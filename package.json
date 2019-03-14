@@ -1,0 +1,22 @@
+{
+  "name": "clever-components",
+  "version": "0.0.1",
+  "description": "This is a Work In Progress to introduce Web Components in our Clever Cloud Web based UIs.",
+  "scripts": {
+    "install": "npm run storybook:build",
+    "start": "static -p 8080 storybook-static",
+    "storybook:build": "build-storybook",
+    "storybook:dev": "start-storybook -p 6006 --ci"
+  },
+  "dependencies": {
+    "node-static": "^0.7.11"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.0",
+    "@storybook/addon-actions": "^5.0.5",
+    "@storybook/addon-knobs": "^5.0.5",
+    "@storybook/addon-notes": "^5.0.5",
+    "@storybook/html": "^5.0.5",
+    "babel-loader": "^8.0.5"
+  }
+}
