@@ -4,7 +4,7 @@
   "description": "This is a Work In Progress to introduce Web Components in our Clever Cloud Web based UIs.",
   "scripts": {
     "install": "npm run storybook:build",
-    "start": "static -p 8080 storybook-static",
+    "start": "static -a 0.0.0.0 -p 8080 storybook-static",
     "storybook:build": "build-storybook",
     "storybook:dev": "start-storybook -p 6006 --ci"
   },
