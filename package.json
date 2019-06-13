@@ -12,11 +12,11 @@
     "node-static": "^0.7.11"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.0",
-    "@storybook/addon-actions": "^5.0.5",
-    "@storybook/addon-knobs": "^5.0.5",
-    "@storybook/addon-notes": "^5.0.5",
-    "@storybook/html": "^5.0.5",
-    "babel-loader": "^8.0.5"
+    "@babel/core": "^7.4.5",
+    "@storybook/addon-actions": "^5.1.4",
+    "@storybook/addon-knobs": "^5.1.4",
+    "@storybook/addon-notes": "^5.1.4",
+    "@storybook/html": "^5.1.4",
+    "babel-loader": "^8.0.6"
   }
 }
