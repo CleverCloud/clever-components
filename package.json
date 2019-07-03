@@ -1,5 +1,5 @@
 {
-  "name": "clever-components",
+  "name": "@clevercloud/components",
   "version": "0.0.1",
   "description": "This is a Work In Progress to introduce Web Components in our Clever Cloud Web based UIs.",
   "scripts": {
