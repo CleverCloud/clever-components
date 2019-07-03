@@ -1,4 +1,5 @@
 import '../../components/atoms/cc-button.js';
+import notes from '../../.components-docs/cc-button.md';
 import { storiesOf } from '@storybook/html';
 import { text } from '@storybook/addon-knobs';
 import { withActions } from '@storybook/addon-actions';
@@ -59,4 +60,4 @@ storiesOf('atoms', module)
       <cc-button danger skeleton outlined>${label || 'Danger outlined'}</cc-button>
       <cc-button danger skeleton outlined disabled>${label || 'Danger outlined & disabled'}</cc-button>
     `;
-  }));
+  }), { notes });

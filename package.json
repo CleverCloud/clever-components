@@ -3,12 +3,15 @@
   "version": "0.0.1",
   "description": "This is a Work In Progress to introduce Web Components in our Clever Cloud Web based UIs.",
   "scripts": {
-    "install": "npm run storybook:build",
+    "components:docs": "wca analyze components/** --format markdown --outDir .components-docs",
+    "install": "npm run components:docs && npm run storybook:build",
     "start": "static -a 0.0.0.0 -p 8080 storybook-static",
     "storybook:dev": "start-storybook -p 6006 --ci",
     "storybook:build": "build-storybook -o storybook-static${STORYBOOK_PATH}"
   },
   "dependencies": {
+    "lit-element": "^2.2.0",
+    "lit-html": "^1.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
@@ -17,6 +20,7 @@
     "@storybook/addon-notes": "^5.1.9",
     "@storybook/html": "^5.1.9",
     "babel-loader": "^8.0.6",
-    "node-static": "^0.7.11"
+    "node-static": "^0.7.11",
+    "web-component-analyzer": "0.1.9"
   }
 }
