@@ -9,7 +9,6 @@
     "storybook:build": "build-storybook -o storybook-static${STORYBOOK_PATH}"
   },
   "dependencies": {
-    "node-static": "^0.7.11"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
@@ -17,6 +16,7 @@
     "@storybook/addon-knobs": "^5.1.9",
     "@storybook/addon-notes": "^5.1.9",
     "@storybook/html": "^5.1.9",
-    "babel-loader": "^8.0.6"
+    "babel-loader": "^8.0.6",
+    "node-static": "^0.7.11"
   }
 }
