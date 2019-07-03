@@ -5,8 +5,8 @@
   "scripts": {
     "install": "npm run storybook:build",
     "start": "static -a 0.0.0.0 -p 8080 storybook-static",
-    "storybook:build": "build-storybook -o storybook-static${STORYBOOK_PATH}",
-    "storybook:dev": "start-storybook -p 6006 --ci"
+    "storybook:dev": "start-storybook -p 6006 --ci",
+    "storybook:build": "build-storybook -o storybook-static${STORYBOOK_PATH}"
   },
   "dependencies": {
     "node-static": "^0.7.11"
