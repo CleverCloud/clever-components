@@ -6,6 +6,8 @@ Here a different rules we want any contributor to follow regarding how we write 
 
 * Don't forget to document your component's public API (properties, attributes, methods, events, slots, CSS custom props...)
 * Your component should be UI only and NOT COUPLED with where the data comes from
+* Don't forget to init your property default values in the constructor
+* Use the `dispatchCustomEvent` helper and try to emit your value directly on `detail`
 * In the data I/O, prefer array of objects (instead of object literals) for collections
 * Always name your event handlers "_onSomething"
 * Try to sort your CSS sources in each selector (alphabetically)
@@ -14,6 +16,9 @@ Here a different rules we want any contributor to follow regarding how we write 
 * Think about what will happen when the data is not there yet, <br> for this, we use the "skeleton screen" pattern
 * Think about what will happen when the data is empty, <br> don't forget to add a message
 * Think about the focus, where does it go when something is validated or when an element disappears
+* Use `// language=CSS` over your `css` declaration so WebStorm can to syntaxic coloration and more
+* Use `// language=HTML` in your stories so WebStorm can to syntaxic coloration and more
+* Try to avoid the quotes for this `prop="${this.prop}"` and do this instead: `prop=${this.prop}`
 
 ## How to order stuff in a custom element using LitElement?
 
@@ -31,3 +36,9 @@ we're proposing this order for the different pars of a custom element built with
 1. LitElement lifecycle callbacks <br> `firstUpdated () {}`
 1. LitElement's render method <br> `render () {}`
 1. LitElement's styles descriptor <br> `static get styles () {}`
+
+## How to order attributes when you use a component?
+
+1. `class` attribute
+1. other attributes
+1. event listeners
