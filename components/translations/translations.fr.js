@@ -6,6 +6,8 @@ module.exports.fr = {
   'env-var-create.create-button': `Créer`,
   'env-var-create.errors.invalid-name': ({ name }) => `Le nom ${name} n'est pas valide`,
   'env-var-create.errors.already-defined-name': ({ name }) => `Le nom ${name} est déjà défini`,
+  // env-var-editor-simple
+  'env-var-editor-simple.empty-data': `Il n'y a pas de variable.`,
   // env-var-input
   'env-var-input.delete-button': `Enlever`,
   'env-var-input.keep-button': `Garder`,
