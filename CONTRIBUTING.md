@@ -1,5 +1,8 @@
 # Contributing to Clever Components
 
+Here are some details on the different npm tasks we use.
+You'll also want to read the details about Web Components contributions in `WEB-COMPONENTS.md`.
+
 ## We use ESLint
 
 We use [ESLint](https://eslint.org/) to enforce JS coding style and spot linting errors ASAP.
