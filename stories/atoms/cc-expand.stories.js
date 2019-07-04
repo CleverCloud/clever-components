@@ -33,7 +33,7 @@ storiesOf('atoms', module)
 
     container.addEventListener('cc-toggle:input', ({ detail: value }) => {
       Array.from(container.querySelectorAll('.box'))
-        .forEach((box) => box.dataset.size = value);
+        .forEach((box) => (box.dataset.size = value));
     });
 
     return container;
