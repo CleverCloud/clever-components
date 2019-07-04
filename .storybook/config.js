@@ -1,4 +1,5 @@
 import { addDecorator, addParameters, configure } from '@storybook/html';
+import { create } from '@storybook/theming';
 import { i18nKnob } from '../stories/lib/i18n-knob';
 import { withKnobs } from '@storybook/addon-knobs';
 
@@ -13,9 +14,16 @@ addDecorator((storyFn) => {
   return storyFn();
 });
 
+const cleverTheme = create({
+  brandTitle: 'Clever Cloud components',
+  brandUrl: 'https://www.clever-cloud.com',
+  brandImage: 'https://www.clever-cloud.com/images/brand-assets/logos/v2/logo_on_white.svg',
+});
+
 addParameters({
   options: {
     enableShortcuts: true,
+    theme: cleverTheme,
   },
 });
 

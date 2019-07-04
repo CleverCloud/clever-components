@@ -28,6 +28,7 @@
     "@storybook/addon-knobs": "^5.1.9",
     "@storybook/addon-notes": "^5.1.9",
     "@storybook/html": "^5.1.9",
+    "@storybook/theming": "^5.1.9",
     "babel-loader": "^8.0.6",
     "babel-plugin-template-html-minifier": "^3.0.1",
     "del": "^5.0.0",
