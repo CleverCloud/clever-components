@@ -19,6 +19,8 @@ Here a different rules we want any contributor to follow regarding how we write 
 * Use `// language=CSS` over your `css` declaration so WebStorm can to syntaxic coloration and more
 * Use `// language=HTML` in your stories so WebStorm can to syntaxic coloration and more
 * Try to avoid the quotes for this `prop="${this.prop}"` and do this instead: `prop=${this.prop}`
+* Make sure all texts are translated
+* Prefix all translation keys with the component name and split parts with dots
 
 ## How to order stuff in a custom element using LitElement?
 

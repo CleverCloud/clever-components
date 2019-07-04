@@ -83,3 +83,74 @@ This way, users can also import any component like this:
 ```js
 import { CCButton } from '@clevercloud';
 ```
+
+## We translate our components
+
+We created a small injector for our translations.
+This allows us to make sure our components are agnostic to the tooling used to create translations and agnostic to the APIs.
+
+In every component, we juste import the fake `@i18n` module.
+It's up to a bundler's config (like Webpack) to wire this import.
+This will be possible to do it natively soon with [import maps](https://github.com/WICG/import-maps) if it gets standardized.
+
+Here's an example for webpack:
+
+```js
+const webpackConfig = {
+  resolve: {
+    alias: {
+      '@i18n': path.join(__dirname, 'node_modules/@clevercloud/components/dist/lib/i18n.js'),
+    },
+  },
+}
+```
+
+When you work on a component, you need to follow several steps...
+
+Step 1, in your component, import the function from the module:
+
+```js
+import { i18n } from '@i18n';
+```
+
+Step 2, use the function in your code with just the key:
+
+```html
+<input placeholder=${i18n('my-component.i18n-key')}>
+```
+
+or with the key AND named params:
+
+```html
+<input placeholder=${i18n('my-component.i18n-key', { name: 'John' })}>
+```
+
+Step 3, make sure translations exists in `components/translations/translations.lang.js` and add an entry to the object with the text value:
+
+```js
+{
+  'my-component.i18n-key': `Hello`,
+}
+```
+
+or with an arrow function and destructured named params:
+
+```js
+{
+  'my-component.i18n-key': ({ name }) => `Hello ${name}`,
+}
+```
+
+## We check our components' translations
+
+Using [i18n-extract](https://github.com/oliviertassinari/i18n-extract), we created a task that scans all source files.
+It checks two things:
+
+* Look for `i18n('key', args)` in the code and make sure all translations exist
+* Look for translations in `components/translations` and make sure we use all defined translations
+
+You can run this check with:
+
+```bash
+npm run components:check-i18n
+```
