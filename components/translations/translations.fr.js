@@ -17,6 +17,15 @@ module.exports.fr = {
   'env-var-editor-expert.errors.duplicated-name': ({ name }) => `attention, le nom ${name} est déjà défini`,
   'env-var-editor-expert.errors.invalid-line': `cette ligne est invalide, le format correct est : NOM="VALEUR"`,
   'env-var-editor-expert.errors.invalid-value': `la valeur est invalide, si vous utilisez des guillements, vous devez les échapper comme ceci : \\" ou alors mettre toute la valeur entre guillemets.`,
+  // env-var-form
+  'env-var-form.mode.simple': `Simple`,
+  'env-var-form.mode.expert': `Expert`,
+  'env-var-form.reset': `Annuler les changements`,
+  'env-var-form.restart-app': `Redémarrer l'app pour appliquer les changements`,
+  'env-var-form.update': `Mettre à jour les changements`,
+  'env-var-form.error.loading': `Une erreur est survenue pendant le chargement des variables d'environnement.`,
+  'env-var-form.error.saving': `Une erreur est survenue pendant la mise à jour des variables d'environnement.`,
+  'env-var-form.error.unknown': `Une erreur est survenue...`,
   // env-var-input
   'env-var-input.delete-button': `Enlever`,
   'env-var-input.keep-button': `Garder`,
