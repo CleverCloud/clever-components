@@ -23,7 +23,7 @@
     "lit-html": "^1.1.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.5",
+    "@babel/core": "^7.5.0",
     "@storybook/addon-actions": "^5.1.9",
     "@storybook/addon-knobs": "^5.1.9",
     "@storybook/addon-notes": "^5.1.9",
@@ -43,6 +43,6 @@
     "i18n-extract": "^0.6.6",
     "node-static": "^0.7.11",
     "terser": "^4.0.2",
-    "web-component-analyzer": "0.1.9"
+    "web-component-analyzer": "0.1.10"
   }
 }
