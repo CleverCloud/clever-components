@@ -30,4 +30,8 @@ module.exports.en = {
   'env-var-input.delete-button': `Remove`,
   'env-var-input.keep-button': `Keep`,
   'env-var-input.value-placeholder': `variable value`,
+  // env-var-full
+  'env-var-full.heading': `Environment variables`,
+  'env-var-full.message': `Environment variables allow you to inject data in your application’s environment.`,
+  'env-var-full.link': `Learn more`,
 };

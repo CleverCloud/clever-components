@@ -7,4 +7,5 @@ export { EnvVarCreate } from './env-var/env-var-create.js';
 export { EnvVarEditorExpert } from './env-var/env-var-editor-expert.js';
 export { EnvVarEditorSimple } from './env-var/env-var-editor-simple.js';
 export { EnvVarForm } from './env-var/env-var-form.js';
+export { EnvVarFull } from './env-var/env-var-full.js';
 export { EnvVarInput } from './env-var/env-var-input.js';
