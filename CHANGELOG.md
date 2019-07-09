@@ -1,5 +1,13 @@
 # Clever Components changelog
 
+## 1.0.2 (2019-07-09)
+
+- cc-input-text: stop propagation on keypress as well
+
+## 1.0.1 (2019-07-09)
+
+- Update npm scripts (move stuffs from `install` to `prestart`)
+
 ## 1.0.0 (2019-07-09)
 
 First public stable release
