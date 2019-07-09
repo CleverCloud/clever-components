@@ -1,5 +1,11 @@
 # Clever Components changelog
 
+## 1.0.3 (2019-07-09)
+
+- env-var-input: fix keep/delete
+- env-var-form: fix reset form
+- env-var-create: fix focus after click on create
+
 ## 1.0.2 (2019-07-09)
 
 - cc-input-text: stop propagation on keypress as well
