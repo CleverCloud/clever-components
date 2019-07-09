@@ -57,7 +57,7 @@ export class CcInputText extends LitElement {
     }
   }
 
-  // Stop propagation of keydown events (to prevent conflicts with shortcuts)
+  // Stop propagation of keydown and keypress events (to prevent conflicts with shortcuts)
   _stopPropagation (e) {
     e.stopPropagation();
   }
@@ -80,6 +80,7 @@ export class CcInputText extends LitElement {
         @focus=${this._onFocus}
         spellcheck="false"
         @keydown=${this._stopPropagation}
+        @keypress=${this._stopPropagation}
       ></textarea>`;
     }
     return html`<input type="text"
@@ -93,6 +94,7 @@ export class CcInputText extends LitElement {
       @focus=${this._onFocus}
       spellcheck="false"
       @keydown=${this._stopPropagation}
+      @keypress=${this._stopPropagation}
     >`;
   }
 
