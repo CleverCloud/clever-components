@@ -7,7 +7,7 @@
     "dist"
   ],
   "scripts": {
-    "prepack": "npm run components:build",
+    "prepack": "npm run lint && npm run components:check-i18n && npm run components:build",
     "components:build": "node tasks/minify-components.js",
     "components:check-i18n": "node tasks/check-i18n.js",
     "components:docs": "wca analyze components/** --format markdown --outDir .components-docs",
