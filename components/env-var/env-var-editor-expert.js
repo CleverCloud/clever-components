@@ -28,7 +28,7 @@ export class EnvVarEditorExpert extends LitElement {
 
   constructor () {
     super();
-    // this.variables is let to undefined by default (this triggers skeleton screen)
+    this.variables = null;
     this.disabled = false;
     this.readonly = false;
   }
@@ -103,11 +103,11 @@ export class EnvVarEditorExpert extends LitElement {
       <cc-input-text
         multi
         value=${this._variablesAsText}
-        @cc-input-text:input=${this._onInput}
         placeholder=${placeholder}
         ?disabled=${this.disabled}
         ?readonly=${this.readonly}
         ?skeleton=${this._isLoading}
+        @cc-input-text:input=${this._onInput}
       ></cc-input-text>
       
       <ul class="error-list" ?hidden=${this._formattedErrors.length === 0}>
