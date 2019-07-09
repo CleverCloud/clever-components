@@ -11,9 +11,9 @@
     "components:build": "node tasks/minify-components.js",
     "components:check-i18n": "node tasks/check-i18n.js",
     "components:docs": "wca analyze components/** --format markdown --outDir .components-docs",
-    "install": "npm run components:docs && npm run storybook:build",
     "lint": "eslint components stories tasks",
     "lint:fix": "eslint --fix components stories tasks",
+    "prestart": "npm run components:docs && npm run storybook:build",
     "start": "static -a 0.0.0.0 -p 8080 storybook-static",
     "storybook:dev": "start-storybook -p 6006 --ci",
     "storybook:build": "build-storybook -o storybook-static${STORYBOOK_PATH}"
