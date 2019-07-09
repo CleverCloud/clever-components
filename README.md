@@ -28,4 +28,5 @@ You can find it in the *Notes* tab of a component's story ([example](https://www
 
 ## Can I use them in my project?
 
-The first stable version will be [available on npm](https://www.npmjs.com/package/@clevercloud/components) soon.
+Sure, they're [available on npm](https://www.npmjs.com/package/@clevercloud/components).
+Contact us if you want more details.
