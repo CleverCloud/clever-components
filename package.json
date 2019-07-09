@@ -1,6 +1,6 @@
 {
   "name": "@clevercloud/components",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "This is a Work In Progress to introduce Web Components in our Clever Cloud Web based UIs.",
   "main": "dist/index.js",
   "files": [
