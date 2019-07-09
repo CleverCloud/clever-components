@@ -89,7 +89,7 @@ export class EnvVarEditorSimple extends LitElement {
       ? []
       : this.variables.map(({ name }) => name);
 
-    const createForm = !this.readonly
+    const $createForm = !this.readonly
       ? html`<env-var-create
         ?disabled=${this.variables == null || this.disabled}
         .variablesNames=${variablesNames}
@@ -97,19 +97,11 @@ export class EnvVarEditorSimple extends LitElement {
       ></env-var-create>`
       : '';
 
-    return html`
-    
-    ${createForm}
-    
-    <div class="message" ?hidden=${variables != null && variables.length !== 0}>
-      ${i18n(`env-var-editor-simple.empty-data`)}
-    </div>
-    
-    ${repeat(
-    variables,
-    ({ name }) => name,
-    ({ name, value, isNew, isEdited, isDeleted }) => {
-      return html`<env-var-input
+    const $envVarInputs = repeat(
+      variables,
+      ({ name }) => name,
+      ({ name, value, isNew, isEdited, isDeleted }) => {
+        return html`<env-var-input
           name=${name}
           value=${value}
           ?new=${isNew}
@@ -122,8 +114,15 @@ export class EnvVarEditorSimple extends LitElement {
           @env-var-input:delete=${this._onDelete}
           @env-var-input:keep=${this._onKeep}
         ></env-var-input>`;
-    },
-  )}
+      },
+    );
+
+    return html`
+      ${$createForm}
+      <div class="message" ?hidden=${variables != null && variables.length !== 0}>
+        ${i18n(`env-var-editor-simple.empty-data`)}
+      </div>
+      ${$envVarInputs}
     `;
   }
 
