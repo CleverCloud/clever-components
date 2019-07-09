@@ -51,7 +51,7 @@ export class EnvVarCreate extends LitElement {
     });
     this.reset();
     // Put focus back on name input so we can add something else directly
-    this.shadowRoot.getElementById('name-input').focus();
+    this.shadowRoot.querySelector('cc-input-text.name').focus();
   }
 
   render () {
