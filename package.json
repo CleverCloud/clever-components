@@ -13,10 +13,9 @@
     "components:docs": "wca analyze components/** --format markdown --outDir .components-docs",
     "lint": "eslint components stories tasks",
     "lint:fix": "eslint --fix components stories tasks",
-    "prestart": "npm run components:docs && npm run storybook:build",
     "start": "static -a 0.0.0.0 -p 8080 storybook-static",
     "storybook:dev": "start-storybook -p 6006 --ci",
-    "storybook:build": "build-storybook -o storybook-static${STORYBOOK_PATH}"
+    "storybook:build": "npm run components:docs && build-storybook -o storybook-static${STORYBOOK_PATH}"
   },
   "dependencies": {
     "lit-element": "^2.2.0",
