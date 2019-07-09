@@ -143,7 +143,7 @@ export class EnvVarForm extends LitElement {
   }
 
   _onResetForm () {
-    this.variables = this._initVariables;
+    this._setVariables(this._initVariables);
   }
 
   _onUpdateForm () {
