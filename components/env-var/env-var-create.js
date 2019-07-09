@@ -65,32 +65,32 @@ export class EnvVarCreate extends LitElement {
         <cc-input-text
           class="name"
           name="name"
-          value="${this._variableName}"
-          ?disabled="${this.disabled}"
-          placeholder="${i18n(`env-var-create.name.placeholder`)}"
-          @cc-input-text:input="${this._onNameInput}"
+          value=${this._variableName}
+          ?disabled=${this.disabled}
+          placeholder=${i18n(`env-var-create.name.placeholder`)}
+          @cc-input-text:input=${this._onNameInput}
         ></cc-input-text>
         <span class="input-btn">
           <cc-input-text
             class="value"
             name="value"
-            value="${this._variableValue}"
+            value=${this._variableValue}
             multi
-            ?disabled="${this.disabled}"
-            placeholder="${i18n(`env-var-create.value.placeholder`)}"
-            @cc-input-text:input="${this._onValueInput}"
+            ?disabled=${this.disabled}
+            placeholder=${i18n(`env-var-create.value.placeholder`)}
+            @cc-input-text:input=${this._onValueInput}
           ></cc-input-text>
           <cc-button
             primary
-            ?disabled="${hasErrors || this.disabled}"
+            ?disabled=${hasErrors || this.disabled}
             @click=${this._onSubmit}
           >${i18n(`env-var-create.create-button`)}</cc-button>
         </span>
       </div>
-      <div class="errors" ?hidden="${!isNameInvalid || this._variableName === ''}">
+      <div class="errors" ?hidden=${!isNameInvalid || this._variableName === ''}>
         ⚠️ ${i18n(`env-var-create.errors.invalid-name`, { name: this._variableName })}  
       </div>
-      <div class="errors" ?hidden="${!isNameAlreadyDefined}">
+      <div class="errors" ?hidden=${!isNameAlreadyDefined}>
         ⚠️ ${i18n(`env-var-create.errors.already-defined-name`, { name: this._variableName })}  
       </div>
     `;

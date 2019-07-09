@@ -58,7 +58,7 @@ export class EnvVarFull extends LitElement {
     return html`
       <env-var-form
         heading=${i18n('env-var-full.heading')}
-        .variables="${this.variables}"
+        .variables=${this.variables}
         .error=${this.error}
         ?restart-app=${this.restartApp}
         @env-var-form:dismissed-error=${(e) => this._onDismissedError(e.detail)}

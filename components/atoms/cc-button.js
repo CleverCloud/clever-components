@@ -55,7 +55,7 @@ export class CcButton extends LitElement {
     return html`<button
       type="button"
       class=${classMap(modes)}
-      .disabled="${this.disabled || this.skeleton}"
+      .disabled=${this.disabled || this.skeleton}
     >
       <slot></slot>
     </button>`;

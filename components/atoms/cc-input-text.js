@@ -68,14 +68,14 @@ export class CcInputText extends LitElement {
 
     if (this.multi) {
       return html`<textarea
-        class="${classMap({ input: true, skeleton: this.skeleton })}"
+        class=${classMap({ input: true, skeleton: this.skeleton })}
         style="--rows: ${rows}"
-        rows="${rows}"
-        ?disabled="${this.disabled || this.skeleton}"
-        ?readonly="${this.readonly}"
-        .value="${this.value}"
-        name="${this.name}"
-        placeholder="${this.placeholder}"
+        rows=${rows}
+        ?disabled=${this.disabled || this.skeleton}
+        ?readonly=${this.readonly}
+        .value=${this.value}
+        name=${this.name}
+        placeholder=${this.placeholder}
         @input=${this._onInput}
         @focus=${this._onFocus}
         spellcheck="false"
@@ -83,12 +83,12 @@ export class CcInputText extends LitElement {
       ></textarea>`;
     }
     return html`<input type="text"
-      class="${classMap({ input: true, skeleton: this.skeleton })}"
-      ?disabled="${this.disabled || this.skeleton}" 
-      ?readonly="${this.readonly}" 
-      .value="${this.value}"
-      name="${this.name}"
-      placeholder="${this.placeholder}"
+      class=${classMap({ input: true, skeleton: this.skeleton })}
+      ?disabled=${this.disabled || this.skeleton} 
+      ?readonly=${this.readonly} 
+      .value=${this.value}
+      name=${this.name}
+      placeholder=${this.placeholder}
       @input=${this._onInput}
       @focus=${this._onFocus}
       spellcheck="false"
