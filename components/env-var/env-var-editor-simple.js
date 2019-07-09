@@ -106,10 +106,10 @@ export class EnvVarEditorSimple extends LitElement {
     </div>
     
     ${repeat(
-      variables,
-      ({ name }) => name,
-      ({ name, value, isNew, isEdited, isDeleted }) => {
-        return html`<env-var-input
+    variables,
+    ({ name }) => name,
+    ({ name, value, isNew, isEdited, isDeleted }) => {
+      return html`<env-var-input
           name=${name}
           value=${value}
           ?new=${isNew}
@@ -122,8 +122,8 @@ export class EnvVarEditorSimple extends LitElement {
           @env-var-input:delete=${this._onDelete}
           @env-var-input:keep=${this._onKeep}
         ></env-var-input>`;
-      },
-    )}
+    },
+  )}
     `;
   }
 
