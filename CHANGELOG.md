@@ -1,5 +1,11 @@
 # Clever Components changelog
 
+## 1.0.5 (2019-07-10)
+
+- env-var-input: fix button alignment
+- env-var-create: fix button alignment
+- env-var-input: switch outline for delete/keep button
+
 ## 1.0.4 (2019-07-10)
 
 - env-var-input: switch colors for delete/keep button
