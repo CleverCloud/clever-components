@@ -22,6 +22,12 @@ export class CcToggle extends LitElement {
     };
   }
 
+  constructor () {
+    super();
+    // use this unique name for isolation (Safari seems to have a bug)
+    this._uniqueName = Math.random().toString(36).slice(2);
+  }
+
   _onChange (e) {
     this.value = e.target.value;
     dispatchCustomEvent(this, 'input', this.value);
@@ -33,7 +39,7 @@ export class CcToggle extends LitElement {
         ${repeat(this.choices, ({ value }) => value, ({ label, value }) => html`
           <input
             type="radio"
-            name="mode"
+            name=${this._uniqueName}
             value=${value}
             id=${value}
             ?disabled=${this.disabled}
