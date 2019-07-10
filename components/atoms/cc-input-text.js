@@ -124,7 +124,7 @@ export class CcInputText extends LitElement {
           border: 1px solid #000;
           box-sizing: border-box;
           display: block;
-          font-family: monospace;
+          font-family: "SourceCodePro", "monaco", monospace;
           font-size: 14px;
           margin: 0;
           padding: 0;
