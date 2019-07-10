@@ -157,6 +157,7 @@ export class EnvVarInput extends LitElement {
         }
 
         cc-button {
+          align-self: flex-start;
           flex: 1 1 6rem;
           white-space: nowrap;
         }
