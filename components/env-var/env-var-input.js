@@ -70,7 +70,7 @@ export class EnvVarInput extends LitElement {
           <cc-button
             ?skeleton=${this.skeleton}
             ?disabled=${this.disabled}
-            ?danger=${this.deleted}
+            ?danger=${!this.deleted}
             ?outlined=${this.deleted}
             @click=${this.deleted ? this._onKeep : this._onDelete}
           >
