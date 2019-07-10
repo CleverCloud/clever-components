@@ -1,5 +1,9 @@
 # Clever Components changelog
 
+## 1.0.4 (2019-07-10)
+
+- env-var-input: switch colors for delete/keep button
+
 ## 1.0.3 (2019-07-09)
 
 - env-var-input: fix keep/delete
