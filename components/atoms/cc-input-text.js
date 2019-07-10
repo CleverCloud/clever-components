@@ -120,6 +120,8 @@ export class CcInputText extends LitElement {
 
         /* RESET */
         .input {
+          /* remove Safari box shadow */
+          -webkit-appearance: none;
           background: #fff;
           border: 1px solid #000;
           box-sizing: border-box;
