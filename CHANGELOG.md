@@ -1,5 +1,9 @@
 # Clever Components changelog
 
+## 1.0.6 (2019-07-10)
+
+- cc-input-text: update monospace font
+
 ## 1.0.5 (2019-07-10)
 
 - env-var-input: fix button alignment
