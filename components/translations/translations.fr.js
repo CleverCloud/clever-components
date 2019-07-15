@@ -3,7 +3,7 @@ module.exports.fr = {
   // env-var-create
   'env-var-create.name.placeholder': `NOM_DE_LA_VARIABLE`,
   'env-var-create.value.placeholder': `valeur de la variable`,
-  'env-var-create.create-button': `Créer`,
+  'env-var-create.create-button': `Ajouter`,
   'env-var-create.errors.invalid-name': ({ name }) => `Le nom ${name} n'est pas valide`,
   'env-var-create.errors.already-defined-name': ({ name }) => `Le nom ${name} est déjà défini`,
   // env-var-editor-simple
