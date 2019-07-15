@@ -1,5 +1,9 @@
 # Clever Components changelog
 
+## 1.1.0 (2019-07-15)
+
+- env-var-create: rename button "create" => "add"
+
 ## 1.0.7 (2019-07-10)
 
 - cc-toggle: fix isolation of name in shadow DOM for Safari
