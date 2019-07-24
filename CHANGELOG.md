@@ -1,5 +1,9 @@
 # Clever Components changelog
 
+## 1.2.0 (2019-07-25)
+
+- Use @clevercloud/client utils to handle env vars
+
 ## 1.1.0 (2019-07-15)
 
 - env-var-create: rename button "create" => "add"
