@@ -17,22 +17,22 @@ function minifyHtmlCss (code, sourceFileName) {
     sourceFileName,
     // Put sourcemap in the file to simplify further manipulation
     sourceMaps: 'inline',
-    'plugins': [
+    plugins: [
       [
         'template-html-minifier',
         {
-          'modules': {
+          modules: {
             'lit-html': ['html'],
             'lit-element': [
               'html',
-              { 'name': 'css', 'encapsulation': 'style' },
+              { name: 'css', encapsulation: 'style' },
             ],
           },
-          'htmlMinifier': {
+          htmlMinifier: {
             collapseWhitespace: true,
             removeComments: true,
             caseSensitive: true,
-            minifyCSS: { 'level': 2 },
+            minifyCSS: { level: 2 },
           },
         },
       ],
@@ -71,7 +71,7 @@ async function run () {
     return { src, sourceMapFilename, dst, sourceMapUrl };
   });
 
-  for (let { src, sourceMapFilename, dst, sourceMapUrl } of filepaths) {
+  for (const { src, sourceMapFilename, dst, sourceMapUrl } of filepaths) {
     console.log(`Minifying ${src} ...`);
     await fs.readFile(src, 'utf8')
       .then((code) => minifyHtmlCss(code, sourceMapFilename))

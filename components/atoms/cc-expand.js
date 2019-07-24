@@ -1,9 +1,9 @@
 // All this file is written in a way so it can be the smallest possible,
 // while keeping a reasonable readability level.
-// It is not using lit* deps on purpuse (keep small and not useful).
+// It is not using lit* deps on purpose (keep small and not useful).
 
-let createElement = (tagName) => document.createElement(tagName);
-let appendChild = (parent, child) => parent.appendChild(child);
+const createElement = (tagName) => document.createElement(tagName);
+const appendChild = (parent, child) => parent.appendChild(child);
 
 /**
  * A wrapper that changes its size (with a transition) according to the size of its children
@@ -16,11 +16,11 @@ export class CcExpand extends HTMLElement {
     super();
 
     // language=CSS
-    let shadow = this.attachShadow({ mode: 'open' });
-    let style = createElement('style');
+    const shadow = this.attachShadow({ mode: 'open' });
+    const style = createElement('style');
     style.textContent = `:host{display:block;overflow:hidden}`;
     this._wrapper = createElement('div');
-    let slot = createElement('slot');
+    const slot = createElement('slot');
 
     appendChild(shadow, style);
     appendChild(shadow, this._wrapper);
@@ -32,7 +32,7 @@ export class CcExpand extends HTMLElement {
       return;
     }
     this._ro = new ResizeObserver(() => {
-      let height = getComputedStyle(this).height;
+      const height = getComputedStyle(this).height;
       if (this._oldHeight === height) {
         return;
       }

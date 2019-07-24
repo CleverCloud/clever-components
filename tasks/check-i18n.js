@@ -12,7 +12,7 @@ const translationsByLang = { en, fr };
 
 async function getUsedKeys (sourceFilepaths) {
   const usedKeysByFile = {};
-  for (let src of sourceFilepaths) {
+  for (const src of sourceFilepaths) {
     const code = await fs.readFile(src, 'utf8');
     const keys = extractFromCode(code, { marker: 'i18n' });
     usedKeysByFile[src] = keys.map(({ key }) => key);

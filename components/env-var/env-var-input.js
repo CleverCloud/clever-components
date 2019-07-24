@@ -80,7 +80,7 @@ export class EnvVarInput extends LitElement {
       : '';
 
     return html`
-      <span class=${classMap({ name: true, skeleton: this.skeleton, 'deleted': this.deleted })}>
+      <span class=${classMap({ name: true, skeleton: this.skeleton, deleted: this.deleted })}>
         <span class="text">${this.name}</span>
       </span>
       <span class="input-btn">

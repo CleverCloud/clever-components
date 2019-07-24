@@ -1,5 +1,5 @@
 module.exports.en = {
-  'LANGUAGE': 'English',
+  LANGUAGE: 'English',
   // env-var-create
   'env-var-create.name.placeholder': `VARIABLE_NAME`,
   'env-var-create.value.placeholder': `variable value`,
