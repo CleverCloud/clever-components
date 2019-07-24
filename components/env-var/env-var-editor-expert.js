@@ -1,7 +1,7 @@
 import '../atoms/cc-input-text.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
-import envVarUtils from '../lib/env-vars.js';
+import { ERROR_TYPES, parseRaw, toNameEqualsValueString } from '@clevercloud/client/esm/utils/env-vars.js';
 import { i18n } from '@i18n';
 
 /**
@@ -51,31 +51,31 @@ export class EnvVarEditorExpert extends LitElement {
 
     const filteredVariables = vars
       .filter(({ isDeleted }) => !isDeleted);
-    this._variablesAsText = envVarUtils.toNameEqualsValueString(filteredVariables);
+    this._variablesAsText = toNameEqualsValueString(filteredVariables);
     this._errors = [];
   }
 
   set _errors (rawErrors) {
     this._formattedErrors = rawErrors.map(({ type, name, pos }) => {
-      if (type === envVarUtils.ERROR_TYPES.INVALID_NAME) {
+      if (type === ERROR_TYPES.INVALID_NAME) {
         return {
           line: pos.line,
           msg: i18n('env-var-editor-expert.errors.invalid-name', { name }),
         };
       }
-      if (type === envVarUtils.ERROR_TYPES.DUPLICATED_NAME) {
+      if (type === ERROR_TYPES.DUPLICATED_NAME) {
         return {
           line: pos.line,
           msg: i18n('env-var-editor-expert.errors.duplicated-name', { name }),
         };
       }
-      if (type === envVarUtils.ERROR_TYPES.INVALID_LINE) {
+      if (type === ERROR_TYPES.INVALID_LINE) {
         return {
           line: pos.line,
           msg: i18n('env-var-editor-expert.errors.invalid-line'),
         };
       }
-      if (type === envVarUtils.ERROR_TYPES.INVALID_VALUE) {
+      if (type === ERROR_TYPES.INVALID_VALUE) {
         return {
           line: pos.line,
           msg: i18n('env-var-editor-expert.errors.invalid-value'),
@@ -86,7 +86,8 @@ export class EnvVarEditorExpert extends LitElement {
   }
 
   _onInput ({ detail: value }) {
-    const { variables, errors } = envVarUtils.parseRaw(value);
+    const { variables, errors } = parseRaw(value);
+    console.log(variables);
     this._errors = errors;
     if (errors.length === 0) {
       dispatchCustomEvent(this, 'change', variables);
