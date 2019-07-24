@@ -18,6 +18,7 @@
     "storybook:build": "npm run components:docs && build-storybook -o storybook-static${STORYBOOK_PATH}"
   },
   "dependencies": {
+    "@clevercloud/client": "^1.0.0",
     "lit-element": "^2.2.0",
     "lit-html": "^1.1.1"
   },

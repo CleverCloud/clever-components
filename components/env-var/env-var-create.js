@@ -2,7 +2,7 @@ import '../atoms/cc-button.js';
 import '../atoms/cc-input-text.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events';
-import envVarUtils from '../lib/env-vars.js';
+import { validateName } from '@clevercloud/client/esm/utils/env-vars.js';
 import { i18n } from '@i18n';
 
 /**
@@ -56,7 +56,7 @@ export class EnvVarCreate extends LitElement {
 
   render () {
 
-    const isNameInvalid = !envVarUtils.validateName(this._variableName);
+    const isNameInvalid = !validateName(this._variableName);
     const isNameAlreadyDefined = this.variablesNames.includes(this._variableName);
     const hasErrors = isNameInvalid || isNameAlreadyDefined;
 
