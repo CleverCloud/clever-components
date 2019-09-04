@@ -5,8 +5,9 @@ module.exports = {
     'brace-style': ['error', 'stroustrup'],
     'comma-dangle': ['error', 'always-multiline'],
     'line-comment-position': ['error', { 'position': 'above' }],
-    'padded-blocks': 'off',
-    'semi': ['error', 'always'],
     'operator-linebreak': ['error', 'before'],
+    'padded-blocks': 'off',
+    'quotes': ['error', 'single', { 'allowTemplateLiterals': true }],
+    'semi': ['error', 'always'],
   },
 };
