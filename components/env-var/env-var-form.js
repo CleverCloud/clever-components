@@ -4,8 +4,8 @@ import '../atoms/cc-loader.js';
 import '../atoms/cc-toggle.js';
 import './env-var-editor-expert.js';
 import './env-var-editor-simple.js';
-import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '@i18n';
 

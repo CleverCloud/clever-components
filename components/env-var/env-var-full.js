@@ -1,8 +1,8 @@
 import './env-var-form.js';
 import { css, html, LitElement } from 'lit-element';
-import { repeat } from 'lit-html/directives/repeat.js';
+import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '@i18n';
-import { dispatchCustomEvent } from '../lib/events';
+import { repeat } from 'lit-html/directives/repeat.js';
 
 /**
  * A high level view to edit env vars of an app and display all its add-on's env vars

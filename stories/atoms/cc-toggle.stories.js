@@ -1,7 +1,7 @@
 import '../../components/atoms/cc-toggle.js';
 import notes from '../../.components-docs/cc-toggle.md';
 import { storiesOf } from '@storybook/html';
-import { withCustomEventActions } from '../lib/event-action';
+import { withCustomEventActions } from '../lib/event-action.js';
 
 const withActions = withCustomEventActions('cc-toggle:input');
 

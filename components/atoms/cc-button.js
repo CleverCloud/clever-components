@@ -1,5 +1,5 @@
-import { LitElement, css, html } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { LitElement, css, html } from 'lit-element';
 import { pulse } from '../styles/animations.js';
 
 /**

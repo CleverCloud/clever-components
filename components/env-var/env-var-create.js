@@ -1,9 +1,9 @@
 import '../atoms/cc-button.js';
 import '../atoms/cc-input-text.js';
 import { css, html, LitElement } from 'lit-element';
-import { dispatchCustomEvent } from '../lib/events';
-import { validateName } from '@clevercloud/client/esm/utils/env-vars.js';
+import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '@i18n';
+import { validateName } from '@clevercloud/client/esm/utils/env-vars.js';
 
 /**
  * A small form to create a new environment variable with validation on the name

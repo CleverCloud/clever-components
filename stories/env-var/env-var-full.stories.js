@@ -1,6 +1,6 @@
 import '../../components/env-var/env-var-full.js';
 import { storiesOf } from '@storybook/html';
-import { withCustomEventActions } from '../lib/event-action';
+import { withCustomEventActions } from '../lib/event-action.js';
 
 const withActions = withCustomEventActions('env-var-form:submit', 'env-var-full:dismissed-error', 'env-var-form:restart-app');
 

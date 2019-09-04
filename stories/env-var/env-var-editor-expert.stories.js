@@ -1,7 +1,7 @@
 import '../../components/env-var/env-var-editor-expert.js';
 import notes from '../../.components-docs/env-var-editor-expert.md';
 import { storiesOf } from '@storybook/html';
-import { withCustomEventActions } from '../lib/event-action';
+import { withCustomEventActions } from '../lib/event-action.js';
 
 const withActions = withCustomEventActions('env-var-editor-expert:change');
 

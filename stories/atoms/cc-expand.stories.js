@@ -1,4 +1,4 @@
-import '../../components/atoms/cc-expand';
+import '../../components/atoms/cc-expand.js';
 import notes from '../../.components-docs/cc-expand.md';
 import { storiesOf } from '@storybook/html';
 

@@ -1,7 +1,7 @@
 import '../../components/env-var/env-var-editor-simple.js';
 import notes from '../../.components-docs/env-var-editor-simple.md';
 import { storiesOf } from '@storybook/html';
-import { withCustomEventActions } from '../lib/event-action';
+import { withCustomEventActions } from '../lib/event-action.js';
 
 const withActions = withCustomEventActions('env-var-editor-simple:change');
 
