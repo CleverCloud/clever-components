@@ -1,7 +1,7 @@
 import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
-import { pulse } from '../styles/animations.js';
+import { skeleton } from '../styles/skeleton.js';
 
 /**
  * A text input (with optional multiline support)
@@ -100,7 +100,7 @@ export class CcInputText extends LitElement {
 
   static get styles () {
     return [
-      pulse,
+      skeleton,
       // language=CSS
       css`
         :host {
@@ -171,17 +171,12 @@ export class CcInputText extends LitElement {
           background: #eee;
         }
 
-        .input.skeleton {
-          animation-direction: alternate;
-          animation-duration: 500ms;
-          animation-iteration-count: infinite;
-          animation-name: pulse;
-          background: #eee;
+        .skeleton {
+          background-color: #eee;
           border-color: #eee;
-          color: transparent;
         }
 
-        .input.skeleton::placeholder {
+        .skeleton::placeholder {
           color: transparent;
         }
 

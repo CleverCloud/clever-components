@@ -4,7 +4,7 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '@i18n';
-import { pulse } from '../styles/animations.js';
+import { skeleton } from '../styles/skeleton.js';
 
 /**
  * A small input to manipulate an environement variable
@@ -80,8 +80,8 @@ export class EnvVarInput extends LitElement {
       : '';
 
     return html`
-      <span class=${classMap({ name: true, skeleton: this.skeleton, deleted: this.deleted })}>
-        <span class="text">${this.name}</span>
+      <span class=${classMap({ name: true, deleted: this.deleted })}>
+        <span class=${classMap({ skeleton: this.skeleton })}>${this.name}</span>
       </span>
       <span class="input-btn">
         <cc-input-text
@@ -102,7 +102,7 @@ export class EnvVarInput extends LitElement {
 
   static get styles () {
     return [
-      pulse,
+      skeleton,
       // language=CSS
       css`
         :host {
@@ -131,17 +131,8 @@ export class EnvVarInput extends LitElement {
           text-decoration: line-through;
         }
 
-        .name.skeleton .text {
-          animation-direction: alternate;
-          animation-duration: 500ms;
-          animation-iteration-count: infinite;
-          animation-name: pulse;
+        .skeleton {
           background-color: #bbb;
-          color: transparent;
-          -moz-user-select: none;
-          -webkit-user-select: none;
-          -ms-user-select: none;
-          user-select: none;
         }
 
         .input-btn {
