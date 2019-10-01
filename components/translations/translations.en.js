@@ -1,5 +1,7 @@
 module.exports.en = {
   LANGUAGE: 'English',
+  // cc-button
+  'cc-button.cancel': `Click to cancel`,
   // env-var-create
   'env-var-create.name.placeholder': `VARIABLE_NAME`,
   'env-var-create.value.placeholder': `variable value`,

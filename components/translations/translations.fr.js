@@ -1,5 +1,7 @@
 module.exports.fr = {
   LANGUAGE: 'Français',
+  // cc-button
+  'cc-button.cancel': `Cliquez pour annuler`,
   // env-var-create
   'env-var-create.name.placeholder': `NOM_DE_LA_VARIABLE`,
   'env-var-create.value.placeholder': `valeur de la variable`,
