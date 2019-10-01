@@ -48,6 +48,18 @@ storiesOf('atoms', module)
       <cc-button skeleton success outlined>${label || 'Success outlined'}</cc-button>
       <cc-button skeleton success outlined disabled>${label || 'Success outlined & disabled'}</cc-button>
       
+      <div class="title">Warning:</div>
+      <cc-button warning>${label || 'Warning'}</cc-button>
+      <cc-button warning disabled>${label || 'Warning disabled'}</cc-button>
+      <cc-button warning outlined>${label || 'Warning outlined'}</cc-button>
+      <cc-button warning outlined disabled>${label || 'Warning outlined & disabled'}</cc-button>
+      
+      <div class="title">Warning (skeleton):</div>
+      <cc-button skeleton warning>${label || 'Warning'}</cc-button>
+      <cc-button warning skeleton disabled>${label || 'Warning disabled'}</cc-button>
+      <cc-button warning skeleton outlined>${label || 'Warning outlined'}</cc-button>
+      <cc-button warning skeleton outlined disabled>${label || 'Warning outlined & disabled'}</cc-button>
+      
       <div class="title">Danger:</div>
       <cc-button danger>${label || 'Danger'}</cc-button>
       <cc-button danger disabled>${label || 'Danger disabled'}</cc-button>

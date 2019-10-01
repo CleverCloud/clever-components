@@ -8,7 +8,7 @@ import { skeleton } from '../styles/skeleton.js';
  *
  * ## Details
  *
- * * Attributes `primary`, `success` and `danger` define the _mode_ of the button.
+ * * Attributes `primary`, `success`, `warning` and `danger` define the _mode_ of the button.
  * * They are exclusive, you can only set one _mode_ at a time.
  * * When you don't use any of these values, the defaults _mode_ is `simple`.
  *
@@ -18,6 +18,7 @@ import { skeleton } from '../styles/skeleton.js';
  *
  * @attr {Boolean} primary - set button UI _mode_ to primary
  * @attr {Boolean} success - set button UI _mode_ to success
+ * @attr {Boolean} warning - set button UI _mode_ to warning
  * @attr {Boolean} danger - set button UI _mode_ to danger
  * @attr {Boolean} disabled - same as native button element `disabled` attribute
  * @attr {Boolean} outlined - set button UI as outlined (no background and colored border)
@@ -30,6 +31,7 @@ export class CcButton extends LitElement {
       disabled: { type: Boolean },
       primary: { type: Boolean },
       success: { type: Boolean },
+      warning: { type: Boolean },
       danger: { type: Boolean },
       outlined: { type: Boolean },
       skeleton: { type: Boolean },
@@ -48,14 +50,15 @@ export class CcButton extends LitElement {
     // those are exclusive, only one can be set at a time
     // we chose this over one attribute named "mode" so it would be easier to write/use
     const modes = {
-      danger: this.danger && !this.success && !this.primary,
-      success: !this.danger && this.success && !this.primary,
-      primary: !this.danger && !this.success && this.primary,
+      primary: this.primary && !this.success && !this.warning && !this.danger,
+      success: !this.primary && this.success && !this.warning && !this.danger,
+      warning: !this.primary && !this.success && this.warning && !this.danger,
+      danger: !this.primary && !this.success && !this.warning && this.danger,
       skeleton: this.skeleton,
     };
 
     // simple mode is default when no value or when there are multiple conflicting values
-    modes.simple = !modes.danger && !modes.success && !modes.primary;
+    modes.simple = !modes.primary && !modes.success && !modes.warning && !modes.danger;
 
     // outlined is not default except in simple mode
     modes.outlined = this.outlined || modes.simple;
@@ -119,6 +122,10 @@ export class CcButton extends LitElement {
 
         .success {
           --btn-color: hsl(144, 56%, 43%);
+        }
+
+        .warning {
+          --btn-color: hsl(35, 84%, 37%);
         }
 
         .danger {
