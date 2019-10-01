@@ -4,7 +4,7 @@ import { storiesOf } from '@storybook/html';
 import { text } from '@storybook/addon-knobs';
 import { withActions } from '@storybook/addon-actions';
 
-const eventNames = ['click cc-button'];
+const eventNames = ['cc-button:click'];
 
 storiesOf('atoms', module)
   .add('<cc-button>', () => withActions(...eventNames)(() => {

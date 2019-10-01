@@ -1,25 +1,26 @@
 import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
+import { dispatchCustomEvent } from '../lib/events.js';
 import { skeleton } from '../styles/skeleton.js';
 
 /**
- * A button
+ * Wraps a `<button>` with a skeleton state and some modes
  *
  * ## Details
  *
- * * attributes `primary`, `success` and `danger` define the mode of the button and are exclusive.
- * * You can only set one mode at a time.
- * * When you don't use any of these values, the mode defaults to `simple`.
+ * * Attributes `primary`, `success` and `danger` define the _mode_ of the button.
+ * * They are exclusive, you can only set one _mode_ at a time.
+ * * When you don't use any of these values, the defaults _mode_ is `simple`.
  *
- * @fires click - Native click event from inner button element
+ * @fires cc-button:click - Fired when button is clicked
  *
  * @slot - The content of the button (text or HTML)
  *
- * @attr {Boolean} primary - set button UI mode to primary
- * @attr {Boolean} success - set button UI mode to success
- * @attr {Boolean} danger - set button UI mode to danger
+ * @attr {Boolean} primary - set button UI _mode_ to primary
+ * @attr {Boolean} success - set button UI _mode_ to success
+ * @attr {Boolean} danger - set button UI _mode_ to danger
  * @attr {Boolean} disabled - same as native button element `disabled` attribute
- * @attr {Boolean} outlined - set button UI as outlined (white background instead of filled color)
+ * @attr {Boolean} outlined - set button UI as outlined (no background and colored border)
  * @attr {Boolean} skeleton - enable skeleton screen UI pattern (loading hint)
  */
 export class CcButton extends LitElement {
@@ -33,6 +34,13 @@ export class CcButton extends LitElement {
       outlined: { type: Boolean },
       skeleton: { type: Boolean },
     };
+  }
+
+  // We tried to reuse native clicks from the inner <button>
+  // but it's not that simple since adding @click on <cc-button> with lit-html also catches clicks on the custom element itself
+  // That's why we emit custom "cc-button:click"
+  _onClick () {
+    dispatchCustomEvent(this, 'click');
   }
 
   render () {
@@ -56,6 +64,7 @@ export class CcButton extends LitElement {
       type="button"
       class=${classMap(modes)}
       .disabled=${this.disabled || this.skeleton}
+      @click=${this._onClick}
     >
       <slot></slot>
     </button>`;

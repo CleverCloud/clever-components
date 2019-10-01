@@ -83,7 +83,7 @@ export class EnvVarCreate extends LitElement {
           <cc-button
             primary
             ?disabled=${hasErrors || this.disabled}
-            @click=${this._onSubmit}
+            @cc-button:click=${this._onSubmit}
           >${i18n(`env-var-create.create-button`)}</cc-button>
         </span>
       </div>
