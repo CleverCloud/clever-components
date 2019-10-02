@@ -68,7 +68,7 @@ export class CcInputText extends LitElement {
 
     if (this.multi) {
       return html`<textarea
-        class=${classMap({ input: true, skeleton: this.skeleton })}
+        class="input ${classMap({ skeleton: this.skeleton })}"
         style="--rows: ${rows}"
         rows=${rows}
         ?disabled=${this.disabled || this.skeleton}
@@ -84,7 +84,7 @@ export class CcInputText extends LitElement {
       ></textarea>`;
     }
     return html`<input type="text"
-      class=${classMap({ input: true, skeleton: this.skeleton })}
+      class="input ${classMap({ skeleton: this.skeleton })}"
       ?disabled=${this.disabled || this.skeleton} 
       ?readonly=${this.readonly} 
       .value=${this.value}

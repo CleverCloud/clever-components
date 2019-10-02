@@ -3,7 +3,7 @@ import './env-var-input.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '@i18n';
-import { repeat } from 'lit-html/directives/repeat.js';
+import { repeat } from 'lit-html/directives/repeat';
 
 /**
  * A high level env var editor, edit variables one at a time + a create form
@@ -81,48 +81,39 @@ export class EnvVarEditorSimple extends LitElement {
 
   render () {
 
-    const variables = (this.variables == null)
-      ? EnvVarEditorSimple.skeletonVariables
-      : this.variables;
+    const skeleton = (this.variables == null);
+    const variables = skeleton ? EnvVarEditorSimple.skeletonVariables : this.variables;
+    const variablesNames = variables.map(({ name }) => name);
 
-    const variablesNames = (this.variables == null)
-      ? []
-      : this.variables.map(({ name }) => name);
-
-    const $createForm = !this.readonly
-      ? html`<env-var-create
-        ?disabled=${this.variables == null || this.disabled}
-        .variablesNames=${variablesNames}
-        @env-var-create:create=${this._onCreate}
-      ></env-var-create>`
-      : '';
-
-    const $envVarInputs = repeat(
-      variables,
-      ({ name }) => name,
-      ({ name, value, isNew, isEdited, isDeleted }) => {
-        return html`<env-var-input
+    return html`
+      
+      ${!this.readonly ? html`
+        <env-var-create
+          ?disabled=${skeleton || this.disabled}
+          .variablesNames=${variablesNames}
+          @env-var-create:create=${this._onCreate}
+        ></env-var-create>
+      ` : ''}
+      
+      <div class="message" ?hidden=${variables != null && variables.length !== 0}>
+        ${i18n(`env-var-editor-simple.empty-data`)}
+      </div>
+      
+      ${repeat(variables, ({ name }) => name, ({ name, value, isNew, isEdited, isDeleted }) => html`
+        <env-var-input
           name=${name}
           value=${value}
           ?new=${isNew}
           ?edited=${isEdited}
           ?deleted=${isDeleted}
-          ?skeleton=${this.variables == null}
+          ?skeleton=${skeleton}
           ?disabled=${this.disabled}
           ?readonly=${this.readonly}
           @env-var-input:input=${this._onInput}
           @env-var-input:delete=${this._onDelete}
           @env-var-input:keep=${this._onKeep}
-        ></env-var-input>`;
-      },
-    );
-
-    return html`
-      ${$createForm}
-      <div class="message" ?hidden=${variables != null && variables.length !== 0}>
-        ${i18n(`env-var-editor-simple.empty-data`)}
-      </div>
-      ${$envVarInputs}
+        ></env-var-input>
+      `)}
     `;
   }
 

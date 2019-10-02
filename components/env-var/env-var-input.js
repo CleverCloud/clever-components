@@ -64,25 +64,11 @@ export class EnvVarInput extends LitElement {
   }
 
   render () {
-
-    const button = !this.readonly
-      ? html`
-          <cc-button
-            ?skeleton=${this.skeleton}
-            ?disabled=${this.disabled}
-            ?danger=${!this.deleted}
-            ?outlined=${!this.deleted}
-            @click=${this.deleted ? this._onKeep : this._onDelete}
-          >
-            ${this.deleted ? i18n('env-var-input.keep-button') : i18n('env-var-input.delete-button')}
-          </cc-button>
-        `
-      : '';
-
     return html`
-      <span class=${classMap({ name: true, deleted: this.deleted })}>
+      <span class="name ${classMap({ deleted: this.deleted })}">
         <span class=${classMap({ skeleton: this.skeleton })}>${this.name}</span>
       </span>
+      
       <span class="input-btn">
         <cc-input-text
           class="value"
@@ -95,7 +81,19 @@ export class EnvVarInput extends LitElement {
           placeholder=${i18n('env-var-input.value-placeholder')}
           @cc-input-text:input=${this._onInput}
         ></cc-input-text>
-        ${button}
+        
+        ${!this.readonly ? html`
+          <cc-button
+            ?skeleton=${this.skeleton}
+            ?disabled=${this.disabled}
+            ?danger=${!this.deleted}
+            ?outlined=${!this.deleted}
+            @click=${this.deleted ? this._onKeep : this._onDelete}
+          >
+            ${this.deleted ? i18n('env-var-input.keep-button') : i18n('env-var-input.delete-button')}
+          </cc-button>
+        ` : ''}
+        
       </span>
     `;
   }
