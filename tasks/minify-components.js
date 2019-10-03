@@ -104,6 +104,9 @@ function minifyJs (code, sourceMapUrl) {
     module: true,
     toplevel: true,
     mangle: {
+      // We have some bugs when the leaflet keyword is mangled
+      // I still don't know why, WTF?
+      reserved: ['leaflet'],
       properties: {
         // mangle "private properties/functions" starting with _
         regex: /^_/,
