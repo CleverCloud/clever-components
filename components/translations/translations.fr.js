@@ -88,6 +88,8 @@ export const translations = {
   'cc-info-scalability.error': `Une erreur est survenue pendant le chargement de la configuration de scalabilité.`,
   // cc-input-text
   'cc-input-text.clipboard': `Copier dans le presse-papier`,
+  // cc-map
+  'cc-map.error': `Une erreur est survenue pendant le chargement des données de la carte.`,
   // env-var-create
   'env-var-create.name.placeholder': `NOM_DE_LA_VARIABLE`,
   'env-var-create.value.placeholder': `valeur de la variable`,

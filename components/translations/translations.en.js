@@ -78,6 +78,8 @@ export const translations = {
   'cc-info-scalability.error': `Something went wrong while loading scalability config.`,
   // cc-input-text
   'cc-input-text.clipboard': `Copy to clipboard`,
+  // cc-map
+  'cc-map.error': `Something went wrong while trying to fetch data for the map.`,
   // env-var-create
   'env-var-create.name.placeholder': `VARIABLE_NAME`,
   'env-var-create.value.placeholder': `variable value`,
