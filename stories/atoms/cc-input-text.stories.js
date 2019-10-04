@@ -83,4 +83,54 @@ storiesOf('1. Atoms|<cc-input-text>', module)
       });
 
     return createContainer(examples);
-  }));
+  }))
+  .add('auto width (only for simple + readonly + clipboard)', withActions(() => {
+
+    function spread (fn) {
+      return Array
+        .from(new Array(4))
+        .map((_, i) => (i + 1) * 15)
+        .flatMap((chars) => {
+          const rawContents = `_chars`;
+          const contents = String(chars) + String(rawContents).padStart(chars - 2, '_');
+          return fn({ chars, contents });
+        });
+    }
+
+    const simple = spread(({ chars, contents }) => [
+      createComponent(null, contents, false, false, false),
+      document.createElement('br'),
+    ]);
+
+    const simpleClipboard = spread(({ chars, contents }) => [
+      createComponent(null, contents, false, false, true),
+      document.createElement('br'),
+    ]);
+
+    const simpleClipboardReadonly = spread(({ chars, contents }) => [
+      createComponent(null, contents, false, true, true),
+      document.createElement('br'),
+    ]);
+
+    const simpleClipboardReadonlyCss = spread(({ chars, contents }) => [
+      createComponent(280, contents, false, true, true),
+      document.createElement('br'),
+    ]);
+
+    const multiClipboardReadonly = spread(({ chars, contents }) => [
+      createComponent(null, contents, true, true, true),
+    ]);
+
+    return createContainer([
+      `simple => no auto width`,
+      ...simple,
+      `simple + clipboard => no auto width`,
+      ...simpleClipboard,
+      `simple + clipboard + readonly => auto width based on contents`,
+      ...simpleClipboardReadonly,
+      `simple + clipboard + readonly width fixed CSS width to 280px => <code>width:280px</code>`,
+      ...simpleClipboardReadonlyCss,
+      `multi => <code>width:100%</code> because it's a block`,
+      ...multiClipboardReadonly,
+    ]);
+  }), { notes });

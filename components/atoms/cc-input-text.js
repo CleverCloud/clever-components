@@ -13,6 +13,7 @@ import { skeleton } from '../styles/skeleton.js';
  * ## Details
  *
  * * uses a native `<input>` element by default and a `<textarea>` element when `multi` is true
+ * * when you use it with `readonly` + `clipboard` + NOT `multi`, the width of the input auto adaps to the lenght of the content
  *
  * ## Properties
  *
@@ -119,6 +120,14 @@ export class CcInputText extends LitElement {
         ` : ''}
         
         ${!this.multi ? html`
+          ${clipboard && this.readonly ? html`
+            <!--
+              This div has the same styles as the input (but it's hidden with height:0)
+              this way we can use it to know what width the content is
+              and "auto size" the container.
+            -->
+            <div class="auto-size input">${this.value}</div>
+          ` : ''}
           <input type="text"
             class="input"
             ?disabled=${this.disabled || this.skeleton} 
@@ -220,6 +229,11 @@ export class CcInputText extends LitElement {
 
         .input[disabled] {
           pointer-events: none;
+        }
+
+        /* Hide only height and keep content width */
+        .auto-size {
+          height: 0;
         }
 
         /* SKELETON */
