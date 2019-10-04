@@ -6,12 +6,13 @@ import { withCustomEventActions } from '../lib/event-action.js';
 
 const withActions = withCustomEventActions('cc-input-text:input');
 
-function createComponent (width, value, multi, readonly) {
+function createComponent (width, value, multi, readonly, clipboard) {
   const component = document.createElement('cc-input-text');
   component.style.width = width + 'px';
   component.value = value;
   component.multi = multi;
   component.readonly = readonly;
+  component.clipboard = clipboard;
   return component;
 }
 
@@ -22,35 +23,49 @@ Integer posuere tortor sit amet nisl sollicitudin, at tempus ipsum semper.`;
 
 storiesOf('1. Atoms|<cc-input-text>', module)
   .addParameters({ notes })
-  .add('simple/multi, disabled, skeleton, long values', withActions(() => `
+  .add('simple/multi, clipboard, disabled, skeleton, long values', withActions(() => `
 
-    <div class="title">Empty value (simple, multi):</div>
+    <div class="title">Empty value (simple, simple clipboard, multi, multi clipboard):</div>
     <cc-input-text placeholder="Placeholder here..."></cc-input-text>
+    <cc-input-text clipboard placeholder="Placeholder here..."></cc-input-text>
     <cc-input-text multi placeholder="Placeholder here..."></cc-input-text>
+    <cc-input-text multi clipboard placeholder="Placeholder here..."></cc-input-text>
     
-    <div class="title">Short value (simple, multi):</div>
+    <div class="title">Short value (simple, simple clipboard, multi, multi clipboard):</div>
     <cc-input-text value="Awesome value"></cc-input-text>
+    <cc-input-text clipboard value="Awesome value"></cc-input-text>
     <cc-input-text multi value="Awesome value line 1\nAwesome value line 2"></cc-input-text>
+    <cc-input-text multi clipboard value="Awesome value line 1\nAwesome value line 2"></cc-input-text>
     
-    <div class="title">Disabled (simple, multi):</div>
+    <div class="title">Disabled (simple, simple clipboard, multi, multi clipboard):</div>
     <cc-input-text disabled value="Disabled value"></cc-input-text>
+    <cc-input-text disabled clipboard value="Disabled value"></cc-input-text>
     <cc-input-text disabled multi value="Disabled value line 1\nDisabled value line 2"></cc-input-text>
+    <cc-input-text disabled multi clipboard value="Disabled value line 1\nDisabled value line 2"></cc-input-text>
     
-    <div class="title">Readonly (simple, multi):</div>
+    <div class="title">Readonly (simple, simple clipboard, multi, multi clipboard):</div>
     <cc-input-text readonly value="This is readonly"></cc-input-text>
+    <cc-input-text readonly clipboard value="This is readonly"></cc-input-text>
     <cc-input-text readonly multi value="This is readonly line 1\nThis is readonly line 2"></cc-input-text>
+    <cc-input-text readonly multi clipboard value="This is readonly line 1\nThis is readonly line 2"></cc-input-text>
     
-    <div class="title">Skeleton empty (simple, multi):</div>
+    <div class="title">Skeleton empty (simple, simple clipboard, multi, multi clipboard):</div>
     <cc-input-text skeleton placeholder="Placeholder here..."></cc-input-text>
+    <cc-input-text skeleton clipboard placeholder="Placeholder here..."></cc-input-text>
     <cc-input-text multi skeleton placeholder="Placeholder here..."></cc-input-text>
+    <cc-input-text multi skeleton clipboard placeholder="Placeholder here..."></cc-input-text>
     
-    <div class="title">Skeleton with value (simple, multi):</div>
+    <div class="title">Skeleton with value (simple, simple clipboard, multi, multi clipboard):</div>
     <cc-input-text skeleton value="Awesome value"></cc-input-text>
     <cc-input-text skeleton value="Awesome value"></cc-input-text>
+    <cc-input-text multi skeleton clipboard value="Awesome value line 1\nAwesome value line 2"></cc-input-text>
+    <cc-input-text multi skeleton clipboard value="Awesome value line 1\nAwesome value line 2"></cc-input-text>
     
-    <div class="title">Long value value (simple, multi):</div>
+    <div class="title">Long value value (simple, simple clipboard, multi, multi clipboard):</div>
     <cc-input-text value="${lorem}"></cc-input-text>
+    <cc-input-text clipboard value="${lorem}"></cc-input-text>
     <cc-input-text multi value="${lorem}"></cc-input-text>
+    <cc-input-text multi clipboard value="${lorem}"></cc-input-text>
   `))
   .add('different CSS widths', withActions(() => {
 
@@ -60,8 +75,10 @@ storiesOf('1. Atoms|<cc-input-text>', module)
       .flatMap((width) => {
         return [
           `Width specified in CSS (${width}px)`,
-          createComponent(width, lorem, false, false),
-          createComponent(width, lorem, true, false),
+          createComponent(width, lorem, false, false, false),
+          createComponent(width, lorem, false, false, true),
+          createComponent(width, lorem, true, false, false),
+          createComponent(width, lorem, true, false, true),
         ];
       });
 
