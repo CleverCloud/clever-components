@@ -100,6 +100,7 @@ export class EnvVarEditorExpert extends LitElement {
     return html`
       <cc-input-text
         multi
+        clipboard
         value=${this._variablesAsText}
         placeholder=${placeholder}
         ?disabled=${this.disabled}
