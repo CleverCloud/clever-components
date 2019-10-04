@@ -19,7 +19,6 @@ import { skeleton } from '../styles/skeleton.js';
  * @attr {String} value - same as native a input/textarea element
  * @attr {String} name - same as native a input/textarea element
  * @attr {String} placeholder - same as native a input/textarea element
- *
  */
 export class CcInputText extends LitElement {
 
@@ -86,7 +85,7 @@ export class CcInputText extends LitElement {
     return html`<input type="text"
       class="input ${classMap({ skeleton: this.skeleton })}"
       ?disabled=${this.disabled || this.skeleton} 
-      ?readonly=${this.readonly} 
+      ?readonly=${this.readonly}
       .value=${this.value}
       name=${this.name}
       placeholder=${this.placeholder}
