@@ -65,36 +65,42 @@ export class CcInputText extends LitElement {
 
     const rows = (this.value || '').split('\n').length;
 
-    if (this.multi) {
-      return html`<textarea
-        class="input ${classMap({ skeleton: this.skeleton })}"
-        style="--rows: ${rows}"
-        rows=${rows}
-        ?disabled=${this.disabled || this.skeleton}
-        ?readonly=${this.readonly}
-        .value=${this.value}
-        name=${this.name}
-        placeholder=${this.placeholder}
+    return html`
+      <div class="wrapper ${classMap({ skeleton: this.skeleton })}"
         @input=${this._onInput}
-        @focus=${this._onFocus}
-        spellcheck="false"
         @keydown=${this._stopPropagation}
         @keypress=${this._stopPropagation}
-      ></textarea>`;
-    }
-    return html`<input type="text"
-      class="input ${classMap({ skeleton: this.skeleton })}"
-      ?disabled=${this.disabled || this.skeleton} 
-      ?readonly=${this.readonly}
-      .value=${this.value}
-      name=${this.name}
-      placeholder=${this.placeholder}
-      @input=${this._onInput}
-      @focus=${this._onFocus}
-      spellcheck="false"
-      @keydown=${this._stopPropagation}
-      @keypress=${this._stopPropagation}
-    >`;
+      >
+      
+        ${this.multi ? html`
+          <textarea
+            class="input"
+            style="--rows: ${rows}"
+            rows=${rows}
+            ?disabled=${this.disabled || this.skeleton}
+            ?readonly=${this.readonly}
+            .value=${this.value}
+            name=${this.name}
+            placeholder=${this.placeholder}
+            spellcheck="false"
+            @focus=${this._onFocus}
+          ></textarea>
+        ` : ''}
+        
+        ${!this.multi ? html`
+          <input type="text"
+            class="input"
+            ?disabled=${this.disabled || this.skeleton} 
+            ?readonly=${this.readonly}
+            .value=${this.value}
+            name=${this.name}
+            placeholder=${this.placeholder}
+            spellcheck="false"
+            @focus=${this._onFocus}
+          >
+        ` : ''}
+      </div>
+    `;
   }
 
   static get styles () {
@@ -105,7 +111,7 @@ export class CcInputText extends LitElement {
         :host {
           display: inline-block;
           box-sizing: border-box;
-          padding: 0.2rem;
+          margin: 0.2rem;
           vertical-align: top;
         }
 
@@ -113,8 +119,33 @@ export class CcInputText extends LitElement {
           display: block;
         }
 
-        :host([skeleton]) {
-          cursor: progress;
+        .wrapper {
+          border-radius: 0.25rem;
+          border: 1px solid #aaa;
+          box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+          overflow: hidden;
+          padding: 0.15rem 0.5rem;
+          transition: all 75ms ease-in-out, height 0ms;
+        }
+
+        .wrapper:focus-within {
+          box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
+          border-color: #777;
+        }
+
+        .wrapper:hover {
+          border-color: #777;
+        }
+
+        :host([disabled]) .wrapper {
+          background: #eee;
+          border-color: #eee;
+          cursor: default;
+          opacity: .75;
+        }
+
+        :host([readonly]) .wrapper {
+          background: #eee;
         }
 
         /* RESET */
@@ -135,65 +166,40 @@ export class CcInputText extends LitElement {
 
         /* BASE */
         .input {
-          border-color: #aaa;
-          border-radius: 0.25rem;
-          height: 2rem;
+          background: none;
+          border: none;
+          height: 1.7rem;
           line-height: 1.7rem;
           overflow: hidden;
-          padding: 0.15rem 0.5rem;
         }
 
         /* STATES */
-        .input:focus {
-          box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
-          border-color: #777;
-          outline: 0;
-        }
-
-        .input:hover {
-          border-color: #777;
-        }
-
+        .input:focus,
         .input:active {
           outline: 0;
         }
 
         .input[disabled] {
-          background: #eee;
-          border-color: #eee;
-          cursor: default;
-          opacity: .75;
           pointer-events: none;
         }
 
-        .input[readonly] {
-          background: #eee;
-        }
-
-        .skeleton {
+        /* SKELETON */
+        .skeleton,
+        .skeleton:hover {
           background-color: #eee;
           border-color: #eee;
+          cursor: progress;
         }
 
-        .skeleton::placeholder {
+        .skeleton .input,
+        .skeleton .input::placeholder {
           color: transparent;
         }
 
-        /* TRANSITIONS */
-        .input {
-          box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
-          transition: all 75ms ease-in-out, height 0ms;
-        }
-
         /* MULTILINE BEHAVIOUR */
-        /* TODO: this needs improvement */
         .input[rows] {
-          height: calc(calc(calc(var(--rows, 1) * 1.7rem) + 0.3rem) + 2px);
+          height: calc(var(--rows, 1) * 1.7rem);
           white-space: pre;
-        }
-
-        .input[rows="1"] {
-          height: 2rem;
         }
       `,
     ];
