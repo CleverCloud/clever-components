@@ -24,12 +24,12 @@ export class CcInputText extends LitElement {
 
   static get properties () {
     return {
-      disabled: { type: Boolean },
-      readonly: { type: Boolean },
-      skeleton: { type: Boolean },
-      multi: { type: Boolean },
+      disabled: { type: Boolean, reflect: true },
+      readonly: { type: Boolean, reflect: true },
+      skeleton: { type: Boolean, reflect: true },
+      multi: { type: Boolean, reflect: true },
       value: { type: String },
-      name: { type: String },
+      name: { type: String, reflect: true },
       placeholder: { type: String },
     };
   }
