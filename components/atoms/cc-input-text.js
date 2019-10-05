@@ -115,6 +115,7 @@ export class CcInputText extends LitElement {
             name=${this.name}
             placeholder=${this.placeholder}
             spellcheck="false"
+            wrap="off"
             @focus=${this._onFocus}
           ></textarea>
         ` : ''}
@@ -216,7 +217,8 @@ export class CcInputText extends LitElement {
         .input {
           background: none;
           border: none;
-          height: 1.7rem;
+          /* multiline behaviour */
+          height: calc(var(--rows, 1) * 1.7rem);
           line-height: 1.7rem;
           overflow: hidden;
         }
@@ -247,12 +249,6 @@ export class CcInputText extends LitElement {
         .skeleton .input,
         .skeleton .input::placeholder {
           color: transparent;
-        }
-
-        /* MULTILINE BEHAVIOUR */
-        .input[rows] {
-          height: calc(var(--rows, 1) * 1.7rem);
-          white-space: pre;
         }
 
         /* CLIPBOARD BUTTON STUFFS */
