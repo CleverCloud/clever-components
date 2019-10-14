@@ -32,7 +32,7 @@ stop_review:
   script:
     - DELETE_CC_APP=true
     - clever link -o ${ORGA_ID} clever-components-${CI_COMMIT_REF_SLUG} || DELETE_CC_APP=false
-    - if $DELETE_CC_APP; then clever delete -y -o ${ORGA_ID} -a clever-components-${CI_COMMIT_REF_SLUG}; fi
+    - if $DELETE_CC_APP; then clever delete -y -a clever-components-${CI_COMMIT_REF_SLUG}; fi
   when: manual
   environment:
     name: review/${CI_COMMIT_REF_SLUG}
