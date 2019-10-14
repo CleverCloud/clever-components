@@ -42,19 +42,6 @@ export class EnvVarFull extends LitElement {
 
   render () {
 
-    const $addons = repeat(
-      this.addons,
-      ({ id }) => id,
-      ({ id, name, variables }) => {
-        return html`<env-var-form
-          heading="Add-on: ${name}"
-          .variables=${variables}
-          readonly
-          @env-var-form:dismissed-error=${() => this._onDismissedError('loading', id)}
-        ></env-var-form>`;
-      },
-    );
-
     return html`
       <env-var-form
         heading=${i18n('env-var-full.heading')}
@@ -66,7 +53,15 @@ export class EnvVarFull extends LitElement {
         ${i18n('env-var-full.message')}
         <a href="http://doc.clever-cloud.com/admin-console/environment-variables/" target="_blank">${i18n('env-var-full.link')}</a>
       </env-var-form>
-      ${$addons}
+      
+      ${repeat(this.addons, ({ id }) => id, ({ id, name, variables }) => html`
+        <env-var-form
+          heading="Add-on: ${name}"
+          .variables=${variables}
+          readonly
+          @env-var-form:dismissed-error=${() => this._onDismissedError('loading', id)}
+        ></env-var-form>
+      `)}
     `;
   }
 

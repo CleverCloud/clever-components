@@ -22,7 +22,7 @@ export class EnvVarEditorExpert extends LitElement {
       readonly: { type: Boolean },
       _variablesAsText: { type: Array, attribute: false },
       _formattedErrors: { type: Array, attribute: false },
-      _isLoading: { type: Boolean, attribute: false },
+      _skeleton: { type: Boolean, attribute: false },
     };
   }
 
@@ -43,11 +43,8 @@ export class EnvVarEditorExpert extends LitElement {
 
   set variables (variables) {
 
-    this._isLoading = (variables == null);
-
-    const vars = this._isLoading
-      ? EnvVarEditorExpert.skeletonVariables
-      : variables;
+    this._skeleton = (variables == null);
+    const vars = this._skeleton ? EnvVarEditorExpert.skeletonVariables : variables;
 
     const filteredVariables = vars
       .filter(({ isDeleted }) => !isDeleted);
@@ -107,7 +104,7 @@ export class EnvVarEditorExpert extends LitElement {
         placeholder=${placeholder}
         ?disabled=${this.disabled}
         ?readonly=${this.readonly}
-        ?skeleton=${this._isLoading}
+        ?skeleton=${this._skeleton}
         @cc-input-text:input=${this._onInput}
       ></cc-input-text>
       

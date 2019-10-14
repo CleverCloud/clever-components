@@ -35,7 +35,7 @@ export class CcToggle extends LitElement {
 
   render () {
     return html`
-      <div class=${classMap({ 'toggle-group': true, disabled: this.disabled, enabled: !this.disabled })}>
+      <div class="toggle-group ${classMap({ disabled: this.disabled, enabled: !this.disabled })}">
         ${repeat(this.choices, ({ value }) => value, ({ label, value }) => html`
           <input
             type="radio"

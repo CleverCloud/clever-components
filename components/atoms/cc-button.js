@@ -1,6 +1,6 @@
 import { classMap } from 'lit-html/directives/class-map.js';
-import { LitElement, css, html } from 'lit-element';
-import { pulse } from '../styles/animations.js';
+import { css, html, LitElement } from 'lit-element';
+import { skeleton } from '../styles/skeleton.js';
 
 /**
  * A button
@@ -63,7 +63,7 @@ export class CcButton extends LitElement {
 
   static get styles () {
     return [
-      pulse,
+      skeleton,
       // language=CSS
       css`
         :host {
@@ -100,19 +100,19 @@ export class CcButton extends LitElement {
         }
 
         /* COLORS */
-        button.simple {
+        .simple {
           --btn-color: hsl(210, 23%, 26%);
         }
 
-        button.primary {
+        .primary {
           --btn-color: hsl(213, 55%, 62%);
         }
 
-        button.success {
+        .success {
           --btn-color: hsl(144, 56%, 43%);
         }
 
-        button.danger {
+        .danger {
           --btn-color: hsl(351, 70%, 47%);
         }
 
@@ -123,13 +123,13 @@ export class CcButton extends LitElement {
           color: #fff;
         }
 
-        button.outlined {
+        .outlined {
           background-color: #fff;
           color: var(--btn-color);
         }
 
         /* special case: we want to keep simple buttons subtle */
-        button.simple {
+        .simple {
           border-color: #aaa;
         }
 
@@ -153,25 +153,10 @@ export class CcButton extends LitElement {
           opacity: .5;
         }
 
-        button.skeleton {
-          animation-direction: alternate;
-          animation-duration: 500ms;
-          animation-iteration-count: infinite;
-          animation-name: pulse;
-          background-color: #aaa;
+        .skeleton {
+          background-color: #bbb;
           border-color: #777;
           color: transparent;
-          cursor: progress;
-        }
-
-        @keyframes pulse {
-          from {
-            opacity: 0.75;
-          }
-
-          to {
-            opacity: 0.5;
-          }
         }
 
         /* TRANSITIONS */

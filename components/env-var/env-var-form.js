@@ -153,14 +153,6 @@ export class EnvVarForm extends LitElement {
     dispatchCustomEvent(this, 'submit', cleanVariables);
   }
 
-  _onRestartApp () {
-    dispatchCustomEvent(this, 'restart-app');
-  }
-
-  _onClickDismissError (errorType) {
-    dispatchCustomEvent(this, 'dismissed-error', errorType);
-  }
-
   get _errorMessage () {
     if (this.error === 'loading') {
       return i18n('env-var-form.error.loading');
@@ -173,51 +165,21 @@ export class EnvVarForm extends LitElement {
 
   render () {
 
-    const $heading = (this.heading != null)
-      ? html`<div class="heading">${this.heading}</div>`
-      : '';
-
-    const $errorMessageContainer = (this.error != null)
-      ? html`<div class="error-container">
-        <div class="error-panel">
-          <div class="error-message">⚠️ ${this._errorMessage}</div>
-          <cc-button @click=${() => this._onClickDismissError(this.error)}>OK</cc-button>
-        </div>
-      </div>`
-      : '';
-
-    const $savingLoader = (this.saving)
-      ? html`<cc-loader class="saving-loader"></cc-loader>`
-      : '';
-
-    const $restartButton = (this.restartApp)
-      ? html`<cc-button @click=${this._onRestartApp}>${i18n('env-var-form.restart-app')}</cc-button>`
-      : '';
-
-    const $buttonsBar = (!this.readonly)
-      ? html`<div class="button-bar">
-          <cc-button
-            ?disabled=${this._currentVariables == null || this.saving || this.error != null || this._isPristine}
-            @click=${this._onResetForm}
-          >${i18n('env-var-form.reset')}</cc-button>
-          <div class="spacer"></div>
-          ${$restartButton}
-          <cc-button
-            success
-            ?disabled=${this._currentVariables == null || this.saving || this._isPristine || this.error != null}
-            @click=${this._onUpdateForm}
-          >${i18n('env-var-form.update')}</cc-button>
-        </div>`
-      : '';
+    const isEditorDisabled = (this.saving || this.error != null);
+    const isFormDisabled = (this._currentVariables == null || this._isPristine || isEditorDisabled);
 
     return html`
       <div class="header">
-        ${$heading}
+        
+        ${this.heading != null ? html`
+          <div class="heading">${this.heading}</div>
+        ` : ''}
+        
         <cc-toggle
-          class=${classMap({ 'mode-switcher': true, saving: this.saving || this.error != null })}
+          class="mode-switcher ${classMap({ saving: this.saving || this.error != null })}"
           value=${this._mode}
           .choices=${EnvVarForm.modes}
-          ?disabled=${this.saving || this.error != null}
+          ?disabled=${isEditorDisabled}
           @cc-toggle:input=${this._onToggleMode}
         ></cc-toggle>
       </div>
@@ -228,7 +190,7 @@ export class EnvVarForm extends LitElement {
         <env-var-editor-simple
           ?hidden=${this._mode !== 'SIMPLE'}
           .variables=${this._currentVariables}
-          ?disabled=${this.saving || this.error != null}
+          ?disabled=${isEditorDisabled}
           ?readonly=${this.readonly}
           @env-var-editor-simple:change=${this._onChange}
         ></env-var-editor-simple>
@@ -236,17 +198,39 @@ export class EnvVarForm extends LitElement {
         <env-var-editor-expert
           ?hidden=${this._mode !== 'EXPERT'}
           .variables=${this._expertVariables}
-          ?disabled=${this.saving || this.error != null}
+          ?disabled=${isEditorDisabled}
           ?readonly=${this.readonly}
           @env-var-editor-expert:change=${this._onChange}
         ></env-var-editor-expert>
       </cc-expand>
       
-      ${$buttonsBar}
+      ${!this.readonly ? html`
+        <div class="button-bar">
+          
+          <cc-button ?disabled=${isFormDisabled} @click=${this._onResetForm}>${i18n('env-var-form.reset')}</cc-button>
+          
+          <div class="spacer"></div>
+          
+          ${this.restartApp ? html`
+            <cc-button @click=${() => dispatchCustomEvent(this, 'restart-app')}>${i18n('env-var-form.restart-app')}</cc-button>
+          ` : ''}
+          
+          <cc-button success ?disabled=${isFormDisabled} @click=${this._onUpdateForm}>${i18n('env-var-form.update')}</cc-button>
+        </div>
+      ` : ''}
       
-      ${$savingLoader}
+      ${this.saving ? html`
+        <cc-loader class="saving-loader"></cc-loader>
+      ` : ''}
       
-      ${$errorMessageContainer}
+      ${this.error != null ? html`
+        <div class="error-container">
+          <div class="error-panel">
+            <div class="error-message">⚠️ ${this._errorMessage}</div>
+            <cc-button @click=${() => dispatchCustomEvent(this, 'dismissed-error', this.error)}>OK</cc-button>
+          </div>
+        </div>
+      ` : ''}
     `;
   }
 
