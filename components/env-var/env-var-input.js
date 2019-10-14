@@ -88,7 +88,7 @@ export class EnvVarInput extends LitElement {
             ?disabled=${this.disabled}
             ?danger=${!this.deleted}
             ?outlined=${!this.deleted}
-            @click=${this.deleted ? this._onKeep : this._onDelete}
+            @cc-button:click=${this.deleted ? this._onKeep : this._onDelete}
           >
             ${this.deleted ? i18n('env-var-input.keep-button') : i18n('env-var-input.delete-button')}
           </cc-button>

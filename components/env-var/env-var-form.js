@@ -207,15 +207,15 @@ export class EnvVarForm extends LitElement {
       ${!this.readonly ? html`
         <div class="button-bar">
           
-          <cc-button ?disabled=${isFormDisabled} @click=${this._onResetForm}>${i18n('env-var-form.reset')}</cc-button>
+          <cc-button ?disabled=${isFormDisabled} @cc-button:click=${this._onResetForm}>${i18n('env-var-form.reset')}</cc-button>
           
           <div class="spacer"></div>
           
           ${this.restartApp ? html`
-            <cc-button @click=${() => dispatchCustomEvent(this, 'restart-app')}>${i18n('env-var-form.restart-app')}</cc-button>
+            <cc-button @cc-button:click=${() => dispatchCustomEvent(this, 'restart-app')}>${i18n('env-var-form.restart-app')}</cc-button>
           ` : ''}
           
-          <cc-button success ?disabled=${isFormDisabled} @click=${this._onUpdateForm}>${i18n('env-var-form.update')}</cc-button>
+          <cc-button success ?disabled=${isFormDisabled} @cc-button:click=${this._onUpdateForm}>${i18n('env-var-form.update')}</cc-button>
         </div>
       ` : ''}
       
@@ -227,7 +227,7 @@ export class EnvVarForm extends LitElement {
         <div class="error-container">
           <div class="error-panel">
             <div class="error-message">⚠️ ${this._errorMessage}</div>
-            <cc-button @click=${() => dispatchCustomEvent(this, 'dismissed-error', this.error)}>OK</cc-button>
+            <cc-button @cc-button:click=${() => dispatchCustomEvent(this, 'dismissed-error', this.error)}>OK</cc-button>
           </div>
         </div>
       ` : ''}
