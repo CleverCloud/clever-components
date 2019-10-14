@@ -15,7 +15,7 @@
     "lint:fix": "eslint --fix components stories tasks",
     "size": "node tasks/size.js",
     "size:dev": "nodemon -w components -x 'npm run components:build && npm run size'",
-    "start": "static -a 0.0.0.0 -p 8080 storybook-static",
+    "start": "static -H '{\"cache-control\": \"no-cache, no-store, must-revalidate\", \"Pragma\": \"no-cache\", \"Expires\": \"0\"}' -a 0.0.0.0 -p 8080 storybook-static",
     "storybook:dev": "start-storybook -p 6006 --ci",
     "storybook:build": "npm run components:docs && build-storybook -o storybook-static${STORYBOOK_PATH}"
   },
