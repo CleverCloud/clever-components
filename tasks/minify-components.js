@@ -5,10 +5,65 @@ const del = require('del');
 const fs = require('fs-extra');
 const path = require('path');
 const rawGlob = require('glob');
+const SVGO = require('svgo');
 const Terser = require('terser');
 const util = require('util');
 
 const glob = util.promisify(rawGlob);
+
+const svgo = new SVGO({
+  // See https://github.com/svg/svgo#what-it-can-do
+  plugins: [
+    { inlineStyles: true },
+    { removeDoctype: true },
+    { removeXMLProcInst: false },
+    { removeComments: true },
+    { removeMetadata: true },
+    { removeTitle: true },
+    { removeDesc: true },
+    { removeUselessDefs: true },
+    { removeXMLNS: false },
+    { removeEditorsNSData: true },
+    { removeEmptyAttrs: false },
+    { removeHiddenElems: false },
+    { removeEmptyText: false },
+    { removeEmptyContainers: false },
+    { removeViewBox: false },
+    { cleanupEnableBackground: false },
+    { minifyStyles: true },
+    { convertStyleToAttrs: false },
+    { convertColors: true },
+    { convertPathData: true },
+    { convertTransform: false },
+    { removeUnknownsAndDefaults: true },
+    { removeNonInheritableGroupAttrs: false },
+    { removeUselessStrokeAndFill: false },
+    { removeUnusedNS: true },
+    { prefixIds: false },
+    { cleanupIDs: true },
+    { cleanupNumericValues: true },
+    { cleanupListOfValues: false },
+    { moveElemsAttrsToGroup: false },
+    { moveGroupAttrsToElems: false },
+    { collapseGroups: false },
+    { removeRasterImages: false },
+    { mergePaths: false },
+    { convertShapeToPath: false },
+    { convertEllipseToCircle: false },
+    { sortAttrs: true },
+    { sortDefsChildren: false },
+    { removeDimensions: false },
+    { removeAttrs: false },
+    { removeAttributesBySelector: false },
+    { removeElementsByAttr: false },
+    { addClassesToSVGElement: false },
+    { addAttributesToSVGElement: false },
+    { removeOffCanvasPaths: false },
+    { removeStyleElement: false },
+    { removeScriptElement: false },
+    { reusePaths: false },
+  ],
+});
 
 // Minify HTML inside lit-html and LitElement html`` templates
 // Minify CSS inside LitElement css`` templates
@@ -57,6 +112,12 @@ function minifyJs (code, sourceMapUrl) {
   });
 };
 
+function optimizeSvg (rawSvg, sourceFileName) {
+  return svgo
+    .optimize(rawSvg, { path: sourceFileName })
+    .then(({ data }) => data);
+}
+
 async function run () {
 
   await del('dist/**/*');
@@ -80,6 +141,16 @@ async function run () {
         await fs.outputFile(dst, code);
         await fs.outputFile(dst + '.map', map);
       });
+    console.log(`   DONE! ${dst}`);
+  }
+
+  const svgFilePath = await glob('./components/**/*.svg');
+  for (const src of svgFilePath) {
+    console.log(`Optimizing ${src} ...`);
+    const dst = src.replace('/components/', '/dist/');
+    const rawSvg = await fs.readFile(src, 'utf8');
+    const minifiedSvg = await optimizeSvg(rawSvg);
+    await fs.outputFile(dst, minifiedSvg);
     console.log(`   DONE! ${dst}`);
   }
 }
