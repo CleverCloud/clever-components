@@ -7,7 +7,7 @@ import { withActions } from '@storybook/addon-actions';
 
 const eventNames = ['cc-button:click'];
 
-storiesOf('atoms/<cc-button>', module)
+storiesOf('1. Atoms|<cc-button>', module)
   .add('various setups', () => withActions(...eventNames)(() => {
 
     const label = text('Button label', '');

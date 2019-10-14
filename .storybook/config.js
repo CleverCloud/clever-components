@@ -28,7 +28,11 @@ addParameters({
 });
 
 function loadStories () {
-  req.keys().forEach(filename => req(filename));
+  // Load documentation home page first
+  req('./welcome.stories.js');
+  req.keys().forEach(filename => {
+    return req(filename);
+  });
 }
 
 configure(loadStories, module);

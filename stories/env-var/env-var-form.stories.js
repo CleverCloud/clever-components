@@ -5,7 +5,7 @@ import { withCustomEventActions } from '../lib/event-action.js';
 
 const withActions = withCustomEventActions('env-var-form:submit', 'env-var-form:dismissed-error', 'env-var-form:restart-app');
 
-storiesOf('env-var/<env-var-form>/default', module)
+storiesOf('2. Environment variables|<env-var-form>/default', module)
   .add('no data yet (skeleton)', withActions(() => {
     const envVarForm = document.createElement('env-var-form');
     return envVarForm;
@@ -85,7 +85,7 @@ storiesOf('env-var/<env-var-form>/default', module)
     return envVarForm;
   }), { notes });
 
-storiesOf('env-var/<env-var-form>/readonly', module)
+storiesOf('2. Environment variables|<env-var-form>/readonly', module)
   .add('no data yet (skeleton)', withActions(() => {
     const envVarForm = document.createElement('env-var-form');
     envVarForm.setAttribute('readonly', 'true');

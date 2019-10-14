@@ -5,7 +5,7 @@ import { withCustomEventActions } from '../lib/event-action.js';
 
 const withActions = withCustomEventActions('env-var-editor-expert:change');
 
-storiesOf('env-var/<env-var-editor-expert>/default', module)
+storiesOf('2. Environment variables|<env-var-editor-expert>/default', module)
   .add('no data yet (skeleton)', withActions(() => {
     const envVarFormExpert = document.createElement('env-var-editor-expert');
     envVarFormExpert.setAttribute('skeleton', 'true');
@@ -42,7 +42,7 @@ storiesOf('env-var/<env-var-editor-expert>/default', module)
     return envVarFormExpert;
   }), { notes });
 
-storiesOf('env-var/<env-var-editor-expert>/readonly', module)
+storiesOf('2. Environment variables|<env-var-editor-expert>/readonly', module)
   .add('with data (skeleton)', withActions(() => {
     const envVarFormExpert = document.createElement('env-var-editor-expert');
     envVarFormExpert.setAttribute('readonly', true);

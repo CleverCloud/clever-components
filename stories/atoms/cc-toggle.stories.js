@@ -5,8 +5,8 @@ import { withCustomEventActions } from '../lib/event-action.js';
 
 const withActions = withCustomEventActions('cc-toggle:input');
 
-storiesOf('atoms', module)
-  .add('<cc-toggle>', withActions(() => {
+storiesOf('1. Atoms|<cc-toggle>', module)
+  .add('default', withActions(() => {
 
     const wrapper = document.createElement('div');
     wrapper.innerHTML = `

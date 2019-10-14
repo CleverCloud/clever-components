@@ -5,7 +5,7 @@ import { withCustomEventActions } from '../lib/event-action.js';
 
 const withActions = withCustomEventActions('cc-input-text:input');
 
-storiesOf('atoms/<cc-input-text>', module)
+storiesOf('1. Atoms|<cc-input-text>', module)
   .add('simple', withActions(() => `
 
     <style>

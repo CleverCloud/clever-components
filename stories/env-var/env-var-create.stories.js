@@ -5,8 +5,8 @@ import { withCustomEventActions } from '../lib/event-action.js';
 
 const withActions = withCustomEventActions('env-var-create:create');
 
-storiesOf('env-var', module)
-  .add('<env-var-create>', withActions(() => {
+storiesOf('2. Environment variables|<env-var-create>', module)
+  .add('default', withActions(() => {
 
     const container = document.createElement('div');
     container.innerHTML = `

@@ -5,8 +5,8 @@ import { withCustomEventActions } from '../lib/event-action.js';
 
 const withActions = withCustomEventActions('env-var-input:input', 'env-var-input:delete', 'env-var-input:keep');
 
-storiesOf('env-var', module)
-  .add('<env-var-input>', withActions(() => {
+storiesOf('2. Environment variables|<env-var-input>', module)
+  .add('default', withActions(() => {
     // language=HTML
     return `
       <style>

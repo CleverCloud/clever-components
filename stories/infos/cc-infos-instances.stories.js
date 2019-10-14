@@ -14,7 +14,7 @@ function createComponent (instances) {
   return component;
 }
 
-storiesOf('infos/<cc-infos-instances>', module)
+storiesOf('2. Information tiles|<cc-infos-instances>', module)
   .add('empty state (loading)', () => {
     return createComponent();
   }, { notes })

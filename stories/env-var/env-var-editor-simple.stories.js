@@ -5,7 +5,7 @@ import { withCustomEventActions } from '../lib/event-action.js';
 
 const withActions = withCustomEventActions('env-var-editor-simple:change');
 
-storiesOf('env-var/<env-var-editor-simple>/default', module)
+storiesOf('2. Environment variables|<env-var-editor-simple>/default', module)
   .add('no data yet (skeleton)', withActions(() => {
     const envVarForm = document.createElement('env-var-editor-simple');
     return envVarForm;
@@ -41,7 +41,7 @@ storiesOf('env-var/<env-var-editor-simple>/default', module)
     return envVarForm;
   }), { notes });
 
-storiesOf('env-var/<env-var-editor-simple>/readonly', module)
+storiesOf('2. Environment variables|<env-var-editor-simple>/readonly', module)
   .add('no data yet (skeleton)', withActions(() => {
     const envVarForm = document.createElement('env-var-editor-simple');
     envVarForm.setAttribute('readonly', 'true');

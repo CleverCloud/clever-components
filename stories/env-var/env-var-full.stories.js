@@ -4,7 +4,7 @@ import { withCustomEventActions } from '../lib/event-action.js';
 
 const withActions = withCustomEventActions('env-var-form:submit', 'env-var-full:dismissed-error', 'env-var-form:restart-app');
 
-storiesOf('env-var/<env-var-full>', module)
+storiesOf('2. Environment variables|<env-var-full>', module)
   .add('no data yet (skeleton)', withActions(() => {
     const envVar = document.createElement('env-var-full');
     envVar.variables = new Promise(() => null);

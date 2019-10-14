@@ -2,8 +2,8 @@ import '../../components/atoms/cc-loader.js';
 import notes from '../../.components-docs/cc-loader.md';
 import { storiesOf } from '@storybook/html';
 
-storiesOf('atoms', module)
-  .add('<cc-loader>', () => {
+storiesOf('1. Atoms|<cc-loader>', module)
+  .add('default', () => {
 
     return `
       <div class="title">Small container:</div>
