@@ -2,12 +2,12 @@ module.exports.fr = {
   LANGUAGE: 'Français',
   // cc-button
   'cc-button.cancel': `Cliquez pour annuler`,
-  // cc-infos-instances
-  'cc-infos-instances.title': `Instances`,
-  'cc-infos-instances.status.deploying': `En déploiement`,
-  'cc-infos-instances.status.running': `En ligne`,
-  'cc-infos-instances.no-instances': `Pas d'instance. L'application est arrêtée.`,
-  'cc-infos-instances.error': `Une erreur est survenue pendant le chargement des instances.`,
+  // cc-info-instances
+  'cc-info-instances.title': `Instances`,
+  'cc-info-instances.status.deploying': `En déploiement`,
+  'cc-info-instances.status.running': `En ligne`,
+  'cc-info-instances.no-instances': `Pas d'instance. L'application est arrêtée.`,
+  'cc-info-instances.error': `Une erreur est survenue pendant le chargement des instances.`,
   // env-var-create
   'env-var-create.name.placeholder': `NOM_DE_LA_VARIABLE`,
   'env-var-create.value.placeholder': `valeur de la variable`,

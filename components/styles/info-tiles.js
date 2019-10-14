@@ -1,7 +1,7 @@
 import { css } from 'lit-element';
 
 // language=CSS
-export const boxStyles = css`
+export const tileStyles = css`
   :host {
     background-color: #fff;
     border-radius: 0.25rem;
@@ -15,18 +15,18 @@ export const boxStyles = css`
     padding: 1rem;
   }
 
-  .box_title {
+  .tile_title {
     color: #5D5D5D;
     font-size: 1.25rem;
     text-align: center;
   }
 
-  .box_body {
+  .tile_body {
     align-content: center;
     display: grid;
   }
 
-  .box_message {
+  .tile_message {
     text-align: center;
   }
 `;

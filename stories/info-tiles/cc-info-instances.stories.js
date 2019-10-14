@@ -1,11 +1,11 @@
-import '../../components/infos/cc-infos-instances.js';
-import notes from '../../.components-docs/cc-infos-instances.md';
+import '../../components/info-tiles/cc-info-instances.js';
+import notes from '../../.components-docs/cc-info-instances.md';
 import { createContainer } from '../lib/dom.js';
 import { sequence } from '../lib/sequence.js';
 import { storiesOf } from '@storybook/html';
 
 function createComponent (instances) {
-  const component = document.createElement('cc-infos-instances');
+  const component = document.createElement('cc-info-instances');
   component.style.width = '300px';
   component.style.display = 'inline-grid';
   component.style.marginBottom = '1rem';
@@ -14,7 +14,7 @@ function createComponent (instances) {
   return component;
 }
 
-storiesOf('2. Information tiles|<cc-infos-instances>', module)
+storiesOf('2. Information tiles|<cc-info-instances>', module)
   .add('empty state (loading)', () => {
     return createComponent();
   }, { notes })

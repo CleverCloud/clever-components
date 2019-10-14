@@ -2,12 +2,12 @@ module.exports.en = {
   LANGUAGE: 'English',
   // cc-button
   'cc-button.cancel': `Click to cancel`,
-  // cc-infos-instances
-  'cc-infos-instances.title': `Instances`,
-  'cc-infos-instances.status.deploying': `Deploying`,
-  'cc-infos-instances.status.running': `Running`,
-  'cc-infos-instances.no-instances': `No instances. Your app is stopped.`,
-  'cc-infos-instances.error': `Something went wrong while loading instances.`,
+  // cc-info-instances
+  'cc-info-instances.title': `Instances`,
+  'cc-info-instances.status.deploying': `Deploying`,
+  'cc-info-instances.status.running': `Running`,
+  'cc-info-instances.no-instances': `No instances. Your app is stopped.`,
+  'cc-info-instances.error': `Something went wrong while loading instances.`,
   // env-var-create
   'env-var-create.name.placeholder': `VARIABLE_NAME`,
   'env-var-create.value.placeholder': `variable value`,
