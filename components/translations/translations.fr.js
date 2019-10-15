@@ -10,6 +10,18 @@ export const translations = {
   'cc-info-instances.status.running': `En ligne`,
   'cc-info-instances.no-instances': `Pas d'instance. L'application est arrêtée.`,
   'cc-info-instances.error': `Une erreur est survenue pendant le chargement des instances.`,
+  // cc-info-scalability
+  'cc-info-scalability.title': `Scalabilité`,
+  'cc-info-scalability.size': `Taille`,
+  'cc-info-scalability.number': `Nombre`,
+  'cc-info-scalability.flavor-info': (f) => {
+    const cpu = `CPUs : ${f.cpus}`;
+    const shared = f.microservice ? ` (partagé)` : '';
+    const gpu = f.gpus > 0 ? `GPUs : ${f.gpus}` : '';
+    const mem = `RAM : ${(f.mem < 1024) ? `${f.mem} Mo` : `${f.mem / 1024} Go`}`;
+    return [cpu + shared, gpu, mem].filter((a) => a).join('\n');
+  },
+  'cc-info-scalability.error': `Une erreur est survenue pendant le chargement de la configuration de scalabilité.`,
   // env-var-create
   'env-var-create.name.placeholder': `NOM_DE_LA_VARIABLE`,
   'env-var-create.value.placeholder': `valeur de la variable`,
