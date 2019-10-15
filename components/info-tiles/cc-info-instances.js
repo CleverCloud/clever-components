@@ -3,7 +3,7 @@ import '../atoms/cc-loader.js';
 import runningSvg from './running.svg';
 import startingSvg from './starting.svg';
 import { animate, QUICK_SHRINK } from '../lib/animate.js';
-import { boxStyles, instanceDetails } from '../styles/infos.js';
+import { instanceDetails, tileStyles } from '../styles/info-tiles.js';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '@i18n';
 
@@ -13,12 +13,12 @@ const statusImg = {
 };
 
 const statusLabel = {
-  running: i18n('cc-infos-instances.status.running'),
-  deploying: i18n('cc-infos-instances.status.deploying'),
+  running: i18n('cc-info-instances.status.running'),
+  deploying: i18n('cc-info-instances.status.deploying'),
 };
 
 /**
- * A "box" component to display current status of running de deploying instances for a given app.
+ * A "tile" component to display current status of running de deploying instances for a given app.
  *
  * ## Details
  *
@@ -54,7 +54,7 @@ const statusLabel = {
  * @prop {Object} instances - BROKEN
  * @attr {Boolean} error - display an error message
  */
-export class CcInfosInstances extends LitElement {
+export class CcInfoInstances extends LitElement {
 
   static get properties () {
     return {
@@ -73,7 +73,8 @@ export class CcInfosInstances extends LitElement {
   _renderInstances (instances, type) {
     return instances.length ? html`
       <div class="instances" data-type=${type}>
-        <img class="instances_status-img" src=${statusImg[type]}>
+        <!-- image has a presentation role => alt="" -->
+        <img class="instances_status-img" src=${statusImg[type]} alt="">
         <span class="instances_status">${statusLabel[type]}</span>
         ${instances.map(({ flavorName, count }) => html`
           <span class="size-label">${flavorName}<span class="count-bubble">${count}</span></span>
@@ -86,7 +87,7 @@ export class CcInfosInstances extends LitElement {
 
     const skeleton = (this.instances == null);
     const isLoading = skeleton && !this.error;
-    const instances = skeleton ? CcInfosInstances.skeletonInstances : this.instances;
+    const instances = skeleton ? CcInfoInstances.skeletonInstances : this.instances;
 
     const runningInstancesCount = instances.running.map((a) => a.count).reduce((a, b) => a + b, 0);
     const deployingInstancesCount = instances.deploying.map((a) => a.count).reduce((a, b) => a + b, 0);
@@ -108,11 +109,11 @@ export class CcInfosInstances extends LitElement {
     }
 
     return html`
-      <div class="box_title">${i18n('cc-infos-instances.title')}</div>
-      <div class="box_body">
+      <div class="tile_title">${i18n('cc-info-instances.title')}</div>
+      <div class="tile_body">
         <cc-expand>
           ${hasNoInstances ? html`
-            <div class="box_message">${i18n('cc-infos-instances.no-instances')}</div>
+            <div class="tile_message">${i18n('cc-info-instances.no-instances')}</div>
           ` : ''}
           ${this._renderInstances(instances.running, 'running')}
           ${this._renderInstances(instances.deploying, 'deploying')}
@@ -124,7 +125,7 @@ export class CcInfosInstances extends LitElement {
         ` : ''}
         
         ${this.error ? html`
-          <div class="box_message">${i18n('cc-infos-instances.error')}</div>
+          <div class="tile_message">${i18n('cc-info-instances.error')}</div>
         ` : ''}
       </div>
     `;
@@ -132,7 +133,7 @@ export class CcInfosInstances extends LitElement {
 
   static get styles () {
     return [
-      boxStyles,
+      tileStyles,
       instanceDetails,
       // language=CSS
       css`
@@ -196,4 +197,4 @@ export class CcInfosInstances extends LitElement {
   }
 }
 
-window.customElements.define('cc-infos-instances', CcInfosInstances);
+window.customElements.define('cc-info-instances', CcInfoInstances);

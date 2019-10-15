@@ -2,8 +2,9 @@ import '../../components/atoms/cc-loader.js';
 import notes from '../../.components-docs/cc-loader.md';
 import { storiesOf } from '@storybook/html';
 
-storiesOf('atoms', module)
-  .add('<cc-loader>', () => {
+storiesOf('1. Atoms|<cc-loader>', module)
+  .addParameters({ notes })
+  .add('default', () => {
 
     return `
       <div class="title">Small container:</div>
@@ -20,4 +21,4 @@ storiesOf('atoms', module)
         <cc-loader style="background: black; width: 12rem; height: 6rem;"></cc-loader>
       </div>
     `;
-  }, { notes });
+  });

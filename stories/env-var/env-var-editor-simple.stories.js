@@ -5,16 +5,17 @@ import { withCustomEventActions } from '../lib/event-action.js';
 
 const withActions = withCustomEventActions('env-var-editor-simple:change');
 
-storiesOf('env-var/<env-var-editor-simple>/default', module)
+storiesOf('2. Environment variables|<env-var-editor-simple>/default', module)
+  .addParameters({ notes })
   .add('no data yet (skeleton)', withActions(() => {
     const envVarForm = document.createElement('env-var-editor-simple');
     return envVarForm;
-  }), { notes })
+  }))
   .add('empty data', withActions(() => {
     const envVarForm = document.createElement('env-var-editor-simple');
     envVarForm.variables = [];
     return envVarForm;
-  }), { notes })
+  }))
   .add('with data', withActions(() => {
     const envVarForm = document.createElement('env-var-editor-simple');
     envVarForm.variables = [
@@ -26,7 +27,7 @@ storiesOf('env-var/<env-var-editor-simple>/default', module)
       { name: 'DELETED', value: 'deleted value', isDeleted: true },
     ];
     return envVarForm;
-  }), { notes })
+  }))
   .add('with data (disabled)', withActions(() => {
     const envVarForm = document.createElement('env-var-editor-simple');
     envVarForm.setAttribute('disabled', true);
@@ -39,20 +40,21 @@ storiesOf('env-var/<env-var-editor-simple>/default', module)
       { name: 'DELETED', value: 'deleted value', isDeleted: true },
     ];
     return envVarForm;
-  }), { notes });
+  }));
 
-storiesOf('env-var/<env-var-editor-simple>/readonly', module)
+storiesOf('2. Environment variables|<env-var-editor-simple>/readonly', module)
+  .addParameters({ notes })
   .add('no data yet (skeleton)', withActions(() => {
     const envVarForm = document.createElement('env-var-editor-simple');
     envVarForm.setAttribute('readonly', 'true');
     return envVarForm;
-  }), { notes })
+  }))
   .add('empty data', withActions(() => {
     const envVarForm = document.createElement('env-var-editor-simple');
     envVarForm.setAttribute('readonly', 'true');
     envVarForm.variables = [];
     return envVarForm;
-  }), { notes })
+  }))
   .add('with data', withActions(() => {
     const envVarForm = document.createElement('env-var-editor-simple');
     envVarForm.setAttribute('readonly', 'true');
@@ -62,4 +64,4 @@ storiesOf('env-var/<env-var-editor-simple>/readonly', module)
       { name: 'VARIABLE_THREE_THREE_THREE', value: 'Value three three three' },
     ];
     return envVarForm;
-  }), { notes });
+  }));

@@ -5,16 +5,17 @@ import { withCustomEventActions } from '../lib/event-action.js';
 
 const withActions = withCustomEventActions('env-var-form:submit', 'env-var-form:dismissed-error', 'env-var-form:restart-app');
 
-storiesOf('env-var/<env-var-form>/default', module)
+storiesOf('2. Environment variables|<env-var-form>/default', module)
+  .addParameters({ notes })
   .add('no data yet (skeleton)', withActions(() => {
     const envVarForm = document.createElement('env-var-form');
     return envVarForm;
-  }), { notes })
+  }))
   .add('empty data', withActions(() => {
     const envVarForm = document.createElement('env-var-form');
     envVarForm.variables = Promise.resolve([]);
     return envVarForm;
-  }), { notes })
+  }))
   .add('with data', withActions(() => {
     const envVarForm = document.createElement('env-var-form');
     envVarForm.variables = Promise.resolve([
@@ -24,7 +25,7 @@ storiesOf('env-var/<env-var-form>/default', module)
       { name: 'TWO', value: 'value TWO' },
     ]);
     return envVarForm;
-  }), { notes })
+  }))
   .add('with data (restart button)', withActions(() => {
     const envVarForm = document.createElement('env-var-form');
     envVarForm.setAttribute('restart-app', 'true');
@@ -35,7 +36,7 @@ storiesOf('env-var/<env-var-form>/default', module)
       { name: 'TWO', value: 'value TWO' },
     ]);
     return envVarForm;
-  }), { notes })
+  }))
   .add('with data (heading & description)', withActions(() => {
     const envVarForm = document.createElement('env-var-form');
     envVarForm.setAttribute('heading', 'Environment variables');
@@ -50,7 +51,7 @@ storiesOf('env-var/<env-var-form>/default', module)
       <a href="http://doc.clever-cloud.com/admin-console/environment-variables/" target="_blank">Learn more</a>
     `;
     return envVarForm;
-  }), { notes })
+  }))
   .add('saving data', withActions(() => {
     const envVarForm = document.createElement('env-var-form');
     envVarForm.variables = Promise.resolve([
@@ -63,14 +64,14 @@ storiesOf('env-var/<env-var-form>/default', module)
       envVarForm.variables = new Promise(() => null);
     }, 0);
     return envVarForm;
-  }), { notes })
+  }))
   .add('error (loading data)', withActions(() => {
     const envVarForm = document.createElement('env-var-form');
     setTimeout(() => {
       envVarForm.variables = Promise.reject(new Error());
     }, 0);
     return envVarForm;
-  }), { notes })
+  }))
   .add('error (saving data)', withActions(() => {
     const envVarForm = document.createElement('env-var-form');
     envVarForm.variables = Promise.resolve([
@@ -83,20 +84,21 @@ storiesOf('env-var/<env-var-form>/default', module)
       envVarForm.variables = Promise.reject(new Error());
     }, 0);
     return envVarForm;
-  }), { notes });
+  }));
 
-storiesOf('env-var/<env-var-form>/readonly', module)
+storiesOf('2. Environment variables|<env-var-form>/readonly', module)
+  .addParameters({ notes })
   .add('no data yet (skeleton)', withActions(() => {
     const envVarForm = document.createElement('env-var-form');
     envVarForm.setAttribute('readonly', 'true');
     return envVarForm;
-  }), { notes })
+  }))
   .add('empty data', withActions(() => {
     const envVarForm = document.createElement('env-var-form');
     envVarForm.setAttribute('readonly', 'true');
     envVarForm.variables = Promise.resolve([]);
     return envVarForm;
-  }), { notes })
+  }))
   .add('with data', withActions(() => {
     const envVarForm = document.createElement('env-var-form');
     envVarForm.setAttribute('readonly', 'true');
@@ -106,7 +108,7 @@ storiesOf('env-var/<env-var-form>/readonly', module)
       { name: 'VARIABLE_THREE_THREE_THREE', value: 'Value three three three' },
     ]);
     return envVarForm;
-  }), { notes })
+  }))
   .add('with data (heading & description)', withActions(() => {
     const envVarForm = document.createElement('env-var-form');
     envVarForm.setAttribute('readonly', 'true');
@@ -117,4 +119,4 @@ storiesOf('env-var/<env-var-form>/readonly', module)
       { name: 'VARIABLE_THREE_THREE_THREE', value: 'Value three three three' },
     ]);
     return envVarForm;
-  }), { notes });
+  }));

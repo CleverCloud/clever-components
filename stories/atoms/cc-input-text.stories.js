@@ -5,7 +5,8 @@ import { withCustomEventActions } from '../lib/event-action.js';
 
 const withActions = withCustomEventActions('cc-input-text:input');
 
-storiesOf('atoms/<cc-input-text>', module)
+storiesOf('1. Atoms|<cc-input-text>', module)
+  .addParameters({ notes })
   .add('simple', withActions(() => `
 
     <style>
@@ -28,7 +29,7 @@ storiesOf('atoms/<cc-input-text>', module)
     <cc-input-text skeleton value="This will be a value"></cc-input-text>
     <cc-input-text skeleton place="Placeholder text here"></cc-input-text>
     
-  `), { notes })
+  `))
   .add('multiline', withActions(() => `
 
     <style>
@@ -50,4 +51,4 @@ storiesOf('atoms/<cc-input-text>', module)
     <div class="title">Skeleton:</div>
     <cc-input-text multi skeleton value="This will be\na value"></cc-input-text>
     <cc-input-text multi skeleton placeholder="Placeholder text here"></cc-input-text>
-  `), { notes });
+  `));

@@ -5,17 +5,18 @@ import { withCustomEventActions } from '../lib/event-action.js';
 
 const withActions = withCustomEventActions('env-var-editor-expert:change');
 
-storiesOf('env-var/<env-var-editor-expert>/default', module)
+storiesOf('2. Environment variables|<env-var-editor-expert>/default', module)
+  .addParameters({ notes })
   .add('no data yet (skeleton)', withActions(() => {
     const envVarFormExpert = document.createElement('env-var-editor-expert');
     envVarFormExpert.setAttribute('skeleton', 'true');
     return envVarFormExpert;
-  }), { notes })
+  }))
   .add('empty data', withActions(() => {
     const envVarFormExpert = document.createElement('env-var-editor-expert');
     envVarFormExpert.variables = [];
     return envVarFormExpert;
-  }), { notes })
+  }))
   .add('with data', withActions(() => {
     const envVarFormExpert = document.createElement('env-var-editor-expert');
     envVarFormExpert.variables = [
@@ -27,7 +28,7 @@ storiesOf('env-var/<env-var-editor-expert>/default', module)
       { name: 'DELETED', value: 'deleted value', isDeleted: true },
     ];
     return envVarFormExpert;
-  }), { notes })
+  }))
   .add('with data (disabled)', withActions(() => {
     const envVarFormExpert = document.createElement('env-var-editor-expert');
     envVarFormExpert.variables = [
@@ -40,20 +41,21 @@ storiesOf('env-var/<env-var-editor-expert>/default', module)
     ];
     envVarFormExpert.setAttribute('disabled', true);
     return envVarFormExpert;
-  }), { notes });
+  }));
 
-storiesOf('env-var/<env-var-editor-expert>/readonly', module)
+storiesOf('2. Environment variables|<env-var-editor-expert>/readonly', module)
+  .addParameters({ notes })
   .add('with data (skeleton)', withActions(() => {
     const envVarFormExpert = document.createElement('env-var-editor-expert');
     envVarFormExpert.setAttribute('readonly', true);
     return envVarFormExpert;
-  }), { notes })
+  }))
   .add('empty data', withActions(() => {
     const envVarFormExpert = document.createElement('env-var-editor-expert');
     envVarFormExpert.setAttribute('readonly', true);
     envVarFormExpert.variables = [];
     return envVarFormExpert;
-  }), { notes })
+  }))
   .add('with data', withActions(() => {
     const envVarFormExpert = document.createElement('env-var-editor-expert');
     envVarFormExpert.setAttribute('readonly', true);
@@ -66,4 +68,4 @@ storiesOf('env-var/<env-var-editor-expert>/readonly', module)
       { name: 'DELETED', value: 'deleted value', isDeleted: true },
     ];
     return envVarFormExpert;
-  }), { notes });
+  }));

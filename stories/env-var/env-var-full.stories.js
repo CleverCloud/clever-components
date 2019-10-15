@@ -1,15 +1,17 @@
 import '../../components/env-var/env-var-full.js';
+import notes from '../../.components-docs/env-var-full.md';
 import { storiesOf } from '@storybook/html';
 import { withCustomEventActions } from '../lib/event-action.js';
 
 const withActions = withCustomEventActions('env-var-form:submit', 'env-var-full:dismissed-error', 'env-var-form:restart-app');
 
-storiesOf('env-var/<env-var-full>', module)
+storiesOf('2. Environment variables|<env-var-full>', module)
+  .addParameters({ notes })
   .add('no data yet (skeleton)', withActions(() => {
     const envVar = document.createElement('env-var-full');
     envVar.variables = new Promise(() => null);
     return envVar;
-  }), { notes: '' })
+  }))
   .add('app data loaded / addon data loading...', withActions(() => {
     const envVar = document.createElement('env-var-full');
     envVar.variables = Promise.resolve([
@@ -31,7 +33,7 @@ storiesOf('env-var/<env-var-full>', module)
       },
     ];
     return envVar;
-  }), { notes: '' })
+  }))
   .add('all data loaded', withActions(() => {
     const envVar = document.createElement('env-var-full');
     envVar.variables = Promise.resolve([
@@ -61,7 +63,7 @@ storiesOf('env-var/<env-var-full>', module)
       },
     ];
     return envVar;
-  }), { notes: '' })
+  }))
   .add('all data loaded (restart button)', withActions(() => {
     const envVar = document.createElement('env-var-full');
     envVar.variables = Promise.resolve([
@@ -92,7 +94,7 @@ storiesOf('env-var/<env-var-full>', module)
       },
     ];
     return envVar;
-  }), { notes: '' })
+  }))
   .add('loading errors', withActions(() => {
     const envVar = document.createElement('env-var-full');
     envVar.variables = Promise.reject(new Error());
@@ -109,7 +111,7 @@ storiesOf('env-var/<env-var-full>', module)
       },
     ];
     return envVar;
-  }), { notes: '' })
+  }))
   .add('app saving error + addon loading errors', withActions(() => {
     const envVar = document.createElement('env-var-full');
     envVar.variables = Promise.resolve([
@@ -134,4 +136,4 @@ storiesOf('env-var/<env-var-full>', module)
       },
     ];
     return envVar;
-  }), { notes: '' });
+  }));

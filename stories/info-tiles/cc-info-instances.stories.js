@@ -1,11 +1,11 @@
-import '../../components/infos/cc-infos-instances.js';
-import notes from '../../.components-docs/cc-infos-instances.md';
+import '../../components/info-tiles/cc-info-instances.js';
+import notes from '../../.components-docs/cc-info-instances.md';
 import { createContainer } from '../lib/dom.js';
 import { sequence } from '../lib/sequence.js';
 import { storiesOf } from '@storybook/html';
 
 function createComponent (instances) {
-  const component = document.createElement('cc-infos-instances');
+  const component = document.createElement('cc-info-instances');
   component.style.width = '300px';
   component.style.display = 'inline-grid';
   component.style.marginBottom = '1rem';
@@ -14,15 +14,16 @@ function createComponent (instances) {
   return component;
 }
 
-storiesOf('infos/<cc-infos-instances>', module)
+storiesOf('2. Information tiles|<cc-info-instances>', module)
+  .addParameters({ notes })
   .add('empty state (loading)', () => {
     return createComponent();
-  }, { notes })
+  })
   .add('error', () => {
     const component = createComponent();
     component.error = true;
     return component;
-  }, { notes })
+  })
   .add('stopped, deploying, running...', () => {
     return createContainer([
       'Stopped',
@@ -70,7 +71,7 @@ storiesOf('infos/<cc-infos-instances>', module)
         deploying: [{ flavorName: '2XL', count: 2 }],
       }),
     ]);
-  }, { notes })
+  })
   .add('simulations', () => {
     const errorComponent = createComponent();
     const component = createComponent();
@@ -128,4 +129,4 @@ storiesOf('infos/<cc-infos-instances>', module)
       'Loading, then running, then deploying, then just running',
       component,
     ]);
-  }, { notes });
+  });

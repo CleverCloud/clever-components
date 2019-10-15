@@ -1,6 +1,7 @@
 import { addDecorator, addParameters, configure } from '@storybook/html';
 import { create } from '@storybook/theming';
 import { i18nKnob } from '../stories/lib/i18n-knob';
+import { withA11y } from '@storybook/addon-a11y';
 import { withKnobs } from '@storybook/addon-knobs';
 
 // automatically import all files ending in *.stories.js
@@ -13,6 +14,10 @@ addDecorator((storyFn) => {
   i18nKnob();
   return storyFn();
 });
+
+// should only be added once
+// best place is in config.js
+addDecorator(withA11y)
 
 const cleverTheme = create({
   brandTitle: 'Clever Cloud components',
@@ -28,7 +33,11 @@ addParameters({
 });
 
 function loadStories () {
-  req.keys().forEach(filename => req(filename));
+  // Load documentation home page first
+  req('./welcome.stories.js');
+  req.keys().forEach(filename => {
+    return req(filename);
+  });
 }
 
 configure(loadStories, module);
