@@ -73,7 +73,8 @@ export class CcInfoInstances extends LitElement {
   _renderInstances (instances, type) {
     return instances.length ? html`
       <div class="instances" data-type=${type}>
-        <img class="instances_status-img" src=${statusImg[type]}>
+        <!-- image has a presentation role => alt="" -->
+        <img class="instances_status-img" src=${statusImg[type]} alt="">
         <span class="instances_status">${statusLabel[type]}</span>
         ${instances.map(({ flavorName, count }) => html`
           <span class="size-label">${flavorName}<span class="count-bubble">${count}</span></span>
