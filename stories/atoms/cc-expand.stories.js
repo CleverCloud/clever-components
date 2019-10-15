@@ -3,6 +3,7 @@ import notes from '../../.components-docs/cc-expand.md';
 import { storiesOf } from '@storybook/html';
 
 storiesOf('1. Atoms|<cc-expand>', module)
+  .addParameters({ notes })
   .add('default', () => {
     const container = document.createElement('div');
     container.innerHTML = `
@@ -37,4 +38,4 @@ storiesOf('1. Atoms|<cc-expand>', module)
     });
 
     return container;
-  }, { notes });
+  });

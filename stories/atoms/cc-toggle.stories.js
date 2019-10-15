@@ -6,6 +6,7 @@ import { withCustomEventActions } from '../lib/event-action.js';
 const withActions = withCustomEventActions('cc-toggle:input');
 
 storiesOf('1. Atoms|<cc-toggle>', module)
+  .addParameters({ notes })
   .add('default', withActions(() => {
 
     const wrapper = document.createElement('div');
@@ -38,4 +39,4 @@ storiesOf('1. Atoms|<cc-toggle>', module)
     ];
 
     return wrapper;
-  }), { notes });
+  }));

@@ -3,6 +3,7 @@ import notes from '../../.components-docs/cc-loader.md';
 import { storiesOf } from '@storybook/html';
 
 storiesOf('1. Atoms|<cc-loader>', module)
+  .addParameters({ notes })
   .add('default', () => {
 
     return `
@@ -20,4 +21,4 @@ storiesOf('1. Atoms|<cc-loader>', module)
         <cc-loader style="background: black; width: 12rem; height: 6rem;"></cc-loader>
       </div>
     `;
-  }, { notes });
+  });

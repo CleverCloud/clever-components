@@ -8,6 +8,7 @@ import { withActions } from '@storybook/addon-actions';
 const eventNames = ['cc-button:click'];
 
 storiesOf('1. Atoms|<cc-button>', module)
+  .addParameters({ notes })
   .add('various setups', () => withActions(...eventNames)(() => {
 
     const label = text('Button label', '');
@@ -103,7 +104,7 @@ storiesOf('1. Atoms|<cc-button>', module)
       <cc-button danger skeleton outlined>${label || 'Danger outlined'}</cc-button>
       <cc-button danger skeleton outlined disabled>${label || 'Danger outlined & disabled'}</cc-button>
     `;
-  }), { notes })
+  }))
   .add('delay and disabled', () => withActions(...eventNames)(() => {
 
     const btn1 = document.createElement('cc-button');
@@ -122,4 +123,4 @@ storiesOf('1. Atoms|<cc-button>', module)
       btn1,
       btn2,
     ]);
-  }), { notes });
+  }));

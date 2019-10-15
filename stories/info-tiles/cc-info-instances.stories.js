@@ -15,14 +15,15 @@ function createComponent (instances) {
 }
 
 storiesOf('2. Information tiles|<cc-info-instances>', module)
+  .addParameters({ notes })
   .add('empty state (loading)', () => {
     return createComponent();
-  }, { notes })
+  })
   .add('error', () => {
     const component = createComponent();
     component.error = true;
     return component;
-  }, { notes })
+  })
   .add('stopped, deploying, running...', () => {
     return createContainer([
       'Stopped',
@@ -70,7 +71,7 @@ storiesOf('2. Information tiles|<cc-info-instances>', module)
         deploying: [{ flavorName: '2XL', count: 2 }],
       }),
     ]);
-  }, { notes })
+  })
   .add('simulations', () => {
     const errorComponent = createComponent();
     const component = createComponent();
@@ -128,4 +129,4 @@ storiesOf('2. Information tiles|<cc-info-instances>', module)
       'Loading, then running, then deploying, then just running',
       component,
     ]);
-  }, { notes });
+  });

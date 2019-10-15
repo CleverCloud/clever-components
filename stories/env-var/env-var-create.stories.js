@@ -6,6 +6,7 @@ import { withCustomEventActions } from '../lib/event-action.js';
 const withActions = withCustomEventActions('env-var-create:create');
 
 storiesOf('2. Environment variables|<env-var-create>', module)
+  .addParameters({ notes })
   .add('default', withActions(() => {
 
     const container = document.createElement('div');
@@ -23,4 +24,4 @@ storiesOf('2. Environment variables|<env-var-create>', module)
     container.querySelector('#variables-names').variablesNames = ['FOO', 'BAR'];
 
     return container;
-  }), { notes });
+  }));
