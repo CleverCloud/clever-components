@@ -2,7 +2,7 @@ import '../atoms/cc-button.js';
 import '../atoms/cc-input-text.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
-import { i18n } from '@i18n';
+import { i18n } from '../lib/i18n.js';
 import { validateName } from '@clevercloud/client/esm/utils/env-vars.js';
 
 /**

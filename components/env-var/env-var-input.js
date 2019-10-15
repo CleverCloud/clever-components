@@ -3,7 +3,7 @@ import '../atoms/cc-input-text.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
-import { i18n } from '@i18n';
+import { i18n } from '../lib/i18n.js';
 import { skeleton } from '../styles/skeleton.js';
 
 /**

@@ -5,7 +5,7 @@ import startingSvg from './starting.svg';
 import { animate, QUICK_SHRINK } from '../lib/animate.js';
 import { instanceDetails, tileStyles } from '../styles/info-tiles.js';
 import { css, html, LitElement } from 'lit-element';
-import { i18n } from '@i18n';
+import { i18n } from '../lib/i18n.js';
 
 const statusImg = {
   running: runningSvg,

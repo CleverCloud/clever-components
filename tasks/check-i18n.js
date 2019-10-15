@@ -1,7 +1,12 @@
 'use strict';
 
-const { en } = require('../components/translations/translations.en.js');
-const { fr } = require('../components/translations/translations.fr.js');
+// Require ESM modules like we're in the future
+// eslint-disable-next-line no-global-assign
+require = require('esm')(module);
+
+const { translations: en } = require('../components/translations/translations.en.js');
+const { translations: fr } = require('../components/translations/translations.fr.js');
+
 const fs = require('fs-extra');
 const rawGlob = require('glob');
 const util = require('util');
@@ -24,7 +29,13 @@ async function run () {
 
   let errors = false;
 
-  const sourceFilepaths = await glob('./components/**/*.js');
+  const sourceFilepaths = await glob('./components/*/*.js', {
+    ignore: [
+      './components/lib/*.js',
+      './components/styles/*.js',
+      './components/translations/*.js',
+    ],
+  });
 
   const usedKeysByFile = await getUsedKeys(sourceFilepaths);
 
@@ -73,5 +84,4 @@ async function run () {
 }
 
 run()
-// .then(console.log)
   .catch(console.error);
