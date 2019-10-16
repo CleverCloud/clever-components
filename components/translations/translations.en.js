@@ -1,9 +1,21 @@
+import { prepareFormatDate, prepareFormatDistanceToNow } from '../lib/i18n-date.js';
+
 export const lang = 'en';
+
+const formatDistanceToNow = prepareFormatDistanceToNow(lang, (value, unit) => {
+  const plural = (value === 1) ? '' : 's';
+  return `${value} ${unit}${plural} ago`;
+}, 'just now');
+
+const formatDate = prepareFormatDate(lang);
 
 export const translations = {
   LANGUAGE: '🇬🇧 English',
   // cc-button
   'cc-button.cancel': `Click to cancel`,
+  // cc-datetime-relative
+  'cc-datetime-relative.distance': ({ date }) => formatDistanceToNow(date),
+  'cc-datetime-relative.title': ({ date }) => formatDate(date),
   // cc-info-instances
   'cc-info-instances.title': `Instances`,
   'cc-info-instances.status.deploying': `Deploying`,
