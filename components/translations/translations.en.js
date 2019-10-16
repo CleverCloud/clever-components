@@ -16,6 +16,14 @@ export const translations = {
   // cc-datetime-relative
   'cc-datetime-relative.distance': ({ date }) => formatDistanceToNow(date),
   'cc-datetime-relative.title': ({ date }) => formatDate(date),
+  // cc-info-deployments
+  'cc-info-deployments.title': `Last deployments`,
+  'cc-info-deployments.state.failed': `Failed`,
+  'cc-info-deployments.state.started': `Started`,
+  'cc-info-deployments.state.cancelled': `Cancelled`,
+  'cc-info-deployments.state.stopped': `Stopped`,
+  'cc-info-deployments.error': `Something went wrong while loading deployments info.`,
+  'cc-info-deployments.no-deployments': `No deployments yet.`,
   // cc-info-instances
   'cc-info-instances.title': `Instances`,
   'cc-info-instances.status.deploying': `Deploying`,

@@ -1,6 +1,7 @@
 export { CcButton } from './atoms/cc-button.js';
 export { CcDatetimeRelative } from './atoms/cc-datetime-relative.js';
 export { CcExpand } from './atoms/cc-expand.js';
+export { CcInfoDeployments } from './info-tiles/cc-info-deployments.js';
 export { CcInfoInstances } from './info-tiles/cc-info-instances.js';
 export { CcInfoScalability } from './info-tiles/cc-info-scalability.js';
 export { CcInputText } from './atoms/cc-input-text.js';
