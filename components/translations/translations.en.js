@@ -9,6 +9,8 @@ const formatDistanceToNow = prepareFormatDistanceToNow(lang, (value, unit) => {
 
 const formatDate = prepareFormatDate(lang);
 
+const currencyFormatter = new Intl.NumberFormat(lang, { style: 'currency', currency: 'EUR' });
+
 export const translations = {
   LANGUAGE: '🇬🇧 English',
   // cc-button
@@ -16,6 +18,12 @@ export const translations = {
   // cc-datetime-relative
   'cc-datetime-relative.distance': ({ date }) => formatDistanceToNow(date),
   'cc-datetime-relative.title': ({ date }) => formatDate(date),
+  // cc-info-consumption
+  'cc-info-consumption.title': `Credits consumption`,
+  'cc-info-consumption.yesterday': `Yesterday`,
+  'cc-info-consumption.last-30-days': `Last 30 days`,
+  'cc-info-consumption.amount': ({ amount }) => currencyFormatter.format(amount),
+  'cc-info-consumption.error': `Something went wrong while loading consumption info.`,
   // cc-info-deployments
   'cc-info-deployments.title': `Last deployments`,
   'cc-info-deployments.state.failed': `Failed`,

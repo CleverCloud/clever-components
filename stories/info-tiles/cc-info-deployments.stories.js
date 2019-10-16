@@ -16,14 +16,15 @@ function createComponent (deployments) {
 }
 
 storiesOf('2. Information tiles|<cc-info-deployments>', module)
+  .addParameters({ notes })
   .add('empty state (loading)', () => {
     return createComponent();
-  }, { notes })
+  })
   .add('error', () => {
     const component = createComponent();
     component.error = true;
     return component;
-  }, { notes })
+  })
   .add('different deployments list', () => {
     return createContainer([
       'No deployments yet',
@@ -177,7 +178,7 @@ storiesOf('2. Information tiles|<cc-info-deployments>', module)
         },
       ]),
     ]);
-  }, { notes })
+  })
   .add('simulations', () => {
 
     const errorComponent = createComponent();
@@ -223,4 +224,4 @@ storiesOf('2. Information tiles|<cc-info-deployments>', module)
       'Loading, then some data',
       component,
     ]);
-  }, { notes });
+  });
