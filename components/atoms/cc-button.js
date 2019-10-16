@@ -247,7 +247,7 @@ export class CcButton extends LitElement {
         }
 
         button:disabled {
-          cursor: default;
+          cursor: inherit;
           opacity: .5;
         }
 
