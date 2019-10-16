@@ -10,6 +10,18 @@ export const translations = {
   'cc-info-instances.status.running': `Running`,
   'cc-info-instances.no-instances': `No instances. Your app is stopped.`,
   'cc-info-instances.error': `Something went wrong while loading instances.`,
+  // cc-info-scalability
+  'cc-info-scalability.title': `Scalability`,
+  'cc-info-scalability.size': `Size`,
+  'cc-info-scalability.number': `Number`,
+  'cc-info-scalability.flavor-info': (f) => {
+    const cpu = `CPUs: ${f.cpus}`;
+    const shared = f.microservice ? ` (shared)` : '';
+    const gpu = f.gpus > 0 ? `GPUs: ${f.gpus}` : '';
+    const mem = `RAM: ${(f.mem < 1024) ? `${f.mem} MB` : `${f.mem / 1024} GB`}`;
+    return [cpu + shared, gpu, mem].filter((a) => a).join('\n');
+  },
+  'cc-info-scalability.error': `Something went wrong while loading scalability config.`,
   // env-var-create
   'env-var-create.name.placeholder': `VARIABLE_NAME`,
   'env-var-create.value.placeholder': `variable value`,
