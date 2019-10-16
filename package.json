@@ -21,11 +21,8 @@
   },
   "dependencies": {
     "@clevercloud/client": "^2.0.0-beta.9",
-    "@github/time-elements": "^3.0.7",
-    "date-fns": "^2.5.0",
     "lit-element": "^2.2.0",
-    "lit-html": "^1.1.1",
-    "moment": "^2.24.0"
+    "lit-html": "^1.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
