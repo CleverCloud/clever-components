@@ -78,6 +78,11 @@ export const translations = {
   'cc-info-scalability.error': `Something went wrong while loading scalability config.`,
   // cc-input-text
   'cc-input-text.clipboard': `Copy to clipboard`,
+  // cc-logsmap
+  'cc-logsmap.mode.points': `Realtime`,
+  'cc-logsmap.mode.heatmap': `Last 24h`,
+  'cc-logsmap.legend.points': `Realtime map of the requests received by your apps.`,
+  'cc-logsmap.legend.heatmap': `Heatmap of all the requests received by your apps during the past 24 hours.`,
   // cc-map
   'cc-map.error': `Something went wrong while trying to fetch data for the map.`,
   // env-var-create
