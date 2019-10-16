@@ -13,7 +13,7 @@ function createComponent (datetime) {
   return component;
 }
 
-function getDate ({ seconds = 0, minutes = 0, hours = 0, days = 0, weeks = 0, months = 0, years = 0 }) {
+export function createDateAgo ({ seconds = 0, minutes = 0, hours = 0, days = 0, weeks = 0, months = 0, years = 0 }) {
   const nowTs = new Date().getTime();
   const targetTs = nowTs
     - seconds * 1000
@@ -29,7 +29,7 @@ function getDate ({ seconds = 0, minutes = 0, hours = 0, days = 0, weeks = 0, mo
 function createComponentSeries (unit, steps, elementName) {
   return [
     `${unit} ago (${steps.join(', ')}):`,
-    ...steps.map((s) => createComponent(getDate({ [unit]: s }).toISOString())),
+    ...steps.map((s) => createComponent(createDateAgo({ [unit]: s }).toISOString())),
   ];
 }
 
@@ -38,7 +38,7 @@ storiesOf('1. Atoms|<cc-datetime-relative>', module)
   .add('default', () => {
     return createContainer([
       'Now',
-      createComponent(getDate({}).toISOString()),
+      createComponent(createDateAgo({}).toISOString()),
       ...createComponentSeries('seconds', [1, 5, 10, 20, 30, 45]),
       ...createComponentSeries('minutes', [1, 5, 10, 20, 30, 45]),
       ...createComponentSeries('hours', [1, 5, 10, 20, 30, 45]),

@@ -66,11 +66,11 @@ export class CcInfoInstances extends LitElement {
   }
 
   _getStatusLabel (type) {
-    switch (type) {
-      case 'running':
-        return i18n('cc-info-instances.status.running');
-      case 'deploying':
-        return i18n('cc-info-instances.status.deploying');
+    if (type === 'running') {
+      return i18n('cc-info-instances.status.running');
+    }
+    if (type === 'deploying') {
+      return i18n('cc-info-instances.status.deploying');
     }
   }
 
