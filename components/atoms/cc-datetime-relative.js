@@ -20,10 +20,6 @@ function updateTrackedElements () {
  */
 export class CcDatetimeRelative extends HTMLElement {
 
-  constructor () {
-    super();
-  }
-
   static get observedAttributes () {
     return ['datetime'];
   }

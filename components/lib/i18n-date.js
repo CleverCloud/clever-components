@@ -20,7 +20,7 @@ export function prepareFormatDistanceToNow (lang, fallback, nowString) {
     const now = new Date().getTime();
     const diff = now - date;
 
-    for (let { unit, duration } of UNITS) {
+    for (const { unit, duration } of UNITS) {
 
       const value = diff / duration;
       const roundedValue = Math.round(value);
