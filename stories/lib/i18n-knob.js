@@ -10,8 +10,10 @@ import { select } from '@storybook/addon-knobs';
 addTranslations(en.lang, en.translations);
 addTranslations(fr.lang, fr.translations);
 
+const INIT_LANG = localStorage.getItem('I18N_LANG') || 'en';
+
 // Default to English
-setLanguage(en.lang);
+setLanguage(INIT_LANG);
 
 export function i18nKnob () {
 
@@ -19,5 +21,6 @@ export function i18nKnob () {
 
   if (getLanguage() !== i18nValue) {
     setLanguage(i18nValue);
+    localStorage.setItem('I18N_LANG', i18nValue);
   }
 }
