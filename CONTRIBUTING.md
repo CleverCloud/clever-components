@@ -86,31 +86,14 @@ import { CCButton } from '@clevercloud';
 
 ## We translate our components
 
-We created a small injector for our translations.
-This allows us to make sure our components are agnostic to the tooling used to create translations and agnostic to the APIs.
-
-In every component, we juste import the fake `@i18n` module.
-It's up to a bundler's config (like Webpack) to wire this import.
-This will be possible to do it natively soon with [import maps](https://github.com/WICG/import-maps) if it gets standardized.
-
-Here's an example for webpack:
-
-```js
-const webpackConfig = {
-  resolve: {
-    alias: {
-      '@i18n': path.join(__dirname, 'node_modules/@clevercloud/components/dist/lib/i18n.js'),
-    },
-  },
-}
-```
-
 When you work on a component, you need to follow several steps...
 
 Step 1, in your component, import the function from the module:
 
+NOTE: you may need to adjust the path to the file since it's relative.
+
 ```js
-import { i18n } from '@i18n';
+import { i18n } from '../lib/i18n.js';
 ```
 
 Step 2, use the function in your code with just the key:
@@ -125,7 +108,7 @@ or with the key AND named params:
 <input placeholder=${i18n('my-component.i18n-key', { name: 'John' })}>
 ```
 
-Step 3, make sure translations exists in `components/translations/translations.lang.js` and add an entry to the object with the text value:
+Step 3, make sure translations exists in `components/translations/translations.[lang].js` and add an entry to the object with the text value:
 
 ```js
 {
@@ -154,3 +137,5 @@ You can run this check with:
 ```bash
 npm run components:check-i18n
 ```
+
+WARNING: This means you CANNOT use the `i18n` with a dynamic string.

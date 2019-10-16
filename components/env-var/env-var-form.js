@@ -7,7 +7,7 @@ import './env-var-editor-simple.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
-import { i18n } from '@i18n';
+import { i18n } from '../lib/i18n.js';
 
 /**
  * A high level env var editor form, wraps simple editor and expert editor

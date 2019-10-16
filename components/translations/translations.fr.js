@@ -1,5 +1,7 @@
-module.exports.fr = {
-  LANGUAGE: 'Français',
+export const lang = 'fr';
+
+export const translations = {
+  LANGUAGE: '🇫🇷 Français',
   // cc-button
   'cc-button.cancel': `Cliquez pour annuler`,
   // cc-info-instances

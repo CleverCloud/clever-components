@@ -2,7 +2,7 @@ import './env-var-create.js';
 import './env-var-input.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
-import { i18n } from '@i18n';
+import { i18n } from '../lib/i18n.js';
 import { repeat } from 'lit-html/directives/repeat';
 
 /**
