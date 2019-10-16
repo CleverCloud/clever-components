@@ -191,7 +191,8 @@ export class CcInfoApp extends LitElement {
         title=${ifDefined(skeleton ? undefined : this._getCommitTitle(type, commit))}
         data-type=${type}
       >
-        <img class="commit_img" src=${commitIcon[type]}>
+        <!-- image has a presentation role => alt="" -->
+        <img class="commit_img" src=${commitIcon[type]} alt="">
         ${commit != null ? html`
           <!-- Keep this on one line to ease copy/paste -->
           <span class=${classMap({ skeleton })}>${(commit.slice(0, 8))}<span class="commit_rest">${(commit.slice(8))}</span></span>
@@ -228,7 +229,8 @@ export class CcInfoApp extends LitElement {
     return html`
       <div class="main">
         <div class="flavor-logo ${classMap({ skeleton })}" title=${ifDefined(variantName)}>
-          <img class="flavor-logo_img" src=${ifDefined(variantLogo)}>
+          <!-- image has a presentation role => alt="" -->
+          <img class="flavor-logo_img" src=${ifDefined(variantLogo)} alt="">
         </div>
         
         <div class="details">
@@ -284,7 +286,8 @@ export class CcInfoApp extends LitElement {
       
       <div class="messages ${classMap({ 'is-deploying': isDeploying })}">
         ${(shouldDisplayStatusMessage) ? html`
-          <img class="status-icon" src=${statusIcon[status] || unknownSvg}>
+          <!-- image has a presentation role => alt="" -->
+          <img class="status-icon" src=${statusIcon[status] || unknownSvg} alt="">
           <span class=${classMap({ skeleton: skeletonStatus })}>
             ${this._getStatusMsg(status)}
           </span>  
