@@ -12,11 +12,6 @@ const statusImg = {
   deploying: startingSvg,
 };
 
-const statusLabel = {
-  running: i18n('cc-info-instances.status.running'),
-  deploying: i18n('cc-info-instances.status.deploying'),
-};
-
 /**
  * A "tile" component to display current status of running de deploying instances for a given app.
  *
@@ -70,12 +65,21 @@ export class CcInfoInstances extends LitElement {
     };
   }
 
+  _getStatusLabel (type) {
+    switch (type) {
+      case 'running':
+        return i18n('cc-info-instances.status.running');
+      case 'deploying':
+        return i18n('cc-info-instances.status.deploying');
+    }
+  }
+
   _renderInstances (instances, type) {
     return instances.length ? html`
       <div class="instances" data-type=${type}>
         <!-- image has a presentation role => alt="" -->
         <img class="instances_status-img" src=${statusImg[type]} alt="">
-        <span class="instances_status">${statusLabel[type]}</span>
+        <span class="instances_status">${this._getStatusLabel(type)}</span>
         ${instances.map(({ flavorName, count }) => html`
           <span class="size-label">${flavorName}<span class="count-bubble">${count}</span></span>
         `)}
