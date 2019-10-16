@@ -1,9 +1,31 @@
+import { prepareFormatDate, prepareFormatDistanceToNow } from '../lib/i18n-date.js';
+
 export const lang = 'fr';
+
+const UNITS_FR = {
+  year: 'année',
+  month: 'mois',
+  week: 'semaine',
+  day: 'jour',
+  hour: 'heure',
+  minute: 'minute',
+  second: 'seconde',
+};
+
+const formatDistanceToNow = prepareFormatDistanceToNow(lang, (value, unit) => {
+  const plural = (value >= 1 || UNITS_FR[unit].endsWith('s')) ? '' : 's';
+  return `il y a ${value} ${UNITS_FR[unit]}${plural}`;
+}, 'à l\'instant');
+
+const formatDate = prepareFormatDate(lang);
 
 export const translations = {
   LANGUAGE: '🇫🇷 Français',
   // cc-button
   'cc-button.cancel': `Cliquez pour annuler`,
+  // cc-datetime-relative
+  'cc-datetime-relative.distance': ({ date }) => formatDistanceToNow(date),
+  'cc-datetime-relative.title': ({ date }) => formatDate(date),
   // cc-info-instances
   'cc-info-instances.title': `Instances`,
   'cc-info-instances.status.deploying': `En déploiement`,
