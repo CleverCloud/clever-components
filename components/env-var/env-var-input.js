@@ -76,6 +76,7 @@ export class EnvVarInput extends LitElement {
           name=${this.name}
           value=${this.value}
           multi
+          clipboard
           ?disabled=${this.deleted || this.disabled}
           ?skeleton=${this.skeleton}
           ?readonly=${this.readonly}

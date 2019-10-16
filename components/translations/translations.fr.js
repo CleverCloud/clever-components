@@ -86,6 +86,8 @@ export const translations = {
     return [cpu + shared, gpu, mem].filter((a) => a).join('\n');
   },
   'cc-info-scalability.error': `Une erreur est survenue pendant le chargement de la configuration de scalabilité.`,
+  // cc-input-text
+  'cc-input-text.clipboard': `Copier dans le presse-papier`,
   // env-var-create
   'env-var-create.name.placeholder': `NOM_DE_LA_VARIABLE`,
   'env-var-create.value.placeholder': `valeur de la variable`,

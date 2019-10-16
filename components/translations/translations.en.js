@@ -76,6 +76,8 @@ export const translations = {
     return [cpu + shared, gpu, mem].filter((a) => a).join('\n');
   },
   'cc-info-scalability.error': `Something went wrong while loading scalability config.`,
+  // cc-input-text
+  'cc-input-text.clipboard': `Copy to clipboard`,
   // env-var-create
   'env-var-create.name.placeholder': `VARIABLE_NAME`,
   'env-var-create.value.placeholder': `variable value`,
