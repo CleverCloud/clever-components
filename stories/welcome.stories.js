@@ -25,7 +25,7 @@ const adrAsStories = storiesOf('0. Welcome|Architecture Decision Records', modul
     },
   });
 
-adrReq.keys().forEach(filename => {
+adrReq.keys().forEach((filename) => {
   const markdownText = adrReq(filename).default;
   const { title, element } = markdownToDom(markdownText);
   adrAsStories.add(title, () => element);

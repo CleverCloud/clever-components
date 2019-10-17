@@ -8,18 +8,10 @@ import '../../components/overview/cc-overview.js';
 import notes from '../../.components-docs/cc-overview.md';
 import { storiesOf } from '@storybook/html';
 
-let fakeDataIndex = 0;
-
-function getFakePointsData () {
-  const data = Promise.resolve(fakePointsData[fakeDataIndex]);
-  fakeDataIndex = (fakeDataIndex + 1) % fakePointsData.length;
-  return data;
-}
-
 const stories = storiesOf('2. Overview|<cc-overview>', module)
   .addParameters({ notes });
 
-const variants = Array
+Array
   .from(new Array(8))
   .map((_, i) => i * 150 + 400)
   .forEach((width) => {
