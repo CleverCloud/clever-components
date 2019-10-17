@@ -8,6 +8,8 @@ export { CcInfoInstances } from './info-tiles/cc-info-instances.js';
 export { CcInfoScalability } from './info-tiles/cc-info-scalability.js';
 export { CcInputText } from './atoms/cc-input-text.js';
 export { CcLoader } from './atoms/cc-loader.js';
+export { CcMap } from './maps/cc-map.js';
+export { CcLogsMap } from './maps/cc-logsmap.js';
 export { CcToggle } from './atoms/cc-toggle.js';
 export { EnvVarCreate } from './env-var/env-var-create.js';
 export { EnvVarEditorExpert } from './env-var/env-var-editor-expert.js';

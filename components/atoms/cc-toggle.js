@@ -99,16 +99,17 @@ export class CcToggle extends LitElement {
         }
 
         label {
+          background-color: white;
+          color: var(--toggle-color);
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: bold;
+          padding: 0.35rem 0.5rem;
+          text-transform: uppercase;
           -moz-user-select: none;
           -webkit-user-select: none;
           -ms-user-select: none;
           user-select: none;
-          cursor: pointer;
-          text-transform: uppercase;
-          font-weight: bold;
-          font-size: 14px;
-          color: var(--toggle-color);
-          padding: 0.35rem 0.5rem;
         }
 
         .disabled label {

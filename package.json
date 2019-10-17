@@ -22,6 +22,8 @@
   "dependencies": {
     "@clevercloud/client": "^2.0.0-beta.9",
     "clipboard-copy": "^3.1.0",
+    "leaflet": "^1.5.1",
+    "leaflet.heat": "^0.2.0",
     "lit-element": "^2.2.0",
     "lit-html": "^1.1.1"
   },
@@ -53,7 +55,7 @@
     "node-static": "^0.7.11",
     "nodemon": "^1.19.2",
     "svgo": "^1.3.0",
-    "terser": "^4.2.1",
+    "terser": "^4.3.1",
     "text-table": "^0.2.0",
     "web-component-analyzer": "0.1.16"
   }
