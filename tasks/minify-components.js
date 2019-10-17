@@ -89,7 +89,8 @@ function minifyHtmlCss (code, sourceFileName) {
             removeAttributeQuotes: true,
             removeComments: true,
             removeRedundantAttributes: true,
-            sortAttributes: true,
+            // This clearly DOES NOT work well with template strings and lit-element
+            sortAttributes: false,
             sortClassName: true,
             minifyCSS: { level: 2 },
           },
