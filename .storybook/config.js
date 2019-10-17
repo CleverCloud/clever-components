@@ -27,6 +27,7 @@ const cleverTheme = create({
 
 addParameters({
   options: {
+    showPanel: true,
     enableShortcuts: true,
     theme: cleverTheme,
   },

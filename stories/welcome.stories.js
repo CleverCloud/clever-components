@@ -8,12 +8,22 @@ import { storiesOf } from '@storybook/html';
 const adrReq = require.context('../docs', true, /adr.+md$/);
 
 storiesOf('0. Welcome|Documentation', module)
+  .addParameters({
+    options: {
+      showPanel: false,
+    },
+  })
   .add('Readme', () => markdownToDom(readme).element)
   .add('Contributing', () => markdownToDom(contributing).element)
   .add('Changelog', () => markdownToDom(changelog).element)
   .add('Web Components', () => markdownToDom(webComponents).element);
 
-const adrAsStories = storiesOf('0. Welcome|Architecture Decision Records', module);
+const adrAsStories = storiesOf('0. Welcome|Architecture Decision Records', module)
+  .addParameters({
+    options: {
+      showPanel: false,
+    },
+  });
 
 adrReq.keys().forEach(filename => {
   const markdownText = adrReq(filename).default;
