@@ -24,10 +24,10 @@ Array
 
       overview.innerHTML = `
         <cc-info-app slot="head"></cc-info-app>
-        <cc-info-instances slot="tiles" style="flex-basis: 290px"></cc-info-instances>
-        <cc-info-scalability slot="tiles" style="flex-basis: 250px"></cc-info-scalability>
-        <cc-info-deployments slot="tiles" style="flex-basis: 290px"></cc-info-deployments>
-        <cc-info-consumption slot="tiles" style="flex-basis: 250px"></cc-info-consumption>
+        <cc-info-instances slot="tiles"></cc-info-instances>
+        <cc-info-scalability slot="tiles"></cc-info-scalability>
+        <cc-info-deployments slot="tiles"></cc-info-deployments>
+        <cc-info-consumption slot="tiles"></cc-info-consumption>
         <cc-logsmap slot="main"></cc-logsmap>
       `;
 

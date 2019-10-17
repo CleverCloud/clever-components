@@ -40,7 +40,7 @@ export class CcOverview extends LitElement {
       }
 
       .tiles::slotted(*) {
-        flex: 1 0 auto;
+        flex: 1 1 19rem;
         margin-bottom: 1rem;
         margin-right: 1rem;
       }
