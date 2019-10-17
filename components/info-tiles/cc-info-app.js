@@ -87,17 +87,17 @@ export class CcInfoApp extends LitElement {
     };
   }
 
-  set app (newVal) {
-    const oldVal = this._app;
-    this._lastUserAction = (this._app != null && this._app.status !== newVal.status)
+  set status (newVal) {
+    const oldVal = this._status;
+    this._lastUserAction = (this.status !== newVal)
       ? null
       : this._lastUserAction;
-    this._app = newVal;
-    this.requestUpdate('app', oldVal);
+    this._status = newVal;
+    this.requestUpdate('status', oldVal);
   }
 
-  get app () {
-    return this._app;
+  get status () {
+    return this._status;
   }
 
   static get skeletonApp () {
