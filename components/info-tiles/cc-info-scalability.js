@@ -86,8 +86,8 @@ export class CcInfoScalability extends LitElement {
       <div class="tile_title">${i18n('cc-info-scalability.title')}</div>
       <div class="tile_body">
         ${!this.error ? html`
-          <div class="line">
-            <div class="label">${i18n('cc-info-scalability.size')}</div>
+          <div class="label">${i18n('cc-info-scalability.size')}</div>
+          <div class="info">
             <div class="size-label ${classMap({ skeleton })}"
               title=${ifDefined(this._getFlavorDetails(minFlavor))}
             >${this._formatFlavorName(minFlavor.name)}</div>
@@ -96,8 +96,8 @@ export class CcInfoScalability extends LitElement {
               title=${ifDefined(this._getFlavorDetails(maxFlavor))}
             >${this._formatFlavorName(maxFlavor.name)}</div>
           </div>
-          <div class="line">
-            <div class="label">${i18n('cc-info-scalability.number')}</div>
+          <div class="label">${i18n('cc-info-scalability.number')}</div>
+          <div class="info">
             <div class="count-bubble ${classMap({ skeleton })}">${minInstances}</div>
             <div class="separator"></div>
             <div class="count-bubble ${classMap({ skeleton })}">${maxInstances}</div>
@@ -117,20 +117,18 @@ export class CcInfoScalability extends LitElement {
       skeleton,
       // language=CSS
       css`
-        .line {
+        .tile_body {
+          grid-template-columns: auto 1fr;
+          grid-row-gap: 1rem;
+          grid-column-gap: 2rem;
+          align-items: center;
+        }
+        
+        .info {
           align-items: center;
           display: flex;
           justify-content: center;
           width: 100%;
-        }
-
-        .line:last-child {
-          margin-top: 1rem;
-        }
-
-        .label {
-          margin-right: 0.5rem;
-          width: 6rem;
         }
 
         .separator {
