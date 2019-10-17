@@ -1,4 +1,4 @@
-# ADR 0001: Why do we wrap <button> clicks in a custom event `cc-button:click`?
+# ADR 0001: Why do we wrap `<button>` clicks in a custom event `cc-button:click`?
 
 This ADR tries to explain why we moved from just letting native clicks bubble to a custom event named `cc-button:click`.
 

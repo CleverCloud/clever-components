@@ -64,6 +64,11 @@ const statusIcon = {
  *
  * *WARNING*: The "Properties" table below is broken
  *
+ * @fires cc-info-app:start - Fired when one of the 3 start buttons is clicked
+ * @fires cc-info-app:restart - Fired when one of the 3 restart buttons is clicked
+ * @fires cc-info-app:cancel - Fired when the cancel button is clicked
+ * @fires cc-info-app:stop - Fired when the stop button is clicked (after the delay)
+ *
  * @prop {Object} app - BROKEN
  * @attr {Boolean} error - display an error message
  * @attr {Boolean} disableButtons - disable all buttons (used in login as)
