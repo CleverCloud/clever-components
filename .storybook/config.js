@@ -17,7 +17,7 @@ addDecorator((storyFn) => {
 
 // should only be added once
 // best place is in config.js
-addDecorator(withA11y)
+addDecorator(withA11y);
 
 const cleverTheme = create({
   brandTitle: 'Clever Cloud components',
@@ -29,6 +29,9 @@ addParameters({
   options: {
     enableShortcuts: true,
     theme: cleverTheme,
+  },
+  a11y: {
+    restoreScroll: true,
   },
 });
 
