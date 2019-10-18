@@ -2,7 +2,6 @@ import '../../components/maps/cc-logsmap.js';
 import fakeHeatmapData from '../assets/24-hours-points.json';
 import fakePointsData from '../assets/country-city-points.json';
 import notes from '../../.components-docs/cc-logsmap.md';
-import { createContainer } from '../lib/dom.js';
 import { setIntervalDom, setTimeoutDom } from '../lib/timers.js';
 import { storiesOf } from '@storybook/html';
 import { withCustomEventActions } from '../lib/event-action.js';
@@ -22,6 +21,7 @@ function createComponent ({ loading = false, error = false, empty = false }) {
   component.error = error;
   component.loading = loading;
   component.empty = empty;
+  component.orgaName = 'ACME Incorporated';
   return component;
 }
 
@@ -44,6 +44,14 @@ storiesOf('2. Maps|<cc-logsmap>', module)
     <cc-logsmap center-lat="22.4" center-lon="114.2" view-zoom="3" style="width:400px;height:200px;"></cc-logsmap>
     <div class="title">Prague:</div>
     <cc-logsmap center-lat="50.1" center-lon="14.4" view-zoom="4" style="width:400px;height:200px;"></cc-logsmap>
+  `))
+  .add('orga vs app only', withActions(() => `
+    <div class="title">Data for all apps of an orga:</div>
+    <cc-logsmap orga-name="ACME Corp" style="width:600px;height:300px;display: inline-block;"></cc-logsmap>
+    <cc-logsmap orga-name="ACME Corp" mode="heatmap" style="width:600px;height:300px;display: inline-block;"></cc-logsmap>
+    <div class="title">Data for only one app:</div>
+    <cc-logsmap app-name="My Awesome Java App (PROD)" style="width:600px;height:300px;display: inline-block;"></cc-logsmap>
+    <cc-logsmap app-name="My Awesome Java App (PROD)" mode="heatmap" style="width:600px;height:300px;display: inline-block;"></cc-logsmap>
   `))
   .add('loading state', withActions(() => {
     return createComponent({ loading: true });
