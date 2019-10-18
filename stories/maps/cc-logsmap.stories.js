@@ -45,28 +45,13 @@ storiesOf('2. Maps|<cc-logsmap>', module)
     <cc-logsmap center-lat="50.1" center-lon="14.4" view-zoom="4" style="width:400px;height:200px;"></cc-logsmap>
   `))
   .add('loading state', withActions(() => {
-    return createContainer([
-      `Loading state enabled:`,
-      createComponent({ loading: true }),
-      `Loading state enabled (with legend):`,
-      createComponent({ loading: true, legend: 'Map with legend' }),
-    ]);
+    return createComponent({ loading: true });
   }))
   .add('error state', withActions(() => {
-    return createContainer([
-      `Error state enabled:`,
-      createComponent({ error: true }),
-      `Error state enabled (with legend):`,
-      createComponent({ error: true, legend: 'Map with legend' }),
-    ]);
+    return createComponent({ error: true });
   }))
   .add('error+loading state', withActions(() => {
-    return createContainer([
-      `Error + loading state enabled:`,
-      createComponent({ loading: true, error: true }),
-      `Error + loading state enabled (with legend):`,
-      createComponent({ loading: true, error: true, legend: 'Map with legend' }),
-    ]);
+    return createComponent({ loading: true, error: true });
   }))
   .add('simulation for realtime and heatmap', withActions(() => {
 
