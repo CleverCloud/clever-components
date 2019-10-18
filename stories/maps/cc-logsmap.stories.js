@@ -2,7 +2,6 @@ import '../../components/maps/cc-logsmap.js';
 import fakeHeatmapData from '../assets/24-hours-points.json';
 import fakePointsData from '../assets/country-city-points.json';
 import notes from '../../.components-docs/cc-logsmap.md';
-import { createContainer } from '../lib/dom.js';
 import { setIntervalDom, setTimeoutDom } from '../lib/timers.js';
 import { storiesOf } from '@storybook/html';
 import { withCustomEventActions } from '../lib/event-action.js';
@@ -15,12 +14,14 @@ function getFakePointsData () {
   return data;
 }
 
-function createComponent ({ loading = false, error = false }) {
+function createComponent ({ loading = false, error = false, empty = false }) {
   const component = document.createElement('cc-logsmap');
   component.setAttribute('style', 'width:700px;height:350px;');
   component.setAttribute('view-zoom', '4');
   component.error = error;
   component.loading = loading;
+  component.empty = empty;
+  component.orgaName = 'ACME Incorporated';
   return component;
 }
 
@@ -44,29 +45,22 @@ storiesOf('2. Maps|<cc-logsmap>', module)
     <div class="title">Prague:</div>
     <cc-logsmap center-lat="50.1" center-lon="14.4" view-zoom="4" style="width:400px;height:200px;"></cc-logsmap>
   `))
+  .add('orga vs app only', withActions(() => `
+    <div class="title">Data for all apps of an orga:</div>
+    <cc-logsmap orga-name="ACME Corp" style="width:600px;height:300px;display: inline-block;"></cc-logsmap>
+    <cc-logsmap orga-name="ACME Corp" mode="heatmap" style="width:600px;height:300px;display: inline-block;"></cc-logsmap>
+    <div class="title">Data for only one app:</div>
+    <cc-logsmap app-name="My Awesome Java App (PROD)" style="width:600px;height:300px;display: inline-block;"></cc-logsmap>
+    <cc-logsmap app-name="My Awesome Java App (PROD)" mode="heatmap" style="width:600px;height:300px;display: inline-block;"></cc-logsmap>
+  `))
   .add('loading state', withActions(() => {
-    return createContainer([
-      `Loading state enabled:`,
-      createComponent({ loading: true }),
-      `Loading state enabled (with legend):`,
-      createComponent({ loading: true, legend: 'Map with legend' }),
-    ]);
+    return createComponent({ loading: true });
   }))
   .add('error state', withActions(() => {
-    return createContainer([
-      `Error state enabled:`,
-      createComponent({ error: true }),
-      `Error state enabled (with legend):`,
-      createComponent({ error: true, legend: 'Map with legend' }),
-    ]);
+    return createComponent({ error: true });
   }))
   .add('error+loading state', withActions(() => {
-    return createContainer([
-      `Error + loading state enabled:`,
-      createComponent({ loading: true, error: true }),
-      `Error + loading state enabled (with legend):`,
-      createComponent({ loading: true, error: true, legend: 'Map with legend' }),
-    ]);
+    return createComponent({ loading: true, error: true });
   }))
   .add('simulation for realtime and heatmap', withActions(() => {
 
@@ -89,4 +83,11 @@ storiesOf('2. Maps|<cc-logsmap>', module)
     setIntervalDom(fetchData, spreadDuration, logsmap);
 
     return logsmap;
-  }));
+  }))
+  .add('heatmap (no data points)', () => {
+    const map = createComponent({});
+    map.viewZoom = '2';
+    map.mode = 'heatmap';
+    map.heatmapPoints = [];
+    return map;
+  });

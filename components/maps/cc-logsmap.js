@@ -62,6 +62,8 @@ export class CcLogsMap extends LitElement {
       heatmapPoints: { type: Array, attribute: false },
       loading: { type: Boolean, reflect: true },
       error: { type: Boolean, reflect: true },
+      orgaName: { type: String, attribute: 'orga-name' },
+      appName: { type: String, attribute: 'app-name' },
     };
   }
 
@@ -88,12 +90,18 @@ export class CcLogsMap extends LitElement {
     this.shadowRoot.querySelector('cc-map').addPoints(...params);
   }
 
+  _getLegend () {
+    if (this.mode === 'points') {
+      return (this.appName == null)
+        ? i18n('cc-logsmap.legend.points', { orgaName: this.orgaName })
+        : i18n('cc-logsmap.legend.points.app', { appName: this.appName });
+    }
+    return (this.appName == null)
+      ? i18n('cc-logsmap.legend.heatmap', { orgaName: this.orgaName })
+      : i18n('cc-logsmap.legend.heatmap.app', { appName: this.appName });
+  }
+
   render () {
-
-    const legend = (this.mode === 'points')
-      ? i18n('cc-logsmap.legend.points')
-      : i18n('cc-logsmap.legend.heatmap');
-
     return html`
       <cc-toggle
         .choices=${CcLogsMap.modes}
@@ -108,7 +116,7 @@ export class CcLogsMap extends LitElement {
         ?loading=${this.loading}
         ?error=${this.error}
         .heatmapPoints=${this.heatmapPoints}
-      >${legend}</cc-map>
+      >${this._getLegend()}</cc-map>
     `;
   }
 
