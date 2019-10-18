@@ -113,6 +113,10 @@ export class CcMap extends LitElement {
     return this._mode;
   }
 
+  get heatmapPoints () {
+    return this._heatmapPoints;
+  }
+
   set centerLat (newVal) {
     const oldVal = this._centerLat;
     this._centerLat = newVal;
@@ -148,6 +152,7 @@ export class CcMap extends LitElement {
   }
 
   set heatmapPoints (newVal) {
+    this._heatmapPoints = newVal;
     // Wait for the first update that the map is made
     (this._map == null)
       ? this.updateComplete.then(() => this._updateHeatmap(newVal))
@@ -187,7 +192,9 @@ export class CcMap extends LitElement {
   _updateHeatmap (newPoints) {
 
     const counts = newPoints.map(({ count }) => count);
-    const maxCount = Math.max(...counts);
+    const maxCount = (newPoints.length > 0)
+      ? Math.max(...counts)
+      : 1;
 
     const heatPoints = newPoints
       .map(({ lat, lon, count }) => [lat, lon, count]);
@@ -334,19 +341,27 @@ export class CcMap extends LitElement {
   }
 
   render () {
+
+    const noHeatmapPoints = (this.mode === 'heatmap' && this.heatmapPoints != null && this.heatmapPoints.length === 0);
+
     return html`
       <div id="cc-map-container"></div>
       <div class="legend"><slot></slot></div>
       ${this.loading && !this.error ? html`
         <cc-loader class="loader"></cc-loader>
       ` : ''}
-      ${this.error ? html`
+      ${this.error || noHeatmapPoints ? html`
         <div class="error-container">
           <div class="error-panel">
             ${this.loading ? html`
               <cc-loader class="error-loader"></cc-loader>
             ` : ''}
-            <div class="error-message">${i18n('cc-map.error')}</div>
+            ${this.error ? html`
+              <div class="error-message">${i18n('cc-map.error')}</div>
+            ` : ''}
+            ${noHeatmapPoints ? html`
+              <div class="error-message">${i18n('cc-map.no-points')}</div>
+            ` : ''}
           </div>
         </div>
       ` : ''}

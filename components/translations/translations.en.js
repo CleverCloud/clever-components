@@ -85,6 +85,7 @@ export const translations = {
   'cc-logsmap.legend.heatmap': `Heatmap of all the requests received by your apps during the past 24 hours.`,
   // cc-map
   'cc-map.error': `Something went wrong while trying to fetch data for the map.`,
+  'cc-map.no-points': `No data to display on the map right now.`,
   // env-var-create
   'env-var-create.name.placeholder': `VARIABLE_NAME`,
   'env-var-create.value.placeholder': `variable value`,

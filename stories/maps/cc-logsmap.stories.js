@@ -15,12 +15,13 @@ function getFakePointsData () {
   return data;
 }
 
-function createComponent ({ loading = false, error = false }) {
+function createComponent ({ loading = false, error = false, empty = false }) {
   const component = document.createElement('cc-logsmap');
   component.setAttribute('style', 'width:700px;height:350px;');
   component.setAttribute('view-zoom', '4');
   component.error = error;
   component.loading = loading;
+  component.empty = empty;
   return component;
 }
 
@@ -74,4 +75,11 @@ storiesOf('2. Maps|<cc-logsmap>', module)
     setIntervalDom(fetchData, spreadDuration, logsmap);
 
     return logsmap;
-  }));
+  }))
+  .add('heatmap (no data points)', () => {
+    const map = createComponent({});
+    map.viewZoom = '2';
+    map.mode = 'heatmap';
+    map.heatmapPoints = [];
+    return map;
+  });

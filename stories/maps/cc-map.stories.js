@@ -139,4 +139,11 @@ storiesOf('2. Maps|<cc-map>', module)
     map.mode = 'heatmap';
     map.heatmapPoints = fakeHeatmapData;
     return map;
+  })
+  .add('heatmap (no data points)', () => {
+    const map = createComponent({ legend: `Heatmap simulation with no data points` });
+    map.viewZoom = '2';
+    map.mode = 'heatmap';
+    map.heatmapPoints = [];
+    return map;
   });

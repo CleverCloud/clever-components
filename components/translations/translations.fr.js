@@ -95,6 +95,7 @@ export const translations = {
   'cc-logsmap.legend.heatmap': `Carte de chaleur de toutes les requêtes reçues par vos apps durant les dernières 24 heures.`,
   // cc-map
   'cc-map.error': `Une erreur est survenue pendant le chargement des données de la carte.`,
+  'cc-map.no-points': `Pas de données à afficher sur la carte en ce moment.`,
   // env-var-create
   'env-var-create.name.placeholder': `NOM_DE_LA_VARIABLE`,
   'env-var-create.value.placeholder': `valeur de la variable`,
