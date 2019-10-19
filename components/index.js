@@ -6,6 +6,7 @@ export { CcInfoApp } from './info-tiles/cc-info-app.js';
 export { CcInfoConsumption } from './info-tiles/cc-info-consumption.js';
 export { CcInfoDeployments } from './info-tiles/cc-info-deployments.js';
 export { CcInfoInstances } from './info-tiles/cc-info-instances.js';
+export { CcInfoOrga } from './info-tiles/cc-info-orga.js';
 export { CcInfoScalability } from './info-tiles/cc-info-scalability.js';
 export { CcInputText } from './atoms/cc-input-text.js';
 export { CcLoader } from './atoms/cc-loader.js';

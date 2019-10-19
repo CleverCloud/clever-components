@@ -74,6 +74,9 @@ export const translations = {
   'cc-info-instances.status.running': `En ligne`,
   'cc-info-instances.no-instances': `Pas d'instance. L'application est arrêtée.`,
   'cc-info-instances.error': `Une erreur est survenue pendant le chargement des instances.`,
+  // cc-info-orga
+  'cc-info-orga.hotline': `Numéro d'urgence :`,
+  'cc-info-orga.error': `Une erreur est survenue pendant le chargement des informations de l'organisation.`,
   // cc-info-scalability
   'cc-info-scalability.title': `Scalabilité`,
   'cc-info-scalability.size': `Taille`,
