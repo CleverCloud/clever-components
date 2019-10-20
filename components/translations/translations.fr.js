@@ -13,7 +13,7 @@ const UNITS_FR = {
 };
 
 const formatDistanceToNow = prepareFormatDistanceToNow(lang, (value, unit) => {
-  const plural = (value >= 1 || UNITS_FR[unit].endsWith('s')) ? '' : 's';
+  const plural = (value > 1 & !UNITS_FR[unit].endsWith('s')) ? 's' : '';
   return `il y a ${value} ${UNITS_FR[unit]}${plural}`;
 }, 'à l\'instant');
 

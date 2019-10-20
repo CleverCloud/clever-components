@@ -10,7 +10,7 @@ const UNITS = [
 
 export function prepareFormatDistanceToNow (lang, fallback, nowString) {
 
-  const format = ('RelativeTimeFormat' in Intl)
+  const format = (false && 'RelativeTimeFormat' in Intl)
     ? (value, unit) => new Intl.RelativeTimeFormat(lang, { numeric: 'auto' }).format(-value, unit)
     : fallback;
 
