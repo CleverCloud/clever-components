@@ -100,6 +100,7 @@ export class CcInfoInstances extends LitElement {
     // NOTE: This does not handle the case where someone has different flavors running or deploying
     if (this._lastRunningCount !== runningInstancesCount) {
       this.updateComplete.then(() => {
+        // This is not supported in Safari yet but it's purely decorative so let's keep it like that
         animate(this.shadowRoot, '.instances[data-type=running] .count-bubble', ...QUICK_SHRINK);
         this._lastRunningCount = runningInstancesCount;
       });
@@ -107,6 +108,7 @@ export class CcInfoInstances extends LitElement {
 
     if (this._lastDeployingCount !== deployingInstancesCount) {
       this.updateComplete.then(() => {
+        // This is not supported in Safari yet but it's purely decorative so let's keep it like that
         animate(this.shadowRoot, '.instances[data-type=deploying] .count-bubble', ...QUICK_SHRINK);
         this._lastDeployingCount = deployingInstancesCount;
       });
