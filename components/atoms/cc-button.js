@@ -92,16 +92,6 @@ export class CcButton extends LitElement {
     }
     else {
       this._cancelMode = true;
-      this._animation = this.shadowRoot.querySelector('button').animate(
-        [
-          { backgroundSize: '0 10%' },
-          { backgroundSize: '100% 10%' },
-        ],
-        {
-          duration: this.delay * 1000,
-          easing: 'linear',
-        },
-      );
       this._timeoutId = setTimeout(() => {
         dispatchCustomEvent(this, 'click');
         this._cancelMode = false;
@@ -142,6 +132,7 @@ export class CcButton extends LitElement {
       -->
       ${this.delay != null ? html`
         <div class=${classMap({ hidden: !this._cancelMode })}>${i18n('cc-button.cancel')}</div>
+        <progress class=${classMap({ active: this._cancelMode })} style="--delay: ${this.delay}s"></progress>
       ` : ''}
     </button>`;
   }
@@ -175,7 +166,10 @@ export class CcButton extends LitElement {
           cursor: pointer;
           font-weight: bold;
           min-height: 2rem;
+          overflow: hidden;
           padding: 0 0.5rem;
+          /* used to absolutely position the <progress> */
+          position: relative;
           text-transform: uppercase;
           -moz-user-select: none;
           -webkit-user-select: none;
@@ -212,16 +206,7 @@ export class CcButton extends LitElement {
           color: #fff;
         }
 
-        button {
-          /* used for delay animation, same color as text */
-          background-image: linear-gradient(#fff, #fff);
-          background-position: left bottom;
-          background-repeat: no-repeat;
-          background-size: 0;
-        }
-
         .outlined {
-          background-image: linear-gradient(var(--btn-color), var(--btn-color));
           background-color: #fff;
           color: var(--btn-color);
         }
@@ -268,6 +253,39 @@ export class CcButton extends LitElement {
           color: transparent;
           height: 0;
           overflow: hidden;
+        }
+
+        /* progress bar for delay, see https://css-tricks.com/html5-progress-element */
+        progress {
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+          border: none;
+          bottom: 0;
+          height: 0.2rem;
+          left: 0;
+          position: absolute;
+          width: 0;
+        }
+        
+        progress.active {
+          transition: width var(--delay) linear;
+          width: 100%;
+        }
+
+        progress,
+        progress::-webkit-progress-bar {
+          background-color: #fff;
+        }
+
+        .outlined progress,
+        .outlined progress::-webkit-progress-bar {
+          background-color: var(--btn-color);
+        }
+
+        progress::-webkit-progress-value,
+        progress::-moz-progress-bar {
+          background-color: transparent;
         }
 
         /* We can do this because we set a visible focus state */
