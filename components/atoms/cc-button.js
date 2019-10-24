@@ -127,14 +127,6 @@ export class CcButton extends LitElement {
     // outlined is not default except in simple mode
     modes.outlined = this.outlined || modes.simple;
 
-    // When delay mechanism is set, we need a cancel label
-    // We don't want the button width to change when the user clicks and toggles between normal and cancel mode
-    // That's why (see CSS) we put both labels on 2 lines and only reduce the height of the one we want to hide
-    // This way, when delay is set, the button has a min width of the largest label (normal or cancel)
-    const $cancelLabel = (this.delay != null)
-      ? html`<div class=${classMap({ hidden: !this._cancelMode })}>${i18n('cc-button.cancel')}</div>`
-      : '';
-
     return html`<button
       type="button"
       class=${classMap(modes)}
@@ -142,7 +134,15 @@ export class CcButton extends LitElement {
       @click=${this._onClick}
     >
       <div class=${classMap({ hidden: this._cancelMode })}><slot></slot></div>
-      ${$cancelLabel}
+      <!--
+        When delay mechanism is set, we need a cancel label
+        We don't want the button width to change when the user clicks and toggles between normal and cancel mode
+        That's why (see CSS) we put both labels on 2 lines and only reduce the height of the one we want to hide
+        This way, when delay is set, the button has a min width of the largest label (normal or cancel)
+      -->
+      ${this.delay != null ? html`
+        <div class=${classMap({ hidden: !this._cancelMode })}>${i18n('cc-button.cancel')}</div>
+      ` : ''}
     </button>`;
   }
 
