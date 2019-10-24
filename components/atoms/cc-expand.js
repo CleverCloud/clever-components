@@ -37,6 +37,7 @@ export class CcExpand extends HTMLElement {
         return;
       }
       if (this._oldHeight != null) {
+        // This is not supported in Safari yet but it's purely decorative so let's keep it like that
         this.animate(
           [
             { height: this._oldHeight },
