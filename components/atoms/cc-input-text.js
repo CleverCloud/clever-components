@@ -174,7 +174,7 @@ export class CcInputText extends LitElement {
           box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
           overflow: hidden;
           padding: 0.15rem 0.5rem;
-          transition: all 75ms ease-in-out, height 0ms;
+          transition: box-shadow 75ms ease-in-out, height 0ms;
         }
 
         .wrapper:focus-within {

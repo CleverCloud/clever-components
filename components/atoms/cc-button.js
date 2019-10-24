@@ -260,7 +260,7 @@ export class CcButton extends LitElement {
         /* TRANSITIONS */
         button {
           box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
-          transition: all 75ms ease-in-out;
+          transition: box-shadow 75ms ease-in-out;
         }
 
         /* special hide, see template comments about it */
