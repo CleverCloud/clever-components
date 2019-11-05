@@ -1,22 +1,14 @@
 import '../../components/maps/cc-map.js';
 import fakeHeatmapData from '../assets/24-hours-points.json';
-import fakePointsData from '../assets/country-city-points.json';
 import notes from '../../.components-docs/cc-map.md';
 import { createContainer } from '../lib/dom.js';
+import { getDataSampleKnob, getFakePointsData } from './fake-map-data.js';
 import { setIntervalDom, setTimeoutDom } from '../lib/timers.js';
 import { storiesOf } from '@storybook/html';
 
-let fakeDataIndex = 0;
-
-function getFakePointsData () {
-  const data = Promise.resolve(fakePointsData[fakeDataIndex]);
-  fakeDataIndex = (fakeDataIndex + 1) % fakePointsData.length;
-  return data;
-}
-
 function createComponent ({ legend, loading = false, error = false }) {
   const component = document.createElement('cc-map');
-  component.setAttribute('style', 'width:700px;height:350px;');
+  component.setAttribute('style', 'width:900px;height:500px;');
   component.setAttribute('view-zoom', '4');
   if (legend != null) {
     component.innerHTML = legend;
@@ -114,6 +106,8 @@ storiesOf('2. Maps|<cc-map>', module)
   })
   .add('realtime simulation (with static data)', () => {
 
+    const dataSampleIndex = getDataSampleKnob();
+
     const spreadDuration = 5000;
     const delay = spreadDuration + 2000;
 
@@ -122,7 +116,7 @@ storiesOf('2. Maps|<cc-map>', module)
     map.viewZoom = '2';
 
     const fetchData = () => {
-      getFakePointsData().then((rawPoints) => {
+      getFakePointsData(dataSampleIndex).then((rawPoints) => {
         const points = rawPoints.map((p) => ({ ...p, tooltip: p.city, delay }));
         map.addPoints(points, { spreadDuration });
       });

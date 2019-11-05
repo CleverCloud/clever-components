@@ -1,18 +1,10 @@
 import '../../components/maps/cc-logsmap.js';
 import fakeHeatmapData from '../assets/24-hours-points.json';
-import fakePointsData from '../assets/country-city-points.json';
 import notes from '../../.components-docs/cc-logsmap.md';
+import { getDataSampleKnob, getFakePointsData } from './fake-map-data.js';
 import { setIntervalDom, setTimeoutDom } from '../lib/timers.js';
 import { storiesOf } from '@storybook/html';
 import { withCustomEventActions } from '../lib/event-action.js';
-
-let fakeDataIndex = 0;
-
-function getFakePointsData () {
-  const data = Promise.resolve(fakePointsData[fakeDataIndex]);
-  fakeDataIndex = (fakeDataIndex + 1) % fakePointsData.length;
-  return data;
-}
 
 function createComponent ({ loading = false, error = false, empty = false }) {
   const component = document.createElement('cc-logsmap');
@@ -64,6 +56,8 @@ storiesOf('2. Maps|<cc-logsmap>', module)
   }))
   .add('simulation for realtime and heatmap', withActions(() => {
 
+    const dataSampleIndex = getDataSampleKnob();
+
     const spreadDuration = 5000;
     const delay = spreadDuration + 2000;
 
@@ -73,7 +67,7 @@ storiesOf('2. Maps|<cc-logsmap>', module)
     logsmap.heatmapPoints = fakeHeatmapData;
 
     const fetchData = () => {
-      getFakePointsData().then((rawPoints) => {
+      getFakePointsData(dataSampleIndex).then((rawPoints) => {
         const points = rawPoints.map((p) => ({ ...p, tooltip: p.city, delay }));
         logsmap.addPoints(points, { spreadDuration });
       });

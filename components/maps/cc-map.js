@@ -7,6 +7,20 @@ import { i18n } from '../lib/i18n.js';
 import { leafletStyles } from '../styles/leaflet.js';
 import { WORLD_GEOJSON } from './world-110m.geo.js';
 
+// Generated with https://components.ai/color-scale/
+// Canvas at #F5F5F5 (map country color)
+// From #40B970 to #003814 with 8 steps
+const COLOR_PALETTE = [
+  '#40b970',
+  '#36a562',
+  '#2c9254',
+  '#237f46',
+  '#1a6c39',
+  '#115a2c',
+  '#084920',
+  '#003814',
+];
+
 /**
  * World map showing blinking dots or heatmaps
  *
@@ -243,13 +257,11 @@ export class CcMap extends LitElement {
       return;
     }
 
-    // Random color
-    const colorIndex = this._colorIndex;
-    this._colorIndex = (this._colorIndex + 1) % 8;
+    const colorVariables = this._getColorVariables(totalCount);
 
     // Prepare new marker
     const dotIcon = leaflet.divIcon({
-      html: `<div class="dot" data-color-index="${colorIndex}"></div>`,
+      html: `<div class="dot" style="${colorVariables}"></div>`,
       iconSize: [30, 30],
       bgPos: [15, 15],
       className: 'cc-map-marker',
@@ -284,6 +296,38 @@ export class CcMap extends LitElement {
       this._pointsLayer.removeLayer(marker);
       delete this._markers[point.coords];
     }
+  }
+
+  _getColorVariables (numberOfRequests) {
+
+    // Let's take the total number of requests for a given set of coordinates
+    // We want to have visible differences of colors between 1 request and 10 requests but also between 20, 50 or 400...
+    // Applying a logarithm helps to notice the importance of a given location
+    // Distributing colors on a limited set of colors also helps
+    // @see COLOR_PALETTE for the details
+
+    // With 8 colors, this gives us those boundaries (color index: nb or requests)
+    // 0:    1.00
+    // 1:    2.71
+    // 2:    7.38
+    // 3:   20.08
+    // 4:   54.59
+    // 5:  148.41
+    // 6:  403.42
+    // 7: 1096.63
+
+    const rawColorIndex = Math.floor(Math.log(numberOfRequests));
+    // If floor(log(value)) is bigger than number of colors in palette, we just use the max (darkest color)
+    const colorIndex = Math.min(rawColorIndex, COLOR_PALETTE.length);
+
+    const hexColor = COLOR_PALETTE[colorIndex];
+
+    // The map needs 3 variants of colors for the bubble animation (different transparencies)
+    return [
+      `--dot-color: ${hexColor}ff`,
+      `--dot-color-half: ${hexColor}66`,
+      `--dot-color-zero: ${hexColor}00`,
+    ].join(';');
   }
 
   connectedCallback () {
@@ -501,55 +545,6 @@ export class CcMap extends LitElement {
 
         :host([view-zoom="6"]) .dot {
           --dot-size: 16px;
-        }
-
-        /* This may seem a bit verbose but it gzips well and we have IDE integration */
-        .dot[data-color-index="0"] {
-          --dot-color: rgba(228, 26, 28, 1);
-          --dot-color-half: rgba(228, 26, 28, 0.4);
-          --dot-color-zero: rgba(228, 26, 28, 0.0);
-        }
-
-        .dot[data-color-index="1"] {
-          --dot-color: rgba(55, 126, 184, 1);
-          --dot-color-half: rgba(55, 126, 184, 0.4);
-          --dot-color-zero: rgba(55, 126, 184, 0);
-        }
-
-        .dot[data-color-index="2"] {
-          --dot-color: rgba(77, 175, 74, 1);
-          --dot-color-half: rgba(77, 175, 74, 0.4);
-          --dot-color-zero: rgba(77, 175, 74, 0);
-        }
-
-        .dot[data-color-index="3"] {
-          --dot-color: rgba(152, 78, 163, 1);
-          --dot-color-half: rgba(152, 78, 163, 0.4);
-          --dot-color-zero: rgba(152, 78, 163, 0);
-        }
-
-        .dot[data-color-index="4"] {
-          --dot-color: rgba(255, 127, 0, 1);
-          --dot-color-half: rgba(255, 127, 0, 0.4);
-          --dot-color-zero: rgba(255, 127, 0, 0);
-        }
-
-        .dot[data-color-index="5"] {
-          --dot-color: rgba(190, 190, 51, 1);
-          --dot-color-half: rgba(190, 190, 51, 0.4);
-          --dot-color-zero: rgba(190, 190, 51, 0);
-        }
-
-        .dot[data-color-index="6"] {
-          --dot-color: rgba(166, 86, 40, 1);
-          --dot-color-half: rgba(166, 86, 40, 0.4);
-          --dot-color-zero: rgba(166, 86, 40, 0);
-        }
-
-        .dot[data-color-index="7"] {
-          --dot-color: rgba(190, 129, 160, 1);
-          --dot-color-half: rgba(190, 129, 160, 0.4);
-          --dot-color-zero: rgba(190, 129, 160, 0);
         }
 
         @keyframes pulse {
