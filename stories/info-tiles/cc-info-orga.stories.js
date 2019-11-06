@@ -82,4 +82,3 @@ storiesOf('2. Information tiles|<cc-info-orga>', module)
       component,
     ]);
   });
-
