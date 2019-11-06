@@ -64,6 +64,9 @@ export const translations = {
   'cc-info-instances.status.running': `Running`,
   'cc-info-instances.no-instances': `No instances. Your app is stopped.`,
   'cc-info-instances.error': `Something went wrong while loading instances.`,
+  // cc-info-orga
+  'cc-info-orga.hotline': `Hotline:`,
+  'cc-info-orga.error': `Something went wrong while loading organization info.`,
   // cc-info-scalability
   'cc-info-scalability.title': `Scalability`,
   'cc-info-scalability.size': `Size`,

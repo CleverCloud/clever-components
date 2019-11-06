@@ -32,7 +32,7 @@ const statusIcon = {
 };
 
 /**
- * A component to display various infos about an app (name, commits, status...).
+ * A component to display various info about an app (name, commits, status...).
  *
  * ## Details
 
