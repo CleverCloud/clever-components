@@ -72,38 +72,40 @@ export class CcInfoDeployments extends LitElement {
     const skeleton = (this.deployments == null);
     const deployments = skeleton ? CcInfoDeployments.skeletonDeploys : this.deployments;
     const hasData = (!this.error && (deployments.length > 0));
-    const noDeploys = (!this.error && (deployments.length === 0));
+    const emptyData = (!this.error && (deployments.length === 0));
 
     return html`
       <div class="tile_title">${i18n('cc-info-deployments.title')}</div>
-      <div class="tile_body ${classMap({ 'has-data': hasData })}">
-
-        <!-- We don't really need to repeat and key by -->
-        ${!this.error ? deployments.map((d) => html`
-          <div class="state" data-state=${d.state}>
-            <span class=${classMap({ skeleton })}>${this._getStateLabel(d.state, d.action)}</span>
-          </div>
-          <div class="date">
-            ${skeleton ? html`
-              <span class="skeleton">${d.date}</span>
-            ` : ''}
-            ${!skeleton ? html`
-              <cc-datetime-relative datetime=${d.date}></cc-datetime-relative>
-            ` : ''}
-          </div>
-          <a class="link" href=${ifDefined(d.logsUrl)}>
-            <span class=${classMap({ skeleton })}>logs</span>
-          </a>
-        `) : ''}
+      
+      ${hasData ? html`
+        <div class="tile_body">
+          <!-- We don't really need to repeat and key by -->
+          ${deployments.map((d) => html`
+            <div class="state" data-state=${d.state}>
+              <span class=${classMap({ skeleton })}>${this._getStateLabel(d.state, d.action)}</span>
+            </div>
+            <div class="date">
+              ${skeleton ? html`
+                <span class="skeleton">${d.date}</span>
+              ` : ''}
+              ${!skeleton ? html`
+                <cc-datetime-relative datetime=${d.date}></cc-datetime-relative>
+              ` : ''}
+            </div>
+            <a class="link" href=${ifDefined(d.logsUrl)}>
+              <span class=${classMap({ skeleton })}>logs</span>
+            </a>
+          `)}
+        </div>
+      ` : ''}
         
-        ${noDeploys ? html`
-          <div class="tile_message">${i18n('cc-info-deployments.no-deployments')}</div>
-        ` : ''}
+      ${emptyData ? html`
+        <div class="tile_message">${i18n('cc-info-deployments.empty')}</div>
+      ` : ''}
 
-        ${this.error ? html`
-          <div class="tile_message">${i18n('cc-info-deployments.error')}</div>
-        ` : ''}
-      </div>
+      ${this.error ? html`
+        <div class="tile_message">${i18n('cc-info-deployments.error')}</div>
+      ` : ''}
     `;
   }
 
@@ -113,8 +115,7 @@ export class CcInfoDeployments extends LitElement {
       skeleton,
       // language=CSS
       css`
-        /* only apply grid on tile_body when there are data */
-        .tile_body.has-data {
+        .tile_body {
           align-items: start;
           grid-gap: 1rem;
           grid-template-columns: auto auto auto;

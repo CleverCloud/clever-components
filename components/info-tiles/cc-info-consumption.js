@@ -55,9 +55,9 @@ export class CcInfoConsumption extends LitElement {
 
     return html`
       <div class="tile_title">${i18n('cc-info-consumption.title')}</div>
-      <div class="tile_body">
-        
-        ${!this.error ? html`
+      
+      ${!this.error ? html`
+        <div class="tile_body">      
           <div class="line">
             <span>${i18n('cc-info-consumption.yesterday')}</span>
             <span class="separator"></span>
@@ -68,12 +68,12 @@ export class CcInfoConsumption extends LitElement {
             <span class="separator"></span>
             <span class="value ${classMap({ skeleton })}">${i18n('cc-info-consumption.amount', { amount: last30Days })}</span>
           </div>
-        ` : ''}
-        
-        ${this.error ? html`
-          <div class="tile_message">${i18n('cc-info-consumption.error')}</div>
-        ` : ''}
-      </div>
+        </div>
+      ` : ''}
+      
+      ${this.error ? html`
+        <div class="tile_message">${i18n('cc-info-consumption.error')}</div>
+      ` : ''}
     `;
   }
 

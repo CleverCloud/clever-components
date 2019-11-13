@@ -56,13 +56,13 @@ export const translations = {
   'cc-info-deployments.state.started': `Started`,
   'cc-info-deployments.state.cancelled': `Cancelled`,
   'cc-info-deployments.state.stopped': `Stopped`,
+  'cc-info-deployments.empty': `No deployments yet.`,
   'cc-info-deployments.error': `Something went wrong while loading deployments info.`,
-  'cc-info-deployments.no-deployments': `No deployments yet.`,
   // cc-info-instances
   'cc-info-instances.title': `Instances`,
   'cc-info-instances.status.deploying': `Deploying`,
   'cc-info-instances.status.running': `Running`,
-  'cc-info-instances.no-instances': `No instances. Your app is stopped.`,
+  'cc-info-instances.empty': `No instances. Your app is stopped.`,
   'cc-info-instances.error': `Something went wrong while loading instances.`,
   // cc-info-orga
   'cc-info-orga.hotline': `Hotline:`,

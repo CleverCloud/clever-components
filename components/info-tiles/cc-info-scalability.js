@@ -84,8 +84,9 @@ export class CcInfoScalability extends LitElement {
 
     return html`
       <div class="tile_title">${i18n('cc-info-scalability.title')}</div>
-      <div class="tile_body">
-        ${!this.error ? html`
+      
+      ${!this.error ? html`
+        <div class="tile_body">
           <div class="label">${i18n('cc-info-scalability.size')}</div>
           <div class="info">
             <div class="size-label ${classMap({ skeleton })}"
@@ -102,11 +103,12 @@ export class CcInfoScalability extends LitElement {
             <div class="separator"></div>
             <div class="count-bubble ${classMap({ skeleton })}">${maxInstances}</div>
           </div>
-        ` : ''}
-        ${this.error ? html`
-          <div class="tile_message">${i18n('cc-info-scalability.error')}</div>
-        ` : ''}
-      </div>
+        </div>
+      ` : ''}
+
+      ${this.error ? html`
+        <div class="tile_message">${i18n('cc-info-scalability.error')}</div>
+      ` : ''}
     `;
   }
 

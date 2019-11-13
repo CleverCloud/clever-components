@@ -27,6 +27,7 @@ export const tileStyles = css`
   }
 
   .tile_message {
+    align-self: center;
     text-align: center;
   }
 `;
