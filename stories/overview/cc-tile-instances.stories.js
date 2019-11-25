@@ -6,7 +6,7 @@ import { storiesOf } from '@storybook/html';
 
 function createComponent (instances) {
   const component = document.createElement('cc-tile-instances');
-  component.style.width = '300px';
+  component.style.width = '275px';
   component.style.display = 'inline-grid';
   component.style.marginBottom = '1rem';
   component.style.marginRight = '1rem';
@@ -34,7 +34,7 @@ storiesOf('2. Overview|<cc-tile-instances>', module)
       'Just deploying',
       createComponent({
         running: [],
-        deploying: [{ flavorName: 'pico', count: 1 }],
+        deploying: [{ flavorName: 'nano', count: 1 }],
       }),
       createComponent({
         running: [],
@@ -46,7 +46,7 @@ storiesOf('2. Overview|<cc-tile-instances>', module)
       }),
       'Just running',
       createComponent({
-        running: [{ flavorName: 'pico', count: 1 }],
+        running: [{ flavorName: 'nano', count: 1 }],
         deploying: [],
       }),
       createComponent({
@@ -59,8 +59,8 @@ storiesOf('2. Overview|<cc-tile-instances>', module)
       }),
       'Deploying and running',
       createComponent({
-        running: [{ flavorName: 'pico', count: 1 }],
-        deploying: [{ flavorName: 'pico', count: 1 }],
+        running: [{ flavorName: 'nano', count: 1 }],
+        deploying: [{ flavorName: 'nano', count: 1 }],
       }),
       createComponent({
         running: [{ flavorName: 'S', count: 2 }],

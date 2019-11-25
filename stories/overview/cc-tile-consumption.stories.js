@@ -6,7 +6,7 @@ import { storiesOf } from '@storybook/html';
 
 function createComponent (consumption) {
   const component = document.createElement('cc-tile-consumption');
-  component.style.width = '300px';
+  component.style.width = '275px';
   component.style.display = 'inline-grid';
   component.style.marginBottom = '1rem';
   component.style.marginRight = '1rem';

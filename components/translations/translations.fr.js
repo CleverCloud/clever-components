@@ -98,7 +98,7 @@ export const translations = {
   'cc-tile-deployments.error': `Une erreur est survenue pendant le chargement des déploiements.`,
   // cc-tile-instances
   'cc-tile-instances.title': `Instances`,
-  'cc-tile-instances.status.deploying': `En déploiement`,
+  'cc-tile-instances.status.deploying': `Déploiement`,
   'cc-tile-instances.status.running': `En ligne`,
   'cc-tile-instances.empty': `Pas d'instance. L'application est arrêtée.`,
   'cc-tile-instances.error': `Une erreur est survenue pendant le chargement des instances.`,

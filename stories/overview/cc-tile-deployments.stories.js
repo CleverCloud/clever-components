@@ -7,7 +7,7 @@ import { storiesOf } from '@storybook/html';
 
 function createComponent (deployments) {
   const component = document.createElement('cc-tile-deployments');
-  component.style.width = '300px';
+  component.style.width = '275px';
   component.style.display = 'inline-grid';
   component.style.marginBottom = '1rem';
   component.style.marginRight = '1rem';

@@ -121,7 +121,7 @@ const flavors = {
 
 function createComponent (scalability) {
   const component = document.createElement('cc-tile-scalability');
-  component.style.width = '300px';
+  component.style.width = '275px';
   component.style.display = 'inline-grid';
   component.style.marginBottom = '1rem';
   component.style.marginRight = '1rem';
