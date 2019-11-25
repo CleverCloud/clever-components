@@ -5,6 +5,7 @@ import 'leaflet.heat';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
 import { leafletStyles } from '../styles/leaflet.js';
+import { withResizeObserver } from '../mixins/with-resize-observer.js';
 import { WORLD_GEOJSON } from './world-110m.geo.js';
 
 // Generated with https://components.ai/color-scale/
@@ -84,7 +85,7 @@ const COLOR_PALETTE = [
  * @attr {Boolean} loading - display a loader
  * @attr {Boolean} error - display an error message
  */
-export class CcMap extends LitElement {
+export class CcMap extends withResizeObserver(LitElement) {
 
   static get properties () {
     return {
@@ -330,16 +331,8 @@ export class CcMap extends LitElement {
     ].join(';');
   }
 
-  connectedCallback () {
-    super.connectedCallback();
-    // Force leaflet to rerender when parent is resized
-    this._ro = new ResizeObserver(() => this._map.invalidateSize());
-    this._ro.observe(this);
-  }
-
-  disconnectedCallback () {
-    super.disconnectedCallback();
-    this._ro.unobserve(this);
+  onResize () {
+    this._map.invalidateSize();
   }
 
   // Draw the Leaflet map
