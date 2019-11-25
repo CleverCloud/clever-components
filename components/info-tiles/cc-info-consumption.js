@@ -1,6 +1,8 @@
+import warningSvg from 'twemoji/2/svg/26a0.svg';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
+import { iconStyles } from '../styles/icon.js';
 import { skeleton } from '../styles/skeleton.js';
 import { tileStyles } from '../styles/info-tiles.js';
 
@@ -72,7 +74,7 @@ export class CcInfoConsumption extends LitElement {
       ` : ''}
       
       ${this.error ? html`
-        <div class="tile_message">${i18n('cc-info-consumption.error')}</div>
+        <div class="tile_message"><img class="icon-img" src=${warningSvg} alt="">${i18n('cc-info-consumption.error')}</div>
       ` : ''}
     `;
   }
@@ -80,6 +82,7 @@ export class CcInfoConsumption extends LitElement {
   static get styles () {
     return [
       tileStyles,
+      iconStyles,
       skeleton,
       // language=CSS
       css`

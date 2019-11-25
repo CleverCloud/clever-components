@@ -1,8 +1,10 @@
 import '../atoms/cc-button.js';
 import '../atoms/cc-input-text.js';
+import warningSvg from 'twemoji/2/svg/26a0.svg';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
+import { iconStyles } from '../styles/icon.js';
 import { validateName } from '@clevercloud/client/esm/utils/env-vars.js';
 
 /**
@@ -88,52 +90,55 @@ export class EnvVarCreate extends LitElement {
         </span>
       </div>
       <div class="errors" ?hidden=${!isNameInvalid || this._variableName === ''}>
-        ⚠️ ${i18n(`env-var-create.errors.invalid-name`, { name: this._variableName })}  
+        <img class="icon-img" src=${warningSvg} alt="">${i18n(`env-var-create.errors.invalid-name`, { name: this._variableName })}  
       </div>
       <div class="errors" ?hidden=${!isNameAlreadyDefined}>
-        ⚠️ ${i18n(`env-var-create.errors.already-defined-name`, { name: this._variableName })}  
+        <img class="icon-img" src=${warningSvg} alt="">️${i18n(`env-var-create.errors.already-defined-name`, { name: this._variableName })}  
       </div>
     `;
   }
 
   static get styles () {
-    // language=CSS
-    return css`
-      :host {
-        display: block;
-      }
+    return [
+      iconStyles,
+      // language=CSS
+      css`
+        :host {
+          display: block;
+        }
 
-      .wrapper {
-        display: flex;
-        flex-wrap: wrap;
-      }
+        .wrapper {
+          display: flex;
+          flex-wrap: wrap;
+        }
 
-      .name {
-        flex: 1 1 15rem;
-      }
+        .name {
+          flex: 1 1 15rem;
+        }
 
-      .input-btn {
-        display: flex;
-        flex: 2 1 27rem;
-        flex-wrap: wrap;
-      }
+        .input-btn {
+          display: flex;
+          flex: 2 1 27rem;
+          flex-wrap: wrap;
+        }
 
-      .value {
-        /* 100 seems weird but it is necessary */
-        /* it helps to have a button that almost does not grow except when it wraps on its own line */
-        flex: 100 1 20rem;
-      }
+        .value {
+          /* 100 seems weird but it is necessary */
+          /* it helps to have a button that almost does not grow except when it wraps on its own line */
+          flex: 100 1 20rem;
+        }
 
-      cc-button {
-        align-self: flex-start;
-        flex: 1 1 6rem;
-        white-space: nowrap;
-      }
+        cc-button {
+          align-self: flex-start;
+          flex: 1 1 6rem;
+          white-space: nowrap;
+        }
 
-      .errors {
-        margin: 0.5rem 0.2rem 0.2rem;
-      }
-    `;
+        .errors {
+          margin: 0.5rem 0.2rem 0.2rem;
+        }
+      `,
+    ];
   }
 }
 

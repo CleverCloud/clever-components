@@ -8,10 +8,12 @@ import startFailedSvg from './start-failed.svg';
 import startingSvg from './starting.svg';
 import stoppedSvg from './stopped.svg';
 import unknownSvg from './unknown.svg';
+import warningSvg from 'twemoji/2/svg/26a0.svg';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
+import { iconStyles } from '../styles/icon.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { skeleton } from '../styles/skeleton.js';
 
@@ -213,7 +215,7 @@ export class CcInfoApp extends LitElement {
 
     // Quick short circuit for errors
     if (this.error) {
-      return html`<div class="error">${i18n('cc-info-app.error')}</div>`;
+      return html`<div class="error"><img class="icon-img" src=${warningSvg} alt="">${i18n('cc-info-app.error')}</div>`;
     }
 
     const skeleton = (this.app == null);
@@ -309,6 +311,7 @@ export class CcInfoApp extends LitElement {
 
   static get styles () {
     return [
+      iconStyles,
       skeleton,
       // language=CSS
       css`
