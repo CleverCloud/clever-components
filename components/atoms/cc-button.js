@@ -44,6 +44,7 @@ export class CcButton extends LitElement {
       warning: { type: Boolean },
       danger: { type: Boolean },
       outlined: { type: Boolean },
+      image: { type: String },
       delay: { type: Number },
       skeleton: { type: Boolean },
       _cancelMode: { type: Boolean, attribute: false },
@@ -109,6 +110,7 @@ export class CcButton extends LitElement {
       warning: !this.primary && !this.success && this.warning && !this.danger,
       danger: !this.primary && !this.success && !this.warning && this.danger,
       skeleton: this.skeleton,
+      image: this.image != null,
     };
 
     // simple mode is default when no value or when there are multiple conflicting values
@@ -123,7 +125,12 @@ export class CcButton extends LitElement {
       .disabled=${this.disabled || this.skeleton}
       @click=${this._onClick}
     >
-      <div class=${classMap({ hidden: this._cancelMode })}><slot></slot></div>
+      <div class=${classMap({ hidden: this._cancelMode })}>
+        ${this.image != null ? html`
+          <img src=${this.image} alt="">
+        ` : ''}
+        <slot></slot>
+      </div>
       <!--
         When delay mechanism is set, we need a cancel label
         We don't want the button width to change when the user clicks and toggles between normal and cancel mode
@@ -267,7 +274,7 @@ export class CcButton extends LitElement {
           position: absolute;
           width: 0;
         }
-        
+
         progress.active {
           transition: width var(--delay) linear;
           width: 100%;
@@ -291,6 +298,23 @@ export class CcButton extends LitElement {
         /* We can do this because we set a visible focus state */
         button::-moz-focus-inner {
           border: 0;
+        }
+
+        button.image,
+        button.image img {
+          height: 1.6rem;
+          width: 1.6rem;
+        }
+
+        button.image {
+          padding: 0;
+          min-height: 1.6rem;
+        }
+
+        button.image img {
+          display: block;
+          box-sizing: border-box;
+          padding: 0.25rem;
         }
       `,
     ];

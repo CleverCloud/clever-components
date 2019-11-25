@@ -1,4 +1,6 @@
 import '../../components/atoms/cc-button.js';
+import closeSvg from '../../components/overview/close.svg';
+import infoSvg from '../../components/overview/info.svg';
 import notes from '../../.components-docs/cc-button.md';
 import { createContainer } from '../lib/dom.js';
 import { storiesOf } from '@storybook/html';
@@ -103,6 +105,13 @@ storiesOf('1. Atoms|<cc-button>', module)
       <cc-button danger skeleton disabled>${label || 'Danger disabled'}</cc-button>
       <cc-button danger skeleton outlined>${label || 'Danger outlined'}</cc-button>
       <cc-button danger skeleton outlined disabled>${label || 'Danger outlined & disabled'}</cc-button>
+    `;
+  }))
+  .add('with image', () => withActions(...eventNames)(() => {
+    return `
+      <div class="title">With image</div>
+      <cc-button image="${infoSvg}"></cc-button>
+      <cc-button image="${closeSvg}"></cc-button>
     `;
   }))
   .add('delay and disabled', () => withActions(...eventNames)(() => {
