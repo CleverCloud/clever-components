@@ -7,8 +7,8 @@ import { css, html, LitElement } from 'lit-element';
  * * Some tiles in one row (or many, if not wide enough, it wraps)
  * * A main component/zone
  *
- * @slot head - Put your header component here (ex: `<cc-info-app>`)
- * @slot tiles - Put your tiles here (ex: `<cc-info-instances>` or `<cc-info-scalability>`)
+ * @slot head - Put your header component here (ex: `<cc-header-app>`)
+ * @slot tiles - Put your tiles here (ex: `<cc-tile-instances>` or `<cc-tile-scalability>`)
  * @slot main - Put your main component here (ex: `<cc-logsmap>`)
  */
 export class CcOverview extends LitElement {

@@ -51,7 +51,7 @@ const statusImg = {
  * @prop {Object} instances - BROKEN
  * @attr {Boolean} error - display an error message
  */
-export class CcInfoInstances extends LitElement {
+export class CcTileInstances extends LitElement {
 
   static get properties () {
     return {
@@ -69,10 +69,10 @@ export class CcInfoInstances extends LitElement {
 
   _getStatusLabel (type) {
     if (type === 'running') {
-      return i18n('cc-info-instances.status.running');
+      return i18n('cc-tile-instances.status.running');
     }
     if (type === 'deploying') {
-      return i18n('cc-info-instances.status.deploying');
+      return i18n('cc-tile-instances.status.deploying');
     }
   }
 
@@ -93,7 +93,7 @@ export class CcInfoInstances extends LitElement {
 
     const skeleton = (this.instances == null);
     const isLoading = skeleton && !this.error;
-    const instances = skeleton ? CcInfoInstances.skeletonInstances : this.instances;
+    const instances = skeleton ? CcTileInstances.skeletonInstances : this.instances;
 
     const runningInstancesCount = instances.running.map((a) => a.count).reduce((a, b) => a + b, 0);
     const deployingInstancesCount = instances.deploying.map((a) => a.count).reduce((a, b) => a + b, 0);
@@ -117,7 +117,7 @@ export class CcInfoInstances extends LitElement {
     }
 
     return html`
-      <div class="tile_title">${i18n('cc-info-instances.title')}</div>
+      <div class="tile_title">${i18n('cc-tile-instances.title')}</div>
       
       ${!this.error && !emptyData ? html`
         <div class="tile_body">
@@ -134,11 +134,11 @@ export class CcInfoInstances extends LitElement {
       ` : ''}
       
       ${emptyData ? html`
-        <div class="tile_message">${i18n('cc-info-instances.empty')}</div>
+        <div class="tile_message">${i18n('cc-tile-instances.empty')}</div>
       ` : ''}
 
       ${this.error ? html`
-        <div class="tile_message"><img class="icon-img" src=${warningSvg} alt="">${i18n('cc-info-instances.error')}</div>
+        <div class="tile_message"><img class="icon-img" src=${warningSvg} alt="">${i18n('cc-tile-instances.error')}</div>
       ` : ''}
     `;
   }
@@ -210,4 +210,4 @@ export class CcInfoInstances extends LitElement {
   }
 }
 
-window.customElements.define('cc-info-instances', CcInfoInstances);
+window.customElements.define('cc-tile-instances', CcTileInstances);

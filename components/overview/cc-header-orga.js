@@ -36,7 +36,7 @@ import { skeleton } from '../styles/skeleton.js';
  *
  * *WARNING*: The "Properties" table below is broken
  */
-export class CcInfoOrga extends LitElement {
+export class CcHeaderOrga extends LitElement {
 
   static get properties () {
     return {
@@ -54,7 +54,7 @@ export class CcInfoOrga extends LitElement {
   render () {
 
     const skeleton = (this.orga == null);
-    const orga = skeleton ? CcInfoOrga.skeletonOrga : this.orga;
+    const orga = skeleton ? CcHeaderOrga.skeletonOrga : this.orga;
     const initials = skeleton ? '' : this.orga.name
       .split(' ')
       .slice(0, 2)
@@ -65,7 +65,7 @@ export class CcInfoOrga extends LitElement {
       <div class="wrapper ${classMap({ enterprise: orga.cleverEnterprise })}">
       
         ${this.error ? html`
-          <div class="error"><img class="icon-img" src=${warningSvg} alt="">${i18n('cc-info-orga.error')}</div>
+          <div class="error"><img class="icon-img" src=${warningSvg} alt="">${i18n('cc-header-orga.error')}</div>
         ` : ''}
         
         ${!this.error ? html`
@@ -82,7 +82,7 @@ export class CcInfoOrga extends LitElement {
           <div class="spacer"></div>
           ${(orga.emergencyNumber != null) ? html`
             <div class="hotline">
-              <div class="hotline_label">${i18n('cc-info-orga.hotline')}</div>
+              <div class="hotline_label">${i18n('cc-header-orga.hotline')}</div>
               <a class="hotline_number" href="tel:${orga.emergencyNumber}">
                 <img class="hotline_number_img" src=${phoneSvg} alt=""> ${orga.emergencyNumber}
               </a>
@@ -215,4 +215,4 @@ export class CcInfoOrga extends LitElement {
   }
 }
 
-window.customElements.define('cc-info-orga', CcInfoOrga);
+window.customElements.define('cc-header-orga', CcHeaderOrga);

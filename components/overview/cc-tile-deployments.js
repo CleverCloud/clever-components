@@ -38,7 +38,7 @@ import { tileStyles } from '../styles/info-tiles.js';
  * @prop {Array} deployments - BROKEN
  * @attr {Boolean} error - display an error message
  */
-export class CcInfoDeployments extends LitElement {
+export class CcTileDeployments extends LitElement {
 
   static get properties () {
     return {
@@ -57,14 +57,14 @@ export class CcInfoDeployments extends LitElement {
   _getStateLabel (state, action) {
     if (state === 'OK') {
       return (action === 'UNDEPLOY')
-        ? i18n('cc-info-deployments.state.stopped')
-        : i18n('cc-info-deployments.state.started');
+        ? i18n('cc-tile-deployments.state.stopped')
+        : i18n('cc-tile-deployments.state.started');
     }
     if (state === 'FAIL') {
-      return i18n('cc-info-deployments.state.failed');
+      return i18n('cc-tile-deployments.state.failed');
     }
     if (state === 'CANCELLED') {
-      return i18n('cc-info-deployments.state.cancelled');
+      return i18n('cc-tile-deployments.state.cancelled');
     }
     return state;
   }
@@ -72,12 +72,12 @@ export class CcInfoDeployments extends LitElement {
   render () {
 
     const skeleton = (this.deployments == null);
-    const deployments = skeleton ? CcInfoDeployments.skeletonDeploys : this.deployments;
+    const deployments = skeleton ? CcTileDeployments.skeletonDeploys : this.deployments;
     const hasData = (!this.error && (deployments.length > 0));
     const emptyData = (!this.error && (deployments.length === 0));
 
     return html`
-      <div class="tile_title">${i18n('cc-info-deployments.title')}</div>
+      <div class="tile_title">${i18n('cc-tile-deployments.title')}</div>
       
       ${hasData ? html`
         <div class="tile_body">
@@ -102,11 +102,11 @@ export class CcInfoDeployments extends LitElement {
       ` : ''}
         
       ${emptyData ? html`
-        <div class="tile_message">${i18n('cc-info-deployments.empty')}</div>
+        <div class="tile_message">${i18n('cc-tile-deployments.empty')}</div>
       ` : ''}
 
       ${this.error ? html`
-        <div class="tile_message"><img class="icon-img" src=${warningSvg} alt="">${i18n('cc-info-deployments.error')}</div>
+        <div class="tile_message"><img class="icon-img" src=${warningSvg} alt="">${i18n('cc-tile-deployments.error')}</div>
       ` : ''}
     `;
   }
@@ -163,4 +163,4 @@ export class CcInfoDeployments extends LitElement {
   }
 }
 
-window.customElements.define('cc-info-deployments', CcInfoDeployments);
+window.customElements.define('cc-tile-deployments', CcTileDeployments);

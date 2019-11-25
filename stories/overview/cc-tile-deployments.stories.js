@@ -1,12 +1,12 @@
-import '../../components/info-tiles/cc-info-deployments.js';
-import notes from '../../.components-docs/cc-info-deployments.md';
+import '../../components/overview/cc-tile-deployments.js';
+import notes from '../../.components-docs/cc-tile-deployments.md';
 import { createContainer } from '../lib/dom.js';
 import { createDateAgo } from '../atoms/cc-datetime-relative.stories.js';
 import { sequence } from '../lib/sequence.js';
 import { storiesOf } from '@storybook/html';
 
 function createComponent (deployments) {
-  const component = document.createElement('cc-info-deployments');
+  const component = document.createElement('cc-tile-deployments');
   component.style.width = '300px';
   component.style.display = 'inline-grid';
   component.style.marginBottom = '1rem';
@@ -15,7 +15,7 @@ function createComponent (deployments) {
   return component;
 }
 
-storiesOf('2. Information tiles|<cc-info-deployments>', module)
+storiesOf('2. Overview|<cc-tile-deployments>', module)
   .addParameters({ notes })
   .add('empty state (loading)', () => {
     return createComponent();

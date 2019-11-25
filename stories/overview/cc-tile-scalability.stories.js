@@ -1,5 +1,5 @@
-import '../../components/info-tiles/cc-info-scalability.js';
-import notes from '../../.components-docs/cc-info-scalability.md';
+import '../../components/overview/cc-tile-scalability.js';
+import notes from '../../.components-docs/cc-tile-scalability.md';
 import { createContainer } from '../lib/dom.js';
 import { sequence } from '../lib/sequence.js';
 import { storiesOf } from '@storybook/html';
@@ -120,7 +120,7 @@ const flavors = {
 };
 
 function createComponent (scalability) {
-  const component = document.createElement('cc-info-scalability');
+  const component = document.createElement('cc-tile-scalability');
   component.style.width = '300px';
   component.style.display = 'inline-grid';
   component.style.marginBottom = '1rem';
@@ -129,7 +129,7 @@ function createComponent (scalability) {
   return component;
 }
 
-storiesOf('2. Information tiles|<cc-info-scalability>', module)
+storiesOf('2. Overview|<cc-tile-scalability>', module)
   .addParameters({ notes })
   .add('empty state (loading)', () => {
     return createComponent();

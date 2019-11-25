@@ -49,7 +49,7 @@ import { skeleton } from '../styles/skeleton.js';
  * @prop {Object} scalability - BROKEN
  * @attr {Boolean} error - display an error message
  */
-export class CcInfoScalability extends LitElement {
+export class CcTileScalability extends LitElement {
 
   static get properties () {
     return {
@@ -71,7 +71,7 @@ export class CcInfoScalability extends LitElement {
     if (flavor.cpus == null) {
       return;
     }
-    return i18n('cc-info-scalability.flavor-info', { ...flavor });
+    return i18n('cc-tile-scalability.flavor-info', { ...flavor });
   }
 
   // For now, we strip the ML_ prefix from ML VMs, this may change in the future
@@ -82,14 +82,14 @@ export class CcInfoScalability extends LitElement {
   render () {
 
     const skeleton = (this.scalability == null);
-    const { minFlavor, maxFlavor, minInstances, maxInstances } = skeleton ? CcInfoScalability._skeletonScalability : this.scalability;
+    const { minFlavor, maxFlavor, minInstances, maxInstances } = skeleton ? CcTileScalability._skeletonScalability : this.scalability;
 
     return html`
-      <div class="tile_title">${i18n('cc-info-scalability.title')}</div>
+      <div class="tile_title">${i18n('cc-tile-scalability.title')}</div>
       
       ${!this.error ? html`
         <div class="tile_body">
-          <div class="label">${i18n('cc-info-scalability.size')}</div>
+          <div class="label">${i18n('cc-tile-scalability.size')}</div>
           <div class="info">
             <div class="size-label ${classMap({ skeleton })}"
               title=${ifDefined(this._getFlavorDetails(minFlavor))}
@@ -99,7 +99,7 @@ export class CcInfoScalability extends LitElement {
               title=${ifDefined(this._getFlavorDetails(maxFlavor))}
             >${this._formatFlavorName(maxFlavor.name)}</div>
           </div>
-          <div class="label">${i18n('cc-info-scalability.number')}</div>
+          <div class="label">${i18n('cc-tile-scalability.number')}</div>
           <div class="info">
             <div class="count-bubble ${classMap({ skeleton })}">${minInstances}</div>
             <div class="separator"></div>
@@ -109,7 +109,7 @@ export class CcInfoScalability extends LitElement {
       ` : ''}
 
       ${this.error ? html`
-        <div class="tile_message"><img class="icon-img" src=${warningSvg} alt="">${i18n('cc-info-scalability.error')}</div>
+        <div class="tile_message"><img class="icon-img" src=${warningSvg} alt="">${i18n('cc-tile-scalability.error')}</div>
       ` : ''}
     `;
   }
@@ -150,4 +150,4 @@ export class CcInfoScalability extends LitElement {
   }
 }
 
-window.customElements.define('cc-info-scalability', CcInfoScalability);
+window.customElements.define('cc-tile-scalability', CcTileScalability);

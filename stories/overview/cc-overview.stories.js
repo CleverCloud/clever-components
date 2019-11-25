@@ -1,10 +1,10 @@
-import '../../components/info-tiles/cc-info-app.js';
-import '../../components/info-tiles/cc-info-consumption.js';
-import '../../components/info-tiles/cc-info-deployments.js';
-import '../../components/info-tiles/cc-info-instances.js';
-import '../../components/info-tiles/cc-info-scalability.js';
 import '../../components/maps/cc-logsmap.js';
+import '../../components/overview/cc-header-app.js';
 import '../../components/overview/cc-overview.js';
+import '../../components/overview/cc-tile-consumption.js';
+import '../../components/overview/cc-tile-deployments.js';
+import '../../components/overview/cc-tile-instances.js';
+import '../../components/overview/cc-tile-scalability.js';
 import notes from '../../.components-docs/cc-overview.md';
 import { storiesOf } from '@storybook/html';
 
@@ -23,11 +23,11 @@ Array
       overview.style.width = width + 'px';
 
       overview.innerHTML = `
-        <cc-info-app slot="head"></cc-info-app>
-        <cc-info-instances slot="tiles"></cc-info-instances>
-        <cc-info-scalability slot="tiles"></cc-info-scalability>
-        <cc-info-deployments slot="tiles"></cc-info-deployments>
-        <cc-info-consumption slot="tiles"></cc-info-consumption>
+        <cc-header-app slot="head"></cc-header-app>
+        <cc-tile-instances slot="tiles"></cc-tile-instances>
+        <cc-tile-scalability slot="tiles"></cc-tile-scalability>
+        <cc-tile-deployments slot="tiles"></cc-tile-deployments>
+        <cc-tile-consumption slot="tiles"></cc-tile-consumption>
         <cc-logsmap slot="main"></cc-logsmap>
       `;
 

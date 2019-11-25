@@ -1,11 +1,11 @@
-import '../../components/info-tiles/cc-info-consumption.js';
-import notes from '../../.components-docs/cc-info-consumption.md';
+import '../../components/overview/cc-tile-consumption.js';
+import notes from '../../.components-docs/cc-tile-consumption.md';
 import { createContainer } from '../lib/dom.js';
 import { sequence } from '../lib/sequence';
 import { storiesOf } from '@storybook/html';
 
 function createComponent (consumption) {
-  const component = document.createElement('cc-info-consumption');
+  const component = document.createElement('cc-tile-consumption');
   component.style.width = '300px';
   component.style.display = 'inline-grid';
   component.style.marginBottom = '1rem';
@@ -14,7 +14,7 @@ function createComponent (consumption) {
   return component;
 }
 
-storiesOf('2. Information tiles|<cc-info-consumption>', module)
+storiesOf('2. Overview|<cc-tile-consumption>', module)
   .addParameters({ notes })
   .add('empty state (loading)', () => {
     return createComponent();

@@ -1,19 +1,19 @@
-import '../../components/info-tiles/cc-info-app.js';
-import notes from '../../.components-docs/cc-info-app.md';
+import '../../components/overview/cc-header-app.js';
+import notes from '../../.components-docs/cc-header-app.md';
 import { createContainer } from '../lib/dom.js';
 import { sequence } from '../lib/sequence';
 import { storiesOf } from '@storybook/html';
 import { withCustomEventActions } from '../lib/event-action';
 
 const withActions = withCustomEventActions(
-  'cc-info-app:start',
-  'cc-info-app:restart',
-  'cc-info-app:cancel',
-  'cc-info-app:stop',
+  'cc-header-app:start',
+  'cc-header-app:restart',
+  'cc-header-app:cancel',
+  'cc-header-app:stop',
 );
 
 export function createComponent ({ app, status, runningCommit, startingCommit, disableButtons = false, width = '95%' }) {
-  const component = document.createElement('cc-info-app');
+  const component = document.createElement('cc-header-app');
   component.app = app;
   component.status = status;
   component.runningCommit = runningCommit;
@@ -26,7 +26,7 @@ export function createComponent ({ app, status, runningCommit, startingCommit, d
   return component;
 }
 
-storiesOf('2. Information tiles|<cc-info-app>', module)
+storiesOf('2. Overview|<cc-header-app>', module)
   .addParameters({ notes })
   .add('empty state (loading)', withActions(() => {
     return createContainer([

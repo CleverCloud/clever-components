@@ -1,11 +1,11 @@
-import '../../components/info-tiles/cc-info-instances.js';
-import notes from '../../.components-docs/cc-info-instances.md';
+import '../../components/overview/cc-tile-instances.js';
+import notes from '../../.components-docs/cc-tile-instances.md';
 import { createContainer } from '../lib/dom.js';
 import { sequence } from '../lib/sequence.js';
 import { storiesOf } from '@storybook/html';
 
 function createComponent (instances) {
-  const component = document.createElement('cc-info-instances');
+  const component = document.createElement('cc-tile-instances');
   component.style.width = '300px';
   component.style.display = 'inline-grid';
   component.style.marginBottom = '1rem';
@@ -14,7 +14,7 @@ function createComponent (instances) {
   return component;
 }
 
-storiesOf('2. Information tiles|<cc-info-instances>', module)
+storiesOf('2. Overview|<cc-tile-instances>', module)
   .addParameters({ notes })
   .add('empty state (loading)', () => {
     return createComponent();
