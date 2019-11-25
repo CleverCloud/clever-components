@@ -11,6 +11,7 @@ export { CcMap } from './maps/cc-map.js';
 export { CcTileConsumption } from './overview/cc-tile-consumption.js';
 export { CcTileDeployments } from './overview/cc-tile-deployments.js';
 export { CcTileInstances } from './overview/cc-tile-instances.js';
+export { CcTileRequests } from './overview/cc-tile-requests.js';
 export { CcTileScalability } from './overview/cc-tile-scalability.js';
 export { CcTileStatusCodes } from './overview/cc-tile-status-codes.js';
 export { CcToggle } from './atoms/cc-toggle.js';

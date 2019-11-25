@@ -22,6 +22,7 @@
   "dependencies": {
     "@clevercloud/client": "^2.0.0-beta.9",
     "chart.js": "^2.9.2",
+    "chartjs-plugin-datalabels": "^0.7.0",
     "clipboard-copy": "^3.1.0",
     "leaflet": "^1.5.1",
     "leaflet.heat": "^0.2.0",

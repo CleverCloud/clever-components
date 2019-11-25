@@ -1,4 +1,10 @@
-import { prepareFormatDate, prepareFormatDistanceToNow } from '../lib/i18n-date.js';
+import {
+  prepareFormatDate,
+  prepareFormatDateOnly,
+  prepareFormatDistanceToNow,
+  prepareFormatHours,
+} from '../lib/i18n-date.js';
+import { prepareNumberUnitFormatter } from '../lib/i18n-number.js';
 
 export const lang = 'fr';
 
@@ -28,6 +34,8 @@ const formatDistanceToNow = prepareFormatDistanceToNow(lang, (value, unit) => {
 }, 'à l\'instant');
 
 const formatDate = prepareFormatDate(lang);
+const formatDateOnly = prepareFormatDateOnly(lang);
+const formatHours = prepareFormatHours(lang);
 
 const currencyFormatter = new Intl.NumberFormat(lang, { style: 'currency', currency: 'EUR' });
 const percentFormatter = new Intl.NumberFormat(lang, {
@@ -36,6 +44,7 @@ const percentFormatter = new Intl.NumberFormat(lang, {
   maximumFractionDigits: 1,
 });
 const numberFormatter = new Intl.NumberFormat(lang);
+const formatNumberUnit = prepareNumberUnitFormatter(lang);
 
 export const translations = {
   LANGUAGE: '🇫🇷 Français',
@@ -93,6 +102,29 @@ export const translations = {
   'cc-tile-instances.status.running': `En ligne`,
   'cc-tile-instances.empty': `Pas d'instance. L'application est arrêtée.`,
   'cc-tile-instances.error': `Une erreur est survenue pendant le chargement des instances.`,
+  // cc-tile-requests
+  'cc-tile-requests.title': `Requêtes HTTP`,
+  'cc-tile-requests.about': `À propos de ce graphe...`,
+  'cc-tile-requests.date-hours': ({ date }) => formatHours(date),
+  'cc-tile-requests.date-tooltip': ({ from, to }) => {
+    const date = formatDateOnly(from);
+    const fromH = formatHours(from);
+    const toH = formatHours(to);
+    return `${date} : de ${fromH} à ${toH}`;
+  },
+  'cc-tile-requests.requests-nb': ({ value, windowHours }) => {
+    const request = plural('requête')(value);
+    const hour = plural('heure')(windowHours);
+    const formattedValue = numberFormatter.format(value);
+    return `${formattedValue} ${request} (en ${windowHours} ${hour})`;
+  },
+  'cc-tile-requests.requests-count': ({ requestCount }) => formatNumberUnit(requestCount),
+  'cc-tile-requests.empty': `Il n'y a pas de données à afficher pour l'instant.`,
+  'cc-tile-requests.error': `Une erreur est survenue pendant le chargement des requêtes.`,
+  'cc-tile-requests.docs.msg': ({ windowHours }) => {
+    const hour = plural('heure')(windowHours);
+    return `Requêtes HTTP reçues durant les dernières 24 heures. Chaque barre représente une fenêtre de temps de ${windowHours} ${hour}.`;
+  },
   // cc-tile-scalability
   'cc-tile-scalability.title': `Scalabilité`,
   'cc-tile-scalability.size': `Taille`,
