@@ -86,8 +86,8 @@ export const translations = {
   'cc-logsmap.mode.heatmap': `Last 24h`,
   'cc-logsmap.legend.points': ({ orgaName }) => `Realtime map of HTTP requests received by all apps from ${orgaName}.`,
   'cc-logsmap.legend.points.app': ({ appName }) => `Realtime map of HTTP requests received by ${appName}.`,
-  'cc-logsmap.legend.heatmap': ({ orgaName }) => `Heatmap of HTTP requests received by all apps from ${orgaName} during the past 24 hours.`,
-  'cc-logsmap.legend.heatmap.app': ({ appName }) => `Heatmap of HTTP requests received by ${appName} during the past 24 hours.`,
+  'cc-logsmap.legend.heatmap': ({ orgaName }) => `Heatmap of HTTP requests received by all apps from ${orgaName} during the last 24 hours.`,
+  'cc-logsmap.legend.heatmap.app': ({ appName }) => `Heatmap of HTTP requests received by ${appName} during the last 24 hours.`,
   // cc-map
   'cc-map.error': `Something went wrong while trying to fetch data for the map.`,
   'cc-map.no-points': `No data to display on the map right now.`,
