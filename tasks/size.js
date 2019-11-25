@@ -36,7 +36,12 @@ async function findDeps (sourceFileName) {
 
   if (sourceFileName.endsWith('.js')) {
 
-    const ast = await babel.parseAsync(fileContents, { sourceFileName });
+    const ast = await babel.parseAsync(fileContents, {
+      sourceFileName,
+      plugins: [
+        '@babel/plugin-syntax-dynamic-import',
+      ],
+    });
 
     const rawDeps = ast.program.body.filter((node) => isImportExportNode(node));
 

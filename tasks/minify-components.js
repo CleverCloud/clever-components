@@ -73,6 +73,7 @@ function minifyHtmlCss (code, sourceFileName) {
     // Put sourcemap in the file to simplify further manipulation
     sourceMaps: 'inline',
     plugins: [
+      '@babel/plugin-syntax-dynamic-import',
       [
         'template-html-minifier',
         {

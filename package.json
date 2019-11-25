@@ -25,10 +25,12 @@
     "leaflet": "^1.5.1",
     "leaflet.heat": "^0.2.0",
     "lit-element": "^2.2.0",
-    "lit-html": "^1.1.1"
+    "lit-html": "^1.1.1",
+    "resize-observer-polyfill": "^1.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@storybook/addon-a11y": "^5.1.11",
     "@storybook/addon-actions": "^5.1.11",
     "@storybook/addon-knobs": "^5.1.11",
