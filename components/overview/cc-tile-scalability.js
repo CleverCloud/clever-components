@@ -1,6 +1,8 @@
+import warningSvg from 'twemoji/2/svg/26a0.svg';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
+import { iconStyles } from '../styles/icon.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { instanceDetails, tileStyles } from '../styles/info-tiles.js';
 import { skeleton } from '../styles/skeleton.js';
@@ -47,7 +49,7 @@ import { skeleton } from '../styles/skeleton.js';
  * @prop {Object} scalability - BROKEN
  * @attr {Boolean} error - display an error message
  */
-export class CcInfoScalability extends LitElement {
+export class CcTileScalability extends LitElement {
 
   static get properties () {
     return {
@@ -69,7 +71,7 @@ export class CcInfoScalability extends LitElement {
     if (flavor.cpus == null) {
       return;
     }
-    return i18n('cc-info-scalability.flavor-info', { ...flavor });
+    return i18n('cc-tile-scalability.flavor-info', { ...flavor });
   }
 
   // For now, we strip the ML_ prefix from ML VMs, this may change in the future
@@ -80,13 +82,14 @@ export class CcInfoScalability extends LitElement {
   render () {
 
     const skeleton = (this.scalability == null);
-    const { minFlavor, maxFlavor, minInstances, maxInstances } = skeleton ? CcInfoScalability._skeletonScalability : this.scalability;
+    const { minFlavor, maxFlavor, minInstances, maxInstances } = skeleton ? CcTileScalability._skeletonScalability : this.scalability;
 
     return html`
-      <div class="tile_title">${i18n('cc-info-scalability.title')}</div>
-      <div class="tile_body">
-        ${!this.error ? html`
-          <div class="label">${i18n('cc-info-scalability.size')}</div>
+      <div class="tile_title">${i18n('cc-tile-scalability.title')}</div>
+      
+      ${!this.error ? html`
+        <div class="tile_body">
+          <div class="label">${i18n('cc-tile-scalability.size')}</div>
           <div class="info">
             <div class="size-label ${classMap({ skeleton })}"
               title=${ifDefined(this._getFlavorDetails(minFlavor))}
@@ -96,23 +99,25 @@ export class CcInfoScalability extends LitElement {
               title=${ifDefined(this._getFlavorDetails(maxFlavor))}
             >${this._formatFlavorName(maxFlavor.name)}</div>
           </div>
-          <div class="label">${i18n('cc-info-scalability.number')}</div>
+          <div class="label">${i18n('cc-tile-scalability.number')}</div>
           <div class="info">
             <div class="count-bubble ${classMap({ skeleton })}">${minInstances}</div>
             <div class="separator"></div>
             <div class="count-bubble ${classMap({ skeleton })}">${maxInstances}</div>
           </div>
-        ` : ''}
-        ${this.error ? html`
-          <div class="tile_message">${i18n('cc-info-scalability.error')}</div>
-        ` : ''}
-      </div>
+        </div>
+      ` : ''}
+
+      ${this.error ? html`
+        <div class="tile_message"><img class="icon-img" src=${warningSvg} alt="">${i18n('cc-tile-scalability.error')}</div>
+      ` : ''}
     `;
   }
 
   static get styles () {
     return [
       tileStyles,
+      iconStyles,
       instanceDetails,
       skeleton,
       // language=CSS
@@ -145,4 +150,4 @@ export class CcInfoScalability extends LitElement {
   }
 }
 
-window.customElements.define('cc-info-scalability', CcInfoScalability);
+window.customElements.define('cc-tile-scalability', CcTileScalability);

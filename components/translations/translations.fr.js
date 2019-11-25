@@ -1,6 +1,19 @@
-import { prepareFormatDate, prepareFormatDistanceToNow } from '../lib/i18n-date.js';
+import {
+  prepareFormatDate,
+  prepareFormatDateOnly,
+  prepareFormatDistanceToNow,
+  prepareFormatHours,
+} from '../lib/i18n-date.js';
+import { prepareNumberUnitFormatter } from '../lib/i18n-number.js';
 
 export const lang = 'fr';
+
+// We considered Intl.PluralRules but no support in Safari 12 and polyfill does too much for us
+function plural (singular, plural = singular + 's') {
+  return (count) => {
+    return (count <= 1) ? singular : plural;
+  };
+}
 
 const UNITS_FR = {
   year: 'année',
@@ -13,13 +26,25 @@ const UNITS_FR = {
 };
 
 const formatDistanceToNow = prepareFormatDistanceToNow(lang, (value, unit) => {
-  const plural = (value > 1 & !UNITS_FR[unit].endsWith('s')) ? 's' : '';
-  return `il y a ${value} ${UNITS_FR[unit]}${plural}`;
+  const frUnit = UNITS_FR[unit];
+  const pluralUnit = frUnit.endsWith('s')
+    ? plural(frUnit, frUnit)(value)
+    : plural(frUnit)(value);
+  return `il y a ${value} ${pluralUnit}`;
 }, 'à l\'instant');
 
 const formatDate = prepareFormatDate(lang);
+const formatDateOnly = prepareFormatDateOnly(lang);
+const formatHours = prepareFormatHours(lang);
 
 const currencyFormatter = new Intl.NumberFormat(lang, { style: 'currency', currency: 'EUR' });
+const percentFormatter = new Intl.NumberFormat(lang, {
+  style: 'percent',
+  minimumFractionDigits: 1,
+  maximumFractionDigits: 1,
+});
+const numberFormatter = new Intl.NumberFormat(lang);
+const formatNumberUnit = prepareNumberUnitFormatter(lang);
 
 export const translations = {
   LANGUAGE: '🇫🇷 Français',
@@ -28,67 +53,103 @@ export const translations = {
   // cc-datetime-relative
   'cc-datetime-relative.distance': ({ date }) => formatDistanceToNow(date),
   'cc-datetime-relative.title': ({ date }) => formatDate(date),
-  // cc-info-app
-  'cc-info-app.action.cancel-deployment': `Annuler le déploiement`,
-  'cc-info-app.action.restart': `Redémarrer`,
-  'cc-info-app.action.restart-last-commit': `Redémarrer le dernier commit poussé`,
-  'cc-info-app.action.restart-rebuild': `Re-build et redémarrer`,
-  'cc-info-app.action.start': `Démarrer`,
-  'cc-info-app.action.start-last-commit': `Démarrer le dernier commit poussé`,
-  'cc-info-app.action.start-rebuild': `Re-build et démarrer`,
-  'cc-info-app.action.stop': `Arrêter l'application`,
-  'cc-info-app.disable-buttons': `Vous n'êtes pas autorisé à réaliser ces actions`,
-  'cc-info-app.read-logs': `voir les logs`,
-  'cc-info-app.commits.no-commits': `pas encore de commit`,
-  'cc-info-app.commits.git': ({ commit }) => `version du dépôt git (HEAD) : ${commit}`,
-  'cc-info-app.commits.running': ({ commit }) => `version en ligne : ${commit}`,
-  'cc-info-app.commits.starting': ({ commit }) => `version en cours de déploiement : ${commit}`,
-  'cc-info-app.state-msg.app-is-restarting': `L'application redémarre...`,
-  'cc-info-app.state-msg.app-is-running': `Votre application est disponible !`,
-  'cc-info-app.state-msg.app-is-starting': `L'application démarre...`,
-  'cc-info-app.state-msg.app-is-stopped': `L'application est arrêtée.`,
-  'cc-info-app.state-msg.last-deploy-failed': `Le dernier déploiement a échoué,`,
-  'cc-info-app.state-msg.unknown-state': `État inconnu, essayez de redémarrer l'application ou de contacter notre support si vous avez des questions.`,
-  'cc-info-app.user-action-msg.app-will-start': `L'application va bientôt démarrer...`,
-  'cc-info-app.user-action-msg.deploy-will-begin': `Un déploiement va bientôt commencer...`,
-  'cc-info-app.user-action-msg.deploy-cancelled': `Ce déploiement a été annulé.`,
-  'cc-info-app.user-action-msg.app-will-stop': `L'application va s'arrêter...`,
-  'cc-info-app.error': `Une erreur est survenue pendant le chargement des informations de l'application.`,
-  // cc-info-consumption
-  'cc-info-consumption.title': `Consommation de crédits`,
-  'cc-info-consumption.yesterday': `Hier`,
-  'cc-info-consumption.last-30-days': `30 derniers jours`,
-  'cc-info-consumption.amount': ({ amount }) => currencyFormatter.format(amount),
-  'cc-info-consumption.error': `Une erreur est survenue pendant le chargement de la consommation.`,
-  // cc-info-deployments
-  'cc-info-deployments.title': `Derniers déploiements`,
-  'cc-info-deployments.state.failed': `Échoué`,
-  'cc-info-deployments.state.started': `Démarré`,
-  'cc-info-deployments.state.cancelled': `Annulé`,
-  'cc-info-deployments.state.stopped': `Arrêté`,
-  'cc-info-deployments.error': `Something went wrong while loading deployments info.`,
-  'cc-info-deployments.no-deployments': `No deployments yet.`,
-  // cc-info-instances
-  'cc-info-instances.title': `Instances`,
-  'cc-info-instances.status.deploying': `En déploiement`,
-  'cc-info-instances.status.running': `En ligne`,
-  'cc-info-instances.no-instances': `Pas d'instance. L'application est arrêtée.`,
-  'cc-info-instances.error': `Une erreur est survenue pendant le chargement des instances.`,
-  // cc-info-orga
-  'cc-info-orga.hotline': `Numéro d'urgence :`,
-  'cc-info-orga.error': `Une erreur est survenue pendant le chargement des informations de l'organisation.`,
-  // cc-info-scalability
-  'cc-info-scalability.title': `Scalabilité`,
-  'cc-info-scalability.size': `Taille`,
-  'cc-info-scalability.number': `Nombre`,
-  'cc-info-scalability.flavor-info': (f) => {
+  // cc-header-app
+  'cc-header-app.action.cancel-deployment': `Annuler le déploiement`,
+  'cc-header-app.action.restart': `Redémarrer`,
+  'cc-header-app.action.restart-last-commit': `Redémarrer le dernier commit poussé`,
+  'cc-header-app.action.restart-rebuild': `Re-build et redémarrer`,
+  'cc-header-app.action.start': `Démarrer`,
+  'cc-header-app.action.start-last-commit': `Démarrer le dernier commit poussé`,
+  'cc-header-app.action.start-rebuild': `Re-build et démarrer`,
+  'cc-header-app.action.stop': `Arrêter l'application`,
+  'cc-header-app.disable-buttons': `Vous n'êtes pas autorisé à réaliser ces actions`,
+  'cc-header-app.read-logs': `voir les logs`,
+  'cc-header-app.commits.no-commits': `pas encore de commit`,
+  'cc-header-app.commits.git': ({ commit }) => `version du dépôt git (HEAD) : ${commit}`,
+  'cc-header-app.commits.running': ({ commit }) => `version en ligne : ${commit}`,
+  'cc-header-app.commits.starting': ({ commit }) => `version en cours de déploiement : ${commit}`,
+  'cc-header-app.state-msg.app-is-restarting': `L'application redémarre...`,
+  'cc-header-app.state-msg.app-is-running': `Votre application est disponible !`,
+  'cc-header-app.state-msg.app-is-starting': `L'application démarre...`,
+  'cc-header-app.state-msg.app-is-stopped': `L'application est arrêtée.`,
+  'cc-header-app.state-msg.last-deploy-failed': `Le dernier déploiement a échoué,`,
+  'cc-header-app.state-msg.unknown-state': `État inconnu, essayez de redémarrer l'application ou de contacter notre support si vous avez des questions.`,
+  'cc-header-app.user-action-msg.app-will-start': `L'application va bientôt démarrer...`,
+  'cc-header-app.user-action-msg.deploy-will-begin': `Un déploiement va bientôt commencer...`,
+  'cc-header-app.user-action-msg.deploy-cancelled': `Ce déploiement a été annulé.`,
+  'cc-header-app.user-action-msg.app-will-stop': `L'application va s'arrêter...`,
+  'cc-header-app.error': `Une erreur est survenue pendant le chargement des informations de l'application.`,
+  // cc-header-orga
+  'cc-header-orga.hotline': `Numéro d'urgence :`,
+  'cc-header-orga.error': `Une erreur est survenue pendant le chargement des informations de l'organisation.`,
+  // cc-tile-consumption
+  'cc-tile-consumption.title': `Consommation de crédits`,
+  'cc-tile-consumption.yesterday': `Hier`,
+  'cc-tile-consumption.last-30-days': `30 derniers jours`,
+  'cc-tile-consumption.amount': ({ amount }) => currencyFormatter.format(amount),
+  'cc-tile-consumption.error': `Une erreur est survenue pendant le chargement de la consommation.`,
+  // cc-tile-deployments
+  'cc-tile-deployments.title': `Derniers déploiements`,
+  'cc-tile-deployments.state.failed': `Échoué`,
+  'cc-tile-deployments.state.started': `Démarré`,
+  'cc-tile-deployments.state.cancelled': `Annulé`,
+  'cc-tile-deployments.state.stopped': `Arrêté`,
+  'cc-tile-deployments.empty': `Pas encore de déploiement.`,
+  'cc-tile-deployments.error': `Une erreur est survenue pendant le chargement des déploiements.`,
+  // cc-tile-instances
+  'cc-tile-instances.title': `Instances`,
+  'cc-tile-instances.status.deploying': `Déploiement`,
+  'cc-tile-instances.status.running': `En ligne`,
+  'cc-tile-instances.empty': `Pas d'instance. L'application est arrêtée.`,
+  'cc-tile-instances.error': `Une erreur est survenue pendant le chargement des instances.`,
+  // cc-tile-requests
+  'cc-tile-requests.title': `Requêtes HTTP`,
+  'cc-tile-requests.about': `À propos de ce graphe...`,
+  'cc-tile-requests.date-hours': ({ date }) => formatHours(date),
+  'cc-tile-requests.date-tooltip': ({ from, to }) => {
+    const date = formatDateOnly(from);
+    const fromH = formatHours(from);
+    const toH = formatHours(to);
+    return `${date} : de ${fromH} à ${toH}`;
+  },
+  'cc-tile-requests.requests-nb': ({ value, windowHours }) => {
+    const request = plural('requête')(value);
+    const hour = plural('heure')(windowHours);
+    const formattedValue = numberFormatter.format(value);
+    return `${formattedValue} ${request} (en ${windowHours} ${hour})`;
+  },
+  'cc-tile-requests.requests-count': ({ requestCount }) => formatNumberUnit(requestCount),
+  'cc-tile-requests.empty': `Il n'y a pas de données à afficher pour l'instant.`,
+  'cc-tile-requests.error': `Une erreur est survenue pendant le chargement des requêtes.`,
+  'cc-tile-requests.docs.msg': ({ windowHours }) => {
+    const hour = plural('heure')(windowHours);
+    return `Requêtes HTTP reçues durant les dernières 24 heures. Chaque barre représente une fenêtre de temps de ${windowHours} ${hour}.`;
+  },
+  // cc-tile-scalability
+  'cc-tile-scalability.title': `Scalabilité`,
+  'cc-tile-scalability.size': `Taille`,
+  'cc-tile-scalability.number': `Nombre`,
+  'cc-tile-scalability.flavor-info': (f) => {
     const cpu = `CPUs : ${f.cpus}`;
     const shared = f.microservice ? ` (partagé)` : '';
     const gpu = f.gpus > 0 ? `GPUs : ${f.gpus}` : '';
     const mem = `RAM : ${(f.mem < 1024) ? `${f.mem} Mo` : `${f.mem / 1024} Go`}`;
     return [cpu + shared, gpu, mem].filter((a) => a).join('\n');
   },
-  'cc-info-scalability.error': `Une erreur est survenue pendant le chargement de la configuration de scalabilité.`,
+  'cc-tile-scalability.error': `Une erreur est survenue pendant le chargement de la configuration de scalabilité.`,
+  // cc-tile-status-codes
+  'cc-tile-status-codes.title': `Codes de réponses HTTP`,
+  'cc-tile-status-codes.about': `À propos de ce graphe...`,
+  'cc-tile-status-codes.tooltip': ({ value, percent }) => {
+    const request = plural('requête')(value);
+    const formattedValue = numberFormatter.format(value);
+    return `${formattedValue} ${request} (${percentFormatter.format(percent)})`;
+  },
+  'cc-tile-status-codes.error': `Une erreur est survenue pendant le chargement des codes de réponses HTTP.`,
+  'cc-tile-status-codes.empty': `Il n'y a pas de données à afficher pour l'instant.`,
+  'cc-tile-status-codes.docs.msg': `Répartition des codes de réponses HTTP envoyés durant les dernières 24 heures. Cliquez sur les éléments de légende pour cacher/montrer certaines catégories de codes.`,
+  'cc-tile-status-codes.docs.link.href': `https://developer.mozilla.org/fr/docs/Web/HTTP/Status`,
+  'cc-tile-status-codes.docs.link.title': `Codes de réponses HTTP (MDN)`,
   // cc-input-text
   'cc-input-text.clipboard': `Copier dans le presse-papier`,
   // cc-logsmap

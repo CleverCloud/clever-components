@@ -4,10 +4,12 @@ import '../atoms/cc-loader.js';
 import '../atoms/cc-toggle.js';
 import './env-var-editor-expert.js';
 import './env-var-editor-simple.js';
+import warningSvg from 'twemoji/2/svg/26a0.svg';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
+import { iconStyles } from '../styles/icon.js';
 
 /**
  * A high level env var editor form, wraps simple editor and expert editor
@@ -226,7 +228,7 @@ export class EnvVarForm extends LitElement {
       ${this.error != null ? html`
         <div class="error-container">
           <div class="error-panel">
-            <div class="error-message">⚠️ ${this._errorMessage}</div>
+            <div class="error-message"><img class="icon-img" src=${warningSvg} alt="">${this._errorMessage}</div>
             <cc-button @cc-button:click=${() => dispatchCustomEvent(this, 'dismissed-error', this.error)}>OK</cc-button>
           </div>
         </div>
@@ -235,89 +237,92 @@ export class EnvVarForm extends LitElement {
   }
 
   static get styles () {
-    // language=CSS
-    return css`
-      :host {
-        display: block;
-        background: #fff;
-        border-radius: 0.25rem;
-        border: 1px solid #bcc2d1;
-        padding: 1rem;
-        /* to position .saving-loader */
-        position: relative;
-      }
+    return [
+      iconStyles,
+      // language=CSS
+      css`
+        :host {
+          display: block;
+          background: #fff;
+          border-radius: 0.25rem;
+          border: 1px solid #bcc2d1;
+          padding: 1rem;
+          /* to position .saving-loader */
+          position: relative;
+        }
 
-      .header {
-        align-items: flex-start;
-        display: flex;
-        justify-content: center;
-        margin-bottom: 0.5rem;
-      }
+        .header {
+          align-items: flex-start;
+          display: flex;
+          justify-content: center;
+          margin-bottom: 0.5rem;
+        }
 
-      .heading {
-        flex: 1 1 0;
-        font-size: 1.25rem;
-        font-weight: 400;
-        margin: 0.2rem;
-      }
+        .heading {
+          flex: 1 1 0;
+          font-size: 1.25rem;
+          font-weight: 400;
+          margin: 0.2rem;
+        }
 
-      .description {
-        display: block;
-        color: #555;
-        font-style: italic;
-        margin: 0.2rem 0.2rem 1rem;
-      }
+        .description {
+          display: block;
+          color: #555;
+          font-style: italic;
+          margin: 0.2rem 0.2rem 1rem;
+        }
 
-      .saving {
-        filter: blur(0.3rem);
-      }
+        .saving {
+          filter: blur(0.3rem);
+        }
 
-      .button-bar {
-        display: flex;
-        flex-wrap: wrap;
-        margin-top: 1rem;
-      }
+        .button-bar {
+          display: flex;
+          flex-wrap: wrap;
+          margin-top: 1rem;
+        }
 
-      .spacer {
-        flex: 1 1 0;
-      }
+        .spacer {
+          flex: 1 1 0;
+        }
 
-      .saving-loader {
-        height: 100%;
-        left: 0;
-        position: absolute;
-        top: 0;
-        width: 100%;
-      }
+        .saving-loader {
+          height: 100%;
+          left: 0;
+          position: absolute;
+          top: 0;
+          width: 100%;
+        }
 
-      .error-container {
-        align-items: center;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        justify-content: center;
-        left: 0;
-        position: absolute;
-        top: 0;
-        width: 100%;
-      }
+        .error-container {
+          align-items: center;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          justify-content: center;
+          left: 0;
+          position: absolute;
+          top: 0;
+          width: 100%;
+        }
 
-      .error-panel {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background-color: #fff;
-        padding: 1rem;
-        border-radius: 0.25rem;
-        border: 1px solid #ccc;
-        max-width: 80%;
-      }
+        .error-panel {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          background-color: #fff;
+          padding: 1rem;
+          border-radius: 0.25rem;
+          border: 1px solid #ccc;
+          max-width: 80%;
+        }
 
-      .error-message {
-        margin-bottom: 1rem;
-      }
-    `;
+        .error-message {
+          margin-bottom: 1rem;
+        }
+      `,
+    ];
   }
 }
 

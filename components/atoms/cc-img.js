@@ -51,10 +51,13 @@ export class CcImg extends LitElement {
   render () {
     const isLoading = (this.src != null && !this._loaded && !this._error);
     const isSkeleton = (this.skeleton || isLoading);
+    const displayText = (this.src == null || this._error);
     return html`
-      <div class="wrapper ${classMap({ skeleton: isSkeleton, loaded: this._loaded })}">
+      <div class="wrapper ${classMap({ skeleton: isSkeleton, loaded: this._loaded, text: displayText })}">
         <img src=${ifDefined(this.src)} @load=${this._onLoad} @error=${this._onError}>
-        <div class="error-msg">${this.text}</div>
+        ${displayText ? html`
+          <div class="error-msg">${this.text}</div>
+        ` : ''}
       </div>
     `;
   }
@@ -77,7 +80,6 @@ export class CcImg extends LitElement {
 
         .wrapper {
           align-items: center;
-          background-color: #eee;
           display: flex;
           justify-content: center;
           position: relative;
@@ -85,6 +87,10 @@ export class CcImg extends LitElement {
 
         .wrapper.skeleton {
           background-color: #bbb;
+        }
+
+        .wrapper.text {
+          background-color: #eee;
         }
 
         img {
@@ -109,11 +115,6 @@ export class CcImg extends LitElement {
           text-align: center;
           text-overflow: ellipsis;
           white-space: nowrap;
-        }
-
-        .wrapper.skeleton .error-msg,
-        .wrapper.loaded .error-msg {
-          display: none;
         }
       `,
     ];

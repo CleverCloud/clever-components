@@ -1,8 +1,10 @@
 import '../atoms/cc-input-text.js';
+import warningSvg from 'twemoji/2/svg/26a0.svg';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { ERROR_TYPES, parseRaw, toNameEqualsValueString } from '@clevercloud/client/esm/utils/env-vars.js';
 import { i18n } from '../lib/i18n.js';
+import { iconStyles } from '../styles/icon.js';
 
 /**
  * A high level env var editor, edit all vars at once with a big string that is parsed and provides error messages
@@ -111,35 +113,38 @@ export class EnvVarEditorExpert extends LitElement {
       
       <ul class="error-list" ?hidden=${this._formattedErrors.length === 0}>
         ${this._formattedErrors.map(({ line, msg }) => html`
-          <li class="error-item">⚠️ <strong>${i18n('env-var-editor-expert.errors.line')} ${line}:</strong> ${msg}</li>
+          <li class="error-item"><img class="icon-img" src=${warningSvg} alt=""><strong>${i18n('env-var-editor-expert.errors.line')} ${line}:</strong> ${msg}</li>
         `)}
       </ul>
     `;
   }
 
   static get styles () {
-    // language=CSS
-    return css`
-      :host {
-        display: block;
-      }
+    return [
+      iconStyles,
+      // language=CSS
+      css`
+        :host {
+          display: block;
+        }
 
-      :host([hidden]) {
-        display: none;
-      }
+        :host([hidden]) {
+          display: none;
+        }
 
-      .error-list {
-        margin: 0.5rem 0.2rem 0.2rem;
-        padding: 0;
-        list-style: none;
-      }
+        .error-list {
+          margin: 0.5rem 0.2rem 0.2rem;
+          padding: 0;
+          list-style: none;
+        }
 
-      .error-item {
-        margin: 0;
-        padding: 0.25rem 0;
-        line-height: 1.75;
-      }
-    `;
+        .error-item {
+          margin: 0;
+          padding: 0.25rem 0;
+          line-height: 1.75;
+        }
+      `,
+    ];
   }
 }
 

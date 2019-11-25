@@ -1,6 +1,6 @@
 {
   "name": "@clevercloud/components",
-  "version": "1.3.0-beta.7",
+  "version": "1.3.0-beta.8",
   "description": "This is a Work In Progress to introduce Web Components in our Clever Cloud Web based UIs.",
   "main": "dist/index.js",
   "files": [
@@ -21,14 +21,20 @@
   },
   "dependencies": {
     "@clevercloud/client": "^2.0.0-beta.9",
+    "chart.js": "^2.9.2",
+    "chartjs-plugin-datalabels": "^0.7.0",
     "clipboard-copy": "^3.1.0",
     "leaflet": "^1.5.1",
     "leaflet.heat": "^0.2.0",
     "lit-element": "^2.2.0",
-    "lit-html": "^1.1.1"
+    "lit-html": "^1.1.1",
+    "resize-observer-polyfill": "^1.5.1",
+    "statuses": "^1.5.0",
+    "twemoji": "^11.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@storybook/addon-a11y": "^5.1.11",
     "@storybook/addon-actions": "^5.1.11",
     "@storybook/addon-knobs": "^5.1.11",

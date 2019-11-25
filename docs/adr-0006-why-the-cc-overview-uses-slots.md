@@ -9,12 +9,12 @@ In the console, we want to display an overview like this:
 ```
 +---------------------------------------------------------------------------------------------+
 |                                                                                             |
-| <cc-info-app>                                                                               |
+| <cc-header-app>                                                                             |
 |                                                                                             |
 +---------------------+-----------------------+-----------------------+-----------------------+
 |                     |                       |                       |                       |
 |                     |                       |                       |                       |
-| <cc-info-instances> | <cc-info-scalability> | <cc-info-deployments> | <cc-info-consumption> |
+| <cc-tile-instances> | <cc-tile-scalability> | <cc-tile-deployments> | <cc-tile-consumption> |
 |                     |                       |                       |                       |
 |                     |                       |                       |                       |
 +---------------------+-----------------------+-----------------------+-----------------------+
@@ -53,11 +53,11 @@ This way, the user will do something like this:
 
 ```html
 <cc-overview>
-    <cc-info-app slot="head"></cc-info-app>
-    <cc-info-instances slot="tiles"></cc-info-instances>
-    <cc-info-scalability slot="tiles"></cc-info-scalability>
-    <cc-info-deployments slot="tiles"></cc-info-deployments>
-    <cc-info-consumption slot="tiles"></cc-info-consumption>
+    <cc-header-app slot="head"></cc-header-app>
+    <cc-tile-instances slot="tiles"></cc-tile-instances>
+    <cc-tile-scalability slot="tiles"></cc-tile-scalability>
+    <cc-tile-deployments slot="tiles"></cc-tile-deployments>
+    <cc-tile-consumption slot="tiles"></cc-tile-consumption>
     <cc-logsmap slot="main"></cc-logsmap>
 </cc-overview>
 ```

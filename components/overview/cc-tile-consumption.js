@@ -1,6 +1,8 @@
+import warningSvg from 'twemoji/2/svg/26a0.svg';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
+import { iconStyles } from '../styles/icon.js';
 import { skeleton } from '../styles/skeleton.js';
 import { tileStyles } from '../styles/info-tiles.js';
 
@@ -32,7 +34,7 @@ import { tileStyles } from '../styles/info-tiles.js';
  * @prop {Object} consumption - BROKEN
  * @attr {Boolean} error - display an error message
  */
-export class CcInfoConsumption extends LitElement {
+export class CcTileConsumption extends LitElement {
 
   static get properties () {
     return {
@@ -51,35 +53,36 @@ export class CcInfoConsumption extends LitElement {
   render () {
 
     const skeleton = (this.consumption == null);
-    const { yesterday, last30Days } = skeleton ? CcInfoConsumption._skeletonConsumption : this.consumption;
+    const { yesterday, last30Days } = skeleton ? CcTileConsumption._skeletonConsumption : this.consumption;
 
     return html`
-      <div class="tile_title">${i18n('cc-info-consumption.title')}</div>
-      <div class="tile_body">
-        
-        ${!this.error ? html`
+      <div class="tile_title">${i18n('cc-tile-consumption.title')}</div>
+      
+      ${!this.error ? html`
+        <div class="tile_body">      
           <div class="line">
-            <span>${i18n('cc-info-consumption.yesterday')}</span>
+            <span>${i18n('cc-tile-consumption.yesterday')}</span>
             <span class="separator"></span>
-            <span class="value ${classMap({ skeleton })}">${i18n('cc-info-consumption.amount', { amount: yesterday })}</span>
+            <span class="value ${classMap({ skeleton })}">${i18n('cc-tile-consumption.amount', { amount: yesterday })}</span>
           </div>
           <div class="line">
-            <span>${i18n('cc-info-consumption.last-30-days')}</span>
+            <span>${i18n('cc-tile-consumption.last-30-days')}</span>
             <span class="separator"></span>
-            <span class="value ${classMap({ skeleton })}">${i18n('cc-info-consumption.amount', { amount: last30Days })}</span>
+            <span class="value ${classMap({ skeleton })}">${i18n('cc-tile-consumption.amount', { amount: last30Days })}</span>
           </div>
-        ` : ''}
-        
-        ${this.error ? html`
-          <div class="tile_message">${i18n('cc-info-consumption.error')}</div>
-        ` : ''}
-      </div>
+        </div>
+      ` : ''}
+      
+      ${this.error ? html`
+        <div class="tile_message"><img class="icon-img" src=${warningSvg} alt="">${i18n('cc-tile-consumption.error')}</div>
+      ` : ''}
     `;
   }
 
   static get styles () {
     return [
       tileStyles,
+      iconStyles,
       skeleton,
       // language=CSS
       css`
@@ -108,4 +111,4 @@ export class CcInfoConsumption extends LitElement {
   }
 }
 
-window.customElements.define('cc-info-consumption', CcInfoConsumption);
+window.customElements.define('cc-tile-consumption', CcTileConsumption);

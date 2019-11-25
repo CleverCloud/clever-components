@@ -73,6 +73,7 @@ function minifyHtmlCss (code, sourceFileName) {
     // Put sourcemap in the file to simplify further manipulation
     sourceMaps: 'inline',
     plugins: [
+      '@babel/plugin-syntax-dynamic-import',
       [
         'template-html-minifier',
         {
@@ -108,10 +109,6 @@ function minifyJs (code, sourceMapUrl) {
       // We have some bugs when the leaflet keyword is mangled
       // I still don't know why, WTF?
       reserved: ['leaflet'],
-      properties: {
-        // mangle "private properties/functions" starting with _
-        regex: /^_/,
-      },
     },
     sourceMap: {
       content: 'inline',

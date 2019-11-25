@@ -1,16 +1,16 @@
-import '../../components/info-tiles/cc-info-orga.js';
-import notes from '../../.components-docs/cc-info-orga.md';
+import '../../components/overview/cc-header-orga.js';
+import notes from '../../.components-docs/cc-header-orga.md';
 import { storiesOf } from '@storybook/html';
 import { createContainer } from '../lib/dom';
 import { sequence } from '../lib/sequence';
 
 function createComponent (orga) {
-  const component = document.createElement('cc-info-orga');
+  const component = document.createElement('cc-header-orga');
   component.orga = orga;
   return component;
 }
 
-storiesOf('2. Information tiles|<cc-info-orga>', module)
+storiesOf('2. Overview|<cc-header-orga>', module)
   .addParameters({ notes })
   .add('empty state (loading)', () => {
     return createComponent();

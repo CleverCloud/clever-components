@@ -48,3 +48,27 @@ export function prepareFormatDate (lang) {
     return dtf.format(date);
   };
 }
+
+export function prepareFormatDateOnly (lang) {
+  const options = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  };
+  const dtf = new Intl.DateTimeFormat(lang, options);
+  return (dateTs) => {
+    const date = new Date(dateTs);
+    return dtf.format(date);
+  };
+}
+
+export function prepareFormatHours (lang) {
+  const options = {
+    hour: 'numeric',
+  };
+  const dtf = new Intl.DateTimeFormat(lang, options);
+  return (dateTs) => {
+    const date = new Date(dateTs);
+    return dtf.format(date);
+  };
+}

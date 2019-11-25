@@ -2,10 +2,12 @@ import '../atoms/cc-expand.js';
 import '../atoms/cc-loader.js';
 import runningSvg from './running.svg';
 import startingSvg from './starting.svg';
+import warningSvg from 'twemoji/2/svg/26a0.svg';
 import { animate, QUICK_SHRINK } from '../lib/animate.js';
-import { instanceDetails, tileStyles } from '../styles/info-tiles.js';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
+import { iconStyles } from '../styles/icon.js';
+import { instanceDetails, tileStyles } from '../styles/info-tiles.js';
 
 const statusImg = {
   running: runningSvg,
@@ -49,7 +51,7 @@ const statusImg = {
  * @prop {Object} instances - BROKEN
  * @attr {Boolean} error - display an error message
  */
-export class CcInfoInstances extends LitElement {
+export class CcTileInstances extends LitElement {
 
   static get properties () {
     return {
@@ -67,10 +69,10 @@ export class CcInfoInstances extends LitElement {
 
   _getStatusLabel (type) {
     if (type === 'running') {
-      return i18n('cc-info-instances.status.running');
+      return i18n('cc-tile-instances.status.running');
     }
     if (type === 'deploying') {
-      return i18n('cc-info-instances.status.deploying');
+      return i18n('cc-tile-instances.status.deploying');
     }
   }
 
@@ -91,11 +93,11 @@ export class CcInfoInstances extends LitElement {
 
     const skeleton = (this.instances == null);
     const isLoading = skeleton && !this.error;
-    const instances = skeleton ? CcInfoInstances.skeletonInstances : this.instances;
+    const instances = skeleton ? CcTileInstances.skeletonInstances : this.instances;
 
     const runningInstancesCount = instances.running.map((a) => a.count).reduce((a, b) => a + b, 0);
     const deployingInstancesCount = instances.deploying.map((a) => a.count).reduce((a, b) => a + b, 0);
-    const hasNoInstances = !skeleton && !this.error && (runningInstancesCount === 0) && (deployingInstancesCount === 0);
+    const emptyData = !skeleton && !this.error && (runningInstancesCount === 0) && (deployingInstancesCount === 0);
 
     // NOTE: This does not handle the case where someone has different flavors running or deploying
     if (this._lastRunningCount !== runningInstancesCount) {
@@ -115,31 +117,36 @@ export class CcInfoInstances extends LitElement {
     }
 
     return html`
-      <div class="tile_title">${i18n('cc-info-instances.title')}</div>
-      <div class="tile_body">
-        <cc-expand>
-          ${hasNoInstances ? html`
-            <div class="tile_message">${i18n('cc-info-instances.no-instances')}</div>
+      <div class="tile_title">${i18n('cc-tile-instances.title')}</div>
+      
+      ${!this.error && !emptyData ? html`
+        <div class="tile_body">
+          <cc-expand>
+            ${this._renderInstances(instances.running, 'running')}
+            ${this._renderInstances(instances.deploying, 'deploying')}
+          </cc-expand>
+          
+          <!-- in this case, a loader is better than a skeleton screen since we're not so sure about the future state -->
+          ${isLoading ? html`
+            <cc-loader></cc-loader>
           ` : ''}
-          ${this._renderInstances(instances.running, 'running')}
-          ${this._renderInstances(instances.deploying, 'deploying')}
-        </cc-expand>
-        
-        <!-- in this case, a loader is better than a skeleton screen since we're not so sure about the future state -->
-        ${isLoading ? html`
-          <cc-loader></cc-loader>
-        ` : ''}
-        
-        ${this.error ? html`
-          <div class="tile_message">${i18n('cc-info-instances.error')}</div>
-        ` : ''}
-      </div>
+        </div>
+      ` : ''}
+      
+      ${emptyData ? html`
+        <div class="tile_message">${i18n('cc-tile-instances.empty')}</div>
+      ` : ''}
+
+      ${this.error ? html`
+        <div class="tile_message"><img class="icon-img" src=${warningSvg} alt="">${i18n('cc-tile-instances.error')}</div>
+      ` : ''}
     `;
   }
 
   static get styles () {
     return [
       tileStyles,
+      iconStyles,
       instanceDetails,
       // language=CSS
       css`
@@ -203,4 +210,4 @@ export class CcInfoInstances extends LitElement {
   }
 }
 
-window.customElements.define('cc-info-instances', CcInfoInstances);
+window.customElements.define('cc-tile-instances', CcTileInstances);

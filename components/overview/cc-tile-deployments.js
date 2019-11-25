@@ -1,7 +1,9 @@
 import '../atoms/cc-datetime-relative.js';
+import warningSvg from 'twemoji/2/svg/26a0.svg';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
+import { iconStyles } from '../styles/icon.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { skeleton } from '../styles/skeleton.js';
 import { tileStyles } from '../styles/info-tiles.js';
@@ -36,7 +38,7 @@ import { tileStyles } from '../styles/info-tiles.js';
  * @prop {Array} deployments - BROKEN
  * @attr {Boolean} error - display an error message
  */
-export class CcInfoDeployments extends LitElement {
+export class CcTileDeployments extends LitElement {
 
   static get properties () {
     return {
@@ -55,14 +57,14 @@ export class CcInfoDeployments extends LitElement {
   _getStateLabel (state, action) {
     if (state === 'OK') {
       return (action === 'UNDEPLOY')
-        ? i18n('cc-info-deployments.state.stopped')
-        : i18n('cc-info-deployments.state.started');
+        ? i18n('cc-tile-deployments.state.stopped')
+        : i18n('cc-tile-deployments.state.started');
     }
     if (state === 'FAIL') {
-      return i18n('cc-info-deployments.state.failed');
+      return i18n('cc-tile-deployments.state.failed');
     }
     if (state === 'CANCELLED') {
-      return i18n('cc-info-deployments.state.cancelled');
+      return i18n('cc-tile-deployments.state.cancelled');
     }
     return state;
   }
@@ -70,51 +72,53 @@ export class CcInfoDeployments extends LitElement {
   render () {
 
     const skeleton = (this.deployments == null);
-    const deployments = skeleton ? CcInfoDeployments.skeletonDeploys : this.deployments;
+    const deployments = skeleton ? CcTileDeployments.skeletonDeploys : this.deployments;
     const hasData = (!this.error && (deployments.length > 0));
-    const noDeploys = (!this.error && (deployments.length === 0));
+    const emptyData = (!this.error && (deployments.length === 0));
 
     return html`
-      <div class="tile_title">${i18n('cc-info-deployments.title')}</div>
-      <div class="tile_body ${classMap({ 'has-data': hasData })}">
-
-        <!-- We don't really need to repeat and key by -->
-        ${!this.error ? deployments.map((d) => html`
-          <div class="state" data-state=${d.state}>
-            <span class=${classMap({ skeleton })}>${this._getStateLabel(d.state, d.action)}</span>
-          </div>
-          <div class="date">
-            ${skeleton ? html`
-              <span class="skeleton">${d.date}</span>
-            ` : ''}
-            ${!skeleton ? html`
-              <cc-datetime-relative datetime=${d.date}></cc-datetime-relative>
-            ` : ''}
-          </div>
-          <a class="link" href=${ifDefined(d.logsUrl)}>
-            <span class=${classMap({ skeleton })}>logs</span>
-          </a>
-        `) : ''}
+      <div class="tile_title">${i18n('cc-tile-deployments.title')}</div>
+      
+      ${hasData ? html`
+        <div class="tile_body">
+          <!-- We don't really need to repeat and key by -->
+          ${deployments.map((d) => html`
+            <div class="state" data-state=${d.state}>
+              <span class=${classMap({ skeleton })}>${this._getStateLabel(d.state, d.action)}</span>
+            </div>
+            <div class="date">
+              ${skeleton ? html`
+                <span class="skeleton">${d.date}</span>
+              ` : ''}
+              ${!skeleton ? html`
+                <cc-datetime-relative datetime=${d.date}></cc-datetime-relative>
+              ` : ''}
+            </div>
+            <a class="link" href=${ifDefined(d.logsUrl)}>
+              <span class=${classMap({ skeleton })}>logs</span>
+            </a>
+          `)}
+        </div>
+      ` : ''}
         
-        ${noDeploys ? html`
-          <div class="tile_message">${i18n('cc-info-deployments.no-deployments')}</div>
-        ` : ''}
+      ${emptyData ? html`
+        <div class="tile_message">${i18n('cc-tile-deployments.empty')}</div>
+      ` : ''}
 
-        ${this.error ? html`
-          <div class="tile_message">${i18n('cc-info-deployments.error')}</div>
-        ` : ''}
-      </div>
+      ${this.error ? html`
+        <div class="tile_message"><img class="icon-img" src=${warningSvg} alt="">${i18n('cc-tile-deployments.error')}</div>
+      ` : ''}
     `;
   }
 
   static get styles () {
     return [
       tileStyles,
+      iconStyles,
       skeleton,
       // language=CSS
       css`
-        /* only apply grid on tile_body when there are data */
-        .tile_body.has-data {
+        .tile_body {
           align-items: start;
           grid-gap: 1rem;
           grid-template-columns: auto auto auto;
@@ -159,4 +163,4 @@ export class CcInfoDeployments extends LitElement {
   }
 }
 
-window.customElements.define('cc-info-deployments', CcInfoDeployments);
+window.customElements.define('cc-tile-deployments', CcTileDeployments);

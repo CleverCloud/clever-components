@@ -20,6 +20,10 @@ export const tileStyles = css`
     font-size: 1.25rem;
     text-align: center;
   }
+  
+  .tile_title--image {
+    text-align: left;
+  }
 
   .tile_body {
     align-content: center;
@@ -27,6 +31,7 @@ export const tileStyles = css`
   }
 
   .tile_message {
+    align-self: center;
     text-align: center;
   }
 `;

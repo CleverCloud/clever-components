@@ -2,9 +2,12 @@ import '../atoms/cc-loader.js';
 import leaflet from 'leaflet';
 // 'leaflet.heat' needs to be imported after 'leaflet'
 import 'leaflet.heat';
+import warningSvg from 'twemoji/2/svg/26a0.svg';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
+import { iconStyles } from '../styles/icon.js';
 import { leafletStyles } from '../styles/leaflet.js';
+import { withResizeObserver } from '../mixins/with-resize-observer.js';
 import { WORLD_GEOJSON } from './world-110m.geo.js';
 
 // Generated with https://components.ai/color-scale/
@@ -84,7 +87,7 @@ const COLOR_PALETTE = [
  * @attr {Boolean} loading - display a loader
  * @attr {Boolean} error - display an error message
  */
-export class CcMap extends LitElement {
+export class CcMap extends withResizeObserver(LitElement) {
 
   static get properties () {
     return {
@@ -330,16 +333,8 @@ export class CcMap extends LitElement {
     ].join(';');
   }
 
-  connectedCallback () {
-    super.connectedCallback();
-    // Force leaflet to rerender when parent is resized
-    this._ro = new ResizeObserver(() => this._map.invalidateSize());
-    this._ro.observe(this);
-  }
-
-  disconnectedCallback () {
-    super.disconnectedCallback();
-    this._ro.unobserve(this);
+  onResize () {
+    this._map.invalidateSize();
   }
 
   // Draw the Leaflet map
@@ -401,7 +396,7 @@ export class CcMap extends LitElement {
               <cc-loader class="error-loader"></cc-loader>
             ` : ''}
             ${this.error ? html`
-              <div class="error-message">${i18n('cc-map.error')}</div>
+              <div class="error-message"><img class="icon-img" src=${warningSvg} alt="">${i18n('cc-map.error')}</div>
             ` : ''}
             ${noHeatmapPoints ? html`
               <div class="error-message">${i18n('cc-map.no-points')}</div>
@@ -414,6 +409,7 @@ export class CcMap extends LitElement {
 
   static get styles () {
     return [
+      iconStyles,
       leafletStyles,
       // language=CSS
       css`
