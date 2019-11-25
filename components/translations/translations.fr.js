@@ -66,8 +66,8 @@ export const translations = {
   'cc-info-deployments.state.started': `Démarré`,
   'cc-info-deployments.state.cancelled': `Annulé`,
   'cc-info-deployments.state.stopped': `Arrêté`,
-  'cc-info-deployments.empty': `No deployments yet.`,
-  'cc-info-deployments.error': `Something went wrong while loading deployments info.`,
+  'cc-info-deployments.empty': `Pas encore de déploiement.`,
+  'cc-info-deployments.error': `Une erreur est survenue pendant le chargement des déploiements.`,
   // cc-info-instances
   'cc-info-instances.title': `Instances`,
   'cc-info-instances.status.deploying': `En déploiement`,
