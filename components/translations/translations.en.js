@@ -2,9 +2,16 @@ import { prepareFormatDate, prepareFormatDistanceToNow } from '../lib/i18n-date.
 
 export const lang = 'en';
 
+// We considered Intl.PluralRules but no support in Safari 12 and polyfill does too much for us
+function plural (singular, plural = singular + 's') {
+  return (count) => {
+    return (count === 1) ? singular : plural;
+  };
+}
+
 const formatDistanceToNow = prepareFormatDistanceToNow(lang, (value, unit) => {
-  const plural = (value === 1) ? '' : 's';
-  return `${value} ${unit}${plural} ago`;
+  const pluralUnit = plural(unit)(value);
+  return `${value} ${pluralUnit} ago`;
 }, 'just now');
 
 const formatDate = prepareFormatDate(lang);
