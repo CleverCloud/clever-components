@@ -17,6 +17,12 @@ const formatDistanceToNow = prepareFormatDistanceToNow(lang, (value, unit) => {
 const formatDate = prepareFormatDate(lang);
 
 const currencyFormatter = new Intl.NumberFormat(lang, { style: 'currency', currency: 'EUR' });
+const percentFormatter = new Intl.NumberFormat(lang, {
+  style: 'percent',
+  minimumFractionDigits: 1,
+  maximumFractionDigits: 1,
+});
+const numberFormatter = new Intl.NumberFormat(lang);
 
 export const translations = {
   LANGUAGE: '🇬🇧 English',
@@ -86,6 +92,19 @@ export const translations = {
     return [cpu + shared, gpu, mem].filter((a) => a).join('\n');
   },
   'cc-tile-scalability.error': `Something went wrong while loading scalability config.`,
+  // cc-tile-status-codes
+  'cc-tile-status-codes.title': `HTTP response codes`,
+  'cc-tile-status-codes.about': `About this chart...`,
+  'cc-tile-status-codes.tooltip': ({ value, percent }) => {
+    const request = plural('request')(value);
+    const formattedValue = numberFormatter.format(value);
+    return `${formattedValue} ${request} (${percentFormatter.format(percent)})`;
+  },
+  'cc-tile-status-codes.error': `Something went wrong while loading HTTP response codes.`,
+  'cc-tile-status-codes.empty': `No data to display for now.`,
+  'cc-tile-status-codes.docs.msg': `Repartition of HTTP response codes returned in the last 24 hours. Click on legend items to show/hide HTTP code categories.`,
+  'cc-tile-status-codes.docs.link.href': `https://developer.mozilla.org/en/docs/Web/HTTP/Status`,
+  'cc-tile-status-codes.docs.link.title': `HTTP response status codes (MDN)`,
   // cc-input-text
   'cc-input-text.clipboard': `Copy to clipboard`,
   // cc-logsmap

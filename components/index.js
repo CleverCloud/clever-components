@@ -12,6 +12,7 @@ export { CcTileConsumption } from './overview/cc-tile-consumption.js';
 export { CcTileDeployments } from './overview/cc-tile-deployments.js';
 export { CcTileInstances } from './overview/cc-tile-instances.js';
 export { CcTileScalability } from './overview/cc-tile-scalability.js';
+export { CcTileStatusCodes } from './overview/cc-tile-status-codes.js';
 export { CcToggle } from './atoms/cc-toggle.js';
 export { EnvVarCreate } from './env-var/env-var-create.js';
 export { EnvVarEditorExpert } from './env-var/env-var-editor-expert.js';

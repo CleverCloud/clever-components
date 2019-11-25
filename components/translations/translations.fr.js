@@ -30,6 +30,12 @@ const formatDistanceToNow = prepareFormatDistanceToNow(lang, (value, unit) => {
 const formatDate = prepareFormatDate(lang);
 
 const currencyFormatter = new Intl.NumberFormat(lang, { style: 'currency', currency: 'EUR' });
+const percentFormatter = new Intl.NumberFormat(lang, {
+  style: 'percent',
+  minimumFractionDigits: 1,
+  maximumFractionDigits: 1,
+});
+const numberFormatter = new Intl.NumberFormat(lang);
 
 export const translations = {
   LANGUAGE: '🇫🇷 Français',
@@ -99,6 +105,19 @@ export const translations = {
     return [cpu + shared, gpu, mem].filter((a) => a).join('\n');
   },
   'cc-tile-scalability.error': `Une erreur est survenue pendant le chargement de la configuration de scalabilité.`,
+  // cc-tile-status-codes
+  'cc-tile-status-codes.title': `Codes de réponses HTTP`,
+  'cc-tile-status-codes.about': `À propos de ce graphe...`,
+  'cc-tile-status-codes.tooltip': ({ value, percent }) => {
+    const request = plural('requête')(value);
+    const formattedValue = numberFormatter.format(value);
+    return `${formattedValue} ${request} (${percentFormatter.format(percent)})`;
+  },
+  'cc-tile-status-codes.error': `Une erreur est survenue pendant le chargement des codes de réponses HTTP.`,
+  'cc-tile-status-codes.empty': `Il n'y a pas de données à afficher pour l'instant.`,
+  'cc-tile-status-codes.docs.msg': `Répartition des codes de réponses HTTP envoyés durant les dernières 24 heures. Cliquez sur les éléments de légende pour cacher/montrer certaines catégories de codes.`,
+  'cc-tile-status-codes.docs.link.href': `https://developer.mozilla.org/fr/docs/Web/HTTP/Status`,
+  'cc-tile-status-codes.docs.link.title': `Codes de réponses HTTP (MDN)`,
   // cc-input-text
   'cc-input-text.clipboard': `Copier dans le presse-papier`,
   // cc-logsmap
