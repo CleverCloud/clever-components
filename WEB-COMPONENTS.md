@@ -44,3 +44,23 @@ we're proposing this order for the different pars of a custom element built with
 1. `class` attribute
 1. other attributes
 1. event listeners
+
+## How to document a component?
+
+* Always start a description with an upper case letter and end it with a dot.
+* Global component description starts with "A component", "A wrapper", "A helper", "An input", "A form", ...
+* Global component description is a simple one-liner.
+* Global component description can have a `## Details` section with a bullet list of informations.
+* Global component description can have a `## Type definitions` section to document the `type` and `interface` of the properties and events.
+* This `## Type definitions` section consists of a group of code samples using the TypeScript definition format.
+* Global component description can have a `## Technical details` section for stuffs that don't concern users.
+* Global component description can have other sections specific to custom behaviours.
+* Properties' descriptions start with a verb at the 3rd person "Sets", "Enables", "Displays", ...
+* Events' descriptions start with "Fires whenever..." or "Fires XXX whenever..." when the event passes data.
+* Events' type should be `CustomEvent` or `CustomEvent<MyType>` to describe the type of the `detail` property of a custom event.
+* Don't forget to set default values for booleans in the constructor.
+* Use `@prop` instead of `@attr`.
+* Please sort your props and events alphabetically.
+* Respect the following order: `@prop`, `@event`, `@slot`, `@cssprop`
+* Document methods in place, just above the given method.
+* Use a `/** @required */` if component breaks without a given property. Must be in the `static get properties` section.

@@ -6,23 +6,31 @@ import { i18n } from '../lib/i18n.js';
 import { repeat } from 'lit-html/directives/repeat';
 
 /**
- * A high level env var editor, edit variables one at a time + a create form
+ * A high level environment variable editor to create/edit/delete variables one at a time (with validation and error messages).
  *
- * @event env-var-editor-simple:change - when any of the values changes with an array of `{ name: 'the name', value: 'the value', isDeleted: true/false }` as `detail`
+ * ## Type definitions
  *
- * @attr {Array} variables - the array of variables
- * @attr {Boolean} disabled - set disabled attribute on inputs and button
- * @attr {Boolean} readonly - if we want to only display variables (the button is hidden)
+ * ```js
+ * interface Variable {
+ *   name: string,
+ *   value: string,
+ *   isDeleted: boolean,
+ * }
+ * ```
  *
- * `{ name: 'the name', value: 'the value', isDeleted: true|false }`
+ * @prop {Boolean} readonly - Sets `readonly` attribute on inputs and hides buttons.
+ * @prop {Boolean} disabled - Sets `disabled` attribute on inputs and buttons.
+ * @prop {Variable[]} variables - Sets the list of variables.
+ *
+ * @event {CustomEvent<Variable[]>} env-var-editor-simple:change - Fires the new list of variables whenever something changes in the list.
  */
 export class EnvVarEditorSimple extends LitElement {
 
   static get properties () {
     return {
-      variables: { type: Array, attribute: false },
       disabled: { type: Boolean },
       readonly: { type: Boolean },
+      variables: { type: Array, attribute: false },
     };
   }
 

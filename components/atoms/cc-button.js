@@ -5,54 +5,62 @@ import { i18n } from '../lib/i18n.js';
 import { skeleton } from '../styles/skeleton.js';
 
 /**
- * Wraps a `<button>` with a skeleton state, some modes and a delay mechanism
+ * Wraps a `<button>` with a skeleton state, some modes and a delay mechanism.
  *
  * ## Details
  *
- * * Attributes `primary`, `success`, `warning` and `danger` define the _mode_ of the button.
- * * They are exclusive, you can only set one _mode_ at a time.
- * * When you don't use any of these values, the defaults _mode_ is `simple`.
+ * * Attributes `primary`, `success`, `warning` and `danger` define the UI _mode_ of the button.
+ * * They are exclusive, you can only set one UI _mode_ at a time.
+ * * When you don't use any of these values, the default UI _mode_ is `simple`.
  *
  * ## Delay mechanism
  *
- * * When `delay` is set, `cc-button:click` events are not fired immediately
- * * They are fired after the number of seconds set with `delay`
- * * During this `delay`, the user is presented a "click to cancel" label
- * * If the user clicks on "click to cancel", the `cc-button:click` event is not fired
- * * If the button `disabled` mode is set during the delay, the `cc-button:click` event is not fired
+ * * When `delay` is set, `cc-button:click` events are not fired immediately.
+ * * They are fired after the number of seconds set with `delay`.
+ * * During this `delay`, the user is presented a "click to cancel" label.
+ * * If the user clicks on "click to cancel", the `cc-button:click` event is not fired.
+ * * If the button `disabled` mode is set during the delay, the `cc-button:click` event is not fired.
  *
- * @fires cc-button:click - Fired when button is clicked.<br>If `delay` is set, click is only fired after the delay.
+ * @prop {Boolean} danger - Sets button UI _mode_ to danger.
+ * @prop {Number} delay - If set, enables delay mechanism and defined the number of seconds before the `cc-button:click` event is actually fired.
+ * @prop {Boolean} disabled - Sets `disabled` attribute on inner native `<button>` element.
+ * @prop {String} image - If set, enables icon mode and sets the `src` of the inner native `<img>` element.
+ * @prop {Boolean} outlined - Sets button UI as _outlined_ (no background and colored border).
+ * @prop {Boolean} primary - Sets button UI _mode_ to primary.
+ * @prop {Boolean} skeleton - Enables skeleton screen UI pattern (loading hint).
+ * @prop {Boolean} success - Sets button UI _mode_ to success.
+ * @prop {Boolean} warning - Sets button UI _mode_ to warning.
  *
- * @slot - The content of the button (text or HTML)
+ * @event {CustomEvent} cc-button:click - Fires whenever the button is clicked.<br>If `delay` is set, fires after the specified `delay` (in seconds).
  *
- * @attr {Boolean} primary - set button UI _mode_ to primary
- * @attr {Boolean} success - set button UI _mode_ to success
- * @attr {Boolean} warning - set button UI _mode_ to warning
- * @attr {Boolean} danger - set button UI _mode_ to danger
- * @attr {Boolean} disabled - same as native button element `disabled` attribute
- * @attr {Boolean} outlined - set button UI as outlined (no background and colored border)
- * @attr {Boolean} skeleton - enable skeleton screen UI pattern (loading hint)
- * @attr {Number} delay - set number of seconds before the `cc-button:click` event is actually fired
+ * @slot - The content of the button (text or HTML). If you want an image, please look at the `image` attribute.
  */
 export class CcButton extends LitElement {
 
   static get properties () {
     return {
+      danger: { type: Boolean },
+      delay: { type: Number },
       disabled: { type: Boolean, reflect: true },
+      image: { type: String },
+      outlined: { type: Boolean },
       primary: { type: Boolean },
+      skeleton: { type: Boolean },
       success: { type: Boolean },
       warning: { type: Boolean },
-      danger: { type: Boolean },
-      outlined: { type: Boolean },
-      image: { type: String },
-      delay: { type: Number },
-      skeleton: { type: Boolean },
       _cancelMode: { type: Boolean, attribute: false },
     };
   }
 
   constructor () {
     super();
+    this.danger = false;
+    this.disabled = false;
+    this.outlined = false;
+    this.primary = false;
+    this.skeleton = false;
+    this.success = false;
+    this.warning = false;
     this._cancelMode = false;
   }
 

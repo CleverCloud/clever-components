@@ -37,56 +37,57 @@ const statusIcon = {
  * A component to display various info about an app (name, commits, status...).
  *
  * ## Details
-
- * * When `app` and `status` are null, a skeleton screen UI pattern is displayed (loading hint)
- * * When only `status` is null, a skeleton screen UI pattern is displayed on the buttons and status message
  *
- * ## Properties
+ * * When `app` and `status` are null, a skeleton screen UI pattern is displayed (loading hint).
+ * * When only `status` is null, a skeleton screen UI pattern is displayed on the buttons and status message.
  *
- * | Property         | Attribute         | Type             | Description
- * | --------         | ---------         | ----             | -----------
- * | `app`            |                   | `App`            | Application details and config
- * | `status`         | `status`          | `string`         | Application status ['restart-failed', 'restarting', 'restarting-with-downtime', 'running', 'start-failed', 'starting', 'stopped', 'unknown']
- * | `runningCommit`  | `running-commit`  | `string`         | Commit from running instances
- * | `startingCommit` | `starting-commit` | `string`         | Commit from starting/deploying instances
- * | `error`          | `error`           | `boolean`        | display an error message
- * | `disableButtons` | `disable-buttons` | `boolean`        | disable all buttons (used in login as)
+ * ## Type definitions
  *
- * ### `App`
- *
- * ```
- * {
- *   name: string,
- *   commit: string,
- *   variantName: string,
- *   variantLogo: string,
- *   lastDeploymentLogsUrl: string,
+ * ```js
+ * interface App {
+ *   name: string,                   // Name of the application
+ *   commit?: string,                // Head commit on remote repo if app is not brand new (full SHA-1)
+ *   variantName: string,            // Human name of the variant (PHP, Ruby, Python...)
+ *   variantLogo: string,            // HTTPS URL to the logo of the variant
+ *   lastDeploymentLogsUrl?: string, // URL to the logs for the last deployment if app is not brand new
  * }
  * ```
  *
- * *WARNING*: The "Properties" table below is broken
+ * ```js
+ * type AppStatus = "restart-failed" | "restarting" | "restarting-with-downtime"
+ *                  | "running" | "start-failed" | "starting" | "stopped" | "unknown"
+ * ```
  *
- * @fires cc-header-app:start - Fired when one of the 3 start buttons is clicked
- * @fires cc-header-app:restart - Fired when one of the 3 restart buttons is clicked
- * @fires cc-header-app:cancel - Fired when the cancel button is clicked
- * @fires cc-header-app:stop - Fired when the stop button is clicked (after the delay)
+ * @prop {App} app - Sets application details and config.
+ * @prop {Boolean} disableButtons - Disables all buttons (in a "login as" use case).
+ * @prop {Boolean} error - Displays an error message.
+ * @prop {String} runningCommit - Sets the running commit (if app is running).
+ * @prop {String} startingCommit - Sets the starting commit (if app is deploying).
+ * @prop {AppStatus} status - Sets application status.
  *
- * @prop {Object} app - BROKEN
- * @attr {Boolean} error - display an error message
- * @attr {Boolean} disableButtons - disable all buttons (used in login as)
+ * @event {CustomEvent} cc-header-app:cancel - Fires whenever the cancel button is clicked.
+ * @event {CustomEvent} cc-header-app:restart - Fires whenever one of the 3 restart buttons is clicked.
+ * @event {CustomEvent} cc-header-app:start - Fires whenever one of the 3 start buttons is clicked.
+ * @event {CustomEvent} cc-header-app:stop - Fires whenever the stop button is clicked (after the delay).
  */
 export class CcHeaderApp extends LitElement {
 
   static get properties () {
     return {
       app: { type: Object, attribute: false },
-      status: { type: String },
+      disableButtons: { type: Boolean, attribute: 'disable-buttons', reflect: true },
+      error: { type: Boolean, reflect: true },
       runningCommit: { type: String, attribute: 'running-commit' },
       startingCommit: { type: String, attribute: 'starting-commit' },
-      error: { type: Boolean, reflect: true },
-      disableButtons: { type: Boolean, attribute: 'disable-buttons', reflect: true },
+      status: { type: String },
       _lastUserAction: { type: String, attribute: false },
     };
+  }
+
+  constructor () {
+    super();
+    this.disableButtons = false;
+    this.error = false;
   }
 
   set status (newVal) {

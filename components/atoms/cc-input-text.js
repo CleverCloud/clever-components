@@ -8,38 +8,23 @@ import { i18n } from '../lib/i18n.js';
 import { skeleton } from '../styles/skeleton.js';
 
 /**
- * A text input with optional multiline support and optional copy to clipboard button
+ * An enhanced text input with support for multiline and copy-to-clipboard.
  *
  * ## Details
  *
- * * uses a native `<input>` element by default and a `<textarea>` element when `multi` is true
- * * when you use it with `readonly` + `clipboard` + NOT `multi`, the width of the input auto adaps to the lenght of the content
+ * * Uses a native `<input>` element by default and a `<textarea>` element when `multi` is true.
+ * * When you use it with `readonly` \+ `clipboard` \+ NOT `multi`, the width of the input auto adapts to the length of the content.
  *
- * ## Properties
+ * @prop {Boolean} clipboard - Adds a copy-to-clipboard button (when not disabled and not skeleton).
+ * @prop {Boolean} disabled - Sets `disabled` attribute on inner native `<input>/<textarea>` element.
+ * @prop {Boolean} multi - Enables multiline support (with a `<textarea>` instead of an `<input>`).
+ * @prop {String} name - Sets `name` attribute on inner native `<input>/<textarea>` element.
+ * @prop {String} placeholder - Sets `placeholder` attribute on inner native `<input>/<textarea>` element.
+ * @prop {Boolean} readonly - Sets `readonly` attribute on inner native `<input>/<textarea>` element.
+ * @prop {Boolean} skeleton - Enables skeleton screen UI pattern (loading hint).
+ * @prop {String} value - Sets `value` attribute on inner native input element or textarea's inner content.
  *
- * | Property        | Attribute       | Type             | Description
- * | --------        | ---------       | ----             | -----------
- * | `disabled`      | `disabled`      | `Boolean`        | same as native a input/textarea element
- * | `readonly`      | `readonly`      | `Boolean`        | same as native a input/textarea element
- * | `skeleton`      | `skeleton`      | `Boolean`        | enable skeleton screen UI pattern (loading hint)
- * | `multi`         | `multi`         | `Boolean`        | enable multiline support (with a textarea)
- * | `clipboard`     | `clipboard`     | `Boolean`        | adds a copy to clipboard button (when not disabled and not skeleton)
- * | `value`         | `value`         | `String`         | same as native a input/textarea element
- * | `name`          | `name`          | `String`         | same as native a input/textarea element
- * | `placeholder`   | `placeholder`   | `String`         | same as native a input/textarea element
- *
- * *WARNING*: The "Properties" table below is broken
- *
- * @fires cc-input-text:input - mirrors native input/textarea events with the `value` on `detail`
- *
- * @attr {Boolean} disabled - same as native a input/textarea element
- * @attr {Boolean} readonly - same as native a input/textarea element
- * @attr {Boolean} skeleton - enable skeleton screen UI pattern (loading hint)
- * @attr {Boolean} multi - enable multiline support (with a textarea)
- * @attr {Boolean} clipboard - adds a copy to clipboard button (when not disabled and not skeleton)
- * @attr {String} value - same as native a input/textarea element
- * @attr {String} name - same as native a input/textarea element
- * @attr {String} placeholder - same as native a input/textarea element
+ * @event {CustomEvent<String>} cc-input-text:input - Fires the `value` whenever the `value` changes.
  */
 export class CcInputText extends LitElement {
 
@@ -51,6 +36,7 @@ export class CcInputText extends LitElement {
       multi: { type: Boolean, reflect: true },
       clipboard: { type: Boolean, reflect: true },
       value: { type: String },
+      /** @required */
       name: { type: String, reflect: true },
       placeholder: { type: String },
       _copyOk: { type: Boolean, attribute: false },
@@ -59,12 +45,19 @@ export class CcInputText extends LitElement {
 
   constructor () {
     super();
-    this.name = '';
-    this.value = '';
+    this.clipboard = false;
+    this.disabled = false;
+    this.multi = false;
     this.placeholder = '';
+    this.readonly = false;
+    this.skeleton = false;
+    this.value = '';
     this._copyOk = false;
   }
 
+  /**
+   * Triggers focus on the inner `<input>/<textarea>` element.
+   */
   focus () {
     this.shadowRoot.querySelector('.input').focus();
   }

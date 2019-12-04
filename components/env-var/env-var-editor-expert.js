@@ -7,21 +7,31 @@ import { i18n } from '../lib/i18n.js';
 import { iconStyles } from '../styles/icon.js';
 
 /**
- * A high level env var editor, edit all vars at once with a big string that is parsed and provides error messages
+ * A high level environment variable editor to create/edit/delete all variables at once as a big string (properly parsed with validation and error messages).
  *
- * @event env-var-editor-expert:change - when any of the values changes with an array of `{ name: 'the name', value: 'the value', isDeleted: true/false }` as `detail`
+ * ## Type definitions
  *
- * @attr {Array} variables - the array of variables
- * @attr {Boolean} disabled - set disabled attribute on inputs and button
- * @attr {Boolean} readonly - if we want to only display variables (the button is hidden)
+ * ```js
+ * interface Variable {
+ *   name: string,
+ *   value: string,
+ *   isDeleted: boolean,
+ * }
+ * ```
+ *
+ * @prop {Boolean} readonly - Sets `readonly` attribute on main input and hides buttons.
+ * @prop {Boolean} disabled - Sets `disabled` attribute on inputs and buttons.
+ * @prop {Variable[]} variables - Sets the list of variables.
+ *
+ * @event {CustomEvent<Variable[]>} env-var-editor-expert:change - Fires the new list of variables whenever something changes in the list.
  */
 export class EnvVarEditorExpert extends LitElement {
 
   static get properties () {
     return {
-      variables: { type: Array, attribute: false },
       disabled: { type: Boolean },
       readonly: { type: Boolean },
+      variables: { type: Array, attribute: false },
       _variablesAsText: { type: Array, attribute: false },
       _formattedErrors: { type: Array, attribute: false },
       _skeleton: { type: Boolean, attribute: false },
@@ -30,6 +40,7 @@ export class EnvVarEditorExpert extends LitElement {
 
   constructor () {
     super();
+    // Triggers setter (init _skeleton, _variablesAsText and _errors)
     this.variables = null;
     this.disabled = false;
     this.readonly = false;

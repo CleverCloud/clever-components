@@ -7,47 +7,63 @@ import { i18n } from '../lib/i18n.js';
 import { skeleton } from '../styles/skeleton.js';
 
 /**
- * A small input to manipulate an environement variable
+ * A small input to manipulate an environement variable.
  *
- * @event env-var-input:input - mirrors native cc-input-text events with `{ name: 'the name', value: 'the value' }` as `detail`
- * @event env-var-input:delete - when the inner delete button is clicked with `{ name: 'the name' }` as `detail`
- * @event env-var-input:keep - when the inner keep button is clicked with `{ name: 'the name' }` as `detail`
+ * ## Type definitions
  *
- * @attr {String} name - name of the environment variable
- * @attr {String} value - value of the environment variable (can be empty)
- * @attr {Boolean} new - if the environment variable is new (compared to server side state)
- * @attr {Boolean} edited - if the environment variable is edited (compared to server side state)
- * @attr {Boolean} deleted - if the environment variable should be deleted
- * @attr {Boolean} skeleton - enable skeleton screen UI pattern (loading hint)
- * @attr {Boolean} readonly - if we want to only display variables (the button is hidden)
- * @attr {Boolean} disabled - set disabled attribute on input and button
+ * ```js
+ * interface Variable {
+ *   name: string,
+ *   value: string,
+ * }
+ * ```
+ *
+ * ```js
+ * interface VariableName {
+ *   name: string,
+ * }
+ * ```
+ *
+ * @prop {Boolean} deleted - Declares the variable as "should be deleted".
+ * @prop {Boolean} disabled - Sets `disabled` attribute on input and button.
+ * @prop {Boolean} edited - Declares the variable as "edited" (compared to server side state).
+ * @prop {String} name - Sets the name of the environment variable.
+ * @prop {Boolean} new - Declares the variable as "new" (compared to server side state).
+ * @prop {Boolean} readonly - Sets `readonly` attribute on input and hides button.
+ * @prop {Boolean} skeleton - Enables skeleton screen UI pattern (loading hint).
+ * @prop {String} value - Sets the value of the environment variable (can be empty).
+ *
+ * @event {CustomEvent<VariableName>} env-var-input:delete - Fires a variable name whenever the delete button is clicked.
+ * @event {CustomEvent<Variable>} env-var-input:input - Fires a variable whenever its value changes.
+ * @event {CustomEvent<VariableName>} env-var-input:keep - Fires a variable name whenever the keep button is clicked.
  */
 export class EnvVarInput extends LitElement {
 
   static get properties () {
     return {
-      name: { type: String },
-      value: { type: String },
-      // new and edited are NOT USED FOR NOW
-      new: { type: Boolean },
-      edited: { type: Boolean },
       deleted: { type: Boolean },
-      skeleton: { type: Boolean },
       disabled: { type: Boolean },
+      // NOT USED FOR NOW
+      edited: { type: Boolean },
+      /** @required */
+      name: { type: String },
+      // NOT USED FOR NOW
+      new: { type: Boolean },
       readonly: { type: Boolean },
+      skeleton: { type: Boolean },
+      value: { type: String },
     };
   }
 
   constructor () {
     super();
-    this.value = '';
-    // new and edited are NOT USED FOR NOW
-    this.new = false;
-    this.edited = false;
     this.deleted = false;
-    this.skeleton = false;
     this.disabled = false;
+    this.edited = false;
+    this.new = false;
     this.readonly = false;
+    this.skeleton = false;
+    this.value = '';
   }
 
   _onInput ({ detail: value }) {

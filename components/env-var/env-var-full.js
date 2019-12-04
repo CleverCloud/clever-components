@@ -5,34 +5,44 @@ import { i18n } from '../lib/i18n.js';
 import { repeat } from 'lit-html/directives/repeat.js';
 
 /**
- * A high level view to edit env vars of an app and display all its add-on's env vars
+ * A high level view to edit environment variables of an app and display environment variables of all its add-ons.
  *
- * @event env-var-form:submit - when the update button is clicked with an array of `{ name: 'the name', value: 'the value' }` as `detail`
- * @event env-var-form:restart-app - when the restart app button is clicked
- * @event env-var-full:dismissed-error - when an error is displayed and the ok button is clicked
+ * ## Type definitions
  *
- * @attr {Array} variables - the array of variables
- * @attr {Boolean} restartApp - display the restart app button
- * @attr {String} error - display an error message (saving|loading)
- * @attr {Array} addons - array of addons
+ * ```js
+ * interface Variable {
+ *   name: string,
+ *   value: string,
+ *   isDeleted: boolean,
+ * }
+ * ```
+ *
+ * @prop {Array} addons - Sets list of addons.
+ * @prop {"saving"|"loading"|null} error - Displays an error message (saving or loading).
+ * @prop {Boolean} restartApp - Displays the restart app button.
+ * @prop {Variable[]} variables - Sets the list of variables.
+ *
+ * @event {CustomEvent<"saving"|"loading">} env-var-form:dismissed-error - Fires the type of error that was dismissed when the error button of an error message is clicked.
+ * @event {CustomEvent} env-var-form:restart-app - Fires whenever the restart app button is clicked.
+ * @event {CustomEvent<Variable[]>} env-var-form:submit - Fires the new list of variables whenever the submit button is clicked.
  */
 export class EnvVarFull extends LitElement {
 
   static get properties () {
     return {
-      variables: { type: Array, attribute: false },
-      restartApp: { type: Boolean, attribute: 'restart-app' },
-      error: { type: String, reflect: true },
       addons: { type: Array, attribute: false },
+      error: { type: String, reflect: true },
+      restartApp: { type: Boolean, attribute: 'restart-app' },
+      variables: { type: Array, attribute: false },
     };
   }
 
   constructor () {
     super();
-    // this.variables is let to undefined by default (this triggers skeleton screen)
-    this.restartApp = false;
-    this.error = null;
     this.addons = [];
+    this.error = null;
+    this.restartApp = false;
+    // this.variables is let to undefined by default (this triggers skeleton screen)
   }
 
   _onDismissedError (error, id) {

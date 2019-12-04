@@ -18,36 +18,26 @@ function xor (a, b) {
 }
 
 /**
- * A "tile" component to display HTTP response status codes in a pie chart (donut)
+ * A "tile" component to display HTTP response status codes in a pie chart (donut).
  *
  * ## Details
 
- * * When `data` is null, a skeleton screen UI pattern is displayed (loading hint)
- * * A short doc is available when the (i) button is clicked
+ * * When `data` is nullish, a skeleton screen UI pattern is displayed (loading hint).
+ * * A short doc is available when the (i) button is clicked.
  *
- * ## Properties
+ * ## Type definitions
  *
- * | Property       | Attribute      | Type              | Description
- * | --------       | ---------      | ----              | -----------
- * | `data`         |                | `StatusCodesData` | Status codes data
- * | `error`        | `error`        | `boolean`         | display an error message
- *
- * ### `StatusCodesData`
- *
- * Object with:
- *
- * * status code number as property
- * * number of requests as value
- *
- * ```
- * {
+ * ```js
+ * interface StatusCodesData {
+ *   // Status code number as property.
+ *   // Number of requests as value.
  *   [number]: number,
  * }
  * ```
  *
  * Example:
  *
- * ```
+ * ```js
  * {
  *   200: 5027,
  *   404: 123,
@@ -55,17 +45,15 @@ function xor (a, b) {
  * }
  * ```
  *
- * *WARNING*: The "Properties" table below is broken
- *
- * @prop {Object} data - BROKEN
- * @attr {Boolean} error - display an error message
+ * @prop {Boolean} error - Displays an error message.
+ * @prop {StatusCodesData} statusCodes - Sets data with the number of requests for each HTTP status code.
  */
 export class CcTileStatusCodes extends LitElement {
 
   static get properties () {
     return {
-      data: { type: Object, attribute: false },
       error: { type: Boolean, reflect: true },
+      statusCodes: { type: Object, attribute: false },
       _skeleton: { type: Boolean, attribute: false },
       _empty: { type: Boolean, attribute: false },
       _docs: { type: Boolean, attribute: false },
@@ -74,6 +62,8 @@ export class CcTileStatusCodes extends LitElement {
 
   constructor () {
     super();
+    // Triggers setter (init _backgroundColor, _chartLabels, _data, _empty, _labels, _skeleton and _statusCodes)
+    this.error = null;
     this.statusCodes = null;
     this._docs = false;
   }
@@ -212,7 +202,7 @@ export class CcTileStatusCodes extends LitElement {
             fontFamily: 'monospace',
             usePointStyle: true,
             // Filter legend items so we can only keep 1xx, 2xx... instead of all status codes
-            filter (current, all) {
+            filter: (current, all) => {
               const label = current.text;
               const previousLabel = all.labels[current.index - 1];
               return label !== previousLabel;
