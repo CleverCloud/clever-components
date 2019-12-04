@@ -2,36 +2,33 @@ import { css, html, LitElement } from 'lit-element';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
 
 /**
- * A display only component (just HTML+CSS) to layout:
+ * A display only component (just HTML+CSS) to layout a header, a main and several tiles.
  *
- * * A header component `.head`
- * * A main component `.main`
- * * Multiple tiles in a 1 to 4 columns grid layout (below the header and around the main component when possible)
- *   * `mode="app"` for 6 tiles
- *   * `mode="orga"` for 2 tiles
+ * ## Details
  *
- * ## Properties
+ * * The header component must have the `head` CSS class, it will be displayed at the top.
+ * * The main component must have the `main` CSS class, it will be displayed at the bottom left (depending on the number of columns).
+ * * The tile components will be displayed in a 1 to 4 columns grid layout, below the header and around the main.
+ * * The number of columns is variable and depends directly on the width of the component (with some help from `withResizeObserver`).
+ * * `mode="app"` for 6 tiles
+ * * `mode="orga"` for 2 tiles
  *
- * | Property         | Attribute         | Type             | Description
- * | --------         | ---------         | ----             | -----------
- * | `mode`           | `mode`            | `string`         | "app" or "orga"
+ * @prop {"app"|"orga"} mode - Sets the mode of the layout for the overview.
  *
- * *WARNING*: The "Properties" table below is broken
- *
- * @prop {string} mode - BROKEN
- *
- * @slot - Put your `.head`, tiles and `.main` components here
+ * @slot - Put your `.head`, tiles and `.main` components here.
  */
 export class CcOverview extends withResizeObserver(LitElement) {
 
   static get properties () {
     return {
+      /** @required */
       mode: { type: String, reflect: true },
     };
   }
 
   constructor () {
     super();
+    /** @protected */
     this.breakpoints = {
       // ceiled width with 275px tiles and 1rem (16px) gap
       width: [570, 860, 1150],

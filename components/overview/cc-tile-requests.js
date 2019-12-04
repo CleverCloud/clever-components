@@ -14,45 +14,31 @@ import { tileStyles } from '../styles/info-tiles.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
 
 /**
- * A "tile" component to display HTTP requests distribution over the last 24 hours in a bar chart
+ * A "tile" component to display HTTP requests distribution over the last 24 hours in a bar chart.
  *
  * ## Details
-
- * * When `data` is null, a skeleton screen UI pattern is displayed (loading hint)
- * * A short doc is available when the (i) button is clicked
- * * Data is provided as 24 slices of one hour but the display depends on the width of the component:
+ *
+ * * When `data` is nullish, a skeleton screen UI pattern is displayed (loading hint).
+ * * A short doc is available when the (i) button is clicked.
+ * * `data` MUST be an array of 24 slices of one hour but the display will depend on the width of the component:
  *   * 6 bars of 4 hours
  *   * 8 bars of 3 hours
  *   * 12 bars of 2 hours
  *
- * ## Properties
- *
- * | Property       | Attribute      | Type              | Description
- * | --------       | ---------      | ----              | -----------
- * | `data`         |                | `RequestsData[]`  | Requests data array (24 items)
- * | `error`        | `error`        | `boolean`         | display an error message
- *
- * ### `RequestsData`
+ * ## Type definitions
  *
  * An array of 3 values:
  *
- * ```
- * [
- *   startTs: number,
- *   endTs: number,
- *   numberOfRequests: number,
+ * ```js
+ * interface RequestsData [
+ *   number, // Start timestamp in milliseconds. Expected to be rounded to the hour of its respective TZ.
+ *   number, // End timestamp in milliseconds. Expected to be rounded to the hour of its respective TZ.
+ *   number, // Number of request during this time window.
  * ]
  * ```
  *
- * NOTES:
- *
- * * `startTs` and `endTs` are timestamps in ms
- * * `startTs` and `endTs` are expected to be rounded to the hour of their respective TZ
- *
- * *WARNING*: The "Properties" table below is broken
- *
- * @prop {Object} data - BROKEN
- * @attr {Boolean} error - display an error message
+ * @prop {RequestsData[24]} data - Sets the list of 24 time windows of one hour with timestamps and number of requests.
+ * @prop {Boolean} error - Displays an error message.
  */
 export class CcTileRequests extends withResizeObserver(LitElement) {
 
@@ -69,6 +55,7 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
 
   constructor () {
     super();
+    this.error = 0;
     // Default to lower resolution
     this._barCount = 6;
     this._data = null;
@@ -92,6 +79,7 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
     this.requestUpdate('data', oldVal);
   }
 
+  /** @protected */
   onResize ({ width }) {
     if (width < 380) {
       this._barCount = 6;

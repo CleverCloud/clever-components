@@ -8,12 +8,26 @@ import { iconStyles } from '../styles/icon.js';
 import { validateName } from '@clevercloud/client/esm/utils/env-vars.js';
 
 /**
- * A small form to create a new environment variable with validation on the name
+ * A small form to create a new environment variable with validations on the name.
  *
- * @event env-var-create:create - when the inner create button is clicked with `{ name: 'the name', value: 'the value' }` as `detail`
+ * ## Details
  *
- * @attr {Boolean} disabled - set disabled attribute on inputs and button
- * @attr {Array} variablesNames - array of existing variables names (so we can display an error if it already exists)
+ * * The validation of the variable name format is handled with [@clevercloud/client](https://github.com/CleverCloud/clever-client.js/blob/master/esm/utils/env-vars.js)
+ * * The validation of existing names is handled with the `variablesNames` property which is a list of already existing names.
+ *
+ * ## Type definitions
+ *
+ * ```js
+ * interface Variable {
+ *   name: string,
+ *   value: string,
+ * }
+ * ```
+ *
+ * @prop {Boolean} disabled - Sets `disabled` attribute on inputs and button.
+ * @prop {String[]} variablesNames - Sets list of existing variables names (so we can display an error if it already exists).
+ *
+ * @event {CustomEvent<Variable>} env-var-create:create - Fires the variable whenever the add button is clicked.
  */
 export class EnvVarCreate extends LitElement {
 
@@ -33,6 +47,7 @@ export class EnvVarCreate extends LitElement {
     this.reset();
   }
 
+  /** Resets the form to its original state. */
   reset () {
     this._variableName = '';
     this._variableValue = '';

@@ -4,26 +4,42 @@ import { dispatchCustomEvent } from '../lib/events.js';
 import { repeat } from 'lit-html/directives/repeat.js';
 
 /**
- * Single choice toggle (a better looking radio input group)
+ * A better looking radio input group component acting like a toggle between many options.
  *
- * @fires {String} cc-toggle:input - the selected/toggled value
+ * ## Technical details
  *
- * @attr {String} value - the selected value
- * @attr {Boolean} disabled - disables the whole radio input group
- * @attr {Array} choices - the list of choices
+ * * Uses native `input[type=radio]` under the hood to keep native behaviour (a11y, keyboards...).
+ * * We decided to use a JavaScript array of objects for the choices because it's way simpler to implement and not that dirtier to use.
+ *
+ * ## Type definitions
+ *
+ * ```js
+ * interface Choice {
+ *   label: string,
+ *   value: string,
+ * }
+ * ```
+ *
+ * @prop {Choice[]} choices - Sets the list of choices.
+ * @prop {Boolean} disabled - Sets the `disabled` attribute on all `input[type=radio]` of whole group.
+ * @prop {String} value - Sets the selected value.
+ *
+ * @event {CustomEvent<String>} cc-toggle:input - Fires the selected `value` whenever the selected `value` changes.
  */
 export class CcToggle extends LitElement {
 
   static get properties () {
     return {
-      value: { type: String },
-      disabled: { type: Boolean },
+      /** @required */
       choices: { type: Array, attribute: false },
+      disabled: { type: Boolean },
+      value: { type: String },
     };
   }
 
   constructor () {
     super();
+    this.disabled = false;
     // use this unique name for isolation (Safari seems to have a bug)
     this._uniqueName = Math.random().toString(36).slice(2);
   }
@@ -34,6 +50,7 @@ export class CcToggle extends LitElement {
   }
 
   render () {
+
     return html`
       <div class="toggle-group ${classMap({ disabled: this.disabled, enabled: !this.disabled })}">
         ${repeat(this.choices, ({ value }) => value, ({ label, value }) => html`

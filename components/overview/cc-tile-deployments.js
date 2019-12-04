@@ -9,23 +9,16 @@ import { skeleton } from '../styles/skeleton.js';
 import { tileStyles } from '../styles/info-tiles.js';
 
 /**
- * A "tile" component to display a list of deployments (status, humanized time ago and logs link)
+ * A "tile" component to display a list of deployments (status, humanized time ago and logs link).
  *
  * ## Details
-
- * When `deployments` is null, a skeleton screen UI pattern is displayed (loading hint)
  *
- * ## Properties
+ * * When `deployments` is nullish, a skeleton screen UI pattern is displayed (loading hint)
  *
- * | Property      | Attribute      | Type             | Description
- * | --------      | ---------      | ----             | -----------
- * | `deployments` |                | `Deployment[]`   | List of deployments to display
- * | `error`       | `error`        | `boolean`        | display an error message
+ * ## Type definitions
  *
- * ### `Deployment`
- *
- * ```
- * {
+ * ```js
+ * interface Deployment {
  *   state: string,
  *   action: string,
  *   date: string,
@@ -33,10 +26,8 @@ import { tileStyles } from '../styles/info-tiles.js';
  * }
  * ```
  *
- * *WARNING*: The "Properties" table below is broken
- *
- * @prop {Array} deployments - BROKEN
- * @attr {Boolean} error - display an error message
+ * @prop {Deployment[]} deployments - Sets the list of the last deployments (it's up to you to only pass 2 or 3).
+ * @prop {Boolean} error - Displays an error message.
  */
 export class CcTileDeployments extends LitElement {
 
@@ -45,6 +36,11 @@ export class CcTileDeployments extends LitElement {
       deployments: { type: Array, attribute: false },
       error: { type: Boolean, reflect: true },
     };
+  }
+
+  constructor () {
+    super();
+    this.error = false;
   }
 
   static get skeletonDeploys () {

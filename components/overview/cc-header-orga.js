@@ -14,19 +14,12 @@ import { skeleton } from '../styles/skeleton.js';
  *
  * ## Details
 
- * * When `orga` is null, a skeleton screen UI pattern is displayed (loading hint)
+ * * When `orga` is nullish, a skeleton screen UI pattern is displayed (loading hint)
  *
- * ## Properties
+ * ## Type definitions
  *
- * | Property         | Attribute         | Type             | Description
- * | --------         | ---------         | ----             | -----------
- * | `orga`           |                   | `Orga`           | Organization details and config
- * | `error`          | `error`           | `boolean`        | display an error message
- *
- * ### `App`
- *
- * ```
- * {
+ * ```js
+ * interface Orga {
  *   name: string,
  *   avatar: string,
  *   cleverEnterprise: boolean,
@@ -34,15 +27,21 @@ import { skeleton } from '../styles/skeleton.js';
  * }
  * ```
  *
- * *WARNING*: The "Properties" table below is broken
+ * @prop {Boolean} error - Displays an error message.
+ * @prop {Orga} orga - Sets organization details and config.
  */
 export class CcHeaderOrga extends LitElement {
 
   static get properties () {
     return {
-      orga: { type: Object, attribute: false },
       error: { type: Boolean, reflect: true },
+      orga: { type: Object, attribute: false },
     };
+  }
+
+  constructor () {
+    super();
+    this.error = false;
   }
 
   static get skeletonOrga () {

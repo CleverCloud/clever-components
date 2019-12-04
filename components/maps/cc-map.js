@@ -25,18 +25,12 @@ const COLOR_PALETTE = [
 ];
 
 /**
- * World map showing blinking dots or heatmaps
+ * World map with two modes: blinking dots or heatmap.
  *
- * ## Methods
+ * ## Type definitions
  *
- * * `addPoints(points: Point[], options?: PointsOptions)`
- *
- * ## Classes
- *
- * ### Point
- *
- * ```
- * {
+ * ```js
+ * interface Point {
  *   lat: number,           // Latitude
  *   lon: number,           // Longitude
  *   count?: number,        // Number of occurences for this location (default: 1)
@@ -45,47 +39,29 @@ const COLOR_PALETTE = [
  * }
  * ```
  *
- * ### PointsOptions
- *
- * ```
- * {
+ * ```js
+ * interface PointsOptions {
  *   spreadDuration?: boolean|number, // Spread points appearance over a time window (in ms)
  * }
  * ```
  *
- * ## Properties
- *
- * | Property        | Attribute       | Type             | Description
- * | --------        | ---------       | ----             | -----------
- * | `centerLat`     | `center-lat`    | `number`         | Place the latitude view/center of the map
- * | `centerLon`     | `center-lon`    | `number`         | Place the longitude view/center of the map
- * | `viewZoom`      | `view-zoom`     | `number`         | Place the view/center zoom of the map [1-6]
- * | `mode`          | `mode`          | `string`         | mode of the map ['points', 'heatmap']
- * | `heatmapPoints` | `heatmapPoints` | `HeatmapPoint[]` | Data to draw the heatmap to show points
- * | `loading`       | `loading`       | `boolean`        | display a loader
- * | `error`         | `error`         | `boolean`        | display an error message
- *
- * ### HeatmapPoint
- *
- * ```
- * {
+ * ```js
+ * interface HeatmapPoint {
  *   lat: number,   // Latitude
  *   lon: number,   // Longitude
  *   count: number, // Number of occurences for this location
  * }
  * ```
  *
- * *WARNING*: The "Properties" table below is broken
+ * @prop {Number} centerLat - Sets the latitude center of the map.
+ * @prop {Number} centerLon - Sets the longitude center of the map.
+ * @prop {Boolean} error - Displays an error message (can be combined with `loading`).
+ * @prop {HeatmapPoint[]} heatmapPoints - Sets the list of points used to draw the heatmap.
+ * @prop {Boolean} loading - Displays a loader on top of the map (can be combined with `error`).
+ * @prop {"points"|"heatmap"} mode - Sets map mode: `"points"` for blinking temporary dots and `"heatmap"` for a heatmap.
+ * @prop {Number} viewZoom - Sets the zoom of the map (between 1 and 6).
  *
- * @slot - Legend and/or details for the map (displayed at the bottom)
- *
- * @attr {Number} center-lat - Place the latitude view/center of the map
- * @attr {Number} center-lon - Place the longitude view/center of the map
- * @attr {Number} view-zoom - Place the view/center zoom of the map
- * @attr {String} mode - 'points' (default) or 'heatmap'
- * @attr {Array} heatmapPoints - TODO
- * @attr {Boolean} loading - display a loader
- * @attr {Boolean} error - display an error message
+ * @slot - The legend and/or details for the map (displayed at the bottom).
  */
 export class CcMap extends withResizeObserver(LitElement) {
 
@@ -93,11 +69,11 @@ export class CcMap extends withResizeObserver(LitElement) {
     return {
       centerLat: { type: Number, attribute: 'center-lat' },
       centerLon: { type: Number, attribute: 'center-lon' },
-      viewZoom: { type: Number, attribute: 'view-zoom', reflect: true },
-      mode: { type: String },
-      loading: { type: Boolean, reflect: true },
-      heatmapPoints: { type: Array, attribute: false },
       error: { type: Boolean, reflect: true },
+      heatmapPoints: { type: Array, attribute: false },
+      loading: { type: Boolean, reflect: true },
+      mode: { type: String },
+      viewZoom: { type: Number, attribute: 'view-zoom', reflect: true },
     };
   }
 
@@ -106,8 +82,11 @@ export class CcMap extends withResizeObserver(LitElement) {
     // Centered on Paris by default
     this.centerLat = 48.9;
     this.centerLon = 2.4;
-    this.viewZoom = 2;
+    this.error = false;
+    this.heatmapPoints = [];
+    this.loading = false;
     this.mode = 'points';
+    this.viewZoom = 2;
     // Used for reatime points
     this._points = [];
     this._markers = {};
@@ -176,6 +155,11 @@ export class CcMap extends withResizeObserver(LitElement) {
       : this._updateHeatmap(newVal);
   }
 
+  /**
+   * Add several points to the map for the live blinking dots mode.
+   * @param {Point[]} points - List of points.
+   * @param {PointsOptions} options - Options to spread the display of the different points over time.
+   */
   addPoints (points, options = {}) {
 
     // If a point is added before the map is set, wait
@@ -333,6 +317,9 @@ export class CcMap extends withResizeObserver(LitElement) {
     ].join(';');
   }
 
+  /**
+   * @private
+   */
   onResize () {
     this._map.invalidateSize();
   }

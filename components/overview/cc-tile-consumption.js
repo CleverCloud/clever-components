@@ -7,32 +7,23 @@ import { skeleton } from '../styles/skeleton.js';
 import { tileStyles } from '../styles/info-tiles.js';
 
 /**
- * A "tile" component to display consumption info (yesterday and last 30 days)
+ * A "tile" component to display consumption info (yesterday and over last 30 days).
  *
  * ## Details
-
- * When `consumption` is null, a skeleton screen UI pattern is displayed (loading hint)
  *
- * ## Properties
+ * * When `consumption` is nullish, a skeleton screen UI pattern is displayed (loading hint).
  *
- * | Property       | Attribute      | Type             | Description
- * | --------       | ---------      | ----             | -----------
- * | `consumption`  |                | `Consumption`    | Consumption info for yesterday and last 30 days
- * | `error`        | `error`        | `boolean`        | display an error message
+ * ## Type definitions
  *
- * ### `Consumption`
- *
- * ```
- * {
+ * ```js
+ * interface Consumption {
  *   yesterday: number,
  *   last30Days: number,
  * }
  * ```
  *
- * *WARNING*: The "Properties" table below is broken
- *
- * @prop {Object} consumption - BROKEN
- * @attr {Boolean} error - display an error message
+ * @prop {Consumption} consumption - Sets the consumption details.
+ * @prop {Boolean} error - Displays an error message.
  */
 export class CcTileConsumption extends LitElement {
 
@@ -41,6 +32,11 @@ export class CcTileConsumption extends LitElement {
       consumption: { type: Object, attribute: false },
       error: { type: Boolean, reflect: true },
     };
+  }
+
+  constructor () {
+    super();
+    this.error = false;
   }
 
   static get _skeletonConsumption () {

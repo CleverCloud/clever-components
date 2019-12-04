@@ -1,6 +1,3 @@
-// This is mainly inspired by https://github.com/github/time-elements/blob/master/src/relative-time-element.js
-// This file is not using lit* deps on purpose (keep small and not useful).
-
 import { i18n } from '../lib/i18n.js';
 
 const trackedElements = [];
@@ -11,12 +8,21 @@ function updateTrackedElements () {
 }
 
 /**
- * Display a date as localized "humanize time ago".
+ * A text-only component to display a localized humanized relative date (ex: "two minutes ago").
  *
- * * The displayed "time ago" text is updated every 10 seconds.
- * * A title (tooltip) is generated with a human date.
+ * ## Details
  *
- * @attr {String} datetime - Date as ISO string or timestamp
+ * * This component relies on the i18n system of this component library to format the relative date.
+ * * Once the element is attached to the DOM, the displayed text is updated every 10 seconds.
+ * * The 10 second update loop is the same for all instances of this component.
+ * * A tooltip is available (with `title=""`) with the full formatted date and time.
+ *
+ * ## Technical details
+ *
+ * * This is mainly inspired by GitHub's [relative-time-element](https://github.com/github/time-elements/blob/master/src/relative-time-element.js).
+ * * This component does not use lit* deps on purpose (keep small and not useful).
+ *
+ * @prop {String|Number} datetime - Date as ISO string or timestamp
  */
 export class CcDatetimeRelative extends HTMLElement {
 
@@ -28,6 +34,7 @@ export class CcDatetimeRelative extends HTMLElement {
     return this.getAttribute('datetime');
   }
 
+  /** @required */
   set datetime (value) {
     this.setAttribute('datetime', value);
   }

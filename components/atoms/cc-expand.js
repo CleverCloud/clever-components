@@ -1,24 +1,24 @@
-// All this file is written in a way so it can be the smallest possible,
-// while keeping a reasonable readability level.
-// It is not using lit* deps on purpose (keep small and not useful).
-
 const createElement = (tagName) => document.createElement(tagName);
 const appendChild = (parent, child) => parent.appendChild(child);
 
 /**
- * A wrapper that changes its size (with a transition) according to the size of its children
+ * A, invisible wrapper that changes its size (with an animation) according to the size of its children.
  *
- * NOTE: The transition only works in browsers supporting ResizeObserver
+ * ## Technical details
+ *
+ * * The animation only works in browsers supporting [`ResizeObserver`](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver) and [Web Animation API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API).
+ * * This component does not use lit* deps on purpose (keep small and not useful).
+ * * The source code is written in a way so it can be the smallest possible, while keeping a reasonable readability level.
  */
 export class CcExpand extends HTMLElement {
 
   constructor () {
     super();
 
-    // language=CSS
     const shadow = this.attachShadow({ mode: 'open' });
     const style = createElement('style');
-    style.textContent = `:host{display:block;overflow:hidden}`;
+    // language=CSS
+    style.textContent = `:host {display:block;overflow:hidden}`;
     this._wrapper = createElement('div');
     const slot = createElement('slot');
 

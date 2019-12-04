@@ -12,31 +12,39 @@ import { i18n } from '../lib/i18n.js';
 import { iconStyles } from '../styles/icon.js';
 
 /**
- * A high level env var editor form, wraps simple editor and expert editor
+ * A high level environment variable form (wrapping simple editor and expert editor into one interface).
  *
- * @event env-var-form:submit - when the update button is clicked with an array of `{ name: 'the name', value: 'the value' }` as `detail`
- * @event env-var-form:restart-app - when the restart app button is clicked
- * @event env-var-form:dismissed-error - when an error is displayed and the ok button is clicked
+ * ## Type definitions
  *
- * @attr {Array} variables - the array of variables
- * @attr {String} heading - a text to be used as a header title
- * @attr {Boolean} saving - enable saving sate (disabled form with loader)
- * @attr {Boolean} readonly - if we want to only display variables (the button is hidden)
- * @attr {Boolean} restartApp - display the restart app button
- * @attr {String} error - display an error message (saving|loading)
+ * ```js
+ * interface Variable {
+ *   name: string,
+ *   value: string,
+ *   isDeleted: boolean,
+ * }
+ * ```
  *
- * `{ name: 'the name', value: 'the value', isDeleted: true|false }`
+ * @prop {"saving"|"loading"|null} error - Displays an error message (saving or loading).
+ * @prop {String} heading - Sets a text to be used as a header title.
+ * @prop {Boolean} readonly - Sets `readonly` attribute input and hides buttons.
+ * @prop {Boolean} restartApp - Displays the restart app button.
+ * @prop {Boolean} saving - Enables saving sate (form is disabled and loader is displayed).
+ * @prop {Variable[]} variables - Sets the list of variables.
+ *
+ * @event {CustomEvent<"saving"|"loading">} env-var-form:dismissed-error - Fires the type of error that was dismissed when the error button of an error message is clicked.
+ * @event {CustomEvent} env-var-form:restart-app - Fires whenever the restart app button is clicked.
+ * @event {CustomEvent<Variable[]>} env-var-form:submit - Fires the new list of variables whenever the submit button is clicked.
  */
 export class EnvVarForm extends LitElement {
 
   static get properties () {
     return {
+      error: { type: String, reflect: true },
       heading: { type: String, reflect: true },
-      variables: { type: Array, attribute: false },
-      saving: { type: Boolean, reflect: true },
       readonly: { type: Boolean, reflect: true },
       restartApp: { type: Boolean, attribute: 'restart-app' },
-      error: { type: String, reflect: true },
+      saving: { type: Boolean, reflect: true },
+      variables: { type: Array, attribute: false },
       _currentVariables: { type: Array, attribute: false },
       _expertVariables: { type: Array, attribute: false },
       _mode: { type: String, attribute: false },
@@ -46,12 +54,12 @@ export class EnvVarForm extends LitElement {
 
   constructor () {
     super();
+    this.error = null;
     this.heading = null;
-    // this.variables is let to undefined by default (this triggers skeleton screen)
-    this.saving = false;
     this.readonly = false;
     this.restartApp = false;
-    this.error = null;
+    this.saving = false;
+    // this.variables is let to undefined by default (this triggers skeleton screen)
     this._mode = 'SIMPLE';
   }
 

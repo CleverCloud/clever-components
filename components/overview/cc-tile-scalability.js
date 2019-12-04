@@ -12,49 +12,38 @@ import { skeleton } from '../styles/skeleton.js';
  *
  * ## Details
 
- * When `scalability` is null, a skeleton screen UI pattern is displayed (loading hint)
+ * * When `scalability` is nullish, a skeleton screen UI pattern is displayed (loading hint).
  *
- * ## Properties
+ * ## Type definitions
  *
- * | Property      | Attribute      | Type             | Description
- * | --------      | ---------      | ----             | -----------
- * | `scalability` |                | `Scalability`    | describe the current scalability settings
- * | `error`       | `error`        | `boolean`        | display an error message
- *
- * ### `Scalability`
- *
+ * ```js
+ * interface Flavor {
+ *   name: string,
+ *   cpus: number,
+ *   gpus: number,
+ *   mem: number,
+ *   microservice: boolean,
+ * }
  * ```
- * {
+ *
+ * ```js
+ * interface Scalability {
  *   minFlavor: Flavor,
  *   maxFlavor: Flavor,
- *   minInstances: Number,
- *   maxInstances: Number,
+ *   minInstances: number,
+ *   maxInstances: number,
  * }
  * ```
  *
- * ### `Flavor`
- *
- * ```
- * {
- *   name: String,
- *   cpus: Number,
- *   gpus: Number,
- *   mem: Number,
- *   microservice: Boolean,
- * }
- * ```
- *
- * *WARNING*: The "Properties" table below is broken
- *
- * @prop {Object} scalability - BROKEN
- * @attr {Boolean} error - display an error message
+ * @prop {Boolean} error - Displays an error message.
+ * @prop {Scalability} scalability - Sets the scalability config of an app with details about flavors and number of instances.
  */
 export class CcTileScalability extends LitElement {
 
   static get properties () {
     return {
-      scalability: { type: Object, attribute: false },
       error: { type: Boolean, reflect: true },
+      scalability: { type: Object, attribute: false },
     };
   }
 

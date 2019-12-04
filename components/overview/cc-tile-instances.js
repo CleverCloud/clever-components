@@ -15,49 +15,43 @@ const statusImg = {
 };
 
 /**
- * A "tile" component to display current status of running de deploying instances for a given app.
+ * A "tile" component to display current status of running and deploying instances for a given app.
  *
  * ## Details
  *
- * * When `instances` is null, a loader is displayed
+ * * When `instances` is nullish, a loader is displayed.
  *
- * ## Properties
+ * ## Type definitions
  *
- * | Property    | Attribute     | Type             | Description
- * | --------    | ---------     | ----             | -----------
- * | `instances` |               | `InstancesState` | describe the current state of running and deploying instances
- * | `error`     | `error`       | `boolean`        | display an error message
- *
- * ### `InstancesState`
- *
- * ```
- * {
+ * ```js
+ * interface InstancesState {
  *   running: Instance[],
  *   deploying: Instance[],
  * }
  * ```
  *
- * ### `Instance`
- *
- * ```
- * {
+ * ```js
+ * interface Instance {
  *   flavourName: string,
- *   count: number
+ *   count: number,
  * }
  * ```
  *
- * *WARNING*: The "Properties" table below is broken
- *
- * @prop {Object} instances - BROKEN
- * @attr {Boolean} error - display an error message
+ * @prop {Boolean} error - Displays an error message.
+ * @prop {InstancesState} instances - Sets the current state of running and deploying instances.
  */
 export class CcTileInstances extends LitElement {
 
   static get properties () {
     return {
-      instances: { type: Object, attribute: false },
       error: { type: Boolean, reflect: true },
+      instances: { type: Object, attribute: false },
     };
+  }
+
+  constructor () {
+    super();
+    this.error = false;
   }
 
   static get skeletonInstances () {

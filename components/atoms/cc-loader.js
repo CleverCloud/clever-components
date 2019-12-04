@@ -1,9 +1,13 @@
 import { LitElement, css, html } from 'lit-element';
 
 /**
- * Simple loading indicator (auto centered and flexible size)
+ * A loading indicator, auto centered and with flexible size.
  *
- * @cssprop --cc-loader-color - The color
+ * ## Details
+ *
+ * * Size this component like you want, the loading circle will be centered automatically.
+ *
+ * @cssprop {Color} --cc-loader-color - The color of the animated circle (defaults: `#2653af`).
  */
 export class CcLoader extends LitElement {
 
