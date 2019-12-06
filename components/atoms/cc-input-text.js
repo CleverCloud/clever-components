@@ -1,5 +1,7 @@
 import clipboardSvg from './clipboard.svg';
 import copy from 'clipboard-copy';
+import eyeClosedSvg from './eye-closed.svg';
+import eyeOpenSvg from './eye-open.svg';
 import tickSvg from './tick.svg';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
@@ -8,12 +10,13 @@ import { i18n } from '../lib/i18n.js';
 import { skeleton } from '../styles/skeleton.js';
 
 /**
- * An enhanced text input with support for multiline and copy-to-clipboard.
+ * An enhanced text input with support for multiline, copy-to-clipboard and show/hide secret.
  *
  * ## Details
  *
  * * Uses a native `<input>` element by default and a `<textarea>` element when `multi` is true.
  * * When you use it with `readonly` \+ `clipboard` \+ NOT `multi`, the width of the input auto adapts to the length of the content.
+ * * The `secret` feature only works for simple line mode (when `multi` is false).
  *
  * @prop {Boolean} clipboard - Adds a copy-to-clipboard button (when not disabled and not skeleton).
  * @prop {Boolean} disabled - Sets `disabled` attribute on inner native `<input>/<textarea>` element.
@@ -21,6 +24,7 @@ import { skeleton } from '../styles/skeleton.js';
  * @prop {String} name - Sets `name` attribute on inner native `<input>/<textarea>` element.
  * @prop {String} placeholder - Sets `placeholder` attribute on inner native `<input>/<textarea>` element.
  * @prop {Boolean} readonly - Sets `readonly` attribute on inner native `<input>/<textarea>` element.
+ * @prop {Boolean} secret - Enables show/hide secret feature with an eye icon.
  * @prop {Boolean} skeleton - Enables skeleton screen UI pattern (loading hint).
  * @prop {String} value - Sets `value` attribute on inner native input element or textarea's inner content.
  *
@@ -30,15 +34,17 @@ export class CcInputText extends LitElement {
 
   static get properties () {
     return {
-      disabled: { type: Boolean, reflect: true },
-      readonly: { type: Boolean, reflect: true },
-      skeleton: { type: Boolean, reflect: true },
-      multi: { type: Boolean, reflect: true },
       clipboard: { type: Boolean, reflect: true },
-      value: { type: String },
-      /** @required */
+      disabled: { type: Boolean, reflect: true },
+      multi: { type: Boolean, reflect: true },
       name: { type: String, reflect: true },
       placeholder: { type: String },
+      readonly: { type: Boolean, reflect: true },
+      secret: { type: Boolean, reflect: true },
+      skeleton: { type: Boolean, reflect: true },
+      /** @required */
+      value: { type: String },
+      _showSecret: { type: Boolean, attribute: false },
       _copyOk: { type: Boolean, attribute: false },
     };
   }
@@ -50,9 +56,11 @@ export class CcInputText extends LitElement {
     this.multi = false;
     this.placeholder = '';
     this.readonly = false;
+    this.secret = false;
     this.skeleton = false;
     this.value = '';
     this._copyOk = false;
+    this._showSecret = false;
   }
 
   /**
@@ -80,6 +88,10 @@ export class CcInputText extends LitElement {
     });
   }
 
+  _onClickSecret () {
+    this._showSecret = !this._showSecret;
+  }
+
   // Stop propagation of keydown and keypress events (to prevent conflicts with shortcuts)
   _stopPropagation (e) {
     e.stopPropagation();
@@ -89,9 +101,11 @@ export class CcInputText extends LitElement {
 
     const rows = (this.value || '').split('\n').length;
     const clipboard = (this.clipboard && !this.disabled && !this.skeleton);
+    // NOTE: For now, we don't support secret when multi is activated
+    const secret = (this.secret && !this.multi && !this.disabled && !this.skeleton);
 
     return html`
-      <div class="wrapper ${classMap({ skeleton: this.skeleton, clipboard })}"
+      <div class="wrapper ${classMap({ skeleton: this.skeleton, clipboard, secret })}"
         @input=${this._onInput}
         @keydown=${this._stopPropagation}
         @keypress=${this._stopPropagation}
@@ -122,7 +136,8 @@ export class CcInputText extends LitElement {
             -->
             <div class="auto-size input">${this.value}</div>
           ` : ''}
-          <input type="text"
+          <input
+            type=${this.secret && !this._showSecret ? 'password' : 'text'}
             class="input"
             ?disabled=${this.disabled || this.skeleton} 
             ?readonly=${this.readonly}
@@ -135,11 +150,20 @@ export class CcInputText extends LitElement {
         ` : ''}
       </div>
       
-      ${clipboard ? html`
-        <button class="clipboard-btn" ?disabled=${this.disabled || this.skeleton} @click=${this._onClickCopy} title=${i18n('cc-input-text.clipboard')}>
-          <img class="clipboard-img" src=${this._copyOk ? tickSvg : clipboardSvg} alt="">
-        </button>
-    ` : ''}
+      <div class="btn-bar">
+        ${secret ? html`
+          <button class="btn" @click=${this._onClickSecret}
+            title=${this._showSecret ? i18n('cc-input-text.secret.hide') : i18n('cc-input-text.secret.show')}>
+            <img class="btn-img" src=${this._showSecret ? eyeClosedSvg : eyeOpenSvg} alt="">
+          </button>
+        ` : ''}
+        
+        ${clipboard ? html`
+          <button class="btn" ?disabled=${this.disabled || this.skeleton} @click=${this._onClickCopy} title=${i18n('cc-input-text.clipboard')}>
+            <img class="btn-img" src=${this._copyOk ? tickSvg : clipboardSvg} alt="">
+          </button>
+        ` : ''}
+      </div>
     `;
   }
 
@@ -244,13 +268,25 @@ export class CcInputText extends LitElement {
           color: transparent;
         }
 
-        /* CLIPBOARD BUTTON STUFFS */
-        .wrapper.clipboard {
+        /* BUTTON STUFFS */
+        .wrapper.clipboard,
+        .wrapper.secret {
           padding-right: 2.2rem;
         }
 
+        .wrapper.clipboard.secret {
+          padding-right: 3.8rem;
+        }
+
+        .btn-bar {
+          display: flex;
+          position: absolute;
+          right: calc(0.2rem + 1px);
+          top: calc(0.2rem + 1px);
+        }
+
         /* RESET */
-        .clipboard-btn {
+        .btn {
           background: transparent;
           border: none;
           display: block;
@@ -259,54 +295,55 @@ export class CcInputText extends LitElement {
           padding: 0;
         }
 
-        .clipboard-btn {
+        .btn {
           border-radius: 0.1rem;
           cursor: pointer;
           height: 1.6rem;
-          position: absolute;
-          right: calc(0.2rem + 1px);
-          top: calc(0.2rem + 1px);
           width: 1.6rem;
         }
 
-        .clipboard-btn[disabled],
-        .clipboard-btn[skeleton] {
+        .btn:not(:first-child) {
+          margin-left: 0.2rem;
+        }
+
+        .btn[disabled],
+        .btn[skeleton] {
           display: none;
         }
 
-        .clipboard-btn:focus {
+        .btn:focus {
           box-shadow: 0 0 0 .2rem rgba(50, 115, 220, .25);
           outline: 0;
         }
 
-        .clipboard-btn:active,
-        .clipboard-btn:hover {
+        .btn:active,
+        .btn:hover {
           box-shadow: none;
           outline: 0;
         }
 
-        .clipboard-btn:hover {
+        .btn:hover {
           background-color: #f5f5f5;
         }
 
-        .clipboard-btn:active {
+        .btn:active {
           background-color: #eee;
         }
 
-        :host([readonly]) .clipboard-btn:hover {
+        :host([readonly]) .btn:hover {
           background-color: #e5e5e5;
         }
 
-        :host([readonly]) .clipboard-btn:active {
+        :host([readonly]) .btn:active {
           background-color: #ddd;
         }
 
         /* We can do this because we set a visible focus state */
-        .clipboard-btn::-moz-focus-inner {
+        .btn::-moz-focus-inner {
           border: 0;
         }
 
-        .clipboard-img {
+        .btn-img {
           box-sizing: border-box;
           padding: 15%;
           height: 100%;
@@ -314,7 +351,7 @@ export class CcInputText extends LitElement {
           filter: grayscale(100%);
         }
 
-        .clipboard-img:hover {
+        .btn-img:hover {
           filter: grayscale(0%);
         }
       `,

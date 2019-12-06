@@ -139,6 +139,8 @@ export const translations = {
   'cc-tile-status-codes.docs.link.title': `HTTP response status codes (MDN)`,
   // cc-input-text
   'cc-input-text.clipboard': `Copy to clipboard`,
+  'cc-input-text.secret.show': `Show secret`,
+  'cc-input-text.secret.hide': `Hide secret`,
   // cc-logsmap
   'cc-logsmap.mode.points': `Realtime`,
   'cc-logsmap.mode.heatmap': `Last 24h`,

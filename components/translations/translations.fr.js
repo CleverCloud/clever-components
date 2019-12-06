@@ -152,6 +152,8 @@ export const translations = {
   'cc-tile-status-codes.docs.link.title': `Codes de réponses HTTP (MDN)`,
   // cc-input-text
   'cc-input-text.clipboard': `Copier dans le presse-papier`,
+  'cc-input-text.secret.show': `Afficher le secret`,
+  'cc-input-text.secret.hide': `Cacher le secret`,
   // cc-logsmap
   'cc-logsmap.mode.points': `En direct`,
   'cc-logsmap.mode.heatmap': `Dernières 24h`,
