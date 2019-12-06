@@ -66,6 +66,6 @@
     "svgo": "^1.3.0",
     "terser": "^4.3.1",
     "text-table": "^0.2.0",
-    "web-component-analyzer": "1.0.0-next.15"
+    "web-component-analyzer": "1.0.0-next.16"
   }
 }
