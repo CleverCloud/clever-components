@@ -4,9 +4,6 @@ import { i18nKnob } from '../stories/lib/i18n-knob';
 import { withA11y } from '@storybook/addon-a11y';
 import { withKnobs } from '@storybook/addon-knobs';
 
-// automatically import all files ending in *.stories.js
-const req = require.context('../stories', true, /.stories.js$/);
-
 addDecorator(withKnobs);
 
 // Add global language selector knob on each story
@@ -30,18 +27,25 @@ addParameters({
     showPanel: true,
     enableShortcuts: true,
     theme: cleverTheme,
+    storySort: (a, b) => {
+      return a[1].id.localeCompare(b[1].id, undefined, { numeric: true });
+    },
   },
   a11y: {
     restoreScroll: true,
   },
 });
 
-function loadStories () {
-  // Load documentation home page first
-  req('./welcome.stories.js');
-  req.keys().forEach(filename => {
-    return req(filename);
+// Automatically import all files ending in *.stories.js
+const req = require.context('../stories', true, /\.stories\.js$/);
+configure(req, module);
+
+// Force full reload instead of HMR for Web Components
+// https://github.com/storybookjs/storybook/tree/next/app/web-components
+if (module.hot) {
+  module.hot.accept(req.id, () => {
+    const currentLocationHref = window.location.href;
+    window.history.pushState(null, null, currentLocationHref);
+    window.location.reload();
   });
 }
-
-configure(loadStories, module);

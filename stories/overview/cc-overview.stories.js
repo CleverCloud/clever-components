@@ -20,15 +20,14 @@ function createComponent (mode, width) {
   return component;
 }
 
-const widths = Array
-  .from(new Array(12))
-  .map((_, i) => i * 100 + 350);
+const widths = [350, 450, 550, 600, 800, 900, 1000, 1150, 1300];
 
+// We keep using stories of here because it's simpler to generate
 const orgaStories = storiesOf('2. Overview|<cc-overview>/orga layout (2 tiles)', module)
   .addParameters({ notes });
 
 widths.forEach((width) => {
-  orgaStories.add(`width at ${width}px`, () => {
+  orgaStories.add(`Width at ${width}px`, () => {
     const overview = createComponent('orga', width);
     overview.innerHTML = `
       <cc-header-orga class="head"></cc-header-orga>
@@ -40,11 +39,12 @@ widths.forEach((width) => {
   });
 });
 
+// We keep using stories of here because it's simpler to generate
 const appStories = storiesOf('2. Overview|<cc-overview>/app layout (6 tiles)', module)
   .addParameters({ notes });
 
 widths.forEach((width) => {
-  appStories.add(`width at ${width}px`, () => {
+  appStories.add(`Width at ${width}px`, () => {
     const overview = createComponent('app', width);
     overview.innerHTML = `
       <cc-header-app class="head"></cc-header-app>

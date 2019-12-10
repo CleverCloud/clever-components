@@ -2,7 +2,6 @@ import '../../components/atoms/cc-expand.js';
 import notes from './with-resize-observer.docs.md';
 import { action } from '@storybook/addon-actions';
 import { html, LitElement } from 'lit-element';
-import { storiesOf } from '@storybook/html';
 import { withResizeObserver } from '../../components/mixins/with-resize-observer.js';
 
 class WithHtml extends withResizeObserver(window.HTMLElement) {
@@ -33,18 +32,22 @@ class WithLit extends withResizeObserver(LitElement) {
   }
 
   render () {
-    return html`<slot></slot>`;
+    return html`
+      <slot></slot>
+    `;
   }
 }
 
 window.customElements.define('lit-element', WithLit);
 
-storiesOf('1. Mixins|withResizeObserver()', module)
-  .addParameters({ notes })
-  .add('default', () => {
+export default {
+  title: '1. Mixins|withResizeObserver()',
+  parameters: { notes },
+};
 
-    const storyDom = document.createElement('div');
-    storyDom.innerHTML = `
+export const defaultStory = () => {
+  const storyDom = document.createElement('div');
+  storyDom.innerHTML = `
     
     <style>
       table {
@@ -143,28 +146,26 @@ storiesOf('1. Mixins|withResizeObserver()', module)
     </lit-element>
   `;
 
-    storyDom.querySelector('cc-toggle').choices = Array.from(new Array(5))
-      .map((a, i) => {
-        const width = String((i + 1) * 50);
-        return { label: width + 'px', value: width };
-      });
-
-    storyDom.addEventListener('cc-toggle:input', ({ detail: value }) => {
-      Array
-        .from(storyDom.querySelectorAll('.container'))
-        .forEach((container) => {
-          container.style.width = value + 'px';
-        });
-    });
-
-    const mo = new window.MutationObserver((mutationList, observer) => {
-      storyDom.querySelector('.attributes').textContent = Array
-        .from(storyDom.querySelector('.container').attributes)
-        .filter((attr) => attr.name.startsWith('w-'))
-        .map((attr) => attr.name + '=""')
-        .join(' ');
-    });
-    mo.observe(storyDom.querySelector('.container'), { attributes: true });
-
-    return storyDom;
+  storyDom.querySelector('cc-toggle').choices = Array.from(new Array(5)).map((a, i) => {
+    const width = String((i + 1) * 50);
+    return { label: width + 'px', value: width };
   });
+
+  storyDom.addEventListener('cc-toggle:input', ({ detail: value }) => {
+    Array.from(storyDom.querySelectorAll('.container')).forEach(container => {
+      container.style.width = value + 'px';
+    });
+  });
+
+  const mo = new window.MutationObserver((mutationList, observer) => {
+    storyDom.querySelector('.attributes').textContent = Array.from(
+      storyDom.querySelector('.container').attributes,
+    )
+      .filter(attr => attr.name.startsWith('w-'))
+      .map(attr => attr.name + '=""')
+      .join(' ');
+  });
+  mo.observe(storyDom.querySelector('.container'), { attributes: true });
+
+  return storyDom;
+};

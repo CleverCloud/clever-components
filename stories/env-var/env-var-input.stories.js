@@ -1,15 +1,21 @@
 import '../../components/env-var/env-var-input.js';
 import notes from '../../.components-docs/env-var-input.md';
-import { storiesOf } from '@storybook/html';
 import { withCustomEventActions } from '../lib/event-action.js';
 
-const withActions = withCustomEventActions('env-var-input:input', 'env-var-input:delete', 'env-var-input:keep');
+const withActions = withCustomEventActions(
+  'env-var-input:input',
+  'env-var-input:delete',
+  'env-var-input:keep'
+);
 
-storiesOf('2. Environment variables|<env-var-input>', module)
-  .addParameters({ notes })
-  .add('default', withActions(() => {
-    // language=HTML
-    return `
+export default {
+  title: '2. Environment variables|<env-var-input>',
+  parameters: { notes },
+};
+
+export const defaultStory = withActions(() => {
+  // language=HTML
+  return `
       <style>
       env-var-input {
         margin-bottom: 0.25rem;
@@ -37,4 +43,4 @@ storiesOf('2. Environment variables|<env-var-input>', module)
       <div class="title">Readonly:</div>
       <env-var-input name="READONLY" value="readonly value" readonly></env-var-input>
     `;
-  }));
+});

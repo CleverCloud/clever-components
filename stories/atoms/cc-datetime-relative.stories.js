@@ -1,7 +1,6 @@
 import '../../components/atoms/cc-datetime-relative.js';
 import notes from '../../.components-docs/cc-datetime-relative.md';
 import { createContainer } from '../lib/dom.js';
-import { storiesOf } from '@storybook/html';
 import { getLanguage } from '../../components/lib/i18n';
 
 function createComponent (datetime) {
@@ -33,18 +32,22 @@ function createComponentSeries (unit, steps, elementName) {
   ];
 }
 
-storiesOf('1. Atoms|<cc-datetime-relative>', module)
-  .addParameters({ notes })
-  .add('default', () => {
-    return createContainer([
-      'Now',
-      createComponent(createDateAgo({}).toISOString()),
-      ...createComponentSeries('seconds', [1, 5, 10, 20, 30, 45]),
-      ...createComponentSeries('minutes', [1, 5, 10, 20, 30, 45]),
-      ...createComponentSeries('hours', [1, 5, 10, 20, 30, 45]),
-      ...createComponentSeries('days', [1, 5, 10, 20, 30, 45]),
-      ...createComponentSeries('weeks', [1, 5, 10, 20, 30, 45]),
-      ...createComponentSeries('months', [1, 5, 10, 20, 30, 45]),
-      ...createComponentSeries('years', [1, 5, 10, 20, 30, 45]),
-    ]);
-  });
+export default {
+  title: '1. Atoms|<cc-datetime-relative>',
+  parameters: { notes },
+  excludeStories: ['createDateAgo'],
+};
+
+export const defaultStory = () => {
+  return createContainer([
+    'Now',
+    createComponent(createDateAgo({}).toISOString()),
+    ...createComponentSeries('seconds', [1, 5, 10, 20, 30, 45]),
+    ...createComponentSeries('minutes', [1, 5, 10, 20, 30, 45]),
+    ...createComponentSeries('hours', [1, 5, 10, 20, 30, 45]),
+    ...createComponentSeries('days', [1, 5, 10, 20, 30, 45]),
+    ...createComponentSeries('weeks', [1, 5, 10, 20, 30, 45]),
+    ...createComponentSeries('months', [1, 5, 10, 20, 30, 45]),
+    ...createComponentSeries('years', [1, 5, 10, 20, 30, 45]),
+  ]);
+};

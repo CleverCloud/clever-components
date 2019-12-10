@@ -2,7 +2,6 @@ import '../../components/overview/cc-tile-scalability.js';
 import notes from '../../.components-docs/cc-tile-scalability.md';
 import { createContainer } from '../lib/dom.js';
 import { sequence } from '../lib/sequence.js';
-import { storiesOf } from '@storybook/html';
 
 const flavors = {
   pico: {
@@ -129,196 +128,203 @@ function createComponent (scalability) {
   return component;
 }
 
-storiesOf('2. Overview|<cc-tile-scalability>', module)
-  .addParameters({ notes })
-  .add('empty state (loading)', () => {
-    return createComponent();
-  })
-  .add('error', () => {
-    const component = createComponent();
-    component.error = true;
-    return component;
-  })
-  .add('different scalability config', () => {
-    return createContainer([
-      'No auto-scalability',
-      createComponent({
-        minFlavor: flavors.pico,
-        maxFlavor: flavors.pico,
-        minInstances: 1,
-        maxInstances: 1,
-      }),
-      createComponent({
-        minFlavor: flavors.S,
-        maxFlavor: flavors.S,
-        minInstances: 2,
-        maxInstances: 2,
-      }),
-      createComponent({
-        minFlavor: flavors['2XL'],
-        maxFlavor: flavors['2XL'],
-        minInstances: 3,
-        maxInstances: 3,
-      }),
-      'Horizontal scalability',
-      createComponent({
-        minFlavor: flavors.pico,
-        maxFlavor: flavors.pico,
-        minInstances: 1,
-        maxInstances: 2,
-      }),
-      createComponent({
-        minFlavor: flavors.S,
-        maxFlavor: flavors.S,
-        minInstances: 2,
-        maxInstances: 4,
-      }),
-      createComponent({
-        minFlavor: flavors['2XL'],
-        maxFlavor: flavors['2XL'],
-        minInstances: 3,
-        maxInstances: 6,
-      }),
-      'Vertical scalability',
-      createComponent({
-        minFlavor: flavors.pico,
-        maxFlavor: flavors.S,
-        minInstances: 1,
-        maxInstances: 1,
-      }),
-      createComponent({
-        minFlavor: flavors.S,
-        maxFlavor: flavors.L,
-        minInstances: 2,
-        maxInstances: 2,
-      }),
-      createComponent({
-        minFlavor: flavors['2XL'],
-        maxFlavor: flavors['3XL'],
-        minInstances: 3,
-        maxInstances: 3,
-      }),
-      'Horizontal & vertical scalability',
-      createComponent({
-        minFlavor: flavors.pico,
-        maxFlavor: flavors.S,
-        minInstances: 1,
-        maxInstances: 2,
-      }),
-      createComponent({
-        minFlavor: flavors.S,
-        maxFlavor: flavors.L,
-        minInstances: 2,
-        maxInstances: 4,
-      }),
-      createComponent({
-        minFlavor: flavors['2XL'],
-        maxFlavor: flavors['3XL'],
-        minInstances: 3,
-        maxInstances: 6,
-      }),
-    ]);
-  })
-  .add('different ML scalability config', () => {
-    return createContainer([
-      'No auto-scalability',
-      createComponent({
-        minFlavor: flavors.ML_XS,
-        maxFlavor: flavors.ML_XS,
-        minInstances: 1,
-        maxInstances: 1,
-      }),
-      createComponent({
-        minFlavor: flavors.ML_S,
-        maxFlavor: flavors.ML_S,
-        minInstances: 2,
-        maxInstances: 2,
-      }),
-      createComponent({
-        minFlavor: flavors.ML_2XL,
-        maxFlavor: flavors.ML_2XL,
-        minInstances: 3,
-        maxInstances: 3,
-      }),
-      'Horizontal scalability',
-      createComponent({
-        minFlavor: flavors.ML_XS,
-        maxFlavor: flavors.ML_XS,
-        minInstances: 1,
-        maxInstances: 2,
-      }),
-      createComponent({
-        minFlavor: flavors.ML_S,
-        maxFlavor: flavors.ML_S,
-        minInstances: 2,
-        maxInstances: 4,
-      }),
-      createComponent({
-        minFlavor: flavors.ML_2XL,
-        maxFlavor: flavors.ML_2XL,
-        minInstances: 3,
-        maxInstances: 6,
-      }),
-      'Vertical scalability',
-      createComponent({
-        minFlavor: flavors.ML_XS,
-        maxFlavor: flavors.ML_S,
-        minInstances: 1,
-        maxInstances: 1,
-      }),
-      createComponent({
-        minFlavor: flavors.ML_S,
-        maxFlavor: flavors.ML_L,
-        minInstances: 2,
-        maxInstances: 2,
-      }),
-      createComponent({
-        minFlavor: flavors.ML_2XL,
-        maxFlavor: flavors.ML_3XL,
-        minInstances: 3,
-        maxInstances: 3,
-      }),
-      'Horizontal & vertical scalability',
-      createComponent({
-        minFlavor: flavors.ML_XS,
-        maxFlavor: flavors.ML_S,
-        minInstances: 1,
-        maxInstances: 2,
-      }),
-      createComponent({
-        minFlavor: flavors.ML_S,
-        maxFlavor: flavors.ML_L,
-        minInstances: 2,
-        maxInstances: 4,
-      }),
-      createComponent({
-        minFlavor: flavors.ML_2XL,
-        maxFlavor: flavors.ML_3XL,
-        minInstances: 3,
-        maxInstances: 6,
-      }),
-    ]);
-  })
-  .add('simulations', () => {
+export default {
+  title: '2. Overview|<cc-tile-scalability>',
+  parameters: { notes },
+};
 
-    const errorComponent = createComponent();
-    const component = createComponent();
+export const skeleton = () => {
+  return createComponent();
+};
 
-    sequence(async (wait) => {
-      await wait(2000);
-      errorComponent.error = true;
-      component.scalability = {
-        minFlavor: flavors.pico,
-        maxFlavor: flavors.XL,
-        minInstances: 2,
-        maxInstances: 3,
-      };
-    });
+export const error = () => {
+  const component = createComponent();
+  component.error = true;
+  return component;
+};
 
-    return createContainer([
-      'Loading, then error',
-      errorComponent,
-      'Loading, then some data',
-      component,
-    ]);
+export const dataLoaded = () => {
+  return createContainer([
+    'No auto-scalability',
+    createComponent({
+      minFlavor: flavors.pico,
+      maxFlavor: flavors.pico,
+      minInstances: 1,
+      maxInstances: 1,
+    }),
+    createComponent({
+      minFlavor: flavors.S,
+      maxFlavor: flavors.S,
+      minInstances: 2,
+      maxInstances: 2,
+    }),
+    createComponent({
+      minFlavor: flavors['2XL'],
+      maxFlavor: flavors['2XL'],
+      minInstances: 3,
+      maxInstances: 3,
+    }),
+    'Horizontal scalability',
+    createComponent({
+      minFlavor: flavors.pico,
+      maxFlavor: flavors.pico,
+      minInstances: 1,
+      maxInstances: 2,
+    }),
+    createComponent({
+      minFlavor: flavors.S,
+      maxFlavor: flavors.S,
+      minInstances: 2,
+      maxInstances: 4,
+    }),
+    createComponent({
+      minFlavor: flavors['2XL'],
+      maxFlavor: flavors['2XL'],
+      minInstances: 3,
+      maxInstances: 6,
+    }),
+    'Vertical scalability',
+    createComponent({
+      minFlavor: flavors.pico,
+      maxFlavor: flavors.S,
+      minInstances: 1,
+      maxInstances: 1,
+    }),
+    createComponent({
+      minFlavor: flavors.S,
+      maxFlavor: flavors.L,
+      minInstances: 2,
+      maxInstances: 2,
+    }),
+    createComponent({
+      minFlavor: flavors['2XL'],
+      maxFlavor: flavors['3XL'],
+      minInstances: 3,
+      maxInstances: 3,
+    }),
+    'Horizontal & vertical scalability',
+    createComponent({
+      minFlavor: flavors.pico,
+      maxFlavor: flavors.S,
+      minInstances: 1,
+      maxInstances: 2,
+    }),
+    createComponent({
+      minFlavor: flavors.S,
+      maxFlavor: flavors.L,
+      minInstances: 2,
+      maxInstances: 4,
+    }),
+    createComponent({
+      minFlavor: flavors['2XL'],
+      maxFlavor: flavors['3XL'],
+      minInstances: 3,
+      maxInstances: 6,
+    }),
+  ]);
+};
+
+export const dataLoadedWithMachineLearningFlavors = () => {
+  return createContainer([
+    'No auto-scalability',
+    createComponent({
+      minFlavor: flavors.ML_XS,
+      maxFlavor: flavors.ML_XS,
+      minInstances: 1,
+      maxInstances: 1,
+    }),
+    createComponent({
+      minFlavor: flavors.ML_S,
+      maxFlavor: flavors.ML_S,
+      minInstances: 2,
+      maxInstances: 2,
+    }),
+    createComponent({
+      minFlavor: flavors.ML_2XL,
+      maxFlavor: flavors.ML_2XL,
+      minInstances: 3,
+      maxInstances: 3,
+    }),
+    'Horizontal scalability',
+    createComponent({
+      minFlavor: flavors.ML_XS,
+      maxFlavor: flavors.ML_XS,
+      minInstances: 1,
+      maxInstances: 2,
+    }),
+    createComponent({
+      minFlavor: flavors.ML_S,
+      maxFlavor: flavors.ML_S,
+      minInstances: 2,
+      maxInstances: 4,
+    }),
+    createComponent({
+      minFlavor: flavors.ML_2XL,
+      maxFlavor: flavors.ML_2XL,
+      minInstances: 3,
+      maxInstances: 6,
+    }),
+    'Vertical scalability',
+    createComponent({
+      minFlavor: flavors.ML_XS,
+      maxFlavor: flavors.ML_S,
+      minInstances: 1,
+      maxInstances: 1,
+    }),
+    createComponent({
+      minFlavor: flavors.ML_S,
+      maxFlavor: flavors.ML_L,
+      minInstances: 2,
+      maxInstances: 2,
+    }),
+    createComponent({
+      minFlavor: flavors.ML_2XL,
+      maxFlavor: flavors.ML_3XL,
+      minInstances: 3,
+      maxInstances: 3,
+    }),
+    'Horizontal & vertical scalability',
+    createComponent({
+      minFlavor: flavors.ML_XS,
+      maxFlavor: flavors.ML_S,
+      minInstances: 1,
+      maxInstances: 2,
+    }),
+    createComponent({
+      minFlavor: flavors.ML_S,
+      maxFlavor: flavors.ML_L,
+      minInstances: 2,
+      maxInstances: 4,
+    }),
+    createComponent({
+      minFlavor: flavors.ML_2XL,
+      maxFlavor: flavors.ML_3XL,
+      minInstances: 3,
+      maxInstances: 6,
+    }),
+  ]);
+};
+
+export const simulations = () => {
+  const errorComponent = createComponent();
+  const component = createComponent();
+
+  sequence(async wait => {
+    await wait(2000);
+    errorComponent.error = true;
+    component.scalability = {
+      minFlavor: flavors.pico,
+      maxFlavor: flavors.XL,
+      minInstances: 2,
+      maxInstances: 3,
+    };
   });
+
+  return createContainer([
+    'Loading, then error',
+    errorComponent,
+    'Loading, then some data',
+    component,
+  ]);
+};
+
