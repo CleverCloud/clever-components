@@ -1,5 +1,4 @@
 import { addDecorator, addParameters, configure } from '@storybook/html';
-import { create } from '@storybook/theming';
 import { i18nKnob } from '../stories/lib/i18n-knob';
 import { withA11y } from '@storybook/addon-a11y';
 import { withKnobs } from '@storybook/addon-knobs';
@@ -12,22 +11,19 @@ addDecorator((storyFn) => {
   return storyFn();
 });
 
-// should only be added once
-// best place is in config.js
 addDecorator(withA11y);
-
-const cleverTheme = create({
-  brandTitle: 'Clever Cloud components',
-  brandUrl: 'https://www.clever-cloud.com',
-  brandImage: 'https://www.clever-cloud.com/images/brand-assets/logos/v2/logo_on_white.svg',
-});
 
 addParameters({
   options: {
-    showPanel: true,
-    enableShortcuts: true,
-    theme: cleverTheme,
     storySort: (a, b) => {
+      if (a[1].parameters.fileName === b[1].parameters.fileName) {
+        if (a[1].name === 'Default') {
+          return -1;
+        }
+        if (b[1].name === 'Default') {
+          return 1;
+        }
+      }
       return a[1].id.localeCompare(b[1].id, undefined, { numeric: true });
     },
   },
@@ -36,7 +32,7 @@ addParameters({
   },
 });
 
-// Automatically import all files ending in *.stories.js
+// We cannot use main.js (stories: []) yet because of the HMR config for web-components
 const req = require.context('../stories', true, /\.stories\.js$/);
 configure(req, module);
 
