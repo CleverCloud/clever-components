@@ -1,7 +1,7 @@
 import { markdownToDom } from '../lib/markdown.js';
 import { storiesOf } from '@storybook/html';
 
-const adrReq = require.context('../../docs', true, /adr.+md$/);
+const adrReq = require.context('../../docs/adr', true, /adr.+md$/);
 
 const adrAsStories = storiesOf('0. Welcome|Architecture Decision Records', module)
   .addParameters({
