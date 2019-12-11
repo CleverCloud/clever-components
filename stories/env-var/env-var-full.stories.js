@@ -1,5 +1,6 @@
 import '../../components/env-var/env-var-full.js';
 import notes from '../../.components-docs/env-var-full.md';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 import { withCustomEventActions } from '../lib/event-action.js';
 
 const withActions = withCustomEventActions(
@@ -42,8 +43,6 @@ export const appLoadedAddonLoading = withActions(() => {
   return envVar;
 });
 
-appLoadedAddonLoading.story = { name: '👍 App loaded / ⌛ Add-on loading' };
-
 export const appLoadedAddonLoaded = withActions(() => {
   const envVar = document.createElement('env-var-full');
   envVar.variables = Promise.resolve([
@@ -74,8 +73,6 @@ export const appLoadedAddonLoaded = withActions(() => {
   ];
   return envVar;
 });
-
-appLoadedAddonLoaded.story = { name: '👍 App loaded / 👍 Add-on loaded' };
 
 export const appLoadedAddonLoadedRestartButton = withActions(() => {
   const envVar = document.createElement('env-var-full');
@@ -108,8 +105,6 @@ export const appLoadedAddonLoadedRestartButton = withActions(() => {
   ];
   return envVar;
 });
-
-appLoadedAddonLoadedRestartButton.story = { name: '👍 App loaded / 👍 Add-on loaded (restart button)' };
 
 export const errorWithLoading = withActions(() => {
   const envVar = document.createElement('env-var-full');
@@ -155,4 +150,8 @@ export const appSavingAddonLoading = withActions(() => {
   return envVar;
 });
 
+appLoadedAddonLoading.story = { name: '👍 App loaded / ⌛ Add-on loading' };
+appLoadedAddonLoaded.story = { name: '👍 App loaded / 👍 Add-on loaded' };
+appLoadedAddonLoadedRestartButton.story = { name: '👍 App loaded / 👍 Add-on loaded (restart button)' };
 appSavingAddonLoading.story = { name: '⌛ App saving / ⌛ Add-on loading' };
+enhanceStoriesNames({ skeleton, errorWithLoading });

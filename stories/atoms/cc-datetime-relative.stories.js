@@ -1,6 +1,7 @@
 import '../../components/atoms/cc-datetime-relative.js';
 import notes from '../../.components-docs/cc-datetime-relative.md';
 import { createContainer } from '../lib/dom.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 import { getLanguage } from '../../components/lib/i18n';
 
 function createComponent (datetime) {
@@ -51,3 +52,5 @@ export const defaultStory = () => {
     ...createComponentSeries('years', [1, 5, 10, 20, 30, 45]),
   ]);
 };
+
+enhanceStoriesNames({ defaultStory });

@@ -1,5 +1,6 @@
 import '../../components/env-var/env-var-editor-expert.js';
 import notes from '../../.components-docs/env-var-editor-expert.md';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 import { withCustomEventActions } from '../lib/event-action.js';
 
 const withActions = withCustomEventActions('env-var-editor-expert:change');
@@ -47,3 +48,5 @@ export const dataLoadedWithDisabled = withActions(() => {
   envVarFormExpert.setAttribute('disabled', true);
   return envVarFormExpert;
 });
+
+enhanceStoriesNames({ skeleton, empty, dataLoaded, dataLoadedWithDisabled });

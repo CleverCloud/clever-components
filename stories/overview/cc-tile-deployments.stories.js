@@ -2,6 +2,7 @@ import '../../components/overview/cc-tile-deployments.js';
 import notes from '../../.components-docs/cc-tile-deployments.md';
 import { createContainer } from '../lib/dom.js';
 import { createDateAgo } from '../atoms/cc-datetime-relative.stories.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 import { sequence } from '../lib/sequence.js';
 
 function createComponent (deployments) {
@@ -230,3 +231,4 @@ export const simulations = () => {
   ]);
 };
 
+enhanceStoriesNames({ skeleton, error, dataLoaded, simulations });

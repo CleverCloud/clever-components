@@ -1,6 +1,7 @@
 import '../../components/overview/cc-tile-instances.js';
 import notes from '../../.components-docs/cc-tile-instances.md';
 import { createContainer } from '../lib/dom.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 import { sequence } from '../lib/sequence.js';
 
 function createComponent (instances) {
@@ -135,3 +136,4 @@ export const simulations = () => {
   ]);
 };
 
+enhanceStoriesNames({ skeleton, error, dataLoaded, simulations });

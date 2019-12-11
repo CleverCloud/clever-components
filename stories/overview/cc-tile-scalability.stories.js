@@ -1,6 +1,7 @@
 import '../../components/overview/cc-tile-scalability.js';
 import notes from '../../.components-docs/cc-tile-scalability.md';
 import { createContainer } from '../lib/dom.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 import { sequence } from '../lib/sequence.js';
 
 const flavors = {
@@ -328,3 +329,4 @@ export const simulations = () => {
   ]);
 };
 
+enhanceStoriesNames({ skeleton, error, dataLoaded, dataLoadedWithMachineLearningFlavors, simulations });

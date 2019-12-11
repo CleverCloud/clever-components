@@ -1,6 +1,7 @@
 import '../../components/maps/cc-logsmap.js';
 import fakeHeatmapData from '../assets/24-hours-points.json';
 import notes from '../../.components-docs/cc-logsmap.md';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 import { getDataSampleKnob, getFakePointsData } from './fake-map-data.js';
 import { setIntervalDom, setTimeoutDom } from '../lib/timers.js';
 import { withCustomEventActions } from '../lib/event-action.js';
@@ -92,4 +93,15 @@ export const emptyWithHeatmap = withActions(() => {
   map.mode = 'heatmap';
   map.heatmapPoints = [];
   return map;
+});
+
+enhanceStoriesNames({
+  emptyWithDifferentSizes,
+  emptyWithDifferentCentersAndZooms,
+  emptyWithAllOrgaOrAppOnly,
+  loading,
+  error,
+  errorWithLoadingIndicator,
+  simulationWithRealtimeAndHeatmap,
+  emptyWithHeatmap,
 });

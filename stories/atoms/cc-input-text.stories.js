@@ -1,6 +1,7 @@
 import '../../components/atoms/cc-input-text.js';
 import notes from '../../.components-docs/cc-input-text.md';
 import { createContainer } from '../lib/dom.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 import { withCustomEventActions } from '../lib/event-action.js';
 
 const withActions = withCustomEventActions('cc-input-text:input');
@@ -157,3 +158,5 @@ export const autoWidth = withActions(() => {
     ...multiClipboardReadonly,
   ]);
 });
+
+enhanceStoriesNames({ defaultStory, differentCssWidths, autoWidth });

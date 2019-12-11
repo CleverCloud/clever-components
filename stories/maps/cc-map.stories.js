@@ -2,6 +2,7 @@ import '../../components/maps/cc-map.js';
 import fakeHeatmapData from '../assets/24-hours-points.json';
 import notes from '../../.components-docs/cc-map.md';
 import { createContainer } from '../lib/dom.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 import { getDataSampleKnob, getFakePointsData } from './fake-map-data.js';
 import { setIntervalDom, setTimeoutDom } from '../lib/timers.js';
 
@@ -87,8 +88,6 @@ export const persistentPointsDisplayedAtOnce = () => {
   return map;
 };
 
-persistentPointsDisplayedAtOnce.story = { name: '👍 Persistent points (displayed at once)' };
-
 export const persistentPointsDisplayedAtOnceWithTooltips = () => {
   const map = createComponent({
     legend: '4 points, persistent (no delay), displayed at once, with tooltips',
@@ -101,8 +100,6 @@ export const persistentPointsDisplayedAtOnceWithTooltips = () => {
   ]);
   return map;
 };
-
-persistentPointsDisplayedAtOnceWithTooltips.story = { name: '👍 Persistent points (displayed at once, with tooltips)' };
 
 export const temporaryPointsBatchDisplayedWithTooltips = () => {
   const spreadDuration = 5000;
@@ -124,8 +121,6 @@ export const temporaryPointsBatchDisplayedWithTooltips = () => {
 
   return map;
 };
-
-temporaryPointsBatchDisplayedWithTooltips.story = { name: '👍 Temporary points (batch displayed, with tooltips)' };
 
 export const realtimeSimulationWithStaticData = () => {
   const dataSampleIndex = getDataSampleKnob();
@@ -167,3 +162,19 @@ export const emptyWithHeatmap = () => {
   map.heatmapPoints = [];
   return map;
 };
+
+persistentPointsDisplayedAtOnce.story = { name: '👍 Persistent points (displayed at once)' };
+persistentPointsDisplayedAtOnceWithTooltips.story = { name: '👍 Persistent points (displayed at once, with tooltips)' };
+temporaryPointsBatchDisplayedWithTooltips.story = { name: '👍 Temporary points (batch displayed, with tooltips)' };
+
+enhanceStoriesNames({
+  emptyWithLegendInSlot,
+  emptyWithDifferentSizes,
+  emptyWithDifferentCentersAndZooms,
+  loading,
+  error,
+  errorWithLoadingIndicator,
+  realtimeSimulationWithStaticData,
+  heatmapSimulation,
+  emptyWithHeatmap,
+});

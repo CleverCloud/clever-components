@@ -1,5 +1,6 @@
 import '../../components/env-var/env-var-form.js';
 import notes from '../../.components-docs/env-var-form.md';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 import { withCustomEventActions } from '../lib/event-action.js';
 
 const withActions = withCustomEventActions('env-var-form:submit', 'env-var-form:dismissed-error', 'env-var-form:restart-app');
@@ -59,7 +60,7 @@ export const dataLoadedWithHeadingAndDescription = withActions(() => {
   return envVarForm;
 });
 
-export const savingData = withActions(() => {
+export const saving = withActions(() => {
   const envVarForm = document.createElement('env-var-form');
   envVarForm.variables = Promise.resolve([
     { name: 'EMPTY', value: '' },
@@ -72,8 +73,6 @@ export const savingData = withActions(() => {
   }, 0);
   return envVarForm;
 });
-
-savingData.story = { name: '⌛ Saving' };
 
 export const errorWithLoading = withActions(() => {
   const envVarForm = document.createElement('env-var-form');
@@ -95,4 +94,14 @@ export const errorWithSaving = withActions(() => {
     envVarForm.variables = Promise.reject(new Error());
   }, 0);
   return envVarForm;
+});
+
+enhanceStoriesNames({
+  skeleton,
+  empty,
+  dataLoaded,
+  dataLoadedWithRestartButton,
+  dataLoadedWithHeadingAndDescription,
+  saving,
+  errorWithLoading
 });

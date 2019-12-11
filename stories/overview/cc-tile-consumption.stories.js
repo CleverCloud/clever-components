@@ -1,7 +1,8 @@
 import '../../components/overview/cc-tile-consumption.js';
 import notes from '../../.components-docs/cc-tile-consumption.md';
 import { createContainer } from '../lib/dom.js';
-import { sequence } from '../lib/sequence';
+import { enhanceStoriesNames } from '../lib/story-names.js';
+import { sequence } from '../lib/sequence.js';
 
 function createComponent (consumption) {
   const component = document.createElement('cc-tile-consumption');
@@ -57,3 +58,4 @@ export const simulations = () => {
   ]);
 };
 
+enhanceStoriesNames({ skeleton, error, dataLoaded, simulations });

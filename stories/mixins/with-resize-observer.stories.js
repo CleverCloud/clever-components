@@ -1,6 +1,7 @@
 import '../../components/atoms/cc-expand.js';
 import notes from './with-resize-observer.docs.md';
 import { action } from '@storybook/addon-actions';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 import { html, LitElement } from 'lit-element';
 import { withResizeObserver } from '../../components/mixins/with-resize-observer.js';
 
@@ -169,3 +170,5 @@ export const defaultStory = () => {
 
   return storyDom;
 };
+
+enhanceStoriesNames({ defaultStory });

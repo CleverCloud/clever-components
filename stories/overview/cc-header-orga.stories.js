@@ -1,6 +1,7 @@
 import '../../components/overview/cc-header-orga.js';
 import notes from '../../.components-docs/cc-header-orga.md';
 import { createContainer } from '../lib/dom';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 import { sequence } from '../lib/sequence';
 
 function createComponent (orga) {
@@ -56,7 +57,7 @@ export const dataLoaded = () => {
   ]);
 };
 
-export const simulation = () => {
+export const simulations = () => {
   const errorComponent = createComponent();
   const noAvatarComponent = createComponent();
   const component = createComponent();
@@ -87,3 +88,4 @@ export const simulation = () => {
   ]);
 };
 
+enhanceStoriesNames({ skeleton, error, dataLoaded, simulations });

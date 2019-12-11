@@ -1,6 +1,7 @@
 import '../../components/overview/cc-header-app.js';
 import notes from '../../.components-docs/cc-header-app.md';
 import { createContainer } from '../lib/dom.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 import { sequence } from '../lib/sequence';
 import { withCustomEventActions } from '../lib/event-action';
 
@@ -349,4 +350,13 @@ export const simulations = withActions(() => {
     'Loading, running, restarting, restart-failed, stopped',
     component,
   ]);
+});
+
+enhanceStoriesNames({
+  skeleton,
+  error,
+  dataLoaded,
+  dataLoadedWithDisableButtons,
+  dataLoadedWithDifferentStyleWidths,
+  simulations,
 });

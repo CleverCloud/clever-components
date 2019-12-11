@@ -1,5 +1,6 @@
 import '../../components/atoms/cc-toggle.js';
 import notes from '../../.components-docs/cc-toggle.md';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 import { withCustomEventActions } from '../lib/event-action.js';
 
 const withActions = withCustomEventActions('cc-toggle:input');
@@ -42,3 +43,5 @@ export const defaultStory = withActions(() => {
 
   return wrapper;
 });
+
+enhanceStoriesNames({ defaultStory });

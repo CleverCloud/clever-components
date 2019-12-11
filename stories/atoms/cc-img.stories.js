@@ -1,7 +1,8 @@
 import '../../components/atoms/cc-img.js';
 import notes from '../../.components-docs/cc-img.md';
-import { sequence } from '../lib/sequence.js';
 import { createContainer } from '../lib/dom';
+import { enhanceStoriesNames } from '../lib/story-names.js';
+import { sequence } from '../lib/sequence.js';
 
 function createComponent (text) {
   const component = document.createElement('cc-img');
@@ -54,3 +55,5 @@ export const defaultStory = () => {
     errorComponent,
   ]);
 };
+
+enhanceStoriesNames({ defaultStory });

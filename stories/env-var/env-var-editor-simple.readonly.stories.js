@@ -1,5 +1,6 @@
 import '../../components/env-var/env-var-editor-simple.js';
 import notes from '../../.components-docs/env-var-editor-simple.md';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 import { withCustomEventActions } from '../lib/event-action.js';
 
 const withActions = withCustomEventActions('env-var-editor-simple:change');
@@ -32,3 +33,5 @@ export const dataLoaded = withActions(() => {
   ];
   return envVarForm;
 });
+
+enhanceStoriesNames({ skeleton, empty, dataLoaded });

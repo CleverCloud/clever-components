@@ -3,6 +3,7 @@ import closeSvg from '../../components/overview/close.svg';
 import infoSvg from '../../components/overview/info.svg';
 import notes from '../../.components-docs/cc-button.md';
 import { createContainer } from '../lib/dom.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 import { text } from '@storybook/addon-knobs';
 import { withCustomEventActions } from '../lib/event-action';
 
@@ -137,3 +138,5 @@ export const delayAndDisabled = withActions(() => {
     btn2,
   ]);
 });
+
+enhanceStoriesNames({ defaultStory, image, delayAndDisabled });

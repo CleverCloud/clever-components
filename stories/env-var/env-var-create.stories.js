@@ -1,5 +1,6 @@
 import '../../components/env-var/env-var-create.js';
 import notes from '../../.components-docs/env-var-create.md';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 import { withCustomEventActions } from '../lib/event-action.js';
 
 const withActions = withCustomEventActions('env-var-create:create');
@@ -28,3 +29,5 @@ export const defaultStory = withActions(() => {
 
   return container;
 });
+
+enhanceStoriesNames({ defaultStory });

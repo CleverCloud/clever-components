@@ -1,7 +1,8 @@
 import '../../components/overview/cc-tile-requests.js';
 import notes from '../../.components-docs/cc-tile-requests.md';
 import { createContainer } from '../lib/dom.js';
-import { sequence } from '../lib/sequence';
+import { enhanceStoriesNames } from '../lib/story-names.js';
+import { sequence } from '../lib/sequence.js';
 
 function createComponent (data, width = '275px') {
   const component = document.createElement('cc-tile-requests');
@@ -133,3 +134,4 @@ export const simulations = () => {
   ]);
 };
 
+enhanceStoriesNames({ skeleton, error, empty, dataLoaded, simulations });

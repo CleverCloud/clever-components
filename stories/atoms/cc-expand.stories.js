@@ -1,5 +1,6 @@
 import '../../components/atoms/cc-expand.js';
 import notes from '../../.components-docs/cc-expand.md';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
   title: '1. Atoms|<cc-expand>',
@@ -40,3 +41,5 @@ export const defaultStory = () => {
 
   return container;
 };
+
+enhanceStoriesNames({ defaultStory });

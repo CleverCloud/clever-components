@@ -2,6 +2,7 @@ import '../../components/overview/cc-tile-status-codes.js';
 import notes from '../../.components-docs/cc-tile-status-codes.md';
 import { createContainer } from '../lib/dom.js';
 import { sequence } from '../lib/sequence';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 
 function createComponent (statusCodes) {
   const component = document.createElement('cc-tile-status-codes');
@@ -65,3 +66,4 @@ export const simulations = () => {
   ]);
 };
 
+enhanceStoriesNames({ skeleton, error, empty, dataLoaded, simulations });

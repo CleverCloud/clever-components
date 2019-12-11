@@ -1,5 +1,6 @@
 import '../../components/atoms/cc-loader.js';
 import notes from '../../.components-docs/cc-loader.md';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
   title: '1. Atoms|<cc-loader>',
@@ -23,3 +24,5 @@ export const defaultStory = () => {
     </div>
   `;
 };
+
+enhanceStoriesNames({ defaultStory });
