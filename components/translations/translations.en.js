@@ -35,6 +35,8 @@ const formatNumberUnit = prepareNumberUnitFormatter(lang);
 
 export const translations = {
   LANGUAGE: '🇬🇧 English',
+  // cc-beta
+  'cc-beta.label': `beta`,
   // cc-button
   'cc-button.cancel': `Click to cancel`,
   // cc-datetime-relative

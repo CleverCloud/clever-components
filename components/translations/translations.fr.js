@@ -48,6 +48,8 @@ const formatNumberUnit = prepareNumberUnitFormatter(lang);
 
 export const translations = {
   LANGUAGE: '🇫🇷 Français',
+  // cc-beta
+  'cc-beta.label': `bêta`,
   // cc-button
   'cc-button.cancel': `Cliquez pour annuler`,
   // cc-datetime-relative
