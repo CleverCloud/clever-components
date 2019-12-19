@@ -1,3 +1,4 @@
+export { CcBeta } from './atoms/cc-beta.js';
 export { CcButton } from './atoms/cc-button.js';
 export { CcDatetimeRelative } from './atoms/cc-datetime-relative.js';
 export { CcExpand } from './atoms/cc-expand.js';
