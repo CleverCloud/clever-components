@@ -22,7 +22,7 @@ function updateTrackedElements () {
  * * This is mainly inspired by GitHub's [relative-time-element](https://github.com/github/time-elements/blob/master/src/relative-time-element.js).
  * * This component does not use lit* deps on purpose (keep small and not useful).
  *
- * @prop {String|Number} datetime - Date as ISO string or timestamp
+ * @prop {String|Number} datetime - Date as ISO string or timestamp.
  */
 export class CcDatetimeRelative extends HTMLElement {
 
