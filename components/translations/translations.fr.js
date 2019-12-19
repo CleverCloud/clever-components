@@ -120,6 +120,11 @@ export const translations = {
     const formattedValue = numberFormatter.format(value);
     return `${formattedValue} ${request} (en ${windowHours} ${hour})`;
   },
+  'cc-tile-requests.requests-nb.total': ({ totalRequests }) => {
+    const request = plural('requête')(totalRequests);
+    const formattedValue = formatNumberUnit(totalRequests);
+    return `${formattedValue} ${request} sur 24 heures`;
+  },
   'cc-tile-requests.requests-count': ({ requestCount }) => formatNumberUnit(requestCount),
   'cc-tile-requests.empty': `Il n'y a pas de données à afficher pour l'instant.`,
   'cc-tile-requests.error': `Une erreur est survenue pendant le chargement des requêtes.`,
