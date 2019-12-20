@@ -105,10 +105,10 @@ export class EnvVarCreate extends LitElement {
         </span>
       </div>
       <div class="errors" ?hidden=${!isNameInvalid || this._variableName === ''}>
-        <img class="icon-img" src=${warningSvg} alt="">${i18n(`env-var-create.errors.invalid-name`, { name: this._variableName })}  
+        <img class="icon-img" src=${warningSvg} alt="">${i18n(`env-var-create.errors.invalid-name`, { name: this._variableName })}
       </div>
       <div class="errors" ?hidden=${!isNameAlreadyDefined}>
-        <img class="icon-img" src=${warningSvg} alt="">️${i18n(`env-var-create.errors.already-defined-name`, { name: this._variableName })}  
+        <img class="icon-img" src=${warningSvg} alt="">️${i18n(`env-var-create.errors.already-defined-name`, { name: this._variableName })}
       </div>
     `;
   }
