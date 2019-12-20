@@ -14,11 +14,11 @@
     "lint": "eslint components stories tasks",
     "lint:fix": "eslint --fix components stories tasks",
     "prepack": "npm run lint && npm run components:check-i18n && npm run components:build",
-    "prestorybook:dev": "npm run components:docs",
+    "prestorybook:dev": "npm run components:docs && npm run components:docs-json",
     "size": "node tasks/size.js",
     "size:dev": "nodemon -w components -x 'npm run components:build && npm run size'",
     "start": "static -H '{\"cache-control\": \"no-cache, no-store, must-revalidate\", \"Pragma\": \"no-cache\", \"Expires\": \"0\"}' -a 0.0.0.0 -p 8080 storybook-static",
-    "storybook:build": "npm run components:docs && build-storybook -o storybook-static${STORYBOOK_PATH}",
+    "storybook:build": "npm run components:docs && npm run components:docs-json && build-storybook -o storybook-static${STORYBOOK_PATH}",
     "storybook:dev": "start-storybook -p 6006 --ci"
   },
   "dependencies": {
@@ -64,6 +64,7 @@
     "glob": "^7.1.6",
     "gzip-size": "^5.1.1",
     "highlight.js": "^9.17.1",
+    "html-to-react": "^1.4.2",
     "i18n-extract": "^0.6.7",
     "markdown-it": "^10.0.0",
     "node-static": "^0.7.11",

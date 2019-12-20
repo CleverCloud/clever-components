@@ -1,139 +1,105 @@
 import '../../components/overview/cc-tile-instances.js';
 import notes from '../../.components-docs/cc-tile-instances.md';
-import { createContainer } from '../lib/dom.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
-import { sequence } from '../lib/sequence.js';
-
-function createComponent (instances) {
-  const component = document.createElement('cc-tile-instances');
-  component.style.width = '275px';
-  component.style.display = 'inline-grid';
-  component.style.marginBottom = '1rem';
-  component.style.marginRight = '1rem';
-  component.instances = instances;
-  return component;
-}
+import { makeStory, storyWait } from '../lib/make-story.js';
 
 export default {
   title: '2. Overview|<cc-tile-instances>',
+  component: 'cc-tile-instances',
   parameters: { notes },
 };
 
-export const skeleton = () => {
-  return createComponent();
+const conf = {
+  component: 'cc-tile-instances',
+  css: `cc-tile-instances {
+    display: inline-grid;
+    margin-bottom: 1rem;
+    margin-right: 1rem;    
+    width: 275px;
+  }`,
 };
 
-export const error = () => {
-  const component = createComponent();
-  component.error = true;
-  return component;
-};
+export const defaultStory = makeStory(conf, {
+  items: [
+    { instances: { running: [{ flavorName: 'nano', count: 1 }], deploying: [] } },
+    { instances: { running: [], deploying: [{ flavorName: 'nano', count: 1 }] } },
+    { instances: { running: [{ flavorName: 'nano', count: 1 }], deploying: [{ flavorName: 'nano', count: 1 }] } },
+  ],
+});
 
-export const dataLoaded = () => {
-  return createContainer([
-    'Stopped',
-    createComponent({
-      running: [],
-      deploying: [],
+export const loading = makeStory(conf, {
+  items: [{}],
+});
+
+export const error = makeStory(conf, {
+  items: [{ error: true }],
+});
+
+export const dataLoadedWithStopped = makeStory(conf, {
+  items: [
+    { instances: { running: [], deploying: [] } },
+  ],
+});
+
+export const dataLoadedWithRunning = makeStory(conf, {
+  items: [
+    { instances: { running: [{ flavorName: 'nano', count: 1 }], deploying: [] } },
+    { instances: { running: [{ flavorName: 'S', count: 2 }], deploying: [] } },
+    { instances: { running: [{ flavorName: '2XL', count: 40 }], deploying: [] } },
+  ],
+});
+
+export const dataLoadedWithDeploying = makeStory(conf, {
+  items: [
+    { instances: { running: [], deploying: [{ flavorName: 'nano', count: 1 }] } },
+    { instances: { running: [], deploying: [{ flavorName: 'S', count: 2 }] } },
+    { instances: { running: [], deploying: [{ flavorName: '2XL', count: 40 }] } },
+  ],
+});
+
+export const dataLoadedWithRunningAndDeploying = makeStory(conf, {
+  items: [
+    { instances: { running: [{ flavorName: 'nano', count: 1 }], deploying: [{ flavorName: 'nano', count: 1 }] } },
+    { instances: { running: [{ flavorName: 'S', count: 2 }], deploying: [{ flavorName: 'S', count: 1 }] } },
+    { instances: { running: [{ flavorName: '2XL', count: 40 }], deploying: [{ flavorName: '2XL', count: 40 }] } },
+  ],
+});
+
+export const simulations = makeStory(conf, {
+  items: [{}, {}],
+  simulations: [
+    storyWait(2000, ([component, componentError]) => {
+      component.instances = { running: [{ flavorName: 'XS', count: 1 }], deploying: [] };
+      componentError.error = true;
     }),
-    'Just deploying',
-    createComponent({
-      running: [],
-      deploying: [{ flavorName: 'nano', count: 1 }],
+    storyWait(1000, ([component]) => {
+      component.instances = { running: [{ flavorName: 'XS', count: 2 }], deploying: [] };
     }),
-    createComponent({
-      running: [],
-      deploying: [{ flavorName: 'S', count: 2 }],
+    storyWait(1000, ([component]) => {
+      component.instances = { running: [{ flavorName: 'XS', count: 3 }], deploying: [] };
     }),
-    createComponent({
-      running: [],
-      deploying: [{ flavorName: '2XL', count: 3 }],
+    storyWait(3000, ([component]) => {
+      component.instances = { running: [{ flavorName: 'XS', count: 3 }], deploying: [{ flavorName: 'XS', count: 1 }] };
     }),
-    'Just running',
-    createComponent({
-      running: [{ flavorName: 'nano', count: 1 }],
-      deploying: [],
+    storyWait(1000, ([component]) => {
+      component.instances = { running: [{ flavorName: 'XS', count: 3 }], deploying: [{ flavorName: 'XS', count: 2 }] };
     }),
-    createComponent({
-      running: [{ flavorName: 'S', count: 2 }],
-      deploying: [],
+    storyWait(1000, ([component]) => {
+      component.instances = { running: [{ flavorName: 'XS', count: 3 }], deploying: [{ flavorName: 'XS', count: 3 }] };
     }),
-    createComponent({
-      running: [{ flavorName: '2XL', count: 3 }],
-      deploying: [],
+    storyWait(3000, ([component]) => {
+      component.instances = { running: [{ flavorName: 'XS', count: 3 }], deploying: [] };
     }),
-    'Deploying and running',
-    createComponent({
-      running: [{ flavorName: 'nano', count: 1 }],
-      deploying: [{ flavorName: 'nano', count: 1 }],
-    }),
-    createComponent({
-      running: [{ flavorName: 'S', count: 2 }],
-      deploying: [{ flavorName: 'S', count: 1 }],
-    }),
-    createComponent({
-      running: [{ flavorName: '2XL', count: 3 }],
-      deploying: [{ flavorName: '2XL', count: 2 }],
-    }),
-  ]);
-};
+  ],
+});
 
-export const simulations = () => {
-  const errorComponent = createComponent();
-  const component = createComponent();
-
-  sequence(async wait => {
-    await wait(2000);
-    errorComponent.error = true;
-    component.instances = {
-      running: [{ flavorName: 'XS', count: 1 }],
-      deploying: [],
-    };
-
-    await wait(1000);
-    component.instances = {
-      running: [{ flavorName: 'XS', count: 2 }],
-      deploying: [],
-    };
-
-    await wait(1000);
-    component.instances = {
-      running: [{ flavorName: 'XS', count: 3 }],
-      deploying: [],
-    };
-
-    await wait(3000);
-
-    component.instances = {
-      running: [{ flavorName: 'XS', count: 3 }],
-      deploying: [{ flavorName: 'XS', count: 1 }],
-    };
-
-    await wait(1000);
-    component.instances = {
-      running: [{ flavorName: 'XS', count: 3 }],
-      deploying: [{ flavorName: 'XS', count: 2 }],
-    };
-
-    await wait(1000);
-    component.instances = {
-      running: [{ flavorName: 'XS', count: 3 }],
-      deploying: [{ flavorName: 'XS', count: 3 }],
-    };
-
-    await wait(3000);
-    component.instances = {
-      running: [{ flavorName: 'XS', count: 3 }],
-      deploying: [],
-    };
-  });
-
-  return createContainer([
-    'Loading, then error',
-    errorComponent,
-    'Loading, then running, then deploying, then just running',
-    component,
-  ]);
-};
-
-enhanceStoriesNames({ skeleton, error, dataLoaded, simulations });
+enhanceStoriesNames({
+  defaultStory,
+  loading,
+  error,
+  dataLoadedWithStopped,
+  dataLoadedWithRunning,
+  dataLoadedWithDeploying,
+  dataLoadedWithRunningAndDeploying,
+  simulations,
+});

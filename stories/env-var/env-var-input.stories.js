@@ -1,49 +1,91 @@
 import '../../components/env-var/env-var-input.js';
 import notes from '../../.components-docs/env-var-input.md';
 import { enhanceStoriesNames } from '../lib/story-names.js';
-import { withCustomEventActions } from '../lib/event-action.js';
-
-const withActions = withCustomEventActions(
-  'env-var-input:input',
-  'env-var-input:delete',
-  'env-var-input:keep',
-);
+import { makeStory } from '../lib/make-story.js';
 
 export default {
   title: '2. Environment variables|<env-var-input>',
+  component: 'env-var-input',
   parameters: { notes },
 };
 
-export const defaultStory = withActions(() => {
-  // language=HTML
-  return `
-    <style>
-    env-var-input {
-      margin-bottom: 0.25rem;
-    }
-    </style>
+const conf = {
+  component: 'env-var-input',
+  events: ['env-var-input:input', 'env-var-input:delete', 'env-var-input:keep'],
+};
 
-    <div class="title">Default:</div>
-    <env-var-input name="EMPTY" value=""></env-var-input>
-    <env-var-input name="PRISTINE" value="pristine value"></env-var-input>
-    <env-var-input name="MULTILINE" value="line one\nline two\nline three"></env-var-input>
-    <env-var-input name="NEW" value="new value" new></env-var-input>
-    <env-var-input name="NEW_EDITED" value="new deleted value" new edited></env-var-input>
-    <env-var-input name="EDITED" value="edited value" edited></env-var-input>
-    <env-var-input name="DELETED" value="deleted value" deleted></env-var-input>
-    <env-var-input name="EDITED_DELETED" value="edited deleted value" edited deleted></env-var-input>
-    <env-var-input name="VERY_LONG_NAME_THAT_IS_ACTUALLY_TOO_LONG_TOO_DISPLAY_OMG_WHAT_IS_HAPPENING" value="value for long name"></env-var-input>
-    <env-var-input name="LONG_VALUE" value="very long value that is actually too long too display omg what is happening"></env-var-input>
-
-    <div class="title">Skeleton:</div>
-    <env-var-input name="LOADING_VARIABLE" skeleton></env-var-input>
-
-    <div class="title">Disabled:</div>
-    <env-var-input name="DISABLED" value="disabled value" disabled></env-var-input>
-
-    <div class="title">Readonly:</div>
-    <env-var-input name="READONLY" value="readonly value" readonly></env-var-input>
-  `;
+export const defaultStory = makeStory(conf, {
+  items: [{ name: 'VAR_NAME', value: 'Awesome value' }],
 });
 
-enhanceStoriesNames({ defaultStory });
+export const empty = makeStory(conf, {
+  items: [{ name: 'EMPTY', value: '' }],
+});
+
+export const pristine = makeStory(conf, {
+  items: [{ name: 'PRISTINE', value: 'pristine value' }],
+});
+
+export const multiline = makeStory(conf, {
+  items: [{ name: 'MULTILINE', value: 'line one\nline two\nline three' }],
+});
+
+export const newValue = makeStory(conf, {
+  items: [{ name: 'NEW', value: 'new value' }],
+});
+
+export const newAndEdited = makeStory(conf, {
+  items: [{ name: 'NEW_EDITED', value: 'new value edited' }],
+});
+
+export const edited = makeStory(conf, {
+  items: [{ name: 'EDITED', value: 'edited value' }],
+});
+
+export const deleted = makeStory(conf, {
+  items: [{ name: 'DELETED', value: 'deleted value' }],
+});
+
+export const editedAndDeleted = makeStory(conf, {
+  items: [{ name: 'EDITED_DELETED', value: 'edited deleted value' }],
+});
+
+export const longName = makeStory(conf, {
+  items: [{
+    name: 'VERY_LONG_NAME_THAT_IS_ACTUALLY_TOO_LONG_TOO_DISPLAY_OMG_WHAT_IS_HAPPENING',
+    value: 'value for long name',
+  }],
+});
+
+export const longValue = makeStory(conf, {
+  items: [{ name: 'LONG_VALUE', value: 'very long value that is actually too long too display omg what is happening' }],
+});
+
+export const skeleton = makeStory(conf, {
+  items: [{ name: 'LOADING_VARIABLE', skeleton: true }],
+});
+
+export const disabled = makeStory(conf, {
+  items: [{ name: 'DISABLED', value: 'disabled value' }],
+});
+
+export const readonly = makeStory(conf, {
+  items: [{ name: 'READONLY', value: 'readonly value' }],
+});
+
+enhanceStoriesNames({
+  defaultStory,
+  empty,
+  pristine,
+  multiline,
+  newValue,
+  newAndEdited,
+  edited,
+  deleted,
+  editedAndDeleted,
+  longName,
+  longValue,
+  skeleton,
+  disabled,
+  readonly,
+});

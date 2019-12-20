@@ -20,7 +20,7 @@ function enhanceStoryName (defaultName) {
   if (defaultName === 'empty') {
     return '🕳 Empty (no data)';
   }
-  if (defaultName === 'loading' || defaultName === 'saving') {
+  if (defaultName === 'loading' || defaultName === 'saving' || defaultName.startsWith('skeleton')) {
     return '⌛ ' + formatStoryName(defaultName);
   }
   if (defaultName.startsWith('empty')) {
@@ -40,8 +40,6 @@ function enhanceStoryName (defaultName) {
 
 export function enhanceStoriesNames (stories) {
   Object.entries(stories).forEach(([name, storyFn]) => {
-    if (storyFn.story == null) {
-      storyFn.story = { name: enhanceStoryName(name) };
-    }
+    storyFn.story = { name: enhanceStoryName(name), ...(storyFn.story || {}) };
   });
 }

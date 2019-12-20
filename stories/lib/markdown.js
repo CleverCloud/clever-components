@@ -2,6 +2,9 @@ import 'github-markdown-css/github-markdown.css';
 import 'highlight.js/styles/vs.css';
 import hljs from 'highlight.js';
 import MarkdownIt from 'markdown-it';
+import { Parser as HtmlToReactParser } from 'html-to-react';
+
+const htmlToReactParser = new HtmlToReactParser();
 
 const md = new MarkdownIt({
   // Enable HTML tags in source
@@ -49,12 +52,21 @@ export function markdownToDom (markdownText) {
 
   const element = document.createElement('div');
   element.style.width = '100%';
-  element.style.maxWidth = '55rem';
-  element.style.margin = '5rem auto';
+  element.style.maxWidth = '1000px';
+  element.style.margin = '0 auto';
   element.classList.add('markdown-body');
   element.innerHTML = html;
 
   const title = element.querySelector('h1').textContent;
 
   return { title, element };
+}
+
+export function markdownToReact (markdownText) {
+  const { element } = markdownToDom(markdownText);
+  return htmlToReact(element.outerHTML);
+}
+
+export function htmlToReact (html) {
+  return htmlToReactParser.parse(html);
 }

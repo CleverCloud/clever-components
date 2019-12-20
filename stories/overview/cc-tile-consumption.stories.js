@@ -1,61 +1,52 @@
 import '../../components/overview/cc-tile-consumption.js';
 import notes from '../../.components-docs/cc-tile-consumption.md';
-import { createContainer } from '../lib/dom.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
-import { sequence } from '../lib/sequence.js';
-
-function createComponent (consumption) {
-  const component = document.createElement('cc-tile-consumption');
-  component.style.width = '275px';
-  component.style.display = 'inline-grid';
-  component.style.marginBottom = '1rem';
-  component.style.marginRight = '1rem';
-  component.consumption = consumption;
-  return component;
-}
+import { makeStory, storyWait } from '../lib/make-story.js';
 
 export default {
   title: '2. Overview|<cc-tile-consumption>',
+  component: 'cc-tile-consumption',
   parameters: { notes },
 };
 
-export const skeleton = () => {
-  return createComponent();
+const conf = {
+  component: 'cc-tile-consumption',
+  css: `cc-tile-consumption {
+    display: inline-grid;
+    margin-bottom: 1rem;
+    margin-right: 1rem;    
+    width: 275px;
+  }`,
 };
 
-export const error = () => {
-  const component = createComponent();
-  component.error = true;
-  return component;
-};
+export const defaultStory = makeStory(conf, {
+  items: [{ consumption: { yesterday: 0.72, last30Days: 14.64 } }],
+});
 
-export const dataLoaded = () => {
-  return createContainer([
-    'Fresh new app',
-    createComponent({ yesterday: 0, last30Days: 0 }),
-    'nano app',
-    createComponent({ yesterday: 0.3, last30Days: 6.1 }),
-    'XS app',
-    createComponent({ yesterday: 0.72, last30Days: 14.64 }),
-  ]);
-};
+export const skeleton = makeStory(conf, {
+  items: [{}],
+});
 
-export const simulations = () => {
-  const errorComponent = createComponent();
-  const component = createComponent();
+export const error = makeStory(conf, {
+  items: [{ error: true }],
+});
 
-  sequence(async wait => {
-    await wait(2000);
-    errorComponent.error = true;
-    component.consumption = { yesterday: 0.72, last30Days: 14.64 };
-  });
+export const dataLoaded = makeStory(conf, {
+  items: [
+    { consumption: { yesterday: 0, last30Days: 0 } },
+    { consumption: { yesterday: 0.3, last30Days: 6.1 } },
+    { consumption: { yesterday: 0.72, last30Days: 14.64 } },
+  ],
+});
 
-  return createContainer([
-    'Loading, then error',
-    errorComponent,
-    'Loading, then some data',
-    component,
-  ]);
-};
+export const simulations = makeStory(conf, {
+  items: [{}, {}],
+  simulations: [
+    storyWait(2000, ([component, componentError]) => {
+      component.consumption = { yesterday: 0.72, last30Days: 14.64 };
+      componentError.error = true;
+    }),
+  ],
+});
 
-enhanceStoriesNames({ skeleton, error, dataLoaded, simulations });
+enhanceStoriesNames({ defaultStory, skeleton, error, dataLoaded, simulations });

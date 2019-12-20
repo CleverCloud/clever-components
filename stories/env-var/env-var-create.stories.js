@@ -1,33 +1,30 @@
 import '../../components/env-var/env-var-create.js';
 import notes from '../../.components-docs/env-var-create.md';
 import { enhanceStoriesNames } from '../lib/story-names.js';
-import { withCustomEventActions } from '../lib/event-action.js';
-
-const withActions = withCustomEventActions('env-var-create:create');
+import { makeStory } from '../lib/make-story.js';
 
 export default {
   title: '2. Environment variables|<env-var-create>',
+  component: 'env-var-create',
   parameters: { notes },
 };
 
-export const defaultStory = withActions(() => {
-  const container = document.createElement('div');
-  container.innerHTML = `
-      <div class="title">Default:</div>
-      <env-var-create></env-var-create>
-      
-      
-      
-      <div class="title">With name "FOO" and "BAR" already defined:</div>
-      <env-var-create id="variables-names"></env-var-create>
-      
-      <div class="title">Disabled:</div>
-      <env-var-create disabled></env-var-create>
-    `;
+const conf = {
+  component: 'env-var-create',
+  events: ['env-var-create:create'],
+};
 
-  container.querySelector('#variables-names').variablesNames = ['FOO', 'BAR'];
-
-  return container;
+export const defaultStory = makeStory(conf, {
+  items: [{}],
 });
 
-enhanceStoriesNames({ defaultStory });
+export const validationWithExistingNames = makeStory(conf, {
+  docs: 'In this example `FOO` and `BAR` are already defined and cannot be used as a variable name again.',
+  items: [{ variablesNames: ['FOO', 'BAR'] }],
+});
+
+export const disabled = makeStory(conf, {
+  items: [{ disabled: true }],
+});
+
+enhanceStoriesNames({ defaultStory, validationWithExistingNames, disabled });

@@ -1,20 +1,7 @@
 import '../../components/overview/cc-tile-requests.js';
 import notes from '../../.components-docs/cc-tile-requests.md';
-import { createContainer } from '../lib/dom.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
-import { sequence } from '../lib/sequence.js';
-
-function createComponent (data, width = '275px') {
-  const component = document.createElement('cc-tile-requests');
-  component.style.width = width;
-  component.style.display = 'inline-grid';
-  component.style.marginBottom = '1rem';
-  component.style.marginRight = '1rem';
-  if (data != null) {
-    component.data = data;
-  }
-  return component;
-}
+import { makeStory, storyWait } from '../lib/make-story.js';
 
 const REQUESTS_COUNTS_BIG = [
   596600,
@@ -63,75 +50,87 @@ function generateData (dataSample) {
   });
 }
 
+const baseItems = [
+  { style: 'width: 275px' },
+  { style: 'width: 380px' },
+  { style: 'width: 540px' },
+];
+
 export default {
   title: '2. Overview|<cc-tile-requests>',
+  component: 'cc-tile-requests',
   parameters: { notes },
 };
 
-export const skeleton = () => {
-  return createContainer([
-    'loading (275px, 380px, 540px)',
-    createComponent(null, '275px'),
-    createComponent(null, '380px'),
-    createComponent(null, '540px'),
-  ]);
+const conf = {
+  component: 'cc-tile-requests',
+  css: `
+    cc-tile-requests {
+      display: inline-grid;
+      margin-bottom: 1rem;
+      margin-right: 1rem;
+    }
+  `,
 };
 
-export const error = () => {
-  const errorComponent = createComponent();
-  errorComponent.error = true;
-  return createContainer(['Error', errorComponent]);
-};
+export const defaultStory = makeStory(conf, {
+  items: [{ style: 'width: 275px', data: generateData(REQUESTS_COUNTS_SMALL) }],
+});
 
-export const empty = () => {
-  return createContainer(['Empty data', createComponent([])]);
-};
+export const skeleton = makeStory(conf, {
+  items: baseItems,
+});
 
-export const dataLoaded = () => {
-  return createContainer([
-    'big number of requests (275px, 380px, 540px)',
-    createComponent(generateData(REQUESTS_COUNTS_BIG), '275px'),
-    createComponent(generateData(REQUESTS_COUNTS_BIG), '380px'),
-    createComponent(generateData(REQUESTS_COUNTS_BIG), '540px'),
-    'small number of requests (275px, 380px, 540px)',
-    createComponent(generateData(REQUESTS_COUNTS_SMALL), '275px'),
-    createComponent(generateData(REQUESTS_COUNTS_SMALL), '380px'),
-    createComponent(generateData(REQUESTS_COUNTS_SMALL), '540px'),
-    'similar number of requests (275px, 380px, 540px)',
-    createComponent(generateData(REQUESTS_COUNTS_SIMILAR), '275px'),
-    createComponent(generateData(REQUESTS_COUNTS_SIMILAR), '380px'),
-    createComponent(generateData(REQUESTS_COUNTS_SIMILAR), '540px'),
-  ]);
-};
+export const error = makeStory(conf, {
+  items: [{ style: 'width: 275px', error: true }],
 
-export const simulations = () => {
-  const componentSmallError = createComponent(null, '275px');
-  const componentMediumError = createComponent(null, '380px');
-  const componentBigError = createComponent(null, '540px');
-  const componentSmall = createComponent(null, '275px');
-  const componentMedium = createComponent(null, '380px');
-  const componentBig = createComponent(null, '540px');
+});
 
-  sequence(async wait => {
-    await wait(2000);
-    componentSmallError.error = true;
-    componentMediumError.error = true;
-    componentBigError.error = true;
-    componentSmall.data = generateData(REQUESTS_COUNTS_BIG);
-    componentMedium.data = generateData(REQUESTS_COUNTS_BIG);
-    componentBig.data = generateData(REQUESTS_COUNTS_BIG);
-  });
+export const empty = makeStory(conf, {
+  items: [{ style: 'width: 275px', data: [] }],
+});
 
-  return createContainer([
-    'Loading, then error (275px, 380px, 540px)',
-    componentSmallError,
-    componentMediumError,
-    componentBigError,
-    'Loading, then some data (275px, 380px, 540px)',
-    componentSmall,
-    componentMedium,
-    componentBig,
-  ]);
-};
+export const dataLoadedWithBigRequests = makeStory(conf, {
+  items: baseItems.map((p) => ({ ...p, data: generateData(REQUESTS_COUNTS_BIG) })),
+});
 
-enhanceStoriesNames({ skeleton, error, empty, dataLoaded, simulations });
+export const dataLoadedWithSmallRequests = makeStory(conf, {
+  items: baseItems.map((p) => ({ ...p, data: generateData(REQUESTS_COUNTS_SMALL) })),
+});
+
+export const dataLoadedWithSimilarRequests = makeStory(conf, {
+  items: baseItems.map((p) => ({ ...p, data: generateData(REQUESTS_COUNTS_SIMILAR) })),
+});
+
+export const simulationsWithData = makeStory(conf, {
+  items: baseItems,
+  simulations: [
+    storyWait(2000, ([componentSmall, componentMedium, componentBig]) => {
+      componentSmall.data = generateData(REQUESTS_COUNTS_BIG);
+      componentMedium.data = generateData(REQUESTS_COUNTS_BIG);
+      componentBig.data = generateData(REQUESTS_COUNTS_BIG);
+    }),
+  ],
+});
+
+export const simulationsWithError = makeStory(conf, {
+  items: baseItems,
+  simulations: [
+    storyWait(2000, ([componentSmall, componentMedium, componentBig]) => {
+      componentSmall.error = true;
+      componentMedium.error = true;
+      componentBig.error = true;
+    }),
+  ],
+});
+
+enhanceStoriesNames({
+  skeleton,
+  error,
+  empty,
+  dataLoadedWithBigRequests,
+  dataLoadedWithSmallRequests,
+  dataLoadedWithSimilarRequests,
+  simulationsWithData,
+  simulationsWithError,
+});

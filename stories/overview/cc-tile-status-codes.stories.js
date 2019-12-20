@@ -1,69 +1,62 @@
 import '../../components/overview/cc-tile-status-codes.js';
 import notes from '../../.components-docs/cc-tile-status-codes.md';
-import { createContainer } from '../lib/dom.js';
-import { sequence } from '../lib/sequence';
 import { enhanceStoriesNames } from '../lib/story-names.js';
+import { makeStory, storyWait } from '../lib/make-story.js';
 
-function createComponent (statusCodes) {
-  const component = document.createElement('cc-tile-status-codes');
-  component.style.width = '275px';
-  component.style.display = 'inline-grid';
-  component.style.marginBottom = '1rem';
-  component.style.marginRight = '1rem';
-  if (statusCodes != null) {
-    component.statusCodes = statusCodes;
-  }
-  return component;
-}
+const DATA = [
+  { 200: 47640, 206: 2011, 302: 11045, 303: 457, 304: 12076, 500: 16 },
+  { 200: 1000, 201: 10, 302: 100, 401: 150, 404: 300, 500: 200 },
+  { 101: 75, 200: 800, 201: 50, 302: 80, 401: 200, 404: 100, 500: 100 },
+];
 
 export default {
   title: '2. Overview|<cc-tile-status-codes>',
+  component: 'cc-tile-status-codes',
   parameters: { notes },
 };
 
-export const skeleton = () => {
-  return createComponent();
+const conf = {
+  component: 'cc-tile-status-codes',
+  css: `cc-tile-status-codes {
+    display: inline-grid;
+    margin-bottom: 1rem;
+    margin-right: 1rem;    
+    width: 275px;
+  }`,
 };
 
-export const error = () => {
-  const errorComponent = createComponent();
-  errorComponent.error = true;
-  return createContainer(['Error', errorComponent]);
-};
+export const defaultStory = makeStory(conf, {
+  items: [{ statusCodes: DATA[0] }],
+});
 
-export const empty = () => {
-  return createContainer(['Empty data', createComponent({})]);
-};
+export const skeleton = makeStory(conf, {
+  items: [{}],
+});
 
-export const dataLoaded = () => {
-  return createContainer([
-    'Example 1',
-    createComponent({ 200: 47640, 206: 2011, 302: 11045, 303: 457, 304: 12076, 500: 16 }),
-    'Example 2',
-    createComponent({ 200: 1000, 201: 10, 302: 100, 303: 150, 500: 200 }),
-    'Example 3',
-    createComponent({ 200: 1000, 201: 10, 302: 100, 401: 150, 404: 300, 500: 200 }),
-    'Example 4',
-    createComponent({ 101: 75, 200: 800, 201: 50, 302: 80, 401: 200, 404: 100, 500: 100 }),
-  ]);
-};
+export const error = makeStory(conf, {
+  items: [{ error: true }],
+});
 
-export const simulations = () => {
-  const errorComponent = createComponent();
-  const component = createComponent();
+export const empty = makeStory(conf, {
+  items: [{ statusCodes: [] }],
+});
 
-  sequence(async wait => {
-    await wait(2000);
-    errorComponent.error = true;
-    component.statusCodes = { 200: 47640, 206: 2011, 302: 11045, 303: 457, 304: 12076, 500: 16 };
-  });
+export const dataLoaded = makeStory(conf, {
+  items: [
+    { statusCodes: DATA[0] },
+    { statusCodes: DATA[1] },
+    { statusCodes: DATA[2] },
+  ],
+});
 
-  return createContainer([
-    'Loading, then error',
-    errorComponent,
-    'Loading, then some data',
-    component,
-  ]);
-};
+export const simulations = makeStory(conf, {
+  items: [{}, {}],
+  simulations: [
+    storyWait(2000, ([component, componentError]) => {
+      component.statusCodes = DATA[0];
+      componentError.error = true;
+    }),
+  ],
+});
 
-enhanceStoriesNames({ skeleton, error, empty, dataLoaded, simulations });
+enhanceStoriesNames({ defaultStory, skeleton, error, empty, dataLoaded, simulations });

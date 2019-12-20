@@ -1,47 +1,50 @@
 import '../../components/atoms/cc-toggle.js';
 import notes from '../../.components-docs/cc-toggle.md';
 import { enhanceStoriesNames } from '../lib/story-names.js';
-import { withCustomEventActions } from '../lib/event-action.js';
-
-const withActions = withCustomEventActions('cc-toggle:input');
+import { makeStory } from '../lib/make-story.js';
 
 export default {
   title: '1. Atoms|<cc-toggle>',
+  component: 'cc-toggle',
   parameters: { notes },
 };
 
-export const defaultStory = withActions(() => {
+const conf = {
+  component: 'cc-toggle',
+  events: ['cc-toggle:input'],
+};
 
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = `
-    <div class="title">Multiple choices:</div>
-    <cc-toggle id="ONE" value="PAUL"></cc-toggle>
-    
-    <div class="title">Classic 2 choices (true/false):</div>
-    <cc-toggle id="TWO" value="true"></cc-toggle>
-    
-    <div class="title">Disabled:</div>
-    <cc-toggle id="THREE" value="true" disabled></cc-toggle>
-  `;
-
-  wrapper.querySelector('#ONE').choices = [
-    { label: 'John', value: 'JOHN' },
-    { label: 'Paul', value: 'PAUL' },
-    { label: 'George', value: 'GEORGE' },
-    { label: 'Ringo', value: 'RINGO' },
-  ];
-
-  wrapper.querySelector('#TWO').choices = [
-    { label: 'true', value: 'true' },
-    { label: 'false', value: 'false' },
-  ];
-
-  wrapper.querySelector('#THREE').choices = [
-    { label: 'true', value: 'true' },
-    { label: 'false', value: 'false' },
-  ];
-
-  return wrapper;
+export const defaultStory = makeStory(conf, {
+  items: [{
+    value: 'PAUL',
+    choices: [
+      { label: 'John', value: 'JOHN' },
+      { label: 'Paul', value: 'PAUL' },
+      { label: 'George', value: 'GEORGE' },
+      { label: 'Ringo', value: 'RINGO' },
+    ],
+  }],
 });
 
-enhanceStoriesNames({ defaultStory });
+export const trueFalse = makeStory(conf, {
+  items: [{
+    value: 'true',
+    choices: [
+      { label: 'true', value: 'true' },
+      { label: 'false', value: 'false' },
+    ],
+  }],
+});
+
+export const disabled = makeStory(conf, {
+  items: [{
+    value: 'true',
+    choices: [
+      { label: 'true', value: 'true' },
+      { label: 'false', value: 'false' },
+    ],
+    disabled: true,
+  }],
+});
+
+enhanceStoriesNames({ defaultStory, trueFalse, disabled });

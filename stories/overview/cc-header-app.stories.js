@@ -1,362 +1,171 @@
 import '../../components/overview/cc-header-app.js';
 import notes from '../../.components-docs/cc-header-app.md';
-import { createContainer } from '../lib/dom.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
-import { sequence } from '../lib/sequence';
-import { withCustomEventActions } from '../lib/event-action';
+import { makeStory, storyWait } from '../lib/make-story.js';
 
-const withActions = withCustomEventActions(
-  'cc-header-app:start',
-  'cc-header-app:restart',
-  'cc-header-app:cancel',
-  'cc-header-app:stop',
-);
+const COMMIT_ONE = '99b8617a5e102b318593eed3cd0c0a67e77b7e9a';
+const COMMIT_TWO = 'bf4c76b3c563050d32e411b2f06d11515c7d8304';
 
-export function createComponent ({ app, status, runningCommit, startingCommit, disableButtons = false, width = '95%' }) {
-  const component = document.createElement('cc-header-app');
-  component.app = app;
-  component.status = status;
-  component.runningCommit = runningCommit;
-  component.startingCommit = startingCommit;
-  component.disableButtons = disableButtons;
-  component.style.display = 'inline-flex';
-  component.style.marginBottom = '1rem';
-  component.style.marginRight = '1rem';
-  component.style.width = width;
-  return component;
+function app (variantName, variantLogoName, commit = COMMIT_ONE) {
+  return {
+    name: `Awesome ${variantName} app (PROD)`,
+    commit,
+    variantName,
+    variantLogo: `https://static-assets.cellar.services.clever-cloud.com/logos/${variantLogoName}.svg`,
+    lastDeploymentLogsUrl: '/url/to/logs?id=fe726a13-345b-46d1-9101-f4f232479122',
+  };
 }
 
 export default {
   title: '2. Overview|<cc-header-app>',
+  component: 'cc-header-app',
   parameters: { notes },
-  excludeStories: ['createComponent'],
 };
 
-export const skeleton = withActions(() => {
-  return createContainer([
-    'App is loading, status is loading',
-    createComponent({}),
-    'App is loaded, status is loading',
-    createComponent({
-      app: {
-        name: 'Awesome app (PROD)',
-        commit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-        variantName: 'PHP',
-        variantLogo: 'https://static-assets.cellar.services.clever-cloud.com/logos/php.svg',
-        lastDeploymentLogsUrl: '/url/to/logs?id=fe726a13-345b-46d1-9101-f4f232479122',
-      },
-    }),
-  ]);
+const conf = {
+  component: 'cc-header-app',
+  css: `
+    cc-header-app:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+  `,
+  events: [
+    'cc-header-app:start',
+    'cc-header-app:restart',
+    'cc-header-app:cancel',
+    'cc-header-app:stop',
+  ],
+};
+
+export const defaultStory = makeStory(conf, {
+  items: [{ app: app('Node', 'nodejs'), status: 'running', runningCommit: COMMIT_ONE }],
 });
 
-export const error = withActions(() => {
-  const component = createComponent({});
-  component.error = true;
-  return component;
+export const skeleton = makeStory(conf, {
+  items: [{}],
 });
 
-export const dataLoaded = withActions(() => {
-  return createContainer([
-    '"unknown" state',
-    createComponent({
-      app: {
-        name: 'Awesome app (PROD)',
-        commit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-        variantName: 'PHP',
-        variantLogo: 'https://static-assets.cellar.services.clever-cloud.com/logos/php.svg',
-        lastDeploymentLogsUrl: '/url/to/logs?id=fe726a13-345b-46d1-9101-f4f232479122',
-      },
-      status: 'unknown',
-    }),
-    '"stopped" state',
-    createComponent({
-      app: {
-        name: 'Awesome app (PROD)',
-        commit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-        variantName: 'Docker',
-        variantLogo: 'https://static-assets.cellar.services.clever-cloud.com/logos/docker.svg',
-        lastDeploymentLogsUrl: '/url/to/logs?id=fe726a13-345b-46d1-9101-f4f232479122',
-      },
-      status: 'stopped',
-    }),
-    '"stopped" state (brand new app)',
-    createComponent({
-      app: {
-        name: 'Awesome app (PROD)',
-        variantName: 'Python',
-        variantLogo: 'https://static-assets.cellar.services.clever-cloud.com/logos/python.svg',
-        lastDeploymentLogsUrl: '/url/to/logs?id=fe726a13-345b-46d1-9101-f4f232479122',
-      },
-      status: 'stopped',
-    }),
-    '"start-failed" state',
-    createComponent({
-      app: {
-        name: 'Awesome app (PROD)',
-        commit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-        variantName: 'Java + WAR',
-        variantLogo: 'https://static-assets.cellar.services.clever-cloud.com/logos/java-war.svg',
-        lastDeploymentLogsUrl: '/url/to/logs?id=fe726a13-345b-46d1-9101-f4f232479122',
-      },
-      status: 'start-failed',
-    }),
-    '"running" state (running commit unknown)',
-    createComponent({
-      app: {
-        name: 'Awesome app (PROD)',
-        commit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-        variantName: 'Java + JAR',
-        variantLogo: 'https://static-assets.cellar.services.clever-cloud.com/logos/java-jar.svg',
-        lastDeploymentLogsUrl: '/url/to/logs?id=fe726a13-345b-46d1-9101-f4f232479122',
-      },
-      status: 'running',
-    }),
-    '"running" state',
-    createComponent({
-      app: {
-        name: 'Awesome app (PROD)',
-        commit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-        variantName: 'Ruby',
-        variantLogo: 'https://static-assets.cellar.services.clever-cloud.com/logos/ruby.svg',
-        lastDeploymentLogsUrl: '/url/to/logs?id=fe726a13-345b-46d1-9101-f4f232479122',
-      },
-      status: 'running',
-      runningCommit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-    }),
-    '"restart-failed" state',
-    createComponent({
-      app: {
-        name: 'Awesome app (PROD)',
-        commit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-        variantName: 'Java or Scala + Play! 2',
-        variantLogo: 'https://static-assets.cellar.services.clever-cloud.com/logos/play2.svg',
-        lastDeploymentLogsUrl: '/url/to/logs?id=fe726a13-345b-46d1-9101-f4f232479122',
-      },
-      status: 'restart-failed',
-      runningCommit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-    }),
-    '"starting" state (deploying commit unknown)',
-    createComponent({
-      app: {
-        name: 'Awesome app (PROD)',
-        commit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-        variantName: 'Java + Maven',
-        variantLogo: 'https://static-assets.cellar.services.clever-cloud.com/logos/maven.svg',
-        lastDeploymentLogsUrl: '/url/to/logs?id=fe726a13-345b-46d1-9101-f4f232479122',
-      },
-      status: 'starting',
-    }),
-    '"starting" state',
-    createComponent({
-      app: {
-        name: 'Awesome app (PROD)',
-        commit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-        variantName: 'Go',
-        variantLogo: 'https://static-assets.cellar.services.clever-cloud.com/logos/go.svg',
-        lastDeploymentLogsUrl: '/url/to/logs?id=fe726a13-345b-46d1-9101-f4f232479122',
-      },
-      status: 'starting',
-      startingCommit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-    }),
-    '"restarting" state (deploying commit unknown)',
-    createComponent({
-      app: {
-        name: 'Awesome app (PROD)',
-        commit: 'bf4c76b3c563050d32e411b2f06d11515c7d8304',
-        variantName: 'Scala',
-        variantLogo: 'https://static-assets.cellar.services.clever-cloud.com/logos/scala.svg',
-        lastDeploymentLogsUrl: '/url/to/logs?id=fe726a13-345b-46d1-9101-f4f232479122',
-      },
-      status: 'restarting',
-      runningCommit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-    }),
-    '"restarting" state',
-    createComponent({
-      app: {
-        name: 'Awesome app (PROD)',
-        commit: 'bf4c76b3c563050d32e411b2f06d11515c7d8304',
-        variantName: 'Haskell',
-        variantLogo: 'https://static-assets.cellar.services.clever-cloud.com/logos/haskell.svg',
-        lastDeploymentLogsUrl: '/url/to/logs?id=fe726a13-345b-46d1-9101-f4f232479122',
-      },
-      status: 'restarting',
-      runningCommit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-      startingCommit: 'bf4c76b3c563050d32e411b2f06d11515c7d8304',
-    }),
-    '"restarting-with-downtime" state',
-    createComponent({
-      app: {
-        name: 'Awesome app (PROD)',
-        commit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-        variantName: 'Static',
-        variantLogo: 'https://static-assets.cellar.services.clever-cloud.com/logos/apache.svg',
-        lastDeploymentLogsUrl: '/url/to/logs?id=fe726a13-345b-46d1-9101-f4f232479122',
-      },
-      status: 'restarting-with-downtime',
-      runningCommit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-      startingCommit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-    }),
-  ]);
+export const skeletonWithAppLoaded = makeStory(conf, {
+  items: [{ app: app('Node', 'nodejs') }],
 });
 
-export const dataLoadedWithDisableButtons = withActions(() => {
-  return createContainer([
-    '"stopped" state',
-    createComponent({
-      app: {
-        name: 'Awesome app (PROD)',
-        commit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-        variantName: 'Docker',
-        variantLogo: 'https://static-assets.cellar.services.clever-cloud.com/logos/docker.svg',
-        lastDeploymentLogsUrl: '/url/to/logs?id=fe726a13-345b-46d1-9101-f4f232479122',
-      },
-      status: 'stopped',
-      width: '95%',
-      disableButtons: true,
-    }),
-    '"running" state',
-    createComponent({
-      app: {
-        name: 'Awesome app (PROD)',
-        commit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-        variantName: 'Ruby',
-        variantLogo: 'https://static-assets.cellar.services.clever-cloud.com/logos/ruby.svg',
-        lastDeploymentLogsUrl: '/url/to/logs?id=fe726a13-345b-46d1-9101-f4f232479122',
-      },
-      status: 'running',
-      runningCommit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-      width: '95%',
-      disableButtons: true,
-    }),
-    '"restarting" state (deploying commit unknown)',
-    createComponent({
-      app: {
-        name: 'Awesome app (PROD)',
-        commit: 'bf4c76b3c563050d32e411b2f06d11515c7d8304',
-        variantName: 'Scala',
-        variantLogo: 'https://static-assets.cellar.services.clever-cloud.com/logos/scala.svg',
-        lastDeploymentLogsUrl: '/url/to/logs?id=fe726a13-345b-46d1-9101-f4f232479122',
-      },
-      status: 'restarting',
-      runningCommit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-      width: '95%',
-      disableButtons: true,
-    }),
-  ]);
+export const error = makeStory(conf, {
+  items: [{ error: true }],
 });
 
-export const dataLoadedWithDifferentStyleWidths = withActions(() => {
-
-  const variants = Array
-    .from(new Array(9))
-    .map((_, i) => i * 100 + 400)
-    .flatMap((width) => {
-      return [
-        width + 'px',
-        createComponent({
-          app: {
-            name: 'Awesome app (PROD)',
-            commit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-            variantName: 'Node',
-            variantLogo: 'https://static-assets.cellar.services.clever-cloud.com/logos/nodejs.svg',
-            lastDeploymentLogsUrl: '/url/to/logs?id=fe726a13-345b-46d1-9101-f4f232479122',
-          },
-          status: 'running',
-          runningCommit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-          startingCommit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-          width: width + 'px',
-        }),
-      ];
-    });
-
-  return createContainer([
-    '300px (short and very long name)',
-    createComponent({
-      app: {
-        name: 'Awesome app',
-        commit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-        variantName: 'Node',
-        variantLogo: 'https://static-assets.cellar.services.clever-cloud.com/logos/nodejs.svg',
-        lastDeploymentLogsUrl: '/url/to/logs?id=fe726a13-345b-46d1-9101-f4f232479122',
-      },
-      status: 'running',
-      runningCommit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-      startingCommit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-      width: '300px',
-    }),
-    createComponent({
-      app: {
-        name: 'Awesome app with very very very very very long name (PROD)',
-        commit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-        variantName: 'Node',
-        variantLogo: 'https://static-assets.cellar.services.clever-cloud.com/logos/nodejs.svg',
-        lastDeploymentLogsUrl: '/url/to/logs?id=fe726a13-345b-46d1-9101-f4f232479122',
-      },
-      status: 'running',
-      runningCommit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-      startingCommit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-      width: '300px',
-    }),
-    ...variants,
-  ]);
+export const unknownState = makeStory(conf, {
+  items: [{ app: app('PHP', 'php'), status: 'unknown' }],
 });
 
-export const simulations = withActions(() => {
+export const stoppedState = makeStory(conf, {
+  items: [{ app: app('Docker', 'docker'), status: 'stopped' }],
+});
 
-  const errorComponent = createComponent({});
-  const component = createComponent({});
+export const stoppedStateWithBrandNewApp = makeStory(conf, {
+  items: [{ app: app('Python', 'python', null), status: 'stopped' }],
+});
 
-  const app = {
-    name: 'Awesome app name (PROD)',
-    commit: '99b8617a5e102b318593eed3cd0c0a67e77b7e9a',
-    variantName: 'Node',
-    variantLogo: 'https://static-assets.cellar.services.clever-cloud.com/logos/nodejs.svg',
-    lastDeploymentLogsUrl: '/url/to/logs?id=fe726a13-345b-46d1-9101-f4f232479122',
-  };
+export const startFailedState = makeStory(conf, {
+  items: [{ app: app('Java + WAR', 'java-war'), status: 'start-failed' }],
+});
 
-  sequence(async (wait) => {
+export const runningStateWithRunningCommitUnknown = makeStory(conf, {
+  items: [{ app: app('Java + JAR', 'java-jar'), status: 'running' }],
+});
 
-    await wait(3000);
-    errorComponent.error = true;
-    component.app = app;
+export const runningState = makeStory(conf, {
+  items: [{ app: app('Ruby', 'ruby'), status: 'running', runningCommit: COMMIT_ONE }],
+});
 
-    await wait(2000);
-    component.status = 'running';
-    component.runningCommit = '99b8617a5e102b318593eed3cd0c0a67e77b7e9a';
+export const restartFailedState = makeStory(conf, {
+  items: [{ app: app('Java or Scala + Play! 2', 'play2'), status: 'restart-failed', runningCommit: COMMIT_ONE }],
+});
 
-    await wait(3000);
-    component.app = {
-      ...app,
-      commit: 'bf4c76b3c563050d32e411b2f06d11515c7d8304',
-    };
-    component.status = 'restarting';
-    component.runningCommit = '99b8617a5e102b318593eed3cd0c0a67e77b7e9a';
+export const startingStateWithDeployingCommitUnknown = makeStory(conf, {
+  items: [{ app: app('Java + Maven', 'maven'), status: 'starting' }],
+});
 
-    await wait(1000);
-    component.startingCommit = 'bf4c76b3c563050d32e411b2f06d11515c7d8304';
+export const startingState = makeStory(conf, {
+  items: [{ app: app('Go', 'go'), status: 'starting', runningCommit: COMMIT_ONE }],
+});
 
-    await wait(3000);
-    component.status = 'restart-failed';
-    component.startingCommit = null;
+export const restartingStateWithDeployingCommitUnknown = makeStory(conf, {
+  items: [{ app: app('Scala', 'scala'), status: 'restarting', runningCommit: COMMIT_ONE }],
+});
 
-    await wait(3000);
-    component.status = 'stopped';
-    component.runningCommit = null;
-  });
+export const restartingState = makeStory(conf, {
+  items: [{
+    app: app('Haskell', 'haskell'),
+    status: 'restarting',
+    runningCommit: COMMIT_ONE,
+    startingCommit: COMMIT_TWO,
+  }],
+});
 
-  return createContainer([
-    'Loading, then error',
-    errorComponent,
-    'Loading, running, restarting, restart-failed, stopped',
-    component,
-  ]);
+export const restartingWithDowntimeState = makeStory(conf, {
+  items: [{
+    app: app('Static', 'apache'),
+    status: 'restarting-with-downtime',
+    runningCommit: COMMIT_ONE,
+    startingCommit: COMMIT_ONE,
+  }],
+});
+
+export const dataLoadedWithDisableButtons = makeStory(conf, {
+  items: [
+    { disableButtons: true, app: app('Docker', 'docker'), status: 'stopped' },
+    { disableButtons: true, app: app('Ruby', 'ruby'), status: 'running' },
+    { disableButtons: true, app: app('Scala', 'scala'), status: 'restarting' },
+  ],
+});
+
+export const simulations = makeStory(conf, {
+  items: [{}, {}],
+  simulations: [
+    storyWait(3000, ([component, componentError]) => {
+      component.app = app('Node', 'nodejs');
+      componentError.error = true;
+    }),
+    storyWait(2000, ([component]) => {
+      component.status = 'running';
+      component.runningCommit = COMMIT_ONE;
+    }),
+    storyWait(3000, ([component]) => {
+      component.app = app('Node', 'nodejs', COMMIT_TWO);
+      component.status = 'restarting';
+      component.runningCommit = COMMIT_ONE;
+    }),
+    storyWait(1000, ([component]) => {
+      component.startingCommit = COMMIT_TWO;
+    }),
+    storyWait(3000, ([component]) => {
+      component.status = 'restart-failed';
+      component.startingCommit = null;
+    }),
+    storyWait(3000, ([component]) => {
+      component.status = 'stopped';
+      component.runningCommit = null;
+    }),
+  ],
 });
 
 enhanceStoriesNames({
+  defaultStory,
   skeleton,
+  skeletonWithAppLoaded,
   error,
-  dataLoaded,
+  unknownState,
+  stoppedState,
+  stoppedStateWithBrandNewApp,
+  startFailedState,
+  runningStateWithRunningCommitUnknown,
+  runningState,
+  restartFailedState,
+  startingStateWithDeployingCommitUnknown,
+  startingState,
+  restartingStateWithDeployingCommitUnknown,
+  restartingState,
+  restartingWithDowntimeState,
   dataLoadedWithDisableButtons,
-  dataLoadedWithDifferentStyleWidths,
   simulations,
 });

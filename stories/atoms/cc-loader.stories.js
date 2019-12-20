@@ -1,28 +1,55 @@
 import '../../components/atoms/cc-loader.js';
 import notes from '../../.components-docs/cc-loader.md';
 import { enhanceStoriesNames } from '../lib/story-names.js';
+import { makeStory } from '../lib/make-story.js';
 
 export default {
   title: '1. Atoms|<cc-loader>',
+  component: 'cc-loader',
   parameters: { notes },
 };
 
-export const defaultStory = () => {
-  return `
-    <div class="title">Small container:</div>
-    <cc-loader style="background: #eee; width: 1rem; height: 1rem;"></cc-loader>
-    
-    <div class="title">Big container (horizontally centered):</div>
-    <cc-loader style="background: #eee; width: 12rem; height: 6rem;"></cc-loader>
-    
-    <div class="title">Big container (vertically centered):</div>
-    <cc-loader style="background: #eee; width: 6rem; height: 10rem;"></cc-loader>
-    
-    <div class="title">Change color with CSS custom prop:</div>
-    <div style="--cc-loader-color: red">
-      <cc-loader style="background: black; width: 12rem; height: 6rem;"></cc-loader>
-    </div>
-  `;
+const conf = {
+  component: 'cc-loader',
+  css: `cc-loader {
+    background: #eee;
+    display: inline-flex;
+    margin-right: 1rem;
+  }`,
 };
 
-enhanceStoriesNames({ defaultStory });
+export const defaultStory = makeStory(conf, {
+  items: [
+    { style: 'width: 5rem; height: 5rem' },
+    { style: 'width: 5rem; height: 5rem; --cc-loader-color: red' },
+    { style: 'width: 5rem; height: 5rem; --cc-loader-color: green' },
+  ],
+});
+
+export const smallContainer = makeStory(conf, {
+  items: [{ style: 'width: 1rem; height: 1rem' }],
+});
+
+export const bigContainerWithHorizontallyCentered = makeStory(conf, {
+  items: [{ style: 'width: 12rem; height: 6rem' }],
+});
+
+export const bigContainerWithVerticallyCentered = makeStory(conf, {
+  items: [{ style: 'width: 6rem; height: 10rem;' }],
+});
+
+export const customColor = makeStory(conf, {
+  items: [
+    { style: 'width: 12rem; height: 6rem; --cc-loader-color: red' },
+    { style: 'width: 12rem; height: 6rem; --cc-loader-color: green' },
+    { style: 'width: 12rem; height: 6rem; --cc-loader-color: orange' },
+  ],
+});
+
+enhanceStoriesNames({
+  defaultStory,
+  smallContainer,
+  bigContainerWithHorizontallyCentered,
+  bigContainerWithVerticallyCentered,
+  customColor,
+});
