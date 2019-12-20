@@ -80,7 +80,7 @@ export class EnvVarInput extends LitElement {
   }
 
   render () {
-    // the no-whitespace comment trick helps users who triple click on the text to be sure to copy the text without any whitespace
+    // the no-whitespace comment trick helps users who triple click on the text to be sure to copy the text without any whitespaces
     return html`
       <span class="name ${classMap({ deleted: this.deleted })}"><!-- no-whitespace
         --><span class=${classMap({ skeleton: this.skeleton })}>${this.name}</span><!-- no-whitespace
