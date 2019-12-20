@@ -2,7 +2,7 @@ import changelogMd from '../../CHANGELOG.md';
 import contributingMd from '../../CONTRIBUTING.md';
 import readmeMd from '../../README.md';
 import { markdownToDom } from '../lib/markdown.js';
-import { storiesOf } from '@storybook/html';
+import { storiesOf } from '@storybook/web-components';
 
 const guidesReq = require.context('../../docs/guides', true, /.+md$/);
 

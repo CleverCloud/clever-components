@@ -1,5 +1,5 @@
 import { markdownToDom } from '../lib/markdown.js';
-import { storiesOf } from '@storybook/html';
+import { storiesOf } from '@storybook/web-components';
 
 const adrReq = require.context('../../docs/adr', true, /adr.+md$/);
 
