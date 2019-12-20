@@ -10,7 +10,7 @@ const DATA = [
 ];
 
 export default {
-  title: '2. Overview|<cc-tile-status-codes>',
+  title: '🛠 Overview|<cc-tile-status-codes>',
   component: 'cc-tile-status-codes',
   parameters: { notes },
 };

@@ -2,27 +2,29 @@ import changelog from '../../CHANGELOG.md';
 import contributing from '../../CONTRIBUTING.md';
 import readme from '../../README.md';
 import release from '../../RELEASE.md';
+import { markdownToDom, markdownToReact } from '../lib/markdown.js';
 import { storiesOf } from '@storybook/web-components';
-import { markdownToDom, markdownToReact } from '../lib/markdown';
-import { formatStoryName } from '../lib/story-names.js';
 
 // TODO: It would be even better if we could load simple markdown files
 export function createDocsStories (kind, stories) {
   Object.entries(stories).forEach(([name, markdownText]) => {
-    const storyName = formatStoryName(name);
-    storiesOf(kind + '|' + storyName, module)
+    storiesOf(kind + '|' + name, module)
       .addParameters({
         options: { showPanel: false },
       })
-      .add('page', () => markdownToDom(markdownText).element, {
-        docs: { page: () => markdownToReact(markdownText) },
+      .add('Page', () => markdownToDom(markdownText).element, {
+        docsOnly: true,
+        docs: {
+          page: () => markdownToReact(markdownText),
+        },
       });
   });
 }
 
-createDocsStories('0. Welcome', {
-  readme,
-  changelog,
-  contributing,
-  release,
+createDocsStories('📌  HOME', {
+  Changelog: changelog,
+  Contributing: contributing,
+  // Small trick to put readme first ;-)
+  ' Readme': readme,
+  Release: release,
 });

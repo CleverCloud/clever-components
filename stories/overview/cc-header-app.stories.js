@@ -17,7 +17,7 @@ function app (variantName, variantLogoName, commit = COMMIT_ONE) {
 }
 
 export default {
-  title: '2. Overview|<cc-header-app>',
+  title: '🛠 Overview|<cc-header-app>',
   component: 'cc-header-app',
   parameters: { notes },
 };

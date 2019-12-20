@@ -4,7 +4,7 @@ import { enhanceStoriesNames } from '../lib/story-names.js';
 import { makeStory } from '../lib/make-story.js';
 
 export default {
-  title: '1. Atoms|<cc-loader>',
+  title: '🧬 Atoms|<cc-loader>',
   component: 'cc-loader',
   parameters: { notes },
 };

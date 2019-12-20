@@ -7,7 +7,7 @@ import { makeStory, storyWait } from '../lib/make-story.js';
 import { setIntervalDom, setTimeoutDom } from '../lib/timers.js';
 
 export default {
-  title: '2. Maps|<cc-logsmap>',
+  title: '🛠 Maps|<cc-logsmap>',
   component: 'cc-logsmap',
   parameters: { notes },
 };

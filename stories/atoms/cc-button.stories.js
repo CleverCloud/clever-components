@@ -14,7 +14,7 @@ const baseItems = [
 ];
 
 export default {
-  title: '1. Atoms|<cc-button>',
+  title: '🧬 Atoms|<cc-button>',
   component: 'cc-button',
   parameters: { notes },
 };

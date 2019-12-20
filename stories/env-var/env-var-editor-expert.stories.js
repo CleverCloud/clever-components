@@ -19,7 +19,7 @@ const VARIABLES_SIMPLE = [
 ];
 
 export default {
-  title: '2. Environment variables|<env-var-editor-expert>',
+  title: '🛠 Environment variables|<env-var-editor-expert>',
   component: 'env-var-editor-expert',
   parameters: { notes },
 };

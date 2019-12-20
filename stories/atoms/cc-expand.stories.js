@@ -6,7 +6,7 @@ import { html, render } from 'lit-html';
 import { makeStory } from '../lib/make-story.js';
 
 export default {
-  title: '1. Atoms|<cc-expand>',
+  title: '🧬 Atoms|<cc-expand>',
   component: 'cc-expand',
   parameters: { notes },
 };

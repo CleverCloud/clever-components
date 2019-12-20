@@ -4,7 +4,7 @@ import { enhanceStoriesNames } from '../lib/story-names.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
 
 export default {
-  title: '1. Atoms|<cc-img>',
+  title: '🧬 Atoms|<cc-img>',
   component: 'cc-img',
   parameters: { notes },
 };

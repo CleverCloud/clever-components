@@ -20,7 +20,7 @@ export function createDateAgo ({ seconds = 0, minutes = 0, hours = 0, days = 0, 
 const STEPS = [1, 5, 10, 20, 30, 45];
 
 export default {
-  title: '1. Atoms|<cc-datetime-relative>',
+  title: '🧬 Atoms|<cc-datetime-relative>',
   component: 'cc-datetime-relative',
   parameters: { notes },
   excludeStories: ['createDateAgo'],

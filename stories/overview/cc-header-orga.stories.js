@@ -8,7 +8,7 @@ function orga (name, avatar, cleverEnterprise, emergencyNumber) {
 }
 
 export default {
-  title: '2. Overview|<cc-header-orga>',
+  title: '🛠 Overview|<cc-header-orga>',
   component: 'cc-header-orga',
   parameters: { notes },
 };

@@ -27,7 +27,7 @@ const baseItems = [
 ];
 
 export default {
-  title: '1. Atoms|<cc-input-text>',
+  title: '🧬 Atoms|<cc-input-text>',
   component: 'cc-input-text',
   parameters: { notes },
 };

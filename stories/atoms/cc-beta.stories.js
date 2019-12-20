@@ -7,7 +7,7 @@ import { defaultStory as statusCodes } from '../overview/cc-tile-status-codes.st
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
-  title: '1. Atoms|<cc-beta>',
+  title: '🧬 Atoms|<cc-beta>',
   component: 'cc-beta',
   parameters: { notes },
 };

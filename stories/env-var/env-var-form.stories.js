@@ -11,7 +11,7 @@ const VARIABLES_FULL = [
 ];
 
 export default {
-  title: '2. Environment variables|<env-var-form>',
+  title: '🛠 Environment variables|<env-var-form>',
   component: 'env-var-form',
   parameters: { notes },
 };

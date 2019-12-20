@@ -14,7 +14,7 @@ import { enhanceStoriesNames } from '../lib/story-names.js';
 import { withMap as betaWithMap, withTiles as betaWithTiles } from '../atoms/cc-beta.stories.js';
 
 export default {
-  title: '2. Overview|<cc-overview>',
+  title: '🛠 Overview|<cc-overview>',
   component: 'cc-overview',
   parameters: { notes },
 };

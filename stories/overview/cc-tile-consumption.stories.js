@@ -4,7 +4,7 @@ import { enhanceStoriesNames } from '../lib/story-names.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
 
 export default {
-  title: '2. Overview|<cc-tile-consumption>',
+  title: '🛠 Overview|<cc-tile-consumption>',
   component: 'cc-tile-consumption',
   parameters: { notes },
 };

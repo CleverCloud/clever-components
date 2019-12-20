@@ -4,7 +4,7 @@ import { enhanceStoriesNames } from '../lib/story-names.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
 
 export default {
-  title: '2. Environment variables|<env-var-full>',
+  title: '🛠 Environment variables|<env-var-full>',
   component: 'env-var-full',
   parameters: { notes },
 };
