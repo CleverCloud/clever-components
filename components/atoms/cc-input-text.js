@@ -12,7 +12,7 @@ import { skeleton } from '../styles/skeleton.js';
 /**
  * An enhanced text input with support for multiline, copy-to-clipboard and show/hide secret.
  *
- * ## Details
+ * ## Technical details
  *
  * * Uses a native `<input>` element by default and a `<textarea>` element when `multi` is true.
  * * When you use it with `readonly` \+ `clipboard` \+ NOT `multi`, the width of the input auto adapts to the length of the content.
