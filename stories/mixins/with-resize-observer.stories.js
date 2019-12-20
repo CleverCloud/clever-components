@@ -1,5 +1,5 @@
 import '../../components/atoms/cc-expand.js';
-import notes from './with-resize-observer.docs.md';
+import docsPage from './with-resize-observer.mdx';
 import { action } from '@storybook/addon-actions';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 import { html, LitElement } from 'lit-element';
@@ -43,7 +43,7 @@ window.customElements.define('lit-element', WithLit);
 
 export default {
   title: '1. Mixins|withResizeObserver()',
-  parameters: { notes },
+  parameters: { docs: { page: docsPage } },
 };
 
 export const defaultStory = () => {
@@ -153,7 +153,7 @@ export const defaultStory = () => {
   });
 
   storyDom.addEventListener('cc-toggle:input', ({ detail: value }) => {
-    Array.from(storyDom.querySelectorAll('.container')).forEach(container => {
+    Array.from(storyDom.querySelectorAll('.container')).forEach((container) => {
       container.style.width = value + 'px';
     });
   });
@@ -162,8 +162,8 @@ export const defaultStory = () => {
     storyDom.querySelector('.attributes').textContent = Array.from(
       storyDom.querySelector('.container').attributes,
     )
-      .filter(attr => attr.name.startsWith('w-'))
-      .map(attr => attr.name + '=""')
+      .filter((attr) => attr.name.startsWith('w-'))
+      .map((attr) => attr.name + '=""')
       .join(' ');
   });
   mo.observe(storyDom.querySelector('.container'), { attributes: true });
