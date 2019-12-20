@@ -104,6 +104,8 @@ export class CcOverview extends withResizeObserver(LitElement) {
       /* .main TILE POSITION/SIZE */
       ::slotted(*.main) {
         grid-column: 1 / -1;
+        height: auto;
+        width: auto;
         min-height: 25rem;
       }
 

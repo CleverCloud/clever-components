@@ -27,6 +27,10 @@ const COLOR_PALETTE = [
 /**
  * World map with two modes: blinking dots or heatmap.
  *
+ * ## Details
+ *
+ * * The component has a default height of 15rem and a default width 20rem but this can be overridden with CSS.
+ *
  * ## Type definitions
  *
  * ```js
@@ -403,8 +407,9 @@ export class CcMap extends withResizeObserver(LitElement) {
         :host {
           display: flex;
           flex-direction: column;
-          height: 50px;
+          height: 15rem;
           position: relative;
+          width: 20rem;
         }
 
         #cc-map-container {
