@@ -139,7 +139,7 @@ export class EnvVarInput extends LitElement {
           /* I have a bug on Linux between Chrome and FF with rem on inputs */
           font-size: 14px;
           line-height: 1.4rem;
-          padding: 0.2rem;
+          margin: 0.2rem;
           word-break: break-all;
         }
 
