@@ -1,4 +1,4 @@
-function formatStoryName (rawName) {
+export function formatStoryName (rawName) {
   return rawName[0].toUpperCase() + rawName
     .slice(1)
     // Camel case to "Sentence case"

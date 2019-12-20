@@ -1,25 +1,28 @@
-import changelogMd from '../../CHANGELOG.md';
-import contributingMd from '../../CONTRIBUTING.md';
-import readmeMd from '../../README.md';
-import { markdownToDom } from '../lib/markdown.js';
+import changelog from '../../CHANGELOG.md';
+import contributing from '../../CONTRIBUTING.md';
+import readme from '../../README.md';
+import release from '../../RELEASE.md';
 import { storiesOf } from '@storybook/web-components';
+import { markdownToDom, markdownToReact } from '../lib/markdown';
+import { formatStoryName } from '../lib/story-names.js';
 
-const guidesReq = require.context('../../docs/guides', true, /.+md$/);
-
-const documentationAsStories = storiesOf('0. Welcome|Documentation & guides', module)
-  .addParameters({
-    options: {
-      showPanel: false,
-    },
+// TODO: It would be even better if we could load simple markdown files
+export function createDocsStories (kind, stories) {
+  Object.entries(stories).forEach(([name, markdownText]) => {
+    const storyName = formatStoryName(name);
+    storiesOf(kind + '|' + storyName, module)
+      .addParameters({
+        options: { showPanel: false },
+      })
+      .add('page', () => markdownToDom(markdownText).element, {
+        docs: { page: () => markdownToReact(markdownText) },
+      });
   });
+}
 
-documentationAsStories.add('README', () => markdownToDom(readmeMd).element);
-documentationAsStories.add('Contributing', () => markdownToDom(contributingMd).element);
-documentationAsStories.add('Changelog', () => markdownToDom(changelogMd).element);
-
-// We still use storiesOf() here because we don't want to list all ADRs statically
-guidesReq.keys().forEach((filename) => {
-  const markdownText = guidesReq(filename).default;
-  const { title, element } = markdownToDom(markdownText);
-  documentationAsStories.add(title, () => element);
+createDocsStories('0. Welcome', {
+  readme,
+  changelog,
+  contributing,
+  release,
 });
