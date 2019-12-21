@@ -1,26 +1,32 @@
 import '../../components/env-var/env-var-full.js';
 import notes from '../../.components-docs/env-var-full.md';
-import { storiesOf } from '@storybook/html';
-import { withCustomEventActions } from '../lib/event-action.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
+import { makeStory, storyWait } from '../lib/make-story.js';
 
-const withActions = withCustomEventActions('env-var-form:submit', 'env-var-full:dismissed-error', 'env-var-form:restart-app');
+export default {
+  title: '🛠 Environment variables|<env-var-full>',
+  component: 'env-var-full',
+  parameters: { notes },
+};
 
-storiesOf('2. Environment variables|<env-var-full>', module)
-  .addParameters({ notes })
-  .add('no data yet (skeleton)', withActions(() => {
-    const envVar = document.createElement('env-var-full');
-    envVar.variables = new Promise(() => null);
-    return envVar;
-  }))
-  .add('app data loaded / addon data loading...', withActions(() => {
-    const envVar = document.createElement('env-var-full');
-    envVar.variables = Promise.resolve([
+const conf = {
+  component: 'env-var-full',
+};
+
+export const skeleton = makeStory(conf, {
+  items: [{ variables: new Promise(() => null) }],
+});
+
+export const appLoadedAddonLoading = makeStory(conf, {
+  name: '👍 App loaded / ⌛ Add-on loading',
+  items: [{
+    variables: Promise.resolve([
       { name: 'EMPTY', value: '' },
       { name: 'ONE', value: 'value ONE' },
       { name: 'MULTI', value: 'line one\nline two\nline three' },
       { name: 'TWO', value: 'value TWO' },
-    ]);
-    envVar.addons = [
+    ]),
+    addons: [
       {
         id: 'foo',
         name: 'Fooooooo',
@@ -31,18 +37,20 @@ storiesOf('2. Environment variables|<env-var-full>', module)
         name: 'Baaaaaar',
         variables: new Promise(() => null),
       },
-    ];
-    return envVar;
-  }))
-  .add('all data loaded', withActions(() => {
-    const envVar = document.createElement('env-var-full');
-    envVar.variables = Promise.resolve([
+    ],
+  }],
+});
+
+export const appLoadedAddonLoaded = makeStory(conf, {
+  name: '👍 App loaded / 👍 Add-on loaded',
+  items: [{
+    variables: Promise.resolve([
       { name: 'EMPTY', value: '' },
       { name: 'ONE', value: 'value ONE' },
       { name: 'MULTI', value: 'line one\nline two\nline three' },
       { name: 'TWO', value: 'value TWO' },
-    ]);
-    envVar.addons = [
+    ]),
+    addons: [
       {
         id: 'foo',
         name: 'Fooooooo',
@@ -61,19 +69,21 @@ storiesOf('2. Environment variables|<env-var-full>', module)
           { name: 'BAR_VARIABLE_THREE_THREE_THREE', value: 'Value three three three' },
         ]),
       },
-    ];
-    return envVar;
-  }))
-  .add('all data loaded (restart button)', withActions(() => {
-    const envVar = document.createElement('env-var-full');
-    envVar.variables = Promise.resolve([
+    ],
+  }],
+});
+
+export const appLoadedAddonLoadedRestartButton = makeStory(conf, {
+  name: '👍 App loaded / 👍 Add-on loaded (restart button)',
+  items: [{
+    variables: Promise.resolve([
       { name: 'EMPTY', value: '' },
       { name: 'ONE', value: 'value ONE' },
       { name: 'MULTI', value: 'line one\nline two\nline three' },
       { name: 'TWO', value: 'value TWO' },
-    ]);
-    envVar.restartApp = true;
-    envVar.addons = [
+    ]),
+    restartApp: true,
+    addons: [
       {
         id: 'foo',
         name: 'Fooooooo',
@@ -92,48 +102,69 @@ storiesOf('2. Environment variables|<env-var-full>', module)
           { name: 'BAR_VARIABLE_THREE_THREE_THREE', value: 'Value three three three' },
         ]),
       },
-    ];
-    return envVar;
-  }))
-  .add('loading errors', withActions(() => {
-    const envVar = document.createElement('env-var-full');
-    envVar.variables = Promise.reject(new Error());
-    envVar.addons = [
+    ],
+  }],
+});
+
+export const errorWithLoading = makeStory(conf, {
+  name: '🔥 App loading / 🔥 Add-on loading',
+  items: [{
+    addons: [
       {
         id: 'foo',
         name: 'Fooooooo',
-        variables: Promise.reject(new Error()),
       },
       {
         id: 'bar',
         name: 'Baaaaaar',
-        variables: Promise.reject(new Error()),
       },
-    ];
-    return envVar;
-  }))
-  .add('app saving error + addon loading errors', withActions(() => {
-    const envVar = document.createElement('env-var-full');
-    envVar.variables = Promise.resolve([
+    ],
+  }],
+  simulations: [
+    storyWait(0, ([component]) => {
+      component.variables = Promise.reject(new Error());
+      component.addons = component.addons.map((addon) => {
+        return { ...addon, variables: Promise.reject(new Error()) };
+      });
+    }),
+  ],
+});
+
+export const errorWithSavingAppAndLoadingAddon = makeStory(conf, {
+  name: '🔥 App saving / 🔥 Add-on loading',
+  items: [{
+    variables: Promise.resolve([
       { name: 'EMPTY', value: '' },
       { name: 'ONE', value: 'value ONE' },
       { name: 'MULTI', value: 'line one\nline two\nline three' },
       { name: 'TWO', value: 'value TWO' },
-    ]);
-    setTimeout(() => {
-      envVar.variables = Promise.reject(new Error());
-    }, 0);
-    envVar.addons = [
+    ]),
+    addons: [
       {
         id: 'foo',
         name: 'Fooooooo',
-        variables: Promise.reject(new Error()),
       },
       {
         id: 'bar',
         name: 'Baaaaaar',
-        variables: Promise.reject(new Error()),
       },
-    ];
-    return envVar;
-  }));
+    ],
+  }],
+  simulations: [
+    storyWait(0, ([component]) => {
+      component.variables = Promise.reject(new Error());
+      component.addons = component.addons.map((addon) => {
+        return { ...addon, variables: Promise.reject(new Error()) };
+      });
+    }),
+  ],
+});
+
+enhanceStoriesNames({
+  skeleton,
+  appLoadedAddonLoading,
+  appLoadedAddonLoaded,
+  appLoadedAddonLoadedRestartButton,
+  errorWithSavingAppAndLoadingAddon,
+  errorWithLoading,
+});

@@ -1,17 +1,7 @@
 import '../../components/atoms/cc-datetime-relative.js';
 import notes from '../../.components-docs/cc-datetime-relative.md';
-import { createContainer } from '../lib/dom.js';
-import { storiesOf } from '@storybook/html';
-import { getLanguage } from '../../components/lib/i18n';
-
-function createComponent (datetime) {
-  const component = document.createElement('cc-datetime-relative');
-  component.setAttribute('datetime', datetime);
-  component.setAttribute('lang', getLanguage());
-  component.style.marginRight = '1rem';
-  component.style.display = 'inline-block';
-  return component;
-}
+import { enhanceStoriesNames } from '../lib/story-names.js';
+import { makeStory } from '../lib/make-story.js';
 
 export function createDateAgo ({ seconds = 0, minutes = 0, hours = 0, days = 0, weeks = 0, months = 0, years = 0 }) {
   const nowTs = new Date().getTime();
@@ -23,28 +13,66 @@ export function createDateAgo ({ seconds = 0, minutes = 0, hours = 0, days = 0, 
     - weeks * 1000 * 60 * 60 * 24 * 7
     - months * 1000 * 60 * 60 * 24 * (365.25 / 12)
     - years * 1000 * 60 * 60 * 24 * 365.25;
-  return new Date(targetTs);
+  const targetDate = new Date(targetTs);
+  return targetDate.toISOString();
 }
 
-function createComponentSeries (unit, steps, elementName) {
-  return [
-    `${unit} ago (${steps.join(', ')}):`,
-    ...steps.map((s) => createComponent(createDateAgo({ [unit]: s }).toISOString())),
-  ];
-}
+const STEPS = [1, 5, 10, 20, 30, 45];
 
-storiesOf('1. Atoms|<cc-datetime-relative>', module)
-  .addParameters({ notes })
-  .add('default', () => {
-    return createContainer([
-      'Now',
-      createComponent(createDateAgo({}).toISOString()),
-      ...createComponentSeries('seconds', [1, 5, 10, 20, 30, 45]),
-      ...createComponentSeries('minutes', [1, 5, 10, 20, 30, 45]),
-      ...createComponentSeries('hours', [1, 5, 10, 20, 30, 45]),
-      ...createComponentSeries('days', [1, 5, 10, 20, 30, 45]),
-      ...createComponentSeries('weeks', [1, 5, 10, 20, 30, 45]),
-      ...createComponentSeries('months', [1, 5, 10, 20, 30, 45]),
-      ...createComponentSeries('years', [1, 5, 10, 20, 30, 45]),
-    ]);
-  });
+export default {
+  title: '🧬 Atoms|<cc-datetime-relative>',
+  component: 'cc-datetime-relative',
+  parameters: { notes },
+  excludeStories: ['createDateAgo'],
+};
+
+const conf = {
+  component: 'cc-datetime-relative',
+  css: `cc-datetime-relative {
+    display: inline-block;
+    margin-right: 1rem;
+  }`,
+};
+
+export const now = makeStory(conf, {
+  items: () => [{ datetime: createDateAgo({}) }],
+});
+
+export const secondsAgo = makeStory(conf, {
+  items: () => STEPS.map((seconds) => ({ datetime: createDateAgo({ seconds }) })),
+});
+
+export const minutesAgo = makeStory(conf, {
+  items: () => STEPS.map((minutes) => ({ datetime: createDateAgo({ minutes }) })),
+});
+
+export const hoursAgo = makeStory(conf, {
+  items: () => STEPS.map((hours) => ({ datetime: createDateAgo({ hours }) })),
+});
+
+export const daysAgo = makeStory(conf, {
+  items: () => STEPS.map((days) => ({ datetime: createDateAgo({ days }) })),
+});
+
+export const weeksAgo = makeStory(conf, {
+  items: () => STEPS.map((weeks) => ({ datetime: createDateAgo({ weeks }) })),
+});
+
+export const monthsAgo = makeStory(conf, {
+  items: () => STEPS.map((months) => ({ datetime: createDateAgo({ months }) })),
+});
+
+export const yearsAgo = makeStory(conf, {
+  items: () => STEPS.map((years) => ({ datetime: createDateAgo({ years }) })),
+});
+
+enhanceStoriesNames({
+  now,
+  secondsAgo,
+  minutesAgo,
+  hoursAgo,
+  daysAgo,
+  weeksAgo,
+  monthsAgo,
+  yearsAgo,
+});

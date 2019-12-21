@@ -1,6 +1,6 @@
 export function setTimeoutDom (fn, delay, domNode) {
   const id = setTimeout(() => {
-    if (domNode.parentElement == null) {
+    if (domNode.parentNode == null) {
       clearTimeout(id);
     }
     else {
@@ -12,7 +12,7 @@ export function setTimeoutDom (fn, delay, domNode) {
 
 export function setIntervalDom (fn, delay, domNode) {
   const id = setInterval(() => {
-    if (domNode.parentElement == null) {
+    if (domNode.parentNode == null) {
       clearInterval(id);
     }
     else {

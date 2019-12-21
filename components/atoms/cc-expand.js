@@ -2,7 +2,7 @@ const createElement = (tagName) => document.createElement(tagName);
 const appendChild = (parent, child) => parent.appendChild(child);
 
 /**
- * A, invisible wrapper that changes its size (with an animation) according to the size of its children.
+ * An invisible wrapper that changes its size (with an animation) according to the size of its children.
  *
  * ## Technical details
  *

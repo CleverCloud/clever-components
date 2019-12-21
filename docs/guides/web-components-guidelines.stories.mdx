@@ -1,4 +1,8 @@
-# Web Components at Clever Cloud
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="📌 Docs|Web components guidelines" />
+
+# Web Components guidelines at Clever Cloud
 
 Here a different rules we want any contributor to follow regarding how we write Web Components with LitElement.
 
@@ -13,8 +17,8 @@ Here a different rules we want any contributor to follow regarding how we write 
 * Try to sort your CSS sources in each selector (alphabetically)
 * Declare all public properties in the static get properties
 * Think about what will happen when there's an error
-* Think about what will happen when the data is not there yet, <br> for this, we use the "skeleton screen" pattern
-* Think about what will happen when the data is empty, <br> don't forget to add a message
+* Think about what will happen when the data is not there yet, <br/> for this, we use the "skeleton screen" pattern
+* Think about what will happen when the data is empty, <br/> don't forget to add a message
 * Think about the focus, where does it go when something is validated or when an element disappears
 * Use `// language=CSS` over your `css` declaration so WebStorm can to syntaxic coloration and more
 * Use `// language=HTML` in your stories so WebStorm can to syntaxic coloration and more
@@ -27,17 +31,17 @@ Here a different rules we want any contributor to follow regarding how we write 
 In order to help anyone reading this code base to find what s.he's looking for,
 we're proposing this order for the different pars of a custom element built with LitElement:
 
-1. LitElement's properties descriptor <br> `static get properties () {}`
-1. Constructor <br> `constructor () {}`
-1. property getters <br> `get myProp () {}`
-1. property setters <br> `set myProp (value) {}`
-1. public methods <br> `myMethodName (arg0, arg1) {}`
-1. private methods (prefixed with an underscore) <br> `_myMethodName (arg0, arg1) {}`
-1. event handlers (almost always private, prefixed with `_on`) <br> `_onClickToggle (e) {}`
-1. custom element lifecycle callbacks <br> `connectedCallback () {}`
-1. LitElement lifecycle callbacks <br> `firstUpdated () {}`
-1. LitElement's render method <br> `render () {}`
-1. LitElement's styles descriptor <br> `static get styles () {}`
+1. LitElement's properties descriptor <br/> `static get properties () {}`
+1. Constructor <br/> `constructor () {}`
+1. property getters <br/> `get myProp () {}`
+1. property setters <br/> `set myProp (value) {}`
+1. public methods <br/> `myMethodName (arg0, arg1) {}`
+1. private methods (prefixed with an underscore) <br/> `_myMethodName (arg0, arg1) {}`
+1. event handlers (almost always private, prefixed with `_on`) <br/> `_onClickToggle (e) {}`
+1. custom element lifecycle callbacks <br/> `connectedCallback () {}`
+1. LitElement lifecycle callbacks <br/> `firstUpdated () {}`
+1. LitElement's render method <br/> `render () {}`
+1. LitElement's styles descriptor <br/> `static get styles () {}`
 
 ## How to order attributes when you use a component?
 

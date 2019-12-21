@@ -147,6 +147,11 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
 
     this._chart.options.tooltips.enabled = !this._skeleton;
 
+    const totalRequests = this._groupedValues.reduce((a, b) => a + b, 0);
+    this._chart.options.title.text = this._skeleton
+      ? '...'
+      : i18n('cc-tile-requests.requests-nb.total', { totalRequests });
+
     this._chart.data = {
       labels: this._xLabels,
       datasets: [{
@@ -205,6 +210,12 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
         // We don't need the responsive mode because we already observe resize to compute bar count
         responsive: false,
         maintainAspectRatio: false,
+        title: {
+          display: true,
+          position: 'bottom',
+          padding: 0,
+          fontStyle: 'italic',
+        },
         legend: {
           display: false,
         },

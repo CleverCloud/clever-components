@@ -1,41 +1,64 @@
 import '../../components/atoms/cc-expand.js';
+import '../../components/atoms/cc-toggle.js';
 import notes from '../../.components-docs/cc-expand.md';
-import { storiesOf } from '@storybook/html';
+import { enhanceStoriesNames } from '../lib/story-names.js';
+import { html, render } from 'lit-html';
+import { makeStory } from '../lib/make-story.js';
 
-storiesOf('1. Atoms|<cc-expand>', module)
-  .addParameters({ notes })
-  .add('default', () => {
-    const container = document.createElement('div');
-    container.innerHTML = `
-      <style>
-        cc-expand {
-          border: 3px solid red;
-        }
-        .button { margin: 1rem 0; }
-        .box { background-color: #bbf; margin: 1rem; }
-        .box[data-size="small"] { height: 60px }
-        .box[data-size="medium"] { height: 120px }
-        .box[data-size="big"] { height: 180px }
-      </style>
-      <div class="title">Change <code>.box</code> blocks (blue background) height here:</div>
-      <div class="button"><cc-toggle value="medium"></cc-toggle></div>
-      <div class="title">See how <code>cc-expand</code> (red border) adapts its size:</div>
-      <cc-expand>
-        <div class="box" data-size="medium"></div>
-        <div class="box" data-size="medium"></div>
-      </cc-expand>
-    `;
+export default {
+  title: '🧬 Atoms|<cc-expand>',
+  component: 'cc-expand',
+  parameters: { notes },
+};
 
-    container.querySelector('cc-toggle').choices = [
+const conf = {
+  component: 'cc-expand',
+};
+
+// We don't want default story to be the first story because we won't have the story description displayed.
+export const notAStory = () => `@see stories below...`;
+
+export const defaultStory = makeStory(conf, {
+  docs: `Change \`.box\` blocks (tomato background) height with the toggle and see how \`cc-expand\` (blue border) adapts its size.`,
+  css: `
+    .knob {
+      margin-bottom: 1rem;
+    }
+    cc-toggle {
+      margin: 0;
+    }
+    cc-expand {
+      border: 3px solid blue;
+    }
+    .box { background-color: tomato; margin: 1rem; }
+    .box[data-size="small"] { height: 60px }
+    .box[data-size="medium"] { height: 120px }
+    .box[data-size="big"] { height: 180px }
+  `,
+  dom: (container) => {
+
+    const choices = [
       { label: 'small', value: 'small' },
       { label: 'medium', value: 'medium' },
       { label: 'big', value: 'big' },
     ];
 
-    container.addEventListener('cc-toggle:input', ({ detail: value }) => {
-      Array.from(container.querySelectorAll('.box'))
-        .forEach((box) => (box.dataset.size = value));
-    });
+    const onSize = ({ detail: size }) => render(template({ size }), container);
 
-    return container;
-  });
+    function template ({ size }) {
+      return html`
+        <div class="knob">
+          <cc-toggle value="${size}" .choices=${choices} @cc-toggle:input=${onSize}></cc-toggle>
+        </div>
+        <cc-expand>
+          <div class="box" data-size="${size}"></div>
+          <div class="box" data-size="${size}"></div>
+        </cc-expand>
+      `;
+    }
+
+    render(template({ size: 'medium' }), container);
+  },
+});
+
+enhanceStoriesNames({ notAStory, defaultStory });

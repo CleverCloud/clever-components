@@ -107,6 +107,11 @@ export const translations = {
     const formattedValue = numberFormatter.format(value);
     return `${formattedValue} ${request} (in ${windowHours} ${hour})`;
   },
+  'cc-tile-requests.requests-nb.total': ({ totalRequests }) => {
+    const request = plural('request')(totalRequests);
+    const formattedValue = formatNumberUnit(totalRequests);
+    return `${formattedValue} ${request} in 24 hours`;
+  },
   'cc-tile-requests.requests-count': ({ requestCount }) => formatNumberUnit(requestCount),
   'cc-tile-requests.empty': `No data to display for now.`,
   'cc-tile-requests.error': `Something went wrong while loading HTTP requests.`,

@@ -7,11 +7,13 @@ import { i18n } from '../lib/i18n.js';
 /**
  * World map of access logs with two modes: blinking dots or heatmap.
  *
+ *
  * ## Details
  *
  * * This component wraps `<cc-map>` with a clickable toggle for the mode.
  * * It has predefined i18n label for the toggle and the legend (to display logs).
  * * The legend is contextualized to an organization or an app so you MUST set either `orgaName` or `appName` but not both.
+ * * The component has a default height of 15rem and a default width 20rem but this can be overridden with CSS.
  *
  * ## Type definitions
  *
@@ -137,8 +139,10 @@ export class CcLogsMap extends LitElement {
         border-radius: 0.25rem;
         border: 1px solid #ccc;
         display: block;
+        height: 15rem;
         overflow: hidden;
         position: relative;
+        width: 20rem;
       }
 
       cc-toggle {

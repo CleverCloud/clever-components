@@ -4,20 +4,23 @@ import { i18n } from '../lib/i18n.js';
 /**
  * A layout component to position a simple beta ribbon around any content.
  *
+ * @prop {Boolean} fill - Forces the slotted element to fill the beta container size (same heigh and width). By default, the beta container adapts to the slotted element size.
  * @prop {"top-left"|"bottom-left"|"top-right"|"bottom-right"} position - Where to position the beta label.
  *
- * @slot - The content around which the beta label will be positionned.
+ * @slot - The content around which the beta label will be positionned. You ONLY one element.
  */
 export class CcBeta extends LitElement {
 
   static get properties () {
     return {
+      fill: { type: Boolean, reflect: true },
       position: { type: String, reflect: true },
     };
   }
 
   constructor () {
     super();
+    this.fill = false;
     this.position = 'top-left';
   }
 
@@ -38,6 +41,12 @@ export class CcBeta extends LitElement {
           position: relative;
         }
 
+        :host([fill]) ::slotted(*) {
+          box-sizing: border-box;
+          height: 100%;
+          width: 100%;
+        }
+
         .beta {
           --height: 1.5rem;
           --width: 8rem;
@@ -51,7 +60,7 @@ export class CcBeta extends LitElement {
           text-align: center;
           transform: rotate(var(--r)) translateY(var(--translate));
           width: var(--width);
-          z-index: 1;
+          z-index: 2;
         }
 
         :host([position^="top-"]) .beta {

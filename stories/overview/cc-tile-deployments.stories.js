@@ -1,227 +1,177 @@
 import '../../components/overview/cc-tile-deployments.js';
 import notes from '../../.components-docs/cc-tile-deployments.md';
-import { createContainer } from '../lib/dom.js';
 import { createDateAgo } from '../atoms/cc-datetime-relative.stories.js';
-import { sequence } from '../lib/sequence.js';
-import { storiesOf } from '@storybook/html';
+import { enhanceStoriesNames } from '../lib/story-names.js';
+import { makeStory, storyWait } from '../lib/make-story.js';
 
-function createComponent (deployments) {
-  const component = document.createElement('cc-tile-deployments');
-  component.style.width = '275px';
-  component.style.display = 'inline-grid';
-  component.style.marginBottom = '1rem';
-  component.style.marginRight = '1rem';
-  component.deployments = deployments;
-  return component;
+function deployment (state, action, dateAgoParams, uuid) {
+  return {
+    state,
+    action,
+    date: createDateAgo(dateAgoParams),
+    logsUrl: `/url/to/logs?id=${uuid}`,
+  };
 }
 
-storiesOf('2. Overview|<cc-tile-deployments>', module)
-  .addParameters({ notes })
-  .add('empty state (loading)', () => {
-    return createComponent();
-  })
-  .add('error', () => {
-    const component = createComponent();
-    component.error = true;
-    return component;
-  })
-  .add('different deployments list', () => {
-    return createContainer([
-      'No deployments yet',
-      createComponent([]),
-      'Started',
-      createComponent([
-        {
-          state: 'OK',
-          action: 'DEPLOY',
-          date: createDateAgo({ seconds: 2 }),
-          logsUrl: '/url/to/logs?id=bf697ecf-c6a1-4ff6-9bd8-b296b27a4bb1',
-        },
-      ]),
-      createComponent([
-        {
-          state: 'OK',
-          action: 'DEPLOY',
-          date: createDateAgo({ minutes: 2 }),
-          logsUrl: '/url/to/logs?id=7dba2548-8c9e-4219-ba0a-b386839cb34b',
-        },
-        {
-          state: 'OK',
-          action: 'DEPLOY',
-          date: createDateAgo({ hours: 2 }),
-          logsUrl: '/url/to/logs?id=fe726a13-345b-46d1-9101-f4f232479122',
-        },
-      ]),
-      createComponent([
-        {
-          state: 'OK',
-          action: 'DEPLOY',
-          date: createDateAgo({ days: 2 }),
-          logsUrl: '/url/to/logs?id=7dba2548-8c9e-4219-ba0a-b386839cb34b',
-        },
-        {
-          state: 'OK',
-          action: 'DEPLOY',
-          date: createDateAgo({ days: 22 }),
-          logsUrl: '/url/to/logs?id=fe726a13-345b-46d1-9101-f4f232479122',
-        },
-      ]),
-      'Stopped',
-      createComponent([
-        {
-          state: 'OK',
-          action: 'UNDEPLOY',
-          date: createDateAgo({ seconds: 3 }),
-          logsUrl: '/url/to/logs?id=dcbae659-89af-4bad-b494-c92ba940b284',
-        },
-      ]),
-      createComponent([
-        {
-          state: 'OK',
-          action: 'UNDEPLOY',
-          date: createDateAgo({ minutes: 3 }),
-          logsUrl: '/url/to/logs?id=d86c59eb-74a7-4687-8fdd-993a1612ff55',
-        },
-        {
-          state: 'OK',
-          action: 'UNDEPLOY',
-          date: createDateAgo({ hours: 3 }),
-          logsUrl: '/url/to/logs?id=bba01a2c-cb96-48d2-b23d-24a8fd6ce868',
-        },
-      ]),
-      createComponent([
-        {
-          state: 'OK',
-          action: 'UNDEPLOY',
-          date: createDateAgo({ days: 3 }),
-          logsUrl: '/url/to/logs?id=d86c59eb-74a7-4687-8fdd-993a1612ff55',
-        },
-        {
-          state: 'OK',
-          action: 'UNDEPLOY',
-          date: createDateAgo({ days: 33 }),
-          logsUrl: '/url/to/logs?id=bba01a2c-cb96-48d2-b23d-24a8fd6ce868',
-        },
-      ]),
-      'Failed',
-      createComponent([
-        {
-          state: 'FAIL',
-          action: 'DEPLOY',
-          date: createDateAgo({ seconds: 4 }),
-          logsUrl: '/url/to/logs?id=5b0afb71-ffc2-4bde-82a4-e8851eeffb53',
-        },
-      ]),
-      createComponent([
-        {
-          state: 'FAIL',
-          action: 'DEPLOY',
-          date: createDateAgo({ minutes: 4 }),
-          logsUrl: '/url/to/logs?id=1f424e9a-0595-4e56-8eda-716159096e4e',
-        },
-        {
-          state: 'FAIL',
-          action: 'DEPLOY',
-          date: createDateAgo({ hours: 4 }),
-          logsUrl: '/url/to/logs?id=a51c343d-140c-4991-aa8b-eead0035be7e',
-        },
-      ]),
-      createComponent([
-        {
-          state: 'FAIL',
-          action: 'DEPLOY',
-          date: createDateAgo({ days: 4 }),
-          logsUrl: '/url/to/logs?id=1f424e9a-0595-4e56-8eda-716159096e4e',
-        },
-        {
-          state: 'FAIL',
-          action: 'DEPLOY',
-          date: createDateAgo({ days: 44 }),
-          logsUrl: '/url/to/logs?id=a51c343d-140c-4991-aa8b-eead0035be7e',
-        },
-      ]),
-      'Cancelled',
-      createComponent([
-        {
-          state: 'CANCELLED',
-          action: 'DEPLOY',
-          date: createDateAgo({ seconds: 5 }),
-          logsUrl: '/url/to/logs?id=b0f319bf-6ee2-4f03-b327-0af6fef9e603',
-        },
-      ]),
-      createComponent([
-        {
-          state: 'CANCELLED',
-          action: 'DEPLOY',
-          date: createDateAgo({ minutes: 5 }),
-          logsUrl: '/url/to/logs?id=0da20587-bb5c-4605-9558-055ae92b940b',
-        },
-        {
-          state: 'CANCELLED',
-          action: 'DEPLOY',
-          date: createDateAgo({ hours: 5 }),
-          logsUrl: '/url/to/logs?id=bec6db51-b52f-4fe9-a426-8ddad8ac5801',
-        },
-      ]),
-      createComponent([
-        {
-          state: 'CANCELLED',
-          action: 'DEPLOY',
-          date: createDateAgo({ days: 5 }),
-          logsUrl: '/url/to/logs?id=0da20587-bb5c-4605-9558-055ae92b940b',
-        },
-        {
-          state: 'CANCELLED',
-          action: 'DEPLOY',
-          date: createDateAgo({ days: 55 }),
-          logsUrl: '/url/to/logs?id=bec6db51-b52f-4fe9-a426-8ddad8ac5801',
-        },
-      ]),
-    ]);
-  })
-  .add('simulations', () => {
+export default {
+  title: '🛠 Overview|<cc-tile-deployments>',
+  component: 'cc-tile-deployments',
+  parameters: { notes },
+};
 
-    const errorComponent = createComponent();
-    const component = createComponent();
+const conf = {
+  component: 'cc-tile-deployments',
+  css: `cc-tile-deployments {
+    display: inline-grid;
+    margin-bottom: 1rem;
+    margin-right: 1rem;
+    width: 275px;
+  }`,
+};
 
-    sequence(async (wait) => {
-      await wait(2000);
-      errorComponent.error = true;
+export const defaultStory = makeStory(conf, {
+  items: [
+    {
+      deployments: [
+        deployment('OK', 'DEPLOY', { minutes: 2 }, '7dba2548-8c9e-4219-ba0a-b386839cb34b'),
+      ],
+    },
+    {
+      deployments: [
+        deployment('OK', 'DEPLOY', { minutes: 2 }, '7dba2548-8c9e-4219-ba0a-b386839cb34b'),
+        deployment('OK', 'UNDEPLOY', { hours: 3 }, 'bba01a2c-cb96-48d2-b23d-24a8fd6ce868'),
+      ],
+    },
+  ],
+});
+
+export const skeleton = makeStory(conf, {
+  items: [{}],
+});
+
+export const error = makeStory(conf, {
+  items: [{ error: true }],
+});
+
+export const empty = makeStory(conf, {
+  items: [{ deployments: [] }],
+});
+
+export const dataLoadedWithStarted = makeStory(conf, {
+  items: [
+    {
+      deployments: [
+        deployment('OK', 'DEPLOY', { seconds: 2 }, 'bf697ecf-c6a1-4ff6-9bd8-b296b27a4bb1'),
+      ],
+    },
+    {
+      deployments: [
+        deployment('OK', 'DEPLOY', { minutes: 2 }, '7dba2548-8c9e-4219-ba0a-b386839cb34b'),
+        deployment('OK', 'DEPLOY', { hours: 2 }, 'fe726a13-345b-46d1-9101-f4f232479122'),
+      ],
+    },
+    {
+      deployments: [
+        deployment('OK', 'DEPLOY', { days: 2 }, '7dba2548-8c9e-4219-ba0a-b386839cb34b'),
+        deployment('OK', 'DEPLOY', { days: 22 }, 'fe726a13-345b-46d1-9101-f4f232479122'),
+      ],
+    },
+  ],
+});
+
+export const dataLoadedWithStopped = makeStory(conf, {
+  items: [
+    {
+      deployments: [
+        deployment('OK', 'UNDEPLOY', { seconds: 3 }, 'dcbae659-89af-4bad-b494-c92ba940b284'),
+      ],
+    },
+    {
+      deployments: [
+        deployment('OK', 'UNDEPLOY', { minutes: 3 }, 'd86c59eb-74a7-4687-8fdd-993a1612ff55'),
+        deployment('OK', 'UNDEPLOY', { hours: 3 }, 'bba01a2c-cb96-48d2-b23d-24a8fd6ce868'),
+      ],
+    },
+    {
+      deployments: [
+        deployment('OK', 'UNDEPLOY', { days: 3 }, 'd86c59eb-74a7-4687-8fdd-993a1612ff55'),
+        deployment('OK', 'UNDEPLOY', { days: 33 }, 'bba01a2c-cb96-48d2-b23d-24a8fd6ce868'),
+      ],
+    },
+  ],
+});
+
+export const dataLoadedWithFailed = makeStory(conf, {
+  items: [
+    {
+      deployments: [
+        deployment('FAIL', 'DEPLOY', { seconds: 4 }, '5b0afb71-ffc2-4bde-82a4-e8851eeffb53'),
+      ],
+    },
+    {
+      deployments: [
+        deployment('FAIL', 'DEPLOY', { minutes: 4 }, '1f424e9a-0595-4e56-8eda-716159096e4e'),
+        deployment('FAIL', 'DEPLOY', { hours: 4 }, 'a51c343d-140c-4991-aa8b-eead0035be7e'),
+      ],
+    },
+    {
+      deployments: [
+        deployment('FAIL', 'DEPLOY', { days: 4 }, '1f424e9a-0595-4e56-8eda-716159096e4e'),
+        deployment('FAIL', 'DEPLOY', { days: 44 }, 'a51c343d-140c-4991-aa8b-eead0035be7e'),
+      ],
+    },
+  ],
+});
+
+export const dataLoadedWithCancelled = makeStory(conf, {
+  items: [
+    {
+      deployments: [
+        deployment('CANCELLED', 'DEPLOY', { seconds: 5 }, 'b0f319bf-6ee2-4f03-b327-0af6fef9e603'),
+      ],
+    },
+    {
+      deployments: [
+        deployment('CANCELLED', 'DEPLOY', { minutes: 5 }, '0da20587-bb5c-4605-9558-055ae92b940b'),
+        deployment('CANCELLED', 'DEPLOY', { hours: 5 }, 'bec6db51-b52f-4fe9-a426-8ddad8ac5801'),
+      ],
+    },
+    {
+      deployments: [
+        deployment('CANCELLED', 'DEPLOY', { days: 5 }, '0da20587-bb5c-4605-9558-055ae92b940b'),
+        deployment('CANCELLED', 'DEPLOY', { days: 55 }, 'bec6db51-b52f-4fe9-a426-8ddad8ac5801'),
+      ],
+    },
+  ],
+});
+
+export const simulations = makeStory(conf, {
+  items: [{}, {}],
+  simulations: [
+    storyWait(2000, ([component, componentError]) => {
       component.deployments = [
-        {
-          state: 'OK',
-          action: 'DEPLOY',
-          date: createDateAgo({ hours: 2 }),
-          logsUrl: '/url/to/logs?id=83ad61b7-d1b3-4632-aab9-9997e02d118d',
-        },
-        {
-          state: 'OK',
-          action: 'DEPLOY',
-          date: createDateAgo({ days: 2 }),
-          logsUrl: '/url/to/logs?id=cfb6679b-0a5b-47c0-8bb2-27fda21a54be',
-        },
+        deployment('OK', 'DEPLOY', { hours: 2 }, '83ad61b7-d1b3-4632-aab9-9997e02d118d'),
+        deployment('OK', 'DEPLOY', { days: 2 }, 'cfb6679b-0a5b-47c0-8bb2-27fda21a54be'),
       ];
-      await wait(2000);
+      componentError.error = true;
+    }),
+    storyWait(2000, ([component]) => {
       component.deployments = [
-        {
-          state: 'OK',
-          action: 'DEPLOY',
-          date: createDateAgo({ seconds: 2 }),
-          logsUrl: '/url/to/logs?id=53f4076d-709c-402c-a901-5337e660ef4e',
-        },
-        {
-          state: 'OK',
-          action: 'DEPLOY',
-          date: createDateAgo({ hours: 2 }),
-          logsUrl: '/url/to/logs?id=83ad61b7-d1b3-4632-aab9-9997e02d118d',
-        },
+        deployment('OK', 'DEPLOY', { seconds: 2 }, '53f4076d-709c-402c-a901-5337e660ef4e'),
+        deployment('OK', 'DEPLOY', { hours: 2 }, '83ad61b7-d1b3-4632-aab9-9997e02d118d'),
       ];
-    });
+    }),
+  ],
+});
 
-    return createContainer([
-      'Loading, then error',
-      errorComponent,
-      'Loading, then some data',
-      component,
-    ]);
-  });
+enhanceStoriesNames({
+  defaultStory,
+  skeleton,
+  error,
+  empty,
+  dataLoadedWithStarted,
+  dataLoadedWithStopped,
+  dataLoadedWithFailed,
+  dataLoadedWithCancelled,
+  simulations,
+});

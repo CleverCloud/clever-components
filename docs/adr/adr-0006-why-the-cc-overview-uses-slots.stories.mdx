@@ -1,3 +1,7 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="📌 Docs|Architecture Decision Records/ADR 0006: Why the <cc-overview> uses slots?" />
+
 # ADR 0006: Why the `<cc-overview>` uses slots?
 
 This ADR tries to explain why we decided to use slots for the `<cc-overview>` component instead of composing an abstraction layer over the 6 child components.
@@ -67,7 +71,7 @@ The component's only purpose is to layout its children to achieve the fluid "gri
 With this implementation:
 
 * 👍 We can use the different child components directly (properties, attributes, events...).
-* 👍 We can add/remove parts of this overview without touching to <cc-overview>.
+* 👍 We can add/remove parts of this overview without touching to `<cc-overview>`.
 * 👍 We can create other look-alike overviews with other components.
 
 We think we can apply this *slot* style for any "presentational" component where:

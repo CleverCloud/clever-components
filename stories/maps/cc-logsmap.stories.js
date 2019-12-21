@@ -1,87 +1,133 @@
 import '../../components/maps/cc-logsmap.js';
 import fakeHeatmapData from '../assets/24-hours-points.json';
 import notes from '../../.components-docs/cc-logsmap.md';
-import { getDataSampleKnob, getFakePointsData } from './fake-map-data.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
+import { getFakePointsData } from './fake-map-data.js';
+import { makeStory, storyWait } from '../lib/make-story.js';
 import { setIntervalDom, setTimeoutDom } from '../lib/timers.js';
-import { storiesOf } from '@storybook/html';
-import { withCustomEventActions } from '../lib/event-action.js';
 
-function createComponent ({ loading = false, error = false, empty = false }) {
-  const component = document.createElement('cc-logsmap');
-  component.setAttribute('style', 'width:700px;height:350px;');
-  component.setAttribute('view-zoom', '4');
-  component.error = error;
-  component.loading = loading;
-  component.empty = empty;
-  component.orgaName = 'ACME Incorporated';
-  return component;
-}
+export default {
+  title: '🛠 Maps|<cc-logsmap>',
+  component: 'cc-logsmap',
+  parameters: { notes },
+};
 
-const withActions = withCustomEventActions('cc-logsmap:mode');
+const conf = {
+  component: 'cc-logsmap',
+  css: `
+    cc-logsmap {
+      display: inline-flex;
+      margin-bottom: 1rem;
+      margin-right: 1rem;
+      vertical-align: bottom;
+    }
+  `,
+  events: ['cc-logsmap:mode'],
+};
 
-storiesOf('2. Maps|<cc-logsmap>', module)
-  .addParameters({ notes })
-  .add('empty, different sizes', withActions(() => `
-    <div class="title">Small:</div>
-    <cc-logsmap style="width:250px;height:150px;"></cc-logsmap>
-    <div class="title">Large:</div>
-    <cc-logsmap style="width:500px;height:200px;"></cc-logsmap>
-    <div class="title">Tall:</div>
-    <cc-logsmap style="width:200px;height:300px;"></cc-logsmap>
-  `))
-  .add('empty, different centers and zooms', withActions(() => `
-    <div class="title">New York:</div>
-    <cc-logsmap center-lat="40.7" center-lon="-74" view-zoom="2" style="width:400px;height:200px;"></cc-logsmap>
-    <div class="title">Hong Kong:</div>
-    <cc-logsmap center-lat="22.4" center-lon="114.2" view-zoom="3" style="width:400px;height:200px;"></cc-logsmap>
-    <div class="title">Prague:</div>
-    <cc-logsmap center-lat="50.1" center-lon="14.4" view-zoom="4" style="width:400px;height:200px;"></cc-logsmap>
-  `))
-  .add('orga vs app only', withActions(() => `
-    <div class="title">Data for all apps of an orga:</div>
-    <cc-logsmap orga-name="ACME Corp" style="width:600px;height:300px;display: inline-block;"></cc-logsmap>
-    <cc-logsmap orga-name="ACME Corp" mode="heatmap" style="width:600px;height:300px;display: inline-block;"></cc-logsmap>
-    <div class="title">Data for only one app:</div>
-    <cc-logsmap app-name="My Awesome Java App (PROD)" style="width:600px;height:300px;display: inline-block;"></cc-logsmap>
-    <cc-logsmap app-name="My Awesome Java App (PROD)" mode="heatmap" style="width:600px;height:300px;display: inline-block;"></cc-logsmap>
-  `))
-  .add('loading state', withActions(() => {
-    return createComponent({ loading: true });
-  }))
-  .add('error state', withActions(() => {
-    return createComponent({ error: true });
-  }))
-  .add('error+loading state', withActions(() => {
-    return createComponent({ loading: true, error: true });
-  }))
-  .add('simulation for realtime and heatmap', withActions(() => {
+const spreadDuration = 5000;
+const delay = spreadDuration + 2000;
 
-    const dataSampleIndex = getDataSampleKnob();
+export const defaultStory = makeStory(conf, {
+  items: [
+    { orgaName: 'ACME Corp', innerHTML: 'Live map with blinking dots' },
+    { appName: 'My Awesome Java App (PROD)', mode: 'heatmap', innerHTML: 'Heatmap', heatmapPoints: fakeHeatmapData },
+  ],
+  simulations: [
+    storyWait(0, ([component]) => {
+      component.addPoints([
+        { lat: 48.8, lon: 2.3, count: 1, delay: 'none' },
+        { lat: 50.6, lon: 3.1, count: 10, delay: 'none' },
+        { lat: 47.2, lon: -1.6, count: 100, delay: 'none' },
+        { lat: 45.7, lon: 4.7, count: 1000, delay: 'none' },
+      ]);
+    }),
+  ],
+});
 
-    const spreadDuration = 5000;
-    const delay = spreadDuration + 2000;
+export const emptyWithDifferentSizes = makeStory(conf, {
+  items: [
+    { orgaName: 'ACME Corp', style: 'height:200px; width:300px' },
+    { orgaName: 'ACME Corp', style: 'height:300px; width:200px' },
+  ],
+});
 
-    const logsmap = createComponent({});
+export const emptyWithDifferentCentersAndZooms = makeStory(conf, {
+  docs: 'Centered on New York and Hong Kong.',
+  items: [
+    { orgaName: 'ACME Corp', centerLat: '40.7', centerLon: '-74', viewZoom: '2' },
+    { orgaName: 'ACME Corp', centerLat: '22.4', centerLon: '114.2', viewZoom: '4' },
+  ],
+});
 
-    logsmap.viewZoom = '2';
-    logsmap.heatmapPoints = fakeHeatmapData;
+export const emptyWithOrga = makeStory(conf, {
+  docs: 'Data for all apps of an orga (name in legend).',
+  items: [
+    { orgaName: 'ACME Corp' },
+    { orgaName: 'ACME Corp' },
+  ],
+});
 
-    const fetchData = () => {
-      getFakePointsData(dataSampleIndex).then((rawPoints) => {
-        const points = rawPoints.map((p) => ({ ...p, tooltip: p.city, delay }));
-        logsmap.addPoints(points, { spreadDuration });
-      });
-    };
+export const emptyWithAppOnly = makeStory(conf, {
+  docs: 'Data for only one app (name in legend).',
+  items: [
+    { appName: 'My Awesome Java App (PROD)' },
+    { appName: 'My Awesome Java App (PROD)' },
+  ],
+});
 
-    setTimeoutDom(fetchData, 0, logsmap);
-    setIntervalDom(fetchData, spreadDuration, logsmap);
+export const loading = makeStory(conf, {
+  items: [{ loading: true, orgaName: 'ACME Corp' }],
+});
 
-    return logsmap;
-  }))
-  .add('heatmap (no data points)', () => {
-    const map = createComponent({});
-    map.viewZoom = '2';
-    map.mode = 'heatmap';
-    map.heatmapPoints = [];
-    return map;
-  });
+export const error = makeStory(conf, {
+  items: [{ error: true, orgaName: 'ACME Corp' }],
+});
+
+export const errorWithLoadingIndicator = makeStory(conf, {
+  items: [{ loading: true, error: true, orgaName: 'ACME Corp' }],
+});
+
+// TODO: other data sets with knobs
+export const simulationWithDotmap = makeStory(conf, {
+  items: [{
+    viewZoom: '2',
+    orgaName: 'ACME Corp',
+  }],
+  simulations: [
+    storyWait(0, ([component]) => {
+
+      const fetchData = () => {
+        getFakePointsData(0).then((rawPoints) => {
+          const points = rawPoints.map((p) => ({ ...p, tooltip: p.city, delay }));
+          component.addPoints(points, { spreadDuration });
+        });
+      };
+
+      setTimeoutDom(fetchData, 0, component);
+      setIntervalDom(fetchData, spreadDuration, component);
+    }),
+  ],
+});
+
+export const simulationWithHeatmap = makeStory(conf, {
+  items: [{
+    viewZoom: '2',
+    orgaName: 'ACME Corp',
+    mode: 'heatmap',
+    heatmapPoints: fakeHeatmapData,
+  }],
+});
+
+enhanceStoriesNames({
+  defaultStory,
+  emptyWithDifferentSizes,
+  emptyWithDifferentCentersAndZooms,
+  emptyWithOrga,
+  emptyWithAppOnly,
+  loading,
+  error,
+  errorWithLoadingIndicator,
+  simulationWithDotmap,
+  simulationWithHeatmap,
+});

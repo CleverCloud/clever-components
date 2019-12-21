@@ -1,143 +1,190 @@
 import '../../components/maps/cc-map.js';
 import fakeHeatmapData from '../assets/24-hours-points.json';
 import notes from '../../.components-docs/cc-map.md';
-import { createContainer } from '../lib/dom.js';
-import { getDataSampleKnob, getFakePointsData } from './fake-map-data.js';
-import { setIntervalDom, setTimeoutDom } from '../lib/timers.js';
-import { storiesOf } from '@storybook/html';
+import { enhanceStoriesNames } from '../lib/story-names.js';
+import { makeStory, storyWait } from '../lib/make-story.js';
+import { getFakePointsData } from './fake-map-data.js';
+import { setIntervalDom, setTimeoutDom } from '../lib/timers';
 
-function createComponent ({ legend, loading = false, error = false }) {
-  const component = document.createElement('cc-map');
-  component.setAttribute('style', 'width:900px;height:500px;');
-  component.setAttribute('view-zoom', '4');
-  if (legend != null) {
-    component.innerHTML = legend;
-  }
-  component.error = error;
-  component.loading = loading;
-  return component;
-}
+const spreadDuration = 5000;
+const delay = spreadDuration + 2000;
 
-storiesOf('2. Maps|<cc-map>', module)
-  .addParameters({ notes })
-  .add('legends with <slot>', () => {
-    return createContainer([
-      `No legend:`,
-      createComponent({}),
-      `With legend:`,
-      createComponent({ legend: 'Map with legend' }),
-    ]);
-  })
-  .add('empty, different sizes', () => `
-    <div class="title">Small:</div>
-    <cc-map style="width:250px;height:150px;"></cc-map>
-    <div class="title">Large:</div>
-    <cc-map style="width:500px;height:200px;"></cc-map>
-    <div class="title">Tall:</div>
-    <cc-map style="width:200px;height:250px;"></cc-map>
-  `)
-  .add('empty, different centers and zooms', () => `
-    <div class="title">New York:</div>
-    <cc-map center-lat="40.7" center-lon="-74" view-zoom="2" style="width:400px;height:200px;"></cc-map>
-    <div class="title">Hong Kong:</div>
-    <cc-map center-lat="22.4" center-lon="114.2" view-zoom="3" style="width:400px;height:200px;"></cc-map>
-    <div class="title">Prague:</div>
-    <cc-map center-lat="50.1" center-lon="14.4" view-zoom="4" style="width:400px;height:200px;"></cc-map>
-  `)
-  .add('loading state', () => {
-    return createContainer([
-      `Loading state enabled:`,
-      createComponent({ loading: true }),
-      `Loading state enabled (with legend):`,
-      createComponent({ loading: true, legend: 'Map with legend' }),
-    ]);
-  })
-  .add('error state', () => {
-    return createContainer([
-      `Error state enabled:`,
-      createComponent({ error: true }),
-      `Error state enabled (with legend):`,
-      createComponent({ error: true, legend: 'Map with legend' }),
-    ]);
-  })
-  .add('error+loading state', () => {
-    return createContainer([
-      `Error + loading state enabled:`,
-      createComponent({ loading: true, error: true }),
-      `Error + loading state enabled (with legend):`,
-      createComponent({ loading: true, error: true, legend: 'Map with legend' }),
-    ]);
-  })
-  .add('persistent points, displayed at once', () => {
-    const map = createComponent({ legend: '4 points, persistent (no delay), displayed at once' });
-    map.addPoints([
-      { lat: 48.8, lon: 2.3, count: 1, delay: 'none' },
-      { lat: 50.6, lon: 3.1, count: 10, delay: 'none' },
-      { lat: 47.2, lon: -1.6, count: 100, delay: 'none' },
-      { lat: 45.7, lon: 4.7, count: 1000, delay: 'none' },
-    ]);
-    return map;
-  })
-  .add('persistent points, displayed at once, with tooltips', () => {
-    const map = createComponent({ legend: '4 points, persistent (no delay), displayed at once, with tooltips' });
-    map.addPoints([
-      { lat: 48.8, lon: 2.3, count: 1, delay: 'none', tooltip: 'Paris' },
-      { lat: 50.6, lon: 3.1, count: 10, delay: 'none', tooltip: 'Lille' },
-      { lat: 47.2, lon: -1.6, count: 100, delay: 'none', tooltip: 'Nantes' },
-      { lat: 45.7, lon: 4.7, count: 1000, delay: 'none', tooltip: 'Lyon' },
-    ]);
-    return map;
-  })
-  .add('temporary points, batch displayed, with tooltips', () => {
+export default {
+  title: '🛠 Maps|<cc-map>',
+  component: 'cc-map',
+  parameters: { notes },
+};
 
-    const spreadDuration = 5000;
-    const delay = spreadDuration + 2000;
+const conf = {
+  component: 'cc-map',
+  // language=CSS
+  css: `
+    cc-map {
+      display: inline-flex;
+      margin-bottom: 1rem;
+      margin-right: 1rem;
+      vertical-align: bottom;
+    }
+  `,
+};
 
-    const map = createComponent({ legend: `4 points, ${delay}ms delay, batch displayed displayed over ${spreadDuration}ms, with tooltips` });
+export const defaultStory = makeStory(conf, {
+  items: [
+    { innerHTML: 'Live map with blinking dots' },
+    { mode: 'heatmap', innerHTML: 'Heatmap', heatmapPoints: fakeHeatmapData },
+  ],
+  simulations: [
+    storyWait(0, ([component]) => {
+      component.addPoints([
+        { lat: 48.8, lon: 2.3, count: 1, delay: 'none' },
+        { lat: 50.6, lon: 3.1, count: 10, delay: 'none' },
+        { lat: 47.2, lon: -1.6, count: 100, delay: 'none' },
+        { lat: 45.7, lon: 4.7, count: 1000, delay: 'none' },
+      ]);
+    }),
+  ],
+});
 
-    map.addPoints([
-      { lat: 48.8, lon: 2.3, count: 1, delay, tooltip: 'Paris' },
-      { lat: 50.6, lon: 3.1, count: 10, delay, tooltip: 'Lille' },
-      { lat: 47.2, lon: -1.6, count: 100, delay, tooltip: 'Nantes' },
-      { lat: 45.7, lon: 4.7, count: 1000, delay, tooltip: 'Lyon' },
-    ], { spreadDuration });
+export const emptyWithLegendInSlot = makeStory(conf, {
+  items: [{ innerHTML: 'Map with legend' }],
+});
 
-    return map;
-  })
-  .add('realtime simulation (with static data)', () => {
+export const emptyWithDifferentSizes = makeStory(conf, {
+  items: [
+    { style: 'height:10rem; width:30rem' },
+    { style: 'height:20rem; width:15rem' },
+  ],
+});
 
-    const dataSampleIndex = getDataSampleKnob();
+export const emptyWithDifferentCentersAndZooms = makeStory(conf, {
+  docs: 'Centered on New York and Hong Kong.',
+  items: [
+    { centerLat: '40.7', centerLon: '-74', viewZoom: '2' },
+    { centerLat: '22.4', centerLon: '114.2', viewZoom: '4' },
+  ],
+});
 
-    const spreadDuration = 5000;
-    const delay = spreadDuration + 2000;
+export const emptyWithHeatmap = makeStory(conf, {
+  items: [{
+    viewZoom: '2',
+    mode: 'heatmap',
+    heatmapPoints: [],
+    innerHTML: `Heatmap simulation with no data points`,
+  }],
+});
 
-    const map = createComponent({ legend: `Realtime simulation, ${delay}ms delay, batch displayed displayed over ${spreadDuration}ms, with tooltips` });
+export const loading = makeStory(conf, {
+  docs: 'Without and with legend.',
+  items: [
+    { loading: true },
+    { loading: true, innerHTML: 'Map with legend' },
+  ],
+});
 
-    map.viewZoom = '2';
+export const error = makeStory(conf, {
+  docs: 'Without and with legend.',
+  items: [
+    { error: true },
+    { error: true, innerHTML: 'Map with legend' },
+  ],
+});
 
-    const fetchData = () => {
-      getFakePointsData(dataSampleIndex).then((rawPoints) => {
-        const points = rawPoints.map((p) => ({ ...p, tooltip: p.city, delay }));
-        map.addPoints(points, { spreadDuration });
-      });
-    };
+export const errorWithLoadingIndicator = makeStory(conf, {
+  docs: 'Without and with legend.',
+  items: [
+    { loading: true, error: true },
+    { loading: true, error: true, innerHTML: 'Map with legend' },
+  ],
+});
 
-    setTimeoutDom(fetchData, 0, map);
-    setIntervalDom(fetchData, spreadDuration, map);
+export const persistentPointsDisplayedAtOnce = makeStory(conf, {
+  name: '👍 Persistent points (displayed at once)',
+  items: [{ innerHTML: '4 points, persistent (no delay), displayed at once.' }],
+  simulations: [
+    storyWait(0, ([component]) => {
+      component.addPoints([
+        { lat: 48.8, lon: 2.3, count: 1, delay: 'none' },
+        { lat: 50.6, lon: 3.1, count: 10, delay: 'none' },
+        { lat: 47.2, lon: -1.6, count: 100, delay: 'none' },
+        { lat: 45.7, lon: 4.7, count: 1000, delay: 'none' },
+      ]);
+    }),
+  ],
+});
 
-    return map;
-  })
-  .add('heatmap simulation', () => {
-    const map = createComponent({ legend: `Heatmap simulation` });
-    map.viewZoom = '2';
-    map.mode = 'heatmap';
-    map.heatmapPoints = fakeHeatmapData;
-    return map;
-  })
-  .add('heatmap (no data points)', () => {
-    const map = createComponent({ legend: `Heatmap simulation with no data points` });
-    map.viewZoom = '2';
-    map.mode = 'heatmap';
-    map.heatmapPoints = [];
-    return map;
-  });
+export const persistentPointsDisplayedAtOnceWithTooltips = makeStory(conf, {
+  name: '👍 Persistent points (displayed at once, with tooltips)',
+  items: [{ innerHTML: '4 points, persistent (no delay), displayed at once, with tooltips.' }],
+  simulations: [
+    storyWait(0, ([component]) => {
+      component.addPoints([
+        { lat: 48.8, lon: 2.3, count: 1, delay: 'none', tooltip: 'Paris' },
+        { lat: 50.6, lon: 3.1, count: 10, delay: 'none', tooltip: 'Lille' },
+        { lat: 47.2, lon: -1.6, count: 100, delay: 'none', tooltip: 'Nantes' },
+        { lat: 45.7, lon: 4.7, count: 1000, delay: 'none', tooltip: 'Lyon' },
+      ]);
+    }),
+  ],
+});
+
+export const temporaryPointsBatchDisplayedWithTooltips = makeStory(conf, {
+  name: '👍 Temporary points (batch displayed, with tooltips)',
+  items: [{ innerHTML: `4 points, ${delay}ms delay, batch displayed displayed over ${spreadDuration}ms, with tooltips.` }],
+  simulations: [
+    storyWait(0, ([component]) => {
+      component.addPoints([
+        { lat: 48.8, lon: 2.3, count: 1, delay, tooltip: 'Paris' },
+        { lat: 50.6, lon: 3.1, count: 10, delay, tooltip: 'Lille' },
+        { lat: 47.2, lon: -1.6, count: 100, delay, tooltip: 'Nantes' },
+        { lat: 45.7, lon: 4.7, count: 1000, delay, tooltip: 'Lyon' },
+      ], { spreadDuration });
+    }),
+  ],
+});
+
+// TODO: other data sets with knobs
+export const simulationWithDotmap = makeStory(conf, {
+  items: [{
+    viewZoom: '2',
+    innerHTML: `Realtime simulation, ${delay}ms delay, batch displayed displayed over ${spreadDuration}ms, with tooltips`,
+  }],
+  simulations: [
+    storyWait(0, ([component]) => {
+
+      const fetchData = () => {
+        getFakePointsData(0).then((rawPoints) => {
+          const points = rawPoints.map((p) => ({ ...p, tooltip: p.city, delay }));
+          component.addPoints(points, { spreadDuration });
+        });
+      };
+
+      setTimeoutDom(fetchData, 0, component);
+      setIntervalDom(fetchData, spreadDuration, component);
+    }),
+  ],
+});
+
+export const simulationWithHeatmap = makeStory(conf, {
+  items: [{
+    viewZoom: '2',
+    mode: 'heatmap',
+    heatmapPoints: fakeHeatmapData,
+    innerHTML: `Heatmap simulation`,
+  }],
+});
+
+enhanceStoriesNames({
+  defaultStory,
+  emptyWithLegendInSlot,
+  emptyWithDifferentSizes,
+  emptyWithDifferentCentersAndZooms,
+  emptyWithHeatmap,
+  loading,
+  error,
+  errorWithLoadingIndicator,
+  persistentPointsDisplayedAtOnce,
+  persistentPointsDisplayedAtOnceWithTooltips,
+  temporaryPointsBatchDisplayedWithTooltips,
+  simulationWithDotmap,
+  simulationWithHeatmap,
+});

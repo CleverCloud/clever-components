@@ -1,122 +1,116 @@
 import '../../components/env-var/env-var-form.js';
 import notes from '../../.components-docs/env-var-form.md';
-import { storiesOf } from '@storybook/html';
-import { withCustomEventActions } from '../lib/event-action.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
+import { makeStory, storyWait } from '../lib/make-story.js';
 
-const withActions = withCustomEventActions('env-var-form:submit', 'env-var-form:dismissed-error', 'env-var-form:restart-app');
+const VARIABLES_FULL = [
+  { name: 'EMPTY', value: '' },
+  { name: 'ONE', value: 'value ONE' },
+  { name: 'MULTI', value: 'line one\nline two\nline three' },
+  { name: 'TWO', value: 'value TWO' },
+];
 
-storiesOf('2. Environment variables|<env-var-form>/default', module)
-  .addParameters({ notes })
-  .add('no data yet (skeleton)', withActions(() => {
-    const envVarForm = document.createElement('env-var-form');
-    return envVarForm;
-  }))
-  .add('empty data', withActions(() => {
-    const envVarForm = document.createElement('env-var-form');
-    envVarForm.variables = Promise.resolve([]);
-    return envVarForm;
-  }))
-  .add('with data', withActions(() => {
-    const envVarForm = document.createElement('env-var-form');
-    envVarForm.variables = Promise.resolve([
-      { name: 'EMPTY', value: '' },
-      { name: 'ONE', value: 'value ONE' },
-      { name: 'MULTI', value: 'line one\nline two\nline three' },
-      { name: 'TWO', value: 'value TWO' },
-    ]);
-    return envVarForm;
-  }))
-  .add('with data (restart button)', withActions(() => {
-    const envVarForm = document.createElement('env-var-form');
-    envVarForm.setAttribute('restart-app', 'true');
-    envVarForm.variables = Promise.resolve([
-      { name: 'EMPTY', value: '' },
-      { name: 'ONE', value: 'value ONE' },
-      { name: 'MULTI', value: 'line one\nline two\nline three' },
-      { name: 'TWO', value: 'value TWO' },
-    ]);
-    return envVarForm;
-  }))
-  .add('with data (heading & description)', withActions(() => {
-    const envVarForm = document.createElement('env-var-form');
-    envVarForm.setAttribute('heading', 'Environment variables');
-    envVarForm.variables = Promise.resolve([
-      { name: 'EMPTY', value: '' },
-      { name: 'ONE', value: 'value ONE' },
-      { name: 'MULTI', value: 'line one\nline two\nline three' },
-      { name: 'TWO', value: 'value TWO' },
-    ]);
-    envVarForm.innerHTML = `
+export default {
+  title: '🛠 Environment variables|<env-var-form>',
+  component: 'env-var-form',
+  parameters: { notes },
+};
+
+const conf = {
+  component: 'env-var-form',
+  events: ['env-var-form:submit', 'env-var-form:dismissed-error', 'env-var-form:restart-app'],
+};
+
+export const defaultStory = makeStory(conf, {
+  items: [{ variables: Promise.resolve(VARIABLES_FULL) }],
+});
+
+export const skeleton = makeStory(conf, {
+  items: [{}],
+});
+
+export const skeletonWithReadonly = makeStory(conf, {
+  items: [{ readonly: true }],
+});
+
+export const empty = makeStory(conf, {
+  items: [{ variables: Promise.resolve([]) }],
+});
+
+export const emptyWithReadonly = makeStory(conf, {
+  items: [{ variables: Promise.resolve([]), readonly: true }],
+});
+
+export const dataLoaded = makeStory(conf, {
+  items: [{ variables: Promise.resolve(VARIABLES_FULL) }],
+});
+
+export const dataLoadedWithReadonly = makeStory(conf, {
+  items: [{ variables: Promise.resolve(VARIABLES_FULL), readonly: true }],
+});
+
+export const dataLoadedWithRestartButton = makeStory(conf, {
+  items: [{ variables: Promise.resolve(VARIABLES_FULL), restartApp: true }],
+});
+
+export const dataLoadedWithHeadingAndDescription = makeStory(conf, {
+  items: [{
+    variables: Promise.resolve(VARIABLES_FULL),
+    heading: 'Environment variables',
+    innerHTML: `
       Environment variables allow you to inject data in your application’s environment.
       <a href="http://doc.clever-cloud.com/admin-console/environment-variables/" target="_blank">Learn more</a>
-    `;
-    return envVarForm;
-  }))
-  .add('saving data', withActions(() => {
-    const envVarForm = document.createElement('env-var-form');
-    envVarForm.variables = Promise.resolve([
-      { name: 'EMPTY', value: '' },
-      { name: 'ONE', value: 'value ONE' },
-      { name: 'MULTI', value: 'line one\nline two\nline three' },
-      { name: 'TWO', value: 'value TWO' },
-    ]);
-    setTimeout(() => {
-      envVarForm.variables = new Promise(() => null);
-    }, 0);
-    return envVarForm;
-  }))
-  .add('error (loading data)', withActions(() => {
-    const envVarForm = document.createElement('env-var-form');
-    setTimeout(() => {
-      envVarForm.variables = Promise.reject(new Error());
-    }, 0);
-    return envVarForm;
-  }))
-  .add('error (saving data)', withActions(() => {
-    const envVarForm = document.createElement('env-var-form');
-    envVarForm.variables = Promise.resolve([
-      { name: 'EMPTY', value: '' },
-      { name: 'ONE', value: 'value ONE' },
-      { name: 'MULTI', value: 'line one\nline two\nline three' },
-      { name: 'TWO', value: 'value TWO' },
-    ]);
-    setTimeout(() => {
-      envVarForm.variables = Promise.reject(new Error());
-    }, 0);
-    return envVarForm;
-  }));
+    `,
+  }],
+});
 
-storiesOf('2. Environment variables|<env-var-form>/readonly', module)
-  .addParameters({ notes })
-  .add('no data yet (skeleton)', withActions(() => {
-    const envVarForm = document.createElement('env-var-form');
-    envVarForm.setAttribute('readonly', 'true');
-    return envVarForm;
-  }))
-  .add('empty data', withActions(() => {
-    const envVarForm = document.createElement('env-var-form');
-    envVarForm.setAttribute('readonly', 'true');
-    envVarForm.variables = Promise.resolve([]);
-    return envVarForm;
-  }))
-  .add('with data', withActions(() => {
-    const envVarForm = document.createElement('env-var-form');
-    envVarForm.setAttribute('readonly', 'true');
-    envVarForm.variables = Promise.resolve([
-      { name: 'VARIABLE_ONE', value: 'Value one' },
-      { name: 'VARIABLE_TWO_TWO', value: 'Value two two' },
-      { name: 'VARIABLE_THREE_THREE_THREE', value: 'Value three three three' },
-    ]);
-    return envVarForm;
-  }))
-  .add('with data (heading & description)', withActions(() => {
-    const envVarForm = document.createElement('env-var-form');
-    envVarForm.setAttribute('readonly', 'true');
-    envVarForm.setAttribute('heading', 'Addon: foobar');
-    envVarForm.variables = Promise.resolve([
-      { name: 'VARIABLE_ONE', value: 'Value one' },
-      { name: 'VARIABLE_TWO_TWO', value: 'Value two two' },
-      { name: 'VARIABLE_THREE_THREE_THREE', value: 'Value three three three' },
-    ]);
-    return envVarForm;
-  }));
+export const dataLoadedWithHeadingAndReadonly = makeStory(conf, {
+  items: [{
+    variables: Promise.resolve(VARIABLES_FULL),
+    heading: 'Addon: foobar',
+    readonly: true,
+  }],
+});
+
+export const saving = makeStory(conf, {
+  items: [{ variables: Promise.resolve(VARIABLES_FULL) }],
+  simulations: [
+    storyWait(0, ([component]) => {
+      component.variables = new Promise(() => null);
+    }),
+  ],
+});
+
+export const errorWithLoading = makeStory(conf, {
+  items: [{}],
+  simulations: [
+    storyWait(0, ([component]) => {
+      component.variables = Promise.reject(new Error());
+    }),
+  ],
+});
+
+export const errorWithSaving = makeStory(conf, {
+  items: [{ variables: Promise.resolve(VARIABLES_FULL) }],
+  simulations: [
+    storyWait(0, ([component]) => {
+      component.variables = Promise.reject(new Error());
+    }),
+  ],
+});
+
+enhanceStoriesNames({
+  defaultStory,
+  skeleton,
+  skeletonWithReadonly,
+  empty,
+  emptyWithReadonly,
+  dataLoaded,
+  dataLoadedWithReadonly,
+  dataLoadedWithRestartButton,
+  dataLoadedWithHeadingAndDescription,
+  dataLoadedWithHeadingAndReadonly,
+  saving,
+  errorWithLoading,
+  errorWithSaving,
+});

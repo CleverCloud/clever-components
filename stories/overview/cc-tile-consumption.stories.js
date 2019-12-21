@@ -1,55 +1,52 @@
 import '../../components/overview/cc-tile-consumption.js';
 import notes from '../../.components-docs/cc-tile-consumption.md';
-import { createContainer } from '../lib/dom.js';
-import { sequence } from '../lib/sequence';
-import { storiesOf } from '@storybook/html';
+import { enhanceStoriesNames } from '../lib/story-names.js';
+import { makeStory, storyWait } from '../lib/make-story.js';
 
-function createComponent (consumption) {
-  const component = document.createElement('cc-tile-consumption');
-  component.style.width = '275px';
-  component.style.display = 'inline-grid';
-  component.style.marginBottom = '1rem';
-  component.style.marginRight = '1rem';
-  component.consumption = consumption;
-  return component;
-}
+export default {
+  title: '🛠 Overview|<cc-tile-consumption>',
+  component: 'cc-tile-consumption',
+  parameters: { notes },
+};
 
-storiesOf('2. Overview|<cc-tile-consumption>', module)
-  .addParameters({ notes })
-  .add('empty state (loading)', () => {
-    return createComponent();
-  })
-  .add('error', () => {
-    const component = createComponent();
-    component.error = true;
-    return component;
-  })
-  .add('different consumptions history', () => {
+const conf = {
+  component: 'cc-tile-consumption',
+  css: `cc-tile-consumption {
+    display: inline-grid;
+    margin-bottom: 1rem;
+    margin-right: 1rem;    
+    width: 275px;
+  }`,
+};
 
-    return createContainer([
-      'Fresh new app',
-      createComponent({ yesterday: 0, last30Days: 0 }),
-      'nano app',
-      createComponent({ yesterday: 0.30, last30Days: 6.1 }),
-      'XS app',
-      createComponent({ yesterday: 0.72, last30Days: 14.64 }),
-    ]);
-  })
-  .add('simulations', () => {
+export const defaultStory = makeStory(conf, {
+  items: [{ consumption: { yesterday: 0.72, last30Days: 14.64 } }],
+});
 
-    const errorComponent = createComponent();
-    const component = createComponent();
+export const skeleton = makeStory(conf, {
+  items: [{}],
+});
 
-    sequence(async (wait) => {
-      await wait(2000);
-      errorComponent.error = true;
+export const error = makeStory(conf, {
+  items: [{ error: true }],
+});
+
+export const dataLoaded = makeStory(conf, {
+  items: [
+    { consumption: { yesterday: 0, last30Days: 0 } },
+    { consumption: { yesterday: 0.3, last30Days: 6.1 } },
+    { consumption: { yesterday: 0.72, last30Days: 14.64 } },
+  ],
+});
+
+export const simulations = makeStory(conf, {
+  items: [{}, {}],
+  simulations: [
+    storyWait(2000, ([component, componentError]) => {
       component.consumption = { yesterday: 0.72, last30Days: 14.64 };
-    });
+      componentError.error = true;
+    }),
+  ],
+});
 
-    return createContainer([
-      'Loading, then error',
-      errorComponent,
-      'Loading, then some data',
-      component,
-    ]);
-  });
+enhanceStoriesNames({ defaultStory, skeleton, error, dataLoaded, simulations });

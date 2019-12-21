@@ -1,84 +1,73 @@
 import '../../components/overview/cc-header-orga.js';
 import notes from '../../.components-docs/cc-header-orga.md';
-import { storiesOf } from '@storybook/html';
-import { createContainer } from '../lib/dom';
-import { sequence } from '../lib/sequence';
+import { enhanceStoriesNames } from '../lib/story-names.js';
+import { makeStory, storyWait } from '../lib/make-story.js';
 
-function createComponent (orga) {
-  const component = document.createElement('cc-header-orga');
-  component.orga = orga;
-  return component;
+function orga (name, avatar, cleverEnterprise, emergencyNumber) {
+  return { name, avatar, cleverEnterprise, emergencyNumber };
 }
 
-storiesOf('2. Overview|<cc-header-orga>', module)
-  .addParameters({ notes })
-  .add('empty state (loading)', () => {
-    return createComponent();
-  })
-  .add('error', () => {
-    const component = createComponent();
-    component.error = true;
-    return component;
-  })
-  .add('different settings', () => {
-    return createContainer([
-      'Classic client',
-      createComponent({
-        name: 'ACME startup',
-        avatar: 'http://placekitten.com/200/200',
-        cleverEnterprise: false,
-        emergencyNumber: null,
-      }),
-      'Classic client (no avatar)',
-      createComponent({
-        name: 'ACME startup',
-        cleverEnterprise: false,
-        emergencyNumber: null,
-      }),
-      'Enterprise client',
-      createComponent({
-        name: 'ACME corporation digital',
-        avatar: 'http://placekitten.com/300/300',
-        cleverEnterprise: true,
-        emergencyNumber: null,
-      }),
-      'Enterprise client (with emergency number)',
-      createComponent({
-        name: 'ACME corporation world',
-        avatar: 'http://placekitten.com/350/350',
-        cleverEnterprise: true,
-        emergencyNumber: '+33 6 00 00 00 00',
-      }),
-    ]);
-  })
-  .add('simulations', () => {
+export default {
+  title: '🛠 Overview|<cc-header-orga>',
+  component: 'cc-header-orga',
+  parameters: { notes },
+};
 
-    const errorComponent = createComponent();
-    const noAvatarComponent = createComponent();
-    const component = createComponent();
+const conf = {
+  component: 'cc-header-orga',
+  css: `
+    cc-header-orga:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+  `,
+};
 
-    sequence(async (wait) => {
-      await wait(3000);
-      errorComponent.error = true;
-      noAvatarComponent.orga = {
-        name: 'ACME corporation (no avatar)',
-        cleverEnterprise: true,
-        emergencyNumber: null,
-      };
-      component.orga = {
-        name: 'ACME corporation digital',
-        avatar: 'http://placekitten.com/200/200',
-        cleverEnterprise: true,
-        emergencyNumber: null,
-      };
-    });
+export const defaultStory = makeStory(conf, {
+  items: [{ orga: orga('ACME corporation world', 'http://placekitten.com/350/350', true, '+33 6 00 00 00 00') }],
+});
 
-    return createContainer([
-      'Loading, then error',
-      errorComponent,
-      'Loading, then enterprise orga (no avatar)',
-      noAvatarComponent,
-      'Loading, then enterprise orga',
-      component,
-    ]);
-  });
+export const skeleton = makeStory(conf, {
+  items: [{}],
+});
+
+export const error = makeStory(conf, {
+  items: [{ error: true }],
+});
+
+export const dataLoadedWithClassicClient = makeStory(conf, {
+  items: [{ orga: orga('ACME startup', 'http://placekitten.com/200/200', false, null) }],
+});
+
+export const dataLoadedWithClassicClientNoAvatar = makeStory(conf, {
+  items: [{ orga: orga('ACME startup', null, false, null) }],
+});
+
+export const dataLoadedWithEnterpriseClient = makeStory(conf, {
+  items: [{ orga: orga('ACME corporation digital', 'http://placekitten.com/300/300', true, null) }],
+});
+
+export const dataLoadedWithEnterpriseClientEmergencyNumber = makeStory(conf, {
+  items: [{ orga: orga('ACME corporation world', 'http://placekitten.com/350/350', true, '+33 6 00 00 00 00') }],
+});
+
+export const simulations = makeStory(conf, {
+  items: [{}, {}, {}],
+  simulations: [
+    storyWait(3000, ([component, componentNoAvatar, componentError]) => {
+      component.orga = orga('ACME corporation', 'http://placekitten.com/200/200', true, null);
+      componentNoAvatar.orga = orga('ACME corporation (no avatar)', null, true, null);
+      componentError.error = true;
+    }),
+  ],
+});
+
+enhanceStoriesNames({
+  defaultStory,
+  skeleton,
+  error,
+  dataLoadedWithClassicClient,
+  dataLoadedWithClassicClientNoAvatar,
+  dataLoadedWithEnterpriseClient,
+  dataLoadedWithEnterpriseClientEmergencyNumber,
+  simulations,
+});

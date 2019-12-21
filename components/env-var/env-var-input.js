@@ -80,7 +80,7 @@ export class EnvVarInput extends LitElement {
   }
 
   render () {
-    // the no-whitespace comment trick helps users who triple click on the text to be sure to copy the text without any whitespace
+    // the no-whitespace comment trick helps users who triple click on the text to be sure to copy the text without any whitespaces
     return html`
       <span class="name ${classMap({ deleted: this.deleted })}"><!-- no-whitespace
         --><span class=${classMap({ skeleton: this.skeleton })}>${this.name}</span><!-- no-whitespace
@@ -139,7 +139,7 @@ export class EnvVarInput extends LitElement {
           /* I have a bug on Linux between Chrome and FF with rem on inputs */
           font-size: 14px;
           line-height: 1.4rem;
-          padding: 0.2rem;
+          margin: 0.2rem;
           word-break: break-all;
         }
 

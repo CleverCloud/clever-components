@@ -1,71 +1,73 @@
 import '../../components/env-var/env-var-editor-expert.js';
 import notes from '../../.components-docs/env-var-editor-expert.md';
-import { storiesOf } from '@storybook/html';
-import { withCustomEventActions } from '../lib/event-action.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
+import { makeStory } from '../lib/make-story.js';
 
-const withActions = withCustomEventActions('env-var-editor-expert:change');
+const VARIABLES_FULL = [
+  { name: 'EMPTY', value: '' },
+  { name: 'PRISTINE', value: 'pristine value' },
+  { name: 'NEW', value: 'new value', isNew: true },
+  { name: 'MULTI', value: 'line one\nline two\nline three' },
+  { name: 'EDITED', value: 'edited value', isEdited: true },
+  { name: 'DELETED', value: 'deleted value', isDeleted: true },
+];
 
-storiesOf('2. Environment variables|<env-var-editor-expert>/default', module)
-  .addParameters({ notes })
-  .add('no data yet (skeleton)', withActions(() => {
-    const envVarFormExpert = document.createElement('env-var-editor-expert');
-    envVarFormExpert.setAttribute('skeleton', 'true');
-    return envVarFormExpert;
-  }))
-  .add('empty data', withActions(() => {
-    const envVarFormExpert = document.createElement('env-var-editor-expert');
-    envVarFormExpert.variables = [];
-    return envVarFormExpert;
-  }))
-  .add('with data', withActions(() => {
-    const envVarFormExpert = document.createElement('env-var-editor-expert');
-    envVarFormExpert.variables = [
-      { name: 'EMPTY', value: '' },
-      { name: 'PRISTINE', value: 'pristine value' },
-      { name: 'NEW', value: 'new value', isNew: true },
-      { name: 'MULTI', value: 'line one\nline two\nline three' },
-      { name: 'EDITED', value: 'edited value', isEdited: true },
-      { name: 'DELETED', value: 'deleted value', isDeleted: true },
-    ];
-    return envVarFormExpert;
-  }))
-  .add('with data (disabled)', withActions(() => {
-    const envVarFormExpert = document.createElement('env-var-editor-expert');
-    envVarFormExpert.variables = [
-      { name: 'EMPTY', value: '' },
-      { name: 'PRISTINE', value: 'pristine value' },
-      { name: 'NEW', value: 'new value', isNew: true },
-      { name: 'MULTI', value: 'line one\nline two\nline three' },
-      { name: 'EDITED', value: 'edited value', isEdited: true },
-      { name: 'DELETED', value: 'deleted value', isDeleted: true },
-    ];
-    envVarFormExpert.setAttribute('disabled', true);
-    return envVarFormExpert;
-  }));
+const VARIABLES_SIMPLE = [
+  { name: 'VARIABLE_ONE', value: 'Value one' },
+  { name: 'VARIABLE_TWO_TWO', value: 'Value two two' },
+  { name: 'VARIABLE_THREE_THREE_THREE', value: 'Value three three three' },
+];
 
-storiesOf('2. Environment variables|<env-var-editor-expert>/readonly', module)
-  .addParameters({ notes })
-  .add('with data (skeleton)', withActions(() => {
-    const envVarFormExpert = document.createElement('env-var-editor-expert');
-    envVarFormExpert.setAttribute('readonly', true);
-    return envVarFormExpert;
-  }))
-  .add('empty data', withActions(() => {
-    const envVarFormExpert = document.createElement('env-var-editor-expert');
-    envVarFormExpert.setAttribute('readonly', true);
-    envVarFormExpert.variables = [];
-    return envVarFormExpert;
-  }))
-  .add('with data', withActions(() => {
-    const envVarFormExpert = document.createElement('env-var-editor-expert');
-    envVarFormExpert.setAttribute('readonly', true);
-    envVarFormExpert.variables = [
-      { name: 'EMPTY', value: '' },
-      { name: 'PRISTINE', value: 'pristine value' },
-      { name: 'NEW', value: 'new value', isNew: true },
-      { name: 'MULTI', value: 'line one\nline two\nline three' },
-      { name: 'EDITED', value: 'edited value', isEdited: true },
-      { name: 'DELETED', value: 'deleted value', isDeleted: true },
-    ];
-    return envVarFormExpert;
-  }));
+export default {
+  title: '🛠 Environment variables|<env-var-editor-expert>',
+  component: 'env-var-editor-expert',
+  parameters: { notes },
+};
+
+const conf = {
+  component: 'env-var-editor-expert',
+  events: ['env-var-editor-expert:change'],
+};
+
+export const defaultStory = makeStory(conf, {
+  items: [{ variables: VARIABLES_FULL }],
+});
+
+export const skeleton = makeStory(conf, {
+  items: [{}],
+});
+
+export const skeletonWithReadonly = makeStory(conf, {
+  items: [{ readonly: true }],
+});
+
+export const empty = makeStory(conf, {
+  items: [{ variables: [] }],
+});
+
+export const emptyWithReadonly = makeStory(conf, {
+  items: [{ variables: [], readonly: true }],
+});
+
+export const dataLoaded = makeStory(conf, {
+  items: [{ variables: VARIABLES_FULL }],
+});
+
+export const dataLoadedWithDisabled = makeStory(conf, {
+  items: [{ variables: VARIABLES_FULL, disabled: true }],
+});
+
+export const dataLoadedWithReadonly = makeStory(conf, {
+  items: [{ variables: VARIABLES_SIMPLE, readonly: true }],
+});
+
+enhanceStoriesNames({
+  defaultStory,
+  skeleton,
+  skeletonWithReadonly,
+  empty,
+  emptyWithReadonly,
+  dataLoaded,
+  dataLoadedWithDisabled,
+  dataLoadedWithReadonly,
+});

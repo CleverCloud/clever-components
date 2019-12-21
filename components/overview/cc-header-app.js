@@ -181,12 +181,12 @@ export class CcHeaderApp extends LitElement {
 
   _onCancel () {
     this._lastUserAction = 'cancel';
-    dispatchCustomEvent(this, 'cancel', 'normal');
+    dispatchCustomEvent(this, 'cancel');
   }
 
   _onStop () {
     this._lastUserAction = 'stop';
-    dispatchCustomEvent(this, 'stop', 'normal');
+    dispatchCustomEvent(this, 'stop');
   }
 
   _renderCommit (commit, type, skeleton) {
