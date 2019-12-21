@@ -1,5 +1,54 @@
 # Clever Components changelog
 
+## 1.3.0 (2019-12-21)
+
+### Components
+
+- New component: `<cc-beta>`
+- New component: `<cc-datetime-relative>`
+- New component: `<cc-img>`
+- New component: `<cc-logsmap>`
+- New component: `<cc-map>`
+- New component: `<cc-header-app>`
+- New component: `<cc-header-orga>`
+- New component: `<cc-overview>`
+- New component: `<cc-tile-consumption>`
+- New component: `<cc-tile-deployments>`
+- New component: `<cc-tile-instances>`
+- New component: `<cc-tile-requests>`
+- New component: `<cc-tile-scalability>`
+- New component: `<cc-tile-status-codes>`
+- New mixin: `withResizeObserver()`
+- `<cc-button>`
+  * move away from native click event to custom event `cc-button:click`
+  * add warning mode
+  * add delay mechanism
+- `<cc-input-text>`
+  * add copy-to-clipboard feature with `clipboard`
+  * add show/hide secret feature with `secret`
+
+### For devs
+
+- New task: `size`
+- New i18n system
+- New dependencies:
+  * [chart.js](https://www.npmjs.com/package/chart.js)
+  * [chartjs-plugin-datalabels](https://www.npmjs.com/package/chartjs-plugin-datalabels)
+  * [clipboard-copy](https://www.npmjs.com/package/clipboard-copy)
+  * [leaflet](https://www.npmjs.com/package/leaflet)
+  * [leaflet.heat](https://www.npmjs.com/package/leaflet.heat)
+  * [resize-observer-polyfill](https://www.npmjs.com/package/resize-observer-polyfill)
+  * [statuses](https://www.npmjs.com/package/statuses)
+  * [twemoji](https://www.npmjs.com/package/twemoji)
+
+### Storybook
+
+- Update storybook to 5.3.0-rc
+- Update stories to CSF (with a `makeStory` helper) and some MDX documents
+- Move from `@storybook/html` to `@storybook/web-components`
+- Add a11y addon
+- Add viewport addon
+
 ## 1.2.0 (2019-07-25)
 
 - Use @clevercloud/client utils to handle env vars
