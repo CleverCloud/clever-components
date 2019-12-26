@@ -48,6 +48,16 @@ const formatNumberUnit = prepareNumberUnitFormatter(lang);
 
 export const translations = {
   LANGUAGE: '🇫🇷 Français',
+  // cc-addon-credentials
+  'cc-addon-credentials.description.apm': `Utilisez ces identifiants pour connecter une instance d'APM Server à votre cluster Elasticsearch.`,
+  'cc-addon-credentials.description.elasticsearch': `Utilisez ces identifiants pour vous connecter à votre cluster Elasticsearch.`,
+  'cc-addon-credentials.description.kibana': `Utilisez ces identifiants pour connecter une instance de Kibana à votre cluster Elasticsearch.`,
+  'cc-addon-credentials.field.auth-token': `Token d'authentification`,
+  'cc-addon-credentials.field.host': `Nom de domaine`,
+  'cc-addon-credentials.field.password': `Mot de passe`,
+  'cc-addon-credentials.field.user': `Utilisateur`,
+  'cc-addon-credentials.loading-error': `Une erreur est survenue pendant le chargement des informations de connexion.`,
+  'cc-addon-credentials.title': ({ name }) => `Identifiants ${name}`,
   // cc-addon-features
   'cc-addon-features.details': `Ci-dessous, les spécifications de votre add-on. Elles peuvent évoluer et une migration de l'add-on peut être nécessaire pour en bénéficier.`,
   'cc-addon-features.loading-error': `Une erreur est survenue pendant le chargement des spécifications de l'add-on`,

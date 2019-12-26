@@ -35,6 +35,16 @@ const formatNumberUnit = prepareNumberUnitFormatter(lang);
 
 export const translations = {
   LANGUAGE: '🇬🇧 English',
+  // cc-addon-credentials
+  'cc-addon-credentials.description.apm': `Use those credentials to connect an APM Server instance to your Elasticsearch cluster.`,
+  'cc-addon-credentials.description.elasticsearch': `Use those credentials to connect to your Elasticsearch cluster.`,
+  'cc-addon-credentials.description.kibana': `Use those credentials to connect a Kibana instance to your Elasticsearch cluster.`,
+  'cc-addon-credentials.field.auth-token': `Authentication token`,
+  'cc-addon-credentials.field.host': `Domain name`,
+  'cc-addon-credentials.field.password': `Password`,
+  'cc-addon-credentials.field.user': `User`,
+  'cc-addon-credentials.loading-error': `Something went wrong while loading the credentials.`,
+  'cc-addon-credentials.title': ({ name }) => `${name} credentials`,
   // cc-addon-features
   'cc-addon-features.details': `Here's the list of all the features of your add-on. Features may evolve and your add-on would need a migration to match them all.`,
   'cc-addon-features.loading-error': `Something went wrong while loading add-on features.`,

@@ -1,3 +1,4 @@
+export { CcAddonCredentials } from './addon/cc-addon-credentials.js';
 export { CcAddonFeatures } from './addon/cc-addon-features.js';
 export { CcAddonLinkedApps } from './addon/cc-addon-linked-apps.js';
 export { CcBeta } from './atoms/cc-beta.js';
