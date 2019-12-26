@@ -1,4 +1,5 @@
 export { CcAddonFeatures } from './addon/cc-addon-features.js';
+export { CcAddonLinkedApps } from './addon/cc-addon-linked-apps.js';
 export { CcBeta } from './atoms/cc-beta.js';
 export { CcBlock } from './molecules/cc-block.js';
 export { CcButton } from './atoms/cc-button.js';
