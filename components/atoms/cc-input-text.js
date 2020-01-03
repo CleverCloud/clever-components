@@ -105,12 +105,11 @@ export class CcInputText extends LitElement {
     const secret = (this.secret && !this.multi && !this.disabled && !this.skeleton);
 
     return html`
-      <div class="wrapper ${classMap({ skeleton: this.skeleton, clipboard, secret })}"
+      <div class="wrapper ${classMap({ skeleton: this.skeleton })}"
         @input=${this._onInput}
         @keydown=${this._stopPropagation}
-        @keypress=${this._stopPropagation}
-      >
-      
+        @keypress=${this._stopPropagation}>
+    
         ${this.multi ? html`
           <textarea
             class="input"
@@ -126,7 +125,7 @@ export class CcInputText extends LitElement {
             @focus=${this._onFocus}
           ></textarea>
         ` : ''}
-        
+          
         ${!this.multi ? html`
           ${clipboard && this.readonly ? html`
             <!--
@@ -134,8 +133,8 @@ export class CcInputText extends LitElement {
               this way we can use it to know what width the content is
               and "auto size" the container.
             -->
-            <div class="auto-size input">${this.value}</div>
-          ` : ''}
+            <div class="input input-mirror">${this.value}</div>
+          ` : '' }
           <input
             type=${this.secret && !this._showSecret ? 'password' : 'text'}
             class="input"
@@ -148,22 +147,22 @@ export class CcInputText extends LitElement {
             @focus=${this._onFocus}
           >
         ` : ''}
+      
+        <div class="ring"></div>
       </div>
       
-      <div class="btn-bar">
-        ${secret ? html`
-          <button class="btn" @click=${this._onClickSecret}
-            title=${this._showSecret ? i18n('cc-input-text.secret.hide') : i18n('cc-input-text.secret.show')}>
-            <img class="btn-img" src=${this._showSecret ? eyeClosedSvg : eyeOpenSvg} alt="">
-          </button>
-        ` : ''}
-        
-        ${clipboard ? html`
-          <button class="btn" ?disabled=${this.disabled || this.skeleton} @click=${this._onClickCopy} title=${i18n('cc-input-text.clipboard')}>
-            <img class="btn-img" src=${this._copyOk ? tickSvg : clipboardSvg} alt="">
-          </button>
-        ` : ''}
-      </div>
+      ${secret ? html`
+        <button class="btn" @click=${this._onClickSecret} 
+          title=${this._showSecret ? i18n('cc-input-text.secret.hide') : i18n('cc-input-text.secret.show')}>
+          <img class="btn-img" src=${this._showSecret ? eyeClosedSvg : eyeOpenSvg} alt="">
+        </button>
+      ` : ''}
+      
+      ${clipboard ? html`
+        <button class="btn" @click=${this._onClickCopy} title=${i18n('cc-input-text.clipboard')}>
+          <img class="btn-img" src=${this._copyOk ? tickSvg : clipboardSvg} alt="">
+        </button>
+      ` : ''}
     `;
   }
 
@@ -173,45 +172,22 @@ export class CcInputText extends LitElement {
       // language=CSS
       css`
         :host {
-          display: inline-block;
+          display: inline-flex;
           box-sizing: border-box;
           margin: 0.2rem;
-          /* link to position:absolute of clipboard-btn */
+          /* link to position:absolute of .ring */
           position: relative;
           vertical-align: top;
         }
 
         :host([multi]) {
-          display: block;
+          display: flex;
         }
 
         .wrapper {
-          border-radius: 0.25rem;
-          border: 1px solid #aaa;
-          box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
-          overflow: hidden;
+          flex: 1 1 0;
+          min-width: 0;
           padding: 0.15rem 0.5rem;
-          transition: box-shadow 75ms ease-in-out, height 0ms;
-        }
-
-        .wrapper:focus-within {
-          box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
-          border-color: #777;
-        }
-
-        .wrapper:hover {
-          border-color: #777;
-        }
-
-        :host([disabled]) .wrapper {
-          background: #eee;
-          border-color: #eee;
-          cursor: default;
-          opacity: .75;
-        }
-
-        :host([readonly]) .wrapper {
-          background: #eee;
         }
 
         /* RESET */
@@ -247,17 +223,50 @@ export class CcInputText extends LitElement {
         }
 
         .input[disabled] {
+          opacity: .75;
           pointer-events: none;
         }
-
+        
         /* Hide only height and keep content width */
-        .auto-size {
+        .input-mirror {
           height: 0;
         }
 
+        /* We use this empty .ring element to decorate the input with background, border, box-shadows... */
+        .ring {
+          border-radius: 0.25rem;
+          border: 1px solid #aaa;
+          bottom: 0;
+          box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+          left: 0;
+          overflow: hidden;
+          position: absolute;
+          right: 0;
+          top: 0;
+          z-index: -1;
+        }
+
+        .input:focus + .ring {
+          border-color: #777;
+          box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
+        }
+
+        .input:hover + .ring {
+          border-color: #777;
+        }
+
+        :host([disabled]) .ring {
+          background: #eee;
+          border-color: #eee;
+        }
+
+        :host([readonly]) .ring {
+          background: #eee;
+        }
+
         /* SKELETON */
-        .skeleton,
-        .skeleton:hover {
+        .skeleton .ring,
+        .skeleton:hover .ring {
           background-color: #eee;
           border-color: #eee;
           cursor: progress;
@@ -266,23 +275,6 @@ export class CcInputText extends LitElement {
         .skeleton .input,
         .skeleton .input::placeholder {
           color: transparent;
-        }
-
-        /* BUTTON STUFFS */
-        .wrapper.clipboard,
-        .wrapper.secret {
-          padding-right: 2.2rem;
-        }
-
-        .wrapper.clipboard.secret {
-          padding-right: 3.8rem;
-        }
-
-        .btn-bar {
-          display: flex;
-          position: absolute;
-          right: calc(0.2rem + 1px);
-          top: calc(0.2rem + 1px);
         }
 
         /* RESET */
@@ -296,19 +288,12 @@ export class CcInputText extends LitElement {
         }
 
         .btn {
-          border-radius: 0.1rem;
+          border-radius: 0.15rem;
           cursor: pointer;
+          flex-shrink: 0;
           height: 1.6rem;
+          margin: 0.2rem 0.2rem 0.2rem 0;
           width: 1.6rem;
-        }
-
-        .btn:not(:first-child) {
-          margin-left: 0.2rem;
-        }
-
-        .btn[disabled],
-        .btn[skeleton] {
-          display: none;
         }
 
         .btn:focus {
@@ -345,10 +330,10 @@ export class CcInputText extends LitElement {
 
         .btn-img {
           box-sizing: border-box;
-          padding: 15%;
-          height: 100%;
-          width: 100%;
           filter: grayscale(100%);
+          height: 100%;
+          padding: 15%;
+          width: 100%;
         }
 
         .btn-img:hover {
