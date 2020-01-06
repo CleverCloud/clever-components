@@ -26,6 +26,34 @@ const baseItems = [
   { placeholder: 'No value yet...', multi: true, value: 'Skeleton\nOther lines...', skeleton: true },
 ];
 
+const tagsSample = ['one', 'two-is-very-very-very-very-very-long', 'three:hello', 'four_HELLO'];
+
+const tagsItems = [
+  {
+    placeholder: 'No value yet...',
+    tags: [],
+  },
+  {
+    placeholder: 'No value yet...',
+    tags: ['simple', 'simple:very-very-very-very-long', 'foo', 'bar', 'simple:foooobar'],
+  },
+  {
+    placeholder: 'No value yet...',
+    tags: ['disabled', 'disabled:very-very-very-very-long', 'foo', 'bar', 'disabled:foooobar'],
+    disabled: true,
+  },
+  {
+    placeholder: 'No value yet...',
+    tags: ['readonly', 'disabled:very-very-very-very-long', 'foo', 'bar', 'readonly:foooobar'],
+    readonly: true,
+  },
+  {
+    placeholder: 'No value yet...',
+    tags: ['skeleton', 'skeleton:very-very-very-very-long', 'foo', 'bar', 'skeleton:foooobar'],
+    skeleton: true,
+  },
+];
+
 export default {
   title: '🧬 Atoms|<cc-input-text>',
   component: 'cc-input-text',
@@ -34,7 +62,10 @@ export default {
 
 const conf = {
   component: 'cc-input-text',
-  events: ['cc-input-text:input'],
+  events: [
+    'cc-input-text:input',
+    'cc-input-text:tags',
+  ],
 };
 
 export const defaultStory = makeStory(conf, {
@@ -47,6 +78,7 @@ export const defaultStory = makeStory(conf, {
     { value: 'Hidden secret', secret: true },
     { value: 'Skeleton', skeleton: true },
     { value: 'Line one\nLine two\nLine three', multi: true },
+    { tags: ['tag1', 'tag2', 'tag-name:tag-value', 'very-very-very-very-long-tag'] },
   ],
 });
 
@@ -95,6 +127,21 @@ export const longValue = makeStory(conf, {
     .map((p) => ({ ...p, value: lorem })),
 });
 
+export const tags = makeStory(conf, {
+  docs: `When \`tags\` is set to an array of strings (or empty array), tags mode is enabled.
+
+* Space separated values are highlighted with a colored background.
+* A \`cc-input-text:tags\` event is fired with the array of tags when the value changes (empty values are filtered out).
+* The \`tags\` feature does not work with \`multi\` or \`secret\`.`,
+  css: `cc-input-text { width: 300px; }`,
+  items: tagsItems,
+});
+
+export const tagsWithClipboard = makeStory(conf, {
+  css: `cc-input-text { width: 300px; }`,
+  items: tagsItems.map((p) => ({ ...p, clipboard: true })),
+});
+
 enhanceStoriesNames({
   defaultStory,
   clipboard,
@@ -103,4 +150,6 @@ enhanceStoriesNames({
   secret,
   clipboardAndSecret,
   longValue,
+  tags,
+  tagsWithClipboard,
 });
