@@ -173,6 +173,13 @@ export class EnvVarForm extends LitElement {
     return i18n('env-var-form.error.unknown');
   }
 
+  _onRequestSubmit (e, isFormDisabled) {
+    e.stopPropagation();
+    if (!isFormDisabled) {
+      this._onUpdateForm();
+    }
+  }
+
   render () {
 
     const isEditorDisabled = (this.saving || this.error != null);
@@ -203,6 +210,7 @@ export class EnvVarForm extends LitElement {
           ?disabled=${isEditorDisabled}
           ?readonly=${this.readonly}
           @env-var-editor-simple:change=${this._onChange}
+          @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
         ></env-var-editor-simple>
         
         <env-var-editor-expert
@@ -211,6 +219,7 @@ export class EnvVarForm extends LitElement {
           ?disabled=${isEditorDisabled}
           ?readonly=${this.readonly}
           @env-var-editor-expert:change=${this._onChange}
+          @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
         ></env-var-editor-expert>
       </cc-expand>
       
