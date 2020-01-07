@@ -71,6 +71,13 @@ export class EnvVarCreate extends LitElement {
     this.shadowRoot.querySelector('cc-input-text.name').focus();
   }
 
+  _onRequestSubmit (e, hasErrors) {
+    e.stopPropagation();
+    if (!hasErrors) {
+      this._onSubmit();
+    }
+  }
+
   render () {
 
     const isNameInvalid = !validateName(this._variableName);
@@ -86,6 +93,7 @@ export class EnvVarCreate extends LitElement {
           ?disabled=${this.disabled}
           placeholder=${i18n(`env-var-create.name.placeholder`)}
           @cc-input-text:input=${this._onNameInput}
+          @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, hasErrors)}
         ></cc-input-text>
         <span class="input-btn">
           <cc-input-text
@@ -96,6 +104,7 @@ export class EnvVarCreate extends LitElement {
             ?disabled=${this.disabled}
             placeholder=${i18n(`env-var-create.value.placeholder`)}
             @cc-input-text:input=${this._onValueInput}
+            @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, hasErrors)}
           ></cc-input-text>
           <cc-button
             primary
