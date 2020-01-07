@@ -56,6 +56,7 @@ function arrayEquals (a, b) {
  *
  * @event {CustomEvent<String>} cc-input-text:input - Fires the `value` whenever the `value` changes.
  * @event {CustomEvent<String[]>} cc-input-text:tags - Fires an array of tags whenever the `value` changes (separated by spaces).
+ * @event {CustomEvent} cc-input-text:requestimplicitsubmit - Fires when enter key is pressed in simple mode, in tags mode or when ctrl+enter is pressed in multi mode.
  */
 export class CcInputText extends LitElement {
 
@@ -166,6 +167,13 @@ export class CcInputText extends LitElement {
     // Here we prevent keydown on enter key from modifying the value
     if (this._tagsEnabled && e.type === 'keydown' && e.keyCode === 13) {
       e.preventDefault();
+      dispatchCustomEvent(this, 'requestimplicitsubmit');
+    }
+    // Request implicit submit with keypress on enter key
+    if (!this.readonly && e.type === 'keypress' && e.keyCode === 13) {
+      if ((!this.multi) || (this.multi && e.ctrlKey)) {
+        dispatchCustomEvent(this, 'requestimplicitsubmit');
+      }
     }
   }
 

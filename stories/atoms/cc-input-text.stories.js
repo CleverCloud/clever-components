@@ -65,6 +65,7 @@ const conf = {
   events: [
     'cc-input-text:input',
     'cc-input-text:tags',
+    'cc-input-text:requestimplicitsubmit',
   ],
 };
 
