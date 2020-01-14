@@ -139,6 +139,7 @@ export class EnvVarInput extends LitElement {
           /* I have a bug on Linux between Chrome and FF with rem on inputs */
           font-size: 14px;
           line-height: 1.4rem;
+          padding-top: 0.3rem;
           margin: 0.2rem;
           word-break: break-all;
         }
@@ -158,6 +159,7 @@ export class EnvVarInput extends LitElement {
         }
 
         .value {
+          align-self: self-start;
           /* 100 seems weird but it is necessary */
           /* it helps to have a button that almost does not grow except when it wraps on its own line */
           flex: 100 1 20rem;

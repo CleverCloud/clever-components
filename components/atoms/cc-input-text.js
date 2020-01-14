@@ -9,14 +9,39 @@ import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { skeleton } from '../styles/skeleton.js';
 
+const TAG_SEPARATOR = ' ';
+
+function arrayEquals (a, b) {
+  if (a === b) {
+    return true;
+  }
+
+  if (a == null || b == null) {
+    return false;
+  }
+
+  if (b.length !== a.length) {
+    return false;
+  }
+
+  for (let i = 0; i < a.length; i += 1) {
+    if (a[i] !== b[i]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 /**
- * An enhanced text input with support for multiline, copy-to-clipboard and show/hide secret.
+ * An enhanced text input with support for multiline, copy-to-clipboard, show/hide secret and highlighted tags.
  *
  * ## Technical details
  *
  * * Uses a native `<input>` element by default and a `<textarea>` element when `multi` is true.
  * * When you use it with `readonly` \+ `clipboard` \+ NOT `multi`, the width of the input auto adapts to the length of the content.
  * * The `secret` feature only works for simple line mode (when `multi` is false).
+ * * The `tags` feature enables a space-separated-value input wrapped on several lines where line breaks are not allowed. Don't use it with `multi` or `secret`.
  *
  * @prop {Boolean} clipboard - Adds a copy-to-clipboard button (when not disabled and not skeleton).
  * @prop {Boolean} disabled - Sets `disabled` attribute on inner native `<input>/<textarea>` element.
@@ -26,9 +51,12 @@ import { skeleton } from '../styles/skeleton.js';
  * @prop {Boolean} readonly - Sets `readonly` attribute on inner native `<input>/<textarea>` element.
  * @prop {Boolean} secret - Enables show/hide secret feature with an eye icon.
  * @prop {Boolean} skeleton - Enables skeleton screen UI pattern (loading hint).
+ * @prop {String[]} tags - Sets list of tags and enables tags mode (if not null).
  * @prop {String} value - Sets `value` attribute on inner native input element or textarea's inner content.
  *
  * @event {CustomEvent<String>} cc-input-text:input - Fires the `value` whenever the `value` changes.
+ * @event {CustomEvent<String[]>} cc-input-text:tags - Fires an array of tags whenever the `value` changes (separated by spaces).
+ * @event {CustomEvent} cc-input-text:requestimplicitsubmit - Fires when enter key is pressed in simple mode, in tags mode or when ctrl+enter is pressed in multi mode.
  */
 export class CcInputText extends LitElement {
 
@@ -42,7 +70,8 @@ export class CcInputText extends LitElement {
       readonly: { type: Boolean, reflect: true },
       secret: { type: Boolean, reflect: true },
       skeleton: { type: Boolean, reflect: true },
-      /** @required */
+      tags: { type: Array, attribute: false },
+      _tagsEnabled: { type: Boolean, attribute: false },
       value: { type: String },
       _showSecret: { type: Boolean, attribute: false },
       _copyOk: { type: Boolean, attribute: false },
@@ -58,9 +87,32 @@ export class CcInputText extends LitElement {
     this.readonly = false;
     this.secret = false;
     this.skeleton = false;
+    this.tags = null;
     this.value = '';
     this._copyOk = false;
     this._showSecret = false;
+    this._tagsEnabled = false;
+  }
+
+  get tags () {
+    return this._tagsEnabled
+      ? this.value.split(TAG_SEPARATOR).filter((tag) => tag !== '')
+      : null;
+  }
+
+  set tags (newVal) {
+    this._tagsEnabled = newVal != null;
+    if (this._tagsEnabled) {
+      const oldVal = this.tags;
+      // The cc-input-text:tags event fires with a filtered list of tags.
+      // This means if you type "hello " with a trailing space, the event would be fired with ['hello'].
+      // Then if a parent component sets input.tags = ['hello'], the space would be removed.
+      // This if only sets the value if the new tags are different
+      if (!arrayEquals(oldVal, newVal)) {
+        this.value = newVal.join(TAG_SEPARATOR);
+        this.requestUpdate('tags', oldVal);
+      }
+    }
   }
 
   /**
@@ -71,8 +123,23 @@ export class CcInputText extends LitElement {
   }
 
   _onInput (e) {
+    // If tags mode is enabled, we want to prevent/remove line breaks
+    // and preserve caret position in case of a line break entry (keypress, DnD, copy/paste...)
+    if (this._tagsEnabled) {
+      if (e.target.value.includes('\n')) {
+        const { selectionStart, selectionEnd } = e.target;
+        const oldValue = e.target.value;
+        const newValue = e.target.value.replace(/\n/g, '');
+        const diff = oldValue.length - newValue.length;
+        e.target.value = newValue;
+        e.target.setSelectionRange(selectionStart - diff, selectionEnd - diff);
+      }
+    }
     this.value = e.target.value;
     dispatchCustomEvent(this, 'input', this.value);
+    if (this._tagsEnabled) {
+      dispatchCustomEvent(this, 'tags', this.tags);
+    }
   }
 
   _onFocus (e) {
@@ -93,8 +160,21 @@ export class CcInputText extends LitElement {
   }
 
   // Stop propagation of keydown and keypress events (to prevent conflicts with shortcuts)
-  _stopPropagation (e) {
-    e.stopPropagation();
+  _onKeyEvent (e) {
+    if (e.type === 'keydown' || e.type === 'keypress') {
+      e.stopPropagation();
+    }
+    // Here we prevent keydown on enter key from modifying the value
+    if (this._tagsEnabled && e.type === 'keydown' && e.keyCode === 13) {
+      e.preventDefault();
+      dispatchCustomEvent(this, 'requestimplicitsubmit');
+    }
+    // Request implicit submit with keypress on enter key
+    if (!this.readonly && e.type === 'keypress' && e.keyCode === 13) {
+      if ((!this.multi) || (this.multi && e.ctrlKey)) {
+        dispatchCustomEvent(this, 'requestimplicitsubmit');
+      }
+    }
   }
 
   render () {
@@ -103,17 +183,28 @@ export class CcInputText extends LitElement {
     const clipboard = (this.clipboard && !this.disabled && !this.skeleton);
     // NOTE: For now, we don't support secret when multi is activated
     const secret = (this.secret && !this.multi && !this.disabled && !this.skeleton);
+    const isTextarea = (this.multi || this._tagsEnabled);
+
+    const tags = this.value
+      .split(TAG_SEPARATOR)
+      .map((tag, i, all) => html`<span class="tag">${tag}</span>${i !== (all.length - 1) ? TAG_SEPARATOR : ''}`);
 
     return html`
-      <div class="wrapper ${classMap({ skeleton: this.skeleton, clipboard, secret })}"
+      <div class="wrapper ${classMap({ skeleton: this.skeleton })}"
         @input=${this._onInput}
-        @keydown=${this._stopPropagation}
-        @keypress=${this._stopPropagation}
-      >
-      
-        ${this.multi ? html`
+        @keydown=${this._onKeyEvent}
+        @keypress=${this._onKeyEvent}>
+        
+        ${isTextarea ? html`
+          ${this._tagsEnabled && !this.skeleton ? html`
+            <!--
+              We use this to display colored background rectangles behind space separated values. 
+              This needs to be on the same line and the 2 level parent is important to keep scroll behaviour.
+            -->
+            <div class="input input-underlayer" style="--rows: ${rows}"><div class="all-tags">${tags}</div></div>
+          ` : ''}
           <textarea
-            class="input"
+            class="input ${classMap({ 'input-tags': this._tagsEnabled })}"
             style="--rows: ${rows}"
             rows=${rows}
             ?disabled=${this.disabled || this.skeleton}
@@ -122,19 +213,19 @@ export class CcInputText extends LitElement {
             name=${this.name}
             placeholder=${this.placeholder}
             spellcheck="false"
-            wrap="off"
+            wrap="${this._tagsEnabled ? 'soft' : 'off'}"
             @focus=${this._onFocus}
           ></textarea>
         ` : ''}
-        
-        ${!this.multi ? html`
+          
+        ${!isTextarea ? html`
           ${clipboard && this.readonly ? html`
             <!--
               This div has the same styles as the input (but it's hidden with height:0)
               this way we can use it to know what width the content is
               and "auto size" the container.
             -->
-            <div class="auto-size input">${this.value}</div>
+            <div class="input input-mirror">${this.value}</div>
           ` : ''}
           <input
             type=${this.secret && !this._showSecret ? 'password' : 'text'}
@@ -148,22 +239,22 @@ export class CcInputText extends LitElement {
             @focus=${this._onFocus}
           >
         ` : ''}
+      
+        <div class="ring"></div>
       </div>
       
-      <div class="btn-bar">
-        ${secret ? html`
-          <button class="btn" @click=${this._onClickSecret}
-            title=${this._showSecret ? i18n('cc-input-text.secret.hide') : i18n('cc-input-text.secret.show')}>
-            <img class="btn-img" src=${this._showSecret ? eyeClosedSvg : eyeOpenSvg} alt="">
-          </button>
-        ` : ''}
-        
-        ${clipboard ? html`
-          <button class="btn" ?disabled=${this.disabled || this.skeleton} @click=${this._onClickCopy} title=${i18n('cc-input-text.clipboard')}>
-            <img class="btn-img" src=${this._copyOk ? tickSvg : clipboardSvg} alt="">
-          </button>
-        ` : ''}
-      </div>
+      ${secret ? html`
+        <button class="btn" @click=${this._onClickSecret} 
+          title=${this._showSecret ? i18n('cc-input-text.secret.hide') : i18n('cc-input-text.secret.show')}>
+          <img class="btn-img" src=${this._showSecret ? eyeClosedSvg : eyeOpenSvg} alt="">
+        </button>
+      ` : ''}
+      
+      ${clipboard ? html`
+        <button class="btn" @click=${this._onClickCopy} title=${i18n('cc-input-text.clipboard')}>
+          <img class="btn-img" src=${this._copyOk ? tickSvg : clipboardSvg} alt="">
+        </button>
+      ` : ''}
     `;
   }
 
@@ -173,45 +264,24 @@ export class CcInputText extends LitElement {
       // language=CSS
       css`
         :host {
-          display: inline-block;
+          display: inline-flex;
           box-sizing: border-box;
           margin: 0.2rem;
-          /* link to position:absolute of clipboard-btn */
+          /* link to position:absolute of .ring */
           position: relative;
           vertical-align: top;
         }
 
         :host([multi]) {
-          display: block;
+          display: flex;
         }
 
         .wrapper {
-          border-radius: 0.25rem;
-          border: 1px solid #aaa;
-          box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+          display: grid;
+          flex: 1 1 0;
+          margin: 0.15rem 0.5rem;
+          min-width: 0;
           overflow: hidden;
-          padding: 0.15rem 0.5rem;
-          transition: box-shadow 75ms ease-in-out, height 0ms;
-        }
-
-        .wrapper:focus-within {
-          box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
-          border-color: #777;
-        }
-
-        .wrapper:hover {
-          border-color: #777;
-        }
-
-        :host([disabled]) .wrapper {
-          background: #eee;
-          border-color: #eee;
-          cursor: default;
-          opacity: .75;
-        }
-
-        :host([readonly]) .wrapper {
-          background: #eee;
         }
 
         /* RESET */
@@ -234,10 +304,12 @@ export class CcInputText extends LitElement {
         .input {
           background: none;
           border: none;
+          grid-area: 1 / 1 / 1 / 1;
           /* multiline behaviour */
           height: calc(var(--rows, 1) * 1.7rem);
           line-height: 1.7rem;
           overflow: hidden;
+          z-index: 2;
         }
 
         /* STATES */
@@ -247,17 +319,76 @@ export class CcInputText extends LitElement {
         }
 
         .input[disabled] {
+          opacity: .75;
           pointer-events: none;
         }
 
         /* Hide only height and keep content width */
-        .auto-size {
+        .input-mirror {
           height: 0;
         }
 
+        /* TAGS UNDERLAYER */
+        .input-tags,
+        .input-underlayer {
+          height: auto;
+          padding: 0 3px;
+          word-break: break-all;
+        }
+
+        .input-underlayer {
+          color: transparent;
+          -moz-user-select: none;
+          -webkit-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+          white-space: pre-wrap;
+          z-index: 1;
+        }
+
+        .input-underlayer .tag:not(:empty) {
+          --color: rgba(50, 50, 255, 0.15);
+          background-color: var(--color);
+          border-radius: 4px;
+          box-shadow: 0 0 0 2px var(--color);
+          padding: 1px 0;
+        }
+
+        /* We use this empty .ring element to decorate the input with background, border, box-shadows... */
+        .ring {
+          border-radius: 0.25rem;
+          border: 1px solid #aaa;
+          bottom: 0;
+          box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+          left: 0;
+          overflow: hidden;
+          position: absolute;
+          right: 0;
+          top: 0;
+          z-index: 0;
+        }
+
+        .input:focus + .ring {
+          border-color: #777;
+          box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
+        }
+
+        .input:hover + .ring {
+          border-color: #777;
+        }
+
+        :host([disabled]) .ring {
+          background: #eee;
+          border-color: #eee;
+        }
+
+        :host([readonly]) .ring {
+          background: #eee;
+        }
+
         /* SKELETON */
-        .skeleton,
-        .skeleton:hover {
+        .skeleton .ring,
+        .skeleton:hover .ring {
           background-color: #eee;
           border-color: #eee;
           cursor: progress;
@@ -266,23 +397,6 @@ export class CcInputText extends LitElement {
         .skeleton .input,
         .skeleton .input::placeholder {
           color: transparent;
-        }
-
-        /* BUTTON STUFFS */
-        .wrapper.clipboard,
-        .wrapper.secret {
-          padding-right: 2.2rem;
-        }
-
-        .wrapper.clipboard.secret {
-          padding-right: 3.8rem;
-        }
-
-        .btn-bar {
-          display: flex;
-          position: absolute;
-          right: calc(0.2rem + 1px);
-          top: calc(0.2rem + 1px);
         }
 
         /* RESET */
@@ -296,19 +410,12 @@ export class CcInputText extends LitElement {
         }
 
         .btn {
-          border-radius: 0.1rem;
+          border-radius: 0.15rem;
           cursor: pointer;
+          flex-shrink: 0;
           height: 1.6rem;
+          margin: 0.2rem 0.2rem 0.2rem 0;
           width: 1.6rem;
-        }
-
-        .btn:not(:first-child) {
-          margin-left: 0.2rem;
-        }
-
-        .btn[disabled],
-        .btn[skeleton] {
-          display: none;
         }
 
         .btn:focus {
@@ -345,10 +452,10 @@ export class CcInputText extends LitElement {
 
         .btn-img {
           box-sizing: border-box;
-          padding: 15%;
-          height: 100%;
-          width: 100%;
           filter: grayscale(100%);
+          height: 100%;
+          padding: 15%;
+          width: 100%;
         }
 
         .btn-img:hover {
