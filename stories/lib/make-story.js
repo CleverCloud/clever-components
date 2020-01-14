@@ -1,21 +1,8 @@
 import * as blockPreview from '@storybook/components/dist/blocks/Preview.js';
-import * as blockTitle from '@storybook/addon-docs/dist/blocks/Title.js';
-import { useContext } from 'react';
 import { decorate } from '@storybook/addon-actions';
-import { DocsContext } from '@storybook/addon-docs/dist/blocks';
 import { sequence } from './sequence.js';
-import { htmlToReact } from './markdown';
 
 // NOTE: Those dirty injects are work in progress
-
-// TODO: Improve this
-blockTitle.Title = (pppp) => {
-  const context = useContext(DocsContext);
-  const title = (context.parameters.component != null)
-    ? `<code>&lt;${context.parameters.component}&gt;</code>`
-    : (context.parameters.title || context.kind).split('|').slice(-1).join('');
-  return htmlToReact(`<h1>${title}</h1>`);
-};
 
 // Force html in preview examples
 const oldPreview = blockPreview.Preview;
