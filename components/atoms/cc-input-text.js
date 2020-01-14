@@ -416,6 +416,7 @@ export class CcInputText extends LitElement {
           height: 1.6rem;
           margin: 0.2rem 0.2rem 0.2rem 0;
           width: 1.6rem;
+          z-index: 2;
         }
 
         .btn:focus {

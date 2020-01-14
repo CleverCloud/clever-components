@@ -26,8 +26,6 @@ const baseItems = [
   { placeholder: 'No value yet...', multi: true, value: 'Skeleton\nOther lines...', skeleton: true },
 ];
 
-const tagsSample = ['one', 'two-is-very-very-very-very-very-long', 'three:hello', 'four_HELLO'];
-
 const tagsItems = [
   {
     placeholder: 'No value yet...',
