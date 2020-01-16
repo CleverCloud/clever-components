@@ -1,6 +1,6 @@
 import * as en from '../../components/translations/translations.en.js';
 import * as fr from '../../components/translations/translations.fr.js';
-import { addTranslations, getAvailableLanguages, getLanguage, setLanguage } from '../../components/lib/i18n.js';
+import { addTranslations, getAvailableLanguages, getLanguage, i18n, setLanguage } from '../../components/lib/i18n.js';
 import { color, select } from '@storybook/addon-knobs';
 import { forceReRender } from '@storybook/web-components';
 
@@ -10,20 +10,23 @@ import { forceReRender } from '@storybook/web-components';
 // Init languages
 addTranslations(en.lang, en.translations);
 addTranslations(fr.lang, fr.translations);
+addTranslations('missing', { LANGUAGE: '🤬 Missing' });
 
 const INIT_LANG = window.localStorage.getItem('I18N_LANG') || 'en';
 
 // Default to English
 setLanguage(INIT_LANG);
 
+const ALL_LANGS = Object.values(getAvailableLanguages());
+
 let keyboardShortcutWasPressed = false;
 window.addEventListener('keypress', ({ keyCode, altKey, ctrlKey, metaKey, shiftKey }) => {
   // "i" key
   if (keyCode === 105 && !altKey && !ctrlKey && !metaKey && !shiftKey) {
     keyboardShortcutWasPressed = true;
-    (getLanguage() === 'en')
-      ? setLanguage('fr')
-      : setLanguage('en');
+    const langIdx = ALL_LANGS.indexOf(getLanguage());
+    const nextIdx = (langIdx + 1) % ALL_LANGS.length;
+    setLanguage(ALL_LANGS[nextIdx]);
     forceReRender();
   }
 });

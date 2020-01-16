@@ -7,13 +7,16 @@ export function i18n (key, data) {
   const translation = getTranslation(key);
   if (translation == null) {
     console.warn(`Unknown translation [${i18n._lang}] "${key}"`);
-    return 'unknown';
+    return i18n.MISSING_TEXT;
   }
   if (typeof translation === 'function') {
     return translation(data);
   }
   return translation;
 }
+
+// Let anyone configure missing text placeholder
+i18n.MISSING_TEXT = '🤬🤬🤬🤬🤬';
 
 /**
  * @param {string} key - The translation key
