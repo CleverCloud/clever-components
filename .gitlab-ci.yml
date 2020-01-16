@@ -21,7 +21,7 @@ deploy:mr:
     - clever deploy -f
   environment:
     name: review/${CI_COMMIT_REF_SLUG}
-    url: https://${CI_COMMIT_REF_SLUG}.clever-components.cleverapps.io
+    url: https://${CI_COMMIT_REF_SLUG}--clever-components.cleverapps.io
     on_stop: stop_review
 
 stop_review:
