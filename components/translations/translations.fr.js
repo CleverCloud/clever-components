@@ -174,7 +174,7 @@ export const translations = {
   'cc-tile-requests.error': `Une erreur est survenue pendant le chargement des requêtes.`,
   'cc-tile-requests.docs.msg': ({ windowHours }) => {
     const hour = plural('heure')(windowHours);
-    return `Requêtes HTTP reçues durant les dernières 24 heures. Chaque barre représente une fenêtre de temps de ${windowHours} ${hour}.`;
+    return sanitize`Requêtes HTTP reçues durant les dernières 24 heures. Chaque barre représente une fenêtre de temps de <strong>${windowHours} ${hour}</strong>.`;
   },
   // cc-tile-scalability
   'cc-tile-scalability.title': `Scalabilité`,

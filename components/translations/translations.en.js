@@ -161,7 +161,7 @@ export const translations = {
   'cc-tile-requests.error': `Something went wrong while loading HTTP requests.`,
   'cc-tile-requests.docs.msg': ({ windowHours }) => {
     const hour = plural('hour')(windowHours);
-    return `HTTP requests received in the last 24 hours. Each bar represents a time window of ${windowHours} ${hour}.`;
+    return sanitize`HTTP requests received in the last 24 hours. Each bar represents a time window of <strong>${windowHours} ${hour}</strong>.`;
   },
   // cc-tile-scalability
   'cc-tile-scalability.title': `Scalability`,
