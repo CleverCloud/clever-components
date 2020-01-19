@@ -55,6 +55,13 @@ export const translations = {
   // cc-datetime-relative
   'cc-datetime-relative.distance': ({ date }) => formatDistanceToNow(date),
   'cc-datetime-relative.title': ({ date }) => formatDate(date),
+  // cc-header-addon
+  'cc-header-addon.plan': `Plan`,
+  'cc-header-addon.version': `Version`,
+  'cc-header-addon.creation-date': `Date de création`,
+  'cc-header-addon.creation-date.short': ({ date }) => formatDateOnly(date),
+  'cc-header-addon.creation-date.full': ({ date }) => formatDate(date),
+  'cc-header-addon.error': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
   // cc-header-app
   'cc-header-app.action.cancel-deployment': `Annuler le déploiement`,
   'cc-header-app.action.restart': `Redémarrer`,

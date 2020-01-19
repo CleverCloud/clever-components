@@ -42,6 +42,13 @@ export const translations = {
   // cc-datetime-relative
   'cc-datetime-relative.distance': ({ date }) => formatDistanceToNow(date),
   'cc-datetime-relative.title': ({ date }) => formatDate(date),
+  // cc-header-addon
+  'cc-header-addon.plan': `Plan`,
+  'cc-header-addon.version': `Version`,
+  'cc-header-addon.creation-date': `Creation date`,
+  'cc-header-addon.creation-date.short': ({ date }) => formatDateOnly(date),
+  'cc-header-addon.creation-date.full': ({ date }) => formatDate(date),
+  'cc-header-addon.error': `Something went wrong while loading add-on info.`,
   // cc-header-app
   'cc-header-app.action.cancel-deployment': `Cancel deployment`,
   'cc-header-app.action.restart': `Restart`,
