@@ -207,10 +207,10 @@ export const translations = {
   // cc-logsmap
   'cc-logsmap.mode.points': `En direct`,
   'cc-logsmap.mode.heatmap': `Dernières 24h`,
-  'cc-logsmap.legend.points': ({ orgaName }) => `Carte temps réel des requêtes HTTP reçues par toutes les applications de ${orgaName}.`,
-  'cc-logsmap.legend.points.app': ({ appName }) => `Carte temps réel des requêtes HTTP reçues par l'application ${appName}.`,
-  'cc-logsmap.legend.heatmap': ({ orgaName }) => `Carte de chaleur des requêtes HTTP reçues par les applications de ${orgaName} durant les dernières 24 heures.`,
-  'cc-logsmap.legend.heatmap.app': ({ appName }) => `Carte de chaleur des requêtes HTTP reçues par l'application ${appName} durant les dernières 24 heures.`,
+  'cc-logsmap.legend.points': ({ orgaName }) => sanitize`Carte temps réel des requêtes HTTP reçues par toutes les applications de <strong>${orgaName}</strong>.`,
+  'cc-logsmap.legend.points.app': ({ appName }) => sanitize`Carte temps réel des requêtes HTTP reçues par l'application <strong>${appName}</strong>.`,
+  'cc-logsmap.legend.heatmap': ({ orgaName }) => sanitize`Carte de chaleur des requêtes HTTP reçues par les applications de <strong>${orgaName}</strong> durant les dernières 24 heures.`,
+  'cc-logsmap.legend.heatmap.app': ({ appName }) => sanitize`Carte de chaleur des requêtes HTTP reçues par l'application <strong>${appName}</strong> durant les dernières 24 heures.`,
   // cc-map
   'cc-map.error': `Une erreur est survenue pendant le chargement des données de la carte.`,
   'cc-map.no-points': `Pas de données à afficher sur la carte en ce moment.`,
