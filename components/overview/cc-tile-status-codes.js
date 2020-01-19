@@ -4,7 +4,7 @@ import closeSvg from './close.svg';
 import infoSvg from './info.svg';
 import warningSvg from 'twemoji/2/svg/26a0.svg';
 import { cache } from 'lit-html/directives/cache';
-import { ccLink, linkStyles } from '../templates/cc-link.js';
+import { linkStyles } from '../templates/cc-link.js';
 import { classMap } from 'lit-html/directives/class-map';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
@@ -168,7 +168,7 @@ export class CcTileStatusCodes extends LitElement {
       
       <div class="tile_docs ${classMap({ 'tile_docs--hidden': !displayDocs })}">
         <p>${i18n('cc-tile-status-codes.docs.msg')}</p>
-        <p>${ccLink(i18n('cc-tile-status-codes.docs.link.href'), i18n('cc-tile-status-codes.docs.link.title'))}</p>
+        <p>${i18n('cc-tile-status-codes.docs.link.href')}</p>
       </div>
     `;
   }

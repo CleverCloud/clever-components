@@ -199,8 +199,7 @@ export const translations = {
   'cc-tile-status-codes.error': `Une erreur est survenue pendant le chargement des codes de réponses HTTP.`,
   'cc-tile-status-codes.empty': `Il n'y a pas de données à afficher pour l'instant.`,
   'cc-tile-status-codes.docs.msg': `Répartition des codes de réponses HTTP envoyés durant les dernières 24 heures. Cliquez sur les éléments de légende pour cacher/montrer certaines catégories de codes.`,
-  'cc-tile-status-codes.docs.link.href': `https://developer.mozilla.org/fr/docs/Web/HTTP/Status`,
-  'cc-tile-status-codes.docs.link.title': `Codes de réponses HTTP (MDN)`,
+  'cc-tile-status-codes.docs.link': () => sanitize`<a href="https://developer.mozilla.org/fr/docs/Web/HTTP/Status">Codes de réponses HTTP (MDN)</a>`,
   // cc-input-text
   'cc-input-text.clipboard': `Copier dans le presse-papier`,
   'cc-input-text.secret.show': `Afficher le secret`,

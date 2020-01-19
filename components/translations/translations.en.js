@@ -186,8 +186,7 @@ export const translations = {
   'cc-tile-status-codes.error': `Something went wrong while loading HTTP response codes.`,
   'cc-tile-status-codes.empty': `No data to display for now.`,
   'cc-tile-status-codes.docs.msg': `Repartition of HTTP response codes returned in the last 24 hours. Click on legend items to show/hide HTTP code categories.`,
-  'cc-tile-status-codes.docs.link.href': `https://developer.mozilla.org/en/docs/Web/HTTP/Status`,
-  'cc-tile-status-codes.docs.link.title': `HTTP response status codes (MDN)`,
+  'cc-tile-status-codes.docs.link': () => sanitize`<a href="https://developer.mozilla.org/en/docs/Web/HTTP/Status">HTTP response status codes (MDN)</a>`,
   // cc-input-text
   'cc-input-text.clipboard': `Copy to clipboard`,
   'cc-input-text.secret.show': `Show secret`,
