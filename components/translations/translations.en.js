@@ -5,6 +5,7 @@ import {
   prepareFormatHours,
 } from '../lib/i18n-date.js';
 import { prepareNumberUnitFormatter } from '../lib/i18n-number.js';
+import { sanitize } from '../lib/i18n-sanitize.js';
 
 export const lang = 'en';
 
@@ -205,8 +206,8 @@ export const translations = {
   'env-var-create.name.placeholder': `VARIABLE_NAME`,
   'env-var-create.value.placeholder': `variable value`,
   'env-var-create.create-button': `Add`,
-  'env-var-create.errors.invalid-name': ({ name }) => `Name ${name} is invalid`,
-  'env-var-create.errors.already-defined-name': ({ name }) => `Name ${name} is already defined`,
+  'env-var-create.errors.invalid-name': ({ name }) => sanitize`Name <code>${name}</code> is invalid`,
+  'env-var-create.errors.already-defined-name': ({ name }) => sanitize`Name <code>${name}</code> is already defined`,
   // env-var-editor-simple
   'env-var-editor-simple.empty-data': `There are no variables.`,
   // env-var-editor-expert

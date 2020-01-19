@@ -161,6 +161,14 @@ export class EnvVarCreate extends LitElement {
         .errors {
           margin: 0.5rem 0.2rem 0.2rem;
         }
+
+        /* i18n error message may contain <code> tags */
+        .errors code {
+          background-color: #f3f3f3;
+          border-radius: 0.25rem;
+          font-family: "SourceCodePro", "monaco", monospace;
+          padding: 0.15rem 0.3rem;
+        }
       `,
     ];
   }
