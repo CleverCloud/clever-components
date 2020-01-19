@@ -154,6 +154,14 @@ export class EnvVarEditorExpert extends LitElement {
           padding: 0.25rem 0;
           line-height: 1.75;
         }
+
+        /* i18n error message may contain <code> tags */
+        .error-item code {
+          background-color: #f3f3f3;
+          border-radius: 0.25rem;
+          font-family: "SourceCodePro", "monaco", monospace;
+          padding: 0.15rem 0.3rem;
+        }
       `,
     ];
   }
