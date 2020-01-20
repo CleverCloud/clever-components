@@ -9,7 +9,7 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { skeleton } from '../styles/skeleton.js';
 
 /**
- * A component to disaly various info about an add-on (name, plan, version...)
+ * A component to display various info about an add-on (name, plan, version...).
  *
  * ## Details
  *
@@ -40,9 +40,9 @@ import { skeleton } from '../styles/skeleton.js';
  * }
  * ```
  *
- * @prop {Addon} addon - Sets add-on details and config
- * @prop {Boolean} error - Display an error message
- * @prop {String} version - Sets version of add-on
+ * @prop {Addon} addon - Sets add-on details and config.
+ * @prop {Boolean} error - Displays an error message.
+ * @prop {String} version - Sets version of add-on.
  */
 
 export class CcHeaderAddon extends LitElement {
