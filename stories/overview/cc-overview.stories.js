@@ -29,20 +29,21 @@ const conf = {
   `,
 };
 
-export const defaultStory = makeStory({
-  component: 'cc-overview',
-  css: `
-    cc-overview {
-      margin-bottom: 1rem;
-    }
-    cc-overview * {
-      background-color: #eee;
-      padding: 1rem;
-    }
-    cc-overview .main {
-      min-height: 200px;
-    }
-  `,
+const placeholderCss = `
+  cc-overview {
+    margin-bottom: 1rem;
+  }
+  cc-overview * {
+    background-color: #eee;
+    padding: 1rem;
+  }
+  cc-overview .main {
+    min-height: 200px;
+  }
+`;
+
+export const defaultStory = makeStory(conf, {
+  css: placeholderCss,
   items: [
     {
       mode: 'app',
@@ -70,6 +71,24 @@ export const orgaMode = makeStory(conf, {
       createStoryItem(logsmap, { class: 'main' }),
     ],
   }],
+});
+
+export const orgaModeWithTwoHeads = makeStory(conf, {
+  docs: 'If you place two or more heads in your overview, you\'ll need to specify how many with the CSS custom property: `--cc-overview-head-count: 2`.',
+  css: placeholderCss,
+  items: [
+    {
+      mode: 'orga',
+      style: '--cc-overview-head-count: 2',
+      innerHTML: `
+        <div class="head">HEAD A</div>
+        <div class="head">HEAD B</div>
+        <div>TILE A</div>
+        <div>TILE B</div>
+        <div class="main">MAIN</div>
+      `,
+    },
+  ],
 });
 
 export const appMode = makeStory(conf, {
@@ -104,4 +123,26 @@ export const appModeWithBeta = makeStory(conf, {
   }],
 });
 
-enhanceStoriesNames({ defaultStory, orgaMode, appMode, appModeWithBeta });
+export const appModeWithTwoHeads = makeStory(conf, {
+  docs: 'If you place two or more heads in your overview, you\'ll need to specify how many with the CSS custom property: `--cc-overview-head-count: 2`.',
+  css: placeholderCss,
+  items: [
+    {
+      mode: 'app',
+      style: '--cc-overview-head-count: 2',
+      innerHTML: `
+        <div class="head">HEAD A</div>
+        <div class="head">HEAD B</div>
+        <div>TILE A</div>
+        <div>TILE B</div>
+        <div>TILE C</div>
+        <div>TILE D</div>
+        <div>TILE E</div>
+        <div>TILE F</div>
+        <div class="main">MAIN</div>
+      `,
+    },
+  ],
+});
+
+enhanceStoriesNames({ defaultStory, orgaMode, orgaModeWithTwoHeads, appMode, appModeWithBeta, appModeWithTwoHeads });
