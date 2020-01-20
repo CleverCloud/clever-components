@@ -1,6 +1,6 @@
 import * as en from '../../components/translations/translations.en.js';
 import * as fr from '../../components/translations/translations.fr.js';
-import { addTranslations, getAvailableLanguages, getLanguage, i18n, setLanguage } from '../../components/lib/i18n.js';
+import { addTranslations, getAvailableLanguages, getLanguage, setLanguage } from '../../components/lib/i18n.js';
 import { color, select } from '@storybook/addon-knobs';
 import { forceReRender } from '@storybook/web-components';
 
