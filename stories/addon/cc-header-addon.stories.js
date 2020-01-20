@@ -1,4 +1,4 @@
-import '../../components/addon-overview/cc-header-addon.js';
+import '../../components/addon/cc-header-addon.js';
 import notes from '../../.components-docs/cc-header-addon.md';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
