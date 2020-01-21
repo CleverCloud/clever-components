@@ -2,6 +2,7 @@ export { CcBeta } from './atoms/cc-beta.js';
 export { CcButton } from './atoms/cc-button.js';
 export { CcDatetimeRelative } from './atoms/cc-datetime-relative.js';
 export { CcExpand } from './atoms/cc-expand.js';
+export { CcHeaderAddon } from './addon/cc-header-addon.js';
 export { CcHeaderApp } from './overview/cc-header-app.js';
 export { CcHeaderOrga } from './overview/cc-header-orga.js';
 export { CcImg } from './atoms/cc-img.js';
