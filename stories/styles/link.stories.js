@@ -1,28 +1,17 @@
-import { Meta, Preview, Story } from '@storybook/addon-docs/blocks';
-import {html} from 'lit-html';
-import { linkStyles} from  '../../components/styles/link.js';
+import docsPage from './link.mdx';
+import { linkStyles } from '../../components/styles/link.js';
+import { makeStory } from '../lib/make-story.js';
 
-<Meta title="🎨 Styles|link" />
+export default {
+  title: '🎨 Styles|link',
+  parameters: { docs: { page: docsPage } },
+};
 
-# Link styles
-
-We're trying to blbla
-
-## How to use?
-
-```html
-<a class="link" href="https://example.com">This is a link</a>
-```
-
-## Example
-
-<Preview>
-<Story name="foo">
-{() => html`
-<style>${linkStyles}</style>
-<a class="link" href="https://example.com">This is a link</a>
-`}
-</Story>
-</Preview>
-
-<a class="link">gferg oeizje fij </a>
+export const defaultStory = makeStory({
+  css: linkStyles,
+  dom: (container) => {
+    container.innerHTML = `
+      <a class="cc-link" href="https://example.com">This is a link using the link styles</a>
+    `;
+  },
+});

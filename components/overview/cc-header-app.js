@@ -15,6 +15,7 @@ import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { iconStyles } from '../styles/icon.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { linkStyles } from '../styles/link';
 import { skeleton } from '../styles/skeleton.js';
 
 const commitIcon = {
@@ -300,7 +301,7 @@ export class CcHeaderApp extends LitElement {
             ${this._getStatusMsg(status)}
           </span>  
           ${shouldDisplayLogsLink ? html`
-            <a href=${lastDeploymentLogsUrl} class="logs-link">${i18n('cc-header-app.read-logs')}</a>
+            <a class="cc-link" href=${lastDeploymentLogsUrl}>${i18n('cc-header-app.read-logs')}</a>
           ` : ''}
         ` : ''}
         ${this._lastUserAction != null ? html`
@@ -314,6 +315,7 @@ export class CcHeaderApp extends LitElement {
     return [
       iconStyles,
       skeleton,
+      linkStyles,
       // language=CSS
       css`
         :host {
@@ -457,11 +459,6 @@ export class CcHeaderApp extends LitElement {
           height: 1.25rem;
           vertical-align: middle;
           min-width: 1.25rem;
-        }
-
-        .logs-link {
-          color: #2b96fd;
-          text-decoration: underline;
         }
 
         [title] {

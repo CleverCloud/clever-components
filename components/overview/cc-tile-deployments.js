@@ -5,6 +5,7 @@ import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
 import { iconStyles } from '../styles/icon.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { linkStyles } from '../styles/link';
 import { skeleton } from '../styles/skeleton.js';
 import { tileStyles } from '../styles/info-tiles.js';
 
@@ -90,9 +91,9 @@ export class CcTileDeployments extends LitElement {
                 <cc-datetime-relative datetime=${d.date}></cc-datetime-relative>
               ` : ''}
             </div>
-            <a class="link" href=${ifDefined(d.logsUrl)}>
-              <span class=${classMap({ skeleton })}>logs</span>
-            </a>
+            <div>
+              <a class="cc-link ${classMap({ skeleton })}" href=${ifDefined(d.logsUrl)}>logs</a>
+            </div>
           `)}
         </div>
       ` : ''}
@@ -112,6 +113,7 @@ export class CcTileDeployments extends LitElement {
       tileStyles,
       iconStyles,
       skeleton,
+      linkStyles,
       // language=CSS
       css`
         .tile_body {
@@ -138,21 +140,12 @@ export class CcTileDeployments extends LitElement {
           color: #2faa60;
         }
 
-        .link {
-          color: #2b96fd;
-          text-decoration: underline;
-        }
-
         [title] {
           cursor: help;
         }
 
         .skeleton {
           background-color: #bbb;
-        }
-
-        .link .skeleton {
-          background-color: #2b96fd;
         }
       `,
     ];

@@ -2,6 +2,7 @@ import './env-var-form.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
+import { linkStyles } from '../styles/link';
 import { repeat } from 'lit-html/directives/repeat.js';
 
 /**
@@ -61,7 +62,7 @@ export class EnvVarFull extends LitElement {
         @env-var-form:dismissed-error=${(e) => this._onDismissedError(e.detail)}
       >
         ${i18n('env-var-full.message')}
-        <a href="http://doc.clever-cloud.com/admin-console/environment-variables/" target="_blank">${i18n('env-var-full.link')}</a>
+        <a class="cc-link" href="http://doc.clever-cloud.com/admin-console/environment-variables/" target="_blank">${i18n('env-var-full.link')}</a>
       </env-var-form>
       
       ${repeat(this.addons, ({ id }) => id, ({ id, name, variables }) => html`
@@ -77,11 +78,14 @@ export class EnvVarFull extends LitElement {
 
   static get styles () {
     // language=CSS
-    return css`
-      env-var-form {
-        margin-bottom: 1rem;
-      }
-    `;
+    return [
+      linkStyles,
+      css`
+        env-var-form {
+          margin-bottom: 1rem;
+        }
+      `,
+    ];
   }
 }
 

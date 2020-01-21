@@ -30,8 +30,8 @@ Array
   });
 
 // Use emojis to sort story categories/kinds
-// Docs, then components, then stuffs for devs (mixins)
-const EMOJI_SORT = ['📌', '🧬', '🛠', '🔀'];
+// Docs, then components, then stuffs for devs (mixins and inner styles)
+const EMOJI_SORT = ['📌', '🧬', '🛠', '🔀', '🎨'];
 
 addParameters({
   options: {

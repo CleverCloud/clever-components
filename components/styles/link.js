@@ -1,28 +1,30 @@
 import { css } from 'lit-element';
 
 // language=CSS
-export const skeleton = css`
+export const linkStyles = css`
 
-  @keyframes skeleton-pulse {
-    from {
-      opacity: 0.85;
-    }
-
-    to {
-      opacity: 0.45;
-    }
+  .cc-link {
+    --color: hsl(209, 98%, 40%);
+    color: var(--color);
   }
 
-  .skeleton {
-    animation-direction: alternate;
-    animation-duration: 500ms;
-    animation-iteration-count: infinite;
-    animation-name: skeleton-pulse;
-    color: transparent;
-    cursor: progress;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+  .cc-link:hover {
+    color: hsl(209, 98%, 25%);
+  }
+
+  .cc-link:focus {
+    background-color: #fff;
+    border-radius: 0.1rem;
+    box-shadow: 0 0 0 .1rem #fff, 0 0 0 .3rem rgba(50, 115, 220, .25);
+    outline: 0;
+  }
+
+  .cc-link::-moz-focus-inner {
+    border: 0;
+  }
+
+  .cc-link.skeleton {
+    color: var(--color);
+    background-color: var(--color);
   }
 `;
