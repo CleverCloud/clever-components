@@ -15,7 +15,7 @@ import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { iconStyles } from '../styles/icon.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { linkStyles } from '../styles/link';
+import { linkStyles } from '../styles/link.js';
 import { skeleton } from '../styles/skeleton.js';
 
 const commitIcon = {

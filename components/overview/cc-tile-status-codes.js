@@ -9,7 +9,7 @@ import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
 import { iconStyles } from '../styles/icon.js';
 import { ifDefined } from 'lit-html/directives/if-defined';
-import { linkStyles } from '../styles/link';
+import { linkStyles } from '../styles/link.js';
 import { skeleton } from '../styles/skeleton.js';
 import { STATUS_CODES } from 'statuses';
 import { tileStyles } from '../styles/info-tiles.js';
