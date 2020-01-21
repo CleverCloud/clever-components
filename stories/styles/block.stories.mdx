@@ -1,0 +1,43 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="🎨 Styles|block" />
+
+# Block styles
+
+We want most of our blocks of information to look the same.
+Instead of creating a block component, we're simply sharing some styles that can be imported and reused.
+
+## Features
+
+* `:host` with `display:grid`, border and radius
+* `.cc-block_title` with color, font-size, font-weight and some margin.
+
+## How to use it?
+
+In your component, import the styles like this:
+
+```js
+import { blockStyles } from 'components/styles/block.js';
+```
+
+Then you need to use it in your LitElement `static get styles()` like this:
+
+```js
+static get styles () {
+  return [
+    blockStyles,
+    css`
+      /* CSS for component goes here */
+    `  
+  ]
+}
+```
+
+With this setup, the `:host` will be styled automatically.
+You'll have to use the `.cc-block_title` CSS class on your title and the other children of your host will be placed in the grid with the right gap between them.
+
+```html
+<div class="cc-block_title">Foobar information</div>
+<div class="one">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie risus metus, a condimentum diam convallis in. Ut fermentum est vitae ante bibendum molestie. Cras egestas lectus vitae nibh efficitur, vitae auctor nisl mollis. Sed volutpat dui sit amet porta placerat. Suspendisse laoreet neque at lacus tristique mattis. Ut cursus ullamcorper ex. Ut fermentum turpis vitae vehicula tristique. Donec maximus posuere urna, quis pellentesque dolor rhoncus quis. Quisque id consectetur elit. Morbi sed blandit nibh, vitae euismod quam. Integer ornare ullamcorper gravida. Maecenas nec mi sit amet sem rutrum tincidunt ut ac nunc. Fusce sed pretium dui. Phasellus eleifend ante nec eros molestie, eget bibendum nunc porttitor. </div>
+<div class="two"> Etiam scelerisque tortor arcu, non interdum magna volutpat eget. Nulla facilisi. Nam pretium, quam sit amet gravida feugiat, ex ante commodo urna, at lacinia mauris augue eget enim. Integer eget sem at nunc viverra ultrices non eu ante. Fusce elementum, ex et tincidunt aliquet, turpis turpis tempor leo, sed condimentum nulla mauris at mi. Aenean et elit in leo placerat luctus ac vel quam. Etiam varius consequat odio, sit amet pharetra quam auctor eu. Quisque tincidunt neque id orci malesuada ultricies. Aenean fringilla luctus dolor sit amet commodo. In gravida libero sit amet efficitur feugiat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; </div>
+```

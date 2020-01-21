@@ -48,6 +48,15 @@ const formatNumberUnit = prepareNumberUnitFormatter(lang);
 
 export const translations = {
   LANGUAGE: '🇫🇷 Français',
+  // cc-addon-features
+  'cc-addon-features.details': `Ci-dessous, les spécifications de votre add-on. Elles peuvent évoluer et une migration de l'add-on peut être nécessaire pour en bénéficier.`,
+  'cc-addon-features.loading-error': `Une erreur est survenue pendant le chargement des spécifications de l'add-on`,
+  'cc-addon-features.title': `Spécifications de l'add-on`,
+  'cc-addon-features.feature-name.disk': `Disque`,
+  'cc-addon-features.feature-name.nodes': `Nœuds`,
+  'cc-addon-features.feature-name.memory': `Mémoire`,
+  'cc-addon-features.feature-value.yes': `Oui`,
+  'cc-addon-features.feature-value.no': `Non`,
   // cc-beta
   'cc-beta.label': `bêta`,
   // cc-button

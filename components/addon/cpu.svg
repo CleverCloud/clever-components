@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" height="100px" width="100px" fill="#000000" xml:space="preserve" version="1.1" style="shape-rendering:geometricPrecision;text-rendering:geometricPrecision;image-rendering:optimizeQuality;" viewBox="0 0 333 333" x="0px" y="0px" fill-rule="evenodd" clip-rule="evenodd" id="svg10" sodipodi:docname="cpu.svg" inkscape:version="0.92.2 (5c3e80d, 2017-08-06)">
+    <metadata id="metadata14">
+        <rdf:RDF>
+            <cc:Work rdf:about="">
+                <dc:format>image/svg+xml</dc:format>
+                <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+                <dc:title />
+            </cc:Work>
+        </rdf:RDF>
+    </metadata>
+    <sodipodi:namedview pagecolor="#ffffff" bordercolor="#666666" borderopacity="1" objecttolerance="10" gridtolerance="10" guidetolerance="10" inkscape:pageopacity="0" inkscape:pageshadow="2" inkscape:window-width="2688" inkscape:window-height="1478" id="namedview12" showgrid="false" inkscape:zoom="6.675088" inkscape:cx="102.00987" inkscape:cy="23.057343" inkscape:window-x="0" inkscape:window-y="0" inkscape:window-maximized="1" inkscape:current-layer="svg10" />
+    <defs id="defs4" />
+    <path id="rect827" d="m 57.37114,43.29 c -7.800954,0 -14.081143,6.280189 -14.081143,14.081143 V 275.62886 c 0,7.80096 6.280189,14.08114 14.081143,14.08114 h 218.25771 c 7.80096,0 14.08115,-6.28018 14.08115,-14.08114 V 57.371143 C 289.71,49.570189 283.42981,43.29 275.62885,43.29 Z M 82.013141,71.452286 H 250.98685 c 5.85072,0 10.56086,4.710142 10.56086,10.560856 V 250.98686 c 0,5.85072 -4.71014,10.56086 -10.56086,10.56086 H 82.013141 c -5.850715,0 -10.560858,-4.71014 -10.560858,-10.56086 V 82.013142 c 0,-5.850714 4.710143,-10.560856 10.560858,-10.560856 z M 99.614573,99.614573 V 233.38543 H 233.38543 V 99.614573 Z" style="fill:#ffffff" />
+    <rect ry="13.32" rx="13.32" y="3.3300056" x="128.76001" height="53.279999" width="26.639999" id="rect2070" style="fill:#ffffff" />
+    <rect style="fill:#ffffff" id="rect2072" width="26.639999" height="53.279999" x="177.60001" y="3.3300056" rx="13.32" ry="13.32" />
+    <rect style="fill:#ffffff" id="rect2074" width="26.639999" height="53.279999" x="79.920006" y="3.3300056" rx="13.32" ry="13.32" />
+    <rect ry="13.32" rx="13.32" y="3.3300056" x="226.44" height="53.279999" width="26.639999" id="rect2076" style="fill:#ffffff" />
+    <rect style="fill:#ffffff" id="rect2080" width="26.639999" height="53.279999" x="128.76001" y="276.39001" rx="13.32" ry="13.32" />
+    <rect ry="13.32" rx="13.32" y="276.39001" x="177.60001" height="53.279999" width="26.639999" id="rect2082" style="fill:#ffffff" />
+    <rect ry="13.32" rx="13.32" y="276.39001" x="79.920006" height="53.279999" width="26.639999" id="rect2084" style="fill:#ffffff" />
+    <rect style="fill:#ffffff" id="rect2086" width="26.639999" height="53.279999" x="226.44" y="276.39001" rx="13.32" ry="13.32" />
+    <rect ry="13.32" rx="13.32" y="79.919998" x="3.3300021" height="26.639999" width="53.279999" id="rect834" style="fill:#ffffff" />
+    <rect style="fill:#ffffff" id="rect836" width="53.279999" height="26.639999" x="3.3300021" y="128.76001" rx="13.32" ry="13.32" />
+    <rect ry="13.32" rx="13.32" y="177.60001" x="3.3300021" height="26.639999" width="53.279999" id="rect838" style="fill:#ffffff" />
+    <rect style="fill:#ffffff" id="rect840" width="53.279999" height="26.639999" x="3.3300021" y="226.44002" rx="13.32" ry="13.32" />
+    <rect style="fill:#ffffff" id="rect848" width="53.279999" height="26.639999" x="276.39001" y="79.919998" rx="13.32" ry="13.32" />
+    <rect ry="13.32" rx="13.32" y="128.76001" x="276.39001" height="26.639999" width="53.279999" id="rect850" style="fill:#ffffff" />
+    <rect style="fill:#ffffff" id="rect852" width="53.279999" height="26.639999" x="276.39001" y="177.60001" rx="13.32" ry="13.32" />
+    <rect ry="13.32" rx="13.32" y="226.44002" x="276.39001" height="26.639999" width="53.279999" id="rect854" style="fill:#ffffff" />
+</svg>
