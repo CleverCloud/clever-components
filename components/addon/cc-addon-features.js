@@ -66,18 +66,26 @@ export class CcAddonFeatures extends LitElement {
   }
 
   _getFeatureName (code, rawName) {
-    return {
-      disk: i18n('cc-addon-features.feature-name.disk'),
-      nodes: i18n('cc-addon-features.feature-name.nodes'),
-      memory: i18n('cc-addon-features.feature-name.memory'),
-    }[code] || rawName;
+    if (code === 'disk') {
+      return i18n('cc-addon-features.feature-name.disk');
+    }
+    if (code === 'nodes') {
+      return i18n('cc-addon-features.feature-name.nodes');
+    }
+    if (code === 'memory') {
+      return i18n('cc-addon-features.feature-name.memory');
+    }
+    return rawName;
   };
 
   _getFeatureValue (code, rawValue) {
-    return {
-      yes: i18n('cc-addon-features.feature-value.yes'),
-      no: i18n('cc-addon-features.feature-value.no'),
-    }[code] || rawValue;
+    if (code === 'yes') {
+      return i18n('cc-addon-features.feature-value.yes');
+    }
+    if (code === 'no') {
+      return i18n('cc-addon-features.feature-value.no');
+    }
+    return rawValue;
   };
 
   // Here we sort feature by name (lower case) but first we force a specific order with SORT_FEATURES
