@@ -1,0 +1,40 @@
+import { Preview, Story } from '@storybook/addon-docs/blocks';
+
+# Link styles
+
+We want all the HTML links included in our components to look the same and have the same behaviour.
+Instead of creating a link component, we're simply sharing some styles that any component can import and reuse.
+
+## Features
+
+* Default style with 5.2 color contrast ratio.
+* Hover style with pointer cursor (default) and slightly darker color.
+* Focus styles with focus ring (and white background).
+* Works well with `.skeleton`.
+
+## How to use it?
+
+In your component, import the styles like this:
+
+```js
+import { linkStyles } from 'components/styles/link.js';
+```
+
+Then you need to use it in your LitElement `static get styles()` like this:
+
+```js
+static get styles () {
+  return [
+    linkStyles,
+    css`
+      /* CSS for component goes here */
+    `  
+  ]
+}
+```
+
+With this setup, you'll be able to use the `.cc-link` CSS class on the links of your components like this:
+
+```html
+<a class="cc-link" href="https://example.com">This is a link using the link styles</a>
+```
