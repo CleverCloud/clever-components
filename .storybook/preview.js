@@ -29,11 +29,17 @@ Array
     };
   });
 
+// Use emojis to sort story categories/kinds
+// Docs, then components, then stuffs for devs (mixins)
+const EMOJI_SORT = ['📌', '🧬', '🛠', '🔀'];
+
 addParameters({
   options: {
     storySort: (a, b) => {
       if (a[1].kind !== b[1].kind) {
-        return a[1].kind.localeCompare(b[1].kind, undefined, { numeric: true });
+        const aEmojiKind = EMOJI_SORT.indexOf(a[1].kind.slice(0, 2)) + a[1].kind;
+        const bEmojiKind = EMOJI_SORT.indexOf(b[1].kind.slice(0, 2)) + b[1].kind;
+        return aEmojiKind.localeCompare(bEmojiKind, undefined, { numeric: true });
       }
       return -1;
     },
@@ -57,7 +63,7 @@ customElements.tags.forEach((tagDefinition) => {
 setCustomElements(customElements);
 
 // We cannot use main.js (stories: []) yet because of the HMR config for web-components
-const csfStories = require.context('../stories', true, /\.stories\.js$/);
+const csfStories = require.context('../stories', true, /\.stories\.(js|mdx)$/);
 const mdxDocsPages = require.context('../docs', true, /\.mdx$/);
 
 configure([csfStories, mdxDocsPages], module);

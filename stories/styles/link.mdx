@@ -1,0 +1,18 @@
+import '../../components/atoms/cc-beta.js';
+import { makeStory } from '../lib/make-story.js';
+import { linkStyles } from '../../components/styles/link.js';
+
+export default {
+  title: '🧬 Styles|link',
+};
+
+const conf = {};
+
+export const defaultStory = makeStory(conf, {
+  css: linkStyles,
+  dom: (container) => {
+    container.innerHTML = `
+      <a class="link" href="https://example.com">This is a link using the link styles</a>
+    `;
+  },
+});
