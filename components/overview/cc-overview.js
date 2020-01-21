@@ -7,7 +7,7 @@ import { withResizeObserver } from '../mixins/with-resize-observer.js';
  * ## Details
  *
  * * The head components must have the `head` CSS class, they will be displayed at the top.
- * * If you use more than one `head, you must specify how many with `--cc-overview-head-count`.
+ * * If you use more than one `head`, you must specify how many with `--cc-overview-head-count`.
  * * The main component must have the `main` CSS class, it will be displayed at the bottom left (depending on the number of columns).
  * * The tile components will be displayed in a 1 to 4 columns grid layout, below the header and around the main.
  * * The number of columns is variable and depends directly on the width of the component (with some help from `withResizeObserver`).
