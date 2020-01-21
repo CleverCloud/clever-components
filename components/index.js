@@ -1,3 +1,4 @@
+export { CcAddonFeatures } from './addon/cc-addon-features.js';
 export { CcBeta } from './atoms/cc-beta.js';
 export { CcButton } from './atoms/cc-button.js';
 export { CcDatetimeRelative } from './atoms/cc-datetime-relative.js';

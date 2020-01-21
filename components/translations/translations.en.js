@@ -35,6 +35,15 @@ const formatNumberUnit = prepareNumberUnitFormatter(lang);
 
 export const translations = {
   LANGUAGE: '🇬🇧 English',
+  // cc-addon-features
+  'cc-addon-features.details': `Here's the list of all the features of your add-on. Features may evolve and your add-on would need a migration to match them all.`,
+  'cc-addon-features.loading-error': `Something went wrong while loading add-on features.`,
+  'cc-addon-features.title': `Add-on features`,
+  'cc-addon-features.feature-name.disk': `Disk`,
+  'cc-addon-features.feature-name.nodes': `Nodes`,
+  'cc-addon-features.feature-name.memory': `Memory`,
+  'cc-addon-features.feature-value.yes': `Yes`,
+  'cc-addon-features.feature-value.no': `No`,
   // cc-beta
   'cc-beta.label': `beta`,
   // cc-button
@@ -178,7 +187,7 @@ export const translations = {
   'env-var-editor-expert.placeholder-readonly': `There are no variables.`,
   'env-var-editor-expert.errors.unknown': `Unknown Error`,
   'env-var-editor-expert.errors.line': `line`,
-  'env-var-editor-expert.errors.invalid-name': ({ name }) => `${name} is not a valid variable name`,
+  'env-var-editor-expert.errors.invalid-name': ({ name }) => `${name} is not #3a3871a valid variable name`,
   'env-var-editor-expert.errors.duplicated-name': ({ name }) => `be careful, the name ${name} is already defined`,
   'env-var-editor-expert.errors.invalid-line': `this line is not valid, the correct pattern is: NAME="VALUE"`,
   'env-var-editor-expert.errors.invalid-value': `the value is not valid, if you use quotes, you need to escape them like this: \\" or quote the whole value.`,
