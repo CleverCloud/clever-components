@@ -1,8 +1,8 @@
+import '../../components/molecules/cc-block.js';
 import cpuSvg from './cpu.svg';
 import diskSvg from './disk.svg';
 import ramSvg from './ram.svg';
 import warningSvg from 'twemoji/2/svg/26a0.svg';
-import { blocStyles } from '../styles/block.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
@@ -116,35 +116,38 @@ export class CcAddonFeatures extends LitElement {
     const features = this._sortFeatures(unsortedFeatures);
 
     return html`
-      <div class="cc-block_title">${i18n('cc-addon-features.title')}</div>
-
-      ${!this.error ? html`
-        <div>${i18n('cc-addon-features.details')}</div>
-        <div class="feature-list">
-          ${features.map((feature) => html`
-            <div class="feature ${classMap({ skeleton })}">
-              ${feature.icon != null ? html`
-                <div class="feature-icon">
-                  <img class="feature-icon_img" src="${feature.icon}" alt="">
+      <cc-block>
+        <div slot="title">${i18n('cc-addon-features.title')}</div>
+        
+        <div slot="main">
+          ${!this.error ? html`
+            <div>${i18n('cc-addon-features.details')}</div>
+            <div class="feature-list">
+              ${features.map((feature) => html`
+                <div class="feature ${classMap({ skeleton })}">
+                  ${feature.icon != null ? html`
+                    <div class="feature-icon">
+                      <img class="feature-icon_img" src="${feature.icon}" alt="">
+                    </div>
+                  ` : ''}
+                  <div class="feature-name">${feature.name}</div>
+                  <div class="feature-value">${feature.value}</div>
                 </div>
-              ` : ''}
-              <div class="feature-name">${feature.name}</div>
-              <div class="feature-value">${feature.value}</div>
+              `)}
             </div>
-          `)}
+          ` : ''}
+    
+          ${this.error ? html`
+            <div><img class="icon-img" src=${warningSvg} alt=""></img>${i18n('cc-addon-features.loading-error')}</div>
+          ` : ''}
         </div>
-      ` : ''}
-
-      ${this.error ? html`
-        <div><img class="icon-img" src=${warningSvg} alt=""></img>${i18n('cc-addon-features.loading-error')}</div>
-      ` : ''}
+      </cc-block>
     `;
   }
 
   static get styles () {
     return [
       skeleton,
-      blocStyles,
       iconStyles,
       // language=CSS
       css`

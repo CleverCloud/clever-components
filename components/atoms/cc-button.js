@@ -90,7 +90,9 @@ export class CcButton extends LitElement {
   // but it's not that simple since adding @click on <cc-button> with lit-html also catches clicks on the custom element itself
   // That's why we emit custom "cc-button:click"
   // It's also easier to handle for the delay mechanism
-  _onClick () {
+  _onClick (e) {
+
+    e.stopPropagation();
 
     if (this.delay == null) {
       return dispatchCustomEvent(this, 'click');
@@ -308,21 +310,17 @@ export class CcButton extends LitElement {
           border: 0;
         }
 
-        button.image,
-        button.image img {
+        button.image {
+          min-height: 0;
+          padding: 0.2rem;
           height: 1.6rem;
           width: 1.6rem;
         }
 
-        button.image {
-          padding: 0;
-          min-height: 1.6rem;
-        }
-
         button.image img {
           display: block;
-          box-sizing: border-box;
-          padding: 0.25rem;
+          height: 100%;
+          width: 100%;
         }
       `,
     ];
