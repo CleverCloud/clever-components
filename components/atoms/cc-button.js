@@ -310,21 +310,17 @@ export class CcButton extends LitElement {
           border: 0;
         }
 
-        button.image,
-        button.image img {
+        button.image {
+          min-height: 0;
+          padding: 0.2rem;
           height: 1.6rem;
           width: 1.6rem;
         }
 
-        button.image {
-          padding: 0;
-          min-height: 1.6rem;
-        }
-
         button.image img {
           display: block;
-          box-sizing: border-box;
-          padding: 0.25rem;
+          height: 100%;
+          width: 100%;
         }
       `,
     ];
