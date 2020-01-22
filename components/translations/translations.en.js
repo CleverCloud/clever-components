@@ -46,6 +46,9 @@ export const translations = {
   'cc-addon-features.feature-value.no': `No`,
   // cc-beta
   'cc-beta.label': `beta`,
+  // cc-block
+  'cc-block.toggle.open': `Open`,
+  'cc-block.toggle.close': `Close`,
   // cc-button
   'cc-button.cancel': `Click to cancel`,
   // cc-datetime-relative
