@@ -10,8 +10,7 @@ import { i18n } from '../lib/i18n.js';
  * A display component with mostly HTML+CSS and a open/close toggle feature.
  *
  * @prop {String} icon - Sets the URL of the image before the title. Icon is hidden if nullish.
- * @prop {Boolean} open - Sets the default state of the toggle behaviour to open.
- * @prop {Boolean} toggle - Enables the toggle behaviour to open/close the main section.
+ * @prop {"off"|"open"|"close"} state - Sets the state of the toggle behaviour.
  */
 
 export class CcBlock extends LitElement {
@@ -19,28 +18,29 @@ export class CcBlock extends LitElement {
   static get properties () {
     return {
       icon: { type: String },
-      open: { type: Boolean, reflect: true },
-      toggle: { type: Boolean, reflect: true },
+      state: { type: String, reflect: true },
     };
   }
 
   constructor () {
     super();
-    this.open = true;
-    this.toggle = false;
+    this.state = 'off';
   }
 
   _clickToggle () {
-    this.open = !this.open;
+    this.state = (this.state === 'close') ? 'open' : 'close';
   }
 
   _getToggleTitle () {
-    return this.open
+    return (this.state === 'close')
       ? i18n('cc-block.toggle.close')
       : i18n('cc-block.toggle.open');
   }
 
   render () {
+
+    const isToggleEnabled = (this.state === 'open' || this.state === 'close');
+    const isOpen = (this.state !== 'close');
 
     return html`
       
@@ -49,23 +49,23 @@ export class CcBlock extends LitElement {
           <cc-img src="${this.icon}"></cc-img>
         ` : ''}
         <slot name="title"></slot>
-        ${this.toggle ? html`
+        ${isToggleEnabled ? html`
           <cc-button @cc-button:click=${this._clickToggle}
-            image=${this.open ? upSvg : downSvg}
+            image=${isOpen ? upSvg : downSvg}
             title="${this._getToggleTitle()}"
           ></cc-button>
         ` : ''}
       </div>
       
-      ${this.toggle ? html`
+      ${isToggleEnabled ? html`
         <cc-expand>
-          ${this.open ? html`
+          ${isOpen ? html`
             <slot name="main"></slot>
           ` : ''}
         </cc-expand>
       ` : ''}
       
-      ${!this.toggle ? html`
+      ${!isToggleEnabled ? html`
         <slot name="main"></slot>
       ` : ''}
     `;
@@ -90,12 +90,14 @@ export class CcBlock extends LitElement {
           display: flex;
         }
 
-        :host([toggle]) .head {
+        :host([state="open"]) .head,
+        :host([state="close"]) .head {
           margin: -1rem;
           padding: 1rem;
         }
 
-        :host([toggle]) .head:hover {
+        :host([state="open"]) .head:hover,
+        :host([state="close"]) .head:hover {
           background-color: #fafafa;
           cursor: pointer;
         }

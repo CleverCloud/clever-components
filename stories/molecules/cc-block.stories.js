@@ -34,35 +34,32 @@ export const icon = makeStory(conf, {
   }],
 });
 
-export const toggleWithOpen = makeStory(conf, {
+export const stateWithOpen = makeStory(conf, {
   items: [{
     innerHTML: htmlExample,
-    toggle: true,
-    open: true,
+    state: 'open',
   }],
 });
 
-export const toggleWithClose = makeStory(conf, {
+export const stateWithClose = makeStory(conf, {
   items: [{
     innerHTML: htmlExample,
-    toggle: true,
-    open: false,
+    state: 'close',
   }],
 });
 
-export const iconAndToggle = makeStory(conf, {
+export const iconAndOpen = makeStory(conf, {
   items: [{
     icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/nodejs.svg',
     innerHTML: htmlExample,
-    toggle: true,
-    open: true,
+    state: 'open',
   }],
 });
 
 enhanceStoriesNames({
   defaultStory,
   icon,
-  toggleWithOpen,
-  toggleWithClose,
-  iconAndToggle,
+  stateWithOpen,
+  stateWithClose,
+  iconAndOpen,
 });
