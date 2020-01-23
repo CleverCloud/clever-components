@@ -151,6 +151,10 @@ export class CcAddonFeatures extends LitElement {
       iconStyles,
       // language=CSS
       css`
+        :host {
+          display: block;
+        }
+        
         .feature-list {
           --color: #496D93;
           --gap: 1rem;

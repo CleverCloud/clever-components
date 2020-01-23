@@ -57,6 +57,12 @@ export const translations = {
   'cc-addon-features.feature-name.memory': `Mémoire`,
   'cc-addon-features.feature-value.yes': `Oui`,
   'cc-addon-features.feature-value.no': `Non`,
+  // cc-addon-linked-apps
+  'cc-addon-linked-apps.details': `Ci-dessous la liste des applications liées à l'add-on. L'add-on expose ses variables d'environnement aux applications qui lui sont liées.`,
+  'cc-addon-linked-apps.loading-error': `Une erreur est survenue pendant le chargement des applications liées.`,
+  'cc-addon-linked-apps.no-linked-applications': `Aucune application liée pour l'instant.`,
+  'cc-addon-linked-apps.title': `Applications liées à cet add-on`,
+  'cc-addon-linked-apps.zone': `zone:`,
   // cc-beta
   'cc-beta.label': `bêta`,
   // cc-block
@@ -103,6 +109,14 @@ export const translations = {
   // cc-header-orga
   'cc-header-orga.hotline': `Numéro d'urgence :`,
   'cc-header-orga.error': `Une erreur est survenue pendant le chargement des informations de l'organisation.`,
+  // cc-tile-addon-linked-apps
+  'cc-tile-addon-linked-apps.details': `Ci-dessous la liste des applications liées à l'add-on. L'add-on expose ses variables d'environnement aux applications qui lui sont liées`,
+  'cc-tile-addon-linked-apps.image-type': `Type d'instance`,
+  'cc-tile-addon-linked-apps.loading-error': `Une erreur est survenue pendant le chargement des applications liées`,
+  'cc-tile-addon-linked-apps.name': `Nom`,
+  'cc-tile-addon-linked-apps.no-linked-applications': `Aucune application liée pour l'instant`,
+  'cc-tile-addon-linked-apps.title': `Applications liées à cet add-on`,
+  'cc-tile-addon-linked-apps.zone': `Zone`,
   // cc-tile-consumption
   'cc-tile-consumption.title': `Consommation de crédits`,
   'cc-tile-consumption.yesterday': `Hier`,
