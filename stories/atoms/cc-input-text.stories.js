@@ -81,6 +81,11 @@ export const defaultStory = makeStory(conf, {
   ],
 });
 
+export const label = makeStory(conf, {
+  css: `cc-input-text { margin: 1rem 0.5rem; }`,
+  items: baseItems.map((p) => ({ ...p, label: 'The label' })),
+});
+
 export const clipboard = makeStory(conf, {
   items: baseItems.map((p) => ({ ...p, clipboard: true })),
 });
@@ -141,8 +146,14 @@ export const tagsWithClipboard = makeStory(conf, {
   items: tagsItems.map((p) => ({ ...p, clipboard: true })),
 });
 
+export const tagsWithLabel = makeStory(conf, {
+  css: `cc-input-text { margin: 1rem 0.5rem; width: 300px; }`,
+  items: tagsItems.map((p) => ({ ...p, label: 'Tags here' })),
+});
+
 enhanceStoriesNames({
   defaultStory,
+  label,
   clipboard,
   clipboardWithAutoAdjust,
   clipboardWithAutoAdjustAndCssOverride,
@@ -151,4 +162,5 @@ enhanceStoriesNames({
   longValue,
   tags,
   tagsWithClipboard,
+  tagsWithLabel,
 });
