@@ -96,14 +96,6 @@ export const translations = {
   // cc-header-orga
   'cc-header-orga.hotline': `Hotline:`,
   'cc-header-orga.error': `Something went wrong while loading organization info.`,
-  // cc-tile-addon-linked-apps
-  'cc-tile-addon-linked-apps.details': `Here are listed applications linked to this add-on. The add-on exposes its environment variables to those linked applications`,
-  'cc-tile-addon-linked-apps.image-type': `Instance type`,
-  'cc-tile-addon-linked-apps.loading-error': `Something went wrong while loading linked applications`,
-  'cc-tile-addon-linked-apps.name': `Name`,
-  'cc-tile-addon-linked-apps.no-linked-applications': `No applications linked yet`,
-  'cc-tile-addon-linked-apps.title': `Linked applications to this add-on`,
-  'cc-tile-addon-linked-apps.zone': `Zone`,
   // cc-tile-consumption
   'cc-tile-consumption.title': `Credits consumption`,
   'cc-tile-consumption.yesterday': `Yesterday`,
