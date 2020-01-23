@@ -35,6 +35,16 @@ const formatNumberUnit = prepareNumberUnitFormatter(lang);
 
 export const translations = {
   LANGUAGE: '🇬🇧 English',
+  // cc-addon-credentials
+  'cc-addon-credentials.description.apm': `Use those credentials to connect an APM Server instance to your Elasticsearch cluster.`,
+  'cc-addon-credentials.description.elasticsearch': `Use those credentials to connect to your Elasticsearch cluster.`,
+  'cc-addon-credentials.description.kibana': `Use those credentials to connect a Kibana instance to your Elasticsearch cluster.`,
+  'cc-addon-credentials.field.auth-token': `Authentication token`,
+  'cc-addon-credentials.field.host': `Domain name`,
+  'cc-addon-credentials.field.password': `Password`,
+  'cc-addon-credentials.field.user': `User`,
+  'cc-addon-credentials.loading-error': `Something went wrong while loading the credentials.`,
+  'cc-addon-credentials.title': ({ name }) => `${name} credentials`,
   // cc-addon-features
   'cc-addon-features.details': `Here's the list of all the features of your add-on. Features may evolve and your add-on would need a migration to match them all.`,
   'cc-addon-features.loading-error': `Something went wrong while loading add-on features.`,
@@ -96,14 +106,6 @@ export const translations = {
   // cc-header-orga
   'cc-header-orga.hotline': `Hotline:`,
   'cc-header-orga.error': `Something went wrong while loading organization info.`,
-  // cc-tile-addon-linked-apps
-  'cc-tile-addon-linked-apps.details': `Here are listed applications linked to this add-on. The add-on exposes its environment variables to those linked applications`,
-  'cc-tile-addon-linked-apps.image-type': `Instance type`,
-  'cc-tile-addon-linked-apps.loading-error': `Something went wrong while loading linked applications`,
-  'cc-tile-addon-linked-apps.name': `Name`,
-  'cc-tile-addon-linked-apps.no-linked-applications': `No applications linked yet`,
-  'cc-tile-addon-linked-apps.title': `Linked applications to this add-on`,
-  'cc-tile-addon-linked-apps.zone': `Zone`,
   // cc-tile-consumption
   'cc-tile-consumption.title': `Credits consumption`,
   'cc-tile-consumption.yesterday': `Yesterday`,

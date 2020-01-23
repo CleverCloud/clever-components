@@ -81,18 +81,12 @@ export class CcBlock extends LitElement {
           border: 1px solid #bcc2d1;
           box-sizing: border-box;
           display: block;
-          padding: 1rem;
           overflow: hidden;
         }
 
         .head {
           align-items: center;
           display: flex;
-        }
-
-        :host([state="open"]) .head,
-        :host([state="close"]) .head {
-          margin: -1rem;
           padding: 1rem;
         }
 
@@ -119,7 +113,7 @@ export class CcBlock extends LitElement {
         ::slotted([slot="main"]) {
           display: grid;
           grid-gap: 1rem;
-          margin-top: 1.5rem;
+          padding: 0.5rem 1rem 1rem;
         }
       `,
     ];

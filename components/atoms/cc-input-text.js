@@ -45,6 +45,7 @@ function arrayEquals (a, b) {
  *
  * @prop {Boolean} clipboard - Adds a copy-to-clipboard button (when not disabled and not skeleton).
  * @prop {Boolean} disabled - Sets `disabled` attribute on inner native `<input>/<textarea>` element.
+ * @prop {String} label - Sets label for the input.
  * @prop {Boolean} multi - Enables multiline support (with a `<textarea>` instead of an `<input>`).
  * @prop {String} name - Sets `name` attribute on inner native `<input>/<textarea>` element.
  * @prop {String} placeholder - Sets `placeholder` attribute on inner native `<input>/<textarea>` element.
@@ -64,6 +65,7 @@ export class CcInputText extends LitElement {
     return {
       clipboard: { type: Boolean, reflect: true },
       disabled: { type: Boolean, reflect: true },
+      label: { type: String },
       multi: { type: Boolean, reflect: true },
       name: { type: String, reflect: true },
       placeholder: { type: String },
@@ -92,6 +94,8 @@ export class CcInputText extends LitElement {
     this._copyOk = false;
     this._showSecret = false;
     this._tagsEnabled = false;
+    // use this unique name for isolation (Safari seems to have a bug)
+    this._uniqueName = Math.random().toString(36).slice(2);
   }
 
   get tags () {
@@ -190,71 +194,80 @@ export class CcInputText extends LitElement {
       .map((tag, i, all) => html`<span class="tag">${tag}</span>${i !== (all.length - 1) ? TAG_SEPARATOR : ''}`);
 
     return html`
-      <div class="wrapper ${classMap({ skeleton: this.skeleton })}"
-        @input=${this._onInput}
-        @keydown=${this._onKeyEvent}
-        @keypress=${this._onKeyEvent}>
-        
-        ${isTextarea ? html`
-          ${this._tagsEnabled && !this.skeleton ? html`
-            <!--
-              We use this to display colored background rectangles behind space separated values. 
-              This needs to be on the same line and the 2 level parent is important to keep scroll behaviour.
-            -->
-            <div class="input input-underlayer" style="--rows: ${rows}"><div class="all-tags">${tags}</div></div>
-          ` : ''}
-          <textarea
-            class="input ${classMap({ 'input-tags': this._tagsEnabled })}"
-            style="--rows: ${rows}"
-            rows=${rows}
-            ?disabled=${this.disabled || this.skeleton}
-            ?readonly=${this.readonly}
-            .value=${this.value}
-            name=${this.name}
-            placeholder=${this.placeholder}
-            spellcheck="false"
-            wrap="${this._tagsEnabled ? 'soft' : 'off'}"
-            @focus=${this._onFocus}
-          ></textarea>
-        ` : ''}
+
+      ${this.label != null ? html`
+        <label for=${this._uniqueName}>${this.label}</label>
+      ` : ''}
+      
+      <div class="meta-input">
+        <div class="wrapper ${classMap({ skeleton: this.skeleton })}"
+          @input=${this._onInput}
+          @keydown=${this._onKeyEvent}
+          @keypress=${this._onKeyEvent}>
           
-        ${!isTextarea ? html`
-          ${clipboard && this.readonly ? html`
-            <!--
-              This div has the same styles as the input (but it's hidden with height:0)
-              this way we can use it to know what width the content is
-              and "auto size" the container.
-            -->
-            <div class="input input-mirror">${this.value}</div>
+          ${isTextarea ? html`
+            ${this._tagsEnabled && !this.skeleton ? html`
+              <!--
+                We use this to display colored background rectangles behind space separated values. 
+                This needs to be on the same line and the 2 level parent is important to keep scroll behaviour.
+              -->
+              <div class="input input-underlayer" style="--rows: ${rows}"><div class="all-tags">${tags}</div></div>
+            ` : ''}
+            <textarea
+              id=${this._uniqueName}
+              class="input ${classMap({ 'input-tags': this._tagsEnabled })}"
+              style="--rows: ${rows}"
+              rows=${rows}
+              ?disabled=${this.disabled || this.skeleton}
+              ?readonly=${this.readonly}
+              .value=${this.value}
+              name=${this.name}
+              placeholder=${this.placeholder}
+              spellcheck="false"
+              wrap="${this._tagsEnabled ? 'soft' : 'off'}"
+              @focus=${this._onFocus}
+            ></textarea>
           ` : ''}
-          <input
-            type=${this.secret && !this._showSecret ? 'password' : 'text'}
-            class="input"
-            ?disabled=${this.disabled || this.skeleton} 
-            ?readonly=${this.readonly}
-            .value=${this.value}
-            name=${this.name}
-            placeholder=${this.placeholder}
-            spellcheck="false"
-            @focus=${this._onFocus}
-          >
+            
+          ${!isTextarea ? html`
+            ${clipboard && this.readonly ? html`
+              <!--
+                This div has the same styles as the input (but it's hidden with height:0)
+                this way we can use it to know what width the content is
+                and "auto size" the container.
+              -->
+              <div class="input input-mirror">${this.value}</div>
+            ` : ''}
+            <input
+              id=${this._uniqueName}
+              type=${this.secret && !this._showSecret ? 'password' : 'text'}
+              class="input"
+              ?disabled=${this.disabled || this.skeleton} 
+              ?readonly=${this.readonly}
+              .value=${this.value}
+              name=${this.name}
+              placeholder=${this.placeholder}
+              spellcheck="false"
+              @focus=${this._onFocus}
+            >
+          ` : ''}
+        
+          <div class="ring"></div>
+        </div>
+        
+        ${secret ? html`
+          <button class="btn" @click=${this._onClickSecret} 
+            title=${this._showSecret ? i18n('cc-input-text.secret.hide') : i18n('cc-input-text.secret.show')}>
+            <img class="btn-img" src=${this._showSecret ? eyeClosedSvg : eyeOpenSvg} alt="">
+          </button>
         ` : ''}
-      
-        <div class="ring"></div>
+        
+        ${clipboard ? html`
+          <button class="btn" @click=${this._onClickCopy} title=${i18n('cc-input-text.clipboard')}>
+            <img class="btn-img" src=${this._copyOk ? tickSvg : clipboardSvg} alt="">
+          </button>
+        ` : ''}
       </div>
-      
-      ${secret ? html`
-        <button class="btn" @click=${this._onClickSecret} 
-          title=${this._showSecret ? i18n('cc-input-text.secret.hide') : i18n('cc-input-text.secret.show')}>
-          <img class="btn-img" src=${this._showSecret ? eyeClosedSvg : eyeOpenSvg} alt="">
-        </button>
-      ` : ''}
-      
-      ${clipboard ? html`
-        <button class="btn" @click=${this._onClickCopy} title=${i18n('cc-input-text.clipboard')}>
-          <img class="btn-img" src=${this._copyOk ? tickSvg : clipboardSvg} alt="">
-        </button>
-      ` : ''}
     `;
   }
 
@@ -264,15 +277,29 @@ export class CcInputText extends LitElement {
       // language=CSS
       css`
         :host {
-          display: inline-flex;
-          box-sizing: border-box;
+          display: inline-block;
           margin: 0.2rem;
-          /* link to position:absolute of .ring */
-          position: relative;
-          vertical-align: top;
         }
 
         :host([multi]) {
+          display: block;
+        }
+
+        label {
+          display: block;
+          padding-bottom: 0.35rem;
+        }
+
+        .meta-input {
+          display: inline-flex;
+          box-sizing: border-box;
+          /* link to position:absolute of .ring */
+          position: relative;
+          vertical-align: top;
+          width: 100%;
+        }
+
+        :host([multi]) .meta-input {
           display: flex;
         }
 
@@ -388,7 +415,8 @@ export class CcInputText extends LitElement {
 
         /* SKELETON */
         .skeleton .ring,
-        .skeleton:hover .ring {
+        .skeleton:hover .ring,
+        .skeleton .input:hover + .ring {
           background-color: #eee;
           border-color: #eee;
           cursor: progress;
