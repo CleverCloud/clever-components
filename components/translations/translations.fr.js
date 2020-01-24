@@ -83,6 +83,14 @@ export const translations = {
   // cc-datetime-relative
   'cc-datetime-relative.distance': ({ date }) => formatDistanceToNow(date),
   'cc-datetime-relative.title': ({ date }) => formatDate(date),
+  // cc-elasticsearch-info
+  'cc-elasticsearch-info.error': `Une erreur est survenue pendant le chargement des liens des add-on liés à cette application.`,
+  'cc-elasticsearch-info.info': `Info`,
+  'cc-elasticsearch-info.link.apm': `Ouvrir APM`,
+  'cc-elasticsearch-info.link.doc': `Lire la documentation`,
+  'cc-elasticsearch-info.link.elasticsearch': `Voir l'add-on Elasticsearch`,
+  'cc-elasticsearch-info.link.kibana': `Ouvrir Kibana`,
+  'cc-elasticsearch-info.text': `Ce service fait partie d'une offre Elasticsearch Enterprise. Vous pouvez retrouver la documentation ainsi que les différents lié ci-dessous.`,
   // cc-header-addon
   'cc-header-addon.plan': `Plan`,
   'cc-header-addon.version': `Version`,

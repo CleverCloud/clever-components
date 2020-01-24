@@ -1,8 +1,8 @@
 import './env-var-form.js';
+import { ccLink, linkStyles } from '../templates/cc-link.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
-import { linkStyles } from '../styles/link.js';
 import { repeat } from 'lit-html/directives/repeat.js';
 
 /**
@@ -62,7 +62,7 @@ export class EnvVarFull extends LitElement {
         @env-var-form:dismissed-error=${(e) => this._onDismissedError(e.detail)}
       >
         ${i18n('env-var-full.message')}
-        <a class="cc-link" href="http://doc.clever-cloud.com/admin-console/environment-variables/" target="_blank">${i18n('env-var-full.link')}</a>
+        ${ccLink('http://doc.clever-cloud.com/admin-console/environment-variables/', i18n('env-var-full.link'))}
       </env-var-form>
       
       ${repeat(this.addons, ({ id }) => id, ({ id, name, variables }) => html`

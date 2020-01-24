@@ -1,11 +1,10 @@
 import '../atoms/cc-datetime-relative.js';
 import warningSvg from 'twemoji/2/svg/26a0.svg';
+import { ccLink, linkStyles } from '../templates/cc-link.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
 import { iconStyles } from '../styles/icon.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { linkStyles } from '../styles/link.js';
 import { skeleton } from '../styles/skeleton.js';
 import { tileStyles } from '../styles/info-tiles.js';
 
@@ -92,7 +91,7 @@ export class CcTileDeployments extends LitElement {
               ` : ''}
             </div>
             <div>
-              <a class="cc-link ${classMap({ skeleton })}" href=${ifDefined(d.logsUrl)}>logs</a>
+              ${ccLink(d.logsUrl, 'logs', skeleton)}
             </div>
           `)}
         </div>
