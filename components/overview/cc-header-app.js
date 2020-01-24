@@ -9,13 +9,13 @@ import startingSvg from './starting.svg';
 import stoppedSvg from './stopped.svg';
 import unknownSvg from './unknown.svg';
 import warningSvg from 'twemoji/2/svg/26a0.svg';
+import { ccLink, linkStyles } from '../templates/cc-link.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { iconStyles } from '../styles/icon.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { linkStyles } from '../styles/link.js';
 import { skeleton } from '../styles/skeleton.js';
 
 const commitIcon = {
@@ -299,10 +299,8 @@ export class CcHeaderApp extends LitElement {
           <img class="status-icon" src=${statusIcon[status] || unknownSvg} alt="">
           <span class=${classMap({ skeleton: skeletonStatus })}>
             ${this._getStatusMsg(status)}
-          </span>  
-          ${shouldDisplayLogsLink ? html`
-            <a class="cc-link" href=${lastDeploymentLogsUrl}>${i18n('cc-header-app.read-logs')}</a>
-          ` : ''}
+          </span>
+          ${shouldDisplayLogsLink ? ccLink(lastDeploymentLogsUrl, i18n('cc-header-app.read-logs')) : ''}
         ` : ''}
         ${this._lastUserAction != null ? html`
           ${this._getLastUserActionMsg()}
