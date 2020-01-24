@@ -125,3 +125,11 @@ export class CcBlock extends LitElement {
 }
 
 window.customElements.define('cc-block', CcBlock);
+
+export const blockStyles = css`
+  
+  .cc-block_empty-msg {
+    color: #555;
+    font-style: italic;
+  }
+`;
