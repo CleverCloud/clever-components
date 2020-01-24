@@ -70,6 +70,14 @@ export const translations = {
   // cc-datetime-relative
   'cc-datetime-relative.distance': ({ date }) => formatDistanceToNow(date),
   'cc-datetime-relative.title': ({ date }) => formatDate(date),
+  // cc-elasticsearch-info
+  'cc-elasticsearch-info.error': `Something went wrong while loading add-ons linked to this application.`,
+  'cc-elasticsearch-info.info': `Info`,
+  'cc-elasticsearch-info.link.apm': `Open APM`,
+  'cc-elasticsearch-info.link.doc': `Read the documentation`,
+  'cc-elasticsearch-info.link.elasticsearch': `Check out the Elasticsearch add-on`,
+  'cc-elasticsearch-info.link.kibana': `Open Kibana`,
+  'cc-elasticsearch-info.text': `This service is part of the Elasticsearch Enterprise offer. You can find the documentation and linked services right below.`,
   // cc-header-addon
   'cc-header-addon.plan': `Plan`,
   'cc-header-addon.version': `Version`,
