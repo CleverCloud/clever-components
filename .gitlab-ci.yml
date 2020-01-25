@@ -15,6 +15,7 @@ deploy:mr:
     - CREATE_CC_APP=false
     - clever link -o ${ORGA_ID} clever-components-${CI_COMMIT_REF_SLUG} || CREATE_CC_APP=true
     - if $CREATE_CC_APP; then clever create --type node -o ${ORGA_ID} clever-components-${CI_COMMIT_REF_SLUG}; sleep 10; fi
+    - clever scale --flavor M
     - clever domain add ${CI_COMMIT_REF_SLUG}--clever-components.cleverapps.io || true
     - clever env set CC_POST_BUILD_HOOK 'npm run storybook:build'
     - clever env set STORYBOOK_PATH '/'

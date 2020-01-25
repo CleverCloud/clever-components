@@ -12,7 +12,6 @@ import { i18n } from '../lib/i18n.js';
  * @prop {String} icon - Sets the URL of the image before the title. Icon is hidden if nullish.
  * @prop {"off"|"open"|"close"} state - Sets the state of the toggle behaviour.
  */
-
 export class CcBlock extends LitElement {
 
   static get properties () {
@@ -28,7 +27,12 @@ export class CcBlock extends LitElement {
   }
 
   _clickToggle () {
-    this.state = (this.state === 'close') ? 'open' : 'close';
+    if (this.state === 'close') {
+      this.state = 'open';
+    }
+    else if (this.state === 'open') {
+      this.state = 'close';
+    }
   }
 
   _getToggleTitle () {
@@ -121,3 +125,11 @@ export class CcBlock extends LitElement {
 }
 
 window.customElements.define('cc-block', CcBlock);
+
+export const blockStyles = css`
+  
+  .cc-block_empty-msg {
+    color: #555;
+    font-style: italic;
+  }
+`;

@@ -1,7 +1,7 @@
-import '../atoms/cc-img.js';
 import '../atoms/cc-expand.js';
-import '../molecules/cc-block.js';
+import '../atoms/cc-img.js';
 import warningSvg from 'twemoji/2/svg/26a0.svg';
+import { blockStyles } from '../molecules/cc-block.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
@@ -99,7 +99,7 @@ export class CcAddonLinkedApps extends LitElement {
           ` : ''}
     
           ${emptyData ? html`
-            <div class="empty-data">${i18n('cc-addon-linked-apps.no-linked-applications')}</div>
+            <div class="cc-block_empty-msg">${i18n('cc-addon-linked-apps.no-linked-applications')}</div>
           ` : ''}
     
           ${this.error ? html`
@@ -114,12 +114,13 @@ export class CcAddonLinkedApps extends LitElement {
     return [
       skeleton,
       iconStyles,
+      blockStyles,
       // language=CSS
       css`
         :host {
           display: block;
         }
-        
+
         .application-list {
           display: grid;
           grid-gap: 1rem;
@@ -165,11 +166,6 @@ export class CcAddonLinkedApps extends LitElement {
 
         [title] {
           cursor: help;
-        }
-
-        .empty-data {
-          color: #555;
-          font-style: italic;
         }
       `,
     ];
