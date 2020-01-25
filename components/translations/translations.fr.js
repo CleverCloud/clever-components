@@ -5,6 +5,7 @@ import {
   prepareFormatHours,
 } from '../lib/i18n-date.js';
 import { prepareNumberUnitFormatter } from '../lib/i18n-number.js';
+import { prepareFormatDatetime } from '../lib/i18n-date';
 import { sanitize } from '../lib/i18n-sanitize';
 
 export const lang = 'fr';
@@ -35,6 +36,7 @@ const formatDistanceToNow = prepareFormatDistanceToNow(lang, (value, unit) => {
 }, 'à l\'instant');
 
 const formatDate = prepareFormatDate(lang);
+const formatDatetime = prepareFormatDatetime(lang);
 const formatDateOnly = prepareFormatDateOnly(lang);
 const formatHours = prepareFormatHours(lang);
 
@@ -49,6 +51,18 @@ const formatNumberUnit = prepareNumberUnitFormatter(lang);
 
 export const translations = {
   LANGUAGE: '🇫🇷 Français',
+  // cc-addon-backups
+  'cc-addon-backups.automatic-restore': `Restauration automatique`,
+  'cc-addon-backups.automatic-restore.es-addon': ({ href }) => sanitize`Une sauvegarde peut être restaurée avec Kibana. Rendez vous vers le <a href="${href}">dépôt de sauvegardes</a> et sélectionnez la sauvegarde que vous voulez restaurer.`,
+  'cc-addon-backups.description.es-addon': `Les sauvegardes sont gérées par Elasticsearch lui-même. Vous pouvez restaurer une sauvegarde en utilisant la commande ci-dessous ou depuis l'interface Kibana. Vous pouvez aussi controller la rétention ainsi que la périodicité de prise des sauvegardes à travers l'interface Kibana.`,
+  'cc-addon-backups.empty': `Il n'y a aucune sauvegarde pour l'instant.`,
+  'cc-addon-backups.link.es-addon': `ouvrir dans Kibana`,
+  'cc-addon-backups.loading-error': `Une erreur est survenue pendant le chargement des sauvegardes.`,
+  'cc-addon-backups.manual-restore': `Restauration manuelle`,
+  'cc-addon-backups.manual-restore.es-addon': `Vous pouvez restorer la sauvegarde grâce à l'outil cURL en exécutant cette commande :`,
+  'cc-addon-backups.restore': `Restaurer une sauvegarde`,
+  'cc-addon-backups.text': ({ createdAt, expiresAt }) => sanitize`Sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong> (expire le <strong>${formatDateOnly(expiresAt)}</strong>)`,
+  'cc-addon-backups.title': `Sauvegardes`,
   // cc-addon-credentials
   'cc-addon-credentials.description.apm': `Utilisez ces identifiants pour connecter une instance d'APM Server à votre cluster Elasticsearch.`,
   'cc-addon-credentials.description.elasticsearch': `Utilisez ces identifiants pour vous connecter à votre cluster Elasticsearch.`,
