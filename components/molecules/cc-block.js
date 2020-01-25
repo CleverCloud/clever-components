@@ -15,6 +15,9 @@ import { i18n } from '../lib/i18n.js';
  *
  * @prop {String} icon - Sets the URL of the image before the title. Icon is hidden if nullish.
  * @prop {"off"|"open"|"close"} state - Sets the state of the toggle behaviour.
+ *
+ * @slot title - The title of the block. Try to only use text. Use the `icon` property/attribute.
+ * @slot main - The main content of the block. The direct children of this will be spaced in a 1 column CSS grid.
  */
 export class CcBlock extends LitElement {
 
