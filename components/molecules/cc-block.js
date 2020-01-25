@@ -9,6 +9,10 @@ import { i18n } from '../lib/i18n.js';
 /**
  * A display component with mostly HTML+CSS and a open/close toggle feature.
  *
+ * ## Details
+ *
+ * * The main section is wrapped in a `<cc-expand>` so variation of this section height will be animated.
+ *
  * @prop {String} icon - Sets the URL of the image before the title. Icon is hidden if nullish.
  * @prop {"off"|"open"|"close"} state - Sets the state of the toggle behaviour.
  */
@@ -61,17 +65,11 @@ export class CcBlock extends LitElement {
         ` : ''}
       </div>
       
-      ${isToggleEnabled ? html`
-        <cc-expand>
-          ${isOpen ? html`
-            <slot name="main"></slot>
-          ` : ''}
-        </cc-expand>
-      ` : ''}
-      
-      ${!isToggleEnabled ? html`
-        <slot name="main"></slot>
-      ` : ''}
+      <cc-expand>
+        ${!isToggleEnabled || isOpen ? html`
+          <slot name="main"></slot>
+        ` : ''}
+      </cc-expand>
     `;
   }
 
