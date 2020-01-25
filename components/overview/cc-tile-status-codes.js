@@ -168,7 +168,7 @@ export class CcTileStatusCodes extends LitElement {
       
       <div class="tile_docs ${classMap({ 'tile_docs--hidden': !displayDocs })}">
         <p>${i18n('cc-tile-status-codes.docs.msg')}</p>
-        <p>${i18n('cc-tile-status-codes.docs.link.href')}</p>
+        <p>${i18n('cc-tile-status-codes.docs.link')}</p>
       </div>
     `;
   }
