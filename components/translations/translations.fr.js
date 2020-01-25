@@ -5,6 +5,7 @@ import {
   prepareFormatHours,
 } from '../lib/i18n-date.js';
 import { prepareNumberUnitFormatter } from '../lib/i18n-number.js';
+import { sanitize } from '../lib/i18n-sanitize';
 
 export const lang = 'fr';
 
@@ -173,7 +174,7 @@ export const translations = {
   'cc-tile-requests.error': `Une erreur est survenue pendant le chargement des requêtes.`,
   'cc-tile-requests.docs.msg': ({ windowHours }) => {
     const hour = plural('heure')(windowHours);
-    return `Requêtes HTTP reçues durant les dernières 24 heures. Chaque barre représente une fenêtre de temps de ${windowHours} ${hour}.`;
+    return sanitize`Requêtes HTTP reçues durant les dernières 24 heures. Chaque barre représente une fenêtre de temps de <strong>${windowHours} ${hour}</strong>.`;
   },
   // cc-tile-scalability
   'cc-tile-scalability.title': `Scalabilité`,
@@ -198,8 +199,7 @@ export const translations = {
   'cc-tile-status-codes.error': `Une erreur est survenue pendant le chargement des codes de réponses HTTP.`,
   'cc-tile-status-codes.empty': `Il n'y a pas de données à afficher pour l'instant.`,
   'cc-tile-status-codes.docs.msg': `Répartition des codes de réponses HTTP envoyés durant les dernières 24 heures. Cliquez sur les éléments de légende pour cacher/montrer certaines catégories de codes.`,
-  'cc-tile-status-codes.docs.link.href': `https://developer.mozilla.org/fr/docs/Web/HTTP/Status`,
-  'cc-tile-status-codes.docs.link.title': `Codes de réponses HTTP (MDN)`,
+  'cc-tile-status-codes.docs.link': () => sanitize`<a href="https://developer.mozilla.org/fr/docs/Web/HTTP/Status">Codes de réponses HTTP (MDN)</a>`,
   // cc-input-text
   'cc-input-text.clipboard': `Copier dans le presse-papier`,
   'cc-input-text.secret.show': `Afficher le secret`,
@@ -207,10 +207,10 @@ export const translations = {
   // cc-logsmap
   'cc-logsmap.mode.points': `En direct`,
   'cc-logsmap.mode.heatmap': `Dernières 24h`,
-  'cc-logsmap.legend.points': ({ orgaName }) => `Carte temps réel des requêtes HTTP reçues par toutes les applications de ${orgaName}.`,
-  'cc-logsmap.legend.points.app': ({ appName }) => `Carte temps réel des requêtes HTTP reçues par l'application ${appName}.`,
-  'cc-logsmap.legend.heatmap': ({ orgaName }) => `Carte de chaleur des requêtes HTTP reçues par les applications de ${orgaName} durant les dernières 24 heures.`,
-  'cc-logsmap.legend.heatmap.app': ({ appName }) => `Carte de chaleur des requêtes HTTP reçues par l'application ${appName} durant les dernières 24 heures.`,
+  'cc-logsmap.legend.points': ({ orgaName }) => sanitize`Carte temps réel des requêtes HTTP reçues par toutes les applications de <strong>${orgaName}</strong>.`,
+  'cc-logsmap.legend.points.app': ({ appName }) => sanitize`Carte temps réel des requêtes HTTP reçues par l'application <strong>${appName}</strong>.`,
+  'cc-logsmap.legend.heatmap': ({ orgaName }) => sanitize`Carte de chaleur des requêtes HTTP reçues par les applications de <strong>${orgaName}</strong> durant les dernières 24 heures.`,
+  'cc-logsmap.legend.heatmap.app': ({ appName }) => sanitize`Carte de chaleur des requêtes HTTP reçues par l'application <strong>${appName}</strong> durant les dernières 24 heures.`,
   // cc-map
   'cc-map.error': `Une erreur est survenue pendant le chargement des données de la carte.`,
   'cc-map.no-points': `Pas de données à afficher sur la carte en ce moment.`,
@@ -218,8 +218,8 @@ export const translations = {
   'env-var-create.name.placeholder': `NOM_DE_LA_VARIABLE`,
   'env-var-create.value.placeholder': `valeur de la variable`,
   'env-var-create.create-button': `Ajouter`,
-  'env-var-create.errors.invalid-name': ({ name }) => `Le nom ${name} n'est pas valide`,
-  'env-var-create.errors.already-defined-name': ({ name }) => `Le nom ${name} est déjà défini`,
+  'env-var-create.errors.invalid-name': ({ name }) => sanitize`Le nom <code>${name}</code> n'est pas valide`,
+  'env-var-create.errors.already-defined-name': ({ name }) => sanitize`Le nom <code>${name}</code> est déjà défini`,
   // env-var-editor-simple
   'env-var-editor-simple.empty-data': `Il n'y a pas de variable.`,
   // env-var-editor-expert
@@ -227,10 +227,10 @@ export const translations = {
   'env-var-editor-expert.placeholder-readonly': `Il n'y a pas de variable.`,
   'env-var-editor-expert.errors.unknown': `Erreur inconnue`,
   'env-var-editor-expert.errors.line': `ligne`,
-  'env-var-editor-expert.errors.invalid-name': ({ name }) => `Le nom ${name} n'est pas valide`,
-  'env-var-editor-expert.errors.duplicated-name': ({ name }) => `attention, le nom ${name} est déjà défini`,
-  'env-var-editor-expert.errors.invalid-line': `cette ligne est invalide, le format correct est : NOM="VALEUR"`,
-  'env-var-editor-expert.errors.invalid-value': `la valeur est invalide, si vous utilisez des guillements, vous devez les échapper comme ceci : \\" ou alors mettre toute la valeur entre guillemets.`,
+  'env-var-editor-expert.errors.invalid-name': ({ name }) => sanitize`Le nom <code>${name}</code> n'est pas valide`,
+  'env-var-editor-expert.errors.duplicated-name': ({ name }) => sanitize`attention, le nom <code>${name}</code> est déjà défini`,
+  'env-var-editor-expert.errors.invalid-line': () => sanitize`cette ligne est invalide, le format correct est : <code>NOM="VALEUR"</code>`,
+  'env-var-editor-expert.errors.invalid-value': () => sanitize`la valeur est invalide, si vous utilisez des guillements, vous devez les échapper comme ceci : <code>\\"</code> ou alors mettre toute la valeur entre guillemets.`,
   // env-var-form
   'env-var-form.mode.simple': `Simple`,
   'env-var-form.mode.expert': `Expert`,

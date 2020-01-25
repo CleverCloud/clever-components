@@ -5,6 +5,7 @@ import {
   prepareFormatHours,
 } from '../lib/i18n-date.js';
 import { prepareNumberUnitFormatter } from '../lib/i18n-number.js';
+import { sanitize } from '../lib/i18n-sanitize.js';
 
 export const lang = 'en';
 
@@ -160,7 +161,7 @@ export const translations = {
   'cc-tile-requests.error': `Something went wrong while loading HTTP requests.`,
   'cc-tile-requests.docs.msg': ({ windowHours }) => {
     const hour = plural('hour')(windowHours);
-    return `HTTP requests received in the last 24 hours. Each bar represents a time window of ${windowHours} ${hour}.`;
+    return sanitize`HTTP requests received in the last 24 hours. Each bar represents a time window of <strong>${windowHours} ${hour}</strong>.`;
   },
   // cc-tile-scalability
   'cc-tile-scalability.title': `Scalability`,
@@ -185,8 +186,7 @@ export const translations = {
   'cc-tile-status-codes.error': `Something went wrong while loading HTTP response codes.`,
   'cc-tile-status-codes.empty': `No data to display for now.`,
   'cc-tile-status-codes.docs.msg': `Repartition of HTTP response codes returned in the last 24 hours. Click on legend items to show/hide HTTP code categories.`,
-  'cc-tile-status-codes.docs.link.href': `https://developer.mozilla.org/en/docs/Web/HTTP/Status`,
-  'cc-tile-status-codes.docs.link.title': `HTTP response status codes (MDN)`,
+  'cc-tile-status-codes.docs.link': () => sanitize`<a href="https://developer.mozilla.org/en/docs/Web/HTTP/Status">HTTP response status codes (MDN)</a>`,
   // cc-input-text
   'cc-input-text.clipboard': `Copy to clipboard`,
   'cc-input-text.secret.show': `Show secret`,
@@ -194,10 +194,10 @@ export const translations = {
   // cc-logsmap
   'cc-logsmap.mode.points': `Realtime`,
   'cc-logsmap.mode.heatmap': `Last 24h`,
-  'cc-logsmap.legend.points': ({ orgaName }) => `Realtime map of HTTP requests received by all apps from ${orgaName}.`,
-  'cc-logsmap.legend.points.app': ({ appName }) => `Realtime map of HTTP requests received by ${appName}.`,
-  'cc-logsmap.legend.heatmap': ({ orgaName }) => `Heatmap of HTTP requests received by all apps from ${orgaName} during the last 24 hours.`,
-  'cc-logsmap.legend.heatmap.app': ({ appName }) => `Heatmap of HTTP requests received by ${appName} during the last 24 hours.`,
+  'cc-logsmap.legend.points': ({ orgaName }) => sanitize`Realtime map of HTTP requests received by all apps from <strong>${orgaName}</strong>.`,
+  'cc-logsmap.legend.points.app': ({ appName }) => sanitize`Realtime map of HTTP requests received by <strong>${appName}</strong>.`,
+  'cc-logsmap.legend.heatmap': ({ orgaName }) => sanitize`Heatmap of HTTP requests received by all apps from <strong>${orgaName}</strong> during the last 24 hours.`,
+  'cc-logsmap.legend.heatmap.app': ({ appName }) => sanitize`Heatmap of HTTP requests received by <strong>${appName}</strong> during the last 24 hours.`,
   // cc-map
   'cc-map.error': `Something went wrong while trying to fetch data for the map.`,
   'cc-map.no-points': `No data to display on the map right now.`,
@@ -205,8 +205,8 @@ export const translations = {
   'env-var-create.name.placeholder': `VARIABLE_NAME`,
   'env-var-create.value.placeholder': `variable value`,
   'env-var-create.create-button': `Add`,
-  'env-var-create.errors.invalid-name': ({ name }) => `Name ${name} is invalid`,
-  'env-var-create.errors.already-defined-name': ({ name }) => `Name ${name} is already defined`,
+  'env-var-create.errors.invalid-name': ({ name }) => sanitize`Name <code>${name}</code> is invalid`,
+  'env-var-create.errors.already-defined-name': ({ name }) => sanitize`Name <code>${name}</code> is already defined`,
   // env-var-editor-simple
   'env-var-editor-simple.empty-data': `There are no variables.`,
   // env-var-editor-expert
@@ -214,10 +214,10 @@ export const translations = {
   'env-var-editor-expert.placeholder-readonly': `There are no variables.`,
   'env-var-editor-expert.errors.unknown': `Unknown Error`,
   'env-var-editor-expert.errors.line': `line`,
-  'env-var-editor-expert.errors.invalid-name': ({ name }) => `${name} is not #3a3871a valid variable name`,
-  'env-var-editor-expert.errors.duplicated-name': ({ name }) => `be careful, the name ${name} is already defined`,
-  'env-var-editor-expert.errors.invalid-line': `this line is not valid, the correct pattern is: NAME="VALUE"`,
-  'env-var-editor-expert.errors.invalid-value': `the value is not valid, if you use quotes, you need to escape them like this: \\" or quote the whole value.`,
+  'env-var-editor-expert.errors.invalid-name': ({ name }) => sanitize`<code>${name}</code> is not #3a3871a valid variable name`,
+  'env-var-editor-expert.errors.duplicated-name': ({ name }) => sanitize`be careful, the name <code>${name}</code> is already defined`,
+  'env-var-editor-expert.errors.invalid-line': () => sanitize`this line is not valid, the correct pattern is: <code>NAME="VALUE"</code>`,
+  'env-var-editor-expert.errors.invalid-value': () => sanitize`the value is not valid, if you use quotes, you need to escape them like this: <code>\\"</code> or quote the whole value.`,
   // env-var-form
   'env-var-form.mode.simple': `Simple`,
   'env-var-form.mode.expert': `Expert`,
