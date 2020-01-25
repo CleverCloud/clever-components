@@ -9,8 +9,15 @@ import { i18n } from '../lib/i18n.js';
 /**
  * A display component with mostly HTML+CSS and a open/close toggle feature.
  *
+ * ## Details
+ *
+ * * The main section is wrapped in a `<cc-expand>` so variation of this section height will be animated.
+ *
  * @prop {String} icon - Sets the URL of the image before the title. Icon is hidden if nullish.
  * @prop {"off"|"open"|"close"} state - Sets the state of the toggle behaviour.
+ *
+ * @slot title - The title of the block. Try to only use text. Use the `icon` property/attribute.
+ * @slot main - The main content of the block. The direct children of this will be spaced in a 1 column CSS grid.
  */
 export class CcBlock extends LitElement {
 
@@ -61,17 +68,11 @@ export class CcBlock extends LitElement {
         ` : ''}
       </div>
       
-      ${isToggleEnabled ? html`
-        <cc-expand>
-          ${isOpen ? html`
-            <slot name="main"></slot>
-          ` : ''}
-        </cc-expand>
-      ` : ''}
-      
-      ${!isToggleEnabled ? html`
-        <slot name="main"></slot>
-      ` : ''}
+      <cc-expand>
+        ${!isToggleEnabled || isOpen ? html`
+          <slot name="main"></slot>
+        ` : ''}
+      </cc-expand>
     `;
   }
 
@@ -127,7 +128,15 @@ export class CcBlock extends LitElement {
 window.customElements.define('cc-block', CcBlock);
 
 export const blockStyles = css`
-  
+
+  .cc-block_subtitle {
+    font-weight: bold;
+  }
+
+  .cc-block_subtitle:not(:first-child) {
+    margin-top: 1rem;
+  }
+
   .cc-block_empty-msg {
     color: #555;
     font-style: italic;

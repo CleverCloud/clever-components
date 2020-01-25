@@ -1,6 +1,7 @@
 import {
   prepareFormatDate,
   prepareFormatDateOnly,
+  prepareFormatDatetime,
   prepareFormatDistanceToNow,
   prepareFormatHours,
 } from '../lib/i18n-date.js';
@@ -22,6 +23,7 @@ const formatDistanceToNow = prepareFormatDistanceToNow(lang, (value, unit) => {
 }, 'just now');
 
 const formatDate = prepareFormatDate(lang);
+const formatDatetime = prepareFormatDatetime(lang);
 const formatDateOnly = prepareFormatDateOnly(lang);
 const formatHours = prepareFormatHours(lang);
 
@@ -36,6 +38,18 @@ const formatNumberUnit = prepareNumberUnitFormatter(lang);
 
 export const translations = {
   LANGUAGE: '🇬🇧 English',
+  // cc-addon-backups
+  'cc-addon-backups.automatic-restore': `Automatic restore`,
+  'cc-addon-backups.automatic-restore.es-addon': ({ href }) => sanitize`A backup can be restored using Kibana. You can go to the <a href="${href}">backup repository</a> and select the backup you want to restore.`,
+  'cc-addon-backups.description.es-addon': `Backups are managed by Elasticsearch itself. You can restore a backup by using the command below ordirectly using Kibana's UI. You can also set your own retention period or backup frequency through Kibana's UI.`,
+  'cc-addon-backups.empty': `There are no backups yet.`,
+  'cc-addon-backups.link.es-addon': `open in Kibana`,
+  'cc-addon-backups.loading-error': `Something went wrong while loading the backups.`,
+  'cc-addon-backups.manual-restore': `Manual restore`,
+  'cc-addon-backups.manual-restore.es-addon': `You can also restore a backup using cURL by executing this command:`,
+  'cc-addon-backups.restore': `Restore a backup`,
+  'cc-addon-backups.text': ({ createdAt, expiresAt }) => sanitize`Backup from <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong> (expires on <strong>${formatDateOnly(expiresAt)}</strong>)`,
+  'cc-addon-backups.title': `Backups`,
   // cc-addon-credentials
   'cc-addon-credentials.description.apm': `Use those credentials to connect an APM Server instance to your Elasticsearch cluster.`,
   'cc-addon-credentials.description.elasticsearch': `Use those credentials to connect to your Elasticsearch cluster.`,

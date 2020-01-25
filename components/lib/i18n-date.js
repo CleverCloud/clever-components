@@ -49,6 +49,21 @@ export function prepareFormatDate (lang) {
   };
 }
 
+export function prepareFormatDatetime (lang) {
+  const options = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+  };
+  const dtf = new Intl.DateTimeFormat(lang, options);
+  return (dateStr) => {
+    const date = new Date(dateStr);
+    return dtf.format(date);
+  };
+}
+
 export function prepareFormatDateOnly (lang) {
   const options = {
     year: 'numeric',
