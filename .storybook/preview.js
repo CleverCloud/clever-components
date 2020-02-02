@@ -44,6 +44,8 @@ addParameters({
       return -1;
     },
   },
+  // a11y: false,
+  // When enabled with live-reload, the scroll jumps a lot :-(
   a11y: {
     restoreScroll: true,
   },
