@@ -73,7 +73,7 @@ configure([csfStories, mdxDocsPages], module);
 // Force full reload instead of HMR for Web Components
 // https://github.com/storybookjs/storybook/tree/next/app/web-components
 if (module.hot) {
-  module.hot.accept(csfStories.id, () => {
+  module.hot.accept([csfStories.id, mdxDocsPages.id], (...a) => {
     const currentLocationHref = window.location.href;
     window.history.pushState(null, null, currentLocationHref);
     window.location.reload();
