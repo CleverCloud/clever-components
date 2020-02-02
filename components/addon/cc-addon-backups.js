@@ -1,13 +1,12 @@
 import '../atoms/cc-expand.js';
 import '../atoms/cc-input-text.js';
+import '../molecules/cc-error.js';
 import backupSvg from './backup.svg';
-import warningSvg from 'twemoji/2/svg/26a0.svg';
 import { blockStyles } from '../molecules/cc-block.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
-import { iconStyles } from '../styles/icon.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { skeleton } from '../styles/skeleton.js';
 
@@ -139,7 +138,7 @@ export class CcAddonBackups extends LitElement {
           ` : ''}
           
           ${this.error ? html`
-            <div><img class="icon-img" src=${warningSvg} alt=""></img>${i18n('cc-addon-backups.loading-error')}</div>
+            <cc-error>${i18n('cc-addon-backups.loading-error')}</cc-error>
           ` : ''}
         </div>
       </cc-block>
@@ -164,7 +163,6 @@ export class CcAddonBackups extends LitElement {
   static get styles () {
     return [
       skeleton,
-      iconStyles,
       linkStyles,
       blockStyles,
       // language=CSS
