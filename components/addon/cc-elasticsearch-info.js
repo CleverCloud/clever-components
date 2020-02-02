@@ -1,11 +1,10 @@
 import '../atoms/cc-img.js';
+import '../molecules/cc-error.js';
 import infoSvg from '../overview/info.svg';
-import warningSvg from 'twemoji/2/svg/26a0.svg';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
-import { iconStyles } from '../styles/icon.js';
 import { skeleton } from '../styles/skeleton.js';
 
 const ELASTICSEARCH_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com/logos/elastic.svg';
@@ -70,7 +69,7 @@ export class CcElasticsearchInfo extends LitElement {
       ` : ''}
 
       ${this.error ? html`
-        <div class="error-msg"><img class="icon-img" src=${warningSvg} alt="">${i18n('cc-elasticsearch-info.error')}</div>
+        <cc-error>${i18n('cc-elasticsearch-info.error')}</cc-error>
       ` : ''}
     `;
   }
@@ -78,7 +77,6 @@ export class CcElasticsearchInfo extends LitElement {
   static get styles () {
     return [
       skeleton,
-      iconStyles,
       linkStyles,
       // language=CSS
       css`
@@ -138,7 +136,7 @@ export class CcElasticsearchInfo extends LitElement {
           background-color: #bbb;
         }
 
-        .error-msg {
+        cc-error {
           text-align: center;
         }
       `,
