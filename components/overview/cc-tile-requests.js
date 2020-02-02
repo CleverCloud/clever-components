@@ -1,13 +1,12 @@
 import '../atoms/cc-button.js';
+import '../molecules/cc-error.js';
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import closeSvg from './close.svg';
 import infoSvg from './info.svg';
-import warningSvg from 'twemoji/2/svg/26a0.svg';
 import { classMap } from 'lit-html/directives/class-map';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
-import { iconStyles } from '../styles/icon.js';
 import { ifDefined } from 'lit-html/directives/if-defined';
 import { skeleton } from '../styles/skeleton.js';
 import { tileStyles } from '../styles/info-tiles.js';
@@ -193,7 +192,7 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
         
       <div class="tile_message ${classMap({ 'tile--hidden': !displayEmpty })}">${i18n('cc-tile-requests.empty')}</div>
     
-      <div class="tile_message ${classMap({ 'tile--hidden': !displayError })}"><img class="icon-img" src=${warningSvg} alt="">${i18n('cc-tile-requests.error')}</div>
+      <cc-error class="tile_message ${classMap({ 'tile--hidden': !displayError })}">${i18n('cc-tile-requests.error')}</cc-error>
       
       <div class="tile_docs ${classMap({ 'tile--hidden': !displayDocs })}">
         <p>${i18n('cc-tile-requests.docs.msg', { windowHours: 24 / this._barCount })}</p>
@@ -278,7 +277,6 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
   static get styles () {
     return [
       tileStyles,
-      iconStyles,
       skeleton,
       // language=CSS
       css`
