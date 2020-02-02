@@ -1,3 +1,4 @@
+/* global globalThis */
 const WHITELISTED_TAGS = ['STRONG', 'EM', 'CODE', 'A'];
 
 // Reuse one text node to escape HTML
