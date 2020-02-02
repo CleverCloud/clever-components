@@ -230,7 +230,7 @@ export const translations = {
   'env-var-editor-expert.placeholder-readonly': `There are no variables.`,
   'env-var-editor-expert.errors.unknown': `Unknown Error`,
   'env-var-editor-expert.errors.line': `line`,
-  'env-var-editor-expert.errors.invalid-name': ({ name }) => sanitize`<code>${name}</code> is not #3a3871a valid variable name`,
+  'env-var-editor-expert.errors.invalid-name': ({ name }) => sanitize`<code>${name}</code> is not a valid variable name`,
   'env-var-editor-expert.errors.duplicated-name': ({ name }) => sanitize`be careful, the name <code>${name}</code> is already defined`,
   'env-var-editor-expert.errors.invalid-line': () => sanitize`this line is not valid, the correct pattern is: <code>NAME="VALUE"</code>`,
   'env-var-editor-expert.errors.invalid-value': () => sanitize`the value is not valid, if you use quotes, you need to escape them like this: <code>\\"</code> or quote the whole value.`,
