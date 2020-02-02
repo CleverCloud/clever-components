@@ -1,14 +1,13 @@
 import '../atoms/cc-button.js';
+import '../molecules/cc-error.js';
 import Chart from 'chart.js';
 import closeSvg from './close.svg';
 import infoSvg from './info.svg';
-import warningSvg from 'twemoji/2/svg/26a0.svg';
 import { cache } from 'lit-html/directives/cache';
 import { linkStyles } from '../templates/cc-link.js';
 import { classMap } from 'lit-html/directives/class-map';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
-import { iconStyles } from '../styles/icon.js';
 import { ifDefined } from 'lit-html/directives/if-defined';
 import { skeleton } from '../styles/skeleton.js';
 import { STATUS_CODES } from 'statuses';
@@ -163,7 +162,7 @@ export class CcTileStatusCodes extends LitElement {
       ` : ''}
       
       ${displayError ? html`
-        <div class="tile_message"><img class="icon-img" src=${warningSvg} alt="">${i18n('cc-tile-status-codes.error')}</div>
+        <cc-error class="tile_message">${i18n('cc-tile-status-codes.error')}</cc-error>
       ` : ''}
       
       <div class="tile_docs ${classMap({ 'tile_docs--hidden': !displayDocs })}">
@@ -244,7 +243,6 @@ export class CcTileStatusCodes extends LitElement {
   static get styles () {
     return [
       tileStyles,
-      iconStyles,
       skeleton,
       linkStyles,
       // language=CSS
