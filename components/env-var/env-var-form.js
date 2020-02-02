@@ -2,14 +2,13 @@ import '../atoms/cc-button.js';
 import '../atoms/cc-expand.js';
 import '../atoms/cc-loader.js';
 import '../atoms/cc-toggle.js';
+import '../molecules/cc-error.js';
 import './env-var-editor-expert.js';
 import './env-var-editor-simple.js';
-import warningSvg from 'twemoji/2/svg/26a0.svg';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
-import { iconStyles } from '../styles/icon.js';
 
 /**
  * A high level environment variable form (wrapping simple editor and expert editor into one interface).
@@ -244,10 +243,7 @@ export class EnvVarForm extends LitElement {
       
       ${this.error != null ? html`
         <div class="error-container">
-          <div class="error-panel">
-            <div class="error-message"><img class="icon-img" src=${warningSvg} alt="">${this._errorMessage}</div>
-            <cc-button @cc-button:click=${() => dispatchCustomEvent(this, 'dismissed-error', this.error)}>OK</cc-button>
-          </div>
+          <cc-error mode="confirm" @cc-error:ok=${() => dispatchCustomEvent(this, 'dismissed-error', this.error)}>${this._errorMessage}</cc-error>
         </div>
       ` : ''}
     `;
@@ -255,7 +251,6 @@ export class EnvVarForm extends LitElement {
 
   static get styles () {
     return [
-      iconStyles,
       // language=CSS
       css`
         :host {
@@ -321,22 +316,6 @@ export class EnvVarForm extends LitElement {
           position: absolute;
           top: 0;
           width: 100%;
-        }
-
-        .error-panel {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          background-color: #fff;
-          padding: 1rem;
-          border-radius: 0.25rem;
-          border: 1px solid #ccc;
-          max-width: 80%;
-        }
-
-        .error-message {
-          margin-bottom: 1rem;
         }
       `,
     ];

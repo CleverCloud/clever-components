@@ -1,11 +1,10 @@
 import '../atoms/cc-loader.js';
+import '../molecules/cc-error.js';
 import leaflet from 'leaflet';
 // 'leaflet.heat' needs to be imported after 'leaflet'
 import 'leaflet.heat';
-import warningSvg from 'twemoji/2/svg/26a0.svg';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
-import { iconStyles } from '../styles/icon.js';
 import { leafletStyles } from '../styles/leaflet.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
 import { WORLD_GEOJSON } from './world-110m.geo.js';
@@ -373,26 +372,22 @@ export class CcMap extends withResizeObserver(LitElement) {
   render () {
 
     const noHeatmapPoints = (this.mode === 'heatmap' && this.heatmapPoints != null && this.heatmapPoints.length === 0);
+    const errorMode = this.loading ? 'loading' : 'info';
 
     return html`
       <div id="cc-map-container"></div>
       <div class="legend"><slot></slot></div>
       ${this.loading && !this.error ? html`
-        <cc-loader class="loader"></cc-loader>
-      ` : ''}
+      <cc-loader class="loader"></cc-loader>
+    ` : ''}
       ${this.error || noHeatmapPoints ? html`
-        <div class="error-container">
-          <div class="error-panel">
-            ${this.loading ? html`
-              <cc-loader class="error-loader"></cc-loader>
-            ` : ''}
-            ${this.error ? html`
-              <div class="error-message"><img class="icon-img" src=${warningSvg} alt="">${i18n('cc-map.error')}</div>
-            ` : ''}
-            ${noHeatmapPoints ? html`
-              <div class="error-message">${i18n('cc-map.no-points')}</div>
-            ` : ''}
-          </div>
+        <div class="msg-container">
+          ${this.error ? html`
+            <cc-error mode=${errorMode}>${i18n('cc-map.error')}</cc-error>
+          ` : ''}
+          ${noHeatmapPoints ? html`
+            <div class="msg">${i18n('cc-map.no-points')}</div>
+          ` : ''}
         </div>
       ` : ''}
     `;
@@ -400,7 +395,6 @@ export class CcMap extends withResizeObserver(LitElement) {
 
   static get styles () {
     return [
-      iconStyles,
       leafletStyles,
       // language=CSS
       css`
@@ -461,13 +455,7 @@ export class CcMap extends withResizeObserver(LitElement) {
           z-index: 2000;
         }
 
-        .error-loader {
-          height: 1.5rem;
-          margin-right: 1rem;
-          width: 1.5rem;
-        }
-
-        .error-container {
+        .msg-container {
           align-items: center;
           display: flex;
           height: 100%;
@@ -480,14 +468,18 @@ export class CcMap extends withResizeObserver(LitElement) {
           z-index: 2000;
         }
 
-        .error-panel {
+        cc-error,
+        .msg {
+          max-width: 80%;
+        }
+
+        .msg {
           align-items: center;
           background-color: white;
           border-radius: 0.25rem;
-          border: 1px solid #ccc;
+          border: 1px solid #bcc2d1;
           display: flex;
           justify-content: center;
-          max-width: 80%;
           padding: 1rem;
         }
 

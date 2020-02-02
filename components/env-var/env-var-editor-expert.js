@@ -1,10 +1,9 @@
 import '../atoms/cc-input-text.js';
-import warningSvg from 'twemoji/2/svg/26a0.svg';
+import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { ERROR_TYPES, parseRaw, toNameEqualsValueString } from '@clevercloud/client/esm/utils/env-vars.js';
 import { i18n } from '../lib/i18n.js';
-import { iconStyles } from '../styles/icon.js';
 
 /**
  * A high level environment variable editor to create/edit/delete all variables at once as a big string (properly parsed with validation and error messages).
@@ -122,17 +121,18 @@ export class EnvVarEditorExpert extends LitElement {
         @cc-input-text:input=${this._onInput}
       ></cc-input-text>
       
-      <ul class="error-list" ?hidden=${this._formattedErrors.length === 0}>
-        ${this._formattedErrors.map(({ line, msg }) => html`
-          <li class="error-item"><img class="icon-img" src=${warningSvg} alt=""><strong>${i18n('env-var-editor-expert.errors.line')} ${line}:</strong> ${msg}</li>
-        `)}
-      </ul>
+      ${this._formattedErrors.length > 0 ? html`
+        <div class="error-list">
+          ${this._formattedErrors.map(({ line, msg }) => html`
+            <cc-error><strong>${i18n('env-var-editor-expert.errors.line')} ${line}:</strong> ${msg}</cc-error>
+          `)}
+        </div>
+      ` : ''}
     `;
   }
 
   static get styles () {
     return [
-      iconStyles,
       // language=CSS
       css`
         :host {
@@ -145,18 +145,15 @@ export class EnvVarEditorExpert extends LitElement {
 
         .error-list {
           margin: 0.5rem 0.2rem 0.2rem;
-          padding: 0;
-          list-style: none;
         }
 
-        .error-item {
-          margin: 0;
-          padding: 0.25rem 0;
+        cc-error {
           line-height: 1.75;
+          padding: 0.25rem 0;
         }
 
         /* i18n error message may contain <code> tags */
-        .error-item code {
+        cc-error code {
           background-color: #f3f3f3;
           border-radius: 0.25rem;
           font-family: "SourceCodePro", "monaco", monospace;

@@ -1,12 +1,11 @@
 import '../atoms/cc-expand.js';
 import '../atoms/cc-loader.js';
+import '../molecules/cc-error.js';
 import runningSvg from './running.svg';
 import startingSvg from './starting.svg';
-import warningSvg from 'twemoji/2/svg/26a0.svg';
 import { animate, QUICK_SHRINK } from '../lib/animate.js';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
-import { iconStyles } from '../styles/icon.js';
 import { instanceDetails, tileStyles } from '../styles/info-tiles.js';
 
 const statusImg = {
@@ -122,8 +121,8 @@ export class CcTileInstances extends LitElement {
           
           <!-- in this case, a loader is better than a skeleton screen since we're not so sure about the future state -->
           ${isLoading ? html`
-            <cc-loader></cc-loader>
-          ` : ''}
+      <cc-loader></cc-loader>
+    ` : ''}
         </div>
       ` : ''}
       
@@ -132,7 +131,7 @@ export class CcTileInstances extends LitElement {
       ` : ''}
 
       ${this.error ? html`
-        <div class="tile_message"><img class="icon-img" src=${warningSvg} alt="">${i18n('cc-tile-instances.error')}</div>
+        <cc-error class="tile_message">${i18n('cc-tile-instances.error')}</cc-error>
       ` : ''}
     `;
   }
@@ -140,7 +139,6 @@ export class CcTileInstances extends LitElement {
   static get styles () {
     return [
       tileStyles,
-      iconStyles,
       instanceDetails,
       // language=CSS
       css`

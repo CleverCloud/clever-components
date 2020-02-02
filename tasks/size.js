@@ -158,6 +158,16 @@ async function run () {
       ];
     });
 
+  const totalComponents = [
+    '',
+    'ALL COMPONENTS',
+    components.reduce((a, b) => a + b[2], 0),
+    components.reduce((a, b) => a + b[3], 0),
+    [...externalDeps, ...otherDeps].reduce((a, b) => a + (isNaN(b[2]) ? 0 : b[2]), 0),
+    [...externalDeps, ...otherDeps].reduce((a, b) => a + (isNaN(b[3]) ? 0 : b[3]), 0),
+    '',
+  ];
+
   const displayTable = [
 
     ['ID', 'NAME', 'raw', 'gzip', 'raw', 'gzip'],
@@ -166,6 +176,7 @@ async function run () {
     ['--', '---------', '-----', '-----', '-----', '-----'],
     ...otherDeps,
     ['--', '---------', '-----', '-----', '-----', '-----'],
+    totalComponents,
     ...components,
   ];
 

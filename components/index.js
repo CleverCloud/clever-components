@@ -5,6 +5,7 @@ export { CcBeta } from './atoms/cc-beta.js';
 export { CcBlock } from './molecules/cc-block.js';
 export { CcButton } from './atoms/cc-button.js';
 export { CcDatetimeRelative } from './atoms/cc-datetime-relative.js';
+export { CcError } from './molecules/cc-error.js';
 export { CcExpand } from './atoms/cc-expand.js';
 export { CcHeaderAddon } from './addon/cc-header-addon.js';
 export { CcHeaderApp } from './overview/cc-header-app.js';
