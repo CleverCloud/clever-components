@@ -93,6 +93,8 @@ export const translations = {
   'cc-elasticsearch-info.link.elasticsearch': `Check out the Elasticsearch add-on`,
   'cc-elasticsearch-info.link.kibana': `Open Kibana`,
   'cc-elasticsearch-info.text': `This service is part of the Elasticsearch Enterprise offer. You can find the documentation and linked services right below.`,
+  // cc-error
+  'cc-error.ok': `OK`,
   // cc-header-addon
   'cc-header-addon.plan': `Plan`,
   'cc-header-addon.version': `Version`,

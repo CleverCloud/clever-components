@@ -91,6 +91,8 @@ export const translations = {
   'cc-addon-linked-apps.zone': `zone:`,
   // cc-beta
   'cc-beta.label': `bêta`,
+  // cc-error
+  'cc-error.ok': `OK`,
   // cc-block
   'cc-block.toggle.open': `Ouvrir`,
   'cc-block.toggle.close': `Fermer`,
