@@ -1,10 +1,9 @@
 import '../atoms/cc-button.js';
 import '../atoms/cc-input-text.js';
-import warningSvg from 'twemoji/2/svg/26a0.svg';
+import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
-import { iconStyles } from '../styles/icon.js';
 import { validateName } from '@clevercloud/client/esm/utils/env-vars.js';
 
 /**
@@ -113,18 +112,17 @@ export class EnvVarCreate extends LitElement {
           >${i18n(`env-var-create.create-button`)}</cc-button>
         </span>
       </div>
-      <div class="errors" ?hidden=${!isNameInvalid || this._variableName === ''}>
-        <img class="icon-img" src=${warningSvg} alt="">${i18n(`env-var-create.errors.invalid-name`, { name: this._variableName })}
-      </div>
-      <div class="errors" ?hidden=${!isNameAlreadyDefined}>
-        <img class="icon-img" src=${warningSvg} alt="">️${i18n(`env-var-create.errors.already-defined-name`, { name: this._variableName })}
-      </div>
+      ${(isNameInvalid && this._variableName !== '') ? html`
+        <cc-error>${i18n(`env-var-create.errors.invalid-name`, { name: this._variableName })}</cc-error>
+      ` : ''}
+      ${isNameAlreadyDefined ? html`
+        <cc-error>${i18n(`env-var-create.errors.already-defined-name`, { name: this._variableName })}</cc-error>
+      ` : ''}
     `;
   }
 
   static get styles () {
     return [
-      iconStyles,
       // language=CSS
       css`
         :host {
@@ -158,12 +156,12 @@ export class EnvVarCreate extends LitElement {
           white-space: nowrap;
         }
 
-        .errors {
+        cc-error {
           margin: 0.5rem 0.2rem 0.2rem;
         }
 
         /* i18n error message may contain <code> tags */
-        .errors code {
+        cc-error code {
           background-color: #f3f3f3;
           border-radius: 0.25rem;
           font-family: "SourceCodePro", "monaco", monospace;
