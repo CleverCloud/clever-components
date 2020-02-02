@@ -3,9 +3,10 @@ import {
   prepareFormatDateOnly,
   prepareFormatDistanceToNow,
   prepareFormatHours,
+  prepareFormatDatetime,
 } from '../lib/i18n-date.js';
 import { prepareNumberUnitFormatter } from '../lib/i18n-number.js';
-import { prepareFormatDatetime } from '../lib/i18n-date';
+
 import { sanitize } from '../lib/i18n-sanitize';
 
 export const lang = 'fr';
