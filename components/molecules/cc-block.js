@@ -16,8 +16,9 @@ import { i18n } from '../lib/i18n.js';
  * @prop {String} icon - Sets the URL of the image before the title. Icon is hidden if nullish.
  * @prop {"off"|"open"|"close"} state - Sets the state of the toggle behaviour.
  *
+ * @slot The main content of the block. The direct children of this will be spaced in a 1 column CSS grid.
+ * @slot overlay - The content to display on top of the main content.
  * @slot title - The title of the block. Try to only use text. Use the `icon` property/attribute.
- * @slot main - The main content of the block. The direct children of this will be spaced in a 1 column CSS grid.
  */
 export class CcBlock extends LitElement {
 
@@ -68,9 +69,11 @@ export class CcBlock extends LitElement {
         ` : ''}
       </div>
       
-      <cc-expand>
+      <cc-expand class="main-wrapper">
         ${!isToggleEnabled || isOpen ? html`
-          <slot name="main"></slot>
+          <div class="main">
+            <slot></slot>
+          </div>
         ` : ''}
       </cc-expand>
     `;
@@ -85,7 +88,7 @@ export class CcBlock extends LitElement {
           border-radius: 0.25rem;
           border: 1px solid #bcc2d1;
           box-sizing: border-box;
-          display: block;
+          display: grid;
           overflow: hidden;
         }
 
@@ -115,10 +118,19 @@ export class CcBlock extends LitElement {
           font-weight: bold;
         }
 
-        ::slotted([slot="main"]) {
+        .main {
           display: grid;
           grid-gap: 1rem;
           padding: 0.5rem 1rem 1rem;
+        }
+
+        .main-wrapper {
+          grid-area: 2 / 1 / auto / auto;
+        }
+        
+        ::slotted(.cc-block_empty-msg) {
+          color: #555;
+          font-style: italic;
         }
       `,
     ];
@@ -135,10 +147,5 @@ export const blockStyles = css`
 
   .cc-block_subtitle:not(:first-child) {
     margin-top: 1rem;
-  }
-
-  .cc-block_empty-msg {
-    color: #555;
-    font-style: italic;
   }
 `;

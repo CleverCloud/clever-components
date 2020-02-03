@@ -117,44 +117,39 @@ export class CcAddonBackups extends LitElement {
       <cc-block>
         <div slot="title">${i18n('cc-addon-backups.title')}</div>
         
-        <div slot="main">
+        ${hasData ? html`
+          <div><span class=${classMap({ skeleton })}>${this._getDescription(providerId)}</span></div>
+          
+          ${backups.map(({ createdAt, url, expiresAt }) => html`
+            <div class="backup">
+              <span class="backup-icon"><img src=${backupSvg} alt=""></span>
+              <span class="backup-text">
+                <span class="backup-text-details ${classMap({ skeleton })}">${this._getBackupText(createdAt, expiresAt)}</span>
+                ${ccLink(url, this._getBackupLink(providerId), skeleton)}
+              </span>
+            </div>
+          `)}
+        ` : ''}
         
-          ${hasData ? html`
-            <div><span class=${classMap({ skeleton })}>${this._getDescription(providerId)}</span></div>
-            
-            ${backups.map(({ createdAt, url, expiresAt }) => html`
-              <div class="backup">
-                <span class="backup-icon"><img src=${backupSvg} alt=""></span>
-                <span class="backup-text">
-                  <span class="backup-text-details ${classMap({ skeleton })}">${this._getBackupText(createdAt, expiresAt)}</span>
-                  ${ccLink(url, this._getBackupLink(providerId), skeleton)}
-                </span>
-              </div>
-            `)}
-          ` : ''}
-          
-          ${emptyData ? html`
-            <div class="cc-block_empty-msg">${i18n('cc-addon-backups.empty')}</div>
-          ` : ''}
-          
-          ${this.error ? html`
-            <cc-error>${i18n('cc-addon-backups.loading-error')}</cc-error>
-          ` : ''}
-        </div>
+        ${emptyData ? html`
+          <div class="cc-block_empty-msg">${i18n('cc-addon-backups.empty')}</div>
+        ` : ''}
+        
+        ${this.error ? html`
+          <cc-error>${i18n('cc-addon-backups.loading-error')}</cc-error>
+        ` : ''}
       </cc-block>
       
       ${!this.error ? html`
         <cc-block state="close">
           <div slot="title">${i18n('cc-addon-backups.restore')}</div>
-          <div slot="main">
             
-            <div class="cc-block_subtitle">${i18n('cc-addon-backups.automatic-restore')}</div>
-            <div><span class=${classMap({ skeleton })}>${this._getAutomaticRestoreDescription(providerId)}</span></div>
-            
-            <div class="cc-block_subtitle">${i18n('cc-addon-backups.manual-restore')}</div>
-            <div><span class=${classMap({ skeleton })}>${this._getManualRestoreDescription(providerId)}</span></div>
-            <cc-input-text readonly clipboard multi ?skeleton=${skeleton} value="${ifDefined(restoreCommand)}"></cc-input-text>
-          </div>
+          <div class="cc-block_subtitle">${i18n('cc-addon-backups.automatic-restore')}</div>
+          <div><span class=${classMap({ skeleton })}>${this._getAutomaticRestoreDescription(providerId)}</span></div>
+          
+          <div class="cc-block_subtitle">${i18n('cc-addon-backups.manual-restore')}</div>
+          <div><span class=${classMap({ skeleton })}>${this._getManualRestoreDescription(providerId)}</span></div>
+          <cc-input-text readonly clipboard multi ?skeleton=${skeleton} value="${ifDefined(restoreCommand)}"></cc-input-text>
         </cc-block>
       ` : ''}
     `;
