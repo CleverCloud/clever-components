@@ -127,7 +127,7 @@ export class CcBlock extends LitElement {
         .main-wrapper {
           grid-area: 2 / 1 / auto / auto;
         }
-        
+
         ::slotted(.cc-block_empty-msg) {
           color: #555;
           font-style: italic;
@@ -138,14 +138,3 @@ export class CcBlock extends LitElement {
 }
 
 window.customElements.define('cc-block', CcBlock);
-
-export const blockStyles = css`
-
-  .cc-block_subtitle {
-    font-weight: bold;
-  }
-
-  .cc-block_subtitle:not(:first-child) {
-    margin-top: 1rem;
-  }
-`;

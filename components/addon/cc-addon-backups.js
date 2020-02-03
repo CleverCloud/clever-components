@@ -1,8 +1,9 @@
 import '../atoms/cc-expand.js';
 import '../atoms/cc-input-text.js';
+import '../molecules/cc-block-section.js';
+import '../molecules/cc-block.js';
 import '../molecules/cc-error.js';
 import backupSvg from './backup.svg';
-import { blockStyles } from '../molecules/cc-block.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
@@ -143,13 +144,17 @@ export class CcAddonBackups extends LitElement {
       ${!this.error ? html`
         <cc-block state="close">
           <div slot="title">${i18n('cc-addon-backups.restore')}</div>
-            
-          <div class="cc-block_subtitle">${i18n('cc-addon-backups.automatic-restore')}</div>
-          <div><span class=${classMap({ skeleton })}>${this._getAutomaticRestoreDescription(providerId)}</span></div>
           
-          <div class="cc-block_subtitle">${i18n('cc-addon-backups.manual-restore')}</div>
-          <div><span class=${classMap({ skeleton })}>${this._getManualRestoreDescription(providerId)}</span></div>
-          <cc-input-text readonly clipboard multi ?skeleton=${skeleton} value="${ifDefined(restoreCommand)}"></cc-input-text>
+          <cc-block-section>
+            <div slot="title">${i18n('cc-addon-backups.automatic-restore')}</div>
+            <div><span class=${classMap({ skeleton })}>${this._getAutomaticRestoreDescription(providerId)}</span></div>
+          </cc-block-section>
+          
+          <cc-block-section>
+            <div slot="title">${i18n('cc-addon-backups.manual-restore')}</div>
+            <div><span class=${classMap({ skeleton })}>${this._getManualRestoreDescription(providerId)}</span></div>
+            <cc-input-text readonly clipboard multi ?skeleton=${skeleton} value="${ifDefined(restoreCommand)}"></cc-input-text>
+          </cc-block-section>
         </cc-block>
       ` : ''}
     `;
@@ -159,7 +164,6 @@ export class CcAddonBackups extends LitElement {
     return [
       skeleton,
       linkStyles,
-      blockStyles,
       // language=CSS
       css`
         :host {
