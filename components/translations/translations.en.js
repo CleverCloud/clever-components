@@ -62,13 +62,14 @@ export const translations = {
   'cc-addon-credentials.title': ({ name }) => `${name} credentials`,
   // cc-addon-features
   'cc-addon-features.details': `Here's the list of all the features of your add-on. Features may evolve and your add-on would need a migration to match them all.`,
-  'cc-addon-features.loading-error': `Something went wrong while loading add-on features.`,
-  'cc-addon-features.title': `Add-on features`,
   'cc-addon-features.feature-name.disk': `Disk`,
-  'cc-addon-features.feature-name.nodes': `Nodes`,
   'cc-addon-features.feature-name.memory': `Memory`,
-  'cc-addon-features.feature-value.yes': `Yes`,
+  'cc-addon-features.feature-name.nodes': `Nodes`,
+  'cc-addon-features.feature-value.dedicated': `Dedicated`,
   'cc-addon-features.feature-value.no': `No`,
+  'cc-addon-features.feature-value.yes': `Yes`,
+  'cc-addon-features.loading-error': `Something went wrong while loading add-on features.`,
+  'cc-addon-features.title': `Features`,
   // cc-addon-linked-apps
   'cc-addon-linked-apps.details': `Here are listed applications linked to this add-on. The add-on exposes its environment variables to those linked applications.`,
   'cc-addon-linked-apps.loading-error': `Something went wrong while loading linked applications.`,

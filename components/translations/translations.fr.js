@@ -76,13 +76,14 @@ export const translations = {
   'cc-addon-credentials.title': ({ name }) => `Identifiants ${name}`,
   // cc-addon-features
   'cc-addon-features.details': `Ci-dessous, les spécifications de votre add-on. Elles peuvent évoluer et une migration de l'add-on peut être nécessaire pour en bénéficier.`,
-  'cc-addon-features.loading-error': `Une erreur est survenue pendant le chargement des spécifications de l'add-on`,
-  'cc-addon-features.title': `Spécifications de l'add-on`,
   'cc-addon-features.feature-name.disk': `Disque`,
-  'cc-addon-features.feature-name.nodes': `Nœuds`,
   'cc-addon-features.feature-name.memory': `Mémoire`,
-  'cc-addon-features.feature-value.yes': `Oui`,
+  'cc-addon-features.feature-name.nodes': `Nœuds`,
+  'cc-addon-features.feature-value.dedicated': `Dédié`,
   'cc-addon-features.feature-value.no': `Non`,
+  'cc-addon-features.feature-value.yes': `Oui`,
+  'cc-addon-features.loading-error': `Une erreur est survenue pendant le chargement des spécifications de l'add-on`,
+  'cc-addon-features.title': `Spécifications`,
   // cc-addon-linked-apps
   'cc-addon-linked-apps.details': `Ci-dessous la liste des applications liées à l'add-on. L'add-on expose ses variables d'environnement aux applications qui lui sont liées.`,
   'cc-addon-linked-apps.loading-error': `Une erreur est survenue pendant le chargement des applications liées.`,

@@ -78,11 +78,14 @@ export class CcAddonFeatures extends LitElement {
   };
 
   _getFeatureValue (code, rawValue) {
-    if (code === 'yes') {
-      return i18n('cc-addon-features.feature-value.yes');
+    if (code === 'dedicated') {
+      return i18n('cc-addon-features.feature-value.dedicated');
     }
     if (code === 'no') {
       return i18n('cc-addon-features.feature-value.no');
+    }
+    if (code === 'yes') {
+      return i18n('cc-addon-features.feature-value.yes');
     }
     return rawValue;
   };
