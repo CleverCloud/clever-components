@@ -3,6 +3,7 @@ import '../atoms/cc-expand.js';
 import '../atoms/cc-img.js';
 import downSvg from './down.svg';
 import upSvg from './up.svg';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
 
@@ -26,12 +27,14 @@ export class CcBlock extends LitElement {
     return {
       icon: { type: String },
       state: { type: String, reflect: true },
+      _overlay: { type: Boolean, attribute: false },
     };
   }
 
   constructor () {
     super();
     this.state = 'off';
+    this._overlay = false;
   }
 
   _clickToggle () {
@@ -69,14 +72,25 @@ export class CcBlock extends LitElement {
         ` : ''}
       </div>
       
-      <cc-expand class="main-wrapper">
+      <cc-expand class="main-wrapper ${classMap({ 'main-wrapper--overlay': this._overlay })}">
         ${!isToggleEnabled || isOpen ? html`
           <div class="main">
             <slot></slot>
           </div>
         ` : ''}
       </cc-expand>
+      
+      <slot name="overlay"></slot>
     `;
+  }
+
+  firstUpdated () {
+    const $overlay = this.shadowRoot.querySelector('slot[name="overlay"]');
+    $overlay.addEventListener('slotchange', (e) => {
+      const oldVal = this._overlay;
+      this._overlay = ($overlay.assignedNodes().length > 0);
+      this.requestUpdate('_overlay', oldVal);
+    });
   }
 
   static get styles () {
@@ -124,10 +138,26 @@ export class CcBlock extends LitElement {
           padding: 0.5rem 1rem 1rem;
         }
 
-        .main-wrapper {
+        .main-wrapper--overlay {
+          filter: blur(0.3rem);
+        }
+
+        /* superpose main and overlay */
+        .main-wrapper,
+        ::slotted([slot="overlay"]) {
           grid-area: 2 / 1 / auto / auto;
         }
 
+        ::slotted([slot="overlay"]) {
+          align-content: center;
+          display: grid;
+          justify-items: center;
+          /* stretch so it covers the .main and prevents clicks */
+          place-self: stretch;
+          /* we have a few z-index:2 on atoms */
+          z-index: 10;
+        }
+        
         ::slotted(.cc-block_empty-msg) {
           color: #555;
           font-style: italic;
