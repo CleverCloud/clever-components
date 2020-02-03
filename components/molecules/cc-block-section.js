@@ -9,7 +9,7 @@ import { css, html, LitElement } from 'lit-element';
  *
  * @slot The main content (right part) of the section. If info is not defined, this will take all the width.
  * @slot info - The info (left part) of the section.
- * @slot title - The title of the section.
+ * @slot title - The title of the section. You can use a `.danger` CSS class on your `<div slot="title">` if it's a danger zone.
  */
 export class CcBlockSection extends LitElement {
 
@@ -49,6 +49,10 @@ export class CcBlockSection extends LitElement {
 
         ::slotted([slot="title"]) {
           font-weight: bold;
+        }
+
+        ::slotted([slot="title"].danger) {
+          color: hsl(351, 70%, 47%);
         }
 
         .section {

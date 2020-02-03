@@ -45,7 +45,7 @@ export const defaultStory = makeStory(conf, {
         <cc-button primary>ACTION!</cc-button>
       </cc-block-section>
       <cc-block-section>
-        <div slot="title">Subtitle Third</div>
+        <div slot="title" class="danger">Danger section</div>
         <div slot="info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa. Mauris dignissim accumsan ex, at vestibulum lectus fermentum id.</div>
         <cc-button primary>THIRD!</cc-button>
       </cc-block-section>
