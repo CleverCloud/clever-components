@@ -132,6 +132,21 @@ export const translations = {
   // cc-header-orga
   'cc-header-orga.hotline': `Hotline:`,
   'cc-header-orga.error': `Something went wrong while loading organization info.`,
+  // cc-addon-admin
+  'cc-addon-admin.addon-name': `Add-on name`,
+  'cc-addon-admin.admin': `Administration`,
+  'cc-addon-admin.delete': `Delete the add-on`,
+  'cc-addon-admin.danger-zone': `Danger zone`,
+  'cc-addon-admin.delete-24h-delay': `The virtual machine will be stopped in 24 hours.`,
+  'cc-addon-admin.delete-keep-backups': `Backups will be kept according to the retention policy.`,
+  'cc-addon-admin.delete-unavailable': `Deleting this add-on will make it immediately unavailable.`,
+  'cc-addon-admin.error-loading': `Something went wrong while loading add-on info.`,
+  'cc-addon-admin.error-saving': `An error occurred when saving your modifications.`,
+  'cc-addon-admin.tags': `Tags`,
+  'cc-addon-admin.tags-description': `Tags allow you to classify your applications and add-ons to create categories`,
+  'cc-addon-admin.tags-empty': `No defined tags`,
+  'cc-addon-admin.tags-update': `Update tags`,
+  'cc-addon-admin.update': `Update name`,
   // cc-tile-consumption
   'cc-tile-consumption.title': `Credits consumption`,
   'cc-tile-consumption.yesterday': `Yesterday`,

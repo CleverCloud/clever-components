@@ -1,12 +1,11 @@
 import {
   prepareFormatDate,
   prepareFormatDateOnly,
+  prepareFormatDatetime,
   prepareFormatDistanceToNow,
   prepareFormatHours,
-  prepareFormatDatetime,
 } from '../lib/i18n-date.js';
 import { prepareNumberUnitFormatter } from '../lib/i18n-number.js';
-
 import { sanitize } from '../lib/i18n-sanitize';
 
 export const lang = 'fr';
@@ -146,6 +145,21 @@ export const translations = {
   // cc-header-orga
   'cc-header-orga.hotline': `Numéro d'urgence :`,
   'cc-header-orga.error': `Une erreur est survenue pendant le chargement des informations de l'organisation.`,
+  // cc-addon-admin
+  'cc-addon-admin.addon-name': `Nom de l'add-on`,
+  'cc-addon-admin.admin': `Administration`,
+  'cc-addon-admin.danger-zone': `Zone de danger`,
+  'cc-addon-admin.delete': `Supprimer l'add-on`,
+  'cc-addon-admin.delete-24h-delay': `La machine virtuelle sera arrêtée dans 24 heures.`,
+  'cc-addon-admin.delete-keep-backups': `Les backups seront gardés suivant la politique de rétention.`,
+  'cc-addon-admin.delete-unavailable': `Supprimer cet add-on le rendra directement indisponible.`,
+  'cc-addon-admin.error-loading': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
+  'cc-addon-admin.error-saving': `Une erreur est survenue pendant la sauvegarde des modifications`,
+  'cc-addon-admin.tags': `Tags`,
+  'cc-addon-admin.tags-description': `Les tags vous permettent de classer vos applications et add-ons afin de les catégoriser`,
+  'cc-addon-admin.tags-empty': `Pas de tags définis`,
+  'cc-addon-admin.tags-update': `Mettre à jour les tags`,
+  'cc-addon-admin.update': `Mettre à jour le nom`,
   // cc-tile-consumption
   'cc-tile-consumption.title': `Consommation de crédits`,
   'cc-tile-consumption.yesterday': `Hier`,
