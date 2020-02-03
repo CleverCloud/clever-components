@@ -1,3 +1,7 @@
+// TRICK_START: if we import translation files statically here, storybook gets reloaded when translations are updated :p
+import '../../components/translations/translations.en.js';
+import '../../components/translations/translations.fr.js';
+// TRICK_END
 import * as blockPreview from '@storybook/components/dist/blocks/Preview.js';
 import { decorate } from '@storybook/addon-actions';
 import { sequence } from './sequence.js';
