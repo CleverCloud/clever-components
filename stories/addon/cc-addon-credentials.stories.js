@@ -71,7 +71,7 @@ export const dataLoadedWithApm = makeStory(conf, {
   items: [{
     type: 'apm',
     name: 'APM',
-    toggleState: 'open',
+    toggleState: 'close',
     icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/elasticsearch-apm.svg',
     credentials: [
       { type: 'user', value: 'my-super-user', secret: false },
