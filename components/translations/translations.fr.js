@@ -87,7 +87,7 @@ export const translations = {
   'cc-addon-linked-apps.details': `Ci-dessous la liste des applications liées à l'add-on. L'add-on expose ses variables d'environnement aux applications qui lui sont liées.`,
   'cc-addon-linked-apps.loading-error': `Une erreur est survenue pendant le chargement des applications liées.`,
   'cc-addon-linked-apps.no-linked-applications': `Aucune application liée pour l'instant.`,
-  'cc-addon-linked-apps.title': `Applications liées à cet add-on`,
+  'cc-addon-linked-apps.title': `Applications liées`,
   'cc-addon-linked-apps.zone': `zone:`,
   // cc-beta
   'cc-beta.label': `bêta`,

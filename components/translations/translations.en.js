@@ -71,10 +71,10 @@ export const translations = {
   'cc-addon-features.loading-error': `Something went wrong while loading add-on features.`,
   'cc-addon-features.title': `Features`,
   // cc-addon-linked-apps
-  'cc-addon-linked-apps.details': `Here are listed applications linked to this add-on. The add-on exposes its environment variables to those linked applications.`,
+  'cc-addon-linked-apps.details': `Here's the list of applications linked to this add-on. The add-on exposes its environment variables to those linked applications.`,
   'cc-addon-linked-apps.loading-error': `Something went wrong while loading linked applications.`,
   'cc-addon-linked-apps.no-linked-applications': `No applications linked yet.`,
-  'cc-addon-linked-apps.title': `Linked applications to this add-on`,
+  'cc-addon-linked-apps.title': `Linked applications`,
   'cc-addon-linked-apps.zone': `zone:`,
   // cc-beta
   'cc-beta.label': `beta`,

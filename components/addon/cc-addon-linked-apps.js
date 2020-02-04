@@ -14,7 +14,6 @@ import { skeleton } from '../styles/skeleton.js';
  * ## Details
  *
  * * When applications is nullish, a skeleton screen UI pattern is displayed (loading hint).
- * * When applications is an empty array, a message is displayed instead of a the list.
  *
  * ## Type definitions
  *
@@ -140,7 +139,6 @@ export class CcAddonLinkedApps extends LitElement {
         }
 
         .zone {
-          background-color: #eee;
           background-color: #496D93;
           border-radius: 0.25rem;
           box-sizing: border-box;
@@ -150,7 +148,6 @@ export class CcAddonLinkedApps extends LitElement {
         }
 
         .zone:not(.skeleton) {
-          color: #222;
           color: #fff;
         }
 
