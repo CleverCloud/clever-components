@@ -73,7 +73,9 @@ export class CcAddonBackups extends LitElement {
   }
 
   _getBackupText (createdAt, expiresAt) {
-    return i18n('cc-addon-backups.text', { createdAt, expiresAt });
+    return (expiresAt != null)
+      ? i18n('cc-addon-backups.text', { createdAt, expiresAt })
+      : i18n('cc-addon-backups.text.user-defined-retention', { createdAt });
   }
 
   _getBackupLink (providerId) {

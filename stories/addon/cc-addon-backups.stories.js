@@ -11,27 +11,21 @@ const backups = {
     {
       createdAt: new Date('2019-11-17 03:00'),
       expiresAt: new Date('2019-11-27 03:00'),
-      url: 'https://my-backup-services.clever-cloud.com/backup.tar.gz',
     },
     {
       createdAt: new Date('2019-11-18 03:30'),
       expiresAt: new Date('2019-11-28 03:30'),
-      url: 'https://my-backup-services.clever-cloud.com/backup.tar.gz',
     },
     {
       createdAt: new Date('2019-11-19 03:00'),
       expiresAt: new Date('2019-11-29 03:00'),
-      url: `https://my-backup-services.clever-cloud.com/backup.tar.gz`,
     },
     {
       createdAt: new Date('2019-11-20 03:00'),
       expiresAt: new Date('2019-11-30 03:00'),
-      url: `https://my-backup-services.clever-cloud.com/backup.tar.gz`,
     },
     {
       createdAt: new Date('2019-11-21 03:00'),
-      expiresAt: new Date('2019-12-01 03:00'),
-      url: 'https://my-backup-services.clever-cloud.com/backup.tar.gz',
     },
   ],
 };

@@ -49,6 +49,7 @@ export const translations = {
   'cc-addon-backups.manual-restore.es-addon': `You can also restore a backup using cURL by executing this command:`,
   'cc-addon-backups.restore': `Restore a backup`,
   'cc-addon-backups.text': ({ createdAt, expiresAt }) => sanitize`Backup from <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong> (expires on <strong>${formatDateOnly(expiresAt)}</strong>)`,
+  'cc-addon-backups.text.user-defined-retention': ({ createdAt }) => sanitize`Backup from <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong> (expires after defined retention)`,
   'cc-addon-backups.title': `Backups`,
   // cc-addon-credentials
   'cc-addon-credentials.description.apm': `Use those credentials to connect an APM Server instance to your Elasticsearch cluster.`,
