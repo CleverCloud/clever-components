@@ -1,4 +1,3 @@
-import '../atoms/cc-expand.js';
 import '../atoms/cc-input-text.js';
 import '../molecules/cc-block-section.js';
 import '../molecules/cc-block.js';

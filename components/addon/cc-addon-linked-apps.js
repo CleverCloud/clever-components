@@ -1,4 +1,3 @@
-import '../atoms/cc-expand.js';
 import '../atoms/cc-img.js';
 import '../molecules/cc-block.js';
 import '../molecules/cc-error.js';
@@ -78,21 +77,17 @@ export class CcAddonLinkedApps extends LitElement {
         ${hasData ? html`
           <div>${i18n('cc-addon-linked-apps.details')}</div>
           
-          <cc-expand>
-            <div class="application-list">
-              ${applications.map((application) => html`
-                <div class="application">
-                  <cc-img class="logo"
-                    ?skeleton=${skeleton}
-                    src=${ifDefined(application.instance.variant.logo)}
-                    title="${ifDefined(application.instance.variant.name)}"
-                  ></cc-img>
-                  <div class="name ${classMap({ skeleton })}">${application.name}</div>
-                  <div class="zone ${classMap({ skeleton })}">${i18n('cc-addon-linked-apps.zone')}${application.zone}</div>
-                </div>
-              `)}
+          ${applications.map((application) => html`
+            <div class="application">
+              <cc-img class="logo"
+                ?skeleton=${skeleton}
+                src=${ifDefined(application.instance.variant.logo)}
+                title="${ifDefined(application.instance.variant.name)}"
+              ></cc-img>
+              <div class="name ${classMap({ skeleton })}">${application.name}</div>
+              <div class="zone ${classMap({ skeleton })}">${i18n('cc-addon-linked-apps.zone')}${application.zone}</div>
             </div>
-          </cc-expand>
+          `)}
         ` : ''}
   
         ${emptyData ? html`
@@ -113,11 +108,6 @@ export class CcAddonLinkedApps extends LitElement {
       css`
         :host {
           display: block;
-        }
-
-        .application-list {
-          display: grid;
-          grid-gap: 1rem;
         }
 
         .application {
