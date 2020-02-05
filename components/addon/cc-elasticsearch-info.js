@@ -23,6 +23,7 @@ const ELASTICSEARCH_DOCUMENTATION = 'https://www.clever-cloud.com/doc/addons/ela
  * @prop {String} apmLink - Sets APM service link.
  * @prop {String} elasticsearchLink - Sets main elasticsearch service link.
  * @prop {Boolean} error - Display an error message.
+ * @prop {Boolean} hideElasticsearchLink - Hides elasticsearch service link.
  * @prop {String} kibanaLink - Sets kibana service link.
  */
 export class CcElasticsearchInfo extends LitElement {
@@ -32,6 +33,7 @@ export class CcElasticsearchInfo extends LitElement {
       apmLink: { type: String },
       elasticsearchLink: { type: String },
       error: { type: Boolean },
+      hideElasticsearchLink: { type: Boolean },
       kibanaLink: { type: String },
     };
   }
@@ -39,11 +41,12 @@ export class CcElasticsearchInfo extends LitElement {
   constructor () {
     super();
     this.error = false;
+    this.hideElasticsearchLink = false;
   }
 
   render () {
 
-    const skeleton = (this.elasticsearchLink == null) || (this.kibanaLink == null) || (this.apmLink == null);
+    const skeleton = (!this.hideElasticsearchLink && this.elasticsearchLink == null) || (this.kibanaLink == null) || (this.apmLink == null);
 
     return html`
 
@@ -53,9 +56,11 @@ export class CcElasticsearchInfo extends LitElement {
         <div class="info-text">${i18n('cc-elasticsearch-info.text')}</div>
         
         <div class="link-list">
-          ${ccLink(this.elasticsearchLink, html`
-            <cc-img src="${ELASTICSEARCH_LOGO_URL}"></cc-img><span class="${classMap({ skeleton })}">${i18n('cc-elasticsearch-info.link.elasticsearch')}</span>
-          `)}
+          ${!this.hideElasticsearchLink ? html`
+            ${ccLink(this.elasticsearchLink, html`
+              <cc-img src="${ELASTICSEARCH_LOGO_URL}"></cc-img><span class="${classMap({ skeleton })}">${i18n('cc-elasticsearch-info.link.elasticsearch')}</span>
+            `)}
+          ` : ''}
           ${ccLink(this.kibanaLink, html`
             <cc-img src="${KIBANA_LOGO_URL}"></cc-img><span class="${classMap({ skeleton })}">${i18n('cc-elasticsearch-info.link.kibana')}</span>
           `)}

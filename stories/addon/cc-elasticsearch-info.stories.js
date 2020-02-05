@@ -28,6 +28,14 @@ export const defaultStory = makeStory(conf, {
   items: [links],
 });
 
+export const hideElasticsearchLink = makeStory(conf, {
+  items: [{
+    hideElasticsearchLink: true,
+    apmLink: links.apmLink,
+    kibanaLink: links.kibanaLink,
+  }],
+});
+
 export const skeletonStory = makeStory(conf, {
   items: [{}],
 });
