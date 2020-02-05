@@ -6,6 +6,7 @@ import backupSvg from './backup.svg';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
+import { fakeString } from '../lib/fake-strings.js';
 import { i18n } from '../lib/i18n.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { skeleton } from '../styles/skeleton.js';
@@ -40,7 +41,6 @@ import { skeleton } from '../styles/skeleton.js';
  * @prop {Boolean} deploying - Displays a message about the addon not being ready yet.
  * @prop {Boolean} error - Displays an error message.
  */
-
 export class CcAddonBackups extends LitElement {
 
   static get properties () {
@@ -72,7 +72,7 @@ export class CcAddonBackups extends LitElement {
       case 'es-addon-old':
         return i18n('cc-addon-backups.description.es-addon-old');
       default:
-        return new Array(140).fill('?').join('');
+        return fakeString(150);
     }
   }
 
@@ -89,7 +89,7 @@ export class CcAddonBackups extends LitElement {
       case 'es-addon-old':
         return i18n('cc-addon-backups.link.es-addon-old');
       default:
-        return new Array(16).fill('?').join('');
+        return fakeString(18);
     }
   }
 
@@ -109,7 +109,7 @@ export class CcAddonBackups extends LitElement {
       case 'es-addon':
         return i18n('cc-addon-backups.restore.with-service.title.es-addon');
       default:
-        return new Array(40).fill('?').join('');
+        return fakeString(20);
     }
   }
 
@@ -120,7 +120,7 @@ export class CcAddonBackups extends LitElement {
           href: (this.backups != null) ? this.backups.esAddonBackupRepositoryUrl : '',
         });
       default:
-        return new Array(110).fill('?').join('');
+        return fakeString(80);
     }
   }
 
@@ -130,7 +130,7 @@ export class CcAddonBackups extends LitElement {
       case 'es-addon-old':
         return i18n('cc-addon-backups.restore.manual.description.es-addon');
       default:
-        return new Array(90).fill('?').join('');
+        return fakeString(70);
     }
   }
 
@@ -139,7 +139,7 @@ export class CcAddonBackups extends LitElement {
       case 'es-addon':
         return i18n('cc-addon-backups.delete.with-service.title.es-addon');
       default:
-        return new Array(40).fill('?').join('');
+        return fakeString(20);
     }
   }
 
@@ -150,7 +150,7 @@ export class CcAddonBackups extends LitElement {
           href: (this.backups != null) ? this.backups.esAddonBackupRepositoryUrl : '',
         });
       default:
-        return new Array(110).fill('?').join('');
+        return fakeString(80);
     }
   }
 
@@ -160,7 +160,7 @@ export class CcAddonBackups extends LitElement {
       case 'es-addon-old':
         return i18n('cc-addon-backups.delete.manual.description.es-addon');
       default:
-        return new Array(40).fill('?').join('');
+        return fakeString(70);
     }
   }
 
@@ -235,7 +235,7 @@ export class CcAddonBackups extends LitElement {
         
           <cc-block-section>
             <div slot="title">${i18n('cc-addon-backups.delete.manual.title')}</div>
-            <div>${this._getManualDeleteDescription(providerId)}</div>
+            <div><span class=${classMap({ skeleton })}>${this._getManualDeleteDescription(providerId)}</span></div>
             <cc-input-text readonly clipboard multi ?skeleton=${skeleton} value="${ifDefined(restoreCommand)}"></cc-input-text>
           </cc-block-section>
         </cc-block>
@@ -252,6 +252,7 @@ export class CcAddonBackups extends LitElement {
         :host {
           display: grid;
           grid-gap: 1rem;
+          line-height: 1.5;
         }
 
         .backup {
