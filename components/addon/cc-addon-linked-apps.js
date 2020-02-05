@@ -1,7 +1,6 @@
-import '../atoms/cc-expand.js';
 import '../atoms/cc-img.js';
+import '../molecules/cc-block.js';
 import '../molecules/cc-error.js';
-import { blockStyles } from '../molecules/cc-block.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
@@ -14,7 +13,6 @@ import { skeleton } from '../styles/skeleton.js';
  * ## Details
  *
  * * When applications is nullish, a skeleton screen UI pattern is displayed (loading hint).
- * * When applications is an empty array, a message is displayed instead of a the list.
  *
  * ## Type definitions
  *
@@ -76,35 +74,29 @@ export class CcAddonLinkedApps extends LitElement {
       <cc-block>
         <div slot="title">${i18n('cc-addon-linked-apps.title')}</div>
         
-        <div slot="main">
-          ${hasData ? html`
-            <div>${i18n('cc-addon-linked-apps.details')}</div>
-            
-            <cc-expand>
-              <div class="application-list">
-                ${applications.map((application) => html`
-                  <div class="application">
-                    <cc-img class="logo"
-                      ?skeleton=${skeleton}
-                      src=${ifDefined(application.instance.variant.logo)}
-                      title="${ifDefined(application.instance.variant.name)}"
-                    ></cc-img>
-                    <div class="name ${classMap({ skeleton })}">${application.name}</div>
-                    <div class="zone ${classMap({ skeleton })}">${i18n('cc-addon-linked-apps.zone')}${application.zone}</div>
-                  </div>
-                `)}
-              </div>
-            </cc-expand>
-          ` : ''}
-    
-          ${emptyData ? html`
-            <div class="cc-block_empty-msg">${i18n('cc-addon-linked-apps.no-linked-applications')}</div>
-          ` : ''}
-    
-          ${this.error ? html`
-            <cc-error>${i18n('cc-addon-linked-apps.loading-error')}</cc-error>
-          ` : ''}
-        </div>
+        ${hasData ? html`
+          <div>${i18n('cc-addon-linked-apps.details')}</div>
+          
+          ${applications.map((application) => html`
+            <div class="application">
+              <cc-img class="logo"
+                ?skeleton=${skeleton}
+                src=${ifDefined(application.instance.variant.logo)}
+                title="${ifDefined(application.instance.variant.name)}"
+              ></cc-img>
+              <div class="name ${classMap({ skeleton })}">${application.name}</div>
+              <div class="zone ${classMap({ skeleton })}">${i18n('cc-addon-linked-apps.zone')}${application.zone}</div>
+            </div>
+          `)}
+        ` : ''}
+  
+        ${emptyData ? html`
+          <div class="cc-block_empty-msg">${i18n('cc-addon-linked-apps.no-linked-applications')}</div>
+        ` : ''}
+  
+        ${this.error ? html`
+          <cc-error>${i18n('cc-addon-linked-apps.loading-error')}</cc-error>
+        ` : ''}
       </cc-block>
     `;
   }
@@ -112,16 +104,10 @@ export class CcAddonLinkedApps extends LitElement {
   static get styles () {
     return [
       skeleton,
-      blockStyles,
       // language=CSS
       css`
         :host {
           display: block;
-        }
-
-        .application-list {
-          display: grid;
-          grid-gap: 1rem;
         }
 
         .application {
@@ -143,7 +129,6 @@ export class CcAddonLinkedApps extends LitElement {
         }
 
         .zone {
-          background-color: #eee;
           background-color: #496D93;
           border-radius: 0.25rem;
           box-sizing: border-box;
@@ -153,7 +138,6 @@ export class CcAddonLinkedApps extends LitElement {
         }
 
         .zone:not(.skeleton) {
-          color: #222;
           color: #fff;
         }
 

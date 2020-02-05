@@ -78,11 +78,14 @@ export class CcAddonFeatures extends LitElement {
   };
 
   _getFeatureValue (code, rawValue) {
-    if (code === 'yes') {
-      return i18n('cc-addon-features.feature-value.yes');
+    if (code === 'dedicated') {
+      return i18n('cc-addon-features.feature-value.dedicated');
     }
     if (code === 'no') {
       return i18n('cc-addon-features.feature-value.no');
+    }
+    if (code === 'yes') {
+      return i18n('cc-addon-features.feature-value.yes');
     }
     return rawValue;
   };
@@ -118,28 +121,26 @@ export class CcAddonFeatures extends LitElement {
       <cc-block>
         <div slot="title">${i18n('cc-addon-features.title')}</div>
         
-        <div slot="main">
-          ${!this.error ? html`
-            <div>${i18n('cc-addon-features.details')}</div>
-            <div class="feature-list">
-              ${features.map((feature) => html`
-                <div class="feature ${classMap({ skeleton })}">
-                  ${feature.icon != null ? html`
-                    <div class="feature-icon">
-                      <img class="feature-icon_img" src="${feature.icon}" alt="">
-                    </div>
-                  ` : ''}
-                  <div class="feature-name">${feature.name}</div>
-                  <div class="feature-value">${feature.value}</div>
-                </div>
-              `)}
-            </div>
-          ` : ''}
-    
-          ${this.error ? html`
-            <cc-error>${i18n('cc-addon-features.loading-error')}</cc-error>
-          ` : ''}
-        </div>
+        ${!this.error ? html`
+          <div>${i18n('cc-addon-features.details')}</div>
+          <div class="feature-list">
+            ${features.map((feature) => html`
+              <div class="feature ${classMap({ skeleton })}">
+                ${feature.icon != null ? html`
+                  <div class="feature-icon">
+                    <img class="feature-icon_img" src="${feature.icon}" alt="">
+                  </div>
+                ` : ''}
+                <div class="feature-name">${feature.name}</div>
+                <div class="feature-value">${feature.value}</div>
+              </div>
+            `)}
+          </div>
+        ` : ''}
+  
+        ${this.error ? html`
+          <cc-error>${i18n('cc-addon-features.loading-error')}</cc-error>
+        ` : ''}
       </cc-block>
     `;
   }

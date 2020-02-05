@@ -3,6 +3,7 @@ import '../atoms/cc-expand.js';
 import '../atoms/cc-img.js';
 import downSvg from './down.svg';
 import upSvg from './up.svg';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
 
@@ -16,8 +17,9 @@ import { i18n } from '../lib/i18n.js';
  * @prop {String} icon - Sets the URL of the image before the title. Icon is hidden if nullish.
  * @prop {"off"|"open"|"close"} state - Sets the state of the toggle behaviour.
  *
+ * @slot The main content of the block. The direct children of this will be spaced in a 1 column CSS grid.
+ * @slot overlay - The content to display on top of the main content.
  * @slot title - The title of the block. Try to only use text. Use the `icon` property/attribute.
- * @slot main - The main content of the block. The direct children of this will be spaced in a 1 column CSS grid.
  */
 export class CcBlock extends LitElement {
 
@@ -25,12 +27,14 @@ export class CcBlock extends LitElement {
     return {
       icon: { type: String },
       state: { type: String, reflect: true },
+      _overlay: { type: Boolean, attribute: false },
     };
   }
 
   constructor () {
     super();
     this.state = 'off';
+    this._overlay = false;
   }
 
   _clickToggle () {
@@ -68,12 +72,25 @@ export class CcBlock extends LitElement {
         ` : ''}
       </div>
       
-      <cc-expand>
+      <cc-expand class="main-wrapper ${classMap({ 'main-wrapper--overlay': this._overlay })}">
         ${!isToggleEnabled || isOpen ? html`
-          <slot name="main"></slot>
+          <div class="main">
+            <slot></slot>
+          </div>
         ` : ''}
       </cc-expand>
+      
+      <slot name="overlay"></slot>
     `;
+  }
+
+  firstUpdated () {
+    const $overlay = this.shadowRoot.querySelector('slot[name="overlay"]');
+    $overlay.addEventListener('slotchange', (e) => {
+      const oldVal = this._overlay;
+      this._overlay = ($overlay.assignedNodes().length > 0);
+      this.requestUpdate('_overlay', oldVal);
+    });
   }
 
   static get styles () {
@@ -85,7 +102,7 @@ export class CcBlock extends LitElement {
           border-radius: 0.25rem;
           border: 1px solid #bcc2d1;
           box-sizing: border-box;
-          display: block;
+          display: grid;
           overflow: hidden;
         }
 
@@ -115,10 +132,35 @@ export class CcBlock extends LitElement {
           font-weight: bold;
         }
 
-        ::slotted([slot="main"]) {
+        .main {
           display: grid;
           grid-gap: 1rem;
           padding: 0.5rem 1rem 1rem;
+        }
+
+        .main-wrapper--overlay {
+          filter: blur(0.3rem);
+        }
+
+        /* superpose main and overlay */
+        .main-wrapper,
+        ::slotted([slot="overlay"]) {
+          grid-area: 2 / 1 / auto / auto;
+        }
+
+        ::slotted([slot="overlay"]) {
+          align-content: center;
+          display: grid;
+          justify-items: center;
+          /* stretch so it covers the .main and prevents clicks */
+          place-self: stretch;
+          /* we have a few z-index:2 on atoms */
+          z-index: 10;
+        }
+        
+        ::slotted(.cc-block_empty-msg) {
+          color: #555;
+          font-style: italic;
         }
       `,
     ];
@@ -126,19 +168,3 @@ export class CcBlock extends LitElement {
 }
 
 window.customElements.define('cc-block', CcBlock);
-
-export const blockStyles = css`
-
-  .cc-block_subtitle {
-    font-weight: bold;
-  }
-
-  .cc-block_subtitle:not(:first-child) {
-    margin-top: 1rem;
-  }
-
-  .cc-block_empty-msg {
-    color: #555;
-    font-style: italic;
-  }
-`;

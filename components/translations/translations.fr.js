@@ -1,12 +1,11 @@
 import {
   prepareFormatDate,
   prepareFormatDateOnly,
+  prepareFormatDatetime,
   prepareFormatDistanceToNow,
   prepareFormatHours,
-  prepareFormatDatetime,
 } from '../lib/i18n-date.js';
 import { prepareNumberUnitFormatter } from '../lib/i18n-number.js';
-
 import { sanitize } from '../lib/i18n-sanitize';
 
 export const lang = 'fr';
@@ -53,16 +52,25 @@ const formatNumberUnit = prepareNumberUnitFormatter(lang);
 export const translations = {
   LANGUAGE: '🇫🇷 Français',
   // cc-addon-backups
-  'cc-addon-backups.automatic-restore': `Restauration automatique`,
-  'cc-addon-backups.automatic-restore.es-addon': ({ href }) => sanitize`Une sauvegarde peut être restaurée avec Kibana. Rendez vous vers le <a href="${href}">dépôt de sauvegardes</a> et sélectionnez la sauvegarde que vous voulez restaurer.`,
-  'cc-addon-backups.description.es-addon': `Les sauvegardes sont gérées par Elasticsearch lui-même. Vous pouvez restaurer une sauvegarde en utilisant la commande ci-dessous ou depuis l'interface Kibana. Vous pouvez aussi controller la rétention ainsi que la périodicité de prise des sauvegardes à travers l'interface Kibana.`,
+  'cc-addon-backups.delete': `Supprimer une sauvegarde`,
+  'cc-addon-backups.delete.with-service.title.es-addon': `Suppression avec Kibana`,
+  'cc-addon-backups.delete.with-service.description.es-addon': ({ href }) => sanitize`Vous pouvez supprimer une sauvegarde avec Kibana en vous rendant sur le <a href="${href}">dépôt de sauvegardes</a>.`,
+  'cc-addon-backups.delete.manual.title': `Suppression manuelle`,
+  'cc-addon-backups.delete.manual.description.es-addon': `Vous pouvez supprimer une sauvegarde manuellement grâce à l'outil cURL en exécutant cette commande :`,
+  'cc-addon-backups.deploying': `L'add-on est en cours de déploiement... Les sauvegardes seront disponibles quand ce déploiement sera terminé.`,
+  'cc-addon-backups.description.es-addon': `Les sauvegardes sont gérées par Elasticsearch lui-même. Vous pouvez définir la rétention ainsi que la périodicité des sauvegardes dans l'interface de Kibana.`,
+  'cc-addon-backups.description.es-addon-old': `Les sauvegardes sont gérées par Elasticsearch lui-même. La version de votre Elasticsearch ne permet pas de définir de politique de rétention. La suppression d'une sauvegarde se fait manuellement avec l'API d'Elasticsearch.`,
   'cc-addon-backups.empty': `Il n'y a aucune sauvegarde pour l'instant.`,
   'cc-addon-backups.link.es-addon': `ouvrir dans Kibana`,
+  'cc-addon-backups.link.es-addon-old': `ouvrir dans Elasticsearch`,
   'cc-addon-backups.loading-error': `Une erreur est survenue pendant le chargement des sauvegardes.`,
-  'cc-addon-backups.manual-restore': `Restauration manuelle`,
-  'cc-addon-backups.manual-restore.es-addon': `Vous pouvez restorer la sauvegarde grâce à l'outil cURL en exécutant cette commande :`,
   'cc-addon-backups.restore': `Restaurer une sauvegarde`,
+  'cc-addon-backups.restore.with-service.title.es-addon': `Restauration avec Kibana`,
+  'cc-addon-backups.restore.with-service.description.es-addon': ({ href }) => sanitize`Vous pouvez restaurer une sauvegarde avec Kibana en vous rendant sur le <a href="${href}">dépôt de sauvegardes</a>.`,
+  'cc-addon-backups.restore.manual.title': `Restauration manuelle`,
+  'cc-addon-backups.restore.manual.description.es-addon': `Vous pouvez restaurer une sauvegarde manuellement grâce à l'outil cURL en exécutant cette commande :`,
   'cc-addon-backups.text': ({ createdAt, expiresAt }) => sanitize`Sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong> (expire le <strong>${formatDateOnly(expiresAt)}</strong>)`,
+  'cc-addon-backups.text.user-defined-retention': ({ createdAt }) => sanitize`Sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong> (expire après la durée de rétention définie)`,
   'cc-addon-backups.title': `Sauvegardes`,
   // cc-addon-credentials
   'cc-addon-credentials.description.apm': `Utilisez ces identifiants pour connecter une instance d'APM Server à votre cluster Elasticsearch.`,
@@ -76,18 +84,19 @@ export const translations = {
   'cc-addon-credentials.title': ({ name }) => `Identifiants ${name}`,
   // cc-addon-features
   'cc-addon-features.details': `Ci-dessous, les spécifications de votre add-on. Elles peuvent évoluer et une migration de l'add-on peut être nécessaire pour en bénéficier.`,
-  'cc-addon-features.loading-error': `Une erreur est survenue pendant le chargement des spécifications de l'add-on`,
-  'cc-addon-features.title': `Spécifications de l'add-on`,
   'cc-addon-features.feature-name.disk': `Disque`,
-  'cc-addon-features.feature-name.nodes': `Nœuds`,
   'cc-addon-features.feature-name.memory': `Mémoire`,
-  'cc-addon-features.feature-value.yes': `Oui`,
+  'cc-addon-features.feature-name.nodes': `Nœuds`,
+  'cc-addon-features.feature-value.dedicated': `Dédié`,
   'cc-addon-features.feature-value.no': `Non`,
+  'cc-addon-features.feature-value.yes': `Oui`,
+  'cc-addon-features.loading-error': `Une erreur est survenue pendant le chargement des spécifications de l'add-on`,
+  'cc-addon-features.title': `Spécifications`,
   // cc-addon-linked-apps
   'cc-addon-linked-apps.details': `Ci-dessous la liste des applications liées à l'add-on. L'add-on expose ses variables d'environnement aux applications qui lui sont liées.`,
   'cc-addon-linked-apps.loading-error': `Une erreur est survenue pendant le chargement des applications liées.`,
   'cc-addon-linked-apps.no-linked-applications': `Aucune application liée pour l'instant.`,
-  'cc-addon-linked-apps.title': `Applications liées à cet add-on`,
+  'cc-addon-linked-apps.title': `Applications liées`,
   'cc-addon-linked-apps.zone': `zone:`,
   // cc-beta
   'cc-beta.label': `bêta`,
@@ -108,7 +117,7 @@ export const translations = {
   'cc-elasticsearch-info.link.doc': `Lire la documentation`,
   'cc-elasticsearch-info.link.elasticsearch': `Voir l'add-on Elasticsearch`,
   'cc-elasticsearch-info.link.kibana': `Ouvrir Kibana`,
-  'cc-elasticsearch-info.text': `Ce service fait partie d'une offre Elasticsearch Enterprise. Vous pouvez retrouver la documentation ainsi que les différents lié ci-dessous.`,
+  'cc-elasticsearch-info.text': `Ce service fait partie d'une offre Elasticsearch Enterprise. Vous pouvez retrouver la documentation ainsi que les différents liés ci-dessous.`,
   // cc-header-addon
   'cc-header-addon.plan': `Plan`,
   'cc-header-addon.version': `Version`,
@@ -145,6 +154,21 @@ export const translations = {
   // cc-header-orga
   'cc-header-orga.hotline': `Numéro d'urgence :`,
   'cc-header-orga.error': `Une erreur est survenue pendant le chargement des informations de l'organisation.`,
+  // cc-addon-admin
+  'cc-addon-admin.addon-name': `Nom de l'add-on`,
+  'cc-addon-admin.admin': `Administration`,
+  'cc-addon-admin.danger-zone': `Zone de danger`,
+  'cc-addon-admin.delete': `Supprimer l'add-on`,
+  'cc-addon-admin.delete-24h-delay': `La machine virtuelle sera arrêtée dans 24 heures.`,
+  'cc-addon-admin.delete-keep-backups': `Les backups seront gardés suivant la politique de rétention.`,
+  'cc-addon-admin.delete-unavailable': `Supprimer cet add-on le rendra directement indisponible.`,
+  'cc-addon-admin.error-loading': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
+  'cc-addon-admin.error-saving': `Une erreur est survenue pendant la sauvegarde des modifications`,
+  'cc-addon-admin.tags': `Tags`,
+  'cc-addon-admin.tags-description': `Les tags vous permettent de classer vos applications et add-ons afin de les catégoriser`,
+  'cc-addon-admin.tags-empty': `Pas de tags définis`,
+  'cc-addon-admin.tags-update': `Mettre à jour les tags`,
+  'cc-addon-admin.update': `Mettre à jour le nom`,
   // cc-tile-consumption
   'cc-tile-consumption.title': `Consommation de crédits`,
   'cc-tile-consumption.yesterday': `Hier`,

@@ -271,9 +271,10 @@ export class EnvVarForm extends LitElement {
         }
 
         .heading {
+          color: #3A3871;
           flex: 1 1 0;
-          font-size: 1.25rem;
-          font-weight: 400;
+          font-size: 1.2rem;
+          font-weight: bold;
           margin: 0.2rem;
         }
 

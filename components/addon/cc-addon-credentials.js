@@ -83,29 +83,26 @@ export class CcAddonCredentials extends LitElement {
       <cc-block icon=${this.icon} state=${this.toggleState}>
         <div slot="title">${i18n('cc-addon-credentials.title', { name: this.name })}</div>
         
-        <div slot="main">
-        
-          ${!this.error ? html`
-            <div>${this._getDescription(this.type)}</div>
-            
-            ${this.credentials != null ? html`
-              <div class="credential-list">
-                ${this.credentials.map(({ type, secret, value }) => html`
-                  <cc-input-text readonly clipboard
-                    ?secret=${secret}
-                    ?skeleton=${value == null}
-                    value=${ifDefined(value)}
-                    label=${this._getFieldName(type)}
-                  ></cc-input-text>
-                `)}
-              </div>
-            ` : ''}
-          ` : ''}
+        ${!this.error ? html`
+          <div>${this._getDescription(this.type)}</div>
           
-          ${this.error ? html`
-            <cc-error>${i18n('cc-addon-credentials.loading-error')}</cc-error>
+          ${this.credentials != null ? html`
+            <div class="credential-list">
+              ${this.credentials.map(({ type, secret, value }) => html`
+                <cc-input-text readonly clipboard
+                  ?secret=${secret}
+                  ?skeleton=${value == null}
+                  value=${ifDefined(value)}
+                  label=${this._getFieldName(type)}
+                ></cc-input-text>
+              `)}
+            </div>
           ` : ''}
-        </div>
+        ` : ''}
+        
+        ${this.error ? html`
+          <cc-error>${i18n('cc-addon-credentials.loading-error')}</cc-error>
+        ` : ''}
       </cc-block>
     `;
   }
