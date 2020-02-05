@@ -30,11 +30,11 @@ export class CcElasticsearchInfo extends LitElement {
 
   static get properties () {
     return {
-      apmLink: { type: String },
-      elasticsearchLink: { type: String },
-      error: { type: Boolean },
-      hideElasticsearchLink: { type: Boolean },
-      kibanaLink: { type: String },
+      apmLink: { type: String, attribute: 'apm-link' },
+      elasticsearchLink: { type: String, attribute: 'elasticsearch-link' },
+      error: { type: Boolean, attribute: 'error' },
+      hideElasticsearchLink: { type: Boolean, attribute: 'hide-elasticsearch-link' },
+      kibanaLink: { type: String, attribute: 'kibana-link' },
     };
   }
 
