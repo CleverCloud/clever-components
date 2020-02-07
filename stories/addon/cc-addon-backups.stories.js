@@ -6,31 +6,40 @@ import { makeStory, storyWait } from '../lib/make-story.js';
 const backupsNewElasticsearch = {
   providerId: 'es-addon',
   restoreCommand: 'curl -XPOST https://my-service.services.clever-cloud.com/_snapshot/cc_backup_repository/snapshot_1/_restore',
-  esAddonBackupRepositoryUrl: 'https://example.com/kibana-repository-url',
   list: [
     {
       createdAt: new Date('2019-11-17 03:00'),
       url: 'https://example.com/kibana-backup/2019-11-17-03-00',
+      restoreCommand: 'curl -XPOST -u 8H8bO5XGeWAZgA https://r3sdepwtxlpso2jbbhho-elasticsearch.services.clever-cloud.com/_snapshot/cc-s3-repository/2019-11-17-03-00/_restore',
+      deleteCommand: 'curl -XPOST -u 8H8bO5XGeWAZgA https://r3sdepwtxlpso2jbbhho-elasticsearch.services.clever-cloud.com/_snapshot/cc-s3-repository/2019-11-17-03-00/_delete',
       expiresAt: new Date('2019-11-27 03:00'),
     },
     {
       createdAt: new Date('2019-11-18 03:30'),
       url: 'https://example.com/kibana-backup/2019-11-18-03-30',
+      restoreCommand: 'curl -XPOST -u 8H8bO5XGeWAZgA https://r3sdepwtxlpso2jbbhho-elasticsearch.services.clever-cloud.com/_snapshot/cc-s3-repository/2019-11-18-03-30/_restore',
+      deleteCommand: 'curl -XPOST -u 8H8bO5XGeWAZgA https://r3sdepwtxlpso2jbbhho-elasticsearch.services.clever-cloud.com/_snapshot/cc-s3-repository/2019-11-18-03-30/_delete',
       expiresAt: new Date('2019-11-28 03:30'),
     },
     {
       createdAt: new Date('2019-11-19 03:00'),
       url: 'https://example.com/kibana-backup/2019-11-19-03-00',
+      restoreCommand: 'curl -XPOST -u 8H8bO5XGeWAZgA https://r3sdepwtxlpso2jbbhho-elasticsearch.services.clever-cloud.com/_snapshot/cc-s3-repository/2019-11-19-03-00/_restore',
+      deleteCommand: 'curl -XPOST -u 8H8bO5XGeWAZgA https://r3sdepwtxlpso2jbbhho-elasticsearch.services.clever-cloud.com/_snapshot/cc-s3-repository/2019-11-19-03-00/_delete',
       expiresAt: new Date('2019-11-29 03:00'),
     },
     {
       createdAt: new Date('2019-11-20 03:00'),
       url: 'https://example.com/kibana-backup/2019-11-20-03-00',
+      restoreCommand: 'curl -XPOST -u 8H8bO5XGeWAZgA https://r3sdepwtxlpso2jbbhho-elasticsearch.services.clever-cloud.com/_snapshot/cc-s3-repository/2019-11-20-03-00/_restore',
+      deleteCommand: 'curl -XPOST -u 8H8bO5XGeWAZgA https://r3sdepwtxlpso2jbbhho-elasticsearch.services.clever-cloud.com/_snapshot/cc-s3-repository/2019-11-20-03-00/_delete',
       expiresAt: new Date('2019-11-30 03:00'),
     },
     {
       createdAt: new Date('2019-11-21 03:00'),
       url: 'https://example.com/kibana-backup/2019-11-21-03-00',
+      restoreCommand: 'curl -XPOST -u 8H8bO5XGeWAZgA https://r3sdepwtxlpso2jbbhho-elasticsearch.services.clever-cloud.com/_snapshot/cc-s3-repository/2019-11-21-03-00/_restore',
+      deleteCommand: 'curl -XPOST -u 8H8bO5XGeWAZgA https://r3sdepwtxlpso2jbbhho-elasticsearch.services.clever-cloud.com/_snapshot/cc-s3-repository/2019-11-21-03-00/_delete',
     },
   ],
 };
@@ -42,26 +51,36 @@ const backupsOldElasticsearch = {
     {
       createdAt: new Date('2019-11-17 03:00'),
       url: 'https://example.com/elasticsearch-backup/2019-11-17-03-00',
+      restoreCommand: 'curl -XPOST -u 8H8bO5XGeWAZgA https://r3sdepwtxlpso2jbbhho-elasticsearch.services.clever-cloud.com/_snapshot/cc-s3-repository/2019-11-17-03-00/_restore',
+      deleteCommand: 'curl -XPOST -u 8H8bO5XGeWAZgA https://r3sdepwtxlpso2jbbhho-elasticsearch.services.clever-cloud.com/_snapshot/cc-s3-repository/2019-11-17-03-00/_delete',
       expiresAt: new Date('2019-11-27 03:00'),
     },
     {
       createdAt: new Date('2019-11-18 03:30'),
       url: 'https://example.com/elasticsearch-backup/2019-11-18-03-30',
+      restoreCommand: 'curl -XPOST -u 8H8bO5XGeWAZgA https://r3sdepwtxlpso2jbbhho-elasticsearch.services.clever-cloud.com/_snapshot/cc-s3-repository/2019-11-18-03-30/_restore',
+      deleteCommand: 'curl -XPOST -u 8H8bO5XGeWAZgA https://r3sdepwtxlpso2jbbhho-elasticsearch.services.clever-cloud.com/_snapshot/cc-s3-repository/2019-11-18-03-30/_delete',
       expiresAt: new Date('2019-11-28 03:30'),
     },
     {
       createdAt: new Date('2019-11-19 03:00'),
       url: 'https://example.com/elasticsearch-backup/2019-11-19-03-00',
+      restoreCommand: 'curl -XPOST -u 8H8bO5XGeWAZgA https://r3sdepwtxlpso2jbbhho-elasticsearch.services.clever-cloud.com/_snapshot/cc-s3-repository/2019-11-19-03-00/_restore',
+      deleteCommand: 'curl -XPOST -u 8H8bO5XGeWAZgA https://r3sdepwtxlpso2jbbhho-elasticsearch.services.clever-cloud.com/_snapshot/cc-s3-repository/2019-11-19-03-00/_delete',
       expiresAt: new Date('2019-11-29 03:00'),
     },
     {
       createdAt: new Date('2019-11-20 03:00'),
       url: 'https://example.com/elasticsearch-backup/2019-11-20-03-00',
+      restoreCommand: 'curl -XPOST -u 8H8bO5XGeWAZgA https://r3sdepwtxlpso2jbbhho-elasticsearch.services.clever-cloud.com/_snapshot/cc-s3-repository/2019-11-20-03-00/_restore',
+      deleteCommand: 'curl -XPOST -u 8H8bO5XGeWAZgA https://r3sdepwtxlpso2jbbhho-elasticsearch.services.clever-cloud.com/_snapshot/cc-s3-repository/2019-11-20-03-00/_delete',
       expiresAt: new Date('2019-11-30 03:00'),
     },
     {
       createdAt: new Date('2019-11-21 03:00'),
       url: 'https://example.com/elasticsearch-backup/2019-11-21-03-00',
+      restoreCommand: 'curl -XPOST -u 8H8bO5XGeWAZgA https://r3sdepwtxlpso2jbbhho-elasticsearch.services.clever-cloud.com/_snapshot/cc-s3-repository/2019-11-21-03-00/_restore',
+      deleteCommand: 'curl -XPOST -u 8H8bO5XGeWAZgA https://r3sdepwtxlpso2jbbhho-elasticsearch.services.clever-cloud.com/_snapshot/cc-s3-repository/2019-11-21-03-00/_delete',
     },
   ],
 };
@@ -101,8 +120,31 @@ export const dataLoadedWithNewElasticsearch = makeStory(conf, {
   items: [{ backups: backupsNewElasticsearch }],
 });
 
+export const dataLoadedWithNewElasticsearchAndSmallList = makeStory(conf, {
+  items: [{
+    backups: {
+      providerId: backupsNewElasticsearch.providerId,
+      list: backupsNewElasticsearch.list.slice(0, 1),
+    },
+  }],
+});
+
 export const dataLoadedWithOldElasticsearch = makeStory(conf, {
   items: [{ backups: backupsOldElasticsearch }],
+});
+
+export const dataLoadedWithOldElasticsearchAndBigList = makeStory(conf, {
+  items: [{
+    backups: {
+      providerId: backupsOldElasticsearch.providerId,
+      list: [
+        ...backupsOldElasticsearch.list,
+        ...backupsOldElasticsearch.list,
+        ...backupsOldElasticsearch.list,
+        ...backupsOldElasticsearch.list,
+      ],
+    },
+  }],
 });
 
 export const simulations = makeStory(conf, {
@@ -122,6 +164,8 @@ enhanceStoriesNames({
   error,
   empty,
   dataLoadedWithNewElasticsearch,
+  dataLoadedWithNewElasticsearchAndSmallList,
   dataLoadedWithOldElasticsearch,
+  dataLoadedWithOldElasticsearchAndBigList,
   simulations,
 });
