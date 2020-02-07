@@ -25,4 +25,8 @@ export const skeleton = css`
     -ms-user-select: none;
     user-select: none;
   }
+
+  .skeleton--paused {
+    animation-play-state: paused;
+  }
 `;
