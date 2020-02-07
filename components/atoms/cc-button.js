@@ -51,6 +51,7 @@ export class CcButton extends LitElement {
       delay: { type: Number },
       disabled: { type: Boolean, reflect: true },
       image: { type: String },
+      link: { type: Boolean, reflect: true },
       outlined: { type: Boolean },
       primary: { type: Boolean },
       skeleton: { type: Boolean },
@@ -84,6 +85,10 @@ export class CcButton extends LitElement {
 
   get disabled () {
     return this._disabled;
+  }
+
+  focus () {
+    this.shadowRoot.querySelector('button').focus();
   }
 
   _cancelClick () {
@@ -178,6 +183,11 @@ export class CcButton extends LitElement {
           display: inline-block;
           margin: 0.2rem;
           vertical-align: top;
+        }
+
+        :host([link]) {
+          margin: 0;
+          vertical-align: initial;
         }
 
         /* RESET */
