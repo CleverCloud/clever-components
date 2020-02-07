@@ -29,7 +29,7 @@ export const linkStyles = css`
     color: var(--color);
   }
 
-  .cc-link:hover {
+  .cc-link:enabled:hover {
     color: hsl(209, 98%, 25%);
   }
 

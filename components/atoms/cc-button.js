@@ -2,6 +2,7 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
+import { linkStyles } from '../templates/cc-link.js';
 import { skeleton } from '../styles/skeleton.js';
 
 /**
@@ -12,6 +13,12 @@ import { skeleton } from '../styles/skeleton.js';
  * * Attributes `primary`, `success`, `warning` and `danger` define the UI _mode_ of the button.
  * * They are exclusive, you can only set one UI _mode_ at a time.
  * * When you don't use any of these values, the default UI _mode_ is `simple`.
+ *
+ * * ## Link appearance
+ *
+ * In some cases (to be defined/explained later), you need a button with a click handler that looks like a link.
+ * Don't use a `<a>` without an href and use our `<cc-button link>` instead.
+ * When `link` is enabled, the following properties won't have any effect: `primary`, `success`, `warning`, `danger`, `outlined`, `delay`.
  *
  * ## Delay mechanism
  *
@@ -25,6 +32,7 @@ import { skeleton } from '../styles/skeleton.js';
  * @prop {Number} delay - If set, enables delay mechanism and defined the number of seconds before the `cc-button:click` event is actually fired.
  * @prop {Boolean} disabled - Sets `disabled` attribute on inner native `<button>` element.
  * @prop {String} image - If set, enables icon mode and sets the `src` of the inner native `<img>` element.
+ * @prop {Boolean} link - If set, the button will look like a link.
  * @prop {Boolean} outlined - Sets button UI as _outlined_ (no background and colored border).
  * @prop {Boolean} primary - Sets button UI _mode_ to primary.
  * @prop {Boolean} skeleton - Enables skeleton screen UI pattern (loading hint).
@@ -56,6 +64,7 @@ export class CcButton extends LitElement {
     super();
     this.danger = false;
     this.disabled = false;
+    this.link = false;
     this.outlined = false;
     this.primary = false;
     this.skeleton = false;
@@ -94,7 +103,7 @@ export class CcButton extends LitElement {
 
     e.stopPropagation();
 
-    if (this.delay == null) {
+    if (this.delay == null || this.link) {
       return dispatchCustomEvent(this, 'click');
     }
 
@@ -115,19 +124,23 @@ export class CcButton extends LitElement {
     // those are exclusive, only one can be set at a time
     // we chose this over one attribute named "mode" so it would be easier to write/use
     const modes = {
-      primary: this.primary && !this.success && !this.warning && !this.danger,
-      success: !this.primary && this.success && !this.warning && !this.danger,
-      warning: !this.primary && !this.success && this.warning && !this.danger,
-      danger: !this.primary && !this.success && !this.warning && this.danger,
+      primary: this.primary && !this.success && !this.warning && !this.danger && !this.link,
+      success: !this.primary && this.success && !this.warning && !this.danger && !this.link,
+      warning: !this.primary && !this.success && this.warning && !this.danger && !this.link,
+      danger: !this.primary && !this.success && !this.warning && this.danger && !this.link,
       skeleton: this.skeleton,
       image: this.image != null,
+      btn: !this.link,
+      'cc-link': this.link,
     };
 
+    const delay = (this.delay != null && !this.link) ? this.delay : null;
+
     // simple mode is default when no value or when there are multiple conflicting values
-    modes.simple = !modes.primary && !modes.success && !modes.warning && !modes.danger;
+    modes.simple = !modes.primary && !modes.success && !modes.warning && !modes.danger && !this.link;
 
     // outlined is not default except in simple mode
-    modes.outlined = this.outlined || modes.simple;
+    modes.outlined = (this.outlined || modes.simple) && !this.link;
 
     return html`<button
       type="button"
@@ -147,9 +160,9 @@ export class CcButton extends LitElement {
         That's why (see CSS) we put both labels on 2 lines and only reduce the height of the one we want to hide
         This way, when delay is set, the button has a min width of the largest label (normal or cancel)
       -->
-      ${this.delay != null ? html`
+      ${delay != null ? html`
         <div class=${classMap({ hidden: !this._cancelMode })}>${i18n('cc-button.cancel')}</div>
-        <progress class=${classMap({ active: this._cancelMode })} style="--delay: ${this.delay}s"></progress>
+        <progress class=${classMap({ active: this._cancelMode })} style="--delay: ${delay}s"></progress>
       ` : ''}
     </button>`;
   }
@@ -157,6 +170,7 @@ export class CcButton extends LitElement {
   static get styles () {
     return [
       skeleton,
+      linkStyles,
       // language=CSS
       css`
         :host {
@@ -169,18 +183,20 @@ export class CcButton extends LitElement {
         /* RESET */
         button {
           background: #fff;
-          border: 1px solid #000;
+          border: none;
           display: block;
-          font-size: 14px;
           font-family: inherit;
+          font-size: 1rem;
           margin: 0;
           padding: 0;
         }
 
         /* BASE */
-        button {
+        .btn {
           border-radius: 0.15rem;
+          border: 1px solid #000;
           cursor: pointer;
+          font-size: 14px;
           font-weight: bold;
           min-height: 2rem;
           overflow: hidden;
@@ -217,7 +233,7 @@ export class CcButton extends LitElement {
         }
 
         /* MODES */
-        button {
+        .btn {
           background-color: var(--btn-color);
           border-color: var(--btn-color);
           color: #fff;
@@ -234,16 +250,16 @@ export class CcButton extends LitElement {
         }
 
         /* STATES */
-        button:enabled:focus {
+        .btn:enabled:focus {
           box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
           outline: 0;
         }
 
-        button:enabled:hover {
+        .btn:enabled:hover {
           box-shadow: 0 1px 3px #888;
         }
 
-        button:enabled:active {
+        .btn:enabled:active {
           box-shadow: none;
           outline: 0;
         }
@@ -260,7 +276,7 @@ export class CcButton extends LitElement {
         }
 
         /* TRANSITIONS */
-        button {
+        .btn {
           box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
           transition: box-shadow 75ms ease-in-out;
         }
@@ -310,17 +326,23 @@ export class CcButton extends LitElement {
           border: 0;
         }
 
-        button.image {
+        .image {
           min-height: 0;
           padding: 0.2rem;
           height: 1.6rem;
           width: 1.6rem;
         }
 
-        button.image img {
+        .image img {
           display: block;
           height: 100%;
           width: 100%;
+        }
+
+        /* button that looks like a cc-link */
+        .cc-link {
+          cursor: pointer;
+          text-decoration: underline;
         }
       `,
     ];
