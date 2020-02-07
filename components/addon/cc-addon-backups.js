@@ -38,7 +38,6 @@ import { skeleton } from '../styles/skeleton.js';
  * ```
  *
  * @prop {BackupDetails} backups - Sets the different details about an add-on and its backup.
- * @prop {Boolean} deploying - Displays a message about the addon not being ready yet.
  * @prop {Boolean} error - Displays an error message.
  */
 export class CcAddonBackups extends LitElement {
@@ -46,7 +45,6 @@ export class CcAddonBackups extends LitElement {
   static get properties () {
     return {
       backups: { type: Object, attribute: false },
-      deploying: { type: Boolean },
       error: { type: Boolean },
     };
   }
@@ -168,8 +166,8 @@ export class CcAddonBackups extends LitElement {
 
     const skeleton = (this.backups == null);
     const { providerId, list: backups, restoreCommand } = skeleton ? CcAddonBackups.skeletonBackups : this.backups;
-    const hasData = (!this.error && !this.deploying && (backups.length > 0));
-    const emptyData = (!this.error && !this.deploying && (backups.length === 0));
+    const hasData = (!this.error && (backups.length > 0));
+    const emptyData = (!this.error && (backups.length === 0));
 
     return html`
 
@@ -194,16 +192,12 @@ export class CcAddonBackups extends LitElement {
           <div class="cc-block_empty-msg">${i18n('cc-addon-backups.empty')}</div>
         ` : ''}
         
-        ${this.deploying ? html`
-          <cc-error>${i18n('cc-addon-backups.deploying')}</cc-error>
-        ` : ''}
-        
         ${this.error ? html`
           <cc-error>${i18n('cc-addon-backups.loading-error')}</cc-error>
         ` : ''}
       </cc-block>
       
-      ${!this.error && !this.deploying ? html`
+      ${!this.error ? html`
         <cc-block state="close">
           <div slot="title">${i18n('cc-addon-backups.restore')}</div>
           
@@ -222,7 +216,7 @@ export class CcAddonBackups extends LitElement {
         </cc-block>
       ` : ''}
       
-      ${!this.error && !this.deploying ? html`
+      ${!this.error ? html`
         <cc-block state="close">
           <div slot="title">${i18n('cc-addon-backups.delete')}</div>
           

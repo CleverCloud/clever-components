@@ -89,10 +89,6 @@ export const skeleton = makeStory(conf, {
   items: [{}],
 });
 
-export const deploying = makeStory(conf, {
-  items: [{ deploying: true }],
-});
-
 export const error = makeStory(conf, {
   items: [{ error: true }],
 });

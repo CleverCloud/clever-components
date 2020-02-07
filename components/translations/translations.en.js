@@ -44,7 +44,6 @@ export const translations = {
   'cc-addon-backups.delete.with-service.description.es-addon': ({ href }) => sanitize`You can delete a backup using Kibana by going to the <a href="${href}">backup repository</a>.`,
   'cc-addon-backups.delete.manual.title': `Delete manually`,
   'cc-addon-backups.delete.manual.description.es-addon': `You can delete a backup using cURL by executing this command:`,
-  'cc-addon-backups.deploying': `The add-on is deploying... Backups will be available once the deployment is finished.`,
   'cc-addon-backups.description.es-addon': `Backups are managed by Elasticsearch itself. You can define the retention period and backup frequency through Kibana's UI.`,
   'cc-addon-backups.description.es-addon-old': `Backups are managed by Elasticsearch itself. The version of your Elasticsearch does not allow to define a retention policy. Deleting a backup can be done manually through Elasticsearch's API.`,
   'cc-addon-backups.empty': `There are no backups yet.`,

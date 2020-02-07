@@ -57,7 +57,6 @@ export const translations = {
   'cc-addon-backups.delete.with-service.description.es-addon': ({ href }) => sanitize`Vous pouvez supprimer une sauvegarde avec Kibana en vous rendant sur le <a href="${href}">dépôt de sauvegardes</a>.`,
   'cc-addon-backups.delete.manual.title': `Suppression manuelle`,
   'cc-addon-backups.delete.manual.description.es-addon': `Vous pouvez supprimer une sauvegarde manuellement grâce à l'outil cURL en exécutant cette commande :`,
-  'cc-addon-backups.deploying': `L'add-on est en cours de déploiement... Les sauvegardes seront disponibles quand ce déploiement sera terminé.`,
   'cc-addon-backups.description.es-addon': `Les sauvegardes sont gérées par Elasticsearch lui-même. Vous pouvez définir la rétention ainsi que la périodicité des sauvegardes dans l'interface de Kibana.`,
   'cc-addon-backups.description.es-addon-old': `Les sauvegardes sont gérées par Elasticsearch lui-même. La version de votre Elasticsearch ne permet pas de définir de politique de rétention. La suppression d'une sauvegarde se fait manuellement avec l'API d'Elasticsearch.`,
   'cc-addon-backups.empty': `Il n'y a aucune sauvegarde pour l'instant.`,
