@@ -142,6 +142,7 @@ export class CcBlock extends LitElement {
 
         .main-wrapper--overlay {
           filter: blur(0.3rem);
+          opacity: 0.35;
         }
 
         /* superpose main and overlay */
