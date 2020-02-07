@@ -25,8 +25,7 @@ export const ccLink = (url, content, skeleton = false) => {
 export const linkStyles = css`
 
   .cc-link {
-    --color: hsl(209, 98%, 40%);
-    color: var(--color);
+    color: hsl(209, 98%, 40%);
   }
 
   .cc-link:enabled:hover {
@@ -46,7 +45,7 @@ export const linkStyles = css`
 
   .cc-link.skeleton,
   .cc-link .skeleton {
-    color: var(--color);
-    background-color: var(--color);
+    color: transparent;
+    background-color: hsl(209, 98%, 73%);
   }
 `;
