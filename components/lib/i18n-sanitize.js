@@ -71,6 +71,7 @@ export function sanitize (statics, ...params) {
 
         // If link has href and external origin => force rel and target
         if (node.tagName === 'A' && node.getAttribute('href') != null && node.origin !== window.location.origin) {
+          node.classList.add('sanitized-link');
           node.setAttribute('rel', 'noopener noreferrer');
           node.setAttribute('target', '_blank');
         }

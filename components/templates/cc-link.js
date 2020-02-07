@@ -24,14 +24,17 @@ export const ccLink = (url, content, skeleton = false) => {
 // language=CSS
 export const linkStyles = css`
 
+  .sanitized-link,
   .cc-link {
     color: hsl(209, 98%, 40%);
   }
 
+  .sanitized-link:enabled:hover,
   .cc-link:enabled:hover {
     color: hsl(209, 98%, 25%);
   }
 
+  .sanitized-link:focus,
   .cc-link:focus {
     background-color: #fff;
     border-radius: 0.1rem;
@@ -39,12 +42,15 @@ export const linkStyles = css`
     outline: 0;
   }
 
+  .sanitized-link::-moz-focus-inner,
   .cc-link::-moz-focus-inner {
     border: 0;
   }
 
   .cc-link.skeleton,
-  .cc-link .skeleton {
+  .sanitized-link.skeleton,
+  .cc-link .skeleton,
+  .sanitized-link .skeleton {
     color: transparent;
     background-color: hsl(209, 98%, 73%);
   }
