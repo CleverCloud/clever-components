@@ -63,6 +63,7 @@ export class CcError extends LitElement {
           background-color: white;
           border-radius: 0.25rem;
           border: 1px solid #bcc2d1;
+          box-shadow: 0 0 1rem #aaa;
           display: grid;
           grid-gap: 1rem;
           justify-content: center;
