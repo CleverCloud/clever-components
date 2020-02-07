@@ -177,15 +177,18 @@ export class CcAddonBackups extends LitElement {
         ${hasData ? html`
           <div><span class=${classMap({ skeleton })}>${this._getDescription(providerId)}</span></div>
           
-          ${backups.map(({ createdAt, url, expiresAt }) => html`
-            <div class="backup">
-              <span class="backup-icon"><img src=${backupSvg} alt=""></span>
-              <span class="backup-text">
-                <span class="backup-text-details ${classMap({ skeleton })}">${this._getBackupText(createdAt, expiresAt)}</span>
-                ${ccLink(url, this._getBackupLink(providerId), skeleton)}
-              </span>
-            </div>
-          `)}
+          <div class="backup-list">
+            ${backups.map(({ createdAt, url, expiresAt }) => html`
+              <div class="backup">
+                <span class="backup-icon"><img src=${backupSvg} alt=""></span>
+                <span class="backup-text">
+                  <span class="backup-text-details ${classMap({ skeleton })}">${this._getBackupText(createdAt, expiresAt)}</span>
+                  <br>
+                  ${ccLink(url, this._getBackupLink(providerId), skeleton)}
+                </span>
+              </div>
+            `)}
+          </div>
         ` : ''}
         
         ${emptyData ? html`
@@ -247,6 +250,11 @@ export class CcAddonBackups extends LitElement {
           display: grid;
           grid-gap: 1rem;
           line-height: 1.5;
+        }
+        
+        .backup-list {
+          display: grid;
+          grid-gap: 1.5rem;
         }
 
         .backup {
