@@ -11,6 +11,7 @@ const baseItems = [
   { innerHTML: 'Success', success: true },
   { innerHTML: 'Warning', warning: true },
   { innerHTML: 'Danger', danger: true },
+  { innerHTML: 'Button link', link: true },
 ];
 
 export default {
