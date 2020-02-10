@@ -52,6 +52,7 @@ const formatNumberUnit = prepareNumberUnitFormatter(lang);
 export const translations = {
   LANGUAGE: '🇫🇷 Français',
   // cc-addon-backups
+  'cc-addon-backups.command-password': `Cette commande vous demandera votre mot de passe, le voici :`,
   'cc-addon-backups.delete': ({ createdAt }) => sanitize`Supprimer la sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
   'cc-addon-backups.delete.btn': 'supprimer...',
   'cc-addon-backups.delete.with-service.title.es-addon': `Suppression avec Kibana`,
