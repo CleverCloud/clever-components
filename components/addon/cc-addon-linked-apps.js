@@ -1,6 +1,7 @@
 import '../atoms/cc-img.js';
 import '../molecules/cc-block.js';
 import '../molecules/cc-error.js';
+import { ccLink, linkStyles } from '../templates/cc-link.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
@@ -32,6 +33,7 @@ import { skeleton } from '../styles/skeleton.js';
  * ```js
  * interface Application {
  *   name: string,
+ *   link: string,
  *   instance: Instance,
  *   zone: string,
  * }
@@ -57,9 +59,9 @@ export class CcAddonLinkedApps extends LitElement {
 
   static get skeletonApplications () {
     return [
-      { name: '??????????????????', instance: { variant: {} }, zone: '???' },
-      { name: '???????????????????????', instance: { variant: {} }, zone: '?????' },
-      { name: '????????????????????', instance: { variant: {} }, zone: '???' },
+      { name: '??????????????????', link: '', instance: { variant: {} }, zone: '???' },
+      { name: '???????????????????????', link: '', instance: { variant: {} }, zone: '?????' },
+      { name: '????????????????????', link: '', instance: { variant: {} }, zone: '???' },
     ];
   }
 
@@ -84,7 +86,7 @@ export class CcAddonLinkedApps extends LitElement {
                 src=${ifDefined(application.instance.variant.logo)}
                 title="${ifDefined(application.instance.variant.name)}"
               ></cc-img>
-              <div class="name ${classMap({ skeleton })}">${application.name}</div>
+              <div class="name">${ccLink(application.link, application.name, skeleton)}</div>
               <div class="zone ${classMap({ skeleton })}">${i18n('cc-addon-linked-apps.zone')}${application.zone}</div>
             </div>
           `)}
@@ -104,6 +106,7 @@ export class CcAddonLinkedApps extends LitElement {
   static get styles () {
     return [
       skeleton,
+      linkStyles,
       // language=CSS
       css`
         :host {

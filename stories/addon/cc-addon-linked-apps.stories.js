@@ -6,6 +6,7 @@ import { makeStory, storyWait } from '../lib/make-story.js';
 const applications = [
   {
     name: 'My Node JS Prod Application',
+    link: '/organisations/uuid_foo/applications/uuid_bar',
     instance: {
       variant: {
         name: 'Node', logo: 'https://static-assets.cellar.services.clever-cloud.com/logos/nodejs.svg',
@@ -15,6 +16,7 @@ const applications = [
   },
   {
     name: 'My Awesome Java app for my API',
+    link: '/organisations/uuid_foo/applications/uuid_bar',
     instance: {
       variant: {
         name: 'Java + Maven', logo: 'https://static-assets.cellar.services.clever-cloud.com/logos/maven.svg',
@@ -24,6 +26,7 @@ const applications = [
   },
   {
     name: 'My Dev PHP frontend',
+    link: '/organisations/uuid_foo/applications/uuid_bar',
     instance: {
       variant: {
         name: 'PHP', logo: 'https://static-assets.cellar.services.clever-cloud.com/logos/php.svg',
@@ -33,6 +36,7 @@ const applications = [
   },
   {
     name: 'My Awesome Scala API',
+    link: '/organisations/uuid_foo/applications/uuid_bar',
     instance: {
       variant: {
         name: 'Scala + SBT', logo: 'https://static-assets.cellar.services.clever-cloud.com/logos/scala.svg',
