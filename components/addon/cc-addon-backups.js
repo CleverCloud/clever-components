@@ -24,6 +24,7 @@ import { skeleton } from '../styles/skeleton.js';
  * ```js
  * interface BackupDetails {
  *   providerId: string,
+ *   passwordForCommand: string,
  *   list: Backup[],
  * }
  * ```
@@ -63,9 +64,9 @@ export class CcAddonBackups extends LitElement {
   static get skeletonBackups () {
     const backup = { createdAt: new Date(), expiresAt: new Date() };
     return {
-      addon: '',
+      providerId: '',
+      passwordForCommand: '',
       list: new Array(5).fill(backup),
-      restoreCommand: '',
     };
   }
 
@@ -192,7 +193,7 @@ export class CcAddonBackups extends LitElement {
   render () {
 
     const skeleton = (this.backups == null);
-    const { providerId, list: backups } = skeleton ? CcAddonBackups.skeletonBackups : this.backups;
+    const { providerId, list: backups, passwordForCommand } = skeleton ? CcAddonBackups.skeletonBackups : this.backups;
     const hasData = (!this.error && (backups.length > 0));
     const emptyData = (!this.error && (backups.length === 0));
 
@@ -246,6 +247,8 @@ export class CcAddonBackups extends LitElement {
                 <div slot="title">${i18n('cc-addon-backups.restore.manual.title')}</div>
                 <div>${this._getManualRestoreDescription(providerId)}</div>
                 <cc-input-text readonly clipboard value="${this._selectedBackup.restoreCommand}"></cc-input-text>
+                <div>${i18n('cc-addon-backups.command-password')}</div>
+                <cc-input-text readonly clipboard secret value=${passwordForCommand}></cc-input-text>
               </cc-block-section>
             </cc-block>
           </div>
@@ -268,6 +271,8 @@ export class CcAddonBackups extends LitElement {
                 <div slot="title">${i18n('cc-addon-backups.delete.manual.title')}</div>
                 <div>${this._getManualDeleteDescription(providerId)}</div>
                 <cc-input-text readonly clipboard value="${this._selectedBackup.deleteCommand}"></cc-input-text>
+                <div>${i18n('cc-addon-backups.command-password')}</div>
+                <cc-input-text readonly clipboard secret value=${passwordForCommand}></cc-input-text>
               </cc-block-section>
             </cc-block>
           </div>

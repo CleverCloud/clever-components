@@ -286,6 +286,7 @@ export class CcInputText extends LitElement {
         }
 
         label {
+          cursor: pointer;
           display: block;
           padding-bottom: 0.35rem;
         }
