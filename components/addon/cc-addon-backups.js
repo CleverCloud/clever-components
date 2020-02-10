@@ -63,9 +63,8 @@ export class CcAddonBackups extends LitElement {
   static get skeletonBackups () {
     const backup = { createdAt: new Date(), expiresAt: new Date() };
     return {
-      addon: '',
+      providerId: '',
       list: new Array(5).fill(backup),
-      restoreCommand: '',
     };
   }
 
