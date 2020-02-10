@@ -8,6 +8,7 @@ import { i18n } from '../lib/i18n.js';
 import { leafletStyles } from '../styles/leaflet.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
 import { WORLD_GEOJSON } from './world-110m.geo.js';
+import { classMap } from 'lit-html/directives/class-map';
 
 // Generated with https://components.ai/color-scale/
 // Canvas at #F5F5F5 (map country color)
@@ -371,15 +372,15 @@ export class CcMap extends withResizeObserver(LitElement) {
 
   render () {
 
-    const noHeatmapPoints = (this.mode === 'heatmap' && this.heatmapPoints != null && this.heatmapPoints.length === 0);
+    const noHeatmapPoints = (!this.error && this.mode === 'heatmap' && this.heatmapPoints != null && this.heatmapPoints.length === 0);
     const errorMode = this.loading ? 'loading' : 'info';
 
     return html`
-      <div id="cc-map-container"></div>
-      <div class="legend"><slot></slot></div>
+      <div id="cc-map-container" class=${classMap({ 'no-data': noHeatmapPoints })}></div>
+      <div class="legend ${classMap({ 'no-data': noHeatmapPoints })}"><slot></slot></div>
       ${this.loading && !this.error ? html`
-      <cc-loader class="loader"></cc-loader>
-    ` : ''}
+        <cc-loader class="loader"></cc-loader>
+      ` : ''}
       ${this.error || noHeatmapPoints ? html`
         <div class="msg-container">
           ${this.error ? html`
@@ -418,8 +419,10 @@ export class CcMap extends withResizeObserver(LitElement) {
 
         :host([loading]) #cc-map-container,
         :host([error]) #cc-map-container,
+        #cc-map-container.no-data,
         :host([loading]) .legend,
-        :host([error]) .legend {
+        :host([error]) .legend,
+        .legend.no-data {
           filter: blur(.1rem);
         }
 
@@ -478,6 +481,7 @@ export class CcMap extends withResizeObserver(LitElement) {
           background-color: white;
           border-radius: 0.25rem;
           border: 1px solid #bcc2d1;
+          box-shadow: 0 0 1rem #aaa;
           display: flex;
           justify-content: center;
           padding: 1rem;
