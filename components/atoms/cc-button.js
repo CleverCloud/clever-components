@@ -196,7 +196,7 @@ export class CcButton extends LitElement {
           border: none;
           display: block;
           font-family: inherit;
-          font-size: 1rem;
+          font-size: unset;
           margin: 0;
           padding: 0;
         }
