@@ -1,6 +1,6 @@
 import '../atoms/cc-button.js';
 import '../atoms/cc-loader.js';
-import warningSvg from 'twemoji/2/svg/26a0.svg';
+import warningSvg from './warning.svg';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
