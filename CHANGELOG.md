@@ -1,5 +1,61 @@
 # Clever Components changelog
 
+## 1.4.0 (2020-02-11)
+
+### Components
+
+#### New components for add-ons:
+
+* New component: `<cc-header-addon>`
+* New component: `<cc-elasticsearch-info>`
+* New component: `<cc-addon-credentials>`
+* New component: `<cc-addon-features>`
+* New component: `<cc-addon-admin>`
+* New component: `<cc-addon-backups>`
+* New component: `<cc-addon-linked-apps>`
+
+#### New molecules for all our components:
+
+* New component: `<cc-block>` and `<cc-block-section>`
+* New component: `<cc-error>` (and remove `iconStyles`)
+* New template: `ccLink()` (with `linkStyles`)
+
+#### Existing components
+
+* `<cc-button>`:
+  * add `.focus()` method
+  * add `link` feature
+  * fix image alignement
+  * prevent native click events from propagating/bubbling
+  * unset `font-size`
+* `<cc-input-text>`:
+  * add `tags` feature
+  * add `label` feature
+  * add `requestimplicitsubmit` event
+  * fix hover behaviour on clipboard/secret buttons
+* `<cc-logsmap>`: add <strong> tags in i18n strings to highlight orga/app name in legend
+* `<cc-map>`: don't display no heatmap points when there is an error
+* `<cc-overview>`: allow multiple heads with `--cc-overview-head-count`
+* `<cc-tile-requests>`: add `<strong>` tags in i18n strings to highlight time window in help
+* `<env-var-create>`: add `<code>` tags in i18n strings to highlight error messages
+* `<env-var-create>`: use `cc-input-text:requestimplicitsubmit`
+* `<env-var-editor-expert>`: add `<code>` tags in i18n strings to highlight error messages
+* `<env-var-form>`: use `cc-input-text:requestimplicitsubmit`
+* `<env-var-input>`: fix alignment between name and value
+
+### For devs
+
+* Skeleton: add paused state
+* Add `sanitize` tag template function to be used in i18n strings containing HTML
+  * With cypress test runner
+* i18n: Add "Missing lang" to help identify hard coded strings
+* Add ADR describing our Storybook migration
+* Storybook: update to Storybook 5.3.x ;-)
+* Storybook: reload stories when translations are updated
+* Tasks: add total count to tasks size
+* Removed twemoji depencendy
+* Update deps
+
 ## 1.3.0 (2019-12-21)
 
 ### Components
