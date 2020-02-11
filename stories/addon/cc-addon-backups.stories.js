@@ -5,7 +5,7 @@ import { makeStory, storyWait } from '../lib/make-story.js';
 
 const backupsNewElasticsearch = {
   providerId: 'es-addon',
-  restoreCommand: 'curl -XPOST https://my-service.services.clever-cloud.com/_snapshot/cc_backup_repository/snapshot_1/_restore',
+  passwordForCommand: 'password-for-command',
   list: [
     {
       createdAt: new Date('2019-11-17 03:00'),
