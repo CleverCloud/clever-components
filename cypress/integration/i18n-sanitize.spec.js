@@ -101,7 +101,7 @@ describe('filter', () => {
 
   it('Add rel="noopener noreferrer" and target=_blank on <a> if href origin is different than document', () => {
     compareChildNodes(sanitize`One Two Three Four <a href="http://example.com/foobar" download id="the-id" target="foobar">Five</a> Six`,
-      ['One Two Three Four ', ['a', ['Five'], [['href', 'http://example.com/foobar'], ['rel', 'noopener noreferrer'], ['target', '_blank']]], ' Six'],
+      ['One Two Three Four ', ['a', ['Five'], [['class', 'sanitized-link'], ['href', 'http://example.com/foobar'], ['rel', 'noopener noreferrer'], ['target', '_blank']]], ' Six'],
     );
   });
 
