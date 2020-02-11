@@ -33,7 +33,7 @@
   * add `label` feature
   * add `requestimplicitsubmit` event
   * fix hover behaviour on clipboard/secret buttons
-* `<cc-logsmap>`: add <strong> tags in i18n strings to highlight orga/app name in legend
+* `<cc-logsmap>`: add `<strong>` tags in i18n strings to highlight orga/app name in legend
 * `<cc-map>`: don't display no heatmap points when there is an error
 * `<cc-overview>`: allow multiple heads with `--cc-overview-head-count`
 * `<cc-tile-requests>`: add `<strong>` tags in i18n strings to highlight time window in help
