@@ -18,26 +18,48 @@ const conf = {
   `,
 };
 
-const links = {
-  elasticsearchLink: 'https://my-elasticsearch.com',
-  apmLink: 'https://my-apm-link.com',
-  kibanaLink: 'https://my-kibana.com',
-};
+const elasticsearchLink = { type: 'elasticsearch', href: 'https://my-elasticsearch.com' };
+const kibanaLink = { type: 'kibana', href: 'https://my-kibana.com' };
+const apmLink = { type: 'apm', href: 'https://my-apm-link.com' };
 
 export const defaultStory = makeStory(conf, {
-  items: [links],
+  items: [{ links: [elasticsearchLink, kibanaLink, apmLink] }],
 });
 
-export const hideElasticsearchLink = makeStory(conf, {
-  items: [{
-    hideElasticsearchLink: true,
-    apmLink: links.apmLink,
-    kibanaLink: links.kibanaLink,
-  }],
+export const elasticOnly = makeStory(conf, {
+  items: [{ links: [elasticsearchLink] }],
 });
 
-export const skeletonStory = makeStory(conf, {
-  items: [{}],
+export const elasticAndKibana = makeStory(conf, {
+  items: [{ links: [elasticsearchLink, kibanaLink] }],
+});
+
+export const elasticAndApm = makeStory(conf, {
+  items: [{ links: [elasticsearchLink, apmLink] }],
+});
+
+export const elasticKibanaAndApm = makeStory(conf, {
+  items: [{ links: [elasticsearchLink, kibanaLink, apmLink] }],
+});
+
+export const noLinks = makeStory(conf, {
+  items: [{ links: [] }],
+});
+
+export const onlyKibana = makeStory(conf, {
+  items: [{ links: [kibanaLink] }],
+});
+
+export const onlyApm = makeStory(conf, {
+  items: [{ links: [apmLink] }],
+});
+
+export const kibanaAndApm = makeStory(conf, {
+  items: [{ links: [kibanaLink, apmLink] }],
+});
+
+export const skeleton = makeStory(conf, {
+  items: [{ links: [{ type: 'elasticsearch' }] }],
 });
 
 export const errorStory = makeStory(conf, {
@@ -45,12 +67,13 @@ export const errorStory = makeStory(conf, {
 });
 
 export const simulations = makeStory(conf, {
-  items: [{}, {}],
+  items: [
+    { links: [{ type: 'elasticsearch' }] },
+    {},
+  ],
   simulations: [
     storyWait(2000, ([component, componentError]) => {
-      component.elasticsearchLink = links.elasticsearchLink;
-      component.apmLink = links.apmLink;
-      component.kibanaLink = links.kibanaLink;
+      component.links = [elasticsearchLink, kibanaLink];
       componentError.error = true;
     }),
   ],
@@ -58,7 +81,15 @@ export const simulations = makeStory(conf, {
 
 enhanceStoriesNames({
   defaultStory,
-  skeletonStory,
+  elasticOnly,
+  elasticAndKibana,
+  elasticAndApm,
+  elasticKibanaAndApm,
+  noLinks,
+  onlyKibana,
+  onlyApm,
+  kibanaAndApm,
+  skeleton,
   errorStory,
   simulations,
 });

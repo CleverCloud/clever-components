@@ -17,36 +17,41 @@ const ELASTICSEARCH_DOCUMENTATION = 'https://www.clever-cloud.com/doc/addons/ela
  *
  * ## Details
  *
- * * When one of elasticsearchLink, kibanaLink or apmLink is nullish, a skeleton UI (loading hint) is displayed.
- * * When error is set, an error message is displayed.
+ * * You need to list the links you want to display in `links`.
+ * * You can omit the `href` property while you wait for the real link, a skeleton UI (loading hint) will be displayed.
  *
- * @prop {String} apmLink - Sets APM service link.
- * @prop {String} elasticsearchLink - Sets main elasticsearch service link.
+ * ## Type definitions
+ *
+ * ```js
+ * interface Link {
+ *   type: "elasticsearch"|"kibana"|"apm",
+ *   href?: string,
+ * }
+ * ```
+ *
+ * @prop {Link[]} links - Sets the different links.
  * @prop {Boolean} error - Display an error message.
- * @prop {Boolean} hideElasticsearchLink - Hides elasticsearch service link.
- * @prop {String} kibanaLink - Sets kibana service link.
  */
 export class CcElasticsearchInfo extends LitElement {
 
   static get properties () {
     return {
-      apmLink: { type: String, attribute: 'apm-link' },
-      elasticsearchLink: { type: String, attribute: 'elasticsearch-link' },
+      links: { type: Array, attribute: 'links' },
       error: { type: Boolean, attribute: 'error' },
-      hideElasticsearchLink: { type: Boolean, attribute: 'hide-elasticsearch-link' },
-      kibanaLink: { type: String, attribute: 'kibana-link' },
     };
   }
 
   constructor () {
     super();
     this.error = false;
-    this.hideElasticsearchLink = false;
   }
 
   render () {
 
-    const skeleton = (!this.hideElasticsearchLink && this.elasticsearchLink == null) || (this.kibanaLink == null) || (this.apmLink == null);
+    const links = this.links || [];
+    const elasticsearchLink = links.find(({ type }) => type === 'elasticsearch');
+    const kibanaLink = links.find(({ type }) => type === 'kibana');
+    const apmLink = links.find(({ type }) => type === 'apm');
 
     return html`
 
@@ -56,20 +61,24 @@ export class CcElasticsearchInfo extends LitElement {
         <div class="info-text">${i18n('cc-elasticsearch-info.text')}</div>
         
         <div class="link-list">
-          ${!this.hideElasticsearchLink ? html`
-            ${ccLink(this.elasticsearchLink, html`
-              <cc-img src="${ELASTICSEARCH_LOGO_URL}"></cc-img><span class="${classMap({ skeleton })}">${i18n('cc-elasticsearch-info.link.elasticsearch')}</span>
-            `)}
-          ` : ''}
-          ${ccLink(this.kibanaLink, html`
-            <cc-img src="${KIBANA_LOGO_URL}"></cc-img><span class="${classMap({ skeleton })}">${i18n('cc-elasticsearch-info.link.kibana')}</span>
-          `)}
-          ${ccLink(this.apmLink, html`
-            <cc-img src="${APM_LOGO_URL}"></cc-img><span class="${classMap({ skeleton })}">${i18n('cc-elasticsearch-info.link.apm')}</span>
-          `)}
           ${ccLink(ELASTICSEARCH_DOCUMENTATION, html`
             <cc-img src="${infoSvg}"></cc-img><span>${i18n('cc-elasticsearch-info.link.doc')}</span>
           `)}
+          ${elasticsearchLink != null ? html`
+            ${ccLink(elasticsearchLink.href, html`
+              <cc-img src="${ELASTICSEARCH_LOGO_URL}"></cc-img><span class="${classMap({ skeleton: (elasticsearchLink.href == null) })}">${i18n('cc-elasticsearch-info.link.elasticsearch')}</span>
+            `)}
+          ` : ''}
+          ${kibanaLink != null ? html`
+            ${ccLink(kibanaLink.href, html`
+              <cc-img src="${KIBANA_LOGO_URL}"></cc-img><span class="${classMap({ skeleton: (kibanaLink.href == null) })}">${i18n('cc-elasticsearch-info.link.kibana')}</span>
+            `)}
+          ` : ''}
+          ${apmLink != null ? html`
+            ${ccLink(apmLink.href, html`
+              <cc-img src="${APM_LOGO_URL}"></cc-img><span class="${classMap({ skeleton: (apmLink.href == null) })}">${i18n('cc-elasticsearch-info.link.apm')}</span>
+            `)}
+          ` : ''}
         </div>
       ` : ''}
 
