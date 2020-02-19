@@ -62,7 +62,7 @@ export class CcToggle extends LitElement {
             value=${value}
             id=${value}
             ?disabled=${this.disabled}
-            ?checked=${this.value === value}
+            .checked=${this.value === value}
             @change=${this._onChange}>
           <label for=${value}>${label}</label>
           `)}
