@@ -35,7 +35,7 @@ export class CcToggle extends LitElement {
       /** @required */
       choices: { type: Array },
       disabled: { type: Boolean },
-      value: { type: String },
+      value: { type: String, reflect: true },
     };
   }
 
