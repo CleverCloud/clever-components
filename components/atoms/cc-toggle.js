@@ -33,7 +33,7 @@ export class CcToggle extends LitElement {
   static get properties () {
     return {
       /** @required */
-      choices: { type: Array, attribute: false },
+      choices: { type: Array },
       disabled: { type: Boolean },
       value: { type: String },
     };
