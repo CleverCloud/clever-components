@@ -36,6 +36,15 @@ const percentFormatter = new Intl.NumberFormat(lang, {
 const numberFormatter = new Intl.NumberFormat(lang);
 const formatNumberUnit = prepareNumberUnitFormatter(lang);
 
+// Shared logic between translations, is it a good idea?
+function formatFlavor (f) {
+  const cpu = `CPUs: ${f.cpus}`;
+  const shared = f.microservice ? ` (shared)` : '';
+  const gpu = f.gpus > 0 ? `GPUs: ${f.gpus}` : '';
+  const mem = `RAM: ${(f.mem < 1024) ? `${f.mem} MB` : `${f.mem / 1024} GB`}`;
+  return [cpu + shared, gpu, mem].filter((a) => a).join('\n');
+}
+
 export const translations = {
   LANGUAGE: '🇬🇧 English',
   // cc-addon-backups
@@ -105,6 +114,18 @@ export const translations = {
   'cc-elasticsearch-info.link.elasticsearch': `Check out the Elasticsearch add-on`,
   'cc-elasticsearch-info.link.kibana': `Open Kibana`,
   'cc-elasticsearch-info.text': `This service is part of the Elasticsearch Enterprise offer. You can find the documentation and linked services right below.`,
+  // cc-elasticsearch-options
+  'cc-elasticsearch-options.enabled': `Enabled`,
+  'cc-elasticsearch-options.disabled': `Disabled`,
+  'cc-elasticsearch-options.confirm': `Confirm options`,
+  'cc-elasticsearch-options.title': `Options for Elasticsearch Enterprise`,
+  'cc-elasticsearch-options.description': () => sanitize`This add-on is part of our Elasticsearch Enterprise offer which includes two options. Both these options will be deployed as applications, managed and updated by Clever Cloud on your behalf. They will appear as regular applications that you can stop, scale up or down automatically like one of your own applications. As such, <strong>enabling these options will result in an increase in credits consumption</strong> as well.`,
+  'cc-elasticsearch-options.description.kibana': () => sanitize`Kibana is the admin UI for the Elastic Stack. It lets you visualize your Elasticsearch data and navigate the stack so you can do anything from tracking query load to understanding the way requests flow through your apps. Learn more in the <a href="https://www.elastic.co/guide/en/kibana/master/index.html">official Kibana documentation</a>.`,
+  'cc-elasticsearch-options.description.apm': () => sanitize`Elastic APM server is an application performance monitoring system built on the Elastic Stack. Deploying this will allow you to automatically send APM metrics from any applications linked to the Elasticsearch add-on instance, providing you add the Elastic APM agent to the application code. Learn more in the <a href="https://www.elastic.co/guide/en/apm/get-started/current/overview.html">official APM server documentation</a>.`,
+  'cc-elasticsearch-options.warning.kibana': `If you enable this option, we'll deploy and manage a Kibana application for you, this will lead to additional costs.`,
+  'cc-elasticsearch-options.warning.kibana.details': (flavor) => sanitize`By default, the app will start on a <strong title="${formatFlavor(flavor)}">${flavor.name} instance</strong> which costs around <strong>${currencyFormatter.format(flavor.monthlyCost)} per month</strong>.`,
+  'cc-elasticsearch-options.warning.apm': `If you enable this option, we'll deploy and manage an Elastic APM server application for you, this will lead to additional costs.`,
+  'cc-elasticsearch-options.warning.apm.details': (flavor) => sanitize`By default, the app will start on a <strong title="${formatFlavor(flavor)}">${flavor.name} instance</strong> which costs around <strong>${currencyFormatter.format(flavor.monthlyCost)} per month</strong>.`,
   // cc-error
   'cc-error.ok': `OK`,
   // cc-header-addon
@@ -210,13 +231,7 @@ export const translations = {
   'cc-tile-scalability.title': `Scalability`,
   'cc-tile-scalability.size': `Size`,
   'cc-tile-scalability.number': `Number`,
-  'cc-tile-scalability.flavor-info': (f) => {
-    const cpu = `CPUs: ${f.cpus}`;
-    const shared = f.microservice ? ` (shared)` : '';
-    const gpu = f.gpus > 0 ? `GPUs: ${f.gpus}` : '';
-    const mem = `RAM: ${(f.mem < 1024) ? `${f.mem} MB` : `${f.mem / 1024} GB`}`;
-    return [cpu + shared, gpu, mem].filter((a) => a).join('\n');
-  },
+  'cc-tile-scalability.flavor-info': (flavor) => formatFlavor(flavor),
   'cc-tile-scalability.error': `Something went wrong while loading scalability config.`,
   // cc-tile-status-codes
   'cc-tile-status-codes.title': `HTTP response codes`,
