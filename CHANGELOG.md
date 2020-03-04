@@ -1,5 +1,18 @@
 # Clever Components changelog
 
+## 2.0.0 (2020-03-04)
+
+* Update `@clevercloud/client` to `2.3.1`
+* New component: `<cc-elasticsearch-options>`
+* `<cc-toggle>`:
+  * reflect attribute `value`
+  * allow `choices` as JSON attribute
+  * expose and document cc-toggle-color
+
+### ⚠️ BREAKING CHANGES
+
+* `<cc-elasticsearch-info>`: make all links optional
+
 ## 1.4.0 (2020-02-11)
 
 ### Components
