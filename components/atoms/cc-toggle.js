@@ -25,15 +25,17 @@ import { repeat } from 'lit-html/directives/repeat.js';
  * @prop {String} value - Sets the selected value.
  *
  * @event {CustomEvent<String>} cc-toggle:input - Fires the selected `value` whenever the selected `value` changes.
+ *
+ * @cssprop {Color} --cc-toggle-color - The main color of the toggle (defaults: `#334252`). It must be defined directly on the element.
  */
 export class CcToggle extends LitElement {
 
   static get properties () {
     return {
       /** @required */
-      choices: { type: Array, attribute: false },
+      choices: { type: Array },
       disabled: { type: Boolean },
-      value: { type: String },
+      value: { type: String, reflect: true },
     };
   }
 
@@ -60,7 +62,7 @@ export class CcToggle extends LitElement {
             value=${value}
             id=${value}
             ?disabled=${this.disabled}
-            ?checked=${this.value === value}
+            .checked=${this.value === value}
             @change=${this._onChange}>
           <label for=${value}>${label}</label>
           `)}
@@ -73,14 +75,14 @@ export class CcToggle extends LitElement {
       // language=CSS
       css`
         :host {
-          --toggle-color: hsl(210, 23%, 26%);
+          --cc-toggle-color: #334252;
           display: flex;
           margin: 0.2rem;
         }
 
         .toggle-group {
           border-radius: 0.15rem;
-          border: 1px solid var(--toggle-color);
+          border: 1px solid var(--cc-toggle-color);
           display: flex;
           overflow: hidden;
         }
@@ -117,7 +119,7 @@ export class CcToggle extends LitElement {
 
         label {
           background-color: white;
-          color: var(--toggle-color);
+          color: var(--cc-toggle-color);
           cursor: pointer;
           font-size: 14px;
           font-weight: bold;
@@ -138,7 +140,7 @@ export class CcToggle extends LitElement {
         }
 
         input:checked + label {
-          background-color: var(--toggle-color);
+          background-color: var(--cc-toggle-color);
           color: white;
           position: relative;
         }

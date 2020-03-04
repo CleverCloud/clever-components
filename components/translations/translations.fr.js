@@ -49,6 +49,15 @@ const percentFormatter = new Intl.NumberFormat(lang, {
 const numberFormatter = new Intl.NumberFormat(lang);
 const formatNumberUnit = prepareNumberUnitFormatter(lang);
 
+// Shared logic between translations, is it a good idea?
+function formatFlavor (f) {
+  const cpu = `CPUs : ${f.cpus}`;
+  const shared = f.microservice ? ` (partagé)` : '';
+  const gpu = f.gpus > 0 ? `GPUs : ${f.gpus}` : '';
+  const mem = `RAM : ${(f.mem < 1024) ? `${f.mem} Mo` : `${f.mem / 1024} Go`}`;
+  return [cpu + shared, gpu, mem].filter((a) => a).join('\n');
+}
+
 export const translations = {
   LANGUAGE: '🇫🇷 Français',
   // cc-addon-backups
@@ -120,6 +129,18 @@ export const translations = {
   'cc-elasticsearch-info.link.elasticsearch': `Voir l'add-on Elasticsearch`,
   'cc-elasticsearch-info.link.kibana': `Ouvrir Kibana`,
   'cc-elasticsearch-info.text': `Ce service fait partie d'une offre Elasticsearch Enterprise. Vous pouvez retrouver la documentation ainsi que les différents services liés ci-dessous.`,
+  // cc-elasticsearch-options
+  'cc-elasticsearch-options.enabled': `Activé`,
+  'cc-elasticsearch-options.disabled': `Désactivé`,
+  'cc-elasticsearch-options.confirm': `Confirmer les options`,
+  'cc-elasticsearch-options.title': `Options pour Elasticsearch Enterprise`,
+  'cc-elasticsearch-options.description': () => sanitize`Cet add-on fait partie de notre offre Elasticsearch Enterprise qui inclue deux options. Ces options sont déployées comme des applications et seront gérées et mises à jour par Clever Cloud. Elles apparaîtront donc comme des application habituelles que vous pouvez arrêter, supprimer, scaler comme n'importe quelle autre application. <strong>Activer ces options augmentera votre consommation de crédits.</strong>`,
+  'cc-elasticsearch-options.description.kibana': () => sanitize`Kibana est l'interface d'administration de la Suite Elastic. Kibana vous permet de visualiser vos données Elasticsearch et de naviguer dans la Suite Elastic. Vous voulez effectuer le suivi de la charge de travail liée à la recherche ou comprendre le flux des requêtes dans vos applications ? Kibana est là pour ça. Retrouvez plus de détails dans <a href="https://www.elastic.co/guide/en/kibana/master/index.html">la documentation officielle de Kibana</a>.`,
+  'cc-elasticsearch-options.description.apm': () => sanitize`Elastic APM est un serveur de monitoring de performance applicative pour la Suite Elastic. Déployer cette option permet d'envoyer automatiquement les métriques de toute application liée à cette instance d'add-on Elasticsearch, en supposant que vous utilisez bien l'agent Elastic APM dans les dépendances de vos applications. Retrouvez plus de détails dans <a href="https://www.elastic.co/guide/en/apm/get-started/current/overview.html">la documentation officielle de APM server</a>.`,
+  'cc-elasticsearch-options.warning.kibana': `Si vous activez cette option, nous allons déployer et gérer pour vous un Kibana, ce qui entraînera des coûts supplémentaires.`,
+  'cc-elasticsearch-options.warning.kibana.details': (flavor) => sanitize`Par défaut, l'app sera démarrée sur une <strong title="${formatFlavor(flavor)}">instance ${flavor.name}</strong> qui coûte environ <strong>${currencyFormatter.format(flavor.monthlyCost)} par mois</strong>.`,
+  'cc-elasticsearch-options.warning.apm': `Si vous activez cette option, nous allons déployer et gérer pour vous un APM server, ce qui entraînera des coûts supplémentaires.`,
+  'cc-elasticsearch-options.warning.apm.details': (flavor) => sanitize`Par défaut, l'app sera démarrée sur une <strong title="${formatFlavor(flavor)}">instance ${flavor.name}</strong> qui coûte environ <strong>${currencyFormatter.format(flavor.monthlyCost)} par mois</strong>. `,
   // cc-header-addon
   'cc-header-addon.plan': `Plan`,
   'cc-header-addon.version': `Version`,
@@ -223,13 +244,7 @@ export const translations = {
   'cc-tile-scalability.title': `Scalabilité`,
   'cc-tile-scalability.size': `Taille`,
   'cc-tile-scalability.number': `Nombre`,
-  'cc-tile-scalability.flavor-info': (f) => {
-    const cpu = `CPUs : ${f.cpus}`;
-    const shared = f.microservice ? ` (partagé)` : '';
-    const gpu = f.gpus > 0 ? `GPUs : ${f.gpus}` : '';
-    const mem = `RAM : ${(f.mem < 1024) ? `${f.mem} Mo` : `${f.mem / 1024} Go`}`;
-    return [cpu + shared, gpu, mem].filter((a) => a).join('\n');
-  },
+  'cc-tile-scalability.flavor-info': (flavor) => formatFlavor(flavor),
   'cc-tile-scalability.error': `Une erreur est survenue pendant le chargement de la configuration de scalabilité.`,
   // cc-tile-status-codes
   'cc-tile-status-codes.title': `Codes de réponses HTTP`,
