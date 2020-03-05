@@ -1,5 +1,10 @@
 # Clever Components changelog
 
+## 2.0.1 (2020-03-05)
+
+* `<cc-elasticsearch-options>`: fix translations/wording
+* `<cc-elasticsearch-info>`: fix translations/wording
+
 ## 2.0.0 (2020-03-04)
 
 * Update `@clevercloud/client` to `2.3.1`
