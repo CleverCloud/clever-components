@@ -1,5 +1,11 @@
 # Clever Components changelog
 
+## 2.0.2 (2020-03-06)
+
+* env-var-form: fix parsing/serialization pb with simple/export mode
+
+NOTE: This is a bug fix but if you copy/paste stuffs in the expert mode that was serialized in the old version you could have some problems.
+
 ## 2.0.1 (2020-03-05)
 
 * `<cc-elasticsearch-options>`: fix translations/wording
