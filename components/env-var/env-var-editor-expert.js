@@ -96,7 +96,6 @@ export class EnvVarEditorExpert extends LitElement {
 
   _onInput ({ detail: value }) {
     const { variables, errors } = parseRaw(value);
-    console.log(variables);
     this._errors = errors;
     if (errors.length === 0) {
       dispatchCustomEvent(this, 'change', variables);
