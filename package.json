@@ -5,7 +5,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type" : "git",
-    "url" : "https://github.com/CleverCloud/clever-client.js"
+    "url" : "https://github.com/CleverCloud/clever-components.git"
   },
   "main": "dist/index.js",
   "files": [
