@@ -302,8 +302,4 @@ export const translations = {
   'env-var-input.delete-button': `Enlever`,
   'env-var-input.keep-button': `Garder`,
   'env-var-input.value-placeholder': `valeur de la variable`,
-  // env-var-full
-  'env-var-full.heading': `Variables d'environnement`,
-  'env-var-full.message': `Les variables d'environnement sont des variables dynamiques que vous pouvez injecter dans votre application.`,
-  'env-var-full.link': `En savoir plus`,
 };
