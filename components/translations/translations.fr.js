@@ -298,6 +298,10 @@ export const translations = {
   'env-var-form.error.loading': `Une erreur est survenue pendant le chargement des variables.`,
   'env-var-form.error.saving': `Une erreur est survenue pendant la mise à jour des variables.`,
   'env-var-form.error.unknown': `Une erreur est survenue...`,
+  'env-var-form.heading.env-var': `Variables d'environnement`,
+  'env-var-form.heading.exposed-config': `Configuration publiée`,
+  'env-var-form.description.env-var': ({ appName }) => sanitize`Liste des variables d'environnement qui seront injectées dans l'application <strong>${appName}</strong>. <a href="http://doc.clever-cloud.com/admin-console/environment-variables/">En savoir plus</a>`,
+  'env-var-form.description.exposed-config': ({ appName }) => sanitize`Configuration publiée pour les applications dépendantes.<br>Ces variables ne seront pas injectées dans l'application <strong>${appName}</strong>, elles seront injectées en tant que variables d'environnement dans les applications qui ont <strong>${appName}</strong> dans leurs services liés. <a href="https://www.clever-cloud.com/doc/admin-console/service-dependencies/">En savoir plus</a>`,
   // env-var-input
   'env-var-input.delete-button': `Enlever`,
   'env-var-input.keep-button': `Garder`,
