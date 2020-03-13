@@ -159,6 +159,7 @@ export class EnvVarForm extends LitElement {
 
     const isEditorDisabled = (this.saving || this.error != null);
     const isFormDisabled = (this._currentVariables == null || this._isPristine || isEditorDisabled);
+    const hasOverlay = this.saving || this.error != null;
 
     return html`
       <div class="header">
@@ -168,7 +169,7 @@ export class EnvVarForm extends LitElement {
         ` : ''}
         
         <cc-toggle
-          class="mode-switcher ${classMap({ saving: this.saving || this.error != null })}"
+          class="mode-switcher ${classMap({ hasOverlay })}"
           value=${this._mode}
           .choices=${EnvVarForm.modes}
           ?disabled=${isEditorDisabled}
@@ -178,7 +179,7 @@ export class EnvVarForm extends LitElement {
       
       <slot class="description"></slot>
       
-      <cc-expand class=${classMap({ saving: this.saving || this.error != null })}>
+      <cc-expand class=${classMap({ hasOverlay })}>
         <env-var-editor-simple
           ?hidden=${this._mode !== 'SIMPLE'}
           .variables=${this._currentVariables}
@@ -267,7 +268,8 @@ export class EnvVarForm extends LitElement {
           margin: 0.2rem 0.2rem 1rem;
         }
 
-        .saving {
+        .hasOverlay {
+          --cc-skeleton-state: paused;
           filter: blur(0.3rem);
         }
 
