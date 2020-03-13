@@ -30,7 +30,7 @@ import { i18n } from '../lib/i18n.js';
  * @prop {Boolean} saving - Enables saving sate (form is disabled and loader is displayed).
  * @prop {Variable[]} variables - Sets the list of variables.
  *
- * @event {CustomEvent<"saving"|"loading">} env-var-form:dismissed-error - Fires the type of error that was dismissed when the error button of an error message is clicked.
+ * @event {CustomEvent} env-var-form:dismissed-error - Fires the type of error that was dismissed when the error button of an error message is clicked.
  * @event {CustomEvent} env-var-form:restart-app - Fires whenever the restart app button is clicked.
  * @event {CustomEvent<Variable[]>} env-var-form:submit - Fires the new list of variables whenever the submit button is clicked.
  *
@@ -217,9 +217,15 @@ export class EnvVarForm extends LitElement {
         <cc-loader class="saving-loader"></cc-loader>
       ` : ''}
       
-      ${this.error != null ? html`
+      ${this.error === 'loading' ? html`
         <div class="error-container">
-          <cc-error mode="confirm" @cc-error:ok=${() => dispatchCustomEvent(this, 'dismissed-error', this.error)}>${this._errorMessage}</cc-error>
+          <cc-error mode="info">${this._errorMessage}</cc-error>
+        </div>
+      ` : ''}
+      
+      ${this.error === 'saving' ? html`
+        <div class="error-container">
+          <cc-error mode="confirm" @cc-error:ok=${() => dispatchCustomEvent(this, 'dismissed-error')}>${this._errorMessage}</cc-error>
         </div>
       ` : ''}
     `;
