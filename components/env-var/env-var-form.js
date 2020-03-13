@@ -9,9 +9,15 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
+import { linkStyles } from '../templates/cc-link.js';
 
 /**
  * A high level environment variable form (wrapping simple editor and expert editor into one interface).
+ *
+ * ## Details
+ *
+ * * You can set a custom `heading` and description with the default <slot>.
+ * * You can also set a context to get the appropriate heading and description (with translations).
  *
  * ## Type definitions
  *
@@ -23,6 +29,8 @@ import { i18n } from '../lib/i18n.js';
  * }
  * ```
  *
+ * @prop {String} appName - Defines application name used in some heading/description (depending on context).
+ * @prop {"env-var"|"env-var-simple"|"exposed-config"|null} context - Defines where the form will be used so it can display the appropriate heading and description.
  * @prop {"saving"|"loading"|null} error - Displays an error message (saving or loading).
  * @prop {String} heading - Sets a text to be used as a header title.
  * @prop {Boolean} readonly - Sets `readonly` attribute input and hides buttons.
@@ -40,6 +48,8 @@ export class EnvVarForm extends LitElement {
 
   static get properties () {
     return {
+      appName: { type: String, attribute: 'app-name' },
+      context: { type: String },
       error: { type: String, reflect: true },
       heading: { type: String, reflect: true },
       readonly: { type: Boolean, reflect: true },
@@ -47,6 +57,7 @@ export class EnvVarForm extends LitElement {
       saving: { type: Boolean, reflect: true },
       variables: { type: Array, attribute: false },
       _currentVariables: { type: Array, attribute: false },
+      _description: { type: String, attribute: false },
       _expertVariables: { type: Array, attribute: false },
       _mode: { type: String, attribute: false },
       _isPristine: { type: Boolean, attribute: false },
@@ -55,6 +66,8 @@ export class EnvVarForm extends LitElement {
 
   constructor () {
     super();
+    this.appName = '?';
+    this.context = null;
     this.error = null;
     this.heading = null;
     this.readonly = false;
@@ -62,6 +75,7 @@ export class EnvVarForm extends LitElement {
     this.saving = false;
     // this.variables is let to undefined by default (this triggers skeleton screen)
     this._mode = 'SIMPLE';
+    this._description = '';
   }
 
   static get modes () {
@@ -69,6 +83,23 @@ export class EnvVarForm extends LitElement {
       { label: i18n('env-var-form.mode.simple'), value: 'SIMPLE' },
       { label: i18n('env-var-form.mode.expert'), value: 'EXPERT' },
     ];
+  }
+
+  set context (context) {
+    if (context === 'env-var') {
+      this.heading = i18n('env-var-form.heading.env-var');
+      this._description = i18n('env-var-form.description.env-var', { appName: this.appName });
+      this.requestUpdate();
+    }
+    if (context === 'env-var-simple') {
+      this.heading = i18n('env-var-form.heading.env-var');
+      this.requestUpdate();
+    }
+    if (context === 'exposed-config') {
+      this.heading = i18n('env-var-form.heading.exposed-config');
+      this._description = i18n('env-var-form.description.exposed-config', { appName: this.appName });
+      this.requestUpdate();
+    }
   }
 
   set variables (variables) {
@@ -177,7 +208,7 @@ export class EnvVarForm extends LitElement {
         ></cc-toggle>
       </div>
       
-      <slot class="description"></slot>
+      <slot class="description">${this._description}</slot>
       
       <cc-expand class=${classMap({ hasOverlay })}>
         <env-var-editor-simple
@@ -235,6 +266,7 @@ export class EnvVarForm extends LitElement {
   static get styles () {
     return [
       // language=CSS
+      linkStyles,
       css`
         :host {
           display: block;
@@ -265,6 +297,7 @@ export class EnvVarForm extends LitElement {
           display: block;
           color: #555;
           font-style: italic;
+          line-height: 1.5;
           margin: 0.2rem 0.2rem 1rem;
         }
 
