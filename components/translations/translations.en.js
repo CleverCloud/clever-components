@@ -282,8 +282,8 @@ export const translations = {
   'env-var-form.reset': `Reset changes`,
   'env-var-form.restart-app': `Restart the app to apply changes`,
   'env-var-form.update': `Update changes`,
-  'env-var-form.error.loading': `Something went wrong while loading environment variables.`,
-  'env-var-form.error.saving': `Something went wrong while updating environment variables.`,
+  'env-var-form.error.loading': `Something went wrong while loading variables.`,
+  'env-var-form.error.saving': `Something went wrong while updating variables.`,
   'env-var-form.error.unknown': `Something went wrong...`,
   // env-var-input
   'env-var-input.delete-button': `Remove`,

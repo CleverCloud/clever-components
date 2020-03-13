@@ -295,8 +295,8 @@ export const translations = {
   'env-var-form.reset': `Annuler les changements`,
   'env-var-form.restart-app': `Redémarrer l'app pour appliquer les changements`,
   'env-var-form.update': `Mettre à jour les changements`,
-  'env-var-form.error.loading': `Une erreur est survenue pendant le chargement des variables d'environnement.`,
-  'env-var-form.error.saving': `Une erreur est survenue pendant la mise à jour des variables d'environnement.`,
+  'env-var-form.error.loading': `Une erreur est survenue pendant le chargement des variables.`,
+  'env-var-form.error.saving': `Une erreur est survenue pendant la mise à jour des variables.`,
   'env-var-form.error.unknown': `Une erreur est survenue...`,
   // env-var-input
   'env-var-input.delete-button': `Enlever`,
