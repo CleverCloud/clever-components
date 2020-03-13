@@ -1,7 +1,7 @@
 import '../../components/env-var/env-var-form.js';
 import notes from '../../.components-docs/env-var-form.md';
 import { enhanceStoriesNames } from '../lib/story-names.js';
-import { makeStory, storyWait } from '../lib/make-story.js';
+import { makeStory } from '../lib/make-story.js';
 
 const VARIABLES_FULL = [
   { name: 'EMPTY', value: '' },
@@ -22,7 +22,7 @@ const conf = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [{ variables: Promise.resolve(VARIABLES_FULL) }],
+  items: [{ variables: VARIABLES_FULL }],
 });
 
 export const skeleton = makeStory(conf, {
@@ -34,28 +34,28 @@ export const skeletonWithReadonly = makeStory(conf, {
 });
 
 export const empty = makeStory(conf, {
-  items: [{ variables: Promise.resolve([]) }],
+  items: [{ variables: [] }],
 });
 
 export const emptyWithReadonly = makeStory(conf, {
-  items: [{ variables: Promise.resolve([]), readonly: true }],
+  items: [{ variables: [], readonly: true }],
 });
 
 export const dataLoaded = makeStory(conf, {
-  items: [{ variables: Promise.resolve(VARIABLES_FULL) }],
+  items: [{ variables: VARIABLES_FULL }],
 });
 
 export const dataLoadedWithReadonly = makeStory(conf, {
-  items: [{ variables: Promise.resolve(VARIABLES_FULL), readonly: true }],
+  items: [{ variables: VARIABLES_FULL, readonly: true }],
 });
 
 export const dataLoadedWithRestartButton = makeStory(conf, {
-  items: [{ variables: Promise.resolve(VARIABLES_FULL), restartApp: true }],
+  items: [{ variables: VARIABLES_FULL, restartApp: true }],
 });
 
 export const dataLoadedWithHeadingAndDescription = makeStory(conf, {
   items: [{
-    variables: Promise.resolve(VARIABLES_FULL),
+    variables: VARIABLES_FULL,
     heading: 'Environment variables',
     innerHTML: `
       Environment variables allow you to inject data in your application’s environment.
@@ -66,37 +66,22 @@ export const dataLoadedWithHeadingAndDescription = makeStory(conf, {
 
 export const dataLoadedWithHeadingAndReadonly = makeStory(conf, {
   items: [{
-    variables: Promise.resolve(VARIABLES_FULL),
-    heading: 'Addon: foobar',
+    variables: VARIABLES_FULL,
+    heading: 'Add-on: foobar',
     readonly: true,
   }],
 });
 
 export const saving = makeStory(conf, {
-  items: [{ variables: Promise.resolve(VARIABLES_FULL) }],
-  simulations: [
-    storyWait(0, ([component]) => {
-      component.variables = new Promise(() => null);
-    }),
-  ],
+  items: [{ variables: VARIABLES_FULL, saving: true }],
 });
 
 export const errorWithLoading = makeStory(conf, {
-  items: [{}],
-  simulations: [
-    storyWait(0, ([component]) => {
-      component.variables = Promise.reject(new Error());
-    }),
-  ],
+  items: [{ error: 'loading' }],
 });
 
 export const errorWithSaving = makeStory(conf, {
-  items: [{ variables: Promise.resolve(VARIABLES_FULL) }],
-  simulations: [
-    storyWait(0, ([component]) => {
-      component.variables = Promise.reject(new Error());
-    }),
-  ],
+  items: [{ variables: VARIABLES_FULL, error: 'saving' }],
 });
 
 enhanceStoriesNames({

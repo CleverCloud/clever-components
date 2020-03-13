@@ -69,33 +69,7 @@ export class EnvVarForm extends LitElement {
     ];
   }
 
-  set variables (variablesPromise) {
-    if (variablesPromise == null) {
-      return this._setVariables(null);
-    }
-    // TODO: handle race conditions
-    if (this._initVariables != null) {
-      this.saving = true;
-    }
-    this.error = null;
-    variablesPromise
-      .then((vars) => {
-        this._setVariables(vars);
-        this.error = null;
-        this.saving = false;
-      })
-      .catch(() => {
-        if (this._initVariables == null) {
-          this.error = 'loading';
-        }
-        else {
-          this.error = 'saving';
-        }
-        this.saving = false;
-      });
-  }
-
-  _setVariables (variables) {
+  set variables (variables) {
     this._initVariables = variables;
     this._isPristine = true;
     if (variables == null) {
@@ -152,7 +126,7 @@ export class EnvVarForm extends LitElement {
   }
 
   _onResetForm () {
-    this._setVariables(this._initVariables);
+    this.variables = this._initVariables;
   }
 
   _onUpdateForm () {
