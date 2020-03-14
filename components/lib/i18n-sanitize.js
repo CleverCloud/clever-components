@@ -1,5 +1,5 @@
 /* global globalThis */
-const WHITELISTED_TAGS = ['STRONG', 'EM', 'CODE', 'A'];
+const WHITELISTED_TAGS = ['STRONG', 'EM', 'CODE', 'A', 'BR'];
 
 // Reuse one text node to escape HTML
 const escapeHtml = (() => {

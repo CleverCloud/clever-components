@@ -9,9 +9,15 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
+import { linkStyles } from '../templates/cc-link.js';
 
 /**
  * A high level environment variable form (wrapping simple editor and expert editor into one interface).
+ *
+ * ## Details
+ *
+ * * You can set a custom `heading` and description with the default <slot>.
+ * * You can also set a context to get the appropriate heading and description (with translations).
  *
  * ## Type definitions
  *
@@ -23,6 +29,8 @@ import { i18n } from '../lib/i18n.js';
  * }
  * ```
  *
+ * @prop {String} appName - Defines application name used in some heading/description (depending on context).
+ * @prop {"env-var"|"env-var-simple"|"exposed-config"|null} context - Defines where the form will be used so it can display the appropriate heading and description.
  * @prop {"saving"|"loading"|null} error - Displays an error message (saving or loading).
  * @prop {String} heading - Sets a text to be used as a header title.
  * @prop {Boolean} readonly - Sets `readonly` attribute input and hides buttons.
@@ -30,14 +38,18 @@ import { i18n } from '../lib/i18n.js';
  * @prop {Boolean} saving - Enables saving sate (form is disabled and loader is displayed).
  * @prop {Variable[]} variables - Sets the list of variables.
  *
- * @event {CustomEvent<"saving"|"loading">} env-var-form:dismissed-error - Fires the type of error that was dismissed when the error button of an error message is clicked.
+ * @event {CustomEvent} env-var-form:dismissed-error - Fires the type of error that was dismissed when the error button of an error message is clicked.
  * @event {CustomEvent} env-var-form:restart-app - Fires whenever the restart app button is clicked.
  * @event {CustomEvent<Variable[]>} env-var-form:submit - Fires the new list of variables whenever the submit button is clicked.
+ *
+ * @slot - Sets custom HTML description.
  */
 export class EnvVarForm extends LitElement {
 
   static get properties () {
     return {
+      appName: { type: String, attribute: 'app-name' },
+      context: { type: String },
       error: { type: String, reflect: true },
       heading: { type: String, reflect: true },
       readonly: { type: Boolean, reflect: true },
@@ -45,6 +57,7 @@ export class EnvVarForm extends LitElement {
       saving: { type: Boolean, reflect: true },
       variables: { type: Array, attribute: false },
       _currentVariables: { type: Array, attribute: false },
+      _description: { type: String, attribute: false },
       _expertVariables: { type: Array, attribute: false },
       _mode: { type: String, attribute: false },
       _isPristine: { type: Boolean, attribute: false },
@@ -53,6 +66,8 @@ export class EnvVarForm extends LitElement {
 
   constructor () {
     super();
+    this.appName = '?';
+    this.context = null;
     this.error = null;
     this.heading = null;
     this.readonly = false;
@@ -60,6 +75,7 @@ export class EnvVarForm extends LitElement {
     this.saving = false;
     // this.variables is let to undefined by default (this triggers skeleton screen)
     this._mode = 'SIMPLE';
+    this._description = '';
   }
 
   static get modes () {
@@ -69,33 +85,24 @@ export class EnvVarForm extends LitElement {
     ];
   }
 
-  set variables (variablesPromise) {
-    if (variablesPromise == null) {
-      return this._setVariables(null);
+  set context (context) {
+    if (context === 'env-var') {
+      this.heading = i18n('env-var-form.heading.env-var');
+      this._description = i18n('env-var-form.description.env-var', { appName: this.appName });
+      this.requestUpdate();
     }
-    // TODO: handle race conditions
-    if (this._initVariables != null) {
-      this.saving = true;
+    if (context === 'env-var-simple') {
+      this.heading = i18n('env-var-form.heading.env-var');
+      this.requestUpdate();
     }
-    this.error = null;
-    variablesPromise
-      .then((vars) => {
-        this._setVariables(vars);
-        this.error = null;
-        this.saving = false;
-      })
-      .catch(() => {
-        if (this._initVariables == null) {
-          this.error = 'loading';
-        }
-        else {
-          this.error = 'saving';
-        }
-        this.saving = false;
-      });
+    if (context === 'exposed-config') {
+      this.heading = i18n('env-var-form.heading.exposed-config');
+      this._description = i18n('env-var-form.description.exposed-config', { appName: this.appName });
+      this.requestUpdate();
+    }
   }
 
-  _setVariables (variables) {
+  set variables (variables) {
     this._initVariables = variables;
     this._isPristine = true;
     if (variables == null) {
@@ -152,7 +159,7 @@ export class EnvVarForm extends LitElement {
   }
 
   _onResetForm () {
-    this._setVariables(this._initVariables);
+    this.variables = this._initVariables;
   }
 
   _onUpdateForm () {
@@ -183,6 +190,7 @@ export class EnvVarForm extends LitElement {
 
     const isEditorDisabled = (this.saving || this.error != null);
     const isFormDisabled = (this._currentVariables == null || this._isPristine || isEditorDisabled);
+    const hasOverlay = this.saving || this.error != null;
 
     return html`
       <div class="header">
@@ -192,7 +200,7 @@ export class EnvVarForm extends LitElement {
         ` : ''}
         
         <cc-toggle
-          class="mode-switcher ${classMap({ saving: this.saving || this.error != null })}"
+          class="mode-switcher ${classMap({ hasOverlay })}"
           value=${this._mode}
           .choices=${EnvVarForm.modes}
           ?disabled=${isEditorDisabled}
@@ -200,28 +208,46 @@ export class EnvVarForm extends LitElement {
         ></cc-toggle>
       </div>
       
-      <slot class="description"></slot>
+      <slot class="description">${this._description}</slot>
       
-      <cc-expand class=${classMap({ saving: this.saving || this.error != null })}>
-        <env-var-editor-simple
-          ?hidden=${this._mode !== 'SIMPLE'}
-          .variables=${this._currentVariables}
-          ?disabled=${isEditorDisabled}
-          ?readonly=${this.readonly}
-          @env-var-editor-simple:change=${this._onChange}
-          @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
-        ></env-var-editor-simple>
+      <div class="overlay-container">
+        <cc-expand class=${classMap({ hasOverlay })}>
+          <env-var-editor-simple
+            ?hidden=${this._mode !== 'SIMPLE'}
+            .variables=${this._currentVariables}
+            ?disabled=${isEditorDisabled}
+            ?readonly=${this.readonly}
+            @env-var-editor-simple:change=${this._onChange}
+            @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
+          ></env-var-editor-simple>
+          
+          <env-var-editor-expert
+            ?hidden=${this._mode !== 'EXPERT'}
+            .variables=${this._expertVariables}
+            ?disabled=${isEditorDisabled}
+            ?readonly=${this.readonly}
+            @env-var-editor-expert:change=${this._onChange}
+            @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
+          ></env-var-editor-expert>
+        </cc-expand>
         
-        <env-var-editor-expert
-          ?hidden=${this._mode !== 'EXPERT'}
-          .variables=${this._expertVariables}
-          ?disabled=${isEditorDisabled}
-          ?readonly=${this.readonly}
-          @env-var-editor-expert:change=${this._onChange}
-          @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
-        ></env-var-editor-expert>
-      </cc-expand>
-      
+        ${this.error === 'loading' ? html`
+          <div class="error-container">
+            <cc-error mode="info">${this._errorMessage}</cc-error>
+          </div>
+        ` : ''}
+        
+        ${this.error === 'saving' ? html`
+          <div class="error-container">
+            <cc-error mode="confirm" @cc-error:ok=${() => dispatchCustomEvent(this, 'dismissed-error')}>${this._errorMessage}</cc-error>
+          </div>
+        ` : ''}
+        
+        ${this.saving ? html`
+          <cc-loader class="saving-loader"></cc-loader>
+        ` : ''}
+      </div>
+        
       ${!this.readonly ? html`
         <div class="button-bar">
           
@@ -236,22 +262,13 @@ export class EnvVarForm extends LitElement {
           <cc-button success ?disabled=${isFormDisabled} @cc-button:click=${this._onUpdateForm}>${i18n('env-var-form.update')}</cc-button>
         </div>
       ` : ''}
-      
-      ${this.saving ? html`
-        <cc-loader class="saving-loader"></cc-loader>
-      ` : ''}
-      
-      ${this.error != null ? html`
-        <div class="error-container">
-          <cc-error mode="confirm" @cc-error:ok=${() => dispatchCustomEvent(this, 'dismissed-error', this.error)}>${this._errorMessage}</cc-error>
-        </div>
-      ` : ''}
     `;
   }
 
   static get styles () {
     return [
       // language=CSS
+      linkStyles,
       css`
         :host {
           display: block;
@@ -259,8 +276,6 @@ export class EnvVarForm extends LitElement {
           border-radius: 0.25rem;
           border: 1px solid #bcc2d1;
           padding: 1rem;
-          /* to position .saving-loader */
-          position: relative;
         }
 
         .header {
@@ -282,29 +297,17 @@ export class EnvVarForm extends LitElement {
           display: block;
           color: #555;
           font-style: italic;
+          line-height: 1.5;
           margin: 0.2rem 0.2rem 1rem;
         }
 
-        .saving {
+        .hasOverlay {
+          --cc-skeleton-state: paused;
           filter: blur(0.3rem);
         }
 
-        .button-bar {
-          display: flex;
-          flex-wrap: wrap;
-          margin-top: 1rem;
-        }
-
-        .spacer {
-          flex: 1 1 0;
-        }
-
-        .saving-loader {
-          height: 100%;
-          left: 0;
-          position: absolute;
-          top: 0;
-          width: 100%;
+        .overlay-container {
+          position: relative;
         }
 
         .error-container {
@@ -317,6 +320,24 @@ export class EnvVarForm extends LitElement {
           position: absolute;
           top: 0;
           width: 100%;
+        }
+
+        .saving-loader {
+          height: 100%;
+          left: 0;
+          position: absolute;
+          top: 0;
+          width: 100%;
+        }
+
+        .button-bar {
+          display: flex;
+          flex-wrap: wrap;
+          margin-top: 1rem;
+        }
+
+        .spacer {
+          flex: 1 1 0;
         }
       `,
     ];
