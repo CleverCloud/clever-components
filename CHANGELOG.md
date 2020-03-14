@@ -1,8 +1,34 @@
 # Clever Components changelog
 
+## 3.0.0 (2020-03-14)
+
+### Components
+
+* New component: `<env-var-linked-services>`
+* `<env-var-form>`:
+  * center overlay blocks in env editor
+  * introduce `context` (and `appName`) to provide several translated heading & descriptions
+  * pause skeleton on loading errors
+  * remove `@env-var-form:dismissed-error` for loading errors
+  * just mention "variables" without environment in i18n
+  * add docs for default slot
+  * remove promise based API
+
+### For devs
+
+* Add Apache 2 license
+* Update dev deps (build, tasks...)
+* Update to Storybook 5.3.17
+
+### ⚠️ BREAKING CHANGES
+
+* `<env-var-full>`: remove component
+
+NOTE: This component was a bit too high level and the composition was hard to struggle with
+
 ## 2.0.2 (2020-03-06)
 
-* env-var-form: fix parsing/serialization pb with simple/export mode
+* `<env-var-form>`: fix parsing/serialization pb with simple/export mode
 
 NOTE: This is a bug fix but if you copy/paste stuffs in the expert mode that was serialized in the old version you could have some problems.
 
