@@ -4,8 +4,8 @@
   "description": "This is a Work In Progress to introduce Web Components in our Clever Cloud Web based UIs.",
   "license": "Apache-2.0",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/CleverCloud/clever-components.git"
+    "type": "git",
+    "url": "https://github.com/CleverCloud/clever-components.git"
   },
   "main": "dist/index.js",
   "files": [
@@ -42,16 +42,16 @@
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-    "@storybook/addon-a11y": "^5.3.12",
-    "@storybook/addon-actions": "^5.3.12",
-    "@storybook/addon-docs": "^5.3.12",
-    "@storybook/addon-knobs": "^5.3.12",
-    "@storybook/addon-notes": "^5.3.12",
-    "@storybook/addon-viewport": "^5.3.12",
-    "@storybook/addons": "^5.3.12",
+    "@storybook/addon-a11y": "^5.3.17",
+    "@storybook/addon-actions": "^5.3.17",
+    "@storybook/addon-docs": "^5.3.17",
+    "@storybook/addon-knobs": "^5.3.17",
+    "@storybook/addon-notes": "^5.3.17",
+    "@storybook/addon-viewport": "^5.3.17",
+    "@storybook/addons": "^5.3.17",
     "@storybook/csf": "0.0.1",
-    "@storybook/theming": "^5.3.12",
-    "@storybook/web-components": "^5.3.12",
+    "@storybook/theming": "^5.3.17",
+    "@storybook/web-components": "^5.3.17",
     "babel-loader": "^8.0.6",
     "babel-plugin-inline-svg": "^1.0.1",
     "babel-plugin-template-html-minifier": "^4.0.0",
