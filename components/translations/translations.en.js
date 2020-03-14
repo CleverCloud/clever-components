@@ -276,6 +276,17 @@ export const translations = {
   'env-var-editor-expert.errors.duplicated-name': ({ name }) => sanitize`be careful, the name <code>${name}</code> is already defined`,
   'env-var-editor-expert.errors.invalid-line': () => sanitize`this line is not valid, the correct pattern is: <code>NAME="VALUE"</code>`,
   'env-var-editor-expert.errors.invalid-value': () => sanitize`the value is not valid, if you use quotes, you need to escape them like this: <code>\\"</code> or quote the whole value.`,
+  // env-var-linked-services
+  'env-var-linked-services.description.addon': ({ serviceName, appName }) => sanitize`List of variables exposed by the add-on <strong>${serviceName}</strong>.<br>Those variables will be injected as environment variables in the application <strong>${appName}</strong>.`,
+  'env-var-linked-services.description.app': ({ serviceName, appName }) => sanitize`Configuration exposed by the application <strong>${serviceName}</strong>.<br>Those variables will be injected as environement variables in the application <strong>${appName}</strong>.`,
+  'env-var-linked-services.empty.addon': ({ appName }) => sanitize`No add-ons linked to <strong>${appName}</strong>.`,
+  'env-var-linked-services.empty.app': ({ appName }) => sanitize`No applications linked to <strong>${appName}</strong>.`,
+  'env-var-linked-services.error.addon': ({ appName }) => sanitize`Something went wrong while loading add-ons linked to <strong>${appName}</strong>.`,
+  'env-var-linked-services.error.app': ({ appName }) => sanitize`Something went wrong while loading applications linked to <strong>${appName}</strong>.`,
+  'env-var-linked-services.heading.addon': ({ name }) => `Add-on: ${name}`,
+  'env-var-linked-services.heading.app': ({ name }) => `Application: ${name}`,
+  'env-var-linked-services.loading.addon': ({ appName }) => sanitize`Loading variables exposed by add-ons linked to <strong>${appName}</strong>...`,
+  'env-var-linked-services.loading.app': ({ appName }) => sanitize`Loading configuration exposed by applications linked to <strong>${appName}</strong>...`,
   // env-var-form
   'env-var-form.mode.simple': `Simple`,
   'env-var-form.mode.expert': `Expert`,
