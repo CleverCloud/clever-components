@@ -36,7 +36,7 @@ export class CcBeta extends LitElement {
       // language=CSS
       css`
         :host {
-          display: block;
+          display: grid;
           overflow: hidden;
           position: relative;
         }
