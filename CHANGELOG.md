@@ -1,5 +1,9 @@
 # Clever Components changelog
 
+## 3.0.2 (2020-03-27)
+
+* Update @clevercloud/client to 5.0.1
+
 ## 3.0.1 (2020-03-26)
 
 * Change `<cc-beta>` default to `display:grid` so it fixes `<cc-overview>` in Safari with `<cc-logsmap>`
