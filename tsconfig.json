@@ -7,7 +7,7 @@
           "no-unknown-tag-name": "error",
           "no-missing-import": "error",
           "no-unclosed-tag": "error",
-          "no-unknown-attribute": "off",
+          "no-unknown-attribute": "error",
           "no-unknown-property": "off",
           "no-unknown-event": "off",
           "no-unknown-slot": "off",
