@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "ts-lit-plugin",
+        "rules": {
+          "no-unknown-tag-name": "off",
+          "no-missing-import": "off",
+          "no-unclosed-tag": "off",
+          "no-unknown-attribute": "off",
+          "no-unknown-property": "off",
+          "no-unknown-event": "off",
+          "no-unknown-slot": "off",
+          "no-invalid-boolean-binding": "off",
+          "no-expressionless-property-binding": "off",
+          "no-noncallable-event-binding": "off",
+          "no-boolean-in-attribute-binding": "off",
+          "no-complex-attribute-binding": "off",
+          "no-nullable-attribute-binding": "off",
+          "no-incompatible-type-binding": "off",
+          "no-invalid-directive-binding": "off",
+          "no-unintended-mixed-binding": "off",
+          "no-incompatible-property-type": "off",
+          "no-unknown-property-converter": "off",
+          "no-invalid-attribute-name": "off",
+          "no-invalid-tag-name": "off",
+          "no-invalid-css": "off"
+        }
+      }
+    ]
+  }
+}
