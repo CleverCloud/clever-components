@@ -11,7 +11,7 @@
           "no-unknown-property": "error",
           "no-unknown-event": "error",
           "no-unknown-slot": "error",
-          "no-invalid-boolean-binding": "off",
+          "no-invalid-boolean-binding": "error",
           "no-expressionless-property-binding": "off",
           "no-noncallable-event-binding": "off",
           "no-boolean-in-attribute-binding": "off",
