@@ -23,7 +23,7 @@
           "no-incompatible-property-type": "off",
           "no-unknown-property-converter": "off",
           "no-invalid-attribute-name": "off",
-          "no-invalid-tag-name": "off",
+          "no-invalid-tag-name": "error",
           "no-invalid-css": "error"
         }
       }
