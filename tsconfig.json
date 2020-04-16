@@ -21,7 +21,7 @@
           "no-invalid-directive-binding": "off",
           "no-unintended-mixed-binding": "off",
           "no-incompatible-property-type": "off",
-          "no-unknown-property-converter": "off",
+          "no-unknown-property-converter": "error",
           "no-invalid-attribute-name": "error",
           "no-invalid-tag-name": "error",
           "no-invalid-css": "error"
