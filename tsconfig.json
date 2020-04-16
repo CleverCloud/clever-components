@@ -12,7 +12,7 @@
           "no-unknown-event": "error",
           "no-unknown-slot": "error",
           "no-invalid-boolean-binding": "error",
-          "no-expressionless-property-binding": "off",
+          "no-expressionless-property-binding": "error",
           "no-noncallable-event-binding": "off",
           "no-boolean-in-attribute-binding": "off",
           "no-complex-attribute-binding": "off",
