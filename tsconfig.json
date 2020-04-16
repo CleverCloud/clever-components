@@ -10,7 +10,7 @@
           "no-unknown-attribute": "error",
           "no-unknown-property": "error",
           "no-unknown-event": "error",
-          "no-unknown-slot": "off",
+          "no-unknown-slot": "error",
           "no-invalid-boolean-binding": "off",
           "no-expressionless-property-binding": "off",
           "no-noncallable-event-binding": "off",

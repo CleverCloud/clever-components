@@ -7,7 +7,7 @@ import { css, html, LitElement } from 'lit-element';
  *
  * * This component is designed to only be use as a direct child of `<cc-block>`.
  *
- * @slot The main content (right part) of the section. If info is not defined, this will take all the width.
+ * @slot - The main content (right part) of the section. If info is not defined, this will take all the width.
  * @slot info - The info (left part) of the section.
  * @slot title - The title of the section. You can use a `.danger` CSS class on your `<div slot="title">` if it's a danger zone.
  */
