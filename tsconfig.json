@@ -18,7 +18,7 @@
           "no-complex-attribute-binding": "error",
           "no-nullable-attribute-binding": "error",
           "no-incompatible-type-binding": "off",
-          "no-invalid-directive-binding": "off",
+          "no-invalid-directive-binding": "error",
           "no-unintended-mixed-binding": "off",
           "no-incompatible-property-type": "off",
           "no-unknown-property-converter": "error",
