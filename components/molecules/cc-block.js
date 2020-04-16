@@ -155,8 +155,6 @@ export class CcBlock extends LitElement {
           align-content: center;
           display: grid;
           justify-items: center;
-          /* stretch so it covers the .main and prevents clicks */
-          place-self: stretch;
           /* we have a few z-index:2 on atoms */
           z-index: 10;
         }

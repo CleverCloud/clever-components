@@ -24,7 +24,7 @@
           "no-unknown-property-converter": "off",
           "no-invalid-attribute-name": "off",
           "no-invalid-tag-name": "off",
-          "no-invalid-css": "off"
+          "no-invalid-css": "error"
         }
       }
     ]
