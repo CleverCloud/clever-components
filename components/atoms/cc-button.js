@@ -95,10 +95,6 @@ export class CcButton extends LitElement {
   }
 
   _cancelClick () {
-    if (this._animation != null) {
-      this._animation.cancel();
-      this._animation = null;
-    }
     clearTimeout(this._timeoutId);
     this._cancelMode = false;
   }
