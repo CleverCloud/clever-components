@@ -6,7 +6,7 @@
         "rules": {
           "no-unknown-tag-name": "error",
           "no-missing-import": "error",
-          "no-unclosed-tag": "off",
+          "no-unclosed-tag": "error",
           "no-unknown-attribute": "off",
           "no-unknown-property": "off",
           "no-unknown-event": "off",

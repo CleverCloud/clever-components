@@ -136,7 +136,7 @@ export class CcAddonAdmin extends LitElement {
             <div>
               <cc-button danger ?skeleton=${this._skeleton} ?disabled=${isFormDisabled} @cc-button:click=${this._onDeleteSubmit}>${i18n('cc-addon-admin.delete')}</cc-button>
             </div>
-          </div>
+          </cc-block-section>
         ` : ''}
         
         ${loadingError ? html`
