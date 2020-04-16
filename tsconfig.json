@@ -9,7 +9,7 @@
           "no-unclosed-tag": "error",
           "no-unknown-attribute": "error",
           "no-unknown-property": "error",
-          "no-unknown-event": "off",
+          "no-unknown-event": "error",
           "no-unknown-slot": "off",
           "no-invalid-boolean-binding": "off",
           "no-expressionless-property-binding": "off",
