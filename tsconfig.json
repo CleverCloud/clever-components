@@ -16,7 +16,7 @@
           "no-noncallable-event-binding": "error",
           "no-boolean-in-attribute-binding": "error",
           "no-complex-attribute-binding": "error",
-          "no-nullable-attribute-binding": "off",
+          "no-nullable-attribute-binding": "error",
           "no-incompatible-type-binding": "off",
           "no-invalid-directive-binding": "off",
           "no-unintended-mixed-binding": "off",
