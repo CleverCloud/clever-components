@@ -37,6 +37,7 @@ import { linkStyles } from '../templates/cc-link.js';
  * @prop {Boolean} primary - Sets button UI _mode_ to primary.
  * @prop {Boolean} skeleton - Enables skeleton screen UI pattern (loading hint).
  * @prop {Boolean} success - Sets button UI _mode_ to success.
+ * @prop {Boolean} waiting - If set, shows a waiting/busy indicator and sets `disabled` attribute on inner native `<button>` element.
  * @prop {Boolean} warning - Sets button UI _mode_ to warning.
  *
  * @event {CustomEvent} cc-button:click - Fires whenever the button is clicked.<br>If `delay` is set, fires after the specified `delay` (in seconds).
@@ -56,6 +57,7 @@ export class CcButton extends LitElement {
       primary: { type: Boolean },
       skeleton: { type: Boolean },
       success: { type: Boolean },
+      waiting: { type: Boolean },
       warning: { type: Boolean },
       _cancelMode: { type: Boolean, attribute: false },
     };
@@ -66,6 +68,7 @@ export class CcButton extends LitElement {
     this.danger = false;
     this.disabled = false;
     this.link = false;
+    this.waiting = false;
     this.outlined = false;
     this.primary = false;
     this.skeleton = false;
@@ -141,6 +144,8 @@ export class CcButton extends LitElement {
 
     const delay = (this.delay != null && !this.link) ? this.delay : null;
 
+    const waiting = (this.waiting && !this.link);
+
     // simple mode is default when no value or when there are multiple conflicting values
     modes.simple = !modes.primary && !modes.success && !modes.warning && !modes.danger && !this.link;
 
@@ -150,7 +155,7 @@ export class CcButton extends LitElement {
     return html`<button
       type="button"
       class=${classMap(modes)}
-      .disabled=${this.disabled || this.skeleton}
+      .disabled=${this.disabled || this.skeleton || this.waiting}
       @click=${this._onClick}
     >
       <div class=${classMap({ hidden: this._cancelMode })}>
@@ -167,7 +172,10 @@ export class CcButton extends LitElement {
       -->
       ${delay != null ? html`
         <div class=${classMap({ hidden: !this._cancelMode })}>${i18n('cc-button.cancel')}</div>
-        <progress class=${classMap({ active: this._cancelMode })} style="--delay: ${delay}s"></progress>
+        <progress class="delay ${classMap({ active: this._cancelMode })}" style="--delay: ${delay}s"></progress>
+      ` : ''}
+      ${waiting ? html`
+        <progress class="waiting"></progress>
       ` : ''}
     </button>`;
   }
@@ -299,25 +307,8 @@ export class CcButton extends LitElement {
         }
 
         /* progress bar for delay, see https://css-tricks.com/html5-progress-element */
-        progress {
-          -webkit-appearance: none;
-          -moz-appearance: none;
-          appearance: none;
-          border: none;
-          bottom: 0;
-          height: 0.2rem;
-          left: 0;
-          position: absolute;
-          width: 0;
-        }
-
-        progress.active {
-          transition: width var(--delay) linear;
-          width: 100%;
-        }
-
         progress,
-        progress::-webkit-progress-bar {
+        progress:-webkit-progress-bar {
           background-color: #fff;
         }
 
@@ -329,6 +320,42 @@ export class CcButton extends LitElement {
         progress::-webkit-progress-value,
         progress::-moz-progress-bar {
           background-color: transparent;
+        }
+
+        progress.delay {
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+          border: none;
+          bottom: 0;
+          height: 0.2rem;
+          left: 0;
+          position: absolute;
+          width: 0;
+        }
+
+        progress.delay.active {
+          transition: width var(--delay) linear;
+          width: 100%;
+        }
+
+        @keyframes waiting {
+          from { left: -52%; }
+          to   { left: 52%;  }
+        }
+
+        progress.waiting {
+          --width: 25%;
+          animation: 1s ease-in-out 0s infinite alternate waiting;
+          appearance: none;
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          border: none;
+          bottom: 0;
+          height: 0.2rem;
+          margin-left: calc(50% - calc(var(--width) / 2));
+          position: absolute;
+          width: var(--width);
         }
 
         /* We can do this because we set a visible focus state */

@@ -45,6 +45,14 @@ export const outlinedAndDisabled = makeStory(conf, {
   items: baseItems.map((p) => ({ ...p, outlined: true, disabled: true })),
 });
 
+export const waiting = makeStory(conf, {
+  items: baseItems.map((p) => ({ ...p, waiting: true })),
+});
+
+export const waitingAndOutlined = makeStory(conf, {
+  items: baseItems.map((p) => ({ ...p, outlined: true, waiting: true })),
+});
+
 export const delay = makeStory(conf, {
   docs: `
 \`<cc-button>\` have a delay mechanism:
@@ -91,13 +99,15 @@ export const skeleton = makeStory(conf, {
 });
 
 enhanceStoriesNames({
-  delay,
-  delayAndDisabled,
-  delayAndOutlined,
-  disabled,
-  image,
   modes,
   outlined,
+  disabled,
   outlinedAndDisabled,
+  waiting,
+  waitingAndOutlined,
+  delay,
+  delayAndOutlined,
+  delayAndDisabled,
+  image,
   skeleton,
 });
