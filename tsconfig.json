@@ -15,7 +15,7 @@
           "no-expressionless-property-binding": "error",
           "no-noncallable-event-binding": "error",
           "no-boolean-in-attribute-binding": "error",
-          "no-complex-attribute-binding": "off",
+          "no-complex-attribute-binding": "error",
           "no-nullable-attribute-binding": "off",
           "no-incompatible-type-binding": "off",
           "no-invalid-directive-binding": "off",
