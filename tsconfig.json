@@ -17,7 +17,7 @@
           "no-boolean-in-attribute-binding": "error",
           "no-complex-attribute-binding": "error",
           "no-nullable-attribute-binding": "error",
-          "no-incompatible-type-binding": "off",
+          "no-incompatible-type-binding": "error",
           "no-invalid-directive-binding": "error",
           "no-unintended-mixed-binding": "error",
           "no-incompatible-property-type": "off",

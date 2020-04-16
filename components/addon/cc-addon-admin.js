@@ -46,6 +46,8 @@ export class CcAddonAdmin extends LitElement {
 
   constructor () {
     super();
+    // lit-analyzer needs this
+    this._skeleton = false;
     this.addon = null;
     this.error = false;
     this.saving = false;

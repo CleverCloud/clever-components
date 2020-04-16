@@ -87,7 +87,6 @@ export class CcMap extends withResizeObserver(LitElement) {
     this.centerLat = 48.9;
     this.centerLon = 2.4;
     this.error = false;
-    this.heatmapPoints = [];
     this.loading = false;
     this.mode = 'points';
     this.viewZoom = 2;
@@ -195,6 +194,10 @@ export class CcMap extends withResizeObserver(LitElement) {
   }
 
   _updateHeatmap (newPoints) {
+
+    if (!Array.isArray(newPoints)) {
+      return;
+    }
 
     const counts = newPoints.map(({ count }) => count);
     const maxCount = (newPoints.length > 0)
@@ -379,8 +382,8 @@ export class CcMap extends withResizeObserver(LitElement) {
       <div id="cc-map-container" class=${classMap({ 'no-data': noHeatmapPoints })}></div>
       <div class="legend ${classMap({ 'no-data': noHeatmapPoints })}"><slot></slot></div>
       ${this.loading && !this.error ? html`
-        <cc-loader class="loader"></cc-loader>
-      ` : ''}
+      <cc-loader class="loader"></cc-loader>
+    ` : ''}
       ${this.error || noHeatmapPoints ? html`
         <div class="msg-container">
           ${this.error ? html`

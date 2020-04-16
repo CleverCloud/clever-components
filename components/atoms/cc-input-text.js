@@ -8,6 +8,7 @@ import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { skeleton } from '../styles/skeleton.js';
+import { ifDefined } from 'lit-html/directives/if-defined';
 
 const TAG_SEPARATOR = ' ';
 
@@ -224,7 +225,7 @@ export class CcInputText extends LitElement {
               name=${this.name}
               placeholder=${this.placeholder}
               spellcheck="false"
-              wrap="${this._tagsEnabled ? 'soft' : 'off'}"
+              wrap="${ifDefined(this._tagsEnabled ? 'soft' : undefined)}"
               @focus=${this._onFocus}
             ></textarea>
           ` : ''}
@@ -338,6 +339,10 @@ export class CcInputText extends LitElement {
           line-height: 1.7rem;
           overflow: hidden;
           z-index: 2;
+        }
+        
+        textarea:not([wrap]) {
+          white-space: pre;
         }
 
         /* STATES */
