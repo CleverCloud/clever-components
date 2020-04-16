@@ -4,8 +4,8 @@
       {
         "name": "ts-lit-plugin",
         "rules": {
-          "no-unknown-tag-name": "off",
-          "no-missing-import": "off",
+          "no-unknown-tag-name": "error",
+          "no-missing-import": "error",
           "no-unclosed-tag": "off",
           "no-unknown-attribute": "off",
           "no-unknown-property": "off",

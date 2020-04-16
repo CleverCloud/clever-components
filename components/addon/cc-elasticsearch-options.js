@@ -2,6 +2,7 @@ import '../atoms/cc-button.js';
 import '../atoms/cc-img.js';
 import '../atoms/cc-toggle.js';
 import '../molecules/cc-block.js';
+import '../molecules/cc-error.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
