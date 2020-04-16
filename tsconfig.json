@@ -8,7 +8,7 @@
           "no-missing-import": "error",
           "no-unclosed-tag": "error",
           "no-unknown-attribute": "error",
-          "no-unknown-property": "off",
+          "no-unknown-property": "error",
           "no-unknown-event": "off",
           "no-unknown-slot": "off",
           "no-invalid-boolean-binding": "off",
