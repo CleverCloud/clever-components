@@ -1,5 +1,8 @@
+import '../atoms/cc-input-text.js';
+import '../atoms/cc-loader.js';
 import '../molecules/cc-block-section.js';
 import '../molecules/cc-block.js';
+import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
@@ -43,6 +46,8 @@ export class CcAddonAdmin extends LitElement {
 
   constructor () {
     super();
+    // lit-analyzer needs this
+    this._skeleton = false;
     this.addon = null;
     this.error = false;
     this.saving = false;
@@ -133,7 +138,7 @@ export class CcAddonAdmin extends LitElement {
             <div>
               <cc-button danger ?skeleton=${this._skeleton} ?disabled=${isFormDisabled} @cc-button:click=${this._onDeleteSubmit}>${i18n('cc-addon-admin.delete')}</cc-button>
             </div>
-          </div>
+          </cc-block-section>
         ` : ''}
         
         ${loadingError ? html`

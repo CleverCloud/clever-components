@@ -86,8 +86,8 @@ export class CcHeaderOrga extends LitElement {
               </a>
             </div>
           ` : ''}
-        </div>
-      ` : ''}
+        ` : ''}
+      </div>
     `;
   }
 

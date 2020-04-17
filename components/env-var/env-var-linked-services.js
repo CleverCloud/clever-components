@@ -123,7 +123,7 @@ export class EnvVarLinkedServices extends LitElement {
       ${this.services != null && !this.error && this.services.length > 0 ? html`
         <div class="service-list">
           ${this.services.map((s) => html`
-            <env-var-form readonly .variables=${ifDefined(s.variables)} heading=${this._getServiceHeading(s.name)} error="${ifDefined(s.error)}">
+            <env-var-form readonly .variables=${s.variables} heading=${this._getServiceHeading(s.name)} error="${ifDefined(s.error)}">
               ${this._getServiceDescription(s.name)}
             </env-var-form>
           `)}

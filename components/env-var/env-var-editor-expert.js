@@ -39,6 +39,8 @@ export class EnvVarEditorExpert extends LitElement {
 
   constructor () {
     super();
+    // lit-analyzer needs this
+    this._skeleton = false;
     // Triggers setter (init _skeleton, _variablesAsText and _errors)
     this.variables = null;
     this.disabled = false;

@@ -49,7 +49,7 @@ export const leafletStyles = css`
   .leaflet-safari .leaflet-tile-container {
     width: 1600px;
     height: 1600px;
-    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
   }
 
   .leaflet-marker-icon,

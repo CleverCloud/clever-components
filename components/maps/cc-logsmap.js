@@ -75,7 +75,7 @@ export class CcLogsMap extends LitElement {
     this.centerLat = 48.9;
     this.centerLon = 2.4;
     this.error = false;
-    this.heatmapPoints = [];
+    // this.heatmapPoints = [];
     this.loading = false;
     this.mode = 'points';
     this.viewZoom = 2;

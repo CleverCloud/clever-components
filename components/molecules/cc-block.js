@@ -17,7 +17,7 @@ import { i18n } from '../lib/i18n.js';
  * @prop {String} icon - Sets the URL of the image before the title. Icon is hidden if nullish.
  * @prop {"off"|"open"|"close"} state - Sets the state of the toggle behaviour.
  *
- * @slot The main content of the block. The direct children of this will be spaced in a 1 column CSS grid.
+ * @slot - The main content of the block. The direct children of this will be spaced in a 1 column CSS grid.
  * @slot button - A zone dedicated for a button/toggle in the to right corner.
  * @slot overlay - The content to display on top of the main content.
  * @slot title - The title of the block. Try to only use text. Use the `icon` property/attribute.
@@ -155,8 +155,6 @@ export class CcBlock extends LitElement {
           align-content: center;
           display: grid;
           justify-items: center;
-          /* stretch so it covers the .main and prevents clicks */
-          place-self: stretch;
           /* we have a few z-index:2 on atoms */
           z-index: 10;
         }

@@ -59,7 +59,7 @@ export class CcAddonCredentials extends LitElement {
       case 'kibana':
         return i18n('cc-addon-credentials.description.kibana');
       default:
-        return null;
+        return '';
     }
   }
 
@@ -74,7 +74,7 @@ export class CcAddonCredentials extends LitElement {
       case 'user':
         return i18n('cc-addon-credentials.field.user');
       default:
-        return null;
+        return '';
     }
   }
 

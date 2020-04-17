@@ -30,8 +30,8 @@ import { linkStyles } from '../templates/cc-link.js';
  * ```
  *
  * @prop {String} appName - Defines application name used in some heading/description (depending on context).
- * @prop {"env-var"|"env-var-simple"|"exposed-config"|null} context - Defines where the form will be used so it can display the appropriate heading and description.
- * @prop {"saving"|"loading"|null} error - Displays an error message (saving or loading).
+ * @prop {"env-var"|"env-var-simple"|"exposed-config"} context - Defines where the form will be used so it can display the appropriate heading and description.
+ * @prop {"saving"|"loading"} error - Displays an error message (saving or loading).
  * @prop {String} heading - Sets a text to be used as a header title.
  * @prop {Boolean} readonly - Sets `readonly` attribute input and hides buttons.
  * @prop {Boolean} restartApp - Displays the restart app button.
@@ -67,9 +67,6 @@ export class EnvVarForm extends LitElement {
   constructor () {
     super();
     this.appName = '?';
-    this.context = null;
-    this.error = null;
-    this.heading = null;
     this.readonly = false;
     this.restartApp = false;
     this.saving = false;
