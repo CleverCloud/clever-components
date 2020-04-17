@@ -1,10 +1,10 @@
 import '../../components/maps/cc-map.js';
-import fakeHeatmapData from '../assets/24-hours-points.json';
 import notes from '../../.components-docs/cc-map.md';
-import { enhanceStoriesNames } from '../lib/story-names.js';
+import fakeHeatmapData from '../assets/24-hours-points.json';
 import { makeStory, storyWait } from '../lib/make-story.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
+import { setIntervalDom, setTimeoutDom } from '../lib/timers.js';
 import { getFakePointsData } from './fake-map-data.js';
-import { setIntervalDom, setTimeoutDom } from '../lib/timers';
 
 const spreadDuration = 5000;
 const delay = spreadDuration + 2000;

@@ -1,7 +1,7 @@
-import fakePointsDataNormal from '../assets/country-city-points-normal-orga';
-import fakePointsDataMedium from '../assets/country-city-points-medium-orga';
-import fakePointsDataBig from '../assets/country-city-points-big-orga';
 import { select } from '@storybook/addon-knobs';
+import fakePointsDataBig from '../assets/country-city-points-big-orga.json';
+import fakePointsDataMedium from '../assets/country-city-points-medium-orga.json';
+import fakePointsDataNormal from '../assets/country-city-points-normal-orga.json';
 
 const FAKE_POINTS_DATA = [
   fakePointsDataNormal,

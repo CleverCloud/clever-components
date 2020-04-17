@@ -1,7 +1,7 @@
 import '../../components/overview/cc-tile-status-codes.js';
 import notes from '../../.components-docs/cc-tile-status-codes.md';
-import { enhanceStoriesNames } from '../lib/story-names.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 
 const DATA = [
   { 200: 47640, 206: 2011, 302: 11045, 303: 457, 304: 12076, 500: 16 },

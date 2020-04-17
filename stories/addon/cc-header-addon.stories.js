@@ -1,7 +1,7 @@
 import '../../components/addon/cc-header-addon.js';
 import notes from '../../.components-docs/cc-header-addon.md';
-import { enhanceStoriesNames } from '../lib/story-names.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 
 const addon = {
   id: 'addon_012345678-9012-3456-7890-12345678',

@@ -1,12 +1,12 @@
 import '../molecules/cc-block.js';
 import '../molecules/cc-error.js';
+import { css, html, LitElement } from 'lit-element';
+import { classMap } from 'lit-html/directives/class-map.js';
+import { i18n } from '../lib/i18n.js';
+import { skeleton } from '../styles/skeleton.js';
 import cpuSvg from './cpu.svg';
 import diskSvg from './disk.svg';
 import ramSvg from './ram.svg';
-import { classMap } from 'lit-html/directives/class-map.js';
-import { css, html, LitElement } from 'lit-element';
-import { i18n } from '../lib/i18n.js';
-import { skeleton } from '../styles/skeleton.js';
 
 const featureIcons = {
   cpus: cpuSvg,

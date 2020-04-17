@@ -1,7 +1,7 @@
 import '../../components/overview/cc-header-app.js';
 import notes from '../../.components-docs/cc-header-app.md';
-import { enhanceStoriesNames } from '../lib/story-names.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 
 const COMMIT_ONE = '99b8617a5e102b318593eed3cd0c0a67e77b7e9a';
 const COMMIT_TWO = 'bf4c76b3c563050d32e411b2f06d11515c7d8304';

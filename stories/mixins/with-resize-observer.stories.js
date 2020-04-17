@@ -1,9 +1,9 @@
 import '../../components/atoms/cc-expand.js';
-import docsPage from './with-resize-observer.mdx';
 import { action } from '@storybook/addon-actions';
-import { enhanceStoriesNames } from '../lib/story-names.js';
 import { html, LitElement } from 'lit-element';
 import { withResizeObserver } from '../../components/mixins/with-resize-observer.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
+import docsPage from './with-resize-observer.mdx';
 
 class WithHtml extends withResizeObserver(window.HTMLElement) {
   constructor () {

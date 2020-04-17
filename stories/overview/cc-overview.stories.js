@@ -1,17 +1,17 @@
 import '../../components/overview/cc-overview.js';
 import notes from '../../.components-docs/cc-overview.md';
-import { createStoryItem, makeStory } from '../lib/make-story.js';
-import { defaultStory as consumption } from '../overview/cc-tile-consumption.stories.js';
-import { defaultStory as deployments } from '../overview/cc-tile-deployments.stories.js';
-import { defaultStory as headerApp } from './cc-header-app.stories.js';
-import { defaultStory as headerOrga } from './cc-header-orga.stories';
-import { defaultStory as instances } from '../overview/cc-tile-instances.stories.js';
-import { defaultStory as logsmap } from '../maps/cc-logsmap.stories.js';
-import { defaultStory as requests } from './cc-tile-requests.stories.js';
-import { defaultStory as scalability } from '../overview/cc-tile-scalability.stories.js';
-import { defaultStory as statusCodes } from './cc-tile-status-codes.stories.js';
-import { enhanceStoriesNames } from '../lib/story-names.js';
 import { withMap as betaWithMap, withTiles as betaWithTiles } from '../atoms/cc-beta.stories.js';
+import { createStoryItem, makeStory } from '../lib/make-story.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
+import { defaultStory as logsmap } from '../maps/cc-logsmap.stories.js';
+import { defaultStory as headerApp } from './cc-header-app.stories.js';
+import { defaultStory as headerOrga } from './cc-header-orga.stories.js';
+import { defaultStory as consumption } from './cc-tile-consumption.stories.js';
+import { defaultStory as deployments } from './cc-tile-deployments.stories.js';
+import { defaultStory as instances } from './cc-tile-instances.stories.js';
+import { defaultStory as requests } from './cc-tile-requests.stories.js';
+import { defaultStory as scalability } from './cc-tile-scalability.stories.js';
+import { defaultStory as statusCodes } from './cc-tile-status-codes.stories.js';
 
 export default {
   title: '🛠 Overview|<cc-overview>',

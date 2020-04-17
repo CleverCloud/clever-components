@@ -1,7 +1,7 @@
 import '../../components/addon/cc-addon-admin.js';
 import notes from '../../.components-docs/cc-addon-admin.md';
-import { enhanceStoriesNames } from '../lib/story-names.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
   title: '🛠 Addon|<cc-addon-admin>',

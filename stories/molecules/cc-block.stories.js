@@ -3,8 +3,8 @@ import '../../components/atoms/cc-input-text.js';
 import '../../components/atoms/cc-loader.js';
 import '../../components/molecules/cc-block.js';
 import notes from '../../.components-docs/cc-block.md';
-import { enhanceStoriesNames } from '../lib/story-names.js';
 import { makeStory } from '../lib/make-story.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
   title: '🧬 Molecules|<cc-block>',

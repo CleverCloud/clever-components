@@ -1,7 +1,7 @@
 import '../../components/env-var/env-var-create.js';
 import notes from '../../.components-docs/env-var-create.md';
-import { enhanceStoriesNames } from '../lib/story-names.js';
 import { makeStory } from '../lib/make-story.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
   title: '🛠 Environment variables|<env-var-create>',

@@ -1,9 +1,9 @@
 import '../../components/atoms/cc-button.js';
+import notes from '../../.components-docs/cc-button.md';
 import closeSvg from '../../components/overview/close.svg';
 import infoSvg from '../../components/overview/info.svg';
-import notes from '../../.components-docs/cc-button.md';
-import { enhanceStoriesNames } from '../lib/story-names.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 
 const baseItems = [
   { innerHTML: 'Simple' },

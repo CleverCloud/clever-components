@@ -1,7 +1,7 @@
 import '../../components/overview/cc-tile-scalability.js';
 import notes from '../../.components-docs/cc-tile-scalability.md';
-import { enhanceStoriesNames } from '../lib/story-names.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 
 const ALL_FLAVORS = {
   pico: { name: 'pico', mem: 256, cpus: 1, gpus: 0, microservice: true },

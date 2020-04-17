@@ -1,11 +1,11 @@
 import '../atoms/cc-datetime-relative.js';
 import '../molecules/cc-error.js';
-import { ccLink, linkStyles } from '../templates/cc-link.js';
-import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { i18n } from '../lib/i18n.js';
-import { skeleton } from '../styles/skeleton.js';
 import { tileStyles } from '../styles/info-tiles.js';
+import { skeleton } from '../styles/skeleton.js';
+import { ccLink, linkStyles } from '../templates/cc-link.js';
 
 /**
  * A "tile" component to display a list of deployments (status, humanized time ago and logs link).

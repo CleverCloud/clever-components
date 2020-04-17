@@ -1,11 +1,11 @@
 import '../atoms/cc-button.js';
 import '../atoms/cc-expand.js';
 import '../atoms/cc-img.js';
+import { css, html, LitElement } from 'lit-element';
+import { classMap } from 'lit-html/directives/class-map.js';
+import { i18n } from '../lib/i18n.js';
 import downSvg from './down.svg';
 import upSvg from './up.svg';
-import { classMap } from 'lit-html/directives/class-map.js';
-import { css, html, LitElement } from 'lit-element';
-import { i18n } from '../lib/i18n.js';
 
 /**
  * A display component with mostly HTML+CSS and a open/close toggle feature.

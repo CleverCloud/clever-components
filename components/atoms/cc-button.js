@@ -1,9 +1,9 @@
-import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
-import { linkStyles } from '../templates/cc-link.js';
 import { skeleton } from '../styles/skeleton.js';
+import { linkStyles } from '../templates/cc-link.js';
 
 /**
  * Wraps a `<button>` with a skeleton state, some modes and a delay mechanism.

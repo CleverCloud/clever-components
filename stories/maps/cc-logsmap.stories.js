@@ -1,10 +1,10 @@
 import '../../components/maps/cc-logsmap.js';
-import fakeHeatmapData from '../assets/24-hours-points.json';
 import notes from '../../.components-docs/cc-logsmap.md';
-import { enhanceStoriesNames } from '../lib/story-names.js';
-import { getFakePointsData } from './fake-map-data.js';
+import fakeHeatmapData from '../assets/24-hours-points.json';
 import { makeStory, storyWait } from '../lib/make-story.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 import { setIntervalDom, setTimeoutDom } from '../lib/timers.js';
+import { getFakePointsData } from './fake-map-data.js';
 
 export default {
   title: '🛠 Maps|<cc-logsmap>',

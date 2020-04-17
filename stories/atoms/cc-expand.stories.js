@@ -1,9 +1,9 @@
 import '../../components/atoms/cc-expand.js';
 import '../../components/atoms/cc-toggle.js';
-import notes from '../../.components-docs/cc-expand.md';
-import { enhanceStoriesNames } from '../lib/story-names.js';
 import { html, render } from 'lit-html';
+import notes from '../../.components-docs/cc-expand.md';
 import { makeStory } from '../lib/make-story.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
   title: '🧬 Atoms|<cc-expand>',

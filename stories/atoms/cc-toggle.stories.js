@@ -1,7 +1,7 @@
 import '../../components/atoms/cc-toggle.js';
 import notes from '../../.components-docs/cc-toggle.md';
-import { enhanceStoriesNames } from '../lib/story-names.js';
 import { makeStory } from '../lib/make-story.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
   title: '🧬 Atoms|<cc-toggle>',

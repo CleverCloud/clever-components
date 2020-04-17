@@ -1,7 +1,7 @@
 import '../../components/atoms/cc-datetime-relative.js';
 import notes from '../../.components-docs/cc-datetime-relative.md';
-import { enhanceStoriesNames } from '../lib/story-names.js';
 import { makeStory } from '../lib/make-story.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export function createDateAgo ({ seconds = 0, minutes = 0, hours = 0, days = 0, weeks = 0, months = 0, years = 0 }) {
   const nowTs = new Date().getTime();

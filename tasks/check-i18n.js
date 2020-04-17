@@ -4,13 +4,12 @@
 // eslint-disable-next-line no-global-assign
 require = require('esm')(module);
 
-const { translations: en } = require('../components/translations/translations.en.js');
-const { translations: fr } = require('../components/translations/translations.fr.js');
-
+const util = require('util');
 const fs = require('fs-extra');
 const rawGlob = require('glob');
-const util = require('util');
 const { extractFromCode } = require('i18n-extract');
+const { translations: en } = require('../components/translations/translations.en.js');
+const { translations: fr } = require('../components/translations/translations.fr.js');
 
 const glob = util.promisify(rawGlob);
 const translationsByLang = { en, fr };

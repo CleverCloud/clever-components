@@ -1,7 +1,7 @@
 import '../../components/addon/cc-addon-features.js';
 import notes from '../../.components-docs/cc-addon-features.md';
-import { enhanceStoriesNames } from '../lib/story-names.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 
 const defaultFeatures = [
   { name: 'DISK', value: '40 GB' },

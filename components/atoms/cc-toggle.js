@@ -1,7 +1,7 @@
-import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
-import { dispatchCustomEvent } from '../lib/events.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { repeat } from 'lit-html/directives/repeat.js';
+import { dispatchCustomEvent } from '../lib/events.js';
 
 /**
  * A better looking radio input group component acting like a toggle between many options.
