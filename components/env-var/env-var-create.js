@@ -1,10 +1,10 @@
 import '../atoms/cc-button.js';
 import '../atoms/cc-input-text.js';
 import '../molecules/cc-error.js';
+import { validateName } from '@clevercloud/client/esm/utils/env-vars.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
-import { validateName } from '@clevercloud/client/esm/utils/env-vars.js';
 
 /**
  * A small form to create a new environment variable with validations on the name.

@@ -4,7 +4,7 @@ import '../../components/molecules/cc-block-section.js';
 import '../../components/molecules/cc-block.js';
 import notes from '../../.components-docs/cc-block-section.md';
 import { makeStory } from '../lib/make-story.js';
-import { enhanceStoriesNames } from '../lib/story-names';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
   title: '🧬 Molecules|<cc-block-section>',

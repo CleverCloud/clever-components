@@ -1,14 +1,14 @@
-import clipboardSvg from './clipboard.svg';
 import copy from 'clipboard-copy';
-import eyeClosedSvg from './eye-closed.svg';
-import eyeOpenSvg from './eye-open.svg';
-import tickSvg from './tick.svg';
-import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
+import { classMap } from 'lit-html/directives/class-map.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { skeleton } from '../styles/skeleton.js';
-import { ifDefined } from 'lit-html/directives/if-defined';
+import clipboardSvg from './clipboard.svg';
+import eyeClosedSvg from './eye-closed.svg';
+import eyeOpenSvg from './eye-open.svg';
+import tickSvg from './tick.svg';
 
 const TAG_SEPARATOR = ' ';
 

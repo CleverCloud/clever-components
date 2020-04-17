@@ -2,8 +2,8 @@
 import '../../components/translations/translations.en.js';
 import '../../components/translations/translations.fr.js';
 // TRICK_END
-import * as blockPreview from '@storybook/components/dist/blocks/Preview.js';
 import { decorate } from '@storybook/addon-actions';
+import * as blockPreview from '@storybook/components/dist/blocks/Preview.js';
 import { sequence } from './sequence.js';
 
 // NOTE: Those dirty injects are work in progress

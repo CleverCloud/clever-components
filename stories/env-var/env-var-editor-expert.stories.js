@@ -1,7 +1,7 @@
 import '../../components/env-var/env-var-editor-expert.js';
 import notes from '../../.components-docs/env-var-editor-expert.md';
-import { enhanceStoriesNames } from '../lib/story-names.js';
 import { makeStory } from '../lib/make-story.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 
 const VARIABLES_FULL = [
   { name: 'EMPTY', value: '' },

@@ -38,7 +38,8 @@
     "lit-element": "^2.2.1",
     "lit-html": "^1.1.2",
     "resize-observer-polyfill": "^1.5.1",
-    "statuses": "^1.5.0"
+    "statuses": "^1.5.0",
+    "un": "0.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.7",
@@ -61,9 +62,11 @@
     "del": "^5.1.0",
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.0",
-    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-lit": "^1.2.0",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-simple-import-sort": "^5.0.2",
     "eslint-plugin-standard": "^4.0.1",
     "esm": "^3.2.25",
     "fs-extra": "^8.1.0",

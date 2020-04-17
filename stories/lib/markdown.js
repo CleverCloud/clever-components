@@ -1,8 +1,8 @@
 import 'github-markdown-css/github-markdown.css';
 import 'highlight.js/styles/vs.css';
 import hljs from 'highlight.js';
-import MarkdownIt from 'markdown-it';
 import { Parser as HtmlToReactParser } from 'html-to-react';
+import MarkdownIt from 'markdown-it';
 
 const htmlToReactParser = new HtmlToReactParser();
 

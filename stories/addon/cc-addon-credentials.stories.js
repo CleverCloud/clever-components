@@ -1,7 +1,7 @@
 import '../../components/addon/cc-addon-credentials.js';
 import notes from '../../.components-docs/cc-addon-credentials.md';
-import { enhanceStoriesNames } from '../lib/story-names.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 
 const credentials = [
   { type: 'host', value: 'my-host.services.clever-cloud.com', secret: false },

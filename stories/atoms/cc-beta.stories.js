@@ -1,10 +1,10 @@
 import '../../components/atoms/cc-beta.js';
 import notes from '../../.components-docs/cc-beta.md';
 import { createStoryItem, makeStory } from '../lib/make-story.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 import { defaultStory as logsmap } from '../maps/cc-logsmap.stories.js';
 import { defaultStory as requests } from '../overview/cc-tile-requests.stories.js';
 import { defaultStory as statusCodes } from '../overview/cc-tile-status-codes.stories.js';
-import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
   title: '🧬 Atoms|<cc-beta>',

@@ -1,12 +1,12 @@
 import '../atoms/cc-img.js';
 import '../molecules/cc-block.js';
 import '../molecules/cc-error.js';
-import { ccLink, linkStyles } from '../templates/cc-link.js';
-import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
-import { i18n } from '../lib/i18n.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { i18n } from '../lib/i18n.js';
 import { skeleton } from '../styles/skeleton.js';
+import { ccLink, linkStyles } from '../templates/cc-link.js';
 
 /**
  * A component to display applications linked to an add-on.

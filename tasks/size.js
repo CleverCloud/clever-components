@@ -1,12 +1,12 @@
 'use strict';
 
-const pkg = require('../package.json');
+const path = require('path');
 const babel = require('@babel/core');
+const { fetchPackageStats } = require('bundle-phobia-cli/src/fetch-package-stats.js');
 const fs = require('fs-extra');
 const getGzipSize = require('gzip-size');
-const path = require('path');
 const table = require('text-table');
-const { fetchPackageStats } = require('bundle-phobia-cli/src/fetch-package-stats.js');
+const pkg = require('../package.json');
 
 function isImportExportNode (node) {
   return (node.type === 'ExportNamedDeclaration' || node.type === 'ImportDeclaration')

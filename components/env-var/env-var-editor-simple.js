@@ -1,9 +1,9 @@
 import './env-var-create.js';
 import './env-var-input.js';
 import { css, html, LitElement } from 'lit-element';
+import { repeat } from 'lit-html/directives/repeat.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
-import { repeat } from 'lit-html/directives/repeat';
 
 /**
  * A high level environment variable editor to create/edit/delete variables one at a time (with validation and error messages).

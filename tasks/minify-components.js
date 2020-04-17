@@ -1,13 +1,13 @@
 'use strict';
 
+const path = require('path');
+const util = require('util');
 const babel = require('@babel/core');
 const del = require('del');
 const fs = require('fs-extra');
-const path = require('path');
 const rawGlob = require('glob');
 const SVGO = require('svgo');
 const Terser = require('terser');
-const util = require('util');
 
 const glob = util.promisify(rawGlob);
 

@@ -2,8 +2,8 @@ import '../atoms/cc-loader.js';
 import '../molecules/cc-error.js';
 import './env-var-form.js';
 import { css, html, LitElement } from 'lit-element';
-import { i18n } from '../lib/i18n.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { i18n } from '../lib/i18n.js';
 
 /**
  * A component to display groups of readonly `<env-var-form>` for linked apps of add-ons.

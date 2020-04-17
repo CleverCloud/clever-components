@@ -1,7 +1,7 @@
 import '../../components/addon/cc-addon-linked-apps.js';
 import notes from '../../.components-docs/cc-addon-linked-apps.md';
-import { enhanceStoriesNames } from '../lib/story-names.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 
 const applications = [
   {

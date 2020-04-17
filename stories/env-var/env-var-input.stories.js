@@ -1,7 +1,7 @@
 import '../../components/env-var/env-var-input.js';
 import notes from '../../.components-docs/env-var-input.md';
-import { enhanceStoriesNames } from '../lib/story-names.js';
 import { makeStory } from '../lib/make-story.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
   title: '🛠 Environment variables|<env-var-input>',

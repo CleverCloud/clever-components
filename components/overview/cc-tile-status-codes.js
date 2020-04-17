@@ -1,17 +1,17 @@
 import '../atoms/cc-button.js';
 import '../molecules/cc-error.js';
 import Chart from 'chart.js';
+import { css, html, LitElement } from 'lit-element';
+import { cache } from 'lit-html/directives/cache.js';
+import { classMap } from 'lit-html/directives/class-map.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { STATUS_CODES } from 'statuses';
+import { i18n } from '../lib/i18n.js';
+import { tileStyles } from '../styles/info-tiles.js';
+import { skeleton } from '../styles/skeleton.js';
+import { linkStyles } from '../templates/cc-link.js';
 import closeSvg from './close.svg';
 import infoSvg from './info.svg';
-import { cache } from 'lit-html/directives/cache';
-import { linkStyles } from '../templates/cc-link.js';
-import { classMap } from 'lit-html/directives/class-map';
-import { css, html, LitElement } from 'lit-element';
-import { i18n } from '../lib/i18n.js';
-import { ifDefined } from 'lit-html/directives/if-defined';
-import { skeleton } from '../styles/skeleton.js';
-import { STATUS_CODES } from 'statuses';
-import { tileStyles } from '../styles/info-tiles.js';
 
 function xor (a, b) {
   return Number(a) ^ Number(b);

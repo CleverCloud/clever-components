@@ -1,9 +1,9 @@
+import { storiesOf } from '@storybook/web-components';
 import changelog from '../../CHANGELOG.md';
 import contributing from '../../CONTRIBUTING.md';
 import readme from '../../README.md';
 import release from '../../RELEASE.md';
 import { markdownToDom, markdownToReact } from '../lib/markdown.js';
-import { storiesOf } from '@storybook/web-components';
 
 // TODO: It would be even better if we could load simple markdown files
 export function createDocsStories (kind, stories) {

@@ -1,9 +1,9 @@
 import '../molecules/cc-error.js';
-import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { i18n } from '../lib/i18n.js';
-import { skeleton } from '../styles/skeleton.js';
 import { tileStyles } from '../styles/info-tiles.js';
+import { skeleton } from '../styles/skeleton.js';
 
 /**
  * A "tile" component to display consumption info (yesterday and over last 30 days).

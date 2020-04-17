@@ -1,7 +1,7 @@
 import '../../components/overview/cc-tile-requests.js';
 import notes from '../../.components-docs/cc-tile-requests.md';
-import { enhanceStoriesNames } from '../lib/story-names.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 
 const REQUESTS_COUNTS_BIG = [
   596600,

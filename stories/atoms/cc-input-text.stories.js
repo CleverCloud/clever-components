@@ -1,7 +1,7 @@
 import '../../components/atoms/cc-input-text.js';
 import notes from '../../.components-docs/cc-input-text.md';
 import { makeStory } from '../lib/make-story.js';
-import { enhanceStoriesNames } from '../lib/story-names';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 
 function widthContent (chars) {
   const rawContents = `_chars`;

@@ -1,7 +1,7 @@
 import '../../components/env-var/env-var-linked-services.js';
 import notes from '../../.components-docs/env-var-linked-services.md';
-import { enhanceStoriesNames } from '../lib/story-names.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 
 const VARIABLES_FULL = [
   { name: 'EMPTY', value: '' },

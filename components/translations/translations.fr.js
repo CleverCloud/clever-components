@@ -6,7 +6,7 @@ import {
   prepareFormatHours,
 } from '../lib/i18n-date.js';
 import { prepareNumberUnitFormatter } from '../lib/i18n-number.js';
-import { sanitize } from '../lib/i18n-sanitize';
+import { sanitize } from '../lib/i18n-sanitize.js';
 
 export const lang = 'fr';
 

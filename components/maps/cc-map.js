@@ -4,11 +4,11 @@ import leaflet from 'leaflet';
 // 'leaflet.heat' needs to be imported after 'leaflet'
 import 'leaflet.heat';
 import { css, html, LitElement } from 'lit-element';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { i18n } from '../lib/i18n.js';
-import { leafletStyles } from '../styles/leaflet.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
+import { leafletStyles } from '../styles/leaflet.js';
 import { WORLD_GEOJSON } from './world-110m.geo.js';
-import { classMap } from 'lit-html/directives/class-map';
 
 // Generated with https://components.ai/color-scale/
 // Canvas at #F5F5F5 (map country color)

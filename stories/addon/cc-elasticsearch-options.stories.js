@@ -1,7 +1,7 @@
 import '../../components/addon/cc-elasticsearch-options.js';
 import notes from '../../.components-docs/cc-elasticsearch-options.md';
-import { enhanceStoriesNames } from '../lib/story-names.js';
 import { makeStory } from '../lib/make-story.js';
+import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
   title: '🛠 Addon|<cc-elasticsearch-options>',

@@ -1,12 +1,12 @@
 import '../atoms/cc-expand.js';
 import '../atoms/cc-loader.js';
 import '../molecules/cc-error.js';
-import runningSvg from './running.svg';
-import startingSvg from './starting.svg';
-import { animate, QUICK_SHRINK } from '../lib/animate.js';
 import { css, html, LitElement } from 'lit-element';
+import { animate, QUICK_SHRINK } from '../lib/animate.js';
 import { i18n } from '../lib/i18n.js';
 import { instanceDetails, tileStyles } from '../styles/info-tiles.js';
+import runningSvg from './running.svg';
+import startingSvg from './starting.svg';
 
 const statusImg = {
   running: runningSvg,

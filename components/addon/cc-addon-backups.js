@@ -3,14 +3,14 @@ import '../atoms/cc-input-text.js';
 import '../molecules/cc-block-section.js';
 import '../molecules/cc-block.js';
 import '../molecules/cc-error.js';
-import backupSvg from './backup.svg';
-import closeSvg from '../overview/close.svg';
-import { ccLink, linkStyles } from '../templates/cc-link.js';
-import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { fakeString } from '../lib/fake-strings.js';
 import { i18n } from '../lib/i18n.js';
+import closeSvg from '../overview/close.svg';
 import { skeleton } from '../styles/skeleton.js';
+import { ccLink, linkStyles } from '../templates/cc-link.js';
+import backupSvg from './backup.svg';
 
 /**
  * A components to display backups available for an add-on
