@@ -59,7 +59,7 @@ export class CcToggle extends LitElement {
           <input
             type="radio"
             name=${this._uniqueName}
-            value=${value}
+            .value=${value}
             id=${value}
             ?disabled=${this.disabled}
             .checked=${this.value === value}
