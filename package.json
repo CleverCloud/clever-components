@@ -38,8 +38,7 @@
     "lit-element": "^2.2.1",
     "lit-html": "^1.1.2",
     "resize-observer-polyfill": "^1.5.1",
-    "statuses": "^1.5.0",
-    "un": "0.0.0"
+    "statuses": "^1.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.7",
