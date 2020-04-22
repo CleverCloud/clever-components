@@ -34,6 +34,11 @@ export class CcTcpRedirectionForm extends LitElement {
     };
   }
 
+  constructor () {
+    super();
+    this.error = false;
+  }
+
   static get skeletonRedirections () {
     return [
       { namespace: 'default', sourcePort: 1234 },
