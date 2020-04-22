@@ -32,8 +32,8 @@ import redirectionSvg from './redirection-on.svg';
  * @prop {Boolean} error - Set if there was an error during creation / deletion.
  * @prop {String} namespace - Sets the name of the namespace.
  * @prop {Boolean} private - Set if this namespace is dedicated to the customer.
- * @prop {Number} sourcePort - Sets the source of the redirection if any.
  * @prop {Boolean} skeleton - Enables skeleton screen UI pattern (loading hint).
+ * @prop {Number} sourcePort - Sets the source of the redirection if any.
  * @prop {Boolean} waiting - Sets the waiting state. You should set this to true while an action is in progress.
  *
  * @event {CustomEvent<RedirectionNamespace>} cc-tcp-redirection:create - Fires a redirection namespace whenever the create button is clicked.
@@ -50,6 +50,14 @@ export class CcTcpRedirection extends LitElement {
       sourcePort: { type: Number },
       waiting: { type: Boolean },
     };
+  }
+
+  constructor () {
+    super();
+    this.error = false;
+    this.private = false;
+    this.skeleton = false;
+    this.waiting = false;
   }
 
   _getButtonText () {
