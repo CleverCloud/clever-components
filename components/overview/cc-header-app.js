@@ -6,6 +6,7 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { skeleton } from '../styles/skeleton.js';
+import { waitingStyles } from '../styles/waiting.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 import gitSvg from './git.svg';
 import restartFailedSvg from './restart-failed.svg';
@@ -195,7 +196,7 @@ export class CcHeaderApp extends LitElement {
     }
     return html`
       <span
-        class="commit-item ${classMap({ 'is-deploying': (type === 'starting') })}"
+        class="commit-item ${classMap({ 'cc-waiting': (type === 'starting') })}"
         title=${ifDefined(skeleton ? undefined : this._getCommitTitle(type, commit))}
         data-type=${type}
       >
@@ -292,7 +293,7 @@ export class CcHeaderApp extends LitElement {
         </div>
       </div>
       
-      <div class="messages ${classMap({ 'is-deploying': isDeploying })}">
+      <div class="messages ${classMap({ 'cc-waiting': isDeploying })}">
         ${(shouldDisplayStatusMessage) ? html`
           <!-- image has a presentation role => alt="" -->
           <img class="status-icon" src=${statusIcon[status] || unknownSvg} alt="">
@@ -312,6 +313,7 @@ export class CcHeaderApp extends LitElement {
     return [
       skeleton,
       linkStyles,
+      waitingStyles,
       // language=CSS
       css`
         :host {
@@ -422,17 +424,6 @@ export class CcHeaderApp extends LitElement {
           cursor: not-allowed;
         }
 
-        /* TODO FACTOR */
-        @keyframes deploying {
-          from {
-            opacity: 0.85;
-          }
-
-          to {
-            opacity: 1;
-          }
-        }
-
         .messages {
           background-color: #f1f5ff;
           box-shadow: inset 0 6px 6px -6px #a4b1c9;
@@ -441,14 +432,6 @@ export class CcHeaderApp extends LitElement {
           font-size: 0.9rem;
           font-style: italic;
           padding: 0.4rem 1rem;
-        }
-
-        /* used on commits and messages */
-        .is-deploying {
-          animation-direction: alternate;
-          animation-duration: 500ms;
-          animation-iteration-count: infinite;
-          animation-name: deploying;
         }
 
         .status-icon {
