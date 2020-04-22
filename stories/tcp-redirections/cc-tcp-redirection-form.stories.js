@@ -1,4 +1,4 @@
-import '../../components/tcp-redirections/cc-tcp-redirection-form.js';
+import '../../src/tcp-redirections/cc-tcp-redirection-form.js';
 import notes from '../../.components-docs/cc-tcp-redirection-form.md';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';

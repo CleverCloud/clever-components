@@ -1,7 +1,7 @@
-import '../../components/atoms/cc-expand.js';
+import '../../src/atoms/cc-expand.js';
 import { action } from '@storybook/addon-actions';
 import { html, LitElement } from 'lit-element';
-import { withResizeObserver } from '../../components/mixins/with-resize-observer.js';
+import { withResizeObserver } from '../../src/mixins/with-resize-observer.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 import docsPage from './with-resize-observer.mdx';
 

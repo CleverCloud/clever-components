@@ -1,4 +1,4 @@
-import { sanitize } from '../../components/lib/i18n-sanitize.js';
+import { sanitize } from '../../src/lib/i18n-sanitize.js';
 
 function compareChildNodes (domFragment, referenceChildNodes) {
 

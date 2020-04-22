@@ -1,4 +1,4 @@
-import '../../components/overview/cc-tile-status-codes.js';
+import '../../src/overview/cc-tile-status-codes.js';
 import notes from '../../.components-docs/cc-tile-status-codes.md';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';

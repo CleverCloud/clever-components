@@ -1,4 +1,4 @@
-import '../../components/addon/cc-elasticsearch-options.js';
+import '../../src/addon/cc-elasticsearch-options.js';
 import notes from '../../.components-docs/cc-elasticsearch-options.md';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';

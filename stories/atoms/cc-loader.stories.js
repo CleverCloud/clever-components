@@ -1,4 +1,4 @@
-import '../../components/atoms/cc-loader.js';
+import '../../src/atoms/cc-loader.js';
 import notes from '../../.components-docs/cc-loader.md';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';

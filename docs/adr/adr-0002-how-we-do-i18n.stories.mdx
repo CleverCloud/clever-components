@@ -25,7 +25,7 @@ In the future, it would have been done in a standard way with import maps (if an
 
 * Users were required to configure their bundler (if they had the "chance" to have one in their project).
   * This step can be troublesome in some contexts (hello webpack :p).
-* This project provided an implementation of the `@i18n` module at `components/lib/i18n.js` and let's face it, nobody would ever wire another implementation. 
+* This project provided an implementation of the `@i18n` module at `src/lib/i18n.js` and let's face it, nobody would ever wire another implementation. 
 * This breaks static code analysis from third party services (like bundlephobia...).
 * This was not solving the right problem, and on top of this, our implementation was always loading all languages.
 

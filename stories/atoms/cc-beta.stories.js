@@ -1,4 +1,4 @@
-import '../../components/atoms/cc-beta.js';
+import '../../src/atoms/cc-beta.js';
 import notes from '../../.components-docs/cc-beta.md';
 import { createStoryItem, makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';

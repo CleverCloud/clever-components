@@ -1,4 +1,4 @@
-import '../../components/overview/cc-tile-consumption.js';
+import '../../src/overview/cc-tile-consumption.js';
 import notes from '../../.components-docs/cc-tile-consumption.md';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';

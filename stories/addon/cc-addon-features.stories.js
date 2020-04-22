@@ -1,4 +1,4 @@
-import '../../components/addon/cc-addon-features.js';
+import '../../src/addon/cc-addon-features.js';
 import notes from '../../.components-docs/cc-addon-features.md';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';

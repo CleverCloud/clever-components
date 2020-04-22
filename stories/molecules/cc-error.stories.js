@@ -1,4 +1,4 @@
-import '../../components/molecules/cc-error.js';
+import '../../src/molecules/cc-error.js';
 import notes from '../../.components-docs/cc-error.md';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';

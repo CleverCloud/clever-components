@@ -43,7 +43,7 @@ npm run storybook:build
 
 ## We build our components
 
-All our components and the different JavaScript files in `components/lib` are minified with [Terser](https://github.com/terser-js/terser) and end up in `dist`.
+All our components and the different JavaScript files in `src/lib` are minified with [Terser](https://github.com/terser-js/terser) and end up in `dist`.
 We also use a specific babel plugin to minify the HTML and the CSS in our LitElement components: [babel-plugin-template-html-minifier](https://github.com/cfware/babel-plugin-template-html-minifier).
 
 To process those files through babel and terser and keep the sourcemaps, we wrote a small script in `tasks/minify-components.js`.
@@ -73,7 +73,7 @@ When we publish a new version, a build (`npm run components:build`) of the compo
 You can import any given component like this:
 
 ```js
-import '@clevercloud/components/dist/atoms/cc-button.js';
+import '@clevercloud/src/dist/atoms/cc-button.js';
 ```
 
 We also expose all components on the package directly with `index.js`.

@@ -1,4 +1,4 @@
-import '../../components/env-var/env-var-linked-services.js';
+import '../../src/env-var/env-var-linked-services.js';
 import notes from '../../.components-docs/env-var-linked-services.md';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';

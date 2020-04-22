@@ -1,6 +1,6 @@
 import { render } from 'lit-html';
-import { skeleton as skeletonStyles } from '../../components/styles/skeleton.js';
-import { ccLink, linkStyles } from '../../components/templates/cc-link.js';
+import { skeleton as skeletonStyles } from '../../src/styles/skeleton.js';
+import { ccLink, linkStyles } from '../../src/templates/cc-link.js';
 import { makeStory } from '../lib/make-story.js';
 import docsPage from './cc-link.mdx';
 

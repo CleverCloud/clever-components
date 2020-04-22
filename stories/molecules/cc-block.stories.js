@@ -1,7 +1,7 @@
-import '../../components/atoms/cc-button.js';
-import '../../components/atoms/cc-input-text.js';
-import '../../components/atoms/cc-loader.js';
-import '../../components/molecules/cc-block.js';
+import '../../src/atoms/cc-button.js';
+import '../../src/atoms/cc-input-text.js';
+import '../../src/atoms/cc-loader.js';
+import '../../src/molecules/cc-block.js';
 import notes from '../../.components-docs/cc-block.md';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';

@@ -1,4 +1,4 @@
-import '../../components/maps/cc-map.js';
+import '../../src/maps/cc-map.js';
 import notes from '../../.components-docs/cc-map.md';
 import fakeHeatmapData from '../assets/24-hours-points.json';
 import { makeStory, storyWait } from '../lib/make-story.js';

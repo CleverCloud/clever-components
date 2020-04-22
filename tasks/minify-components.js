@@ -127,12 +127,12 @@ async function run () {
 
   await del('dist/**/*');
 
-  const sourceFilepaths = await glob('./components/**/*.js');
+  const sourceFilepaths = await glob('./src/**/*.js');
 
   const filepaths = sourceFilepaths.map((src) => {
     // this seems to get better integration in browsers
-    const sourceMapFilename = src.replace('/components/', '/node_modules/@clever/components/');
-    const dst = src.replace('/components/', '/dist/');
+    const sourceMapFilename = src.replace('/src/', '/node_modules/@clever/components/');
+    const dst = src.replace('/src/', '/dist/');
     const sourceMapUrl = path.parse(dst).base + '.map';
     return { src, sourceMapFilename, dst, sourceMapUrl };
   });
@@ -149,10 +149,10 @@ async function run () {
     console.log(`   DONE! ${dst}`);
   }
 
-  const svgFilePath = await glob('./components/**/*.svg');
+  const svgFilePath = await glob('./src/**/*.svg');
   for (const src of svgFilePath) {
     console.log(`Optimizing ${src} ...`);
-    const dst = src.replace('/components/', '/dist/');
+    const dst = src.replace('/src/', '/dist/');
     const rawSvg = await fs.readFile(src, 'utf8');
     const minifiedSvg = await optimizeSvg(rawSvg);
     await fs.outputFile(dst, minifiedSvg);

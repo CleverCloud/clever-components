@@ -1,4 +1,4 @@
-import '../../components/atoms/cc-img.js';
+import '../../src/atoms/cc-img.js';
 import notes from '../../.components-docs/cc-img.md';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';

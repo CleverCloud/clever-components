@@ -1,5 +1,5 @@
-import '../../components/atoms/cc-expand.js';
-import '../../components/atoms/cc-toggle.js';
+import '../../src/atoms/cc-expand.js';
+import '../../src/atoms/cc-toggle.js';
 import { html, render } from 'lit-html';
 import notes from '../../.components-docs/cc-expand.md';
 import { makeStory } from '../lib/make-story.js';

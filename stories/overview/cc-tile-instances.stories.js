@@ -1,4 +1,4 @@
-import '../../components/overview/cc-tile-instances.js';
+import '../../src/overview/cc-tile-instances.js';
 import notes from '../../.components-docs/cc-tile-instances.md';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';

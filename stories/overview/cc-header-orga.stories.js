@@ -1,4 +1,4 @@
-import '../../components/overview/cc-header-orga.js';
+import '../../src/overview/cc-header-orga.js';
 import notes from '../../.components-docs/cc-header-orga.md';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';

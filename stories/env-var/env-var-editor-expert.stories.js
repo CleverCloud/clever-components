@@ -1,4 +1,4 @@
-import '../../components/env-var/env-var-editor-expert.js';
+import '../../src/env-var/env-var-editor-expert.js';
 import notes from '../../.components-docs/env-var-editor-expert.md';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';

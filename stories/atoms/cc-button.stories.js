@@ -1,7 +1,7 @@
-import '../../components/atoms/cc-button.js';
+import '../../src/atoms/cc-button.js';
 import notes from '../../.components-docs/cc-button.md';
-import closeSvg from '../../components/overview/close.svg';
-import infoSvg from '../../components/overview/info.svg';
+import closeSvg from '../../src/overview/close.svg';
+import infoSvg from '../../src/overview/info.svg';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 

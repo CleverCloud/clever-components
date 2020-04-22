@@ -1,4 +1,4 @@
-import '../../components/overview/cc-tile-deployments.js';
+import '../../src/overview/cc-tile-deployments.js';
 import notes from '../../.components-docs/cc-tile-deployments.md';
 import { createDateAgo } from '../atoms/cc-datetime-relative.stories.js';
 import { makeStory, storyWait } from '../lib/make-story.js';

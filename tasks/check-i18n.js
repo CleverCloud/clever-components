@@ -8,8 +8,8 @@ const util = require('util');
 const fs = require('fs-extra');
 const rawGlob = require('glob');
 const { extractFromCode } = require('i18n-extract');
-const { translations: en } = require('../components/translations/translations.en.js');
-const { translations: fr } = require('../components/translations/translations.fr.js');
+const { translations: en } = require('../src/translations/translations.en.js');
+const { translations: fr } = require('../src/translations/translations.fr.js');
 
 const glob = util.promisify(rawGlob);
 const translationsByLang = { en, fr };
@@ -28,11 +28,11 @@ async function run () {
 
   let errors = false;
 
-  const sourceFilepaths = await glob('./components/*/*.js', {
+  const sourceFilepaths = await glob('./src/*/*.js', {
     ignore: [
-      './components/lib/*.js',
-      './components/styles/*.js',
-      './components/translations/*.js',
+      './src/lib/*.js',
+      './src/styles/*.js',
+      './src/translations/*.js',
     ],
   });
 

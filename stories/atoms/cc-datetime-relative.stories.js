@@ -1,4 +1,4 @@
-import '../../components/atoms/cc-datetime-relative.js';
+import '../../src/atoms/cc-datetime-relative.js';
 import notes from '../../.components-docs/cc-datetime-relative.md';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
