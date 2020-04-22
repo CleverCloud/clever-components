@@ -9,8 +9,8 @@ import { i18n } from '../lib/i18n.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
 import { tileStyles } from '../styles/info-tiles.js';
 import { skeleton } from '../styles/skeleton.js';
-import closeSvg from './close.svg';
-import infoSvg from './info.svg';
+import closeSvg from '../assets/close.svg';
+import infoSvg from '../assets/info.svg';
 
 /**
  * A "tile" component to display HTTP requests distribution over the last 24 hours in a bar chart.

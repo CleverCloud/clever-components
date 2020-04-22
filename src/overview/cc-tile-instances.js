@@ -7,8 +7,8 @@ import { animate, QUICK_SHRINK } from '../lib/animate.js';
 import { i18n } from '../lib/i18n.js';
 import { instanceDetails, tileStyles } from '../styles/info-tiles.js';
 import { waitingStyles } from '../styles/waiting.js';
-import runningSvg from './running.svg';
-import startingSvg from './starting.svg';
+import runningSvg from '../assets/running.svg';
+import startingSvg from '../assets/starting.svg';
 
 const statusImg = {
   running: runningSvg,

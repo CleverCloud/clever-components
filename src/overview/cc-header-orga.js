@@ -5,8 +5,8 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { i18n } from '../lib/i18n.js';
 import { skeleton } from '../styles/skeleton.js';
-import badgeSvg from './badge-white.svg';
-import phoneSvg from './phone.svg';
+import badgeSvg from '../assets/badge-white.svg';
+import phoneSvg from '../assets/phone.svg';
 
 /**
  * A component to display various info about an orga (name and enterprise status).

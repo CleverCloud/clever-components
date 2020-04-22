@@ -8,15 +8,15 @@ import { i18n } from '../lib/i18n.js';
 import { skeleton } from '../styles/skeleton.js';
 import { waitingStyles } from '../styles/waiting.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
-import gitSvg from './git.svg';
-import restartFailedSvg from './restart-failed.svg';
-import restartingWithDowntimeSvg from './restarting-with-downtime.svg';
-import restartingSvg from './restarting.svg';
-import runningSvg from './running.svg';
-import startFailedSvg from './start-failed.svg';
-import startingSvg from './starting.svg';
-import stoppedSvg from './stopped.svg';
-import unknownSvg from './unknown.svg';
+import gitSvg from '../assets/git.svg';
+import restartFailedSvg from '../assets/restart-failed.svg';
+import restartingWithDowntimeSvg from '../assets/restarting-with-downtime.svg';
+import restartingSvg from '../assets/restarting.svg';
+import runningSvg from '../assets/running.svg';
+import startFailedSvg from '../assets/start-failed.svg';
+import startingSvg from '../assets/starting.svg';
+import stoppedSvg from '../assets/stopped.svg';
+import unknownSvg from '../assets/unknown.svg';
 
 const commitIcon = {
   git: gitSvg,

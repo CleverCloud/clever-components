@@ -10,8 +10,8 @@ import { i18n } from '../lib/i18n.js';
 import { tileStyles } from '../styles/info-tiles.js';
 import { skeleton } from '../styles/skeleton.js';
 import { linkStyles } from '../templates/cc-link.js';
-import closeSvg from './close.svg';
-import infoSvg from './info.svg';
+import closeSvg from '../assets/close.svg';
+import infoSvg from '../assets/info.svg';
 
 function xor (a, b) {
   return Number(a) ^ Number(b);

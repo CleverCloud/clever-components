@@ -4,9 +4,9 @@ import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { i18n } from '../lib/i18n.js';
 import { skeleton } from '../styles/skeleton.js';
-import cpuSvg from './cpu.svg';
-import diskSvg from './disk.svg';
-import ramSvg from './ram.svg';
+import cpuSvg from '../assets/cpu.svg';
+import diskSvg from '../assets/disk.svg';
+import ramSvg from '../assets/ram.svg';
 
 const featureIcons = {
   cpus: cpuSvg,

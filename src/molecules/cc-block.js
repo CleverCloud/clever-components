@@ -4,8 +4,8 @@ import '../atoms/cc-img.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { i18n } from '../lib/i18n.js';
-import downSvg from './down.svg';
-import upSvg from './up.svg';
+import downSvg from '../assets/down.svg';
+import upSvg from '../assets/up.svg';
 
 /**
  * A display component with mostly HTML+CSS and a open/close toggle feature.

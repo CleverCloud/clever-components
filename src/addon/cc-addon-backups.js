@@ -7,7 +7,7 @@ import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { fakeString } from '../lib/fake-strings.js';
 import { i18n } from '../lib/i18n.js';
-import closeSvg from '../overview/close.svg';
+import closeSvg from '../assets/close.svg';
 import { skeleton } from '../styles/skeleton.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 import backupSvg from './backup.svg';

@@ -4,12 +4,12 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
-import warningSvg from '../molecules/warning.svg';
+import warningSvg from '../assets/warning.svg';
 import '../atoms/cc-loader.js';
 import { skeleton } from '../styles/skeleton.js';
 import { waitingStyles } from '../styles/waiting.js';
-import noRedirectionSvg from './redirection-off.svg';
-import redirectionSvg from './redirection-on.svg';
+import noRedirectionSvg from '../assets/redirection-off.svg';
+import redirectionSvg from '../assets/redirection-on.svg';
 
 /**
  * A small form to create or delete a TCP redirection

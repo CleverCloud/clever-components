@@ -5,10 +5,10 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { skeleton } from '../styles/skeleton.js';
-import clipboardSvg from './clipboard.svg';
-import eyeClosedSvg from './eye-closed.svg';
-import eyeOpenSvg from './eye-open.svg';
-import tickSvg from './tick.svg';
+import clipboardSvg from '../assets/clipboard.svg';
+import eyeClosedSvg from '../assets/eye-closed.svg';
+import eyeOpenSvg from '../assets/eye-open.svg';
+import tickSvg from '../assets/tick.svg';
 
 const TAG_SEPARATOR = ' ';
 

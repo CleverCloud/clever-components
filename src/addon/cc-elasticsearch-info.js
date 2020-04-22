@@ -3,7 +3,7 @@ import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { i18n } from '../lib/i18n.js';
-import infoSvg from '../overview/info.svg';
+import infoSvg from '../assets/info.svg';
 import { skeleton } from '../styles/skeleton.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 
