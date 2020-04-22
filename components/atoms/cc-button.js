@@ -14,7 +14,7 @@ import { linkStyles } from '../templates/cc-link.js';
  * * They are exclusive, you can only set one UI _mode_ at a time.
  * * When you don't use any of these values, the default UI _mode_ is `simple`.
  *
- * * ## Link appearance
+ * ## Link appearance
  *
  * In some cases (to be defined/explained later), you need a button with a click handler that looks like a link.
  * Don't use a `<a>` without an href and use our `<cc-button link>` instead.
