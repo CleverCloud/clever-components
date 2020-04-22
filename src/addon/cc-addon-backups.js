@@ -10,7 +10,7 @@ import { i18n } from '../lib/i18n.js';
 import closeSvg from '../assets/close.svg';
 import { skeleton } from '../styles/skeleton.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
-import backupSvg from './backup.svg';
+import backupSvg from '../assets/backup.svg';
 
 /**
  * A components to display backups available for an add-on
