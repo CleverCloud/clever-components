@@ -55,7 +55,7 @@ export class EnvVarForm extends LitElement {
       readonly: { type: Boolean, reflect: true },
       restartApp: { type: Boolean, attribute: 'restart-app' },
       saving: { type: Boolean, reflect: true },
-      variables: { type: Array, attribute: false },
+      variables: { type: Array },
       _currentVariables: { type: Array, attribute: false },
       _description: { type: String, attribute: false },
       _expertVariables: { type: Array, attribute: false },

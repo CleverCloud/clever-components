@@ -75,7 +75,7 @@ export class CcHeaderApp extends LitElement {
 
   static get properties () {
     return {
-      app: { type: Object, attribute: false },
+      app: { type: Object },
       disableButtons: { type: Boolean, attribute: 'disable-buttons', reflect: true },
       error: { type: Boolean, reflect: true },
       runningCommit: { type: String, attribute: 'running-commit' },

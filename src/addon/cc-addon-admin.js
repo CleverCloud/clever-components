@@ -35,7 +35,7 @@ export class CcAddonAdmin extends LitElement {
 
   static get properties () {
     return {
-      addon: { type: Object, attribute: false },
+      addon: { type: Object },
       error: { type: String },
       saving: { type: Boolean },
       _name: { type: String, attribute: false },

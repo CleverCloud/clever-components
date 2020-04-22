@@ -42,7 +42,7 @@ export class CcTileScalability extends LitElement {
   static get properties () {
     return {
       error: { type: Boolean, reflect: true },
-      scalability: { type: Object, attribute: false },
+      scalability: { type: Object },
     };
   }
 

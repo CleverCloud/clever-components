@@ -41,7 +41,7 @@ export class EnvVarLinkedServices extends LitElement {
     return {
       appName: { type: String },
       error: { type: Boolean },
-      services: { type: Array, attribute: false },
+      services: { type: Array },
       type: { type: String },
     };
   }

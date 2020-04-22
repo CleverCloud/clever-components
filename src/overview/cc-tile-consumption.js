@@ -28,7 +28,7 @@ export class CcTileConsumption extends LitElement {
 
   static get properties () {
     return {
-      consumption: { type: Object, attribute: false },
+      consumption: { type: Object },
       error: { type: Boolean, reflect: true },
     };
   }

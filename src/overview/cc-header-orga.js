@@ -34,7 +34,7 @@ export class CcHeaderOrga extends LitElement {
   static get properties () {
     return {
       error: { type: Boolean, reflect: true },
-      orga: { type: Object, attribute: false },
+      orga: { type: Object },
     };
   }
 

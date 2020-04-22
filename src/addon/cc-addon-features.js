@@ -46,7 +46,7 @@ export class CcAddonFeatures extends LitElement {
   static get properties () {
     return {
       error: { type: Boolean },
-      features: { type: Array, attribute: false },
+      features: { type: Array },
     };
   }
 

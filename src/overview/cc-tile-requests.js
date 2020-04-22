@@ -43,7 +43,7 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
 
   static get properties () {
     return {
-      data: { type: Object, attribute: false },
+      data: { type: Object },
       error: { type: Boolean, reflect: true },
       _skeleton: { type: Boolean, attribute: false },
       _empty: { type: Boolean, attribute: false },

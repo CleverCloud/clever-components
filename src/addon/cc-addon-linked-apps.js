@@ -47,7 +47,7 @@ export class CcAddonLinkedApps extends LitElement {
 
   static get properties () {
     return {
-      applications: { type: Array, attribute: false },
+      applications: { type: Array },
       error: { type: Boolean },
     };
   }

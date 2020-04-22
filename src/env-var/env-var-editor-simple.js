@@ -30,7 +30,7 @@ export class EnvVarEditorSimple extends LitElement {
     return {
       disabled: { type: Boolean },
       readonly: { type: Boolean },
-      variables: { type: Array, attribute: false },
+      variables: { type: Array },
     };
   }
 

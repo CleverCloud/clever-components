@@ -32,7 +32,7 @@ export class CcTileDeployments extends LitElement {
 
   static get properties () {
     return {
-      deployments: { type: Array, attribute: false },
+      deployments: { type: Array },
       error: { type: Boolean, reflect: true },
     };
   }

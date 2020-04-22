@@ -47,7 +47,7 @@ export class CcAddonBackups extends LitElement {
   static get properties () {
     return {
       // TODO: Maybe we could split backups.providerId and backups.list
-      backups: { type: Object, attribute: false },
+      backups: { type: Object },
       error: { type: Boolean },
       _overlay: { type: String, attribute: false },
       _selectedBackup: { type: Object, attribute: false },

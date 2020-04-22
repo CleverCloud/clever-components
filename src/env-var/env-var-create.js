@@ -33,7 +33,7 @@ export class EnvVarCreate extends LitElement {
   static get properties () {
     return {
       disabled: { type: Boolean },
-      variablesNames: { type: Array, attribute: false },
+      variablesNames: { type: Array },
       _variableName: { type: String, attribute: false },
       _variableValue: { type: String, attribute: false },
     };

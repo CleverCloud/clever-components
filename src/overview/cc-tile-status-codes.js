@@ -53,7 +53,7 @@ export class CcTileStatusCodes extends LitElement {
   static get properties () {
     return {
       error: { type: Boolean, reflect: true },
-      statusCodes: { type: Object, attribute: false },
+      statusCodes: { type: Object },
       _skeleton: { type: Boolean, attribute: false },
       _empty: { type: Boolean, attribute: false },
       _docs: { type: Boolean, attribute: false },

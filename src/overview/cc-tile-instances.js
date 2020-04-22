@@ -46,7 +46,7 @@ export class CcTileInstances extends LitElement {
   static get properties () {
     return {
       error: { type: Boolean, reflect: true },
-      instances: { type: Object, attribute: false },
+      instances: { type: Object },
     };
   }
 

@@ -48,7 +48,7 @@ export class CcHeaderAddon extends LitElement {
 
   static get properties () {
     return {
-      addon: { type: Object, attribute: false },
+      addon: { type: Object },
       error: { type: Boolean },
       version: { type: String },
     };

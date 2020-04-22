@@ -73,7 +73,7 @@ export class CcInputText extends LitElement {
       readonly: { type: Boolean, reflect: true },
       secret: { type: Boolean, reflect: true },
       skeleton: { type: Boolean, reflect: true },
-      tags: { type: Array, attribute: false },
+      tags: { type: Array },
       _tagsEnabled: { type: Boolean, attribute: false },
       value: { type: String },
       _showSecret: { type: Boolean, attribute: false },

@@ -30,7 +30,7 @@ export class EnvVarEditorExpert extends LitElement {
     return {
       disabled: { type: Boolean },
       readonly: { type: Boolean },
-      variables: { type: Array, attribute: false },
+      variables: { type: Array },
       _variablesAsText: { type: Array, attribute: false },
       _formattedErrors: { type: Array, attribute: false },
       _skeleton: { type: Boolean, attribute: false },

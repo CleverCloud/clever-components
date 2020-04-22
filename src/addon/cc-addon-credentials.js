@@ -35,7 +35,7 @@ export class CcAddonCredentials extends LitElement {
 
   static get properties () {
     return {
-      credentials: { type: Array, attribute: false },
+      credentials: { type: Array },
       error: { type: Boolean },
       icon: { type: String },
       name: { type: String },
