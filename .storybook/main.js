@@ -1,3 +1,5 @@
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
 module.exports = {
   // We don't use this yet because of HMR
   // stories: ['../**/*.stories.js'],
@@ -10,4 +12,11 @@ module.exports = {
     '@storybook/addon-viewport/register',
   ],
   presets: ['@storybook/addon-docs/preset'],
+  webpackFinal: (config) => {
+
+    // Copy all svg so our usage with `import.meta.url` still work
+    config.plugins.push(new CopyWebpackPlugin(['src/assets/*.svg']));
+
+    return config;
+  },
 };

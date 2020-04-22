@@ -2,13 +2,15 @@ import copy from 'clipboard-copy';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { assetUrl } from '../lib/asset-url.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { skeleton } from '../styles/skeleton.js';
-import clipboardSvg from '../assets/clipboard.svg';
-import eyeClosedSvg from '../assets/eye-closed.svg';
-import eyeOpenSvg from '../assets/eye-open.svg';
-import tickSvg from '../assets/tick.svg';
+
+const clipboardSvg = assetUrl(import.meta, '../assets/clipboard.svg');
+const eyeClosedSvg = assetUrl(import.meta, '../assets/eye-closed.svg');
+const eyeOpenSvg = assetUrl(import.meta, '../assets/eye-open.svg');
+const tickSvg = assetUrl(import.meta, '../assets/tick.svg');
 
 const TAG_SEPARATOR = ' ';
 

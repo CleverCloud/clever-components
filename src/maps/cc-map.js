@@ -5,10 +5,10 @@ import leaflet from 'leaflet';
 import 'leaflet.heat';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { WORLD_GEOJSON } from '../assets/world-110m.geo.js';
 import { i18n } from '../lib/i18n.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
 import { leafletStyles } from '../styles/leaflet.js';
-import { WORLD_GEOJSON } from '../assets/world-110m.geo.js';
 
 // Generated with https://components.ai/color-scale/
 // Canvas at #F5F5F5 (map country color)

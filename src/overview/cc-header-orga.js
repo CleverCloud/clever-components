@@ -3,10 +3,12 @@ import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { assetUrl } from '../lib/asset-url.js';
 import { i18n } from '../lib/i18n.js';
 import { skeleton } from '../styles/skeleton.js';
-import badgeSvg from '../assets/badge-white.svg';
-import phoneSvg from '../assets/phone.svg';
+
+const badgeSvg = assetUrl(import.meta, '../assets/badge-white.svg');
+const phoneSvg = assetUrl(import.meta, '../assets/phone.svg');
 
 /**
  * A component to display various info about an orga (name and enterprise status).

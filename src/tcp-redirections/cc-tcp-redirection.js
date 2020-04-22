@@ -2,14 +2,16 @@ import '../atoms/cc-button.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { assetUrl } from '../lib/asset-url.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
-import warningSvg from '../assets/warning.svg';
 import '../atoms/cc-loader.js';
 import { skeleton } from '../styles/skeleton.js';
 import { waitingStyles } from '../styles/waiting.js';
-import noRedirectionSvg from '../assets/redirection-off.svg';
-import redirectionSvg from '../assets/redirection-on.svg';
+
+const warningSvg = assetUrl(import.meta, '../assets/warning.svg');
+const noRedirectionSvg = assetUrl(import.meta, '../assets/redirection-off.svg');
+const redirectionSvg = assetUrl(import.meta, '../assets/redirection-on.svg');
 
 /**
  * A small form to create or delete a TCP redirection
