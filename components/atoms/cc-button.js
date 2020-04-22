@@ -27,6 +27,7 @@ import { linkStyles } from '../templates/cc-link.js';
  * * During this `delay`, the user is presented a "click to cancel" label.
  * * If the user clicks on "click to cancel", the `cc-button:click` event is not fired.
  * * If the button `disabled` mode is set during the delay, the `cc-button:click` event is not fired.
+ * * If you set `delay=0`, the button will have the same width as other buttons with delay, but the event will be triggered instantly.
  *
  * @prop {Boolean} danger - Sets button UI _mode_ to danger.
  * @prop {Number} delay - If set, enables delay mechanism and defined the number of seconds before the `cc-button:click` event is actually fired.
@@ -107,7 +108,9 @@ export class CcButton extends LitElement {
 
     e.stopPropagation();
 
-    if (this.delay == null || this.link) {
+    // delay=0 is needed in some situations where you want the button to have the same width
+    // as buttons with delay > 0 but without any delay
+    if (this.delay == null || this.delay === 0 || this.link) {
       return dispatchCustomEvent(this, 'click');
     }
 

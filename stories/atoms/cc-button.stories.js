@@ -66,6 +66,11 @@ export const delay = makeStory(conf, {
   items: baseItems.map((p) => ({ ...p, delay: 3 })),
 });
 
+export const delayZero = makeStory(conf, {
+  docs: `If you have several buttons with and without delay, you may want them to have the same width. If you set \`delay=0\`, the button will have the same width as other buttons with delay, but the event will be triggered instantly.`,
+  items: baseItems.map((p) => ({ ...p, delay: 0 })),
+});
+
 export const delayAndOutlined = makeStory(conf, {
   items: baseItems.map((p) => ({ ...p, delay: 3, outlined: true })),
 });
@@ -106,6 +111,7 @@ enhanceStoriesNames({
   waiting,
   waitingAndOutlined,
   delay,
+  delayZero,
   delayAndOutlined,
   delayAndDisabled,
   image,
