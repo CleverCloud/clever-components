@@ -20,7 +20,7 @@ function enhanceStoryName (defaultName) {
   if (defaultName === 'empty') {
     return '🕳 Empty (no data)';
   }
-  if (defaultName.startsWith('loading') || defaultName === 'saving' || defaultName.startsWith('skeleton')) {
+  if (defaultName.startsWith('loading') || defaultName.startsWith('waiting') || defaultName === 'saving' || defaultName.startsWith('skeleton')) {
     return '⌛ ' + formatStoryName(defaultName);
   }
   if (defaultName.startsWith('empty')) {

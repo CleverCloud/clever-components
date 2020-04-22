@@ -45,6 +45,14 @@ export const outlinedAndDisabled = makeStory(conf, {
   items: baseItems.map((p) => ({ ...p, outlined: true, disabled: true })),
 });
 
+export const waiting = makeStory(conf, {
+  items: baseItems.map((p) => ({ ...p, waiting: true })),
+});
+
+export const waitingAndOutlined = makeStory(conf, {
+  items: baseItems.map((p) => ({ ...p, outlined: true, waiting: true })),
+});
+
 export const delay = makeStory(conf, {
   docs: `
 \`<cc-button>\` have a delay mechanism:
@@ -56,6 +64,11 @@ export const delay = makeStory(conf, {
  * If the \`disabled\` mode is set during the delay, the \`cc-button:click\` event is not fired.
   `,
   items: baseItems.map((p) => ({ ...p, delay: 3 })),
+});
+
+export const delayZero = makeStory(conf, {
+  docs: `If you have several buttons with and without delay, you may want them to have the same width. If you set \`delay=0\`, the button will have the same width as other buttons with delay, but the event will be triggered instantly.`,
+  items: baseItems.map((p) => ({ ...p, delay: 0 })),
 });
 
 export const delayAndOutlined = makeStory(conf, {
@@ -91,13 +104,16 @@ export const skeleton = makeStory(conf, {
 });
 
 enhanceStoriesNames({
-  delay,
-  delayAndDisabled,
-  delayAndOutlined,
-  disabled,
-  image,
   modes,
   outlined,
+  disabled,
   outlinedAndDisabled,
+  waiting,
+  waitingAndOutlined,
+  delay,
+  delayZero,
+  delayAndOutlined,
+  delayAndDisabled,
+  image,
   skeleton,
 });

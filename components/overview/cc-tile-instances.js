@@ -2,9 +2,11 @@ import '../atoms/cc-expand.js';
 import '../atoms/cc-loader.js';
 import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { animate, QUICK_SHRINK } from '../lib/animate.js';
 import { i18n } from '../lib/i18n.js';
 import { instanceDetails, tileStyles } from '../styles/info-tiles.js';
+import { waitingStyles } from '../styles/waiting.js';
 import runningSvg from './running.svg';
 import startingSvg from './starting.svg';
 
@@ -71,7 +73,7 @@ export class CcTileInstances extends LitElement {
 
   _renderInstances (instances, type) {
     return instances.length ? html`
-      <div class="instances" data-type=${type}>
+      <div class="instances ${classMap({ 'cc-waiting': type === 'deploying' })}" data-type=${type}>
         <!-- image has a presentation role => alt="" -->
         <img class="instances_status-img" src=${statusImg[type]} alt="">
         <span class="instances_status">${this._getStatusLabel(type)}</span>
@@ -140,6 +142,7 @@ export class CcTileInstances extends LitElement {
     return [
       tileStyles,
       instanceDetails,
+      waitingStyles,
       // language=CSS
       css`
         cc-expand {
@@ -156,22 +159,8 @@ export class CcTileInstances extends LitElement {
           --status-color: #2faa60;
         }
 
-        @keyframes deploying {
-          from {
-            opacity: 0.85;
-          }
-
-          to {
-            opacity: 1;
-          }
-        }
-
         .instances[data-type=deploying] {
           --status-color: #2b96fd;
-          animation-direction: alternate;
-          animation-duration: 500ms;
-          animation-iteration-count: infinite;
-          animation-name: deploying;
         }
 
         .instances_status-img {

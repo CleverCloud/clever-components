@@ -179,6 +179,30 @@ export const translations = {
   'cc-addon-admin.tags-empty': `No defined tags`,
   'cc-addon-admin.tags-update': `Update tags`,
   'cc-addon-admin.update': `Update name`,
+  // cc-tcp-redirection
+  'cc-tcp-redirection.create-button': `Create`,
+  'cc-tcp-redirection.delete-button': `Delete`,
+  'cc-tcp-redirection.retry-button': `Retry`,
+  'cc-tcp-redirection.namespace-additionaldescription-cleverapps': () => sanitize`This namespace is used by all <em>cleverapps.io</em> domains (e.g. <em>my-app.cleverapps.io</em>).`,
+  'cc-tcp-redirection.namespace-additionaldescription-default': () => sanitize`This namespace is used by all custom domains (e.g. <em>my-app.com</em>).`,
+  'cc-tcp-redirection.namespace-private': `This is your private namespace.`,
+  'cc-tcp-redirection.redirection-defined': ({ namespace, sourcePort }) => sanitize`This application has a redirection from port <code>${sourcePort}</code> to port <code>4040</code> in the <strong>${namespace}</strong> namespace.`,
+  'cc-tcp-redirection.redirection-not-defined': ({ namespace }) => sanitize`You can create a redirection in the <strong>${namespace}</strong> namespace.`,
+  'cc-tcp-redirection.error.redirection-defined': ({ namespace, sourcePort }) => sanitize`An error occurred while deleting the redirection from port <code>${sourcePort}</code> to port <code>4040</code> in the <strong>${namespace}</strong> namespace.`,
+  'cc-tcp-redirection.error.redirection-not-defined': ({ namespace }) => sanitize`An error occured while creating a redirection in the <strong>${namespace}</strong> namespace.`,
+  // cc-tcp-redirection-form
+  'cc-tcp-redirection-form.description': () => sanitize`
+    <p>
+      A TCP redirection allows you to route external traffic to the <code>4040</code> port of the application via the load balancers.<br>
+      You can create one TCP redirection per application for each namespace you have access to.
+    </p>
+    <p>
+      A namespace is a group of load balancers: either the default public ones, cleverapps.io or dedicated ones if you are a Clever Cloud Premium customer.
+    </p>
+  `,
+  'cc-tcp-redirection-form.empty': `You do not have access to any namespaces.`,
+  'cc-tcp-redirection-form.error': `An error occured while loading TCP redirections.`,
+  'cc-tcp-redirection-form.title': `TCP Redirections`,
   // cc-tile-consumption
   'cc-tile-consumption.title': `Credits consumption`,
   'cc-tile-consumption.yesterday': `Yesterday`,

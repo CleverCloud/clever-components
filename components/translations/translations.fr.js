@@ -192,6 +192,30 @@ export const translations = {
   'cc-addon-admin.tags-empty': `Pas de tags définis`,
   'cc-addon-admin.tags-update': `Mettre à jour les tags`,
   'cc-addon-admin.update': `Mettre à jour le nom`,
+  // cc-tcp-redirection
+  'cc-tcp-redirection.create-button': `Créer`,
+  'cc-tcp-redirection.delete-button': `Supprimer`,
+  'cc-tcp-redirection.retry-button': `Réessayer`,
+  'cc-tcp-redirection.namespace-additionaldescription-cleverapps': () => sanitize`Cet espace de nommage est utilisé par tous les noms de domaine <em>cleverapps.io</em> (p. ex. <em>mon-application.cleverapps.io</em>).`,
+  'cc-tcp-redirection.namespace-additionaldescription-default': () => sanitize`Cet espace de nommage est utilisé par tous les noms de domaine personnalisés (p. ex. <em>mon-application.fr</em>).`,
+  'cc-tcp-redirection.namespace-private': `Cet espace de nommage vous est dédié.`,
+  'cc-tcp-redirection.redirection-defined': ({ namespace, sourcePort }) => sanitize`Cette application a une redirection du port <code>${sourcePort}</code> vers le port <code>4040</code> dans l'espace de nommage <strong>${namespace}</strong>.`,
+  'cc-tcp-redirection.redirection-not-defined': ({ namespace }) => sanitize`Vous pouvez créer une redirection dans l'espace de nommage <strong>${namespace}</strong>.`,
+  'cc-tcp-redirection.error.redirection-defined': ({ namespace, sourcePort }) => sanitize`Une erreur est survenue pendant la suppression de la redirection du port <code>${sourcePort}</code> vers le port <code>4040</code> dans l'espace de nommage <strong>${namespace}</strong>.`,
+  'cc-tcp-redirection.error.redirection-not-defined': ({ namespace }) => sanitize`Une erreur est survenue pendant la création d'une redirection dans l'espace de nommage <strong>${namespace}</strong>.`,
+  // cc-tcp-redirection-form
+  'cc-tcp-redirection-form.description': () => sanitize`
+    <p>
+      Une redirection TCP permet d'obtenir un accès au port <code>4040</code> de l'application au travers des frontaux.<br>
+      Vous pouvez créer une redirection TCP par application sur chaque espace de nommage auquel vous avez accès.
+    </p>
+    <p>
+      Un espace de nommage correspond à un groupe de frontaux : public, cleverapps.io ou encore dédiés dans le cadre de Clever Cloud Premium.
+    </p>
+  `,
+  'cc-tcp-redirection-form.empty': `Vous n'avez accès à aucun espace de nommage.`,
+  'cc-tcp-redirection-form.error': `Une erreur est survenue pendant le chargement des redirections TCP.`,
+  'cc-tcp-redirection-form.title': `Redirections TCP`,
   // cc-tile-consumption
   'cc-tile-consumption.title': `Consommation de crédits`,
   'cc-tile-consumption.yesterday': `Hier`,
