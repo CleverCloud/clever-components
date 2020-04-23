@@ -77,7 +77,6 @@ export class CcToggle extends LitElement {
         :host {
           --cc-toggle-color: #334252;
           display: flex;
-          margin: 0.2rem;
         }
 
         .toggle-group {
