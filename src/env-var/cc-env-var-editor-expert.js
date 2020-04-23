@@ -22,9 +22,9 @@ import { i18n } from '../lib/i18n.js';
  * @prop {Boolean} disabled - Sets `disabled` attribute on inputs and buttons.
  * @prop {Variable[]} variables - Sets the list of variables.
  *
- * @event {CustomEvent<Variable[]>} env-var-editor-expert:change - Fires the new list of variables whenever something changes in the list.
+ * @event {CustomEvent<Variable[]>} cc-env-var-editor-expert:change - Fires the new list of variables whenever something changes in the list.
  */
-export class EnvVarEditorExpert extends LitElement {
+export class CcEnvVarEditorExpert extends LitElement {
 
   static get properties () {
     return {
@@ -58,7 +58,7 @@ export class EnvVarEditorExpert extends LitElement {
   set variables (variables) {
 
     this._skeleton = (variables == null);
-    const vars = this._skeleton ? EnvVarEditorExpert.skeletonVariables : variables;
+    const vars = this._skeleton ? CcEnvVarEditorExpert.skeletonVariables : variables;
 
     const filteredVariables = vars
       .filter(({ isDeleted }) => !isDeleted);
@@ -165,4 +165,4 @@ export class EnvVarEditorExpert extends LitElement {
   }
 }
 
-window.customElements.define('env-var-editor-expert', EnvVarEditorExpert);
+window.customElements.define('cc-env-var-editor-expert', CcEnvVarEditorExpert);

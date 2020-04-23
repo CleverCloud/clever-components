@@ -1,5 +1,5 @@
-import '../../src/env-var/env-var-form.js';
-import notes from '../../.components-docs/env-var-form.md';
+import '../../src/env-var/cc-env-var-form.js';
+import notes from '../../.components-docs/cc-env-var-form.md';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
@@ -11,14 +11,14 @@ const VARIABLES_FULL = [
 ];
 
 export default {
-  title: '🛠 Environment variables|<env-var-form>',
-  component: 'env-var-form',
+  title: '🛠 Environment variables|<cc-env-var-form>',
+  component: 'cc-env-var-form',
   parameters: { notes },
 };
 
 const conf = {
-  component: 'env-var-form',
-  events: ['env-var-form:submit', 'env-var-form:dismissed-error', 'env-var-form:restart-app'],
+  component: 'cc-env-var-form',
+  events: ['cc-env-var-form:submit', 'cc-env-var-form:dismissed-error', 'cc-env-var-form:restart-app'],
 };
 
 export const defaultStory = makeStory(conf, {

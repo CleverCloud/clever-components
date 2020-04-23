@@ -33,11 +33,11 @@ import { skeleton } from '../styles/skeleton.js';
  * @prop {Boolean} skeleton - Enables skeleton screen UI pattern (loading hint).
  * @prop {String} value - Sets the value of the environment variable (can be empty).
  *
- * @event {CustomEvent<VariableName>} env-var-input:delete - Fires a variable name whenever the delete button is clicked.
- * @event {CustomEvent<Variable>} env-var-input:input - Fires a variable whenever its value changes.
- * @event {CustomEvent<VariableName>} env-var-input:keep - Fires a variable name whenever the keep button is clicked.
+ * @event {CustomEvent<VariableName>} cc-env-var-input:delete - Fires a variable name whenever the delete button is clicked.
+ * @event {CustomEvent<Variable>} cc-env-var-input:input - Fires a variable whenever its value changes.
+ * @event {CustomEvent<VariableName>} cc-env-var-input:keep - Fires a variable name whenever the keep button is clicked.
  */
-export class EnvVarInput extends LitElement {
+export class CcEnvVarInput extends LitElement {
 
   static get properties () {
     return {
@@ -175,4 +175,4 @@ export class EnvVarInput extends LitElement {
   }
 }
 
-window.customElements.define('env-var-input', EnvVarInput);
+window.customElements.define('cc-env-var-input', CcEnvVarInput);

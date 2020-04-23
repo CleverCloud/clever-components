@@ -1,17 +1,17 @@
-import '../../src/env-var/env-var-input.js';
-import notes from '../../.components-docs/env-var-input.md';
+import '../../src/env-var/cc-env-var-input.js';
+import notes from '../../.components-docs/cc-env-var-input.md';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
-  title: '🛠 Environment variables|<env-var-input>',
-  component: 'env-var-input',
+  title: '🛠 Environment variables|<cc-env-var-input>',
+  component: 'cc-env-var-input',
   parameters: { notes },
 };
 
 const conf = {
-  component: 'env-var-input',
-  events: ['env-var-input:input', 'env-var-input:delete', 'env-var-input:keep'],
+  component: 'cc-env-var-input',
+  events: ['cc-env-var-input:input', 'cc-env-var-input:delete', 'cc-env-var-input:keep'],
 };
 
 export const defaultStory = makeStory(conf, {

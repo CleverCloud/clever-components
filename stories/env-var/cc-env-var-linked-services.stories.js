@@ -1,5 +1,5 @@
-import '../../src/env-var/env-var-linked-services.js';
-import notes from '../../.components-docs/env-var-linked-services.md';
+import '../../src/env-var/cc-env-var-linked-services.js';
+import notes from '../../.components-docs/cc-env-var-linked-services.md';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
@@ -11,15 +11,15 @@ const VARIABLES_FULL = [
 ];
 
 export default {
-  title: '🛠 Environment variables|<env-var-linked-services>',
-  component: 'env-var-linked-services',
+  title: '🛠 Environment variables|<cc-env-var-linked-services>',
+  component: 'cc-env-var-linked-services',
   parameters: { notes },
 };
 
 const conf = {
-  component: 'env-var-linked-services',
+  component: 'cc-env-var-linked-services',
   css: `
-    env-var-linked-services {
+    cc-env-var-linked-services {
       margin-bottom: 1rem;
     }
   `,

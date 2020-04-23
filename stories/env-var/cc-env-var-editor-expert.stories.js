@@ -1,5 +1,5 @@
-import '../../src/env-var/env-var-editor-simple.js';
-import notes from '../../.components-docs/env-var-editor-simple.md';
+import '../../src/env-var/cc-env-var-editor-expert.js';
+import notes from '../../.components-docs/cc-env-var-editor-expert.md';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
@@ -19,14 +19,14 @@ const VARIABLES_SIMPLE = [
 ];
 
 export default {
-  title: '🛠 Environment variables|<env-var-editor-simple>',
-  component: 'env-var-editor-simple',
+  title: '🛠 Environment variables|<cc-env-var-editor-expert>',
+  component: 'cc-env-var-editor-expert',
   parameters: { notes },
 };
 
 const conf = {
-  component: 'env-var-editor-simple',
-  events: ['env-var-editor-simple:change'],
+  component: 'cc-env-var-editor-expert',
+  events: ['cc-env-var-editor-expert:change'],
 };
 
 export const defaultStory = makeStory(conf, {

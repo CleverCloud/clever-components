@@ -26,9 +26,9 @@ import { i18n } from '../lib/i18n.js';
  * @prop {Boolean} disabled - Sets `disabled` attribute on inputs and button.
  * @prop {String[]} variablesNames - Sets list of existing variables names (so we can display an error if it already exists).
  *
- * @event {CustomEvent<Variable>} env-var-create:create - Fires the variable whenever the add button is clicked.
+ * @event {CustomEvent<Variable>} cc-env-var-create:create - Fires the variable whenever the add button is clicked.
  */
-export class EnvVarCreate extends LitElement {
+export class CcEnvVarCreate extends LitElement {
 
   static get properties () {
     return {
@@ -172,4 +172,4 @@ export class EnvVarCreate extends LitElement {
   }
 }
 
-window.customElements.define('env-var-create', EnvVarCreate);
+window.customElements.define('cc-env-var-create', CcEnvVarCreate);
