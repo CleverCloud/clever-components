@@ -23,6 +23,11 @@ export default {
 const conf = {
   component: 'cc-button',
   events: ['cc-button:click'],
+  css: `
+    cc-button {
+      margin: 0.5rem;
+    }
+  `,
 };
 
 export const modes = makeStory(conf, {

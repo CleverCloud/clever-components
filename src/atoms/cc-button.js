@@ -157,20 +157,22 @@ export class CcButton extends LitElement {
       .disabled=${this.disabled || this.skeleton || this.waiting}
       @click=${this._onClick}
     >
-      <div class=${classMap({ hidden: this._cancelMode })}>
+      <!--
+        When delay mechanism is set, we need a cancel label.
+        We don't want the button width to change when the user clicks and toggles between normal and cancel mode.
+        That's why (see CSS) we put both labels in a grid, in the same cell and hide (visibility:hidden) the one we don't want.
+        This way, when delay is set, the button has a min width of the largest label (normal or cancel).
+      -->
+      <div class="text-wrapper ${classMap({ 'cancel-mode': this._cancelMode })}">
         ${this.image != null ? html`
           <img src=${this.image} alt="">
         ` : ''}
-        <slot></slot>
+        <div class="text-normal"><slot></slot></div>
+        ${delay != null ? html`
+          <div class="text-cancel">${i18n('cc-button.cancel')}</div>
+        ` : ''}
       </div>
-      <!--
-        When delay mechanism is set, we need a cancel label
-        We don't want the button width to change when the user clicks and toggles between normal and cancel mode
-        That's why (see CSS) we put both labels on 2 lines and only reduce the height of the one we want to hide
-        This way, when delay is set, the button has a min width of the largest label (normal or cancel)
-      -->
       ${delay != null ? html`
-        <div class=${classMap({ hidden: !this._cancelMode })}>${i18n('cc-button.cancel')}</div>
         <progress class="delay ${classMap({ active: this._cancelMode })}" style="--delay: ${delay}s"></progress>
       ` : ''}
       ${waiting ? html`
@@ -188,13 +190,7 @@ export class CcButton extends LitElement {
         :host {
           box-sizing: border-box;
           display: inline-block;
-          margin: 0.2rem;
-          vertical-align: top;
-        }
-
-        :host([link]) {
-          margin: 0;
-          vertical-align: initial;
+          vertical-align: middle;
         }
 
         /* RESET */
@@ -298,11 +294,19 @@ export class CcButton extends LitElement {
           transition: box-shadow 75ms ease-in-out;
         }
 
-        /* special hide, see template comments about it */
-        .hidden {
-          color: transparent;
-          height: 0;
-          overflow: hidden;
+        /* DELAY CANCEL MODE SUPERPOSITION WITH GRID */
+        .text-wrapper {
+          display: grid;
+        }
+
+        .text-normal,
+        .text-cancel {
+          grid-area: 1 / 1 / 2 / 2;
+        }
+
+        .text-wrapper.cancel-mode .text-normal,
+        .text-wrapper:not(.cancel-mode) .text-cancel {
+          visibility: hidden;
         }
 
         /* progress bar for delay, see https://css-tricks.com/html5-progress-element */
@@ -339,8 +343,12 @@ export class CcButton extends LitElement {
         }
 
         @keyframes waiting {
-          from { left: -52%; }
-          to   { left: 52%;  }
+          from {
+            left: -52%;
+          }
+          to {
+            left: 52%;
+          }
         }
 
         progress.waiting {
