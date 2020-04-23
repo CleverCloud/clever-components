@@ -31,23 +31,23 @@ export const multiline = makeStory(conf, {
 });
 
 export const newValue = makeStory(conf, {
-  items: [{ name: 'NEW', value: 'new value' }],
+  items: [{ name: 'NEW', value: 'new value', new: true }],
 });
 
 export const newAndEdited = makeStory(conf, {
-  items: [{ name: 'NEW_EDITED', value: 'new value edited' }],
+  items: [{ name: 'NEW_EDITED', value: 'new value edited', new: true, edited: true }],
 });
 
 export const edited = makeStory(conf, {
-  items: [{ name: 'EDITED', value: 'edited value' }],
+  items: [{ name: 'EDITED', value: 'edited value', edited: true }],
 });
 
 export const deleted = makeStory(conf, {
-  items: [{ name: 'DELETED', value: 'deleted value' }],
+  items: [{ name: 'DELETED', value: 'deleted value', deleted: true }],
 });
 
 export const editedAndDeleted = makeStory(conf, {
-  items: [{ name: 'EDITED_DELETED', value: 'edited deleted value' }],
+  items: [{ name: 'EDITED_DELETED', value: 'edited deleted value', edited: true, deleted: true }],
 });
 
 export const longName = makeStory(conf, {
@@ -66,11 +66,11 @@ export const skeleton = makeStory(conf, {
 });
 
 export const disabled = makeStory(conf, {
-  items: [{ name: 'DISABLED', value: 'disabled value' }],
+  items: [{ name: 'DISABLED', value: 'disabled value', disabled: true }],
 });
 
 export const readonly = makeStory(conf, {
-  items: [{ name: 'READONLY', value: 'readonly value' }],
+  items: [{ name: 'READONLY', value: 'readonly value', readonly: true }],
 });
 
 enhanceStoriesNames({
