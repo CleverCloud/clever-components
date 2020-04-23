@@ -1,5 +1,5 @@
-import './env-var-create.js';
-import './env-var-input.js';
+import './cc-env-var-create.js';
+import './cc-env-var-input.js';
 import { css, html, LitElement } from 'lit-element';
 import { repeat } from 'lit-html/directives/repeat.js';
 import { dispatchCustomEvent } from '../lib/events.js';
@@ -22,9 +22,9 @@ import { i18n } from '../lib/i18n.js';
  * @prop {Boolean} disabled - Sets `disabled` attribute on inputs and buttons.
  * @prop {Variable[]} variables - Sets the list of variables.
  *
- * @event {CustomEvent<Variable[]>} env-var-editor-simple:change - Fires the new list of variables whenever something changes in the list.
+ * @event {CustomEvent<Variable[]>} cc-env-var-editor-simple:change - Fires the new list of variables whenever something changes in the list.
  */
-export class EnvVarEditorSimple extends LitElement {
+export class CcEnvVarEditorSimple extends LitElement {
 
   static get properties () {
     return {
@@ -90,17 +90,17 @@ export class EnvVarEditorSimple extends LitElement {
   render () {
 
     const skeleton = (this.variables == null);
-    const variables = skeleton ? EnvVarEditorSimple.skeletonVariables : this.variables;
+    const variables = skeleton ? CcEnvVarEditorSimple.skeletonVariables : this.variables;
     const variablesNames = variables.map(({ name }) => name);
 
     return html`
       
       ${!this.readonly ? html`
-        <env-var-create
+        <cc-env-var-create
           ?disabled=${skeleton || this.disabled}
           .variablesNames=${variablesNames}
-          @env-var-create:create=${this._onCreate}
-        ></env-var-create>
+          @cc-env-var-create:create=${this._onCreate}
+        ></cc-env-var-create>
       ` : ''}
       
       <div class="message" ?hidden=${variables != null && variables.length !== 0}>
@@ -108,7 +108,7 @@ export class EnvVarEditorSimple extends LitElement {
       </div>
       
       ${repeat(variables, ({ name }) => name, ({ name, value, isNew, isEdited, isDeleted }) => html`
-        <env-var-input
+        <cc-env-var-input
           name=${name}
           value=${value}
           ?new=${isNew}
@@ -117,10 +117,10 @@ export class EnvVarEditorSimple extends LitElement {
           ?skeleton=${skeleton}
           ?disabled=${this.disabled}
           ?readonly=${this.readonly}
-          @env-var-input:input=${this._onInput}
-          @env-var-input:delete=${this._onDelete}
-          @env-var-input:keep=${this._onKeep}
-        ></env-var-input>
+          @cc-env-var-input:input=${this._onInput}
+          @cc-env-var-input:delete=${this._onDelete}
+          @cc-env-var-input:keep=${this._onKeep}
+        ></cc-env-var-input>
       `)}
     `;
   }
@@ -129,14 +129,15 @@ export class EnvVarEditorSimple extends LitElement {
     // language=CSS
     return css`
       :host {
-        display: block;
+        display: grid;
+        grid-gap: 0.5rem;
       }
 
       :host([hidden]) {
         display: none;
       }
 
-      env-var-create {
+      cc-env-var-create {
         margin-bottom: 1rem;
       }
 
@@ -145,12 +146,8 @@ export class EnvVarEditorSimple extends LitElement {
         margin: 0.2rem;
         font-style: italic;
       }
-
-      env-var-input {
-        margin-bottom: 0.25rem;
-      }
     `;
   }
 }
 
-window.customElements.define('env-var-editor-simple', EnvVarEditorSimple);
+window.customElements.define('cc-env-var-editor-simple', CcEnvVarEditorSimple);

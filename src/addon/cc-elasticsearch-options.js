@@ -176,7 +176,7 @@ export class CcElasticsearchOptions extends LitElement {
 
         cc-toggle {
           justify-self: end;
-          margin: 0.5rem 0 0;
+          margin-top: 0.5rem;
         }
 
         .option--enabled cc-toggle {
@@ -186,10 +186,6 @@ export class CcElasticsearchOptions extends LitElement {
         .button-bar {
           display: grid;
           justify-content: flex-end;
-        }
-
-        cc-button {
-          margin: 0;
         }
 
         [title] {

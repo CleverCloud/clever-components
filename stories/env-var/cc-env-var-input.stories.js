@@ -1,17 +1,17 @@
-import '../../src/env-var/env-var-input.js';
-import notes from '../../.components-docs/env-var-input.md';
+import '../../src/env-var/cc-env-var-input.js';
+import notes from '../../.components-docs/cc-env-var-input.md';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
-  title: '🛠 Environment variables|<env-var-input>',
-  component: 'env-var-input',
+  title: '🛠 Environment variables|<cc-env-var-input>',
+  component: 'cc-env-var-input',
   parameters: { notes },
 };
 
 const conf = {
-  component: 'env-var-input',
-  events: ['env-var-input:input', 'env-var-input:delete', 'env-var-input:keep'],
+  component: 'cc-env-var-input',
+  events: ['cc-env-var-input:input', 'cc-env-var-input:delete', 'cc-env-var-input:keep'],
 };
 
 export const defaultStory = makeStory(conf, {
@@ -31,23 +31,23 @@ export const multiline = makeStory(conf, {
 });
 
 export const newValue = makeStory(conf, {
-  items: [{ name: 'NEW', value: 'new value' }],
+  items: [{ name: 'NEW', value: 'new value', new: true }],
 });
 
 export const newAndEdited = makeStory(conf, {
-  items: [{ name: 'NEW_EDITED', value: 'new value edited' }],
+  items: [{ name: 'NEW_EDITED', value: 'new value edited', new: true, edited: true }],
 });
 
 export const edited = makeStory(conf, {
-  items: [{ name: 'EDITED', value: 'edited value' }],
+  items: [{ name: 'EDITED', value: 'edited value', edited: true }],
 });
 
 export const deleted = makeStory(conf, {
-  items: [{ name: 'DELETED', value: 'deleted value' }],
+  items: [{ name: 'DELETED', value: 'deleted value', deleted: true }],
 });
 
 export const editedAndDeleted = makeStory(conf, {
-  items: [{ name: 'EDITED_DELETED', value: 'edited deleted value' }],
+  items: [{ name: 'EDITED_DELETED', value: 'edited deleted value', edited: true, deleted: true }],
 });
 
 export const longName = makeStory(conf, {
@@ -66,11 +66,11 @@ export const skeleton = makeStory(conf, {
 });
 
 export const disabled = makeStory(conf, {
-  items: [{ name: 'DISABLED', value: 'disabled value' }],
+  items: [{ name: 'DISABLED', value: 'disabled value', disabled: true }],
 });
 
 export const readonly = makeStory(conf, {
-  items: [{ name: 'READONLY', value: 'readonly value' }],
+  items: [{ name: 'READONLY', value: 'readonly value', readonly: true }],
 });
 
 enhanceStoriesNames({

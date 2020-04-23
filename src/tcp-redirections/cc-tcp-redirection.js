@@ -1,4 +1,5 @@
 import '../atoms/cc-button.js';
+import '../atoms/cc-flex-gap.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { assetUrl } from '../lib/asset-url.js';
@@ -123,34 +124,35 @@ export class CcTcpRedirection extends LitElement {
 
   render () {
     return html`
-      <span class="icon ${classMap({ skeleton: this.skeleton })}">
-        ${!this.waiting && !this.skeleton ? html`
-          <img src=${this._getIconUrl()} alt="">
-        ` : ''}
-        ${this.waiting ? html`
-      <cc-loader></cc-loader>
-    ` : ''}
-      </span>
-      <div class="text-button ${classMap({ 'cc-waiting': this.waiting })}">
-        <div class="text-wrapper">
-          <span class="text ${classMap({ skeleton: this.skeleton })}">${this._getHelpText()}</span>
-          ${this._getHelpTextAddendum() != null ? html`
-            <br>
-            <span class="text-addendum ${classMap({ skeleton: this.skeleton })}">${this._getHelpTextAddendum()}</span>
+      <cc-flex-gap class="wrapper">
+        <div class="icon ${classMap({ skeleton: this.skeleton })}">
+          ${!this.waiting && !this.skeleton ? html`
+            <img src=${this._getIconUrl()} alt="">
+          ` : ''}
+          ${this.waiting ? html`
+            <cc-loader></cc-loader>
           ` : ''}
         </div>
-        <cc-button
-          outlined
-          ?skeleton=${this.skeleton}
-          ?waiting=${this.waiting}
-          ?danger=${this._isRedirectionDefined()}
-          delay=${this._isRedirectionDefined() ? 3 : 0}
-          ?primary=${!this._isRedirectionDefined()}
-          @cc-button:click=${this._isRedirectionDefined() ? this._onDelete : this._onCreate}
-        >
-          ${this._getButtonText()}
-        </cc-button>
-      </div>
+        <cc-flex-gap class="text-button ${classMap({ 'cc-waiting': this.waiting })}">
+          <div class="text-wrapper">
+            <div class="text ${classMap({ skeleton: this.skeleton })}">${this._getHelpText()}</div>
+            ${this._getHelpTextAddendum() != null ? html`
+              <div class="text-addendum ${classMap({ skeleton: this.skeleton })}">${this._getHelpTextAddendum()}</div>
+            ` : ''}
+          </div>
+          <cc-button
+            outlined
+            ?skeleton=${this.skeleton}
+            ?waiting=${this.waiting}
+            ?danger=${this._isRedirectionDefined()}
+            delay=${this._isRedirectionDefined() ? 3 : 0}
+            ?primary=${!this._isRedirectionDefined()}
+            @cc-button:click=${this._isRedirectionDefined() ? this._onDelete : this._onCreate}
+          >
+            ${this._getButtonText()}
+          </cc-button>
+        </cc-flex-gap>
+      </cc-flex-gap>
     `;
   }
 
@@ -161,14 +163,16 @@ export class CcTcpRedirection extends LitElement {
       // language=CSS
       css`
         :host {
-          align-items: flex-start;
-          display: flex;
+          display: block;
+        }
+        
+        .wrapper {
+          --cc-gap: 0.8rem;
         }
 
         .icon {
           flex: 0 0 auto;
           height: 1.5rem;
-          margin-right: 0.8rem;
           width: 1.5rem;
         }
 
@@ -183,16 +187,7 @@ export class CcTcpRedirection extends LitElement {
         }
 
         .text-button {
-          align-items: flex-start;
-          display: flex;
           flex: 1 1 0;
-          flex-wrap: wrap;
-          margin: -0.25rem;
-        }
-
-        .text-wrapper,
-        cc-button {
-          margin: 0.25rem;
         }
 
         .text-wrapper {

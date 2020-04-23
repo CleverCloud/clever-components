@@ -3,8 +3,8 @@ import '../atoms/cc-expand.js';
 import '../atoms/cc-loader.js';
 import '../atoms/cc-toggle.js';
 import '../molecules/cc-error.js';
-import './env-var-editor-expert.js';
-import './env-var-editor-simple.js';
+import './cc-env-var-editor-expert.js';
+import './cc-env-var-editor-simple.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { dispatchCustomEvent } from '../lib/events.js';
@@ -38,13 +38,13 @@ import { linkStyles } from '../templates/cc-link.js';
  * @prop {Boolean} saving - Enables saving sate (form is disabled and loader is displayed).
  * @prop {Variable[]} variables - Sets the list of variables.
  *
- * @event {CustomEvent} env-var-form:dismissed-error - Fires the type of error that was dismissed when the error button of an error message is clicked.
- * @event {CustomEvent} env-var-form:restart-app - Fires whenever the restart app button is clicked.
- * @event {CustomEvent<Variable[]>} env-var-form:submit - Fires the new list of variables whenever the submit button is clicked.
+ * @event {CustomEvent} cc-env-var-form:dismissed-error - Fires the type of error that was dismissed when the error button of an error message is clicked.
+ * @event {CustomEvent} cc-env-var-form:restart-app - Fires whenever the restart app button is clicked.
+ * @event {CustomEvent<Variable[]>} cc-env-var-form:submit - Fires the new list of variables whenever the submit button is clicked.
  *
  * @slot - Sets custom HTML description.
  */
-export class EnvVarForm extends LitElement {
+export class CcEnvVarForm extends LitElement {
 
   static get properties () {
     return {
@@ -199,7 +199,7 @@ export class EnvVarForm extends LitElement {
         <cc-toggle
           class="mode-switcher ${classMap({ hasOverlay })}"
           value=${this._mode}
-          .choices=${EnvVarForm.modes}
+          .choices=${CcEnvVarForm.modes}
           ?disabled=${isEditorDisabled}
           @cc-toggle:input=${this._onToggleMode}
         ></cc-toggle>
@@ -209,23 +209,23 @@ export class EnvVarForm extends LitElement {
       
       <div class="overlay-container">
         <cc-expand class=${classMap({ hasOverlay })}>
-          <env-var-editor-simple
+          <cc-env-var-editor-simple
             ?hidden=${this._mode !== 'SIMPLE'}
             .variables=${this._currentVariables}
             ?disabled=${isEditorDisabled}
             ?readonly=${this.readonly}
-            @env-var-editor-simple:change=${this._onChange}
+            @cc-env-var-editor-simple:change=${this._onChange}
             @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
-          ></env-var-editor-simple>
+          ></cc-env-var-editor-simple>
           
-          <env-var-editor-expert
+          <cc-env-var-editor-expert
             ?hidden=${this._mode !== 'EXPERT'}
             .variables=${this._expertVariables}
             ?disabled=${isEditorDisabled}
             ?readonly=${this.readonly}
-            @env-var-editor-expert:change=${this._onChange}
+            @cc-env-var-editor-expert:change=${this._onChange}
             @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
-          ></env-var-editor-expert>
+          ></cc-env-var-editor-expert>
         </cc-expand>
         
         ${this.error === 'loading' ? html`
@@ -287,7 +287,6 @@ export class EnvVarForm extends LitElement {
           flex: 1 1 0;
           font-size: 1.2rem;
           font-weight: bold;
-          margin: 0.2rem;
         }
 
         .description {
@@ -295,7 +294,7 @@ export class EnvVarForm extends LitElement {
           color: #555;
           font-style: italic;
           line-height: 1.5;
-          margin: 0.2rem 0.2rem 1rem;
+          margin-bottom: 1rem;
         }
 
         .hasOverlay {
@@ -330,7 +329,7 @@ export class EnvVarForm extends LitElement {
         .button-bar {
           display: flex;
           flex-wrap: wrap;
-          margin-top: 1rem;
+          margin-top: 1.5rem;
         }
 
         .spacer {
@@ -341,4 +340,4 @@ export class EnvVarForm extends LitElement {
   }
 }
 
-window.customElements.define('env-var-form', EnvVarForm);
+window.customElements.define('cc-env-var-form', CcEnvVarForm);

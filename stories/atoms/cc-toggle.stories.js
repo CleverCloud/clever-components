@@ -12,6 +12,11 @@ export default {
 const conf = {
   component: 'cc-toggle',
   events: ['cc-toggle:input'],
+  css: `
+    cc-toggle {
+      margin: 0.5rem;
+    }
+  `,
 };
 
 export const defaultStory = makeStory(conf, {

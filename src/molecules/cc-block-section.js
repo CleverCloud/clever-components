@@ -55,6 +55,7 @@ export class CcBlockSection extends LitElement {
           color: hsl(351, 70%, 47%);
         }
 
+        /* TODO: We may want to adapt cc-flex-gap for this case one day */
         .section {
           display: flex;
           flex-wrap: wrap;

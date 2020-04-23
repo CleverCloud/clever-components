@@ -65,6 +65,11 @@ const conf = {
     'cc-input-text:tags',
     'cc-input-text:requestimplicitsubmit',
   ],
+  css: `
+    cc-input-text {
+      margin: 0.5rem;
+    }
+  `,
 };
 
 export const defaultStory = makeStory(conf, {
@@ -137,12 +142,12 @@ export const tags = makeStory(conf, {
 * Space separated values are highlighted with a colored background.
 * A \`cc-input-text:tags\` event is fired with the array of tags when the value changes (empty values are filtered out).
 * The \`tags\` feature does not work with \`multi\` or \`secret\`.`,
-  css: `cc-input-text { width: 300px; }`,
+  css: `cc-input-text { margin: 0.5rem; width: 300px; }`,
   items: tagsItems,
 });
 
 export const tagsWithClipboard = makeStory(conf, {
-  css: `cc-input-text { width: 300px; }`,
+  css: `cc-input-text { margin: 0.5rem; width: 300px; }`,
   items: tagsItems.map((p) => ({ ...p, clipboard: true })),
 });
 

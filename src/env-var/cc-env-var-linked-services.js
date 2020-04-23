@@ -1,17 +1,17 @@
 import '../atoms/cc-loader.js';
 import '../molecules/cc-error.js';
-import './env-var-form.js';
+import './cc-env-var-form.js';
 import { css, html, LitElement } from 'lit-element';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { i18n } from '../lib/i18n.js';
 
 /**
- * A component to display groups of readonly `<env-var-form>` for linked apps of add-ons.
+ * A component to display groups of readonly `<cc-env-var-form>` for linked apps of add-ons.
  *
  * ## Details
  *
  * * When `services` is nullish, a loading indicator is displayed with a message (corresponding to `type`).
- * * If `variables` on a service is nullish, the `<env-var-form>` will be in skeleton mode.
+ * * If `variables` on a service is nullish, the `<cc-env-var-form>` will be in skeleton mode.
  *
  * ## Type definitions
  *
@@ -35,7 +35,7 @@ import { i18n } from '../lib/i18n.js';
  * @prop {Service[]} services - List of add-ons or apps with their name and variables.
  * @prop {"addon"|"app"} type - Type of env vars to display linked add-ons or linked apps.
  */
-export class EnvVarLinkedServices extends LitElement {
+export class CcEnvVarLinkedServices extends LitElement {
 
   static get properties () {
     return {
@@ -123,9 +123,9 @@ export class EnvVarLinkedServices extends LitElement {
       ${this.services != null && !this.error && this.services.length > 0 ? html`
         <div class="service-list">
           ${this.services.map((s) => html`
-            <env-var-form readonly .variables=${s.variables} heading=${this._getServiceHeading(s.name)} error="${ifDefined(s.error)}">
+            <cc-env-var-form readonly .variables=${s.variables} heading=${this._getServiceHeading(s.name)} error="${ifDefined(s.error)}">
               ${this._getServiceDescription(s.name)}
-            </env-var-form>
+            </cc-env-var-form>
           `)}
         </div>
       ` : ''}
@@ -184,4 +184,4 @@ export class EnvVarLinkedServices extends LitElement {
   }
 }
 
-window.customElements.define('env-var-linked-services', EnvVarLinkedServices);
+window.customElements.define('cc-env-var-linked-services', CcEnvVarLinkedServices);

@@ -1,4 +1,5 @@
 import '../atoms/cc-img.js';
+import '../atoms/cc-flex-gap.js';
 import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
@@ -62,7 +63,7 @@ export class CcHeaderOrga extends LitElement {
       .join('');
 
     return html`
-      <div class="wrapper ${classMap({ enterprise: orga.cleverEnterprise })}">
+      <cc-flex-gap class="wrapper ${classMap({ enterprise: orga.cleverEnterprise })}">
       
         ${this.error ? html`
           <cc-error>${i18n('cc-header-orga.error')}</cc-error>
@@ -89,7 +90,7 @@ export class CcHeaderOrga extends LitElement {
             </div>
           ` : ''}
         ` : ''}
-      </div>
+      </cc-flex-gap>
     `;
   }
 
@@ -99,17 +100,16 @@ export class CcHeaderOrga extends LitElement {
       // language=CSS
       css`
         :host {
+          --cc-gap: 1rem;
           display: block;
         }
 
         .wrapper {
-          align-items: stretch;
           background-color: #fff;
           border-radius: 0.25rem;
           border: 1px solid #bcc2d1;
-          display: flex;
-          flex-wrap: wrap;
-          padding: 0 1rem 1rem 1rem;
+          display: block;
+          padding: var(--cc-gap);
           overflow: hidden;
         }
 
@@ -118,15 +118,9 @@ export class CcHeaderOrga extends LitElement {
           border-width: 2px;
         }
 
-        cc-error {
-          margin-top: 1rem;
-        }
-
         .logo {
           border-radius: 0.25rem;
           height: 3.25rem;
-          margin-right: 1rem;
-          margin-top: 1rem;
           width: 3.25rem;
         }
 
@@ -134,16 +128,7 @@ export class CcHeaderOrga extends LitElement {
         .hotline {
           align-items: flex-start;
           display: flex;
-          margin-top: 1rem;
           flex-direction: column;
-        }
-
-        .details {
-          justify-content: center;
-          margin-right: 1rem;
-        }
-
-        .hotline {
           justify-content: space-between;
         }
 

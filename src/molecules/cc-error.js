@@ -93,7 +93,6 @@ export class CcError extends LitElement {
 
         cc-button {
           display: block;
-          margin: 0;
         }
       `,
     ];
