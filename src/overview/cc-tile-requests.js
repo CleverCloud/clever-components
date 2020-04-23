@@ -5,12 +5,14 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { assetUrl } from '../lib/asset-url.js';
 import { i18n } from '../lib/i18n.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
 import { tileStyles } from '../styles/info-tiles.js';
 import { skeleton } from '../styles/skeleton.js';
-import closeSvg from '../assets/close.svg';
-import infoSvg from '../assets/info.svg';
+
+const closeSvg = assetUrl(import.meta, '../assets/close.svg');
+const infoSvg = assetUrl(import.meta, '../assets/info.svg');
 
 /**
  * A "tile" component to display HTTP requests distribution over the last 24 hours in a bar chart.

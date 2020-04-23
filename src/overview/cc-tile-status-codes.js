@@ -6,12 +6,14 @@ import { cache } from 'lit-html/directives/cache.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { STATUS_CODES } from 'statuses';
+import { assetUrl } from '../lib/asset-url.js';
 import { i18n } from '../lib/i18n.js';
 import { tileStyles } from '../styles/info-tiles.js';
 import { skeleton } from '../styles/skeleton.js';
 import { linkStyles } from '../templates/cc-link.js';
-import closeSvg from '../assets/close.svg';
-import infoSvg from '../assets/info.svg';
+
+const closeSvg = assetUrl(import.meta, '../assets/close.svg');
+const infoSvg = assetUrl(import.meta, '../assets/info.svg');
 
 function xor (a, b) {
   return Number(a) ^ Number(b);

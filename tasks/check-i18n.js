@@ -4,8 +4,8 @@
 // eslint-disable-next-line no-global-assign
 require = require('esm')(module);
 
+const fs = require('fs').promises;
 const util = require('util');
-const fs = require('fs-extra');
 const rawGlob = require('glob');
 const { extractFromCode } = require('i18n-extract');
 const { translations: en } = require('../src/translations/translations.en.js');
@@ -14,11 +14,18 @@ const { translations: fr } = require('../src/translations/translations.fr.js');
 const glob = util.promisify(rawGlob);
 const translationsByLang = { en, fr };
 
+const babelOptions = {
+  ast: true,
+  plugins: [
+    '@babel/plugin-syntax-import-meta',
+  ],
+};
+
 async function getUsedKeys (sourceFilepaths) {
   const usedKeysByFile = {};
   for (const src of sourceFilepaths) {
     const code = await fs.readFile(src, 'utf8');
-    const keys = extractFromCode(code, { marker: 'i18n' });
+    const keys = extractFromCode(code, { marker: 'i18n', babelOptions });
     usedKeysByFile[src] = keys.map(({ key }) => key);
   }
   return usedKeysByFile;

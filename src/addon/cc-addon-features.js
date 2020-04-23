@@ -2,11 +2,13 @@ import '../molecules/cc-block.js';
 import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { assetUrl } from '../lib/asset-url.js';
 import { i18n } from '../lib/i18n.js';
 import { skeleton } from '../styles/skeleton.js';
-import cpuSvg from '../assets/cpu.svg';
-import diskSvg from '../assets/disk.svg';
-import ramSvg from '../assets/ram.svg';
+
+const cpuSvg = assetUrl(import.meta, '../assets/cpu.svg');
+const diskSvg = assetUrl(import.meta, '../assets/disk.svg');
+const ramSvg = assetUrl(import.meta, '../assets/ram.svg');
 
 const featureIcons = {
   cpus: cpuSvg,
