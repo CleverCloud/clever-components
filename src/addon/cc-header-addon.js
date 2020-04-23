@@ -1,5 +1,6 @@
 import '../atoms/cc-img.js';
 import '../atoms/cc-input-text.js';
+import '../atoms/cc-flex-gap.js';
 import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
@@ -87,17 +88,17 @@ export class CcHeaderAddon extends LitElement {
 
     return html`
       ${!this.error ? html`
-        <div class="main">
+        <cc-flex-gap class="main">
         
           <cc-img class="logo" src="${ifDefined(addon.provider.logoUrl)}"
             ?skeleton=${skeleton} text="${addon.provider.name}" title="${ifDefined(addon.provider.name)}"></cc-img>
         
           <div class="details">
             <div class="name"><span class="${classMap({ skeleton })}">${addon.name}</span></div>
-            <cc-input-text class="id" readonly clipboard value="${ifDefined(addon.id)}" ?skeleton=${skeleton}></cc-input-text>
+            <cc-input-text readonly clipboard value="${ifDefined(addon.id)}" ?skeleton=${skeleton}></cc-input-text>
           </div>
 
-          <div class="description">
+          <cc-flex-gap class="description">
             <div class="description-item">
               <div class="description-label">${i18n('cc-header-addon.plan')}</div>
               <div class="${classMap({ skeleton })}">${addon.plan.name}</div>
@@ -110,8 +111,8 @@ export class CcHeaderAddon extends LitElement {
               <div class="description-label">${i18n('cc-header-addon.creation-date')}</div>
               <div class="${classMap({ skeleton })}" title="${ifDefined(creationDateFull)}">${creationDateShort}</div>
             </div>
-          </div>
-        </div>
+          </cc-flex-gap>
+        </cc-flex-gap>
       ` : ''}
 
       ${this.error ? html`
@@ -126,6 +127,7 @@ export class CcHeaderAddon extends LitElement {
       // language=CSS
       css`
         :host {
+          --cc-gap: 1rem;
           background-color: #fff;
           border-radius: 0.25rem;
           border: 1px solid #bcc2d1;
@@ -133,23 +135,17 @@ export class CcHeaderAddon extends LitElement {
         }
 
         .main {
-          align-items: center;
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: flex-start;
+          padding: var(--cc-gap);
         }
 
         .logo {
-          align-self: flex-start;
           border-radius: 0.25rem;
           height: 3.25rem;
-          margin: 1rem;
           width: 3.25rem;
         }
 
         .details {
           flex: 1 1 0;
-          margin: 1rem 1rem 1rem 0;
         }
 
         .name,
@@ -163,18 +159,12 @@ export class CcHeaderAddon extends LitElement {
           min-width: 12rem;
         }
 
-        .id {
-          margin: 0;
-        }
-
         .description {
-          display: flex;
-          padding: 0.5rem 1rem 0.5rem 0;
+          align-self: center;
         }
 
         .description-item {
           flex: 1 1 auto;
-          margin: 0.5rem 0 0.5rem 1rem;
         }
 
         .description-label {
@@ -182,7 +172,7 @@ export class CcHeaderAddon extends LitElement {
         }
 
         cc-error {
-          padding: 1rem;
+          padding: var(--cc-gap);
           text-align: center;
         }
 

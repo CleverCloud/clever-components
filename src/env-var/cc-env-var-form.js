@@ -287,7 +287,6 @@ export class CcEnvVarForm extends LitElement {
           flex: 1 1 0;
           font-size: 1.2rem;
           font-weight: bold;
-          margin: 0.2rem;
         }
 
         .description {
@@ -295,7 +294,7 @@ export class CcEnvVarForm extends LitElement {
           color: #555;
           font-style: italic;
           line-height: 1.5;
-          margin: 0.2rem 0.2rem 1rem;
+          margin-bottom: 1rem;
         }
 
         .hasOverlay {
@@ -330,7 +329,7 @@ export class CcEnvVarForm extends LitElement {
         .button-bar {
           display: flex;
           flex-wrap: wrap;
-          margin-top: 1rem;
+          margin-top: 1.5rem;
         }
 
         .spacer {

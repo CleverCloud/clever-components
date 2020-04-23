@@ -334,10 +334,6 @@ export class CcAddonBackups extends LitElement {
           cursor: help;
         }
 
-        cc-input-text {
-          margin: 0;
-        }
-
         /* SKELETON */
         .skeleton {
           background-color: #bbb;
@@ -352,6 +348,7 @@ export class CcAddonBackups extends LitElement {
         .cc-link,
         cc-button[link] {
           margin-right: 0.5rem;
+          vertical-align: baseline;
         }
       `,
     ];

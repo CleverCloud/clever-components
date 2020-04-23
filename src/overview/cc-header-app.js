@@ -1,4 +1,5 @@
 import '../atoms/cc-button.js';
+import '../atoms/cc-flex-gap.js';
 import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
@@ -198,7 +199,7 @@ export class CcHeaderApp extends LitElement {
     }
     return html`
       <span
-        class="commit-item ${classMap({ 'cc-waiting': (type === 'starting') })}"
+        class="commit ${classMap({ 'cc-waiting': (type === 'starting') })}"
         title=${ifDefined(skeleton ? undefined : this._getCommitTitle(type, commit))}
         data-type=${type}
       >
@@ -238,7 +239,7 @@ export class CcHeaderApp extends LitElement {
     const disableButtonsTitle = this.disableButtons ? i18n('cc-header-app.disable-buttons') : undefined;
 
     return html`
-      <div class="main">
+      <cc-flex-gap class="main">
         <div class="flavor-logo ${classMap({ skeleton })}" title=${ifDefined(variantName)}>
           <!-- image has a presentation role => alt="" -->
           <img class="flavor-logo_img" src=${ifDefined(variantLogo)} alt="">
@@ -246,14 +247,14 @@ export class CcHeaderApp extends LitElement {
         
         <div class="details">
           <div class="name"><span class=${classMap({ skeleton })}>${name}</span></div>
-          <div class="commits">
+          <cc-flex-gap class="commits">
             ${this._renderCommit(commit, 'git', skeleton)}
             ${isRunning ? this._renderCommit(this.runningCommit, 'running', skeleton) : ''}
             ${isDeploying ? this._renderCommit(this.startingCommit, 'starting', skeleton) : ''}
-          </div>
+          </cc-flex-gap>
         </div>
         
-        <div class="buttons">
+        <cc-flex-gap class="buttons">
         
           ${canStart ? html`
             <cc-button title=${ifDefined(disableButtonsTitle)} ?disabled=${shouldDisableAllButtons} @cc-button:click=${() => this._onStart('normal')}>
@@ -292,8 +293,8 @@ export class CcHeaderApp extends LitElement {
             @cc-button:click=${this._onStop}
           >${i18n('cc-header-app.action.stop')}</cc-button>
           
-        </div>
-      </div>
+        </cc-flex-gap>
+      </cc-flex-gap>
       
       <div class="messages ${classMap({ 'cc-waiting': isDeploying })}">
         ${(shouldDisplayStatusMessage) ? html`
@@ -319,32 +320,26 @@ export class CcHeaderApp extends LitElement {
       // language=CSS
       css`
         :host {
+          --cc-gap: 1rem;
           background-color: #fff;
           border-radius: 0.25rem;
           border: 1px solid #bcc2d1;
-          display: flex;
-          flex-direction: column;
-          flex-wrap: wrap;
+          display: block;
         }
 
         cc-error {
-          padding: 1rem;
+          padding: var(--cc-gap);
           text-align: center;
         }
 
         .main {
-          align-items: center;
-          box-sizing: border-box;
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: flex-end;
+          padding: var(--cc-gap);
         }
 
         .flavor-logo {
           border-radius: 0.25rem;
           align-self: flex-start;
           height: 3.25rem;
-          margin: 1rem;
           overflow: hidden;
           width: 3.25rem;
         }
@@ -363,8 +358,6 @@ export class CcHeaderApp extends LitElement {
           display: flex;
           flex-direction: column;
           flex: 1 1 0;
-          min-height: 3rem;
-          margin: 1rem 1rem 1rem 0;
           justify-content: space-between;
         }
 
@@ -374,27 +367,20 @@ export class CcHeaderApp extends LitElement {
           min-width: 12rem;
         }
 
-        .commits {
-          display: flex;
-          flex-wrap: wrap;
-        }
-
-        .commit-item {
+        .commit {
           align-items: flex-start;
           display: flex;
-          margin-right: 0.75rem;
-          margin-top: 0.5rem;
         }
 
-        .commit-item[data-type="git"] {
+        .commit[data-type="git"] {
           color: #5D5D5D;
         }
 
-        .commit-item[data-type="running"] {
+        .commit[data-type="running"] {
           color: #2faa60;
         }
 
-        .commit-item[data-type="starting"] {
+        .commit[data-type="starting"] {
           color: #2b96fd;
         }
 
@@ -411,14 +397,11 @@ export class CcHeaderApp extends LitElement {
         }
 
         .buttons {
-          display: flex;
-          flex-wrap: wrap;
-          padding: 0.5rem 1rem 0.5rem 0;
+          align-self: center;
         }
 
         cc-button {
           flex: 1 1 auto;
-          margin: 0.5rem 0 0.5rem 1rem;
           min-width: 0;
         }
 
@@ -433,7 +416,7 @@ export class CcHeaderApp extends LitElement {
           color: #2e2e2e;
           font-size: 0.9rem;
           font-style: italic;
-          padding: 0.4rem 1rem;
+          padding: 0.4rem var(--cc-gap);
         }
 
         .status-icon {

@@ -1,4 +1,5 @@
 import '../atoms/cc-button.js';
+import '../atoms/cc-flex-gap.js';
 import '../atoms/cc-input-text.js';
 import '../molecules/cc-error.js';
 import { validateName } from '@clevercloud/client/esm/utils/env-vars.js';
@@ -84,7 +85,8 @@ export class CcEnvVarCreate extends LitElement {
     const hasErrors = isNameInvalid || isNameAlreadyDefined;
 
     return html`
-      <div class="wrapper">
+      <cc-flex-gap>
+        
         <cc-input-text
           class="name"
           name="name"
@@ -94,7 +96,9 @@ export class CcEnvVarCreate extends LitElement {
           @cc-input-text:input=${this._onNameInput}
           @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, hasErrors)}
         ></cc-input-text>
-        <span class="input-btn">
+        
+        <cc-flex-gap class="input-btn">
+          
           <cc-input-text
             class="value"
             name="value"
@@ -105,13 +109,16 @@ export class CcEnvVarCreate extends LitElement {
             @cc-input-text:input=${this._onValueInput}
             @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, hasErrors)}
           ></cc-input-text>
+          
           <cc-button
             primary
             ?disabled=${hasErrors || this.disabled}
             @cc-button:click=${this._onSubmit}
           >${i18n(`env-var-create.create-button`)}</cc-button>
-        </span>
-      </div>
+          
+        </cc-flex-gap>
+      </cc-flex-gap>
+      
       ${(isNameInvalid && this._variableName !== '') ? html`
         <cc-error>${i18n(`env-var-create.errors.invalid-name`, { name: this._variableName })}</cc-error>
       ` : ''}
@@ -126,12 +133,8 @@ export class CcEnvVarCreate extends LitElement {
       // language=CSS
       css`
         :host {
+          --cc-gap: 0.5rem;
           display: block;
-        }
-
-        .wrapper {
-          display: flex;
-          flex-wrap: wrap;
         }
 
         .name {
@@ -139,9 +142,7 @@ export class CcEnvVarCreate extends LitElement {
         }
 
         .input-btn {
-          display: flex;
           flex: 2 1 27rem;
-          flex-wrap: wrap;
         }
 
         .value {
@@ -157,7 +158,7 @@ export class CcEnvVarCreate extends LitElement {
         }
 
         cc-error {
-          margin: 0.5rem 0.2rem 0.2rem;
+          margin: 0.5rem 0;
         }
 
         /* i18n error message may contain <code> tags */

@@ -129,14 +129,15 @@ export class CcEnvVarEditorSimple extends LitElement {
     // language=CSS
     return css`
       :host {
-        display: block;
+        display: grid;
+        grid-gap: 0.5rem;
       }
 
       :host([hidden]) {
         display: none;
       }
 
-      env-var-create {
+      cc-env-var-create {
         margin-bottom: 1rem;
       }
 
@@ -144,10 +145,6 @@ export class CcEnvVarEditorSimple extends LitElement {
         color: #555;
         margin: 0.2rem;
         font-style: italic;
-      }
-
-      env-var-input {
-        margin-bottom: 0.25rem;
       }
     `;
   }

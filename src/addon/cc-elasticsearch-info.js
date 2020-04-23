@@ -1,4 +1,5 @@
 import '../atoms/cc-img.js';
+import '../atoms/cc-flex-gap.js';
 import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
@@ -62,7 +63,7 @@ export class CcElasticsearchInfo extends LitElement {
       ${!this.error ? html`
         <div class="info-text">${i18n('cc-elasticsearch-info.text')}</div>
         
-        <div class="link-list">
+        <cc-flex-gap class="link-list">
           ${ccLink(ELASTICSEARCH_DOCUMENTATION, html`
             <cc-img src="${infoSvg}"></cc-img><span>${i18n('cc-elasticsearch-info.link.doc')}</span>
           `)}
@@ -81,7 +82,7 @@ export class CcElasticsearchInfo extends LitElement {
               <cc-img src="${APM_LOGO_URL}"></cc-img><span class="${classMap({ skeleton: (apmLink.href == null) })}">${i18n('cc-elasticsearch-info.link.apm')}</span>
             `)}
           ` : ''}
-        </div>
+        </cc-flex-gap>
       ` : ''}
 
       ${this.error ? html`
@@ -97,26 +98,21 @@ export class CcElasticsearchInfo extends LitElement {
       // language=CSS
       css`
         :host {
+          --cc-gap: 1rem;
           background-color: #fff;
           border-radius: 0.25rem;
           border: 1px solid #bcc2d1;
           display: grid;
-          grid-gap: 1rem;
+          grid-gap: var(--cc-gap);
           overflow: hidden;
-          padding: 1rem 1rem 1rem 4rem;
+          padding: var(--cc-gap);
+          padding-left: 4rem;
           position: relative;
-        }
-
-        .link-list {
-          display: flex;
-          flex-wrap: wrap;
-          margin: -0.5rem -0.75rem;
         }
 
         .cc-link {
           align-items: center;
           display: flex;
-          margin: 0.5rem 0.75rem;
         }
 
         cc-img {

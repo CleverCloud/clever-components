@@ -1,4 +1,5 @@
 import '../atoms/cc-input-text.js';
+import '../atoms/cc-flex-gap.js';
 import '../molecules/cc-block.js';
 import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
@@ -87,7 +88,7 @@ export class CcAddonCredentials extends LitElement {
           <div>${this._getDescription(this.type)}</div>
           
           ${this.credentials != null ? html`
-            <div class="credential-list">
+            <cc-flex-gap class="credential-list">
               ${this.credentials.map(({ type, secret, value }) => html`
                 <cc-input-text readonly clipboard
                   ?secret=${secret}
@@ -96,7 +97,7 @@ export class CcAddonCredentials extends LitElement {
                   label=${this._getFieldName(type)}
                 ></cc-input-text>
               `)}
-            </div>
+            </cc-flex-gap>
           ` : ''}
         ` : ''}
         
@@ -117,15 +118,11 @@ export class CcAddonCredentials extends LitElement {
         }
 
         .credential-list {
-          display: flex;
-          flex-wrap: wrap;
-          margin: -1rem;
-          padding: 0.5rem;
+          --cc-gap: 1rem;
         }
 
         cc-input-text {
           flex: 1 0 18rem;
-          margin: 0.5rem;
         }
 
         /* SKELETON */

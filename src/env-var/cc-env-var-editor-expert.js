@@ -145,12 +145,9 @@ export class CcEnvVarEditorExpert extends LitElement {
         }
 
         .error-list {
-          margin: 0.5rem 0.2rem 0.2rem;
-        }
-
-        cc-error {
-          line-height: 1.75;
-          padding: 0.25rem 0;
+          display: grid;
+          grid-gap: 0.75rem;
+          margin-top: 1rem;
         }
 
         /* i18n error message may contain <code> tags */

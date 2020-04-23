@@ -1,4 +1,5 @@
 import '../atoms/cc-button.js';
+import '../atoms/cc-flex-gap.js';
 import '../atoms/cc-input-text.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
@@ -82,37 +83,41 @@ export class CcEnvVarInput extends LitElement {
   render () {
     // the no-whitespace comment trick helps users who triple click on the text to be sure to copy the text without any whitespaces
     return html`
-      <span class="name ${classMap({ deleted: this.deleted })}"><!-- no-whitespace
-        --><span class=${classMap({ skeleton: this.skeleton })}>${this.name}</span><!-- no-whitespace
-      --></span>
-      
-      <span class="input-btn">
-        <cc-input-text
-          class="value"
-          name=${this.name}
-          value=${this.value}
-          multi
-          clipboard
-          ?disabled=${this.deleted || this.disabled}
-          ?skeleton=${this.skeleton}
-          ?readonly=${this.readonly}
-          placeholder=${i18n('env-var-input.value-placeholder')}
-          @cc-input-text:input=${this._onInput}
-        ></cc-input-text>
+      <cc-flex-gap>
         
-        ${!this.readonly ? html`
-          <cc-button
+        <span class="name ${classMap({ deleted: this.deleted })}"><!-- no-whitespace
+          --><span class=${classMap({ skeleton: this.skeleton })}>${this.name}</span><!-- no-whitespace
+        --></span>
+        
+        <cc-flex-gap class="input-btn">
+          
+          <cc-input-text
+            class="value"
+            name=${this.name}
+            value=${this.value}
+            multi
+            clipboard
+            ?disabled=${this.deleted || this.disabled}
             ?skeleton=${this.skeleton}
-            ?disabled=${this.disabled}
-            ?danger=${!this.deleted}
-            ?outlined=${!this.deleted}
-            @cc-button:click=${this.deleted ? this._onKeep : this._onDelete}
-          >
-            ${this.deleted ? i18n('env-var-input.keep-button') : i18n('env-var-input.delete-button')}
-          </cc-button>
-        ` : ''}
-        
-      </span>
+            ?readonly=${this.readonly}
+            placeholder=${i18n('env-var-input.value-placeholder')}
+            @cc-input-text:input=${this._onInput}
+          ></cc-input-text>
+          
+          ${!this.readonly ? html`
+            <cc-button
+              ?skeleton=${this.skeleton}
+              ?disabled=${this.disabled}
+              ?danger=${!this.deleted}
+              ?outlined=${!this.deleted}
+              @cc-button:click=${this.deleted ? this._onKeep : this._onDelete}
+            >
+              ${this.deleted ? i18n('env-var-input.keep-button') : i18n('env-var-input.delete-button')}
+            </cc-button>
+          ` : ''}
+          
+        </cc-flex-gap>
+      </cc-flex-gap>
     `;
   }
 
@@ -122,12 +127,8 @@ export class CcEnvVarInput extends LitElement {
       // language=CSS
       css`
         :host {
-          display: flex;
-          flex-wrap: wrap;
-        }
-
-        :host([hidden]) {
-          display: none;
+          --cc-gap: 0.5rem;
+          display: block;
         }
 
         .name {
@@ -140,7 +141,6 @@ export class CcEnvVarInput extends LitElement {
           font-size: 14px;
           line-height: 1.4rem;
           padding-top: 0.3rem;
-          margin: 0.2rem;
           word-break: break-all;
         }
 
@@ -153,9 +153,7 @@ export class CcEnvVarInput extends LitElement {
         }
 
         .input-btn {
-          display: flex;
           flex: 2 1 27rem;
-          flex-wrap: wrap;
         }
 
         .value {
