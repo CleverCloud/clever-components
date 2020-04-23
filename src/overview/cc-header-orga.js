@@ -129,6 +129,13 @@ export class CcHeaderOrga extends LitElement {
           align-items: flex-start;
           display: flex;
           flex-direction: column;
+        }
+
+        .details {
+          justify-content: center;
+        }
+
+        .hotline {
           justify-content: space-between;
         }
 
