@@ -281,7 +281,6 @@ export class CcInputText extends LitElement {
       css`
         :host {
           display: inline-block;
-          margin: 0.2rem;
         }
 
         :host([multi]) {
