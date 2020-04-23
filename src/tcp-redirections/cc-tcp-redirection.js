@@ -135,9 +135,10 @@ export class CcTcpRedirection extends LitElement {
         </div>
         <cc-flex-gap class="text-button ${classMap({ 'cc-waiting': this.waiting })}">
           <div class="text-wrapper">
-            <div class="text ${classMap({ skeleton: this.skeleton })}">${this._getHelpText()}</div>
+            <span class="text ${classMap({ skeleton: this.skeleton })}">${this._getHelpText()}</span>
             ${this._getHelpTextAddendum() != null ? html`
-              <div class="text-addendum ${classMap({ skeleton: this.skeleton })}">${this._getHelpTextAddendum()}</div>
+              <br>
+              <span class="text-addendum ${classMap({ skeleton: this.skeleton })}">${this._getHelpTextAddendum()}</span>
             ` : ''}
           </div>
           <cc-button
