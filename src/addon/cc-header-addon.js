@@ -8,6 +8,17 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { i18n } from '../lib/i18n.js';
 import { skeleton } from '../styles/skeleton.js';
 
+const SKELETON_ADDON = {
+  name: '??????????????????????????',
+  provider: {},
+  plan: {
+    name: '?????????',
+  },
+  creationDate: 0,
+};
+
+const SKELETON_VERSION = '????????';
+
 /**
  * A component to display various info about an add-on (name, plan, version...).
  *
@@ -60,28 +71,13 @@ export class CcHeaderAddon extends LitElement {
     this.error = false;
   }
 
-  static get skeletonAddon () {
-    return {
-      name: '??????????????????????????',
-      provider: {},
-      plan: {
-        name: '?????????',
-      },
-      creationDate: 0,
-    };
-  }
-
-  static get skeletonVersion () {
-    return '????????';
-  }
-
   render () {
 
     const skeleton = (this.addon == null);
-    const addon = skeleton ? CcHeaderAddon.skeletonAddon : this.addon;
+    const addon = skeleton ? SKELETON_ADDON : this.addon;
 
     const skeletonVersion = (this.version == null);
-    const version = skeletonVersion ? CcHeaderAddon.skeletonVersion : this.version;
+    const version = skeletonVersion ? SKELETON_VERSION : this.version;
 
     const creationDateShort = i18n('cc-header-addon.creation-date.short', { date: addon.creationDate });
     const creationDateFull = skeleton ? undefined : i18n('cc-header-addon.creation-date.full', { date: addon.creationDate });

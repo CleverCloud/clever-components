@@ -17,6 +17,11 @@ const statusImg = {
   deploying: startingSvg,
 };
 
+const SKELETON_INSTANCES = {
+  running: [],
+  deploying: [],
+};
+
 /**
  * A "tile" component to display current status of running and deploying instances for a given app.
  *
@@ -57,13 +62,6 @@ export class CcTileInstances extends LitElement {
     this.error = false;
   }
 
-  static get skeletonInstances () {
-    return {
-      running: [],
-      deploying: [],
-    };
-  }
-
   _getStatusLabel (type) {
     if (type === 'running') {
       return i18n('cc-tile-instances.status.running');
@@ -90,7 +88,7 @@ export class CcTileInstances extends LitElement {
 
     const skeleton = (this.instances == null);
     const isLoading = skeleton && !this.error;
-    const instances = skeleton ? CcTileInstances.skeletonInstances : this.instances;
+    const instances = skeleton ? SKELETON_INSTANCES : this.instances;
 
     const runningInstancesCount = instances.running.map((a) => a.count).reduce((a, b) => a + b, 0);
     const deployingInstancesCount = instances.deploying.map((a) => a.count).reduce((a, b) => a + b, 0);

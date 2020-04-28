@@ -5,6 +5,11 @@ import { i18n } from '../lib/i18n.js';
 import { tileStyles } from '../styles/info-tiles.js';
 import { skeleton } from '../styles/skeleton.js';
 
+const SKELETON_CONSUMPTION = {
+  yesterday: 0.7,
+  last30Days: 14.6,
+};
+
 /**
  * A "tile" component to display consumption info (yesterday and over last 30 days).
  *
@@ -38,17 +43,10 @@ export class CcTileConsumption extends LitElement {
     this.error = false;
   }
 
-  static get _skeletonConsumption () {
-    return {
-      yesterday: 0.7,
-      last30Days: 14.6,
-    };
-  }
-
   render () {
 
     const skeleton = (this.consumption == null);
-    const { yesterday, last30Days } = skeleton ? CcTileConsumption._skeletonConsumption : this.consumption;
+    const { yesterday, last30Days } = skeleton ? SKELETON_CONSUMPTION : this.consumption;
 
     return html`
       <div class="tile_title">${i18n('cc-tile-consumption.title')}</div>

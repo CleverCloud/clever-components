@@ -6,6 +6,13 @@ import { i18n } from '../lib/i18n.js';
 import { instanceDetails, tileStyles } from '../styles/info-tiles.js';
 import { skeleton } from '../styles/skeleton.js';
 
+const SKELETON_SCALABILITY = {
+  minFlavor: { name: '??' },
+  maxFlavor: { name: '?' },
+  minInstances: 0,
+  maxInstances: 0,
+};
+
 /**
  * A "tile" component to display the current config of scalability for a given app.
  *
@@ -46,15 +53,6 @@ export class CcTileScalability extends LitElement {
     };
   }
 
-  static get _skeletonScalability () {
-    return {
-      minFlavor: { name: '??' },
-      maxFlavor: { name: '?' },
-      minInstances: 0,
-      maxInstances: 0,
-    };
-  }
-
   _getFlavorDetails (flavor) {
     if (flavor.cpus == null) {
       return;
@@ -70,7 +68,7 @@ export class CcTileScalability extends LitElement {
   render () {
 
     const skeleton = (this.scalability == null);
-    const { minFlavor, maxFlavor, minInstances, maxInstances } = skeleton ? CcTileScalability._skeletonScalability : this.scalability;
+    const { minFlavor, maxFlavor, minInstances, maxInstances } = skeleton ? SKELETON_SCALABILITY : this.scalability;
 
     return html`
       <div class="tile_title">${i18n('cc-tile-scalability.title')}</div>

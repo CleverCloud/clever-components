@@ -5,6 +5,12 @@ import { repeat } from 'lit-html/directives/repeat.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 
+const SKELETON_VARIABLES = [
+  { name: 'VARIABLE_ONE', value: '' },
+  { name: 'VARIABLE_FOOBAR', value: '' },
+  { name: 'VARIABLE_PORT', value: '' },
+];
+
 /**
  * A high level environment variable editor to create/edit/delete variables one at a time (with validation and error messages).
  *
@@ -39,14 +45,6 @@ export class CcEnvVarEditorSimple extends LitElement {
     // this.variables is let to undefined by default (this triggers skeleton screen)
     this.disabled = false;
     this.readonly = false;
-  }
-
-  static get skeletonVariables () {
-    return [
-      { name: 'VARIABLE_ONE', value: '' },
-      { name: 'VARIABLE_FOOBAR', value: '' },
-      { name: 'VARIABLE_PORT', value: '' },
-    ];
   }
 
   _onCreate ({ detail: newVar }) {
@@ -90,7 +88,7 @@ export class CcEnvVarEditorSimple extends LitElement {
   render () {
 
     const skeleton = (this.variables == null);
-    const variables = skeleton ? CcEnvVarEditorSimple.skeletonVariables : this.variables;
+    const variables = skeleton ? SKELETON_VARIABLES : this.variables;
     const variablesNames = variables.map(({ name }) => name);
 
     return html`

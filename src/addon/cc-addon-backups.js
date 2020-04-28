@@ -14,6 +14,12 @@ import { ccLink, linkStyles } from '../templates/cc-link.js';
 const backupSvg = assetUrl(import.meta, '../assets/backup.svg');
 const closeSvg = assetUrl(import.meta, '../assets/close.svg');
 
+const SKELETON_BACKUPS = {
+  providerId: '',
+  passwordForCommand: '',
+  list: new Array(5).fill({ createdAt: new Date(), expiresAt: new Date() }),
+};
+
 /**
  * A components to display backups available for an add-on
  *
@@ -61,15 +67,6 @@ export class CcAddonBackups extends LitElement {
     this.error = false;
     this._overlay = null;
     this._selectedBackup = null;
-  }
-
-  static get skeletonBackups () {
-    const backup = { createdAt: new Date(), expiresAt: new Date() };
-    return {
-      providerId: '',
-      passwordForCommand: '',
-      list: new Array(5).fill(backup),
-    };
   }
 
   _getDescription (providerId) {
@@ -195,7 +192,7 @@ export class CcAddonBackups extends LitElement {
   render () {
 
     const skeleton = (this.backups == null);
-    const { providerId, list: backups, passwordForCommand } = skeleton ? CcAddonBackups.skeletonBackups : this.backups;
+    const { providerId, list: backups, passwordForCommand } = skeleton ? SKELETON_BACKUPS : this.backups;
     const hasData = (!this.error && (backups.length > 0));
     const emptyData = (!this.error && (backups.length === 0));
 

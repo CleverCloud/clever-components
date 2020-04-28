@@ -75,13 +75,6 @@ export class CcEnvVarForm extends LitElement {
     this._description = '';
   }
 
-  static get modes () {
-    return [
-      { label: i18n('env-var-form.mode.simple'), value: 'SIMPLE' },
-      { label: i18n('env-var-form.mode.expert'), value: 'EXPERT' },
-    ];
-  }
-
   set context (context) {
     if (context === 'env-var') {
       this.heading = i18n('env-var-form.heading.env-var');
@@ -110,6 +103,13 @@ export class CcEnvVarForm extends LitElement {
       this._currentVariables = variables.sort((a, b) => a.name.localeCompare(b.name));
       this._expertVariables = variables.sort((a, b) => a.name.localeCompare(b.name));
     }
+  }
+
+  _getModes () {
+    return [
+      { label: i18n('env-var-form.mode.simple'), value: 'SIMPLE' },
+      { label: i18n('env-var-form.mode.expert'), value: 'EXPERT' },
+    ];
   }
 
   _onChange ({ detail: changedVariables }) {
@@ -199,7 +199,7 @@ export class CcEnvVarForm extends LitElement {
         <cc-toggle
           class="mode-switcher ${classMap({ hasOverlay })}"
           value=${this._mode}
-          .choices=${CcEnvVarForm.modes}
+          .choices=${this._getModes()}
           ?disabled=${isEditorDisabled}
           @cc-toggle:input=${this._onToggleMode}
         ></cc-toggle>
@@ -241,8 +241,8 @@ export class CcEnvVarForm extends LitElement {
         ` : ''}
         
         ${this.saving ? html`
-          <cc-loader class="saving-loader"></cc-loader>
-        ` : ''}
+      <cc-loader class="saving-loader"></cc-loader>
+    ` : ''}
       </div>
         
       ${!this.readonly ? html`

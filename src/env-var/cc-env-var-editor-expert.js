@@ -5,6 +5,12 @@ import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 
+const SKELETON_VARIABLES = [
+  { name: 'VARIABLE_ONE', value: '' },
+  { name: 'VARIABLE_FOOBAR', value: '' },
+  { name: 'VARIABLE_PORT', value: '' },
+];
+
 /**
  * A high level environment variable editor to create/edit/delete all variables at once as a big string (properly parsed with validation and error messages).
  *
@@ -47,18 +53,10 @@ export class CcEnvVarEditorExpert extends LitElement {
     this.readonly = false;
   }
 
-  static get skeletonVariables () {
-    return [
-      { name: 'VARIABLE_ONE', value: '' },
-      { name: 'VARIABLE_FOOBAR', value: '' },
-      { name: 'VARIABLE_PORT', value: '' },
-    ];
-  }
-
   set variables (variables) {
 
     this._skeleton = (variables == null);
-    const vars = this._skeleton ? CcEnvVarEditorExpert.skeletonVariables : variables;
+    const vars = this._skeleton ? SKELETON_VARIABLES : variables;
 
     const filteredVariables = vars
       .filter(({ isDeleted }) => !isDeleted);

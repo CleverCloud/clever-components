@@ -14,6 +14,10 @@ import { skeleton } from '../styles/skeleton.js';
 const closeSvg = assetUrl(import.meta, '../assets/close.svg');
 const infoSvg = assetUrl(import.meta, '../assets/info.svg');
 
+const SKELETON_REQUESTS = Array
+  .from(new Array(24))
+  .map(() => [0, 0, 1]);
+
 /**
  * A "tile" component to display HTTP requests distribution over the last 24 hours in a bar chart.
  *
@@ -63,12 +67,6 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
     this._docs = false;
   }
 
-  static get skeletonRequests () {
-    return Array
-      .from(new Array(24))
-      .map(() => [0, 0, 1]);
-  }
-
   get data () {
     return this._data;
   }
@@ -103,9 +101,7 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
 
     this._skeleton = (this.data == null);
 
-    const data = this._skeleton
-      ? CcTileRequests.skeletonRequests
-      : this.data;
+    const data = this._skeleton ? SKELETON_REQUESTS : this.data;
 
     this._empty = (data.length === 0);
 

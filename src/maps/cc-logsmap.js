@@ -81,13 +81,6 @@ export class CcLogsMap extends LitElement {
     this.viewZoom = 2;
   }
 
-  static get modes () {
-    return [
-      { label: i18n('cc-logsmap.mode.points'), value: 'points' },
-      { label: i18n('cc-logsmap.mode.heatmap'), value: 'heatmap' },
-    ];
-  }
-
   /**
    * Add several points to the map for the live blinking dots mode.
    * @param {Point[]} points - List of points.
@@ -95,6 +88,13 @@ export class CcLogsMap extends LitElement {
    */
   addPoints (...params) {
     this.shadowRoot.querySelector('cc-map').addPoints(...params);
+  }
+
+  _getModes () {
+    return [
+      { label: i18n('cc-logsmap.mode.points'), value: 'points' },
+      { label: i18n('cc-logsmap.mode.heatmap'), value: 'heatmap' },
+    ];
   }
 
   _getLegend () {
@@ -111,7 +111,7 @@ export class CcLogsMap extends LitElement {
   render () {
     return html`
       <cc-toggle
-        .choices=${CcLogsMap.modes}
+        .choices=${this._getModes()}
         value=${this.mode}
         @cc-toggle:input=${this._onModeChange}
       ></cc-toggle>

@@ -37,6 +37,13 @@ const statusIcon = {
   stopped: stoppedSvg,
 };
 
+const SKELETON_APP = {
+  name: '??????????????????????????',
+  commit: '????????????????????????????????????????',
+};
+
+const SKELETON_STATUS = 'unknown';
+
 /**
  * A component to display various info about an app (name, commits, status...).
  *
@@ -105,17 +112,6 @@ export class CcHeaderApp extends LitElement {
 
   get status () {
     return this._status;
-  }
-
-  static get skeletonApp () {
-    return {
-      name: '??????????????????????????',
-      commit: '????????????????????????????????????????',
-    };
-  }
-
-  static get skeletonStatus () {
-    return 'unknown';
   }
 
   _getCommitTitle (type, commit) {
@@ -224,9 +220,9 @@ export class CcHeaderApp extends LitElement {
     }
 
     const skeleton = (this.app == null);
-    const { name, commit, variantName, variantLogo, lastDeploymentLogsUrl } = skeleton ? CcHeaderApp.skeletonApp : this.app;
+    const { name, commit, variantName, variantLogo, lastDeploymentLogsUrl } = skeleton ? SKELETON_APP : this.app;
     const skeletonStatus = (this.status == null);
-    const status = skeletonStatus ? CcHeaderApp.skeletonStatus : this.status;
+    const status = skeletonStatus ? SKELETON_STATUS : this.status;
 
     const isDeploying = ['restarting', 'restarting-with-downtime', 'starting'].includes(status);
     const isRunning = ['restart-failed', 'restarting', 'running'].includes(status);

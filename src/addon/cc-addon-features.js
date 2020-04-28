@@ -21,6 +21,13 @@ const featureIcons = {
 
 const SORT_FEATURES = ['cpus', 'vcpus', 'memory', 'disk'];
 
+const SKELETON_FEATURES = [
+  { name: '??????', value: '????????' },
+  { name: '????', value: '??' },
+  { name: '?????', value: '????' },
+  { name: '???????', value: '????????' },
+];
+
 /**
  * A component to display an add-on set of features.
  *
@@ -56,15 +63,6 @@ export class CcAddonFeatures extends LitElement {
   constructor () {
     super();
     this.error = false;
-  }
-
-  static get skeletonFeatures () {
-    return [
-      { name: '??????', value: '????????' },
-      { name: '????', value: '??' },
-      { name: '?????', value: '????' },
-      { name: '???????', value: '????????' },
-    ];
   }
 
   _getFeatureName (code, rawName) {
@@ -107,7 +105,7 @@ export class CcAddonFeatures extends LitElement {
   render () {
 
     const skeleton = (this.features == null);
-    const rawFeatures = skeleton ? CcAddonFeatures.skeletonFeatures : this.features;
+    const rawFeatures = skeleton ? SKELETON_FEATURES : this.features;
     const unsortedFeatures = rawFeatures.map((feature) => {
       const nameCode = feature.name.toLowerCase();
       const valueCode = feature.value.toLowerCase();

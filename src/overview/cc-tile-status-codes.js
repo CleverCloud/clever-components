@@ -19,6 +19,16 @@ function xor (a, b) {
   return Number(a) ^ Number(b);
 }
 
+const COLORS = {
+  1: '#bbb',
+  2: '#30ab61',
+  3: '#365bd3',
+  4: '#ff9f40',
+  5: '#cf3942',
+};
+
+const SKELETON_STATUS_CODES = { 200: 1 };
+
 /**
  * A "tile" component to display HTTP response status codes in a pie chart (donut).
  *
@@ -70,20 +80,6 @@ export class CcTileStatusCodes extends LitElement {
     this._docs = false;
   }
 
-  static get skeletonStatusCodes () {
-    return { 200: 1 };
-  }
-
-  static get COLORS () {
-    return {
-      1: '#bbb',
-      2: '#30ab61',
-      3: '#365bd3',
-      4: '#ff9f40',
-      5: '#cf3942',
-    };
-  }
-
   get statusCodes () {
     return this._statusCodes;
   }
@@ -92,9 +88,7 @@ export class CcTileStatusCodes extends LitElement {
 
     this._skeleton = (rawValue == null);
 
-    const value = this._skeleton
-      ? CcTileStatusCodes.skeletonStatusCodes
-      : rawValue;
+    const value = this._skeleton ? SKELETON_STATUS_CODES : rawValue;
 
     this._statusCodes = value;
 
@@ -112,7 +106,7 @@ export class CcTileStatusCodes extends LitElement {
 
     this._backgroundColor = this._skeleton
       ? this._labels.map(() => '#bbb')
-      : this._labels.map((statusCode) => CcTileStatusCodes.COLORS[statusCode[0]]);
+      : this._labels.map((statusCode) => COLORS[statusCode[0]]);
 
     this.updateComplete.then(() => {
       this._chart.options.animation.duration = this._skeleton ? 0 : 300;

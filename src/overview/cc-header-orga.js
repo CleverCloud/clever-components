@@ -11,6 +11,10 @@ import { skeleton } from '../styles/skeleton.js';
 const badgeSvg = assetUrl(import.meta, '../assets/badge-white.svg');
 const phoneSvg = assetUrl(import.meta, '../assets/phone.svg');
 
+const SKELETON_ORGA = {
+  name: '??????????????????????????',
+};
+
 /**
  * A component to display various info about an orga (name and enterprise status).
  *
@@ -46,16 +50,10 @@ export class CcHeaderOrga extends LitElement {
     this.error = false;
   }
 
-  static get skeletonOrga () {
-    return {
-      name: '??????????????????????????',
-    };
-  }
-
   render () {
 
     const skeleton = (this.orga == null);
-    const orga = skeleton ? CcHeaderOrga.skeletonOrga : this.orga;
+    const orga = skeleton ? SKELETON_ORGA : this.orga;
     const initials = skeleton ? '' : this.orga.name
       .split(' ')
       .slice(0, 2)

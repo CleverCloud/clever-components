@@ -3,8 +3,21 @@
 // DOCS: Always keep the ".js" at the end when you reference a file directly [error in ESLint].
 // DOCS: We enforce import order [fixed by ESLint].
 import { css, html, LitElement } from 'lit-element';
+import { assetUrl } from '../src/lib/asset-url.js';
+
+// DOCS: You may prepare URLs for assets like SVG files here:
+const warningSvg = assetUrl(import.meta, '../assets/warning.svg');
+const noRedirectionSvg = assetUrl(import.meta, '../assets/redirection-off.svg');
 
 // DOCS: You may setup/init some stuffs here but this should be rare and most of the setup should happen in the component.
+const MY_AWESOME_CONST = 'foobar';
+
+// DOCS: You may setup/init constant data used when component is in skeleton state.
+const SKELETON_FOOBAR = [
+  { foo: '???????' },
+  { foo: '????' },
+  { foo: '???????' },
+];
 
 /**
  * A component doing X and Y (one liner description of your component).
@@ -162,7 +175,7 @@ export class CcExampleComponent extends LitElement {
       // language=CSS
       css`
         :host {
-          /* You may use another display type but you need to define one. */ 
+          /* You may use another display type but you need to define one. */
           display: block;
         }
       `,

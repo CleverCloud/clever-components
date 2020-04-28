@@ -4,6 +4,11 @@ import './cc-tcp-redirection.js';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
 
+const SKELETON_REDIRECTIONS = [
+  { namespace: 'default', sourcePort: 1234 },
+  { namespace: 'cleverapps' },
+];
+
 /**
  * An interface to create / delete TCP redirections in the context of an application.
  *
@@ -42,13 +47,6 @@ export class CcTcpRedirectionForm extends LitElement {
     this.context = 'user';
   }
 
-  static get skeletonRedirections () {
-    return [
-      { namespace: 'default', sourcePort: 1234 },
-      { namespace: 'cleverapps' },
-    ];
-  }
-
   _getRedirectionCount () {
     if (this.context === 'admin' && this.redirections != null) {
       const howManyRedirections = this.redirections.filter(({ sourcePort }) => sourcePort != null).length;
@@ -61,7 +59,7 @@ export class CcTcpRedirectionForm extends LitElement {
 
   render () {
     const skeleton = (this.redirections == null);
-    const redirections = skeleton ? CcTcpRedirectionForm.skeletonRedirections : this.redirections;
+    const redirections = skeleton ? SKELETON_REDIRECTIONS : this.redirections;
     const blockState = (this.context === 'admin') ? 'close' : 'off';
 
     return html`

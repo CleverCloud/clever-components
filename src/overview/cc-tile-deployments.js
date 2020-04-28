@@ -7,6 +7,11 @@ import { tileStyles } from '../styles/info-tiles.js';
 import { skeleton } from '../styles/skeleton.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 
+const SKELETON_DEPLOYS = [
+  { state: '???????', date: '??????????' },
+  { state: '??????', date: '???????????' },
+];
+
 /**
  * A "tile" component to display a list of deployments (status, humanized time ago and logs link).
  *
@@ -42,13 +47,6 @@ export class CcTileDeployments extends LitElement {
     this.error = false;
   }
 
-  static get skeletonDeploys () {
-    return [
-      { state: '???????', date: '??????????' },
-      { state: '??????', date: '???????????' },
-    ];
-  }
-
   _getStateLabel (state, action) {
     if (state === 'OK') {
       return (action === 'UNDEPLOY')
@@ -67,7 +65,7 @@ export class CcTileDeployments extends LitElement {
   render () {
 
     const skeleton = (this.deployments == null);
-    const deployments = skeleton ? CcTileDeployments.skeletonDeploys : this.deployments;
+    const deployments = skeleton ? SKELETON_DEPLOYS : this.deployments;
     const hasData = (!this.error && (deployments.length > 0));
     const emptyData = (!this.error && (deployments.length === 0));
 
