@@ -6,7 +6,7 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { animate, QUICK_SHRINK } from '../lib/animate.js';
 import { assetUrl } from '../lib/asset-url.js';
 import { i18n } from '../lib/i18n.js';
-import { instanceDetails, tileStyles } from '../styles/info-tiles.js';
+import { instanceDetailsStyles, tileStyles } from '../styles/info-tiles.js';
 import { waitingStyles } from '../styles/waiting.js';
 
 const runningSvg = assetUrl(import.meta, '../assets/running.svg');
@@ -141,7 +141,7 @@ export class CcTileInstances extends LitElement {
   static get styles () {
     return [
       tileStyles,
-      instanceDetails,
+      instanceDetailsStyles,
       waitingStyles,
       // language=CSS
       css`

@@ -3,7 +3,7 @@ import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { i18n } from '../lib/i18n.js';
-import { instanceDetails, tileStyles } from '../styles/info-tiles.js';
+import { instanceDetailsStyles, tileStyles } from '../styles/info-tiles.js';
 import { skeleton } from '../styles/skeleton.js';
 
 const SKELETON_SCALABILITY = {
@@ -103,7 +103,7 @@ export class CcTileScalability extends LitElement {
   static get styles () {
     return [
       tileStyles,
-      instanceDetails,
+      instanceDetailsStyles,
       skeleton,
       // language=CSS
       css`

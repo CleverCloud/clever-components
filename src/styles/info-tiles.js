@@ -37,7 +37,7 @@ export const tileStyles = css`
 `;
 
 // language=CSS
-export const instanceDetails = css`
+export const instanceDetailsStyles = css`
   :host {
     --bubble-d: 1.5rem;
     --bubble-r: calc(var(--bubble-d) / 2);
