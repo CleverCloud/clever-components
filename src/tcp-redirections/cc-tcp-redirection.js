@@ -49,7 +49,7 @@ export class CcTcpRedirection extends LitElement {
       namespace: { type: String },
       private: { type: Boolean },
       skeleton: { type: Boolean },
-      sourcePort: { type: Number },
+      sourcePort: { type: Number, attribute: 'source-port' },
       waiting: { type: Boolean },
     };
   }
