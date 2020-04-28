@@ -128,13 +128,7 @@ export class CcAddonAdmin extends LitElement {
 
           <cc-block-section>
             <div slot="title" class="danger">${i18n('cc-addon-admin.danger-zone')}</div>
-            <div slot="info">
-              ${i18n('cc-addon-admin.delete-unavailable')}
-              <br>
-              ${i18n('cc-addon-admin.delete-24h-delay')}
-              <br>
-              ${i18n('cc-addon-admin.delete-keep-backups')}
-            </div>
+            <div slot="info">${i18n('cc-addon-admin.delete-description')}</div>
             <div>
               <cc-button danger ?skeleton=${this._skeleton} ?disabled=${isFormDisabled} @cc-button:click=${this._onDeleteSubmit}>${i18n('cc-addon-admin.delete')}</cc-button>
             </div>
