@@ -3,16 +3,9 @@ import '../../src/translations/translations.en.js';
 import '../../src/translations/translations.fr.js';
 // TRICK_END
 import { decorate } from '@storybook/addon-actions';
-import * as blockPreview from '@storybook/components/dist/blocks/Preview.js';
 import { sequence } from './sequence.js';
 
 // NOTE: Those dirty injects are work in progress
-
-// Force html in preview examples
-const oldPreview = blockPreview.Preview;
-blockPreview.Preview = (pppp) => {
-  return oldPreview({ ...pppp, language: 'html', isExpanded: false });
-};
 
 const customEvent = decorate([(args) => {
   return [JSON.stringify(args[0].detail)];
@@ -87,11 +80,8 @@ export function makeStory (...configs) {
           if (typeof value === 'string' || typeof value === 'number') {
             return `${name}=${JSON.stringify(String(value))}`;
           }
-          if (typeof value === 'object' && Array.isArray(value)) {
-            return `.${name}='${JSON.stringify(value)}'`;
-          }
           if (typeof value === 'object') {
-            return `.${name}='${JSON.stringify(value)}'`;
+            return `${name}='${JSON.stringify(value)}'`;
           }
         })
         .filter((a) => a != null);
