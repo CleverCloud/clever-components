@@ -26,7 +26,7 @@ export function setMarkdownDocs (component, md) {
 
 export function makeStory (...configs) {
 
-  const { name, docs, css, component, dom, items: rawItems = [{}], events = [], simulations = [] } = Object.assign({}, ...configs);
+  const { name, docs, css, component, dom, items: rawItems = [{}], simulations = [] } = Object.assign({}, ...configs);
 
   const items = (typeof rawItems === 'function')
     ? rawItems()
@@ -67,8 +67,10 @@ export function makeStory (...configs) {
       }
     });
 
-    events.forEach((e) => {
-      container.addEventListener(e, customEvent.action(e));
+    const customElementsJson = window.__STORYBOOK_CUSTOM_ELEMENTS__;
+    const { events = [] } = customElementsJson.tags.find((tag) => tag.name === component);
+    events.forEach(({ name: eventName }) => {
+      container.addEventListener(eventName, customEvent.action(eventName));
     });
 
     return container;

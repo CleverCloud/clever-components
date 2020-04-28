@@ -24,7 +24,6 @@ export default {
 
 const conf = {
   component: 'cc-env-var-editor-expert',
-  events: ['cc-env-var-editor-expert:change'],
 };
 
 export const defaultStory = makeStory(conf, {

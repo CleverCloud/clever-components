@@ -9,7 +9,6 @@ export default {
 
 const conf = {
   component: 'cc-env-var-input',
-  events: ['cc-env-var-input:input', 'cc-env-var-input:delete', 'cc-env-var-input:keep'],
 };
 
 export const defaultStory = makeStory(conf, {

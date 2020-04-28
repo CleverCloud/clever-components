@@ -27,12 +27,6 @@ const conf = {
       margin-bottom: 1rem;
     }
   `,
-  events: [
-    'cc-header-app:start',
-    'cc-header-app:restart',
-    'cc-header-app:cancel',
-    'cc-header-app:stop',
-  ],
 };
 
 export const defaultStory = makeStory(conf, {

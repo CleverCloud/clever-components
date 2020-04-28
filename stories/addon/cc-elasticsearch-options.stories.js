@@ -9,7 +9,6 @@ export default {
 
 const conf = {
   component: 'cc-elasticsearch-options',
-  events: ['cc-elasticsearch-options:submit'],
 };
 
 export const defaultStory = makeStory(conf, {

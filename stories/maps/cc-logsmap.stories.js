@@ -20,7 +20,6 @@ const conf = {
       vertical-align: bottom;
     }
   `,
-  events: ['cc-logsmap:mode'],
 };
 
 const spreadDuration = 5000;

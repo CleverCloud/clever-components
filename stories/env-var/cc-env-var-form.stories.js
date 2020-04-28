@@ -16,7 +16,6 @@ export default {
 
 const conf = {
   component: 'cc-env-var-form',
-  events: ['cc-env-var-form:submit', 'cc-env-var-form:dismissed-error', 'cc-env-var-form:restart-app'],
 };
 
 export const defaultStory = makeStory(conf, {

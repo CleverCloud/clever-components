@@ -9,7 +9,6 @@ export default {
 
 const conf = {
   component: 'cc-tcp-redirection',
-  events: ['cc-tcp-redirection:create', 'cc-tcp-redirection:delete'],
   css: 'cc-tcp-redirection { margin-bottom: 1rem; }',
 };
 

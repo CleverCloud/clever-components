@@ -19,7 +19,6 @@ const conf = {
       margin-bottom: 1rem;
     }
   `,
-  events: ['cc-error:ok'],
 };
 
 export const defaultStory = makeStory(conf, {

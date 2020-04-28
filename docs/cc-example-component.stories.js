@@ -13,8 +13,6 @@ export default {
 
 const conf = {
   component: 'cc-example-component',
-  // If your component emits events, list their names here so you can inspect them in Storybook's addons tab action.
-  events: ['cc-example-component:foo'],
   // You may need to add some CSS just for your stories.
   // It's often needed to add some margin around your component.
   // language=CSS

@@ -58,11 +58,6 @@ export default {
 
 const conf = {
   component: 'cc-input-text',
-  events: [
-    'cc-input-text:input',
-    'cc-input-text:tags',
-    'cc-input-text:requestimplicitsubmit',
-  ],
   css: `
     cc-input-text {
       margin: 0.5rem;

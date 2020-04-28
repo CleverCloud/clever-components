@@ -9,7 +9,6 @@ export default {
 
 const conf = {
   component: 'cc-addon-admin',
-  events: ['cc-addon-admin:update-name', 'cc-addon-admin:delete-addon', 'cc-addon-admin:update-tags'],
   css: `
     cc-addon-admin {
       margin-bottom: 1rem;

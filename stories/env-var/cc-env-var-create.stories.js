@@ -9,7 +9,6 @@ export default {
 
 const conf = {
   component: 'cc-env-var-create',
-  events: ['cc-env-var-create:create'],
 };
 
 export const defaultStory = makeStory(conf, {
