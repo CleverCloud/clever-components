@@ -7,7 +7,7 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { assetUrl } from '../lib/asset-url.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
-import { skeleton } from '../styles/skeleton.js';
+import { skeletonStyles } from '../styles/skeleton.js';
 import { waitingStyles } from '../styles/waiting.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 
@@ -310,7 +310,7 @@ export class CcHeaderApp extends LitElement {
 
   static get styles () {
     return [
-      skeleton,
+      skeletonStyles,
       linkStyles,
       waitingStyles,
       // language=CSS

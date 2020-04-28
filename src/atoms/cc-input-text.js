@@ -5,7 +5,7 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { assetUrl } from '../lib/asset-url.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
-import { skeleton } from '../styles/skeleton.js';
+import { skeletonStyles } from '../styles/skeleton.js';
 
 const clipboardSvg = assetUrl(import.meta, '../assets/clipboard.svg');
 const eyeClosedSvg = assetUrl(import.meta, '../assets/eye-closed.svg');
@@ -276,7 +276,7 @@ export class CcInputText extends LitElement {
 
   static get styles () {
     return [
-      skeleton,
+      skeletonStyles,
       // language=CSS
       css`
         :host {

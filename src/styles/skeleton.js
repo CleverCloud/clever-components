@@ -1,7 +1,7 @@
 import { css } from 'lit-element';
 
 // language=CSS
-export const skeleton = css`
+export const skeletonStyles = css`
 
   @keyframes skeleton-pulse {
     from {

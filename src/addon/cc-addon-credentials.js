@@ -5,7 +5,7 @@ import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { i18n } from '../lib/i18n.js';
-import { skeleton } from '../styles/skeleton.js';
+import { skeletonStyles } from '../styles/skeleton.js';
 
 /**
  * A component to display an add-on credentials.
@@ -110,7 +110,7 @@ export class CcAddonCredentials extends LitElement {
 
   static get styles () {
     return [
-      skeleton,
+      skeletonStyles,
       // language=CSS
       css`
         :host {

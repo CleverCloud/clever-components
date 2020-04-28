@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { skeleton } from '../styles/skeleton.js';
+import { skeletonStyles } from '../styles/skeleton.js';
 
 /**
  * A wrapper around `<img>` to add loader indicator, remove ugly borders and display proper placeholder text when there's an error.
@@ -73,7 +73,7 @@ export class CcImg extends LitElement {
 
   static get styles () {
     return [
-      skeleton,
+      skeletonStyles,
       // language=CSS
       css`
         :host {

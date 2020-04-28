@@ -3,7 +3,7 @@ import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { i18n } from '../lib/i18n.js';
 import { tileStyles } from '../styles/info-tiles.js';
-import { skeleton } from '../styles/skeleton.js';
+import { skeletonStyles } from '../styles/skeleton.js';
 
 const SKELETON_CONSUMPTION = {
   yesterday: 0.7,
@@ -75,7 +75,7 @@ export class CcTileConsumption extends LitElement {
   static get styles () {
     return [
       tileStyles,
-      skeleton,
+      skeletonStyles,
       // language=CSS
       css`
         .line {

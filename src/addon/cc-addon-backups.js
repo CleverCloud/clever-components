@@ -8,7 +8,7 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { assetUrl } from '../lib/asset-url.js';
 import { fakeString } from '../lib/fake-strings.js';
 import { i18n } from '../lib/i18n.js';
-import { skeleton } from '../styles/skeleton.js';
+import { skeletonStyles } from '../styles/skeleton.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 
 const backupSvg = assetUrl(import.meta, '../assets/backup.svg');
@@ -282,7 +282,7 @@ export class CcAddonBackups extends LitElement {
 
   static get styles () {
     return [
-      skeleton,
+      skeletonStyles,
       linkStyles,
       // language=CSS
       css`

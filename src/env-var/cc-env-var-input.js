@@ -5,7 +5,7 @@ import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
-import { skeleton } from '../styles/skeleton.js';
+import { skeletonStyles } from '../styles/skeleton.js';
 
 /**
  * A small input to manipulate an environement variable.
@@ -123,7 +123,7 @@ export class CcEnvVarInput extends LitElement {
 
   static get styles () {
     return [
-      skeleton,
+      skeletonStyles,
       // language=CSS
       css`
         :host {

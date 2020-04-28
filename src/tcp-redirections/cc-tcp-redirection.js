@@ -6,7 +6,7 @@ import { assetUrl } from '../lib/asset-url.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import '../atoms/cc-loader.js';
-import { skeleton } from '../styles/skeleton.js';
+import { skeletonStyles } from '../styles/skeleton.js';
 import { waitingStyles } from '../styles/waiting.js';
 
 const warningSvg = assetUrl(import.meta, '../assets/warning.svg');
@@ -159,7 +159,7 @@ export class CcTcpRedirection extends LitElement {
 
   static get styles () {
     return [
-      skeleton,
+      skeletonStyles,
       waitingStyles,
       // language=CSS
       css`

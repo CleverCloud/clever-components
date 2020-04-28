@@ -9,7 +9,7 @@ import { assetUrl } from '../lib/asset-url.js';
 import { i18n } from '../lib/i18n.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
 import { tileStyles } from '../styles/info-tiles.js';
-import { skeleton } from '../styles/skeleton.js';
+import { skeletonStyles } from '../styles/skeleton.js';
 
 const closeSvg = assetUrl(import.meta, '../assets/close.svg');
 const infoSvg = assetUrl(import.meta, '../assets/info.svg');
@@ -275,7 +275,7 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
   static get styles () {
     return [
       tileStyles,
-      skeleton,
+      skeletonStyles,
       // language=CSS
       css`
         .tile_title {

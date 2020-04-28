@@ -4,7 +4,7 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { i18n } from '../lib/i18n.js';
 import { instanceDetailsStyles, tileStyles } from '../styles/info-tiles.js';
-import { skeleton } from '../styles/skeleton.js';
+import { skeletonStyles } from '../styles/skeleton.js';
 
 const SKELETON_SCALABILITY = {
   minFlavor: { name: '??' },
@@ -104,7 +104,7 @@ export class CcTileScalability extends LitElement {
     return [
       tileStyles,
       instanceDetailsStyles,
-      skeleton,
+      skeletonStyles,
       // language=CSS
       css`
         .tile_body {

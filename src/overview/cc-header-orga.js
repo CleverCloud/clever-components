@@ -6,7 +6,7 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { assetUrl } from '../lib/asset-url.js';
 import { i18n } from '../lib/i18n.js';
-import { skeleton } from '../styles/skeleton.js';
+import { skeletonStyles } from '../styles/skeleton.js';
 
 const badgeSvg = assetUrl(import.meta, '../assets/badge-white.svg');
 const phoneSvg = assetUrl(import.meta, '../assets/phone.svg');
@@ -94,7 +94,7 @@ export class CcHeaderOrga extends LitElement {
 
   static get styles () {
     return [
-      skeleton,
+      skeletonStyles,
       // language=CSS
       css`
         :host {

@@ -9,7 +9,7 @@ import { STATUS_CODES } from 'statuses';
 import { assetUrl } from '../lib/asset-url.js';
 import { i18n } from '../lib/i18n.js';
 import { tileStyles } from '../styles/info-tiles.js';
-import { skeleton } from '../styles/skeleton.js';
+import { skeletonStyles } from '../styles/skeleton.js';
 import { linkStyles } from '../templates/cc-link.js';
 
 const closeSvg = assetUrl(import.meta, '../assets/close.svg');
@@ -239,7 +239,7 @@ export class CcTileStatusCodes extends LitElement {
   static get styles () {
     return [
       tileStyles,
-      skeleton,
+      skeletonStyles,
       linkStyles,
       // language=CSS
       css`
