@@ -47,6 +47,19 @@ export const dataLoaded = makeStory(conf, {
   ],
 });
 
+export const dataLoadedWithContextAdmin = makeStory(conf, {
+  items: [
+    {
+      redirections: [
+        { namespace: 'default', sourcePort: 5220 },
+        { namespace: 'cleverapps' },
+        { namespace: 'customer-name', sourcePort: 6440, private: true },
+      ],
+      context: 'admin',
+    },
+  ],
+});
+
 export const dataLoadedWithCreatingRedirection = makeStory(conf, {
   items: [
     {
@@ -190,6 +203,7 @@ enhanceStoriesNames({
   loading,
   loadingError,
   dataLoaded,
+  dataLoadedWithContextAdmin,
   dataLoadedWithCreatingRedirection,
   dataLoadedWithDeletingRedirection,
   dataLoadedWithErrorCreatingRedirection,
