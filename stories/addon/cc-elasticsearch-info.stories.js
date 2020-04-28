@@ -1,12 +1,10 @@
 import '../../src/addon/cc-elasticsearch-info.js';
-import notes from '../../.components-docs/cc-elasticsearch-info.md';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
   title: '🛠 Addon|<cc-elasticsearch-info>',
   component: 'cc-elasticsearch-info',
-  parameters: { notes },
 };
 
 const conf = {

@@ -3,6 +3,7 @@ import { addDecorator, addParameters, configure, setCustomElements } from '@stor
 import { i18nKnob } from '../stories/lib/i18n-knob.js';
 import { withA11y } from '@storybook/addon-a11y';
 import { withKnobs } from '@storybook/addon-knobs';
+import { setMarkdownDocs } from '../stories/lib/make-story.js';
 
 addDecorator(withKnobs);
 
@@ -67,13 +68,20 @@ setCustomElements(customElements);
 // We cannot use main.js (stories: []) yet because of the HMR config for web-components
 const csfStories = require.context('../stories', true, /\.stories\.(js|mdx)$/);
 const mdxDocsPages = require.context('../docs', true, /\.mdx$/);
+const markdownDocs = require.context('../.components-docs', false, /\.md$/);
+
+markdownDocs.keys().forEach((k) => {
+  const component = k.replace(/^\.\/(.*)\.md$/, '$1');
+  const md = markdownDocs(k).default;
+  setMarkdownDocs(component, md);
+});
 
 configure([csfStories, mdxDocsPages], module);
 
 // Force full reload instead of HMR for Web Components
 // https://github.com/storybookjs/storybook/tree/next/app/web-components
 if (module.hot) {
-  module.hot.accept([csfStories.id, mdxDocsPages.id], (...a) => {
+  module.hot.accept([csfStories.id, mdxDocsPages.id, markdownDocs.id], (...a) => {
     const currentLocationHref = window.location.href;
     window.history.pushState(null, null, currentLocationHref);
     window.location.reload();

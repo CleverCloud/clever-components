@@ -1,12 +1,10 @@
 import '../../src/env-var/cc-env-var-create.js';
-import notes from '../../.components-docs/cc-env-var-create.md';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
   title: '🛠 Environment variables|<cc-env-var-create>',
   component: 'cc-env-var-create',
-  parameters: { notes },
 };
 
 const conf = {

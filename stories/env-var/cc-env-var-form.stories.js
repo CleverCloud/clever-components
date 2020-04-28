@@ -1,5 +1,4 @@
 import '../../src/env-var/cc-env-var-form.js';
-import notes from '../../.components-docs/cc-env-var-form.md';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
@@ -13,7 +12,6 @@ const VARIABLES_FULL = [
 export default {
   title: '🛠 Environment variables|<cc-env-var-form>',
   component: 'cc-env-var-form',
-  parameters: { notes },
 };
 
 const conf = {

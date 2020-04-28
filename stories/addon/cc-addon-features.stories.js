@@ -1,5 +1,4 @@
 import '../../src/addon/cc-addon-features.js';
-import notes from '../../.components-docs/cc-addon-features.md';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
@@ -14,7 +13,6 @@ const defaultFeatures = [
 export default {
   title: '🛠 Addon|<cc-addon-features>',
   component: 'cc-addon-features',
-  parameters: { notes },
 };
 
 const conf = {

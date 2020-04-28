@@ -1,12 +1,10 @@
 import '../../src/atoms/cc-img.js';
-import notes from '../../.components-docs/cc-img.md';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
   title: '🧬 Atoms|<cc-img>',
   component: 'cc-img',
-  parameters: { notes },
 };
 
 const conf = {

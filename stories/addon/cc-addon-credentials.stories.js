@@ -1,5 +1,4 @@
 import '../../src/addon/cc-addon-credentials.js';
-import notes from '../../.components-docs/cc-addon-credentials.md';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
@@ -14,7 +13,6 @@ const credentialsSkeleton = credentials.map((p) => ({ ...p, value: null }));
 export default {
   title: '🛠 Addon|<cc-addon-credentials>',
   component: 'cc-addon-credentials',
-  parameters: { notes },
 };
 
 const conf = {

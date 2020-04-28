@@ -1,12 +1,10 @@
 import '../../src/tcp-redirections/cc-tcp-redirection.js';
-import notes from '../../.components-docs/cc-tcp-redirection.md';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
   title: '🛠 TCP Redirections|<cc-tcp-redirection>',
   component: 'cc-tcp-redirection',
-  parameters: { notes },
 };
 
 const conf = {

@@ -1,5 +1,4 @@
 import '../../src/overview/cc-header-orga.js';
-import notes from '../../.components-docs/cc-header-orga.md';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
@@ -10,7 +9,6 @@ function orga (name, avatar, cleverEnterprise, emergencyNumber) {
 export default {
   title: '🛠 Overview|<cc-header-orga>',
   component: 'cc-header-orga',
-  parameters: { notes },
 };
 
 const conf = {

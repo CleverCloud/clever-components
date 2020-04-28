@@ -1,8 +1,5 @@
 // Don't forget to import the component you're presenting!
 import './cc-example-component.js';
-// This markdown file contains generated documentation extracted from your component's JSDoc.
-// Run `npm run components:docs` to generate this markdown file.
-import notes from '../../.components-docs/cc-example-component.md';
 import { makeStory, storyWait } from '../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../stories/lib/story-names.js';
 
@@ -12,7 +9,6 @@ export default {
   // It will use `custom-elements.json` documentation file.
   // Run `npm run components:docs-json` to generate this JSON file.
   component: 'cc-example-component',
-  parameters: { notes },
 };
 
 const conf = {

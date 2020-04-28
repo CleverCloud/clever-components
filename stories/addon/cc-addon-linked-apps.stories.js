@@ -1,5 +1,4 @@
 import '../../src/addon/cc-addon-linked-apps.js';
-import notes from '../../.components-docs/cc-addon-linked-apps.md';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
@@ -49,7 +48,6 @@ const applications = [
 export default {
   title: '🛠 Addon|<cc-addon-linked-apps>',
   component: 'cc-addon-linked-apps',
-  parameters: { notes },
 };
 
 const conf = {

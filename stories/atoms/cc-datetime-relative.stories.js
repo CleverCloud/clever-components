@@ -1,5 +1,4 @@
 import '../../src/atoms/cc-datetime-relative.js';
-import notes from '../../.components-docs/cc-datetime-relative.md';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
@@ -22,7 +21,6 @@ const STEPS = [1, 5, 10, 20, 30, 45];
 export default {
   title: '🧬 Atoms|<cc-datetime-relative>',
   component: 'cc-datetime-relative',
-  parameters: { notes },
   excludeStories: ['createDateAgo'],
 };
 

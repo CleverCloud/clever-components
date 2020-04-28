@@ -1,12 +1,10 @@
 import '../../src/atoms/cc-toggle.js';
-import notes from '../../.components-docs/cc-toggle.md';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
   title: '🧬 Atoms|<cc-toggle>',
   component: 'cc-toggle',
-  parameters: { notes },
 };
 
 const conf = {

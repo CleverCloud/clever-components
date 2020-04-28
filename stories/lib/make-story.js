@@ -18,6 +18,12 @@ const customEvent = decorate([(args) => {
   return [JSON.stringify(args[0].detail)];
 }]);
 
+const markdownDocs = {};
+
+export function setMarkdownDocs (component, md) {
+  markdownDocs[component] = md;
+}
+
 export function makeStory (...configs) {
 
   const { name, docs, css, component, dom, items: rawItems = [{}], events = [], simulations = [] } = Object.assign({}, ...configs);
@@ -108,6 +114,24 @@ export function makeStory (...configs) {
     ? domSource()
     : generatedSource();
 
+  let notes;
+  if (component != null && markdownDocs[component] != null) {
+    notes = markdownDocs[component];
+  }
+  else {
+    notes = `
+# ${component}
+
+No markdown documentation could be found for this component.
+
+Don't forget to run:
+      
+\`\`\`bash
+npm run components:docs
+\`\`\`
+`.trim();
+  }
+
   storyFn.story = {
     docs,
     css,
@@ -117,6 +141,7 @@ export function makeStory (...configs) {
       docs: {
         storyDescription: (docs || '').trim(),
       },
+      notes,
       // Dirty way to ovveride the contnet of the "show code" block
       mdxSource,
     },

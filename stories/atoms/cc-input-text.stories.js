@@ -1,5 +1,4 @@
 import '../../src/atoms/cc-input-text.js';
-import notes from '../../.components-docs/cc-input-text.md';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
@@ -55,7 +54,6 @@ const tagsItems = [
 export default {
   title: '🧬 Atoms|<cc-input-text>',
   component: 'cc-input-text',
-  parameters: { notes },
 };
 
 const conf = {

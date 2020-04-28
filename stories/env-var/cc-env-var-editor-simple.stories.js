@@ -1,5 +1,4 @@
 import '../../src/env-var/cc-env-var-editor-simple.js';
-import notes from '../../.components-docs/cc-env-var-editor-simple.md';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
@@ -21,7 +20,6 @@ const VARIABLES_SIMPLE = [
 export default {
   title: '🛠 Environment variables|<cc-env-var-editor-simple>',
   component: 'cc-env-var-editor-simple',
-  parameters: { notes },
 };
 
 const conf = {

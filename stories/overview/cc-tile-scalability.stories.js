@@ -1,5 +1,4 @@
 import '../../src/overview/cc-tile-scalability.js';
-import notes from '../../.components-docs/cc-tile-scalability.md';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
@@ -29,7 +28,6 @@ function scalability (minFlavor, maxFlavor, minInstances, maxInstances) {
 export default {
   title: '🛠 Overview|<cc-tile-scalability>',
   component: 'cc-tile-scalability',
-  parameters: { notes },
 };
 
 const conf = {

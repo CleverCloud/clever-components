@@ -1,5 +1,4 @@
 import '../../src/overview/cc-header-app.js';
-import notes from '../../.components-docs/cc-header-app.md';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
@@ -19,7 +18,6 @@ function app (variantName, variantLogoName, commit = COMMIT_ONE) {
 export default {
   title: '🛠 Overview|<cc-header-app>',
   component: 'cc-header-app',
-  parameters: { notes },
 };
 
 const conf = {

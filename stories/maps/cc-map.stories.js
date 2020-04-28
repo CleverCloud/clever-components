@@ -1,5 +1,4 @@
 import '../../src/maps/cc-map.js';
-import notes from '../../.components-docs/cc-map.md';
 import fakeHeatmapData from '../assets/24-hours-points.json';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
@@ -12,7 +11,6 @@ const delay = spreadDuration + 2000;
 export default {
   title: '🛠 Maps|<cc-map>',
   component: 'cc-map',
-  parameters: { notes },
 };
 
 const conf = {

@@ -1,5 +1,4 @@
 import '../../src/addon/cc-header-addon.js';
-import notes from '../../.components-docs/cc-header-addon.md';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
@@ -21,7 +20,6 @@ const version = '11.2';
 export default {
   title: '🛠 Addon|<cc-header-addon>',
   component: 'cc-header-addon',
-  parameters: { notes },
 };
 
 const conf = {

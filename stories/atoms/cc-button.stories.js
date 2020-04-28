@@ -1,5 +1,4 @@
 import '../../src/atoms/cc-button.js';
-import notes from '../../.components-docs/cc-button.md';
 import closeSvg from '../../src/assets/close.svg';
 import infoSvg from '../../src/assets/info.svg';
 import { makeStory, storyWait } from '../lib/make-story.js';
@@ -17,7 +16,6 @@ const baseItems = [
 export default {
   title: '🧬 Atoms|<cc-button>',
   component: 'cc-button',
-  parameters: { notes },
 };
 
 const conf = {

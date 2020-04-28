@@ -1,5 +1,4 @@
 import '../../src/overview/cc-tile-requests.js';
-import notes from '../../.components-docs/cc-tile-requests.md';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
@@ -59,7 +58,6 @@ const baseItems = [
 export default {
   title: '🛠 Overview|<cc-tile-requests>',
   component: 'cc-tile-requests',
-  parameters: { notes },
 };
 
 const conf = {

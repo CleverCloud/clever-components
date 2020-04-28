@@ -1,5 +1,4 @@
 import '../../src/molecules/cc-error.js';
-import notes from '../../.components-docs/cc-error.md';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
@@ -11,7 +10,6 @@ const baseItems = [
 export default {
   title: '🧬 Molecules|<cc-error>',
   component: 'cc-error',
-  parameters: { notes },
 };
 
 const conf = {

@@ -2,14 +2,12 @@ import '../../src/atoms/cc-button.js';
 import '../../src/atoms/cc-input-text.js';
 import '../../src/atoms/cc-loader.js';
 import '../../src/molecules/cc-block.js';
-import notes from '../../.components-docs/cc-block.md';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
   title: '🧬 Molecules|<cc-block>',
   component: 'cc-block',
-  parameters: { notes },
 };
 
 const htmlExample = `

@@ -1,5 +1,4 @@
 import '../../src/overview/cc-tile-deployments.js';
-import notes from '../../.components-docs/cc-tile-deployments.md';
 import { createDateAgo } from '../atoms/cc-datetime-relative.stories.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
@@ -16,7 +15,6 @@ function deployment (state, action, dateAgoParams, uuid) {
 export default {
   title: '🛠 Overview|<cc-tile-deployments>',
   component: 'cc-tile-deployments',
-  parameters: { notes },
 };
 
 const conf = {

@@ -1,5 +1,4 @@
 import '../../src/overview/cc-overview.js';
-import notes from '../../.components-docs/cc-overview.md';
 import { withMap as betaWithMap, withTiles as betaWithTiles } from '../atoms/cc-beta.stories.js';
 import { createStoryItem, makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
@@ -16,7 +15,6 @@ import { defaultStory as statusCodes } from './cc-tile-status-codes.stories.js';
 export default {
   title: '🛠 Overview|<cc-overview>',
   component: 'cc-overview',
-  parameters: { notes },
 };
 
 const conf = {

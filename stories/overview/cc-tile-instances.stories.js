@@ -1,12 +1,10 @@
 import '../../src/overview/cc-tile-instances.js';
-import notes from '../../.components-docs/cc-tile-instances.md';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
   title: '🛠 Overview|<cc-tile-instances>',
   component: 'cc-tile-instances',
-  parameters: { notes },
 };
 
 const conf = {

@@ -1,12 +1,10 @@
 import '../../src/env-var/cc-env-var-input.js';
-import notes from '../../.components-docs/cc-env-var-input.md';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
   title: '🛠 Environment variables|<cc-env-var-input>',
   component: 'cc-env-var-input',
-  parameters: { notes },
 };
 
 const conf = {

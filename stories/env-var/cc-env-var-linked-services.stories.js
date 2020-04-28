@@ -1,5 +1,4 @@
 import '../../src/env-var/cc-env-var-linked-services.js';
-import notes from '../../.components-docs/cc-env-var-linked-services.md';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
@@ -13,7 +12,6 @@ const VARIABLES_FULL = [
 export default {
   title: '🛠 Environment variables|<cc-env-var-linked-services>',
   component: 'cc-env-var-linked-services',
-  parameters: { notes },
 };
 
 const conf = {
