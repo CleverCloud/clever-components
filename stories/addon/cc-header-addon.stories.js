@@ -18,7 +18,7 @@ const addon = {
 const version = '11.2';
 
 export default {
-  title: '🛠 Addon|<cc-header-addon>',
+  title: '🛠 Addon/<cc-header-addon>',
   component: 'cc-header-addon',
 };
 

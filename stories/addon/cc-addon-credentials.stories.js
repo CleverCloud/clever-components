@@ -11,7 +11,7 @@ const credentials = [
 const credentialsSkeleton = credentials.map((p) => ({ ...p, value: null }));
 
 export default {
-  title: '🛠 Addon|<cc-addon-credentials>',
+  title: '🛠 Addon/<cc-addon-credentials>',
   component: 'cc-addon-credentials',
 };
 

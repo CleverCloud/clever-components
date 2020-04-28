@@ -36,6 +36,7 @@ const EMOJI_SORT = ['📌', '🧬', '🛠', '🔀', '♻️'];
 
 addParameters({
   options: {
+    showRoots: true,
     storySort: (a, b) => {
       if (a[1].kind !== b[1].kind) {
         const aEmojiKind = EMOJI_SORT.indexOf(a[1].kind.slice(0, 2)) + a[1].kind;

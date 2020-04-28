@@ -14,7 +14,7 @@ const baseItems = [
 ];
 
 export default {
-  title: '🧬 Atoms|<cc-button>',
+  title: '🧬 Atoms/<cc-button>',
   component: 'cc-button',
 };
 

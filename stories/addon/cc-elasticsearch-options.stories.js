@@ -3,7 +3,7 @@ import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
-  title: '🛠 Addon|<cc-elasticsearch-options>',
+  title: '🛠 Addon/<cc-elasticsearch-options>',
   component: 'cc-elasticsearch-options',
 };
 

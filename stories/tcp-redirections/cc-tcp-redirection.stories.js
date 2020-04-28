@@ -3,7 +3,7 @@ import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
-  title: '🛠 TCP Redirections|<cc-tcp-redirection>',
+  title: '🛠 TCP Redirections/<cc-tcp-redirection>',
   component: 'cc-tcp-redirection',
 };
 

@@ -8,7 +8,7 @@ const baseItems = [
 ];
 
 export default {
-  title: '🧬 Molecules|<cc-error>',
+  title: '🧬 Molecules/<cc-error>',
   component: 'cc-error',
 };
 

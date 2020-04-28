@@ -3,7 +3,7 @@ import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
-  title: '🛠 Environment variables|<cc-env-var-input>',
+  title: '🛠 Environment variables/<cc-env-var-input>',
   component: 'cc-env-var-input',
 };
 

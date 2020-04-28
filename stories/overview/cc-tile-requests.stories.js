@@ -56,7 +56,7 @@ const baseItems = [
 ];
 
 export default {
-  title: '🛠 Overview|<cc-tile-requests>',
+  title: '🛠 Overview/<cc-tile-requests>',
   component: 'cc-tile-requests',
 };
 

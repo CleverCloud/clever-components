@@ -7,7 +7,7 @@ function orga (name, avatar, cleverEnterprise, emergencyNumber) {
 }
 
 export default {
-  title: '🛠 Overview|<cc-header-orga>',
+  title: '🛠 Overview/<cc-header-orga>',
   component: 'cc-header-orga',
 };
 

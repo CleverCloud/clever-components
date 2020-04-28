@@ -10,7 +10,7 @@ const VARIABLES_FULL = [
 ];
 
 export default {
-  title: '🛠 Environment variables|<cc-env-var-linked-services>',
+  title: '🛠 Environment variables/<cc-env-var-linked-services>',
   component: 'cc-env-var-linked-services',
 };
 

@@ -6,7 +6,7 @@ import { setIntervalDom, setTimeoutDom } from '../lib/timers.js';
 import { getFakePointsData } from './fake-map-data.js';
 
 export default {
-  title: '🛠 Maps|<cc-logsmap>',
+  title: '🛠 Maps/<cc-logsmap>',
   component: 'cc-logsmap',
 };
 

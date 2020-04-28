@@ -26,7 +26,7 @@ function scalability (minFlavor, maxFlavor, minInstances, maxInstances) {
 }
 
 export default {
-  title: '🛠 Overview|<cc-tile-scalability>',
+  title: '🛠 Overview/<cc-tile-scalability>',
   component: 'cc-tile-scalability',
 };
 

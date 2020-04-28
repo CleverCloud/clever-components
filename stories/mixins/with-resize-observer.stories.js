@@ -42,7 +42,7 @@ class WithLit extends withResizeObserver(LitElement) {
 window.customElements.define('lit-element', WithLit);
 
 export default {
-  title: '🔀 Mixins|withResizeObserver()',
+  title: '🔀 Mixins/withResizeObserver()',
   parameters: { docs: { page: docsPage } },
 };
 

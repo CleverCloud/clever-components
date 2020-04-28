@@ -85,7 +85,7 @@ const backupsOldElasticsearch = {
 };
 
 export default {
-  title: '🛠 Addon|<cc-addon-backups>',
+  title: '🛠 Addon/<cc-addon-backups>',
   component: 'cc-addon-backups',
 };
 

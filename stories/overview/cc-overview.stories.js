@@ -13,7 +13,7 @@ import { defaultStory as scalability } from './cc-tile-scalability.stories.js';
 import { defaultStory as statusCodes } from './cc-tile-status-codes.stories.js';
 
 export default {
-  title: '🛠 Overview|<cc-overview>',
+  title: '🛠 Overview/<cc-overview>',
   component: 'cc-overview',
 };
 

@@ -11,7 +11,7 @@ const defaultFeatures = [
 ];
 
 export default {
-  title: '🛠 Addon|<cc-addon-features>',
+  title: '🛠 Addon/<cc-addon-features>',
   component: 'cc-addon-features',
 };
 

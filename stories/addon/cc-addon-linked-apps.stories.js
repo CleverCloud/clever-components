@@ -46,7 +46,7 @@ const applications = [
 ];
 
 export default {
-  title: '🛠 Addon|<cc-addon-linked-apps>',
+  title: '🛠 Addon/<cc-addon-linked-apps>',
   component: 'cc-addon-linked-apps',
 };
 

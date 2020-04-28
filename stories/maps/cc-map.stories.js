@@ -9,7 +9,7 @@ const spreadDuration = 5000;
 const delay = spreadDuration + 2000;
 
 export default {
-  title: '🛠 Maps|<cc-map>',
+  title: '🛠 Maps/<cc-map>',
   component: 'cc-map',
 };
 

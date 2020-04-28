@@ -3,7 +3,7 @@ import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
-  title: '🛠 Overview|<cc-tile-instances>',
+  title: '🛠 Overview/<cc-tile-instances>',
   component: 'cc-tile-instances',
 };
 

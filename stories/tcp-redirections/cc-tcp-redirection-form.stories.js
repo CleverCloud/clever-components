@@ -3,7 +3,7 @@ import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
-  title: '🛠 TCP Redirections|<cc-tcp-redirection-form>',
+  title: '🛠 TCP Redirections/<cc-tcp-redirection-form>',
   component: 'cc-tcp-redirection-form',
 };
 

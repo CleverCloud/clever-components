@@ -10,7 +10,7 @@ const VARIABLES_FULL = [
 ];
 
 export default {
-  title: '🛠 Environment variables|<cc-env-var-form>',
+  title: '🛠 Environment variables/<cc-env-var-form>',
   component: 'cc-env-var-form',
 };
 

@@ -18,7 +18,7 @@ const VARIABLES_SIMPLE = [
 ];
 
 export default {
-  title: '🛠 Environment variables|<cc-env-var-editor-expert>',
+  title: '🛠 Environment variables/<cc-env-var-editor-expert>',
   component: 'cc-env-var-editor-expert',
 };
 

@@ -9,5 +9,4 @@ const cleverTheme = create({
 
 addons.setConfig({
   theme: cleverTheme,
-  showRoots: false,
 });

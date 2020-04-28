@@ -6,7 +6,7 @@ import { defaultStory as requests } from '../overview/cc-tile-requests.stories.j
 import { defaultStory as statusCodes } from '../overview/cc-tile-status-codes.stories.js';
 
 export default {
-  title: '🧬 Atoms|<cc-beta>',
+  title: '🧬 Atoms/<cc-beta>',
   component: 'cc-beta',
 };
 

@@ -13,7 +13,7 @@ function deployment (state, action, dateAgoParams, uuid) {
 }
 
 export default {
-  title: '🛠 Overview|<cc-tile-deployments>',
+  title: '🛠 Overview/<cc-tile-deployments>',
   component: 'cc-tile-deployments',
 };
 

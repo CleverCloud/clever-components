@@ -6,7 +6,7 @@ import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
-  title: '🧬 Molecules|<cc-block>',
+  title: '🧬 Molecules/<cc-block>',
   component: 'cc-block',
 };
 

@@ -5,7 +5,7 @@ import { makeStory } from '../lib/make-story.js';
 import docsPage from './cc-link.mdx';
 
 export default {
-  title: '♻️ Templates|ccLink()',
+  title: '♻️ Templates/ccLink()',
   parameters: { docs: { page: docsPage } },
 };
 

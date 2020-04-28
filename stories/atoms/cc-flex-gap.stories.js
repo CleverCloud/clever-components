@@ -3,7 +3,7 @@ import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
-  title: '🧬 Atoms|<cc-flex-gap>',
+  title: '🧬 Atoms/<cc-flex-gap>',
   component: 'cc-flex-gap',
 };
 

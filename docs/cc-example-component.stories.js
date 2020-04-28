@@ -4,7 +4,7 @@ import { makeStory, storyWait } from '../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../stories/lib/story-names.js';
 
 export default {
-  title: '🛠 Example section|<cc-example-component>',
+  title: '🛠 Example section/<cc-example-component>',
   // This component name is used by Storybook's docs page for the API table.
   // It will use `custom-elements.json` documentation file.
   // Run `npm run components:docs-json` to generate this JSON file.

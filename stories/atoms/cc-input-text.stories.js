@@ -52,7 +52,7 @@ const tagsItems = [
 ];
 
 export default {
-  title: '🧬 Atoms|<cc-input-text>',
+  title: '🧬 Atoms/<cc-input-text>',
   component: 'cc-input-text',
 };
 
