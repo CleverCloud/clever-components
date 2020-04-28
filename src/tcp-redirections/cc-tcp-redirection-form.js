@@ -49,6 +49,16 @@ export class CcTcpRedirectionForm extends LitElement {
     ];
   }
 
+  _getRedirectionCount () {
+    if (this.context === 'admin' && this.redirections != null) {
+      const howManyRedirections = this.redirections.filter(({ sourcePort }) => sourcePort != null).length;
+      if (howManyRedirections >= 1) {
+        return html`<span class="count">${howManyRedirections}</span>`;
+      }
+    }
+    return '';
+  }
+
   render () {
     const skeleton = (this.redirections == null);
     const redirections = skeleton ? CcTcpRedirectionForm.skeletonRedirections : this.redirections;
@@ -56,7 +66,7 @@ export class CcTcpRedirectionForm extends LitElement {
 
     return html`
       <cc-block state="${blockState}">
-        <div slot="title">${i18n('cc-tcp-redirection-form.title')}</div>
+        <div slot="title">${i18n('cc-tcp-redirection-form.title')}${this._getRedirectionCount()}</div>
         ${this.context === 'user' ? html`
           <div class="description">${i18n('cc-tcp-redirection-form.description')}</div>
         ` : ''}
@@ -88,6 +98,16 @@ export class CcTcpRedirectionForm extends LitElement {
       css`
         :host {
           display: block;
+        }
+
+        .count {
+          background-color: #3a3871;
+          border-radius: 10rem;
+          color: #fff;
+          font-size: 0.8rem;
+          margin-left: 0.5rem;
+          padding: 0.1rem 0.5rem;
+          vertical-align: middle;
         }
 
         .description {
