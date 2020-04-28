@@ -19,6 +19,7 @@ import { i18n } from '../lib/i18n.js';
  * }
  * ```
  *
+ * @prop {"user"|"admin"} context - Defines in which context the form is used so it can show the appropriate description or lack thereof (defaults to user).
  * @prop {Boolean} error - Sets a loading error state.
  * @prop {Redirection[]} redirections - Sets the list of redirections.
  *
@@ -29,6 +30,7 @@ export class CcTcpRedirectionForm extends LitElement {
 
   static get properties () {
     return {
+      context: { type: String },
       error: { type: Boolean },
       redirections: { type: Array },
     };
@@ -37,6 +39,7 @@ export class CcTcpRedirectionForm extends LitElement {
   constructor () {
     super();
     this.error = false;
+    this.context = 'user';
   }
 
   static get skeletonRedirections () {
@@ -53,7 +56,9 @@ export class CcTcpRedirectionForm extends LitElement {
     return html`
       <cc-block>
         <div slot="title">${i18n('cc-tcp-redirection-form.title')}</div>
-        <div class="description">${i18n('cc-tcp-redirection-form.description')}</div>
+        ${this.context === 'user' ? html`
+          <div class="description">${i18n('cc-tcp-redirection-form.description')}</div>
+        ` : ''}
         ${!this.error && redirections.length > 0 ? html`
           ${redirections.map((redirection) => html`
             <cc-tcp-redirection
