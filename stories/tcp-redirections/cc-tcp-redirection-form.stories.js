@@ -48,12 +48,27 @@ export const dataLoaded = makeStory(conf, {
 });
 
 export const dataLoadedWithContextAdmin = makeStory(conf, {
+  docs: 'When `context="admin"` is used, the component description is hidden, the block is collapsed and a redirection counter bubble is be displayed.',
   items: [
     {
       redirections: [
         { namespace: 'default', sourcePort: 5220 },
         { namespace: 'cleverapps' },
         { namespace: 'customer-name', sourcePort: 6440, private: true },
+      ],
+      context: 'admin',
+    },
+  ],
+});
+
+export const dataLoadedWithContextAdminAndNoRedirections = makeStory(conf, {
+  docs: 'When `context="admin"` is used, the counter bubble is not displayed if there is no redirection.',
+  items: [
+    {
+      redirections: [
+        { namespace: 'default' },
+        { namespace: 'cleverapps' },
+        { namespace: 'customer-name', private: true },
       ],
       context: 'admin',
     },
@@ -204,6 +219,7 @@ enhanceStoriesNames({
   loadingError,
   dataLoaded,
   dataLoadedWithContextAdmin,
+  dataLoadedWithContextAdminAndNoRedirections,
   dataLoadedWithCreatingRedirection,
   dataLoadedWithDeletingRedirection,
   dataLoadedWithErrorCreatingRedirection,
