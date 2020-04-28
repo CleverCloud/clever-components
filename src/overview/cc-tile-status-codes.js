@@ -5,7 +5,7 @@ import { css, html, LitElement } from 'lit-element';
 import { cache } from 'lit-html/directives/cache.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { STATUS_CODES } from 'statuses';
+import status from 'statuses';
 import { assetUrl } from '../lib/asset-url.js';
 import { i18n } from '../lib/i18n.js';
 import { tileStyles } from '../styles/info-tiles.js';
@@ -217,7 +217,7 @@ export class CcTileStatusCodes extends LitElement {
             // Add official english title of the HTTP status code
             title: (tooltipItem, data) => {
               const statusCode = this._labels[tooltipItem[0].index];
-              return `HTTP ${statusCode}: ${STATUS_CODES[statusCode]}`;
+              return `HTTP ${statusCode}: ${status.message[statusCode]}`;
             },
             // Display number of requests and percentage
             label: (tooltipItem, data) => {
