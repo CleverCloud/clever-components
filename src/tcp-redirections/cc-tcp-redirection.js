@@ -192,7 +192,7 @@ export class CcTcpRedirection extends LitElement {
         }
 
         .text-wrapper {
-          flex: 1 1 17rem;
+          flex: 1 1 30rem;
           line-height: 1.6rem;
         }
 
