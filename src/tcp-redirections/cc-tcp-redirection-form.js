@@ -52,9 +52,10 @@ export class CcTcpRedirectionForm extends LitElement {
   render () {
     const skeleton = (this.redirections == null);
     const redirections = skeleton ? CcTcpRedirectionForm.skeletonRedirections : this.redirections;
+    const blockState = (this.context === 'admin') ? 'close' : 'off';
 
     return html`
-      <cc-block>
+      <cc-block state="${blockState}">
         <div slot="title">${i18n('cc-tcp-redirection-form.title')}</div>
         ${this.context === 'user' ? html`
           <div class="description">${i18n('cc-tcp-redirection-form.description')}</div>
