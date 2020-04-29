@@ -123,6 +123,7 @@ export class CcBlock extends LitElement {
         }
 
         cc-img {
+          align-self: flex-start;
           border-radius: 0.25rem;
           margin-right: 1rem;
           height: 1.5rem;
