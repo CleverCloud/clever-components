@@ -341,7 +341,7 @@ export class CcInputText extends LitElement {
           overflow: hidden;
           z-index: 2;
         }
-        
+
         textarea:not([wrap]) {
           white-space: pre;
         }
@@ -390,6 +390,7 @@ export class CcInputText extends LitElement {
 
         /* We use this empty .ring element to decorate the input with background, border, box-shadows... */
         .ring {
+          background: #fff;
           border: 1px solid #aaa;
           border-radius: 0.25rem;
           bottom: 0;
