@@ -186,13 +186,14 @@ export class CcInputText extends LitElement {
 
   render () {
 
-    const rows = (this.value || '').split('\n').length;
+    const value = this.value || '';
+    const rows = value.split('\n').length;
     const clipboard = (this.clipboard && !this.disabled && !this.skeleton);
     // NOTE: For now, we don't support secret when multi is activated
     const secret = (this.secret && !this.multi && !this.disabled && !this.skeleton);
     const isTextarea = (this.multi || this._tagsEnabled);
 
-    const tags = this.value
+    const tags = value
       .split(TAG_SEPARATOR)
       .map((tag, i, all) => html`<span class="tag">${tag}</span>${i !== (all.length - 1) ? TAG_SEPARATOR : ''}`);
 
@@ -223,7 +224,7 @@ export class CcInputText extends LitElement {
               rows=${rows}
               ?disabled=${this.disabled || this.skeleton}
               ?readonly=${this.readonly}
-              .value=${this.value}
+              .value=${value}
               name=${this.name}
               placeholder=${this.placeholder}
               spellcheck="false"
@@ -239,7 +240,7 @@ export class CcInputText extends LitElement {
                 this way we can use it to know what width the content is
                 and "auto size" the container.
               -->
-              <div class="input input-mirror">${this.value}</div>
+              <div class="input input-mirror">${value}</div>
             ` : ''}
             <input
               id=${this._uniqueName}
@@ -247,7 +248,7 @@ export class CcInputText extends LitElement {
               class="input"
               ?disabled=${this.disabled || this.skeleton} 
               ?readonly=${this.readonly}
-              .value=${this.value}
+              .value=${value}
               name=${this.name}
               placeholder=${this.placeholder}
               spellcheck="false"
