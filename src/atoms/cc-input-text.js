@@ -383,7 +383,7 @@ export class CcInputText extends LitElement {
         .input-underlayer .tag:not(:empty) {
           --color: rgba(50, 50, 255, 0.15);
           background-color: var(--color);
-          border-radius: 4px;
+          border-radius: 3px;
           box-shadow: 0 0 0 2px var(--color);
           padding: 1px 0;
         }
