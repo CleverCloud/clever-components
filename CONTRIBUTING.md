@@ -75,11 +75,3 @@ You can import any given component like this:
 ```js
 import '@clevercloud/components/dist/atoms/cc-button.js';
 ```
-
-We also expose all components on the package directly with `index.js`.
-Don't forget to add your new components in this.
-This way, users can also import any component like this:
-
-```js
-import { CCButton } from '@clevercloud';
-```
