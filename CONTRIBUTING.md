@@ -8,7 +8,7 @@ You'll also want to read the details about Web Components contributions in [`web
 We use [ESLint](https://eslint.org/) to enforce JS coding style and spot linting errors ASAP.
 Our configuration is based on [standardJS](https://standardjs.com/) + some small tweaks (see `.eslintrc.js`).
 
-All JavaScript files in `components`, `stories` and `tasks` are scanned.
+All JavaScript files in `src`, `stories` and `tasks` are scanned.
 
 You can run the lint check with:
 
