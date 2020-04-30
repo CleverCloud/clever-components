@@ -314,7 +314,7 @@ export class CcButton extends LitElement {
 
         /* progress bar for delay, see https://css-tricks.com/html5-progress-element */
         progress,
-        progress:-webkit-progress-bar {
+        progress::-webkit-progress-bar {
           background-color: #fff;
         }
 
