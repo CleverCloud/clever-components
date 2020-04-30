@@ -93,7 +93,7 @@ export const delayAndDisabled = makeStory(conf, {
 });
 
 export const image = makeStory(conf, {
-  docs: `If you need a simple image button, use the \`src\` attribute to set the URL of an image and don't use the slot.`,
+  docs: `If you need a simple image button, use the \`image\` attribute to set the URL of an image and don't use the slot.`,
   items: [
     { image: closeSvg },
     { image: infoSvg },
