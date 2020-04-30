@@ -73,7 +73,7 @@ When we publish a new version, a build (`npm run components:build`) of the compo
 You can import any given component like this:
 
 ```js
-import '@clevercloud/src/dist/atoms/cc-button.js';
+import '@clevercloud/components/dist/atoms/cc-button.js';
 ```
 
 We also expose all components on the package directly with `index.js`.
