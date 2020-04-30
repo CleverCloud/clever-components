@@ -305,6 +305,10 @@ export class CcEnvVarForm extends LitElement {
         .overlay-container {
           position: relative;
         }
+        
+        cc-expand {
+          overflow: visible;
+        }
 
         .error-container {
           align-items: center;
