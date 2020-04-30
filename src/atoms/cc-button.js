@@ -297,8 +297,11 @@ export class CcButton extends LitElement {
         /* DELAY CANCEL MODE SUPERPOSITION WITH GRID */
         .text-wrapper {
           display: grid;
+          height: 100%;
+          width: 100%;
         }
 
+        img,
         .text-normal,
         .text-cancel {
           grid-area: 1 / 1 / 2 / 2;
