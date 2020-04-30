@@ -82,11 +82,11 @@ export class CcToggle extends LitElement {
         .toggle-group {
           border-radius: 0.25rem;
           border: 1px solid var(--cc-toggle-color);
+          box-sizing: border-box;
           display: flex;
-          overflow: hidden;
           height: 2rem;
           line-height: 2rem;
-          box-sizing: border-box;
+          overflow: hidden;
         }
 
         .toggle-group.enabled:focus-within {
