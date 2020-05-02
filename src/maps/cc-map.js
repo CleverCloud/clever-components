@@ -482,8 +482,8 @@ export class CcMap extends withResizeObserver(LitElement) {
         .msg {
           align-items: center;
           background-color: white;
-          border-radius: 0.25rem;
           border: 1px solid #bcc2d1;
+          border-radius: 0.25rem;
           box-shadow: 0 0 1rem #aaa;
           display: flex;
           justify-content: center;

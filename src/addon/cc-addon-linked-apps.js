@@ -118,8 +118,8 @@ export class CcAddonLinkedApps extends LitElement {
         }
 
         .logo {
-          flex: 0 0 auto;
           border-radius: 0.25rem;
+          flex: 0 0 auto;
           height: 1.6rem;
           width: 1.6rem;
         }

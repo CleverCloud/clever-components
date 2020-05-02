@@ -100,8 +100,8 @@ export class CcElasticsearchInfo extends LitElement {
         :host {
           --cc-gap: 1rem;
           background-color: #fff;
-          border-radius: 0.25rem;
           border: 1px solid #bcc2d1;
+          border-radius: 0.25rem;
           display: grid;
           grid-gap: var(--cc-gap);
           overflow: hidden;

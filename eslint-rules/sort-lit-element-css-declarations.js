@@ -26,7 +26,7 @@ module.exports = {
   create: function (context) {
 
     return {
-      async TaggedTemplateExpression (node) {
+      TaggedTemplateExpression (node) {
 
         // Only works on simple CSS (without holes)
         if (node.tag.name === 'css' && node.quasi.quasis.length === 1) {

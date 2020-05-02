@@ -294,8 +294,8 @@ export class CcInputText extends LitElement {
         }
 
         .meta-input {
-          display: inline-flex;
           box-sizing: border-box;
+          display: inline-flex;
           /* link to position:absolute of .ring */
           position: relative;
           vertical-align: top;
@@ -390,8 +390,8 @@ export class CcInputText extends LitElement {
 
         /* We use this empty .ring element to decorate the input with background, border, box-shadows... */
         .ring {
-          border-radius: 0.25rem;
           border: 1px solid #aaa;
+          border-radius: 0.25rem;
           bottom: 0;
           box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
           left: 0;

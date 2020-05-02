@@ -206,8 +206,8 @@ export class CcButton extends LitElement {
 
         /* BASE */
         .btn {
-          border-radius: 0.15rem;
           border: 1px solid #000;
+          border-radius: 0.15rem;
           cursor: pointer;
           font-size: 14px;
           font-weight: bold;
@@ -357,9 +357,9 @@ export class CcButton extends LitElement {
         progress.waiting {
           --width: 25%;
           animation: 1s ease-in-out 0s infinite alternate waiting;
-          appearance: none;
           -webkit-appearance: none;
           -moz-appearance: none;
+          appearance: none;
           border: none;
           bottom: 0;
           height: 0.2rem;
@@ -374,9 +374,9 @@ export class CcButton extends LitElement {
         }
 
         .image {
+          height: 1.6rem;
           min-height: 0;
           padding: 0.2rem;
-          height: 1.6rem;
           width: 1.6rem;
         }
 

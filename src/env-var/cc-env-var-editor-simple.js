@@ -141,8 +141,8 @@ export class CcEnvVarEditorSimple extends LitElement {
 
       .message {
         color: #555;
-        margin: 0.2rem;
         font-style: italic;
+        margin: 0.2rem;
       }
     `;
   }

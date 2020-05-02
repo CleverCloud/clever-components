@@ -104,11 +104,11 @@ export class CcHeaderOrga extends LitElement {
 
         .wrapper {
           background-color: #fff;
-          border-radius: 0.25rem;
           border: 1px solid #bcc2d1;
+          border-radius: 0.25rem;
           display: block;
-          padding: var(--cc-gap);
           overflow: hidden;
+          padding: var(--cc-gap);
         }
 
         .wrapper.enterprise {
@@ -159,9 +159,9 @@ export class CcHeaderOrga extends LitElement {
         }
 
         .hotline_number {
-          cursor: pointer;
           border: 1px solid #1ea2f1;
           color: #1ea2f1;
+          cursor: pointer;
         }
 
         .badge_img,

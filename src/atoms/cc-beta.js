@@ -64,13 +64,13 @@ export class CcBeta extends LitElement {
         }
 
         :host([position^="top-"]) .beta {
-          top: calc(var(--height) / -2);
           --translate: 1.6rem;
+          top: calc(var(--height) / -2);
         }
 
         :host([position^="bottom-"]) .beta {
-          bottom: calc(var(--height) / -2);
           --translate: -1.6rem;
+          bottom: calc(var(--height) / -2);
         }
 
         :host([position$="-left"]) .beta {
