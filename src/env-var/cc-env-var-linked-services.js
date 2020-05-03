@@ -55,9 +55,9 @@ export class CcEnvVarLinkedServices extends LitElement {
     const i18nParams = { appName: this.appName };
     switch (this.type) {
       case 'addon':
-        return i18n('env-var-linked-services.loading.addon', i18nParams);
+        return i18n('cc-env-var-linked-services.loading.addon', i18nParams);
       case 'app':
-        return i18n('env-var-linked-services.loading.app', i18nParams);
+        return i18n('cc-env-var-linked-services.loading.app', i18nParams);
       default:
         return '';
     }
@@ -66,9 +66,9 @@ export class CcEnvVarLinkedServices extends LitElement {
   _getServiceHeading (name) {
     switch (this.type) {
       case 'addon':
-        return i18n('env-var-linked-services.heading.addon', { name });
+        return i18n('cc-env-var-linked-services.heading.addon', { name });
       case 'app':
-        return i18n('env-var-linked-services.heading.app', { name });
+        return i18n('cc-env-var-linked-services.heading.app', { name });
       default:
         return '';
     }
@@ -78,9 +78,9 @@ export class CcEnvVarLinkedServices extends LitElement {
     const i18nParams = { serviceName, appName: this.appName };
     switch (this.type) {
       case 'addon':
-        return i18n('env-var-linked-services.description.addon', i18nParams);
+        return i18n('cc-env-var-linked-services.description.addon', i18nParams);
       case 'app':
-        return i18n('env-var-linked-services.description.app', i18nParams);
+        return i18n('cc-env-var-linked-services.description.app', i18nParams);
       default:
         return '';
     }
@@ -90,9 +90,9 @@ export class CcEnvVarLinkedServices extends LitElement {
     const i18nParams = { appName: this.appName };
     switch (this.type) {
       case 'addon':
-        return i18n('env-var-linked-services.empty.addon', i18nParams);
+        return i18n('cc-env-var-linked-services.empty.addon', i18nParams);
       case 'app':
-        return i18n('env-var-linked-services.empty.app', i18nParams);
+        return i18n('cc-env-var-linked-services.empty.app', i18nParams);
       default:
         return '';
     }
@@ -102,9 +102,9 @@ export class CcEnvVarLinkedServices extends LitElement {
     const i18nParams = { appName: this.appName };
     switch (this.type) {
       case 'addon':
-        return i18n('env-var-linked-services.error.addon', i18nParams);
+        return i18n('cc-env-var-linked-services.error.addon', i18nParams);
       case 'app':
-        return i18n('env-var-linked-services.error.app', i18nParams);
+        return i18n('cc-env-var-linked-services.error.app', i18nParams);
       default:
         return '';
     }

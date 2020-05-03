@@ -100,7 +100,7 @@ export class CcEnvVarInput extends LitElement {
             ?disabled=${this.deleted || this.disabled}
             ?skeleton=${this.skeleton}
             ?readonly=${this.readonly}
-            placeholder=${i18n('env-var-input.value-placeholder')}
+            placeholder=${i18n('cc-env-var-input.value-placeholder')}
             @cc-input-text:input=${this._onInput}
           ></cc-input-text>
           
@@ -112,7 +112,7 @@ export class CcEnvVarInput extends LitElement {
               ?outlined=${!this.deleted}
               @cc-button:click=${this.deleted ? this._onKeep : this._onDelete}
             >
-              ${this.deleted ? i18n('env-var-input.keep-button') : i18n('env-var-input.delete-button')}
+              ${this.deleted ? i18n('cc-env-var-input.keep-button') : i18n('cc-env-var-input.delete-button')}
             </cc-button>
           ` : ''}
           
