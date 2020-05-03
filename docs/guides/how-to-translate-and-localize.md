@@ -139,13 +139,17 @@ They all follow this pattern:
 
 ### Create a new translation
 
+NOTE: All the conventions described below are enforced with a series of custom ESLint rules.
+
 When you create a new translation, please follow those rules:
 
 * Don't use a translation in multiple components.
 * Prefix your translation key with the name of the component and a dot: `my-component.`.
 * Use a dash `-` with composed names but not `_`.
 * Use a dot `.` to split by "category" or "section".
-* Group the translations by component and split them with a comment: `// my-component`.
+* Group the translations by component and surround them with:
+  * a start comment: `//#region my-component`.
+  * a end comment: `//#endregion`.
 * Sort the groups and translations in alphabetical order.
 
 Here's a few examples of how to create new translation:
