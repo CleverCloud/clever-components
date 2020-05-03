@@ -92,7 +92,7 @@ export class CcEnvVarCreate extends LitElement {
           name="name"
           value=${this._variableName}
           ?disabled=${this.disabled}
-          placeholder=${i18n(`env-var-create.name.placeholder`)}
+          placeholder=${i18n('cc-env-var-create.name.placeholder')}
           @cc-input-text:input=${this._onNameInput}
           @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, hasErrors)}
         ></cc-input-text>
@@ -105,7 +105,7 @@ export class CcEnvVarCreate extends LitElement {
             value=${this._variableValue}
             multi
             ?disabled=${this.disabled}
-            placeholder=${i18n(`env-var-create.value.placeholder`)}
+            placeholder=${i18n('cc-env-var-create.value.placeholder')}
             @cc-input-text:input=${this._onValueInput}
             @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, hasErrors)}
           ></cc-input-text>
@@ -114,16 +114,16 @@ export class CcEnvVarCreate extends LitElement {
             primary
             ?disabled=${hasErrors || this.disabled}
             @cc-button:click=${this._onSubmit}
-          >${i18n(`env-var-create.create-button`)}</cc-button>
+          >${i18n('cc-env-var-create.create-button')}</cc-button>
           
         </cc-flex-gap>
       </cc-flex-gap>
       
       ${(isNameInvalid && this._variableName !== '') ? html`
-        <cc-error>${i18n(`env-var-create.errors.invalid-name`, { name: this._variableName })}</cc-error>
+        <cc-error>${i18n(`cc-env-var-create.errors.invalid-name`, { name: this._variableName })}</cc-error>
       ` : ''}
       ${isNameAlreadyDefined ? html`
-        <cc-error>${i18n(`env-var-create.errors.already-defined-name`, { name: this._variableName })}</cc-error>
+        <cc-error>${i18n(`cc-env-var-create.errors.already-defined-name`, { name: this._variableName })}</cc-error>
       ` : ''}
     `;
   }

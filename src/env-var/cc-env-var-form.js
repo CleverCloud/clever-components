@@ -77,17 +77,17 @@ export class CcEnvVarForm extends LitElement {
 
   set context (context) {
     if (context === 'env-var') {
-      this.heading = i18n('env-var-form.heading.env-var');
-      this._description = i18n('env-var-form.description.env-var', { appName: this.appName });
+      this.heading = i18n('cc-env-var-form.heading.env-var');
+      this._description = i18n('cc-env-var-form.description.env-var', { appName: this.appName });
       this.requestUpdate();
     }
     if (context === 'env-var-simple') {
-      this.heading = i18n('env-var-form.heading.env-var');
+      this.heading = i18n('cc-env-var-form.heading.env-var');
       this.requestUpdate();
     }
     if (context === 'exposed-config') {
-      this.heading = i18n('env-var-form.heading.exposed-config');
-      this._description = i18n('env-var-form.description.exposed-config', { appName: this.appName });
+      this.heading = i18n('cc-env-var-form.heading.exposed-config');
+      this._description = i18n('cc-env-var-form.description.exposed-config', { appName: this.appName });
       this.requestUpdate();
     }
   }
@@ -107,8 +107,8 @@ export class CcEnvVarForm extends LitElement {
 
   _getModes () {
     return [
-      { label: i18n('env-var-form.mode.simple'), value: 'SIMPLE' },
-      { label: i18n('env-var-form.mode.expert'), value: 'EXPERT' },
+      { label: i18n('cc-env-var-form.mode.simple'), value: 'SIMPLE' },
+      { label: i18n('cc-env-var-form.mode.expert'), value: 'EXPERT' },
     ];
   }
 
@@ -168,12 +168,12 @@ export class CcEnvVarForm extends LitElement {
 
   get _errorMessage () {
     if (this.error === 'loading') {
-      return i18n('env-var-form.error.loading');
+      return i18n('cc-env-var-form.error.loading');
     }
     if (this.error === 'saving') {
-      return i18n('env-var-form.error.saving');
+      return i18n('cc-env-var-form.error.saving');
     }
-    return i18n('env-var-form.error.unknown');
+    return i18n('cc-env-var-form.error.unknown');
   }
 
   _onRequestSubmit (e, isFormDisabled) {
@@ -248,15 +248,15 @@ export class CcEnvVarForm extends LitElement {
       ${!this.readonly ? html`
         <div class="button-bar">
           
-          <cc-button ?disabled=${isFormDisabled} @cc-button:click=${this._onResetForm}>${i18n('env-var-form.reset')}</cc-button>
+          <cc-button ?disabled=${isFormDisabled} @cc-button:click=${this._onResetForm}>${i18n('cc-env-var-form.reset')}</cc-button>
           
           <div class="spacer"></div>
           
           ${this.restartApp ? html`
-            <cc-button @cc-button:click=${() => dispatchCustomEvent(this, 'restart-app')}>${i18n('env-var-form.restart-app')}</cc-button>
+            <cc-button @cc-button:click=${() => dispatchCustomEvent(this, 'restart-app')}>${i18n('cc-env-var-form.restart-app')}</cc-button>
           ` : ''}
           
-          <cc-button success ?disabled=${isFormDisabled} @cc-button:click=${this._onUpdateForm}>${i18n('env-var-form.update')}</cc-button>
+          <cc-button success ?disabled=${isFormDisabled} @cc-button:click=${this._onUpdateForm}>${i18n('cc-env-var-form.update')}</cc-button>
         </div>
       ` : ''}
     `;

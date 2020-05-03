@@ -69,28 +69,28 @@ export class CcEnvVarEditorExpert extends LitElement {
       if (type === ERROR_TYPES.INVALID_NAME) {
         return {
           line: pos.line,
-          msg: i18n('env-var-editor-expert.errors.invalid-name', { name }),
+          msg: i18n('cc-env-var-editor-expert.errors.invalid-name', { name }),
         };
       }
       if (type === ERROR_TYPES.DUPLICATED_NAME) {
         return {
           line: pos.line,
-          msg: i18n('env-var-editor-expert.errors.duplicated-name', { name }),
+          msg: i18n('cc-env-var-editor-expert.errors.duplicated-name', { name }),
         };
       }
       if (type === ERROR_TYPES.INVALID_LINE) {
         return {
           line: pos.line,
-          msg: i18n('env-var-editor-expert.errors.invalid-line'),
+          msg: i18n('cc-env-var-editor-expert.errors.invalid-line'),
         };
       }
       if (type === ERROR_TYPES.INVALID_VALUE) {
         return {
           line: pos.line,
-          msg: i18n('env-var-editor-expert.errors.invalid-value'),
+          msg: i18n('cc-env-var-editor-expert.errors.invalid-value'),
         };
       }
-      return { line: '?', msg: i18n('env-var-editor-expert.errors.unknown') };
+      return { line: '?', msg: i18n('cc-env-var-editor-expert.errors.unknown') };
     });
   }
 
@@ -105,8 +105,8 @@ export class CcEnvVarEditorExpert extends LitElement {
   render () {
 
     const placeholder = this.readonly
-      ? i18n('env-var-editor-expert.placeholder-readonly')
-      : i18n('env-var-editor-expert.placeholder');
+      ? i18n('cc-env-var-editor-expert.placeholder-readonly')
+      : i18n('cc-env-var-editor-expert.placeholder');
 
     return html`
       <cc-input-text
@@ -123,7 +123,7 @@ export class CcEnvVarEditorExpert extends LitElement {
       ${this._formattedErrors.length > 0 ? html`
         <div class="error-list">
           ${this._formattedErrors.map(({ line, msg }) => html`
-            <cc-error><strong>${i18n('env-var-editor-expert.errors.line')} ${line}:</strong> ${msg}</cc-error>
+            <cc-error><strong>${i18n('cc-env-var-editor-expert.errors.line')} ${line}:</strong> ${msg}</cc-error>
           `)}
         </div>
       ` : ''}
