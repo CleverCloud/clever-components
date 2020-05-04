@@ -307,7 +307,9 @@ export class CcEnvVarForm extends LitElement {
         }
         
         cc-expand {
-          overflow: visible;
+          /* We need to spread so the focus rings can be visible even with cc-expand default overflow:hidden */
+          margin: -0.25rem;
+          padding: 0.25rem;
         }
 
         .error-container {
