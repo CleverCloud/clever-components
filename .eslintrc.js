@@ -6,6 +6,7 @@ module.exports = {
     'lit',
   ],
   'rules': {
+    'sort-lit-element-css-declarations': ['error'],
     'arrow-parens': ['error', 'always'],
     'brace-style': ['error', 'stroustrup'],
     'comma-dangle': ['error', 'always-multiline'],

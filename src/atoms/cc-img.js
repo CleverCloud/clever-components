@@ -104,13 +104,13 @@ export class CcImg extends LitElement {
 
         img {
           display: block;
+          left: 0;
           object-fit: cover;
           object-position: center center;
           opacity: 0;
           position: absolute;
           top: 0;
           transition: opacity 150ms ease-in-out;
-          left: 0;
         }
 
         .wrapper.loaded img {

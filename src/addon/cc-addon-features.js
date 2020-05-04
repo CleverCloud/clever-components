@@ -164,8 +164,8 @@ export class CcAddonFeatures extends LitElement {
 
         .feature {
           background-color: var(--color);
-          border-radius: calc(2 * var(--bdw));
           border: var(--bdw) solid var(--color);
+          border-radius: calc(2 * var(--bdw));
           display: flex;
           flex-wrap: wrap;
         }
@@ -206,8 +206,8 @@ export class CcAddonFeatures extends LitElement {
 
         .feature-value {
           background-color: #fff;
-          color: var(--color);
           border-radius: var(--bdw);
+          color: var(--color);
         }
 
         .skeleton .feature-value {

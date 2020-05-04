@@ -80,8 +80,8 @@ export class CcToggle extends LitElement {
         }
 
         .toggle-group {
-          border-radius: 0.15rem;
           border: 1px solid var(--cc-toggle-color);
+          border-radius: 0.15rem;
           box-sizing: border-box;
           display: flex;
           height: 2rem;

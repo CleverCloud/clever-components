@@ -40,9 +40,9 @@ export class CcLoader extends LitElement {
         circle {
           animation: progress-circular-dash 1.75s ease-in-out infinite;
           fill: transparent;
+          stroke: var(--cc-loader-color, #2653af);
           stroke-linecap: round;
           stroke-width: 5px;
-          stroke: var(--cc-loader-color, #2653af);
         }
 
         @keyframes progress-circular-rotate {

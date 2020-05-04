@@ -4,8 +4,8 @@ import { css } from 'lit-element';
 export const tileStyles = css`
   :host {
     background-color: #fff;
-    border-radius: 0.25rem;
     border: 1px solid #bcc2d1;
+    border-radius: 0.25rem;
     box-sizing: border-box;
     display: grid;
     grid-gap: 1rem;
@@ -45,8 +45,8 @@ export const instanceDetailsStyles = css`
 
   .size-label {
     background-color: #EAEAEA;
-    border-radius: 0.25rem;
     border: 1px solid #484848;
+    border-radius: 0.25rem;
     box-sizing: border-box;
     display: block;
     font-weight: bold;

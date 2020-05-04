@@ -268,10 +268,10 @@ export class CcEnvVarForm extends LitElement {
       linkStyles,
       css`
         :host {
-          display: block;
           background: #fff;
-          border-radius: 0.25rem;
           border: 1px solid #bcc2d1;
+          border-radius: 0.25rem;
+          display: block;
           padding: 1rem;
         }
 
@@ -290,8 +290,8 @@ export class CcEnvVarForm extends LitElement {
         }
 
         .description {
-          display: block;
           color: #555;
+          display: block;
           font-style: italic;
           line-height: 1.5;
           margin-bottom: 1rem;

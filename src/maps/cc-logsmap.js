@@ -136,8 +136,8 @@ export class CcLogsMap extends LitElement {
     // language=CSS
     return css`
       :host {
-        border-radius: 0.25rem;
         border: 1px solid #ccc;
+        border-radius: 0.25rem;
         display: block;
         height: 15rem;
         overflow: hidden;
@@ -146,8 +146,8 @@ export class CcLogsMap extends LitElement {
       }
 
       cc-toggle {
-        position: absolute;
         left: 0.5rem;
+        position: absolute;
         top: 0.5rem;
         z-index: 2;
       }

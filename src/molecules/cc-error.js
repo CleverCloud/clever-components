@@ -63,8 +63,8 @@ export class CcError extends LitElement {
         :host([mode="confirm"]) {
           align-items: center;
           background-color: white;
-          border-radius: 0.25rem;
           border: 1px solid #bcc2d1;
+          border-radius: 0.25rem;
           box-shadow: 0 0 1rem #aaa;
           display: grid;
           grid-gap: 1rem;

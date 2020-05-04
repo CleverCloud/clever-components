@@ -1,5 +1,7 @@
 import { css } from 'lit-element';
 
+/* eslint-disable sort-lit-element-css-declarations */
+
 // language=CSS
 export const leafletStyles = css`
   .leaflet-heatmap-layer {

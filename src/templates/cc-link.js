@@ -51,7 +51,7 @@ export const linkStyles = css`
   .sanitized-link.skeleton,
   .cc-link .skeleton,
   .sanitized-link .skeleton {
-    color: transparent;
     background-color: hsl(209, 98%, 73%);
+    color: transparent;
   }
 `;

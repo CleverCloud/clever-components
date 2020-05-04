@@ -313,8 +313,8 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
         }
 
         .tile_body {
-          position: relative;
           min-height: 140px;
+          position: relative;
         }
 
         .tile_docs {

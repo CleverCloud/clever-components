@@ -338,8 +338,8 @@ export class CcAddonBackups extends LitElement {
 
         .overlay {
           box-shadow: 0 0 1rem #aaa;
-          max-width: 80%;
           margin: 2rem;
+          max-width: 80%;
         }
 
         .cc-link,

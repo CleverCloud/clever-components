@@ -318,8 +318,8 @@ export class CcHeaderApp extends LitElement {
         :host {
           --cc-gap: 1rem;
           background-color: #fff;
-          border-radius: 0.25rem;
           border: 1px solid #bcc2d1;
+          border-radius: 0.25rem;
           display: block;
         }
 
@@ -333,8 +333,8 @@ export class CcHeaderApp extends LitElement {
         }
 
         .flavor-logo {
-          border-radius: 0.25rem;
           align-self: flex-start;
+          border-radius: 0.25rem;
           height: 3.25rem;
           overflow: hidden;
           width: 3.25rem;
@@ -352,14 +352,14 @@ export class CcHeaderApp extends LitElement {
 
         .details {
           display: flex;
-          flex-direction: column;
           flex: 1 1 0;
+          flex-direction: column;
           justify-content: space-between;
         }
 
         .name {
-          font-weight: bold;
           font-size: 1.1rem;
+          font-weight: bold;
           min-width: 12rem;
         }
 
@@ -417,8 +417,8 @@ export class CcHeaderApp extends LitElement {
 
         .status-icon {
           height: 1.25rem;
-          vertical-align: middle;
           min-width: 1.25rem;
+          vertical-align: middle;
         }
 
         [title] {

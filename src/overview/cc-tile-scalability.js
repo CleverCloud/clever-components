@@ -108,10 +108,10 @@ export class CcTileScalability extends LitElement {
       // language=CSS
       css`
         .tile_body {
-          grid-template-columns: auto 1fr;
-          grid-row-gap: 1rem;
-          grid-column-gap: 2rem;
           align-items: center;
+          grid-column-gap: 2rem;
+          grid-row-gap: 1rem;
+          grid-template-columns: auto 1fr;
         }
 
         .info {
