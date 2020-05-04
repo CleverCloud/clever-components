@@ -4,7 +4,6 @@ import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { assetUrl } from '../lib/asset-url.js';
 import { i18n } from '../lib/i18n.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
@@ -177,9 +176,9 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
         <cc-button
           class="docs-toggle"
           image=${displayDocs ? closeSvg : infoSvg}
-          title=${ifDefined(!displayDocs ? i18n('cc-tile-requests.about') : undefined)}
+          hide-text
           @cc-button:click=${this._onToggleDocs}
-        ></cc-button>
+        >${this._docs ? i18n('cc-tile-requests.close-btn') : i18n('cc-tile-requests.about-btn')}</cc-button>
       </div>
 
       <div class="tile_body ${classMap({ 'tile--hidden': !displayChart })}">

@@ -49,12 +49,6 @@ export class CcBlock extends LitElement {
     }
   }
 
-  _getToggleTitle () {
-    return (this.state === 'close')
-      ? i18n('cc-block.toggle.close')
-      : i18n('cc-block.toggle.open');
-  }
-
   render () {
 
     const isToggleEnabled = (this.state === 'open' || this.state === 'close');
@@ -68,10 +62,11 @@ export class CcBlock extends LitElement {
         ` : ''}
         <slot name="title"></slot>
         ${isToggleEnabled ? html`
-          <cc-button @cc-button:click=${this._clickToggle}
+          <cc-button
             image=${isOpen ? upSvg : downSvg}
-            title="${this._getToggleTitle()}"
-          ></cc-button>
+            hide-text
+            @cc-button:click=${this._clickToggle}
+          >${(this.state === 'close') ? i18n('cc-block.toggle.close') : i18n('cc-block.toggle.open')}</cc-button>
         ` : ''}
         <slot name="button"></slot>
       </div>

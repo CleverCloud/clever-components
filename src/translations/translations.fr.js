@@ -62,6 +62,7 @@ export const translations = {
   LANGUAGE: '🇫🇷 Français',
   // cc-addon-backups
   'cc-addon-backups.command-password': `Cette commande vous demandera votre mot de passe, le voici :`,
+  'cc-addon-backups.close-btn': `Fermer ce panneau`,
   'cc-addon-backups.delete': ({ createdAt }) => sanitize`Supprimer la sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
   'cc-addon-backups.delete.btn': 'supprimer...',
   'cc-addon-backups.delete.with-service.title.es-addon': `Suppression avec Kibana`,
@@ -236,7 +237,8 @@ export const translations = {
   'cc-tile-instances.error': `Une erreur est survenue pendant le chargement des instances.`,
   // cc-tile-requests
   'cc-tile-requests.title': `Requêtes HTTP`,
-  'cc-tile-requests.about': `À propos de ce graphe...`,
+  'cc-tile-requests.about-btn': `À propos de ce graphe...`,
+  'cc-tile-requests.close-btn': `Afficher le graphe`,
   'cc-tile-requests.date-hours': ({ date }) => formatHours(date),
   'cc-tile-requests.date-tooltip': ({ from, to }) => {
     const date = formatDateOnly(from);
@@ -270,7 +272,8 @@ export const translations = {
   'cc-tile-scalability.error': `Une erreur est survenue pendant le chargement de la configuration de scalabilité.`,
   // cc-tile-status-codes
   'cc-tile-status-codes.title': `Codes de réponses HTTP`,
-  'cc-tile-status-codes.about': `À propos de ce graphe...`,
+  'cc-tile-status-codes.about-btn': `À propos de ce graphe...`,
+  'cc-tile-status-codes.close-btn': `Afficher le graphe`,
   'cc-tile-status-codes.tooltip': ({ value, percent }) => {
     const request = plural('requête')(value);
     const formattedValue = numberFormatter.format(value);

@@ -1,10 +1,10 @@
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { linkStyles } from '../templates/cc-link.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
 
 /**
  * Wraps a `<button>` with a skeleton state, some modes and a delay mechanism.

@@ -49,6 +49,7 @@ export const translations = {
   LANGUAGE: '🇬🇧 English',
   // cc-addon-backups
   'cc-addon-backups.command-password': `This command will ask for your password, here it is:`,
+  'cc-addon-backups.close-btn': `Close this panel`,
   'cc-addon-backups.delete': ({ createdAt }) => sanitize`Delete the backup from <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
   'cc-addon-backups.delete.btn': 'delete...',
   'cc-addon-backups.delete.with-service.title.es-addon': `Delete with Kibana`,
@@ -223,7 +224,8 @@ export const translations = {
   'cc-tile-instances.error': `Something went wrong while loading instances.`,
   // cc-tile-requests
   'cc-tile-requests.title': `HTTP requests`,
-  'cc-tile-requests.about': `About this chart...`,
+  'cc-tile-requests.about-btn': `About this chart...`,
+  'cc-tile-requests.close-btn': `Display chart`,
   'cc-tile-requests.date-hours': ({ date }) => formatHours(date),
   'cc-tile-requests.date-tooltip': ({ from, to }) => {
     const date = formatDateOnly(from);
@@ -257,7 +259,8 @@ export const translations = {
   'cc-tile-scalability.error': `Something went wrong while loading scalability config.`,
   // cc-tile-status-codes
   'cc-tile-status-codes.title': `HTTP response codes`,
-  'cc-tile-status-codes.about': `About this chart...`,
+  'cc-tile-status-codes.about-btn': `About this chart...`,
+  'cc-tile-status-codes.close-btn': `Display chart`,
   'cc-tile-status-codes.tooltip': ({ value, percent }) => {
     const request = plural('request')(value);
     const formattedValue = numberFormatter.format(value);
