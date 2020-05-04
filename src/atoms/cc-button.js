@@ -4,6 +4,7 @@ import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { linkStyles } from '../templates/cc-link.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 
 /**
  * Wraps a `<button>` with a skeleton state, some modes and a delay mechanism.
@@ -32,6 +33,7 @@ import { linkStyles } from '../templates/cc-link.js';
  * @prop {Boolean} danger - Sets button UI _mode_ to danger.
  * @prop {Number} delay - If set, enables delay mechanism and defined the number of seconds before the `cc-button:click` event is actually fired.
  * @prop {Boolean} disabled - Sets `disabled` attribute on inner native `<button>` element.
+ * @prop {Boolean} hideText - Hides the text and only displays the image specified with `image`. The slotted text will be added as `title` and `aria-label` on the inner `<button>`.
  * @prop {String} image - If set, enables icon mode and sets the `src` of the inner native `<img>` element.
  * @prop {Boolean} link - If set, the button will look like a link.
  * @prop {Boolean} outlined - Sets button UI as _outlined_ (no background and colored border).
@@ -52,6 +54,7 @@ export class CcButton extends LitElement {
       danger: { type: Boolean },
       delay: { type: Number },
       disabled: { type: Boolean, reflect: true },
+      hideText: { type: Boolean, attribute: 'hide-text' },
       image: { type: String },
       link: { type: Boolean, reflect: true },
       outlined: { type: Boolean },
@@ -69,11 +72,12 @@ export class CcButton extends LitElement {
     this.danger = false;
     this.disabled = false;
     this.link = false;
-    this.waiting = false;
+    this.hideText = false;
     this.outlined = false;
     this.primary = false;
     this.skeleton = false;
     this.success = false;
+    this.waiting = false;
     this.warning = false;
     this._cancelMode = false;
   }
@@ -136,7 +140,8 @@ export class CcButton extends LitElement {
       warning: !this.primary && !this.success && this.warning && !this.danger && !this.link,
       danger: !this.primary && !this.success && !this.warning && this.danger && !this.link,
       skeleton: this.skeleton,
-      image: this.image != null,
+      'img-only': this.image != null && this.hideText,
+      'txt-only': this.image == null,
       btn: !this.link,
       'cc-link': this.link,
     };
@@ -151,11 +156,17 @@ export class CcButton extends LitElement {
     // outlined is not default except in simple mode
     modes.outlined = (this.outlined || modes.simple) && !this.link;
 
+    const imageOnlyText = (this.image != null && this.hideText)
+      ? (this.textContent || '')
+      : undefined;
+
     return html`<button
       type="button"
       class=${classMap(modes)}
       .disabled=${this.disabled || this.skeleton || this.waiting}
       @click=${this._onClick}
+      title="${ifDefined(imageOnlyText)}"
+      aria-label="${ifDefined(imageOnlyText)}"
     >
       <!--
         When delay mechanism is set, we need a cancel label.
@@ -176,8 +187,8 @@ export class CcButton extends LitElement {
         <progress class="delay ${classMap({ active: this._cancelMode })}" style="--delay: ${delay}s"></progress>
       ` : ''}
       ${waiting ? html`
-        <progress class="waiting"></progress>
-      ` : ''}
+      <progress class="waiting"></progress>
+    ` : ''}
     </button>`;
   }
 
@@ -262,6 +273,13 @@ export class CcButton extends LitElement {
           border-color: #aaa;
         }
 
+        .img-only {
+          height: 1.75rem;
+          min-height: 0;
+          padding: 0;
+          width: 1.75rem;
+        }
+
         /* STATES */
         .btn:enabled:focus {
           box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
@@ -288,25 +306,66 @@ export class CcButton extends LitElement {
           color: transparent;
         }
 
+        .skeleton img {
+          visibility: hidden;
+        }
+
         /* TRANSITIONS */
         .btn {
           box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
           transition: box-shadow 75ms ease-in-out;
         }
 
-        /* DELAY CANCEL MODE SUPERPOSITION WITH GRID */
+        /* Grid to place image + text and superpose "cancel mode text" */
         .text-wrapper {
+          align-items: center;
           display: grid;
+          grid-gap: 0.5rem;
+          grid-template-columns: min-content 1fr;
           height: 100%;
+          justify-content: center;
           width: 100%;
+        }
+
+        .txt-only .text-wrapper {
+          grid-gap: 0;
+          grid-template-columns: 1fr;
+        }
+
+        .img-only .text-wrapper {
+          grid-gap: 0;
+          grid-template-columns: min-content;
+        }
+
+        img {
+          display: block;
+          height: 1.25rem;
+          width: 1.25rem;
+        }
+
+        .img-only .text-normal {
+          display: none;
         }
 
         img,
         .text-normal,
         .text-cancel {
-          grid-area: 1 / 1 / 2 / 2;
+          grid-row: 1 / 2;
         }
 
+        img {
+          grid-column: 1 / 2;
+        }
+
+        .text-normal {
+          grid-column: -1 / -2;
+        }
+
+        .text-cancel {
+          grid-column: 1 / -1;
+        }
+
+        .text-wrapper.cancel-mode img,
         .text-wrapper.cancel-mode .text-normal,
         .text-wrapper:not(.cancel-mode) .text-cancel {
           visibility: hidden;
@@ -371,19 +430,6 @@ export class CcButton extends LitElement {
         /* We can do this because we set a visible focus state */
         button::-moz-focus-inner {
           border: 0;
-        }
-
-        .image {
-          height: 1.6rem;
-          min-height: 0;
-          padding: 0.2rem;
-          width: 1.6rem;
-        }
-
-        .image img {
-          display: block;
-          height: 100%;
-          width: 100%;
         }
 
         /* button that looks like a cc-link */
