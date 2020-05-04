@@ -186,13 +186,14 @@ export class CcInputText extends LitElement {
 
   render () {
 
-    const rows = (this.value || '').split('\n').length;
+    const value = this.value || '';
+    const rows = value.split('\n').length;
     const clipboard = (this.clipboard && !this.disabled && !this.skeleton);
     // NOTE: For now, we don't support secret when multi is activated
     const secret = (this.secret && !this.multi && !this.disabled && !this.skeleton);
     const isTextarea = (this.multi || this._tagsEnabled);
 
-    const tags = this.value
+    const tags = value
       .split(TAG_SEPARATOR)
       .map((tag, i, all) => html`<span class="tag">${tag}</span>${i !== (all.length - 1) ? TAG_SEPARATOR : ''}`);
 
@@ -223,7 +224,7 @@ export class CcInputText extends LitElement {
               rows=${rows}
               ?disabled=${this.disabled || this.skeleton}
               ?readonly=${this.readonly}
-              .value=${this.value}
+              .value=${value}
               name=${this.name}
               placeholder=${this.placeholder}
               spellcheck="false"
@@ -239,7 +240,7 @@ export class CcInputText extends LitElement {
                 this way we can use it to know what width the content is
                 and "auto size" the container.
               -->
-              <div class="input input-mirror">${this.value}</div>
+              <div class="input input-mirror">${value}</div>
             ` : ''}
             <input
               id=${this._uniqueName}
@@ -247,7 +248,7 @@ export class CcInputText extends LitElement {
               class="input"
               ?disabled=${this.disabled || this.skeleton} 
               ?readonly=${this.readonly}
-              .value=${this.value}
+              .value=${value}
               name=${this.name}
               placeholder=${this.placeholder}
               spellcheck="false"
@@ -341,7 +342,7 @@ export class CcInputText extends LitElement {
           overflow: hidden;
           z-index: 2;
         }
-        
+
         textarea:not([wrap]) {
           white-space: pre;
         }
@@ -383,13 +384,14 @@ export class CcInputText extends LitElement {
         .input-underlayer .tag:not(:empty) {
           --color: rgba(50, 50, 255, 0.15);
           background-color: var(--color);
-          border-radius: 4px;
+          border-radius: 3px;
           box-shadow: 0 0 0 2px var(--color);
           padding: 1px 0;
         }
 
         /* We use this empty .ring element to decorate the input with background, border, box-shadows... */
         .ring {
+          background: #fff;
           border: 1px solid #aaa;
           border-radius: 0.25rem;
           bottom: 0;

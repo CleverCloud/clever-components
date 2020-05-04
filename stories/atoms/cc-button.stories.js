@@ -1,6 +1,7 @@
 import '../../src/atoms/cc-button.js';
 import closeSvg from '../../src/assets/close.svg';
 import infoSvg from '../../src/assets/info.svg';
+import warningSvg from '../../src/assets/warning.svg';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
@@ -93,10 +94,40 @@ export const delayAndDisabled = makeStory(conf, {
 });
 
 export const image = makeStory(conf, {
-  docs: `If you need a simple image button, use the \`src\` attribute to set the URL of an image and don't use the slot.`,
+  docs: `
+If you need an image+text button:
+
+* use the default slot for the text
+* use the \`image\` attribute to set the URL of the image
+
+Here you can see this combination in various situations:
+  `,
   items: [
-    { image: closeSvg },
-    { image: infoSvg },
+    { innerHTML: 'Basic', image: warningSvg, primary: true },
+    { innerHTML: 'Outlined', image: warningSvg, outlined: true },
+    { innerHTML: 'Disabled', image: warningSvg, disabled: true },
+    { innerHTML: 'Waiting', image: warningSvg, waiting: true },
+    { innerHTML: 'Delay', image: warningSvg, delay: 3 },
+    { innerHTML: 'Link', image: warningSvg, link: true },
+    { innerHTML: 'Skeleton', image: warningSvg, skeleton: true },
+  ],
+});
+
+export const hideText = makeStory(conf, {
+  docs: `
+If you need a button with just an image:
+
+* use the default slot for the text, it will not be displayed but will be used for accessibility purposes
+* use the \`image\` attribute to set the URL of the image
+* add the \`hide-text\` attribute to hide the text
+  * The slotted text is used to set \`title\` and \`aria-label\` attributes on the inner \`<button>\`
+
+As you can see here, \`hide-text\` can only be used if there is an \`image\`:
+  `,
+  items: [
+    { image: closeSvg, innerHTML: 'Close foo', hideText: true },
+    { image: infoSvg, innerHTML: 'Info bar', hideText: true },
+    { innerHTML: 'hide-text but no image', hideText: true },
   ],
 });
 
@@ -117,5 +148,6 @@ enhanceStoriesNames({
   delayAndOutlined,
   delayAndDisabled,
   image,
+  hideText,
   skeleton,
 });

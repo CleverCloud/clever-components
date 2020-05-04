@@ -233,7 +233,12 @@ export class CcAddonBackups extends LitElement {
           <div slot="overlay">
             <cc-block class="overlay">
               <div slot="title">${i18n('cc-addon-backups.restore', this._selectedBackup)}</div>
-              <cc-button slot="button" image=${closeSvg} @cc-button:click=${this._onCloseOverlay}></cc-button>
+              <cc-button
+                slot="button"
+                image=${closeSvg}
+                hide-text
+                @cc-button:click=${this._onCloseOverlay}
+              >${i18n('cc-addon-backups.close-btn')}</cc-button>
               
               ${this._displaySectionWithService(providerId) ? html`
                 <cc-block-section>
@@ -257,7 +262,12 @@ export class CcAddonBackups extends LitElement {
           <div slot="overlay">
             <cc-block class="overlay">
               <div slot="title">${i18n('cc-addon-backups.delete', this._selectedBackup)}</div>
-              <cc-button slot="button" image=${closeSvg} @cc-button:click=${this._onCloseOverlay}></cc-button>
+              <cc-button
+                slot="button"
+                image=${closeSvg}
+                hide-text
+                @cc-button:click=${this._onCloseOverlay}
+              >${i18n('cc-addon-backups.close-btn')}</cc-button>
               
               ${this._displaySectionWithService(providerId) ? html`
                 <cc-block-section>

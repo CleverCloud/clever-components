@@ -4,7 +4,6 @@ import Chart from 'chart.js';
 import { css, html, LitElement } from 'lit-element';
 import { cache } from 'lit-html/directives/cache.js';
 import { classMap } from 'lit-html/directives/class-map.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
 import status from 'statuses';
 import { assetUrl } from '../lib/asset-url.js';
 import { i18n } from '../lib/i18n.js';
@@ -139,9 +138,9 @@ export class CcTileStatusCodes extends LitElement {
         <cc-button
           class="docs-toggle"
           image=${displayDocs ? closeSvg : infoSvg}
-          title=${ifDefined(!displayDocs ? i18n('cc-tile-status-codes.about') : undefined)}
+          hide-text
           @cc-button:click=${this._onToggleDocs}
-        ></cc-button>
+        >${this._docs ? i18n('cc-tile-status-codes.close-btn') : i18n('cc-tile-status-codes.about-btn')}</cc-button>
       </div>
 
       ${cache(displayChart ? html`
