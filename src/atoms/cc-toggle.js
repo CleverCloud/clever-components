@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { repeat } from 'lit-html/directives/repeat.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 
@@ -16,12 +17,14 @@ import { dispatchCustomEvent } from '../lib/events.js';
  * ```js
  * interface Choice {
  *   label: string,
+ *   image?: string,   // Optional URL of an image
  *   value: string,
  * }
  * ```
  *
  * @prop {Choice[]} choices - Sets the list of choices.
  * @prop {Boolean} disabled - Sets the `disabled` attribute on all `input[type=radio]` of whole group.
+ * @prop {Boolean} hideText - Hides the text and only displays the image specified with `choices[i].image`. The text will be added as `title` on the inner `<label>` and a `aria-label` on the inner `<inpu>`.
  * @prop {String} value - Sets the selected value.
  *
  * @event {CustomEvent<String>} cc-toggle:input - Fires the selected `value` whenever the selected `value` changes.
@@ -35,6 +38,7 @@ export class CcToggle extends LitElement {
       /** @required */
       choices: { type: Array },
       disabled: { type: Boolean },
+      hideText: { type: Boolean, attribute: 'hide-text' },
       value: { type: String, reflect: true },
     };
   }
@@ -42,6 +46,7 @@ export class CcToggle extends LitElement {
   constructor () {
     super();
     this.disabled = false;
+    this.hideText = false;
     // use this unique name for isolation (Safari seems to have a bug)
     this._uniqueName = Math.random().toString(36).slice(2);
   }
@@ -55,7 +60,7 @@ export class CcToggle extends LitElement {
 
     return html`
       <div class="toggle-group ${classMap({ disabled: this.disabled, enabled: !this.disabled })}">
-        ${repeat(this.choices, ({ value }) => value, ({ label, value }) => html`
+        ${repeat(this.choices, ({ value }) => value, ({ label, image, value }) => html`
           <input
             type="radio"
             name=${this._uniqueName}
@@ -63,8 +68,16 @@ export class CcToggle extends LitElement {
             id=${value}
             ?disabled=${this.disabled}
             .checked=${this.value === value}
-            @change=${this._onChange}>
-          <label for=${value}>${label}</label>
+            @change=${this._onChange}
+            aria-label=${ifDefined((image != null && this.hideText) ? label : undefined)}>
+          <label for=${value} title=${ifDefined((image != null && this.hideText) ? label : undefined)}>
+            ${image != null ? html`
+              <img src=${image} alt="">
+            ` : ''}
+            ${(image == null) || !this.hideText ? html`
+              <span>${label}</span>
+            ` : ''}
+          </label>
           `)}
       </div>
     `;
@@ -120,11 +133,15 @@ export class CcToggle extends LitElement {
         }
 
         label {
+          align-items: center;
           background-color: white;
           color: var(--cc-toggle-color);
           cursor: pointer;
+          display: grid;
           font-size: 14px;
           font-weight: bold;
+          grid-auto-flow: column;
+          grid-gap: 0.5rem;
           padding: 0 0.5rem;
           text-transform: uppercase;
           -moz-user-select: none;
@@ -145,6 +162,12 @@ export class CcToggle extends LitElement {
           background-color: var(--cc-toggle-color);
           color: white;
           position: relative;
+        }
+
+        img {
+          display: block;
+          height: 1.25rem;
+          width: 1.25rem;
         }
       `,
     ];

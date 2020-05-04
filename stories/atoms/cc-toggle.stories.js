@@ -16,15 +16,19 @@ const conf = {
   `,
 };
 
+const choices = [
+  { label: 'John', image: 'https://twemoji.maxcdn.com/v/12.1.6/72x72/1f453.png', value: 'JOHN' },
+  { label: 'Paul', image: 'https://twemoji.maxcdn.com/v/12.1.6/72x72/1f3b9.png', value: 'PAUL' },
+  { label: 'George', image: 'https://twemoji.maxcdn.com/v/12.1.6/72x72/1f3b8.png', value: 'GEORGE' },
+  { label: 'Ringo', image: 'https://twemoji.maxcdn.com/v/12.1.6/72x72/1f941.png', value: 'RINGO' },
+];
+
+const choicesWithoutImages = choices.map(({ label, value }) => ({ label, value }));
+
 export const defaultStory = makeStory(conf, {
   items: [{
     value: 'PAUL',
-    choices: [
-      { label: 'John', value: 'JOHN' },
-      { label: 'Paul', value: 'PAUL' },
-      { label: 'George', value: 'GEORGE' },
-      { label: 'Ringo', value: 'RINGO' },
-    ],
+    choices: choicesWithoutImages,
   }],
 });
 
@@ -49,4 +53,43 @@ export const disabled = makeStory(conf, {
   }],
 });
 
-enhanceStoriesNames({ defaultStory, trueFalse, disabled });
+export const image = makeStory(conf, {
+  docs: `If you need toggle options with image + text, define \`choices\` with a \`label\` and an \`image\`.`,
+  items: [{
+    value: 'PAUL',
+    choices,
+  }],
+});
+
+export const hideText = makeStory(conf, {
+  docs: `
+If you need toggle options with just image and no text, define \`choices\` with an \`image\` but you still need to define a \`label\`.
+
+Then you can add the \`hide-text\` attribute to hide the text. The \`label\` you set will be used to:
+ 
+* set the \`title\` attribute on the inner \`<label>\`
+* set the \`aria-label\` attribute on the inner \`<input>\`
+
+As you can see here, \`hide-text\` can only be used if there is an \`image\`:
+  `,
+  items: [
+    {
+      value: 'PAUL',
+      choices,
+      hideText: true,
+    },
+    {
+      value: 'PAUL',
+      choices: choicesWithoutImages,
+      hideText: true,
+    },
+  ],
+});
+
+enhanceStoriesNames({
+  defaultStory,
+  trueFalse,
+  disabled,
+  image,
+  hideText,
+});
