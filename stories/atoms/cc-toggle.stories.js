@@ -10,86 +10,99 @@ export default {
 const conf = {
   component: 'cc-toggle',
   css: `
-    cc-toggle {
-      margin: 0.5rem;
+    :host {
+      display: grid;
+      gap: 0.5rem;
+      grid-template-columns: repeat(4, min-content);
     }
   `,
 };
 
-const choices = [
-  { label: 'John', image: 'https://twemoji.maxcdn.com/v/12.1.6/72x72/1f453.png', value: 'JOHN' },
-  { label: 'Paul', image: 'https://twemoji.maxcdn.com/v/12.1.6/72x72/1f3b9.png', value: 'PAUL' },
-  { label: 'George', image: 'https://twemoji.maxcdn.com/v/12.1.6/72x72/1f3b8.png', value: 'GEORGE' },
-  { label: 'Ringo', image: 'https://twemoji.maxcdn.com/v/12.1.6/72x72/1f941.png', value: 'RINGO' },
-];
+const IMAGES = {
+  JOHN: 'https://twemoji.maxcdn.com/v/12.1.6/72x72/1f453.png',
+  PAUL: 'https://twemoji.maxcdn.com/v/12.1.6/72x72/1f3b9.png',
+  GEORGE: 'https://twemoji.maxcdn.com/v/12.1.6/72x72/1f3b8.png',
+  RINGO: 'https://twemoji.maxcdn.com/v/12.1.6/72x72/1f941.png',
+};
 
-const choicesWithoutImages = choices.map(({ label, value }) => ({ label, value }));
+const falseTrue = {
+  value: 'TRUE',
+  choices: [
+    { label: 'false', value: 'FALSE' },
+    { label: 'true', value: 'TRUE' },
+  ],
+};
 
-export const defaultStory = makeStory(conf, {
-  items: [{
-    value: 'PAUL',
-    choices: choicesWithoutImages,
-  }],
+const beatles = {
+  value: 'PAUL',
+  choices: [
+    { label: 'John', value: 'JOHN' },
+    { label: 'Paul', value: 'PAUL' },
+    { label: 'George', value: 'GEORGE' },
+    { label: 'Ringo', value: 'RINGO' },
+  ],
+};
+
+const beatlesChoicesImage = beatles.choices.map((c) => {
+  return { ...c, image: IMAGES[c.value] };
 });
 
-export const falseTrue = makeStory(conf, {
-  items: [{
-    value: 'false',
-    choices: [
-      { label: 'false', value: 'false' },
-      { label: 'true', value: 'true' },
-    ],
-  }],
+const baseItems = [
+  falseTrue,
+  beatles,
+  { ...beatles, choices: beatlesChoicesImage },
+  { ...beatles, choices: beatlesChoicesImage, hideText: true },
+];
+
+export const defaultStory = makeStory(conf, {
+  items: baseItems,
 });
 
 export const disabled = makeStory(conf, {
-  items: [{
-    value: 'false',
-    choices: [
-      { label: 'false', value: 'false' },
-      { label: 'true', value: 'true' },
-    ],
-    disabled: true,
-  }],
+  items: baseItems.map((p) => ({ ...p, disabled: true })),
 });
 
-export const image = makeStory(conf, {
-  docs: `If you need toggle options with image + text, define \`choices\` with a \`label\` and an \`image\`.`,
-  items: [{
-    value: 'PAUL',
-    choices,
-  }],
+export const color = makeStory(conf, {
+  docs: `
+You can have a bit of control over the main color used by the component with \`--cc-toggle-color\`:
+
+* You can set the color with  \`cc-toggle { --cc-toggle-color: blue }\`
+* You can have a different color when a specific value is selected  \`cc-toggle[value="TRUE"] { --cc-toggle-color: green }\`
+`,
+  css: conf.css + `
+    cc-toggle {
+      --cc-toggle-color: hsl(213, 55%, 62%);
+    }
+    cc-toggle[value="TRUE"] {
+      --cc-toggle-color: hsl(144, 56%, 43%);
+    }
+  `,
+  items: baseItems,
 });
 
 export const hideText = makeStory(conf, {
   docs: `
-If you need toggle options with just image and no text, define \`choices\` with an \`image\` but you still need to define a \`label\`.
+If you need toggle options with just an image, add the \`hide-text\` attribute and define \`choices\` like this:
 
-Then you can add the \`hide-text\` attribute to hide the text. The \`label\` you set will be used to:
- 
-* set the \`title\` attribute on the inner \`<label>\`
-* set the \`aria-label\` attribute on the inner \`<input>\`
+* use the \`choices[].label\` property for the text, it will not be displayed but will be used for accessibility purposes
+* use the \`choices[].image\` property to set the URL of the image
 
-As you can see here, \`hide-text\` can only be used if there is an \`image\`:
+The \`hide-text\` attribute will hide the text but it will use \`choices[].label\` to set:
+
+* a \`title\` attribute on the inner \`<label>\`
+* an \`arial-label\` attribute on the inner \`<input>\`
+
+As you can see here, \`hide-text\` can only be used if \`choices[].image\` is defined:
   `,
   items: [
-    {
-      value: 'PAUL',
-      choices,
-      hideText: true,
-    },
-    {
-      value: 'PAUL',
-      choices: choicesWithoutImages,
-      hideText: true,
-    },
+    { ...beatles, choices: beatlesChoicesImage, hideText: true },
+    { ...beatles, hideText: true },
   ],
 });
 
 enhanceStoriesNames({
   defaultStory,
-  falseTrue,
   disabled,
-  image,
+  color,
   hideText,
 });
