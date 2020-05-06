@@ -98,7 +98,7 @@ export class CcToggle extends LitElement {
           box-sizing: border-box;
           display: flex;
           height: 2rem;
-          line-height: 2rem;
+          line-height: 1.25;
           overflow: hidden;
         }
 
