@@ -102,24 +102,7 @@ export class CcToggle extends LitElement {
           overflow: hidden;
         }
 
-        .toggle-group.enabled:focus-within {
-          box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
-          outline: 0;
-        }
-
-        .toggle-group.enabled:hover {
-          box-shadow: 0 1px 3px #888;
-        }
-
-        .toggle-group.enabled:active {
-          box-shadow: none;
-          outline: 0;
-        }
-
-        .toggle-group.disabled {
-          opacity: .5;
-        }
-
+        /* We hide the <input> and only display the related <label> */
         input {
           -moz-appearance: none;
           -webkit-appearance: none;
@@ -134,8 +117,8 @@ export class CcToggle extends LitElement {
 
         label {
           align-items: center;
-          background-color: white;
-          color: var(--cc-toggle-color);
+          background-color: var(--color-bg);
+          color: var(--color-txt);
           cursor: pointer;
           display: grid;
           font-size: 14px;
@@ -150,24 +133,52 @@ export class CcToggle extends LitElement {
           user-select: none;
         }
 
-        .disabled label {
-          cursor: default;
-        }
-
-        input:not(:checked):enabled:hover + label {
-          background-color: hsl(210, 23%, 95%);
-        }
-
-        input:checked + label {
-          background-color: var(--cc-toggle-color);
-          color: white;
-          position: relative;
-        }
-
         img {
           display: block;
           height: 1.25rem;
           width: 1.25rem;
+        }
+
+        /* NOT SELECTED */
+        label {
+          --color-bg: #fff;
+          --color-txt: var(--cc-toggle-color);
+        }
+
+        /* DISABLED */
+        .toggle-group.disabled {
+          opacity: .5;
+        }
+
+        .disabled label {
+          cursor: default;
+        }
+
+        /* HOVERED */
+        .toggle-group.enabled:hover {
+          box-shadow: 0 1px 3px #888;
+        }
+
+        input:not(:checked):enabled:hover + label {
+          --color-bg: #ededed;
+        }
+
+        /* FOCUS */
+        .toggle-group.enabled:focus-within {
+          box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
+          outline: 0;
+        }
+
+        /* ACTIVE */
+        .toggle-group.enabled:active {
+          box-shadow: none;
+          outline: 0;
+        }
+
+        /* SELECTED */
+        input:checked + label {
+          --color-bg: var(--cc-toggle-color);
+          --color-txt: #fff;
         }
       `,
     ];
