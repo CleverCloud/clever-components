@@ -12,7 +12,7 @@ const conf = {
   css: `
     :host {
       display: grid;
-      gap: 0.5rem;
+      gap: 1rem 0.5rem;
       grid-template-columns: repeat(4, min-content);
     }
   `,
@@ -67,6 +67,10 @@ export const disabled = makeStory(conf, {
   items: normalAndSubtleItems.map((p) => ({ ...p, disabled: true })),
 });
 
+export const legend = makeStory(conf, {
+  items: normalAndSubtleItems.map((p) => ({ ...p, legend: 'The legend' })),
+});
+
 export const color = makeStory(conf, {
   docs: `
 You can have a bit of control over the main color used by the component with \`--cc-toggle-color\`:
@@ -108,6 +112,7 @@ As you can see here, \`hide-text\` can only be used if \`choices[].image\` is de
 enhanceStoriesNames({
   defaultStory,
   disabled,
+  legend,
   color,
   hideText,
 });

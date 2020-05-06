@@ -25,6 +25,7 @@ import { dispatchCustomEvent } from '../lib/events.js';
  * @prop {Choice[]} choices - Sets the list of choices.
  * @prop {Boolean} disabled - Sets the `disabled` attribute on all `input[type=radio]` of whole group.
  * @prop {Boolean} hideText - Hides the text and only displays the image specified with `choices[i].image`. The text will be added as `title` on the inner `<label>` and an `aria-label` on the inner `<input>`.
+ * @prop {String} legend - Sets a legend to describe the whole component (radio group).
  * @prop {Boolean} subtle - Uses a more subtle display mode, less attractive to the user's attention.
  * @prop {String} value - Sets the selected value.
  *
@@ -40,6 +41,7 @@ export class CcToggle extends LitElement {
       choices: { type: Array },
       disabled: { type: Boolean },
       hideText: { type: Boolean, attribute: 'hide-text' },
+      legend: { type: String },
       subtle: { type: Boolean },
       value: { type: String, reflect: true },
     };
@@ -69,27 +71,30 @@ export class CcToggle extends LitElement {
     };
 
     return html`
-      <div class="toggle-group ${classMap(classes)}">
-        ${repeat(this.choices, ({ value }) => value, ({ label, image, value }) => html`
-          <input
-            type="radio"
-            name=${this._uniqueName}
-            .value=${value}
-            id=${value}
-            ?disabled=${this.disabled}
-            .checked=${this.value === value}
-            @change=${this._onChange}
-            aria-label=${ifDefined((image != null && this.hideText) ? label : undefined)}>
-          <label for=${value} title=${ifDefined((image != null && this.hideText) ? label : undefined)}>
-            ${image != null ? html`
-              <img src=${image} alt="">
-            ` : ''}
-            ${(image == null) || !this.hideText ? html`
-              <span>${label}</span>
-            ` : ''}
-          </label>
-          `)}
-      </div>
+      <fieldset>
+        <legend>${this.legend}</legend>
+        <div class="toggle-group ${classMap(classes)}">
+          ${repeat(this.choices, ({ value }) => value, ({ label, image, value }) => html`
+            <input
+              type="radio"
+              name=${this._uniqueName}
+              .value=${value}
+              id=${value}
+              ?disabled=${this.disabled}
+              .checked=${this.value === value}
+              @change=${this._onChange}
+              aria-label=${ifDefined((image != null && this.hideText) ? label : undefined)}>
+            <label for=${value} title=${ifDefined((image != null && this.hideText) ? label : undefined)}>
+              ${image != null ? html`
+                <img src=${image} alt="">
+              ` : ''}
+              ${(image == null) || !this.hideText ? html`
+                <span>${label}</span>
+              ` : ''}
+            </label>
+            `)}
+        </div>
+      </fieldset>
     `;
   }
 
@@ -100,6 +105,30 @@ export class CcToggle extends LitElement {
         :host {
           --cc-toggle-color: #334252;
           display: flex;
+          flex-direction: column;
+        }
+
+        /* RESET */
+        fieldset {
+          border: 0;
+          margin: 0;
+          min-width: 0;
+          padding: 0;
+        }
+
+        /* RESET */
+        legend {
+          color: inherit;
+          display: block;
+          line-height: inherit;
+          max-width: 100%;
+          padding: 0;
+          white-space: normal;
+          width: 100%;
+        }
+
+        legend {
+          padding-bottom: 0.35rem;
         }
 
         .toggle-group {
