@@ -32,22 +32,22 @@ export const defaultStory = makeStory(conf, {
   }],
 });
 
-export const trueFalse = makeStory(conf, {
+export const falseTrue = makeStory(conf, {
   items: [{
-    value: 'true',
+    value: 'false',
     choices: [
-      { label: 'true', value: 'true' },
       { label: 'false', value: 'false' },
+      { label: 'true', value: 'true' },
     ],
   }],
 });
 
 export const disabled = makeStory(conf, {
   items: [{
-    value: 'true',
+    value: 'false',
     choices: [
-      { label: 'true', value: 'true' },
       { label: 'false', value: 'false' },
+      { label: 'true', value: 'true' },
     ],
     disabled: true,
   }],
@@ -88,7 +88,7 @@ As you can see here, \`hide-text\` can only be used if there is an \`image\`:
 
 enhanceStoriesNames({
   defaultStory,
-  trueFalse,
+  falseTrue,
   disabled,
   image,
   hideText,
