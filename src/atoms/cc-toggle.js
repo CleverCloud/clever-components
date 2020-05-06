@@ -24,7 +24,7 @@ import { dispatchCustomEvent } from '../lib/events.js';
  *
  * @prop {Choice[]} choices - Sets the list of choices.
  * @prop {Boolean} disabled - Sets the `disabled` attribute on all `input[type=radio]` of whole group.
- * @prop {Boolean} hideText - Hides the text and only displays the image specified with `choices[i].image`. The text will be added as `title` on the inner `<label>` and a `aria-label` on the inner `<inpu>`.
+ * @prop {Boolean} hideText - Hides the text and only displays the image specified with `choices[i].image`. The text will be added as `title` on the inner `<label>` and an `aria-label` on the inner `<input>`.
  * @prop {Boolean} subtle - Uses a more subtle display mode, less attractive to the user's attention.
  * @prop {String} value - Sets the selected value.
  *
