@@ -54,12 +54,17 @@ const baseItems = [
   { ...beatles, choices: beatlesChoicesImage, hideText: true },
 ];
 
+const normalAndSubtleItems = [
+  ...baseItems,
+  ...baseItems.map((p) => ({ ...p, subtle: true })),
+];
+
 export const defaultStory = makeStory(conf, {
-  items: baseItems,
+  items: normalAndSubtleItems,
 });
 
 export const disabled = makeStory(conf, {
-  items: baseItems.map((p) => ({ ...p, disabled: true })),
+  items: normalAndSubtleItems.map((p) => ({ ...p, disabled: true })),
 });
 
 export const color = makeStory(conf, {
@@ -77,7 +82,7 @@ You can have a bit of control over the main color used by the component with \`-
       --cc-toggle-color: hsl(144, 56%, 43%);
     }
   `,
-  items: baseItems,
+  items: normalAndSubtleItems,
 });
 
 export const hideText = makeStory(conf, {

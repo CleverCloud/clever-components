@@ -25,6 +25,7 @@ import { dispatchCustomEvent } from '../lib/events.js';
  * @prop {Choice[]} choices - Sets the list of choices.
  * @prop {Boolean} disabled - Sets the `disabled` attribute on all `input[type=radio]` of whole group.
  * @prop {Boolean} hideText - Hides the text and only displays the image specified with `choices[i].image`. The text will be added as `title` on the inner `<label>` and a `aria-label` on the inner `<inpu>`.
+ * @prop {Boolean} subtle - Uses a more subtle display mode, less attractive to the user's attention.
  * @prop {String} value - Sets the selected value.
  *
  * @event {CustomEvent<String>} cc-toggle:input - Fires the selected `value` whenever the selected `value` changes.
@@ -39,6 +40,7 @@ export class CcToggle extends LitElement {
       choices: { type: Array },
       disabled: { type: Boolean },
       hideText: { type: Boolean, attribute: 'hide-text' },
+      subtle: { type: Boolean },
       value: { type: String, reflect: true },
     };
   }
@@ -47,6 +49,7 @@ export class CcToggle extends LitElement {
     super();
     this.disabled = false;
     this.hideText = false;
+    this.subtle = false;
     // use this unique name for isolation (Safari seems to have a bug)
     this._uniqueName = Math.random().toString(36).slice(2);
   }
@@ -58,8 +61,15 @@ export class CcToggle extends LitElement {
 
   render () {
 
+    const classes = {
+      disabled: this.disabled,
+      enabled: !this.disabled,
+      'display-normal': !this.subtle,
+      'display-subtle': this.subtle,
+    };
+
     return html`
-      <div class="toggle-group ${classMap({ disabled: this.disabled, enabled: !this.disabled })}">
+      <div class="toggle-group ${classMap(classes)}">
         ${repeat(this.choices, ({ value }) => value, ({ label, image, value }) => html`
           <input
             type="radio"
@@ -169,6 +179,19 @@ export class CcToggle extends LitElement {
           z-index: 0;
         }
 
+        /* Used to display a bottom line in display subtle */
+        .display-subtle label::after {
+          background-color: var(--color-subtle-border);
+          bottom: 0;
+          content: '';
+          display: block;
+          height: var(--space);
+          left: 0.25rem;
+          position: absolute;
+          right: 0.25rem;
+          z-index: 0;
+        }
+
         label span,
         label img {
           z-index: 0;
@@ -183,7 +206,7 @@ export class CcToggle extends LitElement {
         /* NOT SELECTED */
         label {
           --color-bg: #fff;
-          --color-txt: var(--cc-toggle-color);
+          --color-txt: #666;
         }
 
         /* DISABLED */
@@ -196,7 +219,8 @@ export class CcToggle extends LitElement {
         }
 
         /* HOVERED */
-        input:not(:checked):enabled:hover + label {
+        .display-normal input:not(:checked):enabled:hover + label,
+        .display-subtle input:enabled:hover + label {
           --color-bg: #ededed;
         }
 
@@ -212,9 +236,14 @@ export class CcToggle extends LitElement {
         }
 
         /* SELECTED */
-        input:checked + label {
+        .display-normal input:checked + label {
           --color-bg: var(--cc-toggle-color);
           --color-txt: #fff;
+        }
+
+        .display-subtle input:checked + label {
+          --color-txt: var(--cc-toggle-color);
+          --color-subtle-border: var(--cc-toggle-color);
         }
       `,
     ];
