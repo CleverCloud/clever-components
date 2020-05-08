@@ -206,6 +206,11 @@ export class CcToggle extends LitElement {
           outline: 0;
         }
 
+        /* ACTIVE */
+        input:enabled:active + label::before {
+          transform: scale(0.95);
+        }
+
         /* SELECTED */
         input:checked + label {
           --color-bg: var(--cc-toggle-color);
