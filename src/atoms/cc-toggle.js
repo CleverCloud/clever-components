@@ -93,6 +93,7 @@ export class CcToggle extends LitElement {
         }
 
         .toggle-group {
+          background-color: #fff;
           border-radius: 0.15rem;
           box-sizing: border-box;
           display: flex;
@@ -115,8 +116,9 @@ export class CcToggle extends LitElement {
         }
 
         label {
+          /* used around the background */
+          --space: 2px;
           align-items: center;
-          background-color: var(--color-bg);
           border-color: var(--cc-toggle-color);
           border-style: solid;
           color: var(--color-txt);
@@ -127,6 +129,7 @@ export class CcToggle extends LitElement {
           grid-auto-flow: column;
           grid-gap: 0.5rem;
           padding: 0 0.5rem;
+          position: relative;
           text-transform: uppercase;
           -moz-user-select: none;
           -webkit-user-select: none;
@@ -146,6 +149,29 @@ export class CcToggle extends LitElement {
         label:last-of-type {
           border-radius: 0 0.15rem 0.15rem 0;
           border-right-width: 1px;
+        }
+
+        label:not(:first-of-type) {
+          margin-left: calc(var(--space) * -1);
+        }
+
+        /* Used to display a background behind the text */
+        label::before {
+          background-color: var(--color-bg);
+          border-radius: .15rem;
+          bottom: var(--space);
+          content: '';
+          display: block;
+          left: var(--space);
+          position: absolute;
+          right: var(--space);
+          top: var(--space);
+          z-index: 0;
+        }
+
+        label span,
+        label img {
+          z-index: 0;
         }
 
         img {
