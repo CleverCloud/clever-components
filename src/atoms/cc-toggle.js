@@ -155,10 +155,6 @@ export class CcToggle extends LitElement {
         }
 
         /* HOVERED */
-        .toggle-group.enabled:hover {
-          box-shadow: 0 1px 3px #888;
-        }
-
         input:not(:checked):enabled:hover + label {
           --color-bg: #ededed;
         }
@@ -166,12 +162,6 @@ export class CcToggle extends LitElement {
         /* FOCUS */
         .toggle-group.enabled:focus-within {
           box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
-          outline: 0;
-        }
-
-        /* ACTIVE */
-        .toggle-group.enabled:active {
-          box-shadow: none;
           outline: 0;
         }
 
