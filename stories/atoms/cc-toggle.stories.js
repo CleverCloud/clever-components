@@ -1,4 +1,11 @@
 import '../../src/atoms/cc-toggle.js';
+import boldSvg from '../assets/bold.svg';
+import centerSvg from '../assets/center.svg';
+import italicSvg from '../assets/italic.svg';
+import justifySvg from '../assets/justify.svg';
+import leftSvg from '../assets/left.svg';
+import rightSvg from '../assets/right.svg';
+import underlineSvg from '../assets/underline.svg';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
@@ -23,6 +30,13 @@ const IMAGES = {
   PAUL: 'https://twemoji.maxcdn.com/v/12.1.6/72x72/1f3b9.png',
   GEORGE: 'https://twemoji.maxcdn.com/v/12.1.6/72x72/1f3b8.png',
   RINGO: 'https://twemoji.maxcdn.com/v/12.1.6/72x72/1f941.png',
+  LEFT: leftSvg,
+  CENTER: centerSvg,
+  RIGHT: rightSvg,
+  JUSTIFY: justifySvg,
+  BOLD: boldSvg,
+  ITALIC: italicSvg,
+  UNDERLINE: underlineSvg,
 };
 
 const falseTrue = {
@@ -46,6 +60,39 @@ const beatles = {
 const beatlesChoicesImage = beatles.choices.map((c) => {
   return { ...c, image: IMAGES[c.value] };
 });
+
+const alignment = {
+  choices: [
+    { label: 'Left', value: 'LEFT' },
+    { label: 'Center', value: 'CENTER' },
+    { label: 'Right', value: 'RIGHT' },
+    { label: 'Justify', value: 'JUSTIFY' },
+  ],
+  value: 'CENTER',
+};
+
+const alignmentImage = {
+  ...alignment,
+  choices: alignment.choices.map((c) => {
+    return { ...c, image: IMAGES[c.value] };
+  }),
+};
+
+const textStyle = {
+  choices: [
+    { label: 'Bold', value: 'BOLD' },
+    { label: 'Italic', value: 'ITALIC' },
+    { label: 'Underline', value: 'UNDERLINE' },
+  ],
+  multipleValues: ['BOLD', 'UNDERLINE'],
+};
+
+const textStyleImage = {
+  ...textStyle,
+  choices: textStyle.choices.map((c) => {
+    return { ...c, image: IMAGES[c.value] };
+  }),
+};
 
 const baseItems = [
   falseTrue,
@@ -125,6 +172,50 @@ As you can see here, \`hide-text\` can only be used if \`choices[].image\` is de
   ],
 });
 
+// The images for this story are monochrome and use the exact same color defined below.
+// Using CSS filters, we're able to transform this color into gray, or white.
+export const toolbar = makeStory(conf, {
+  docs: `
+As explained in the "when to use section above", this component fits well in toolbars for single or multiple choice toggles.
+
+Here you can see a series of toolbar examples using CSS custom propreties of the component:
+
+* \`--cc-toggle-color\` to change the main color
+* \`--cc-toggle-img-filter\` so we can tweak the color of the image from default \`#6999d3\` to gray or white.
+* \`--cc-toggle-img-filter-selected\` so we can tweak the color of the image from default \`#6999d3\` to gray or white. 
+  `,
+  css: conf.css + `
+    :host {
+      grid-template-columns: repeat(2, min-content);
+      justify-items: start;
+    }
+    cc-toggle {
+      --cc-toggle-color: #6999d3;
+    }
+    cc-toggle:not(.subtle) {
+      --cc-toggle-img-filter: grayscale(100%) brightness(0.7);
+      --cc-toggle-img-filter-selected: brightness(2);
+    }
+    cc-toggle.subtle {
+      --cc-toggle-img-filter: grayscale(100%) brightness(0.7);
+    }
+  `,
+  items: [
+    { ...alignment, legend: 'Alignement (txt)' },
+    { ...alignment, legend: 'Alignement (txt) subtle', subtle: true, class: 'subtle' },
+    { ...alignmentImage, legend: 'Alignement (img+txt)' },
+    { ...alignmentImage, legend: 'Alignement (img+txt) subtle', subtle: true, class: 'subtle' },
+    { ...alignmentImage, legend: 'Alignement (img)', hideText: true },
+    { ...alignmentImage, legend: 'Alignement (img) subtle', hideText: true, subtle: true, class: 'subtle' },
+    { ...textStyle, legend: 'Text style (txt)' },
+    { ...textStyle, legend: 'Text style (txt) subtle', subtle: true, class: 'subtle' },
+    { ...textStyleImage, legend: 'Text style (img+txt)' },
+    { ...textStyleImage, legend: 'Text style (img+txt) subtle', subtle: true, class: 'subtle' },
+    { ...textStyleImage, legend: 'Text style (img)', hideText: true },
+    { ...textStyleImage, legend: 'Text style (img) subtle', hideText: true, subtle: true, class: 'subtle' },
+  ],
+});
+
 enhanceStoriesNames({
   defaultStory,
   disabled,
@@ -132,4 +223,5 @@ enhanceStoriesNames({
   multiple,
   color,
   hideText,
+  toolbar,
 });

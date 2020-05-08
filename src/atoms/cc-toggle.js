@@ -46,6 +46,8 @@ import { dispatchCustomEvent } from '../lib/events.js';
  * @event {CustomEvent<String>} cc-toggle:input-multiple - Fires the selected `multipleValues` whenever the selected `multipleValues` changes (single mode only).
  *
  * @cssprop {Color} --cc-toggle-color - The main color of the toggle (defaults: `#334252`). It must be defined directly on the element.
+ * @cssprop {Filter} --cc-toggle-img-filter - A CSS filter to apply on images of all choices (defaults: `none`). It must be defined directly on the element.
+ * @cssprop {Filter} --cc-toggle-img-filter-selected - A CSS filter to apply on images of selected choices (defaults: `none`). It must be defined directly on the element.
  */
 export class CcToggle extends LitElement {
 
@@ -142,6 +144,8 @@ export class CcToggle extends LitElement {
       css`
         :host {
           --cc-toggle-color: #334252;
+          --cc-toggle-img-filter: none;
+          --cc-toggle-img-filter-selected: none;
           display: flex;
           flex-direction: column;
         }
@@ -275,6 +279,10 @@ export class CcToggle extends LitElement {
           --color-bg: #fff;
           --color-txt: #666;
         }
+        
+        img {
+          filter: var(--cc-toggle-img-filter);
+        }
 
         /* DISABLED */
         .toggle-group.disabled {
@@ -308,6 +316,10 @@ export class CcToggle extends LitElement {
         }
 
         /* SELECTED */
+        input:checked + label img {
+          filter: var(--cc-toggle-img-filter-selected);
+        }
+
         .display-normal input:checked + label {
           --color-bg: var(--cc-toggle-color);
           --color-txt: #fff;
