@@ -343,6 +343,10 @@ export class CcInputText extends LitElement {
           z-index: 2;
         }
 
+        .input::placeholder {
+          font-style: italic;
+        }
+
         textarea:not([wrap]) {
           white-space: pre;
         }
