@@ -93,13 +93,12 @@ export class CcToggle extends LitElement {
         }
 
         .toggle-group {
-          border: 1px solid var(--cc-toggle-color);
           border-radius: 0.15rem;
           box-sizing: border-box;
           display: flex;
           height: 2rem;
           line-height: 1.25;
-          overflow: hidden;
+          overflow: visible;
         }
 
         /* We hide the <input> and only display the related <label> */
@@ -118,6 +117,8 @@ export class CcToggle extends LitElement {
         label {
           align-items: center;
           background-color: var(--color-bg);
+          border-color: var(--cc-toggle-color);
+          border-style: solid;
           color: var(--color-txt);
           cursor: pointer;
           display: grid;
@@ -131,6 +132,20 @@ export class CcToggle extends LitElement {
           -webkit-user-select: none;
           -ms-user-select: none;
           user-select: none;
+        }
+
+        label {
+          border-width: 1px 0;
+        }
+
+        label:first-of-type {
+          border-left-width: 1px;
+          border-radius: 0.15rem 0 0 0.15rem;
+        }
+
+        label:last-of-type {
+          border-radius: 0 0.15rem 0.15rem 0;
+          border-right-width: 1px;
         }
 
         img {
