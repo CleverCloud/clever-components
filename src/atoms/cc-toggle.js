@@ -5,11 +5,23 @@ import { repeat } from 'lit-html/directives/repeat.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 
 /**
- * A better looking radio input group component acting like a toggle between many options.
+ * A radio/checkbox input group component acting like a toggle between many options.
+ *
+ * ## When to use?
+ *
+ * * This component does not replace regular usage of radio/checkbox inputs in forms.
+ * * It works well in toolbars or filter panels.
+ * * The single mode mode (default) works well to toggle a component between two (or more) modes.
+ *
+ * ## Details
+ *
+ * * Single mode (default) is one selected choice.
+ * * Multiple mode is zero to many selected choices and is enabled by setting \`multipleValues\`.
  *
  * ## Technical details
  *
- * * Uses native `input[type=radio]` under the hood to keep native behaviour (a11y, keyboards...).
+ * * Single mode (default) uses native `input[type=radio]` under the hood to keep native behaviour (a11y, keyboards...).
+ * * Multiple mode uses native `input[type=checkbox]` under the hood to keep native behaviour (a11y, keyboards...).
  * * We decided to use a JavaScript array of objects for the choices because it's way simpler to implement and not that dirtier to use.
  *
  * ## Type definitions
@@ -23,13 +35,15 @@ import { dispatchCustomEvent } from '../lib/events.js';
  * ```
  *
  * @prop {Choice[]} choices - Sets the list of choices.
- * @prop {Boolean} disabled - Sets the `disabled` attribute on all `input[type=radio]` of whole group.
+ * @prop {Boolean} disabled - Sets the `disabled` attribute on all inner `<input>` of whole group.
  * @prop {Boolean} hideText - Hides the text and only displays the image specified with `choices[i].image`. The text will be added as `title` on the inner `<label>` and an `aria-label` on the inner `<input>`.
- * @prop {String} legend - Sets a legend to describe the whole component (radio group).
+ * @prop {String} legend - Sets a legend to describe the whole component (input group).
+ * @prop {Array} multipleValues - Enables multiple mode and sets the selected values.
  * @prop {Boolean} subtle - Uses a more subtle display mode, less attractive to the user's attention.
- * @prop {String} value - Sets the selected value.
+ * @prop {String} value - Sets the selected value (single mode only).
  *
- * @event {CustomEvent<String>} cc-toggle:input - Fires the selected `value` whenever the selected `value` changes.
+ * @event {CustomEvent<String>} cc-toggle:input - Fires the selected `value` whenever the selected `value` changes (single mode only).
+ * @event {CustomEvent<String>} cc-toggle:input-multiple - Fires the selected `multipleValues` whenever the selected `multipleValues` changes (single mode only).
  *
  * @cssprop {Color} --cc-toggle-color - The main color of the toggle (defaults: `#334252`). It must be defined directly on the element.
  */
@@ -42,6 +56,7 @@ export class CcToggle extends LitElement {
       disabled: { type: Boolean },
       hideText: { type: Boolean, attribute: 'hide-text' },
       legend: { type: String },
+      multipleValues: { type: Array },
       subtle: { type: Boolean },
       value: { type: String, reflect: true },
     };
@@ -57,8 +72,22 @@ export class CcToggle extends LitElement {
   }
 
   _onChange (e) {
-    this.value = e.target.value;
-    dispatchCustomEvent(this, 'input', this.value);
+    if (this.multipleValues == null) {
+      this.value = e.target.value;
+      dispatchCustomEvent(this, 'input', this.value);
+    }
+    else {
+      // Same order as the choices
+      const multipleValues = this.choices
+        .filter(({ value }) => {
+          return value === e.target.value
+            ? e.target.checked
+            : this.multipleValues.includes(value);
+        })
+        .map(({ value }) => value);
+      this.multipleValues = multipleValues;
+      dispatchCustomEvent(this, 'input-multiple', multipleValues);
+    }
   }
 
   render () {
@@ -68,6 +97,15 @@ export class CcToggle extends LitElement {
       enabled: !this.disabled,
       'display-normal': !this.subtle,
       'display-subtle': this.subtle,
+      'mode-single': this.multipleValues == null,
+      'mode-multiple': this.multipleValues != null,
+    };
+    const type = (this.multipleValues == null) ? 'radio' : 'checkbox';
+
+    const isChecked = (value) => {
+      return (this.multipleValues != null)
+        ? this.multipleValues.includes(value)
+        : this.value === value;
     };
 
     return html`
@@ -76,12 +114,12 @@ export class CcToggle extends LitElement {
         <div class="toggle-group ${classMap(classes)}">
           ${repeat(this.choices, ({ value }) => value, ({ label, image, value }) => html`
             <input
-              type="radio"
+              type=${type}
               name=${this._uniqueName}
               .value=${value}
               id=${value}
               ?disabled=${this.disabled}
-              .checked=${this.value === value}
+              .checked=${isChecked(value)}
               @change=${this._onChange}
               aria-label=${ifDefined((image != null && this.hideText) ? label : undefined)}>
             <label for=${value} title=${ifDefined((image != null && this.hideText) ? label : undefined)}>
@@ -254,9 +292,14 @@ export class CcToggle extends LitElement {
         }
 
         /* FOCUS */
-        .toggle-group.enabled:not(:hover):focus-within {
+        .toggle-group.mode-single.enabled:not(:hover):focus-within,
+        .toggle-group.mode-multiple.enabled:not(:hover) input:enabled:focus + label {
           box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
           outline: 0;
+        }
+
+        .toggle-group.mode-multiple.enabled:not(:hover) input:enabled:focus + label {
+          z-index: 1;
         }
 
         /* ACTIVE */

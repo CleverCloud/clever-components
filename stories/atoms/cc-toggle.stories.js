@@ -71,6 +71,22 @@ export const legend = makeStory(conf, {
   items: normalAndSubtleItems.map((p) => ({ ...p, legend: 'The legend' })),
 });
 
+export const multiple = makeStory(conf, {
+  css: conf.css + `
+    :host {
+      grid-template-columns: repeat(3, min-content);
+    }
+  `,
+  items: [
+    { ...beatles, multipleValues: [] },
+    { ...beatles, multipleValues: ['PAUL', 'RINGO'] },
+    { ...beatles, multipleValues: ['JOHN', 'PAUL', 'GEORGE', 'RINGO'] },
+    { ...beatles, multipleValues: [], subtle: true },
+    { ...beatles, multipleValues: ['PAUL', 'RINGO'], subtle: true },
+    { ...beatles, multipleValues: ['JOHN', 'PAUL', 'GEORGE', 'RINGO'], subtle: true },
+  ],
+});
+
 export const color = makeStory(conf, {
   docs: `
 You can have a bit of control over the main color used by the component with \`--cc-toggle-color\`:
@@ -113,6 +129,7 @@ enhanceStoriesNames({
   defaultStory,
   disabled,
   legend,
+  multiple,
   color,
   hideText,
 });
