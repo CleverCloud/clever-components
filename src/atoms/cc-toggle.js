@@ -160,7 +160,7 @@ export class CcToggle extends LitElement {
         }
 
         /* FOCUS */
-        .toggle-group.enabled:focus-within {
+        .toggle-group.enabled:not(:hover):focus-within {
           box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
           outline: 0;
         }
