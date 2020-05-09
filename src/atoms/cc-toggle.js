@@ -58,7 +58,7 @@ export class CcToggle extends LitElement {
       disabled: { type: Boolean },
       hideText: { type: Boolean, attribute: 'hide-text' },
       legend: { type: String },
-      multipleValues: { type: Array },
+      multipleValues: { type: Array, attribute: 'multiple-values', reflect: true },
       subtle: { type: Boolean },
       value: { type: String, reflect: true },
     };
@@ -279,7 +279,7 @@ export class CcToggle extends LitElement {
           --color-bg: #fff;
           --color-txt: #666;
         }
-        
+
         img {
           filter: var(--cc-toggle-img-filter);
         }
