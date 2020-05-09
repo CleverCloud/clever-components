@@ -43,7 +43,7 @@ import { dispatchCustomEvent } from '../lib/events.js';
  * @prop {String} value - Sets the selected value (single mode only).
  *
  * @event {CustomEvent<String>} cc-toggle:input - Fires the selected `value` whenever the selected `value` changes (single mode only).
- * @event {CustomEvent<Array>} cc-toggle:input-multiple - Fires the selected `multipleValues` whenever the selected `multipleValues` changes (single mode only).
+ * @event {CustomEvent<String[]>} cc-toggle:input-multiple - Fires the selected `multipleValues` whenever the selected `multipleValues` changes (single mode only).
  *
  * @cssprop {Color} --cc-toggle-color - The main color of the toggle (defaults: `#334252`). It must be defined directly on the element.
  * @cssprop {Filter} --cc-toggle-img-filter - A CSS filter to apply on images of all choices (defaults: `none`). It must be defined directly on the element.
