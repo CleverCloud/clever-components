@@ -22,6 +22,10 @@ const SKELETON_FOOBAR = [
 /**
  * A component doing X and Y (one liner description of your component).
  *
+ * * 🎨 default CSS display: `block`
+ * <br>
+ * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/dir/cc-example-component.js)
+ *
  * ## Details
  *
  * * Details about bla.
