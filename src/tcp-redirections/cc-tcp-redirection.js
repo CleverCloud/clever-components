@@ -35,6 +35,14 @@ const redirectionSvg = assetUrl(import.meta, '../assets/redirection-on.svg');
  * }
  * ```
  *
+ * ## Images
+ *
+ * | | |
+ * |-------|------|
+ * | <img src="/src/assets/warning.svg" style="height: 1.5rem; vertical-align: middle"> | <code>warning.svg</code>
+ * | <img src="/src/assets/redirection-off.svg" style="height: 1.5rem; vertical-align: middle"> | <code>redirection-off.svg</code>
+ * | <img src="/src/assets/redirection-on.svg" style="height: 1.5rem; vertical-align: middle"> | <code>redirection-on.svg</code>
+ *
  * @prop {Boolean} error - Set if there was an error during creation / deletion.
  * @prop {String} namespace - Sets the name of the namespace.
  * @prop {Boolean} private - Set if this namespace is dedicated to the customer.

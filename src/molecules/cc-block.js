@@ -20,6 +20,13 @@ const upSvg = assetUrl(import.meta, '../assets/up.svg');
  *
  * * The main section is wrapped in a `<cc-expand>` so variation of this section height will be animated.
  *
+ * ## Images
+ *
+ * | | |
+ * |-------|------|
+ * | <img src="/src/assets/down.svg" style="height: 1.5rem; vertical-align: middle"> | <code>down.svg</code>
+ * | <img src="/src/assets/up.svg" style="height: 1.5rem; vertical-align: middle"> | <code>up.svg</code>
+ *
  * @prop {String} icon - Sets the URL of the image before the title. Icon is hidden if nullish.
  * @prop {"off"|"open"|"close"} state - Sets the state of the toggle behaviour.
  *

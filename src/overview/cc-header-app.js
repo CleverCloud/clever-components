@@ -73,6 +73,20 @@ const SKELETON_STATUS = 'unknown';
  *                  | "running" | "start-failed" | "starting" | "stopped" | "unknown"
  * ```
  *
+ * ## Images
+ *
+ * | | |
+ * |-------|------|
+ * | <img src="/src/assets/git.svg" style="height: 1.5rem; vertical-align: middle"> | <code>git.svg</code>
+ * | <img src="/src/assets/restart-failed.svg" style="height: 1.5rem; vertical-align: middle"> | <code>restart-failed.svg</code>
+ * | <img src="/src/assets/restarting-with-downtime.svg" style="height: 1.5rem; vertical-align: middle"> | <code>restarting-with-downtime.svg</code>
+ * | <img src="/src/assets/restarting.svg" style="height: 1.5rem; vertical-align: middle"> | <code>restarting.svg</code>
+ * | <img src="/src/assets/running.svg" style="height: 1.5rem; vertical-align: middle"> | <code>running.svg</code>
+ * | <img src="/src/assets/start-failed.svg" style="height: 1.5rem; vertical-align: middle"> | <code>start-failed.svg</code>
+ * | <img src="/src/assets/starting.svg" style="height: 1.5rem; vertical-align: middle"> | <code>starting.svg</code>
+ * | <img src="/src/assets/stopped.svg" style="height: 1.5rem; vertical-align: middle"> | <code>stopped.svg</code>
+ * | <img src="/src/assets/unknown.svg" style="height: 1.5rem; vertical-align: middle"> | <code>unknown.svg</code>
+ *
  * @prop {App} app - Sets application details and config.
  * @prop {Boolean} disableButtons - Disables all buttons (in a "login as" use case).
  * @prop {Boolean} error - Displays an error message.

@@ -60,6 +60,13 @@ const SKELETON_STATUS_CODES = { 200: 1 };
  * }
  * ```
  *
+ * ## Images
+ *
+ * | | |
+ * |-------|------|
+ * | <img src="/src/assets/close.svg" style="height: 1.5rem; vertical-align: middle"> | <code>close.svg</code>
+ * | <img src="/src/assets/info.svg" style="height: 1.5rem; vertical-align: middle"> | <code>info.svg</code>
+ *
  * @prop {Boolean} error - Displays an error message.
  * @prop {StatusCodesData} statusCodes - Sets data with the number of requests for each HTTP status code.
  */

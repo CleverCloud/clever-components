@@ -48,6 +48,13 @@ const SKELETON_FOOBAR = [
  * }
  * ```
  *
+ * ## Images
+ *
+ * | | |
+ * |-------|------|
+ * | <img src="/src/assets/warning.svg" style="height: 1.5rem; vertical-align: middle"> | <code>warning.svg</code>
+ * | <img src="/src/assets/redirection-off.svg" style="height: 1.5rem; vertical-align: middle"> | <code>redirection-off.svg</code>
+ *
  * @prop {String} one - Description for one.
  * @prop {Boolean} two - Description for two.
  * @prop {ExampleInterface[]} three - Description for three.

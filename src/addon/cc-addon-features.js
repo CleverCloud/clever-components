@@ -51,6 +51,14 @@ const SKELETON_FEATURES = [
  * }
  * ```
  *
+ * ## Images
+ *
+ * | | |
+ * |-------|------|
+ * | <img src="/src/assets/cpu.svg" style="height: 1.5rem; vertical-align: middle"> | <code>cpu.svg</code>
+ * | <img src="/src/assets/disk.svg" style="height: 1.5rem; vertical-align: middle"> | <code>disk.svg</code>
+ * | <img src="/src/assets/ram.svg" style="height: 1.5rem; vertical-align: middle"> | <code>ram.svg</code>
+ *
  * @prop {Boolean} error - Displays an error message.
  * @prop {Feature[]} features - Sets the list features.
  */

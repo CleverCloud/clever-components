@@ -45,6 +45,13 @@ const SKELETON_REQUESTS = Array
  * ]
  * ```
  *
+ * ## Images
+ *
+ * | | |
+ * |-------|------|
+ * | <img src="/src/assets/close.svg" style="height: 1.5rem; vertical-align: middle"> | <code>close.svg</code>
+ * | <img src="/src/assets/info.svg" style="height: 1.5rem; vertical-align: middle"> | <code>info.svg</code>
+ *
  * @prop {RequestsData[24]} data - Sets the list of 24 time windows of one hour with timestamps and number of requests.
  * @prop {Boolean} error - Displays an error message.
  */

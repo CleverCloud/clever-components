@@ -50,6 +50,15 @@ function arrayEquals (a, b) {
  * * The `secret` feature only works for simple line mode (when `multi` is false).
  * * The `tags` feature enables a space-separated-value input wrapped on several lines where line breaks are not allowed. Don't use it with `multi` or `secret`.
  *
+ * ## Images
+ *
+ * | | |
+ * |-------|------|
+ * | <img src="/src/assets/clipboard.svg" style="height: 1.5rem; vertical-align: middle"> | <code>clipboard.svg</code>
+ * | <img src="/src/assets/eye-closed.svg" style="height: 1.5rem; vertical-align: middle"> | <code>eye-closed.svg</code>
+ * | <img src="/src/assets/eye-open.svg" style="height: 1.5rem; vertical-align: middle"> | <code>eye-open.svg</code>
+ * | <img src="/src/assets/tick.svg" style="height: 1.5rem; vertical-align: middle"> | <code>tick.svg</code>
+ *
  * @prop {Boolean} clipboard - Adds a copy-to-clipboard button (when not disabled and not skeleton).
  * @prop {Boolean} disabled - Sets `disabled` attribute on inner native `<input>/<textarea>` element.
  * @prop {String} label - Sets label for the input.

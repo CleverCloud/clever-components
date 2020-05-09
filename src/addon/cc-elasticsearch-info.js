@@ -36,6 +36,12 @@ const ELASTICSEARCH_DOCUMENTATION = 'https://www.clever-cloud.com/doc/addons/ela
  * }
  * ```
  *
+ * ## Images
+ *
+ * | | |
+ * |-------|------|
+ * | <img src="/src/assets/info.svg" style="height: 1.5rem; vertical-align: middle"> | <code>info.svg</code>
+ *
  * @prop {Link[]} links - Sets the different links.
  * @prop {Boolean} error - Display an error message.
  */
