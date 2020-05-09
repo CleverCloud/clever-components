@@ -5,8 +5,6 @@ import '../../src/translations/translations.fr.js';
 import { decorate } from '@storybook/addon-actions';
 import { sequence } from './sequence.js';
 
-// NOTE: Those dirty injects are work in progress
-
 const customEvent = decorate([(args) => {
   return [JSON.stringify(args[0].detail)];
 }]);

@@ -54,16 +54,6 @@ addParameters({
   viewport: { viewports },
 });
 
-// Temporary patch for default values and redundancy
-function addDefaultValue (def) {
-  def.defaultValue = def.default;
-}
-
-customElements.tags.forEach((tagDefinition) => {
-  (tagDefinition.attributes || []).forEach((def) => addDefaultValue(def));
-  (tagDefinition.properties || []).forEach((def) => addDefaultValue(def));
-});
-
 setCustomElements(customElements);
 
 // We cannot use main.js (stories: []) yet because of the HMR config for web-components
