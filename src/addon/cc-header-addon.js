@@ -23,6 +23,8 @@ const SKELETON_VERSION = '????????';
  * A component to display various info about an add-on (name, plan, version...).
  *
  * 🎨 default CSS display: `block`
+ * <br>
+ * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-header-addon.js)
  *
  * ## Details
  *

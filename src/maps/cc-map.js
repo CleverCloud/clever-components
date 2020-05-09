@@ -28,6 +28,8 @@ const COLOR_PALETTE = [
  * World map with two modes: blinking dots or heatmap.
  *
  * 🎨 default CSS display: `flex`
+ * <br>
+ * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/maps/cc-map.js)
  *
  * ## Details
  *

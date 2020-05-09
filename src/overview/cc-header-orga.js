@@ -19,6 +19,8 @@ const SKELETON_ORGA = {
  * A component to display various info about an orga (name and enterprise status).
  *
  * 🎨 default CSS display: `block`
+ * <br>
+ * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-header-orga.js)
  *
  * ## Details
 

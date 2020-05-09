@@ -8,6 +8,8 @@ import { dispatchCustomEvent } from '../lib/events.js';
  * A radio/checkbox input group component acting like a toggle between many options.
  *
  * 🎨 default CSS display: `flex`
+ * <br>
+ * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-toggle.js)
  *
  * ## When to use?
  *

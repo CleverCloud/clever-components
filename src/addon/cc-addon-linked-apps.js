@@ -18,6 +18,8 @@ const SKELETON_APPLICATIONS = [
  * A component to display applications linked to an add-on.
  *
  * 🎨 default CSS display: `block`
+ * <br>
+ * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-linked-apps.js)
  *
  * ## Details
  *

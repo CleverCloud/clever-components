@@ -5,6 +5,8 @@ const appendChild = (parent, child) => parent.appendChild(child);
  * An invisible wrapper that changes its size (with an animation) according to the size of its children.
  *
  * 🎨 default CSS display: `block`
+ * <br>
+ * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-expand.js)
  *
  * ## Technical details
  *

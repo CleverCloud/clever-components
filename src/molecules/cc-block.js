@@ -13,6 +13,8 @@ const upSvg = assetUrl(import.meta, '../assets/up.svg');
  * A display component with mostly HTML+CSS and a open/close toggle feature.
  *
  * 🎨 default CSS display: `grid`
+ * <br>
+ * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/molecules/cc-block.js)
  *
  * ## Details
  *

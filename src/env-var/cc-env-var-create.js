@@ -11,6 +11,8 @@ import { i18n } from '../lib/i18n.js';
  * A small form to create a new environment variable with validations on the name.
  *
  * 🎨 default CSS display: `block`
+ * <br>
+ * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/env-var/cc-env-var-create.js)
  *
  * ## Details
  *

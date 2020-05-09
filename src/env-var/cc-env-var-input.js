@@ -11,6 +11,8 @@ import { skeletonStyles } from '../styles/skeleton.js';
  * A small input to manipulate an environement variable.
  *
  * 🎨 default CSS display: `block`
+ * <br>
+ * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/env-var/cc-env-var-input.js)
  *
  * ## Type definitions
  *

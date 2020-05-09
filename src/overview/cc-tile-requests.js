@@ -21,6 +21,8 @@ const SKELETON_REQUESTS = Array
  * A "tile" component to display HTTP requests distribution over the last 24 hours in a bar chart.
  *
  * 🎨 default CSS display: `grid`
+ * <br>
+ * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-tile-requests.js)
  *
  * ## Details
  *

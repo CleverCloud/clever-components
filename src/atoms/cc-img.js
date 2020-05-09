@@ -7,6 +7,8 @@ import { skeletonStyles } from '../styles/skeleton.js';
  * A wrapper around `<img>` to add loader indicator, remove ugly borders and display proper placeholder text when there's an error.
  *
  * 🎨 default CSS display: `inline-block`
+ * <br>
+ * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-img.js)
  *
  * ## Details
  *

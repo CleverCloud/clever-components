@@ -16,6 +16,8 @@ const APM_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com/log
  * A form component to select the two options of our Elasticsearch offer: Kibana and APM.
  *
  * 🎨 default CSS display: `block`
+ * <br>
+ * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-elasticsearch-options.js)
  *
  * ## Details
  *

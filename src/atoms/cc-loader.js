@@ -4,6 +4,8 @@ import { LitElement, css, html } from 'lit-element';
  * A loading indicator, auto centered and with flexible size.
  *
  * 🎨 default CSS display: `flex`
+ * <br>
+ * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-loader.js)
  *
  * ## Details
  *

@@ -10,6 +10,8 @@ import { linkStyles } from '../templates/cc-link.js';
  * Wraps a `<button>` with a skeleton state, some modes and a delay mechanism.
  *
  * 🎨 default CSS display: `inline-block`
+ * <br>
+ * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-button.js)
  *
  * ## Details
  *

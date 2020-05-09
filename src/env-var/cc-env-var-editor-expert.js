@@ -15,6 +15,8 @@ const SKELETON_VARIABLES = [
  * A high level environment variable editor to create/edit/delete all variables at once as a big string (properly parsed with validation and error messages).
  *
  * 🎨 default CSS display: `block` - `none` with `[hidden]`
+ * <br>
+ * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/env-var/cc-env-var-editor-expert.js)
  *
  * ## Type definitions
  *

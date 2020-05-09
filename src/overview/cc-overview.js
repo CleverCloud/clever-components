@@ -5,6 +5,8 @@ import { withResizeObserver } from '../mixins/with-resize-observer.js';
  * A display only component (just HTML+CSS) to layout heads, a main and several tiles.
  *
  * 🎨 default CSS display: `grid`
+ * <br>
+ * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-overview.js)
  *
  * ## Details
  *

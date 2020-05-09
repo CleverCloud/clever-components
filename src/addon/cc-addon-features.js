@@ -32,6 +32,8 @@ const SKELETON_FEATURES = [
  * A component to display an add-on set of features.
  *
  * 🎨 default CSS display: `block`
+ * <br>
+ * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-features.js)
  *
  * ## Details
  *

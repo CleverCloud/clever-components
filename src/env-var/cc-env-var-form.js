@@ -15,6 +15,8 @@ import { linkStyles } from '../templates/cc-link.js';
  * A high level environment variable form (wrapping simple editor and expert editor into one interface).
  *
  * 🎨 default CSS display: `block`
+ * <br>
+ * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/env-var/cc-env-var-form.js)
  *
  * ## Details
  *

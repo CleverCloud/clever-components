@@ -40,6 +40,8 @@ function arrayEquals (a, b) {
  * An enhanced text input with support for multiline, copy-to-clipboard, show/hide secret and highlighted tags.
  *
  * 🎨 default CSS display: `inline-block` - `block` with `[multi]`
+ * <br>
+ * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-input-text.js)
  *
  * ## Technical details
  *

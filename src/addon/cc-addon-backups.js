@@ -24,6 +24,8 @@ const SKELETON_BACKUPS = {
  * A components to display backups available for an add-on
  *
  * 🎨 default CSS display: `grid`
+ * <br>
+ * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-backups.js)
  *
  * ## Details
  *
