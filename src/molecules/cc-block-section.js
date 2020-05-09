@@ -3,6 +3,8 @@ import { css, html, LitElement } from 'lit-element';
 /**
  * A display component with mostly HTML+CSS to separate a `<cc-block>` into different sections.
  *
+ * 🎨 default CSS display: `grid`
+ *
  * ## Details
  *
  * * This component is designed to only be use as a direct child of `<cc-block>`.

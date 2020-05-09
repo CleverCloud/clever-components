@@ -16,6 +16,8 @@ const redirectionSvg = assetUrl(import.meta, '../assets/redirection-on.svg');
 /**
  * A small form to create or delete a TCP redirection
  *
+ * 🎨 default CSS display: `block`
+ *
  * ## Type definitions
  *
  * ```js

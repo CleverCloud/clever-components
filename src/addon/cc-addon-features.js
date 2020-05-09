@@ -31,6 +31,8 @@ const SKELETON_FEATURES = [
 /**
  * A component to display an add-on set of features.
  *
+ * 🎨 default CSS display: `block`
+ *
  * ## Details
  *
  * * When `features` is nullish, a skeleton screen UI pattern is displayed (loading hint).

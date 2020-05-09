@@ -4,6 +4,8 @@ import { i18n } from '../lib/i18n.js';
 /**
  * A layout component to position a simple beta ribbon around any content.
  *
+ * 🎨 default CSS display: `grid`
+ *
  * @prop {Boolean} fill - Forces the slotted element to fill the beta container size (same heigh and width). By default, the beta container adapts to the slotted element size.
  * @prop {"top-left"|"bottom-left"|"top-right"|"bottom-right"} position - Where to position the beta label.
  *

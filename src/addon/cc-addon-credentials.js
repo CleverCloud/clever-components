@@ -10,6 +10,8 @@ import { skeletonStyles } from '../styles/skeleton.js';
 /**
  * A component to display an add-on credentials.
  *
+ * 🎨 default CSS display: `block`
+ *
  * ## Details
  *
  * * When the `value` of a credential is nullish, a skeleton UI pattern is displayed (loading hint).

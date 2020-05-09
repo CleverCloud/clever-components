@@ -27,6 +27,8 @@ const COLOR_PALETTE = [
 /**
  * World map with two modes: blinking dots or heatmap.
  *
+ * 🎨 default CSS display: `flex`
+ *
  * ## Details
  *
  * * The component has a default height of 15rem and a default width 20rem but this can be overridden with CSS.

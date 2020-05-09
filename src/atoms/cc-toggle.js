@@ -7,6 +7,8 @@ import { dispatchCustomEvent } from '../lib/events.js';
 /**
  * A radio/checkbox input group component acting like a toggle between many options.
  *
+ * 🎨 default CSS display: `flex`
+ *
  * ## When to use?
  *
  * * This component does not replace regular usage of radio/checkbox inputs in forms.

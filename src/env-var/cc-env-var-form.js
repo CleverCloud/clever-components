@@ -14,6 +14,8 @@ import { linkStyles } from '../templates/cc-link.js';
 /**
  * A high level environment variable form (wrapping simple editor and expert editor into one interface).
  *
+ * 🎨 default CSS display: `block`
+ *
  * ## Details
  *
  * * You can set a custom `heading` and description with the default <slot>.

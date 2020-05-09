@@ -10,6 +10,8 @@ import { i18n } from '../lib/i18n.js';
 /**
  * A small form to create a new environment variable with validations on the name.
  *
+ * 🎨 default CSS display: `block`
+ *
  * ## Details
  *
  * * The validation of the variable name format is handled with [@clevercloud/client](https://github.com/CleverCloud/clever-client.js/blob/master/esm/utils/env-vars.js)

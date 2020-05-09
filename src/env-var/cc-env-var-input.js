@@ -10,6 +10,8 @@ import { skeletonStyles } from '../styles/skeleton.js';
 /**
  * A small input to manipulate an environement variable.
  *
+ * 🎨 default CSS display: `block`
+ *
  * ## Type definitions
  *
  * ```js

@@ -22,6 +22,8 @@ const SKELETON_VERSION = '????????';
 /**
  * A component to display various info about an add-on (name, plan, version...).
  *
+ * 🎨 default CSS display: `block`
+ *
  * ## Details
  *
  * * When `addon` or `version` are null, a skeleton screen UI pattern is displayed (loading hint) on the corresponding zone.

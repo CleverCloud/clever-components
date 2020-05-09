@@ -18,6 +18,8 @@ const ELASTICSEARCH_DOCUMENTATION = 'https://www.clever-cloud.com/doc/addons/ela
 /**
  * A component to display various links (Documentation, kibana, APM) for an elasticsearch service.
  *
+ * 🎨 default CSS display: `grid`
+ *
  * ## Details
  *
  * * You need to list the links you want to display in `links`.

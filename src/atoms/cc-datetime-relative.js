@@ -10,6 +10,8 @@ function updateTrackedElements () {
 /**
  * A text-only component to display a localized humanized relative date (ex: "two minutes ago").
  *
+ * 🎨 default CSS display: not defined, should default to `inline` in most browsers
+ *
  * ## Details
  *
  * * This component relies on the i18n system of this component library to format the relative date.

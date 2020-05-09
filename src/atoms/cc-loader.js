@@ -3,6 +3,8 @@ import { LitElement, css, html } from 'lit-element';
 /**
  * A loading indicator, auto centered and with flexible size.
  *
+ * 🎨 default CSS display: `flex`
+ *
  * ## Details
  *
  * * Size this component like you want, the loading circle will be centered automatically.

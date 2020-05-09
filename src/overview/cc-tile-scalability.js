@@ -16,6 +16,8 @@ const SKELETON_SCALABILITY = {
 /**
  * A "tile" component to display the current config of scalability for a given app.
  *
+ * 🎨 default CSS display: `grid`
+ *
  * ## Details
 
  * * When `scalability` is nullish, a skeleton screen UI pattern is displayed (loading hint).

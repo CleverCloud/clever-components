@@ -8,6 +8,8 @@ import { i18n } from '../lib/i18n.js';
 /**
  * A component to display groups of readonly `<cc-env-var-form>` for linked apps of add-ons.
  *
+ * 🎨 default CSS display: `block`
+ *
  * ## Details
  *
  * * When `services` is nullish, a loading indicator is displayed with a message (corresponding to `type`).

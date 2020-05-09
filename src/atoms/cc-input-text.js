@@ -39,6 +39,8 @@ function arrayEquals (a, b) {
 /**
  * An enhanced text input with support for multiline, copy-to-clipboard, show/hide secret and highlighted tags.
  *
+ * 🎨 default CSS display: `inline-block` - `block` with `[multi]`
+ *
  * ## Technical details
  *
  * * Uses a native `<input>` element by default and a `<textarea>` element when `multi` is true.

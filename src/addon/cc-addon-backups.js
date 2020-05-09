@@ -23,6 +23,8 @@ const SKELETON_BACKUPS = {
 /**
  * A components to display backups available for an add-on
  *
+ * 🎨 default CSS display: `grid`
+ *
  * ## Details
  *
  * * When `backups` is nullish, a skeleton screen UI pattern is displayed (loading hint).

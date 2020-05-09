@@ -14,6 +14,8 @@ const SKELETON_VARIABLES = [
 /**
  * A high level environment variable editor to create/edit/delete variables one at a time (with validation and error messages).
  *
+ * 🎨 default CSS display: `grid` - `none` with `[hidden]`
+ *
  * ## Type definitions
  *
  * ```js

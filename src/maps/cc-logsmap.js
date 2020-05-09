@@ -7,6 +7,8 @@ import { i18n } from '../lib/i18n.js';
 /**
  * World map of access logs with two modes: blinking dots or heatmap.
  *
+ * 🎨 default CSS display: `block`
+ *
  *
  * ## Details
  *

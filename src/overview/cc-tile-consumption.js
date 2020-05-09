@@ -13,6 +13,8 @@ const SKELETON_CONSUMPTION = {
 /**
  * A "tile" component to display consumption info (yesterday and over last 30 days).
  *
+ * 🎨 default CSS display: `grid`
+ *
  * ## Details
  *
  * * When `consumption` is nullish, a skeleton screen UI pattern is displayed (loading hint).

@@ -12,6 +12,8 @@ const upSvg = assetUrl(import.meta, '../assets/up.svg');
 /**
  * A display component with mostly HTML+CSS and a open/close toggle feature.
  *
+ * 🎨 default CSS display: `grid`
+ *
  * ## Details
  *
  * * The main section is wrapped in a `<cc-expand>` so variation of this section height will be animated.

@@ -15,6 +15,8 @@ const SKELETON_DEPLOYS = [
 /**
  * A "tile" component to display a list of deployments (status, humanized time ago and logs link).
  *
+ * 🎨 default CSS display: `grid`
+ *
  * ## Details
  *
  * * When `deployments` is nullish, a skeleton screen UI pattern is displayed (loading hint)

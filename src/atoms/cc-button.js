@@ -9,6 +9,8 @@ import { linkStyles } from '../templates/cc-link.js';
 /**
  * Wraps a `<button>` with a skeleton state, some modes and a delay mechanism.
  *
+ * 🎨 default CSS display: `inline-block`
+ *
  * ## Details
  *
  * * Attributes `primary`, `success`, `warning` and `danger` define the UI _mode_ of the button.

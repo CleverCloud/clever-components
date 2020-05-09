@@ -4,6 +4,8 @@ const appendChild = (parent, child) => parent.appendChild(child);
 /**
  * A pure layout component used to overcome the lack of `gap` in CSS flex containers.
  *
+ * 🎨 default CSS display: `grid`
+ *
  * ## Technical details
  *
  * * This component does not use lit* deps on purpose (keep small and not useful).

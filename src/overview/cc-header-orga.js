@@ -18,6 +18,8 @@ const SKELETON_ORGA = {
 /**
  * A component to display various info about an orga (name and enterprise status).
  *
+ * 🎨 default CSS display: `block`
+ *
  * ## Details
 
  * * When `orga` is nullish, a skeleton screen UI pattern is displayed (loading hint)

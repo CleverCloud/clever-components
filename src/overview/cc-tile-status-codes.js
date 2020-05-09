@@ -31,6 +31,8 @@ const SKELETON_STATUS_CODES = { 200: 1 };
 /**
  * A "tile" component to display HTTP response status codes in a pie chart (donut).
  *
+ * 🎨 default CSS display: `grid`
+ *
  * ## Details
 
  * * When `data` is nullish, a skeleton screen UI pattern is displayed (loading hint).

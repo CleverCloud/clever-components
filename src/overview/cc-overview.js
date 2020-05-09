@@ -4,6 +4,8 @@ import { withResizeObserver } from '../mixins/with-resize-observer.js';
 /**
  * A display only component (just HTML+CSS) to layout heads, a main and several tiles.
  *
+ * 🎨 default CSS display: `grid`
+ *
  * ## Details
  *
  * * The head components must have the `head` CSS class, they will be displayed at the top.

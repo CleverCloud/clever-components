@@ -10,6 +10,8 @@ const warningSvg = assetUrl(import.meta, '../assets/warning.svg');
 /**
  * A display component for error messages with 4 modes: inline (default), info, loading or confirm.
  *
+ * 🎨 default CSS display: `block`
+ *
  * ## Details
  *
  * * Use `"inline"` mode when you want to display the message as simple text.

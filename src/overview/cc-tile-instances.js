@@ -25,6 +25,8 @@ const SKELETON_INSTANCES = {
 /**
  * A "tile" component to display current status of running and deploying instances for a given app.
  *
+ * 🎨 default CSS display: `grid`
+ *
  * ## Details
  *
  * * When `instances` is nullish, a loader is displayed.

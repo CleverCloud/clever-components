@@ -17,6 +17,8 @@ const SKELETON_APPLICATIONS = [
 /**
  * A component to display applications linked to an add-on.
  *
+ * 🎨 default CSS display: `block`
+ *
  * ## Details
  *
  * * When applications is nullish, a skeleton screen UI pattern is displayed (loading hint).

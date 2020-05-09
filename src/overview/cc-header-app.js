@@ -47,6 +47,8 @@ const SKELETON_STATUS = 'unknown';
 /**
  * A component to display various info about an app (name, commits, status...).
  *
+ * 🎨 default CSS display: `block`
+ *
  * ## Details
  *
  * * When `app` and `status` are null, a skeleton screen UI pattern is displayed (loading hint).

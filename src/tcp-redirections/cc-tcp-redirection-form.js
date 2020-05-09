@@ -12,6 +12,8 @@ const SKELETON_REDIRECTIONS = [
 /**
  * An interface to create / delete TCP redirections in the context of an application.
  *
+ * 🎨 default CSS display: `block`
+ *
  * ## Type definitions
  *
  * ```js
