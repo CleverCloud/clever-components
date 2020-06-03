@@ -22,7 +22,10 @@ export class CcExpand extends HTMLElement {
     const shadow = this.attachShadow({ mode: 'open' });
     const style = createElement('style');
     // language=CSS
-    style.textContent = `:host {display:block;overflow:hidden}`;
+    style.textContent = `:host {
+      display: block;
+      overflow: hidden
+    }`;
     this._wrapper = createElement('div');
     const slot = createElement('slot');
 
@@ -36,16 +39,33 @@ export class CcExpand extends HTMLElement {
       return;
     }
     this._ro = new ResizeObserver(() => {
-      const height = getComputedStyle(this).height;
-      if (this._oldHeight === height) {
+
+      // The animation API is not supported in some versions of Safari but it's purely decorative so it's OK if it does not work
+      if (this.animate == null) {
         return;
       }
-      if (this._oldHeight != null) {
-        // This is not supported in Safari yet but it's purely decorative so let's keep it like that
-        this.animate(
+
+      let fromHeight = this._oldHeight;
+
+      // If there's already an animation (not finished),
+      // we stop it and use the current height as the "from" base for the next animation.
+      if (this._animation != null && this._animation.playState !== 'finished') {
+        // Pause so we can properly get the current height
+        this._animation.pause();
+        fromHeight = getComputedStyle(this).height;
+        // Finish will instantly apply the animation end state (and stop the animation)
+        this._animation.finish();
+      }
+
+      const toHeight = getComputedStyle(this).height;
+      if (fromHeight === toHeight) {
+        return;
+      }
+      if (fromHeight != null) {
+        this._animation = this.animate(
           [
-            { height: this._oldHeight },
-            { height },
+            { height: fromHeight },
+            { height: toHeight },
           ],
           {
             duration: 300,
@@ -53,7 +73,8 @@ export class CcExpand extends HTMLElement {
           },
         );
       }
-      this._oldHeight = height;
+
+      this._oldHeight = toHeight;
     });
     // TODO: Should we debounce this?
     this._ro.observe(this._wrapper);
