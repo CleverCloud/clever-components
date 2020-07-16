@@ -12,6 +12,7 @@
   * `<cc-button>`
 * We renamed all `<env-var-*>` components to `<cc-env-var-*>`
 * `<cc-button>`: always display text when `image` is used
+* We removed `index.js`, if you were using it, you now need to import the components one by one with their direct paths
 
 ### Components
 
