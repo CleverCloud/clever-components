@@ -1,5 +1,103 @@
 # Clever Components changelog
 
+## 4.0.0 (2020-07-16)
+
+### ⚠️ BREAKING CHANGES
+
+* We moved our internal build to rollup and changed the way we link to images from non-standard syntax to `import.meta.url`.
+  * Depending on the way you bundle our components, you may need some config to support this.
+* We removed the outter margin on `:host` of several components:
+  * `<cc-toggle>`
+  * `<cc-input-text>`
+  * `<cc-button>`
+* We renamed all `<env-var-*>` components to `<cc-env-var-*>`
+* `<cc-button>`: always display text when `image` is used
+
+### Components
+
+* You can now set objects and arrays via attributes (as JSON)
+* New components:
+  * `<cc-flex-gap>`
+  * `<cc-tcp-redirection-form>`
+  * `<cc-tcp-redirection>`
+* `<cc-addon-admin>`: simplify i18n (fix #103)
+* `<cc-block>`: align icon on top (flex-start)
+* `<cc-button>`:
+  * Add `waiting` state
+  * Handle `delay=0`
+  * Fix image height with new inner grid system
+  * Fix JSDoc
+  * Fix story doc
+* `<cc-env-form>`: fix overflow pb with inner button focus rings
+* `<cc-env-var-form>`: fix overflow behaviour with inner input focus rings
+* `<cc-env-var-input>`: fix story data (was broken for ages...)
+* `<cc-expand>`: fix spring effect
+* `<cc-header-orga>`: fix vertical alignment
+* `<cc-input-text>`:
+  * Adjust tag border-radius
+  * Display placeholders in italics
+  * Fix undefined behaviour
+  * Force white background
+* `<cc-link>`: fix lint issue
+* `<cc-toggle>`:
+  * Add multiple mode (with checkboxes)
+  * Add color story and rework examples
+  * Add subtle display mode
+  * Add image feature (and image only feature)
+  * Add `--cc-toggle-img-filter*` custom props and a toolbar story
+  * Add a legend to describe the whole group
+  * Add active state with small change on background size
+  * Enhance backgroud display (hover & selected)
+  * Fix component's and stories' docs
+  * Fix CSS order
+  * Fix JSDoc for event `cc-toggle:input-multiple`
+  * Fix vertical text alignement
+  * Only show focus ring when not hovered
+  * Refactor CSS and move borders on labels
+  * Refactor CSS to group and comment sections
+  * Remove box-shadow when hovered (we already have a cursor:pointer)
+  * Revert to button like border-radius
+  * Show boolean example with "activated" choice on the right in the story
+  * Switch layout strategy (txt+padding => height+line-height)
+
+### Docs
+
+* Update CONTRIBUTING.md
+* Storybook
+  * Show list of images used by a component in docs page
+  * Add link to source for each component in docs page 
+  * Add details about component default CSS `display` in docs page
+  * Force white background in preview (iPad gets dark auto mode)
+  * Improve show code display (and remove hack)
+* Startup examples/docs:
+  * Rename `ExampleComponent.js` to `cc-example-component.js` and improve examples and docs
+  * Introduce `cc-example-component.stories.js` with examples and docs
+
+### For devs
+
+* Update deps
+* Update gitlab-ci scaling config
+* build: use rollup to build the components
+* Storybook
+  * Remove useless hacks
+  * Simplify i18n-knob hack
+  * Use proper story root separator "/" ("|" is deprecated)
+  * Load event names from custom-elements.json (addon action)
+  * Simplify markdown docs loading
+* Refactor:
+  * Rename "skeleton" to "skeletonStyles" (fix #92)
+  * Rename "instanceDetails" to "instanceDetailsStyles" (fix #92)
+  * Change the way we declare skeleton constant data
+  * Move all assets (svg icons and geojson) into "assets" dir
+  * Big bang rename from `components` to `src`
+  * Remove dead code in `<cc-button>` method `_cancelClick()`
+  * Add `.cc-waiting` for subtle blinking animations
+* ESLint:
+  * add custom rule "sort-lit-element-css-declarations"
+  * add lit-html specific rules
+  * add ES import rules (sort, extensions, dev deps...)
+* Add `component:check-lit` task using lit-analyzer to lint/check our components
+
 ## 3.0.2 (2020-03-27)
 
 * Update @clevercloud/client to 5.0.1
