@@ -8,7 +8,9 @@
     "url": "https://github.com/CleverCloud/clever-components.git"
   },
   "type": "module",
+  "main": "./dist/index.js",
   "exports": {
+    ".": "./dist/index.js",
     "./addon/": "./dist/addon/",
     "./atoms/": "./dist/atoms/",
     "./env-var/": "./dist/env-var/",
