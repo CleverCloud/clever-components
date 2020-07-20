@@ -68,6 +68,7 @@ export function multiGlob (patterns, opts) {
 export function inputs (sourceDir, entryMapper) {
 
   const filesToExposeGlobs = [
+    `${sourceDir}/index.js`,
     `${sourceDir}/addon/*.js`,
     `${sourceDir}/atoms/*.js`,
     `${sourceDir}/env-var/*.js`,

@@ -19,6 +19,7 @@
     "./tcp-redirections/": "./dist/tcp-redirections/",
     "./translations/": "./dist/translations/"
   },
+  "sideEffects": false,
   "files": [
     "dist"
   ],
