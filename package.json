@@ -14,6 +14,7 @@
     ".": "./dist/index.js",
     "./addon/": "./dist/addon/",
     "./atoms/": "./dist/atoms/",
+    "./assets/": "./dist/assets/",
     "./env-var/": "./dist/env-var/",
     "./lib/i18n.js": "./dist/lib/i18n.js",
     "./maps/": "./dist/maps/",
@@ -45,6 +46,7 @@
   },
   "dependencies": {
     "@clevercloud/client": "^5.1.0",
+    "@spectrum-web-components/icon": "^0.4.9-alpha.38",
     "chart.js": "^2.9.3",
     "chartjs-plugin-datalabels": "^0.7.0",
     "clipboard-copy": "^3.1.0",
