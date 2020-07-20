@@ -7,6 +7,18 @@
     "type": "git",
     "url": "https://github.com/CleverCloud/clever-components.git"
   },
+  "type": "module",
+  "export": {
+    "./addon/": "./dist/addon/",
+    "./atoms/": "./dist/atoms/",
+    "./env-var/": "./dist/env-var/",
+    "./lib/i18n.js": "./dist/lib/i18n.js",
+    "./maps/": "./dist/maps/",
+    "./molecules/": "./dist/molecules/",
+    "./overview/": "./dist/overview/",
+    "./tcp-redirections/": "./dist/tcp-redirections/",
+    "./translations/": "./dist/translations/"
+  },
   "files": [
     "dist"
   ],
