@@ -4,14 +4,13 @@ import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
-import { assetUrl } from '../lib/asset-url.js';
 import { i18n } from '../lib/i18n.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
 import { tileStyles } from '../styles/info-tiles.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
-const closeSvg = assetUrl(import.meta, '../assets/close.svg');
-const infoSvg = assetUrl(import.meta, '../assets/info.svg');
+const closeSvg = new URL('../assets/close.svg', import.meta.url).href;
+const infoSvg = new URL('../assets/info.svg', import.meta.url).href;
 
 const SKELETON_REQUESTS = Array
   .from(new Array(24))

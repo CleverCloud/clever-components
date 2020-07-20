@@ -4,22 +4,21 @@ import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { assetUrl } from '../lib/asset-url.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { waitingStyles } from '../styles/waiting.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 
-const gitSvg = assetUrl(import.meta, '../assets/git.svg');
-const restartFailedSvg = assetUrl(import.meta, '../assets/restart-failed.svg');
-const restartingWithDowntimeSvg = assetUrl(import.meta, '../assets/restarting-with-downtime.svg');
-const restartingSvg = assetUrl(import.meta, '../assets/restarting.svg');
-const runningSvg = assetUrl(import.meta, '../assets/running.svg');
-const startFailedSvg = assetUrl(import.meta, '../assets/start-failed.svg');
-const startingSvg = assetUrl(import.meta, '../assets/starting.svg');
-const stoppedSvg = assetUrl(import.meta, '../assets/stopped.svg');
-const unknownSvg = assetUrl(import.meta, '../assets/unknown.svg');
+const gitSvg = new URL('../assets/git.svg', import.meta.url).href;
+const restartFailedSvg = new URL('../assets/restart-failed.svg', import.meta.url).href;
+const restartingWithDowntimeSvg = new URL('../assets/restarting-with-downtime.svg', import.meta.url).href;
+const restartingSvg = new URL('../assets/restarting.svg', import.meta.url).href;
+const runningSvg = new URL('../assets/running.svg', import.meta.url).href;
+const startFailedSvg = new URL('../assets/start-failed.svg', import.meta.url).href;
+const startingSvg = new URL('../assets/starting.svg', import.meta.url).href;
+const stoppedSvg = new URL('../assets/stopped.svg', import.meta.url).href;
+const unknownSvg = new URL('../assets/unknown.svg', import.meta.url).href;
 
 const commitIcon = {
   git: gitSvg,

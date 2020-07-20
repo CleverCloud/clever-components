@@ -1,11 +1,10 @@
 import '../atoms/cc-button.js';
 import '../atoms/cc-loader.js';
 import { css, html, LitElement } from 'lit-element';
-import { assetUrl } from '../lib/asset-url.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 
-const warningSvg = assetUrl(import.meta, '../assets/warning.svg');
+const warningSvg = new URL('../assets/warning.svg', import.meta.url).href;
 
 /**
  * A display component for error messages with 4 modes: inline (default), info, loading or confirm.
@@ -51,8 +50,8 @@ export class CcError extends LitElement {
   render () {
     return html`
       ${this.mode === 'loading' ? html`
-        <cc-loader></cc-loader>
-      ` : ''}
+      <cc-loader></cc-loader>
+    ` : ''}
       <div><img src=${warningSvg} alt=""><slot></slot></div>
       ${this.mode === 'confirm' ? html`
         <cc-button @cc-button:click=${this._onOkClick}>${i18n('cc-error.ok')}</cc-button>

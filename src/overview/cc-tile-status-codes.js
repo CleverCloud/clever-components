@@ -5,14 +5,13 @@ import { css, html, LitElement } from 'lit-element';
 import { cache } from 'lit-html/directives/cache.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import status from 'statuses';
-import { assetUrl } from '../lib/asset-url.js';
 import { i18n } from '../lib/i18n.js';
 import { tileStyles } from '../styles/info-tiles.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { linkStyles } from '../templates/cc-link.js';
 
-const closeSvg = assetUrl(import.meta, '../assets/close.svg');
-const infoSvg = assetUrl(import.meta, '../assets/info.svg');
+const closeSvg = new URL('../assets/close.svg', import.meta.url).href;
+const infoSvg = new URL('../assets/info.svg', import.meta.url).href;
 
 function xor (a, b) {
   return Number(a) ^ Number(b);

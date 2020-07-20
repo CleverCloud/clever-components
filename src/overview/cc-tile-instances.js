@@ -4,13 +4,12 @@ import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { animate, QUICK_SHRINK } from '../lib/animate.js';
-import { assetUrl } from '../lib/asset-url.js';
 import { i18n } from '../lib/i18n.js';
 import { instanceDetailsStyles, tileStyles } from '../styles/info-tiles.js';
 import { waitingStyles } from '../styles/waiting.js';
 
-const runningSvg = assetUrl(import.meta, '../assets/running.svg');
-const startingSvg = assetUrl(import.meta, '../assets/starting.svg');
+const runningSvg = new URL('../assets/running.svg', import.meta.url).href;
+const startingSvg = new URL('../assets/starting.svg', import.meta.url).href;
 
 const statusImg = {
   running: runningSvg,
