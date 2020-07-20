@@ -8,6 +8,7 @@
     "url": "https://github.com/CleverCloud/clever-components.git"
   },
   "type": "module",
+  "module": "./dist/index.js",
   "main": "./dist/index.js",
   "exports": {
     ".": "./dist/index.js",
@@ -19,7 +20,8 @@
     "./molecules/": "./dist/molecules/",
     "./overview/": "./dist/overview/",
     "./tcp-redirections/": "./dist/tcp-redirections/",
-    "./translations/": "./dist/translations/"
+    "./translations/": "./dist/translations/",
+    "./package.json": "./package.json"
   },
   "sideEffects": false,
   "files": [
