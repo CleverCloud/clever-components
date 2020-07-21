@@ -45,6 +45,31 @@ function formatFlavor (f) {
   return [cpu + shared, gpu, mem].filter((a) => a).join('\n');
 }
 
+// Intl API for bytes not yet available in safari
+// https://bugs.webkit.org/show_bug.cgi?id=209774
+function convertBytes (bytes) {
+  const kb = Math.pow(1024, 1);
+  const mb = Math.pow(1024, 2);
+  const gb = Math.pow(1024, 3);
+  const tb = Math.pow(1024, 4);
+
+  if (bytes < kb) {
+    return `${bytes} B`;
+  }
+  else if (bytes < mb) {
+    return `${(bytes / kb).toFixed(1)} KB`;
+  }
+  else if (bytes < gb) {
+    return `${(bytes / mb).toFixed(1)} MB`;
+  }
+  else if (bytes < tb) {
+    return `${(bytes / gb).toFixed(1)} GB`;
+  }
+  else {
+    return `${(bytes / tb).toFixed(1)} TB`;
+  }
+}
+
 export const translations = {
   LANGUAGE: '🇬🇧 English',
   // cc-addon-backups
@@ -165,6 +190,16 @@ export const translations = {
   // cc-header-orga
   'cc-header-orga.hotline': `Hotline:`,
   'cc-header-orga.error': `Something went wrong while loading organization info.`,
+  // cc-heptapod-info
+  'cc-heptapod-info.private-active-users-description': `Private users`,
+  'cc-heptapod-info.public-active-users-description': `Public users`,
+  'cc-heptapod-info.storage-bytes': (bytes) => convertBytes(bytes),
+  'cc-heptapod-info.storage-description': `Storage size`,
+  'cc-heptapod-info.price-value': (price) => currencyFormatter.format(price),
+  'cc-heptapod-info.price-description': `Estimated price`,
+  'cc-heptapod-info.not-in-use': `You are not using this Heptapod service.`,
+  'cc-heptapod-info.description': () => sanitize`This Heptapod instance hosts mercurial projects. Learn more on <a href="https://heptapod.host" rel="noreferrer noopener">https://about.heptapod.host</a>.`,
+  'cc-heptapod-info.error-loading': `Something went wrong while loading usage info.`,
   // cc-addon-admin
   'cc-addon-admin.addon-name': `Add-on name`,
   'cc-addon-admin.admin': `Administration`,
