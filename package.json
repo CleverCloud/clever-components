@@ -49,7 +49,6 @@
     "./translations/": "./dist/translations/",
     "./package.json": "./package.json"
   },
-  "sideEffects": false,
   "files": [
     "dist"
   ],
