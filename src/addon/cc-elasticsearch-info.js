@@ -7,7 +7,7 @@ import { i18n } from '../lib/i18n.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 
-const infoSvg = new URL('../assets/info.svg', import.meta.url).href;
+const infoSvg = new URL('../assets/info.svg', 'https://example.com').href;
 
 const ELASTICSEARCH_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com/logos/elastic.svg';
 const KIBANA_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com/logos/elasticsearch-kibana.svg';

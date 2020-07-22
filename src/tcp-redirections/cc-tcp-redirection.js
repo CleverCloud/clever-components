@@ -8,9 +8,9 @@ import '../atoms/cc-loader.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { waitingStyles } from '../styles/waiting.js';
 
-const warningSvg = new URL('../assets/warning.svg', import.meta.url).href;
-const noRedirectionSvg = new URL('../assets/redirection-off.svg', import.meta.url).href;
-const redirectionSvg = new URL('../assets/redirection-on.svg', import.meta.url).href;
+const warningSvg = new URL('../assets/warning.svg', 'https://example.com').href;
+const noRedirectionSvg = new URL('../assets/redirection-off.svg', 'https://example.com').href;
+const redirectionSvg = new URL('../assets/redirection-on.svg', 'https://example.com').href;
 
 /**
  * A small form to create or delete a TCP redirection

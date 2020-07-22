@@ -10,15 +10,15 @@ import { skeletonStyles } from '../styles/skeleton.js';
 import { waitingStyles } from '../styles/waiting.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 
-const gitSvg = new URL('../assets/git.svg', import.meta.url).href;
-const restartFailedSvg = new URL('../assets/restart-failed.svg', import.meta.url).href;
-const restartingWithDowntimeSvg = new URL('../assets/restarting-with-downtime.svg', import.meta.url).href;
-const restartingSvg = new URL('../assets/restarting.svg', import.meta.url).href;
-const runningSvg = new URL('../assets/running.svg', import.meta.url).href;
-const startFailedSvg = new URL('../assets/start-failed.svg', import.meta.url).href;
-const startingSvg = new URL('../assets/starting.svg', import.meta.url).href;
-const stoppedSvg = new URL('../assets/stopped.svg', import.meta.url).href;
-const unknownSvg = new URL('../assets/unknown.svg', import.meta.url).href;
+const gitSvg = new URL('../assets/git.svg', 'https://example.com').href;
+const restartFailedSvg = new URL('../assets/restart-failed.svg', 'https://example.com').href;
+const restartingWithDowntimeSvg = new URL('../assets/restarting-with-downtime.svg', 'https://example.com').href;
+const restartingSvg = new URL('../assets/restarting.svg', 'https://example.com').href;
+const runningSvg = new URL('../assets/running.svg', 'https://example.com').href;
+const startFailedSvg = new URL('../assets/start-failed.svg', 'https://example.com').href;
+const startingSvg = new URL('../assets/starting.svg', 'https://example.com').href;
+const stoppedSvg = new URL('../assets/stopped.svg', 'https://example.com').href;
+const unknownSvg = new URL('../assets/unknown.svg', 'https://example.com').href;
 
 const commitIcon = {
   git: gitSvg,

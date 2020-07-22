@@ -8,8 +8,8 @@ import { i18n } from '../lib/i18n.js';
 import { instanceDetailsStyles, tileStyles } from '../styles/info-tiles.js';
 import { waitingStyles } from '../styles/waiting.js';
 
-const runningSvg = new URL('../assets/running.svg', import.meta.url).href;
-const startingSvg = new URL('../assets/starting.svg', import.meta.url).href;
+const runningSvg = new URL('../assets/running.svg', 'https://example.com').href;
+const startingSvg = new URL('../assets/starting.svg', 'https://example.com').href;
 
 const statusImg = {
   running: runningSvg,

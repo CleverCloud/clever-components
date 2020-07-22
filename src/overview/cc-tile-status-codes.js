@@ -10,8 +10,8 @@ import { tileStyles } from '../styles/info-tiles.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { linkStyles } from '../templates/cc-link.js';
 
-const closeSvg = new URL('../assets/close.svg', import.meta.url).href;
-const infoSvg = new URL('../assets/info.svg', import.meta.url).href;
+const closeSvg = new URL('../assets/close.svg', 'https://example.com').href;
+const infoSvg = new URL('../assets/info.svg', 'https://example.com').href;
 
 function xor (a, b) {
   return Number(a) ^ Number(b);

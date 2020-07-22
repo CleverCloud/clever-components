@@ -7,8 +7,8 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { i18n } from '../lib/i18n.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
-const badgeSvg = new URL('../assets/badge-white.svg', import.meta.url).href;
-const phoneSvg = new URL('../assets/phone.svg', import.meta.url).href;
+const badgeSvg = new URL('../assets/badge-white.svg', 'https://example.com').href;
+const phoneSvg = new URL('../assets/phone.svg', 'https://example.com').href;
 
 const SKELETON_ORGA = {
   name: '??????????????????????????',

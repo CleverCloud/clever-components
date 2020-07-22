@@ -5,8 +5,8 @@ import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { i18n } from '../lib/i18n.js';
 
-const downSvg = new URL('../assets/down.svg', import.meta.url).href;
-const upSvg = new URL('../assets/up.svg', import.meta.url).href;
+const downSvg = new URL('../assets/down.svg', 'https://example.com').href;
+const upSvg = new URL('../assets/up.svg', 'https://example.com').href;
 
 /**
  * A display component with mostly HTML+CSS and a open/close toggle feature.

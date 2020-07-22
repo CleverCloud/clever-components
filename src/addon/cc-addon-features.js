@@ -6,9 +6,9 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { i18n } from '../lib/i18n.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
-const cpuSvg = new URL('../assets/cpu.svg', import.meta.url).href;
-const diskSvg = new URL('../assets/disk.svg', import.meta.url).href;
-const ramSvg = new URL('../assets/ram.svg', import.meta.url).href;
+const cpuSvg = new URL('../assets/cpu.svg', 'https://example.com').href;
+const diskSvg = new URL('../assets/disk.svg', 'https://example.com').href;
+const ramSvg = new URL('../assets/ram.svg', 'https://example.com').href;
 
 const featureIcons = {
   cpus: cpuSvg,

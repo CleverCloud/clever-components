@@ -4,7 +4,7 @@ import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 
-const warningSvg = new URL('../assets/warning.svg', import.meta.url).href;
+const warningSvg = new URL('../assets/warning.svg', 'https://example.com').href;
 
 /**
  * A display component for error messages with 4 modes: inline (default), info, loading or confirm.

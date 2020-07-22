@@ -9,8 +9,8 @@ import { withResizeObserver } from '../mixins/with-resize-observer.js';
 import { tileStyles } from '../styles/info-tiles.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
-const closeSvg = new URL('../assets/close.svg', import.meta.url).href;
-const infoSvg = new URL('../assets/info.svg', import.meta.url).href;
+const closeSvg = new URL('../assets/close.svg', 'https://example.com').href;
+const infoSvg = new URL('../assets/info.svg', 'https://example.com').href;
 
 const SKELETON_REQUESTS = Array
   .from(new Array(24))

@@ -10,8 +10,8 @@ import { i18n } from '../lib/i18n.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 
-const backupSvg = new URL('../assets/backup.svg', import.meta.url).href;
-const closeSvg = new URL('../assets/close.svg', import.meta.url).href;
+const backupSvg = new URL('../assets/backup.svg', 'https://example.com').href;
+const closeSvg = new URL('../assets/close.svg', 'https://example.com').href;
 
 const SKELETON_BACKUPS = {
   providerId: '',

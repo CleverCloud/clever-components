@@ -6,10 +6,10 @@ import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
-const clipboardSvg = new URL('../assets/clipboard.svg', import.meta.url).href;
-const eyeClosedSvg = new URL('../assets/eye-closed.svg', import.meta.url).href;
-const eyeOpenSvg = new URL('../assets/eye-open.svg', import.meta.url).href;
-const tickSvg = new URL('../assets/tick.svg', import.meta.url).href;
+const clipboardSvg = new URL('../assets/clipboard.svg', 'https://example.com').href;
+const eyeClosedSvg = new URL('../assets/eye-closed.svg', 'https://example.com').href;
+const eyeOpenSvg = new URL('../assets/eye-open.svg', 'https://example.com').href;
+const tickSvg = new URL('../assets/tick.svg', 'https://example.com').href;
 
 const TAG_SEPARATOR = ' ';
 
