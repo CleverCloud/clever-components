@@ -8,8 +8,6 @@
     "url": "https://github.com/CleverCloud/clever-components.git"
   },
   "type": "module",
-  "module": "./dist/index.js",
-  "main": "./dist/index.js",
   "exports": {
     "./atoms/cc-button.js": "./dist/atoms/cc-button.js",
     "./atoms/cc-datetime-relative.js": "./dist/atoms/cc-datetime-relative.js",
