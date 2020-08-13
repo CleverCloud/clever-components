@@ -1,5 +1,13 @@
 # Clever Components changelog
 
+## 4.1.1 (2020-08-13)
+
+### Components
+
+* `<cc-heptapod-info>`:
+  * Fix price translations
+  * Change default width from 500px to 600px
+
 ## 4.1.0 (2020-08-13)
 
 ### Components
