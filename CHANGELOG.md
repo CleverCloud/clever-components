@@ -1,5 +1,11 @@
 # Clever Components changelog
 
+## 4.1.0 (2020-08-13)
+
+### Components
+
+* New component: `<cc-heptapod-info>`
+
 ## 4.0.0 (2020-07-16)
 
 ### ⚠️ BREAKING CHANGES
