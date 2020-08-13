@@ -75,6 +75,7 @@ export function inputs (sourceDir, entryMapper) {
     `${sourceDir}/maps/*.js`,
     `${sourceDir}/molecules/*.js`,
     `${sourceDir}/overview/*.js`,
+    `${sourceDir}/saas/*.js`,
     `${sourceDir}/tcp-redirections/*.js`,
     `${sourceDir}/translations/*.js`,
   ];
