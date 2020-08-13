@@ -122,7 +122,7 @@ export class CcHeptapodInfo extends LitElement {
         :host {
           /* You may use another display type but you need to define one. */
           display: flex;
-          max-width: 500px;
+          max-width: 600px;
         }
 
         .header {
