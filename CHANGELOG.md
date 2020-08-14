@@ -1,5 +1,11 @@
 # Clever Components changelog
 
+## 4.1.2 (2020-08-14)
+
+### Components
+
+* `<cc-heptapod-info>`: Fix heptapod about link href
+
 ## 4.1.1 (2020-08-13)
 
 ### Components
