@@ -198,7 +198,7 @@ export const translations = {
   'cc-heptapod-info.price-value': (price) => `${currencyFormatter.format(price)} / month`,
   'cc-heptapod-info.price-description': `Estimated price`,
   'cc-heptapod-info.not-in-use': `You are not using this Heptapod service.`,
-  'cc-heptapod-info.description': () => sanitize`This Heptapod instance hosts mercurial projects. Learn more on <a href="https://heptapod.host" rel="noreferrer noopener">https://about.heptapod.host</a>.`,
+  'cc-heptapod-info.description': () => sanitize`This Heptapod instance hosts mercurial projects. Learn more on <a href="https://about.heptapod.host" rel="noreferrer noopener">https://about.heptapod.host</a>.`,
   'cc-heptapod-info.error-loading': `Something went wrong while loading usage info.`,
   // cc-addon-admin
   'cc-addon-admin.addon-name': `Add-on name`,
