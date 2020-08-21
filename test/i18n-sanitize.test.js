@@ -1,4 +1,5 @@
-import { sanitize } from '../../src/lib/i18n-sanitize.js';
+import { sanitize } from '../src/lib/i18n-sanitize.js';
+import { expect } from '@bundled-es-modules/chai';
 
 function compareChildNodes (domFragment, referenceChildNodes) {
 
@@ -66,7 +67,7 @@ describe('filter', () => {
   });
 
   it('Replace non-whitelisted tags with a text node and escape the contents', () => {
-    compareChildNodes(sanitize`One <p><strong>Two</strong></p> <pre><em>Three</em></pre> <h1><code>Four</code></h1> <div><code>Five</code></div> <section><a>Six</a></section>`,
+    compareChildNodes(sanitize`One <div><strong>Two</strong></div> <pre><em>Three</em></pre> <h1><code>Four</code></h1> <div><code>Five</code></div> <section><a>Six</a></section>`,
       ['One Two Three Four Five Six'],
     );
   });
