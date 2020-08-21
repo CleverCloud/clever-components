@@ -98,6 +98,9 @@ export const translations = {
   'cc-addon-linked-apps.no-linked-applications': `No applications linked yet.`,
   'cc-addon-linked-apps.title': `Linked applications`,
   'cc-addon-linked-apps.zone': `zone:`,
+  // cc-addon-option
+  'cc-addon-option.enabled': `Enabled`,
+  'cc-addon-option.disabled': `Disabled`,
   // cc-beta
   'cc-beta.label': `beta`,
   // cc-block

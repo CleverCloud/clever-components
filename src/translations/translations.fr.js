@@ -111,6 +111,9 @@ export const translations = {
   'cc-addon-linked-apps.no-linked-applications': `Aucune application liée pour l'instant.`,
   'cc-addon-linked-apps.title': `Applications liées`,
   'cc-addon-linked-apps.zone': `zone:`,
+  // cc-addon-option
+  'cc-addon-option.enabled': `Activé`,
+  'cc-addon-option.disabled': `Désactivé`,
   // cc-beta
   'cc-beta.label': `bêta`,
   // cc-error
