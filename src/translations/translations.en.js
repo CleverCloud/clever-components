@@ -101,6 +101,8 @@ export const translations = {
   // cc-addon-option
   'cc-addon-option.enabled': `Enabled`,
   'cc-addon-option.disabled': `Disabled`,
+  // cc-addon-option-form
+  'cc-addon-option-form.confirm': `Confirm options`,
   // cc-beta
   'cc-beta.label': `beta`,
   // cc-block

@@ -114,6 +114,8 @@ export const translations = {
   // cc-addon-option
   'cc-addon-option.enabled': `Activé`,
   'cc-addon-option.disabled': `Désactivé`,
+  // cc-addon-option-form
+  'cc-addon-option-form.confirm': `Confirmer les options`,
   // cc-beta
   'cc-beta.label': `bêta`,
   // cc-error
