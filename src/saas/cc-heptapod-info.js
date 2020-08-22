@@ -62,10 +62,10 @@ export class CcHeptapodInfo extends LitElement {
   }
 
   render () {
-    const error = (this.error === true);
-    const skeleton = (this.loading === true && error === false);
+    const error = (this.error);
+    const skeleton = (this.loading && !error);
     const statistics = (skeleton ? SKELETON_STATISTICS : this.statistics);
-    const dataLoaded = (skeleton === false && error === false);
+    const dataLoaded = (!skeleton && !error);
 
     return html`
       <cc-block>
@@ -81,11 +81,11 @@ export class CcHeptapodInfo extends LitElement {
           ${i18n('cc-heptapod-info.description')}
         </div>
 
-        ${error === true ? html`
+        ${error ? html`
           <cc-error>${i18n('cc-heptapod-info.error-loading')}</cc-error>
         ` : ''}
 
-        ${statistics !== null || skeleton === true ? html`
+        ${statistics != null || skeleton ? html`
           <cc-flex-gap class="pricing">
             <div class="pricing-item">
               <div class="pricing-item-value ${classMap({ skeleton })}">${statistics.private_active_users}</div>
@@ -106,7 +106,7 @@ export class CcHeptapodInfo extends LitElement {
           </cc-flex-gap>
         ` : ''}
 
-        ${statistics === null && dataLoaded === true ? html`
+        ${statistics == null && dataLoaded ? html`
           <div class="no-statistics">${i18n('cc-heptapod-info.not-in-use')}</div>
         ` : ''}
 
