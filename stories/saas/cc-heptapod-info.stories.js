@@ -16,7 +16,7 @@ const statistics = {
   private_active_users: 12,
   public_active_users: 120,
   // 666.6 MB
-  storage: 698966016,
+  storage: 698980762,
   price: 17.50,
 };
 

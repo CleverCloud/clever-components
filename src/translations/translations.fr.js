@@ -5,7 +5,7 @@ import {
   prepareFormatDistanceToNow,
   prepareFormatHours,
 } from '../lib/i18n-date.js';
-import { prepareNumberUnitFormatter } from '../lib/i18n-number.js';
+import { prepareNumberBytesFormatter, prepareNumberUnitFormatter } from '../lib/i18n-number.js';
 import { sanitize } from '../lib/i18n-sanitize.js';
 
 export const lang = 'fr';
@@ -48,39 +48,15 @@ const percentFormatter = new Intl.NumberFormat(lang, {
 });
 const numberFormatter = new Intl.NumberFormat(lang);
 const formatNumberUnit = prepareNumberUnitFormatter(lang);
+const formatBytes = prepareNumberBytesFormatter(lang, 'o', '\u202f');
 
 // Shared logic between translations, is it a good idea?
 function formatFlavor (f) {
   const cpu = `CPUs : ${f.cpus}`;
   const shared = f.microservice ? ` (partagé)` : '';
   const gpu = f.gpus > 0 ? `GPUs : ${f.gpus}` : '';
-  const mem = `RAM : ${(f.mem < 1024) ? `${f.mem} Mo` : `${f.mem / 1024} Go`}`;
+  const mem = `RAM : ${formatBytes(f.mem * 1024 * 1024)}`;
   return [cpu + shared, gpu, mem].filter((a) => a).join('\n');
-}
-
-// Intl API for bytes not yet available in safari
-// https://bugs.webkit.org/show_bug.cgi?id=209774
-function convertBytes (bytes) {
-  const kb = Math.pow(1024, 1);
-  const mb = Math.pow(1024, 2);
-  const gb = Math.pow(1024, 3);
-  const tb = Math.pow(1024, 4);
-
-  if (bytes < kb) {
-    return `${bytes} B`;
-  }
-  else if (bytes < mb) {
-    return `${(bytes / kb).toFixed(1)} Ko`;
-  }
-  else if (bytes < gb) {
-    return `${(bytes / mb).toFixed(1)} Mo`;
-  }
-  else if (bytes < tb) {
-    return `${(bytes / gb).toFixed(1)} Go`;
-  }
-  else {
-    return `${(bytes / tb).toFixed(1)} To`;
-  }
 }
 
 export const translations = {
@@ -206,7 +182,7 @@ export const translations = {
   // cc-heptapod-info
   'cc-heptapod-info.private-active-users-description': `Utilisateurs privés`,
   'cc-heptapod-info.public-active-users-description': `Utilisateurs publics`,
-  'cc-heptapod-info.storage-bytes': (bytes) => convertBytes(bytes),
+  'cc-heptapod-info.storage-bytes': (bytes) => formatBytes(bytes, 1),
   'cc-heptapod-info.storage-description': `Stockage utilisé`,
   'cc-heptapod-info.price-value': (price) => `${currencyFormatter.format(price)} / mois`,
   'cc-heptapod-info.price-description': `Prix estimé`,

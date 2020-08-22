@@ -9,7 +9,7 @@ import { skeletonStyles } from '../styles/skeleton.js';
 const SKELETON_STATISTICS = {
   private_active_users: 15,
   public_active_users: 120,
-  storage: 698966016,
+  storage: 698980762,
   price: 17.50,
 };
 

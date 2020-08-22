@@ -1,6 +1,6 @@
 // Intl.NumberFormat has a `notation: 'compact'` option.
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat
-// This is close to want we want to achieve for compact number display but:
+// This is close to what we want to achieve for compact number display but:
 // * It's not supported on Safari.
 // * In english:
 //   * The prefixes are K, M, B and T with no space between number and prefix (1K, 2M...) (short scale based)
@@ -36,5 +36,52 @@ export function prepareNumberUnitFormatter (lang) {
     const symbol = SI_SYMBOLS[symbolIndex];
     // No space for compact display
     return formattedValue + symbol;
+  };
+}
+
+// Intl.NumberFormat has a `style: 'unit', unit: 'byte'` option.
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat
+// This is close to what we need, it would help us display `B` in english and `o` in french but:
+// * It's not supported in Safari.
+// * We would still have to do the 1024 base magic.
+// * We would still have to decide if we need to display kilobyte, megabytes... and would have to list all those unit names.
+// For our context, this solution is smaller and simpler.
+
+// https://en.wikipedia.org/wiki/Binary_prefix
+const IEC_SYMBOLS = ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi'];
+
+// We tried an implementation with Math.log2() similar to what we do with prepareNumberUnitFormatter
+// but it gets weird around 1125899906842621 :-|
+export function prepareNumberBytesFormatter (lang, byteSymbol, separator) {
+  return (rawValue, fractionDigits = 0) => {
+
+    // Nothing fancy to do when rawValues is under 1 kibibyte
+    if (rawValue < 1024) {
+      return new Intl.NumberFormat(lang).format(rawValue) + separator + byteSymbol;
+    }
+
+    const nf = new Intl.NumberFormat(lang, {
+      minimumFractionDigits: fractionDigits,
+      maximumFractionDigits: fractionDigits,
+    });
+
+    // Figure out the "magnitude" of the rawValue: greater than 1024 => 1 / greater than 1024^2 => 2 / greater than 1024^3 => 3 ...
+    const symbolIndex = IEC_SYMBOLS.findIndex((symbol, i) => {
+      // Return last symbol of the array if we cannot find a symbol
+      return rawValue < 1024 ** (i + 1) || i === IEC_SYMBOLS.length - 1;
+    });
+
+    // Use the symbolIndex to "rebase" the rawValue into the new base, 1250 => 1.22 / 1444000 => 1.377...
+    const rebasedValue = rawValue / 1024 ** symbolIndex;
+
+    // Truncate so the rounding applied by nf.format() does not mess with the symbol we selected
+    // Ex: it prevents from returning 1,024.0 KiB if we're just under 1024^2 bytes and returns 1,023.9 KiB instead
+    const truncatedValue = Math.trunc(rebasedValue * (10 ** fractionDigits)) / (10 ** fractionDigits);
+
+    // Use Intl/i18n aware number formatter
+    const formattedValue = nf.format(truncatedValue);
+
+    const symbol = IEC_SYMBOLS[symbolIndex];
+    return formattedValue + separator + symbol + byteSymbol;
   };
 }
