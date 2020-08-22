@@ -155,7 +155,6 @@ export class CcHeptapodInfo extends LitElement {
         .pricing-item-value {
           display: inline-block;
           font-weight: bold;
-          margin-bottom: 2px;
         }
 
         .no-statistics {
