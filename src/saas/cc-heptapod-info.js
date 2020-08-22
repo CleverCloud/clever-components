@@ -25,9 +25,7 @@ const HEPTAPOD_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.co
  *
  * ## Details
  *
- * * When `loading` is true, a skeleton screen UI pattern will be displayed for statistics.
- * * When `statistics` is nullish, a text saying that you do not use the service is displayed. Otherwise, usage numbers will be displayed.
- * * When `error` is true, an error message is displayed saying that the component's data failed to load.
+ * * When `statistics` is nullish, a skeleton screen UI pattern is displayed (loading hint).
  *
  * ## Type definitions
  *
@@ -41,14 +39,12 @@ const HEPTAPOD_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.co
  * ```
  *
  * @prop {Boolean} error - Displays an error message.
- * @prop {Boolean} loading - Indicates that the data is loading.
- * @prop {Statistics} statistics - Sets the usage statistics of this heptapod SaaS.
+ * @prop {Statistics|"not-used"} statistics - Sets the usage statistics of this heptapod SaaS or `"not-used"` to display a message explaining the service is not used.
  */
 export class CcHeptapodInfo extends LitElement {
 
   static get properties () {
     return {
-      loading: { type: Boolean, reflect: true },
       error: { type: Boolean, reflect: true },
       statistics: { type: Object },
     };
@@ -56,15 +52,14 @@ export class CcHeptapodInfo extends LitElement {
 
   constructor () {
     super();
-    this.loading = true;
     this.error = false;
     this.statistics = null;
   }
 
   render () {
-    const skeleton = (this.loading && !this.error);
-    const statistics = (skeleton ? SKELETON_STATISTICS : this.statistics);
-    const dataLoaded = (!skeleton && !this.error);
+    const skeleton = (this.statistics == null);
+    const statistics = skeleton ? SKELETON_STATISTICS : this.statistics;
+    const isNotUsed = (this.statistics === 'not-used');
 
     return html`
       <cc-block>
@@ -80,7 +75,7 @@ export class CcHeptapodInfo extends LitElement {
           ${i18n('cc-heptapod-info.description')}
         </div>
 
-        ${statistics != null || skeleton ? html`
+        ${!this.error && !isNotUsed ? html`
           <cc-flex-gap class="pricing">
             <div class="pricing-item">
               <div class="pricing-item-value ${classMap({ skeleton })}">${statistics.private_active_users}</div>
@@ -101,7 +96,7 @@ export class CcHeptapodInfo extends LitElement {
           </cc-flex-gap>
         ` : ''}
 
-        ${statistics == null && dataLoaded ? html`
+        ${!this.error && isNotUsed ? html`
           <div class="no-statistics">${i18n('cc-heptapod-info.not-in-use')}</div>
         ` : ''}
 
@@ -123,7 +118,7 @@ export class CcHeptapodInfo extends LitElement {
           display: flex;
           max-width: 600px;
         }
-        
+
         .header,
         .description,
         .pricing {

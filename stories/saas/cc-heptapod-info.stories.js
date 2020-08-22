@@ -13,7 +13,7 @@ const conf = {
     cc-heptapod-info {
       margin-bottom: 1rem;
     }
-  `
+  `,
 };
 
 const statistics = {
@@ -25,15 +25,15 @@ const statistics = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [{ loading: false, statistics }],
+  items: [{ statistics }],
 });
 
-export const loading = makeStory(conf, {
-  items: [{ loading: true }],
+export const skeleton = makeStory(conf, {
+  items: [{}],
 });
 
-export const empty = makeStory(conf, {
-  items: [{ loading: false }],
+export const notUsed = makeStory(conf, {
+  items: [{ statistics: 'not-used' }],
 });
 
 export const error = makeStory(conf, {
@@ -44,13 +44,8 @@ export const simulations = makeStory(conf, {
   items: [{}, {}, {}],
   simulations: [
     storyWait(2000, ([component, componentNotUsed, componentError]) => {
-      component.loading = false;
       component.statistics = statistics;
-
-      componentNotUsed.loading = false;
-      componentNotUsed.statistics = null;
-
-      componentError.loading = false;
+      componentNotUsed.statistics = 'not-used';
       componentError.error = true;
     }),
   ],
@@ -58,8 +53,8 @@ export const simulations = makeStory(conf, {
 
 enhanceStoriesNames({
   defaultStory,
-  loading,
+  skeleton,
+  notUsed,
   error,
-  empty,
   simulations,
 });
