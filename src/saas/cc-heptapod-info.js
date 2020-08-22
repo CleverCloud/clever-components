@@ -45,9 +45,9 @@ export class CcHeptapodInfo extends LitElement {
 
   static get properties () {
     return {
-      loading: { type: Boolean, attribute: true },
-      error: { type: Boolean, attribute: true },
-      statistics: { type: Object, attribute: false },
+      loading: { type: Boolean, reflect: true },
+      error: { type: Boolean, reflect: true },
+      statistics: { type: Object },
     };
   }
 
