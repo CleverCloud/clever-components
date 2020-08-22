@@ -33,7 +33,7 @@ const SKELETON_STATISTICS = {
  *   private_active_users: number,
  *   public_active_users: number,
  *   storage: number,
- *   price: float
+ *   price: number
  * }
  * ```
  *
