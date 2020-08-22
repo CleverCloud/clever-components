@@ -87,19 +87,19 @@ export class CcHeptapodInfo extends LitElement {
           <cc-flex-gap class="pricing">
             <div class="pricing-item">
               <div class="pricing-item-value ${classMap({ skeleton })}">${statistics.private_active_users}</div>
-              <div class="${classMap({ skeleton })}">${i18n('cc-heptapod-info.private-active-users-description')}</div>
+              <div>${i18n('cc-heptapod-info.private-active-users-description')}</div>
             </div>
             <div class="pricing-item">
               <div class="pricing-item-value ${classMap({ skeleton })}">${statistics.public_active_users}</div>
-              <div class="${classMap({ skeleton })}">${i18n('cc-heptapod-info.public-active-users-description')}</div>
+              <div>${i18n('cc-heptapod-info.public-active-users-description')}</div>
             </div>
             <div class="pricing-item">
               <div class="pricing-item-value ${classMap({ skeleton })}">${i18n('cc-heptapod-info.storage-bytes', statistics.storage)}</div>
-              <div class="${classMap({ skeleton })}">${i18n('cc-heptapod-info.storage-description')}</div>
+              <div>${i18n('cc-heptapod-info.storage-description')}</div>
             </div>
             <div class="pricing-item">
               <div class="pricing-item-value ${classMap({ skeleton })}">${i18n('cc-heptapod-info.price-value', statistics.price)}</div>
-              <div class="${classMap({ skeleton })}">${i18n('cc-heptapod-info.price-description')}</div>
+              <div>${i18n('cc-heptapod-info.price-description')}</div>
             </div>
           </cc-flex-gap>
         ` : ''}
@@ -141,6 +141,7 @@ export class CcHeptapodInfo extends LitElement {
         .header-content {
           margin-left: 1rem;
         }
+
         
         .pricing {
           --cc-gap: 1rem;
@@ -152,6 +153,7 @@ export class CcHeptapodInfo extends LitElement {
         }
 
         .pricing-item-value {
+          display: inline-block;
           font-weight: bold;
           margin-bottom: 2px;
         }
