@@ -14,6 +14,8 @@ const SKELETON_STATISTICS = {
   price: 17.50,
 };
 
+const HEPTAPOD_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com/logos/heptapod.svg';
+
 /**
  * A component that shows a summary of our Heptapod SaaS offer.
  *
@@ -69,7 +71,7 @@ export class CcHeptapodInfo extends LitElement {
       <cc-block>
         <div slot="title">Heptapod</div>
         <div class="header">
-          <img class="header-logo" src="https://static-assets.cellar.services.clever-cloud.com/logos/heptapod.svg" alt="heptapod logo" title="heptapod logo">
+          <img class="header-logo" src=${HEPTAPOD_LOGO_URL} alt="heptapod logo" title="heptapod logo">
           <div class="header-content">
             <div>Heptapod</div>
             <div>${ccLink('https://heptapod.host', 'https://heptapod.host')}</div>
@@ -145,7 +147,7 @@ export class CcHeptapodInfo extends LitElement {
           margin-left: 1rem;
         }
 
-        
+
         .pricing {
           --cc-gap: 1rem;
         }
