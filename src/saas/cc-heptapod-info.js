@@ -62,10 +62,9 @@ export class CcHeptapodInfo extends LitElement {
   }
 
   render () {
-    const error = (this.error);
-    const skeleton = (this.loading && !error);
+    const skeleton = (this.loading && !this.error);
     const statistics = (skeleton ? SKELETON_STATISTICS : this.statistics);
-    const dataLoaded = (!skeleton && !error);
+    const dataLoaded = (!skeleton && !this.error);
 
     return html`
       <cc-block>
@@ -81,7 +80,7 @@ export class CcHeptapodInfo extends LitElement {
           ${i18n('cc-heptapod-info.description')}
         </div>
 
-        ${error ? html`
+        ${this.error ? html`
           <cc-error>${i18n('cc-heptapod-info.error-loading')}</cc-error>
         ` : ''}
 
