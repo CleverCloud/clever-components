@@ -139,6 +139,9 @@ export class CcHeptapodInfo extends LitElement {
         }
 
         .header-content {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
           margin-left: 1rem;
         }
 
