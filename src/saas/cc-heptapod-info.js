@@ -156,6 +156,12 @@ export class CcHeptapodInfo extends LitElement {
           margin-bottom: 2px;
         }
 
+        .no-statistics {
+          color: #555;
+          font-style: italic;
+          margin: 0.2rem;
+        }
+
         /* SKELETON */
         .skeleton {
           background-color: #bbb;
