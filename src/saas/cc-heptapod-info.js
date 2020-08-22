@@ -8,8 +8,8 @@ import { i18n } from '../lib/i18n.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
 const SKELETON_STATISTICS = {
-  private_active_users: 15,
-  public_active_users: 120,
+  privateActiveUsers: 15,
+  publicActiveUsers: 120,
   storage: 698980762,
   price: 17.50,
 };
@@ -31,8 +31,8 @@ const HEPTAPOD_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.co
  *
  * ```js
  * interface Statistics {
- *   private_active_users: number,
- *   public_active_users: number,
+ *   privateActiveUsers: number,
+ *   publicActiveUsers: number,
  *   storage: number,
  *   price: number,
  * }
@@ -78,11 +78,11 @@ export class CcHeptapodInfo extends LitElement {
         ${!this.error && !isNotUsed ? html`
           <cc-flex-gap class="pricing">
             <div class="pricing-item">
-              <div class="pricing-item-value ${classMap({ skeleton })}">${statistics.private_active_users}</div>
+              <div class="pricing-item-value ${classMap({ skeleton })}">${statistics.privateActiveUsers}</div>
               <div>${i18n('cc-heptapod-info.private-active-users-description')}</div>
             </div>
             <div class="pricing-item">
-              <div class="pricing-item-value ${classMap({ skeleton })}">${statistics.public_active_users}</div>
+              <div class="pricing-item-value ${classMap({ skeleton })}">${statistics.publicActiveUsers}</div>
               <div>${i18n('cc-heptapod-info.public-active-users-description')}</div>
             </div>
             <div class="pricing-item">

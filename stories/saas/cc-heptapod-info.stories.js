@@ -18,8 +18,8 @@ const conf = {
 };
 
 const statistics = {
-  private_active_users: 12,
-  public_active_users: 120,
+  privateActiveUsers: 12,
+  publicActiveUsers: 120,
   // 666.6 MB
   storage: 698980762,
   price: 17.50,
