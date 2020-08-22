@@ -122,6 +122,12 @@ export class CcHeptapodInfo extends LitElement {
           display: flex;
           max-width: 600px;
         }
+        
+        .header,
+        .description,
+        .pricing {
+          line-height: 1.5;
+        }
 
         .header {
           display: flex;
@@ -135,7 +141,7 @@ export class CcHeptapodInfo extends LitElement {
           height: 3.25rem;
           width: 3.25rem;
         }
-
+        
         .pricing {
           --cc-gap: 1rem;
         }
