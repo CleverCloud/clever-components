@@ -128,12 +128,12 @@ export class CcHeptapodInfo extends LitElement {
         }
 
         .header-content {
-          margin-left: 20px;
+          margin-left: 1rem;
         }
 
-        img.heptapod-logo {
-          height: 50px;
-          width: 50px;
+        .heptapod-logo {
+          height: 3.25rem;
+          width: 3.25rem;
         }
 
         .pricing {
