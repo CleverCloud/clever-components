@@ -80,10 +80,6 @@ export class CcHeptapodInfo extends LitElement {
           ${i18n('cc-heptapod-info.description')}
         </div>
 
-        ${this.error ? html`
-          <cc-error>${i18n('cc-heptapod-info.error-loading')}</cc-error>
-        ` : ''}
-
         ${statistics != null || skeleton ? html`
           <cc-flex-gap class="pricing">
             <div class="pricing-item">
@@ -107,6 +103,10 @@ export class CcHeptapodInfo extends LitElement {
 
         ${statistics == null && dataLoaded ? html`
           <div class="no-statistics">${i18n('cc-heptapod-info.not-in-use')}</div>
+        ` : ''}
+
+        ${this.error ? html`
+          <cc-error>${i18n('cc-heptapod-info.error-loading')}</cc-error>
         ` : ''}
 
       </cc-block>
