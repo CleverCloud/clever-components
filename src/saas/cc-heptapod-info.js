@@ -14,7 +14,7 @@ const SKELETON_STATISTICS = {
 };
 
 /**
- * A component that shows a summary of our Heptapod SaaS offer
+ * A component that shows a summary of our Heptapod SaaS offer.
  *
  * * 🎨 default CSS display: `flex`
  * <br>
@@ -33,13 +33,13 @@ const SKELETON_STATISTICS = {
  *   private_active_users: number,
  *   public_active_users: number,
  *   storage: number,
- *   price: number
+ *   price: number,
  * }
  * ```
  *
- * @prop {Boolean} loading - The data is loading
- * @prop {Boolean} error - The data failed to load
- * @prop {Statistics} statistics - An object having the usage statistics of this heptapod SaaS
+ * @prop {Boolean} error - Displays an error message.
+ * @prop {Boolean} loading - Indicates that the data is loading.
+ * @prop {Statistics} statistics - Sets the usage statistics of this heptapod SaaS.
  */
 export class CcHeptapodInfo extends LitElement {
 
@@ -80,8 +80,7 @@ export class CcHeptapodInfo extends LitElement {
 
         ${error === true ? html`
           <cc-error>${i18n('cc-heptapod-info.error-loading')}</cc-error>
-        ` : ''
-        }
+        ` : ''}
 
         ${statistics !== null || skeleton === true ? html`
           <cc-flex-gap class="pricing">
