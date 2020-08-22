@@ -19,7 +19,7 @@ const HEPTAPOD_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.co
 /**
  * A component that shows a summary of our Heptapod SaaS offer.
  *
- * * 🎨 default CSS display: `flex`
+ * * 🎨 default CSS display: `block`
  * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/saas/cc-heptapod-info.js)
  *
@@ -115,7 +115,7 @@ export class CcHeptapodInfo extends LitElement {
       // language=CSS
       css`
         :host {
-          display: flex;
+          display: block;
         }
 
         .header,
