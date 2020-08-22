@@ -9,6 +9,11 @@ export default {
 
 const conf = {
   component: 'cc-heptapod-info',
+  css: `
+    cc-heptapod-info {
+      margin-bottom: 1rem;
+    }
+  `
 };
 
 const statistics = {
