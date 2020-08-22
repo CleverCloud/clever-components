@@ -1,6 +1,7 @@
 import '../atoms/cc-flex-gap.js';
 import '../molecules/cc-block.js';
 import '../molecules/cc-error.js';
+import { ccLink, linkStyles } from '../templates/cc-link.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { i18n } from '../lib/i18n.js';
@@ -71,7 +72,7 @@ export class CcHeptapodInfo extends LitElement {
           <img src="https://static-assets.cellar.services.clever-cloud.com/logos/heptapod.svg" alt="heptapod logo" title="heptapod logo" class="heptapod-logo"/>
           <div class="header-content">
             <div class="heptapod-name">Heptapod</div>
-            <div class="heptapod-url"><a href="https://heptapod.host" rel="noreferrer noopener">https://heptapod.host</a></div>
+            <div class="heptapod-url">${ccLink('https://heptapod.host', 'https://heptapod.host')}</div>
           </div>
         </div>
         <div class="description">
@@ -114,6 +115,7 @@ export class CcHeptapodInfo extends LitElement {
   static get styles () {
     return [
       skeletonStyles,
+      linkStyles,
       // language=CSS
       css`
         :host {
