@@ -113,14 +113,11 @@ export class CcHeptapodInfo extends LitElement {
   }
 
   static get styles () {
-    // This array may contain style imports from shared files.
-    // Then you can defined your own component's styles.
     return [
       skeletonStyles,
       // language=CSS
       css`
         :host {
-          /* You may use another display type but you need to define one. */
           display: flex;
           max-width: 600px;
         }

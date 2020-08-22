@@ -1,4 +1,3 @@
-// Don't forget to import the component you're presenting!
 import '../../src/saas/cc-heptapod-info.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
