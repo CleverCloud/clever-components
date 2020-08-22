@@ -11,6 +11,7 @@ const conf = {
   component: 'cc-heptapod-info',
   css: `
     cc-heptapod-info {
+      max-width: 40rem;
       margin-bottom: 1rem;
     }
   `,

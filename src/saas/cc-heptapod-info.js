@@ -116,7 +116,6 @@ export class CcHeptapodInfo extends LitElement {
       css`
         :host {
           display: flex;
-          max-width: 600px;
         }
 
         .header,
