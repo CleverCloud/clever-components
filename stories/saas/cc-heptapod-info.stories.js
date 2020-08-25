@@ -1,4 +1,3 @@
-// Don't forget to import the component you're presenting!
 import '../../src/saas/cc-heptapod-info.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
@@ -10,26 +9,32 @@ export default {
 
 const conf = {
   component: 'cc-heptapod-info',
+  css: `
+    cc-heptapod-info {
+      max-width: 40rem;
+      margin-bottom: 1rem;
+    }
+  `,
 };
 
 const statistics = {
-  private_active_users: 12,
-  public_active_users: 120,
+  privateActiveUsers: 12,
+  publicActiveUsers: 120,
   // 666.6 MB
-  storage: 698966016,
+  storage: 698980762,
   price: 17.50,
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [{ loading: false, statistics }],
+  items: [{ statistics }],
 });
 
-export const loading = makeStory(conf, {
-  items: [{ loading: true }],
+export const skeleton = makeStory(conf, {
+  items: [{}],
 });
 
-export const empty = makeStory(conf, {
-  items: [{ loading: false }],
+export const notUsed = makeStory(conf, {
+  items: [{ statistics: 'not-used' }],
 });
 
 export const error = makeStory(conf, {
@@ -40,13 +45,8 @@ export const simulations = makeStory(conf, {
   items: [{}, {}, {}],
   simulations: [
     storyWait(2000, ([component, componentNotUsed, componentError]) => {
-      component.loading = false;
       component.statistics = statistics;
-
-      componentNotUsed.loading = false;
-      componentNotUsed.statistics = null;
-
-      componentError.loading = false;
+      componentNotUsed.statistics = 'not-used';
       componentError.error = true;
     }),
   ],
@@ -54,8 +54,8 @@ export const simulations = makeStory(conf, {
 
 enhanceStoriesNames({
   defaultStory,
-  loading,
+  skeleton,
+  notUsed,
   error,
-  empty,
   simulations,
 });

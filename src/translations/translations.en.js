@@ -5,7 +5,7 @@ import {
   prepareFormatDistanceToNow,
   prepareFormatHours,
 } from '../lib/i18n-date.js';
-import { prepareNumberUnitFormatter } from '../lib/i18n-number.js';
+import { prepareNumberBytesFormatter, prepareNumberUnitFormatter } from '../lib/i18n-number.js';
 import { sanitize } from '../lib/i18n-sanitize.js';
 
 export const lang = 'en';
@@ -35,39 +35,15 @@ const percentFormatter = new Intl.NumberFormat(lang, {
 });
 const numberFormatter = new Intl.NumberFormat(lang);
 const formatNumberUnit = prepareNumberUnitFormatter(lang);
+const formatBytes = prepareNumberBytesFormatter(lang, 'B', ' ');
 
 // Shared logic between translations, is it a good idea?
 function formatFlavor (f) {
   const cpu = `CPUs: ${f.cpus}`;
   const shared = f.microservice ? ` (shared)` : '';
   const gpu = f.gpus > 0 ? `GPUs: ${f.gpus}` : '';
-  const mem = `RAM: ${(f.mem < 1024) ? `${f.mem} MB` : `${f.mem / 1024} GB`}`;
+  const mem = `RAM: ${formatBytes(f.mem * 1024 * 1024)}`;
   return [cpu + shared, gpu, mem].filter((a) => a).join('\n');
-}
-
-// Intl API for bytes not yet available in safari
-// https://bugs.webkit.org/show_bug.cgi?id=209774
-function convertBytes (bytes) {
-  const kb = Math.pow(1024, 1);
-  const mb = Math.pow(1024, 2);
-  const gb = Math.pow(1024, 3);
-  const tb = Math.pow(1024, 4);
-
-  if (bytes < kb) {
-    return `${bytes} B`;
-  }
-  else if (bytes < mb) {
-    return `${(bytes / kb).toFixed(1)} KB`;
-  }
-  else if (bytes < gb) {
-    return `${(bytes / mb).toFixed(1)} MB`;
-  }
-  else if (bytes < tb) {
-    return `${(bytes / gb).toFixed(1)} GB`;
-  }
-  else {
-    return `${(bytes / tb).toFixed(1)} TB`;
-  }
 }
 
 export const translations = {
@@ -193,7 +169,7 @@ export const translations = {
   // cc-heptapod-info
   'cc-heptapod-info.private-active-users-description': `Private users`,
   'cc-heptapod-info.public-active-users-description': `Public users`,
-  'cc-heptapod-info.storage-bytes': (bytes) => convertBytes(bytes),
+  'cc-heptapod-info.storage-bytes': (bytes) => formatBytes(bytes, 1),
   'cc-heptapod-info.storage-description': `Storage size`,
   'cc-heptapod-info.price-value': (price) => `${currencyFormatter.format(price)} / month`,
   'cc-heptapod-info.price-description': `Estimated price`,
