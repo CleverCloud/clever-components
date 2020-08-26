@@ -1,6 +1,5 @@
 import '../addon/cc-addon-option-form.js';
-import '../atoms/cc-button.js';
-import '../molecules/cc-block.js';
+import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
