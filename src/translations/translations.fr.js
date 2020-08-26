@@ -95,6 +95,15 @@ export const translations = {
   'cc-addon-credentials.field.user': `Utilisateur`,
   'cc-addon-credentials.loading-error': `Une erreur est survenue pendant le chargement des informations de connexion.`,
   'cc-addon-credentials.title': ({ name }) => `Identifiants ${name}`,
+  // cc-addon-elasticsearch-options
+  'cc-addon-elasticsearch-options.title': `Options pour la Suite Elastic`,
+  'cc-addon-elasticsearch-options.description': () => sanitize`Cet add-on fait partie de l'offre Suite Elastic qui inclue deux options. Ces options sont déployées comme des applications et seront gérées et mises à jour par Clever Cloud. Elles apparaîtront donc comme des applications habituelles que vous pouvez arrêter, supprimer, scaler comme n'importe quelle autre application. <strong>Activer ces options augmentera votre consommation de crédits.</strong>`,
+  'cc-addon-elasticsearch-options.description.kibana': () => sanitize`Kibana est l'interface d'administration de la Suite Elastic. Kibana vous permet de visualiser vos données Elasticsearch et de naviguer dans la Suite Elastic. Vous voulez effectuer le suivi de la charge de travail liée à la recherche ou comprendre le flux des requêtes dans vos applications ? Kibana est là pour ça. Retrouvez plus de détails dans <a href="https://www.elastic.co/guide/en/kibana/master/index.html">la documentation officielle de Kibana</a>.`,
+  'cc-addon-elasticsearch-options.description.apm': () => sanitize`Elastic APM est un serveur de monitoring de performance applicative pour la Suite Elastic. Déployer cette option permet d'envoyer automatiquement les métriques de toute application liée à cette instance d'add-on Elasticsearch, en supposant que vous utilisez bien l'agent Elastic APM dans les dépendances de vos applications. Retrouvez plus de détails dans <a href="https://www.elastic.co/guide/en/apm/get-started/current/overview.html">la documentation officielle de APM server</a>.`,
+  'cc-addon-elasticsearch-options.warning.kibana': `Si vous activez cette option, nous allons déployer et gérer pour vous un Kibana, ce qui entraînera des coûts supplémentaires.`,
+  'cc-addon-elasticsearch-options.warning.kibana.details': (flavor) => sanitize`Par défaut, l'app sera démarrée sur une <strong title="${formatFlavor(flavor)}">instance ${flavor.name}</strong> qui coûte environ <strong>${currencyFormatter.format(flavor.monthlyCost)} par mois</strong>.`,
+  'cc-addon-elasticsearch-options.warning.apm': `Si vous activez cette option, nous allons déployer et gérer pour vous un APM server, ce qui entraînera des coûts supplémentaires.`,
+  'cc-addon-elasticsearch-options.warning.apm.details': (flavor) => sanitize`Par défaut, l'app sera démarrée sur une <strong title="${formatFlavor(flavor)}">instance ${flavor.name}</strong> qui coûte environ <strong>${currencyFormatter.format(flavor.monthlyCost)} par mois</strong>. `,
   // cc-addon-features
   'cc-addon-features.details': `Ci-dessous, les spécifications de votre add-on. Elles peuvent évoluer et une migration de l'add-on peut être nécessaire pour en bénéficier.`,
   'cc-addon-features.feature-name.disk': `Disque`,
@@ -111,6 +120,11 @@ export const translations = {
   'cc-addon-linked-apps.no-linked-applications': `Aucune application liée pour l'instant.`,
   'cc-addon-linked-apps.title': `Applications liées`,
   'cc-addon-linked-apps.zone': `zone:`,
+  // cc-addon-option
+  'cc-addon-option.enabled': `Activé`,
+  'cc-addon-option.disabled': `Désactivé`,
+  // cc-addon-option-form
+  'cc-addon-option-form.confirm': `Confirmer les options`,
   // cc-beta
   'cc-beta.label': `bêta`,
   // cc-error
@@ -131,18 +145,6 @@ export const translations = {
   'cc-elasticsearch-info.link.elasticsearch': `Voir l'add-on Elasticsearch`,
   'cc-elasticsearch-info.link.kibana': `Ouvrir Kibana`,
   'cc-elasticsearch-info.text': `Cet add-on fait partie de l'offre Suite Elastic. Vous pouvez retrouver la documentation ainsi que les différents services liés ci-dessous.`,
-  // cc-elasticsearch-options
-  'cc-elasticsearch-options.enabled': `Activé`,
-  'cc-elasticsearch-options.disabled': `Désactivé`,
-  'cc-elasticsearch-options.confirm': `Confirmer les options`,
-  'cc-elasticsearch-options.title': `Options pour la Suite Elastic`,
-  'cc-elasticsearch-options.description': () => sanitize`Cet add-on fait partie de l'offre Suite Elastic qui inclue deux options. Ces options sont déployées comme des applications et seront gérées et mises à jour par Clever Cloud. Elles apparaîtront donc comme des applications habituelles que vous pouvez arrêter, supprimer, scaler comme n'importe quelle autre application. <strong>Activer ces options augmentera votre consommation de crédits.</strong>`,
-  'cc-elasticsearch-options.description.kibana': () => sanitize`Kibana est l'interface d'administration de la Suite Elastic. Kibana vous permet de visualiser vos données Elasticsearch et de naviguer dans la Suite Elastic. Vous voulez effectuer le suivi de la charge de travail liée à la recherche ou comprendre le flux des requêtes dans vos applications ? Kibana est là pour ça. Retrouvez plus de détails dans <a href="https://www.elastic.co/guide/en/kibana/master/index.html">la documentation officielle de Kibana</a>.`,
-  'cc-elasticsearch-options.description.apm': () => sanitize`Elastic APM est un serveur de monitoring de performance applicative pour la Suite Elastic. Déployer cette option permet d'envoyer automatiquement les métriques de toute application liée à cette instance d'add-on Elasticsearch, en supposant que vous utilisez bien l'agent Elastic APM dans les dépendances de vos applications. Retrouvez plus de détails dans <a href="https://www.elastic.co/guide/en/apm/get-started/current/overview.html">la documentation officielle de APM server</a>.`,
-  'cc-elasticsearch-options.warning.kibana': `Si vous activez cette option, nous allons déployer et gérer pour vous un Kibana, ce qui entraînera des coûts supplémentaires.`,
-  'cc-elasticsearch-options.warning.kibana.details': (flavor) => sanitize`Par défaut, l'app sera démarrée sur une <strong title="${formatFlavor(flavor)}">instance ${flavor.name}</strong> qui coûte environ <strong>${currencyFormatter.format(flavor.monthlyCost)} par mois</strong>.`,
-  'cc-elasticsearch-options.warning.apm': `Si vous activez cette option, nous allons déployer et gérer pour vous un APM server, ce qui entraînera des coûts supplémentaires.`,
-  'cc-elasticsearch-options.warning.apm.details': (flavor) => sanitize`Par défaut, l'app sera démarrée sur une <strong title="${formatFlavor(flavor)}">instance ${flavor.name}</strong> qui coûte environ <strong>${currencyFormatter.format(flavor.monthlyCost)} par mois</strong>. `,
   // cc-header-addon
   'cc-header-addon.plan': `Plan`,
   'cc-header-addon.version': `Version`,
