@@ -1,6 +1,5 @@
-import '../addon/cc-addon-option-form.js';
-import '../atoms/cc-button.js';
-import '../molecules/cc-block.js';
+import './cc-addon-option-form.js';
+import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
@@ -39,7 +38,7 @@ const APM_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com/log
  * @prop {Flavor} apmEnabled - Enables APM.
  * @prop {Flavor} kibanaFlavor - Sets the default `Flavor` used to run the Kibana app.
  * @prop {Flavor} kibanaEnabled - Enables Kibana.
- * @prop {Array<String>} options - List of options to enable for this selection.
+ * @prop {String[]} options - List of options to enable for this selection.
  *
  * @event {CustomEvent<Options>} cc-addon-elasticsearch-options:submit - Fires when the form is submitted.
  */

@@ -1,4 +1,4 @@
-import '../addon/cc-addon-option.js';
+import './cc-addon-option.js';
 import '../atoms/cc-button.js';
 import '../molecules/cc-block.js';
 import { css, html, LitElement } from 'lit-element';
@@ -29,7 +29,7 @@ import { i18n } from '../lib/i18n.js';
  * ```
  *
  * @prop {String} title - Title of the whole options form.
- * @prop {Array<Option>} options - List of Option object to render.
+ * @prop {Option[]} options - List of Option object to render.
  *
  * @event {CustomEvent<Options>} cc-addon-option-form:submit - Fires when the form is submitted.
  *
@@ -39,15 +39,15 @@ export class CcAddonOptionForm extends LitElement {
 
   static get properties () {
     return {
+      /** @required */
       title: { type: String },
+      /** @required */
       options: { type: Array },
     };
   }
 
   constructor () {
     super();
-    this.title = null;
-    this.options = [];
     this._optionsStates = {};
   }
 
