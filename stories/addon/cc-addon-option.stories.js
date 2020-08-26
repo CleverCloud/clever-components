@@ -19,7 +19,7 @@ scelerisque ornare neque
 
 const optionExample = {
   title: 'My Option',
-  logo: 'https://static-assets.cellar.services.clever-cloud.com/logos/elasticsearch-kibana.svg'
+  logo: 'https://static-assets.cellar.services.clever-cloud.com/logos/elasticsearch-kibana.svg',
 };
 
 const conf = {

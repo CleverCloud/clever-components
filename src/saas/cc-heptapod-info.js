@@ -1,11 +1,11 @@
 import '../atoms/cc-flex-gap.js';
 import '../molecules/cc-block.js';
 import '../molecules/cc-error.js';
-import { ccLink, linkStyles } from '../templates/cc-link.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { i18n } from '../lib/i18n.js';
 import { skeletonStyles } from '../styles/skeleton.js';
+import { ccLink, linkStyles } from '../templates/cc-link.js';
 
 const SKELETON_STATISTICS = {
   privateActiveUsers: 15,

@@ -32,7 +32,7 @@ const optionsExamples = [
     description: htmlExample,
     enabled: true,
     name: 'apm',
-  }
+  },
 ];
 
 const conf = {

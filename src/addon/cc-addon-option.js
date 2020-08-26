@@ -1,7 +1,6 @@
 import '../atoms/cc-img.js';
 import '../atoms/cc-toggle.js';
 import { css, html, LitElement } from 'lit-element';
-import { classMap } from 'lit-html/directives/class-map.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 
