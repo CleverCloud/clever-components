@@ -21,6 +21,7 @@
   * `<cc-addon-elasticsearch-options>`
   * `<cc-addon-postgresql-options>`
   * `<cc-addon-mysql-options>`
+  * `<cc-addon-mongodb-options>`
   * `<cc-map-marker-dot>`
   * `<cc-map-marker-server>`
   * `<cc-zone>`
