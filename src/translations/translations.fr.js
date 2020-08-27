@@ -127,6 +127,9 @@ export const translations = {
   'cc-addon-linked-apps.no-linked-applications': `Aucune application liée pour l'instant.`,
   'cc-addon-linked-apps.title': `Applications liées`,
   'cc-addon-linked-apps.zone': `zone:`,
+  // cc-addon-mysql-options
+  'cc-addon-mysql-options.description': `Sélectionnez les options que vous souhaitez pour votre add-on MySQL.`,
+  'cc-addon-mysql-options.title': `Options pour l'add-on MySQL`,
   // cc-addon-option
   'cc-addon-option.enabled': `Activé`,
   'cc-addon-option.disabled': `Désactivé`,

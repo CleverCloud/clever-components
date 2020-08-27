@@ -20,6 +20,7 @@
   * `<cc-addon-option-form>`
   * `<cc-addon-elasticsearch-options>`
   * `<cc-addon-postgresql-options>`
+  * `<cc-addon-mysql-options>`
   * `<cc-map-marker-dot>`
   * `<cc-map-marker-server>`
   * `<cc-zone>`
