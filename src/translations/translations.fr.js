@@ -132,6 +132,9 @@ export const translations = {
   'cc-addon-option.disabled': `Désactivé`,
   // cc-addon-option-form
   'cc-addon-option-form.confirm': `Confirmer les options`,
+  // cc-addon-postgresql-options
+  'cc-addon-postgresql-options.description': `Sélectionnez les options que vous souhaitez pour votre add-on PostgreSQL.`,
+  'cc-addon-postgresql-options.title': `Options pour l'add-on PostgreSQL`,
   // cc-beta
   'cc-beta.label': `bêta`,
   // cc-error
