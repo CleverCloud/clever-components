@@ -171,9 +171,9 @@ export const translations = {
   // cc-heptapod-info
   'cc-heptapod-info.private-active-users-description': `Private users`,
   'cc-heptapod-info.public-active-users-description': `Public users`,
-  'cc-heptapod-info.storage-bytes': (bytes) => formatBytes(bytes, 1),
+  'cc-heptapod-info.storage-bytes': ({ storage }) => formatBytes(storage, 1),
   'cc-heptapod-info.storage-description': `Storage size`,
-  'cc-heptapod-info.price-value': (price) => `${currencyFormatter.format(price)} / month`,
+  'cc-heptapod-info.price-value': ({ price }) => `${currencyFormatter.format(price)} / month`,
   'cc-heptapod-info.price-description': `Estimated price`,
   'cc-heptapod-info.not-in-use': `You are not using this Heptapod service.`,
   'cc-heptapod-info.description': () => sanitize`This Heptapod instance hosts mercurial projects. Learn more on <a href="https://about.heptapod.host" rel="noreferrer noopener">https://about.heptapod.host</a>.`,

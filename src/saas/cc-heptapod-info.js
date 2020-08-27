@@ -86,11 +86,11 @@ export class CcHeptapodInfo extends LitElement {
               <div>${i18n('cc-heptapod-info.public-active-users-description')}</div>
             </div>
             <div class="pricing-item">
-              <div class="pricing-item-value ${classMap({ skeleton })}">${i18n('cc-heptapod-info.storage-bytes', statistics.storage)}</div>
+              <div class="pricing-item-value ${classMap({ skeleton })}">${i18n('cc-heptapod-info.storage-bytes', statistics)}</div>
               <div>${i18n('cc-heptapod-info.storage-description')}</div>
             </div>
             <div class="pricing-item">
-              <div class="pricing-item-value ${classMap({ skeleton })}">${i18n('cc-heptapod-info.price-value', statistics.price)}</div>
+              <div class="pricing-item-value ${classMap({ skeleton })}">${i18n('cc-heptapod-info.price-value', statistics)}</div>
               <div>${i18n('cc-heptapod-info.price-description')}</div>
             </div>
           </cc-flex-gap>
