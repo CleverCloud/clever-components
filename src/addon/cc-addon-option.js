@@ -7,7 +7,7 @@ import { i18n } from '../lib/i18n.js';
 /**
  * A component that allows to enable or disable an add-on option.
  *
- * * 🎨 default CSS display: `block`
+ * * 🎨 default CSS display: `grid`
  * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-option.js)
  *
@@ -53,13 +53,11 @@ export class CcAddonOption extends LitElement {
     ];
 
     return html`
-      <div class="option">
-        <cc-img class="logo" src=${this.logo}></cc-img>
-        <div class="option-main">
-          <div class="option-name">${this.title}</div>
-          <slot class="option-details"></slot>
-          <cc-toggle .choices=${choices} .value=${this.enabled} @cc-toggle:input=${this._onToggleOption}></cc-toggle>
-        </div>
+      <cc-img class="logo" src=${this.logo}></cc-img>
+      <div class="option-main">
+        <div class="option-name">${this.title}</div>
+        <slot class="option-details"></slot>
+        <cc-toggle .choices=${choices} .value=${this.enabled} @cc-toggle:input=${this._onToggleOption}></cc-toggle>
       </div>
     `;
   }
@@ -69,7 +67,11 @@ export class CcAddonOption extends LitElement {
       // language=CSS
       css`
         :host {
-          display: block;
+          border-radius: 0.25rem;
+          display: grid;
+          grid-gap: 1rem;
+          grid-template-columns: min-content 1fr;
+          padding: 1rem;
         }
 
         ::slotted(.option-warning) {
@@ -86,14 +88,6 @@ export class CcAddonOption extends LitElement {
           font-weight: bold;
           line-height: 1.6;
           min-height: 1.6rem;
-        }
-
-        .option {
-          border-radius: 0.25rem;
-          display: grid;
-          grid-gap: 1rem;
-          grid-template-columns: min-content 1fr;
-          padding: 1rem;
         }
 
         :host(:not([enabled])) {
@@ -116,7 +110,7 @@ export class CcAddonOption extends LitElement {
           margin-top: 0.5rem;
         }
 
-        .option--enabled cc-toggle {
+        :host([enabled]) cc-toggle {
           --cc-toggle-color: hsl(144, 56%, 43%);
         }
 
