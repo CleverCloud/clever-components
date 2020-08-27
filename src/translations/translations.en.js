@@ -94,6 +94,10 @@ export const translations = {
   'cc-addon-elasticsearch-options.warning.kibana.details': (flavor) => sanitize`By default, the app will start on a <strong title="${formatFlavor(flavor)}">${flavor.name} instance</strong> which costs around <strong>${currencyFormatter.format(flavor.monthlyCost)} per month</strong>.`,
   'cc-addon-elasticsearch-options.warning.apm': `If you enable this option, we'll deploy and manage an Elastic APM server application for you, this will lead to additional costs.`,
   'cc-addon-elasticsearch-options.warning.apm.details': (flavor) => sanitize`By default, the app will start on a <strong title="${formatFlavor(flavor)}">${flavor.name} instance</strong> which costs around <strong>${currencyFormatter.format(flavor.monthlyCost)} per month</strong>.`,
+  // cc-addon-encryption-at-rest-option
+  'cc-addon-encryption-at-rest-option.description': ({ documentationLink }) => sanitize`Encryption at rest encrypts the entire data disk of your add-on. It prevents reading the stored data in case of a physical access to the hard drive. More information in our <a href="${documentationLink}">documentation</a>.`,
+  'cc-addon-encryption-at-rest-option.title': `Encryption at rest`,
+  'cc-addon-encryption-at-rest-option.warning': ({ percent, price }) => sanitize`This option is currently free. In the future, it will be billed ${percentFormatter.format(percent)} of the plan price, which amounts to <strong>${currencyFormatter.format(price)} per month</strong> here.`,
   // cc-addon-features
   'cc-addon-features.details': `Here's the list of all the features of your add-on. Features may evolve and your add-on would need a migration to match them all.`,
   'cc-addon-features.feature-name.disk': `Disk`,
