@@ -184,9 +184,9 @@ export const translations = {
   // cc-heptapod-info
   'cc-heptapod-info.private-active-users-description': `Utilisateurs privés`,
   'cc-heptapod-info.public-active-users-description': `Utilisateurs publics`,
-  'cc-heptapod-info.storage-bytes': (bytes) => formatBytes(bytes, 1),
+  'cc-heptapod-info.storage-bytes': ({ storage }) => formatBytes(storage, 1),
   'cc-heptapod-info.storage-description': `Stockage utilisé`,
-  'cc-heptapod-info.price-value': (price) => `${currencyFormatter.format(price)} / mois`,
+  'cc-heptapod-info.price-value': ({ price }) => `${currencyFormatter.format(price)} / mois`,
   'cc-heptapod-info.price-description': `Prix estimé`,
   'cc-heptapod-info.not-in-use': `Vous n'utilisez pas ce service Heptapod.`,
   'cc-heptapod-info.description': () => sanitize`Cette instance Heptapod héberge des dépôts Mercurial. Plus d'informations sur <a href="https://about.heptapod.host" rel="noreferrer noopener">https://about.heptapod.host</a>.`,
