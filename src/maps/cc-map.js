@@ -223,9 +223,9 @@ export class CcMap extends withResizeObserver(LitElement) {
       .addLayer(leaflet.heatLayer(heatPoints, heatOptions));
   }
 
-  _addPoint ({ lat, lon, count = 1, delay = 1000, tooltip, country }) {
+  _addPoint ({ lat, lon, count = 1, delay = 1000, tooltip }) {
 
-    const newPoint = { lat, lon, count, delay, tooltip, country, coords: [lat, lon].join(',') };
+    const newPoint = { lat, lon, count, delay, tooltip, coords: [lat, lon].join(',') };
     this._points.push(newPoint);
 
     this._updateMarker(newPoint);
