@@ -6,26 +6,13 @@ import 'leaflet.heat';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { WORLD_GEOJSON } from '../assets/world-110m.geo.js';
+import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
 import { leafletStyles } from '../styles/leaflet.js';
 
-// Generated with https://components.ai/color-scale/
-// Canvas at #F5F5F5 (map country color)
-// From #40B970 to #003814 with 8 steps
-const COLOR_PALETTE = [
-  '#40b970',
-  '#36a562',
-  '#2c9254',
-  '#237f46',
-  '#1a6c39',
-  '#115a2c',
-  '#084920',
-  '#003814',
-];
-
 /**
- * World map with two modes: blinking dots or heatmap.
+ * World map with two modes: positioned markers or heatmap.
  *
  * 🎨 default CSS display: `flex`
  * <br>
@@ -34,22 +21,33 @@ const COLOR_PALETTE = [
  * ## Details
  *
  * * The component has a default height of 15rem and a default width 20rem but this can be overridden with CSS.
+ * * When using `points`, you need to specify which HTML tag should be used to create and display the marker.
+ * * The marker DOM element should expose `size`, `anchor` and `tooltip` to help this component place the marker and tooltip correctly on the map.
+ * * When using `points`, you can specify some text for the tooltip but you can also specify which HTML tag to use to create and display the tooltip.
  *
  * ## Type definitions
  *
  * ```js
  * interface Point {
- *   lat: number,           // Latitude
- *   lon: number,           // Longitude
- *   count?: number,        // Number of occurences for this location (default: 1)
- *   delay?: number|string, // How long the point needs to stay (in ms), 'none' for a fixed point, (default: 1000)
- *   tooltip?: string,      // Tooltip when the point is hovered
+ *   lat: number,              // Latitude
+ *   lon: number,              // Longitude
+ *   marker: Marker,           // An object describing how to create a marker with a custom element.
+ *   tooltip: string|Tooltip,  // Simple string or an object describing how to create a tooltip with a custom element.
+ *   zIndexOffset: number,     // The offset to add to the automatic offset already defined for a given point.
  * }
  * ```
  *
  * ```js
- * interface PointsOptions {
- *   spreadDuration?: boolean|number, // Spread points appearance over a time window (in ms)
+ * interface Marker {
+ *   tag: string,              // The HTML tag name used for the marker
+ *   // Additional specific properties for the marker custom element.
+ * }
+ * ```
+ *
+ * ```js
+ * interface Tooltip {
+ *   tag: string,              // The HTML tag name used for the tooltip
+ *   // Additional specific properties for the tooltip custom element.
  * }
  * ```
  *
@@ -66,8 +64,13 @@ const COLOR_PALETTE = [
  * @prop {Boolean} error - Displays an error message (can be combined with `loading`).
  * @prop {HeatmapPoint[]} heatmapPoints - Sets the list of points used to draw the heatmap.
  * @prop {Boolean} loading - Displays a loader on top of the map (can be combined with `error`).
- * @prop {"points"|"heatmap"} mode - Sets map mode: `"points"` for blinking temporary dots and `"heatmap"` for a heatmap.
+ * @prop {"points"|"heatmap"} mode - Sets map mode: `"points"` for points with custom markers and `"heatmap"` for a heatmap.
+ * @prop {Point[]} points - Sets the list of points used to place markers.
  * @prop {Number} viewZoom - Sets the zoom of the map (between 1 and 6).
+ *
+ * @event {CustomEvent<Point>} cc-map:marker-click - Fires the corresponding point whenever a marker is clicked.
+ * @event {CustomEvent<Point>} cc-map:marker-enter - Fires the corresponding point whenever a marker is entered by the mouse.
+ * @event {CustomEvent<Point>} cc-map:marker-leave - Fires the corresponding point whenever a marker is left by the mouse.
  *
  * @slot - The legend and/or details for the map (displayed at the bottom).
  */
@@ -81,6 +84,7 @@ export class CcMap extends withResizeObserver(LitElement) {
       heatmapPoints: { type: Array },
       loading: { type: Boolean, reflect: true },
       mode: { type: String },
+      points: { type: Array },
       viewZoom: { type: Number, attribute: 'view-zoom', reflect: true },
     };
   }
@@ -94,10 +98,7 @@ export class CcMap extends withResizeObserver(LitElement) {
     this.loading = false;
     this.mode = 'points';
     this.viewZoom = 2;
-    // Used for reatime points
-    this._points = [];
-    this._markers = {};
-    this._colorIndex = 0;
+    this._pointsCache = {};
   }
 
   get centerLat () {
@@ -118,6 +119,10 @@ export class CcMap extends withResizeObserver(LitElement) {
 
   get heatmapPoints () {
     return this._heatmapPoints;
+  }
+
+  get points () {
+    return this._points;
   }
 
   set centerLat (newVal) {
@@ -155,28 +160,11 @@ export class CcMap extends withResizeObserver(LitElement) {
       .then(() => this._updateHeatmap(newVal));
   }
 
-  /**
-   * Add several points to the map for the live blinking dots mode.
-   * @param {Point[]} points - List of points.
-   * @param {PointsOptions} options - Options to spread the display of the different points over time.
-   */
-  addPoints (points, options = {}) {
-
-    // If a point is added before the map is set, wait
-    if (this._map == null) {
-      this.updateComplete.then(() => this.addPoints(points, options));
-      return;
-    }
-
-    const { spreadDuration = false } = options;
-
-    const timeStep = (spreadDuration !== false)
-      ? Math.floor(spreadDuration / points.length)
-      : 0;
-
-    points.forEach((p, i) => {
-      setTimeout(() => this._addPoint(p), timeStep * i);
-    });
+  set points (newVal) {
+    const oldVal = this._points;
+    this._points = newVal;
+    this.requestUpdate('points', oldVal)
+      .then(() => this._updatePoints(newVal));
   }
 
   _resetCurrentLayer () {
@@ -213,109 +201,128 @@ export class CcMap extends withResizeObserver(LitElement) {
       .addLayer(leaflet.heatLayer(heatPoints, heatOptions));
   }
 
-  _addPoint ({ lat, lon, count = 1, delay = 1000, tooltip }) {
+  _updatePoints (newPoints) {
 
-    const newPoint = { lat, lon, count, delay, tooltip, coords: [lat, lon].join(',') };
-    this._points.push(newPoint);
-
-    this._updateMarker(newPoint);
-
-    if (typeof delay === 'number') {
-      setTimeout(() => {
-        this._points = this._points.filter((p) => p !== newPoint);
-        this._updateMarker(newPoint);
-      }, delay);
-    }
-  }
-
-  _updateMarker (point) {
-
-    // Remove marker if there's alreay one at the coordinates
-    this._removeMarker(point);
-
-    // Compute total count of the points at those coordinates
-    // We don't use this value for the tooltip for now
-    const totalCount = this._points
-      .filter((p) => p.coords === point.coords)
-      .map((p) => p.count)
-      .reduce((a, b) => a + b, 0);
-
-    // Don't add a new marker
-    if (totalCount === 0) {
+    if (!Array.isArray(newPoints)) {
       return;
     }
 
-    const colorVariables = this._getColorVariables(totalCount);
+    const obsoleteIds = new Set(Object.keys(this._pointsCache));
 
-    // Prepare new marker
-    const dotIcon = leaflet.divIcon({
-      html: `<div class="dot" style="${colorVariables}"></div>`,
-      iconSize: [30, 30],
-      bgPos: [15, 15],
+    // Create new markers or update them if there's already one with the same tag at the same coordinates
+    for (const point of newPoints) {
+      const id = [point.lat, point.lon, point.marker.tag].join(',');
+      const old = this._pointsCache[id];
+      if (old == null) {
+        this._createMarker(id, point);
+      }
+      this._updateMarker(id, point);
+      // Don't delete this marker
+      obsoleteIds.delete(id);
+    }
+
+    // Delete markers
+    for (const id of obsoleteIds.values()) {
+      this._deleteMarker(id);
+    }
+  }
+
+  _createMarker (id, point) {
+
+    // Prepare icon with custom element
+    const iconElement = document.createElement(point.marker.tag);
+    const icon = leaflet.divIcon({
+      html: iconElement,
+      iconSize: iconElement.size,
+      iconAnchor: iconElement.anchor,
+      tooltipAnchor: iconElement.tooltip,
       className: 'cc-map-marker',
     });
 
-    // Add marker to the map
+    // Create marker and add it to the map
     const marker = leaflet
-      .marker([point.lat, point.lon], { icon: dotIcon })
+      // We don't use for riseOnHover: true, it's up to the user to do it with zIndexOffset
+      .marker([point.lat, point.lon], { icon, zIndexOffset: point.zIndexOffset })
       .addTo(this._pointsLayer);
 
-    // Save marker for later
-    this._markers[point.coords] = marker;
+    marker
+      .on('click', () => dispatchCustomEvent(this, 'marker-click', point))
+      .on('mouseover', () => dispatchCustomEvent(this, 'marker-enter', point))
+      .on('mouseout', () => dispatchCustomEvent(this, 'marker-leave', point));
 
-    // Prepare tooltip
-    const allTooltips = this._points
-      .filter((p) => p.coords === point.coords && p.tooltip != null && p.tooltip !== '')
-      .map((p) => p.tooltip);
+    this._pointsCache[id] = { point, marker, iconElement };
+  }
 
-    const uniqueTooltips = Array.from(new Set(allTooltips));
+  _updateMarker (id, newPoint) {
 
-    // Bind tooltip to the marker
-    if (allTooltips.length > 0) {
-      const suffix = (uniqueTooltips.length >= 3) ? '...' : '';
-      const tooltipsStr = uniqueTooltips.slice(0, 3).join('<br>') + suffix;
-      marker.bindTooltip(tooltipsStr, { direction: 'top' });
+    this._pointsCache[id].point = newPoint;
+    const { point, marker, iconElement } = this._pointsCache[id];
+
+    // Update marker icon custom element properties
+    for (const k in point.marker) {
+      if (k !== 'tag') {
+        iconElement[k] = point.marker[k];
+      }
+    }
+
+    // Update zIndexOffset
+    marker.setZIndexOffset(point.zIndexOffset);
+
+    // Create, update or delete tooltip
+    if (point.tooltip == null) {
+      marker.unbindTooltip();
+    }
+    else {
+      if (marker.getTooltip() == null) {
+        // Create empty tooltip
+        marker.bindTooltip('', { direction: 'top', opacity: 1 });
+      }
+      if (point.tooltip.tag == null) {
+        // Simple tooltip with text
+        marker.setTooltipContent(point.tooltip);
+      }
+      else {
+        // Complex tooltip with custom element
+        const oldElement = marker.getTooltip().getContent();
+        const oldTagName = (oldElement != null && oldElement.tagName != null) ? oldElement.tagName.toLowerCase() : null;
+        const tooltipElement = (oldTagName !== point.tooltip.tag)
+          ? document.createElement(point.tooltip.tag)
+          : oldElement;
+
+        // Update tooltip custom element properties
+        for (const k in point.tooltip) {
+          if (k !== 'tag') {
+            tooltipElement[k] = point.tooltip[k];
+          }
+        }
+
+        // WARNING: This is a trick!
+        // Fact A: In order to place a tooltip on the map, Leaflet tries to compute the size of the custom element.
+        // Fact B: In order to update the DOM in the most performant way, LitElement does async rendering.
+        // Consequence: When Leaflet tries to compute the size of a tooltip using a custom element written with LitElement,
+        // it's too soon, the shadow DOM is empty and the computed size is [0, 0].
+        // With this dirty trick, we force LitElement to trigger a render on the custom element before we call Leaflet to use it.
+        this.appendChild(tooltipElement);
+        this.removeChild(tooltipElement);
+
+        marker.setTooltipContent(tooltipElement);
+      }
     }
   }
 
-  _removeMarker (point) {
-    const marker = this._markers[point.coords];
-    if (marker != null) {
-      this._pointsLayer.removeLayer(marker);
-      delete this._markers[point.coords];
-    }
+  _deleteMarker (id) {
+    const { marker } = this._pointsCache[id];
+    this._pointsLayer.removeLayer(marker);
+    delete this._pointsCache[id];
   }
 
-  _getColorVariables (numberOfRequests) {
-
-    // Let's take the total number of requests for a given set of coordinates
-    // We want to have visible differences of colors between 1 request and 10 requests but also between 20, 50 or 400...
-    // Applying a logarithm helps to notice the importance of a given location
-    // Distributing colors on a limited set of colors also helps
-    // @see COLOR_PALETTE for the details
-
-    // With 8 colors, this gives us those boundaries (color index: nb or requests)
-    // 0:    1.00
-    // 1:    2.71
-    // 2:    7.38
-    // 3:   20.08
-    // 4:   54.59
-    // 5:  148.41
-    // 6:  403.42
-    // 7: 1096.63
-
-    const rawColorIndex = Math.floor(Math.log(numberOfRequests));
-    // If floor(log(value)) is bigger than number of colors in palette, we just use the max (darkest color)
-    const colorIndex = Math.min(rawColorIndex, COLOR_PALETTE.length);
-
-    const hexColor = COLOR_PALETTE[colorIndex];
-
-    // The map needs 3 variants of colors for the bubble animation (different transparencies)
-    return [
-      `--dot-color: ${hexColor}ff`,
-      `--dot-color-half: ${hexColor}66`,
-      `--dot-color-zero: ${hexColor}00`,
-    ].join(';');
+  /**
+   * Pan the map to a given point but only if it's necessary and with some small padding (50px).
+   * @prop {Number} lat - Sets the latitude of the point.
+   * @prop {Number} lon - Sets the longitude of the point.
+   */
+  panInside (lat, lon) {
+    this._map.panInside([lat, lon], { padding: [50, 50] });
   }
 
   /**
@@ -376,8 +383,8 @@ export class CcMap extends withResizeObserver(LitElement) {
       <div id="cc-map-container" class=${classMap({ 'no-data': noHeatmapPoints })}></div>
       <div class="legend ${classMap({ 'no-data': noHeatmapPoints })}"><slot></slot></div>
       ${this.loading && !this.error ? html`
-      <cc-loader class="loader"></cc-loader>
-    ` : ''}
+        <cc-loader class="loader"></cc-loader>
+      ` : ''}
       ${this.error || noHeatmapPoints ? html`
         <div class="msg-container">
           ${this.error ? html`
@@ -486,58 +493,8 @@ export class CcMap extends withResizeObserver(LitElement) {
 
         .cc-map-marker {
           align-items: center;
-          background: none;
           display: flex;
           justify-content: center;
-        }
-
-        .dot {
-          animation: pulse 2s infinite;
-          background: var(--dot-color);
-          border-radius: 50%;
-          color: #1a1a1a;
-          cursor: pointer;
-          height: var(--dot-size);
-          line-height: var(--dot-size);
-          position: relative;
-          text-align: center;
-          width: var(--dot-size);
-        }
-
-        :host([view-zoom="1"]) .dot {
-          --dot-size: 6px;
-        }
-
-        :host([view-zoom="2"]) .dot {
-          --dot-size: 8px;
-        }
-
-        :host([view-zoom="3"]) .dot {
-          --dot-size: 10px;
-        }
-
-        :host([view-zoom="4"]) .dot {
-          --dot-size: 12px;
-        }
-
-        :host([view-zoom="5"]) .dot {
-          --dot-size: 14px;
-        }
-
-        :host([view-zoom="6"]) .dot {
-          --dot-size: 16px;
-        }
-
-        @keyframes pulse {
-          0% {
-            box-shadow: 0 0 0 0 var(--dot-color-half);
-          }
-          70% {
-            box-shadow: 0 0 0 var(--dot-size) var(--dot-color-zero);
-          }
-          100% {
-            box-shadow: 0 0 0 0 var(--dot-color-zero);
-          }
         }
       `,
     ];
