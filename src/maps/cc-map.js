@@ -123,43 +123,36 @@ export class CcMap extends withResizeObserver(LitElement) {
   set centerLat (newVal) {
     const oldVal = this._centerLat;
     this._centerLat = newVal;
-    this.requestUpdate('centerLat', oldVal);
-    if (this._map != null) {
-      this._map.setView([newVal, this._centerLon]);
-    }
+    this.requestUpdate('centerLat', oldVal)
+      .then(() => this._map.setView([newVal, this._centerLon]));
   }
 
   set centerLon (newVal) {
     const oldVal = this._centerLon;
     this._centerLon = newVal;
-    this.requestUpdate('centerLon', oldVal);
-    if (this._map != null) {
-      this._map.setView([this._centerLat, newVal]);
-    }
+    this.requestUpdate('centerLon', oldVal)
+      .then(() => this._map.setView([this._centerLat, newVal]));
   }
 
   set viewZoom (newVal) {
     const oldVal = this._viewZoom;
     this._viewZoom = newVal;
-    this.requestUpdate('viewZoom', oldVal);
-    if (this._map != null) {
-      this._map.setZoom(newVal);
-    }
+    this.requestUpdate('viewZoom', oldVal)
+      .then(() => this._map.setZoom(newVal));
   }
 
   set mode (newVal) {
     const oldVal = this._mode;
     this._mode = newVal;
-    this.requestUpdate('mode', oldVal);
-    this._resetCurrentLayer();
+    this.requestUpdate('mode', oldVal)
+      .then(() => this._resetCurrentLayer());
   }
 
   set heatmapPoints (newVal) {
+    const oldVal = this._heatmapPoints;
     this._heatmapPoints = newVal;
-    // Wait for the first update that the map is made
-    (this._map == null)
-      ? this.updateComplete.then(() => this._updateHeatmap(newVal))
-      : this._updateHeatmap(newVal);
+    this.requestUpdate('heatmapPoints', oldVal)
+      .then(() => this._updateHeatmap(newVal));
   }
 
   /**
@@ -187,14 +180,11 @@ export class CcMap extends withResizeObserver(LitElement) {
   }
 
   _resetCurrentLayer () {
-    if (this._map != null) {
-      (this._mode === 'heatmap')
-        ? this._map.addLayer(this._heatLayer)
-        : this._map.removeLayer(this._heatLayer);
-      (this._mode === 'points')
-        ? this._map.addLayer(this._pointsLayer)
-        : this._map.removeLayer(this._pointsLayer);
-    }
+    const [layerToAdd, layerToRemove] = (this.mode === 'heatmap')
+      ? [this._heatLayer, this._pointsLayer]
+      : [this._pointsLayer, this._heatLayer];
+    this._map.removeLayer(layerToRemove);
+    this._map.addLayer(layerToAdd);
   }
 
   _updateHeatmap (newPoints) {
