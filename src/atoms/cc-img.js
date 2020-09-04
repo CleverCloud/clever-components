@@ -17,6 +17,8 @@ import { skeletonStyles } from '../styles/skeleton.js';
  * @prop {Boolean} skeleton - Enables skeleton screen UI pattern (loading hint).
  * @prop {String} src - Sets `src` attribute on inner native `<img>` element.
  * @prop {String} text - Sets short fallback text to display when the image cannot be loaded or if `src` is not defined and `skeleton` is `false`.
+ *
+ * @cssprop {"cover"|"contain"} --cc-img-fit - Sets the `object-fit` of the inner `<img>` element (defaults to "cover").
  */
 export class CcImg extends LitElement {
 
@@ -109,7 +111,7 @@ export class CcImg extends LitElement {
         img {
           display: block;
           left: 0;
-          object-fit: cover;
+          object-fit: var(--cc-img-fit, cover);
           object-position: center center;
           opacity: 0;
           position: absolute;
