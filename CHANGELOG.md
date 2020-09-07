@@ -10,6 +10,7 @@
   * set default display to `block`
   * remove max-width
   * rework `loading`/`skeleton` logic
+* `<cc-header-app>`: add `zone` details
 * Remove `<cc-elasticsearch-options>`, replaced by `<cc-addon-elasticsearch-options>` 
 
 ### Components

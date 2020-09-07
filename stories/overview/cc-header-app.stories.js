@@ -15,6 +15,14 @@ function app (variantName, variantLogoName, commit = COMMIT_ONE) {
   };
 }
 
+const zoneParis = {
+  name: 'par',
+  country: 'France',
+  countryCode: 'fr',
+  city: 'Paris',
+  tags: ['region:eu', 'infra:clever-cloud'],
+};
+
 export default {
   title: '🛠 Overview/<cc-header-app>',
   component: 'cc-header-app',
@@ -30,7 +38,7 @@ const conf = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [{ app: app('Node', 'nodejs'), status: 'running', runningCommit: COMMIT_ONE }],
+  items: [{ app: app('Node', 'nodejs'), status: 'running', runningCommit: COMMIT_ONE, zone: zoneParis }],
 });
 
 export const skeleton = makeStory(conf, {
@@ -46,43 +54,45 @@ export const error = makeStory(conf, {
 });
 
 export const unknownState = makeStory(conf, {
-  items: [{ app: app('PHP', 'php'), status: 'unknown' }],
+  items: [{ app: app('PHP', 'php'), status: 'unknown', zone: zoneParis }],
 });
 
 export const stoppedState = makeStory(conf, {
-  items: [{ app: app('Docker', 'docker'), status: 'stopped' }],
+  items: [{ app: app('Docker', 'docker'), status: 'stopped', zone: zoneParis }],
 });
 
 export const stoppedStateWithBrandNewApp = makeStory(conf, {
-  items: [{ app: app('Python', 'python', null), status: 'stopped' }],
+  items: [{ app: app('Python', 'python', null), status: 'stopped', zone: zoneParis }],
 });
 
 export const startFailedState = makeStory(conf, {
-  items: [{ app: app('Java + WAR', 'java-war'), status: 'start-failed' }],
+  items: [{ app: app('Java + WAR', 'java-war'), status: 'start-failed', zone: zoneParis }],
 });
 
 export const runningStateWithRunningCommitUnknown = makeStory(conf, {
-  items: [{ app: app('Java + JAR', 'java-jar'), status: 'running' }],
+  items: [{ app: app('Java + JAR', 'java-jar'), status: 'running', zone: zoneParis }],
 });
 
 export const runningState = makeStory(conf, {
-  items: [{ app: app('Ruby', 'ruby'), status: 'running', runningCommit: COMMIT_ONE }],
+  items: [{ app: app('Ruby', 'ruby'), status: 'running', runningCommit: COMMIT_ONE, zone: zoneParis }],
 });
 
 export const restartFailedState = makeStory(conf, {
-  items: [{ app: app('Java or Scala + Play! 2', 'play2'), status: 'restart-failed', runningCommit: COMMIT_ONE }],
+  items: [{
+    app: app('Java or Scala + Play! 2', 'play2'), status: 'restart-failed', runningCommit: COMMIT_ONE, zone: zoneParis,
+  }],
 });
 
 export const startingStateWithDeployingCommitUnknown = makeStory(conf, {
-  items: [{ app: app('Java + Maven', 'maven'), status: 'starting' }],
+  items: [{ app: app('Java + Maven', 'maven'), status: 'starting', zone: zoneParis }],
 });
 
 export const startingState = makeStory(conf, {
-  items: [{ app: app('Go', 'go'), status: 'starting', runningCommit: COMMIT_ONE }],
+  items: [{ app: app('Go', 'go'), status: 'starting', runningCommit: COMMIT_ONE, zone: zoneParis }],
 });
 
 export const restartingStateWithDeployingCommitUnknown = makeStory(conf, {
-  items: [{ app: app('Scala', 'scala'), status: 'restarting', runningCommit: COMMIT_ONE }],
+  items: [{ app: app('Scala', 'scala'), status: 'restarting', runningCommit: COMMIT_ONE, zone: zoneParis }],
 });
 
 export const restartingState = makeStory(conf, {
@@ -91,6 +101,7 @@ export const restartingState = makeStory(conf, {
     status: 'restarting',
     runningCommit: COMMIT_ONE,
     startingCommit: COMMIT_TWO,
+    zone: zoneParis,
   }],
 });
 
@@ -100,14 +111,15 @@ export const restartingWithDowntimeState = makeStory(conf, {
     status: 'restarting-with-downtime',
     runningCommit: COMMIT_ONE,
     startingCommit: COMMIT_ONE,
+    zone: zoneParis,
   }],
 });
 
 export const dataLoadedWithDisableButtons = makeStory(conf, {
   items: [
-    { disableButtons: true, app: app('Docker', 'docker'), status: 'stopped' },
-    { disableButtons: true, app: app('Ruby', 'ruby'), status: 'running' },
-    { disableButtons: true, app: app('Scala', 'scala'), status: 'restarting' },
+    { disableButtons: true, app: app('Docker', 'docker'), status: 'stopped', zone: zoneParis },
+    { disableButtons: true, app: app('Ruby', 'ruby'), status: 'running', zone: zoneParis },
+    { disableButtons: true, app: app('Scala', 'scala'), status: 'restarting', zone: zoneParis },
   ],
 });
 
@@ -117,6 +129,9 @@ export const simulations = makeStory(conf, {
     storyWait(3000, ([component, componentError]) => {
       component.app = app('Node', 'nodejs');
       componentError.error = true;
+    }),
+    storyWait(2000, ([component]) => {
+      component.zone = zoneParis;
     }),
     storyWait(2000, ([component]) => {
       component.status = 'running';

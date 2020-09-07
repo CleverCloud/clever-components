@@ -1,6 +1,7 @@
 import '../atoms/cc-button.js';
 import '../atoms/cc-flex-gap.js';
 import '../molecules/cc-error.js';
+import '../zones/cc-zone.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -73,6 +74,16 @@ const SKELETON_STATUS = 'unknown';
  *                  | "running" | "start-failed" | "starting" | "stopped" | "unknown"
  * ```
  *
+ * ```js
+ * interface Zone {
+ *   countryCode: string,   // ISO 3166-1 alpha-2 code of the country (2 letters): "fr", "ca", "us"...
+ *   city: string,          // Name of the city in english: "Paris", "Montreal", "New York City"...
+ *   country: string,       // Name of the country in english: "France", "Canada", "United States"...
+ *   displayName?: string,  // Optional display name for private zones (instead of displaying city + country): "ACME (dedicated)"...
+ *   tags: string[],        // Array of strings for semantic tags: ["region:eu", "infra:clever-cloud"], ["scope:private"]...
+ * }
+ * ```
+ *
  * ## Images
  *
  * | | |
@@ -93,6 +104,7 @@ const SKELETON_STATUS = 'unknown';
  * @prop {String} runningCommit - Sets the running commit (if app is running).
  * @prop {String} startingCommit - Sets the starting commit (if app is deploying).
  * @prop {AppStatus} status - Sets application status.
+ * @prop {Zone} zone - Sets application zone.
  *
  * @event {CustomEvent} cc-header-app:cancel - Fires whenever the cancel button is clicked.
  * @event {CustomEvent} cc-header-app:restart - Fires whenever one of the 3 restart buttons is clicked.
@@ -109,6 +121,7 @@ export class CcHeaderApp extends LitElement {
       runningCommit: { type: String, attribute: 'running-commit' },
       startingCommit: { type: String, attribute: 'starting-commit' },
       status: { type: String },
+      zone: { type: Object },
       _lastUserAction: { type: String, attribute: false },
     };
   }
@@ -310,7 +323,7 @@ export class CcHeaderApp extends LitElement {
         </cc-flex-gap>
       </cc-flex-gap>
       
-      <div class="messages ${classMap({ 'cc-waiting': isDeploying })}">
+      <cc-flex-gap class="messages ${classMap({ 'cc-waiting': isDeploying })}">
         ${(shouldDisplayStatusMessage) ? html`
           <!-- image has a presentation role => alt="" -->
           <img class="status-icon" src=${statusIcon[status] || unknownSvg} alt="">
@@ -322,7 +335,9 @@ export class CcHeaderApp extends LitElement {
         ${this._lastUserAction != null ? html`
           ${this._getLastUserActionMsg()}
         ` : ''}
-      </div>
+        <span class="spacer"></span>
+        <cc-zone .zone=${this.zone} mode="small-infra"></cc-zone>
+      </cc-flex-gap>
     `;
   }
 
@@ -424,19 +439,30 @@ export class CcHeaderApp extends LitElement {
         }
 
         .messages {
+          --cc-gap: 0.5rem;
+          --cc-align-items: center;
+          align-items: center;
           background-color: #f1f5ff;
           box-shadow: inset 0 6px 6px -6px #a4b1c9;
           box-sizing: border-box;
           color: #2e2e2e;
           font-size: 0.9rem;
           font-style: italic;
-          padding: 0.4rem var(--cc-gap);
+          padding: 0.4rem 1rem;
         }
 
         .status-icon {
           height: 1.25rem;
           min-width: 1.25rem;
-          vertical-align: middle;
+        }
+        
+        .spacer {
+          flex: 1 1 0;
+        }
+        
+        cc-zone {
+          font-style: normal;
+          white-space: nowrap;
         }
 
         [title] {
