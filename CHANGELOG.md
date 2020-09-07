@@ -1,5 +1,40 @@
 # Clever Components changelog
 
+## Unreleased (????-??-??)
+
+### ⚠️ BREAKING CHANGES
+
+* `<cc-map>`: rework the API to place markers with something more generic
+* `<cc-heptapod-info>`:
+  * rename `statistics` properties
+  * set default display to `block`
+  * remove max-width
+  * rework `loading`/`skeleton` logic
+* Remove `<cc-elasticsearch-options>`, replaced by `<cc-addon-elasticsearch-options>` 
+
+### Components
+
+* New components:
+  * `<cc-addon-option>`
+  * `<cc-addon-option-form>`
+  * `<cc-addon-elasticsearch-options>`
+  * `<cc-map-marker-dot>`
+  * `<cc-map-marker-server>`
+  * `<cc-zone>`
+  * `<cc-zone-input>`
+* `<cc-img>`: add CSS custom prop `--cc-img-fit` to customize object-fit (default is cover)
+* Rework the way we format bytes and use it in `<cc-heptapod-info>`, `<cc-tile-scalability>` and `<cc-addon-elasticsearch-options>`
+
+### For devs
+
+* docs: add some details about properties/attributes in cc-example-component.js
+* Replace cypress by web-test-runner (and fix a test)
+* Add tests for `prepareNumberUnitFormatter()`, refine implementation and adapt tests
+* Refactor:
+  * `<cc-logsmap>`: absorb logic that was in `<cc-map>` and use `<cc-map-marker-dot>`
+  * `<cc-map>`: simplify setters and remove useless country property in point object
+  * `<cc-heptapod-info>`: fix small issues (lint, CSS, story, API...)
+
 ## 4.1.2 (2020-08-14)
 
 ### Components
