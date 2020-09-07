@@ -1,12 +1,38 @@
 import '../../src/maps/cc-map.js';
+import '../../src/maps/cc-map-marker-server.js';
+import '../../src/maps/cc-map-marker-dot.js';
+import '../../src/zones/cc-zone.js';
 import fakeHeatmapData from '../assets/24-hours-points.json';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
-import { setIntervalDom, setTimeoutDom } from '../lib/timers.js';
-import { getFakePointsData } from './fake-map-data.js';
 
-const spreadDuration = 5000;
-const delay = spreadDuration + 2000;
+const points = [
+  { lat: 48.8, lon: 2.3, city: 'Paris', country: 'France', countryCode: 'fr', state: 'default' },
+  { lat: 50.6, lon: 3.1, city: 'Lille', country: 'France', countryCode: 'fr', state: 'selected' },
+  { lat: 47.2, lon: -1.6, city: 'Nantes', country: 'France', countryCode: 'fr', state: 'default' },
+  { lat: 45.7, lon: 4.7, city: 'Lyon', country: 'France', countryCode: 'fr', state: 'default' },
+];
+
+const blinkingDots = points.map((p, i) => {
+  const { lat, lon, city } = p;
+  return {
+    lat,
+    lon,
+    marker: { tag: 'cc-map-marker-dot', count: 10 ** i },
+    tooltip: city,
+  };
+});
+
+const servers = points.map((p) => {
+  const { lat, lon, city, country, countryCode, state } = p;
+  return {
+    lat,
+    lon,
+    zIndexOffset: (state === 'selected') ? 250 : 0,
+    marker: { tag: 'cc-map-marker-server', state },
+    tooltip: { tag: 'cc-zone', zone: { city, country, countryCode, tags: [] }, mode: 'small' },
+  };
+});
 
 export default {
   title: '🛠 Maps/<cc-map>',
@@ -28,18 +54,8 @@ const conf = {
 
 export const defaultStory = makeStory(conf, {
   items: [
-    { innerHTML: 'Live map with blinking dots' },
+    { innerHTML: 'Blinking dots', points: blinkingDots },
     { mode: 'heatmap', innerHTML: 'Heatmap', heatmapPoints: fakeHeatmapData },
-  ],
-  simulations: [
-    storyWait(0, ([component]) => {
-      component.addPoints([
-        { lat: 48.8, lon: 2.3, count: 1, delay: 'none' },
-        { lat: 50.6, lon: 3.1, count: 10, delay: 'none' },
-        { lat: 47.2, lon: -1.6, count: 100, delay: 'none' },
-        { lat: 45.7, lon: 4.7, count: 1000, delay: 'none' },
-      ]);
-    }),
   ],
 });
 
@@ -95,69 +111,90 @@ export const errorWithLoadingIndicator = makeStory(conf, {
   ],
 });
 
-export const persistentPointsDisplayedAtOnce = makeStory(conf, {
-  name: '👍 Persistent points (displayed at once)',
-  items: [{ innerHTML: '4 points, persistent (no delay), displayed at once.' }],
-  simulations: [
-    storyWait(0, ([component]) => {
-      component.addPoints([
-        { lat: 48.8, lon: 2.3, count: 1, delay: 'none' },
-        { lat: 50.6, lon: 3.1, count: 10, delay: 'none' },
-        { lat: 47.2, lon: -1.6, count: 100, delay: 'none' },
-        { lat: 45.7, lon: 4.7, count: 1000, delay: 'none' },
-      ]);
-    }),
-  ],
+export const pointsWithDots = makeStory(conf, {
+  name: '👍 Points (blinking dots with string tooltips)',
+  items: [{ points: blinkingDots }],
 });
 
-export const persistentPointsDisplayedAtOnceWithTooltips = makeStory(conf, {
-  name: '👍 Persistent points (displayed at once, with tooltips)',
-  items: [{ innerHTML: '4 points, persistent (no delay), displayed at once, with tooltips.' }],
-  simulations: [
-    storyWait(0, ([component]) => {
-      component.addPoints([
-        { lat: 48.8, lon: 2.3, count: 1, delay: 'none', tooltip: 'Paris' },
-        { lat: 50.6, lon: 3.1, count: 10, delay: 'none', tooltip: 'Lille' },
-        { lat: 47.2, lon: -1.6, count: 100, delay: 'none', tooltip: 'Nantes' },
-        { lat: 45.7, lon: 4.7, count: 1000, delay: 'none', tooltip: 'Lyon' },
-      ]);
-    }),
-  ],
+export const pointsWithServers = makeStory(conf, {
+  name: '👍 Points (servers)',
+  items: [{ points: servers }],
 });
 
-export const temporaryPointsBatchDisplayedWithTooltips = makeStory(conf, {
-  name: '👍 Temporary points (batch displayed, with tooltips)',
-  items: [{ innerHTML: `4 points, ${delay}ms delay, batch displayed displayed over ${spreadDuration}ms, with tooltips.` }],
-  simulations: [
-    storyWait(0, ([component]) => {
-      component.addPoints([
-        { lat: 48.8, lon: 2.3, count: 1, delay, tooltip: 'Paris' },
-        { lat: 50.6, lon: 3.1, count: 10, delay, tooltip: 'Lille' },
-        { lat: 47.2, lon: -1.6, count: 100, delay, tooltip: 'Nantes' },
-        { lat: 45.7, lon: 4.7, count: 1000, delay, tooltip: 'Lyon' },
-      ], { spreadDuration });
-    }),
-  ],
+export const pointsWithDotsNoTooltips = makeStory(conf, {
+  name: '👍 Points (blinking dots without tooltips)',
+  items: [{ points: blinkingDots.map((p) => ({ ...p, tooltip: null })) }],
 });
 
-// TODO: other data sets with knobs
-export const simulationWithDotmap = makeStory(conf, {
+export const simulationWithUpdatesOnSameDot = makeStory(conf, {
   items: [{
     viewZoom: '2',
-    innerHTML: `Realtime simulation, ${delay}ms delay, batch displayed displayed over ${spreadDuration}ms, with tooltips`,
+    mode: 'points',
+    points: [blinkingDots[0]],
   }],
   simulations: [
-    storyWait(0, ([component]) => {
+    storyWait(2000, ([component]) => {
+      component.points[0].marker.count = 5;
+      component.points = [component.points[0]];
+    }),
+    storyWait(2000, ([component]) => {
+      component.points[0].marker.count = 20;
+      component.points[0].tooltip = 'Paris<br>Cachan';
+      component.points = [component.points[0]];
+    }),
+    storyWait(2000, ([component]) => {
+      component.points[0].marker.count = 50;
+      component.points[0].tooltip = 'Paris<br>Cachan<br>La défense...';
+      component.points = [component.points[0]];
+    }),
+    storyWait(2000, ([component]) => {
+      component.points[0].marker.count = 100;
+      component.points[0].tooltip = null;
+      component.points = [component.points[0]];
+    }),
+  ],
+});
 
-      const fetchData = () => {
-        getFakePointsData(0).then((rawPoints) => {
-          const points = rawPoints.map((p) => ({ ...p, tooltip: p.city, delay }));
-          component.addPoints(points, { spreadDuration });
-        });
-      };
+export const simulationWithDifferentDots = makeStory(conf, {
+  items: [{
+    viewZoom: '2',
+    mode: 'points',
+    points: [blinkingDots[0]],
+  }],
+  simulations: [
+    storyWait(1000, ([component]) => {
+      component.points = [blinkingDots[1]];
+    }),
+    storyWait(1000, ([component]) => {
+      component.points = [blinkingDots[2]];
+    }),
+    storyWait(1000, ([component]) => {
+      component.points = [blinkingDots[3]];
+    }),
+    storyWait(1000, ([component]) => {
+      component.points = [];
+    }),
+  ],
+});
 
-      setTimeoutDom(fetchData, 0, component);
-      setIntervalDom(fetchData, spreadDuration, component);
+export const simulationWithUpdatesOnSameServer = makeStory(conf, {
+  items: [{
+    viewZoom: '2',
+    mode: 'points',
+    points: [servers[0]],
+  }],
+  simulations: [
+    storyWait(2000, ([component]) => {
+      component.points[0].marker.state = 'hovered';
+      component.points = [component.points[0]];
+    }),
+    storyWait(2000, ([component]) => {
+      component.points[0].marker.state = 'selected';
+      component.points = [component.points[0]];
+    }),
+    storyWait(2000, ([component]) => {
+      component.points[0].marker.state = 'default';
+      component.points = [component.points[0]];
     }),
   ],
 });
@@ -180,9 +217,11 @@ enhanceStoriesNames({
   loading,
   error,
   errorWithLoadingIndicator,
-  persistentPointsDisplayedAtOnce,
-  persistentPointsDisplayedAtOnceWithTooltips,
-  temporaryPointsBatchDisplayedWithTooltips,
-  simulationWithDotmap,
+  pointsWithDots,
+  pointsWithServers,
+  pointsWithDotsNoTooltips,
+  simulationWithUpdatesOnSameDot,
+  simulationWithDifferentDots,
+  simulationWithUpdatesOnSameServer,
   simulationWithHeatmap,
 });

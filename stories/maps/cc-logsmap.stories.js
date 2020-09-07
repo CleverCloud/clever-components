@@ -12,6 +12,7 @@ export default {
 
 const conf = {
   component: 'cc-logsmap',
+  // language=CSS
   css: `
     cc-logsmap {
       display: inline-flex;
@@ -32,12 +33,16 @@ export const defaultStory = makeStory(conf, {
   ],
   simulations: [
     storyWait(0, ([component]) => {
-      component.addPoints([
-        { lat: 48.8, lon: 2.3, count: 1, delay: 'none' },
-        { lat: 50.6, lon: 3.1, count: 10, delay: 'none' },
-        { lat: 47.2, lon: -1.6, count: 100, delay: 'none' },
-        { lat: 45.7, lon: 4.7, count: 1000, delay: 'none' },
-      ]);
+
+      const fetchData = () => {
+        getFakePointsData(0).then((rawPoints) => {
+          const points = rawPoints.map((p) => ({ ...p, tooltip: p.city, delay }));
+          component.addPoints(points, { spreadDuration });
+        });
+      };
+
+      setTimeoutDom(fetchData, 0, component);
+      setIntervalDom(fetchData, spreadDuration, component);
     }),
   ],
 });
@@ -85,7 +90,6 @@ export const errorWithLoadingIndicator = makeStory(conf, {
   items: [{ loading: true, error: true, orgaName: 'ACME Corp' }],
 });
 
-// TODO: other data sets with knobs
 export const simulationWithDotmap = makeStory(conf, {
   items: [{
     viewZoom: '2',
@@ -96,6 +100,27 @@ export const simulationWithDotmap = makeStory(conf, {
 
       const fetchData = () => {
         getFakePointsData(0).then((rawPoints) => {
+          const points = rawPoints.map((p) => ({ ...p, tooltip: p.city, delay }));
+          component.addPoints(points, { spreadDuration });
+        });
+      };
+
+      setTimeoutDom(fetchData, 0, component);
+      setIntervalDom(fetchData, spreadDuration, component);
+    }),
+  ],
+});
+
+export const simulationWithVeryBusyDotmap = makeStory(conf, {
+  items: [{
+    viewZoom: '2',
+    orgaName: 'ACME Corp',
+  }],
+  simulations: [
+    storyWait(0, ([component]) => {
+
+      const fetchData = () => {
+        getFakePointsData(2).then((rawPoints) => {
           const points = rawPoints.map((p) => ({ ...p, tooltip: p.city, delay }));
           component.addPoints(points, { spreadDuration });
         });
@@ -126,5 +151,6 @@ enhanceStoriesNames({
   error,
   errorWithLoadingIndicator,
   simulationWithDotmap,
+  simulationWithVeryBusyDotmap,
   simulationWithHeatmap,
 });

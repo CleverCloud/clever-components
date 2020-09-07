@@ -5,6 +5,7 @@ import {
   prepareFormatDistanceToNow,
   prepareFormatHours,
 } from '../lib/i18n-date.js';
+import { prepareCountryName } from '../lib/i18n-display.js';
 import { prepareNumberBytesFormatter, prepareNumberUnitFormatter } from '../lib/i18n-number.js';
 import { sanitize } from '../lib/i18n-sanitize.js';
 
@@ -49,6 +50,8 @@ const percentFormatter = new Intl.NumberFormat(lang, {
 const numberFormatter = new Intl.NumberFormat(lang);
 const formatNumberUnit = prepareNumberUnitFormatter(lang);
 const formatBytes = prepareNumberBytesFormatter(lang, 'o', '\u202f');
+
+const countryName = prepareCountryName(lang);
 
 // Shared logic between translations, is it a good idea?
 function formatFlavor (f) {
@@ -355,4 +358,8 @@ export const translations = {
   'cc-env-var-input.delete-button': `Enlever`,
   'cc-env-var-input.keep-button': `Garder`,
   'cc-env-var-input.value-placeholder': `valeur de la variable`,
+  // cc-zone
+  'cc-zone.country': ({ code, name }) => countryName({ code, name }),
+  // cc-zone-input
+  'cc-zone-input.error': `Une erreur est survenue pendant le chargement des zones.`,
 };

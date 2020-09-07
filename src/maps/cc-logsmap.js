@@ -1,4 +1,5 @@
 import '../atoms/cc-toggle.js';
+import './cc-map-marker-dot.js';
 import './cc-map.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
@@ -70,6 +71,8 @@ export class CcLogsMap extends LitElement {
       mode: { type: String },
       orgaName: { type: String, attribute: 'orga-name' },
       viewZoom: { type: Number, attribute: 'view-zoom' },
+      // Internal state for child component <cc-map>
+      _points: { type: Array },
     };
   }
 
@@ -83,15 +86,84 @@ export class CcLogsMap extends LitElement {
     this.loading = false;
     this.mode = 'points';
     this.viewZoom = 2;
+    this._points = [];
+    this._pointsByCoords = {};
   }
 
   /**
-   * Add several points to the map for the live blinking dots mode.
+   * Add several points to the map with blinking dots markers.
    * @param {Point[]} points - List of points.
    * @param {PointsOptions} options - Options to spread the display of the different points over time.
    */
-  addPoints (...params) {
-    this.shadowRoot.querySelector('cc-map').addPoints(...params);
+  addPoints (points, options = {}) {
+
+    const { spreadDuration = false } = options;
+
+    const timeStep = (spreadDuration !== false)
+      ? Math.floor(spreadDuration / points.length)
+      : 0;
+
+    points.forEach((p, i) => {
+      setTimeout(() => this._addPoint(p), timeStep * i);
+    });
+  }
+
+  _addPoint ({ lat, lon, count = 1, delay = 1000, tooltip }) {
+
+    const coords = [lat, lon].join(',');
+    const newPoint = { lat, lon, count, tooltip };
+
+    // Add point now
+    if (this._pointsByCoords[coords] == null) {
+      this._pointsByCoords[coords] = [];
+    }
+    this._pointsByCoords[coords].push(newPoint);
+
+    this._updatePoints();
+
+    // Schedule delete point
+    setTimeout(() => {
+      this._pointsByCoords[coords] = this._pointsByCoords[coords].filter((p) => p !== newPoint);
+      if (this._pointsByCoords[coords].length === 0) {
+        delete this._pointsByCoords[coords];
+      }
+      this._updatePoints();
+    }, delay);
+  }
+
+  _updatePoints () {
+
+    // Merge points at the same coordinates:
+    // * sum "count"
+    // * concatenante "tooltip" (3 max)
+    this._points = Object
+      .entries(this._pointsByCoords)
+      .map(([coords, points]) => {
+
+        const { lat, lon } = points[0];
+
+        const count = points
+          .map((p) => p.count)
+          .reduce((a, b) => a + b, 0);
+
+        const allTooltips = points
+          .filter((p) => p.tooltip != null && p.tooltip !== '')
+          .map((p) => p.tooltip);
+
+        const uniqueTooltips = Array.from(new Set(allTooltips));
+
+        if (uniqueTooltips.length >= 3) {
+          // Only keep first 3 values
+          uniqueTooltips.length = 3;
+          uniqueTooltips[2] = uniqueTooltips[2] + '...';
+        }
+
+        const tooltip = (uniqueTooltips.length > 0)
+          ? uniqueTooltips.join('<br>')
+          : null;
+
+        return { lat, lon, marker: { tag: 'cc-map-marker-dot', count }, tooltip };
+      });
   }
 
   _getModes () {
@@ -127,6 +199,7 @@ export class CcLogsMap extends LitElement {
         ?loading=${this.loading}
         ?error=${this.error}
         .heatmapPoints=${this.heatmapPoints}
+        .points=${this._points}
       >${this._getLegend()}</cc-map>
     `;
   }
@@ -163,6 +236,30 @@ export class CcLogsMap extends LitElement {
         top: 0;
         width: 100%;
         z-index: 1;
+      }
+
+      cc-map[view-zoom="1"] {
+        --cc-map-marker-dot-size: 6px;
+      }
+
+      cc-map[view-zoom="2"] {
+        --cc-map-marker-dot-size: 8px;
+      }
+
+      cc-map[view-zoom="3"] {
+        --cc-map-marker-dot-size: 10px;
+      }
+
+      cc-map[view-zoom="4"] {
+        --cc-map-marker-dot-size: 12px;
+      }
+
+      cc-map[view-zoom="5"] {
+        --cc-map-marker-dot-size: 14px;
+      }
+
+      cc-map[view-zoom="6"] {
+        --cc-map-marker-dot-size: 16px;
       }
     `;
   }

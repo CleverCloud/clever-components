@@ -27,6 +27,15 @@ export const defaultStory = makeStory(conf, {
   ],
 });
 
+export const imageFitContain = makeStory(conf, {
+  items: [
+    { text: 'CC', src: 'https://static-assets.cellar.services.clever-cloud.com/infra/clever-cloud.svg', style: 'border: 1px solid #000; height: 7rem; width: 2rem;' },
+    { text: 'CC', src: 'https://static-assets.cellar.services.clever-cloud.com/infra/clever-cloud.svg', style: 'border: 1px solid #000; height: 2rem; width: 7rem;' },
+    { text: 'CC', src: 'https://static-assets.cellar.services.clever-cloud.com/infra/clever-cloud.svg', style: 'border: 1px solid #000; height: 7rem; width: 2rem; --cc-img-fit: contain;' },
+    { text: 'CC', src: 'https://static-assets.cellar.services.clever-cloud.com/infra/clever-cloud.svg', style: 'border: 1px solid #000; height: 2rem; width: 7rem; --cc-img-fit: contain;' },
+  ],
+});
+
 export const noImage = makeStory(conf, {
   docs: 'If `src` and `skeleton` are not defined, the `text` is displayed. Please make sure it fits the size you defined for the image.',
   items: [{ text: 'OMG' }],
@@ -83,6 +92,7 @@ export const simulationWithLoadingThenError = makeStory(conf, {
 
 enhanceStoriesNames({
   defaultStory,
+  imageFitContain,
   noImage,
   loading,
   simulationWithSquareThenOther,

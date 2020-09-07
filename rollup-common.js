@@ -78,6 +78,7 @@ export function inputs (sourceDir, entryMapper) {
     `${sourceDir}/saas/*.js`,
     `${sourceDir}/tcp-redirections/*.js`,
     `${sourceDir}/translations/*.js`,
+    `${sourceDir}/zones/*.js`,
   ];
 
   const filesToExposePairs = filesToExposeGlobs
