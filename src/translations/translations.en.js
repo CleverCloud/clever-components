@@ -347,4 +347,6 @@ export const translations = {
   'cc-env-var-input.value-placeholder': `variable value`,
   // cc-zone
   'cc-zone.country': ({ code, name }) => countryName({ code, name }),
+  // cc-zone-input
+  'cc-zone-input.error': `Something went wrong while loading zones.`,
 };

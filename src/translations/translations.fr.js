@@ -360,4 +360,6 @@ export const translations = {
   'cc-env-var-input.value-placeholder': `valeur de la variable`,
   // cc-zone
   'cc-zone.country': ({ code, name }) => countryName({ code, name }),
+  // cc-zone-input
+  'cc-zone-input.error': `Une erreur est survenue pendant le chargement des zones.`,
 };
