@@ -10,6 +10,7 @@
   * set default display to `block`
   * remove max-width
   * rework `loading`/`skeleton` logic
+* `<cc-header-app>`: add `zone` details
 * Remove `<cc-elasticsearch-options>`, replaced by `<cc-addon-elasticsearch-options>` 
 
 ### Components
@@ -24,6 +25,7 @@
   * `<cc-zone-input>`
 * `<cc-img>`: add CSS custom prop `--cc-img-fit` to customize object-fit (default is cover)
 * `<cc-env-var-form>`: fix restart button margin
+* `<cc-flex-gap>`: add `--cc-align-items` CSS property
 * Rework the way we format bytes and use it in `<cc-heptapod-info>`, `<cc-tile-scalability>` and `<cc-addon-elasticsearch-options>`
 
 ### For devs

@@ -25,6 +25,7 @@ const appendChild = (parent, child) => parent.appendChild(child);
  * * We chose to use a `display: grid` on the parent to disable the margin collapsing while preserving potential overflow like focus rings etc...
  *
  * @cssprop {Number} --cc-gap - The gap between children.
+ * @cssprop {String} --cc-align-items - The `align-items` value of the inner flexbox (defaults to normal).
  */
 export class CcFlexGap extends HTMLElement {
 
@@ -37,7 +38,7 @@ export class CcFlexGap extends HTMLElement {
     style.textContent = `:host{display:grid}::slotted(*){margin:calc(var(--cc-gap)/2)}`;
 
     const flexContainer = createElement('div');
-    flexContainer.style = `display:flex;flex-wrap:wrap;margin:calc(var(--cc-gap)/-2);`;
+    flexContainer.style = `display:flex;flex-wrap:wrap;margin:calc(var(--cc-gap)/-2);align-items:var(--cc-align-items)`;
 
     const slot = createElement('slot');
 

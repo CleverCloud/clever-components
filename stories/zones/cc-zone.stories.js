@@ -67,29 +67,29 @@ const zoneWithManyTags = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [{ zone: zoneDefault }, { zone: zoneDefault, mode: 'small' }],
+  items: [{ zone: zoneDefault }, { zone: zoneDefault, mode: 'small' }, { zone: zoneDefault, mode: 'small-infra' }],
 });
 
 export const skeleton = makeStory(conf, {
-  items: [{}, { mode: 'small' }],
+  items: [{}, { mode: 'small' }, { mode: 'small-infra' }],
 });
 
 // NOTE: We don't need an error state for now
 
 export const dataLoadedWithInfra = makeStory(conf, {
-  items: [{ zone: zoneWithInfra }, { zone: zoneWithInfra, mode: 'small' }],
+  items: [{ zone: zoneWithInfra }, { zone: zoneWithInfra, mode: 'small' }, { zone: zoneWithInfra, mode: 'small-infra' }],
 });
 
 export const dataLoadedWithPrivate = makeStory(conf, {
-  items: [{ zone: zonePrivate }, { zone: zonePrivate, mode: 'small' }],
+  items: [{ zone: zonePrivate }, { zone: zonePrivate, mode: 'small' }, { zone: zonePrivate, mode: 'small-infra' }],
 });
 
 export const dataLoadedWithNoTags = makeStory(conf, {
-  items: [{ zone: zoneWithoutTags }, { zone: zoneWithoutTags, mode: 'small' }],
+  items: [{ zone: zoneWithoutTags }, { zone: zoneWithoutTags, mode: 'small' }, { zone: zoneWithoutTags, mode: 'small-infra' }],
 });
 
 export const dataLoadedWithManyTags = makeStory(conf, {
-  items: [{ zone: zoneWithManyTags }, { zone: zoneWithManyTags, mode: 'small' }],
+  items: [{ zone: zoneWithManyTags }, { zone: zoneWithManyTags, mode: 'small' }, { zone: zoneWithManyTags, mode: 'small-infra' }],
 });
 
 export const simulations = makeStory(conf, {

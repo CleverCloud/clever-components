@@ -42,7 +42,7 @@ const PRIVATE_ZONE = 'scope:private';
  * }
  * ```
  *
- * @prop {"default"|"small"} mode - Sets the mode of the component.
+ * @prop {"default"|"small"|"small-infra"} mode - Sets the mode of the component.
  * @prop {Zone} zone - Sets the different details of the zone.
  */
 export class CcZone extends LitElement {
@@ -99,7 +99,8 @@ export class CcZone extends LitElement {
           display: flex;
         }
 
-        :host([mode="small"]) {
+        :host([mode="small"]),
+        :host([mode="small-infra"]) {
           --lh: 1rem;
           font-size: 0.8rem !important;
         }
@@ -113,7 +114,8 @@ export class CcZone extends LitElement {
           width: 2rem;
         }
 
-        :host([mode="small"]) .flag {
+        :host([mode="small"]) .flag,
+        :host([mode="small-infra"]) .flag {
           margin-right: 0.5rem;
           width: 1.33rem;
         }
@@ -144,11 +146,13 @@ export class CcZone extends LitElement {
         .infra-logo {
           --cc-img-fit: contain;
           height: var(--lh);
+          margin-left: 0.5rem;
           width: 4rem;
         }
 
+        :host([mode="small"]) .tag-list,
         :host([mode="small"]) .infra-logo,
-        :host([mode="small"]) .tag-list {
+        :host([mode="small-infra"]) .tag-list {
           display: none;
         }
 
@@ -164,12 +168,6 @@ export class CcZone extends LitElement {
           font-size: 0.8rem;
           margin-top: 0.5rem;
           padding: 0.1rem 0.3rem;
-        }
-
-        :host([mode="small"]) .tag {
-          font-size: 0.7rem;
-          margin-top: 0.25rem;
-          padding: 0.1rem;
         }
 
         .skeleton {
