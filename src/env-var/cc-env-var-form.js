@@ -2,6 +2,7 @@ import '../atoms/cc-button.js';
 import '../atoms/cc-expand.js';
 import '../atoms/cc-loader.js';
 import '../atoms/cc-toggle.js';
+import '../atoms/cc-flex-gap.js';
 import '../molecules/cc-error.js';
 import './cc-env-var-editor-expert.js';
 import './cc-env-var-editor-simple.js';
@@ -250,7 +251,7 @@ export class CcEnvVarForm extends LitElement {
       </div>
         
       ${!this.readonly ? html`
-        <div class="button-bar">
+        <cc-flex-gap class="button-bar">
           
           <cc-button ?disabled=${isFormDisabled} @cc-button:click=${this._onResetForm}>${i18n('cc-env-var-form.reset')}</cc-button>
           
@@ -261,7 +262,7 @@ export class CcEnvVarForm extends LitElement {
           ` : ''}
           
           <cc-button success ?disabled=${isFormDisabled} @cc-button:click=${this._onUpdateForm}>${i18n('cc-env-var-form.update')}</cc-button>
-        </div>
+        </cc-flex-gap>
       ` : ''}
     `;
   }
@@ -337,8 +338,7 @@ export class CcEnvVarForm extends LitElement {
         }
 
         .button-bar {
-          display: flex;
-          flex-wrap: wrap;
+          --cc-gap: 1rem;
           margin-top: 1.5rem;
         }
 
