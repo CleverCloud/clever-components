@@ -43,9 +43,23 @@ export const bigGap = makeStory(conf, {
   items: [{ innerHTML: flexItemsHtml, style: '--cc-gap: 2rem' }],
 });
 
+export const alignItems = makeStory(conf, {
+  items: [
+    {
+      innerHTML: `
+        <div style="height: 1rem">One</div>
+        <div style="height: 3rem">Two</div>
+        <div style="height: 9rem">Three</div>
+      `,
+      style: '--cc-gap: 1rem; --cc-align-items: center',
+    },
+  ],
+});
+
 enhanceStoriesNames({
   defaultStory,
   noGap,
   smallGap,
   bigGap,
+  alignItems,
 });
