@@ -170,12 +170,6 @@ export class CcZone extends LitElement {
           padding: 0.1rem 0.3rem;
         }
 
-        :host([mode="small"]) .tag {
-          font-size: 0.7rem;
-          margin-top: 0.25rem;
-          padding: 0.1rem;
-        }
-
         .skeleton {
           color: transparent !important;
         }
