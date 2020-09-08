@@ -89,8 +89,11 @@ export class CcMapMarkerDot extends LitElement {
   }
 
   render () {
+    // When we do this:
+    // <div style="--dot-color: ${this._color}ff; --dot-color-half: ${this._color}66; --dot-color-zero: ${this._color}00"></div>
+    // The template minifier removes the double quotes and the template is broken
     return html`
-      <div style="--dot-color: ${this._color}ff; --dot-color-half: ${this._color}66; --dot-color-zero: ${this._color}00"></div>
+      <div style=${`--dot-color:${this._color}ff;--dot-color-half:${this._color}66;--dot-color-zero:${this._color}00`}></div>
     `;
   }
 
