@@ -55,6 +55,7 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
       _centerLat: { type: Number },
       _centerLon: { type: Number },
       _hovered: { type: String },
+      _legend: { type: String },
       _points: { type: Array },
     };
   }
@@ -66,6 +67,7 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
     this.breakpoints = {
       width: [600],
     };
+    this._legend = '';
     this._points = [];
   }
 
@@ -101,14 +103,21 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
       return;
     }
 
-    this._points = this.zones.map((zone) => ({
-      name: zone.name,
-      lat: zone.lat,
-      lon: zone.lon,
-      marker: { tag: 'cc-map-marker-server', state: this._getState(zone.name) },
-      tooltip: { tag: 'cc-zone', zone, mode: 'small' },
-      zIndexOffset: this._getZIndexOffset(zone.name),
-    }));
+    // Filter out private zones from the map for now as they may be at the same coordinates and overlap
+    this._points = this.zones
+      .filter((zone) => !zone.tags.includes(PRIVATE_ZONE))
+      .map((zone) => ({
+        name: zone.name,
+        lat: zone.lat,
+        lon: zone.lon,
+        marker: { tag: 'cc-map-marker-server', state: this._getState(zone.name) },
+        tooltip: { tag: 'cc-zone', zone, mode: 'small' },
+        zIndexOffset: this._getZIndexOffset(zone.name),
+      }));
+
+    this._legend = this.zones.some((zone) => zone.tags.includes(PRIVATE_ZONE))
+      ? i18n('cc-zone-input.private-map-warning')
+      : '';
   }
 
   _getState (zoneName) {
@@ -252,7 +261,7 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
         @cc-map:marker-click=${(e) => this._onSelect(e.detail.name)}
         @cc-map:marker-enter=${(e) => this._onMarkerHover(e.detail.name)}
         @cc-map:marker-leave=${(e) => this._onMarkerHover()}
-      ></cc-map>
+      >${this._legend}</cc-map>
       <div class="zone-list-wrapper">
         ${this.error ? html`
           <cc-error>${i18n('cc-zone-input.error')}</cc-error>
