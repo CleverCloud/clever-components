@@ -267,18 +267,20 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
           border: 1px solid #bcc2d1;
           border-radius: 0.25rem;
           box-sizing: border-box;
-          display: grid;
-          grid-template-rows: 1fr;
+          display: flex;
           overflow: hidden;
         }
 
-        :host([w-lt-600]),
-        :host([error]) {
-          grid-template-columns: 1fr;
+        cc-map,
+        .zone-list-wrapper {
+          flex-grow: 1;
         }
 
-        :host(:not([error])[w-gte-600]) {
-          grid-template-columns: 1fr 24rem;
+        cc-map {
+          border-right: 1px solid #bcc2d1;
+          flex-basis: 0;
+          height: 100%;
+          width: 100%;
         }
 
         :host([w-lt-600]) cc-map,
@@ -286,16 +288,15 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
           display: none;
         }
 
-        cc-map {
-          border-right: 1px solid #bcc2d1;
-          height: 100%;
-          width: 100%;
-        }
-
         .zone-list-wrapper {
           box-sizing: border-box;
           height: 100%;
           overflow: auto;
+        }
+
+        :host(:not([error])[w-gte-600]) .zone-list-wrapper {
+          flex-basis: 24rem;
+          max-width: 24rem;
         }
 
         :host([error]) .zone-list-wrapper {
