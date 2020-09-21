@@ -33,7 +33,7 @@
     "chart.js": "^2.9.3",
     "chartjs-plugin-datalabels": "^0.7.0",
     "clipboard-copy": "^3.1.0",
-    "leaflet": "^1.6.0",
+    "leaflet": "^1.7.1",
     "leaflet.heat": "^0.2.0",
     "lit-element": "^2.3.1",
     "lit-html": "^1.2.1",
