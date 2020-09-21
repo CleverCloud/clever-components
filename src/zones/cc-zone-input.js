@@ -139,11 +139,23 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
       if (a == null || b == null) {
         return 0;
       }
-      if (a.tags.includes(CLEVER_CLOUD_ZONE) !== b.tags.includes(CLEVER_CLOUD_ZONE)) {
-        return a.tags.includes(CLEVER_CLOUD_ZONE) ? -1 : 1;
+      const aIsCcZone = a.tags.includes(CLEVER_CLOUD_ZONE);
+      const bIsCcZone = b.tags.includes(CLEVER_CLOUD_ZONE);
+      if (aIsCcZone !== bIsCcZone) {
+        return aIsCcZone ? -1 : 1;
       }
-      if (a.tags.includes(PRIVATE_ZONE) !== b.tags.includes(PRIVATE_ZONE)) {
-        return a.tags.includes(PRIVATE_ZONE) ? -1 : 1;
+      const aIsPrivateZone = a.tags.includes(PRIVATE_ZONE);
+      const bIsPrivateZone = b.tags.includes(PRIVATE_ZONE);
+      if (aIsCcZone && bIsCcZone) {
+        if (aIsPrivateZone !== bIsPrivateZone) {
+          return aIsPrivateZone ? 1 : -1;
+        }
+        if (aIsPrivateZone && bIsPrivateZone) {
+          return (a.displayName || '').localeCompare((b.displayName || ''));
+        }
+      }
+      if (aIsPrivateZone !== bIsPrivateZone) {
+        return aIsPrivateZone ? -1 : 1;
       }
       return a.city.localeCompare(b.city);
     });
