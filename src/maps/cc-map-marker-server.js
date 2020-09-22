@@ -31,7 +31,7 @@ export class CcMapMarkerServer extends LitElement {
     /** @readonly */
     this.anchor = [16, 32];
     /** @readonly */
-    this.tooltip = [16, -32];
+    this.tooltip = [0, -32];
   }
 
   render () {

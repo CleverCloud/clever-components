@@ -27,6 +27,26 @@ const ZONES = [
     tags: ['infra:clever-cloud', 'region:eu'],
   },
   {
+    name: 'priv1',
+    country: 'France',
+    countryCode: 'fr',
+    displayName: 'Foobar Corp',
+    city: 'Paris',
+    lat: 48.87,
+    lon: 2.33,
+    tags: ['infra:clever-cloud', 'region:eu', 'scope:private'],
+  },
+  {
+    name: 'priv2',
+    country: 'France',
+    countryCode: 'fr',
+    displayName: 'Barfoo Ltd.',
+    city: 'Paris',
+    lat: 48.87,
+    lon: 2.33,
+    tags: ['infra:clever-cloud', 'region:eu', 'scope:private'],
+  },
+  {
     name: 'war',
     country: 'Poland',
     countryCode: 'pl',
@@ -98,6 +118,13 @@ export const defaultStory = makeStory(conf, {
 
 export const skeleton = makeStory(conf, {
   items: [{}],
+});
+
+export const dataLoadedWithNoPrivateZones = makeStory(conf, {
+  items: [{
+    zones: ZONES.filter((z) => !z.tags.includes('scope:private')),
+    selected: 'rbx',
+  }],
 });
 
 export const error = makeStory(conf, {

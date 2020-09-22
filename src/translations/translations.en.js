@@ -349,4 +349,5 @@ export const translations = {
   'cc-zone.country': ({ code, name }) => countryName({ code, name }),
   // cc-zone-input
   'cc-zone-input.error': `Something went wrong while loading zones.`,
+  'cc-zone-input.private-map-warning': `Private zones don't appear on the map.`,
 };

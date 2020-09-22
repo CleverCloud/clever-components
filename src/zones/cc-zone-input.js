@@ -55,6 +55,7 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
       _centerLat: { type: Number },
       _centerLon: { type: Number },
       _hovered: { type: String },
+      _legend: { type: String },
       _points: { type: Array },
     };
   }
@@ -66,6 +67,7 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
     this.breakpoints = {
       width: [600],
     };
+    this._legend = '';
     this._points = [];
   }
 
@@ -101,14 +103,21 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
       return;
     }
 
-    this._points = this.zones.map((zone) => ({
-      name: zone.name,
-      lat: zone.lat,
-      lon: zone.lon,
-      marker: { tag: 'cc-map-marker-server', state: this._getState(zone.name) },
-      tooltip: { tag: 'cc-zone', zone, mode: 'small' },
-      zIndexOffset: this._getZIndexOffset(zone.name),
-    }));
+    // Filter out private zones from the map for now as they may be at the same coordinates and overlap
+    this._points = this.zones
+      .filter((zone) => !zone.tags.includes(PRIVATE_ZONE))
+      .map((zone) => ({
+        name: zone.name,
+        lat: zone.lat,
+        lon: zone.lon,
+        marker: { tag: 'cc-map-marker-server', state: this._getState(zone.name) },
+        tooltip: { tag: 'cc-zone', zone, mode: 'small' },
+        zIndexOffset: this._getZIndexOffset(zone.name),
+      }));
+
+    this._legend = this.zones.some((zone) => zone.tags.includes(PRIVATE_ZONE))
+      ? i18n('cc-zone-input.private-map-warning')
+      : '';
   }
 
   _getState (zoneName) {
@@ -139,11 +148,23 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
       if (a == null || b == null) {
         return 0;
       }
-      if (a.tags.includes(CLEVER_CLOUD_ZONE) !== b.tags.includes(CLEVER_CLOUD_ZONE)) {
-        return a.tags.includes(CLEVER_CLOUD_ZONE) ? -1 : 1;
+      const aIsCcZone = a.tags.includes(CLEVER_CLOUD_ZONE);
+      const bIsCcZone = b.tags.includes(CLEVER_CLOUD_ZONE);
+      if (aIsCcZone !== bIsCcZone) {
+        return aIsCcZone ? -1 : 1;
       }
-      if (a.tags.includes(PRIVATE_ZONE) !== b.tags.includes(PRIVATE_ZONE)) {
-        return a.tags.includes(PRIVATE_ZONE) ? -1 : 1;
+      const aIsPrivateZone = a.tags.includes(PRIVATE_ZONE);
+      const bIsPrivateZone = b.tags.includes(PRIVATE_ZONE);
+      if (aIsCcZone && bIsCcZone) {
+        if (aIsPrivateZone !== bIsPrivateZone) {
+          return aIsPrivateZone ? 1 : -1;
+        }
+        if (aIsPrivateZone && bIsPrivateZone) {
+          return (a.displayName || '').localeCompare((b.displayName || ''));
+        }
+      }
+      if (aIsPrivateZone !== bIsPrivateZone) {
+        return aIsPrivateZone ? -1 : 1;
       }
       return a.city.localeCompare(b.city);
     });
@@ -240,7 +261,7 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
         @cc-map:marker-click=${(e) => this._onSelect(e.detail.name)}
         @cc-map:marker-enter=${(e) => this._onMarkerHover(e.detail.name)}
         @cc-map:marker-leave=${(e) => this._onMarkerHover()}
-      ></cc-map>
+      >${this._legend}</cc-map>
       <div class="zone-list-wrapper">
         ${this.error ? html`
           <cc-error>${i18n('cc-zone-input.error')}</cc-error>
@@ -267,18 +288,20 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
           border: 1px solid #bcc2d1;
           border-radius: 0.25rem;
           box-sizing: border-box;
-          display: grid;
-          grid-template-rows: 1fr;
+          display: flex;
           overflow: hidden;
         }
 
-        :host([w-lt-600]),
-        :host([error]) {
-          grid-template-columns: 1fr;
+        cc-map,
+        .zone-list-wrapper {
+          flex-grow: 1;
         }
 
-        :host(:not([error])[w-gte-600]) {
-          grid-template-columns: 1fr 24rem;
+        cc-map {
+          border-right: 1px solid #bcc2d1;
+          flex-basis: 0;
+          height: 100%;
+          width: 100%;
         }
 
         :host([w-lt-600]) cc-map,
@@ -286,16 +309,15 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
           display: none;
         }
 
-        cc-map {
-          border-right: 1px solid #bcc2d1;
-          height: 100%;
-          width: 100%;
-        }
-
         .zone-list-wrapper {
           box-sizing: border-box;
           height: 100%;
           overflow: auto;
+        }
+
+        :host(:not([error])[w-gte-600]) .zone-list-wrapper {
+          flex-basis: 24rem;
+          max-width: 24rem;
         }
 
         :host([error]) .zone-list-wrapper {
