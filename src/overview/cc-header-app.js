@@ -335,8 +335,10 @@ export class CcHeaderApp extends LitElement {
         ${this._lastUserAction != null ? html`
           ${this._getLastUserActionMsg()}
         ` : ''}
-        <span class="spacer"></span>
-        <cc-zone .zone=${this.zone} mode="small-infra"></cc-zone>
+        ${this.zone != null ? html`
+          <span class="spacer"></span>
+          <cc-zone .zone=${this.zone} mode="small-infra"></cc-zone>
+        ` : ''}
       </cc-flex-gap>
     `;
   }
