@@ -18,7 +18,7 @@ const conf = {
 const zoneDefault = {
   name: 'par',
   country: 'France',
-  countryCode: 'fr',
+  countryCode: 'FR',
   city: 'Paris',
   lat: 48.87,
   lon: 2.33,
@@ -28,7 +28,7 @@ const zoneDefault = {
 const zoneWithInfra = {
   name: 'war',
   country: 'Poland',
-  countryCode: 'pl',
+  countryCode: 'PL',
   city: 'Warsaw',
   lat: 52.23,
   lon: 21.01,
@@ -39,7 +39,7 @@ const zonePrivate = {
   name: 'acme-corp',
   displayName: 'ACME Corp',
   country: 'Germany',
-  countryCode: 'de',
+  countryCode: 'DE',
   city: 'Berlin',
   lat: 52.52,
   lon: 13.39,
@@ -49,7 +49,7 @@ const zonePrivate = {
 const zoneWithoutTags = {
   name: 'nyc',
   country: 'United States',
-  countryCode: 'us',
+  countryCode: 'US',
   city: 'New York City',
   lat: 40.71,
   lon: -74.01,
@@ -59,7 +59,7 @@ const zoneWithoutTags = {
 const zoneWithManyTags = {
   name: 'war',
   country: 'Poland',
-  countryCode: 'pl',
+  countryCode: 'PL',
   city: 'Warsaw',
   lat: 52.23,
   lon: 21.01,

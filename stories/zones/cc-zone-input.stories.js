@@ -20,7 +20,7 @@ const ZONES = [
   {
     name: 'par',
     country: 'France',
-    countryCode: 'fr',
+    countryCode: 'FR',
     city: 'Paris',
     lat: 48.87,
     lon: 2.33,
@@ -29,7 +29,7 @@ const ZONES = [
   {
     name: 'priv1',
     country: 'France',
-    countryCode: 'fr',
+    countryCode: 'FR',
     displayName: 'Foobar Corp',
     city: 'Paris',
     lat: 48.87,
@@ -39,7 +39,7 @@ const ZONES = [
   {
     name: 'priv2',
     country: 'France',
-    countryCode: 'fr',
+    countryCode: 'FR',
     displayName: 'Barfoo Ltd.',
     city: 'Paris',
     lat: 48.87,
@@ -49,7 +49,7 @@ const ZONES = [
   {
     name: 'war',
     country: 'Poland',
-    countryCode: 'pl',
+    countryCode: 'PL',
     city: 'Warsaw',
     lat: 52.23,
     lon: 21.01,
@@ -58,7 +58,7 @@ const ZONES = [
   {
     name: 'rbx',
     country: 'France',
-    countryCode: 'fr',
+    countryCode: 'FR',
     city: 'Roubaix',
     lat: 50.69,
     lon: 3.17,
@@ -67,7 +67,7 @@ const ZONES = [
   {
     name: 'sgp',
     country: 'Singapore',
-    countryCode: 'sg',
+    countryCode: 'SG',
     city: 'Singapore',
     lat: 1.34,
     lon: 103.83,
@@ -76,7 +76,7 @@ const ZONES = [
   {
     name: 'syd',
     country: 'Australia',
-    countryCode: 'au',
+    countryCode: 'AU',
     city: 'Sydney',
     lat: -33.85,
     lon: 151.22,
@@ -85,7 +85,7 @@ const ZONES = [
   {
     name: 'mtl',
     country: 'Canada',
-    countryCode: 'ca',
+    countryCode: 'CA',
     city: 'Montreal',
     lat: 45.50,
     lon: -73.61,
@@ -95,7 +95,7 @@ const ZONES = [
     name: 'acme-corp',
     displayName: 'ACME Corp',
     country: 'Germany',
-    countryCode: 'de',
+    countryCode: 'DE',
     city: 'Berlin',
     lat: 52.52,
     lon: 13.39,
@@ -104,7 +104,7 @@ const ZONES = [
   {
     name: 'nyc',
     country: 'United States',
-    countryCode: 'us',
+    countryCode: 'US',
     city: 'New York City',
     lat: 40.71,
     lon: -74.01,
