@@ -11,7 +11,8 @@
   * remove max-width
   * rework `loading`/`skeleton` logic
 * `<cc-header-app>`: add `zone` details
-* Remove `<cc-elasticsearch-options>`, replaced by `<cc-addon-elasticsearch-options>` 
+* Remove `<cc-elasticsearch-options>`, replaced by `<cc-addon-elasticsearch-options>`
+  * Merge many attrs/props into `options`
 
 ### Components
 
@@ -19,6 +20,9 @@
   * `<cc-addon-option>`
   * `<cc-addon-option-form>`
   * `<cc-addon-elasticsearch-options>`
+  * `<cc-addon-postgresql-options>`
+  * `<cc-addon-mysql-options>`
+  * `<cc-addon-mongodb-options>`
   * `<cc-map-marker-dot>`
   * `<cc-map-marker-server>`
   * `<cc-zone>`

@@ -94,6 +94,10 @@ export const translations = {
   'cc-addon-elasticsearch-options.warning.kibana.details': (flavor) => sanitize`By default, the app will start on a <strong title="${formatFlavor(flavor)}">${flavor.name} instance</strong> which costs around <strong>${currencyFormatter.format(flavor.monthlyCost)} per month</strong>.`,
   'cc-addon-elasticsearch-options.warning.apm': `If you enable this option, we'll deploy and manage an Elastic APM server application for you, this will lead to additional costs.`,
   'cc-addon-elasticsearch-options.warning.apm.details': (flavor) => sanitize`By default, the app will start on a <strong title="${formatFlavor(flavor)}">${flavor.name} instance</strong> which costs around <strong>${currencyFormatter.format(flavor.monthlyCost)} per month</strong>.`,
+  // cc-addon-encryption-at-rest-option
+  'cc-addon-encryption-at-rest-option.description': ({ documentationLink }) => sanitize`Encryption at rest encrypts the entire data disk of your add-on. It prevents reading the stored data in case of a physical access to the hard drive. More information in our <a href="${documentationLink}">documentation</a>.`,
+  'cc-addon-encryption-at-rest-option.title': `Encryption at rest`,
+  'cc-addon-encryption-at-rest-option.warning': ({ percent, price }) => sanitize`This option is currently free. In the future, it will be billed ${percentFormatter.format(percent)} of the plan price, which amounts to <strong>${currencyFormatter.format(price)} per month</strong> here.`,
   // cc-addon-features
   'cc-addon-features.details': `Here's the list of all the features of your add-on. Features may evolve and your add-on would need a migration to match them all.`,
   'cc-addon-features.feature-name.disk': `Disk`,
@@ -110,11 +114,20 @@ export const translations = {
   'cc-addon-linked-apps.no-linked-applications': `No applications linked yet.`,
   'cc-addon-linked-apps.title': `Linked applications`,
   'cc-addon-linked-apps.zone': `zone:`,
+  // cc-addon-mongodb-options
+  'cc-addon-mongodb-options.description': `Choose the options you want for your MongoDB add-on.`,
+  'cc-addon-mongodb-options.title': `Options for the MongoDB add-on`,
+  // cc-addon-mysql-options
+  'cc-addon-mysql-options.description': `Choose the options you want for your MySQL add-on.`,
+  'cc-addon-mysql-options.title': `Options for the MySQL add-on`,
   // cc-addon-option
   'cc-addon-option.enabled': `Enabled`,
   'cc-addon-option.disabled': `Disabled`,
   // cc-addon-option-form
   'cc-addon-option-form.confirm': `Confirm options`,
+  // cc-addon-postgresql-options
+  'cc-addon-postgresql-options.description': `Choose the options you want for your PostgreSQL add-on.`,
+  'cc-addon-postgresql-options.title': `Options for the PostgreSQL add-on`,
   // cc-beta
   'cc-beta.label': `beta`,
   // cc-block

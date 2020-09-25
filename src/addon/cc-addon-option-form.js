@@ -4,6 +4,7 @@ import '../molecules/cc-block.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
+import { linkStyles } from '../templates/cc-link.js';
 
 /**
  * A component that displays a form of `<cc-addon-option>`.
@@ -94,6 +95,7 @@ export class CcAddonOptionForm extends LitElement {
 
   static get styles () {
     return [
+      linkStyles,
       // language=CSS
       css`
         :host {

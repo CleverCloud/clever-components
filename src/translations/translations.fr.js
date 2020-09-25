@@ -107,6 +107,10 @@ export const translations = {
   'cc-addon-elasticsearch-options.warning.kibana.details': (flavor) => sanitize`Par défaut, l'app sera démarrée sur une <strong title="${formatFlavor(flavor)}">instance ${flavor.name}</strong> qui coûte environ <strong>${currencyFormatter.format(flavor.monthlyCost)} par mois</strong>.`,
   'cc-addon-elasticsearch-options.warning.apm': `Si vous activez cette option, nous allons déployer et gérer pour vous un APM server, ce qui entraînera des coûts supplémentaires.`,
   'cc-addon-elasticsearch-options.warning.apm.details': (flavor) => sanitize`Par défaut, l'app sera démarrée sur une <strong title="${formatFlavor(flavor)}">instance ${flavor.name}</strong> qui coûte environ <strong>${currencyFormatter.format(flavor.monthlyCost)} par mois</strong>. `,
+  // cc-addon-encryption-at-rest-option
+  'cc-addon-encryption-at-rest-option.description': ({ documentationLink }) => sanitize`Le chiffrement au repos chiffre l'intégralité du disque de données afin de ne pas y stocker d'informations en clair. Grâce à cette sécurité, l'accès physique au disque empêchera toute lecture des données stockées. Plus d'information dans notre <a href="${documentationLink}">documentation</a>.`,
+  'cc-addon-encryption-at-rest-option.title': `Chiffrement au repos`,
+  'cc-addon-encryption-at-rest-option.warning': ({ percent, price }) => sanitize`Cette option est actuellement gratuite. Dans le futur, elle sera facturée ${percentFormatter.format(percent)} du prix du plan, ce qui dans ce cas fait <strong>${currencyFormatter.format(price)} par mois.</strong>`,
   // cc-addon-features
   'cc-addon-features.details': `Ci-dessous, les spécifications de votre add-on. Elles peuvent évoluer et une migration de l'add-on peut être nécessaire pour en bénéficier.`,
   'cc-addon-features.feature-name.disk': `Disque`,
@@ -123,11 +127,20 @@ export const translations = {
   'cc-addon-linked-apps.no-linked-applications': `Aucune application liée pour l'instant.`,
   'cc-addon-linked-apps.title': `Applications liées`,
   'cc-addon-linked-apps.zone': `zone:`,
+  // cc-addon-mongodb-options
+  'cc-addon-mongodb-options.description': `Sélectionnez les options que vous souhaitez pour votre add-on MongoDB.`,
+  'cc-addon-mongodb-options.title': `Options pour l'add-on MongoDB`,
+  // cc-addon-mysql-options
+  'cc-addon-mysql-options.description': `Sélectionnez les options que vous souhaitez pour votre add-on MySQL.`,
+  'cc-addon-mysql-options.title': `Options pour l'add-on MySQL`,
   // cc-addon-option
   'cc-addon-option.enabled': `Activé`,
   'cc-addon-option.disabled': `Désactivé`,
   // cc-addon-option-form
   'cc-addon-option-form.confirm': `Confirmer les options`,
+  // cc-addon-postgresql-options
+  'cc-addon-postgresql-options.description': `Sélectionnez les options que vous souhaitez pour votre add-on PostgreSQL.`,
+  'cc-addon-postgresql-options.title': `Options pour l'add-on PostgreSQL`,
   // cc-beta
   'cc-beta.label': `bêta`,
   // cc-error

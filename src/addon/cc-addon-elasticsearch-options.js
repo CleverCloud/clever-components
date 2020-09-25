@@ -17,6 +17,15 @@ const APM_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com/log
  * ## Type definitions
  *
  * ```js
+ * interface Option {
+ *   name: string,
+ *   enabled: boolean,
+ *   // Option specific params
+ *   flavor: Flavor, // for "apm" and "kibana" options
+ * }
+ * ```
+ *
+ * ```js
  * interface Flavor {
  *   name: string,
  *   cpus: number,
@@ -34,11 +43,7 @@ const APM_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com/log
  * }
  * ```
  *
- * @prop {Flavor} apmFlavor - Sets the default `Flavor` used to run the APM app.
- * @prop {Flavor} apmEnabled - Enables APM.
- * @prop {Flavor} kibanaFlavor - Sets the default `Flavor` used to run the Kibana app.
- * @prop {Flavor} kibanaEnabled - Enables Kibana.
- * @prop {String[]} options - List of options to enable for this selection.
+ * @prop {Option[]} options - List of options for this add-on.
  *
  * @event {CustomEvent<Options>} cc-addon-elasticsearch-options:submit - Fires when the form is submitted.
  */
@@ -47,31 +52,25 @@ export class CcAddonElasticsearchOptions extends LitElement {
   static get properties () {
     return {
       options: { type: Array, attribute: 'options' },
-      apmEnabled: { type: Boolean, attribute: 'apm-enabled' },
-      apmFlavor: { type: Object, attribute: 'apm-flavor' },
-      kibanaEnabled: { type: Boolean, attribute: 'kibana-enabled' },
-      kibanaFlavor: { type: Object, attribute: 'kibana-flavor' },
     };
   }
 
   constructor () {
     super();
     this.options = [];
-    this.apmEnabled = false;
-    this.kibanaEnabled = false;
   }
 
   _onFormOptionsSubmit ({ detail }) {
     dispatchCustomEvent(this, 'submit', detail);
   }
 
-  _getApmOption () {
+  _getApmOption ({ enabled, flavor }) {
     const description = html`
       <div class="option-details">${i18n('cc-addon-elasticsearch-options.description.apm')}</div>
       <cc-error class="option-warning">
         ${i18n('cc-addon-elasticsearch-options.warning.apm')}
-        ${this.apmFlavor != null ? html`
-          ${i18n('cc-addon-elasticsearch-options.warning.apm.details', this.apmFlavor)}
+        ${flavor != null ? html`
+          ${i18n('cc-addon-elasticsearch-options.warning.apm.details', flavor)}
         ` : ''}
       </cc-error>`;
 
@@ -79,18 +78,18 @@ export class CcAddonElasticsearchOptions extends LitElement {
       title: 'APM',
       logo: APM_LOGO_URL,
       description,
-      enabled: this.apmEnabled,
+      enabled,
       name: 'apm',
     };
   }
 
-  _getKibanaOption () {
+  _getKibanaOption ({ enabled, flavor }) {
     const description = html`
       <div class="option-details">${i18n('cc-addon-elasticsearch-options.description.kibana')}</div>
       <cc-error class="option-warning">
         ${i18n('cc-addon-elasticsearch-options.warning.kibana')}
-        ${this.kibanaFlavor != null ? html`
-          ${i18n('cc-addon-elasticsearch-options.warning.kibana.details', this.kibanaFlavor)}
+        ${flavor != null ? html`
+          ${i18n('cc-addon-elasticsearch-options.warning.kibana.details', flavor)}
         ` : ''}
       </cc-error>
     `;
@@ -99,19 +98,24 @@ export class CcAddonElasticsearchOptions extends LitElement {
       title: 'Kibana',
       logo: KIBANA_LOGO_URL,
       description,
-      enabled: this.kibanaEnabled,
+      enabled,
       name: 'kibana',
     };
   }
 
   _getFormOptions () {
-    return this.options.map((option) => {
-      switch (option) {
-        case 'apm': return this._getApmOption();
-        case 'kibana': return this._getKibanaOption();
-        default: return null;
-      };
-    }).filter((option) => option !== null);
+    return this.options
+      .map((option) => {
+        switch (option.name) {
+          case 'apm':
+            return this._getApmOption(option);
+          case 'kibana':
+            return this._getKibanaOption(option);
+          default:
+            return null;
+        }
+      })
+      .filter((option) => option != null);
   }
 
   render () {
