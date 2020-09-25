@@ -14,17 +14,56 @@ const conf = {
 export const defaultStory = makeStory(conf, {
   items: [
     {
-      options: ['kibana', 'apm'],
-      kibanaFlavor: { name: 'L', mem: 8192, cpus: 6, gpus: 0, microservice: false, monthlyCost: 144 },
-      apmFlavor: { name: 'M', mem: 4096, cpus: 4, gpus: 0, microservice: false, monthlyCost: 72 },
+      options: [
+        {
+          name: 'kibana',
+          enabled: false,
+          flavor: { name: 'L', mem: 8192, cpus: 6, gpus: 0, microservice: false, monthlyCost: 144 },
+        },
+        {
+          name: 'apm',
+          enabled: false,
+          flavor: { name: 'M', mem: 4096, cpus: 4, gpus: 0, microservice: false, monthlyCost: 72 },
+        },
+      ],
     },
   ],
 });
 
 export const noFlavorDetailsYet = makeStory(conf, {
-  items: [{
-    options: ['kibana', 'apm'],
-  }],
+  items: [
+    {
+      options: [
+        {
+          name: 'kibana',
+          enabled: false,
+        },
+        {
+          name: 'apm',
+          enabled: false,
+        },
+      ],
+    },
+  ],
+});
+
+export const preselectedKibana = makeStory(conf, {
+  items: [
+    {
+      options: [
+        {
+          name: 'kibana',
+          enabled: true,
+          flavor: { name: 'L', mem: 8192, cpus: 6, gpus: 0, microservice: false, monthlyCost: 144 },
+        },
+        {
+          name: 'apm',
+          enabled: false,
+          flavor: { name: 'M', mem: 4096, cpus: 4, gpus: 0, microservice: false, monthlyCost: 72 },
+        },
+      ],
+    },
+  ],
 });
 
 enhanceStoriesNames({

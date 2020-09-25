@@ -11,7 +11,8 @@
   * remove max-width
   * rework `loading`/`skeleton` logic
 * `<cc-header-app>`: add `zone` details
-* Remove `<cc-elasticsearch-options>`, replaced by `<cc-addon-elasticsearch-options>` 
+* Remove `<cc-elasticsearch-options>`, replaced by `<cc-addon-elasticsearch-options>`
+  * Merge many attrs/props into `options`
 
 ### Components
 
