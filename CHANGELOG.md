@@ -30,6 +30,7 @@
 
 ### For devs
 
+* Update @clevercloud/client to 7.0.0
 * docs: add some details about properties/attributes in cc-example-component.js
 * Replace cypress by web-test-runner (and fix a test)
 * Add tests for `prepareNumberUnitFormatter()`, refine implementation and adapt tests
