@@ -10,7 +10,6 @@
   * set default display to `block`
   * remove max-width
   * rework `loading`/`skeleton` logic
-* `<cc-header-app>`: add `zone` details
 * Remove `<cc-elasticsearch-options>`, replaced by `<cc-addon-elasticsearch-options>` 
 
 ### Components
@@ -23,6 +22,7 @@
   * `<cc-map-marker-server>`
   * `<cc-zone>`
   * `<cc-zone-input>`
+* `<cc-header-app>`: add `zone` details
 * `<cc-img>`: add CSS custom prop `--cc-img-fit` to customize object-fit (default is cover)
 * `<cc-env-var-form>`: fix restart button margin
 * `<cc-flex-gap>`: add `--cc-align-items` CSS property
