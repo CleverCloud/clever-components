@@ -59,14 +59,24 @@ export class CcZone extends LitElement {
     this.mode = 'default';
   }
 
+  // This is a bit irregular to do this but we need to reuse this text logic in a <select>.
+  // Moving this to a separated module feels overkill right now.
+  static getText (zone) {
+    const { title, subtitle } = CcZone._getTextParts(zone);
+    return [title, subtitle].filter((a) => a != null).join(', ');
+  }
+
+  static _getTextParts (zone) {
+    return (zone.tags.includes(PRIVATE_ZONE) && zone.displayName != null)
+      ? { title: zone.displayName }
+      : { title: zone.city, subtitle: i18n('cc-zone.country', { code: zone.countryCode, name: zone.country }) };
+  }
+
   render () {
 
     const skeleton = (this.zone == null);
     const zone = skeleton ? SKELETON_ZONE : this.zone;
-    const title = (zone.tags.includes(PRIVATE_ZONE) && zone.displayName != null) ? zone.displayName : zone.city;
-    const subtitle = (zone.tags.includes(PRIVATE_ZONE) && zone.displayName != null) ? '' : i18n('cc-zone.country', {
-      code: zone.countryCode, name: zone.country,
-    });
+    const { title, subtitle } = CcZone._getTextParts(zone);
     const infraTag = zone.tags.find((t) => t.startsWith('infra:'));
     const infraProviderSlug = (infraTag != null) ? infraTag.split(':')[1] : null;
 
