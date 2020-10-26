@@ -3,4 +3,10 @@ import { create } from '@storybook/theming/create';
 
 const cleverTheme = create({
   brandTitle: 'Clever Cloud components',
-  brandUrl: 'https://www.clever-cloud.com/doc/Logo URL 
+  brandUrl: 'https://www.clever-cloud.com/doc/',
+  brandImage: 'https://www.clever-cloud.com/images/brand-assets/logos/v2/logo_on_white.svg',
+});
+
+addons.setConfig({
+  theme: cleverTheme,
+});
