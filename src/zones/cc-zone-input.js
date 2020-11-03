@@ -256,6 +256,7 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
 
     return html`
       <cc-map
+        view-zoom="1"
         .points=${this._points}
         ?loading=${skeleton && !this.error}
         @cc-map:marker-click=${(e) => this._onSelect(e.detail.name)}

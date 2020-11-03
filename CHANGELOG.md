@@ -1,5 +1,9 @@
 # Clever Components changelog
 
+## Unreleased (????-??-??)
+
+* `<cc-zone-input>`: change default internal `view-zoom` to `1`
+
 ## 5.0.0 (2020-11-03)
 
 ### ⚠️ BREAKING CHANGES
