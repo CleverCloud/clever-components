@@ -1,6 +1,6 @@
 # Clever Components changelog
 
-## Unreleased (????-??-??)
+## 5.0.0 (2020-11-03)
 
 ### ⚠️ BREAKING CHANGES
 
