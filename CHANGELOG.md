@@ -2,6 +2,10 @@
 
 ## Unreleased (????-??-??)
 
+...
+
+## 5.1.0 (2020-11-03)
+
 * `<cc-zone-input>`: change default internal `view-zoom` to `1`
 
 ## 5.0.0 (2020-11-03)
