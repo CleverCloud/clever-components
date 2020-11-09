@@ -248,9 +248,11 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
     const skeleton = (this.zones == null);
     const zones = skeleton ? SKELETON_ZONES : this.zones;
 
+    // Try to zoom out and center the map
     return html`
       <cc-map
         view-zoom="1"
+        center-lat="35"
         .points=${this._points}
         ?loading=${skeleton && !this.error}
         @cc-map:marker-click=${(e) => this._onSelect(e.detail.name)}
