@@ -4,6 +4,7 @@ import '../maps/cc-map-marker-server.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { repeat } from 'lit-html/directives/repeat.js';
+import { scrollIntoView } from '../lib/dom.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
@@ -202,16 +203,9 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
   }
 
   _scrollIntoView (name) {
-    clearTimeout(this._scrollListTimeout);
-    this._scrollListTimeout = setTimeout(() => {
-      if (name == null) {
-        return;
-      }
-      this.shadowRoot.querySelector(`input[id=${name}]`).scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-      });
-    }, 200);
+    const parent = this.shadowRoot.querySelector(`.zone-list-wrapper`);
+    const element = this.shadowRoot.querySelector(`input[id=${name}]`);
+    scrollIntoView(parent, element);
   }
 
   _renderZoneInput (zone) {
@@ -254,9 +248,11 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
     const skeleton = (this.zones == null);
     const zones = skeleton ? SKELETON_ZONES : this.zones;
 
+    // Try to zoom out and center the map
     return html`
       <cc-map
         view-zoom="1"
+        center-lat="35"
         .points=${this._points}
         ?loading=${skeleton && !this.error}
         @cc-map:marker-click=${(e) => this._onSelect(e.detail.name)}

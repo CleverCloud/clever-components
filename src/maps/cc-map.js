@@ -129,21 +129,21 @@ export class CcMap extends withResizeObserver(LitElement) {
     const oldVal = this._centerLat;
     this._centerLat = newVal;
     this.requestUpdate('centerLat', oldVal)
-      .then(() => this._map.setView([newVal, this._centerLon]));
+      .then(() => this._map.setView([newVal, this._centerLat]));
   }
 
   set centerLon (newVal) {
     const oldVal = this._centerLon;
     this._centerLon = newVal;
     this.requestUpdate('centerLon', oldVal)
-      .then(() => this._map.setView([this._centerLat, newVal]));
+      .then(() => this._map.setView([this._centerLat, this._centerLon]));
   }
 
   set viewZoom (newVal) {
     const oldVal = this._viewZoom;
     this._viewZoom = newVal;
     this.requestUpdate('viewZoom', oldVal)
-      .then(() => this._map.setZoom(newVal));
+      .then(() => this._map.setZoom(this._viewZoom));
   }
 
   set mode (newVal) {
@@ -157,14 +157,14 @@ export class CcMap extends withResizeObserver(LitElement) {
     const oldVal = this._heatmapPoints;
     this._heatmapPoints = newVal;
     this.requestUpdate('heatmapPoints', oldVal)
-      .then(() => this._updateHeatmap(newVal));
+      .then(() => this._updateHeatmap(this._heatmapPoints));
   }
 
   set points (newVal) {
     const oldVal = this._points;
     this._points = newVal;
     this.requestUpdate('points', oldVal)
-      .then(() => this._updatePoints(newVal));
+      .then(() => this._updatePoints(this._points));
   }
 
   _resetCurrentLayer () {
