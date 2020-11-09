@@ -2,7 +2,7 @@
 
 ## Unreleased (????-??-??)
 
-...
+* `<cc-zone-input>`: fix scrollIntoView behaviour
 
 ## 5.1.0 (2020-11-03)
 
