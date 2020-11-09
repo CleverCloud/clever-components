@@ -2,6 +2,10 @@
 
 ## Unreleased (????-??-??)
 
+...
+
+## 5.2.0 (2020-11-09)
+
 * `<cc-zone-input>`: fix scrollIntoView behaviour
 * `<cc-zone-input>`: center the map
 * `<cc-map>`: fix race conditions on view-zoom update (and other attrs)
