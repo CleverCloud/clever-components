@@ -145,6 +145,7 @@ export const simulations = makeStory(conf, {
 enhanceStoriesNames({
   defaultStory,
   skeleton,
+  dataLoadedWithNoPrivateZones,
   error,
   simulations,
 });
