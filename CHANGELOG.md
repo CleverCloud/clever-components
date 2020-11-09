@@ -3,6 +3,7 @@
 ## Unreleased (????-??-??)
 
 * `<cc-zone-input>`: fix scrollIntoView behaviour
+* `<cc-map>`: fix race conditions on view-zoom update (and other attrs)
 
 ## 5.1.0 (2020-11-03)
 
