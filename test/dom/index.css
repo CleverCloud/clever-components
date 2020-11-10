@@ -1,0 +1,12 @@
+.big {
+  height: 5000px;
+}
+
+.container {
+  height: 250px;
+  overflow: auto;
+}
+
+.item {
+  height: 100px;
+}

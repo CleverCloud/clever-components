@@ -4,7 +4,7 @@ import '../maps/cc-map-marker-server.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { repeat } from 'lit-html/directives/repeat.js';
-import { scrollIntoView } from '../lib/dom.js';
+import { scrollChildIntoParent } from '../lib/dom.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
@@ -85,7 +85,7 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
     this._selected = newVal;
     this.requestUpdate('selected', oldVal).then(() => {
       this._updatePoints();
-      this._scrollIntoView(this._selected);
+      this._scrollChildIntoParent(this._selected);
       // This could move the map while just after a marker is clicked but it should be a good thing in most cases
       this._panMap();
     });
@@ -185,7 +185,7 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
   _onMarkerHover (name) {
     this._hovered = name;
     this._updatePoints();
-    this._scrollIntoView(this._hovered || this.selected);
+    this._scrollChildIntoParent(this._hovered || this.selected);
   }
 
   _panMap () {
@@ -202,10 +202,10 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
     }, 200);
   }
 
-  _scrollIntoView (name) {
+  _scrollChildIntoParent (name) {
     const parent = this.shadowRoot.querySelector(`.zone-list-wrapper`);
-    const element = this.shadowRoot.querySelector(`input[id=${name}]`);
-    scrollIntoView(parent, element);
+    const child = this.shadowRoot.querySelector(`input[id=${name}]`);
+    scrollChildIntoParent(parent, child);
   }
 
   _renderZoneInput (zone) {

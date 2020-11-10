@@ -1,0 +1,31 @@
+<html>
+<head>
+  <script type="module">
+  import { runTests } from '@web/test-runner-mocha';
+
+  runTests(() => import('./index.js'));
+  </script>
+  <link rel="stylesheet" href="./index.css">
+</head>
+<!--
+HTML example where a scrollable .container is below the fold.
+Using our scrollChildIntoParent() helper on .item elements,
+we can test if the scroll position of .container is updated as requested
+without changing the scroll position of its own parents (like the body).
+-->
+<body>
+<div class="big"></div>
+<div class="container">
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+</div>
+</body>
+</html>
