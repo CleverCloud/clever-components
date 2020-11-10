@@ -2,7 +2,11 @@
 
 ## Unreleased (????-??-??)
 
-* `<cc-zone-input>`: fix scrolling behaviour
+...
+
+## 5.3.0 (2020-11-10)
+
+* `<cc-zone-input>`: fix scrolling behaviour (again)
 
 ## 5.2.0 (2020-11-09)
 
