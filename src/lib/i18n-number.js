@@ -28,7 +28,9 @@ export function prepareNumberUnitFormatter (lang) {
   const nf = new Intl.NumberFormat(lang, { minimumFractionDigits: 0, maximumFractionDigits: 1 });
   return (rawValue) => {
     // Figure out the "magnitude" of the rawValue: 1000 => 1 / 1000000 => 2 / 1000000000 => 3 ...
-    const symbolIndex = Math.floor(Math.log10(rawValue) / 3);
+    const symbolIndex = (rawValue > 1)
+      ? Math.floor(Math.log10(rawValue) / 3)
+      : 0;
     // Use the symbolIndex to "rebase" the rawValue into the new base, 1250 => 1.25 / 1444000 => 1.444...
     const rebasedValue = rawValue / 1000 ** symbolIndex;
     // Use Intl/i18n aware number formatter

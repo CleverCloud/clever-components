@@ -2,7 +2,7 @@
 
 ## Unreleased (????-??-??)
 
-...
+* `<cc-tile-requests>`: fix broken display when value is 0
 
 ## 5.3.0 (2020-11-10)
 
