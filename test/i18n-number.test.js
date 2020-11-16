@@ -8,6 +8,7 @@ describe('prepareNumberUnitFormatter', () => {
     const formatNumberUnit = prepareNumberUnitFormatter('en');
 
     it('Small values', () => {
+      expect(formatNumberUnit(0)).to.equal('0');
       expect(formatNumberUnit(1)).to.equal('1');
       expect(formatNumberUnit(10)).to.equal('10');
       expect(formatNumberUnit(100)).to.equal('100');
@@ -59,6 +60,7 @@ describe('prepareNumberUnitFormatter', () => {
     const formatNumberUnit = prepareNumberUnitFormatter('fr');
 
     it('Small values', () => {
+      expect(formatNumberUnit(0)).to.equal('0');
       expect(formatNumberUnit(1)).to.equal('1');
       expect(formatNumberUnit(10)).to.equal('10');
       expect(formatNumberUnit(100)).to.equal('100');
@@ -113,6 +115,7 @@ describe('prepareNumberBytesFormatter', () => {
     const formatBytes = prepareNumberBytesFormatter('en', 'B', ' ');
 
     it('Small values', () => {
+      expect(formatBytes(0)).to.equal('0 B');
       expect(formatBytes(1)).to.equal('1 B');
       expect(formatBytes(10)).to.equal('10 B');
       expect(formatBytes(100)).to.equal('100 B');
@@ -162,6 +165,7 @@ describe('prepareNumberBytesFormatter', () => {
     });
 
     it('1 decimal', () => {
+      expect(formatBytes(0, 1)).to.equal('0 B');
       expect(formatBytes(1, 1)).to.equal('1 B');
       expect(formatBytes(10, 1)).to.equal('10 B');
       expect(formatBytes(100, 1)).to.equal('100 B');
@@ -177,6 +181,7 @@ describe('prepareNumberBytesFormatter', () => {
     });
 
     it('2 decimals', () => {
+      expect(formatBytes(0, 2)).to.equal('0 B');
       expect(formatBytes(1, 2)).to.equal('1 B');
       expect(formatBytes(10, 2)).to.equal('10 B');
       expect(formatBytes(100, 2)).to.equal('100 B');
@@ -197,6 +202,7 @@ describe('prepareNumberBytesFormatter', () => {
     const formatBytes = prepareNumberBytesFormatter('fr', 'o', '\u202f');
 
     it('Small values', () => {
+      expect(formatBytes(0)).to.equal('0\u202fo');
       expect(formatBytes(1)).to.equal('1\u202fo');
       expect(formatBytes(10)).to.equal('10\u202fo');
       expect(formatBytes(100)).to.equal('100\u202fo');
@@ -246,6 +252,7 @@ describe('prepareNumberBytesFormatter', () => {
     });
 
     it('1 decimal', () => {
+      expect(formatBytes(0, 1)).to.equal('0\u202fo');
       expect(formatBytes(1, 1)).to.equal('1\u202fo');
       expect(formatBytes(10, 1)).to.equal('10\u202fo');
       expect(formatBytes(100, 1)).to.equal('100\u202fo');
@@ -261,6 +268,7 @@ describe('prepareNumberBytesFormatter', () => {
     });
 
     it('2 decimals', () => {
+      expect(formatBytes(0, 2)).to.equal('0\u202fo');
       expect(formatBytes(1, 2)).to.equal('1\u202fo');
       expect(formatBytes(10, 2)).to.equal('10\u202fo');
       expect(formatBytes(100, 2)).to.equal('100\u202fo');
