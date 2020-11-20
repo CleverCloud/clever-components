@@ -3,12 +3,11 @@ import '../atoms/cc-flex-gap.js';
 import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
-import { assetUrl } from '../lib/asset-url.js';
 import { i18n } from '../lib/i18n.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 
-const infoSvg = assetUrl(import.meta, '../assets/info.svg');
+const infoSvg = new URL('../assets/info.svg', import.meta.url).href;
 
 const ELASTICSEARCH_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com/logos/elastic.svg';
 const KIBANA_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com/logos/elasticsearch-kibana.svg';

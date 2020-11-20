@@ -5,14 +5,13 @@ import '../molecules/cc-block.js';
 import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
-import { assetUrl } from '../lib/asset-url.js';
 import { fakeString } from '../lib/fake-strings.js';
 import { i18n } from '../lib/i18n.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 
-const backupSvg = assetUrl(import.meta, '../assets/backup.svg');
-const closeSvg = assetUrl(import.meta, '../assets/close.svg');
+const backupSvg = new URL('../assets/backup.svg', import.meta.url).href;
+const closeSvg = new URL('../assets/close.svg', import.meta.url).href;
 
 const SKELETON_BACKUPS = {
   providerId: '',

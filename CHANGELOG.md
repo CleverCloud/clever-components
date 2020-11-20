@@ -2,7 +2,9 @@
 
 ## Unreleased (????-??-??)
 
-...
+### For devs
+
+* Replace `assetUrl()` helper with raw `new URL('../asset.svg', import.meta.url).href`
 
 ## 5.3.1 (2020-11-16)
 
