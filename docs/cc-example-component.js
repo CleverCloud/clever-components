@@ -3,11 +3,10 @@
 // DOCS: Always keep the ".js" at the end when you reference a file directly [error in ESLint].
 // DOCS: We enforce import order [fixed by ESLint].
 import { css, html, LitElement } from 'lit-element';
-import { assetUrl } from '../src/lib/asset-url.js';
 
 // DOCS: You may prepare URLs for assets like SVG files here:
-const warningSvg = assetUrl(import.meta, '../assets/warning.svg');
-const noRedirectionSvg = assetUrl(import.meta, '../assets/redirection-off.svg');
+const warningSvg = new URL('../assets/warning.svg', import.meta.url).href;
+const noRedirectionSvg = new URL('../assets/redirection-off.svg', import.meta.url).href;
 
 // DOCS: You may setup/init some stuffs here but this should be rare and most of the setup should happen in the component.
 const MY_AWESOME_CONST = 'foobar';

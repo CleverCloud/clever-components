@@ -2,15 +2,14 @@ import copy from 'clipboard-copy';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { assetUrl } from '../lib/asset-url.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
-const clipboardSvg = assetUrl(import.meta, '../assets/clipboard.svg');
-const eyeClosedSvg = assetUrl(import.meta, '../assets/eye-closed.svg');
-const eyeOpenSvg = assetUrl(import.meta, '../assets/eye-open.svg');
-const tickSvg = assetUrl(import.meta, '../assets/tick.svg');
+const clipboardSvg = new URL('../assets/clipboard.svg', import.meta.url).href;
+const eyeClosedSvg = new URL('../assets/eye-closed.svg', import.meta.url).href;
+const eyeOpenSvg = new URL('../assets/eye-open.svg', import.meta.url).href;
+const tickSvg = new URL('../assets/tick.svg', import.meta.url).href;
 
 const TAG_SEPARATOR = ' ';
 

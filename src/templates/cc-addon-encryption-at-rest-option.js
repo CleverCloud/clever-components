@@ -1,9 +1,8 @@
 import '../molecules/cc-error.js';
 import { html } from 'lit-element';
-import { assetUrl } from '../lib/asset-url.js';
 import { i18n } from '../lib/i18n.js';
 
-const encryptionAtRestSvg = assetUrl(import.meta, '../assets/encryption-at-rest.svg');
+const encryptionAtRestSvg = new URL('../assets/encryption-at-rest.svg', import.meta.url).href;
 
 const PRICE_PERCENT = 0.10;
 

@@ -4,12 +4,11 @@ import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { assetUrl } from '../lib/asset-url.js';
 import { i18n } from '../lib/i18n.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
-const badgeSvg = assetUrl(import.meta, '../assets/badge-white.svg');
-const phoneSvg = assetUrl(import.meta, '../assets/phone.svg');
+const badgeSvg = new URL('../assets/badge-white.svg', import.meta.url).href;
+const phoneSvg = new URL('../assets/phone.svg', import.meta.url).href;
 
 const SKELETON_ORGA = {
   name: '??????????????????????????',
