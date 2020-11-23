@@ -1,4 +1,3 @@
-import json from '@rollup/plugin-json';
 import { importMetaAssets } from '@web/rollup-plugin-import-meta-assets';
 import glob from 'glob';
 import babel from 'rollup-plugin-babel';
@@ -88,60 +87,69 @@ export function inputs (sourceDir, entryMapper) {
   return Object.fromEntries(filesToExposePairs);
 }
 
-export function plugins (sourceDir, outputDir) {
-  return [
-    clear({
-      targets: [outputDir],
-    }),
-    json(),
-    importMetaAssets({
-      // Let's assume we don't have import.meta.url assets in our deps to speed up things
-      exclude: 'node_modules/**',
-      transform: (svgBuffer, id) => {
-        return svgo
-          .optimize(svgBuffer.toString())
-          .then(({ data }) => data);
-      },
-    }),
-    terser({
-      output: { comments: false },
-    }),
-    babel({
-      plugins: [
-        '@babel/plugin-syntax-dynamic-import',
-        '@babel/plugin-syntax-import-meta',
-        // Minify HTML inside lit-html and LitElement html`` templates
-        // Minify CSS inside LitElement css`` templates
-        [
-          'template-html-minifier',
-          {
-            modules: {
-              'lit-html': ['html'],
-              'lit-element': [
-                'html',
-                { name: 'css', encapsulation: 'style' },
-              ],
-            },
-            htmlMinifier: {
-              caseSensitive: true,
-              collapseWhitespace: true,
-              removeAttributeQuotes: true,
-              removeComments: true,
-              removeRedundantAttributes: true,
-              // This clearly DOES NOT work well with template strings and lit-element
-              sortAttributes: false,
-              sortClassName: true,
-              minifyCSS: { level: 2 },
-            },
-          },
-        ],
-      ],
-    }),
-    visualizer({
-      filename: `${outputDir}/stats.html`,
-      template: 'treemap',
-      gzipSize: true,
-      brotliSize: true,
-    }),
-  ];
+export function clearPlugin ({ outputDir }) {
+  return clear({
+    targets: [outputDir],
+  });
 }
+
+export function importMetaUrlAssetsPlugin () {
+  return importMetaAssets({
+    // Let's assume we don't have import.meta.url assets in our deps to speed up things
+    exclude: 'node_modules/**',
+    transform: (svgBuffer, id) => {
+      return svgo
+        .optimize(svgBuffer.toString())
+        .then(({ data }) => data);
+    },
+  });
+}
+
+export function terserPlugin () {
+  return terser({
+    output: { comments: false },
+  });
+}
+
+export function babelPlugin () {
+  return babel({
+    plugins: [
+      '@babel/plugin-syntax-dynamic-import',
+      '@babel/plugin-syntax-import-meta',
+      // Minify HTML inside lit-html and LitElement html`` templates
+      // Minify CSS inside LitElement css`` templates
+      [
+        'template-html-minifier',
+        {
+          modules: {
+            'lit-html': ['html'],
+            'lit-element': [
+              'html',
+              { name: 'css', encapsulation: 'style' },
+            ],
+          },
+          htmlMinifier: {
+            caseSensitive: true,
+            collapseWhitespace: true,
+            removeAttributeQuotes: true,
+            removeComments: true,
+            removeRedundantAttributes: true,
+            // This clearly DOES NOT work well with template strings and lit-element
+            sortAttributes: false,
+            sortClassName: true,
+            minifyCSS: { level: 2 },
+          },
+        },
+      ],
+    ],
+  });
+}
+
+export function visualizerPlugin ({ outputDir }) {
+  return visualizer({
+    filename: `${outputDir}/stats.html`,
+    template: 'treemap',
+    gzipSize: true,
+    brotliSize: true,
+  });
+};

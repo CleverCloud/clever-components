@@ -6,6 +6,7 @@
 
 * Use `@web/rollup-plugin-import-meta-assets` for assets instead of `rollup-plugin-copy`
 * Replace `assetUrl()` helper with raw `new URL('../asset.svg', import.meta.url).href`
+* Move rollup configs to specific dir and rework plugin usage
 
 ## 5.3.1 (2020-11-16)
 
