@@ -10,6 +10,7 @@
 * Move rollup configs to specific dir and rework plugin usage
 * Introduce rollup-plugin-deps-manifest to list dependencies for CDN
 * Add new npm script `components:build-cdn` to prepare files for CDN
+* Add new npm script `components:publish-cdn` to published files to Cellar
 
 ## 5.3.1 (2020-11-16)
 
