@@ -14,6 +14,7 @@
   "scripts": {
     "components:build": "rollup -c rollup/rollup-npm.config.js",
     "components:build-cdn": "rollup -c rollup/rollup-cdn.config.js",
+    "components:publish-cdn": "node tasks/publish-cdn.js",
     "components:check-i18n": "node tasks/check-i18n.js",
     "components:check-lit": "lit-analyzer src",
     "components:docs": "npm run components:docs-md && npm run components:docs-json",
@@ -62,6 +63,7 @@
     "@web/rollup-plugin-import-meta-assets": "^1.0.4",
     "@web/test-runner": "^0.9.7",
     "@web/test-runner-mocha": "^0.5.1",
+    "aws-sdk": "^2.799.0",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "babel-plugin-inline-svg": "^1.0.1",
@@ -84,6 +86,7 @@
     "i18n-extract": "^0.6.7",
     "lit-analyzer": "^1.1.10",
     "markdown-it": "^10.0.0",
+    "mime-types": "^2.1.27",
     "node-static": "^0.7.11",
     "postcss": "^7.0.27",
     "postcss-sorting": "^5.0.1",
