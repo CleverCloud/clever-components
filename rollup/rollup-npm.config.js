@@ -10,7 +10,7 @@ import {
 } from './rollup-common.js';
 
 const sourceDir = 'src';
-const outputDir = `dist`;
+const outputDir = 'dist';
 
 export default {
   input: inputs(sourceDir, (file) => {
