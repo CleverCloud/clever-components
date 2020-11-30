@@ -13,6 +13,7 @@
   ],
   "scripts": {
     "components:build": "rollup -c rollup/rollup-npm.config.js",
+    "components:build-cdn": "rollup -c rollup/rollup-cdn.config.js",
     "components:check-i18n": "node tasks/check-i18n.js",
     "components:check-lit": "lit-analyzer src",
     "components:docs": "npm run components:docs-md && npm run components:docs-json",
@@ -44,7 +45,10 @@
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/plugin-syntax-import-meta": "^7.10.4",
     "@bundled-es-modules/chai": "^4.2.2",
+    "@rollup/plugin-alias": "^3.1.1",
+    "@rollup/plugin-commonjs": "^16.0.0",
     "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^10.0.0",
     "@storybook/addon-a11y": "^5.3.18",
     "@storybook/addon-actions": "^5.3.18",
     "@storybook/addon-docs": "^5.3.18",
