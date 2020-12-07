@@ -11,6 +11,7 @@
 * Introduce rollup-plugin-deps-manifest to list dependencies for CDN
 * Add new npm script `components:build-cdn` to prepare files for CDN
 * Add new npm script `components:publish-cdn` to published files to Cellar
+* Add manual CSS to style not yet defined components (will be reworked and automated later)
 
 ## 5.3.1 (2020-11-16)
 
