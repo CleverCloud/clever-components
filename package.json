@@ -14,6 +14,7 @@
   "scripts": {
     "components:build": "rollup -c rollup/rollup-npm.config.js",
     "components:build-cdn": "rollup -c rollup/rollup-cdn.config.js",
+    "components:build-cdn:versions-list": "node tasks/update-versions-list.js",
     "components:publish-cdn": "node tasks/publish-cdn.js",
     "components:check-i18n": "node tasks/check-i18n.js",
     "components:check-lit": "lit-analyzer src",
@@ -95,6 +96,7 @@
     "rollup-plugin-clear": "^2.0.7",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-visualizer": "^4.2.0",
+    "superagent": "^6.1.0",
     "svgo": "^1.3.2",
     "web-component-analyzer": "1.0.3"
   }
