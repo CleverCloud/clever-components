@@ -12,6 +12,7 @@
 * Add new npm script `components:build-cdn` to prepare files for CDN
 * Add new npm script `components:publish-cdn` to published files to Cellar
 * Add manual CSS to style not yet defined components (will be reworked and automated later)
+* Add new npm script `components:build-cdn:versions-list` to update the list of available versions (published on CDN)
 
 ## 5.3.1 (2020-11-16)
 
