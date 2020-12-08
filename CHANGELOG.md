@@ -3,6 +3,10 @@
 
 ## Unreleased (????-??-??)
 
+* `<cc-addon-credentials>`
+  * Add `"pulsar"` type
+  * Add `"url"` credential type
+
 ### For devs
 
 * Use `@web/rollup-plugin-import-meta-assets` for assets instead of `rollup-plugin-copy`

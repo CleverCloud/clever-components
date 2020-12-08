@@ -22,7 +22,7 @@ import { skeletonStyles } from '../styles/skeleton.js';
  *
  * ```js
  * interface Credential {
- *   type: string,
+ *   type: "auth-token"|"host"|"password"|"url"|"user",
  *   value: string,
  *   secret: boolean,
  * }
@@ -33,7 +33,7 @@ import { skeletonStyles } from '../styles/skeleton.js';
  * @prop {String} icon - Sets the URL of the icon to use.
  * @prop {String} name - Sets the display name of the add-on.
  * @prop {"off"|"open"|"close"} toggleState - Sets the toggle state of the inner block.
- * @prop {String} type - Sets the type of the add-on.
+ * @prop {"apm"|"elasticsearch"|"kibana"|"pulsar"} type - Sets the type of the add-on.
  */
 
 export class CcAddonCredentials extends LitElement {
@@ -63,6 +63,8 @@ export class CcAddonCredentials extends LitElement {
         return i18n('cc-addon-credentials.description.elasticsearch');
       case 'kibana':
         return i18n('cc-addon-credentials.description.kibana');
+      case 'pulsar':
+        return i18n('cc-addon-credentials.description.pulsar');
       default:
         return '';
     }
@@ -76,6 +78,8 @@ export class CcAddonCredentials extends LitElement {
         return i18n('cc-addon-credentials.field.host');
       case 'password':
         return i18n('cc-addon-credentials.field.password');
+      case 'url':
+        return i18n('cc-addon-credentials.field.url');
       case 'user':
         return i18n('cc-addon-credentials.field.user');
       default:

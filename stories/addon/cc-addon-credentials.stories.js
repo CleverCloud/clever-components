@@ -79,6 +79,19 @@ export const dataLoadedWithApm = makeStory(conf, {
   }],
 });
 
+export const dataLoadedWithPulsar = makeStory(conf, {
+  items: [{
+    type: 'pulsar',
+    name: 'Pulsar',
+    toggleState: 'open',
+    icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/pulsar.svg',
+    credentials: [
+      { type: 'url', value: 'pulsar+ssl://url:port', secret: false },
+      { type: 'auth-token', value: 'my-awesome-token', secret: true },
+    ],
+  }],
+});
+
 export const simulations = makeStory(conf, {
   items: [
     {
@@ -112,5 +125,6 @@ enhanceStoriesNames({
   error,
   dataLoadedWithKibana,
   dataLoadedWithApm,
+  dataLoadedWithPulsar,
   simulations,
 });
