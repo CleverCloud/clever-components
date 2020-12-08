@@ -1,7 +1,10 @@
-
 # Clever Components changelog
 
 ## Unreleased (????-??-??)
+
+...
+
+## 5.4.0 (2020-12-08)
 
 * `<cc-addon-credentials>`
   * Add `"pulsar"` type
