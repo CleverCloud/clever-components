@@ -1,3 +1,5 @@
+import path from 'path';
+import alias from '@rollup/plugin-alias';
 import { importMetaAssets } from '@web/rollup-plugin-import-meta-assets';
 import glob from 'glob';
 import babel from 'rollup-plugin-babel';
@@ -145,11 +147,61 @@ export function babelPlugin () {
   });
 }
 
-export function visualizerPlugin ({ outputDir }) {
+export function visualizerPlugin ({ outputDir, packageVersion }) {
+  const filename = (packageVersion != null)
+    ? `${outputDir}/visualizer-stats-${packageVersion}.html`
+    : `${outputDir}/visualizer-stats.html`;
   return visualizer({
-    filename: `${outputDir}/stats.html`,
+    filename,
     template: 'treemap',
     gzipSize: true,
     brotliSize: true,
   });
+};
+
+// Replace moment.js with an empty object
+// charts.js imports moment.js but we don't want/need it
+export function shimMoment () {
+  return {
+    load (id) {
+      if (id.includes('/node_modules/moment/')) {
+        return 'export default {}';
+      }
+    },
+  };
+}
+
+// https://github.com/Polymer/lit-element/issues/909
+// LitElement imports some legacy code for IE11 but we don't want/need it
+export function shimShadyRender () {
+  return alias({
+    entries: [
+      {
+        find: 'lit-html/lib/shady-render.js',
+        replacement: 'lit-html/lit-html.js',
+      },
+    ],
+  });
+}
+
+export const manualChunkOptions = (id) => {
+  const isSmall = id.endsWith('src/lib/events.js')
+    || id.endsWith('src/styles/skeleton.js')
+    || id.endsWith('src/styles/waiting.js')
+    || id.endsWith('lit-html/directives/if-defined.js')
+    || id.endsWith('lit-html/directives/class-map.js');
+  if (isSmall) {
+    return 'vendor';
+  }
+};
+
+export const treeshakeOptions = {
+  moduleSideEffects: (id, external) => {
+    const relativeId = path.relative(process.cwd(), id);
+    const isComponent = /^src\/.+\/cc-[a-z-]+\.js$/.test(relativeId);
+    const isEntryPoint = /^src\/[a-z-]+\.js$/.test(relativeId);
+    // TODO: fix conflict with Leaflet.heat
+    const isLeaflet = /^node_modules\/leaflet/.test(relativeId);
+    return isComponent || isEntryPoint || isLeaflet;
+  },
 };

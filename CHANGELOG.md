@@ -1,3 +1,4 @@
+
 # Clever Components changelog
 
 ## Unreleased (????-??-??)
@@ -7,6 +8,12 @@
 * Use `@web/rollup-plugin-import-meta-assets` for assets instead of `rollup-plugin-copy`
 * Replace `assetUrl()` helper with raw `new URL('../asset.svg', import.meta.url).href`
 * Move rollup configs to specific dir and rework plugin usage
+* Introduce rollup-plugin-deps-manifest to list dependencies for CDN
+* Add new npm script `components:build-cdn` to prepare files for CDN
+* Add new npm script `components:publish-cdn` to published files to Cellar
+* Add manual CSS to style not yet defined components (will be reworked and automated later)
+* Add new npm script `components:build-cdn:versions-list` to update the list of available versions (published on CDN)
+* Add Jenkinsfile to automate CDN publication on new tag
 
 ## 5.3.1 (2020-11-16)
 
