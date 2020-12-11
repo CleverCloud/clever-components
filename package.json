@@ -66,7 +66,7 @@
     "@storybook/theming": "^5.3.18",
     "@storybook/web-components": "^5.3.18",
     "@web/rollup-plugin-import-meta-assets": "^1.0.4",
-    "@web/test-runner": "^0.9.7",
+    "@web/test-runner": "^0.10.0",
     "@web/test-runner-mocha": "^0.5.1",
     "aws-sdk": "^2.808.0",
     "babel-loader": "^8.2.2",
