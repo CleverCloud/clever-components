@@ -1,15 +1,9 @@
-'use strict';
-
-// Require ESM modules like we're in the future
-// eslint-disable-next-line no-global-assign
-require = require('esm')(module);
-
-const fs = require('fs').promises;
-const util = require('util');
-const rawGlob = require('glob');
-const { extractFromCode } = require('i18n-extract');
-const { translations: en } = require('../src/translations/translations.en.js');
-const { translations: fr } = require('../src/translations/translations.fr.js');
+import { promises as fs } from 'fs';
+import util from 'util';
+import rawGlob from 'glob';
+import { extractFromCode } from 'i18n-extract';
+import { translations as en } from '../src/translations/translations.en.js';
+import { translations as fr } from '../src/translations/translations.fr.js';
 
 const glob = util.promisify(rawGlob);
 const translationsByLang = { en, fr };
