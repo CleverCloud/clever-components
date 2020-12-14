@@ -1,10 +1,8 @@
-'use strict';
-
-const fs = require('fs/promises');
-const util = require('util');
-const AWS = require('aws-sdk');
-const rawGlob = require('glob');
-const mime = require('mime-types');
+import fs from 'fs/promises';
+import util from 'util';
+import AWS from 'aws-sdk';
+import rawGlob from 'glob';
+import mime from 'mime-types';
 
 const glob = util.promisify(rawGlob);
 
