@@ -81,6 +81,7 @@ export function makeStory (...configs) {
           if (typeof value === 'object') {
             return `${name}='${JSON.stringify(value)}'`;
           }
+          return null;
         })
         .filter((a) => a != null);
 

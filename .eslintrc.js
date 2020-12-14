@@ -1,5 +1,4 @@
 module.exports = {
-  'parser': 'babel-eslint',
   'extends': 'standard',
   'plugins': [
     'import',
@@ -30,5 +29,7 @@ module.exports = {
     'padded-blocks': 'off',
     'quotes': ['error', 'single', { 'allowTemplateLiterals': true }],
     'semi': ['error', 'always'],
+    'multiline-ternary': 'off',
+    'accessor-pairs': 'off',
   },
 };
