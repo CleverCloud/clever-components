@@ -1,7 +1,6 @@
-import { Meta } from '@storybook/addon-docs/blocks';
-
-<Meta title="📌 Docs/How to write stories" />
-
+---
+kind: '📌 Docs'
+---
 # How to write stories
 
 We're trying to enforce a few names/titles for our stories.

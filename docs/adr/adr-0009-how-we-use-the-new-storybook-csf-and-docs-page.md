@@ -1,7 +1,6 @@
-import { Meta } from '@storybook/addon-docs/blocks';
-
-<Meta title="📌 Docs/Architecture Decision Records/ADR 0009: How we use the new Storybook CSF and docs page?" />
-
+---
+kind: '📌 Docs/Architecture Decision Records'
+---
 # ADR 0009: How we use the new Storybook CSF and docs page?
 
 ## Context
@@ -92,7 +91,7 @@ Here are some facts abouts our migration and usage.
 
 #### Story names
 
-👎 The way story names are computed from exported function names was not to our taste and the way you can override the name with `myStoryFn.story = { name: 'foobar' }` was also not to our taste.
+👎 The way story names are computed from exported function names was not to our taste and the way you can override the name with  was also not to our taste.
 
 👍 Our `makeStory()` helper allows us to specify a name in a cleaner way.
 

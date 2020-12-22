@@ -2,11 +2,11 @@ import { render } from 'lit-html';
 import { skeletonStyles } from '../../src/styles/skeleton.js';
 import { ccLink, linkStyles } from '../../src/templates/cc-link.js';
 import { makeStory } from '../lib/make-story.js';
-import docsPage from './cc-link.mdx';
+import docsPage from './cc-link.md';
 
 export default {
   title: '♻️ Templates/ccLink()',
-  parameters: { docs: { page: docsPage } },
+  parameters: { docs: { page: docsPage.parameters.docs.page } },
 };
 
 const conf = {

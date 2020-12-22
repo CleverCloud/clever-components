@@ -1,7 +1,6 @@
-import { Meta } from '@storybook/addon-docs/blocks';
-
-<Meta title="📌 Docs/Architecture Decision Records/ADR 0011: Sorting CSS declarations" />
-
+---
+kind: '📌 Docs/Architecture Decision Records'
+---
 # ADR 0011: Sorting CSS declarations
 
 Since we started this project, we tried to apply an alphabetical sort on CSS declarations inside our LitElement based components.

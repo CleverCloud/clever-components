@@ -1,9 +1,11 @@
 import '../../src/atoms/cc-expand.js';
-import { action } from '@storybook/addon-actions';
 import { html, LitElement } from 'lit-element';
 import { withResizeObserver } from '../../src/mixins/with-resize-observer.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
-import docsPage from './with-resize-observer.mdx';
+import docsPage from './with-resize-observer.md';
+// import { action } from '@storybook/addon-actions';
+const action = () => {
+};
 
 class WithHtml extends withResizeObserver(window.HTMLElement) {
   constructor () {
@@ -43,7 +45,7 @@ window.customElements.define('lit-element', WithLit);
 
 export default {
   title: '🔀 Mixins/withResizeObserver()',
-  parameters: { docs: { page: docsPage } },
+  parameters: { docs: { page: docsPage.parameters.docs.page } },
 };
 
 export const defaultStory = () => {

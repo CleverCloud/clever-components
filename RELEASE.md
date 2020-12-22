@@ -1,3 +1,7 @@
+---
+kind: 🏠 Home
+title: Releases
+---
 # Clever Components releases
 
 ## How do I release a new version?

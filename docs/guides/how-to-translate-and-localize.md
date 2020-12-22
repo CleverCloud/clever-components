@@ -1,7 +1,6 @@
-import { Meta } from '@storybook/addon-docs/blocks';
-
-<Meta title="📌 Docs/How to translate and localize?" />
-
+---
+kind: '📌 Docs'
+---
 # How to translate and localize?
 
 Welcome to this complete guide about the translation and localization system of our component library.

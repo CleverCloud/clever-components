@@ -1,7 +1,6 @@
-import { Meta } from '@storybook/addon-docs/blocks';
-
-<Meta title="📌 Docs/Architecture Decision Records/ADR 0005: How should we implement copy to clipboard?" />
-
+---
+kind: '📌 Docs/Architecture Decision Records'
+---
 # ADR 0005: How should we implement copy to clipboard?
 
 This ADR tries to explain the choices we made to add a copy to clipboard feature on our `<cc-input-text>` component.

@@ -1,3 +1,7 @@
+---
+kind: 🏠 Home
+title: ' Readme'
+---
 # Collection of Web Components by Clever Cloud
 
 ## What is this?
