@@ -2,7 +2,7 @@ import '../../src/maps/cc-map.js';
 import '../../src/maps/cc-map-marker-server.js';
 import '../../src/maps/cc-map-marker-dot.js';
 import '../../src/zones/cc-zone.js';
-import fakeHeatmapData from '../assets/24-hours-points.json';
+import fakeHeatmapData from '../assets/24-hours-points.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 

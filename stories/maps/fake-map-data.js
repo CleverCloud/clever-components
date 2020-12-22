@@ -1,7 +1,6 @@
-import { select } from '@storybook/addon-knobs';
-import fakePointsDataBig from '../assets/country-city-points-big-orga.json';
-import fakePointsDataMedium from '../assets/country-city-points-medium-orga.json';
-import fakePointsDataNormal from '../assets/country-city-points-normal-orga.json';
+import fakePointsDataBig from '../assets/country-city-points-big-orga.js';
+import fakePointsDataMedium from '../assets/country-city-points-medium-orga.js';
+import fakePointsDataNormal from '../assets/country-city-points-normal-orga.js';
 
 const FAKE_POINTS_DATA = [
   fakePointsDataNormal,
@@ -20,12 +19,4 @@ export function getFakePointsData (sampleIndex) {
   const data = Promise.resolve(FAKE_POINTS_DATA[sampleIndex][fakeDataIndex]);
   fakeDataIndex = (fakeDataIndex + 1) % FAKE_POINTS_DATA[sampleIndex].length;
   return data;
-}
-
-export function getDataSampleKnob () {
-  return select('Sample', {
-    'Normal orga': 0,
-    'Medium orga': 1,
-    'Really big orga': 2,
-  }, 1);
 }
