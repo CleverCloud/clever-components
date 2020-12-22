@@ -1,21 +1,24 @@
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const json = require('@rollup/plugin-json');
+const commonjs = require('@rollup/plugin-commonjs');
+const { storybookRollupPlugin } = require('../stories/lib/markdown.cjs');
 
 module.exports = {
-  // We don't use this yet because of HMR
-  // stories: ['../**/*.stories.js'],
-  // The order of those imports will be the same as the order of tabs in addons pane
-  addons: [
-    '@storybook/addon-actions/register',
-    '@storybook/addon-knobs/register',
-    '@storybook/addon-a11y/register',
-    '@storybook/addon-notes/register',
-    '@storybook/addon-viewport/register',
+  stories: [
+    // Top level Markdown documents
+    '../*.md',
+    // Then Markdown documents inside docs
+    '../docs/**/*.md',
+    // Then regular CSF stories
+    '../stories/**/*.stories.js',
   ],
-  presets: ['@storybook/addon-docs/preset'],
-  webpackFinal: (config) => {
+  rollupConfig (config) {
 
-    // Copy all svg so our usage with `import.meta.url` still work
-    config.plugins.push(new CopyWebpackPlugin(['src/assets/*.svg']));
+    // Replace Modern Web plugin MD support with plain markdown support
+    config.plugins = config.plugins.filter((plugin) => plugin.name !== 'md');
+    config.plugins.unshift(storybookRollupPlugin());
+
+    config.plugins.unshift(json());
+    config.plugins.unshift(commonjs());
 
     return config;
   },
