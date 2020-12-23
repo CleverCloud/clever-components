@@ -239,9 +239,9 @@ npm run components:check-i18n
 
 ### Check hard coded text with the "missing" language
 
-In our storybook, you can:
+In our Storybook, you can:
 
-* Change the language with a knob in the canvas tab.
+* Change the language with a control in the canvas tab.
 * Change the language with the `i` key shortcut (canvas tab and docs tab).
 
 The keyboard shortcut will cycle through english, french and "missing".
