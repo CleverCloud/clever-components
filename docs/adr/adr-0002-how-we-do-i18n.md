@@ -1,7 +1,6 @@
-import { Meta } from '@storybook/addon-docs/blocks';
-
-<Meta title="📌 Docs/Architecture Decision Records/ADR 0002: Why we changed the way i18n works?" />
-
+---
+kind: '📌 Docs/Architecture Decision Records'
+---
 # ADR 0002: Why we changed the way i18n works?
 
 This ADR tries to explain the original design for i18n and why we changed.

@@ -1,5 +1,3 @@
-import { Preview, Story } from '@storybook/addon-docs/blocks';
-
 # `ccLink()` template and `linkStyles` CSS styles
 
 We want all the HTML links included in our components to look the same and have the same behaviour.

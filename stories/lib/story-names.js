@@ -40,6 +40,6 @@ function enhanceStoryName (defaultName) {
 
 export function enhanceStoriesNames (stories) {
   Object.entries(stories).forEach(([name, storyFn]) => {
-    storyFn.story = { name: enhanceStoryName(name), ...(storyFn.story || {}) };
+    storyFn.storyName = enhanceStoryName(name);
   });
 }

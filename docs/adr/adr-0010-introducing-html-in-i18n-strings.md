@@ -1,7 +1,6 @@
-import { Meta } from '@storybook/addon-docs/blocks';
-
-<Meta title="📌 Docs/Architecture Decision Records/ADR 0010: Introducing HTML in translation strings" />
-
+---
+kind: '📌 Docs/Architecture Decision Records'
+---
 # ADR 0010: Introducing HTML in translation strings
 
 We want to use some whitelisted HTML tags in translation strings.

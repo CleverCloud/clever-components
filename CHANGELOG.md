@@ -1,3 +1,7 @@
+---
+kind: 🏠 Home
+title: Changelog
+---
 # Clever Components changelog
 
 ## Unreleased (????-??-??)

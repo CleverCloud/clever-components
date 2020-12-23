@@ -1,5 +1,5 @@
 import '../../src/maps/cc-logsmap.js';
-import fakeHeatmapData from '../assets/24-hours-points.json';
+import fakeHeatmapData from '../assets/24-hours-points.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 import { setIntervalDom, setTimeoutDom } from '../lib/timers.js';

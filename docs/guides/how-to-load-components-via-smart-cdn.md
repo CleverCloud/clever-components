@@ -1,7 +1,6 @@
-import { Meta } from '@storybook/addon-docs/blocks';
-
-<Meta title="📌 Docs/How to load components via Smart CDN?" />
-
+---
+kind: '📌 Docs'
+---
 # How to load components via Smart CDN?
 
 NOTE: This doc is a work in progress...

@@ -1,19 +1,9 @@
-// TRICK_START: if we import translation files statically here, storybook gets reloaded when translations are updated :p
-import '../../src/translations/translations.en.js';
-import '../../src/translations/translations.fr.js';
-// TRICK_END
-import { decorate } from '@storybook/addon-actions';
+import { useArgs } from '@web/storybook-prebuilt/addons.js';
+import { getLanguage } from '../../src/lib/i18n.js';
+import { getLangArgType, setUpdateArgsCallback, updateLang } from './i18n-control.js';
 import { sequence } from './sequence.js';
 
-const customEvent = decorate([(args) => {
-  return [JSON.stringify(args[0].detail)];
-}]);
-
-const markdownDocs = {};
-
-export function setMarkdownDocs (component, md) {
-  markdownDocs[component] = md;
-}
+const ceJson = window.__STORYBOOK_CUSTOM_ELEMENTS__;
 
 export function makeStory (...configs) {
 
@@ -23,7 +13,12 @@ export function makeStory (...configs) {
     ? rawItems()
     : rawItems;
 
-  const storyFn = (aa) => {
+  const storyFn = (storyArgs) => {
+
+    updateLang(storyArgs.lang);
+    // React hooks voodoo shit
+    const [, updateArgs] = useArgs();
+    setUpdateArgsCallback(updateArgs);
 
     const container = document.createElement('div');
     const shadow = container.attachShadow({ mode: 'open' });
@@ -58,11 +53,17 @@ export function makeStory (...configs) {
       }
     });
 
-    const customElementsJson = window.__STORYBOOK_CUSTOM_ELEMENTS__;
-    const { events = [] } = customElementsJson.tags.find((tag) => tag.name === component);
-    events.forEach(({ name: eventName }) => {
-      container.addEventListener(eventName, customEvent.action(eventName));
-    });
+    const componentDefinition = ceJson.tags.find((c) => c.name === component);
+    const componentEventNames = (componentDefinition != null && componentDefinition.events != null)
+      ? componentDefinition.events.map((e) => e.name)
+      : [];
+
+    Object
+      .entries(storyArgs)
+      .filter(([eventName]) => componentEventNames.includes(eventName))
+      .forEach(([eventName, callback]) => {
+        container.addEventListener(eventName, (e) => callback(JSON.stringify(e.detail)));
+      });
 
     return container;
   };
@@ -105,41 +106,36 @@ export function makeStory (...configs) {
     ? domSource()
     : generatedSource();
 
-  let notes;
-  if (component != null && markdownDocs[component] != null) {
-    notes = markdownDocs[component];
-  }
-  else {
-    notes = `
-# ${component}
-
-No markdown documentation could be found for this component.
-
-Don't forget to run:
-      
-\`\`\`bash
-npm run components:docs
-\`\`\`
-`.trim();
-  }
-
-  storyFn.story = {
-    docs,
-    css,
-    component,
-    items,
-    parameters: {
-      docs: {
-        storyDescription: (docs || '').trim(),
+  storyFn.parameters = {
+    docs: {
+      description: {
+        story: (docs || '').trim(),
       },
-      notes,
-      // Dirty way to ovveride the contnet of the "show code" block
-      mdxSource,
+    },
+    storySource: {
+      source: mdxSource,
+    },
+    // Detect all *:* as events and refine in the story
+    actions: {
+      argTypesRegex: '.*:.*',
     },
   };
 
+  storyFn.argTypes = {
+    lang: getLangArgType(),
+  };
+
+  storyFn.args = {
+    lang: getLanguage(),
+  };
+
+  storyFn.docs = docs;
+  storyFn.css = css;
+  storyFn.component = component;
+  storyFn.items = items;
+
   if (name != null) {
-    storyFn.story.name = name;
+    storyFn.storyName = name;
   }
 
   return storyFn;
@@ -165,9 +161,8 @@ function assignPropsToElement (element, props = {}) {
 }
 
 export function createStoryItem (storyFn, props = {}, itemIndex = 0) {
-  const story = storyFn.story;
-  const element = document.createElement(story.component);
-  assignPropsToElement(element, story.items[itemIndex]);
+  const element = document.createElement(storyFn.component);
+  assignPropsToElement(element, storyFn.items[itemIndex]);
   assignPropsToElement(element, props);
   return element;
 }

@@ -1,7 +1,6 @@
-import { Meta } from '@storybook/addon-docs/blocks';
-
-<Meta title="📌 Docs/Architecture Decision Records/ADR 0003: Why did we create a datetime relative component?" />
-
+---
+kind: '📌 Docs/Architecture Decision Records'
+---
 # ADR 0003: Why did we create a datetime relative component?
 
 This ADR tries to explain why we created our own datetime relative component and how it compares to other solutions.

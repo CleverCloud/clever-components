@@ -1,5 +1,5 @@
-import { addons } from '@storybook/addons';
-import { create } from '@storybook/theming/create';
+import { addons } from '@web/storybook-prebuilt/addons.js';
+import { create } from '@web/storybook-prebuilt/theming.js';
 
 const cleverTheme = create({
   brandTitle: 'Clever Cloud components',

@@ -1,13 +1,14 @@
 import '../../src/atoms/cc-toggle.js';
-import boldSvg from '../assets/bold.svg';
-import centerSvg from '../assets/center.svg';
-import italicSvg from '../assets/italic.svg';
-import justifySvg from '../assets/justify.svg';
-import leftSvg from '../assets/left.svg';
-import rightSvg from '../assets/right.svg';
-import underlineSvg from '../assets/underline.svg';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
+
+const boldSvg = new URL('../assets/bold.svg', import.meta.url);
+const centerSvg = new URL('../assets/center.svg', import.meta.url);
+const italicSvg = new URL('../assets/italic.svg', import.meta.url);
+const justifySvg = new URL('../assets/justify.svg', import.meta.url);
+const leftSvg = new URL('../assets/left.svg', import.meta.url);
+const rightSvg = new URL('../assets/right.svg', import.meta.url);
+const underlineSvg = new URL('../assets/underline.svg', import.meta.url);
 
 export default {
   title: '🧬 Atoms/<cc-toggle>',

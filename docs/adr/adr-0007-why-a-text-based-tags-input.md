@@ -1,8 +1,6 @@
-import { Meta, Preview, Story } from '@storybook/addon-docs/blocks';
-import { html } from 'lit-html';
-
-<Meta title="📌 Docs/Architecture Decision Records/ADR 0007: Why a text based tags input?" />
-
+---
+kind: '📌 Docs/Architecture Decision Records'
+---
 # ADR 0007: Why a text based tags input?
 
 This ADR tries to explain why we decided to create a tags component as a feature of `<cc-input-text>`.

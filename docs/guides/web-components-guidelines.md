@@ -1,7 +1,6 @@
-import { Meta } from '@storybook/addon-docs/blocks';
-
-<Meta title="📌 Docs/Web components guidelines" />
-
+---
+kind: '📌 Docs'
+---
 # Web Components guidelines at Clever Cloud
 
 Here a different rules we want any contributor to follow regarding how we write Web Components with LitElement.

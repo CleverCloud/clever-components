@@ -1,7 +1,6 @@
-import { Meta } from '@storybook/addon-docs/blocks';
-
-<Meta title="📌 Docs/Architecture Decision Records/ADR 0008: Why an event called `requestimplicitsubmit`?" />
-
+---
+kind: '📌 Docs/Architecture Decision Records'
+---
 # ADR 0008: Why an event called `requestimplicitsubmit`?
 
 This ADR tries to explain why we introduced a custom event on `<cc-input-text>` called `cc-input-text:requestimplicitsubmit`.

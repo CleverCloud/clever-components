@@ -1,9 +1,10 @@
 import '../../src/atoms/cc-button.js';
-import closeSvg from '../../src/assets/close.svg';
-import infoSvg from '../../src/assets/info.svg';
-import warningSvg from '../../src/assets/warning.svg';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
+
+const closeSvg = new URL('../../src/assets/close.svg', import.meta.url);
+const infoSvg = new URL('../../src/assets/info.svg', import.meta.url);
+const warningSvg = new URL('../../src/assets/warning.svg', import.meta.url);
 
 const baseItems = [
   { innerHTML: 'Simple' },

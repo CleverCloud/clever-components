@@ -1,3 +1,7 @@
+---
+kind: 🏠 Home
+title: Contributing
+---
 # Contributing to Clever Components
 
 Here are some details on the different npm tasks we use.

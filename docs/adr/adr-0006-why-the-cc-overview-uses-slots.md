@@ -1,7 +1,6 @@
-import { Meta } from '@storybook/addon-docs/blocks';
-
-<Meta title="📌 Docs/Architecture Decision Records/ADR 0006: Why the <cc-overview> uses slots?" />
-
+---
+kind: '📌 Docs/Architecture Decision Records'
+---
 # ADR 0006: Why the `<cc-overview>` uses slots?
 
 This ADR tries to explain why we decided to use slots for the `<cc-overview>` component instead of composing an abstraction layer over the 6 child components.
