@@ -24,7 +24,7 @@ const warningSvg = new URL('../assets/warning.svg', import.meta.url).href;
  *
  * | | |
  * |-------|------|
- * | <img src="/src/assets/warning.svg" style="height: 1.5rem; vertical-align: middle"> | <code>warning.svg</code>
+ * | <img src="assets/warning.svg" style="height: 1.5rem; vertical-align: middle"> | <code>warning.svg</code>
  *
  * @prop {"inline"|"info"|"loading"|"confirm"} mode - Sets the displays mode (see details).
  *

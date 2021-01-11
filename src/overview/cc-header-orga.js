@@ -40,8 +40,8 @@ const SKELETON_ORGA = {
  *
  * | | |
  * |-------|------|
- * | <img src="/src/assets/badge-white.svg" style="height: 1.5rem; vertical-align: middle"> | <code>badge-white.svg</code>
- * | <img src="/src/assets/phone.svg" style="height: 1.5rem; vertical-align: middle"> | <code>phone.svg</code>
+ * | <img src="assets/badge-white.svg" style="height: 1.5rem; vertical-align: middle"> | <code>badge-white.svg</code>
+ * | <img src="assets/phone.svg" style="height: 1.5rem; vertical-align: middle"> | <code>phone.svg</code>
  *
  * @prop {Boolean} error - Displays an error message.
  * @prop {Orga} orga - Sets organization details and config.

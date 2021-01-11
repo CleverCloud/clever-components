@@ -52,8 +52,8 @@ const SKELETON_INSTANCES = {
  *
  * | | |
  * |-------|------|
- * | <img src="/src/assets/running.svg" style="height: 1.5rem; vertical-align: middle"> | <code>running.svg</code>
- * | <img src="/src/assets/starting.svg" style="height: 1.5rem; vertical-align: middle"> | <code>starting.svg</code>
+ * | <img src="assets/running.svg" style="height: 1.5rem; vertical-align: middle"> | <code>running.svg</code>
+ * | <img src="assets/starting.svg" style="height: 1.5rem; vertical-align: middle"> | <code>starting.svg</code>
  *
  * @prop {Boolean} error - Displays an error message.
  * @prop {InstancesState} instances - Sets the current state of running and deploying instances.
