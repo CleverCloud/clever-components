@@ -5,7 +5,7 @@ module.exports = {
     'lit',
   ],
   'rules': {
-    'sort-lit-element-css-declarations': ['error'],
+    'accessor-pairs': 'off',
     'arrow-parens': ['error', 'always'],
     'brace-style': ['error', 'stroustrup'],
     'comma-dangle': ['error', 'always-multiline'],
@@ -25,11 +25,11 @@ module.exports = {
     'lit/no-template-bind': 'error',
     'lit/no-useless-template-literals': 'error',
     'lit/no-value-attribute': 'error',
+    'multiline-ternary': 'off',
     'operator-linebreak': ['error', 'before'],
     'padded-blocks': 'off',
     'quotes': ['error', 'single', { 'allowTemplateLiterals': true }],
     'semi': ['error', 'always'],
-    'multiline-ternary': 'off',
-    'accessor-pairs': 'off',
+    'sort-lit-element-css-declarations': ['error'],
   },
 };
