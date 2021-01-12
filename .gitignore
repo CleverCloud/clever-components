@@ -2,4 +2,5 @@
 dist
 dist-cdn
 node_modules
-storybook-static
+storybook-static/*
+!storybook-static/favicon.ico
