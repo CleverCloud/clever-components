@@ -43,7 +43,7 @@ export class CcEnvVarLinkedServices extends LitElement {
 
   static get properties () {
     return {
-      appName: { type: String },
+      appName: { type: String, attribute: 'app-name' },
       error: { type: Boolean },
       services: { type: Array },
       type: { type: String },

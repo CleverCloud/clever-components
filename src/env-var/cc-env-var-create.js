@@ -38,7 +38,7 @@ export class CcEnvVarCreate extends LitElement {
   static get properties () {
     return {
       disabled: { type: Boolean },
-      variablesNames: { type: Array },
+      variablesNames: { type: Array, attribute: 'variables-names' },
       _variableName: { type: String, attribute: false },
       _variableValue: { type: String, attribute: false },
     };

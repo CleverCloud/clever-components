@@ -66,7 +66,7 @@ export class CcLogsMap extends LitElement {
       centerLat: { type: Number, attribute: 'center-lat' },
       centerLon: { type: Number, attribute: 'center-lon' },
       error: { type: Boolean, reflect: true },
-      heatmapPoints: { type: Array },
+      heatmapPoints: { type: Array, attribute: 'heatmap-points' },
       loading: { type: Boolean, reflect: true },
       mode: { type: String },
       orgaName: { type: String, attribute: 'orga-name' },

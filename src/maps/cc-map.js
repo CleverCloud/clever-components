@@ -81,7 +81,7 @@ export class CcMap extends withResizeObserver(LitElement) {
       centerLat: { type: Number, attribute: 'center-lat' },
       centerLon: { type: Number, attribute: 'center-lon' },
       error: { type: Boolean, reflect: true },
-      heatmapPoints: { type: Array },
+      heatmapPoints: { type: Array, attribute: 'heatmap-points' },
       loading: { type: Boolean, reflect: true },
       mode: { type: String },
       points: { type: Array },
