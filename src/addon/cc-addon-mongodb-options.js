@@ -62,7 +62,7 @@ export class CcAddonMongodbOptions extends LitElement {
             return null;
         };
       })
-      .filter((option) => option !== null);
+      .filter((option) => option != null);
   }
 
   render () {

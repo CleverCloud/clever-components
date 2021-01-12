@@ -9,6 +9,8 @@ module.exports = {
     'arrow-parens': ['error', 'always'],
     'brace-style': ['error', 'stroustrup'],
     'comma-dangle': ['error', 'always-multiline'],
+    'curly': ['error', 'all'],
+    'eqeqeq': ['error', 'always', { 'null': 'never' }],
     'import/extensions': ['error', 'always'],
     'import/first': ['error'],
     'import/newline-after-import': ['error', { 'count': 1 }],
