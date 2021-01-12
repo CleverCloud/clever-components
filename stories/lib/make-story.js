@@ -73,14 +73,16 @@ export function makeStory (...configs) {
 
       const allPropertiesAndAttributes = Object.entries(props)
         .map(([name, value]) => {
+          // We should rely on the official attribute name but for now it's good enough
+          const attrName = name.replace(/[A-Z]/g, ((a) => '-' + a.toLowerCase()));
           if (value === true) {
-            return `${name}`;
+            return `${attrName}`;
           }
           if (typeof value === 'string' || typeof value === 'number') {
-            return `${name}=${JSON.stringify(String(value))}`;
+            return `${attrName}=${JSON.stringify(String(value))}`;
           }
           if (typeof value === 'object') {
-            return `${name}='${JSON.stringify(value)}'`;
+            return `${attrName}='${JSON.stringify(value)}'`;
           }
           return null;
         })
