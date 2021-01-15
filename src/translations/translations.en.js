@@ -130,6 +130,9 @@ export const translations = {
   // cc-addon-postgresql-options
   'cc-addon-postgresql-options.description': `Choose the options you want for your PostgreSQL add-on.`,
   'cc-addon-postgresql-options.title': `Options for the PostgreSQL add-on`,
+  // cc-addon-redis-options
+  'cc-addon-redis-options.description': `Choose the options you want for your Redis add-on.`,
+  'cc-addon-redis-options.title': `Options for the Redis add-on`,
   // cc-beta
   'cc-beta.label': `beta`,
   // cc-block

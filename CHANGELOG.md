@@ -6,6 +6,9 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+* New components:
+  * `<cc-addon-redis-options>`
+
 * `cc-addon-encryption-at-rest-option` template
   * Drop documentation URL parameter
 
