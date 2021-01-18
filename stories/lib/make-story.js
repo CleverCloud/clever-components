@@ -74,7 +74,7 @@ export function makeStory (...configs) {
       const allPropertiesAndAttributes = Object.entries(props)
         .map(([name, value]) => {
           // We should rely on the official attribute name but for now it's good enough
-          const attrName = name.replace(/[A-Z]/g, ((a) => '-' + a.toLowerCase()));
+          const attrName = name.replace(/[A-Z]/g, (a) => '-' + a.toLowerCase());
           if (value === true) {
             return `${attrName}`;
           }
