@@ -110,6 +110,9 @@ export const translations = {
   'cc-addon-features.feature-value.yes': `Yes`,
   'cc-addon-features.loading-error': `Something went wrong while loading add-on features.`,
   'cc-addon-features.title': `Features`,
+  // cc-addon-jenkins-options
+  'cc-addon-jenkins-options.description': `Choose the options you want for your Jenkins add-on.`,
+  'cc-addon-jenkins-options.title': `Options for the Jenkins add-on`,
   // cc-addon-linked-apps
   'cc-addon-linked-apps.details': `Here's the list of applications linked to this add-on. The add-on exposes its environment variables to those linked applications.`,
   'cc-addon-linked-apps.loading-error': `Something went wrong while loading linked applications.`,

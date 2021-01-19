@@ -8,6 +8,7 @@ title: Changelog
 
 * New components:
   * `<cc-addon-redis-options>`
+  * `<cc-addon-jenkins-options>`
 
 * `<cc-addon-elasticsearch-options>`
   * Add encryption at rest option
