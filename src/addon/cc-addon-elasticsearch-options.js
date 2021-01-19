@@ -3,6 +3,7 @@ import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
+import { ccAddonEncryptionAtRestOption } from '../templates/cc-addon-encryption-at-rest-option.js';
 
 const KIBANA_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com/logos/elasticsearch-kibana.svg';
 const APM_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com/logos/elasticsearch-apm.svg';
@@ -22,6 +23,7 @@ const APM_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com/log
  *   enabled: boolean,
  *   // Option specific params
  *   flavor: Flavor, // for "apm" and "kibana" options
+ *   price: number, // for "encryption" option
  * }
  * ```
  *
@@ -111,6 +113,8 @@ export class CcAddonElasticsearchOptions extends LitElement {
             return this._getApmOption(option);
           case 'kibana':
             return this._getKibanaOption(option);
+          case 'encryption':
+            return ccAddonEncryptionAtRestOption(option);
           default:
             return null;
         }

@@ -9,6 +9,9 @@ title: Changelog
 * New components:
   * `<cc-addon-redis-options>`
 
+* `<cc-addon-elasticsearch-options>`
+  * Add encryption at rest option
+
 * `cc-addon-encryption-at-rest-option` template
   * Drop documentation URL parameter
 

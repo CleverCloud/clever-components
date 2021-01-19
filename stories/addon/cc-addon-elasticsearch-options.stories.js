@@ -25,6 +25,11 @@ export const defaultStory = makeStory(conf, {
           enabled: false,
           flavor: { name: 'M', mem: 4096, cpus: 4, gpus: 0, microservice: false, monthlyCost: 72 },
         },
+        {
+          name: 'encryption',
+          enabled: false,
+          price: 10.00,
+        },
       ],
     },
   ],
@@ -41,6 +46,11 @@ export const noFlavorDetailsYet = makeStory(conf, {
         {
           name: 'apm',
           enabled: false,
+        },
+        {
+          name: 'encryption',
+          enabled: false,
+          price: 10.00,
         },
       ],
     },
@@ -60,6 +70,11 @@ export const preselectedKibana = makeStory(conf, {
           name: 'apm',
           enabled: false,
           flavor: { name: 'M', mem: 4096, cpus: 4, gpus: 0, microservice: false, monthlyCost: 72 },
+        },
+        {
+          name: 'encryption',
+          enabled: false,
+          price: 10.00,
         },
       ],
     },
