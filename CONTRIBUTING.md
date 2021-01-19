@@ -5,7 +5,7 @@ title: Contributing
 # Contributing to Clever Components
 
 Here are some details on the different npm tasks we use.
-You'll also want to read the details about Web Components contributions in [`web-components-guidelines.stories.mdx`](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%93%8C-docs-web-components-guidelines--page).
+You'll also want to read the details about Web Components contributions in [`web-components-guidelines.stories.mdx`](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%93%8C-docs-web-components-guidelines-at-clever-cloud--page).
 
 ## We use ESLint
 
