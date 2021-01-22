@@ -5,8 +5,6 @@ import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { ccAddonEncryptionAtRestOption } from '../templates/cc-addon-encryption-at-rest-option.js';
 
-const ENCRYPTION_DOCUMENTATION_URL = 'https://www.clever-cloud.com/doc/addons/mongodb/#encryption-at-rest';
-
 /**
  * A component that displays the available options of a MongoDB add-on.
  *
@@ -57,7 +55,7 @@ export class CcAddonMongodbOptions extends LitElement {
       .map((option) => {
         switch (option.name) {
           case 'encryption':
-            return ccAddonEncryptionAtRestOption(ENCRYPTION_DOCUMENTATION_URL, option);
+            return ccAddonEncryptionAtRestOption(option);
           default:
             return null;
         };

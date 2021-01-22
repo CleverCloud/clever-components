@@ -6,6 +6,9 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+* `cc-addon-encryption-at-rest-option` template
+  * Drop documentation URL parameter
+
 ...
 
 ## 5.4.0 (2020-12-08)
