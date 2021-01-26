@@ -110,7 +110,7 @@ export const translations = {
   'cc-addon-elasticsearch-options.warning.apm': `Si vous activez cette option, nous allons déployer et gérer pour vous un APM server, ce qui entraînera des coûts supplémentaires.`,
   'cc-addon-elasticsearch-options.warning.apm.details': (flavor) => sanitize`Par défaut, l'app sera démarrée sur une <strong title="${formatFlavor(flavor)}">instance ${flavor.name}</strong> qui coûte environ <strong>${currencyFormatter.format(flavor.monthlyCost)} par mois</strong>. `,
   // cc-addon-encryption-at-rest-option
-  'cc-addon-encryption-at-rest-option.description': ({ documentationLink }) => sanitize`Le chiffrement au repos chiffre l'intégralité du disque de données afin de ne pas y stocker d'informations en clair. Grâce à cette sécurité, l'accès physique au disque empêchera toute lecture des données stockées. Plus d'information dans notre <a href="${documentationLink}">documentation</a>.`,
+  'cc-addon-encryption-at-rest-option.description': () => sanitize`Le chiffrement au repos chiffre l'intégralité du disque de données afin de ne pas y stocker d'informations en clair. Grâce à cette sécurité, l'accès physique au disque empêchera toute lecture des données stockées. Plus d'information dans notre <a href="https://www.clever-cloud.com/doc/administrate/encryption-at-rest/">documentation</a>.`,
   'cc-addon-encryption-at-rest-option.title': `Chiffrement au repos`,
   'cc-addon-encryption-at-rest-option.warning': ({ percent, price }) => sanitize`Cette option est actuellement gratuite. Dans le futur, elle sera facturée ${percentFormatter.format(percent)} du prix du plan, ce qui dans ce cas fait <strong>${currencyFormatter.format(price)} par mois.</strong>`,
   // cc-addon-features

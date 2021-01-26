@@ -6,9 +6,9 @@ const encryptionAtRestSvg = new URL('../assets/encryption-at-rest.svg', import.m
 
 const PRICE_PERCENT = 0.10;
 
-export const ccAddonEncryptionAtRestOption = (documentationLink, { enabled, price }) => {
+export const ccAddonEncryptionAtRestOption = ({ enabled, price }) => {
   const description = html`
-    <div class="option-details">${i18n('cc-addon-encryption-at-rest-option.description', { documentationLink })}</div>
+    <div class="option-details">${i18n('cc-addon-encryption-at-rest-option.description')}</div>
     <cc-error class="option-warning">
       ${i18n('cc-addon-encryption-at-rest-option.warning', { percent: PRICE_PERCENT, price })}
     </cc-error>
