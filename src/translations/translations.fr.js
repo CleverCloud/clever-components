@@ -123,6 +123,9 @@ export const translations = {
   'cc-addon-features.feature-value.yes': `Oui`,
   'cc-addon-features.loading-error': `Une erreur est survenue pendant le chargement des spécifications de l'add-on`,
   'cc-addon-features.title': `Spécifications`,
+  // cc-addon-jenkins-options
+  'cc-addon-jenkins-options.description': `Sélectionnez les options que vous souhaitez pour votre add-on Jenkins.`,
+  'cc-addon-jenkins-options.title': `Options pour l'add-on Jenkins`,
   // cc-addon-linked-apps
   'cc-addon-linked-apps.details': `Ci-dessous la liste des applications liées à l'add-on. L'add-on expose ses variables d'environnement aux applications qui lui sont liées.`,
   'cc-addon-linked-apps.loading-error': `Une erreur est survenue pendant le chargement des applications liées.`,
@@ -143,6 +146,9 @@ export const translations = {
   // cc-addon-postgresql-options
   'cc-addon-postgresql-options.description': `Sélectionnez les options que vous souhaitez pour votre add-on PostgreSQL.`,
   'cc-addon-postgresql-options.title': `Options pour l'add-on PostgreSQL`,
+  // cc-addon-redis-options
+  'cc-addon-redis-options.description': `Sélectionnez les options que vous souhaitez pour votre add-on Redis.`,
+  'cc-addon-redis-options.title': `Options pour l'add-on Redis`,
   // cc-beta
   'cc-beta.label': `bêta`,
   // cc-error
