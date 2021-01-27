@@ -4,7 +4,7 @@ title: Changelog
 ---
 # Clever Components changelog
 
-## Unreleased (????-??-??)
+## 5.5.0 (2021-01-27)
 
 * New components:
   * `<cc-addon-redis-options>`
