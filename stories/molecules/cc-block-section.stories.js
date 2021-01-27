@@ -39,7 +39,7 @@ export const defaultStory = makeStory(conf, {
         <div slot="info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa. Mauris dignissim accumsan ex, at vestibulum lectus fermentum id.</div>
         <cc-input-text label="Name:"></cc-input-text>
         <cc-input-text label="Lastname:"></cc-input-text>
-        <cc-input-text label="Adress:"></cc-input-text>
+        <cc-input-text label="Address:"></cc-input-text>
         <cc-button primary>ACTION!</cc-button>
       </cc-block-section>
       <cc-block-section>
@@ -66,7 +66,7 @@ export const infoWithEmptyColumn = makeStory(conf, {
         <div slot="info"></div>
         <cc-input-text label="Name:"></cc-input-text>
         <cc-input-text label="Lastname:"></cc-input-text>
-        <cc-input-text label="Adress:"></cc-input-text>
+        <cc-input-text label="Address:"></cc-input-text>
         <cc-button primary>ACTION!</cc-button>
       </cc-block-section>
     `,
@@ -86,7 +86,7 @@ export const infoWithNoInfoColumn = makeStory(conf, {
         <div slot="title">Subtitle Bar</div>
         <cc-input-text label="Name:"></cc-input-text>
         <cc-input-text label="Lastname:"></cc-input-text>
-        <cc-input-text label="Adress:"></cc-input-text>
+        <cc-input-text label="Address:"></cc-input-text>
         <cc-button primary>ACTION!</cc-button>
       </cc-block-section>
     `,
