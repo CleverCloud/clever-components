@@ -4,6 +4,12 @@ title: Changelog
 ---
 # Clever Components changelog
 
+## Unreleased (????-??-??)
+
+* Introduce smart components system
+* Update @clevercloud/client
+* Pin Node.js and npm versions with volta and update lock to v2
+
 ## 5.5.0 (2021-01-27)
 
 * New components:
