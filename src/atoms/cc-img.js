@@ -39,18 +39,6 @@ export class CcImg extends LitElement {
     this._loaded = false;
   }
 
-  set src (newVal) {
-    const oldVal = this._src;
-    this._src = newVal;
-    this.requestUpdate('src', oldVal);
-    this._error = false;
-    this._loaded = false;
-  }
-
-  get src () {
-    return this._src;
-  }
-
   _onLoad (e) {
     this._loaded = true;
     // WARNING: we modify the exposed property "skeleton" from the inside
@@ -61,6 +49,14 @@ export class CcImg extends LitElement {
     this._error = true;
     // WARNING: we modify the exposed property "skeleton" from the inside
     this.skeleton = false;
+  }
+
+  update (changedProperties) {
+    if (changedProperties.has('src')) {
+      this._error = false;
+      this._loaded = false;
+    }
+    super.update(changedProperties);
   }
 
   render () {

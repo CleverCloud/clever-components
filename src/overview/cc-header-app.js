@@ -131,19 +131,6 @@ export class CcHeaderApp extends LitElement {
     this.error = false;
   }
 
-  set status (newVal) {
-    const oldVal = this._status;
-    this._lastUserAction = (this.status !== newVal)
-      ? null
-      : this._lastUserAction;
-    this._status = newVal;
-    this.requestUpdate('status', oldVal);
-  }
-
-  get status () {
-    return this._status;
-  }
-
   _getCommitTitle (type, commit) {
     if (commit == null) {
       return;
@@ -240,6 +227,15 @@ export class CcHeaderApp extends LitElement {
         ` : ''}
       </span>
     `;
+  }
+
+  update (changeProperties) {
+    if (changeProperties.has('status')) {
+      this._lastUserAction = (changeProperties.get('status') !== this.status)
+        ? null
+        : this._lastUserAction;
+    }
+    super.update(changeProperties);
   }
 
   render () {

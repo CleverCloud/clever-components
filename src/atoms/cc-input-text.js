@@ -113,6 +113,8 @@ export class CcInputText extends LitElement {
     this._uniqueName = Math.random().toString(36).slice(2);
   }
 
+  // In general, we try to use LitELement's update() lifecycle callback but in this situation,
+  // overriding get/set makes more sense
   get tags () {
     return this._tagsEnabled
       ? this.value.split(TAG_SEPARATOR).filter((tag) => tag !== '')

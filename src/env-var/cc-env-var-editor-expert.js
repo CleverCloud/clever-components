@@ -42,7 +42,7 @@ export class CcEnvVarEditorExpert extends LitElement {
       readonly: { type: Boolean },
       variables: { type: Array },
       _variablesAsText: { type: Array, attribute: false },
-      _formattedErrors: { type: Array, attribute: false },
+      _errors: { type: Array, attribute: false },
       _skeleton: { type: Boolean, attribute: false },
     };
   }
@@ -57,19 +57,8 @@ export class CcEnvVarEditorExpert extends LitElement {
     this.readonly = false;
   }
 
-  set variables (variables) {
-
-    this._skeleton = (variables == null);
-    const vars = this._skeleton ? SKELETON_VARIABLES : variables;
-
-    const filteredVariables = vars
-      .filter(({ isDeleted }) => !isDeleted);
-    this._variablesAsText = toNameEqualsValueString(filteredVariables);
-    this._errors = [];
-  }
-
-  set _errors (rawErrors) {
-    this._formattedErrors = rawErrors.map(({ type, name, pos }) => {
+  _setErrors (rawErrors) {
+    this._errors = rawErrors.map(({ type, name, pos }) => {
       if (type === ERROR_TYPES.INVALID_NAME) {
         return {
           line: pos.line,
@@ -100,10 +89,22 @@ export class CcEnvVarEditorExpert extends LitElement {
 
   _onInput ({ detail: value }) {
     const { variables, errors } = parseRaw(value);
-    this._errors = errors;
+    this._setErrors(errors);
     if (errors.length === 0) {
       dispatchCustomEvent(this, 'change', variables);
     }
+  }
+
+  update (changedProperties) {
+    if (changedProperties.has('variables')) {
+      this._skeleton = (this.variables == null);
+      const vars = this._skeleton ? SKELETON_VARIABLES : this.variables;
+      const filteredVariables = vars
+        .filter(({ isDeleted }) => !isDeleted);
+      this._variablesAsText = toNameEqualsValueString(filteredVariables);
+      this._setErrors([]);
+    }
+    super.update(changedProperties);
   }
 
   render () {
@@ -123,10 +124,10 @@ export class CcEnvVarEditorExpert extends LitElement {
         ?skeleton=${this._skeleton}
         @cc-input-text:input=${this._onInput}
       ></cc-input-text>
-      
-      ${this._formattedErrors.length > 0 ? html`
+
+      ${this._errors.length > 0 ? html`
         <div class="error-list">
-          ${this._formattedErrors.map(({ line, msg }) => html`
+          ${this._errors.map(({ line, msg }) => html`
             <cc-error><strong>${i18n('cc-env-var-editor-expert.errors.line')} ${line}:</strong> ${msg}</cc-error>
           `)}
         </div>
