@@ -8,6 +8,7 @@ module.exports = {
     'accessor-pairs': 'off',
     'arrow-parens': ['error', 'always'],
     'brace-style': ['error', 'stroustrup'],
+    'camelcase': ['error', { allow: ['_lp$'] }],
     'comma-dangle': ['error', 'always-multiline'],
     'curly': ['error', 'all'],
     'eqeqeq': ['error', 'always', { 'null': 'never' }],
