@@ -51,17 +51,6 @@ export class CcMapMarkerDot extends LitElement {
     this.tooltip = [0, 0];
   }
 
-  get count () {
-    return this._count;
-  }
-
-  set count (newVal) {
-    const oldVal = this._count;
-    this._count = newVal;
-    this.requestUpdate('count', oldVal);
-    this._color = this._getColorFromCount(newVal);
-  }
-
   _getColorFromCount (count) {
 
     // This blinking dot is mainly used to display the number of HTTP requests received at a given location on a map
@@ -86,6 +75,13 @@ export class CcMapMarkerDot extends LitElement {
     const colorIndex = Math.min(rawColorIndex, COLOR_PALETTE.length - 1);
 
     return COLOR_PALETTE[colorIndex];
+  }
+
+  update (changedProperties) {
+    if (changedProperties.has('count')) {
+      this._color = this._getColorFromCount(this.count);
+    }
+    super.update(changedProperties);
   }
 
   render () {

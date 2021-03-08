@@ -72,32 +72,6 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
     this._points = [];
   }
 
-  get selected () {
-    return this._selected;
-  }
-
-  get zones () {
-    return this._zones;
-  }
-
-  set selected (newVal) {
-    const oldVal = this._selected;
-    this._selected = newVal;
-    this.requestUpdate('selected', oldVal).then(() => {
-      this._updatePoints();
-      this._scrollChildIntoParent(this._selected);
-      // This could move the map while just after a marker is clicked but it should be a good thing in most cases
-      this._panMap();
-    });
-  }
-
-  set zones (newVal) {
-    const oldVal = this._zones;
-    this._zones = this._sortZones(newVal);
-    this.requestUpdate('zones', oldVal)
-      .then(() => this._updatePoints());
-  }
-
   _updatePoints () {
 
     if (!Array.isArray(this.zones)) {
@@ -243,6 +217,27 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
     `;
   }
 
+  firstUpdated () {
+    this._map = this.shadowRoot.querySelector('cc-map');
+  }
+
+  // updated and not udpate because we need this._map before
+  updated (changedProperties) {
+
+    if (changedProperties.has('selected')) {
+      this._updatePoints();
+      this._scrollChildIntoParent(this.selected);
+      // This could move the map while just after a marker is clicked but it should be a good thing in most cases
+      this._panMap();
+    }
+
+    if (changedProperties.has('zones')) {
+      this._updatePoints();
+    }
+
+    super.updated(changedProperties);
+  }
+
   render () {
 
     const skeleton = (this.zones == null);
@@ -270,10 +265,6 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
         ` : ''}
       </div>
     `;
-  }
-
-  firstUpdated () {
-    this._map = this.shadowRoot.querySelector('cc-map');
   }
 
   static get styles () {

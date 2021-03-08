@@ -101,72 +101,6 @@ export class CcMap extends withResizeObserver(LitElement) {
     this._pointsCache = {};
   }
 
-  get centerLat () {
-    return this._centerLat;
-  }
-
-  get centerLon () {
-    return this._centerLon;
-  }
-
-  get viewZoom () {
-    return this._viewZoom;
-  }
-
-  get mode () {
-    return this._mode;
-  }
-
-  get heatmapPoints () {
-    return this._heatmapPoints;
-  }
-
-  get points () {
-    return this._points;
-  }
-
-  set centerLat (newVal) {
-    const oldVal = this._centerLat;
-    this._centerLat = newVal;
-    this.requestUpdate('centerLat', oldVal)
-      .then(() => this._map.setView([newVal, this._centerLat]));
-  }
-
-  set centerLon (newVal) {
-    const oldVal = this._centerLon;
-    this._centerLon = newVal;
-    this.requestUpdate('centerLon', oldVal)
-      .then(() => this._map.setView([this._centerLat, this._centerLon]));
-  }
-
-  set viewZoom (newVal) {
-    const oldVal = this._viewZoom;
-    this._viewZoom = newVal;
-    this.requestUpdate('viewZoom', oldVal)
-      .then(() => this._map.setZoom(this._viewZoom));
-  }
-
-  set mode (newVal) {
-    const oldVal = this._mode;
-    this._mode = newVal;
-    this.requestUpdate('mode', oldVal)
-      .then(() => this._resetCurrentLayer());
-  }
-
-  set heatmapPoints (newVal) {
-    const oldVal = this._heatmapPoints;
-    this._heatmapPoints = newVal;
-    this.requestUpdate('heatmapPoints', oldVal)
-      .then(() => this._updateHeatmap(this._heatmapPoints));
-  }
-
-  set points (newVal) {
-    const oldVal = this._points;
-    this._points = newVal;
-    this.requestUpdate('points', oldVal)
-      .then(() => this._updatePoints(this._points));
-  }
-
   _resetCurrentLayer () {
     const [layerToAdd, layerToRemove] = (this.mode === 'heatmap')
       ? [this._heatLayer, this._pointsLayer]
@@ -351,7 +285,7 @@ export class CcMap extends withResizeObserver(LitElement) {
     // Init map
     this._map = leaflet
       .map(this.renderRoot.getElementById('cc-map-container'), leafletOptions)
-      .setView([this._centerLat, this._centerLon], this._viewZoom);
+      .setView([this.centerLat, this.centerLon], this.viewZoom);
 
     this._map.on('zoomanim', (e) => {
       this.viewZoom = e.zoom;
@@ -372,6 +306,32 @@ export class CcMap extends withResizeObserver(LitElement) {
     this._pointsLayer = leaflet.layerGroup();
     this._heatLayer = leaflet.layerGroup();
     this._resetCurrentLayer();
+  }
+
+  // updated and not udpate because we need this._map before
+  updated (changedProperties) {
+
+    if (changedProperties.has('centerLat') || changedProperties.has('centerLon')) {
+      this._map.setView([this.centerLat, this.centerLon]);
+    }
+
+    if (changedProperties.has('viewZoom')) {
+      this._map.setZoom(this.viewZoom);
+    }
+
+    if (changedProperties.has('mode')) {
+      this._resetCurrentLayer();
+    }
+
+    if (changedProperties.has('heatmapPoints')) {
+      this._updateHeatmap(this.heatmapPoints);
+    }
+
+    if (changedProperties.has('points')) {
+      this._updatePoints(this.points);
+    }
+
+    super.updated(changedProperties);
   }
 
   render () {

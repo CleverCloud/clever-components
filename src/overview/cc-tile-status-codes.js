@@ -83,98 +83,14 @@ export class CcTileStatusCodes extends LitElement {
 
   constructor () {
     super();
-    // Triggers setter (init _backgroundColor, _chartLabels, _data, _empty, _labels, _skeleton and _statusCodes)
+    // Triggers setter (init _backgroundColor, _chartLabels, _data, _empty, _labels and _skeleton)
     this.error = null;
     this.statusCodes = null;
     this._docs = false;
   }
 
-  get statusCodes () {
-    return this._statusCodes;
-  }
-
-  set statusCodes (rawValue) {
-
-    this._skeleton = (rawValue == null);
-
-    const value = this._skeleton ? SKELETON_STATUS_CODES : rawValue;
-
-    this._statusCodes = value;
-
-    this._empty = Object.keys(value).length === 0;
-
-    // Raw status codes
-    this._labels = Object.keys(value);
-
-    // Status codes as categories (2xx, 3xx...)
-    this._chartLabels = this._skeleton
-      ? this._labels.map(() => '???')
-      : this._labels.map((statusCode) => statusCode[0] + 'xx');
-
-    this._data = Object.values(value);
-
-    this._backgroundColor = this._skeleton
-      ? this._labels.map(() => '#bbb')
-      : this._labels.map((statusCode) => COLORS[statusCode[0]]);
-
-    this.updateComplete.then(() => {
-      this._chart.options.animation.duration = this._skeleton ? 0 : 300;
-      this._chart.options.tooltips.enabled = !this._skeleton;
-      this._chart.data = {
-        labels: this._chartLabels,
-        datasets: [{
-          data: this._data,
-          backgroundColor: this._backgroundColor,
-        }],
-      };
-      this._chart.update();
-    });
-  }
-
   _onToggleDocs () {
     this._docs = !this._docs;
-  }
-
-  render () {
-
-    const displayChart = (!this.error && !this._empty && !this._docs);
-    const displayError = (this.error && !this._docs);
-    const displayEmpty = (this._empty && !this._docs);
-    const displayDocs = (this._docs);
-
-    return html`
-      <div class="tile_title tile_title--image">
-        ${i18n('cc-tile-status-codes.title')}
-        <cc-button
-          class="docs-toggle"
-          image=${displayDocs ? closeSvg : infoSvg}
-          hide-text
-          @cc-button:click=${this._onToggleDocs}
-        >${this._docs ? i18n('cc-tile-status-codes.close-btn') : i18n('cc-tile-status-codes.about-btn')}</cc-button>
-      </div>
-
-      ${cache(displayChart ? html`
-        <div class="tile_body">
-          <!-- https://www.chartjs.org/docs/latest/general/responsive.html -->
-          <div class="chart-container ${classMap({ skeleton: this._skeleton })}">
-            <canvas id="chart"></canvas>
-          </div>
-        </div>
-      ` : '')}
-        
-      ${displayEmpty ? html`
-        <div class="tile_message">${i18n('cc-tile-status-codes.empty')}</div>
-      ` : ''}
-      
-      ${displayError ? html`
-        <cc-error class="tile_message">${i18n('cc-tile-status-codes.error')}</cc-error>
-      ` : ''}
-      
-      <div class="tile_docs ${classMap({ 'tile_docs--hidden': !displayDocs })}">
-        <p>${i18n('cc-tile-status-codes.docs.msg')}</p>
-        <p>${i18n('cc-tile-status-codes.docs.link')}</p>
-      </div>
-    `;
   }
 
   firstUpdated () {
@@ -243,6 +159,90 @@ export class CcTileStatusCodes extends LitElement {
         },
       },
     });
+  }
+
+  // updated and not udpate because we need this._chart before
+  updated (changedProperties) {
+
+    if (changedProperties.has('statusCodes')) {
+
+      this._skeleton = (this.statusCodes == null);
+
+      const value = this._skeleton ? SKELETON_STATUS_CODES : this.statusCodes;
+
+      this._empty = Object.keys(value).length === 0;
+
+      // Raw status codes
+      this._labels = Object.keys(value);
+
+      // Status codes as categories (2xx, 3xx...)
+      this._chartLabels = this._skeleton
+        ? this._labels.map(() => '???')
+        : this._labels.map((statusCode) => statusCode[0] + 'xx');
+
+      this._data = Object.values(value);
+
+      this._backgroundColor = this._skeleton
+        ? this._labels.map(() => '#bbb')
+        : this._labels.map((statusCode) => COLORS[statusCode[0]]);
+
+      this.updateComplete.then(() => {
+        this._chart.options.animation.duration = this._skeleton ? 0 : 300;
+        this._chart.options.tooltips.enabled = !this._skeleton;
+        this._chart.data = {
+          labels: this._chartLabels,
+          datasets: [{
+            data: this._data,
+            backgroundColor: this._backgroundColor,
+          }],
+        };
+        this._chart.update();
+      });
+
+    }
+    super.updated(changedProperties);
+  }
+
+  render () {
+
+    const displayChart = (!this.error && !this._empty && !this._docs);
+    const displayError = (this.error && !this._docs);
+    const displayEmpty = (this._empty && !this._docs);
+    const displayDocs = (this._docs);
+
+    return html`
+      <div class="tile_title tile_title--image">
+        ${i18n('cc-tile-status-codes.title')}
+        <cc-button
+          class="docs-toggle"
+          image=${displayDocs ? closeSvg : infoSvg}
+          hide-text
+          @cc-button:click=${this._onToggleDocs}
+        >${this._docs ? i18n('cc-tile-status-codes.close-btn') : i18n('cc-tile-status-codes.about-btn')}</cc-button>
+      </div>
+
+      ${cache(displayChart ? html`
+        <div class="tile_body">
+          <!-- https://www.chartjs.org/docs/latest/general/responsive.html -->
+          <div class="chart-container ${classMap({ skeleton: this._skeleton })}">
+            <canvas id="chart"></canvas>
+          </div>
+        </div>
+      ` : '')}
+        
+      ${displayEmpty ? html`
+        <div class="tile_message">${i18n('cc-tile-status-codes.empty')}</div>
+      ` : ''}
+      
+      ${displayError ? html`
+        <cc-error class="tile_message">${i18n('cc-tile-status-codes.error')}</cc-error>
+      ` : ''}
+      
+      <div class="tile_docs ${classMap({ 'tile_docs--hidden': !displayDocs })}">
+        <p>${i18n('cc-tile-status-codes.docs.msg')}</p>
+        <p>${i18n('cc-tile-status-codes.docs.link')}</p>
+      </div>
+    `;
   }
 
   static get styles () {

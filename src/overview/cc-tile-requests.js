@@ -76,17 +76,6 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
     this._docs = false;
   }
 
-  get data () {
-    return this._data;
-  }
-
-  set data (newVal) {
-    const oldVal = this._data;
-    this._data = newVal;
-    this._refreshChart();
-    this.requestUpdate('data', oldVal);
-  }
-
   /** @protected */
   onResize ({ width }) {
     if (width < 380) {
@@ -173,40 +162,6 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
     this._chart.resize();
   }
 
-  render () {
-
-    const displayChart = (!this.error && !this._empty && !this._docs);
-    const displayError = (this.error && !this._docs);
-    const displayEmpty = (this._empty && !this._docs);
-    const displayDocs = (this._docs);
-
-    return html`
-      <div class="tile_title tile_title--image">
-        ${i18n('cc-tile-requests.title')}
-        <cc-button
-          class="docs-toggle"
-          image=${displayDocs ? closeSvg : infoSvg}
-          hide-text
-          @cc-button:click=${this._onToggleDocs}
-        >${this._docs ? i18n('cc-tile-requests.close-btn') : i18n('cc-tile-requests.about-btn')}</cc-button>
-      </div>
-
-      <div class="tile_body ${classMap({ 'tile--hidden': !displayChart })}">
-        <div class="chart-container ${classMap({ skeleton: this._skeleton })}">
-          <canvas id="chart"></canvas>
-        </div>
-      </div>
-        
-      <div class="tile_message ${classMap({ 'tile--hidden': !displayEmpty })}">${i18n('cc-tile-requests.empty')}</div>
-    
-      <cc-error class="tile_message ${classMap({ 'tile--hidden': !displayError })}">${i18n('cc-tile-requests.error')}</cc-error>
-      
-      <div class="tile_docs ${classMap({ 'tile--hidden': !displayDocs })}">
-        <p>${i18n('cc-tile-requests.docs.msg', { windowHours: 24 / this._barCount })}</p>
-      </div>
-    `;
-  }
-
   firstUpdated () {
     this._ctx = this.renderRoot.getElementById('chart');
     this._chart = new Chart(this._ctx, {
@@ -279,6 +234,48 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
         },
       },
     });
+  }
+
+  // updated and not udpate because we need this._chart before
+  updated(changedProperties) {
+    if (changedProperties.has('data')) {
+      this._refreshChart();
+    }
+    super.updated(changedProperties);
+  }
+
+  render () {
+
+    const displayChart = (!this.error && !this._empty && !this._docs);
+    const displayError = (this.error && !this._docs);
+    const displayEmpty = (this._empty && !this._docs);
+    const displayDocs = (this._docs);
+
+    return html`
+      <div class="tile_title tile_title--image">
+        ${i18n('cc-tile-requests.title')}
+        <cc-button
+          class="docs-toggle"
+          image=${displayDocs ? closeSvg : infoSvg}
+          hide-text
+          @cc-button:click=${this._onToggleDocs}
+        >${this._docs ? i18n('cc-tile-requests.close-btn') : i18n('cc-tile-requests.about-btn')}</cc-button>
+      </div>
+
+      <div class="tile_body ${classMap({ 'tile--hidden': !displayChart })}">
+        <div class="chart-container ${classMap({ skeleton: this._skeleton })}">
+          <canvas id="chart"></canvas>
+        </div>
+      </div>
+        
+      <div class="tile_message ${classMap({ 'tile--hidden': !displayEmpty })}">${i18n('cc-tile-requests.empty')}</div>
+    
+      <cc-error class="tile_message ${classMap({ 'tile--hidden': !displayError })}">${i18n('cc-tile-requests.error')}</cc-error>
+      
+      <div class="tile_docs ${classMap({ 'tile--hidden': !displayDocs })}">
+        <p>${i18n('cc-tile-requests.docs.msg', { windowHours: 24 / this._barCount })}</p>
+      </div>
+    `;
   }
 
   static get styles () {

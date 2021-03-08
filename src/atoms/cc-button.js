@@ -86,19 +86,6 @@ export class CcButton extends LitElement {
     this._cancelMode = false;
   }
 
-  set disabled (newVal) {
-    const oldVal = this._disabled;
-    this._disabled = newVal;
-    this.requestUpdate('disabled', oldVal);
-    if (newVal === true) {
-      this._cancelClick();
-    }
-  }
-
-  get disabled () {
-    return this._disabled;
-  }
-
   focus () {
     this.shadowRoot.querySelector('button').focus();
   }
@@ -132,6 +119,15 @@ export class CcButton extends LitElement {
         this._cancelMode = false;
       }, this.delay * 1000);
     }
+  }
+
+  update (changedProperties) {
+    if (changedProperties.has('disabled')) {
+      if (this.disabled === true) {
+        this._cancelClick();
+      }
+    }
+    super.update(changedProperties);
   }
 
   render () {

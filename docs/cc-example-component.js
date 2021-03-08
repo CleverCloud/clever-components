@@ -96,28 +96,7 @@ export class CcExampleComponent extends LitElement {
     // You don't need to init everything, there are lots of valid use of default nullish properties.
   }
 
-  // DOCS: 3. Property getters
-
-  // Use the underscore prefix convention to store the value in the getter/setter.
-  // You probably don't need this if you didn't add a setter.
-  get one () {
-    return this._one;
-  }
-
-  // DOCS: 4. Property setters
-
-  // LitElement automatically creates getters/setters for your properties described in `static get properties ()`.
-  // If you need a setter to hook into a property,
-  // you will need to call LitElement's `this.requestUpdate('propName', oldVal)` to maintain the auto render mechanism.
-  // Use the underscore prefix convention to store the value in the getter/setter.
-  set one (newVal) {
-    const oldVal = this._one;
-    this._one = newVal;
-    this.requestUpdate('one', oldVal);
-    // Do something
-  }
-
-  // DOCS: 5. Public methods
+  // DOCS: 3. Public methods
 
   // It's rare, but your component may need to expose methods.
   // Native DOM elements have methods to focus, submit form...
@@ -131,7 +110,7 @@ export class CcExampleComponent extends LitElement {
     // Do something
   }
 
-  // DOCS: 6. Private methods
+  // DOCS: 4. Private methods
 
   // It's common to use private methods not to have too much code in `render()`.
   // We often use this for i18n multiple cases.
@@ -139,7 +118,7 @@ export class CcExampleComponent extends LitElement {
     // Do something
   }
 
-  // DOCS: 7. Event handlers
+  // DOCS: 5. Event handlers
 
   // If you listen to an event in your `render()` function,
   // use a private method to handle the event and prefix it with `_on`.
@@ -147,7 +126,7 @@ export class CcExampleComponent extends LitElement {
     // Do something
   }
 
-  // DOCS: 8. Custom element lifecycle callbacks
+  // DOCS: 6. Custom element lifecycle callbacks
 
   // It's rare, but you may need to directly into the custom element lifecycle callbacks.
   // This is useful if you set intervals or listeners.
@@ -161,15 +140,29 @@ export class CcExampleComponent extends LitElement {
     // Do something
   }
 
-  // DOCS: 9. LitElement lifecycle callbacks
+  // DOCS: 7. LitElement lifecycle callbacks
 
-  // If you need to setup some code before the first render, use this.
-  // It's often needed if you component contains DOM managed by a 3rd party (chart, map...).
-  firstUpdated () {
-
+  // If you need to hook some code when a property changes (before the render)
+  // It's often needed when you have a private property that depends on a public property
+  update (changeProperties) {
+    // Do something
+    super.update(changeProperties);
   }
 
-  // DOCS: 10. LitElement's render method
+  // If you need to setup some code before the first render, use this.
+  // It's often needed if your component contains DOM managed by a 3rd party (chart, map...).
+  firstUpdated () {
+    // Do something
+  }
+
+  // If you need to hook some code when a property changes (after the render)
+  // Use this one instead of update when you have a "firstUpdated"
+  updated (changeProperties) {
+    // Do something
+    super.updated(changeProperties);
+  }
+
+  // DOCS: 8. LitElement's render method
 
   // All UI components will need this function to describe the "HTML template".
   render () {
@@ -181,7 +174,7 @@ export class CcExampleComponent extends LitElement {
     `;
   }
 
-  // DOCS: 11. LitElement's styles descriptor
+  // DOCS: 9. LitElement's styles descriptor
 
   static get styles () {
     // This array may contain style imports from shared files.
@@ -198,6 +191,6 @@ export class CcExampleComponent extends LitElement {
   }
 }
 
-// DOCS: 12. Define the custom element
+// DOCS: 10. Define the custom element
 
 window.customElements.define('cc-example-component', CcExampleComponent);

@@ -96,7 +96,7 @@ export class CcAddonAdmin extends LitElement {
 
       <cc-block>
         <div slot="title">${i18n('cc-addon-admin.admin')}</div>
-        
+
         ${!loadingError ? html`
 
           <cc-block-section>
@@ -104,11 +104,11 @@ export class CcAddonAdmin extends LitElement {
             <div slot="info"></div>
             <div class="one-line-form">
               <cc-input-text
-                ?skeleton=${this._skeleton}
-                ?disabled=${isFormDisabled}
-                .value=${this._name}
-                @cc-input-text:input=${this._onNameInput}
-                @cc-input-text:requestimplicitsubmit=${this._onNameSubmit}
+                  ?skeleton=${this._skeleton}
+                  ?disabled=${isFormDisabled}
+                  .value=${this._name}
+                  @cc-input-text:input=${this._onNameInput}
+                  @cc-input-text:requestimplicitsubmit=${this._onNameSubmit}
               ></cc-input-text>
               <cc-button primary ?skeleton=${this._skeleton} ?disabled=${isFormDisabled} @cc-button:click=${this._onNameSubmit}>${i18n('cc-addon-admin.update')}</cc-button>
             </div>
@@ -119,12 +119,12 @@ export class CcAddonAdmin extends LitElement {
             <div slot="info">${i18n('cc-addon-admin.tags-description')}</div>
             <div class="one-line-form">
               <cc-input-text
-                ?skeleton=${this._skeleton}
-                ?disabled=${isFormDisabled}
-                .tags=${this._tags}
-                placeholder="${i18n('cc-addon-admin.tags-empty')}"
-                @cc-input-text:tags=${this._onTagsInput}
-                @cc-input-text:requestimplicitsubmit=${this._onTagsSubmit}
+                  ?skeleton=${this._skeleton}
+                  ?disabled=${isFormDisabled}
+                  .tags=${this._tags}
+                  placeholder="${i18n('cc-addon-admin.tags-empty')}"
+                  @cc-input-text:tags=${this._onTagsInput}
+                  @cc-input-text:requestimplicitsubmit=${this._onTagsSubmit}
               ></cc-input-text>
               <cc-button primary ?skeleton=${this._skeleton} ?disabled=${isFormDisabled} @cc-button:click=${this._onTagsSubmit}>${i18n('cc-addon-admin.tags-update')}</cc-button>
             </div>
@@ -138,15 +138,15 @@ export class CcAddonAdmin extends LitElement {
             </div>
           </cc-block-section>
         ` : ''}
-        
+
         ${loadingError ? html`
           <cc-error>${i18n('cc-addon-admin.error-loading')}</cc-error>
         ` : ''}
-        
+
         ${this.saving ? html`
           <cc-loader slot="overlay"></cc-loader>
         ` : ''}
-        
+
         ${this.error === 'saving' ? html`
           <div slot="overlay">
             <cc-error mode="confirm" @cc-error:ok=${this._onDismissError}>${i18n('cc-addon-admin.error-saving')}</cc-error>
