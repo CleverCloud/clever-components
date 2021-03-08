@@ -237,7 +237,7 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
   }
 
   // updated and not udpate because we need this._chart before
-  updated(changedProperties) {
+  updated (changedProperties) {
     if (changedProperties.has('data')) {
       this._refreshChart();
     }
