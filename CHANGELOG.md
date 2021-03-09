@@ -6,7 +6,7 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+* Add check on `apiConfig` in cc-env-var-form.smart-exposed-config
 
 ## 5.6.0 (2021-03-09)
 

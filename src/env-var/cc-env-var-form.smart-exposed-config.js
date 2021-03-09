@@ -61,7 +61,7 @@ defineComponent({
         component.saving = false;
         component.variables = null;
 
-        if (ownerId != null && appId != null) {
+        if (apiConfig != null && ownerId != null && appId != null) {
           app_lp.push((signal) => {
             return fetchApp({ apiConfig, signal, ownerId, appId }).catch(addErrorType('loading'));
           });
