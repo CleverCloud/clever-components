@@ -1,7 +1,5 @@
-'use strict';
-
-const fs = require('fs/promises');
-const superagent = require('superagent');
+import fs from 'fs/promises';
+import superagent from 'superagent';
 
 async function run () {
 
