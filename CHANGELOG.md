@@ -6,6 +6,10 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+...
+
+## 5.6.0 (2021-03-09)
+
 * Introduce smart components system
 * Update @clevercloud/client
 * Pin Node.js and npm versions with volta and update lock to v2
