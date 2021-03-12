@@ -6,8 +6,9 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
-
+* New component : 
+  * `<cc-input-number>` 
+  
 ## 6.0.1 (2021-03-15)
 
 * `<cc-addon-linked-apps>`: fix CSS alignment
