@@ -1,3 +1,4 @@
+import '../atoms/cc-flex-gap.js';
 import '../atoms/cc-img.js';
 import '../molecules/cc-block.js';
 import '../molecules/cc-error.js';
@@ -98,8 +99,10 @@ export class CcAddonLinkedApps extends LitElement {
                 src=${ifDefined(application.instance.variant.logo)}
                 title="${ifDefined(application.instance.variant.name)}"
               ></cc-img>
-              <div class="name">${ccLink(application.link, application.name, skeleton)}</div>
-              <cc-zone mode="small" .zone="${application.zone}"></cc-zone>
+              <cc-flex-gap class="details">
+                <span class="name">${ccLink(application.link, application.name, skeleton)}</span>
+                <cc-zone mode="small" .zone="${application.zone}"></cc-zone>
+              </cc-flex-gap>
             </div>
           `)}
         ` : ''}
@@ -126,7 +129,7 @@ export class CcAddonLinkedApps extends LitElement {
         }
 
         .application {
-          align-items: center;
+          align-items: flex-start;
           display: flex;
           line-height: 1.6rem;
         }
@@ -137,13 +140,10 @@ export class CcAddonLinkedApps extends LitElement {
           height: 1.6rem;
           width: 1.6rem;
         }
-
-        .name {
-          margin-left: 0.5rem;
-          margin-right: 0.5rem;
-        }
-
-        cc-zone {
+        
+        .details {
+          --cc-align-items: center;
+          --cc-gap: 0.5rem;
           margin-left: 0.5rem;
         }
 
