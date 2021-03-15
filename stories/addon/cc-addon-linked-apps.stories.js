@@ -2,6 +2,26 @@ import '../../src/addon/cc-addon-linked-apps.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
+const ZONE_PAR = {
+  name: 'par',
+  country: 'France',
+  countryCode: 'FR',
+  city: 'Paris',
+  lat: 48.87,
+  lon: 2.33,
+  tags: ['region:eu', 'infra:clever-cloud'],
+};
+
+const ZONE_MTL = {
+  name: 'mtl',
+  country: 'Canada',
+  countryCode: 'CA',
+  city: 'Montreal',
+  lat: 45.50,
+  lon: -73.61,
+  tags: ['infra:ovh'],
+};
+
 const applications = [
   {
     name: 'My Node JS Prod Application',
@@ -11,7 +31,7 @@ const applications = [
         name: 'Node', logo: 'https://static-assets.cellar.services.clever-cloud.com/logos/nodejs.svg',
       },
     },
-    zone: 'par',
+    zone: ZONE_PAR,
   },
   {
     name: 'My Awesome Java app for my API',
@@ -21,7 +41,7 @@ const applications = [
         name: 'Java + Maven', logo: 'https://static-assets.cellar.services.clever-cloud.com/logos/maven.svg',
       },
     },
-    zone: 'par',
+    zone: ZONE_PAR,
   },
   {
     name: 'My Dev PHP frontend',
@@ -31,7 +51,7 @@ const applications = [
         name: 'PHP', logo: 'https://static-assets.cellar.services.clever-cloud.com/logos/php.svg',
       },
     },
-    zone: 'mtl',
+    zone: ZONE_MTL,
   },
   {
     name: 'My Awesome Scala API',
@@ -41,7 +61,7 @@ const applications = [
         name: 'Scala + SBT', logo: 'https://static-assets.cellar.services.clever-cloud.com/logos/scala.svg',
       },
     },
-    zone: 'mtl',
+    zone: ZONE_MTL,
   },
 ];
 

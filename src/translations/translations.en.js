@@ -118,7 +118,6 @@ export const translations = {
   'cc-addon-linked-apps.loading-error': `Something went wrong while loading linked applications.`,
   'cc-addon-linked-apps.no-linked-applications': `No applications linked yet.`,
   'cc-addon-linked-apps.title': `Linked applications`,
-  'cc-addon-linked-apps.zone': `zone:`,
   // cc-addon-mongodb-options
   'cc-addon-mongodb-options.description': `Choose the options you want for your MongoDB add-on.`,
   'cc-addon-mongodb-options.title': `Options for the MongoDB add-on`,
