@@ -46,6 +46,10 @@ export const dataLoadedWithContextEnvVarSimple = makeStory(conf, {
   items: [{ context: 'env-var-simple', variables: VARIABLES_FULL }],
 });
 
+export const dataLoadedWithContextEnvVarAddon = makeStory(conf, {
+  items: [{ context: 'env-var-addon', variables: VARIABLES_FULL }],
+});
+
 export const dataLoadedWithContextEnvVar = makeStory(conf, {
   items: [{ appName: 'Foobar backend python', context: 'env-var', variables: VARIABLES_FULL }],
 });
@@ -96,6 +100,7 @@ enhanceStoriesNames({
   emptyWithReadonly,
   dataLoadedWithNoContext,
   dataLoadedWithContextEnvVarSimple,
+  dataLoadedWithContextEnvVarAddon,
   dataLoadedWithContextEnvVar,
   dataLoadedWithContextExposedConfig,
   dataLoadedWithCustomHeadingAndReadonly,

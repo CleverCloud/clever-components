@@ -1,17 +1,17 @@
 import '../atoms/cc-img.js';
 import '../molecules/cc-block.js';
 import '../molecules/cc-error.js';
+import '../zones/cc-zone.js';
 import { css, html, LitElement } from 'lit-element';
-import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { i18n } from '../lib/i18n.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 
 const SKELETON_APPLICATIONS = [
-  { name: '??????????????????', link: '', instance: { variant: {} }, zone: '???' },
-  { name: '???????????????????????', link: '', instance: { variant: {} }, zone: '?????' },
-  { name: '????????????????????', link: '', instance: { variant: {} }, zone: '???' },
+  { name: '??????????????????', link: '', instance: { variant: {} } },
+  { name: '???????????????????????', link: '', instance: { variant: {} } },
+  { name: '????????????????????', link: '', instance: { variant: {} } },
 ];
 
 /**
@@ -45,7 +45,17 @@ const SKELETON_APPLICATIONS = [
  *   name: string,
  *   link: string,
  *   instance: Instance,
- *   zone: string,
+ *   zone: Zone,
+ * }
+ * ```
+ *
+ * ```js
+ * interface Zone {
+ *   countryCode: string,   // ISO 3166-1 alpha-2 code of the country (2 letters): "FR", "CA", "US"...
+ *   city: string,          // Name of the city in english: "Paris", "Montreal", "New York City"...
+ *   country: string,       // Name of the country in english: "France", "Canada", "United States"...
+ *   displayName?: string,  // Optional display name for private zones (instead of displaying city + country): "ACME (dedicated)"...
+ *   tags: string[],        // Array of strings for semantic tags: ["region:eu", "infra:clever-cloud"], ["scope:private"]...
  * }
  * ```
  *
@@ -77,10 +87,10 @@ export class CcAddonLinkedApps extends LitElement {
     return html`
       <cc-block>
         <div slot="title">${i18n('cc-addon-linked-apps.title')}</div>
-        
+
         ${hasData ? html`
           <div>${i18n('cc-addon-linked-apps.details')}</div>
-          
+
           ${applications.map((application) => html`
             <div class="application">
               <cc-img class="logo"
@@ -89,15 +99,15 @@ export class CcAddonLinkedApps extends LitElement {
                 title="${ifDefined(application.instance.variant.name)}"
               ></cc-img>
               <div class="name">${ccLink(application.link, application.name, skeleton)}</div>
-              <div class="zone ${classMap({ skeleton })}">${i18n('cc-addon-linked-apps.zone')}${application.zone}</div>
+              <cc-zone mode="small" .zone="${application.zone}"></cc-zone>
             </div>
           `)}
         ` : ''}
-  
+
         ${emptyData ? html`
           <div class="cc-block_empty-msg">${i18n('cc-addon-linked-apps.no-linked-applications')}</div>
         ` : ''}
-  
+
         ${this.error ? html`
           <cc-error>${i18n('cc-addon-linked-apps.loading-error')}</cc-error>
         ` : ''}
@@ -116,7 +126,7 @@ export class CcAddonLinkedApps extends LitElement {
         }
 
         .application {
-          align-items: flex-start;
+          align-items: center;
           display: flex;
           line-height: 1.6rem;
         }
@@ -133,17 +143,8 @@ export class CcAddonLinkedApps extends LitElement {
           margin-right: 0.5rem;
         }
 
-        .zone {
-          background-color: #496D93;
-          border-radius: 0.25rem;
-          box-sizing: border-box;
-          font-size: 0.9rem;
-          font-weight: bold;
-          padding: 0 0.3rem;
-        }
-
-        .zone:not(.skeleton) {
-          color: #fff;
+        cc-zone {
+          margin-left: 0.5rem;
         }
 
         /* SKELETON */

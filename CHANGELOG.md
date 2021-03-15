@@ -7,6 +7,12 @@ title: Changelog
 ## Unreleased (????-??-??)
 
 * Add check on `apiConfig` in cc-env-var-form.smart-exposed-config
+* `<cc-addon-linked-apps>`:
+  * Use `<cc-zone>` instead of just zone name (BREAKING CHANGE)
+  * Add smart definition
+* `<cc-env-var-form>`:
+  * add env-var-addon context
+  * add smart definition (env-var-addon)
 
 ## 5.6.0 (2021-03-09)
 
