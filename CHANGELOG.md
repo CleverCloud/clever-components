@@ -6,7 +6,7 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+* `<cc-addon-linked-apps>`: fix CSS alignment
 
 ## 6.0.0 (2021-03-15)
 
