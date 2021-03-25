@@ -6,7 +6,11 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-* New component : 
+...
+
+## 6.1.0 (2021-03-25)
+
+* New component:
   * `<cc-input-number>` 
   
 ## 6.0.1 (2021-03-15)
