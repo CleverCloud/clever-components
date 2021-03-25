@@ -196,7 +196,7 @@ export class CcInputNumber extends LitElement {
         .meta-input {
           box-sizing: border-box;
           display: inline-flex;
-          overflow: hidden;
+          overflow: visible;
           /* link to position:absolute of .ring */
           position: relative;
           vertical-align: top;
