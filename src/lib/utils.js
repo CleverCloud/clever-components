@@ -62,3 +62,7 @@ export function sortBy (propertyName, desc = false) {
       : b[propertyName].localeCompare(a[propertyName]);
   };
 }
+
+export function asyncMap (array, asyncCallback) {
+  return Promise.all(array.map(asyncCallback));
+}

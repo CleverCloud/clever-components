@@ -8,7 +8,7 @@ title: Changelog
 
 * New component:
   * `<cc-html-frame>`
-  * `<cc-invoice-list>`
+  * `<cc-invoice-list>` (with smart definition)
   * `<cc-invoice-table>`
 
 ## 6.1.0 (2021-03-25)
