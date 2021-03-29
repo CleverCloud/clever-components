@@ -214,6 +214,11 @@ export const translations = {
   'cc-heptapod-info.not-in-use': `Vous n'utilisez pas ce service Heptapod.`,
   'cc-heptapod-info.description': () => sanitize`Cette instance Heptapod héberge des dépôts Mercurial. Plus d'informations sur <a href="https://about.heptapod.host" rel="noreferrer noopener">https://about.heptapod.host</a>.`,
   'cc-heptapod-info.error-loading': `Une erreur est survenue pendant le chargement des informations d'utilisation.`,
+  // cc-invoice
+  'cc-invoice.download-pdf': `Télécharger le PDF`,
+  'cc-invoice.error': `Une erreur est survenue pendant le chargement de la facture.`,
+  'cc-invoice.info': ({ date, amount }) => sanitize`Cette facture a été émise le <strong>${formatDateOnly(date)}</strong> pour un total de <strong>${currencyFormatter.format(amount)}</strong>.`,
+  'cc-invoice.title': `Facture`,
   // cc-invoice-list
   'cc-invoice-list.error': `Une erreur est survenue pendant le chargement des factures.`,
   'cc-invoice-list.pending': `Factures en attente de paiement`,

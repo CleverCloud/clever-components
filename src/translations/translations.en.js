@@ -201,6 +201,11 @@ export const translations = {
   'cc-heptapod-info.not-in-use': `You are not using this Heptapod service.`,
   'cc-heptapod-info.description': () => sanitize`This Heptapod instance hosts mercurial projects. Learn more on <a href="https://about.heptapod.host" rel="noreferrer noopener">https://about.heptapod.host</a>.`,
   'cc-heptapod-info.error-loading': `Something went wrong while loading usage info.`,
+  // cc-invoice
+  'cc-invoice.download-pdf': `Download PDF`,
+  'cc-invoice.error': `Something went wrong while loading the invoice.`,
+  'cc-invoice.info': ({ date, amount }) => sanitize`This invoice was issued on <strong>${formatDateOnly(date)}</strong> for a total amount of <strong>${currencyFormatter.format(amount)}</strong>.`,
+  'cc-invoice.title': `Invoice`,
   // cc-invoice-list
   'cc-invoice-list.title': `Invoices`,
   'cc-invoice-list.error': `An error occured while loading invoices.`,
