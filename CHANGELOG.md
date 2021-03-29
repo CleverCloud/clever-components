@@ -7,6 +7,7 @@ title: Changelog
 ## Unreleased (????-??-??)
 
 * New component:
+  * `<cc-html-frame>`
   * `<cc-invoice-list>`
   * `<cc-invoice-table>`
 
