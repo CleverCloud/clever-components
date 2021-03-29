@@ -9,6 +9,17 @@ export function fetchApp ({ apiConfig, signal, ownerId, appId }) {
   return getApp({ id: ownerId, appId }).then(sendToApi({ apiConfig, signal }));
 }
 
+export async function fetchInvoice ({ apiConfig, signal, ownerId, invoiceNumber }) {
+  return getInvoice({ id: ownerId, invoiceNumber, type: '' })
+    .then(sendToApi({ apiConfig, signal }))
+    .then((invoice) => formatInvoice(apiConfig, ownerId, invoice));
+}
+
+export async function fetchInvoiceHtml ({ apiConfig, signal, ownerId, invoiceNumber }) {
+  return getInvoice({ id: ownerId, invoiceNumber, type: '.html' })
+    .then(sendToApi({ apiConfig, signal }));
+}
+
 // TODO: move to clever-client
 function getInvoice (params) {
   return Promise
