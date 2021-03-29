@@ -6,7 +6,8 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+* New component:
+  * `<cc-invoice-table>`
 
 ## 6.1.0 (2021-03-25)
 

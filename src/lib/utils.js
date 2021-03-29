@@ -48,3 +48,11 @@ export function addErrorType (type) {
     throw err;
   };
 }
+
+export function sortBy (propertyName, desc = false) {
+  return (a, b) => {
+    return (desc === false)
+      ? a[propertyName].localeCompare(b[propertyName])
+      : b[propertyName].localeCompare(a[propertyName]);
+  };
+}

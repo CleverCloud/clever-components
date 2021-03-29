@@ -214,6 +214,14 @@ export const translations = {
   'cc-heptapod-info.not-in-use': `Vous n'utilisez pas ce service Heptapod.`,
   'cc-heptapod-info.description': () => sanitize`Cette instance Heptapod héberge des dépôts Mercurial. Plus d'informations sur <a href="https://about.heptapod.host" rel="noreferrer noopener">https://about.heptapod.host</a>.`,
   'cc-heptapod-info.error-loading': `Une erreur est survenue pendant le chargement des informations d'utilisation.`,
+  // cc-invoice-table
+  'cc-invoice-table.date.payment': `Date de paiement`,
+  'cc-invoice-table.date.value': ({ date }) => `${formatDateOnly(date)}`,
+  'cc-invoice-table.number': `Numéro`,
+  'cc-invoice-table.open-pdf': `Télécharger le PDF`,
+  'cc-invoice-table.pay': `Régler`,
+  'cc-invoice-table.total.label': `Total`,
+  'cc-invoice-table.total.value': ({ amount }) => `${currencyFormatter.format(amount)}`,
   // cc-addon-admin
   'cc-addon-admin.addon-name': `Nom de l'add-on`,
   'cc-addon-admin.admin': `Administration`,
