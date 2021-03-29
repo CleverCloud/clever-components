@@ -49,6 +49,12 @@ export function addErrorType (type) {
   };
 }
 
+export const unique = [(a, b, i, array) => {
+  if (i === array.length - 1) {
+    return Array.from(new Set(array));
+  }
+}, []];
+
 export function sortBy (propertyName, desc = false) {
   return (a, b) => {
     return (desc === false)

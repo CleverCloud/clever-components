@@ -201,6 +201,15 @@ export const translations = {
   'cc-heptapod-info.not-in-use': `You are not using this Heptapod service.`,
   'cc-heptapod-info.description': () => sanitize`This Heptapod instance hosts mercurial projects. Learn more on <a href="https://about.heptapod.host" rel="noreferrer noopener">https://about.heptapod.host</a>.`,
   'cc-heptapod-info.error-loading': `Something went wrong while loading usage info.`,
+  // cc-invoice-list
+  'cc-invoice-list.title': `Invoices`,
+  'cc-invoice-list.error': `An error occured while loading invoices.`,
+  'cc-invoice-list.pending': `Pending invoices`,
+  'cc-invoice-list.pending.no-invoices': `No pending invoices at the moment.`,
+  'cc-invoice-list.processed': `Paid invoices`,
+  'cc-invoice-list.processed.no-invoices': `No paid invoices at the moment.`,
+  'cc-invoice-list.processing': `Invoices awaiting payment validation`,
+  'cc-invoice-list.year': `Year:`,
   // cc-invoice-table
   'cc-invoice-table.date.payment': `Payment date`,
   'cc-invoice-table.date.value': ({ date }) => `${formatDateOnly(date)}`,
