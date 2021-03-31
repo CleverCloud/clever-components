@@ -48,3 +48,21 @@ export function addErrorType (type) {
     throw err;
   };
 }
+
+export const unique = [(a, b, i, array) => {
+  if (i === array.length - 1) {
+    return Array.from(new Set(array));
+  }
+}, []];
+
+export function sortBy (propertyName, desc = false) {
+  return (a, b) => {
+    return (desc === false)
+      ? a[propertyName].localeCompare(b[propertyName])
+      : b[propertyName].localeCompare(a[propertyName]);
+  };
+}
+
+export function asyncMap (array, asyncCallback) {
+  return Promise.all(array.map(asyncCallback));
+}

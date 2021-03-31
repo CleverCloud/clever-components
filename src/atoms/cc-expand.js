@@ -13,6 +13,8 @@ const appendChild = (parent, child) => parent.appendChild(child);
  * * The animation only works in browsers supporting [`ResizeObserver`](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver) and [Web Animation API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API).
  * * This component does not use lit* deps on purpose (keep small and not useful).
  * * The source code is written in a way so it can be the smallest possible, while keeping a reasonable readability level.
+ *
+ * @slot - The content that may expand/shrink.
  */
 export class CcExpand extends HTMLElement {
 

@@ -29,6 +29,8 @@ const warningSvg = new URL('../assets/warning.svg', import.meta.url).href;
  * @prop {"inline"|"info"|"loading"|"confirm"} mode - Sets the displays mode (see details).
  *
  * @event {CustomEvent} cc-error:ok - Fires when the OK button is clicked.
+ *
+ * @slot - The content of the error message.
  */
 export class CcError extends LitElement {
 
