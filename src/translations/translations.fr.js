@@ -229,7 +229,7 @@ export const translations = {
   'cc-invoice-list.title': `Factures`,
   'cc-invoice-list.year': `Année :`,
   // cc-invoice-table
-  'cc-invoice-table.date.payment': `Date de paiement`,
+  'cc-invoice-table.date.emission': `Date d'émission`,
   'cc-invoice-table.date.value': ({ date }) => `${formatDateOnly(date)}`,
   'cc-invoice-table.number': `Numéro`,
   'cc-invoice-table.open-pdf': `Télécharger le PDF`,

@@ -216,7 +216,7 @@ export const translations = {
   'cc-invoice-list.processing': `Invoices awaiting payment validation`,
   'cc-invoice-list.year': `Year:`,
   // cc-invoice-table
-  'cc-invoice-table.date.payment': `Payment date`,
+  'cc-invoice-table.date.emission': `Emission date`,
   'cc-invoice-table.date.value': ({ date }) => `${formatDateOnly(date)}`,
   'cc-invoice-table.number': `Number`,
   'cc-invoice-table.open-pdf': `Download PDF`,

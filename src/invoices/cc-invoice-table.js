@@ -85,7 +85,7 @@ export class CcInvoiceTable extends LitElement {
     return html`
       <table>
         <tr>
-          <th>${i18n('cc-invoice-table.date.payment')}</th>
+          <th>${i18n('cc-invoice-table.date.emission')}</th>
           <th>${i18n('cc-invoice-table.number')}</th>
           <th class="number">${i18n('cc-invoice-table.total.label')}</th>
           <th></th>
