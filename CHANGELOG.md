@@ -6,9 +6,13 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+...
+
+## 6.2.0 (2021-03-31)
+
 * New components:
   * `<cc-html-frame>`
-  * `<cc-invoice>`
+  * `<cc-invoice>` (with smart definition)
   * `<cc-invoice-list>` (with smart definition)
   * `<cc-invoice-table>`
 
