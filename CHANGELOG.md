@@ -6,6 +6,10 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+...
+
+## 6.2.1 (2021-04-01)
+
 * cc-invoice-table: fix i18n for emission date
 
 ## 6.2.0 (2021-03-31)
