@@ -8,6 +8,10 @@ title: Changelog
 
 ...
 
+## 6.2.2 (2021-04-01)
+
+* cc-invoice-table: change sort order to desc
+
 ## 6.2.1 (2021-04-01)
 
 * cc-invoice-table: fix i18n for emission date
