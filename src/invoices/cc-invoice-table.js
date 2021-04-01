@@ -80,7 +80,7 @@ export class CcInvoiceTable extends LitElement {
           },
         };
       })
-      .sort(sortBy('emissionDate'));
+      .sort(sortBy('emissionDate', true));
 
     return html`
       <table>
