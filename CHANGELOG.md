@@ -6,7 +6,7 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+* cc-invoice-table: fix pending statuses
 
 ## 6.2.2 (2021-04-01)
 

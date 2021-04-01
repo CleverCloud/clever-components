@@ -11,7 +11,7 @@ function createInvoice (year, month, amount, status, type = 'INVOICE') {
 }
 
 export const pendingInvoices = (year) => [
-  createInvoice(year, '01', 17.79, 'PENDING'),
+  createInvoice(year, '01', 17.79, 'WONTPAY'),
   createInvoice(year, '02', 29.24, 'PENDING'),
   createInvoice(year, '03', 73.34, 'PENDING'),
   createInvoice(year, '04', 71.96, 'PENDING'),
@@ -22,12 +22,12 @@ export const pendingInvoices = (year) => [
   createInvoice(year, '09', 99.14, 'PENDING'),
   createInvoice(year, '10', 2261.81, 'PAYMENTHELD'),
   createInvoice(year, '11', 6218.31, 'PENDING'),
-  createInvoice(year, '12', 11487.02, 'WONTPAY'),
+  createInvoice(year, '12', 11487.02, 'PENDING'),
 ];
 
 export const processingInvoices = (year) => [
   createInvoice(year, '11', 172.79, 'PROCESSING'),
-  createInvoice(year, '12', 11487.02, 'PROCESSING'),
+  createInvoice(year, '12', 2287.02, 'PROCESSING'),
 ];
 
 export const processedInvoices = (year) => [

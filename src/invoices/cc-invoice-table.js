@@ -7,7 +7,7 @@ import { skeletonStyles } from '../styles/skeleton.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 
 // TODO: Move to clever-client
-export const PENDING_STATUSES = ['PENDING', 'PAYMENTHELD', 'WONTPAY'];
+export const PENDING_STATUSES = ['PENDING', 'PAYMENTHELD'];
 export const PROCESSING_STATUS = 'PROCESSING';
 export const PROCESSED_STATUSES = ['PAID', 'CANCELED', 'REFUNDED'];
 
