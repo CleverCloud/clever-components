@@ -6,8 +6,12 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
-
+* cc-input-number
+  * When in controls mode and in a disabled state the buttons also appear in a disabled state 
+    with a slight opacity change
+  * Fixed a bug that allowed to change the value of the input in controls mode 
+    when the component was in a readonly state
+    
 ## 6.2.3 (2021-04-01)
 
 * cc-invoice-table: fix pending statuses

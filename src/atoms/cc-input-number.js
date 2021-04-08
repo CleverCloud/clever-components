@@ -134,7 +134,7 @@ export class CcInputNumber extends LitElement {
   render () {
 
     const value = (this.value != null) ? this.value : 0;
-    const controls = (this.controls && !this.disabled && !this.skeleton);
+    const controls = (this.controls && !this.skeleton);
 
     return html`
 
@@ -144,7 +144,7 @@ export class CcInputNumber extends LitElement {
       
       <div class="meta-input">
         ${controls ? html`
-        <button class="btn" @click=${this._onDecrement}>
+        <button class="btn" @click=${this._onDecrement} ?disabled=${this.disabled || this.readonly}>
           <img class="btn-img" src=${decrementSvg} alt="">
         </button>
         ` : ''}
@@ -170,7 +170,7 @@ export class CcInputNumber extends LitElement {
           <div class="ring"></div>
         </div>
         ${controls ? html`
-        <button class="btn" @click=${this._onIncrement}>
+        <button class="btn" @click=${this._onIncrement} ?disabled=${this.disabled || this.readonly}>
           <img class="btn-img" src=${incrementSvg} alt="">
         </button>
         ` : ''}
@@ -259,6 +259,11 @@ export class CcInputNumber extends LitElement {
 
         input[disabled] {
           opacity: .75;
+          pointer-events: none;
+        }
+        
+        button[disabled] {
+          opacity: .5;
           pointer-events: none;
         }
         
