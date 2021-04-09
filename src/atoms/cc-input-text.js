@@ -4,6 +4,7 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
 const clipboardSvg = new URL('../assets/clipboard.svg', import.meta.url).href;
@@ -291,6 +292,7 @@ export class CcInputText extends LitElement {
 
   static get styles () {
     return [
+      defaultThemeStyles,
       skeletonStyles,
       // language=CSS
       css`
@@ -337,7 +339,7 @@ export class CcInputText extends LitElement {
           border: 1px solid #000;
           box-sizing: border-box;
           display: block;
-          font-family: "SourceCodePro", "monaco", monospace;
+          font-family: var(--cc-ff-monospace);
           font-size: 14px;
           margin: 0;
           padding: 0;

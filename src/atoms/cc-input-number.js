@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { dispatchCustomEvent } from '../lib/events.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
 const incrementSvg = new URL('../assets/increment.svg', import.meta.url).href;
@@ -182,6 +183,7 @@ export class CcInputNumber extends LitElement {
 
   static get styles () {
     return [
+      defaultThemeStyles,
       skeletonStyles,
       // language=CSS
       css`
@@ -221,7 +223,7 @@ export class CcInputNumber extends LitElement {
           border: 1px solid #000;
           box-sizing: border-box;
           display: block;
-          font-family: "SourceCodePro", "monaco", monospace;
+          font-family: var(--cc-ff-monospace);
           font-size: 14px;
           margin: 0;
           padding: 0;

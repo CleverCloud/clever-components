@@ -6,6 +6,7 @@ import { validateName } from '@clevercloud/client/esm/utils/env-vars.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 
 /**
  * A small form to create a new environment variable with validations on the name.
@@ -134,6 +135,7 @@ export class CcEnvVarCreate extends LitElement {
 
   static get styles () {
     return [
+      defaultThemeStyles,
       // language=CSS
       css`
         :host {
@@ -169,7 +171,7 @@ export class CcEnvVarCreate extends LitElement {
         cc-error code {
           background-color: #f3f3f3;
           border-radius: 0.25rem;
-          font-family: "SourceCodePro", "monaco", monospace;
+          font-family: var(--cc-ff-monospace);
           padding: 0.15rem 0.3rem;
         }
       `,

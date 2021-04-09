@@ -3,6 +3,7 @@ import '../atoms/cc-flex-gap.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { i18n } from '../lib/i18n.js';
 import { sortBy } from '../lib/utils.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 
@@ -119,6 +120,7 @@ export class CcInvoiceTable extends LitElement {
 
   static get styles () {
     return [
+      defaultThemeStyles,
       skeletonStyles,
       linkStyles,
       // language=CSS
@@ -157,7 +159,7 @@ export class CcInvoiceTable extends LitElement {
         }
 
         td.number {
-          font-family: monospace;
+          font-family: var(--cc-ff-monospace);
           font-size: 1rem;
           /* "-ø###,###.##" OR "-### ###,## ø" => 13ch */
           min-width: 13ch;

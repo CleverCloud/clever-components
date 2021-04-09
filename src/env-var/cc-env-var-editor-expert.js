@@ -4,6 +4,7 @@ import { ERROR_TYPES, parseRaw, toNameEqualsValueString } from '@clevercloud/cli
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 
 const SKELETON_VARIABLES = [
   { name: 'VARIABLE_ONE', value: '' },
@@ -137,6 +138,7 @@ export class CcEnvVarEditorExpert extends LitElement {
 
   static get styles () {
     return [
+      defaultThemeStyles,
       // language=CSS
       css`
         :host {
@@ -157,7 +159,7 @@ export class CcEnvVarEditorExpert extends LitElement {
         cc-error code {
           background-color: #f3f3f3;
           border-radius: 0.25rem;
-          font-family: "SourceCodePro", "monaco", monospace;
+          font-family: var(--cc-ff-monospace);
           padding: 0.15rem 0.3rem;
         }
       `,

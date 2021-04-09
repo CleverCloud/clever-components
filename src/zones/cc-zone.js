@@ -5,6 +5,7 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { i18n } from '../lib/i18n.js';
 import { getFlagUrl, getInfraProviderLogoUrl } from '../lib/remote-assets.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
 const SKELETON_ZONE = {
@@ -101,6 +102,7 @@ export class CcZone extends LitElement {
 
   static get styles () {
     return [
+      defaultThemeStyles,
       skeletonStyles,
       // language=CSS
       css`
@@ -174,7 +176,7 @@ export class CcZone extends LitElement {
           background-color: rgba(50, 50, 255, 0.15);
           border-radius: 0.25rem;
           box-sizing: border-box;
-          font-family: monospace;
+          font-family: var(--cc-ff-monospace);
           font-size: 0.8rem;
           margin-top: 0.5rem;
           padding: 0.1rem 0.3rem;
