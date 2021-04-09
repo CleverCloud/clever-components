@@ -6,19 +6,27 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
-
+* `<cc-input-number>`
+  * When in controls mode and in a disabled state the buttons also appear in a disabled state 
+    with a slight opacity change
+  * Fixed a bug that allowed to change the value of the input in controls mode 
+    when the component was in a readonly state
+  * The buttons in controls mode now get the state of disabled when min or max value is reached
+    (e.g: If we have a value of `0` and the min is `0` the `decrement` button will change to `disabled`. The same would
+    happen  for the `increment` button if we had a value of `10` and a max of `10`) 
+    
+    
 ## 6.2.3 (2021-04-01)
 
-* cc-invoice-table: fix pending statuses
+* `<cc-invoice-table>`: fix pending statuses
 
 ## 6.2.2 (2021-04-01)
 
-* cc-invoice-table: change sort order to desc
+* `<cc-invoice-table>`: change sort order to desc
 
 ## 6.2.1 (2021-04-01)
 
-* cc-invoice-table: fix i18n for emission date
+* `<cc-invoice-table>`: fix i18n for emission date
 
 ## 6.2.0 (2021-03-31)
 
