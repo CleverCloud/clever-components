@@ -234,6 +234,7 @@ export const translations = {
   'cc-invoice-table.number': `Numéro`,
   'cc-invoice-table.open-pdf': `Télécharger le PDF`,
   'cc-invoice-table.pay': `Régler`,
+  'cc-invoice-table.text': ({ number, date, amount }) => sanitize`Facture <strong>${number}</strong> émise le <strong>${formatDateOnly(date)}</strong> pour un total de <code>${currencyFormatter.format(amount)}</code>`,
   'cc-invoice-table.total.label': `Total`,
   'cc-invoice-table.total.value': ({ amount }) => `${currencyFormatter.format(amount)}`,
   // cc-addon-admin
