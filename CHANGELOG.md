@@ -18,15 +18,15 @@ title: Changelog
     
 ## 6.2.3 (2021-04-01)
 
-* cc-invoice-table: fix pending statuses
+* `<cc-invoice-table>`: fix pending statuses
 
 ## 6.2.2 (2021-04-01)
 
-* cc-invoice-table: change sort order to desc
+* `<cc-invoice-table>`: change sort order to desc
 
 ## 6.2.1 (2021-04-01)
 
-* cc-invoice-table: fix i18n for emission date
+* `<cc-invoice-table>`: fix i18n for emission date
 
 ## 6.2.0 (2021-03-31)
 
