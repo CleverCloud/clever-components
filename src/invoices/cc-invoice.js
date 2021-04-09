@@ -77,6 +77,11 @@ export class CcInvoice extends LitElement {
           display: block;
         }
 
+        [slot="button"] {
+          margin-left: 1rem;
+          align-self: start;
+        }
+
         .has-errors {
           --cc-skeleton-state: paused;
         }
