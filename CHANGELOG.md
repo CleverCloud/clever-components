@@ -6,6 +6,9 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+...
+
+## 6.2.4 (2021-04-09)
 * `<cc-input-number>`
   * When in controls mode and in a disabled state the buttons also appear in a disabled state 
     with a slight opacity change
