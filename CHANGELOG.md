@@ -7,6 +7,7 @@ title: Changelog
 ## Unreleased (????-??-??)
 
 * Introduce `defaultThemeStyles` with monospace font-family 
+* `<cc-invoice>`: adjust spacing around "Download PDF" for narrow mode
 
 ## 6.2.4 (2021-04-09)
 
