@@ -13,6 +13,7 @@ const baseItems = [
 const minMaxItems = [
   { label: '' },
   { value: 5, min: 0, max: 10, label: 'Min: 0, Max: 10' },
+  { value: 0, min: 0, max: 10, label: 'Min: 0, Max: 10' },
   { value: 10, min: 0, max: 10, label: 'Min: 0, Max: 10' },
   { value: 30, min: 0, max: 10, label: 'Min: 0, Max: 10' },
   { value: 5, min: 0, max: 10, label: 'Min: 0, Max: 10', disabled: true },

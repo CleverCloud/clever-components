@@ -135,6 +135,8 @@ export class CcInputNumber extends LitElement {
 
     const value = (this.value != null) ? this.value : 0;
     const controls = (this.controls && !this.skeleton);
+    const minDisabled = (this.value <= this.min);
+    const maxDisabled = (this.value >= this.max);
 
     return html`
 
@@ -144,7 +146,7 @@ export class CcInputNumber extends LitElement {
       
       <div class="meta-input">
         ${controls ? html`
-        <button class="btn" @click=${this._onDecrement} ?disabled=${this.disabled || this.readonly}>
+        <button class="btn" @click=${this._onDecrement} ?disabled=${this.disabled || this.readonly || minDisabled}>
           <img class="btn-img" src=${decrementSvg} alt="">
         </button>
         ` : ''}
@@ -170,7 +172,7 @@ export class CcInputNumber extends LitElement {
           <div class="ring"></div>
         </div>
         ${controls ? html`
-        <button class="btn" @click=${this._onIncrement} ?disabled=${this.disabled || this.readonly}>
+        <button class="btn" @click=${this._onIncrement} ?disabled=${this.disabled || this.readonly || maxDisabled}>
           <img class="btn-img" src=${incrementSvg} alt="">
         </button>
         ` : ''}
