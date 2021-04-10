@@ -5,6 +5,7 @@ import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
 /**
@@ -127,6 +128,7 @@ export class CcEnvVarInput extends LitElement {
 
   static get styles () {
     return [
+      defaultThemeStyles,
       skeletonStyles,
       // language=CSS
       css`
@@ -140,7 +142,7 @@ export class CcEnvVarInput extends LitElement {
           box-sizing: border-box;
           display: inline-block;
           flex: 1 1 15rem;
-          font-family: "SourceCodePro", "monaco", monospace;
+          font-family: var(--cc-ff-monospace);
           /* I have a bug on Linux between Chrome and FF with rem on inputs */
           font-size: 14px;
           line-height: 1.4rem;

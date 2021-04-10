@@ -3,6 +3,7 @@ import '../molecules/cc-error.js';
 import './cc-tcp-redirection.js';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 
 const SKELETON_REDIRECTIONS = [
   { namespace: 'default', sourcePort: 1234 },
@@ -96,6 +97,7 @@ export class CcTcpRedirectionForm extends LitElement {
 
   static get styles () {
     return [
+      defaultThemeStyles,
       // language=CSS
       css`
         :host {
@@ -124,7 +126,7 @@ export class CcTcpRedirectionForm extends LitElement {
         .description code {
           background-color: #f3f3f3;
           border-radius: 0.25rem;
-          font-family: "SourceCodePro", "monaco", monospace;
+          font-family: var(--cc-ff-monospace);
           padding: 0.15rem 0.3rem;
         }
       `,
