@@ -1,11 +1,15 @@
 import { css, html, LitElement } from 'lit-element';
 import '../atoms/cc-flex-gap.js';
+import '../atoms/cc-img.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { i18n } from '../lib/i18n.js';
 import { sortBy } from '../lib/utils.js';
 import { defaultThemeStyles } from '../styles/default-theme.js';
+import { withResizeObserver } from '../mixins/with-resize-observer.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
+
+const fileSvg = new URL('../assets/file.svg', import.meta.url).href;
 
 // TODO: Move to clever-client
 export const PENDING_STATUSES = ['PENDING', 'PAYMENTHELD'];
@@ -58,15 +62,86 @@ const SKELETON_INVOICES = [
  *
  * @prop {Invoice[]} invoices - Sets the list of invoices.
  */
-export class CcInvoiceTable extends LitElement {
+export class CcInvoiceTable extends withResizeObserver(LitElement) {
 
   static get properties () {
     return {
       invoices: { type: Array },
+      _width: { type: Number },
     };
   }
 
+  onResize ({ width }) {
+    this._width = width;
+  }
+
+  _renderBig (skeleton, invoiceList) {
+    return html`
+      <table>
+        <tr>
+          <th>${i18n('cc-invoice-table.date.emission')}</th>
+          <th>${i18n('cc-invoice-table.number')}</th>
+          <th class="number">${i18n('cc-invoice-table.total.label')}</th>
+          <th></th>
+        </tr>
+        ${invoiceList.map((invoice) => html`
+          <tr>
+            <td>
+              <span class="${classMap({ skeleton })}">${i18n('cc-invoice-table.date.value', { date: invoice.emissionDate })}</span>
+            </td>
+            <td>
+              <span class="${classMap({ skeleton })}">${invoice.number}</span>
+            </td>
+            <td class="number">
+              <code class="${classMap({ skeleton, 'credit-note': (invoice.type === 'CREDITNOTE') })}">
+                ${i18n('cc-invoice-table.total.value', { amount: invoice.total.amount })}
+              </code>
+            </td>
+            <td>
+              ${this._renderLinks(skeleton, invoice)}
+            </td>
+          </tr>
+        `)}
+      </table>
+    `;
+  }
+
+  _renderSmall (skeleton, invoiceList) {
+    return html`
+      <div class="invoice-list">
+        ${invoiceList.map((invoice) => html`
+          <div class="invoice">
+            <cc-img class="invoice-icon" src=${fileSvg}></cc-img>
+            <div class="invoice-text ${classMap({ skeleton })}">
+              ${i18n('cc-invoice-table.text', {
+      number: invoice.number, date: invoice.emissionDate, amount: invoice.total.amount,
+    })}
+              <br>
+              ${this._renderLinks(skeleton, invoice)}
+            </div>
+          </div>
+        `)}
+      </div>
+    `;
+  }
+
+  _renderLinks (skeleton, invoice) {
+    return html`
+      <cc-flex-gap class="links">
+        ${ccLink(invoice.downloadUrl, i18n('cc-invoice-table.open-pdf'), skeleton)}
+        ${PENDING_STATUSES.includes(invoice.status) ? html`
+          ${ccLink(invoice.paymentUrl, i18n('cc-invoice-table.pay'), skeleton)}
+        ` : ''}
+      </cc-flex-gap>
+    `;
+  }
+
   render () {
+
+    // NOTE: This value is arbitrary, we don't have a better solution for now
+    // It's a bit more than the width of the table in french (which is the largest) and with both links (download and pay)
+    // The table width is mostly stable since the with of the amount is fixed and the rest is almost always the same number of characters
+    const bigMode = (this._width > 700);
 
     const skeleton = (this.invoices == null);
     const invoices = skeleton ? SKELETON_INVOICES : this.invoices;
@@ -83,44 +158,13 @@ export class CcInvoiceTable extends LitElement {
       })
       .sort(sortBy('emissionDate', true));
 
-    return html`
-      <table>
-        <tr>
-          <th>${i18n('cc-invoice-table.date.emission')}</th>
-          <th>${i18n('cc-invoice-table.number')}</th>
-          <th class="number">${i18n('cc-invoice-table.total.label')}</th>
-          <th></th>
-        </tr>
-        ${formattedInvoices.map((invoice) => html`
-          <tr>
-            <td>
-              <span class="${classMap({ skeleton })}">${i18n('cc-invoice-table.date.value', { date: invoice.emissionDate })}</span>
-            </td>
-            <td>
-              <span class="${classMap({ skeleton })}">${invoice.number}</span>
-            </td>
-            <td class="number">
-              <span class="${classMap({ skeleton, 'credit-note': (invoice.type === 'CREDITNOTE') })}">
-                ${i18n('cc-invoice-table.total.value', { amount: invoice.total.amount })}
-              </span>
-            </td>
-            <td>
-              <cc-flex-gap class="actions">
-                ${ccLink(invoice.downloadUrl, i18n('cc-invoice-table.open-pdf'), skeleton)}
-                ${PENDING_STATUSES.includes(invoice.status) ? html`
-                  ${ccLink(invoice.paymentUrl, i18n('cc-invoice-table.pay'), skeleton)}
-                ` : ''}
-              </cc-flex-gap>
-            </td>
-          </tr>
-        `)}
-      </table>
-    `;
+    return bigMode
+      ? this._renderBig(skeleton, formattedInvoices)
+      : this._renderSmall(skeleton, formattedInvoices);
   }
 
   static get styles () {
     return [
-      defaultThemeStyles,
       skeletonStyles,
       linkStyles,
       // language=CSS
@@ -128,22 +172,78 @@ export class CcInvoiceTable extends LitElement {
         :host {
           display: block;
         }
+        
+        /* we should use a class (something like "number-value") but it's not possible right now in i18n */
+        code {
+          font-family: var(--cc-ff-monospace);
+          font-size: 1rem;
+        }
 
+        .credit-note {
+          font-style: italic;
+        }
+
+        .cc-link {
+          white-space: nowrap;
+        }
+
+        .links {
+          --cc-gap: 1rem;
+          --cc-align-items: center;
+        }
+        
+        /* SMALL MODE */
+
+        .invoice-list {
+          display: grid;
+          gap: 1.5rem;
+        }
+
+        .invoice {
+          display: flex;
+          line-height: 1.5rem;
+        }
+
+        .invoice-icon,
+        .invoice-text {
+          margin-right: 0.5rem;
+        }
+
+        .invoice-icon {
+          flex: 0 0 auto;
+          height: 1.5rem;
+          width: 1.5rem;
+        }
+
+        .invoice-text {
+          color: #555;
+        }
+
+        .invoice-text code,
+        .invoice-text strong {
+          color: #000;
+          font-weight: bold;
+          white-space: nowrap;
+        }
+
+        .invoice-list .skeleton code,
+        .invoice-list .skeleton strong {
+          background-color: #bbb;
+          color: transparent;
+        }
+
+        /* BIG MODE */
+        
         table {
           border-collapse: collapse;
           border-radius: 5px;
           overflow: hidden;
         }
-
+        
         th,
         td {
           padding: 0.5rem 1rem;
           text-align: left;
-        }
-
-        th.number,
-        td.number {
-          text-align: right;
         }
 
         th {
@@ -157,33 +257,23 @@ export class CcInvoiceTable extends LitElement {
         tr:not(:last-child) td {
           border-bottom: 1px solid #ddd;
         }
+        
+        /* applied on th and td */
+        .number {
+          text-align: right;
+        }
 
         td.number {
-          font-family: var(--cc-ff-monospace);
-          font-size: 1rem;
           /* "-ø###,###.##" OR "-### ###,## ø" => 13ch */
           min-width: 13ch;
         }
-
+        
         tr:hover td {
           background-color: #f5f5f5;
         }
 
-        .credit-note {
-          font-style: italic;
-        }
-
-        .skeleton {
+        table .skeleton {
           background-color: #bbb;
-        }
-
-        .actions {
-          --cc-gap: 1rem;
-          --cc-align-items: center;
-        }
-
-        .cc-link {
-          white-space: nowrap;
         }
       `,
     ];
