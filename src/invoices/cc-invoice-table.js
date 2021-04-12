@@ -4,8 +4,8 @@ import '../atoms/cc-img.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { i18n } from '../lib/i18n.js';
 import { sortBy } from '../lib/utils.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 
