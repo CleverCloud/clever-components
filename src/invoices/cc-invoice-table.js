@@ -165,6 +165,7 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
 
   static get styles () {
     return [
+      defaultThemeStyles,
       skeletonStyles,
       linkStyles,
       // language=CSS
