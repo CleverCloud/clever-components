@@ -1,6 +1,6 @@
 import { get as getApp } from '@clevercloud/client/esm/api/v2/application.js';
+import { getAllInvoices, getInvoice } from '@clevercloud/client/esm/api/v4/billing.js';
 import { addOauthHeader } from '@clevercloud/client/esm/oauth.browser.js';
-import { pickNonNull } from '@clevercloud/client/esm/pick-non-null.js';
 import { prefixUrl } from '@clevercloud/client/esm/prefix-url.js';
 import { sendToApi } from './send-to-api.js';
 import { asyncMap } from './utils.js';
@@ -20,36 +20,12 @@ export async function fetchInvoiceHtml ({ apiConfig, signal, ownerId, invoiceNum
     .then(sendToApi({ apiConfig, signal }));
 }
 
-// TODO: move to clever-client
-function getInvoice (params) {
-  return Promise
-    .resolve({
-      method: 'get',
-      url: `/v4/billing/organisations/${params.id}/invoices/${params.invoiceNumber}${params.type}`,
-      headers: { Accept: 'application/json' },
-      // no queryParams
-      // no body
-    });
-}
-
 export async function fetchAllInvoices ({ apiConfig, signal, ownerId }) {
   // We ask for all invoices by default for now
   return getAllInvoices({ id: ownerId, since: '2010-08-01T00:00:00.000Z' })
     .then(sendToApi({ apiConfig, signal }))
     .then((invoices) => {
       return asyncMap(invoices, async (i) => formatInvoice(apiConfig, ownerId, i));
-    });
-}
-
-// TODO: move to clever-client
-function getAllInvoices (params) {
-  return Promise
-    .resolve({
-      method: 'get',
-      url: `/v4/billing/organisations/${params.id}/invoices`,
-      headers: { Accept: 'application/json' },
-      queryParams: pickNonNull(params, ['since']),
-      // no body
     });
 }
 
@@ -68,7 +44,6 @@ async function formatInvoice (apiConfig, ownerId, rawInvoice) {
   };
 }
 
-// TODO: move to clever-client
 function getDownloadUrl (apiConfig, ownerId, invoiceNumber) {
   return getInvoice({ id: ownerId, invoiceNumber, type: '.pdf' })
     .then(prefixUrl(apiConfig.API_HOST))

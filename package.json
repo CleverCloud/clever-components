@@ -39,7 +39,7 @@
     "storybook:dev": "wds -p 6006"
   },
   "dependencies": {
-    "@clevercloud/client": "^7.3.2",
+    "@clevercloud/client": "^7.4.0",
     "chart.js": "^2.9.4",
     "chartjs-plugin-datalabels": "^0.7.0",
     "clipboard-copy": "^4.0.1",
