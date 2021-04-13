@@ -6,6 +6,10 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+...
+
+## 6.3.0 (2021-04-13)
+
 * Introduce `defaultThemeStyles` with monospace font-family 
 * `<cc-invoice>`: adjust spacing around "Download PDF" for narrow mode
 * `<cc-invoice-table>`: introduce a responsive system (big/small render modes)
