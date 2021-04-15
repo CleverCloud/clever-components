@@ -7,6 +7,8 @@ title: Changelog
 ## Unreleased (????-??-??)
 
 * `<cc-button>`: Add a circle form when in hide-text with an image
+* New component:
+  * `<cc-pricing-table>`
 
 ### For devs
 
