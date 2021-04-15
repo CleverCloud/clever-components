@@ -34,6 +34,7 @@ import { linkStyles } from '../templates/cc-link.js';
  * * If the button `disabled` mode is set during the delay, the `cc-button:click` event is not fired.
  * * If you set `delay=0`, the button will have the same width as other buttons with delay, but the event will be triggered instantly.
  *
+ * @prop {Boolean} circle - Sets button UI to a circle form when in `hide-text` and `image` mode.
  * @prop {Boolean} danger - Sets button UI _mode_ to danger.
  * @prop {Number} delay - If set, enables delay mechanism and defined the number of seconds before the `cc-button:click` event is actually fired.
  * @prop {Boolean} disabled - Sets `disabled` attribute on inner native `<button>` element.
@@ -55,6 +56,7 @@ export class CcButton extends LitElement {
 
   static get properties () {
     return {
+      circle: { type: Boolean },
       danger: { type: Boolean },
       delay: { type: Number },
       disabled: { type: Boolean, reflect: true },
@@ -73,6 +75,7 @@ export class CcButton extends LitElement {
 
   constructor () {
     super();
+    this.circle = false;
     this.danger = false;
     this.disabled = false;
     this.link = false;
@@ -155,6 +158,9 @@ export class CcButton extends LitElement {
 
     // outlined is not default except in simple mode
     modes.outlined = (this.outlined || modes.simple) && !this.link;
+
+    // circle mode should only appear in hide-text mode if we have an image
+    modes.circle = this.circle && this.hideText && this.image;
 
     const imageOnlyText = (this.image != null && this.hideText)
       ? (this.textContent || '')
@@ -266,6 +272,10 @@ export class CcButton extends LitElement {
         .outlined {
           background-color: #fff;
           color: var(--btn-color);
+        }
+        
+        .circle {
+          border-radius: 50%;
         }
 
         /* special case: we want to keep simple buttons subtle */
