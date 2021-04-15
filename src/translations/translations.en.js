@@ -401,4 +401,30 @@ export const translations = {
   // cc-zone-input
   'cc-zone-input.error': `Something went wrong while loading zones.`,
   'cc-zone-input.private-map-warning': `Private zones don't appear on the map.`,
+  // cc-pricing-table
+  'cc-pricing-table.add-button': 'Add',
+  'cc-pricing-table.plan': `Plan`,
+  'cc-pricing-table.price': ({ price, code }) => formatCurrency(lang, price, { currency: code }),
+  'cc-pricing-table.price-name-daily': `Price (daily)`,
+  'cc-pricing-table.price-name-monthly': () => sanitize`Price (30&nbsp;days)`,
+  // -> Feature name translation
+  'cc-pricing-table.feature.connection-limit': `Connection limit`,
+  'cc-pricing-table.feature.cpu': `vCPUs`,
+  'cc-pricing-table.feature.databases': `Databases`,
+  'cc-pricing-table.feature.disk-size': `Disk size`,
+  'cc-pricing-table.feature.gpu': `GPUs`,
+  'cc-pricing-table.feature.has-logs': `Logs`,
+  'cc-pricing-table.feature.has-metrics': `Metrics`,
+  'cc-pricing-table.feature.memory': `RAM`,
+  'cc-pricing-table.feature.version': `Version`,
+  // -> Feature type format
+  'cc-pricing-table.type.boolean': ({ boolean }) => `${boolean ? 'Yes' : 'No'}`,
+  'cc-pricing-table.type.boolean-shared': ({ shared }) => `${shared ? 'Shared' : 'Dedicated'}`,
+  'cc-pricing-table.type.bytes': ({ bytes }) => formatBytes(bytes, 0, 3),
+  'cc-pricing-table.type.number': ({ number }) => formatNumber(lang, number),
+  'cc-pricing-table.type.number-cpu-runtime': ({ cpu, shared }) => {
+    return shared
+      ? sanitize`<em title="low priority">${formatNumber(lang, cpu)}<code>*</code></em>`
+      : formatNumber(lang, cpu);
+  },
 };

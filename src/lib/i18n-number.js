@@ -26,7 +26,10 @@ export function formatCurrency (lang, value, options = {}) {
     currency,
     maximumFractionDigits,
   });
-  return nf.format(value);
+  return nf
+    .format(value)
+    // Safari does not support currencySymbol: 'narrow' in Intl.NumberFormat so we need to do this #sorry
+    .replace('$US', '$');
 }
 
 /**
@@ -101,7 +104,7 @@ const IEC_SYMBOLS = ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi'];
 // We tried an implementation with Math.log2() similar to what we do with prepareNumberUnitFormatter
 // but it gets weird around 1125899906842621 :-|
 export function prepareNumberBytesFormatter (lang, byteSymbol, separator) {
-  return (rawValue, fractionDigits = 0) => {
+  return (rawValue, fractionDigits = 0, maxSymbolIndex = IEC_SYMBOLS.length - 1) => {
 
     // Nothing fancy to do when rawValues is under 1 kibibyte
     if (rawValue < 1024) {
@@ -114,9 +117,9 @@ export function prepareNumberBytesFormatter (lang, byteSymbol, separator) {
     });
 
     // Figure out the "magnitude" of the rawValue: greater than 1024 => 1 / greater than 1024^2 => 2 / greater than 1024^3 => 3 ...
-    const symbolIndex = IEC_SYMBOLS.findIndex((symbol, i) => {
+    const symbolIndex = IEC_SYMBOLS.slice(0, maxSymbolIndex + 1).findIndex((symbol, i) => {
       // Return last symbol of the array if we cannot find a symbol
-      return rawValue < 1024 ** (i + 1) || i === IEC_SYMBOLS.length - 1;
+      return rawValue < 1024 ** (i + 1) || i === maxSymbolIndex;
     });
 
     // Use the symbolIndex to "rebase" the rawValue into the new base, 1250 => 1.22 / 1444000 => 1.377...
