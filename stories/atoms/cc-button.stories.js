@@ -137,6 +137,26 @@ export const skeleton = makeStory(conf, {
   items: baseItems.map((p) => ({ ...p, skeleton: true })),
 });
 
+export const circle = makeStory(conf, {
+  docs: `
+If you need a button with just an image in a circle form:
+
+* use the default slot for the text, it will not be displayed but will be used for accessibility purposes
+* use the \`image\` attribute to set the URL of the image
+* add the \`hide-text\` attribute to hide the text
+  * The slotted text is used to set \`title\` and \`aria-label\` attributes on the inner \`<button>\`
+* add the \`circle\` attribute to get the circle form
+
+As you can see here, \`circle\` can only be used if there is an \`image\` and in \`hide-text\` :
+  `,
+  items: [
+    { image: closeSvg, innerHTML: 'Close foo', hideText: true, circle: true },
+    { image: infoSvg, innerHTML: 'Info bar', hideText: true, circle: true },
+    { innerHTML: 'hide-text but no image', hideText: true, circle: true },
+    { image: closeSvg, innerHTML: 'image but no hide-text', circle: true },
+  ],
+});
+
 enhanceStoriesNames({
   modes,
   outlined,
@@ -151,4 +171,5 @@ enhanceStoriesNames({
   image,
   hideText,
   skeleton,
+  circle,
 });
