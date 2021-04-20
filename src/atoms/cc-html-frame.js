@@ -70,6 +70,9 @@ export class CcHtmlFrame extends LitElement {
   disconnectedCallback () {
     super.disconnectedCallback();
     this._mo.disconnect();
+    if (this._blobUrl) {
+      window.URL.revokeObjectURL(this._blobUrl);
+    }
   }
 
   firstUpdated () {
