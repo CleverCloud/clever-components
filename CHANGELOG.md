@@ -6,7 +6,7 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+* Introduce a preview system
 
 ## 6.3.0 (2021-04-13)
 

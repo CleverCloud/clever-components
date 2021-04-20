@@ -34,6 +34,9 @@
     "prepack": "npm run test && npm run lint && npm run components:check-lit && npm run components:check-i18n && npm run components:build",
     "prestorybook:build": "npm run components:docs",
     "prestorybook:dev": "npm run components:docs",
+    "preview:list": "node tasks/preview.js list",
+    "preview:publish": "node tasks/preview.js publish",
+    "preview:delete": "node tasks/preview.js delete",
     "start": "static -H '{\"cache-control\": \"no-cache, no-store, must-revalidate\", \"Pragma\": \"no-cache\", \"Expires\": \"0\"}' -a 0.0.0.0 -p 8080 storybook-static",
     "storybook:build": "build-storybook -o storybook-static${STORYBOOK_PATH}",
     "storybook:dev": "wds -p 6006"
