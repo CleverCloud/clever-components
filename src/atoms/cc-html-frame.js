@@ -11,6 +11,9 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
  * ## Technical details
  *
  * * The HTML contents needs to be wrapped in a `<template>` tag.
+ * * By default, the origin of the inner `<iframe>` is the same as the parent window. This means the iframe can access the same local storage and other origin bound APIs.
+ * * If you want to limit this access and increase the isolation, you can add the `sandbox` attribute, see [MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#attr-sandbox) for more details.
+ * * This implemententation does not create an OOP (out of process) iframe.
  *
  * @prop {String} sandbox - Sets `sandbox` attribute on inner native `<iframe>` element.
  * @prop {String} title - Sets `title` attribute on the inner `<iframe>` element.
@@ -37,7 +40,9 @@ export class CcHtmlFrame extends LitElement {
     `;
   }
 
-  // TODO: We need to improve this:
+  // As explained in the docs, this implemententation does not trigger an OOP iframe
+  // It could help preventing the iframe from impacting the perf of the main page.
+  // There is a technique to do this with a blob URL and opaque origin but to this date, it only works in Chrome (see links).
   // https://shhnjk.blogspot.com/2021/03/a-hack-to-render-untrusted-content-in.html
   // https://shhnjk.github.io/PoCs/process_isolated_content.html
   _updateHtmlSource () {
