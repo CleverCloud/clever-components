@@ -19,7 +19,45 @@ const SKELETON_INVOICE = {
 };
 
 /**
- * TODO DOCS
+ * A block component to display an HTML invoice.
+ *
+ * * 🎨 default CSS display: `block`
+ * <br>
+ * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/invoices/cc-invoice.js)
+ *
+ * ## Type definitions
+ *
+ * ```js
+ * interface Amount {
+ *   amount: Number,
+ *   currency: String,
+ * }
+ * ```
+ *
+ * ```js
+ * type InvoiceStatus = "PENDING" | "PROCESSING" | "PAID" | "PAYMENTHELD" | "CANCELED" | "REFUNDED" | "WONTPAY"
+ * ```
+ *
+ * ```js
+ * type InvoiceType = "INVOICE" | "CREDITNOTE"
+ * ```
+ *
+ * ```js
+ * interface Invoice {
+ *   downloadUrl: String,
+ *   emissionDate: String,
+ *   invoiceHtml: String,
+ *   number: String,
+ *   paymentUrl: String,
+ *   status: InvoiceStatus,
+ *   total: Amount,
+ *   type: InvoiceType,
+ * }
+ * ```
+ *
+ * @prop {Boolean} error - Sets a loading error state.
+ * @prop {Invoice} invoice - Sets the invoice.
+ * @prop {String} number - Sets the invoice number.
  */
 export class CcInvoice extends LitElement {
 
@@ -51,14 +89,11 @@ export class CcInvoice extends LitElement {
         ${!this.error ? html`
           <div slot="button">${ccLink(invoice.downloadUrl, i18n('cc-invoice.download-pdf'), skeleton)}</div>
           <div class="info"><em class=${classMap({ skeleton })}>${i18n('cc-invoice.info', { date, amount })}</em></div>
-          ${skeleton ? html`
-            <cc-loader class="frame"></cc-loader>
-          ` : ''}
-          ${!skeleton ? html`
-            <cc-html-frame class="frame ${classMap({ skeleton })}">
+          <cc-html-frame class="frame" ?loading="${skeleton}">
+            ${!skeleton ? html`
               <template>${unsafeHTML(this.invoice.invoiceHtml)}</template>
-            </cc-html-frame>
-          ` : ''}
+            ` : ''}
+          </cc-html-frame>
         ` : ''}
         ${this.error ? html`
           <cc-error>${i18n('cc-invoice.error')}</cc-error>
@@ -101,10 +136,6 @@ export class CcInvoice extends LitElement {
           height: 31cm;
           max-width: 22cm;
           width: 100%;
-        }
-
-        cc-loader.frame {
-          height: 20rem;
         }
       `,
     ];
