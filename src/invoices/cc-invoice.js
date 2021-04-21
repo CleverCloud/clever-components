@@ -89,14 +89,11 @@ export class CcInvoice extends LitElement {
         ${!this.error ? html`
           <div slot="button">${ccLink(invoice.downloadUrl, i18n('cc-invoice.download-pdf'), skeleton)}</div>
           <div class="info"><em class=${classMap({ skeleton })}>${i18n('cc-invoice.info', { date, amount })}</em></div>
-          ${skeleton ? html`
-            <cc-loader class="frame"></cc-loader>
-          ` : ''}
-          ${!skeleton ? html`
-            <cc-html-frame class="frame ${classMap({ skeleton })}">
+          <cc-html-frame class="frame" ?loading="${skeleton}">
+            ${!skeleton ? html`
               <template>${unsafeHTML(this.invoice.invoiceHtml)}</template>
-            </cc-html-frame>
-          ` : ''}
+            ` : ''}
+          </cc-html-frame>
         ` : ''}
         ${this.error ? html`
           <cc-error>${i18n('cc-invoice.error')}</cc-error>
@@ -139,10 +136,6 @@ export class CcInvoice extends LitElement {
           height: 31cm;
           max-width: 22cm;
           width: 100%;
-        }
-
-        cc-loader.frame {
-          height: 20rem;
         }
       `,
     ];
