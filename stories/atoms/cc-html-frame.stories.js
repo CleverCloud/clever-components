@@ -1,5 +1,5 @@
 import '../../src/atoms/cc-html-frame.js';
-import { makeStory } from '../lib/make-story.js';
+import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
@@ -44,6 +44,10 @@ export const defaultCss = makeStory(conf, {
       innerHTML: '<template><h1>Hello World</h1></template>',
     },
   ],
+});
+
+export const loading = makeStory(conf, {
+  items: [{ loading: true }],
 });
 
 export const script = makeStory(conf, {
@@ -124,12 +128,36 @@ export const sandboxWithAllowScripts = makeStory(conf, {
   ],
 });
 
+export const simulations = makeStory(conf, {
+  items: [{ loading: true }],
+  simulations: [
+    storyWait(2000, ([component]) => {
+      component.innerHTML = `
+        <template>
+          <h1>Hello cats 1</h1>
+          ${Array.from({ length: 100 }, (a, i) => `<img src="https://placekitten.com/${200 + i}/${300 + i}">`).join('\n')}
+        </template>
+      `;
+    }),
+    storyWait(5000, ([component]) => {
+      component.innerHTML = `
+        <template>
+          <h1>Hello cats 2</h1>
+          ${Array.from({ length: 100 }, (a, i) => `<img src="https://placekitten.com/${250 + i}/${350 + i}">`).join('\n')}
+        </template>
+      `;
+    }),
+  ],
+});
+
 enhanceStoriesNames({
   defaultStory,
   heightAndWidth,
   defaultCss,
+  loading,
   script,
   sameOrigin,
   sandbox,
   sandboxWithAllowScripts,
+  simulations,
 });

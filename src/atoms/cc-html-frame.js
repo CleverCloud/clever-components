@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import './cc-loader.js';
 
 /**
  * A low level component that takes some HMTL and puts it in an iframe.
@@ -11,6 +12,7 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
  * ## Details
  *
  * * By default, the inner `<iframe>` is borderless and has a transparent background.
+ * * If you set `loading=true` and a `<template>` inside the main slot, `loading` will be set back to `false` by the component once the inner native `<iframe>` is loaded.
  *
  * ## Technical details
  *
@@ -19,6 +21,7 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
  * * If you want to limit this access and increase the isolation, you can add the `sandbox` attribute, see [MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#attr-sandbox) for more details.
  * * This implemententation does not create an OOP (out of process) iframe.
  *
+ * @prop {Boolean} loading - Enables the loader indicator.
  * @prop {String} sandbox - Sets `sandbox` attribute on inner native `<iframe>` element.
  * @prop {String} title - Sets `title` attribute on the inner `<iframe>` element.
  *
@@ -28,6 +31,7 @@ export class CcHtmlFrame extends LitElement {
 
   static get properties () {
     return {
+      loading: { type: Boolean, reflect: true },
       sandbox: { type: String },
       title: { type: String },
     };
@@ -35,13 +39,8 @@ export class CcHtmlFrame extends LitElement {
 
   constructor (props) {
     super(props);
+    this.loading = false;
     this.title = '';
-  }
-
-  render () {
-    return html`
-      <iframe title=${this.title} src="about:blank" sandbox=${ifDefined(this.sandbox)}></iframe>
-    `;
   }
 
   // As explained in the docs, this implemententation does not trigger an OOP iframe
@@ -57,7 +56,10 @@ export class CcHtmlFrame extends LitElement {
         window.URL.revokeObjectURL(this._blobUrl);
       }
       this._blobUrl = window.URL.createObjectURL(blob);
-      this.shadowRoot.querySelector('iframe').src = this._blobUrl;
+      const $iframe = this.shadowRoot.querySelector('iframe');
+      this.loading = true;
+      $iframe.addEventListener('load', () => (this.loading = false), { once: true });
+      $iframe.src = this._blobUrl;
     }
   }
 
@@ -79,17 +81,39 @@ export class CcHtmlFrame extends LitElement {
     this._updateHtmlSource();
   }
 
+  render () {
+    return html`
+      <iframe title=${this.title} src="about:blank" sandbox=${ifDefined(this.sandbox)}></iframe>
+      ${this.loading ? html`
+        <cc-loader></cc-loader>
+      ` : ''}
+    `;
+  }
+
   static get styles () {
     return [
       // language=CSS
       css`
         :host {
           display: block;
+          position: relative;
         }
 
         iframe {
           border: none;
           height: 100%;
+          width: 100%;
+        }
+
+        :host([loading]) iframe {
+          opacity: 0.25;
+        }
+
+        cc-loader {
+          height: 100%;
+          left: 0;
+          position: absolute;
+          top: 0;
           width: 100%;
         }
       `,

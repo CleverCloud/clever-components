@@ -7,7 +7,9 @@ title: Changelog
 ## Unreleased (????-??-??)
 
 * Introduce a preview system
-* `<cc-html-frame>`: call `revokeObjectURL` when the component is disconnected
+* `<cc-html-frame>`:
+  * call `revokeObjectURL` when the component is disconnected
+  * add `loading` feature
 
 ## 6.3.0 (2021-04-13)
 
