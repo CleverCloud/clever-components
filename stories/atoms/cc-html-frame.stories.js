@@ -11,8 +11,8 @@ const conf = {
   component: 'cc-html-frame',
   css: `
     cc-html-frame {
-      background-color: yellow;
-      border: 1px solid blue;
+      background-color: white;
+      border: 1px solid black;
     }
   `,
 };
@@ -32,6 +32,16 @@ export const heightAndWidth = makeStory(conf, {
       title: 'hello world document',
       innerHTML: '<template><h1>Hello World</h1></template>',
       style: 'height: 600px; width: 400px',
+    },
+  ],
+});
+
+export const defaultCss = makeStory(conf, {
+  css: ``,
+  items: [
+    {
+      title: 'hello world document',
+      innerHTML: '<template><h1>Hello World</h1></template>',
     },
   ],
 });
@@ -58,6 +68,7 @@ export const sandbox = makeStory(conf, {
 enhanceStoriesNames({
   defaultStory,
   heightAndWidth,
+  defaultCss,
   script,
   sandbox,
 });

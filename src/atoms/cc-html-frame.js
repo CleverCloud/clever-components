@@ -8,6 +8,10 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
  * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-html-frame.js)
  *
+ * ## Details
+ *
+ * * By default, the inner `<iframe>` is borderless and has a transparent background.
+ *
  * ## Technical details
  *
  * * The HTML contents needs to be wrapped in a `<template>` tag.
