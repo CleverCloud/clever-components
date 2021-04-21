@@ -19,7 +19,45 @@ const SKELETON_INVOICE = {
 };
 
 /**
- * TODO DOCS
+ * A block component to display an HTML invoice.
+ *
+ * * 🎨 default CSS display: `block`
+ * <br>
+ * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/invoices/cc-invoice.js)
+ *
+ * ## Type definitions
+ *
+ * ```js
+ * interface Amount {
+ *   amount: Number,
+ *   currency: String,
+ * }
+ * ```
+ *
+ * ```js
+ * type InvoiceStatus = "PENDING" | "PROCESSING" | "PAID" | "PAYMENTHELD" | "CANCELED" | "REFUNDED" | "WONTPAY"
+ * ```
+ *
+ * ```js
+ * type InvoiceType = "INVOICE" | "CREDITNOTE"
+ * ```
+ *
+ * ```js
+ * interface Invoice {
+ *   downloadUrl: String,
+ *   emissionDate: String,
+ *   invoiceHtml: String,
+ *   number: String,
+ *   paymentUrl: String,
+ *   status: InvoiceStatus,
+ *   total: Amount,
+ *   type: InvoiceType,
+ * }
+ * ```
+ *
+ * @prop {Boolean} error - Sets a loading error state.
+ * @prop {Invoice} invoice - Sets the invoice.
+ * @prop {String} number - Sets the invoice number.
  */
 export class CcInvoice extends LitElement {
 
