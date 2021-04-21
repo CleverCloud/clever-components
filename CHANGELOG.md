@@ -6,6 +6,10 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+...
+
+## 6.4.0 (2021-04-21)
+
 * Introduce a preview system
 * `<cc-html-frame>`:
   * call `revokeObjectURL` when the component is disconnected
