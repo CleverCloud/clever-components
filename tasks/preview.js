@@ -176,7 +176,7 @@ async function updateListIndex (manifest) {
         </tr>
         ${manifest.previews.map((p) => `
           <tr>
-            <td><a href="https://clever-components-preview.cellar-c2.services.clever-cloud.com/html-frame/index.html"><code>${p.branch}</code></a></td>
+            <td><a href="https://clever-components-preview.cellar-c2.services.clever-cloud.com/${p.branch}/index.html"><code>${p.branch}</code></a></td>
             <td><cc-datetime-relative datetime="${p.updatedAt}">${p.updatedAt}</cc-datetime-relative></td>
             <td><span title="${p.commitId}">${p.commitId.substr(0, 8)}</span></td>
             <td>${p.author}</td>
