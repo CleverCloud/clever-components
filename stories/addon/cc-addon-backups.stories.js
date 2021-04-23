@@ -84,6 +84,214 @@ const backupsOldElasticsearch = {
   ],
 };
 
+const backupsPostgresql = {
+  providerId: 'postgresql-addon',
+  passwordForCommand: 'password-for-command',
+  list: [
+    {
+      createdAt: new Date('2020-12-23T16:31:56.713Z'),
+      expiresAt: new Date('2020-12-28T03:30:00.000Z'),
+      url: 'https://ccbackups-postgresql-6f2688c1-0b43-4434-a890-c4ce4dcc0986.cellar-c2.services.clever-cloud.com/postgresql_6f2688c1-0b43-4434-a890-c4ce4dcc0986-20201223163156.dump?AWSAccessKeyId=Y27YNLBXE7CIA8YCPJPP&Expires=1608836895&Signature=lXo6OYlwDpafH%2BPrgYVPtZnm%2FaM%3D',
+      restoreCommand: 'pg_restore -h buet68oyeprz5tlhcdvn-postgresql.services.clever-cloud.com -p 1204 -U ug6icxp9f2mtjmxbtons -d buet68oyeprz5tlhcdvn --format=c YOUR_BACKUP_FILE',
+      deleteCommand: null,
+    },
+    {
+      createdAt: new Date('2020-12-24T02:02:03.006Z'),
+      expiresAt: new Date('2020-12-29T03:30:00.000Z'),
+      url: 'https://ccbackups-postgresql-6f2688c1-0b43-4434-a890-c4ce4dcc0986.cellar-c2.services.clever-cloud.com/postgresql_6f2688c1-0b43-4434-a890-c4ce4dcc0986-20201224020203.dump?AWSAccessKeyId=Y27YNLBXE7CIA8YCPJPP&Expires=1608836895&Signature=%2B6nVsLAqg2H2P6w%2FHsKGprPOIto%3D',
+      restoreCommand: 'pg_restore -h buet68oyeprz5tlhcdvn-postgresql.services.clever-cloud.com -p 1204 -U ug6icxp9f2mtjmxbtons -d buet68oyeprz5tlhcdvn --format=c YOUR_BACKUP_FILE',
+      deleteCommand: null,
+    },
+    {
+      createdAt: new Date('2020-12-25T16:31:56.713Z'),
+      expiresAt: new Date('2020-12-30T03:30:00.000Z'),
+      url: 'https://ccbackups-postgresql-6f2688c1-0b43-4434-a890-c4ce4dcc0986.cellar-c2.services.clever-cloud.com/postgresql_6f2688c1-0b43-4434-a890-c4ce4dcc0986-20201223163156.dump?AWSAccessKeyId=Y27YNLBXE7CIA8YCPJPP&Expires=1608836895&Signature=lXo6OYlwDpafH%2BPrgYVPtZnm%2FaM%3D',
+      restoreCommand: 'pg_restore -h buet68oyeprz5tlhcdvn-postgresql.services.clever-cloud.com -p 1204 -U ug6icxp9f2mtjmxbtons -d buet68oyeprz5tlhcdvn --format=c YOUR_BACKUP_FILE',
+      deleteCommand: null,
+    },
+    {
+      createdAt: new Date('2020-12-26T02:02:03.006Z'),
+      expiresAt: new Date('2020-12-31T03:30:00.000Z'),
+      url: 'https://ccbackups-postgresql-6f2688c1-0b43-4434-a890-c4ce4dcc0986.cellar-c2.services.clever-cloud.com/postgresql_6f2688c1-0b43-4434-a890-c4ce4dcc0986-20201224020203.dump?AWSAccessKeyId=Y27YNLBXE7CIA8YCPJPP&Expires=1608836895&Signature=%2B6nVsLAqg2H2P6w%2FHsKGprPOIto%3D',
+      restoreCommand: 'pg_restore -h buet68oyeprz5tlhcdvn-postgresql.services.clever-cloud.com -p 1204 -U ug6icxp9f2mtjmxbtons -d buet68oyeprz5tlhcdvn --format=c YOUR_BACKUP_FILE',
+      deleteCommand: null,
+    },
+    {
+      createdAt: new Date('2020-12-27T16:31:56.713Z'),
+      expiresAt: new Date('2021-01-01T03:30:00.000Z'),
+      url: 'https://ccbackups-postgresql-6f2688c1-0b43-4434-a890-c4ce4dcc0986.cellar-c2.services.clever-cloud.com/postgresql_6f2688c1-0b43-4434-a890-c4ce4dcc0986-20201223163156.dump?AWSAccessKeyId=Y27YNLBXE7CIA8YCPJPP&Expires=1608836895&Signature=lXo6OYlwDpafH%2BPrgYVPtZnm%2FaM%3D',
+      restoreCommand: 'pg_restore -h buet68oyeprz5tlhcdvn-postgresql.services.clever-cloud.com -p 1204 -U ug6icxp9f2mtjmxbtons -d buet68oyeprz5tlhcdvn --format=c YOUR_BACKUP_FILE',
+      deleteCommand: null,
+    },
+  ],
+};
+
+const backupsMysql = {
+  providerId: 'mysql-addon',
+  passwordForCommand: 'password-for-command',
+  list: [
+    {
+      createdAt: new Date('2020-12-23T16:31:56.713Z'),
+      expiresAt: new Date('2020-12-28T03:30:00.000Z'),
+      url: 'https://ccbackups-mysql-6f2688c1-0b43-4434-a890-c4ce4dcc0986.cellar-c2.services.clever-cloud.com/mysql_6f2688c1-0b43-4434-a890-c4ce4dcc0986-20201223163156.dump?AWSAccessKeyId=Y27YNLBXE7CIA8YCPJPP&Expires=1608836895&Signature=lXo6OYlwDpafH%2BPrgYVPtZnm%2FaM%3D',
+      restoreCommand: 'mysql -h buet68oyeprz5tlhcdvn-mysql.services.clever-cloud.com -P 1204 -u ug6icxp9f2mtjmxbtons -p buet68oyeprz5tlhcdvn < YOUR_BACKUP_FILE',
+      deleteCommand: null,
+    },
+    {
+      createdAt: new Date('2020-12-24T02:02:03.006Z'),
+      expiresAt: new Date('2020-12-29T03:30:00.000Z'),
+      url: 'https://ccbackups-mysql-6f2688c1-0b43-4434-a890-c4ce4dcc0986.cellar-c2.services.clever-cloud.com/mysql_6f2688c1-0b43-4434-a890-c4ce4dcc0986-20201224020203.dump?AWSAccessKeyId=Y27YNLBXE7CIA8YCPJPP&Expires=1608836895&Signature=%2B6nVsLAqg2H2P6w%2FHsKGprPOIto%3D',
+      restoreCommand: 'mysql -h buet68oyeprz5tlhcdvn-mysql.services.clever-cloud.com -P 1204 -u ug6icxp9f2mtjmxbtons -p buet68oyeprz5tlhcdvn < YOUR_BACKUP_FILE',
+      deleteCommand: null,
+    },
+    {
+      createdAt: new Date('2020-12-25T16:31:56.713Z'),
+      expiresAt: new Date('2020-12-30T03:30:00.000Z'),
+      url: 'https://ccbackups-mysql-6f2688c1-0b43-4434-a890-c4ce4dcc0986.cellar-c2.services.clever-cloud.com/mysql_6f2688c1-0b43-4434-a890-c4ce4dcc0986-20201223163156.dump?AWSAccessKeyId=Y27YNLBXE7CIA8YCPJPP&Expires=1608836895&Signature=lXo6OYlwDpafH%2BPrgYVPtZnm%2FaM%3D',
+      restoreCommand: 'mysql -h buet68oyeprz5tlhcdvn-mysql.services.clever-cloud.com -P 1204 -u ug6icxp9f2mtjmxbtons -p buet68oyeprz5tlhcdvn < YOUR_BACKUP_FILE',
+      deleteCommand: null,
+    },
+    {
+      createdAt: new Date('2020-12-26T02:02:03.006Z'),
+      expiresAt: new Date('2020-12-31T03:30:00.000Z'),
+      url: 'https://ccbackups-mysql-6f2688c1-0b43-4434-a890-c4ce4dcc0986.cellar-c2.services.clever-cloud.com/mysql_6f2688c1-0b43-4434-a890-c4ce4dcc0986-20201224020203.dump?AWSAccessKeyId=Y27YNLBXE7CIA8YCPJPP&Expires=1608836895&Signature=%2B6nVsLAqg2H2P6w%2FHsKGprPOIto%3D',
+      restoreCommand: 'mysql -h buet68oyeprz5tlhcdvn-mysql.services.clever-cloud.com -P 1204 -u ug6icxp9f2mtjmxbtons -p buet68oyeprz5tlhcdvn < YOUR_BACKUP_FILE',
+      deleteCommand: null,
+    },
+    {
+      createdAt: new Date('2020-12-27T16:31:56.713Z'),
+      expiresAt: new Date('2021-01-01T03:30:00.000Z'),
+      url: 'https://ccbackups-mysql-6f2688c1-0b43-4434-a890-c4ce4dcc0986.cellar-c2.services.clever-cloud.com/mysql_6f2688c1-0b43-4434-a890-c4ce4dcc0986-20201223163156.dump?AWSAccessKeyId=Y27YNLBXE7CIA8YCPJPP&Expires=1608836895&Signature=lXo6OYlwDpafH%2BPrgYVPtZnm%2FaM%3D',
+      restoreCommand: 'mysql -h buet68oyeprz5tlhcdvn-mysql.services.clever-cloud.com -P 1204 -u ug6icxp9f2mtjmxbtons -p buet68oyeprz5tlhcdvn < YOUR_BACKUP_FILE',
+      deleteCommand: null,
+    },
+  ],
+};
+
+const backupsMongodb = {
+  providerId: 'mongodb-addon',
+  passwordForCommand: 'password-for-command',
+  list: [
+    {
+      createdAt: new Date('2020-12-23T16:31:56.713Z'),
+      expiresAt: new Date('2020-12-28T03:30:00.000Z'),
+      url: 'https://ccbackups-mongodb-6f2688c1-0b43-4434-a890-c4ce4dcc0986.cellar-c2.services.clever-cloud.com/mongodb_6f2688c1-0b43-4434-a890-c4ce4dcc0986-20201223163156.dump?AWSAccessKeyId=Y27YNLBXE7CIA8YCPJPP&Expires=1608836895&Signature=lXo6OYlwDpafH%2BPrgYVPtZnm%2FaM%3D',
+      restoreCommand: 'mongorestore --host=buet68oyeprz5tlhcdvn-mongodb.services.clever-cloud.com --port=1204 --username=ug6icxp9f2mtjmxbtons --nsFrom="buet68oyeprz5tlhcdvn.*" --nsTo="buet68oyeprz5tlhcdvn.*" --authenticationDatabase=buet68oyeprz5tlhcdvn --archive=YOUR_BACKUP_FILE --gzip',
+      deleteCommand: null,
+    },
+    {
+      createdAt: new Date('2020-12-24T02:02:03.006Z'),
+      expiresAt: new Date('2020-12-29T03:30:00.000Z'),
+      url: 'https://ccbackups-mongodb-6f2688c1-0b43-4434-a890-c4ce4dcc0986.cellar-c2.services.clever-cloud.com/mongodb_6f2688c1-0b43-4434-a890-c4ce4dcc0986-20201224020203.dump?AWSAccessKeyId=Y27YNLBXE7CIA8YCPJPP&Expires=1608836895&Signature=%2B6nVsLAqg2H2P6w%2FHsKGprPOIto%3D',
+      restoreCommand: 'mongorestore --host=buet68oyeprz5tlhcdvn-mongodb.services.clever-cloud.com --port=1204 --username=ug6icxp9f2mtjmxbtons --nsFrom="buet68oyeprz5tlhcdvn.*" --nsTo="buet68oyeprz5tlhcdvn.*" --authenticationDatabase=buet68oyeprz5tlhcdvn --archive=YOUR_BACKUP_FILE --gzip',
+      deleteCommand: null,
+    },
+    {
+      createdAt: new Date('2020-12-25T16:31:56.713Z'),
+      expiresAt: new Date('2020-12-30T03:30:00.000Z'),
+      url: 'https://ccbackups-mongodb-6f2688c1-0b43-4434-a890-c4ce4dcc0986.cellar-c2.services.clever-cloud.com/mongodb_6f2688c1-0b43-4434-a890-c4ce4dcc0986-20201223163156.dump?AWSAccessKeyId=Y27YNLBXE7CIA8YCPJPP&Expires=1608836895&Signature=lXo6OYlwDpafH%2BPrgYVPtZnm%2FaM%3D',
+      restoreCommand: 'mongorestore --host=buet68oyeprz5tlhcdvn-mongodb.services.clever-cloud.com --port=1204 --username=ug6icxp9f2mtjmxbtons --nsFrom="buet68oyeprz5tlhcdvn.*" --nsTo="buet68oyeprz5tlhcdvn.*" --authenticationDatabase=buet68oyeprz5tlhcdvn --archive=YOUR_BACKUP_FILE --gzip',
+      deleteCommand: null,
+    },
+    {
+      createdAt: new Date('2020-12-26T02:02:03.006Z'),
+      expiresAt: new Date('2020-12-31T03:30:00.000Z'),
+      url: 'https://ccbackups-mongodb-6f2688c1-0b43-4434-a890-c4ce4dcc0986.cellar-c2.services.clever-cloud.com/mongodb_6f2688c1-0b43-4434-a890-c4ce4dcc0986-20201224020203.dump?AWSAccessKeyId=Y27YNLBXE7CIA8YCPJPP&Expires=1608836895&Signature=%2B6nVsLAqg2H2P6w%2FHsKGprPOIto%3D',
+      restoreCommand: 'mongorestore --host=buet68oyeprz5tlhcdvn-mongodb.services.clever-cloud.com --port=1204 --username=ug6icxp9f2mtjmxbtons --nsFrom="buet68oyeprz5tlhcdvn.*" --nsTo="buet68oyeprz5tlhcdvn.*" --authenticationDatabase=buet68oyeprz5tlhcdvn --archive=YOUR_BACKUP_FILE --gzip',
+      deleteCommand: null,
+    },
+    {
+      createdAt: new Date('2020-12-27T16:31:56.713Z'),
+      expiresAt: new Date('2021-01-01T03:30:00.000Z'),
+      url: 'https://ccbackups-mongodb-6f2688c1-0b43-4434-a890-c4ce4dcc0986.cellar-c2.services.clever-cloud.com/mongodb_6f2688c1-0b43-4434-a890-c4ce4dcc0986-20201223163156.dump?AWSAccessKeyId=Y27YNLBXE7CIA8YCPJPP&Expires=1608836895&Signature=lXo6OYlwDpafH%2BPrgYVPtZnm%2FaM%3D',
+      restoreCommand: 'mongorestore --host=buet68oyeprz5tlhcdvn-mongodb.services.clever-cloud.com --port=1204 --username=ug6icxp9f2mtjmxbtons --nsFrom="buet68oyeprz5tlhcdvn.*" --nsTo="buet68oyeprz5tlhcdvn.*" --authenticationDatabase=buet68oyeprz5tlhcdvn --archive=YOUR_BACKUP_FILE --gzip',
+      deleteCommand: null,
+    },
+  ],
+};
+
+const backupsRedis = {
+  providerId: 'redis-addon',
+  list: [
+    {
+      createdAt: new Date('2020-12-23T16:31:56.713Z'),
+      expiresAt: new Date('2020-12-28T03:30:00.000Z'),
+      url: 'https://ccbackups-redis-6f2688c1-0b43-4434-a890-c4ce4dcc0986.cellar-c2.services.clever-cloud.com/redis_6f2688c1-0b43-4434-a890-c4ce4dcc0986-20201223163156.dump?AWSAccessKeyId=Y27YNLBXE7CIA8YCPJPP&Expires=1608836895&Signature=lXo6OYlwDpafH%2BPrgYVPtZnm%2FaM%3D',
+      restoreCommand: null,
+      deleteCommand: null,
+    },
+    {
+      createdAt: new Date('2020-12-24T02:02:03.006Z'),
+      expiresAt: new Date('2020-12-29T03:30:00.000Z'),
+      url: 'https://ccbackups-redis-6f2688c1-0b43-4434-a890-c4ce4dcc0986.cellar-c2.services.clever-cloud.com/redis_6f2688c1-0b43-4434-a890-c4ce4dcc0986-20201224020203.dump?AWSAccessKeyId=Y27YNLBXE7CIA8YCPJPP&Expires=1608836895&Signature=%2B6nVsLAqg2H2P6w%2FHsKGprPOIto%3D',
+      restoreCommand: null,
+      deleteCommand: null,
+    },
+    {
+      createdAt: new Date('2020-12-25T16:31:56.713Z'),
+      expiresAt: new Date('2020-12-30T03:30:00.000Z'),
+      url: 'https://ccbackups-redis-6f2688c1-0b43-4434-a890-c4ce4dcc0986.cellar-c2.services.clever-cloud.com/redis_6f2688c1-0b43-4434-a890-c4ce4dcc0986-20201223163156.dump?AWSAccessKeyId=Y27YNLBXE7CIA8YCPJPP&Expires=1608836895&Signature=lXo6OYlwDpafH%2BPrgYVPtZnm%2FaM%3D',
+      restoreCommand: null,
+      deleteCommand: null,
+    },
+    {
+      createdAt: new Date('2020-12-26T02:02:03.006Z'),
+      expiresAt: new Date('2020-12-31T03:30:00.000Z'),
+      url: 'https://ccbackups-redis-6f2688c1-0b43-4434-a890-c4ce4dcc0986.cellar-c2.services.clever-cloud.com/redis_6f2688c1-0b43-4434-a890-c4ce4dcc0986-20201224020203.dump?AWSAccessKeyId=Y27YNLBXE7CIA8YCPJPP&Expires=1608836895&Signature=%2B6nVsLAqg2H2P6w%2FHsKGprPOIto%3D',
+      restoreCommand: null,
+      deleteCommand: null,
+    },
+    {
+      createdAt: new Date('2020-12-27T16:31:56.713Z'),
+      expiresAt: new Date('2021-01-01T03:30:00.000Z'),
+      url: 'https://ccbackups-redis-6f2688c1-0b43-4434-a890-c4ce4dcc0986.cellar-c2.services.clever-cloud.com/redis_6f2688c1-0b43-4434-a890-c4ce4dcc0986-20201223163156.dump?AWSAccessKeyId=Y27YNLBXE7CIA8YCPJPP&Expires=1608836895&Signature=lXo6OYlwDpafH%2BPrgYVPtZnm%2FaM%3D',
+      restoreCommand: null,
+      deleteCommand: null,
+    },
+  ],
+};
+
+const backupsJenkins = {
+  providerId: 'jenkins',
+  list: [
+    {
+      createdAt: new Date('2020-12-23T16:31:56.713Z'),
+      expiresAt: new Date('2020-12-28T03:30:00.000Z'),
+      url: 'https://ccbackups-jenkins-6f2688c1-0b43-4434-a890-c4ce4dcc0986.cellar-c2.services.clever-cloud.com/jenkins_6f2688c1-0b43-4434-a890-c4ce4dcc0986-20201223163156.dump?AWSAccessKeyId=Y27YNLBXE7CIA8YCPJPP&Expires=1608836895&Signature=lXo6OYlwDpafH%2BPrgYVPtZnm%2FaM%3D',
+      restoreCommand: null,
+      deleteCommand: null,
+    },
+    {
+      createdAt: new Date('2020-12-24T02:02:03.006Z'),
+      expiresAt: new Date('2020-12-29T03:30:00.000Z'),
+      url: 'https://ccbackups-jenkins-6f2688c1-0b43-4434-a890-c4ce4dcc0986.cellar-c2.services.clever-cloud.com/jenkins_6f2688c1-0b43-4434-a890-c4ce4dcc0986-20201224020203.dump?AWSAccessKeyId=Y27YNLBXE7CIA8YCPJPP&Expires=1608836895&Signature=%2B6nVsLAqg2H2P6w%2FHsKGprPOIto%3D',
+      restoreCommand: null,
+      deleteCommand: null,
+    },
+    {
+      createdAt: new Date('2020-12-25T16:31:56.713Z'),
+      expiresAt: new Date('2020-12-30T03:30:00.000Z'),
+      url: 'https://ccbackups-jenkins-6f2688c1-0b43-4434-a890-c4ce4dcc0986.cellar-c2.services.clever-cloud.com/jenkins_6f2688c1-0b43-4434-a890-c4ce4dcc0986-20201223163156.dump?AWSAccessKeyId=Y27YNLBXE7CIA8YCPJPP&Expires=1608836895&Signature=lXo6OYlwDpafH%2BPrgYVPtZnm%2FaM%3D',
+      restoreCommand: null,
+      deleteCommand: null,
+    },
+    {
+      createdAt: new Date('2020-12-26T02:02:03.006Z'),
+      expiresAt: new Date('2020-12-31T03:30:00.000Z'),
+      url: 'https://ccbackups-jenkins-6f2688c1-0b43-4434-a890-c4ce4dcc0986.cellar-c2.services.clever-cloud.com/jenkins_6f2688c1-0b43-4434-a890-c4ce4dcc0986-20201224020203.dump?AWSAccessKeyId=Y27YNLBXE7CIA8YCPJPP&Expires=1608836895&Signature=%2B6nVsLAqg2H2P6w%2FHsKGprPOIto%3D',
+      restoreCommand: null,
+      deleteCommand: null,
+    },
+    {
+      createdAt: new Date('2020-12-27T16:31:56.713Z'),
+      expiresAt: new Date('2021-01-01T03:30:00.000Z'),
+      url: 'https://ccbackups-jenkins-6f2688c1-0b43-4434-a890-c4ce4dcc0986.cellar-c2.services.clever-cloud.com/jenkins_6f2688c1-0b43-4434-a890-c4ce4dcc0986-20201223163156.dump?AWSAccessKeyId=Y27YNLBXE7CIA8YCPJPP&Expires=1608836895&Signature=lXo6OYlwDpafH%2BPrgYVPtZnm%2FaM%3D',
+      restoreCommand: null,
+      deleteCommand: null,
+    },
+  ],
+};
+
 export default {
   title: '🛠 Addon/<cc-addon-backups>',
   component: 'cc-addon-backups',
@@ -145,6 +353,96 @@ export const dataLoadedWithOldElasticsearchAndBigList = makeStory(conf, {
   }],
 });
 
+export const dataLoadedWithPostgresql = makeStory(conf, {
+  items: [{ backups: backupsPostgresql }],
+});
+
+export const dataLoadedWithPostgresqlAndBigList = makeStory(conf, {
+  items: [{
+    backups: {
+      providerId: backupsPostgresql.providerId,
+      list: [
+        ...backupsPostgresql.list,
+        ...backupsPostgresql.list,
+        ...backupsPostgresql.list,
+        ...backupsPostgresql.list,
+      ],
+    },
+  }],
+});
+
+export const dataLoadedWithMysql = makeStory(conf, {
+  items: [{ backups: backupsMysql }],
+});
+
+export const dataLoadedWithMysqlAndBigList = makeStory(conf, {
+  items: [{
+    backups: {
+      providerId: backupsMysql.providerId,
+      list: [
+        ...backupsMysql.list,
+        ...backupsMysql.list,
+        ...backupsMysql.list,
+        ...backupsMysql.list,
+      ],
+    },
+  }],
+});
+
+export const dataLoadedWithMongodb = makeStory(conf, {
+  items: [{ backups: backupsMongodb }],
+});
+
+export const dataLoadedWithMongodbAndBigList = makeStory(conf, {
+  items: [{
+    backups: {
+      providerId: backupsMongodb.providerId,
+      list: [
+        ...backupsMongodb.list,
+        ...backupsMongodb.list,
+        ...backupsMongodb.list,
+        ...backupsMongodb.list,
+      ],
+    },
+  }],
+});
+
+export const dataLoadedWithRedis = makeStory(conf, {
+  items: [{ backups: backupsRedis }],
+});
+
+export const dataLoadedWithRedisAndBigList = makeStory(conf, {
+  items: [{
+    backups: {
+      providerId: backupsRedis.providerId,
+      list: [
+        ...backupsRedis.list,
+        ...backupsRedis.list,
+        ...backupsRedis.list,
+        ...backupsRedis.list,
+      ],
+    },
+  }],
+});
+
+export const dataLoadedWithJenkins = makeStory(conf, {
+  items: [{ backups: backupsJenkins }],
+});
+
+export const dataLoadedWithJenkinsAndBigList = makeStory(conf, {
+  items: [{
+    backups: {
+      providerId: backupsJenkins.providerId,
+      list: [
+        ...backupsJenkins.list,
+        ...backupsJenkins.list,
+        ...backupsJenkins.list,
+        ...backupsJenkins.list,
+      ],
+    },
+  }],
+});
+
 export const simulations = makeStory(conf, {
   items: [{}, {}, {}],
   simulations: [
@@ -165,5 +463,15 @@ enhanceStoriesNames({
   dataLoadedWithNewElasticsearchAndSmallList,
   dataLoadedWithOldElasticsearch,
   dataLoadedWithOldElasticsearchAndBigList,
+  dataLoadedWithPostgresql,
+  dataLoadedWithPostgresqlAndBigList,
+  dataLoadedWithMysql,
+  dataLoadedWithMysqlAndBigList,
+  dataLoadedWithMongodb,
+  dataLoadedWithMongodbAndBigList,
+  dataLoadedWithRedis,
+  dataLoadedWithRedisAndBigList,
+  dataLoadedWithJenkins,
+  dataLoadedWithJenkinsAndBigList,
   simulations,
 });
