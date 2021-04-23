@@ -32,7 +32,7 @@ npm run storybook:build
 Once the build is ready, you can publish a preview with:
 
 ```
-npm run preview:sync
+npm run preview:publish
 ```
 
 * By the default, the preview will be named like your current branch.
@@ -41,7 +41,7 @@ npm run preview:sync
 You can publish a preview with a different name with:
 
 ```
-npm run preview:sync feature-x-blue
+npm run preview:publish feature-x-blue
 ```
 
 This is often required when you work on a branch but you want to share multiple iterations/ideas of a given feature.
