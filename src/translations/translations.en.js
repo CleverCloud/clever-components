@@ -42,7 +42,7 @@ function formatFlavor (f) {
 }
 
 export const translations = {
-  LANGUAGE: '🇬🇧 English',
+  LANGUAGE: 'English',
   // cc-addon-backups
   'cc-addon-backups.command-password': `This command will ask for your password, here it is:`,
   'cc-addon-backups.close-btn': `Close this panel`,

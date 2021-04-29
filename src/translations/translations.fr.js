@@ -55,7 +55,7 @@ function formatFlavor (f) {
 }
 
 export const translations = {
-  LANGUAGE: '🇫🇷 Français',
+  LANGUAGE: 'Français',
   // cc-addon-backups
   'cc-addon-backups.command-password': `Cette commande vous demandera votre mot de passe, le voici :`,
   'cc-addon-backups.close-btn': `Fermer ce panneau`,
