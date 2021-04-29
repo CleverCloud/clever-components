@@ -6,7 +6,9 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+### For devs
+
+* i18n: simplify formatter system and add JSDoc
 
 ## 6.4.0 (2021-04-21)
 

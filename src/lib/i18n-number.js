@@ -1,3 +1,49 @@
+/**
+ * Format a given number
+ * @param {String} lang - BCP 47 language tag
+ * @param {Number} value
+ * @returns {String}
+ */
+export function formatNumber (lang, value) {
+  const nf = new Intl.NumberFormat(lang);
+  return nf.format(value);
+}
+
+/**
+ * Format a given number as a currency
+ * @param {String} lang - BCP 47 language tag
+ * @param {Number} value
+ * @param {Object} options
+ * @param {String} options.currency - Currency code (defaults to EUR)
+ * @param {String} options.maximumFractionDigits
+ * @returns {String}
+ */
+export function formatCurrency (lang, value, options = {}) {
+  const { currency = 'EUR' } = options;
+  const { maximumFractionDigits = 2 } = options;
+  const nf = new Intl.NumberFormat(lang, {
+    style: 'currency',
+    currency,
+    maximumFractionDigits,
+  });
+  return nf.format(value);
+}
+
+/**
+ * Format a given number as a percentage
+ * @param {String} lang - BCP 47 language tag
+ * @param {Number} value
+ * @returns {String}
+ */
+export function formatPercent (lang, value) {
+  const nf = new Intl.NumberFormat(lang, {
+    style: 'percent',
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  });
+  return nf.format(value);
+}
+
 // Intl.NumberFormat has a `notation: 'compact'` option.
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat
 // This is close to what we want to achieve for compact number display but:
