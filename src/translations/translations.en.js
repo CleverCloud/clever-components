@@ -1,12 +1,18 @@
 import {
-  prepareFormatDate,
-  prepareFormatDateOnly,
-  prepareFormatDatetime,
+  formatDate,
+  formatDateOnly,
+  formatDatetime,
+  formatHours,
   prepareFormatDistanceToNow,
-  prepareFormatHours,
 } from '../lib/i18n-date.js';
-import { prepareCountryName } from '../lib/i18n-display.js';
-import { prepareNumberBytesFormatter, prepareNumberUnitFormatter } from '../lib/i18n-number.js';
+import { getCountryName } from '../lib/i18n-display.js';
+import {
+  formatCurrency,
+  formatNumber,
+  formatPercent,
+  prepareNumberBytesFormatter,
+  prepareNumberUnitFormatter,
+} from '../lib/i18n-number.js';
 import { sanitize } from '../lib/i18n-sanitize.js';
 
 export const lang = 'en';
@@ -23,22 +29,8 @@ const formatDistanceToNow = prepareFormatDistanceToNow(lang, (value, unit) => {
   return `${value} ${pluralUnit} ago`;
 }, 'just now');
 
-const formatDate = prepareFormatDate(lang);
-const formatDatetime = prepareFormatDatetime(lang);
-const formatDateOnly = prepareFormatDateOnly(lang);
-const formatHours = prepareFormatHours(lang);
-
-const currencyFormatter = new Intl.NumberFormat(lang, { style: 'currency', currency: 'EUR' });
-const percentFormatter = new Intl.NumberFormat(lang, {
-  style: 'percent',
-  minimumFractionDigits: 1,
-  maximumFractionDigits: 1,
-});
-const numberFormatter = new Intl.NumberFormat(lang);
 const formatNumberUnit = prepareNumberUnitFormatter(lang);
 const formatBytes = prepareNumberBytesFormatter(lang, 'B', ' ');
-
-const countryName = prepareCountryName(lang);
 
 // Shared logic between translations, is it a good idea?
 function formatFlavor (f) {
@@ -50,11 +42,11 @@ function formatFlavor (f) {
 }
 
 export const translations = {
-  LANGUAGE: '🇬🇧 English',
+  LANGUAGE: 'English',
   // cc-addon-backups
   'cc-addon-backups.command-password': `This command will ask for your password, here it is:`,
   'cc-addon-backups.close-btn': `Close this panel`,
-  'cc-addon-backups.delete': ({ createdAt }) => sanitize`Delete the backup from <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
+  'cc-addon-backups.delete': ({ createdAt }) => sanitize`Delete the backup from <strong title="${formatDate(lang, createdAt)}">${formatDatetime(lang, createdAt)}</strong>`,
   'cc-addon-backups.delete.btn': 'delete...',
   'cc-addon-backups.delete.with-service.title.es-addon': `Delete with Kibana`,
   'cc-addon-backups.delete.with-service.description.es-addon': ({ href }) => sanitize`You can delete this backup using Kibana by going to the <a href="${href}">backup repository</a>.`,
@@ -66,14 +58,16 @@ export const translations = {
   'cc-addon-backups.link.es-addon': `open in Kibana`,
   'cc-addon-backups.link.es-addon-old': `open in Elasticsearch`,
   'cc-addon-backups.loading-error': `Something went wrong while loading the backups.`,
-  'cc-addon-backups.restore': ({ createdAt }) => sanitize`Restore the backup from <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
+  'cc-addon-backups.restore': ({ createdAt }) => sanitize`Restore the backup from <strong title="${formatDate(lang, createdAt)}">${formatDatetime(lang, createdAt)}</strong>`,
   'cc-addon-backups.restore.btn': 'restore...',
   'cc-addon-backups.restore.with-service.title.es-addon': `Restore with Kibana`,
   'cc-addon-backups.restore.with-service.description.es-addon': ({ href }) => sanitize`You can restore this backup using Kibana by going to the <a href="${href}">backup repository</a>.`,
   'cc-addon-backups.restore.manual.title': `Restore manually`,
   'cc-addon-backups.restore.manual.description.es-addon': `You can restore this backup using cURL by executing this command:`,
-  'cc-addon-backups.text': ({ createdAt, expiresAt }) => sanitize`Backup from <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong> (expires on <strong>${formatDateOnly(expiresAt)}</strong>)`,
-  'cc-addon-backups.text.user-defined-retention': ({ createdAt }) => sanitize`Backup from <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong> (expires after defined retention)`,
+  'cc-addon-backups.text': ({ createdAt, expiresAt }) => {
+    return sanitize`Backup from <strong title="${formatDate(lang, createdAt)}">${formatDatetime(lang, createdAt)}</strong> (expires on <strong>${formatDateOnly(lang, expiresAt)}</strong>)`;
+  },
+  'cc-addon-backups.text.user-defined-retention': ({ createdAt }) => sanitize`Backup from <strong title="${formatDate(lang, createdAt)}">${formatDatetime(lang, createdAt)}</strong> (expires after defined retention)`,
   'cc-addon-backups.title': `Backups`,
   // cc-addon-credentials
   'cc-addon-credentials.description.apm': `Use those credentials to connect an APM Server instance to your Elasticsearch cluster.`,
@@ -93,13 +87,15 @@ export const translations = {
   'cc-addon-elasticsearch-options.description.kibana': () => sanitize`Kibana is the admin UI for the Elastic Stack. It lets you visualize your Elasticsearch data and navigate the stack so you can do anything from tracking query load to understanding the way requests flow through your apps. Learn more in the <a href="https://www.elastic.co/guide/en/kibana/master/index.html">official Kibana documentation</a>.`,
   'cc-addon-elasticsearch-options.description.apm': () => sanitize`Elastic APM server is an application performance monitoring system built on the Elastic Stack. Deploying this will allow you to automatically send APM metrics from any applications linked to the Elasticsearch add-on instance, providing you add the Elastic APM agent to the application code. Learn more in the <a href="https://www.elastic.co/guide/en/apm/get-started/current/overview.html">official APM server documentation</a>.`,
   'cc-addon-elasticsearch-options.warning.kibana': `If you enable this option, we'll deploy and manage a Kibana application for you, this will lead to additional costs.`,
-  'cc-addon-elasticsearch-options.warning.kibana.details': (flavor) => sanitize`By default, the app will start on a <strong title="${formatFlavor(flavor)}">${flavor.name} instance</strong> which costs around <strong>${currencyFormatter.format(flavor.monthlyCost)} per month</strong>.`,
+  'cc-addon-elasticsearch-options.warning.kibana.details': (flavor) => sanitize`By default, the app will start on a <strong title="${formatFlavor(flavor)}">${flavor.name} instance</strong> which costs around <strong>${formatCurrency(lang, flavor.monthlyCost)} per month</strong>.`,
   'cc-addon-elasticsearch-options.warning.apm': `If you enable this option, we'll deploy and manage an Elastic APM server application for you, this will lead to additional costs.`,
-  'cc-addon-elasticsearch-options.warning.apm.details': (flavor) => sanitize`By default, the app will start on a <strong title="${formatFlavor(flavor)}">${flavor.name} instance</strong> which costs around <strong>${currencyFormatter.format(flavor.monthlyCost)} per month</strong>.`,
+  'cc-addon-elasticsearch-options.warning.apm.details': (flavor) => sanitize`By default, the app will start on a <strong title="${formatFlavor(flavor)}">${flavor.name} instance</strong> which costs around <strong>${formatCurrency(lang, flavor.monthlyCost)} per month</strong>.`,
   // cc-addon-encryption-at-rest-option
   'cc-addon-encryption-at-rest-option.description': () => sanitize`Encryption at rest encrypts the entire data disk of your add-on. It prevents reading the stored data in case of a physical access to the hard drive. More information in our <a href="https://www.clever-cloud.com/doc/administrate/encryption-at-rest/">documentation</a>.`,
   'cc-addon-encryption-at-rest-option.title': `Encryption at rest`,
-  'cc-addon-encryption-at-rest-option.warning': ({ percent, price }) => sanitize`This option is currently free. In the future, it will be billed ${percentFormatter.format(percent)} of the plan price, which amounts to <strong>${currencyFormatter.format(price)} per month</strong> here.`,
+  'cc-addon-encryption-at-rest-option.warning': ({ percent, price }) => {
+    return sanitize`This option is currently free. In the future, it will be billed ${formatPercent(lang, percent)} of the plan price, which amounts to <strong>${formatCurrency(lang, price)} per month</strong> here.`;
+  },
   // cc-addon-features
   'cc-addon-features.details': `Here's the list of all the features of your add-on. Features may evolve and your add-on would need a migration to match them all.`,
   'cc-addon-features.feature-name.disk': `Disk`,
@@ -144,7 +140,7 @@ export const translations = {
   'cc-button.cancel': `Click to cancel`,
   // cc-datetime-relative
   'cc-datetime-relative.distance': ({ date }) => formatDistanceToNow(date),
-  'cc-datetime-relative.title': ({ date }) => formatDate(date),
+  'cc-datetime-relative.title': ({ date }) => formatDate(lang, date),
   // cc-elasticsearch-info
   'cc-elasticsearch-info.error': `Something went wrong while loading add-ons linked to this application.`,
   'cc-elasticsearch-info.info': `Info`,
@@ -159,8 +155,8 @@ export const translations = {
   'cc-header-addon.plan': `Plan`,
   'cc-header-addon.version': `Version`,
   'cc-header-addon.creation-date': `Creation date`,
-  'cc-header-addon.creation-date.short': ({ date }) => formatDateOnly(date),
-  'cc-header-addon.creation-date.full': ({ date }) => formatDate(date),
+  'cc-header-addon.creation-date.short': ({ date }) => formatDateOnly(lang, date),
+  'cc-header-addon.creation-date.full': ({ date }) => formatDate(lang, date),
   'cc-header-addon.error': `Something went wrong while loading add-on info.`,
   // cc-header-app
   'cc-header-app.action.cancel-deployment': `Cancel deployment`,
@@ -196,7 +192,7 @@ export const translations = {
   'cc-heptapod-info.public-active-users-description': `Public users`,
   'cc-heptapod-info.storage-bytes': ({ storage }) => formatBytes(storage, 1),
   'cc-heptapod-info.storage-description': `Storage size`,
-  'cc-heptapod-info.price-value': ({ price }) => `${currencyFormatter.format(price)} / month`,
+  'cc-heptapod-info.price-value': ({ price }) => `${formatCurrency(lang, price)} / month`,
   'cc-heptapod-info.price-description': `Estimated price`,
   'cc-heptapod-info.not-in-use': `You are not using this Heptapod service.`,
   'cc-heptapod-info.description': () => sanitize`This Heptapod instance hosts mercurial projects. Learn more on <a href="https://about.heptapod.host" rel="noreferrer noopener">https://about.heptapod.host</a>.`,
@@ -204,7 +200,9 @@ export const translations = {
   // cc-invoice
   'cc-invoice.download-pdf': `Download PDF`,
   'cc-invoice.error': `Something went wrong while loading the invoice.`,
-  'cc-invoice.info': ({ date, amount }) => sanitize`This invoice was issued on <strong>${formatDateOnly(date)}</strong> for a total amount of <strong>${currencyFormatter.format(amount)}</strong>.`,
+  'cc-invoice.info': ({ date, amount }) => {
+    return sanitize`This invoice was issued on <strong>${formatDateOnly(lang, date)}</strong> for a total amount of <strong>${formatCurrency(lang, amount)}</strong>.`;
+  },
   'cc-invoice.title': `Invoice`,
   // cc-invoice-list
   'cc-invoice-list.title': `Invoices`,
@@ -217,13 +215,15 @@ export const translations = {
   'cc-invoice-list.year': `Year:`,
   // cc-invoice-table
   'cc-invoice-table.date.emission': `Emission date`,
-  'cc-invoice-table.date.value': ({ date }) => `${formatDateOnly(date)}`,
+  'cc-invoice-table.date.value': ({ date }) => `${formatDateOnly(lang, date)}`,
   'cc-invoice-table.number': `Number`,
   'cc-invoice-table.open-pdf': `Download PDF`,
   'cc-invoice-table.pay': `Pay`,
-  'cc-invoice-table.text': ({ number, date, amount }) => sanitize`Invoice <strong>${number}</strong> issued on <strong>${formatDateOnly(date)}</strong> for a total amount of <code>${currencyFormatter.format(amount)}</code>`,
+  'cc-invoice-table.text': ({ number, date, amount }) => {
+    return sanitize`Invoice <strong>${number}</strong> issued on <strong>${formatDateOnly(lang, date)}</strong> for a total amount of <code>${formatCurrency(lang, amount)}</code>`;
+  },
   'cc-invoice-table.total.label': `Total`,
-  'cc-invoice-table.total.value': ({ amount }) => `${currencyFormatter.format(amount)}`,
+  'cc-invoice-table.total.value': ({ amount }) => `${formatCurrency(lang, amount)}`,
   // cc-addon-admin
   'cc-addon-admin.addon-name': `Add-on name`,
   'cc-addon-admin.admin': `Administration`,
@@ -244,9 +244,13 @@ export const translations = {
   'cc-tcp-redirection.namespace-additionaldescription-cleverapps': () => sanitize`This namespace is used by all <em>cleverapps.io</em> domains (e.g. <em>my-app.cleverapps.io</em>).`,
   'cc-tcp-redirection.namespace-additionaldescription-default': () => sanitize`This namespace is used by all custom domains (e.g. <em>my-app.com</em>).`,
   'cc-tcp-redirection.namespace-private': `This is your private namespace.`,
-  'cc-tcp-redirection.redirection-defined': ({ namespace, sourcePort }) => sanitize`This application has a redirection from port <code>${sourcePort}</code> to port <code>4040</code> in the <strong>${namespace}</strong> namespace.`,
+  'cc-tcp-redirection.redirection-defined': ({ namespace, sourcePort }) => {
+    return sanitize`This application has a redirection from port <code>${sourcePort}</code> to port <code>4040</code> in the <strong>${namespace}</strong> namespace.`;
+  },
   'cc-tcp-redirection.redirection-not-defined': ({ namespace }) => sanitize`You can create a redirection in the <strong>${namespace}</strong> namespace.`,
-  'cc-tcp-redirection.error.redirection-defined': ({ namespace, sourcePort }) => sanitize`An error occurred while deleting the redirection from port <code>${sourcePort}</code> to port <code>4040</code> in the <strong>${namespace}</strong> namespace.`,
+  'cc-tcp-redirection.error.redirection-defined': ({ namespace, sourcePort }) => {
+    return sanitize`An error occurred while deleting the redirection from port <code>${sourcePort}</code> to port <code>4040</code> in the <strong>${namespace}</strong> namespace.`;
+  },
   'cc-tcp-redirection.error.redirection-not-defined': ({ namespace }) => sanitize`An error occured while creating a redirection in the <strong>${namespace}</strong> namespace.`,
   // cc-tcp-redirection-form
   'cc-tcp-redirection-form.description': () => sanitize`
@@ -265,7 +269,7 @@ export const translations = {
   'cc-tile-consumption.title': `Credits consumption`,
   'cc-tile-consumption.yesterday': `Yesterday`,
   'cc-tile-consumption.last-30-days': `Last 30 days`,
-  'cc-tile-consumption.amount': ({ amount }) => currencyFormatter.format(amount),
+  'cc-tile-consumption.amount': ({ amount }) => formatCurrency(lang, amount),
   'cc-tile-consumption.error': `Something went wrong while loading consumption info.`,
   // cc-tile-deployments
   'cc-tile-deployments.title': `Last deployments`,
@@ -285,17 +289,17 @@ export const translations = {
   'cc-tile-requests.title': `HTTP requests`,
   'cc-tile-requests.about-btn': `About this chart...`,
   'cc-tile-requests.close-btn': `Display chart`,
-  'cc-tile-requests.date-hours': ({ date }) => formatHours(date),
+  'cc-tile-requests.date-hours': ({ date }) => formatHours(lang, date),
   'cc-tile-requests.date-tooltip': ({ from, to }) => {
-    const date = formatDateOnly(from);
-    const fromH = formatHours(from);
-    const toH = formatHours(to);
+    const date = formatDateOnly(lang, from);
+    const fromH = formatHours(lang, from);
+    const toH = formatHours(lang, to);
     return `${date}: from ${fromH} to ${toH}`;
   },
   'cc-tile-requests.requests-nb': ({ value, windowHours }) => {
     const request = plural('request')(value);
     const hour = plural('hour')(windowHours);
-    const formattedValue = numberFormatter.format(value);
+    const formattedValue = formatNumber(lang, value);
     return `${formattedValue} ${request} (in ${windowHours} ${hour})`;
   },
   'cc-tile-requests.requests-nb.total': ({ totalRequests }) => {
@@ -322,8 +326,8 @@ export const translations = {
   'cc-tile-status-codes.close-btn': `Display chart`,
   'cc-tile-status-codes.tooltip': ({ value, percent }) => {
     const request = plural('request')(value);
-    const formattedValue = numberFormatter.format(value);
-    return `${formattedValue} ${request} (${percentFormatter.format(percent)})`;
+    const formattedValue = formatNumber(lang, value);
+    return `${formattedValue} ${request} (${formatPercent(lang, percent)})`;
   },
   'cc-tile-status-codes.error': `Something went wrong while loading HTTP response codes.`,
   'cc-tile-status-codes.empty': `No data to display for now.`,
@@ -361,8 +365,12 @@ export const translations = {
   'cc-env-var-editor-expert.errors.invalid-line': () => sanitize`this line is not valid, the correct pattern is: <code>NAME="VALUE"</code>`,
   'cc-env-var-editor-expert.errors.invalid-value': () => sanitize`the value is not valid, if you use quotes, you need to escape them like this: <code>\\"</code> or quote the whole value.`,
   // env-var-linked-services
-  'cc-env-var-linked-services.description.addon': ({ serviceName, appName }) => sanitize`List of variables exposed by the add-on <strong>${serviceName}</strong>.<br>Those variables will be injected as environment variables in the application <strong>${appName}</strong>.`,
-  'cc-env-var-linked-services.description.app': ({ serviceName, appName }) => sanitize`Configuration exposed by the application <strong>${serviceName}</strong>.<br>Those variables will be injected as environement variables in the application <strong>${appName}</strong>.`,
+  'cc-env-var-linked-services.description.addon': ({ serviceName, appName }) => {
+    return sanitize`List of variables exposed by the add-on <strong>${serviceName}</strong>.<br>Those variables will be injected as environment variables in the application <strong>${appName}</strong>.`;
+  },
+  'cc-env-var-linked-services.description.app': ({ serviceName, appName }) => {
+    return sanitize`Configuration exposed by the application <strong>${serviceName}</strong>.<br>Those variables will be injected as environement variables in the application <strong>${appName}</strong>.`;
+  },
   'cc-env-var-linked-services.empty.addon': ({ appName }) => sanitize`No add-ons linked to <strong>${appName}</strong>.`,
   'cc-env-var-linked-services.empty.app': ({ appName }) => sanitize`No applications linked to <strong>${appName}</strong>.`,
   'cc-env-var-linked-services.error.addon': ({ appName }) => sanitize`Something went wrong while loading add-ons linked to <strong>${appName}</strong>.`,
@@ -389,7 +397,7 @@ export const translations = {
   'cc-env-var-input.keep-button': `Keep`,
   'cc-env-var-input.value-placeholder': `variable value`,
   // cc-zone
-  'cc-zone.country': ({ code, name }) => countryName({ code, name }),
+  'cc-zone.country': ({ code, name }) => getCountryName(lang, code, name),
   // cc-zone-input
   'cc-zone-input.error': `Something went wrong while loading zones.`,
   'cc-zone-input.private-map-warning': `Private zones don't appear on the map.`,

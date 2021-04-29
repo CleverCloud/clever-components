@@ -6,7 +6,10 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+### For devs
+
+* i18n: simplify formatter system and add JSDoc
+* i18n: remove country flags (it makes no sense for a language)
 
 ## 6.4.0 (2021-04-21)
 

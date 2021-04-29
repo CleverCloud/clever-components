@@ -1,12 +1,18 @@
 import {
-  prepareFormatDate,
-  prepareFormatDateOnly,
-  prepareFormatDatetime,
+  formatDate,
+  formatDateOnly,
+  formatDatetime,
+  formatHours,
   prepareFormatDistanceToNow,
-  prepareFormatHours,
 } from '../lib/i18n-date.js';
-import { prepareCountryName } from '../lib/i18n-display.js';
-import { prepareNumberBytesFormatter, prepareNumberUnitFormatter } from '../lib/i18n-number.js';
+import { getCountryName } from '../lib/i18n-display.js';
+import {
+  formatCurrency,
+  formatNumber,
+  formatPercent,
+  prepareNumberBytesFormatter,
+  prepareNumberUnitFormatter,
+} from '../lib/i18n-number.js';
 import { sanitize } from '../lib/i18n-sanitize.js';
 
 export const lang = 'fr';
@@ -36,22 +42,8 @@ const formatDistanceToNow = prepareFormatDistanceToNow(lang, (value, unit) => {
   return `il y a ${value} ${pluralUnit}`;
 }, 'à l\'instant');
 
-const formatDate = prepareFormatDate(lang);
-const formatDatetime = prepareFormatDatetime(lang);
-const formatDateOnly = prepareFormatDateOnly(lang);
-const formatHours = prepareFormatHours(lang);
-
-const currencyFormatter = new Intl.NumberFormat(lang, { style: 'currency', currency: 'EUR' });
-const percentFormatter = new Intl.NumberFormat(lang, {
-  style: 'percent',
-  minimumFractionDigits: 1,
-  maximumFractionDigits: 1,
-});
-const numberFormatter = new Intl.NumberFormat(lang);
 const formatNumberUnit = prepareNumberUnitFormatter(lang);
 const formatBytes = prepareNumberBytesFormatter(lang, 'o', '\u202f');
-
-const countryName = prepareCountryName(lang);
 
 // Shared logic between translations, is it a good idea?
 function formatFlavor (f) {
@@ -63,11 +55,11 @@ function formatFlavor (f) {
 }
 
 export const translations = {
-  LANGUAGE: '🇫🇷 Français',
+  LANGUAGE: 'Français',
   // cc-addon-backups
   'cc-addon-backups.command-password': `Cette commande vous demandera votre mot de passe, le voici :`,
   'cc-addon-backups.close-btn': `Fermer ce panneau`,
-  'cc-addon-backups.delete': ({ createdAt }) => sanitize`Supprimer la sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
+  'cc-addon-backups.delete': ({ createdAt }) => sanitize`Supprimer la sauvegarde du <strong title="${formatDate(lang, createdAt)}">${formatDatetime(lang, createdAt)}</strong>`,
   'cc-addon-backups.delete.btn': 'supprimer...',
   'cc-addon-backups.delete.with-service.title.es-addon': `Suppression avec Kibana`,
   'cc-addon-backups.delete.with-service.description.es-addon': ({ href }) => sanitize`Vous pouvez supprimer cette sauvegarde avec Kibana en vous rendant sur le <a href="${href}">dépôt de sauvegardes</a>.`,
@@ -79,14 +71,16 @@ export const translations = {
   'cc-addon-backups.link.es-addon': `ouvrir dans Kibana`,
   'cc-addon-backups.link.es-addon-old': `ouvrir dans Elasticsearch`,
   'cc-addon-backups.loading-error': `Une erreur est survenue pendant le chargement des sauvegardes.`,
-  'cc-addon-backups.restore': ({ createdAt }) => sanitize`Restaurer la sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
+  'cc-addon-backups.restore': ({ createdAt }) => sanitize`Restaurer la sauvegarde du <strong title="${formatDate(lang, createdAt)}">${formatDatetime(lang, createdAt)}</strong>`,
   'cc-addon-backups.restore.btn': 'restaurer...',
   'cc-addon-backups.restore.with-service.title.es-addon': `Restauration avec Kibana`,
   'cc-addon-backups.restore.with-service.description.es-addon': ({ href }) => sanitize`Vous pouvez restaurer cette sauvegarde avec Kibana en vous rendant sur le <a href="${href}">dépôt de sauvegardes</a>.`,
   'cc-addon-backups.restore.manual.title': `Restauration manuelle`,
   'cc-addon-backups.restore.manual.description.es-addon': `Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil cURL en exécutant cette commande :`,
-  'cc-addon-backups.text': ({ createdAt, expiresAt }) => sanitize`Sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong> (expire le <strong>${formatDateOnly(expiresAt)}</strong>)`,
-  'cc-addon-backups.text.user-defined-retention': ({ createdAt }) => sanitize`Sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong> (expire après la durée de rétention définie)`,
+  'cc-addon-backups.text': ({ createdAt, expiresAt }) => {
+    return sanitize`Sauvegarde du <strong title="${formatDate(lang, createdAt)}">${formatDatetime(lang, createdAt)}</strong> (expire le <strong>${formatDateOnly(lang, expiresAt)}</strong>)`;
+  },
+  'cc-addon-backups.text.user-defined-retention': ({ createdAt }) => sanitize`Sauvegarde du <strong title="${formatDate(lang, createdAt)}">${formatDatetime(lang, createdAt)}</strong> (expire après la durée de rétention définie)`,
   'cc-addon-backups.title': `Sauvegardes`,
   // cc-addon-credentials
   'cc-addon-credentials.description.apm': `Utilisez ces identifiants pour connecter une instance d'APM Server à votre cluster Elasticsearch.`,
@@ -106,13 +100,15 @@ export const translations = {
   'cc-addon-elasticsearch-options.description.kibana': () => sanitize`Kibana est l'interface d'administration de la Suite Elastic. Kibana vous permet de visualiser vos données Elasticsearch et de naviguer dans la Suite Elastic. Vous voulez effectuer le suivi de la charge de travail liée à la recherche ou comprendre le flux des requêtes dans vos applications ? Kibana est là pour ça. Retrouvez plus de détails dans <a href="https://www.elastic.co/guide/en/kibana/master/index.html">la documentation officielle de Kibana</a>.`,
   'cc-addon-elasticsearch-options.description.apm': () => sanitize`Elastic APM est un serveur de monitoring de performance applicative pour la Suite Elastic. Déployer cette option permet d'envoyer automatiquement les métriques de toute application liée à cette instance d'add-on Elasticsearch, en supposant que vous utilisez bien l'agent Elastic APM dans les dépendances de vos applications. Retrouvez plus de détails dans <a href="https://www.elastic.co/guide/en/apm/get-started/current/overview.html">la documentation officielle de APM server</a>.`,
   'cc-addon-elasticsearch-options.warning.kibana': `Si vous activez cette option, nous allons déployer et gérer pour vous un Kibana, ce qui entraînera des coûts supplémentaires.`,
-  'cc-addon-elasticsearch-options.warning.kibana.details': (flavor) => sanitize`Par défaut, l'app sera démarrée sur une <strong title="${formatFlavor(flavor)}">instance ${flavor.name}</strong> qui coûte environ <strong>${currencyFormatter.format(flavor.monthlyCost)} par mois</strong>.`,
+  'cc-addon-elasticsearch-options.warning.kibana.details': (flavor) => sanitize`Par défaut, l'app sera démarrée sur une <strong title="${formatFlavor(flavor)}">instance ${flavor.name}</strong> qui coûte environ <strong>${formatCurrency(lang, flavor.monthlyCost)} par mois</strong>.`,
   'cc-addon-elasticsearch-options.warning.apm': `Si vous activez cette option, nous allons déployer et gérer pour vous un APM server, ce qui entraînera des coûts supplémentaires.`,
-  'cc-addon-elasticsearch-options.warning.apm.details': (flavor) => sanitize`Par défaut, l'app sera démarrée sur une <strong title="${formatFlavor(flavor)}">instance ${flavor.name}</strong> qui coûte environ <strong>${currencyFormatter.format(flavor.monthlyCost)} par mois</strong>. `,
+  'cc-addon-elasticsearch-options.warning.apm.details': (flavor) => sanitize`Par défaut, l'app sera démarrée sur une <strong title="${formatFlavor(flavor)}">instance ${flavor.name}</strong> qui coûte environ <strong>${formatCurrency(lang, flavor.monthlyCost)} par mois</strong>. `,
   // cc-addon-encryption-at-rest-option
   'cc-addon-encryption-at-rest-option.description': () => sanitize`Le chiffrement au repos chiffre l'intégralité du disque de données afin de ne pas y stocker d'informations en clair. Grâce à cette sécurité, l'accès physique au disque empêchera toute lecture des données stockées. Plus d'information dans notre <a href="https://www.clever-cloud.com/doc/administrate/encryption-at-rest/">documentation</a>.`,
   'cc-addon-encryption-at-rest-option.title': `Chiffrement au repos`,
-  'cc-addon-encryption-at-rest-option.warning': ({ percent, price }) => sanitize`Cette option est actuellement gratuite. Dans le futur, elle sera facturée ${percentFormatter.format(percent)} du prix du plan, ce qui dans ce cas fait <strong>${currencyFormatter.format(price)} par mois.</strong>`,
+  'cc-addon-encryption-at-rest-option.warning': ({ percent, price }) => {
+    return sanitize`Cette option est actuellement gratuite. Dans le futur, elle sera facturée ${formatPercent(lang, percent)} du prix du plan, ce qui dans ce cas fait <strong>${formatCurrency(lang, price)} par mois.</strong>`;
+  },
   // cc-addon-features
   'cc-addon-features.details': `Ci-dessous, les spécifications de votre add-on. Elles peuvent évoluer et une migration de l'add-on peut être nécessaire pour en bénéficier.`,
   'cc-addon-features.feature-name.disk': `Disque`,
@@ -159,7 +155,7 @@ export const translations = {
   'cc-button.cancel': `Cliquez pour annuler`,
   // cc-datetime-relative
   'cc-datetime-relative.distance': ({ date }) => formatDistanceToNow(date),
-  'cc-datetime-relative.title': ({ date }) => formatDate(date),
+  'cc-datetime-relative.title': ({ date }) => formatDate(lang, date),
   // cc-elasticsearch-info
   'cc-elasticsearch-info.error': `Une erreur est survenue pendant le chargement des liens des add-on liés à cette application.`,
   'cc-elasticsearch-info.info': `Info`,
@@ -172,8 +168,8 @@ export const translations = {
   'cc-header-addon.plan': `Plan`,
   'cc-header-addon.version': `Version`,
   'cc-header-addon.creation-date': `Date de création`,
-  'cc-header-addon.creation-date.short': ({ date }) => formatDateOnly(date),
-  'cc-header-addon.creation-date.full': ({ date }) => formatDate(date),
+  'cc-header-addon.creation-date.short': ({ date }) => formatDateOnly(lang, date),
+  'cc-header-addon.creation-date.full': ({ date }) => formatDate(lang, date),
   'cc-header-addon.error': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
   // cc-header-app
   'cc-header-app.action.cancel-deployment': `Annuler le déploiement`,
@@ -209,7 +205,7 @@ export const translations = {
   'cc-heptapod-info.public-active-users-description': `Utilisateurs publics`,
   'cc-heptapod-info.storage-bytes': ({ storage }) => formatBytes(storage, 1),
   'cc-heptapod-info.storage-description': `Stockage utilisé`,
-  'cc-heptapod-info.price-value': ({ price }) => `${currencyFormatter.format(price)} / mois`,
+  'cc-heptapod-info.price-value': ({ price }) => `${formatCurrency(lang, price)} / mois`,
   'cc-heptapod-info.price-description': `Prix estimé`,
   'cc-heptapod-info.not-in-use': `Vous n'utilisez pas ce service Heptapod.`,
   'cc-heptapod-info.description': () => sanitize`Cette instance Heptapod héberge des dépôts Mercurial. Plus d'informations sur <a href="https://about.heptapod.host" rel="noreferrer noopener">https://about.heptapod.host</a>.`,
@@ -217,7 +213,9 @@ export const translations = {
   // cc-invoice
   'cc-invoice.download-pdf': `Télécharger le PDF`,
   'cc-invoice.error': `Une erreur est survenue pendant le chargement de la facture.`,
-  'cc-invoice.info': ({ date, amount }) => sanitize`Cette facture a été émise le <strong>${formatDateOnly(date)}</strong> pour un total de <strong>${currencyFormatter.format(amount)}</strong>.`,
+  'cc-invoice.info': ({ date, amount }) => {
+    return sanitize`Cette facture a été émise le <strong>${formatDateOnly(lang, date)}</strong> pour un total de <strong>${formatCurrency(lang, amount)}</strong>.`;
+  },
   'cc-invoice.title': `Facture`,
   // cc-invoice-list
   'cc-invoice-list.error': `Une erreur est survenue pendant le chargement des factures.`,
@@ -230,13 +228,15 @@ export const translations = {
   'cc-invoice-list.year': `Année :`,
   // cc-invoice-table
   'cc-invoice-table.date.emission': `Date d'émission`,
-  'cc-invoice-table.date.value': ({ date }) => `${formatDateOnly(date)}`,
+  'cc-invoice-table.date.value': ({ date }) => `${formatDateOnly(lang, date)}`,
   'cc-invoice-table.number': `Numéro`,
   'cc-invoice-table.open-pdf': `Télécharger le PDF`,
   'cc-invoice-table.pay': `Régler`,
-  'cc-invoice-table.text': ({ number, date, amount }) => sanitize`Facture <strong>${number}</strong> émise le <strong>${formatDateOnly(date)}</strong> pour un total de <code>${currencyFormatter.format(amount)}</code>`,
+  'cc-invoice-table.text': ({
+    number, date, amount,
+  }) => sanitize`Facture <strong>${number}</strong> émise le <strong>${formatDateOnly(lang, date)}</strong> pour un total de <code>${formatCurrency(lang, amount)}</code>`,
   'cc-invoice-table.total.label': `Total`,
-  'cc-invoice-table.total.value': ({ amount }) => `${currencyFormatter.format(amount)}`,
+  'cc-invoice-table.total.value': ({ amount }) => `${formatCurrency(lang, amount)}`,
   // cc-addon-admin
   'cc-addon-admin.addon-name': `Nom de l'add-on`,
   'cc-addon-admin.admin': `Administration`,
@@ -257,9 +257,13 @@ export const translations = {
   'cc-tcp-redirection.namespace-additionaldescription-cleverapps': () => sanitize`Cet espace de nommage est utilisé par tous les noms de domaine <em>cleverapps.io</em> (p. ex. <em>mon-application.cleverapps.io</em>).`,
   'cc-tcp-redirection.namespace-additionaldescription-default': () => sanitize`Cet espace de nommage est utilisé par tous les noms de domaine personnalisés (p. ex. <em>mon-application.fr</em>).`,
   'cc-tcp-redirection.namespace-private': `Cet espace de nommage vous est dédié.`,
-  'cc-tcp-redirection.redirection-defined': ({ namespace, sourcePort }) => sanitize`Cette application a une redirection du port <code>${sourcePort}</code> vers le port <code>4040</code> dans l'espace de nommage <strong>${namespace}</strong>.`,
+  'cc-tcp-redirection.redirection-defined': ({ namespace, sourcePort }) => {
+    return sanitize`Cette application a une redirection du port <code>${sourcePort}</code> vers le port <code>4040</code> dans l'espace de nommage <strong>${namespace}</strong>.`;
+  },
   'cc-tcp-redirection.redirection-not-defined': ({ namespace }) => sanitize`Vous pouvez créer une redirection dans l'espace de nommage <strong>${namespace}</strong>.`,
-  'cc-tcp-redirection.error.redirection-defined': ({ namespace, sourcePort }) => sanitize`Une erreur est survenue pendant la suppression de la redirection du port <code>${sourcePort}</code> vers le port <code>4040</code> dans l'espace de nommage <strong>${namespace}</strong>.`,
+  'cc-tcp-redirection.error.redirection-defined': ({ namespace, sourcePort }) => {
+    return sanitize`Une erreur est survenue pendant la suppression de la redirection du port <code>${sourcePort}</code> vers le port <code>4040</code> dans l'espace de nommage <strong>${namespace}</strong>.`;
+  },
   'cc-tcp-redirection.error.redirection-not-defined': ({ namespace }) => sanitize`Une erreur est survenue pendant la création d'une redirection dans l'espace de nommage <strong>${namespace}</strong>.`,
   // cc-tcp-redirection-form
   'cc-tcp-redirection-form.description': () => sanitize`
@@ -278,7 +282,7 @@ export const translations = {
   'cc-tile-consumption.title': `Consommation de crédits`,
   'cc-tile-consumption.yesterday': `Hier`,
   'cc-tile-consumption.last-30-days': `30 derniers jours`,
-  'cc-tile-consumption.amount': ({ amount }) => currencyFormatter.format(amount),
+  'cc-tile-consumption.amount': ({ amount }) => formatCurrency(lang, amount),
   'cc-tile-consumption.error': `Une erreur est survenue pendant le chargement de la consommation.`,
   // cc-tile-deployments
   'cc-tile-deployments.title': `Derniers déploiements`,
@@ -298,17 +302,17 @@ export const translations = {
   'cc-tile-requests.title': `Requêtes HTTP`,
   'cc-tile-requests.about-btn': `À propos de ce graphe...`,
   'cc-tile-requests.close-btn': `Afficher le graphe`,
-  'cc-tile-requests.date-hours': ({ date }) => formatHours(date),
+  'cc-tile-requests.date-hours': ({ date }) => formatHours(lang, date),
   'cc-tile-requests.date-tooltip': ({ from, to }) => {
-    const date = formatDateOnly(from);
-    const fromH = formatHours(from);
-    const toH = formatHours(to);
+    const date = formatDateOnly(lang, from);
+    const fromH = formatHours(lang, from);
+    const toH = formatHours(lang, to);
     return `${date} : de ${fromH} à ${toH}`;
   },
   'cc-tile-requests.requests-nb': ({ value, windowHours }) => {
     const request = plural('requête')(value);
     const hour = plural('heure')(windowHours);
-    const formattedValue = numberFormatter.format(value);
+    const formattedValue = formatNumber(lang, value);
     return `${formattedValue} ${request} (en ${windowHours} ${hour})`;
   },
   'cc-tile-requests.requests-nb.total': ({ totalRequests }) => {
@@ -335,8 +339,8 @@ export const translations = {
   'cc-tile-status-codes.close-btn': `Afficher le graphe`,
   'cc-tile-status-codes.tooltip': ({ value, percent }) => {
     const request = plural('requête')(value);
-    const formattedValue = numberFormatter.format(value);
-    return `${formattedValue} ${request} (${percentFormatter.format(percent)})`;
+    const formattedValue = formatNumber(lang, value);
+    return `${formattedValue} ${request} (${formatPercent(lang, percent)})`;
   },
   'cc-tile-status-codes.error': `Une erreur est survenue pendant le chargement des codes de réponses HTTP.`,
   'cc-tile-status-codes.empty': `Il n'y a pas de données à afficher pour l'instant.`,
@@ -374,8 +378,12 @@ export const translations = {
   'cc-env-var-editor-expert.errors.invalid-line': () => sanitize`cette ligne est invalide, le format correct est : <code>NOM="VALEUR"</code>`,
   'cc-env-var-editor-expert.errors.invalid-value': () => sanitize`la valeur est invalide, si vous utilisez des guillements, vous devez les échapper comme ceci : <code>\\"</code> ou alors mettre toute la valeur entre guillemets.`,
   // env-var-linked-services
-  'cc-env-var-linked-services.description.addon': ({ serviceName, appName }) => sanitize`Liste des variables exposées par l'add-on <strong>${serviceName}</strong>.<br>Ces variables seront injectées en tant que variables d'environnement dans l'application <strong>${appName}</strong>.`,
-  'cc-env-var-linked-services.description.app': ({ serviceName, appName }) => sanitize`Configuration publiée par l'application <strong>${serviceName}</strong>.<br>Ces variables seront injectées en tant que variables d'environnement dans l'application <strong>${appName}</strong>.`,
+  'cc-env-var-linked-services.description.addon': ({ serviceName, appName }) => {
+    return sanitize`Liste des variables exposées par l'add-on <strong>${serviceName}</strong>.<br>Ces variables seront injectées en tant que variables d'environnement dans l'application <strong>${appName}</strong>.`;
+  },
+  'cc-env-var-linked-services.description.app': ({ serviceName, appName }) => {
+    return sanitize`Configuration publiée par l'application <strong>${serviceName}</strong>.<br>Ces variables seront injectées en tant que variables d'environnement dans l'application <strong>${appName}</strong>.`;
+  },
   'cc-env-var-linked-services.empty.addon': ({ appName }) => sanitize`Aucun add-on lié à <strong>${appName}</strong>.`,
   'cc-env-var-linked-services.empty.app': ({ appName }) => sanitize`Aucune application liée à <strong>${appName}</strong>.`,
   'cc-env-var-linked-services.error.addon': ({ appName }) => sanitize`Une erreur est survenue pendant le chargement des add-ons liés à <strong>${appName}</strong>.`,
@@ -402,7 +410,7 @@ export const translations = {
   'cc-env-var-input.keep-button': `Garder`,
   'cc-env-var-input.value-placeholder': `valeur de la variable`,
   // cc-zone
-  'cc-zone.country': ({ code, name }) => countryName({ code, name }),
+  'cc-zone.country': ({ code, name }) => getCountryName(lang, code, name),
   // cc-zone-input
   'cc-zone-input.error': `Une erreur est survenue pendant le chargement des zones.`,
   'cc-zone-input.private-map-warning': `Les zones privées n'apparaissent pas sur la carte.`,
