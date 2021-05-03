@@ -441,4 +441,6 @@ export const translations = {
       ? sanitize`<em title="Accès au vCPU moins prioritaire">${formatNumber(lang, cpu)}<code>*</code></em>`
       : formatNumber(lang, cpu);
   },
+  // cc-pricing-product
+  'cc-pricing-product.error': 'Une erreur est survenue pendant le chargement des prix.',
 };

@@ -428,4 +428,6 @@ export const translations = {
       ? sanitize`<em title="Lower priority access to vCPU">${formatNumber(lang, cpu)}<code>*</code></em>`
       : formatNumber(lang, cpu);
   },
+  // cc-pricing-product
+  'cc-pricing-product.error': 'An error occured while loading pricing details.',
 };
