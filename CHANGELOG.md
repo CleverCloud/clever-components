@@ -9,7 +9,7 @@ title: Changelog
 * `<cc-button>`: Add a circle form when in hide-text with an image
 * New component:
   * `<cc-pricing-table>`
-  * `<cc-pricing-product>` (with smart definition for add-ons)
+  * `<cc-pricing-product>` (with smart definition for add-ons and runtimes)
 
 ### For devs
 
