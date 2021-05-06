@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Pricing demo</title>
+  <script type="module" src="./index.js"></script>
+  <style>
+  body {
+    font-family: sans-serif;
+    background-color: #fcfcfc;
+    width: 100%;
+    max-width: 1200px;
+    margin: 1rem auto;
+  }
+
+  cc-pricing-product {
+    border-radius: 5px;
+    box-shadow: 0 0 5px #ccc;
+    margin: 2rem 0;
+    overflow: hidden;
+  }
+
+  cc-pricing-product:not(:defined) [slot="icon"] {
+    display: none;
+  }
+  </style>
+</head>
+<body>
+
+<cc-smart-container context='{ "zoneId": "PAR" }'>
+<!--  <cc-pricing-page>-->
+
+    <h1>Pricing demo</h1>
+
+<!--    <h2>Runtimes</h2>-->
+
+<!--    <cc-smart-container context='{ "productId": "dotnet", "zoneId": "PAR" }'>-->
+<!--      <cc-pricing-product mode="runtime"></cc-pricing-product>-->
+<!--    </cc-smart-container>-->
+
+<!--    <cc-smart-container context='{ "productId": "elixir", "zoneId": "PAR" }'>-->
+<!--      <cc-pricing-product mode="runtime"></cc-pricing-product>-->
+<!--    </cc-smart-container>-->
+
+<!--    <cc-smart-container context='{ "productId": "go", "zoneId": "PAR" }'>-->
+<!--      <cc-pricing-product mode="runtime"></cc-pricing-product>-->
+<!--    </cc-smart-container>-->
+
+    <cc-smart-container context='{ "productId": "node", "zoneId": "PAR" }'>
+      <cc-pricing-product mode="runtime"></cc-pricing-product>
+    </cc-smart-container>
+
+<!--    &lt;!&ndash;<cc-smart-container context='{ "productId": "meteor", "zoneId": "PAR" }'>&ndash;&gt;-->
+<!--    &lt;!&ndash;    <cc-pricing-product mode="runtime"></cc-pricing-product>&ndash;&gt;-->
+<!--    &lt;!&ndash;</cc-smart-container>&ndash;&gt;-->
+
+<!--    <cc-smart-container context='{ "productId": "haskell", "zoneId": "PAR" }'>-->
+<!--      <cc-pricing-product mode="runtime"></cc-pricing-product>-->
+<!--    </cc-smart-container>-->
+
+<!--    <cc-smart-container context='{ "productId": "python", "zoneId": "PAR" }'>-->
+<!--      <cc-pricing-product mode="runtime"></cc-pricing-product>-->
+<!--    </cc-smart-container>-->
+
+<!--    <cc-smart-container context='{ "productId": "php", "zoneId": "PAR" }'>-->
+<!--      <cc-pricing-product mode="runtime"></cc-pricing-product>-->
+<!--    </cc-smart-container>-->
+
+<!--    &lt;!&ndash;<cc-smart-container context='{ "productId": "static-apache", "zoneId": "PAR" }'>&ndash;&gt;-->
+<!--    &lt;!&ndash;    <cc-pricing-product mode="runtime"></cc-pricing-product>&ndash;&gt;-->
+<!--    &lt;!&ndash;</cc-smart-container>&ndash;&gt;-->
+
+<!--    <cc-smart-container context='{ "productId": "rust", "zoneId": "PAR" }'>-->
+<!--      <cc-pricing-product mode="runtime"></cc-pricing-product>-->
+<!--    </cc-smart-container>-->
+
+<!--    <cc-smart-container context='{ "productId": "ruby", "zoneId": "PAR" }'>-->
+<!--      <cc-pricing-product mode="runtime"></cc-pricing-product>-->
+<!--    </cc-smart-container>-->
+
+<!--    <cc-smart-container context='{ "productId": "jar", "zoneId": "PAR" }'>-->
+<!--      <cc-pricing-product mode="runtime">-->
+<!--        <img slot="icon" src="https://static-assets.cellar.services.clever-cloud.com/logos/java-jar.svg" alt="">-->
+<!--        <img slot="icon" src="https://static-assets.cellar.services.clever-cloud.com/logos/java-war.svg" alt="">-->
+<!--        <img slot="icon" src="https://static-assets.cellar.services.clever-cloud.com/logos/maven.svg" alt="">-->
+<!--        <img slot="icon" src="https://static-assets.cellar.services.clever-cloud.com/logos/gradle.svg" alt="">-->
+<!--        <img slot="icon" src="https://static-assets.cellar.services.clever-cloud.com/logos/scala.svg" alt="">-->
+<!--        <img slot="icon" src="https://static-assets.cellar.services.clever-cloud.com/logos/play1.svg" alt="">-->
+<!--        <img slot="icon" src="https://static-assets.cellar.services.clever-cloud.com/logos/play2.svg" alt="">-->
+<!--        <div slot="name">JVM: Java, Scala...</div>-->
+<!--        Define custom description here. Quiet nice when you want to talk about multiple flavors...-->
+<!--      </cc-pricing-product>-->
+<!--    </cc-smart-container>-->
+
+<!--    <h2>Container as a Service</h2>-->
+
+<!--    <cc-smart-container context='{ "productId": "docker", "zoneId": "PAR" }'>-->
+<!--      <cc-pricing-product mode="runtime"></cc-pricing-product>-->
+<!--    </cc-smart-container>-->
+
+    <h2>Add-ons</h2>
+
+<!--    <cc-smart-container context='{ "productId": "es-addon", "zoneId": "PAR", "addonFeatures": ["cpu","memory", "connection-limit", "is_dedicated"] }'>-->
+<!--      <cc-pricing-product mode="addon"></cc-pricing-product>-->
+<!--    </cc-smart-container>-->
+
+<!--    <cc-smart-container context='{ "productId": "mongodb-addon", "zoneId": "PAR", "addonFeatures": ["cpu","memory", "connection-limit", "is_dedicated"] }'>-->
+<!--      <cc-pricing-product mode="addon"></cc-pricing-product>-->
+<!--    </cc-smart-container>-->
+
+<!--    <cc-smart-container context='{ "productId": "mysql-addon", "zoneId": "PAR", "addonFeatures": ["cpu","memory", "connection-limit", "is_dedicated"] }'>-->
+<!--      <cc-pricing-product mode="addon"></cc-pricing-product>-->
+<!--    </cc-smart-container>-->
+
+  <cc-smart-container context='{ "productId": "postgresql-addon", "zoneId": "PAR" }'>
+    <cc-pricing-product mode="addon"></cc-pricing-product>
+  </cc-smart-container>
+
+<!--  <cc-smart-container context='{ "productId": "postgresql-addon", "zoneId": "PAR", "currencyCode": "USD" }'>-->
+<!--    <cc-pricing-product mode="addon"></cc-pricing-product>-->
+<!--  </cc-smart-container>-->
+
+  <cc-smart-container context='{ "productId": "postgresql-addon", "zoneId": "PAR", "addonFeatures": ["cpu","memory","disk-size","connection-limit","databases","has-logs","has-metrics"] }'>
+    <cc-pricing-product mode="addon"></cc-pricing-product>
+  </cc-smart-container>
+
+<!--    <cc-smart-container context='{ "productId": "redis-addon", "zoneId": "PAR", "addonFeatures": ["cpu","memory", "connection-limit", "is_dedicated"] }'>-->
+<!--      <cc-pricing-product mode="addon"></cc-pricing-product>-->
+<!--    </cc-smart-container>-->
+
+<!--  </cc-pricing-page>-->
+</cc-smart-container>
+
+</body>
+</html>

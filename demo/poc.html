@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>POC</title>
+    <script type="module" src="./poc.js"></script>
+</head>
+<body>
+<h1> &ltcc-pricing-page&gt Smart Demo</h1>
+<cc-smart-container context='{ "zoneId": "PAR" }'>
+    <cc-pricing-page>
+<!--     pricing header   -->
+        <div class="addons">
+            <h2>Addons</h2>
+            <cc-smart-container context='{ "productId": "postgresql-addon" }'>
+                <cc-pricing-product mode="addon"></cc-pricing-product>
+            </cc-smart-container>
+            <br>
+            <cc-smart-container context='{ "productId": "mysql-addon" }'>
+                <cc-pricing-product mode="addon"></cc-pricing-product>
+            </cc-smart-container>
+        </div>
+        <div class="runtime">
+            <h2>Runtime</h2>
+            <cc-smart-container context='{ "productId": "node" }'>
+                <cc-pricing-product mode="runtime"></cc-pricing-product>
+            </cc-smart-container>
+            <br>
+            <cc-smart-container context='{ "productId": "php" }'>
+                <cc-pricing-product mode="runtime"></cc-pricing-product>
+            </cc-smart-container>
+        </div>
+
+<!--     pricing estimation   -->
+    </cc-pricing-page>
+</cc-smart-container>
+</body>
+</html>
