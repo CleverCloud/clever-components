@@ -26,7 +26,10 @@ export function formatCurrency (lang, value, options = {}) {
     currency,
     maximumFractionDigits,
   });
-  return nf.format(value);
+  return nf
+    .format(value)
+    // Safari does not support currencySymbol: 'narrow' in Intl.NumberFormat so we need to do this #sorry
+    .replace('$US', '$');
 }
 
 /**
@@ -64,26 +67,26 @@ export function formatPercent (lang, value) {
 //   * Bn for "un billion"
 // For our context, we would prefer no space and just one letter, it's more compact.
 // We also feel like the short/long scale is confusing for the "B" since a billion can be 10^9 or 10^12.
-// Using SI symbols (k, M, G, T...) is simpler to implement and easier maintain.
+// Using SI prefixes (k, M, G, T...) is simpler to implement and easier maintain.
 // It's also pretty well understood by our kind of technical/scientific users (even in countries that don't use the metric system).
 
 // https://en.wikipedia.org/wiki/Metric_prefix
-const SI_SYMBOLS = ['', 'k', 'M', 'G', 'T', 'P'];
+const SI_PREFIXES = ['', 'k', 'M', 'G', 'T', 'P'];
 
 export function prepareNumberUnitFormatter (lang) {
   const nf = new Intl.NumberFormat(lang, { minimumFractionDigits: 0, maximumFractionDigits: 1 });
   return (rawValue) => {
     // Figure out the "magnitude" of the rawValue: 1000 => 1 / 1000000 => 2 / 1000000000 => 3 ...
-    const symbolIndex = (rawValue > 1)
+    const prefixIndex = (rawValue > 1)
       ? Math.floor(Math.log10(rawValue) / 3)
       : 0;
-    // Use the symbolIndex to "rebase" the rawValue into the new base, 1250 => 1.25 / 1444000 => 1.444...
-    const rebasedValue = rawValue / 1000 ** symbolIndex;
+    // Use the prefixIndex to "rebase" the rawValue into the new base, 1250 => 1.25 / 1444000 => 1.444...
+    const rebasedValue = rawValue / 1000 ** prefixIndex;
     // Use Intl/i18n aware number formatter
     const formattedValue = nf.format(rebasedValue);
-    const symbol = SI_SYMBOLS[symbolIndex];
+    const prefix = SI_PREFIXES[prefixIndex];
     // No space for compact display
-    return formattedValue + symbol;
+    return formattedValue + prefix;
   };
 }
 
@@ -96,12 +99,12 @@ export function prepareNumberUnitFormatter (lang) {
 // For our context, this solution is smaller and simpler.
 
 // https://en.wikipedia.org/wiki/Binary_prefix
-const IEC_SYMBOLS = ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi'];
+const IEC_PREFIXES = ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi'];
 
 // We tried an implementation with Math.log2() similar to what we do with prepareNumberUnitFormatter
 // but it gets weird around 1125899906842621 :-|
 export function prepareNumberBytesFormatter (lang, byteSymbol, separator) {
-  return (rawValue, fractionDigits = 0) => {
+  return (rawValue, fractionDigits = 0, maxPrefixIndex = IEC_PREFIXES.length - 1) => {
 
     // Nothing fancy to do when rawValues is under 1 kibibyte
     if (rawValue < 1024) {
@@ -114,22 +117,22 @@ export function prepareNumberBytesFormatter (lang, byteSymbol, separator) {
     });
 
     // Figure out the "magnitude" of the rawValue: greater than 1024 => 1 / greater than 1024^2 => 2 / greater than 1024^3 => 3 ...
-    const symbolIndex = IEC_SYMBOLS.findIndex((symbol, i) => {
-      // Return last symbol of the array if we cannot find a symbol
-      return rawValue < 1024 ** (i + 1) || i === IEC_SYMBOLS.length - 1;
+    const prefixIndex = IEC_PREFIXES.slice(0, maxPrefixIndex + 1).findIndex((prefix, i) => {
+      // Return last prefix of the array if we cannot find a prefix
+      return rawValue < 1024 ** (i + 1) || i === maxPrefixIndex;
     });
 
-    // Use the symbolIndex to "rebase" the rawValue into the new base, 1250 => 1.22 / 1444000 => 1.377...
-    const rebasedValue = rawValue / 1024 ** symbolIndex;
+    // Use the prefixIndex to "rebase" the rawValue into the new base, 1250 => 1.22 / 1444000 => 1.377...
+    const rebasedValue = rawValue / 1024 ** prefixIndex;
 
-    // Truncate so the rounding applied by nf.format() does not mess with the symbol we selected
+    // Truncate so the rounding applied by nf.format() does not mess with the prefix we selected
     // Ex: it prevents from returning 1,024.0 KiB if we're just under 1024^2 bytes and returns 1,023.9 KiB instead
     const truncatedValue = Math.trunc(rebasedValue * (10 ** fractionDigits)) / (10 ** fractionDigits);
 
     // Use Intl/i18n aware number formatter
     const formattedValue = nf.format(truncatedValue);
 
-    const symbol = IEC_SYMBOLS[symbolIndex];
-    return formattedValue + separator + symbol + byteSymbol;
+    const prefix = IEC_PREFIXES[prefixIndex];
+    return formattedValue + separator + prefix + byteSymbol;
   };
 }
