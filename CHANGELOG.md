@@ -8,6 +8,10 @@ title: Changelog
 
 ...
 
+## 6.5.1 (2021-05-07)
+
+* Fix: the new pricing components where not correctly packaged
+
 ## 6.5.0 (2021-05-07)
 
 * `<cc-button>`: Add a circle form when in hide-text with an image
