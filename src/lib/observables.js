@@ -1,4 +1,4 @@
-import { combineLatest, fromEvent, interval, merge, Observable, of, Subject } from 'rxjs/dist/esm/index.js';
+import { combineLatest, fromEvent, interval, merge, Observable, of, Subject } from 'rxjs';
 import {
   delay,
   distinctUntilChanged,
@@ -10,7 +10,8 @@ import {
   share,
   switchMap,
   withLatestFrom,
-} from 'rxjs/dist/esm/operators/index.js';
+// eslint-disable-next-line import/extensions
+} from 'rxjs/operators';
 
 export function unsubscribeWithSignal (signal, subscriptions) {
   signal.addEventListener('abort', () => {

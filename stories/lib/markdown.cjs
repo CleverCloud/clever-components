@@ -110,7 +110,7 @@ function markdownToCsfWithDocsPage (markdownText) {
 function getKind (frontmatterNode) {
 
   if (frontmatterNode != null) {
-    const fmObject = yaml.safeLoad(frontmatterNode.value);
+    const fmObject = yaml.load(frontmatterNode.value);
     if (fmObject.kind != null) {
       return fmObject.kind;
     }
