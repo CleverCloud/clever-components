@@ -122,7 +122,7 @@ function getKind (frontmatterNode) {
 function getSubTitle (frontmatterNode, headingNode) {
 
   if (frontmatterNode != null) {
-    const fmObject = yaml.safeLoad(frontmatterNode.value);
+    const fmObject = yaml.load(frontmatterNode.value);
     if (fmObject.title != null) {
       return fmObject.title;
     }
