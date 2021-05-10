@@ -9,7 +9,7 @@ You don't need npm or a bundler to use our components in your site or web app.
 All you need is a `<script>` tag like this example:
 
 ```html
-<script type="module" src="https://components.clever-cloud.com?load.js&version=5.3.1&lang=fr&components=cc-toggle,cc-tile-requests"></script>
+<script type="module" src="https://components.clever-cloud.com/load.js?version=5.3.1&lang=fr&components=cc-toggle,cc-tile-requests"></script>
 ```
 
 ## Version
