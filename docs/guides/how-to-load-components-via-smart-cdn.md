@@ -46,5 +46,5 @@ Please do not rely on this in production, it does not provide good performances.
 To use it, you can specify a version and a lang if you want and instead of specifying a list of components, you add this special query param:
 
 ```
-https://components.clever-cloud.com?load.js&version=5&lang=fr&magic-mode=dont-use-this-in-prod
+https://components.clever-cloud.com/load.js?version=5.3.1&lang=fr&magic-mode=dont-use-this-in-prod
 ```
