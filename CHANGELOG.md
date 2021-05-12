@@ -6,7 +6,7 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+* Add new custom ESLint rules to enforce conventions over translation files
 
 ## 6.5.1 (2021-05-07)
 
