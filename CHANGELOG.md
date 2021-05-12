@@ -7,6 +7,7 @@ title: Changelog
 ## Unreleased (????-??-??)
 
 * Add new custom ESLint rules to enforce conventions over translation files
+* cc-toggle: remove padding when legend is empty
 
 ## 6.5.1 (2021-05-07)
 

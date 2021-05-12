@@ -173,7 +173,7 @@ export class CcToggle extends LitElement {
           width: 100%;
         }
 
-        legend {
+        legend:not(:empty) {
           padding-bottom: 0.35rem;
         }
 
