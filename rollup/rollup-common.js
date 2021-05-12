@@ -121,8 +121,6 @@ export function terserPlugin () {
 export function babelPlugin () {
   return babel({
     plugins: [
-      '@babel/plugin-syntax-dynamic-import',
-      '@babel/plugin-syntax-import-meta',
       // Minify HTML inside lit-html and LitElement html`` templates
       // Minify CSS inside LitElement css`` templates
       [
