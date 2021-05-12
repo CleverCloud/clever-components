@@ -8,18 +8,11 @@ import { translations as fr } from '../src/translations/translations.fr.js';
 const glob = util.promisify(rawGlob);
 const translationsByLang = { en, fr };
 
-const babelOptions = {
-  ast: true,
-  plugins: [
-    '@babel/plugin-syntax-import-meta',
-  ],
-};
-
 async function getUsedKeys (sourceFilepaths) {
   const usedKeysByFile = {};
   for (const src of sourceFilepaths) {
     const code = await fs.readFile(src, 'utf8');
-    const keys = extractFromCode(code, { marker: 'i18n', babelOptions });
+    const keys = extractFromCode(code, { marker: 'i18n' });
     usedKeysByFile[src] = keys.map(({ key }) => key);
   }
   return usedKeysByFile;

@@ -56,8 +56,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.14.0",
-    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-    "@babel/plugin-syntax-import-meta": "^7.10.4",
     "@babel/preset-react": "^7.13.13",
     "@bundled-es-modules/chai": "^4.2.2",
     "@open-wc/dev-server-hmr": "^0.1.1",
