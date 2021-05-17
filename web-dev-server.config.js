@@ -62,6 +62,9 @@ export default {
         // used by chart.js
         'moment',
         'statuses',
+        // used by clever-client
+        'oauth-1.0a',
+        'component-emitter',
       ]),
     }),
   ],

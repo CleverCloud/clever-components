@@ -9,8 +9,12 @@ module.exports = {
     '../*.md',
     // Then Markdown documents inside docs
     '../docs/**/*.md',
+    // Prevent smart component Markdown example
+    '!(../docs/**/*example*.md)',
     // Then regular CSF stories
     '../stories/**/*.stories.js',
+    // Then smart component Markdown docs
+    '../stories/**/*smart*.md',
   ],
   rollupConfig (config) {
 
