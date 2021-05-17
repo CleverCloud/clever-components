@@ -1,4 +1,7 @@
 import '../../src/pricing/cc-pricing-product.js';
+// Load smart definition so we can use it in the Markdown docs
+import '../../src/pricing/cc-pricing-product.smart-runtime.js';
+import '../../src/pricing/cc-pricing-product.smart-addon.js';
 import { getFullProductAddon } from '../assets/addon-plans.js';
 import { getFullProductRuntime } from '../assets/runtime-plans.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
