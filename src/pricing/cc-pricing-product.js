@@ -155,9 +155,9 @@ export class CcPricingProduct extends LitElement {
 
         .head {
           display: grid;
-          gap: 1rem;
+          gap: 1em;
           grid-auto-rows: min-content;
-          padding: 1rem;
+          padding: 1em;
         }
 
         /* We cannot use cc-flex-gap because of a double slot */
@@ -166,27 +166,27 @@ export class CcPricingProduct extends LitElement {
           flex-wrap: wrap;
           /* reset gap for browsers that support gap for flexbox */
           gap: 0;
-          margin: -0.5rem;
+          margin: -0.5em;
         }
 
         .product-logo,
         slot[name="icon"]::slotted(*),
         .name {
-          margin: 0.5rem;
+          margin: 0.5em;
         }
 
         .product-logo,
         slot[name=icon]::slotted(*) {
           --cc-img-fit: contain;
-          border-radius: 0.25rem;
+          border-radius: 0.25em;
           display: block;
-          height: 3rem;
-          width: 3rem;
+          height: 3em;
+          width: 3em;
         }
 
         .name {
           align-self: center;
-          font-size: 1.5rem;
+          font-size: 1.5em;
           font-weight: bold;
         }
 
@@ -209,11 +209,11 @@ export class CcPricingProduct extends LitElement {
         }
 
         cc-loader {
-          min-height: 20rem;
+          min-height: 20em;
         }
 
         cc-error {
-          padding: 0 1rem 1rem;
+          padding: 0 1em 1em;
         }
       `,
     ];

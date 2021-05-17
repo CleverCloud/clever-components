@@ -314,21 +314,21 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
         }
 
         tr:nth-child(n+3) {
-          border-top: 0.1rem solid #e5e5e5;
+          border-top: 1px solid #e5e5e5;
         }
 
         th {
           background-color: #f6f6fb;
-          padding: 1rem 0.5rem;
+          padding: 1em 0.5em;
           text-align: left;
         }
 
         th.btn-col {
-          width: 2rem;
+          width: 2em;
         }
 
         td {
-          padding: 0.25rem 0.5rem;
+          padding: 0.25em 0.5em;
           white-space: nowrap;
         }
 
@@ -339,7 +339,7 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
         table em[title] code {
           box-sizing: border-box;
           left: 100%;
-          padding: 0 0.15rem;
+          padding: 0 0.15em;
           position: absolute;
         }
 
@@ -351,15 +351,15 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
           display: grid;
           grid-template-columns: min-content 1fr min-content;
           margin: 0;
-          padding: 1rem;
+          padding: 1em;
         }
 
         .plan .add-item-btn {
-          margin-right: 1rem;
+          margin-right: 1em;
         }
 
         .plan-name {
-          font-size: 1.2rem;
+          font-size: 1.2em;
           font-weight: bold;
         }
 
@@ -368,7 +368,7 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
         }
 
         .feature-list:not(:last-child) {
-          margin-top: 1rem;
+          margin-top: 1em;
         }
 
         .plan[data-state="closed"] .feature-list {
@@ -380,7 +380,7 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
           border-bottom: 1px solid #e5e5e5;
           display: flex;
           justify-content: space-between;
-          padding: 0.75rem 0;
+          padding: 0.75em 0;
         }
 
         .feature-list:last-child .feature:last-child {
@@ -396,7 +396,7 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
 
         .plan[data-state="closed"] .feature:not(:last-child)::after {
           content: ',';
-          padding-right: 0.5rem;
+          padding-right: 0.5em;
         }
 
         .feature-name {
@@ -406,11 +406,11 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
 
         .plan[data-state="closed"] .feature-name::after {
           content: ' :';
-          padding-right: 0.25rem;
+          padding-right: 0.25em;
         }
 
         .plan[data-state="opened"] .feature-value {
-          margin-right: 0.5rem;
+          margin-right: 0.5em;
         }
       `,
     ];
