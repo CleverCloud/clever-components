@@ -73,6 +73,7 @@ const NUMBER_FEATURE_TYPES = ['bytes', 'number', 'number-cpu-runtime'];
  * | <img src="../assets/plus.svg" style="height: 1.5rem; vertical-align: middle"> | <code>plus.svg</code>
  * | <img src="../assets/up.svg" style="height: 1.5rem; vertical-align: middle"> | <code>up.svg</code>
  *
+ * @prop {"add"|"none"} action - Sets the type of action: "add" to display add buttons for each item and "none" for no actions (defaults to "add").
  * @prop { Currency } currency - Sets the currency used to display the prices (defaults to euros).
  * @prop { Array<Feature> } features - Sets the list of features (used for the feature sort order).
  * @prop { Array<Item> } items - Sets the list of items.
@@ -83,6 +84,7 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
 
   static get properties () {
     return {
+      action: { type: String, reflect: true },
       currency: { type: Object },
       features: { type: Array },
       items: { type: Array },
@@ -94,6 +96,7 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
 
   constructor () {
     super();
+    this.action = 'add';
     this._items = [];
     this._features = [];
   }
@@ -154,14 +157,16 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
         ${this._items.map((item) => html`
           <div class="plan" data-state=${item.state}>
 
-            <cc-button
-              class="add-item-btn"
-              image=${plusSvg}
-              hide-text
-              circle
-              @cc-button:click=${() => this._onAddItem(item)}
-            >${i18n('cc-pricing-table.add-button')}
-            </cc-button>
+            ${this.action === 'add' ? html`
+              <cc-button
+                class="add-item-btn"
+                image=${plusSvg}
+                hide-text
+                circle
+                @cc-button:click=${() => this._onAddItem(item)}
+              >${i18n('cc-pricing-table.add-button')}
+              </cc-button>
+            ` : ''}
 
             <div class="plan-name">${item.name}</div>
 
@@ -212,7 +217,9 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
     return html`
       <table>
         <tr>
-          <th class="btn-col"></th>
+          ${this.action === 'add' ? html`
+            <th class="btn-col"></th>
+          ` : ''}
           <th>${i18n('cc-pricing-table.plan')}</th>
           ${this._features.map((feature) => html`
             <th class=${classMap({ 'number-align': NUMBER_FEATURE_TYPES.includes(feature.type) })}>${this._getFeatureName(feature)}</th>
@@ -222,9 +229,11 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
         </tr>
         ${this._items.map((item) => html`
           <tr>
-            <td>
-              <cc-button image=${plusSvg} hide-text circle @cc-button:click=${() => this._onAddItem(item)}></cc-button>
-            </td>
+            ${this.action === 'add' ? html`
+              <td class="btn-col">
+                <cc-button image=${plusSvg} hide-text circle @cc-button:click=${() => this._onAddItem(item)}></cc-button>
+              </td>
+            ` : ''}
             <td>${item.name}</td>
             ${this._renderBigItemFeatures(item.features)}
             <td class="number-align">${this._getDailyPrice(item.price)}</td>
@@ -328,8 +337,12 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
         }
 
         td {
-          padding: 0.25em 0.5em;
+          padding: 0.5em 0.5em;
           white-space: nowrap;
+        }
+
+        td.btn-col {
+          padding: 0.25em 0.5em;
         }
 
         tr:hover td {
@@ -349,9 +362,13 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
           align-items: center;
           border-top: 1px solid #e5e5e5;
           display: grid;
-          grid-template-columns: min-content 1fr min-content;
+          grid-template-columns: min-content [main-start] 1fr [main-end] min-content;
           margin: 0;
           padding: 1em;
+        }
+
+        :host([action="none"]) .plan {
+          grid-template-columns: [main-start] 1fr [main-end] min-content;
         }
 
         .plan .add-item-btn {
@@ -364,7 +381,7 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
         }
 
         .feature-list {
-          grid-column: 2 / 4;
+          grid-column: main-start / main-end;
         }
 
         .feature-list:not(:last-child) {
