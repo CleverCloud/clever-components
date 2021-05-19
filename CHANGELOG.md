@@ -9,6 +9,13 @@ title: Changelog
 * Add new custom ESLint rules to enforce conventions over translation files
 * cc-toggle: remove padding when legend is empty
 * Introduce new docs template/system for smart components
+* `<cc-pricing-table>`:
+  * replace `rem` with `em` units (it's a fix)
+  * add action property (add/none)
+* `<cc-pricing-product>`:
+  * replace `rem` with `em` units (it's a fix)
+  * add action property (add/none)
+  * add head slot to override the whole head section
 
 ## 6.5.1 (2021-05-07)
 

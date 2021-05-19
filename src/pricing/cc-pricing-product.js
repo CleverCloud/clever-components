@@ -52,6 +52,7 @@ const SKELETON_DESCRIPTION = fakeString(180);
  * }
  * ```
  *
+ * @prop {"add"|"none"} action - Sets the type of action: "add" to display add buttons for each item and "none" for no actions (defaults to "add").
  * @prop {Currency} currency - Sets the currency used to display the prices (defaults to euros).
  * @prop {String} description - Sets the description of the product (can be overriden with the default slot).
  * @prop {Boolean} error - Displays an error message.
@@ -63,6 +64,7 @@ const SKELETON_DESCRIPTION = fakeString(180);
  * @event {CustomEvent<Product>} cc-pricing-product:add-product - Fires the product whenever the "plus" button of an item is clicked.
  *
  * @slot - Override the `description` param with custom HTML.
+ * @slot head - Override the whole head section (with the icon, name and description).
  * @slot icon - Override the `icon` url param with HTML where you can put multiple `<img>` tags.
  * @slot name - Override the `name` param with custom HTML.
  */
@@ -70,6 +72,7 @@ export class CcPricingProduct extends LitElement {
 
   static get properties () {
     return {
+      action: { type: String },
       currency: { type: Object },
       description: { type: String },
       error: { type: Boolean, reflect: true },
@@ -82,6 +85,7 @@ export class CcPricingProduct extends LitElement {
 
   constructor () {
     super();
+    this.action = 'add';
     this.icons = [];
     this.features = [];
   }
@@ -99,31 +103,33 @@ export class CcPricingProduct extends LitElement {
 
     return html`
 
-      <div class="head">
+      <slot name="head">
+        <div class="head">
 
-        <div class="head-info">
-          <slot name="icon">
-            <cc-img class="product-logo" src="${ifDefined(this.icon)}" ?skeleton="${skeleton}"></cc-img>
-          </slot>
-          <div class="name">
-            <slot name="name">
-              <span class="${classMap({ skeleton })}">${name}</span>
+          <div class="head-info">
+            <slot name="icon">
+              <cc-img class="product-logo" src="${ifDefined(this.icon)}" ?skeleton="${skeleton}"></cc-img>
             </slot>
-          </div>
-        </div>
-
-        ${skeleton && !this.error ? html`
-          <slot>
-            <div>
-              <span class="description skeleton">${description}</span>
+            <div class="name">
+              <slot name="name">
+                <span class="${classMap({ skeleton })}">${name}</span>
+              </slot>
             </div>
-          </slot>
-        ` : ''}
-        ${!skeleton && !this.error ? html`
-          <slot>${description}</slot>
-        ` : ''}
+          </div>
 
-      </div>
+          ${skeleton && !this.error ? html`
+            <slot>
+              <div>
+                <span class="description skeleton">${description}</span>
+              </div>
+            </slot>
+          ` : ''}
+          ${!skeleton && !this.error ? html`
+            <slot>${description}</slot>
+          ` : ''}
+
+        </div>
+      </slot>
 
       ${this.error ? html`
         <cc-error>${i18n('cc-pricing-product.error')}</cc-error>
@@ -137,6 +143,7 @@ export class CcPricingProduct extends LitElement {
           .items=${this.items}
           .features=${this.features}
           .currency=${this.currency}
+          action=${this.action}
           @cc-pricing-table:add-item=${this._onAddItem}
         ></cc-pricing-table>
       ` : ''}
@@ -155,9 +162,9 @@ export class CcPricingProduct extends LitElement {
 
         .head {
           display: grid;
-          gap: 1rem;
+          gap: 1em;
           grid-auto-rows: min-content;
-          padding: 1rem;
+          padding: 1em;
         }
 
         /* We cannot use cc-flex-gap because of a double slot */
@@ -166,27 +173,27 @@ export class CcPricingProduct extends LitElement {
           flex-wrap: wrap;
           /* reset gap for browsers that support gap for flexbox */
           gap: 0;
-          margin: -0.5rem;
+          margin: -0.5em;
         }
 
         .product-logo,
         slot[name="icon"]::slotted(*),
         .name {
-          margin: 0.5rem;
+          margin: 0.5em;
         }
 
         .product-logo,
         slot[name=icon]::slotted(*) {
           --cc-img-fit: contain;
-          border-radius: 0.25rem;
+          border-radius: 0.25em;
           display: block;
-          height: 3rem;
-          width: 3rem;
+          height: 3em;
+          width: 3em;
         }
 
         .name {
           align-self: center;
-          font-size: 1.5rem;
+          font-size: 1.5em;
           font-weight: bold;
         }
 
@@ -209,11 +216,11 @@ export class CcPricingProduct extends LitElement {
         }
 
         cc-loader {
-          min-height: 20rem;
+          min-height: 20em;
         }
 
         cc-error {
-          padding: 0 1rem 1rem;
+          padding: 0 1em 1em;
         }
       `,
     ];

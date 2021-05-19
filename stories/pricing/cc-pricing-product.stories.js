@@ -49,6 +49,20 @@ export const dataLoadedWithNode = makeStory(conf, {
   items: [getFullProductRuntime('node')],
 });
 
+export const dataLoadedWithCustomHead = makeStory(conf, {
+  items: [{
+    ...getFullProductRuntime('node'),
+    innerHTML: `<div slot="head" style="padding: 1rem; background-color: lime;">The whole head section can be overriden with the head slot...</div>`,
+  }],
+});
+
+export const dataLoadedWithEmptyHead = makeStory(conf, {
+  items: [{
+    ...getFullProductRuntime('node'),
+    innerHTML: `<div slot="head"></div>`,
+  }],
+});
+
 export const dataLoadedWithCustomDescription = makeStory(conf, {
   items: [{
     ...getFullProductRuntime('node'),
@@ -114,6 +128,13 @@ export const dataLoadedWithPostgresql = makeStory(conf, {
   items: [getFullProductAddon('postgresql-addon')],
 });
 
+export const dataLoadedWithPostgresqlNoAction = makeStory(conf, {
+  items: [{
+    ...getFullProductAddon('postgresql-addon'),
+    action: 'none',
+  }],
+});
+
 export const dataLoadedWithPostgresqlDollars = makeStory(conf, {
   items: [
     {
@@ -155,6 +176,8 @@ enhanceStoriesNames({
   loading,
   error,
   dataLoadedWithNode,
+  dataLoadedWithCustomHead,
+  dataLoadedWithEmptyHead,
   dataLoadedWithCustomDescription,
   dataLoadedWithNoDescription,
   dataLoadedWithCustomIcons,
@@ -163,6 +186,7 @@ enhanceStoriesNames({
   dataLoadedWithMongodb,
   dataLoadedWithMysql,
   dataLoadedWithPostgresql,
+  dataLoadedWithPostgresqlNoAction,
   dataLoadedWithPostgresqlDollars,
   dataLoadedWithRedis,
   simulations,
