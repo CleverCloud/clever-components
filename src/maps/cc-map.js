@@ -1,13 +1,12 @@
 import '../atoms/cc-loader.js';
 import '../molecules/cc-error.js';
-import leaflet from 'leaflet';
-// 'leaflet.heat' needs to be imported after 'leaflet'
-import 'leaflet.heat';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { WORLD_GEOJSON } from '../assets/world-110m.geo.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
+import * as leaflet from '../lib/leaflet-esm.js';
+import { leafletHeatLayer } from '../lib/leaflet-heat.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
 import { leafletStyles } from '../styles/leaflet.js';
 
@@ -132,7 +131,7 @@ export class CcMap extends withResizeObserver(LitElement) {
 
     this._heatLayer
       .clearLayers()
-      .addLayer(leaflet.heatLayer(heatPoints, heatOptions));
+      .addLayer(leafletHeatLayer(heatPoints, heatOptions));
   }
 
   _updatePoints (newPoints) {

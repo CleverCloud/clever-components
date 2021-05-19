@@ -57,8 +57,6 @@ export default {
         'clipboard-copy',
         'chart.js',
         'chartjs-plugin-datalabels',
-        'leaflet',
-        'leaflet.heat',
         // used by chart.js
         'moment',
         'statuses',

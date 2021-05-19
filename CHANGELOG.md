@@ -6,7 +6,7 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+* `<cc-map>`: use leaflet from ESM source to improve treeshaking
 
 ## 6.6.0 (2021-05-19)
 
