@@ -6,6 +6,10 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+...
+
+## 6.6.0 (2021-05-19)
+
 * Add new custom ESLint rules to enforce conventions over translation files
 * cc-toggle: remove padding when legend is empty
 * Introduce new docs template/system for smart components
