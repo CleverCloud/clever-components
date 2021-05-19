@@ -64,6 +64,7 @@ const SKELETON_DESCRIPTION = fakeString(180);
  * @event {CustomEvent<Product>} cc-pricing-product:add-product - Fires the product whenever the "plus" button of an item is clicked.
  *
  * @slot - Override the `description` param with custom HTML.
+ * @slot head - Override the whole head section (with the icon, name and description).
  * @slot icon - Override the `icon` url param with HTML where you can put multiple `<img>` tags.
  * @slot name - Override the `name` param with custom HTML.
  */
@@ -102,31 +103,33 @@ export class CcPricingProduct extends LitElement {
 
     return html`
 
-      <div class="head">
+      <slot name="head">
+        <div class="head">
 
-        <div class="head-info">
-          <slot name="icon">
-            <cc-img class="product-logo" src="${ifDefined(this.icon)}" ?skeleton="${skeleton}"></cc-img>
-          </slot>
-          <div class="name">
-            <slot name="name">
-              <span class="${classMap({ skeleton })}">${name}</span>
+          <div class="head-info">
+            <slot name="icon">
+              <cc-img class="product-logo" src="${ifDefined(this.icon)}" ?skeleton="${skeleton}"></cc-img>
             </slot>
-          </div>
-        </div>
-
-        ${skeleton && !this.error ? html`
-          <slot>
-            <div>
-              <span class="description skeleton">${description}</span>
+            <div class="name">
+              <slot name="name">
+                <span class="${classMap({ skeleton })}">${name}</span>
+              </slot>
             </div>
-          </slot>
-        ` : ''}
-        ${!skeleton && !this.error ? html`
-          <slot>${description}</slot>
-        ` : ''}
+          </div>
 
-      </div>
+          ${skeleton && !this.error ? html`
+            <slot>
+              <div>
+                <span class="description skeleton">${description}</span>
+              </div>
+            </slot>
+          ` : ''}
+          ${!skeleton && !this.error ? html`
+            <slot>${description}</slot>
+          ` : ''}
+
+        </div>
+      </slot>
 
       ${this.error ? html`
         <cc-error>${i18n('cc-pricing-product.error')}</cc-error>

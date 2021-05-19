@@ -15,6 +15,7 @@ title: Changelog
 * `<cc-pricing-product>`:
   * replace `rem` with `em` units (it's a fix)
   * add action property (add/none)
+  * add head slot to override the whole head section
 
 ## 6.5.1 (2021-05-07)
 
