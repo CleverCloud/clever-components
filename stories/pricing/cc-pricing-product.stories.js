@@ -114,6 +114,13 @@ export const dataLoadedWithPostgresql = makeStory(conf, {
   items: [getFullProductAddon('postgresql-addon')],
 });
 
+export const dataLoadedWithPostgresqlNoAction = makeStory(conf, {
+  items: [{
+    ...getFullProductAddon('postgresql-addon'),
+    action: 'none',
+  }],
+});
+
 export const dataLoadedWithPostgresqlDollars = makeStory(conf, {
   items: [
     {
@@ -163,6 +170,7 @@ enhanceStoriesNames({
   dataLoadedWithMongodb,
   dataLoadedWithMysql,
   dataLoadedWithPostgresql,
+  dataLoadedWithPostgresqlNoAction,
   dataLoadedWithPostgresqlDollars,
   dataLoadedWithRedis,
   simulations,

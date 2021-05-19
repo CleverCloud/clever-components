@@ -52,6 +52,7 @@ const SKELETON_DESCRIPTION = fakeString(180);
  * }
  * ```
  *
+ * @prop {"add"|"none"} action - Sets the type of action: "add" to display add buttons for each item and "none" for no actions (defaults to "add").
  * @prop {Currency} currency - Sets the currency used to display the prices (defaults to euros).
  * @prop {String} description - Sets the description of the product (can be overriden with the default slot).
  * @prop {Boolean} error - Displays an error message.
@@ -70,6 +71,7 @@ export class CcPricingProduct extends LitElement {
 
   static get properties () {
     return {
+      action: { type: String },
       currency: { type: Object },
       description: { type: String },
       error: { type: Boolean, reflect: true },
@@ -82,6 +84,7 @@ export class CcPricingProduct extends LitElement {
 
   constructor () {
     super();
+    this.action = 'add';
     this.icons = [];
     this.features = [];
   }
@@ -137,6 +140,7 @@ export class CcPricingProduct extends LitElement {
           .items=${this.items}
           .features=${this.features}
           .currency=${this.currency}
+          action=${this.action}
           @cc-pricing-table:add-item=${this._onAddItem}
         ></cc-pricing-table>
       ` : ''}

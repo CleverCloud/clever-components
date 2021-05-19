@@ -12,7 +12,9 @@ title: Changelog
 * `<cc-pricing-table>`:
   * replace `rem` with `em` units (it's a fix)
   * add action property (add/none)
-* `<cc-pricing-product>`: replace `rem` with `em` units (it's a fix)
+* `<cc-pricing-product>`:
+  * replace `rem` with `em` units (it's a fix)
+  * add action property (add/none)
 
 ## 6.5.1 (2021-05-07)
 
