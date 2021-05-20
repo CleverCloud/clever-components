@@ -1,6 +1,6 @@
 import '../atoms/cc-button.js';
 import '../molecules/cc-error.js';
-import Chart from 'chart.js';
+import { ArcElement, Chart, DoughnutController, Legend, Tooltip } from 'chart.js';
 import { css, html, LitElement } from 'lit-element';
 import { cache } from 'lit-html/directives/cache.js';
 import { classMap } from 'lit-html/directives/class-map.js';
@@ -12,6 +12,8 @@ import { linkStyles } from '../templates/cc-link.js';
 
 const closeSvg = new URL('../assets/close.svg', import.meta.url).href;
 const infoSvg = new URL('../assets/info.svg', import.meta.url).href;
+
+Chart.register(ArcElement, DoughnutController, Legend, Tooltip);
 
 function xor (a, b) {
   return Number(a) ^ Number(b);
@@ -101,56 +103,55 @@ export class CcTileStatusCodes extends LitElement {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        legend: {
-          onClick: function (e, legendItem) {
-            const meta = this.chart.getDatasetMeta(0);
-            this.chart.data.labels.forEach((label, i) => {
-              const sameLabel = (label === legendItem.text);
-              if (xor(e.shiftKey, sameLabel)) {
-                meta.data[i].hidden = !meta.data[i].hidden;
-              }
-            });
-            this.chart.update();
-          },
-          onHover: (e) => {
-            this._ctx.style.cursor = 'pointer';
-          },
-          onLeave: (e) => {
-            this._ctx.style.cursor = null;
-          },
-          position: 'right',
-          labels: {
-            fontFamily: 'monospace',
-            usePointStyle: true,
-            // Filter legend items so we can only keep 1xx, 2xx... instead of all status codes
-            filter: (current, all) => {
-              const label = current.text;
-              const previousLabel = all.labels[current.index - 1];
-              return label !== previousLabel;
-            },
-          },
-        },
         plugins: {
           datalabels: {
             display: false,
           },
-        },
-        tooltips: {
-          backgroundColor: '#000',
-          displayColors: false,
-          callbacks: {
-            // Add official english title of the HTTP status code
-            title: (tooltipItem, data) => {
-              const statusCode = this._labels[tooltipItem[0].index];
-              return `HTTP ${statusCode}: ${status.message[statusCode]}`;
+          legend: {
+            onClick: function (e, legendItem) {
+              this.chart.data.labels.forEach((label, i) => {
+                const sameLabel = (label === legendItem.text);
+                if (xor(e.native.shiftKey, sameLabel)) {
+                  this.chart.toggleDataVisibility(i);
+                }
+              });
+              this.chart.update();
             },
-            // Display number of requests and percentage
-            label: (tooltipItem, data) => {
-              const allData = data.datasets[tooltipItem.datasetIndex].data;
-              const total = allData.reduce((a, b) => a + b, 0);
-              const value = allData[tooltipItem.index];
-              const percent = value / total;
-              return i18n('cc-tile-status-codes.tooltip', { value, percent });
+            onHover: (e) => {
+              this._ctx.style.cursor = 'pointer';
+            },
+            onLeave: (e) => {
+              this._ctx.style.cursor = null;
+            },
+            position: 'right',
+            labels: {
+              fontFamily: 'monospace',
+              usePointStyle: true,
+              // Filter legend items so we can only keep 1xx, 2xx... instead of all status codes
+              filter: (current, all) => {
+                const label = current.text;
+                const previousLabel = all.labels[current.index - 1];
+                return label !== previousLabel;
+              },
+            },
+          },
+          tooltip: {
+            backgroundColor: '#000',
+            displayColors: false,
+            callbacks: {
+              // Add official english title of the HTTP status code
+              title: ([context]) => {
+                const statusCode = this._labels[context.dataIndex];
+                return `HTTP ${statusCode}: ${status.message[statusCode]}`;
+              },
+              // Display number of requests and percentage
+              label: (context) => {
+                const allData = context.dataset.data;
+                const total = allData.reduce((a, b) => a + b, 0);
+                const value = allData[context.dataIndex];
+                const percent = value / total;
+                return i18n('cc-tile-status-codes.tooltip', { value, percent });
+              },
             },
           },
         },
@@ -188,7 +189,7 @@ export class CcTileStatusCodes extends LitElement {
 
       this.updateComplete.then(() => {
         this._chart.options.animation.duration = this._skeleton ? 0 : 300;
-        this._chart.options.tooltips.enabled = !this._skeleton;
+        this._chart.options.plugins.tooltip.enabled = !this._skeleton;
         this._chart.data = {
           labels: this._chartLabels,
           datasets: [{
