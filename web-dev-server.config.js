@@ -55,10 +55,6 @@ export default {
       // the commonjs plugin is slow, list the required packages explicitly:
       include: commonJsIdentifiers([
         'clipboard-copy',
-        'chart.js',
-        'chartjs-plugin-datalabels',
-        // used by chart.js
-        'moment',
         'statuses',
         // used by clever-client
         'oauth-1.0a',

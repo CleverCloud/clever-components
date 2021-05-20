@@ -1,6 +1,6 @@
 import '../atoms/cc-button.js';
 import '../molecules/cc-error.js';
-import Chart from 'chart.js';
+import { BarController, BarElement, CategoryScale, Chart, LinearScale, Title, Tooltip } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
@@ -11,6 +11,8 @@ import { skeletonStyles } from '../styles/skeleton.js';
 
 const closeSvg = new URL('../assets/close.svg', import.meta.url).href;
 const infoSvg = new URL('../assets/info.svg', import.meta.url).href;
+
+Chart.register(BarController, BarElement, Tooltip, CategoryScale, LinearScale, Title);
 
 const SKELETON_REQUESTS = Array
   .from(new Array(24))
@@ -138,12 +140,12 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
     // * 1.3 helps to let some white space on top of the bar for the label
     // (I didn't found a better yet)
     const maxRequestCount = Math.ceil(Math.max(...this._groupedValues) * 1.3);
-    this._chart.options.scales.yAxes[0].ticks.suggestedMax = maxRequestCount;
+    this._chart.options.scales.y.ticks.suggestedMax = maxRequestCount;
 
-    this._chart.options.tooltips.enabled = !this._skeleton;
+    this._chart.options.plugins.tooltip.enabled = !this._skeleton;
 
     const totalRequests = this._groupedValues.reduce((a, b) => a + b, 0);
-    this._chart.options.title.text = this._skeleton
+    this._chart.options.plugins.title.text = this._skeleton
       ? '...'
       : i18n('cc-tile-requests.requests-nb.total', { totalRequests });
 
@@ -171,16 +173,36 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
         // We don't need the responsive mode because we already observe resize to compute bar count
         responsive: false,
         maintainAspectRatio: false,
-        title: {
-          display: true,
-          position: 'bottom',
-          padding: 0,
-          fontStyle: 'italic',
-        },
-        legend: {
-          display: false,
-        },
         plugins: {
+          title: {
+            display: true,
+            position: 'bottom',
+            padding: 0,
+            font: {
+              style: 'italic',
+              weight: 'normal',
+            },
+          },
+          legend: {
+            display: false,
+          },
+          tooltip: {
+            backgroundColor: '#000',
+            displayColors: false,
+            callbacks: {
+              title: ([context]) => {
+                const [from, to] = this._groupedData[context.dataIndex];
+                return i18n('cc-tile-requests.date-tooltip', { from, to });
+              },
+              label: (context) => {
+                const windowHours = (24 / this._barCount);
+                return i18n('cc-tile-requests.requests-nb', {
+                  value: this._groupedValues[context.dataIndex],
+                  windowHours,
+                });
+              },
+            },
+          },
           datalabels: {
             anchor: 'end',
             offset: 0,
@@ -193,40 +215,19 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
           },
         },
         scales: {
-          xAxes: [
-            {
-              gridLines: {
-                drawOnChartArea: false,
-                drawTicks: false,
-              },
-              ticks: {
-                padding: 10,
-                fontSize: 12,
-              },
+          x: {
+            grid: {
+              drawOnChartArea: false,
+              drawTicks: false,
             },
-          ],
-          yAxes: [{
-            display: false,
             ticks: {
-              beginAtZero: true,
+              padding: 10,
+              font: { size: 12 },
             },
-          }],
-        },
-        tooltips: {
-          backgroundColor: '#000',
-          displayColors: false,
-          callbacks: {
-            title: (tooltipItem, data) => {
-              const [from, to] = this._groupedData[tooltipItem[0].index];
-              return i18n('cc-tile-requests.date-tooltip', { from, to });
-            },
-            label: (tooltipItem, data) => {
-              const windowHours = (24 / this._barCount);
-              return i18n('cc-tile-requests.requests-nb', {
-                value: this._groupedValues[tooltipItem.index],
-                windowHours,
-              });
-            },
+          },
+          y: {
+            display: false,
+            beginAtZero: true,
           },
         },
         animation: {

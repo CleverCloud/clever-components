@@ -162,18 +162,6 @@ export function visualizerPlugin ({ outputDir, packageVersion }) {
   });
 };
 
-// Replace moment.js with an empty object
-// charts.js imports moment.js but we don't want/need it
-export function shimMoment () {
-  return {
-    load (id) {
-      if (id.includes('/node_modules/moment/')) {
-        return 'export default {}';
-      }
-    },
-  };
-}
-
 // https://github.com/Polymer/lit-element/issues/909
 // LitElement imports some legacy code for IE11 but we don't want/need it
 export function shimShadyRender () {
