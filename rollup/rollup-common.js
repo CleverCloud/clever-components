@@ -203,8 +203,6 @@ export const treeshakeOptions = {
     const relativeId = path.relative(process.cwd(), id);
     const isComponent = /^src\/.+\/cc-[a-z-]+\.js$/.test(relativeId);
     const isEntryPoint = /^src\/[a-z-]+\.js$/.test(relativeId);
-    // TODO: fix conflict with Leaflet.heat
-    const isLeaflet = /^node_modules\/leaflet/.test(relativeId);
-    return isComponent || isEntryPoint || isLeaflet;
+    return isComponent || isEntryPoint;
   },
 };
