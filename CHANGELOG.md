@@ -6,6 +6,10 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+...
+
+## 6.7.2 (2021-05-22)
+
 * Fix Leaflet ESM treeshaking (handle side effects)
 
 ## 6.7.1 (2021-05-21)
