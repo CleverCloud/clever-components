@@ -56,9 +56,30 @@ const mySQLExample = {
   quantity: 5,
 };
 
+const cellarExample = {
+  productName: 'Cellar',
+  item: {
+    name: 'Storage: 1000GB, Traffic: 1TB',
+    price: { daily: 15, monthly: 90 },
+  },
+  quantity: 1,
+};
+
 export const defaultStory = makeStory(conf, {
   items: [
     { selectedProducts: [pgExample, mySQLExample] },
+  ],
+});
+
+export const dataLoadedWithCellar = makeStory(conf, {
+  items: [
+    { selectedProducts: [cellarExample] },
+  ],
+});
+
+export const dataLoadedWithMysql = makeStory(conf, {
+  items: [
+    { selectedProducts: [mySQLExample] },
   ],
 });
 
@@ -68,11 +89,6 @@ export const dataLoadedWithPostgres = makeStory(conf, {
   ],
 });
 
-export const dataLoadedWithMysql = makeStory(conf, {
-  items: [
-    { selectedProducts: [mySQLExample] },
-  ],
-});
 
 export const dataLoadedWithMultiple = makeStory(conf, {
   items: [
@@ -93,7 +109,8 @@ export const empty = makeStory(conf, {
 enhanceStoriesNames({
   defaultStory,
   empty,
-  dataLoadedWithPostgres,
+  dataLoadedWithCellar,
   dataLoadedWithMysql,
+  dataLoadedWithPostgres,
   dataLoadedWithMultiple,
 });

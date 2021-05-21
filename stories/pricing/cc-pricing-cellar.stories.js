@@ -1,24 +1,93 @@
 // Don't forget to import the component you're presenting!
-import '../../src/pricing/cc-pricing-cellar.js';
+import '../../src/pricing/cc-pricing-product-cellar.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
-  title: '🛠 pricing/<cc-pricing-cellar>',
+  title: '🛠 pricing/<cc-pricing-product-cellar>',
   // This component name is used by Storybook's docs page for the API table.
   // It will use `custom-elements.json` documentation file.
   // Run `npm run components:docs-json` to generate this JSON file.
-  component: 'cc-pricing-cellar',
+  component: 'cc-pricing-product-cellar',
 };
 
 const conf = {
-  component: 'cc-pricing-cellar',
+  component: 'cc-pricing-product-cellar',
   // You may need to add some CSS just for your stories.
   // It's often needed to add some margin around your component.
   // language=CSS
-  css: `cc-pricing-cellar {
+  css: `cc-pricing-product-cellar {
     margin-bottom: 1rem;
   }`,
+};
+
+const baseItems = {
+  storage: [
+    {
+      minRange: 0,
+      maxRange: 1000000,
+      minRangeDisplay: 0,
+      maxRangeDisplay: 1e12,
+      price: 0.02,
+      highlighted: true,
+      totalPrice: {
+        price: 0,
+        visible: true,
+      },
+    },
+    {
+      minRange: 1000000,
+      maxRange: 25000000,
+      minRangeDisplay: 10 * 1e12,
+      maxRangeDisplay: 25 * 1e12,
+      price: 0.015,
+      highlighted: false,
+      totalPrice: {
+        price: 0,
+        visible: false,
+      },
+    },
+    {
+      minRange: 25000000,
+      // -1 to represent infinity
+      maxRange: -1,
+      minRangeDisplay: 25 * 1e12,
+      maxRangeDisplay: '∞',
+      price: 0.01,
+      highlighted: false,
+      totalPrice: {
+        price: 0,
+        hidden: false,
+      },
+    },
+  ],
+  traffic: [
+    {
+      minRange: 0,
+      maxRange: 10000000,
+      minRangeDisplay: 0,
+      maxRangeDisplay: 10 * 1e12,
+      price: 0.09,
+      highlighted: true,
+      totalPrice: {
+        price: 0,
+        visible: true,
+      },
+    },
+    {
+      minRange: 10000000,
+      // -1 to represent infinity
+      maxRange: -1,
+      minRangeDisplay: 10 * 1e12,
+      maxRangeDisplay: '∞',
+      price: 0.07,
+      highlighted: false,
+      totalPrice: {
+        price: 0,
+        visible: false,
+      },
+    },
+  ],
 };
 
 // The first story in the file will appear before the API table in Storybook's docs page.
@@ -27,7 +96,16 @@ const conf = {
 // but no need to get exhaustive or too detailed ;-)
 export const defaultStory = makeStory(conf, {
   items: [
-    { },
+    { cellarInfos: baseItems },
+  ],
+});
+
+export const noAction = makeStory(conf, {
+  items: [
+    {
+      cellarInfos: baseItems,
+      action: 'none',
+    },
   ],
 });
 
@@ -90,6 +168,7 @@ export const simulations = makeStory(conf, {
 // you need to call `enhanceStoriesNames()` with all your stories.
 enhanceStoriesNames({
   defaultStory,
+  noAction,
   skeleton,
   empty,
   error,

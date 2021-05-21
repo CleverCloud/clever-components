@@ -65,7 +65,7 @@ const UNITS = [
  *
  * @cssprop {Color} --cc-loader-color - The color of the animated circle (defaults: `#2653af`).
  */
-export class CcPricingCellar extends LitElement {
+export class CcPricingProductCellar extends LitElement {
 
   // DOCS: 1. LitElement's properties descriptor
 
@@ -331,11 +331,11 @@ export class CcPricingCellar extends LitElement {
               <div class="title title-storage">Storage</div>
 
               <div class="input-wrapper">
-                <cc-input-text 
-                    placeholder="Your storage"
-                    @cc-input-text:input=${this._onStorageChanged}
+                <cc-input-number 
+                    label="Your storage"
+                    @cc-input-number:input=${this._onStorageChanged}
                     number
-                ></cc-input-text>
+                ></cc-input-number>
                 <cc-toggle 
                     class="unit-toggle" 
                     value=${this._storageUnitValue}
@@ -352,12 +352,12 @@ export class CcPricingCellar extends LitElement {
               <div class="title title-traffic">Outbound Traffic</div>
 
               <div class="input-wrapper">
-                <cc-input-text
-                    placeholder="Your traffic"
-                    @cc-input-text:input=${this._onTrafficChanged}
+                <cc-input-number
+                    label="Your Traffic"
+                    @cc-input-number:input=${this._onStorageChanged}
                     number
-                ></cc-input-text>
-<!--                <input type="number" @input=...>-->
+                ></cc-input-number>
+                <!--                <input type="number" @input=...>-->
                 <cc-toggle 
                     class="unit-toggle" 
                     value=${this._trafficUnitValue}
@@ -389,6 +389,7 @@ export class CcPricingCellar extends LitElement {
       // language=CSS
       css`
                 :host {
+                    background-color: #fff;
                     display: grid;
                     grid-gap: 0.5rem;
                 }
@@ -441,7 +442,6 @@ export class CcPricingCellar extends LitElement {
 
                 .storage,
                 .traffic {
-                  box-shadow: 0 0 0.5rem #aaa;
                   padding: 0.5rem 0 0.5rem 1rem;
                 }
                 
@@ -484,4 +484,4 @@ export class CcPricingCellar extends LitElement {
   }
 }
 
-window.customElements.define('cc-pricing-cellar', CcPricingCellar);
+window.customElements.define('cc-pricing-product-cellar', CcPricingProductCellar);

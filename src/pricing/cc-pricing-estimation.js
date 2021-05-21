@@ -161,7 +161,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
                 </button>
 
             </td>
-            <td>${product.name}</td>
+            <td>${product.productName}</td>
             <td>${product.item.name}</td>
             <td>${product.quantity}</td>
             <td class="price-item">${i18n('cc-pricing-table.price', {
