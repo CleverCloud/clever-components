@@ -25,7 +25,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // Original source at https://github.com/Leaflet/Leaflet.heat/blob/gh-pages/src/HeatLayer.js
 
-import { Bounds, Browser, DomUtil, Layer, point, setOptions, Util } from 'leaflet/src/Leaflet.js';
+import { Bounds, Browser, DomUtil, Layer, point, setOptions, Util } from './leaflet-esm.js';
 import { Simpleheat } from './simpleheat.js';
 
 export const HeatLayer = Layer.extend({
