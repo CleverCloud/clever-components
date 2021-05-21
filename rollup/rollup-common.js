@@ -191,6 +191,13 @@ export const treeshakeOptions = {
     const relativeId = path.relative(process.cwd(), id);
     const isComponent = /^src\/.+\/cc-[a-z-]+\.js$/.test(relativeId);
     const isEntryPoint = /^src\/[a-z-]+\.js$/.test(relativeId);
-    return isComponent || isEntryPoint;
+
+    // More details at src/lib/leaflet-esm.js
+    const isLeaflet = relativeId.endsWith('leaflet-esm.js')
+      || relativeId.includes('leaflet/src/layer/vector/Renderer.getRenderer.js')
+      || relativeId.includes('leaflet/src/layer/Tooltip.js')
+      || relativeId.includes('leaflet/src/control');
+
+    return isComponent || isEntryPoint || isLeaflet;
   },
 };
