@@ -6,7 +6,7 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+* Internalize leaflet.heat (and simpleheat) and transform them into ESM
 
 ## 6.7.0 (2021-05-20)
 

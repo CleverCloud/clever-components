@@ -6,7 +6,7 @@ import { WORLD_GEOJSON } from '../assets/world-110m.geo.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import * as leaflet from '../lib/leaflet-esm.js';
-import { leafletHeatLayer } from '../lib/leaflet-heat.js';
+import { HeatLayer } from '../lib/leaflet-heat.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
 import { leafletStyles } from '../styles/leaflet.js';
 
@@ -131,7 +131,7 @@ export class CcMap extends withResizeObserver(LitElement) {
 
     this._heatLayer
       .clearLayers()
-      .addLayer(leafletHeatLayer(heatPoints, heatOptions));
+      .addLayer(new HeatLayer(heatPoints, heatOptions));
   }
 
   _updatePoints (newPoints) {
