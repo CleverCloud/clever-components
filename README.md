@@ -34,3 +34,20 @@ You can find it in the *Notes* tab of a component's story ([example](https://www
 
 Sure, they're [available on npm](https://www.npmjs.com/package/@clevercloud/components).
 Contact us if you want more details.
+
+## License
+
+This project is licensed under the [Apache-2.0](https://spdx.org/licenses/Apache-2.0.html).
+
+We're using modified versions of two projects related to [Leaflet](https://leafletjs.com/):
+
+* https://github.com/Leaflet/Leaflet.heat
+* https://github.com/mourner/simpleheat
+
+Both projects are licensed with [BSD-2-Clause](https://spdx.org/licenses/BSD-2-Clause.html).
+They aren't updated anymore, and we wanted them to be exposed as modern ES modules.
+This is the main reason we decided to copy them in our own repo.
+The respective copyrights are at the top of each file:
+
+* src/lib/leaflet-heat.js
+* src/lib/simpleheat.js
