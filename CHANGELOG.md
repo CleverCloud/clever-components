@@ -6,6 +6,10 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+...
+
+## 6.7.0 (2021-05-20)
+
 * `<cc-map>`: use leaflet from ESM source to improve treeshaking
 * Update chart.js v2 => v3 (with ESM and treeshaking)
 
