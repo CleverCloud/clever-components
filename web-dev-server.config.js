@@ -1,8 +1,9 @@
+import { hmrPlugin, presets } from '@open-wc/dev-server-hmr';
 import json from '@rollup/plugin-json';
 import rollupCommonjs from '@rollup/plugin-commonjs';
 import { fromRollup, rollupAdapter } from '@web/dev-server-rollup';
-import { hmrPlugin, presets } from '@open-wc/dev-server-hmr';
 import { storybookWdsPlugin } from './stories/lib/markdown.cjs';
+import { esbuildBundlePlugin } from './wds/esbuild-bundle-plugin.js';
 
 const commonjs = fromRollup(rollupCommonjs);
 
@@ -35,6 +36,7 @@ const hmrI18n = {
 };
 
 export default {
+  port: 6006,
   nodeResolve: true,
   // watch: true,
   mimeTypes: {
@@ -51,6 +53,14 @@ export default {
       // TODO maybe hook the translation system with HMR
     }),
     rollupAdapter(json()),
+    esbuildBundlePlugin({
+      pathsToBundle: [
+        '/src/lib/leaflet-esm.js',
+        '/node_modules/rxjs/dist/esm5/index.js',
+        '/node_modules/rxjs/dist/esm5/operators/index.js',
+        '/node_modules/chart.js/dist/chart.esm.js',
+      ],
+    }),
     commonjs({
       // the commonjs plugin is slow, list the required packages explicitly:
       include: commonJsIdentifiers([

@@ -6,7 +6,7 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+* Introduce new custom esbuild WDS plugin (experimental)
 
 ## 6.7.2 (2021-05-22)
 
