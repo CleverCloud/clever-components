@@ -28,3 +28,4 @@ import 'leaflet/src/layer/vector/Renderer.getRenderer.js';
 import 'leaflet/src/layer/Tooltip.js';
 
 export * from 'leaflet/src/Leaflet.js';
+export { HeatLayer } from './leaflet-heat.js';

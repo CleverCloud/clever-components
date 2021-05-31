@@ -6,7 +6,8 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+* Introduce new custom esbuild WDS plugin (experimental)
+* `<cc-tile-status-codes>`: add smart definition
 
 ## 6.7.2 (2021-05-22)
 

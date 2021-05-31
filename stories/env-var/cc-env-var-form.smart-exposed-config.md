@@ -54,7 +54,7 @@ interface ApiConfig {
     OAUTH_CONSUMER_SECRET: "",
   },
   "ownerId": "",
-  "appId": "",
+  "appId": ""
 }'>
   <cc-env-var-form context="exposed-config"></cc-env-var-form>
 </cc-smart-container>

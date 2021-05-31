@@ -29,8 +29,8 @@
     "components:docs": "wca analyze src/** --outFile .components-docs/custom-elements.json",
     "test": "wtr 'test/**/*.test.*' --node-resolve",
     "test:watch": "wtr 'test/**/*.test.*' --node-resolve --watch",
-    "lint": "eslint --rulesdir eslint-rules rollup/*.js src stories tasks",
-    "lint:fix": "eslint --rulesdir eslint-rules --fix rollup/*.js src stories tasks",
+    "lint": "eslint --rulesdir eslint-rules rollup/*.js src stories tasks wds",
+    "lint:fix": "eslint --rulesdir eslint-rules --fix rollup/*.js src stories tasks wds",
     "prepack": "npm run test && npm run lint && npm run components:check-lit && npm run components:check-i18n && npm run components:build",
     "prestorybook:build": "npm run components:docs",
     "prestorybook:dev": "npm run components:docs",
@@ -39,13 +39,14 @@
     "preview:delete": "node tasks/preview.js delete",
     "start": "static -H '{\"cache-control\": \"no-cache, no-store, must-revalidate\", \"Pragma\": \"no-cache\", \"Expires\": \"0\"}' -a 0.0.0.0 -p 8080 storybook-static",
     "storybook:build": "build-storybook -o storybook-static${STORYBOOK_PATH}",
-    "storybook:dev": "wds -p 6006"
+    "storybook:dev": "wds"
   },
   "dependencies": {
     "@clevercloud/client": "^7.4.0",
     "chart.js": "^3.2.1",
     "chartjs-plugin-datalabels": "^2.0.0-rc.1",
     "clipboard-copy": "^4.0.1",
+    "esbuild": "^0.12.5",
     "leaflet": "^1.7.1",
     "lit-element": "^2.5.1",
     "lit-html": "^1.4.1",
