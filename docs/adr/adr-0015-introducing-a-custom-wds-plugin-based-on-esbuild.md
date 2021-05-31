@@ -24,7 +24,7 @@ We recently introduced several dependencies as ES modules in our components:
 
 ## The problem
 
-Because of those changes, the number of files loaded by the prebuilt Storybook in dev move increased a lot.
+Because of those changes, the number of files loaded by the prebuilt Storybook in dev mode increased a lot.
 By a lot, I mean more than 620 files total (HTML, CSS, JS modules, images...) to display a story.
 This is because by default, Web Dev Server doesn't bundle anything.
 It will rely on your browser's ability to load ES modules as the `import` statements are discovered in the code.
@@ -41,7 +41,7 @@ This has an impact on how long it takes to load the Storybook locally in dev mod
 
 ## The solution
 
-Storybook is working on new stuffs that may/should improve the performance.
+Storybook is working on new stuff that may/should improve the performance.
 We're not sure what will bring these improvements and how much faster it will be (maybe something based on [vite](https://vitejs.dev)).
 We're also not sure when such improvements will land.
 
