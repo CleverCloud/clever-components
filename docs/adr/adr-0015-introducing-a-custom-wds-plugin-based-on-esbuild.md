@@ -42,7 +42,7 @@ This has an impact on how long it takes to load the Storybook locally in dev mod
 ## The solution
 
 Storybook is working on new stuff that may/should improve the performance.
-We're not sure what will bring these improvements and how much faster it will be (maybe something based on [vite](https://vitejs.dev)).
+We're not sure what these improvements will bring and how much faster it will be (maybe something based on [vite](https://vitejs.dev)).
 We're also not sure when such improvements will land.
 
 While we wait for an official faster Storybook release, we decided to create a custom WDS plugin to improve the situation.
