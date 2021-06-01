@@ -24,6 +24,7 @@ title: '💡 Smart'
 ```js
 interface ApiConfig {
   API_HOST: String,
+  WARP_10_HOST: String,
   API_OAUTH_TOKEN: String,
   API_OAUTH_TOKEN_SECRET: String,
   OAUTH_CONSUMER_KEY: String,
@@ -54,11 +55,12 @@ If you only specify a `ownerId` and no `appId`, the data represent the whole org
 ```html
 <cc-smart-container context='{
   "apiConfig": {
-    API_HOST: "",
-    API_OAUTH_TOKEN: "",
-    API_OAUTH_TOKEN_SECRET: "",
-    OAUTH_CONSUMER_KEY: "",
-    OAUTH_CONSUMER_SECRET: "",
+    "API_HOST": "",
+    "WARP_10_HOST": ""
+    "API_OAUTH_TOKEN": "",
+    "API_OAUTH_TOKEN_SECRET": "",
+    "OAUTH_CONSUMER_KEY": "",
+    "OAUTH_CONSUMER_SECRET": "",
   },
   "ownerId": ""
 }'>
@@ -71,11 +73,12 @@ If you only specify a `ownerId` and no `appId`, the data represent the whole org
 ```html
 <cc-smart-container context='{
   "apiConfig": {
-    API_HOST: "",
-    API_OAUTH_TOKEN: "",
-    API_OAUTH_TOKEN_SECRET: "",
-    OAUTH_CONSUMER_KEY: "",
-    OAUTH_CONSUMER_SECRET: "",
+    "API_HOST": "",
+    "WARP_10_HOST": ""
+    "API_OAUTH_TOKEN": "",
+    "API_OAUTH_TOKEN_SECRET": "",
+    "OAUTH_CONSUMER_KEY": "",
+    "OAUTH_CONSUMER_SECRET": "",
   },
   "ownerId": "",
   "appId": ""
