@@ -137,10 +137,10 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
 
     await this.updateComplete;
 
-    // * 1.3 helps to let some white space on top of the bar for the label
+    // * 1.2 helps to let some white space on top of the bar for the label
     // (I didn't found a better yet)
-    const maxRequestCount = Math.ceil(Math.max(...this._groupedValues) * 1.3);
-    this._chart.options.scales.y.ticks.suggestedMax = maxRequestCount;
+    const maxRequestCount = Math.ceil(Math.max(...this._groupedValues) * 1.2);
+    this._chart.options.scales.y.suggestedMax = maxRequestCount;
 
     this._chart.options.plugins.tooltip.enabled = !this._skeleton;
 
