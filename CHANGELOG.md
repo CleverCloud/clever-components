@@ -6,6 +6,10 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+...
+
+## 6.8.0 (2021-06-01)
+
 * Introduce new custom esbuild WDS plugin (experimental)
 * `<cc-tile-status-codes>`: add smart definition
 * `<cc-tile-requests>`: fix label position
