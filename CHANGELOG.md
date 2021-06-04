@@ -7,6 +7,10 @@ title: Changelog
 ## Unreleased (????-??-??)
 
 * Improve display of `preview:list` task
+* `events.js`:
+  * removed the `options` parameter as it was not used anymore
+  * add the possibility to provide a suffix instead of just being able to provide an event name =>
+  It gives the possibility to create a suffix with a `tagName:suffix` directly if needed
 
 ## 6.8.0 (2021-06-01)
 
