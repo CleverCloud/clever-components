@@ -4,6 +4,8 @@ import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
 
+const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
+
 /**
  * A component doing X and Y (one liner description of your component).
  *
@@ -85,7 +87,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
       width: [600],
     };
     // this.currency = 'EUR';
-    this.currency = { code: 'EUR', changeRate: 1 };
+    this.currency = CURRENCY_EUR;
   }
 
   onResize ({ width }) {
@@ -97,7 +99,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
     return Object
       .values(this.selectedProducts)
       .map((product) => {
-        return (product !== null)
+        return (product != null)
           ? html`
               <div class="plan">
                  <div class="head-separator"></div> 
@@ -127,7 +129,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
                       <div class="name">${i18n('cc-pricing-estimation.price-name-daily')}</div>
                       <div class="number-align">
                           ${i18n('cc-pricing-table.price', {
-                              price: (product.item.price.daily * product.quantity) * this.currency.changeRate,
+                              price: (product.item.price * 24 * product.quantity) * this.currency.changeRate,
                               code: this.currency.code,
                           })}
                       </div>
@@ -136,7 +138,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
                       <div class="name">${i18n('cc-pricing-estimation.price-name-monthly')}</div>
                       <div class="number-align">
                           ${i18n('cc-pricing-table.price', {
-                              price: (product.item.price.monthly * product.quantity) * this.currency.changeRate,
+                              price: (product.item.price * 24 * 30 * product.quantity) * this.currency.changeRate,
                               code: this.currency.code,
                           })}
                   </div>
@@ -148,8 +150,9 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
   }
 
   _renderBigSelProducts () {
+      console.log(this.selectedProducts);
     return Object.values(this.selectedProducts).map((product) => {
-      return (product !== null)
+      return (product != null)
         ? html`
         <tr>
             <td>
@@ -161,16 +164,16 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
                 </button>
 
             </td>
-            <td>${product.productName}</td>
+            <td>${product.name}</td>
             <td>${product.item.name}</td>
             <td>${product.quantity}</td>
             <td class="price-item">${i18n('cc-pricing-table.price', {
-                 price: (product.item.price.daily * product.quantity) * this.currency.changeRate,
+                 price: (product.item.price * 24 * product.quantity) * this.currency.changeRate,
                  code: this.currency.code,
              })}
             </td>
             <td class="price-item">${i18n('cc-pricing-table.price', {
-                 price: (product.item.price.monthly * product.quantity) * this.currency.changeRate,
+                 price: (product.item.price * 24 * 30 * product.quantity) * this.currency.changeRate,
                  code: this.currency.code,
              })}
             </td>
@@ -184,7 +187,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
     let totalPrice = 0;
     for (const p of Object.values(this.selectedProducts)) {
       if (p != null) {
-        totalPrice += (p.item.price.monthly * p.quantity) * this.currency.changeRate;
+        totalPrice += (p.item.price * 24 * 30 * p.quantity) * this.currency.changeRate;
       }
     }
     return totalPrice;
