@@ -6,6 +6,9 @@ import { withResizeObserver } from '../mixins/with-resize-observer.js';
 
 const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
 
+const plusSvg = new URL('../assets/plus.svg', import.meta.url).href;
+const minusSvg = new URL('../assets/minus.svg', import.meta.url).href;
+
 /**
  * A component doing X and Y (one liner description of your component).
  *
@@ -150,23 +153,31 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
   }
 
   _renderBigSelProducts () {
-      console.log(this.selectedProducts);
     return Object.values(this.selectedProducts).map((product) => {
       return (product != null)
         ? html`
         <tr>
             <td>
-                <button class="change-qt-btn" @click=${() => this._onChangeQuantity(product, 'add')}>
-                    <img src=${new URL('../assets/circle.svg', import.meta.url).href} />
-                </button>
-                <button class="change-qt-btn" @click=${() => this._onChangeQuantity(product, 'remove')}>
-                    <img src=${new URL('../assets/minus.svg', import.meta.url).href} />
-                </button>
-
+                <cc-button
+                        class="add-item-btn"
+                        image=${plusSvg}
+                        hide-text
+                        circle
+                        @cc-button:click=${() => this._onChangeQuantity(product, 'add')}
+                >
+                </cc-button>
+                <cc-button
+                        class="remove-item-btn"
+                        image=${minusSvg}
+                        hide-text
+                        circle
+                        @cc-button:click=${() => this._onChangeQuantity(product, 'remove')}
+                >
+                </cc-button>
             </td>
             <td>${product.name}</td>
             <td>${product.item.name}</td>
-            <td>${product.quantity}</td>
+            <td class="number-align">${product.quantity}</td>
             <td class="price-item">${i18n('cc-pricing-table.price', {
                  price: (product.item.price * 24 * product.quantity) * this.currency.changeRate,
                  code: this.currency.code,
@@ -283,7 +294,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
                 td {
                     padding: 1rem;
                 }
-
+                
                 /* Properties for small screen size */
 
                 .container {
