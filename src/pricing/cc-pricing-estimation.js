@@ -77,6 +77,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
       selectedProducts: { type: Object },
       currency: { type: Object },
       _size: { type: String },
+        _mode: { type: String },
     };
   }
 
@@ -91,6 +92,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
     };
     // this.currency = 'EUR';
     this.currency = CURRENCY_EUR;
+    this._mode = 'classic';
   }
 
   onResize ({ width }) {
@@ -160,7 +162,8 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
             <td>${product.name}</td>
             <td>${product.item.name}</td>
             <td class="quantity-wrapper">
-                <cc-button
+                ${this._mode === 'classic'
+                    ? html` <cc-button
                         class="remove-item-btn"
                         image=${minusSvg}
                         hide-text
@@ -176,7 +179,10 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
                         circle
                         @cc-button:click=${() => this._onChangeQuantity(product, 'add')}
                 >
-                </cc-button>
+                </cc-button>`
+                        : html`<cc-input-number min="0" value="${product.quantity}"></cc-input-number>`
+                }
+               
             </td>
             <td class="price-item">${i18n('cc-pricing-table.price', {
                  price: (product.item.price * 24 * product.quantity) * this.currency.changeRate,
@@ -213,6 +219,11 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
     }
   }
 
+  _onToggleMode({detail: mode}) {
+      this._mode = mode;
+      console.log(mode, this._mode);
+  }
+
   _renderSmallEstimation () {
     return (Object.values(this.selectedProducts).length !== 0)
       ? html`
@@ -225,6 +236,20 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
 
   _renderBigEstimation () {
     return html`
+        <cc-toggle .choices="${[
+            {
+                label: 'classic',
+                value: 'classic',
+            },
+            {
+                label: 'input',
+                value: 'input',
+            },
+        ]}" 
+        value=${this._mode}
+        @cc-toggle:input=${this._onToggleMode}
+        >
+        </cc-toggle>
          <table>
             <tr>
                 <th>${i18n('cc-pricing-estimation.product')}</th>
