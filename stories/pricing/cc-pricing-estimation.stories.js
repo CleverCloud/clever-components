@@ -14,13 +14,10 @@ const conf = {
     }`,
 };
 const pgExample = {
-  productName: 'Postgresql',
+  name: 'Postgresql',
   item: {
     name: 'XS Small Space',
-    price: {
-      daily: 7.5,
-      monthly: 17.5,
-    },
+    price: 7.5 / 30,
     features: [{ name: 'Backups', value: 'Daily - 7 Retained' }, {
       name: 'Max DB size',
       value: '5 GB',
@@ -35,13 +32,10 @@ const pgExample = {
   quantity: 2,
 };
 const mySQLExample = {
-  productName: 'MySQL',
+  name: 'MySQL',
   item: {
     name: 'XXS Small Space',
-    price: {
-      daily: 7.5,
-      monthly: 17.5,
-    },
+    price: 7.5 / 30,
     features: [{ name: 'Backups', value: 'Daily - 7 Retained' }, {
       name: 'Max DB size',
       value: '5 GB',
@@ -57,10 +51,10 @@ const mySQLExample = {
 };
 
 const cellarExample = {
-  productName: 'Cellar',
+  name: 'Cellar',
   item: {
     name: 'Storage: 1000GB, Traffic: 1TB',
-    price: { daily: 15, monthly: 90 },
+    price: 15 / 30,
   },
   quantity: 1,
 };

@@ -119,7 +119,7 @@ export class CcPricingPage extends LitElement {
      * we just add one more to the list
      */
   _onAddProduct ({ detail: product }) {
-    console.log(product);
+    console.log('product from page', product);
     // TODO: Have a dedicated product.item.id
     const id = (product.item.id != null)
       ? product.item.id
