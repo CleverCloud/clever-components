@@ -157,15 +157,9 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
       return (product != null)
         ? html`
         <tr>
-            <td>
-                <cc-button
-                        class="add-item-btn"
-                        image=${plusSvg}
-                        hide-text
-                        circle
-                        @cc-button:click=${() => this._onChangeQuantity(product, 'add')}
-                >
-                </cc-button>
+            <td>${product.name}</td>
+            <td>${product.item.name}</td>
+            <td class="quantity-wrapper">
                 <cc-button
                         class="remove-item-btn"
                         image=${minusSvg}
@@ -174,10 +168,16 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
                         @cc-button:click=${() => this._onChangeQuantity(product, 'remove')}
                 >
                 </cc-button>
+                <div class="quantity-text">${product.quantity}</div>
+                <cc-button
+                        class="add-item-btn"
+                        image=${plusSvg}
+                        hide-text
+                        circle
+                        @cc-button:click=${() => this._onChangeQuantity(product, 'add')}
+                >
+                </cc-button>
             </td>
-            <td>${product.name}</td>
-            <td>${product.item.name}</td>
-            <td class="number-align">${product.quantity}</td>
             <td class="price-item">${i18n('cc-pricing-table.price', {
                  price: (product.item.price * 24 * product.quantity) * this.currency.changeRate,
                  code: this.currency.code,
@@ -227,7 +227,6 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
     return html`
          <table>
             <tr>
-                <th></th>
                 <th>${i18n('cc-pricing-estimation.product')}</th>
                 <th>${i18n('cc-pricing-estimation.size')}</th>
                 <th>${i18n('cc-pricing-estimation.quantity')}</th>
@@ -398,7 +397,17 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
                     background: transparent;
                     border: none;
                 }
-
+                
+                .quantity-wrapper {
+                    text-align: center;
+                    display: flex;
+                    justify-content: center;
+                    gap: 1rem;
+                }
+                
+                .quantity-text {
+                    align-self: center;
+                }
 
                 /* Recap */
                 
