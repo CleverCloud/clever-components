@@ -193,7 +193,14 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
                         @cc-button:click=${() => this._onChangeQuantity(product, 'add')}
                 >
                 </cc-button>`
-                        : html`<cc-input-number min="0" value="${product.quantity}"></cc-input-number>`
+                        : html`
+                            <cc-input-number 
+                                    class="input-number" 
+                                    min="0" 
+                                    value="${product.quantity}" 
+                                    @cc-input-number:input=${() => this._onChangeQuantityInputNumber(product)}
+                                    controls>
+                            </cc-input-number>`
                 }
                
             </td>
@@ -231,6 +238,10 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
       dispatchCustomEvent(this, 'change-quantity', { ...product, quantity: product.quantity + 1 });
     }
   }
+
+    _onChangeQuantityInputNumber (product) {
+      
+    }
 
   _onToggleMode ({ detail: mode }) {
     this._mode = mode;
@@ -444,6 +455,11 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
                 
                 .quantity-text {
                     align-self: center;
+                }
+                
+                .input-number {
+                    width: 25%;
+                    text-align: center;
                 }
 
                 /* Recap */
