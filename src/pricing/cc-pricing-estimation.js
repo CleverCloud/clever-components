@@ -242,7 +242,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
   }
 
   _onChangeQuantityInputNumber (product, e) {
-    console.log(e.target.value);
+    console.log(e);
     if (isNaN(e.target.value)) {
       product.quantity = 0;
       dispatchCustomEvent(this, 'change-quantity', { ...product, quantity: 0 });
