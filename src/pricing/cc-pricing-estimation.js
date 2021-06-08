@@ -198,7 +198,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
                                     class="input-number" 
                                     min="0" 
                                     value="${product.quantity}" 
-                                    @cc-input-number:input=${() => this._onChangeQuantityInputNumber(product)}
+                                    @cc-input-number:input=${(e) => this._onChangeQuantityInputNumber(product, e)}
                                     controls>
                             </cc-input-number>`
                 }
@@ -232,16 +232,26 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
 
   _onChangeQuantity (product, action) {
     if (action === 'remove') {
+      product.quantity -= 1;
       dispatchCustomEvent(this, 'change-quantity', { ...product, quantity: product.quantity - 1 });
     }
     else if (action === 'add') {
+      product.quantity += 1;
       dispatchCustomEvent(this, 'change-quantity', { ...product, quantity: product.quantity + 1 });
     }
   }
 
-    _onChangeQuantityInputNumber (product) {
-      
+  _onChangeQuantityInputNumber (product, e) {
+    console.log(e.target.value);
+    if (isNaN(e.target.value)) {
+      product.quantity = 0;
+      dispatchCustomEvent(this, 'change-quantity', { ...product, quantity: 0 });
     }
+    else {
+      product.quantity = e.target.value;
+      dispatchCustomEvent(this, 'change-quantity', { ...product, quantity: e.target.value });
+    }
+  }
 
   _onToggleMode ({ detail: mode }) {
     this._mode = mode;
