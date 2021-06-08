@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
+import '@shoelace-style/shoelace';
 
 /**
  * A component doing X and Y (one liner description of your component).
@@ -114,18 +115,18 @@ export class CcPricingHeader extends LitElement {
             <div class="header">
                 <div class="select-currency">
                    ${i18n('cc-pricing-header.currency-text')}:
-                    <select @change=${this._onCurrencyChange}>
-                        ${Object.values(this.currencies).map((c) => html`
-                            <option value=${c.code}>${c.displayValue}</option>`)}
-                    </select>
+                  <sl-select size="large">
+                    ${Object.values(this.currencies).map((c) => html`
+                            <sl-menu-item value=${c.code}>${c.displayValue}</sl-menu-item>`)}
+                  </sl-select>
                 </div>
                 <div class="zones">
-                  <cc-zone-input
-                    .zones=${this.zones}
-                    @cc-zone-input:input=${this._onZoneInput}
-                    selected=PAR
-                  >
-                  </cc-zone-input>
+                  <sl-select class="select" value="PAR">
+                    ${this.zones.map((zone) => html`
+                      <sl-menu-item  class="select-item" value=${zone.name}>
+                        <cc-zone class="select-content" .zone=${zone}></cc-zone>
+                      </sl-menu-item>`)}
+                  </sl-select>
                 </div>
                 <div class="est-cost">
                   ${i18n('cc-pricing-header.est-cost')}:
@@ -139,6 +140,8 @@ export class CcPricingHeader extends LitElement {
     return [
       // language=CSS
       css`
+
+                
                 :host {
                     background-color: #FFFAFA;
                     box-shadow: 0 0 0.5rem #aaa;
@@ -146,16 +149,25 @@ export class CcPricingHeader extends LitElement {
                     margin-bottom: 1.5rem;
                     padding: 1rem;
                 }
-
-                .zones {
-                    max-width: 550px;
-                }
-
+                
                 .header {
                     align-items: center;
                     display: flex;
                     justify-content: space-between;
                 }
+                
+                .select-content {
+                  width: min-content;
+                }
+                
+                .select-item {
+                  background-color: #ffffff;
+                }
+                
+                .zones {
+                  width: 100%;
+                }
+                
             `,
     ];
   }

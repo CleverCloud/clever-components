@@ -77,7 +77,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
       selectedProducts: { type: Object },
       currency: { type: Object },
       _size: { type: String },
-        _mode: { type: String },
+      _mode: { type: String },
     };
   }
 
@@ -98,6 +98,19 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
   onResize ({ width }) {
     this._size = width;
     console.log(this._size);
+  }
+
+  _getChoices () {
+    return [
+      {
+        label: i18n('cc-pricing-estimation.classic-mode'),
+        value: 'classic',
+      },
+      {
+        label: i18n('cc-pricing-estimation.input-mode'),
+        value: 'input',
+      },
+    ];
   }
 
   _renderSmallSelProduct () {
@@ -219,9 +232,9 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
     }
   }
 
-  _onToggleMode({detail: mode}) {
-      this._mode = mode;
-      console.log(mode, this._mode);
+  _onToggleMode ({ detail: mode }) {
+    this._mode = mode;
+    console.log(mode, this._mode);
   }
 
   _renderSmallEstimation () {
@@ -236,30 +249,25 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
 
   _renderBigEstimation () {
     return html`
-        <cc-toggle .choices="${[
-            {
-                label: 'classic',
-                value: 'classic',
-            },
-            {
-                label: 'input',
-                value: 'input',
-            },
-        ]}" 
-        value=${this._mode}
-        @cc-toggle:input=${this._onToggleMode}
-        >
-        </cc-toggle>
-         <table>
-            <tr>
-                <th>${i18n('cc-pricing-estimation.product')}</th>
-                <th>${i18n('cc-pricing-estimation.size')}</th>
-                <th>${i18n('cc-pricing-estimation.quantity')}</th>
-                <th>${i18n('cc-pricing-estimation.price-name-daily')}</th>
-                <th>${i18n('cc-pricing-estimation.price-name-monthly')}</th>
-            </tr>
+        <div class="mode-toggle">
+            <cc-toggle .choices="${this._getChoices()}"
+                       value=${this._mode}
+                       @cc-toggle:input=${this._onToggleMode}
+            >
+            </cc-toggle>
+        </div>
+        <div class="estimation-table">
+            <table>
+                <tr>
+                    <th>${i18n('cc-pricing-estimation.product')}</th>
+                    <th>${i18n('cc-pricing-estimation.size')}</th>
+                    <th>${i18n('cc-pricing-estimation.quantity')}</th>
+                    <th>${i18n('cc-pricing-estimation.price-name-daily')}</th>
+                    <th>${i18n('cc-pricing-estimation.price-name-monthly')}</th>
+                </tr>
                 ${this._renderBigSelProducts()}
-         </table> 
+            </table>
+        </div>
       `;
   }
 
@@ -317,6 +325,10 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
 
                 td {
                     padding: 1rem;
+                }
+                
+                .mode-toggle {
+                    margin-bottom: 1rem;
                 }
                 
                 /* Properties for small screen size */

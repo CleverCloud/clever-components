@@ -352,6 +352,8 @@ export const translations = {
   'cc-pricing-estimation.monthly-est': `Est. Monthly Cost`,
   'cc-pricing-estimation.sales': `Contact Sales`,
   'cc-pricing-estimation.sign-up': `Sign Up`,
+  'cc-pricing-estimation.classic-mode': `Simple`,
+  'cc-pricing-estimation.input-mode': `Expert`,
   //#endregion
   //#region cc-pricing-header
   'cc-pricing-header.currency-text': 'Currency',
