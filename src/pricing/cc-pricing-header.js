@@ -93,7 +93,7 @@ export class CcPricingHeader extends LitElement {
     console.log('from header', this.selectedProducts);
     for (const p of Object.values(this.selectedProducts)) {
       if (p != null) {
-        totalPrice += (p.item.price.monthly * p.quantity) * this.currency.changeRate;
+        totalPrice += (p.item.price * 30 * 24 * p.quantity) * this.currency.changeRate;
       }
     }
     return totalPrice;
@@ -115,7 +115,7 @@ export class CcPricingHeader extends LitElement {
             <div class="header">
                 <div class="select-currency">
                    ${i18n('cc-pricing-header.currency-text')}:
-                  <sl-select size="large">
+                  <sl-select size="large" @sl-change=${this._onCurrencyChange}>
                     ${Object.values(this.currencies).map((c) => html`
                             <sl-menu-item value=${c.code}>${c.displayValue}</sl-menu-item>`)}
                   </sl-select>
@@ -140,11 +140,9 @@ export class CcPricingHeader extends LitElement {
     return [
       // language=CSS
       css`
-
-                
                 :host {
                     background-color: #FFFAFA;
-                    box-shadow: 0 0 0.5rem #aaa;
+                    box-shadow: var(--shadow, 0);
                     display: block;
                     margin-bottom: 1.5rem;
                     padding: 1rem;

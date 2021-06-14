@@ -161,7 +161,7 @@ export class CcPricingPage extends LitElement {
   _onCurencyChanged ({ detail: currency }) {
     console.log('currency is', currency);
     this._currency = currency;
-    dispatchCustomEvent(this, 'change-currency', { currencyCode: currency.code });
+    dispatchCustomEvent(this, 'change-currency', { code: currency.code, changeRate: currency.changeRate });
   }
 
   _onZoneChanged ({ detail: zoneName }) {

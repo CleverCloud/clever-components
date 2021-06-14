@@ -28,7 +28,7 @@ const baseItems = {
       maxRange: 1000000,
       minRangeDisplay: 0,
       maxRangeDisplay: 1e12,
-      price: 0.02,
+      price: 0.02048,
       highlighted: true,
       totalPrice: {
         price: 0,
@@ -116,12 +116,6 @@ export const skeleton = makeStory(conf, {
 });
 
 // If your component contains remote data,
-// don't forget the case where there is no data (ex: empty lists...).
-export const empty = makeStory(conf, {
-  items: [{ three: [] }],
-});
-
-// If your component contains remote data,
 // don't forget the case where you have loading errors.
 // If you have other kind of errors (ex: saving errors...).
 // You need to name your stories with the `errorWith` prefix.
@@ -129,23 +123,6 @@ export const error = makeStory(conf, {
   items: [{ error: true }],
 });
 
-// If your component contains remote data,
-// try to present all the possible data combination.
-// You need to name your stories with the `dataLoadedWith` prefix.
-// Don't forget edge cases (ex: small/huge strings, small/huge lists...).
-export const dataLoadedWithFoo = makeStory(conf, {
-  items: [
-    { one: 'Foo', three: [{ foo: 42 }] },
-  ],
-});
-
-// If your component can trigger updates/deletes remote data,
-// don't forget the case where the user's waiting for an operation to complete.
-export const waiting = makeStory(conf, {
-  items: [
-    { one: 'Foo', three: [{ foo: 42 }], waiting: true },
-  ],
-});
 
 // If your component contains remote data,
 // it will have several state transitions (ex: loading => error, loading => loaded, loaded => saving...).
@@ -170,9 +147,6 @@ enhanceStoriesNames({
   defaultStory,
   noAction,
   skeleton,
-  empty,
   error,
-  dataLoadedWithFoo,
-  waiting,
   simulations,
 });

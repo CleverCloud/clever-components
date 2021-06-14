@@ -1,6 +1,7 @@
 import '../../src/pricing/cc-pricing-estimation.js';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
+import {getFullProductRuntime} from "../assets/runtime-plans.js";
 
 export default {
   title: '🛠 pricing/<cc-pricing-estimation>',
@@ -65,6 +66,20 @@ export const defaultStory = makeStory(conf, {
   ],
 });
 
+export const dataLoadedWithCustomStyles = makeStory(conf, {
+  css: `
+    cc-pricing-estimation {
+      border-radius: 5px;
+      --shadow: 0 0 5px #aaa;
+      margin: 1rem;
+      overflow: hidden;
+    }
+  `,
+  items: [
+    {selectedProducts: [pgExample, mySQLExample]}
+  ],
+});
+
 export const dataLoadedWithCellar = makeStory(conf, {
   items: [
     { selectedProducts: [cellarExample] },
@@ -104,6 +119,7 @@ enhanceStoriesNames({
   defaultStory,
   empty,
   dataLoadedWithCellar,
+  dataLoadedWithCustomStyles,
   dataLoadedWithMysql,
   dataLoadedWithPostgres,
   dataLoadedWithMultiple,
