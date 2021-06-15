@@ -1,6 +1,8 @@
 import { exec as execRaw } from 'child_process';
 import fs from 'fs/promises';
 import { promisify } from 'util';
+import textTable from 'text-table';
+import chalk from 'chalk';
 
 const exec = promisify(execRaw);
 
@@ -47,10 +49,18 @@ async function listPreviews () {
     console.log('No previews right now.');
   }
   else {
-    console.log('Available previews:');
-    manifest.previews.forEach((p) => {
-      console.log(p.branch, p.updatedAt.substr(0, 19), p.commitId.substr(0, 8), p.author, p.url);
+
+    const table = manifest.previews.map((p) => {
+      return [
+        ...p.updatedAt.substr(0, 19).split('T'),
+        chalk.red(p.commitId.substr(0, 8)),
+        chalk.yellow(p.branch),
+        chalk.green(p.author),
+        '\n  ' + chalk.italic(chalk.blue(p.url)),
+      ];
     });
+
+    console.log(textTable(table));
   }
 }
 

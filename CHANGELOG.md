@@ -6,7 +6,7 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+* Improve display of `preview:list` task
 
 ## 6.8.0 (2021-06-01)
 
