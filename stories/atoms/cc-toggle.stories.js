@@ -153,6 +153,18 @@ You can have a bit of control over the main color used by the component with \`-
   items: normalAndSubtleItems,
 });
 
+export const textTransform = makeStory(conf, {
+  docs: `
+You can have a bit of control over the text transformation of the labels used by the component with \`--cc-text-transform\`.:
+`,
+  css: conf.css + `
+    cc-toggle {
+      --cc-text-transform: none;
+    }
+  `,
+  items: normalAndSubtleItems,
+});
+
 export const hideText = makeStory(conf, {
   docs: `
 If you need toggle options with just an image, add the \`hide-text\` attribute and define \`choices\` like this:
@@ -223,6 +235,7 @@ enhanceStoriesNames({
   legend,
   multiple,
   color,
+  textTransform,
   hideText,
   toolbar,
 });

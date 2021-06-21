@@ -6,7 +6,7 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+* `<cc-toggle>`: add `--cc-text-transform` CSS custom property
 
 ## 6.9.1 (2021-06-30)
 
