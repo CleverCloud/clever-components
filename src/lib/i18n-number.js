@@ -15,15 +15,17 @@ export function formatNumber (lang, value) {
  * @param {Number} value
  * @param {Object} options
  * @param {String} options.currency - Currency code (defaults to EUR)
+ * @param {String} options.minimumFractionDigits
  * @param {String} options.maximumFractionDigits
  * @returns {String}
  */
 export function formatCurrency (lang, value, options = {}) {
   const { currency = 'EUR' } = options;
-  const { maximumFractionDigits = 2 } = options;
+  const { minimumFractionDigits = 2, maximumFractionDigits = 2 } = options;
   const nf = new Intl.NumberFormat(lang, {
     style: 'currency',
     currency,
+    minimumFractionDigits,
     maximumFractionDigits,
   });
   return nf
@@ -73,7 +75,7 @@ export function formatPercent (lang, value) {
 // https://en.wikipedia.org/wiki/Metric_prefix
 const SI_PREFIXES = ['', 'k', 'M', 'G', 'T', 'P'];
 
-export function prepareNumberUnitFormatter (lang) {
+export function prepareNumberUnitFormatter (lang, symbol = '', separator = '') {
   const nf = new Intl.NumberFormat(lang, { minimumFractionDigits: 0, maximumFractionDigits: 1 });
   return (rawValue) => {
     // Figure out the "magnitude" of the rawValue: 1000 => 1 / 1000000 => 2 / 1000000000 => 3 ...
@@ -85,8 +87,7 @@ export function prepareNumberUnitFormatter (lang) {
     // Use Intl/i18n aware number formatter
     const formattedValue = nf.format(rebasedValue);
     const prefix = SI_PREFIXES[prefixIndex];
-    // No space for compact display
-    return formattedValue + prefix;
+    return formattedValue + separator + prefix + symbol;
   };
 }
 

@@ -44,6 +44,12 @@ const formatDistanceToNow = prepareFormatDistanceToNow(lang, (value, unit) => {
 
 const formatNumberUnit = prepareNumberUnitFormatter(lang);
 const formatBytes = prepareNumberBytesFormatter(lang, 'o', '\u202f');
+const BYTES_SI_SEPARATOR = '\u202f';
+const formatBytesSi = prepareNumberUnitFormatter(lang, 'o', BYTES_SI_SEPARATOR);
+
+function getUnit (value) {
+  return formatBytesSi(value).split(BYTES_SI_SEPARATOR)[1];
+}
 
 // Shared logic between translations, is it a good idea?
 function formatFlavor (f) {
@@ -352,6 +358,29 @@ export const translations = {
   //#region cc-pricing-product
   'cc-pricing-product.error': `Une erreur est survenue pendant le chargement des prix.`,
   //#endregion
+  //#region cc-pricing-product-cellar
+  'cc-pricing-product-cellar.add': `Ajouter`,
+  'cc-pricing-product-cellar.bytes': ({ bytes }) => formatBytesSi(bytes),
+  'cc-pricing-product-cellar.bytes-unit': ({ bytes }) => getUnit(bytes),
+  'cc-pricing-product-cellar.error': `Une erreur est survenue pendant le chargement des prix de Cellar.`,
+  'cc-pricing-product-cellar.price': ({ price, code }) => `${formatCurrency(lang, price, { currency: code })}`,
+  'cc-pricing-product-cellar.price-interval': ({ price, code }) => {
+    const priceInterval = formatCurrency(lang, price, {
+      minimumFractionDigits: 3, maximumFractionDigits: 3, currency: code,
+    });
+    const priceOneGigabyte = getUnit(1e9);
+    return `${priceInterval} / ${priceOneGigabyte} (30 jours)`;
+  },
+  'cc-pricing-product-cellar.price-interval.free': `GRATUIT`,
+  'cc-pricing-product-cellar.product-item-name': ({ storageBytes, trafficBytes }) => {
+    return `Stockage : ${formatBytesSi(storageBytes)}, Trafic sortant : ${formatBytesSi(trafficBytes)}`;
+  },
+  'cc-pricing-product-cellar.storage.label': `stockage`,
+  'cc-pricing-product-cellar.storage.title': `Stockage :`,
+  'cc-pricing-product-cellar.total.title': `Total estimé (30 jours) :`,
+  'cc-pricing-product-cellar.traffic.label': `trafic`,
+  'cc-pricing-product-cellar.traffic.title': `Trafic sortant :`,
+  //#endregion
   //#region cc-pricing-table
   'cc-pricing-table.add-button': `Ajouter`,
   'cc-pricing-table.feature.connection-limit': `Limite de connexions`,
@@ -488,5 +517,5 @@ export const translations = {
   //#region cc-zone-input
   'cc-zone-input.error': `Une erreur est survenue pendant le chargement des zones.`,
   'cc-zone-input.private-map-warning': `Les zones privées n'apparaissent pas sur la carte.`,
-//#endregion
+  //#endregion
 };

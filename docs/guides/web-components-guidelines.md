@@ -3,7 +3,7 @@ kind: '📌 Docs'
 ---
 # Web Components guidelines at Clever Cloud
 
-Here a different rules we want any contributor to follow regarding how we write Web Components with LitElement.
+Here are different rules we want any contributor to follow regarding how we write Web Components with LitElement.
 
 ## General rules and reminders
 
