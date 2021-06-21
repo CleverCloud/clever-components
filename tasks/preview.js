@@ -1,8 +1,8 @@
 import { exec as execRaw } from 'child_process';
 import fs from 'fs/promises';
 import { promisify } from 'util';
-import textTable from 'text-table';
 import chalk from 'chalk';
+import textTable from 'text-table';
 
 const exec = promisify(execRaw);
 
