@@ -1,4 +1,4 @@
-import '../../src/pricing/cc-pricing-product-cellar.js';
+import '../../src/pricing/cc-pricing-product-cellar.smart.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
