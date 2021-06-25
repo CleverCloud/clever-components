@@ -6,6 +6,10 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+...
+
+## 6.8.1 (2021-06-25)
+
 * Improve display of `preview:list` task
 * `events.js`:
   * removed the `options` parameter as it was not used anymore
