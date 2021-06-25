@@ -118,66 +118,11 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
     ];
   }
 
-  _renderSmallSelProductOld () {
-    return Object
-      .values(this.selectedProducts)
-      .map((product) => {
-        return (product != null)
-          ? html`
-              <div class="plan">
-                 <div class="head-separator"></div> 
-                  <div class="qt-btn">
-                  <div class="add-item">
-                      <button class="change-qt-btn" @click=${() => this._onChangeQuantity(product, 'add')}>
-                          <img src=${new URL('../assets/circle.svg', import.meta.url).href} />
-                      </button>
-                  </div>
-                  <div class="remove-item">
-                      <button class="change-qt-btn" @click=${() => this._onChangeQuantity(product, 'remove')}>
-                          <img src=${new URL('../assets/minus.svg', import.meta.url).href} />
-                      </button>
-                  </div>
-                  </div>
-                  <div class="plan-name">${product.name}</div>
-                  <div class="plan-infos">
-                  <div class="feature">
-                      <div class="name">${i18n('cc-pricing-estimation.size')}</div>
-                      <div>${product.item.name}</div>
-                  </div> 
-                  <div class="feature">
-                      <div class="name">${i18n('cc-pricing-estimation.quantity')}</div>
-                      <div class="number-align">${product.quantity}</div>
-                  </div>
-                  <div class="feature">
-                      <div class="name">${i18n('cc-pricing-estimation.price-name-daily')}</div>
-                      <div class="number-align">
-                          ${i18n('cc-pricing-table.price', {
-                              price: (product.item.price * 24 * product.quantity) * this.currency.changeRate,
-                              code: this.currency.code,
-                          })}
-                      </div>
-                  </div>
-                  <div class="feature">
-                      <div class="name">${i18n('cc-pricing-estimation.price-name-monthly')}</div>
-                      <div class="number-align">
-                          ${i18n('cc-pricing-table.price', {
-                              price: (product.item.price * 24 * 30 * product.quantity) * this.currency.changeRate,
-                              code: this.currency.code,
-                          })}
-                  </div>
-                  </div>
-              </div> 
-               `
-          : '';
-      });
-  }
-
   _renderSmallSelProduct () {
     return Object
       .values(this.selectedProducts)
       .map((product) => html`
           <div class="plan">
-              
               
               <div class="qt-btn">
                   <cc-button
@@ -385,18 +330,18 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
                 /* Table properties for big screen size */
 
                 table {
-                    box-shadow: var(--shadow);
-                    width: 100%;
                     border-collapse: collapse;
                     border-radius: 0.5rem;
+                    box-shadow: var(--shadow);
+                    width: 100%;
                 }
                 
                 th {
                     background-color: #f6f6fb;
-                    text-align: left;
+                    border-radius: 0.5rem;
                     height: 4rem;
                     padding: 1rem 0.5rem;
-                    border-radius: 0.5rem;
+                    text-align: left;
 
                 }
 
@@ -421,8 +366,8 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
                 
                 .plan {
                     align-items: center;
-                    display: grid;
                     border-top: 1px solid #e5e5e5;
+                    display: grid;
                     grid-template-columns: min-content [main-start] 1fr [main-end] min-content;
                     margin: 0;
                     padding: 1em;
@@ -486,8 +431,8 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
                 
 
                 .container {
-                    box-shadow: var(--shadow);
                     border-radius: 0.25rem;
+                    box-shadow: var(--shadow);
                 }
                 
                 /* Global properties */

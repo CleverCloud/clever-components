@@ -2,6 +2,9 @@ import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import '@shoelace-style/shoelace';
+import { getFlagUrl } from '../lib/remote-assets.js';
+import { shoelaceStyles } from '../styles/shoelace.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 
 /**
  * A component doing X and Y (one liner description of your component).
@@ -39,7 +42,7 @@ export class CcPricingHeader extends LitElement {
 
   static get properties () {
     return {
-      currencies: { type: Object },
+      currencies: { type: Array },
       pricingCurrency: { type: String },
       selectedProducts: { type: Object },
       currency: { type: String },
@@ -49,11 +52,12 @@ export class CcPricingHeader extends LitElement {
 
   constructor () {
     super();
-    this.currencies = {
-      EUR: { code: 'EUR', displayValue: '€ EUR', changeRate: 1 },
-      GBP: { code: 'GBP', displayValue: '£ GBP', changeRate: 0.88603 },
-      USD: { code: 'USD', displayValue: '$ USD', changeRate: 1.2091 },
-    };
+    // TODO: Temp to change default array
+    this.currencies = [
+      { code: 'EUR', displayValue: '€ EUR', changeRate: 1 },
+      { code: 'GBP', displayValue: '£ GBP', changeRate: 0.88603 },
+      { code: 'USD', displayValue: '$ USD', changeRate: 1.2091 },
+    ];
     this.currency = { code: 'EUR', changeRate: 1 };
     this.selectedProducts = {};
     // TODO: Temp to change default array
@@ -100,8 +104,9 @@ export class CcPricingHeader extends LitElement {
   }
 
   _onCurrencyChange (e) {
-    // e.target.value is the value of the option which is represented by the currency code
-    const currency = Object.values(this.currencies).find((c) => c.code === e.target.value);
+    console.log('currencies from event', this.currencies);
+    const currency = this.currencies.find((c) => c.code === e.target.value);
+    console.log('ccurency find + event ', currency, e.target.value)
     dispatchCustomEvent(this, 'change-currency', currency);
   }
 
@@ -114,22 +119,27 @@ export class CcPricingHeader extends LitElement {
     return html`
             <div class="header">
                 <div class="select-currency">
-                   ${i18n('cc-pricing-header.currency-text')}:
-                  <sl-select size="large" @sl-change=${this._onCurrencyChange}>
-                    ${Object.values(this.currencies).map((c) => html`
+                  <div class="currency-text">
+                    ${i18n('cc-pricing-header.currency-text')}
+                  </div> 
+                  <div>
+                    <sl-select @sl-change=${this._onCurrencyChange} value=${this.currency.code}>
+                      ${this.currencies.map((c) => html`
                             <sl-menu-item value=${c.code}>${c.displayValue}</sl-menu-item>`)}
-                  </sl-select>
+                    </sl-select>
+                  </div>
                 </div>
                 <div class="zones">
-                  <sl-select class="select" value="PAR">
+                  <sl-select  value="PAR">
                     ${this.zones.map((zone) => html`
-                      <sl-menu-item  class="select-item" value=${zone.name}>
-                        <cc-zone class="select-content" .zone=${zone}></cc-zone>
+                      <sl-menu-item  class="select-item" @sl-change=${this._onZoneInput} value=${zone.name}>
+                        <cc-img class="flag" src=${ifDefined(getFlagUrl(zone.countryCode))} text=${ifDefined(zone.countryCode)}></cc-img>
+                        ${zone.name}              
                       </sl-menu-item>`)}
                   </sl-select>
                 </div>
                 <div class="est-cost">
-                  ${i18n('cc-pricing-header.est-cost')}:
+                  ${i18n('cc-pricing-header.est-cost')}
                     ${i18n('cc-pricing-header.price', { price: this._getTotalPrice(), code: this.currency.code })}
                 </div>
             </div>
@@ -138,21 +148,40 @@ export class CcPricingHeader extends LitElement {
 
   static get styles () {
     return [
+      shoelaceStyles,
       // language=CSS
       css`
                 :host {
-                    background-color: #FFFAFA;
-                    box-shadow: var(--shadow, 0);
                     display: block;
                     margin-bottom: 1.5rem;
                     padding: 1rem;
                 }
+
+                .flag {
+                  border-radius: 0.15rem;
+                  box-shadow: 0 0 3px #ccc;
+                  height: 1.5rem;
+                  margin-right: 1rem;
+                  width: 2rem;
+                }
+                
+                .select-currency {
+                  align-items: center;
+                  display: flex;
+                  gap: 0.25rem;
+                }
+                
+                .currency-text {
+                  width: max-content;
+                }
                 
                 .header {
-                    align-items: center;
                     display: flex;
+                    gap: 0.5rem;
                     justify-content: space-between;
+                  align-items: center;
                 }
+                
                 
                 .select-content {
                   width: min-content;

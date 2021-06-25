@@ -2,7 +2,6 @@ import './cc-pricing-page.js';
 import '../smart/cc-smart-container.js';
 import { fromCustomEvent, LastPromise, unsubscribeWithSignal } from '../lib/observables.js';
 import { defineComponent } from '../lib/smart-manager.js';
-import { lang } from '../translations/translations.en.js';
 
 // const SHORT_DESC = 'Hey, this is a short description of the addon.';
 
@@ -66,13 +65,13 @@ async function fetchPriceSystem (zoneId) {
 // TODO: TEMP => Change when changeRate is available on the pricing API
 function formatCurrencies (currencies) {
   // TODO: Remove if we fetch from exchange api
-  const formattedCurrencies = { ...currencies };
+  const formattedCurrencies = [];
   for (const key of Object.keys(currencies)) {
-    formattedCurrencies[key] = {
+    formattedCurrencies.push({
       code: key,
       displayValue: `${key} ${getCurrencySymbol(key)}`,
-      changeRate: formattedCurrencies[key],
-    };
+      changeRate: currencies[key],
+    });
   }
   return formattedCurrencies;
 }

@@ -1,7 +1,7 @@
 import '../../src/pricing/cc-pricing-estimation.js';
+import { getFullProductRuntime } from '../assets/runtime-plans.js';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
-import {getFullProductRuntime} from "../assets/runtime-plans.js";
 
 export default {
   title: '🛠 pricing/<cc-pricing-estimation>',
@@ -76,7 +76,7 @@ export const dataLoadedWithCustomStyles = makeStory(conf, {
     }
   `,
   items: [
-    {selectedProducts: [pgExample, mySQLExample]}
+    { selectedProducts: [pgExample, mySQLExample] },
   ],
 });
 
@@ -97,7 +97,6 @@ export const dataLoadedWithPostgres = makeStory(conf, {
     { selectedProducts: [pgExample] },
   ],
 });
-
 
 export const dataLoadedWithMultiple = makeStory(conf, {
   items: [

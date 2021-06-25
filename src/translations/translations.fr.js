@@ -356,21 +356,21 @@ export const translations = {
   'cc-map.no-points': `Pas de données à afficher sur la carte en ce moment.`,
   //#endregion
   //#region cc-pricing-estimation
-  'cc-pricing-estimation.product': `Produit`,
-  'cc-pricing-estimation.size': `Taille`,
-  'cc-pricing-estimation.quantity': `Quantité`,
-  'cc-pricing-estimation.price-name-daily': `Prix (jour)`,
-  'cc-pricing-estimation.price-name-monthly': () => sanitize`Prix (30&nbsp;jours)`,
-  'cc-pricing-estimation.price': ({ price, code }) => `${formatCurrency(lang, price, { currency: code })}`,
-  'cc-pricing-estimation.monthly-est': `Coût Mensuel Estimé`,
-  'cc-pricing-estimation.sales': `Nous contacter`,
-  'cc-pricing-estimation.sign-up': `S'inscrire`,
   'cc-pricing-estimation.classic-mode': `Simple`,
   'cc-pricing-estimation.input-mode': `Expert`,
+  'cc-pricing-estimation.monthly-est': `Coût Mensuel Estimé`,
+  'cc-pricing-estimation.price': ({ price, code }) => `${formatCurrency(lang, price, { currency: code })}`,
+  'cc-pricing-estimation.price-name-daily': `Prix (jour)`,
+  'cc-pricing-estimation.price-name-monthly': () => sanitize`Prix (30&nbsp;jours)`,
+  'cc-pricing-estimation.product': `Produit`,
+  'cc-pricing-estimation.quantity': `Quantité`,
+  'cc-pricing-estimation.sales': `Nous contacter`,
+  'cc-pricing-estimation.sign-up': `S'inscrire`,
+  'cc-pricing-estimation.size': `Taille`,
   //#endregion
   //#region cc-pricing-header
-  'cc-pricing-header.currency-text': 'Monnaie',
-  'cc-pricing-header.est-cost': 'Coût Estimé',
+  'cc-pricing-header.currency-text': `Monnaie:`,
+  'cc-pricing-header.est-cost': `Coût Estimé:`,
   'cc-pricing-header.price': ({ price, code }) => `${formatCurrency(lang, price, { currency: code })}`,
   //#endregion
   //#region cc-pricing-product

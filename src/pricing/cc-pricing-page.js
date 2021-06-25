@@ -33,7 +33,7 @@ export class CcPricingPage extends LitElement {
     return {
       products: { type: Array },
       pricingList: { type: Array },
-      currencies: { type: Object },
+      currencies: { type: Array },
       _selectedProducts: { type: Object },
       _currency: { type: Object },
       _zone: { type: String },
@@ -46,10 +46,9 @@ export class CcPricingPage extends LitElement {
   constructor () {
     super();
     this._selectedProducts = {};
-    this.currencies = {};
+    this.currencies = [];
     // Set default currency to EURO (€)
-    // this._currency = this.currencies?.EUR != null ? this.currencies.EUR.code : 'EUR';
-    this._currency = this.currencies?.EUR != null ? this.currencies.EUR : { code: 'EUR', changeRate: '1' };
+    this._currency = { code: 'EUR', changeRate: '1' };
     this._categories = ['runtime', 'addon'];
     this.pricingList = [];
     // Use Paris as default (might need to change later on)
@@ -171,7 +170,7 @@ export class CcPricingPage extends LitElement {
   }
 
   render () {
-
+    console.log('on render', this.currencies);
     return html`
       <div class="header">
         <cc-pricing-header 
