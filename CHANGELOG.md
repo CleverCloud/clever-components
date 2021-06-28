@@ -6,7 +6,7 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+* Update project to Node.js v16 (it was already on npm v7)
 
 ## 6.8.1 (2021-06-25)
 
