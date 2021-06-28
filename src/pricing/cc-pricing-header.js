@@ -104,13 +104,12 @@ export class CcPricingHeader extends LitElement {
   }
 
   _onCurrencyChange (e) {
-    console.log('currencies from event', this.currencies);
     const currency = this.currencies.find((c) => c.code === e.target.value);
-    console.log('ccurency find + event ', currency, e.target.value)
     dispatchCustomEvent(this, 'change-currency', currency);
   }
 
-  _onZoneInput ({ detail: zoneName }) {
+  _onZoneInput (e) {
+    const zoneName = e.target.value;
     dispatchCustomEvent(this, 'change-zone', zoneName);
   }
 
@@ -130,9 +129,9 @@ export class CcPricingHeader extends LitElement {
                   </div>
                 </div>
                 <div class="zones">
-                  <sl-select  value="PAR">
+                  <sl-select @sl-change=${this._onZoneInput} value="PAR">
                     ${this.zones.map((zone) => html`
-                      <sl-menu-item  class="select-item" @sl-change=${this._onZoneInput} value=${zone.name}>
+                      <sl-menu-item value=${zone.name}>
                         <cc-img class="flag" src=${ifDefined(getFlagUrl(zone.countryCode))} text=${ifDefined(zone.countryCode)}></cc-img>
                         ${zone.name}              
                       </sl-menu-item>`)}

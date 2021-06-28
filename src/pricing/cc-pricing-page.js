@@ -4,6 +4,8 @@ import './cc-pricing-product.js';
 import './cc-pricing-estimation.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 
+const CURRENCY_EUR = { code: 'EUR', changeRate: '1' };
+
 /**
  * A component doing X and Y (one liner description of your component).
  *
@@ -48,7 +50,6 @@ export class CcPricingPage extends LitElement {
     this._selectedProducts = {};
     this.currencies = [];
     // Set default currency to EURO (€)
-    this._currency = { code: 'EUR', changeRate: '1' };
     this._categories = ['runtime', 'addon'];
     this.pricingList = [];
     // Use Paris as default (might need to change later on)
@@ -118,7 +119,6 @@ export class CcPricingPage extends LitElement {
      * we just add one more to the list
      */
   _onAddProduct ({ detail: product }) {
-    console.log('product from page', product);
     // TODO: Have a dedicated product.item.id
     const id = (product.item.id != null)
       ? product.item.id
@@ -157,27 +157,32 @@ export class CcPricingPage extends LitElement {
     this._selectedProducts = { ...this._selectedProducts };
   }
 
-  _onCurencyChanged ({ detail: currency }) {
-    console.log('currency is', currency);
+  _onCurrencyChanged ({ detail: currency }) {
     this._currency = currency;
+    console.log('currency is', this._currency);
     dispatchCustomEvent(this, 'change-currency', { code: currency.code, changeRate: currency.changeRate });
   }
 
   _onZoneChanged ({ detail: zoneName }) {
-    console.log('zone_name', zoneName);
     this.zone = zoneName;
     dispatchCustomEvent(this, 'change-zone', { zoneId: zoneName });
   }
 
+  update(changedProperties) {
+    if (changedProperties.has('currencies')) {
+      this._currency = (this.currencies != null) ? this.currencies.find((c) => c.code === 'EUR') : CURRENCY_EUR;
+    }
+    super.update(changedProperties);
+  }
+
   render () {
-    console.log('on render', this.currencies);
     return html`
       <div class="header">
         <cc-pricing-header 
             .selectedProducts=${this._selectedProducts}
             .currency=${this._currency}
             .currencies=${this.currencies}
-            @cc-pricing-header:change-currency=${this._onCurencyChanged}
+            @cc-pricing-header:change-currency=${this._onCurrencyChanged}
             @cc-pricing-header:change-zone=${this._onZoneChanged}
         >
         </cc-pricing-header>

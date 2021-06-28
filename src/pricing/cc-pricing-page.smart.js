@@ -27,10 +27,10 @@ defineComponent({
     unsubscribeWithSignal(disconnectSignal, [
       product_lp.error$.subscribe((err) => console.error(err)),
       product_lp.value$.subscribe((priceSystem) => {
-        // Do we even need the pricing list ?
+        console.log('ps', priceSystem);
         component.pricingList = priceSystem.pricingList;
         component.zone = priceSystem.zoneId;
-        component.currencies = formatCurrencies(RATES);
+        component.currencies = priceSystem.currencies;
       }),
       context$.subscribe(({ zoneId }) => {
         product_lp.push(() => fetchPriceSystem(zoneId));
@@ -38,8 +38,8 @@ defineComponent({
       onZoneChanged$.subscribe(({ zoneId }) => {
         container.context = { ...container.context, zoneId };
       }),
-      onCurrencyChanged$.subscribe(({ currencyCode }) => {
-        container.context = { ...container.context, currencyCode };
+      onCurrencyChanged$.subscribe(({code}) => {
+        container.context = { ...container.context, currencyCode: code };
       }),
     ]);
 
@@ -57,9 +57,9 @@ async function fetchPriceSystem (zoneId) {
   // ]);
   const pricingList = await fetch(`https://api.clever-cloud.com/v4/billing/price-system?zone_id=${zoneId}`).then((r) => r.json());
   await sleep();
-  return { pricingList, zoneId };
+  // return { pricingList, zoneId };
   // console.log(currencies);
-  // return { pricingList, zoneId, currencies: {EUR: 1, ...currencies.rates} };
+  return { pricingList, zoneId, currencies: formatCurrencies(RATES) };
 }
 
 // TODO: TEMP => Change when changeRate is available on the pricing API
@@ -73,5 +73,6 @@ function formatCurrencies (currencies) {
       changeRate: currencies[key],
     });
   }
+  console.log('fc', formattedCurrencies);
   return formattedCurrencies;
 }

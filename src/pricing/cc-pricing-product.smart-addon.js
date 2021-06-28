@@ -25,6 +25,7 @@ defineComponent({
       product_lp.error$.subscribe(console.error),
       product_lp.error$.subscribe(() => (component.error = true)),
       product_lp.value$.subscribe((product) => {
+        console.log('product changed', product);
         component.name = product.name;
         component.icon = product.icon;
         component.description = product.description;
