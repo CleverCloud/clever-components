@@ -24,6 +24,7 @@
     "components:check-i18n": "node tasks/check-i18n.js",
     "components:check-lit": "lit-analyzer src",
     "components:docs": "wca analyze src/** --outFile .components-docs/custom-elements.json",
+    "components:docs-cem": "cem analyze --litelement",
     "test": "wtr 'test/**/*.test.*' --node-resolve",
     "test:watch": "wtr 'test/**/*.test.*' --node-resolve --watch",
     "lint": "eslint --rulesdir eslint-rules rollup/*.js src stories tasks wds",
@@ -55,6 +56,7 @@
     "@babel/core": "^7.14.0",
     "@babel/preset-react": "^7.13.13",
     "@bundled-es-modules/chai": "^4.2.2",
+    "@custom-elements-manifest/analyzer": "^0.4.1",
     "@open-wc/dev-server-hmr": "^0.1.1",
     "@rollup/plugin-alias": "^3.1.2",
     "@rollup/plugin-commonjs": "^18.1.0",
@@ -106,6 +108,7 @@
     "unified": "^9.2.1",
     "web-component-analyzer": "^1.1.6"
   },
+  "customElements": "dist/custom-elements.json",
   "volta": {
     "node": "16.4.0",
     "npm": "7.6.1"
