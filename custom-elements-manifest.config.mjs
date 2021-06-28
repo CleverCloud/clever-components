@@ -1,5 +1,6 @@
 import fs from 'fs';
 import sortItems from './cem/sort-items.js';
+import removePrivateMembers from './cem/remove-private-members.js';
 
 try {
   // Temporary for now
@@ -15,5 +16,6 @@ export default {
   // watch: true,
   plugins: [
     sortItems(),
+    removePrivateMembers(),
   ],
 };
