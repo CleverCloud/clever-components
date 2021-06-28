@@ -1,5 +1,5 @@
 import '../stories/lib/i18n-control.js';
-import ceJson from '../.components-docs/custom-elements.json';
+import ceJson from './custom-elements-manifest.js';
 
 // Temporary hack, waiting for `setCustomElements` to be exposed
 // Then waiting for new Custom Elements Manifest support

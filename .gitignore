@@ -1,5 +1,4 @@
 *.s3cfg
-.components-docs
 .preview-index.html
 .preview-manifest.json
 dist
