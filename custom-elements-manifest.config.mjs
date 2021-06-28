@@ -1,4 +1,5 @@
 import fs from 'fs';
+import sortItems from './cem/sort-items.js';
 
 try {
   // Temporary for now
@@ -13,5 +14,6 @@ export default {
   // dev: true,
   // watch: true,
   plugins: [
+    sortItems(),
   ],
 };
