@@ -13,8 +13,6 @@ const SKELETON_REDIRECTIONS = [
 /**
  * An interface to create / delete TCP redirections in the context of an application.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/tcp-redirections/cc-tcp-redirection-form.js)
- *
  * ## Type definitions
  *
  * ```js

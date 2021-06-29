@@ -30,8 +30,6 @@ const NUMBER_FEATURE_TYPES = ['bytes', 'number', 'number-cpu-runtime'];
 /**
  * A component to display product informations: items (plans) and features.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/pricing/cc-pricing-table.js)
- *
  * ## Details
  *
  * * The items are sorted by price.

@@ -47,8 +47,6 @@ const SKELETON_STATUS = 'unknown';
 /**
  * A component to display various info about an app (name, commits, status...).
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-header-app.js)
- *
  * ## Details
  *
  * * When `app` and `status` are null, a skeleton screen UI pattern is displayed (loading hint).

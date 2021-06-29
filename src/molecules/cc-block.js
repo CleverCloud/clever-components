@@ -11,8 +11,6 @@ const upSvg = new URL('../assets/up.svg', import.meta.url).href;
 /**
  * A display component with mostly HTML+CSS and a open/close toggle feature.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/molecules/cc-block.js)
- *
  * ## Details
  *
  * * The main section is wrapped in a `<cc-expand>` so variation of this section height will be animated.

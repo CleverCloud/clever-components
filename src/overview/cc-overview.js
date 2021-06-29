@@ -4,8 +4,6 @@ import { withResizeObserver } from '../mixins/with-resize-observer.js';
 /**
  * A display only component (just HTML+CSS) to layout heads, a main and several tiles.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-overview.js)
- *
  * ## Details
  *
  * * The head components must have the `head` CSS class, they will be displayed at the top.

@@ -10,8 +10,6 @@ const decrementSvg = new URL('../assets/decrement.svg', import.meta.url).href;
 /**
  * A custom number input with controls mode.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-input-number.js)
- *
  * ## Technical details
  *
  * * Uses a native `<input>` with a type `number` without native arrows mode

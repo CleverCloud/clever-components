@@ -22,8 +22,6 @@ const SKELETON_BACKUPS = {
 /**
  * A components to display backups available for an add-on
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-backups.js)
- *
  * ## Details
  *
  * * When `backups` is nullish, a skeleton screen UI pattern is displayed (loading hint).

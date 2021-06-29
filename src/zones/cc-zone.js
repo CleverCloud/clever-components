@@ -20,8 +20,6 @@ const PRIVATE_ZONE = 'scope:private';
 /**
  * A display component to show information about a zone.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/zones/cc-zone.js)
- *
  * ## Details
  *
  * * When `zone` is nullish, a skeleton screen UI pattern is displayed (loading hint).

@@ -10,8 +10,6 @@ import { skeletonStyles } from '../styles/skeleton.js';
 /**
  * A component to display an add-on credentials.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-credentials.js)
- *
  * ## Details
  *
  * * When the `value` of a credential is nullish, a skeleton UI pattern is displayed (loading hint).

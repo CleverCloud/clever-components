@@ -13,8 +13,6 @@ const SKELETON_CONSUMPTION = {
 /**
  * A "tile" component to display consumption info (yesterday and over last 30 days).
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-tile-consumption.js)
- *
  * ## Details
  *
  * * When `consumption` is nullish, a skeleton screen UI pattern is displayed (loading hint).

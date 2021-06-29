@@ -19,8 +19,6 @@ const HEPTAPOD_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.co
 /**
  * A component that shows a summary of our Heptapod SaaS offer.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/saas/cc-heptapod-info.js)
- *
  * ## Details
  *
  * * When `statistics` is nullish, a skeleton screen UI pattern is displayed (loading hint).

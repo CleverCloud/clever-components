@@ -9,8 +9,6 @@ import { linkStyles } from '../templates/cc-link.js';
 /**
  * A component that displays a form of `<cc-addon-option>`.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-option-form.js)
- *
  * ## Type definitions
  *
  * ```js

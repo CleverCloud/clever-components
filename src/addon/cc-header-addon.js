@@ -22,8 +22,6 @@ const SKELETON_VERSION = '????????';
 /**
  * A component to display various info about an add-on (name, plan, version...).
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-header-addon.js)
- *
  * ## Details
  *
  * * When `addon` or `version` are null, a skeleton screen UI pattern is displayed (loading hint) on the corresponding zone.

@@ -9,8 +9,6 @@ import { linkStyles } from '../templates/cc-link.js';
 /**
  * Wraps a `<button>` with a skeleton state, some modes and a delay mechanism.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-button.js)
- *
  * ## Details
  *
  * * Attributes `primary`, `success`, `warning` and `danger` define the UI _mode_ of the button.

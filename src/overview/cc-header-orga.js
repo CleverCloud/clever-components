@@ -17,8 +17,6 @@ const SKELETON_ORGA = {
 /**
  * A component to display various info about an orga (name and enterprise status).
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-header-orga.js)
- *
  * ## Details
 
  * * When `orga` is nullish, a skeleton screen UI pattern is displayed (loading hint)

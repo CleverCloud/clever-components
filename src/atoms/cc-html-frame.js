@@ -5,8 +5,6 @@ import './cc-loader.js';
 /**
  * A low level component that takes some HMTL and puts it in an iframe.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-html-frame.js)
- *
  * ## Details
  *
  * * By default, the inner `<iframe>` is borderless and has a transparent background.

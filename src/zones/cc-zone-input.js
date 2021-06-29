@@ -16,8 +16,6 @@ const PRIVATE_ZONE = 'scope:private';
 /**
  * A input component to select a zone with a map and a list.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/zones/cc-zone-input.js)
- *
  * ## Details
  *
  * * When `zones` is nullish, a skeleton screen UI pattern is displayed (loading hint).

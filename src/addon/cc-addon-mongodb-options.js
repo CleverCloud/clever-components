@@ -8,8 +8,6 @@ import { ccAddonEncryptionAtRestOption } from '../templates/cc-addon-encryption-
 /**
  * A component that displays the available options of a MongoDB add-on.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-mongodb-options.js)
- *
  * * ## Type definitions
  *
  * ```js

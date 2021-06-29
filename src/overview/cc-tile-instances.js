@@ -24,8 +24,6 @@ const SKELETON_INSTANCES = {
 /**
  * A "tile" component to display current status of running and deploying instances for a given app.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-tile-instances.js)
- *
  * ## Details
  *
  * * When `instances` is nullish, a loader is displayed.

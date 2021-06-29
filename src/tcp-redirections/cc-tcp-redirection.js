@@ -16,8 +16,6 @@ const redirectionSvg = new URL('../assets/redirection-on.svg', import.meta.url).
 /**
  * A small form to create or delete a TCP redirection
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/tcp-redirections/cc-tcp-redirection.js)
- *
  * ## Type definitions
  *
  * ```js

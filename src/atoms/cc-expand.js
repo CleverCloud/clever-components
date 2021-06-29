@@ -4,8 +4,6 @@ const appendChild = (parent, child) => parent.appendChild(child);
 /**
  * An invisible wrapper that changes its size (with an animation) according to the size of its children.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-expand.js)
- *
  * ## Technical details
  *
  * * The animation only works in browsers supporting [`ResizeObserver`](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver) and [Web Animation API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API).

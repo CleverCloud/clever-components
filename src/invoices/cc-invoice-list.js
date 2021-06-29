@@ -23,8 +23,6 @@ function maxFromStrings (strings) {
 /**
  * A component to display a list of invoices in paginated categories.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/invoices/cc-invoice-list.js)
- *
  * ## Type definitions
  *
  * ```js

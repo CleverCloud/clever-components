@@ -17,8 +17,6 @@ const COLOR_PALETTE = [
 /**
  * A map marker displayed as a blinking dot with color grading depending on the value of `count`.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/maps/cc-map-marker-dot.js)
- *
  * ## Technical details
  *
  * * `size`, `anchor` and `tooltip` are readonly.

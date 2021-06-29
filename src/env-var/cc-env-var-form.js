@@ -15,8 +15,6 @@ import { linkStyles } from '../templates/cc-link.js';
 /**
  * A high level environment variable form (wrapping simple editor and expert editor into one interface).
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/env-var/cc-env-var-form.js)
- *
  * ## Details
  *
  * * You can set a custom `heading` and description with the default <slot>.

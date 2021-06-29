@@ -15,8 +15,6 @@ const SKELETON_DEPLOYS = [
 /**
  * A "tile" component to display a list of deployments (status, humanized time ago and logs link).
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-tile-deployments.js)
- *
  * ## Details
  *
  * * When `deployments` is nullish, a skeleton screen UI pattern is displayed (loading hint)

@@ -39,8 +39,6 @@ function arrayEquals (a, b) {
 /**
  * An enhanced text input with support for multiline, copy-to-clipboard, show/hide secret and highlighted tags.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-input-text.js)
- *
  * ## Technical details
  *
  * * Uses a native `<input>` element by default and a `<textarea>` element when `multi` is true.

@@ -4,8 +4,6 @@ import { i18n } from '../lib/i18n.js';
 /**
  * A layout component to position a simple beta ribbon around any content.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-beta.js)
- *
  * @cssdisplay grid
  *
  * @prop {Boolean} fill - Forces the slotted element to fill the beta container size (same heigh and width). By default, the beta container adapts to the slotted element size.

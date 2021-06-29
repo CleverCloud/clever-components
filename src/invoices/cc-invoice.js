@@ -21,8 +21,6 @@ const SKELETON_INVOICE = {
 /**
  * A block component to display an HTML invoice.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/invoices/cc-invoice.js)
- *
  * ## Type definitions
  *
  * ```js

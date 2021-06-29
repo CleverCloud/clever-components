@@ -11,8 +11,6 @@ import { defaultThemeStyles } from '../styles/default-theme.js';
 /**
  * A small form to create a new environment variable with validations on the name.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/env-var/cc-env-var-create.js)
- *
  * ## Details
  *
  * * The validation of the variable name format is handled with [@clevercloud/client](https://github.com/CleverCloud/clever-client.js/blob/master/esm/utils/env-vars.js)

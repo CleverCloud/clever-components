@@ -16,8 +16,6 @@ const SKELETON_SCALABILITY = {
 /**
  * A "tile" component to display the current config of scalability for a given app.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-tile-scalability.js)
- *
  * ## Details
 
  * * When `scalability` is nullish, a skeleton screen UI pattern is displayed (loading hint).

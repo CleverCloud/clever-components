@@ -9,8 +9,6 @@ const warningSvg = new URL('../assets/warning.svg', import.meta.url).href;
 /**
  * A display component for error messages with 4 modes: inline (default), info, loading or confirm.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/molecules/cc-error.js)
- *
  * ## Details
  *
  * * Use `"inline"` mode when you want to display the message as simple text.

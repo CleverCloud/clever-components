@@ -16,8 +16,6 @@ const SKELETON_DESCRIPTION = fakeString(180);
 /**
  * A component to display product informations: icon, name, description with items (plans) and features.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/pricing/cc-pricing-product.js)
- *
  * ## Type definitions
  *
  * ```js

@@ -30,8 +30,6 @@ const SKELETON_FEATURES = [
 /**
  * A component to display an add-on set of features.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-features.js)
- *
  * ## Details
  *
  * * When `features` is nullish, a skeleton screen UI pattern is displayed (loading hint).

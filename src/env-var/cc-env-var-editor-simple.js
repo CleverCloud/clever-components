@@ -14,8 +14,6 @@ const SKELETON_VARIABLES = [
 /**
  * A high level environment variable editor to create/edit/delete variables one at a time (with validation and error messages).
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/env-var/cc-env-var-editor-simple.js)
- *
  * ## Type definitions
  *
  * ```js

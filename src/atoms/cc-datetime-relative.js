@@ -10,8 +10,6 @@ function updateTrackedElements () {
 /**
  * A text-only component to display a localized humanized relative date (ex: "two minutes ago").
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-datetime-relative.js)
- *
  * ## Details
  *
  * * This component relies on the i18n system of this component library to format the relative date.

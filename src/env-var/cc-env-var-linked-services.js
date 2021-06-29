@@ -8,8 +8,6 @@ import { i18n } from '../lib/i18n.js';
 /**
  * A component to display groups of readonly `<cc-env-var-form>` for linked apps of add-ons.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/env-var/cc-env-var-linked-services.js)
- *
  * ## Details
  *
  * * When `services` is nullish, a loading indicator is displayed with a message (corresponding to `type`).

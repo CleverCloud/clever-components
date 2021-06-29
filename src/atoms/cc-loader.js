@@ -3,8 +3,6 @@ import { LitElement, css, html } from 'lit-element';
 /**
  * A loading indicator, auto centered and with flexible size.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-loader.js)
- *
  * ## Details
  *
  * * Size this component like you want, the loading circle will be centered automatically.

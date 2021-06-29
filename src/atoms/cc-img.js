@@ -6,8 +6,6 @@ import { skeletonStyles } from '../styles/skeleton.js';
 /**
  * A wrapper around `<img>` to add loader indicator, remove ugly borders and display proper placeholder text when there's an error.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-img.js)
- *
  * ## Details
  *
  * * If you set `skeleton=true` and `src="https://..."`, `skeleton` will be set back to `false` by the component once the inner native `<img>` is loaded (success or error).

@@ -18,8 +18,6 @@ const SKELETON_APPLICATIONS = [
 /**
  * A component to display applications linked to an add-on.
  *
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-linked-apps.js)
- *
  * ## Details
  *
  * * When applications is nullish, a skeleton screen UI pattern is displayed (loading hint).
