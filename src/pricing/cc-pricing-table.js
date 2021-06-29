@@ -61,14 +61,6 @@ const NUMBER_FEATURE_TYPES = ['bytes', 'number', 'number-cpu-runtime'];
  * }
  * ```
  *
- * ## Images
- *
- * | | |
- * |-------|------|
- * | <img src="../assets/down.svg" style="height: 1.5rem; vertical-align: middle"> | <code>down.svg</code>
- * | <img src="../assets/plus.svg" style="height: 1.5rem; vertical-align: middle"> | <code>plus.svg</code>
- * | <img src="../assets/up.svg" style="height: 1.5rem; vertical-align: middle"> | <code>up.svg</code>
- *
  * @cssdisplay block
  *
  * @prop {"add"|"none"} action - Sets the type of action: "add" to display add buttons for each item and "none" for no actions (defaults to "add").

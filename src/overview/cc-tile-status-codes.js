@@ -57,13 +57,6 @@ const SKELETON_STATUS_CODES = { 200: 1 };
  * }
  * ```
  *
- * ## Images
- *
- * | | |
- * |-------|------|
- * | <img src="assets/close.svg" style="height: 1.5rem; vertical-align: middle"> | <code>close.svg</code>
- * | <img src="assets/info.svg" style="height: 1.5rem; vertical-align: middle"> | <code>info.svg</code>
- *
  * @cssdisplay grid
  *
  * @prop {Boolean} error - Displays an error message.

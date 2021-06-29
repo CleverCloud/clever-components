@@ -31,14 +31,6 @@ const redirectionSvg = new URL('../assets/redirection-on.svg', import.meta.url).
  * }
  * ```
  *
- * ## Images
- *
- * | | |
- * |-------|------|
- * | <img src="assets/warning.svg" style="height: 1.5rem; vertical-align: middle"> | <code>warning.svg</code>
- * | <img src="assets/redirection-off.svg" style="height: 1.5rem; vertical-align: middle"> | <code>redirection-off.svg</code>
- * | <img src="assets/redirection-on.svg" style="height: 1.5rem; vertical-align: middle"> | <code>redirection-on.svg</code>
- *
  * @cssdisplay block
  *
  * @prop {Boolean} error - Set if there was an error during creation / deletion.

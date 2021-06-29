@@ -31,12 +31,6 @@ const ELASTICSEARCH_DOCUMENTATION = 'https://www.clever-cloud.com/doc/addons/ela
  * }
  * ```
  *
- * ## Images
- *
- * | | |
- * |-------|------|
- * | <img src="assets/info.svg" style="height: 1.5rem; vertical-align: middle"> | <code>info.svg</code>
- *
  * @cssdisplay grid
  *
  * @prop {Link[]} links - Sets the different links.

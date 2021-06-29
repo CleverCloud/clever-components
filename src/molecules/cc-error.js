@@ -16,12 +16,6 @@ const warningSvg = new URL('../assets/warning.svg', import.meta.url).href;
  * * Use `"loading"` when you want to display the message in a bordered "box" with a loader.
  * * Use `"confirm"` when you want to display the message in a bordered "box" with a confirm "OK" button.
  *
- * ## Images
- *
- * | | |
- * |-------|------|
- * | <img src="assets/warning.svg" style="height: 1.5rem; vertical-align: middle"> | <code>warning.svg</code>
- *
  * @cssdisplay block
  *
  * @prop {"inline"|"info"|"loading"|"confirm"} mode - Sets the displays mode (see details).

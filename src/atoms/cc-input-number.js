@@ -15,13 +15,6 @@ const decrementSvg = new URL('../assets/decrement.svg', import.meta.url).href;
  * * Uses a native `<input>` with a type `number` without native arrows mode
  * * The `controls` feature enables the "arrow" mode but with an increment/decrement button on the side of the input
  *
- * ## Images
- *
- * | | |
- * |-------|------|
- * | <img src="assets/decrement.svg" style="height: 1.5rem; vertical-align: middle"> | <code>decrement.svg</code>
- * | <img src="assets/increment.svg" style="height: 1.5rem; vertical-align: middle"> | <code>increment.svg</code>
- *
  * @cssdisplay inline-block
  *
  * @prop {Boolean} controls - Sets the control mode with a decrement and increment buttons.

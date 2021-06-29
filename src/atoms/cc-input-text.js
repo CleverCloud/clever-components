@@ -46,15 +46,6 @@ function arrayEquals (a, b) {
  * * The `secret` feature only works for simple line mode (when `multi` is false).
  * * The `tags` feature enables a space-separated-value input wrapped on several lines where line breaks are not allowed. Don't use it with `multi` or `secret`.
  *
- * ## Images
- *
- * | | |
- * |-------|------|
- * | <img src="assets/clipboard.svg" style="height: 1.5rem; vertical-align: middle"> | <code>clipboard.svg</code>
- * | <img src="assets/eye-closed.svg" style="height: 1.5rem; vertical-align: middle"> | <code>eye-closed.svg</code>
- * | <img src="assets/eye-open.svg" style="height: 1.5rem; vertical-align: middle"> | <code>eye-open.svg</code>
- * | <img src="assets/tick.svg" style="height: 1.5rem; vertical-align: middle"> | <code>tick.svg</code>
- *
  * @cssdisplay inline-block / block (with `[multi]`)
  *
  * @prop {Boolean} clipboard - Adds a copy-to-clipboard button (when not disabled and not skeleton).

@@ -46,13 +46,6 @@ const SKELETON_BACKUPS = {
  * }
  * ```
  *
- * ## Images
- *
- * | | |
- * |-------|------|
- * | <img src="assets/backup.svg" style="height: 1.5rem; vertical-align: middle"> | <code>backup.svg</code>
- * | <img src="assets/close.svg" style="height: 1.5rem; vertical-align: middle"> | <code>close.svg</code>
- *
  * @cssdisplay grid
  *
  * @prop {BackupDetails} backups - Sets the different details about an add-on and its backup.

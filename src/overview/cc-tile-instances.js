@@ -44,13 +44,6 @@ const SKELETON_INSTANCES = {
  * }
  * ```
  *
- * ## Images
- *
- * | | |
- * |-------|------|
- * | <img src="assets/running.svg" style="height: 1.5rem; vertical-align: middle"> | <code>running.svg</code>
- * | <img src="assets/starting.svg" style="height: 1.5rem; vertical-align: middle"> | <code>starting.svg</code>
- *
  * @cssdisplay grid
  *
  * @prop {Boolean} error - Displays an error message.

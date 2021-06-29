@@ -32,13 +32,6 @@ const SKELETON_ORGA = {
  * }
  * ```
  *
- * ## Images
- *
- * | | |
- * |-------|------|
- * | <img src="assets/badge-white.svg" style="height: 1.5rem; vertical-align: middle"> | <code>badge-white.svg</code>
- * | <img src="assets/phone.svg" style="height: 1.5rem; vertical-align: middle"> | <code>phone.svg</code>
- *
  * @cssdisplay block
  *
  * @prop {Boolean} error - Displays an error message.

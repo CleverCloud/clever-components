@@ -43,13 +43,6 @@ const SKELETON_FOOBAR = [
  * }
  * ```
  *
- * ## Images
- *
- * | | |
- * |-------|------|
- * | <img src="assets/warning.svg" style="height: 1.5rem; vertical-align: middle"> | <code>warning.svg</code>
- * | <img src="assets/redirection-off.svg" style="height: 1.5rem; vertical-align: middle"> | <code>redirection-off.svg</code>
- *
  * @cssdisplay block
  *
  * @prop {String} one - Description for one.
