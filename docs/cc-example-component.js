@@ -21,8 +21,6 @@ const SKELETON_FOOBAR = [
 /**
  * A component doing X and Y (one liner description of your component).
  *
- * * 🎨 default CSS display: `block`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/dir/cc-example-component.js)
  *
  * ## Details
@@ -53,6 +51,8 @@ const SKELETON_FOOBAR = [
  * |-------|------|
  * | <img src="assets/warning.svg" style="height: 1.5rem; vertical-align: middle"> | <code>warning.svg</code>
  * | <img src="assets/redirection-off.svg" style="height: 1.5rem; vertical-align: middle"> | <code>redirection-off.svg</code>
+ *
+ * @cssdisplay block
  *
  * @prop {String} one - Description for one.
  * @prop {Boolean} two - Description for two.

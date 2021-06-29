@@ -39,8 +39,6 @@ function arrayEquals (a, b) {
 /**
  * An enhanced text input with support for multiline, copy-to-clipboard, show/hide secret and highlighted tags.
  *
- * 🎨 default CSS display: `inline-block` - `block` with `[multi]`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-input-text.js)
  *
  * ## Technical details
@@ -58,6 +56,8 @@ function arrayEquals (a, b) {
  * | <img src="assets/eye-closed.svg" style="height: 1.5rem; vertical-align: middle"> | <code>eye-closed.svg</code>
  * | <img src="assets/eye-open.svg" style="height: 1.5rem; vertical-align: middle"> | <code>eye-open.svg</code>
  * | <img src="assets/tick.svg" style="height: 1.5rem; vertical-align: middle"> | <code>tick.svg</code>
+ *
+ * @cssdisplay inline-block / block (with `[multi]`)
  *
  * @prop {Boolean} clipboard - Adds a copy-to-clipboard button (when not disabled and not skeleton).
  * @prop {Boolean} disabled - Sets `disabled` attribute on inner native `<input>/<textarea>` element.

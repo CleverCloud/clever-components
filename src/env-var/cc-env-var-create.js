@@ -11,8 +11,6 @@ import { defaultThemeStyles } from '../styles/default-theme.js';
 /**
  * A small form to create a new environment variable with validations on the name.
  *
- * 🎨 default CSS display: `block`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/env-var/cc-env-var-create.js)
  *
  * ## Details
@@ -28,6 +26,8 @@ import { defaultThemeStyles } from '../styles/default-theme.js';
  *   value: string,
  * }
  * ```
+ *
+ * @cssdisplay block
  *
  * @prop {Boolean} disabled - Sets `disabled` attribute on inputs and button.
  * @prop {String[]} variablesNames - Sets list of existing variables names (so we can display an error if it already exists).

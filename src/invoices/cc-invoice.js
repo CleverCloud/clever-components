@@ -21,8 +21,6 @@ const SKELETON_INVOICE = {
 /**
  * A block component to display an HTML invoice.
  *
- * * 🎨 default CSS display: `block`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/invoices/cc-invoice.js)
  *
  * ## Type definitions
@@ -54,6 +52,8 @@ const SKELETON_INVOICE = {
  *   type: InvoiceType,
  * }
  * ```
+ *
+ * @cssdisplay block
  *
  * @prop {Boolean} error - Sets a loading error state.
  * @prop {Invoice} invoice - Sets the invoice.

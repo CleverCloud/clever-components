@@ -4,8 +4,6 @@ const appendChild = (parent, child) => parent.appendChild(child);
 /**
  * An invisible wrapper that changes its size (with an animation) according to the size of its children.
  *
- * 🎨 default CSS display: `block`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-expand.js)
  *
  * ## Technical details
@@ -13,6 +11,8 @@ const appendChild = (parent, child) => parent.appendChild(child);
  * * The animation only works in browsers supporting [`ResizeObserver`](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver) and [Web Animation API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API).
  * * This component does not use lit* deps on purpose (keep small and not useful).
  * * The source code is written in a way so it can be the smallest possible, while keeping a reasonable readability level.
+ *
+ * @cssdisplay block
  *
  * @slot - The content that may expand/shrink.
  */

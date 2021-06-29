@@ -20,8 +20,6 @@ const PRIVATE_ZONE = 'scope:private';
 /**
  * A display component to show information about a zone.
  *
- * * 🎨 default CSS display: `flex`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/zones/cc-zone.js)
  *
  * ## Details
@@ -42,6 +40,8 @@ const PRIVATE_ZONE = 'scope:private';
  *   tags: string[],        // Array of strings for semantic tags: ["region:eu", "infra:clever-cloud"], ["scope:private"]...
  * }
  * ```
+ *
+ * @cssdisplay flex
  *
  * @prop {"default"|"small"|"small-infra"} mode - Sets the mode of the component.
  * @prop {Zone} zone - Sets the different details of the zone.

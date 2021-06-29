@@ -8,8 +8,6 @@ import { ccAddonEncryptionAtRestOption } from '../templates/cc-addon-encryption-
 /**
  * A component that displays the available options of a PostgreSQL add-on.
  *
- * * 🎨 default CSS display: `block`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-postgresql-options.js)
  *
  * ## Type definitions
@@ -28,6 +26,8 @@ import { ccAddonEncryptionAtRestOption } from '../templates/cc-addon-encryption-
  *   encryption: boolean,
  * }
  * ```
+ *
+ * @cssdisplay block
  *
  * @prop {Option[]} options - List of options for this add-on.
  *
@@ -58,7 +58,8 @@ export class CcAddonPostgresqlOptions extends LitElement {
             return ccAddonEncryptionAtRestOption(option);
           default:
             return null;
-        };
+        }
+        ;
       })
       .filter((option) => option != null);
   }

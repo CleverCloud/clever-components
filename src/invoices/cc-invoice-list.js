@@ -23,8 +23,6 @@ function maxFromStrings (strings) {
 /**
  * A component to display a list of invoices in paginated categories.
  *
- * * 🎨 default CSS display: `block`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/invoices/cc-invoice-list.js)
  *
  * ## Type definitions
@@ -55,6 +53,8 @@ function maxFromStrings (strings) {
  *   type: InvoiceType,
  * }
  * ```
+ *
+ * @cssdisplay block
  *
  * @prop {Boolean} error - Sets a loading error state.
  * @prop {Invoice[]} invoices - Sets the list of invoices.

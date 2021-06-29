@@ -10,8 +10,6 @@ import { skeletonStyles } from '../styles/skeleton.js';
 /**
  * A component to display an add-on credentials.
  *
- * 🎨 default CSS display: `block`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-credentials.js)
  *
  * ## Details
@@ -27,6 +25,8 @@ import { skeletonStyles } from '../styles/skeleton.js';
  *   secret: boolean,
  * }
  * ```
+ *
+ * @cssdisplay block
  *
  * @prop {Credential[]} credentials - Sets the list of  add-on credentials.
  * @prop {Boolean} error - Displays an error message.

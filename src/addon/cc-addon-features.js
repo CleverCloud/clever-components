@@ -30,8 +30,6 @@ const SKELETON_FEATURES = [
 /**
  * A component to display an add-on set of features.
  *
- * 🎨 default CSS display: `block`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-features.js)
  *
  * ## Details
@@ -57,6 +55,8 @@ const SKELETON_FEATURES = [
  * | <img src="assets/cpu.svg" style="height: 1.5rem; vertical-align: middle"> | <code>cpu.svg</code>
  * | <img src="assets/disk.svg" style="height: 1.5rem; vertical-align: middle"> | <code>disk.svg</code>
  * | <img src="assets/ram.svg" style="height: 1.5rem; vertical-align: middle"> | <code>ram.svg</code>
+ *
+ * @cssdisplay block
  *
  * @prop {Boolean} error - Displays an error message.
  * @prop {Feature[]} features - Sets the list features.

@@ -4,8 +4,6 @@ import { withResizeObserver } from '../mixins/with-resize-observer.js';
 /**
  * A display only component (just HTML+CSS) to layout heads, a main and several tiles.
  *
- * 🎨 default CSS display: `grid`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-overview.js)
  *
  * ## Details
@@ -17,6 +15,8 @@ import { withResizeObserver } from '../mixins/with-resize-observer.js';
  * * The number of columns is variable and depends directly on the width of the component (with some help from `withResizeObserver`).
  * * `mode="app"` for 6 tiles
  * * `mode="orga"` for 2 tiles
+ *
+ * @cssdisplay grid
  *
  * @prop {"app"|"orga"} mode - Sets the mode of the layout for the overview.
  *

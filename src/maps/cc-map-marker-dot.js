@@ -17,13 +17,13 @@ const COLOR_PALETTE = [
 /**
  * A map marker displayed as a blinking dot with color grading depending on the value of `count`.
  *
+ * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/maps/cc-map-marker-dot.js)
+ *
  * ## Technical details
  *
  * * `size`, `anchor` and `tooltip` are readonly.
  *
- * 🎨 default CSS display: `inline-block`
- * <br>
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/maps/cc-map-marker-dot.js)
+ * @cssdisplay inline-block
  *
  * @prop {Array} anchor - Exposes the coordinates of the "tip" of the marker, relative to its top left corner: `[x, y]` (used by `<cc-map>`).
  * @prop {Number} count - Sets an abstract value for this marker to vary the color grading.

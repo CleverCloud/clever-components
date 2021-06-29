@@ -7,14 +7,12 @@ import { i18n } from '../lib/i18n.js';
 /**
  * A component that allows to enable or disable an add-on option.
  *
- * * 🎨 default CSS display: `grid`
- * <br>
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-option.js)
- *
  * ## Technical details
  *
  * * If you want to display a warning in the option, add the `option-warning` class to an HTML element. It will be displayed
  * with a custom color and in italic.
+ *
+ * @cssdisplay grid
  *
  * @prop {String} logo - The logo URL of the option.
  * @prop {String} title - Title of the option.

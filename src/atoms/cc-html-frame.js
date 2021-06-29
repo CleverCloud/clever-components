@@ -5,8 +5,6 @@ import './cc-loader.js';
 /**
  * A low level component that takes some HMTL and puts it in an iframe.
  *
- * 🎨 default CSS display: `block`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-html-frame.js)
  *
  * ## Details
@@ -20,6 +18,8 @@ import './cc-loader.js';
  * * By default, the origin of the inner `<iframe>` is the same as the parent window. This means the iframe can access the same local storage and other origin bound APIs.
  * * If you want to limit this access and increase the isolation, you can add the `sandbox` attribute, see [MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#attr-sandbox) for more details.
  * * This implemententation does not create an OOP (out of process) iframe.
+ *
+ * @cssdisplay block
  *
  * @prop {Boolean} loading - Enables the loader indicator.
  * @prop {String} sandbox - Sets `sandbox` attribute on inner native `<iframe>` element.

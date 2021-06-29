@@ -4,8 +4,6 @@ const appendChild = (parent, child) => parent.appendChild(child);
 /**
  * A pure layout component used to overcome the lack of `gap` in CSS flex containers.
  *
- * 🎨 default CSS display: `grid`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-flex-gap.js)
  *
  * ## Technical details
@@ -23,6 +21,8 @@ const appendChild = (parent, child) => parent.appendChild(child);
  * * the negative margin of the container will be displayed as white space in its parent.
  * * There are a few techniques to prevent this.
  * * We chose to use a `display: grid` on the parent to disable the margin collapsing while preserving potential overflow like focus rings etc...
+ *
+ * @cssdisplay grid
  *
  * @slot - The flex items on which you want to set a gap.
  *

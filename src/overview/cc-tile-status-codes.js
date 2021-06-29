@@ -32,8 +32,6 @@ const SKELETON_STATUS_CODES = { 200: 1 };
 /**
  * A "tile" component to display HTTP response status codes in a pie chart (donut).
  *
- * 🎨 default CSS display: `grid`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-tile-status-codes.js)
  *
  * ## Details
@@ -67,6 +65,8 @@ const SKELETON_STATUS_CODES = { 200: 1 };
  * |-------|------|
  * | <img src="assets/close.svg" style="height: 1.5rem; vertical-align: middle"> | <code>close.svg</code>
  * | <img src="assets/info.svg" style="height: 1.5rem; vertical-align: middle"> | <code>info.svg</code>
+ *
+ * @cssdisplay grid
  *
  * @prop {Boolean} error - Displays an error message.
  * @prop {StatusCodesData} statusCodes - Sets data with the number of requests for each HTTP status code.

@@ -10,8 +10,6 @@ const decrementSvg = new URL('../assets/decrement.svg', import.meta.url).href;
 /**
  * A custom number input with controls mode.
  *
- * 🎨 default CSS display: `inline-block`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-input-number.js)
  *
  * ## Technical details
@@ -26,6 +24,8 @@ const decrementSvg = new URL('../assets/decrement.svg', import.meta.url).href;
  * | <img src="assets/decrement.svg" style="height: 1.5rem; vertical-align: middle"> | <code>decrement.svg</code>
  * | <img src="assets/increment.svg" style="height: 1.5rem; vertical-align: middle"> | <code>increment.svg</code>
  *
+ * @cssdisplay inline-block
+ *
  * @prop {Boolean} controls - Sets the control mode with a decrement and increment buttons.
  * @prop {Boolean} disabled - Sets `disabled` attribute on inner native `<input>` element.
  * @prop {String} label - Sets label for the input.
@@ -36,7 +36,6 @@ const decrementSvg = new URL('../assets/decrement.svg', import.meta.url).href;
  * @prop {Boolean} skeleton - Enables skeleton screen UI pattern (loading hint).
  * @prop {Number} step - Sets the step of the `<input>` element affecting the value when changing it on the keyboard or controls mode.
  * @prop {Number} value - Sets `value` attribute on inner native input number element.
- *
  *
  * @event {CustomEvent<String>} cc-input-number:input - Fires the `value` whenever the `value` changes.
  * @event {CustomEvent} cc-input-number:requestimplicitsubmit - Fires when enter key is pressed.

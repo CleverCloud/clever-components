@@ -47,8 +47,6 @@ const SKELETON_STATUS = 'unknown';
 /**
  * A component to display various info about an app (name, commits, status...).
  *
- * 🎨 default CSS display: `block`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-header-app.js)
  *
  * ## Details
@@ -96,6 +94,8 @@ const SKELETON_STATUS = 'unknown';
  * | <img src="assets/starting.svg" style="height: 1.5rem; vertical-align: middle"> | <code>starting.svg</code>
  * | <img src="assets/stopped.svg" style="height: 1.5rem; vertical-align: middle"> | <code>stopped.svg</code>
  * | <img src="assets/unknown.svg" style="height: 1.5rem; vertical-align: middle"> | <code>unknown.svg</code>
+ *
+ * @cssdisplay block
  *
  * @prop {App} app - Sets application details and config.
  * @prop {Boolean} disableButtons - Disables all buttons (in a "login as" use case).

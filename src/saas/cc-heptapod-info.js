@@ -19,8 +19,6 @@ const HEPTAPOD_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.co
 /**
  * A component that shows a summary of our Heptapod SaaS offer.
  *
- * * 🎨 default CSS display: `block`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/saas/cc-heptapod-info.js)
  *
  * ## Details
@@ -37,6 +35,8 @@ const HEPTAPOD_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.co
  *   price: number,
  * }
  * ```
+ *
+ * @cssdisplay block
  *
  * @prop {Boolean} error - Displays an error message.
  * @prop {Statistics|"not-used"} statistics - Sets the usage statistics of this heptapod SaaS or `"not-used"` to display a message explaining the service is not used.

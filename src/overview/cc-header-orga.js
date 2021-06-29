@@ -17,8 +17,6 @@ const SKELETON_ORGA = {
 /**
  * A component to display various info about an orga (name and enterprise status).
  *
- * 🎨 default CSS display: `block`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-header-orga.js)
  *
  * ## Details
@@ -42,6 +40,8 @@ const SKELETON_ORGA = {
  * |-------|------|
  * | <img src="assets/badge-white.svg" style="height: 1.5rem; vertical-align: middle"> | <code>badge-white.svg</code>
  * | <img src="assets/phone.svg" style="height: 1.5rem; vertical-align: middle"> | <code>phone.svg</code>
+ *
+ * @cssdisplay block
  *
  * @prop {Boolean} error - Displays an error message.
  * @prop {Orga} orga - Sets organization details and config.

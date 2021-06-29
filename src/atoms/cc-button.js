@@ -9,8 +9,6 @@ import { linkStyles } from '../templates/cc-link.js';
 /**
  * Wraps a `<button>` with a skeleton state, some modes and a delay mechanism.
  *
- * 🎨 default CSS display: `inline-block`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-button.js)
  *
  * ## Details
@@ -33,6 +31,8 @@ import { linkStyles } from '../templates/cc-link.js';
  * * If the user clicks on "click to cancel", the `cc-button:click` event is not fired.
  * * If the button `disabled` mode is set during the delay, the `cc-button:click` event is not fired.
  * * If you set `delay=0`, the button will have the same width as other buttons with delay, but the event will be triggered instantly.
+ *
+ * @cssdisplay inline-block
  *
  * @prop {Boolean} circle - Sets button UI to a circle form when in `hide-text` and `image` mode.
  * @prop {Boolean} danger - Sets button UI _mode_ to danger.

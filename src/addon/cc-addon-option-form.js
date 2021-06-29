@@ -9,8 +9,6 @@ import { linkStyles } from '../templates/cc-link.js';
 /**
  * A component that displays a form of `<cc-addon-option>`.
  *
- * * 🎨 default CSS display: `block`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-option-form.js)
  *
  * ## Type definitions
@@ -29,6 +27,9 @@ import { linkStyles } from '../templates/cc-link.js';
  * }
  * ```
  *
+ * @cssdisplay block
+ *
+ * @prop {Option[]} options - List of Option object to render.
  * @prop {String} title - Title of the whole options form.
  * @prop {Option[]} options - List of Option object to render.
  *

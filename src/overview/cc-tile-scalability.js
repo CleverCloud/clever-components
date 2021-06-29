@@ -16,8 +16,6 @@ const SKELETON_SCALABILITY = {
 /**
  * A "tile" component to display the current config of scalability for a given app.
  *
- * 🎨 default CSS display: `grid`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-tile-scalability.js)
  *
  * ## Details
@@ -44,6 +42,8 @@ const SKELETON_SCALABILITY = {
  *   maxInstances: number,
  * }
  * ```
+ *
+ * @cssdisplay grid
  *
  * @prop {Boolean} error - Displays an error message.
  * @prop {Scalability} scalability - Sets the scalability config of an app with details about flavors and number of instances.

@@ -14,8 +14,6 @@ const SKELETON_VARIABLES = [
 /**
  * A high level environment variable editor to create/edit/delete variables one at a time (with validation and error messages).
  *
- * 🎨 default CSS display: `grid` - `none` with `[hidden]`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/env-var/cc-env-var-editor-simple.js)
  *
  * ## Type definitions
@@ -27,6 +25,8 @@ const SKELETON_VARIABLES = [
  *   isDeleted: boolean,
  * }
  * ```
+ *
+ * @cssdisplay grid / none (with `[hidden]`)
  *
  * @prop {Boolean} readonly - Sets `readonly` attribute on inputs and hides buttons.
  * @prop {Boolean} disabled - Sets `disabled` attribute on inputs and buttons.

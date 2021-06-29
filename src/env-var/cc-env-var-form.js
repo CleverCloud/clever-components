@@ -15,8 +15,6 @@ import { linkStyles } from '../templates/cc-link.js';
 /**
  * A high level environment variable form (wrapping simple editor and expert editor into one interface).
  *
- * 🎨 default CSS display: `block`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/env-var/cc-env-var-form.js)
  *
  * ## Details
@@ -33,6 +31,8 @@ import { linkStyles } from '../templates/cc-link.js';
  *   isDeleted: boolean,
  * }
  * ```
+ *
+ * @cssdisplay block
  *
  * @prop {String} appName - Defines application name used in some heading/description (depending on context).
  * @prop {"env-var"|"env-var-simple"|"env-var-addon"|"exposed-config"} context - Defines where the form will be used so it can display the appropriate heading and description.

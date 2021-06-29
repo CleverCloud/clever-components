@@ -7,9 +7,7 @@ import { css, LitElement, svg } from 'lit-element';
  *
  * * `size`, `anchor` and `tooltip` are readonly.
  *
- * 🎨 default CSS display: `inline-block`
- * <br>
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/maps/cc-map-marker-server.js)
+ * @cssdisplay inline-block
  *
  * @prop {Array} anchor - Exposes the coordinates of the "tip" of the marker, relative to its top left corner: `[x, y]` (used by `<cc-map>`).
  * @prop {Array} size - Exposes the size of the marker: `[width, height]` (used by `<cc-map>`).

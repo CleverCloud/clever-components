@@ -30,8 +30,6 @@ const NUMBER_FEATURE_TYPES = ['bytes', 'number', 'number-cpu-runtime'];
 /**
  * A component to display product informations: items (plans) and features.
  *
- * * 🎨 default CSS display: `block`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/pricing/cc-pricing-table.js)
  *
  * ## Details
@@ -72,6 +70,8 @@ const NUMBER_FEATURE_TYPES = ['bytes', 'number', 'number-cpu-runtime'];
  * | <img src="../assets/down.svg" style="height: 1.5rem; vertical-align: middle"> | <code>down.svg</code>
  * | <img src="../assets/plus.svg" style="height: 1.5rem; vertical-align: middle"> | <code>plus.svg</code>
  * | <img src="../assets/up.svg" style="height: 1.5rem; vertical-align: middle"> | <code>up.svg</code>
+ *
+ * @cssdisplay block
  *
  * @prop {"add"|"none"} action - Sets the type of action: "add" to display add buttons for each item and "none" for no actions (defaults to "add").
  * @prop { Currency } currency - Sets the currency used to display the prices (defaults to euros).

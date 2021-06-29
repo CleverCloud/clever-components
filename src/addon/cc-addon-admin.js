@@ -10,8 +10,6 @@ import { i18n } from '../lib/i18n.js';
 /**
  * A component displaying the admin interface of an add-on to edit its name or delete the add-on
  *
- * 🎨 default CSS display: `block`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-admin.js)
  *
  * ## Details
@@ -26,6 +24,8 @@ import { i18n } from '../lib/i18n.js';
  *   tags: String[],
  * }
  * ```
+ *
+ * @cssdisplay block
  *
  * @prop {Addon} addon - Sets the add-on details (name and tags).
  * @prop {false|"saving"|"loading"} error - Sets the error state on the component.

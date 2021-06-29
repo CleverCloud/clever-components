@@ -3,13 +3,13 @@ import { css, html, LitElement } from 'lit-element';
 /**
  * A display component with mostly HTML+CSS to separate a `<cc-block>` into different sections.
  *
- * 🎨 default CSS display: `grid`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/molecules/cc-block-section.js)
  *
  * ## Details
  *
  * * This component is designed to only be use as a direct child of `<cc-block>`.
+ *
+ * @cssdisplay grid
  *
  * @slot - The main content (right part) of the section. If info is not defined, this will take all the width.
  * @slot info - The info (left part) of the section.

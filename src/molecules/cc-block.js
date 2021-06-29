@@ -11,8 +11,6 @@ const upSvg = new URL('../assets/up.svg', import.meta.url).href;
 /**
  * A display component with mostly HTML+CSS and a open/close toggle feature.
  *
- * 🎨 default CSS display: `grid`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/molecules/cc-block.js)
  *
  * ## Details
@@ -25,6 +23,8 @@ const upSvg = new URL('../assets/up.svg', import.meta.url).href;
  * |-------|------|
  * | <img src="assets/down.svg" style="height: 1.5rem; vertical-align: middle"> | <code>down.svg</code>
  * | <img src="assets/up.svg" style="height: 1.5rem; vertical-align: middle"> | <code>up.svg</code>
+ *
+ * @cssdisplay grid
  *
  * @prop {String} icon - Sets the URL of the image before the title. Icon is hidden if nullish.
  * @prop {"off"|"open"|"close"} state - Sets the state of the toggle behaviour.

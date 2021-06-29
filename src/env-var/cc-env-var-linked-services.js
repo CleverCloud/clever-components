@@ -8,8 +8,6 @@ import { i18n } from '../lib/i18n.js';
 /**
  * A component to display groups of readonly `<cc-env-var-form>` for linked apps of add-ons.
  *
- * 🎨 default CSS display: `block`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/env-var/cc-env-var-linked-services.js)
  *
  * ## Details
@@ -33,6 +31,8 @@ import { i18n } from '../lib/i18n.js';
  *   isDeleted: boolean,
  * }
  * ```
+ *
+ * @cssdisplay block
  *
  * @prop {String} appName - Sets name of the main app to which services are linked.
  * @prop {Boolean} error - Sets error status if list of services could not be fetched.

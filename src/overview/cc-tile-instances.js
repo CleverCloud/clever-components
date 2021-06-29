@@ -24,8 +24,6 @@ const SKELETON_INSTANCES = {
 /**
  * A "tile" component to display current status of running and deploying instances for a given app.
  *
- * 🎨 default CSS display: `grid`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-tile-instances.js)
  *
  * ## Details
@@ -54,6 +52,8 @@ const SKELETON_INSTANCES = {
  * |-------|------|
  * | <img src="assets/running.svg" style="height: 1.5rem; vertical-align: middle"> | <code>running.svg</code>
  * | <img src="assets/starting.svg" style="height: 1.5rem; vertical-align: middle"> | <code>starting.svg</code>
+ *
+ * @cssdisplay grid
  *
  * @prop {Boolean} error - Displays an error message.
  * @prop {InstancesState} instances - Sets the current state of running and deploying instances.

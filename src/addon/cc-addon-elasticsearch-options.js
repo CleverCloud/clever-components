@@ -11,8 +11,6 @@ const APM_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com/log
 /**
  * A component that displays the available options of an elasticsearch add-on.
  *
- * * 🎨 default CSS display: `block`
- * <br>
  * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-elasticsearch-options.js)
  *
  * ## Type definitions
@@ -44,6 +42,8 @@ const APM_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com/log
  *   apm: boolean,
  * }
  * ```
+ *
+ * @cssdisplay block
  *
  * @prop {Option[]} options - List of options for this add-on.
  *
