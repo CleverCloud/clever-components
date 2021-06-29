@@ -28,6 +28,7 @@ title: Changelog
   * `<cc-pricing-header>`
   * `<cc-pricing-estimation>`
   * `<cc-pricing-page>` (with smart definition)
+  * `<cc-jenkins-info>` (with smart definition)
 
 ## 6.10.0 (2021-07-08)
 
