@@ -1,6 +1,7 @@
+import { spawn } from 'child_process';
 import { hmrPlugin, presets } from '@open-wc/dev-server-hmr';
-import json from '@rollup/plugin-json';
 import rollupCommonjs from '@rollup/plugin-commonjs';
+import json from '@rollup/plugin-json';
 import { fromRollup, rollupAdapter } from '@web/dev-server-rollup';
 import { storybookWdsPlugin } from './stories/lib/markdown.cjs';
 import { esbuildBundlePlugin } from './wds/esbuild-bundle-plugin.js';
@@ -10,6 +11,9 @@ const commonjs = fromRollup(rollupCommonjs);
 function commonJsIdentifiers (ids) {
   return ids.map((id) => `**/node_modules/${id}/**/*`);
 }
+
+// This feels like a hack but with this, we get up to date CEM inside storybook's docs page
+spawn('npm', ['run', 'components:docs:watch']);
 
 const hmrI18n = {
   name: 'hmr-i18n',

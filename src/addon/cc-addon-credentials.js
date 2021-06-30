@@ -10,10 +10,6 @@ import { skeletonStyles } from '../styles/skeleton.js';
 /**
  * A component to display an add-on credentials.
  *
- * 🎨 default CSS display: `block`
- * <br>
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-credentials.js)
- *
  * ## Details
  *
  * * When the `value` of a credential is nullish, a skeleton UI pattern is displayed (loading hint).
@@ -28,6 +24,8 @@ import { skeletonStyles } from '../styles/skeleton.js';
  * }
  * ```
  *
+ * @cssdisplay block
+ *
  * @prop {Credential[]} credentials - Sets the list of  add-on credentials.
  * @prop {Boolean} error - Displays an error message.
  * @prop {String} icon - Sets the URL of the icon to use.
@@ -35,7 +33,6 @@ import { skeletonStyles } from '../styles/skeleton.js';
  * @prop {"off"|"open"|"close"} toggleState - Sets the toggle state of the inner block.
  * @prop {"apm"|"elasticsearch"|"kibana"|"pulsar"} type - Sets the type of the add-on.
  */
-
 export class CcAddonCredentials extends LitElement {
 
   static get properties () {

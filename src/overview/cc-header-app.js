@@ -47,10 +47,6 @@ const SKELETON_STATUS = 'unknown';
 /**
  * A component to display various info about an app (name, commits, status...).
  *
- * 🎨 default CSS display: `block`
- * <br>
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-header-app.js)
- *
  * ## Details
  *
  * * When `app` and `status` are null, a skeleton screen UI pattern is displayed (loading hint).
@@ -83,19 +79,7 @@ const SKELETON_STATUS = 'unknown';
  * }
  * ```
  *
- * ## Images
- *
- * | | |
- * |-------|------|
- * | <img src="assets/git.svg" style="height: 1.5rem; vertical-align: middle"> | <code>git.svg</code>
- * | <img src="assets/restart-failed.svg" style="height: 1.5rem; vertical-align: middle"> | <code>restart-failed.svg</code>
- * | <img src="assets/restarting-with-downtime.svg" style="height: 1.5rem; vertical-align: middle"> | <code>restarting-with-downtime.svg</code>
- * | <img src="assets/restarting.svg" style="height: 1.5rem; vertical-align: middle"> | <code>restarting.svg</code>
- * | <img src="assets/running.svg" style="height: 1.5rem; vertical-align: middle"> | <code>running.svg</code>
- * | <img src="assets/start-failed.svg" style="height: 1.5rem; vertical-align: middle"> | <code>start-failed.svg</code>
- * | <img src="assets/starting.svg" style="height: 1.5rem; vertical-align: middle"> | <code>starting.svg</code>
- * | <img src="assets/stopped.svg" style="height: 1.5rem; vertical-align: middle"> | <code>stopped.svg</code>
- * | <img src="assets/unknown.svg" style="height: 1.5rem; vertical-align: middle"> | <code>unknown.svg</code>
+ * @cssdisplay block
  *
  * @prop {App} app - Sets application details and config.
  * @prop {Boolean} disableButtons - Disables all buttons (in a "login as" use case).

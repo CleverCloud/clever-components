@@ -3,13 +3,11 @@ import { LitElement, css, html } from 'lit-element';
 /**
  * A loading indicator, auto centered and with flexible size.
  *
- * 🎨 default CSS display: `flex`
- * <br>
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-loader.js)
- *
  * ## Details
  *
  * * Size this component like you want, the loading circle will be centered automatically.
+ *
+ * @cssdisplay flex
  *
  * @cssprop {Color} --cc-loader-color - The color of the animated circle (defaults: `#2653af`).
  */

@@ -39,10 +39,6 @@ function arrayEquals (a, b) {
 /**
  * An enhanced text input with support for multiline, copy-to-clipboard, show/hide secret and highlighted tags.
  *
- * 🎨 default CSS display: `inline-block` - `block` with `[multi]`
- * <br>
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-input-text.js)
- *
  * ## Technical details
  *
  * * Uses a native `<input>` element by default and a `<textarea>` element when `multi` is true.
@@ -50,14 +46,7 @@ function arrayEquals (a, b) {
  * * The `secret` feature only works for simple line mode (when `multi` is false).
  * * The `tags` feature enables a space-separated-value input wrapped on several lines where line breaks are not allowed. Don't use it with `multi` or `secret`.
  *
- * ## Images
- *
- * | | |
- * |-------|------|
- * | <img src="assets/clipboard.svg" style="height: 1.5rem; vertical-align: middle"> | <code>clipboard.svg</code>
- * | <img src="assets/eye-closed.svg" style="height: 1.5rem; vertical-align: middle"> | <code>eye-closed.svg</code>
- * | <img src="assets/eye-open.svg" style="height: 1.5rem; vertical-align: middle"> | <code>eye-open.svg</code>
- * | <img src="assets/tick.svg" style="height: 1.5rem; vertical-align: middle"> | <code>tick.svg</code>
+ * @cssdisplay inline-block / block (with `[multi]`)
  *
  * @prop {Boolean} clipboard - Adds a copy-to-clipboard button (when not disabled and not skeleton).
  * @prop {Boolean} disabled - Sets `disabled` attribute on inner native `<input>/<textarea>` element.
@@ -72,8 +61,8 @@ function arrayEquals (a, b) {
  * @prop {String} value - Sets `value` attribute on inner native input element or textarea's inner content.
  *
  * @event {CustomEvent<String>} cc-input-text:input - Fires the `value` whenever the `value` changes.
- * @event {CustomEvent<String[]>} cc-input-text:tags - Fires an array of tags whenever the `value` changes (separated by spaces).
  * @event {CustomEvent} cc-input-text:requestimplicitsubmit - Fires when enter key is pressed in simple mode, in tags mode or when ctrl+enter is pressed in multi mode.
+ * @event {CustomEvent<String[]>} cc-input-text:tags - Fires an array of tags whenever the `value` changes (separated by spaces).
  */
 export class CcInputText extends LitElement {
 

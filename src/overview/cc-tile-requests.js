@@ -21,10 +21,6 @@ const SKELETON_REQUESTS = Array
 /**
  * A "tile" component to display HTTP requests distribution over the last 24 hours in a bar chart.
  *
- * 🎨 default CSS display: `grid`
- * <br>
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-tile-requests.js)
- *
  * ## Details
  *
  * * When `data` is nullish, a skeleton screen UI pattern is displayed (loading hint).
@@ -46,12 +42,7 @@ const SKELETON_REQUESTS = Array
  * ]
  * ```
  *
- * ## Images
- *
- * | | |
- * |-------|------|
- * | <img src="assets/close.svg" style="height: 1.5rem; vertical-align: middle"> | <code>close.svg</code>
- * | <img src="assets/info.svg" style="height: 1.5rem; vertical-align: middle"> | <code>info.svg</code>
+ * @cssdisplay grid
  *
  * @prop {RequestsData[24]} data - Sets the list of 24 time windows of one hour with timestamps and number of requests.
  * @prop {Boolean} error - Displays an error message.

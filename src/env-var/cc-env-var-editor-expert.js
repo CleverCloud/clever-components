@@ -15,10 +15,6 @@ const SKELETON_VARIABLES = [
 /**
  * A high level environment variable editor to create/edit/delete all variables at once as a big string (properly parsed with validation and error messages).
  *
- * 🎨 default CSS display: `block` - `none` with `[hidden]`
- * <br>
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/env-var/cc-env-var-editor-expert.js)
- *
  * ## Type definitions
  *
  * ```js
@@ -29,8 +25,10 @@ const SKELETON_VARIABLES = [
  * }
  * ```
  *
- * @prop {Boolean} readonly - Sets `readonly` attribute on main input and hides buttons.
+ * @cssdisplay block / none (with `[hidden]`)
+ *
  * @prop {Boolean} disabled - Sets `disabled` attribute on inputs and buttons.
+ * @prop {Boolean} readonly - Sets `readonly` attribute on main input and hides buttons.
  * @prop {Variable[]} variables - Sets the list of variables.
  *
  * @event {CustomEvent<Variable[]>} cc-env-var-editor-expert:change - Fires the new list of variables whenever something changes in the list.

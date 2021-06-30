@@ -14,11 +14,7 @@ const noRedirectionSvg = new URL('../assets/redirection-off.svg', import.meta.ur
 const redirectionSvg = new URL('../assets/redirection-on.svg', import.meta.url).href;
 
 /**
- * A small form to create or delete a TCP redirection
- *
- * 🎨 default CSS display: `block`
- * <br>
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/tcp-redirections/cc-tcp-redirection.js)
+ * A small form to create or delete a TCP redirection.
  *
  * ## Type definitions
  *
@@ -35,13 +31,7 @@ const redirectionSvg = new URL('../assets/redirection-on.svg', import.meta.url).
  * }
  * ```
  *
- * ## Images
- *
- * | | |
- * |-------|------|
- * | <img src="assets/warning.svg" style="height: 1.5rem; vertical-align: middle"> | <code>warning.svg</code>
- * | <img src="assets/redirection-off.svg" style="height: 1.5rem; vertical-align: middle"> | <code>redirection-off.svg</code>
- * | <img src="assets/redirection-on.svg" style="height: 1.5rem; vertical-align: middle"> | <code>redirection-on.svg</code>
+ * @cssdisplay block
  *
  * @prop {Boolean} error - Set if there was an error during creation / deletion.
  * @prop {String} namespace - Sets the name of the namespace.

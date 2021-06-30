@@ -20,11 +20,7 @@ const SKELETON_BACKUPS = {
 };
 
 /**
- * A components to display backups available for an add-on
- *
- * 🎨 default CSS display: `grid`
- * <br>
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-backups.js)
+ * A components to display backups available for an add-on.
  *
  * ## Details
  *
@@ -50,12 +46,7 @@ const SKELETON_BACKUPS = {
  * }
  * ```
  *
- * ## Images
- *
- * | | |
- * |-------|------|
- * | <img src="assets/backup.svg" style="height: 1.5rem; vertical-align: middle"> | <code>backup.svg</code>
- * | <img src="assets/close.svg" style="height: 1.5rem; vertical-align: middle"> | <code>close.svg</code>
+ * @cssdisplay grid
  *
  * @prop {BackupDetails} backups - Sets the different details about an add-on and its backup.
  * @prop {Boolean} error - Displays an error message.

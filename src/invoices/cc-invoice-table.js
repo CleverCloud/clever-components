@@ -27,10 +27,6 @@ const SKELETON_INVOICES = [
 /**
  * A table component to display a list of invoices.
  *
- * * 🎨 default CSS display: `block`
- * <br>
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/invoices/cc-invoice-table.js)
- *
  * ## Type definitions
  *
  * ```js
@@ -59,6 +55,8 @@ const SKELETON_INVOICES = [
  *   type: InvoiceType,
  * }
  * ```
+ *
+ * @cssdisplay block
  *
  * @prop {Invoice[]} invoices - Sets the list of invoices.
  */

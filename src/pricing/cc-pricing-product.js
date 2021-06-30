@@ -16,10 +16,6 @@ const SKELETON_DESCRIPTION = fakeString(180);
 /**
  * A component to display product informations: icon, name, description with items (plans) and features.
  *
- * * 🎨 default CSS display: `block`
- * <br>
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/pricing/cc-pricing-product.js)
- *
  * ## Type definitions
  *
  * ```js
@@ -52,13 +48,15 @@ const SKELETON_DESCRIPTION = fakeString(180);
  * }
  * ```
  *
+ * @cssdisplay block
+ *
  * @prop {"add"|"none"} action - Sets the type of action: "add" to display add buttons for each item and "none" for no actions (defaults to "add").
  * @prop {Currency} currency - Sets the currency used to display the prices (defaults to euros).
  * @prop {String} description - Sets the description of the product (can be overriden with the default slot).
  * @prop {Boolean} error - Displays an error message.
- * @prop {Array<Feature>} features - Sets the list of features (used for the feature sort order).
+ * @prop {Feature[]} features - Sets the list of features (used for the feature sort order).
  * @prop {String} icon - Sets the url of the product icon/logo image (can be overriden with the `icon` slot).
- * @prop {Array<Item>} items - Sets the list of items.
+ * @prop {Item[]} items - Sets the list of items.
  * @prop {String} name - Sets the name of the product (can be overriden with the `name` slot).
  *
  * @event {CustomEvent<Product>} cc-pricing-product:add-product - Fires the product whenever the "plus" button of an item is clicked.
@@ -86,7 +84,6 @@ export class CcPricingProduct extends LitElement {
   constructor () {
     super();
     this.action = 'add';
-    this.icons = [];
     this.features = [];
   }
 

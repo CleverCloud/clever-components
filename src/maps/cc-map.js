@@ -12,10 +12,6 @@ import { leafletStyles } from '../styles/leaflet.js';
 /**
  * World map with two modes: positioned markers or heatmap.
  *
- * 🎨 default CSS display: `flex`
- * <br>
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/maps/cc-map.js)
- *
  * ## Details
  *
  * * The component has a default height of 15rem and a default width 20rem but this can be overridden with CSS.
@@ -56,6 +52,8 @@ import { leafletStyles } from '../styles/leaflet.js';
  *   count: number, // Number of occurences for this location
  * }
  * ```
+ *
+ * @cssdisplay flex
  *
  * @prop {Number} centerLat - Sets the latitude center of the map.
  * @prop {Number} centerLon - Sets the longitude center of the map.

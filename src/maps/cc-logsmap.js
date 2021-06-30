@@ -8,11 +8,6 @@ import { i18n } from '../lib/i18n.js';
 /**
  * World map of access logs with two modes: blinking dots or heatmap.
  *
- * 🎨 default CSS display: `block`
- * <br>
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/maps/cc-logsmap.js)
- *
- *
  * ## Details
  *
  * * This component wraps `<cc-map>` with a clickable toggle for the mode.
@@ -45,6 +40,8 @@ import { i18n } from '../lib/i18n.js';
  *   count: number, // Number of occurences for this location
  * }
  * ```
+ *
+ * @cssdisplay block
  *
  * @prop {String} appName - Sets the name of the app for which we display the logs (don't use it with `orgaName`).
  * @prop {Number} centerLat - Sets the latitude center of the map.

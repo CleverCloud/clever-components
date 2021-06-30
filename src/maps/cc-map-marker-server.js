@@ -6,14 +6,13 @@ import { css, LitElement, svg } from 'lit-element';
  * ## Technical details
  *
  * * `size`, `anchor` and `tooltip` are readonly.
- * * `size` and `anchor` will help `<cc-map>` to place the bubble tip on the exact GPS position.
- * * `tooltip` will help `<cc-map>` to place the tooltip's tip above the bubble.
  *
- * 🎨 default CSS display: `inline-block`
- * <br>
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/maps/cc-map-marker-server.js)
+ * @cssdisplay inline-block
  *
+ * @prop {Array} anchor - Exposes the coordinates of the "tip" of the marker, relative to its top left corner: `[x, y]` (used by `<cc-map>`).
+ * @prop {Array} size - Exposes the size of the marker: `[width, height]` (used by `<cc-map>`).
  * @prop {"default"|"hovered"|"selected"} state - Sets the state of the marker.
+ * @prop {Array} tooltip - Exposes the coordinates from which tooltips will "open", relative to the marker anchor: `[width, height]` (used by `<cc-map>`).
  */
 export class CcMapMarkerServer extends LitElement {
 
@@ -26,12 +25,21 @@ export class CcMapMarkerServer extends LitElement {
   constructor () {
     super();
     this.state = 'default';
-    /** @readonly */
-    this.size = [32, 32];
-    /** @readonly */
-    this.anchor = [16, 32];
-    /** @readonly */
-    this.tooltip = [0, -32];
+  }
+
+  /** @readonly */
+  get anchor () {
+    return [16, 32];
+  }
+
+  /** @readonly */
+  get size () {
+    return [32, 32];
+  }
+
+  /** @readonly */
+  get tooltip () {
+    return [0, -32];
   }
 
   render () {

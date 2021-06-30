@@ -18,10 +18,6 @@ const SKELETON_APPLICATIONS = [
 /**
  * A component to display applications linked to an add-on.
  *
- * 🎨 default CSS display: `block`
- * <br>
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-linked-apps.js)
- *
  * ## Details
  *
  * * When applications is nullish, a skeleton screen UI pattern is displayed (loading hint).
@@ -59,6 +55,8 @@ const SKELETON_APPLICATIONS = [
  *   tags: string[],        // Array of strings for semantic tags: ["region:eu", "infra:clever-cloud"], ["scope:private"]...
  * }
  * ```
+ *
+ * @cssdisplay block
  *
  * @prop {Application[]} applications - Sets the linked applications.
  * @prop {Boolean} error - Displays an error message.

@@ -16,10 +16,6 @@ const PRIVATE_ZONE = 'scope:private';
 /**
  * A input component to select a zone with a map and a list.
  *
- * * 🎨 default CSS display: `grid`
- * <br>
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/zones/cc-zone-input.js)
- *
  * ## Details
  *
  * * When `zones` is nullish, a skeleton screen UI pattern is displayed (loading hint).
@@ -39,6 +35,8 @@ const PRIVATE_ZONE = 'scope:private';
  *   tags: string[],        // Array of strings for semantic tags: ["region:eu", "infra:clever-cloud"], ["scope:private"]...
  * }
  * ```
+ *
+ * @cssdisplay grid
  *
  * @prop {Boolean} error - Displays an error message.
  * @prop {String} selected - Sets the `name` of the selected zone.
@@ -253,7 +251,8 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
         @cc-map:marker-click=${(e) => this._onSelect(e.detail.name)}
         @cc-map:marker-enter=${(e) => this._onMarkerHover(e.detail.name)}
         @cc-map:marker-leave=${(e) => this._onMarkerHover()}
-      >${this._legend}</cc-map>
+      >${this._legend}
+      </cc-map>
       <div class="zone-list-wrapper">
         ${this.error ? html`
           <cc-error>${i18n('cc-zone-input.error')}</cc-error>

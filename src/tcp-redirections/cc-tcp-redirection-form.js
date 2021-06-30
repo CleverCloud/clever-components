@@ -13,10 +13,6 @@ const SKELETON_REDIRECTIONS = [
 /**
  * An interface to create / delete TCP redirections in the context of an application.
  *
- * 🎨 default CSS display: `block`
- * <br>
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/tcp-redirections/cc-tcp-redirection-form.js)
- *
  * ## Type definitions
  *
  * ```js
@@ -28,6 +24,8 @@ const SKELETON_REDIRECTIONS = [
  *   waiting?: boolean,
  * }
  * ```
+ *
+ * @cssdisplay block
  *
  * @prop {"user"|"admin"} context - Defines in which context the form is used so it can show the appropriate description or lack thereof (defaults to user).
  * @prop {Boolean} error - Sets a loading error state.

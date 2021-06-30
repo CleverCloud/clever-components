@@ -20,18 +20,16 @@ const COLOR_PALETTE = [
  * ## Technical details
  *
  * * `size`, `anchor` and `tooltip` are readonly.
- * * `size` and `anchor` will help `<cc-map>` to center the dot on the exact GPS position.
- * * `tooltip` will help `<cc-map>` to place the tooltip's tip at the center of the dot.
  *
- * 🎨 default CSS display: `inline-block`
- * <br>
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/maps/cc-map-marker-dot.js)
+ * @cssdisplay inline-block
  *
+ * @prop {Array} anchor - Exposes the coordinates of the "tip" of the marker, relative to its top left corner: `[x, y]` (used by `<cc-map>`).
  * @prop {Number} count - Sets an abstract value for this marker to vary the color grading.
+ * @prop {Array} size - Exposes the size of the marker: `[width, height]` (used by `<cc-map>`).
+ * @prop {Array} tooltip - Exposes the coordinates from which tooltips will "open", relative to the marker anchor: `[width, height]` (used by `<cc-map>`).
  *
  * @cssprop {Number} --cc-map-marker-dot-size - The size of the dot (defaults to 6px).
  */
-
 export class CcMapMarkerDot extends LitElement {
 
   static get properties () {
@@ -41,14 +39,19 @@ export class CcMapMarkerDot extends LitElement {
     };
   }
 
-  constructor () {
-    super();
-    /** @readonly */
-    this.size = [16, 16];
-    /** @readonly */
-    this.anchor = [8, 8];
-    /** @readonly */
-    this.tooltip = [0, 0];
+  /** @readonly */
+  get anchor () {
+    return [8, 8];
+  }
+
+  /** @readonly */
+  get size () {
+    return [16, 16];
+  }
+
+  /** @readonly */
+  get tooltip () {
+    return [0, 0];
   }
 
   _getColorFromCount (count) {

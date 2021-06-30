@@ -7,10 +7,6 @@ import { dispatchCustomEvent } from '../lib/events.js';
 /**
  * A radio/checkbox input group component acting like a toggle between many options.
  *
- * 🎨 default CSS display: `flex`
- * <br>
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-toggle.js)
- *
  * ## When to use?
  *
  * * This component does not replace regular usage of radio/checkbox inputs in forms.
@@ -37,6 +33,8 @@ import { dispatchCustomEvent } from '../lib/events.js';
  *   value: string,
  * }
  * ```
+ *
+ * @cssdisplay flex
  *
  * @prop {Choice[]} choices - Sets the list of choices.
  * @prop {Boolean} disabled - Sets the `disabled` attribute on all inner `<input>` of whole group.
