@@ -6,7 +6,16 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-* Update project to Node.js v16 (it was already on npm v7)
+...
+
+## 6.9.0 (2021-06-30)
+
+* Release a `custom-elements.json` following the new CEM format on npm
+
+### For devs
+
+* Replace WCA with OpenWC's CEM analyzer
+  * This includes a few simplifications on how we write JSDoc
 
 ## 6.8.1 (2021-06-25)
 
@@ -75,7 +84,7 @@ title: Changelog
 
 ## 6.3.0 (2021-04-13)
 
-* Introduce `defaultThemeStyles` with monospace font-family 
+* Introduce `defaultThemeStyles` with monospace font-family
 * `<cc-invoice>`: adjust spacing around "Download PDF" for narrow mode
 * `<cc-invoice-table>`: introduce a responsive system (big/small render modes)
 * Update `@clevercloud/client` (new billing/payment API endpoints)
@@ -83,15 +92,15 @@ title: Changelog
 ## 6.2.4 (2021-04-09)
 
 * `<cc-input-number>`
-  * When in controls mode and in a disabled state the buttons also appear in a disabled state 
+  * When in controls mode and in a disabled state the buttons also appear in a disabled state
     with a slight opacity change
-  * Fixed a bug that allowed to change the value of the input in controls mode 
+  * Fixed a bug that allowed to change the value of the input in controls mode
     when the component was in a readonly state
   * The buttons in controls mode now get the state of disabled when min or max value is reached
     (e.g: If we have a value of `0` and the min is `0` the `decrement` button will change to `disabled`. The same would
-    happen  for the `increment` button if we had a value of `10` and a max of `10`) 
-    
-    
+    happen  for the `increment` button if we had a value of `10` and a max of `10`)
+
+
 ## 6.2.3 (2021-04-01)
 
 * `<cc-invoice-table>`: fix pending statuses
@@ -115,8 +124,8 @@ title: Changelog
 ## 6.1.0 (2021-03-25)
 
 * New component:
-  * `<cc-input-number>` 
-  
+  * `<cc-input-number>`
+
 ## 6.0.1 (2021-03-15)
 
 * `<cc-addon-linked-apps>`: fix CSS alignment
@@ -321,7 +330,7 @@ title: Changelog
 * Update CONTRIBUTING.md
 * Storybook
   * Show list of images used by a component in docs page
-  * Add link to source for each component in docs page 
+  * Add link to source for each component in docs page
   * Add details about component default CSS `display` in docs page
   * Force white background in preview (iPad gets dark auto mode)
   * Improve show code display (and remove hack)
