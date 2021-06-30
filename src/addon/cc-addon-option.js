@@ -9,14 +9,13 @@ import { i18n } from '../lib/i18n.js';
  *
  * ## Technical details
  *
- * * If you want to display a warning in the option, add the `option-warning` class to an HTML element. It will be displayed
- * with a custom color and in italic.
+ * * If you want to display a warning in the option, add the `option-warning` class to an HTML element. It will be displayed with a custom color and in italic.
  *
  * @cssdisplay grid
  *
+ * @prop {Boolean} enabled - Enable the option by default.
  * @prop {String} logo - The logo URL of the option.
  * @prop {String} title - Title of the option.
- * @prop {Boolean} enabled - Enable the option by default.
  *
  * @event {CustomEvent<Boolean>} cc-addon-option:input - Fires when the option is enabled or disabled.
  *
@@ -26,17 +25,17 @@ export class CcAddonOption extends LitElement {
 
   static get properties () {
     return {
-      title: { type: String },
-      logo: { type: String },
       enabled: { type: Boolean, reflect: true },
+      logo: { type: String },
+      title: { type: String },
     };
   }
 
   constructor () {
     super();
-    this.title = null;
-    this.logo = null;
     this.enabled = false;
+    this.logo = null;
+    this.title = null;
   }
 
   _onToggleOption () {

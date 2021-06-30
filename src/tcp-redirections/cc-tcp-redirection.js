@@ -14,7 +14,7 @@ const noRedirectionSvg = new URL('../assets/redirection-off.svg', import.meta.ur
 const redirectionSvg = new URL('../assets/redirection-on.svg', import.meta.url).href;
 
 /**
- * A small form to create or delete a TCP redirection
+ * A small form to create or delete a TCP redirection.
  *
  * ## Type definitions
  *

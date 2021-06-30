@@ -33,7 +33,6 @@ import { skeletonStyles } from '../styles/skeleton.js';
  * @prop {"off"|"open"|"close"} toggleState - Sets the toggle state of the inner block.
  * @prop {"apm"|"elasticsearch"|"kibana"|"pulsar"} type - Sets the type of the add-on.
  */
-
 export class CcAddonCredentials extends LitElement {
 
   static get properties () {

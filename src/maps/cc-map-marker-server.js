@@ -28,13 +28,13 @@ export class CcMapMarkerServer extends LitElement {
   }
 
   /** @readonly */
-  get size () {
-    return [32, 32];
+  get anchor () {
+    return [16, 32];
   }
 
   /** @readonly */
-  get anchor () {
-    return [16, 32];
+  get size () {
+    return [32, 32];
   }
 
   /** @readonly */

@@ -26,8 +26,8 @@ const SKELETON_VARIABLES = [
  *
  * @cssdisplay grid / none (with `[hidden]`)
  *
- * @prop {Boolean} readonly - Sets `readonly` attribute on inputs and hides buttons.
  * @prop {Boolean} disabled - Sets `disabled` attribute on inputs and buttons.
+ * @prop {Boolean} readonly - Sets `readonly` attribute on inputs and hides buttons.
  * @prop {Variable[]} variables - Sets the list of variables.
  *
  * @event {CustomEvent<Variable[]>} cc-env-var-editor-simple:change - Fires the new list of variables whenever something changes in the list.

@@ -33,15 +33,15 @@ const ELASTICSEARCH_DOCUMENTATION = 'https://www.clever-cloud.com/doc/addons/ela
  *
  * @cssdisplay grid
  *
- * @prop {Link[]} links - Sets the different links.
  * @prop {Boolean} error - Display an error message.
+ * @prop {Link[]} links - Sets the different links.
  */
 export class CcElasticsearchInfo extends LitElement {
 
   static get properties () {
     return {
-      links: { type: Array, attribute: 'links' },
       error: { type: Boolean, attribute: 'error' },
+      links: { type: Array, attribute: 'links' },
     };
   }
 

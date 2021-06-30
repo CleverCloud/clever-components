@@ -20,7 +20,7 @@ const SKELETON_BACKUPS = {
 };
 
 /**
- * A components to display backups available for an add-on
+ * A components to display backups available for an add-on.
  *
  * ## Details
  *

@@ -8,7 +8,7 @@ import { ccAddonEncryptionAtRestOption } from '../templates/cc-addon-encryption-
 /**
  * A component that displays the available options of a MongoDB add-on.
  *
- * * ## Type definitions
+ * ## Type definitions
  *
  * ```js
  * interface Option {

@@ -24,8 +24,8 @@ const appendChild = (parent, child) => parent.appendChild(child);
  *
  * @slot - The flex items on which you want to set a gap.
  *
- * @cssprop {Number} --cc-gap - The gap between children.
  * @cssprop {String} --cc-align-items - The `align-items` value of the inner flexbox (defaults to normal).
+ * @cssprop {Number} --cc-gap - The gap between children.
  */
 export class CcFlexGap extends HTMLElement {
 

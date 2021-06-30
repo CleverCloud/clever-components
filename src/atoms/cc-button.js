@@ -17,9 +17,9 @@ import { linkStyles } from '../templates/cc-link.js';
  *
  * ## Link appearance
  *
- * In some cases (to be defined/explained later), you need a button with a click handler that looks like a link.
- * Don't use a `<a>` without an href and use our `<cc-button link>` instead.
- * When `link` is enabled, the following properties won't have any effect: `primary`, `success`, `warning`, `danger`, `outlined`, `delay`.
+ * * In some cases (to be defined/explained later), you need a button with a click handler that looks like a link.
+ * * Don't use a `<a>` without an href and use our `<cc-button link>` instead.
+ * * When `link` is enabled, the following properties won't have any effect: `primary`, `success`, `warning`, `danger`, `outlined`, `delay`.
  *
  * ## Delay mechanism
  *

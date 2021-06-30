@@ -64,9 +64,9 @@ const NUMBER_FEATURE_TYPES = ['bytes', 'number', 'number-cpu-runtime'];
  * @cssdisplay block
  *
  * @prop {"add"|"none"} action - Sets the type of action: "add" to display add buttons for each item and "none" for no actions (defaults to "add").
- * @prop { Currency } currency - Sets the currency used to display the prices (defaults to euros).
- * @prop { Array<Feature> } features - Sets the list of features (used for the feature sort order).
- * @prop { Array<Item> } items - Sets the list of items.
+ * @prop {Currency} currency - Sets the currency used to display the prices (defaults to euros).
+ * @prop {Feature[]} features - Sets the list of features (used for the feature sort order).
+ * @prop {Item[]} items - Sets the list of items.
  *
  * @event {CustomEvent<Item>} cc-pricing-table:add-item - Fires the item whenever the "plus" button of an item is clicked.
  */

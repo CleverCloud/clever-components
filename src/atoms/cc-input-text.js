@@ -61,8 +61,8 @@ function arrayEquals (a, b) {
  * @prop {String} value - Sets `value` attribute on inner native input element or textarea's inner content.
  *
  * @event {CustomEvent<String>} cc-input-text:input - Fires the `value` whenever the `value` changes.
- * @event {CustomEvent<String[]>} cc-input-text:tags - Fires an array of tags whenever the `value` changes (separated by spaces).
  * @event {CustomEvent} cc-input-text:requestimplicitsubmit - Fires when enter key is pressed in simple mode, in tags mode or when ctrl+enter is pressed in multi mode.
+ * @event {CustomEvent<String[]>} cc-input-text:tags - Fires an array of tags whenever the `value` changes (separated by spaces).
  */
 export class CcInputText extends LitElement {
 

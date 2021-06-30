@@ -8,7 +8,7 @@ import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 
 /**
- * A component displaying the admin interface of an add-on to edit its name or delete the add-on
+ * A component displaying the admin interface of an add-on to edit its name or delete the add-on.
  *
  * ## Details
  *
@@ -29,9 +29,9 @@ import { i18n } from '../lib/i18n.js';
  * @prop {false|"saving"|"loading"} error - Sets the error state on the component.
  * @prop {Boolean} saving - Enables the saving state (form is disabled and blurred).
  *
+ * @event {CustomEvent} cc-addon-admin:delete-addon - Fires when the delete button is clicked.
  * @event {CustomEvent<String>} cc-addon-admin:update-name - Fires the new name of the add-on when update name button is clicked.
  * @event {CustomEvent<String[]>} cc-addon-admin:update-tags - Fires the new list of tags when update tags button is clicked.
- * @event {CustomEvent} cc-addon-admin:delete-addon - Fires when the delete button is clicked.
  */
 export class CcAddonAdmin extends LitElement {
 

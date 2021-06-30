@@ -40,13 +40,13 @@ export class CcMapMarkerDot extends LitElement {
   }
 
   /** @readonly */
-  get size () {
-    return [16, 16];
+  get anchor () {
+    return [8, 8];
   }
 
   /** @readonly */
-  get anchor () {
-    return [8, 8];
+  get size () {
+    return [16, 16];
   }
 
   /** @readonly */
