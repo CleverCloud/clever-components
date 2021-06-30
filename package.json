@@ -29,7 +29,7 @@
     "test:watch": "wtr 'test/**/*.test.*' --node-resolve --watch",
     "lint": "eslint --rulesdir eslint-rules rollup/*.js cem src stories tasks wds",
     "lint:fix": "eslint --rulesdir eslint-rules --fix rollup/*.js cem src stories tasks wds",
-    "prepack": "npm run test && npm run lint && npm run components:check-lit && npm run components:check-i18n && npm run components:build",
+    "prepack": "npm run test && npm run lint && npm run components:check-lit && npm run components:check-i18n && npm run components:build && npm run components:docs",
     "prestorybook:build": "npm run components:docs",
     "preview:list": "node tasks/preview.js list",
     "preview:publish": "node tasks/preview.js publish",

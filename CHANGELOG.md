@@ -8,9 +8,11 @@ title: Changelog
 
 ...
 
-## 6.9.0 (2021-06-30)
+## 6.9.1 (2021-06-30)
 
 * Release a `custom-elements.json` following the new CEM format on npm
+
+## 6.9.0 (2021-06-30)
 
 ### For devs
 
