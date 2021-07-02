@@ -32,24 +32,6 @@ const pgExample = {
   },
   quantity: 2,
 };
-const mySQLExample = {
-  name: 'MySQL',
-  item: {
-    name: 'XXS Small Space',
-    price: 7.5 / 30,
-    features: [{ name: 'Backups', value: 'Daily - 7 Retained' }, {
-      name: 'Max DB size',
-      value: '5 GB',
-    }, { name: 'Metrics', value: 'Yes' }, { name: 'PostGIS', value: 'Yes' }, {
-      name: 'Type',
-      value: 'Dedicated',
-    }, { name: 'vCPUS', value: '1' }, { name: 'Logs', value: 'Yes' }, {
-      name: 'Max connection limit',
-      value: '75',
-    }, { name: 'Memory', value: '1 GB' }, { name: 'Migration Tool', value: 'Yes' }],
-  },
-  quantity: 5,
-};
 
 const cellarExample = {
   name: 'Cellar',
@@ -60,11 +42,27 @@ const cellarExample = {
   quantity: 1,
 };
 
+// TODO: Node to have runtime example
+
 export const defaultStory = makeStory(conf, {
   items: [
-    { selectedProducts: [pgExample, mySQLExample] },
+    {
+      selectedProducts: [pgExample, cellarExample],
+      totalPrice: 720,
+    },
   ],
 });
+
+export const dataLoadedWithDollars = makeStory(conf, {
+  items: [
+    {
+      selectedProducts: [pgExample, cellarExample],
+      currency: { code: 'USD', changeRate: 1.1802 },
+      totalPrice: 720,
+    },
+  ],
+});
+
 
 export const dataLoadedWithCustomStyles = makeStory(conf, {
   css: `
@@ -76,19 +74,13 @@ export const dataLoadedWithCustomStyles = makeStory(conf, {
     }
   `,
   items: [
-    { selectedProducts: [pgExample, mySQLExample] },
+    { selectedProducts: [pgExample, cellarExample] },
   ],
 });
 
 export const dataLoadedWithCellar = makeStory(conf, {
   items: [
     { selectedProducts: [cellarExample] },
-  ],
-});
-
-export const dataLoadedWithMysql = makeStory(conf, {
-  items: [
-    { selectedProducts: [mySQLExample] },
   ],
 });
 
@@ -100,9 +92,11 @@ export const dataLoadedWithPostgres = makeStory(conf, {
 
 export const dataLoadedWithMultiple = makeStory(conf, {
   items: [
-    { selectedProducts: [pgExample, mySQLExample] },
+    { selectedProducts: [pgExample, cellarExample] },
   ],
-}); ;
+});
+
+// TODO : Dollars story
 
 export const empty = makeStory(conf, {
   items: [
@@ -117,9 +111,9 @@ export const empty = makeStory(conf, {
 enhanceStoriesNames({
   defaultStory,
   empty,
+  dataLoadedWithDollars,
   dataLoadedWithCellar,
   dataLoadedWithCustomStyles,
-  dataLoadedWithMysql,
   dataLoadedWithPostgres,
   dataLoadedWithMultiple,
 });

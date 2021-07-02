@@ -1,7 +1,8 @@
 import './cc-pricing-page.js';
 import '../smart/cc-smart-container.js';
-import { fromCustomEvent, LastPromise, unsubscribeWithSignal } from '../lib/observables.js';
+import { fromCustomEvent, LastPromise, merge, unsubscribeWithSignal, withLatestFrom } from '../lib/observables.js';
 import { defineComponent } from '../lib/smart-manager.js';
+import { fetchAllCurrencies, fetchAllZones } from '../lib/api-helpers.js';
 
 // const SHORT_DESC = 'Hey, this is a short description of the addon.';
 
@@ -17,33 +18,44 @@ defineComponent({
   selector: 'cc-pricing-page',
   params: {
     zoneId: { type: String },
+    currencyCode: { type: String },
   },
   onConnect (container, component, context$, disconnectSignal) {
-    const product_lp = new LastPromise();
+    const currencies_lp = new LastPromise();
+    const zones_lp = new LastPromise();
+
+    const error$ = merge(currencies_lp.error$, zones_lp.error$);
 
     const onZoneChanged$ = fromCustomEvent(component, 'cc-pricing-page:change-zone');
     const onCurrencyChanged$ = fromCustomEvent(component, 'cc-pricing-page:change-currency');
 
+    const contextAndCurrencies$ = context$.pipe(withLatestFrom(currencies_lp.value$));
+
     unsubscribeWithSignal(disconnectSignal, [
-      product_lp.error$.subscribe((err) => console.error(err)),
-      product_lp.value$.subscribe((priceSystem) => {
-        console.log('ps', priceSystem);
-        component.pricingList = priceSystem.pricingList;
-        component.zone = priceSystem.zoneId;
-        component.currencies = priceSystem.currencies;
+      error$.subscribe(console.error),
+      currencies_lp.value$.subscribe((currencies) => {
+        component.currencies = currencies;
+      }),
+      zones_lp.value$.subscribe((zones) => {
+        component.zones = zones;
       }),
       context$.subscribe(({ zoneId }) => {
-        product_lp.push(() => fetchPriceSystem(zoneId));
+        component.zoneId = zoneId;
       }),
-      onZoneChanged$.subscribe(({ zoneId }) => {
+      contextAndCurrencies$.subscribe(([context, currencies]) => {
+        component.currency = currencies?.find((currency) => currency.code === context.currencyCode);
+      }),
+      onZoneChanged$.subscribe((zoneId) => {
         container.context = { ...container.context, zoneId };
       }),
-      onCurrencyChanged$.subscribe(({code}) => {
-        container.context = { ...container.context, currencyCode: code };
+      onCurrencyChanged$.subscribe((currency) => {
+        container.context = { ...container.context, currencyCode: currency?.code };
       }),
     ]);
-
+    currencies_lp.push((signal) => fetchAllCurrencies({signal}));
+    zones_lp.push((signal) => fetchAllZones({signal}));
   },
+
 });
 
 function sleep () {

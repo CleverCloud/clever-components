@@ -34,12 +34,13 @@ export class CcPricingPage extends LitElement {
   static get properties () {
     return {
       products: { type: Array },
-      pricingList: { type: Array },
+      // pricingList: { type: Array },
       currencies: { type: Array },
+      zones: { type: Array },
       _selectedProducts: { type: Object },
-      _currency: { type: Object },
-      _zone: { type: String },
-      _categories: { type: Array },
+      currency: { type: String },
+      zoneId: { type: String },
+      _totalPrice: {type: Number},
     };
   }
 
@@ -49,65 +50,24 @@ export class CcPricingPage extends LitElement {
     super();
     this._selectedProducts = {};
     this.currencies = [];
-    // Set default currency to EURO (€)
-    this._categories = ['runtime', 'addon'];
-    this.pricingList = [];
     // Use Paris as default (might need to change later on)
-    this.zone = 'PAR';
+    this.zoneId = 'PAR';
+    this.currency = CURRENCY_EUR;
+    this.zones = [];
+    this._totalPrice = 0;
   }
 
-  // DOCS: 5. Public methods
-
-  // DOCS: 6. Private methods
-  _filterPrice (products) {
-    return products.map((p) => {
-
-      const priceList = this.pricingLists.find((pl) => pl.zone_id === this.zone);
-
-      const items = p.items.map((item) => {
-        const { price } = priceList.runtime.find((pl) => pl.slug_id === item.price_id) || {};
-        return {
-          ...item,
-          price: {
-            daily: (price * 24) * this._currency.changeRate,
-            monthly: (price * 730.5) * this._currency.changeRate,
-          },
-        };
-      });
-      return { ...p, items };
-    });
+  _getTotalPrice () {
+    let totalPrice = 0;
+    console.log('from header', this._selectedProducts);
+    for (const p of Object.values(this._selectedProducts)) {
+      if (p != null) {
+        totalPrice += p.item.price * 30 * 24 * p.quantity;
+      }
+    }
+    return totalPrice;
   }
 
-  /**
-   * Documentation of this awesome method.
-   * @param {String} foo - Docs for foo.
-   * @param {Boolean} bar - Docs for bar.
-   */
-  _renderProducts (category) {
-
-    // Might change it with an update()
-    const productsFiltered = this.products.filter((p) => p.category === category);
-    const productsWithPrice = this._filterPrice(productsFiltered);
-
-    return productsWithPrice.map((p) => {
-      return html`
-        
-        <div>
-          <cc-pricing-product
-              name=${p.name}
-              icon=${p.icon}
-              description=${p.description}
-              currency=${this._currency.code}
-              .items=${p.items}
-              .features=${p.features}
-              .icons=${p.icons}
-              @cc-pricing-product:add-product=${this._onAddProduct}
-          >
-          </cc-pricing-product>
-        </div>
-      `;
-    });
-  }
 
   /**
      *
@@ -131,6 +91,7 @@ export class CcPricingPage extends LitElement {
     this._selectedProducts[id].quantity += 1;
 
     this._selectedProducts = { ...this._selectedProducts };
+    this._totalPrice = this._getTotalPrice();
   }
 
   /**
@@ -155,48 +116,40 @@ export class CcPricingPage extends LitElement {
     }
 
     this._selectedProducts = { ...this._selectedProducts };
+    this._totalPrice = this._getTotalPrice();
   }
 
   _onCurrencyChanged ({ detail: currency }) {
-    this._currency = currency;
-    console.log('currency is', this._currency);
-    dispatchCustomEvent(this, 'change-currency', { code: currency.code, changeRate: currency.changeRate });
+    dispatchCustomEvent(this, 'change-currency', currency);
   }
 
-  _onZoneChanged ({ detail: zoneName }) {
-    this.zone = zoneName;
-    dispatchCustomEvent(this, 'change-zone', { zoneId: zoneName });
-  }
-
-  update(changedProperties) {
-    if (changedProperties.has('currencies')) {
-      this._currency = (this.currencies != null) ? this.currencies.find((c) => c.code === 'EUR') : CURRENCY_EUR;
-    }
-    super.update(changedProperties);
+  _onZoneChanged ({ detail: zoneId }) {
+    dispatchCustomEvent(this, 'change-zone', zoneId);
   }
 
   render () {
     return html`
       <div class="header">
-        <cc-pricing-header 
+        <cc-pricing-header
+            .totalPrice=${this._totalPrice}
+            .zoneId=${this.zoneId}
+            .currency=${this.currency}
             .selectedProducts=${this._selectedProducts}
-            .currency=${this._currency}
             .currencies=${this.currencies}
+            .zones=${this.zones}
             @cc-pricing-header:change-currency=${this._onCurrencyChanged}
             @cc-pricing-header:change-zone=${this._onZoneChanged}
         >
         </cc-pricing-header>
       </div>
-      <slot name="resources">
-        resources that you need, including all features.
-        ...
-      </slot>
+      <slot name="resources"> </slot>
       <slot @cc-pricing-product:add-product=${this._onAddProduct}></slot>
       <div class="estimation">
         <div class="title">Cost Estimation</div>
         <cc-pricing-estimation
             .selectedProducts=${this._selectedProducts}
-            .currency=${this._currency}
+            .currency=${this.currency}
+            .totalPrice=${this._totalPrice}
             @cc-pricing-estimation:change-quantity=${this._onQuantityChanged}
         >
         </cc-pricing-estimation>

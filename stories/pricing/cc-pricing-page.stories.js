@@ -3,6 +3,7 @@ import '../../src/pricing/cc-pricing-product.js';
 import { getFullProductAddon } from '../assets/addon-plans.js';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
+import {getFullProductRuntime} from "../assets/runtime-plans.js";
 
 export default {
   title: '🛠 pricing/<cc-pricing-page>',
@@ -18,7 +19,11 @@ const conf = {
 };
 
 const SHORT_DESC = `Hey i'm a description of the addon`;
+
+const RUBY_RUNTIME = getFullProductRuntime('ruby');
+const NODE_RUNTIME = getFullProductRuntime('node');
 const MONGO_ADDON = getFullProductAddon('mongodb-addon');
+const PSQL_ADDON = getFullProductAddon('postgresql-addon');
 
 export const defaultStory = makeStory(conf, {
   items: [{
@@ -1486,19 +1491,32 @@ export const defaultStory = makeStory(conf, {
     innerHTML: `
     <h1>Runtimes</h1>
     <cc-pricing-product 
-        name="Ruby" 
-        icon="https://static-assets.cellar.services.clever-cloud.com/logos/ruby.svg" 
-        features='[{"code":"cpu","type":"number-cpu-runtime"},{"code":"memory","type":"bytes"}]' 
-        items='[{"name":"pico","price":0.00625000000284,"features":[{"code":"cpu","type":"number-cpu-runtime","value":{"cpu":1,"shared":true,"nice":5}},{"code":"memory","type":"bytes","value":268435456}]},{"name":"nano","price":0.0083333333313,"features":[{"code":"cpu","type":"number-cpu-runtime","value":{"cpu":1,"shared":true,"nice":5}},{"code":"memory","type":"bytes","value":536870912}]},{"name":"XS","price":0.01999752,"features":[{"code":"cpu","type":"number-cpu-runtime","value":{"cpu":1,"shared":false,"nice":0}},{"code":"memory","type":"bytes","value":1073741824}]},{"name":"S","price":0.04000086,"features":[{"code":"cpu","type":"number-cpu-runtime","value":{"cpu":2,"shared":false,"nice":0}},{"code":"memory","type":"bytes","value":2147483648}]},{"name":"M","price":0.09999924,"features":[{"code":"cpu","type":"number-cpu-runtime","value":{"cpu":4,"shared":false,"nice":0}},{"code":"memory","type":"bytes","value":4294967296}]},{"name":"L","price":0.19999848,"features":[{"code":"cpu","type":"number-cpu-runtime","value":{"cpu":6,"shared":false,"nice":0}},{"code":"memory","type":"bytes","value":8589934592}]},{"name":"XL","price":0.40000278,"features":[{"code":"cpu","type":"number-cpu-runtime","value":{"cpu":8,"shared":false,"nice":0}},{"code":"memory","type":"bytes","value":17179869184}]},{"name":"2XL","price":0.80000556,"features":[{"code":"cpu","type":"number-cpu-runtime","value":{"cpu":12,"shared":false,"nice":0}},{"code":"memory","type":"bytes","value":25769803776}]},{"name":"3XL","price":1.6000053,"features":[{"code":"cpu","type":"number-cpu-runtime","value":{"cpu":16,"shared":false,"nice":0}},{"code":"memory","type":"bytes","value":34359738368}]}]' 
-        currency='{"code":"EUR","changeRate":1}'>
+        name='${RUBY_RUNTIME.name}'
+        icon='${RUBY_RUNTIME.icon}'
+        description='${RUBY_RUNTIME.description}'
+        features='${JSON.stringify(RUBY_RUNTIME.features)}'
+        items='${JSON.stringify(RUBY_RUNTIME.items)}'
+        currency='${JSON.stringify(RUBY_RUNTIME.currency)}'
+    >
+    </cc-pricing-product>   
+    <cc-pricing-product
+        name='${NODE_RUNTIME.name}'
+        icon='${NODE_RUNTIME.icon}'
+        description='${NODE_RUNTIME.description}'
+        features='${JSON.stringify(NODE_RUNTIME.features)}'
+        items='${JSON.stringify(NODE_RUNTIME.items)}'
+        currency='${JSON.stringify(NODE_RUNTIME.currency)}'
+    >
     </cc-pricing-product>
     <h1>Addons</h1>
     <cc-pricing-product 
-        name="PostgreSQL" 
-        icon="https://static-assets.cellar.services.clever-cloud.com/logos/pgsql.svg" 
-        description="Wanna add an addon to your Clever Cloud account? Want it to be a postgresql database? This is for you!" 
-        features='[{"code":"disk-size","type":"bytes","value":""},{"code":"has-logs","type":"boolean","value":""},{"code":"backup","type":"object","value":""},{"code":"memory","type":"bytes","value":""},{"code":"is-migratable","type":"boolean","value":""},{"code":"cpu","type":"number","value":""},{"code":"is-dedicated","type":"boolean_shared","value":""},{"code":"connection-limit","type":"number","value":""},{"code":"has-metrics","type":"boolean","value":""}]' items='[{"name":"XS Small Space","price":0.0243055555555556,"features":[{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"disk-size","type":"bytes","value":"5368709120"},{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"cpu","type":"number","value":"1"},{"code":"memory","type":"bytes","value":"1073741824"},{"code":"has-metrics","type":"boolean","value":"true"},{"code":"connection-limit","type":"number","value":"75"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"}]},{"name":"XXS Small Space","price":0.00729166666666667,"features":[{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"has-metrics","type":"boolean","value":"true"},{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"},{"code":"disk-size","type":"bytes","value":"1073741824"},{"code":"memory","type":"bytes","value":"536870912"},{"code":"cpu","type":"number","value":"1"},{"code":"connection-limit","type":"number","value":"45"}]},{"name":"XL Small Space","price":0.455555555555556,"features":[{"code":"disk-size","type":"bytes","value":"85899345920"},{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"memory","type":"bytes","value":"17179869184"},{"code":"has-metrics","type":"boolean","value":"true"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"},{"code":"cpu","type":"number","value":"8"},{"code":"connection-limit","type":"number","value":"750"}]},{"name":"XS Big Space","price":0.0416666666666667,"features":[{"code":"memory","type":"bytes","value":"1073741824"},{"code":"disk-size","type":"bytes","value":"16106127360"},{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"has-metrics","type":"boolean","value":"true"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"},{"code":"cpu","type":"number","value":"1"},{"code":"connection-limit","type":"number","value":"75"}]},{"name":"XS Tiny Space","price":0.0180555555555556,"features":[{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"memory","type":"bytes","value":"1073741824"},{"code":"connection-limit","type":"number","value":"75"},{"code":"cpu","type":"number","value":"1"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"},{"code":"has-metrics","type":"boolean","value":"true"},{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"disk-size","type":"bytes","value":"2147483648"}]},{"name":"XXL Small Space","price":1.10555555555556,"features":[{"code":"disk-size","type":"bytes","value":"171798691840"},{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"memory","type":"bytes","value":"34359738368"},{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"has-metrics","type":"boolean","value":"true"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"},{"code":"cpu","type":"number","value":"10"},{"code":"connection-limit","type":"number","value":"900"}]},{"name":"XXS Medium Space","price":0.00944444444444444,"features":[{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"has-metrics","type":"boolean","value":"true"},{"code":"connection-limit","type":"number","value":"45"},{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"},{"code":"memory","type":"bytes","value":"536870912"},{"code":"disk-size","type":"bytes","value":"2147483648"},{"code":"cpu","type":"number","value":"1"}]},{"name":"L Big Space","price":0.283333333333333,"features":[{"code":"disk-size","type":"bytes","value":"128849018880"},{"code":"memory","type":"bytes","value":"8589934592"},{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"has-metrics","type":"boolean","value":"true"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"},{"code":"cpu","type":"number","value":"6"},{"code":"connection-limit","type":"number","value":"500"}]},{"name":"M Small Space","price":0.113888888888889,"features":[{"code":"memory","type":"bytes","value":"4294967296"},{"code":"disk-size","type":"bytes","value":"21474836480"},{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"has-metrics","type":"boolean","value":"true"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"},{"code":"cpu","type":"number","value":"4"},{"code":"connection-limit","type":"number","value":"250"}]},{"name":"L Small Space","price":0.227777777777778,"features":[{"code":"disk-size","type":"bytes","value":"42949672960"},{"code":"memory","type":"bytes","value":"8589934592"},{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"has-metrics","type":"boolean","value":"true"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"},{"code":"cpu","type":"number","value":"6"},{"code":"connection-limit","type":"number","value":"500"}]},{"name":"XXXL Small Space","price":2.21944444444444,"features":[{"code":"has-metrics","type":"boolean","value":"true"},{"code":"memory","type":"bytes","value":"68719476736"},{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"},{"code":"disk-size","type":"bytes","value":"687194767360"},{"code":"connection-limit","type":"number","value":"1200"},{"code":"cpu","type":"number","value":"12"}]},{"name":"M Big Space","price":0.155555555555556,"features":[{"code":"memory","type":"bytes","value":"4294967296"},{"code":"disk-size","type":"bytes","value":"85899345920"},{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"has-metrics","type":"boolean","value":"true"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"},{"code":"cpu","type":"number","value":"4"},{"code":"connection-limit","type":"number","value":"250"}]},{"name":"S Huge Space","price":0.0763888888888889,"features":[{"code":"memory","type":"bytes","value":"2147483648"},{"code":"disk-size","type":"bytes","value":"53687091200"},{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"has-metrics","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"},{"code":"connection-limit","type":"number","value":"125"},{"code":"cpu","type":"number","value":"2"}]},{"name":"XXXL Medium Space","price":2.53055555555556,"features":[{"code":"has-metrics","type":"boolean","value":"true"},{"code":"memory","type":"bytes","value":"68719476736"},{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"},{"code":"disk-size","type":"bytes","value":"1030792151040"},{"code":"connection-limit","type":"number","value":"1200"},{"code":"cpu","type":"number","value":"12"}]},{"name":"XXXL Big Space","price":2.76388888888889,"features":[{"code":"has-metrics","type":"boolean","value":"true"},{"code":"memory","type":"bytes","value":"68719476736"},{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"},{"code":"disk-size","type":"bytes","value":"1288490188800"},{"code":"connection-limit","type":"number","value":"1200"},{"code":"cpu","type":"number","value":"12"}]},{"name":"S Small Space","price":0.0486111111111111,"features":[{"code":"memory","type":"bytes","value":"2147483648"},{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"disk-size","type":"bytes","value":"10737418240"},{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"has-metrics","type":"boolean","value":"true"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"},{"code":"cpu","type":"number","value":"2"},{"code":"connection-limit","type":"number","value":"125"}]},{"name":"XXL Huge Space","price":1.77222222222222,"features":[{"code":"disk-size","type":"bytes","value":"1030792151040"},{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"memory","type":"bytes","value":"34359738368"},{"code":"cpu","type":"number","value":"10"},{"code":"has-metrics","type":"boolean","value":"true"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"},{"code":"connection-limit","type":"number","value":"900"}]},{"name":"XXL Medium Space","price":1.23888888888889,"features":[{"code":"disk-size","type":"bytes","value":"343597383680"},{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"memory","type":"bytes","value":"34359738368"},{"code":"cpu","type":"number","value":"10"},{"code":"connection-limit","type":"number","value":"900"},{"code":"has-metrics","type":"boolean","value":"true"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"}]},{"name":"S Medium Space","price":0.0520833333333333,"features":[{"code":"disk-size","type":"bytes","value":"16106127360"},{"code":"memory","type":"bytes","value":"2147483648"},{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"has-metrics","type":"boolean","value":"true"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"},{"code":"cpu","type":"number","value":"2"},{"code":"connection-limit","type":"number","value":"125"}]},{"name":"M Medium Space","price":0.127777777777778,"features":[{"code":"disk-size","type":"bytes","value":"42949672960"},{"code":"memory","type":"bytes","value":"4294967296"},{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"has-metrics","type":"boolean","value":"true"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"},{"code":"cpu","type":"number","value":"4"},{"code":"connection-limit","type":"number","value":"250"}]},{"name":"XXL Big Space","price":1.50555555555556,"features":[{"code":"disk-size","type":"bytes","value":"687194767360"},{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"memory","type":"bytes","value":"34359738368"},{"code":"cpu","type":"number","value":"10"},{"code":"has-metrics","type":"boolean","value":"true"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"},{"code":"connection-limit","type":"number","value":"900"}]},{"name":"XXS Big Space","price":0.0106944444444444,"features":[{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"},{"code":"cpu","type":"number","value":"1"},{"code":"connection-limit","type":"number","value":"45"},{"code":"has-metrics","type":"boolean","value":"true"},{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"memory","type":"bytes","value":"536870912"},{"code":"disk-size","type":"bytes","value":"3221225472"}]},{"name":"L Medium Space","price":0.255555555555556,"features":[{"code":"disk-size","type":"bytes","value":"85899345920"},{"code":"memory","type":"bytes","value":"8589934592"},{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"has-metrics","type":"boolean","value":"true"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"},{"code":"cpu","type":"number","value":"6"},{"code":"connection-limit","type":"number","value":"500"}]},{"name":"XL Medium Space","price":0.511111111111111,"features":[{"code":"disk-size","type":"bytes","value":"171798691840"},{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"memory","type":"bytes","value":"17179869184"},{"code":"has-metrics","type":"boolean","value":"true"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"},{"code":"cpu","type":"number","value":"8"},{"code":"connection-limit","type":"number","value":"750"}]},{"name":"S Big Space","price":0.0555555555555556,"features":[{"code":"memory","type":"bytes","value":"2147483648"},{"code":"disk-size","type":"bytes","value":"21474836480"},{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"has-metrics","type":"boolean","value":"true"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"},{"code":"cpu","type":"number","value":"2"},{"code":"connection-limit","type":"number","value":"125"}]},{"name":"DEV","price":0,"features":[{"code":"connection-limit","type":"number","value":"5"},{"code":"memory","type":"bytes","value":"0"},{"code":"cpu","type":"number","value":"0"},{"code":"disk-size","type":"bytes","value":"268435456"},{"code":"has-metrics","type":"boolean","value":"false"},{"code":"has-logs","type":"boolean","value":"false"},{"code":"is-dedicated","type":"boolean_shared","value":"shared"},{"code":"is-migratable","type":"boolean","value":"true"},{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"}]},{"name":"XL Big Space","price":0.622222222222222,"features":[{"code":"disk-size","type":"bytes","value":"343597383680"},{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"memory","type":"bytes","value":"17179869184"},{"code":"has-metrics","type":"boolean","value":"true"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"},{"code":"cpu","type":"number","value":"8"},{"code":"connection-limit","type":"number","value":"750"}]},{"name":"XS Medium Space","price":0.0277777777777778,"features":[{"code":"is-dedicated","type":"boolean_shared","value":"dedicated"},{"code":"backup","type":"object","value":"{\\"frequency_seconds\\":86400,\\"retention_seconds\\":604800}"},{"code":"memory","type":"bytes","value":"1073741824"},{"code":"disk-size","type":"bytes","value":"10737418240"},{"code":"connection-limit","type":"number","value":"75"},{"code":"cpu","type":"number","value":"1"},{"code":"has-logs","type":"boolean","value":"true"},{"code":"has-metrics","type":"boolean","value":"true"},{"code":"is-migratable","type":"boolean","value":"true"}]}]' 
-        currency='{"code":"EUR","changeRate":1}'>    
+        name='${PSQL_ADDON.name}'
+        icon='${PSQL_ADDON.icon}'
+        description='${PSQL_ADDON.description}'
+        features='${JSON.stringify(PSQL_ADDON.features)}'
+        items='${JSON.stringify(PSQL_ADDON.items)}'
+        currency='${JSON.stringify(PSQL_ADDON.currency)}'
+    >
     </cc-pricing-product>   
     <cc-pricing-product
         name='${MONGO_ADDON.name}'
@@ -1512,6 +1530,1524 @@ export const defaultStory = makeStory(conf, {
   }],
 });
 
+export const dataLoadedWithRuntimes = makeStory(conf, {
+  items: [{
+    currencies: [
+      { code: 'EUR', displayValue: '€ EUR', changeRate: 1 },
+      { code: 'GBP', displayValue: '£ GBP', changeRate: 0.88603 },
+      { code: 'USD', displayValue: '$ USD', changeRate: 1.2091 },
+    ],
+    innerHTML: `
+     <h1>Runtimes</h1>
+    <cc-pricing-product 
+        name='${RUBY_RUNTIME.name}'
+        icon='${RUBY_RUNTIME.icon}'
+        description='${RUBY_RUNTIME.description}'
+        features='${JSON.stringify(RUBY_RUNTIME.features)}'
+        items='${JSON.stringify(RUBY_RUNTIME.items)}'
+        currency='${JSON.stringify(RUBY_RUNTIME.currency)}'
+    >
+    </cc-pricing-product>   
+    <cc-pricing-product
+        name='${NODE_RUNTIME.name}'
+        icon='${NODE_RUNTIME.icon}'
+        description='${NODE_RUNTIME.description}'
+        features='${JSON.stringify(NODE_RUNTIME.features)}'
+        items='${JSON.stringify(NODE_RUNTIME.items)}'
+        currency='${JSON.stringify(NODE_RUNTIME.currency)}'
+    >
+    `,
+  }],
+});
+
+export const dataLoadedWithAddons = makeStory(conf, {
+  items: [{
+    currencies: [
+      { code: 'EUR', displayValue: '€ EUR', changeRate: 1 },
+      { code: 'GBP', displayValue: '£ GBP', changeRate: 0.88603 },
+      { code: 'USD', displayValue: '$ USD', changeRate: 1.2091 },
+    ],
+    pricingList: {
+      id: '40d64f52-3172-4c4f-bd21-136382c8b30e',
+      owner_id: null,
+      zone_id: 'PAR',
+      currency: 'EUR',
+      start_date: '2010-08-02T00:00:00Z',
+      end_date: null,
+      runtime: [
+        {
+          runtime_policy_id: '0c5aeb83-d910-4698-a27f-4d8b79abe8f9',
+          source: 'apps',
+          flavor: '3XL',
+          time_unit: 'PT1H',
+          price: 1.6000053,
+          slug_id: 'apps.3XL',
+        },
+        {
+          runtime_policy_id: '31606ad9-4fa2-4a37-86f7-099d66901ef7',
+          source: 'apps',
+          flavor: 'L',
+          time_unit: 'PT1H',
+          price: 0.19999848,
+          slug_id: 'apps.L',
+        },
+        {
+          runtime_policy_id: 'e68fd62d-9914-4e6c-b1ae-783b083e3439',
+          source: 'apps',
+          flavor: 'M',
+          time_unit: 'PT1H',
+          price: 0.09999924,
+          slug_id: 'apps.M',
+        },
+        {
+          runtime_policy_id: 'ddb667f6-e09b-4446-9d14-43958c0242d4',
+          source: 'apps',
+          flavor: 'ML_2XL',
+          time_unit: 'PT1H',
+          price: 1.4583174,
+          slug_id: 'apps.ML_2XL',
+        },
+        {
+          runtime_policy_id: '72991902-d784-42aa-b054-ebeab8b400f3',
+          source: 'apps',
+          flavor: 'ML_3XL',
+          time_unit: 'PT1H',
+          price: 1.6666734,
+          slug_id: 'apps.ML_3XL',
+        },
+        {
+          runtime_policy_id: '5aa84dac-8d4b-45a2-9466-f071f814ca0d',
+          source: 'apps',
+          flavor: 'ML_L',
+          time_unit: 'PT1H',
+          price: 1.0416636,
+          slug_id: 'apps.ML_L',
+        },
+        {
+          runtime_policy_id: '705ad0ce-d805-4144-a3d6-56e135e59aa6',
+          source: 'apps',
+          flavor: 'ML_M',
+          time_unit: 'PT1H',
+          price: 0.8333076,
+          slug_id: 'apps.ML_M',
+        },
+        {
+          runtime_policy_id: '460bf02d-1bde-45c7-8afa-c01ffa62a4bd',
+          source: 'apps',
+          flavor: 'ML_S',
+          time_unit: 'PT1H',
+          price: 0.6250098,
+          slug_id: 'apps.ML_S',
+        },
+        {
+          runtime_policy_id: '1d3bcee6-6ff7-4147-8f4e-4d868caae2a1',
+          source: 'apps',
+          flavor: 'ML_XL',
+          time_unit: 'PT1H',
+          price: 1.2500196,
+          slug_id: 'apps.ML_XL',
+        },
+        {
+          runtime_policy_id: '0ab78f1c-2d3a-48ba-b15b-8649b59dc21e',
+          source: 'apps',
+          flavor: 'ML_XS',
+          time_unit: 'PT1H',
+          price: 0.4166538,
+          slug_id: 'apps.ML_XS',
+        },
+        {
+          runtime_policy_id: 'ab30122f-83b5-46bd-99bb-0636a55b4937',
+          source: 'apps',
+          flavor: 'ML_XXL',
+          time_unit: 'PT1H',
+          price: 1.4583174,
+          slug_id: 'apps.ML_XXL',
+        },
+        {
+          runtime_policy_id: '2edeec1d-3ca7-42e3-9abe-80e76c76c15a',
+          source: 'apps',
+          flavor: 'nano',
+          time_unit: 'PT1H',
+          price: 0.0083333333313,
+          slug_id: 'apps.nano',
+        },
+        {
+          runtime_policy_id: '2f0f4334-e15b-4dbe-aa95-e837b74f3c0a',
+          source: 'apps',
+          flavor: 'pico',
+          time_unit: 'PT1H',
+          price: 0.00625000000284,
+          slug_id: 'apps.pico',
+        },
+        {
+          runtime_policy_id: '4c1c108e-e97b-42e8-b85c-7b5554e3aab1',
+          source: 'apps',
+          flavor: 'S',
+          time_unit: 'PT1H',
+          price: 0.04000086,
+          slug_id: 'apps.S',
+        },
+        {
+          runtime_policy_id: '2050bf57-0f22-4e84-af9d-08a1baa70309',
+          source: 'apps',
+          flavor: 'Solo',
+          time_unit: 'PT1H',
+          price: 0.01999752,
+          slug_id: 'apps.Solo',
+        },
+        {
+          runtime_policy_id: 'ed4025ef-3b0a-4ba7-8618-48b027da6951',
+          source: 'apps',
+          flavor: 'XL',
+          time_unit: 'PT1H',
+          price: 0.40000278,
+          slug_id: 'apps.XL',
+        },
+        {
+          runtime_policy_id: '2a9dad8e-e8b9-4e8e-a809-891ebd0dd771',
+          source: 'apps',
+          flavor: 'XS',
+          time_unit: 'PT1H',
+          price: 0.01999752,
+          slug_id: 'apps.XS',
+        },
+        {
+          runtime_policy_id: '4b60fb69-77f6-44cd-8eec-884dc2e155de',
+          source: 'elasticsearch',
+          flavor: '4XL',
+          time_unit: 'PT1H',
+          price: 2.62083333333333,
+          slug_id: 'elasticsearch.4XL',
+        },
+        {
+          runtime_policy_id: '54f0fd7a-9834-460f-89bd-bd5fdb39310b',
+          source: 'elasticsearch',
+          flavor: '5XL',
+          time_unit: 'PT1H',
+          price: 5.76527777777778,
+          slug_id: 'elasticsearch.5XL',
+        },
+        {
+          runtime_policy_id: '45330af4-d89b-400f-8da0-ef58790b3045',
+          source: 'elasticsearch',
+          flavor: 'ANTMAN',
+          time_unit: 'PT1H',
+          price: 0.0152777777777778,
+          slug_id: 'elasticsearch.ANTMAN',
+        },
+        {
+          runtime_policy_id: '45edf5bf-0175-48d9-af5f-b8a657afe4ea',
+          source: 'elasticsearch',
+          flavor: 'BLACKWIDOW',
+          time_unit: 'PT1H',
+          price: 0.0555555555555556,
+          slug_id: 'elasticsearch.BLACKWIDOW',
+        },
+        {
+          runtime_policy_id: '5e7c27fd-b1eb-4e3e-a0af-7a2e200fed18',
+          source: 'elasticsearch',
+          flavor: 'FST',
+          time_unit: 'PT1H',
+          price: 0.166666666666667,
+          slug_id: 'elasticsearch.FST',
+        },
+        {
+          runtime_policy_id: '93db599d-3694-4f0f-b1d0-35641d72ee85',
+          source: 'elasticsearch',
+          flavor: 'HULK',
+          time_unit: 'PT1H',
+          price: 0.180555555555556,
+          slug_id: 'elasticsearch.HULK',
+        },
+        {
+          runtime_policy_id: '7a682ea7-15c9-4900-873d-1aae1078eb80',
+          source: 'elasticsearch',
+          flavor: 'L',
+          time_unit: 'PT1H',
+          price: 0.169444444444444,
+          slug_id: 'elasticsearch.L',
+        },
+        {
+          runtime_policy_id: 'fdf5a8e5-2ad0-4f13-9043-526fc88585ae',
+          source: 'elasticsearch',
+          flavor: 'M',
+          time_unit: 'PT1H',
+          price: 0.0805555555555556,
+          slug_id: 'elasticsearch.M',
+        },
+        {
+          runtime_policy_id: '347059b5-5edc-4fab-8911-f1693c7807fb',
+          source: 'elasticsearch',
+          flavor: 'PSYLOCKE',
+          time_unit: 'PT1H',
+          price: 0.25,
+          slug_id: 'elasticsearch.PSYLOCKE',
+        },
+        {
+          runtime_policy_id: '000c9371-05c9-4bf1-8061-bbdc27da9db6',
+          source: 'elasticsearch',
+          flavor: 'ROCKETRACCOON',
+          time_unit: 'PT1H',
+          price: 0.0347222222222222,
+          slug_id: 'elasticsearch.ROCKETRACCOON',
+        },
+        {
+          runtime_policy_id: 'a6305908-812b-4b35-bde8-22c2a74c7b8c',
+          source: 'elasticsearch',
+          flavor: 'S',
+          time_unit: 'PT1H',
+          price: 0.0472222222222222,
+          slug_id: 'elasticsearch.S',
+        },
+        {
+          runtime_policy_id: '23f90180-f6dc-49a7-ae5a-42184fcd88a9',
+          source: 'elasticsearch',
+          flavor: 'STORM',
+          time_unit: 'PT1H',
+          price: 0.111111111111111,
+          slug_id: 'elasticsearch.STORM',
+        },
+        {
+          runtime_policy_id: '76afba95-1088-4222-80b8-fdfd9d484967',
+          source: 'elasticsearch',
+          flavor: 'THING',
+          time_unit: 'PT1H',
+          price: 0.388888888888889,
+          slug_id: 'elasticsearch.THING',
+        },
+        {
+          runtime_policy_id: '1a678d82-9c63-40b4-93df-5a69d9ee422d',
+          source: 'elasticsearch',
+          flavor: 'XL',
+          time_unit: 'PT1H',
+          price: 0.329166666666667,
+          slug_id: 'elasticsearch.XL',
+        },
+        {
+          runtime_policy_id: '32eaa609-962d-4ddb-975d-f09ade0e6844',
+          source: 'elasticsearch',
+          flavor: 'XS',
+          time_unit: 'PT1H',
+          price: 0.0236111111111111,
+          slug_id: 'elasticsearch.XS',
+        },
+        {
+          runtime_policy_id: 'e2111343-953b-4af5-ab9c-2cbd5a92a028',
+          source: 'elasticsearch',
+          flavor: 'XXL',
+          time_unit: 'PT1H',
+          price: 0.636111111111111,
+          slug_id: 'elasticsearch.XXL',
+        },
+        {
+          runtime_policy_id: '72c638c1-9441-43dc-a2df-64304eaed6f7',
+          source: 'elasticsearch',
+          flavor: 'XXXL',
+          time_unit: 'PT1H',
+          price: 1.34305555555556,
+          slug_id: 'elasticsearch.XXXL',
+        },
+        {
+          runtime_policy_id: 'ee84a40d-6a70-4b8b-badb-8f4488b85caf',
+          source: 'jenkins',
+          flavor: 'L',
+          time_unit: 'PT1H',
+          price: 0.20833333333333334,
+          slug_id: 'jenkins.L',
+        },
+        {
+          runtime_policy_id: '45aaa578-e43c-4d71-9473-dd190bb80078',
+          source: 'jenkins',
+          flavor: 'M',
+          time_unit: 'PT1H',
+          price: 0.1111111111111111,
+          slug_id: 'jenkins.M',
+        },
+        {
+          runtime_policy_id: 'ce94567f-fc0a-4936-b099-562dcd2b8608',
+          source: 'jenkins',
+          flavor: 'S',
+          time_unit: 'PT1H',
+          price: 0.013888888888888888,
+          slug_id: 'jenkins.S',
+        },
+        {
+          runtime_policy_id: 'fd82718d-6153-4cd8-bca5-dcee9f2c5845',
+          source: 'jenkins',
+          flavor: 'XL',
+          time_unit: 'PT1H',
+          price: 0.2777777777777778,
+          slug_id: 'jenkins.XL',
+        },
+        {
+          runtime_policy_id: '44a2c649-03b5-4e7f-ad8c-fc9b8c621146',
+          source: 'kafka',
+          flavor: 'A_L',
+          time_unit: 'PT1H',
+          price: 1.08333333333333,
+          slug_id: 'kafka.A_L',
+        },
+        {
+          runtime_policy_id: 'bf67da7a-1d79-453b-95c8-0cc76ac00a0a',
+          source: 'kafka',
+          flavor: 'A_M',
+          time_unit: 'PT1H',
+          price: 1,
+          slug_id: 'kafka.A_M',
+        },
+        {
+          runtime_policy_id: 'febeb58a-9613-440b-9e75-fbb3c2607e26',
+          source: 'kafka',
+          flavor: 'A_S',
+          time_unit: 'PT1H',
+          price: 0.944444444444444,
+          slug_id: 'kafka.A_S',
+        },
+        {
+          runtime_policy_id: 'b1d54bdb-602d-49aa-b32a-137d5a39a806',
+          source: 'kafka',
+          flavor: 'M',
+          time_unit: 'PT1H',
+          price: 0.180555555555556,
+          slug_id: 'kafka.M',
+        },
+        {
+          runtime_policy_id: '45dfb8e2-b23f-445b-aa81-fe4c265b0b21',
+          source: 'kafka',
+          flavor: 'S',
+          time_unit: 'PT1H',
+          price: 0.159722222222222,
+          slug_id: 'kafka.S',
+        },
+        {
+          runtime_policy_id: '28ec83c4-e3cc-41b7-acc7-958644bd65ca',
+          source: 'kafka',
+          flavor: 'TC_L',
+          time_unit: 'PT1H',
+          price: 0.722222222222222,
+          slug_id: 'kafka.TC_L',
+        },
+        {
+          runtime_policy_id: '4ae6363d-3b71-49b2-85ca-54ab3be8b699',
+          source: 'kafka',
+          flavor: 'TC_M',
+          time_unit: 'PT1H',
+          price: 0.666666666666667,
+          slug_id: 'kafka.TC_M',
+        },
+        {
+          runtime_policy_id: 'a6674eb6-7795-4dc6-9382-5962a9d2cef4',
+          source: 'kafka',
+          flavor: 'TC_S',
+          time_unit: 'PT1H',
+          price: 0.625,
+          slug_id: 'kafka.TC_S',
+        },
+        {
+          runtime_policy_id: '2ee502ae-719d-4fad-9b73-9996e9acf09c',
+          source: 'kafka',
+          flavor: 'TJ_L',
+          time_unit: 'PT1H',
+          price: 1.44444444444444,
+          slug_id: 'kafka.TJ_L',
+        },
+        {
+          runtime_policy_id: '9350a518-b958-4b3b-8d92-303ced391f90',
+          source: 'kafka',
+          flavor: 'TJ_M',
+          time_unit: 'PT1H',
+          price: 1.33333333333333,
+          slug_id: 'kafka.TJ_M',
+        },
+        {
+          runtime_policy_id: '2e74f37c-b7d7-48a6-bf64-e286afd56cff',
+          source: 'kafka',
+          flavor: 'TJ_S',
+          time_unit: 'PT1H',
+          price: 1.27777777777778,
+          slug_id: 'kafka.TJ_S',
+        },
+        {
+          runtime_policy_id: 'e6d8fadf-923b-4572-a3db-6936966c10ef',
+          source: 'kafka',
+          flavor: 'TJ_XL',
+          time_unit: 'PT1H',
+          price: 1.56944444444444,
+          slug_id: 'kafka.TJ_XL',
+        },
+        {
+          runtime_policy_id: '56a2eaee-69e7-4c2a-83fb-a574d6a2e80f',
+          source: 'kafka',
+          flavor: 'TM_L',
+          time_unit: 'PT1H',
+          price: 0.208333333333333,
+          slug_id: 'kafka.TM_L',
+        },
+        {
+          runtime_policy_id: '6404fbcd-b85a-4e1b-aafa-6982e7e1e554',
+          source: 'kafka',
+          flavor: 'TM_M',
+          time_unit: 'PT1H',
+          price: 0.180555555555556,
+          slug_id: 'kafka.TM_M',
+        },
+        {
+          runtime_policy_id: '8f73a9cc-735c-41a6-8d92-c41f0f70541a',
+          source: 'kafka',
+          flavor: 'TM_S',
+          time_unit: 'PT1H',
+          price: 0.159722222222222,
+          slug_id: 'kafka.TM_S',
+        },
+        {
+          runtime_policy_id: '99ec8932-b7d0-421d-94c5-32f7571cb9f5',
+          source: 'kafka',
+          flavor: 'TT_L',
+          time_unit: 'PT1H',
+          price: 0.361111111111111,
+          slug_id: 'kafka.TT_L',
+        },
+        {
+          runtime_policy_id: '40ad56f0-6255-42c6-b9e6-b0bb610eb625',
+          source: 'kafka',
+          flavor: 'TT_M',
+          time_unit: 'PT1H',
+          price: 0.333333333333333,
+          slug_id: 'kafka.TT_M',
+        },
+        {
+          runtime_policy_id: 'c5deb072-bc16-42ae-a31e-b818d89f6bac',
+          source: 'kafka',
+          flavor: 'TT_S',
+          time_unit: 'PT1H',
+          price: 0.3125,
+          slug_id: 'kafka.TT_S',
+        },
+        {
+          runtime_policy_id: '6ea87634-2f10-4c6c-a7fc-09a8c4cc3174',
+          source: 'mongodb',
+          flavor: 'BIGGUNNERA',
+          time_unit: 'PT1H',
+          price: 0.25,
+          slug_id: 'mongodb.BIGGUNNERA',
+        },
+        {
+          runtime_policy_id: '1ef4798c-029a-4e17-96d0-ba14d76cc0d3',
+          source: 'mongodb',
+          flavor: 'GUNNERA',
+          time_unit: 'PT1H',
+          price: 0.208333333333333,
+          slug_id: 'mongodb.GUNNERA',
+        },
+        {
+          runtime_policy_id: 'd3e91b99-4684-4ed2-a06e-58aab3cac3a4',
+          source: 'mongodb',
+          flavor: 'HAZELNUT',
+          time_unit: 'PT1H',
+          price: 0.0277777777777778,
+          slug_id: 'mongodb.HAZELNUT',
+        },
+        {
+          runtime_policy_id: '151672ba-2269-4035-a372-1830fdbe2980',
+          source: 'mongodb',
+          flavor: 'L',
+          time_unit: 'PT1H',
+          price: 0.486111111111111,
+          slug_id: 'mongodb.L',
+        },
+        {
+          runtime_policy_id: '390ecf0b-212b-49f1-92e3-cc56385dcfde',
+          source: 'mongodb',
+          flavor: 'L_BIG',
+          time_unit: 'PT1H',
+          price: 0.408333333333333,
+          slug_id: 'mongodb.L_BIG',
+        },
+        {
+          runtime_policy_id: '3331413b-e3cb-4d54-a72c-5c0afb735b95',
+          source: 'mongodb',
+          flavor: 'L_MED',
+          time_unit: 'PT1H',
+          price: 0.338888888888889,
+          slug_id: 'mongodb.L_MED',
+        },
+        {
+          runtime_policy_id: '96c7affb-1f1c-43ee-b724-c8b7a31509b6',
+          source: 'mongodb',
+          flavor: 'L_SML',
+          time_unit: 'PT1H',
+          price: 0.269444444444444,
+          slug_id: 'mongodb.L_SML',
+        },
+        {
+          runtime_policy_id: 'd01d857d-8a34-4e5d-9d5e-82909cbb32a0',
+          source: 'mongodb',
+          flavor: 'M_BIG',
+          time_unit: 'PT1H',
+          price: 0.169444444444444,
+          slug_id: 'mongodb.M_BIG',
+        },
+        {
+          runtime_policy_id: '57f2f263-f4dc-449c-8c0d-9321c2b0b6b5',
+          source: 'mongodb',
+          flavor: 'M_MED',
+          time_unit: 'PT1H',
+          price: 0.155555555555556,
+          slug_id: 'mongodb.M_MED',
+        },
+        {
+          runtime_policy_id: '8601634a-0af7-41cb-b3c4-10333dfe2b42',
+          source: 'mongodb',
+          flavor: 'M_SML',
+          time_unit: 'PT1H',
+          price: 0.134722222222222,
+          slug_id: 'mongodb.M_SML',
+        },
+        {
+          runtime_policy_id: 'f7dfd6aa-c680-4184-96fd-3f27f48fffbe',
+          source: 'mongodb',
+          flavor: 'S_BIG',
+          time_unit: 'PT1H',
+          price: 0.0763888888888889,
+          slug_id: 'mongodb.S_BIG',
+        },
+        {
+          runtime_policy_id: 'e3306ec4-e583-44b1-99ad-070f83bd1d0a',
+          source: 'mongodb',
+          flavor: 'SHAMROCK',
+          time_unit: 'PT1H',
+          price: 0.0555555555555556,
+          slug_id: 'mongodb.SHAMROCK',
+        },
+        {
+          runtime_policy_id: 'e823fea8-fe8a-4304-9f45-6c701841b721',
+          source: 'mongodb',
+          flavor: 'S_HUG',
+          time_unit: 'PT1H',
+          price: 0.09375,
+          slug_id: 'mongodb.S_HUG',
+        },
+        {
+          runtime_policy_id: 'd2fbcb7c-da49-415b-a638-3d7f13a19651',
+          source: 'mongodb',
+          flavor: 'S_MED',
+          time_unit: 'PT1H',
+          price: 0.0625,
+          slug_id: 'mongodb.S_MED',
+        },
+        {
+          runtime_policy_id: '6fa97c82-2c0b-4333-b553-833bded8a0a5',
+          source: 'mongodb',
+          flavor: 'S_SML',
+          time_unit: 'PT1H',
+          price: 0.0520833333333333,
+          slug_id: 'mongodb.S_SML',
+        },
+        {
+          runtime_policy_id: '171cfe65-4562-46b6-ad88-dbf4170aa25d',
+          source: 'mongodb',
+          flavor: 'VINE',
+          time_unit: 'PT1H',
+          price: 0.104166666666667,
+          slug_id: 'mongodb.VINE',
+        },
+        {
+          runtime_policy_id: 'feda1d7a-3529-4494-86b5-e6876b7b04df',
+          source: 'mongodb',
+          flavor: 'XL_BIG',
+          time_unit: 'PT1H',
+          price: 0.816666666666667,
+          slug_id: 'mongodb.XL_BIG',
+        },
+        {
+          runtime_policy_id: '1ca5f747-0bad-4759-8d03-6ddb12cf01e9',
+          source: 'mongodb',
+          flavor: 'XL_MED',
+          time_unit: 'PT1H',
+          price: 0.7125,
+          slug_id: 'mongodb.XL_MED',
+        },
+        {
+          runtime_policy_id: '6088fc25-0d45-4ae3-b046-36884595016d',
+          source: 'mongodb',
+          flavor: 'XL_SML',
+          time_unit: 'PT1H',
+          price: 0.608333333333333,
+          slug_id: 'mongodb.XL_SML',
+        },
+        {
+          runtime_policy_id: '1e84279f-6bee-4255-8e2f-33bf3e73b698',
+          source: 'mongodb',
+          flavor: 'XS_BIG',
+          time_unit: 'PT1H',
+          price: 0.0416666666666667,
+          slug_id: 'mongodb.XS_BIG',
+        },
+        {
+          runtime_policy_id: '54201660-05ec-4fe8-b137-e357dfa7c628',
+          source: 'mongodb',
+          flavor: 'XS_MED',
+          time_unit: 'PT1H',
+          price: 0.03125,
+          slug_id: 'mongodb.XS_MED',
+        },
+        {
+          runtime_policy_id: 'f8033b45-d873-4064-b73d-0946496cecd0',
+          source: 'mongodb',
+          flavor: 'XS_SML',
+          time_unit: 'PT1H',
+          price: 0.0243055555555556,
+          slug_id: 'mongodb.XS_SML',
+        },
+        {
+          runtime_policy_id: '2951a4f4-368a-4fae-b6a1-fa02822b9473',
+          source: 'mongodb',
+          flavor: 'XXL_BIG',
+          time_unit: 'PT1H',
+          price: 1.59722222222222,
+          slug_id: 'mongodb.XXL_BIG',
+        },
+        {
+          runtime_policy_id: '4a2b992d-1d88-4230-a712-1033d3011c02',
+          source: 'mongodb',
+          flavor: 'XXL_SML',
+          time_unit: 'PT1H',
+          price: 1.38888888888889,
+          slug_id: 'mongodb.XXL_SML',
+        },
+        {
+          runtime_policy_id: 'fe3ce7cd-2726-47a9-8eac-d32a0c857ab7',
+          source: 'mongodb',
+          flavor: 'XXX_MED',
+          time_unit: 'PT1H',
+          price: 1.49305555555556,
+          slug_id: 'mongodb.XXX_MED',
+        },
+        {
+          runtime_policy_id: '32aca144-0f96-43fe-b60d-33c8257d3b0b',
+          source: 'mysql',
+          flavor: 'L',
+          time_unit: 'PT1H',
+          price: 0.416666666666667,
+          slug_id: 'mysql.L',
+        },
+        {
+          runtime_policy_id: 'b4c9d7ab-8d41-4138-a8da-33f96763ac23',
+          source: 'mysql',
+          flavor: 'L_BIG',
+          time_unit: 'PT1H',
+          price: 0.343333333333333,
+          slug_id: 'mysql.L_BIG',
+        },
+        {
+          runtime_policy_id: '08e00372-a3db-4f1c-8096-e46ed8ebf6ce',
+          source: 'mysql',
+          flavor: 'L_MED',
+          time_unit: 'PT1H',
+          price: 0.315555555555556,
+          slug_id: 'mysql.L_MED',
+        },
+        {
+          runtime_policy_id: 'c2046f75-ecf7-48e8-a1bc-fc450c68cb70',
+          source: 'mysql',
+          flavor: 'L_SML',
+          time_unit: 'PT1H',
+          price: 0.287777777777778,
+          slug_id: 'mysql.L_SML',
+        },
+        {
+          runtime_policy_id: 'af34b7ab-47ce-4912-bb80-316265c2503e',
+          source: 'mysql',
+          flavor: 'M',
+          time_unit: 'PT1H',
+          price: 0.0625,
+          slug_id: 'mysql.M',
+        },
+        {
+          runtime_policy_id: 'cd4f9d01-0a64-4eab-838e-87741777bd30',
+          source: 'mysql',
+          flavor: 'MAJ_DIGITAL',
+          time_unit: 'PT1H',
+          price: 0,
+          slug_id: 'mysql.MAJ_DIGITAL',
+        },
+        {
+          runtime_policy_id: '14dffc6d-9737-43d0-8a3f-7100c1bb1aaf',
+          source: 'mysql',
+          flavor: 'M_BIG',
+          time_unit: 'PT1H',
+          price: 0.185555555555556,
+          slug_id: 'mysql.M_BIG',
+        },
+        {
+          runtime_policy_id: '792634ec-ad04-406d-adc9-bdc211e26c84',
+          source: 'mysql',
+          flavor: 'ML',
+          time_unit: 'PT1H',
+          price: 0.152777777777778,
+          slug_id: 'mysql.ML',
+        },
+        {
+          runtime_policy_id: '3a608d4d-c4fd-4c10-af02-d0c2084e5088',
+          source: 'mysql',
+          flavor: 'M_MED',
+          time_unit: 'PT1H',
+          price: 0.157777777777778,
+          slug_id: 'mysql.M_MED',
+        },
+        {
+          runtime_policy_id: 'fe1af4ad-8b6f-4e49-9282-28c334e9719a',
+          source: 'mysql',
+          flavor: 'M_SML',
+          time_unit: 'PT1H',
+          price: 0.143055555555556,
+          slug_id: 'mysql.M_SML',
+        },
+        {
+          runtime_policy_id: '5abba538-43bb-48c7-a870-5aa2d287dc5c',
+          source: 'mysql',
+          flavor: 'S',
+          time_unit: 'PT1H',
+          price: 0.0208333333333333,
+          slug_id: 'mysql.S',
+        },
+        {
+          runtime_policy_id: '77da24c0-cd34-47c6-82ab-10c887faedee',
+          source: 'mysql',
+          flavor: 'S_BIG',
+          time_unit: 'PT1H',
+          price: 0.0680555555555555,
+          slug_id: 'mysql.S_BIG',
+        },
+        {
+          runtime_policy_id: 'e693c6ca-daf8-4b27-8f4d-327008e00f21',
+          source: 'mysql',
+          flavor: 'SIMBIOSE',
+          time_unit: 'PT1H',
+          price: 0,
+          slug_id: 'mysql.SIMBIOSE',
+        },
+        {
+          runtime_policy_id: '97e56d64-2cc0-438c-b8b4-8f3f51f6c625',
+          source: 'mysql',
+          flavor: 'S_MED',
+          time_unit: 'PT1H',
+          price: 0.0645833333333333,
+          slug_id: 'mysql.S_MED',
+        },
+        {
+          runtime_policy_id: '02a8b632-897a-4017-9fe4-b79360521b7a',
+          source: 'mysql',
+          flavor: 'S_SML',
+          time_unit: 'PT1H',
+          price: 0.0611111111111111,
+          slug_id: 'mysql.S_SML',
+        },
+        {
+          runtime_policy_id: '6adf16cb-6cee-4c14-a58e-c9f1342019c5',
+          source: 'mysql',
+          flavor: 'XL_BIG',
+          time_unit: 'PT1H',
+          price: 0.742222222222222,
+          slug_id: 'mysql.XL_BIG',
+        },
+        {
+          runtime_policy_id: '4d8e5434-ba6e-49ae-9b0e-db9fe389159d',
+          source: 'mysql',
+          flavor: 'XL_MED',
+          time_unit: 'PT1H',
+          price: 0.631111111111111,
+          slug_id: 'mysql.XL_MED',
+        },
+        {
+          runtime_policy_id: '7b8e829f-6f34-431d-85ee-5aab52b0712e',
+          source: 'mysql',
+          flavor: 'XL_SML',
+          time_unit: 'PT1H',
+          price: 0.575555555555555,
+          slug_id: 'mysql.XL_SML',
+        },
+        {
+          runtime_policy_id: 'b2b9ef1b-2b23-4014-84ff-4c58f27d2b42',
+          source: 'mysql',
+          flavor: 'XS_BIG',
+          time_unit: 'PT1H',
+          price: 0.0375,
+          slug_id: 'mysql.XS_BIG',
+        },
+        {
+          runtime_policy_id: '3fdf66cd-b68a-440d-8e18-249d2756fb76',
+          source: 'mysql',
+          flavor: 'XS_MED',
+          time_unit: 'PT1H',
+          price: 0.0340277777777778,
+          slug_id: 'mysql.XS_MED',
+        },
+        {
+          runtime_policy_id: 'b2a44a22-a355-467a-aedf-cedb4bda6582',
+          source: 'mysql',
+          flavor: 'XS_SML',
+          time_unit: 'PT1H',
+          price: 0.0305555555555556,
+          slug_id: 'mysql.XS_SML',
+        },
+        {
+          runtime_policy_id: '368dd07f-4baf-427d-be5b-43f894c10365',
+          source: 'mysql',
+          flavor: 'XS_TNY',
+          time_unit: 'PT1H',
+          price: 0.0180555555555556,
+          slug_id: 'mysql.XS_TNY',
+        },
+        {
+          runtime_policy_id: '0b671996-1740-423c-8816-5dae4313372e',
+          source: 'mysql',
+          flavor: 'XXL_BIG',
+          time_unit: 'PT1H',
+          price: 1.88611111111111,
+          slug_id: 'mysql.XXL_BIG',
+        },
+        {
+          runtime_policy_id: 'd7a2e4a5-8d2d-43ee-965c-c9cce9c28ca6',
+          source: 'mysql',
+          flavor: 'XXL_HUG',
+          time_unit: 'PT1H',
+          price: 2.19722222222222,
+          slug_id: 'mysql.XXL_HUG',
+        },
+        {
+          runtime_policy_id: '4027baf6-0796-45b9-ba3a-431621537f72',
+          source: 'mysql',
+          flavor: 'XXL_MED',
+          time_unit: 'PT1H',
+          price: 1.575,
+          slug_id: 'mysql.XXL_MED',
+        },
+        {
+          runtime_policy_id: '7b759018-ff08-46b2-a9ea-1b7f5c8a08a0',
+          source: 'mysql',
+          flavor: 'XXL_SML',
+          time_unit: 'PT1H',
+          price: 1.41944444444444,
+          slug_id: 'mysql.XXL_SML',
+        },
+        {
+          runtime_policy_id: '834f26ae-a88d-4501-abf9-ed6fc2899576',
+          source: 'mysql',
+          flavor: 'XXS_BIG',
+          time_unit: 'PT1H',
+          price: 0.00944444444444444,
+          slug_id: 'mysql.XXS_BIG',
+        },
+        {
+          runtime_policy_id: '86bd7f4f-4627-42dc-be8e-3c9f3a231aac',
+          source: 'mysql',
+          flavor: 'XXS_MED',
+          time_unit: 'PT1H',
+          price: 0.00819444444444445,
+          slug_id: 'mysql.XXS_MED',
+        },
+        {
+          runtime_policy_id: '554f5608-9d65-4182-8009-c8b99ecef01a',
+          source: 'mysql',
+          flavor: 'XXS_SML',
+          time_unit: 'PT1H',
+          price: 0.00694444444444444,
+          slug_id: 'mysql.XXS_SML',
+        },
+        {
+          runtime_policy_id: '85c33f10-f770-494a-9cdf-45ac8cd18b70',
+          source: 'postgresql',
+          flavor: 'L',
+          time_unit: 'PT1H',
+          price: 0.333333333333333,
+          slug_id: 'postgresql.L',
+        },
+        {
+          runtime_policy_id: 'bfa57212-a6ec-4bcf-841d-1df94d94b279',
+          source: 'postgresql',
+          flavor: 'L_BIG',
+          time_unit: 'PT1H',
+          price: 0.283333333333333,
+          slug_id: 'postgresql.L_BIG',
+        },
+        {
+          runtime_policy_id: '05a08e42-e116-4a55-a860-f9bc67faa50f',
+          source: 'postgresql',
+          flavor: 'LM',
+          time_unit: 'PT1H',
+          price: 0.138888888888889,
+          slug_id: 'postgresql.LM',
+        },
+        {
+          runtime_policy_id: '683d9e0b-8c86-4521-a92e-c10d483429d2',
+          source: 'postgresql',
+          flavor: 'L_MED',
+          time_unit: 'PT1H',
+          price: 0.255555555555556,
+          slug_id: 'postgresql.L_MED',
+        },
+        {
+          runtime_policy_id: 'ccfd280b-e6e8-48f2-8f0b-1ed4989bb95b',
+          source: 'postgresql',
+          flavor: 'L_SML',
+          time_unit: 'PT1H',
+          price: 0.227777777777778,
+          slug_id: 'postgresql.L_SML',
+        },
+        {
+          runtime_policy_id: 'cbb39023-6132-47c9-85b1-f51822f5a194',
+          source: 'postgresql',
+          flavor: 'M',
+          time_unit: 'PT1H',
+          price: 0.0416666666666667,
+          slug_id: 'postgresql.M',
+        },
+        {
+          runtime_policy_id: '75cacc62-10f6-4dc5-9761-90fa7de16d33',
+          source: 'postgresql',
+          flavor: 'M_BIG',
+          time_unit: 'PT1H',
+          price: 0.155555555555556,
+          slug_id: 'postgresql.M_BIG',
+        },
+        {
+          runtime_policy_id: '69c5342d-2b2a-42c7-b821-2d472e30c5ea',
+          source: 'postgresql',
+          flavor: 'M_MED',
+          time_unit: 'PT1H',
+          price: 0.127777777777778,
+          slug_id: 'postgresql.M_MED',
+        },
+        {
+          runtime_policy_id: '40faaaf7-ec1b-449a-9937-bae503b71c86',
+          source: 'postgresql',
+          flavor: 'M_SML',
+          time_unit: 'PT1H',
+          price: 0.113888888888889,
+          slug_id: 'postgresql.M_SML',
+        },
+        {
+          runtime_policy_id: 'c607c2ed-8a6a-45f3-aba8-e9aa05db33f8',
+          source: 'postgresql',
+          flavor: 'S',
+          time_unit: 'PT1H',
+          price: 0.0138888888888889,
+          slug_id: 'postgresql.S',
+        },
+        {
+          runtime_policy_id: '9b1699a4-f0a9-495d-bb0c-bfc0119b802d',
+          source: 'postgresql',
+          flavor: 'S_BIG',
+          time_unit: 'PT1H',
+          price: 0.0555555555555556,
+          slug_id: 'postgresql.S_BIG',
+        },
+        {
+          runtime_policy_id: '2e2325e1-03c1-41a3-96c5-fdca830af1b1',
+          source: 'postgresql',
+          flavor: 'S_HUG',
+          time_unit: 'PT1H',
+          price: 0.0763888888888889,
+          slug_id: 'postgresql.S_HUG',
+        },
+        {
+          runtime_policy_id: 'f3d43d3e-24fc-4eb1-9149-e1dfdb9b9281',
+          source: 'postgresql',
+          flavor: 'S_MED',
+          time_unit: 'PT1H',
+          price: 0.0520833333333333,
+          slug_id: 'postgresql.S_MED',
+        },
+        {
+          runtime_policy_id: '86c3f3a3-7dbf-438a-9251-5282dd9021cf',
+          source: 'postgresql',
+          flavor: 'S_SML',
+          time_unit: 'PT1H',
+          price: 0.0486111111111111,
+          slug_id: 'postgresql.S_SML',
+        },
+        {
+          runtime_policy_id: '760a851e-3cf2-4fe4-a5f0-25598b73c12a',
+          source: 'postgresql',
+          flavor: 'XL',
+          time_unit: 'PT1H',
+          price: 0.972222222222222,
+          slug_id: 'postgresql.XL',
+        },
+        {
+          runtime_policy_id: '15cc9181-6e20-4cc0-a824-4dc7e6d4e11c',
+          source: 'postgresql',
+          flavor: 'XL_BIG',
+          time_unit: 'PT1H',
+          price: 0.622222222222222,
+          slug_id: 'postgresql.XL_BIG',
+        },
+        {
+          runtime_policy_id: '1a6b7b08-241c-458b-b4dc-109096a07863',
+          source: 'postgresql',
+          flavor: 'XL_MED',
+          time_unit: 'PT1H',
+          price: 0.511111111111111,
+          slug_id: 'postgresql.XL_MED',
+        },
+        {
+          runtime_policy_id: '480d43cc-7863-478a-a18d-a5022bd4812a',
+          source: 'postgresql',
+          flavor: 'XL_SML',
+          time_unit: 'PT1H',
+          price: 0.455555555555556,
+          slug_id: 'postgresql.XL_SML',
+        },
+        {
+          runtime_policy_id: '920ba928-37c3-4990-9a70-2ba6fdb86738',
+          source: 'postgresql',
+          flavor: 'XM',
+          time_unit: 'PT1H',
+          price: 0,
+          slug_id: 'postgresql.XM',
+        },
+        {
+          runtime_policy_id: '35df3fb1-298f-4b8a-a4ee-b67cffad5427',
+          source: 'postgresql',
+          flavor: 'XS_BIG',
+          time_unit: 'PT1H',
+          price: 0.0416666666666667,
+          slug_id: 'postgresql.XS_BIG',
+        },
+        {
+          runtime_policy_id: '63f621d1-9a10-4b80-b94b-eb15cf3d04f6',
+          source: 'postgresql',
+          flavor: 'XS_MED',
+          time_unit: 'PT1H',
+          price: 0.0277777777777778,
+          slug_id: 'postgresql.XS_MED',
+        },
+        {
+          runtime_policy_id: '04e6910d-d005-4e14-a9ca-16badb6f52a1',
+          source: 'postgresql',
+          flavor: 'XS_SML',
+          time_unit: 'PT1H',
+          price: 0.0243055555555556,
+          slug_id: 'postgresql.XS_SML',
+        },
+        {
+          runtime_policy_id: '30c99dce-6ef3-430c-9b4f-ba7809de020f',
+          source: 'postgresql',
+          flavor: 'XS_TNY',
+          time_unit: 'PT1H',
+          price: 0.0180555555555556,
+          slug_id: 'postgresql.XS_TNY',
+        },
+        {
+          runtime_policy_id: 'f7ad2f38-7789-4427-8d01-6c8950a85ffb',
+          source: 'postgresql',
+          flavor: 'XXL_BIG',
+          time_unit: 'PT1H',
+          price: 1.50555555555556,
+          slug_id: 'postgresql.XXL_BIG',
+        },
+        {
+          runtime_policy_id: '0fc96712-1ba9-4f84-a850-5c13cf3918fb',
+          source: 'postgresql',
+          flavor: 'XXL_HUG',
+          time_unit: 'PT1H',
+          price: 1.77222222222222,
+          slug_id: 'postgresql.XXL_HUG',
+        },
+        {
+          runtime_policy_id: '5d427429-e761-4de1-b343-86617ce2f2e8',
+          source: 'postgresql',
+          flavor: 'XXL_MED',
+          time_unit: 'PT1H',
+          price: 1.23888888888889,
+          slug_id: 'postgresql.XXL_MED',
+        },
+        {
+          runtime_policy_id: 'e112e117-ee65-47d0-8c29-09c66ba2d571',
+          source: 'postgresql',
+          flavor: 'XXL_SML',
+          time_unit: 'PT1H',
+          price: 1.10555555555556,
+          slug_id: 'postgresql.XXL_SML',
+        },
+        {
+          runtime_policy_id: '372d7dac-c10e-4a9f-a562-2e46d7f01714',
+          source: 'postgresql',
+          flavor: 'XXS_BIG',
+          time_unit: 'PT1H',
+          price: 0.0106944444444444,
+          slug_id: 'postgresql.XXS_BIG',
+        },
+        {
+          runtime_policy_id: '22bdbb73-a98d-4791-957d-9939a3c16724',
+          source: 'postgresql',
+          flavor: 'XXS_MED',
+          time_unit: 'PT1H',
+          price: 0.00944444444444444,
+          slug_id: 'postgresql.XXS_MED',
+        },
+        {
+          runtime_policy_id: 'fbd4097c-162b-4504-8fad-684b61af42d8',
+          source: 'postgresql',
+          flavor: 'XXS_SML',
+          time_unit: 'PT1H',
+          price: 0.00729166666666667,
+          slug_id: 'postgresql.XXS_SML',
+        },
+        {
+          runtime_policy_id: '98e678a3-7790-4230-ae82-9655d4fae118',
+          source: 'postgresql',
+          flavor: 'XXXL_BIG',
+          time_unit: 'PT1H',
+          price: 2.76388888888889,
+          slug_id: 'postgresql.XXXL_BIG',
+        },
+        {
+          runtime_policy_id: '809b2199-c3af-448b-a4ee-967bda4c7b73',
+          source: 'postgresql',
+          flavor: 'XXXL_MED',
+          time_unit: 'PT1H',
+          price: 2.53055555555556,
+          slug_id: 'postgresql.XXXL_MED',
+        },
+        {
+          runtime_policy_id: '4729bc43-7c40-4626-bc2c-189d70de80e6',
+          source: 'postgresql',
+          flavor: 'XXXL_SML',
+          time_unit: 'PT1H',
+          price: 2.21944444444444,
+          slug_id: 'postgresql.XXXL_SML',
+        },
+        {
+          runtime_policy_id: '905af5f0-9f32-4c16-bdfb-0afe8017af77',
+          source: 'redis',
+          flavor: 'CUSTOM',
+          time_unit: 'PT1H',
+          price: 0.694444444444444,
+          slug_id: 'redis.CUSTOM',
+        },
+        {
+          runtime_policy_id: '04277f8e-af3f-40bb-8638-084d00e3f944',
+          source: 'redis',
+          flavor: 'L',
+          time_unit: 'PT1H',
+          price: 0.06025,
+          slug_id: 'redis.L',
+        },
+        {
+          runtime_policy_id: 'b096819e-c84c-4873-a8cf-bc8bb45408de',
+          source: 'redis',
+          flavor: 'M',
+          time_unit: 'PT1H',
+          price: 0.0185277777777778,
+          slug_id: 'redis.M',
+        },
+        {
+          runtime_policy_id: 'db6ebe81-4bba-440a-b3f0-ad67d16c9a1a',
+          source: 'redis',
+          flavor: 'S',
+          time_unit: 'PT1H',
+          price: 0.0120416666666667,
+          slug_id: 'redis.S',
+        },
+        {
+          runtime_policy_id: 'dc01a3f1-8bc0-4a26-aef0-598a5ed51bf2',
+          source: 'redis',
+          flavor: 'XL',
+          time_unit: 'PT1H',
+          price: 0.108444444444444,
+          slug_id: 'redis.XL',
+        },
+        {
+          runtime_policy_id: '0c55b83e-bd21-4e78-83de-cace8babae99',
+          source: 'redis',
+          flavor: 'XXL',
+          time_unit: 'PT1H',
+          price: 0.264875,
+          slug_id: 'redis.XXL',
+        },
+        {
+          runtime_policy_id: '6edc65bc-4b79-425b-b4cd-c106e57b7536',
+          source: 'redis',
+          flavor: 'XXXL',
+          time_unit: 'PT1H',
+          price: 0.347222222222222,
+          slug_id: 'redis.XXXL',
+        },
+        {
+          runtime_policy_id: '5d043ce9-8dca-4a55-a378-f11c514c26be',
+          source: 'apps',
+          flavor: '2XL',
+          time_unit: 'PT1H',
+          price: 0.80000556,
+          slug_id: 'apps.2XL',
+        },
+      ],
+      countable: [
+        {
+          countable_policy_id: 'a6202541-c5c6-498c-8d6c-ce45fe7761de',
+          service: 'heptapod.public_active_users',
+          data_unit: 'User',
+          data_quantity_for_price: {
+            secability: 'insecable',
+            quantity: 100,
+          },
+          time_interval_for_price: {
+            secability: 'insecable',
+            interval: 'PT720H',
+          },
+          first_x_free: 0,
+          price_plans: [
+            {
+              plan_id: '6e093de7-e98d-4eea-8a0e-8cd79c9a8767',
+              max_quantity: 100,
+              price: 0,
+            },
+            {
+              plan_id: 'dd6fd762-063b-416c-8fa0-f856a152ef7f',
+              max_quantity: null,
+              price: 7,
+            },
+          ],
+        },
+        {
+          countable_policy_id: 'c97cb0d2-bbce-4e2e-ab92-25811a80a92a',
+          service: 'pulsar_storage_size',
+          data_unit: 'B',
+          data_quantity_for_price: {
+            secability: 'secable',
+            quantity: 1000000000,
+          },
+          time_interval_for_price: {
+            secability: 'secable',
+            interval: 'PT1H',
+          },
+          first_x_free: 100000000,
+          price_plans: [
+            {
+              plan_id: 'a094f1b5-908e-4f2c-a0e0-9e873d85945c',
+              max_quantity: 20000000000,
+              price: 0.0001,
+            },
+            {
+              plan_id: '94adb772-cc7c-493f-bb86-9406bd4f3985',
+              max_quantity: 100000000000,
+              price: 9e-05,
+            },
+            {
+              plan_id: '2c619cb2-3022-413c-96b5-cf187462a72c',
+              max_quantity: null,
+              price: 8e-05,
+            },
+          ],
+        },
+        {
+          countable_policy_id: 'd915348d-e8b2-49a6-ae38-bc2d3a4a080f',
+          service: 'pulsar_throughput_out',
+          data_unit: 'B',
+          data_quantity_for_price: {
+            secability: 'secable',
+            quantity: 1000000000,
+          },
+          time_interval_for_price: null,
+          first_x_free: 2000000000,
+          price_plans: [
+            {
+              plan_id: '4a1da82e-42e6-456e-9fc9-de0127f812e7',
+              max_quantity: 100000000000,
+              price: 0.04,
+            },
+            {
+              plan_id: 'ae8f5f90-0bb8-4cdf-a590-2429888a1e21',
+              max_quantity: null,
+              price: 0.032,
+            },
+          ],
+        },
+        {
+          countable_policy_id: '9e36585c-93f3-481d-af53-6e818e274509',
+          service: 'heptapod.private_active_users',
+          data_unit: 'User',
+          data_quantity_for_price: {
+            secability: 'insecable',
+            quantity: 1,
+          },
+          time_interval_for_price: {
+            secability: 'insecable',
+            interval: 'PT720H',
+          },
+          first_x_free: 0,
+          price_plans: [
+            {
+              plan_id: 'd55beffe-d882-4659-b97d-99041b900b61',
+              max_quantity: null,
+              price: 7,
+            },
+          ],
+        },
+        {
+          countable_policy_id: 'd64c6b92-44cb-43ae-a717-89cc5ca1129f',
+          service: 'heptapod.storage',
+          data_unit: 'B',
+          data_quantity_for_price: {
+            secability: 'secable',
+            quantity: 1000000000,
+          },
+          time_interval_for_price: {
+            secability: 'secable',
+            interval: 'PT1H',
+          },
+          first_x_free: 0,
+          price_plans: [
+            {
+              plan_id: '66112307-e2a1-4904-a9df-b7c738cf5ee1',
+              max_quantity: 1000000000,
+              price: 0,
+            },
+            {
+              plan_id: 'daafde0d-51d8-411b-a721-d24a8e866370',
+              max_quantity: null,
+              price: 2.777777777777778e-05,
+            },
+          ],
+        },
+        {
+          countable_policy_id: '28dba37e-40b5-4882-930d-57b6a83bf376',
+          service: 'cellar.storage',
+          data_unit: 'B',
+          data_quantity_for_price: {
+            secability: 'secable',
+            quantity: 1000000000,
+          },
+          time_interval_for_price: {
+            secability: 'secable',
+            interval: 'PT1H',
+          },
+          first_x_free: 0,
+          price_plans: [
+            {
+              plan_id: '52eea80c-a6e6-47fc-bf66-19e21f669702',
+              max_quantity: 100000000,
+              price: 0,
+            },
+            {
+              plan_id: '67ed6204-86f9-443f-85b3-87449e14b289',
+              max_quantity: 1000000000000,
+              price: 2.844444444444444e-05,
+            },
+            {
+              plan_id: '559928aa-549e-486d-92fc-aef7eb441a6d',
+              max_quantity: 25000000000000,
+              price: 2.133333333333333e-05,
+            },
+            {
+              plan_id: '7dd2dd8c-293b-40c2-8c07-7cef1b119689',
+              max_quantity: null,
+              price: 1.422222222222222e-05,
+            },
+          ],
+        },
+        {
+          countable_policy_id: '97572134-08fc-44f6-b936-4fbeda8645f4',
+          service: 'fsbucket.storage',
+          data_unit: 'B',
+          data_quantity_for_price: {
+            secability: 'secable',
+            quantity: 1000000000,
+          },
+          time_interval_for_price: {
+            secability: 'secable',
+            interval: 'PT1H',
+          },
+          first_x_free: 0,
+          price_plans: [
+            {
+              plan_id: '03e7d98d-3113-431a-8b0c-5beef766ca94',
+              max_quantity: 100000000,
+              price: 0,
+            },
+            {
+              plan_id: '83383e8e-5546-4598-b08c-4a36d939dc31',
+              max_quantity: null,
+              price: 0.0020833333333333333,
+            },
+          ],
+        },
+        {
+          countable_policy_id: 'c8dc181e-5ab1-420e-afd7-5c4bf13690d9',
+          service: 'pulsar_throughput_in',
+          data_unit: 'B',
+          data_quantity_for_price: {
+            secability: 'secable',
+            quantity: 1000000000,
+          },
+          time_interval_for_price: null,
+          first_x_free: 2000000000,
+          price_plans: [
+            {
+              plan_id: '42044363-7eb4-4e72-a6f4-77b1955a7477',
+              max_quantity: 100000000000,
+              price: 0.04,
+            },
+            {
+              plan_id: '230cb68b-6e33-409b-9175-bb6b7cc9b2a8',
+              max_quantity: null,
+              price: 0.035,
+            },
+          ],
+        },
+        {
+          countable_policy_id: '475fc68f-4fc8-4c0e-8597-7bab65e72ad5',
+          service: 'cellar.outbound',
+          data_unit: 'B',
+          data_quantity_for_price: {
+            secability: 'secable',
+            quantity: 1000000000,
+          },
+          time_interval_for_price: null,
+          first_x_free: 0,
+          price_plans: [
+            {
+              plan_id: 'd08f3fb4-ad30-4150-b72d-41f8a55b16fd',
+              max_quantity: 10000000000000,
+              price: 0.09,
+            },
+            {
+              plan_id: '15acf9f1-dad3-4bfb-91b9-dfde390287ac',
+              max_quantity: null,
+              price: 0.07,
+            },
+          ],
+        },
+      ],
+      runtime_options: [],
+    },
+    innerHTML: `
+    <h1>Addons</h1>
+    <cc-pricing-product 
+        name='${PSQL_ADDON.name}'
+        icon='${PSQL_ADDON.icon}'
+        description='${PSQL_ADDON.description}'
+        features='${JSON.stringify(PSQL_ADDON.features)}'
+        items='${JSON.stringify(PSQL_ADDON.items)}'
+        currency='${JSON.stringify(PSQL_ADDON.currency)}'
+    >   
+    </cc-pricing-product>   
+    <cc-pricing-product
+        name='${MONGO_ADDON.name}'
+        icon='${MONGO_ADDON.icon}'
+        description='${MONGO_ADDON.description}'
+        features='${JSON.stringify(MONGO_ADDON.features)}'
+        items='${JSON.stringify(MONGO_ADDON.items)}'
+        currency='${JSON.stringify(MONGO_ADDON.currency)}'
+    >
+    </cc-pricing-product>`,
+  }],
+});
+
+
+
 // Right now, because of how we're using this component, we don't need:
 // * skeleton/waiting state
 // * emtpy state
@@ -1519,4 +3055,6 @@ export const defaultStory = makeStory(conf, {
 
 enhanceStoriesNames({
   defaultStory,
+  dataLoadedWithAddons,
+  dataLoadedWithRuntimes,
 });

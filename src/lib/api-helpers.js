@@ -6,6 +6,7 @@ import { prefixUrl } from '@clevercloud/client/esm/prefix-url.js';
 import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
 import { sendToApi } from './send-to-api.js';
 import { asyncMap } from './utils.js';
+import { getAllZones } from '@clevercloud/client/esm/api/v4/product.js';
 
 export function fetchApp ({ apiConfig, signal, ownerId, appId }) {
   return getApp({ id: ownerId, appId }).then(sendToApi({ apiConfig, signal }));
@@ -128,4 +129,14 @@ export async function fetchCurrency ({ currencyCode }) {
     code: currencyCode,
     changeRate: RATES[currencyCode],
   };
+}
+
+export async function fetchAllCurrencies () {
+  return Object.entries(RATES).map(([code, changeRate]) => ({ code, changeRate }));
+}
+
+export async function fetchAllZones ({ signal }) {
+  return [{"city":"Singapore","country":"Singapore","countryCode":"SG","id":"3b9a58f4-bab4-439b-8662-e200d9805dba","lat":1.3143,"lon":103.7038,"name":"sgp","tags":["infra:ovh","for:applications"]},{"city":"Paris","country":"France","countryCode":"FR","id":"aad32a21-24f8-40b3-a750-baab218d927b","lat":48.8566,"lon":2.3522,"name":"par","tags":["infra:clever-cloud","for:applications"]},{"city":"Paris","country":"France","countryCode":"FR","displayName":"Testing environment","id":"43058982-bd36-4d87-a0e6-f1299b2c479a","lat":48.8566,"lon":2.3522,"name":"par0","tags":["infra:clever-cloud","for:applications","scope:private"]},{"city":"Montreal","country":"Canada","countryCode":"CA","id":"d62b134a-2671-4bba-8c46-b9a09a47aedd","lat":45.5017,"lon":-73.5673,"name":"mtl","tags":["infra:ovh","for:applications"]},{"city":"Roubaix","country":"France","countryCode":"FR","id":"b9bd85cc-62db-492f-94f5-ad3e47367d8e","lat":50.6901,"lon":3.1613,"name":"rbx","tags":["infra:ovh","for:applications"]},{"city":"Warsaw","country":"Poland","countryCode":"PL","id":"83923989-e9e8-4070-a371-3aafc2c4b9e3","lat":52.2331,"lon":20.9208,"name":"wsw","tags":["for:applications","infra:ovh"]},{"city":"Paris","country":"France","countryCode":"FR","displayName":"GPUs-enabled zone","id":"b4b05c1c-87a8-4e20-9e90-2b19214059b6","lat":48.8566,"lon":2.3522,"name":"clevergrid","tags":["for:applications-ml","infra:clever-cloud"]},{"city":"Paris","country":"France","countryCode":"FR","displayName":"Private PostgreSQL cluster","id":"47f4b372-d49e-4d26-8b1b-558a6c3de488","lat":48.8566,"lon":2.3522,"name":"clevercloud-postgresql-internal","tags":["scope:private"]},{"city":"Paris","country":"France","countryCode":"FR","displayName":"Private MongoDB cluster","id":"d7674e60-8178-43b9-aa80-342f613ec373","lat":48.8566,"lon":2.3522,"name":"yaakadev","tags":["scope:private"]},{"city":"Roubaix","country":"France","countryCode":"FR","id":"7602ecff-3b3a-42d4-84f4-6d382d4073d1","lat":50.6901,"lon":3.1613,"name":"rbxhds","tags":["certification:hds","for:applications","infra:ovh"]},{"city":"Sydney","country":"Australia","countryCode":"AU","id":"1a886ae1-1643-448b-a6b1-5891ecd74e82","lat":-33.8479,"lon":150.7915,"name":"syd","tags":["for:applications","infra:ovh"]},{"city":"New York","country":"United States of America","countryCode":"US","id":"96e8b92f-919e-4c94-91f8-71c90f2e200d","lat":40.7128,"lon":-74.006,"name":"nyc","tags":["infra:bso","for:applications"]},{"city":"North","country":"France","countryCode":"FR","id":"55336314-2f0e-42d5-87ac-bb7a1225350a","lat":50.7226113,"lon":2.5360331,"name":"fr-north-hds","tags":["infra:ovh","certification:hds"]},{"city":"Paris","country":"France","countryCode":"FR","displayName":"Private MySQL cluster","id":"a556b295-1d9c-46ca-bb19-342fc20c8451","lat":48.8566,"lon":2.3522,"name":"maj-digital","tags":["scope:private"]}];
+  // return getAllZones()
+  //   .then(sendToApi({ signal, cacheDelay: ONE_DAY }));
 }

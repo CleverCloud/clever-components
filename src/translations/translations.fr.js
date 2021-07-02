@@ -356,8 +356,7 @@ export const translations = {
   'cc-map.no-points': `Pas de données à afficher sur la carte en ce moment.`,
   //#endregion
   //#region cc-pricing-estimation
-  'cc-pricing-estimation.classic-mode': `Simple`,
-  'cc-pricing-estimation.input-mode': `Expert`,
+  'cc-pricing-estimation.empty-basket': `Votre panier est vide.`,
   'cc-pricing-estimation.monthly-est': `Coût Mensuel Estimé`,
   'cc-pricing-estimation.price': ({ price, code }) => `${formatCurrency(lang, price, { currency: code })}`,
   'cc-pricing-estimation.price-name-daily': `Prix (jour)`,
@@ -372,6 +371,7 @@ export const translations = {
   'cc-pricing-header.currency-text': `Monnaie:`,
   'cc-pricing-header.est-cost': `Coût Estimé:`,
   'cc-pricing-header.price': ({ price, code }) => `${formatCurrency(lang, price, { currency: code })}`,
+  'cc-pricing-header.selected-zone': `Zone : `,
   //#endregion
   //#region cc-pricing-product
   'cc-pricing-product.error': `Une erreur est survenue pendant le chargement des prix.`,

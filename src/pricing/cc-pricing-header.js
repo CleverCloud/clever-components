@@ -6,6 +6,8 @@ import { getFlagUrl } from '../lib/remote-assets.js';
 import { shoelaceStyles } from '../styles/shoelace.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 
+const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
+
 /**
  * A component doing X and Y (one liner description of your component).
  *
@@ -42,65 +44,39 @@ export class CcPricingHeader extends LitElement {
 
   static get properties () {
     return {
+      currency: { type: Object },
       currencies: { type: Array },
-      pricingCurrency: { type: String },
-      selectedProducts: { type: Object },
-      currency: { type: String },
+      totalPrice: { type: Number, attribute: 'total-price' },
+      zoneId: { type: String, attribute: 'zone-id' },
       zones: { type: Array },
     };
   }
 
   constructor () {
     super();
-    // TODO: Temp to change default array
-    this.currencies = [
-      { code: 'EUR', displayValue: '€ EUR', changeRate: 1 },
-      { code: 'GBP', displayValue: '£ GBP', changeRate: 0.88603 },
-      { code: 'USD', displayValue: '$ USD', changeRate: 1.2091 },
-    ];
-    this.currency = { code: 'EUR', changeRate: 1 };
-    this.selectedProducts = {};
-    // TODO: Temp to change default array
-    this.zones = [
-      {
-        name: 'PAR',
-        country: 'France',
-        countryCode: 'FR',
-        city: 'Paris',
-        lat: 48.87,
-        lon: 2.33,
-        tags: ['infra:clever-cloud', 'region:eu'],
-      },
-      {
-        name: 'RBX',
-        country: 'France',
-        countryCode: 'FR',
-        city: 'Roubaix',
-        lat: 50.69,
-        lon: 3.17,
-        tags: ['region:eu', 'infra:ovh'],
-      },
-      {
-        name: 'WAR',
-        country: 'Poland',
-        countryCode: 'PL',
-        city: 'Warsaw',
-        lat: 52.23,
-        lon: 21.01,
-        tags: ['region:eu', 'infra:ovh'],
-      },
-    ];
+    // TODO: skeleton
+    this.currencies = [];
+    // TODO skeleton
+    this.zones = [];
+    this.currency = {};
+    this.zoneId = 'PAR';
+    this.totalPrice = 0;
   }
 
-  _getTotalPrice () {
-    let totalPrice = 0;
-    console.log('from header', this.selectedProducts);
-    for (const p of Object.values(this.selectedProducts)) {
-      if (p != null) {
-        totalPrice += (p.item.price * 30 * 24 * p.quantity) * this.currency.changeRate;
-      }
-    }
-    return totalPrice;
+  _getCurrencySymbol(currency) {
+    return new Intl.NumberFormat('fr', {
+      style: 'currency',
+      currency: currency,
+      currencyDisplay: 'narrowSymbol',
+      maximumFractionDigits: 0,
+    }).formatToParts(0).find((p) => p.type === 'currency').value;
+  }
+
+  _getformattedCurrencies (currencies) {
+    return currencies.map((currency) => {
+      const displayValue = `${this._getCurrencySymbol(currency.code)} ${currency.code}`;
+      return {...currency, displayValue};
+    });
   }
 
   _onCurrencyChange (e) {
@@ -114,35 +90,39 @@ export class CcPricingHeader extends LitElement {
   }
 
   render () {
-
     return html`
-            <div class="header">
-                <div class="select-currency">
-                  <div class="currency-text">
-                    ${i18n('cc-pricing-header.currency-text')}
-                  </div> 
-                  <div>
-                    <sl-select @sl-change=${this._onCurrencyChange} value=${this.currency.code}>
-                      ${this.currencies.map((c) => html`
-                            <sl-menu-item value=${c.code}>${c.displayValue}</sl-menu-item>`)}
-                    </sl-select>
-                  </div>
-                </div>
-                <div class="zones">
-                  <sl-select @sl-change=${this._onZoneInput} value="PAR">
-                    ${this.zones.map((zone) => html`
-                      <sl-menu-item value=${zone.name}>
-                        <cc-img class="flag" src=${ifDefined(getFlagUrl(zone.countryCode))} text=${ifDefined(zone.countryCode)}></cc-img>
-                        ${zone.name}              
-                      </sl-menu-item>`)}
-                  </sl-select>
-                </div>
-                <div class="est-cost">
-                  ${i18n('cc-pricing-header.est-cost')}
-                    ${i18n('cc-pricing-header.price', { price: this._getTotalPrice(), code: this.currency.code })}
-                </div>
-            </div>
-        `;
+      <div class="header">
+        <div class="currency-text">
+          ${i18n('cc-pricing-header.currency-text')}
+        </div>
+        <div class="currency-select">
+          <sl-select @sl-change=${this._onCurrencyChange} value=${this.currency.code} class="select">
+            ${this._getformattedCurrencies(this.currencies).map((c) => html`
+              <sl-menu-item value=${c.code}>${c.displayValue}</sl-menu-item>`)}
+          </sl-select>
+        </div>
+        <div class="zone-text">
+          ${i18n('cc-pricing-header.selected-zone')}
+        </div>
+        <div class="zones">
+          <sl-select @sl-change=${this._onZoneInput} value=${this.zoneId} class="select">
+            ${this.zones.map((zone) => html`
+              <sl-menu-item value=${zone.name}>
+                <cc-img class="flag" src=${ifDefined(getFlagUrl(zone.countryCode))}
+                  text=${ifDefined(zone.countryCode)}></cc-img>
+                ${zone.name}
+              </sl-menu-item>`)}
+          </sl-select>
+        </div>
+        <div class="est-cost-text">
+          ${i18n('cc-pricing-header.est-cost')}
+        </div>
+        <div class="total-price">
+          ${i18n('cc-pricing-header.price', { price: this.totalPrice * this.currency.changeRate, code: this.currency.code })}
+        </div>
+      </div>
+      </div>
+    `;
   }
 
   static get styles () {
@@ -150,51 +130,83 @@ export class CcPricingHeader extends LitElement {
       shoelaceStyles,
       // language=CSS
       css`
-                :host {
-                    display: block;
-                    margin-bottom: 1.5rem;
-                    padding: 1rem;
-                }
+        :host {
+          display: block;
+          margin-bottom: 1.5rem;
+          padding: 1rem;
+        }
 
-                .flag {
-                  border-radius: 0.15rem;
-                  box-shadow: 0 0 3px #ccc;
-                  height: 1.5rem;
-                  margin-right: 1rem;
-                  width: 2rem;
-                }
-                
-                .select-currency {
-                  align-items: center;
-                  display: flex;
-                  gap: 0.25rem;
-                }
-                
-                .currency-text {
-                  width: max-content;
-                }
-                
-                .header {
-                    display: flex;
-                    gap: 0.5rem;
-                    justify-content: space-between;
-                  align-items: center;
-                }
-                
-                
-                .select-content {
-                  width: min-content;
-                }
-                
-                .select-item {
-                  background-color: #ffffff;
-                }
-                
-                .zones {
-                  width: 100%;
-                }
-                
-            `,
+        .flag {
+          border-radius: 0.15rem;
+          box-shadow: 0 0 3px #ccc;
+          height: 1.5rem;
+          margin-right: 1rem;
+          width: 2rem;
+        }
+
+        .select {
+
+        }
+
+        .select-currency {
+          align-items: center;
+          display: flex;
+          flex-direction: column;
+          gap: 0.25rem;
+        }
+
+        .currency-text {
+          width: max-content;
+        }
+
+        .header {
+          display: grid;
+          grid-template: 
+                    "currency-text zone-text estimation-text"
+                    "currency-select zones estimation";
+          gap: 0.5rem;
+        }
+
+        .est-cost-text {
+          grid-area: estimation-text;
+          justify-self: end;
+        }
+
+        .currency-text {
+          grid-area: currency-text;
+        }
+
+        .currency-select {
+          grid-area: currency-select;
+        }
+
+
+        .select-content {
+          width: min-content;
+        }
+
+        .select-item {
+          background-color: #ffffff;
+        }
+
+        .zones {
+          grid-area: zones;
+        }
+
+        .zone-text {
+          grid-area: zone-text;
+        }
+
+        .total-price {
+          font-weight: bold;
+          font-size: 1.5rem;
+          grid-area: estimation;
+          align-self: center;
+          justify-self: end;
+        }
+
+
+      `,
     ];
   }
 }
