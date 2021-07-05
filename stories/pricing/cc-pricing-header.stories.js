@@ -80,7 +80,7 @@ const cellarExample = {
 
 export const defaultStory = makeStory(conf, {
   items: [
-    { ...baseItems, zone: 'PAR', currency: {code: 'EUR', changeRate: 1} },
+    { ...baseItems, zone: 'PAR', currency: {code: 'EUR', changeRate: 1}, totalPrice: 720 },
   ],
 });
 
@@ -93,13 +93,13 @@ export const dataLoadedWithCustomStyles = makeStory(conf, {
     }
   `,
   items: [
-    { ...baseItems, zone: 'PAR', currency: 'EUR' },
+    { ...baseItems, zone: 'PAR', currency: {code: 'EUR', changeRate: 1}, totalPrice: 720 },
   ],
 });
 
 export const dataLoadedWithDollars = makeStory(conf, {
   items: [
-    { ...baseItems, zone: 'RBX', currency: 'USD' },
+    { ...baseItems, zone: 'RBX', currency: {code: 'USD', changeRate: 1.21}, totalPrice: 360 },
   ],
 });
 

@@ -144,8 +144,8 @@ export class CcPricingHeader extends LitElement {
           width: 2rem;
         }
 
-        .select {
-
+        .currency-select {
+            width: min-content;
         }
 
         .select-currency {

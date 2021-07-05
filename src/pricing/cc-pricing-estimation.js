@@ -261,15 +261,15 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
       }
 
       <div class="recap">
-        <div class="monthly-est">${i18n('cc-pricing-estimation.monthly-est')}:</div>
+        <div class="monthly-est">${i18n('cc-pricing-estimation.monthly-est')}</div>
         <div class="cost-price">
           ${i18n('cc-pricing-estimation.price', {
             price: this.totalPrice * this.currency.changeRate, code: this.currency.code,
           })}
         </div>
         <div class="recap-buttons">
-          <button class="contact-sales">${i18n('cc-pricing-estimation.sales')}</button>
-          <button class="sign-up">${i18n('cc-pricing-estimation.sign-up')}</button>
+          <button href="https://www.clever-cloud.com/en/contact-sales" class="contact-sales">${i18n('cc-pricing-estimation.sales')}</button>
+          <button href="https://api.clever-cloud.com/v2/sessions/signup" class="sign-up">${i18n('cc-pricing-estimation.sign-up')}</button>
         </div>
       </div>
     `;
@@ -325,7 +325,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
         /* Properties for small screen size */
 
         .qt-btn {
-          align-self: center;
+            justify-self: end;
         }
 
         .plan {
@@ -349,6 +349,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
 
         .feature-list {
           grid-column: main-start / main-end;
+            margin: 1em 1em 0 0;
         }
 
         .feature-list:not(:last-child) {
@@ -424,7 +425,12 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
 
         .input-number {
           --cc-input-number-align: center;
+            width: 50%;
+            display: block;
+            margin: auto;
+            text-align: center;
         }
+        
 
         /* Recap */
 

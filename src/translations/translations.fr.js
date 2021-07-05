@@ -357,7 +357,7 @@ export const translations = {
   //#endregion
   //#region cc-pricing-estimation
   'cc-pricing-estimation.empty-basket': `Votre panier est vide.`,
-  'cc-pricing-estimation.monthly-est': `Coût Mensuel Estimé`,
+  'cc-pricing-estimation.monthly-est': `Total Estimé (30 jours)`,
   'cc-pricing-estimation.price': ({ price, code }) => `${formatCurrency(lang, price, { currency: code })}`,
   'cc-pricing-estimation.price-name-daily': `Prix (jour)`,
   'cc-pricing-estimation.price-name-monthly': () => sanitize`Prix (30&nbsp;jours)`,
@@ -369,7 +369,7 @@ export const translations = {
   //#endregion
   //#region cc-pricing-header
   'cc-pricing-header.currency-text': `Monnaie:`,
-  'cc-pricing-header.est-cost': `Coût Estimé:`,
+  'cc-pricing-header.est-cost': `Total Estimé:`,
   'cc-pricing-header.price': ({ price, code }) => `${formatCurrency(lang, price, { currency: code })}`,
   'cc-pricing-header.selected-zone': `Zone : `,
   //#endregion
