@@ -7,7 +7,6 @@ The purpose of this document is to allow you to check your component when you th
 
 Before, going any further into the checklist we suppose that you have read and applied [the guideline](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%93%8C-docs-web-components-guidelines-at-clever-cloud--page).
 
-
 # Preliminary check
 
 Fist, please run : `npm run lint`
@@ -32,7 +31,14 @@ It will also allow you to check if you have problems with your translations. (e.
 
 ## Component
 
-## Docs
+## Global
+
+* Check if you have remaining `console.log()` and delete them.
+* If you use classMap please put the classMap at then end of your classes.
+* If you use other components in the one you're making, and you have to deal with event put them at the end
+  where ths props are initiated.
+
+## Component documentation
 
 * All props are listed.
 * Props have a description.
@@ -44,22 +50,11 @@ It will also allow you to check if you have problems with your translations. (e.
     * The public ones first
     * The private ones after
 * Make sure you have set their default values when needed.    
-    
 
 ## Methods
 
 * Check that they are placed and sorted within the guideline requirements.
 
 ## Render 
-
-* If you use other components in the one you're making and you have to deal with event put them at the end
-where ths props are initiated.
-  
-* If you use classMap please put the classMap at then end of your classes.
-
-## Global
-
-* Check if you have remaining `console.log()` and delete them
-
 
 ## Stories
