@@ -73,6 +73,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
       currency: { type: Object },
       totalPrice: { type: Number },
       _size: { type: String },
+      _selectedProducts: { type: Array },
     };
   }
 
@@ -111,7 +112,9 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
 
     if (products.length === 0 || foundEmpty.length === products.length) {
       return html`
-        <cc-error mode="info">${i18n('cc-pricing-estimation.empty-basket')}</cc-error>
+        <div class="error-text">
+          ${i18n('cc-pricing-estimation.empty-basket')}
+        </div>
       `;
 
     }
@@ -169,9 +172,6 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
 
   _renderBigSelProducts (products) {
     return products.map((product) => {
-      if (product == null) {
-        return null;
-      }
 
       const pricePerDay = product.item.price * 24;
       const totalPricePerDay = pricePerDay * product.quantity * this.currency.changeRate;
@@ -181,12 +181,15 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
 
       return html`
         <tr>
+          ${product.quantity}
           <td>${product.name}</td>
           <td>${product.item.name}</td>
           <td class="quantity-wrapper">
+            ${product.toDelete ? html`
+              <cc-button @cc-button:click=${() => this._onDelete(product)}>DELETE ME</cc-button>
+            ` : ''}
             <cc-input-number
               class="input-number"
-              min="0"
               value=${product.quantity}
               @cc-input-number:input=${(e) => this._onChangeQuantity(product, e)}
               controls>
@@ -208,13 +211,36 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
 
   _onChangeQuantity (product, e) {
     if (isNaN(e.target.value)) {
-      product.quantity = 0;
-      dispatchCustomEvent(this, 'change-quantity', { ...product, quantity: 0 });
+      return;
     }
-    else {
-      product.quantity = e.target.value;
-      dispatchCustomEvent(this, 'change-quantity', { ...product, quantity: e.target.value });
-    }
+
+    const quantity = e.target.value;
+    const id = `${product.name}/${product.item.name}`;
+
+    const formattedProducts = this._selectedProducts.map((p) => {
+      const fpId = `${p.name}/${p.item.name}`;
+      return (fpId === id)
+        ? { ...product, quantity, toDelete: (quantity <= 0) }
+        : p;
+    });
+    console.log('form p ', formattedProducts);
+
+    dispatchCustomEvent(this, 'change-quantity', { ...product, quantity: e.target.value });
+
+
+    this._selectedProducts = formattedProducts;
+
+    console.log('sel p', this._selectedProducts);
+
+  }
+
+  _onDelete (product) {
+    const id = `${product.name}/${product.item.name}`;
+    this._selectedProducts = this._selectedProducts.filter((p) => {
+      const fpId = `${p.name}/${p.item.name}`;
+      return (fpId !== id);
+    });
+    dispatchCustomEvent(this, 'change-quantity', { ...product, quantity: 0 });
   }
 
   _renderSmallEstimation () {
@@ -225,9 +251,9 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
   }
 
   _renderBigEstimation () {
-    const products = Object.values(this.selectedProducts);
-    const foundEmpty = products.filter((p) => p == null);
+    const products = this._selectedProducts;
 
+    console.log('inserted', products);
     return html`
       <div class="estimation-table">
         <table>
@@ -238,19 +264,34 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
             <th class="number-align">${i18n('cc-pricing-estimation.price-name-daily')}</th>
             <th class="number-align">${i18n('cc-pricing-estimation.price-name-monthly')}</th>
           </tr>
-          ${products.length > 0 || foundEmpty.length !== products.length
+          ${products.length > 0
             ? this._renderBigSelProducts(products)
             : ''}
-          ${products.length === 0 || foundEmpty.length === products.length ? html`
+          ${products.length === 0 ? html`
               <tr>
-                <td colspan="5">
-                  <cc-error mode="info">${i18n('cc-pricing-estimation.empty-basket')}</cc-error>
+                <td colspan="5" class="error-text">
+                  ${i18n('cc-pricing-estimation.empty-basket')}
                 </td>
-              </tr>`
-            : ''}
+              </tr>
+            ` : ''}
         </table>
       </div>
     `;
+  }
+
+  update (changedProperties) {
+    console.log('wololo here');
+    if (changedProperties.has('selectedProducts')) {
+      this._selectedProducts = Object.values(this.selectedProducts).map((product) => {
+        if (product == null) {
+          return null;
+        }
+        return { ...product, toDelete: (product.quantity <= 0) };
+      })
+        .filter((product) => product != null);
+    }
+    console.log('changed p', this._selectedProducts);
+    super.update(changedProperties);
   }
 
   render () {
@@ -279,254 +320,257 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
     return [
       // language=CSS
       css`
-        :host {
-          display: block;
-        }
+          :host {
+              display: block;
+          }
 
-        .error {
-          text-align: center;
-        }
+          .error {
+              text-align: center;
+          }
 
-        /* Table properties for big screen size */
+          /* Table properties for big screen size */
 
-        table {
-          border-collapse: collapse;
-          border-radius: 0.5rem;
-          box-shadow: var(--shadow);
-          width: 100%;
-        }
+          table {
+              border-collapse: collapse;
+              border-spacing: 0;
+              width: 100%;
+          }
 
-        th {
-          background-color: #f6f6fb;
-          border-radius: 0.5rem;
-          height: 4rem;
-          padding: 1rem 0.5rem;
-          text-align: left;
+          tr:nth-child(n+3) {
+              border-top: 1px solid #e5e5e5;
+          }
 
-        }
+          th {
+              background-color: #f6f6fb;
+              padding: 1em 0.5em;
+              text-align: left;
+          }
 
-        tr:nth-child(n+3) {
-          border-top: 0.1rem solid #e5e5e5;
-        }
+          td {
+              padding: 0.5em 0.5em;
+              white-space: nowrap;
+          }
 
-        td {
-          padding: 1rem;
-          width: min-content;
-        }
+          td.btn-col {
+              padding: 0.25em 0.5em;
+          }
 
-        .mode-toggle {
-          margin-bottom: 1rem;
-        }
-
-        .quantity-th {
-          text-align: center;
-        }
-
-        /* Properties for small screen size */
-
-        .qt-btn {
-            justify-self: end;
-        }
-
-        .plan {
-          align-items: center;
-          border-top: 1px solid #e5e5e5;
-          display: grid;
-          grid-template-columns:  [main-start] 1fr 1fr [main-end] min-content;
-          margin: 0;
-          padding: 1em;
-        }
+          tr:hover td {
+              background-color: #f5f5f5;
+          }
 
 
-        .plan .add-item-btn .remove-item-btn {
-          margin-right: 1em;
-        }
+          .quantity-th {
+              text-align: center;
+          }
 
-        .plan-name {
-          font-size: 1.2em;
-          font-weight: bold;
-        }
+          /* Properties for small screen size */
 
-        .feature-list {
-          grid-column: main-start / main-end;
-            margin: 1em 1em 0 0;
-        }
+          .qt-btn {
+              justify-self: end;
+          }
 
-        .feature-list:not(:last-child) {
-          margin-top: 1em;
-        }
-
-        .plan .feature-list {
-          display: flex;
-          flex-wrap: wrap;
-        }
-
-        .feature {
-          border-bottom: 1px solid #e5e5e5;
-          display: flex;
-          justify-content: space-between;
-          padding: 0.75em 0;
-        }
-
-        .feature-list:last-child .feature:last-child {
-          border: none;
-        }
-
-        .plan .feature {
-          border: none;
-          line-height: 1.5;
-          padding: 0;
-          white-space: nowrap;
-        }
-
-        .plan .feature:not(:last-child)::after {
-          content: ',';
-          padding-right: 0.5em;
-        }
-
-        .feature-name {
-          font-style: italic;
-          font-weight: bold;
-        }
-
-        .plan .feature-name::after {
-          content: ' :';
-          padding-right: 0.25em;
-        }
+          .plan {
+              align-items: center;
+              border-top: 1px solid #e5e5e5;
+              display: grid;
+              grid-template-columns:  [main-start] 1fr 1fr [main-end] min-content;
+              margin: 0;
+              padding: 1em;
+          }
 
 
-        .container {
-          border-radius: 0.25rem;
-          box-shadow: var(--shadow);
-        }
+          .plan .add-item-btn .remove-item-btn {
+              margin-right: 1em;
+          }
 
-        /* Global properties */
+          .plan-name {
+              font-size: 1.2em;
+              font-weight: bold;
+          }
 
-        .number-align {
-          text-align: right;
-        }
+          .feature-list {
+              grid-column: main-start / main-end;
+              margin: 1em 1em 0 0;
+          }
 
-        .add-item-btn {
-          background: transparent;
-          border: none;
-        }
+          .feature-list:not(:last-child) {
+              margin-top: 1em;
+          }
 
-        td {
-          width: min-content;
-        }
+          .plan .feature-list {
+              display: flex;
+              flex-wrap: wrap;
+          }
 
-        /*.quantity-wrapper {*/
-        /*  width: min-content;*/
-        /*}*/
+          .feature {
+              border-bottom: 1px solid #e5e5e5;
+              display: flex;
+              justify-content: space-between;
+              padding: 0.75em 0;
+          }
 
-        .quantity-text {
-          align-self: center;
-        }
+          .feature-list:last-child .feature:last-child {
+              border: none;
+          }
 
-        .input-number {
-          --cc-input-number-align: center;
-            width: 50%;
-            display: block;
-            margin: auto;
-            text-align: center;
-        }
-        
+          .plan .feature {
+              border: none;
+              line-height: 1.5;
+              padding: 0;
+              white-space: nowrap;
+          }
 
-        /* Recap */
+          .plan .feature:not(:last-child)::after {
+              content: ',';
+              padding-right: 0.5em;
+          }
 
-        .recap {
-          background-color: #3a3771;
-          border-radius: 0.2rem;
-          color: white;
-          display: grid;
-          gap: 1rem;
-          grid-template-areas: 
+          .feature-name {
+              font-style: italic;
+              font-weight: bold;
+          }
+
+          .plan .feature-name::after {
+              content: ' :';
+              padding-right: 0.25em;
+          }
+
+
+          .container {
+              border-radius: 0.25em;
+              box-shadow: var(--shadow);
+          }
+
+          /* Global properties */
+
+          .number-align {
+              text-align: right;
+          }
+
+          .add-item-btn {
+              background: transparent;
+              border: none;
+          }
+
+
+          .quantity-text {
+              align-self: center;
+          }
+
+          .input-number {
+              --cc-input-number-align: center;
+              display: block;
+              margin: auto;
+              text-align: center;
+              width: 50%;
+          }
+
+          :host([w-gte-600]) .input-number {
+              width: 25%;
+          }
+
+          .error-text {
+              font-style: italic;
+              text-align: center;
+          }
+
+
+          /* Recap */
+
+          .recap {
+              background-color: #3a3771;
+              border-radius: 0.2em;
+              color: white;
+              display: grid;
+              gap: 1em;
+              grid-template-areas: 
                 "txt price"
                 "btn btn";
-          margin-top: 1rem;
-          padding: 1rem 0 1rem 1rem;
-        }
+              margin-top: 1em;
+              padding: 1em 0 1em 1em;
+          }
 
-        :host([w-gte-600]) .recap {
-          grid-template-areas: 
+          :host([w-gte-600]) .recap {
+              grid-template-areas: 
                 "txt btn"
                 "price btn";
-        }
+          }
 
-        :host([w-gte-600]) .recap-buttons {
-          justify-self: right;
-        }
+          :host([w-gte-600]) .recap-buttons {
+              justify-self: right;
+          }
 
-        .monthly-est {
-          align-self: center;
-          grid-area: txt;
-          justify-self: center;
+          .monthly-est {
+              align-self: center;
+              grid-area: txt;
+              justify-self: center;
 
-        }
+          }
 
-        .cost-price {
-          align-self: center;
-          font-size: 2rem;
-          grid-area: price;
-          justify-self: center;
-        }
+          .cost-price {
+              align-self: center;
+              font-size: 2em;
+              grid-area: price;
+              justify-self: center;
+          }
 
-        .recap-buttons {
-          align-self: center;
-          display: flex;
-          gap: 1.5rem;
-          grid-area: btn;
-          justify-self: center;
-          margin-right: 1.5rem;
-        }
+          .recap-buttons {
+              align-self: center;
+              display: flex;
+              gap: 1em;
+              grid-area: btn;
+              justify-self: center;
+              margin-right: 1em;
+          }
 
-        .contact-sales {
-          border-color: transparent;
-          border-radius: 0.25rem;
-          color: #3a3871;
-          padding: 0.75rem 2.5rem 0.75rem 2.5rem;
-        }
+          .contact-sales {
+              border-color: transparent;
+              border-radius: 0.2em;
+              color: #3a3871;
+              padding: 0.7em 2em 0.7em 2em;
+          }
 
-        .contact-sales:hover {
-          background-color: rgba(255, 255, 255, 0.8);
-          cursor: pointer;
-        }
+          .contact-sales:hover {
+              background-color: rgba(255, 255, 255, 0.8);
+              cursor: pointer;
+          }
 
-        .sign-up {
-          background-color: transparent;
-          border-color: #cccccc;
-          border-radius: 0.25rem;
-          border-style: solid;
-          color: #ffffff;
-          padding: 0.75rem;
-        }
+          .sign-up {
+              background-color: transparent;
+              border-color: #cccccc;
+              border-radius: 0.2em;
+              border-style: solid;
+              color: #ffffff;
+              padding: 0.7em;
+          }
 
-        .sign-up:hover {
-          background-color: rgba(255, 255, 255, 0.1);
-          cursor: pointer;
-        }
+          .sign-up:hover {
+              background-color: rgba(255, 255, 255, 0.1);
+              cursor: pointer;
+          }
 
-        .price-item {
-          text-align: right;
-        }
+          .price-item {
+              text-align: right;
+          }
 
 
-        .change-qt-btn {
-          background: transparent;
-          border: none;
-        }
+          .change-qt-btn {
+              background: transparent;
+              border: none;
+          }
 
-        .change-qt-btn img {
-          filter: brightness(100%);
-          height: 32px;
-          width: 32px;
-        }
+          .change-qt-btn img {
+              filter: brightness(100%);
+              height: 32px;
+              width: 32px;
+          }
 
-        .change-qt-btn img:hover {
-          cursor: pointer;
-          filter: brightness(50%);
-          transition: all 0.75s ease;
-        }
+          .change-qt-btn img:hover {
+              cursor: pointer;
+              filter: brightness(50%);
+              transition: all 0.75s ease;
+          }
       `,
     ];
   }

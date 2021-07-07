@@ -108,13 +108,14 @@ export class CcPricingPage extends LitElement {
       ? product.item.id
       : `${product.name}/${product.item.name}`;
 
-    if (product.quantity <= 0) {
+    if (product.quantity <= 0 && !product.toDelete) {
+      console.log('goes here');
       this._selectedProducts[id] = null;
     }
     else {
       this._selectedProducts[id].quantity = product.quantity;
     }
-
+    console.log('after page thing', this._selectedProducts);
     this._selectedProducts = { ...this._selectedProducts };
     this._totalPrice = this._getTotalPrice();
   }
