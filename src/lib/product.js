@@ -9,6 +9,29 @@ export function formatAddonProduct (addonProvider, priceSystem, selectedFeatures
   };
 }
 
+export function formatAddonCellar (priceSystem, currency) {
+  const cellarStorage = priceSystem.countable.find((c) => c.service === 'cellar.storage').price_plans;
+  const cellarTraffic = priceSystem.countable.find((c) => c.service === 'cellar.outbound').price_plans;
+  return {
+    intervals: {
+      storage: formatCellarIntervals(cellarStorage),
+      traffic: formatCellarIntervals(cellarTraffic),
+    },
+    currency,
+  };
+}
+
+function formatCellarIntervals (rawIntervals) {
+  return rawIntervals.map((interval, idx, allIntervals) => {
+    const minRange = (idx === 0) ? 0 : allIntervals[idx - 1].max_quantity;
+    return {
+      minRange,
+      maxRange: interval.max_quantity,
+      price: interval.price,
+    };
+  });
+}
+
 function formatAddonFeatures (providerFeatures, selectedFeatures) {
 
   // If selectedFeatures is not specified, we just use the features as is

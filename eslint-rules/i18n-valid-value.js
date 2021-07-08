@@ -70,6 +70,10 @@ module.exports = {
             continue;
           }
 
+          if (tp.value.type === 'CallExpression') {
+            continue;
+          }
+
           if (tp.value.type === 'ArrowFunctionExpression') {
 
             if (tp.value.body.type === 'TemplateLiteral') {

@@ -31,6 +31,12 @@ const formatDistanceToNow = prepareFormatDistanceToNow(lang, (value, unit) => {
 
 const formatNumberUnit = prepareNumberUnitFormatter(lang);
 const formatBytes = prepareNumberBytesFormatter(lang, 'B', ' ');
+const BYTES_SI_SEPARATOR = ' ';
+const formatBytesSi = prepareNumberUnitFormatter(lang, 'B', BYTES_SI_SEPARATOR);
+
+function getUnit (value) {
+  return formatBytesSi(value).split(BYTES_SI_SEPARATOR)[1];
+}
 
 // Shared logic between translations, is it a good idea?
 function formatFlavor (f) {
@@ -338,6 +344,29 @@ export const translations = {
   //#endregion
   //#region cc-pricing-product
   'cc-pricing-product.error': `An error occured while loading pricing details.`,
+  //#endregion
+  //#region cc-pricing-product-cellar
+  'cc-pricing-product-cellar.add': `Add`,
+  'cc-pricing-product-cellar.bytes': ({ bytes }) => formatBytesSi(bytes),
+  'cc-pricing-product-cellar.bytes-unit': ({ bytes }) => getUnit(bytes),
+  'cc-pricing-product-cellar.error': `An error occured while retrieving Cellar pricing details.`,
+  'cc-pricing-product-cellar.price': ({ price, code }) => `${formatCurrency(lang, price, { currency: code })}`,
+  'cc-pricing-product-cellar.price-interval': ({ price, code }) => {
+    const priceInterval = formatCurrency(lang, price, {
+      minimumFractionDigits: 3, maximumFractionDigits: 3, currency: code,
+    });
+    const priceOneGigabyte = getUnit(1e9);
+    return `${priceInterval} / ${priceOneGigabyte} (30 days)`;
+  },
+  'cc-pricing-product-cellar.price-interval.free': `FREE`,
+  'cc-pricing-product-cellar.product-item-name': ({ storageBytes, trafficBytes }) => {
+    return `Storage: ${formatBytesSi(storageBytes)}, Traffic: ${formatBytesSi(trafficBytes)}`;
+  },
+  'cc-pricing-product-cellar.storage.label': `storage`,
+  'cc-pricing-product-cellar.storage.title': `Storage:`,
+  'cc-pricing-product-cellar.total.title': `Estimated total (30 days):`,
+  'cc-pricing-product-cellar.traffic.label': `traffic`,
+  'cc-pricing-product-cellar.traffic.title': `Outbound traffic:`,
   //#endregion
   //#region cc-pricing-table
   'cc-pricing-table.add-button': `Add`,
