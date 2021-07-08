@@ -1,0 +1,3338 @@
+{
+  "version": "experimental",
+  "tags": [
+    {
+      "name": "cc-addon-admin",
+      "path": "./../src/addon/cc-addon-admin.js",
+      "description": "A component displaying the admin interface of an add-on to edit its name or delete the add-on\n\n🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-admin.js)\n\n## Details\n\n* When addon is nullish, a skeleton screen UI pattern is displayed (loading hint).\n\n## Type definitions\n\n```js\ninterface Addon {\n   name: String,\n   tags: String[],\n}\n```",
+      "attributes": [
+        {
+          "name": "addon",
+          "description": "Sets the add-on details (name and tags).",
+          "type": "Addon"
+        },
+        {
+          "name": "error",
+          "description": "Sets the error state on the component.",
+          "type": "false|\"saving\"|\"loading\"",
+          "default": "false"
+        },
+        {
+          "name": "saving",
+          "description": "Enables the saving state (form is disabled and blurred).",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "addon",
+          "attribute": "addon",
+          "description": "Sets the add-on details (name and tags).",
+          "type": "Addon"
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Sets the error state on the component.",
+          "type": "false|\"saving\"|\"loading\"",
+          "default": "false"
+        },
+        {
+          "name": "saving",
+          "attribute": "saving",
+          "description": "Enables the saving state (form is disabled and blurred).",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-addon-admin:update-name",
+          "description": "Fires the new name of the add-on when update name button is clicked."
+        },
+        {
+          "name": "cc-addon-admin:update-tags",
+          "description": "Fires the new list of tags when update tags button is clicked."
+        },
+        {
+          "name": "cc-addon-admin:delete-addon",
+          "description": "Fires when the delete button is clicked."
+        }
+      ]
+    },
+    {
+      "name": "cc-addon-backups",
+      "path": "./../src/addon/cc-addon-backups.js",
+      "description": "A components to display backups available for an add-on\n\n🎨 default CSS display: `grid`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-backups.js)\n\n## Details\n\n* When `backups` is nullish, a skeleton screen UI pattern is displayed (loading hint).\n\n## Type definitions\n\n```js\ninterface BackupDetails {\n   providerId: string,\n   passwordForCommand: string,\n   list: Backup[],\n}\n```\n\n```js\ninterface Backup {\n   createdAt: Date,\n   expiresAt: Date\n   url: string,\n   restoreCommand: string,\n   deleteCommand: string,\n}\n```\n\n## Images\n\n| | |\n|-------|------|\n| <img src=\"assets/backup.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>backup.svg</code>\n| <img src=\"assets/close.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>close.svg</code>",
+      "attributes": [
+        {
+          "name": "backups",
+          "description": "Sets the different details about an add-on and its backup.",
+          "type": "BackupDetails"
+        },
+        {
+          "name": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "backups",
+          "attribute": "backups",
+          "description": "Sets the different details about an add-on and its backup.",
+          "type": "BackupDetails"
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ]
+    },
+    {
+      "name": "cc-addon-credentials",
+      "path": "./../src/addon/cc-addon-credentials.js",
+      "description": "A component to display an add-on credentials.\n\n🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-credentials.js)\n\n## Details\n\n* When the `value` of a credential is nullish, a skeleton UI pattern is displayed (loading hint).\n\n## Type definition\n\n```js\ninterface Credential {\n   type: \"auth-token\"|\"host\"|\"password\"|\"url\"|\"user\",\n   value: string,\n   secret: boolean,\n}\n```",
+      "attributes": [
+        {
+          "name": "credentials",
+          "description": "Sets the list of  add-on credentials.",
+          "type": "Credential[]"
+        },
+        {
+          "name": "icon",
+          "description": "Sets the URL of the icon to use.",
+          "type": "String"
+        },
+        {
+          "name": "name",
+          "description": "Sets the display name of the add-on.",
+          "type": "String"
+        },
+        {
+          "name": "type",
+          "description": "Sets the type of the add-on.",
+          "type": "\"apm\"|\"elasticsearch\"|\"kibana\"|\"pulsar\""
+        },
+        {
+          "name": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "toggle-state",
+          "description": "Sets the toggle state of the inner block.",
+          "type": "\"off\"|\"open\"|\"close\"",
+          "default": "\"off\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "credentials",
+          "attribute": "credentials",
+          "description": "Sets the list of  add-on credentials.",
+          "type": "Credential[]"
+        },
+        {
+          "name": "icon",
+          "attribute": "icon",
+          "description": "Sets the URL of the icon to use.",
+          "type": "String"
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "description": "Sets the display name of the add-on.",
+          "type": "String"
+        },
+        {
+          "name": "type",
+          "attribute": "type",
+          "description": "Sets the type of the add-on.",
+          "type": "\"apm\"|\"elasticsearch\"|\"kibana\"|\"pulsar\""
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "toggleState",
+          "attribute": "toggle-state",
+          "description": "Sets the toggle state of the inner block.",
+          "type": "\"off\"|\"open\"|\"close\"",
+          "default": "\"off\""
+        }
+      ]
+    },
+    {
+      "name": "cc-addon-elasticsearch-options",
+      "path": "./../src/addon/cc-addon-elasticsearch-options.js",
+      "description": "A component that displays the available options of an elasticsearch add-on.\n\n* 🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-elasticsearch-options.js)\n\n## Type definitions\n\n```js\ninterface Option {\n   name: string,\n   enabled: boolean,\n   // Option specific params\n   flavor: Flavor, // for \"apm\" and \"kibana\" options\n   price: number, // for \"encryption\" option\n}\n```\n\n```js\ninterface Flavor {\n   name: string,\n   cpus: number,\n   gpus: number,\n   mem: number,\n   microservice: boolean,\n   monthlyCost: number,\n}\n```\n\n```js\ninterface Options {\n   kibana: boolean,\n   apm: boolean,\n}\n```",
+      "attributes": [
+        {
+          "name": "options",
+          "description": "List of options for this add-on.",
+          "type": "Option[]",
+          "default": "[]"
+        }
+      ],
+      "properties": [
+        {
+          "name": "options",
+          "attribute": "options",
+          "description": "List of options for this add-on.",
+          "type": "Option[]",
+          "default": "[]"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-addon-elasticsearch-options:submit",
+          "description": "Fires when the form is submitted."
+        }
+      ]
+    },
+    {
+      "name": "cc-addon-features",
+      "path": "./../src/addon/cc-addon-features.js",
+      "description": "A component to display an add-on set of features.\n\n🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-features.js)\n\n## Details\n\n* When `features` is nullish, a skeleton screen UI pattern is displayed (loading hint).\n* We don't have a proper i18n and icon system for feature names. For the time being, the (lower cased) name is used as some kind of code to match an icon and maybe translate the name of the feature.\n* We don't have a proper i18n system for feature values. For the time being, the (lower cased) value is used as some kind of code to maybe translate the value of the feature.\n\n\n## Type definitions\n\n```js\ninterface Feature {\n   name: String,\n   value: String,\n}\n```\n\n## Images\n\n| | |\n|-------|------|\n| <img src=\"assets/cpu.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>cpu.svg</code>\n| <img src=\"assets/disk.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>disk.svg</code>\n| <img src=\"assets/ram.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>ram.svg</code>",
+      "attributes": [
+        {
+          "name": "features",
+          "description": "Sets the list features.",
+          "type": "Feature[]"
+        },
+        {
+          "name": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "features",
+          "attribute": "features",
+          "description": "Sets the list features.",
+          "type": "Feature[]"
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ]
+    },
+    {
+      "name": "cc-addon-jenkins-options",
+      "path": "./../src/addon/cc-addon-jenkins-options.js",
+      "description": "A component that displays the available options of a Jenkins add-on.\n\n* 🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-jenkins-options.js)\n\n## Type definitions\n\n```js\ninterface Option {\n   name: string,\n   enabled: boolean,\n   // Option specific params\n   price: number, // for \"encryption\" option\n}\n```\n\n```js\ninterface Options {\n   encryption: boolean,\n}\n```",
+      "attributes": [
+        {
+          "name": "options",
+          "description": "List of options for this add-on.",
+          "type": "Option[]",
+          "default": "[]"
+        }
+      ],
+      "properties": [
+        {
+          "name": "options",
+          "attribute": "options",
+          "description": "List of options for this add-on.",
+          "type": "Option[]",
+          "default": "[]"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-addon-jenkins-options:submit",
+          "description": "Fires when the form is submitted."
+        }
+      ]
+    },
+    {
+      "name": "cc-addon-linked-apps",
+      "path": "./../src/addon/cc-addon-linked-apps.js",
+      "description": "A component to display applications linked to an add-on.\n\n🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-linked-apps.js)\n\n## Details\n\n* When applications is nullish, a skeleton screen UI pattern is displayed (loading hint).\n\n## Type definitions\n\n```js\ninterface InstanceVariant {\n   name: string,\n   logo: string,\n}\n```\n\n```js\ninterface Instance {\n   variant: InstanceVariant,\n}\n```\n\n```js\ninterface Application {\n   name: string,\n   link: string,\n   instance: Instance,\n   zone: Zone,\n}\n```\n\n```js\ninterface Zone {\n   countryCode: string,   // ISO 3166-1 alpha-2 code of the country (2 letters): \"FR\", \"CA\", \"US\"...\n   city: string,          // Name of the city in english: \"Paris\", \"Montreal\", \"New York City\"...\n   country: string,       // Name of the country in english: \"France\", \"Canada\", \"United States\"...\n   displayName?: string,  // Optional display name for private zones (instead of displaying city + country): \"ACME (dedicated)\"...\n   tags: string[],        // Array of strings for semantic tags: [\"region:eu\", \"infra:clever-cloud\"], [\"scope:private\"]...\n}\n```",
+      "attributes": [
+        {
+          "name": "applications",
+          "description": "Sets the linked applications.",
+          "type": "Application[]"
+        },
+        {
+          "name": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "applications",
+          "attribute": "applications",
+          "description": "Sets the linked applications.",
+          "type": "Application[]"
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ]
+    },
+    {
+      "name": "cc-addon-mongodb-options",
+      "path": "./../src/addon/cc-addon-mongodb-options.js",
+      "description": "A component that displays the available options of a MongoDB add-on.\n\n* 🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-mongodb-options.js)\n\n* ## Type definitions\n\n```js\ninterface Option {\n   name: string,\n   enabled: boolean,\n   // Option specific params\n   price: number, // for \"encryption\" option\n}\n```\n\n```js\ninterface Options {\n   encryption: boolean,\n}\n```",
+      "attributes": [
+        {
+          "name": "options",
+          "description": "List of options for this add-on.",
+          "type": "Option[]",
+          "default": "[]"
+        }
+      ],
+      "properties": [
+        {
+          "name": "options",
+          "attribute": "options",
+          "description": "List of options for this add-on.",
+          "type": "Option[]",
+          "default": "[]"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-addon-mongodb-options:submit",
+          "description": "Fires when the form is submitted."
+        }
+      ]
+    },
+    {
+      "name": "cc-addon-mysql-options",
+      "path": "./../src/addon/cc-addon-mysql-options.js",
+      "description": "A component that displays the available options of a MySQL add-on.\n\n* 🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-mysql-options.js)\n\n* ## Type definitions\n\n```js\ninterface Option {\n   name: string,\n   enabled: boolean,\n   // Option specific params\n   price: number, // for \"encryption\" option\n}\n```\n\n```js\ninterface Options {\n   encryption: boolean,\n}\n```",
+      "attributes": [
+        {
+          "name": "options",
+          "description": "List of options for this add-on.",
+          "type": "Option[]",
+          "default": "[]"
+        }
+      ],
+      "properties": [
+        {
+          "name": "options",
+          "attribute": "options",
+          "description": "List of options for this add-on.",
+          "type": "Option[]",
+          "default": "[]"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-addon-mysql-options:submit",
+          "description": "Fires when the form is submitted."
+        }
+      ]
+    },
+    {
+      "name": "cc-addon-option-form",
+      "path": "./../src/addon/cc-addon-option-form.js",
+      "description": "A component that displays a form of `<cc-addon-option>`.\n\n* 🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-option-form.js)\n\n## Type definitions\n\n```js\ninterface Option {\n   title: String,\n   logo: String,\n   description: HTMLElement | String,\n   name: String,\n   enabled: Boolean\n}\n\ninterface Options {\n   [propName: string]: String\n}\n```",
+      "attributes": [
+        {
+          "name": "title",
+          "description": "Title of the whole options form.",
+          "type": "String"
+        },
+        {
+          "name": "options",
+          "description": "List of Option object to render.",
+          "type": "Option[]"
+        }
+      ],
+      "properties": [
+        {
+          "name": "title",
+          "attribute": "title",
+          "description": "Title of the whole options form.",
+          "type": "String"
+        },
+        {
+          "name": "options",
+          "attribute": "options",
+          "description": "List of Option object to render.",
+          "type": "Option[]"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-addon-option-form:submit",
+          "description": "Fires when the form is submitted."
+        }
+      ],
+      "slots": [
+        {
+          "name": "description",
+          "description": "The description of the add-on and available options."
+        }
+      ]
+    },
+    {
+      "name": "cc-addon-option",
+      "path": "./../src/addon/cc-addon-option.js",
+      "description": "A component that allows to enable or disable an add-on option.\n\n* 🎨 default CSS display: `grid`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-option.js)\n\n## Technical details\n\n* If you want to display a warning in the option, add the `option-warning` class to an HTML element. It will be displayed\nwith a custom color and in italic.",
+      "attributes": [
+        {
+          "name": "title",
+          "description": "Title of the option.",
+          "type": "String"
+        },
+        {
+          "name": "logo",
+          "description": "The logo URL of the option.",
+          "type": "String"
+        },
+        {
+          "name": "enabled",
+          "description": "Enable the option by default.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "title",
+          "attribute": "title",
+          "description": "Title of the option.",
+          "type": "String"
+        },
+        {
+          "name": "logo",
+          "attribute": "logo",
+          "description": "The logo URL of the option.",
+          "type": "String"
+        },
+        {
+          "name": "enabled",
+          "attribute": "enabled",
+          "description": "Enable the option by default.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-addon-option:input",
+          "description": "Fires when the option is enabled or disabled."
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "The content of the option's description (text or HTML)."
+        }
+      ]
+    },
+    {
+      "name": "cc-addon-postgresql-options",
+      "path": "./../src/addon/cc-addon-postgresql-options.js",
+      "description": "A component that displays the available options of a PostgreSQL add-on.\n\n* 🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-postgresql-options.js)\n\n## Type definitions\n\n```js\ninterface Option {\n   name: string,\n   enabled: boolean,\n   // Option specific params\n   price: number, // for \"encryption\" option\n}\n```\n\n```js\ninterface Options {\n   encryption: boolean,\n}\n```",
+      "attributes": [
+        {
+          "name": "options",
+          "description": "List of options for this add-on.",
+          "type": "Option[]",
+          "default": "[]"
+        }
+      ],
+      "properties": [
+        {
+          "name": "options",
+          "attribute": "options",
+          "description": "List of options for this add-on.",
+          "type": "Option[]",
+          "default": "[]"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-addon-postgresql-options:submit",
+          "description": "Fires when the form is submitted."
+        }
+      ]
+    },
+    {
+      "name": "cc-addon-redis-options",
+      "path": "./../src/addon/cc-addon-redis-options.js",
+      "description": "A component that displays the available options of a Redis add-on.\n\n* 🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-addon-redis-options.js)\n\n* ## Type definitions\n\n```js\ninterface Option {\n   name: string,\n   enabled: boolean,\n   // Option specific params\n   price: number, // for \"encryption\" option\n}\n```\n\n```js\ninterface Options {\n   encryption: boolean,\n}\n```",
+      "attributes": [
+        {
+          "name": "options",
+          "description": "List of options for this add-on.",
+          "type": "Option[]",
+          "default": "[]"
+        }
+      ],
+      "properties": [
+        {
+          "name": "options",
+          "attribute": "options",
+          "description": "List of options for this add-on.",
+          "type": "Option[]",
+          "default": "[]"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-addon-redis-options:submit",
+          "description": "Fires when the form is submitted."
+        }
+      ]
+    },
+    {
+      "name": "cc-elasticsearch-info",
+      "path": "./../src/addon/cc-elasticsearch-info.js",
+      "description": "A component to display various links (Documentation, kibana, APM) for an elasticsearch service.\n\n🎨 default CSS display: `grid`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-elasticsearch-info.js)\n\n## Details\n\n* You need to list the links you want to display in `links`.\n* You can omit the `href` property while you wait for the real link, a skeleton UI (loading hint) will be displayed.\n\n## Type definitions\n\n```js\ninterface Link {\n   type: \"elasticsearch\"|\"kibana\"|\"apm\",\n   href?: string,\n}\n```\n\n## Images\n\n| | |\n|-------|------|\n| <img src=\"assets/info.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>info.svg</code>",
+      "attributes": [
+        {
+          "name": "links",
+          "description": "Sets the different links.",
+          "type": "Link[]"
+        },
+        {
+          "name": "error",
+          "description": "Display an error message.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "links",
+          "attribute": "links",
+          "description": "Sets the different links.",
+          "type": "Link[]"
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Display an error message.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ]
+    },
+    {
+      "name": "cc-header-addon",
+      "path": "./../src/addon/cc-header-addon.js",
+      "description": "A component to display various info about an add-on (name, plan, version...).\n\n🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/addon/cc-header-addon.js)\n\n## Details\n\n* When `addon` or `version` are null, a skeleton screen UI pattern is displayed (loading hint) on the corresponding zone.\n\n## Type definitions\n\n```js\ninterface Provider {\n   name: string,\n   logoUrl: string,\n}\n```\n\n```js\ninterface Plan {\n   name: string,\n}\n```\n\n```js\ninterface Addon {\n   id: string,\n   name: string,\n   provider: Provider,\n   plan: Plan,\n   creationDate: Date|number|string,\n}\n```",
+      "attributes": [
+        {
+          "name": "addon",
+          "description": "Sets add-on details and config.",
+          "type": "Addon"
+        },
+        {
+          "name": "version",
+          "description": "Sets version of add-on.",
+          "type": "String"
+        },
+        {
+          "name": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "addon",
+          "attribute": "addon",
+          "description": "Sets add-on details and config.",
+          "type": "Addon"
+        },
+        {
+          "name": "version",
+          "attribute": "version",
+          "description": "Sets version of add-on.",
+          "type": "String"
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ]
+    },
+    {
+      "name": "cc-beta",
+      "path": "./../src/atoms/cc-beta.js",
+      "description": "A layout component to position a simple beta ribbon around any content.\n\n🎨 default CSS display: `grid`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-beta.js)",
+      "attributes": [
+        {
+          "name": "fill",
+          "description": "Forces the slotted element to fill the beta container size (same heigh and width). By default, the beta container adapts to the slotted element size.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "position",
+          "description": "Where to position the beta label.",
+          "type": "\"top-left\"|\"bottom-left\"|\"top-right\"|\"bottom-right\"",
+          "default": "\"top-left\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "fill",
+          "attribute": "fill",
+          "description": "Forces the slotted element to fill the beta container size (same heigh and width). By default, the beta container adapts to the slotted element size.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "position",
+          "attribute": "position",
+          "description": "Where to position the beta label.",
+          "type": "\"top-left\"|\"bottom-left\"|\"top-right\"|\"bottom-right\"",
+          "default": "\"top-left\""
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "The content around which the beta label will be positionned. You ONLY one element."
+        }
+      ]
+    },
+    {
+      "name": "cc-button",
+      "path": "./../src/atoms/cc-button.js",
+      "description": "Wraps a `<button>` with a skeleton state, some modes and a delay mechanism.\n\n🎨 default CSS display: `inline-block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-button.js)\n\n## Details\n\n* Attributes `primary`, `success`, `warning` and `danger` define the UI _mode_ of the button.\n* They are exclusive, you can only set one UI _mode_ at a time.\n* When you don't use any of these values, the default UI _mode_ is `simple`.\n\n## Link appearance\n\nIn some cases (to be defined/explained later), you need a button with a click handler that looks like a link.\nDon't use a `<a>` without an href and use our `<cc-button link>` instead.\nWhen `link` is enabled, the following properties won't have any effect: `primary`, `success`, `warning`, `danger`, `outlined`, `delay`.\n\n## Delay mechanism\n\n* When `delay` is set, `cc-button:click` events are not fired immediately.\n* They are fired after the number of seconds set with `delay`.\n* During this `delay`, the user is presented a \"click to cancel\" label.\n* If the user clicks on \"click to cancel\", the `cc-button:click` event is not fired.\n* If the button `disabled` mode is set during the delay, the `cc-button:click` event is not fired.\n* If you set `delay=0`, the button will have the same width as other buttons with delay, but the event will be triggered instantly.",
+      "attributes": [
+        {
+          "name": "delay",
+          "description": "If set, enables delay mechanism and defined the number of seconds before the `cc-button:click` event is actually fired.",
+          "type": "Number"
+        },
+        {
+          "name": "image",
+          "description": "If set, enables icon mode and sets the `src` of the inner native `<img>` element.",
+          "type": "String"
+        },
+        {
+          "name": "circle",
+          "description": "Sets button UI to a circle form when in `hide-text` and `image` mode.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "danger",
+          "description": "Sets button UI _mode_ to danger.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "disabled",
+          "description": "Sets `disabled` attribute on inner native `<button>` element.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "link",
+          "description": "If set, the button will look like a link.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "hide-text",
+          "description": "Hides the text and only displays the image specified with `image`. The slotted text will be added as `title` and `aria-label` on the inner `<button>`.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "outlined",
+          "description": "Sets button UI as _outlined_ (no background and colored border).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "primary",
+          "description": "Sets button UI _mode_ to primary.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "skeleton",
+          "description": "Enables skeleton screen UI pattern (loading hint).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "success",
+          "description": "Sets button UI _mode_ to success.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "waiting",
+          "description": "If set, shows a waiting/busy indicator and sets `disabled` attribute on inner native `<button>` element.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "warning",
+          "description": "Sets button UI _mode_ to warning.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "delay",
+          "attribute": "delay",
+          "description": "If set, enables delay mechanism and defined the number of seconds before the `cc-button:click` event is actually fired.",
+          "type": "Number"
+        },
+        {
+          "name": "image",
+          "attribute": "image",
+          "description": "If set, enables icon mode and sets the `src` of the inner native `<img>` element.",
+          "type": "String"
+        },
+        {
+          "name": "circle",
+          "attribute": "circle",
+          "description": "Sets button UI to a circle form when in `hide-text` and `image` mode.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "danger",
+          "attribute": "danger",
+          "description": "Sets button UI _mode_ to danger.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "description": "Sets `disabled` attribute on inner native `<button>` element.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "link",
+          "attribute": "link",
+          "description": "If set, the button will look like a link.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "hideText",
+          "attribute": "hide-text",
+          "description": "Hides the text and only displays the image specified with `image`. The slotted text will be added as `title` and `aria-label` on the inner `<button>`.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "outlined",
+          "attribute": "outlined",
+          "description": "Sets button UI as _outlined_ (no background and colored border).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "primary",
+          "attribute": "primary",
+          "description": "Sets button UI _mode_ to primary.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "skeleton",
+          "attribute": "skeleton",
+          "description": "Enables skeleton screen UI pattern (loading hint).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "success",
+          "attribute": "success",
+          "description": "Sets button UI _mode_ to success.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "waiting",
+          "attribute": "waiting",
+          "description": "If set, shows a waiting/busy indicator and sets `disabled` attribute on inner native `<button>` element.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "warning",
+          "attribute": "warning",
+          "description": "Sets button UI _mode_ to warning.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-button:click",
+          "description": "Fires whenever the button is clicked.<br>If `delay` is set, fires after the specified `delay` (in seconds)."
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "The content of the button (text or HTML). If you want an image, please look at the `image` attribute."
+        }
+      ]
+    },
+    {
+      "name": "cc-datetime-relative",
+      "path": "./../src/atoms/cc-datetime-relative.js",
+      "description": "A text-only component to display a localized humanized relative date (ex: \"two minutes ago\").\n\n🎨 default CSS display: not defined, should default to `inline` in most browsers\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-datetime-relative.js)\n\n## Details\n\n* This component relies on the i18n system of this component library to format the relative date.\n* Once the element is attached to the DOM, the displayed text is updated every 10 seconds.\n* The 10 second update loop is the same for all instances of this component.\n* A tooltip is available (with `title=\"\"`) with the full formatted date and time.\n\n## Technical details\n\n* This is mainly inspired by GitHub's [relative-time-element](https://github.com/github/time-elements/blob/master/src/relative-time-element.js).\n* This component does not use lit* deps on purpose (keep small and not useful).",
+      "attributes": [
+        {
+          "name": "datetime",
+          "description": "Date as ISO string or timestamp.",
+          "type": "String|Number"
+        }
+      ],
+      "properties": [
+        {
+          "name": "datetime",
+          "attribute": "datetime",
+          "description": "Date as ISO string or timestamp.",
+          "type": "String|Number"
+        }
+      ]
+    },
+    {
+      "name": "cc-expand",
+      "path": "./../src/atoms/cc-expand.js",
+      "description": "An invisible wrapper that changes its size (with an animation) according to the size of its children.\n\n🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-expand.js)\n\n## Technical details\n\n* The animation only works in browsers supporting [`ResizeObserver`](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver) and [Web Animation API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API).\n* This component does not use lit* deps on purpose (keep small and not useful).\n* The source code is written in a way so it can be the smallest possible, while keeping a reasonable readability level.",
+      "slots": [
+        {
+          "name": "",
+          "description": "The content that may expand/shrink."
+        }
+      ]
+    },
+    {
+      "name": "cc-flex-gap",
+      "path": "./../src/atoms/cc-flex-gap.js",
+      "description": "A pure layout component used to overcome the lack of `gap` in CSS flex containers.\n\n🎨 default CSS display: `grid`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-flex-gap.js)\n\n## Technical details\n\n* This component does not use lit* deps on purpose (keep small and not useful).\n* The source code is written in a way so it can be the smallest possible, while keeping a reasonable readability level.\n* This feature exist in Firefox: https://developer.mozilla.org/en-US/docs/Web/CSS/gap.\n\nHere is the technique:\n\n* Use `display: flex` on a container.\n* Use a negative margin of half the gap on this container.\n* Use a positive margin of half the gap on its children.\n* Sadly, due to margin collapsing behaviour between the container with negative margins and its parent,\n* the negative margin of the container will be displayed as white space in its parent.\n* There are a few techniques to prevent this.\n* We chose to use a `display: grid` on the parent to disable the margin collapsing while preserving potential overflow like focus rings etc...",
+      "slots": [
+        {
+          "name": "",
+          "description": "The flex items on which you want to set a gap."
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-gap",
+          "description": "The gap between children.",
+          "type": "Number"
+        },
+        {
+          "name": "--cc-align-items",
+          "description": "The `align-items` value of the inner flexbox (defaults to normal).",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "cc-html-frame",
+      "path": "./../src/atoms/cc-html-frame.js",
+      "description": "A low level component that takes some HMTL and puts it in an iframe.\n\n🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-html-frame.js)\n\n## Details\n\n* By default, the inner `<iframe>` is borderless and has a transparent background.\n* If you set `loading=true` and a `<template>` inside the main slot, `loading` will be set back to `false` by the component once the inner native `<iframe>` is loaded.\n\n## Technical details\n\n* The HTML contents needs to be wrapped in a `<template>` tag.\n* By default, the origin of the inner `<iframe>` is the same as the parent window. This means the iframe can access the same local storage and other origin bound APIs.\n* If you want to limit this access and increase the isolation, you can add the `sandbox` attribute, see [MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#attr-sandbox) for more details.\n* This implemententation does not create an OOP (out of process) iframe.",
+      "attributes": [
+        {
+          "name": "sandbox",
+          "description": "Sets `sandbox` attribute on inner native `<iframe>` element.",
+          "type": "String"
+        },
+        {
+          "name": "loading",
+          "description": "Enables the loader indicator.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "title",
+          "description": "Sets `title` attribute on the inner `<iframe>` element.",
+          "type": "String",
+          "default": "\"\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "sandbox",
+          "attribute": "sandbox",
+          "description": "Sets `sandbox` attribute on inner native `<iframe>` element.",
+          "type": "String"
+        },
+        {
+          "name": "loading",
+          "attribute": "loading",
+          "description": "Enables the loader indicator.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "title",
+          "attribute": "title",
+          "description": "Sets `title` attribute on the inner `<iframe>` element.",
+          "type": "String",
+          "default": "\"\""
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "The HTML contents (wrapped in a `<template>`)."
+        }
+      ]
+    },
+    {
+      "name": "cc-img",
+      "path": "./../src/atoms/cc-img.js",
+      "description": "A wrapper around `<img>` to add loader indicator, remove ugly borders and display proper placeholder text when there's an error.\n\n🎨 default CSS display: `inline-block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-img.js)\n\n## Details\n\n* If you set `skeleton=true` and `src=\"https://...\"`, `skeleton` will be set back to `false` by the component once the inner native `<img>` is loaded (success or error).",
+      "attributes": [
+        {
+          "name": "src",
+          "description": "Sets `src` attribute on inner native `<img>` element.",
+          "type": "String"
+        },
+        {
+          "name": "text",
+          "description": "Sets short fallback text to display when the image cannot be loaded or if `src` is not defined and `skeleton` is `false`.",
+          "type": "String"
+        },
+        {
+          "name": "skeleton",
+          "description": "Enables skeleton screen UI pattern (loading hint).",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "src",
+          "attribute": "src",
+          "description": "Sets `src` attribute on inner native `<img>` element.",
+          "type": "String"
+        },
+        {
+          "name": "text",
+          "attribute": "text",
+          "description": "Sets short fallback text to display when the image cannot be loaded or if `src` is not defined and `skeleton` is `false`.",
+          "type": "String"
+        },
+        {
+          "name": "skeleton",
+          "attribute": "skeleton",
+          "description": "Enables skeleton screen UI pattern (loading hint).",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-img-fit",
+          "description": "Sets the `object-fit` of the inner `<img>` element (defaults to \"cover\").",
+          "type": "\"cover\"|\"contain\""
+        }
+      ]
+    },
+    {
+      "name": "cc-input-number",
+      "path": "./../src/atoms/cc-input-number.js",
+      "description": "A custom number input with controls mode.\n\n🎨 default CSS display: `inline-block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-input-number.js)\n\n## Technical details\n\n* Uses a native `<input>` with a type `number` without native arrows mode\n* The `controls` feature enables the \"arrow\" mode but with an increment/decrement button on the side of the input\n\n## Images\n\n| | |\n|-------|------|\n| <img src=\"assets/decrement.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>decrement.svg</code>\n| <img src=\"assets/increment.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>increment.svg</code>",
+      "attributes": [
+        {
+          "name": "label",
+          "description": "Sets label for the input.",
+          "type": "String"
+        },
+        {
+          "name": "max",
+          "description": "Sets the max range of the `<input>` element.",
+          "type": "Number"
+        },
+        {
+          "name": "min",
+          "description": "Sets the min range of the `<input>` element.",
+          "type": "Number"
+        },
+        {
+          "name": "name",
+          "description": "Sets `name` attribute on inner native `<input>` element.",
+          "type": "String"
+        },
+        {
+          "name": "step",
+          "description": "Sets the step of the `<input>` element affecting the value when changing it on the keyboard or controls mode.",
+          "type": "Number"
+        },
+        {
+          "name": "value",
+          "description": "Sets `value` attribute on inner native input number element.",
+          "type": "Number"
+        },
+        {
+          "name": "disabled",
+          "description": "Sets `disabled` attribute on inner native `<input>` element.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "readonly",
+          "description": "Sets `readonly` attribute on inner native `<input>` element.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "skeleton",
+          "description": "Enables skeleton screen UI pattern (loading hint).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "controls",
+          "description": "Sets the control mode with a decrement and increment buttons.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "label",
+          "attribute": "label",
+          "description": "Sets label for the input.",
+          "type": "String"
+        },
+        {
+          "name": "max",
+          "attribute": "max",
+          "description": "Sets the max range of the `<input>` element.",
+          "type": "Number"
+        },
+        {
+          "name": "min",
+          "attribute": "min",
+          "description": "Sets the min range of the `<input>` element.",
+          "type": "Number"
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "description": "Sets `name` attribute on inner native `<input>` element.",
+          "type": "String"
+        },
+        {
+          "name": "step",
+          "attribute": "step",
+          "description": "Sets the step of the `<input>` element affecting the value when changing it on the keyboard or controls mode.",
+          "type": "Number"
+        },
+        {
+          "name": "value",
+          "attribute": "value",
+          "description": "Sets `value` attribute on inner native input number element.",
+          "type": "Number"
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "description": "Sets `disabled` attribute on inner native `<input>` element.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "readonly",
+          "attribute": "readonly",
+          "description": "Sets `readonly` attribute on inner native `<input>` element.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "skeleton",
+          "attribute": "skeleton",
+          "description": "Enables skeleton screen UI pattern (loading hint).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "controls",
+          "attribute": "controls",
+          "description": "Sets the control mode with a decrement and increment buttons.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-input-number:input",
+          "description": "Fires the `value` whenever the `value` changes."
+        },
+        {
+          "name": "cc-input-number:requestimplicitsubmit",
+          "description": "Fires when enter key is pressed."
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-input-number-align",
+          "description": "Change the alignment of the number present in the input (defaults: `right`).",
+          "type": "Align"
+        }
+      ]
+    },
+    {
+      "name": "cc-input-text",
+      "path": "./../src/atoms/cc-input-text.js",
+      "description": "An enhanced text input with support for multiline, copy-to-clipboard, show/hide secret and highlighted tags.\n\n🎨 default CSS display: `inline-block` - `block` with `[multi]`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-input-text.js)\n\n## Technical details\n\n* Uses a native `<input>` element by default and a `<textarea>` element when `multi` is true.\n* When you use it with `readonly` \\+ `clipboard` \\+ NOT `multi`, the width of the input auto adapts to the length of the content.\n* The `secret` feature only works for simple line mode (when `multi` is false).\n* The `tags` feature enables a space-separated-value input wrapped on several lines where line breaks are not allowed. Don't use it with `multi` or `secret`.\n\n## Images\n\n| | |\n|-------|------|\n| <img src=\"assets/clipboard.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>clipboard.svg</code>\n| <img src=\"assets/eye-closed.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>eye-closed.svg</code>\n| <img src=\"assets/eye-open.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>eye-open.svg</code>\n| <img src=\"assets/tick.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>tick.svg</code>",
+      "attributes": [
+        {
+          "name": "label",
+          "description": "Sets label for the input.",
+          "type": "String"
+        },
+        {
+          "name": "name",
+          "description": "Sets `name` attribute on inner native `<input>/<textarea>` element.",
+          "type": "String"
+        },
+        {
+          "name": "clipboard",
+          "description": "Adds a copy-to-clipboard button (when not disabled and not skeleton).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "disabled",
+          "description": "Sets `disabled` attribute on inner native `<input>/<textarea>` element.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "multi",
+          "description": "Enables multiline support (with a `<textarea>` instead of an `<input>`).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "placeholder",
+          "description": "Sets `placeholder` attribute on inner native `<input>/<textarea>` element.",
+          "type": "String",
+          "default": "\"\""
+        },
+        {
+          "name": "readonly",
+          "description": "Sets `readonly` attribute on inner native `<input>/<textarea>` element.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "secret",
+          "description": "Enables show/hide secret feature with an eye icon.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "skeleton",
+          "description": "Enables skeleton screen UI pattern (loading hint).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "tags",
+          "description": "Sets list of tags and enables tags mode (if not null).",
+          "type": "String[]"
+        },
+        {
+          "name": "value",
+          "description": "Sets `value` attribute on inner native input element or textarea's inner content.",
+          "type": "String",
+          "default": "\"\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "label",
+          "attribute": "label",
+          "description": "Sets label for the input.",
+          "type": "String"
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "description": "Sets `name` attribute on inner native `<input>/<textarea>` element.",
+          "type": "String"
+        },
+        {
+          "name": "clipboard",
+          "attribute": "clipboard",
+          "description": "Adds a copy-to-clipboard button (when not disabled and not skeleton).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "description": "Sets `disabled` attribute on inner native `<input>/<textarea>` element.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "multi",
+          "attribute": "multi",
+          "description": "Enables multiline support (with a `<textarea>` instead of an `<input>`).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "placeholder",
+          "attribute": "placeholder",
+          "description": "Sets `placeholder` attribute on inner native `<input>/<textarea>` element.",
+          "type": "String",
+          "default": "\"\""
+        },
+        {
+          "name": "readonly",
+          "attribute": "readonly",
+          "description": "Sets `readonly` attribute on inner native `<input>/<textarea>` element.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "secret",
+          "attribute": "secret",
+          "description": "Enables show/hide secret feature with an eye icon.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "skeleton",
+          "attribute": "skeleton",
+          "description": "Enables skeleton screen UI pattern (loading hint).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "tags",
+          "attribute": "tags",
+          "description": "Sets list of tags and enables tags mode (if not null).",
+          "type": "String[]"
+        },
+        {
+          "name": "value",
+          "attribute": "value",
+          "description": "Sets `value` attribute on inner native input element or textarea's inner content.",
+          "type": "String",
+          "default": "\"\""
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-input-text:input",
+          "description": "Fires the `value` whenever the `value` changes."
+        },
+        {
+          "name": "cc-input-text:tags",
+          "description": "Fires an array of tags whenever the `value` changes (separated by spaces)."
+        },
+        {
+          "name": "cc-input-text:requestimplicitsubmit",
+          "description": "Fires when enter key is pressed in simple mode, in tags mode or when ctrl+enter is pressed in multi mode."
+        }
+      ]
+    },
+    {
+      "name": "cc-loader",
+      "path": "./../src/atoms/cc-loader.js",
+      "description": "A loading indicator, auto centered and with flexible size.\n\n🎨 default CSS display: `flex`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-loader.js)\n\n## Details\n\n* Size this component like you want, the loading circle will be centered automatically.",
+      "cssProperties": [
+        {
+          "name": "--cc-loader-color",
+          "description": "The color of the animated circle (defaults: `#2653af`).",
+          "type": "Color"
+        }
+      ]
+    },
+    {
+      "name": "cc-toggle",
+      "path": "./../src/atoms/cc-toggle.js",
+      "description": "A radio/checkbox input group component acting like a toggle between many options.\n\n🎨 default CSS display: `flex`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/atoms/cc-toggle.js)\n\n## When to use?\n\n* This component does not replace regular usage of radio/checkbox inputs in forms.\n* It works well in toolbars or filter panels.\n* The single mode mode (default) works well to toggle a component between two (or more) modes.\n\n## Details\n\n* Single mode (default) is one selected choice.\n* Multiple mode is zero to many selected choices and is enabled by setting \\`multipleValues\\`.\n\n## Technical details\n\n* Single mode (default) uses native `input[type=radio]` under the hood to keep native behaviour (a11y, keyboards...).\n* Multiple mode uses native `input[type=checkbox]` under the hood to keep native behaviour (a11y, keyboards...).\n* We decided to use a JavaScript array of objects for the choices because it's way simpler to implement and not that dirtier to use.\n\n## Type definitions\n\n```js\ninterface Choice {\n   label: string,\n   image?: string,   // Optional URL of an image\n   value: string,\n}\n```",
+      "attributes": [
+        {
+          "name": "choices",
+          "description": "Sets the list of choices.",
+          "type": "Choice[]"
+        },
+        {
+          "name": "legend",
+          "description": "Sets a legend to describe the whole component (input group).",
+          "type": "String"
+        },
+        {
+          "name": "multiple-values",
+          "description": "Enables multiple mode and sets the selected values.",
+          "type": "Array"
+        },
+        {
+          "name": "value",
+          "description": "Sets the selected value (single mode only).",
+          "type": "String"
+        },
+        {
+          "name": "disabled",
+          "description": "Sets the `disabled` attribute on all inner `<input>` of whole group.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "hide-text",
+          "description": "Hides the text and only displays the image specified with `choices[i].image`. The text will be added as `title` on the inner `<label>` and an `aria-label` on the inner `<input>`.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "subtle",
+          "description": "Uses a more subtle display mode, less attractive to the user's attention.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "choices",
+          "attribute": "choices",
+          "description": "Sets the list of choices.",
+          "type": "Choice[]"
+        },
+        {
+          "name": "legend",
+          "attribute": "legend",
+          "description": "Sets a legend to describe the whole component (input group).",
+          "type": "String"
+        },
+        {
+          "name": "multipleValues",
+          "attribute": "multiple-values",
+          "description": "Enables multiple mode and sets the selected values.",
+          "type": "Array"
+        },
+        {
+          "name": "value",
+          "attribute": "value",
+          "description": "Sets the selected value (single mode only).",
+          "type": "String"
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "description": "Sets the `disabled` attribute on all inner `<input>` of whole group.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "hideText",
+          "attribute": "hide-text",
+          "description": "Hides the text and only displays the image specified with `choices[i].image`. The text will be added as `title` on the inner `<label>` and an `aria-label` on the inner `<input>`.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "subtle",
+          "attribute": "subtle",
+          "description": "Uses a more subtle display mode, less attractive to the user's attention.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-toggle:input",
+          "description": "Fires the selected `value` whenever the selected `value` changes (single mode only)."
+        },
+        {
+          "name": "cc-toggle:input-multiple",
+          "description": "Fires the selected `multipleValues` whenever the selected `multipleValues` changes (single mode only)."
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-text-transform",
+          "description": "Apply a text transformation on labels (defaults: `uppercase`).",
+          "type": "TextTransform"
+        },
+        {
+          "name": "--cc-toggle-color",
+          "description": "The main color of the toggle (defaults: `#334252`). It must be defined directly on the element.",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-toggle-img-filter",
+          "description": "A CSS filter to apply on images of all choices (defaults: `none`). It must be defined directly on the element.",
+          "type": "Filter"
+        },
+        {
+          "name": "--cc-toggle-img-filter-selected",
+          "description": "A CSS filter to apply on images of selected choices (defaults: `none`). It must be defined directly on the element.",
+          "type": "Filter"
+        }
+      ]
+    },
+    {
+      "name": "cc-env-var-create",
+      "path": "./../src/env-var/cc-env-var-create.js",
+      "description": "A small form to create a new environment variable with validations on the name.\n\n🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/env-var/cc-env-var-create.js)\n\n## Details\n\n* The validation of the variable name format is handled with [@clevercloud/client](https://github.com/CleverCloud/clever-client.js/blob/master/esm/utils/env-vars.js)\n* The validation of existing names is handled with the `variablesNames` property which is a list of already existing names.\n\n## Type definitions\n\n```js\ninterface Variable {\n   name: string,\n   value: string,\n}\n```",
+      "attributes": [
+        {
+          "name": "disabled",
+          "description": "Sets `disabled` attribute on inputs and button.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "variables-names",
+          "description": "Sets list of existing variables names (so we can display an error if it already exists).",
+          "type": "String[]",
+          "default": "[]"
+        }
+      ],
+      "properties": [
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "description": "Sets `disabled` attribute on inputs and button.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "variablesNames",
+          "attribute": "variables-names",
+          "description": "Sets list of existing variables names (so we can display an error if it already exists).",
+          "type": "String[]",
+          "default": "[]"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-env-var-create:create",
+          "description": "Fires the variable whenever the add button is clicked."
+        }
+      ]
+    },
+    {
+      "name": "cc-env-var-editor-expert",
+      "path": "./../src/env-var/cc-env-var-editor-expert.js",
+      "description": "A high level environment variable editor to create/edit/delete all variables at once as a big string (properly parsed with validation and error messages).\n\n🎨 default CSS display: `block` - `none` with `[hidden]`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/env-var/cc-env-var-editor-expert.js)\n\n## Type definitions\n\n```js\ninterface Variable {\n   name: string,\n   value: string,\n   isDeleted: boolean,\n}\n```",
+      "attributes": [
+        {
+          "name": "variables",
+          "description": "Sets the list of variables.",
+          "type": "Variable[]"
+        },
+        {
+          "name": "disabled",
+          "description": "Sets `disabled` attribute on inputs and buttons.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "readonly",
+          "description": "Sets `readonly` attribute on main input and hides buttons.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "variables",
+          "attribute": "variables",
+          "description": "Sets the list of variables.",
+          "type": "Variable[]"
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "description": "Sets `disabled` attribute on inputs and buttons.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "readonly",
+          "attribute": "readonly",
+          "description": "Sets `readonly` attribute on main input and hides buttons.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-env-var-editor-expert:change",
+          "description": "Fires the new list of variables whenever something changes in the list."
+        }
+      ]
+    },
+    {
+      "name": "cc-env-var-editor-simple",
+      "path": "./../src/env-var/cc-env-var-editor-simple.js",
+      "description": "A high level environment variable editor to create/edit/delete variables one at a time (with validation and error messages).\n\n🎨 default CSS display: `grid` - `none` with `[hidden]`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/env-var/cc-env-var-editor-simple.js)\n\n## Type definitions\n\n```js\ninterface Variable {\n   name: string,\n   value: string,\n   isDeleted: boolean,\n}\n```",
+      "attributes": [
+        {
+          "name": "variables",
+          "description": "Sets the list of variables.",
+          "type": "Variable[]"
+        },
+        {
+          "name": "disabled",
+          "description": "Sets `disabled` attribute on inputs and buttons.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "readonly",
+          "description": "Sets `readonly` attribute on inputs and hides buttons.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "variables",
+          "attribute": "variables",
+          "description": "Sets the list of variables.",
+          "type": "Variable[]"
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "description": "Sets `disabled` attribute on inputs and buttons.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "readonly",
+          "attribute": "readonly",
+          "description": "Sets `readonly` attribute on inputs and hides buttons.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-env-var-editor-simple:change",
+          "description": "Fires the new list of variables whenever something changes in the list."
+        }
+      ]
+    },
+    {
+      "name": "cc-env-var-form",
+      "path": "./../src/env-var/cc-env-var-form.js",
+      "description": "A high level environment variable form (wrapping simple editor and expert editor into one interface).\n\n🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/env-var/cc-env-var-form.js)\n\n## Details\n\n* You can set a custom `heading` and description with the default <slot>.\n* You can also set a context to get the appropriate heading and description (with translations).\n\n## Type definitions\n\n```js\ninterface Variable {\n   name: string,\n   value: string,\n   isDeleted: boolean,\n}\n```",
+      "attributes": [
+        {
+          "name": "context",
+          "description": "Defines where the form will be used so it can display the appropriate heading and description.",
+          "type": "\"env-var\"|\"env-var-simple\"|\"env-var-addon\"|\"exposed-config\""
+        },
+        {
+          "name": "error",
+          "description": "Displays an error message (saving or loading).",
+          "type": "\"saving\"|\"loading\""
+        },
+        {
+          "name": "heading",
+          "description": "Sets a text to be used as a header title.",
+          "type": "String"
+        },
+        {
+          "name": "variables",
+          "description": "Sets the list of variables.",
+          "type": "Variable[]"
+        },
+        {
+          "name": "app-name",
+          "description": "Defines application name used in some heading/description (depending on context).",
+          "type": "String",
+          "default": "\"?\""
+        },
+        {
+          "name": "readonly",
+          "description": "Sets `readonly` attribute input and hides buttons.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "restart-app",
+          "description": "Displays the restart app button.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "saving",
+          "description": "Enables saving sate (form is disabled and loader is displayed).",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "context",
+          "attribute": "context",
+          "description": "Defines where the form will be used so it can display the appropriate heading and description.",
+          "type": "\"env-var\"|\"env-var-simple\"|\"env-var-addon\"|\"exposed-config\""
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Displays an error message (saving or loading).",
+          "type": "\"saving\"|\"loading\""
+        },
+        {
+          "name": "heading",
+          "attribute": "heading",
+          "description": "Sets a text to be used as a header title.",
+          "type": "String"
+        },
+        {
+          "name": "variables",
+          "attribute": "variables",
+          "description": "Sets the list of variables.",
+          "type": "Variable[]"
+        },
+        {
+          "name": "appName",
+          "attribute": "app-name",
+          "description": "Defines application name used in some heading/description (depending on context).",
+          "type": "String",
+          "default": "\"?\""
+        },
+        {
+          "name": "readonly",
+          "attribute": "readonly",
+          "description": "Sets `readonly` attribute input and hides buttons.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "restartApp",
+          "attribute": "restart-app",
+          "description": "Displays the restart app button.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "saving",
+          "attribute": "saving",
+          "description": "Enables saving sate (form is disabled and loader is displayed).",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-env-var-form:dismissed-error",
+          "description": "Fires the type of error that was dismissed when the error button of an error message is clicked."
+        },
+        {
+          "name": "cc-env-var-form:restart-app",
+          "description": "Fires whenever the restart app button is clicked."
+        },
+        {
+          "name": "cc-env-var-form:submit",
+          "description": "Fires the new list of variables whenever the submit button is clicked."
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "Sets custom HTML description."
+        }
+      ]
+    },
+    {
+      "name": "cc-env-var-input",
+      "path": "./../src/env-var/cc-env-var-input.js",
+      "description": "A small input to manipulate an environement variable.\n\n🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/env-var/cc-env-var-input.js)\n\n## Type definitions\n\n```js\ninterface Variable {\n   name: string,\n   value: string,\n}\n```\n\n```js\ninterface VariableName {\n   name: string,\n}\n```",
+      "attributes": [
+        {
+          "name": "name",
+          "description": "Sets the name of the environment variable.",
+          "type": "String"
+        },
+        {
+          "name": "deleted",
+          "description": "Declares the variable as \"should be deleted\".",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "disabled",
+          "description": "Sets `disabled` attribute on input and button.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "edited",
+          "description": "Declares the variable as \"edited\" (compared to server side state).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "new",
+          "description": "Declares the variable as \"new\" (compared to server side state).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "readonly",
+          "description": "Sets `readonly` attribute on input and hides button.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "skeleton",
+          "description": "Enables skeleton screen UI pattern (loading hint).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "value",
+          "description": "Sets the value of the environment variable (can be empty).",
+          "type": "String",
+          "default": "\"\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "name",
+          "attribute": "name",
+          "description": "Sets the name of the environment variable.",
+          "type": "String"
+        },
+        {
+          "name": "deleted",
+          "attribute": "deleted",
+          "description": "Declares the variable as \"should be deleted\".",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "description": "Sets `disabled` attribute on input and button.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "edited",
+          "attribute": "edited",
+          "description": "Declares the variable as \"edited\" (compared to server side state).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "new",
+          "attribute": "new",
+          "description": "Declares the variable as \"new\" (compared to server side state).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "readonly",
+          "attribute": "readonly",
+          "description": "Sets `readonly` attribute on input and hides button.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "skeleton",
+          "attribute": "skeleton",
+          "description": "Enables skeleton screen UI pattern (loading hint).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "value",
+          "attribute": "value",
+          "description": "Sets the value of the environment variable (can be empty).",
+          "type": "String",
+          "default": "\"\""
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-env-var-input:delete",
+          "description": "Fires a variable name whenever the delete button is clicked."
+        },
+        {
+          "name": "cc-env-var-input:input",
+          "description": "Fires a variable whenever its value changes."
+        },
+        {
+          "name": "cc-env-var-input:keep",
+          "description": "Fires a variable name whenever the keep button is clicked."
+        }
+      ]
+    },
+    {
+      "name": "cc-env-var-linked-services",
+      "path": "./../src/env-var/cc-env-var-linked-services.js",
+      "description": "A component to display groups of readonly `<cc-env-var-form>` for linked apps of add-ons.\n\n🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/env-var/cc-env-var-linked-services.js)\n\n## Details\n\n* When `services` is nullish, a loading indicator is displayed with a message (corresponding to `type`).\n* If `variables` on a service is nullish, the `<cc-env-var-form>` will be in skeleton mode.\n\n## Type definitions\n\n```js\ninterface Service {\n   name: string,\n   variables?: Variable[],\n}\n```\n\n```js\ninterface Variable {\n   name: string,\n   value: string,\n   isDeleted: boolean,\n}\n```",
+      "attributes": [
+        {
+          "name": "app-name",
+          "description": "Sets name of the main app to which services are linked.",
+          "type": "String"
+        },
+        {
+          "name": "services",
+          "description": "List of add-ons or apps with their name and variables.",
+          "type": "Service[]"
+        },
+        {
+          "name": "type",
+          "description": "Type of env vars to display linked add-ons or linked apps.",
+          "type": "\"addon\"|\"app\""
+        },
+        {
+          "name": "error",
+          "description": "Sets error status if list of services could not be fetched.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "appName",
+          "attribute": "app-name",
+          "description": "Sets name of the main app to which services are linked.",
+          "type": "String"
+        },
+        {
+          "name": "services",
+          "attribute": "services",
+          "description": "List of add-ons or apps with their name and variables.",
+          "type": "Service[]"
+        },
+        {
+          "name": "type",
+          "attribute": "type",
+          "description": "Type of env vars to display linked add-ons or linked apps.",
+          "type": "\"addon\"|\"app\""
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Sets error status if list of services could not be fetched.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ]
+    },
+    {
+      "name": "cc-invoice-list",
+      "path": "./../src/invoices/cc-invoice-list.js",
+      "description": "A component to display a list of invoices in paginated categories.\n\n* 🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/invoices/cc-invoice-list.js)\n\n## Type definitions\n\n```js\ninterface Amount {\n   amount: Number,\n   currency: String,\n}\n```\n\n```js\ntype InvoiceStatus = \"PENDING\" | \"PROCESSING\" | \"PAID\" | \"PAYMENTHELD\" | \"CANCELED\" | \"REFUNDED\" | \"WONTPAY\"\n```\n\n```js\ntype InvoiceType = \"INVOICE\" | \"CREDITNOTE\"\n```\n\n```js\ninterface Invoice {\n   downloadUrl: String,\n   emissionDate: String,\n   number: String,\n   paymentUrl: String,\n   status: InvoiceStatus,\n   total: Amount,\n   type: InvoiceType,\n}\n```",
+      "attributes": [
+        {
+          "name": "invoices",
+          "description": "Sets the list of invoices.",
+          "type": "Invoice[]"
+        },
+        {
+          "name": "error",
+          "description": "Sets a loading error state.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "invoices",
+          "attribute": "invoices",
+          "description": "Sets the list of invoices.",
+          "type": "Invoice[]"
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Sets a loading error state.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ]
+    },
+    {
+      "name": "cc-invoice-table",
+      "path": "./../src/invoices/cc-invoice-table.js",
+      "description": "A table component to display a list of invoices.\n\n* 🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/invoices/cc-invoice-table.js)\n\n## Type definitions\n\n```js\ninterface Amount {\n   amount: Number,\n   currency: String,\n}\n```\n\n```js\ntype InvoiceStatus = \"PENDING\" | \"PROCESSING\" | \"PAID\" | \"PAYMENTHELD\" | \"CANCELED\" | \"REFUNDED\" | \"WONTPAY\"\n```\n\n```js\ntype InvoiceType = \"INVOICE\" | \"CREDITNOTE\"\n```\n\n```js\ninterface Invoice {\n   downloadUrl: String,\n   emissionDate: String,\n   number: String,\n   paymentUrl: String,\n   status: InvoiceStatus,\n   total: Amount,\n   type: InvoiceType,\n}\n```",
+      "attributes": [
+        {
+          "name": "invoices",
+          "description": "Sets the list of invoices.",
+          "type": "Invoice[]"
+        }
+      ],
+      "properties": [
+        {
+          "name": "invoices",
+          "attribute": "invoices",
+          "description": "Sets the list of invoices.",
+          "type": "Invoice[]"
+        }
+      ]
+    },
+    {
+      "name": "cc-invoice",
+      "path": "./../src/invoices/cc-invoice.js",
+      "description": "A block component to display an HTML invoice.\n\n* 🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/invoices/cc-invoice.js)\n\n## Type definitions\n\n```js\ninterface Amount {\n   amount: Number,\n   currency: String,\n}\n```\n\n```js\ntype InvoiceStatus = \"PENDING\" | \"PROCESSING\" | \"PAID\" | \"PAYMENTHELD\" | \"CANCELED\" | \"REFUNDED\" | \"WONTPAY\"\n```\n\n```js\ntype InvoiceType = \"INVOICE\" | \"CREDITNOTE\"\n```\n\n```js\ninterface Invoice {\n   downloadUrl: String,\n   emissionDate: String,\n   invoiceHtml: String,\n   number: String,\n   paymentUrl: String,\n   status: InvoiceStatus,\n   total: Amount,\n   type: InvoiceType,\n}\n```",
+      "attributes": [
+        {
+          "name": "invoice",
+          "description": "Sets the invoice.",
+          "type": "Invoice"
+        },
+        {
+          "name": "number",
+          "description": "Sets the invoice number.",
+          "type": "String"
+        },
+        {
+          "name": "error",
+          "description": "Sets a loading error state.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "invoice",
+          "attribute": "invoice",
+          "description": "Sets the invoice.",
+          "type": "Invoice"
+        },
+        {
+          "name": "number",
+          "attribute": "number",
+          "description": "Sets the invoice number.",
+          "type": "String"
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Sets a loading error state.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ]
+    },
+    {
+      "name": "cc-logsmap",
+      "path": "./../src/maps/cc-logsmap.js",
+      "description": "World map of access logs with two modes: blinking dots or heatmap.\n\n🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/maps/cc-logsmap.js)\n\n\n## Details\n\n* This component wraps `<cc-map>` with a clickable toggle for the mode.\n* It has predefined i18n label for the toggle and the legend (to display logs).\n* The legend is contextualized to an organization or an app so you MUST set either `orgaName` or `appName` but not both.\n* The component has a default height of 15rem and a default width 20rem but this can be overridden with CSS.\n\n## Type definitions\n\n```js\ninterface Point {\n   lat: number,           // Latitude\n   lon: number,           // Longitude\n   count?: number,        // Number of occurences for this location (default: 1)\n   delay?: number|string, // How long the point needs to stay (in ms), 'none' for a fixed point, (default: 1000)\n   tooltip?: string,      // Tooltip when the point is hovered\n}\n```\n\n```js\ninterface PointsOptions {\n   spreadDuration?: boolean|number, // Spread points appearance over a time window (in ms)\n}\n```\n\n```js\ninterface HeatmapPoint {\n   lat: number,   // Latitude\n   lon: number,   // Longitude\n   count: number, // Number of occurences for this location\n}\n```",
+      "attributes": [
+        {
+          "name": "app-name",
+          "description": "Sets the name of the app for which we display the logs (don't use it with `orgaName`).",
+          "type": "String"
+        },
+        {
+          "name": "heatmap-points",
+          "description": "Sets the list of points used to draw the heatmap.",
+          "type": "HeatmapPoint[]"
+        },
+        {
+          "name": "orga-name",
+          "description": "Sets the name of the organization for which we display the logs (don't use it with `appName`).",
+          "type": "String"
+        },
+        {
+          "name": "center-lat",
+          "description": "Sets the latitude center of the map.",
+          "type": "Number",
+          "default": "48.9"
+        },
+        {
+          "name": "center-lon",
+          "description": "Sets the longitude center of the map.",
+          "type": "Number",
+          "default": "2.4"
+        },
+        {
+          "name": "error",
+          "description": "Displays an error message (can be combined with `loading`).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "loading",
+          "description": "Displays a loader on top of the map (can be combined with `error`).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "mode",
+          "description": "Sets map mode: `\"points\"` for blinking temporary dots and `\"heatmap\"` for a heatmap.",
+          "type": "\"points\"|\"heatmap\"",
+          "default": "\"points\""
+        },
+        {
+          "name": "view-zoom",
+          "description": "Sets the zoom of the map (between 1 and 6).",
+          "type": "Number",
+          "default": "2"
+        }
+      ],
+      "properties": [
+        {
+          "name": "appName",
+          "attribute": "app-name",
+          "description": "Sets the name of the app for which we display the logs (don't use it with `orgaName`).",
+          "type": "String"
+        },
+        {
+          "name": "heatmapPoints",
+          "attribute": "heatmap-points",
+          "description": "Sets the list of points used to draw the heatmap.",
+          "type": "HeatmapPoint[]"
+        },
+        {
+          "name": "orgaName",
+          "attribute": "orga-name",
+          "description": "Sets the name of the organization for which we display the logs (don't use it with `appName`).",
+          "type": "String"
+        },
+        {
+          "name": "centerLat",
+          "attribute": "center-lat",
+          "description": "Sets the latitude center of the map.",
+          "type": "Number",
+          "default": "48.9"
+        },
+        {
+          "name": "centerLon",
+          "attribute": "center-lon",
+          "description": "Sets the longitude center of the map.",
+          "type": "Number",
+          "default": "2.4"
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Displays an error message (can be combined with `loading`).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "loading",
+          "attribute": "loading",
+          "description": "Displays a loader on top of the map (can be combined with `error`).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "mode",
+          "attribute": "mode",
+          "description": "Sets map mode: `\"points\"` for blinking temporary dots and `\"heatmap\"` for a heatmap.",
+          "type": "\"points\"|\"heatmap\"",
+          "default": "\"points\""
+        },
+        {
+          "name": "viewZoom",
+          "attribute": "view-zoom",
+          "description": "Sets the zoom of the map (between 1 and 6).",
+          "type": "Number",
+          "default": "2"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-logsmap:mode",
+          "description": "Fires the selected mode whenever the toggle changes."
+        }
+      ]
+    },
+    {
+      "name": "cc-map-marker-dot",
+      "path": "./../src/maps/cc-map-marker-dot.js",
+      "description": "A map marker displayed as a blinking dot with color grading depending on the value of `count`.\n\n## Technical details\n\n* `size`, `anchor` and `tooltip` are readonly.\n* `size` and `anchor` will help `<cc-map>` to center the dot on the exact GPS position.\n* `tooltip` will help `<cc-map>` to place the tooltip's tip at the center of the dot.\n\n🎨 default CSS display: `inline-block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/maps/cc-map-marker-dot.js)",
+      "attributes": [
+        {
+          "name": "count",
+          "description": "Sets an abstract value for this marker to vary the color grading.",
+          "type": "Number"
+        }
+      ],
+      "properties": [
+        {
+          "name": "count",
+          "attribute": "count",
+          "description": "Sets an abstract value for this marker to vary the color grading.",
+          "type": "Number"
+        },
+        {
+          "name": "size",
+          "type": "number[]",
+          "default": "[16,16]"
+        },
+        {
+          "name": "anchor",
+          "type": "number[]",
+          "default": "[8,8]"
+        },
+        {
+          "name": "tooltip",
+          "type": "number[]",
+          "default": "[0,0]"
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-map-marker-dot-size",
+          "description": "The size of the dot (defaults to 6px).",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "cc-map-marker-server",
+      "path": "./../src/maps/cc-map-marker-server.js",
+      "description": "A map marker displayed as a server inside a bubble with blinking dots for LEDs when state is \"selected\".\n\n## Technical details\n\n* `size`, `anchor` and `tooltip` are readonly.\n* `size` and `anchor` will help `<cc-map>` to place the bubble tip on the exact GPS position.\n* `tooltip` will help `<cc-map>` to place the tooltip's tip above the bubble.\n\n🎨 default CSS display: `inline-block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/maps/cc-map-marker-server.js)",
+      "attributes": [
+        {
+          "name": "state",
+          "description": "Sets the state of the marker.",
+          "type": "\"default\"|\"hovered\"|\"selected\"",
+          "default": "\"default\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "description": "Sets the state of the marker.",
+          "type": "\"default\"|\"hovered\"|\"selected\"",
+          "default": "\"default\""
+        },
+        {
+          "name": "size",
+          "type": "number[]",
+          "default": "[32,32]"
+        },
+        {
+          "name": "anchor",
+          "type": "number[]",
+          "default": "[16,32]"
+        },
+        {
+          "name": "tooltip",
+          "type": "number[]",
+          "default": "[0,-32]"
+        }
+      ]
+    },
+    {
+      "name": "cc-map",
+      "path": "./../src/maps/cc-map.js",
+      "description": "World map with two modes: positioned markers or heatmap.\n\n🎨 default CSS display: `flex`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/maps/cc-map.js)\n\n## Details\n\n* The component has a default height of 15rem and a default width 20rem but this can be overridden with CSS.\n* When using `points`, you need to specify which HTML tag should be used to create and display the marker.\n* The marker DOM element should expose `size`, `anchor` and `tooltip` to help this component place the marker and tooltip correctly on the map.\n* When using `points`, you can specify some text for the tooltip but you can also specify which HTML tag to use to create and display the tooltip.\n\n## Type definitions\n\n```js\ninterface Point {\n   lat: number,              // Latitude\n   lon: number,              // Longitude\n   marker: Marker,           // An object describing how to create a marker with a custom element.\n   tooltip: string|Tooltip,  // Simple string or an object describing how to create a tooltip with a custom element.\n   zIndexOffset: number,     // The offset to add to the automatic offset already defined for a given point.\n}\n```\n\n```js\ninterface Marker {\n   tag: string,              // The HTML tag name used for the marker\n   // Additional specific properties for the marker custom element.\n}\n```\n\n```js\ninterface Tooltip {\n   tag: string,              // The HTML tag name used for the tooltip\n   // Additional specific properties for the tooltip custom element.\n}\n```\n\n```js\ninterface HeatmapPoint {\n   lat: number,   // Latitude\n   lon: number,   // Longitude\n   count: number, // Number of occurences for this location\n}\n```",
+      "attributes": [
+        {
+          "name": "heatmap-points",
+          "description": "Sets the list of points used to draw the heatmap.",
+          "type": "HeatmapPoint[]"
+        },
+        {
+          "name": "points",
+          "description": "Sets the list of points used to place markers.",
+          "type": "Point[]"
+        },
+        {
+          "name": "center-lat",
+          "description": "Sets the latitude center of the map.",
+          "type": "Number",
+          "default": "48.9"
+        },
+        {
+          "name": "center-lon",
+          "description": "Sets the longitude center of the map.",
+          "type": "Number",
+          "default": "2.4"
+        },
+        {
+          "name": "error",
+          "description": "Displays an error message (can be combined with `loading`).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "loading",
+          "description": "Displays a loader on top of the map (can be combined with `error`).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "mode",
+          "description": "Sets map mode: `\"points\"` for points with custom markers and `\"heatmap\"` for a heatmap.",
+          "type": "\"points\"|\"heatmap\"",
+          "default": "\"points\""
+        },
+        {
+          "name": "view-zoom",
+          "description": "Sets the zoom of the map (between 1 and 6).",
+          "type": "Number",
+          "default": "2"
+        }
+      ],
+      "properties": [
+        {
+          "name": "heatmapPoints",
+          "attribute": "heatmap-points",
+          "description": "Sets the list of points used to draw the heatmap.",
+          "type": "HeatmapPoint[]"
+        },
+        {
+          "name": "points",
+          "attribute": "points",
+          "description": "Sets the list of points used to place markers.",
+          "type": "Point[]"
+        },
+        {
+          "name": "centerLat",
+          "attribute": "center-lat",
+          "description": "Sets the latitude center of the map.",
+          "type": "Number",
+          "default": "48.9"
+        },
+        {
+          "name": "centerLon",
+          "attribute": "center-lon",
+          "description": "Sets the longitude center of the map.",
+          "type": "Number",
+          "default": "2.4"
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Displays an error message (can be combined with `loading`).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "loading",
+          "attribute": "loading",
+          "description": "Displays a loader on top of the map (can be combined with `error`).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "mode",
+          "attribute": "mode",
+          "description": "Sets map mode: `\"points\"` for points with custom markers and `\"heatmap\"` for a heatmap.",
+          "type": "\"points\"|\"heatmap\"",
+          "default": "\"points\""
+        },
+        {
+          "name": "viewZoom",
+          "attribute": "view-zoom",
+          "description": "Sets the zoom of the map (between 1 and 6).",
+          "type": "Number",
+          "default": "2"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-map:marker-click",
+          "description": "Fires the corresponding point whenever a marker is clicked."
+        },
+        {
+          "name": "cc-map:marker-enter",
+          "description": "Fires the corresponding point whenever a marker is entered by the mouse."
+        },
+        {
+          "name": "cc-map:marker-leave",
+          "description": "Fires the corresponding point whenever a marker is left by the mouse."
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "The legend and/or details for the map (displayed at the bottom)."
+        }
+      ]
+    },
+    {
+      "name": "cc-block-section",
+      "path": "./../src/molecules/cc-block-section.js",
+      "description": "A display component with mostly HTML+CSS to separate a `<cc-block>` into different sections.\n\n🎨 default CSS display: `grid`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/molecules/cc-block-section.js)\n\n## Details\n\n* This component is designed to only be use as a direct child of `<cc-block>`.",
+      "slots": [
+        {
+          "name": "",
+          "description": "The main content (right part) of the section. If info is not defined, this will take all the width."
+        },
+        {
+          "name": "info",
+          "description": "The info (left part) of the section."
+        },
+        {
+          "name": "title",
+          "description": "The title of the section. You can use a `.danger` CSS class on your `<div slot=\"title\">` if it's a danger zone."
+        }
+      ]
+    },
+    {
+      "name": "cc-block",
+      "path": "./../src/molecules/cc-block.js",
+      "description": "A display component with mostly HTML+CSS and a open/close toggle feature.\n\n🎨 default CSS display: `grid`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/molecules/cc-block.js)\n\n## Details\n\n* The main section is wrapped in a `<cc-expand>` so variation of this section height will be animated.\n\n## Images\n\n| | |\n|-------|------|\n| <img src=\"assets/down.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>down.svg</code>\n| <img src=\"assets/up.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>up.svg</code>",
+      "attributes": [
+        {
+          "name": "icon",
+          "description": "Sets the URL of the image before the title. Icon is hidden if nullish.",
+          "type": "String"
+        },
+        {
+          "name": "state",
+          "description": "Sets the state of the toggle behaviour.",
+          "type": "\"off\"|\"open\"|\"close\"",
+          "default": "\"off\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "icon",
+          "attribute": "icon",
+          "description": "Sets the URL of the image before the title. Icon is hidden if nullish.",
+          "type": "String"
+        },
+        {
+          "name": "state",
+          "attribute": "state",
+          "description": "Sets the state of the toggle behaviour.",
+          "type": "\"off\"|\"open\"|\"close\"",
+          "default": "\"off\""
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "The main content of the block. The direct children of this will be spaced in a 1 column CSS grid."
+        },
+        {
+          "name": "button",
+          "description": "A zone dedicated for a button/toggle in the to right corner."
+        },
+        {
+          "name": "overlay",
+          "description": "The content to display on top of the main content."
+        },
+        {
+          "name": "title",
+          "description": "The title of the block. Try to only use text. Use the `icon` property/attribute."
+        }
+      ]
+    },
+    {
+      "name": "cc-error",
+      "path": "./../src/molecules/cc-error.js",
+      "description": "A display component for error messages with 4 modes: inline (default), info, loading or confirm.\n\n🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/molecules/cc-error.js)\n\n## Details\n\n* Use `\"inline\"` mode when you want to display the message as simple text.\n* Use `\"info\"` when you want to display the message in a bordered \"box\".\n* Use `\"loading\"` when you want to display the message in a bordered \"box\" with a loader.\n* Use `\"confirm\"` when you want to display the message in a bordered \"box\" with a confirm \"OK\" button.\n\n## Images\n\n| | |\n|-------|------|\n| <img src=\"assets/warning.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>warning.svg</code>",
+      "attributes": [
+        {
+          "name": "mode",
+          "description": "Sets the displays mode (see details).",
+          "type": "\"inline\"|\"info\"|\"loading\"|\"confirm\"",
+          "default": "\"inline\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "mode",
+          "attribute": "mode",
+          "description": "Sets the displays mode (see details).",
+          "type": "\"inline\"|\"info\"|\"loading\"|\"confirm\"",
+          "default": "\"inline\""
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-error:ok",
+          "description": "Fires when the OK button is clicked."
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "The content of the error message."
+        }
+      ]
+    },
+    {
+      "name": "cc-header-app",
+      "path": "./../src/overview/cc-header-app.js",
+      "description": "A component to display various info about an app (name, commits, status...).\n\n🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-header-app.js)\n\n## Details\n\n* When `app` and `status` are null, a skeleton screen UI pattern is displayed (loading hint).\n* When only `status` is null, a skeleton screen UI pattern is displayed on the buttons and status message.\n\n## Type definitions\n\n```js\ninterface App {\n   name: string,                   // Name of the application\n   commit?: string,                // Head commit on remote repo if app is not brand new (full SHA-1)\n   variantName: string,            // Human name of the variant (PHP, Ruby, Python...)\n   variantLogo: string,            // HTTPS URL to the logo of the variant\n   lastDeploymentLogsUrl?: string, // URL to the logs for the last deployment if app is not brand new\n}\n```\n\n```js\ntype AppStatus = \"restart-failed\" | \"restarting\" | \"restarting-with-downtime\"\n                  | \"running\" | \"start-failed\" | \"starting\" | \"stopped\" | \"unknown\"\n```\n\n```js\ninterface Zone {\n   countryCode: string,   // ISO 3166-1 alpha-2 code of the country (2 letters): \"fr\", \"ca\", \"us\"...\n   city: string,          // Name of the city in english: \"Paris\", \"Montreal\", \"New York City\"...\n   country: string,       // Name of the country in english: \"France\", \"Canada\", \"United States\"...\n   displayName?: string,  // Optional display name for private zones (instead of displaying city + country): \"ACME (dedicated)\"...\n   tags: string[],        // Array of strings for semantic tags: [\"region:eu\", \"infra:clever-cloud\"], [\"scope:private\"]...\n}\n```\n\n## Images\n\n| | |\n|-------|------|\n| <img src=\"assets/git.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>git.svg</code>\n| <img src=\"assets/restart-failed.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>restart-failed.svg</code>\n| <img src=\"assets/restarting-with-downtime.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>restarting-with-downtime.svg</code>\n| <img src=\"assets/restarting.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>restarting.svg</code>\n| <img src=\"assets/running.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>running.svg</code>\n| <img src=\"assets/start-failed.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>start-failed.svg</code>\n| <img src=\"assets/starting.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>starting.svg</code>\n| <img src=\"assets/stopped.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>stopped.svg</code>\n| <img src=\"assets/unknown.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>unknown.svg</code>",
+      "attributes": [
+        {
+          "name": "app",
+          "description": "Sets application details and config.",
+          "type": "App"
+        },
+        {
+          "name": "running-commit",
+          "description": "Sets the running commit (if app is running).",
+          "type": "String"
+        },
+        {
+          "name": "starting-commit",
+          "description": "Sets the starting commit (if app is deploying).",
+          "type": "String"
+        },
+        {
+          "name": "status",
+          "description": "Sets application status.",
+          "type": "AppStatus"
+        },
+        {
+          "name": "zone",
+          "description": "Sets application zone.",
+          "type": "Zone"
+        },
+        {
+          "name": "disable-buttons",
+          "description": "Disables all buttons (in a \"login as\" use case).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "app",
+          "attribute": "app",
+          "description": "Sets application details and config.",
+          "type": "App"
+        },
+        {
+          "name": "runningCommit",
+          "attribute": "running-commit",
+          "description": "Sets the running commit (if app is running).",
+          "type": "String"
+        },
+        {
+          "name": "startingCommit",
+          "attribute": "starting-commit",
+          "description": "Sets the starting commit (if app is deploying).",
+          "type": "String"
+        },
+        {
+          "name": "status",
+          "attribute": "status",
+          "description": "Sets application status.",
+          "type": "AppStatus"
+        },
+        {
+          "name": "zone",
+          "attribute": "zone",
+          "description": "Sets application zone.",
+          "type": "Zone"
+        },
+        {
+          "name": "disableButtons",
+          "attribute": "disable-buttons",
+          "description": "Disables all buttons (in a \"login as\" use case).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-header-app:cancel",
+          "description": "Fires whenever the cancel button is clicked."
+        },
+        {
+          "name": "cc-header-app:restart",
+          "description": "Fires whenever one of the 3 restart buttons is clicked."
+        },
+        {
+          "name": "cc-header-app:start",
+          "description": "Fires whenever one of the 3 start buttons is clicked."
+        },
+        {
+          "name": "cc-header-app:stop",
+          "description": "Fires whenever the stop button is clicked (after the delay)."
+        }
+      ]
+    },
+    {
+      "name": "cc-header-orga",
+      "path": "./../src/overview/cc-header-orga.js",
+      "description": "A component to display various info about an orga (name and enterprise status).\n\n🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-header-orga.js)\n\n## Details\n\n* When `orga` is nullish, a skeleton screen UI pattern is displayed (loading hint)\n\n## Type definitions\n\n```js\ninterface Orga {\n   name: string,\n   avatar: string,\n   cleverEnterprise: boolean,\n   emergencyNumber: string,\n}\n```\n\n## Images\n\n| | |\n|-------|------|\n| <img src=\"assets/badge-white.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>badge-white.svg</code>\n| <img src=\"assets/phone.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>phone.svg</code>",
+      "attributes": [
+        {
+          "name": "orga",
+          "description": "Sets organization details and config.",
+          "type": "Orga"
+        },
+        {
+          "name": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "orga",
+          "attribute": "orga",
+          "description": "Sets organization details and config.",
+          "type": "Orga"
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ]
+    },
+    {
+      "name": "cc-overview",
+      "path": "./../src/overview/cc-overview.js",
+      "description": "A display only component (just HTML+CSS) to layout heads, a main and several tiles.\n\n🎨 default CSS display: `grid`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-overview.js)\n\n## Details\n\n* The head components must have the `head` CSS class, they will be displayed at the top.\n* If you use more than one `head`, you must specify how many with `--cc-overview-head-count`.\n* The main component must have the `main` CSS class, it will be displayed at the bottom left (depending on the number of columns).\n* The tile components will be displayed in a 1 to 4 columns grid layout, below the header and around the main.\n* The number of columns is variable and depends directly on the width of the component (with some help from `withResizeObserver`).\n* `mode=\"app\"` for 6 tiles\n* `mode=\"orga\"` for 2 tiles",
+      "attributes": [
+        {
+          "name": "mode",
+          "description": "Sets the mode of the layout for the overview.",
+          "type": "\"app\"|\"orga\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "mode",
+          "attribute": "mode",
+          "description": "Sets the mode of the layout for the overview.",
+          "type": "\"app\"|\"orga\""
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "Put your `.head`, tiles and `.main` components here."
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-overview-head-count",
+          "description": "How many `.head` elements marked are in the slot  (defaults: `1`).",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "cc-tile-consumption",
+      "path": "./../src/overview/cc-tile-consumption.js",
+      "description": "A \"tile\" component to display consumption info (yesterday and over last 30 days).\n\n🎨 default CSS display: `grid`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-tile-consumption.js)\n\n## Details\n\n* When `consumption` is nullish, a skeleton screen UI pattern is displayed (loading hint).\n\n## Type definitions\n\n```js\ninterface Consumption {\n   yesterday: number,\n   last30Days: number,\n}\n```",
+      "attributes": [
+        {
+          "name": "consumption",
+          "description": "Sets the consumption details.",
+          "type": "Consumption"
+        },
+        {
+          "name": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "consumption",
+          "attribute": "consumption",
+          "description": "Sets the consumption details.",
+          "type": "Consumption"
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ]
+    },
+    {
+      "name": "cc-tile-deployments",
+      "path": "./../src/overview/cc-tile-deployments.js",
+      "description": "A \"tile\" component to display a list of deployments (status, humanized time ago and logs link).\n\n🎨 default CSS display: `grid`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-tile-deployments.js)\n\n## Details\n\n* When `deployments` is nullish, a skeleton screen UI pattern is displayed (loading hint)\n\n## Type definitions\n\n```js\ninterface Deployment {\n   state: string,\n   action: string,\n   date: string,\n   logsUrl: string,\n}\n```",
+      "attributes": [
+        {
+          "name": "deployments",
+          "description": "Sets the list of the last deployments (it's up to you to only pass 2 or 3).",
+          "type": "Deployment[]"
+        },
+        {
+          "name": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "deployments",
+          "attribute": "deployments",
+          "description": "Sets the list of the last deployments (it's up to you to only pass 2 or 3).",
+          "type": "Deployment[]"
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ]
+    },
+    {
+      "name": "cc-tile-instances",
+      "path": "./../src/overview/cc-tile-instances.js",
+      "description": "A \"tile\" component to display current status of running and deploying instances for a given app.\n\n🎨 default CSS display: `grid`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-tile-instances.js)\n\n## Details\n\n* When `instances` is nullish, a loader is displayed.\n\n## Type definitions\n\n```js\ninterface InstancesState {\n   running: Instance[],\n   deploying: Instance[],\n}\n```\n\n```js\ninterface Instance {\n   flavourName: string,\n   count: number,\n}\n```\n\n## Images\n\n| | |\n|-------|------|\n| <img src=\"assets/running.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>running.svg</code>\n| <img src=\"assets/starting.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>starting.svg</code>",
+      "attributes": [
+        {
+          "name": "instances",
+          "description": "Sets the current state of running and deploying instances.",
+          "type": "InstancesState"
+        },
+        {
+          "name": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "instances",
+          "attribute": "instances",
+          "description": "Sets the current state of running and deploying instances.",
+          "type": "InstancesState"
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ]
+    },
+    {
+      "name": "cc-tile-requests",
+      "path": "./../src/overview/cc-tile-requests.js",
+      "description": "A \"tile\" component to display HTTP requests distribution over the last 24 hours in a bar chart.\n\n🎨 default CSS display: `grid`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-tile-requests.js)\n\n## Details\n\n* When `data` is nullish, a skeleton screen UI pattern is displayed (loading hint).\n* A short doc is available when the (i) button is clicked.\n* `data` MUST be an array of 24 slices of one hour but the display will depend on the width of the component:\n   * 6 bars of 4 hours\n   * 8 bars of 3 hours\n   * 12 bars of 2 hours\n\n## Type definitions\n\nAn array of 3 values:\n\n```js\ninterface RequestsData [\n   number, // Start timestamp in milliseconds. Expected to be rounded to the hour of its respective TZ.\n   number, // End timestamp in milliseconds. Expected to be rounded to the hour of its respective TZ.\n   number, // Number of request during this time window.\n]\n```\n\n## Images\n\n| | |\n|-------|------|\n| <img src=\"assets/close.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>close.svg</code>\n| <img src=\"assets/info.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>info.svg</code>",
+      "attributes": [
+        {
+          "name": "data",
+          "description": "Sets the list of 24 time windows of one hour with timestamps and number of requests.",
+          "type": "RequestsData[24]"
+        },
+        {
+          "name": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "0"
+        }
+      ],
+      "properties": [
+        {
+          "name": "data",
+          "attribute": "data",
+          "description": "Sets the list of 24 time windows of one hour with timestamps and number of requests.",
+          "type": "RequestsData[24]"
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "0"
+        }
+      ]
+    },
+    {
+      "name": "cc-tile-scalability",
+      "path": "./../src/overview/cc-tile-scalability.js",
+      "description": "A \"tile\" component to display the current config of scalability for a given app.\n\n🎨 default CSS display: `grid`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-tile-scalability.js)\n\n## Details\n\n* When `scalability` is nullish, a skeleton screen UI pattern is displayed (loading hint).\n\n## Type definitions\n\n```js\ninterface Flavor {\n   name: string,\n   cpus: number,\n   gpus: number,\n   mem: number,\n   microservice: boolean,\n}\n```\n\n```js\ninterface Scalability {\n   minFlavor: Flavor,\n   maxFlavor: Flavor,\n   minInstances: number,\n   maxInstances: number,\n}\n```",
+      "attributes": [
+        {
+          "name": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean"
+        },
+        {
+          "name": "scalability",
+          "description": "Sets the scalability config of an app with details about flavors and number of instances.",
+          "type": "Scalability"
+        }
+      ],
+      "properties": [
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean"
+        },
+        {
+          "name": "scalability",
+          "attribute": "scalability",
+          "description": "Sets the scalability config of an app with details about flavors and number of instances.",
+          "type": "Scalability"
+        }
+      ]
+    },
+    {
+      "name": "cc-tile-status-codes",
+      "path": "./../src/overview/cc-tile-status-codes.js",
+      "description": "A \"tile\" component to display HTTP response status codes in a pie chart (donut).\n\n🎨 default CSS display: `grid`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/overview/cc-tile-status-codes.js)\n\n## Details\n\n* When `data` is nullish, a skeleton screen UI pattern is displayed (loading hint).\n* A short doc is available when the (i) button is clicked.\n\n## Type definitions\n\n```js\ninterface StatusCodesData {\n   // Status code number as property.\n   // Number of requests as value.\n   [number]: number,\n}\n```\n\nExample:\n\n```js\n{\n   200: 5027,\n   404: 123,\n   500: 5,\n}\n```\n\n## Images\n\n| | |\n|-------|------|\n| <img src=\"assets/close.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>close.svg</code>\n| <img src=\"assets/info.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>info.svg</code>",
+      "attributes": [
+        {
+          "name": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean"
+        },
+        {
+          "name": "status-codes",
+          "description": "Sets data with the number of requests for each HTTP status code.",
+          "type": "StatusCodesData"
+        }
+      ],
+      "properties": [
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean"
+        },
+        {
+          "name": "statusCodes",
+          "attribute": "status-codes",
+          "description": "Sets data with the number of requests for each HTTP status code.",
+          "type": "StatusCodesData"
+        }
+      ]
+    },
+    {
+      "name": "cc-pricing-product-cellar",
+      "path": "./../src/pricing/cc-pricing-product-cellar.js",
+      "description": "A component to display information and do a pricing simulation of the cellar product.\n\n* 🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/pricing/cc-pricing-product-cellar.js)\n\n## Type definitions\n\n```js\ninterface CellarInfos {\n   storage: Interval[],\n   traffic: Interval[],\n}\n```\n\n```js\ninterface Interval {\n   maxRange: number,\n   minRange: number,\n   price: number, // For storage: €/GB/Hour, For outbound traffic : €/GB\n}\n```\n\n```js\ninterface Feature {\n   code: \"connection-limit\" | \"cpu\" | \"databases\" | \"disk-size\" | \"gpu\" | \"has-logs\" | \"has-metrics\" | \"max-db-size\" | \"memory\" | \"version\",\n   type: \"boolean\" | \"shared\" | \"bytes\" | \"number\" | \"runtime\" | \"string\",\n   value?: number|string, // Only required for an item feature\n}\n```\n\n```js\ninterface Item {\n   name: string,\n   price: number, // price in euros for 1 hour\n   features: Feature[],\n}\n```\n\n```js\ninterface Product {\n   name: string,\n   item: Item,\n}\n``\n\n## Images\n\n| | |\n|-------|------|\n| <img src=\"/src/assets/down.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>down.svg</code>\n| <img src=\"/src/assets/plus.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>plus.svg</code>\n| <img src=\"/src/assets/up.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>up.svg</code>",
+      "attributes": [
+        {
+          "name": "cellarInfos",
+          "description": "Sets the storage and traffic information needed to render the intervals.",
+          "type": "CellarInfos"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "action",
+          "description": "Sets the type of action: \"add\" to display the \"add\" button for the product and \"none\" for no actions (defaults to \"add\").",
+          "type": "\"add\"|\"none\"",
+          "default": "\"add\""
+        },
+        {
+          "name": "currency",
+          "type": "object",
+          "default": "{\"code\":\"EUR\",\"changeRate\":1}"
+        },
+        {
+          "name": "icon",
+          "type": "string",
+          "default": "\"https://static-assets.cellar.services.clever-cloud.com/logos/cellar.svg\""
+        },
+        {
+          "name": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "cellarInfos",
+          "attribute": "cellarInfos",
+          "description": "Sets the storage and traffic information needed to render the intervals.",
+          "type": "CellarInfos"
+        },
+        {
+          "name": "description",
+          "attribute": "description",
+          "type": "string"
+        },
+        {
+          "name": "action",
+          "attribute": "action",
+          "description": "Sets the type of action: \"add\" to display the \"add\" button for the product and \"none\" for no actions (defaults to \"add\").",
+          "type": "\"add\"|\"none\"",
+          "default": "\"add\""
+        },
+        {
+          "name": "currency",
+          "attribute": "currency",
+          "type": "object",
+          "default": "{\"code\":\"EUR\",\"changeRate\":1}"
+        },
+        {
+          "name": "icon",
+          "attribute": "icon",
+          "type": "string",
+          "default": "\"https://static-assets.cellar.services.clever-cloud.com/logos/cellar.svg\""
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "default": "\"Cellar\""
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-pricing-product:add-product",
+          "description": "Fires the product whenever the \"add\" button is clicked."
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "The content of the description of the cellar product"
+        }
+      ]
+    },
+    {
+      "name": "cc-pricing-product",
+      "path": "./../src/pricing/cc-pricing-product.js",
+      "description": "A component to display product informations: icon, name, description with items (plans) and features.\n\n* 🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/pricing/cc-pricing-product.js)\n\n## Type definitions\n\n```js\ninterface Item {\n   name: string,\n   price: number, // price in euros for 1 hour\n   features: Feature[],\n}\n```\n\n```js\ninterface Feature {\n   code: \"connection-limit\" | \"cpu\" | \"databases\" | \"disk-size\" | \"gpu\" | \"has-logs\" | \"has-metrics\" | \"max-db-size\" | \"memory\" | \"version\",\n   type: \"boolean\" | \"shared\" | \"bytes\" | \"number\" | \"runtime\" | \"string\",\n   value?: number|string, // Only required for an item feature\n}\n```\n\n```js\ninterface Currency {\n   code: string,\n   changeRate: number, // based on euros\n}\n```\n\n```js\ninterface Product {\n   name: string,\n   item: Item,\n}\n```",
+      "attributes": [
+        {
+          "name": "currency",
+          "description": "Sets the currency used to display the prices (defaults to euros).",
+          "type": "Currency"
+        },
+        {
+          "name": "description",
+          "description": "Sets the description of the product (can be overriden with the default slot).",
+          "type": "String"
+        },
+        {
+          "name": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean"
+        },
+        {
+          "name": "icon",
+          "description": "Sets the url of the product icon/logo image (can be overriden with the `icon` slot).",
+          "type": "String"
+        },
+        {
+          "name": "items",
+          "description": "Sets the list of items.",
+          "type": "Array<Item>"
+        },
+        {
+          "name": "name",
+          "description": "Sets the name of the product (can be overriden with the `name` slot).",
+          "type": "String"
+        },
+        {
+          "name": "action",
+          "description": "Sets the type of action: \"add\" to display add buttons for each item and \"none\" for no actions (defaults to \"add\").",
+          "type": "\"add\"|\"none\"",
+          "default": "\"add\""
+        },
+        {
+          "name": "features",
+          "description": "Sets the list of features (used for the feature sort order).",
+          "type": "Array<Feature>",
+          "default": "[]"
+        }
+      ],
+      "properties": [
+        {
+          "name": "currency",
+          "attribute": "currency",
+          "description": "Sets the currency used to display the prices (defaults to euros).",
+          "type": "Currency"
+        },
+        {
+          "name": "description",
+          "attribute": "description",
+          "description": "Sets the description of the product (can be overriden with the default slot).",
+          "type": "String"
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean"
+        },
+        {
+          "name": "icon",
+          "attribute": "icon",
+          "description": "Sets the url of the product icon/logo image (can be overriden with the `icon` slot).",
+          "type": "String"
+        },
+        {
+          "name": "items",
+          "attribute": "items",
+          "description": "Sets the list of items.",
+          "type": "Array<Item>"
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "description": "Sets the name of the product (can be overriden with the `name` slot).",
+          "type": "String"
+        },
+        {
+          "name": "action",
+          "attribute": "action",
+          "description": "Sets the type of action: \"add\" to display add buttons for each item and \"none\" for no actions (defaults to \"add\").",
+          "type": "\"add\"|\"none\"",
+          "default": "\"add\""
+        },
+        {
+          "name": "icons",
+          "type": "never[]",
+          "default": "[]"
+        },
+        {
+          "name": "features",
+          "attribute": "features",
+          "description": "Sets the list of features (used for the feature sort order).",
+          "type": "Array<Feature>",
+          "default": "[]"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-pricing-product:add-product",
+          "description": "Fires the product whenever the \"plus\" button of an item is clicked."
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "Override the `description` param with custom HTML."
+        },
+        {
+          "name": "head",
+          "description": "Override the whole head section (with the icon, name and description)."
+        },
+        {
+          "name": "icon",
+          "description": "Override the `icon` url param with HTML where you can put multiple `<img>` tags."
+        },
+        {
+          "name": "name",
+          "description": "Override the `name` param with custom HTML."
+        }
+      ]
+    },
+    {
+      "name": "cc-pricing-table",
+      "path": "./../src/pricing/cc-pricing-table.js",
+      "description": "A component to display product informations: items (plans) and features.\n\n* 🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/pricing/cc-pricing-table.js)\n\n## Details\n\n* The items are sorted by price.\n* If an item has a feature that is not listed in features, it will be ignored.\n* If a feature has a code that is not supported, it will be ignored.\n\n## Type definitions\n\n```js\ninterface Item {\n   name: string,\n   price: number, // price in euros for 1 hour\n   features: Feature[],\n}\n```\n\n```js\ninterface Feature {\n   code: \"connection-limit\" | \"cpu\" | \"databases\" | \"disk-size\" | \"gpu\" | \"has-logs\" | \"has-metrics\" | \"max-db-size\" | \"memory\" | \"version\",\n   type: \"boolean\" | \"shared\" | \"bytes\" | \"number\" | \"runtime\" | \"string\",\n   value?: number|string, // Only required for an item feature\n}\n```\n\n```js\ninterface Currency {\n   code: string,\n   changeRate: number, // based on euros\n}\n```\n\n## Images\n\n| | |\n|-------|------|\n| <img src=\"../assets/down.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>down.svg</code>\n| <img src=\"../assets/plus.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>plus.svg</code>\n| <img src=\"../assets/up.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>up.svg</code>",
+      "attributes": [
+        {
+          "name": "currency",
+          "description": "Sets the currency used to display the prices (defaults to euros).",
+          "type": " Currency "
+        },
+        {
+          "name": "features",
+          "description": "Sets the list of features (used for the feature sort order).",
+          "type": " Array<Feature> "
+        },
+        {
+          "name": "items",
+          "description": "Sets the list of items.",
+          "type": " Array<Item> "
+        },
+        {
+          "name": "action",
+          "description": "Sets the type of action: \"add\" to display add buttons for each item and \"none\" for no actions (defaults to \"add\").",
+          "type": "\"add\"|\"none\"",
+          "default": "\"add\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "currency",
+          "attribute": "currency",
+          "description": "Sets the currency used to display the prices (defaults to euros).",
+          "type": " Currency "
+        },
+        {
+          "name": "features",
+          "attribute": "features",
+          "description": "Sets the list of features (used for the feature sort order).",
+          "type": " Array<Feature> "
+        },
+        {
+          "name": "items",
+          "attribute": "items",
+          "description": "Sets the list of items.",
+          "type": " Array<Item> "
+        },
+        {
+          "name": "action",
+          "attribute": "action",
+          "description": "Sets the type of action: \"add\" to display add buttons for each item and \"none\" for no actions (defaults to \"add\").",
+          "type": "\"add\"|\"none\"",
+          "default": "\"add\""
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-pricing-table:add-item",
+          "description": "Fires the item whenever the \"plus\" button of an item is clicked."
+        }
+      ]
+    },
+    {
+      "name": "cc-heptapod-info",
+      "path": "./../src/saas/cc-heptapod-info.js",
+      "description": "A component that shows a summary of our Heptapod SaaS offer.\n\n* 🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/saas/cc-heptapod-info.js)\n\n## Details\n\n* When `statistics` is nullish, a skeleton screen UI pattern is displayed (loading hint).\n\n## Type definitions\n\n```js\ninterface Statistics {\n   privateActiveUsers: number,\n   publicActiveUsers: number,\n   storage: number,\n   price: number,\n}\n```",
+      "attributes": [
+        {
+          "name": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "statistics",
+          "description": "Sets the usage statistics of this heptapod SaaS or `\"not-used\"` to display a message explaining the service is not used.",
+          "type": "Statistics|\"not-used\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "statistics",
+          "attribute": "statistics",
+          "description": "Sets the usage statistics of this heptapod SaaS or `\"not-used\"` to display a message explaining the service is not used.",
+          "type": "Statistics|\"not-used\""
+        }
+      ]
+    },
+    {
+      "name": "cc-smart-container",
+      "path": "./../src/smart/cc-smart-container.js",
+      "attributes": [
+        {
+          "name": "context",
+          "type": "object",
+          "default": "{}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "context",
+          "attribute": "context",
+          "type": "object",
+          "default": "{}"
+        },
+        {
+          "name": "parentContext",
+          "type": "object",
+          "default": "{}"
+        }
+      ]
+    },
+    {
+      "name": "cc-tcp-redirection-form",
+      "path": "./../src/tcp-redirections/cc-tcp-redirection-form.js",
+      "description": "An interface to create / delete TCP redirections in the context of an application.\n\n🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/tcp-redirections/cc-tcp-redirection-form.js)\n\n## Type definitions\n\n```js\ninterface Redirection {\n   error?: boolean,\n   namespace: string,\n   private?: boolean,\n   sourcePort?: number,\n   waiting?: boolean,\n}\n```",
+      "attributes": [
+        {
+          "name": "redirections",
+          "description": "Sets the list of redirections.",
+          "type": "Redirection[]"
+        },
+        {
+          "name": "error",
+          "description": "Sets a loading error state.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "context",
+          "description": "Defines in which context the form is used so it can show the appropriate description or lack thereof (defaults to user).",
+          "type": "\"user\"|\"admin\"",
+          "default": "\"user\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "redirections",
+          "attribute": "redirections",
+          "description": "Sets the list of redirections.",
+          "type": "Redirection[]"
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Sets a loading error state.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "context",
+          "attribute": "context",
+          "description": "Defines in which context the form is used so it can show the appropriate description or lack thereof (defaults to user).",
+          "type": "\"user\"|\"admin\"",
+          "default": "\"user\""
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-tcp-redirection:create",
+          "description": "Fires a redirection namespace whenever the create button is clicked."
+        },
+        {
+          "name": "cc-tcp-redirection:delete",
+          "description": "Fires a redirection whenever the delete button is clicked."
+        }
+      ]
+    },
+    {
+      "name": "cc-tcp-redirection",
+      "path": "./../src/tcp-redirections/cc-tcp-redirection.js",
+      "description": "A small form to create or delete a TCP redirection\n\n🎨 default CSS display: `block`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/tcp-redirections/cc-tcp-redirection.js)\n\n## Type definitions\n\n```js\ninterface RedirectionNamespace {\n   namespace: string,\n}\n```\n\n```js\ninterface Redirection {\n   namespace: string,\n   sourcePort: number,\n}\n```\n\n## Images\n\n| | |\n|-------|------|\n| <img src=\"assets/warning.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>warning.svg</code>\n| <img src=\"assets/redirection-off.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>redirection-off.svg</code>\n| <img src=\"assets/redirection-on.svg\" style=\"height: 1.5rem; vertical-align: middle\"> | <code>redirection-on.svg</code>",
+      "attributes": [
+        {
+          "name": "namespace",
+          "description": "Sets the name of the namespace.",
+          "type": "String"
+        },
+        {
+          "name": "source-port",
+          "description": "Sets the source of the redirection if any.",
+          "type": "Number"
+        },
+        {
+          "name": "error",
+          "description": "Set if there was an error during creation / deletion.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "private",
+          "description": "Set if this namespace is dedicated to the customer.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "skeleton",
+          "description": "Enables skeleton screen UI pattern (loading hint).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "waiting",
+          "description": "Sets the waiting state. You should set this to true while an action is in progress.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "namespace",
+          "attribute": "namespace",
+          "description": "Sets the name of the namespace.",
+          "type": "String"
+        },
+        {
+          "name": "sourcePort",
+          "attribute": "source-port",
+          "description": "Sets the source of the redirection if any.",
+          "type": "Number"
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Set if there was an error during creation / deletion.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "private",
+          "attribute": "private",
+          "description": "Set if this namespace is dedicated to the customer.",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "skeleton",
+          "attribute": "skeleton",
+          "description": "Enables skeleton screen UI pattern (loading hint).",
+          "type": "Boolean",
+          "default": "false"
+        },
+        {
+          "name": "waiting",
+          "attribute": "waiting",
+          "description": "Sets the waiting state. You should set this to true while an action is in progress.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-tcp-redirection:create",
+          "description": "Fires a redirection namespace whenever the create button is clicked."
+        },
+        {
+          "name": "cc-tcp-redirection:delete",
+          "description": "Fires a redirection whenever the delete button is clicked."
+        }
+      ]
+    },
+    {
+      "name": "cc-zone-input",
+      "path": "./../src/zones/cc-zone-input.js",
+      "description": "A input component to select a zone with a map and a list.\n\n* 🎨 default CSS display: `grid`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/zones/cc-zone-input.js)\n\n## Details\n\n* When `zones` is nullish, a skeleton screen UI pattern is displayed (loading hint).\n* Zones are sorted in the list using `tags`. Clever Cloud, then private, then regular alphanumeric sort on the city name.\n\n## Type definitions\n\n```js\ninterface Zone {\n   name: string,          // Unique code/identifier for the zone\n   lat: number,           // Latitude\n   lon: number,           // Longitude\n   countryCode: string,   // ISO 3166-1 alpha-2 code of the country (2 letters): \"FR\", \"CA\", \"US\"...\n   city: string,          // Name of the city in english: \"Paris\", \"Montreal\", \"New York City\"...\n   country: string,       // Name of the country in english: \"France\", \"Canada\", \"United States\"...\n   displayName?: string,  // Optional display name for private zones (instead of displaying city + country): \"ACME (dedicated)\"...\n   tags: string[],        // Array of strings for semantic tags: [\"region:eu\", \"infra:clever-cloud\"], [\"scope:private\"]...\n}\n```",
+      "attributes": [
+        {
+          "name": "selected",
+          "description": "Sets the `name` of the selected zone.",
+          "type": "String"
+        },
+        {
+          "name": "zones",
+          "description": "Sets the list of available zones.",
+          "type": "Zone[]"
+        },
+        {
+          "name": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "selected",
+          "attribute": "selected",
+          "description": "Sets the `name` of the selected zone.",
+          "type": "String"
+        },
+        {
+          "name": "zones",
+          "attribute": "zones",
+          "description": "Sets the list of available zones.",
+          "type": "Zone[]"
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "description": "Displays an error message.",
+          "type": "Boolean",
+          "default": "false"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-zone-input:input",
+          "description": "Fires the `name` of the selected zone whenever the selection changes."
+        }
+      ]
+    },
+    {
+      "name": "cc-zone",
+      "path": "./../src/zones/cc-zone.js",
+      "description": "A display component to show information about a zone.\n\n* 🎨 default CSS display: `flex`\n<br>\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/zones/cc-zone.js)\n\n## Details\n\n* When `zone` is nullish, a skeleton screen UI pattern is displayed (loading hint).\n* When a tag prefixed with `infra:` is used, the corresponding logo is displayed.\n* When the `scope:private` tag is used, the optional `displayName` of the zone will be used instead of the City + Country.\n* If the browser supports it, the `countryCode` will be used to display a translated version of the country's name.\n\n## Type definitions\n\n```js\ninterface Zone {\n   countryCode: string,   // ISO 3166-1 alpha-2 code of the country (2 letters): \"FR\", \"CA\", \"US\"...\n   city: string,          // Name of the city in english: \"Paris\", \"Montreal\", \"New York City\"...\n   country: string,       // Name of the country in english: \"France\", \"Canada\", \"United States\"...\n   displayName?: string,  // Optional display name for private zones (instead of displaying city + country): \"ACME (dedicated)\"...\n   tags: string[],        // Array of strings for semantic tags: [\"region:eu\", \"infra:clever-cloud\"], [\"scope:private\"]...\n}\n```",
+      "attributes": [
+        {
+          "name": "zone",
+          "description": "Sets the different details of the zone.",
+          "type": "Zone"
+        },
+        {
+          "name": "mode",
+          "description": "Sets the mode of the component.",
+          "type": "\"default\"|\"small\"|\"small-infra\"",
+          "default": "\"default\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "zone",
+          "attribute": "zone",
+          "description": "Sets the different details of the zone.",
+          "type": "Zone"
+        },
+        {
+          "name": "mode",
+          "attribute": "mode",
+          "description": "Sets the mode of the component.",
+          "type": "\"default\"|\"small\"|\"small-infra\"",
+          "default": "\"default\""
+        }
+      ]
+    }
+  ]
+}

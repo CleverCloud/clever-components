@@ -40,7 +40,7 @@ export class CcPricingPage extends LitElement {
       _selectedProducts: { type: Object },
       currency: { type: String },
       zoneId: { type: String },
-      _totalPrice: {type: Number},
+      _totalPrice: { type: Number },
     };
   }
 
@@ -68,16 +68,15 @@ export class CcPricingPage extends LitElement {
     return totalPrice;
   }
 
-
   /**
-     *
-     * @param product
-     * @private
-     * If we receive a product add event. We will get the product added as a param. Then we'll check if
-     * it is already on the selected products list. If not we initiate it with it's qt at 1.
-     * If it is already present it means it has been added from the product page and not from the recap so
-     * we just add one more to the list
-     */
+   *
+   * @param product
+   * @private
+   * If we receive a product add event. We will get the product added as a param. Then we'll check if
+   * it is already on the selected products list. If not we initiate it with it's qt at 1.
+   * If it is already present it means it has been added from the product page and not from the recap so
+   * we just add one more to the list
+   */
   _onAddProduct ({ detail: product }) {
     // TODO: Have a dedicated product.item.id
     const id = (product.item.id != null)
@@ -95,29 +94,35 @@ export class CcPricingPage extends LitElement {
   }
 
   /**
-     *
-     * @param product
-     * @private
-     * When someone add or remove a product from the recap that the user has selected before we check if
-     * we update the quantity it is at a quantity of zero then we remove it. Otherwise we just update it's quantity
-     * whether it has been an addition or subtraction of the quantity.
-     */
+   *
+   * @param product
+   * @private
+   * When someone add or remove a product from the recap that the user has selected before we check if
+   * we update the quantity it is at a quantity of zero then we remove it. Otherwise we just update it's quantity
+   * whether it has been an addition or subtraction of the quantity.
+   */
   _onQuantityChanged ({ detail: product }) {
     // TODO: Have a dedicated product.item.id
     const id = (product.item.id !== undefined)
       ? product.item.id
       : `${product.name}/${product.item.name}`;
 
-    if (product.quantity <= 0 && !product.toDelete) {
-      console.log('goes here');
-      this._selectedProducts[id] = null;
-    }
-    else {
-      this._selectedProducts[id].quantity = product.quantity;
-    }
-    console.log('after page thing', this._selectedProducts);
+    this._selectedProducts[id].quantity = product.quantity;
+
     this._selectedProducts = { ...this._selectedProducts };
     this._totalPrice = this._getTotalPrice();
+  }
+
+  _onDeleteQuantity ({ detail: product }) {
+    const id = (product.item.id !== undefined)
+      ? product.item.id
+      : `${product.name}/${product.item.name}`;
+
+    this._selectedProducts[id] = null;
+
+    this._selectedProducts = { ...this._selectedProducts };
+    this._totalPrice = this._getTotalPrice();
+
   }
 
   _onCurrencyChanged ({ detail: currency }) {
@@ -132,26 +137,27 @@ export class CcPricingPage extends LitElement {
     return html`
       <div class="header">
         <cc-pricing-header
-            .totalPrice=${this._totalPrice}
-            .zoneId=${this.zoneId}
-            .currency=${this.currency}
-            .selectedProducts=${this._selectedProducts}
-            .currencies=${this.currencies}
-            .zones=${this.zones}
-            @cc-pricing-header:change-currency=${this._onCurrencyChanged}
-            @cc-pricing-header:change-zone=${this._onZoneChanged}
+          .totalPrice=${this._totalPrice}
+          .zoneId=${this.zoneId}
+          .currency=${this.currency}
+          .selectedProducts=${this._selectedProducts}
+          .currencies=${this.currencies}
+          .zones=${this.zones}
+          @cc-pricing-header:change-currency=${this._onCurrencyChanged}
+          @cc-pricing-header:change-zone=${this._onZoneChanged}
         >
         </cc-pricing-header>
       </div>
-      <slot name="resources"> </slot>
+      <slot name="resources"></slot>
       <slot @cc-pricing-product:add-product=${this._onAddProduct}></slot>
       <div class="estimation">
         <div class="title">Cost Estimation</div>
         <cc-pricing-estimation
-            .selectedProducts=${this._selectedProducts}
-            .currency=${this.currency}
-            .totalPrice=${this._totalPrice}
-            @cc-pricing-estimation:change-quantity=${this._onQuantityChanged}
+          .selectedProducts=${this._selectedProducts}
+          .currency=${this.currency}
+          .totalPrice=${this._totalPrice}
+          @cc-pricing-estimation:change-quantity=${this._onQuantityChanged}
+          @cc-pricing-estimation:delete-quantity=${this._onDeleteQuantity}
         >
         </cc-pricing-estimation>
       </div>
@@ -162,24 +168,24 @@ export class CcPricingPage extends LitElement {
     return [
       // language=CSS
       css`
-        :host {
-          display: block;
-        }
+          :host {
+              display: block;
+          }
 
-        .addons div {
-          margin-bottom: 1.5rem;
-        }
-        
-        .runtimes div {
-          margin-bottom: 1.5rem;
-        }
-        
-        .title {
-          font-size: 1.5rem;
-          font-weight: bold;
-          margin-bottom: 1rem;
-          margin-top: 0.5rem;
-        }
+          .addons div {
+              margin-bottom: 1.5rem;
+          }
+
+          .runtimes div {
+              margin-bottom: 1.5rem;
+          }
+
+          .title {
+              font-size: 1.5rem;
+              font-weight: bold;
+              margin-bottom: 1rem;
+              margin-top: 0.5rem;
+          }
       `,
     ];
   }

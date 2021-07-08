@@ -5,15 +5,14 @@ import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 
 const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
 
+const deleteSvg = new URL('../assets/delete.svg', import.meta.url).href;
+
 /**
- * A component doing X and Y (one liner description of your component).
- *
- * * 🎨 default CSS display: `block`
- * <br>
- * 🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/pricing/cc-pricing-estimation.js)
+ * A component displaying the products selected, change their quantity or remove them from the list.
  *
  * ## Type definitions
  *
@@ -59,10 +58,15 @@ const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
  * }
  * ``
  *
+ * @cssdisplay block
+ *
+ *
  * @prop {Array<Product>} selectedProducts - Sets the products selected from the user in the page.
  * @prop {Currency} currency - Sets the current currency code.
+ * @prop {Number} totalPrice - the total price estimated of the products.
  *
- * @event {CustomEvent<Product>} cc-pricing-estimation:change-quantity - Fires the product with a modified quantity whenever the add or minus button is clicked on a product.
+ * @event {CustomEvent<Product>} cc-pricing-estimation:change-quantity - Fires the product with a modified quantity whenever the quantity on the input has been changed.
+ * @event {CustomEvent<Product>} cc-pricing-estimation:delete-quantity - Fires the product with a modified quantity of 0 when the delete button is clicked on a product.
  *
  */
 export class CcPricingEstimation extends withResizeObserver(LitElement) {
@@ -89,7 +93,6 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
 
   onResize ({ width }) {
     this._size = width;
-    console.log(this._size);
   }
 
   _getChoices () {
@@ -105,12 +108,103 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
     ];
   }
 
+  _onChangeQuantity (product, e) {
+    const quantity = (!isNaN(e.target.value)) ? e.target.value : 0;
+
+    dispatchCustomEvent(this, 'change-quantity', { ...product, quantity });
+  }
+
+  _onDelete (product) {
+    dispatchCustomEvent(this, 'delete-quantity', product);
+  }
+
+  _renderSmallEstimation () {
+    return html`
+      <div class="container">
+        ${this._renderSmallSelProduct()}
+      </div>`;
+  }
+
+  _renderBigEstimation () {
+    return html`
+      <div class="estimation-table">
+        <table>
+          <tr>
+            <th></th>
+            <th>${i18n('cc-pricing-estimation.product')}</th>
+            <th>${i18n('cc-pricing-estimation.size')}</th>
+            <th class="quantity-th">${i18n('cc-pricing-estimation.quantity')}</th>
+            <th class="number-align">${i18n('cc-pricing-estimation.price-name-daily')}</th>
+            <th class="number-align">${i18n('cc-pricing-estimation.price-name-monthly')}</th>
+          </tr>
+          ${this._selectedProducts.length > 0
+            ? this._renderBigSelProducts(this._selectedProducts)
+            : ''}
+          ${this.selectedProducts.length === 0 ? html`
+            <tr>
+              <td colspan="6" class="error-text">
+                ${i18n('cc-pricing-estimation.empty-basket')}
+              </td>
+            </tr>
+          ` : ''}
+        </table>
+      </div>
+    `;
+  }
+
+  _renderBigSelProducts (products) {
+    return products.map((product) => {
+
+      const pricePerDay = product.item.price * 24;
+      const totalPricePerDay = pricePerDay * product.quantity * this.currency.changeRate;
+
+      const pricePerMonth = pricePerDay * 30;
+      const totalPricePerMonth = pricePerMonth * product.quantity * this.currency.changeRate;
+
+      return html`
+        <tr>
+          <td>
+            <cc-button
+              image=${deleteSvg}
+              hide-text
+              circle
+              @cc-button:click=${() => this._onDelete(product)}
+            >
+              ${i18n('cc-pricing-estimation.delete')}
+            </cc-button>
+          </td>
+          <td>${product.name}</td>
+          <td>${product.item.name}</td>
+          <td>
+            <div class="quantity-wrapper">
+              <cc-input-number
+                class="input-number"
+                value=${product.quantity}
+                min="0"
+                controls
+                @cc-input-number:input=${(e) => this._onChangeQuantity(product, e)}
+              >
+              </cc-input-number>
+            </div>
+          </td>
+          <td class="price-item">${i18n('cc-pricing-estimation.price', {
+            price: totalPricePerDay,
+            code: this.currency.code,
+          })}
+          </td>
+          <td class="price-item">${i18n('cc-pricing-estimation.price', {
+            price: totalPricePerMonth,
+            code: this.currency.code,
+          })}
+          </td>
+        </tr>`;
+    });
+  }
+
   _renderSmallSelProduct () {
 
-    const products = Object.values(this.selectedProducts);
-    const foundEmpty = products.filter((p) => p == null);
 
-    if (products.length === 0 || foundEmpty.length === products.length) {
+    if (this._selectedProducts.length === 0) {
       return html`
         <div class="error-text">
           ${i18n('cc-pricing-estimation.empty-basket')}
@@ -119,10 +213,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
 
     }
 
-    return products.map((product) => {
-      if (product == null) {
-        return null;
-      }
+    return this._selectedProducts.map((product) => {
 
       const pricePerDay = product.item.price * 24;
       const totalPricePerDay = pricePerDay * product.quantity * this.currency.changeRate;
@@ -132,6 +223,17 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
 
       return html`
         <div class="plan">
+
+          <div class="remove-btn">
+            <cc-button
+              image=${deleteSvg}
+              hide-text
+              circle
+              @cc-button:click=${() => this._onDelete(product)}
+            >
+              ${i18n('cc-pricing-estimation.delete')}
+            </cc-button>
+          </div>
 
           <div class="plan-name">${product.name}</div>
 
@@ -170,127 +272,17 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
     });
   }
 
-  _renderBigSelProducts (products) {
-    return products.map((product) => {
-
-      const pricePerDay = product.item.price * 24;
-      const totalPricePerDay = pricePerDay * product.quantity * this.currency.changeRate;
-
-      const pricePerMonth = pricePerDay * 30;
-      const totalPricePerMonth = pricePerMonth * product.quantity * this.currency.changeRate;
-
-      return html`
-        <tr>
-          ${product.quantity}
-          <td>${product.name}</td>
-          <td>${product.item.name}</td>
-          <td class="quantity-wrapper">
-            ${product.toDelete ? html`
-              <cc-button @cc-button:click=${() => this._onDelete(product)}>DELETE ME</cc-button>
-            ` : ''}
-            <cc-input-number
-              class="input-number"
-              value=${product.quantity}
-              @cc-input-number:input=${(e) => this._onChangeQuantity(product, e)}
-              controls>
-            </cc-input-number>
-          </td>
-          <td class="price-item">${i18n('cc-pricing-estimation.price', {
-            price: totalPricePerDay,
-            code: this.currency.code,
-          })}
-          </td>
-          <td class="price-item">${i18n('cc-pricing-estimation.price', {
-            price: totalPricePerMonth,
-            code: this.currency.code,
-          })}
-          </td>
-        </tr>`;
-    });
-  }
-
-  _onChangeQuantity (product, e) {
-    if (isNaN(e.target.value)) {
-      return;
-    }
-
-    const quantity = e.target.value;
-    const id = `${product.name}/${product.item.name}`;
-
-    const formattedProducts = this._selectedProducts.map((p) => {
-      const fpId = `${p.name}/${p.item.name}`;
-      return (fpId === id)
-        ? { ...product, quantity, toDelete: (quantity <= 0) }
-        : p;
-    });
-    console.log('form p ', formattedProducts);
-
-    dispatchCustomEvent(this, 'change-quantity', { ...product, quantity: e.target.value });
-
-
-    this._selectedProducts = formattedProducts;
-
-    console.log('sel p', this._selectedProducts);
-
-  }
-
-  _onDelete (product) {
-    const id = `${product.name}/${product.item.name}`;
-    this._selectedProducts = this._selectedProducts.filter((p) => {
-      const fpId = `${p.name}/${p.item.name}`;
-      return (fpId !== id);
-    });
-    dispatchCustomEvent(this, 'change-quantity', { ...product, quantity: 0 });
-  }
-
-  _renderSmallEstimation () {
-    return html`
-      <div class="container">
-        ${this._renderSmallSelProduct()}
-      </div>`;
-  }
-
-  _renderBigEstimation () {
-    const products = this._selectedProducts;
-
-    console.log('inserted', products);
-    return html`
-      <div class="estimation-table">
-        <table>
-          <tr>
-            <th>${i18n('cc-pricing-estimation.product')}</th>
-            <th>${i18n('cc-pricing-estimation.size')}</th>
-            <th class="quantity-th">${i18n('cc-pricing-estimation.quantity')}</th>
-            <th class="number-align">${i18n('cc-pricing-estimation.price-name-daily')}</th>
-            <th class="number-align">${i18n('cc-pricing-estimation.price-name-monthly')}</th>
-          </tr>
-          ${products.length > 0
-            ? this._renderBigSelProducts(products)
-            : ''}
-          ${products.length === 0 ? html`
-              <tr>
-                <td colspan="5" class="error-text">
-                  ${i18n('cc-pricing-estimation.empty-basket')}
-                </td>
-              </tr>
-            ` : ''}
-        </table>
-      </div>
-    `;
-  }
-
   update (changedProperties) {
-    console.log('wololo here');
     if (changedProperties.has('selectedProducts')) {
-      this._selectedProducts = Object.values(this.selectedProducts).map((product) => {
-        if (product == null) {
-          return null;
-        }
-        return { ...product, toDelete: (product.quantity <= 0) };
-      })
+      this._selectedProducts = Object.values(this.selectedProducts)
+        .map((product) => {
+          if (product == null) {
+            return null;
+          }
+          return product;
+        })
         .filter((product) => product != null);
     }
-    console.log('changed p', this._selectedProducts);
     super.update(changedProperties);
   }
 
@@ -309,8 +301,8 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
           })}
         </div>
         <div class="recap-buttons">
-          <button href="https://www.clever-cloud.com/en/contact-sales" class="contact-sales">${i18n('cc-pricing-estimation.sales')}</button>
-          <button href="https://api.clever-cloud.com/v2/sessions/signup" class="sign-up">${i18n('cc-pricing-estimation.sign-up')}</button>
+          <a href="https://www.clever-cloud.com/en/contact-sales" class="contact-sales">${i18n('cc-pricing-estimation.sales')}</a>
+          <a href="https://api.clever-cloud.com/v2/sessions/signup" class="sign-up">${i18n('cc-pricing-estimation.sign-up')}</a>
         </div>
       </div>
     `;
@@ -360,6 +352,16 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
           }
 
 
+          .quantity-wrapper {
+              display: block;
+              text-align: center;
+              margin: auto;
+          }
+
+          .delete-state {
+              visibility: visible;
+          }
+
           .quantity-th {
               text-align: center;
           }
@@ -367,16 +369,20 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
           /* Properties for small screen size */
 
           .qt-btn {
-              justify-self: end;
+              text-align: right;
           }
 
           .plan {
               align-items: center;
               border-top: 1px solid #e5e5e5;
               display: grid;
-              grid-template-columns:  [main-start] 1fr 1fr [main-end] min-content;
+              grid-template-columns:  min-content [main-start]1fr 1fr [main-end] min-content;
               margin: 0;
               padding: 1em;
+          }
+
+          .remove-btn {
+              padding: 0.5em;
           }
 
 
@@ -460,11 +466,9 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
 
           .input-number {
               --cc-input-number-align: center;
-              display: block;
-              margin: auto;
-              text-align: center;
               width: 50%;
           }
+
 
           :host([w-gte-600]) .input-number {
               width: 25%;
@@ -526,9 +530,11 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
 
           .contact-sales {
               border-color: transparent;
+              background-color: white;
               border-radius: 0.2em;
               color: #3a3871;
               padding: 0.7em 2em 0.7em 2em;
+              text-decoration: none;
           }
 
           .contact-sales:hover {
@@ -538,11 +544,11 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
 
           .sign-up {
               background-color: transparent;
-              border-color: #cccccc;
-              border-radius: 0.2em;
-              border-style: solid;
+              border-radius: 0.1em;
+              border: 0.1em solid #cccccc;
               color: #ffffff;
               padding: 0.7em;
+              text-decoration: none;
           }
 
           .sign-up:hover {

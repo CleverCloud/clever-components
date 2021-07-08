@@ -356,6 +356,7 @@ export const translations = {
   'cc-map.no-points': `Pas de données à afficher sur la carte en ce moment.`,
   //#endregion
   //#region cc-pricing-estimation
+  'cc-pricing-estimation.delete': `Supprimer le produit`,
   'cc-pricing-estimation.empty-basket': `Votre panier est vide.`,
   'cc-pricing-estimation.monthly-est': `Total Estimé (30 jours)`,
   'cc-pricing-estimation.price': ({ price, code }) => `${formatCurrency(lang, price, { currency: code })}`,
