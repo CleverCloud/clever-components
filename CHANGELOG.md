@@ -6,6 +6,10 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+...
+
+## 6.10.0 (2021-07-08)
+
 * `<cc-toggle>`: add `--cc-text-transform` CSS custom property
 * New component:
   * `<cc-pricing-product-cellar>` (with smart definition)
