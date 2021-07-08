@@ -197,12 +197,12 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
             code: this.currency.code,
           })}
           </td>
-        </tr>`;
+        </tr>
+      `;
     });
   }
 
   _renderSmallSelProduct () {
-
 
     if (this._selectedProducts.length === 0) {
       return html`
@@ -301,8 +301,14 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
           })}
         </div>
         <div class="recap-buttons">
-          <a href="https://www.clever-cloud.com/en/contact-sales" class="contact-sales">${i18n('cc-pricing-estimation.sales')}</a>
-          <a href="https://api.clever-cloud.com/v2/sessions/signup" class="sign-up">${i18n('cc-pricing-estimation.sign-up')}</a>
+          <div class="contact-sales-wrapper">
+            <a href="https://www.clever-cloud.com/en/contact-sales" class="contact-sales">${i18n('cc-pricing-estimation.sales')}</a>
+<!--            <div class="ring"></div>-->
+          </div>
+          <div class="sign-up-wrapper">
+            <a href="https://api.clever-cloud.com/v2/sessions/signup" class="sign-up">${i18n('cc-pricing-estimation.sign-up')}</a>
+<!--            <div class="ring"></div>-->
+          </div>
         </div>
       </div>
     `;
@@ -479,6 +485,20 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
               text-align: center;
           }
 
+          .ring {
+              background: #fff;
+              border: 1px solid #aaa;
+              border-radius: 0.25rem;
+              bottom: 0;
+              box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+              left: 0;
+              overflow: hidden;
+              position: absolute;
+              right: 0;
+              top: 0;
+              z-index: 0;
+          }
+
 
           /* Recap */
 
@@ -542,6 +562,11 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
               cursor: pointer;
           }
 
+          .contact-sales:focus {
+              border-color: #777;
+              box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
+          }
+
           .sign-up {
               background-color: transparent;
               border-radius: 0.1em;
@@ -554,6 +579,11 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
           .sign-up:hover {
               background-color: rgba(255, 255, 255, 0.1);
               cursor: pointer;
+          }
+
+          .sign-up:focus {
+              border-color: #777;
+              box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
           }
 
           .price-item {
