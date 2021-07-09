@@ -1,7 +1,7 @@
 {
   "name": "@clevercloud/components",
   "version": "6.10.0",
-  "description": "This is a Work In Progress to introduce Web Components in our Clever Cloud Web based UIs.",
+  "description": "Collection of Web Components by Clever Cloud",
   "license": "Apache-2.0",
   "keywords": [
     "components",
