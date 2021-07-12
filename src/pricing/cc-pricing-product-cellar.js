@@ -17,8 +17,8 @@ const downSvg = new URL('../assets/down.svg', import.meta.url).href;
 const plusSvg = new URL('../assets/plus.svg', import.meta.url).href;
 const upSvg = new URL('../assets/up.svg', import.meta.url).href;
 
-const CELLAR_NAME = 'Cellar';
-const CELLAR_ICON = 'https://static-assets.cellar.services.clever-cloud.com/logos/cellar.svg';
+const CELLAR_NAME = 'FS Bucket';
+const CELLAR_ICON = 'https://static-assets.cellar.services.clever-cloud.com/logos/fsbucket.svg';
 
 const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
 const INFINITY = '∞';
@@ -402,22 +402,6 @@ export class CcPricingProductCellar extends withResizeObserver(LitElement) {
           estimatedPrice: this._storagePrice,
           intervals: skeleton ? SKELETON_STORAGE_INTERVALS : this.intervals.storage,
           currentInterval: this._storageInterval,
-          skeleton,
-        })}
-
-        <hr>
-
-        ${this._renderSection({
-          section: 'traffic',
-          title: i18n('cc-pricing-product-cellar.traffic.title'),
-          label: i18n('cc-pricing-product-cellar.traffic.label'),
-          icon: arrowsSvg,
-          isSectionClosed: this._trafficSectionClosed,
-          quantity: this._trafficQuantity,
-          unitValue: this._trafficUnitValue,
-          estimatedPrice: this._trafficPrice,
-          intervals: skeleton ? SKELETON_TRAFFIC_INTERVALS : this.intervals.traffic,
-          currentInterval: this._trafficInterval,
           skeleton,
         })}
 

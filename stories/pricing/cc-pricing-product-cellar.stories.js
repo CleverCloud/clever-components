@@ -80,7 +80,28 @@ export const dataLoadedWithEmptyHead = makeStory(conf, {
 
 export const dataLoadedWithCustomDescription = makeStory(conf, {
   items: [{
-    intervals: baseIntervals,
+    intervals: {
+      storage: [
+        {
+          minRange: 0,
+          maxRange: 100 * 1e6,
+          price: 0,
+        },
+        {
+          /* Bytes */
+          minRange: 100 * 1e6,
+          /* Price for 1GB per hour */
+          price: 0.00208333333333333333,
+        },
+      ],
+      traffic: [
+        {
+          minRange: 0,
+          maxRange: 100 * 1e6,
+          price: 0,
+        },
+      ],
+    },
     innerHTML: 'Description can be overriden with default slot...',
   }],
 });
