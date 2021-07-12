@@ -50,11 +50,11 @@ export class CcBeta extends LitElement {
         }
 
         .beta {
-          --height: 1.5rem;
-          --width: 8rem;
+          --height: 1.75em;
+          --width: 8em;
           background: #3A3871;
           color: white;
-          font-size: 0.9rem;
+          font-size: 0.85em;
           font-weight: bold;
           height: var(--height);
           line-height: var(--height);
@@ -66,12 +66,12 @@ export class CcBeta extends LitElement {
         }
 
         :host([position^="top-"]) .beta {
-          --translate: 1.6rem;
+          --translate: 1.85em;
           top: calc(var(--height) / -2);
         }
 
         :host([position^="bottom-"]) .beta {
-          --translate: -1.6rem;
+          --translate: -1.85em;
           bottom: calc(var(--height) / -2);
         }
 

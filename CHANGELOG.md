@@ -6,7 +6,7 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+* `<cc-beta>`: replace rem with em
 
 ## 6.10.0 (2021-07-08)
 
