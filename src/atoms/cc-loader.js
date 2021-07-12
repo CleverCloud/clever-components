@@ -34,8 +34,8 @@ export class CcLoader extends LitElement {
           animation: progress-circular-rotate 1.75s linear infinite;
           height: 100%;
           margin: auto;
-          max-height: 2.5rem;
-          max-width: 2.5rem;
+          max-height: 2.5em;
+          max-width: 2.5em;
           width: 100%;
         }
 
