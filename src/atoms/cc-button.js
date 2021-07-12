@@ -164,36 +164,40 @@ export class CcButton extends LitElement {
       ? (this.textContent || '')
       : undefined;
 
-    return html`<button
-      type="button"
-      class=${classMap(modes)}
-      .disabled=${this.disabled || this.skeleton || this.waiting}
-      @click=${this._onClick}
-      title="${ifDefined(imageOnlyText)}"
-      aria-label="${ifDefined(imageOnlyText)}"
-    >
-      <!--
-        When delay mechanism is set, we need a cancel label.
-        We don't want the button width to change when the user clicks and toggles between normal and cancel mode.
-        That's why (see CSS) we put both labels in a grid, in the same cell and hide (visibility:hidden) the one we don't want.
-        This way, when delay is set, the button has a min width of the largest label (normal or cancel).
-      -->
-      <div class="text-wrapper ${classMap({ 'cancel-mode': this._cancelMode })}">
-        ${this.image != null ? html`
-          <img src=${this.image} alt="">
-        ` : ''}
-        <div class="text-normal"><slot></slot></div>
+    return html`
+      <button
+        type="button"
+        class=${classMap(modes)}
+        .disabled=${this.disabled || this.skeleton || this.waiting}
+        @click=${this._onClick}
+        title="${ifDefined(imageOnlyText)}"
+        aria-label="${ifDefined(imageOnlyText)}"
+      >
+        <!--
+          When delay mechanism is set, we need a cancel label.
+          We don't want the button width to change when the user clicks and toggles between normal and cancel mode.
+          That's why (see CSS) we put both labels in a grid, in the same cell and hide (visibility:hidden) the one we don't want.
+          This way, when delay is set, the button has a min width of the largest label (normal or cancel).
+        -->
+        <div class="text-wrapper ${classMap({ 'cancel-mode': this._cancelMode })}">
+          ${this.image != null ? html`
+            <img src=${this.image} alt="">
+          ` : ''}
+          <div class="text-normal">
+            <slot></slot>
+          </div>
+          ${delay != null ? html`
+            <div class="text-cancel">${i18n('cc-button.cancel')}</div>
+          ` : ''}
+        </div>
         ${delay != null ? html`
-          <div class="text-cancel">${i18n('cc-button.cancel')}</div>
+          <progress class="delay ${classMap({ active: this._cancelMode })}" style="--delay: ${delay}s"></progress>
         ` : ''}
-      </div>
-      ${delay != null ? html`
-        <progress class="delay ${classMap({ active: this._cancelMode })}" style="--delay: ${delay}s"></progress>
-      ` : ''}
-      ${waiting ? html`
-      <progress class="waiting"></progress>
-    ` : ''}
-    </button>`;
+        ${waiting ? html`
+          <progress class="waiting"></progress>
+        ` : ''}
+      </button>
+    `;
   }
 
   static get styles () {
@@ -222,13 +226,12 @@ export class CcButton extends LitElement {
         /* BASE */
         .btn {
           border: 1px solid #000;
-          border-radius: 0.15rem;
+          border-radius: 0.15em;
           cursor: pointer;
-          font-size: 14px;
           font-weight: bold;
-          min-height: 2rem;
+          min-height: 2em;
           overflow: hidden;
-          padding: 0 0.5rem;
+          padding: 0 0.5em;
           /* used to absolutely position the <progress> */
           position: relative;
           text-transform: uppercase;
@@ -271,7 +274,7 @@ export class CcButton extends LitElement {
           background-color: #fff;
           color: var(--btn-color);
         }
-        
+
         .circle {
           border-radius: 50%;
         }
@@ -282,10 +285,10 @@ export class CcButton extends LitElement {
         }
 
         .img-only {
-          height: 1.75rem;
+          height: 1.75em;
           min-height: 0;
           padding: 0;
-          width: 1.75rem;
+          width: 1.75em;
         }
 
         /* STATES */
@@ -328,7 +331,7 @@ export class CcButton extends LitElement {
         .text-wrapper {
           align-items: center;
           display: grid;
-          grid-gap: 0.5rem;
+          gap: 0.5em;
           grid-template-columns: min-content 1fr;
           height: 100%;
           justify-content: center;
@@ -336,19 +339,19 @@ export class CcButton extends LitElement {
         }
 
         .txt-only .text-wrapper {
-          grid-gap: 0;
+          gap: 0;
           grid-template-columns: 1fr;
         }
 
         .img-only .text-wrapper {
-          grid-gap: 0;
+          gap: 0;
           grid-template-columns: min-content;
         }
 
         img {
           display: block;
-          height: 1.25rem;
-          width: 1.25rem;
+          height: 1.25em;
+          width: 1.25em;
         }
 
         .img-only .text-normal {
@@ -359,6 +362,12 @@ export class CcButton extends LitElement {
         .text-normal,
         .text-cancel {
           grid-row: 1 / 2;
+        }
+
+        .text-normal,
+        .text-cancel {
+          /* Setting font-size here is easier than on .btn because of how "em" works */
+          font-size: 0.85em;
         }
 
         img {
@@ -401,7 +410,7 @@ export class CcButton extends LitElement {
           appearance: none;
           border: none;
           bottom: 0;
-          height: 0.2rem;
+          height: 0.2em;
           left: 0;
           position: absolute;
           width: 0;
@@ -429,7 +438,7 @@ export class CcButton extends LitElement {
           appearance: none;
           border: none;
           bottom: 0;
-          height: 0.2rem;
+          height: 0.2em;
           margin-left: calc(50% - calc(var(--width) / 2));
           position: absolute;
           width: var(--width);
@@ -444,6 +453,10 @@ export class CcButton extends LitElement {
         .cc-link {
           cursor: pointer;
           text-decoration: underline;
+        }
+
+        .cc-link .text-normal {
+          font-size: 1em;
         }
       `,
     ];
