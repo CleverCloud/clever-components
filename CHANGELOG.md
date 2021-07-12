@@ -6,7 +6,13 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+* `<cc-beta>`: replace rem with em
+* `<cc-button>`: replace rem with em
+* `<cc-img>`: replace rem with em
+* `<cc-input-number>`: replace rem with em
+* `<cc-input-text>`: replace rem with em
+* `<cc-loader>`: replace rem with em
+* `<cc-toggle>`: replace rem with em
 
 ## 6.10.0 (2021-07-08)
 

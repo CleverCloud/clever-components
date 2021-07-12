@@ -251,6 +251,7 @@ export class CcTileStatusCodes extends LitElement {
         }
 
         .docs-toggle {
+          font-size: 1rem;
           margin: 0 0 0 1rem;
         }
 

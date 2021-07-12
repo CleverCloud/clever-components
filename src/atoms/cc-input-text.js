@@ -296,7 +296,7 @@ export class CcInputText extends LitElement {
         label {
           cursor: pointer;
           display: block;
-          padding-bottom: 0.35rem;
+          padding-bottom: 0.35em;
         }
 
         .meta-input {
@@ -315,7 +315,8 @@ export class CcInputText extends LitElement {
         .wrapper {
           display: grid;
           flex: 1 1 0;
-          margin: 0.15rem 0.5rem;
+          /* see input to know why 0.15em */
+          margin: 0.15em 0.5em;
           min-width: 0;
           overflow: hidden;
         }
@@ -328,8 +329,8 @@ export class CcInputText extends LitElement {
           border: 1px solid #000;
           box-sizing: border-box;
           display: block;
-          font-family: var(--cc-ff-monospace);
-          font-size: 14px;
+          font-family: monospace;
+          font-size: unset;
           margin: 0;
           padding: 0;
           resize: none;
@@ -340,10 +341,14 @@ export class CcInputText extends LitElement {
         .input {
           background: none;
           border: none;
-          grid-area: 1 / 1 / 1 / 1;
+          font-family: var(--cc-ff-monospace);
+          font-size: 0.85em;
+          grid-area: 1 / 1 / 2 / 2;
           /* multiline behaviour */
-          height: calc(var(--rows, 1) * 1.7rem);
-          line-height: 1.7rem;
+          height: calc(var(--rows, 1) * 2em);
+          /* 2em with a 0.85em font-size ~ 1.7em */
+          /* (2em - 1.7em) / 2 ~ 0.15em of padding (top and bottom) on the wrapper */
+          line-height: 2em;
           overflow: hidden;
           z-index: 2;
         }
@@ -402,7 +407,7 @@ export class CcInputText extends LitElement {
         .ring {
           background: #fff;
           border: 1px solid #aaa;
-          border-radius: 0.25rem;
+          border-radius: 0.25em;
           bottom: 0;
           box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
           left: 0;
@@ -451,22 +456,23 @@ export class CcInputText extends LitElement {
           border: none;
           display: block;
           font-family: inherit;
+          font-size: unset;
           margin: 0;
           padding: 0;
         }
 
         .btn {
-          border-radius: 0.15rem;
+          border-radius: 0.15em;
           cursor: pointer;
           flex-shrink: 0;
-          height: 1.6rem;
-          margin: 0.2rem 0.2rem 0.2rem 0;
-          width: 1.6rem;
+          height: 1.6em;
+          margin: 0.2em 0.2em 0.2em 0;
+          width: 1.6em;
           z-index: 2;
         }
 
         .btn:focus {
-          box-shadow: 0 0 0 .2rem rgba(50, 115, 220, .25);
+          box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
           outline: 0;
         }
 
