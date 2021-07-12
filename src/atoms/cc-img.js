@@ -118,9 +118,9 @@ export class CcImg extends LitElement {
         }
 
         .error-msg {
-          font-size: 0.9rem;
+          font-size: 0.85em;
           overflow: hidden;
-          padding: 0.25rem;
+          padding: 0.3em;
           text-align: center;
           text-overflow: ellipsis;
           white-space: nowrap;
