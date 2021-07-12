@@ -12,6 +12,7 @@ title: Changelog
 * `<cc-input-number>`: replace rem with em
 * `<cc-input-text>`: replace rem with em
 * `<cc-loader>`: replace rem with em
+* `<cc-toggle>`: replace rem with em
 
 ## 6.10.0 (2021-07-08)
 

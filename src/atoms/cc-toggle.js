@@ -173,15 +173,15 @@ export class CcToggle extends LitElement {
         }
 
         legend:not(:empty) {
-          padding-bottom: 0.35rem;
+          padding-bottom: 0.35em;
         }
 
         .toggle-group {
           background-color: #fff;
-          border-radius: 0.15rem;
+          border-radius: 0.15em;
           box-sizing: border-box;
           display: flex;
-          height: 2rem;
+          height: 2em;
           line-height: 1.25;
           overflow: visible;
         }
@@ -208,11 +208,11 @@ export class CcToggle extends LitElement {
           color: var(--color-txt);
           cursor: pointer;
           display: grid;
-          font-size: 14px;
+          font-size: 0.85em;
           font-weight: bold;
           grid-auto-flow: column;
-          grid-gap: 0.5rem;
-          padding: 0 0.5rem;
+          gap: 0.6em;
+          padding: 0 0.6em;
           position: relative;
           text-transform: var(--cc-text-transform, uppercase);
           -moz-user-select: none;
@@ -227,11 +227,11 @@ export class CcToggle extends LitElement {
 
         label:first-of-type {
           border-left-width: 1px;
-          border-radius: 0.15rem 0 0 0.15rem;
+          border-radius: 0.15em 0 0 0.15em;
         }
 
         label:last-of-type {
-          border-radius: 0 0.15rem 0.15rem 0;
+          border-radius: 0 0.15em 0.15em 0;
           border-right-width: 1px;
         }
 
@@ -242,7 +242,7 @@ export class CcToggle extends LitElement {
         /* Used to display a background behind the text */
         label::before {
           background-color: var(--color-bg);
-          border-radius: .15rem;
+          border-radius: .15em;
           bottom: var(--space);
           content: '';
           display: block;
@@ -260,9 +260,9 @@ export class CcToggle extends LitElement {
           content: '';
           display: block;
           height: var(--space);
-          left: 0.25rem;
+          left: 0.25em;
           position: absolute;
-          right: 0.25rem;
+          right: 0.25em;
           z-index: 0;
         }
 
@@ -273,8 +273,8 @@ export class CcToggle extends LitElement {
 
         img {
           display: block;
-          height: 1.25rem;
-          width: 1.25rem;
+          height: 1.45em;
+          width: 1.45em;
         }
 
         /* NOT SELECTED */
