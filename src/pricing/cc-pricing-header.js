@@ -2,10 +2,10 @@ import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import '@shoelace-style/shoelace';
-import { getFlagUrl } from '../lib/remote-assets.js';
-import { shoelaceStyles } from '../styles/shoelace.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
+import { shoelaceStyles } from '../styles/shoelace.js';
+import { CcZone } from '../zones/cc-zone.js';
+import { skeletonStyles } from '../styles/skeleton.js';
 
 const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
 
@@ -54,22 +54,19 @@ export class CcPricingHeader extends withResizeObserver(LitElement) {
 
   constructor () {
     super();
-    // TODO: skeleton
-    this.currencies = [];
-    // TODO skeleton
-    this.zones = [];
-    this.currency = {};
-    this.zoneId = 'PAR';
-    this.totalPrice = 0;
     this.breakpoints = {
       width: [600],
     };
+    this.currencies = [];
+    this.currency = {};
+    this.totalPrice = 0;
+    this.zoneId = 'PAR';
+    this.zones = [];
     this._size = 0;
   }
 
   onResize ({ width }) {
     this._size = width;
-    console.log(this._size);
   }
 
   _getCurrencySymbol (currency) {
@@ -106,8 +103,18 @@ export class CcPricingHeader extends withResizeObserver(LitElement) {
         </div>
         <div class="currency-select">
           <sl-select @sl-change=${this._onCurrencyChange} value=${this.currency.code} class="select">
-            ${this._getformattedCurrencies(this.currencies).map((c) => html`
-              <sl-menu-item value=${c.code}>${c.displayValue}</sl-menu-item>`)}
+            ${this.currencies.length === 0 ? html`
+              <sl-menu-item class="skeleton">
+                <div slot="prefix" class="skeleton-item">€ EUR</div>
+              </sl-menu-item>
+            ` : ''}
+            ${this.currencies.length > 0
+              ? this._getformattedCurrencies(this.currencies).map((c) => html`
+                <sl-menu-item value=${c.code}>
+                    ${c.displayValue}
+                </sl-menu-item>
+              `)
+              : ''}
           </sl-select>
         </div>
         <div class="zone-text">
@@ -115,23 +122,44 @@ export class CcPricingHeader extends withResizeObserver(LitElement) {
         </div>
         <div class="zones">
           <sl-select @sl-change=${this._onZoneInput} value=${this.zoneId} class="select">
-            ${this.zones.map((zone) => html`
-              <sl-menu-item value=${zone.name}>
-                <cc-zone
-                  mode="medium"
-                  .zone=${zone}>
-                </cc-zone>
+            ${this.zones.length === 0 ? html`
+              <sl-menu-item>
+                <cc-zone slot="prefix" mode="medium"></cc-zone>
               </sl-menu-item>
-            `)}
+              <sl-menu-item>
+                <cc-zone slot="prefix" mode="medium"></cc-zone>
+              </sl-menu-item>
+              <sl-menu-item>
+                <cc-zone slot="prefix" mode="medium"></cc-zone>
+              </sl-menu-item>
+            ` : ''}
+            ${this.zones.length > 0 ? this.zones.map((zone) => html`
+                <sl-menu-item  class="zone-item" value=${zone.name}>
+                  ${CcZone.getText(zone)}
+                  <cc-zone
+                    slot="prefix"
+                    class="zone-item"
+                    mode="medium"
+                    .zone=${zone}>
+                  </cc-zone>
+                </sl-menu-item>
+              `)
+              : ''}
           </sl-select>
         </div>
         <div class="est-cost-text">
           ${i18n('cc-pricing-header.est-cost')}
         </div>
         <div class="total-price">
-          ${i18n('cc-pricing-header.price', {
-            price: this.totalPrice * this.currency.changeRate, code: this.currency.code,
-          })}
+          ${Object.values(this.currency).length === 0 ? html`
+            <div class="skeleton">00000 €</div>
+          ` : ''}
+          ${Object.values(this.currency).length > 0 ? html`
+            ${i18n('cc-pricing-header.price', {
+              price: this.totalPrice * this.currency.changeRate, code: this.currency.code,
+            })}
+          ` : ''}
+
         </div>
       </div>
       </div>
@@ -141,27 +169,28 @@ export class CcPricingHeader extends withResizeObserver(LitElement) {
   static get styles () {
     return [
       shoelaceStyles,
+      skeletonStyles,
       // language=CSS
       css`
           :host {
               display: block;
-              margin-bottom: 1.5rem;
-              padding: 1rem;
+              margin-bottom: 1.5em;
+              padding: 1em;
           }
 
-          .flag {
-              border-radius: 0.15rem;
-              box-shadow: 0 0 3px #ccc;
-              height: 1.5rem;
-              margin-right: 1rem;
-              width: 2rem;
+          .skeleton {
+              background-color: #bbb;
           }
 
+          .skeleton-item {
+              visibility: hidden;
+          }
+          
           .select-currency {
               align-items: center;
               display: flex;
               flex-direction: column;
-              gap: 0.25rem;
+              gap: 0.25em;
           }
 
           .header {
@@ -180,9 +209,9 @@ export class CcPricingHeader extends withResizeObserver(LitElement) {
           }
 
           .est-cost-text {
+              align-self: end;
               grid-area: estimation-text;
               justify-self: end;
-              align-self: end;
           }
 
           .currency-text {
@@ -202,6 +231,25 @@ export class CcPricingHeader extends withResizeObserver(LitElement) {
               background-color: #ffffff;
           }
 
+          .zone-item {
+              margin: 0.5em 0 0.5em 0.5em;
+          }
+
+          sl-menu-item.zone-item::part(base):focus {
+              --cc-zone-subtitle-color: #fff;
+              --cc-zone-tag-bgcolor: transparent;
+              --cc-zone-tag-border-color: #fff;
+          }
+
+          sl-menu-item.zone-item::part(label) {
+              display: none;
+          }
+
+          sl-menu-item.zone-itemw::part(prefix) {
+              display: block;
+              flex: 1 1 0;
+          }
+
           .zones {
               grid-area: zones;
           }
@@ -209,13 +257,13 @@ export class CcPricingHeader extends withResizeObserver(LitElement) {
           .zone-text {
               grid-area: zone-text;
           }
-          
+
           .total-price {
+              align-self: end;
               font-size: 1.5em;
               font-weight: bold;
               grid-area: estimation;
               justify-self: end;
-              align-self: end;
 
           }
 
@@ -223,7 +271,7 @@ export class CcPricingHeader extends withResizeObserver(LitElement) {
               align-self: center;
 
           }
-          
+
           .select {
               --focus-ring: 0 0 0 .2em rgba(50, 115, 220, .25);
           }

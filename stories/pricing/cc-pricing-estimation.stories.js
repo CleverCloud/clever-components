@@ -1,5 +1,4 @@
 import '../../src/pricing/cc-pricing-estimation.js';
-import { getFullProductRuntime } from '../assets/runtime-plans.js';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
@@ -63,7 +62,6 @@ export const dataLoadedWithDollars = makeStory(conf, {
   ],
 });
 
-
 export const dataLoadedWithCustomStyles = makeStory(conf, {
   css: `
     cc-pricing-estimation {
@@ -74,29 +72,39 @@ export const dataLoadedWithCustomStyles = makeStory(conf, {
     }
   `,
   items: [
-    { selectedProducts: [pgExample, cellarExample] },
+    {
+      selectedProducts: [pgExample, cellarExample],
+      totalPrice: 720,
+    },
   ],
 });
 
 export const dataLoadedWithCellar = makeStory(conf, {
   items: [
-    { selectedProducts: [cellarExample] },
+    {
+      selectedProducts: [cellarExample],
+      totalPrice: 360,
+    },
   ],
 });
 
 export const dataLoadedWithPostgres = makeStory(conf, {
   items: [
-    { selectedProducts: [pgExample] },
+    {
+      selectedProducts: [pgExample],
+      totalPrice: 360,
+    },
   ],
 });
 
 export const dataLoadedWithMultiple = makeStory(conf, {
   items: [
-    { selectedProducts: [pgExample, cellarExample] },
+    {
+      selectedProducts: [pgExample, cellarExample],
+      totalPrice: 720,
+    },
   ],
 });
-
-// TODO : Dollars story
 
 export const empty = makeStory(conf, {
   items: [

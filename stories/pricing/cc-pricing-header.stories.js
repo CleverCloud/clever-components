@@ -50,38 +50,15 @@ const baseItems = {
     },
   ],
 };
-const pgExample = {
-  name: 'Postgresql',
-  item: {
-    name: 'XS Small Space',
-    price: 7.5 / 30,
-    features: [{ name: 'Backups', value: 'Daily - 7 Retained' }, {
-      name: 'Max DB size',
-      value: '5 GB',
-    }, { name: 'Metrics', value: 'Yes' }, { name: 'PostGIS', value: 'Yes' }, {
-      name: 'Type',
-      value: 'Dedicated',
-    }, { name: 'vCPUS', value: '1' }, { name: 'Logs', value: 'Yes' }, {
-      name: 'Max connection limit',
-      value: '75',
-    }, { name: 'Memory', value: '1 GB' }, { name: 'Migration Tool', value: 'Yes' }],
-  },
-  quantity: 2,
-};
-
-const cellarExample = {
-  name: 'Cellar',
-  item: {
-    name: 'Storage: 1000GB, Traffic: 1TB',
-    price: 15 / 30,
-  },
-  quantity: 1,
-};
 
 export const defaultStory = makeStory(conf, {
   items: [
-    { ...baseItems, zone: 'PAR', currency: {code: 'EUR', changeRate: 1}, totalPrice: 720 },
+    { ...baseItems, zone: 'PAR', currency: { code: 'EUR', changeRate: 1 }, totalPrice: 720 },
   ],
+});
+
+export const skeleton = makeStory(conf, {
+  items: [{}],
 });
 
 export const dataLoadedWithCustomStyles = makeStory(conf, {
@@ -93,13 +70,13 @@ export const dataLoadedWithCustomStyles = makeStory(conf, {
     }
   `,
   items: [
-    { ...baseItems, zone: 'PAR', currency: {code: 'EUR', changeRate: 1}, totalPrice: 720 },
+    { ...baseItems, zone: 'PAR', currency: { code: 'EUR', changeRate: 1 }, totalPrice: 720 },
   ],
 });
 
 export const dataLoadedWithDollars = makeStory(conf, {
   items: [
-    { ...baseItems, zone: 'RBX', currency: {code: 'USD', changeRate: 1.21}, totalPrice: 360 },
+    { ...baseItems, zone: 'RBX', currency: { code: 'USD', changeRate: 1.21 }, totalPrice: 360 },
   ],
 });
 
@@ -110,6 +87,7 @@ export const dataLoadedWithDollars = makeStory(conf, {
 
 enhanceStoriesNames({
   defaultStory,
+  skeleton,
   dataLoadedWithCustomStyles,
   dataLoadedWithDollars,
 });

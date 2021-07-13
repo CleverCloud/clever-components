@@ -104,89 +104,90 @@ export class CcZone extends LitElement {
       skeletonStyles,
       // language=CSS
       css`
-        :host {
-          --lh: 1.5rem;
-          display: flex;
-        }
+          :host {
+              --lh: 1.5rem;
+              display: flex;
+          }
 
-        :host([mode="small"]),
-        :host([mode="small-infra"]) {
-          --lh: 1rem;
-          font-size: 0.8rem !important;
-        }
+          :host([mode="small"]),
+          :host([mode="small-infra"]) {
+              --lh: 1rem;
+              font-size: 0.8rem !important;
+          }
 
-        .flag {
-          border-radius: 0.15rem;
-          box-shadow: 0 0 3px #ccc;
-          display: inline-block;
-          height: var(--lh);
-          margin-right: 1rem;
-          width: 2rem;
-        }
+          .flag {
+              border-radius: 0.15rem;
+              box-shadow: 0 0 3px #ccc;
+              display: inline-block;
+              height: var(--lh);
+              margin-right: 1rem;
+              width: 2rem;
+          }
 
-        :host([mode="small"]) .flag,
-        :host([mode="small-infra"]) .flag {
-          margin-right: 0.5rem;
-          width: 1.33rem;
-        }
+          :host([mode="small"]) .flag,
+          :host([mode="small-infra"]) .flag {
+              margin-right: 0.5rem;
+              width: 1.33rem;
+          }
 
-        .wrapper-details-logo {
-          flex: 1 1 0;
-          min-height: var(--lh);
-        }
+          .wrapper-details-logo {
+              flex: 1 1 0;
+              min-height: var(--lh);
+          }
 
-        .wrapper-details {
-          display: flex;
-        }
+          .wrapper-details {
+              display: flex;
+          }
 
-        .details {
-          align-self: center;
-          flex: 1 1 0;
-          line-height: var(--lh);
-        }
+          .details {
+              align-self: center;
+              flex: 1 1 0;
+              line-height: var(--lh);
+          }
 
-        .title {
-          font-weight: bold;
-        }
+          .title {
+              font-weight: bold;
+          }
 
-        .subtitle {
-          color: #555;
-        }
+          .subtitle {
+              color: var(--cc-zone-subtitle-color, #555);
+          }
 
-        .infra-logo {
-          --cc-img-fit: contain;
-          height: var(--lh);
-          margin-left: 0.5rem;
-          width: 4rem;
-        }
+          .infra-logo {
+              --cc-img-fit: contain;
+              height: var(--lh);
+              margin-left: 0.5rem;
+              width: 4rem;
+          }
 
-        :host([mode="small"]) .tag-list,
-        :host([mode="small"]) .infra-logo,
-        :host([mode="small-infra"]) .tag-list {
-          display: none;
-        }
+          :host([mode="small"]) .tag-list,
+          :host([mode="small"]) .infra-logo,
+          :host([mode="small-infra"]) .tag-list {
+              display: none;
+          }
 
-        .tag-list {
-          --cc-gap: 0.5rem;
-        }
+          .tag-list {
+              --cc-gap: 0.5rem;
+          }
 
-        .tag {
-          background-color: rgba(50, 50, 255, 0.15);
-          border-radius: 0.25rem;
-          box-sizing: border-box;
-          font-family: var(--cc-ff-monospace);
-          font-size: 0.8rem;
-          margin-top: 0.5rem;
-          padding: 0.1rem 0.3rem;
-        }
+          .tag {
+              background-color: var(--cc-zone-tag-bgcolor, rgba(50, 50, 255, 0.15));
+              border: 1px solid var(--cc-zone-tag-border-color, transparent);
+              border-radius: 0.25rem;
+              box-sizing: border-box;
+              font-family: var(--cc-ff-monospace);
+              font-size: 0.8rem;
+              margin-top: 0.5rem;
+              padding: 0.1rem 0.3rem;
+          }
 
-        .skeleton {
-          color: transparent !important;
-        }
+          .skeleton {
+              color: transparent !important;
+          }
 
-        .skeleton:not(.tag) {
-          background-color: #bbb;
-        }
+          .skeleton:not(.tag) {
+              background-color: #bbb;
+          }
       `,
     ];
   }

@@ -1,18 +1,20 @@
 import '../atoms/cc-button.js';
 import '../molecules/cc-error.js';
-import { preventOutline } from 'leaflet/src/dom/DomUtil.js';
+import '../atoms/cc-input-number.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
-import { classMap } from 'lit-html/directives/class-map.js';
 
 const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
 
 const deleteSvg = new URL('../assets/delete.svg', import.meta.url).href;
 
+const CONTACT_URL = 'https://www.clever-cloud.com/en/contact-sales';
+const SIGN_UP_URL = 'https://api.clever-cloud.com/v2/sessions/signup';
+
 /**
- * A component displaying the products selected, change their quantity or remove them from the list.
+ * A component displaying the products selected and allows to change their quantity or remove them from the list.
  *
  * ## Type definitions
  *
@@ -73,39 +75,26 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
 
   static get properties () {
     return {
-      selectedProducts: { type: Array },
       currency: { type: Object },
+      selectedProducts: { type: Array },
       totalPrice: { type: Number },
-      _size: { type: String },
       _selectedProducts: { type: Array },
+      _size: { type: String },
     };
   }
 
   constructor () {
     super();
-    this.selectedProducts = [];
-    this.totalPrice = 0;
     this.breakpoints = {
       width: [600],
     };
     this.currency = CURRENCY_EUR;
+    this.selectedProducts = [];
+    this.totalPrice = 0;
   }
 
   onResize ({ width }) {
     this._size = width;
-  }
-
-  _getChoices () {
-    return [
-      {
-        label: i18n('cc-pricing-estimation.classic-mode'),
-        value: 'classic',
-      },
-      {
-        label: i18n('cc-pricing-estimation.input-mode'),
-        value: 'input',
-      },
-    ];
   }
 
   _onChangeQuantity (product, e) {
@@ -118,11 +107,44 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
     dispatchCustomEvent(this, 'delete-quantity', product);
   }
 
-  _renderSmallEstimation () {
+  update (changedProperties) {
+    if (changedProperties.has('selectedProducts')) {
+      this._selectedProducts = Object.values(this.selectedProducts)
+        .map((product) => {
+          if (product == null) {
+            return null;
+          }
+          return product;
+        })
+        .filter((product) => product != null);
+    }
+    super.update(changedProperties);
+  }
+
+  render () {
     return html`
-      <div class="container">
-        ${this._renderSmallSelProduct()}
-      </div>`;
+      ${(this._size > 600)
+        ? this._renderBigEstimation()
+        : this._renderSmallEstimation()
+      }
+
+      <div class="recap">
+        <div class="monthly-est">${i18n('cc-pricing-estimation.monthly-est')}</div>
+        <div class="cost-price">
+          ${i18n('cc-pricing-estimation.price', {
+            price: this.totalPrice * this.currency.changeRate, code: this.currency.code,
+          })}
+        </div>
+        <div class="recap-buttons">
+          <div class="contact-sales-wrapper">
+            <a href=${CONTACT_URL} class="contact-sales">${i18n('cc-pricing-estimation.sales')}</a>
+          </div>
+          <div class="sign-up-wrapper">
+            <a href=${SIGN_UP_URL} class="sign-up">${i18n('cc-pricing-estimation.sign-up')}</a>
+          </div>
+        </div>
+      </div>
+    `;
   }
 
   _renderBigEstimation () {
@@ -138,7 +160,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
             <th class="number-align">${i18n('cc-pricing-estimation.price-name-monthly')}</th>
           </tr>
           ${this._selectedProducts.length > 0
-            ? this._renderBigSelProducts(this._selectedProducts)
+            ? this._renderBigSelProducts()
             : ''}
           ${this.selectedProducts.length === 0 ? html`
             <tr>
@@ -152,8 +174,8 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
     `;
   }
 
-  _renderBigSelProducts (products) {
-    return products.map((product) => {
+  _renderBigSelProducts () {
+    return this._selectedProducts.map((product) => {
 
       const pricePerDay = product.item.price * 24;
       const totalPricePerDay = pricePerDay * product.quantity * this.currency.changeRate;
@@ -165,6 +187,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
         <tr>
           <td>
             <cc-button
+              class="delete-btn"
               image=${deleteSvg}
               hide-text
               circle
@@ -202,6 +225,13 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
     });
   }
 
+  _renderSmallEstimation () {
+    return html`
+      <div class="container">
+        ${this._renderSmallSelProduct()}
+      </div>`;
+  }
+
   _renderSmallSelProduct () {
 
     if (this._selectedProducts.length === 0) {
@@ -210,7 +240,6 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
           ${i18n('cc-pricing-estimation.empty-basket')}
         </div>
       `;
-
     }
 
     return this._selectedProducts.map((product) => {
@@ -224,16 +253,15 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
       return html`
         <div class="plan">
 
-          <div class="remove-btn">
-            <cc-button
-              image=${deleteSvg}
-              hide-text
-              circle
-              @cc-button:click=${() => this._onDelete(product)}
-            >
-              ${i18n('cc-pricing-estimation.delete')}
-            </cc-button>
-          </div>
+          <cc-button
+            class="delete-btn"
+            image=${deleteSvg}
+            hide-text
+            circle
+            @cc-button:click=${() => this._onDelete(product)}
+          >
+            ${i18n('cc-pricing-estimation.delete')}
+          </cc-button>
 
           <div class="plan-name">${product.name}</div>
 
@@ -268,50 +296,10 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
               })}
               </div>
             </div>
-          </div>`;
+          </div>
+        </div>
+      `;
     });
-  }
-
-  update (changedProperties) {
-    if (changedProperties.has('selectedProducts')) {
-      this._selectedProducts = Object.values(this.selectedProducts)
-        .map((product) => {
-          if (product == null) {
-            return null;
-          }
-          return product;
-        })
-        .filter((product) => product != null);
-    }
-    super.update(changedProperties);
-  }
-
-  render () {
-    return html`
-      ${(this._size > 600)
-        ? this._renderBigEstimation()
-        : this._renderSmallEstimation()
-      }
-
-      <div class="recap">
-        <div class="monthly-est">${i18n('cc-pricing-estimation.monthly-est')}</div>
-        <div class="cost-price">
-          ${i18n('cc-pricing-estimation.price', {
-            price: this.totalPrice * this.currency.changeRate, code: this.currency.code,
-          })}
-        </div>
-        <div class="recap-buttons">
-          <div class="contact-sales-wrapper">
-            <a href="https://www.clever-cloud.com/en/contact-sales" class="contact-sales">${i18n('cc-pricing-estimation.sales')}</a>
-<!--            <div class="ring"></div>-->
-          </div>
-          <div class="sign-up-wrapper">
-            <a href="https://api.clever-cloud.com/v2/sessions/signup" class="sign-up">${i18n('cc-pricing-estimation.sign-up')}</a>
-<!--            <div class="ring"></div>-->
-          </div>
-        </div>
-      </div>
-    `;
   }
 
   static get styles () {
@@ -320,10 +308,6 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
       css`
           :host {
               display: block;
-          }
-
-          .error {
-              text-align: center;
           }
 
           /* Table properties for big screen size */
@@ -336,6 +320,10 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
 
           tr:nth-child(n+3) {
               border-top: 1px solid #e5e5e5;
+          }
+
+          tr:hover td {
+              background-color: #f5f5f5;
           }
 
           th {
@@ -353,15 +341,10 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
               padding: 0.25em 0.5em;
           }
 
-          tr:hover td {
-              background-color: #f5f5f5;
-          }
-
-
           .quantity-wrapper {
               display: block;
-              text-align: center;
               margin: auto;
+              text-align: center;
           }
 
           .delete-state {
@@ -370,6 +353,10 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
 
           .quantity-th {
               text-align: center;
+          }
+
+          .price-item {
+              text-align: right;
           }
 
           /* Properties for small screen size */
@@ -382,18 +369,15 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
               align-items: center;
               border-top: 1px solid #e5e5e5;
               display: grid;
-              grid-template-columns:  min-content [main-start]1fr 1fr [main-end] min-content;
+              /* TODO : Why does it seems to work ???? */
+              grid-template-columns:  min-content [main-start] 1fr 1fr [main-end] min-content;
               margin: 0;
               padding: 1em;
           }
 
-          .remove-btn {
-              padding: 0.5em;
-          }
-
-
-          .plan .add-item-btn .remove-item-btn {
-              margin-right: 1em;
+          .delete-btn {
+              align-self: start;
+              margin-right: 0.5em;
           }
 
           .plan-name {
@@ -470,14 +454,10 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
               align-self: center;
           }
 
+
           .input-number {
               --cc-input-number-align: center;
-              width: 50%;
-          }
-
-
-          :host([w-gte-600]) .input-number {
-              width: 25%;
+              width: 13ch; /* This is enough to display to 999 */
           }
 
           .error-text {
@@ -488,7 +468,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
           .ring {
               background: #fff;
               border: 1px solid #aaa;
-              border-radius: 0.25rem;
+              border-radius: 0.25em;
               bottom: 0;
               box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
               left: 0;
@@ -498,7 +478,6 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
               top: 0;
               z-index: 0;
           }
-
 
           /* Recap */
 
@@ -549,8 +528,8 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
           }
 
           .contact-sales {
-              border-color: transparent;
               background-color: white;
+              border-color: transparent;
               border-radius: 0.2em;
               color: #3a3871;
               padding: 0.7em 2em 0.7em 2em;
@@ -558,19 +537,14 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
           }
 
           .contact-sales:hover {
-              background-color: rgba(255, 255, 255, 0.8);
+              background-color: rgba(255, 255, 255, 0.9);
               cursor: pointer;
-          }
-
-          .contact-sales:focus {
-              border-color: #777;
-              box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
           }
 
           .sign-up {
               background-color: transparent;
-              border-radius: 0.1em;
               border: 0.1em solid #cccccc;
+              border-radius: 0.1em;
               color: #ffffff;
               padding: 0.7em;
               text-decoration: none;
@@ -581,31 +555,18 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
               cursor: pointer;
           }
 
-          .sign-up:focus {
+          .sign-up:focus,
+          .contact-sales:focus {
               border-color: #777;
-              box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
+              box-shadow: 0 0 0 .2em #cbdcf6;
+              outline: 0;
           }
 
-          .price-item {
-              text-align: right;
-          }
+          /* We can do this because we set a visible focus state */
 
-
-          .change-qt-btn {
-              background: transparent;
-              border: none;
-          }
-
-          .change-qt-btn img {
-              filter: brightness(100%);
-              height: 32px;
-              width: 32px;
-          }
-
-          .change-qt-btn img:hover {
-              cursor: pointer;
-              filter: brightness(50%);
-              transition: all 0.75s ease;
+          .contact-sales::-moz-focus-inner,
+          .sign-up::-moz-focus-inner {
+              border: 0;
           }
       `,
     ];
