@@ -5,6 +5,7 @@ import '../atoms/cc-input-number.js';
 import '../atoms/cc-toggle.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
@@ -17,14 +18,12 @@ const downSvg = new URL('../assets/down.svg', import.meta.url).href;
 const plusSvg = new URL('../assets/plus.svg', import.meta.url).href;
 const upSvg = new URL('../assets/up.svg', import.meta.url).href;
 
-const CELLAR_NAME = 'Cellar';
-const CELLAR_ICON = 'https://static-assets.cellar.services.clever-cloud.com/logos/cellar.svg';
-
 const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
 const INFINITY = '∞';
 const ONE_GIGABYTE = 1e9;
 const THIRTY_DAYS_IN_HOURS = 24 * 30;
 
+const SKELETON_NAME = '??????????';
 const SKELETON_STORAGE_INTERVALS = [
   { minRange: 0, maxRange: 1e8, price: 0 },
   { minRange: 1e8, maxRange: 1e12, price: 0.0001 },
@@ -37,14 +36,14 @@ const SKELETON_TRAFFIC_INTERVALS = [
 ];
 
 /**
- * A component to display information and do a pricing simulation of the Cellar product.
+ * A component to display information and do a pricing simulation of a product with storage and traffic like Cellar or FS Buckets.
  *
  * ## Type definitions
  *
  * ```js
- * interface CellarIntervals {
- *   storage: Interval[],
- *   traffic: Interval[],
+ * interface PriceIntervals {
+ *   storage?: Interval[],
+ *   traffic?: Interval[],
  * }
  * ```
  *
@@ -83,21 +82,27 @@ const SKELETON_TRAFFIC_INTERVALS = [
  *
  * @prop {"add"|"none"} action - Sets the type of action: "add" to display the "add" button for the product and "none" for no actions (defaults to "add").
  * @prop {Boolean} error - Displays an error message.
- * @prop {CellarIntervals} intervals - Sets the storage and traffic information needed to render the intervals.
+ * @prop {String} icon - Sets the url of the product icon/logo image.
+ * @prop {PriceIntervals} intervals - Sets the storage and traffic information needed to render the intervals.
+ * @prop {String} name - Sets the name of the product.
+ * @prop {Boolean} noTraffic - Hides the traffic section of the component.
  *
  * @event {CustomEvent<Product>} cc-pricing-product:add-product - Fires the product whenever the "add" button is clicked.
  *
  * @slot - The description of the cellar product.
  * @slot head - Override the whole head section (with the icon, name and description).
  */
-export class CcPricingProductCellar extends withResizeObserver(LitElement) {
+export class CcPricingProductStorage extends withResizeObserver(LitElement) {
 
   static get properties () {
     return {
       action: { type: String },
       currency: { type: Object },
       error: { type: Boolean, reflect: true },
+      icon: { type: String },
       intervals: { type: Object },
+      name: { type: String },
+      noTraffic: { type: Boolean, attribute: 'no-traffic' },
       _size: { type: String },
       _storageInterval: { type: Number },
       _storagePrice: { type: Number },
@@ -116,6 +121,7 @@ export class CcPricingProductCellar extends withResizeObserver(LitElement) {
     this.action = 'add';
     this.currency = CURRENCY_EUR;
     this.error = false;
+    this.noTraffic = false;
     this._storagePrice = 0;
     this._storageQuantity = 0;
     this._storageSectionClosed = true;
@@ -134,15 +140,15 @@ export class CcPricingProductCellar extends withResizeObserver(LitElement) {
   _getUnits () {
     return [
       {
-        label: i18n('cc-pricing-product-cellar.bytes-unit', { bytes: 1e6 }),
+        label: i18n('cc-pricing-product-storage.bytes-unit', { bytes: 1e6 }),
         value: '1000000',
       },
       {
-        label: i18n('cc-pricing-product-cellar.bytes-unit', { bytes: 1e9 }),
+        label: i18n('cc-pricing-product-storage.bytes-unit', { bytes: 1e9 }),
         value: '1000000000',
       },
       {
-        label: i18n('cc-pricing-product-cellar.bytes-unit', { bytes: 1e12 }),
+        label: i18n('cc-pricing-product-storage.bytes-unit', { bytes: 1e12 }),
         value: '1000000000000',
       },
     ];
@@ -153,7 +159,7 @@ export class CcPricingProductCellar extends withResizeObserver(LitElement) {
   }
 
   _updatePrice (priceCategory) {
-    if (priceCategory === 'storage') {
+    if (priceCategory === 'storage' && this.intervals.storage != null) {
       const storageValueBytes = this._storageQuantity * parseInt(this._storageUnitValue);
       const storageValueGigabytes = (storageValueBytes / ONE_GIGABYTE);
       this._storageInterval = this.intervals.storage.find((interval) => {
@@ -161,7 +167,7 @@ export class CcPricingProductCellar extends withResizeObserver(LitElement) {
       });
       this._storagePrice = this._storageInterval.price * THIRTY_DAYS_IN_HOURS * storageValueGigabytes;
     }
-    else {
+    if (priceCategory === 'traffic' && this.intervals.traffic != null && !this.noTraffic) {
       const trafficValueBytes = this._trafficQuantity * parseInt(this._trafficUnitValue);
       const trafficValueGigabytes = (trafficValueBytes / ONE_GIGABYTE);
       this._trafficInterval = this.intervals.traffic.find((interval) => {
@@ -174,10 +180,10 @@ export class CcPricingProductCellar extends withResizeObserver(LitElement) {
 
   _onAddItem () {
     const storageBytes = this._storageQuantity * parseInt(this._storageUnitValue);
-    const trafficBytes = this._trafficQuantity * parseInt(this._trafficUnitValue);
+    const trafficBytes = this.noTraffic ? null : this._trafficQuantity * parseInt(this._trafficUnitValue);
     const name = this.name;
     const item = {
-      name: i18n('cc-pricing-product-cellar.product-item-name', { storageBytes, trafficBytes }),
+      name: i18n('cc-pricing-product-storage.product-item-name', { storageBytes, trafficBytes }),
       price: this._getTotal() / THIRTY_DAYS_IN_HOURS,
     };
     dispatchCustomEvent(this, 'cc-pricing-product:add-product', { name, item });
@@ -224,7 +230,7 @@ export class CcPricingProductCellar extends withResizeObserver(LitElement) {
 
     if (this.error) {
       return html`
-        <cc-error>${i18n('cc-pricing-product-cellar.error')}</cc-error>
+        <cc-error>${i18n('cc-pricing-product-storage.error')}</cc-error>
       `;
     }
 
@@ -244,7 +250,7 @@ export class CcPricingProductCellar extends withResizeObserver(LitElement) {
 
         <div class="interval interval-min">
           <span class="${classMap({ skeleton })}">
-            ${i18n('cc-pricing-product-cellar.bytes', { bytes: interval.minRange })}
+            ${i18n('cc-pricing-product-storage.bytes', { bytes: interval.minRange })}
           </span>
         </div>
         <div class="interval interval-min-sign">&le;</div>
@@ -252,15 +258,15 @@ export class CcPricingProductCellar extends withResizeObserver(LitElement) {
         <div class="interval interval-max-sign">&lt;</div>
         <div class="interval interval-max">
           <span class="${classMap({ skeleton })}">
-            ${(interval.maxRange != null) ? i18n('cc-pricing-product-cellar.bytes', { bytes: interval.maxRange }) : INFINITY}
+            ${(interval.maxRange != null) ? i18n('cc-pricing-product-storage.bytes', { bytes: interval.maxRange }) : INFINITY}
           </span>
         </div>
 
         <div class="interval-price ${classMap({ 'interval-price--free': (interval.price === 0) })}">
           <span class="${classMap({ skeleton })}">
             ${(interval.price === 0)
-              ? i18n('cc-pricing-product-cellar.price-interval.free')
-              : i18n('cc-pricing-product-cellar.price-interval', {
+              ? i18n('cc-pricing-product-storage.price-interval.free')
+              : i18n('cc-pricing-product-storage.price-interval', {
                 price: interval.price * this.currency.changeRate,
                 code: this.currency.code,
               })
@@ -270,7 +276,7 @@ export class CcPricingProductCellar extends withResizeObserver(LitElement) {
 
         <div class="estimated-price">
           <span class="${classMap({ skeleton })}">
-            ${i18n('cc-pricing-product-cellar.price', {
+            ${i18n('cc-pricing-product-storage.price', {
               price: estimatedPrice * this.currency.changeRate,
               code: this.currency.code,
             })}
@@ -345,7 +351,7 @@ export class CcPricingProductCellar extends withResizeObserver(LitElement) {
         ${!this.error ? html`
           <div class="estimated-price estimated-price--subtotal">
             <span class=${classMap({ skeleton })}>
-              ${i18n('cc-pricing-product-cellar.price', { price: estimatedPrice, code: this.currency.code })}
+              ${i18n('cc-pricing-product-storage.price', { price: estimatedPrice, code: this.currency.code })}
             </span>
           </div>
         ` : ''}
@@ -365,6 +371,7 @@ export class CcPricingProductCellar extends withResizeObserver(LitElement) {
   render () {
 
     const skeleton = (this.intervals == null);
+    const name = (this.name == null) ? SKELETON_NAME : this.name;
 
     const bodyClasses = {
       'body--big': (this._size > 600),
@@ -375,9 +382,9 @@ export class CcPricingProductCellar extends withResizeObserver(LitElement) {
       <slot name="head">
         <div class="head">
           <div class="head-info">
-            <cc-img class="product-logo" src="${CELLAR_ICON}"></cc-img>
+            <cc-img class="product-logo" src="${ifDefined(this.icon)}" ?skelton=${this.icon == null}></cc-img>
             <div class="name-wrapper">
-              <span class="name">${CELLAR_NAME}</span>
+              <span class="name ${classMap({ skeleton: (this.name == null) })}">${name}</span>
             </div>
           </div>
 
@@ -393,8 +400,8 @@ export class CcPricingProductCellar extends withResizeObserver(LitElement) {
 
         ${this._renderSection({
           section: 'storage',
-          title: i18n('cc-pricing-product-cellar.storage.title'),
-          label: i18n('cc-pricing-product-cellar.storage.label'),
+          title: i18n('cc-pricing-product-storage.storage.title'),
+          label: i18n('cc-pricing-product-storage.storage.label'),
           icon: storageSvg,
           isSectionClosed: this._storageSectionClosed,
           quantity: this._storageQuantity,
@@ -405,31 +412,33 @@ export class CcPricingProductCellar extends withResizeObserver(LitElement) {
           skeleton,
         })}
 
-        <hr>
-
-        ${this._renderSection({
-          section: 'traffic',
-          title: i18n('cc-pricing-product-cellar.traffic.title'),
-          label: i18n('cc-pricing-product-cellar.traffic.label'),
-          icon: arrowsSvg,
-          isSectionClosed: this._trafficSectionClosed,
-          quantity: this._trafficQuantity,
-          unitValue: this._trafficUnitValue,
-          estimatedPrice: this._trafficPrice,
-          intervals: skeleton ? SKELETON_TRAFFIC_INTERVALS : this.intervals.traffic,
-          currentInterval: this._trafficInterval,
-          skeleton,
-        })}
+        ${this.noTraffic !== true ? html`
+          <hr>
+  
+          ${this._renderSection({
+            section: 'traffic',
+            title: i18n('cc-pricing-product-storage.traffic.title'),
+            label: i18n('cc-pricing-product-storage.traffic.label'),
+            icon: arrowsSvg,
+            isSectionClosed: this._trafficSectionClosed,
+            quantity: this._trafficQuantity,
+            unitValue: this._trafficUnitValue,
+            estimatedPrice: this._trafficPrice,
+            intervals: skeleton ? SKELETON_TRAFFIC_INTERVALS : this.intervals.traffic,
+            currentInterval: this._trafficInterval,
+            skeleton,
+          })}
+        ` : ''}
 
         <hr>
 
         <div class="section">
           <div class="section-header section-header--total">
             <cc-img class="section-icon" src=${sumSvg}></cc-img>
-            <div class="section-title">${i18n('cc-pricing-product-cellar.total.title')}</div>
+            <div class="section-title">${i18n('cc-pricing-product-storage.total.title')}</div>
             <div class="estimated-price estimated-price--total">
               <span class=${classMap({ skeleton })}>
-                ${i18n('cc-pricing-product-cellar.price', {
+                ${i18n('cc-pricing-product-storage.price', {
                   price: this._totalPrice * this.currency.changeRate, code: this.currency.code,
                 })}
               </span>
@@ -445,7 +454,7 @@ export class CcPricingProductCellar extends withResizeObserver(LitElement) {
               image=${plusSvg}
               ?disabled=${(this._storageQuantity <= 0 && this._trafficQuantity <= 0) || skeleton || this.error}
               @cc-button:click=${this._onAddItem}
-            >${i18n('cc-pricing-product-cellar.add')}
+            >${i18n('cc-pricing-product-storage.add')}
             </cc-button>
           </div>
         ` : ''}
@@ -735,4 +744,4 @@ export class CcPricingProductCellar extends withResizeObserver(LitElement) {
   }
 }
 
-window.customElements.define('cc-pricing-product-cellar', CcPricingProductCellar);
+window.customElements.define('cc-pricing-product-storage', CcPricingProductStorage);
