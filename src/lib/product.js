@@ -14,14 +14,24 @@ export function formatAddonCellar (priceSystem, currency) {
   const cellarTraffic = priceSystem.countable.find((c) => c.service === 'cellar.outbound').price_plans;
   return {
     intervals: {
-      storage: formatCellarIntervals(cellarStorage),
-      traffic: formatCellarIntervals(cellarTraffic),
+      storage: formatProductStorageIntervals(cellarStorage),
+      traffic: formatProductStorageIntervals(cellarTraffic),
     },
     currency,
   };
 }
 
-function formatCellarIntervals (rawIntervals) {
+export function formatAddonFsbucket (priceSystem, currency) {
+  const fsbucketStorage = priceSystem.countable.find((c) => c.service === 'fsbucket.storage').price_plans;
+  return {
+    intervals: {
+      storage: formatProductStorageIntervals(fsbucketStorage),
+    },
+    currency,
+  };
+}
+
+function formatProductStorageIntervals (rawIntervals) {
   return rawIntervals.map((interval, idx, allIntervals) => {
     const minRange = (idx === 0) ? 0 : allIntervals[idx - 1].max_quantity;
     return {

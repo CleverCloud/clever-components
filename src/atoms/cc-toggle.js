@@ -210,8 +210,8 @@ export class CcToggle extends LitElement {
           display: grid;
           font-size: 0.85em;
           font-weight: bold;
-          grid-auto-flow: column;
           gap: 0.6em;
+          grid-auto-flow: column;
           padding: 0 0.6em;
           position: relative;
           text-transform: var(--cc-text-transform, uppercase);
