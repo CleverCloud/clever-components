@@ -2,6 +2,7 @@ const frontmatter = require('remark-frontmatter');
 const highlight = require('remark-highlight.js');
 const remark2Html = require('remark-html');
 const remarkParse = require('remark-parse');
+const remarkGfm = require('remark-gfm');
 const unified = require('unified');
 const yaml = require('js-yaml');
 const { storybookPlugin: modernWebStorybookPlugin } = require('@web/dev-server-storybook');
@@ -45,6 +46,7 @@ function markdownToCsfWithDocsPage (markdownText) {
 
   const processor = unified()
     .use(remarkParse, {})
+    .use(remarkGfm)
     .use(frontmatter, ['yaml'])
     .use(highlight)
     .use(remark2Html);

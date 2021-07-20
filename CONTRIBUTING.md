@@ -1,81 +1,95 @@
 ---
 kind: 🏠 Home
-title: Contributing
 ---
-# Contributing to Clever Components
+# Contributing guide
 
-Here are some details on the different npm tasks we use.
-You'll also want to read the details about Web Components contributions in [`web-components-guidelines.stories.mdx`](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%93%8C-docs-web-components-guidelines-at-clever-cloud--page).
+Welcome to this contributing guide!
 
-## We use ESLint
+In this document, we'll cover the different steps to go through to contribute a new component to this project.
 
-We use [ESLint](https://eslint.org/) to enforce JS coding style and spot linting errors ASAP.
-Our configuration is based on [standardJS](https://standardjs.com/) + some small tweaks (see `.eslintrc.js`).
+## Prerequisites
 
-All JavaScript files in `src`, `stories` and `tasks` are scanned.
+To work on this project, you need:
 
-You can run the lint check with:
+* Git ([intructions on git-scm.com](https://git-scm.com/downloads))
+* Node.js and npm ([intructions on nodejs.org](https://nodejs.org/en/download/))
+* Any code editor or IDE but we recommend [WebStorm](https://www.jetbrains.com/webstorm/) or [Visual Studio Code](https://code.visualstudio.com/).
+* A terminal to run commands
 
-```bash
-npm run lint
+volta
+
+## Getting started
+
+You need to clone the project with git with:
+
+```
+git clone git@github.com:CleverCloud/clever-components.git
 ```
 
-You can run the lint check (with autofix) with:
+Once you're in the directory, you can install the dependencies with:
 
-```bash
-npm run lint:fix
+```
+npm install
 ```
 
-## We use Storybook
+With these dependencies, you will be able to run the different tasks required to work on this project.
+They are all described in the [`tasks.reference.md`](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%93%8C-docs-web-components-guidelines-at-clever-cloud--page).
 
-You can have a local preview of the [Storybook](https://storybook.js.org/) (with live reload).
-It's a great development experience when you work on a component.
+The most important task is running Storybook in dev mode with:
 
-You can start the local Storybook with:
-
-```bash
+```
 npm run storybook:dev
 ```
 
-When the `master` branch is updated, the latest version of the Storybook is automatically published on the [public preview](https://www.clever-cloud.com/doc/clever-components/).
+* read project structure reference
 
-The production build of the public Storybook is done with:
+They are all described in the [`project-structure.reference.md`](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%93%8C-docs-web-components-guidelines-at-clever-cloud--page).
 
-```bash
-npm run storybook:build
-```
+## Design the component
 
-## We build our components
+* what needs to be displayed
+* what needs to be interacted and produced by the user
+* draw a wireframe
+* think about inputs
+* think about outputs
+* think about use cases => stories
+* wording & translations
+* where do the data come from? auth? cache? => smart definition
 
-All our components and the different JavaScript files in `src/lib` are minified with [Terser](https://github.com/terser-js/terser) and end up in `dist`.
-We also use a specific babel plugin to minify the HTML and the CSS in our LitElement components: [babel-plugin-template-html-minifier](https://github.com/cfware/babel-plugin-template-html-minifier).
+## Write the stories
 
-To process those files through babel and terser and keep the sourcemaps, we wrote a small script in `tasks/minify-components.js`.
+use the example
 
-You can run the build process with:
+* defaultStory
+* skeleton
+* empty
+* error
+* dataLoadedWithFoo
+* waiting
+* simulations
 
-```bash
-npm run components:build
-```
+## Write component
 
-## We document our components
+use the example
 
-To document our Web Components, we use [web-component-analyzer](https://github.com/runem/web-component-analyzer).
-We chose the markdown output, they all end up in `.component-docs` and we integrate them manually in Storybook's stories as notes.
+guidelines & checklist
+  JS
+  HTML/lit
+  CSS
+  i18n
+  a11y
+  JSDoc
 
-You can generate the components' docs with:
+mobile
+i18n
+a11y
 
-```bash
-npm run components:docs
-```
+explain the preview
 
-## We package our components for npm
+## Check, lint, test
 
-To distribute our components for npm, we only package what's in `dist`.
-When we publish a new version, a build (`npm run components:build`) of the components is automatically triggered.
+* unit test if necessary
+* test on Firefox, Chrome & Safari (see reference)
+* explain lint
 
-You can import any given component like this:
-
-```js
-import '@clevercloud/components/dist/atoms/cc-button.js';
-```
+## Build
