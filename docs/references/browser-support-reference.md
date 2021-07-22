@@ -11,7 +11,7 @@ This project targets _modern browsers_.
 Our subjective definition is: **current** AND **previous** stable versions of ![Chrome logo](https://github.com/alrra/browser-logos/raw/main/src/chrome/chrome_16x16.png) Chrome, ![Firefox logo](https://github.com/alrra/browser-logos/raw/main/src/firefox/firefox_16x16.png) Firefox and ![Safari logo](https://github.com/alrra/browser-logos/raw/main/src/safari/safari_16x16.png) Safari.
 
 In the real world, browsers evolve at different speeds.
-Many browsers are based on Chromium now and they often land Web features early.
+Many browsers are based on Chromium now, and they often land Web features early.
 On the other side, Safari often lands Web features last.
 Because of this, we maintain a more explicit list of such _modern browsers_ and we update it every 6 months, a few months after a new Safari release gets out.
 
@@ -55,7 +55,7 @@ If you're not sure if a given feature is supported by _modern browsers_, you can
 * [Kangax's compat table](https://kangax.github.io/compat-table/es6/) works really well for specific JavaScript features
 * [MDN](https://developer.mozilla.org/en-US/) works well in for all features
 
-Modern browsers also maintain platform/feature status pages:
+Browser vendors also maintain platform/feature status pages:
 
 * https://www.chromestatus.com/features
 * https://developer.microsoft.com/en-us/microsoft-edge/status/
@@ -65,17 +65,17 @@ Modern browsers also maintain platform/feature status pages:
 ## What does it mean for users?
 
 As a user of this component library, you can be sure it will work in _modern browsers_.
-If you need wider browser support, you will need to enable it in your project.
+If you need wider browser support, you will need to adapt your project configuration and toolchain.
 
 When it comes to CSS features, we don't have a clear solution for you right now.
 
-When it comes to JavaScript language features, you will need to configure you're toolchain (bundler, transpiler...) to compile the source of our components.
+When it comes to JavaScript language features, you will need to configure your toolchain (bundler, transpiler...) to transform the source of our components to something that works for you context.
 
-When it comes to JavaScript and browser APIs than can be polyfilled, you will need to chose and load the appropriate polyfills yourself before you load our components.
+When it comes to JavaScript and browser APIs than can be polyfilled, you will need to choose and load the appropriate polyfills yourself before you load our components.
 
 ## What features are we waiting for?
 
-Thare are lots of exciting new Web features we'd like to use in this project but we still need to wait.
+There are lots of exciting new Web features we'd like to use in this project, but we still need to wait.
 
 ### Features landed in some browsers
 
