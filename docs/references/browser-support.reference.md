@@ -85,9 +85,9 @@ There are lots of exciting new Web features we'd like to use in this project, bu
   * Waiting for Safari 14.1
 * [JS: Private class features](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields)
   * Waiting for Safari 14.1
-* [CSS: gap with Flexbox](https://developer.mozilla.org/fr/docs/Web/CSS/gap)
+* [CSS: gap with Flexbox](https://developer.mozilla.org/en-US/docs/Web/CSS/gap)
   * Waiting for Safari 14.1
-* [CSS: Subgrids](https://developer.mozilla.org/fr/docs/Web/CSS/CSS_Grid_Layout/Subgrid)
+* [CSS: Subgrids](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Subgrid)
   * Waiting for Chrome and Safari
 
 ### Promising/WIP features
