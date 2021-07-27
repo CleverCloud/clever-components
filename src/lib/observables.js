@@ -1,17 +1,22 @@
-import { combineLatest, fromEvent, interval, merge, Observable, of, Subject } from 'rxjs';
 import {
+  combineLatest,
   delay,
   distinctUntilChanged,
   filter,
+  fromEvent,
+  interval,
   map,
+  merge,
   multicast,
+  Observable,
+  of,
   sample,
   scan,
   share,
+  Subject,
   switchMap,
   withLatestFrom,
-// eslint-disable-next-line import/extensions
-} from 'rxjs/operators';
+} from 'rxjs';
 
 export function unsubscribeWithSignal (signal, subscriptions) {
   signal.addEventListener('abort', () => {
@@ -76,20 +81,20 @@ export class LastPromise {
 
 export {
   combineLatest,
+  delay,
   distinctUntilChanged,
-  share,
   filter,
   fromEvent,
   interval,
   map,
   merge,
+  multicast,
   Observable,
+  of,
   sample,
   scan,
+  share,
   Subject,
   switchMap,
   withLatestFrom,
-  delay,
-  multicast,
-  of,
 };
