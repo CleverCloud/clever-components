@@ -18,6 +18,7 @@ title: Changelog
 * `<cc-pricing-table>`: rename `items` to `plans` (BREAKING CHANGE)
 * `<cc-pricing-product>`: rename `items` to `plans` (BREAKING CHANGE)
 * `<cc-block>`: introduce a ribbon and a noHead property
+* `<cc-zone>`: add CSS custom properties to customize colors
 
 ## 6.10.0 (2021-07-08)
 
