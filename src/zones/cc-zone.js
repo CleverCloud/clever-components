@@ -43,6 +43,10 @@ const PRIVATE_ZONE = 'scope:private';
  *
  * @prop {"default"|"small"|"small-infra"} mode - Sets the mode of the component.
  * @prop {Zone} zone - Sets the different details of the zone.
+ *
+ * @cssprop {Color} --cc-zone-subtitle-color - Text color of the subtitle (country name) (defaults to #555)
+ * @cssprop {Color} --cc-zone-tag-bdcolor - Border color of the tags (defaults to transparent)
+ * @cssprop {Color} --cc-zone-tag-bgcolor - Background color of the tags (defaults to rgba(50, 50, 255, 0.15))
  */
 export class CcZone extends LitElement {
 
@@ -150,7 +154,7 @@ export class CcZone extends LitElement {
         }
 
         .subtitle {
-          color: #555;
+          color: var(--cc-zone-subtitle-color, #555);
         }
 
         .infra-logo {
@@ -171,7 +175,8 @@ export class CcZone extends LitElement {
         }
 
         .tag {
-          background-color: rgba(50, 50, 255, 0.15);
+          background-color: var(--cc-zone-tag-bgcolor, rgba(50, 50, 255, 0.15));
+          border: 1px solid var(--cc-zone-tag-bdcolor, transparent);
           border-radius: 0.25rem;
           box-sizing: border-box;
           font-family: var(--cc-ff-monospace);
