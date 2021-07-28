@@ -198,6 +198,9 @@ export const treeshakeOptions = {
       || relativeId.includes('leaflet/src/layer/Tooltip.js')
       || relativeId.includes('leaflet/src/control');
 
-    return isComponent || isEntryPoint || isLeaflet;
+    // Shoelace exposes components with window.customElements.define()
+    const isShoelace = relativeId.includes('@shoelace-style/shoelace');
+
+    return isComponent || isEntryPoint || isLeaflet || isShoelace;
   },
 };
