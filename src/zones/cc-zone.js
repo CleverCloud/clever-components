@@ -109,29 +109,28 @@ export class CcZone extends LitElement {
       // language=CSS
       css`
         :host {
-          --lh: 1.5rem;
+          --lh: 1.5em;
           display: flex;
         }
 
         :host([mode="small"]),
         :host([mode="small-infra"]) {
-          --lh: 1rem;
-          font-size: 0.8rem !important;
+          --lh: 1em;
         }
 
         .flag {
-          border-radius: 0.15rem;
+          border-radius: 0.15em;
           box-shadow: 0 0 3px #ccc;
           display: inline-block;
           height: var(--lh);
-          margin-right: 1rem;
-          width: 2rem;
+          margin-right: 1em;
+          width: 2em;
         }
 
         :host([mode="small"]) .flag,
         :host([mode="small-infra"]) .flag {
-          margin-right: 0.5rem;
-          width: 1.33rem;
+          margin-right: 0.5em;
+          width: 1.33em;
         }
 
         .wrapper-details-logo {
@@ -149,6 +148,13 @@ export class CcZone extends LitElement {
           line-height: var(--lh);
         }
 
+        :host([mode="small"]) .title,
+        :host([mode="small"]) .subtitle,
+        :host([mode="small-infra"]) .title,
+        :host([mode="small-infra"]) .subtitle {
+          font-size: 0.8em;
+        }
+
         .title {
           font-weight: bold;
         }
@@ -160,8 +166,8 @@ export class CcZone extends LitElement {
         .infra-logo {
           --cc-img-fit: contain;
           height: var(--lh);
-          margin-left: 0.5rem;
-          width: 4rem;
+          margin-left: 0.5em;
+          width: 4em;
         }
 
         :host([mode="small"]) .tag-list,
@@ -171,18 +177,20 @@ export class CcZone extends LitElement {
         }
 
         .tag-list {
-          --cc-gap: 0.5rem;
+          --cc-gap: 0.5em;
         }
 
         .tag {
           background-color: var(--cc-zone-tag-bgcolor, rgba(50, 50, 255, 0.15));
           border: 1px solid var(--cc-zone-tag-bdcolor, transparent);
+          border-radius: 0.25em;
           border-radius: 0.25rem;
           box-sizing: border-box;
           font-family: var(--cc-ff-monospace);
-          font-size: 0.8rem;
-          margin-top: 0.5rem;
-          padding: 0.1rem 0.3rem;
+          font-size: 0.8em;
+          line-height: 1.5;
+          margin-top: 0.5em;
+          padding: 0.1em 0.3em;
         }
 
         .skeleton {
