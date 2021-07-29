@@ -24,6 +24,8 @@ title: Changelog
 * `<cc-zone-input>`:
   * fix zone list sort
   * move `sortZones` out in a lib
+* New components:
+  * `<cc-pricing-header>`
 
 ## 6.10.0 (2021-07-08)
 

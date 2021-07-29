@@ -355,6 +355,12 @@ export const translations = {
   'cc-map.error': `Une erreur est survenue pendant le chargement des données de la carte.`,
   'cc-map.no-points': `Pas de données à afficher sur la carte en ce moment.`,
   //#endregion
+  //#region cc-pricing-header
+  'cc-pricing-header.currency-text': `Devise : `,
+  'cc-pricing-header.est-cost': `Total Estimé : `,
+  'cc-pricing-header.price': ({ price, code }) => `${formatCurrency(lang, price, { currency: code })}`,
+  'cc-pricing-header.selected-zone': `Zone : `,
+  //#endregion
   //#region cc-pricing-product
   'cc-pricing-product.error': `Une erreur est survenue pendant le chargement des prix.`,
   //#endregion
