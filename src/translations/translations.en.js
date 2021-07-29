@@ -342,6 +342,19 @@ export const translations = {
   'cc-map.error': `Something went wrong while trying to fetch data for the map.`,
   'cc-map.no-points': `No data to display on the map right now.`,
   //#endregion
+  //#region cc-pricing-estimation
+  'cc-pricing-estimation.delete': `Delete product`,
+  'cc-pricing-estimation.empty-list': `Add some items to create your pricing estimation.`,
+  'cc-pricing-estimation.monthly-est': `Estimated Cost (30 days)`,
+  'cc-pricing-estimation.price': ({ price, code }) => `${formatCurrency(lang, price, { currency: code })}`,
+  'cc-pricing-estimation.price-name-daily': `Price (daily)`,
+  'cc-pricing-estimation.price-name-monthly': () => sanitize`Price (30&nbsp;days)`,
+  'cc-pricing-estimation.product': `Product`,
+  'cc-pricing-estimation.quantity': `Quantity`,
+  'cc-pricing-estimation.sales': `Contact Sales`,
+  'cc-pricing-estimation.sign-up': `Sign Up`,
+  'cc-pricing-estimation.size': `Size`,
+  //#endregion
   //#region cc-pricing-header
   'cc-pricing-header.currency-text': `Currency: `,
   'cc-pricing-header.est-cost': `Estimated Cost: `,
