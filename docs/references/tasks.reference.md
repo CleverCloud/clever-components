@@ -43,6 +43,11 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
 
 * Generate [Custom Elements Manifest](https://github.com/webcomponents/custom-elements-manifest) with [CEM analyzer](https://github.com/open-wc/custom-elements-manifest/tree/master/packages/analyzer) in `dist`.
 
+## `npm run components:docs:watch`
+
+* Same as npm run components:docs but in watch mode.
+* This is used by [Storybook](https://storybook.js.org/) in dev mode.
+
 ## `npm run test`
 
 * Run all unit tests present in `test` with [Web Test Runner](https://modern-web.dev/docs/test-runner/overview/).

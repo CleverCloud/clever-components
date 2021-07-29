@@ -24,6 +24,7 @@
     "components:check-i18n": "node tasks/check-i18n.js",
     "components:check-lit": "lit-analyzer src",
     "components:docs": "cem analyze --litelement",
+    "components:docs:watch": "cem analyze --litelement --watch",
     "test": "wtr 'test/**/*.test.*' --node-resolve",
     "test:watch": "wtr 'test/**/*.test.*' --node-resolve --watch",
     "lint": "eslint --rulesdir eslint-rules rollup/*.js cem src stories tasks wds",
