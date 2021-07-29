@@ -382,7 +382,7 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
       <slot name="head">
         <div class="head">
           <div class="head-info">
-            <cc-img class="product-logo" src="${ifDefined(this.icon)}" ?skelton=${this.icon == null}></cc-img>
+            <cc-img class="product-logo" src="${ifDefined(this.icon)}" ?skeleton=${this.icon == null}></cc-img>
             <div class="name-wrapper">
               <span class="name ${classMap({ skeleton: (this.name == null) })}">${name}</span>
             </div>
