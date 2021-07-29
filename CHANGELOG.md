@@ -26,6 +26,7 @@ title: Changelog
   * move `sortZones` out in a lib
 * New components:
   * `<cc-pricing-header>`
+  * `<cc-pricing-estimation>`
 
 ## 6.10.0 (2021-07-08)
 

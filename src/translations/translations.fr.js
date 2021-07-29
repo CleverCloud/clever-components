@@ -355,6 +355,19 @@ export const translations = {
   'cc-map.error': `Une erreur est survenue pendant le chargement des données de la carte.`,
   'cc-map.no-points': `Pas de données à afficher sur la carte en ce moment.`,
   //#endregion
+  //#region cc-pricing-estimation
+  'cc-pricing-estimation.delete': `Supprimer le produit`,
+  'cc-pricing-estimation.empty-list': `Ajoutez des produits et services pour modéliser une estimation.`,
+  'cc-pricing-estimation.monthly-est': `Total Estimé (30 jours)`,
+  'cc-pricing-estimation.plan': `Plan :`,
+  'cc-pricing-estimation.price': ({ price, code }) => `${formatCurrency(lang, price, { currency: code })}`,
+  'cc-pricing-estimation.price-name-daily': `Prix (jour)`,
+  'cc-pricing-estimation.price-name-monthly': () => sanitize`Prix (30&nbsp;jours)`,
+  'cc-pricing-estimation.product': `Produit`,
+  'cc-pricing-estimation.quantity': `Quantité`,
+  'cc-pricing-estimation.sales': `Nous contacter`,
+  'cc-pricing-estimation.sign-up': `S'inscrire`,
+  //#endregion
   //#region cc-pricing-header
   'cc-pricing-header.currency-text': `Devise : `,
   'cc-pricing-header.est-cost': `Total Estimé : `,
