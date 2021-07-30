@@ -1,5 +1,6 @@
 import { get as getApp } from '@clevercloud/client/esm/api/v2/application.js';
 import { getAllInvoices, getInvoice } from '@clevercloud/client/esm/api/v4/billing.js';
+import { getAllZones } from '@clevercloud/client/esm/api/v4/product.js';
 import { addOauthHeader } from '@clevercloud/client/esm/oauth.browser.js';
 import { pickNonNull } from '@clevercloud/client/esm/pick-non-null.js';
 import { prefixUrl } from '@clevercloud/client/esm/prefix-url.js';
@@ -128,4 +129,13 @@ export async function fetchCurrency ({ currencyCode }) {
     code: currencyCode,
     changeRate: RATES[currencyCode],
   };
+}
+
+export async function fetchAllCurrencies () {
+  return Object.entries(RATES).map(([code, changeRate]) => ({ code, changeRate }));
+}
+
+export async function fetchAllZones ({ signal }) {
+  return getAllZones()
+    .then(sendToApi({ signal, cacheDelay: ONE_DAY }));
 }
