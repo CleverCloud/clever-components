@@ -5,6 +5,7 @@ import { enhanceStoriesNames } from '../lib/story-names.js';
 export default {
   title: '🛠 Zones/<cc-zone-input>',
   component: 'cc-zone-input',
+  excludeStories: ['ZONES'],
 };
 
 const conf = {
@@ -16,7 +17,7 @@ const conf = {
   }`,
 };
 
-const ZONES = [
+export const ZONES = [
   {
     name: 'par',
     country: 'France',
