@@ -90,7 +90,7 @@ const storyblonPlugin = {
               grid-template-rows: 1fr 1fr;
               grid-template-areas:
                 "component-list preview"
-                "story-list preview";
+                "story-list previewB";
               padding: 1em;
             }
             .component-list,
@@ -111,6 +111,9 @@ const storyblonPlugin = {
             .preview-wrapper {
               grid-area: preview;
               overflow: hidden;
+            }
+            .preview-wrapper-b {
+              grid-area: previewB;
             }
             .preview {
               border: none;
@@ -133,7 +136,7 @@ const storyblonPlugin = {
             window.addEventListener('click', (e) => {
               if (e.target.nodeName ==='A') {
                 const url = new URL(e.target.href);
-                const componentName = url.searchParams.get('component');console.log(componentName);
+                const componentName = url.searchParams.get('component');
                 Array.from(document.querySelectorAll('.story-list')).forEach((list) => {
                   const hidden = (list.dataset.component !==componentName);
                   list.classList.toggle('hidden', hidden);
@@ -156,6 +159,9 @@ const storyblonPlugin = {
               `).join('')}
             </ul>
           `).join('')}
+          <div class="preview-wrapper">
+            <iframe class="preview" name="preview"></iframe>
+          </div>
           <div class="preview-wrapper">
             <iframe class="preview" name="preview"></iframe>
           </div>
