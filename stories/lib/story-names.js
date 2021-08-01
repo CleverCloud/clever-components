@@ -10,7 +10,7 @@ export function formatStoryName (rawName) {
     .replace(/ with (.*)/, ' ($1)');
 }
 
-function enhanceStoryName (defaultName) {
+export function enhanceStoryName (defaultName) {
   if (defaultName === 'defaultStory') {
     return 'Default';
   }

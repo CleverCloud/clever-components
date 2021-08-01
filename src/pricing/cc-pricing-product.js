@@ -56,10 +56,10 @@ const SKELETON_DESCRIPTION = fakeString(180);
  * @prop {Boolean} error - Displays an error message.
  * @prop {Feature[]} features - Sets the list of features (used for the feature sort order).
  * @prop {String} icon - Sets the url of the product icon/logo image (can be overriden with the `icon` slot).
- * @prop {Item[]} items - Sets the list of items.
+ * @prop {ProductItem[]} items - Sets the list of items.
  * @prop {String} name - Sets the name of the product (can be overriden with the `name` slot).
  *
- * @event {CustomEvent<Product>} cc-pricing-product:add-product - Fires the product whenever the "plus" button of an item is clicked.
+ * @event {CustomEvent<ProductItem>} cc-pricing-product:add-product - Fires the product whenever the "plus" button of an item is clicked.
  *
  * @slot - Override the `description` param with custom HTML.
  * @slot head - Override the whole head section (with the icon, name and description).

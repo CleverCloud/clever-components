@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Document</title>
+  <style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+  </style>
+  <script type="module">
+
+  const url = new URL(location.href);
+  const langCode = url.searchParams.get('lang') ?? 'en';
+  const componentSection = url.searchParams.get('section');
+  const componentName = url.searchParams.get('component');
+  const storyName = url.searchParams.get('story');
+
+  Promise
+    .all([
+      import('../src/lib/i18n.js'),
+      import((`../src/translations/translations.${langCode}.js`)),
+    ])
+    .then(([{ addTranslations, setLanguage }, { lang, translations }]) => {
+      addTranslations(lang, translations);
+      setLanguage(lang);
+    })
+    .then(() => import((`../stories/${componentSection}/${componentName}.stories.js`)))
+    .then((module) => {
+      const storyFn = module[storyName];
+      document.querySelector('body').appendChild(storyFn({}));
+    })
+    .catch(console.error);
+
+  </script>
+</head>
+<body>
+</body>
+</html>

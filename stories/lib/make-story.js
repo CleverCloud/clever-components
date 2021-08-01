@@ -1,6 +1,6 @@
-import { useArgs } from '@web/storybook-prebuilt/addons.js';
+// import { useArgs } from '@web/storybook-prebuilt/addons.js';
 import { getLanguage } from '../../src/lib/i18n.js';
-import { getLangArgType, setUpdateArgsCallback, updateLang } from './i18n-control.js';
+// import { getLangArgType, setUpdateArgsCallback, updateLang } from './i18n-control.js';
 import { sequence } from './sequence.js';
 
 const ceJson = window.__STORYBOOK_CUSTOM_ELEMENTS__;
@@ -15,10 +15,10 @@ export function makeStory (...configs) {
 
   const storyFn = (storyArgs) => {
 
-    updateLang(storyArgs.lang);
-    // React hooks voodoo shit
-    const [, updateArgs] = useArgs();
-    setUpdateArgsCallback(updateArgs);
+    // updateLang(storyArgs.lang);
+    // // React hooks voodoo shit
+    // const [, updateArgs] = useArgs();
+    // setUpdateArgsCallback(updateArgs);
 
     const container = document.createElement('div');
     const shadow = container.attachShadow({ mode: 'open' });
@@ -53,7 +53,7 @@ export function makeStory (...configs) {
       }
     });
 
-    const componentDefinition = ceJson.tags.find((c) => c.name === component);
+    const componentDefinition = ceJson?.tags?.find((c) => c.name === component);
     const componentEventNames = (componentDefinition != null && componentDefinition.events != null)
       ? componentDefinition.events.map((e) => e.name)
       : [];
@@ -123,9 +123,9 @@ export function makeStory (...configs) {
     },
   };
 
-  storyFn.argTypes = {
-    lang: getLangArgType(),
-  };
+  // storyFn.argTypes = {
+  //   lang: getLangArgType(),
+  // };
 
   storyFn.args = {
     lang: getLanguage(),

@@ -60,8 +60,16 @@ export const dataLoaded = makeStory(conf, {
 });
 
 export const dataLoadedWithCustomStyles = makeStory(conf, {
+  // language=CSS
   css: `
-    cc-pricing-estimation {
+    cc-pricing-estimation::part(selected-products) {
+      box-shadow: 0 0 5px #aaa;
+      margin: 1em 0;
+      border-radius: 5px;
+    }
+    cc-pricing-estimation::part(recap) {
+      box-shadow: 0 0 5px #aaa;
+      margin: 1em 0;
     }
   `,
   items: [defaultItem],
