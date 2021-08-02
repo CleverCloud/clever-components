@@ -16,21 +16,49 @@ function commonJsIdentifiers (ids) {
   return ids.map((id) => `**/node_modules/${id}/**/*`);
 }
 
-function foobar (story, name) {
-  if (name == null) {
-    console.log(story);
-    return 'null';
-  }
-  return enhanceStoryName(name);
+function getStoryUrl ({ section, component, exports, storyName, lang = 'en' }) {
+  const sp = new URLSearchParams();
+  const hash = [section, component, storyName ?? exports[0], lang].join('/');
+  sp.set('stories', hash);
+  return '/?' + sp.toString();
 }
 
-function getStoryUrl ({ section, component, exports }, storyName, lang = 'en') {
-  const sp = new URLSearchParams();
-  sp.set('section', section);
-  sp.set('component', component);
-  sp.set('story', storyName ?? exports[0]);
-  sp.set('lang', 'en');
-  return '/storyblon/story.html?' + sp.toString();
+let cachedStories;
+
+async function getStories () {
+
+  if (cachedStories == null) {
+    const storiesFilePaths = await glob('stories/**/cc-*.js');
+    cachedStories = storiesFilePaths
+      .map((fp) => {
+        const [_, section] = fp.split('/');
+        return {
+          fp,
+          section,
+          fileContent: fs.readFileSync(new URL(fp, import.meta.url), 'utf8'),
+        };
+      })
+      .map((story) => ({
+        ...story,
+        ast: babelParse(story.fileContent),
+      }))
+      .map((story) => {
+        const defaultEntries = story.ast.program.body
+          .find((node) => node.type === 'ExportDefaultDeclaration')
+          .declaration
+          .properties
+          .map((prop) => [prop.key.name, prop.value.value]);
+        const { title, component } = Object.fromEntries(defaultEntries);
+        const exports = story.ast.program.body
+          .filter((node) => node.type === 'ExportNamedDeclaration')
+          .map((node) => node.declaration.declarations?.[0]?.id?.name)
+          .filter((name) => name != null);
+        return { ...story, title, component, exports };
+      })
+      .filter(({ component, exports }) => component != null && exports != null);
+  }
+
+  return cachedStories;
 }
 
 const storyblonPlugin = {
@@ -39,34 +67,7 @@ const storyblonPlugin = {
 
     if (context.path === '/') {
 
-      const storiesFilePaths = await glob('stories/**/cc-*.js');
-      const stories = storiesFilePaths
-        .map((fp) => {
-          const [_, section] = fp.split('/');
-          return {
-            fp,
-            section,
-            fileContent: fs.readFileSync(new URL(fp, import.meta.url), 'utf8'),
-          };
-        })
-        .map((story) => ({
-          ...story,
-          ast: babelParse(story.fileContent),
-        }))
-        .map((story) => {
-          const defaultEntries = story.ast.program.body
-            .find((node) => node.type === 'ExportDefaultDeclaration')
-            .declaration
-            .properties
-            .map((prop) => [prop.key.name, prop.value.value]);
-          const { title, component } = Object.fromEntries(defaultEntries);
-          const exports = story.ast.program.body
-            .filter((node) => node.type === 'ExportNamedDeclaration')
-            .map((node) => node.declaration.declarations?.[0]?.id?.name)
-            .filter((name) => name != null);
-          return { ...story, title, component, exports };
-        })
-        .filter(({ component, exports }) => component != null && exports != null);
+      const stories = await getStories();
 
       return `
         <!doctype html>
@@ -87,20 +88,25 @@ const storyblonPlugin = {
               display: grid;
               gap: 1em;
               grid-template-columns: 20em 1fr;
-              grid-template-rows: 1fr 1fr;
+              grid-template-rows: min-content 1fr 1fr;
               grid-template-areas:
+                "controls preview"
                 "component-list preview"
-                "story-list previewB";
+                "story-list preview";
               padding: 1em;
             }
+            .controls,
             .component-list,
-            .story-list,
-            .preview-wrapper {
+            .story-list {
               background-color: #fff;
               height: 100%;
               margin: 0;
               overflow: auto;
               padding: 0;
+            }
+            .controls {
+              box-sizing: border-box;
+              padding: 1em;
             }
             .component-list {
               grid-area: component-list;
@@ -108,12 +114,21 @@ const storyblonPlugin = {
             .story-list {
               grid-area: story-list;
             }
-            .preview-wrapper {
+            .preview-list {
+              display: grid;
+              gap: 1em;
               grid-area: preview;
-              overflow: hidden;
+              grid-auto-rows: 1fr;
             }
-            .preview-wrapper-b {
-              grid-area: previewB;
+            .preview-list[data-orientation="rows"] {
+              grid-auto-flow: row;
+            }
+            .preview-list[data-orientation="columns"] {
+              grid-auto-flow: column;
+            }
+            .preview-wrapper {
+              background-color: #fff;
+              overflow: hidden;
             }
             .preview {
               border: none;
@@ -132,38 +147,91 @@ const storyblonPlugin = {
               display: none;
             }
           </style>
-          <script>
+          <script type="module">
+
+            function createPreview () {
+              const wrapper = document.createElement('div');
+              wrapper.classList.add('preview-wrapper');
+              wrapper.innerHTML = \`<iframe class="preview" src=""></iframe>\`;
+              return wrapper;
+            }
+          
+            function updatePreviewsList() {
+              const url = new URL(location.href);
+              const stories = (url.searchParams.get('stories') ?? '').split(',');
+              const $previewList = document.querySelector('.preview-list');
+              const previews = Array.from($previewList.querySelectorAll('.preview-wrapper'));
+              for (let i = 0; i <= Math.max(0, stories.length - previews.length); i+=1) {
+                const $preview = createPreview();
+                previews.push($preview);
+                $previewList.appendChild($preview);
+              }
+              for (let i = stories.length; i < previews.length; i+=1) {
+                $previewList.removeChild(previews[i]);
+              }
+              for (let i = 0; i < stories.length; i+=1) {
+                const iframe = previews[i].querySelector('iframe');
+                if (iframe.dataset.story !== stories[i]) {
+                  iframe.dataset.story = stories[i];
+                  iframe.src = '/storyblon/story.html?story=' + stories[i];
+                }
+              }
+              
+              const componentName = stories[0].split('/')[1];
+              Array.from(document.querySelectorAll('.story-list')).forEach((list) => {
+                const hidden = (list.dataset.component !== componentName);
+                list.classList.toggle('hidden', hidden);
+              });
+            }
+            
+            updatePreviewsList();
+          
             window.addEventListener('click', (e) => {
               if (e.target.nodeName ==='A') {
-                const url = new URL(e.target.href);
-                const componentName = url.searchParams.get('component');
-                Array.from(document.querySelectorAll('.story-list')).forEach((list) => {
-                  const hidden = (list.dataset.component !==componentName);
-                  list.classList.toggle('hidden', hidden);
-                });
+                e.preventDefault();
+                
+                const targetUrl = new URL(e.target.href);
+                const targetHashes = (targetUrl.searchParams.get('stories') ?? '').split(',');
+                
+                const url = new URL(location.href);
+                const hashes = e.altKey
+                  ? (url.searchParams.get('stories') ?? '').split(',')
+                  : [];
+                  
+                targetHashes.forEach((hash) => hashes.push(hash));
+                url.searchParams.set('stories', hashes.join(','));
+
+                history.pushState({}, '', url.toString());
+                
+                updatePreviewsList();
               }
             });
+            document.querySelector('.controls').addEventListener('change', (e) => {
+              document.querySelector('.preview-list').dataset.orientation = e.target.value; 
+            })
           </script>
         </head>
         <body>
+          <div class="controls">
+            <label><input type="radio" name="orientation" value="rows" checked>rows</label>
+            <label><input type="radio" name="orientation" value="columns">columns</label>
+          </div>
           <ul class="component-list">
             ${stories.map((s) => `
-              <li class="component-item"><a href="${getStoryUrl(s)}" target="preview">${s.component}</a></li>
+              <li class="component-item"><a href="${getStoryUrl(s)}">${s.component}</a></li>
             `).join('')}
           </ul>
           <ul class="story-list placeholder"></ul>
           ${stories.map((s) => `
             <ul class="story-list hidden" data-component="${s.component}">
               ${s.exports.map((storyName) => `
-                <li class="story-item"><a href="${getStoryUrl(s, storyName)}" target="preview">${foobar(s, storyName)}</a></li>
+                <li class="story-item"><a href="${getStoryUrl({
+        ...s, storyName
+      })}" target="preview-a">${enhanceStoryName(storyName)}</a></li>
               `).join('')}
             </ul>
           `).join('')}
-          <div class="preview-wrapper">
-            <iframe class="preview" name="preview"></iframe>
-          </div>
-          <div class="preview-wrapper">
-            <iframe class="preview" name="preview"></iframe>
+          <div class="preview-list" data-orientation="vertical">
           </div>
         </body>
         </html>

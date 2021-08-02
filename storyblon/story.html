@@ -12,10 +12,8 @@
   <script type="module">
 
   const url = new URL(location.href);
-  const langCode = url.searchParams.get('lang') ?? 'en';
-  const componentSection = url.searchParams.get('section');
-  const componentName = url.searchParams.get('component');
-  const storyName = url.searchParams.get('story');
+  const hash = url.searchParams.get('story');
+  const [section, component, storyName, langCode] = hash.split('/');
 
   Promise
     .all([
@@ -26,7 +24,7 @@
       addTranslations(lang, translations);
       setLanguage(lang);
     })
-    .then(() => import((`../stories/${componentSection}/${componentName}.stories.js`)))
+    .then(() => import((`../stories/${section}/${component}.stories.js`)))
     .then((module) => {
       const storyFn = module[storyName];
       document.querySelector('body').appendChild(storyFn({}));
