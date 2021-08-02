@@ -56,15 +56,8 @@ const SKELETON_TRAFFIC_INTERVALS = [
  * ```
  *
  * ```js
- * interface Feature {
- *   code: "connection-limit" | "cpu" | "databases" | "disk-size" | "gpu" | "has-logs" | "has-metrics" | "max-db-size" | "memory" | "version",
- *   type: "boolean" | "shared" | "bytes" | "number" | "runtime" | "string",
- *   value?: number|string, // Only required for an item feature
- * }
- * ```
- *
- * ```js
- * interface Item {
+ * interface Plan {
+ *   productName: string,
  *   name: string,
  *   price: number, // price in euros for 1 hour
  *   features: Feature[],
@@ -72,9 +65,10 @@ const SKELETON_TRAFFIC_INTERVALS = [
  * ```
  *
  * ```js
- * interface Product {
- *   name: string,
- *   item: Item,
+ * interface Feature {
+ *   code: "connection-limit" | "cpu" | "databases" | "disk-size" | "gpu" | "has-logs" | "has-metrics" | "max-db-size" | "memory" | "version",
+ *   type: "boolean" | "shared" | "bytes" | "number" | "runtime" | "string",
+ *   value?: number|string, // Only required for a plan feature
  * }
  * ```
  *
@@ -87,7 +81,7 @@ const SKELETON_TRAFFIC_INTERVALS = [
  * @prop {String} name - Sets the name of the product.
  * @prop {Boolean} noTraffic - Hides the traffic section of the component.
  *
- * @event {CustomEvent<Product>} cc-pricing-product:add-product - Fires the product whenever the "add" button is clicked.
+ * @event {CustomEvent<Plan>} cc-pricing-product:add-plan - Fires the plan whenever the "add" button is clicked.
  *
  * @slot - The description of the cellar product.
  * @slot head - Override the whole head section (with the icon, name and description).
@@ -178,15 +172,15 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
     this._totalPrice = this._getTotal();
   }
 
-  _onAddItem () {
+  _onAddPlan () {
     const storageBytes = this._storageQuantity * parseInt(this._storageUnitValue);
     const trafficBytes = this.noTraffic ? null : this._trafficQuantity * parseInt(this._trafficUnitValue);
-    const name = this.name;
-    const item = {
-      name: i18n('cc-pricing-product-storage.product-item-name', { storageBytes, trafficBytes }),
+    const plan = {
+      productName: this.name,
+      name: i18n('cc-pricing-product-storage.plan-name', { storageBytes, trafficBytes }),
       price: this._getTotal() / THIRTY_DAYS_IN_HOURS,
     };
-    dispatchCustomEvent(this, 'cc-pricing-product:add-product', { name, item });
+    dispatchCustomEvent(this, 'cc-pricing-product:add-plan', plan);
   }
 
   _onInputValue (section, quantity) {
@@ -414,7 +408,7 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
 
         ${this.noTraffic !== true ? html`
           <hr>
-  
+
           ${this._renderSection({
             section: 'traffic',
             title: i18n('cc-pricing-product-storage.traffic.title'),
@@ -453,7 +447,7 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
             <cc-button
               image=${plusSvg}
               ?disabled=${(this._storageQuantity <= 0 && this._trafficQuantity <= 0) || skeleton || this.error}
-              @cc-button:click=${this._onAddItem}
+              @cc-button:click=${this._onAddPlan}
             >${i18n('cc-pricing-product-storage.add')}
             </cc-button>
           </div>
