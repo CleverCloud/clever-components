@@ -164,7 +164,7 @@ export const simulations = makeStory(conf, {
       component.name = product.name;
       component.icon = product.icon;
       component.description = product.description;
-      component.items = product.items;
+      component.plans = product.plans;
       component.features = product.features;
       componentError.error = true;
     }),
