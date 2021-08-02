@@ -5,6 +5,7 @@ import '../atoms/cc-toggle.js';
 import '../atoms/cc-flex-gap.js';
 import '../molecules/cc-error.js';
 import './cc-env-var-editor-expert.js';
+import './cc-env-var-editor-json.js';
 import './cc-env-var-editor-simple.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
@@ -49,6 +50,7 @@ export class CcEnvVarForm extends LitElement {
       _currentVariables: { type: Array, attribute: false },
       _description: { type: String, attribute: false },
       _expertVariables: { type: Array, attribute: false },
+      _jsonVariables: { type: Array, attribute: false },
       _mode: { type: String, attribute: false },
       _isPristine: { type: Boolean, attribute: false },
     };
@@ -102,6 +104,7 @@ export class CcEnvVarForm extends LitElement {
     return [
       { label: i18n('cc-env-var-form.mode.simple'), value: 'SIMPLE' },
       { label: i18n('cc-env-var-form.mode.expert'), value: 'EXPERT' },
+      { label: 'JSON', value: 'JSON' },
     ];
   }
 
@@ -155,6 +158,9 @@ export class CcEnvVarForm extends LitElement {
     if (mode === 'EXPERT') {
       this._expertVariables = this._currentVariables;
     }
+    else if (mode === 'JSON') {
+      this._jsonVariables = this._currentVariables;
+    }
     this._mode = mode;
   }
 
@@ -202,10 +208,12 @@ export class CcEnvVarForm extends LitElement {
       if (this.variables == null) {
         this._currentVariables = null;
         this._expertVariables = null;
+        this._jsonVariables = null;
       }
       else {
         this._currentVariables = this.variables.sort((a, b) => a.name.localeCompare(b.name));
         this._expertVariables = this.variables.sort((a, b) => a.name.localeCompare(b.name));
+        this._jsonVariables = this.variables.sort((a, b) => a.name.localeCompare(b.name));
       }
     }
     super.update(changedProperties);
@@ -254,6 +262,15 @@ export class CcEnvVarForm extends LitElement {
             @cc-env-var-editor-expert:change=${this._onChange}
             @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
           ></cc-env-var-editor-expert>
+
+          <cc-env-var-editor-json
+            ?hidden=${this._mode !== 'JSON'}
+            .variables=${this._jsonVariables}
+            ?disabled=${isEditorDisabled}
+            ?readonly=${this.readonly}
+            @cc-env-var-editor-json:change=${this._onChange}
+            @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
+          ></cc-env-var-editor-json>
         </cc-expand>
 
         ${this.error === 'loading' ? html`
@@ -295,79 +312,79 @@ export class CcEnvVarForm extends LitElement {
       // language=CSS
       linkStyles,
       css`
-        :host {
-          background: #fff;
-          border: 1px solid #bcc2d1;
-          border-radius: 0.25rem;
-          display: block;
-          padding: 1rem;
-        }
+          :host {
+              background: #fff;
+              border: 1px solid #bcc2d1;
+              border-radius: 0.25rem;
+              display: block;
+              padding: 1rem;
+          }
 
-        .header {
-          align-items: flex-start;
-          display: flex;
-          justify-content: center;
-          margin-bottom: 0.5rem;
-        }
+          .header {
+              align-items: flex-start;
+              display: flex;
+              justify-content: center;
+              margin-bottom: 0.5rem;
+          }
 
-        .heading {
-          color: #3A3871;
-          flex: 1 1 0;
-          font-size: 1.2rem;
-          font-weight: bold;
-        }
+          .heading {
+              color: #3A3871;
+              flex: 1 1 0;
+              font-size: 1.2rem;
+              font-weight: bold;
+          }
 
-        .description {
-          color: #555;
-          display: block;
-          font-style: italic;
-          line-height: 1.5;
-          margin-bottom: 1rem;
-        }
+          .description {
+              color: #555;
+              display: block;
+              font-style: italic;
+              line-height: 1.5;
+              margin-bottom: 1rem;
+          }
 
-        .hasOverlay {
-          --cc-skeleton-state: paused;
-          filter: blur(0.3rem);
-        }
+          .hasOverlay {
+              --cc-skeleton-state: paused;
+              filter: blur(0.3rem);
+          }
 
-        .overlay-container {
-          position: relative;
-        }
+          .overlay-container {
+              position: relative;
+          }
 
-        cc-expand {
-          /* We need to spread so the focus rings can be visible even with cc-expand default overflow:hidden */
-          margin: -0.25rem;
-          padding: 0.25rem;
-        }
+          cc-expand {
+              /* We need to spread so the focus rings can be visible even with cc-expand default overflow:hidden */
+              margin: -0.25rem;
+              padding: 0.25rem;
+          }
 
-        .error-container {
-          align-items: center;
-          display: flex;
-          flex-direction: column;
-          height: 100%;
-          justify-content: center;
-          left: 0;
-          position: absolute;
-          top: 0;
-          width: 100%;
-        }
+          .error-container {
+              align-items: center;
+              display: flex;
+              flex-direction: column;
+              height: 100%;
+              justify-content: center;
+              left: 0;
+              position: absolute;
+              top: 0;
+              width: 100%;
+          }
 
-        .saving-loader {
-          height: 100%;
-          left: 0;
-          position: absolute;
-          top: 0;
-          width: 100%;
-        }
+          .saving-loader {
+              height: 100%;
+              left: 0;
+              position: absolute;
+              top: 0;
+              width: 100%;
+          }
 
-        .button-bar {
-          --cc-gap: 1rem;
-          margin-top: 1.5rem;
-        }
+          .button-bar {
+              --cc-gap: 1rem;
+              margin-top: 1.5rem;
+          }
 
-        .spacer {
-          flex: 1 1 0;
-        }
+          .spacer {
+              flex: 1 1 0;
+          }
       `,
     ];
   }
