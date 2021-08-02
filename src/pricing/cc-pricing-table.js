@@ -28,18 +28,19 @@ const AVAILABLE_FEATURES = Object.keys(FEATURES_I18N);
 const NUMBER_FEATURE_TYPES = ['bytes', 'number', 'number-cpu-runtime'];
 
 /**
- * A component to display product informations: items (plans) and features.
+ * A component to display product plans and their features.
  *
  * ## Details
  *
- * * The items are sorted by price.
- * * If an item has a feature that is not listed in features, it will be ignored.
- * * If a feature has a code that is not supported, it will be ignored.
+ * * The plans are sorted by price.
+ * * If a plan has a feature that is not listed in `features`, it will be ignored.
+ * * If a feature has a `code` that is not supported, it will be ignored.
  *
  * ## Type definitions
  *
  * ```js
- * interface Item {
+ * interface Plan {
+ *   productName: string,
  *   name: string,
  *   price: number, // price in euros for 1 hour
  *   features: Feature[],
@@ -50,7 +51,7 @@ const NUMBER_FEATURE_TYPES = ['bytes', 'number', 'number-cpu-runtime'];
  * interface Feature {
  *   code: "connection-limit" | "cpu" | "databases" | "disk-size" | "gpu" | "has-logs" | "has-metrics" | "max-db-size" | "memory" | "version",
  *   type: "boolean" | "shared" | "bytes" | "number" | "runtime" | "string",
- *   value?: number|string, // Only required for an item feature
+ *   value?: number|string, // Only required for a plan feature
  * }
  * ```
  *
@@ -63,12 +64,12 @@ const NUMBER_FEATURE_TYPES = ['bytes', 'number', 'number-cpu-runtime'];
  *
  * @cssdisplay block
  *
- * @prop {"add"|"none"} action - Sets the type of action: "add" to display add buttons for each item and "none" for no actions (defaults to "add").
+ * @prop {"add"|"none"} action - Sets the type of action: "add" to display add buttons for each plan and "none" for no actions (defaults to "add").
  * @prop {Currency} currency - Sets the currency used to display the prices (defaults to euros).
  * @prop {Feature[]} features - Sets the list of features (used for the feature sort order).
- * @prop {Item[]} items - Sets the list of items.
+ * @prop {Plan[]} plans - Sets the list of plans.
  *
- * @event {CustomEvent<Item>} cc-pricing-table:add-item - Fires the item whenever the "plus" button of an item is clicked.
+ * @event {CustomEvent<Plan>} cc-pricing-table:add-plan - Fires the plan whenever a "plus" button is clicked.
  */
 export class CcPricingTable extends withResizeObserver(LitElement) {
 
@@ -77,9 +78,9 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
       action: { type: String, reflect: true },
       currency: { type: Object },
       features: { type: Array },
-      items: { type: Array },
+      plans: { type: Array },
       _features: { type: Array },
-      _items: { type: Array },
+      _plans: { type: Array },
       _size: { type: String },
     };
   }
@@ -87,7 +88,7 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
   constructor () {
     super();
     this.action = 'add';
-    this._items = [];
+    this._plans = [];
     this._features = [];
   }
 
@@ -141,44 +142,44 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
     return i18n('cc-pricing-table.price', { price, code: currency.code });
   }
 
-  _renderSmallItems () {
+  _renderSmallPlans () {
     return html`
       <div class="container">
-        ${this._items.map((item) => html`
-          <div class="plan" data-state=${item.state}>
+        ${this._plans.map((plan) => html`
+          <div class="plan" data-state=${plan.state}>
 
             ${this.action === 'add' ? html`
               <cc-button
-                class="add-item-btn"
+                class="add-plan-btn"
                 image=${plusSvg}
                 hide-text
                 circle
-                @cc-button:click=${() => this._onAddItem(item)}
+                @cc-button:click=${() => this._onAddPlan(plan)}
               >${i18n('cc-pricing-table.add-button')}
               </cc-button>
             ` : ''}
 
-            <div class="plan-name">${item.name}</div>
+            <div class="plan-name">${plan.name}</div>
 
             <cc-button
-              image=${item.state === 'closed' ? downSvg : upSvg}
+              image=${plan.state === 'closed' ? downSvg : upSvg}
               hide-text
               circle
-              @cc-button:click=${() => this._onToggleState(item)}
+              @cc-button:click=${() => this._onToggleState(plan)}
             ></cc-button>
 
             <div class="feature-list">
-              ${this._renderSmallItemFeatures(item.features)}
+              ${this._renderSmallPlanFeatures(plan.features)}
             </div>
 
             <div class="feature-list">
               <div class="feature">
                 <div class="feature-name">${i18n('cc-pricing-table.price-name-daily')}</div>
-                <div class="feature-value">${this._getDailyPrice(item.price)}</div>
+                <div class="feature-value">${this._getDailyPrice(plan.price)}</div>
               </div>
               <div class="feature">
                 <div class="feature-name">${i18n('cc-pricing-table.price-name-monthly')}</div>
-                <div class="feature-value">${this._getMonthlyPrice(item.price)}</div>
+                <div class="feature-value">${this._getMonthlyPrice(plan.price)}</div>
               </div>
             </div>
 
@@ -188,9 +189,9 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
     `;
   }
 
-  _renderSmallItemFeatures (itemFeatures) {
+  _renderSmallPlanFeatures (planFeatures) {
     return this._features.map((feature) => {
-      const currentFeature = itemFeatures.find((itemFeature) => feature.code === itemFeature.code);
+      const currentFeature = planFeatures.find((f) => feature.code === f.code);
       if (currentFeature == null) {
         return '';
       }
@@ -203,7 +204,7 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
     });
   }
 
-  _renderBigItems () {
+  _renderBigPlans () {
     return html`
       <table>
         <tr>
@@ -217,56 +218,57 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
           <th class="number-align">${i18n('cc-pricing-table.price-name-daily')}</th>
           <th class="number-align">${i18n('cc-pricing-table.price-name-monthly')}</th>
         </tr>
-        ${this._items.map((item) => html`
+        ${this._plans.map((plan) => html`
           <tr>
             ${this.action === 'add' ? html`
               <td class="btn-col">
-                <cc-button image=${plusSvg} hide-text circle @cc-button:click=${() => this._onAddItem(item)}></cc-button>
+                <cc-button image=${plusSvg} hide-text circle @cc-button:click=${() => this._onAddPlan(plan)}></cc-button>
               </td>
             ` : ''}
-            <td>${item.name}</td>
-            ${this._renderBigItemFeatures(item.features)}
-            <td class="number-align">${this._getDailyPrice(item.price)}</td>
-            <td class="number-align">${this._getMonthlyPrice(item.price)}</td>
+            <td>${plan.name}</td>
+            ${this._renderBigPlanFeatures(plan.features)}
+            <td class="number-align">${this._getDailyPrice(plan.price)}</td>
+            <td class="number-align">${this._getMonthlyPrice(plan.price)}</td>
           </tr>
         `)}
       </table>
     `;
   }
 
-  _renderBigItemFeatures (itemFeatures) {
+  _renderBigPlanFeatures (planFeatures) {
     return this._features.map((feature) => {
-      const currentFeature = itemFeatures.find((itemFeature) => feature.code === itemFeature.code);
+      const currentFeature = planFeatures.find((f) => feature.code === f.code);
       return html`
         <td class=${classMap({ 'number-align': NUMBER_FEATURE_TYPES.includes(feature.type) })}>${this._getFeatureValue(currentFeature)}</td>
       `;
     });
   }
 
-  _onAddItem (item) {
-    dispatchCustomEvent(this, 'add-item', item);
+  _onAddPlan (plan) {
+    dispatchCustomEvent(this, 'add-plan', plan);
   }
 
-  _onToggleState (newItem) {
-    this._items = this._items.map((item) => {
-      return (item === newItem)
-        ? { ...item, state: (item.state === 'closed') ? 'opened' : 'closed' }
-        : item;
+  _onToggleState (newPlan) {
+    this._plans = this._plans.map((plan) => {
+      return (plan === newPlan)
+        ? { ...plan, state: (plan.state === 'closed') ? 'opened' : 'closed' }
+        : plan;
     });
   }
 
   update (changedProperties) {
 
-    if (changedProperties.has('items') && Array.isArray(this.items)) {
-      this._items = this.items
-        .map((item) => ({ ...item, state: 'closed' }))
-        .sort((i1, i2) => i1.price - i2.price);
+    if (changedProperties.has('plans') && Array.isArray(this.plans)) {
+      this._plans = this.plans
+        .map((plan) => ({ ...plan, state: 'closed' }))
+        .sort((a, b) => a.price - b.price);
     }
 
     if (changedProperties.has('features') && Array.isArray(this.features)) {
       this._features = this.features
         .filter((feature) => AVAILABLE_FEATURES.includes(feature.code));
     }
+
     super.update(changedProperties);
   }
 
@@ -275,8 +277,8 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
     // Also, when this component is used several times in the page, it's better if all instances switch at the same breakpoint.
     // 950 seems like a good arbitrary value for the content we need to display.
     return (this._size > 950)
-      ? this._renderBigItems()
-      : this._renderSmallItems();
+      ? this._renderBigPlans()
+      : this._renderSmallPlans();
   }
 
   static get styles () {
@@ -361,7 +363,7 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
           grid-template-columns: [main-start] 1fr [main-end] min-content;
         }
 
-        .plan .add-item-btn {
+        .plan .add-plan-btn {
           margin-right: 1em;
         }
 

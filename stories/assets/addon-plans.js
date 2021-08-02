@@ -6897,6 +6897,6 @@ export function getFullProductAddon (addonProviderId, addonFeatures) {
 }
 
 export function getProductAddon (addonProviderId) {
-  const { items, features } = getFullProductAddon(addonProviderId);
-  return { items, features };
+  const { plans, features } = getFullProductAddon(addonProviderId);
+  return { plans, features };
 }
