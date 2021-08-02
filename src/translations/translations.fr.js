@@ -228,6 +228,16 @@ export const translations = {
   'cc-env-var-editor-expert.placeholder': `NOM_DE_LA_VARIABLE="valeur de la variable"`,
   'cc-env-var-editor-expert.placeholder-readonly': `Il n'y a pas de variable.`,
   //#endregion
+  //#region cc-env-var-editor-json
+  'cc-env-var-editor-json.errors.duplicated-name': ({ name }) => sanitize`attention, le nom <code>${name}</code> est déjà défini`,
+  'cc-env-var-editor-json.errors.invalid-json': `Le JSON entré est invalide.`,
+  'cc-env-var-editor-json.errors.invalid-json-entry': `Le JSON entré est un tableau d'objets JSON valide mais toutes les valeurs des propriétés doivent être de type string. Ex : '[{ "name": "THE_NAME", "value": "the value" }]'`,
+  'cc-env-var-editor-json.errors.invalid-json-format': `Le JSON entré est valide mais n'est pas au bon format. Le JSON doit être un tableau d'objets`,
+  'cc-env-var-editor-json.errors.invalid-name': ({ name }) => sanitize`Le nom <code>${name}</code> n'est pas valide`,
+  'cc-env-var-editor-json.errors.unknown': `Erreur inconnue`,
+  'cc-env-var-editor-json.placeholder': `'[{ "name": "THE_NAME", "value": "the value" }]'`,
+  'cc-env-var-editor-json.placeholder-readonly': `Il n'y a pas de variables.`,
+  //#endregion
   //#region cc-env-var-editor-simple
   'cc-env-var-editor-simple.empty-data': `Il n'y a pas de variable.`,
   //#endregion

@@ -215,6 +215,16 @@ export const translations = {
   'cc-env-var-editor-expert.placeholder': `VARIABLE_NAME="variable value"`,
   'cc-env-var-editor-expert.placeholder-readonly': `There are no variables.`,
   //#endregion
+  //#region cc-env-var-editor-json
+  'cc-env-var-editor-json.errors.duplicated-name': ({ name }) => sanitize`be careful, the name <code>${name}</code> is already defined`,
+  'cc-env-var-editor-json.errors.invalid-json': `The JSON entered is invalid`,
+  'cc-env-var-editor-json.errors.invalid-json-entry': `The input was a valid JSON array of objects but all entries must have properties "name" and "value" of type string. Ex: '[{ "name": "THE_NAME", "value": "the value" }]'`,
+  'cc-env-var-editor-json.errors.invalid-json-format': `The input was valid JSON but it does not follow the correct format. It must be an array of objects`,
+  'cc-env-var-editor-json.errors.invalid-name': ({ name }) => sanitize`<code>${name}</code> is not a valid variable name`,
+  'cc-env-var-editor-json.errors.unknown': `Unknown Error`,
+  'cc-env-var-editor-json.placeholder': `'[{ "name": "THE_NAME", "value": "the value" }]'`,
+  'cc-env-var-editor-json.placeholder-readonly': `There are no variables.`,
+  //#endregion
   //#region cc-env-var-editor-simple
   'cc-env-var-editor-simple.empty-data': `There are no variables.`,
   //#endregion

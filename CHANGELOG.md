@@ -12,6 +12,9 @@ title: Changelog
 * `<cc-zone-input>`: fix type for `_hovered` (string|null)
 * Storybook: fix logo URL
 
+* New component:
+  * `<cc-env-var-editor-json>`
+
 ### For devs
 
 * Improve type definitions documentation:
