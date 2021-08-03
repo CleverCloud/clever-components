@@ -17,6 +17,7 @@ title: Changelog
 * `<cc-pricing-product-storage>`: introduce a more generic version of `<cc-pricing-product-cellar>` that works with smart definition for Cellar & FS Bucket
 * `<cc-pricing-table>`: rename `items` to `plans` (BREAKING CHANGE)
 * `<cc-pricing-product>`: rename `items` to `plans` (BREAKING CHANGE)
+* `<cc-block>`: introduce a ribbon and a noHead property
 
 ## 6.10.0 (2021-07-08)
 
