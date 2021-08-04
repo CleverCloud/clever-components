@@ -7,8 +7,8 @@ import { enhanceStoriesNames } from '../lib/story-names.js';
 // Feature order is not the same between plans
 // Some features will be ignored because they cannot be translated
 // Some features will be ignored because they are not listed
-// Some features are missing for some items
-const fakeProductItems = [
+// Some features are missing for some plans
+const fakeProductPlans = [
   {
     name: 'ONE',
     features: [
@@ -81,7 +81,7 @@ export const defaultStory = makeStory(conf, {
 export const dataLoadedWithFake = makeStory(conf, {
   items: [
     {
-      items: fakeProductItems,
+      plans: fakeProductPlans,
       features: [
         { code: 'connection-limit', type: 'number' },
         { code: 'cpu', type: 'number' },
@@ -96,7 +96,7 @@ export const dataLoadedWithFake = makeStory(conf, {
       ],
     },
     {
-      items: fakeProductItems,
+      plans: fakeProductPlans,
       features: [
         { code: 'cpu', type: 'number' },
         { code: 'gpu', type: 'number' },

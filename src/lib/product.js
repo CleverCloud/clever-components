@@ -4,7 +4,7 @@ export function formatAddonProduct (addonProvider, priceSystem, selectedFeatures
     icon: addonProvider.logoUrl,
     description: addonProvider.longDesc,
     features: formatAddonFeatures(addonProvider.features, selectedFeatures),
-    items: formatAddonItems(addonProvider.plans, priceSystem, selectedFeatures),
+    plans: formatAddonPlans(addonProvider.plans, priceSystem, selectedFeatures),
     currency,
   };
 }
@@ -58,13 +58,13 @@ function formatAddonFeatures (providerFeatures, selectedFeatures) {
       return {
         code: feature.name_code,
         type: feature.type.toLowerCase(),
-        // Only used when we format item features
+        // Only used when we format plan features
         value: feature.computable_value || '',
       };
     });
 }
 
-function formatAddonItems (allPlans, priceSystem, selectedFeatures) {
+function formatAddonPlans (allPlans, priceSystem, selectedFeatures) {
   return allPlans.map((plan) => {
     const priceItem = priceSystem.runtime.find((runtime) => runtime.slug_id.toLowerCase() === plan.price_id.toLowerCase());
     return {
@@ -82,7 +82,7 @@ export function formatRuntimeProduct (runtime, priceSystem, currency) {
     icon: runtime.variant.logo,
     // The runtime description is not really useful here
     features,
-    items: formatRuntimeItems(runtime.flavors, priceSystem, features),
+    plans: formatRuntimePlans(runtime.flavors, priceSystem, features),
     currency,
   };
 }
@@ -98,7 +98,7 @@ function formatRuntimeFeatures (runtime) {
   return features;
 }
 
-function formatRuntimeItems (allFlavors, priceSystem, features) {
+function formatRuntimePlans (allFlavors, priceSystem, features) {
   return allFlavors.map((flavor) => {
     const priceItem = priceSystem.runtime.find((runtime) => runtime.slug_id.toLowerCase() === flavor.price_id.toLowerCase());
     return {

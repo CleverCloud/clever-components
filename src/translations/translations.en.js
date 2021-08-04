@@ -350,6 +350,11 @@ export const translations = {
   'cc-pricing-product-storage.bytes': ({ bytes }) => formatBytesSi(bytes),
   'cc-pricing-product-storage.bytes-unit': ({ bytes }) => getUnit(bytes),
   'cc-pricing-product-storage.error': `An error occured while retrieving pricing details.`,
+  'cc-pricing-product-storage.plan-name': ({ storageBytes, trafficBytes }) => {
+    return (trafficBytes != null)
+      ? `Storage: ${formatBytesSi(storageBytes)}, Traffic: ${formatBytesSi(trafficBytes)}`
+      : `Storage: ${formatBytesSi(storageBytes)}`;
+  },
   'cc-pricing-product-storage.price': ({ price, code }) => `${formatCurrency(lang, price, { currency: code })}`,
   'cc-pricing-product-storage.price-interval': ({ price, code }) => {
     const priceInterval = formatCurrency(lang, price, {
@@ -359,11 +364,6 @@ export const translations = {
     return `${priceInterval} / ${priceOneGigabyte} (30 days)`;
   },
   'cc-pricing-product-storage.price-interval.free': `FREE`,
-  'cc-pricing-product-storage.product-item-name': ({ storageBytes, trafficBytes }) => {
-    return (trafficBytes != null)
-      ? `Storage: ${formatBytesSi(storageBytes)}, Traffic: ${formatBytesSi(trafficBytes)}`
-      : `Storage: ${formatBytesSi(storageBytes)}`;
-  },
   'cc-pricing-product-storage.storage.label': `storage`,
   'cc-pricing-product-storage.storage.title': `Storage:`,
   'cc-pricing-product-storage.total.title': `Estimated total (30 days):`,

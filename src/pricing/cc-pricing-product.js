@@ -14,12 +14,13 @@ const SKELETON_NAME = '????????????';
 const SKELETON_DESCRIPTION = fakeString(180);
 
 /**
- * A component to display product informations: icon, name, description with items (plans) and features.
+ * A component to display product informations: icon, name, description with plans and their features.
  *
  * ## Type definitions
  *
  * ```js
- * interface Item {
+ * interface Plan {
+ *   productName: string,
  *   name: string,
  *   price: number, // price in euros for 1 hour
  *   features: Feature[],
@@ -30,7 +31,7 @@ const SKELETON_DESCRIPTION = fakeString(180);
  * interface Feature {
  *   code: "connection-limit" | "cpu" | "databases" | "disk-size" | "gpu" | "has-logs" | "has-metrics" | "max-db-size" | "memory" | "version",
  *   type: "boolean" | "shared" | "bytes" | "number" | "runtime" | "string",
- *   value?: number|string, // Only required for an item feature
+ *   value?: number|string, // Only required for a plan feature
  * }
  * ```
  *
@@ -41,25 +42,18 @@ const SKELETON_DESCRIPTION = fakeString(180);
  * }
  * ```
  *
- * ```js
- * interface Product {
- *   name: string,
- *   item: Item,
- * }
- * ```
- *
  * @cssdisplay block
  *
- * @prop {"add"|"none"} action - Sets the type of action: "add" to display add buttons for each item and "none" for no actions (defaults to "add").
+ * @prop {"add"|"none"} action - Sets the type of action: "add" to display add buttons for each plan and "none" for no actions (defaults to "add").
  * @prop {Currency} currency - Sets the currency used to display the prices (defaults to euros).
  * @prop {String} description - Sets the description of the product (can be overriden with the default slot).
  * @prop {Boolean} error - Displays an error message.
  * @prop {Feature[]} features - Sets the list of features (used for the feature sort order).
  * @prop {String} icon - Sets the url of the product icon/logo image (can be overriden with the `icon` slot).
- * @prop {Item[]} items - Sets the list of items.
  * @prop {String} name - Sets the name of the product (can be overriden with the `name` slot).
+ * @prop {Plan[]} plans - Sets the list of plans.
  *
- * @event {CustomEvent<Product>} cc-pricing-product:add-product - Fires the product whenever the "plus" button of an item is clicked.
+ * @event {CustomEvent<Plan>} cc-pricing-product:add-plan - Fires the plan whenever a "plus" button is clicked.
  *
  * @slot - Override the `description` param with custom HTML.
  * @slot head - Override the whole head section (with the icon, name and description).
@@ -76,8 +70,8 @@ export class CcPricingProduct extends LitElement {
       error: { type: Boolean, reflect: true },
       features: { type: Array },
       icon: { type: String },
-      items: { type: Array },
       name: { type: String },
+      plans: { type: Array },
     };
   }
 
@@ -87,14 +81,14 @@ export class CcPricingProduct extends LitElement {
     this.features = [];
   }
 
-  _onAddItem ({ detail: item }) {
-    const name = this.name;
-    dispatchCustomEvent(this, 'add-product', { name, item });
+  _onAddPlan ({ detail: plan }) {
+    const productName = this.name;
+    dispatchCustomEvent(this, 'add-plan', { productName, ...plan });
   }
 
   render () {
 
-    const skeleton = (this.items == null || this.features == null);
+    const skeleton = (this.plans == null || this.features == null);
     const name = skeleton ? SKELETON_NAME : this.name;
     const description = skeleton ? SKELETON_DESCRIPTION : this.description;
 
@@ -137,11 +131,11 @@ export class CcPricingProduct extends LitElement {
       ${!skeleton && !this.error ? html`
         <cc-pricing-table
           class="pricing-table"
-          .items=${this.items}
+          .plans=${this.plans}
           .features=${this.features}
           .currency=${this.currency}
           action=${this.action}
-          @cc-pricing-table:add-item=${this._onAddItem}
+          @cc-pricing-table:add-plan=${this._onAddPlan}
         ></cc-pricing-table>
       ` : ''}
     `;
