@@ -18,6 +18,8 @@ const upSvg = new URL('../assets/up.svg', import.meta.url).href;
  * @cssdisplay grid
  *
  * @prop {String} icon - Sets the URL of the image before the title. Icon is hidden if nullish.
+ * @prop {Boolean} noHead - Hides the head section.
+ * @prop {String} ribbon - Adds a ribbon on the top left corner if it is not empty.
  * @prop {"off"|"open"|"close"} state - Sets the state of the toggle behaviour.
  *
  * @slot - The main content of the block. The direct children of this will be spaced in a 1 column CSS grid.
@@ -30,6 +32,8 @@ export class CcBlock extends LitElement {
   static get properties () {
     return {
       icon: { type: String },
+      noHead: { type: Boolean, attribute: 'no-head', reflect: true },
+      ribbon: { type: String, reflect: true },
       state: { type: String, reflect: true },
       _overlay: { type: Boolean, attribute: false },
     };
@@ -37,6 +41,7 @@ export class CcBlock extends LitElement {
 
   constructor () {
     super();
+    this.noHead = false;
     this.state = 'off';
     this._overlay = false;
   }
@@ -56,22 +61,29 @@ export class CcBlock extends LitElement {
     const isOpen = (this.state !== 'close');
 
     return html`
-      
-      <div class="head" @click=${this._clickToggle}>
-        ${this.icon != null ? html`
-          <cc-img src="${this.icon}"></cc-img>
-        ` : ''}
-        <slot name="title"></slot>
-        ${isToggleEnabled ? html`
-          <cc-button
-            image=${isOpen ? upSvg : downSvg}
-            hide-text
-            @cc-button:click=${this._clickToggle}
-          >${(this.state === 'close') ? i18n('cc-block.toggle.close') : i18n('cc-block.toggle.open')}</cc-button>
-        ` : ''}
-        <slot name="button"></slot>
-      </div>
-      
+
+      ${this.ribbon != null && this.ribbon !== '' ? html`
+        <div class="info-ribbon">${this.ribbon}</div>
+      ` : ''}
+
+      ${!this.noHead ? html`
+        <div class="head" @click=${this._clickToggle}>
+          ${this.icon != null ? html`
+            <cc-img src="${this.icon}"></cc-img>
+          ` : ''}
+          <slot name="title"></slot>
+          ${isToggleEnabled ? html`
+            <cc-button
+              image=${isOpen ? upSvg : downSvg}
+              hide-text
+              @cc-button:click=${this._clickToggle}
+            >${(this.state === 'close') ? i18n('cc-block.toggle.close') : i18n('cc-block.toggle.open')}
+            </cc-button>
+          ` : ''}
+          <slot name="button"></slot>
+        </div>
+      ` : ''}
+
       <cc-expand class="main-wrapper ${classMap({ 'main-wrapper--overlay': this._overlay })}">
         ${!isToggleEnabled || isOpen ? html`
           <div class="main">
@@ -79,7 +91,7 @@ export class CcBlock extends LitElement {
           </div>
         ` : ''}
       </cc-expand>
-      
+
       <slot name="overlay"></slot>
     `;
   }
@@ -104,12 +116,17 @@ export class CcBlock extends LitElement {
           box-sizing: border-box;
           display: grid;
           overflow: hidden;
+          position: relative;
         }
 
         .head {
           align-items: center;
           display: flex;
           padding: 1rem;
+        }
+
+        :host([ribbon]) .head {
+          padding-left: 3.5rem;
         }
 
         :host([state="open"]) .head:hover,
@@ -133,10 +150,35 @@ export class CcBlock extends LitElement {
           font-weight: bold;
         }
 
+        .info-ribbon {
+          --height: 1.5rem;
+          --width: 8rem;
+          --r: -45deg;
+          --translate: 1.6rem;
+          background: #3A3871;
+          color: white;
+          font-size: 0.9rem;
+          font-weight: bold;
+          height: var(--height);
+          left: calc(var(--width) / -2);
+          line-height: var(--height);
+          position: absolute;
+          text-align: center;
+          top: calc(var(--height) / -2);
+          transform: rotate(var(--r)) translateY(var(--translate));
+          width: var(--width);
+          z-index: 2;
+        }
+
+
         .main {
           display: grid;
           grid-gap: 1rem;
           padding: 0.5rem 1rem 1rem;
+        }
+
+        :host([no-head]) .main {
+          padding: 1rem;
         }
 
         .main-wrapper--overlay {
@@ -150,6 +192,10 @@ export class CcBlock extends LitElement {
           grid-area: 2 / 1 / auto / auto;
         }
 
+        :host([ribbon]) .main-wrapper {
+          padding-left: 2.5rem;
+        }
+
         ::slotted([slot="overlay"]) {
           align-content: center;
           display: grid;
@@ -157,7 +203,7 @@ export class CcBlock extends LitElement {
           /* we have a few z-index:2 on atoms */
           z-index: 10;
         }
-        
+
         ::slotted(.cc-block_empty-msg) {
           color: #555;
           font-style: italic;
