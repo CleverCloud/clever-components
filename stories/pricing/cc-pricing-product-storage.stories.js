@@ -15,68 +15,166 @@ const conf = {
   }`,
 };
 
-const baseCellarIntervals = {
-  storage: [
-    {
-      minRange: 0,
-      maxRange: 100 * 1e6,
-      price: 0,
-    },
-    {
-      /* Bytes */
-      minRange: 100 * 1e6,
-      maxRange: 1e12,
-      /* Price for 1GB per hour */
-      price: 0.00002844444444444444,
-    },
-    {
-      minRange: 1e12,
-      maxRange: 25 * 1e12,
-      price: 0.00002133333333333333,
-    },
-    {
-      minRange: 25 * 1e12,
-      price: 0.00001422222222222222,
-    },
-  ],
-  traffic: [
-    {
-      minRange: 0,
-      maxRange: 10 * 1e12,
-      price: 0.09,
-    },
-    {
-      minRange: 10 * 1e12,
-      price: 0.07,
-    },
-  ],
-};
+const THIRTY_DAYS_IN_HOURS = 24 * 30;
 
 const baseCellar = {
   name: 'Cellar',
   icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/cellar.svg',
-  intervals: baseCellarIntervals,
+  sections: [
+    {
+      type: 'storage',
+      intervals: [
+        {
+          minRange: 0,
+          maxRange: 100 * 1e6,
+          price: 0 * THIRTY_DAYS_IN_HOURS,
+        },
+        {
+          minRange: 100 * 1e6,
+          maxRange: 1e12,
+          price: 0.00002844444444444444 * THIRTY_DAYS_IN_HOURS,
+        },
+        {
+          minRange: 1e12,
+          maxRange: 25 * 1e12,
+          price: 0.00002133333333333333 * THIRTY_DAYS_IN_HOURS,
+        },
+        {
+          minRange: 25 * 1e12,
+          price: 0.00001422222222222222 * THIRTY_DAYS_IN_HOURS,
+        },
+      ],
+    },
+    {
+      type: 'outbound-traffic',
+      intervals: [
+        {
+          minRange: 0,
+          maxRange: 10 * 1e12,
+          price: 0.09,
+        },
+        {
+          minRange: 10 * 1e12,
+          price: 0.07,
+        },
+      ],
+    },
+  ],
 };
 
 const baseFsBucket = {
   name: 'FS Bucket',
   icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/fsbucket.svg',
-  noTraffic: true,
-  intervals: {
-    storage: [
-      {
-        minRange: 0,
-        maxRange: 100 * 1e6,
-        price: 0,
-      },
-      {
-        /* Bytes */
-        minRange: 100 * 1e6,
-        /* Price for 1GB per hour */
-        price: 0.0020833333333333333,
-      },
-    ],
-  },
+  sections: [
+    {
+      type: 'storage',
+      intervals: [
+        {
+          minRange: 0,
+          maxRange: 100 * 1e6,
+          price: 0 * THIRTY_DAYS_IN_HOURS,
+        },
+        {
+          minRange: 100 * 1e6,
+          price: 0.0020833333333333333 * THIRTY_DAYS_IN_HOURS,
+        },
+      ],
+    },
+  ],
+};
+
+const basePulsar = {
+  name: 'Pulsar',
+  icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/pulsar.svg',
+  sections: [
+    {
+      type: 'storage',
+      intervals: [
+        {
+          minRange: 0,
+          maxRange: 256000000,
+          price: 0 * THIRTY_DAYS_IN_HOURS,
+        },
+        {
+          minRange: 256000000,
+          maxRange: 50000000000,
+          price: 0.00027777777777777778 * THIRTY_DAYS_IN_HOURS,
+        },
+        {
+          minRange: 50000000000,
+          maxRange: 250000000000,
+          price: 0.0002083333333333333 * THIRTY_DAYS_IN_HOURS,
+        },
+        {
+          minRange: 250000000000,
+          maxRange: 1000000000000,
+          price: 0.0001666666666666666 * THIRTY_DAYS_IN_HOURS,
+        },
+        {
+          minRange: 1000000000000,
+          price: 0.00013888888888888889 * THIRTY_DAYS_IN_HOURS,
+        },
+      ],
+    },
+    {
+      type: 'inbound-traffic',
+      intervals: [
+        {
+          minRange: 0,
+          maxRange: 500000000,
+          price: 0,
+        },
+        {
+          minRange: 500000000,
+          maxRange: 100000000000,
+          price: 0.8000000000000000,
+        },
+        {
+          minRange: 100000000000,
+          maxRange: 500000000000,
+          price: 0.50000000000000000000,
+        },
+        {
+          minRange: 500000000000,
+          maxRange: 5000000000000,
+          price: 0.4000000000000000,
+        },
+        {
+          minRange: 5000000000000,
+          price: 0.3000000000000000,
+        },
+      ],
+    },
+    {
+      type: 'outbound-traffic',
+      intervals: [
+        {
+          minRange: 0,
+          maxRange: 500000000,
+          price: 0,
+        },
+        {
+          minRange: 500000000,
+          maxRange: 100000000000,
+          price: 0.8000000000000000,
+        },
+        {
+          minRange: 100000000000,
+          maxRange: 500000000000,
+          price: 0.50000000000000000000,
+        },
+        {
+          minRange: 500000000000,
+          maxRange: 5000000000000,
+          price: 0.4000000000000000,
+        },
+        {
+          minRange: 5000000000000,
+          price: 0.3000000000000000,
+        },
+      ],
+    },
+  ],
 };
 
 export const defaultStory = makeStory(conf, {
@@ -87,16 +185,61 @@ export const skeleton = makeStory(conf, {
   items: [{}],
 });
 
-export const skeletonWithNoTraffic = makeStory(conf, {
-  items: [{ noTraffic: true }],
+export const skeletonWithCellar = makeStory(conf, {
+  items: [{
+    ...baseCellar,
+    sections: baseCellar.sections.map(({ type }) => ({ type })),
+  }],
+});
+
+export const skeletonWithFsBucket = makeStory(conf, {
+  items: [{
+    ...baseFsBucket,
+    sections: baseFsBucket.sections.map(({ type }) => ({ type })),
+  }],
+});
+
+export const skeletonWithPulsar = makeStory(conf, {
+  items: [{
+    ...basePulsar,
+    sections: basePulsar.sections.map(({ type }) => ({ type })),
+  }],
 });
 
 export const error = makeStory(conf, {
   items: [{ error: true }],
 });
 
+export const errorWithCellar = makeStory(conf, {
+  items: [{
+    ...baseCellar,
+    sections: baseCellar.sections.map(({ type }) => ({ type })),
+    error: true,
+  }],
+});
+
+export const errorWithFsBucket = makeStory(conf, {
+  items: [{
+    ...baseFsBucket,
+    sections: baseFsBucket.sections.map(({ type }) => ({ type })),
+    error: true,
+  }],
+});
+
+export const errorWithPulsar = makeStory(conf, {
+  items: [{
+    ...basePulsar,
+    sections: basePulsar.sections.map(({ type }) => ({ type })),
+    error: true,
+  }],
+});
+
 export const dataLoadedWithFsBucket = makeStory(conf, {
   items: [baseFsBucket],
+});
+
+export const dataLoadedWithPulsar = makeStory(conf, {
+  items: [basePulsar],
 });
 
 export const dataLoadedWithCustomHead = makeStory(conf, {
@@ -121,6 +264,7 @@ export const dataLoadedWithCustomDescription = makeStory(conf, {
 });
 
 export const dataLoadedWithCustomStyles = makeStory(conf, {
+  // language=CSS
   css: `
     cc-pricing-product-storage {
       border-radius: 5px;
@@ -150,23 +294,66 @@ export const dataLoadedWithDollars = makeStory(conf, {
   }],
 });
 
-export const simulations = makeStory(conf, {
-  items: [
-    { innerHTML: 'Cellar is an awesome object storage service!' },
-    { innerHTML: 'FS bucket is an awesome service!', noTraffic: true },
-    { innerHTML: 'This is an awesome service!' },
-  ],
+export const simulationsWithCellar = makeStory(conf, {
+  items: [{
+    innerHTML: 'Cellar is an awesome object storage service!',
+  }],
   simulations: [
-    storyWait(1000, ([componentCellar, componentFsBucket]) => {
-      componentCellar.icon = baseCellar.icon;
-      componentCellar.name = baseCellar.name;
-      componentCellar.intervals = baseCellar.intervals;
-      componentFsBucket.icon = baseFsBucket.icon;
-      componentFsBucket.name = baseFsBucket.name;
-      componentFsBucket.intervals = baseFsBucket.intervals;
+    storyWait(1000, ([component]) => {
+      component.icon = baseCellar.icon;
+      component.name = baseCellar.name;
+      component.sections = baseCellar.sections.map(({ type }) => ({ type }));
     }),
-    storyWait(2000, ([componentCellar, componentFsBucket, componentError]) => {
-      componentError.error = true;
+    storyWait(3000, ([component]) => {
+      component.sections = baseCellar.sections;
+    }),
+  ],
+});
+
+export const simulationsWithFsBucket = makeStory(conf, {
+  items: [{
+    innerHTML: 'FS bucket is an awesome service!',
+  }],
+  simulations: [
+    storyWait(1000, ([component]) => {
+      component.icon = baseFsBucket.icon;
+      component.name = baseFsBucket.name;
+      component.sections = baseFsBucket.sections.map(({ type }) => ({ type }));
+    }),
+    storyWait(3000, ([component]) => {
+      component.sections = baseFsBucket.sections;
+    }),
+  ],
+});
+
+export const simulationsWithPulsar = makeStory(conf, {
+  items: [{
+    innerHTML: 'Pulsar is an awesome service!',
+  }],
+  simulations: [
+    storyWait(1000, ([component]) => {
+      component.icon = basePulsar.icon;
+      component.name = basePulsar.name;
+      component.sections = basePulsar.sections.map(({ type }) => ({ type }));
+    }),
+    storyWait(3000, ([component]) => {
+      component.sections = basePulsar.sections;
+    }),
+  ],
+});
+
+export const simulationsWithError = makeStory(conf, {
+  items: [{
+    innerHTML: 'Cellar is an awesome object storage service!',
+  }],
+  simulations: [
+    storyWait(1000, ([component]) => {
+      component.icon = baseCellar.icon;
+      component.name = baseCellar.name;
+      component.sections = baseCellar.sections.map(({ type }) => ({ type }));
+    }),
+    storyWait(3000, ([component]) => {
+      component.error = true;
     }),
   ],
 });
@@ -174,14 +361,23 @@ export const simulations = makeStory(conf, {
 enhanceStoriesNames({
   defaultStory,
   skeleton,
-  skeletonWithNoTraffic,
+  skeletonWithCellar,
+  skeletonWithFsBucket,
+  skeletonWithPulsar,
   error,
+  errorWithCellar,
+  errorWithFsBucket,
+  errorWithPulsar,
   dataLoadedWithFsBucket,
+  dataLoadedWithPulsar,
   dataLoadedWithCustomHead,
   dataLoadedWithEmptyHead,
   dataLoadedWithCustomDescription,
   dataLoadedWithCustomStyles,
   dataLoadedWithNoAction,
   dataLoadedWithDollars,
-  simulations,
+  simulationsWithCellar,
+  simulationsWithFsBucket,
+  simulationsWithPulsar,
+  simulationsWithError,
 });

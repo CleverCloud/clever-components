@@ -13,7 +13,7 @@ function commonJsIdentifiers (ids) {
 }
 
 // This feels like a hack but with this, we get up to date CEM inside storybook's docs page
-spawn('npm', ['run', 'components:docs:watch']);
+// spawn('npm', ['run', 'components:docs:watch']);
 
 const hmrI18n = {
   name: 'hmr-i18n',
