@@ -9,35 +9,55 @@ export function formatAddonProduct (addonProvider, priceSystem, selectedFeatures
   };
 }
 
+// The API returns interval prices in "euros / gigabyte / 1 hour" for "storage",
+// and just "euros / gigabyte" for timeless sections like traffic.
+// We want interval prices to be in "euros / gigabyte / 30 days" for "storage".
+// Therefore, we need to apply this price factor for storage interval prices.
+const THIRTY_DAYS_IN_HOURS = 24 * 30;
+
 export function formatAddonCellar (priceSystem, currency) {
-  const cellarStorage = priceSystem.countable.find((c) => c.service === 'cellar.storage').price_plans;
-  const cellarTraffic = priceSystem.countable.find((c) => c.service === 'cellar.outbound').price_plans;
+  const storage = priceSystem.countable.find((c) => c.service === 'cellar.storage').price_plans;
+  const outboundTraffic = priceSystem.countable.find((c) => c.service === 'cellar.outbound').price_plans;
   return {
-    intervals: {
-      storage: formatProductStorageIntervals(cellarStorage),
-      traffic: formatProductStorageIntervals(cellarTraffic),
-    },
+    sections: [
+      { type: 'storage', intervals: formatProductStorageIntervals(storage, THIRTY_DAYS_IN_HOURS) },
+      { type: 'outbound-traffic', intervals: formatProductStorageIntervals(outboundTraffic) },
+    ],
     currency,
   };
 }
 
 export function formatAddonFsbucket (priceSystem, currency) {
-  const fsbucketStorage = priceSystem.countable.find((c) => c.service === 'fsbucket.storage').price_plans;
+  const storage = priceSystem.countable.find((c) => c.service === 'fsbucket.storage').price_plans;
   return {
-    intervals: {
-      storage: formatProductStorageIntervals(fsbucketStorage),
-    },
+    sections: [
+      { type: 'storage', intervals: formatProductStorageIntervals(storage, THIRTY_DAYS_IN_HOURS) },
+    ],
     currency,
   };
 }
 
-function formatProductStorageIntervals (rawIntervals) {
+export function formatAddonPulsar (priceSystem, currency) {
+  const storage = priceSystem.countable.find((c) => c.service === 'pulsar_storage_size').price_plans;
+  const inboundTraffic = priceSystem.countable.find((c) => c.service === 'pulsar_throughput_in').price_plans;
+  const outboundTraffic = priceSystem.countable.find((c) => c.service === 'pulsar_throughput_out').price_plans;
+  return {
+    sections: [
+      { type: 'storage', intervals: formatProductStorageIntervals(storage, THIRTY_DAYS_IN_HOURS) },
+      { type: 'inbound-traffic', intervals: formatProductStorageIntervals(inboundTraffic) },
+      { type: 'outbound-traffic', intervals: formatProductStorageIntervals(outboundTraffic) },
+    ],
+    currency,
+  };
+}
+
+function formatProductStorageIntervals (rawIntervals, priceFactor = 1) {
   return rawIntervals.map((interval, idx, allIntervals) => {
     const minRange = (idx === 0) ? 0 : allIntervals[idx - 1].max_quantity;
     return {
       minRange,
       maxRange: interval.max_quantity,
-      price: interval.price,
+      price: interval.price * priceFactor,
     };
   });
 }

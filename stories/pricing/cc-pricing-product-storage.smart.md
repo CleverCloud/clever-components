@@ -16,9 +16,9 @@ title: '💡 Smart'
 
 <table>
   <tr><th>Name                       <th>Type                  <th>Details                                                                                                                <th>Default
-  <tr><td><code>productId</code>     <td><code>String</code>   <td><code>cellar</code> or <code>fsbucket</code>                                                                           <td>
-  <tr><td><code>zoneId</code>        <td><code>String</code>   <td>Name from <a href="https://api.clever-cloud.com/v4/products/zones"><code>/v4/products/zones</code></a>                 <td><code>par</code>
   <tr><td><code>currencyCode</code>  <td><code>String</code>   <td>ISO 4217 currency code                                                                                                 <td><code>EUR</code>
+  <tr><td><code>productId</code>     <td><code>String</code>   <td><code>cellar</code>, <code>fsbucket</code> or <code>pulsar</code>                                                      <td>
+  <tr><td><code>zoneId</code>        <td><code>String</code>   <td>Name from <a href="https://api.clever-cloud.com/v4/products/zones"><code>/v4/products/zones</code></a>                 <td><code>par</code>
 </table>
 
 ## ⚠️ Warnings!
@@ -59,6 +59,20 @@ Simple example for FS Bucket based on default zone and currency.
 ```
 
 <cc-smart-container context='{ "productId": "fsbucket" }'>
+  <cc-pricing-product-storage></cc-pricing-product-storage>
+</cc-smart-container>
+
+### Simple Pulsar
+
+Simple example for FS Bucket based on default zone and currency.
+
+```html
+<cc-smart-container context='{ "productId": "pulsar" }'>
+  <cc-pricing-product-storage></cc-pricing-product-storage>
+</cc-smart-container>
+```
+
+<cc-smart-container context='{ "productId": "pulsar" }'>
   <cc-pricing-product-storage></cc-pricing-product-storage>
 </cc-smart-container>
 
