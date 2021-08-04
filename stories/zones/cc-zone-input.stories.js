@@ -108,7 +108,7 @@ const ZONES = [
     city: 'New York City',
     lat: 40.71,
     lon: -74.01,
-    tags: ['infra:clever-cloud'],
+    tags: ['infra:bso'],
   },
 ];
 

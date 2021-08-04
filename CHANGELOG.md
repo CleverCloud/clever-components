@@ -21,6 +21,7 @@ title: Changelog
 * `<cc-zone>`:
   * add CSS custom properties to customize colors
   * replace rem with em
+* `<cc-zone-input>`: fix zone list sort
 
 ## 6.10.0 (2021-07-08)
 

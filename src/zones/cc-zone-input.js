@@ -56,6 +56,7 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
       _hovered: { type: String },
       _legend: { type: String },
       _points: { type: Array },
+      _sortedZones: { type: Array },
     };
   }
 
@@ -72,12 +73,12 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
 
   _updatePoints () {
 
-    if (!Array.isArray(this.zones)) {
+    if (!Array.isArray(this._sortedZones)) {
       return;
     }
 
     // Filter out private zones from the map for now as they may be at the same coordinates and overlap
-    this._points = this.zones
+    this._points = this._sortedZones
       .filter((zone) => !zone.tags.includes(PRIVATE_ZONE))
       .map((zone) => ({
         name: zone.name,
@@ -88,7 +89,7 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
         zIndexOffset: this._getZIndexOffset(zone.name),
       }));
 
-    this._legend = this.zones.some((zone) => zone.tags.includes(PRIVATE_ZONE))
+    this._legend = this._sortedZones.some((zone) => zone.tags.includes(PRIVATE_ZONE))
       ? i18n('cc-zone-input.private-map-warning')
       : '';
   }
@@ -117,6 +118,9 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
   // 2. Private zones "scope:private"
   // 3. Alphanum sort on city
   _sortZones (zones) {
+    if (zones == null) {
+      return null;
+    }
     return [...zones].sort((a, b) => {
       if (a == null || b == null) {
         return 0;
@@ -164,11 +168,11 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
     clearTimeout(this._panMapTimeout);
     this._panMapTimeout = setTimeout(() => {
       if (this._hovered != null) {
-        const zone = this.zones.find((z) => z.name === this._hovered);
+        const zone = this._sortedZones.find((z) => z.name === this._hovered);
         this._map.panInside(zone.lat, zone.lon);
       }
       else if (this.selected != null) {
-        const zone = this.zones.find((z) => z.name === this.selected);
+        const zone = this._sortedZones.find((z) => z.name === this.selected);
         this._map.panInside(zone.lat, zone.lon);
       }
     }, 200);
@@ -230,6 +234,7 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
     }
 
     if (changedProperties.has('zones')) {
+      this._sortedZones = this._sortZones(this.zones);
       this._updatePoints();
     }
 
@@ -238,8 +243,8 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
 
   render () {
 
-    const skeleton = (this.zones == null);
-    const zones = skeleton ? SKELETON_ZONES : this.zones;
+    const skeleton = (this._sortedZones == null);
+    const zones = skeleton ? SKELETON_ZONES : this._sortedZones;
 
     // Try to zoom out and center the map
     return html`
