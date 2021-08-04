@@ -27,7 +27,7 @@ title: Changelog
 * New components:
   * `<cc-pricing-header>`
   * `<cc-pricing-estimation>`
-  * `<cc-pricing-page>`
+  * `<cc-pricing-page>` (with smart definition)
 
 ## 6.10.0 (2021-07-08)
 
