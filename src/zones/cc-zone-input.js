@@ -7,11 +7,10 @@ import { repeat } from 'lit-html/directives/repeat.js';
 import { scrollChildIntoParent } from '../lib/dom.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
+import { PRIVATE_ZONE, sortZones } from '../lib/zone.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
 
 const SKELETON_ZONES = new Array(6).fill(null);
-const CLEVER_CLOUD_ZONE = 'infra:clever-cloud';
-const PRIVATE_ZONE = 'scope:private';
 
 /**
  * A input component to select a zone with a map and a list.
@@ -114,39 +113,6 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
     return 0;
   }
 
-  // 1. Clever Cloud zones "infra:clever-cloud"
-  // 2. Private zones "scope:private"
-  // 3. Alphanum sort on city
-  _sortZones (zones) {
-    if (zones == null) {
-      return null;
-    }
-    return [...zones].sort((a, b) => {
-      if (a == null || b == null) {
-        return 0;
-      }
-      const aIsCcZone = a.tags.includes(CLEVER_CLOUD_ZONE);
-      const bIsCcZone = b.tags.includes(CLEVER_CLOUD_ZONE);
-      if (aIsCcZone !== bIsCcZone) {
-        return aIsCcZone ? -1 : 1;
-      }
-      const aIsPrivateZone = a.tags.includes(PRIVATE_ZONE);
-      const bIsPrivateZone = b.tags.includes(PRIVATE_ZONE);
-      if (aIsCcZone && bIsCcZone) {
-        if (aIsPrivateZone !== bIsPrivateZone) {
-          return aIsPrivateZone ? 1 : -1;
-        }
-        if (aIsPrivateZone && bIsPrivateZone) {
-          return (a.displayName || '').localeCompare((b.displayName || ''));
-        }
-      }
-      if (aIsPrivateZone !== bIsPrivateZone) {
-        return aIsPrivateZone ? -1 : 1;
-      }
-      return a.city.localeCompare(b.city);
-    });
-  }
-
   _onSelect (name) {
     this.selected = name;
     dispatchCustomEvent(this, 'input', this.selected);
@@ -234,7 +200,7 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
     }
 
     if (changedProperties.has('zones')) {
-      this._sortedZones = this._sortZones(this.zones);
+      this._sortedZones = sortZones(this.zones);
       this._updatePoints();
     }
 
