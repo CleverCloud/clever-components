@@ -25,7 +25,9 @@
           "no-invalid-attribute-name": "error",
           "no-invalid-tag-name": "error",
           "no-invalid-css": "error"
-        }
+        },
+        // HACK: Right now, we don't have a clean way to recognize Shoelace events so this is not perfect.
+        "globalEvents": ["sl-change"]
       }
     ]
   }

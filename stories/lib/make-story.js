@@ -153,7 +153,18 @@ function assignPropsToElement (element, props = {}) {
       element.setAttribute(name, value);
     }
     if (name === 'children') {
-      value().forEach((child) => element.appendChild(child));
+      value()
+        .map((child) => {
+          if (typeof child === 'string') {
+            const template = document.createElement('template');
+            template.innerHTML = child;
+            return template.content.cloneNode(true);
+          }
+          return child;
+        })
+        .forEach((child) => {
+          element.appendChild(child);
+        });
     }
     else {
       element[name] = value;
