@@ -1,5 +1,5 @@
 import { expect } from '@bundled-es-modules/chai';
-import { PricingStorageSimulator } from '../src/lib/pricing.js';
+import { PricingConsumptionSimulator } from '../src/lib/pricing.js';
 
 const INTERVALS_FOO = [
   { minRange: 0, maxRange: 100 * 1e6, price: 0 },
@@ -27,18 +27,18 @@ const NULLISH_INTERVALS = [
 
 const ONE_GIGABYTE = 1e9;
 
-describe('PricingStorageSimulator', () => {
+describe('PricingConsumptionSimulator', () => {
 
   describe('getQuantity()', () => {
 
     it('default', () => {
-      const ps = new PricingStorageSimulator(INTERVALS);
+      const ps = new PricingConsumptionSimulator(INTERVALS);
       expect(ps.getQuantity('foo')).to.equal(0);
       expect(ps.getQuantity('bar')).to.equal(0);
     });
 
     it('some value', () => {
-      const ps = new PricingStorageSimulator(INTERVALS);
+      const ps = new PricingConsumptionSimulator(INTERVALS);
       ps.setQuantity('foo', 5 * 1e3 * ONE_GIGABYTE);
       ps.setQuantity('bar', 10 * 1e3 * ONE_GIGABYTE);
       expect(ps.getQuantity('foo')).to.equal(5 * 1e3 * ONE_GIGABYTE);
@@ -49,13 +49,13 @@ describe('PricingStorageSimulator', () => {
   describe('getCurrentInterval()', () => {
 
     it('default', () => {
-      const ps = new PricingStorageSimulator(INTERVALS);
+      const ps = new PricingConsumptionSimulator(INTERVALS);
       expect(ps.getCurrentInterval('foo')).to.equal(INTERVALS_FOO[0]);
       expect(ps.getCurrentInterval('bar')).to.equal(INTERVALS_BAR[0]);
     });
 
     it('inside interval', () => {
-      const ps = new PricingStorageSimulator(INTERVALS);
+      const ps = new PricingConsumptionSimulator(INTERVALS);
       ps.setQuantity('foo', 150 * 1e6);
       ps.setQuantity('bar', 250 * 1e6);
       expect(ps.getCurrentInterval('foo')).to.equal(INTERVALS_FOO[1]);
@@ -63,7 +63,7 @@ describe('PricingStorageSimulator', () => {
     });
 
     it('lower limit of interval', () => {
-      const ps = new PricingStorageSimulator(INTERVALS);
+      const ps = new PricingConsumptionSimulator(INTERVALS);
       ps.setQuantity('foo', 1e12);
       ps.setQuantity('bar', 5 * 1e12);
       expect(ps.getCurrentInterval('foo')).to.equal(INTERVALS_FOO[2]);
@@ -71,7 +71,7 @@ describe('PricingStorageSimulator', () => {
     });
 
     it('big value', () => {
-      const ps = new PricingStorageSimulator(INTERVALS);
+      const ps = new PricingConsumptionSimulator(INTERVALS);
       ps.setQuantity('foo', 50 * 1e12);
       ps.setQuantity('bar', 100 * 1e12);
       expect(ps.getCurrentInterval('foo')).to.equal(INTERVALS_FOO[3]);
@@ -79,7 +79,7 @@ describe('PricingStorageSimulator', () => {
     });
 
     it('nullish intervals', () => {
-      const ps = new PricingStorageSimulator(NULLISH_INTERVALS);
+      const ps = new PricingConsumptionSimulator(NULLISH_INTERVALS);
       expect(ps.getCurrentInterval('foo')).to.equal(null);
       expect(ps.getCurrentInterval('bar')).to.equal(null);
     });
@@ -88,7 +88,7 @@ describe('PricingStorageSimulator', () => {
   describe('getEstimatedPrice()', () => {
 
     it('small value', () => {
-      const ps = new PricingStorageSimulator(INTERVALS);
+      const ps = new PricingConsumptionSimulator(INTERVALS);
       ps.setQuantity('foo', 50 * 1e6);
       ps.setQuantity('bar', 150 * 1e6);
       expect(ps.getEstimatedPrice('foo')).to.equal(0);
@@ -96,7 +96,7 @@ describe('PricingStorageSimulator', () => {
     });
 
     it('big value', () => {
-      const ps = new PricingStorageSimulator(INTERVALS);
+      const ps = new PricingConsumptionSimulator(INTERVALS);
       ps.setQuantity('foo', 5 * 1e3 * ONE_GIGABYTE);
       ps.setQuantity('bar', 10 * 1e3 * ONE_GIGABYTE);
       expect(ps.getEstimatedPrice('foo')).to.equal(5 * 1e3 * 2);
@@ -104,7 +104,7 @@ describe('PricingStorageSimulator', () => {
     });
 
     it('nullish intervals', () => {
-      const ps = new PricingStorageSimulator(NULLISH_INTERVALS);
+      const ps = new PricingConsumptionSimulator(NULLISH_INTERVALS);
       expect(ps.getEstimatedPrice('foo')).to.equal(0);
       expect(ps.getEstimatedPrice('bar')).to.equal(0);
     });
@@ -113,21 +113,21 @@ describe('PricingStorageSimulator', () => {
   describe('getTotalPrice()', () => {
 
     it('small value', () => {
-      const ps = new PricingStorageSimulator(INTERVALS);
+      const ps = new PricingConsumptionSimulator(INTERVALS);
       ps.setQuantity('foo', 50 * 1e6);
       ps.setQuantity('bar', 150 * 1e6);
       expect(ps.getTotalPrice()).to.equal((50 * 1e6 * 0) + (150 * 1e6 * 0));
     });
 
     it('big value', () => {
-      const ps = new PricingStorageSimulator(INTERVALS);
+      const ps = new PricingConsumptionSimulator(INTERVALS);
       ps.setQuantity('foo', 5 * 1e3 * ONE_GIGABYTE);
       ps.setQuantity('bar', 10 * 1e3 * ONE_GIGABYTE);
       expect(ps.getTotalPrice()).to.equal((5 * 1e3 * 2) + (10 * 1e3 * 20));
     });
 
     it('nullish intervals', () => {
-      const ps = new PricingStorageSimulator(NULLISH_INTERVALS);
+      const ps = new PricingConsumptionSimulator(NULLISH_INTERVALS);
       expect(ps.getTotalPrice('foo')).to.equal(0);
     });
   });

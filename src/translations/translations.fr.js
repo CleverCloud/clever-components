@@ -392,28 +392,28 @@ export const translations = {
   //#region cc-pricing-product
   'cc-pricing-product.error': `Une erreur est survenue pendant le chargement des prix.`,
   //#endregion
-  //#region cc-pricing-product-storage
-  'cc-pricing-product-storage.add': `Ajouter`,
-  'cc-pricing-product-storage.bytes': ({ bytes }) => formatBytesSi(bytes),
-  'cc-pricing-product-storage.bytes-unit': ({ bytes }) => getUnit(bytes),
-  'cc-pricing-product-storage.error': `Une erreur est survenue pendant le chargement des prix.`,
-  'cc-pricing-product-storage.inbound-traffic.label': `trafic entrant`,
-  'cc-pricing-product-storage.inbound-traffic.title': `Trafic entrant :`,
-  'cc-pricing-product-storage.outbound-traffic.label': `trafic sortant`,
-  'cc-pricing-product-storage.outbound-traffic.title': `Trafic sortant :`,
-  'cc-pricing-product-storage.price': ({ price, code }) => `${formatCurrency(lang, price, { currency: code })}`,
-  'cc-pricing-product-storage.price-interval': ({ price, code }) => {
+  //#region cc-pricing-product-consumption
+  'cc-pricing-product-consumption.add': `Ajouter`,
+  'cc-pricing-product-consumption.bytes': ({ bytes }) => formatBytesSi(bytes),
+  'cc-pricing-product-consumption.bytes-unit': ({ bytes }) => getUnit(bytes),
+  'cc-pricing-product-consumption.error': `Une erreur est survenue pendant le chargement des prix.`,
+  'cc-pricing-product-consumption.inbound-traffic.label': `trafic entrant`,
+  'cc-pricing-product-consumption.inbound-traffic.title': `Trafic entrant :`,
+  'cc-pricing-product-consumption.outbound-traffic.label': `trafic sortant`,
+  'cc-pricing-product-consumption.outbound-traffic.title': `Trafic sortant :`,
+  'cc-pricing-product-consumption.price': ({ price, code }) => `${formatCurrency(lang, price, { currency: code })}`,
+  'cc-pricing-product-consumption.price-interval': ({ price, code }) => {
     const priceInterval = formatCurrency(lang, price, {
       minimumFractionDigits: 3, maximumFractionDigits: 3, currency: code,
     });
     const priceOneGigabyte = getUnit(1e9);
     return `${priceInterval} / ${priceOneGigabyte} (30 jours)`;
   },
-  'cc-pricing-product-storage.price-interval.free': `GRATUIT`,
-  'cc-pricing-product-storage.storage.label': `stockage`,
-  'cc-pricing-product-storage.storage.title': `Stockage :`,
-  'cc-pricing-product-storage.subtotal.title': `Sous-total (30 jours) :`,
-  'cc-pricing-product-storage.total.title': `Total estimé (30 jours) :`,
+  'cc-pricing-product-consumption.price-interval.free': `GRATUIT`,
+  'cc-pricing-product-consumption.storage.label': `stockage`,
+  'cc-pricing-product-consumption.storage.title': `Stockage :`,
+  'cc-pricing-product-consumption.subtotal.title': `Sous-total (30 jours) :`,
+  'cc-pricing-product-consumption.total.title': `Total estimé (30 jours) :`,
   //#endregion
   //#region cc-pricing-table
   'cc-pricing-table.add-button': `Ajouter`,

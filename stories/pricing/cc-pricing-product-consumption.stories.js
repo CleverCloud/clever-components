@@ -1,16 +1,16 @@
-import '../../src/pricing/cc-pricing-product-storage.smart.js';
+import '../../src/pricing/cc-pricing-product-consumption.smart.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
-  title: '🛠 pricing/<cc-pricing-product-storage>',
-  component: 'cc-pricing-product-storage',
+  title: '🛠 pricing/<cc-pricing-product-consumption>',
+  component: 'cc-pricing-product-consumption',
 };
 
 const conf = {
-  component: 'cc-pricing-product-storage',
+  component: 'cc-pricing-product-consumption',
   // language=CSS
-  css: `cc-pricing-product-storage {
+  css: `cc-pricing-product-consumption {
     margin-bottom: 1rem;
   }`,
 };
@@ -266,7 +266,7 @@ export const dataLoadedWithCustomDescription = makeStory(conf, {
 export const dataLoadedWithCustomStyles = makeStory(conf, {
   // language=CSS
   css: `
-    cc-pricing-product-storage {
+    cc-pricing-product-consumption {
       border-radius: 5px;
       box-shadow:  0 0 5px #aaa;
       margin: 1rem;

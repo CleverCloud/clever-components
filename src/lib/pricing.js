@@ -1,7 +1,7 @@
 const ONE_GIGABYTE = 1e9;
 
 /**
- * Pricing simulator for products with interval based pricing.
+ * A pricing simulator for products with consumption based pricings.
  *
  * * Interval prices are defined in "euros / gigabyte".
  * * Interval ranges are defined in bytes.
@@ -24,7 +24,7 @@ const ONE_GIGABYTE = 1e9;
  * }
  * ```
  */
-export class PricingStorageSimulator {
+export class PricingConsumptionSimulator {
 
   /**
    * @param {Section[]} sections
