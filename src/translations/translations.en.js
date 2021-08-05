@@ -330,6 +330,21 @@ export const translations = {
   'cc-invoice-table.total.label': `Total`,
   'cc-invoice-table.total.value': ({ amount }) => `${formatCurrency(lang, amount)}`,
   //#endregion
+  //#region cc-jenkins-info
+  'cc-jenkins-info.documentation.link': `Read the documentation`,
+  'cc-jenkins-info.documentation.text': `Our documentation can help you start using Jenkins and create jobs that run on Clever Cloud docker applications.`,
+  'cc-jenkins-info.documentation.title': `Documentation`,
+  'cc-jenkins-info.error': `An error occured while fetching the information about this add-on.`,
+  'cc-jenkins-info.info': `Info`,
+  'cc-jenkins-info.open-jenkins.link': `Access Jenkins`,
+  'cc-jenkins-info.open-jenkins.text': `Access Jenkins using the Clever Cloud SSO (Single Sign-On). Organisation members can also access the Jenkins service.`,
+  'cc-jenkins-info.open-jenkins.title': `Access Jenkins`,
+  'cc-jenkins-info.text': `This add-on is part of the Jenkins offer. You can find the documentation and various information below.`,
+  'cc-jenkins-info.update.new-version': ({ version }) => `Jenkins version ${version} is available!`,
+  'cc-jenkins-info.update.text': `Jenkins and its plugins often get updates. You can automatically update Jenkins and its plugins using its dedicated WEB interface.`,
+  'cc-jenkins-info.update.title': `Updates`,
+  'cc-jenkins-info.update.up-to-date': `Your Jenkins version is up-to-date.`,
+  //#endregion
   //#region cc-logsmap
   'cc-logsmap.legend.heatmap': ({ orgaName }) => sanitize`Heatmap of HTTP requests received by all apps from <strong>${orgaName}</strong> during the last 24 hours.`,
   'cc-logsmap.legend.heatmap.app': ({ appName }) => sanitize`Heatmap of HTTP requests received by <strong>${appName}</strong> during the last 24 hours.`,
