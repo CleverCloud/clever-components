@@ -11,17 +11,20 @@ export function formatAddonProduct (addonProvider, priceSystem, selectedFeatures
 
 // The API returns interval prices in "euros / gigabyte / 1 hour" for "storage",
 // and just "euros / gigabyte" for timeless sections like traffic.
-// We want interval prices to be in "euros / gigabyte / 30 days" for "storage".
-// Therefore, we need to apply this price factor for storage interval prices.
+// We want interval prices to be in "euros / byte / 30 days" for "storage" and "euros / byte" for others.
+// Therefore, we need to apply a price factor for on interval prices.
 const THIRTY_DAYS_IN_HOURS = 24 * 30;
+const ONE_GIGABYTE = 1e9;
+const STORAGE_PRICE_FACTOR = THIRTY_DAYS_IN_HOURS / ONE_GIGABYTE;
+const TRAFFIC_PRICE_FACTOR = 1 / ONE_GIGABYTE;
 
 export function formatAddonCellar (priceSystem, currency) {
   const storage = priceSystem.countable.find((c) => c.service === 'cellar.storage').price_plans;
   const outboundTraffic = priceSystem.countable.find((c) => c.service === 'cellar.outbound').price_plans;
   return {
     sections: [
-      { type: 'storage', intervals: formatProductStorageIntervals(storage, THIRTY_DAYS_IN_HOURS) },
-      { type: 'outbound-traffic', intervals: formatProductStorageIntervals(outboundTraffic) },
+      { type: 'storage', intervals: formatProductStorageIntervals(storage, STORAGE_PRICE_FACTOR) },
+      { type: 'outbound-traffic', intervals: formatProductStorageIntervals(outboundTraffic, TRAFFIC_PRICE_FACTOR) },
     ],
     currency,
   };
@@ -31,7 +34,7 @@ export function formatAddonFsbucket (priceSystem, currency) {
   const storage = priceSystem.countable.find((c) => c.service === 'fsbucket.storage').price_plans;
   return {
     sections: [
-      { type: 'storage', intervals: formatProductStorageIntervals(storage, THIRTY_DAYS_IN_HOURS) },
+      { type: 'storage', intervals: formatProductStorageIntervals(storage, STORAGE_PRICE_FACTOR) },
     ],
     currency,
   };
@@ -43,9 +46,9 @@ export function formatAddonPulsar (priceSystem, currency) {
   const outboundTraffic = priceSystem.countable.find((c) => c.service === 'pulsar_throughput_out').price_plans;
   return {
     sections: [
-      { type: 'storage', intervals: formatProductStorageIntervals(storage, THIRTY_DAYS_IN_HOURS) },
-      { type: 'inbound-traffic', intervals: formatProductStorageIntervals(inboundTraffic) },
-      { type: 'outbound-traffic', intervals: formatProductStorageIntervals(outboundTraffic) },
+      { type: 'storage', intervals: formatProductStorageIntervals(storage, STORAGE_PRICE_FACTOR) },
+      { type: 'inbound-traffic', intervals: formatProductStorageIntervals(inboundTraffic, TRAFFIC_PRICE_FACTOR) },
+      { type: 'outbound-traffic', intervals: formatProductStorageIntervals(outboundTraffic, TRAFFIC_PRICE_FACTOR) },
     ],
     currency,
   };

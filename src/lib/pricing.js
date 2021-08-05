@@ -1,11 +1,9 @@
-const ONE_GIGABYTE = 1e9;
-
 /**
  * A pricing simulator for products with consumption based pricings.
  *
- * * Interval prices are defined in "euros / gigabyte".
- * * Interval ranges are defined in bytes.
- * * Quantity is in bytes.
+ * * Interval prices are defined in "euros / [unit]".
+ * * Interval ranges are defined in [unit].
+ * * Quantity is in [unit].
  *
  * ## Type definitions
  *
@@ -18,9 +16,9 @@ const ONE_GIGABYTE = 1e9;
  *
  * ```js
  * interface Interval {
- *   maxRange: number, // byte
- *   minRange: number, // byte
- *   price: number,    // "euros / gigabyte / 30 days" or just "euros / gigabyte" for timeless sections like traffic
+ *   maxRange: number, // [unit]
+ *   minRange: number, // [unit]
+ *   price: number,    // "euros / [unit]"
  * }
  * ```
  */
@@ -41,7 +39,7 @@ export class PricingConsumptionSimulator {
 
   /**
    * @param {SectionType} type
-   * @returns {Number} - Number of bytes
+   * @returns {Number} - How many [unit]
    */
   getQuantity (type) {
     return this._state[type].quantity;
@@ -49,7 +47,7 @@ export class PricingConsumptionSimulator {
 
   /**
    * @param {SectionType} type
-   * @param {Number} quantity - Number of bytes
+   * @param {Number} quantity - How many [unit]
    */
   setQuantity (type, quantity) {
     if (!isNaN(quantity)) {
@@ -77,10 +75,9 @@ export class PricingConsumptionSimulator {
     if (interval == null) {
       return 0;
     }
-    const pricePerGigabyte = interval.price;
-    const quantityInBytes = this._state[type].quantity;
-    const quantityInGigabytes = quantityInBytes / ONE_GIGABYTE;
-    return pricePerGigabyte * quantityInGigabytes;
+    const unitPrice = interval.price;
+    const quantity = this._state[type].quantity;
+    return unitPrice * quantity;
   }
 
   /**

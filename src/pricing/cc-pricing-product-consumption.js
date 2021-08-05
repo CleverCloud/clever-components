@@ -23,6 +23,7 @@ const upSvg = new URL('../assets/up.svg', import.meta.url).href;
 const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
 const INFINITY = '∞';
 const THIRTY_DAYS_IN_HOURS = 24 * 30;
+const ONE_GIGABYTE = 1e9;
 
 const ICONS = {
   storage: storageSvg,
@@ -43,7 +44,7 @@ const SKELETON_INTERVALS = [
  *
  * ## Details
  *
- * * Interval prices are defined in "euros / gigabyte / 30 days" or just "euros / gigabyte" for timeless sections like traffic.
+ * * Interval prices are defined in "euros / byte / 30 days" or just "euros / byte" for timeless sections like traffic.
  * * Interval ranges are defined in bytes.
  * * To comply with `<cc-pricing-product>`, the price in the event `cc-pricing-product:add-plan` is in "euros / 1 hour".
  * * When a section has a nullish `intervals`, a skeleton screen UI pattern is displayed for this section (loading hint).
@@ -63,9 +64,9 @@ const SKELETON_INTERVALS = [
  *
  * ```js
  * interface Interval {
- *   maxRange: number, // byte
  *   minRange: number, // byte
- *   price: number,    // "euros / gigabyte / 30 days" or just "euros / gigabyte" for timeless sections like traffic
+ *   maxRange: number, // byte
+ *   price: number,    // "euros / byte / 30 days" or just "euros / byte" for timeless sections like traffic
  * }
  * ```
  *
@@ -211,7 +212,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
     const plan = {
       productName: this.name,
       name,
-      // As explained above, interval prices are expected to be in "euros / gigabyte / 30 days" or just "euros / gigabyte" for timeless sections like traffic
+      // As explained above, interval prices are expected to be in "euros / byte / 30 days" or just "euros / byte" for timeless sections like traffic
       // To comply with `<cc-pricing-product>`, the price in this event is in "euros / 1 hour"
       price: this._simulator.getTotalPrice() / THIRTY_DAYS_IN_HOURS,
     };
@@ -395,6 +396,8 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
     return intervals.map((interval) => {
 
       const highlighted = (interval === currentInterval);
+      // Interval prices are specified for 1 byte but we want to display a unit price for 1 gigabyte
+      const intervalPrice = interval.price * ONE_GIGABYTE;
 
       return html`
         <div class="interval-line ${classMap({ highlighted })}">
@@ -417,7 +420,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
             <span class="${classMap({ skeleton })}">
               ${(interval.price === 0)
                 ? i18n('cc-pricing-product-consumption.price-interval.free')
-                : i18n('cc-pricing-product-consumption.price-interval', this._getCurrencyValue(interval.price))
+                : i18n('cc-pricing-product-consumption.price-interval', this._getCurrencyValue(intervalPrice))
               }
             </span>
           </div>
