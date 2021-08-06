@@ -119,7 +119,6 @@ export const dataLoadedWithCustomStyles = makeStory(conf, {
 
     cc-pricing-product-consumption {
       overflow: hidden;
-      padding: 1em;
     }
 
     h2 {

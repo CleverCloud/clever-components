@@ -269,35 +269,34 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
             <slot></slot>
           ` : ''}
         </div>
+        <hr>
       </slot>
 
       <div class="body ${classMap(bodyClasses)}">
 
         ${this.error && (this.sections == null) ? html`
-          <hr>
           <cc-error class="error-global">${i18n('cc-pricing-product-consumption.error')}</cc-error>
+          <hr>
         ` : ''}
 
         ${this.sections != null ? html`
           ${this.sections.map((section) => html`
-            <hr>
             ${this._renderSection(section)}
+            <hr>
           `)}
         ` : ''}
-
-        <hr>
 
         <div class="section">
           <div class="section-header">
             <cc-img class="section-icon" src=${sumSvg}></cc-img>
-            <div class="section-title">
+            <div class="section-title section-title--total">
               <div class="section-title-text">${this._getTitle('total')}</div>
               <div class="section-title-price">${i18n('cc-pricing-product-consumption.price', this._getCurrencyValue(this._simulator.getTotalPrice()))}</div>
             </div>
           </div>
         </div>
 
-        <hr>
+        <hr class="${classMap({ last: this.action === 'none' })}">
 
         ${(this.action === 'add') ? html`
           <div class="button-bar">
@@ -457,6 +456,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
           display: grid;
           gap: 1em;
           grid-auto-rows: min-content;
+          padding: 1em 1em 0 1em;
         }
 
         /* We cannot use cc-flex-gap because of a double slot */
@@ -520,6 +520,10 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
           width: 100%;
         }
 
+        hr.last {
+          margin-bottom: 0;
+        }
+
         .section-icon {
           grid-column: section-icon / span 1;
           height: 1em;
@@ -530,14 +534,20 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         .section-title {
           display: flex;
           font-weight: bold;
+          grid-column: title / title--end;
           justify-content: space-between;
+        }
+
+        .section-title.section-title--subtotal,
+        .section-title.section-title--total {
+          grid-column: title / title-total--end;
         }
 
         .section-title.section-title--subtotal {
           margin-top: 0.5em;
         }
 
-        .section-title--subtotal .section-title-text {
+        .section-title.section-title--subtotal .section-title-text {
           font-weight: normal;
         }
 
@@ -548,12 +558,14 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         .input-wrapper {
           align-items: end;
           display: flex;
+          grid-column: input-wrapper / input-wrapper--end;
           margin: 1em 0;
           width: 100%;
         }
 
         .input-quantity {
           min-width: 10ch;
+          flex: 1 1 0;
         }
 
         .input-unit {
@@ -568,7 +580,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         }
 
         cc-error.error-global {
-          grid-column: 1 / -1;
+          grid-column: start / end;
         }
 
         .interval-line {
@@ -612,6 +624,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         .interval-price {
           color: #333;
           font-style: italic;
+          grid-column: interval-price / interval-price--end;
         }
 
         .interval-max {
@@ -628,7 +641,8 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         }
 
         .button-bar {
-          grid-column: 1 / -1;
+          grid-column: start / end;
+          margin-bottom: 1em;
         }
 
         .skeleton {
@@ -641,19 +655,17 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
 
         .body--big {
           grid-template-columns:
-            [section-icon] 2em
-            [interval-min] min-content
+            1em
+            [start section-icon] 2em
+            [title input-wrapper interval-min] min-content
             [interval-min-sign] min-content
             [interval-label] min-content
             [interval-max-sign] min-content
             [interval-max] min-content
-            [interval-price] min-content
-            [estimated-price] min-content
-            [end];
-        }
-
-        .body--big .section-title {
-          grid-column: interval-min / -1;
+            [interval-price input-wrapper--end] min-content
+            [estimated-price interval-price--end] min-content
+            [title--end title-total--end] 1fr
+            [end] 1em;
         }
 
         .body--big .section-title--subtotal {
@@ -662,10 +674,6 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
 
         .body--big .section-toggle-btn {
           display: none;
-        }
-
-        .body--big .input-wrapper {
-          grid-column: interval-min / interval-price;
         }
 
         .body--big .interval-label {
@@ -687,26 +695,20 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
 
         .body--small {
           grid-template-columns:
-            [section-icon] 2em
-            [interval-min] min-content
+            1em
+            [start section-icon] 2em
+            [title input-wrapper interval-min interval-price] min-content
             [interval-min-sign] min-content
             [interval-label] min-content
             [interval-max-sign] min-content
-            [interval-max] min-content
-            [toggle-btn] 1fr
-            [end];
-        }
-
-        .body--small .section-title {
-          grid-column: interval-min / -2;
+            [interval-max toggle-btn title--end] min-content
+            [input-wrapper--end interval-price--end title-total--end] 1fr
+            [end] 1em;
         }
 
         .body--small .section-toggle-btn {
           justify-self: end;
-        }
-
-        .body--small .input-wrapper {
-          grid-column: interval-min / toggle-btn;
+          grid-column: toggle-btn / end;
         }
 
         .body--small .section--closed .input-wrapper {
@@ -724,7 +726,6 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         }
 
         .body--small .interval-price {
-          grid-column: interval-min / toggle-btn;
           margin-bottom: 1em;
         }
 
