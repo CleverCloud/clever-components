@@ -8,7 +8,7 @@ import { ZONES } from '../zones/cc-zone-input.stories.js';
 import {
   defaultStory as cellarStory,
   skeletonWithCellar as cellarSkeletonStory,
-} from './cc-pricing-product-storage.stories.js';
+} from './cc-pricing-product-consumption.stories.js';
 import {
   dataLoadedWithMongodb as mongoStory,
   dataLoadedWithNode as nodeStory,
@@ -110,16 +110,15 @@ export const dataLoadedWithCustomStyles = makeStory(conf, {
     }
 
     cc-pricing-product,
-    cc-pricing-product-storage {
+    cc-pricing-product-consumption {
       border-radius: 5px;
       box-shadow: 0 0 5px #aaa;
       margin: 1em;
       overflow: hidden;
     }
 
-    cc-pricing-product-storage {
+    cc-pricing-product-consumption {
       overflow: hidden;
-      padding: 1em;
     }
 
     h2 {

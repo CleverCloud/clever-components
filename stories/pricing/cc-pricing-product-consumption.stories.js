@@ -1,21 +1,24 @@
-import '../../src/pricing/cc-pricing-product-storage.smart.js';
+import '../../src/pricing/cc-pricing-product-consumption.smart.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
 export default {
-  title: '🛠 pricing/<cc-pricing-product-storage>',
-  component: 'cc-pricing-product-storage',
+  title: '🛠 pricing/<cc-pricing-product-consumption>',
+  component: 'cc-pricing-product-consumption',
 };
 
 const conf = {
-  component: 'cc-pricing-product-storage',
+  component: 'cc-pricing-product-consumption',
   // language=CSS
-  css: `cc-pricing-product-storage {
-    margin-bottom: 1rem;
-  }`,
+  css: `
+    cc-pricing-product-consumption {
+      margin-bottom: 1rem;
+    }
+  `,
 };
 
 const THIRTY_DAYS_IN_HOURS = 24 * 30;
+const ONE_GIGABYTE = 1e9;
 
 const baseCellar = {
   name: 'Cellar',
@@ -27,21 +30,21 @@ const baseCellar = {
         {
           minRange: 0,
           maxRange: 100 * 1e6,
-          price: 0 * THIRTY_DAYS_IN_HOURS,
+          price: 0 * THIRTY_DAYS_IN_HOURS / ONE_GIGABYTE,
         },
         {
           minRange: 100 * 1e6,
           maxRange: 1e12,
-          price: 0.00002844444444444444 * THIRTY_DAYS_IN_HOURS,
+          price: 0.00002844444444444444 * THIRTY_DAYS_IN_HOURS / ONE_GIGABYTE,
         },
         {
           minRange: 1e12,
           maxRange: 25 * 1e12,
-          price: 0.00002133333333333333 * THIRTY_DAYS_IN_HOURS,
+          price: 0.00002133333333333333 * THIRTY_DAYS_IN_HOURS / ONE_GIGABYTE,
         },
         {
           minRange: 25 * 1e12,
-          price: 0.00001422222222222222 * THIRTY_DAYS_IN_HOURS,
+          price: 0.00001422222222222222 * THIRTY_DAYS_IN_HOURS / ONE_GIGABYTE,
         },
       ],
     },
@@ -51,11 +54,11 @@ const baseCellar = {
         {
           minRange: 0,
           maxRange: 10 * 1e12,
-          price: 0.09,
+          price: 0.09 / ONE_GIGABYTE,
         },
         {
           minRange: 10 * 1e12,
-          price: 0.07,
+          price: 0.07 / ONE_GIGABYTE,
         },
       ],
     },
@@ -72,11 +75,11 @@ const baseFsBucket = {
         {
           minRange: 0,
           maxRange: 100 * 1e6,
-          price: 0 * THIRTY_DAYS_IN_HOURS,
+          price: 0 * THIRTY_DAYS_IN_HOURS / ONE_GIGABYTE,
         },
         {
           minRange: 100 * 1e6,
-          price: 0.0020833333333333333 * THIRTY_DAYS_IN_HOURS,
+          price: 0.0020833333333333333 * THIRTY_DAYS_IN_HOURS / ONE_GIGABYTE,
         },
       ],
     },
@@ -93,26 +96,26 @@ const basePulsar = {
         {
           minRange: 0,
           maxRange: 256000000,
-          price: 0 * THIRTY_DAYS_IN_HOURS,
+          price: 0 * THIRTY_DAYS_IN_HOURS / ONE_GIGABYTE,
         },
         {
           minRange: 256000000,
           maxRange: 50000000000,
-          price: 0.00027777777777777778 * THIRTY_DAYS_IN_HOURS,
+          price: 0.00027777777777777778 * THIRTY_DAYS_IN_HOURS / ONE_GIGABYTE,
         },
         {
           minRange: 50000000000,
           maxRange: 250000000000,
-          price: 0.0002083333333333333 * THIRTY_DAYS_IN_HOURS,
+          price: 0.0002083333333333333 * THIRTY_DAYS_IN_HOURS / ONE_GIGABYTE,
         },
         {
           minRange: 250000000000,
           maxRange: 1000000000000,
-          price: 0.0001666666666666666 * THIRTY_DAYS_IN_HOURS,
+          price: 0.0001666666666666666 * THIRTY_DAYS_IN_HOURS / ONE_GIGABYTE,
         },
         {
           minRange: 1000000000000,
-          price: 0.00013888888888888889 * THIRTY_DAYS_IN_HOURS,
+          price: 0.00013888888888888889 * THIRTY_DAYS_IN_HOURS / ONE_GIGABYTE,
         },
       ],
     },
@@ -122,26 +125,26 @@ const basePulsar = {
         {
           minRange: 0,
           maxRange: 500000000,
-          price: 0,
+          price: 0 / ONE_GIGABYTE,
         },
         {
           minRange: 500000000,
           maxRange: 100000000000,
-          price: 0.8000000000000000,
+          price: 0.8000000000000000 / ONE_GIGABYTE,
         },
         {
           minRange: 100000000000,
           maxRange: 500000000000,
-          price: 0.50000000000000000000,
+          price: 0.50000000000000000000 / ONE_GIGABYTE,
         },
         {
           minRange: 500000000000,
           maxRange: 5000000000000,
-          price: 0.4000000000000000,
+          price: 0.4000000000000000 / ONE_GIGABYTE,
         },
         {
           minRange: 5000000000000,
-          price: 0.3000000000000000,
+          price: 0.3000000000000000 / ONE_GIGABYTE,
         },
       ],
     },
@@ -151,26 +154,26 @@ const basePulsar = {
         {
           minRange: 0,
           maxRange: 500000000,
-          price: 0,
+          price: 0 / ONE_GIGABYTE,
         },
         {
           minRange: 500000000,
           maxRange: 100000000000,
-          price: 0.8000000000000000,
+          price: 0.8000000000000000 / ONE_GIGABYTE,
         },
         {
           minRange: 100000000000,
           maxRange: 500000000000,
-          price: 0.50000000000000000000,
+          price: 0.50000000000000000000 / ONE_GIGABYTE,
         },
         {
           minRange: 500000000000,
           maxRange: 5000000000000,
-          price: 0.4000000000000000,
+          price: 0.4000000000000000 / ONE_GIGABYTE,
         },
         {
           minRange: 5000000000000,
-          price: 0.3000000000000000,
+          price: 0.3000000000000000 / ONE_GIGABYTE,
         },
       ],
     },
@@ -266,11 +269,10 @@ export const dataLoadedWithCustomDescription = makeStory(conf, {
 export const dataLoadedWithCustomStyles = makeStory(conf, {
   // language=CSS
   css: `
-    cc-pricing-product-storage {
+    cc-pricing-product-consumption {
       border-radius: 5px;
-      box-shadow:  0 0 5px #aaa;
+      box-shadow: 0 0 5px #aaa;
       margin: 1rem;
-      padding: 1rem;
       overflow: hidden;
     }
   `,

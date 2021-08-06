@@ -14,7 +14,6 @@ title: Changelog
 * `<cc-loader>`: replace rem with em
 * `<cc-toggle>`: replace rem with em
 * `<cc-pricing-product-cellar>`: delete component and replace it with a more generic component (BREAKING CHANGE)
-* `<cc-pricing-product-storage>`: introduce a more generic version of `<cc-pricing-product-cellar>` that works with smart definition for Cellar & FS Bucket
 * `<cc-pricing-table>`: rename `items` to `plans` (BREAKING CHANGE)
 * `<cc-pricing-product>`: rename `items` to `plans` (BREAKING CHANGE)
 * `<cc-block>`: introduce a ribbon and a noHead property
@@ -25,6 +24,8 @@ title: Changelog
   * fix zone list sort
   * move `sortZones` out in a lib
 * New components:
+  * `<cc-pricing-product-consumption>` (with smart definition)
+    * this is the replacement for `<cc-pricing-product-cellar>`, it works for Cellar, FS Bucket, Pulsar
   * `<cc-pricing-header>`
   * `<cc-pricing-estimation>`
   * `<cc-pricing-page>` (with smart definition)

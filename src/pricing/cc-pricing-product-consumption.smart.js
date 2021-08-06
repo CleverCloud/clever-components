@@ -1,4 +1,4 @@
-import './cc-pricing-product-storage.js';
+import './cc-pricing-product-consumption.js';
 import '../smart/cc-smart-container.js';
 import { fetchCurrency, fetchPriceSystem } from '../lib/api-helpers.js';
 import { LastPromise, unsubscribeWithSignal } from '../lib/observables.js';
@@ -33,7 +33,7 @@ const PRODUCTS = {
 };
 
 defineComponent({
-  selector: 'cc-pricing-product-storage',
+  selector: 'cc-pricing-product-consumption',
   params: {
     currencyCode: { type: String },
     productId: { type: String },

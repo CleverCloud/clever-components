@@ -8,7 +8,7 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
-import { PricingStorageSimulator } from '../lib/pricing.js';
+import { PricingConsumptionSimulator } from '../lib/pricing.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
@@ -23,6 +23,7 @@ const upSvg = new URL('../assets/up.svg', import.meta.url).href;
 const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
 const INFINITY = '∞';
 const THIRTY_DAYS_IN_HOURS = 24 * 30;
+const ONE_GIGABYTE = 1e9;
 
 const ICONS = {
   storage: storageSvg,
@@ -39,11 +40,11 @@ const SKELETON_INTERVALS = [
 ];
 
 /**
- * A component to simulate pricing for products with interval based pricings (Cellar, FS Buckets, Pulsar...).
+ * A component to simulate pricing for products with consumption based pricings (Cellar, FS Buckets, Pulsar...).
  *
  * ## Details
  *
- * * Interval prices are defined in "euros / gigabyte / 30 days" or just "euros / gigabyte" for timeless sections like traffic.
+ * * Interval prices are defined in "euros / byte / 30 days" or just "euros / byte" for timeless sections like traffic.
  * * Interval ranges are defined in bytes.
  * * To comply with `<cc-pricing-product>`, the price in the event `cc-pricing-product:add-plan` is in "euros / 1 hour".
  * * When a section has a nullish `intervals`, a skeleton screen UI pattern is displayed for this section (loading hint).
@@ -63,9 +64,9 @@ const SKELETON_INTERVALS = [
  *
  * ```js
  * interface Interval {
- *   maxRange: number, // byte
  *   minRange: number, // byte
- *   price: number,    // "euros / gigabyte / 30 days" or just "euros / gigabyte" for timeless sections like traffic
+ *   maxRange: number, // byte
+ *   price: number,    // "euros / byte / 30 days" or just "euros / byte" for timeless sections like traffic
  * }
  * ```
  *
@@ -99,7 +100,7 @@ const SKELETON_INTERVALS = [
  * @slot - The description of the product.
  * @slot head - Override the whole head section (with the icon, name and description).
  */
-export class CcPricingProductStorage extends withResizeObserver(LitElement) {
+export class CcPricingProductConsumption extends withResizeObserver(LitElement) {
 
   static get properties () {
     return {
@@ -119,7 +120,7 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
     this.action = 'add';
     this.currency = CURRENCY_EUR;
     this.error = false;
-    this._simulator = new PricingStorageSimulator();
+    this._simulator = new PricingConsumptionSimulator();
     this._state = {};
   }
 
@@ -130,24 +131,24 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
   _getTitle (type) {
     switch (type) {
       case 'storage':
-        return i18n('cc-pricing-product-storage.storage.title');
+        return i18n('cc-pricing-product-consumption.storage.title');
       case 'inbound-traffic':
-        return i18n('cc-pricing-product-storage.inbound-traffic.title');
+        return i18n('cc-pricing-product-consumption.inbound-traffic.title');
       case 'outbound-traffic':
-        return i18n('cc-pricing-product-storage.outbound-traffic.title');
+        return i18n('cc-pricing-product-consumption.outbound-traffic.title');
       case 'total':
-        return i18n('cc-pricing-product-storage.total.title');
+        return i18n('cc-pricing-product-consumption.total.title');
     }
   }
 
   _getLabel (type) {
     switch (type) {
       case 'storage':
-        return i18n('cc-pricing-product-storage.storage.label');
+        return i18n('cc-pricing-product-consumption.storage.label');
       case 'inbound-traffic':
-        return i18n('cc-pricing-product-storage.inbound-traffic.label');
+        return i18n('cc-pricing-product-consumption.inbound-traffic.label');
       case 'outbound-traffic':
-        return i18n('cc-pricing-product-storage.outbound-traffic.label');
+        return i18n('cc-pricing-product-consumption.outbound-traffic.label');
     }
   }
 
@@ -161,15 +162,15 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
   _getUnits () {
     return [
       {
-        label: i18n('cc-pricing-product-storage.bytes-unit', { bytes: 1e6 }),
+        label: i18n('cc-pricing-product-consumption.bytes-unit', { bytes: 1e6 }),
         value: '1000000',
       },
       {
-        label: i18n('cc-pricing-product-storage.bytes-unit', { bytes: 1e9 }),
+        label: i18n('cc-pricing-product-consumption.bytes-unit', { bytes: 1e9 }),
         value: '1000000000',
       },
       {
-        label: i18n('cc-pricing-product-storage.bytes-unit', { bytes: 1e12 }),
+        label: i18n('cc-pricing-product-consumption.bytes-unit', { bytes: 1e12 }),
         value: '1000000000000',
       },
     ];
@@ -203,7 +204,7 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
     const name = (this.sections ?? [])
       .map(({ type }) => {
         const title = this._getTitle(type);
-        const quantity = i18n('cc-pricing-product-storage.bytes', { bytes: this._simulator.getQuantity(type) });
+        const quantity = i18n('cc-pricing-product-consumption.bytes', { bytes: this._simulator.getQuantity(type) });
         return `${title} ${quantity}`;
       })
       .join(', ');
@@ -211,7 +212,7 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
     const plan = {
       productName: this.name,
       name,
-      // As explained above, interval prices are expected to be in "euros / gigabyte / 30 days" or just "euros / gigabyte" for timeless sections like traffic
+      // As explained above, interval prices are expected to be in "euros / byte / 30 days" or just "euros / byte" for timeless sections like traffic
       // To comply with `<cc-pricing-product>`, the price in this event is in "euros / 1 hour"
       price: this._simulator.getTotalPrice() / THIRTY_DAYS_IN_HOURS,
     };
@@ -234,7 +235,7 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
         };
       });
 
-      this._simulator = new PricingStorageSimulator(this.sections);
+      this._simulator = new PricingConsumptionSimulator(this.sections);
     }
     super.update(changedProperties);
   }
@@ -268,35 +269,34 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
             <slot></slot>
           ` : ''}
         </div>
+        <hr>
       </slot>
 
       <div class="body ${classMap(bodyClasses)}">
 
         ${this.error && (this.sections == null) ? html`
+          <cc-error class="error-global">${i18n('cc-pricing-product-consumption.error')}</cc-error>
           <hr>
-          <cc-error class="error-global">${i18n('cc-pricing-product-storage.error')}</cc-error>
         ` : ''}
 
         ${this.sections != null ? html`
           ${this.sections.map((section) => html`
-            <hr>
             ${this._renderSection(section)}
+            <hr>
           `)}
         ` : ''}
-
-        <hr>
 
         <div class="section">
           <div class="section-header">
             <cc-img class="section-icon" src=${sumSvg}></cc-img>
-            <div class="section-title">
+            <div class="section-title section-title--total">
               <div class="section-title-text">${this._getTitle('total')}</div>
-              <div class="section-title-price">${i18n('cc-pricing-product-storage.price', this._getCurrencyValue(this._simulator.getTotalPrice()))}</div>
+              <div class="section-title-price">${i18n('cc-pricing-product-consumption.price', this._getCurrencyValue(this._simulator.getTotalPrice()))}</div>
             </div>
           </div>
         </div>
 
-        <hr>
+        <hr class="${classMap({ last: this.action === 'none' })}">
 
         ${(this.action === 'add') ? html`
           <div class="button-bar">
@@ -304,7 +304,7 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
               image=${plusSvg}
               ?disabled=${(someNullishIntervals || everyQuantityAtZero)}
               @cc-button:click=${this._onAddPlan}
-            >${i18n('cc-pricing-product-storage.add')}
+            >${i18n('cc-pricing-product-consumption.add')}
             </cc-button>
           </div>
         ` : ''}
@@ -364,10 +364,10 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
 
         ${!this.error ? html`
           <div class="section-title section-title--subtotal">
-            <div class="section-title-text">${i18n('cc-pricing-product-storage.subtotal.title')}</div>
+            <div class="section-title-text">${i18n('cc-pricing-product-consumption.subtotal.title')}</div>
             <div class="section-title-price">
               <span class=${classMap({ skeleton })}>
-                ${i18n('cc-pricing-product-storage.price', this._getCurrencyValue(sectionPrice))}
+                ${i18n('cc-pricing-product-consumption.price', this._getCurrencyValue(sectionPrice))}
               </span>
             </div>
           </div>
@@ -388,20 +388,22 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
 
     if (this.error) {
       return html`
-        <cc-error>${i18n('cc-pricing-product-storage.error')}</cc-error>
+        <cc-error>${i18n('cc-pricing-product-consumption.error')}</cc-error>
       `;
     }
 
     return intervals.map((interval) => {
 
       const highlighted = (interval === currentInterval);
+      // Interval prices are specified for 1 byte but we want to display a unit price for 1 gigabyte
+      const intervalPrice = interval.price * ONE_GIGABYTE;
 
       return html`
         <div class="interval-line ${classMap({ highlighted })}">
 
           <div class="interval interval-min">
             <span class="${classMap({ skeleton })}">
-              ${i18n('cc-pricing-product-storage.bytes', { bytes: interval.minRange })}
+              ${i18n('cc-pricing-product-consumption.bytes', { bytes: interval.minRange })}
             </span>
           </div>
           <div class="interval interval-min-sign">&le;</div>
@@ -409,22 +411,22 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
           <div class="interval interval-max-sign">&lt;</div>
           <div class="interval interval-max">
             <span class="${classMap({ skeleton })}">
-              ${(interval.maxRange != null) ? i18n('cc-pricing-product-storage.bytes', { bytes: interval.maxRange }) : INFINITY}
+              ${(interval.maxRange != null) ? i18n('cc-pricing-product-consumption.bytes', { bytes: interval.maxRange }) : INFINITY}
             </span>
           </div>
 
           <div class="interval-price ${classMap({ 'interval-price--free': (interval.price === 0) })}">
             <span class="${classMap({ skeleton })}">
               ${(interval.price === 0)
-                ? i18n('cc-pricing-product-storage.price-interval.free')
-                : i18n('cc-pricing-product-storage.price-interval', this._getCurrencyValue(interval.price))
+                ? i18n('cc-pricing-product-consumption.price-interval.free')
+                : i18n('cc-pricing-product-consumption.price-interval', this._getCurrencyValue(intervalPrice))
               }
             </span>
           </div>
 
           <div class="estimated-price">
             <span class="${classMap({ skeleton })}">
-              ${i18n('cc-pricing-product-storage.price', this._getCurrencyValue(sectionPrice))}
+              ${i18n('cc-pricing-product-consumption.price', this._getCurrencyValue(sectionPrice))}
             </span>
           </div>
 
@@ -454,6 +456,7 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
           display: grid;
           gap: 1em;
           grid-auto-rows: min-content;
+          padding: 1em 1em 0 1em;
         }
 
         /* We cannot use cc-flex-gap because of a double slot */
@@ -517,6 +520,10 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
           width: 100%;
         }
 
+        hr.last {
+          margin-bottom: 0;
+        }
+
         .section-icon {
           grid-column: section-icon / span 1;
           height: 1em;
@@ -527,14 +534,20 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
         .section-title {
           display: flex;
           font-weight: bold;
+          grid-column: title / title--end;
           justify-content: space-between;
+        }
+
+        .section-title.section-title--subtotal,
+        .section-title.section-title--total {
+          grid-column: title / title-total--end;
         }
 
         .section-title.section-title--subtotal {
           margin-top: 0.5em;
         }
 
-        .section-title--subtotal .section-title-text {
+        .section-title.section-title--subtotal .section-title-text {
           font-weight: normal;
         }
 
@@ -545,12 +558,14 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
         .input-wrapper {
           align-items: end;
           display: flex;
+          grid-column: input-wrapper / input-wrapper--end;
           margin: 1em 0;
           width: 100%;
         }
 
         .input-quantity {
           min-width: 10ch;
+          flex: 1 1 0;
         }
 
         .input-unit {
@@ -565,7 +580,7 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
         }
 
         cc-error.error-global {
-          grid-column: 1 / -1;
+          grid-column: start / end;
         }
 
         .interval-line {
@@ -609,6 +624,7 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
         .interval-price {
           color: #333;
           font-style: italic;
+          grid-column: interval-price / interval-price--end;
         }
 
         .interval-max {
@@ -625,7 +641,8 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
         }
 
         .button-bar {
-          grid-column: 1 / -1;
+          grid-column: start / end;
+          margin-bottom: 1em;
         }
 
         .skeleton {
@@ -638,19 +655,17 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
 
         .body--big {
           grid-template-columns:
-            [section-icon] 2em
-            [interval-min] min-content
+            1em
+            [start section-icon] 2em
+            [title input-wrapper interval-min] min-content
             [interval-min-sign] min-content
             [interval-label] min-content
             [interval-max-sign] min-content
             [interval-max] min-content
-            [interval-price] min-content
-            [estimated-price] min-content
-            [end];
-        }
-
-        .body--big .section-title {
-          grid-column: interval-min / -1;
+            [interval-price input-wrapper--end] min-content
+            [estimated-price interval-price--end] min-content
+            [title--end title-total--end] 1fr
+            [end] 1em;
         }
 
         .body--big .section-title--subtotal {
@@ -659,10 +674,6 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
 
         .body--big .section-toggle-btn {
           display: none;
-        }
-
-        .body--big .input-wrapper {
-          grid-column: interval-min / interval-price;
         }
 
         .body--big .interval-label {
@@ -684,26 +695,20 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
 
         .body--small {
           grid-template-columns:
-            [section-icon] 2em
-            [interval-min] min-content
+            1em
+            [start section-icon] 2em
+            [title input-wrapper interval-min interval-price] min-content
             [interval-min-sign] min-content
             [interval-label] min-content
             [interval-max-sign] min-content
-            [interval-max] min-content
-            [toggle-btn] 1fr
-            [end];
-        }
-
-        .body--small .section-title {
-          grid-column: interval-min / -2;
+            [interval-max toggle-btn title--end] min-content
+            [input-wrapper--end interval-price--end title-total--end] 1fr
+            [end] 1em;
         }
 
         .body--small .section-toggle-btn {
           justify-self: end;
-        }
-
-        .body--small .input-wrapper {
-          grid-column: interval-min / toggle-btn;
+          grid-column: toggle-btn / end;
         }
 
         .body--small .section--closed .input-wrapper {
@@ -721,7 +726,6 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
         }
 
         .body--small .interval-price {
-          grid-column: interval-min / toggle-btn;
           margin-bottom: 1em;
         }
 
@@ -735,4 +739,4 @@ export class CcPricingProductStorage extends withResizeObserver(LitElement) {
   }
 }
 
-window.customElements.define('cc-pricing-product-storage', CcPricingProductStorage);
+window.customElements.define('cc-pricing-product-consumption', CcPricingProductConsumption);
