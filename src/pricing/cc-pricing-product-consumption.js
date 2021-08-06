@@ -564,8 +564,8 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         }
 
         .input-quantity {
-          min-width: 10ch;
           flex: 1 1 0;
+          min-width: 10ch;
         }
 
         .input-unit {
@@ -707,8 +707,8 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         }
 
         .body--small .section-toggle-btn {
-          justify-self: end;
           grid-column: toggle-btn / end;
+          justify-self: end;
         }
 
         .body--small .section--closed .input-wrapper {
