@@ -3,3 +3,6 @@ storybook-static
 dist
 .components-docs
 cdn
+.clever-components-previews.s3cfg
+.preview-index.html
+.preview-manifest.json

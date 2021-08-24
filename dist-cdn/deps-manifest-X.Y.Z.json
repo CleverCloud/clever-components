@@ -1,0 +1,2163 @@
+{
+  "manifestVersion": "1",
+  "packageVersion": "X.Y.Z",
+  "files": [
+    {
+      "id": "",
+      "path": "vendor-5e139a4e.js",
+      "dependencies": [],
+      "sources": [
+        "node_modules/lit-html/lib/directive.js",
+        "node_modules/lit-html/lib/dom.js",
+        "node_modules/lit-html/lib/part.js",
+        "node_modules/lit-html/lib/template.js",
+        "node_modules/lit-html/lib/template-instance.js",
+        "node_modules/lit-html/lib/template-result.js",
+        "node_modules/lit-html/lib/parts.js",
+        "node_modules/lit-html/lib/default-template-processor.js",
+        "node_modules/lit-html/lib/template-factory.js",
+        "node_modules/lit-html/lib/render.js",
+        "node_modules/lit-html/lit-html.js",
+        "node_modules/lit-element/lib/updating-element.js",
+        "node_modules/lit-element/lib/decorators.js",
+        "node_modules/lit-element/lib/css-tag.js",
+        "node_modules/lit-element/lit-element.js",
+        "node_modules/lit-html/directives/class-map.js",
+        "node_modules/lit-html/directives/if-defined.js",
+        "src/lib/events.js",
+        "src/styles/skeleton.js",
+        "src/styles/waiting.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "fake-strings-0d4d5c0b.js",
+      "dependencies": [],
+      "sources": [
+        "src/lib/fake-strings.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "cc-link-bb132771.js",
+      "dependencies": [
+        "vendor-5e139a4e.js"
+      ],
+      "sources": [
+        "src/templates/cc-link.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "cc-addon-encryption-at-rest-option-fbb0d003.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "assets/encryption-at-rest-9baf5ef8.svg"
+      ],
+      "sources": [
+        "src/templates/cc-addon-encryption-at-rest-option.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "default-theme-fead272a.js",
+      "dependencies": [
+        "vendor-5e139a4e.js"
+      ],
+      "sources": [
+        "src/styles/default-theme.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "repeat-b0d66412.js",
+      "dependencies": [
+        "vendor-5e139a4e.js"
+      ],
+      "sources": [
+        "node_modules/lit-html/directives/repeat.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "env-vars-13fc89da.js",
+      "dependencies": [],
+      "sources": [
+        "node_modules/@clevercloud/client/esm/utils/env-vars.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "with-resize-observer-2a1b198b.js",
+      "dependencies": [],
+      "sources": [
+        "src/mixins/with-resize-observer.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "info-tiles-0fcdc9dd.js",
+      "dependencies": [
+        "vendor-5e139a4e.js"
+      ],
+      "sources": [
+        "src/styles/info-tiles.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "chart.esm-dc52f043.js",
+      "dependencies": [],
+      "sources": [
+        "node_modules/chart.js/dist/chunks/helpers.segment.js",
+        "node_modules/chart.js/dist/chart.esm.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "cc-smart-container-bfdf348e.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "utils-e732f1fc.js",
+        "smart-manager-270d83dd.js"
+      ],
+      "sources": [
+        "node_modules/rxjs/dist/esm5/internal/util/lift.js",
+        "node_modules/rxjs/dist/esm5/internal/operators/OperatorSubscriber.js",
+        "node_modules/rxjs/dist/esm5/internal/observable/empty.js",
+        "node_modules/rxjs/dist/esm5/internal/scheduled/scheduleArray.js",
+        "node_modules/rxjs/dist/esm5/internal/util/isArrayLike.js",
+        "node_modules/rxjs/dist/esm5/internal/util/isPromise.js",
+        "node_modules/rxjs/dist/esm5/internal/scheduled/scheduleObservable.js",
+        "node_modules/rxjs/dist/esm5/internal/scheduled/schedulePromise.js",
+        "node_modules/rxjs/dist/esm5/internal/symbol/iterator.js",
+        "node_modules/rxjs/dist/esm5/internal/util/caughtSchedule.js",
+        "node_modules/rxjs/dist/esm5/internal/scheduled/scheduleIterable.js",
+        "node_modules/rxjs/dist/esm5/internal/scheduled/scheduleAsyncIterable.js",
+        "node_modules/rxjs/dist/esm5/internal/util/isInteropObservable.js",
+        "node_modules/rxjs/dist/esm5/internal/util/isIterable.js",
+        "node_modules/rxjs/dist/esm5/internal/util/isAsyncIterable.js",
+        "node_modules/rxjs/dist/esm5/internal/util/throwUnobservableError.js",
+        "node_modules/rxjs/dist/esm5/internal/util/isReadableStreamLike.js",
+        "node_modules/rxjs/dist/esm5/internal/scheduled/scheduleReadableStreamLike.js",
+        "node_modules/rxjs/dist/esm5/internal/scheduled/scheduled.js",
+        "node_modules/rxjs/dist/esm5/internal/observable/from.js",
+        "node_modules/rxjs/dist/esm5/internal/observable/fromArray.js",
+        "node_modules/rxjs/dist/esm5/internal/operators/map.js",
+        "node_modules/rxjs/dist/esm5/internal/util/mapOneOrManyArgs.js",
+        "node_modules/rxjs/dist/esm5/internal/operators/mergeInternals.js",
+        "node_modules/rxjs/dist/esm5/internal/operators/mergeMap.js",
+        "node_modules/rxjs/dist/esm5/internal/observable/fromEvent.js",
+        "node_modules/rxjs/dist/esm5/internal/operators/filter.js",
+        "node_modules/rxjs/dist/esm5/internal/operators/take.js",
+        "node_modules/rxjs/dist/esm5/internal/operators/share.js",
+        "node_modules/rxjs/dist/esm5/internal/operators/switchMap.js",
+        "src/lib/observables.js",
+        "src/smart/cc-smart-container.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "addon-f5d51d1d.js",
+      "dependencies": [],
+      "sources": [
+        "node_modules/@clevercloud/client/esm/api/v2/addon.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "product-857e3fb7.js",
+      "dependencies": [],
+      "sources": [
+        "node_modules/@clevercloud/client/esm/api/v4/product.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "send-to-api-d26c0c41.js",
+      "dependencies": [],
+      "sources": [
+        "node_modules/@clevercloud/client/esm/pick-non-null.js",
+        "node_modules/@clevercloud/client/esm/with-cache.js",
+        "commonjsHelpers.js",
+        "node_modules/oauth-1.0a/oauth-1.0a.js",
+        "node_modules/@clevercloud/client/esm/oauth.browser.js",
+        "node_modules/@clevercloud/client/esm/prefix-url.js",
+        "node_modules/@clevercloud/client/esm/request.fetch-with-timeout.js",
+        "node_modules/@clevercloud/client/esm/request-warp10.fetch.js",
+        "node_modules/@clevercloud/client/esm/request.fetch.js",
+        "node_modules/@clevercloud/client/esm/with-options.js",
+        "src/lib/send-to-api.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "smart-manager-270d83dd.js",
+      "dependencies": [
+        "utils-e732f1fc.js"
+      ],
+      "sources": [
+        "node_modules/rxjs/node_modules/tslib/tslib.es6.js",
+        "node_modules/rxjs/dist/esm5/internal/util/isFunction.js",
+        "node_modules/rxjs/dist/esm5/internal/util/createErrorClass.js",
+        "node_modules/rxjs/dist/esm5/internal/util/UnsubscriptionError.js",
+        "node_modules/rxjs/dist/esm5/internal/util/arrRemove.js",
+        "node_modules/rxjs/dist/esm5/internal/Subscription.js",
+        "node_modules/rxjs/dist/esm5/internal/config.js",
+        "node_modules/rxjs/dist/esm5/internal/scheduler/timeoutProvider.js",
+        "node_modules/rxjs/dist/esm5/internal/util/reportUnhandledError.js",
+        "node_modules/rxjs/dist/esm5/internal/util/noop.js",
+        "node_modules/rxjs/dist/esm5/internal/util/errorContext.js",
+        "node_modules/rxjs/dist/esm5/internal/Subscriber.js",
+        "node_modules/rxjs/dist/esm5/internal/symbol/observable.js",
+        "node_modules/rxjs/dist/esm5/internal/util/identity.js",
+        "node_modules/rxjs/dist/esm5/internal/util/pipe.js",
+        "node_modules/rxjs/dist/esm5/internal/Observable.js",
+        "node_modules/rxjs/dist/esm5/internal/util/ObjectUnsubscribedError.js",
+        "node_modules/rxjs/dist/esm5/internal/Subject.js",
+        "src/lib/smart-manager.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "merge-3986a14c.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "utils-e732f1fc.js",
+        "smart-manager-270d83dd.js",
+        "cc-smart-container-bfdf348e.js"
+      ],
+      "sources": [
+        "node_modules/rxjs/dist/esm5/internal/util/isScheduler.js",
+        "node_modules/rxjs/dist/esm5/internal/util/args.js",
+        "node_modules/rxjs/dist/esm5/internal/operators/mergeAll.js",
+        "node_modules/rxjs/dist/esm5/internal/observable/merge.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "combineLatest-411c7594.js",
+      "dependencies": [
+        "utils-e732f1fc.js",
+        "smart-manager-270d83dd.js",
+        "vendor-5e139a4e.js",
+        "cc-smart-container-bfdf348e.js",
+        "merge-3986a14c.js"
+      ],
+      "sources": [
+        "node_modules/rxjs/dist/esm5/internal/util/argsArgArrayOrObject.js",
+        "node_modules/rxjs/dist/esm5/internal/util/createObject.js",
+        "node_modules/rxjs/dist/esm5/internal/observable/combineLatest.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "utils-e732f1fc.js",
+      "dependencies": [],
+      "sources": [
+        "src/lib/utils.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "api-helpers-ed6aeb3f.js",
+      "dependencies": [
+        "send-to-api-d26c0c41.js",
+        "product-857e3fb7.js",
+        "utils-e732f1fc.js"
+      ],
+      "sources": [
+        "node_modules/@clevercloud/client/esm/api/v2/application.js",
+        "node_modules/@clevercloud/client/esm/api/v4/billing.js",
+        "src/lib/api-helpers.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "withLatestFrom-4fac4bc8.js",
+      "dependencies": [
+        "utils-e732f1fc.js",
+        "smart-manager-270d83dd.js",
+        "vendor-5e139a4e.js",
+        "cc-smart-container-bfdf348e.js",
+        "merge-3986a14c.js"
+      ],
+      "sources": [
+        "node_modules/rxjs/dist/esm5/internal/operators/withLatestFrom.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "product-8863421b.js",
+      "dependencies": [],
+      "sources": [
+        "src/lib/product.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "product-33178d77.js",
+      "dependencies": [
+        "send-to-api-d26c0c41.js"
+      ],
+      "sources": [
+        "node_modules/@clevercloud/client/esm/api/v2/product.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "i18n-sanitize-f4fc8c96.js",
+      "dependencies": [],
+      "sources": [
+        "src/lib/i18n-date.js",
+        "src/lib/i18n-display.js",
+        "src/lib/i18n-number.js",
+        "src/lib/i18n-sanitize.js"
+      ]
+    },
+    {
+      "id": "cc-addon-admin",
+      "path": "cc-addon-admin-dc543623.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-6c31d7c8.js",
+        "cc-loader-c874b32c.js",
+        "cc-block-section-d9dd6090.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4ea9c0db.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js"
+      ],
+      "sources": [
+        "src/addon/cc-addon-admin.js"
+      ]
+    },
+    {
+      "id": "cc-addon-backups",
+      "path": "cc-addon-backups-098402f3.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-6c31d7c8.js",
+        "cc-block-section-d9dd6090.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4ea9c0db.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "fake-strings-0d4d5c0b.js",
+        "assets/backup-5902d4d1.svg",
+        "assets/close-5578d4ce.svg"
+      ],
+      "sources": [
+        "src/addon/cc-addon-backups.js"
+      ]
+    },
+    {
+      "id": "cc-addon-credentials",
+      "path": "cc-addon-credentials-6963efc6.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-6c31d7c8.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4ea9c0db.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js"
+      ],
+      "sources": [
+        "src/addon/cc-addon-credentials.js"
+      ]
+    },
+    {
+      "id": "cc-addon-elasticsearch-options",
+      "path": "cc-addon-elasticsearch-options-ac57a6be.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "i18n-446ebe81.js",
+        "cc-addon-option-47a4ef0e.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-expand-2cca00e2.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4ea9c0db.js",
+        "cc-addon-option-form-697bce6d.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "assets/encryption-at-rest-9baf5ef8.svg",
+        "cc-addon-encryption-at-rest-option-fbb0d003.js"
+      ],
+      "sources": [
+        "src/addon/cc-addon-elasticsearch-options.js"
+      ]
+    },
+    {
+      "id": "cc-addon-features",
+      "path": "cc-addon-features-51b21e08.js",
+      "dependencies": [
+        "cc-flex-gap-4e6ab5ba.js",
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4ea9c0db.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "assets/cpu-8f43fcc2.svg",
+        "assets/disk-f8ad3cfd.svg",
+        "assets/ram-bd115490.svg"
+      ],
+      "sources": [
+        "src/addon/cc-addon-features.js"
+      ]
+    },
+    {
+      "id": "cc-addon-jenkins-options",
+      "path": "cc-addon-jenkins-options-dd030e14.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "i18n-446ebe81.js",
+        "cc-addon-option-47a4ef0e.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-expand-2cca00e2.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4ea9c0db.js",
+        "cc-addon-option-form-697bce6d.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "assets/encryption-at-rest-9baf5ef8.svg",
+        "cc-addon-encryption-at-rest-option-fbb0d003.js"
+      ],
+      "sources": [
+        "src/addon/cc-addon-jenkins-options.js"
+      ]
+    },
+    {
+      "id": "cc-addon-linked-apps",
+      "path": "cc-addon-linked-apps-f04a72eb.js",
+      "dependencies": [
+        "cc-flex-gap-4e6ab5ba.js",
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-expand-2cca00e2.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4ea9c0db.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "default-theme-fead272a.js",
+        "cc-zone-535a4410.js"
+      ],
+      "sources": [
+        "src/addon/cc-addon-linked-apps.js"
+      ]
+    },
+    {
+      "id": "cc-addon-linked-apps.smart",
+      "path": "cc-addon-linked-apps.smart-ebb1439f.js",
+      "dependencies": [
+        "cc-flex-gap-4e6ab5ba.js",
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-expand-2cca00e2.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4ea9c0db.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "default-theme-fead272a.js",
+        "cc-zone-535a4410.js",
+        "cc-addon-linked-apps-f04a72eb.js",
+        "utils-e732f1fc.js",
+        "smart-manager-270d83dd.js",
+        "cc-smart-container-bfdf348e.js",
+        "addon-f5d51d1d.js",
+        "product-857e3fb7.js",
+        "send-to-api-d26c0c41.js",
+        "merge-3986a14c.js",
+        "combineLatest-411c7594.js"
+      ],
+      "sources": [
+        "src/addon/cc-addon-linked-apps.smart.js"
+      ]
+    },
+    {
+      "id": "cc-addon-mongodb-options",
+      "path": "cc-addon-mongodb-options-79cf2023.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "i18n-446ebe81.js",
+        "cc-addon-option-47a4ef0e.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-expand-2cca00e2.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4ea9c0db.js",
+        "cc-addon-option-form-697bce6d.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "assets/encryption-at-rest-9baf5ef8.svg",
+        "cc-addon-encryption-at-rest-option-fbb0d003.js"
+      ],
+      "sources": [
+        "src/addon/cc-addon-mongodb-options.js"
+      ]
+    },
+    {
+      "id": "cc-addon-mysql-options",
+      "path": "cc-addon-mysql-options-3635f3bf.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "i18n-446ebe81.js",
+        "cc-addon-option-47a4ef0e.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-expand-2cca00e2.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4ea9c0db.js",
+        "cc-addon-option-form-697bce6d.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "assets/encryption-at-rest-9baf5ef8.svg",
+        "cc-addon-encryption-at-rest-option-fbb0d003.js"
+      ],
+      "sources": [
+        "src/addon/cc-addon-mysql-options.js"
+      ]
+    },
+    {
+      "id": "cc-addon-option",
+      "path": "cc-addon-option-47a4ef0e.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "i18n-446ebe81.js"
+      ],
+      "sources": [
+        "src/addon/cc-addon-option.js"
+      ]
+    },
+    {
+      "id": "cc-addon-option-form",
+      "path": "cc-addon-option-form-697bce6d.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "i18n-446ebe81.js",
+        "cc-addon-option-47a4ef0e.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-expand-2cca00e2.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4ea9c0db.js"
+      ],
+      "sources": [
+        "src/addon/cc-addon-option-form.js"
+      ]
+    },
+    {
+      "id": "cc-addon-postgresql-options",
+      "path": "cc-addon-postgresql-options-ff5c5be4.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "i18n-446ebe81.js",
+        "cc-addon-option-47a4ef0e.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-expand-2cca00e2.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4ea9c0db.js",
+        "cc-addon-option-form-697bce6d.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "assets/encryption-at-rest-9baf5ef8.svg",
+        "cc-addon-encryption-at-rest-option-fbb0d003.js"
+      ],
+      "sources": [
+        "src/addon/cc-addon-postgresql-options.js"
+      ]
+    },
+    {
+      "id": "cc-addon-redis-options",
+      "path": "cc-addon-redis-options-3e72ff10.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "i18n-446ebe81.js",
+        "cc-addon-option-47a4ef0e.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-expand-2cca00e2.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4ea9c0db.js",
+        "cc-addon-option-form-697bce6d.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "assets/encryption-at-rest-9baf5ef8.svg",
+        "cc-addon-encryption-at-rest-option-fbb0d003.js"
+      ],
+      "sources": [
+        "src/addon/cc-addon-redis-options.js"
+      ]
+    },
+    {
+      "id": "cc-beta",
+      "path": "cc-beta-7393a4ea.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js"
+      ],
+      "sources": [
+        "src/atoms/cc-beta.js"
+      ]
+    },
+    {
+      "id": "cc-block",
+      "path": "cc-block-4ea9c0db.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg"
+      ],
+      "sources": [
+        "src/molecules/cc-block.js"
+      ]
+    },
+    {
+      "id": "cc-block-section",
+      "path": "cc-block-section-d9dd6090.js",
+      "dependencies": [
+        "vendor-5e139a4e.js"
+      ],
+      "sources": [
+        "src/molecules/cc-block-section.js"
+      ]
+    },
+    {
+      "id": "cc-button",
+      "path": "cc-button-2582079d.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js"
+      ],
+      "sources": [
+        "src/atoms/cc-button.js"
+      ]
+    },
+    {
+      "id": "cc-datetime-relative",
+      "path": "cc-datetime-relative-cbda2ddb.js",
+      "dependencies": [
+        "i18n-446ebe81.js"
+      ],
+      "sources": [
+        "src/atoms/cc-datetime-relative.js"
+      ]
+    },
+    {
+      "id": "cc-elasticsearch-info",
+      "path": "cc-elasticsearch-info-2122db11.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "assets/info-fd0d98fe.svg"
+      ],
+      "sources": [
+        "src/addon/cc-elasticsearch-info.js"
+      ]
+    },
+    {
+      "id": "cc-env-var-create",
+      "path": "cc-env-var-create-7bca8eac.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-6c31d7c8.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "env-vars-13fc89da.js"
+      ],
+      "sources": [
+        "src/env-var/cc-env-var-create.js"
+      ]
+    },
+    {
+      "id": "cc-env-var-editor-expert",
+      "path": "cc-env-var-editor-expert-abe4f78e.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-6c31d7c8.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "env-vars-13fc89da.js"
+      ],
+      "sources": [
+        "src/env-var/cc-env-var-editor-expert.js"
+      ]
+    },
+    {
+      "id": "cc-env-var-editor-simple",
+      "path": "cc-env-var-editor-simple-e39662d0.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-6c31d7c8.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "env-vars-13fc89da.js",
+        "cc-env-var-create-7bca8eac.js",
+        "cc-env-var-input-dfd7ab9b.js",
+        "repeat-b0d66412.js"
+      ],
+      "sources": [
+        "src/env-var/cc-env-var-editor-simple.js"
+      ]
+    },
+    {
+      "id": "cc-env-var-form",
+      "path": "cc-env-var-form-bd25dc5f.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-expand-2cca00e2.js",
+        "cc-loader-c874b32c.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-6c31d7c8.js",
+        "env-vars-13fc89da.js",
+        "cc-env-var-editor-expert-abe4f78e.js",
+        "cc-env-var-create-7bca8eac.js",
+        "cc-env-var-input-dfd7ab9b.js",
+        "cc-env-var-editor-simple-e39662d0.js"
+      ],
+      "sources": [
+        "src/env-var/cc-env-var-form.js"
+      ]
+    },
+    {
+      "id": "cc-env-var-form.smart-env-var-addon",
+      "path": "cc-env-var-form.smart-env-var-addon-4832b5d0.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-expand-2cca00e2.js",
+        "cc-loader-c874b32c.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-6c31d7c8.js",
+        "env-vars-13fc89da.js",
+        "cc-env-var-editor-expert-abe4f78e.js",
+        "cc-env-var-create-7bca8eac.js",
+        "cc-env-var-input-dfd7ab9b.js",
+        "cc-env-var-editor-simple-e39662d0.js",
+        "cc-env-var-form-bd25dc5f.js",
+        "utils-e732f1fc.js",
+        "smart-manager-270d83dd.js",
+        "cc-smart-container-bfdf348e.js",
+        "addon-f5d51d1d.js",
+        "send-to-api-d26c0c41.js"
+      ],
+      "sources": [
+        "src/env-var/cc-env-var-form.smart-env-var-addon.js"
+      ]
+    },
+    {
+      "id": "cc-env-var-form.smart-exposed-config",
+      "path": "cc-env-var-form.smart-exposed-config-0ca2d778.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-expand-2cca00e2.js",
+        "cc-loader-c874b32c.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-6c31d7c8.js",
+        "env-vars-13fc89da.js",
+        "cc-env-var-editor-expert-abe4f78e.js",
+        "cc-env-var-create-7bca8eac.js",
+        "cc-env-var-input-dfd7ab9b.js",
+        "cc-env-var-editor-simple-e39662d0.js",
+        "cc-env-var-form-bd25dc5f.js",
+        "utils-e732f1fc.js",
+        "smart-manager-270d83dd.js",
+        "cc-smart-container-bfdf348e.js",
+        "send-to-api-d26c0c41.js",
+        "product-857e3fb7.js",
+        "api-helpers-ed6aeb3f.js",
+        "merge-3986a14c.js",
+        "withLatestFrom-4fac4bc8.js"
+      ],
+      "sources": [
+        "src/env-var/cc-env-var-form.smart-exposed-config.js"
+      ]
+    },
+    {
+      "id": "cc-env-var-input",
+      "path": "cc-env-var-input-dfd7ab9b.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-6c31d7c8.js"
+      ],
+      "sources": [
+        "src/env-var/cc-env-var-input.js"
+      ]
+    },
+    {
+      "id": "cc-env-var-linked-services",
+      "path": "cc-env-var-linked-services-27834304.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-loader-c874b32c.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "cc-expand-2cca00e2.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-6c31d7c8.js",
+        "env-vars-13fc89da.js",
+        "cc-env-var-editor-expert-abe4f78e.js",
+        "cc-env-var-create-7bca8eac.js",
+        "cc-env-var-input-dfd7ab9b.js",
+        "cc-env-var-editor-simple-e39662d0.js",
+        "cc-env-var-form-bd25dc5f.js"
+      ],
+      "sources": [
+        "src/env-var/cc-env-var-linked-services.js"
+      ]
+    },
+    {
+      "id": "cc-error",
+      "path": "cc-error-7bb81256.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg"
+      ],
+      "sources": [
+        "src/molecules/cc-error.js"
+      ]
+    },
+    {
+      "id": "cc-expand",
+      "path": "cc-expand-2cca00e2.js",
+      "dependencies": [],
+      "sources": [
+        "src/atoms/cc-expand.js"
+      ]
+    },
+    {
+      "id": "cc-flex-gap",
+      "path": "cc-flex-gap-4e6ab5ba.js",
+      "dependencies": [],
+      "sources": [
+        "src/atoms/cc-flex-gap.js"
+      ]
+    },
+    {
+      "id": "cc-header-addon",
+      "path": "cc-header-addon-67470e52.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "i18n-446ebe81.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-6c31d7c8.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js"
+      ],
+      "sources": [
+        "src/addon/cc-header-addon.js"
+      ]
+    },
+    {
+      "id": "cc-header-app",
+      "path": "cc-header-app-d4180085.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "cc-img-ca15395c.js",
+        "default-theme-fead272a.js",
+        "cc-zone-535a4410.js",
+        "assets/git-9772156e.svg",
+        "assets/restart-failed-1bdb53dc.svg",
+        "assets/restarting-with-downtime-f8e9df23.svg",
+        "assets/restarting-b53bf52a.svg",
+        "assets/running-cada7a10.svg",
+        "assets/start-failed-2f874290.svg",
+        "assets/starting-3ce177c7.svg",
+        "assets/stopped-d4aeda43.svg",
+        "assets/unknown-d36353e6.svg"
+      ],
+      "sources": [
+        "src/overview/cc-header-app.js"
+      ]
+    },
+    {
+      "id": "cc-header-orga",
+      "path": "cc-header-orga-ac1da16e.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "assets/badge-white-0c2da36b.svg",
+        "assets/phone-13ccf5ab.svg"
+      ],
+      "sources": [
+        "src/overview/cc-header-orga.js"
+      ]
+    },
+    {
+      "id": "cc-heptapod-info",
+      "path": "cc-heptapod-info-515283e3.js",
+      "dependencies": [
+        "cc-flex-gap-4e6ab5ba.js",
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4ea9c0db.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js"
+      ],
+      "sources": [
+        "src/saas/cc-heptapod-info.js"
+      ]
+    },
+    {
+      "id": "cc-html-frame",
+      "path": "cc-html-frame-4f8ed684.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-loader-c874b32c.js"
+      ],
+      "sources": [
+        "src/atoms/cc-html-frame.js"
+      ]
+    },
+    {
+      "id": "cc-img",
+      "path": "cc-img-ca15395c.js",
+      "dependencies": [
+        "vendor-5e139a4e.js"
+      ],
+      "sources": [
+        "src/atoms/cc-img.js"
+      ]
+    },
+    {
+      "id": "cc-input-number",
+      "path": "cc-input-number-d19c6368.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "default-theme-fead272a.js",
+        "assets/increment-a9125041.svg",
+        "assets/decrement-44ef7da1.svg"
+      ],
+      "sources": [
+        "src/atoms/cc-input-number.js"
+      ]
+    },
+    {
+      "id": "cc-input-text",
+      "path": "cc-input-text-6c31d7c8.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg"
+      ],
+      "sources": [
+        "node_modules/clipboard-copy/index.js",
+        "src/atoms/cc-input-text.js"
+      ]
+    },
+    {
+      "id": "cc-invoice",
+      "path": "cc-invoice-9a941e18.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4ea9c0db.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "cc-html-frame-4f8ed684.js",
+        "assets/file-d798b536.svg"
+      ],
+      "sources": [
+        "node_modules/lit-html/directives/unsafe-html.js",
+        "src/invoices/cc-invoice.js"
+      ]
+    },
+    {
+      "id": "cc-invoice-list",
+      "path": "cc-invoice-list-bb275253.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4ea9c0db.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "cc-block-section-d9dd6090.js",
+        "utils-e732f1fc.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "with-resize-observer-2a1b198b.js",
+        "default-theme-fead272a.js",
+        "assets/file-d798b536.svg",
+        "cc-invoice-table-3b202117.js"
+      ],
+      "sources": [
+        "src/invoices/cc-invoice-list.js"
+      ]
+    },
+    {
+      "id": "cc-invoice-list.smart",
+      "path": "cc-invoice-list.smart-69bfd025.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4ea9c0db.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "cc-block-section-d9dd6090.js",
+        "utils-e732f1fc.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "with-resize-observer-2a1b198b.js",
+        "default-theme-fead272a.js",
+        "assets/file-d798b536.svg",
+        "cc-invoice-table-3b202117.js",
+        "cc-invoice-list-bb275253.js",
+        "smart-manager-270d83dd.js",
+        "cc-smart-container-bfdf348e.js",
+        "send-to-api-d26c0c41.js",
+        "product-857e3fb7.js",
+        "api-helpers-ed6aeb3f.js"
+      ],
+      "sources": [
+        "src/invoices/cc-invoice-list.smart.js"
+      ]
+    },
+    {
+      "id": "cc-invoice-table",
+      "path": "cc-invoice-table-3b202117.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "cc-img-ca15395c.js",
+        "i18n-446ebe81.js",
+        "utils-e732f1fc.js",
+        "with-resize-observer-2a1b198b.js",
+        "default-theme-fead272a.js",
+        "cc-link-bb132771.js",
+        "assets/file-d798b536.svg"
+      ],
+      "sources": [
+        "src/invoices/cc-invoice-table.js"
+      ]
+    },
+    {
+      "id": "cc-invoice.smart",
+      "path": "cc-invoice.smart-27e6f755.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4ea9c0db.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "cc-html-frame-4f8ed684.js",
+        "assets/file-d798b536.svg",
+        "cc-invoice-9a941e18.js",
+        "utils-e732f1fc.js",
+        "smart-manager-270d83dd.js",
+        "cc-smart-container-bfdf348e.js",
+        "send-to-api-d26c0c41.js",
+        "product-857e3fb7.js",
+        "api-helpers-ed6aeb3f.js",
+        "merge-3986a14c.js",
+        "combineLatest-411c7594.js"
+      ],
+      "sources": [
+        "src/invoices/cc-invoice.smart.js"
+      ]
+    },
+    {
+      "id": "cc-loader",
+      "path": "cc-loader-c874b32c.js",
+      "dependencies": [
+        "vendor-5e139a4e.js"
+      ],
+      "sources": [
+        "src/atoms/cc-loader.js"
+      ]
+    },
+    {
+      "id": "cc-logsmap",
+      "path": "cc-logsmap-c6fc4d10.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "cc-map-marker-dot-948bbfc4.js",
+        "cc-loader-c874b32c.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "with-resize-observer-2a1b198b.js",
+        "cc-map-e39a74e7.js"
+      ],
+      "sources": [
+        "src/maps/cc-logsmap.js"
+      ]
+    },
+    {
+      "id": "cc-map",
+      "path": "cc-map-e39a74e7.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-loader-c874b32c.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "with-resize-observer-2a1b198b.js"
+      ],
+      "sources": [
+        "src/assets/world-110m.geo.js",
+        "node_modules/leaflet/src/core/Util.js",
+        "node_modules/leaflet/src/core/Class.js",
+        "node_modules/leaflet/src/core/Events.js",
+        "node_modules/leaflet/src/geometry/Point.js",
+        "node_modules/leaflet/src/geometry/Bounds.js",
+        "node_modules/leaflet/src/geo/LatLngBounds.js",
+        "node_modules/leaflet/src/geo/LatLng.js",
+        "node_modules/leaflet/src/geo/crs/CRS.js",
+        "node_modules/leaflet/src/geo/crs/CRS.Earth.js",
+        "node_modules/leaflet/src/geo/projection/Projection.SphericalMercator.js",
+        "node_modules/leaflet/src/geometry/Transformation.js",
+        "node_modules/leaflet/src/geo/crs/CRS.EPSG3857.js",
+        "node_modules/leaflet/src/layer/vector/SVG.Util.js",
+        "node_modules/leaflet/src/core/Browser.js",
+        "node_modules/leaflet/src/dom/DomEvent.Pointer.js",
+        "node_modules/leaflet/src/dom/DomEvent.DoubleTap.js",
+        "node_modules/leaflet/src/dom/DomUtil.js",
+        "node_modules/leaflet/src/dom/DomEvent.js",
+        "node_modules/leaflet/src/dom/PosAnimation.js",
+        "node_modules/leaflet/src/map/Map.js",
+        "node_modules/leaflet/src/control/Control.js",
+        "node_modules/leaflet/src/control/Control.Layers.js",
+        "node_modules/leaflet/src/control/Control.Zoom.js",
+        "node_modules/leaflet/src/control/Control.Scale.js",
+        "node_modules/leaflet/src/control/Control.Attribution.js",
+        "node_modules/leaflet/src/control/index.js",
+        "node_modules/leaflet/src/layer/Layer.js",
+        "node_modules/leaflet/src/layer/vector/Renderer.js",
+        "node_modules/leaflet/src/layer/vector/Canvas.js",
+        "node_modules/leaflet/src/layer/vector/SVG.VML.js",
+        "node_modules/leaflet/src/layer/vector/SVG.js",
+        "node_modules/leaflet/src/layer/vector/Renderer.getRenderer.js",
+        "node_modules/leaflet/src/layer/LayerGroup.js",
+        "node_modules/leaflet/src/layer/FeatureGroup.js",
+        "node_modules/leaflet/src/layer/DivOverlay.js",
+        "node_modules/leaflet/src/layer/Tooltip.js",
+        "node_modules/leaflet/src/core/Handler.js",
+        "node_modules/leaflet/src/dom/Draggable.js",
+        "node_modules/leaflet/src/geometry/LineUtil.js",
+        "node_modules/leaflet/src/geometry/PolyUtil.js",
+        "node_modules/leaflet/src/layer/marker/Icon.js",
+        "node_modules/leaflet/src/layer/marker/Icon.Default.js",
+        "node_modules/leaflet/src/layer/marker/Marker.Drag.js",
+        "node_modules/leaflet/src/layer/marker/Marker.js",
+        "node_modules/leaflet/src/layer/vector/Path.js",
+        "node_modules/leaflet/src/layer/vector/CircleMarker.js",
+        "node_modules/leaflet/src/layer/vector/Circle.js",
+        "node_modules/leaflet/src/layer/vector/Polyline.js",
+        "node_modules/leaflet/src/layer/vector/Polygon.js",
+        "node_modules/leaflet/src/layer/GeoJSON.js",
+        "node_modules/leaflet/src/layer/marker/DivIcon.js",
+        "src/lib/simpleheat.js",
+        "src/lib/leaflet-heat.js",
+        "src/styles/leaflet.js",
+        "src/maps/cc-map.js"
+      ]
+    },
+    {
+      "id": "cc-map-marker-dot",
+      "path": "cc-map-marker-dot-948bbfc4.js",
+      "dependencies": [
+        "vendor-5e139a4e.js"
+      ],
+      "sources": [
+        "src/maps/cc-map-marker-dot.js"
+      ]
+    },
+    {
+      "id": "cc-map-marker-server",
+      "path": "cc-map-marker-server-90f6bafb.js",
+      "dependencies": [
+        "vendor-5e139a4e.js"
+      ],
+      "sources": [
+        "src/maps/cc-map-marker-server.js"
+      ]
+    },
+    {
+      "id": "cc-overview",
+      "path": "cc-overview-2ca4067c.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "with-resize-observer-2a1b198b.js"
+      ],
+      "sources": [
+        "src/overview/cc-overview.js"
+      ]
+    },
+    {
+      "id": "cc-pricing-estimation",
+      "path": "cc-pricing-estimation-4bff8269.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "default-theme-fead272a.js",
+        "assets/increment-a9125041.svg",
+        "assets/decrement-44ef7da1.svg",
+        "cc-input-number-d19c6368.js",
+        "with-resize-observer-2a1b198b.js",
+        "assets/delete-596afc24.svg"
+      ],
+      "sources": [
+        "src/pricing/cc-pricing-estimation.js"
+      ]
+    },
+    {
+      "id": "cc-pricing-header",
+      "path": "cc-pricing-header-1344f74c.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "with-resize-observer-2a1b198b.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "cc-img-ca15395c.js",
+        "default-theme-fead272a.js",
+        "cc-zone-535a4410.js"
+      ],
+      "sources": [
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.IHGPZX35.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.ZSCGQDBN.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.WV5V5UEU.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.VIWFLAGR.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.K2ZF75ZS.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.7RSYSOZZ.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.BD26TKS4.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.IBDZI3K2.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.I4TE3TJV.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.5I2V7AFI.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.WJ7L2V7L.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.V2VD73RM.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.XX7PSQRC.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.GADG7AUG.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.DTSUHNT6.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.XAZN5AQ5.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.NVGT36PI.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.EVK2ASE6.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.XYKBCI6Y.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.XAZSQ3AT.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.USM4X4MF.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.S6TJZ6NJ.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.FGIYSBZ6.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.73PEGQ4K.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.L23EKU34.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.ARRH633M.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.ZMRAQYRA.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.JLSM76ER.js",
+        "src/styles/shoelace.js",
+        "src/pricing/cc-pricing-header.js"
+      ]
+    },
+    {
+      "id": "cc-pricing-page",
+      "path": "cc-pricing-page-f591a3c0.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "with-resize-observer-2a1b198b.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "cc-img-ca15395c.js",
+        "default-theme-fead272a.js",
+        "cc-zone-535a4410.js",
+        "cc-pricing-header-1344f74c.js",
+        "cc-loader-c874b32c.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "assets/down-5b7898da.svg",
+        "assets/plus-b81295d1.svg",
+        "assets/up-a464b04f.svg",
+        "cc-pricing-table-b08dee9b.js",
+        "fake-strings-0d4d5c0b.js",
+        "cc-pricing-product-c35d9a21.js",
+        "assets/increment-a9125041.svg",
+        "assets/decrement-44ef7da1.svg",
+        "cc-input-number-d19c6368.js",
+        "assets/delete-596afc24.svg",
+        "cc-pricing-estimation-4bff8269.js"
+      ],
+      "sources": [
+        "src/pricing/cc-pricing-page.js"
+      ]
+    },
+    {
+      "id": "cc-pricing-page.smart",
+      "path": "cc-pricing-page.smart-46589ba3.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "with-resize-observer-2a1b198b.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "cc-img-ca15395c.js",
+        "default-theme-fead272a.js",
+        "cc-zone-535a4410.js",
+        "cc-pricing-header-1344f74c.js",
+        "cc-loader-c874b32c.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "assets/down-5b7898da.svg",
+        "assets/plus-b81295d1.svg",
+        "assets/up-a464b04f.svg",
+        "cc-pricing-table-b08dee9b.js",
+        "fake-strings-0d4d5c0b.js",
+        "cc-pricing-product-c35d9a21.js",
+        "assets/increment-a9125041.svg",
+        "assets/decrement-44ef7da1.svg",
+        "cc-input-number-d19c6368.js",
+        "assets/delete-596afc24.svg",
+        "cc-pricing-estimation-4bff8269.js",
+        "cc-pricing-page-f591a3c0.js",
+        "utils-e732f1fc.js",
+        "smart-manager-270d83dd.js",
+        "cc-smart-container-bfdf348e.js",
+        "send-to-api-d26c0c41.js",
+        "product-857e3fb7.js",
+        "api-helpers-ed6aeb3f.js",
+        "merge-3986a14c.js",
+        "withLatestFrom-4fac4bc8.js"
+      ],
+      "sources": [
+        "src/pricing/cc-pricing-page.smart.js"
+      ]
+    },
+    {
+      "id": "cc-pricing-product",
+      "path": "cc-pricing-product-c35d9a21.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "cc-loader-c874b32c.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "with-resize-observer-2a1b198b.js",
+        "assets/down-5b7898da.svg",
+        "assets/plus-b81295d1.svg",
+        "assets/up-a464b04f.svg",
+        "cc-pricing-table-b08dee9b.js",
+        "fake-strings-0d4d5c0b.js"
+      ],
+      "sources": [
+        "src/pricing/cc-pricing-product.js"
+      ]
+    },
+    {
+      "id": "cc-pricing-product-storage",
+      "path": "cc-pricing-product-storage-387578ce.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "cc-img-ca15395c.js",
+        "default-theme-fead272a.js",
+        "assets/increment-a9125041.svg",
+        "assets/decrement-44ef7da1.svg",
+        "cc-input-number-d19c6368.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "with-resize-observer-2a1b198b.js",
+        "assets/arrows-42f1e71e.svg",
+        "assets/storage-a73f53b5.svg",
+        "assets/sum-1ba8fc4e.svg",
+        "assets/down-5b7898da.svg",
+        "assets/plus-b81295d1.svg",
+        "assets/up-a464b04f.svg"
+      ],
+      "sources": [
+        "src/pricing/cc-pricing-product-storage.js"
+      ]
+    },
+    {
+      "id": "cc-pricing-product-storage.smart",
+      "path": "cc-pricing-product-storage.smart-37157b2e.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "cc-img-ca15395c.js",
+        "default-theme-fead272a.js",
+        "assets/increment-a9125041.svg",
+        "assets/decrement-44ef7da1.svg",
+        "cc-input-number-d19c6368.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "with-resize-observer-2a1b198b.js",
+        "assets/arrows-42f1e71e.svg",
+        "assets/storage-a73f53b5.svg",
+        "assets/sum-1ba8fc4e.svg",
+        "assets/down-5b7898da.svg",
+        "assets/plus-b81295d1.svg",
+        "assets/up-a464b04f.svg",
+        "cc-pricing-product-storage-387578ce.js",
+        "utils-e732f1fc.js",
+        "smart-manager-270d83dd.js",
+        "cc-smart-container-bfdf348e.js",
+        "send-to-api-d26c0c41.js",
+        "product-857e3fb7.js",
+        "api-helpers-ed6aeb3f.js",
+        "product-8863421b.js"
+      ],
+      "sources": [
+        "src/pricing/cc-pricing-product-storage.smart.js"
+      ]
+    },
+    {
+      "id": "cc-pricing-product.smart-addon",
+      "path": "cc-pricing-product.smart-addon-369fba5a.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "cc-loader-c874b32c.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "with-resize-observer-2a1b198b.js",
+        "assets/down-5b7898da.svg",
+        "assets/plus-b81295d1.svg",
+        "assets/up-a464b04f.svg",
+        "cc-pricing-table-b08dee9b.js",
+        "fake-strings-0d4d5c0b.js",
+        "cc-pricing-product-c35d9a21.js",
+        "utils-e732f1fc.js",
+        "smart-manager-270d83dd.js",
+        "cc-smart-container-bfdf348e.js",
+        "send-to-api-d26c0c41.js",
+        "product-33178d77.js",
+        "product-857e3fb7.js",
+        "api-helpers-ed6aeb3f.js",
+        "product-8863421b.js"
+      ],
+      "sources": [
+        "src/pricing/cc-pricing-product.smart-addon.js"
+      ]
+    },
+    {
+      "id": "cc-pricing-product.smart-runtime",
+      "path": "cc-pricing-product.smart-runtime-5291367c.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "cc-loader-c874b32c.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "with-resize-observer-2a1b198b.js",
+        "assets/down-5b7898da.svg",
+        "assets/plus-b81295d1.svg",
+        "assets/up-a464b04f.svg",
+        "cc-pricing-table-b08dee9b.js",
+        "fake-strings-0d4d5c0b.js",
+        "cc-pricing-product-c35d9a21.js",
+        "utils-e732f1fc.js",
+        "smart-manager-270d83dd.js",
+        "cc-smart-container-bfdf348e.js",
+        "send-to-api-d26c0c41.js",
+        "product-33178d77.js",
+        "product-857e3fb7.js",
+        "api-helpers-ed6aeb3f.js",
+        "product-8863421b.js"
+      ],
+      "sources": [
+        "src/pricing/cc-pricing-product.smart-runtime.js"
+      ]
+    },
+    {
+      "id": "cc-pricing-table",
+      "path": "cc-pricing-table-b08dee9b.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-img-ca15395c.js",
+        "with-resize-observer-2a1b198b.js",
+        "assets/down-5b7898da.svg",
+        "assets/plus-b81295d1.svg",
+        "assets/up-a464b04f.svg"
+      ],
+      "sources": [
+        "src/pricing/cc-pricing-table.js"
+      ]
+    },
+    {
+      "id": "cc-smart-container",
+      "path": "cc-smart-container-6b0da930.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "utils-e732f1fc.js",
+        "smart-manager-270d83dd.js",
+        "cc-smart-container-bfdf348e.js"
+      ],
+      "sources": []
+    },
+    {
+      "id": "cc-tcp-redirection",
+      "path": "cc-tcp-redirection-cc450a64.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "cc-loader-c874b32c.js",
+        "default-theme-fead272a.js",
+        "assets/warning-a3a07993.svg",
+        "assets/redirection-off-ceacb7da.svg",
+        "assets/redirection-on-5539b160.svg"
+      ],
+      "sources": [
+        "src/tcp-redirections/cc-tcp-redirection.js"
+      ]
+    },
+    {
+      "id": "cc-tcp-redirection-form",
+      "path": "cc-tcp-redirection-form-70956a2f.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4ea9c0db.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "default-theme-fead272a.js",
+        "assets/redirection-off-ceacb7da.svg",
+        "assets/redirection-on-5539b160.svg",
+        "cc-tcp-redirection-cc450a64.js"
+      ],
+      "sources": [
+        "src/tcp-redirections/cc-tcp-redirection-form.js"
+      ]
+    },
+    {
+      "id": "cc-tile-consumption",
+      "path": "cc-tile-consumption-00d48745.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "info-tiles-0fcdc9dd.js"
+      ],
+      "sources": [
+        "src/overview/cc-tile-consumption.js"
+      ]
+    },
+    {
+      "id": "cc-tile-deployments",
+      "path": "cc-tile-deployments-9de39711.js",
+      "dependencies": [
+        "i18n-446ebe81.js",
+        "cc-datetime-relative-cbda2ddb.js",
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "info-tiles-0fcdc9dd.js"
+      ],
+      "sources": [
+        "src/overview/cc-tile-deployments.js"
+      ]
+    },
+    {
+      "id": "cc-tile-instances",
+      "path": "cc-tile-instances-378a94e6.js",
+      "dependencies": [
+        "cc-expand-2cca00e2.js",
+        "vendor-5e139a4e.js",
+        "cc-loader-c874b32c.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "info-tiles-0fcdc9dd.js",
+        "assets/running-cada7a10.svg",
+        "assets/starting-3ce177c7.svg"
+      ],
+      "sources": [
+        "src/lib/animate.js",
+        "src/overview/cc-tile-instances.js"
+      ]
+    },
+    {
+      "id": "cc-tile-requests",
+      "path": "cc-tile-requests-aa892c6e.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "chart.esm-dc52f043.js",
+        "with-resize-observer-2a1b198b.js",
+        "info-tiles-0fcdc9dd.js",
+        "assets/close-5578d4ce.svg",
+        "assets/info-fd0d98fe.svg"
+      ],
+      "sources": [
+        "node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.esm.js",
+        "src/overview/cc-tile-requests.js"
+      ]
+    },
+    {
+      "id": "cc-tile-scalability",
+      "path": "cc-tile-scalability-f440a702.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "info-tiles-0fcdc9dd.js"
+      ],
+      "sources": [
+        "src/overview/cc-tile-scalability.js"
+      ]
+    },
+    {
+      "id": "cc-tile-status-codes",
+      "path": "cc-tile-status-codes-ae05fed6.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "chart.esm-dc52f043.js",
+        "info-tiles-0fcdc9dd.js",
+        "assets/close-5578d4ce.svg",
+        "assets/info-fd0d98fe.svg"
+      ],
+      "sources": [
+        "node_modules/lit-html/directives/cache.js",
+        "node_modules/statuses/codes.json",
+        "node_modules/statuses/index.js",
+        "src/overview/cc-tile-status-codes.js"
+      ]
+    },
+    {
+      "id": "cc-tile-status-codes.smart",
+      "path": "cc-tile-status-codes.smart-eb5e95a1.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "utils-e732f1fc.js",
+        "smart-manager-270d83dd.js",
+        "cc-smart-container-bfdf348e.js",
+        "i18n-446ebe81.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "chart.esm-dc52f043.js",
+        "info-tiles-0fcdc9dd.js",
+        "assets/close-5578d4ce.svg",
+        "assets/info-fd0d98fe.svg",
+        "cc-tile-status-codes-ae05fed6.js",
+        "send-to-api-d26c0c41.js"
+      ],
+      "sources": [
+        "node_modules/@clevercloud/client/esm/access-logs.js",
+        "node_modules/@clevercloud/client/esm/api/v2/warp-10.js",
+        "src/overview/cc-tile-status-codes.smart.js"
+      ]
+    },
+    {
+      "id": "cc-toggle",
+      "path": "cc-toggle-8b8e589e.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "repeat-b0d66412.js"
+      ],
+      "sources": [
+        "src/atoms/cc-toggle.js"
+      ]
+    },
+    {
+      "id": "cc-zone",
+      "path": "cc-zone-535a4410.js",
+      "dependencies": [
+        "cc-flex-gap-4e6ab5ba.js",
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "i18n-446ebe81.js",
+        "default-theme-fead272a.js"
+      ],
+      "sources": [
+        "src/lib/remote-assets.js",
+        "src/zones/cc-zone.js"
+      ]
+    },
+    {
+      "id": "cc-zone-input",
+      "path": "cc-zone-input-7d58ed7e.js",
+      "dependencies": [
+        "cc-flex-gap-4e6ab5ba.js",
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "i18n-446ebe81.js",
+        "default-theme-fead272a.js",
+        "cc-zone-535a4410.js",
+        "cc-loader-c874b32c.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "with-resize-observer-2a1b198b.js",
+        "cc-map-e39a74e7.js",
+        "cc-map-marker-server-90f6bafb.js",
+        "repeat-b0d66412.js"
+      ],
+      "sources": [
+        "src/lib/dom.js",
+        "src/zones/cc-zone-input.js"
+      ]
+    },
+    {
+      "id": "i18n",
+      "path": "i18n-446ebe81.js",
+      "dependencies": [],
+      "sources": [
+        "src/lib/i18n.js"
+      ]
+    },
+    {
+      "id": "index",
+      "path": "index-fbb855e2.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-446ebe81.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-6c31d7c8.js",
+        "cc-loader-c874b32c.js",
+        "cc-block-section-d9dd6090.js",
+        "cc-link-bb132771.js",
+        "cc-button-2582079d.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4ea9c0db.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-7bb81256.js",
+        "cc-addon-admin-dc543623.js",
+        "fake-strings-0d4d5c0b.js",
+        "assets/backup-5902d4d1.svg",
+        "assets/close-5578d4ce.svg",
+        "cc-addon-backups-098402f3.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "cc-addon-credentials-6963efc6.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "cc-addon-option-47a4ef0e.js",
+        "cc-addon-option-form-697bce6d.js",
+        "assets/encryption-at-rest-9baf5ef8.svg",
+        "cc-addon-encryption-at-rest-option-fbb0d003.js",
+        "cc-addon-elasticsearch-options-ac57a6be.js",
+        "assets/cpu-8f43fcc2.svg",
+        "assets/disk-f8ad3cfd.svg",
+        "assets/ram-bd115490.svg",
+        "cc-addon-features-51b21e08.js",
+        "cc-zone-535a4410.js",
+        "cc-addon-linked-apps-f04a72eb.js",
+        "cc-addon-mongodb-options-79cf2023.js",
+        "cc-addon-mysql-options-3635f3bf.js",
+        "cc-addon-postgresql-options-ff5c5be4.js",
+        "assets/info-fd0d98fe.svg",
+        "cc-elasticsearch-info-2122db11.js",
+        "cc-header-addon-67470e52.js",
+        "cc-beta-7393a4ea.js",
+        "cc-datetime-relative-cbda2ddb.js",
+        "env-vars-13fc89da.js",
+        "cc-env-var-create-7bca8eac.js",
+        "cc-env-var-editor-expert-abe4f78e.js",
+        "cc-env-var-input-dfd7ab9b.js",
+        "cc-env-var-editor-simple-e39662d0.js",
+        "cc-env-var-form-bd25dc5f.js",
+        "cc-env-var-linked-services-27834304.js",
+        "cc-map-marker-dot-948bbfc4.js",
+        "with-resize-observer-2a1b198b.js",
+        "cc-map-e39a74e7.js",
+        "cc-logsmap-c6fc4d10.js",
+        "cc-map-marker-server-90f6bafb.js",
+        "assets/git-9772156e.svg",
+        "assets/restart-failed-1bdb53dc.svg",
+        "assets/restarting-with-downtime-f8e9df23.svg",
+        "assets/restarting-b53bf52a.svg",
+        "assets/running-cada7a10.svg",
+        "assets/start-failed-2f874290.svg",
+        "assets/starting-3ce177c7.svg",
+        "assets/stopped-d4aeda43.svg",
+        "assets/unknown-d36353e6.svg",
+        "cc-header-app-d4180085.js",
+        "assets/badge-white-0c2da36b.svg",
+        "assets/phone-13ccf5ab.svg",
+        "cc-header-orga-ac1da16e.js",
+        "cc-overview-2ca4067c.js",
+        "info-tiles-0fcdc9dd.js",
+        "cc-tile-consumption-00d48745.js",
+        "cc-tile-deployments-9de39711.js",
+        "cc-tile-instances-378a94e6.js",
+        "chart.esm-dc52f043.js",
+        "cc-tile-requests-aa892c6e.js",
+        "cc-tile-scalability-f440a702.js",
+        "cc-tile-status-codes-ae05fed6.js",
+        "cc-heptapod-info-515283e3.js",
+        "assets/redirection-off-ceacb7da.svg",
+        "assets/redirection-on-5539b160.svg",
+        "cc-tcp-redirection-cc450a64.js",
+        "cc-tcp-redirection-form-70956a2f.js",
+        "cc-zone-input-7d58ed7e.js"
+      ],
+      "sources": [
+        "src/index.js"
+      ]
+    },
+    {
+      "id": "ResizeObserver.es",
+      "path": "ResizeObserver.es-27bdc8d1.js",
+      "dependencies": [],
+      "sources": [
+        "node_modules/resize-observer-polyfill/dist/ResizeObserver.es.js"
+      ]
+    },
+    {
+      "id": "smart-manager",
+      "path": "smart-manager-80e77b0b.js",
+      "dependencies": [
+        "utils-e732f1fc.js",
+        "smart-manager-270d83dd.js"
+      ],
+      "sources": []
+    },
+    {
+      "id": "translations.en",
+      "path": "translations.en-67d3b92b.js",
+      "dependencies": [
+        "i18n-sanitize-f4fc8c96.js"
+      ],
+      "sources": [
+        "src/translations/translations.en.js"
+      ]
+    },
+    {
+      "id": "translations.fr",
+      "path": "translations.fr-233e0b33.js",
+      "dependencies": [
+        "i18n-sanitize-f4fc8c96.js"
+      ],
+      "sources": [
+        "src/translations/translations.fr.js"
+      ]
+    }
+  ]
+}

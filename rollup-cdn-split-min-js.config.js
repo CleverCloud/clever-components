@@ -36,5 +36,15 @@ export default {
     resolve(),
     // convert CommonJS modules to ES6, so they can be included in a Rollup bundle
     commonjs(),
+    {
+      generateBundle (options, outputBundle) {
+        const deps = {};
+        for (const [id, bundle] of Object.entries(outputBundle)) {
+          // console.log({ id, imports: bundle.imports, files: bundle.referencedFiles });
+          deps[id] = [...(bundle.imports || []), ...(bundle.referencedFiles || [])];
+        }
+        console.log(deps);
+      },
+    },
   ],
 };

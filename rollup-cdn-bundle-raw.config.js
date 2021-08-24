@@ -7,7 +7,13 @@ import { importMetaUrlAssets } from './rollup-plugin-import-meta-url-assets.js';
 const OUTPUT_DIR = `cdn/bundle-raw`;
 
 export default {
-  input: 'src/index.js',
+  input: [
+    'src/index.js',
+    'src/simple.js',
+    'src/multiple-one.js',
+    'src/multiple-two.js',
+    'src/multiple-three.js',
+  ],
   output: {
     dir: OUTPUT_DIR,
     sourcemap: true,
