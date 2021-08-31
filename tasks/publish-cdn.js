@@ -27,6 +27,7 @@ async function run () {
   for (const file of fileList) {
     await uploadToCellar(cdnDir + '/' + file, file);
   }
+  await uploadToCellar('cdn-ui/index.html', 'index.html');
 }
 
 function cellar ({ accessKeyId, secretAccessKey, host, bucket }) {
