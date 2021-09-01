@@ -14,8 +14,12 @@ title: Changelog
 * `<cc-loader>`: replace rem with em
 * `<cc-toggle>`: replace rem with em
 * `<cc-pricing-product-cellar>`: delete component and replace it with a more generic component (BREAKING CHANGE)
-* `<cc-pricing-table>`: rename `items` to `plans` (BREAKING CHANGE)
-* `<cc-pricing-product>`: rename `items` to `plans` (BREAKING CHANGE)
+* `<cc-pricing-table>`:
+  * rename `items` to `plans` (BREAKING CHANGE)
+  * replace `currencyCode` with `currency` in smart definition (BREAKING CHANGE)
+* `<cc-pricing-product>`:
+  * rename `items` to `plans` (BREAKING CHANGE)
+  * replace `currencyCode` with `currency` in smart definition (BREAKING CHANGE)
 * `<cc-block>`: introduce a ribbon and a noHead property
 * `<cc-zone>`:
   * add CSS custom properties to customize colors

@@ -2,7 +2,7 @@ import './cc-pricing-product.js';
 import '../smart/cc-smart-container.js';
 import { getAllAddonProviders } from '@clevercloud/client/esm/api/v2/product.js';
 import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
-import { fetchCurrency, fetchPriceSystem } from '../lib/api-helpers.js';
+import { fetchPriceSystem } from '../lib/api-helpers.js';
 import { LastPromise, unsubscribeWithSignal } from '../lib/observables.js';
 import { formatAddonProduct } from '../lib/product.js';
 import { sendToApi } from '../lib/send-to-api.js';
@@ -13,7 +13,7 @@ defineComponent({
   params: {
     productId: { type: String },
     zoneId: { type: String },
-    currencyCode: { type: String },
+    currency: { type: Object },
     addonFeatures: { type: Array },
   },
   onConnect (container, component, context$, disconnectSignal) {
@@ -30,11 +30,13 @@ defineComponent({
         component.description = product.description;
         component.plans = product.plans;
         component.features = product.features;
-        component.currency = product.currency;
       }),
 
-      context$.subscribe(({ productId, zoneId, currencyCode, addonFeatures }) => {
-        product_lp.push((signal) => fetchAddonProduct({ signal, productId, zoneId, currencyCode, addonFeatures }));
+      context$.subscribe(({ productId, zoneId, currency, addonFeatures }) => {
+        if (currency != null) {
+          component.currency = currency;
+        }
+        product_lp.push((signal) => fetchAddonProduct({ signal, productId, zoneId, addonFeatures }));
       }),
 
     ]);
@@ -42,15 +44,14 @@ defineComponent({
   },
 });
 
-async function fetchAddonProduct ({ signal, productId, zoneId = 'PAR', currencyCode = 'EUR', addonFeatures }) {
+async function fetchAddonProduct ({ signal, productId, zoneId = 'PAR', addonFeatures }) {
 
-  const [addonProvider, priceSystem, currency] = await Promise.all([
+  const [addonProvider, priceSystem] = await Promise.all([
     fetchAddonProvider({ signal, productId }),
     fetchPriceSystem({ signal, zoneId }),
-    fetchCurrency({ signal, currencyCode }),
   ]);
 
-  return formatAddonProduct(addonProvider, priceSystem, addonFeatures, currency);
+  return formatAddonProduct(addonProvider, priceSystem, addonFeatures);
 }
 
 function fetchAddonProvider ({ signal, productId }) {

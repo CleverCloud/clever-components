@@ -15,15 +15,18 @@ title: '💡 Smart (runtime)'
 ## ⚙️ Params
 
 <table>
-  <tr><th>Name                      <th>Type                <th>Details                                                                                                                <th>Default
-  <tr><td><code>productId</code>    <td><code>String</code> <td>Variant slug from <a href="https://api.clever-cloud.com/v2/products/instances"><code>/v2/products/instances</code></a> <td>
-  <tr><td><code>zoneId</code>       <td><code>String</code> <td>Name from <a href="https://api.clever-cloud.com/v4/products/zones"><code>/v4/products/zones</code></a>                 <td><code>par</code>
-  <tr><td><code>currencyCode</code> <td><code>String</code> <td>ISO 4217 currency code                                                                                                 <td><code>EUR</code>
+  <tr><th>Name                      <th>Type                  <th>Details                                                                                                                <th>Default
+  <tr><td><code>productId</code>    <td><code>String</code>   <td>Variant slug from <a href="https://api.clever-cloud.com/v2/products/instances"><code>/v2/products/instances</code></a> <td>
+  <tr><td><code>zoneId</code>       <td><code>String</code>   <td>Name from <a href="https://api.clever-cloud.com/v4/products/zones"><code>/v4/products/zones</code></a>                 <td><code>par</code>
+  <tr><td><code>currency</code>     <td><code>Currency</code> <td>Currency info                                                                                                          <td><code>{ code: 'EUR', changeRate: 1 }</code>
 </table>
 
-## ⚠️ Warnings!
-
-* Right now, change rates are fetched from a hard coded list of currencies.
+```ts
+interface Currency {
+  code: string,       // ISO 4217 currency code
+  changeRate: number, // based on euros
+}
+```
 
 ## 🌐 API endpoints
 
@@ -56,12 +59,12 @@ Simple example with custom zone and custom currency.
 NOTE: Prices are the same on all zones right now.
 
 ```html
-<cc-smart-container context='{ "productId": "node", "zoneId": "rbx", "currencyCode": "USD" }'>
+<cc-smart-container context='{ "productId": "node", "zoneId": "rbx", "currency": { "code": "USD", "changeRate": 1.1802 } }'>
   <cc-pricing-product mode="runtime"></cc-pricing-product>
 </cc-smart-container>
 ```
 
-<cc-smart-container context='{ "productId": "node", "zoneId": "rbx", "currencyCode": "USD" }'>
+<cc-smart-container context='{ "productId": "node", "zoneId": "rbx", "currency": { "code": "USD", "changeRate": 1.1802 } }'>
   <cc-pricing-product mode="runtime"></cc-pricing-product>
 </cc-smart-container>
 

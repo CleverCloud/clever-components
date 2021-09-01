@@ -1,6 +1,6 @@
 import './cc-pricing-product-consumption.js';
 import '../smart/cc-smart-container.js';
-import { fetchCurrency, fetchPriceSystem } from '../lib/api-helpers.js';
+import { fetchPriceSystem } from '../lib/api-helpers.js';
 import { LastPromise, unsubscribeWithSignal } from '../lib/observables.js';
 import { formatAddonCellar, formatAddonFsbucket, formatAddonPulsar } from '../lib/product.js';
 import { defineComponent } from '../lib/smart-manager.js';
@@ -35,7 +35,7 @@ const PRODUCTS = {
 defineComponent({
   selector: 'cc-pricing-product-consumption',
   params: {
-    currencyCode: { type: String },
+    currency: { type: Object },
     productId: { type: String },
     zoneId: { type: String },
   },
@@ -49,17 +49,20 @@ defineComponent({
       product_lp.error$.subscribe(() => (component.error = true)),
       product_lp.value$.subscribe((product) => {
         component.sections = product.sections;
-        component.currency = product.currency;
       }),
 
-      context$.subscribe(({ productId, zoneId, currencyCode }) => {
+      context$.subscribe(({ productId, zoneId, currency }) => {
+
+        if (currency != null) {
+          component.currency = currency;
+        }
 
         const product = PRODUCTS[productId];
         if (product != null) {
           Object.entries(product).forEach(([key, value]) => {
             component[key] = value;
           });
-          product_lp.push((signal) => fetchProduct({ signal, productId, zoneId, currencyCode }));
+          product_lp.push((signal) => fetchProduct({ signal, productId, zoneId }));
         }
       }),
 
@@ -67,19 +70,16 @@ defineComponent({
   },
 });
 
-async function fetchProduct ({ signal, productId, zoneId = 'PAR', currencyCode = 'EUR' }) {
-  const [priceSystem, currency] = await Promise.all([
-    fetchPriceSystem({ signal, zoneId }),
-    fetchCurrency({ signal, currencyCode }),
-  ]);
+async function fetchProduct ({ signal, productId, zoneId = 'PAR' }) {
+  const priceSystem = await fetchPriceSystem({ signal, zoneId });
   if (productId === 'cellar') {
-    return formatAddonCellar(priceSystem, currency);
+    return formatAddonCellar(priceSystem);
   }
   if (productId === 'fsbucket') {
-    return formatAddonFsbucket(priceSystem, currency);
+    return formatAddonFsbucket(priceSystem);
   }
   if (productId === 'pulsar') {
-    return formatAddonPulsar(priceSystem, currency);
+    return formatAddonPulsar(priceSystem);
   }
   throw new Error(`Cannot find product "${productId}"`);
 }

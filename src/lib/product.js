@@ -1,11 +1,10 @@
-export function formatAddonProduct (addonProvider, priceSystem, selectedFeatures, currency) {
+export function formatAddonProduct (addonProvider, priceSystem, selectedFeatures) {
   return {
     name: addonProvider.name,
     icon: addonProvider.logoUrl,
     description: addonProvider.longDesc,
     features: formatAddonFeatures(addonProvider.features, selectedFeatures),
     plans: formatAddonPlans(addonProvider.plans, priceSystem, selectedFeatures),
-    currency,
   };
 }
 
@@ -18,7 +17,7 @@ const ONE_GIGABYTE = 1e9;
 const STORAGE_PRICE_FACTOR = THIRTY_DAYS_IN_HOURS / ONE_GIGABYTE;
 const TRAFFIC_PRICE_FACTOR = 1 / ONE_GIGABYTE;
 
-export function formatAddonCellar (priceSystem, currency) {
+export function formatAddonCellar (priceSystem) {
   const storage = priceSystem.countable.find((c) => c.service === 'cellar.storage').price_plans;
   const outboundTraffic = priceSystem.countable.find((c) => c.service === 'cellar.outbound').price_plans;
   return {
@@ -26,21 +25,19 @@ export function formatAddonCellar (priceSystem, currency) {
       { type: 'storage', intervals: formatProductStorageIntervals(storage, STORAGE_PRICE_FACTOR) },
       { type: 'outbound-traffic', intervals: formatProductStorageIntervals(outboundTraffic, TRAFFIC_PRICE_FACTOR) },
     ],
-    currency,
   };
 }
 
-export function formatAddonFsbucket (priceSystem, currency) {
+export function formatAddonFsbucket (priceSystem) {
   const storage = priceSystem.countable.find((c) => c.service === 'fsbucket.storage').price_plans;
   return {
     sections: [
       { type: 'storage', intervals: formatProductStorageIntervals(storage, STORAGE_PRICE_FACTOR) },
     ],
-    currency,
   };
 }
 
-export function formatAddonPulsar (priceSystem, currency) {
+export function formatAddonPulsar (priceSystem) {
   const storage = priceSystem.countable.find((c) => c.service === 'pulsar_storage_size').price_plans;
   const inboundTraffic = priceSystem.countable.find((c) => c.service === 'pulsar_throughput_in').price_plans;
   const outboundTraffic = priceSystem.countable.find((c) => c.service === 'pulsar_throughput_out').price_plans;
@@ -50,7 +47,6 @@ export function formatAddonPulsar (priceSystem, currency) {
       { type: 'inbound-traffic', intervals: formatProductStorageIntervals(inboundTraffic, TRAFFIC_PRICE_FACTOR) },
       { type: 'outbound-traffic', intervals: formatProductStorageIntervals(outboundTraffic, TRAFFIC_PRICE_FACTOR) },
     ],
-    currency,
   };
 }
 
@@ -98,7 +94,7 @@ function formatAddonPlans (allPlans, priceSystem, selectedFeatures) {
   });
 }
 
-export function formatRuntimeProduct (runtime, priceSystem, currency) {
+export function formatRuntimeProduct (runtime, priceSystem) {
   const features = formatRuntimeFeatures(runtime);
   return {
     name: runtime.variant.name,
@@ -106,7 +102,6 @@ export function formatRuntimeProduct (runtime, priceSystem, currency) {
     // The runtime description is not really useful here
     features,
     plans: formatRuntimePlans(runtime.flavors, priceSystem, features),
-    currency,
   };
 }
 

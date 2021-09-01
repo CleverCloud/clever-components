@@ -2,6 +2,7 @@
 kind: '🛠 pricing/<cc-pricing-product-consumption>'
 title: '💡 Smart'
 ---
+
 # 💡 Smart `<cc-pricing-product-consumption>`
 
 ## ℹ️ Details
@@ -16,14 +17,17 @@ title: '💡 Smart'
 
 <table>
   <tr><th>Name                       <th>Type                  <th>Details                                                                                                                <th>Default
-  <tr><td><code>currencyCode</code>  <td><code>String</code>   <td>ISO 4217 currency code                                                                                                 <td><code>EUR</code>
+  <tr><td><code>currency</code>      <td><code>Currency</code> <td>Currency info                                                                                                          <td><code>{ code: 'EUR', changeRate: 1 }</code>
   <tr><td><code>productId</code>     <td><code>String</code>   <td><code>cellar</code>, <code>fsbucket</code> or <code>pulsar</code>                                                      <td>
   <tr><td><code>zoneId</code>        <td><code>String</code>   <td>Name from <a href="https://api.clever-cloud.com/v4/products/zones"><code>/v4/products/zones</code></a>                 <td><code>par</code>
 </table>
 
-## ⚠️ Warnings!
-
-* Right now, change rates are fetched from a hard coded list of currencies.
+```ts
+interface Currency {
+  code: string,       // ISO 4217 currency code
+  changeRate: number, // based on euros
+}
+```
 
 ## 🌐 API endpoints
 
@@ -39,6 +43,7 @@ title: '💡 Smart'
 Simple example for Cellar based on default zone and currency.
 
 ```html
+
 <cc-smart-container context='{ "productId": "cellar" }'>
   <cc-pricing-product-consumption></cc-pricing-product-consumption>
 </cc-smart-container>
@@ -53,6 +58,7 @@ Simple example for Cellar based on default zone and currency.
 Simple example for FS Bucket based on default zone and currency.
 
 ```html
+
 <cc-smart-container context='{ "productId": "fsbucket" }'>
   <cc-pricing-product-consumption></cc-pricing-product-consumption>
 </cc-smart-container>
@@ -67,6 +73,7 @@ Simple example for FS Bucket based on default zone and currency.
 Simple example for FS Bucket based on default zone and currency.
 
 ```html
+
 <cc-smart-container context='{ "productId": "pulsar" }'>
   <cc-pricing-product-consumption></cc-pricing-product-consumption>
 </cc-smart-container>
@@ -83,12 +90,12 @@ Simple example for Cellar with custom zone and custom currency.
 NOTE: Prices are the same on all zones right now.
 
 ```html
-<cc-smart-container context='{ "productId": "cellar", "zoneId": "rbx", "currencyCode": "USD" }'>
+<cc-smart-container context='{ "productId": "cellar", "zoneId": "rbx", "currency": { "code": "USD", "changeRate": 1.1802 } }'>
   <cc-pricing-product-consumption></cc-pricing-product-consumption>
 </cc-smart-container>
 ```
 
-<cc-smart-container context='{ "productId": "cellar", "zoneId": "rbx", "currencyCode": "USD" }'>
+<cc-smart-container context='{ "productId": "cellar", "zoneId": "rbx", "currency": { "code": "USD", "changeRate": 1.1802 } }'>
   <cc-pricing-product-consumption></cc-pricing-product-consumption>
 </cc-smart-container>
 

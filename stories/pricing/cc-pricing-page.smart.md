@@ -2,6 +2,7 @@
 kind: '🛠 pricing/<cc-pricing-page>'
 title: '💡 Smart'
 ---
+
 # 💡 Smart `<cc-pricing-page>`
 
 ## ℹ️ Details
@@ -16,13 +17,16 @@ title: '💡 Smart'
 
 <table>
   <tr><th>Name                       <th>Type                  <th>Details                                                                                                                <th>Default
-  <tr><td><code>currencyCode</code>  <td><code>String</code>   <td>ISO 4217 currency code                                                                                                 <td><code>EUR</code>
+  <tr><td><code>currency</code>      <td><code>Currency</code> <td>Currency info                                                                                                          <td><code>{ code: 'EUR', changeRate: 1 }</code>
   <tr><td><code>zoneId</code>        <td><code>String</code>   <td>Name from <a href="https://api.clever-cloud.com/v4/products/zones"><code>/v4/products/zones</code></a>                 <td><code>par</code>
 </table>
 
-## ⚠️ Warnings!
-
-* Right now, change rates are fetched from a hard coded list of currencies.
+```ts
+interface Currency {
+  code: string,       // ISO 4217 currency code
+  changeRate: number, // based on euros
+}
+```
 
 ## 🌐 API endpoints
 
@@ -38,8 +42,9 @@ title: '💡 Smart'
 Simple example based on default zone and currency.
 
 ```html
+
 <cc-smart-container>
-  <cc-pricing-page>
+  <cc-pricing-page currencies='[{ "code": "EUR", "changeRate": 1 }, { "code": "USD", "changeRate": 1.1802 }, { "code": "GBP", "changeRate": 0.86068 }]'>
     <h1>Addons</h1>
     <cc-smart-container context='{ "productId": "postgresql-addon" }'>
       <cc-pricing-product mode="addon"></cc-pricing-product>
@@ -53,7 +58,7 @@ Simple example based on default zone and currency.
 ```
 
 <cc-smart-container>
-  <cc-pricing-page>
+  <cc-pricing-page currencies='[{ "code": "EUR", "changeRate": 1 }, { "code": "USD", "changeRate": 1.1802 }, { "code": "GBP", "changeRate": 0.86068 }]'>
     <h1>Addons</h1>
     <cc-smart-container context='{ "productId": "postgresql-addon" }'>
       <cc-pricing-product mode="addon"></cc-pricing-product>
@@ -72,8 +77,8 @@ Simple example with custom zone and custom currency.
 NOTE: Prices are the same on all zones right now.
 
 ```html
-<cc-smart-container context='{ "zoneId": "rbx", "currencyCode": "USD" }'>
-  <cc-pricing-page>
+<cc-smart-container context='{ "zoneId": "rbx", "currency": { "code": "USD", "changeRate": 1.1802 } }'>
+  <cc-pricing-page currencies='[{ "code": "EUR", "changeRate": 1 }, { "code": "USD", "changeRate": 1.1802 }, { "code": "GBP", "changeRate": 0.86068 }]'>
     <h1>Addons</h1>
     <cc-smart-container context='{ "productId": "postgresql-addon" }'>
       <cc-pricing-product mode="addon"></cc-pricing-product>
@@ -86,8 +91,8 @@ NOTE: Prices are the same on all zones right now.
 </cc-smart-container>
 ```
 
-<cc-smart-container context='{ "zoneId": "rbx", "currencyCode": "USD" }'>
-  <cc-pricing-page>
+<cc-smart-container context='{ "zoneId": "rbx", "currency": { "code": "USD", "changeRate": 1.1802 } }'>
+  <cc-pricing-page currencies='[{ "code": "EUR", "changeRate": 1 }, { "code": "USD", "changeRate": 1.1802 }, { "code": "GBP", "changeRate": 0.86068 }]'>
     <h1>Addons</h1>
     <cc-smart-container context='{ "productId": "postgresql-addon" }'>
       <cc-pricing-product mode="addon"></cc-pricing-product>
