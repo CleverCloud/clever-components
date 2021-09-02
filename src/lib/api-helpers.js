@@ -87,54 +87,6 @@ export function fetchPriceSystem ({ signal, zoneId }) {
     .then(sendToApi({ signal, cacheDelay: ONE_DAY }));
 }
 
-const RATES = {
-  EUR: 1,
-  USD: 1.1802,
-  // others
-  AUD: 1.5548,
-  BGN: 1.9558,
-  BRL: 6.696,
-  CAD: 1.4849,
-  CHF: 1.1045,
-  CNY: 7.722,
-  CZK: 26.233,
-  DKK: 7.436,
-  GBP: 0.86068,
-  HKD: 9.17,
-  HRK: 7.5748,
-  HUF: 364.78,
-  IDR: 17024.39,
-  ILS: 3.9091,
-  INR: 85.7605,
-  ISK: 149.8,
-  JPY: 128.75,
-  KRW: 1340.88,
-  MXN: 24.6616,
-  MYR: 4.8937,
-  NOK: 10.1653,
-  NZD: 1.6948,
-  PHP: 57.335,
-  PLN: 4.6399,
-  RON: 4.8865,
-  RUB: 90.0115,
-  SEK: 10.1935,
-  SGD: 1.5899,
-  THB: 36.746,
-  TRY: 9.4313,
-  ZAR: 17.6852,
-};
-
-export async function fetchCurrency ({ currencyCode }) {
-  return {
-    code: currencyCode,
-    changeRate: RATES[currencyCode],
-  };
-}
-
-export async function fetchAllCurrencies () {
-  return Object.entries(RATES).map(([code, changeRate]) => ({ code, changeRate }));
-}
-
 export async function fetchAllZones ({ signal }) {
   return getAllZones()
     .then(sendToApi({ signal, cacheDelay: ONE_DAY }));

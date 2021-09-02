@@ -133,7 +133,7 @@ export class CcPricingProduct extends LitElement {
           class="pricing-table"
           .plans=${this.plans}
           .features=${this.features}
-          .currency=${this.currency}
+          .currency=${ifDefined(this.currency)}
           action=${this.action}
           @cc-pricing-table:add-plan=${this._onAddPlan}
         ></cc-pricing-table>

@@ -2,7 +2,7 @@ import './cc-pricing-product.js';
 import '../smart/cc-smart-container.js';
 import { getAvailableInstances } from '@clevercloud/client/esm/api/v2/product.js';
 import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
-import { fetchCurrency, fetchPriceSystem } from '../lib/api-helpers.js';
+import { fetchPriceSystem } from '../lib/api-helpers.js';
 import { LastPromise, unsubscribeWithSignal } from '../lib/observables.js';
 import { formatRuntimeProduct } from '../lib/product.js';
 import { sendToApi } from '../lib/send-to-api.js';
@@ -13,7 +13,7 @@ defineComponent({
   params: {
     productId: { type: String },
     zoneId: { type: String },
-    currencyCode: { type: String },
+    currency: { type: Object },
   },
   onConnect (container, component, context$, disconnectSignal) {
 
@@ -29,11 +29,13 @@ defineComponent({
         component.description = product.description;
         component.plans = product.plans;
         component.features = product.features;
-        component.currency = product.currency;
       }),
 
-      context$.subscribe(({ productId, zoneId, currencyCode }) => {
-        product_lp.push((signal) => fetchRuntimeProduct({ signal, productId, zoneId, currencyCode }));
+      context$.subscribe(({ productId, zoneId, currency }) => {
+        if (currency != null) {
+          component.currency = currency;
+        }
+        product_lp.push((signal) => fetchRuntimeProduct({ signal, productId, zoneId }));
       }),
 
     ]);
@@ -41,15 +43,14 @@ defineComponent({
   },
 });
 
-async function fetchRuntimeProduct ({ signal, productId, zoneId = 'PAR', currencyCode = 'EUR' }) {
+async function fetchRuntimeProduct ({ signal, productId, zoneId = 'PAR' }) {
 
-  const [runtime, priceSystem, currency] = await Promise.all([
+  const [runtime, priceSystem] = await Promise.all([
     fetchRuntime({ signal, productId }),
     fetchPriceSystem({ signal, zoneId }),
-    fetchCurrency({ signal, currencyCode }),
   ]);
 
-  return formatRuntimeProduct(runtime, priceSystem, currency);
+  return formatRuntimeProduct(runtime, priceSystem);
 }
 
 function fetchRuntime ({ signal, productId }) {

@@ -88,6 +88,7 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
   constructor () {
     super();
     this.action = 'add';
+    this.currency = CURRENCY_EUR;
     this._plans = [];
     this._features = [];
   }
@@ -130,14 +131,14 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
   }
 
   _getDailyPrice (hourlyPrice) {
-    const currency = this.currency || CURRENCY_EUR;
+    const currency = this.currency;
     const price = hourlyPrice * 24 * currency.changeRate;
     return i18n('cc-pricing-table.price', { price, code: currency.code });
   }
 
   // "monthly" being 30 days
   _getMonthlyPrice (hourlyPrice) {
-    const currency = this.currency || CURRENCY_EUR;
+    const currency = this.currency;
     const price = hourlyPrice * 24 * 30 * currency.changeRate;
     return i18n('cc-pricing-table.price', { price, code: currency.code });
   }

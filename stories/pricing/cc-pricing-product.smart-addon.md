@@ -18,17 +18,20 @@ title: '💡 Smart (add-on)'
   <tr><th>Name                       <th>Type                  <th>Details                                                                                                                <th>Default
   <tr><td><code>productId</code>     <td><code>String</code>   <td>id from <a href="https://api.clever-cloud.com/v2/products/addonproviders"><code>/v2/products/addonproviders</code></a> <td>
   <tr><td><code>zoneId</code>        <td><code>String</code>   <td>Name from <a href="https://api.clever-cloud.com/v4/products/zones"><code>/v4/products/zones</code></a>                 <td><code>par</code>
-  <tr><td><code>currencyCode</code>  <td><code>String</code>   <td>ISO 4217 currency code                                                                                                 <td><code>EUR</code>
+  <tr><td><code>currency</code>      <td><code>Currency</code> <td>Currency info                                                                                                          <td><code>{ code: 'EUR', changeRate: 1 }</code>
   <tr><td><code>addonFeatures</code> <td><code>String[]</code> <td>List of feature codes as describe in the component API.                                                                <td><code>undefined</code>
 </table>
+
+```ts
+interface Currency {
+  code: string,       // ISO 4217 currency code
+  changeRate: number, // based on euros
+}
+```
 
 * When `addonFeatures` is not specified, all product features are listed in the order of the API.
 * Setting `addonFeatures` allows you to filter the features you want to display.
 * Setting `addonFeatures` allows you to control the display order of the features.
-
-## ⚠️ Warnings!
-
-* Right now, change rates are fetched from a hard coded list of currencies.
 
 ## 🌐 API endpoints
 
@@ -61,12 +64,12 @@ Simple example with custom zone and custom currency.
 NOTE: Prices are the same on all zones right now.
 
 ```html
-<cc-smart-container context='{ "productId": "postgresql-addon", "zoneId": "rbx", "currencyCode": "USD" }'>
+<cc-smart-container context='{ "productId": "postgresql-addon", "zoneId": "rbx", "currency": { "code": "USD", "changeRate": 1.1802 } }'>
   <cc-pricing-product mode="addon"></cc-pricing-product>
 </cc-smart-container>
 ```
 
-<cc-smart-container context='{ "productId": "postgresql-addon", "zoneId": "rbx", "currencyCode": "USD" }'>
+<cc-smart-container context='{ "productId": "postgresql-addon", "zoneId": "rbx", "currency": { "code": "USD", "changeRate": 1.1802 } }'>
   <cc-pricing-product mode="addon"></cc-pricing-product>
 </cc-smart-container>
 
