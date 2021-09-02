@@ -16,6 +16,7 @@ const CURRENCY_EUR = { code: 'EUR', changeRate: '1' };
  *   name: string,
  *   code: string,
  * }
+ * ```
  *
  * ```js
  * interface Zone {
