@@ -2,8 +2,8 @@ pipeline {
   agent { label 'cc-ci-agent' }
   environment {
     GIT_TAG_NAME = gitTagName()
-    S3_KEY_ID = credentials('CELLAR_CC_COMPONENTS_ACCESS_KEY_ID')
-    S3_SECRET_KEY = credentials('CELLAR_CC_COMPONENTS_SECRET_ACCESS_KEY')
+    SMART_CDN_CELLAR_KEY_ID = credentials('CELLAR_CC_COMPONENTS_ACCESS_KEY_ID')
+    SMART_CDN_CELLAR_SECRET_KEY = credentials('CELLAR_CC_COMPONENTS_SECRET_ACCESS_KEY')
   }
   options {
     buildDiscarder(logRotator(daysToKeepStr: '5', numToKeepStr: '10', artifactDaysToKeepStr: '5', artifactNumToKeepStr: '10'))
