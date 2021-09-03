@@ -6,8 +6,17 @@ kind: 📌 Docs
 When working on this components library, we often need to publish and share a live preview of the components to get some feedbacks.
 In order to do this, we have a series of scripts to quickly publish a preview.
 
-_**WARNINGS:**_ All the following commands require a private config file to access the Cellar `addon_9feadcac-4278-4af1-bfea-597477bf9b92`.
-It must be named `.clever-components-previews.s3cfg` and placed at the root of the project.
+_**WARNINGS:**_ All the following commands require 2 environment variables to access the Cellar `addon_9feadcac-4278-4af1-bfea-597477bf9b92`.
+
+* `PREVIEWS_CELLAR_KEY_ID`: the S3 `access_key`
+* `PREVIEWS_CELLAR_SECRET_KEY`: the S3 `secret_key`
+
+We advise you to put those into a `.env` file, so you can source it once and use all commands:
+
+```
+export PREVIEWS_CELLAR_KEY_ID=XXXXXXXXXXXXXXXXXXXX;
+export PREVIEWS_CELLAR_SECRET_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX;
+```
 
 ## List previews
 

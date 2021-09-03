@@ -35,6 +35,11 @@ title: Changelog
   * `<cc-pricing-page>` (with smart definition)
   * `<cc-jenkins-info>` (with smart definition)
 
+### For devs
+
+* Replace `aws-sdk` with `@aws-sdk/s3-client` so we can stop relying on `s3cmd` for previews
+  * You no longer need the `.clever-components-previews.s3cfg` but you will need env vars (see docs)
+
 ## 6.10.0 (2021-07-08)
 
 * `<cc-toggle>`: add `--cc-text-transform` CSS custom property
