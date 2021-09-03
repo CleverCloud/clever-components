@@ -6,13 +6,12 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-* `<cc-beta>`: replace rem with em
-* `<cc-button>`: replace rem with em
-* `<cc-img>`: replace rem with em
-* `<cc-input-number>`: replace rem with em
-* `<cc-input-text>`: replace rem with em
-* `<cc-loader>`: replace rem with em
-* `<cc-toggle>`: replace rem with em
+...
+
+## 7.0.0 (2021-09-03)
+
+### ⚠️ BREAKING CHANGES
+
 * `<cc-pricing-product-cellar>`: delete component and replace it with a more generic component (BREAKING CHANGE)
 * `<cc-pricing-table>`:
   * rename `items` to `plans` (BREAKING CHANGE)
@@ -20,6 +19,16 @@ title: Changelog
 * `<cc-pricing-product>`:
   * rename `items` to `plans` (BREAKING CHANGE)
   * replace `currencyCode` with `currency` in smart definition (BREAKING CHANGE)
+
+### Components
+
+* `<cc-beta>`: replace rem with em
+* `<cc-button>`: replace rem with em
+* `<cc-img>`: replace rem with em
+* `<cc-input-number>`: replace rem with em
+* `<cc-input-text>`: replace rem with em
+* `<cc-loader>`: replace rem with em
+* `<cc-toggle>`: replace rem with em
 * `<cc-block>`: introduce a ribbon and a noHead property
 * `<cc-zone>`:
   * add CSS custom properties to customize colors
