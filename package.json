@@ -68,7 +68,6 @@
     "@web/rollup-plugin-import-meta-assets": "^1.0.6",
     "@web/test-runner": "^0.13.4",
     "@web/test-runner-mocha": "^0.7.2",
-    "aws-sdk": "^2.902.0",
     "babel-loader": "^8.2.2",
     "babel-plugin-inline-svg": "^1.2.0",
     "babel-plugin-template-html-minifier": "^4.1.0",
