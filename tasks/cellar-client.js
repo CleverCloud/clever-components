@@ -1,9 +1,9 @@
 import { createReadStream } from 'fs';
+import path from 'path';
 import { promisify } from 'util';
 import AWS from '@aws-sdk/client-s3';
 import rawGlob from 'glob';
 import mime from 'mime-types';
-import path from 'path';
 
 const glob = promisify(rawGlob);
 
