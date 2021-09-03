@@ -13,6 +13,9 @@ import { skeletonStyles } from '../styles/skeleton.js';
 const SKELETON_NAME = '????????????';
 const SKELETON_DESCRIPTION = fakeString(180);
 
+/** @type {Currency} */
+const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
+
 /**
  * A component to display product informations: icon, name, description with plans and their features.
  *
@@ -78,6 +81,7 @@ export class CcPricingProduct extends LitElement {
   constructor () {
     super();
     this.action = 'add';
+    this.currency = CURRENCY_EUR;
     this.features = [];
   }
 
@@ -133,7 +137,7 @@ export class CcPricingProduct extends LitElement {
           class="pricing-table"
           .plans=${this.plans}
           .features=${this.features}
-          .currency=${ifDefined(this.currency)}
+          .currency=${this.currency}
           action=${this.action}
           @cc-pricing-table:add-plan=${this._onAddPlan}
         ></cc-pricing-table>
