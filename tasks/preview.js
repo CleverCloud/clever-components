@@ -3,13 +3,18 @@ import fs from 'fs/promises';
 import { promisify } from 'util';
 import chalk from 'chalk';
 import textTable from 'text-table';
+import { CellarClient } from './cellar-client.js';
 
 const exec = promisify(execRaw);
 
 // !! WARNINGS !!
-// * The code with the scripts/commands is a all-in-one file with everything, lots of shell exec...
-// * There is a lot of room to improve this.
-//   * Consider this system a work in progress.
+// * We're still depending on git with exec
+
+const cellar = new CellarClient({
+  bucket: 'clever-components-preview',
+  accessKeyId: process.env.PREVIEWS_CELLAR_KEY_ID,
+  secretAccessKey: process.env.PREVIEWS_CELLAR_SECRET_KEY,
+});
 
 async function run () {
 
@@ -66,13 +71,10 @@ async function listPreviews () {
 
 async function publishPreviewBranch (branch) {
 
-  await s3cmd('sync', [
-    `storybook-static/. s3://clever-components-preview/${branch}/`,
-    '--acl-public',
-    '--guess-mime-type',
-    '--no-mime-magic',
-    '--delete-removed',
-  ]);
+  const localDir = 'storybook-static';
+  const remoteDir = branch;
+
+  await cellar.sync({ localDir, remoteDir, deleteRemoved: true });
 
   const manifest = await getManifest();
   const newPreview = {
@@ -93,14 +95,12 @@ async function publishPreviewBranch (branch) {
   await updateManifest(manifest);
   await updateListIndex(manifest);
 
-  console.log('Preview available at: ' + newPreview.url);
+  console.log('\nPreview available at: ' + newPreview.url);
 }
 
 async function deletePreviewBranch (branch) {
-  await s3cmd('rm', [
-    `s3://clever-components-preview/${branch}/`,
-    '--recursive',
-  ]);
+
+  await cellar.deleteManyObjects({ prefix: branch + '/' });
   const manifest = await getManifest();
   const previewIndex = manifest.previews.findIndex((p) => p.branch === branch);
   if (previewIndex !== -1) {
@@ -112,36 +112,27 @@ async function deletePreviewBranch (branch) {
 }
 
 async function getManifest () {
-  try {
-    await s3cmd('get', [
-      `s3://clever-components-preview/preview-manifest.json`,
-      '.preview-manifest.json',
-      '--force',
-    ]);
-    const jsonManifest = await fs.readFile('.preview-manifest.json', 'utf-8');
-    return JSON.parse(jsonManifest);
-  }
-  catch (e) {
-    return {
-      version: 1,
-      previews: [],
-    };
-  }
+  return cellar
+    .getObject({ key: 'preview-manifest.json' })
+    .catch((e) => {
+      return {
+        version: 1,
+        previews: [],
+      };
+    });
 }
 
 async function updateManifest (manifest) {
-  await fs.writeFile('.preview-manifest.json', JSON.stringify(manifest, null, '  '));
-  await s3cmd('put', [
-    '.preview-manifest.json',
-    `s3://clever-components-preview/preview-manifest.json`,
-    '--acl-public',
-    '--guess-mime-type',
-    '--no-mime-magic',
-  ]);
+  const manifestJson = JSON.stringify(manifest, null, '  ');
+  await fs.writeFile('.preview-manifest.json', manifestJson);
+  return cellar.putObject({
+    key: 'preview-manifest.json',
+    body: manifestJson,
+  });
 }
 
 async function updateListIndex (manifest) {
-  await fs.writeFile('.preview-index.html', `
+  const indexHtml = `
     <!doctype html>
     <html lang="en">
     <head>
@@ -196,33 +187,11 @@ async function updateListIndex (manifest) {
     `}
     </body>
     </html>
-  `);
-  await s3cmd('put', [
-    '.preview-index.html',
-    `s3://clever-components-preview/index.html`,
-    '--acl-public',
-    '--guess-mime-type',
-    '--no-mime-magic',
-  ]);
-}
-
-function s3cmd (command, params) {
-  const fullCommand = [
-    's3cmd',
-    '-c .clever-components-previews.s3cfg',
-    command,
-    ...params,
-  ].join(' ');
-  return exec(fullCommand).then(({ stdout, stderr }) => {
-    if (stdout !== '') {
-      console.log(stdout.trim());
-      console.log('-'.repeat(120));
-    }
-    if (stderr !== '') {
-      console.error(stderr);
-      console.log('-'.repeat(120));
-      throw new Error(`Error with s3cmd ${command}`);
-    }
+  `;
+  await fs.writeFile('.preview-index.html', indexHtml);
+  return cellar.putObject({
+    key: 'index.html',
+    body: indexHtml,
   });
 }
 
