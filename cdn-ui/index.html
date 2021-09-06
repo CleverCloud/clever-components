@@ -109,7 +109,7 @@ function $$ (selector) {
   return Array.from(document.querySelectorAll(selector));
 }
 
-fetch('https://components.clever-cloud.com/versions-list.json')
+fetch('https://components.clever-cloud.com/versions-list.json?t=' + (new Date().getTime()))
   .then((r) => r.json())
   .then((versionList) => {
     versionList.reverse();
