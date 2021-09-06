@@ -28,6 +28,7 @@ defineComponent({
 
     unsubscribeWithSignal(disconnectSignal, [
 
+      error$.subscribe(console.error),
       error$.subscribe((error) => {
         component.error = error.type;
         component.saving = false;
@@ -66,7 +67,7 @@ defineComponent({
             return fetchApp({ apiConfig, signal, ownerId, appId }).catch(addErrorType('loading'));
           });
           variables_lp.push((signal) => {
-            return fetchExposedConfig({ apiConfig, signal, ownerId, appId }).catch(addErrorType('saving'));
+            return fetchExposedConfig({ apiConfig, signal, ownerId, appId }).catch(addErrorType('loading'));
           });
         }
       }),

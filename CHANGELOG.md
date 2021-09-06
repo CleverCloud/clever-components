@@ -6,7 +6,7 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+* `<cc-env-var-form>`: fix small issues in exposed-config smart definition
 
 ## 7.0.0 (2021-09-03)
 
