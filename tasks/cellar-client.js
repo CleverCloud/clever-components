@@ -9,6 +9,7 @@ const glob = promisify(rawGlob);
 
 const ONE_YEAR = 365 * 24 * 60 * 60;
 export const LONG_CACHE = `public, max-age=${ONE_YEAR}, immutable`;
+export const NO_CACHE = `no-cache, max-age=0`;
 
 export class CellarClient {
 

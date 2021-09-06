@@ -1,4 +1,4 @@
-import { CellarClient, LONG_CACHE } from './cellar-client.js';
+import { CellarClient, LONG_CACHE, NO_CACHE } from './cellar-client.js';
 
 const cellar = new CellarClient({
   bucket: 'components.clever-cloud.com',
@@ -9,7 +9,7 @@ const cellar = new CellarClient({
 async function run () {
   const cdnDir = 'dist-cdn';
   await cellar.sync({ localDir: cdnDir, cacheControl: LONG_CACHE });
-  await cellar.putObject({ key: 'index.html', filepath: 'cdn-ui/index.html' });
+  await cellar.putObject({ key: 'index.html', filepath: 'cdn-ui/index.html', cacheControl: NO_CACHE });
 }
 
 run().catch((e) => {
