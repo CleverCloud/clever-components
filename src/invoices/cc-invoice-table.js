@@ -139,8 +139,10 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
             <cc-img class="invoice-icon" src=${fileSvg}></cc-img>
             <div class="invoice-text ${classMap({ skeleton })}">
               ${i18n('cc-invoice-table.text', {
-      number: invoice.number, date: invoice.emissionDate, amount: invoice.total.amount,
-    })}
+                number: invoice.number,
+                date: invoice.emissionDate,
+                amount: invoice.total.amount,
+              })}
               <br>
               ${this._renderLinks(skeleton, invoice)}
             </div>
@@ -171,7 +173,8 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
         :host {
           display: block;
         }
-        
+
+        /*region COMMON*/
         /* we should use a class (something like "number-value") but it's not possible right now in i18n */
         code {
           font-family: var(--cc-ff-monospace);
@@ -190,9 +193,10 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
           --cc-gap: 1rem;
           --cc-align-items: center;
         }
-        
-        /* SMALL MODE */
 
+        /*endregion*/
+
+        /*region SMALL*/
         .invoice-list {
           display: grid;
           gap: 1.5rem;
@@ -231,14 +235,15 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
           color: transparent;
         }
 
-        /* BIG MODE */
-        
+        /*endregion*/
+
+        /*region BIG*/
         table {
           border-collapse: collapse;
           border-radius: 5px;
           overflow: hidden;
         }
-        
+
         th,
         td {
           padding: 0.5rem 1rem;
@@ -256,7 +261,7 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
         tr:not(:last-child) td {
           border-bottom: 1px solid #ddd;
         }
-        
+
         /* applied on th and td */
         .number {
           text-align: right;
@@ -266,7 +271,7 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
           /* "-ø###,###.##" OR "-### ###,## ø" => 13ch */
           min-width: 13ch;
         }
-        
+
         tr:hover td {
           background-color: #f5f5f5;
         }
@@ -274,6 +279,8 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
         table .skeleton {
           background-color: #bbb;
         }
+
+        /*endregion*/
       `,
     ];
   }

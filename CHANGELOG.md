@@ -16,6 +16,7 @@ title: Changelog
 * refactor: try to use `?.` when it's a bit simpler
 * i18n: use Intl.PluralRules instead of custom code
 * refactor: move sub render methods `_renderFoo()` below the main `render()` method
+* refactor: use code folding regions in CSS (especially for responsive with COMMON/BIG/SMALL modes)
 
 ## 7.0.0 (2021-09-03)
 

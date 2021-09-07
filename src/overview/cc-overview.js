@@ -56,7 +56,7 @@ export class CcOverview extends withResizeObserver(LitElement) {
         grid-gap: 1rem;
       }
 
-      /* GRID LAYOUT */
+      /*region GRID LAYOUT*/
       :host([w-lt-570]) {
         grid-template-columns: [main-start] 1fr [main-end];
       }
@@ -73,7 +73,9 @@ export class CcOverview extends withResizeObserver(LitElement) {
         grid-template-columns: [main-start] 1fr 1fr 1fr [main-end] 1fr;
       }
 
-      /* GRID LAYOUT (app) */
+      /*endregion*/
+
+      /*region GRID LAYOUT (app)*/
       :host([mode="app"][w-lt-570]) {
         grid-template-rows: repeat(calc(var(--cc-overview-head-count) + 6), min-content) [main-start] 1fr [main-end];
       }
@@ -90,7 +92,9 @@ export class CcOverview extends withResizeObserver(LitElement) {
         grid-template-rows: repeat(calc(var(--cc-overview-head-count) + 1), min-content) [main-start] 1fr 1fr [main-end];
       }
 
-      /* GRID LAYOUT (orga) */
+      /*endregion*/
+
+      /*region GRID LAYOUT (orga)*/
       :host([mode="orga"][w-lt-570]) {
         grid-template-rows: repeat(calc(var(--cc-overview-head-count) + 2), min-content) [main-start] 1fr [main-end];
       }
@@ -102,6 +106,8 @@ export class CcOverview extends withResizeObserver(LitElement) {
       :host([mode="orga"][w-gte-860]) {
         grid-template-rows: repeat(calc(var(--cc-overview-head-count) + 0), min-content) [main-start] 1fr 1fr [main-end];
       }
+
+      /*endregion*/
 
       /* .head TILE POSITION/SIZE */
       ::slotted(*.head) {

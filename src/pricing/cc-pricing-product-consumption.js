@@ -438,8 +438,6 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
       skeletonStyles,
       // language=CSS
       css`
-        /*#region COMMON*/
-
         :host {
           background-color: #fff;
           display: block;
@@ -449,6 +447,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
           --cc-skeleton-state: paused;
         }
 
+        /*region COMMON*/
         .head {
           border-radius: 0.25em;
           display: grid;
@@ -647,10 +646,9 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
           background-color: #bbb;
         }
 
-        /*#endregion COMMON*/
+        /*endregion*/
 
-        /*#region BIG*/
-
+        /*region BIG*/
         .body--big {
           grid-template-columns:
             1em
@@ -687,10 +685,9 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
           margin-left: 2em;
         }
 
-        /*#endregion BIG*/
+        /*endregion*/
 
-        /*#region SMALL*/
-
+        /*region SMALL*/
         .body--small {
           grid-template-columns:
             1em
@@ -731,7 +728,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
           display: none;
         }
 
-        /*#endregion SMALL*/
+        /*endregion*/
       `,
     ];
   }

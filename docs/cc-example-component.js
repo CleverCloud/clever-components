@@ -194,6 +194,29 @@ export class CcExampleComponent extends LitElement {
           /* You may use another display type but you need to define one. */
           display: block;
         }
+
+        /* You may use "regions" to help code editors fold main sections of your styles. It's often needed with responsive and COMMON/BIG/SMALL regions. */
+
+        /*region COMMON*/
+        .foobar {
+          color: red;
+        }
+
+        /*endregion*/
+
+        /*region BIG*/
+        .foobar.big {
+          color: blue;
+        }
+
+        /*endregion*/
+
+        /*region SMALL*/
+        .foobar.small {
+          color: green;
+        }
+
+        /*endregion*/
       `,
     ];
   }

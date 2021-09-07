@@ -271,12 +271,11 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
     return [
       // language=CSS
       css`
-        /*#region COMMON*/
-
         :host {
           display: block;
         }
 
+        /*region COMMON*/
         .input-number {
           --cc-input-number-align: center;
           /* This is enough to display up to 999 */
@@ -354,10 +353,9 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
           background-color: rgba(255, 255, 255, 0.1);
         }
 
-        /*#endregion*/
+        /*endregion*/
 
-        /*#region BIG*/
-
+        /*region BIG*/
         .number-align {
           text-align: right;
         }
@@ -411,10 +409,9 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
           padding: 0.75em 1em;
         }
 
-        /*#endregion*/
+        /*endregion*/
 
-        /*#region SMALL*/
-
+        /*region SMALL*/
         .plan {
           align-items: center;
           border-top: 1px solid #e5e5e5;
@@ -485,7 +482,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
           padding: 0.75em 1em;
         }
 
-        /*#endregion*/
+        /*endregion*/
       `,
     ];
   }
