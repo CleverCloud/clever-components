@@ -289,6 +289,7 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
           display: block;
         }
 
+        /*region COMMON*/
         .number-align {
           text-align: right;
         }
@@ -305,8 +306,9 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
           font-weight: bold;
         }
 
-        /* BIG SIZE */
+        /*endregion*/
 
+        /*region BIG*/
         table {
           border-collapse: collapse;
           border-spacing: 0;
@@ -347,8 +349,9 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
           position: absolute;
         }
 
-        /* SMALL SIZE */
+        /*endregion*/
 
+        /*region SMALL*/
         .plan {
           align-items: center;
           border-top: 1px solid #e5e5e5;
@@ -420,6 +423,8 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
         .plan[data-state="opened"] .feature-value {
           margin-right: 0.5em;
         }
+
+        /*endregion*/
       `,
     ];
   }
