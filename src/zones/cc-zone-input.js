@@ -150,41 +150,6 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
     scrollChildIntoParent(parent, child);
   }
 
-  _renderZoneInput (zone) {
-
-    // Simplified template without label/input when skeleton is enabled
-    if (zone == null) {
-      return html`
-        <div class="zone">
-          <div class="label">
-            <cc-zone></cc-zone>
-          </div>
-        </div>
-      `;
-    }
-
-    return html`
-      <div class="zone-choice">
-        <input
-          type="radio"
-          name="zone"
-          .value=${zone.name}
-          id=${zone.name}
-          .checked=${zone.name === this.selected}
-          @change=${(e) => this._onSelect(zone.name)}
-        >
-        <label
-          for=${zone.name}
-          class="label ${classMap({ hovered: zone.name === this._hovered })}"
-          @mouseenter=${() => this._onListHover(zone.name)}
-          @mouseleave=${() => this._onListHover()}
-        >
-          <cc-zone .zone=${zone}></cc-zone>
-        </label>
-      </div>
-    `;
-  }
-
   firstUpdated () {
     this._map = this.shadowRoot.querySelector('cc-map');
   }
@@ -233,6 +198,41 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
             ${repeat(zones, (z) => z?.name ?? '', (z) => this._renderZoneInput(z))}
           </div>
         ` : ''}
+      </div>
+    `;
+  }
+
+  _renderZoneInput (zone) {
+
+    // Simplified template without label/input when skeleton is enabled
+    if (zone == null) {
+      return html`
+        <div class="zone">
+          <div class="label">
+            <cc-zone></cc-zone>
+          </div>
+        </div>
+      `;
+    }
+
+    return html`
+      <div class="zone-choice">
+        <input
+          type="radio"
+          name="zone"
+          .value=${zone.name}
+          id=${zone.name}
+          .checked=${zone.name === this.selected}
+          @change=${(e) => this._onSelect(zone.name)}
+        >
+        <label
+          for=${zone.name}
+          class="label ${classMap({ hovered: zone.name === this._hovered })}"
+          @mouseenter=${() => this._onListHover(zone.name)}
+          @mouseleave=${() => this._onListHover()}
+        >
+          <cc-zone .zone=${zone}></cc-zone>
+        </label>
       </div>
     `;
   }

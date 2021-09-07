@@ -190,29 +190,6 @@ export class CcHeaderApp extends LitElement {
     dispatchCustomEvent(this, 'stop');
   }
 
-  _renderCommit (commit, type, skeleton) {
-    if (commit == null && type !== 'git') {
-      return '';
-    }
-    return html`
-      <span
-        class="commit ${classMap({ 'cc-waiting': (type === 'starting') })}"
-        title=${ifDefined(skeleton ? undefined : this._getCommitTitle(type, commit))}
-        data-type=${type}
-      >
-        <!-- image has a presentation role => alt="" -->
-        <img class="commit_img" src=${commitIcon[type]} alt="">
-        ${commit != null ? html`
-          <!-- Keep this on one line to ease copy/paste -->
-          <span class=${classMap({ skeleton })}>${(commit.slice(0, 8))}<span class="commit_rest">${(commit.slice(8))}</span></span>
-        ` : ''}
-        ${commit == null ? html`
-          <span>${i18n('cc-header-app.commits.no-commits')}</span>
-        ` : ''}
-      </span>
-    `;
-  }
-
   update (changeProperties) {
     if (changeProperties.has('status')) {
       this._lastUserAction = (changeProperties.get('status') !== this.status)
@@ -319,6 +296,29 @@ export class CcHeaderApp extends LitElement {
           <cc-zone .zone=${this.zone} mode="small-infra"></cc-zone>
         ` : ''}
       </cc-flex-gap>
+    `;
+  }
+
+  _renderCommit (commit, type, skeleton) {
+    if (commit == null && type !== 'git') {
+      return '';
+    }
+    return html`
+      <span
+        class="commit ${classMap({ 'cc-waiting': (type === 'starting') })}"
+        title=${ifDefined(skeleton ? undefined : this._getCommitTitle(type, commit))}
+        data-type=${type}
+      >
+        <!-- image has a presentation role => alt="" -->
+        <img class="commit_img" src=${commitIcon[type]} alt="">
+        ${commit != null ? html`
+          <!-- Keep this on one line to ease copy/paste -->
+          <span class=${classMap({ skeleton })}>${(commit.slice(0, 8))}<span class="commit_rest">${(commit.slice(8))}</span></span>
+        ` : ''}
+        ${commit == null ? html`
+          <span>${i18n('cc-header-app.commits.no-commits')}</span>
+        ` : ''}
+      </span>
     `;
   }
 

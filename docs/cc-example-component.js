@@ -161,11 +161,28 @@ export class CcExampleComponent extends LitElement {
     // Prepare booleans and format stuffs here
 
     return html`
-      <div>This is <code>cc-example-component</code></div>
+      <div>
+        This is <code>cc-example-component</code>
+        ${this._renderSubpart()}
+      </div>
     `;
   }
 
-  // DOCS: 9. LitElement's styles descriptor
+  // DOCS: 9. "sub render" private methods used by the main render()
+
+  // If you need to isolate a part of the template, put it in a "sub render" private method.
+  // This is often used in repetitions.
+  // It must be prefixed with `_render`.
+  _renderSubpart () {
+
+    // Prepare booleans and format stuffs here
+
+    return html`
+      <div>Sub part of the template</div>
+    `;
+  }
+
+  // DOCS: 10. LitElement's styles descriptor
 
   static get styles () {
     // This array may contain style imports from shared files.
@@ -182,6 +199,6 @@ export class CcExampleComponent extends LitElement {
   }
 }
 
-// DOCS: 10. Define the custom element
+// DOCS: 11. Define the custom element
 
 window.customElements.define('cc-example-component', CcExampleComponent);

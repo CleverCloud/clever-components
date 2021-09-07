@@ -40,6 +40,7 @@ we're proposing this order for the different pars of a custom element built with
 1. custom element lifecycle callbacks <br/> `connectedCallback () {}`
 1. LitElement lifecycle callbacks <br/> `firstUpdated () {}`
 1. LitElement's render method <br/> `render () {}`
+1. sub render private methods <br/> `_renderFoobar () {}`
 1. LitElement's styles descriptor <br/> `static get styles () {}`
 
 ## How to order attributes when you use a component?
