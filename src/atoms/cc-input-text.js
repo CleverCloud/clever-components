@@ -1,4 +1,3 @@
-import copy from 'clipboard-copy';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -160,7 +159,7 @@ export class CcInputText extends LitElement {
   }
 
   _onClickCopy () {
-    copy(this.value).then(() => {
+    navigator.clipboard.writeText(this.value).then(() => {
       this._copyOk = true;
       setTimeout(() => (this._copyOk = false), 1000);
     });
@@ -190,7 +189,7 @@ export class CcInputText extends LitElement {
 
   render () {
 
-    const value = this.value || '';
+    const value = this.value ?? '';
     const rows = value.split('\n').length;
     const clipboard = (this.clipboard && !this.disabled && !this.skeleton);
     // NOTE: For now, we don't support secret when multi is activated
@@ -206,20 +205,22 @@ export class CcInputText extends LitElement {
       ${this.label != null ? html`
         <label for=${this._uniqueName}>${this.label}</label>
       ` : ''}
-      
+
       <div class="meta-input">
         <div class="wrapper ${classMap({ skeleton: this.skeleton })}"
           @input=${this._onInput}
           @keydown=${this._onKeyEvent}
           @keypress=${this._onKeyEvent}>
-          
+
           ${isTextarea ? html`
             ${this._tagsEnabled && !this.skeleton ? html`
               <!--
                 We use this to display colored background rectangles behind space separated values. 
                 This needs to be on the same line and the 2 level parent is important to keep scroll behaviour.
               -->
-              <div class="input input-underlayer" style="--rows: ${rows}"><div class="all-tags">${tags}</div></div>
+              <div class="input input-underlayer" style="--rows: ${rows}">
+                <div class="all-tags">${tags}</div>
+              </div>
             ` : ''}
             <textarea
               id=${this._uniqueName}
@@ -236,7 +237,7 @@ export class CcInputText extends LitElement {
               @focus=${this._onFocus}
             ></textarea>
           ` : ''}
-            
+
           ${!isTextarea ? html`
             ${clipboard && this.readonly ? html`
               <!--
@@ -250,7 +251,7 @@ export class CcInputText extends LitElement {
               id=${this._uniqueName}
               type=${this.secret && !this._showSecret ? 'password' : 'text'}
               class="input"
-              ?disabled=${this.disabled || this.skeleton} 
+              ?disabled=${this.disabled || this.skeleton}
               ?readonly=${this.readonly}
               .value=${value}
               name=${this.name}
@@ -259,17 +260,17 @@ export class CcInputText extends LitElement {
               @focus=${this._onFocus}
             >
           ` : ''}
-        
+
           <div class="ring"></div>
         </div>
-        
+
         ${secret ? html`
-          <button class="btn" @click=${this._onClickSecret} 
+          <button class="btn" @click=${this._onClickSecret}
             title=${this._showSecret ? i18n('cc-input-text.secret.hide') : i18n('cc-input-text.secret.show')}>
             <img class="btn-img" src=${this._showSecret ? eyeClosedSvg : eyeOpenSvg} alt="">
           </button>
         ` : ''}
-        
+
         ${clipboard ? html`
           <button class="btn" @click=${this._onClickCopy} title=${i18n('cc-input-text.clipboard')}>
             <img class="btn-img" src=${this._copyOk ? tickSvg : clipboardSvg} alt="">

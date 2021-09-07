@@ -53,7 +53,7 @@ export class CcElasticsearchInfo extends LitElement {
 
   render () {
 
-    const links = this.links || [];
+    const links = this.links ?? [];
     const elasticsearchLink = links.find(({ type }) => type === 'elasticsearch');
     const kibanaLink = links.find(({ type }) => type === 'kibana');
     const apmLink = links.find(({ type }) => type === 'apm');

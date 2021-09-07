@@ -8,6 +8,14 @@ title: Changelog
 
 * `<cc-env-var-form>`: fix small issues in exposed-config smart definition
 
+### For devs
+
+* with-resize-observer: remove "resize-observer-polyfill" dependency
+* `<cc-input-text>`: remove "clipboard-copy" dependency
+* refactor: use `??` instead of `||` when it makes more sense
+* refactor: try to use `?.` when it's a bit simpler
+* i18n: use Intl.PluralRules instead of custom code
+
 ## 7.0.0 (2021-09-03)
 
 ### ⚠️ BREAKING CHANGES

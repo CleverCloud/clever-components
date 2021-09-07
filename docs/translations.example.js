@@ -4,15 +4,12 @@ import { formatDatetime } from '../lib/i18n-date.js';
 import { sanitize } from '../lib/i18n-sanitize.js';
 // Use existing number helpers if you need them
 import { prepareNumberUnitFormatter } from '../src/lib/i18n-number.js';
+import { preparePlural } from '../src/lib/i18n-string.js';
 
 // Define language code here
 export const lang = 'example';
 
-// We considered Intl.PluralRules but no support in Safari 12 and polyfill does too much for us
-function plural (singular, plural = singular + 's') {
-  // Defined plural behavior for the current language
-  return (count) => (count === 1) ? singular : plural;
-}
+const plural = preparePlural(lang);
 
 // Prepare date and number helpers for the current language
 const formatNumberUnit = prepareNumberUnitFormatter(lang);
@@ -92,7 +89,7 @@ export const translations = {
   // the arrow function can have a block body and use multine lines.
   'cc-good.arrow-with-body': ({ from, totalRequests }) => {
     const fromDate = formatDatetime(from);
-    const request = plural('request')(totalRequests);
+    const request = plural(totalRequests, 'request');
     const formattedValue = formatNumberUnit(totalRequests);
     return `${formattedValue} ${request} since ${fromDate}`;
   },

@@ -23,7 +23,7 @@ const escapeHtml = (() => {
 
 // If sibling is text, get text content and remove if from the DOM
 function absorbTextSibling (sibling) {
-  if (sibling != null && sibling.nodeType === document.TEXT_NODE) {
+  if (sibling?.nodeType === document.TEXT_NODE) {
     sibling.parentNode.removeChild(sibling);
     return sibling.data;
   }

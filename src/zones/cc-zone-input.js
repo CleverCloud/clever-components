@@ -230,7 +230,7 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
         ` : ''}
         ${!this.error ? html`
           <div class="zone-list">
-            ${repeat(zones, (z) => z != null ? z.name : '', (z) => this._renderZoneInput(z))}
+            ${repeat(zones, (z) => z?.name ?? '', (z) => this._renderZoneInput(z))}
           </div>
         ` : ''}
       </div>

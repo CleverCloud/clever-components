@@ -61,14 +61,12 @@ export default {
       pathsToBundle: [
         '/src/lib/leaflet-esm.js',
         '/node_modules/rxjs/dist/esm5/index.js',
-        '/node_modules/rxjs/dist/esm5/operators/index.js',
         '/node_modules/chart.js/dist/chart.esm.js',
       ],
     }),
     commonjs({
       // the commonjs plugin is slow, list the required packages explicitly:
       include: commonJsIdentifiers([
-        'clipboard-copy',
         'statuses',
         // used by clever-client
         'oauth-1.0a',

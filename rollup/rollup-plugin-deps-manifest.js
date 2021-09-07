@@ -14,11 +14,11 @@ export function depsManifestPlugin ({ packageVersion }) {
       // Look for JS imports and referenced assets => graph
       for (const [id, bundle] of Object.entries(outputBundle)) {
         graph.addNode(id);
-        for (const imp of bundle.imports || []) {
+        for (const imp of bundle.imports ?? []) {
           graph.addNode(imp);
           graph.addDependency(id, imp);
         }
-        for (const rf of bundle.referencedFiles || []) {
+        for (const rf of bundle.referencedFiles ?? []) {
           graph.addNode(rf);
           graph.addDependency(id, rf);
         }

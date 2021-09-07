@@ -149,11 +149,11 @@ export class CcInputNumber extends LitElement {
               class="input ${classMap({ error: this._invalid })}"
               ?disabled=${this.disabled || this.skeleton} 
               ?readonly=${this.readonly}
-              min=${(this.min != null) ? this.min : ''}
-              max=${(this.max != null) ? this.max : ''}
-              step=${(this.step != null) ? this.step : ''}
+              min=${this.min ?? ''}
+              max=${this.max ?? ''}
+              step=${this.step ?? ''}
               .value=${value}
-              name=${(this.name != null) ? this.name : ''}
+              name=${this.name ?? ''}
               spellcheck="false"
               @focus=${this._onFocus}
               @input=${this._onInput}

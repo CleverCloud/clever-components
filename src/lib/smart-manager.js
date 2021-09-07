@@ -64,7 +64,7 @@ export function defineComponent (definition, signal) {
 
       // Properly disconnect components
       smartContainers.forEach((container) => {
-        const allComponents = container[COMPONENTS].get(definition) || [];
+        const allComponents = container[COMPONENTS].get(definition) ?? [];
         allComponents.forEach((component) => disconnectComponent(container, definition, component));
         container[COMPONENTS].delete(definition);
       });
@@ -85,7 +85,7 @@ function updateEverything () {
       const allDefinitionComponents = Array.from(container.querySelectorAll(definition.selector))
         .filter((c) => closestParent(c, 'cc-smart-container') === container);
 
-      const previousComponents = container[COMPONENTS].get(definition) || [];
+      const previousComponents = container[COMPONENTS].get(definition) ?? [];
       container[COMPONENTS].set(definition, allDefinitionComponents);
 
       // connected

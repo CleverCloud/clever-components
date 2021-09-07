@@ -121,7 +121,7 @@ export const HeatLayer = Layer.extend({
   },
 
   _updateOptions () {
-    this._heat.radius(this.options.radius || this._heat.defaultRadius, this.options.blur);
+    this._heat.radius(this.options.radius ?? this._heat.defaultRadius, this.options.blur);
 
     if (this.options.gradient) {
       this._heat.gradient(this.options.gradient);

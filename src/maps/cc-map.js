@@ -214,7 +214,7 @@ export class CcMap extends withResizeObserver(LitElement) {
       else {
         // Complex tooltip with custom element
         const oldElement = marker.getTooltip().getContent();
-        const oldTagName = (oldElement != null && oldElement.tagName != null) ? oldElement.tagName.toLowerCase() : null;
+        const oldTagName = oldElement?.tagName?.toLowerCase();
         const tooltipElement = (oldTagName !== point.tooltip.tag)
           ? document.createElement(point.tooltip.tag)
           : oldElement;
@@ -332,7 +332,7 @@ export class CcMap extends withResizeObserver(LitElement) {
 
   render () {
 
-    const noHeatmapPoints = (!this.error && this.mode === 'heatmap' && this.heatmapPoints != null && this.heatmapPoints.length === 0);
+    const noHeatmapPoints = (!this.error && this.mode === 'heatmap' && this.heatmapPoints?.length === 0);
     const errorMode = this.loading ? 'loading' : 'info';
 
     return html`

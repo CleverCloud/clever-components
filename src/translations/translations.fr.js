@@ -14,15 +14,11 @@ import {
   prepareNumberUnitFormatter,
 } from '../lib/i18n-number.js';
 import { sanitize } from '../lib/i18n-sanitize.js';
+import { preparePlural } from '../lib/i18n-string.js';
 
 export const lang = 'fr';
 
-// We considered Intl.PluralRules but no support in Safari 12 and polyfill does too much for us
-function plural (singular, plural = singular + 's') {
-  return (count) => {
-    return (count <= 1) ? singular : plural;
-  };
-}
+const plural = preparePlural(lang);
 
 const UNITS_FR = {
   year: 'année',
@@ -37,8 +33,8 @@ const UNITS_FR = {
 const formatDistanceToNow = prepareFormatDistanceToNow(lang, (value, unit) => {
   const frUnit = UNITS_FR[unit];
   const pluralUnit = frUnit.endsWith('s')
-    ? plural(frUnit, frUnit)(value)
-    : plural(frUnit)(value);
+    ? plural(value, frUnit, frUnit)
+    : plural(value, frUnit);
   return `il y a ${value} ${pluralUnit}`;
 }, 'à l\'instant');
 
@@ -505,20 +501,20 @@ export const translations = {
     return `${date} : de ${fromH} à ${toH}`;
   },
   'cc-tile-requests.docs.msg': ({ windowHours }) => {
-    const hour = plural('heure')(windowHours);
+    const hour = plural(windowHours, 'heure');
     return sanitize`Requêtes HTTP reçues durant les dernières 24 heures. Chaque barre représente une fenêtre de temps de <strong>${windowHours} ${hour}</strong>.`;
   },
   'cc-tile-requests.empty': `Il n'y a pas de données à afficher pour l'instant.`,
   'cc-tile-requests.error': `Une erreur est survenue pendant le chargement des requêtes.`,
   'cc-tile-requests.requests-count': ({ requestCount }) => formatNumberUnit(requestCount),
   'cc-tile-requests.requests-nb': ({ value, windowHours }) => {
-    const request = plural('requête')(value);
-    const hour = plural('heure')(windowHours);
+    const request = plural(value, 'requête');
+    const hour = plural(windowHours, 'heure');
     const formattedValue = formatNumber(lang, value);
     return `${formattedValue} ${request} (en ${windowHours} ${hour})`;
   },
   'cc-tile-requests.requests-nb.total': ({ totalRequests }) => {
-    const request = plural('requête')(totalRequests);
+    const request = plural(totalRequests, 'requête');
     const formattedValue = formatNumberUnit(totalRequests);
     return `${formattedValue} ${request} sur 24 heures`;
   },
@@ -540,7 +536,7 @@ export const translations = {
   'cc-tile-status-codes.error': `Une erreur est survenue pendant le chargement des codes de réponses HTTP.`,
   'cc-tile-status-codes.title': `Codes de réponses HTTP`,
   'cc-tile-status-codes.tooltip': ({ value, percent }) => {
-    const request = plural('requête')(value);
+    const request = plural(value, 'requête');
     const formattedValue = formatNumber(lang, value);
     return `${formattedValue} ${request} (${formatPercent(lang, percent)})`;
   },
