@@ -54,9 +54,7 @@ export function makeStory (...configs) {
     });
 
     const componentDefinition = ceJson.tags.find((c) => c.name === component);
-    const componentEventNames = (componentDefinition != null && componentDefinition.events != null)
-      ? componentDefinition.events.map((e) => e.name)
-      : [];
+    const componentEventNames = componentDefinition?.events?.map((e) => e.name) ?? [];
 
     Object
       .entries(storyArgs)

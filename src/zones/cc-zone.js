@@ -81,7 +81,7 @@ export class CcZone extends LitElement {
     const zone = skeleton ? SKELETON_ZONE : this.zone;
     const { title, subtitle } = CcZone._getTextParts(zone);
     const infraTag = zone.tags.find((t) => t.startsWith('infra:'));
-    const infraProviderSlug = (infraTag != null) ? infraTag.split(':')[1] : null;
+    const infraProviderSlug = infraTag?.split(':')[1] ?? null;
 
     return html`
       <cc-img class="flag" ?skeleton=${skeleton} src=${ifDefined(getFlagUrl(zone.countryCode))} text=${ifDefined(zone.countryCode)}></cc-img>

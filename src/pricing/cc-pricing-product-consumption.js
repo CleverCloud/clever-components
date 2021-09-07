@@ -279,12 +279,10 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
           <hr>
         ` : ''}
 
-        ${this.sections != null ? html`
-          ${this.sections.map((section) => html`
-            ${this._renderSection(section)}
-            <hr>
-          `)}
-        ` : ''}
+        ${this.sections?.map((section) => html`
+          ${this._renderSection(section)}
+          <hr>
+        `)}
 
         <div class="section">
           <div class="section-header">

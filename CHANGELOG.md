@@ -13,6 +13,7 @@ title: Changelog
 * with-resize-observer: remove "resize-observer-polyfill" dependency
 * `<cc-input-text>`: remove "clipboard-copy" dependency
 * refactor: use `??` instead of `||` when it makes more sense
+* refactor: try to use `?.` when it's a bit simpler
 
 ## 7.0.0 (2021-09-03)
 

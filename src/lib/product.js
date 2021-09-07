@@ -88,7 +88,7 @@ function formatAddonPlans (allPlans, priceSystem, selectedFeatures) {
     const priceItem = priceSystem.runtime.find((runtime) => runtime.slug_id.toLowerCase() === plan.price_id.toLowerCase());
     return {
       name: plan.name,
-      price: (priceItem != null) ? priceItem.price : 0,
+      price: priceItem?.price ?? 0,
       features: formatAddonFeatures(plan.features, selectedFeatures),
     };
   });
@@ -121,7 +121,7 @@ function formatRuntimePlans (allFlavors, priceSystem, features) {
     const priceItem = priceSystem.runtime.find((runtime) => runtime.slug_id.toLowerCase() === flavor.price_id.toLowerCase());
     return {
       name: flavor.name,
-      price: (priceItem != null) ? priceItem.price : 0,
+      price: priceItem?.price ?? 0,
       features: formatRuntimeFeatureValues(features, flavor),
     };
   });
