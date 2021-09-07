@@ -8,6 +8,10 @@ title: Changelog
 
 * `<cc-env-var-form>`: fix small issues in exposed-config smart definition
 
+### For devs
+
+* with-resize-observer: remove "resize-observer-polyfill" dependency
+
 ## 7.0.0 (2021-09-03)
 
 ### ⚠️ BREAKING CHANGES

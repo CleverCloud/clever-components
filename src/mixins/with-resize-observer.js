@@ -1,10 +1,5 @@
 export function withResizeObserver (ParentClass) {
 
-  // Load native impl or polyfill (without poluting global scope)
-  const ResizeObserverPromise = ('ResizeObserver' in window)
-    ? Promise.resolve(window.ResizeObserver)
-    : import('resize-observer-polyfill/dist/ResizeObserver.es.js').then((mod) => mod.default);
-
   return class extends ParentClass {
 
     _onResize ({ width }) {
@@ -29,12 +24,14 @@ export function withResizeObserver (ParentClass) {
       }
     }
 
-    async connectedCallback () {
+    connectedCallback () {
       if (super.connectedCallback != null) {
         super.connectedCallback();
       }
-      const ResizeObserver = await ResizeObserverPromise;
-      const ro = new ResizeObserver(() => {
+      if (window.ResizeObserver == null) {
+        return;
+      }
+      const ro = new window.ResizeObserver(() => {
         // NOTE: We could use entries[0].borderBoxSize.inlineSize but not supported in Chrome, Safari or polyfill
         const { width } = this.getBoundingClientRect();
         this._onResize({ width });
