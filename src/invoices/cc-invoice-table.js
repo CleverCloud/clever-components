@@ -73,6 +73,33 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
     this._width = width;
   }
 
+  render () {
+
+    // NOTE: This value is arbitrary, we don't have a better solution for now
+    // It's a bit more than the width of the table in french (which is the largest) and with both links (download and pay)
+    // The table width is mostly stable since the with of the amount is fixed and the rest is almost always the same number of characters
+    const bigMode = (this._width > 700);
+
+    const skeleton = (this.invoices == null);
+    const invoices = skeleton ? SKELETON_INVOICES : this.invoices;
+    const formattedInvoices = invoices
+      .map((invoice) => {
+        const sign = (invoice.type === 'CREDITNOTE') ? -1 : 1;
+        return {
+          ...invoice,
+          total: {
+            ...invoice.total,
+            amount: invoice.total.amount * sign,
+          },
+        };
+      })
+      .sort(sortBy('emissionDate', true));
+
+    return bigMode
+      ? this._renderBig(skeleton, formattedInvoices)
+      : this._renderSmall(skeleton, formattedInvoices);
+  }
+
   _renderBig (skeleton, invoiceList) {
     return html`
       <table>
@@ -132,33 +159,6 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
         ` : ''}
       </cc-flex-gap>
     `;
-  }
-
-  render () {
-
-    // NOTE: This value is arbitrary, we don't have a better solution for now
-    // It's a bit more than the width of the table in french (which is the largest) and with both links (download and pay)
-    // The table width is mostly stable since the with of the amount is fixed and the rest is almost always the same number of characters
-    const bigMode = (this._width > 700);
-
-    const skeleton = (this.invoices == null);
-    const invoices = skeleton ? SKELETON_INVOICES : this.invoices;
-    const formattedInvoices = invoices
-      .map((invoice) => {
-        const sign = (invoice.type === 'CREDITNOTE') ? -1 : 1;
-        return {
-          ...invoice,
-          total: {
-            ...invoice.total,
-            amount: invoice.total.amount * sign,
-          },
-        };
-      })
-      .sort(sortBy('emissionDate', true));
-
-    return bigMode
-      ? this._renderBig(skeleton, formattedInvoices)
-      : this._renderSmall(skeleton, formattedInvoices);
   }
 
   static get styles () {

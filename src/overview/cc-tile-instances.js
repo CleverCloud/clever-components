@@ -72,19 +72,6 @@ export class CcTileInstances extends LitElement {
     }
   }
 
-  _renderInstances (instances, type) {
-    return instances.length ? html`
-      <div class="instances ${classMap({ 'cc-waiting': type === 'deploying' })}" data-type=${type}>
-        <!-- image has a presentation role => alt="" -->
-        <img class="instances_status-img" src=${statusImg[type]} alt="">
-        <span class="instances_status">${this._getStatusLabel(type)}</span>
-        ${instances.map(({ flavorName, count }) => html`
-          <span class="size-label">${flavorName}<span class="count-bubble">${count}</span></span>
-        `)}
-      </div>
-    ` : '';
-  }
-
   render () {
 
     const skeleton = (this.instances == null);
@@ -137,6 +124,19 @@ export class CcTileInstances extends LitElement {
         <cc-error class="tile_message">${i18n('cc-tile-instances.error')}</cc-error>
       ` : ''}
     `;
+  }
+
+  _renderInstances (instances, type) {
+    return instances.length ? html`
+      <div class="instances ${classMap({ 'cc-waiting': type === 'deploying' })}" data-type=${type}>
+        <!-- image has a presentation role => alt="" -->
+        <img class="instances_status-img" src=${statusImg[type]} alt="">
+        <span class="instances_status">${this._getStatusLabel(type)}</span>
+        ${instances.map(({ flavorName, count }) => html`
+          <span class="size-label">${flavorName}<span class="count-bubble">${count}</span></span>
+        `)}
+      </div>
+    ` : '';
   }
 
   static get styles () {

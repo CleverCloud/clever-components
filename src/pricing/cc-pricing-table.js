@@ -141,6 +141,43 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
     return i18n('cc-pricing-table.price', { price, code: this.currency.code });
   }
 
+  _onAddPlan (plan) {
+    dispatchCustomEvent(this, 'add-plan', plan);
+  }
+
+  _onToggleState (newPlan) {
+    this._plans = this._plans.map((plan) => {
+      return (plan === newPlan)
+        ? { ...plan, state: (plan.state === 'closed') ? 'opened' : 'closed' }
+        : plan;
+    });
+  }
+
+  update (changedProperties) {
+
+    if (changedProperties.has('plans') && Array.isArray(this.plans)) {
+      this._plans = this.plans
+        .map((plan) => ({ ...plan, state: 'closed' }))
+        .sort((a, b) => a.price - b.price);
+    }
+
+    if (changedProperties.has('features') && Array.isArray(this.features)) {
+      this._features = this.features
+        .filter((feature) => AVAILABLE_FEATURES.includes(feature.code));
+    }
+
+    super.update(changedProperties);
+  }
+
+  render () {
+    // We don't really have a good way to detect when the component should switch between bit and small mode.
+    // Also, when this component is used several times in the page, it's better if all instances switch at the same breakpoint.
+    // 950 seems like a good arbitrary value for the content we need to display.
+    return (this._size > 950)
+      ? this._renderBigPlans()
+      : this._renderSmallPlans();
+  }
+
   _renderSmallPlans () {
     return html`
       <div class="container">
@@ -241,43 +278,6 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
         <td class=${classMap({ 'number-align': NUMBER_FEATURE_TYPES.includes(feature.type) })}>${this._getFeatureValue(currentFeature)}</td>
       `;
     });
-  }
-
-  _onAddPlan (plan) {
-    dispatchCustomEvent(this, 'add-plan', plan);
-  }
-
-  _onToggleState (newPlan) {
-    this._plans = this._plans.map((plan) => {
-      return (plan === newPlan)
-        ? { ...plan, state: (plan.state === 'closed') ? 'opened' : 'closed' }
-        : plan;
-    });
-  }
-
-  update (changedProperties) {
-
-    if (changedProperties.has('plans') && Array.isArray(this.plans)) {
-      this._plans = this.plans
-        .map((plan) => ({ ...plan, state: 'closed' }))
-        .sort((a, b) => a.price - b.price);
-    }
-
-    if (changedProperties.has('features') && Array.isArray(this.features)) {
-      this._features = this.features
-        .filter((feature) => AVAILABLE_FEATURES.includes(feature.code));
-    }
-
-    super.update(changedProperties);
-  }
-
-  render () {
-    // We don't really have a good way to detect when the component should switch between bit and small mode.
-    // Also, when this component is used several times in the page, it's better if all instances switch at the same breakpoint.
-    // 950 seems like a good arbitrary value for the content we need to display.
-    return (this._size > 950)
-      ? this._renderBigPlans()
-      : this._renderSmallPlans();
   }
 
   static get styles () {

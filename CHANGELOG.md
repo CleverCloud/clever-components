@@ -15,6 +15,7 @@ title: Changelog
 * refactor: use `??` instead of `||` when it makes more sense
 * refactor: try to use `?.` when it's a bit simpler
 * i18n: use Intl.PluralRules instead of custom code
+* refactor: move sub render methods `_renderFoo()` below the main `render()` method
 
 ## 7.0.0 (2021-09-03)
 
