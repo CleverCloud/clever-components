@@ -77,7 +77,7 @@ export class CcInvoice extends LitElement {
     const skeleton = (this.invoice == null);
     const invoice = skeleton ? SKELETON_INVOICE : this.invoice;
 
-    const number = this.number || SKELETON_INVOICE.number;
+    const number = this.number ?? SKELETON_INVOICE.number;
     const date = invoice.emissionDate;
     const amount = invoice.total.amount;
 

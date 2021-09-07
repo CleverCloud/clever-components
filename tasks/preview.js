@@ -25,9 +25,9 @@ async function run () {
     case 'list':
       return listPreviews();
     case 'publish':
-      return publishPreviewBranch(branch || currentBranch);
+      return publishPreviewBranch(branch ?? currentBranch);
     case 'delete':
-      return deletePreviewBranch(branch || currentBranch);
+      return deletePreviewBranch(branch ?? currentBranch);
   }
 
   throw new Error('Unknown command!');

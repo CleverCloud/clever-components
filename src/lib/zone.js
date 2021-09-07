@@ -24,7 +24,7 @@ export function sortZones (rawZones) {
         return aIsPrivate ? 1 : -1;
       }
       if (aIsPrivate && bIsPrivate) {
-        return (a.displayName || '').localeCompare((b.displayName || ''));
+        return (a.displayName ?? '').localeCompare((b.displayName ?? ''));
       }
     }
     if (aIsPrivate !== bIsPrivate) {

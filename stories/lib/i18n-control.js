@@ -7,7 +7,7 @@ addTranslations(en.lang, en.translations);
 addTranslations(fr.lang, fr.translations);
 addTranslations('missing', { LANGUAGE: '🤬 Missing' });
 
-const INIT_LANG = window.localStorage.getItem('I18N_LANG') || 'en';
+const INIT_LANG = window.localStorage.getItem('I18N_LANG') ?? 'en';
 
 // Default to English
 setLanguage(INIT_LANG);

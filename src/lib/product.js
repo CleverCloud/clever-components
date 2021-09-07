@@ -78,7 +78,7 @@ function formatAddonFeatures (providerFeatures, selectedFeatures) {
         code: feature.name_code,
         type: feature.type.toLowerCase(),
         // Only used when we format plan features
-        value: feature.computable_value || '',
+        value: feature.computable_value ?? '',
       };
     });
 }

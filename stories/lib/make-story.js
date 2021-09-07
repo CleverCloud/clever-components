@@ -111,7 +111,7 @@ export function makeStory (...configs) {
   storyFn.parameters = {
     docs: {
       description: {
-        story: (docs || '').trim(),
+        story: (docs ?? '').trim(),
       },
     },
     storySource: {

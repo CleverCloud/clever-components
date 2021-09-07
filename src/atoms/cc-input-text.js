@@ -189,7 +189,7 @@ export class CcInputText extends LitElement {
 
   render () {
 
-    const value = this.value || '';
+    const value = this.value ?? '';
     const rows = value.split('\n').length;
     const clipboard = (this.clipboard && !this.disabled && !this.skeleton);
     // NOTE: For now, we don't support secret when multi is activated
