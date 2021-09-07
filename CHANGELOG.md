@@ -12,6 +12,7 @@ title: Changelog
 
 ### ⚠️ BREAKING CHANGES
 
+* Browser support updated (Safari >=14), see [browser support reference](https://github.com/CleverCloud/clever-components/blob/7.0.0/docs/references/browser-support.reference.md) for details (BREAKING CHANGE). 
 * `<cc-pricing-product-cellar>`: delete component and replace it with a more generic component (BREAKING CHANGE)
 * `<cc-pricing-table>`:
   * rename `items` to `plans` (BREAKING CHANGE)
