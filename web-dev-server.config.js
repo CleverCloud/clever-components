@@ -68,7 +68,6 @@ export default {
     commonjs({
       // the commonjs plugin is slow, list the required packages explicitly:
       include: commonJsIdentifiers([
-        'clipboard-copy',
         'statuses',
         // used by clever-client
         'oauth-1.0a',

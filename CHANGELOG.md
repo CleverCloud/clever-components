@@ -11,6 +11,7 @@ title: Changelog
 ### For devs
 
 * with-resize-observer: remove "resize-observer-polyfill" dependency
+* `<cc-input-text>`: remove "clipboard-copy" dependency
 
 ## 7.0.0 (2021-09-03)
 
