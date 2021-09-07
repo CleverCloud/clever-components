@@ -61,7 +61,6 @@ export default {
       pathsToBundle: [
         '/src/lib/leaflet-esm.js',
         '/node_modules/rxjs/dist/esm5/index.js',
-        '/node_modules/rxjs/dist/esm5/operators/index.js',
         '/node_modules/chart.js/dist/chart.esm.js',
       ],
     }),
