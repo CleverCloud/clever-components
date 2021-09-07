@@ -14,18 +14,14 @@ import {
   prepareNumberUnitFormatter,
 } from '../lib/i18n-number.js';
 import { sanitize } from '../lib/i18n-sanitize.js';
+import { preparePlural } from '../lib/i18n-string.js';
 
 export const lang = 'en';
 
-// We considered Intl.PluralRules but no support in Safari 12 and polyfill does too much for us
-function plural (singular, plural = singular + 's') {
-  return (count) => {
-    return (count === 1) ? singular : plural;
-  };
-}
+const plural = preparePlural(lang);
 
 const formatDistanceToNow = prepareFormatDistanceToNow(lang, (value, unit) => {
-  const pluralUnit = plural(unit)(value);
+  const pluralUnit = plural(value, unit);
   return `${value} ${pluralUnit} ago`;
 }, 'just now');
 
@@ -492,20 +488,20 @@ export const translations = {
     return `${date}: from ${fromH} to ${toH}`;
   },
   'cc-tile-requests.docs.msg': ({ windowHours }) => {
-    const hour = plural('hour')(windowHours);
+    const hour = plural(windowHours, 'hour');
     return sanitize`HTTP requests received in the last 24 hours. Each bar represents a time window of <strong>${windowHours} ${hour}</strong>.`;
   },
   'cc-tile-requests.empty': `No data to display for now.`,
   'cc-tile-requests.error': `Something went wrong while loading HTTP requests.`,
   'cc-tile-requests.requests-count': ({ requestCount }) => formatNumberUnit(requestCount),
   'cc-tile-requests.requests-nb': ({ value, windowHours }) => {
-    const request = plural('request')(value);
-    const hour = plural('hour')(windowHours);
+    const request = plural(value, 'request');
+    const hour = plural(windowHours, 'hour');
     const formattedValue = formatNumber(lang, value);
     return `${formattedValue} ${request} (in ${windowHours} ${hour})`;
   },
   'cc-tile-requests.requests-nb.total': ({ totalRequests }) => {
-    const request = plural('request')(totalRequests);
+    const request = plural(totalRequests, 'request');
     const formattedValue = formatNumberUnit(totalRequests);
     return `${formattedValue} ${request} in 24 hours`;
   },
@@ -527,7 +523,7 @@ export const translations = {
   'cc-tile-status-codes.error': `Something went wrong while loading HTTP response codes.`,
   'cc-tile-status-codes.title': `HTTP response codes`,
   'cc-tile-status-codes.tooltip': ({ value, percent }) => {
-    const request = plural('request')(value);
+    const request = plural(value, 'request');
     const formattedValue = formatNumber(lang, value);
     return `${formattedValue} ${request} (${formatPercent(lang, percent)})`;
   },
