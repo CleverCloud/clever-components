@@ -10,8 +10,8 @@ const INTERVALS_FOO = [
 
 const INTERVALS_BAR = [
   { minRange: 0, maxRange: 1000, price: 0 },
-  { minRange: 100, maxRange: 2000, price: 10 },
-  { minRange: 200, maxRange: 3000, price: 20 },
+  { minRange: 1000, maxRange: 2000, price: 10 },
+  { minRange: 2000, maxRange: 3000, price: 20 },
   { minRange: 3000, price: 30 },
 ];
 
@@ -24,8 +24,6 @@ const NULLISH_INTERVALS = [
   { type: 'foo' },
   { type: 'bar' },
 ];
-
-const ONE_GIGABYTE = 1e9;
 
 describe('PricingConsumptionSimulator', () => {
 
