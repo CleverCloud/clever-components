@@ -38,6 +38,7 @@ export class PricingConsumptionSimulator {
   }
 
   /**
+   * Get the quantity for a given section.
    * @param {SectionType} type
    * @returns {Number} - How many [unit]
    */
@@ -46,7 +47,8 @@ export class PricingConsumptionSimulator {
   }
 
   /**
-   * @param {SectionType} type
+   * Set the quantity for a given section.
+   * @param {SectionType} type - The section type
    * @param {Number} quantity - How many [unit]
    */
   setQuantity (type, quantity) {
@@ -56,23 +58,27 @@ export class PricingConsumptionSimulator {
   }
 
   /**
-   * @param {SectionType} type
-   * @returns {Interval} - Interval matching the current quantity or null
+   * Get the maximum interval (the one matching the quantity) for a given section.
+   * @param {SectionType} type - The section type
+   * @returns {Interval} - Interval matching the quantity or null
    */
-  getCurrentInterval (type) {
+  getMaxInterval (type) {
     const { intervals, quantity } = this._state[type];
     return intervals?.find((interval) => {
-      return quantity >= interval.minRange && quantity < (interval?.maxRange ?? Infinity);
+      return quantity >= interval.minRange && quantity < (interval.maxRange ?? Infinity);
     }) ?? null;
   }
 
   /**
-   * @param {SectionType} type
-   * @returns {Number} - Estimated price for a section
+   * Get the estimated price for a given interval.
+   * @param {SectionType} type - The section type
+   * @param {Number} intervalIndex - The index of the interval
+   * @returns {number} - Estimated price for a given interval.
    */
-  getEstimatedPrice (type) {
-    const interval = this.getCurrentInterval(type);
-    if (interval == null) {
+  getIntervalPrice (type, intervalIndex) {
+    const interval = this._state[type].intervals?.[intervalIndex] ?? null;
+    const maxInterval = this.getMaxInterval(type);
+    if (interval == null || interval !== maxInterval) {
       return 0;
     }
     const unitPrice = interval.price;
@@ -81,11 +87,24 @@ export class PricingConsumptionSimulator {
   }
 
   /**
-   * @returns {Number} - Sum of estimated price for all the sections
+   * Get the estimated price for all intervals of a given section.
+   * @param {SectionType} type - The section type
+   * @returns {number} - Estimated price for all intervals of a given section.
+   */
+  getSectionPrice (type) {
+    const intervals = this._state[type].intervals ?? [];
+    return intervals
+      .map((interval, intervalIndex) => this.getIntervalPrice(type, intervalIndex))
+      .reduce((a, b) => a + b, 0);
+  }
+
+  /**
+   * Get the estimated price for all sections.
+   * @returns {Number} - Estimated price for all intervals of a given section.
    */
   getTotalPrice () {
     return Object.keys(this._state)
-      .map((type) => this.getEstimatedPrice(type))
+      .map((type) => this.getSectionPrice(type))
       .reduce((a, b) => a + b, 0);
   }
 }

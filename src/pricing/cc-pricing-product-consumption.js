@@ -322,8 +322,8 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
     const type = section.type;
     const icon = ICONS[type];
     const { isClosed, quantity, unitValue } = this._state[type];
-    const sectionPrice = this._simulator.getEstimatedPrice(type);
-    const currentInterval = this._simulator.getCurrentInterval(type);
+    const sectionPrice = this._simulator.getSectionPrice(type);
+    const maxInterval = this._simulator.getMaxInterval(type);
 
     return html`
       <div class="section ${classMap({ 'section--closed': isClosed })}">
@@ -358,7 +358,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
           ></cc-toggle>
         </div>
 
-        ${this._renderIntervals({ type, intervals, sectionPrice, currentInterval, skeleton })}
+        ${this._renderIntervals({ type, intervals, sectionPrice, maxInterval, skeleton })}
 
         ${!this.error ? html`
           <div class="section-title section-title--subtotal">
@@ -379,10 +379,10 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
    * @param {SectionType} type
    * @param {Interval[]} intervals
    * @param {Number} sectionPrice
-   * @param {Interval} currentInterval
+   * @param {Interval} maxInterval
    * @param {Boolean} skeleton
    */
-  _renderIntervals ({ type, intervals, sectionPrice, currentInterval, skeleton }) {
+  _renderIntervals ({ type, intervals, sectionPrice, maxInterval, skeleton }) {
 
     if (this.error) {
       return html`
@@ -390,11 +390,12 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
       `;
     }
 
-    return intervals.map((interval) => {
+    return intervals.map((interval, intervalIndex) => {
 
-      const highlighted = (interval === currentInterval);
+      const highlighted = (interval === maxInterval);
       // Interval prices are specified for 1 byte but we want to display a unit price for 1 gigabyte
       const intervalPrice = interval.price * ONE_GIGABYTE;
+      const estimatedPrice = this._simulator.getIntervalPrice(type, intervalIndex);
 
       return html`
         <div class="interval-line ${classMap({ highlighted })}">
@@ -424,7 +425,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
 
           <div class="estimated-price">
             <span class="${classMap({ skeleton })}">
-              ${i18n('cc-pricing-product-consumption.price', this._getCurrencyValue(sectionPrice))}
+              ${i18n('cc-pricing-product-consumption.price', this._getCurrencyValue(estimatedPrice))}
             </span>
           </div>
 
