@@ -25,6 +25,16 @@ const INTERVALS_PROGRESSIVE = [
   { type: 'bar', intervals: INTERVALS_BAR, progressive: true },
 ];
 
+const INTERVALS_SECABILITY = [
+  { type: 'foo', intervals: INTERVALS_FOO, secability: 10 },
+  { type: 'bar', intervals: INTERVALS_BAR, secability: 100 },
+];
+
+const INTERVALS_PROGRESSIVE_SECABILITY = [
+  { type: 'foo', intervals: INTERVALS_FOO, progressive: true, secability: 10 },
+  { type: 'bar', intervals: INTERVALS_BAR, progressive: true, secability: 100 },
+];
+
 const NULLISH_INTERVALS = [
   { type: 'foo' },
   { type: 'bar' },
@@ -90,7 +100,7 @@ describe('PricingConsumptionSimulator', () => {
 
   describe('getIntervalPrice()', () => {
 
-    describe('progressive: false (default)', () => {
+    describe('progressive: false (default) & secability: 1 (default)', () => {
 
       it('small value', () => {
         const ps = new PricingConsumptionSimulator(INTERVALS);
@@ -159,6 +169,68 @@ describe('PricingConsumptionSimulator', () => {
         expect(ps.getIntervalPrice('bar', 3)).to.equal(2001 * 30);
       });
     });
+
+    describe('secability: 10 & 100', () => {
+
+      it('small value', () => {
+        const ps = new PricingConsumptionSimulator(INTERVALS_SECABILITY);
+        ps.setQuantity('foo', 50);
+        ps.setQuantity('bar', 500);
+        expect(ps.getIntervalPrice('foo', 0)).to.equal(0);
+        expect(ps.getIntervalPrice('foo', 1)).to.equal(0);
+        expect(ps.getIntervalPrice('foo', 2)).to.equal(0);
+        expect(ps.getIntervalPrice('foo', 3)).to.equal(0);
+        expect(ps.getIntervalPrice('bar', 0)).to.equal(0);
+        expect(ps.getIntervalPrice('bar', 1)).to.equal(0);
+        expect(ps.getIntervalPrice('bar', 2)).to.equal(0);
+        expect(ps.getIntervalPrice('bar', 3)).to.equal(0);
+      });
+
+      it('big value', () => {
+        const ps = new PricingConsumptionSimulator(INTERVALS_SECABILITY);
+        ps.setQuantity('foo', 255);
+        ps.setQuantity('bar', 5050);
+        expect(ps.getIntervalPrice('foo', 0)).to.equal(0);
+        expect(ps.getIntervalPrice('foo', 1)).to.equal(0);
+        expect(ps.getIntervalPrice('foo', 2)).to.equal(260 * 2);
+        expect(ps.getIntervalPrice('foo', 3)).to.equal(0);
+        expect(ps.getIntervalPrice('bar', 0)).to.equal(0);
+        expect(ps.getIntervalPrice('bar', 1)).to.equal(0);
+        expect(ps.getIntervalPrice('bar', 2)).to.equal(0);
+        expect(ps.getIntervalPrice('bar', 3)).to.equal(5100 * 30);
+      });
+    });
+
+    describe('progressive: true AND secability: 10 & 100', () => {
+
+      it('small value', () => {
+        const ps = new PricingConsumptionSimulator(INTERVALS_PROGRESSIVE_SECABILITY);
+        ps.setQuantity('foo', 50);
+        ps.setQuantity('bar', 500);
+        expect(ps.getIntervalPrice('foo', 0)).to.equal(0);
+        expect(ps.getIntervalPrice('foo', 1)).to.equal(0);
+        expect(ps.getIntervalPrice('foo', 2)).to.equal(0);
+        expect(ps.getIntervalPrice('foo', 3)).to.equal(0);
+        expect(ps.getIntervalPrice('bar', 0)).to.equal(0);
+        expect(ps.getIntervalPrice('bar', 1)).to.equal(0);
+        expect(ps.getIntervalPrice('bar', 2)).to.equal(0);
+        expect(ps.getIntervalPrice('bar', 3)).to.equal(0);
+      });
+
+      it('big value', () => {
+        const ps = new PricingConsumptionSimulator(INTERVALS_PROGRESSIVE_SECABILITY);
+        ps.setQuantity('foo', 255);
+        ps.setQuantity('bar', 5050);
+        expect(ps.getIntervalPrice('foo', 0)).to.equal(99 * 0);
+        expect(ps.getIntervalPrice('foo', 1)).to.equal(100 * 1);
+        expect(ps.getIntervalPrice('foo', 2)).to.equal(61 * 2);
+        expect(ps.getIntervalPrice('foo', 3)).to.equal(0);
+        expect(ps.getIntervalPrice('bar', 0)).to.equal(999 * 0);
+        expect(ps.getIntervalPrice('bar', 1)).to.equal(1000 * 10);
+        expect(ps.getIntervalPrice('bar', 2)).to.equal(1000 * 20);
+        expect(ps.getIntervalPrice('bar', 3)).to.equal(2101 * 30);
+      });
+    });
   });
 
   describe('getSectionPrice()', () => {
@@ -206,6 +278,54 @@ describe('PricingConsumptionSimulator', () => {
         expect(ps.getSectionPrice('bar')).to.equal(999 * 0 + 1000 * 10 + 1000 * 20 + 2001 * 30);
       });
     });
+
+    describe('secability: 10 & 100', () => {
+
+      it('small value', () => {
+        const ps = new PricingConsumptionSimulator(INTERVALS_SECABILITY);
+        ps.setQuantity('foo', 50);
+        ps.setQuantity('bar', 500);
+        expect(ps.getSectionPrice('foo')).to.equal(0);
+        expect(ps.getSectionPrice('bar')).to.equal(0);
+      });
+
+      it('big value', () => {
+        const ps = new PricingConsumptionSimulator(INTERVALS_SECABILITY);
+        ps.setQuantity('foo', 255);
+        ps.setQuantity('bar', 5050);
+        expect(ps.getSectionPrice('foo')).to.equal(260 * 2);
+        expect(ps.getSectionPrice('bar')).to.equal(5100 * 30);
+      });
+    });
+
+    describe('progressive: true AND secability: 10 & 100', () => {
+
+      it('small value', () => {
+        const ps = new PricingConsumptionSimulator(INTERVALS_PROGRESSIVE_SECABILITY);
+        ps.setQuantity('foo', 50);
+        ps.setQuantity('bar', 500);
+        expect(ps.getSectionPrice('foo')).to.equal(0);
+        expect(ps.getSectionPrice('bar')).to.equal(0);
+      });
+
+      it('big value', () => {
+        const ps = new PricingConsumptionSimulator(INTERVALS_PROGRESSIVE_SECABILITY);
+        ps.setQuantity('foo', 255);
+        ps.setQuantity('bar', 5050);
+        expect(ps.getSectionPrice('foo')).to.equal(
+          99 * 0
+          + 100 * 1
+          + 61 * 2
+          + 0 * 3,
+        );
+        expect(ps.getSectionPrice('bar')).to.equal(
+          999 * 0
+          + 1000 * 10
+          + 1000 * 20
+          + 2101 * 30,
+        );
+      });
+    });
   });
 
   describe('getTotalPrice()', () => {
@@ -249,6 +369,82 @@ describe('PricingConsumptionSimulator', () => {
           (99 * 0 + 100 * 1 + 51 * 2)
           + (999 * 0 + 1000 * 10 + 1000 * 20 + 2001 * 30),
         );
+      });
+    });
+
+    describe('secability: 10 & 100', () => {
+
+      it('small value', () => {
+        const ps = new PricingConsumptionSimulator(INTERVALS_SECABILITY);
+        ps.setQuantity('foo', 50);
+        ps.setQuantity('bar', 500);
+        expect(ps.getTotalPrice()).to.equal(0 + 0);
+      });
+
+      it('big value', () => {
+        const ps = new PricingConsumptionSimulator(INTERVALS_SECABILITY);
+        ps.setQuantity('foo', 255);
+        ps.setQuantity('bar', 5050);
+        expect(ps.getTotalPrice()).to.equal(
+          260 * 2
+          + 5100 * 30,
+        );
+      });
+    });
+
+    describe('progressive: true AND secability: 10 & 100', () => {
+
+      it('small value', () => {
+        const ps = new PricingConsumptionSimulator(INTERVALS_PROGRESSIVE_SECABILITY);
+        ps.setQuantity('foo', 50);
+        ps.setQuantity('bar', 500);
+        expect(ps.getTotalPrice()).to.equal(0 + 0);
+      });
+
+      it('big value', () => {
+        const ps = new PricingConsumptionSimulator(INTERVALS_PROGRESSIVE_SECABILITY);
+        ps.setQuantity('foo', 255);
+        ps.setQuantity('bar', 5050);
+        expect(ps.getTotalPrice()).to.equal(
+          999 * 0
+          + 100 * 1
+          + 61 * 2
+          + 0
+          + 999 * 0
+          + 1000 * 10
+          + 1000 * 20
+          + 2101 * 30,
+        );
+      });
+
+      it('values near interval limits', () => {
+        const ps = new PricingConsumptionSimulator([
+          {
+            type: 'foo',
+            progressive: true,
+            secability: 100,
+            intervals: [
+              { minRange: 0, maxRange: 101, price: 0 },
+              { minRange: 101, price: 0.01 },
+            ],
+          },
+        ]);
+        ps.setQuantity('foo', 99);
+        expect(ps.getTotalPrice()).to.equal(0);
+        ps.setQuantity('foo', 100);
+        expect(ps.getTotalPrice()).to.equal(0);
+        ps.setQuantity('foo', 101);
+        expect(ps.getTotalPrice()).to.equal(1);
+        ps.setQuantity('foo', 102);
+        expect(ps.getTotalPrice()).to.equal(1);
+        ps.setQuantity('foo', 150);
+        expect(ps.getTotalPrice()).to.equal(1);
+        ps.setQuantity('foo', 200);
+        expect(ps.getTotalPrice()).to.equal(1);
+        ps.setQuantity('foo', 201);
+        expect(ps.getTotalPrice()).to.equal(2);
+        ps.setQuantity('foo', 250);
+        expect(ps.getTotalPrice()).to.equal(2);
       });
     });
   });

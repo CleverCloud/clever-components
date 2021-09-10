@@ -16,12 +16,20 @@
  * * Solution 2 is used by most cloud providers for consumption based pricing.
  * * Solution 2 is what most income tax systems use.
  *
+ * ## Secability
+ *
+ * If you need to apply your prices on batches/groups, something like "€2 per 100 users":
+ *
+ * * you need to set the secability to the size of your batch/group `secability: 100` in the section
+ * * the interval prices are still per 1 so you will need to set `price: 0.02` in your intervals
+ *
  * ## Type definitions
  *
  * ```js
  * interface Section {
  *   type: string,
  *   progressive?: boolean, // defaults to false
+ *   secability?: number, // defaults to 1
  *   intervals?: Interval[],
  * }
  * ```
@@ -41,10 +49,11 @@ export class PricingConsumptionSimulator {
    */
   constructor (sections = []) {
     this._state = {};
-    sections.forEach(({ type, intervals, progressive = false }) => {
+    sections.forEach(({ type, intervals, progressive = false, secability = 1 }) => {
       this._state[type] = {
         intervals,
         progressive,
+        secability,
         quantity: 0,
       };
     });
@@ -97,12 +106,14 @@ export class PricingConsumptionSimulator {
     }
 
     const isProgressive = this._state[type].progressive;
+    const secability = this._state[type].secability;
     const { price: unitPrice } = interval;
-    const totalQuantity = this._state[type].quantity;
+    const quantity = this._state[type].quantity;
+    const totalQuantity = Math.ceil(quantity / secability) * secability;
 
     if (isProgressive) {
-      const { minRange, maxRange = Infinity } = interval;
-      const intervalQuantity = getIntervalQuantity(minRange, totalQuantity, maxRange);
+      const { minRange, maxRange } = interval;
+      const intervalQuantity = getIntervalQuantity(minRange, totalQuantity, maxRange ?? Infinity);
       return unitPrice * intervalQuantity;
     }
     else {
