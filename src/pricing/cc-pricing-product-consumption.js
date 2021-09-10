@@ -49,11 +49,30 @@ const SKELETON_INTERVALS = [
  * * To comply with `<cc-pricing-product>`, the price in the event `cc-pricing-product:add-plan` is in "euros / 1 hour".
  * * When a section has a nullish `intervals`, a skeleton screen UI pattern is displayed for this section (loading hint).
  *
+ * ## Progressive pricing system
+ *
+ * ### Not progressive (default)
+ *
+ * When a section is `progressive: false` (default):
+ *
+ * * The interval matching the total quantity is highlighted.
+ * * We display a price only on the interval line matching the total quantity.
+ * * We apply the price of the interval matching the total quantity to the total quantity.
+ *
+ * ### Progressive
+ *
+ * When a section is `progressive: true`:
+ *
+ * * Intervals are not highlighted.
+ * * We display a price for each interval that match part of the total quantity.
+ * * We apply the price of each interval to the quantity that fits in each respective interval.
+ *
  * ## Type definitions
  *
  * ```js
  * interface Section {
  *   type: SectionType,
+ *   progressive?: boolean, // defaults to false
  *   intervals?: Interval[],
  * }
  * ```
@@ -89,7 +108,7 @@ const SKELETON_INTERVALS = [
  *
  * @cssdisplay block
  *
- * @prop {"add"|"none"} action - Sets the type of action: "add" to display the "add" button for the product and "none" for no actions (defaults to "add").
+ * @prop {'add"|"none"} action - Sets the type of action: "add" to display the "add" button for the product and "none" for no actions (defaults to "add').
  * @prop {Boolean} error - Displays an error message.
  * @prop {String} icon - Sets the url of the product icon/logo image.
  * @prop {String} name - Sets the name of the product.
@@ -318,6 +337,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
 
     const skeleton = (section.intervals == null);
     const intervals = section.intervals ?? SKELETON_INTERVALS;
+    const progressive = section.progressive;
 
     const type = section.type;
     const icon = ICONS[type];
@@ -358,7 +378,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
           ></cc-toggle>
         </div>
 
-        ${this._renderIntervals({ type, intervals, sectionPrice, maxInterval, skeleton })}
+        ${this._renderIntervals({ type, progressive, intervals, maxInterval, skeleton })}
 
         ${!this.error ? html`
           <div class="section-title section-title--subtotal">
@@ -378,11 +398,10 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
   /**
    * @param {SectionType} type
    * @param {Interval[]} intervals
-   * @param {Number} sectionPrice
    * @param {Interval} maxInterval
    * @param {Boolean} skeleton
    */
-  _renderIntervals ({ type, intervals, sectionPrice, maxInterval, skeleton }) {
+  _renderIntervals ({ type, progressive, intervals, maxInterval, skeleton }) {
 
     if (this.error) {
       return html`
@@ -392,13 +411,15 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
 
     return intervals.map((interval, intervalIndex) => {
 
-      const highlighted = (interval === maxInterval);
+      const maxIntervalIndex = intervals.indexOf(maxInterval);
+      const foo = progressive && intervalIndex <= maxIntervalIndex;
+      const highlighted = (interval === maxInterval || foo);
       // Interval prices are specified for 1 byte but we want to display a unit price for 1 gigabyte
       const intervalPrice = interval.price * ONE_GIGABYTE;
       const estimatedPrice = this._simulator.getIntervalPrice(type, intervalIndex);
 
       return html`
-        <div class="interval-line ${classMap({ highlighted })}">
+        <div class="interval-line ${classMap({ progressive, highlighted })}">
 
           <div class="interval interval-min">
             <span class="${classMap({ skeleton })}">
@@ -600,7 +621,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
           padding-right: 0.25em;
         }
 
-        .interval-line.highlighted .interval {
+        .interval-line.highlighted:not(.progressive) .interval {
           background-color: rgba(50, 50, 255, 0.15);
         }
 

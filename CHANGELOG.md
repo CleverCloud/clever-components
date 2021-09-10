@@ -7,7 +7,9 @@ title: Changelog
 ## Unreleased (????-??-??)
 
 * `<cc-env-var-form>`: fix small issues in exposed-config smart definition
-* `<cc-pricing-product-consumption>`: consider empty number values as `0`
+* `<cc-pricing-product-consumption>`:
+  * consider empty number values as `0`
+  * add `progressive` support
 
 ### For devs
 
