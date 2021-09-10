@@ -10,6 +10,7 @@ title: Changelog
 * `<cc-pricing-product-consumption>`:
   * consider empty number values as `0`
   * add `progressive` support
+  * add support for users (non byte type) and `secability`
 
 ### For devs
 

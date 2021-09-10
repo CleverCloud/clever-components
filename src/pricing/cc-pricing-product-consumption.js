@@ -19,6 +19,7 @@ const plusSvg = new URL('../assets/plus.svg', import.meta.url).href;
 const storageSvg = new URL('../assets/storage.svg', import.meta.url).href;
 const sumSvg = new URL('../assets/sum.svg', import.meta.url).href;
 const upSvg = new URL('../assets/up.svg', import.meta.url).href;
+const userSvg = new URL('../assets/user.svg', import.meta.url).href;
 
 const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
 const INFINITY = '∞';
@@ -29,6 +30,8 @@ const ICONS = {
   storage: storageSvg,
   'inbound-traffic': arrowsRightSvg,
   'outbound-traffic': arrowsLeftSvg,
+  'private-users': userSvg,
+  'public-users': userSvg,
 };
 
 const SKELETON_NAME = '??????????';
@@ -67,18 +70,26 @@ const SKELETON_INTERVALS = [
  * * We display a price for each interval that match part of the total quantity.
  * * We apply the price of each interval to the quantity that fits in each respective interval.
  *
+ * ## Secability system
+ *
+ * * If you need to apply your prices on batches/groups, something like "€2 per 100 users":
+ *
+ * * you need to set the secability to the size of your batch/group `secability: 100` in the section
+ * * the interval prices are still per 1 so you will need to set `price: 0.02` in your intervals
+ *
  * ## Type definitions
  *
  * ```js
  * interface Section {
  *   type: SectionType,
  *   progressive?: boolean, // defaults to false
+ *   secability?: number, // defaults to 1
  *   intervals?: Interval[],
  * }
  * ```
  *
  * ```js
- *   type SectionType = "storage"|"inbound-traffic"|"outbound-traffic"
+ *   type SectionType = "storage"|"inbound-traffic"|"outbound-traffic"|"private-users"|"public-users"
  * ```
  *
  * ```js
@@ -155,6 +166,10 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         return i18n('cc-pricing-product-consumption.inbound-traffic.title');
       case 'outbound-traffic':
         return i18n('cc-pricing-product-consumption.outbound-traffic.title');
+      case 'private-users':
+        return i18n('cc-pricing-product-consumption.private-users.title');
+      case 'public-users':
+        return i18n('cc-pricing-product-consumption.public-users.title');
       case 'total':
         return i18n('cc-pricing-product-consumption.total.title');
     }
@@ -168,6 +183,10 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         return i18n('cc-pricing-product-consumption.inbound-traffic.label');
       case 'outbound-traffic':
         return i18n('cc-pricing-product-consumption.outbound-traffic.label');
+      case 'private-users':
+        return i18n('cc-pricing-product-consumption.private-users.label');
+      case 'public-users':
+        return i18n('cc-pricing-product-consumption.public-users.label');
     }
   }
 
@@ -195,10 +214,47 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
     ];
   }
 
+  _isTypeBytes (type) {
+    return ['storage', 'inbound-traffic', 'outbound-traffic'].includes(type);
+  }
+
+  _getMinRange (type, minRange) {
+    return this._isTypeBytes(type)
+      ? i18n('cc-pricing-product-consumption.bytes', { bytes: minRange })
+      : minRange;
+  }
+
+  _getMaxRange (type, maxRange) {
+    if (maxRange == null) {
+      return INFINITY;
+    }
+    if (this._isTypeBytes(type)) {
+      return i18n('cc-pricing-product-consumption.bytes', { bytes: maxRange });
+    }
+    return maxRange;
+  }
+
+  _getIntervalPrice (type, intervalPrice) {
+
+    if (intervalPrice === 0) {
+      return i18n('cc-pricing-product-consumption.price-interval.free');
+    }
+
+    // type bytes interval prices are specified for 1 byte but we want to display a unit price for 1 gigabyte
+    return this._isTypeBytes(type)
+      ? i18n('cc-pricing-product-consumption.price-interval.bytes', this._getCurrencyValue(intervalPrice * ONE_GIGABYTE))
+      : i18n('cc-pricing-product-consumption.price-interval.users', {
+        ...this._getCurrencyValue(intervalPrice),
+        userCount: this.sections.find((s) => s.type === type).secability ?? 1,
+      });
+  }
+
   _updateSimulatorQuantity (type) {
     const quantity = this._state[type].quantity;
-    const valueBytes = parseInt(this._state[type].unitValue);
-    this._simulator.setQuantity(type, quantity * valueBytes);
+    const factor = this._isTypeBytes(type)
+      ? parseInt(this._state[type].unitValue)
+      : 1;
+    this._simulator.setQuantity(type, quantity * factor);
   }
 
   _onToggleState (type) {
@@ -243,7 +299,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
     if (changedProperties.has('sections') && Array.isArray(this.sections)) {
 
       this._state = {};
-      this.sections.forEach(({ type, value }) => {
+      this.sections.forEach(({ type }) => {
         this._state[type] = {
           // In small mode, sections are closed by default
           isClosed: true,
@@ -362,20 +418,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         </div>
 
         <div class="input-wrapper">
-          <cc-input-number
-            class="input-quantity"
-            value=${quantity}
-            min="0"
-            ?disabled=${skeleton}
-            @cc-input-number:input=${(e) => this._onInputValue(type, e.detail)}
-          ></cc-input-number>
-          <cc-toggle
-            class="input-unit"
-            value=${unitValue}
-            .choices=${this._getUnits()}
-            ?disabled=${skeleton}
-            @cc-toggle:input=${(e) => this._onToggleUnit(type, e.detail)}
-          ></cc-toggle>
+          ${this._renderInput({ type, quantity, unitValue, skeleton })}
         </div>
 
         ${this._renderIntervals({ type, progressive, intervals, maxInterval, skeleton })}
@@ -397,6 +440,45 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
 
   /**
    * @param {SectionType} type
+   * @param {Number} quantity
+   * @param {Number} unitValue
+   * @param {Boolean} skeleton
+   */
+  _renderInput ({ type, quantity, unitValue, skeleton }) {
+
+    if (this._isTypeBytes(type)) {
+      return html`
+        <cc-input-number
+          class="input-quantity"
+          value=${quantity}
+          min="0"
+          ?disabled=${skeleton}
+          @cc-input-number:input=${(e) => this._onInputValue(type, e.detail)}
+        ></cc-input-number>
+        <cc-toggle
+          class="input-unit"
+          value=${unitValue}
+          .choices=${this._getUnits()}
+          ?disabled=${skeleton}
+          @cc-toggle:input=${(e) => this._onToggleUnit(type, e.detail)}
+        ></cc-toggle>
+      `;
+    }
+    else {
+      return html`
+        <cc-input-number
+          class="input-quantity"
+          value=${quantity}
+          min="0"
+          ?disabled=${skeleton}
+          @cc-input-number:input=${(e) => this._onInputValue(type, e.detail)}
+        ></cc-input-number>
+      `;
+    }
+  }
+
+  /**
+   * @param {SectionType} type
    * @param {Interval[]} intervals
    * @param {Interval} maxInterval
    * @param {Boolean} skeleton
@@ -414,42 +496,30 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
       const maxIntervalIndex = intervals.indexOf(maxInterval);
       const foo = progressive && intervalIndex <= maxIntervalIndex;
       const highlighted = (interval === maxInterval || foo);
-      // Interval prices are specified for 1 byte but we want to display a unit price for 1 gigabyte
-      const intervalPrice = interval.price * ONE_GIGABYTE;
-      const estimatedPrice = this._simulator.getIntervalPrice(type, intervalIndex);
+
+      const minRange = this._getMinRange(type, interval.minRange);
+      const maxRange = this._getMaxRange(type, interval.maxRange);
+      const intervalPrice = this._getIntervalPrice(type, interval.price);
+      const estimatedPriceValue = this._simulator.getIntervalPrice(type, intervalIndex);
+      const estimatedPrice = i18n('cc-pricing-product-consumption.price', this._getCurrencyValue(estimatedPriceValue));
 
       return html`
         <div class="interval-line ${classMap({ progressive, highlighted })}">
-
           <div class="interval interval-min">
-            <span class="${classMap({ skeleton })}">
-              ${i18n('cc-pricing-product-consumption.bytes', { bytes: interval.minRange })}
-            </span>
+            <span class="${classMap({ skeleton })}">${minRange}</span>
           </div>
           <div class="interval interval-min-sign">&le;</div>
           <div class="interval interval-label"> ${this._getLabel(type)}</div>
           <div class="interval interval-max-sign">&lt;</div>
           <div class="interval interval-max">
-            <span class="${classMap({ skeleton })}">
-              ${(interval.maxRange != null) ? i18n('cc-pricing-product-consumption.bytes', { bytes: interval.maxRange }) : INFINITY}
-            </span>
+            <span class="${classMap({ skeleton })}">${maxRange}</span>
           </div>
-
           <div class="interval-price ${classMap({ 'interval-price--free': (interval.price === 0) })}">
-            <span class="${classMap({ skeleton })}">
-              ${(interval.price === 0)
-                ? i18n('cc-pricing-product-consumption.price-interval.free')
-                : i18n('cc-pricing-product-consumption.price-interval', this._getCurrencyValue(intervalPrice))
-              }
-            </span>
+            <span class="${classMap({ skeleton })}">${intervalPrice}</span>
           </div>
-
           <div class="estimated-price">
-            <span class="${classMap({ skeleton })}">
-              ${i18n('cc-pricing-product-consumption.price', this._getCurrencyValue(estimatedPrice))}
-            </span>
+            <span class="${classMap({ skeleton })}">${estimatedPrice}</span>
           </div>
-
         </div>
       `;
     });

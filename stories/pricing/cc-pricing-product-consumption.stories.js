@@ -198,6 +198,32 @@ const baseHeptapod = {
         },
       ],
     },
+    {
+      type: 'private-users',
+      progressive: true,
+      intervals: [
+        {
+          minRange: 0,
+          price: 7,
+        },
+      ],
+    },
+    {
+      type: 'public-users',
+      progressive: true,
+      secability: 100,
+      intervals: [
+        {
+          minRange: 0,
+          maxRange: 101,
+          price: 0,
+        },
+        {
+          minRange: 101,
+          price: 0.07,
+        },
+      ],
+    },
   ],
 };
 
