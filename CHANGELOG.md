@@ -21,6 +21,7 @@ title: Changelog
 * pricing:
   * fix tests for PricingConsumptionSimulator
   * rename and update documentation for PricingConsumptionSimulator
+  * add `progressive` to PricingConsumptionSimulator
 
 ## 7.0.0 (2021-09-03)
 

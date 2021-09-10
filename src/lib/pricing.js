@@ -5,11 +5,23 @@
  * * Interval ranges are defined in [unit].
  * * Quantity is in [unit].
  *
+ * ## Progressive pricing system
+ *
+ * There are two solutions to apply a consumption pricing system based on intervals.
+ *
+ * * Solution 1: apply the price of the interval matching the total quantity to the total quantity.
+ * * Solution 2: apply the price of each interval to the quantity that fits in each respective interval.
+ *
+ * * Solution 2 is what we call progressive.
+ * * Solution 2 is used by most cloud providers for consumption based pricing.
+ * * Solution 2 is what most income tax systems use.
+ *
  * ## Type definitions
  *
  * ```js
  * interface Section {
  *   type: string,
+ *   progressive?: boolean, // defaults to false
  *   intervals?: Interval[],
  * }
  * ```
@@ -29,9 +41,10 @@ export class PricingConsumptionSimulator {
    */
   constructor (sections = []) {
     this._state = {};
-    sections.forEach(({ type, intervals }) => {
+    sections.forEach(({ type, intervals, progressive = false }) => {
       this._state[type] = {
         intervals,
+        progressive,
         quantity: 0,
       };
     });
@@ -64,8 +77,8 @@ export class PricingConsumptionSimulator {
    */
   getMaxInterval (type) {
     const { intervals, quantity } = this._state[type];
-    return intervals?.find((interval) => {
-      return quantity >= interval.minRange && quantity < (interval.maxRange ?? Infinity);
+    return intervals?.find(({ minRange, maxRange }) => {
+      return quantity >= minRange && quantity < (maxRange ?? Infinity);
     }) ?? null;
   }
 
@@ -76,14 +89,28 @@ export class PricingConsumptionSimulator {
    * @returns {number} - Estimated price for a given interval.
    */
   getIntervalPrice (type, intervalIndex) {
+
     const interval = this._state[type].intervals?.[intervalIndex] ?? null;
-    const maxInterval = this.getMaxInterval(type);
-    if (interval == null || interval !== maxInterval) {
+
+    if (interval == null) {
       return 0;
     }
-    const unitPrice = interval.price;
-    const quantity = this._state[type].quantity;
-    return unitPrice * quantity;
+
+    const isProgressive = this._state[type].progressive;
+    const { price: unitPrice } = interval;
+    const totalQuantity = this._state[type].quantity;
+
+    if (isProgressive) {
+      const { minRange, maxRange = Infinity } = interval;
+      const intervalQuantity = getIntervalQuantity(minRange, totalQuantity, maxRange);
+      return unitPrice * intervalQuantity;
+    }
+    else {
+      const maxInterval = this.getMaxInterval(type);
+      return (interval === maxInterval)
+        ? unitPrice * totalQuantity
+        : 0;
+    }
   }
 
   /**
@@ -107,4 +134,18 @@ export class PricingConsumptionSimulator {
       .map((type) => this.getSectionPrice(type))
       .reduce((a, b) => a + b, 0);
   }
+}
+
+/**
+ * Return how many integers fit inside interval [min, max[
+ * @param {number} min
+ * @param {number} value
+ * @param {number} max
+ * @returns {number}
+ */
+export function getIntervalQuantity (min, value, max) {
+  // Intervals starting at 0 are a special case
+  const beforeMin = (min === 0) ? 0 : (min - 1);
+  const intervalSize = (min === 0) ? max - 1 : (max - min);
+  return Math.max(0, Math.min(value - beforeMin, intervalSize));
 }
