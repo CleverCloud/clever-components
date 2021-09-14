@@ -11,6 +11,7 @@ title: Changelog
   * consider empty number values as `0`
   * add `progressive` support
   * add support for users (non byte type) and `secability`
+  * add support for Heptapod in smart definition
 
 ### For devs
 

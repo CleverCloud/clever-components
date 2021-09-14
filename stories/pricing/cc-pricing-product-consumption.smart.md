@@ -18,7 +18,7 @@ title: '💡 Smart'
 <table>
   <tr><th>Name                       <th>Type                  <th>Details                                                                                                                <th>Default
   <tr><td><code>currency</code>      <td><code>Currency</code> <td>Currency info                                                                                                          <td><code>{ code: 'EUR', changeRate: 1 }</code>
-  <tr><td><code>productId</code>     <td><code>String</code>   <td><code>cellar</code>, <code>fsbucket</code> or <code>pulsar</code>                                                      <td>
+  <tr><td><code>productId</code>     <td><code>String</code>   <td><code>cellar</code>, <code>fsbucket</code>, <code>heptapod</code> or <code>pulsar</code>                                                      <td>
   <tr><td><code>zoneId</code>        <td><code>String</code>   <td>Name from <a href="https://api.clever-cloud.com/v4/products/zones"><code>/v4/products/zones</code></a>                 <td><code>par</code>
 </table>
 
@@ -43,7 +43,6 @@ interface Currency {
 Simple example for Cellar based on default zone and currency.
 
 ```html
-
 <cc-smart-container context='{ "productId": "cellar" }'>
   <cc-pricing-product-consumption></cc-pricing-product-consumption>
 </cc-smart-container>
@@ -58,7 +57,6 @@ Simple example for Cellar based on default zone and currency.
 Simple example for FS Bucket based on default zone and currency.
 
 ```html
-
 <cc-smart-container context='{ "productId": "fsbucket" }'>
   <cc-pricing-product-consumption></cc-pricing-product-consumption>
 </cc-smart-container>
@@ -73,13 +71,26 @@ Simple example for FS Bucket based on default zone and currency.
 Simple example for FS Bucket based on default zone and currency.
 
 ```html
-
 <cc-smart-container context='{ "productId": "pulsar" }'>
   <cc-pricing-product-consumption></cc-pricing-product-consumption>
 </cc-smart-container>
 ```
 
 <cc-smart-container context='{ "productId": "pulsar" }'>
+  <cc-pricing-product-consumption></cc-pricing-product-consumption>
+</cc-smart-container>
+
+### Simple Heptapod
+
+Simple example for Heptapod based on default zone and currency.
+
+```html
+<cc-smart-container context='{ "productId": "heptapod" }'>
+  <cc-pricing-product-consumption></cc-pricing-product-consumption>
+</cc-smart-container>
+```
+
+<cc-smart-container context='{ "productId": "heptapod" }'>
   <cc-pricing-product-consumption></cc-pricing-product-consumption>
 </cc-smart-container>
 

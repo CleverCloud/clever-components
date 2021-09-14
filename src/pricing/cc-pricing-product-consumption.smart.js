@@ -2,7 +2,7 @@ import './cc-pricing-product-consumption.js';
 import '../smart/cc-smart-container.js';
 import { fetchPriceSystem } from '../lib/api-helpers.js';
 import { LastPromise, unsubscribeWithSignal } from '../lib/observables.js';
-import { formatAddonCellar, formatAddonFsbucket, formatAddonPulsar } from '../lib/product.js';
+import { formatAddonCellar, formatAddonFsbucket, formatAddonHeptapod, formatAddonPulsar } from '../lib/product.js';
 import { defineComponent } from '../lib/smart-manager.js';
 
 const PRODUCTS = {
@@ -28,6 +28,15 @@ const PRODUCTS = {
       { type: 'storage' },
       { type: 'inbound-traffic' },
       { type: 'outbound-traffic' },
+    ],
+  },
+  heptapod: {
+    name: 'Heptapod',
+    icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/heptapod.svg',
+    sections: [
+      { type: 'storage' },
+      { type: 'private-users' },
+      { type: 'public-users' },
     ],
   },
 };
@@ -80,6 +89,9 @@ async function fetchProduct ({ signal, productId, zoneId = 'PAR' }) {
   }
   if (productId === 'pulsar') {
     return formatAddonPulsar(priceSystem);
+  }
+  if (productId === 'heptapod') {
+    return formatAddonHeptapod(priceSystem);
   }
   throw new Error(`Cannot find product "${productId}"`);
 }

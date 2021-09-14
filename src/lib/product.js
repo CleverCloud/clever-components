@@ -19,11 +19,11 @@ export function formatAddonCellar (priceSystem) {
     sections: [
       {
         type: 'storage',
-        intervals: formatProductConsumptionIntervals(priceSystem, 'cellar.storage'),
+        ...formatProductConsumptionIntervals(priceSystem, 'cellar.storage'),
       },
       {
         type: 'outbound-traffic',
-        intervals: formatProductConsumptionIntervals(priceSystem, 'cellar.outbound'),
+        ...formatProductConsumptionIntervals(priceSystem, 'cellar.outbound'),
       },
     ],
   };
@@ -34,7 +34,7 @@ export function formatAddonFsbucket (priceSystem) {
     sections: [
       {
         type: 'storage',
-        intervals: formatProductConsumptionIntervals(priceSystem, 'fsbucket.storage'),
+        ...formatProductConsumptionIntervals(priceSystem, 'fsbucket.storage'),
       },
     ],
   };
@@ -45,15 +45,36 @@ export function formatAddonPulsar (priceSystem) {
     sections: [
       {
         type: 'storage',
-        intervals: formatProductConsumptionIntervals(priceSystem, 'pulsar_storage_size'),
+        ...formatProductConsumptionIntervals(priceSystem, 'pulsar_storage_size'),
       },
       {
         type: 'inbound-traffic',
-        intervals: formatProductConsumptionIntervals(priceSystem, 'pulsar_throughput_in'),
+        ...formatProductConsumptionIntervals(priceSystem, 'pulsar_throughput_in'),
       },
       {
         type: 'outbound-traffic',
-        intervals: formatProductConsumptionIntervals(priceSystem, 'pulsar_throughput_out'),
+        ...formatProductConsumptionIntervals(priceSystem, 'pulsar_throughput_out'),
+      },
+    ],
+  };
+}
+
+export function formatAddonHeptapod (priceSystem) {
+  return {
+    sections: [
+      {
+        type: 'storage',
+        ...formatProductConsumptionIntervals(priceSystem, 'heptapod.storage'),
+      },
+      {
+        type: 'private-users',
+        progressive: true,
+        ...formatProductConsumptionIntervals(priceSystem, 'heptapod.private_active_users'),
+      },
+      {
+        type: 'public-users',
+        progressive: true,
+        ...formatProductConsumptionIntervals(priceSystem, 'heptapod.public_active_users'),
       },
     ],
   };
@@ -63,12 +84,16 @@ function formatProductConsumptionIntervals (priceSystem, serviceName) {
 
   const service = priceSystem.countable.find((c) => c.service === serviceName);
 
+  const secability = (service?.data_quantity_for_price?.secability === 'insecable')
+    ? service.data_quantity_for_price.quantity
+    : 1;
+
   const timeFactor = (service?.time_interval_for_price?.interval === 'PT1H') ? THIRTY_DAYS_IN_HOURS : 1;
   const quantityFactor = service?.data_quantity_for_price?.quantity ?? 1;
 
   const priceFactor = timeFactor / quantityFactor;
 
-  return service.price_plans.map((interval, idx, allIntervals) => {
+  const intervals = service.price_plans.map((interval, idx, allIntervals) => {
     const minRange = (idx === 0) ? 0 : allIntervals[idx - 1].max_quantity;
     return {
       minRange,
@@ -76,6 +101,8 @@ function formatProductConsumptionIntervals (priceSystem, serviceName) {
       price: interval.price * priceFactor,
     };
   });
+
+  return { secability, intervals };
 }
 
 function formatAddonFeatures (providerFeatures, selectedFeatures) {
