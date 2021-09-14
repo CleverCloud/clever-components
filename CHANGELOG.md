@@ -26,6 +26,7 @@ title: Changelog
   * rename and update documentation for PricingConsumptionSimulator
   * add `progressive` to PricingConsumptionSimulator
   * add `secability` to PricingConsumptionSimulator
+* product: refactor data API extraction for consumption based products
 
 ## 7.0.0 (2021-09-03)
 
