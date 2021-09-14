@@ -188,7 +188,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
   }
 
   _onInputValue (type, quantity) {
-    this._state[type].quantity = quantity;
+    this._state[type].quantity = isNaN(quantity) ? 0 : quantity;
     this._updateSimulatorQuantity(type);
     this.requestUpdate();
   }
