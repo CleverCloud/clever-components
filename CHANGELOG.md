@@ -7,6 +7,11 @@ title: Changelog
 ## Unreleased (????-??-??)
 
 * `<cc-env-var-form>`: fix small issues in exposed-config smart definition
+* `<cc-pricing-product-consumption>`:
+  * consider empty number values as `0`
+  * add `progressive` support
+  * add support for users (non byte type) and `secability`
+  * add support for Heptapod in smart definition
 
 ### For devs
 
@@ -17,6 +22,12 @@ title: Changelog
 * i18n: use Intl.PluralRules instead of custom code
 * refactor: move sub render methods `_renderFoo()` below the main `render()` method
 * refactor: use code folding regions in CSS (especially for responsive with COMMON/BIG/SMALL modes)
+* pricing:
+  * fix tests for PricingConsumptionSimulator
+  * rename and update documentation for PricingConsumptionSimulator
+  * add `progressive` to PricingConsumptionSimulator
+  * add `secability` to PricingConsumptionSimulator
+* product: refactor data API extraction for consumption based products
 
 ## 7.0.0 (2021-09-03)
 

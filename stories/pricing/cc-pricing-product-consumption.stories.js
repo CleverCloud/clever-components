@@ -180,6 +180,53 @@ const basePulsar = {
   ],
 };
 
+const baseHeptapod = {
+  name: 'Heptapod',
+  icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/heptapod.svg',
+  sections: [
+    {
+      type: 'storage',
+      intervals: [
+        {
+          minRange: 0,
+          maxRange: 1 * 1e9,
+          price: 0 * THIRTY_DAYS_IN_HOURS / ONE_GIGABYTE,
+        },
+        {
+          minRange: 1 * 1e9,
+          price: 0.00002777777777777778 * THIRTY_DAYS_IN_HOURS / ONE_GIGABYTE,
+        },
+      ],
+    },
+    {
+      type: 'private-users',
+      progressive: true,
+      intervals: [
+        {
+          minRange: 0,
+          price: 7,
+        },
+      ],
+    },
+    {
+      type: 'public-users',
+      progressive: true,
+      secability: 100,
+      intervals: [
+        {
+          minRange: 0,
+          maxRange: 101,
+          price: 0,
+        },
+        {
+          minRange: 101,
+          price: 0.07,
+        },
+      ],
+    },
+  ],
+};
+
 export const defaultStory = makeStory(conf, {
   items: [baseCellar],
 });
@@ -243,6 +290,10 @@ export const dataLoadedWithFsBucket = makeStory(conf, {
 
 export const dataLoadedWithPulsar = makeStory(conf, {
   items: [basePulsar],
+});
+
+export const dataLoadedWithHeptapod = makeStory(conf, {
+  items: [baseHeptapod],
 });
 
 export const dataLoadedWithCustomHead = makeStory(conf, {
@@ -372,6 +423,7 @@ enhanceStoriesNames({
   errorWithPulsar,
   dataLoadedWithFsBucket,
   dataLoadedWithPulsar,
+  dataLoadedWithHeptapod,
   dataLoadedWithCustomHead,
   dataLoadedWithEmptyHead,
   dataLoadedWithCustomDescription,

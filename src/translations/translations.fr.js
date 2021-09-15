@@ -397,13 +397,22 @@ export const translations = {
   'cc-pricing-product-consumption.inbound-traffic.title': `Trafic entrant :`,
   'cc-pricing-product-consumption.outbound-traffic.label': `trafic sortant`,
   'cc-pricing-product-consumption.outbound-traffic.title': `Trafic sortant :`,
+  'cc-pricing-product-consumption.private-users.label': `utilisateurs privés`,
+  'cc-pricing-product-consumption.private-users.title': `Utilisateurs privés :`,
+  'cc-pricing-product-consumption.public-users.label': `utilisateurs publics`,
+  'cc-pricing-product-consumption.public-users.title': `Utilisateurs publics :`,
   'cc-pricing-product-consumption.price': ({ price, code }) => `${formatCurrency(lang, price, { currency: code })}`,
-  'cc-pricing-product-consumption.price-interval': ({ price, code }) => {
+  'cc-pricing-product-consumption.price-interval.bytes': ({ price, code }) => {
     const priceInterval = formatCurrency(lang, price, {
       minimumFractionDigits: 3, maximumFractionDigits: 3, currency: code,
     });
     const priceOneGigabyte = getUnit(1e9);
     return `${priceInterval} / ${priceOneGigabyte} (30 jours)`;
+  },
+  'cc-pricing-product-consumption.price-interval.users': ({ userCount, price, code }) => {
+    const users = plural(userCount, 'utilisateur');
+    const priceInterval = formatCurrency(lang, price * userCount, { currency: code });
+    return `${priceInterval} / ${userCount} ${users} (30 jours)`;
   },
   'cc-pricing-product-consumption.price-interval.free': `GRATUIT`,
   'cc-pricing-product-consumption.storage.label': `stockage`,
