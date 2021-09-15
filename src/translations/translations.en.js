@@ -384,10 +384,6 @@ export const translations = {
   'cc-pricing-product-consumption.inbound-traffic.title': `Inbound traffic:`,
   'cc-pricing-product-consumption.outbound-traffic.label': `traffic out`,
   'cc-pricing-product-consumption.outbound-traffic.title': `Outbound traffic:`,
-  'cc-pricing-product-consumption.private-users.label': `private users`,
-  'cc-pricing-product-consumption.private-users.title': `Private users:`,
-  'cc-pricing-product-consumption.public-users.label': `public users`,
-  'cc-pricing-product-consumption.public-users.title': `Public users:`,
   'cc-pricing-product-consumption.price': ({ price, code }) => `${formatCurrency(lang, price, { currency: code })}`,
   'cc-pricing-product-consumption.price-interval.bytes': ({ price, code }) => {
     const priceInterval = formatCurrency(lang, price, {
@@ -396,12 +392,16 @@ export const translations = {
     const priceOneGigabyte = getUnit(1e9);
     return `${priceInterval} / ${priceOneGigabyte} (30 days)`;
   },
+  'cc-pricing-product-consumption.price-interval.free': `FREE`,
   'cc-pricing-product-consumption.price-interval.users': ({ userCount, price, code }) => {
     const users = plural(userCount, 'user');
     const priceInterval = formatCurrency(lang, price * userCount, { currency: code });
     return `${priceInterval} / ${userCount} ${users} (30 days)`;
   },
-  'cc-pricing-product-consumption.price-interval.free': `FREE`,
+  'cc-pricing-product-consumption.private-users.label': `private users`,
+  'cc-pricing-product-consumption.private-users.title': `Private users:`,
+  'cc-pricing-product-consumption.public-users.label': `public users`,
+  'cc-pricing-product-consumption.public-users.title': `Public users:`,
   'cc-pricing-product-consumption.storage.label': `storage`,
   'cc-pricing-product-consumption.storage.title': `Storage:`,
   'cc-pricing-product-consumption.subtotal.title': `Subtotal (30 days):`,
