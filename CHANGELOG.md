@@ -6,6 +6,10 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+...
+
+## 7.1.0 (2021-09-15)
+
 * `<cc-env-var-form>`: fix small issues in exposed-config smart definition
 * `<cc-pricing-product-consumption>`:
   * consider empty number values as `0`
