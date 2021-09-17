@@ -397,6 +397,7 @@ export const translations = {
   'cc-pricing-product-consumption.error': `An error occured while retrieving pricing details.`,
   'cc-pricing-product-consumption.inbound-traffic.label': `traffic in`,
   'cc-pricing-product-consumption.inbound-traffic.title': `Inbound traffic:`,
+  'cc-pricing-product-consumption.number': ({ number }) => formatNumber(lang, number),
   'cc-pricing-product-consumption.outbound-traffic.label': `traffic out`,
   'cc-pricing-product-consumption.outbound-traffic.title': `Outbound traffic:`,
   'cc-pricing-product-consumption.price': ({ price, code }) => `${formatCurrency(lang, price, { currency: code })}`,

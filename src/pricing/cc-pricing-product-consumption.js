@@ -279,7 +279,9 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
     const name = (this.sections ?? [])
       .map(({ type }) => {
         const title = this._getTitle(type);
-        const quantity = i18n('cc-pricing-product-consumption.bytes', { bytes: this._simulator.getQuantity(type) });
+        const quantity = this._isTypeBytes(type)
+          ? i18n('cc-pricing-product-consumption.bytes', { bytes: this._simulator.getQuantity(type) })
+          : i18n('cc-pricing-product-consumption.number', { number: this._simulator.getQuantity(type) });
         return `${title} ${quantity}`;
       })
       .join(', ');

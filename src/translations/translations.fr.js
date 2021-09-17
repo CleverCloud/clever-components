@@ -410,6 +410,7 @@ export const translations = {
   'cc-pricing-product-consumption.error': `Une erreur est survenue pendant le chargement des prix.`,
   'cc-pricing-product-consumption.inbound-traffic.label': `trafic entrant`,
   'cc-pricing-product-consumption.inbound-traffic.title': `Trafic entrant :`,
+  'cc-pricing-product-consumption.number': ({ number }) => formatNumber(lang, number),
   'cc-pricing-product-consumption.outbound-traffic.label': `trafic sortant`,
   'cc-pricing-product-consumption.outbound-traffic.title': `Trafic sortant :`,
   'cc-pricing-product-consumption.price': ({ price, code }) => `${formatCurrency(lang, price, { currency: code })}`,

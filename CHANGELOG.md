@@ -10,6 +10,7 @@ title: Changelog
 * `<cc-pricing-product>`:
   * add `temporality` feature
   * add plans and features for Jenkins runner (hard coded in the smart definition)
+* `<cc-pricing-product-consumption>`: fix plan name for non bytes with cc-pricing-product:add-plan event
 
 ### For devs
 
