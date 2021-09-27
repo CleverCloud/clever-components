@@ -8,6 +8,10 @@ title: Changelog
 
 ...
 
+## 7.2.0 (2021-09-27)
+
+* `<cc-addon-backups>`: Add support for PostgreSQL, MySQL, MongoDB, Redis and Jenkins add-ons.
+
 ## 7.1.0 (2021-09-15)
 
 * `<cc-env-var-form>`: fix small issues in exposed-config smart definition
