@@ -11,7 +11,7 @@ import { ccLink, linkStyles } from '../templates/cc-link.js';
 const infoSvg = new URL('../assets/info.svg', import.meta.url).href;
 
 const JENKINS_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com/logos/jenkins.svg';
-const JENKINS_DOCUMENTATION = 'https://www.clever-cloud.com/doc/addons/jenkins/';
+const JENKINS_DOCUMENTATION = 'https://www.clever-cloud.com/doc/deploy/addon/jenkins/';
 
 /**
  * A component to display various informations (Documentation, access, updates, ...) for a Jenkins service.
