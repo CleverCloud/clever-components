@@ -6,6 +6,10 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+...
+
+## 7.2.1 (2021-09-30)
+
 * `<cc-jenkins-info>`: Update documentation URL
 
 ## 7.2.0 (2021-09-27)
