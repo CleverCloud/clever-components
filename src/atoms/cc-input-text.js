@@ -329,7 +329,7 @@ export class CcInputText extends LitElement {
           background: #fff;
           border: 1px solid #000;
           box-sizing: border-box;
-          display: block;
+          display: flex;
           font-family: monospace;
           font-size: unset;
           margin: 0;
