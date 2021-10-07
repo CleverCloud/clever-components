@@ -218,9 +218,9 @@ export class CcInputText extends LitElement {
                 We use this to display colored background rectangles behind space separated values. 
                 This needs to be on the same line and the 2 level parent is important to keep scroll behaviour.
               -->
-              <div class="input input-underlayer" style="--rows: ${rows}">
-                <div class="all-tags">${tags}</div>
-              </div>
+              <div class="input input-underlayer" style="--rows: ${rows}"><!--
+                --><div class="all-tags">${tags}</div><!--
+              --></div>
             ` : ''}
             <textarea
               id=${this._uniqueName}

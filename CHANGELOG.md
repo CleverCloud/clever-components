@@ -11,6 +11,7 @@ title: Changelog
   * add `temporality` feature
   * add plans and features for Jenkins runner (hard coded in the smart definition)
 * `<cc-pricing-product-consumption>`: fix plan name for non bytes with cc-pricing-product:add-plan event
+* `<cc-input-text>`: fix tags underline
 
 ### For devs
 
