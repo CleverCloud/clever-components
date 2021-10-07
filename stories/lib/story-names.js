@@ -3,6 +3,8 @@ export function formatStoryName (rawName) {
     .slice(1)
     // Camel case to "Sentence case"
     .replace(/([A-Z])/g, ' $1')
+    // Camel case to with numbers
+    .replace(/([0-9]+)/g, ' $1')
     .toLowerCase()
     // Special keyworks in uppercase
     .replace(/css/g, 'CSS')

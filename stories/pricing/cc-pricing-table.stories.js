@@ -78,7 +78,7 @@ export const defaultStory = makeStory(conf, {
   ],
 });
 
-export const dataLoadedWithFake = makeStory(conf, {
+export const dataLoadedWithFakeProduct = makeStory(conf, {
   items: [
     {
       plans: fakeProductPlans,
@@ -113,42 +113,46 @@ export const dataLoadedWithFake = makeStory(conf, {
   ],
 });
 
-export const dataLoadedWithNode = makeStory(conf, {
+export const dataLoadedWithRuntimeNode = makeStory(conf, {
   items: [getProductRuntime('node')],
 });
 
-export const dataLoadedWithPhp = makeStory(conf, {
+export const dataLoadedWithRuntimePhp = makeStory(conf, {
   items: [getProductRuntime('php')],
 });
 
-export const dataLoadedWithPythonAndMl = makeStory(conf, {
+export const dataLoadedWithRuntimePythonAndMl = makeStory(conf, {
   items: [getProductRuntime('ml_python')],
 });
 
-export const dataLoadedWithElasticsearch = makeStory(conf, {
+export const dataLoadedWithAddonElasticsearch = makeStory(conf, {
   items: [getProductAddon('es-addon')],
 });
 
-export const dataLoadedWithMongodb = makeStory(conf, {
+export const dataLoadedWithAddonMongodb = makeStory(conf, {
   items: [getProductAddon('mongodb-addon')],
 });
 
-export const dataLoadedWithMysql = makeStory(conf, {
+export const dataLoadedWithAddonMysql = makeStory(conf, {
   items: [getProductAddon('mysql-addon')],
 });
 
-export const dataLoadedWithPostgresql = makeStory(conf, {
+export const dataLoadedWithAddonPostgresql = makeStory(conf, {
   items: [getProductAddon('postgresql-addon')],
 });
 
-export const dataLoadedWithPostgresqlNoAction = makeStory(conf, {
+export const dataLoadedWithAddonRedis = makeStory(conf, {
+  items: [getProductAddon('redis-addon')],
+});
+
+export const dataLoadedWithNoAction = makeStory(conf, {
   items: [{
     ...getProductAddon('postgresql-addon'),
     action: 'none',
   }],
 });
 
-export const dataLoadedWithPostgresqlDollars = makeStory(conf, {
+export const dataLoadedWithDollars = makeStory(conf, {
   items: [
     {
       currency: { code: 'USD', changeRate: 1.1802 },
@@ -157,8 +161,62 @@ export const dataLoadedWithPostgresqlDollars = makeStory(conf, {
   ],
 });
 
-export const dataLoadedWithRedis = makeStory(conf, {
-  items: [getProductAddon('redis-addon')],
+export const dataLoadedWithTemporalitySecond7Digits = makeStory(conf, {
+  items: [{
+    ...getProductRuntime('node'),
+    temporality: [
+      { type: 'second', digits: 7 },
+    ],
+  }],
+});
+
+export const dataLoadedWithTemporalityMinute5Digits = makeStory(conf, {
+  items: [{
+    ...getProductRuntime('node'),
+    temporality: [
+      { type: 'minute', digits: 5 },
+    ],
+  }],
+});
+
+export const dataLoadedWithTemporalityHour3Digits = makeStory(conf, {
+  items: [{
+    ...getProductRuntime('node'),
+    temporality: [
+      { type: 'hour', digits: 3 },
+    ],
+  }],
+});
+
+export const dataLoadedWithTemporalityDay2Digits = makeStory(conf, {
+  items: [{
+    ...getProductRuntime('node'),
+    temporality: [
+      { type: 'day', digits: 2 },
+    ],
+  }],
+});
+
+export const dataLoadedWithTemporality30Days1Digit = makeStory(conf, {
+  items: [{
+    ...getProductRuntime('node'),
+    temporality: [
+      { type: '30-days', digits: 1 },
+    ],
+  }],
+});
+
+export const dataLoadedWithTemporalityAll = makeStory(conf, {
+  items: [{
+    ...getProductRuntime('node'),
+    temporality: [
+      { type: 'second', digits: 7 },
+      { type: 'minute', digits: 5 },
+      { type: 'hour', digits: 3 },
+      { type: 'day' },
+      { type: '30-days' },
+    ],
+  }],
 });
 
 // Right now, because of how we're using this component, we don't need:
@@ -168,15 +226,21 @@ export const dataLoadedWithRedis = makeStory(conf, {
 
 enhanceStoriesNames({
   defaultStory,
-  dataLoadedWithFake,
-  dataLoadedWithNode,
-  dataLoadedWithPhp,
-  dataLoadedWithPythonAndMl,
-  dataLoadedWithElasticsearch,
-  dataLoadedWithMongodb,
-  dataLoadedWithMysql,
-  dataLoadedWithPostgresql,
-  dataLoadedWithPostgresqlNoAction,
-  dataLoadedWithPostgresqlDollars,
-  dataLoadedWithRedis,
+  dataLoadedWithFakeProduct,
+  dataLoadedWithRuntimeNode,
+  dataLoadedWithRuntimePhp,
+  dataLoadedWithRuntimePythonAndMl,
+  dataLoadedWithAddonElasticsearch,
+  dataLoadedWithAddonMongodb,
+  dataLoadedWithAddonMysql,
+  dataLoadedWithAddonPostgresql,
+  dataLoadedWithAddonRedis,
+  dataLoadedWithNoAction,
+  dataLoadedWithDollars,
+  dataLoadedWithTemporalitySecond7Digits,
+  dataLoadedWithTemporalityMinute5Digits,
+  dataLoadedWithTemporalityHour3Digits,
+  dataLoadedWithTemporalityDay2Digits,
+  dataLoadedWithTemporality30Days1Digit,
+  dataLoadedWithTemporalityAll,
 });

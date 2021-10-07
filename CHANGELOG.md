@@ -6,7 +6,12 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+* `<cc-pricing-table>`: add `temporality` feature
+* `<cc-pricing-product>`: add `temporality` feature
+
+### For devs
+
+* Add an env param to disable generating docs on each change
 
 ## 7.2.1 (2021-09-30)
 

@@ -16,6 +16,12 @@ const SKELETON_DESCRIPTION = fakeString(180);
 /** @type {Currency} */
 const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
 
+/** @type {Temporality[]} */
+const DEFAULT_TEMPORALITY = [
+  { type: 'day', digits: 2 },
+  { type: '30-days', digits: 2 },
+];
+
 /**
  * A component to display product informations: icon, name, description with plans and their features.
  *
@@ -45,6 +51,13 @@ const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
  * }
  * ```
  *
+ * ```js
+ * interface Temporality {
+ *   type: "second"|"minute"|"hour"|"day"|"30-days",
+ *   digits: number, // how many fraction digits to display the price
+ * }
+ * ```
+ *
  * @cssdisplay block
  *
  * @prop {"add"|"none"} action - Sets the type of action: "add" to display add buttons for each plan and "none" for no actions (defaults to "add").
@@ -55,6 +68,7 @@ const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
  * @prop {String} icon - Sets the url of the product icon/logo image (can be overriden with the `icon` slot).
  * @prop {String} name - Sets the name of the product (can be overriden with the `name` slot).
  * @prop {Plan[]} plans - Sets the list of plans.
+ * @prop {Temporality[]} temporality - Sets the ordered list of time windows you want to display the prices in (defaults to day and 30 days with 2 fraction digits).
  *
  * @event {CustomEvent<Plan>} cc-pricing-product:add-plan - Fires the plan whenever a "plus" button is clicked.
  *
@@ -75,6 +89,7 @@ export class CcPricingProduct extends LitElement {
       icon: { type: String },
       name: { type: String },
       plans: { type: Array },
+      temporality: { type: Array },
     };
   }
 
@@ -83,6 +98,7 @@ export class CcPricingProduct extends LitElement {
     this.action = 'add';
     this.currency = CURRENCY_EUR;
     this.features = [];
+    this.temporality = DEFAULT_TEMPORALITY;
   }
 
   _onAddPlan ({ detail: plan }) {
@@ -138,6 +154,7 @@ export class CcPricingProduct extends LitElement {
           .plans=${this.plans}
           .features=${this.features}
           .currency=${this.currency}
+          .temporality=${this.temporality}
           action=${this.action}
           @cc-pricing-table:add-plan=${this._onAddPlan}
         ></cc-pricing-table>
