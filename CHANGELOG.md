@@ -6,6 +6,10 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+...
+
+## 7.3.0 (2021-10-07)
+
 * `<cc-pricing-table>`: add `temporality` feature
 * `<cc-pricing-product>`:
   * add `temporality` feature
