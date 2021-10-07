@@ -12,8 +12,10 @@ function commonJsIdentifiers (ids) {
   return ids.map((id) => `**/node_modules/${id}/**/*`);
 }
 
-// This feels like a hack but with this, we get up to date CEM inside storybook's docs page
-spawn('npm', ['run', 'components:docs:watch']);
+if (process.env.CC_NO_DOCS_WATCH !== 'true') {
+  // This feels like a hack but with this, we get up to date CEM inside storybook's docs page
+  spawn('npm', ['run', 'components:docs:watch']);
+}
 
 const hmrI18n = {
   name: 'hmr-i18n',
