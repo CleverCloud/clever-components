@@ -7,6 +7,7 @@ title: Changelog
 ## Unreleased (????-??-??)
 
 * `<cc-pricing-table>`: add `temporality` feature
+* `<cc-pricing-product>`: add `temporality` feature
 
 ### For devs
 
