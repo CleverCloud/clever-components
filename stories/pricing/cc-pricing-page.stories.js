@@ -8,6 +8,7 @@ import { ZONES } from '../zones/cc-zone-input.stories.js';
 import {
   defaultStory as cellarStory,
   skeletonWithCellar as cellarSkeletonStory,
+  dataLoadedWithHeptapod as heptapodStory,
 } from './cc-pricing-product-consumption.stories.js';
 import {
   dataLoadedWithAddonMongodb as mongoStory,
@@ -48,6 +49,7 @@ const defaultItem = {
     createStoryItem(mongoStory),
     '<h2>Object Storage</h2>',
     createStoryItem(cellarStory),
+    createStoryItem(heptapodStory),
     `
       <div slot="estimation-header">
         <h2>Cost estimation</h2>
