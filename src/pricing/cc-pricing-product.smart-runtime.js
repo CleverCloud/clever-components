@@ -4,7 +4,7 @@ import { getAvailableInstances } from '@clevercloud/client/esm/api/v2/product.js
 import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
 import { fetchPriceSystem } from '../lib/api-helpers.js';
 import { LastPromise, unsubscribeWithSignal } from '../lib/observables.js';
-import { formatRuntimeProduct } from '../lib/product.js';
+import { formatRuntimeProduct, getJenkinsRunnerProduct } from '../lib/product.js';
 import { sendToApi } from '../lib/send-to-api.js';
 import { defineComponent } from '../lib/smart-manager.js';
 
@@ -59,6 +59,11 @@ function fetchRuntime ({ signal, productId }) {
     .then((allRuntimes) => {
       const runtime = allRuntimes.find((f) => f.variant.slug === productId);
       if (runtime == null) {
+        // If the API does not return the 'jenkins-runner' product, we provided a hard coded one.
+        // This is only the list of plans with features, the prices come from the API.
+        if (productId === 'jenkins-runner') {
+          return getJenkinsRunnerProduct();
+        }
         throw new Error(`Unknown variant slug: ${productId}`);
       }
       return runtime;

@@ -7,7 +7,9 @@ title: Changelog
 ## Unreleased (????-??-??)
 
 * `<cc-pricing-table>`: add `temporality` feature
-* `<cc-pricing-product>`: add `temporality` feature
+* `<cc-pricing-product>`:
+  * add `temporality` feature
+  * add plans and features for Jenkins runner (hard coded in the smart definition)
 
 ### For devs
 
