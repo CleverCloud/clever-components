@@ -161,6 +161,64 @@ export const dataLoadedWithDollars = makeStory(conf, {
   ],
 });
 
+export const dataLoadedWithTemporalitySecond7Digits = makeStory(conf, {
+  items: [{
+    ...getProductRuntime('node'),
+    temporality: [
+      { type: 'second', digits: 7 },
+    ],
+  }],
+});
+
+export const dataLoadedWithTemporalityMinute5Digits = makeStory(conf, {
+  items: [{
+    ...getProductRuntime('node'),
+    temporality: [
+      { type: 'minute', digits: 5 },
+    ],
+  }],
+});
+
+export const dataLoadedWithTemporalityHour3Digits = makeStory(conf, {
+  items: [{
+    ...getProductRuntime('node'),
+    temporality: [
+      { type: 'hour', digits: 3 },
+    ],
+  }],
+});
+
+export const dataLoadedWithTemporalityDay2Digits = makeStory(conf, {
+  items: [{
+    ...getProductRuntime('node'),
+    temporality: [
+      { type: 'day', digits: 2 },
+    ],
+  }],
+});
+
+export const dataLoadedWithTemporality30Days1Digit = makeStory(conf, {
+  items: [{
+    ...getProductRuntime('node'),
+    temporality: [
+      { type: '30-days', digits: 1 },
+    ],
+  }],
+});
+
+export const dataLoadedWithTemporalityAll = makeStory(conf, {
+  items: [{
+    ...getProductRuntime('node'),
+    temporality: [
+      { type: 'second', digits: 7 },
+      { type: 'minute', digits: 5 },
+      { type: 'hour', digits: 3 },
+      { type: 'day' },
+      { type: '30-days' },
+    ],
+  }],
+});
+
 // Right now, because of how we're using this component, we don't need:
 // * skeleton/waiting state
 // * emtpy state
@@ -179,4 +237,10 @@ enhanceStoriesNames({
   dataLoadedWithAddonRedis,
   dataLoadedWithNoAction,
   dataLoadedWithDollars,
+  dataLoadedWithTemporalitySecond7Digits,
+  dataLoadedWithTemporalityMinute5Digits,
+  dataLoadedWithTemporalityHour3Digits,
+  dataLoadedWithTemporalityDay2Digits,
+  dataLoadedWithTemporality30Days1Digit,
+  dataLoadedWithTemporalityAll,
 });

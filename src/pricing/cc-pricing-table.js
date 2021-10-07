@@ -27,6 +27,11 @@ const FEATURES_I18N = {
 const AVAILABLE_FEATURES = Object.keys(FEATURES_I18N);
 const NUMBER_FEATURE_TYPES = ['bytes', 'number', 'number-cpu-runtime'];
 
+const DEFAULT_TEMPORALITY = [
+  { type: 'day', digits: 2 },
+  { type: '30-days', digits: 2 },
+];
+
 /**
  * A component to display product plans and their features.
  *
@@ -62,12 +67,20 @@ const NUMBER_FEATURE_TYPES = ['bytes', 'number', 'number-cpu-runtime'];
  * }
  * ```
  *
+ * ```js
+ * interface Temporality {
+ *   type: "second"|"minute"|"hour"|"day"|"30-days",
+ *   digits: number, // how many fraction digits to display the price
+ * }
+ * ```
+ *
  * @cssdisplay block
  *
- * @prop {"add"|"none"} action - Sets the type of action: "add" to display add buttons for each plan and "none" for no actions (defaults to "add").
+ * @prop {'add"|"none"} action - Sets the type of action: "add" to display add buttons for each plan and "none" for no actions (defaults to "add').
  * @prop {Currency} currency - Sets the currency used to display the prices (defaults to euros).
  * @prop {Feature[]} features - Sets the list of features (used for the feature sort order).
  * @prop {Plan[]} plans - Sets the list of plans.
+ * @prop {Temporality[]} temporality - Sets the ordered list of time windows you want to display the prices in (defaults to day and 30 days with 2 fraction digits).
  *
  * @event {CustomEvent<Plan>} cc-pricing-table:add-plan - Fires the plan whenever a "plus" button is clicked.
  */
@@ -79,6 +92,7 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
       currency: { type: Object },
       features: { type: Array },
       plans: { type: Array },
+      temporality: { type: Array },
       _features: { type: Array },
       _plans: { type: Array },
       _size: { type: String },
@@ -91,6 +105,7 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
     this.currency = CURRENCY_EUR;
     this._plans = [];
     this._features = [];
+    this.temporality = DEFAULT_TEMPORALITY;
   }
 
   onResize ({ width }) {
@@ -130,15 +145,47 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
     }
   }
 
-  _getDailyPrice (hourlyPrice) {
-    const price = hourlyPrice * 24 * this.currency.changeRate;
-    return i18n('cc-pricing-table.price', { price, code: this.currency.code });
+  _getPriceLabel (type) {
+    if (type === 'second') {
+      return i18n('cc-pricing-table.price-name.second');
+    }
+    if (type === 'minute') {
+      return i18n('cc-pricing-table.price-name.minute');
+    }
+    if (type === 'hour') {
+      return i18n('cc-pricing-table.price-name.hour');
+    }
+    if (type === 'day') {
+      return i18n('cc-pricing-table.price-name.day');
+    }
+    if (type === '30-days') {
+      return i18n('cc-pricing-table.price-name.30-days');
+    }
   }
 
-  // "monthly" being 30 days
-  _getMonthlyPrice (hourlyPrice) {
-    const price = hourlyPrice * 24 * 30 * this.currency.changeRate;
-    return i18n('cc-pricing-table.price', { price, code: this.currency.code });
+  _getPrice (type, hourlyPrice) {
+    if (type === 'second') {
+      return hourlyPrice / 60 / 60 * this.currency.changeRate;
+    }
+    if (type === 'minute') {
+      return hourlyPrice / 60 * this.currency.changeRate;
+    }
+    if (type === 'hour') {
+      return hourlyPrice * this.currency.changeRate;
+    }
+    if (type === 'day') {
+      return hourlyPrice * 24 * this.currency.changeRate;
+    }
+    if (type === '30-days') {
+      return hourlyPrice * 24 * 30 * this.currency.changeRate;
+    }
+  }
+
+  _getPriceValue (type, hourlyPrice, digits) {
+    const price = this._getPrice(type, hourlyPrice);
+    if (price != null) {
+      return i18n('cc-pricing-table.price', { price, code: this.currency.code, digits });
+    }
   }
 
   _onAddPlan (plan) {
@@ -179,6 +226,7 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
   }
 
   _renderSmallPlans () {
+    const temporality = this.temporality ?? DEFAULT_TEMPORALITY;
     return html`
       <div class="container">
         ${this._plans.map((plan) => html`
@@ -209,14 +257,12 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
             </div>
 
             <div class="feature-list">
-              <div class="feature">
-                <div class="feature-name">${i18n('cc-pricing-table.price-name-daily')}</div>
-                <div class="feature-value">${this._getDailyPrice(plan.price)}</div>
-              </div>
-              <div class="feature">
-                <div class="feature-name">${i18n('cc-pricing-table.price-name-monthly')}</div>
-                <div class="feature-value">${this._getMonthlyPrice(plan.price)}</div>
-              </div>
+              ${temporality.map(({ type, digits }) => html`
+                <div class="feature">
+                  <div class="feature-name">${this._getPriceLabel(type)}</div>
+                  <div class="feature-value">${this._getPriceValue(type, plan.price, digits)}</div>
+                </div>
+              `)}
             </div>
 
           </div>
@@ -241,6 +287,7 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
   }
 
   _renderBigPlans () {
+    const temporality = this.temporality ?? DEFAULT_TEMPORALITY;
     return html`
       <table>
         <tr>
@@ -251,8 +298,9 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
           ${this._features.map((feature) => html`
             <th class=${classMap({ 'number-align': NUMBER_FEATURE_TYPES.includes(feature.type) })}>${this._getFeatureName(feature)}</th>
           `)}
-          <th class="number-align">${i18n('cc-pricing-table.price-name-daily')}</th>
-          <th class="number-align">${i18n('cc-pricing-table.price-name-monthly')}</th>
+          ${temporality.map(({ type }) => html`
+            <th class="number-align">${this._getPriceLabel(type)}</th>
+          `)}
         </tr>
         ${this._plans.map((plan) => html`
           <tr>
@@ -263,8 +311,9 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
             ` : ''}
             <td>${plan.name}</td>
             ${this._renderBigPlanFeatures(plan.features)}
-            <td class="number-align">${this._getDailyPrice(plan.price)}</td>
-            <td class="number-align">${this._getMonthlyPrice(plan.price)}</td>
+            ${temporality.map(({ type, digits }) => html`
+              <td class="number-align">${this._getPriceValue(type, plan.price, digits)}</td>
+            `)}
           </tr>
         `)}
       </table>

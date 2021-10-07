@@ -6,6 +6,8 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+* `<cc-pricing-table>`: add `temporality` feature
+
 ### For devs
 
 * Add an env param to disable generating docs on each change
