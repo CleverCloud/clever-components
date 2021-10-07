@@ -194,3 +194,67 @@ function getRuntimeFeatureValue (featureCode, flavor) {
       return flavor.gpus;
   }
 }
+
+export function getJenkinsRunnerProduct () {
+  return {
+    type: 'docker',
+    // Fake date
+    version: '20211001',
+    name: 'Docker',
+    variant: {
+      // Fake UUID
+      id: 'b8093938-4846-4f74-8c4a-82660180093e',
+      slug: 'jenkins-runner',
+      name: 'Jenkins runner',
+      deployType: 'docker',
+      logo: 'https://static-assets.cellar.services.clever-cloud.com/logos/jenkins.svg',
+    },
+    description: 'Jenkins runner',
+    enabled: true,
+    comingSoon: false,
+    maxInstances: 40,
+    tags: [],
+    deployments: [
+      'git',
+    ],
+    flavors: [
+      getJenkinsFlavor('XS', 1, 2),
+      getJenkinsFlavor('S', 2, 4),
+      getJenkinsFlavor('M', 4, 8),
+      getJenkinsFlavor('L', 6, 12),
+      getJenkinsFlavor('XL', 8, 16),
+      getJenkinsFlavor('2XL', 12, 24),
+      getJenkinsFlavor('3XL', 16, 32),
+    ],
+    // not used
+    defaultFlavor: null,
+    // not used
+    buildFlavor: null,
+  };
+}
+
+function getJenkinsFlavor (name, cpus, memory) {
+  return {
+    name,
+    // not used
+    mem: null,
+    cpus,
+    gpus: 0,
+    disk: null,
+    // not used
+    price: null,
+    available: true,
+    microservice: false,
+    // eslint-disable-next-line camelcase
+    machine_learning: false,
+    nice: 0,
+    // eslint-disable-next-line camelcase
+    price_id: 'jenkins-runner.' + name,
+    memory: {
+      unit: 'B',
+      value: memory * 1024 ** 3,
+      // not used
+      formatted: null,
+    },
+  };
+}
