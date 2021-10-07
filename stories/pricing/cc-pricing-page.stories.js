@@ -10,9 +10,9 @@ import {
   skeletonWithCellar as cellarSkeletonStory,
 } from './cc-pricing-product-consumption.stories.js';
 import {
-  dataLoadedWithMongodb as mongoStory,
-  dataLoadedWithNode as nodeStory,
-  dataLoadedWithPostgresql as postgresqlStory,
+  dataLoadedWithAddonMongodb as mongoStory,
+  dataLoadedWithRuntimeNode as nodeStory,
+  dataLoadedWithAddonPostgresql as postgresqlStory,
 } from './cc-pricing-product.stories.js';
 
 export default {
