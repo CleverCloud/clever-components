@@ -78,7 +78,7 @@ export const defaultStory = makeStory(conf, {
   ],
 });
 
-export const dataLoadedWithFake = makeStory(conf, {
+export const dataLoadedWithFakeProduct = makeStory(conf, {
   items: [
     {
       plans: fakeProductPlans,
@@ -113,52 +113,52 @@ export const dataLoadedWithFake = makeStory(conf, {
   ],
 });
 
-export const dataLoadedWithNode = makeStory(conf, {
+export const dataLoadedWithRuntimeNode = makeStory(conf, {
   items: [getProductRuntime('node')],
 });
 
-export const dataLoadedWithPhp = makeStory(conf, {
+export const dataLoadedWithRuntimePhp = makeStory(conf, {
   items: [getProductRuntime('php')],
 });
 
-export const dataLoadedWithPythonAndMl = makeStory(conf, {
+export const dataLoadedWithRuntimePythonAndMl = makeStory(conf, {
   items: [getProductRuntime('ml_python')],
 });
 
-export const dataLoadedWithElasticsearch = makeStory(conf, {
+export const dataLoadedWithAddonElasticsearch = makeStory(conf, {
   items: [getProductAddon('es-addon')],
 });
 
-export const dataLoadedWithMongodb = makeStory(conf, {
+export const dataLoadedWithAddonMongodb = makeStory(conf, {
   items: [getProductAddon('mongodb-addon')],
 });
 
-export const dataLoadedWithMysql = makeStory(conf, {
+export const dataLoadedWithAddonMysql = makeStory(conf, {
   items: [getProductAddon('mysql-addon')],
 });
 
-export const dataLoadedWithPostgresql = makeStory(conf, {
+export const dataLoadedWithAddonPostgresql = makeStory(conf, {
   items: [getProductAddon('postgresql-addon')],
 });
 
-export const dataLoadedWithPostgresqlNoAction = makeStory(conf, {
+export const dataLoadedWithAddonRedis = makeStory(conf, {
+  items: [getProductAddon('redis-addon')],
+});
+
+export const dataLoadedWithNoAction = makeStory(conf, {
   items: [{
     ...getProductAddon('postgresql-addon'),
     action: 'none',
   }],
 });
 
-export const dataLoadedWithPostgresqlDollars = makeStory(conf, {
+export const dataLoadedWithDollars = makeStory(conf, {
   items: [
     {
       currency: { code: 'USD', changeRate: 1.1802 },
       ...getProductAddon('postgresql-addon'),
     },
   ],
-});
-
-export const dataLoadedWithRedis = makeStory(conf, {
-  items: [getProductAddon('redis-addon')],
 });
 
 // Right now, because of how we're using this component, we don't need:
@@ -168,15 +168,15 @@ export const dataLoadedWithRedis = makeStory(conf, {
 
 enhanceStoriesNames({
   defaultStory,
-  dataLoadedWithFake,
-  dataLoadedWithNode,
-  dataLoadedWithPhp,
-  dataLoadedWithPythonAndMl,
-  dataLoadedWithElasticsearch,
-  dataLoadedWithMongodb,
-  dataLoadedWithMysql,
-  dataLoadedWithPostgresql,
-  dataLoadedWithPostgresqlNoAction,
-  dataLoadedWithPostgresqlDollars,
-  dataLoadedWithRedis,
+  dataLoadedWithFakeProduct,
+  dataLoadedWithRuntimeNode,
+  dataLoadedWithRuntimePhp,
+  dataLoadedWithRuntimePythonAndMl,
+  dataLoadedWithAddonElasticsearch,
+  dataLoadedWithAddonMongodb,
+  dataLoadedWithAddonMysql,
+  dataLoadedWithAddonPostgresql,
+  dataLoadedWithAddonRedis,
+  dataLoadedWithNoAction,
+  dataLoadedWithDollars,
 });
