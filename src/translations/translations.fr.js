@@ -454,6 +454,7 @@ export const translations = {
     minimumFractionDigits: digits,
     maximumFractionDigits: digits,
   }),
+  'cc-pricing-table.price-name.1000-minutes': `Prix (${formatNumber(lang, 1000)} minutes)`,
   'cc-pricing-table.price-name.30-days': () => sanitize`Prix (30&nbsp;jours)`,
   'cc-pricing-table.price-name.day': `Prix (jour)`,
   'cc-pricing-table.price-name.hour': `Prix (heure)`,

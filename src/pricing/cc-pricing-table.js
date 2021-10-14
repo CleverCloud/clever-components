@@ -69,7 +69,7 @@ const DEFAULT_TEMPORALITY = [
  *
  * ```js
  * interface Temporality {
- *   type: "second"|"minute"|"hour"|"day"|"30-days",
+ *   type: "second"|"minute"|"hour"|"1000-minutes"|"day"|"30-days",
  *   digits: number, // how many fraction digits to display the price
  * }
  * ```
@@ -155,6 +155,9 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
     if (type === 'hour') {
       return i18n('cc-pricing-table.price-name.hour');
     }
+    if (type === '1000-minutes') {
+      return i18n('cc-pricing-table.price-name.1000-minutes');
+    }
     if (type === 'day') {
       return i18n('cc-pricing-table.price-name.day');
     }
@@ -172,6 +175,9 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
     }
     if (type === 'hour') {
       return hourlyPrice * this.currency.changeRate;
+    }
+    if (type === '1000-minutes') {
+      return hourlyPrice / 60 * 1000 * this.currency.changeRate;
     }
     if (type === 'day') {
       return hourlyPrice * 24 * this.currency.changeRate;

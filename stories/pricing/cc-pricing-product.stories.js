@@ -175,6 +175,15 @@ export const dataLoadedWithTemporalityHour3Digits = makeStory(conf, {
   }],
 });
 
+export const dataLoadedWithTemporality1000Minutes2Digits = makeStory(conf, {
+  items: [{
+    ...getFullProductRuntime('node'),
+    temporality: [
+      { type: '1000-minutes' },
+    ],
+  }],
+});
+
 export const dataLoadedWithTemporalityDay2Digits = makeStory(conf, {
   items: [{
     ...getFullProductRuntime('node'),
@@ -200,6 +209,7 @@ export const dataLoadedWithTemporalityAll = makeStory(conf, {
       { type: 'second', digits: 7 },
       { type: 'minute', digits: 5 },
       { type: 'hour', digits: 3 },
+      { type: '1000-minutes' },
       { type: 'day' },
       { type: '30-days' },
     ],
@@ -250,6 +260,7 @@ enhanceStoriesNames({
   dataLoadedWithTemporalitySecond7Digits,
   dataLoadedWithTemporalityMinute5Digits,
   dataLoadedWithTemporalityHour3Digits,
+  dataLoadedWithTemporality1000Minutes2Digits,
   dataLoadedWithTemporalityDay2Digits,
   dataLoadedWithTemporality30Days1Digit,
   dataLoadedWithTemporalityAll,
