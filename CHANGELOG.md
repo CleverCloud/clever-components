@@ -6,6 +6,10 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+...
+
+## 7.4.0 (2021-10-14)
+
 * `<cc-pricing-table>`: add new `temporality` type `1000-minutes`
 
 ## 7.3.0 (2021-10-07)
