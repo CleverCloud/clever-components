@@ -4,7 +4,7 @@ import { withResizeObserver } from '../../src/mixins/with-resize-observer.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 import docsPage from './with-resize-observer.md';
 // import { action } from '@storybook/addon-actions';
-const action = () => {
+const action = () => () => {
 };
 
 class WithHtml extends withResizeObserver(window.HTMLElement) {
