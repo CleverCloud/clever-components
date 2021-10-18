@@ -97,7 +97,7 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
 
 ## `npm run start`
 
-* Start a static HTTP server to server the [Storybook](https://storybook.js.org/) from `storybook-static`.
+* Start a static HTTP server to serve the [Storybook](https://storybook.js.org/) from `storybook-static`.
 
 ## `npm run storybook:build`
 

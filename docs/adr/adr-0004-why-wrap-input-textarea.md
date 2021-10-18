@@ -3,7 +3,7 @@ kind: '📌 Docs/Architecture Decision Records'
 ---
 # ADR 0004: Why do we wrap `<input>` and `<textarea>` in a `div.wrapper` and puts styles on this wrapper?
 
-This ADR tries to explain why we moved from just letting native clicks bubble to a custom event named `cc-button:click`.
+This ADR tries to explain why we wrap `<input>` and `<textarea>` in a `div.wrapper` and puts styles on this wrapper.
 
 ## Context?
 
