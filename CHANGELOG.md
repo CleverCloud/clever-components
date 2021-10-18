@@ -6,6 +6,10 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+...
+
+## 7.5.0 (2021-10-18)
+
 * New components:
   * `<cc-grafana-info>` (with smart definition)
 
