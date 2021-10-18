@@ -44,6 +44,7 @@ import './overview/cc-tile-requests.js';
 import './overview/cc-tile-scalability.js';
 import './overview/cc-tile-status-codes.js';
 import './saas/cc-heptapod-info.js';
+import './saas/cc-grafana-info.js';
 import './tcp-redirections/cc-tcp-redirection-form.js';
 import './tcp-redirections/cc-tcp-redirection.js';
 import './translations/translations.en.js';
