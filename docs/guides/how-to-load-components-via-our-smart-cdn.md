@@ -1,7 +1,7 @@
 ---
 kind: '📌 Docs'
 ---
-# How to load components via Smart CDN?
+# How to load components via our smart CDN?
 
 NOTE: This doc is a work in progress...
 
@@ -32,7 +32,7 @@ All you need is a `<script>` tag like this example:
 ## Components
 
 * You can specify the components you need with the `components` query param
-* It's a coma separated list where you list the tag names of the components you need (without angle brackets)
+* It's a comma separated list where you list the tag names of the components you need (without angle brackets)
 * If you don't set the `components` query param, it will "work" but you'll get a warning in the devtools console
 * If you ask for a component that does not exist, you'll get a warning in the devtools console
 

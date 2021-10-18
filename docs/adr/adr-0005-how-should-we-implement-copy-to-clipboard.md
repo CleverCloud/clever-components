@@ -46,4 +46,4 @@ In the end, we decided to:
 
 * Have an icon button like Slack does
 * Align it to top right, whatever the height
-* Make it display a green tick for a second after the click (just like GitHub does in merge request copy branch)
+* Make it display a green tick for a second after the click (just like GitHub does in Pull Request copy branch)

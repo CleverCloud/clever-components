@@ -69,7 +69,7 @@ If you need wider browser support, you will need to adapt your project configura
 
 When it comes to CSS features, we don't have a clear solution for you right now.
 
-When it comes to JavaScript language features, you will need to configure your toolchain (bundler, transpiler...) to transform the source of our components to something that works for you context.
+When it comes to JavaScript language features, you will need to configure your toolchain (bundler, transpiler...) to transform the source of our components to something that works for your context.
 
 When it comes to JavaScript and browser APIs than can be polyfilled, you will need to choose and load the appropriate polyfills yourself before you load our components.
 
