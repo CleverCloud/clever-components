@@ -90,50 +90,50 @@ export function fetchPriceSystem ({ signal, zoneId }) {
 // TODO: move to clever-client
 // Tmp Grafana API calls
 /**
- * GET /v2/saas/grafana/{id}
+ * GET /v4/saas/grafana/{id}
  * @param {Object} params
  * @param {String} params.id
  */
 export function getGrafanaOrganisation (params) {
   return Promise.resolve({
     method: 'get',
-    url: `/v2/saas/grafana/${params.id}`,
+    url: `/v4/saas/grafana/${params.id}`,
     headers: { Accept: 'application/json' },
   });
 }
 /**
- * POST /v2/saas/grafana/{id}
+ * POST /v4/saas/grafana/{id}
  * @param {Object} params
  * @param {String} params.id
  */
 export function createGrafanaOrganisation (params) {
   return Promise.resolve({
     method: 'post',
-    url: `/v2/saas/grafana/${params.id}`,
+    url: `/v4/saas/grafana/${params.id}`,
     headers: { Accept: 'application/json' },
   });
 }
 /**
- * DELETE /v2/saas/grafana/{id}
+ * DELETE /v4/saas/grafana/{id}
  * @param {Object} params
  * @param {String} params.id
  */
 export function deleteGrafanaOrganisation (params) {
   return Promise.resolve({
     method: 'delete',
-    url: `/v2/saas/grafana/${params.id}`,
+    url: `/v4/saas/grafana/${params.id}`,
     headers: { Accept: 'application/json' },
   });
 }
 /**
- * POST /v2/saas/grafana/{id}/reset
+ * POST /v4/saas/grafana/{id}/reset
  * @param {Object} params
  * @param {String} params.id
  */
 export function resetGrafanaOrganisation (params) {
   return Promise.resolve({
     method: 'post',
-    url: `/v2/saas/grafana/${params.id}/reset`,
+    url: `/v4/saas/grafana/${params.id}/reset`,
     headers: { Accept: 'application/json' },
   });
 }
