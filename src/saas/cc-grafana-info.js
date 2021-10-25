@@ -244,7 +244,12 @@ export class CcGrafanaInfo extends LitElement {
         p {
           margin: 0;
         }
-        
+
+        br {
+          display: block;
+          margin: 0.5em 0;
+        }
+
         cc-error.warning {
           margin-top: 1em;
         }
