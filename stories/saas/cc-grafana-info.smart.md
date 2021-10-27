@@ -35,10 +35,10 @@ interface ApiConfig {
 
 <table>
   <tr><th>Method <th>URL                                                   <th>Cache?
-  <tr><td>GET    <td><code>/v2/saas/grafana/{id}</code>                    <td>Default
-  <tr><td>POST   <td><code>/v2/saas/grafana/{id}</code>                    <td>Default
-  <tr><td>DELETE <td><code>/v2/saas/grafana/{id}</code>                    <td>Default
-  <tr><td>POST   <td><code>/v2/saas/grafana/{id}/reset</code>              <td>Default
+  <tr><td>GET    <td><code>/v4/saas/grafana/{id}</code>                    <td>Default
+  <tr><td>POST   <td><code>/v4/saas/grafana/{id}</code>                    <td>Default
+  <tr><td>DELETE <td><code>/v4/saas/grafana/{id}</code>                    <td>Default
+  <tr><td>POST   <td><code>/v4/saas/grafana/{id}/reset</code>              <td>Default
 </table>
 
 ## ⬇️️ Examples
