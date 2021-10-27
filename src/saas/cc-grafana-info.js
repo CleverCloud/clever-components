@@ -134,7 +134,6 @@ export class CcGrafanaInfo extends LitElement {
             <div slot="title">${i18n('cc-grafana-info.enable-title')}</div>
             <div slot="info">
               <p>${i18n('cc-grafana-info.enable-description')}</p>
-              <cc-error class="warning">${i18n('cc-grafana-info.enable-description.warning')}</cc-error>
             </div>
             ${this.error === 'enabling' ? html`
               <cc-error>${i18n('cc-grafana-info.error-enabling')}</cc-error>
@@ -153,7 +152,6 @@ export class CcGrafanaInfo extends LitElement {
             <div slot="title">${i18n('cc-grafana-info.grafana-link-title')}</div>
             <div slot="info">
               <p>${i18n('cc-grafana-info.grafana-link-description')}</p>
-              <cc-error class="warning">${i18n('cc-grafana-info.grafana-link-description.warning')}</cc-error>
             </div>
             ${this.error === 'link-grafana' || this.link == null ? html`
               <cc-error>${i18n('cc-grafana-info.error-link-grafana')}</cc-error>
