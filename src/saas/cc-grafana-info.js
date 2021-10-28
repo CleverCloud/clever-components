@@ -177,20 +177,6 @@ export class CcGrafanaInfo extends LitElement {
               </div>
             `}
           </cc-block-section>
-
-          <cc-block-section>
-            <div slot="title">${i18n('cc-grafana-info.disable-title')}</div>
-            <div slot="info">${i18n('cc-grafana-info.disable-description')}</div>
-            ${this.error === 'disabling' ? html`
-              <cc-error>${i18n('cc-grafana-info.error-disabling')}</cc-error>
-            ` : html`
-              <div>
-                <cc-button danger delay="3" ?skeleton=${this._skeleton} ?disabled=${isFormDisabled} @cc-button:click=${this._onDisableSubmit}>
-                  ${i18n('cc-grafana-info.disable-title')}
-                </cc-button>
-              </div>
-            `}
-          </cc-block-section>
         ` : ''}
 
         ${!isWaitingGrafana ? html`
@@ -205,6 +191,22 @@ export class CcGrafanaInfo extends LitElement {
               </div>
             </cc-block-section>
           `)}
+        ` : ''}
+
+        ${isGrafanaEnabled ? html`
+          <cc-block-section>
+            <div slot="title">${i18n('cc-grafana-info.disable-title')}</div>
+            <div slot="info">${i18n('cc-grafana-info.disable-description')}</div>
+            ${this.error === 'disabling' ? html`
+                <cc-error>${i18n('cc-grafana-info.error-disabling')}</cc-error>
+              ` : html`
+                <div>
+                  <cc-button danger delay="3" ?skeleton=${this._skeleton} ?disabled=${isFormDisabled} @cc-button:click=${this._onDisableSubmit}>
+                    ${i18n('cc-grafana-info.disable-title')}
+                  </cc-button>
+                </div>
+              `}
+          </cc-block-section>
         ` : ''}
 
       </cc-block>
