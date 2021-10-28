@@ -8,6 +8,14 @@ title: Changelog
 
 ...
 
+## 7.6.0 (2021-10-28)
+
+* `<cc-grafana-info>`:
+  * fix API path in smart definition
+  * remove warning (not needed anymore)
+  * move disable section at the bottom
+  * fix wording and descriptions
+
 ## 7.5.0 (2021-10-18)
 
 * New components:
