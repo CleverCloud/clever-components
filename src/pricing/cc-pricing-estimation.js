@@ -9,46 +9,19 @@ import { ccLink } from '../templates/cc-link.js';
 
 const deleteSvg = new URL('../assets/delete.svg', import.meta.url).href;
 
-/** @type {Object} */
+/** @type {Currency} */
 const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
+
 const CONTACT_URL = 'https://www.clever-cloud.com/en/contact-sales';
 const SIGN_UP_URL = 'https://api.clever-cloud.com/v2/sessions/signup';
 
 /**
  * A component to display a list of selected product plans with the ability to change their quantity or remove them from the list.
  *
- * ## Type definitions
- *
- * ```js
- * interface Currency {
- *   code: string,
- *   changeRate: string,
- * }
- * ```
- *
- * ```js
- * interface Plan {
- *   productName: string,
- *   name: string,
- *   price: number, // price in euros for 1 hour
- *   features: Feature[],
- *   quantity: number,
- * }
- * ```
- *
- * ```js
- * interface Feature {
- *   code: "connection-limit" | "cpu" | "databases" | "disk-size" | "gpu" | "has-logs" | "has-metrics" | "max-db-size" | "memory" | "version",
- *   type: "boolean" | "shared" | "bytes" | "number" | "runtime" | "string",
- *   value?: number|string, // Only required for a plan feature
- * }
- * ```
+ * @typedef {import('./types.js').Currency} Currency
+ * @typedef {import('./types.js').Plan} Plan
  *
  * @cssdisplay block
- *
- * @prop {Currency} currency - Sets the current currency.
- * @prop {Plan[]} selectedPlans - Sets the list of selected plans with their quantity.
- * @prop {Number} totalPrice - Sets the total estimated price for all selected plans.
  *
  * @event {CustomEvent<Plan>} cc-pricing-estimation:change-quantity - Fires the plan with a modified quantity whenever the quantity on the input changes.
  * @event {CustomEvent<Plan>} cc-pricing-estimation:delete-plan - Fires the plan whenever a delete button is clicked.
@@ -69,11 +42,22 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
 
   constructor () {
     super();
+
     this.breakpoints = {
       width: [600],
     };
+
+    /** @type {Currency} Sets the current currency. */
     this.currency = CURRENCY_EUR;
+
+    /** @type {Plan[]|null} Sets the list of selected plans with their quantity. */
+    this.selectedPlans = null;
+
+    /** @type {number} Sets the total estimated price for all selected plans. */
     this.totalPrice = 0;
+
+    /** @type {number|null} Sets the total estimated price for all selected plans. */
+    this._size = null;
   }
 
   onResize ({ width }) {
@@ -271,6 +255,8 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
     return [
       // language=CSS
       css`
+
+
         :host {
           display: block;
         }

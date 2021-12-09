@@ -37,30 +37,9 @@ const SKELETON_STATUS_CODES = { 200: 1 };
  * * When `data` is nullish, a skeleton screen UI pattern is displayed (loading hint).
  * * A short doc is available when the (i) button is clicked.
  *
- * ## Type definitions
- *
- * ```js
- * interface StatusCodesData {
- *   // Status code number as property.
- *   // Number of requests as value.
- *   [number]: number,
- * }
- * ```
- *
- * Example:
- *
- * ```js
- * {
- *   200: 5027,
- *   404: 123,
- *   500: 5,
- * }
- * ```
+ * @typedef {import('./types.js').StatusCodesData} StatusCodesData
  *
  * @cssdisplay grid
- *
- * @prop {Boolean} error - Displays an error message.
- * @prop {StatusCodesData} statusCodes - Sets data with the number of requests for each HTTP status code.
  */
 export class CcTileStatusCodes extends LitElement {
 
@@ -68,18 +47,29 @@ export class CcTileStatusCodes extends LitElement {
     return {
       error: { type: Boolean, reflect: true },
       statusCodes: { type: Object, attribute: 'status-codes' },
-      _skeleton: { type: Boolean, attribute: false },
-      _empty: { type: Boolean, attribute: false },
       _docs: { type: Boolean, attribute: false },
+      _empty: { type: Boolean, attribute: false },
+      _skeleton: { type: Boolean, attribute: false },
     };
   }
 
   constructor () {
     super();
-    // Triggers setter (init _backgroundColor, _chartLabels, _data, _empty, _labels and _skeleton)
+
+    /** @type {boolean|null} Displays an error message. */
     this.error = null;
+
+    /** @type {StatusCodesData|null} Sets data with the number of requests for each HTTP status code. */
     this.statusCodes = null;
+
+    /** @type {boolean} */
     this._docs = false;
+
+    /** @type {boolean} */
+    this._empty = false;
+
+    /** @type {boolean} */
+    this._skeleton = false;
   }
 
   _onToggleDocs () {
@@ -221,15 +211,15 @@ export class CcTileStatusCodes extends LitElement {
           </div>
         </div>
       ` : '')}
-        
+
       ${displayEmpty ? html`
         <div class="tile_message">${i18n('cc-tile-status-codes.empty')}</div>
       ` : ''}
-      
+
       ${displayError ? html`
         <cc-error class="tile_message">${i18n('cc-tile-status-codes.error')}</cc-error>
       ` : ''}
-      
+
       <div class="tile_docs ${classMap({ 'tile_docs--hidden': !displayDocs })}">
         <p>${i18n('cc-tile-status-codes.docs.msg')}</p>
         <p>${i18n('cc-tile-status-codes.docs.link')}</p>

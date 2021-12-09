@@ -16,18 +16,27 @@
           "no-noncallable-event-binding": "error",
           "no-boolean-in-attribute-binding": "error",
           "no-complex-attribute-binding": "error",
-          "no-nullable-attribute-binding": "error",
-          "no-incompatible-type-binding": "error",
+          // in some special cases, it doesn't know enough to work
+          "no-nullable-attribute-binding": "off",
+          // There are false positives and false negatives with this rule :-(
+          // https://github.com/runem/web-component-analyzer/issues/104
+          "no-incompatible-type-binding": "off",
           "no-invalid-directive-binding": "error",
           "no-unintended-mixed-binding": "error",
-          "no-incompatible-property-type": "off",
+          "no-incompatible-property-type": "error",
           "no-unknown-property-converter": "error",
-          "no-invalid-attribute-name": "error",
+          "no-invalid-attribute-name": "false",
           "no-invalid-tag-name": "error",
           "no-invalid-css": "error"
         },
-        // HACK: Right now, we don't have a clean way to recognize Shoelace events so this is not perfect.
-        "globalEvents": ["sl-change"]
+        "globalEvents": [
+          // HACK: Right now, we don't have a clean way to recognize Shoelace events so this is not perfect.
+          "sl-change",
+          // mouseenter and mouseleave aren't recognized :-(
+          // https://developer.mozilla.org/en-US/docs/Web/API/Element/mouseenter_event
+          "mouseenter",
+          "mouseleave"
+        ]
       }
     ]
   }

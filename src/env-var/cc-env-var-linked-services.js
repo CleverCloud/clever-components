@@ -8,34 +8,15 @@ import { i18n } from '../lib/i18n.js';
 /**
  * A component to display groups of readonly `<cc-env-var-form>` for linked apps of add-ons.
  *
+ * @typedef {import('./types.js').EnvType} EnvType
+ * @typedef {import('./types.js').Service} Service
+ *
  * ## Details
  *
  * * When `services` is nullish, a loading indicator is displayed with a message (corresponding to `type`).
  * * If `variables` on a service is nullish, the `<cc-env-var-form>` will be in skeleton mode.
  *
- * ## Type definitions
- *
- * ```js
- * interface Service {
- *   name: string,
- *   variables?: Variable[],
- * }
- * ```
- *
- * ```js
- * interface Variable {
- *   name: string,
- *   value: string,
- *   isDeleted: boolean,
- * }
- * ```
- *
  * @cssdisplay block
- *
- * @prop {String} appName - Sets name of the main app to which services are linked.
- * @prop {Boolean} error - Sets error status if list of services could not be fetched.
- * @prop {Service[]} services - List of add-ons or apps with their name and variables.
- * @prop {"addon"|"app"} type - Type of env vars to display linked add-ons or linked apps.
  */
 export class CcEnvVarLinkedServices extends LitElement {
 
@@ -50,7 +31,18 @@ export class CcEnvVarLinkedServices extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {string|null} Sets name of the main app to which services are linked. */
+    this.appName = null;
+
+    /** @type {boolean} Sets error status if list of services could not be fetched. */
     this.error = false;
+
+    /** @type {Service[]|null} List of add-ons or apps with their name and variables. */
+    this.services = null;
+
+    /** @type {EnvType} Type of env vars to display linked add-ons or linked apps. */
+    this.type = null;
   }
 
   _getLoadingMessage () {
@@ -115,13 +107,13 @@ export class CcEnvVarLinkedServices extends LitElement {
   render () {
 
     return html`
-      
+
       ${this.services == null && !this.error ? html`
         <div class="loading">
           <cc-loader></cc-loader><span>${this._getLoadingMessage()}</span>
         </div>
       ` : ''}
-      
+
       ${!this.error && this.services?.length > 0 ? html`
         <div class="service-list">
           ${this.services.map((s) => html`
@@ -131,11 +123,11 @@ export class CcEnvVarLinkedServices extends LitElement {
           `)}
         </div>
       ` : ''}
-      
+
       ${this.services != null && !this.error && this.services.length === 0 ? html`
         <div class="empty-msg">${this._getEmptyMessage()}</div>
       ` : ''}
-      
+
       ${this.error ? html`
         <div class="error">
           <cc-error>${this._getErrorMessage()}</cc-error>

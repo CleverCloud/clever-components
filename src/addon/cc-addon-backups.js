@@ -13,6 +13,7 @@ import { ccLink, linkStyles } from '../templates/cc-link.js';
 const backupSvg = new URL('../assets/backup.svg', import.meta.url).href;
 const closeSvg = new URL('../assets/close.svg', import.meta.url).href;
 
+/** @type {BackupDetails} */
 const SKELETON_BACKUPS = {
   providerId: '',
   passwordForCommand: '',
@@ -26,36 +27,16 @@ const SKELETON_BACKUPS = {
  *
  * * When `backups` is nullish, a skeleton screen UI pattern is displayed (loading hint).
  *
- * ## Type definitions
- *
- * ```js
- * interface BackupDetails {
- *   providerId: String,
- *   passwordForCommand: String,
- *   list: Backup[],
- * }
- * ```
- *
- * ```js
- * interface Backup {
- *   createdAt: Date,
- *   expiresAt: Date
- *   url: String,
- *   restoreCommand?: String,
- *   deleteCommand?: String,
- * }
- * ```
+ * @typedef {import('./types.js').BackupDetails} BackupDetails
+ * @typedef {import('./types.js').Backup} Backup
+ * @typedef {import('./types.js').OverlayType} OverlayType
  *
  * @cssdisplay grid
- *
- * @prop {BackupDetails} backups - Sets the different details about an add-on and its backup.
- * @prop {Boolean} error - Displays an error message.
  */
 export class CcAddonBackups extends LitElement {
 
   static get properties () {
     return {
-      // TODO: Maybe we could split backups.providerId and backups.list
       backups: { type: Object },
       error: { type: Boolean },
       _overlay: { type: String, attribute: false },
@@ -65,8 +46,20 @@ export class CcAddonBackups extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {BackupDetails|null} Sets the different details about an add-on and its backup. */
+    this.backups = null;
+
+    /** @type {boolean} Displays an error message. */
     this.error = false;
+
+    /** @type {OverlayType|null} */
     this._overlay = null;
+
+    /** @type {Element|null} */
+    this._overlayTarget = null;
+
+    /** @type {Backup|null} */
     this._selectedBackup = null;
   }
 
@@ -199,6 +192,11 @@ export class CcAddonBackups extends LitElement {
   // Because we focus in both ways (open & close), part of the modal is visible
   // This could be solved with some offsetTop and positionning magic but it's not easy to do it properly and it's not a very common case.
   // For now, we help the focus with some scroll into view.
+
+  /**
+   * @param {OverlayType} type
+   * @param {Backup} backup
+   */
   _onOpenOverlay (e, type, backup) {
     this._overlay = type;
     this._selectedBackup = backup;
@@ -223,7 +221,8 @@ export class CcAddonBackups extends LitElement {
   render () {
 
     const skeleton = (this.backups == null);
-    const { providerId, list: backups, passwordForCommand } = skeleton ? SKELETON_BACKUPS : this.backups;
+    const backupDetails = skeleton ? SKELETON_BACKUPS : this.backups;
+    const { providerId, list: backups, passwordForCommand } = backupDetails;
     const hasData = (!this.error && (backups.length > 0));
     const emptyData = (!this.error && (backups.length === 0));
 
@@ -236,7 +235,7 @@ export class CcAddonBackups extends LitElement {
           <div><span class=${classMap({ skeleton })}>${this._getDescription(providerId)}</span></div>
 
           <div class="backup-list">
-            ${backups.map((backup) => html`
+            ${backupDetails.list.map((backup) => html`
               <div class="backup">
                 <span class="backup-icon"><img src=${backupSvg} alt=""></span>
                 <span class="backup-text">

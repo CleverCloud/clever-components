@@ -23,11 +23,6 @@ const COLOR_PALETTE = [
  *
  * @cssdisplay inline-block
  *
- * @prop {Array} anchor - Exposes the coordinates of the "tip" of the marker, relative to its top left corner: `[x, y]` (used by `<cc-map>`).
- * @prop {Number} count - Sets an abstract value for this marker to vary the color grading.
- * @prop {Array} size - Exposes the size of the marker: `[width, height]` (used by `<cc-map>`).
- * @prop {Array} tooltip - Exposes the coordinates from which tooltips will "open", relative to the marker anchor: `[width, height]` (used by `<cc-map>`).
- *
  * @cssprop {Number} --cc-map-marker-dot-size - The size of the dot (defaults to 6px).
  */
 export class CcMapMarkerDot extends LitElement {
@@ -37,6 +32,25 @@ export class CcMapMarkerDot extends LitElement {
       count: { type: Number, reflect: true },
       _color: { type: String },
     };
+  }
+
+  constructor () {
+    super();
+
+    /** @type {Array} Exposes the coordinates of the "tip" of the marker, relative to its top left corner: `[x, y]` (used by `<cc-map>`). */
+    this.anchor = null;
+
+    /** @type {number|null} Sets an abstract value for this marker to vary the color grading. */
+    this.count = null;
+
+    /** @type {Array} Exposes the size of the marker: `[width, height]` (used by `<cc-map>`). */
+    this.size = null;
+
+    /** @type {Array} Exposes the coordinates from which tooltips will "open", relative to the marker anchor: `[width, height]` (used by `<cc-map>`). */
+    this.tooltip = null;
+
+    /** @type {string|null} */
+    this._color = null;
   }
 
   /** @readonly */

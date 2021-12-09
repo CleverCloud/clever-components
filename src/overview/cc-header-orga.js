@@ -18,24 +18,12 @@ const SKELETON_ORGA = {
  * A component to display various info about an orga (name and enterprise status).
  *
  * ## Details
-
+ *
  * * When `orga` is nullish, a skeleton screen UI pattern is displayed (loading hint)
  *
- * ## Type definitions
- *
- * ```js
- * interface Orga {
- *   name: string,
- *   avatar: string,
- *   cleverEnterprise: boolean,
- *   emergencyNumber: string,
- * }
- * ```
+ * @typedef {import('../types.js').Organisation} Organisation
  *
  * @cssdisplay block
- *
- * @prop {Boolean} error - Displays an error message.
- * @prop {Orga} orga - Sets organization details and config.
  */
 export class CcHeaderOrga extends LitElement {
 
@@ -48,7 +36,12 @@ export class CcHeaderOrga extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {boolean} Displays an error message. */
     this.error = false;
+
+    /** @type {Organisation|null} Sets organisation details and config. */
+    this.orga = null;
   }
 
   render () {
@@ -63,11 +56,11 @@ export class CcHeaderOrga extends LitElement {
 
     return html`
       <cc-flex-gap class="wrapper ${classMap({ enterprise: orga.cleverEnterprise })}">
-      
+
         ${this.error ? html`
           <cc-error>${i18n('cc-header-orga.error')}</cc-error>
         ` : ''}
-        
+
         ${!this.error ? html`
           <cc-img class="logo" ?skeleton=${skeleton} src=${ifDefined(orga.avatar)} text=${initials}></cc-img>
           <div class="details">

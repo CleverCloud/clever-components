@@ -52,42 +52,11 @@ const SKELETON_STATUS = 'unknown';
  * * When `app` and `status` are null, a skeleton screen UI pattern is displayed (loading hint).
  * * When only `status` is null, a skeleton screen UI pattern is displayed on the buttons and status message.
  *
- * ## Type definitions
- *
- * ```js
- * interface App {
- *   name: string,                   // Name of the application
- *   commit?: string,                // Head commit on remote repo if app is not brand new (full SHA-1)
- *   variantName: string,            // Human name of the variant (PHP, Ruby, Python...)
- *   variantLogo: string,            // HTTPS URL to the logo of the variant
- *   lastDeploymentLogsUrl?: string, // URL to the logs for the last deployment if app is not brand new
- * }
- * ```
- *
- * ```js
- * type AppStatus = "restart-failed" | "restarting" | "restarting-with-downtime"
- *                  | "running" | "start-failed" | "starting" | "stopped" | "unknown"
- * ```
- *
- * ```js
- * interface Zone {
- *   countryCode: string,   // ISO 3166-1 alpha-2 code of the country (2 letters): "fr", "ca", "us"...
- *   city: string,          // Name of the city in english: "Paris", "Montreal", "New York City"...
- *   country: string,       // Name of the country in english: "France", "Canada", "United States"...
- *   displayName?: string,  // Optional display name for private zones (instead of displaying city + country): "ACME (dedicated)"...
- *   tags: string[],        // Array of strings for semantic tags: ["region:eu", "infra:clever-cloud"], ["scope:private"]...
- * }
- * ```
+ * @typedef {import('../types.js').App} App
+ * @typedef {import('../types.js').AppStatus} AppStatus
+ * @typedef {import('../types.js').Zone} Zone
  *
  * @cssdisplay block
- *
- * @prop {App} app - Sets application details and config.
- * @prop {Boolean} disableButtons - Disables all buttons (in a "login as" use case).
- * @prop {Boolean} error - Displays an error message.
- * @prop {String} runningCommit - Sets the running commit (if app is running).
- * @prop {String} startingCommit - Sets the starting commit (if app is deploying).
- * @prop {AppStatus} status - Sets application status.
- * @prop {Zone} zone - Sets application zone.
  *
  * @event {CustomEvent} cc-header-app:cancel - Fires whenever the cancel button is clicked.
  * @event {CustomEvent} cc-header-app:restart - Fires whenever one of the 3 restart buttons is clicked.
@@ -111,8 +80,30 @@ export class CcHeaderApp extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {App|null} Sets application details and config. */
+    this.app = null;
+
+    /** @type {boolean} Disables all buttons (in a "login as" use case). */
     this.disableButtons = false;
+
+    /** @type {boolean}  Displays an error message. */
     this.error = false;
+
+    /** @type {string|null} Sets the running commit (if app is running). */
+    this.runningCommit = null;
+
+    /** @type {string|null} Sets the starting commit (if app is deploying). */
+    this.startingCommit = null;
+
+    /** @type {AppStatus|null} Sets application status. */
+    this.status = null;
+
+    /** @type {Zone|null} Sets application zone. */
+    this.zone = null;
+
+    /** @type {string|null} */
+    this._lastUserAction = null;
   }
 
   _getCommitTitle (type, commit) {
@@ -227,7 +218,7 @@ export class CcHeaderApp extends LitElement {
           <!-- image has a presentation role => alt="" -->
           <img class="flavor-logo_img" src=${ifDefined(variantLogo)} alt="">
         </div>
-        
+
         <div class="details">
           <div class="name"><span class=${classMap({ skeleton })}>${name}</span></div>
           <cc-flex-gap class="commits">
@@ -236,9 +227,9 @@ export class CcHeaderApp extends LitElement {
             ${isDeploying ? this._renderCommit(this.startingCommit, 'starting', skeleton) : ''}
           </cc-flex-gap>
         </div>
-        
+
         <cc-flex-gap class="buttons">
-        
+
           ${canStart ? html`
             <cc-button title=${ifDefined(disableButtonsTitle)} ?disabled=${shouldDisableAllButtons} @cc-button:click=${() => this._onStart('normal')}>
               ${i18n('cc-header-app.action.start')}
@@ -250,7 +241,7 @@ export class CcHeaderApp extends LitElement {
               ${i18n('cc-header-app.action.start-last-commit')}
             </cc-button>
           ` : ''}
-          
+
           ${canRestart ? html`
             <cc-button title=${ifDefined(disableButtonsTitle)} ?skeleton=${skeletonStatus} ?disabled=${shouldDisableAllButtons} @cc-button:click=${() => this._onRestart('normal')}>
               ${i18n('cc-header-app.action.restart')}
@@ -262,23 +253,23 @@ export class CcHeaderApp extends LitElement {
               ${i18n('cc-header-app.action.restart-last-commit')}
             </cc-button>
           ` : ''}
-          
+
           ${isDeploying ? html`
             <cc-button warning outlined title=${ifDefined(disableButtonsTitle)} ?disabled=${shouldDisableAllButtons} @cc-button:click=${this._onCancel}>
               ${i18n('cc-header-app.action.cancel-deployment')}
             </cc-button>
           ` : ''}
-          
+
           <cc-button danger outlined delay="3"
             title=${ifDefined(disableButtonsTitle)}
             ?skeleton=${skeletonStatus}
             ?disabled=${shouldDisableAllButtons || shouldDisableStopButton}
             @cc-button:click=${this._onStop}
           >${i18n('cc-header-app.action.stop')}</cc-button>
-          
+
         </cc-flex-gap>
       </cc-flex-gap>
-      
+
       <cc-flex-gap class="messages ${classMap({ 'cc-waiting': isDeploying })}">
         ${(shouldDisplayStatusMessage) ? html`
           <!-- image has a presentation role => alt="" -->
@@ -436,11 +427,11 @@ export class CcHeaderApp extends LitElement {
           height: 1.25rem;
           min-width: 1.25rem;
         }
-        
+
         .spacer {
           flex: 1 1 0;
         }
-        
+
         cc-zone {
           font-style: normal;
           white-space: nowrap;

@@ -14,24 +14,11 @@ import { skeletonStyles } from '../styles/skeleton.js';
  *
  * * When the `value` of a credential is nullish, a skeleton UI pattern is displayed (loading hint).
  *
- * ## Type definition
- *
- * ```js
- * interface Credential {
- *   type: "auth-token"|"host"|"password"|"url"|"user",
- *   value: string,
- *   secret: boolean,
- * }
- * ```
+ * @typedef {import('./types.js').Credential} Credential
+ * @typedef {import('../types.js').ToggleStateType} ToggleStateType
+ * @typedef {import('./types.js').AddonType} AddonType
  *
  * @cssdisplay block
- *
- * @prop {Credential[]} credentials - Sets the list of  add-on credentials.
- * @prop {Boolean} error - Displays an error message.
- * @prop {String} icon - Sets the URL of the icon to use.
- * @prop {String} name - Sets the display name of the add-on.
- * @prop {"off"|"open"|"close"} toggleState - Sets the toggle state of the inner block.
- * @prop {"apm"|"elasticsearch"|"kibana"|"pulsar"} type - Sets the type of the add-on.
  */
 export class CcAddonCredentials extends LitElement {
 
@@ -48,8 +35,24 @@ export class CcAddonCredentials extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {Credential[]|null} Sets the list of add-on credentials. */
+    this.credentials = null;
+
+    /** @type {boolean} Displays an error message. */
     this.error = false;
+
+    /** @type {string|null} Sets the URL of the icon to use. */
+    this.icon = null;
+
+    /** @type {string|null} Sets the display name of the add-on. */
+    this.name = null;
+
+    /** @type {ToggleStateType} Sets the toggle state of the inner block. */
     this.toggleState = 'off';
+
+    /** @type {AddonType}  Sets the type of the add-on. */
+    this.type = null;
   }
 
   _getDescription (addonType) {
@@ -86,12 +89,12 @@ export class CcAddonCredentials extends LitElement {
 
   render () {
     return html`
-      <cc-block icon=${this.icon} state=${this.toggleState}>
+      <cc-block icon=${ifDefined(this.icon ?? undefined)} state=${this.toggleState}>
         <div slot="title">${i18n('cc-addon-credentials.title', { name: this.name })}</div>
-        
+
         ${!this.error ? html`
           <div>${this._getDescription(this.type)}</div>
-          
+
           ${this.credentials != null ? html`
             <cc-flex-gap class="credential-list">
               ${this.credentials.map(({ type, secret, value }) => html`
@@ -105,7 +108,7 @@ export class CcAddonCredentials extends LitElement {
             </cc-flex-gap>
           ` : ''}
         ` : ''}
-        
+
         ${this.error ? html`
           <cc-error>${i18n('cc-addon-credentials.loading-error')}</cc-error>
         ` : ''}

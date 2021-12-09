@@ -18,12 +18,11 @@ const GRAFANA_DOCUMENTATION = 'https://www.clever-cloud.com/doc/administrate/met
 /**
  * A component to display information about grafana and allow some actions: enable, disable, reset.
  *
- * @cssdisplay block
+ * @typedef {import('./types.js').GrafanaErrorType} GrafanaErrorType
+ * @typedef {import('./types.js').GrafanaStatusType} GrafanaStatusType
+ * @typedef {import('./types.js').GrafanaWaitingType} GrafanaWaitingType
  *
- * @prop {false|"resetting"|"loading"|"disabling"|"enabling"|"link-grafana"} error - Displays an error message.
- * @prop {null|String} link - Set the Grafana link.
- * @prop {null|"enabled"|"disabled"} status - Grafana account status, is the Grafana enabled or disabled? Null means no data are received.
- * @prop {false|"resetting"|"disabling"|"enabling"} waiting - Waiting for the result status (based on actions: reset, disable or enable).
+ * @cssdisplay block
  *
  * @event {CustomEvent} cc-grafana-info:enable - Fires when the enable button is clicked.
  * @event {CustomEvent} cc-grafana-info:disable - Fires when the disable button is clicked.
@@ -42,9 +41,17 @@ export class CcGrafanaInfo extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {GrafanaErrorType} Displays an error message. */
     this.error = false;
+
+    /** @type {string|null} Sets the grafana link. */
     this.link = null;
+
+    /** @type {GrafanaStatusType} Grafana account status, is the Grafana enabled or disabled? Null means no data are received. */
     this.status = null;
+
+    /** @type {GrafanaWaitingType} Waiting for the result status (based on actions: reset, disable or enable). */
     this.waiting = false;
   }
 
@@ -119,7 +126,7 @@ export class CcGrafanaInfo extends LitElement {
             </div>
           </cc-block-section>
         ` : ''}
-          
+
         ${isGrafanaStatusLoading ? html`
           <cc-block-section>
             <div slot="title">${i18n('cc-grafana-info.loading-title')}</div>
@@ -240,7 +247,7 @@ export class CcGrafanaInfo extends LitElement {
           max-width: 50em;
           width: 100%;
         }
-        
+
         p {
           margin: 0;
         }

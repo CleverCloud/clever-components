@@ -16,29 +16,10 @@ const redirectionSvg = new URL('../assets/redirection-on.svg', import.meta.url).
 /**
  * A small form to create or delete a TCP redirection.
  *
- * ## Type definitions
- *
- * ```js
- * interface RedirectionNamespace {
- *   namespace: string,
- * }
- * ```
- *
- * ```js
- * interface Redirection {
- *   namespace: string,
- *   sourcePort: number,
- * }
- * ```
+ * @typedef {import('./types.js').RedirectionNamespace} RedirectionNamespace
+ * @typedef {import('./types.js').Redirection} Redirection
  *
  * @cssdisplay block
- *
- * @prop {Boolean} error - Set if there was an error during creation / deletion.
- * @prop {String} namespace - Sets the name of the namespace.
- * @prop {Boolean} private - Set if this namespace is dedicated to the customer.
- * @prop {Boolean} skeleton - Enables skeleton screen UI pattern (loading hint).
- * @prop {Number} sourcePort - Sets the source of the redirection if any.
- * @prop {Boolean} waiting - Sets the waiting state. You should set this to true while an action is in progress.
  *
  * @event {CustomEvent<RedirectionNamespace>} cc-tcp-redirection:create - Fires a redirection namespace whenever the create button is clicked.
  * @event {CustomEvent<Redirection>} cc-tcp-redirection:delete - Fires a redirection whenever the delete button is clicked.
@@ -58,9 +39,23 @@ export class CcTcpRedirection extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {boolean} Set if there was an error during creation / deletion. */
     this.error = false;
+
+    /** @type {string|null} Sets the name of the namespace. */
+    this.namespace = null;
+
+    /** @type {boolean} Set if this namespace is dedicated to the customer. */
     this.private = false;
+
+    /** @type {boolean} Enables skeleton screen UI pattern (loading hint). */
     this.skeleton = false;
+
+    /** @type {number|null} Sets the source of the redirection if any. */
+    this.sourcePort = null;
+
+    /** @type {boolean} Sets the waiting state. You should set this to true while an action is in progress. */
     this.waiting = false;
   }
 

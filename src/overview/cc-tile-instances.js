@@ -16,6 +16,7 @@ const statusImg = {
   deploying: startingSvg,
 };
 
+/** @type {InstancesState} */
 const SKELETON_INSTANCES = {
   running: [],
   deploying: [],
@@ -28,26 +29,9 @@ const SKELETON_INSTANCES = {
  *
  * * When `instances` is nullish, a loader is displayed.
  *
- * ## Type definitions
- *
- * ```js
- * interface InstancesState {
- *   running: Instance[],
- *   deploying: Instance[],
- * }
- * ```
- *
- * ```js
- * interface Instance {
- *   flavourName: string,
- *   count: number,
- * }
- * ```
+ * @typedef {import('./types.js').InstancesState} InstancesState
  *
  * @cssdisplay grid
- *
- * @prop {Boolean} error - Displays an error message.
- * @prop {InstancesState} instances - Sets the current state of running and deploying instances.
  */
 export class CcTileInstances extends LitElement {
 
@@ -60,7 +44,12 @@ export class CcTileInstances extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {boolean} Displays an error message. */
     this.error = false;
+
+    /** @type {InstancesState|null} Sets the current state of running and deploying instances. */
+    this.instances = null;
   }
 
   _getStatusLabel (type) {
@@ -101,21 +90,21 @@ export class CcTileInstances extends LitElement {
 
     return html`
       <div class="tile_title">${i18n('cc-tile-instances.title')}</div>
-      
+
       ${!this.error && !emptyData ? html`
         <div class="tile_body">
           <cc-expand>
             ${this._renderInstances(instances.running, 'running')}
             ${this._renderInstances(instances.deploying, 'deploying')}
           </cc-expand>
-          
+
           <!-- in this case, a loader is better than a skeleton screen since we're not so sure about the future state -->
           ${isLoading ? html`
-      <cc-loader></cc-loader>
-    ` : ''}
+            <cc-loader></cc-loader>
+          ` : ''}
         </div>
       ` : ''}
-      
+
       ${emptyData ? html`
         <div class="tile_message">${i18n('cc-tile-instances.empty')}</div>
       ` : ''}

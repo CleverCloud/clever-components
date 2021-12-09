@@ -7,12 +7,9 @@ import { css, LitElement, svg } from 'lit-element';
  *
  * * `size`, `anchor` and `tooltip` are readonly.
  *
- * @cssdisplay inline-block
+ * @typedef {import('./types.js').MarkerStateType} MarkerStateType
  *
- * @prop {Array} anchor - Exposes the coordinates of the "tip" of the marker, relative to its top left corner: `[x, y]` (used by `<cc-map>`).
- * @prop {Array} size - Exposes the size of the marker: `[width, height]` (used by `<cc-map>`).
- * @prop {"default"|"hovered"|"selected"} state - Sets the state of the marker.
- * @prop {Array} tooltip - Exposes the coordinates from which tooltips will "open", relative to the marker anchor: `[width, height]` (used by `<cc-map>`).
+ * @cssdisplay inline-block
  */
 export class CcMapMarkerServer extends LitElement {
 
@@ -24,7 +21,18 @@ export class CcMapMarkerServer extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {Array} Exposes the coordinates of the "tip" of the marker, relative to its top left corner: `[x, y]` (used by `<cc-map>`) */
+    this.anchor = null;
+
+    /** @type {Array} Exposes the size of the marker: `[width, height]` (used by `<cc-map>`) */
+    this.size = null;
+
+    /** @type {MarkerStateType} Sets the state of the marker */
     this.state = 'default';
+
+    /** @type {Array} Exposes the coordinates from which tooltips will "open", relative to the marker anchor: `[width, height]` (used by `<cc-map>`) */
+    this.tooltip = null;
   }
 
   /** @readonly */
@@ -72,109 +80,109 @@ export class CcMapMarkerServer extends LitElement {
     return [
       // language=CSS
       css`
-        :host {
-          /* Make sure container size adapts to inner div */
-          display: inline-block;
-        }
-
-        svg {
-          display: block;
-          /* A filter:drop-shadow will match the shape, a box-shadow would just be a rectangle */
-          filter: drop-shadow(0 0 2px #555);
-          /* Exception to the "rem everywhere rule" because of the way leaflet positions markers and tooltips, same as this.size */
-          height: 32px;
-          width: 32px;
-        }
-
-        :host(:not([state="default"])) svg {
-          transform: scale(1.2);
-          transform-origin: center bottom;
-        }
-
-        :host([state="selected"]) svg {
-          filter: drop-shadow(0 0 2px #E307D9);
-        }
-
-        path {
-          fill: #999;
-          stroke: #333;
-        }
-
-        :host([state="selected"]) path {
-          fill: url(#gradient);
-          stroke: #000;
-        }
-
-        .gradient-1 {
-          stop-color: #F19175;
-        }
-
-        .gradient-2 {
-          stop-color: #CF3942;
-        }
-
-        .gradient-3 {
-          stop-color: #E307D9;
-        }
-
-        rect {
-          fill: #333;
-        }
-
-        :host(:not([state="default"])) rect {
-          fill: #000;
-        }
-
-        :host([state="selected"]) circle {
-          animation: var(--duration) var(--delay) infinite led-half;
-        }
-
-        circle:nth-of-type(2) {
-          --duration: 0.9s;
-          --delay: 0.25s;
-        }
-
-        circle:nth-of-type(3) {
-          --duration: 1.1s;
-          --delay: 0.5s;
-        }
-
-        circle:nth-of-type(4) {
-          --duration: 0.8s;
-          --delay: 0.75s;
-        }
-
-        circle:nth-of-type(6) {
-          --duration: 0.95s;
-          --delay: 0.15s;
-        }
-
-        circle:nth-of-type(8) {
-          --duration: 0.85s;
-          --delay: 0.45s;
-        }
-
-        circle:nth-of-type(9) {
-          --duration: 1.05s;
-          --delay: 0.65s;
-        }
-
-        circle:nth-of-type(10) {
-          --duration: 0.75s;
-          --delay: 0.95s;
-        }
-
-        @keyframes led-half {
-          0% {
-            visibility: hidden;
+          :host {
+              /* Make sure container size adapts to inner div */
+              display: inline-block;
           }
-          20% {
-            visibility: hidden;
+
+          svg {
+              display: block;
+              /* A filter:drop-shadow will match the shape, a box-shadow would just be a rectangle */
+              filter: drop-shadow(0 0 2px #555);
+              /* Exception to the "rem everywhere rule" because of the way leaflet positions markers and tooltips, same as this.size */
+              height: 32px;
+              width: 32px;
           }
-          100% {
-            visibility: visible;
+
+          :host(:not([state="default"])) svg {
+              transform: scale(1.2);
+              transform-origin: center bottom;
           }
-        }
+
+          :host([state="selected"]) svg {
+              filter: drop-shadow(0 0 2px #E307D9);
+          }
+
+          path {
+              fill: #999;
+              stroke: #333;
+          }
+
+          :host([state="selected"]) path {
+              fill: url(#gradient);
+              stroke: #000;
+          }
+
+          .gradient-1 {
+              stop-color: #F19175;
+          }
+
+          .gradient-2 {
+              stop-color: #CF3942;
+          }
+
+          .gradient-3 {
+              stop-color: #E307D9;
+          }
+
+          rect {
+              fill: #333;
+          }
+
+          :host(:not([state="default"])) rect {
+              fill: #000;
+          }
+
+          :host([state="selected"]) circle {
+              animation: var(--duration) var(--delay) infinite led-half;
+          }
+
+          circle:nth-of-type(2) {
+              --duration: 0.9s;
+              --delay: 0.25s;
+          }
+
+          circle:nth-of-type(3) {
+              --duration: 1.1s;
+              --delay: 0.5s;
+          }
+
+          circle:nth-of-type(4) {
+              --duration: 0.8s;
+              --delay: 0.75s;
+          }
+
+          circle:nth-of-type(6) {
+              --duration: 0.95s;
+              --delay: 0.15s;
+          }
+
+          circle:nth-of-type(8) {
+              --duration: 0.85s;
+              --delay: 0.45s;
+          }
+
+          circle:nth-of-type(9) {
+              --duration: 1.05s;
+              --delay: 0.65s;
+          }
+
+          circle:nth-of-type(10) {
+              --duration: 0.75s;
+              --delay: 0.95s;
+          }
+
+          @keyframes led-half {
+              0% {
+                  visibility: hidden;
+              }
+              20% {
+                  visibility: hidden;
+              }
+              100% {
+                  visibility: visible;
+              }
+          }
       `,
     ];
   }

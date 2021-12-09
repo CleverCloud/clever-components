@@ -9,29 +9,11 @@ import { linkStyles } from '../templates/cc-link.js';
 /**
  * A component that displays a form of `<cc-addon-option>`.
  *
- * ## Type definitions
- *
- * ```js
- * interface Option {
- *   title: String,
- *   logo: String,
- *   description: HTMLElement | String,
- *   name: String,
- *   enabled: Boolean
- * }
- *
- * interface Options {
- *   [propName: string]: String
- * }
- * ```
+ * @typedef {import('./types.js').Option} Option
  *
  * @cssdisplay block
  *
- * @prop {Option[]} options - List of Option object to render.
- * @prop {String} title - Title of the whole options form.
- * @prop {Option[]} options - List of Option object to render.
- *
- * @event {CustomEvent<Options>} cc-addon-option-form:submit - Fires when the form is submitted.
+ * @event {CustomEvent<Object>} cc-addon-option-form:submit - Fires when the form is submitted.
  *
  * @slot description - The description of the add-on and available options.
  */
@@ -39,15 +21,21 @@ export class CcAddonOptionForm extends LitElement {
 
   static get properties () {
     return {
-      /** @required */
-      title: { type: String },
-      /** @required */
       options: { type: Array },
+      title: { type: String },
     };
   }
 
   constructor () {
     super();
+
+    /** @type {Option[]} List of Option object to render. */
+    this.options = null;
+
+    /** @type {string} Title of the whole options form. */
+    this.title = null;
+
+    /** @type {Object} */
     this._optionsStates = {};
   }
 

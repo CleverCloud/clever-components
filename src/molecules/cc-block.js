@@ -15,12 +15,9 @@ const upSvg = new URL('../assets/up.svg', import.meta.url).href;
  *
  * * The main section is wrapped in a `<cc-expand>` so variation of this section height will be animated.
  *
- * @cssdisplay grid
+ * @typedef {import('../types.js').ToggleStateType} ToggleStateType
  *
- * @prop {String} icon - Sets the URL of the image before the title. Icon is hidden if nullish.
- * @prop {Boolean} noHead - Hides the head section.
- * @prop {String} ribbon - Adds a ribbon on the top left corner if it is not empty.
- * @prop {"off"|"open"|"close"} state - Sets the state of the toggle behaviour.
+ * @cssdisplay grid
  *
  * @slot - The main content of the block. The direct children of this will be spaced in a 1 column CSS grid.
  * @slot button - A zone dedicated for a button/toggle in the to right corner.
@@ -41,8 +38,20 @@ export class CcBlock extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {string|null} Sets the URL of the image before the title. Icon is hidden if nullish. */
+    this.icon = null;
+
+    /** @type {boolean} Hides the head section. */
     this.noHead = false;
+
+    /** @type {string|null} Adds a ribbon on the top left corner if it is not empty. */
+    this.ribbon = null;
+
+    /** @type {ToggleStateType} Sets the state of the toggle behaviour. */
     this.state = 'off';
+
+    /** @type {boolean} */
     this._overlay = false;
   }
 

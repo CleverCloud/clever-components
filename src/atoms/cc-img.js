@@ -12,10 +12,6 @@ import { skeletonStyles } from '../styles/skeleton.js';
  *
  * @cssdisplay inline-block
  *
- * @prop {Boolean} skeleton - Enables skeleton screen UI pattern (loading hint).
- * @prop {String} src - Sets `src` attribute on inner native `<img>` element.
- * @prop {String} text - Sets short fallback text to display when the image cannot be loaded or if `src` is not defined and `skeleton` is `false`.
- *
  * @cssprop {"cover"|"contain"} --cc-img-fit - Sets the `object-fit` of the inner `<img>` element (defaults to "cover").
  */
 export class CcImg extends LitElement {
@@ -32,8 +28,20 @@ export class CcImg extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {number} Enables skeleton screen UI pattern (loading hint). */
     this.skeleton = false;
+
+    /** @type {string|null} Sets `src` attribute on inner native `<img>` element. */
+    this.src = null;
+
+    /** @type {string|null} Sets short fallback text to display when the image cannot be loaded or if `src` is not defined and `skeleton` is `false`. */
+    this.text = null;
+
+    /** @type {boolean} */
     this._error = false;
+
+    /** @type {boolean} */
     this._loaded = false;
   }
 
@@ -63,7 +71,7 @@ export class CcImg extends LitElement {
     const displayText = (this.src == null || this._error);
     return html`
       <div class="wrapper ${classMap({ skeleton: isSkeleton, loaded: this._loaded, text: displayText })}">
-        <img src=${ifDefined(this.src)} @load=${this._onLoad} @error=${this._onError} alt="">
+        <img src=${ifDefined(this.src ?? undefined)} @load=${this._onLoad} @error=${this._onError} alt="">
         ${displayText ? html`
           <div class="error-msg">${this.text}</div>
         ` : ''}

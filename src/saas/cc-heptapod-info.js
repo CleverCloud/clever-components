@@ -7,6 +7,7 @@ import { i18n } from '../lib/i18n.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 
+/** @type {Statistics} */
 const SKELETON_STATISTICS = {
   privateActiveUsers: 15,
   publicActiveUsers: 120,
@@ -23,21 +24,9 @@ const HEPTAPOD_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.co
  *
  * * When `statistics` is nullish, a skeleton screen UI pattern is displayed (loading hint).
  *
- * ## Type definitions
- *
- * ```js
- * interface Statistics {
- *   privateActiveUsers: number,
- *   publicActiveUsers: number,
- *   storage: number,
- *   price: number,
- * }
- * ```
+ * @typedef {import('./types.js').Statistics} Statistics
  *
  * @cssdisplay block
- *
- * @prop {Boolean} error - Displays an error message.
- * @prop {Statistics|"not-used"} statistics - Sets the usage statistics of this heptapod SaaS or `"not-used"` to display a message explaining the service is not used.
  */
 export class CcHeptapodInfo extends LitElement {
 
@@ -50,7 +39,11 @@ export class CcHeptapodInfo extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {boolean} Displays an error message. */
     this.error = false;
+
+    /** @type {Statistics|null} Sets the usage statistics of this heptapod SaaS or `"not-used"` to display a message explaining the service is not used. */
     this.statistics = null;
   }
 

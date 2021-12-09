@@ -20,6 +20,7 @@ const featureIcons = {
 
 const SORT_FEATURES = ['cpus', 'vcpus', 'memory', 'disk'];
 
+/** @type {Feature[]} */
 const SKELETON_FEATURES = [
   { name: '??????', value: '????????' },
   { name: '????', value: '??' },
@@ -36,22 +37,10 @@ const SKELETON_FEATURES = [
  * * We don't have a proper i18n and icon system for feature names. For the time being, the (lower cased) name is used as some kind of code to match an icon and maybe translate the name of the feature.
  * * We don't have a proper i18n system for feature values. For the time being, the (lower cased) value is used as some kind of code to maybe translate the value of the feature.
  *
- *
- * ## Type definitions
- *
- * ```js
- * interface Feature {
- *   name: String,
- *   value: String,
- * }
- * ```
+ * @typedef {import('./types.js').Feature} Feature
  *
  * @cssdisplay block
- *
- * @prop {Boolean} error - Displays an error message.
- * @prop {Feature[]} features - Sets the list features.
  */
-
 export class CcAddonFeatures extends LitElement {
 
   static get properties () {
@@ -63,7 +52,12 @@ export class CcAddonFeatures extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {boolean} Displays an error message. */
     this.error = false;
+
+    /** @type {Feature[]} Sets the list features. */
+    this.features = [];
   }
 
   _getFeatureName (code, rawName) {
@@ -122,7 +116,7 @@ export class CcAddonFeatures extends LitElement {
     return html`
       <cc-block>
         <div slot="title">${i18n('cc-addon-features.title')}</div>
-        
+
         ${!this.error ? html`
           <div>${i18n('cc-addon-features.details')}</div>
           <cc-flex-gap class="feature-list">
@@ -139,7 +133,7 @@ export class CcAddonFeatures extends LitElement {
             `)}
           </cc-flex-gap>
         ` : ''}
-  
+
         ${this.error ? html`
           <cc-error>${i18n('cc-addon-features.loading-error')}</cc-error>
         ` : ''}

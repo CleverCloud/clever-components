@@ -14,6 +14,7 @@ const infoSvg = new URL('../assets/info.svg', import.meta.url).href;
 
 Chart.register(BarController, BarElement, Tooltip, CategoryScale, LinearScale, Title);
 
+/** @type {RequestsData[]} */
 const SKELETON_REQUESTS = Array
   .from(new Array(24))
   .map(() => [0, 0, 1]);
@@ -30,43 +31,44 @@ const SKELETON_REQUESTS = Array
  *   * 8 bars of 3 hours
  *   * 12 bars of 2 hours
  *
- * ## Type definitions
- *
- * An array of 3 values:
- *
- * ```js
- * interface RequestsData [
- *   number, // Start timestamp in milliseconds. Expected to be rounded to the hour of its respective TZ.
- *   number, // End timestamp in milliseconds. Expected to be rounded to the hour of its respective TZ.
- *   number, // Number of request during this time window.
- * ]
- * ```
+ * @typedef {import('./types.js').RequestsData} RequestsData
  *
  * @cssdisplay grid
- *
- * @prop {RequestsData[24]} data - Sets the list of 24 time windows of one hour with timestamps and number of requests.
- * @prop {Boolean} error - Displays an error message.
  */
 export class CcTileRequests extends withResizeObserver(LitElement) {
 
   static get properties () {
     return {
-      data: { type: Object },
+      data: { type: Array },
       error: { type: Boolean, reflect: true },
-      _skeleton: { type: Boolean, attribute: false },
-      _empty: { type: Boolean, attribute: false },
-      _docs: { type: Boolean, attribute: false },
       _barCount: { type: Number, attribute: false },
+      _docs: { type: Boolean, attribute: false },
+      _empty: { type: Boolean, attribute: false },
+      _skeleton: { type: Boolean, attribute: false },
     };
   }
 
   constructor () {
     super();
-    this.error = 0;
+
+    /** @type {RequestsData[]|null} Sets the list of 24 time windows of one hour with timestamps and number of requests. */
+    this.data = null;
+
+    /** @type {boolean} Displays an error message. */
+    this.error = false;
+
     // Default to lower resolution
+    /** @type {number} */
     this._barCount = 6;
-    this._data = null;
+
+    /** @type {boolean} */
+    this._empty = false;
+
+    /** @type {boolean} */
     this._docs = false;
+
+    /** @type {boolean} */
+    this._skeleton = false;
   }
 
   /** @protected */
@@ -251,7 +253,8 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
           image=${displayDocs ? closeSvg : infoSvg}
           hide-text
           @cc-button:click=${this._onToggleDocs}
-        >${this._docs ? i18n('cc-tile-requests.close-btn') : i18n('cc-tile-requests.about-btn')}</cc-button>
+        >${this._docs ? i18n('cc-tile-requests.close-btn') : i18n('cc-tile-requests.about-btn')}
+        </cc-button>
       </div>
 
       <div class="tile_body ${classMap({ 'tile--hidden': !displayChart })}">
@@ -259,11 +262,11 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
           <canvas id="chart"></canvas>
         </div>
       </div>
-        
+
       <div class="tile_message ${classMap({ 'tile--hidden': !displayEmpty })}">${i18n('cc-tile-requests.empty')}</div>
-    
+
       <cc-error class="tile_message ${classMap({ 'tile--hidden': !displayError })}">${i18n('cc-tile-requests.error')}</cc-error>
-      
+
       <div class="tile_docs ${classMap({ 'tile--hidden': !displayDocs })}">
         <p>${i18n('cc-tile-requests.docs.msg', { windowHours: 24 / this._barCount })}</p>
       </div>

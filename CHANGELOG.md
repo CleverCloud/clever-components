@@ -6,7 +6,11 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+### For devs
+
+* Improve type definitions documentation:
+  * move types to a `types.d.ts` for each web components section
+  * add a script to automate type definition generation
 
 ## 7.6.0 (2021-10-28)
 

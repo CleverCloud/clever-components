@@ -14,24 +14,14 @@ import { i18n } from '../lib/i18n.js';
  *
  * * When addon is nullish, a skeleton screen UI pattern is displayed (loading hint).
  *
- * ## Type definitions
- *
- * ```js
- * interface Addon {
- *   name: String,
- *   tags: String[],
- * }
- * ```
+ * @typedef {import('./types.js').Addon} Addon
+ * @typedef {import('./types.js').ErrorType} ErrorType
  *
  * @cssdisplay block
  *
- * @prop {Addon} addon - Sets the add-on details (name and tags).
- * @prop {false|"saving"|"loading"} error - Sets the error state on the component.
- * @prop {Boolean} saving - Enables the saving state (form is disabled and blurred).
- *
  * @event {CustomEvent} cc-addon-admin:delete-addon - Fires when the delete button is clicked.
- * @event {CustomEvent<String>} cc-addon-admin:update-name - Fires the new name of the add-on when update name button is clicked.
- * @event {CustomEvent<String[]>} cc-addon-admin:update-tags - Fires the new list of tags when update tags button is clicked.
+ * @event {CustomEvent<string>} cc-addon-admin:update-name - Fires the new name of the add-on when update name button is clicked.
+ * @event {CustomEvent<string[]>} cc-addon-admin:update-tags - Fires the new list of tags when update tags button is clicked.
  */
 export class CcAddonAdmin extends LitElement {
 
@@ -48,11 +38,24 @@ export class CcAddonAdmin extends LitElement {
 
   constructor () {
     super();
-    // lit-analyzer needs this
-    this._skeleton = false;
+
+    /** @type {Addon|null} Sets the add-on details (name and tags). */
     this.addon = null;
+
+    /** @type {ErrorType} Sets the error state on the component. */
     this.error = false;
+
+    /** @type {boolean} Enables the saving state (form is disabled and blurred). */
     this.saving = false;
+
+    /** @type {string} */
+    this._name = '';
+
+    /** @type {boolean} */
+    this._skeleton = false;
+
+    /** @type {string[]} */
+    this._tags = [];
   }
 
   set addon (addon) {
@@ -102,11 +105,11 @@ export class CcAddonAdmin extends LitElement {
             <div slot="info"></div>
             <div class="one-line-form">
               <cc-input-text
-                  ?skeleton=${this._skeleton}
-                  ?disabled=${isFormDisabled}
-                  .value=${this._name}
-                  @cc-input-text:input=${this._onNameInput}
-                  @cc-input-text:requestimplicitsubmit=${this._onNameSubmit}
+                ?skeleton=${this._skeleton}
+                ?disabled=${isFormDisabled}
+                .value=${this._name}
+                @cc-input-text:input=${this._onNameInput}
+                @cc-input-text:requestimplicitsubmit=${this._onNameSubmit}
               ></cc-input-text>
               <cc-button primary ?skeleton=${this._skeleton} ?disabled=${isFormDisabled} @cc-button:click=${this._onNameSubmit}>${i18n('cc-addon-admin.update')}</cc-button>
             </div>
@@ -117,12 +120,12 @@ export class CcAddonAdmin extends LitElement {
             <div slot="info">${i18n('cc-addon-admin.tags-description')}</div>
             <div class="one-line-form">
               <cc-input-text
-                  ?skeleton=${this._skeleton}
-                  ?disabled=${isFormDisabled}
-                  .tags=${this._tags}
-                  placeholder="${i18n('cc-addon-admin.tags-empty')}"
-                  @cc-input-text:tags=${this._onTagsInput}
-                  @cc-input-text:requestimplicitsubmit=${this._onTagsSubmit}
+                ?skeleton=${this._skeleton}
+                ?disabled=${isFormDisabled}
+                .tags=${this._tags}
+                placeholder="${i18n('cc-addon-admin.tags-empty')}"
+                @cc-input-text:tags=${this._onTagsInput}
+                @cc-input-text:requestimplicitsubmit=${this._onTagsSubmit}
               ></cc-input-text>
               <cc-button primary ?skeleton=${this._skeleton} ?disabled=${isFormDisabled} @cc-button:click=${this._onTagsSubmit}>${i18n('cc-addon-admin.tags-update')}</cc-button>
             </div>

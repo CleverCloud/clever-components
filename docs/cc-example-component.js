@@ -33,15 +33,7 @@ const SKELETON_FOOBAR = [
  * * Technical details about bar.
  * * Technical details about baz.
  *
- * ## Type definitions
- *
- * ```js
- * interface ExampleInterface {
- *   one: string,
- *   two: number,
- *   three: boolean,
- * }
- * ```
+ * @typedef {import('./types.js').ExampleInterface} ExampleInterface
  *
  * @cssdisplay block
  *
@@ -81,10 +73,25 @@ export class CcExampleComponent extends LitElement {
 
   constructor () {
     super();
-    // Init default values for a clean component and for auto generated documentation.
+    // Init every property with @type and default values for a clean component and for auto generated documentation.
+
+    /** @type {string} Description for one. */
     this.one = '';
+
+    /** @type {boolean} Description for two. */
     this.two = false;
-    // You don't need to init everything, there are lots of valid use of default nullish properties.
+
+    /** @type {ExampleInterface|null} Description for three. */
+    this.three = null;
+
+    /** @type {string|null} Description for fooBarBaz. */
+    this.fooBarBaz = null;
+
+    /** @type {boolean} Description for enabled. */
+    this.enabled = false;
+
+    /** @type {boolean} */
+    this._privateFoobar = false;
   }
 
   // DOCS: 3. Public methods

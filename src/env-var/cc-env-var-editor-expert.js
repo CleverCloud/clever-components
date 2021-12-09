@@ -6,6 +6,7 @@ import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { defaultThemeStyles } from '../styles/default-theme.js';
 
+/** @type {Variable[]} */
 const SKELETON_VARIABLES = [
   { name: 'VARIABLE_ONE', value: '' },
   { name: 'VARIABLE_FOOBAR', value: '' },
@@ -15,21 +16,10 @@ const SKELETON_VARIABLES = [
 /**
  * A high level environment variable editor to create/edit/delete all variables at once as a big string (properly parsed with validation and error messages).
  *
- * ## Type definitions
- *
- * ```js
- * interface Variable {
- *   name: string,
- *   value: string,
- *   isDeleted: boolean,
- * }
- * ```
+ * @typedef {import('./types.js').ParseError} ParseError
+ * @typedef {import('./types.js').Variable} Variable
  *
  * @cssdisplay block / none (with `[hidden]`)
- *
- * @prop {Boolean} disabled - Sets `disabled` attribute on inputs and buttons.
- * @prop {Boolean} readonly - Sets `readonly` attribute on main input and hides buttons.
- * @prop {Variable[]} variables - Sets the list of variables.
  *
  * @event {CustomEvent<Variable[]>} cc-env-var-editor-expert:change - Fires the new list of variables whenever something changes in the list.
  */
@@ -40,20 +30,32 @@ export class CcEnvVarEditorExpert extends LitElement {
       disabled: { type: Boolean },
       readonly: { type: Boolean },
       variables: { type: Array },
-      _variablesAsText: { type: Array, attribute: false },
       _errors: { type: Array, attribute: false },
       _skeleton: { type: Boolean, attribute: false },
+      _variablesAsText: { type: Array, attribute: false },
     };
   }
 
   constructor () {
     super();
-    // lit-analyzer needs this
-    this._skeleton = false;
-    // Triggers setter (init _skeleton, _variablesAsText and _errors)
-    this.variables = null;
+
+    /** @type {boolean} Sets `disabled` attribute on inputs and buttons. */
     this.disabled = false;
+
+    /** @type {boolean} Sets `readonly` attribute on main input and hides buttons. */
     this.readonly = false;
+
+    /** @type {Variable[]|null} Sets the list of variables */
+    this.variables = null;
+
+    /** @type {ParseError[]} */
+    this._errors = [];
+
+    /** @type {boolean} */
+    this._skeleton = false;
+
+    /** @type {string} */
+    this._variablesAsText = '';
   }
 
   _setErrors (rawErrors) {

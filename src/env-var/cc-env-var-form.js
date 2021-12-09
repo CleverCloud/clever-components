@@ -20,26 +20,11 @@ import { linkStyles } from '../templates/cc-link.js';
  * * You can set a custom `heading` and description with the default <slot>.
  * * You can also set a context to get the appropriate heading and description (with translations).
  *
- * ## Type definitions
- *
- * ```js
- * interface Variable {
- *   name: string,
- *   value: string,
- *   isDeleted: boolean,
- * }
- * ```
+ * @typedef {import('./types.js').ContextType} ContextType
+ * @typedef {import('./types.js').ErrorType} ErrorType
+ * @typedef {import('./types.js').Variable} Variable
  *
  * @cssdisplay block
- *
- * @prop {String} appName - Defines application name used in some heading/description (depending on context).
- * @prop {"env-var"|"env-var-simple"|"env-var-addon"|"exposed-config"} context - Defines where the form will be used so it can display the appropriate heading and description.
- * @prop {"saving"|"loading"} error - Displays an error message (saving or loading).
- * @prop {String} heading - Sets a text to be used as a header title.
- * @prop {Boolean} readonly - Sets `readonly` attribute input and hides buttons.
- * @prop {Boolean} restartApp - Displays the restart app button.
- * @prop {Boolean} saving - Enables saving sate (form is disabled and loader is displayed).
- * @prop {Variable[]} variables - Sets the list of variables.
  *
  * @event {CustomEvent} cc-env-var-form:dismissed-error - Fires the type of error that was dismissed when the error button of an error message is clicked.
  * @event {CustomEvent} cc-env-var-form:restart-app - Fires whenever the restart app button is clicked.
@@ -69,13 +54,46 @@ export class CcEnvVarForm extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {string} Defines application name used in some heading/description (depending on context). */
     this.appName = '?';
+
+    /** @type {ContextType} Defines where the form will be used so it can display the appropriate heading and description. */
+    this.context = null;
+
+    /** @type {ErrorType} Displays an error message (saving or loading). */
+    this.error = null;
+
+    /** @type {string|null} Sets a text to be used as a header title. */
+    this.heading = null;
+
+    /** @type {boolean} Sets `readonly` attribute input and hides buttons. */
     this.readonly = false;
+
+    /** @type {boolean} Displays the restart app button. */
     this.restartApp = false;
+
+    /** @type {boolean} Enables saving sate (form is disabled and loader is displayed). */
     this.saving = false;
-    // this.variables is let to undefined by default (this triggers skeleton screen)
-    this._mode = 'SIMPLE';
+
+    // this.variables is let to null by default (this triggers skeleton screen)
+    /** @type {Variable[]|null} Sets the list of variables. */
+    this.variables = null;
+
+    /** @type {Variable[]|null} */
+    this._currentVariables = null;
+
+    /** @type {string} */
     this._description = '';
+
+    /** @type {Variable[]|null} */
+    this._expertVariables = null;
+
+    /** @type {string} */
+    this._mode = 'SIMPLE';
+
+    /** @type {boolean} */
+    this._isPristine = true;
   }
 
   _getModes () {
@@ -199,11 +217,11 @@ export class CcEnvVarForm extends LitElement {
 
     return html`
       <div class="header">
-        
+
         ${this.heading != null ? html`
           <div class="heading">${this.heading}</div>
         ` : ''}
-        
+
         <cc-toggle
           class="mode-switcher ${classMap({ hasOverlay })}"
           value=${this._mode}
@@ -212,9 +230,9 @@ export class CcEnvVarForm extends LitElement {
           @cc-toggle:input=${this._onToggleMode}
         ></cc-toggle>
       </div>
-      
+
       <slot class="description">${this._description}</slot>
-      
+
       <div class="overlay-container">
         <cc-expand class=${classMap({ hasOverlay })}>
           <cc-env-var-editor-simple
@@ -225,7 +243,7 @@ export class CcEnvVarForm extends LitElement {
             @cc-env-var-editor-simple:change=${this._onChange}
             @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
           ></cc-env-var-editor-simple>
-          
+
           <cc-env-var-editor-expert
             ?hidden=${this._mode !== 'EXPERT'}
             .variables=${this._expertVariables}
@@ -235,35 +253,35 @@ export class CcEnvVarForm extends LitElement {
             @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
           ></cc-env-var-editor-expert>
         </cc-expand>
-        
+
         ${this.error === 'loading' ? html`
           <div class="error-container">
             <cc-error mode="info">${this._getErrorMessage()}</cc-error>
           </div>
         ` : ''}
-        
+
         ${this.error === 'saving' ? html`
           <div class="error-container">
             <cc-error mode="confirm" @cc-error:ok=${() => dispatchCustomEvent(this, 'dismissed-error')}>${this._getErrorMessage()}</cc-error>
           </div>
         ` : ''}
-        
+
         ${this.saving ? html`
-      <cc-loader class="saving-loader"></cc-loader>
-    ` : ''}
+          <cc-loader class="saving-loader"></cc-loader>
+        ` : ''}
       </div>
-        
+
       ${!this.readonly ? html`
         <cc-flex-gap class="button-bar">
-          
+
           <cc-button ?disabled=${isFormDisabled} @cc-button:click=${this._onResetForm}>${i18n('cc-env-var-form.reset')}</cc-button>
-          
+
           <div class="spacer"></div>
-          
+
           ${this.restartApp ? html`
             <cc-button @cc-button:click=${() => dispatchCustomEvent(this, 'restart-app')}>${i18n('cc-env-var-form.restart-app')}</cc-button>
           ` : ''}
-          
+
           <cc-button success ?disabled=${isFormDisabled} @cc-button:click=${this._onUpdateForm}>${i18n('cc-env-var-form.update')}</cc-button>
         </cc-flex-gap>
       ` : ''}
@@ -313,7 +331,7 @@ export class CcEnvVarForm extends LitElement {
         .overlay-container {
           position: relative;
         }
-        
+
         cc-expand {
           /* We need to spread so the focus rings can be visible even with cc-expand default overflow:hidden */
           margin: -0.25rem;
