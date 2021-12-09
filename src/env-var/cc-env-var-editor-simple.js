@@ -14,21 +14,9 @@ const SKELETON_VARIABLES = [
 /**
  * A high level environment variable editor to create/edit/delete variables one at a time (with validation and error messages).
  *
- * ## Type definitions
- *
- * ```js
- * interface Variable {
- *   name: string,
- *   value: string,
- *   isDeleted: boolean,
- * }
- * ```
+ * @typedef {import('./types.js').Variable} Variable
  *
  * @cssdisplay grid / none (with `[hidden]`)
- *
- * @prop {Boolean} disabled - Sets `disabled` attribute on inputs and buttons.
- * @prop {Boolean} readonly - Sets `readonly` attribute on inputs and hides buttons.
- * @prop {Variable[]} variables - Sets the list of variables.
  *
  * @event {CustomEvent<Variable[]>} cc-env-var-editor-simple:change - Fires the new list of variables whenever something changes in the list.
  */
@@ -44,9 +32,16 @@ export class CcEnvVarEditorSimple extends LitElement {
 
   constructor () {
     super();
-    // this.variables is let to undefined by default (this triggers skeleton screen)
+
+    /** @type {boolean} Sets `disabled` attribute on inputs and buttons. */
     this.disabled = false;
+
+    /** @type {boolean} Sets `readonly` attribute on inputs and hides buttons. */
     this.readonly = false;
+
+    // this.variables is let to undefined by default (this triggers skeleton screen)
+    /** @type {Variable[]|null} Sets the list of variables. */
+    this.variables = null;
   }
 
   _onCreate ({ detail: newVar }) {
@@ -94,7 +89,7 @@ export class CcEnvVarEditorSimple extends LitElement {
     const variablesNames = variables.map(({ name }) => name);
 
     return html`
-      
+
       ${!this.readonly ? html`
         <cc-env-var-create
           ?disabled=${skeleton || this.disabled}
@@ -102,11 +97,11 @@ export class CcEnvVarEditorSimple extends LitElement {
           @cc-env-var-create:create=${this._onCreate}
         ></cc-env-var-create>
       ` : ''}
-      
+
       <div class="message" ?hidden=${variables != null && variables.length !== 0}>
         ${i18n('cc-env-var-editor-simple.empty-data')}
       </div>
-      
+
       ${repeat(variables, ({ name }) => name, ({ name, value, isNew, isEdited, isDeleted }) => html`
         <cc-env-var-input
           name=${name}

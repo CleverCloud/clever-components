@@ -1,6 +1,7 @@
 import '../atoms/cc-flex-gap.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import '@shoelace-style/shoelace/dist/components/select/select.js';
@@ -10,46 +11,25 @@ import { shoelaceStyles } from '../styles/shoelace.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { CcZone } from '../zones/cc-zone.js';
 
+/** @type {Currency[]} */
 const SKELETON_CURRENCIES = [];
+/** @type {Zone[]} */
 const SKELETON_ZONES = [];
 
-/** @type {Object} */
+/** @type {Currency} */
 const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
 
 /**
  * A component that displays a total price and allows the selection of a currency and a zone.
  *
- * ## Type definitions
- *
- * ```js
- * interface Currency {
- *   name: string,
- *   code: string,
- * }
- *
- * ```js
- * interface Zone {
- *   name: string,          // Unique code/identifier for the zone
- *   lat: number,           // Latitude
- *   lon: number,           // Longitude
- *   countryCode: string,   // ISO 3166-1 alpha-2 code of the country (2 letters): "FR", "CA", "US"...
- *   city: string,          // Name of the city in english: "Paris", "Montreal", "New York City"...
- *   country: string,       // Name of the country in english: "France", "Canada", "United States"...
- *   displayName?: string,  // Optional display name for private zones (instead of displaying city + country): "ACME (dedicated)"...
- *   tags: string[],        // Array of strings for semantic tags: ["region:eu", "infra:clever-cloud"], ["scope:private"]...
- * }
- * ```
+ * @typedef {import('./types.js').Currency} Currency
+ * @typedef {import('./types.js').Plan} Plan
+ * @typedef {import('../types.js').Zone} Zone
  *
  * @cssdisplay block
  *
- * @prop {Currency[]} currencies - Sets the list of currencies available for selection.
- * @prop {Currency} currency - Sets the current selected currency.
- * @prop {Number} totalPrice - Sets total price to display.
- * @prop {String} zoneId - Sets the current selected zone by its ID/name.
- * @prop {Zone[]} zones - Sets the list of zones available for selection.
- *
  * @event {CustomEvent<Currency>} cc-pricing-header:change-currency - Fires the `currency` whenever the currency selection changes.
- * @event {CustomEvent<String>} cc-pricing-header:change-zone - Fires the `zoneId` (zone name) whenever the zone selection changes.
+ * @event {CustomEvent<string>} cc-pricing-header:change-zone - Fires the `zoneId` (zone name) whenever the zone selection changes.
  */
 export class CcPricingHeader extends LitElement {
 
@@ -66,8 +46,24 @@ export class CcPricingHeader extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {Currency[]|null} Sets the list of currencies available for selection. */
+    this.currencies = null;
+
+    /** @type {Currency}  Sets the current selected currency. */
     this.currency = CURRENCY_EUR;
+
+    /** @type {number} Sets total price to display. */
     this.totalPrice = 0;
+
+    /** @type {string|null} Sets the current selected zone by its ID/name. */
+    this.zoneId = null;
+
+    /** @type {Zone[]|null} Sets the list of zones available for selection. */
+    this.zones = null;
+
+    /** @type {Zone[]|null} */
+    this._sortedZones = null;
   }
 
   _getCurrencySymbol (currency) {
@@ -124,7 +120,7 @@ export class CcPricingHeader extends LitElement {
         <sl-select
           class="zone-select ${classMap({ skeleton: zonesSkeleton })}"
           label=${i18n('cc-pricing-header.selected-zone')}
-          value=${this.zoneId}
+          value=${ifDefined(this.zoneId ?? undefined)}
           ?disabled=${this._sortedZones == null}
           @sl-change=${this._onZoneChange}
         >

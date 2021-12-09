@@ -23,13 +23,18 @@ function updateTrackedElements () {
  * * This component does not use lit* deps on purpose (keep small and not useful).
  *
  * @cssdisplay not defined, should default to `inline` in most browsers
- *
- * @prop {String|Number} datetime - Date as ISO string or timestamp.
  */
 export class CcDatetimeRelative extends HTMLElement {
 
   static get observedAttributes () {
     return ['datetime'];
+  }
+
+  constructor () {
+    super();
+
+    /** @type {string|number|null} datetime - Date as ISO string or timestamp. */
+    this.datetime = null;
   }
 
   get datetime () {

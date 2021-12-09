@@ -25,50 +25,13 @@ const DEFAULT_TEMPORALITY = [
 /**
  * A component to display product informations: icon, name, description with plans and their features.
  *
- * ## Type definitions
- *
- * ```js
- * interface Plan {
- *   productName: string,
- *   name: string,
- *   price: number, // price in euros for 1 hour
- *   features: Feature[],
- * }
- * ```
- *
- * ```js
- * interface Feature {
- *   code: "connection-limit" | "cpu" | "databases" | "disk-size" | "gpu" | "has-logs" | "has-metrics" | "max-db-size" | "memory" | "version",
- *   type: "boolean" | "shared" | "bytes" | "number" | "runtime" | "string",
- *   value?: number|string, // Only required for a plan feature
- * }
- * ```
- *
- * ```js
- * interface Currency {
- *   code: string,
- *   changeRate: number, // based on euros
- * }
- * ```
- *
- * ```js
- * interface Temporality {
- *   type: "second"|"minute"|"hour"|"day"|"30-days",
- *   digits: number, // how many fraction digits to display the price
- * }
- * ```
+ * @typedef {import('./types.js').ActionType} ActionType
+ * @typedef {import('./types.js').Currency} Currency
+ * @typedef {import('./types.js').Feature} Feature
+ * @typedef {import('./types.js').Plan} Plan
+ * @typedef {import('./types.js').Temporality} Temporality
  *
  * @cssdisplay block
- *
- * @prop {"add"|"none"} action - Sets the type of action: "add" to display add buttons for each plan and "none" for no actions (defaults to "add").
- * @prop {Currency} currency - Sets the currency used to display the prices (defaults to euros).
- * @prop {String} description - Sets the description of the product (can be overriden with the default slot).
- * @prop {Boolean} error - Displays an error message.
- * @prop {Feature[]} features - Sets the list of features (used for the feature sort order).
- * @prop {String} icon - Sets the url of the product icon/logo image (can be overriden with the `icon` slot).
- * @prop {String} name - Sets the name of the product (can be overriden with the `name` slot).
- * @prop {Plan[]} plans - Sets the list of plans.
- * @prop {Temporality[]} temporality - Sets the ordered list of time windows you want to display the prices in (defaults to day and 30 days with 2 fraction digits).
  *
  * @event {CustomEvent<Plan>} cc-pricing-product:add-plan - Fires the plan whenever a "plus" button is clicked.
  *
@@ -95,9 +58,32 @@ export class CcPricingProduct extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {ActionType} Sets the type of action: "add" to display add buttons for each plan and "none" for no actions (defaults to "add"). */
     this.action = 'add';
+
+    /** @type {Currency} Sets the currency used to display the prices (defaults to euros). */
     this.currency = CURRENCY_EUR;
+
+    /** @type {string|null} Sets the description of the product (can be overriden with the default slot). */
+    this.description = null;
+
+    /** @type {boolean} Displays an error message. */
+    this.error = false;
+
+    /** @type {Feature[]} Sets the list of features (used for the feature sort order). */
     this.features = [];
+
+    /** @type {string|null} Sets the url of the product icon/logo image (can be overriden with the `icon` slot). */
+    this.icon = null;
+
+    /** @type {string|null} Sets the name of the product (can be overriden with the `name` slot). */
+    this.name = null;
+
+    /** @type {Plan[]|null} Sets the list of plans. */
+    this.plans = null;
+
+    /** @type {Temporality[]} Sets the ordered list of time windows you want to display the prices in (defaults to day and 30 days with 2 fraction digits). */
     this.temporality = DEFAULT_TEMPORALITY;
   }
 
@@ -119,7 +105,7 @@ export class CcPricingProduct extends LitElement {
 
           <div class="head-info">
             <slot name="icon">
-              <cc-img class="product-logo" src="${ifDefined(this.icon)}" ?skeleton="${skeleton}"></cc-img>
+              <cc-img class="product-logo" src="${ifDefined(this.icon ?? undefined)}" ?skeleton="${skeleton}"></cc-img>
             </slot>
             <div class="name">
               <slot name="name">

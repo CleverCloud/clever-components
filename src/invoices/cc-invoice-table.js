@@ -16,6 +16,7 @@ export const PENDING_STATUSES = ['PENDING', 'PAYMENTHELD'];
 export const PROCESSING_STATUS = 'PROCESSING';
 export const PROCESSED_STATUSES = ['PAID', 'CANCELED', 'REFUNDED'];
 
+/** @type {Invoice[]} */
 const SKELETON_INVOICES = [
   // @formatter:off
   { emissionDate: '2020-01-01', number: '????????????', type: 'INVOICE', status: 'PENDING', total: { currency: 'EUR', amount: 10.00 } },
@@ -27,38 +28,9 @@ const SKELETON_INVOICES = [
 /**
  * A table component to display a list of invoices.
  *
- * ## Type definitions
- *
- * ```js
- * interface Amount {
- *   amount: Number,
- *   currency: String,
- * }
- * ```
- *
- * ```js
- * type InvoiceStatus = "PENDING" | "PROCESSING" | "PAID" | "PAYMENTHELD" | "CANCELED" | "REFUNDED" | "WONTPAY"
- * ```
- *
- * ```js
- * type InvoiceType = "INVOICE" | "CREDITNOTE"
- * ```
- *
- * ```js
- * interface Invoice {
- *   downloadUrl: String,
- *   emissionDate: String,
- *   number: String,
- *   paymentUrl: String,
- *   status: InvoiceStatus,
- *   total: Amount,
- *   type: InvoiceType,
- * }
- * ```
+ * @typedef {import('./types.js').Invoice} Invoice
  *
  * @cssdisplay block
- *
- * @prop {Invoice[]} invoices - Sets the list of invoices.
  */
 export class CcInvoiceTable extends withResizeObserver(LitElement) {
 
@@ -67,6 +39,16 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
       invoices: { type: Array },
       _width: { type: Number },
     };
+  }
+
+  constructor () {
+    super();
+
+    /** @type {Invoice[]|null} Sets the list of invoices. */
+    this.invoices = null;
+
+    /** @type {number|null} */
+    this._width = null;
   }
 
   onResize ({ width }) {

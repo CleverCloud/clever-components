@@ -1,6 +1,7 @@
 import '../atoms/cc-img.js';
 import '../atoms/cc-toggle.js';
 import { css, html, LitElement } from 'lit-element';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 
@@ -13,11 +14,7 @@ import { i18n } from '../lib/i18n.js';
  *
  * @cssdisplay grid
  *
- * @prop {Boolean} enabled - Enable the option by default.
- * @prop {String} logo - The logo URL of the option.
- * @prop {String} title - Title of the option.
- *
- * @event {CustomEvent<Boolean>} cc-addon-option:input - Fires when the option is enabled or disabled.
+ * @event {CustomEvent<boolean>} cc-addon-option:input - Fires when the option is enabled or disabled.
  *
  * @slot - The content of the option's description (text or HTML).
  */
@@ -33,28 +30,34 @@ export class CcAddonOption extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {boolean} Enable the option by default. */
     this.enabled = false;
+
+    /** @type {string|null} The logo URL of the option. */
     this.logo = null;
+
+    /** @type {string|null} Title of the option. */
     this.title = null;
   }
 
-  _onToggleOption () {
-    this.enabled = !this.enabled;
+  _onToggleOption ({ detail: enabled }) {
+    this.enabled = (enabled === 'ENABLED');
     dispatchCustomEvent(this, 'input', this.enabled);
   }
 
   render () {
     const choices = [
-      { label: i18n('cc-addon-option.disabled'), value: false },
-      { label: i18n('cc-addon-option.enabled'), value: true },
+      { label: i18n('cc-addon-option.disabled'), value: 'DISABLED' },
+      { label: i18n('cc-addon-option.enabled'), value: 'ENABLED' },
     ];
 
     return html`
-      <cc-img class="logo" src=${this.logo}></cc-img>
+      <cc-img class="logo" src=${ifDefined(this.logo ?? undefined)}></cc-img>
       <div class="option-main">
         <div class="option-name">${this.title}</div>
         <slot class="option-details"></slot>
-        <cc-toggle .choices=${choices} .value=${this.enabled} @cc-toggle:input=${this._onToggleOption}></cc-toggle>
+        <cc-toggle .choices=${choices} value=${this.enabled ? 'ENABLED' : 'DISABLED'} @cc-toggle:input=${this._onToggleOption}></cc-toggle>
       </div>
     `;
   }

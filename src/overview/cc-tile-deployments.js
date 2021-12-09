@@ -19,21 +19,9 @@ const SKELETON_DEPLOYS = [
  *
  * * When `deployments` is nullish, a skeleton screen UI pattern is displayed (loading hint)
  *
- * ## Type definitions
- *
- * ```js
- * interface Deployment {
- *   state: string,
- *   action: string,
- *   date: string,
- *   logsUrl: string,
- * }
- * ```
+ * @typedef {import('./types.js').Deployment} Deployment
  *
  * @cssdisplay grid
- *
- * @prop {Deployment[]} deployments - Sets the list of the last deployments (it's up to you to only pass 2 or 3).
- * @prop {Boolean} error - Displays an error message.
  */
 export class CcTileDeployments extends LitElement {
 
@@ -46,6 +34,11 @@ export class CcTileDeployments extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {Deployment[]|null} Sets the list of the last deployments (it's up to you to only pass 2 or 3) */
+    this.deployments = null;
+
+    /** @type {boolean} Displays an error message */
     this.error = false;
   }
 
@@ -73,7 +66,7 @@ export class CcTileDeployments extends LitElement {
 
     return html`
       <div class="tile_title">${i18n('cc-tile-deployments.title')}</div>
-      
+
       ${hasData ? html`
         <div class="tile_body">
           <!-- We don't really need to repeat and key by -->
@@ -95,7 +88,7 @@ export class CcTileDeployments extends LitElement {
           `)}
         </div>
       ` : ''}
-        
+
       ${emptyData ? html`
         <div class="tile_message">${i18n('cc-tile-deployments.empty')}</div>
       ` : ''}

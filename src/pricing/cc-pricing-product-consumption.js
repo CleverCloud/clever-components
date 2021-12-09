@@ -35,6 +35,7 @@ const ICONS = {
 };
 
 const SKELETON_NAME = '??????????';
+/** @type {Interval} */
 const SKELETON_INTERVALS = [
   { minRange: 0, maxRange: 1e8, price: 0 },
   { minRange: 1e8, maxRange: 1e12, price: 0.0001 },
@@ -52,78 +53,13 @@ const SKELETON_INTERVALS = [
  * * To comply with `<cc-pricing-product>`, the price in the event `cc-pricing-product:add-plan` is in "euros / 1 hour".
  * * When a section has a nullish `intervals`, a skeleton screen UI pattern is displayed for this section (loading hint).
  *
- * ## Progressive pricing system
- *
- * ### Not progressive (default)
- *
- * When a section is `progressive: false` (default):
- *
- * * The interval matching the total quantity is highlighted.
- * * We display a price only on the interval line matching the total quantity.
- * * We apply the price of the interval matching the total quantity to the total quantity.
- *
- * ### Progressive
- *
- * When a section is `progressive: true`:
- *
- * * Intervals are not highlighted.
- * * We display a price for each interval that match part of the total quantity.
- * * We apply the price of each interval to the quantity that fits in each respective interval.
- *
- * ## Secability system
- *
- * * If you need to apply your prices on batches/groups, something like "€2 per 100 users":
- *
- * * you need to set the secability to the size of your batch/group `secability: 100` in the section
- * * the interval prices are still per 1 so you will need to set `price: 0.02` in your intervals
- *
- * ## Type definitions
- *
- * ```js
- * interface Section {
- *   type: SectionType,
- *   progressive?: boolean, // defaults to false
- *   secability?: number, // defaults to 1
- *   intervals?: Interval[],
- * }
- * ```
- *
- * ```js
- *   type SectionType = "storage"|"inbound-traffic"|"outbound-traffic"|"private-users"|"public-users"
- * ```
- *
- * ```js
- * interface Interval {
- *   minRange: number, // byte
- *   maxRange: number, // byte
- *   price: number,    // "euros / byte / 30 days" or just "euros / byte" for timeless sections like traffic
- * }
- * ```
- *
- * ```js
- * interface Plan {
- *   productName: string,
- *   name: string,
- *   price: number, // "euros / 1 hour"
- *   features: Feature[],
- * }
- * ```
- *
- * ```js
- * interface Feature {
- *   code: "connection-limit" | "cpu" | "databases" | "disk-size" | "gpu" | "has-logs" | "has-metrics" | "max-db-size" | "memory" | "version",
- *   type: "boolean" | "shared" | "bytes" | "number" | "runtime" | "string",
- *   value?: number|string, // Only required for a plan feature
- * }
- * ```
+ * @typedef {import('./types.js').ActionType} ActionType
+ * @typedef {import('./types.js').Interval} Interval
+ * @typedef {import('./types.js').Currency} Currency
+ * @typedef {import('./types.js').Plan} Plan
+ * @typedef {import('./types.js').Section} Section
  *
  * @cssdisplay block
- *
- * @prop {'add"|"none"} action - Sets the type of action: "add" to display the "add" button for the product and "none" for no actions (defaults to "add').
- * @prop {Boolean} error - Displays an error message.
- * @prop {String} icon - Sets the url of the product icon/logo image.
- * @prop {String} name - Sets the name of the product.
- * @prop {Section[]} sections - Sets the different sections with their `type` and `intervals`.
  *
  * @event {CustomEvent<Plan>} cc-pricing-product:add-plan - Fires the plan whenever the "add" button is clicked.
  *
@@ -147,10 +83,30 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
 
   constructor () {
     super();
+
+    /** @type {ActionType} Sets the type of action: "add" to display the "add" button for the product and "none" for no actions (defaults to "add") */
     this.action = 'add';
+
+    /** @type {Currency} Sets the currency used to display the prices (defaults to euros) */
     this.currency = CURRENCY_EUR;
+
+    /** @type {boolean} Displays an error message */
     this.error = false;
+
+    /** @type {string|null} Sets the url of the product icon/logo image */
+    this.icon = null;
+
+    /** @type {string|null} Sets the name of the product */
+    this.name = null;
+
+    /** @type {Section[]|null} Sets the different sections with their `type` and `intervals` */
+    this.sections = null;
+
     this._simulator = new PricingConsumptionSimulator();
+
+    /** @type {number|null} Sets the name of the product */
+    this._size = null;
+
     this._state = {};
   }
 
@@ -336,7 +292,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
       <slot name="head">
         <div class="head">
           <div class="head-info">
-            <cc-img class="product-logo" src="${ifDefined(this.icon)}" ?skeleton=${this.icon == null}></cc-img>
+            <cc-img class="product-logo" src="${ifDefined(this.icon ?? undefined)}" ?skeleton=${this.icon == null}></cc-img>
             <div class="name-wrapper">
               <span class="name ${classMap({ skeleton: (this.name == null) })}">${name}</span>
             </div>
@@ -444,7 +400,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
    * @param {SectionType} type
    * @param {Number} quantity
    * @param {Number} unitValue
-   * @param {Boolean} skeleton
+   * @param {boolean} skeleton
    */
   _renderInput ({ type, quantity, unitValue, skeleton }) {
 
@@ -483,7 +439,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
    * @param {SectionType} type
    * @param {Interval[]} intervals
    * @param {Interval} maxInterval
-   * @param {Boolean} skeleton
+   * @param {boolean} skeleton
    */
   _renderIntervals ({ type, progressive, intervals, maxInterval, skeleton }) {
 

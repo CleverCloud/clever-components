@@ -8,6 +8,7 @@ import { getFlagUrl, getInfraProviderLogoUrl } from '../lib/remote-assets.js';
 import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
+/** @type {Zone} */
 const SKELETON_ZONE = {
   name: 'name',
   country: '????????????',
@@ -27,22 +28,10 @@ const PRIVATE_ZONE = 'scope:private';
  * * When the `scope:private` tag is used, the optional `displayName` of the zone will be used instead of the City + Country.
  * * If the browser supports it, the `countryCode` will be used to display a translated version of the country's name.
  *
- * ## Type definitions
- *
- * ```js
- * interface Zone {
- *   countryCode: string,   // ISO 3166-1 alpha-2 code of the country (2 letters): "FR", "CA", "US"...
- *   city: string,          // Name of the city in english: "Paris", "Montreal", "New York City"...
- *   country: string,       // Name of the country in english: "France", "Canada", "United States"...
- *   displayName?: string,  // Optional display name for private zones (instead of displaying city + country): "ACME (dedicated)"...
- *   tags: string[],        // Array of strings for semantic tags: ["region:eu", "infra:clever-cloud"], ["scope:private"]...
- * }
- * ```
+ * @typedef {import('./types.js').ModeType} ModeType
+ * @typedef {import('../types.js').Zone} Zone
  *
  * @cssdisplay flex
- *
- * @prop {"default"|"small"|"small-infra"} mode - Sets the mode of the component.
- * @prop {Zone} zone - Sets the different details of the zone.
  *
  * @cssprop {Color} --cc-zone-subtitle-color - Text color of the subtitle (country name) (defaults to #555)
  * @cssprop {Color} --cc-zone-tag-bdcolor - Border color of the tags (defaults to transparent)
@@ -59,7 +48,12 @@ export class CcZone extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {ModeType} Sets the mode of the component. */
     this.mode = 'default';
+
+    /** @type {Zone|null} Sets the different details of the zone. */
+    this.zone = null;
   }
 
   // This is a bit irregular to do this but we need to reuse this text logic in a <select>.

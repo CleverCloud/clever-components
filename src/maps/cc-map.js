@@ -19,50 +19,11 @@ import { leafletStyles } from '../styles/leaflet.js';
  * * The marker DOM element should expose `size`, `anchor` and `tooltip` to help this component place the marker and tooltip correctly on the map.
  * * When using `points`, you can specify some text for the tooltip but you can also specify which HTML tag to use to create and display the tooltip.
  *
- * ## Type definitions
- *
- * ```js
- * interface Point {
- *   lat: number,              // Latitude
- *   lon: number,              // Longitude
- *   marker: Marker,           // An object describing how to create a marker with a custom element.
- *   tooltip: string|Tooltip,  // Simple string or an object describing how to create a tooltip with a custom element.
- *   zIndexOffset: number,     // The offset to add to the automatic offset already defined for a given point.
- * }
- * ```
- *
- * ```js
- * interface Marker {
- *   tag: string,              // The HTML tag name used for the marker
- *   // Additional specific properties for the marker custom element.
- * }
- * ```
- *
- * ```js
- * interface Tooltip {
- *   tag: string,              // The HTML tag name used for the tooltip
- *   // Additional specific properties for the tooltip custom element.
- * }
- * ```
- *
- * ```js
- * interface HeatmapPoint {
- *   lat: number,   // Latitude
- *   lon: number,   // Longitude
- *   count: number, // Number of occurences for this location
- * }
- * ```
+ * @typedef {import('./types.js').HeatmapPoint} HeatmapPoint
+ * @typedef {import('./types.js').MapModeType} MapModeType
+ * @typedef {import('./types.js').Point} Point
  *
  * @cssdisplay flex
- *
- * @prop {Number} centerLat - Sets the latitude center of the map.
- * @prop {Number} centerLon - Sets the longitude center of the map.
- * @prop {Boolean} error - Displays an error message (can be combined with `loading`).
- * @prop {HeatmapPoint[]} heatmapPoints - Sets the list of points used to draw the heatmap.
- * @prop {Boolean} loading - Displays a loader on top of the map (can be combined with `error`).
- * @prop {"points"|"heatmap"} mode - Sets map mode: `"points"` for points with custom markers and `"heatmap"` for a heatmap.
- * @prop {Point[]} points - Sets the list of points used to place markers.
- * @prop {Number} viewZoom - Sets the zoom of the map (between 1 and 6).
  *
  * @event {CustomEvent<Point>} cc-map:marker-click - Fires the corresponding point whenever a marker is clicked.
  * @event {CustomEvent<Point>} cc-map:marker-enter - Fires the corresponding point whenever a marker is entered by the mouse.
@@ -87,13 +48,29 @@ export class CcMap extends withResizeObserver(LitElement) {
 
   constructor () {
     super();
+
     // Centered on Paris by default
+    /** @type {number} Sets the latitude center of the map. */
     this.centerLat = 48.9;
+
+    /** @type {number} Sets the longitude center of the map. */
     this.centerLon = 2.4;
+
+    /** @type {boolean} Displays an error message (can be combined with `loading`). */
     this.error = false;
+
+    /** @type {HeatmapPoint[]|null} Sets the list of points used to draw the heatmap. */
+    this.heatmapPoints = null;
+
+    /** @type {boolean} Displays a loader on top of the map (can be combined with `error`). */
     this.loading = false;
+
+    /** @type {MapModeType} Sets map mode: `"points"` for points with custom markers and `"heatmap"` for a heatmap. */
     this.mode = 'points';
+
+    /** @type {number} Sets the zoom of the map (between 1 and 6). */
     this.viewZoom = 2;
+
     this._pointsCache = {};
   }
 
@@ -248,8 +225,8 @@ export class CcMap extends withResizeObserver(LitElement) {
 
   /**
    * Pan the map to a given point but only if it's necessary and with some small padding (50px).
-   * @prop {Number} lat - Sets the latitude of the point.
-   * @prop {Number} lon - Sets the longitude of the point.
+   * @prop {number} lat - Sets the latitude of the point.
+   * @prop {number} lon - Sets the longitude of the point.
    */
   panInside (lat, lon) {
     this._map.panInside([lat, lon], { padding: [50, 50] });

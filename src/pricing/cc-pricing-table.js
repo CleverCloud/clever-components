@@ -27,6 +27,7 @@ const FEATURES_I18N = {
 const AVAILABLE_FEATURES = Object.keys(FEATURES_I18N);
 const NUMBER_FEATURE_TYPES = ['bytes', 'number', 'number-cpu-runtime'];
 
+/** @type {Temporality[]} */
 const DEFAULT_TEMPORALITY = [
   { type: 'day', digits: 2 },
   { type: '30-days', digits: 2 },
@@ -41,46 +42,13 @@ const DEFAULT_TEMPORALITY = [
  * * If a plan has a feature that is not listed in `features`, it will be ignored.
  * * If a feature has a `code` that is not supported, it will be ignored.
  *
- * ## Type definitions
- *
- * ```js
- * interface Plan {
- *   productName: string,
- *   name: string,
- *   price: number, // price in euros for 1 hour
- *   features: Feature[],
- * }
- * ```
- *
- * ```js
- * interface Feature {
- *   code: "connection-limit" | "cpu" | "databases" | "disk-size" | "gpu" | "has-logs" | "has-metrics" | "max-db-size" | "memory" | "version",
- *   type: "boolean" | "shared" | "bytes" | "number" | "runtime" | "string",
- *   value?: number|string, // Only required for a plan feature
- * }
- * ```
- *
- * ```js
- * interface Currency {
- *   code: string,
- *   changeRate: number, // based on euros
- * }
- * ```
- *
- * ```js
- * interface Temporality {
- *   type: "second"|"minute"|"hour"|"1000-minutes"|"day"|"30-days",
- *   digits: number, // how many fraction digits to display the price
- * }
- * ```
+ * @typedef {import('./types.js').ActionType} ActionType
+ * @typedef {import('./types.js').Currency} Currency
+ * @typedef {import('./types.js').Feature} Feature
+ * @typedef {import('./types.js').Plan} Plan
+ * @typedef {import('./types.js').Temporality} Temporality
  *
  * @cssdisplay block
- *
- * @prop {'add"|"none"} action - Sets the type of action: "add" to display add buttons for each plan and "none" for no actions (defaults to "add').
- * @prop {Currency} currency - Sets the currency used to display the prices (defaults to euros).
- * @prop {Feature[]} features - Sets the list of features (used for the feature sort order).
- * @prop {Plan[]} plans - Sets the list of plans.
- * @prop {Temporality[]} temporality - Sets the ordered list of time windows you want to display the prices in (defaults to day and 30 days with 2 fraction digits).
  *
  * @event {CustomEvent<Plan>} cc-pricing-table:add-plan - Fires the plan whenever a "plus" button is clicked.
  */
@@ -101,11 +69,30 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
 
   constructor () {
     super();
+
+    /** @type {ActionType} Sets the type of action: "add" to display add buttons for each plan and "none" for no actions (defaults to "add"). */
     this.action = 'add';
+
+    /** @type {Currency} Sets the currency used to display the prices (defaults to euros). */
     this.currency = CURRENCY_EUR;
-    this._plans = [];
-    this._features = [];
+
+    /** @type {Feature[]|null} Sets the list of features (used for the feature sort order). */
+    this.features = null;
+
+    /** @type {Plan[]|null} Sets the list of plans. */
+    this.plans = null;
+
+    /** @type {Temporality[]} Sets the ordered list of time windows you want to display the prices in (defaults to day and 30 days with 2 fraction digits). */
     this.temporality = DEFAULT_TEMPORALITY;
+
+    /** @type {Feature[]|null} */
+    this._features = [];
+
+    /** @type {Plan[]|null} */
+    this._plans = [];
+
+    /** @type {number|null} */
+    this._size = null;
   }
 
   onResize ({ width }) {

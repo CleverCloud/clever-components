@@ -5,6 +5,7 @@ import { i18n } from '../lib/i18n.js';
 import { tileStyles } from '../styles/info-tiles.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
+/** @type {Consumption} */
 const SKELETON_CONSUMPTION = {
   yesterday: 0.7,
   last30Days: 14.6,
@@ -17,19 +18,9 @@ const SKELETON_CONSUMPTION = {
  *
  * * When `consumption` is nullish, a skeleton screen UI pattern is displayed (loading hint).
  *
- * ## Type definitions
- *
- * ```js
- * interface Consumption {
- *   yesterday: number,
- *   last30Days: number,
- * }
- * ```
+ * @typedef {import('./types.js').Consumption} Consumption
  *
  * @cssdisplay grid
- *
- * @prop {Consumption} consumption - Sets the consumption details.
- * @prop {Boolean} error - Displays an error message.
  */
 export class CcTileConsumption extends LitElement {
 
@@ -42,6 +33,11 @@ export class CcTileConsumption extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {Consumption|null} Sets the consumption details */
+    this.consumption = null;
+
+    /** @type {boolean} Displays an error message */
     this.error = false;
   }
 
@@ -52,9 +48,9 @@ export class CcTileConsumption extends LitElement {
 
     return html`
       <div class="tile_title">${i18n('cc-tile-consumption.title')}</div>
-      
+
       ${!this.error ? html`
-        <div class="tile_body">      
+        <div class="tile_body">
           <div class="line">
             <span>${i18n('cc-tile-consumption.yesterday')}</span>
             <span class="separator"></span>
@@ -67,10 +63,10 @@ export class CcTileConsumption extends LitElement {
           </div>
         </div>
       ` : ''}
-      
+
       ${this.error ? html`
         <cc-error class="tile_message">${i18n('cc-tile-consumption.error')}</cc-error>
-      ` : ''} 
+      ` : ''}
     `;
   }
 

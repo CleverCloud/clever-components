@@ -16,21 +16,9 @@ const JENKINS_DOCUMENTATION = 'https://www.clever-cloud.com/doc/deploy/addon/jen
 /**
  * A component to display various informations (Documentation, access, updates, ...) for a Jenkins service.
  *
- * ## Type definitions
- *
- * ```js
- * interface Versions {
- *   current: String,
- *   available: String
- * }
- * ```
+ * @typedef {import('./types.js').Versions} Versions
  *
  * @cssdisplay block
- *
- * @prop {Boolean} error - Display an error message.
- * @prop {String} jenkinsLink - Provides the HTTP link of the Jenkins service.
- * @prop {String} jenkinsManageLink - Provides the HTTP link of the Jenkins management interface.
- * @prop {Versions} versions - Provides the current and available version of the Jenkins add-on.
  */
 export class CcJenkinsInfo extends LitElement {
 
@@ -45,7 +33,18 @@ export class CcJenkinsInfo extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {boolean} Display an error message. */
     this.error = false;
+
+    /** @type {string|null} Provides the HTTP link of the Jenkins service. */
+    this.jenkinsLink = null;
+
+    /** @type {string|null} Provides the HTTP link of the Jenkins management interface. */
+    this.jenkinsManageLink = null;
+
+    /** @type {Versions|null} Provides the current and available version of the Jenkins add-on. */
+    this.versions = null;
   }
 
   render () {

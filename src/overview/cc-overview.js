@@ -14,9 +14,9 @@ import { withResizeObserver } from '../mixins/with-resize-observer.js';
  * * `mode="app"` for 6 tiles
  * * `mode="orga"` for 2 tiles
  *
- * @cssdisplay grid
+ * @typedef {import('./types.js').ModeType} ModeType
  *
- * @prop {"app"|"orga"} mode - Sets the mode of the layout for the overview.
+ * @cssdisplay grid
  *
  * @slot - Put your `.head`, tiles and `.main` components here.
  *
@@ -33,6 +33,10 @@ export class CcOverview extends withResizeObserver(LitElement) {
 
   constructor () {
     super();
+
+    /** @type {ModeType|null} Sets the mode of the layout for the overview */
+    this.mode = null;
+
     /** @protected */
     this.breakpoints = {
       // ceiled width with 275px tiles and 1rem (16px) gap

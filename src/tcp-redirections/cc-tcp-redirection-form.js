@@ -13,23 +13,11 @@ const SKELETON_REDIRECTIONS = [
 /**
  * An interface to create / delete TCP redirections in the context of an application.
  *
- * ## Type definitions
- *
- * ```js
- * interface Redirection {
- *   error?: boolean,
- *   namespace: string,
- *   private?: boolean,
- *   sourcePort?: number,
- *   waiting?: boolean,
- * }
- * ```
+ * @typedef {import('./types.js').ContextRedirectionType} ContextRedirectionType
+ * @typedef {import('./types.js').Redirection} Redirection
+ * @typedef {import('./types.js').RedirectionNamespace} RedirectionNamespace
  *
  * @cssdisplay block
- *
- * @prop {"user"|"admin"} context - Defines in which context the form is used so it can show the appropriate description or lack thereof (defaults to user).
- * @prop {Boolean} error - Sets a loading error state.
- * @prop {Redirection[]} redirections - Sets the list of redirections.
  *
  * @event {CustomEvent<RedirectionNamespace>} cc-tcp-redirection:create - Fires a redirection namespace whenever the create button is clicked.
  * @event {CustomEvent<Redirection>} cc-tcp-redirection:delete - Fires a redirection whenever the delete button is clicked.
@@ -46,8 +34,15 @@ export class CcTcpRedirectionForm extends LitElement {
 
   constructor () {
     super();
-    this.error = false;
+
+    /** @type {ContextRedirectionType} Defines in which context the form is used so it can show the appropriate description or lack thereof (defaults to user). */
     this.context = 'user';
+
+    /** @type {boolean} Sets a loading error state. */
+    this.error = false;
+
+    /** @type {Redirection[]|null} Sets the list of redirections. */
+    this.redirections = null;
   }
 
   _getRedirectionCount () {

@@ -6,6 +6,7 @@ import { i18n } from '../lib/i18n.js';
 import { instanceDetailsStyles, tileStyles } from '../styles/info-tiles.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
+/** @type {Scalability} */
 const SKELETON_SCALABILITY = {
   minFlavor: { name: '??' },
   maxFlavor: { name: '?' },
@@ -17,34 +18,12 @@ const SKELETON_SCALABILITY = {
  * A "tile" component to display the current config of scalability for a given app.
  *
  * ## Details
-
+ *
  * * When `scalability` is nullish, a skeleton screen UI pattern is displayed (loading hint).
  *
- * ## Type definitions
- *
- * ```js
- * interface Flavor {
- *   name: string,
- *   cpus: number,
- *   gpus: number,
- *   mem: number,
- *   microservice: boolean,
- * }
- * ```
- *
- * ```js
- * interface Scalability {
- *   minFlavor: Flavor,
- *   maxFlavor: Flavor,
- *   minInstances: number,
- *   maxInstances: number,
- * }
- * ```
+ * @typedef {import('./types.js').Scalability} Scalability
  *
  * @cssdisplay grid
- *
- * @prop {Boolean} error - Displays an error message.
- * @prop {Scalability} scalability - Sets the scalability config of an app with details about flavors and number of instances.
  */
 export class CcTileScalability extends LitElement {
 
@@ -53,6 +32,16 @@ export class CcTileScalability extends LitElement {
       error: { type: Boolean, reflect: true },
       scalability: { type: Object },
     };
+  }
+
+  constructor () {
+    super();
+
+    /** @type {boolean} Displays an error message. */
+    this.error = false;
+
+    /** @type {Scalability|null} Sets the scalability config of an app with details about flavors and number of instances. */
+    this.scalability = null;
   }
 
   _getFlavorDetails (flavor) {
@@ -74,7 +63,7 @@ export class CcTileScalability extends LitElement {
 
     return html`
       <div class="tile_title">${i18n('cc-tile-scalability.title')}</div>
-      
+
       ${!this.error ? html`
         <div class="tile_body">
           <div class="label">${i18n('cc-tile-scalability.size')}</div>

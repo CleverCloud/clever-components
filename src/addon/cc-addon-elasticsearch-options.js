@@ -11,41 +11,12 @@ const APM_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com/log
 /**
  * A component that displays the available options of an elasticsearch add-on.
  *
- * ## Type definitions
- *
- * ```js
- * interface Option {
- *   name: string,
- *   enabled: boolean,
- *   // Option specific params
- *   flavor: Flavor, // for "apm" and "kibana" options
- *   price: number, // for "encryption" option
- * }
- * ```
- *
- * ```js
- * interface Flavor {
- *   name: string,
- *   cpus: number,
- *   gpus: number,
- *   mem: number,
- *   microservice: boolean,
- *   monthlyCost: number,
- * }
- * ```
- *
- * ```js
- * interface Options {
- *   kibana: boolean,
- *   apm: boolean,
- * }
- * ```
+ * @typedef {import('./types.js').Option} Option
+ * @typedef {import('./types.js').ElasticOptions} ElasticOptions
  *
  * @cssdisplay block
  *
- * @prop {Option[]} options - List of options for this add-on.
- *
- * @event {CustomEvent<Options>} cc-addon-elasticsearch-options:submit - Fires when the form is submitted.
+ * @event {CustomEvent<ElasticOptions>} cc-addon-elasticsearch-options:submit - Fires when the form is submitted.
  */
 export class CcAddonElasticsearchOptions extends LitElement {
 
@@ -57,6 +28,8 @@ export class CcAddonElasticsearchOptions extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {Option[]} List of options for this add-on. */
     this.options = [];
   }
 
@@ -72,7 +45,8 @@ export class CcAddonElasticsearchOptions extends LitElement {
         ${flavor != null ? html`
           ${i18n('cc-addon-elasticsearch-options.warning.apm.details', flavor)}
         ` : ''}
-      </cc-error>`;
+      </cc-error>
+    `;
 
     return {
       title: 'APM',

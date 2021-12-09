@@ -5,6 +5,8 @@ import './cc-loader.js';
 /**
  * A low level component that takes some HMTL and puts it in an iframe.
  *
+ * @typedef {import('./types.js').IframeSandbox} IframeSandbox
+ *
  * ## Details
  *
  * * By default, the inner `<iframe>` is borderless and has a transparent background.
@@ -18,10 +20,6 @@ import './cc-loader.js';
  * * This implemententation does not create an OOP (out of process) iframe.
  *
  * @cssdisplay block
- *
- * @prop {Boolean} loading - Enables the loader indicator.
- * @prop {String} sandbox - Sets `sandbox` attribute on inner native `<iframe>` element.
- * @prop {String} title - Sets `title` attribute on the inner `<iframe>` element.
  *
  * @slot - The HTML contents (wrapped in a `<template>`).
  */
@@ -37,7 +35,14 @@ export class CcHtmlFrame extends LitElement {
 
   constructor (props) {
     super(props);
+
+    /** @type {boolean} Enables the loader indicator. */
     this.loading = false;
+
+    /** @type {IframeSandbox|null} Sets `sandbox` attribute on inner native `<iframe>` element. */
+    this.sandbox = null;
+
+    /** @type {string} Sets `title` attribute on the inner `<iframe>` element. */
     this.title = '';
   }
 
@@ -81,7 +86,7 @@ export class CcHtmlFrame extends LitElement {
 
   render () {
     return html`
-      <iframe title=${this.title} src="about:blank" sandbox=${ifDefined(this.sandbox)}></iframe>
+      <iframe title=${this.title} src="about:blank" sandbox=${ifDefined(this.sandbox ?? undefined)}></iframe>
       ${this.loading ? html`
         <cc-loader></cc-loader>
       ` : ''}

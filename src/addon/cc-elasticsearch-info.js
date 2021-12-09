@@ -23,32 +23,27 @@ const ELASTICSEARCH_DOCUMENTATION = 'https://www.clever-cloud.com/doc/addons/ela
  * * You need to list the links you want to display in `links`.
  * * You can omit the `href` property while you wait for the real link, a skeleton UI (loading hint) will be displayed.
  *
- * ## Type definitions
- *
- * ```js
- * interface Link {
- *   type: "elasticsearch"|"kibana"|"apm",
- *   href?: string,
- * }
- * ```
+ * @typedef {import('./types.js').Link} Link
  *
  * @cssdisplay block
- *
- * @prop {Boolean} error - Display an error message.
- * @prop {Link[]} links - Sets the different links.
  */
 export class CcElasticsearchInfo extends LitElement {
 
   static get properties () {
     return {
-      error: { type: Boolean, attribute: 'error' },
-      links: { type: Array, attribute: 'links' },
+      error: { type: Boolean },
+      links: { type: Array },
     };
   }
 
   constructor () {
     super();
+
+    /** @type {boolean} Display an error message. */
     this.error = false;
+
+    /** @type {Link[]|null} Sets the different links. */
+    this.links = null;
   }
 
   render () {
@@ -93,7 +88,7 @@ export class CcElasticsearchInfo extends LitElement {
         ${this.error ? html`
           <cc-error>${i18n('cc-elasticsearch-info.error')}</cc-error>
         ` : ''}
-        
+
       </cc-block>
     `;
   }

@@ -17,18 +17,7 @@ const decrementSvg = new URL('../assets/decrement.svg', import.meta.url).href;
  *
  * @cssdisplay inline-block
  *
- * @prop {Boolean} controls - Sets the control mode with a decrement and increment buttons.
- * @prop {Boolean} disabled - Sets `disabled` attribute on inner native `<input>` element.
- * @prop {String} label - Sets label for the input.
- * @prop {Number} max - Sets the max range of the `<input>` element.
- * @prop {Number} min - Sets the min range of the `<input>` element.
- * @prop {String} name - Sets `name` attribute on inner native `<input>` element.
- * @prop {Boolean} readonly - Sets `readonly` attribute on inner native `<input>` element.
- * @prop {Boolean} skeleton - Enables skeleton screen UI pattern (loading hint).
- * @prop {Number} step - Sets the step of the `<input>` element affecting the value when changing it on the keyboard or controls mode.
- * @prop {Number} value - Sets `value` attribute on inner native input number element.
- *
- * @event {CustomEvent<String>} cc-input-number:input - Fires the `value` whenever the `value` changes.
+ * @event {CustomEvent<string>} cc-input-number:input - Fires the `value` whenever the `value` changes.
  * @event {CustomEvent} cc-input-number:requestimplicitsubmit - Fires when enter key is pressed.
  *
  * @cssprop {Align} --cc-input-number-align - Change the alignment of the number present in the input (defaults: `right`).
@@ -47,18 +36,48 @@ export class CcInputNumber extends LitElement {
       skeleton: { type: Boolean, reflect: true },
       step: { type: Number },
       value: { type: Number },
-      _invalid: { type: Boolean },
+      _invalid: { type: Boolean, attribute: false },
     };
   }
 
   constructor () {
     super();
-    this.disabled = false;
-    this.readonly = false;
-    this.skeleton = false;
+
+    /** @type {boolean} Sets the control mode with a decrement and increment buttons. */
     this.controls = false;
+
+    /** @type {boolean} Sets `disabled` attribute on inner native `<input>` element. */
+    this.disabled = false;
+
+    /** @type {string|null} Sets label for the input. */
+    this.label = null;
+
+    /** @type {number|null} Sets the max range of the `<input>` element. */
+    this.max = null;
+
+    /** @type {number|null} Sets the min range of the `<input>` element. */
+    this.min = null;
+
+    /** @type {string|null} Sets `name` attribute on inner native `<input>` element. */
+    this.name = null;
+
+    /** @type {boolean} Sets `readonly` attribute on inner native `<input>` element. */
+    this.readonly = false;
+
+    /** @type {boolean} Enables skeleton screen UI pattern (loading hint). */
+    this.skeleton = false;
+
+    /** @type {number|null} Sets the step of the `<input>` element affecting the value when changing it on the keyboard or controls mode. */
+    this.step = null;
+
+    /** @type {number|null} Sets `value` attribute on inner native input number element. */
+    this.value = null;
+
+    /** @type {boolean} */
     this._invalid = false;
+
     // use this unique name for isolation (Safari seems to have a bug)
+    /** @type {string} */
     this._uniqueName = Math.random().toString(36).slice(2);
   }
 
@@ -134,38 +153,38 @@ export class CcInputNumber extends LitElement {
       ${this.label != null ? html`
         <label for=${this._uniqueName}>${this.label}</label>
       ` : ''}
-      
+
       <div class="meta-input">
         ${controls ? html`
-        <button class="btn" @click=${this._onDecrement} ?disabled=${this.disabled || this.readonly || minDisabled}>
-          <img class="btn-img" src=${decrementSvg} alt="">
-        </button>
+          <button class="btn" @click=${this._onDecrement} ?disabled=${this.disabled || this.readonly || minDisabled}>
+            <img class="btn-img" src=${decrementSvg} alt="">
+          </button>
         ` : ''}
         <div class="wrapper ${classMap({ skeleton: this.skeleton })}">
-          
-            <input
-              id=${this._uniqueName}
-              type="number"
-              class="input ${classMap({ error: this._invalid })}"
-              ?disabled=${this.disabled || this.skeleton} 
-              ?readonly=${this.readonly}
-              min=${this.min ?? ''}
-              max=${this.max ?? ''}
-              step=${this.step ?? ''}
-              .value=${value}
-              name=${this.name ?? ''}
-              spellcheck="false"
-              @focus=${this._onFocus}
-              @input=${this._onInput}
-              @keydown=${this._onKeyEvent}
-              @keypress=${this._onKeyEvent}
-            >
+
+          <input
+            id=${this._uniqueName}
+            type="number"
+            class="input ${classMap({ error: this._invalid })}"
+            ?disabled=${this.disabled || this.skeleton}
+            ?readonly=${this.readonly}
+            min=${this.min ?? ''}
+            max=${this.max ?? ''}
+            step=${this.step ?? ''}
+            .value=${value}
+            name=${this.name ?? ''}
+            spellcheck="false"
+            @focus=${this._onFocus}
+            @input=${this._onInput}
+            @keydown=${this._onKeyEvent}
+            @keypress=${this._onKeyEvent}
+          >
           <div class="ring"></div>
         </div>
         ${controls ? html`
-        <button class="btn" @click=${this._onIncrement} ?disabled=${this.disabled || this.readonly || maxDisabled}>
-          <img class="btn-img" src=${incrementSvg} alt="">
-        </button>
+          <button class="btn" @click=${this._onIncrement} ?disabled=${this.disabled || this.readonly || maxDisabled}>
+            <img class="btn-img" src=${incrementSvg} alt="">
+          </button>
         ` : ''}
       </div>
     `;
@@ -180,7 +199,7 @@ export class CcInputNumber extends LitElement {
         :host {
           display: inline-block;
         }
-        
+
         label {
           cursor: pointer;
           display: block;
@@ -221,12 +240,12 @@ export class CcInputNumber extends LitElement {
           resize: none;
           width: 100%;
         }
-        
+
         /* remove spinner firefox */
         input[type="number"] {
           -moz-appearance: textfield;
         }
-        
+
         /* remove spinner safari */
         input[type="number"]::-webkit-inner-spin-button,
         input[type="number"]::-webkit-outer-spin-button {
@@ -249,7 +268,7 @@ export class CcInputNumber extends LitElement {
           text-align: var(--cc-input-number-align, left);
           z-index: 2;
         }
-        
+
         /* STATES */
         input:focus,
         input:active {
@@ -260,12 +279,12 @@ export class CcInputNumber extends LitElement {
           opacity: .75;
           pointer-events: none;
         }
-        
+
         button[disabled] {
           opacity: .5;
           pointer-events: none;
         }
-        
+
         /* We use this empty .ring element to decorate the input with background, border, box-shadows... */
         .ring {
           background: #fff;
@@ -286,11 +305,11 @@ export class CcInputNumber extends LitElement {
           box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
         }
 
-        input:focus.error  + .ring {
+        input:focus.error + .ring {
           /*border-color: #777;*/
           box-shadow: 0 0 0 .2em rgba(255, 0, 0, .25);
         }
-        
+
         input.error + .ring {
           border-color: hsl(351, 70%, 47%);
         }

@@ -10,6 +10,7 @@ import { ccLink, linkStyles } from '../templates/cc-link.js';
 
 const fileSvg = new URL('../assets/file.svg', import.meta.url).href;
 
+/** @type {Invoice} */
 const SKELETON_INVOICE = {
   emissionDate: '2020-01-01',
   number: '????????????',
@@ -21,41 +22,10 @@ const SKELETON_INVOICE = {
 /**
  * A block component to display an HTML invoice.
  *
- * ## Type definitions
- *
- * ```js
- * interface Amount {
- *   amount: Number,
- *   currency: String,
- * }
- * ```
- *
- * ```js
- * type InvoiceStatus = "PENDING" | "PROCESSING" | "PAID" | "PAYMENTHELD" | "CANCELED" | "REFUNDED" | "WONTPAY"
- * ```
- *
- * ```js
- * type InvoiceType = "INVOICE" | "CREDITNOTE"
- * ```
- *
- * ```js
- * interface Invoice {
- *   downloadUrl: String,
- *   emissionDate: String,
- *   invoiceHtml: String,
- *   number: String,
- *   paymentUrl: String,
- *   status: InvoiceStatus,
- *   total: Amount,
- *   type: InvoiceType,
- * }
- * ```
+ * @typedef {import('./types.js').Amount} Amount
+ * @typedef {import('./types.js').Invoice} Invoice
  *
  * @cssdisplay block
- *
- * @prop {Boolean} error - Sets a loading error state.
- * @prop {Invoice} invoice - Sets the invoice.
- * @prop {String} number - Sets the invoice number.
  */
 export class CcInvoice extends LitElement {
 
@@ -69,7 +39,15 @@ export class CcInvoice extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {boolean} Sets a loading error state. */
     this.error = false;
+
+    /** @type {Invoice|null} Sets the invoice. */
+    this.invoice = null;
+
+    /** @type {string|null} Sets the invoice number. */
+    this.number = null;
   }
 
   render () {
@@ -122,7 +100,7 @@ export class CcInvoice extends LitElement {
         .skeleton {
           background-color: #bbb;
         }
-        
+
         .info,
         .frame {
           justify-self: center;

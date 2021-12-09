@@ -15,45 +15,14 @@ import { i18n } from '../lib/i18n.js';
  * * The legend is contextualized to an organization or an app so you MUST set either `orgaName` or `appName` but not both.
  * * The component has a default height of 15rem and a default width 20rem but this can be overridden with CSS.
  *
- * ## Type definitions
- *
- * ```js
- * interface Point {
- *   lat: number,           // Latitude
- *   lon: number,           // Longitude
- *   count?: number,        // Number of occurences for this location (default: 1)
- *   delay?: number|string, // How long the point needs to stay (in ms), 'none' for a fixed point, (default: 1000)
- *   tooltip?: string,      // Tooltip when the point is hovered
- * }
- * ```
- *
- * ```js
- * interface PointsOptions {
- *   spreadDuration?: boolean|number, // Spread points appearance over a time window (in ms)
- * }
- * ```
- *
- * ```js
- * interface HeatmapPoint {
- *   lat: number,   // Latitude
- *   lon: number,   // Longitude
- *   count: number, // Number of occurences for this location
- * }
- * ```
+ * @typedef {import('./types.js').HeatmapPoint} HeatmapPoint
+ * @typedef {import('./types.js').MapModeType} MapModeType
+ * @typedef {import('./types.js').Point} Point
+ * @typedef {import('./types.js').PointsOptions} PointsOptions
  *
  * @cssdisplay block
  *
- * @prop {String} appName - Sets the name of the app for which we display the logs (don't use it with `orgaName`).
- * @prop {Number} centerLat - Sets the latitude center of the map.
- * @prop {Number} centerLon - Sets the longitude center of the map.
- * @prop {Boolean} error - Displays an error message (can be combined with `loading`).
- * @prop {HeatmapPoint[]} heatmapPoints - Sets the list of points used to draw the heatmap.
- * @prop {Boolean} loading - Displays a loader on top of the map (can be combined with `error`).
- * @prop {"points"|"heatmap"} mode - Sets map mode: `"points"` for blinking temporary dots and `"heatmap"` for a heatmap.
- * @prop {String} orgaName - Sets the name of the organization for which we display the logs (don't use it with `appName`).
- * @prop {Number} viewZoom - Sets the zoom of the map (between 1 and 6).
- *
- * @event {"points"|"heatmap"} cc-logsmap:mode - Fires the selected mode whenever the toggle changes.
+ * @event {CustomEvent<MapModeType>} cc-logsmap:mode - Fires the selected mode whenever the toggle changes.
  */
 export class CcLogsMap extends LitElement {
 
@@ -69,21 +38,44 @@ export class CcLogsMap extends LitElement {
       orgaName: { type: String, attribute: 'orga-name' },
       viewZoom: { type: Number, attribute: 'view-zoom' },
       // Internal state for child component <cc-map>
-      _points: { type: Array },
+      _points: { type: Array, attribute: false },
     };
   }
 
   constructor () {
     super();
+
+    /** @type {String} Sets the name of the app for which we display the logs (don't use it with `orgaName`). */
+    this.appName = null;
+
     // Centered on Paris by default
+    /** @type {number} Sets the latitude center of the map. */
     this.centerLat = 48.9;
+
+    /** @type {number} Sets the longitude center of the map. */
     this.centerLon = 2.4;
+
+    /** @type {boolean} Displays an error message (can be combined with `loading`). */
     this.error = false;
-    // this.heatmapPoints = [];
+
+    /** @type {HeatmapPoint[]|null} Sets the list of points used to draw the heatmap. */
+    this.heatmapPoints = null;
+
+    /** @type {boolean} Displays a loader on top of the map (can be combined with `error`). */
     this.loading = false;
+
+    /** @type {MapModeType} Sets map mode: `"points"` for blinking temporary dots and `"heatmap"` for a heatmap. */
     this.mode = 'points';
+
+    /** @type {string|null} Sets the name of the organization for which we display the logs (don't use it with `appName`). */
+    this.orgaName = null;
+
+    /** @type {number} Sets the zoom of the map (between 1 and 6). */
     this.viewZoom = 2;
+
+    /** @type {Point[]} */
     this._points = [];
+
     this._pointsByCoords = {};
   }
 

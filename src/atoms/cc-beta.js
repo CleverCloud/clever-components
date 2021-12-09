@@ -4,10 +4,9 @@ import { i18n } from '../lib/i18n.js';
 /**
  * A layout component to position a simple beta ribbon around any content.
  *
- * @cssdisplay grid
+ * @typedef {import('./types.js').PositionType} PositionType
  *
- * @prop {Boolean} fill - Forces the slotted element to fill the beta container size (same heigh and width). By default, the beta container adapts to the slotted element size.
- * @prop {"top-left"|"bottom-left"|"top-right"|"bottom-right"} position - Where to position the beta label.
+ * @cssdisplay grid
  *
  * @slot - The content around which the beta label will be positionned. You ONLY one element.
  */
@@ -22,7 +21,11 @@ export class CcBeta extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {boolean} Forces the slotted element to fill the beta container size (same heigh and width). By default, the beta container adapts to the slotted element size. */
     this.fill = false;
+
+    /** @type {PositionType} Where to position the beta label. */
     this.position = 'top-left';
   }
 

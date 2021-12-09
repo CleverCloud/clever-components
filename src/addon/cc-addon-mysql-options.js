@@ -8,28 +8,12 @@ import { ccAddonEncryptionAtRestOption } from '../templates/cc-addon-encryption-
 /**
  * A component that displays the available options of a MySQL add-on.
  *
- * ## Type definitions
- *
- * ```js
- * interface Option {
- *   name: string,
- *   enabled: boolean,
- *   // Option specific params
- *   price: number, // for "encryption" option
- * }
- * ```
- *
- * ```js
- * interface Options {
- *   encryption: boolean,
- * }
- * ```
+ * @typedef {import('./types.js').Option} Option
+ * @typedef {import('./types.js').GenericOptions} GenericOptions
  *
  * @cssdisplay block
  *
- * @prop {Option[]} options - List of options for this add-on.
- *
- * @event {CustomEvent<Options>} cc-addon-mysql-options:submit - Fires when the form is submitted.
+ * @event {CustomEvent<GenericOptions>} cc-addon-mysql-options:submit - Fires when the form is submitted.
  */
 export class CcAddonMysqlOptions extends LitElement {
 
@@ -41,6 +25,8 @@ export class CcAddonMysqlOptions extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {Option[]} List of options for this add-on. */
     this.options = [];
   }
 
@@ -56,7 +42,7 @@ export class CcAddonMysqlOptions extends LitElement {
             return ccAddonEncryptionAtRestOption(option);
           default:
             return null;
-        };
+        }
       })
       .filter((option) => option != null);
   }

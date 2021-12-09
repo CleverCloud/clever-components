@@ -9,6 +9,7 @@ import { i18n } from '../lib/i18n.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 
+/** @type {Application[]} */
 const SKELETON_APPLICATIONS = [
   { name: '??????????????????', link: '', instance: { variant: {} } },
   { name: '???????????????????????', link: '', instance: { variant: {} } },
@@ -22,46 +23,10 @@ const SKELETON_APPLICATIONS = [
  *
  * * When applications is nullish, a skeleton screen UI pattern is displayed (loading hint).
  *
- * ## Type definitions
- *
- * ```js
- * interface InstanceVariant {
- *   name: string,
- *   logo: string,
- * }
- * ```
- *
- * ```js
- * interface Instance {
- *   variant: InstanceVariant,
- * }
- * ```
- *
- * ```js
- * interface Application {
- *   name: string,
- *   link: string,
- *   instance: Instance,
- *   zone: Zone,
- * }
- * ```
- *
- * ```js
- * interface Zone {
- *   countryCode: string,   // ISO 3166-1 alpha-2 code of the country (2 letters): "FR", "CA", "US"...
- *   city: string,          // Name of the city in english: "Paris", "Montreal", "New York City"...
- *   country: string,       // Name of the country in english: "France", "Canada", "United States"...
- *   displayName?: string,  // Optional display name for private zones (instead of displaying city + country): "ACME (dedicated)"...
- *   tags: string[],        // Array of strings for semantic tags: ["region:eu", "infra:clever-cloud"], ["scope:private"]...
- * }
- * ```
+ * @typedef {import('../types.js').Application} Application
  *
  * @cssdisplay block
- *
- * @prop {Application[]} applications - Sets the linked applications.
- * @prop {Boolean} error - Displays an error message.
  */
-
 export class CcAddonLinkedApps extends LitElement {
 
   static get properties () {
@@ -73,6 +38,11 @@ export class CcAddonLinkedApps extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {Application[]|null} Sets the linked applications. */
+    this.applications = null;
+
+    /** @type {boolean} Displays an error message. */
     this.error = false;
   }
 
@@ -138,7 +108,7 @@ export class CcAddonLinkedApps extends LitElement {
           height: 1.6rem;
           width: 1.6rem;
         }
-        
+
         .details {
           --cc-align-items: center;
           --cc-gap: 0.5rem;

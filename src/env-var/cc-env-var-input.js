@@ -11,31 +11,10 @@ import { skeletonStyles } from '../styles/skeleton.js';
 /**
  * A small input to manipulate an environement variable.
  *
- * ## Type definitions
- *
- * ```js
- * interface Variable {
- *   name: string,
- *   value: string,
- * }
- * ```
- *
- * ```js
- * interface VariableName {
- *   name: string,
- * }
- * ```
+ * @typedef {import('./types.js').Variable} Variable
+ * @typedef {import('./types.js').VariableName} VariableName
  *
  * @cssdisplay block
- *
- * @prop {Boolean} deleted - Declares the variable as "should be deleted".
- * @prop {Boolean} disabled - Sets `disabled` attribute on input and button.
- * @prop {Boolean} edited - Declares the variable as "edited" (compared to server side state).
- * @prop {String} name - Sets the name of the environment variable.
- * @prop {Boolean} new - Declares the variable as "new" (compared to server side state).
- * @prop {Boolean} readonly - Sets `readonly` attribute on input and hides button.
- * @prop {Boolean} skeleton - Enables skeleton screen UI pattern (loading hint).
- * @prop {String} value - Sets the value of the environment variable (can be empty).
  *
  * @event {CustomEvent<VariableName>} cc-env-var-input:delete - Fires a variable name whenever the delete button is clicked.
  * @event {CustomEvent<Variable>} cc-env-var-input:input - Fires a variable whenever its value changes.
@@ -61,12 +40,29 @@ export class CcEnvVarInput extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {boolean} Declares the variable as "should be deleted". */
     this.deleted = false;
+
+    /** @type {boolean} Sets `disabled` attribute on input and button. */
     this.disabled = false;
+
+    /** @type {boolean} Declares the variable as "edited" (compared to server side state). */
     this.edited = false;
+
+    /** @type {string|null} Sets the name of the environment variable. */
+    this.name = null;
+
+    /** @type {boolean}  Declares the variable as "new" (compared to server side state). */
     this.new = false;
+
+    /** @type {boolean} Sets `readonly` attribute on input and hides button. */
     this.readonly = false;
+
+    /** @type {boolean} Enables skeleton screen UI pattern (loading hint). */
     this.skeleton = false;
+
+    /** @type {string} Sets the value of the environment variable (can be empty). */
     this.value = '';
   }
 
@@ -91,12 +87,12 @@ export class CcEnvVarInput extends LitElement {
         <span class="name ${classMap({ deleted: this.deleted })}"><!-- no-whitespace
           --><span class=${classMap({ skeleton: this.skeleton })}>${this.name}</span><!-- no-whitespace
         --></span>
-        
+
         <cc-flex-gap class="input-btn">
-          
+
           <cc-input-text
             class="value"
-            name=${this.name}
+            name="value"
             value=${this.value}
             multi
             clipboard
@@ -106,7 +102,7 @@ export class CcEnvVarInput extends LitElement {
             placeholder=${i18n('cc-env-var-input.value-placeholder')}
             @cc-input-text:input=${this._onInput}
           ></cc-input-text>
-          
+
           ${!this.readonly ? html`
             <cc-button
               ?skeleton=${this.skeleton}
@@ -118,7 +114,7 @@ export class CcEnvVarInput extends LitElement {
               ${this.deleted ? i18n('cc-env-var-input.keep-button') : i18n('cc-env-var-input.delete-button')}
             </cc-button>
           ` : ''}
-          
+
         </cc-flex-gap>
       </cc-flex-gap>
     `;

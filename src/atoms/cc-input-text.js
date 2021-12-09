@@ -47,21 +47,9 @@ function arrayEquals (a, b) {
  *
  * @cssdisplay inline-block / block (with `[multi]`)
  *
- * @prop {Boolean} clipboard - Adds a copy-to-clipboard button (when not disabled and not skeleton).
- * @prop {Boolean} disabled - Sets `disabled` attribute on inner native `<input>/<textarea>` element.
- * @prop {String} label - Sets label for the input.
- * @prop {Boolean} multi - Enables multiline support (with a `<textarea>` instead of an `<input>`).
- * @prop {String} name - Sets `name` attribute on inner native `<input>/<textarea>` element.
- * @prop {String} placeholder - Sets `placeholder` attribute on inner native `<input>/<textarea>` element.
- * @prop {Boolean} readonly - Sets `readonly` attribute on inner native `<input>/<textarea>` element.
- * @prop {Boolean} secret - Enables show/hide secret feature with an eye icon.
- * @prop {Boolean} skeleton - Enables skeleton screen UI pattern (loading hint).
- * @prop {String[]} tags - Sets list of tags and enables tags mode (if not null).
- * @prop {String} value - Sets `value` attribute on inner native input element or textarea's inner content.
- *
- * @event {CustomEvent<String>} cc-input-text:input - Fires the `value` whenever the `value` changes.
+ * @event {CustomEvent<string>} cc-input-text:input - Fires the `value` whenever the `value` changes.
  * @event {CustomEvent} cc-input-text:requestimplicitsubmit - Fires when enter key is pressed in simple mode, in tags mode or when ctrl+enter is pressed in multi mode.
- * @event {CustomEvent<String[]>} cc-input-text:tags - Fires an array of tags whenever the `value` changes (separated by spaces).
+ * @event {CustomEvent<string[]>} cc-input-text:tags - Fires an array of tags whenever the `value` changes (separated by spaces).
  */
 export class CcInputText extends LitElement {
 
@@ -86,19 +74,51 @@ export class CcInputText extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {boolean} Adds a copy-to-clipboard button (when not disabled and not skeleton). */
     this.clipboard = false;
+
+    /** @type {boolean} Sets `disabled` attribute on inner native `<input>/<textarea>` element. */
     this.disabled = false;
+
+    /** @type {string|null} Sets label for the input. */
+    this.label = null;
+
+    /** @type {boolean} Enables multiline support (with a `<textarea>` instead of an `<input>`). */
     this.multi = false;
+
+    /** @type {string|null} Sets `name` attribute on inner native `<input>/<textarea>` element. */
+    this.name = null;
+
+    /** @type {string} Sets `placeholder` attribute on inner native `<input>/<textarea>` element. */
     this.placeholder = '';
+
+    /** @type {boolean} Sets `readonly` attribute on inner native `<input>/<textarea>` element. */
     this.readonly = false;
+
+    /** @type {boolean} Enables show/hide secret feature with an eye icon. */
     this.secret = false;
+
+    /** @type {boolean} Enables skeleton screen UI pattern (loading hint). */
     this.skeleton = false;
+
+    /** @type {string[]} Sets list of tags and enables tags mode (if not null). */
     this.tags = null;
+
+    /** @type {string} Sets `value` attribute on inner native input element or textarea's inner content. */
     this.value = '';
+
+    /** @type {boolean} */
     this._copyOk = false;
+
+    /** @type {boolean} */
     this._showSecret = false;
+
+    /** @type {boolean} */
     this._tagsEnabled = false;
+
     // use this unique name for isolation (Safari seems to have a bug)
+    /** @type {string} */
     this._uniqueName = Math.random().toString(36).slice(2);
   }
 
@@ -230,7 +250,7 @@ export class CcInputText extends LitElement {
               ?disabled=${this.disabled || this.skeleton}
               ?readonly=${this.readonly}
               .value=${value}
-              name=${this.name}
+              name=${ifDefined(this.name ?? undefined)}
               placeholder=${this.placeholder}
               spellcheck="false"
               wrap="${ifDefined(this._tagsEnabled ? 'soft' : undefined)}"
@@ -254,7 +274,7 @@ export class CcInputText extends LitElement {
               ?disabled=${this.disabled || this.skeleton}
               ?readonly=${this.readonly}
               .value=${value}
-              name=${this.name}
+              name=${ifDefined(this.name ?? undefined)}
               placeholder=${this.placeholder}
               spellcheck="false"
               @focus=${this._onFocus}

@@ -20,28 +20,12 @@ const SKELETON_ZONES = new Array(6).fill(null);
  * * When `zones` is nullish, a skeleton screen UI pattern is displayed (loading hint).
  * * Zones are sorted in the list using `tags`. Clever Cloud, then private, then regular alphanumeric sort on the city name.
  *
- * ## Type definitions
- *
- * ```js
- * interface Zone {
- *   name: string,          // Unique code/identifier for the zone
- *   lat: number,           // Latitude
- *   lon: number,           // Longitude
- *   countryCode: string,   // ISO 3166-1 alpha-2 code of the country (2 letters): "FR", "CA", "US"...
- *   city: string,          // Name of the city in english: "Paris", "Montreal", "New York City"...
- *   country: string,       // Name of the country in english: "France", "Canada", "United States"...
- *   displayName?: string,  // Optional display name for private zones (instead of displaying city + country): "ACME (dedicated)"...
- *   tags: string[],        // Array of strings for semantic tags: ["region:eu", "infra:clever-cloud"], ["scope:private"]...
- * }
- * ```
+ * @typedef {import('../maps/types.js').Point} Point
+ * @typedef {import('../types.js').Zone} Zone
  *
  * @cssdisplay grid
  *
- * @prop {Boolean} error - Displays an error message.
- * @prop {String} selected - Sets the `name` of the selected zone.
- * @prop {Zone[]} zones - Sets the list of available zones.
- *
- * @event {CustomEvent<String>} cc-zone-input:input - Fires the `name` of the selected zone whenever the selection changes.
+ * @event {CustomEvent<string>} cc-zone-input:input - Fires the `name` of the selected zone whenever the selection changes.
  */
 export class CcZoneInput extends withResizeObserver(LitElement) {
 
@@ -50,8 +34,6 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
       error: { type: Boolean, reflect: true },
       selected: { type: String },
       zones: { type: Array },
-      _centerLat: { type: Number },
-      _centerLon: { type: Number },
       _hovered: { type: String },
       _legend: { type: String },
       _points: { type: Array },
@@ -61,13 +43,32 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
 
   constructor (props) {
     super(props);
+
+    /** @type {boolean} Displays an error message. */
     this.error = false;
+
+    /** @type {string|null} Sets the `name` of the selected zone. */
+    this.selected = null;
+
+    /** @type {Zone[]|null} Sets the list of available zones. */
+    this.zones = null;
+
     /** @protected */
     this.breakpoints = {
       width: [600],
     };
+
+    /** @type {boolean} */
+    this._hovered = false;
+
+    /** @type {string} */
     this._legend = '';
+
+    /** @type {Point[]} */
     this._points = [];
+
+    /** @type {Zone[]|null} */
+    this._sortedZones = null;
   }
 
   _updatePoints () {
