@@ -53,7 +53,6 @@ export const noticeConfirm = makeStory(conf, {
   items: baseItems.map((p) => ({ ...p, mode: 'confirm', notice: true })),
 });
 
-
 enhanceStoriesNames({
   defaultStory,
   info,

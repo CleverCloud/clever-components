@@ -19,6 +19,10 @@ export interface ParseError {
   msg: string,
 }
 
+export interface ParserOptions {
+  mode: string,
+}
+
 export interface VariableName {
   name: string,
 }

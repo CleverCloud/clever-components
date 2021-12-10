@@ -20,8 +20,12 @@ export const validationWithExistingNames = makeStory(conf, {
   items: [{ variablesNames: ['FOO', 'BAR'] }],
 });
 
+export const validationWithStrictMode = makeStory(conf, {
+  items: [{ mode: 'strict' }],
+});
+
 export const disabled = makeStory(conf, {
   items: [{ disabled: true }],
 });
 
-enhanceStoriesNames({ defaultStory, validationWithExistingNames, disabled });
+enhanceStoriesNames({ defaultStory, validationWithExistingNames, validationWithStrictMode, disabled });

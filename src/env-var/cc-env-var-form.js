@@ -43,6 +43,7 @@ export class CcEnvVarForm extends LitElement {
       context: { type: String },
       error: { type: String, reflect: true },
       heading: { type: String, reflect: true },
+      parserOptions: { type: Object, attribute: 'parser-options' },
       readonly: { type: Boolean, reflect: true },
       restartApp: { type: Boolean, attribute: 'restart-app' },
       saving: { type: Boolean, reflect: true },
@@ -70,6 +71,9 @@ export class CcEnvVarForm extends LitElement {
 
     /** @type {string|null} Sets a text to be used as a header title. */
     this.heading = null;
+
+    /** @type {ParserOptions} Sets the options for the variables parser. */
+    this.parserOptions = { mode: null };
 
     /** @type {boolean} Sets `readonly` attribute input and hides buttons. */
     this.readonly = false;
@@ -246,6 +250,7 @@ export class CcEnvVarForm extends LitElement {
       <div class="overlay-container">
         <cc-expand class=${classMap({ hasOverlay })}>
           <cc-env-var-editor-simple
+            mode=${this.parserOptions.mode ?? ''}
             ?hidden=${this._mode !== 'SIMPLE'}
             .variables=${this._currentVariables}
             ?disabled=${isEditorDisabled}
@@ -256,6 +261,7 @@ export class CcEnvVarForm extends LitElement {
 
           <cc-env-var-editor-expert
             ?hidden=${this._mode !== 'EXPERT'}
+            .parserOptions=${this.parserOptions}
             .variables=${this._expertVariables}
             ?disabled=${isEditorDisabled}
             ?readonly=${this.readonly}
@@ -265,6 +271,7 @@ export class CcEnvVarForm extends LitElement {
 
           <cc-env-var-editor-json
             ?hidden=${this._mode !== 'JSON'}
+            .parserOptions=${this.parserOptions}
             .variables=${this._jsonVariables}
             ?disabled=${isEditorDisabled}
             ?readonly=${this.readonly}
@@ -312,79 +319,79 @@ export class CcEnvVarForm extends LitElement {
       // language=CSS
       linkStyles,
       css`
-          :host {
-              background: #fff;
-              border: 1px solid #bcc2d1;
-              border-radius: 0.25rem;
-              display: block;
-              padding: 1rem;
-          }
+        :host {
+          background: #fff;
+          border: 1px solid #bcc2d1;
+          border-radius: 0.25rem;
+          display: block;
+          padding: 1rem;
+        }
 
-          .header {
-              align-items: flex-start;
-              display: flex;
-              justify-content: center;
-              margin-bottom: 0.5rem;
-          }
+        .header {
+          align-items: flex-start;
+          display: flex;
+          justify-content: center;
+          margin-bottom: 0.5rem;
+        }
 
-          .heading {
-              color: #3A3871;
-              flex: 1 1 0;
-              font-size: 1.2rem;
-              font-weight: bold;
-          }
+        .heading {
+          color: #3A3871;
+          flex: 1 1 0;
+          font-size: 1.2rem;
+          font-weight: bold;
+        }
 
-          .description {
-              color: #555;
-              display: block;
-              font-style: italic;
-              line-height: 1.5;
-              margin-bottom: 1rem;
-          }
+        .description {
+          color: #555;
+          display: block;
+          font-style: italic;
+          line-height: 1.5;
+          margin-bottom: 1rem;
+        }
 
-          .hasOverlay {
-              --cc-skeleton-state: paused;
-              filter: blur(0.3rem);
-          }
+        .hasOverlay {
+          --cc-skeleton-state: paused;
+          filter: blur(0.3rem);
+        }
 
-          .overlay-container {
-              position: relative;
-          }
+        .overlay-container {
+          position: relative;
+        }
 
-          cc-expand {
-              /* We need to spread so the focus rings can be visible even with cc-expand default overflow:hidden */
-              margin: -0.25rem;
-              padding: 0.25rem;
-          }
+        cc-expand {
+          /* We need to spread so the focus rings can be visible even with cc-expand default overflow:hidden */
+          margin: -0.25rem;
+          padding: 0.25rem;
+        }
 
-          .error-container {
-              align-items: center;
-              display: flex;
-              flex-direction: column;
-              height: 100%;
-              justify-content: center;
-              left: 0;
-              position: absolute;
-              top: 0;
-              width: 100%;
-          }
+        .error-container {
+          align-items: center;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          justify-content: center;
+          left: 0;
+          position: absolute;
+          top: 0;
+          width: 100%;
+        }
 
-          .saving-loader {
-              height: 100%;
-              left: 0;
-              position: absolute;
-              top: 0;
-              width: 100%;
-          }
+        .saving-loader {
+          height: 100%;
+          left: 0;
+          position: absolute;
+          top: 0;
+          width: 100%;
+        }
 
-          .button-bar {
-              --cc-gap: 1rem;
-              margin-top: 1.5rem;
-          }
+        .button-bar {
+          --cc-gap: 1rem;
+          margin-top: 1.5rem;
+        }
 
-          .spacer {
-              flex: 1 1 0;
-          }
+        .spacer {
+          flex: 1 1 0;
+        }
       `,
     ];
   }

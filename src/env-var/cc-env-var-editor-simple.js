@@ -27,6 +27,7 @@ export class CcEnvVarEditorSimple extends LitElement {
   static get properties () {
     return {
       disabled: { type: Boolean },
+      mode: { type: String },
       readonly: { type: Boolean },
       variables: { type: Array },
     };
@@ -37,6 +38,9 @@ export class CcEnvVarEditorSimple extends LitElement {
 
     /** @type {boolean} Sets `disabled` attribute on inputs and buttons. */
     this.disabled = false;
+
+    /** @type {string} Sets the mode of the variables name validation. */
+    this.mode = '';
 
     /** @type {boolean} Sets `readonly` attribute on inputs and hides buttons. */
     this.readonly = false;
@@ -95,6 +99,7 @@ export class CcEnvVarEditorSimple extends LitElement {
       ${!this.readonly ? html`
         <cc-env-var-create
           ?disabled=${skeleton || this.disabled}
+          mode=${this.mode}
           .variablesNames=${variablesNames}
           @cc-env-var-create:create=${this._onCreate}
         ></cc-env-var-create>
@@ -106,6 +111,7 @@ export class CcEnvVarEditorSimple extends LitElement {
 
       ${repeat(variables, ({ name }) => name, ({ name, value, isNew, isEdited, isDeleted }) => html`
         <cc-env-var-input
+          mode=${this.mode}
           name=${name}
           value=${value}
           ?new=${isNew}
