@@ -4,6 +4,7 @@ import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 
+const noticeSvg = new URL('../assets/notice.svg', import.meta.url).href;
 const warningSvg = new URL('../assets/warning.svg', import.meta.url).href;
 
 /**
@@ -31,6 +32,7 @@ export class CcError extends LitElement {
   static get properties () {
     return {
       mode: { type: String, reflect: true },
+      notice: { type: Boolean },
     };
   }
 
@@ -39,6 +41,7 @@ export class CcError extends LitElement {
 
     /** @type {ErrorModeType}  Sets the displays mode (see details). */
     this.mode = 'inline';
+    this.notice = false;
   }
 
   _onOkClick () {
@@ -50,7 +53,7 @@ export class CcError extends LitElement {
       ${this.mode === 'loading' ? html`
         <cc-loader></cc-loader>
       ` : ''}
-      <div><img src=${warningSvg} alt="">
+      <div><img src=${this.notice ? noticeSvg : warningSvg} alt="">
         <slot></slot>
       </div>
       ${this.mode === 'confirm' ? html`
