@@ -17,7 +17,7 @@ function renderContent (context) {
   const entryPointUrl = configId.includes('all-bundle')
     ? useCdnOrigin('./all-bundle.js', context.requestUrlWithOptions)
     : configId.includes('dedicated-bundle')
-      ? useCdnOrigin('./simple-bundle.js', context.requestUrlWithOptions)
+      ? './simple-bundle.js'
       : useCdnOrigin('./simple-split.js', context.requestUrlWithOptions);
 
   // language=HTML

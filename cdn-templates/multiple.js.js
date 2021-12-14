@@ -18,7 +18,7 @@ function renderContent (context) {
     return configId.includes('all-bundle')
       ? useCdnOrigin('./all-bundle.js', context.requestUrlWithOptions)
       : configId.includes(`dedicated-bundle`)
-        ? useCdnOrigin(`./multiple-${page}-bundle.js`, context.requestUrlWithOptions)
+        ? `./multiple-${page}-bundle.js`
         : useCdnOrigin(`./multiple-${page}.js`, context.requestUrlWithOptions);
   };
 
