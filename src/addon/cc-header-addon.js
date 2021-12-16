@@ -21,13 +21,15 @@ const SKELETON_ADDON = {
 const SKELETON_VERSION = '????????';
 
 /**
+ * @typedef {import('./types.js').Addon} Addon
+ */
+
+/**
  * A component to display various info about an add-on (name, plan, version...).
  *
  * ## Details
  *
  * * When `addon` or `version` are null, a skeleton screen UI pattern is displayed (loading hint) on the corresponding zone.
- *
- * @typedef {import('./types.js').Addon} Addon
  *
  * @cssdisplay block
  */

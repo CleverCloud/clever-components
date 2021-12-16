@@ -19,6 +19,11 @@ const SKELETON_ZONE = {
 const PRIVATE_ZONE = 'scope:private';
 
 /**
+ * @typedef {import('./types.js').ModeType} ModeType
+ * @typedef {import('../types.js').Zone} Zone
+ */
+
+/**
  * A display component to show information about a zone.
  *
  * ## Details
@@ -27,9 +32,6 @@ const PRIVATE_ZONE = 'scope:private';
  * * When a tag prefixed with `infra:` is used, the corresponding logo is displayed.
  * * When the `scope:private` tag is used, the optional `displayName` of the zone will be used instead of the City + Country.
  * * If the browser supports it, the `countryCode` will be used to display a translated version of the country's name.
- *
- * @typedef {import('./types.js').ModeType} ModeType
- * @typedef {import('../types.js').Zone} Zone
  *
  * @cssdisplay flex
  *

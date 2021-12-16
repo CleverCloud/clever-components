@@ -23,13 +23,15 @@ const SKELETON_INSTANCES = {
 };
 
 /**
+ * @typedef {import('./types.js').InstancesState} InstancesState
+ */
+
+/**
  * A "tile" component to display current status of running and deploying instances for a given app.
  *
  * ## Details
  *
  * * When `instances` is nullish, a loader is displayed.
- *
- * @typedef {import('./types.js').InstancesState} InstancesState
  *
  * @cssdisplay grid
  */

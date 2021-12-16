@@ -6,6 +6,13 @@ import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 
 /**
+ * @typedef {import('./types.js').HeatmapPoint} HeatmapPoint
+ * @typedef {import('./types.js').MapModeType} MapModeType
+ * @typedef {import('./types.js').Point} Point
+ * @typedef {import('./types.js').PointsOptions} PointsOptions
+ */
+
+/**
  * World map of access logs with two modes: blinking dots or heatmap.
  *
  * ## Details
@@ -14,11 +21,6 @@ import { i18n } from '../lib/i18n.js';
  * * It has predefined i18n label for the toggle and the legend (to display logs).
  * * The legend is contextualized to an organization or an app so you MUST set either `orgaName` or `appName` but not both.
  * * The component has a default height of 15rem and a default width 20rem but this can be overridden with CSS.
- *
- * @typedef {import('./types.js').HeatmapPoint} HeatmapPoint
- * @typedef {import('./types.js').MapModeType} MapModeType
- * @typedef {import('./types.js').Point} Point
- * @typedef {import('./types.js').PointsOptions} PointsOptions
  *
  * @cssdisplay block
  *

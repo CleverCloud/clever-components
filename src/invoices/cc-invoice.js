@@ -20,10 +20,12 @@ const SKELETON_INVOICE = {
 };
 
 /**
- * A block component to display an HTML invoice.
- *
  * @typedef {import('./types.js').Amount} Amount
  * @typedef {import('./types.js').Invoice} Invoice
+ */
+
+/**
+ * A block component to display an HTML invoice.
  *
  * @cssdisplay block
  */

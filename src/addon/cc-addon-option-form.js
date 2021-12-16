@@ -7,9 +7,11 @@ import { i18n } from '../lib/i18n.js';
 import { linkStyles } from '../templates/cc-link.js';
 
 /**
- * A component that displays a form of `<cc-addon-option>`.
- *
  * @typedef {import('./types.js').Option} Option
+ */
+
+/**
+ * A component that displays a form of `<cc-addon-option>`.
  *
  * @cssdisplay block
  *

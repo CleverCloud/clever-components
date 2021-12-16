@@ -13,16 +13,18 @@ import { i18n } from '../lib/i18n.js';
 import { linkStyles } from '../templates/cc-link.js';
 
 /**
+ * @typedef {import('./types.js').ContextType} ContextType
+ * @typedef {import('./types.js').ErrorType} ErrorType
+ * @typedef {import('./types.js').Variable} Variable
+ */
+
+/**
  * A high level environment variable form (wrapping simple editor and expert editor into one interface).
  *
  * ## Details
  *
  * * You can set a custom `heading` and description with the default <slot>.
  * * You can also set a context to get the appropriate heading and description (with translations).
- *
- * @typedef {import('./types.js').ContextType} ContextType
- * @typedef {import('./types.js').ErrorType} ErrorType
- * @typedef {import('./types.js').Variable} Variable
  *
  * @cssdisplay block
  *

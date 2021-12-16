@@ -16,10 +16,12 @@ const CONTACT_URL = 'https://www.clever-cloud.com/en/contact-sales';
 const SIGN_UP_URL = 'https://api.clever-cloud.com/v2/sessions/signup';
 
 /**
- * A component to display a list of selected product plans with the ability to change their quantity or remove them from the list.
- *
  * @typedef {import('./types.js').Currency} Currency
  * @typedef {import('./types.js').Plan} Plan
+ */
+
+/**
+ * A component to display a list of selected product plans with the ability to change their quantity or remove them from the list.
  *
  * @cssdisplay block
  *

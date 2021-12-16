@@ -9,10 +9,12 @@ const KIBANA_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com/
 const APM_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com/logos/elasticsearch-apm.svg';
 
 /**
- * A component that displays the available options of an elasticsearch add-on.
- *
  * @typedef {import('./types.js').Option} Option
  * @typedef {import('./types.js').ElasticOptions} ElasticOptions
+ */
+
+/**
+ * A component that displays the available options of an elasticsearch add-on.
  *
  * @cssdisplay block
  *

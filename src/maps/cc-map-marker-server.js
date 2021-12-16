@@ -1,13 +1,15 @@
 import { css, LitElement, svg } from 'lit-element';
 
 /**
+ * @typedef {import('./types.js').MarkerStateType} MarkerStateType
+ */
+
+/**
  * A map marker displayed as a server inside a bubble with blinking dots for LEDs when state is "selected".
  *
  * ## Technical details
  *
  * * `size`, `anchor` and `tooltip` are readonly.
- *
- * @typedef {import('./types.js').MarkerStateType} MarkerStateType
  *
  * @cssdisplay inline-block
  */

@@ -11,6 +11,7 @@ title: Changelog
 * Improve type definitions documentation:
   * move types to a `types.d.ts` for each web components section
   * add a script to automate type definition generation
+  * moved typedef imports to above class declaration to avoid events not showing up on the docs 
 
 ## 7.6.0 (2021-10-28)
 

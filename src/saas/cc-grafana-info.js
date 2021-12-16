@@ -16,11 +16,13 @@ const GRAFANA_ADDON_SCREEN = 'https://static-assets.cellar.services.clever-cloud
 const GRAFANA_DOCUMENTATION = 'https://www.clever-cloud.com/doc/administrate/metrics/overview/';
 
 /**
- * A component to display information about grafana and allow some actions: enable, disable, reset.
- *
  * @typedef {import('./types.js').GrafanaErrorType} GrafanaErrorType
  * @typedef {import('./types.js').GrafanaStatusType} GrafanaStatusType
  * @typedef {import('./types.js').GrafanaWaitingType} GrafanaWaitingType
+ */
+
+/**
+ * A component to display information about grafana and allow some actions: enable, disable, reset.
  *
  * @cssdisplay block
  *

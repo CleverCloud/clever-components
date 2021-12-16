@@ -20,6 +20,10 @@ const SKELETON_REQUESTS = Array
   .map(() => [0, 0, 1]);
 
 /**
+ * @typedef {import('./types.js').RequestsData} RequestsData
+ */
+
+/**
  * A "tile" component to display HTTP requests distribution over the last 24 hours in a bar chart.
  *
  * ## Details
@@ -30,8 +34,6 @@ const SKELETON_REQUESTS = Array
  *   * 6 bars of 4 hours
  *   * 8 bars of 3 hours
  *   * 12 bars of 2 hours
- *
- * @typedef {import('./types.js').RequestsData} RequestsData
  *
  * @cssdisplay grid
  */

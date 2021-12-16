@@ -9,10 +9,12 @@ import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
 /**
- * A small input to manipulate an environement variable.
- *
  * @typedef {import('./types.js').Variable} Variable
  * @typedef {import('./types.js').VariableName} VariableName
+ */
+
+/**
+ * A small input to manipulate an environement variable.
  *
  * @cssdisplay block
  *

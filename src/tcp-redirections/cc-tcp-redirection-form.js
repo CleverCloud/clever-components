@@ -11,11 +11,13 @@ const SKELETON_REDIRECTIONS = [
 ];
 
 /**
- * An interface to create / delete TCP redirections in the context of an application.
- *
  * @typedef {import('./types.js').ContextRedirectionType} ContextRedirectionType
  * @typedef {import('./types.js').Redirection} Redirection
  * @typedef {import('./types.js').RedirectionNamespace} RedirectionNamespace
+ */
+
+/**
+ * An interface to create / delete TCP redirections in the context of an application.
  *
  * @cssdisplay block
  *

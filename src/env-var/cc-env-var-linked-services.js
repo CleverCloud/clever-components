@@ -6,10 +6,12 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { i18n } from '../lib/i18n.js';
 
 /**
- * A component to display groups of readonly `<cc-env-var-form>` for linked apps of add-ons.
- *
  * @typedef {import('./types.js').EnvType} EnvType
  * @typedef {import('./types.js').Service} Service
+ */
+
+/**
+ * A component to display groups of readonly `<cc-env-var-form>` for linked apps of add-ons.
  *
  * ## Details
  *

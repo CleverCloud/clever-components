@@ -30,14 +30,16 @@ const COLORS = {
 const SKELETON_STATUS_CODES = { 200: 1 };
 
 /**
+ * @typedef {import('./types.js').StatusCodesData} StatusCodesData
+ */
+
+/**
  * A "tile" component to display HTTP response status codes in a pie chart (donut).
  *
  * ## Details
 
  * * When `data` is nullish, a skeleton screen UI pattern is displayed (loading hint).
  * * A short doc is available when the (i) button is clicked.
- *
- * @typedef {import('./types.js').StatusCodesData} StatusCodesData
  *
  * @cssdisplay grid
  */

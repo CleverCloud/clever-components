@@ -23,13 +23,15 @@ const DEFAULT_TEMPORALITY = [
 ];
 
 /**
- * A component to display product informations: icon, name, description with plans and their features.
- *
  * @typedef {import('./types.js').ActionType} ActionType
  * @typedef {import('./types.js').Currency} Currency
  * @typedef {import('./types.js').Feature} Feature
  * @typedef {import('./types.js').Plan} Plan
  * @typedef {import('./types.js').Temporality} Temporality
+ */
+
+/**
+ * A component to display product informations: icon, name, description with plans and their features.
  *
  * @cssdisplay block
  *

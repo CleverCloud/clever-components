@@ -29,6 +29,10 @@ const SKELETON_FEATURES = [
 ];
 
 /**
+ * @typedef {import('./types.js').Feature} Feature
+ */
+
+/**
  * A component to display an add-on set of features.
  *
  * ## Details
@@ -36,8 +40,6 @@ const SKELETON_FEATURES = [
  * * When `features` is nullish, a skeleton screen UI pattern is displayed (loading hint).
  * * We don't have a proper i18n and icon system for feature names. For the time being, the (lower cased) name is used as some kind of code to match an icon and maybe translate the name of the feature.
  * * We don't have a proper i18n system for feature values. For the time being, the (lower cased) value is used as some kind of code to maybe translate the value of the feature.
- *
- * @typedef {import('./types.js').Feature} Feature
  *
  * @cssdisplay block
  */

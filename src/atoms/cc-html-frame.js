@@ -3,9 +3,11 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import './cc-loader.js';
 
 /**
- * A low level component that takes some HMTL and puts it in an iframe.
- *
  * @typedef {import('./types.js').IframeSandbox} IframeSandbox
+ */
+
+/**
+ * A low level component that takes some HMTL and puts it in an iframe.
  *
  * ## Details
  *

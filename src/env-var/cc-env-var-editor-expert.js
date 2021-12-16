@@ -14,10 +14,12 @@ const SKELETON_VARIABLES = [
 ];
 
 /**
- * A high level environment variable editor to create/edit/delete all variables at once as a big string (properly parsed with validation and error messages).
- *
  * @typedef {import('./types.js').ParseError} ParseError
  * @typedef {import('./types.js').Variable} Variable
+ */
+
+/**
+ * A high level environment variable editor to create/edit/delete all variables at once as a big string (properly parsed with validation and error messages).
  *
  * @cssdisplay block / none (with `[hidden]`)
  *

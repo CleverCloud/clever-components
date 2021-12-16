@@ -10,6 +10,12 @@ import { withResizeObserver } from '../mixins/with-resize-observer.js';
 import { leafletStyles } from '../styles/leaflet.js';
 
 /**
+ * @typedef {import('./types.js').HeatmapPoint} HeatmapPoint
+ * @typedef {import('./types.js').MapModeType} MapModeType
+ * @typedef {import('./types.js').Point} Point
+ */
+
+/**
  * World map with two modes: positioned markers or heatmap.
  *
  * ## Details
@@ -18,10 +24,6 @@ import { leafletStyles } from '../styles/leaflet.js';
  * * When using `points`, you need to specify which HTML tag should be used to create and display the marker.
  * * The marker DOM element should expose `size`, `anchor` and `tooltip` to help this component place the marker and tooltip correctly on the map.
  * * When using `points`, you can specify some text for the tooltip but you can also specify which HTML tag to use to create and display the tooltip.
- *
- * @typedef {import('./types.js').HeatmapPoint} HeatmapPoint
- * @typedef {import('./types.js').MapModeType} MapModeType
- * @typedef {import('./types.js').Point} Point
  *
  * @cssdisplay flex
  *

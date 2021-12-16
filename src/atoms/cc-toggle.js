@@ -5,6 +5,10 @@ import { repeat } from 'lit-html/directives/repeat.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 
 /**
+ * @typedef {import('./types.js').Choice} Choice
+ */
+
+/**
  * A radio/checkbox input group component acting like a toggle between many options.
  *
  * ## When to use?
@@ -23,8 +27,6 @@ import { dispatchCustomEvent } from '../lib/events.js';
  * * Single mode (default) uses native `input[type=radio]` under the hood to keep native behaviour (a11y, keyboards...).
  * * Multiple mode uses native `input[type=checkbox]` under the hood to keep native behaviour (a11y, keyboards...).
  * * We decided to use a JavaScript array of objects for the choices because it's way simpler to implement and not that dirtier to use.
- *
- * @typedef {import('./types.js').Choice} Choice
  *
  * @cssdisplay flex
  *

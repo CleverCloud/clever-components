@@ -45,16 +45,18 @@ const SKELETON_APP = {
 const SKELETON_STATUS = 'unknown';
 
 /**
+ * @typedef {import('../types.js').App} App
+ * @typedef {import('../types.js').AppStatus} AppStatus
+ * @typedef {import('../types.js').Zone} Zone
+ */
+
+/**
  * A component to display various info about an app (name, commits, status...).
  *
  * ## Details
  *
  * * When `app` and `status` are null, a skeleton screen UI pattern is displayed (loading hint).
  * * When only `status` is null, a skeleton screen UI pattern is displayed on the buttons and status message.
- *
- * @typedef {import('../types.js').App} App
- * @typedef {import('../types.js').AppStatus} AppStatus
- * @typedef {import('../types.js').Zone} Zone
  *
  * @cssdisplay block
  *

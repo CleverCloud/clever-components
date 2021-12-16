@@ -21,15 +21,17 @@ const SKELETON_BACKUPS = {
 };
 
 /**
+ * @typedef {import('./types.js').BackupDetails} BackupDetails
+ * @typedef {import('./types.js').Backup} Backup
+ * @typedef {import('./types.js').OverlayType} OverlayType
+ */
+
+/**
  * A components to display backups available for an add-on.
  *
  * ## Details
  *
  * * When `backups` is nullish, a skeleton screen UI pattern is displayed (loading hint).
- *
- * @typedef {import('./types.js').BackupDetails} BackupDetails
- * @typedef {import('./types.js').Backup} Backup
- * @typedef {import('./types.js').OverlayType} OverlayType
  *
  * @cssdisplay grid
  */

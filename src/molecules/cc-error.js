@@ -7,6 +7,10 @@ import { i18n } from '../lib/i18n.js';
 const warningSvg = new URL('../assets/warning.svg', import.meta.url).href;
 
 /**
+ * @typedef {import('./types.js').ErrorModeType} ErrorModeType
+ */
+
+/**
  * A display component for error messages with 4 modes: inline (default), info, loading or confirm.
  *
  * ## Details
@@ -15,8 +19,6 @@ const warningSvg = new URL('../assets/warning.svg', import.meta.url).href;
  * * Use `"info"` when you want to display the message in a bordered "box".
  * * Use `"loading"` when you want to display the message in a bordered "box" with a loader.
  * * Use `"confirm"` when you want to display the message in a bordered "box" with a confirm "OK" button.
- *
- * @typedef {import('./types.js').ErrorModeType} ErrorModeType
  *
  * @cssdisplay block
  *

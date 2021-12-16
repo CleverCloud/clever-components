@@ -8,10 +8,12 @@ import { dispatchCustomEvent } from '../lib/events.js';
 const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
 
 /**
- * A component to display a pricing simulator with a list of `<cc-pricing-product>` in the default slot.
- *
  * @typedef {import('./types.js').Currency} Currency
  * @typedef {import('../types.js').Zone} Zone
+ */
+
+/**
+ * A component to display a pricing simulator with a list of `<cc-pricing-product>` in the default slot.
  *
  * @cssdisplay block
  *
