@@ -8,15 +8,17 @@ import { i18n } from '../lib/i18n.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
 /**
+ * @typedef {import('./types.js').Credential} Credential
+ * @typedef {import('../types.js').ToggleStateType} ToggleStateType
+ * @typedef {import('./types.js').AddonType} AddonType
+ */
+
+/**
  * A component to display an add-on credentials.
  *
  * ## Details
  *
  * * When the `value` of a credential is nullish, a skeleton UI pattern is displayed (loading hint).
- *
- * @typedef {import('./types.js').Credential} Credential
- * @typedef {import('../types.js').ToggleStateType} ToggleStateType
- * @typedef {import('./types.js').AddonType} AddonType
  *
  * @cssdisplay block
  */

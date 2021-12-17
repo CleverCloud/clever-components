@@ -19,6 +19,10 @@ const SKELETON_FOOBAR = [
 ];
 
 /**
+ * @typedef {import('./types.js').ExampleInterface} ExampleInterface
+ */
+
+/**
  * A component doing X and Y (one liner description of your component).
  *
  * ## Details
@@ -32,8 +36,6 @@ const SKELETON_FOOBAR = [
  * * Technical details about foo.
  * * Technical details about bar.
  * * Technical details about baz.
- *
- * @typedef {import('./types.js').ExampleInterface} ExampleInterface
  *
  * @cssdisplay block
  *

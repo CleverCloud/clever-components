@@ -2,6 +2,10 @@ import { css, html, LitElement } from 'lit-element';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
 
 /**
+ * @typedef {import('./types.js').ModeType} ModeType
+ */
+
+/**
  * A display only component (just HTML+CSS) to layout heads, a main and several tiles.
  *
  * ## Details
@@ -13,8 +17,6 @@ import { withResizeObserver } from '../mixins/with-resize-observer.js';
  * * The number of columns is variable and depends directly on the width of the component (with some help from `withResizeObserver`).
  * * `mode="app"` for 6 tiles
  * * `mode="orga"` for 2 tiles
- *
- * @typedef {import('./types.js').ModeType} ModeType
  *
  * @cssdisplay grid
  *

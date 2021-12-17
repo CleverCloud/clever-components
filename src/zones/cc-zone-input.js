@@ -13,15 +13,17 @@ import { withResizeObserver } from '../mixins/with-resize-observer.js';
 const SKELETON_ZONES = new Array(6).fill(null);
 
 /**
+ * @typedef {import('../maps/types.js').Point} Point
+ * @typedef {import('../types.js').Zone} Zone
+ */
+
+/**
  * A input component to select a zone with a map and a list.
  *
  * ## Details
  *
  * * When `zones` is nullish, a skeleton screen UI pattern is displayed (loading hint).
  * * Zones are sorted in the list using `tags`. Clever Cloud, then private, then regular alphanumeric sort on the city name.
- *
- * @typedef {import('../maps/types.js').Point} Point
- * @typedef {import('../types.js').Zone} Zone
  *
  * @cssdisplay grid
  *

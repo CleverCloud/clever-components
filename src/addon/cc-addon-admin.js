@@ -8,14 +8,18 @@ import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 
 /**
+ * @typedef {import('./types.js').Addon} Addon
+ * @typedef {import('./types.js').ErrorType} ErrorType
+ */
+
+/**
  * A component displaying the admin interface of an add-on to edit its name or delete the add-on.
  *
  * ## Details
  *
  * * When addon is nullish, a skeleton screen UI pattern is displayed (loading hint).
  *
- * @typedef {import('./types.js').Addon} Addon
- * @typedef {import('./types.js').ErrorType} ErrorType
+
  *
  * @cssdisplay block
  *

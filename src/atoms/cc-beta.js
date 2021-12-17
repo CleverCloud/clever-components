@@ -2,9 +2,11 @@ import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
 
 /**
- * A layout component to position a simple beta ribbon around any content.
- *
  * @typedef {import('./types.js').PositionType} PositionType
+ */
+
+/**
+ * A layout component to position a simple beta ribbon around any content.
  *
  * @cssdisplay grid
  *

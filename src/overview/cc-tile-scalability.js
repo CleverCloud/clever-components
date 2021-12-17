@@ -15,13 +15,15 @@ const SKELETON_SCALABILITY = {
 };
 
 /**
+ * @typedef {import('./types.js').Scalability} Scalability
+ */
+
+/**
  * A "tile" component to display the current config of scalability for a given app.
  *
  * ## Details
  *
  * * When `scalability` is nullish, a skeleton screen UI pattern is displayed (loading hint).
- *
- * @typedef {import('./types.js').Scalability} Scalability
  *
  * @cssdisplay grid
  */

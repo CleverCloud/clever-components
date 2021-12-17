@@ -13,13 +13,15 @@ const SKELETON_DEPLOYS = [
 ];
 
 /**
+ * @typedef {import('./types.js').Deployment} Deployment
+ */
+
+/**
  * A "tile" component to display a list of deployments (status, humanized time ago and logs link).
  *
  * ## Details
  *
  * * When `deployments` is nullish, a skeleton screen UI pattern is displayed (loading hint)
- *
- * @typedef {import('./types.js').Deployment} Deployment
  *
  * @cssdisplay grid
  */

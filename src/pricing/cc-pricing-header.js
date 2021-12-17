@@ -20,11 +20,13 @@ const SKELETON_ZONES = [];
 const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
 
 /**
- * A component that displays a total price and allows the selection of a currency and a zone.
- *
  * @typedef {import('./types.js').Currency} Currency
  * @typedef {import('./types.js').Plan} Plan
  * @typedef {import('../types.js').Zone} Zone
+ */
+
+/**
+ * A component that displays a total price and allows the selection of a currency and a zone.
  *
  * @cssdisplay block
  *

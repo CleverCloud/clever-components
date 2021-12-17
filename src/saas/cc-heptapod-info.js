@@ -18,13 +18,15 @@ const SKELETON_STATISTICS = {
 const HEPTAPOD_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com/logos/heptapod.svg';
 
 /**
+ * @typedef {import('./types.js').Statistics} Statistics
+ */
+
+/**
  * A component that shows a summary of our Heptapod SaaS offer.
  *
  * ## Details
  *
  * * When `statistics` is nullish, a skeleton screen UI pattern is displayed (loading hint).
- *
- * @typedef {import('./types.js').Statistics} Statistics
  *
  * @cssdisplay block
  */

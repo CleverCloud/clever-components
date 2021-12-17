@@ -15,13 +15,15 @@ const SKELETON_ORGA = {
 };
 
 /**
+ * @typedef {import('../types.js').Organisation} Organisation
+ */
+
+/**
  * A component to display various info about an orga (name and enterprise status).
  *
  * ## Details
  *
  * * When `orga` is nullish, a skeleton screen UI pattern is displayed (loading hint)
- *
- * @typedef {import('../types.js').Organisation} Organisation
  *
  * @cssdisplay block
  */

@@ -9,13 +9,15 @@ const downSvg = new URL('../assets/down.svg', import.meta.url).href;
 const upSvg = new URL('../assets/up.svg', import.meta.url).href;
 
 /**
+ * @typedef {import('../types.js').ToggleStateType} ToggleStateType
+ */
+
+/**
  * A display component with mostly HTML+CSS and a open/close toggle feature.
  *
  * ## Details
  *
  * * The main section is wrapped in a `<cc-expand>` so variation of this section height will be animated.
- *
- * @typedef {import('../types.js').ToggleStateType} ToggleStateType
  *
  * @cssdisplay grid
  *

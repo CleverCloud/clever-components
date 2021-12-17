@@ -6,10 +6,11 @@ import { i18n } from '../lib/i18n.js';
 import { ccAddonEncryptionAtRestOption } from '../templates/cc-addon-encryption-at-rest-option.js';
 
 /**
- * A component that displays the available options of a MongoDB add-on.
- *
  * @typedef {import('./types.js').Option} Option
  * @typedef {import('./types.js').GenericOptions} GenericOptions
+ */
+/**
+ * A component that displays the available options of a MongoDB add-on.
  *
  * @cssdisplay block
  *

@@ -14,9 +14,11 @@ const JENKINS_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com
 const JENKINS_DOCUMENTATION = 'https://www.clever-cloud.com/doc/deploy/addon/jenkins/';
 
 /**
- * A component to display various informations (Documentation, access, updates, ...) for a Jenkins service.
- *
  * @typedef {import('./types.js').Versions} Versions
+ */
+
+/**
+ * A component to display various informations (Documentation, access, updates, ...) for a Jenkins service.
  *
  * @cssdisplay block
  */

@@ -34,6 +34,14 @@ const DEFAULT_TEMPORALITY = [
 ];
 
 /**
+ * @typedef {import('./types.js').ActionType} ActionType
+ * @typedef {import('./types.js').Currency} Currency
+ * @typedef {import('./types.js').Feature} Feature
+ * @typedef {import('./types.js').Plan} Plan
+ * @typedef {import('./types.js').Temporality} Temporality
+ */
+
+/**
  * A component to display product plans and their features.
  *
  * ## Details
@@ -41,12 +49,6 @@ const DEFAULT_TEMPORALITY = [
  * * The plans are sorted by price.
  * * If a plan has a feature that is not listed in `features`, it will be ignored.
  * * If a feature has a `code` that is not supported, it will be ignored.
- *
- * @typedef {import('./types.js').ActionType} ActionType
- * @typedef {import('./types.js').Currency} Currency
- * @typedef {import('./types.js').Feature} Feature
- * @typedef {import('./types.js').Plan} Plan
- * @typedef {import('./types.js').Temporality} Temporality
  *
  * @cssdisplay block
  *

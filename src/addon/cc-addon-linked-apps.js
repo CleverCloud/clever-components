@@ -17,13 +17,15 @@ const SKELETON_APPLICATIONS = [
 ];
 
 /**
+ * @typedef {import('../types.js').Application} Application
+ */
+
+/**
  * A component to display applications linked to an add-on.
  *
  * ## Details
  *
  * * When applications is nullish, a skeleton screen UI pattern is displayed (loading hint).
- *
- * @typedef {import('../types.js').Application} Application
  *
  * @cssdisplay block
  */

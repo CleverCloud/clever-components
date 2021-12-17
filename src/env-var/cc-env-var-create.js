@@ -9,14 +9,16 @@ import { i18n } from '../lib/i18n.js';
 import { defaultThemeStyles } from '../styles/default-theme.js';
 
 /**
+ * @typedef {import('./types.js').Variable} Variable
+ */
+
+/**
  * A small form to create a new environment variable with validations on the name.
  *
  * ## Details
  *
  * * The validation of the variable name format is handled with [@clevercloud/client](https://github.com/CleverCloud/clever-client.js/blob/master/esm/utils/env-vars.js)
  * * The validation of existing names is handled with the `variablesNames` property which is a list of already existing names.
- *
- * @typedef {import('./types.js').Variable} Variable
  *
  * @cssdisplay block
  *

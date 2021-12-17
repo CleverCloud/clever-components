@@ -12,13 +12,15 @@ const SKELETON_CONSUMPTION = {
 };
 
 /**
+ * @typedef {import('./types.js').Consumption} Consumption
+ */
+
+/**
  * A "tile" component to display consumption info (yesterday and over last 30 days).
  *
  * ## Details
  *
  * * When `consumption` is nullish, a skeleton screen UI pattern is displayed (loading hint).
- *
- * @typedef {import('./types.js').Consumption} Consumption
  *
  * @cssdisplay grid
  */

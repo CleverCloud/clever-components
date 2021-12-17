@@ -44,6 +44,14 @@ const SKELETON_INTERVALS = [
 ];
 
 /**
+ * @typedef {import('./types.js').ActionType} ActionType
+ * @typedef {import('./types.js').Interval} Interval
+ * @typedef {import('./types.js').Currency} Currency
+ * @typedef {import('./types.js').Plan} Plan
+ * @typedef {import('./types.js').Section} Section
+ */
+
+/**
  * A component to simulate pricing for products with consumption based pricings (Cellar, FS Buckets, Pulsar...).
  *
  * ## Details
@@ -52,12 +60,6 @@ const SKELETON_INTERVALS = [
  * * Interval ranges are defined in bytes.
  * * To comply with `<cc-pricing-product>`, the price in the event `cc-pricing-product:add-plan` is in "euros / 1 hour".
  * * When a section has a nullish `intervals`, a skeleton screen UI pattern is displayed for this section (loading hint).
- *
- * @typedef {import('./types.js').ActionType} ActionType
- * @typedef {import('./types.js').Interval} Interval
- * @typedef {import('./types.js').Currency} Currency
- * @typedef {import('./types.js').Plan} Plan
- * @typedef {import('./types.js').Section} Section
  *
  * @cssdisplay block
  *

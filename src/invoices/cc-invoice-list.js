@@ -21,9 +21,11 @@ function maxFromStrings (strings) {
 }
 
 /**
- * A component to display a list of invoices in paginated categories.
- *
  * @typedef {import('./types.js').Invoice} Invoice
+ */
+
+/**
+ * A component to display a list of invoices in paginated categories.
  *
  * @cssdisplay block
  */
