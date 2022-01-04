@@ -1,0 +1,1 @@
+import{p as r}from"./send-to-api-d26c0c41.js";function e(e){return Promise.resolve({method:"get",url:"/v2/products/addonproviders",headers:{Accept:"application/json"},queryParams:r(e,["orgaId"])})}function o(e){return Promise.resolve({method:"get",url:"/v2/products/instances",headers:{Accept:"application/json"},queryParams:r(e,["for"])})}export{o as a,e as g};

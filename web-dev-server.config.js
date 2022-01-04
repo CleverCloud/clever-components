@@ -44,7 +44,7 @@ const hmrI18n = {
 export default {
   port: 6006,
   nodeResolve: true,
-  // watch: true,
+  watch: true,
   mimeTypes: {
     '**/*.md': 'js',
     '**/*.json': 'js',

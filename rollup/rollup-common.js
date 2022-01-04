@@ -74,7 +74,7 @@ export function inputs (sourceDir, entryMapper) {
     `${sourceDir}/atoms/*.js`,
     `${sourceDir}/env-var/*.js`,
     `${sourceDir}/invoices/*.js`,
-    `${sourceDir}/lib/i18n.js`,
+    // `${sourceDir}/lib/i18n.js`,
     `${sourceDir}/lib/smart-manager.js`,
     `${sourceDir}/maps/*.js`,
     `${sourceDir}/molecules/*.js`,
@@ -83,7 +83,7 @@ export function inputs (sourceDir, entryMapper) {
     `${sourceDir}/saas/*.js`,
     `${sourceDir}/smart/*.js`,
     `${sourceDir}/tcp-redirections/*.js`,
-    `${sourceDir}/translations/*.js`,
+    // `${sourceDir}/translations/*.js`,
     `${sourceDir}/zones/*.js`,
   ];
 
@@ -183,6 +183,9 @@ export const manualChunkOptions = (id) => {
     || id.endsWith('lit-html/directives/class-map.js');
   if (isSmall) {
     return 'vendor';
+  }
+  if (id.includes('i18n')) {
+    return 'i18n';
   }
 };
 

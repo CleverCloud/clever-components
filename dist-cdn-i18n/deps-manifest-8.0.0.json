@@ -1,0 +1,2294 @@
+{
+  "manifestVersion": "1",
+  "packageVersion": "8.0.0",
+  "files": [
+    {
+      "id": "",
+      "path": "i18n-bf531c19.js",
+      "dependencies": [],
+      "sources": [
+        "src/lib/i18n-date.js",
+        "src/lib/i18n-display.js",
+        "src/lib/i18n-number.js",
+        "src/lib/i18n-sanitize.js",
+        "src/lib/i18n-string.js",
+        "src/lib/i18n.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "vendor-5e139a4e.js",
+      "dependencies": [],
+      "sources": [
+        "node_modules/lit-html/lib/directive.js",
+        "node_modules/lit-html/lib/dom.js",
+        "node_modules/lit-html/lib/part.js",
+        "node_modules/lit-html/lib/template.js",
+        "node_modules/lit-html/lib/template-instance.js",
+        "node_modules/lit-html/lib/template-result.js",
+        "node_modules/lit-html/lib/parts.js",
+        "node_modules/lit-html/lib/default-template-processor.js",
+        "node_modules/lit-html/lib/template-factory.js",
+        "node_modules/lit-html/lib/render.js",
+        "node_modules/lit-html/lit-html.js",
+        "node_modules/lit-element/lib/updating-element.js",
+        "node_modules/lit-element/lib/decorators.js",
+        "node_modules/lit-element/lib/css-tag.js",
+        "node_modules/lit-element/lit-element.js",
+        "node_modules/lit-html/directives/class-map.js",
+        "node_modules/lit-html/directives/if-defined.js",
+        "src/lib/events.js",
+        "src/styles/skeleton.js",
+        "src/styles/waiting.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "fake-strings-0d4d5c0b.js",
+      "dependencies": [],
+      "sources": [
+        "src/lib/fake-strings.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "cc-link-bb132771.js",
+      "dependencies": [
+        "vendor-5e139a4e.js"
+      ],
+      "sources": [
+        "src/templates/cc-link.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "cc-addon-encryption-at-rest-option-06b7f6fe.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "assets/encryption-at-rest-9baf5ef8.svg"
+      ],
+      "sources": [
+        "NOCHUNK:7tny8jxjcpi@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/templates/cc-addon-encryption-at-rest-option.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "default-theme-fead272a.js",
+      "dependencies": [
+        "vendor-5e139a4e.js"
+      ],
+      "sources": [
+        "src/styles/default-theme.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "repeat-b0d66412.js",
+      "dependencies": [
+        "vendor-5e139a4e.js"
+      ],
+      "sources": [
+        "node_modules/lit-html/directives/repeat.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "env-vars-13fc89da.js",
+      "dependencies": [],
+      "sources": [
+        "node_modules/@clevercloud/client/esm/utils/env-vars.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "with-resize-observer-323d9e0d.js",
+      "dependencies": [],
+      "sources": [
+        "src/mixins/with-resize-observer.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "info-tiles-0fcdc9dd.js",
+      "dependencies": [
+        "vendor-5e139a4e.js"
+      ],
+      "sources": [
+        "src/styles/info-tiles.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "chart.esm-dc52f043.js",
+      "dependencies": [],
+      "sources": [
+        "node_modules/chart.js/dist/chunks/helpers.segment.js",
+        "node_modules/chart.js/dist/chart.esm.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "zone-48aed84f.js",
+      "dependencies": [],
+      "sources": [
+        "src/lib/zone.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "cc-smart-container-0c093be7.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "utils-e732f1fc.js",
+        "smart-manager-10eab692.js"
+      ],
+      "sources": [
+        "node_modules/rxjs/dist/esm5/internal/util/lift.js",
+        "node_modules/rxjs/dist/esm5/internal/operators/OperatorSubscriber.js",
+        "node_modules/rxjs/dist/esm5/internal/observable/empty.js",
+        "node_modules/rxjs/dist/esm5/internal/scheduled/scheduleArray.js",
+        "node_modules/rxjs/dist/esm5/internal/util/isArrayLike.js",
+        "node_modules/rxjs/dist/esm5/internal/util/isPromise.js",
+        "node_modules/rxjs/dist/esm5/internal/scheduled/scheduleObservable.js",
+        "node_modules/rxjs/dist/esm5/internal/scheduled/schedulePromise.js",
+        "node_modules/rxjs/dist/esm5/internal/symbol/iterator.js",
+        "node_modules/rxjs/dist/esm5/internal/util/caughtSchedule.js",
+        "node_modules/rxjs/dist/esm5/internal/scheduled/scheduleIterable.js",
+        "node_modules/rxjs/dist/esm5/internal/scheduled/scheduleAsyncIterable.js",
+        "node_modules/rxjs/dist/esm5/internal/util/isInteropObservable.js",
+        "node_modules/rxjs/dist/esm5/internal/util/isIterable.js",
+        "node_modules/rxjs/dist/esm5/internal/util/isAsyncIterable.js",
+        "node_modules/rxjs/dist/esm5/internal/util/throwUnobservableError.js",
+        "node_modules/rxjs/dist/esm5/internal/util/isReadableStreamLike.js",
+        "node_modules/rxjs/dist/esm5/internal/scheduled/scheduleReadableStreamLike.js",
+        "node_modules/rxjs/dist/esm5/internal/scheduled/scheduled.js",
+        "node_modules/rxjs/dist/esm5/internal/observable/from.js",
+        "node_modules/rxjs/dist/esm5/internal/observable/fromArray.js",
+        "node_modules/rxjs/dist/esm5/internal/operators/map.js",
+        "node_modules/rxjs/dist/esm5/internal/util/mapOneOrManyArgs.js",
+        "node_modules/rxjs/dist/esm5/internal/operators/mergeInternals.js",
+        "node_modules/rxjs/dist/esm5/internal/operators/mergeMap.js",
+        "node_modules/rxjs/dist/esm5/internal/observable/fromEvent.js",
+        "node_modules/rxjs/dist/esm5/internal/operators/filter.js",
+        "node_modules/rxjs/dist/esm5/internal/operators/take.js",
+        "node_modules/rxjs/dist/esm5/internal/operators/share.js",
+        "node_modules/rxjs/dist/esm5/internal/operators/switchMap.js",
+        "src/lib/observables.js",
+        "src/smart/cc-smart-container.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "addon-f5d51d1d.js",
+      "dependencies": [],
+      "sources": [
+        "node_modules/@clevercloud/client/esm/api/v2/addon.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "product-857e3fb7.js",
+      "dependencies": [],
+      "sources": [
+        "node_modules/@clevercloud/client/esm/api/v4/product.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "send-to-api-d26c0c41.js",
+      "dependencies": [],
+      "sources": [
+        "node_modules/@clevercloud/client/esm/pick-non-null.js",
+        "node_modules/@clevercloud/client/esm/with-cache.js",
+        "commonjsHelpers.js",
+        "node_modules/oauth-1.0a/oauth-1.0a.js",
+        "node_modules/@clevercloud/client/esm/oauth.browser.js",
+        "node_modules/@clevercloud/client/esm/prefix-url.js",
+        "node_modules/@clevercloud/client/esm/request.fetch-with-timeout.js",
+        "node_modules/@clevercloud/client/esm/request-warp10.fetch.js",
+        "node_modules/@clevercloud/client/esm/request.fetch.js",
+        "node_modules/@clevercloud/client/esm/with-options.js",
+        "src/lib/send-to-api.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "smart-manager-10eab692.js",
+      "dependencies": [
+        "utils-e732f1fc.js"
+      ],
+      "sources": [
+        "node_modules/rxjs/node_modules/tslib/tslib.es6.js",
+        "node_modules/rxjs/dist/esm5/internal/util/isFunction.js",
+        "node_modules/rxjs/dist/esm5/internal/util/createErrorClass.js",
+        "node_modules/rxjs/dist/esm5/internal/util/UnsubscriptionError.js",
+        "node_modules/rxjs/dist/esm5/internal/util/arrRemove.js",
+        "node_modules/rxjs/dist/esm5/internal/Subscription.js",
+        "node_modules/rxjs/dist/esm5/internal/config.js",
+        "node_modules/rxjs/dist/esm5/internal/scheduler/timeoutProvider.js",
+        "node_modules/rxjs/dist/esm5/internal/util/reportUnhandledError.js",
+        "node_modules/rxjs/dist/esm5/internal/util/noop.js",
+        "node_modules/rxjs/dist/esm5/internal/util/errorContext.js",
+        "node_modules/rxjs/dist/esm5/internal/Subscriber.js",
+        "node_modules/rxjs/dist/esm5/internal/symbol/observable.js",
+        "node_modules/rxjs/dist/esm5/internal/util/identity.js",
+        "node_modules/rxjs/dist/esm5/internal/util/pipe.js",
+        "node_modules/rxjs/dist/esm5/internal/Observable.js",
+        "node_modules/rxjs/dist/esm5/internal/util/ObjectUnsubscribedError.js",
+        "node_modules/rxjs/dist/esm5/internal/Subject.js",
+        "src/lib/smart-manager.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "merge-d357dbf8.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "utils-e732f1fc.js",
+        "smart-manager-10eab692.js",
+        "cc-smart-container-0c093be7.js"
+      ],
+      "sources": [
+        "node_modules/rxjs/dist/esm5/internal/util/isScheduler.js",
+        "node_modules/rxjs/dist/esm5/internal/util/args.js",
+        "node_modules/rxjs/dist/esm5/internal/operators/mergeAll.js",
+        "node_modules/rxjs/dist/esm5/internal/observable/merge.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "combineLatest-ab1ee35e.js",
+      "dependencies": [
+        "utils-e732f1fc.js",
+        "smart-manager-10eab692.js",
+        "vendor-5e139a4e.js",
+        "cc-smart-container-0c093be7.js",
+        "merge-d357dbf8.js"
+      ],
+      "sources": [
+        "node_modules/rxjs/dist/esm5/internal/util/argsArgArrayOrObject.js",
+        "node_modules/rxjs/dist/esm5/internal/util/createObject.js",
+        "node_modules/rxjs/dist/esm5/internal/observable/combineLatest.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "utils-e732f1fc.js",
+      "dependencies": [],
+      "sources": [
+        "src/lib/utils.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "api-helpers-a710dc87.js",
+      "dependencies": [
+        "send-to-api-d26c0c41.js",
+        "product-857e3fb7.js",
+        "utils-e732f1fc.js"
+      ],
+      "sources": [
+        "node_modules/@clevercloud/client/esm/api/v2/application.js",
+        "node_modules/@clevercloud/client/esm/api/v4/billing.js",
+        "src/lib/api-helpers.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "withLatestFrom-81917e03.js",
+      "dependencies": [
+        "utils-e732f1fc.js",
+        "smart-manager-10eab692.js",
+        "vendor-5e139a4e.js",
+        "cc-smart-container-0c093be7.js",
+        "merge-d357dbf8.js"
+      ],
+      "sources": [
+        "node_modules/rxjs/dist/esm5/internal/operators/withLatestFrom.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "product-4de508d3.js",
+      "dependencies": [],
+      "sources": [
+        "src/lib/product.js"
+      ]
+    },
+    {
+      "id": "",
+      "path": "product-33178d77.js",
+      "dependencies": [
+        "send-to-api-d26c0c41.js"
+      ],
+      "sources": [
+        "node_modules/@clevercloud/client/esm/api/v2/product.js"
+      ]
+    },
+    {
+      "id": "cc-addon-admin",
+      "path": "cc-addon-admin-7119915f.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-215605a4.js",
+        "cc-loader-c874b32c.js",
+        "cc-block-section-d9dd6090.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4351d64f.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js"
+      ],
+      "sources": [
+        "NOCHUNK:nh839ap5n8k@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/addon/cc-addon-admin.js"
+      ]
+    },
+    {
+      "id": "cc-addon-backups",
+      "path": "cc-addon-backups-4f3151b9.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-215605a4.js",
+        "cc-block-section-d9dd6090.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4351d64f.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "fake-strings-0d4d5c0b.js",
+        "assets/backup-5902d4d1.svg",
+        "assets/close-5578d4ce.svg"
+      ],
+      "sources": [
+        "NOCHUNK:o9ki5y1zayn@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/addon/cc-addon-backups.js"
+      ]
+    },
+    {
+      "id": "cc-addon-credentials",
+      "path": "cc-addon-credentials-4f26fd78.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-215605a4.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4351d64f.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js"
+      ],
+      "sources": [
+        "NOCHUNK:d5mo0oxngsg@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/addon/cc-addon-credentials.js"
+      ]
+    },
+    {
+      "id": "cc-addon-elasticsearch-options",
+      "path": "cc-addon-elasticsearch-options-5117aa50.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "cc-addon-option-1781fe46.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4351d64f.js",
+        "cc-addon-option-form-da879069.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "assets/encryption-at-rest-9baf5ef8.svg",
+        "cc-addon-encryption-at-rest-option-06b7f6fe.js"
+      ],
+      "sources": [
+        "NOCHUNK:ixun93qrl2j@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/addon/cc-addon-elasticsearch-options.js"
+      ]
+    },
+    {
+      "id": "cc-addon-features",
+      "path": "cc-addon-features-34b72fcf.js",
+      "dependencies": [
+        "cc-flex-gap-4e6ab5ba.js",
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4351d64f.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "assets/cpu-8f43fcc2.svg",
+        "assets/disk-f8ad3cfd.svg",
+        "assets/ram-bd115490.svg"
+      ],
+      "sources": [
+        "NOCHUNK:8whvxstjl0i@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/addon/cc-addon-features.js"
+      ]
+    },
+    {
+      "id": "cc-addon-jenkins-options",
+      "path": "cc-addon-jenkins-options-879495fc.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "cc-addon-option-1781fe46.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4351d64f.js",
+        "cc-addon-option-form-da879069.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "i18n-bf531c19.js",
+        "assets/encryption-at-rest-9baf5ef8.svg",
+        "cc-addon-encryption-at-rest-option-06b7f6fe.js"
+      ],
+      "sources": [
+        "NOCHUNK:buiuaig8ao9@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/addon/cc-addon-jenkins-options.js"
+      ]
+    },
+    {
+      "id": "cc-addon-linked-apps",
+      "path": "cc-addon-linked-apps-732667c5.js",
+      "dependencies": [
+        "cc-flex-gap-4e6ab5ba.js",
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4351d64f.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "i18n-bf531c19.js",
+        "default-theme-fead272a.js",
+        "cc-zone-280ca68f.js"
+      ],
+      "sources": [
+        "NOCHUNK:foccu602jz@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/addon/cc-addon-linked-apps.js"
+      ]
+    },
+    {
+      "id": "cc-addon-linked-apps.smart",
+      "path": "cc-addon-linked-apps.smart-351025ab.js",
+      "dependencies": [
+        "cc-flex-gap-4e6ab5ba.js",
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4351d64f.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "i18n-bf531c19.js",
+        "default-theme-fead272a.js",
+        "cc-zone-280ca68f.js",
+        "cc-addon-linked-apps-732667c5.js",
+        "utils-e732f1fc.js",
+        "smart-manager-10eab692.js",
+        "cc-smart-container-0c093be7.js",
+        "addon-f5d51d1d.js",
+        "product-857e3fb7.js",
+        "send-to-api-d26c0c41.js",
+        "merge-d357dbf8.js",
+        "combineLatest-ab1ee35e.js"
+      ],
+      "sources": [
+        "src/addon/cc-addon-linked-apps.smart.js"
+      ]
+    },
+    {
+      "id": "cc-addon-mongodb-options",
+      "path": "cc-addon-mongodb-options-fef69e3c.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "cc-addon-option-1781fe46.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4351d64f.js",
+        "cc-addon-option-form-da879069.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "i18n-bf531c19.js",
+        "assets/encryption-at-rest-9baf5ef8.svg",
+        "cc-addon-encryption-at-rest-option-06b7f6fe.js"
+      ],
+      "sources": [
+        "NOCHUNK:o6kf7xegysh@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/addon/cc-addon-mongodb-options.js"
+      ]
+    },
+    {
+      "id": "cc-addon-mysql-options",
+      "path": "cc-addon-mysql-options-5ef0dbde.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "cc-addon-option-1781fe46.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4351d64f.js",
+        "cc-addon-option-form-da879069.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "i18n-bf531c19.js",
+        "assets/encryption-at-rest-9baf5ef8.svg",
+        "cc-addon-encryption-at-rest-option-06b7f6fe.js"
+      ],
+      "sources": [
+        "NOCHUNK:k8somvd187@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/addon/cc-addon-mysql-options.js"
+      ]
+    },
+    {
+      "id": "cc-addon-option",
+      "path": "cc-addon-option-1781fe46.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js"
+      ],
+      "sources": [
+        "NOCHUNK:sfhjbyt4u3k@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/addon/cc-addon-option.js"
+      ]
+    },
+    {
+      "id": "cc-addon-option-form",
+      "path": "cc-addon-option-form-da879069.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "cc-addon-option-1781fe46.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4351d64f.js"
+      ],
+      "sources": [
+        "NOCHUNK:djawnl9nydt@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/addon/cc-addon-option-form.js"
+      ]
+    },
+    {
+      "id": "cc-addon-postgresql-options",
+      "path": "cc-addon-postgresql-options-4ed6e558.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "cc-addon-option-1781fe46.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4351d64f.js",
+        "cc-addon-option-form-da879069.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "i18n-bf531c19.js",
+        "assets/encryption-at-rest-9baf5ef8.svg",
+        "cc-addon-encryption-at-rest-option-06b7f6fe.js"
+      ],
+      "sources": [
+        "NOCHUNK:loi179gtp4g@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/addon/cc-addon-postgresql-options.js"
+      ]
+    },
+    {
+      "id": "cc-addon-redis-options",
+      "path": "cc-addon-redis-options-2fc7099d.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "cc-addon-option-1781fe46.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4351d64f.js",
+        "cc-addon-option-form-da879069.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "i18n-bf531c19.js",
+        "assets/encryption-at-rest-9baf5ef8.svg",
+        "cc-addon-encryption-at-rest-option-06b7f6fe.js"
+      ],
+      "sources": [
+        "NOCHUNK:hlmo6y726mf@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/addon/cc-addon-redis-options.js"
+      ]
+    },
+    {
+      "id": "cc-beta",
+      "path": "cc-beta-e3033114.js",
+      "dependencies": [
+        "vendor-5e139a4e.js"
+      ],
+      "sources": [
+        "NOCHUNK:faguklgq7vn@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/atoms/cc-beta.js"
+      ]
+    },
+    {
+      "id": "cc-block",
+      "path": "cc-block-4351d64f.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg"
+      ],
+      "sources": [
+        "NOCHUNK:ksjy0pc9wrp@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/molecules/cc-block.js"
+      ]
+    },
+    {
+      "id": "cc-block-section",
+      "path": "cc-block-section-d9dd6090.js",
+      "dependencies": [
+        "vendor-5e139a4e.js"
+      ],
+      "sources": [
+        "src/molecules/cc-block-section.js"
+      ]
+    },
+    {
+      "id": "cc-button",
+      "path": "cc-button-0fc35634.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js"
+      ],
+      "sources": [
+        "NOCHUNK:8cs0k4i1ih7@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/atoms/cc-button.js"
+      ]
+    },
+    {
+      "id": "cc-datetime-relative",
+      "path": "cc-datetime-relative-92a81728.js",
+      "dependencies": [
+        "i18n-bf531c19.js"
+      ],
+      "sources": [
+        "NOCHUNK:qa4yqpv9vdq@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/atoms/cc-datetime-relative.js"
+      ]
+    },
+    {
+      "id": "cc-elasticsearch-info",
+      "path": "cc-elasticsearch-info-bfebb15e.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4351d64f.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "assets/info-fd0d98fe.svg"
+      ],
+      "sources": [
+        "NOCHUNK:8gqz77etee4@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/addon/cc-elasticsearch-info.js"
+      ]
+    },
+    {
+      "id": "cc-env-var-create",
+      "path": "cc-env-var-create-67c99352.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-215605a4.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "env-vars-13fc89da.js"
+      ],
+      "sources": [
+        "NOCHUNK:qxu7ngtk38@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/env-var/cc-env-var-create.js"
+      ]
+    },
+    {
+      "id": "cc-env-var-editor-expert",
+      "path": "cc-env-var-editor-expert-2fbc0daf.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-215605a4.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "env-vars-13fc89da.js"
+      ],
+      "sources": [
+        "NOCHUNK:kxz9cbaq1l@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/env-var/cc-env-var-editor-expert.js"
+      ]
+    },
+    {
+      "id": "cc-env-var-editor-simple",
+      "path": "cc-env-var-editor-simple-342f4542.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-215605a4.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "env-vars-13fc89da.js",
+        "cc-env-var-create-67c99352.js",
+        "cc-env-var-input-8def1ce5.js",
+        "repeat-b0d66412.js"
+      ],
+      "sources": [
+        "NOCHUNK:11jbstmvvoy@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/env-var/cc-env-var-editor-simple.js"
+      ]
+    },
+    {
+      "id": "cc-env-var-form",
+      "path": "cc-env-var-form-e72b0c15.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "cc-loader-c874b32c.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-215605a4.js",
+        "env-vars-13fc89da.js",
+        "cc-env-var-editor-expert-2fbc0daf.js",
+        "cc-env-var-create-67c99352.js",
+        "cc-env-var-input-8def1ce5.js",
+        "cc-env-var-editor-simple-342f4542.js"
+      ],
+      "sources": [
+        "NOCHUNK:1xwg82gjib@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/env-var/cc-env-var-form.js"
+      ]
+    },
+    {
+      "id": "cc-env-var-form.smart-env-var-addon",
+      "path": "cc-env-var-form.smart-env-var-addon-197e7a5f.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "cc-loader-c874b32c.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-215605a4.js",
+        "env-vars-13fc89da.js",
+        "cc-env-var-editor-expert-2fbc0daf.js",
+        "cc-env-var-create-67c99352.js",
+        "cc-env-var-input-8def1ce5.js",
+        "cc-env-var-editor-simple-342f4542.js",
+        "cc-env-var-form-e72b0c15.js",
+        "utils-e732f1fc.js",
+        "smart-manager-10eab692.js",
+        "cc-smart-container-0c093be7.js",
+        "addon-f5d51d1d.js",
+        "send-to-api-d26c0c41.js"
+      ],
+      "sources": [
+        "src/env-var/cc-env-var-form.smart-env-var-addon.js"
+      ]
+    },
+    {
+      "id": "cc-env-var-form.smart-exposed-config",
+      "path": "cc-env-var-form.smart-exposed-config-e8475c47.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "cc-loader-c874b32c.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-215605a4.js",
+        "env-vars-13fc89da.js",
+        "cc-env-var-editor-expert-2fbc0daf.js",
+        "cc-env-var-create-67c99352.js",
+        "cc-env-var-input-8def1ce5.js",
+        "cc-env-var-editor-simple-342f4542.js",
+        "cc-env-var-form-e72b0c15.js",
+        "utils-e732f1fc.js",
+        "smart-manager-10eab692.js",
+        "cc-smart-container-0c093be7.js",
+        "send-to-api-d26c0c41.js",
+        "product-857e3fb7.js",
+        "api-helpers-a710dc87.js",
+        "merge-d357dbf8.js",
+        "withLatestFrom-81917e03.js"
+      ],
+      "sources": [
+        "src/env-var/cc-env-var-form.smart-exposed-config.js"
+      ]
+    },
+    {
+      "id": "cc-env-var-input",
+      "path": "cc-env-var-input-8def1ce5.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-215605a4.js"
+      ],
+      "sources": [
+        "NOCHUNK:jdutj3wxyb@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/env-var/cc-env-var-input.js"
+      ]
+    },
+    {
+      "id": "cc-env-var-linked-services",
+      "path": "cc-env-var-linked-services-f950b5f5.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "cc-loader-c874b32c.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "cc-expand-2cca00e2.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-215605a4.js",
+        "env-vars-13fc89da.js",
+        "cc-env-var-editor-expert-2fbc0daf.js",
+        "cc-env-var-create-67c99352.js",
+        "cc-env-var-input-8def1ce5.js",
+        "cc-env-var-editor-simple-342f4542.js",
+        "cc-env-var-form-e72b0c15.js"
+      ],
+      "sources": [
+        "NOCHUNK:wk66qx5wve@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/env-var/cc-env-var-linked-services.js"
+      ]
+    },
+    {
+      "id": "cc-error",
+      "path": "cc-error-8d730ec3.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg"
+      ],
+      "sources": [
+        "NOCHUNK:sbiirr2h1rf@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/molecules/cc-error.js"
+      ]
+    },
+    {
+      "id": "cc-expand",
+      "path": "cc-expand-2cca00e2.js",
+      "dependencies": [],
+      "sources": [
+        "src/atoms/cc-expand.js"
+      ]
+    },
+    {
+      "id": "cc-flex-gap",
+      "path": "cc-flex-gap-4e6ab5ba.js",
+      "dependencies": [],
+      "sources": [
+        "src/atoms/cc-flex-gap.js"
+      ]
+    },
+    {
+      "id": "cc-grafana-info",
+      "path": "cc-grafana-info-afd88dbc.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "cc-loader-c874b32c.js",
+        "cc-block-section-d9dd6090.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4351d64f.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "assets/info-fd0d98fe.svg"
+      ],
+      "sources": [
+        "NOCHUNK:r814t8k9rti@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/saas/cc-grafana-info.js"
+      ]
+    },
+    {
+      "id": "cc-grafana-info.smart",
+      "path": "cc-grafana-info.smart-1b269f44.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "cc-loader-c874b32c.js",
+        "cc-block-section-d9dd6090.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4351d64f.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "assets/info-fd0d98fe.svg",
+        "cc-grafana-info-afd88dbc.js",
+        "utils-e732f1fc.js",
+        "smart-manager-10eab692.js",
+        "cc-smart-container-0c093be7.js",
+        "send-to-api-d26c0c41.js",
+        "product-857e3fb7.js",
+        "api-helpers-a710dc87.js",
+        "merge-d357dbf8.js",
+        "withLatestFrom-81917e03.js"
+      ],
+      "sources": [
+        "src/saas/cc-grafana-info.smart.js"
+      ]
+    },
+    {
+      "id": "cc-header-addon",
+      "path": "cc-header-addon-a51e01fb.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-215605a4.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js"
+      ],
+      "sources": [
+        "NOCHUNK:ztw68btrt3g@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/addon/cc-header-addon.js"
+      ]
+    },
+    {
+      "id": "cc-header-app",
+      "path": "cc-header-app-f04e9f67.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "i18n-bf531c19.js",
+        "cc-img-ca15395c.js",
+        "default-theme-fead272a.js",
+        "cc-zone-280ca68f.js",
+        "assets/git-9772156e.svg",
+        "assets/restart-failed-1bdb53dc.svg",
+        "assets/restarting-with-downtime-f8e9df23.svg",
+        "assets/restarting-b53bf52a.svg",
+        "assets/running-cada7a10.svg",
+        "assets/start-failed-2f874290.svg",
+        "assets/starting-3ce177c7.svg",
+        "assets/stopped-d4aeda43.svg",
+        "assets/unknown-d36353e6.svg"
+      ],
+      "sources": [
+        "NOCHUNK:ydjjltobp6@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/overview/cc-header-app.js"
+      ]
+    },
+    {
+      "id": "cc-header-orga",
+      "path": "cc-header-orga-61008af2.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "assets/badge-white-0c2da36b.svg",
+        "assets/phone-13ccf5ab.svg"
+      ],
+      "sources": [
+        "NOCHUNK:thraw8inkpd@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/overview/cc-header-orga.js"
+      ]
+    },
+    {
+      "id": "cc-heptapod-info",
+      "path": "cc-heptapod-info-7b316b0a.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4351d64f.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js"
+      ],
+      "sources": [
+        "NOCHUNK:ye19skrmfbm@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/saas/cc-heptapod-info.js"
+      ]
+    },
+    {
+      "id": "cc-html-frame",
+      "path": "cc-html-frame-4f8ed684.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-loader-c874b32c.js"
+      ],
+      "sources": [
+        "src/atoms/cc-html-frame.js"
+      ]
+    },
+    {
+      "id": "cc-img",
+      "path": "cc-img-ca15395c.js",
+      "dependencies": [
+        "vendor-5e139a4e.js"
+      ],
+      "sources": [
+        "src/atoms/cc-img.js"
+      ]
+    },
+    {
+      "id": "cc-input-number",
+      "path": "cc-input-number-5a04b6b3.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "default-theme-fead272a.js",
+        "assets/increment-a9125041.svg",
+        "assets/decrement-44ef7da1.svg"
+      ],
+      "sources": [
+        "src/atoms/cc-input-number.js"
+      ]
+    },
+    {
+      "id": "cc-input-text",
+      "path": "cc-input-text-215605a4.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg"
+      ],
+      "sources": [
+        "NOCHUNK:d7dgw17erl@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/atoms/cc-input-text.js"
+      ]
+    },
+    {
+      "id": "cc-invoice",
+      "path": "cc-invoice-a02852de.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4351d64f.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "cc-html-frame-4f8ed684.js",
+        "assets/file-d798b536.svg"
+      ],
+      "sources": [
+        "NOCHUNK:m5vmf2q30u@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "node_modules/lit-html/directives/unsafe-html.js",
+        "src/invoices/cc-invoice.js"
+      ]
+    },
+    {
+      "id": "cc-invoice-list",
+      "path": "cc-invoice-list-9b44726b.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4351d64f.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "cc-block-section-d9dd6090.js",
+        "utils-e732f1fc.js",
+        "i18n-bf531c19.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "with-resize-observer-323d9e0d.js",
+        "default-theme-fead272a.js",
+        "assets/file-d798b536.svg",
+        "cc-invoice-table-7c70a25a.js"
+      ],
+      "sources": [
+        "NOCHUNK:vbrjuattjr@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/invoices/cc-invoice-list.js"
+      ]
+    },
+    {
+      "id": "cc-invoice-list.smart",
+      "path": "cc-invoice-list.smart-adbce0d3.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4351d64f.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "cc-block-section-d9dd6090.js",
+        "utils-e732f1fc.js",
+        "i18n-bf531c19.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "with-resize-observer-323d9e0d.js",
+        "default-theme-fead272a.js",
+        "assets/file-d798b536.svg",
+        "cc-invoice-table-7c70a25a.js",
+        "cc-invoice-list-9b44726b.js",
+        "smart-manager-10eab692.js",
+        "cc-smart-container-0c093be7.js",
+        "send-to-api-d26c0c41.js",
+        "product-857e3fb7.js",
+        "api-helpers-a710dc87.js"
+      ],
+      "sources": [
+        "src/invoices/cc-invoice-list.smart.js"
+      ]
+    },
+    {
+      "id": "cc-invoice-table",
+      "path": "cc-invoice-table-7c70a25a.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "cc-img-ca15395c.js",
+        "utils-e732f1fc.js",
+        "with-resize-observer-323d9e0d.js",
+        "default-theme-fead272a.js",
+        "cc-link-bb132771.js",
+        "assets/file-d798b536.svg"
+      ],
+      "sources": [
+        "NOCHUNK:39ovv9oyj95@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/invoices/cc-invoice-table.js"
+      ]
+    },
+    {
+      "id": "cc-invoice.smart",
+      "path": "cc-invoice.smart-05ca6b1e.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4351d64f.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "cc-html-frame-4f8ed684.js",
+        "assets/file-d798b536.svg",
+        "cc-invoice-a02852de.js",
+        "utils-e732f1fc.js",
+        "smart-manager-10eab692.js",
+        "cc-smart-container-0c093be7.js",
+        "send-to-api-d26c0c41.js",
+        "product-857e3fb7.js",
+        "api-helpers-a710dc87.js",
+        "merge-d357dbf8.js",
+        "combineLatest-ab1ee35e.js"
+      ],
+      "sources": [
+        "src/invoices/cc-invoice.smart.js"
+      ]
+    },
+    {
+      "id": "cc-jenkins-info",
+      "path": "cc-jenkins-info-b62a8b41.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "cc-block-section-d9dd6090.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4351d64f.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "assets/info-fd0d98fe.svg"
+      ],
+      "sources": [
+        "NOCHUNK:do40q3gyw56@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/addon/cc-jenkins-info.js"
+      ]
+    },
+    {
+      "id": "cc-jenkins-info.smart",
+      "path": "cc-jenkins-info.smart-e228f60e.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "cc-block-section-d9dd6090.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4351d64f.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "assets/info-fd0d98fe.svg",
+        "cc-jenkins-info-b62a8b41.js",
+        "utils-e732f1fc.js",
+        "smart-manager-10eab692.js",
+        "cc-smart-container-0c093be7.js",
+        "send-to-api-d26c0c41.js",
+        "merge-d357dbf8.js",
+        "combineLatest-ab1ee35e.js"
+      ],
+      "sources": [
+        "node_modules/@clevercloud/client/esm/api/v4/addon-providers.js",
+        "src/addon/cc-jenkins-info.smart.js"
+      ]
+    },
+    {
+      "id": "cc-loader",
+      "path": "cc-loader-c874b32c.js",
+      "dependencies": [
+        "vendor-5e139a4e.js"
+      ],
+      "sources": [
+        "src/atoms/cc-loader.js"
+      ]
+    },
+    {
+      "id": "cc-logsmap",
+      "path": "cc-logsmap-ab054c42.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "cc-map-marker-dot-948bbfc4.js",
+        "cc-loader-c874b32c.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "with-resize-observer-323d9e0d.js",
+        "cc-map-c3cd5dae.js"
+      ],
+      "sources": [
+        "NOCHUNK:sdwqq01yb5@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/maps/cc-logsmap.js"
+      ]
+    },
+    {
+      "id": "cc-map",
+      "path": "cc-map-c3cd5dae.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-loader-c874b32c.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "with-resize-observer-323d9e0d.js"
+      ],
+      "sources": [
+        "NOCHUNK:j9cs2x3twn@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/assets/world-110m.geo.js",
+        "node_modules/leaflet/src/core/Util.js",
+        "node_modules/leaflet/src/core/Class.js",
+        "node_modules/leaflet/src/core/Events.js",
+        "node_modules/leaflet/src/geometry/Point.js",
+        "node_modules/leaflet/src/geometry/Bounds.js",
+        "node_modules/leaflet/src/geo/LatLngBounds.js",
+        "node_modules/leaflet/src/geo/LatLng.js",
+        "node_modules/leaflet/src/geo/crs/CRS.js",
+        "node_modules/leaflet/src/geo/crs/CRS.Earth.js",
+        "node_modules/leaflet/src/geo/projection/Projection.SphericalMercator.js",
+        "node_modules/leaflet/src/geometry/Transformation.js",
+        "node_modules/leaflet/src/geo/crs/CRS.EPSG3857.js",
+        "node_modules/leaflet/src/layer/vector/SVG.Util.js",
+        "node_modules/leaflet/src/core/Browser.js",
+        "node_modules/leaflet/src/dom/DomEvent.Pointer.js",
+        "node_modules/leaflet/src/dom/DomEvent.DoubleTap.js",
+        "node_modules/leaflet/src/dom/DomUtil.js",
+        "node_modules/leaflet/src/dom/DomEvent.js",
+        "node_modules/leaflet/src/dom/PosAnimation.js",
+        "node_modules/leaflet/src/map/Map.js",
+        "node_modules/leaflet/src/control/Control.js",
+        "node_modules/leaflet/src/control/Control.Layers.js",
+        "node_modules/leaflet/src/control/Control.Zoom.js",
+        "node_modules/leaflet/src/control/Control.Scale.js",
+        "node_modules/leaflet/src/control/Control.Attribution.js",
+        "node_modules/leaflet/src/control/index.js",
+        "node_modules/leaflet/src/layer/Layer.js",
+        "node_modules/leaflet/src/layer/vector/Renderer.js",
+        "node_modules/leaflet/src/layer/vector/Canvas.js",
+        "node_modules/leaflet/src/layer/vector/SVG.VML.js",
+        "node_modules/leaflet/src/layer/vector/SVG.js",
+        "node_modules/leaflet/src/layer/vector/Renderer.getRenderer.js",
+        "node_modules/leaflet/src/layer/LayerGroup.js",
+        "node_modules/leaflet/src/layer/FeatureGroup.js",
+        "node_modules/leaflet/src/layer/DivOverlay.js",
+        "node_modules/leaflet/src/layer/Tooltip.js",
+        "node_modules/leaflet/src/core/Handler.js",
+        "node_modules/leaflet/src/dom/Draggable.js",
+        "node_modules/leaflet/src/geometry/LineUtil.js",
+        "node_modules/leaflet/src/geometry/PolyUtil.js",
+        "node_modules/leaflet/src/layer/marker/Icon.js",
+        "node_modules/leaflet/src/layer/marker/Icon.Default.js",
+        "node_modules/leaflet/src/layer/marker/Marker.Drag.js",
+        "node_modules/leaflet/src/layer/marker/Marker.js",
+        "node_modules/leaflet/src/layer/vector/Path.js",
+        "node_modules/leaflet/src/layer/vector/CircleMarker.js",
+        "node_modules/leaflet/src/layer/vector/Circle.js",
+        "node_modules/leaflet/src/layer/vector/Polyline.js",
+        "node_modules/leaflet/src/layer/vector/Polygon.js",
+        "node_modules/leaflet/src/layer/GeoJSON.js",
+        "node_modules/leaflet/src/layer/marker/DivIcon.js",
+        "src/lib/simpleheat.js",
+        "src/lib/leaflet-heat.js",
+        "src/styles/leaflet.js",
+        "src/maps/cc-map.js"
+      ]
+    },
+    {
+      "id": "cc-map-marker-dot",
+      "path": "cc-map-marker-dot-948bbfc4.js",
+      "dependencies": [
+        "vendor-5e139a4e.js"
+      ],
+      "sources": [
+        "src/maps/cc-map-marker-dot.js"
+      ]
+    },
+    {
+      "id": "cc-map-marker-server",
+      "path": "cc-map-marker-server-90f6bafb.js",
+      "dependencies": [
+        "vendor-5e139a4e.js"
+      ],
+      "sources": [
+        "src/maps/cc-map-marker-server.js"
+      ]
+    },
+    {
+      "id": "cc-overview",
+      "path": "cc-overview-538b5ccc.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "with-resize-observer-323d9e0d.js"
+      ],
+      "sources": [
+        "src/overview/cc-overview.js"
+      ]
+    },
+    {
+      "id": "cc-pricing-estimation",
+      "path": "cc-pricing-estimation-89fc13c5.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "default-theme-fead272a.js",
+        "assets/increment-a9125041.svg",
+        "assets/decrement-44ef7da1.svg",
+        "cc-input-number-5a04b6b3.js",
+        "with-resize-observer-323d9e0d.js",
+        "assets/delete-0802f1f7.svg"
+      ],
+      "sources": [
+        "NOCHUNK:dsgnonmqwy8@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/pricing/cc-pricing-estimation.js"
+      ]
+    },
+    {
+      "id": "cc-pricing-header",
+      "path": "cc-pricing-header-ca4106dc.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "vendor-5e139a4e.js",
+        "zone-48aed84f.js",
+        "cc-img-ca15395c.js",
+        "default-theme-fead272a.js",
+        "cc-zone-280ca68f.js"
+      ],
+      "sources": [
+        "NOCHUNK:pnpzd7il2z@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.IHGPZX35.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.ZSCGQDBN.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.WV5V5UEU.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.VIWFLAGR.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.K2ZF75ZS.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.7RSYSOZZ.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.BD26TKS4.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.IBDZI3K2.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.I4TE3TJV.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.5I2V7AFI.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.WJ7L2V7L.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.V2VD73RM.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.XX7PSQRC.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.GADG7AUG.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.DTSUHNT6.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.XAZN5AQ5.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.NVGT36PI.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.EVK2ASE6.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.XYKBCI6Y.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.XAZSQ3AT.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.USM4X4MF.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.S6TJZ6NJ.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.FGIYSBZ6.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.73PEGQ4K.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.L23EKU34.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.ARRH633M.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.ZMRAQYRA.js",
+        "node_modules/@shoelace-style/shoelace/dist/chunks/chunk.JLSM76ER.js",
+        "src/styles/shoelace.js",
+        "src/pricing/cc-pricing-header.js"
+      ]
+    },
+    {
+      "id": "cc-pricing-page",
+      "path": "cc-pricing-page-fa44b6d3.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-bf531c19.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "zone-48aed84f.js",
+        "cc-img-ca15395c.js",
+        "default-theme-fead272a.js",
+        "cc-zone-280ca68f.js",
+        "cc-pricing-header-ca4106dc.js",
+        "cc-loader-c874b32c.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "with-resize-observer-323d9e0d.js",
+        "assets/down-5b7898da.svg",
+        "assets/plus-b81295d1.svg",
+        "assets/up-a464b04f.svg",
+        "cc-pricing-table-4ab8fd85.js",
+        "fake-strings-0d4d5c0b.js",
+        "cc-pricing-product-d512ad08.js",
+        "assets/increment-a9125041.svg",
+        "assets/decrement-44ef7da1.svg",
+        "cc-input-number-5a04b6b3.js",
+        "assets/delete-0802f1f7.svg",
+        "cc-pricing-estimation-89fc13c5.js"
+      ],
+      "sources": [
+        "src/pricing/cc-pricing-page.js"
+      ]
+    },
+    {
+      "id": "cc-pricing-page.smart",
+      "path": "cc-pricing-page.smart-cdd5d357.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "i18n-bf531c19.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "zone-48aed84f.js",
+        "cc-img-ca15395c.js",
+        "default-theme-fead272a.js",
+        "cc-zone-280ca68f.js",
+        "cc-pricing-header-ca4106dc.js",
+        "cc-loader-c874b32c.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "with-resize-observer-323d9e0d.js",
+        "assets/down-5b7898da.svg",
+        "assets/plus-b81295d1.svg",
+        "assets/up-a464b04f.svg",
+        "cc-pricing-table-4ab8fd85.js",
+        "fake-strings-0d4d5c0b.js",
+        "cc-pricing-product-d512ad08.js",
+        "assets/increment-a9125041.svg",
+        "assets/decrement-44ef7da1.svg",
+        "cc-input-number-5a04b6b3.js",
+        "assets/delete-0802f1f7.svg",
+        "cc-pricing-estimation-89fc13c5.js",
+        "cc-pricing-page-fa44b6d3.js",
+        "utils-e732f1fc.js",
+        "smart-manager-10eab692.js",
+        "cc-smart-container-0c093be7.js",
+        "send-to-api-d26c0c41.js",
+        "product-857e3fb7.js",
+        "api-helpers-a710dc87.js"
+      ],
+      "sources": [
+        "src/pricing/cc-pricing-page.smart.js"
+      ]
+    },
+    {
+      "id": "cc-pricing-product",
+      "path": "cc-pricing-product-d512ad08.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "cc-loader-c874b32c.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "i18n-bf531c19.js",
+        "with-resize-observer-323d9e0d.js",
+        "assets/down-5b7898da.svg",
+        "assets/plus-b81295d1.svg",
+        "assets/up-a464b04f.svg",
+        "cc-pricing-table-4ab8fd85.js",
+        "fake-strings-0d4d5c0b.js"
+      ],
+      "sources": [
+        "NOCHUNK:yf2i7ootxz@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/pricing/cc-pricing-product.js"
+      ]
+    },
+    {
+      "id": "cc-pricing-product-consumption",
+      "path": "cc-pricing-product-consumption-b1d188e2.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-img-ca15395c.js",
+        "default-theme-fead272a.js",
+        "assets/increment-a9125041.svg",
+        "assets/decrement-44ef7da1.svg",
+        "cc-input-number-5a04b6b3.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "with-resize-observer-323d9e0d.js",
+        "assets/arrows-left-2a0b4430.svg",
+        "assets/arrows-right-9d33e797.svg",
+        "assets/down-5b7898da.svg",
+        "assets/plus-b81295d1.svg",
+        "assets/storage-a73f53b5.svg",
+        "assets/sum-1ba8fc4e.svg",
+        "assets/up-a464b04f.svg",
+        "assets/user-087432d3.svg"
+      ],
+      "sources": [
+        "NOCHUNK:3z4lmdv2es8@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/lib/pricing.js",
+        "src/pricing/cc-pricing-product-consumption.js"
+      ]
+    },
+    {
+      "id": "cc-pricing-product-consumption.smart",
+      "path": "cc-pricing-product-consumption.smart-ef05c6ad.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-img-ca15395c.js",
+        "default-theme-fead272a.js",
+        "assets/increment-a9125041.svg",
+        "assets/decrement-44ef7da1.svg",
+        "cc-input-number-5a04b6b3.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "with-resize-observer-323d9e0d.js",
+        "assets/arrows-left-2a0b4430.svg",
+        "assets/arrows-right-9d33e797.svg",
+        "assets/down-5b7898da.svg",
+        "assets/plus-b81295d1.svg",
+        "assets/storage-a73f53b5.svg",
+        "assets/sum-1ba8fc4e.svg",
+        "assets/up-a464b04f.svg",
+        "assets/user-087432d3.svg",
+        "cc-pricing-product-consumption-b1d188e2.js",
+        "utils-e732f1fc.js",
+        "smart-manager-10eab692.js",
+        "cc-smart-container-0c093be7.js",
+        "send-to-api-d26c0c41.js",
+        "product-857e3fb7.js",
+        "api-helpers-a710dc87.js",
+        "product-4de508d3.js"
+      ],
+      "sources": [
+        "src/pricing/cc-pricing-product-consumption.smart.js"
+      ]
+    },
+    {
+      "id": "cc-pricing-product.smart-addon",
+      "path": "cc-pricing-product.smart-addon-87159cee.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "cc-loader-c874b32c.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "i18n-bf531c19.js",
+        "with-resize-observer-323d9e0d.js",
+        "assets/down-5b7898da.svg",
+        "assets/plus-b81295d1.svg",
+        "assets/up-a464b04f.svg",
+        "cc-pricing-table-4ab8fd85.js",
+        "fake-strings-0d4d5c0b.js",
+        "cc-pricing-product-d512ad08.js",
+        "utils-e732f1fc.js",
+        "smart-manager-10eab692.js",
+        "cc-smart-container-0c093be7.js",
+        "send-to-api-d26c0c41.js",
+        "product-33178d77.js",
+        "product-857e3fb7.js",
+        "api-helpers-a710dc87.js",
+        "product-4de508d3.js"
+      ],
+      "sources": [
+        "src/pricing/cc-pricing-product.smart-addon.js"
+      ]
+    },
+    {
+      "id": "cc-pricing-product.smart-runtime",
+      "path": "cc-pricing-product.smart-runtime-7d778e89.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "cc-loader-c874b32c.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "i18n-bf531c19.js",
+        "with-resize-observer-323d9e0d.js",
+        "assets/down-5b7898da.svg",
+        "assets/plus-b81295d1.svg",
+        "assets/up-a464b04f.svg",
+        "cc-pricing-table-4ab8fd85.js",
+        "fake-strings-0d4d5c0b.js",
+        "cc-pricing-product-d512ad08.js",
+        "utils-e732f1fc.js",
+        "smart-manager-10eab692.js",
+        "cc-smart-container-0c093be7.js",
+        "send-to-api-d26c0c41.js",
+        "product-33178d77.js",
+        "product-857e3fb7.js",
+        "api-helpers-a710dc87.js",
+        "product-4de508d3.js"
+      ],
+      "sources": [
+        "src/pricing/cc-pricing-product.smart-runtime.js"
+      ]
+    },
+    {
+      "id": "cc-pricing-table",
+      "path": "cc-pricing-table-4ab8fd85.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-img-ca15395c.js",
+        "with-resize-observer-323d9e0d.js",
+        "assets/down-5b7898da.svg",
+        "assets/plus-b81295d1.svg",
+        "assets/up-a464b04f.svg"
+      ],
+      "sources": [
+        "NOCHUNK:xjyxghxnmnp@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/pricing/cc-pricing-table.js"
+      ]
+    },
+    {
+      "id": "cc-smart-container",
+      "path": "cc-smart-container-5c600434.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "utils-e732f1fc.js",
+        "smart-manager-10eab692.js",
+        "cc-smart-container-0c093be7.js"
+      ],
+      "sources": []
+    },
+    {
+      "id": "cc-tcp-redirection",
+      "path": "cc-tcp-redirection-afd110a6.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "cc-loader-c874b32c.js",
+        "default-theme-fead272a.js",
+        "assets/warning-a3a07993.svg",
+        "assets/redirection-off-ceacb7da.svg",
+        "assets/redirection-on-5539b160.svg"
+      ],
+      "sources": [
+        "NOCHUNK:rm77vtg6s1a@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/tcp-redirections/cc-tcp-redirection.js"
+      ]
+    },
+    {
+      "id": "cc-tcp-redirection-form",
+      "path": "cc-tcp-redirection-form-1e75ccb8.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4351d64f.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "default-theme-fead272a.js",
+        "assets/redirection-off-ceacb7da.svg",
+        "assets/redirection-on-5539b160.svg",
+        "cc-tcp-redirection-afd110a6.js"
+      ],
+      "sources": [
+        "NOCHUNK:ds7qifr9fi@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/tcp-redirections/cc-tcp-redirection-form.js"
+      ]
+    },
+    {
+      "id": "cc-tile-consumption",
+      "path": "cc-tile-consumption-d90b7ad7.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "info-tiles-0fcdc9dd.js"
+      ],
+      "sources": [
+        "NOCHUNK:yzkw7yedt6a@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/overview/cc-tile-consumption.js"
+      ]
+    },
+    {
+      "id": "cc-tile-deployments",
+      "path": "cc-tile-deployments-b89d49c2.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "cc-datetime-relative-92a81728.js",
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "info-tiles-0fcdc9dd.js"
+      ],
+      "sources": [
+        "NOCHUNK:llcypny3iwa@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/overview/cc-tile-deployments.js"
+      ]
+    },
+    {
+      "id": "cc-tile-instances",
+      "path": "cc-tile-instances-cea7822a.js",
+      "dependencies": [
+        "cc-expand-2cca00e2.js",
+        "vendor-5e139a4e.js",
+        "cc-loader-c874b32c.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "info-tiles-0fcdc9dd.js",
+        "assets/running-cada7a10.svg",
+        "assets/starting-3ce177c7.svg"
+      ],
+      "sources": [
+        "NOCHUNK:9zv2bu6u82r@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/lib/animate.js",
+        "src/overview/cc-tile-instances.js"
+      ]
+    },
+    {
+      "id": "cc-tile-requests",
+      "path": "cc-tile-requests-0597a4e5.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "chart.esm-dc52f043.js",
+        "with-resize-observer-323d9e0d.js",
+        "info-tiles-0fcdc9dd.js",
+        "assets/close-5578d4ce.svg",
+        "assets/info-fd0d98fe.svg"
+      ],
+      "sources": [
+        "NOCHUNK:6vr6m0vciyb@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.esm.js",
+        "src/overview/cc-tile-requests.js"
+      ]
+    },
+    {
+      "id": "cc-tile-scalability",
+      "path": "cc-tile-scalability-40591df2.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "info-tiles-0fcdc9dd.js"
+      ],
+      "sources": [
+        "NOCHUNK:9e0a773i9fg@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/overview/cc-tile-scalability.js"
+      ]
+    },
+    {
+      "id": "cc-tile-status-codes",
+      "path": "cc-tile-status-codes-741a4a06.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "chart.esm-dc52f043.js",
+        "info-tiles-0fcdc9dd.js",
+        "assets/close-5578d4ce.svg",
+        "assets/info-fd0d98fe.svg"
+      ],
+      "sources": [
+        "NOCHUNK:ztjt5d5ccl7@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "node_modules/lit-html/directives/cache.js",
+        "node_modules/statuses/codes.json",
+        "node_modules/statuses/index.js",
+        "src/overview/cc-tile-status-codes.js"
+      ]
+    },
+    {
+      "id": "cc-tile-status-codes.smart",
+      "path": "cc-tile-status-codes.smart-0626445e.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "utils-e732f1fc.js",
+        "smart-manager-10eab692.js",
+        "cc-smart-container-0c093be7.js",
+        "i18n-bf531c19.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-loader-c874b32c.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "chart.esm-dc52f043.js",
+        "info-tiles-0fcdc9dd.js",
+        "assets/close-5578d4ce.svg",
+        "assets/info-fd0d98fe.svg",
+        "cc-tile-status-codes-741a4a06.js",
+        "send-to-api-d26c0c41.js"
+      ],
+      "sources": [
+        "node_modules/@clevercloud/client/esm/access-logs.js",
+        "node_modules/@clevercloud/client/esm/api/v2/warp-10.js",
+        "src/overview/cc-tile-status-codes.smart.js"
+      ]
+    },
+    {
+      "id": "cc-toggle",
+      "path": "cc-toggle-8b8e589e.js",
+      "dependencies": [
+        "vendor-5e139a4e.js",
+        "repeat-b0d66412.js"
+      ],
+      "sources": [
+        "src/atoms/cc-toggle.js"
+      ]
+    },
+    {
+      "id": "cc-zone",
+      "path": "cc-zone-280ca68f.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "default-theme-fead272a.js"
+      ],
+      "sources": [
+        "NOCHUNK:fd4aae688@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/lib/remote-assets.js",
+        "src/zones/cc-zone.js"
+      ]
+    },
+    {
+      "id": "cc-zone-input",
+      "path": "cc-zone-input-bb43ef2d.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "vendor-5e139a4e.js",
+        "cc-img-ca15395c.js",
+        "default-theme-fead272a.js",
+        "cc-zone-280ca68f.js",
+        "cc-loader-c874b32c.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "with-resize-observer-323d9e0d.js",
+        "cc-map-c3cd5dae.js",
+        "cc-map-marker-server-90f6bafb.js",
+        "repeat-b0d66412.js",
+        "zone-48aed84f.js"
+      ],
+      "sources": [
+        "NOCHUNK:hb6anc83j8n@/home/hsablonniere/dev/clever-components/src/translations/translations.en.js",
+        "src/lib/dom.js",
+        "src/zones/cc-zone-input.js"
+      ]
+    },
+    {
+      "id": "index",
+      "path": "index-61d7c0be.js",
+      "dependencies": [
+        "i18n-bf531c19.js",
+        "vendor-5e139a4e.js",
+        "default-theme-fead272a.js",
+        "assets/clipboard-bf8d5491.svg",
+        "assets/eye-closed-390597cc.svg",
+        "assets/eye-open-d3ed151c.svg",
+        "assets/tick-a5247ce9.svg",
+        "cc-input-text-215605a4.js",
+        "cc-loader-c874b32c.js",
+        "cc-block-section-d9dd6090.js",
+        "cc-link-bb132771.js",
+        "cc-button-0fc35634.js",
+        "cc-expand-2cca00e2.js",
+        "cc-img-ca15395c.js",
+        "assets/down-5b7898da.svg",
+        "assets/up-a464b04f.svg",
+        "cc-block-4351d64f.js",
+        "assets/warning-a3a07993.svg",
+        "cc-error-8d730ec3.js",
+        "cc-addon-admin-7119915f.js",
+        "fake-strings-0d4d5c0b.js",
+        "assets/backup-5902d4d1.svg",
+        "assets/close-5578d4ce.svg",
+        "cc-addon-backups-4f3151b9.js",
+        "cc-flex-gap-4e6ab5ba.js",
+        "cc-addon-credentials-4f26fd78.js",
+        "repeat-b0d66412.js",
+        "cc-toggle-8b8e589e.js",
+        "cc-addon-option-1781fe46.js",
+        "cc-addon-option-form-da879069.js",
+        "assets/encryption-at-rest-9baf5ef8.svg",
+        "cc-addon-encryption-at-rest-option-06b7f6fe.js",
+        "cc-addon-elasticsearch-options-5117aa50.js",
+        "assets/cpu-8f43fcc2.svg",
+        "assets/disk-f8ad3cfd.svg",
+        "assets/ram-bd115490.svg",
+        "cc-addon-features-34b72fcf.js",
+        "cc-zone-280ca68f.js",
+        "cc-addon-linked-apps-732667c5.js",
+        "cc-addon-mongodb-options-fef69e3c.js",
+        "cc-addon-mysql-options-5ef0dbde.js",
+        "cc-addon-postgresql-options-4ed6e558.js",
+        "assets/info-fd0d98fe.svg",
+        "cc-elasticsearch-info-bfebb15e.js",
+        "cc-header-addon-a51e01fb.js",
+        "cc-beta-e3033114.js",
+        "cc-datetime-relative-92a81728.js",
+        "env-vars-13fc89da.js",
+        "cc-env-var-create-67c99352.js",
+        "cc-env-var-editor-expert-2fbc0daf.js",
+        "cc-env-var-input-8def1ce5.js",
+        "cc-env-var-editor-simple-342f4542.js",
+        "cc-env-var-form-e72b0c15.js",
+        "cc-env-var-linked-services-f950b5f5.js",
+        "cc-map-marker-dot-948bbfc4.js",
+        "with-resize-observer-323d9e0d.js",
+        "cc-map-c3cd5dae.js",
+        "cc-logsmap-ab054c42.js",
+        "cc-map-marker-server-90f6bafb.js",
+        "assets/git-9772156e.svg",
+        "assets/restart-failed-1bdb53dc.svg",
+        "assets/restarting-with-downtime-f8e9df23.svg",
+        "assets/restarting-b53bf52a.svg",
+        "assets/running-cada7a10.svg",
+        "assets/start-failed-2f874290.svg",
+        "assets/starting-3ce177c7.svg",
+        "assets/stopped-d4aeda43.svg",
+        "assets/unknown-d36353e6.svg",
+        "cc-header-app-f04e9f67.js",
+        "assets/badge-white-0c2da36b.svg",
+        "assets/phone-13ccf5ab.svg",
+        "cc-header-orga-61008af2.js",
+        "cc-overview-538b5ccc.js",
+        "info-tiles-0fcdc9dd.js",
+        "cc-tile-consumption-d90b7ad7.js",
+        "cc-tile-deployments-b89d49c2.js",
+        "cc-tile-instances-cea7822a.js",
+        "chart.esm-dc52f043.js",
+        "cc-tile-requests-0597a4e5.js",
+        "cc-tile-scalability-40591df2.js",
+        "cc-tile-status-codes-741a4a06.js",
+        "cc-heptapod-info-7b316b0a.js",
+        "cc-grafana-info-afd88dbc.js",
+        "assets/redirection-off-ceacb7da.svg",
+        "assets/redirection-on-5539b160.svg",
+        "cc-tcp-redirection-afd110a6.js",
+        "cc-tcp-redirection-form-1e75ccb8.js",
+        "zone-48aed84f.js",
+        "cc-zone-input-bb43ef2d.js"
+      ],
+      "sources": [
+        "src/index.js"
+      ]
+    },
+    {
+      "id": "smart-manager",
+      "path": "smart-manager-83e8d9bf.js",
+      "dependencies": [
+        "utils-e732f1fc.js",
+        "smart-manager-10eab692.js"
+      ],
+      "sources": []
+    }
+  ]
+}

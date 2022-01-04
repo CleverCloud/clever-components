@@ -19,6 +19,7 @@
   "scripts": {
     "components:build": "rollup -c rollup/rollup-npm.config.js",
     "components:build-cdn": "rollup -c rollup/rollup-cdn.config.js",
+    "components:build-cdn-i18n": "rollup -c rollup/rollup-cdn-i18n.config.js",
     "components:build-cdn:versions-list": "node tasks/update-versions-list.js",
     "components:publish-cdn": "node tasks/publish-cdn.js",
     "components:check-i18n": "node tasks/check-i18n.js",
@@ -80,6 +81,7 @@
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-standard": "^5.0.0",
+    "estree-walker": "^1.0.1",
     "github-markdown-css": "^4.0.0",
     "glob": "^7.1.7",
     "hanbi": "^1.0.1",
@@ -87,6 +89,7 @@
     "i18n-extract": "^0.6.7",
     "js-yaml": "^4.1.0",
     "lit-analyzer": "^1.1.10",
+    "magic-string": "^0.25.7",
     "mime-types": "^2.1.30",
     "node-static": "^0.7.11",
     "postcss": "^8.2.14",
