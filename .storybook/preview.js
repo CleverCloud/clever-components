@@ -1,9 +1,9 @@
 import '../stories/lib/i18n-control.js';
-import ceJson from './custom-elements-manifest.js';
+import { setCustomElementsManifest } from '@web/storybook-prebuilt/web-components.js';
+import customElementsManifest from '../dist/custom-elements.json';
+import { getAvailableLanguages } from '../src/lib/i18n.js';
 
-// Temporary hack, waiting for `setCustomElements` to be exposed
-// Then waiting for new Custom Elements Manifest support
-window.__STORYBOOK_CUSTOM_ELEMENTS__ = ceJson;
+setCustomElementsManifest(customElementsManifest);
 
 const viewports = {};
 Array
@@ -36,4 +36,20 @@ export const parameters = {
     },
   },
   viewport: { viewports },
+};
+
+const availableLanguages = Object
+  .entries(getAvailableLanguages())
+  .map(([title, value]) => ({ value, title }));
+
+export const globalTypes = {
+  locale: {
+    name: 'Language',
+    description: 'i18n language',
+    defaultValue: 'en',
+    toolbar: {
+      icon: 'globe',
+      items: availableLanguages,
+    },
+  },
 };

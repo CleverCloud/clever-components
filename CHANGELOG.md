@@ -17,7 +17,21 @@ title: Changelog
 * Improve type definitions documentation:
   * move types to a `types.d.ts` for each web components section
   * add a script to automate type definition generation
-  * moved typedef imports to above class declaration to avoid events not showing up on the docs 
+  * moved typedef imports to above class declaration to avoid events not showing up on the docs
+* Storybook: update prebuilt Storybook to `0.1.32` (Storybook `6.4.9`)
+  * Use new CEM format (and ditch the old/temp WCA transformer)
+  * Move the language selection to a [toolbar + globals](https://storybook.js.org/docs/web-components/essentials/toolbars-and-globals)
+    * Remove lots of ugly React voodoo hacks
+  * Use the story "props" and the CEM for the controls (with the new CSF args system)
+    * Only the first item can be updated
+    * The table props displays types for events
+    * The table props doesn't display the default slot anymore :-(
+    * Some controls in the table props are weird (union between `string|null` or `boolean|string`) :-(
+  * Display the stories in docs mode in alphabetical order
+    * This is not something we decided nor can change
+  * Change the display of events name in the actions panel
+    * `cc-foobar:the-event` => `onCcFoobarTheEvent`
+    * This is not something we decided nor can change
 
 ## 7.6.0 (2021-10-28)
 
