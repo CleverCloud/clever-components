@@ -60,8 +60,8 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
       width: [600],
     };
 
-    /** @type {boolean} */
-    this._hovered = false;
+    /** @type {string|null} */
+    this._hovered = null;
 
     /** @type {string} */
     this._legend = '';
