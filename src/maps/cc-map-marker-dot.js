@@ -29,7 +29,10 @@ export class CcMapMarkerDot extends LitElement {
 
   static get properties () {
     return {
+      anchor: { type: Array },
       count: { type: Number, reflect: true },
+      size: { type: Array },
+      tooltip: { type: Array },
       _color: { type: String },
     };
   }
@@ -38,34 +41,19 @@ export class CcMapMarkerDot extends LitElement {
     super();
 
     /** @type {Array} Exposes the coordinates of the "tip" of the marker, relative to its top left corner: `[x, y]` (used by `<cc-map>`). */
-    this.anchor = null;
+    this.anchor = [8, 8];
 
     /** @type {number|null} Sets an abstract value for this marker to vary the color grading. */
     this.count = null;
 
     /** @type {Array} Exposes the size of the marker: `[width, height]` (used by `<cc-map>`). */
-    this.size = null;
+    this.size = [16, 16];
 
     /** @type {Array} Exposes the coordinates from which tooltips will "open", relative to the marker anchor: `[width, height]` (used by `<cc-map>`). */
-    this.tooltip = null;
+    this.tooltip = [0, 0];
 
     /** @type {string|null} */
     this._color = null;
-  }
-
-  /** @readonly */
-  get anchor () {
-    return [8, 8];
-  }
-
-  /** @readonly */
-  get size () {
-    return [16, 16];
-  }
-
-  /** @readonly */
-  get tooltip () {
-    return [0, 0];
   }
 
   _getColorFromCount (count) {

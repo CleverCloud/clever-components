@@ -8,6 +8,7 @@ title: Changelog
 
 * `<cc-datetime-relative>`: fix first initialization of datetime attribute/property
 * `<cc-img>`: fix type for `skeleton` (boolean)
+* `<cc-map-marker-*>`: fix the way we document readonly properties (anchor, size, tooltip)
 
 ### For devs
 
