@@ -10,6 +10,7 @@ title: Changelog
 * `<cc-img>`: fix type for `skeleton` (boolean)
 * `<cc-map-marker-*>`: fix the way we document readonly properties (anchor, size, tooltip)
 * `<cc-zone-input>`: fix type for `_hovered` (string|null)
+* Storybook: fix logo URL
 
 ### For devs
 
