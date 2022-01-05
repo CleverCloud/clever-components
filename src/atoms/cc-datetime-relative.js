@@ -43,7 +43,9 @@ export class CcDatetimeRelative extends HTMLElement {
 
   /** @required */
   set datetime (value) {
-    this.setAttribute('datetime', value);
+    if (value != null) {
+      this.setAttribute('datetime', value);
+    }
   }
 
   attributeChangedCallback (attrName, old, date) {

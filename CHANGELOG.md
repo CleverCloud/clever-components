@@ -6,6 +6,8 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+* `<cc-datetime-relative>`: fix first initialization of datetime attribute/property
+
 ### For devs
 
 * Improve type definitions documentation:
