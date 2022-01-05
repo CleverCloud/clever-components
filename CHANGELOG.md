@@ -7,6 +7,7 @@ title: Changelog
 ## Unreleased (????-??-??)
 
 * `<cc-datetime-relative>`: fix first initialization of datetime attribute/property
+* `<cc-img>`: fix type for `skeleton` (boolean)
 
 ### For devs
 

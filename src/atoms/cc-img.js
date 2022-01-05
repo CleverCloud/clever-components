@@ -29,7 +29,7 @@ export class CcImg extends LitElement {
   constructor () {
     super();
 
-    /** @type {number} Enables skeleton screen UI pattern (loading hint). */
+    /** @type {boolean} Enables skeleton screen UI pattern (loading hint). */
     this.skeleton = false;
 
     /** @type {string|null} Sets `src` attribute on inner native `<img>` element. */
