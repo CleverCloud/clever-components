@@ -63,9 +63,9 @@ function convertInterface (ts, node, code, interfaceName) {
 
   const start = st?.modifiers?.find((modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword)?.end ?? st?.pos;
   const typeDeclaration = code.substring(start, st?.end).trim();
-  const typeDisplay = '```ts\n'
+  const typeDisplay = '```ts\n\n'
     + typeDeclaration
-    + '\n```';
+    + '\n\n```';
   typeCache.set(interfaceName, typeDisplay);
   return typeDisplay;
 }

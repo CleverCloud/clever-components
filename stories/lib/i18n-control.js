@@ -1,3 +1,5 @@
+import { addons } from '@web/storybook-prebuilt/addons.js';
+import { UPDATE_GLOBALS } from '@web/storybook-prebuilt/core-events.js';
 import { addTranslations, getAvailableLanguages, getLanguage, setLanguage } from '../../src/lib/i18n.js';
 import * as en from '../../src/translations/translations.en.js';
 import * as fr from '../../src/translations/translations.fr.js';
@@ -14,30 +16,12 @@ setLanguage(INIT_LANG);
 
 const ALL_LANGS = Object.values(getAvailableLanguages());
 
-// React hooks voodoo shit
-let updateArgs = () => {
-};
-
-export function setUpdateArgsCallback (callback) {
-  updateArgs = callback;
-}
-
 window.addEventListener('keypress', ({ keyCode, altKey, ctrlKey, metaKey, shiftKey }) => {
   // "i" key
   if (keyCode === 105 && !altKey && !ctrlKey && !metaKey && !shiftKey) {
     const langIdx = ALL_LANGS.indexOf(getLanguage());
     const nextIdx = (langIdx + 1) % ALL_LANGS.length;
     const nextLang = ALL_LANGS[nextIdx];
-    // https://github.com/storybookjs/storybook/issues/3855#issuecomment-660158622
-    updateArgs({ lang: nextLang });
+    addons.getChannel().emit(UPDATE_GLOBALS, { globals: { locale: nextLang } });
   }
 });
-
-export function getLangArgType () {
-  return { control: { type: 'inline-radio', options: getAvailableLanguages() } };
-}
-
-export function updateLang (lang) {
-  window.localStorage.setItem('I18N_LANG', lang);
-  setLanguage(lang);
-}
