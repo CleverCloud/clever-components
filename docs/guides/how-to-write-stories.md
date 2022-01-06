@@ -75,6 +75,33 @@ It provides several features to improve the whole writing/maintaining stories ex
 * Generate a simulation to show how a component behaves when going from one state to another
 * Override the argument types
 
+### Signature and types
+
+Here are the type definitions for the `makeStory` helper function:
+
+```ts
+function makeStory (...options: Array<MakeStoryOptions>) { /* ... */ }
+
+interface MakeStoryOptions {
+  // Set the name of the component
+  component?: string,
+  // Define the properties to set for each instance of the component
+  items?: object[] | (): Array<object>,
+  // Override the automatic name of the story
+  name?: string,
+  // Set a documentation/description for a story
+  docs?: string,
+  // Set some custom CSS for a story
+  css?: string,
+  // Use this instead of `items` if you want to define raw DOM directly
+  dom?: HTMLElement): HTMLElement,
+  // See Present state changes with simulations
+  simulations?: Array<(Array<HTMLElement>): void>,
+  // See Override argument types
+  argTypes?: object,
+}
+```
+
 ### Basic usage
 
 The `makeStory()` function will help you to present one or many instances of a given component.
@@ -252,7 +279,7 @@ export const storyWithSimulations = makeStory(conf, {
 * The `simulations` array can take as many async functions as you need, they will all be executed.
 * The `storyWait()` function can help you to wait before applying a state change to your components.
   * The first argument is the delay in milliseconds.
-  * The second argument is the callback, it will be called with the instances of the component.
+  * The second argument is the callback, it will be called with the instances of the component in the same order they were defined in the `items` property.
 
 ### Override argument types
 
