@@ -5,6 +5,7 @@ import '../atoms/cc-toggle.js';
 import '../atoms/cc-flex-gap.js';
 import '../molecules/cc-error.js';
 import './cc-env-var-editor-expert.js';
+import './cc-env-var-editor-json.js';
 import './cc-env-var-editor-simple.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
@@ -42,6 +43,7 @@ export class CcEnvVarForm extends LitElement {
       context: { type: String },
       error: { type: String, reflect: true },
       heading: { type: String, reflect: true },
+      parserOptions: { type: Object, attribute: 'parser-options' },
       readonly: { type: Boolean, reflect: true },
       restartApp: { type: Boolean, attribute: 'restart-app' },
       saving: { type: Boolean, reflect: true },
@@ -49,6 +51,7 @@ export class CcEnvVarForm extends LitElement {
       _currentVariables: { type: Array, attribute: false },
       _description: { type: String, attribute: false },
       _expertVariables: { type: Array, attribute: false },
+      _jsonVariables: { type: Array, attribute: false },
       _mode: { type: String, attribute: false },
       _isPristine: { type: Boolean, attribute: false },
     };
@@ -68,6 +71,9 @@ export class CcEnvVarForm extends LitElement {
 
     /** @type {string|null} Sets a text to be used as a header title. */
     this.heading = null;
+
+    /** @type {ParserOptions} Sets the options for the variables parser. */
+    this.parserOptions = { mode: null };
 
     /** @type {boolean} Sets `readonly` attribute input and hides buttons. */
     this.readonly = false;
@@ -102,6 +108,7 @@ export class CcEnvVarForm extends LitElement {
     return [
       { label: i18n('cc-env-var-form.mode.simple'), value: 'SIMPLE' },
       { label: i18n('cc-env-var-form.mode.expert'), value: 'EXPERT' },
+      { label: 'JSON', value: 'JSON' },
     ];
   }
 
@@ -155,6 +162,9 @@ export class CcEnvVarForm extends LitElement {
     if (mode === 'EXPERT') {
       this._expertVariables = this._currentVariables;
     }
+    else if (mode === 'JSON') {
+      this._jsonVariables = this._currentVariables;
+    }
     this._mode = mode;
   }
 
@@ -202,10 +212,12 @@ export class CcEnvVarForm extends LitElement {
       if (this.variables == null) {
         this._currentVariables = null;
         this._expertVariables = null;
+        this._jsonVariables = null;
       }
       else {
         this._currentVariables = this.variables.sort((a, b) => a.name.localeCompare(b.name));
         this._expertVariables = this.variables.sort((a, b) => a.name.localeCompare(b.name));
+        this._jsonVariables = this.variables.sort((a, b) => a.name.localeCompare(b.name));
       }
     }
     super.update(changedProperties);
@@ -238,6 +250,7 @@ export class CcEnvVarForm extends LitElement {
       <div class="overlay-container">
         <cc-expand class=${classMap({ hasOverlay })}>
           <cc-env-var-editor-simple
+            mode=${this.parserOptions.mode ?? ''}
             ?hidden=${this._mode !== 'SIMPLE'}
             .variables=${this._currentVariables}
             ?disabled=${isEditorDisabled}
@@ -248,12 +261,23 @@ export class CcEnvVarForm extends LitElement {
 
           <cc-env-var-editor-expert
             ?hidden=${this._mode !== 'EXPERT'}
+            .parserOptions=${this.parserOptions}
             .variables=${this._expertVariables}
             ?disabled=${isEditorDisabled}
             ?readonly=${this.readonly}
             @cc-env-var-editor-expert:change=${this._onChange}
             @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
           ></cc-env-var-editor-expert>
+
+          <cc-env-var-editor-json
+            ?hidden=${this._mode !== 'JSON'}
+            .parserOptions=${this.parserOptions}
+            .variables=${this._jsonVariables}
+            ?disabled=${isEditorDisabled}
+            ?readonly=${this.readonly}
+            @cc-env-var-editor-json:change=${this._onChange}
+            @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
+          ></cc-env-var-editor-json>
         </cc-expand>
 
         ${this.error === 'loading' ? html`

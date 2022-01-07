@@ -1,4 +1,4 @@
-import '../../src/env-var/cc-env-var-editor-simple.js';
+import '../../src/env-var/cc-env-var-editor-json.js';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
@@ -18,12 +18,16 @@ const VARIABLES_SIMPLE = [
 ];
 
 export default {
-  title: '🛠 Environment variables/<cc-env-var-editor-simple>',
-  component: 'cc-env-var-editor-simple',
+  title: '🛠 Environment variables/<cc-env-var-editor-json>',
+  component: 'cc-env-var-editor-json',
 };
 
 const conf = {
-  component: 'cc-env-var-editor-simple',
+  component: 'cc-env-var-editor-json',
+  // language=CSS
+  css: `cc-env-var-editor-json {
+    margin-bottom: 1rem;
+  }`,
 };
 
 export const defaultStory = makeStory(conf, {
@@ -59,7 +63,7 @@ export const dataLoadedWithReadonly = makeStory(conf, {
 });
 
 export const dataLoadedWithStrictMode = makeStory(conf, {
-  items: [{ variables: VARIABLES_FULL, mode: 'strict' }],
+  items: [{ variables: VARIABLES_FULL, parserOptions: { mode: 'strict' } }],
 });
 
 enhanceStoriesNames({

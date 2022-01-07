@@ -6,11 +6,19 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+* New component:
+  * `<cc-env-var-editor-json>`
+
 * `<cc-datetime-relative>`: fix first initialization of datetime attribute/property
 * `<cc-img>`: fix type for `skeleton` (boolean)
 * `<cc-map-marker-*>`: fix the way we document readonly properties (anchor, size, tooltip)
 * `<cc-zone-input>`: fix type for `_hovered` (string|null)
 * Storybook: fix logo URL
+* `<cc-env-var-form>`: add JSON mode
+* `<cc-env-var-editor-expert>`: keeping only valid values when leaving expert mode
+* `<cc-env-var-editor-simple>`: add a strict mode
+* `<cc-env-var-create>`: add a strict mode
+* `<cc-error>`: add a notice mode
 
 ### For devs
 

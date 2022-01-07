@@ -215,6 +215,7 @@ export const translations = {
   'cc-env-var-create.create-button': `Ajouter`,
   'cc-env-var-create.errors.already-defined-name': ({ name }) => sanitize`Le nom <code>${name}</code> est déjà défini`,
   'cc-env-var-create.errors.invalid-name': ({ name }) => sanitize`Le nom <code>${name}</code> n'est pas valide`,
+  'cc-env-var-create.info.java-prop': ({ name }) => sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-format">plus de détails</a>`,
   'cc-env-var-create.name.placeholder': `NOM_DE_LA_VARIABLE`,
   'cc-env-var-create.value.placeholder': `valeur de la variable`,
   //#endregion
@@ -222,11 +223,23 @@ export const translations = {
   'cc-env-var-editor-expert.errors.duplicated-name': ({ name }) => sanitize`attention, le nom <code>${name}</code> est déjà défini`,
   'cc-env-var-editor-expert.errors.invalid-line': () => sanitize`cette ligne est invalide, le format correct est : <code>NOM="VALEUR"</code>`,
   'cc-env-var-editor-expert.errors.invalid-name': ({ name }) => sanitize`Le nom <code>${name}</code> n'est pas valide`,
+  'cc-env-var-editor-expert.errors.invalid-name-strict': ({ name }) => sanitize`Le nom <code>${name}</code> n'est pas valide en mode strict`,
   'cc-env-var-editor-expert.errors.invalid-value': () => sanitize`la valeur est invalide, si vous utilisez des guillements, vous devez les échapper comme ceci : <code>\\"</code> ou alors mettre toute la valeur entre guillemets.`,
   'cc-env-var-editor-expert.errors.line': `ligne`,
   'cc-env-var-editor-expert.errors.unknown': `Erreur inconnue`,
-  'cc-env-var-editor-expert.placeholder': `NOM_DE_LA_VARIABLE="valeur de la variable"`,
-  'cc-env-var-editor-expert.placeholder-readonly': `Il n'y a pas de variable.`,
+  'cc-env-var-editor-expert.example': () => sanitize`Format : <code>NOM_DE_LA_VARIABLE="valeur de la variable"</code> <br> Chaque variable doit être séparée par des sauts de ligne, <a href="https://clever-cloud.com/doc/develop/#environment-variables-rules-and-format">en savoir plus</a>.`,
+  'cc-env-var-editor-expert.info.java-prop': ({ name }) => sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-format">plus de détails</a>`,
+  //#endregion
+  //#region cc-env-var-editor-json
+  'cc-env-var-editor-json.errors.duplicated-name': ({ name }) => sanitize`attention, le nom <code>${name}</code> est déjà défini`,
+  'cc-env-var-editor-json.errors.invalid-json': `Le Json entré est invalide.`,
+  'cc-env-var-editor-json.errors.invalid-json-entry': `Le Json entré est un tableau d'objets JSON valide mais toutes les valeurs des propriétés doivent être de type string. Ex : '[{ "name": "THE_NAME", "value": "the value" }]'`,
+  'cc-env-var-editor-json.errors.invalid-json-format': `Le Json entré est valide mais n'est pas au bon format. Le JSON doit être un tableau d'objets`,
+  'cc-env-var-editor-json.errors.invalid-name': ({ name }) => sanitize`Le nom <code>${name}</code> n'est pas valide`,
+  'cc-env-var-editor-json.errors.invalid-name-strict': ({ name }) => sanitize`Le nom <code>${name}</code> n'est pas valide en mode strict`,
+  'cc-env-var-editor-json.errors.unknown': `Erreur inconnue`,
+  'cc-env-var-editor-json.example': () => sanitize`Format : <code>{ "name": "NOM_DE_LA_VARIABLE", "value": "valeur de la variable" }</code> <br> Tableau d'objets respectant le format ci-dessus, <a href="https://clever-cloud.com/doc/develop/#environment-variables-rules-and-format">en savoir plus</a>.`,
+  'cc-env-var-editor-json.info.java-prop': ({ name }) => sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-format">plus de détails</a>`,
   //#endregion
   //#region cc-env-var-editor-simple
   'cc-env-var-editor-simple.empty-data': `Il n'y a pas de variable.`,

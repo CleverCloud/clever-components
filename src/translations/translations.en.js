@@ -202,6 +202,7 @@ export const translations = {
   'cc-env-var-create.create-button': `Add`,
   'cc-env-var-create.errors.already-defined-name': ({ name }) => sanitize`Name <code>${name}</code> is already defined`,
   'cc-env-var-create.errors.invalid-name': ({ name }) => sanitize`Name <code>${name}</code> is invalid`,
+  'cc-env-var-create.info.java-prop': ({ name }) => sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-format">more details</a>`,
   'cc-env-var-create.name.placeholder': `VARIABLE_NAME`,
   'cc-env-var-create.value.placeholder': `variable value`,
   //#endregion
@@ -209,11 +210,23 @@ export const translations = {
   'cc-env-var-editor-expert.errors.duplicated-name': ({ name }) => sanitize`be careful, the name <code>${name}</code> is already defined`,
   'cc-env-var-editor-expert.errors.invalid-line': () => sanitize`this line is not valid, the correct pattern is: <code>NAME="VALUE"</code>`,
   'cc-env-var-editor-expert.errors.invalid-name': ({ name }) => sanitize`<code>${name}</code> is not a valid variable name`,
+  'cc-env-var-editor-expert.errors.invalid-name-strict': ({ name }) => sanitize`<code>${name}</code> is not a valid variable name`,
   'cc-env-var-editor-expert.errors.invalid-value': () => sanitize`the value is not valid, if you use quotes, you need to escape them like this: <code>\\"</code> or quote the whole value.`,
   'cc-env-var-editor-expert.errors.line': `line`,
   'cc-env-var-editor-expert.errors.unknown': `Unknown Error`,
-  'cc-env-var-editor-expert.placeholder': `VARIABLE_NAME="variable value"`,
-  'cc-env-var-editor-expert.placeholder-readonly': `There are no variables.`,
+  'cc-env-var-editor-expert.example': () => sanitize`Format: <code>VARIABLE_NAME="variable value"</code> <br> Every variable must be separated by a line break, <a href="https://clever-cloud.com/doc/develop/#environment-variables-rules-and-format">learn more</a>.`,
+  'cc-env-var-editor-expert.info.java-prop': ({ name }) => sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-format">more details</a>`,
+  //#endregion
+  //#region cc-env-var-editor-json
+  'cc-env-var-editor-json.errors.duplicated-name': ({ name }) => sanitize`be careful, the name <code>${name}</code> is already defined`,
+  'cc-env-var-editor-json.errors.invalid-json': `The JSON entered is invalid`,
+  'cc-env-var-editor-json.errors.invalid-json-entry': () => sanitize`The input was a valid Json array of objects but all entries must have properties <code>name</code> and <code>value</code> of type string. Ex: <code>[{ "name": "THE_NAME", "value": "the value" }]</code>`,
+  'cc-env-var-editor-json.errors.invalid-json-format': `The input was valid JSON but it does not follow the correct format. It must be an array of objects`,
+  'cc-env-var-editor-json.errors.invalid-name': ({ name }) => sanitize`<code>${name}</code> is not a valid variable name`,
+  'cc-env-var-editor-json.errors.invalid-name-strict': ({ name }) => sanitize`<code>${name}</code> is not a valid variable name in strict mode`,
+  'cc-env-var-editor-json.errors.unknown': `Unknown Error`,
+  'cc-env-var-editor-json.example': () => sanitize`Format: <code>{ "name": "VARIABLE_NAME", "value": "variable value" }</code> <br> Array of objects following the above format, <a href="https://clever-cloud.com/doc/develop/#environment-variables-rules-and-format">learn more</a>.`,
+  'cc-env-var-editor-json.info.java-prop': ({ name }) => sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-format">more details</a>`,
   //#endregion
   //#region cc-env-var-editor-simple
   'cc-env-var-editor-simple.empty-data': `There are no variables.`,

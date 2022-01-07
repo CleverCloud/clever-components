@@ -37,9 +37,28 @@ export const confirm = makeStory(conf, {
   items: baseItems.map((p) => ({ ...p, mode: 'confirm' })),
 });
 
+export const notice = makeStory(conf, {
+  items: baseItems.map((p) => ({ ...p, notice: true })),
+});
+
+export const noticeInfo = makeStory(conf, {
+  items: baseItems.map((p) => ({ ...p, mode: 'info', notice: true })),
+});
+
+export const noticeLoading = makeStory(conf, {
+  items: baseItems.map((p) => ({ ...p, mode: 'loading', notice: true })),
+});
+
+export const noticeConfirm = makeStory(conf, {
+  items: baseItems.map((p) => ({ ...p, mode: 'confirm', notice: true })),
+});
+
 enhanceStoriesNames({
   defaultStory,
   info,
   loading,
   confirm,
+  notice,
+  noticeInfo,
+  noticeConfirm,
 });

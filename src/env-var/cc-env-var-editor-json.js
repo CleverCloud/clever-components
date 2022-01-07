@@ -1,13 +1,12 @@
-import '../atoms/cc-input-text.js';
-import '../molecules/cc-error.js';
-import { ERROR_TYPES, parseRaw, toNameEqualsValueString } from '@clevercloud/client/esm/utils/env-vars.js';
+import { ERROR_TYPES, parseRawJson, toJson } from '@clevercloud/client/esm/utils/env-vars.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
+import '../atoms/cc-input-text.js';
+import '../molecules/cc-error.js';
 import { defaultThemeStyles } from '../styles/default-theme.js';
 import { linkStyles } from '../templates/cc-link.js';
 
-/** @type {Variable[]} */
 const SKELETON_VARIABLES = [
   { name: 'VARIABLE_ONE', value: '' },
   { name: 'VARIABLE_FOOBAR', value: '' },
@@ -21,13 +20,13 @@ const SKELETON_VARIABLES = [
  */
 
 /**
- * A high level environment variable editor to create/edit/delete all variables at once as a big string (properly parsed with validation and error messages).
+ * A high level environment variable editor to create/edit/delete all variables at once as a JSON text (properly parsed with validation and error messages).
  *
- * @cssdisplay block / none (with `[hidden]`)
+ * @cssdisplay block
  *
- * @event {CustomEvent<Variable[]>} cc-env-var-editor-expert:change - Fires the new list of variables whenever something changes in the list.
+ * @event {CustomEvent<Variable[]>} cc-env-var-editor-json:change - Fires the new list of variables whenever something changes in the list.
  */
-export class CcEnvVarEditorExpert extends LitElement {
+export class CcEnvVarEditorJson extends LitElement {
 
   static get properties () {
     return {
@@ -35,9 +34,10 @@ export class CcEnvVarEditorExpert extends LitElement {
       parserOptions: { type: Object },
       readonly: { type: Boolean },
       variables: { type: Array },
-      _errors: { type: Array, attribute: false },
+      _errors: { type: Array },
+      _formattedErrors: { type: Array, attribute: false },
       _skeleton: { type: Boolean, attribute: false },
-      _variablesAsText: { type: Array, attribute: false },
+      _variablesAsJson: { type: String, attribute: false },
     };
   }
 
@@ -53,7 +53,7 @@ export class CcEnvVarEditorExpert extends LitElement {
     /** @type {boolean} Sets `readonly` attribute on main input and hides buttons. */
     this.readonly = false;
 
-    /** @type {Variable[]|null} Sets the list of variables */
+    /** @type {Variable[]|null} Sets the list of variables. */
     this.variables = null;
 
     /** @type {ParseError[]} */
@@ -61,62 +61,58 @@ export class CcEnvVarEditorExpert extends LitElement {
 
     /** @type {boolean} */
     this._skeleton = false;
-
-    /** @type {string} */
-    this._variablesAsText = '';
   }
 
   _setErrors (rawErrors) {
-    this._errors = rawErrors.map(({ type, name, pos }) => {
+    this._errors = rawErrors.map(({ type, name }) => {
       if (type === ERROR_TYPES.INVALID_NAME) {
         return {
-          line: pos.line,
-          msg: i18n('cc-env-var-editor-expert.errors.invalid-name', { name }),
+          msg: i18n('cc-env-var-editor-json.errors.invalid-name', { name }),
           isNotice: false,
         };
       }
       if (type === ERROR_TYPES.DUPLICATED_NAME) {
         return {
-          line: pos.line,
-          msg: i18n('cc-env-var-editor-expert.errors.duplicated-name', { name }),
+          msg: i18n('cc-env-var-editor-json.errors.duplicated-name', { name }),
           isNotice: false,
         };
       }
-      if (type === ERROR_TYPES.INVALID_LINE) {
+      if (type === ERROR_TYPES.INVALID_JSON) {
         return {
-          line: pos.line,
-          msg: i18n('cc-env-var-editor-expert.errors.invalid-line'),
+          msg: i18n('cc-env-var-editor-json.errors.invalid-json'),
           isNotice: false,
         };
       }
-      if (type === ERROR_TYPES.INVALID_VALUE) {
+      if (type === ERROR_TYPES.INVALID_JSON_FORMAT) {
         return {
-          line: pos.line,
-          msg: i18n('cc-env-var-editor-expert.errors.invalid-value'),
+          msg: i18n('cc-env-var-editor-json.errors.invalid-json-format'),
+          isNotice: false,
+        };
+      }
+      if (type === ERROR_TYPES.INVALID_JSON_ENTRY) {
+        return {
+          msg: i18n('cc-env-var-editor-json.errors.invalid-json-entry'),
           isNotice: false,
         };
       }
       if (type === ERROR_TYPES.INVALID_NAME_STRICT) {
         return {
-          line: pos.line,
-          msg: i18n('cc-env-var-editor-expert.errors.invalid-name-strict', { name }),
+          msg: i18n('cc-env-var-editor-json.errors.invalid-name-strict', { name }),
           isNotice: false,
         };
       }
       if (type === ERROR_TYPES.JAVA_INFO) {
         return {
-          line: pos.line,
-          msg: i18n('cc-env-var-editor-expert.info.java-prop', { name }),
+          msg: i18n('cc-env-var-editor-json.info.java-prop', { name }),
           isNotice: true,
         };
       }
-
-      return { line: '?', msg: i18n('cc-env-var-editor-expert.errors.unknown') };
+      return { line: '?', msg: i18n('cc-env-var-editor-json.errors.unknown') };
     });
   }
 
   _onInput ({ detail: value }) {
-    const { variables, errors } = parseRaw(value, this.parserOptions);
+    const { variables, errors } = parseRawJson(value, this.parserOptions);
     this._setErrors(errors);
     dispatchCustomEvent(this, 'change', variables);
   }
@@ -127,25 +123,25 @@ export class CcEnvVarEditorExpert extends LitElement {
       const vars = this._skeleton ? SKELETON_VARIABLES : this.variables;
       const filteredVariables = vars
         .filter(({ isDeleted }) => !isDeleted);
-      this._variablesAsText = toNameEqualsValueString(filteredVariables);
+      this._variablesAsJson = toJson(filteredVariables);
       this._setErrors([]);
     }
     super.update(changedProperties);
   }
 
   render () {
-    return html`
 
+    return html`
       ${!this.readonly
         ? html`
           <div class="example">
-            ${i18n('cc-env-var-editor-expert.example')}
+            ${i18n('cc-env-var-editor-json.example')}
           </div>
         ` : ''}
       <cc-input-text
         multi
         clipboard
-        value=${this._variablesAsText}
+        value=${this._variablesAsJson}
         ?disabled=${this.disabled}
         ?readonly=${this.readonly}
         ?skeleton=${this._skeleton}
@@ -154,13 +150,12 @@ export class CcEnvVarEditorExpert extends LitElement {
 
       ${this._errors.length > 0 ? html`
         <div class="error-list">
-          ${this._errors.map(({ line, msg, isNotice }) => html`
+          ${this._errors.map(({ msg, isNotice }) => html`
             ${!isNotice ? html`
-              <cc-error><strong>${i18n('cc-env-var-editor-expert.errors.line')} ${line}:</strong> ${msg}</cc-error>
+              <cc-error> ${msg}</cc-error>
             ` : ''}
             ${isNotice ? html`
-              <cc-error notice><strong>${i18n('cc-env-var-editor-expert.errors.line')} ${line}:</strong> ${msg}
-              </cc-error>
+              <cc-error notice>${msg}</cc-error>
             ` : ''}
           `)}
         </div>
@@ -193,7 +188,6 @@ export class CcEnvVarEditorExpert extends LitElement {
           padding-bottom: 1em;
         }
 
-
         /* i18n error message may contain <code> tags */
         cc-error code,
         .example code {
@@ -208,4 +202,4 @@ export class CcEnvVarEditorExpert extends LitElement {
 
 }
 
-window.customElements.define('cc-env-var-editor-expert', CcEnvVarEditorExpert);
+window.customElements.define('cc-env-var-editor-json', CcEnvVarEditorJson);

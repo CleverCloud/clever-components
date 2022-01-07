@@ -69,9 +69,9 @@ export function makeStory (...configs) {
         // actions callbacks are provided on the storyArgs object but their names differ from our events
         // our events => "cc-component:event-name"
         // the equivalent callback name => "onCcComponentEventName"
-        const [_, actionCallback] = Object.entries(storyArgs).find(([eventNameCamelCase]) => {
+        const actionCallback = Object.entries(storyArgs).find(([eventNameCamelCase]) => {
           return normalize(eventNameCamelCase) === 'on' + normalize(eventName);
-        }) ?? [];
+        })?.[1];
 
         if (actionCallback != null) {
           container.addEventListener(eventName, (e) => actionCallback(JSON.stringify(e.detail)));
