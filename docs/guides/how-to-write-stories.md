@@ -14,7 +14,7 @@ This is also a great way for users to recognize patterns in our components.
 * Think about what happens if it fails (error in general).
 * Think about what happens while we're waiting for the data (loading, updating...).
 * Think about what happens if there are no data.
-* Try to show off a time-simulation like "loading" then "data is loaded". 
+* Try to show off a time-simulation like "loading" then "data is loaded".
 
 ## Generic names
 
@@ -259,7 +259,7 @@ export const storyWithSimulations = makeStory(conf, {
 If you want, you can override the argument types of the story to improve the controls with the `argTypes` property.
 See https://storybook.js.org/docs/web-components/api/argtypes for more details.
 
-Here's an example where we provide a 2-choice radio input for the `one` property: 
+Here's an example where we provide a 2-choice radio input for the `one` property:
 
 ```js
 export const storyWithSimulations = makeStory(conf, {
