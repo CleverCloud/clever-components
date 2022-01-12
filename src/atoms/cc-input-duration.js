@@ -126,9 +126,9 @@ export class CcInputDuration extends LitElement {
 
   _onSimpleInput (e) {
     const durationObj = {
-      years: this.shadowRoot.querySelector('.input-years').valueAsNumber || 0,
-      months: this.shadowRoot.querySelector('.input-months').valueAsNumber || 0,
-      days: this.shadowRoot.querySelector('.input-days').valueAsNumber || 0,
+      years: this.shadowRoot.querySelector('#input-years').valueAsNumber || 0,
+      months: this.shadowRoot.querySelector('#input-months').valueAsNumber || 0,
+      days: this.shadowRoot.querySelector('#input-days').valueAsNumber || 0,
     };
 
     this.value = serializeDuration(durationObj);
@@ -151,21 +151,23 @@ export class CcInputDuration extends LitElement {
         <label for=${this._uniqueName}>${this.label}</label>
       ` : ''}
 
-      <div class="meta-input ${classMap({ expert: this.expert, error: this._isInvalid() })}" @keypress=${this._onKeyEvent} @keydown=${this._onKeyEvent}>
-        <div class="expert-wrapper">
-          <input type="text" .value="${expertValue}" @input=${this._onExpertInput} @focus=${this.focus} @blur=${this.blur}>
+      <div class="meta-input ${classMap({ expert: this.expert, error: this._isInvalid(), skeleton: this.skeleton })}" @keypress=${this._onKeyEvent} @keydown=${this._onKeyEvent}>
+        <div class="expert-wrapper ${classMap({ skeleton: this.skeleton })}">
+          <input type="text" .value="${expertValue}" @input=${this._onExpertInput} @focus=${this.focus} @blur=${this.blur} ?disabled=${this.disabled || this.skeleton}>
         </div>
-        <div class="simple-wrapper">
-          <input type="number" class="input-years" .value="${years}" ?readonly=${this.readonly} ?disabled=${this.disabled} @input=${this._onSimpleInput} @focus=${this.focus} @blur=${this.blur}>
-          <span class="unit-char">Y</span>
-          <input type="number" class="input-months" .value="${months}" ?readonly=${this.readonly} ?disabled=${this.disabled} @input=${this._onSimpleInput} @focus=${this.focus} @blur=${this.blur}>
-          <span class="unit-char">M</span>
-          <input type="number" class="input-days" .value="${theDays}" ?readonly=${this.readonly} ?disabled=${this.disabled} @input=${this._onSimpleInput} @focus=${this.focus} @blur=${this.blur}>
-          <span class="unit-char">D</span>
+        <div class="simple-wrapper ${classMap({ skeleton: this.skeleton })}">
+          <input type="number" id="input-years" .value="${years}" ?readonly=${this.readonly} ?disabled=${this.disabled || this.skeleton} @input=${this._onSimpleInput} @focus=${this.focus} @blur=${this.blur}>
+          <label class="unit-char" for="input-years">Y</label>
+          <input type="number" id="input-months" .value="${months}" ?readonly=${this.readonly} ?disabled=${this.disabled || this.skeleton} @input=${this._onSimpleInput} @focus=${this.focus} @blur=${this.blur}>
+          <label class="unit-char" for="input-months">M</label>
+          <input type="number" id="input-days" .value="${theDays}" ?readonly=${this.readonly} ?disabled=${this.disabled || this.skeleton} @input=${this._onSimpleInput} @focus=${this.focus} @blur=${this.blur}>
+          <label class="unit-char" for="input-days">D</label>
         </div>
         <div class="ring"></div>
-        <button class="btn" @click=${this._switchMode} @focus=${this.focus} ?disabled=${this.disabled} title=${i18n('cc-input-duration.switch.' + (this.expert ? 'simple' : 'expert'))}>
+        <button class="btn" @click=${this._switchMode} @focus=${this.focus} ?disabled=${this.disabled || this.skeleton} title=${i18n('cc-input-duration.switch.' + (this.expert ? 'simple' : 'expert'))}>
+        ${!this.skeleton ? html`
           <img class="btn-img" src=${this.expert ? keyboardExpertSvg : keyboardSvg} alt="">
+        ` : ''}
         </button>
       </div>
     `;
@@ -352,8 +354,15 @@ export class CcInputDuration extends LitElement {
           cursor: progress;
         }
 
-        .skeleton input {
+        .skeleton input,
+        .skeleton label,
+        .skeleton button {
           color: transparent;
+          cursor: progress;
+        }
+
+        .skeleton button:hover {
+          background: #eee;
         }
 
         /* RESET */
