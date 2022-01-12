@@ -21,7 +21,6 @@ const conf = {
   css: `
     cc-input-duration {
       margin: 0.5rem;
-      width: 15em;
     }
   `,
 };

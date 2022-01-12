@@ -1,4 +1,3 @@
-import './cc-input-number.js';
 import './cc-input-text.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
@@ -6,17 +5,31 @@ import { dispatchCustomEvent } from '../lib/events.js';
 import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
-const REGEX = /P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)W)?(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?$/;
+const DURATION_REGEX = /P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)W)?(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?$/;
 const keyboardSvg = new URL('../assets/keyboard.svg', import.meta.url).href;
 const keyboardExpertSvg = new URL('../assets/keyboard-inverted.svg', import.meta.url).href;
 
+function parseDuration (durationString) {
+  const [, years = 0, months = 0, weeks = 0, days = 0, hours = 0, minutes = 0, seconds = 0] = durationString.match(DURATION_REGEX) ?? [];
+
+  return { years, months, weeks, days, hours, minutes, seconds };
+}
+
+function validateDuration (durationString) {
+  return DURATION_REGEX.test(durationString);
+}
+
+function serializeDuration ({ years, months, days }) {
+  const yearsPart = years > 0 ? `${years}Y` : '';
+  const monthsPart = months > 0 ? `${months}M` : '';
+  const daysPart = days > 0 ? `${days}D` : '';
+
+  return `P${yearsPart}${monthsPart}${daysPart}`;
+}
+
+
 /**
- * A custom number input with controls mode.
- *
- * ## Technical details
- *
- * * Uses a native `<input>` with a type `number` without native arrows mode
- * * The `controls` feature enables the "arrow" mode but with an increment/decrement button on the side of the input
+ * A custom duration input with simple and expert modes.
  *
  * @cssdisplay inline-block
  *
@@ -27,32 +40,26 @@ export class CcInputDuration extends LitElement {
 
   static get properties () {
     return {
-      controls: { type: Boolean },
       disabled: { type: Boolean, reflect: true },
+      expert: { type: Boolean, reflect: true },
       label: { type: String },
-      name: { type: String, reflect: true },
       readonly: { type: Boolean, reflect: true },
       skeleton: { type: Boolean, reflect: true },
-      value: { type: Number },
-      expert: { type: Boolean, reflect: true },
-      _invalid: { type: Boolean, attribute: false },
+      value: { type: String },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {boolean} Sets the control mode with a decrement and increment buttons. */
-    this.controls = false;
-
     /** @type {boolean} Sets `disabled` attribute on inner native `<input>` element. */
     this.disabled = false;
 
+    /** @type {boolean} Displays the expert mode, where users need to input ISO8601 duration */
+    this.expert = false;
+
     /** @type {string|null} Sets label for the input. */
     this.label = null;
-
-    /** @type {string|null} Sets `name` attribute on inner native `<input>` "expert" element. */
-    this.name = null;
 
     /** @type {boolean} Sets `readonly` attribute on inner native `<input>` elements. */
     this.readonly = false;
@@ -60,14 +67,11 @@ export class CcInputDuration extends LitElement {
     /** @type {boolean} Enables skeleton screen UI pattern (loading hint). */
     this.skeleton = false;
 
-    /** @type {number|null} Sets `value` attribute on inner native "expert" input number element. */
+    /** @type {string|null} Sets `value` attribute on inner native "expert" input number element. */
     this.value = null;
 
-    /** @type {boolean} Displays the expert mode, where users need to input ISO8601 duration */
-    this.expert = false;
-
     /** @type {boolean} */
-    this._invalid = false;
+    this._invalid = false; // TODO: implement css for this.
 
     // use this unique name for isolation (Safari seems to have a bug)
     /** @type {string} */
@@ -75,7 +79,8 @@ export class CcInputDuration extends LitElement {
   }
 
   /**
-   * Triggers focus on the inner `<input>/<textarea>` element.
+   * Triggers focus on the inner `<input>` elements.
+   * TODO: fix this using a property.
    */
   focus () {
     this.shadowRoot.querySelector('.meta-input').classList.add('focus');
@@ -85,17 +90,11 @@ export class CcInputDuration extends LitElement {
     this.shadowRoot.querySelector('.meta-input').classList.remove('focus');
   }
 
-  _onExpertInput (e) {
-    this.value = e.target.value;
-    this._invalid = !REGEX.test(this.value);
-
-    if (!this._invalid) {
-      dispatchCustomEvent(this, 'input', this.value);
-    }
+  _isInvalid () {
+    return !validateDuration(this.value);
   }
 
   _onFocus (e) {
-    console.log(`focus on ${e.target}`);
     if (this.readonly) {
       e.target.select();
     }
@@ -117,16 +116,22 @@ export class CcInputDuration extends LitElement {
     }
   }
 
+  _onExpertInput (e) {
+    this.value = e.target.value;
+
+    if (!this._isInvalid()) {
+      dispatchCustomEvent(this, 'input', this.value);
+    }
+  }
+
   _onSimpleInput (e) {
-    const years = this.shadowRoot.querySelector('.input-years').value || 0;
-    const months = this.shadowRoot.querySelector('.input-months').value || 0;
-    const days = this.shadowRoot.querySelector('.input-days').value || 0;
+    const durationObj = {
+      years: this.shadowRoot.querySelector('.input-years').valueAsNumber || 0,
+      months: this.shadowRoot.querySelector('.input-months').valueAsNumber || 0,
+      days: this.shadowRoot.querySelector('.input-days').valueAsNumber || 0,
+    };
 
-    const yearsPart = years > 0 ? `${years}Y` : '';
-    const monthsPart = months > 0 ? `${months}M` : '';
-    const daysPart = days > 0 ? `${days}D` : '';
-
-    this.value = `P${yearsPart}${monthsPart}${daysPart}`;
+    this.value = serializeDuration(durationObj);
     dispatchCustomEvent(this, 'input', this.value);
   }
 
@@ -134,51 +139,34 @@ export class CcInputDuration extends LitElement {
     this.expert = !this.expert;
   }
 
-  // updated and not udpate because we need this._input before
-  updated (changedProperties) {
-    if (changedProperties.has('value')) {
-      this._invalid = !REGEX.test(this.value);
-    }
-    super.update(changedProperties);
-  }
-
   render () {
+
+    const expertValue = this.value ?? '';
+    const { years, months, weeks, days } = (this.value != null) ? parseDuration(this.value) : {};
+    const theDays = weeks * 7 + days;
+
     return html`
       ${this.label != null ? html`
         <label for=${this._uniqueName}>${this.label}</label>
       ` : ''}
 
-      <div class="meta-input">
-      ${this.expert ? this._renderExpert() : this._renderSimple()}
-      <div class="ring"></div>
-      <button class="btn" @click=${this._switchMode} ?disabled=${this.disabled}>
-      <img class="btn-img ${this.expert ? 'expert' : ''}" src=${this.expert ? keyboardExpertSvg : keyboardSvg} alt="">
-      </button>
+      <div class="meta-input ${classMap({ expert: this.expert })}" @keypress=${this._onKeyEvent} @keydown=${this._onKeyEvent}>
+        <div class="expert-wrapper">
+          <input type="text" value="${expertValue}" @input=${this._onExpertInput} @focus=${this.focus} @blur=${this.blur}>
+        </div>
+        <div class="simple-wrapper">
+          <input type="number" class="input-years" value="${years}" ?readonly=${this.readonly} ?disabled=${this.disabled} @input=${this._onSimpleInput} @focus=${this.focus} @blur=${this.blur}>
+          <span class="unit-char">Y</span>
+          <input type="number" class="input-months" value="${months}" ?readonly=${this.readonly} ?disabled=${this.disabled} @input=${this._onSimpleInput} @focus=${this.focus} @blur=${this.blur}>
+          <span class="unit-char">M</span>
+          <input type="number" class="input-days" value="${theDays}" ?readonly=${this.readonly} ?disabled=${this.disabled} @input=${this._onSimpleInput} @focus=${this.focus} @blur=${this.blur}>
+          <span class="unit-char">D</span>
+        </div>
+        <div class="ring"></div>
+        <button class="btn" @click=${this._switchMode} ?disabled=${this.disabled}>
+          <img class="btn-img" src=${this.expert ? keyboardExpertSvg : keyboardSvg} alt="">
+        </button>
       </div>
-    `;
-  }
-
-  _renderExpert () {
-    const value = (this.value != null) ? this.value : '';
-
-    return html`
-    <div class="expert-wrapper">
-    <cc-input-text value="${value}" focus @cc-input-text:input=${this._onExpertInput} @focus=${this.focus} @blur=${this.blur}></cc-input-text>
-    </div>
-    `;
-  }
-
-  _renderSimple () {
-    const [, years, months, weeks, days] = (this.value != null) ? this.value.match(REGEX) : [];
-
-    const theDays = parseInt(weeks || 0) * 7 + parseInt(days || 0);
-
-    return html`
-    <div class="simple-wrapper">
-      <cc-input-number class="input-years" value="${years || 0}" ?readonly=${this.readonly} ?disabled=${this.disabled} @cc-input-number:input=${this._onSimpleInput} @focus=${this.focus} @blur=${this.blur}></cc-input-number><span class="unit-char">Y</span>
-      <cc-input-number class="input-months" value="${months || 0}" ?readonly=${this.readonly} ?disabled=${this.disabled} @cc-input-number:input=${this._onSimpleInput} @focus=${this.focus} @blur=${this.blur}></cc-input-number><span class="unit-char">M</span>
-      <cc-input-number class="input-days" value="${theDays}" ?readonly=${this.readonly} ?disabled=${this.disabled} @cc-input-number:input=${this._onSimpleInput} @focus=${this.focus} @blur=${this.blur}></cc-input-number><span class="unit-char">D</span>
-    </div>
     `;
   }
 
@@ -190,17 +178,19 @@ export class CcInputDuration extends LitElement {
       css`
         :host {
           display: inline-block;
-          min-width: 7em;
+          /*min-width: 7em;*/
         }
 
         .meta-input {
           box-sizing: border-box;
-          display: inline-flex;
+          display: grid;
           overflow: visible;
           /* link to position:absolute of .ring */
           position: relative;
           vertical-align: top;
           width: 100%;
+          grid-template-columns: min-content min-content;
+          grid-template-areas: "input button";
         }
 
         label {
@@ -210,16 +200,65 @@ export class CcInputDuration extends LitElement {
         }
 
         cc-input-text {
-          --wrapped: 1;
           flex-grow: 1;
           margin-left: .1em;
           width:100%;
         }
 
-        cc-input-number {
+        /* RESET */
+        input {
+          /* remove Safari box shadow */
+          -webkit-appearance: none;
+          background: #fff;
+          border: 1px solid #000;
+          box-sizing: border-box;
+          display: block;
+          font-family: monospace;
+          font-size: unset;
+          margin: 0;
+          padding: 0;
+          resize: none;
+          width: 100%;
+        }
+
+        /* remove spinner firefox */
+        input[type="number"] {
+          -moz-appearance: textfield;
+        }
+
+        /* remove spinner safari */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+
+        /* BASE */
+        input {
+          border: none;
           flex-grow: 1;
-          --wrapped: 1;
-          --cc-input-number-align: right;
+          background: none;
+          border: none;
+          font-family: var(--cc-ff-monospace);
+          font-size: 0.85em;
+          height: 2em;
+          line-height: 2em;
+          overflow: hidden;
+        }
+
+        input[type="number"] {
+          width: 4ch;
+          text-align: right;
+        }
+
+        input[type="text"] {
+          padding-left: .6em;
+        }
+
+        /* STATES */
+        input:focus,
+        input:active {
+          outline: 0;
         }
 
         .unit-char {
@@ -236,12 +275,13 @@ export class CcInputDuration extends LitElement {
           margin-right: 0;
         }
 
-        cc-input-number:focus + .unit-char {
+        input:focus + .unit-char {
           color: #777;
           font-weight: bold;
         }
 
-        .simple-wrapper,.expert-wrapper {
+        .simple-wrapper,
+        .expert-wrapper {
           box-sizing: border-box;
           display: inline-flex;
           overflow: visible;
@@ -250,7 +290,14 @@ export class CcInputDuration extends LitElement {
           justify-content: center;
           padding: 0;
           border-radius: 0.25em;
-          --hide-ring: 1;
+          position: relative;
+          z-index: 1;
+          grid-area: input;
+        }
+
+        .meta-input.expert .simple-wrapper,
+        .meta-input:not(.expert) .expert-wrapper {
+          visibility: hidden;
         }
 
         /* We use this empty .ring element to decorate the input with background, border, box-shadows... */
@@ -327,6 +374,7 @@ export class CcInputDuration extends LitElement {
           margin: 0.2em;
           width: 1.6em;
           z-index: 2;
+          grid-area: button;
         }
 
         .btn:focus {
