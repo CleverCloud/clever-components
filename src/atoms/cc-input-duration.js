@@ -10,7 +10,9 @@ const keyboardSvg = new URL('../assets/keyboard.svg', import.meta.url).href;
 const keyboardExpertSvg = new URL('../assets/keyboard-inverted.svg', import.meta.url).href;
 
 function parseDuration (durationString) {
-  const [, years = 0, months = 0, weeks = 0, days = 0, hours = 0, minutes = 0, seconds = 0] = durationString.match(DURATION_REGEX) ?? [];
+  const matches = durationString.match(DURATION_REGEX)?.slice(1) ?? Array.from({ length: 7 });
+  const [years, months, weeks, days, hours, minutes, seconds] = matches
+    .map((s) => (s != null) ? parseInt(s) : 0) ?? [];
 
   return { years, months, weeks, days, hours, minutes, seconds };
 }
@@ -69,9 +71,6 @@ export class CcInputDuration extends LitElement {
 
     /** @type {string|null} Sets `value` attribute on inner native "expert" input number element. */
     this.value = null;
-
-    /** @type {boolean} */
-    this._invalid = false; // TODO: implement css for this.
 
     // use this unique name for isolation (Safari seems to have a bug)
     /** @type {string} */
@@ -150,16 +149,16 @@ export class CcInputDuration extends LitElement {
         <label for=${this._uniqueName}>${this.label}</label>
       ` : ''}
 
-      <div class="meta-input ${classMap({ expert: this.expert })}" @keypress=${this._onKeyEvent} @keydown=${this._onKeyEvent}>
+      <div class="meta-input ${classMap({ expert: this.expert, error: this._isInvalid() })}" @keypress=${this._onKeyEvent} @keydown=${this._onKeyEvent}>
         <div class="expert-wrapper">
-          <input type="text" value="${expertValue}" @input=${this._onExpertInput} @focus=${this.focus} @blur=${this.blur}>
+          <input type="text" .value="${expertValue}" @input=${this._onExpertInput} @focus=${this.focus} @blur=${this.blur}>
         </div>
         <div class="simple-wrapper">
-          <input type="number" class="input-years" value="${years}" ?readonly=${this.readonly} ?disabled=${this.disabled} @input=${this._onSimpleInput} @focus=${this.focus} @blur=${this.blur}>
+          <input type="number" class="input-years" .value="${years}" ?readonly=${this.readonly} ?disabled=${this.disabled} @input=${this._onSimpleInput} @focus=${this.focus} @blur=${this.blur}>
           <span class="unit-char">Y</span>
-          <input type="number" class="input-months" value="${months}" ?readonly=${this.readonly} ?disabled=${this.disabled} @input=${this._onSimpleInput} @focus=${this.focus} @blur=${this.blur}>
+          <input type="number" class="input-months" .value="${months}" ?readonly=${this.readonly} ?disabled=${this.disabled} @input=${this._onSimpleInput} @focus=${this.focus} @blur=${this.blur}>
           <span class="unit-char">M</span>
-          <input type="number" class="input-days" value="${theDays}" ?readonly=${this.readonly} ?disabled=${this.disabled} @input=${this._onSimpleInput} @focus=${this.focus} @blur=${this.blur}>
+          <input type="number" class="input-days" .value="${theDays}" ?readonly=${this.readonly} ?disabled=${this.disabled} @input=${this._onSimpleInput} @focus=${this.focus} @blur=${this.blur}>
           <span class="unit-char">D</span>
         </div>
         <div class="ring"></div>
@@ -378,7 +377,7 @@ export class CcInputDuration extends LitElement {
         }
 
         .btn:focus {
-          box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
+          box-shadow: 0 0 0 .1em rgba(50, 115, 220, .25);
           outline: 0;
         }
 
