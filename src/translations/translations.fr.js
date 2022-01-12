@@ -349,6 +349,10 @@ export const translations = {
   'cc-heptapod-info.storage-bytes': ({ storage }) => formatBytes(storage, 1),
   'cc-heptapod-info.storage-description': `Stockage utilisé`,
   //#endregion
+  //#region cc-input-duration
+  'cc-input-duration.switch.simple': `Passer en mode simple`,
+  'cc-input-duration.switch.expert': `Passer en mode expert`,
+  //#endregion
   //#region cc-input-text
   'cc-input-text.clipboard': `Copier dans le presse-papier`,
   'cc-input-text.secret.hide': `Cacher le secret`,

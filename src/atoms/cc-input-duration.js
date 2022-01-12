@@ -3,6 +3,7 @@ import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { defaultThemeStyles } from '../styles/default-theme.js';
+import { i18n } from '../lib/i18n.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
 const DURATION_REGEX = /P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)W)?(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?$/;
@@ -131,6 +132,7 @@ export class CcInputDuration extends LitElement {
     };
 
     this.value = serializeDuration(durationObj);
+
     dispatchCustomEvent(this, 'input', this.value);
   }
 
@@ -162,7 +164,7 @@ export class CcInputDuration extends LitElement {
           <span class="unit-char">D</span>
         </div>
         <div class="ring"></div>
-        <button class="btn" @click=${this._switchMode} ?disabled=${this.disabled}>
+        <button class="btn" @click=${this._switchMode} @focus=${this.focus} ?disabled=${this.disabled} title=${i18n('cc-input-duration.switch.' + (this.expert ? 'simple' : 'expert'))}>
           <img class="btn-img" src=${this.expert ? keyboardExpertSvg : keyboardSvg} alt="">
         </button>
       </div>
