@@ -107,8 +107,11 @@
     "unified": "^9.2.1"
   },
   "customElements": "dist/custom-elements.json",
+  "engines": {
+    "node": "^16.13.2"
+  },
   "volta": {
-    "node": "16.4.0",
-    "npm": "7.6.1"
+    "node": "16.13.2",
+    "npm": "8.1.2"
   }
 }
