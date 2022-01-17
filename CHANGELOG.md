@@ -22,6 +22,7 @@ title: Changelog
 * `<cc-header-addon>`:
   * display realId in a readonly cc-input-text next to the ID
   * fix title on add-on icon
+  * display zone in the bottom right corner
 
 ### For devs
 

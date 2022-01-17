@@ -2,6 +2,14 @@ import '../../src/addon/cc-header-addon.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
+const zoneParis = {
+  name: 'par',
+  country: 'France',
+  countryCode: 'fr',
+  city: 'Paris',
+  tags: ['region:eu', 'infra:clever-cloud'],
+};
+
 const addon = {
   id: 'addon_012345678-9012-3456-7890-12345678',
   realId: 'postgresql_90459c4a-4db3-4805-9844-4dac30b0a89d',
@@ -33,7 +41,7 @@ const conf = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [{ addon, version }],
+  items: [{ addon, version, zone: zoneParis }],
 });
 
 export const skeleton = makeStory(conf, {
@@ -51,10 +59,14 @@ export const simulations = makeStory(conf, {
   items: [{}, {}, {}],
   simulations: [
     storyWait(2000, ([componentLazy, componentFull, componentError]) => {
+      componentLazy.addon = addon;
       componentFull.addon = addon;
       componentFull.version = version;
-      componentLazy.addon = addon;
       componentError.error = true;
+    }),
+    storyWait(2000, ([componentLazy, componentFull]) => {
+      componentLazy.zone = zoneParis;
+      componentFull.zone = zoneParis;
     }),
     storyWait(4000, ([componentLazy]) => {
       componentLazy.version = version;
