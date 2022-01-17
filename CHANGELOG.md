@@ -23,6 +23,7 @@ title: Changelog
   * display realId in a readonly cc-input-text next to the ID
   * fix title on add-on icon
   * display zone in the bottom right corner
+  * add `noVersion` property to hide the version
 
 ### For devs
 

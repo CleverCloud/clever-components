@@ -40,6 +40,7 @@ export class CcHeaderAddon extends LitElement {
     return {
       addon: { type: Object },
       error: { type: Boolean },
+      noVersion: { type: Boolean, attribute: 'no-version' },
       version: { type: String },
       zone: { type: Object },
     };
@@ -56,6 +57,9 @@ export class CcHeaderAddon extends LitElement {
 
     /** @type {string|null} Sets version of add-on. */
     this.version = null;
+
+    /** @type {boolean} Hides the version. */
+    this.noVersion = false;
 
     /** @type {Zone|null} Sets add-on zone. */
     this.zone = null;
@@ -91,10 +95,12 @@ export class CcHeaderAddon extends LitElement {
               <div class="description-label">${i18n('cc-header-addon.plan')}</div>
               <div class="${classMap({ skeleton })}">${addon.plan.name}</div>
             </div>
-            <div class="description-item">
-              <div class="description-label">${i18n('cc-header-addon.version')}</div>
-              <div class="${classMap({ skeleton: skeletonVersion })}">${version}</div>
-            </div>
+            ${!this.noVersion ? html`
+              <div class="description-item">
+                <div class="description-label">${i18n('cc-header-addon.version')}</div>
+                <div class="${classMap({ skeleton: skeletonVersion })}">${version}</div>
+              </div>
+            ` : ''}
             <div class="description-item">
               <div class="description-label">${i18n('cc-header-addon.creation-date')}</div>
               <div class="${classMap({ skeleton })}" title="${ifDefined(creationDateFull)}">${creationDateShort}</div>

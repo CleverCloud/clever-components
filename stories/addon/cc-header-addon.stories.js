@@ -24,6 +24,20 @@ const addon = {
   creationDate: 1538990538754,
 };
 
+const addonConfig = {
+  id: 'addon_5fe90fe5-e63e-424e-a5f6-3f008fb5f456',
+  realId: 'config_28a90c96-0a6e-49b8-b4d5-aeb3b8d70df3',
+  name: 'My config add-on',
+  provider: {
+    name: 'Configuration provider',
+    logoUrl: 'https://static-assets.cellar.services.clever-cloud.com/logos/configprovider.svg',
+  },
+  plan: {
+    name: 'Standard',
+  },
+  creationDate: 1538990538754,
+};
+
 const version = '11.2';
 
 export default {
@@ -53,6 +67,10 @@ export const skeleton = makeStory(conf, {
 
 export const error = makeStory(conf, {
   items: [{ error: true }],
+});
+
+export const noVersion = makeStory(conf, {
+  items: [{ addon: addonConfig, noVersion: true, zone: zoneParis }],
 });
 
 export const simulations = makeStory(conf, {
