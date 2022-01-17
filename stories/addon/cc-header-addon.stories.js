@@ -4,6 +4,7 @@ import { enhanceStoriesNames } from '../lib/story-names.js';
 
 const addon = {
   id: 'addon_012345678-9012-3456-7890-12345678',
+  realId: 'postgresql_90459c4a-4db3-4805-9844-4dac30b0a89d',
   name: 'Awesome addon (PROD)',
   provider: {
     name: 'PostgreSQL Addon',
