@@ -19,7 +19,9 @@ title: Changelog
 * `<cc-env-var-create>`: add a strict mode
 * `<cc-error>`: add a notice mode
 * Update all static assets URLs to Cellar v2
-* `<cc-header-addon>`: display realId in a readonly cc-input-text next to the ID
+* `<cc-header-addon>`:
+  * display realId in a readonly cc-input-text next to the ID
+  * fix title on add-on icon
 
 ### For devs
 

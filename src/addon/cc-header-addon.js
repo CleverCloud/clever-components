@@ -72,7 +72,7 @@ export class CcHeaderAddon extends LitElement {
         <cc-flex-gap class="main">
         
           <cc-img class="logo" src="${ifDefined(addon.provider.logoUrl)}"
-            ?skeleton=${skeleton} text="${addon.provider.name}" title="${ifDefined(addon)}"></cc-img>
+            ?skeleton=${skeleton} text="${addon.provider.name}" title="${ifDefined(addon.provider.name)}"></cc-img>
         
           <div class="details">
             <div class="name"><span class="${classMap({ skeleton })}">${addon.name}</span></div>
