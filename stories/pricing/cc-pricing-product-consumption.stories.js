@@ -22,7 +22,7 @@ const ONE_GIGABYTE = 1e9;
 
 const baseCellar = {
   name: 'Cellar',
-  icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/cellar.svg',
+  icon: 'https://assets.clever-cloud.com/logos/cellar.svg',
   sections: [
     {
       type: 'storage',
@@ -67,7 +67,7 @@ const baseCellar = {
 
 const baseFsBucket = {
   name: 'FS Bucket',
-  icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/fsbucket.svg',
+  icon: 'https://assets.clever-cloud.com/logos/fsbucket.svg',
   sections: [
     {
       type: 'storage',
@@ -88,7 +88,7 @@ const baseFsBucket = {
 
 const basePulsar = {
   name: 'Pulsar',
-  icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/pulsar.svg',
+  icon: 'https://assets.clever-cloud.com/logos/pulsar.svg',
   sections: [
     {
       type: 'storage',
@@ -182,7 +182,7 @@ const basePulsar = {
 
 const baseHeptapod = {
   name: 'Heptapod',
-  icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/heptapod.svg',
+  icon: 'https://assets.clever-cloud.com/logos/heptapod.svg',
   sections: [
     {
       type: 'storage',

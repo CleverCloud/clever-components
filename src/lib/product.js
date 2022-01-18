@@ -207,7 +207,7 @@ export function getJenkinsRunnerProduct () {
       slug: 'jenkins-runner',
       name: 'Jenkins runner',
       deployType: 'docker',
-      logo: 'https://static-assets.cellar.services.clever-cloud.com/logos/jenkins.svg',
+      logo: 'https://assets.clever-cloud.com/logos/jenkins.svg',
     },
     description: 'Jenkins runner',
     enabled: true,

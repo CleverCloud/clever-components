@@ -28,7 +28,7 @@ const applications = [
     link: '/organisations/uuid_foo/applications/uuid_bar',
     instance: {
       variant: {
-        name: 'Node', logo: 'https://static-assets.cellar.services.clever-cloud.com/logos/nodejs.svg',
+        name: 'Node', logo: 'https://assets.clever-cloud.com/logos/nodejs.svg',
       },
     },
     zone: ZONE_PAR,
@@ -38,7 +38,7 @@ const applications = [
     link: '/organisations/uuid_foo/applications/uuid_bar',
     instance: {
       variant: {
-        name: 'Java + Maven', logo: 'https://static-assets.cellar.services.clever-cloud.com/logos/maven.svg',
+        name: 'Java + Maven', logo: 'https://assets.clever-cloud.com/logos/maven.svg',
       },
     },
     zone: ZONE_PAR,
@@ -48,7 +48,7 @@ const applications = [
     link: '/organisations/uuid_foo/applications/uuid_bar',
     instance: {
       variant: {
-        name: 'PHP', logo: 'https://static-assets.cellar.services.clever-cloud.com/logos/php.svg',
+        name: 'PHP', logo: 'https://assets.clever-cloud.com/logos/php.svg',
       },
     },
     zone: ZONE_MTL,
@@ -58,7 +58,7 @@ const applications = [
     link: '/organisations/uuid_foo/applications/uuid_bar',
     instance: {
       variant: {
-        name: 'Scala + SBT', logo: 'https://static-assets.cellar.services.clever-cloud.com/logos/scala.svg',
+        name: 'Scala + SBT', logo: 'https://assets.clever-cloud.com/logos/scala.svg',
       },
     },
     zone: ZONE_MTL,

@@ -88,10 +88,10 @@ This will override the data that comes from the smart component:
 ```html
 <cc-smart-container context='{ "productId": "jar" }'>
   <cc-pricing-product mode="runtime">
-    <img slot="icon" src="https://static-assets.cellar.services.clever-cloud.com/logos/java-jar.svg" alt="">
-    <img slot="icon" src="https://static-assets.cellar.services.clever-cloud.com/logos/scala.svg" alt="">
-    <img slot="icon" src="https://static-assets.cellar.services.clever-cloud.com/logos/maven.svg" alt="">
-    <img slot="icon" src="https://static-assets.cellar.services.clever-cloud.com/logos/gradle.svg" alt="">
+    <img slot="icon" src="https://assets.clever-cloud.com/logos/java-jar.svg" alt="">
+    <img slot="icon" src="https://assets.clever-cloud.com/logos/scala.svg" alt="">
+    <img slot="icon" src="https://assets.clever-cloud.com/logos/maven.svg" alt="">
+    <img slot="icon" src="https://assets.clever-cloud.com/logos/gradle.svg" alt="">
     <div slot="name">JVM: Java, Scala...</div>
     <div>
       Bla bla about JVM based apps using Java, Scala etc...
@@ -103,10 +103,10 @@ This will override the data that comes from the smart component:
 
 <cc-smart-container context='{ "productId": "jar" }'>
   <cc-pricing-product mode="runtime">
-    <img slot="icon" src="https://static-assets.cellar.services.clever-cloud.com/logos/java-jar.svg" alt="">
-    <img slot="icon" src="https://static-assets.cellar.services.clever-cloud.com/logos/scala.svg" alt="">
-    <img slot="icon" src="https://static-assets.cellar.services.clever-cloud.com/logos/maven.svg" alt="">
-    <img slot="icon" src="https://static-assets.cellar.services.clever-cloud.com/logos/gradle.svg" alt="">
+    <img slot="icon" src="https://assets.clever-cloud.com/logos/java-jar.svg" alt="">
+    <img slot="icon" src="https://assets.clever-cloud.com/logos/scala.svg" alt="">
+    <img slot="icon" src="https://assets.clever-cloud.com/logos/maven.svg" alt="">
+    <img slot="icon" src="https://assets.clever-cloud.com/logos/gradle.svg" alt="">
     <div slot="name">JVM: Java, Scala...</div>
     <div>
       Bla bla about JVM based apps using Java, Scala etc...

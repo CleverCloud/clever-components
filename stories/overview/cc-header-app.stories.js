@@ -10,7 +10,7 @@ function app (variantName, variantLogoName, commit = COMMIT_ONE) {
     name: `Awesome ${variantName} app (PROD)`,
     commit,
     variantName,
-    variantLogo: `https://static-assets.cellar.services.clever-cloud.com/logos/${variantLogoName}.svg`,
+    variantLogo: `https://assets.clever-cloud.com/logos/${variantLogoName}.svg`,
     lastDeploymentLogsUrl: '/url/to/logs?id=fe726a13-345b-46d1-9101-f4f232479122',
   };
 }

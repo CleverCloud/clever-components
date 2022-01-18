@@ -103,13 +103,13 @@ export const dataLoadedWithCustomIcons = makeStory(conf, {
       ...getFullProductRuntime('jar'),
       name: 'JVM: Java, Scala...',
       innerHTML: `
-        <img slot="icon" src="https://static-assets.cellar.services.clever-cloud.com/logos/java-jar.svg" alt="">
-        <img slot="icon" src="https://static-assets.cellar.services.clever-cloud.com/logos/java-war.svg" alt="">
-        <img slot="icon" src="https://static-assets.cellar.services.clever-cloud.com/logos/maven.svg" alt="">
-        <img slot="icon" src="https://static-assets.cellar.services.clever-cloud.com/logos/gradle.svg" alt="">
-        <img slot="icon" src="https://static-assets.cellar.services.clever-cloud.com/logos/scala.svg" alt="">
-        <img slot="icon" src="https://static-assets.cellar.services.clever-cloud.com/logos/play1.svg" alt="">
-        <img slot="icon" src="https://static-assets.cellar.services.clever-cloud.com/logos/play2.svg" alt="">
+        <img slot="icon" src="https://assets.clever-cloud.com/logos/java-jar.svg" alt="">
+        <img slot="icon" src="https://assets.clever-cloud.com/logos/java-war.svg" alt="">
+        <img slot="icon" src="https://assets.clever-cloud.com/logos/maven.svg" alt="">
+        <img slot="icon" src="https://assets.clever-cloud.com/logos/gradle.svg" alt="">
+        <img slot="icon" src="https://assets.clever-cloud.com/logos/scala.svg" alt="">
+        <img slot="icon" src="https://assets.clever-cloud.com/logos/play1.svg" alt="">
+        <img slot="icon" src="https://assets.clever-cloud.com/logos/play2.svg" alt="">
         <div>
           On top of customizing the description with the default slot, you can also customize the icon with <code>slot[icon]</code>.
           <br>

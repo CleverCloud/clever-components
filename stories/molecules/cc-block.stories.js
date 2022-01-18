@@ -54,7 +54,7 @@ export const overlayWithErrorAlert = makeStory(conf, {
 
 export const icon = makeStory(conf, {
   items: [{
-    icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/nodejs.svg',
+    icon: 'https://assets.clever-cloud.com/logos/nodejs.svg',
     innerHTML: htmlExample,
   }],
 });
@@ -141,7 +141,7 @@ export const stateWithOverflow = makeStory(conf, {
 
 export const iconAndOpen = makeStory(conf, {
   items: [{
-    icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/nodejs.svg',
+    icon: 'https://assets.clever-cloud.com/logos/nodejs.svg',
     innerHTML: htmlExample,
     state: 'open',
   }],

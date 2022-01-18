@@ -9,10 +9,10 @@ import { ccLink, linkStyles } from '../templates/cc-link.js';
 
 const infoSvg = new URL('../assets/info.svg', import.meta.url).href;
 
-const GRAFANA_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com/logos/grafana.svg';
-const GRAFANA_HOME_SCREEN = 'https://static-assets.cellar.services.clever-cloud.com/grafana/screens/home.png';
-const GRAFANA_RUNTIME_SCREEN = 'https://static-assets.cellar.services.clever-cloud.com/grafana/screens/runtime.png';
-const GRAFANA_ADDON_SCREEN = 'https://static-assets.cellar.services.clever-cloud.com/grafana/screens/addon.png';
+const GRAFANA_LOGO_URL = 'https://assets.clever-cloud.com/logos/grafana.svg';
+const GRAFANA_HOME_SCREEN = 'https://assets.clever-cloud.com/grafana/screens/home.png';
+const GRAFANA_RUNTIME_SCREEN = 'https://assets.clever-cloud.com/grafana/screens/runtime.png';
+const GRAFANA_ADDON_SCREEN = 'https://assets.clever-cloud.com/grafana/screens/addon.png';
 const GRAFANA_DOCUMENTATION = 'https://www.clever-cloud.com/doc/administrate/metrics/overview/';
 
 /**

@@ -8,7 +8,7 @@ import { defineComponent } from '../lib/smart-manager.js';
 const PRODUCTS = {
   cellar: {
     name: 'Cellar',
-    icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/cellar.svg',
+    icon: 'https://assets.clever-cloud.com/logos/cellar.svg',
     sections: [
       { type: 'storage' },
       { type: 'outbound-traffic' },
@@ -16,14 +16,14 @@ const PRODUCTS = {
   },
   fsbucket: {
     name: 'FS Bucket',
-    icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/fsbucket.svg',
+    icon: 'https://assets.clever-cloud.com/logos/fsbucket.svg',
     sections: [
       { type: 'storage' },
     ],
   },
   pulsar: {
     name: 'Pulsar',
-    icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/pulsar.svg',
+    icon: 'https://assets.clever-cloud.com/logos/pulsar.svg',
     sections: [
       { type: 'storage' },
       { type: 'inbound-traffic' },
@@ -32,7 +32,7 @@ const PRODUCTS = {
   },
   heptapod: {
     name: 'Heptapod',
-    icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/heptapod.svg',
+    icon: 'https://assets.clever-cloud.com/logos/heptapod.svg',
     sections: [
       { type: 'storage' },
       { type: 'private-users' },
