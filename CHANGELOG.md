@@ -16,6 +16,7 @@ title: Changelog
 * `<cc-env-var-form>`:
   * add JSON mode
   * add context for add-on configuration provider
+  * add smart definition for add-on configuration provider
 * `<cc-env-var-editor-expert>`: keeping only valid values when leaving expert mode
 * `<cc-env-var-editor-simple>`: add a strict mode
 * `<cc-env-var-create>`: add a strict mode

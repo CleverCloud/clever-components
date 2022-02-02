@@ -1,4 +1,6 @@
 import '../../src/env-var/cc-env-var-form.js';
+// Load smart definition so we can use it in the Markdown docs
+import '../../src/env-var/cc-env-var-form.smart-config-provider.js';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
