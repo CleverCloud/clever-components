@@ -245,11 +245,13 @@ export const translations = {
   'cc-env-var-editor-simple.empty-data': `Il n'y a pas de variable.`,
   //#endregion
   //#region cc-env-var-form
+  'cc-env-var-form.description.config-provider': ({ addonName }) => sanitize`Configuration publiée pour les applications dépendantes. <a href="https://www.clever-cloud.com/doc/deploy/addon/config-provider/">En savoir plus</a><br>Ces seront injectées en tant que variables d'environnement dans les applications qui ont l'add-on <strong>${addonName}</strong> dans leurs services liés.<br>À chaque fois que vous mettez à jour les changements, toutes les applications dépendantes seront redémarrées automatiquement.`,
   'cc-env-var-form.description.env-var': ({ appName }) => sanitize`Ces variables eront injectées en tant que variables d'environnement dans l'application <strong>${appName}</strong>. <a href="https://doc.clever-cloud.com/admin-console/environment-variables/">En savoir plus</a>`,
   'cc-env-var-form.description.exposed-config': ({ appName }) => sanitize`Configuration publiée pour les applications dépendantes. <a href="https://www.clever-cloud.com/doc/admin-console/service-dependencies/">En savoir plus</a><br>Ces variables ne seront pas injectées dans l'application <strong>${appName}</strong>, elles seront injectées en tant que variables d'environnement dans les applications qui ont <strong>${appName}</strong> dans leurs services liés.`,
   'cc-env-var-form.error.loading': `Une erreur est survenue pendant le chargement des variables.`,
   'cc-env-var-form.error.saving': `Une erreur est survenue pendant la mise à jour des variables.`,
   'cc-env-var-form.error.unknown': `Une erreur est survenue...`,
+  'cc-env-var-form.heading.config-provider': `Variables`,
   'cc-env-var-form.heading.env-var': `Variables d'environnement`,
   'cc-env-var-form.heading.exposed-config': `Configuration publiée`,
   'cc-env-var-form.mode.expert': `Expert`,

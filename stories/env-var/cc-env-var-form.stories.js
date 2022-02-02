@@ -58,6 +58,10 @@ export const dataLoadedWithContextExposedConfig = makeStory(conf, {
   items: [{ appName: 'Foobar backend python', context: 'exposed-config', variables: VARIABLES_FULL }],
 });
 
+export const dataLoadedWithContextConfigProvider = makeStory(conf, {
+  items: [{ addonName: 'My shared config', context: 'config-provider', variables: VARIABLES_FULL }],
+});
+
 export const dataLoadedWithRestartButton = makeStory(conf, {
   items: [{ appName: 'Foobar backend python', context: 'env-var', variables: VARIABLES_FULL, restartApp: true }],
 });
@@ -107,6 +111,7 @@ enhanceStoriesNames({
   dataLoadedWithContextEnvVarAddon,
   dataLoadedWithContextEnvVar,
   dataLoadedWithContextExposedConfig,
+  dataLoadedWithContextConfigProvider,
   dataLoadedWithCustomHeadingAndReadonly,
   dataLoadedWithRestartButton,
   dataLoadedWithCustomHeadingAndDescription,

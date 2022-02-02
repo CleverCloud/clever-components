@@ -232,11 +232,13 @@ export const translations = {
   'cc-env-var-editor-simple.empty-data': `There are no variables.`,
   //#endregion
   //#region cc-env-var-form
+  'cc-env-var-form.description.config-provider': ({ addonName }) => sanitize`Configuration exposed to dependent applications. <a href="https://www.clever-cloud.com/doc/deploy/addon/config-provider/">Learn more</a><br>These variables will be injected as environment variables in applications that have the add-on <strong>${addonName}</strong> in their service dependencies.<br>Every time you update your changes, all the dependent applications will be automatically restarted.`,
   'cc-env-var-form.description.env-var': ({ appName }) => sanitize`These variables will be injected as environment variables in the application <strong>${appName}</strong>. <a href="https://doc.clever-cloud.com/admin-console/environment-variables/">Learn more</a>`,
   'cc-env-var-form.description.exposed-config': ({ appName }) => sanitize`Configuration exposed to dependent applications. <a href="https://www.clever-cloud.com/doc/admin-console/service-dependencies/">Learn more</a><br>These variables won't be injected in the application <strong>${appName}</strong>, they will be injected as environment variables in applications that have <strong>${appName}</strong> in their service dependencies.`,
   'cc-env-var-form.error.loading': `Something went wrong while loading variables.`,
   'cc-env-var-form.error.saving': `Something went wrong while updating variables.`,
   'cc-env-var-form.error.unknown': `Something went wrong...`,
+  'cc-env-var-form.heading.config-provider': `Variables`,
   'cc-env-var-form.heading.env-var': `Environment variables`,
   'cc-env-var-form.heading.exposed-config': `Exposed configuration`,
   'cc-env-var-form.mode.expert': `Expert`,
