@@ -45,6 +45,7 @@ title: Changelog
   * Change the display of events name in the actions panel
     * `cc-foobar:the-event` => `onCcFoobarTheEvent`
     * This is not something we decided nor can change
+  * Add an env var config system to use credentials in smart components stories
 * Introduce a new `getCssCustomProperties()` helper to define variables in CSS and use them in JavaScript
 * Move color definitions to default them and use `getCssCustomProperties()` to inject them in Chart.js
   * `<cc-tile-requests>`

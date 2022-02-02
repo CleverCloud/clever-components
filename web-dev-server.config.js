@@ -17,25 +17,59 @@ if (process.env.CC_NO_DOCS_WATCH !== 'true') {
   spawn('npm', ['run', 'components:docs:watch']);
 }
 
-const hmrI18n = {
+const hmrI18nPlugin = {
   name: 'hmr-i18n',
   async transform (context) {
 
     // TODO: replace force re render with a call to LitELement requestUpdate() somehow (to keep state)
     const TRANSLATION_FILE_REGEX = /^\/src\/translations\/translations\.[a-z]+\.js$/;
     if (TRANSLATION_FILE_REGEX.test(context.path)) {
+      // language=JavaScript
       context.body += `
         ;;
         // Injected by custom HMR for i18n
         import { addTranslations } from '../lib/i18n.js';
         import { forceReRender } from '@web/storybook-prebuilt/web-components.js';
+
         if (import.meta.hot) {
           import.meta.hot.accept((mod) => {
-            console.log('foo');
             addTranslations(mod.lang, mod.translations);
             forceReRender();
           });
         }
+      `;
+    }
+  },
+};
+
+const injectAuthForSmartComponentsPlugin = {
+  name: 'inject-auth-for-smart-components',
+  async transform (context) {
+
+    const {
+      API_HOST,
+      API_OAUTH_TOKEN,
+      API_OAUTH_TOKEN_SECRET,
+      OAUTH_CONSUMER_KEY,
+      OAUTH_CONSUMER_SECRET,
+    } = process.env;
+
+    const SMART_COMPONENT_STORY_REGEX = /^\/stories\/.*\/cc-.*\.smart.*\.md$/;
+    if (SMART_COMPONENT_STORY_REGEX.test(context.path)) {
+
+      // language=JavaScript
+      context.body += `
+        import { updateRootContext } from '../../src/lib/smart-manager.js';
+
+        updateRootContext({
+          apiConfig: {
+            API_HOST: '${API_HOST}',
+            API_OAUTH_TOKEN: '${API_OAUTH_TOKEN}',
+            API_OAUTH_TOKEN_SECRET: '${API_OAUTH_TOKEN_SECRET}',
+            OAUTH_CONSUMER_KEY: '${OAUTH_CONSUMER_KEY}',
+            OAUTH_CONSUMER_SECRET: '${OAUTH_CONSUMER_SECRET}',
+          },
+        });
       `;
     }
   },
@@ -52,7 +86,8 @@ export default {
   },
   plugins: [
     storybookWdsPlugin(),
-    hmrI18n,
+    hmrI18nPlugin,
+    injectAuthForSmartComponentsPlugin,
     hmrPlugin({
       include: ['src/**/*'],
       presets: [presets.litElement],
