@@ -220,7 +220,7 @@ export const translations = {
   //#region cc-env-var-editor-json
   'cc-env-var-editor-json.errors.duplicated-name': ({ name }) => sanitize`be careful, the name <code>${name}</code> is already defined`,
   'cc-env-var-editor-json.errors.invalid-json': `The JSON entered is invalid`,
-  'cc-env-var-editor-json.errors.invalid-json-entry': () => sanitize`The input was a valid Json array of objects but all entries must have properties <code>name</code> and <code>value</code> of type string. Ex: <code>[{ "name": "THE_NAME", "value": "the value" }]</code>`,
+  'cc-env-var-editor-json.errors.invalid-json-entry': () => sanitize`The input was a valid JSON array of objects but all entries must have properties <code>name</code> and <code>value</code> of type string. Ex: <code>[{ "name": "THE_NAME", "value": "the value" }]</code>`,
   'cc-env-var-editor-json.errors.invalid-json-format': `The input was valid JSON but it does not follow the correct format. It must be an array of objects`,
   'cc-env-var-editor-json.errors.invalid-name': ({ name }) => sanitize`<code>${name}</code> is not a valid variable name`,
   'cc-env-var-editor-json.errors.invalid-name-strict': ({ name }) => sanitize`<code>${name}</code> is not a valid variable name in strict mode`,
@@ -232,8 +232,8 @@ export const translations = {
   'cc-env-var-editor-simple.empty-data': `There are no variables.`,
   //#endregion
   //#region cc-env-var-form
-  'cc-env-var-form.description.env-var': ({ appName }) => sanitize`List of environment variables that will be injected in the application <strong>${appName}</strong>. <a href="http://doc.clever-cloud.com/admin-console/environment-variables/">Learn more</a>`,
-  'cc-env-var-form.description.exposed-config': ({ appName }) => sanitize`Configuration exposed to dependent applications.<br>Those variables won't be injected in the application <strong>${appName}</strong>, they will be injected as environment variables in applications that have <strong>${appName}</strong> in their service dependencies. <a href="https://www.clever-cloud.com/doc/admin-console/service-dependencies/">Learn more</a>`,
+  'cc-env-var-form.description.env-var': ({ appName }) => sanitize`These variables will be injected as environment variables in the application <strong>${appName}</strong>. <a href="https://doc.clever-cloud.com/admin-console/environment-variables/">Learn more</a>`,
+  'cc-env-var-form.description.exposed-config': ({ appName }) => sanitize`Configuration exposed to dependent applications. <a href="https://www.clever-cloud.com/doc/admin-console/service-dependencies/">Learn more</a><br>These variables won't be injected in the application <strong>${appName}</strong>, they will be injected as environment variables in applications that have <strong>${appName}</strong> in their service dependencies.`,
   'cc-env-var-form.error.loading': `Something went wrong while loading variables.`,
   'cc-env-var-form.error.saving': `Something went wrong while updating variables.`,
   'cc-env-var-form.error.unknown': `Something went wrong...`,
