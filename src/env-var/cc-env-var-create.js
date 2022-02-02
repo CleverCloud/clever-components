@@ -94,7 +94,7 @@ export class CcEnvVarCreate extends LitElement {
     const isNameAlreadyDefined = this.variablesNames.includes(this._variableName);
     const hasErrors = (this.mode === 'strict')
       ? isNameInvalidStrict || isNameAlreadyDefined
-      : isNameInvalidSimple || !isNameInvalidStrict || isNameAlreadyDefined;
+      : isNameInvalidSimple || isNameAlreadyDefined;
 
     return html`
       <cc-flex-gap>
