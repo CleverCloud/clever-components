@@ -40,6 +40,9 @@ title: Changelog
     * `cc-foobar:the-event` => `onCcFoobarTheEvent`
     * This is not something we decided nor can change
 * Introduce a new `getCssCustomProperties()` helper to define variables in CSS and use them in JavaScript
+* Move color definitions to default them and use `getCssCustomProperties()` to inject them in Chart.js
+  * `<cc-tile-requests>`
+  * `<cc-tile-status-codes>`
 
 ## 7.6.0 (2021-10-28)
 
