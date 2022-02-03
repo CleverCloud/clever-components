@@ -8,7 +8,6 @@ title: Changelog
 
 * New component:
   * `<cc-env-var-editor-json>`
-
 * `<cc-datetime-relative>`: fix first initialization of datetime attribute/property
 * `<cc-img>`: fix type for `skeleton` (boolean)
 * `<cc-map-marker-*>`: fix the way we document readonly properties (anchor, size, tooltip)
@@ -40,6 +39,10 @@ title: Changelog
   * Change the display of events name in the actions panel
     * `cc-foobar:the-event` => `onCcFoobarTheEvent`
     * This is not something we decided nor can change
+* Introduce a new `getCssCustomProperties()` helper to define variables in CSS and use them in JavaScript
+* Move color definitions to default them and use `getCssCustomProperties()` to inject them in Chart.js
+  * `<cc-tile-requests>`
+  * `<cc-tile-status-codes>`
 
 ## 7.6.0 (2021-10-28)
 

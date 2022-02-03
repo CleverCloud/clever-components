@@ -4,8 +4,10 @@ import { BarController, BarElement, CategoryScale, Chart, LinearScale, Title, To
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { getCssCustomProperties } from '../lib/css-custom-properties.js';
 import { i18n } from '../lib/i18n.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 import { tileStyles } from '../styles/info-tiles.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
@@ -94,6 +96,8 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
 
   async _refreshChart () {
 
+    const cssCustomProperties = getCssCustomProperties(this);
+
     this._skeleton = (this.data == null);
 
     const data = this._skeleton ? SKELETON_REQUESTS : this.data;
@@ -127,8 +131,8 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
       : this._groupedData.map(([from], i) => i18n('cc-tile-requests.date-hours', { date: from }));
 
     const backgroundColor = this._skeleton
-      ? '#bbb'
-      : '#30ab61';
+      ? cssCustomProperties['--cc-chart-color-skeleton']
+      : cssCustomProperties['--cc-chart-color-green'];
 
     await this.updateComplete;
 
@@ -279,8 +283,14 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
     return [
       tileStyles,
       skeletonStyles,
+      defaultThemeStyles,
       // language=CSS
       css`
+        :host {
+          /*--color-bar: #30ab61;*/
+          /*--color-bar-skeleton: #bbb;*/
+        }
+
         .tile_title {
           align-items: center;
           display: flex;

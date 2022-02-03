@@ -8,5 +8,11 @@ import { css } from 'lit-element';
 export const defaultThemeStyles = css`
   :host {
     --cc-ff-monospace: "SourceCodePro", "monaco", monospace;
+    --cc-chart-color-skeleton: #bbb;
+    --cc-chart-color-lightgray: #bbb;
+    --cc-chart-color-green: #30ab61;
+    --cc-chart-color-blue: #365bd3;
+    --cc-chart-color-orange: #ff9f40;
+    --cc-chart-color-red: #cf3942;
   }
 `;

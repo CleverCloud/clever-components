@@ -5,7 +5,9 @@ import { css, html, LitElement } from 'lit-element';
 import { cache } from 'lit-html/directives/cache.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import status from 'statuses';
+import { getCssCustomProperties } from '../lib/css-custom-properties.js';
 import { i18n } from '../lib/i18n.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 import { tileStyles } from '../styles/info-tiles.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { linkStyles } from '../templates/cc-link.js';
@@ -18,14 +20,6 @@ Chart.register(ArcElement, DoughnutController, Legend, Tooltip);
 function xor (a, b) {
   return Number(a) ^ Number(b);
 }
-
-const COLORS = {
-  1: '#bbb',
-  2: '#30ab61',
-  3: '#365bd3',
-  4: '#ff9f40',
-  5: '#cf3942',
-};
 
 const SKELETON_STATUS_CODES = { 200: 1 };
 
@@ -150,6 +144,8 @@ export class CcTileStatusCodes extends LitElement {
 
     if (changedProperties.has('statusCodes')) {
 
+      const cssCustomProperties = getCssCustomProperties(this);
+
       this._skeleton = (this.statusCodes == null);
 
       const value = this._skeleton ? SKELETON_STATUS_CODES : this.statusCodes;
@@ -167,8 +163,12 @@ export class CcTileStatusCodes extends LitElement {
       this._data = Object.values(value);
 
       this._backgroundColor = this._skeleton
-        ? this._labels.map(() => '#bbb')
-        : this._labels.map((statusCode) => COLORS[statusCode[0]]);
+        ? this._labels.map(() => cssCustomProperties['--cc-chart-color-skeleton'])
+        : this._labels.map((statusCode) => {
+          // See styles below for details
+          const colorName = `--chart-color-${statusCode[0]}xx`;
+          return cssCustomProperties[colorName];
+        });
 
       this.updateComplete.then(() => {
         this._chart.options.animation.duration = this._skeleton ? 0 : 300;
@@ -202,7 +202,8 @@ export class CcTileStatusCodes extends LitElement {
           image=${displayDocs ? closeSvg : infoSvg}
           hide-text
           @cc-button:click=${this._onToggleDocs}
-        >${this._docs ? i18n('cc-tile-status-codes.close-btn') : i18n('cc-tile-status-codes.about-btn')}</cc-button>
+        >${this._docs ? i18n('cc-tile-status-codes.close-btn') : i18n('cc-tile-status-codes.about-btn')}
+        </cc-button>
       </div>
 
       ${cache(displayChart ? html`
@@ -234,8 +235,17 @@ export class CcTileStatusCodes extends LitElement {
       tileStyles,
       skeletonStyles,
       linkStyles,
+      defaultThemeStyles,
       // language=CSS
       css`
+        :host {
+          --chart-color-1xx: var(--cc-chart-color-lightgray);
+          --chart-color-2xx: var(--cc-chart-color-green);
+          --chart-color-3xx: var(--cc-chart-color-blue);
+          --chart-color-4xx: var(--cc-chart-color-orange);
+          --chart-color-5xx: var(--cc-chart-color-red);
+        }
+
         .tile_title {
           align-items: center;
           display: flex;

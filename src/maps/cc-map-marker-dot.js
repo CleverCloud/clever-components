@@ -3,6 +3,7 @@ import { css, html, LitElement } from 'lit-element';
 // Generated with https://components.ai/color-scale/
 // Canvas at #F5F5F5 (map country color)
 // From #40B970 to #003814 with 8 steps
+// /!\ Moving this to CSS with getCssCustomProperties() is really tricky, don't do this at home ;-)
 const COLOR_PALETTE = [
   '#40b970',
   '#36a562',
