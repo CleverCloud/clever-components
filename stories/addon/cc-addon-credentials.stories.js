@@ -28,7 +28,7 @@ export const defaultStory = makeStory(conf, {
   items: [{
     type: 'elasticsearch',
     name: 'Elasticsearch',
-    icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/elastic.svg',
+    icon: 'https://assets.clever-cloud.com/logos/elastic.svg',
     credentials,
   }],
 });
@@ -37,7 +37,7 @@ export const skeleton = makeStory(conf, {
   items: [{
     type: 'elasticsearch',
     name: 'Elasticsearch',
-    icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/elastic.svg',
+    icon: 'https://assets.clever-cloud.com/logos/elastic.svg',
     credentials: credentialsSkeleton,
   }],
 });
@@ -46,7 +46,7 @@ export const error = makeStory(conf, {
   items: [{
     type: 'elasticsearch',
     name: 'Elasticsearch',
-    icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/elastic.svg',
+    icon: 'https://assets.clever-cloud.com/logos/elastic.svg',
     error: true,
   }],
 });
@@ -55,7 +55,7 @@ export const dataLoadedWithKibana = makeStory(conf, {
   items: [{
     type: 'kibana',
     name: 'Kibana',
-    icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/elasticsearch-kibana.svg',
+    icon: 'https://assets.clever-cloud.com/logos/elasticsearch-kibana.svg',
     toggleState: 'close',
     credentials: [
       { type: 'host', value: 'my-host.services.clever-cloud.com', secret: false },
@@ -70,7 +70,7 @@ export const dataLoadedWithApm = makeStory(conf, {
     type: 'apm',
     name: 'APM',
     toggleState: 'close',
-    icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/elasticsearch-apm.svg',
+    icon: 'https://assets.clever-cloud.com/logos/elasticsearch-apm.svg',
     credentials: [
       { type: 'user', value: 'my-super-user', secret: false },
       { type: 'password', value: 'my-super-password', secret: true },
@@ -84,7 +84,7 @@ export const dataLoadedWithPulsar = makeStory(conf, {
     type: 'pulsar',
     name: 'Pulsar',
     toggleState: 'open',
-    icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/pulsar.svg',
+    icon: 'https://assets.clever-cloud.com/logos/pulsar.svg',
     credentials: [
       { type: 'url', value: 'pulsar+ssl://url:port', secret: false },
       { type: 'auth-token', value: 'my-awesome-token', secret: true },
@@ -97,13 +97,13 @@ export const simulations = makeStory(conf, {
     {
       type: 'elasticsearch',
       name: 'Elasticsearch',
-      icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/elastic.svg',
+      icon: 'https://assets.clever-cloud.com/logos/elastic.svg',
       credentials: credentialsSkeleton,
     },
     {
       type: 'apm',
       name: 'APM',
-      icon: 'https://static-assets.cellar.services.clever-cloud.com/logos/elasticsearch-apm.svg',
+      icon: 'https://assets.clever-cloud.com/logos/elasticsearch-apm.svg',
       credentials: [
         { type: 'user', secret: false },
         { type: 'password', secret: true },

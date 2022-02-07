@@ -7,7 +7,7 @@ const addon = {
   name: 'Awesome addon (PROD)',
   provider: {
     name: 'PostgreSQL Addon',
-    logoUrl: 'https://static-assets.cellar.services.clever-cloud.com/logos/pgsql.svg',
+    logoUrl: 'https://assets.clever-cloud.com/logos/pgsql.svg',
   },
   plan: {
     name: 'XS_SML',

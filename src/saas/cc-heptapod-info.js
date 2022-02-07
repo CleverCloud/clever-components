@@ -15,7 +15,7 @@ const SKELETON_STATISTICS = {
   price: 17.50,
 };
 
-const HEPTAPOD_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com/logos/heptapod.svg';
+const HEPTAPOD_LOGO_URL = 'https://assets.clever-cloud.com/logos/heptapod.svg';
 
 /**
  * @typedef {import('./types.js').Statistics} Statistics

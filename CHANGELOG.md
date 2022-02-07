@@ -18,6 +18,7 @@ title: Changelog
 * `<cc-env-var-editor-simple>`: add a strict mode
 * `<cc-env-var-create>`: add a strict mode
 * `<cc-error>`: add a notice mode
+* Update all static assets URLs to Cellar v2
 
 ### For devs
 

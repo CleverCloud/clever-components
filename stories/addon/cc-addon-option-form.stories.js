@@ -21,14 +21,14 @@ export default {
 const optionsExamples = [
   {
     title: 'Kibana',
-    logo: 'https://static-assets.cellar.services.clever-cloud.com/logos/elasticsearch-kibana.svg',
+    logo: 'https://assets.clever-cloud.com/logos/elasticsearch-kibana.svg',
     description: htmlExample,
     enabled: false,
     name: 'kibana',
   },
   {
     title: 'APM',
-    logo: 'https://static-assets.cellar.services.clever-cloud.com/logos/elasticsearch-apm.svg',
+    logo: 'https://assets.clever-cloud.com/logos/elasticsearch-apm.svg',
     description: htmlExample,
     enabled: true,
     name: 'apm',

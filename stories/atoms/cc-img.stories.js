@@ -29,10 +29,10 @@ export const defaultStory = makeStory(conf, {
 
 export const imageFitContain = makeStory(conf, {
   items: [
-    { text: 'CC', src: 'https://static-assets.cellar.services.clever-cloud.com/infra/clever-cloud.svg', style: 'border: 1px solid #000; height: 7rem; width: 2rem;' },
-    { text: 'CC', src: 'https://static-assets.cellar.services.clever-cloud.com/infra/clever-cloud.svg', style: 'border: 1px solid #000; height: 2rem; width: 7rem;' },
-    { text: 'CC', src: 'https://static-assets.cellar.services.clever-cloud.com/infra/clever-cloud.svg', style: 'border: 1px solid #000; height: 7rem; width: 2rem; --cc-img-fit: contain;' },
-    { text: 'CC', src: 'https://static-assets.cellar.services.clever-cloud.com/infra/clever-cloud.svg', style: 'border: 1px solid #000; height: 2rem; width: 7rem; --cc-img-fit: contain;' },
+    { text: 'CC', src: 'https://assets.clever-cloud.com/infra/clever-cloud.svg', style: 'border: 1px solid #000; height: 7rem; width: 2rem;' },
+    { text: 'CC', src: 'https://assets.clever-cloud.com/infra/clever-cloud.svg', style: 'border: 1px solid #000; height: 2rem; width: 7rem;' },
+    { text: 'CC', src: 'https://assets.clever-cloud.com/infra/clever-cloud.svg', style: 'border: 1px solid #000; height: 7rem; width: 2rem; --cc-img-fit: contain;' },
+    { text: 'CC', src: 'https://assets.clever-cloud.com/infra/clever-cloud.svg', style: 'border: 1px solid #000; height: 2rem; width: 7rem; --cc-img-fit: contain;' },
   ],
 });
 
