@@ -19,6 +19,8 @@ export function makeStory (...configs) {
 
     // We create a shadow tree so we can add some custom isolated CSS for each stories
     const container = document.createElement('div');
+    // We use this for i18n HMR
+    container.classList.add('story-shadow-container');
     const shadow = container.attachShadow({ mode: 'open' });
 
     // If we have some custom CSS we add it in the shadow tree

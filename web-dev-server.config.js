@@ -33,8 +33,36 @@ const hmrI18nPlugin = {
 
         if (import.meta.hot) {
           import.meta.hot.accept((mod) => {
+
+            // Let's add the new translations
             addTranslations(mod.lang, mod.translations);
-            forceReRender();
+
+            // We're going to assume we will need a to force storybook to re-render
+            let needStorybookForceRerender = true;
+
+            // Let's find all our LitElement base custom elements in the story
+            // and force requestUpdate() on all their properties
+            const customElements = Array
+              .from(
+                document
+                  .querySelector('.story-shadow-container')
+                  .shadowRoot
+                  .querySelectorAll(':defined')
+              )
+              .forEach((el) => {
+                if (el.requestUpdate != null) {
+                  const properties = Object.keys(el.constructor.properties);
+                  for (const prop of properties) {
+                    el.requestUpdate(prop);
+                  }
+                  // Seems like it's a LitElement custom element, we won't need the Storybook force rerender
+                  needStorybookForceRerender = false;
+                }
+              });
+
+            if (needStorybookForceRerender) {
+              forceReRender();
+            }
           });
         }
       `;
@@ -91,7 +119,6 @@ export default {
     hmrPlugin({
       include: ['src/**/*'],
       presets: [presets.litElement],
-      // TODO maybe hook the translation system with HMR
     }),
     rollupAdapter(json()),
     esbuildBundlePlugin({
