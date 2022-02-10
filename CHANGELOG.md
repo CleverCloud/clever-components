@@ -6,7 +6,8 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+* `<cc-tile-requests>`: rollback usage of `getCssCustomProperties()` (broken on Chrome)
+* `<cc-tile-status-codes>`: rollback usage of `getCssCustomProperties()` (broken on Chrome)
 
 ## 7.7.0 (2022-02-10)
 
