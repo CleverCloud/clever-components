@@ -1,4 +1,6 @@
 import '../../src/env-var/cc-env-var-form.js';
+// Load smart definition so we can use it in the Markdown docs
+import '../../src/env-var/cc-env-var-form.smart-config-provider.js';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
@@ -58,6 +60,10 @@ export const dataLoadedWithContextExposedConfig = makeStory(conf, {
   items: [{ appName: 'Foobar backend python', context: 'exposed-config', variables: VARIABLES_FULL }],
 });
 
+export const dataLoadedWithContextConfigProvider = makeStory(conf, {
+  items: [{ addonName: 'My shared config', context: 'config-provider', variables: VARIABLES_FULL }],
+});
+
 export const dataLoadedWithRestartButton = makeStory(conf, {
   items: [{ appName: 'Foobar backend python', context: 'env-var', variables: VARIABLES_FULL, restartApp: true }],
 });
@@ -107,6 +113,7 @@ enhanceStoriesNames({
   dataLoadedWithContextEnvVarAddon,
   dataLoadedWithContextEnvVar,
   dataLoadedWithContextExposedConfig,
+  dataLoadedWithContextConfigProvider,
   dataLoadedWithCustomHeadingAndReadonly,
   dataLoadedWithRestartButton,
   dataLoadedWithCustomHeadingAndDescription,

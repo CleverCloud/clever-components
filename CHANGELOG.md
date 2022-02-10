@@ -13,12 +13,20 @@ title: Changelog
 * `<cc-map-marker-*>`: fix the way we document readonly properties (anchor, size, tooltip)
 * `<cc-zone-input>`: fix type for `_hovered` (string|null)
 * Storybook: fix logo URL
-* `<cc-env-var-form>`: add JSON mode
+* `<cc-env-var-form>`:
+  * add JSON mode
+  * add context for add-on configuration provider
+  * add smart definition for add-on configuration provider
 * `<cc-env-var-editor-expert>`: keeping only valid values when leaving expert mode
 * `<cc-env-var-editor-simple>`: add a strict mode
 * `<cc-env-var-create>`: add a strict mode
 * `<cc-error>`: add a notice mode
 * Update all static assets URLs to Cellar v2
+* `<cc-header-addon>`:
+  * display realId in a readonly cc-input-text next to the ID
+  * fix title on add-on icon
+  * display zone in the bottom right corner
+  * add `noVersion` property to hide the version
 
 ### For devs
 
@@ -40,6 +48,8 @@ title: Changelog
   * Change the display of events name in the actions panel
     * `cc-foobar:the-event` => `onCcFoobarTheEvent`
     * This is not something we decided nor can change
+  * Add an env var config system to use credentials in smart components stories
+  * Improve HMR for i18n
 * Introduce a new `getCssCustomProperties()` helper to define variables in CSS and use them in JavaScript
 * Move color definitions to default them and use `getCssCustomProperties()` to inject them in Chart.js
   * `<cc-tile-requests>`

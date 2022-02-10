@@ -22,6 +22,7 @@ const SKELETON_VERSION = '????????';
 
 /**
  * @typedef {import('./types.js').Addon} Addon
+ * @typedef {import('../types.js').Zone} Zone
  */
 
 /**
@@ -39,7 +40,9 @@ export class CcHeaderAddon extends LitElement {
     return {
       addon: { type: Object },
       error: { type: Boolean },
+      noVersion: { type: Boolean, attribute: 'no-version' },
       version: { type: String },
+      zone: { type: Object },
     };
   };
 
@@ -54,6 +57,12 @@ export class CcHeaderAddon extends LitElement {
 
     /** @type {string|null} Sets version of add-on. */
     this.version = null;
+
+    /** @type {boolean} Hides the version. */
+    this.noVersion = false;
+
+    /** @type {Zone|null} Sets add-on zone. */
+    this.zone = null;
   }
 
   render () {
@@ -70,13 +79,15 @@ export class CcHeaderAddon extends LitElement {
     return html`
       ${!this.error ? html`
         <cc-flex-gap class="main">
-        
+
           <cc-img class="logo" src="${ifDefined(addon.provider.logoUrl)}"
-            ?skeleton=${skeleton} text="${addon.provider.name}" title="${ifDefined(addon)}"></cc-img>
-        
+            ?skeleton=${skeleton} text="${addon.provider.name}" title="${ifDefined(addon.provider.name)}"></cc-img>
           <div class="details">
             <div class="name"><span class="${classMap({ skeleton })}">${addon.name}</span></div>
-            <cc-input-text readonly clipboard value="${ifDefined(addon.id)}" ?skeleton=${skeleton}></cc-input-text>
+            <cc-flex-gap>
+              <cc-input-text readonly clipboard value="${ifDefined(addon.id)}" ?skeleton=${skeleton}></cc-input-text>
+              <cc-input-text readonly clipboard value="${ifDefined(addon.realId)}" ?skeleton=${skeleton}></cc-input-text>
+            </cc-flex-gap>
           </div>
 
           <cc-flex-gap class="description">
@@ -84,15 +95,21 @@ export class CcHeaderAddon extends LitElement {
               <div class="description-label">${i18n('cc-header-addon.plan')}</div>
               <div class="${classMap({ skeleton })}">${addon.plan.name}</div>
             </div>
-            <div class="description-item">
-              <div class="description-label">${i18n('cc-header-addon.version')}</div>
-              <div class="${classMap({ skeleton: skeletonVersion })}">${version}</div>
-            </div>
+            ${!this.noVersion ? html`
+              <div class="description-item">
+                <div class="description-label">${i18n('cc-header-addon.version')}</div>
+                <div class="${classMap({ skeleton: skeletonVersion })}">${version}</div>
+              </div>
+            ` : ''}
             <div class="description-item">
               <div class="description-label">${i18n('cc-header-addon.creation-date')}</div>
               <div class="${classMap({ skeleton })}" title="${ifDefined(creationDateFull)}">${creationDateShort}</div>
             </div>
           </cc-flex-gap>
+        </cc-flex-gap>
+
+        <cc-flex-gap class="messages">
+          <cc-zone .zone=${this.zone} mode="small-infra"></cc-zone>
         </cc-flex-gap>
       ` : ''}
 
@@ -155,6 +172,25 @@ export class CcHeaderAddon extends LitElement {
         cc-error {
           padding: var(--cc-gap);
           text-align: center;
+        }
+
+        .messages {
+          --cc-gap: 0.5rem;
+          --cc-align-items: center;
+          align-items: center;
+          background-color: #f1f5ff;
+          box-shadow: inset 0 6px 6px -6px #a4b1c9;
+          box-sizing: border-box;
+          color: #2e2e2e;
+          font-size: 0.9rem;
+          font-style: italic;
+          justify-content: end;
+          padding: 0.6rem 1rem;
+        }
+
+        cc-zone {
+          font-style: normal;
+          white-space: nowrap;
         }
 
         [title] {

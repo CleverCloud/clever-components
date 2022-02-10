@@ -1,5 +1,6 @@
 export interface Addon {
   id: string,
+  realId: string,
   name: string,
   provider: AddonProvider,
   plan: AddonPlan,

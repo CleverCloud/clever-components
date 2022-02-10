@@ -39,8 +39,9 @@ export class CcEnvVarForm extends LitElement {
 
   static get properties () {
     return {
+      addonName: { type: String, attribute: 'addon-name' },
       appName: { type: String, attribute: 'app-name' },
-      context: { type: String },
+      context: { type: String, reflect: true },
       error: { type: String, reflect: true },
       heading: { type: String, reflect: true },
       parserOptions: { type: Object, attribute: 'parser-options' },
@@ -59,6 +60,9 @@ export class CcEnvVarForm extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {string} Defines add-on name used in some heading/description (depending on context). */
+    this.addonName = '?';
 
     /** @type {string} Defines application name used in some heading/description (depending on context). */
     this.appName = '?';
@@ -188,7 +192,7 @@ export class CcEnvVarForm extends LitElement {
 
   update (changedProperties) {
 
-    if (changedProperties.has('context') || changedProperties.has('appName')) {
+    if (changedProperties.has('context') || changedProperties.has('addonName') || changedProperties.has('appName')) {
       if (this.context === 'env-var') {
         this.heading = i18n('cc-env-var-form.heading.env-var');
         this._description = i18n('cc-env-var-form.description.env-var', { appName: this.appName });
@@ -203,6 +207,10 @@ export class CcEnvVarForm extends LitElement {
       if (this.context === 'exposed-config') {
         this.heading = i18n('cc-env-var-form.heading.exposed-config');
         this._description = i18n('cc-env-var-form.description.exposed-config', { appName: this.appName });
+      }
+      if (this.context === 'config-provider') {
+        this.heading = i18n('cc-env-var-form.heading.config-provider');
+        this._description = i18n('cc-env-var-form.description.config-provider', { addonName: this.addonName });
       }
     }
 
