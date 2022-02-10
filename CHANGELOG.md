@@ -6,6 +6,10 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+...
+
+## 7.7.0 (2022-02-10)
+
 * New component:
   * `<cc-env-var-editor-json>`
 * `<cc-datetime-relative>`: fix first initialization of datetime attribute/property
