@@ -202,7 +202,7 @@ export const translations = {
   'cc-env-var-create.create-button': `Add`,
   'cc-env-var-create.errors.already-defined-name': ({ name }) => sanitize`Name <code>${name}</code> is already defined`,
   'cc-env-var-create.errors.invalid-name': ({ name }) => sanitize`Name <code>${name}</code> is invalid`,
-  'cc-env-var-create.info.java-prop': ({ name }) => sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-format">more details</a>`,
+  'cc-env-var-create.info.java-prop': ({ name }) => sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-formats">more details</a>`,
   'cc-env-var-create.name.placeholder': `VARIABLE_NAME`,
   'cc-env-var-create.value.placeholder': `variable value`,
   //#endregion
@@ -214,8 +214,8 @@ export const translations = {
   'cc-env-var-editor-expert.errors.invalid-value': () => sanitize`the value is not valid, if you use quotes, you need to escape them like this: <code>\\"</code> or quote the whole value.`,
   'cc-env-var-editor-expert.errors.line': `line`,
   'cc-env-var-editor-expert.errors.unknown': `Unknown Error`,
-  'cc-env-var-editor-expert.example': () => sanitize`Format: <code>VARIABLE_NAME="variable value"</code> <br> Every variable must be separated by a line break, <a href="https://clever-cloud.com/doc/develop/#environment-variables-rules-and-format">learn more</a>.`,
-  'cc-env-var-editor-expert.info.java-prop': ({ name }) => sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-format">more details</a>`,
+  'cc-env-var-editor-expert.example': () => sanitize`Format: <code>VARIABLE_NAME="variable value"</code> <br> Every variable must be separated by a line break, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#format">learn more</a>.`,
+  'cc-env-var-editor-expert.info.java-prop': ({ name }) => sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-formats">more details</a>`,
   //#endregion
   //#region cc-env-var-editor-json
   'cc-env-var-editor-json.errors.duplicated-name': ({ name }) => sanitize`be careful, the name <code>${name}</code> is already defined`,
@@ -225,8 +225,8 @@ export const translations = {
   'cc-env-var-editor-json.errors.invalid-name': ({ name }) => sanitize`<code>${name}</code> is not a valid variable name`,
   'cc-env-var-editor-json.errors.invalid-name-strict': ({ name }) => sanitize`<code>${name}</code> is not a valid variable name in strict mode`,
   'cc-env-var-editor-json.errors.unknown': `Unknown Error`,
-  'cc-env-var-editor-json.example': () => sanitize`Format: <code>{ "name": "VARIABLE_NAME", "value": "variable value" }</code> <br> Array of objects following the above format, <a href="https://clever-cloud.com/doc/develop/#environment-variables-rules-and-format">learn more</a>.`,
-  'cc-env-var-editor-json.info.java-prop': ({ name }) => sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-format">more details</a>`,
+  'cc-env-var-editor-json.example': () => sanitize`Format: <code>{ "name": "VARIABLE_NAME", "value": "variable value" }</code> <br> Array of objects following the above format, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#format">learn more</a>.`,
+  'cc-env-var-editor-json.info.java-prop': ({ name }) => sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-formats">more details</a>`,
   //#endregion
   //#region cc-env-var-editor-simple
   'cc-env-var-editor-simple.empty-data': `There are no variables.`,

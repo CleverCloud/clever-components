@@ -6,10 +6,10 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+* `<cc-env-var-*>`: fix links to the doc
 
 ## 7.7.1 (2022-02-10)
-* 
+
 * `<cc-tile-requests>`: rollback usage of `getCssCustomProperties()` (broken on Chrome)
 * `<cc-tile-status-codes>`: rollback usage of `getCssCustomProperties()` (broken on Chrome)
 
