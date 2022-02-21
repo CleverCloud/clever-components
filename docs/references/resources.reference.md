@@ -12,15 +12,12 @@ Here's list of interesting things to read, watch and listen to if you're working
 * [Effective Skeleton Screens](https://timkadlec.com/remembers/2020-11-02-skeleton-screens/)
 * [Lit docs](https://lit.dev/)
 * [RxJS docs](https://rxjs.dev/)
-* [SaaS, PaaS, IaaS: what are the differences and what does it matter?](https://blog.alwaysdata.com/2018/03/05/saas-paas-iaas-what-are-the-differences-and-what-does-it-matter/)
 * [Storybook docs](https://storybook.js.org/)
-* [The End of the Fortress Metaphor](https://www.clever-cloud.com/blog/guests/2015/06/16/the-end-of-the-fortress-metaphor/)
 * [The performance benefits of rel=noopener](https://jakearchibald.com/2016/performance-benefits-of-rel-noopener/)
 * [Un petit pas pour l’em, un grand pas pour le Web - Nicolas Hoizey](https://vimeo.com/79204119)
 * [Virtual DOM is pure overhead](https://svelte.dev/blog/virtual-dom-is-pure-overhead)
 * [Web Dev Server](https://modern-web.dev/docs/dev-server/overview/)
 * [Web Test Runner](https://modern-web.dev/docs/test-runner/overview/)
-* [Why isn’t there a free tier in Clever Cloud](https://www.clever-cloud.com/blog/company/2015/04/14/why-isnt-t-there-a-free-tier-in-clever-cloud/)
 
 ### From MDN
 
