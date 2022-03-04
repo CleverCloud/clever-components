@@ -9,21 +9,21 @@ Here are different rules we want any contributor to follow regarding how we writ
 
 * Don't forget to document your component's public API (properties, attributes, methods, events, slots, CSS custom props...)
 * Your component should be UI only and NOT COUPLED with where the data comes from
-* Don't forget to init your property default values in the constructor
-* Use the `dispatchCustomEvent` helper and try to emit your value directly on `detail`
+* Don't forget to init your property default values in the constructor (see ['cc-example-component' constructor](https://github.com/CleverCloud/clever-components/blob/master/docs/cc-example-component.js#L76))
+* Use the [`dispatchCustomEvent` helper](https://github.com/CleverCloud/clever-components/blob/9c8b046d21a734159b007646f042eb8053297168/src/lib/events.js) and try to emit your value directly on `detail` ([see 'cc-pricing-estimation' _onChangeQuantity method](https://github.com/CleverCloud/clever-components/blob/master/src/pricing/cc-pricing-estimation.js#L83))
 * In the data I/O, prefer array of objects (instead of object literals) for collections
 * Always name your event handlers "_onSomething"
-* Try to sort your CSS sources in each selector (alphabetically)
-* Declare all public properties in the static get properties
+* Try to sort your CSS sources in each selector (alphabetically) (enforced by the linter)
+* Declare all public properties in the static get properties (['cc-example-component' property getter](https://github.com/CleverCloud/clever-components/blob/master/docs/cc-example-component.js))
 * Think about what will happen when there's an error
 * Think about what will happen when the data is not there yet, <br/> for this, we use the "skeleton screen" pattern
 * Think about what will happen when the data is empty, <br/> don't forget to add a message
 * Think about the focus, where does it go when something is validated or when an element disappears
-* Use `// language=CSS` over your `css` declaration so WebStorm can to syntaxic coloration and more
-* Use `// language=HTML` in your stories so WebStorm can to syntaxic coloration and more
+* Use `// language=CSS` over your `css` declaration so WebStorm can apply syntaxic coloration and more (see ['cc-example-component-stories'](https://github.com/CleverCloud/clever-components/blob/master/docs/cc-example-component.stories.js#L18))
+* Use `// language=HTML` in your stories so WebStorm can apply syntaxic coloration and more
 * Try to avoid the quotes for this `prop="${this.prop}"` and do this instead: `prop=${this.prop}`
 * Make sure all texts are translated
-* Prefix all translation keys with the component name and split parts with dots
+* Prefix all translation keys with the component name and split parts with dots (see ['translation-example'](https://github.com/CleverCloud/clever-components/blob/master/docs/translations.example.js#L37))
 
 ## How to order stuff in a custom element using LitElement?
 
@@ -55,7 +55,7 @@ we're proposing this order for the different pars of a custom element built with
 * Global component description starts with "A component", "A wrapper", "A helper", "An input", "A form", ...
 * Global component description is a simple one-liner.
 * Global component description can have a `## Details` section with a bullet list of informations.
-* Global component description can have a `## Type definitions` section to document the `type` and `interface` of the properties and events.
+* Global component description can have a `## Type definitions` section to document the `type` and `interface` of the properties and events (see ['cc-example-component' typedef section](https://github.com/CleverCloud/clever-components/blob/master/docs/cc-example-component.js#L80)).
 * This `## Type definitions` section consists of a group of code samples using the TypeScript definition format.
 * Global component description can have a `## Technical details` section for stuffs that don't concern users.
 * Global component description can have other sections specific to custom behaviours.
