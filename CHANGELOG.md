@@ -8,6 +8,10 @@ title: Changelog
 
 * `<cc-env-var-*>`: fix links to the doc
 
+## For devs
+
+* Improve the CEM analyzer generate behaviour in dev mode
+
 ## 7.7.1 (2022-02-10)
 
 * `<cc-tile-requests>`: rollback usage of `getCssCustomProperties()` (broken on Chrome)
