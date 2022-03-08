@@ -1,20 +1,15 @@
-import { spawn } from 'child_process';
 import { hmrPlugin, presets } from '@open-wc/dev-server-hmr';
 import rollupCommonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import { fromRollup, rollupAdapter } from '@web/dev-server-rollup';
 import { storybookWdsPlugin } from './stories/lib/markdown.cjs';
+import { generateCustomElementsManifest } from './tasks/cem-analyzer.js';
 import { esbuildBundlePlugin } from './wds/esbuild-bundle-plugin.js';
 
 const commonjs = fromRollup(rollupCommonjs);
 
 function commonJsIdentifiers (ids) {
   return ids.map((id) => `**/node_modules/${id}/**/*`);
-}
-
-if (process.env.CC_NO_DOCS_WATCH !== 'true') {
-  // This feels like a hack but with this, we get up to date CEM inside storybook's docs page
-  spawn('npm', ['run', 'components:docs:watch']);
 }
 
 const hmrI18nPlugin = {
@@ -103,6 +98,16 @@ const injectAuthForSmartComponentsPlugin = {
   },
 };
 
+// This plugin generates and serves the CEM on demand.
+const cemAnalyzerPlugin = {
+  name: 'cem-analyzer-plugin',
+  async serve (context) {
+    if (context.path === '/dist/custom-elements.json') {
+      return generateCustomElementsManifest();
+    }
+  },
+};
+
 export default {
   port: 6006,
   nodeResolve: true,
@@ -116,6 +121,7 @@ export default {
     storybookWdsPlugin(),
     hmrI18nPlugin,
     injectAuthForSmartComponentsPlugin,
+    cemAnalyzerPlugin,
     hmrPlugin({
       include: ['src/**/*'],
       presets: [presets.litElement],
