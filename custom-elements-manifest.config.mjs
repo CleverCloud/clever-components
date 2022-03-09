@@ -7,12 +7,8 @@ import supportCssdisplayJsdoc from './cem/support-cssdisplay-jsdoc.js';
 import supportTypedefJsdoc from './cem/support-typedef-jsdoc.js';
 import listImages from './cem/list-images.js';
 
-try {
-  // Temporary for now
-  fs.mkdirSync('dist');
-}
-catch (e) {
-}
+// Temporary for now
+fs.mkdirSync('dist', { recursive: true });
 
 export default {
   globs: ['src/**/cc-*.js'],
