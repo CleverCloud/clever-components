@@ -11,7 +11,7 @@ export async function generateCustomElementsManifest () {
 
   const CEM_OUT_DIR = os.tmpdir() + '/cc-cem';
   await fs.mkdir(CEM_OUT_DIR, { recursive: true });
-  process.env.CEM_TMP_DIR = CEM_OUT_DIR;
+  process.env.CEM_OUT_DIR = CEM_OUT_DIR;
 
   spawnSync('npm', ['run', 'components:docs']);
   const cemJson = await fs.readFile(CEM_OUT_DIR + '/custom-elements.json', 'utf8');
