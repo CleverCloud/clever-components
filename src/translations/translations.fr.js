@@ -515,6 +515,9 @@ export const translations = {
       : formatNumber(lang, cpu);
   },
   //#endregion
+  //#region cc-select
+  'cc-select.required': `obligatoire`,
+  //#endregion
   //#region cc-tcp-redirection
   'cc-tcp-redirection.create-button': `Créer`,
   'cc-tcp-redirection.delete-button': `Supprimer`,
