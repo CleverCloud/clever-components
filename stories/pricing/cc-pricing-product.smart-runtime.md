@@ -64,6 +64,18 @@ Simple example based on default zone and currency.
   <cc-pricing-product mode="runtime" action="none" temporality='[{"type":"minute","digits":5}]'></cc-pricing-product>
 </cc-smart-container>
 
+### Special case for Heptapod runner
+
+```html
+<cc-smart-container context='{ "productId": "heptapod-runner" }'>
+  <cc-pricing-product mode="runtime" action="none" temporality='[{"type":"minute","digits":5}]'></cc-pricing-product>
+</cc-smart-container>
+```
+
+<cc-smart-container context='{ "productId": "heptapod-runner" }'>
+  <cc-pricing-product mode="runtime" action="none" temporality='[{"type":"minute","digits":5}]'></cc-pricing-product>
+</cc-smart-container>
+
 ### Zone and currency
 
 Simple example with custom zone and custom currency.

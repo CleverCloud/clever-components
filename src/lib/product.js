@@ -195,21 +195,17 @@ function getRuntimeFeatureValue (featureCode, flavor) {
   }
 }
 
-export function getJenkinsRunnerProduct () {
-  return {
+export function getRunnerProduct (productId) {
+
+  const baseProduct = {
     type: 'docker',
     // Fake date
     version: '20211001',
     name: 'Docker',
-    variant: {
-      // Fake UUID
-      id: 'b8093938-4846-4f74-8c4a-82660180093e',
-      slug: 'jenkins-runner',
-      name: 'Jenkins runner',
-      deployType: 'docker',
-      logo: 'https://assets.clever-cloud.com/logos/jenkins.svg',
-    },
-    description: 'Jenkins runner',
+    // not used
+    defaultFlavor: null,
+    // not used
+    buildFlavor: null,
     enabled: true,
     comingSoon: false,
     maxInstances: 40,
@@ -217,23 +213,57 @@ export function getJenkinsRunnerProduct () {
     deployments: [
       'git',
     ],
-    flavors: [
-      getJenkinsFlavor('XS', 1, 2),
-      getJenkinsFlavor('S', 2, 4),
-      getJenkinsFlavor('M', 4, 8),
-      getJenkinsFlavor('L', 6, 12),
-      getJenkinsFlavor('XL', 8, 16),
-      getJenkinsFlavor('2XL', 12, 24),
-      getJenkinsFlavor('3XL', 16, 32),
-    ],
-    // not used
-    defaultFlavor: null,
-    // not used
-    buildFlavor: null,
   };
+
+  if (productId === 'jenkins-runner') {
+    return {
+      ...baseProduct,
+      variant: {
+        // Fake UUID
+        id: 'b8093938-4846-4f74-8c4a-82660180093e',
+        slug: 'jenkins-runner',
+        name: 'Jenkins runner',
+        deployType: 'docker',
+        logo: 'https://assets.clever-cloud.com/logos/jenkins.svg',
+      },
+      description: 'Jenkins runner',
+      flavors: [
+        getRunnerFlavor('jenkins-runner.', 'XS', 1, 2),
+        getRunnerFlavor('jenkins-runner.', 'S', 2, 4),
+        getRunnerFlavor('jenkins-runner.', 'M', 4, 8),
+        getRunnerFlavor('jenkins-runner.', 'L', 6, 12),
+        getRunnerFlavor('jenkins-runner.', 'XL', 8, 16),
+        getRunnerFlavor('jenkins-runner.', '2XL', 12, 24),
+        getRunnerFlavor('jenkins-runner.', '3XL', 16, 32),
+      ],
+    };
+  }
+  if (productId === 'heptapod-runner') {
+    return {
+      ...baseProduct,
+      variant: {
+        // Fake UUID
+        id: '9b207292-732b-4594-b48b-09a91ac72f0c',
+        slug: 'heptapod-runner',
+        name: 'Heptapod runner',
+        deployType: 'docker',
+        logo: 'https://assets.clever-cloud.com/logos/heptapod.svg',
+      },
+      description: 'Heptapod runner',
+      flavors: [
+        getRunnerFlavor('heptapod-runner.', 'XS', 1, 2, true, 5),
+        getRunnerFlavor('heptapod-runner.', 'S', 2, 4, true, 5),
+        getRunnerFlavor('heptapod-runner.', 'M', 4, 8, true, 5),
+        getRunnerFlavor('heptapod-runner.', 'L', 6, 12, true, 5),
+        getRunnerFlavor('heptapod-runner.', 'XL', 8, 16, true, 5),
+        getRunnerFlavor('heptapod-runner.', '2XL', 12, 24, true, 5),
+        getRunnerFlavor('heptapod-runner.', '3XL', 16, 32, true, 5),
+      ],
+    };
+  }
 }
 
-function getJenkinsFlavor (name, cpus, memory) {
+function getRunnerFlavor (prefix, name, cpus, memory, microservice = false, nice = 0) {
   return {
     name,
     // not used
@@ -244,12 +274,12 @@ function getJenkinsFlavor (name, cpus, memory) {
     // not used
     price: null,
     available: true,
-    microservice: false,
+    microservice,
     // eslint-disable-next-line camelcase
     machine_learning: false,
-    nice: 0,
+    nice,
     // eslint-disable-next-line camelcase
-    price_id: 'jenkins-runner.' + name,
+    price_id: prefix + name,
     memory: {
       unit: 'B',
       value: memory * 1024 ** 3,
