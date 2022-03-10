@@ -7,6 +7,7 @@ title: Changelog
 ## Unreleased (????-??-??)
 
 * `<cc-env-var-*>`: fix links to the doc
+* `<cc-pricing-product>`: add details for Heptapod runners
 
 ## For devs
 
