@@ -534,11 +534,12 @@ export const translations = {
   //#region cc-tcp-redirection-form
   'cc-tcp-redirection-form.description': () => sanitize`
     <p>
-      Une redirection TCP permet d'obtenir un accès au port <code>4040</code> de l'application au travers des frontaux.<br>
+      Une redirection TCP permet d'obtenir un accès au port <code>4040</code> de l'application.<br>
       Vous pouvez créer une redirection TCP par application sur chaque espace de nommage auquel vous avez accès.
     </p>
     <p>
-      Un espace de nommage correspond à un groupe de frontaux : public, cleverapps.io ou encore dédiés dans le cadre de Clever Cloud Premium.
+      Un espace de nommage correspond à un groupe de frontaux : public, cleverapps.io, ou encore dédiés dans le cadre de Clever Cloud Premium.<br>
+      Retrouvez plus de détails sur la <a href="https://www.clever-cloud.com/doc/administrate/tcp-redirections/">page de documentation des redirections TCP</a>.
     </p>
   `,
   'cc-tcp-redirection-form.empty': `Vous n'avez accès à aucun espace de nommage.`,
