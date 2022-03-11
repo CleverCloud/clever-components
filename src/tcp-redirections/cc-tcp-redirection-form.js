@@ -4,6 +4,7 @@ import './cc-tcp-redirection.js';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
 import { defaultThemeStyles } from '../styles/default-theme.js';
+import { linkStyles } from '../templates/cc-link.js';
 
 const SKELETON_REDIRECTIONS = [
   { namespace: 'default', sourcePort: 1234 },
@@ -93,6 +94,7 @@ export class CcTcpRedirectionForm extends LitElement {
   static get styles () {
     return [
       defaultThemeStyles,
+      linkStyles,
       // language=CSS
       css`
         :host {

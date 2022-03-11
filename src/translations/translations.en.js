@@ -521,11 +521,12 @@ export const translations = {
   //#region cc-tcp-redirection-form
   'cc-tcp-redirection-form.description': () => sanitize`
     <p>
-      A TCP redirection allows you to route external traffic to the <code>4040</code> port of the application via the load balancers.<br>
+      A TCP redirection allows you to route external traffic to the <code>4040</code> port of the application.<br>
       You can create one TCP redirection per application for each namespace you have access to.
     </p>
     <p>
-      A namespace is a group of load balancers: either the default public ones, cleverapps.io or dedicated ones if you are a Clever Cloud Premium customer.
+      A namespace is a group of load balancers: either the default public ones, cleverapps.io, or dedicated ones if you are a Clever Cloud Premium customer.<br>
+      Find out more details on the <a href="https://www.clever-cloud.com/doc/administrate/tcp-redirections/">documentation page for TCP redirections</a>.
     </p>
   `,
   'cc-tcp-redirection-form.empty': `You do not have access to any namespaces.`,

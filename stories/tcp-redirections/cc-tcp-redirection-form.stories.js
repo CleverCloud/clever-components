@@ -1,4 +1,5 @@
 import '../../src/tcp-redirections/cc-tcp-redirection-form.js';
+import '../../src/tcp-redirections/cc-tcp-redirection-form.smart.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
