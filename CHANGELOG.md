@@ -11,6 +11,7 @@ title: Changelog
 ## 7.8.0 (2022-03-10)
 
 * `<cc-env-var-*>`: fix links to the doc
+* `<cc-pricing-product>`: add details for Heptapod runners
 
 ## For devs
 
