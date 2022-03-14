@@ -1,6 +1,7 @@
 import '../../src/atoms/cc-button.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
+import { allFormControlsStory } from './all-form-controls.js';
 
 const closeSvg = new URL('../../src/assets/close.svg', import.meta.url);
 const infoSvg = new URL('../../src/assets/info.svg', import.meta.url);
@@ -157,6 +158,8 @@ As you can see here, \`circle\` can only be used if there is an \`image\` and in
   ],
 });
 
+export const allFormControls = allFormControlsStory;
+
 enhanceStoriesNames({
   modes,
   outlined,
@@ -172,4 +175,5 @@ enhanceStoriesNames({
   hideText,
   skeleton,
   circle,
+  allFormControls,
 });
