@@ -1,10 +1,11 @@
 import { css, html, LitElement } from 'lit-element';
 import '../atoms/cc-button.js';
+import '../atoms/cc-select.js';
 import '../atoms/cc-toggle.js';
 import '../molecules/cc-block.js';
+import { i18n } from '../lib/i18n.js';
 import '../molecules/cc-error.js';
 import '../molecules/cc-block-section.js';
-import { i18n } from '../lib/i18n.js';
 import { sortBy, unique } from '../lib/utils.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
 import { PENDING_STATUSES, PROCESSED_STATUSES, PROCESSING_STATUS } from './cc-invoice-table.js';

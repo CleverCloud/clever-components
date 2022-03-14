@@ -2,6 +2,7 @@ import '../atoms/cc-img.js';
 import '../atoms/cc-input-text.js';
 import '../atoms/cc-flex-gap.js';
 import '../molecules/cc-error.js';
+import '../zones/cc-zone.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';

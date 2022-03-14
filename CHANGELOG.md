@@ -13,10 +13,13 @@ title: Changelog
 * `<cc-invoice-list>`: implement `<cc-select>` to display the year list when component width is lower than 520px
 * Remove `engines.node` from `package.json` and rely on Volta's versions fields
   * We use the `CC_PRE_BUILD_HOOK` env var to select the versions for Node.js and npm
+* `<cc-header-addon>`: add missing import to cc-zone
 
 ### For devs
 
 * Use specific Docker image for the CDN deployment job
+* Fix npm task components:check-lit (was only applied on atoms)
+* `<cc-env-var-editor-simple>`: remove unused mode attribute on cc-env-var-input
 
 ## 7.8.0 (2022-03-10)
 
