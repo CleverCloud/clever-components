@@ -18,6 +18,7 @@ title: Changelog
 
 * Use specific Docker image for the CDN deployment job
 * Fix npm task components:check-lit (was only applied on atoms)
+* `<cc-env-var-editor-simple>`: remove unused mode attribute on cc-env-var-input
 
 ## 7.8.0 (2022-03-10)
 

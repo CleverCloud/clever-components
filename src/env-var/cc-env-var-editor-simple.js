@@ -111,7 +111,6 @@ export class CcEnvVarEditorSimple extends LitElement {
 
       ${repeat(variables, ({ name }) => name, ({ name, value, isNew, isEdited, isDeleted }) => html`
         <cc-env-var-input
-          mode=${this.mode}
           name=${name}
           value=${value}
           ?new=${isNew}
