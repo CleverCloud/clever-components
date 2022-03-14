@@ -11,13 +11,19 @@ title: Changelog
   * `<cc-select>`
 * `<cc-button>`, `<cc-input-number>`, `<cc-input-text>`, `<cc-select>`, `<cc-toggle>`: add new story showing all form controls together
 * `<cc-invoice-list>`: implement `<cc-select>` to display the year list when component width is lower than 520px
+* Remove `engines.node` from `package.json` and rely on Volta's versions fields
+  * We use the `CC_PRE_BUILD_HOOK` env var to select the versions for Node.js and npm
+
+### For devs
+
+* Use specific Docker image for the CDN deployment job
 
 ## 7.8.0 (2022-03-10)
 
 * `<cc-env-var-*>`: fix links to the doc
 * `<cc-pricing-product>`: add details for Heptapod runners
 
-## For devs
+### For devs
 
 * Improve the CEM analyzer generate behaviour in dev mode
 

@@ -1,5 +1,5 @@
 pipeline {
-  agent { label 'cc-ci-agent' }
+  agent { label 'cc-ci-clever-components' }
   environment {
     GIT_TAG_NAME = gitTagName()
     SMART_CDN_CELLAR_KEY_ID = credentials('CELLAR_CC_COMPONENTS_ACCESS_KEY_ID')
