@@ -6,6 +6,10 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+...
+
+## 7.9.0 (2022-03-14)
+
 * `<cc-tcp-redirection-form>`: add smart definition
 * New component:
   * `<cc-select>`
