@@ -6,6 +6,7 @@ import '../molecules/cc-error.js';
 import '../molecules/cc-block-section.js';
 import { i18n } from '../lib/i18n.js';
 import { sortBy, unique } from '../lib/utils.js';
+import { withResizeObserver } from '../mixins/with-resize-observer.js';
 import { PENDING_STATUSES, PROCESSED_STATUSES, PROCESSING_STATUS } from './cc-invoice-table.js';
 
 function getYearAsString (dateString) {
@@ -29,7 +30,7 @@ function maxFromStrings (strings) {
  *
  * @cssdisplay block
  */
-export class CcInvoiceList extends LitElement {
+export class CcInvoiceList extends withResizeObserver(LitElement) {
 
   static get properties () {
     return {
@@ -50,6 +51,12 @@ export class CcInvoiceList extends LitElement {
 
     /** @type {number|null} */
     this._yearFilter = null;
+
+    /** @protected */
+    this.breakpoints = {
+      // used to switch between cc-toggle (> 520) and cc-select (<= 520)
+      width: [520],
+    };
   }
 
   _onYearFilterValue ({ detail: year }) {
@@ -79,6 +86,8 @@ export class CcInvoiceList extends LitElement {
 
     const filteredProcessedInvoices = processedInvoices.filter((i) => getYearAsString(i.emissionDate) === yearFilter);
 
+    const hasYearSelector = !skeleton && filteredProcessedInvoices.length > 0 && yearChoices.length > 1;
+
     return html`
       <cc-block>
         <div slot="title">${i18n('cc-invoice-list.title')}</div>
@@ -104,14 +113,20 @@ export class CcInvoiceList extends LitElement {
 
           <cc-block-section>
             <div slot="title">${i18n('cc-invoice-list.processed')}</div>
-            ${!skeleton && filteredProcessedInvoices.length > 0 && yearChoices.length > 1 ? html`
-              <cc-toggle
-                legend=${i18n('cc-invoice-list.year')}
-                .choices=${yearChoices}
-                value=${yearFilter}
-                @cc-toggle:input=${this._onYearFilterValue}
-              ></cc-toggle>
-            ` : ''}
+            ${hasYearSelector ? html`
+                <cc-toggle
+                  legend=${i18n('cc-invoice-list.year')}
+                  .choices=${yearChoices}
+                  value=${yearFilter}
+                  @cc-toggle:input=${this._onYearFilterValue}
+                ></cc-toggle>
+                <cc-select
+                  label=${i18n('cc-invoice-list.year')}
+                  .options=${yearChoices}
+                  value=${yearFilter}
+                  @cc-select:input=${this._onYearFilterValue}
+                ></cc-select>
+              ` : ''}
             ${skeleton || filteredProcessedInvoices.length > 0 ? html`
               <cc-invoice-table .invoices=${skeleton ? null : filteredProcessedInvoices}></cc-invoice-table>
             ` : ''}
@@ -139,6 +154,18 @@ export class CcInvoiceList extends LitElement {
 
         cc-toggle {
           justify-self: start;
+        }
+
+        :host([w-lt-520]) cc-toggle {
+          display: none;
+        }
+        
+        :host([w-gte-520]) cc-select {
+          display: none;
+        }
+
+        cc-select {
+          width: max-content;
         }
       `,
     ];

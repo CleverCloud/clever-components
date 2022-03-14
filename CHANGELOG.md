@@ -10,6 +10,7 @@ title: Changelog
 * New component:
   * `<cc-select>`
 * `<cc-button>`, `<cc-input-number>`, `<cc-input-text>`, `<cc-select>`, `<cc-toggle>`: add new story showing all form controls together
+* `<cc-invoice-list>`: implement `<cc-select>` to display the year list when component width is lower than 520px
 
 ## 7.8.0 (2022-03-10)
 
