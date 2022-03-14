@@ -1,6 +1,7 @@
 import '../../src/atoms/cc-input-number.js';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
+import { allFormControlsStory } from './all-form-controls.js';
 
 const baseItems = [
   {},
@@ -121,6 +122,8 @@ export const customWidth = makeStory(conf, {
     }),
 });
 
+export const allFormControls = allFormControlsStory;
+
 enhanceStoriesNames({
   defaultStory,
   label,
@@ -133,4 +136,5 @@ enhanceStoriesNames({
   stepWithControls,
   customAlign,
   customWidth,
+  allFormControls,
 });

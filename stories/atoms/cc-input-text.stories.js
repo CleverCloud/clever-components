@@ -1,6 +1,7 @@
 import '../../src/atoms/cc-input-text.js';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
+import { allFormControlsStory } from './all-form-controls.js';
 
 function widthContent (chars) {
   const rawContents = `_chars`;
@@ -149,6 +150,8 @@ export const tagsWithLabel = makeStory(conf, {
   items: tagsItems.map((p) => ({ ...p, label: 'Tags here' })),
 });
 
+export const allFormControls = allFormControlsStory;
+
 enhanceStoriesNames({
   defaultStory,
   label,
@@ -161,4 +164,5 @@ enhanceStoriesNames({
   tags,
   tagsWithClipboard,
   tagsWithLabel,
+  allFormControls,
 });

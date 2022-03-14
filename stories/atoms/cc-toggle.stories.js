@@ -1,6 +1,7 @@
 import '../../src/atoms/cc-toggle.js';
 import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
+import { allFormControlsStory } from './all-form-controls.js';
 
 const boldSvg = new URL('../assets/bold.svg', import.meta.url);
 const centerSvg = new URL('../assets/center.svg', import.meta.url);
@@ -229,6 +230,8 @@ Here you can see a series of toolbar examples using CSS custom propreties of the
   ],
 });
 
+export const allFormControls = allFormControlsStory;
+
 enhanceStoriesNames({
   defaultStory,
   disabled,
@@ -238,4 +241,5 @@ enhanceStoriesNames({
   textTransform,
   hideText,
   toolbar,
+  allFormControls,
 });
