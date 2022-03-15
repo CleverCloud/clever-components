@@ -6,7 +6,7 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+* `<cc-tcp-redirection-form>`: fix smart definition (wrong operator caused race conditions)
 
 ## 7.9.0 (2022-03-14)
 

@@ -2,7 +2,14 @@ import './cc-tcp-redirection-form.js';
 import '../smart/cc-smart-container.js';
 import { addTcpRedir, getTcpRedirs, removeTcpRedir } from '@clevercloud/client/esm/api/v2/application.js';
 import { getNamespaces } from '@clevercloud/client/esm/api/v2/organisation.js';
-import { fromCustomEvent, LastPromise, merge, unsubscribeWithSignal, withLatestFrom } from '../lib/observables.js';
+import {
+  combineLatest,
+  fromCustomEvent,
+  LastPromise,
+  merge,
+  unsubscribeWithSignal,
+  withLatestFrom,
+} from '../lib/observables.js';
 import { sendToApi } from '../lib/send-to-api.js';
 import { defineComponent } from '../lib/smart-manager.js';
 
@@ -20,8 +27,7 @@ defineComponent({
 
     const error$ = merge(namespaces_lp.error$, redirections_lp.error$);
 
-    const redirections$ = redirections_lp.value$
-      .pipe(withLatestFrom(namespaces_lp.value$));
+    const redirectionsAndNamespaces$ = combineLatest(redirections_lp.value$, namespaces_lp.value$);
 
     const onCreate$ = fromCustomEvent(component, 'cc-tcp-redirection:create')
       .pipe(withLatestFrom(context$));
@@ -43,7 +49,7 @@ defineComponent({
       error$.subscribe((error) => {
         component.error = error.type;
       }),
-      redirections$.subscribe(([redirections, namespaces]) => {
+      redirectionsAndNamespaces$.subscribe(([redirections, namespaces]) => {
         component.redirections = namespaces.map((n) => {
           const sourcePort = redirections.find((r) => r.namespace === n.namespace)?.sourcePort;
           return { namespace: n.namespace, sourcePort };
