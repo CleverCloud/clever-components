@@ -145,8 +145,8 @@ export class CcInputNumber extends LitElement {
 
     const value = (this.value != null) ? this.value : 0;
     const controls = (this.controls && !this.skeleton);
-    const minDisabled = (this.value <= this.min);
-    const maxDisabled = (this.value >= this.max);
+    const minDisabled = (this.value <= this.min) && (this.min != null);
+    const maxDisabled = (this.value >= this.max) && (this.max != null);
 
     return html`
 

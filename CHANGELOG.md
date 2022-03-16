@@ -6,7 +6,7 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+* `<cc-input-number>`: fix controls mode not working properly from types introduction
 
 ## 7.9.1 (2022-03-15)
 
