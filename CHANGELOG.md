@@ -7,6 +7,7 @@ title: Changelog
 ## Unreleased (????-??-??)
 
 * `<cc-input-number>`: fix controls mode not working properly from types introduction
+* `<cc-pricing-header>`: fix `skeleton` animation still displaying on the select on Safari after loading of data
 
 ## 7.9.1 (2022-03-15)
 
