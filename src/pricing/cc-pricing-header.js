@@ -123,7 +123,7 @@ export class CcPricingHeader extends LitElement {
           class="zone-select ${classMap({ skeleton: zonesSkeleton })}"
           label=${i18n('cc-pricing-header.selected-zone')}
           value=${ifDefined(this.zoneId ?? undefined)}
-          ?disabled=${this._sortedZones == null}
+          ?disabled=${zonesSkeleton}
           @sl-change=${this._onZoneChange}
         >
           ${zones.map((zone) => html`
@@ -176,6 +176,7 @@ export class CcPricingHeader extends LitElement {
           --sl-input-color-focus: #000;
           --sl-input-color-hover: #000;
           --sl-input-color: #000;
+          animation: none;
         }
 
         sl-select::part(label),
