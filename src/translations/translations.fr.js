@@ -426,6 +426,26 @@ export const translations = {
   'cc-map.error': `Une erreur est survenue pendant le chargement des données de la carte.`,
   'cc-map.no-points': `Pas de données à afficher sur la carte en ce moment.`,
   //#endregion
+  //#region cc-matomo-info
+  'cc-matomo-info.about.text': () => sanitize`
+    <p>L'add-on Matomo inclut des dépendances indispensables à son bon fonctionnement. Il est accompagné d'une application <strong>PHP</strong>, d'un add-on <strong>MySQL</strong> et d'un add-on <strong>Redis</strong>.</p>
+    <p>Ces dépendances sont affichées dans votre organisation comme n'importe quelle autre application ou add-on. Vous pouvez les configurer comme bon vous semble. Vous pouvez modifier le domaine de l'application PHP ou encore migrer le MySQL vers un plus gros plan.</p>
+    <p>Cet add-on est gratuit, mais ses dépendances sont facturées en fonction de leur consommation.</p>
+  `,
+  'cc-matomo-info.about.title': `À propos`,
+  'cc-matomo-info.documentation.link': `Accéder à la documentation`,
+  'cc-matomo-info.documentation.text': `Consultez notre documentation pour en apprendre plus sur l'utilisation ou la configuration de votre Matomo et de ses dépendances.`,
+  'cc-matomo-info.documentation.title': `Documentation`,
+  'cc-matomo-info.error': `An error occured while fetching the information about this add-on.`,
+  'cc-matomo-info.heading': `Cet add-on Matomo inclut toutes les dépendances nécessaires à son bon fonctionnement.`,
+  'cc-matomo-info.info': `Info`,
+  'cc-matomo-info.link.mysql': `Accéder à l'add-on MySQL`,
+  'cc-matomo-info.link.php': `Accéder à l'application PHP`,
+  'cc-matomo-info.link.redis': `Accéder à l'add-on Redis`,
+  'cc-matomo-info.open-matomo.link': `Accéder à Matomo`,
+  'cc-matomo-info.open-matomo.text': `Vous pouvez accéder à votre Matomo en utilisant votre compte Clever Cloud. Tous les membres de l'organisation peuvent également accéder au service grâce à leur propre compte.`,
+  'cc-matomo-info.open-matomo.title': `Accéder à Matomo`,
+  //#endregion
   //#region cc-pricing-estimation
   'cc-pricing-estimation.delete': `Supprimer le produit`,
   'cc-pricing-estimation.empty-list': `Ajoutez des produits et services pour modéliser une estimation.`,

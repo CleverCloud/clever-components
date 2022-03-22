@@ -413,6 +413,26 @@ export const translations = {
   'cc-map.error': `Something went wrong while trying to fetch data for the map.`,
   'cc-map.no-points': `No data to display on the map right now.`,
   //#endregion
+  //#region cc-matomo-info
+  'cc-matomo-info.about.text': () => sanitize`
+    <p>The Matomo add-on is a meta add-on. It provides you with a <strong>PHP</strong> application, a <strong>MySQL</strong> add-on and a <strong>Redis</strong> add-on.</p>
+    <p>They appear in your organisation just like your other applications and add-ons. You can still configure them as you like. For example, you may want to change the PHP application's domain or migrate the MySQL add-on to a bigger plan.</p>
+    <p>This add-on is free but its dependencies are billed based on their consumptions, just like other applications and add-ons.</p>
+  `,
+  'cc-matomo-info.about.title': `About`,
+  'cc-matomo-info.documentation.link': `Read the documentation`,
+  'cc-matomo-info.documentation.text': `Our documentation can help you start using Matomo and configure its dependencies.`,
+  'cc-matomo-info.documentation.title': `Documentation`,
+  'cc-matomo-info.error': `An error occured while fetching the information about this add-on.`,
+  'cc-matomo-info.heading': `This Matomo add-on provides all required dependencies to get started.`,
+  'cc-matomo-info.info': `Info`,
+  'cc-matomo-info.link.mysql': `Access the MySQL add-on`,
+  'cc-matomo-info.link.php': `Access the PHP application`,
+  'cc-matomo-info.link.redis': `Access the Redis add-on`,
+  'cc-matomo-info.open-matomo.link': `Access Matomo`,
+  'cc-matomo-info.open-matomo.text': `You can access your Matomo using your Clever Cloud account. Organisation members can also access the Matomo service.`,
+  'cc-matomo-info.open-matomo.title': `Access Matomo`,
+  //#endregion
   //#region cc-pricing-estimation
   'cc-pricing-estimation.delete': `Delete product`,
   'cc-pricing-estimation.empty-list': `Add some products to create your pricing estimation.`,
