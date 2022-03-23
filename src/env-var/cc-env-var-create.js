@@ -185,7 +185,7 @@ export class CcEnvVarCreate extends LitElement {
 
         /* i18n error message may contain <code> tags */
         cc-error code {
-          background-color: #f3f3f3;
+          background-color: var(--color-bg-neutral);
           border-radius: 0.25rem;
           font-family: var(--cc-ff-monospace);
           padding: 0.15rem 0.3rem;

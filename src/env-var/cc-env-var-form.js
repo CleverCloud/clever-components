@@ -11,6 +11,7 @@ import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 import { linkStyles } from '../templates/cc-link.js';
 
 /**
@@ -324,6 +325,7 @@ export class CcEnvVarForm extends LitElement {
 
   static get styles () {
     return [
+      defaultThemeStyles,
       // language=CSS
       linkStyles,
       css`
@@ -343,14 +345,14 @@ export class CcEnvVarForm extends LitElement {
         }
 
         .heading {
-          color: #3A3871;
+          color: var(--color-text-strong);
           flex: 1 1 0;
           font-size: 1.2rem;
           font-weight: bold;
         }
 
         .description {
-          color: #555;
+          color: var(--color-text-light);
           display: block;
           font-style: italic;
           line-height: 1.5;

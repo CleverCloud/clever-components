@@ -4,6 +4,7 @@ import '../atoms/cc-img.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { i18n } from '../lib/i18n.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 
 const downSvg = new URL('../assets/down.svg', import.meta.url).href;
 const upSvg = new URL('../assets/up.svg', import.meta.url).href;
@@ -87,6 +88,8 @@ export class CcBlock extends LitElement {
             <cc-button
               image=${isOpen ? upSvg : downSvg}
               hide-text
+              outlined
+              primary
               @cc-button:click=${this._clickToggle}
             >${(this.state === 'close') ? i18n('cc-block.toggle.close') : i18n('cc-block.toggle.open')}
             </cc-button>
@@ -118,6 +121,7 @@ export class CcBlock extends LitElement {
 
   static get styles () {
     return [
+      defaultThemeStyles,
       // language=CSS
       css`
         :host {
@@ -155,7 +159,7 @@ export class CcBlock extends LitElement {
         }
 
         ::slotted([slot="title"]) {
-          color: #3A3871;
+          color: var(--color-text-strong);
           flex: 1 1 0;
           font-size: 1.2rem;
           font-weight: bold;
@@ -166,7 +170,7 @@ export class CcBlock extends LitElement {
           --width: 8rem;
           --r: -45deg;
           --translate: 1.6rem;
-          background: #3A3871;
+          background: var(--color-bg-strong);
           color: white;
           font-size: 0.9rem;
           font-weight: bold;
@@ -180,7 +184,6 @@ export class CcBlock extends LitElement {
           width: var(--width);
           z-index: 2;
         }
-
 
         .main {
           display: grid;

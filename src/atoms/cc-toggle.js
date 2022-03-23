@@ -3,6 +3,7 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { repeat } from 'lit-html/directives/repeat.js';
 import { dispatchCustomEvent } from '../lib/events.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 
 /**
  * @typedef {import('./types.js').Choice} Choice
@@ -149,10 +150,11 @@ export class CcToggle extends LitElement {
 
   static get styles () {
     return [
+      defaultThemeStyles,
       // language=CSS
       css`
         :host {
-          --cc-toggle-color: #334252;
+          --cc-toggle-color: var(--color-bg-primary);
           --cc-toggle-img-filter: none;
           --cc-toggle-img-filter-selected: none;
           display: flex;
@@ -286,7 +288,7 @@ export class CcToggle extends LitElement {
         /* NOT SELECTED */
         label {
           --color-bg: #fff;
-          --color-txt: #666;
+          --color-txt: var(--color-text-normal);
         }
 
         img {
@@ -305,7 +307,7 @@ export class CcToggle extends LitElement {
         /* HOVERED */
         .display-normal input:not(:checked):enabled:hover + label,
         .display-subtle input:enabled:hover + label {
-          --color-bg: #ededed;
+          --color-bg: var(--color-bg-neutral-hovered);
         }
 
         /* FOCUS */

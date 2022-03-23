@@ -6,6 +6,8 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+* colors: use variables to specify colors and swap old colors for new contrasted ones.
+
 ...
 
 ## 7.10.1 (2022-03-23)

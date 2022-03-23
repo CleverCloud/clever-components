@@ -203,12 +203,12 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
         }
 
         .invoice-text {
-          color: #555;
+          color: var(--color-text-light);
         }
 
         .invoice-text code,
         .invoice-text strong {
-          color: #000;
+          color: var(--color-text-strongest);
           font-weight: bold;
           white-space: nowrap;
         }
@@ -218,7 +218,6 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
           background-color: #bbb;
           color: transparent;
         }
-
         /*endregion*/
 
         /*region BIG*/
@@ -235,11 +234,13 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
         }
 
         th {
-          background-color: #eee;
+          background-color: var(--color-bg-neutral-alt);
+          color: var(--color-text-strongest);
         }
 
         td {
-          background-color: #fafafa;
+          background-color: var(--color-bg-neutral);
+          color: var(--color-text-normal);
         }
 
         tr:not(:last-child) td {
@@ -257,7 +258,7 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
         }
 
         tr:hover td {
-          background-color: #f5f5f5;
+          background-color: var(--color-bg-neutral-hovered);
         }
 
         table .skeleton {

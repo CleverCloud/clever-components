@@ -3,6 +3,7 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { linkStyles } from '../templates/cc-link.js';
 
@@ -218,6 +219,7 @@ export class CcButton extends LitElement {
 
   static get styles () {
     return [
+      defaultThemeStyles,
       skeletonStyles,
       linkStyles,
       // language=CSS
@@ -260,30 +262,30 @@ export class CcButton extends LitElement {
 
         /* COLORS */
         .simple {
-          --btn-color: hsl(210, 23%, 26%);
+          --btn-color: var(--color-text-strong);
         }
 
         .primary {
-          --btn-color: hsl(213, 55%, 62%);
+          --btn-color: var(--color-bg-primary);
         }
 
         .success {
-          --btn-color: hsl(144, 56%, 43%);
+          --btn-color: var(--color-bg-success);
         }
 
         .warning {
-          --btn-color: hsl(35, 84%, 37%);
+          --btn-color: var(--color-bg-warning);
         }
 
         .danger {
-          --btn-color: hsl(351, 70%, 47%);
+          --btn-color: var(--color-bg-danger);
         }
 
         /* MODES */
         .btn {
           background-color: var(--btn-color);
           border-color: var(--btn-color);
-          color: #fff;
+          color: var(--color-text-inverted);
         }
 
         .outlined {
@@ -297,7 +299,7 @@ export class CcButton extends LitElement {
 
         /* special case: we want to keep simple buttons subtle */
         .simple {
-          border-color: #aaa;
+          border-color: var(--color-grey-medium);
         }
 
         .img-only {

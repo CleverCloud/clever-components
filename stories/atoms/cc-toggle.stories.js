@@ -145,10 +145,10 @@ You can have a bit of control over the main color used by the component with \`-
 `,
   css: conf.css + `
     cc-toggle {
-      --cc-toggle-color: hsl(213, 55%, 62%);
+      --cc-toggle-color: #3569aa;
     }
     cc-toggle[value="TRUE"] {
-      --cc-toggle-color: hsl(144, 56%, 43%);
+      --cc-toggle-color: #098846;
     }
   `,
   items: normalAndSubtleItems,
@@ -204,11 +204,11 @@ Here you can see a series of toolbar examples using CSS custom propreties of the
       justify-items: start;
     }
     cc-toggle {
-      --cc-toggle-color: #6999d3;
+      --cc-toggle-color: #3569aa;
     }
     cc-toggle:not(.subtle) {
       --cc-toggle-img-filter: grayscale(100%) brightness(0.7);
-      --cc-toggle-img-filter-selected: brightness(2);
+      --cc-toggle-img-filter-selected: brightness(10);
     }
     cc-toggle.subtle {
       --cc-toggle-img-filter: grayscale(100%) brightness(0.7);

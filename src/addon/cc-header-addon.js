@@ -7,6 +7,7 @@ import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { i18n } from '../lib/i18n.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
 /** @type {Addon} */
@@ -122,6 +123,7 @@ export class CcHeaderAddon extends LitElement {
 
   static get styles () {
     return [
+      defaultThemeStyles,
       skeletonStyles,
       // language=CSS
       css`
@@ -179,7 +181,7 @@ export class CcHeaderAddon extends LitElement {
           --cc-gap: 0.5rem;
           --cc-align-items: center;
           align-items: center;
-          background-color: #f1f5ff;
+          background-color: var(--color-bg-primary-light);
           box-shadow: inset 0 6px 6px -6px #a4b1c9;
           box-sizing: border-box;
           color: #2e2e2e;

@@ -7,6 +7,7 @@ import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { fakeString } from '../lib/fake-strings.js';
 import { i18n } from '../lib/i18n.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 
@@ -271,6 +272,8 @@ export class CcAddonBackups extends LitElement {
                 slot="button"
                 image=${closeSvg}
                 hide-text
+                outlined
+                primary
                 @cc-button:click=${this._onCloseOverlay}
               >${i18n('cc-addon-backups.close-btn')}</cc-button>
 
@@ -302,6 +305,8 @@ export class CcAddonBackups extends LitElement {
                 slot="button"
                 image=${closeSvg}
                 hide-text
+                outlined
+                primary
                 @cc-button:click=${this._onCloseOverlay}
               >${i18n('cc-addon-backups.close-btn')}</cc-button>
 
@@ -328,6 +333,7 @@ export class CcAddonBackups extends LitElement {
 
   static get styles () {
     return [
+      defaultThemeStyles,
       skeletonStyles,
       linkStyles,
       // language=CSS
@@ -366,7 +372,7 @@ export class CcAddonBackups extends LitElement {
         }
 
         .backup-text {
-          color: #555;
+          color: var(--color-text-light);
         }
 
         .backup-text-details:not(.skeleton) strong {

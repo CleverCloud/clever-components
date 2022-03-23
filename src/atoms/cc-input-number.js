@@ -276,7 +276,9 @@ export class CcInputNumber extends LitElement {
         }
 
         input[disabled] {
-          opacity: .75;
+          background-color: var(--color-bg-neutral-disabled);
+          color: var(--color-text-light);
+          opacity: 1;
           pointer-events: none;
         }
 
@@ -319,19 +321,19 @@ export class CcInputNumber extends LitElement {
         }
 
         :host([disabled]) .ring {
-          background: #eee;
-          border-color: #eee;
+          background: var(--color-bg-neutral-disabled);
+          border-color: var(--color-bg-neutral-disabled);
         }
 
         :host([readonly]) .ring {
-          background: #eee;
+          background: var(--color-bg-neutral-readonly);
         }
 
         /* SKELETON */
         .skeleton .ring,
         .skeleton:hover .ring,
         .skeleton input:hover + .ring {
-          background-color: #eee;
+          background-color: var(--color-bg-neutral-disabled);
           border-color: #eee;
           cursor: progress;
         }
@@ -373,19 +375,11 @@ export class CcInputNumber extends LitElement {
         }
 
         .btn:hover {
-          background-color: #f5f5f5;
+          background-color: var(--color-bg-neutral-hovered);
         }
 
         .btn:active {
-          background-color: #eee;
-        }
-
-        :host([readonly]) .btn:hover {
-          background-color: #e5e5e5;
-        }
-
-        :host([readonly]) .btn:active {
-          background-color: #ddd;
+          background-color: var(--color-bg-neutral-active);
         }
 
         /* We can do this because we set a visible focus state */
@@ -397,12 +391,14 @@ export class CcInputNumber extends LitElement {
           box-sizing: border-box;
           filter: grayscale(100%);
           height: 100%;
+          opacity: 0.6;
           padding: 15%;
           width: 100%;
         }
 
         .btn-img:hover {
           filter: grayscale(0%);
+          opacity: 1;
         }
       `,
     ];

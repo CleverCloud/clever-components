@@ -4,6 +4,7 @@ import { css, html, LitElement } from 'lit-element';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 
 /**
  * A component that allows to enable or disable an add-on option.
@@ -64,6 +65,7 @@ export class CcAddonOption extends LitElement {
 
   static get styles () {
     return [
+      defaultThemeStyles,
       // language=CSS
       css`
         :host {
@@ -75,7 +77,7 @@ export class CcAddonOption extends LitElement {
         }
 
         ::slotted(.option-warning) {
-          color: #555;
+          color: var(--color-text-light);
           font-style: italic;
         }
 
@@ -91,12 +93,12 @@ export class CcAddonOption extends LitElement {
         }
 
         :host(:not([enabled])) {
-          background-color: #f8f8f8;
+          background-color: var(--color-bg-neutral);
           border: 2px solid #f8f8f8;
         }
 
         :host([enabled]) {
-          border: 2px solid hsl(144, 56%, 43%);
+          border: 2px solid var(--color-bg-success);
         }
 
         .logo {
@@ -111,7 +113,7 @@ export class CcAddonOption extends LitElement {
         }
 
         :host([enabled]) cc-toggle {
-          --cc-toggle-color: hsl(144, 56%, 43%);
+          --cc-toggle-color: var(--color-bg-success);
         }
 
         .option-details {

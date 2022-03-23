@@ -6,6 +6,7 @@ import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { i18n } from '../lib/i18n.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 import { tileStyles } from '../styles/info-tiles.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
@@ -254,6 +255,8 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
           class="docs-toggle"
           image=${displayDocs ? closeSvg : infoSvg}
           hide-text
+          outlined
+          primary
           @cc-button:click=${this._onToggleDocs}
         >${this._docs ? i18n('cc-tile-requests.close-btn') : i18n('cc-tile-requests.about-btn')}
         </cc-button>
@@ -277,6 +280,7 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
 
   static get styles () {
     return [
+      defaultThemeStyles,
       tileStyles,
       skeletonStyles,
       // language=CSS
@@ -328,7 +332,7 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
         }
 
         .tile_docs_link {
-          color: #2b96fd;
+          color: var(--color-text-primary-highlight);
           text-decoration: underline;
         }
       `,
