@@ -6,7 +6,7 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+`<cc-matomo-info>`: fix logo URLs for PHP, MySQL and Redis
 
 ## 7.10.0 (2022-03-23)
 
