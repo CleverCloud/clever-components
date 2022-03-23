@@ -11,9 +11,9 @@ import { ccLink, linkStyles } from '../templates/cc-link.js';
 const infoSvg = new URL('../assets/info.svg', import.meta.url).href;
 
 const MATOMO_LOGO_URL = 'https://assets.clever-cloud.com/logos/matomo.svg';
-const PHP_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com/logos/php.svg';
-const MYSQL_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com/logos/mysql.svg';
-const REDIS_LOGO_URL = 'https://static-assets.cellar.services.clever-cloud.com/logos/redis.svg';
+const PHP_LOGO_URL = 'https://assets.clever-cloud.com/logos/php.svg';
+const MYSQL_LOGO_URL = 'https://assets.clever-cloud.com/logos/mysql.svg';
+const REDIS_LOGO_URL = 'https://assets.clever-cloud.com/logos/redis.svg';
 const MATOMO_DOCUMENTATION = 'https://www.clever-cloud.com/doc/deploy/addon/matomo/';
 
 /**
