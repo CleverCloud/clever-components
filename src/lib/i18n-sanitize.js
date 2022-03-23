@@ -70,10 +70,12 @@ export function sanitize (statics, ...params) {
           });
 
         // If link has href and external origin => force rel and target
-        if (node.tagName === 'A' && node.getAttribute('href') != null && node.origin !== window.location.origin) {
+        if (node.tagName === 'A' && node.getAttribute('href') != null) {
           node.classList.add('sanitized-link');
-          node.setAttribute('rel', 'noopener noreferrer');
-          node.setAttribute('target', '_blank');
+          if (node.origin !== window.location.origin) {
+            node.setAttribute('rel', 'noopener noreferrer');
+            node.setAttribute('target', '_blank');
+          }
         }
       }
     });

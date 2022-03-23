@@ -96,7 +96,7 @@ describe('filter', () => {
 
   it('Only keep href and title attributes on <a> (remove every other attributes)', () => {
     compareChildNodes(sanitize`One Two Three Four <a href="/foobar" download id="the-id" target="foobar" title="a-title">Five</a> Six`,
-      ['One Two Three Four ', ['a', ['Five'], [['href', '/foobar'], ['title', 'a-title']]], ' Six'],
+      ['One Two Three Four ', ['a', ['Five'], [['href', '/foobar'], ['title', 'a-title'], ['class', 'sanitized-link']]], ' Six'],
     );
   });
 
