@@ -78,6 +78,7 @@ export function inputs (sourceDir, entryMapper) {
     `${sourceDir}/lib/smart-manager.js`,
     `${sourceDir}/maps/*.js`,
     `${sourceDir}/molecules/*.js`,
+    `${sourceDir}/notices/*.js`,
     `${sourceDir}/overview/*.js`,
     `${sourceDir}/pricing/*.js`,
     `${sourceDir}/saas/*.js`,

@@ -36,11 +36,13 @@ export const defaultThemeStyles = css`
     --color-legacy-green: #2faa60;
     /* do not use except inside cc-tile-instances*/
     --color-legacy-red: #ff0032;
+    --color-orange-light: #fff9cb;
     --color-orange: #c15807;
     --color-purple-light: #e0e0ff;
     --color-red: #be242d;
     --color-red-light: #ffe4e1;
     --color-white: #ffffff;
+    --color-yellow: #e9e138;
     /*endregion*/
     
     /*region Color Decisions (text)*/
@@ -148,6 +150,14 @@ export const defaultThemeStyles = css`
     /* Usage: elements containing short texts with a "caution" / "warning" meaning and usually interactive.
     For instance: ? */
     --color-bg-warning: var(--color-orange);
+
+    /* Usage: elements containing texts with a "caution" / "warning" meaning with text in --color-text-default */
+    --color-bg-warning-light: var(--color-orange-light);
+    /*endregion*/
+
+    /*region Color Decisions(border)*/
+    /* Usage: with default background for an "outlined" style or warning background for "plain" style" ? */
+    --border-warning: 1px solid var(--color-yellow);
     /*endregion*/
   }
 `;

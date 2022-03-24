@@ -446,6 +446,19 @@ export const translations = {
   'cc-matomo-info.open-matomo.text': `Vous pouvez accéder à votre Matomo en utilisant votre compte Clever Cloud. Tous les membres de l'organisation peuvent également accéder au service grâce à leur propre compte.`,
   'cc-matomo-info.open-matomo.title': `Accéder à Matomo`,
   //#endregion
+  //#region cc-payment-warning
+  'cc-payment-warning.billing-page-link': ({ orgaName, orgaBillingLink }) => sanitize`<a href="${orgaBillingLink}" aria-label="Se rendre sur la page de facturation - ${orgaName}">Se rendre sur la page de facturation</a>`,
+  'cc-payment-warning.generic.default-payment-method-is-expired': ({ orgaName }) => sanitize`<strong>${orgaName}</strong> a un moyen de paiement enregistré mais il est expiré.`,
+  'cc-payment-warning.generic.no-default-payment-method': ({ orgaName }) => sanitize`<strong>${orgaName}</strong> a des moyens de payments enregistrés mais aucun d'entre eux n'est défini par défaut.`,
+  'cc-payment-warning.generic.no-payment-method': ({ orgaName }) => sanitize`<strong>${orgaName}</strong> n'a aucun moyen de paiement enregistré.`,
+  'cc-payment-warning.home': ({ orgaCount }) => {
+    const organisation = plural(orgaCount, 'à l\'organisation suivante', 'aux organisations suivantes');
+    return sanitize`<strong>Attention ! Quelque chose pose problème avec vos moyens de paiement.</strong><br>Pour éviter tout risque de suspension de vos services et de suppression de vos données, merci de vérifier les informations de facturation liées ${organisation} :`;
+  },
+  'cc-payment-warning.orga.default-payment-method-is-expired': () => sanitize`<strong>Attention ! Votre moyen de paiement est expiré.</strong><br>Pour éviter tout risque de suspension de vos services et de suppression de vos données, merci d'ajouter un moyen de paiement valide et de le définir par défaut.`,
+  'cc-payment-warning.orga.no-default-payment-method': () => sanitize`<strong>Attention ! Vous avez des moyens de payments enregistrés, mais aucun d'entre eux n'est défini par défaut.</strong><br>Pour éviter tout risque de suspension de vos services et de suppression de vos données, merci de définir un de vos moyen de paiement par défaut.`,
+  'cc-payment-warning.orga.no-payment-method': () => sanitize`<strong>Attention ! Vous n'avez aucun moyen de paiement enregistré.</strong><br>Pour éviter tout risque de suspension de vos services et de suppression de vos données, merci d'ajouter un moyen de paiement valide et de le définir par défaut.`,
+  //#endregion
   //#region cc-pricing-estimation
   'cc-pricing-estimation.delete': `Supprimer le produit`,
   'cc-pricing-estimation.empty-list': `Ajoutez des produits et services pour modéliser une estimation.`,

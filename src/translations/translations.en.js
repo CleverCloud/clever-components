@@ -433,6 +433,19 @@ export const translations = {
   'cc-matomo-info.open-matomo.text': `You can access your Matomo using your Clever Cloud account. Organisation members can also access the Matomo service.`,
   'cc-matomo-info.open-matomo.title': `Access Matomo`,
   //#endregion
+  //#region cc-payment-warning
+  'cc-payment-warning.billing-page-link': ({ orgaName, orgaBillingLink }) => sanitize`<a href="${orgaBillingLink}" aria-label="Go to the billing page - ${orgaName}">Go to the billing page</a>`,
+  'cc-payment-warning.generic.default-payment-method-is-expired': ({ orgaName }) => sanitize`<strong>${orgaName}</strong> has a default payment method but it has expired.`,
+  'cc-payment-warning.generic.no-default-payment-method': ({ orgaName }) => sanitize`<strong>${orgaName}</strong> has registered payment methods but none of them are set as default.`,
+  'cc-payment-warning.generic.no-payment-method': ({ orgaName }) => sanitize`<strong>${orgaName}</strong> doesn't have any registered payment method.`,
+  'cc-payment-warning.home': ({ orgaCount }) => {
+    const organisation = plural(orgaCount, 'organisation');
+    return sanitize`<strong>Beware! Something is wrong with your payment methods.</strong><br>To avoid any suspension of your services and deletion of your data, please check the billing info related to the following ${organisation}:`;
+  },
+  'cc-payment-warning.orga.default-payment-method-is-expired': () => sanitize`<strong>Beware! Your default payment method has expired.</strong><br>To avoid any suspension of your services and deletion of your data, please add a valid payment method and set it as default.`,
+  'cc-payment-warning.orga.no-default-payment-method': () => sanitize`<strong>Beware! You have registered payment methods but none of them are set as default.</strong><br>To avoid any suspension of your services and deletion of your data, please set one of them as default.`,
+  'cc-payment-warning.orga.no-payment-method': () => sanitize`<strong>Beware! You don't have any registered payment method.</strong><br>To avoid any suspension of your services and deletion of your data, please add a valid payment method and set it as default.`,
+  //#endregion
   //#region cc-pricing-estimation
   'cc-pricing-estimation.delete': `Delete product`,
   'cc-pricing-estimation.empty-list': `Add some products to create your pricing estimation.`,
