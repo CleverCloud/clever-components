@@ -1,6 +1,11 @@
 /* global globalThis */
 const AUTHORIZED_TAGS = ['STRONG', 'EM', 'CODE', 'A', 'BR', 'P'];
 
+function isAuthorizedAttribute (attributeName, tagName) {
+  return (attributeName === 'title')
+    || (attributeName === 'href' && tagName === 'A');
+}
+
 // Reuse one text node to escape HTML
 const escapeHtml = (() => {
 
@@ -60,10 +65,9 @@ export function sanitize (statics, ...params) {
       }
       else {
 
-        // Authorized attributes: *[title] and a[href]
         Array
           .from(node.attributes)
-          .filter((attr) => attr.name !== 'title' && (node.tagName !== 'A' || attr.name !== 'href'))
+          .filter((attr) => !isAuthorizedAttribute(attr.name, node.tagName))
           .forEach((attr) => {
             console.warn(`Attribute ${attr.name} is not allowed on <${node.tagName.toLowerCase()}> in translations!`);
             return node.removeAttribute(attr.name);
