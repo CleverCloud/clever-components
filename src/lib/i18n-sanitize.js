@@ -3,6 +3,7 @@ const AUTHORIZED_TAGS = ['STRONG', 'EM', 'CODE', 'A', 'BR', 'P'];
 
 function isAuthorizedAttribute (attributeName, tagName) {
   return (attributeName === 'title')
+    || (attributeName === 'aria-label')
     || (attributeName === 'href' && tagName === 'A');
 }
 
