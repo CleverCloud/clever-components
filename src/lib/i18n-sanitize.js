@@ -1,5 +1,5 @@
 /* global globalThis */
-const WHITELISTED_TAGS = ['STRONG', 'EM', 'CODE', 'A', 'BR', 'P'];
+const AUTHORIZED_TAGS = ['STRONG', 'EM', 'CODE', 'A', 'BR', 'P'];
 
 // Reuse one text node to escape HTML
 const escapeHtml = (() => {
@@ -47,8 +47,8 @@ export function sanitize (statics, ...params) {
     .from(template.content.querySelectorAll('*'))
     .forEach((node) => {
 
-      // If tag is not whitelisted, transform it to a text node and merge it with previous and/or next siblings if they are text nodes
-      if (!WHITELISTED_TAGS.includes(node.tagName)) {
+      // If tag is not authorized, transform it to a text node and merge it with previous and/or next siblings if they are text nodes
+      if (!AUTHORIZED_TAGS.includes(node.tagName)) {
 
         const previousText = absorbTextSibling(node.previousSibling);
         const nextText = absorbTextSibling(node.nextSibling);
@@ -60,7 +60,7 @@ export function sanitize (statics, ...params) {
       }
       else {
 
-        // Whitelisted attributes: *[title] and a[href]
+        // Authorized attributes: *[title] and a[href]
         Array
           .from(node.attributes)
           .filter((attr) => attr.name !== 'title' && (node.tagName !== 'A' || attr.name !== 'href'))
