@@ -9,8 +9,10 @@ Here's list of interesting things to read, watch and listen to if you're working
 ## Articles, docs...
 
 * [Atomic Design](https://bradfrost.com/blog/post/atomic-web-design/)
+* [Design tokens — What are they & how will they help you?](https://lukasoppermann.medium.com/design-tokens-what-are-they-how-will-they-help-you-b73f80f602ab)
 * [Effective Skeleton Screens](https://timkadlec.com/remembers/2020-11-02-skeleton-screens/)
 * [Lit docs](https://lit.dev/)
+* [Naming Tokens in Design Systems](https://medium.com/eightshapes-llc/naming-tokens-in-design-systems-9e86c7444676)
 * [RxJS docs](https://rxjs.dev/)
 * [Storybook docs](https://storybook.js.org/)
 * [The performance benefits of rel=noopener](https://jakearchibald.com/2016/performance-benefits-of-rel-noopener/)
