@@ -389,7 +389,9 @@ export class CcInputText extends LitElement {
         }
 
         .input[disabled] {
-          opacity: .75;
+          background-color: var(--color-bg-neutral-disabled);
+          color: var(--color-text-light);
+          opacity: 1;
           pointer-events: none;
         }
 
@@ -417,7 +419,7 @@ export class CcInputText extends LitElement {
         }
 
         .input-underlayer .tag:not(:empty) {
-          --color: rgba(50, 50, 255, 0.15);
+          --color: var(--color-bg-soft);
           background-color: var(--color);
           border-radius: 3px;
           box-shadow: 0 0 0 2px var(--color);
@@ -449,7 +451,7 @@ export class CcInputText extends LitElement {
         }
 
         :host([disabled]) .ring {
-          background: #eee;
+          background: var(--color-bg-neutral-disabled);
           border-color: #eee;
         }
 
@@ -461,7 +463,7 @@ export class CcInputText extends LitElement {
         .skeleton .ring,
         .skeleton:hover .ring,
         .skeleton .input:hover + .ring {
-          background-color: #eee;
+          background-color: var(--color-bg-neutral-disabled);
           border-color: #eee;
           cursor: progress;
         }
@@ -504,19 +506,11 @@ export class CcInputText extends LitElement {
         }
 
         .btn:hover {
-          background-color: #f5f5f5;
+          background-color: var(--color-bg-neutral-hovered);
         }
 
         .btn:active {
-          background-color: #eee;
-        }
-
-        :host([readonly]) .btn:hover {
-          background-color: #e5e5e5;
-        }
-
-        :host([readonly]) .btn:active {
-          background-color: #ddd;
+          background-color: var(--color-bg-neutral-active);
         }
 
         /* We can do this because we set a visible focus state */
@@ -528,12 +522,14 @@ export class CcInputText extends LitElement {
           box-sizing: border-box;
           filter: grayscale(100%);
           height: 100%;
+          opacity: .6;
           padding: 15%;
           width: 100%;
         }
 
         .btn-img:hover {
           filter: grayscale(0%);
+          opacity: 1;
         }
       `,
     ];

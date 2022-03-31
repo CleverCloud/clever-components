@@ -156,7 +156,7 @@ export class CcZone extends LitElement {
         }
 
         .subtitle {
-          color: var(--cc-zone-subtitle-color, #555);
+          color: var(--cc-zone-subtitle-color, var(--color-text-light));
         }
 
         .infra-logo {
@@ -177,7 +177,7 @@ export class CcZone extends LitElement {
         }
 
         .tag {
-          background-color: var(--cc-zone-tag-bgcolor, rgba(50, 50, 255, 0.15));
+          background-color: var(--cc-zone-tag-bgcolor, var(--color-bg-soft));
           border: 1px solid var(--cc-zone-tag-bdcolor, transparent);
           border-radius: 0.25em;
           border-radius: 0.25rem;

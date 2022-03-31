@@ -7,6 +7,7 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { waitingStyles } from '../styles/waiting.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
@@ -317,6 +318,7 @@ export class CcHeaderApp extends LitElement {
 
   static get styles () {
     return [
+      defaultThemeStyles,
       skeletonStyles,
       linkStyles,
       waitingStyles,
@@ -372,19 +374,8 @@ export class CcHeaderApp extends LitElement {
 
         .commit {
           align-items: flex-start;
+          color: var(--color-text-default);
           display: flex;
-        }
-
-        .commit[data-type="git"] {
-          color: #5D5D5D;
-        }
-
-        .commit[data-type="running"] {
-          color: #2faa60;
-        }
-
-        .commit[data-type="starting"] {
-          color: #2b96fd;
         }
 
         .commit_img {
@@ -416,7 +407,7 @@ export class CcHeaderApp extends LitElement {
           --cc-gap: 0.5rem;
           --cc-align-items: center;
           align-items: center;
-          background-color: #f1f5ff;
+          background-color: var(--color-bg-primary-light);
           box-shadow: inset 0 6px 6px -6px #a4b1c9;
           box-sizing: border-box;
           color: #2e2e2e;

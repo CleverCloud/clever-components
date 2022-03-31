@@ -1,8 +1,8 @@
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
-
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 
 /**
  * @typedef {import('./types.js').Option} Option
@@ -114,6 +114,7 @@ export class CcSelect extends LitElement {
 
   static get styles () {
     return [
+      defaultThemeStyles,
       // language=CSS
       css`
         :host {
@@ -129,7 +130,7 @@ export class CcSelect extends LitElement {
         }
 
         .required {
-          color: #555;
+          color: var(--color-text-light);
           font-size: 0.9em;
           font-variant: small-caps;
           margin-left: 2em;
@@ -184,7 +185,7 @@ export class CcSelect extends LitElement {
         }
 
         .selectWrapper::after {
-          background-color: hsl(213, 55%, 62%);
+          background-color: var(--color-bg-primary);
           clip-path: polygon(100% 0%, 0 0%, 50% 100%);
           content: '';
           height: 0.5em;
@@ -200,13 +201,15 @@ export class CcSelect extends LitElement {
         }
 
         select[disabled] {
-          background: #eee;
-          border-color: #eee;
+          background: var(--color-bg-neutral-disabled);
+          border-color: var(--color-bg-neutral-disabled);
+          color: var(--color-text-light);
+          opacity: 1;
           pointer-events: none;
         }
 
         slot[name='error']::slotted(*) {
-          color: hsl(351, 70%, 47%);
+          color: var(--color-text-danger);
           margin: 0.5em 0 0 0;
         }
       `,

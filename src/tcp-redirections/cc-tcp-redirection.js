@@ -166,7 +166,7 @@ export class CcTcpRedirection extends LitElement {
         :host {
           display: block;
         }
-        
+      
         .wrapper {
           --cc-gap: 0.8rem;
         }
@@ -201,14 +201,14 @@ export class CcTcpRedirection extends LitElement {
         }
 
         .text:not(.skeleton) code {
-          background-color: #f3f3f3;
+          background-color: var(--color-bg-neutral);
           border-radius: 0.25rem;
           font-family: var(--cc-ff-monospace);
           padding: 0.15rem 0.3rem;
         }
 
         .text-addendum:not(.skeleton) {
-          color: #555;
+          color: var(--color-text-light);
         }
 
         .skeleton {

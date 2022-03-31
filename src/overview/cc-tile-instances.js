@@ -5,6 +5,7 @@ import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { animate, QUICK_SHRINK } from '../lib/animate.js';
 import { i18n } from '../lib/i18n.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 import { instanceDetailsStyles, tileStyles } from '../styles/info-tiles.js';
 import { waitingStyles } from '../styles/waiting.js';
 
@@ -132,6 +133,7 @@ export class CcTileInstances extends LitElement {
 
   static get styles () {
     return [
+      defaultThemeStyles,
       tileStyles,
       instanceDetailsStyles,
       waitingStyles,
@@ -148,11 +150,11 @@ export class CcTileInstances extends LitElement {
         }
 
         .instances[data-type=running] {
-          --status-color: #2faa60;
+          --status-color: var(--color-legacy-green);
         }
 
         .instances[data-type=deploying] {
-          --status-color: #2b96fd;
+          --status-color: var(--color-legacy-blue);
         }
 
         .instances_status-img {

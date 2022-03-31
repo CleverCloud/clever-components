@@ -3,6 +3,7 @@ import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { i18n } from '../lib/i18n.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 import { tileStyles } from '../styles/info-tiles.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
@@ -103,6 +104,7 @@ export class CcTileDeployments extends LitElement {
 
   static get styles () {
     return [
+      defaultThemeStyles,
       tileStyles,
       skeletonStyles,
       linkStyles,
@@ -121,15 +123,15 @@ export class CcTileDeployments extends LitElement {
         }
 
         .state[data-state="CANCELLED"] {
-          color: #b06d0f;
+          color: var(--color-text-warning);
         }
 
         .state[data-state="FAIL"] {
-          color: #cc0028;
+          color: var(--color-text-danger);
         }
 
         .state[data-state="OK"] {
-          color: #2faa60;
+          color: var(--color-text-success);
         }
 
         [title] {

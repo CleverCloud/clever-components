@@ -7,6 +7,7 @@ import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import * as leaflet from '../lib/leaflet-esm.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 import { leafletStyles } from '../styles/leaflet.js';
 
 /**
@@ -335,6 +336,7 @@ export class CcMap extends withResizeObserver(LitElement) {
 
   static get styles () {
     return [
+      defaultThemeStyles,
       leafletStyles,
       // language=CSS
       css`
@@ -378,10 +380,9 @@ export class CcMap extends withResizeObserver(LitElement) {
         }
 
         :host(:not(:empty)) .legend {
-          background-color: #f1f5ff;
+          background-color: var(--color-bg-neutral);
           box-shadow: inset 0 6px 6px -6px #a4b1c9;
           box-sizing: border-box;
-          color: #2e2e2e;
           font-size: 0.9rem;
           font-style: italic;
           padding: 0.4rem 1rem;

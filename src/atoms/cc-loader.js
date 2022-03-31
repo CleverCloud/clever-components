@@ -1,4 +1,5 @@
 import { css, html, LitElement } from 'lit-element';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 
 /**
  * A loading indicator, auto centered and with flexible size.
@@ -24,6 +25,7 @@ export class CcLoader extends LitElement {
 
   static get styles () {
     return [
+      defaultThemeStyles,
       // language=CSS
       css`
         :host {
@@ -42,7 +44,7 @@ export class CcLoader extends LitElement {
         circle {
           animation: progress-circular-dash 1.75s ease-in-out infinite;
           fill: transparent;
-          stroke: var(--cc-loader-color, #2653af);
+          stroke: var(--cc-loader-color, var(--color-bg-primary-highlight));
           stroke-linecap: round;
           stroke-width: 5px;
         }

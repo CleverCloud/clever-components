@@ -4,6 +4,7 @@ import './cc-env-var-form.js';
 import { css, html, LitElement } from 'lit-element';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { i18n } from '../lib/i18n.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 
 /**
  * @typedef {import('./types.js').EnvType} EnvType
@@ -140,6 +141,7 @@ export class CcEnvVarLinkedServices extends LitElement {
 
   static get styles () {
     return [
+      defaultThemeStyles,
       // language=CSS
       css`
         :host {
@@ -172,7 +174,7 @@ export class CcEnvVarLinkedServices extends LitElement {
         }
 
         .empty-msg {
-          color: #555;
+          color: var(--color-text-light);
           font-style: italic;
         }
       `,

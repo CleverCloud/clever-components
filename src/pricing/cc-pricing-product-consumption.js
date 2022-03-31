@@ -10,6 +10,7 @@ import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { PricingConsumptionSimulator } from '../lib/pricing.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
 const arrowsLeftSvg = new URL('../assets/arrows-left.svg', import.meta.url).href;
@@ -487,6 +488,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
 
   static get styles () {
     return [
+      defaultThemeStyles,
       skeletonStyles,
       // language=CSS
       css`
@@ -652,7 +654,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         }
 
         .interval-line.highlighted:not(.progressive) .interval {
-          background-color: rgba(50, 50, 255, 0.15);
+          background-color: var(--color-bg-soft);
         }
 
         .interval-min,
