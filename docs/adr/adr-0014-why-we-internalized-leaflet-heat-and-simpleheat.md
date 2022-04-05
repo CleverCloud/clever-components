@@ -3,6 +3,8 @@ kind: '📌 Docs/Architecture Decision Records'
 ---
 # ADR 0014: Why we internalized leaflet.heat and simpleheat
 
+🗓️ 2021-05-21 · ✍️ Hubert Sablonnière
+
 ## The context
 
 We've been using a [Leaflet](https://leafletjs.com/) plugin to display heat maps called: [leaflet.heat](https://github.com/Leaflet/Leaflet.heat).

@@ -3,6 +3,8 @@ kind: '📌 Docs/Architecture Decision Records'
 ---
 # ADR 0009: How we use the new Storybook CSF and docs page?
 
+🗓️ 2020-01-14 · ✍️ Hubert Sablonnière
+
 ## Context
 
 Our Web Components project was started in march 2019.

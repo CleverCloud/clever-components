@@ -3,6 +3,8 @@ kind: '📌 Docs/Architecture Decision Records'
 ---
 # ADR 0008: Why an event called `requestimplicitsubmit`?
 
+🗓️ 2020-01-07 · ✍️ Hubert Sablonnière
+
 This ADR tries to explain why we introduced a custom event on `<cc-input-text>` called `cc-input-text:requestimplicitsubmit`.
 
 ## Context?

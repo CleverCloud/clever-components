@@ -3,6 +3,8 @@ kind: '📌 Docs/Architecture Decision Records'
 ---
 # ADR 0010: Introducing HTML in translation strings
 
+🗓️ 2020-01-19 · ✍️ Hubert Sablonnière
+
 We want to use some whitelisted HTML tags in translation strings.
 The main reason would be to add a `<strong>`, `<em>`, `<code>` or an anchor `<a>` directly in a translated sentence.
 

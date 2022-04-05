@@ -3,6 +3,8 @@ kind: '📌 Docs/Architecture Decision Records'
 ---
 # ADR 0005: How should we implement copy to clipboard?
 
+🗓️ 2019-10-05 · ✍️ Hubert Sablonnière
+
 This ADR tries to explain the choices we made to add a copy to clipboard feature on our `<cc-input-text>` component.
 
 ## Technical choices?
