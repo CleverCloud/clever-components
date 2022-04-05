@@ -3,6 +3,8 @@ kind: '📌 Docs/Architecture Decision Records'
 ---
 # ADR 0006: Why the `<cc-overview>` uses slots?
 
+🗓️ 2019-10-17 · ✍️ Hubert Sablonnière
+
 This ADR tries to explain why we decided to use slots for the `<cc-overview>` component instead of composing an abstraction layer over the 6 child components.
 
 ## Context?

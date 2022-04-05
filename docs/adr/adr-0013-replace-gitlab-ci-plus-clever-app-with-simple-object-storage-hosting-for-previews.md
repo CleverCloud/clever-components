@@ -3,6 +3,8 @@ kind: '📌 Docs/Architecture Decision Records'
 ---
 # ADR 0013: Replace GitLab CI + Clever app with simple object storage hosting for previews
 
+🗓️ 2021-04-20 · ✍️ Hubert Sablonnière
+
 ## The context
 
 We used to have a GitLab CI integration to publish previews of the Storybook for any given branch.

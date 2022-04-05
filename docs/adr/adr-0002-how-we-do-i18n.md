@@ -3,6 +3,8 @@ kind: '📌 Docs/Architecture Decision Records'
 ---
 # ADR 0002: Why we changed the way i18n works?
 
+🗓️ 2019-10-15 · ✍️ Hubert Sablonnière
+
 This ADR tries to explain the original design for i18n and why we changed.
 
 ## Context?

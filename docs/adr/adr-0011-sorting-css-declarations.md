@@ -3,6 +3,8 @@ kind: '📌 Docs/Architecture Decision Records'
 ---
 # ADR 0011: Sorting CSS declarations
 
+🗓️ 2020-05-02 · ✍️ Hubert Sablonnière
+
 Since we started this project, we tried to apply an alphabetical sort on CSS declarations inside our LitElement based components.
 We did it manually and of course we failed in some places, so it's time to automate this...
 

@@ -3,6 +3,8 @@ kind: '📌 Docs/Architecture Decision Records'
 ---
 # ADR 0003: Why did we create a datetime relative component?
 
+🗓️ 2019-10-16 · ✍️ Hubert Sablonnière
+
 This ADR tries to explain why we created our own datetime relative component and how it compares to other solutions.
 
 ## Context?

@@ -3,6 +3,8 @@ kind: '📌 Docs/Architecture Decision Records'
 ---
 # ADR 0012: Hello prebuilt Storybook
 
+🗓️ 2020-12-22 · ✍️ Hubert Sablonnière
+
 ## The context
 
 We started the Clever Components library with Storybook v5.

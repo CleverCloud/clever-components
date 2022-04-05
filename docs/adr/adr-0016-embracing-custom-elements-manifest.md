@@ -1,7 +1,9 @@
 ---
 kind: '📌 Docs/Architecture Decision Records'
 ---
-# ADR 0016: Embracing Custom Elements Manifest 
+# ADR 0016: Embracing Custom Elements Manifest
+
+🗓️ 2021-06-29 · ✍️ Hubert Sablonnière
 
 ## The context
 

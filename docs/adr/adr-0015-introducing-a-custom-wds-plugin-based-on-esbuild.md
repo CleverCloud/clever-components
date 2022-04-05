@@ -3,6 +3,8 @@ kind: '📌 Docs/Architecture Decision Records'
 ---
 # ADR 0015: Introducing a custom WDS plugin based on esbuild
 
+🗓️ 2021-05-21 · ✍️ Hubert Sablonnière
+
 ## The context
 
 In this project, we use a [prebuilt version of Storybook](https://modern-web.dev/guides/dev-server/storybook/) (see ADR #0012).

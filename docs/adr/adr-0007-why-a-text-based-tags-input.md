@@ -3,6 +3,8 @@ kind: '📌 Docs/Architecture Decision Records'
 ---
 # ADR 0007: Why a text based tags input?
 
+🗓️ 2020-01-06 · ✍️ Hubert Sablonnière
+
 This ADR tries to explain why we decided to create a tags component as a feature of `<cc-input-text>`.
 
 ## Context?

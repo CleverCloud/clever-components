@@ -3,6 +3,8 @@ kind: '📌 Docs/Architecture Decision Records'
 ---
 # ADR 0001: Why do we wrap `<button>` clicks in a custom event `cc-button:click`?
 
+🗓️ 2019-10-01 · ✍️ Hubert Sablonnière
+
 This ADR tries to explain why we moved from just letting native clicks bubble to a custom event named `cc-button:click`.
 
 ## Context?
