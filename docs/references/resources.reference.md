@@ -20,6 +20,7 @@ Here's list of interesting things to read, watch and listen to if you're working
 * [Virtual DOM is pure overhead](https://svelte.dev/blog/virtual-dom-is-pure-overhead)
 * [Web Dev Server](https://modern-web.dev/docs/dev-server/overview/)
 * [Web Test Runner](https://modern-web.dev/docs/test-runner/overview/)
+* [Writing one-sentence-per-line](https://hieuphay.com/one-sentence-per-line/)
 
 ### From MDN
 
