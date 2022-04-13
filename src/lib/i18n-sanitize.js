@@ -1,5 +1,11 @@
 /* global globalThis */
-const WHITELISTED_TAGS = ['STRONG', 'EM', 'CODE', 'A', 'BR', 'P'];
+const AUTHORIZED_TAGS = ['STRONG', 'EM', 'CODE', 'A', 'BR', 'P'];
+
+function isAuthorizedAttribute (attributeName, tagName) {
+  return (attributeName === 'title')
+    || (attributeName === 'aria-label')
+    || (attributeName === 'href' && tagName === 'A');
+}
 
 // Reuse one text node to escape HTML
 const escapeHtml = (() => {
@@ -47,8 +53,8 @@ export function sanitize (statics, ...params) {
     .from(template.content.querySelectorAll('*'))
     .forEach((node) => {
 
-      // If tag is not whitelisted, transform it to a text node and merge it with previous and/or next siblings if they are text nodes
-      if (!WHITELISTED_TAGS.includes(node.tagName)) {
+      // If tag is not authorized, transform it to a text node and merge it with previous and/or next siblings if they are text nodes
+      if (!AUTHORIZED_TAGS.includes(node.tagName)) {
 
         const previousText = absorbTextSibling(node.previousSibling);
         const nextText = absorbTextSibling(node.nextSibling);
@@ -60,20 +66,21 @@ export function sanitize (statics, ...params) {
       }
       else {
 
-        // Whitelisted attributes: *[title] and a[href]
         Array
           .from(node.attributes)
-          .filter((attr) => attr.name !== 'title' && (node.tagName !== 'A' || attr.name !== 'href'))
+          .filter((attr) => !isAuthorizedAttribute(attr.name, node.tagName))
           .forEach((attr) => {
             console.warn(`Attribute ${attr.name} is not allowed on <${node.tagName.toLowerCase()}> in translations!`);
             return node.removeAttribute(attr.name);
           });
 
         // If link has href and external origin => force rel and target
-        if (node.tagName === 'A' && node.getAttribute('href') != null && node.origin !== window.location.origin) {
+        if (node.tagName === 'A' && node.getAttribute('href') != null) {
           node.classList.add('sanitized-link');
-          node.setAttribute('rel', 'noopener noreferrer');
-          node.setAttribute('target', '_blank');
+          if (node.origin !== window.location.origin) {
+            node.setAttribute('rel', 'noopener noreferrer');
+            node.setAttribute('target', '_blank');
+          }
         }
       }
     });

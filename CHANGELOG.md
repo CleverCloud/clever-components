@@ -8,6 +8,8 @@ title: Changelog
 
 * colors: use variables to specify colors and swap old colors for new contrasted ones.
 * all-form-controls story: display disabled and readonly form controls next to each other to make sure they look the same.
+* New component:
+  * `<cc-warning-payment>`
 
 ...
 
