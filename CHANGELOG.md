@@ -6,6 +6,10 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+...
+
+## 7.11.0 (2022-04-14)
+
 * colors: use variables to specify colors and swap old colors for new contrasted ones. Add ADR about colors and Design Tokens.
 * all-form-controls story: display disabled and readonly form controls next to each other to make sure they look the same.
 * New component:
@@ -13,8 +17,6 @@ title: Changelog
 * cc-input-text: add help text and error message support as well as their related stories. Remove label stories and add label inside all stories.
 * cc-input-number: add help text and error message support as well as their related stories. Remove label stories and add label inside all stories.
 * cc-select: add help text support as well as its related story.
-
-...
 
 ## 7.10.1 (2022-03-23)
 
