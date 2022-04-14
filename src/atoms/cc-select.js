@@ -15,7 +15,8 @@ import { defaultThemeStyles } from '../styles/default-theme.js';
  *
  * @event {CustomEvent<string>} cc-select:input - Fires the `value` whenever the `value` changes.
  *
- * @slot error - The error message to be displayed right below the select element (low margin + red text)
+ * @slot error - The error message to be displayed below the `<select>` element or below the help text. Please use a `<p>` tag.
+ * @slot help - The help message to be displayed right below the `<select>` element. Please use a `<p>` tag.
  */
 export class CcSelect extends LitElement {
   static get properties () {
@@ -28,8 +29,9 @@ export class CcSelect extends LitElement {
       placeholder: { type: String },
       required: { type: Boolean },
       value: { type: String },
-      _uniqueId: { type: String, attribute: false },
       _uniqueErrorId: { type: String, attribute: false },
+      _uniqueHelpId: { type: String, attribute: false },
+      _uniqueInputId: { type: String, attribute: false },
     };
   }
 
@@ -58,12 +60,16 @@ export class CcSelect extends LitElement {
     this.value = null;
 
     // use this unique id for isolation (Safari seems to have a bug)
-    /** @type {string} used by the aria-describedby attribute on the `<select>` element and the id attribute on the error slot container */
+    /** @type {string} used by the aria-describedby attribute on the `<select>` element and the `id` attribute on the error slot container */
     this._uniqueErrorId = Math.random().toString(36).slice(2);
+
+    // use this unique id for isolation (Safari seems to have a bug)
+    /** @type {string} used by the `aria-describedby` attribute on the `<select>` element and the `id` attribute on the help text container */
+    this._uniqueHelpId = Math.random().toString(36).slice(2);
 
     // use this unique name for isolation (Safari seems to have a bug)
     /** @type {string} used by the for/id relation between `<label>` and `<select>` */
-    this._uniqueId = Math.random().toString(36).slice(2);
+    this._uniqueInputId = Math.random().toString(36).slice(2);
   }
 
   /**
@@ -80,17 +86,17 @@ export class CcSelect extends LitElement {
 
   render () {
     return html`
-      <label for=${this._uniqueId}>
-        ${this.label}
+      <label for=${this._uniqueInputId}>
+        <span>${this.label}</span>
         ${this.required ? html`
           <span class="required">${i18n('cc-select.required')}</span>
         ` : ''}
       </label>
       <div class="selectWrapper ${classMap({ disabled: this.disabled })}">
         <select
-          id=${this._uniqueId}
+          id=${this._uniqueInputId}
           ?disabled=${this.disabled}
-          aria-describedby=${this._uniqueErrorId}
+          aria-describedby="${this._uniqueHelpId} ${this._uniqueErrorId}"
           @input=${this._onSelectInput}
         >
           ${this.placeholder != null && this.placeholder !== '' ? html`
@@ -106,6 +112,11 @@ export class CcSelect extends LitElement {
           `)}
         </select>
       </div>
+
+      <div id=${this._uniqueHelpId}>
+        <slot name="help"></slot>
+      </div>
+
       <div id=${this._uniqueErrorId}>
         <slot name="error"></slot>
       </div>
@@ -121,10 +132,12 @@ export class CcSelect extends LitElement {
           display: inline-block;
         }
 
+        /*region Common to cc-input-* & cc-select*/
         label {
           align-items: flex-end;
           cursor: pointer;
           display: flex;
+          gap: 2em;
           justify-content: space-between;
           padding-bottom: 0.35em;
         }
@@ -133,8 +146,19 @@ export class CcSelect extends LitElement {
           color: var(--color-text-light);
           font-size: 0.9em;
           font-variant: small-caps;
-          margin-left: 2em;
         }
+
+        slot[name='help']::slotted(*) {
+          color: var(--color-text-light);
+          font-size: 0.9em;
+          margin: 0.3em 0 0 0;
+        }
+        
+        slot[name='error']::slotted(*) {
+          color: var(--color-text-danger);
+          margin: 0.5em 0 0 0;
+        }
+        /*endregion*/
 
         /* RESET */
         select {
@@ -206,11 +230,6 @@ export class CcSelect extends LitElement {
           color: var(--color-text-light);
           opacity: 1;
           pointer-events: none;
-        }
-
-        slot[name='error']::slotted(*) {
-          color: var(--color-text-danger);
-          margin: 0.5em 0 0 0;
         }
       `,
     ];

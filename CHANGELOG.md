@@ -6,10 +6,13 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-* colors: use variables to specify colors and swap old colors for new contrasted ones.
+* colors: use variables to specify colors and swap old colors for new contrasted ones. Add ADR about colors and Design Tokens.
 * all-form-controls story: display disabled and readonly form controls next to each other to make sure they look the same.
 * New component:
   * `<cc-warning-payment>`
+* cc-input-text: add help text and error message support as well as their related stories. Remove label stories and add label inside all stories.
+* cc-input-number: add help text and error message support as well as their related stories. Remove label stories and add label inside all stories.
+* cc-select: add help text support as well as its related story.
 
 ...
 
