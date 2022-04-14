@@ -4,15 +4,15 @@ import { enhanceStoriesNames } from '../lib/story-names.js';
 import { allFormControlsStory } from './all-form-controls.js';
 
 const baseItems = [
-  {},
-  { value: 100 },
-  { value: 200, disabled: true },
-  { value: 300, readonly: true },
-  { value: 400, skeleton: true },
+  { label: 'The Label' },
+  { label: 'The Label', value: 100 },
+  { label: 'The Label', value: 200, disabled: true },
+  { label: 'The Label', value: 300, readonly: true },
+  { label: 'The Label', value: 400, skeleton: true },
 ];
 
 const minMaxItems = [
-  { label: '' },
+  { label: 'The Label' },
   { value: 5, min: 0, max: 10, label: 'Min: 0, Max: 10' },
   { value: 0, min: 0, max: 10, label: 'Min: 0, Max: 10' },
   { value: 10, min: 0, max: 10, label: 'Min: 0, Max: 10' },
@@ -41,8 +41,35 @@ export const defaultStory = makeStory(conf, {
   items: baseItems,
 });
 
-export const label = makeStory(conf, {
-  items: baseItems.map((p) => ({ ...p, label: 'The label' })),
+export const required = makeStory(conf, {
+  items: baseItems.map((p) => ({ ...p, required: true })),
+});
+
+export const helpMessage = makeStory(conf, {
+  items: baseItems.map((p) => ({
+    ...p,
+    required: true,
+    innerHTML: '<p slot="help">Must be an integer</p>',
+  })),
+});
+
+export const errorMessage = makeStory(conf, {
+  items: baseItems.map((p) => ({
+    ...p,
+    required: true,
+    innerHTML: '<p slot="error">You must enter a value</p>',
+  })),
+});
+
+export const errorMessageWithHelpMessage = makeStory(conf, {
+  items: baseItems.map((p) => ({
+    ...p,
+    required: true,
+    innerHTML: `
+      <p slot="help">Must be an integer</p>
+      <p slot="error">You must enter a value</p>
+    `,
+  })),
 });
 
 export const controls = makeStory(conf, {
@@ -126,7 +153,10 @@ export const allFormControls = allFormControlsStory;
 
 enhanceStoriesNames({
   defaultStory,
-  label,
+  required,
+  helpMessage,
+  errorMessage,
+  errorMessageWithHelpMessage,
   controls,
   minMax,
   minMaxWithControls,

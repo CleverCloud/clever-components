@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { dispatchCustomEvent } from '../lib/events.js';
+import { i18n } from '../lib/i18n.js';
 import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
@@ -21,6 +22,9 @@ const decrementSvg = new URL('../assets/decrement.svg', import.meta.url).href;
  * @event {CustomEvent} cc-input-number:requestimplicitsubmit - Fires when enter key is pressed.
  *
  * @cssprop {Align} --cc-input-number-align - Change the alignment of the number present in the input (defaults: `right`).
+ *
+ * @slot error - The error message to be displayed below the `<input>` element or below the help text. Please use a `<p>` tag.
+ * @slot help - The help message to be displayed right below the `<input>` element. Please use a `<p>` tag.
  */
 export class CcInputNumber extends LitElement {
 
@@ -33,10 +37,14 @@ export class CcInputNumber extends LitElement {
       min: { type: Number },
       name: { type: String, reflect: true },
       readonly: { type: Boolean, reflect: true },
+      required: { type: Boolean },
       skeleton: { type: Boolean, reflect: true },
       step: { type: Number },
       value: { type: Number },
       _invalid: { type: Boolean, attribute: false },
+      _uniqueErrorId: { type: Boolean, attribute: false },
+      _uniqueHelpId: { type: Boolean, attribute: false },
+      _uniqueInputId: { type: Boolean, attribute: false },
     };
   }
 
@@ -64,6 +72,9 @@ export class CcInputNumber extends LitElement {
     /** @type {boolean} Sets `readonly` attribute on inner native `<input>` element. */
     this.readonly = false;
 
+    /** @type {boolean} Sets the "required" text inside the label */
+    this.required = false;
+
     /** @type {boolean} Enables skeleton screen UI pattern (loading hint). */
     this.skeleton = false;
 
@@ -76,9 +87,17 @@ export class CcInputNumber extends LitElement {
     /** @type {boolean} */
     this._invalid = false;
 
+    // use this unique id for isolation (Safari seems to have a bug)
+    /** @type {string} used by the `aria-describedby` attribute on the `<input>` element and the `id` attribute on the error slot container */
+    this._uniqueErrorId = Math.random().toString(36).slice(2);
+
+    // use this unique id for isolation (Safari seems to have a bug)
+    /** @type {string} used by the `aria-describedby` attribute on the `<input>` element and the `id` attribute on the help text container */
+    this._uniqueHelpId = Math.random().toString(36).slice(2);
+
     // use this unique name for isolation (Safari seems to have a bug)
-    /** @type {string} */
-    this._uniqueName = Math.random().toString(36).slice(2);
+    /** @type {string} used by the for/id relation between `<label>` and `<input>` */
+    this._uniqueInputId = Math.random().toString(36).slice(2);
   }
 
   /**
@@ -151,7 +170,12 @@ export class CcInputNumber extends LitElement {
     return html`
 
       ${this.label != null ? html`
-        <label for=${this._uniqueName}>${this.label}</label>
+        <label for=${this._uniqueInputId}>
+          <span>${this.label}</span>
+          ${this.required ? html`
+            <span class="required">${i18n('cc-input-number.required')}</span>
+          ` : ''}
+        </label>
       ` : ''}
 
       <div class="meta-input">
@@ -163,7 +187,7 @@ export class CcInputNumber extends LitElement {
         <div class="wrapper ${classMap({ skeleton: this.skeleton })}">
 
           <input
-            id=${this._uniqueName}
+            id=${this._uniqueInputId}
             type="number"
             class="input ${classMap({ error: this._invalid })}"
             ?disabled=${this.disabled || this.skeleton}
@@ -174,6 +198,7 @@ export class CcInputNumber extends LitElement {
             .value=${value}
             name=${this.name ?? ''}
             spellcheck="false"
+            aria-describedby="${this._uniqueHelpId} ${this._uniqueErrorId}"
             @focus=${this._onFocus}
             @input=${this._onInput}
             @keydown=${this._onKeyEvent}
@@ -186,6 +211,14 @@ export class CcInputNumber extends LitElement {
             <img class="btn-img" src=${incrementSvg} alt="">
           </button>
         ` : ''}
+      </div>
+
+      <div id=${this._uniqueHelpId}>
+        <slot name="help"></slot>
+      </div>
+
+      <div id=${this._uniqueErrorId}>
+        <slot name="error"></slot>
       </div>
     `;
   }
@@ -200,11 +233,33 @@ export class CcInputNumber extends LitElement {
           display: inline-block;
         }
 
+        /*region Common to cc-input-* & cc-select*/
         label {
+          align-items: flex-end;
           cursor: pointer;
-          display: block;
+          display: flex;
+          gap: 2em;
+          justify-content: space-between;
           padding-bottom: 0.35em;
         }
+
+        .required {
+          color: var(--color-text-light);
+          font-size: 0.9em;
+          font-variant: small-caps;
+        }
+
+        slot[name='help']::slotted(*) {
+          color: var(--color-text-light);
+          font-size: 0.9em;
+          margin: 0.3em 0 0 0;
+        }
+        
+        slot[name='error']::slotted(*) {
+          color: var(--color-text-danger);
+          margin: 0.5em 0 0 0;
+        }
+        /*endregion*/
 
         .meta-input {
           box-sizing: border-box;
@@ -219,10 +274,10 @@ export class CcInputNumber extends LitElement {
         .wrapper {
           display: grid;
           flex: 1 1 0;
-          /* see input to know why 0.15em */
-          margin: 0.15em 0.5em;
           min-width: 0;
           overflow: hidden;
+          /* see input to know why 0.15em */
+          padding: 0.15em 0.5em;
         }
 
         /* RESET */

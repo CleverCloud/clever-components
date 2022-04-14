@@ -14,16 +14,16 @@ Etiam vestibulum placerat massa eget lacinia. Aenean bibendum, massa id mattis v
 Integer posuere tortor sit amet nisl sollicitudin, at tempus ipsum semper.`;
 
 const baseItems = [
-  { placeholder: 'No value yet...' },
-  { placeholder: 'No value yet...', value: 'Simple value' },
-  { placeholder: 'No value yet...', value: 'Disabled value', disabled: true },
-  { placeholder: 'No value yet...', value: 'Readonly value', readonly: true },
-  { placeholder: 'No value yet...', value: 'Skeleton', skeleton: true },
-  { placeholder: 'No value yet...', multi: true },
-  { placeholder: 'No value yet...', multi: true, value: 'Simple value\nOther lines...' },
-  { placeholder: 'No value yet...', multi: true, value: 'Disabled value\nOther lines...', disabled: true },
-  { placeholder: 'No value yet...', multi: true, value: 'Readonly value\nOther lines...', readonly: true },
-  { placeholder: 'No value yet...', multi: true, value: 'Skeleton\nOther lines...', skeleton: true },
+  { label: 'The label', placeholder: 'No value yet...' },
+  { label: 'The label', placeholder: 'No value yet...', value: 'Simple value' },
+  { label: 'The label', placeholder: 'No value yet...', value: 'Disabled value', disabled: true },
+  { label: 'The label', placeholder: 'No value yet...', value: 'Readonly value', readonly: true },
+  { label: 'The label', placeholder: 'No value yet...', value: 'Skeleton', skeleton: true },
+  { label: 'The label', placeholder: 'No value yet...', multi: true },
+  { label: 'The label', placeholder: 'No value yet...', multi: true, value: 'Simple value\nOther lines...' },
+  { label: 'The label', placeholder: 'No value yet...', multi: true, value: 'Disabled value\nOther lines...', disabled: true },
+  { label: 'The label', placeholder: 'No value yet...', multi: true, value: 'Readonly value\nOther lines...', readonly: true },
+  { label: 'The label', placeholder: 'No value yet...', multi: true, value: 'Skeleton\nOther lines...', skeleton: true },
 ];
 
 const tagsItems = [
@@ -68,21 +68,51 @@ const conf = {
 
 export const defaultStory = makeStory(conf, {
   items: [
-    { placeholder: 'No value yet...' },
-    { value: 'Some example text' },
-    { value: 'Disabled value', disabled: true },
-    { value: 'Readonly value', readonly: true },
-    { value: 'Copy to clipboard', clipboard: true },
-    { value: 'Hidden secret', secret: true },
-    { value: 'Skeleton', skeleton: true },
-    { value: 'Line one\nLine two\nLine three', multi: true },
-    { tags: ['tag1', 'tag2', 'tag-name:tag-value', 'very-very-very-very-long-tag'] },
+    { label: 'The Label', placeholder: 'No value yet...' },
+    { label: 'The Label', value: 'Some example text' },
+    { label: 'The Label', value: 'Disabled value', disabled: true },
+    { label: 'The Label', value: 'Readonly value', readonly: true },
+    { label: 'The Label', value: 'Copy to clipboard', clipboard: true },
+    { label: 'The Label', value: 'Hidden secret', secret: true },
+    { label: 'The Label', value: 'Skeleton', skeleton: true },
+    { label: 'The Label', value: 'Line one\nLine two\nLine three', multi: true },
+    { label: 'The Label', tags: ['tag1', 'tag2', 'tag-name:tag-value', 'very-very-very-very-long-tag'] },
   ],
 });
 
-export const label = makeStory(conf, {
+export const required = makeStory(conf, {
   css: `cc-input-text { margin: 1rem 0.5rem; }`,
-  items: baseItems.map((p) => ({ ...p, label: 'The label' })),
+  items: baseItems.map((p) => ({ ...p, required: true })),
+});
+
+export const helpMessage = makeStory(conf, {
+  css: `cc-input-text { margin: 1rem 0.5rem; }`,
+  items: baseItems.map((p) => ({
+    ...p,
+    required: true,
+    innerHTML: '<p slot="help">Must be at least 7 characters long</p>',
+  })),
+});
+
+export const errorMessage = makeStory(conf, {
+  css: `cc-input-text { margin: 1rem 0.5rem; }`,
+  items: baseItems.map((p) => ({
+    ...p,
+    required: true,
+    innerHTML: '<p slot="error">You must enter a value</p>',
+  })),
+});
+
+export const errorMessageWithHelpMessage = makeStory(conf, {
+  css: `cc-input-text { margin: 1rem 0.5rem; }`,
+  items: baseItems.map((p) => ({
+    ...p,
+    required: true,
+    innerHTML: `
+      <p slot="help">Must be at least 7 characters long</p>
+      <p slot="error">You must enter a value</p>
+    `,
+  })),
 });
 
 export const clipboard = makeStory(conf, {
@@ -154,7 +184,10 @@ export const allFormControls = allFormControlsStory;
 
 enhanceStoriesNames({
   defaultStory,
-  label,
+  required,
+  helpMessage,
+  errorMessage,
+  errorMessageWithHelpMessage,
   clipboard,
   clipboardWithAutoAdjust,
   clipboardWithAutoAdjustAndCssOverride,

@@ -50,6 +50,9 @@ function arrayEquals (a, b) {
  * @event {CustomEvent<string>} cc-input-text:input - Fires the `value` whenever the `value` changes.
  * @event {CustomEvent} cc-input-text:requestimplicitsubmit - Fires when enter key is pressed in simple mode, in tags mode or when ctrl+enter is pressed in multi mode.
  * @event {CustomEvent<string[]>} cc-input-text:tags - Fires an array of tags whenever the `value` changes (separated by spaces).
+ *
+ * @slot error - The error message to be displayed below the `<input>` element or below the help text. Please use a `<p>` tag.
+ * @slot help - The help message to be displayed right below the `<input>` element. Please use a `<p>` tag.
  */
 export class CcInputText extends LitElement {
 
@@ -62,13 +65,17 @@ export class CcInputText extends LitElement {
       name: { type: String, reflect: true },
       placeholder: { type: String },
       readonly: { type: Boolean, reflect: true },
+      required: { type: Boolean },
       secret: { type: Boolean, reflect: true },
       skeleton: { type: Boolean, reflect: true },
       tags: { type: Array },
-      _tagsEnabled: { type: Boolean, attribute: false },
       value: { type: String },
-      _showSecret: { type: Boolean, attribute: false },
       _copyOk: { type: Boolean, attribute: false },
+      _showSecret: { type: Boolean, attribute: false },
+      _tagsEnabled: { type: Boolean, attribute: false },
+      _uniqueErrorId: { type: String, attribute: false },
+      _uniqueHelpId: { type: String, attribute: false },
+      _uniqueInputId: { type: String, attribute: false },
     };
   }
 
@@ -96,6 +103,9 @@ export class CcInputText extends LitElement {
     /** @type {boolean} Sets `readonly` attribute on inner native `<input>/<textarea>` element. */
     this.readonly = false;
 
+    /** @type {boolean} Sets required mention inside the `<label>` element. */
+    this.required = false;
+
     /** @type {boolean} Enables show/hide secret feature with an eye icon. */
     this.secret = false;
 
@@ -117,9 +127,17 @@ export class CcInputText extends LitElement {
     /** @type {boolean} */
     this._tagsEnabled = false;
 
+    // use this unique id for isolation (Safari seems to have a bug)
+    /** @type {string} used by the `aria-describedby` attribute on the `<input>` element and the `id` attribute on the error slot container */
+    this._uniqueErrorId = Math.random().toString(36).slice(2);
+
+    // use this unique id for isolation (Safari seems to have a bug)
+    /** @type {string} used by the `aria-describedby` attribute on the `<input>` element and the `id` attribute on the help text container */
+    this._uniqueHelpId = Math.random().toString(36).slice(2);
+
     // use this unique name for isolation (Safari seems to have a bug)
-    /** @type {string} */
-    this._uniqueName = Math.random().toString(36).slice(2);
+    /** @type {string} used by the for/id relation between `<label>` and `<input>` */
+    this._uniqueInputId = Math.random().toString(36).slice(2);
   }
 
   // In general, we try to use LitELement's update() lifecycle callback but in this situation,
@@ -223,7 +241,12 @@ export class CcInputText extends LitElement {
     return html`
 
       ${this.label != null ? html`
-        <label for=${this._uniqueName}>${this.label}</label>
+        <label for=${this._uniqueInputId}>
+          <span>${this.label}</span>
+          ${this.required ? html`
+            <span class="required">${i18n('cc-input-text.required')}</span>
+          ` : ''}
+        </label>
       ` : ''}
 
       <div class="meta-input">
@@ -243,7 +266,7 @@ export class CcInputText extends LitElement {
               --></div>
             ` : ''}
             <textarea
-              id=${this._uniqueName}
+              id=${this._uniqueInputId}
               class="input ${classMap({ 'input-tags': this._tagsEnabled })}"
               style="--rows: ${rows}"
               rows=${rows}
@@ -254,6 +277,7 @@ export class CcInputText extends LitElement {
               placeholder=${this.placeholder}
               spellcheck="false"
               wrap="${ifDefined(this._tagsEnabled ? 'soft' : undefined)}"
+              aria-describedby="${this._uniqueHelpId} ${this._uniqueErrorId}"
               @focus=${this._onFocus}
             ></textarea>
           ` : ''}
@@ -268,7 +292,7 @@ export class CcInputText extends LitElement {
               <div class="input input-mirror">${value}</div>
             ` : ''}
             <input
-              id=${this._uniqueName}
+              id=${this._uniqueInputId}
               type=${this.secret && !this._showSecret ? 'password' : 'text'}
               class="input"
               ?disabled=${this.disabled || this.skeleton}
@@ -277,6 +301,7 @@ export class CcInputText extends LitElement {
               name=${ifDefined(this.name ?? undefined)}
               placeholder=${this.placeholder}
               spellcheck="false"
+              aria-describedby="${this._uniqueHelpId} ${this._uniqueErrorId}"
               @focus=${this._onFocus}
             >
           ` : ''}
@@ -297,6 +322,15 @@ export class CcInputText extends LitElement {
           </button>
         ` : ''}
       </div>
+
+      
+      <div id=${this._uniqueHelpId}>
+        <slot name="help"></slot>
+      </div>
+
+      <div id=${this._uniqueErrorId}>
+        <slot name="error"></slot>
+      </div>
     `;
   }
 
@@ -314,11 +348,33 @@ export class CcInputText extends LitElement {
           display: block;
         }
 
+        /*region Common to cc-input-* & cc-select*/
         label {
+          align-items: flex-end;
           cursor: pointer;
-          display: block;
+          display: flex;
+          gap: 2em;
+          justify-content: space-between;
           padding-bottom: 0.35em;
         }
+
+        .required {
+          color: var(--color-text-light);
+          font-size: 0.9em;
+          font-variant: small-caps;
+        }
+
+        slot[name='help']::slotted(*) {
+          color: var(--color-text-light);
+          font-size: 0.9em;
+          margin: 0.3em 0 0 0;
+        }
+        
+        slot[name='error']::slotted(*) {
+          color: var(--color-text-danger);
+          margin: 0.5em 0 0 0;
+        }
+        /*endregion*/
 
         .meta-input {
           box-sizing: border-box;
@@ -336,10 +392,10 @@ export class CcInputText extends LitElement {
         .wrapper {
           display: grid;
           flex: 1 1 0;
-          /* see input to know why 0.15em */
-          margin: 0.15em 0.5em;
           min-width: 0;
           overflow: hidden;
+          /* see input to know why 0.15em */
+          padding: 0.15em 0.5em;
         }
 
         /* RESET */

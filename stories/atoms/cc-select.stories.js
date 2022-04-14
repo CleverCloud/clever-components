@@ -63,6 +63,45 @@ export const required = makeStory(conf, {
   ],
 });
 
+export const helpMessage = makeStory(conf, {
+  items: [
+    {
+      label: 'Favourite artist',
+      placeholder: '-- Select an artist --',
+      required: true,
+      options: baseOptions,
+      innerHTML: '<p slot="help">There can be only one.</p>',
+    },
+  ],
+});
+
+export const errorMessage = makeStory(conf, {
+  items: [
+    {
+      label: 'Favourite artist',
+      placeholder: '-- Select an artist --',
+      required: true,
+      options: baseOptions,
+      innerHTML: '<p slot="error">A value must be selected.</p>',
+    },
+  ],
+});
+
+export const errorMessageWithHelpMessage = makeStory(conf, {
+  items: [
+    {
+      label: 'Favourite artist',
+      placeholder: '-- Select an artist --',
+      required: true,
+      options: baseOptions,
+      innerHTML: `
+        <p slot="help">There can be only one.</p>
+        <p slot="error">A value must be selected.</p>
+      `,
+    },
+  ],
+});
+
 export const disabled = makeStory(conf, {
   items: [
     {
@@ -95,24 +134,14 @@ export const longContentWihFixedWidth = makeStory(
   },
 );
 
-export const errorMessage = makeStory(conf, {
-  items: [
-    {
-      label: 'Favourite artist',
-      placeholder: '-- Select an artist --',
-      required: true,
-      options: baseOptions,
-      innerHTML: `<p slot="error">A value must be selected.</p>`,
-    },
-  ],
-});
-
 export const allFormControls = allFormControlsStory;
 
 enhanceStoriesNames({
   defaultStory,
-  errorMessage,
-  longContentWihFixedWidth,
   required,
+  helpMessage,
+  errorMessage,
+  errorMessageWithHelpMessage,
+  longContentWihFixedWidth,
   allFormControls,
 });
