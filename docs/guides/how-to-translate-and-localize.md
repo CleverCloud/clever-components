@@ -214,7 +214,7 @@ For dates, we rely on:
 Please follow those rules:
 
 * Try to reuse the already existing functions/formats.
-* We're sill using simple language settings without locales like GB or US for english so try to avoir the `DD/MM/YYYY` vs. `MM/DD/YYYY` format.
+* We're sill using simple language settings without locales like GB or US for english so try to avoid the `DD/MM/YYYY` vs. `MM/DD/YYYY` format.
 
 For numbers, we rely on:
 
