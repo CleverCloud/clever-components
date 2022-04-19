@@ -70,12 +70,12 @@ You can find more information about it in [Pascal Schilp's blog post](https://de
 Along with this new format, the brillant folks behind [Open Web Components](https://open-wc.org/) released a new tool: [Custom Elements Manifest analyzer (CEM analyzer)](https://github.com/open-wc/custom-elements-manifest/tree/master/packages/analyzer).
 This new analyzer serves the same purpose as WCA.
 It scans and parses your Web Component's source code and produces a `custom-elements.json` following the new standard CEM format.
-On top of vanilla Web Components written with JavaScript, this new analyzer also handles TypeScript and the following libraries: [Lit](https://lit.dev/), [Fast](https://github.com/microsoft/fast), [Sencil](https://stenciljs.com/), [Catalyst](https://github.github.io/catalyst/).
+On top of vanilla Web Components written with JavaScript, this new analyzer also handles TypeScript and the following libraries: [Lit](https://lit.dev/), [Fast](https://github.com/microsoft/fast), [Stencil](https://stenciljs.com/), [Catalyst](https://github.github.io/catalyst/).
 
 CEM analyzer features a powerful plugin system:
 
 * OPINIONATED: It is very easy to write a plugin if you're familiar with ASTs or other plugin systems like ESLint or Rollup.
-* It has [very good documentation](https://github.com/open-wc/custom-elements-manifest/blob/master/packages/analyzer/docs/plugins.md)
+* It has [very good documentation](https://github.com/open-wc/custom-elements-manifest/blob/master/packages/analyzer/docs/plugins.md).
 * It has a [plugin template](https://github.com/open-wc/cem-plugin-template) to get started easily. 
 * It has an [online playground](https://custom-elements-manifest.netlify.app) to easily try and share a plugin idea.
 
