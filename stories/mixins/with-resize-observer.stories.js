@@ -122,7 +122,7 @@ export const defaultStory = () => {
     <div class="title">Set container width here:</div>
     <div class="button"><cc-toggle value="50"></cc-toggle></div>
     
-    <div class="title">Container uses <code>withResizeObserver()</code> with <code>breakpoints</code> [75, 150, 225] so <code>w-lt-*</code> and <code>w-gte-*</code> attribtues are automatically set/removed like this:</div>
+    <div class="title">Container uses <code>withResizeObserver()</code> with <code>breakpoints</code> [75, 150, 225] so <code>w-lt-*</code> and <code>w-gte-*</code> attributes are automatically set/removed like this:</div>
     <pre>&lt;div class="container" <span class="attributes"></span>>Lorem ipsum...&lt;/div></pre>
 
     <div class="title">This way, we can apply some styles depending on the width with attribute selectors (a bit like media queries):</div>
