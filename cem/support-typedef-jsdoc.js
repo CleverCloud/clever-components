@@ -40,9 +40,9 @@ function convertImports (ts, imports) {
     subtypes.forEach((type) => typesSet.add(type));
 
     typesSet.forEach((type) =>
-      (typeCache.has(type))
-        ? asts.push(typeCache.get(type))
-        : asts.push(convertInterface(ts, sourceAst, sourceCode, type)));
+      (typeCache.has(`${type}-${filename}`))
+        ? asts.push(typeCache.get(`${type}-${filename}`))
+        : asts.push(convertInterface(ts, sourceAst, sourceCode, type, filename)));
   });
   return asts.join('\n');
 }
@@ -55,7 +55,7 @@ function convertImports (ts, imports) {
  * @param interfaceName
  * @returns {string}
  */
-function convertInterface (ts, node, code, interfaceName) {
+function convertInterface (ts, node, code, interfaceName, filename) {
   const st = node?.statements.find((st) => st?.name?.getText() === interfaceName);
   if (st == null) {
     return '';
@@ -66,7 +66,7 @@ function convertInterface (ts, node, code, interfaceName) {
   const typeDisplay = '```ts\n\n'
     + typeDeclaration
     + '\n\n```';
-  typeCache.set(interfaceName, typeDisplay);
+  typeCache.set(`${interfaceName}-${filename}`, typeDisplay);
   return typeDisplay;
 }
 
