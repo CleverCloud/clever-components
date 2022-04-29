@@ -188,6 +188,12 @@ export const translations = {
   'cc-addon-redis-options.description': `Sélectionnez les options que vous souhaitez pour votre add-on Redis.`,
   'cc-addon-redis-options.title': `Options pour l'add-on Redis`,
   //#endregion
+  //#region cc-article-card
+  'cc-article-card.date': ({ date }) => formatDateOnly(lang, date),
+  //#endregion
+  //#region cc-article-list
+  'cc-article-list.error': `Une erreur est survenue pendant le chargement des articles.`,
+  //#endregion
   //#region cc-beta
   'cc-beta.label': `bêta`,
   //#endregion
