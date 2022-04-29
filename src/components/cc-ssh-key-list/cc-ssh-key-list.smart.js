@@ -1,0 +1,147 @@
+import '../cc-smart-container/cc-smart-container.js';
+import { getKeys } from '@clevercloud/client/esm/api/v2/github.js';
+import { get as getUser } from '@clevercloud/client/esm/api/v2/organisation.js';
+import {
+  todo_addSshKey as addSshKey,
+  todo_getSshKeys as getSshKeys,
+  todo_removeSshKey as removeSshKey,
+} from '@clevercloud/client/esm/api/v2/user.js';
+import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
+import { defineSmartComponent } from '../../lib/define-smart-component.js';
+import { i18n } from '../../lib/i18n.js';
+import { notifyError, notifySuccess } from '../../lib/notifications.js';
+import { sendToApi } from '../../lib/send-to-api.js';
+import { CcSshKeyList } from './cc-ssh-key-list.js';
+
+defineSmartComponent({
+  selector: 'cc-ssh-key-list',
+  params: {
+    apiConfig: { type: Object },
+  },
+  onContextUpdate ({ component, context, onEvent, updateComponent, signal }) {
+
+    const { apiConfig } = context;
+
+    // Retrieving SSH keys is done in two steps, hidden in the `fetchAllKeys()` implementation:
+    // - first, we retrieve the current user information to check if their GitHub account is linked to their main account;
+    // - then, we fetch the personal SSH keys and the GitHub keys if needed.
+    // Note: we intentionally show `loading` state only on initial load and not on further actions, to keep a responsive UI.
+    function refreshList () {
+      return fetchAllKeys({ apiConfig, signal, cacheDelay: 0 })
+        .then(({ isGithubLinked, personalKeys, githubKeys }) => {
+          updateComponent('keyData', {
+            state: 'loaded',
+            // linked (or unlinked) GitHub account state passed to the component
+            isGithubLinked,
+            // internal key states initialization (to `idle`) after API fetch, to separate fetched data from UI infos
+            personalKeys: personalKeys.map((key) => ({ ...key, state: 'idle' })),
+            githubKeys: githubKeys?.map((key) => ({ ...key, state: 'idle' })),
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          updateComponent('keyData', { state: 'error' });
+        });
+    }
+
+    onEvent('cc-ssh-key-list:create', ({ name, publicKey }) => {
+      updateComponent('createSshKeyForm', (createSshKeyForm) => {
+        createSshKeyForm.state = 'creating';
+      });
+
+      addKey({ apiConfig, key: { name, key: publicKey } })
+        .then(() => {
+          updateComponent('createSshKeyForm', CcSshKeyList.CREATE_FORM_INIT_STATE);
+          // re-fetching keys because we need fingerprint info sent from API to properly display newly created keys
+          refreshList().then(() => notifySuccess(component, i18n('cc-ssh-key-list.success.add', { name })));
+        })
+        .catch((error) => {
+          console.error(error);
+          notifyError(component, error, i18n('cc-ssh-key-list.error.add', { name }));
+          updateComponent('createSshKeyForm', (createSshKeyForm) => {
+            createSshKeyForm.state = 'idle';
+          });
+        });
+    });
+
+    onEvent('cc-ssh-key-list:delete', ({ name }) => {
+      updateComponent('keyData', (keyData) => {
+        const key = keyData.personalKeys.find((key) => key.name === name);
+        key.state = 'deleting';
+      });
+
+      deleteKey({ apiConfig, key: { name } })
+        .then(() => {
+          // refreshing both personal and GitHub keys because we don't know if we should add the deleting key back to the GitHub list
+          refreshList().then(() => notifySuccess(component, i18n('cc-ssh-key-list.success.delete', { name })));
+        })
+        .catch((error) => {
+          console.error(error);
+          notifyError(component, error, i18n('cc-ssh-key-list.error.delete', { name }));
+          updateComponent('keyData', (keyData) => {
+            const key = keyData.personalKeys.find((key) => key.name === name);
+            key.state = 'idle';
+          });
+        });
+    });
+
+    onEvent('cc-ssh-key-list:import', ({ name, key, fingerprint }) => {
+      updateComponent('keyData', (keyData) => {
+        const key = keyData.githubKeys.find((key) => key.name === name);
+        key.state = 'importing';
+      });
+
+      importKey({ apiConfig, key: { name, key } })
+        .then(() => {
+          notifySuccess(component, i18n('cc-ssh-key-list.success.import', { name }));
+          updateComponent('keyData', (keyData) => {
+            keyData.personalKeys.push({ state: 'idle', name, fingerprint });
+            keyData.githubKeys = keyData.githubKeys.filter((k) => k.name !== name);
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          notifyError(component, error, i18n('cc-ssh-key-list.error.import', { name }));
+          updateComponent('keyData', (keyData) => {
+            const key = keyData.githubKeys.find((key) => key.name === name);
+            key.state = 'idle';
+          });
+        });
+    });
+
+    updateComponent('createSshKeyForm', CcSshKeyList.CREATE_FORM_INIT_STATE);
+    updateComponent('keyData', { state: 'loading' });
+
+    refreshList();
+  },
+});
+
+async function fetchAllKeys ({ apiConfig, signal, cacheDelay }) {
+  const [user, personalKeys] = await Promise.all([
+    getUser({}).then(sendToApi({ apiConfig, signal, cacheDelay: ONE_DAY })),
+    getSshKeys().then(sendToApi({ apiConfig, signal, cacheDelay })),
+  ]);
+
+  const isGithubLinked = user.oauthApps.includes('github');
+  let githubKeys;
+  if (isGithubLinked) {
+    githubKeys = await getKeys().then(sendToApi({ apiConfig, signal, cacheDelay }));
+  }
+
+  return { isGithubLinked, personalKeys, githubKeys };
+}
+
+async function addKey ({ apiConfig, key }) {
+  const name = encodeURIComponent(key.name);
+  const publicKey = key.key;
+  return addSshKey({ key: name }, JSON.stringify(publicKey))
+    .then(sendToApi({ apiConfig }));
+}
+
+const importKey = addKey;
+
+async function deleteKey ({ apiConfig, key }) {
+  const name = encodeURIComponent(key.name);
+  return removeSshKey({ key: name })
+    .then(sendToApi({ apiConfig }));
+}
