@@ -12,32 +12,32 @@ assignees: ''
 
 ## To be discussed
 
-<!-- Here you can list stuff that still need to be discussed... -->
+<!-- Here you can list stuff that still needs to be discussed... -->
 
 ## Inputs
 
 <!-- List the inputs of the component (attributes/properties, slots, CSS custom properties, CSS parts...) -->
 <!-- (you can describe your type definitions in the dedicated section below) -->
 
-## Attributes/properties
+### Attributes/properties
 
 | Property | Type   | Default value | Mandatory | Description |
 |----------|--------|---------------|-----------|-------------|
 | `xxx`    | `Yyyy` | `null`        | `true`    | TODO        |
 
-## Slots
+### Slots
 
 | Name  | Description |
 |-------|-------------|
 | `xxx` | TODO        |
 
-## CSS custom property
+### CSS custom property
 
 | Name  | Type   | Default value | Description |
 |-------|--------|---------------|-------------|
 | `xxx` | `Yyyy` | `null`        | TODO        |
 
-## CSS part
+### CSS part
 
 | Name  | Description |
 |-------|-------------|
@@ -45,7 +45,7 @@ assignees: ''
 
 ## Outputs
 
-<!-- List the ouputs of the component (DOM events) -->
+<!-- List the outputs of the component (DOM events) -->
 <!-- (you can describe your type definitions in the dedicated section below) -->
 
 | Event | Data type | Description |
