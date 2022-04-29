@@ -6,7 +6,9 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+* New components:
+  * `<cc-article-card>`
+  * `<cc-article-list>` (with smart definition)
 
 ## 7.11.0 (2022-04-14)
 
