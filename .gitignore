@@ -1,3 +1,4 @@
+.idea
 *.s3cfg
 .env*
 .preview-index.html
