@@ -217,6 +217,27 @@ export const translations = {
   'cc-elasticsearch-info.link.kibana': `Ouvrir Kibana`,
   'cc-elasticsearch-info.text': `Cet add-on fait partie de l'offre Suite Elastic. Vous pouvez retrouver la documentation ainsi que les différents services liés ci-dessous.`,
   //#endregion
+  //#region cc-email
+  'cc-email.primary.description': `Cette addresse est celle utilisée pour la création de votre compte. Toutes les notifications sont envoyées à cette addresse.`,
+  'cc-email.primary.email.unverified': `Non vérifiée`,
+  'cc-email.primary.email.verified': `Vérifiée`,
+  'cc-email.primary.errors.loading': `Une erreur est survenue pendant le chargement de l'adresse email principal.`,
+  'cc-email.primary.errors.resending-confirmation-email': `Une erreur est survenue pendant l'envoie de l'email de confirmation.`,
+  'cc-email.primary.resend-confirmation-email': `Envoyer un nouvel email de confirmation`,
+  'cc-email.primary.title': `Adresse email principale`,
+  'cc-email.secondary.action.add': `Ajouter l'adresse`,
+  'cc-email.secondary.action.delete': `Supprimer`,
+  'cc-email.secondary.action.mark-as-primary': `Marquer comme primaire`,
+  'cc-email.secondary.address-input.error.empty': `Veuillez saisir une adresse email`,
+  'cc-email.secondary.address-input.error.invalid': `Cette adresse email n'est pas valide`,
+  'cc-email.secondary.address-input.label': `Adresse email`,
+  'cc-email.secondary.description': `Contrairement à l'adresse principale, ces addresses email ne recoivent aucune notification. Les adresses email secondaires peuvent être utilisées pour ajouter un membre à une organisation.`,
+  'cc-email.secondary.errors.adding': `Une erreur est survenue pendant le chargement des adresses email secondaires.`,
+  'cc-email.secondary.errors.deleting': `Une erreur est survenue pendant la suppression de l'adresse email`,
+  'cc-email.secondary.errors.loading': `Une erreur est survenue pendant l'ajout de l'adresse email.`,
+  'cc-email.secondary.errors.marking-as-primary': `Une erreur est survenue pendant le marquage en tant qu'adresse email primaire.`,
+  'cc-email.secondary.title': `Adresses email secondaires`,
+  //#endregion
   //#region cc-env-var-create
   'cc-env-var-create.create-button': `Ajouter`,
   'cc-env-var-create.errors.already-defined-name': ({ name }) => sanitize`Le nom <code>${name}</code> est déjà défini`,

@@ -204,6 +204,27 @@ export const translations = {
   'cc-elasticsearch-info.link.kibana': `Open Kibana`,
   'cc-elasticsearch-info.text': `This add-on is part of the Elastic Stack offer. You can find the documentation and linked services right below.`,
   //#endregion
+  //#region cc-email
+  'cc-email.primary.description': `This is the address used to create your account. All notifications are sent to this address.`,
+  'cc-email.primary.email.unverified': `Not verified`,
+  'cc-email.primary.email.verified': `Verified`,
+  'cc-email.primary.errors.loading': `Something went wrong while loading primary email address.`,
+  'cc-email.primary.errors.resending-confirmation-email': `Something went wrong while sending the confirmation email.`,
+  'cc-email.primary.resend-confirmation-email': `Resend a confirmation email`,
+  'cc-email.primary.title': `Primary email address`,
+  'cc-email.secondary.action.add': `Add e-mail address`,
+  'cc-email.secondary.action.delete': `Delete`,
+  'cc-email.secondary.action.mark-as-primary': `Mark as primary`,
+  'cc-email.secondary.address-input.error.empty': `You must enter an e-mail address`,
+  'cc-email.secondary.address-input.error.invalid': `This e-mail address is not valid`,
+  'cc-email.secondary.address-input.label': `E-mail address`,
+  'cc-email.secondary.description': `Unlike the primary e-mail address, no notification is sent to these addresses. Secondary e-mail address can be used when adding someone to the list of members of an organisation.`,
+  'cc-email.secondary.errors.adding': `Something went wrong while adding the e-mail address.`,
+  'cc-email.secondary.errors.deleting': `Something went wrong while deleting e-mail address.`,
+  'cc-email.secondary.errors.loading': `Something went wrong while loading secondary e-mail addresses.`,
+  'cc-email.secondary.errors.marking-as-primary': `Something went wrong while marking e-mail address as primary.`,
+  'cc-email.secondary.title': `Secondary e-mail addresses`,
+  //#endregion
   //#region cc-env-var-create
   'cc-env-var-create.create-button': `Add`,
   'cc-env-var-create.errors.already-defined-name': ({ name }) => sanitize`Name <code>${name}</code> is already defined`,

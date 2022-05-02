@@ -166,7 +166,7 @@ export class CcButton extends LitElement {
 
     const delay = (this.delay != null && !this.link) ? this.delay : null;
 
-    const waiting = (this.waiting && !this.link);
+    const waiting = (this.waiting);
 
     // simple mode is default when no value or when there are multiple conflicting values
     modes.simple = !modes.primary && !modes.success && !modes.warning && !modes.danger && !this.link;
@@ -413,6 +413,7 @@ export class CcButton extends LitElement {
         }
 
         .outlined progress,
+        .cc-link progress,
         .outlined progress::-webkit-progress-bar {
           background-color: var(--btn-color);
         }
@@ -469,7 +470,10 @@ export class CcButton extends LitElement {
 
         /* button that looks like a cc-link */
         .cc-link {
+          --btn-color: var(--color-text-strong);
           cursor: pointer;
+          overflow: hidden;
+          position: relative;
           text-decoration: underline;
         }
 
