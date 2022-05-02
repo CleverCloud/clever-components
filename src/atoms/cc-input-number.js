@@ -240,6 +240,7 @@ export class CcInputNumber extends LitElement {
           display: flex;
           gap: 2em;
           justify-content: space-between;
+          line-height: 1.25em;
           padding-bottom: 0.35em;
         }
 

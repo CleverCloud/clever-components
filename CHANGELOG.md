@@ -6,6 +6,12 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+* `<cc-input-text>`: set line-height to 1.25em for the `<label>` element.
+* `<cc-input-number>`: set line-height to 1.25em for the `<label>` element.
+* `<cc-select>`: set line-height to 1.25em for the `<label>` element.
+* `<cc-toggle>`: set line-height to 1.25em for the `<legend>` element.
+* `defaultThemeStyles`: add variable to be used as `margin-top` value on a `<cc-button>` when one wants to align all form elements horizontally.
+* `all-form-controls` story: add new story with help message and add a note about how to handle horizontal layout inside forms.
 * New components:
   * `<cc-article-card>`
   * `<cc-article-list>` (with smart definition)

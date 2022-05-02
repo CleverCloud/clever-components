@@ -181,6 +181,7 @@ export class CcToggle extends LitElement {
         }
 
         legend:not(:empty) {
+          line-height: 1.25em;
           padding-bottom: 0.35em;
         }
 
