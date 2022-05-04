@@ -6,6 +6,16 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+* `cc-link`: remove `defaultThemeStyles` insertion in CSS.
+* `<cc-addon-linked-apps>`: add `defaultThemeStyles` import so that variables can be used by `cc-link`.
+* `<cc-addon-option-form>`: add `defaultThemeStyles` import so that variables can be used by `cc-link`.
+* `<cc-elasticsearch-info>`: add `defaultThemeStyles` import so that variables can be used by `cc-link`.
+* `<cc-jenkins-info>`: add `defaultThemeStyles` import so that variables can be used by `cc-link`.
+* `<cc-matomo-info>`: add `defaultThemeStyles` import so that variables can be used by `cc-link`.
+* `<cc-env-var-form>`: add `defaultThemeStyles` import so that variables can be used by `cc-link`.
+* `<cc-article-card>`: add `defaultThemeStyles` import so that variables can be used by `cc-link`.
+* `<cc-invoice>`: add `defaultThemeStyles` import so that variables can be used by `cc-link`.
+* `<cc-grafana-info>`: add `defaultThemeStyles` import so that variables can be used by `cc-link`.
 * `<cc-input-text>`: set line-height to 1.25em for the `<label>` element.
 * `<cc-input-number>`: set line-height to 1.25em for the `<label>` element.
 * `<cc-select>`: set line-height to 1.25em for the `<label>` element.
