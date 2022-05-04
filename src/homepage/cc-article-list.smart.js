@@ -18,11 +18,13 @@ defineComponent({
     const articles_lp = new LastPromise();
 
     unsubscribeWithSignal(disconnectSignal, [
-      articles_lp.error$.subscribe(console.error),
+      articles_lp.error$.subscribe(() => (component.error = true)),
       articles_lp.value$.subscribe((articles) => {
         component.articles = articles;
       }),
       context$.subscribe(({ lang, limit }) => {
+        component.articles = null;
+        component.error = false;
         articles_lp.push((signal) => fetchArticleList({ signal, lang, limit }));
       }),
     ]);
