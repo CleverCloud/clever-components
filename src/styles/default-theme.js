@@ -159,5 +159,18 @@ export const defaultThemeStyles = css`
     /* Usage: with default background for an "outlined" style or warning background for "plain" style" ? */
     --border-warning: 1px solid var(--color-yellow);
     /*endregion*/
+      
+    /*region Margin Decisions*/
+    /* Usage: 
+    *   - in an horizontal form
+    *   - use flex and align-items: start; on the form
+    *   - use margin-top: var(--margin-top-btn-horizontal-form); on the <cc-button> element so that it aligns 
+    *   horizontally even when error / help messages are displayed. 
+    *  See the All Controls Story - Horizontal form section
+    *  
+    *  The 1.6em value comes from the label line-height (1.25em) and bottom padding (0.35em)
+    */
+    --margin-top-btn-horizontal-form: 1.6em;
+    /*endregion*/
   }
 `;
