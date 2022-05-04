@@ -17,6 +17,7 @@ title: Changelog
 * `<cc-invoice>`: add `defaultThemeStyles` import so that variables can be used by `cc-link`.
 * `<cc-grafana-info>`: add `defaultThemeStyles` import so that variables can be used by `cc-link`.
 * `cc-link` story: update documentation following the color update. Add `defaultThemeStyles` import inside the example.
+* `cc-link`: fix `:visited` and `:active` color so that they are the same as the link with default state (primary highlight).
 * `<cc-input-text>`: set line-height to 1.25em for the `<label>` element.
 * `<cc-input-number>`: set line-height to 1.25em for the `<label>` element.
 * `<cc-select>`: set line-height to 1.25em for the `<label>` element.

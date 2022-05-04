@@ -24,8 +24,12 @@ export const ccLink = (url, content, skeleton = false) => {
 // language=CSS
 export const linkStyles = css`
   .sanitized-link,
-  .cc-link {
-    color: var(--color-text-primary-highlight);
+  .sanitized-link:visited,
+  .sanitized-link:active,
+  .cc-link,
+  .cc-link:visited,
+  .cc-link:active {
+      color: var(--color-text-primary-highlight);
   }
 
   .sanitized-link:enabled:hover,
