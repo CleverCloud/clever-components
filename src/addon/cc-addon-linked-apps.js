@@ -6,6 +6,7 @@ import '../zones/cc-zone.js';
 import { css, html, LitElement } from 'lit-element';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { i18n } from '../lib/i18n.js';
+import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 
@@ -90,8 +91,9 @@ export class CcAddonLinkedApps extends LitElement {
 
   static get styles () {
     return [
-      skeletonStyles,
+      defaultThemeStyles,
       linkStyles,
+      skeletonStyles,
       // language=CSS
       css`
         :host {

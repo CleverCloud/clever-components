@@ -326,8 +326,8 @@ export class CcEnvVarForm extends LitElement {
   static get styles () {
     return [
       defaultThemeStyles,
-      // language=CSS
       linkStyles,
+      // language=CSS
       css`
         :host {
           background: #fff;

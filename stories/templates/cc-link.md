@@ -6,8 +6,8 @@ Instead of creating a link component, we provide a helper function and some shar
 ## Features
 
 * Automatic attributes: `target="_blank"` and `rel="nopener noreferrer"` when target origin is different from current origin.
-* Default style with 5.2 color contrast ratio.
-* Hover style with pointer cursor (default) and slightly darker color.
+* Default style with 6 color contrast ratio over a white background.
+* Hover style with pointer cursor (default) and slightly darker color (primary).
 * Focus styles with focus ring (and white background).
 * Works well with `.skeleton`.
 
@@ -17,6 +17,7 @@ In your component, import the template and styles like this:
 
 ```js
 import { ccLink, linkStyles } from 'src/templates/cc-link.js';
+import { defaultThemeStyles } from 'src/styles/default-theme.js';
 ```
 
 When you need a link, use the `ccLink(url, content, skeleton)` function like this:
@@ -32,6 +33,7 @@ You also need to add the CSS styles in your LitElement `static get styles()` lik
 ```js
 static get styles () {
   return [
+    defaultThemeStyles,
     linkStyles,
     css`
       /* CSS for component goes here */

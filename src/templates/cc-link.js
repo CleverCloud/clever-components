@@ -1,7 +1,6 @@
 import { css, html } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 
 function isDifferentOrigin (rawUrl) {
   try {
@@ -24,11 +23,13 @@ export const ccLink = (url, content, skeleton = false) => {
 
 // language=CSS
 export const linkStyles = css`
-  ${defaultThemeStyles}
-
   .sanitized-link,
-  .cc-link {
-    color: var(--color-text-primary-highlight);
+  .sanitized-link:visited,
+  .sanitized-link:active,
+  .cc-link,
+  .cc-link:visited,
+  .cc-link:active {
+      color: var(--color-text-primary-highlight);
   }
 
   .sanitized-link:enabled:hover,
