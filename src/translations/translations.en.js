@@ -195,6 +195,10 @@ export const translations = {
   'cc-datetime-relative.distance': ({ date }) => formatDistanceToNow(date),
   'cc-datetime-relative.title': ({ date }) => formatDate(lang, date),
   //#endregion
+  //#region cc-doc-card
+  'cc-doc-card.link': ({ link, product }) => sanitize(`<a href=${link} aria-label="Read the documentation - ${product}">Read the documentation</a>`),
+  'cc-doc-card.skeleton-link-title': `Read the documentation`,
+  //#endregion
   //#region cc-elasticsearch-info
   'cc-elasticsearch-info.error': `Something went wrong while loading add-ons linked to this application.`,
   'cc-elasticsearch-info.info': `Info`,

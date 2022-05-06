@@ -27,6 +27,7 @@ title: Changelog
 * New components:
   * `<cc-article-card>`
   * `<cc-article-list>` (with smart definition)
+  * `<cc-doc-card>`
 
 ## 7.11.0 (2022-04-14)
 
