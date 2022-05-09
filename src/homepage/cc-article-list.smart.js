@@ -6,7 +6,7 @@ import { LastPromise, unsubscribeWithSignal } from '../lib/observables.js';
 import { defineComponent } from '../lib/smart-manager.js';
 import { parseRssFeed } from '../lib/xml-parser.js';
 
-const FOUR_HOURS = 60 * 60 * 4;
+const FOUR_HOURS = 1000 * 60 * 60 * 4;
 
 defineComponent({
   selector: 'cc-article-list',
@@ -36,20 +36,20 @@ defineComponent({
 async function fetchArticleList ({ signal, lang, limit = 9 }) {
 
   const url = (lang === 'fr')
-    ? 'https://www.clever-cloud.com/fr/feed?format=excerpt'
+    ? 'https://www.clever-cloud.com/fr/feed/?format=excerpt'
     : 'https://www.clever-cloud.com/feed/?format=excerpt';
 
+  const requestParams = {
+    method: 'get',
+    url,
+    headers: {},
+    signal,
+  };
+
   const rssFeed = await withCache(
-    {},
+    requestParams,
     FOUR_HOURS,
-    () => request(
-      {
-        method: 'get',
-        url,
-        headers: {},
-        signal,
-      },
-    ));
+    () => request(requestParams));
 
   const articleList = parseRssFeed(rssFeed, limit);
 
