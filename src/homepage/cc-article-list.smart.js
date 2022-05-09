@@ -1,3 +1,4 @@
+import './cc-article-list.js';
 import '../smart/cc-smart-container.js';
 import { request } from '@clevercloud/client/esm/request.fetch.js';
 import { withCache } from '@clevercloud/client/esm/with-cache.js';
