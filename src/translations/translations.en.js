@@ -208,10 +208,10 @@ export const translations = {
   'cc-email.primary.description': `This is the address used to create your account. All notifications are sent to this address.`,
   'cc-email.primary.email.unverified': `Not verified`,
   'cc-email.primary.email.verified': `Verified`,
-  'cc-email.primary.errors.loading': `Something went wrong while loading primary email address.`,
-  'cc-email.primary.errors.resending-confirmation-email': `Something went wrong while sending the confirmation email.`,
-  'cc-email.primary.resend-confirmation-email': `Resend a confirmation email`,
-  'cc-email.primary.title': `Primary email address`,
+  'cc-email.primary.errors.loading': `Something went wrong while loading primary e-mail address.`,
+  'cc-email.primary.errors.resending-confirmation-email': `Something went wrong while sending the confirmation e-mail.`,
+  'cc-email.primary.resend-confirmation-email': `Resend a confirmation e-mail`,
+  'cc-email.primary.title': `Primary e-mail address`,
   'cc-email.secondary.action.add': `Add e-mail address`,
   'cc-email.secondary.action.delete': `Delete`,
   'cc-email.secondary.action.mark-as-primary': `Mark as primary`,
@@ -224,6 +224,7 @@ export const translations = {
   'cc-email.secondary.errors.loading': `Something went wrong while loading secondary e-mail addresses.`,
   'cc-email.secondary.errors.marking-as-primary': `Something went wrong while marking e-mail address as primary.`,
   'cc-email.secondary.title': `Secondary e-mail addresses`,
+  'cc-email.title': `E-mail addresses`,
   //#endregion
   //#region cc-env-var-create
   'cc-env-var-create.create-button': `Add`,

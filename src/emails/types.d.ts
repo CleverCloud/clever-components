@@ -7,28 +7,31 @@ export type SecondaryModelStateType = "adding";
 export type SecondaryAddressErrorType = "markingAsPrimary" | "deleting";
 export type SecondaryAddressStateType = "markingAsPrimary" | "deleting";
 
-export interface GenericModel<S, E> {
-  state: S;
-  error: E;
-}
-
-export interface EmailAddressModel<S, E> extends GenericModel<S, E> {
-  address: EmailAddress;
-}
-
 export interface EmailModel {
-  primaryModel: null | 'loadingError' | PrimaryModel;
-  secondaryModel: null | 'loadingError' | SecondaryModel;
+  primary: null | 'loadingError' | PrimaryModel;
+  secondary: null | 'loadingError' | SecondaryModel;
 }
 
-export interface PrimaryModel extends EmailAddressModel<PrimaryModelStateType, PrimaryModelErrorType> {
+export interface PrimaryModel {
+  address: EmailAddress;
+  state: PrimaryModelStateType;
+  error: PrimaryModelErrorType;
 }
+
+export interface SecondaryModel {
+  addresses: SecondaryAddressModel[];
+  state: SecondaryModelStateType;
+  error: SecondaryModelErrorType;
+}
+
+export interface SecondaryAddressModel {
+  address: EmailAddress;
+  state: SecondaryAddressStateType;
+  error: SecondaryAddressErrorType;
+}
+
 
 export interface EmailAddress {
   value: string;
   verified: boolean;
-}
-
-export interface SecondaryModel extends GenericModel<SecondaryModelStateType, SecondaryModelErrorType> {
-  addresses: EmailAddressModel<SecondaryAddressStateType, SecondaryAddressErrorType>[];
 }

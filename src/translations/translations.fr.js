@@ -237,6 +237,7 @@ export const translations = {
   'cc-email.secondary.errors.loading': `Une erreur est survenue pendant l'ajout de l'adresse email.`,
   'cc-email.secondary.errors.marking-as-primary': `Une erreur est survenue pendant le marquage en tant qu'adresse email primaire.`,
   'cc-email.secondary.title': `Adresses email secondaires`,
+  'cc-email.title': `Addresses email`,
   //#endregion
   //#region cc-env-var-create
   'cc-env-var-create.create-button': `Ajouter`,

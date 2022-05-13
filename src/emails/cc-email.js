@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { validateEmailAddress } from '../lib/email.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { fakeString } from '../lib/fake-strings.js';
 import { i18n } from '../lib/i18n.js';
@@ -8,10 +9,10 @@ import { skeletonStyles } from '../styles/skeleton.js';
 import '../atoms/cc-loader.js';
 import '../atoms/cc-flex-gap.js';
 import '../atoms/cc-button.js';
+import '../atoms/cc-input-text.js';
 import '../molecules/cc-error.js';
 import '../molecules/cc-block.js';
 import '../molecules/cc-block-section.js';
-import '../atoms/cc-input-text.js';
 
 const mailSvg = new URL('../assets/mail.svg', import.meta.url).href;
 const trashSvg = new URL('../assets/trash-red.svg', import.meta.url).href;
@@ -19,31 +20,39 @@ const tickSvg = new URL('../assets/tick.svg', import.meta.url).href;
 const warningSvg = new URL('../assets/warning.svg', import.meta.url).href;
 
 /**
- * @param {string} address
- * @return {'empty'|'invalid'|null} Returns null when validation passes.
- */
-function validateEmailAddress (address) {
-  if (address === '') {
-    return 'empty';
-  }
-
-  // todo : validate with regex
-  if (!address.includes('@')) {
-    return 'invalid';
-  }
-
-  return null;
-}
-
-/**
  * @typedef {import('./types.js').EmailModel} EmailModel
  */
 
 /**
- * A component displaying the email addresses associated with a user account.
+ * A component displaying the e-mail addresses associated with a user account.
+ *
+ * ## Details
+ *
+ * The component gives the ability to:
+ *
+ * * Resend the confirmation e-mail on the primary address (if it has not been verified yet)
+ * * Add a secondary e-mail address
+ * * Delete a secondary e-mail address
+ * * Promote a secondary e-mail address to primary.
+ *
+ * The component is in skeleton mode if one of the given primary or secondary model is nullish.
+ *
+ * ## secondary e-mail address input validation
+ *
+ * * The component is responsible for validating the secondary e-mail address entered by the user.
+ * * This validation is triggered whenever the add button is clicked.
+ * * The validation is minimalist: it verifies if the input text is not empty and contains a `@` character.
+ * * If the validation doesn't succeed, an error message is displayed bellow the text input. Otherwise, the custom event `cc-email:add` is fired.
+ * * The validation handles only two cases:
+ *   - the input is empty
+ *   - the input is not an e-mail address valid.
+ * * For the other error cases, you'll need to use the `_addAddressInputError` property manually.
  *
  * @cssdisplay block
  *
+ * @event {CustomEvent} cc-email:add - Fires whenever the add button is clicked. If the validation doesn't succeed, the event is not fired.
+ * @event {CustomEvent} cc-email:delete - Fires whenever the delete button is clicked.
+ * @event {CustomEvent} cc-email:mark-as-primary - Fires whenever the 'mark as primary' button is clicked.
  */
 export class CcEmail extends LitElement {
 
@@ -53,10 +62,19 @@ export class CcEmail extends LitElement {
     /** @type {EmailModel} model. */
     this.model = null;
 
-    /** @type {string} The value currently set on the add address input. */
+    /** @type {string} The value currently set on the add address text input. */
     this._addAddressInputValue = '';
 
-    /** @type {'empty'|'invalid'|null} The error displayed bellow the address text input. */
+    /**
+     * @type {'empty'|'invalid'|'already-defined'|'used'|null}
+     * The code of the error message displayed bellow the address text input.
+     *  | code |  |
+     *  | --- | --- |
+     *  | `empty` | the text input is empty |
+     *  | `invalid` | the text input is not a valid e-mail address |
+     *  | `already-defined` | the e-mail address is already defined as primary or secondary |
+     *  | `used` | the e-mail address is already owned by another user account |
+     */
     this._addAddressInputError = null;
   }
 
@@ -69,7 +87,7 @@ export class CcEmail extends LitElement {
   }
 
   _isSkeleton () {
-    return !this.model?.primaryModel || !this.model?.secondaryModel;
+    return !this.model?.primary || !this.model?.secondary;
   }
 
   _getVerifiedTagLabel () {
@@ -78,13 +96,13 @@ export class CcEmail extends LitElement {
     if (this._isSkeleton()) {
       return fakeString(verifiedLabel.length);
     }
-    return this.model?.primaryModel?.address?.verified ? verifiedLabel : i18n('cc-email.primary.email.unverified');
+    return this.model?.primary?.address?.verified ? verifiedLabel : i18n('cc-email.primary.email.unverified');
   }
 
   _renderPrimarySection () {
     const skeleton = this._isSkeleton();
-    const address = skeleton ? fakeString(35) : this.model?.primaryModel?.address?.value;
-    const verified = this.model?.primaryModel?.address?.verified;
+    const address = skeleton ? fakeString(35) : this.model?.primary?.address?.value;
+    const verified = this.model?.primary?.address?.verified;
     const shouldDisplayResendConfirmationEmail = !skeleton && !verified;
 
     return html`
@@ -92,11 +110,11 @@ export class CcEmail extends LitElement {
         <div slot="title">${i18n('cc-email.primary.title')}</div>
         <div slot="info">${i18n('cc-email.primary.description')}</div>
 
-        ${this.model?.primaryModel === 'loadingError' ? html`
+        ${this.model?.primary === 'loadingError' ? html`
           <cc-error>${i18n('cc-email.primary.errors.loading')}</cc-error>
         ` : ''}
         
-        ${this.model?.primaryModel !== 'loadingError' ? html`
+        ${this.model?.primary !== 'loadingError' ? html`
           <cc-flex-gap class="address-line primary">
             <div class="address">
               <div class="icon"><img src="${mailSvg}" alt=""/></div>
@@ -110,13 +128,13 @@ export class CcEmail extends LitElement {
             ${shouldDisplayResendConfirmationEmail ? html`
               <cc-button
                   @cc-button:click=${this._onResend}
-                  ?waiting=${this.model?.primaryModel?.state === 'sendingConfirmationEmail'}
+                  ?waiting=${this.model?.primary?.state === 'sendingConfirmationEmail'}
                   link
               >
                 ${i18n('cc-email.primary.resend-confirmation-email')}
               </cc-button>
             ` : ''}
-            ${this.model?.primaryModel?.error === 'sendingConfirmationEmail' ? html`
+            ${this.model?.primary?.error === 'sendingConfirmationEmail' ? html`
               <div>
                 <cc-error>${i18n('cc-email.primary.errors.resending-confirmation-email')}</cc-error>
               </div>
@@ -129,7 +147,7 @@ export class CcEmail extends LitElement {
 
   _renderSecondarySection () {
     const skeleton = this._isSkeleton();
-    const disabled = this.model?.secondaryModel?.addresses
+    const disabled = this.model?.secondary?.addresses
       ?.find((item) => item.state === 'markingAsPrimary');
 
     return html`
@@ -137,12 +155,12 @@ export class CcEmail extends LitElement {
         <div slot="title">${i18n('cc-email.secondary.title')}</div>
         <div slot="info">${i18n('cc-email.secondary.description')}</div>
 
-        ${this.model?.secondaryModel === 'loadingError' ? html`
+        ${this.model?.secondary === 'loadingError' ? html`
           <cc-error>${i18n('cc-email.secondary.errors.loading')}</cc-error>
         ` : ''}
         
-        ${this.model?.secondaryModel !== 'loadingError' && !skeleton ? html`
-          ${this.model?.secondaryModel?.addresses?.map((item) => html`
+        ${this.model?.secondary !== 'loadingError' && !skeleton ? html`
+          ${this.model?.secondary?.addresses?.map((item) => html`
             <cc-flex-gap class="address-line secondary">
               <div class="address">
                 ${item.state ? html`
@@ -182,7 +200,7 @@ export class CcEmail extends LitElement {
             <hr>
           `)}
         ` : ''}
-        ${this.model?.secondaryModel !== 'loadingError' ? html`
+        ${this.model?.secondary !== 'loadingError' ? html`
           <div>
             <cc-flex-gap class="form">
               <cc-input-text
@@ -190,7 +208,7 @@ export class CcEmail extends LitElement {
                   required
                   value="${this._addAddressInputValue}"
                   ?skeleton=${skeleton}
-                  ?disabled=${disabled || this.model?.secondaryModel?.state === 'adding'}
+                  ?disabled=${disabled || this.model?.secondary?.state === 'adding'}
                   @cc-input-text:input=${this._onInput}
               >
                 ${this._addAddressInputError ? html`
@@ -201,7 +219,7 @@ export class CcEmail extends LitElement {
               <cc-button
                   success
                   ?skeleton=${skeleton}
-                  ?waiting=${this.model?.secondaryModel?.state === 'adding'}
+                  ?waiting=${this.model?.secondary?.state === 'adding'}
                   ?disabled=${disabled}
                   @cc-button:click=${this._onAdd}
               >
@@ -211,7 +229,7 @@ export class CcEmail extends LitElement {
           </div>
         ` : ''}
 
-        ${this.model?.secondaryModel?.error === 'adding' ? html`
+        ${this.model?.secondary?.error === 'adding' ? html`
           <cc-error>${i18n('cc-email.secondary.errors.adding')}</cc-error>
         ` : ''}
       </cc-block-section>
@@ -223,7 +241,7 @@ export class CcEmail extends LitElement {
   }
 
   _onMarkAsPrimary (address) {
-    dispatchCustomEvent(this, 'markAsPrimary', address);
+    dispatchCustomEvent(this, 'mark-as-primary', address);
   }
 
   _onInput ({ detail: value }) {
@@ -238,10 +256,15 @@ export class CcEmail extends LitElement {
     }
   }
 
+  reset () {
+    this._addAddressInputError = null;
+    this._addAddressInputValue = '';
+  }
+
   render () {
     return html`
       <cc-block>
-        <div slot="title">Email Addresses</div>
+        <div slot="title">${i18n('cc-email.title')}</div>
 
         ${this._renderPrimarySection()}
         ${this._renderSecondarySection()}
