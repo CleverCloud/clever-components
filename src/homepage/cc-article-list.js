@@ -77,6 +77,7 @@ export class CcArticleList extends LitElement {
         }
 
         cc-error {
+          background-color: #fff;
           border: 1px solid #bcc2d1;
           border-radius: 0.25em;
           padding: 1em;
