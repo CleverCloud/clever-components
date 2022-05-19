@@ -460,7 +460,7 @@ export class CcButton extends LitElement {
         }
 
         .outlined progress,
-        .outlined progress::-webkit-progress-bar{
+        .outlined progress::-webkit-progress-bar {
           background-color: var(--btn-color);
         }
 
