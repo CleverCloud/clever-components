@@ -19,8 +19,10 @@ title: Changelog
 * `<cc-zone-input>`: make server markers not focusable.
 * `<cc-addon-admin>`: fix skeleton mode
 * `<cc-env-var-form>`: fix toggling to JSON mode while in skeleton state.
+* `<cc-button>`: display progress bar during waiting state when button is in link mode.
 * New component:
   * `<cc-action-dispatcher>`
+  * `<cc-email>`
 
 ### For devs
 
