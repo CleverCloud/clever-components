@@ -121,6 +121,10 @@ export class CcArticleCard extends LitElement {
           text-decoration: underline;
         }
 
+        .title a:visited {
+          color: inherit;
+        }
+
         .date {
           font-size: 0.85em;
           font-style: italic;

@@ -1,24 +1,24 @@
+import './cc-doc-card.js';
+import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
-import './cc-article-card.js';
-import '../molecules/cc-error.js';
 
-const ARTICLE_SKELETON_NUMBER = 9;
+const DOC_SKELETON_NUMBER = 9;
 
 /**
- * @typedef {import('./types.js').Article} Article
+ * @typedef {import('./types.js').Documentation} Documentation
  */
 
 /**
- * A component displaying a list of article cards.
+ * A component displaying a list of documentation cards.
  *
  * @cssdisplay block
  */
-export class CcArticleList extends LitElement {
+export class CcDocList extends LitElement {
 
   static get properties () {
     return {
-      articles: { type: Array },
+      docs: { type: Array },
       error: { type: Boolean },
     };
   }
@@ -26,8 +26,8 @@ export class CcArticleList extends LitElement {
   constructor () {
     super();
 
-    /** @type {Article[]} Sets an array that contains for each element an object with the content of a card article. */
-    this.articles = null;
+    /** @type {Documentation[]} Sets the content that will be put into the cards. */
+    this.docs = null;
 
     /** @type {boolean} Displays an error message. */
     this.error = false;
@@ -35,27 +35,26 @@ export class CcArticleList extends LitElement {
 
   render () {
 
-    const skeleton = (this.articles == null);
+    const skeleton = (this.docs == null);
 
     return html`
-      <div class="article-container">
+      <div class="doc-wrapper">
         ${this.error ? html`
-          <cc-error>${i18n('cc-article-list.error')}</cc-error>
+            <cc-error>${i18n('cc-doc-list.error')}</cc-error>
         ` : ''}
         ${skeleton && !this.error ? html`
-          ${new Array(ARTICLE_SKELETON_NUMBER).fill(html`
-            <cc-article-card></cc-article-card>
+          ${new Array(DOC_SKELETON_NUMBER).fill(html`
+            <cc-doc-card></cc-doc-card>
           `)}
         ` : ''}
         ${!skeleton && !this.error ? html`
-          ${this.articles.map((article) => html`
-            <cc-article-card
-              banner=${article.banner}
+          ${this.docs.map((article) => html`
+            <cc-doc-card
               title=${article.title ?? ''}
-              link=${article.link ?? ''}
+              .icons=${article.icons ?? []}
               description=${article.description ?? ''}
-              date=${article.date ?? new Date().toDateString()}
-            ></cc-article-card>
+              link=${article.link ?? ''}
+            ></cc-doc-card>
           `)}
         ` : ''}
       </div>
@@ -70,7 +69,7 @@ export class CcArticleList extends LitElement {
           display: block;
         }
 
-        .article-container {
+        .doc-wrapper {
           display: grid;
           gap: 1em;
           grid-template-columns: repeat( auto-fit, minmax(20em, 1fr) );
@@ -83,9 +82,12 @@ export class CcArticleList extends LitElement {
           padding: 1em;
           text-align: center;
         }
+
       `,
     ];
   }
 }
 
-window.customElements.define('cc-article-list', CcArticleList);
+// DOCS: 11. Define the custom element
+
+window.customElements.define('cc-doc-list', CcDocList);

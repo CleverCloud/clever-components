@@ -208,6 +208,13 @@ export const translations = {
   'cc-datetime-relative.distance': ({ date }) => formatDistanceToNow(date),
   'cc-datetime-relative.title': ({ date }) => formatDate(lang, date),
   //#endregion
+  //#region cc-doc-card
+  'cc-doc-card.link': ({ link, product }) => sanitize(`<a href=${link} aria-label="Lire la documentation - ${product}">Lire la documentation</a>`),
+  'cc-doc-card.skeleton-link-title': `Lire la documentation`,
+  //#endregion
+  //#region cc-doc-list
+  'cc-doc-list.error': `Une erreur est survenue pendant le chargement de la documentation`,
+  //#endregion
   //#region cc-elasticsearch-info
   'cc-elasticsearch-info.error': `Une erreur est survenue pendant le chargement des liens des add-on liés à cette application.`,
   'cc-elasticsearch-info.info': `Info`,

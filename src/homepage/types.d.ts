@@ -6,3 +6,9 @@ export interface Article {
   date: string,
 }
 
+export interface Documentation {
+  desc: string,
+  icons: string[],
+  link: string,
+  title: string,
+}
