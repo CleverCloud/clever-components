@@ -6,6 +6,10 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+...
+
+## 7.12.0 (2022-05-20)
+
 * `cc-link`: remove `defaultThemeStyles` insertion in CSS.
 * `<cc-addon-linked-apps>`: add `defaultThemeStyles` import so that variables can be used by `cc-link`.
 * `<cc-addon-option-form>`: add `defaultThemeStyles` import so that variables can be used by `cc-link`.
