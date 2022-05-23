@@ -21,6 +21,10 @@ defineComponent({
       invoices_lp.value$.subscribe((invoices) => (component.invoices = invoices)),
 
       context$.subscribe(({ apiConfig, ownerId }) => {
+
+        component.eror = null;
+        component.invoices = null;
+
         if (apiConfig != null && ownerId != null) {
           invoices_lp.push((signal) => fetchAllInvoices({ apiConfig, signal, ownerId }));
         }

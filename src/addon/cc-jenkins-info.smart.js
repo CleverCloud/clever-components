@@ -1,7 +1,7 @@
 import './cc-jenkins-info.js';
 import '../smart/cc-smart-container.js';
 import { getAddon, getJenkinsUpdates } from '@clevercloud/client/esm/api/v4/addon-providers.js';
-import { combineLatest, LastPromise, merge, unsubscribeWithSignal } from '../lib/observables.js';
+import { LastPromise, unsubscribeWithSignal } from '../lib/observables.js';
 import { sendToApi } from '../lib/send-to-api.js';
 import { defineComponent } from '../lib/smart-manager.js';
 
@@ -13,31 +13,27 @@ defineComponent({
   },
   onConnect (container, component, context$, disconnectSignal) {
 
-    const addon_lp = new LastPromise();
-    const jenkinsUpdates_lp = new LastPromise();
-    const addonUpdateCenter = combineLatest(addon_lp.value$, jenkinsUpdates_lp.value$);
-
-    const error$ = merge(addon_lp.error$, jenkinsUpdates_lp.error$);
+    const jenkinsAddon_lp = new LastPromise();
 
     unsubscribeWithSignal(disconnectSignal, [
 
-      error$.subscribe(console.error),
-      error$.subscribe(() => (component.error = true)),
-      addonUpdateCenter.subscribe(([addon, updateCenter]) => {
-        component.jenkinsLink = `https://${addon.host}`;
-        component.jenkinsManageLink = updateCenter.manageLink;
-        component.versions = updateCenter.versions;
+      jenkinsAddon_lp.error$.subscribe(console.error),
+      jenkinsAddon_lp.error$.subscribe(() => (component.error = true)),
+      jenkinsAddon_lp.value$.subscribe((jenkinsAddon) => {
+        component.jenkinsLink = jenkinsAddon.jenkinsLink;
+        component.jenkinsManageLink = jenkinsAddon.jenkinsManageLink;
+        component.versions = jenkinsAddon.versions;
       }),
 
       context$.subscribe(({ apiConfig, addonId }) => {
 
         component.error = false;
+        component.jenkinsLink = null;
         component.jenkinsManageLink = null;
         component.versions = null;
 
         if (apiConfig != null && addonId != null) {
-          addon_lp.push((signal) => fetchAddon({ apiConfig, signal, addonId }));
-          jenkinsUpdates_lp.push((signal) => fetchUpdates({ apiConfig, signal, addonId }));
+          jenkinsAddon_lp.push((signal) => fetchJenkinsAddon({ apiConfig, signal, addonId }));
         }
       }),
 
@@ -45,10 +41,17 @@ defineComponent({
   },
 });
 
-function fetchUpdates ({ apiConfig, signal, addonId }) {
-  return getJenkinsUpdates({ addonId }).then(sendToApi({ apiConfig, signal }));
-}
-
-function fetchAddon ({ apiConfig, signal, addonId }) {
-  return getAddon({ providerId: 'jenkins', addonId }).then(sendToApi({ apiConfig, signal }));
+function fetchJenkinsAddon ({ apiConfig, signal, addonId }) {
+  return Promise
+    .all([
+      getAddon({ providerId: 'jenkins', addonId }).then(sendToApi({ apiConfig, signal })),
+      getJenkinsUpdates({ addonId }).then(sendToApi({ apiConfig, signal })),
+    ])
+    .then(([addon, jenkinsUpdates]) => {
+      return {
+        jenkinsLink: `https://${addon.host}`,
+        jenkinsManageLink: jenkinsUpdates.manageLink,
+        versions: jenkinsUpdates.versions,
+      };
+    });
 }

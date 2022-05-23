@@ -1,5 +1,5 @@
-import '../smart/cc-smart-container.js';
 import './cc-tile-status-codes.js';
+import '../smart/cc-smart-container.js';
 import { getStatusCodesFromWarp10 } from '@clevercloud/client/esm/access-logs.js';
 import { getWarp10AccessLogsToken } from '@clevercloud/client/esm/api/v2/warp-10.js';
 import { THIRTY_SECONDS } from '@clevercloud/client/esm/request.fetch-with-timeout.js';

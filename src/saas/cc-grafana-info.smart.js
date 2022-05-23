@@ -11,6 +11,7 @@ import { sendToApi } from '../lib/send-to-api.js';
 import { defineComponent } from '../lib/smart-manager.js';
 import { addErrorType } from '../lib/utils.js';
 
+// TODO, we need to refactor this one to make it more like the others
 defineComponent({
   selector: 'cc-grafana-info',
   params: {
@@ -18,7 +19,6 @@ defineComponent({
     ownerId: { type: String },
     grafanaBaseLink: { type: String },
   },
-
   onConnect (container, component, context$, disconnectSignal) {
 
     const grafana_lp = new LastPromise();
