@@ -1,8 +1,8 @@
 import '../../src/smart/cc-smart-container.js';
-import { defineComponent, updateRootContext } from '../../src/lib/smart-manager.js';
-import { stub as rawStub } from 'hanbi';
 import { expect } from '@bundled-es-modules/chai';
+import { stub as rawStub } from 'hanbi';
 import { Observable, unsubscribeWithSignal } from '../../src/lib/observables.js';
+import { defineComponent, updateRootContext } from '../../src/lib/smart-manager.js';
 
 // hanbi should have a chained API IMO
 function stub (fn) {
@@ -124,7 +124,6 @@ describe('smart components', () => {
       $containerThree.context = { three: 'the-three' };
 
       $containerThree.innerHTML = `<my-component></my-component>`;
-      const [$component] = $($containerThree, 'my-component');
 
       await sleep(25);
       expect(onContextUpdateStub.getCall(0).args).to.deep.equal([{
@@ -190,7 +189,6 @@ describe('smart components', () => {
       $container.context = { one: 'the-one' };
 
       $container.innerHTML = `<my-component></my-component>`;
-      const [$component] = $($container, 'my-component');
 
       await sleep(25);
       expect(onContextUpdateStub.getCall(0).args).to.deep.equal([{
@@ -287,7 +285,6 @@ describe('smart components', () => {
       $container.context = { one: 'the-one' };
 
       $container.innerHTML = `<my-component></my-component>`;
-      const [$component] = $($container, 'my-component');
 
       defineComponent({
         selector: 'my-component',
@@ -315,7 +312,6 @@ describe('smart components', () => {
       $container.context = { one: 'the-one', foo: 'foo', bar: 'bar' };
 
       $container.innerHTML = `<my-component></my-component>`;
-      const [$component] = $($container, 'my-component');
 
       defineComponent({
         selector: 'my-component',
@@ -369,7 +365,6 @@ describe('smart components', () => {
       const [$container] = $($main, 'cc-smart-container');
 
       $container.innerHTML = `<my-component></my-component>`;
-      const [$component] = $($container, 'my-component');
 
       await sleep(25);
       $main.removeChild($container);
@@ -627,7 +622,6 @@ describe('smart components', () => {
       const [$container] = $($main, 'cc-smart-container');
 
       $container.innerHTML = `<my-component></my-component>`;
-      const [$component] = $($container, 'my-component');
 
       await sleep(25);
       defineComponentController.abort();
@@ -650,7 +644,6 @@ describe('smart components', () => {
       defineComponentController.abort();
 
       $container.innerHTML = `<my-component></my-component>`;
-      const [$component] = $($container, 'my-component');
 
       await sleep(25);
       expect(onConnectStub.callCount).to.equal(0);

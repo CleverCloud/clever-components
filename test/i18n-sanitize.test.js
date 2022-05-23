@@ -1,5 +1,5 @@
-import { sanitize } from '../src/lib/i18n-sanitize.js';
 import { expect } from '@bundled-es-modules/chai';
+import { sanitize } from '../src/lib/i18n-sanitize.js';
 
 function compareChildNodes (domFragment, referenceChildNodes) {
 
@@ -107,7 +107,13 @@ describe('filter', () => {
   });
 
   it('Everything that comes from params must be escaped (even authorized tags)', () => {
-    compareChildNodes(sanitize`${'<h1>One</h1>'} ${'<strong>Two</strong>'} ${'<em>Three</em>'} ${'<code>Four</code>'} ${'<a>Five</a>'} ${'<pre>Six</pre>'}`,
+    const one = '<h1>One</h1>';
+    const two = '<strong>Two</strong>';
+    const three = '<em>Three</em>';
+    const four = '<code>Four</code>';
+    const five = '<a>Five</a>';
+    const six = '<pre>Six</pre>';
+    compareChildNodes(sanitize`${one} ${two} ${three} ${four} ${five} ${six}`,
       ['<h1>One</h1> <strong>Two</strong> <em>Three</em> <code>Four</code> <a>Five</a> <pre>Six</pre>'],
     );
   });

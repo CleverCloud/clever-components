@@ -1,5 +1,8 @@
 module.exports = {
   'extends': 'standard',
+  'env': {
+    'browser': true,
+  },
   'plugins': [
     'import',
     'lit',

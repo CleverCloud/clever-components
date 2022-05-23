@@ -1,5 +1,5 @@
-import { prepareNumberBytesFormatter, prepareNumberUnitFormatter } from '../src/lib/i18n-number.js';
 import { expect } from '@bundled-es-modules/chai';
+import { prepareNumberBytesFormatter, prepareNumberUnitFormatter } from '../src/lib/i18n-number.js';
 
 describe('prepareNumberUnitFormatter', () => {
 
