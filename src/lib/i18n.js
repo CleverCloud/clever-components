@@ -1,6 +1,6 @@
 /**
  * @param {string} key - The translation key
- * @param {object} data - The translation data
+ * @param {object?} data - The translation data
  * @returns {string} - The translated
  */
 export function i18n (key, data) {

@@ -29,7 +29,7 @@ Also, the project depends on [simpleheat](https://github.com/mourner/simpleheat)
 
 We can't really expect those projects to accept a contribution as radical as modifying the module exposition.
 
-## The discared solution
+## The discarded solution
 
 We could have chosen to:
 

@@ -673,6 +673,13 @@ export const translations = {
     return `${formattedValue} ${request} (${formatPercent(lang, percent)})`;
   },
   //#endregion
+  //#region cc-toast
+  'cc-toast.close': `Fermer cette notification`,
+  'cc-toast.icon-alt.danger': `Erreur`,
+  'cc-toast.icon-alt.info': `Information`,
+  'cc-toast.icon-alt.success': `Succès`,
+  'cc-toast.icon-alt.warning': `Avertissement`,
+  //#endregion
   //#region cc-zone
   'cc-zone.country': ({ code, name }) => getCountryName(lang, code, name),
   //#endregion

@@ -6,6 +6,9 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+* New components:
+  * `<cc-toaster>`
+  * `<cc-toast>`
 ...
 ## 8.0.1 (2022-07-15)
 

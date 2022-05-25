@@ -32,10 +32,13 @@
         "globalEvents": [
           // HACK: Right now, we don't have a clean way to recognize Shoelace events so this is not perfect.
           "sl-change",
-          // mouseenter and mouseleave aren't recognized :-(
+          // animationend, mouseenter and mouseleave aren't recognized :-(
+          // https://github.com/runem/lit-analyzer/issues/145
+          // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/animationend_event
           // https://developer.mozilla.org/en-US/docs/Web/API/Element/mouseenter_event
+          "animationend",
           "mouseenter",
-          "mouseleave"
+          "mouseleave",
         ]
       }
     ]
