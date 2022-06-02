@@ -10,9 +10,10 @@ title: Changelog
 * `<cc-doc-card>`: rename title property to heading to fix a conflict.
 * `<cc-doc-list>`: use heading when initializing the cards instead of title.
 
-### Fixes 
+### Components 
 * `<cc-article-list>`: fix error mode not triggering on XML parsing failure (smart). 
 * `parseRssFeed()`: trim XML string before parse to avoid whitespaces error.
+* `<cc-button>`: update waiting loader animation in circle state.
 
 ## 7.12.0 (2022-05-20)
 
