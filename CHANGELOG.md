@@ -20,6 +20,7 @@ title: Changelog
 * `<cc-tcp-redirection-form>`: Use `<cc-badge>` to display redirection count.
 * `<cc-header-app>`: Change footer background to neutral.
 * `<cc-header-addon>`: Change footer background to neutral.
+* `<cc-header-orga>`: Use `<cc-badge>` to display org status and hotline number. 
 ...
 
 ## 7.12.0 (2022-05-20)
