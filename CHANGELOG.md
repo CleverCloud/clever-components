@@ -15,6 +15,8 @@ title: Changelog
 * `parseRssFeed()`: trim XML string before parse to avoid whitespaces error.
 * `<cc-button>`: update waiting loader animation in circle state.
 * Color design tokens: add darker shades for light colors.
+* New component:
+  * `<cc-badge>`
 ...
 
 ## 7.12.0 (2022-05-20)
