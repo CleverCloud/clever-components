@@ -18,6 +18,7 @@ title: Changelog
 * New component:
   * `<cc-badge>`
 * `<cc-tcp-redirection-form>`: Use `<cc-badge>` to display redirection count.
+* `<cc-header-app>`: Change footer background to neutral.
 ...
 
 ## 7.12.0 (2022-05-20)
