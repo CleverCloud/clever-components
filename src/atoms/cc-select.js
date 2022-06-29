@@ -22,6 +22,7 @@ export class CcSelect extends LitElement {
   static get properties () {
     return {
       disabled: { type: Boolean, reflect: true },
+      inline: { type: Boolean, reflect: true },
       /** @required */
       label: { type: String },
       name: { type: String, reflect: true },
@@ -40,6 +41,11 @@ export class CcSelect extends LitElement {
 
     /** @type {boolean} Sets `disabled` attribute on inner native `<select>` element. */
     this.disabled = false;
+
+    /** @type {boolean} Sets the `<label>` on the left of the `<select>` element.
+     * Only use this if your form contains 1 or 2 fields and your labels are short.
+     */
+    this.inline = false;
 
     /** @type {string|null} Sets `name` attribute on inner native `<select>` element. */
     this.name = null;
@@ -113,11 +119,11 @@ export class CcSelect extends LitElement {
         </select>
       </div>
 
-      <div id=${this._uniqueHelpId}>
+      <div class="help-container" id=${this._uniqueHelpId}>
         <slot name="help"></slot>
       </div>
 
-      <div id=${this._uniqueErrorId}>
+      <div class="error-container" id=${this._uniqueErrorId}>
         <slot name="error"></slot>
       </div>
     `;
@@ -133,6 +139,23 @@ export class CcSelect extends LitElement {
         }
 
         /*region Common to cc-input-* & cc-select*/
+        :host([inline]) {
+          display: inline-grid;
+          gap: 0 1em;
+          grid-template-areas: "label input"
+                              ". help"
+                              ". error";
+          grid-template-columns: auto 1fr;
+        }
+
+        .help-container {
+          grid-area: help;
+        }
+
+        .error-container {
+          grid-area: error;
+        }
+
         label {
           align-items: flex-end;
           cursor: pointer;
@@ -143,10 +166,23 @@ export class CcSelect extends LitElement {
           padding-bottom: 0.35em;
         }
 
+        :host([inline]) label {
+          flex-direction: column;
+          gap: 0;
+          grid-area: label;
+          justify-content: center;
+          line-height: normal;
+          padding: 0;
+        }
+
         .required {
           color: var(--color-text-light);
           font-size: 0.9em;
           font-variant: small-caps;
+        }
+
+        :host([inline]) .required {
+          font-size: 0.8em;
         }
 
         slot[name='help']::slotted(*) {
@@ -183,6 +219,7 @@ export class CcSelect extends LitElement {
           border: 1px solid #aaa;
           border-radius: 0.25em;
           box-sizing: border-box;
+          grid-area: input;
           height: 2em;
           padding: 0 3em 0 0.5em;
         }
