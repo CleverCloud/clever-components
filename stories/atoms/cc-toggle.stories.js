@@ -120,6 +120,19 @@ export const legend = makeStory(conf, {
   items: normalAndSubtleItems.map((p) => ({ ...p, legend: 'The legend' })),
 });
 
+export const legendWithInline = makeStory({
+  ...conf,
+  css: `
+    :host {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem 0.5rem;
+    }
+  `,
+}, {
+  items: normalAndSubtleItems.map((p) => ({ ...p, legend: 'The legend', inline: true })),
+});
+
 export const multiple = makeStory(conf, {
   css: conf.css + `
     :host {
@@ -236,6 +249,7 @@ enhanceStoriesNames({
   defaultStory,
   disabled,
   legend,
+  legendWithInline,
   multiple,
   color,
   textTransform,
