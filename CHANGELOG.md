@@ -25,6 +25,7 @@ title: Changelog
 * `<cc-input-number>`: add `inline` prop to place the label on the left of the `<input>` element. Add new `inline` story to show this behavior.
 * `<cc-select>`: add `inline` prop to place the label on the left of the `<select>` element. Add new `inline` story to show this behavior.
 * `<cc-toggle>`: add `inline` prop to place the label on the left of the group of radio input elements. Add new `inline` story to show this behavior.
+* `<cc-invoice-list>`: inline year filters (`<cc-toggle>` for desktop and `<cc-select>` for mobile).
 ...
 
 ## 7.12.0 (2022-05-20)
