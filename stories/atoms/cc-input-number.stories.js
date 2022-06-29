@@ -72,6 +72,36 @@ export const errorMessageWithHelpMessage = makeStory(conf, {
   })),
 });
 
+export const inline = makeStory(conf, {
+  css: `cc-input-number { margin: 1rem 0.5rem; }`,
+  items: baseItems.map((p) => ({
+    ...p,
+    inline: true,
+  })),
+});
+
+export const inlineWithRequired = makeStory(conf, {
+  css: `cc-input-number { margin: 1rem 0.5rem; }`,
+  items: baseItems.map((p) => ({
+    ...p,
+    inline: true,
+    required: true,
+  })),
+});
+
+export const inlineWithErrorAndHelpMessages = makeStory(conf, {
+  css: `cc-input-number { margin: 1rem 0.5rem; }`,
+  items: baseItems.map((p) => ({
+    ...p,
+    inline: true,
+    required: true,
+    innerHTML: `
+      <p slot="help">Must be an integer</p>
+      <p slot="error">You must enter a value</p>
+    `,
+  })),
+});
+
 export const controls = makeStory(conf, {
   items: baseItems.map((p) => ({ ...p, controls: true })),
 });
@@ -157,6 +187,9 @@ enhanceStoriesNames({
   helpMessage,
   errorMessage,
   errorMessageWithHelpMessage,
+  inline,
+  inlineWithRequired,
+  inlineWithErrorAndHelpMessages,
   controls,
   minMax,
   minMaxWithControls,

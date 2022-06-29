@@ -22,6 +22,7 @@ title: Changelog
 * `<cc-header-addon>`: Change footer background to neutral.
 * `<cc-header-orga>`: Use `<cc-badge>` to display org status and hotline number. 
 * `<cc-input-text>`: add `inline` prop to place the label on the left of the `<input>` element. Add new `inline` story to show this behavior.
+* `<cc-input-number>`: add `inline` prop to place the label on the left of the `<input>` element. Add new `inline` story to show this behavior.
 ...
 
 ## 7.12.0 (2022-05-20)
