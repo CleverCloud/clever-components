@@ -158,6 +158,13 @@ As you can see here, \`circle\` can only be used if there is an \`image\` and in
   ],
 });
 
+export const waitingAndCircle = makeStory(conf, {
+  items: [
+    { image: closeSvg, innerHTML: 'Close foo', hideText: true, circle: true, waiting: true },
+    { image: infoSvg, innerHTML: 'Info bar', hideText: true, circle: true, waiting: true },
+  ],
+});
+
 export const allFormControls = allFormControlsStory;
 
 enhanceStoriesNames({
@@ -175,5 +182,6 @@ enhanceStoriesNames({
   hideText,
   skeleton,
   circle,
+  waitingAndCircle,
   allFormControls,
 });

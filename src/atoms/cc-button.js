@@ -52,7 +52,7 @@ export class CcButton extends LitElement {
       primary: { type: Boolean },
       skeleton: { type: Boolean },
       success: { type: Boolean },
-      waiting: { type: Boolean },
+      waiting: { type: Boolean, reflect: true },
       warning: { type: Boolean },
       _cancelMode: { type: Boolean, attribute: false },
     };
@@ -210,8 +210,13 @@ export class CcButton extends LitElement {
         ${delay != null ? html`
           <progress class="delay ${classMap({ active: this._cancelMode })}" style="--delay: ${delay}s"></progress>
         ` : ''}
-        ${waiting ? html`
+        ${waiting && !modes.circle ? html`
           <progress class="waiting"></progress>
+        ` : ''}
+        ${waiting && modes.circle ? html`
+          <svg class="circle-loader" viewBox="25 25 50 50" stroke-width="4" aria-hidden="true">
+            <circle fill="none" cx="50" cy="50" r="15" />
+          </svg>
         ` : ''}
       </button>
     `;
@@ -460,6 +465,54 @@ export class CcButton extends LitElement {
           margin-left: calc(50% - calc(var(--width) / 2));
           position: absolute;
           width: var(--width);
+        }
+
+        /* circle waiting mode - keyframes */
+        @keyframes rotate {
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+
+        @keyframes stretch {
+          0% {
+            stroke-dasharray: 1, 200;
+            stroke-dashoffset: 0;
+          }
+          50% {
+            stroke-dasharray: 90, 200;
+            stroke-dashoffset: -35px;
+          }
+          100% {
+            stroke-dashoffset: -124px;
+          }
+        }
+
+        /* circle waiting mode - partial opacity */
+        :host([waiting]) button.circle {
+          opacity: 1;
+        }
+
+        :host([waiting]) button.circle .text-wrapper img {
+          opacity: 0.25;
+        }
+
+        /* circle waiting mode - core animation */
+        .circle-loader {
+          --bcw-speed: 2s;
+          animation: rotate var(--bcw-speed) linear infinite;
+          inset: 0;
+          position: absolute;
+          transform-origin: center;
+          vertical-align: middle;
+        }
+
+        .circle-loader circle {
+          animation: stretch calc(var(--bcw-speed) * 0.75) ease-in-out infinite;
+          stroke: currentColor;
+          stroke-dasharray: 1, 200;
+          stroke-dashoffset: 0;
+          stroke-linecap: round;
         }
 
         /* We can do this because we set a visible focus state */
