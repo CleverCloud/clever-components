@@ -1,7 +1,7 @@
 import { expect } from '@bundled-es-modules/chai';
 import { parseRssFeed } from '../src/lib/xml-parser.js';
 
-describe('xml parsing', () => {
+describe('XML parsing', () => {
 
   let fileString = '';
   before(async () => {
@@ -103,6 +103,14 @@ describe('xml parsing', () => {
     expect(thirdItem.date).to.deep.equal(new Date(' Mon, 13 Dec 2021 13:10:32 +0000').toISOString());
     expect(thirdItem.banner).to.deep.equal('https://staging-cc-assets.cellar-c2.services.clever-cloud.com/uploads/2021/12/Security-update-318x159.png');
     expect(thirdItem.link).to.deep.equal('https://clevercloud-staging.cleverapps.io/blog/engineering/2021/12/13/security-update-about-log4shell/');
+  });
+
+  describe('XML parsing error check', () => {
+    it('throws an error with bad XML ', () => {
+      const wrongFileString = 'here is a wrong thing' + fileString;
+      expect(() => parseRssFeed(wrongFileString)).to.throw();
+    });
+
   });
 
 });

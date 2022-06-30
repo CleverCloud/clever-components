@@ -10,6 +10,11 @@
  */
 export function parseRssFeed (xmlStr, limit = 9) {
   const doc = new DOMParser().parseFromString(xmlStr, 'application/xml');
+  const error = doc.querySelector('parsererror');
+  if (error != null) {
+    throw new Error(error.innerHTML);
+  }
+
   return Array
     .from(doc.querySelectorAll('item'))
     .map((node) => {
