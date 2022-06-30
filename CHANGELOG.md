@@ -17,6 +17,7 @@ title: Changelog
 * Color design tokens: add darker shades for light colors.
 * New component:
   * `<cc-badge>`
+* `<cc-tcp-redirection-form>`: Use `<cc-badge>` to display redirection count.
 ...
 
 ## 7.12.0 (2022-05-20)
