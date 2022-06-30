@@ -99,30 +99,6 @@ export const dataLoadedWithDeletingRedirection = makeStory(conf, {
   ],
 });
 
-export const dataLoadedWithErrorCreatingRedirection = makeStory(conf, {
-  items: [
-    {
-      redirections: [
-        { namespace: 'default', sourcePort: 5220 },
-        { namespace: 'cleverapps', error: true },
-        { namespace: 'customer-name', sourcePort: 6440, private: true },
-      ],
-    },
-  ],
-});
-
-export const dataLoadedWithErrorDeletingRedirection = makeStory(conf, {
-  items: [
-    {
-      redirections: [
-        { namespace: 'default', sourcePort: 5220 },
-        { namespace: 'cleverapps', sourcePort: 3821 },
-        { namespace: 'customer-name', sourcePort: 6440, error: true, private: true },
-      ],
-    },
-  ],
-});
-
 export const dataLoadedWithManyNamespaces = makeStory(conf, {
   items: [
     {
@@ -167,42 +143,7 @@ export const simulation = makeStory(conf, {
         { namespace: 'customer-name', sourcePort: 6440, private: true, waiting: true },
       ];
     }),
-    storyWait(1000, ([component, componentError]) => {
-      component.redirections = [
-        { namespace: 'default', sourcePort: 5220 },
-        { namespace: 'cleverapps', error: true },
-        { namespace: 'customer-name', sourcePort: 6440, private: true, waiting: true },
-      ];
-    }),
-    storyWait(500, ([component, componentError]) => {
-      component.redirections = [
-        { namespace: 'default', sourcePort: 5220 },
-        { namespace: 'cleverapps', error: true },
-        { namespace: 'customer-name', sourcePort: 6440, private: true, error: true },
-      ];
-    }),
-    storyWait(3000, ([component, componentError]) => {
-      component.redirections = [
-        { namespace: 'default', sourcePort: 5220 },
-        { namespace: 'cleverapps', error: true, waiting: true },
-        { namespace: 'customer-name', sourcePort: 6440, private: true, error: true },
-      ];
-    }),
-    storyWait(200, ([component, componentError]) => {
-      component.redirections = [
-        { namespace: 'default', sourcePort: 5220 },
-        { namespace: 'cleverapps', error: true, waiting: true },
-        { namespace: 'customer-name', sourcePort: 6440, private: true, error: true, waiting: true },
-      ];
-    }),
-    storyWait(2000, ([component, componentError]) => {
-      component.redirections = [
-        { namespace: 'default', sourcePort: 5220 },
-        { namespace: 'cleverapps', error: true, waiting: true },
-        { namespace: 'customer-name', private: true },
-      ];
-    }),
-    storyWait(500, ([component, componentError]) => {
+    storyWait(1500, ([component, componentError]) => {
       component.redirections = [
         { namespace: 'default', sourcePort: 5220 },
         { namespace: 'cleverapps', sourcePort: 4242 },
@@ -222,8 +163,6 @@ enhanceStoriesNames({
   dataLoadedWithContextAdminAndNoRedirections,
   dataLoadedWithCreatingRedirection,
   dataLoadedWithDeletingRedirection,
-  dataLoadedWithErrorCreatingRedirection,
-  dataLoadedWithErrorDeletingRedirection,
   dataLoadedWithManyNamespaces,
   simulation,
 });

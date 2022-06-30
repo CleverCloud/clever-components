@@ -9,7 +9,6 @@ import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { waitingStyles } from '../styles/waiting.js';
 
-const warningSvg = new URL('../assets/warning.svg', import.meta.url).href;
 const noRedirectionSvg = new URL('../assets/redirection-off.svg', import.meta.url).href;
 const redirectionSvg = new URL('../assets/redirection-on.svg', import.meta.url).href;
 
@@ -30,7 +29,6 @@ export class CcTcpRedirection extends LitElement {
 
   static get properties () {
     return {
-      error: { type: Boolean },
       namespace: { type: String },
       private: { type: Boolean },
       skeleton: { type: Boolean },
@@ -41,9 +39,6 @@ export class CcTcpRedirection extends LitElement {
 
   constructor () {
     super();
-
-    /** @type {boolean} Set if there was an error during creation / deletion. */
-    this.error = false;
 
     /** @type {string|null} Sets the name of the namespace. */
     this.namespace = null;
@@ -62,9 +57,6 @@ export class CcTcpRedirection extends LitElement {
   }
 
   _getButtonText () {
-    if (this.error) {
-      return i18n('cc-tcp-redirection.retry-button');
-    }
     return this._isRedirectionDefined()
       ? i18n('cc-tcp-redirection.delete-button')
       : i18n('cc-tcp-redirection.create-button');
@@ -72,20 +64,12 @@ export class CcTcpRedirection extends LitElement {
 
   _getHelpText () {
     const { namespace, sourcePort } = this;
-    if (this.error) {
-      return this._isRedirectionDefined()
-        ? i18n('cc-tcp-redirection.error.redirection-defined', { namespace, sourcePort })
-        : i18n('cc-tcp-redirection.error.redirection-not-defined', { namespace });
-    }
     return this._isRedirectionDefined()
       ? i18n('cc-tcp-redirection.redirection-defined', { namespace, sourcePort })
       : i18n('cc-tcp-redirection.redirection-not-defined', { namespace });
   }
 
   _getHelpTextAddendum () {
-    if (this.error) {
-      return null;
-    }
     if (this.private) {
       return i18n('cc-tcp-redirection.namespace-private');
     }
@@ -100,9 +84,6 @@ export class CcTcpRedirection extends LitElement {
   }
 
   _getIconUrl () {
-    if (this.error) {
-      return warningSvg;
-    }
     if (this._isRedirectionDefined()) {
       return redirectionSvg;
     }
@@ -141,13 +122,13 @@ export class CcTcpRedirection extends LitElement {
             ` : ''}
           </div>
           <cc-button
-            outlined
-            ?skeleton=${this.skeleton}
-            ?waiting=${this.waiting}
-            ?danger=${this._isRedirectionDefined()}
-            delay=${this._isRedirectionDefined() ? 3 : 0}
-            ?primary=${!this._isRedirectionDefined()}
-            @cc-button:click=${this._isRedirectionDefined() ? this._onDelete : this._onCreate}
+              outlined
+              ?skeleton=${this.skeleton}
+              ?waiting=${this.waiting}
+              ?danger=${this._isRedirectionDefined()}
+              delay=${this._isRedirectionDefined() ? 3 : 0}
+              ?primary=${!this._isRedirectionDefined()}
+              @cc-button:click=${this._isRedirectionDefined() ? this._onDelete : this._onCreate}
           >
             ${this._getButtonText()}
           </cc-button>
@@ -166,7 +147,7 @@ export class CcTcpRedirection extends LitElement {
         :host {
           display: block;
         }
-      
+
         .wrapper {
           --cc-gap: 0.8rem;
         }

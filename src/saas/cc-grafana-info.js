@@ -145,15 +145,11 @@ export class CcGrafanaInfo extends LitElement {
             <div slot="info">
               <p>${i18n('cc-grafana-info.enable-description')}</p>
             </div>
-            ${this.error === 'enabling' ? html`
-              <cc-error>${i18n('cc-grafana-info.error-enabling')}</cc-error>
-            ` : html`
-              <div>
-                <cc-button success ?skeleton=${this._skeleton} ?disabled=${isFormDisabled} @cc-button:click=${this._onEnableSubmit}>
-                  ${i18n('cc-grafana-info.enable-title')}
-                </cc-button>
-              </div>
-            `}
+            <div>
+              <cc-button success ?skeleton=${this._skeleton} ?disabled=${isFormDisabled} @cc-button:click=${this._onEnableSubmit}>
+                ${i18n('cc-grafana-info.enable-title')}
+              </cc-button>
+            </div>
           </cc-block-section>
         ` : ''}
 
@@ -177,15 +173,11 @@ export class CcGrafanaInfo extends LitElement {
           <cc-block-section>
             <div slot="title">${i18n('cc-grafana-info.reset-title')}</div>
             <div slot="info">${i18n('cc-grafana-info.reset-description')}</div>
-            ${this.error === 'resetting' ? html`
-              <cc-error>${i18n('cc-grafana-info.error-resetting')}</cc-error>
-            ` : html`
-              <div>
-                <cc-button primary ?skeleton=${this._skeleton} ?disabled=${isFormDisabled} ?waiting=${this.waiting === 'resetting'} @cc-button:click=${this._onResetSubmit}>
-                  ${i18n('cc-grafana-info.reset-title')}
-                </cc-button>
-              </div>
-            `}
+            <div>
+              <cc-button primary ?skeleton=${this._skeleton} ?disabled=${isFormDisabled} ?waiting=${this.waiting === 'resetting'} @cc-button:click=${this._onResetSubmit}>
+                ${i18n('cc-grafana-info.reset-title')}
+              </cc-button>
+            </div>
           </cc-block-section>
         ` : ''}
 
@@ -207,15 +199,11 @@ export class CcGrafanaInfo extends LitElement {
           <cc-block-section>
             <div slot="title">${i18n('cc-grafana-info.disable-title')}</div>
             <div slot="info">${i18n('cc-grafana-info.disable-description')}</div>
-            ${this.error === 'disabling' ? html`
-                <cc-error>${i18n('cc-grafana-info.error-disabling')}</cc-error>
-              ` : html`
-                <div>
-                  <cc-button danger delay="3" ?skeleton=${this._skeleton} ?disabled=${isFormDisabled} @cc-button:click=${this._onDisableSubmit}>
-                    ${i18n('cc-grafana-info.disable-title')}
-                  </cc-button>
-                </div>
-              `}
+            <div>
+              <cc-button danger delay="3" ?skeleton=${this._skeleton} ?disabled=${isFormDisabled} @cc-button:click=${this._onDisableSubmit}>
+                ${i18n('cc-grafana-info.disable-title')}
+              </cc-button>
+            </div>
           </cc-block-section>
         ` : ''}
 

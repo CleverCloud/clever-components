@@ -19,12 +19,12 @@ defineComponent({
     unsubscribeWithSignal(disconnectSignal, [
 
       variables_lp.error$.subscribe(console.error),
-      variables_lp.error$.subscribe(() => (component.error = 'loading')),
+      variables_lp.error$.subscribe(() => (component.error = true)),
       variables_lp.value$.subscribe((variables) => (component.variables = variables)),
 
       context$.subscribe(({ apiConfig, ownerId, addonId }) => {
 
-        component.error = null;
+        component.error = false;
         component.variables = null;
 
         if (apiConfig != null && ownerId != null && addonId != null) {

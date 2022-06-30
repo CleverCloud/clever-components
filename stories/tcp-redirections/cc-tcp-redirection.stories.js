@@ -51,14 +51,6 @@ export const waitingWithNoRedirection = makeStory(conf, {
   items: baseItems.map((p) => ({ ...p, waiting: true })),
 });
 
-export const errorWithCreation = makeStory(conf, {
-  items: baseItems.map((p) => ({ ...p, error: true })),
-});
-
-export const errorWithDeletion = makeStory(conf, {
-  items: baseItemsWithRedirection.map((p) => ({ ...p, error: true })),
-});
-
 enhanceStoriesNames({
   defaultStory,
   loading,
@@ -66,6 +58,4 @@ enhanceStoriesNames({
   dataLoadedWithNoRedirection,
   waitingWithRedirection,
   waitingWithNoRedirection,
-  errorWithCreation,
-  errorWithDeletion,
 });

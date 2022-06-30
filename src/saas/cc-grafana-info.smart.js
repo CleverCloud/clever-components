@@ -6,10 +6,11 @@ import {
   getGrafanaOrganisation,
   resetGrafanaOrganisation,
 } from '../lib/api-helpers.js';
-import { fromCustomEvent, LastPromise, merge, unsubscribeWithSignal, withLatestFrom } from '../lib/observables.js';
+import { i18n } from '../lib/i18n.js';
+import { notifyError, notifySuccess } from '../lib/notifications.js';
+import { fromCustomEvent, LastPromise, unsubscribeWithSignal, withLatestFrom } from '../lib/observables.js';
 import { sendToApi } from '../lib/send-to-api.js';
 import { defineComponent } from '../lib/smart-manager.js';
-import { addErrorType } from '../lib/utils.js';
 
 // TODO, we need to refactor this one to make it more like the others
 defineComponent({
@@ -22,7 +23,6 @@ defineComponent({
   onConnect (container, component, context$, disconnectSignal) {
 
     const grafana_lp = new LastPromise();
-    const reset_lp = new LastPromise();
 
     const onReset$ = fromCustomEvent(component, 'cc-grafana-info:reset')
       .pipe(withLatestFrom(context$));
@@ -31,13 +31,11 @@ defineComponent({
     const onEnable$ = fromCustomEvent(component, 'cc-grafana-info:enable')
       .pipe(withLatestFrom(context$));
 
-    const error$ = merge(grafana_lp.error$, reset_lp.error$);
-
     unsubscribeWithSignal(disconnectSignal, [
 
-      error$.subscribe(console.error),
-      error$.subscribe((error) => {
-        component.error = error.type;
+      grafana_lp.error$.subscribe(console.error),
+      grafana_lp.error$.subscribe(() => {
+        component.error = 'loading';
         component.waiting = false;
       }),
 
@@ -52,21 +50,17 @@ defineComponent({
         component.waiting = false;
       }),
 
-      reset_lp.value$.subscribe(() => {
-        component.waiting = false;
-      }),
-
       onReset$.subscribe(([variables, { apiConfig, ownerId }]) => {
 
         component.error = false;
         component.waiting = 'resetting';
 
-        if (apiConfig != null && ownerId != null) {
-          reset_lp.push((signal) => doResetGrafanaOrganisation({ apiConfig, signal, ownerId }));
-        }
-        else {
-          component.error = 'resetting';
-        }
+        doResetGrafanaOrganisation({ apiConfig, ownerId })
+          .then(() => notifySuccess(component, i18n('cc-grafana-info.reset.success')))
+          .catch(() => notifyError(component, i18n('cc-grafana-info.reset.error')))
+          .finally(() => {
+            component.waiting = false;
+          });
       }),
 
       onDisable$.subscribe(([variables, { apiConfig, ownerId }]) => {
@@ -74,25 +68,32 @@ defineComponent({
         component.error = false;
         component.waiting = 'disabling';
 
-        if (apiConfig != null && ownerId != null) {
-          grafana_lp.push((signal) => disableGrafanaOrganisation({ apiConfig, signal, ownerId }));
-        }
-        else {
-          component.error = 'disabling';
-        }
+        disableGrafanaOrganisation({ apiConfig, ownerId })
+          .then(() => {
+            component.status = 'disabled';
+            component.link = null;
+            notifySuccess(component, i18n('cc-grafana-info.disable.success'));
+          })
+          .catch(() => notifyError(component, i18n('cc-grafana-info.disable.error')))
+          .finally(() => {
+            component.waiting = false;
+          });
       }),
 
-      onEnable$.subscribe(([variables, { apiConfig, ownerId, grafanaBaseLink }]) => {
+      onEnable$.subscribe(([_, { apiConfig, ownerId, grafanaBaseLink }]) => {
 
         component.error = false;
         component.waiting = 'enabling';
 
-        if (apiConfig != null && ownerId != null && grafanaBaseLink != null) {
-          grafana_lp.push((signal) => enableGrafanaOrganisation({ apiConfig, signal, ownerId, grafanaBaseLink }));
-        }
-        else {
-          component.error = 'enabling';
-        }
+        enableGrafanaOrganisation({ apiConfig, ownerId })
+          .then(() => {
+            grafana_lp.push((signal) => fetchGrafanaOrganisation({ apiConfig, signal, ownerId, grafanaBaseLink }));
+            notifySuccess(component, i18n('cc-grafana-info.enable.success'));
+          })
+          .catch(() => notifyError(component, i18n('cc-grafana-info.enable.error')))
+          .finally(() => {
+            component.waiting = false;
+          });
       }),
 
       context$.subscribe(({ apiConfig, ownerId, grafanaBaseLink }) => {
@@ -112,8 +113,6 @@ defineComponent({
   },
 });
 
-const DISABLED_GRAFANA = { status: 'disabled', link: null };
-
 function fetchGrafanaOrganisation ({ apiConfig, signal, ownerId, grafanaBaseLink }) {
   return getGrafanaOrganisation({ id: ownerId })
     .then(sendToApi({ apiConfig, signal }))
@@ -124,31 +123,25 @@ function fetchGrafanaOrganisation ({ apiConfig, signal, ownerId, grafanaBaseLink
     })
     .catch((error) => {
       if (error.response?.status === 404 && error.toString().startsWith('Error: Grafana organization not found')) {
-        return DISABLED_GRAFANA;
+        return { status: 'disabled', link: null };
       }
       else {
         throw error;
       }
-    })
-    .catch(addErrorType('loading'));
+    });
 }
 
-function doResetGrafanaOrganisation ({ apiConfig, signal, ownerId }) {
+function doResetGrafanaOrganisation ({ apiConfig, ownerId }) {
   return resetGrafanaOrganisation({ id: ownerId })
-    .then(sendToApi({ apiConfig, signal }))
-    .catch(addErrorType('resetting'));
+    .then(sendToApi({ apiConfig }));
 }
 
-function disableGrafanaOrganisation ({ apiConfig, signal, ownerId }) {
+function disableGrafanaOrganisation ({ apiConfig, ownerId }) {
   return deleteGrafanaOrganisation({ id: ownerId })
-    .then(sendToApi({ apiConfig, signal }))
-    .then(() => DISABLED_GRAFANA)
-    .catch(addErrorType('disabling'));
+    .then(sendToApi({ apiConfig }));
 }
 
-async function enableGrafanaOrganisation ({ apiConfig, signal, ownerId, grafanaBaseLink }) {
-  await createGrafanaOrganisation({ id: ownerId })
-    .then(sendToApi({ apiConfig, signal }))
-    .catch(addErrorType('enabling'));
-  return await fetchGrafanaOrganisation({ apiConfig, signal, ownerId, grafanaBaseLink });
+function enableGrafanaOrganisation ({ apiConfig, ownerId }) {
+  return createGrafanaOrganisation({ id: ownerId })
+    .then(sendToApi({ apiConfig }));
 }
