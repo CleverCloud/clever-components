@@ -6,7 +6,8 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+* `<cc-article-list>`: fix error mode not triggering on XML parsing failure (smart). 
+* `parseRssFeed()`: trim XML string before parse to avoid whitespaces error.
 
 ## 7.12.0 (2022-05-20)
 
