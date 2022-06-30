@@ -111,6 +111,14 @@ describe('XML parsing', () => {
       expect(() => parseRssFeed(wrongFileString)).to.throw();
     });
 
+    it('doesn\'t throw an error with whitespaces', () => {
+      const wrongFileString = '\n' + fileString;
+      expect(() => parseRssFeed(wrongFileString)).to.not.throw();
+      const parsedXML = parseRssFeed(wrongFileString);
+      expect(parsedXML).to.not.equal(null);
+      expect(parsedXML.length).to.be.greaterThan(0);
+    });
+
   });
 
 });
