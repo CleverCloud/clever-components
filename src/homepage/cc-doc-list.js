@@ -50,9 +50,9 @@ export class CcDocList extends LitElement {
         ${!skeleton && !this.error ? html`
           ${this.docs.map((article) => html`
             <cc-doc-card
-              title=${article.title ?? ''}
-              .icons=${article.icons ?? []}
               description=${article.description ?? ''}
+              heading=${article.heading ?? ''}
+              .icons=${article.icons ?? []}
               link=${article.link ?? ''}
             ></cc-doc-card>
           `)}

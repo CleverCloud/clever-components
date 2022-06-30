@@ -8,7 +8,7 @@ import { skeletonStyles } from '../styles/skeleton.js';
 import { linkStyles } from '../templates/cc-link.js';
 
 const SKELETON_INFO = {
-  title: fakeString(6),
+  heading: fakeString(6),
   description: fakeString(110),
 };
 
@@ -22,9 +22,9 @@ export class CcDocCard extends LitElement {
   static get properties () {
     return {
       description: { type: String },
+      heading: { type: String },
       icons: { type: Array },
       link: { type: String },
-      title: { type: String },
     };
   }
 
@@ -40,14 +40,14 @@ export class CcDocCard extends LitElement {
     /** @type {string|null} Sets the link of the documentation card. */
     this.link = null;
 
-    /** @type {string|null} Sets the title of the documentation card.  */
-    this.title = null;
+    /** @type {string|null} Sets the title heading of the documentation card.  */
+    this.heading = null;
   }
 
   render () {
 
-    const skeleton = (this.icons == null || this.title == null || this.description == null || this.link == null);
-    const title = this.title ?? SKELETON_INFO.title;
+    const skeleton = (this.icons == null || this.heading == null || this.description == null || this.link == null);
+    const heading = this.heading ?? SKELETON_INFO.heading;
     const description = this.description ?? SKELETON_INFO.description;
 
     return html`
@@ -62,14 +62,14 @@ export class CcDocCard extends LitElement {
           ` : ''}
         </div>
         <div class="title">
-          <span class="${classMap({ skeleton })}">${title}</span>
+          <span class="${classMap({ skeleton })}">${heading}</span>
         </div>
         <div class="desc">
           <span class="${classMap({ skeleton })}">${description}</span>
         </div>
         <div class="link ${classMap({ skeleton })}">
           ${!skeleton
-            ? i18n('cc-doc-card.link', { link: this.link, product: this.title })
+            ? i18n('cc-doc-card.link', { link: this.link, product: this.heading })
             : i18n('cc-doc-card.skeleton-link-title')}
         </div>
     `;

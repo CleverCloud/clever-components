@@ -6,6 +6,11 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+### ⚠️ BREAKING CHANGES
+* `<cc-doc-card>`: rename title property to heading to fix a conflict.
+* `<cc-doc-list>`: use heading when initializing the cards instead of title.
+
+### Fixes 
 * `<cc-article-list>`: fix error mode not triggering on XML parsing failure (smart). 
 * `parseRssFeed()`: trim XML string before parse to avoid whitespaces error.
 

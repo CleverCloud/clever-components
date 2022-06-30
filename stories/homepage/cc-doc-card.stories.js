@@ -3,7 +3,7 @@ import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
 const DEFAULT_CARD = {
-  title: 'ruby',
+  heading: 'ruby',
   icons: ['https://assets.clever-cloud.com/logos/ruby.svg'],
   description: 'Run your Ruby and Ruby on Rails applications. Compatible with Rake, Sidekiq and Active Storage for Cellar.',
   link: '#',
@@ -11,7 +11,7 @@ const DEFAULT_CARD = {
 
 const MULTIPLE_ICONS_CARD = {
   icons: ['https://assets.clever-cloud.com/logos/java-jar.svg', 'https://assets.clever-cloud.com/logos/maven.svg', 'https://assets.clever-cloud.com/logos/play2.svg'],
-  title: 'Java',
+  heading: 'Java',
   description: 'Deploy Java runtimes with your specific process (Jar or War) or build tools (Maven, SBT…).',
   link: '#',
 };
@@ -50,9 +50,9 @@ export const simulations = makeStory(conf, {
   items: [{}],
   simulations: [
     storyWait(2000, ([component]) => {
-      component.title = DEFAULT_CARD.title;
+      component.heading = DEFAULT_CARD.heading;
       component.icons = DEFAULT_CARD.icons;
-      component.desc = DEFAULT_CARD.desc;
+      component.description = DEFAULT_CARD.description;
       component.link = DEFAULT_CARD.link;
     }),
   ],
