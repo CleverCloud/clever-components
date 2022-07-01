@@ -1,7 +1,7 @@
 import './cc-invoice.js';
 import '../smart/cc-smart-container.js';
 import { fetchInvoice, fetchInvoiceHtml } from '../lib/api-helpers.js';
-import { combineLatest, LastPromise, map, merge, unsubscribeWithSignal } from '../lib/observables.js';
+import { LastPromise, unsubscribeWithSignal } from '../lib/observables.js';
 import { defineComponent } from '../lib/smart-manager.js';
 
 defineComponent({
@@ -14,29 +14,35 @@ defineComponent({
   onConnect (container, component, context$, disconnectSignal) {
 
     const invoice_lp = new LastPromise();
-    const invoiceHtml_lp = new LastPromise();
-
-    const error$ = merge(invoice_lp.error$, invoiceHtml_lp.error$);
-    const invoice$ = combineLatest(invoice_lp.value$, invoiceHtml_lp.value$)
-      .pipe(map(([invoice, invoiceHtml]) => ({ ...invoice, invoiceHtml })));
 
     unsubscribeWithSignal(disconnectSignal, [
 
-      error$.subscribe(console.error),
-      error$.subscribe(() => (component.error = true)),
-      invoice$.subscribe((invoice) => (component.invoice = invoice)),
+      invoice_lp.error$.subscribe(console.error),
+      invoice_lp.error$.subscribe(() => (component.error = true)),
+      invoice_lp.value$.subscribe((invoice) => (component.invoice = invoice)),
 
       context$.subscribe(({ apiConfig, ownerId, invoiceNumber }) => {
+
+        component.error = false;
+        component.number = invoiceNumber;
+        component.invoice = null;
+
         if (apiConfig != null && ownerId != null && invoiceNumber != null) {
-
-          component.number = invoiceNumber;
-          component.invoice = null;
-
-          invoice_lp.push((signal) => fetchInvoice({ apiConfig, signal, ownerId, invoiceNumber }));
-          invoiceHtml_lp.push((signal) => fetchInvoiceHtml({ apiConfig, signal, ownerId, invoiceNumber }));
+          invoice_lp.push((signal) => fetchFullInvoice({ apiConfig, signal, ownerId, invoiceNumber }));
         }
       }),
 
     ]);
   },
 });
+
+function fetchFullInvoice ({ apiConfig, signal, ownerId, invoiceNumber }) {
+  return Promise
+    .all([
+      fetchInvoice({ apiConfig, signal, ownerId, invoiceNumber }),
+      fetchInvoiceHtml({ apiConfig, signal, ownerId, invoiceNumber }),
+    ])
+    .then(([invoice, invoiceHtml]) => {
+      return { ...invoice, invoiceHtml };
+    });
+}

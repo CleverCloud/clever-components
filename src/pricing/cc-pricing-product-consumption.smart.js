@@ -56,11 +56,12 @@ defineComponent({
 
       product_lp.error$.subscribe(console.error),
       product_lp.error$.subscribe(() => (component.error = true)),
-      product_lp.value$.subscribe((product) => {
-        component.sections = product.sections;
-      }),
+      product_lp.value$.subscribe((product) => (component.sections = product.sections)),
 
       context$.subscribe(({ productId, zoneId, currency }) => {
+
+        // TODO, we may need to refine this reset
+        component.sections = null;
 
         if (currency != null) {
           component.currency = currency;

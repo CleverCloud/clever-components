@@ -1,4 +1,4 @@
-import '../../src/addon/cc-addon-linked-apps.js';
+import '../../src/addon/cc-addon-linked-apps.smart.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 

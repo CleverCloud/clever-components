@@ -3,7 +3,7 @@ import '../smart/cc-smart-container.js';
 import { getLinkedApplications } from '@clevercloud/client/esm/api/v2/addon.js';
 import { getAllZones } from '@clevercloud/client/esm/api/v4/product.js';
 import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
-import { combineLatest, LastPromise, merge, unsubscribeWithSignal } from '../lib/observables.js';
+import { LastPromise, unsubscribeWithSignal } from '../lib/observables.js';
 import { sendToApi } from '../lib/send-to-api.js';
 import { defineComponent } from '../lib/smart-manager.js';
 
@@ -16,22 +16,13 @@ defineComponent({
   },
   onConnect (container, component, context$, disconnectSignal) {
 
-    const zones_lp = new LastPromise();
-    const linkedApps_lp = new LastPromise();
-
-    const error$ = merge(zones_lp.error$, linkedApps_lp.error$);
-    const linkedAppsAndZones = combineLatest(zones_lp.value$, linkedApps_lp.value$);
+    const applications_lp = new LastPromise();
 
     unsubscribeWithSignal(disconnectSignal, [
 
-      error$.subscribe(console.error),
-      error$.subscribe(() => (component.error = true)),
-      linkedAppsAndZones.subscribe(([zones, applications]) => {
-        component.applications = applications.map((app) => {
-          const zone = zones.find((z) => z.name === app.zoneName);
-          return { ...app, zone };
-        });
-      }),
+      applications_lp.error$.subscribe(console.error),
+      applications_lp.error$.subscribe(() => (component.error = true)),
+      applications_lp.value$.subscribe((applications) => (component.applications = applications)),
 
       context$.subscribe(({ apiConfig, ownerId, addonId }) => {
 
@@ -39,8 +30,7 @@ defineComponent({
         component.applications = null;
 
         if (apiConfig != null && ownerId != null && addonId != null) {
-          zones_lp.push((signal) => fetchZones({ apiConfig, signal }));
-          linkedApps_lp.push((signal) => fetchLinkedApplications({ apiConfig, signal, ownerId, addonId }));
+          applications_lp.push((signal) => fetchApplications({ apiConfig, signal, ownerId, addonId }));
         }
 
       }),
@@ -49,20 +39,28 @@ defineComponent({
   },
 });
 
+function fetchApplications ({ apiConfig, signal, ownerId, addonId }) {
+  return Promise
+    .all([
+      fetchZones({ apiConfig, signal }),
+      fetchLinkedApplications({ apiConfig, signal, ownerId, addonId }),
+    ])
+    .then(([zones, applications]) => {
+      return applications.map((app) => {
+        const { name, instance } = app;
+        const link = getApplicationLink(ownerId, app.id);
+        const zone = zones.find((z) => z.name === app.zone);
+        return { name, link, instance, zone };
+      });
+    });
+}
+
 function fetchZones ({ apiConfig, signal }) {
   return getAllZones().then(sendToApi({ apiConfig, signal, cacheDelay: ONE_DAY }));
 }
 
 function fetchLinkedApplications ({ apiConfig, signal, ownerId, addonId }) {
-  return getLinkedApplications({ id: ownerId, addonId })
-    .then(sendToApi({ apiConfig, signal }))
-    .then((linkedApps) => {
-      return linkedApps.map((app) => {
-        const { name, instance, zone } = app;
-        const link = getApplicationLink(ownerId, app.id);
-        return { name, link, instance, zoneName: zone };
-      });
-    });
+  return getLinkedApplications({ id: ownerId, addonId }).then(sendToApi({ apiConfig, signal }));
 }
 
 function getApplicationLink (ownerId, appId) {

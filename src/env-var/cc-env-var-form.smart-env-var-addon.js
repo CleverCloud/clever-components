@@ -18,6 +18,7 @@ defineComponent({
 
     unsubscribeWithSignal(disconnectSignal, [
 
+      variables_lp.error$.subscribe(console.error),
       variables_lp.error$.subscribe(() => (component.error = 'loading')),
       variables_lp.value$.subscribe((variables) => (component.variables = variables)),
 

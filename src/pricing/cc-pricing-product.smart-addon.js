@@ -33,9 +33,18 @@ defineComponent({
       }),
 
       context$.subscribe(({ productId, zoneId, currency, addonFeatures }) => {
+
+        component.error = false;
+        component.name = null;
+        component.icon = null;
+        component.description = null;
+        component.plans = null;
+        component.features = null;
+
         if (currency != null) {
           component.currency = currency;
         }
+
         product_lp.push((signal) => fetchAddonProduct({ signal, productId, zoneId, addonFeatures }));
       }),
 

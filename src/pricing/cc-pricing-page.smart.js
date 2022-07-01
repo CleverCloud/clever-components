@@ -18,25 +18,27 @@ defineComponent({
     const onZoneChanged$ = fromCustomEvent(component, 'cc-pricing-page:change-zone');
 
     unsubscribeWithSignal(disconnectSignal, [
+
       zones_lp.error$.subscribe(console.error),
-      zones_lp.value$.subscribe((zones) => {
-        component.zones = zones;
-      }),
-      context$.subscribe(({ zoneId }) => {
-        component.zoneId = zoneId;
-      }),
+      // TODO, seems like we need an error state for the page (and thus the header)
+      zones_lp.value$.subscribe((zones) => (component.zones = zones)),
+
+      context$.subscribe(({ zoneId }) => (component.zoneId = zoneId)),
       onZoneChanged$.subscribe((zoneId) => {
         container.context = { ...container.context, zoneId };
       }),
       onCurrencyChanged$.subscribe((currency) => {
         container.context = { ...container.context, currency };
       }),
+
       context$.subscribe(({ currency }) => {
         if (currency != null) {
           component.currency = currency;
         }
       }),
     ]);
+
+    // Trigger call directly when the component is connected
     zones_lp.push((signal) => fetchAllZones({ signal }));
   },
 
