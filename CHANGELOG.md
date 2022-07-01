@@ -6,11 +6,17 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+...
+
+## 8.0.0 (2022-07-01)
+
 ### ⚠️ BREAKING CHANGES
+
 * `<cc-doc-card>`: rename title property to heading to fix a conflict.
 * `<cc-doc-list>`: use heading when initializing the cards instead of title.
 
-### Components 
+### Components
+
 * `<cc-article-list>`: fix error mode not triggering on XML parsing failure (smart). 
 * `parseRssFeed()`: trim XML string before parse to avoid whitespaces error.
 * `<cc-button>`: update waiting loader animation in circle state.
@@ -26,7 +32,6 @@ title: Changelog
 * `<cc-select>`: add `inline` prop to place the label on the left of the `<select>` element. Add new `inline` story to show this behavior.
 * `<cc-toggle>`: add `inline` prop to place the label on the left of the group of radio input elements. Add new `inline` story to show this behavior.
 * `<cc-invoice-list>`: inline year filters (`<cc-toggle>` for desktop and `<cc-select>` for mobile).
-...
 
 ## 7.12.0 (2022-05-20)
 
