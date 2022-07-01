@@ -61,6 +61,7 @@ export class CcInputText extends LitElement {
       clipboard: { type: Boolean, reflect: true },
       disabled: { type: Boolean, reflect: true },
       label: { type: String },
+      inline: { type: Boolean, reflect: true },
       multi: { type: Boolean, reflect: true },
       name: { type: String, reflect: true },
       placeholder: { type: String },
@@ -87,6 +88,11 @@ export class CcInputText extends LitElement {
 
     /** @type {boolean} Sets `disabled` attribute on inner native `<input>/<textarea>` element. */
     this.disabled = false;
+
+    /** @type {boolean} Sets the `<label>` on the left of the `<input>` element.
+     * Only use this if your form contains 1 or 2 fields and your labels are short.
+     */
+    this.inline = false;
 
     /** @type {string|null} Sets label for the input. */
     this.label = null;
@@ -324,11 +330,11 @@ export class CcInputText extends LitElement {
       </div>
 
       
-      <div id=${this._uniqueHelpId}>
+      <div class="help-container" id=${this._uniqueHelpId}>
         <slot name="help"></slot>
       </div>
 
-      <div id=${this._uniqueErrorId}>
+      <div class="error-container" id=${this._uniqueErrorId}>
         <slot name="error"></slot>
       </div>
     `;
@@ -348,7 +354,28 @@ export class CcInputText extends LitElement {
           display: block;
         }
 
-        /*region Common to cc-input-* & cc-select*/
+        /*region Common to cc-input-* & cc-select (apart from multi) */
+        :host([inline]) {
+          display: inline-grid;
+          gap: 0 1em;
+          grid-template-areas: "label input"
+                              ". help"
+                              ". error";
+          grid-template-columns: auto 1fr;
+        }
+
+        :host([inline][multi]) {
+          display: grid;
+        }
+
+        .help-container {
+          grid-area: help;
+        }
+
+        .error-container {
+          grid-area: error;
+        }
+
         label {
           align-items: flex-end;
           cursor: pointer;
@@ -359,10 +386,28 @@ export class CcInputText extends LitElement {
           padding-bottom: 0.35em;
         }
 
+        :host([inline]) label {
+          flex-direction: column;
+          gap: 0;
+          grid-area: label;
+          justify-content: center;
+          line-height: normal;
+          padding: 0;
+        }
+        
+        :host([inline][multi]) label {
+          /* Allows the label text to be aligned with the first line of the input. */
+          height: 2em;
+        }
+
         .required {
           color: var(--color-text-light);
           font-size: 0.9em;
           font-variant: small-caps;
+        }
+
+        :host([inline]) .required {
+          font-size: 0.8em;
         }
 
         slot[name='help']::slotted(*) {
@@ -380,6 +425,8 @@ export class CcInputText extends LitElement {
         .meta-input {
           box-sizing: border-box;
           display: inline-flex;
+          grid-area: input;
+          height: max-content;
           /* link to position:absolute of .ring */
           position: relative;
           vertical-align: top;

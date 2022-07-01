@@ -21,6 +21,11 @@ title: Changelog
 * `<cc-header-app>`: Change footer background to neutral.
 * `<cc-header-addon>`: Change footer background to neutral.
 * `<cc-header-orga>`: Use `<cc-badge>` to display org status and hotline number. 
+* `<cc-input-text>`: add `inline` prop to place the label on the left of the `<input>` element. Add new `inline` story to show this behavior.
+* `<cc-input-number>`: add `inline` prop to place the label on the left of the `<input>` element. Add new `inline` story to show this behavior.
+* `<cc-select>`: add `inline` prop to place the label on the left of the `<select>` element. Add new `inline` story to show this behavior.
+* `<cc-toggle>`: add `inline` prop to place the label on the left of the group of radio input elements. Add new `inline` story to show this behavior.
+* `<cc-invoice-list>`: inline year filters (`<cc-toggle>` for desktop and `<cc-select>` for mobile).
 ...
 
 ## 7.12.0 (2022-05-20)

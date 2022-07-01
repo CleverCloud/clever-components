@@ -102,6 +102,69 @@ export const errorMessageWithHelpMessage = makeStory(conf, {
   ],
 });
 
+export const inline = makeStory(conf, {
+  css: `cc-select { margin: 1rem 0.5rem; }`,
+  items: [
+    {
+      label: 'The label',
+      inline: true,
+      options: baseOptions,
+    },
+    {
+      label: 'Favourite artist',
+      placeholder: '-- Select an artist --',
+      inline: true,
+      options: baseOptions,
+    },
+  ],
+});
+
+export const inlineWithRequired = makeStory(conf, {
+  css: `cc-select { margin: 1rem 0.5rem; }`,
+  items: [
+    {
+      label: 'The label',
+      inline: true,
+      required: true,
+      options: baseOptions,
+    },
+    {
+      label: 'Favourite artist',
+      placeholder: '-- Select an artist --',
+      inline: true,
+      required: true,
+      options: baseOptions,
+    },
+  ],
+});
+
+export const inlineWithErrorAndHelpMessages = makeStory(conf, {
+  css: `cc-select { margin: 1rem 0.5rem; }`,
+  items: [
+    {
+      label: 'The label',
+      inline: true,
+      required: true,
+      options: baseOptions,
+      innerHTML: `
+        <p slot="help">There can be only one.</p>
+        <p slot="error">A value must be selected.</p>
+      `,
+    },
+    {
+      label: 'Favourite artist',
+      placeholder: '-- Select an artist --',
+      inline: true,
+      required: true,
+      options: baseOptions,
+      innerHTML: `
+        <p slot="help">There can be only one.</p>
+        <p slot="error">A value must be selected.</p>
+      `,
+    },
+  ],
+});
+
 export const disabled = makeStory(conf, {
   items: [
     {
@@ -142,6 +205,9 @@ enhanceStoriesNames({
   helpMessage,
   errorMessage,
   errorMessageWithHelpMessage,
+  inline,
+  inlineWithRequired,
+  inlineWithErrorAndHelpMessages,
   longContentWihFixedWidth,
   allFormControls,
 });

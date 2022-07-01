@@ -115,6 +115,36 @@ export const errorMessageWithHelpMessage = makeStory(conf, {
   })),
 });
 
+export const inline = makeStory(conf, {
+  css: `cc-input-text { margin: 1rem 0.5rem; }`,
+  items: baseItems.map((p) => ({
+    ...p,
+    inline: true,
+  })),
+});
+
+export const inlineWithRequired = makeStory(conf, {
+  css: `cc-input-text { margin: 1rem 0.5rem; }`,
+  items: baseItems.map((p) => ({
+    ...p,
+    inline: true,
+    required: true,
+  })),
+});
+
+export const inlineWithErrorAndHelpMessages = makeStory(conf, {
+  css: `cc-input-text { margin: 1rem 0.5rem; }`,
+  items: baseItems.map((p) => ({
+    ...p,
+    inline: true,
+    required: true,
+    innerHTML: `
+      <p slot="help">Must be at least 7 characters long</p>
+      <p slot="error">You must enter a value</p>
+    `,
+  })),
+});
+
 export const clipboard = makeStory(conf, {
   items: baseItems.map((p) => ({ ...p, clipboard: true })),
 });
@@ -188,6 +218,9 @@ enhanceStoriesNames({
   helpMessage,
   errorMessage,
   errorMessageWithHelpMessage,
+  inline,
+  inlineWithRequired,
+  inlineWithErrorAndHelpMessages,
   clipboard,
   clipboardWithAutoAdjust,
   clipboardWithAutoAdjustAndCssOverride,

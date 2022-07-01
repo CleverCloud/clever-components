@@ -47,6 +47,7 @@ export class CcToggle extends LitElement {
       choices: { type: Array },
       disabled: { type: Boolean },
       hideText: { type: Boolean, attribute: 'hide-text' },
+      inline: { type: Boolean, reflect: true },
       legend: { type: String },
       multipleValues: { type: Array, attribute: 'multiple-values', reflect: true },
       subtle: { type: Boolean },
@@ -65,6 +66,11 @@ export class CcToggle extends LitElement {
 
     /** @type {boolean} Hides the text and only displays the image specified with `choices[i].image`. The text will be added as `title` on the inner `<label>` and an `aria-label` on the inner `<input>`. */
     this.hideText = false;
+
+    /** @type {boolean} Sets the `<label>` on the left of the `<select>` element.
+     * Only use this if your form contains 1 or 2 fields and your labels are short.
+     */
+    this.inline = false;
 
     /** @type {string|null} Sets a legend to describe the whole component (input group). */
     this.legend = null;
@@ -157,6 +163,7 @@ export class CcToggle extends LitElement {
           --cc-toggle-color: var(--color-bg-primary);
           --cc-toggle-img-filter: none;
           --cc-toggle-img-filter-selected: none;
+          --height: 2em;
           display: flex;
           flex-direction: column;
         }
@@ -185,12 +192,22 @@ export class CcToggle extends LitElement {
           padding-bottom: 0.35em;
         }
 
+        :host([inline]) legend {
+          /* cannot use flex to change legend position. Only solution is float. */
+          float: left;
+          /* used to vertically center the floated element. */
+          line-height: var(--height);
+          margin-right: 1em;
+          padding: 0;
+          width: max-content;
+        }
+
         .toggle-group {
           background-color: #fff;
           border-radius: 0.15em;
           box-sizing: border-box;
           display: flex;
-          height: 2em;
+          height: var(--height);
           line-height: 1.25;
           overflow: visible;
         }
