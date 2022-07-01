@@ -140,8 +140,8 @@ export class CcHeaderOrga extends LitElement {
           min-width: 12rem;
         }
 
-        .hotline_number cc-badge {
-          text-decoration: underline;
+        .hotline_number {
+          border-radius: 1em;
         }
 
         .hotline_number:focus,
@@ -154,17 +154,24 @@ export class CcHeaderOrga extends LitElement {
           border: 0;
         }
 
-        .hotline_number:focus cc-badge {
+        .hotline_number:focus {
           box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
         }
 
-        .hotline_number:hover cc-badge {
+        .hotline_number:hover {
           box-shadow: 0 1px 3px #888;
         }
 
-        .hotline_number:active cc-badge {
+        .hotline_number:active {
           box-shadow: none;
         }
+
+        .hotline_number cc-badge {
+          /* Prevent space below badge because of text lines */
+          display: flex;
+          text-decoration: underline;
+        }
+
         .spacer {
           flex: 1 1 0;
         }
