@@ -16,9 +16,11 @@ export const defaultThemeStyles = css`
     --color-blue: #3569aa;
     --color-blue-dark: #012a51;
     --color-blue-highlight: #0061bd;
-    --color-blue-light: #f1f5ff;
+    --color-blue-light: #cedcff;
+    --color-blue-lighter: #f1f5ff;
     --color-green: #098846;
-    --color-green-light: #e3ffd6;
+    --color-green-light: #baf0be;
+    --color-green-lighter: #e3ffd6;
     --color-grey-100: #0d0d0d;
     --color-grey-90: #262626;
     --color-grey-80: #404040;
@@ -36,11 +38,13 @@ export const defaultThemeStyles = css`
     --color-legacy-green: #2faa60;
     /* do not use except inside cc-tile-instances*/
     --color-legacy-red: #ff0032;
-    --color-orange-light: #fff9cb;
+    --color-orange-light: #fcf3b5;
+    --color-orange-lighter: #fff9cb;
     --color-orange: #c15807;
     --color-purple-light: #e0e0ff;
     --color-red: #be242d;
-    --color-red-light: #ffe4e1;
+    --color-red-light: #fbc8c2;
+    --color-red-lighter: #ffe4e1;
     --color-white: #ffffff;
     --color-yellow: #e9e138;
     /*endregion*/
@@ -93,6 +97,11 @@ export const defaultThemeStyles = css`
     For instance: delete / remove buttons. */
     --color-bg-danger: var(--color-red);
 
+    /* Usage: minimal way to make content stand out.
+    Weakest of all color options for danger content.
+    For instance: notice, badge. */
+    --color-bg-danger-light: var(--color-red-light);
+
     /* Usage: default background color
     -- Not used at the moment - will be when we allow theme override. -- */
     --color-bg-default: var(--color-white);
@@ -102,7 +111,7 @@ export const defaultThemeStyles = css`
     --color-bg-neutral: var(--color-grey-10);
 
     /* Usage: another shade neutral background that stands out a little bit from the default background and neutral one.
-    For instance: blocks, cards, table rows. */
+    For instance: blocks, cards, table rows, badge. */
     --color-bg-neutral-alt: var(--color-grey-15);
     
     /* Usage: element with a neutral background with active status.
@@ -126,7 +135,9 @@ export const defaultThemeStyles = css`
     For instance: Modal opening button, add an element without refreshing the page. */
     --color-bg-primary: var(--color-blue);
 
-    /* Usage: notice ? */
+    /* Usage: minimal way to make content stand out.
+    * Weakest of all color options for information content.
+    For instance: notice, badge. */
     --color-bg-primary-light: var(--color-blue-light);
 
     /* Usage: content that needs to stand out a little more than primary content.
@@ -146,13 +157,25 @@ export const defaultThemeStyles = css`
     -- Use this with --color-text-inverted --
     For instance: submit buttons */
     --color-bg-success: var(--color-green);
+
+    /* Usage: minimal way to make content stand out.
+    * Weakest of all color options for success content.
+    For instance: notice, badge. */
+    --color-bg-success-light: var(--color-green-light);
     
     /* Usage: elements containing short texts with a "caution" / "warning" meaning and usually interactive.
     For instance: ? */
     --color-bg-warning: var(--color-orange);
 
-    /* Usage: elements containing texts with a "caution" / "warning" meaning with text in --color-text-default */
+    /* Usage: elements containing a small chunk of text with a "caution" / "warning" meaning with text in --color-text-default.
+    * Weak of all color options for warning content
+    For instance: badge */
     --color-bg-warning-light: var(--color-orange-light);
+
+    /* Usage: elements containing sentences with a "caution" / "warning" meaning with text in --color-text-default.
+    * Weakest of all color options for warning content
+    For instance: warning when no payment method is set */
+    --color-bg-warning-lighter: var(--color-orange-lighter);
     /*endregion*/
 
     /*region Color Decisions(border)*/
