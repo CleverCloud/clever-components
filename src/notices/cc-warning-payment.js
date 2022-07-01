@@ -100,7 +100,7 @@ export class CcWarningPayment extends LitElement {
       linkStyles,
       css`
         :host {
-          background-color: var(--color-bg-warning-light);
+          background-color: var(--color-bg-warning-lighter);
           border: var(--border-warning);
           border-radius: 0.25em;
           color: var(--color-text-default);

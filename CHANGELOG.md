@@ -14,6 +14,14 @@ title: Changelog
 * `<cc-article-list>`: fix error mode not triggering on XML parsing failure (smart). 
 * `parseRssFeed()`: trim XML string before parse to avoid whitespaces error.
 * `<cc-button>`: update waiting loader animation in circle state.
+* Color design tokens: add darker shades for light colors.
+* New component:
+  * `<cc-badge>`
+* `<cc-tcp-redirection-form>`: Use `<cc-badge>` to display redirection count.
+* `<cc-header-app>`: Change footer background to neutral.
+* `<cc-header-addon>`: Change footer background to neutral.
+* `<cc-header-orga>`: Use `<cc-badge>` to display org status and hotline number. 
+...
 
 ## 7.12.0 (2022-05-20)
 

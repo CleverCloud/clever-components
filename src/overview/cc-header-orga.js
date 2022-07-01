@@ -1,3 +1,4 @@
+import '../atoms/cc-badge.js';
 import '../atoms/cc-img.js';
 import '../atoms/cc-flex-gap.js';
 import '../molecules/cc-error.js';
@@ -70,9 +71,7 @@ export class CcHeaderOrga extends LitElement {
             <div class="name ${classMap({ skeleton })}">${orga.name}</div>
             ${orga.cleverEnterprise ? html`
               <div class="spacer"></div>
-              <div class="badge">
-                <img class="badge_img" src=${badgeSvg} alt=""> Clever Cloud Enterprise
-              </div>
+              <cc-badge weight="strong" intent="info" icon-src=${badgeSvg}>Clever Cloud Enterprise</cc-badge>
             ` : ''}
           </div>
           <div class="spacer"></div>
@@ -80,7 +79,7 @@ export class CcHeaderOrga extends LitElement {
             <div class="hotline">
               <div class="hotline_label">${i18n('cc-header-orga.hotline')}</div>
               <a class="hotline_number" href="tel:${orga.emergencyNumber}">
-                <img class="hotline_number_img" src=${phoneSvg} alt=""> ${orga.emergencyNumber}
+                <cc-badge weight="outlined" intent="info" icon-src=${phoneSvg}>${orga.emergencyNumber}</cc-badge>
               </a>
             </div>
           ` : ''}
@@ -141,46 +140,12 @@ export class CcHeaderOrga extends LitElement {
           min-width: 12rem;
         }
 
-        .badge,
-        .hotline_number {
-          align-items: center;
-          border-radius: 0.15rem;
-          display: flex;
-          font-size: 0.8rem;
-          font-weight: bold;
-          padding: 0.2rem 0.4rem;
+        .hotline_number cc-badge {
+          text-decoration: underline;
         }
 
-        .badge {
-          background: var(--color-bg-primary);
-          color: #fff;
-        }
-
-        .hotline_number {
-          border: 1px solid var(--color-bg-primary);
-          color: var(--color-text-primary);
-          cursor: pointer;
-        }
-
-        .badge_img,
-        .hotline_number_img {
-          height: 0.9rem;
-          margin-right: 0.4rem;
-          overflow: hidden;
-          width: 0.9rem;
-        }
-
-        .hotline_number:focus {
-          box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
-          outline: 0;
-        }
-
-        .hotline_number:hover {
-          box-shadow: 0 1px 3px #888;
-        }
-
+        .hotline_number:focus,
         .hotline_number:active {
-          box-shadow: none;
           outline: 0;
         }
 
@@ -189,6 +154,17 @@ export class CcHeaderOrga extends LitElement {
           border: 0;
         }
 
+        .hotline_number:focus cc-badge {
+          box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
+        }
+
+        .hotline_number:hover cc-badge {
+          box-shadow: 0 1px 3px #888;
+        }
+
+        .hotline_number:active cc-badge {
+          box-shadow: none;
+        }
         .spacer {
           flex: 1 1 0;
         }

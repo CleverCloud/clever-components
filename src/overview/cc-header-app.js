@@ -330,6 +330,7 @@ export class CcHeaderApp extends LitElement {
           border: 1px solid #bcc2d1;
           border-radius: 0.25rem;
           display: block;
+          overflow: hidden;
         }
 
         cc-error {
@@ -407,7 +408,7 @@ export class CcHeaderApp extends LitElement {
           --cc-gap: 0.5rem;
           --cc-align-items: center;
           align-items: center;
-          background-color: var(--color-bg-primary-light);
+          background-color: var(--color-bg-neutral);
           box-shadow: inset 0 6px 6px -6px #a4b1c9;
           box-sizing: border-box;
           color: #2e2e2e;

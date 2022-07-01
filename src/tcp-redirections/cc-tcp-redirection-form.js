@@ -1,3 +1,4 @@
+import '../atoms/cc-badge.js';
 import '../molecules/cc-block.js';
 import '../molecules/cc-error.js';
 import './cc-tcp-redirection.js';
@@ -52,7 +53,7 @@ export class CcTcpRedirectionForm extends LitElement {
     if (this.context === 'admin' && this.redirections != null) {
       const howManyRedirections = this.redirections.filter(({ sourcePort }) => sourcePort != null).length;
       if (howManyRedirections >= 1) {
-        return html`<span class="count">${howManyRedirections}</span>`;
+        return html`<cc-badge circle weight="strong">${howManyRedirections}</cc-badge>`;
       }
     }
     return '';
@@ -101,13 +102,10 @@ export class CcTcpRedirectionForm extends LitElement {
           display: block;
         }
 
-        .count {
-          background-color: #3a3871;
-          border-radius: 10rem;
-          color: #fff;
-          font-size: 0.8rem;
+        cc-badge {
+          /* cc-block title changes the font-size to 1.2em, which makes our badge way too big */
+          font-size: 0.8em;
           margin-left: 0.5rem;
-          padding: 0.1rem 0.5rem;
           vertical-align: middle;
         }
 
