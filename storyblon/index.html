@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Document</title>
+  <style>
+  html,
+  body {
+    margin: 0;
+    height: 100%;
+  }
+
+  body {
+    background-color: #fff;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    box-sizing: border-box;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  }
+
+  .iframe-wrapper {
+    border: none;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .iframe-wrapper:not(:last-child) {
+    border-right: 1px solid #aaa;
+  }
+
+  .iframe-title {
+    background-color: #eee;
+    border-bottom: 1px solid #aaa;
+    font-weight: bold;
+    padding: 1em;
+    text-align: center;
+  }
+
+  iframe {
+    background-color: #fff;
+    border: none;
+    flex: 1 1 0;
+    height: 100%;
+    width: 100%;
+  }
+  </style>
+  <script type="module">
+  const componentName = new URL(location.href).searchParams.get('component');
+  Array
+    .from(document.querySelectorAll('iframe'))
+    .forEach((iframe) => {
+      const url = new URL(iframe.src);
+      url.searchParams.set('component', componentName);
+      iframe.src = url.toString();
+    });
+  </script>
+</head>
+<body>
+<div class="iframe-wrapper">
+  <div class="iframe-title">English</div>
+  <iframe src="storyblon/demo-i18n.html?component=cc-tile-instances&lang=en"></iframe>
+</div>
+<div class="iframe-wrapper">
+  <div class="iframe-title">Français</div>
+  <iframe src="storyblon/demo-i18n.html?component=cc-tile-instances&lang=fr"></iframe>
+</div>
+<div class="iframe-wrapper">
+  <div class="iframe-title">no lang</div>
+  <iframe src="storyblon/demo-i18n.html?component=cc-tile-instances&lang=none"></iframe>
+</div>
+</body>
+</html>

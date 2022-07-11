@@ -603,7 +603,7 @@ export const translations = {
   'cc-tile-deployments.title': `Last deployments`,
   //#endregion
   //#region cc-tile-instances
-  'cc-tile-instances.empty': `No instances. Your app is stopped.`,
+  'cc-tile-instances.empty': `No instances. Your app is stopped`,
   'cc-tile-instances.error': `Something went wrong while loading instances.`,
   'cc-tile-instances.status.deploying': `Deploying`,
   'cc-tile-instances.status.running': `Running`,
