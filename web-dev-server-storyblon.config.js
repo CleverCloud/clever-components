@@ -1,4 +1,3 @@
-import fs from 'fs';
 import { hmrPlugin, presets } from '@open-wc/dev-server-hmr';
 
 export default {
@@ -7,19 +6,6 @@ export default {
   // watch: true,
   mimeTypes: {},
   plugins: [
-    {
-      serve (context) {
-        const url = new URL('http://example.com' + context.request.url);
-        if (url.pathname === '/' || url.pathname === '/index.html') {
-          return {
-            headers: {
-              'Content-Type': 'text/html',
-            },
-            body: fs.readFileSync('storyblon/index.html'),
-          };
-        }
-      },
-    },
     {
       name: 'hmr-i18n',
       async transform (context) {

@@ -16,3 +16,18 @@ export const variants = [
   { mode: 'home', errors: [SECRET_STARTUP_ERROR_3] },
   { mode: 'home', errors: [ACME_CORP_ERROR_1, MY_SIDE_PROJECT_ERROR_2, SECRET_STARTUP_ERROR_3] },
 ];
+
+export const style = `
+  cc-warning-payment:not(:defined) {
+    background-color: #fff9cb;
+    border: 1px solid #e9e138;
+    border-radius: 0.25em;
+    color: #262626;
+    display: grid;
+    gap: 1em;
+    grid-template-columns: min-content 1fr;
+    line-height: 1.5;
+    padding: 1em;
+    min-height: 4em;
+  }
+`;

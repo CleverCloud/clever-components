@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Document</title>
+  <title>@Storyblon</title>
   <style>
   html,
   body {
@@ -17,10 +17,6 @@
 
   body > * {
     margin-bottom: 1em;
-  }
-
-  cc-tile-instances {
-    max-width: 22em;
   }
   </style>
   <script type="module">
@@ -40,9 +36,12 @@
       });
   }
 
+  const notDefined = searchParams.get('nnot-defined') === 'true';
   const componentName = searchParams.get('component');
-  import(`/src/components/${componentName}/${componentName}.js`);
-  import((`/src/components/${componentName}/${componentName}.variants.js`)).then(({ variants }) => {
+  if (!notDefined) {
+    import(`/src/components/${componentName}/${componentName}.js`);
+  }
+  import((`/src/components/${componentName}/${componentName}.variants.js`)).then(({ variants, style }) => {
     const $fragment = document.createDocumentFragment();
     for (const properties of variants) {
       const $component = document.createElement(componentName);
@@ -53,7 +52,23 @@
     }
 
     document.body.appendChild($fragment);
+
+    if (style != null) {
+      const $style = document.createElement('style');
+      $style.textContent = style;
+      document.head.appendChild($style);
+    }
   });
+
+  const textZoom = searchParams.get('text-zoom');
+  if (textZoom != null) {
+    const $style = document.createElement('style');
+    $style.textContent = `
+      html { font-size: ${textZoom} }
+    `;
+    // body { font-size: 16px }
+    document.head.appendChild($style);
+  }
 
   </script>
 </head>
