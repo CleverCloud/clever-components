@@ -22,3 +22,26 @@ A "Read the documentation" link leading to the "JavaScript application" document
 ```
 
 To learn more about this subject, see the [G208 Technique of WCAG 2.2 - "Including the text of the visible label as part of the accessible name"](https://www.w3.org/WAI/WCAG22/Techniques/general/G208).
+
+## Decorative SVGs
+
+This section only applies if you use `<svg>` elements. If you use an `<img>` tag, rely on the `alt` attribute.
+
+With `<svg>` elements, apply the same logic as you do with `<img>` elements to determine whether it is decorative or it conveys information.
+In most cases, it probably is decorative because we try to provide text next to the icon as much as possible.
+
+If the `<svg>` is decorative, then we need to make sure its content is not read by screen readers.
+To do so, we use the `<aria-hidden="true">` attribute on the `<svg>` element.
+
+### Example:
+```html
+<svg aria-hidden="true"></svg>
+```
+
+**Note**: Make sure your `<svg>` element:
+* has no other `aria-` attribute (`aria-label`, etc.),
+* `role` attribute,
+* and no `<title>` or `<desc>` tags.
+
+These do not make sense for a decorative `<svg>` and screen readers may try to announce these elements if you try to name them even though they are not supposed to be exposed (`aria-hidden="true"`).
+
