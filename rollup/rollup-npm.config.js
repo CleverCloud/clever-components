@@ -1,10 +1,12 @@
 import path from 'path';
 import json from '@rollup/plugin-json';
+import copy from 'rollup-plugin-copy';
 import {
   babelPlugin,
   clearPlugin,
   importMetaUrlAssetsPlugin,
   inputs,
+  minifyStylesheet,
   terserPlugin,
   visualizerPlugin,
 } from './rollup-common.js';
@@ -30,6 +32,15 @@ export default {
     importMetaUrlAssetsPlugin(),
     terserPlugin(),
     babelPlugin(),
+    copy({
+      targets: [
+        {
+          src: 'src/styles/default-theme.css',
+          dest: 'dist/styles',
+          transform: (stylesheet) => minifyStylesheet(stylesheet),
+        },
+      ],
+    }),
     visualizerPlugin({ outputDir }),
   ],
 };

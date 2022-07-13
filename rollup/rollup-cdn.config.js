@@ -8,12 +8,14 @@ import {
   importMetaUrlAssetsPlugin,
   inputs,
   manualChunkOptions,
+  minifyStylesheet,
   shimShadyRender,
   terserPlugin,
   treeshakeOptions,
   visualizerPlugin,
 } from './rollup-common.js';
 import { depsManifestPlugin } from './rollup-plugin-deps-manifest.js';
+import { stylesAssetsPlugin } from './rollup-plugin-styles-assets.js';
 
 const packageVersion = getVersion();
 
@@ -43,6 +45,9 @@ export default {
     resolve(),
     terserPlugin(),
     babelPlugin(),
+    stylesAssetsPlugin({
+      transform: (stylesheet) => minifyStylesheet(stylesheet),
+    }),
     depsManifestPlugin({ packageVersion }),
     visualizerPlugin({ outputDir, packageVersion }),
   ],

@@ -32,6 +32,12 @@ title: Changelog
   * `<cc-toast>`
 * `<cc-button>`: add CSS Custom Props to customize `border-radius`, `font-weight` and `text-transform`.
 
+### For devs
+
+* `rollup`:
+  * add new plugin `rollup-plugin-styles-assets` to bundle the `default-theme` CSS file. 
+  * add new property (array) `styles` in `deps-manifest` to specify the hashed name of the `default-theme` CSS file corresponding to a specific version (to be used by the CDN). 
+
 ...
 ## 8.0.1 (2022-07-15)
 

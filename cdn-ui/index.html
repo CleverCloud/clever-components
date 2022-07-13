@@ -39,7 +39,11 @@
     display: inline-flex;
   }
 
-  cc-input-text {
+  .cdn-urls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    width: max-content;
   }
 
   #components-choice {
@@ -60,6 +64,15 @@
 
   .choice-input {
     margin-right: 0.5rem;
+  }
+
+  dl dd {
+    margin: 0;
+  }
+
+  /* This is temporary, to override the display: inline-block of cc-input-text */
+  [hidden] {
+    display: none;
   }
   </style>
   <script type="module" src="https://components.clever-cloud.com/load.js?version=6.10.0&components=cc-expand,cc-input-text,cc-toggle"></script>
@@ -87,11 +100,19 @@
 </cc-expand>
 
 <section>
-  URL to use:
-  <a id="cdn-url" target="_blank" href="https://components.clever-cloud.com/load.js">https://components.clever-cloud.com/load.js</a>
+  <dl hidden>
+    <dt>Styles URL:</dt>
+    <dd><a id="cdn-styles-url" target="_blank" href="https://components.clever-cloud.com/styles.css">https://components.clever-cloud.com/styles.css</a></dd>
+  </dl>
+  <dl>
+    <dt>Script URL:</dt>
+    <dd><a id="cdn-script-url" target="_blank" href="https://components.clever-cloud.com/load.js">https://components.clever-cloud.com/load.js</a></dd>
+  </dl>
+  
 </section>
 
-<section>
+<section class="cdn-urls">
+  <cc-input-text id="cdn-styles" label="Styles to include:" readonly clipboard hidden></cc-input-text>
   <cc-input-text id="cdn-script" label="Script to include:" readonly clipboard></cc-input-text>
 </section>
 
@@ -148,8 +169,10 @@ function updateUrl () {
     .map((node) => node.value)
     .join(',');
   const url = new URL('https://components.clever-cloud.com/load.js');
+  const stylesheetUrl = new URL('https://components.clever-cloud.com/styles.css')
   if (version !== '') {
     url.searchParams.set('version', version);
+    stylesheetUrl.searchParams.set('version', version);
   }
   if (lang !== '') {
     url.searchParams.set('lang', lang);
@@ -158,15 +181,18 @@ function updateUrl () {
     url.searchParams.set('components', components);
   }
   const urlString = url.toString().replace(/%2C/g, ',');
-  $('#cdn-url').href = urlString;
-  $('#cdn-url').textContent = urlString;
+  const stylesheetUrlString = stylesheetUrl.toString().replace(/%2C/g, ',');
+  $('#cdn-script-url').href = urlString;
+  $('#cdn-script-url').textContent = urlString;
+  $('#cdn-styles-url').href = stylesheetUrlString;
+  $('#cdn-styles-url').textContent = stylesheetUrlString;
+  $('#cdn-styles').value = `<link rel="stylesheet" href="${stylesheetUrlString}">`;
   $('#cdn-script').value = `<script type="module" src="${urlString}"><` + `/script>`;
 }
 
 $('#version-choice').addEventListener('input', updateComponentList);
 $('#lang-choice').addEventListener('cc-toggle:input', updateUrl);
 $('#components-choice').addEventListener('input', updateUrl);
-
 </script>
 
 </body>

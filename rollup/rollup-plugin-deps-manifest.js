@@ -5,7 +5,6 @@ import { DepGraph } from 'dependency-graph';
 export function depsManifestPlugin ({ packageVersion }) {
   return {
     generateBundle: function (options, outputBundle) {
-
       const depsManifestDir = path.join(process.cwd(), options.dir);
       const depsManifestFilepath = path.join(process.cwd(), options.dir, `deps-manifest-${packageVersion}.json`);
 
@@ -26,15 +25,22 @@ export function depsManifestPlugin ({ packageVersion }) {
 
       const depsManifest = {
         // In case we need to change the behavior later
-        manifestVersion: '1',
+        manifestVersion: '2',
         packageVersion,
         files: [],
+        styles: [],
       };
 
       for (const [hashedId, bundle] of Object.entries(outputBundle)) {
-
         // Ignore SVG assets
         if (hashedId.endsWith('.svg')) {
+          continue;
+        }
+
+        if (hashedId.endsWith('.css')) {
+          depsManifest.styles.push({
+            path: hashedId,
+          });
           continue;
         }
 
