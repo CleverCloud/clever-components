@@ -5,7 +5,6 @@ import '../atoms/cc-html-frame.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { i18n } from '../lib/i18n.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 
@@ -83,7 +82,6 @@ export class CcInvoice extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       linkStyles,
       skeletonStyles,
       // language=CSS
@@ -112,7 +110,7 @@ export class CcInvoice extends LitElement {
 
         .frame {
           /* height and max-width are roughly set to have a standard letter / A4 paper ratio */
-          box-shadow: 0 0 0.5rem #ccc;
+          box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.4);
           height: 31cm;
           max-width: 22cm;
           width: 100%;

@@ -3,7 +3,6 @@ import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { fakeString } from '../lib/fake-strings.js';
 import { i18n } from '../lib/i18n.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { linkStyles } from '../templates/cc-link.js';
 
@@ -77,13 +76,12 @@ export class CcDocCard extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       linkStyles,
       skeletonStyles,
       // language=CSS
       css`
         :host {
-          background: #fff;
+          background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid #bcc2d1;
           border-radius: 0.25em;
           box-sizing: border-box;

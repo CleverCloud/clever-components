@@ -92,6 +92,10 @@ export const loading = makeStory(conf, {
 export const dataLoadedWithCustomStyles = makeStory(conf, {
   // language=CSS
   css: `
+    cc-pricing-page {
+      --cc-pricing-estimation-recap-bg-color: #3a3771;
+    }
+
     cc-pricing-page::part(header) {
       border-radius: 5px;
       box-shadow: 0 0 0.5em #aaa;

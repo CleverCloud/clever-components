@@ -6,7 +6,6 @@ import { validateName } from '@clevercloud/client/esm/utils/env-vars.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 import { linkStyles } from '../templates/cc-link.js';
 
 /**
@@ -150,7 +149,6 @@ export class CcEnvVarCreate extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       linkStyles,
       // language=CSS
       css`
@@ -189,7 +187,7 @@ export class CcEnvVarCreate extends LitElement {
 
         /* i18n error message may contain <code> tags */
         cc-error code {
-          background-color: var(--color-bg-neutral);
+          background-color: var(--cc-color-bg-neutral, #eeeeee);
           border-radius: 0.25rem;
           font-family: var(--cc-ff-monospace, monospace);
           padding: 0.15rem 0.3rem;

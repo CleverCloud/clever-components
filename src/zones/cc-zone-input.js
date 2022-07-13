@@ -9,7 +9,6 @@ import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { PRIVATE_ZONE, sortZones } from '../lib/zone.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 
 const SKELETON_ZONES = new Array(6).fill(null);
 
@@ -243,11 +242,10 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       // language=CSS
       css`
         :host {
-          background-color: #fff;
+          background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid #bcc2d1;
           border-radius: 0.25rem;
           box-sizing: border-box;
@@ -336,12 +334,12 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
         }
 
         input:checked + .label {
-          --bd-color: var(--color-bg-primary-highlight);
+          --bd-color: var(--cc-color-bg-primary-highlight, #000000);
         }
 
         label.hovered,
         input:hover + .label {
-          background: var(--color-bg-neutral);
+          background: var(--cc-color-bg-neutral, #f9f9f9);
         }
 
         cc-zone {

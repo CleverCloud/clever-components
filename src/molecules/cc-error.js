@@ -67,17 +67,17 @@ export class CcError extends LitElement {
       // language=CSS
       css`
           :host {
-              display: block;
+            display: block;
           }
 
           :host([mode="info"]),
           :host([mode="loading"]),
           :host([mode="confirm"]) {
               align-items: center;
-              background-color: white;
+              background-color: var(--cc-color-bg-default, #fff);
               border: 1px solid #bcc2d1;
               border-radius: 0.25rem;
-              box-shadow: 0 0 1rem #aaa;
+              box-shadow: 0 0 1rem rgba(0, 0, 0, 0.4);
               display: grid;
               grid-gap: 1rem;
               justify-content: center;

@@ -1,0 +1,191 @@
+:root {
+  --cc-ff-monospace: "SourceCodePro", "monaco", monospace;
+    
+  /*region Color choices*/
+  /* color choices - these should not be referenced inside components (use decisions below instead)
+    tool used for grey shades: https://mdigi.tools/color-shades/#333333 (10 or 11 steps)    
+  */
+  --color-blue: #3569aa;
+  --color-blue-dark: #012a51;
+  --color-blue-highlight: #0061bd;
+  --color-blue-light: #cedcff;
+  --color-blue-lighter: #f1f5ff;
+  --color-green: #098846;
+  --color-green-light: #baf0be;
+  --color-green-lighter: #e3ffd6;
+  --color-grey-100: #0d0d0d;
+  --color-grey-90: #262626;
+  --color-grey-80: #404040;
+  --color-grey-70: #595959;
+  --color-grey-60: #737373;
+  --color-grey-50: #8c8c8c;
+  --color-grey-40: #a6a6a6;
+  --color-grey-30: #bfbfbf;
+  --color-grey-20: #d9d9d9;
+  --color-grey-15: #e7e7e7;
+  --color-grey-10: #f5f5f5;
+  /* do not use except inside cc-tile-instances*/
+  --color-legacy-blue: #1ea2f1;
+  /* do not use except inside cc-tile-instances*/
+  --color-legacy-green: #2faa60;
+  /* do not use except inside cc-tile-scalability*/
+  --color-legacy-grey: #8c8c8c;
+  /* do not use except inside cc-tile-instances*/
+  --color-legacy-red: #ff0032;
+  --color-orange-light: #fcf3b5;
+  --color-orange-lighter: #fff9cb;
+  --color-orange: #c15807;
+  --color-purple-light: #e0e0ff;
+  --color-red: #be242d;
+  --color-red-light: #fbc8c2;
+  --color-red-lighter: #ffe4e1;
+  --color-white: #ffffff;
+  --color-yellow: #e9e138;
+  /*endregion*/
+
+  /*region Color Decisions (text)*/
+  /* Usage: Sensitive information that require attention.
+  For instance: error messages */
+  --cc-color-text-danger: var(--color-red);
+  /* Usage: regular text.
+  -- Not used at the moment - will be when we allow theme override. -- */
+  --cc-color-text-default: var(--color-grey-90);
+  
+  /* Usage: Opposite of default text color - use this with plain backgrounds like primary / success / danger, etc.
+  For instance: text inside primary cc-button. */
+  --cc-color-text-inverted: var(--color-white);
+  
+  /* Usage: text less important than normal text.
+  For instance: sidenotes, the required mention inside forms. */
+  --cc-color-text-light: var(--color-grey-80);
+  
+  /* Usage: info, main color used through the application.
+  For instance: text color inside outlined primary cc-button. */
+  --cc-color-text-primary: var(--color-blue);
+  
+  /* Usage: information that need to stand out a little bit more than the rest of the text.
+  For instance: links. */
+  --cc-color-text-primary-highlight: var(--color-blue-highlight);
+
+  /* Usage: Very contrasted text but not black and not default text color.
+  For instance: headings. */
+  --cc-color-text-strong: var(--color-blue-dark);
+
+  /* Usage: bold text that needs to stand out from normal / light variants.
+  For instance: text inside <strong> tags. */
+  --cc-color-text-strongest: var(--color-grey-100);
+  
+  /* Usage: success or valid feedback.
+  For instance: text saying an app is running correctly */
+  --cc-color-text-success: var(--color-green);
+
+  /* Usage: cautionnary text.
+  For instance: text saying an app is stopped. */
+  --cc-color-text-warning: var(--color-orange);
+  /*endregion*/
+
+  /*region Color Decisions (background)*/
+  /* Usage: Usually interactive, used for sensitive actions.
+  -- Use this with --cc-color-text-inverted --
+  For instance: delete / remove buttons. */
+  --cc-color-bg-danger: var(--color-red);
+
+  /* Usage: minimal way to make content stand out.
+  Weakest of all color options for danger content.
+  For instance: notice, badge. */
+  --cc-color-bg-danger-light: var(--color-red-light);
+
+  /* Usage: default background color
+  -- Not used at the moment - will be when we allow theme override. -- */
+  --cc-color-bg-default: var(--color-white);
+
+  /* Usage: neutral background that stands out a little bit from the default one.
+  For instance: blocks, cards, table rows. */
+  --cc-color-bg-neutral: var(--color-grey-10);
+
+  /* Usage: another shade neutral background that stands out a little bit from the default background and neutral one.
+  For instance: blocks, cards, table rows, badge. */
+  --cc-color-bg-neutral-alt: var(--color-grey-15);
+  
+  /* Usage: element with a neutral background with active status.
+  For instance: When being clicked, + / - button backgrounds inside cc-input-text */
+  --cc-color-bg-neutral-active: var(--color-grey-20);
+
+  /* Usage: element with neutral background is disabled.
+  For instance: disabled text / number input */
+  --cc-color-bg-neutral-disabled: var(--color-grey-15);
+  
+  /* Usage: element with a neutral background is hovered.
+  For instance: Card or table row being hovered. */
+  --cc-color-bg-neutral-hovered: var(--color-grey-15);
+
+  /* Usage: element with a neutral background is hovered.
+  For instance: Card or table row being hovered. */
+  --cc-color-bg-neutral-readonly: var(--color-grey-10);
+
+  /* Usage: Usually interactive, used to trigger basic actions that are not submit, delete, reset, etc.
+  -- Use this with --cc-color-text-inverted --
+  For instance: Modal opening button, add an element without refreshing the page. */
+  --cc-color-bg-primary: var(--color-blue);
+
+  /* Usage: minimal way to make content stand out.
+  * Weakest of all color options for information content.
+  For instance: notice, badge. */
+  --cc-color-bg-primary-light: var(--color-blue-light);
+
+  /* Usage: content that needs to stand out a little more than primary content.
+  For instance: some icons. */
+  --cc-color-bg-primary-highlight: var(--color-blue-highlight);
+  
+  /* Usage: content that needs a plain but very soft background.
+  For instance: tags, pieces of text that need to stand out but not too much */
+  --cc-color-bg-soft: var(--color-purple-light);
+  
+  /* Usage: header background when something needs to stand out
+  -- Use this with --cc-color-text-inverted -- 
+  For instance: table header, ribbon. */
+  --cc-color-bg-strong: var(--color-blue-dark);
+
+  /* Usage: Usually interactive, used to trigger submit forms / data, validate something.
+  -- Use this with --cc-color-text-inverted --
+  For instance: submit buttons */
+  --cc-color-bg-success: var(--color-green);
+
+  /* Usage: minimal way to make content stand out.
+  * Weakest of all color options for success content.
+  For instance: notice, badge. */
+  --cc-color-bg-success-light: var(--color-green-light);
+  
+  /* Usage: elements containing short texts with a "caution" / "warning" meaning and usually interactive.
+  For instance: ? */
+  --cc-color-bg-warning: var(--color-orange);
+
+  /* Usage: elements containing a small chunk of text with a "caution" / "warning" meaning with text in --cc-color-text-default.
+  * Weak of all color options for warning content
+  For instance: badge */
+  --cc-color-bg-warning-light: var(--color-orange-light);
+
+  /* Usage: elements containing sentences with a "caution" / "warning" meaning with text in --cc-color-text-default.
+  * Weakest of all color options for warning content
+  For instance: warning when no payment method is set */
+  --cc-color-bg-warning-lighter: var(--color-orange-lighter);
+  /*endregion*/
+  
+  /*region Color Decisions(border)*/
+  /* Usage: with default background for an "outlined" style or warning background for "plain" style" ? */
+  --cc-border-warning: 1px solid var(--color-yellow);
+  /*endregion*/
+    
+  /*region Margin Decisions*/
+  /* Usage: 
+  *   - in an horizontal form
+  *   - use flex and align-items: start; on the form
+  *   - use margin-top: var(--margin-top-btn-horizontal-form); on the <cc-button> element so that it aligns 
+  *   horizontally even when error / help messages are displayed. 
+  *  See the All Controls Story - Horizontal form section
+  *  
+  *  The 1.6em value comes from the label line-height (1.25em) and bottom padding (0.35em)
+  */
+  --cc-margin-top-btn-horizontal-form: 1.6em;
+  /*endregion*/
+}

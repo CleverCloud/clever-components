@@ -3,7 +3,6 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 
 const closeSvg = new URL('../assets/close-gray.svg', import.meta.url).href;
 const infoSvg = new URL('../assets/information-line.svg', import.meta.url).href;
@@ -199,7 +198,6 @@ export class CcToast extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       // language=CSS
       css`
         :host {
@@ -223,19 +221,19 @@ export class CcToast extends LitElement {
 
         /*region COLOR*/
         :host([intent="info"]) {
-          --toast-color: var(--color-bg-primary);
+          --toast-color: var(--cc-color-bg-primary);
         }
 
         :host([intent="success"]) {
-          --toast-color: var(--color-bg-success);
+          --toast-color: var(--cc-color-bg-success);
         }
 
         :host([intent="warning"]) {
-          --toast-color: var(--color-bg-warning);
+          --toast-color: var(--cc-color-bg-warning);
         }
 
         :host([intent="danger"]) {
-          --toast-color: var(--color-bg-danger);
+          --toast-color: var(--cc-color-bg-danger);
         }
         /*endregion*/
 
@@ -257,7 +255,7 @@ export class CcToast extends LitElement {
         /*endregion*/
         
         .right {
-          background-color: var(--color-bg-default);
+          background-color: var(--cc-color-bg-default);
           display: flex;
           flex: 1 1 auto;
           justify-content: stretch;
@@ -302,7 +300,7 @@ export class CcToast extends LitElement {
         }
 
         .close-button:hover {
-          background-color: var(--color-bg-neutral-hovered);
+          background-color: var(--cc-color-bg-neutral-hovered);
         }
         
         .close-button:enabled:focus {

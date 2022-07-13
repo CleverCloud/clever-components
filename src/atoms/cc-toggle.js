@@ -3,7 +3,6 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { repeat } from 'lit-html/directives/repeat.js';
 import { dispatchCustomEvent } from '../lib/events.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 
 /**
  * @typedef {import('./types.js').Choice} Choice
@@ -158,11 +157,10 @@ export class CcToggle extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       // language=CSS
       css`
         :host {
-          --cc-toggle-color: var(--color-bg-primary);
+          --cc-toggle-color: var(--cc-color-bg-primary, #000000);
           --cc-toggle-img-filter: none;
           --cc-toggle-img-filter-selected: none;
           --height: 2em;
@@ -205,13 +203,14 @@ export class CcToggle extends LitElement {
         }
 
         .toggle-group {
-          background-color: #fff;
+          background-color: var(--cc-color-bg-default, #fff);
           border-radius: 0.15em;
           box-sizing: border-box;
           display: flex;
           height: var(--height);
           line-height: 1.25;
           overflow: visible;
+          width: max-content;
         }
 
         /* We hide the <input> and only display the related <label> */
@@ -270,7 +269,7 @@ export class CcToggle extends LitElement {
 
         /* Used to display a background behind the text */
         label::before {
-          background-color: var(--color-bg);
+          background-color: var(--cc-color-bg);
           border-radius: .15em;
           bottom: var(--space);
           content: '';
@@ -308,8 +307,8 @@ export class CcToggle extends LitElement {
 
         /* NOT SELECTED */
         label {
-          --color-bg: #fff;
-          --color-txt: var(--color-text-normal);
+          --cc-color-bg: var(--cc-color-bg-default, #fff);
+          --color-txt: var(--cc-color-text-default);
         }
 
         img {
@@ -328,7 +327,7 @@ export class CcToggle extends LitElement {
         /* HOVERED */
         .display-normal input:not(:checked):enabled:hover + label,
         .display-subtle input:enabled:hover + label {
-          --color-bg: var(--color-bg-neutral-hovered);
+          --cc-color-bg: var(--cc-color-bg-neutral-hovered);
         }
 
         /* FOCUS */
@@ -353,8 +352,8 @@ export class CcToggle extends LitElement {
         }
 
         .display-normal input:checked + label {
-          --color-bg: var(--cc-toggle-color);
-          --color-txt: #fff;
+          --cc-color-bg: var(--cc-toggle-color);
+          --color-txt: var(--cc-color-text-inverted, #fff);
         }
 
         .display-subtle input:checked + label {

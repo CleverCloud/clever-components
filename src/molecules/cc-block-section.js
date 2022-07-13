@@ -1,5 +1,4 @@
 import { css, html, LitElement } from 'lit-element';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 
 /**
  * A display component with mostly HTML+CSS to separate a `<cc-block>` into different sections.
@@ -28,10 +27,10 @@ export class CcBlockSection extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       // language=CSS
       css`
         :host {
+          background-color: var(--cc-color-bg-default, #fff);
           display: grid;
           grid-gap: 1rem;
         }
@@ -56,7 +55,7 @@ export class CcBlockSection extends LitElement {
         }
 
         ::slotted([slot="title"].danger) {
-          color: var(--color-text-danger);
+          color: var(--cc-color-text-danger);
         }
 
         /* TODO: We may want to adapt cc-flex-gap for this case one day */
@@ -72,7 +71,6 @@ export class CcBlockSection extends LitElement {
         }
 
         ::slotted([slot="info"]) {
-          color: #333;
           flex: 1 1 15rem;
           line-height: 1.5;
         }

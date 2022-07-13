@@ -27,6 +27,7 @@ const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
  * @csspart header - Targets the inner `<cc-pricing-header>`.
  * @csspart estimation-selected-plans - Targets the inner `<cc-pricing-estimation>` part `selected-plans`.
  * @csspart estimation-recap - Targets the inner `<cc-pricing-estimation>` part `recap`.
+ * @cssprop {Color} --cc-pricing-estimation-recap-bg-color - Sets the value of the recap (part of the inner `cc-pricing-estimation` component) background color (#000000 by default).
  */
 export class CcPricingPage extends LitElement {
 
@@ -138,7 +139,7 @@ export class CcPricingPage extends LitElement {
       // language=CSS
       css`
           :host {
-              display: contents;
+            display: contents;
           }
       `,
     ];

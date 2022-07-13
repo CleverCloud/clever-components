@@ -3,7 +3,7 @@ import { css } from 'lit-element';
 // language=CSS
 export const tileStyles = css`
   :host {
-    background-color: #fff;
+    background-color: var(--cc-color-bg-default, #fff);
     border: 1px solid #bcc2d1;
     border-radius: 0.25rem;
     box-sizing: border-box;
@@ -16,7 +16,7 @@ export const tileStyles = css`
   }
 
   .tile_title {
-    color: #5D5D5D;
+    color: var(--cc-color-text-light);
     font-size: 1.25rem;
     text-align: center;
   }
@@ -44,7 +44,7 @@ export const instanceDetailsStyles = css`
   }
 
   .size-label {
-    background-color: #EAEAEA;
+    background-color: var(--cc-color-bg-neutral);
     border: 1px solid #484848;
     border-radius: 0.25rem;
     box-sizing: border-box;
@@ -57,9 +57,9 @@ export const instanceDetailsStyles = css`
   }
 
   .count-bubble {
-    background-color: #8C8C8C;
+    background-color: var(--color-legacy-grey, #000);
     border-radius: 50%;
-    color: #fff;
+    color: var(--cc-color-text-inverted, #fff);
     display: block;
     font-weight: bold;
     height: var(--bubble-d);

@@ -107,7 +107,7 @@ export class CcImg extends LitElement {
         }
 
         .wrapper.text {
-          background-color: #eee;
+          background-color: var(--cc-color-bg-neutral,#eee);
         }
 
         img {

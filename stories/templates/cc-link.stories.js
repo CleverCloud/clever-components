@@ -1,5 +1,4 @@
 import { render } from 'lit-html';
-import { defaultThemeStyles } from '../../src/styles/default-theme.js';
 import { skeletonStyles } from '../../src/styles/skeleton.js';
 import { ccLink, linkStyles } from '../../src/templates/cc-link.js';
 import { makeStory } from '../lib/make-story.js';
@@ -11,7 +10,7 @@ export default {
 };
 
 const conf = {
-  css: [defaultThemeStyles, linkStyles, skeletonStyles].join(''),
+  css: [linkStyles, skeletonStyles].join(''),
 };
 
 export const defaultStory = makeStory(conf, {

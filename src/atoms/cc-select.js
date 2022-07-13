@@ -2,7 +2,6 @@ import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 
 /**
  * @typedef {import('./types.js').Option} Option
@@ -131,7 +130,6 @@ export class CcSelect extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       // language=CSS
       css`
         :host {
@@ -176,7 +174,7 @@ export class CcSelect extends LitElement {
         }
 
         .required {
-          color: var(--color-text-light);
+          color: var(--cc-color-text-light);
           font-size: 0.9em;
           font-variant: small-caps;
         }
@@ -186,13 +184,13 @@ export class CcSelect extends LitElement {
         }
 
         slot[name='help']::slotted(*) {
-          color: var(--color-text-light);
+          color: var(--cc-color-text-light);
           font-size: 0.9em;
           margin: 0.3em 0 0 0;
         }
         
         slot[name='error']::slotted(*) {
-          color: var(--color-text-danger);
+          color: var(--cc-color-text-danger);
           margin: 0.5em 0 0 0;
         }
         /*endregion*/
@@ -215,7 +213,7 @@ export class CcSelect extends LitElement {
         }
 
         select {
-          background: #ffffff;
+          background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid #aaa;
           border-radius: 0.25em;
           box-sizing: border-box;
@@ -247,7 +245,7 @@ export class CcSelect extends LitElement {
         }
 
         .selectWrapper::after {
-          background-color: var(--color-bg-primary);
+          background-color: var(--cc-color-bg-primary, #000000);
           clip-path: polygon(100% 0%, 0 0%, 50% 100%);
           content: '';
           height: 0.5em;
@@ -263,9 +261,9 @@ export class CcSelect extends LitElement {
         }
 
         select[disabled] {
-          background: var(--color-bg-neutral-disabled);
-          border-color: var(--color-bg-neutral-disabled);
-          color: var(--color-text-light);
+          background: var(--cc-color-bg-neutral-disabled);
+          border-color: var(--cc-color-bg-neutral-disabled);
+          color: var(--cc-color-text-light);
           opacity: 1;
           pointer-events: none;
         }

@@ -7,7 +7,6 @@ import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { fakeString } from '../lib/fake-strings.js';
 import { i18n } from '../lib/i18n.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 
@@ -333,7 +332,6 @@ export class CcAddonBackups extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       skeletonStyles,
       linkStyles,
       // language=CSS
@@ -372,11 +370,11 @@ export class CcAddonBackups extends LitElement {
         }
 
         .backup-text {
-          color: var(--color-text-light);
+          color: var(--cc-color-text-light);
         }
 
         .backup-text-details:not(.skeleton) strong {
-          color: #000;
+          color: var(--cc-color-text-strongest, #000);
         }
 
         [title] {
@@ -389,7 +387,7 @@ export class CcAddonBackups extends LitElement {
         }
 
         .overlay {
-          box-shadow: 0 0 1rem #aaa;
+          box-shadow: 0 0 1rem rgba(0, 0, 0, 0.4);
           margin: 2rem;
           max-width: 80%;
         }

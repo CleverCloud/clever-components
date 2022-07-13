@@ -3,37 +3,34 @@ import '../../src/atoms/cc-input-number.js';
 import '../../src/atoms/cc-input-text.js';
 import '../../src/atoms/cc-select.js';
 import '../../src/atoms/cc-toggle.js';
-import { defaultThemeStyles } from '../../src/styles/default-theme.js';
 import { makeStory } from '../lib/make-story.js';
 
 const conf = {
-  css: [
-    defaultThemeStyles.toString(),
-    // language=CSS
-    `
-      h1 {
-        font-size: 1.2em;
-        margin-bottom: 1em;
-      }
-  
-      form {
-        align-items: start;
-        border-bottom: solid 1px gray;
-        display: flex;
-        gap: 1em;
-        margin-bottom: 2em;
-        padding-bottom: 2em;
-      }
-      
-      code {
-        background-color: var(--color-bg-neutral);
-        padding: 0.3em;
-      }
-      
-      cc-button {
-        margin-top: var(--margin-top-btn-horizontal-form);
-      }
-    `].join('/n'),
+  // language=CSS
+  css: `
+    h1 {
+      font-size: 1.2em;
+      margin-bottom: 1em;
+    }
+
+    form {
+      align-items: start;
+      border-bottom: solid 1px gray;
+      display: flex;
+      gap: 1em;
+      margin-bottom: 2em;
+      padding-bottom: 2em;
+    }
+    
+    code {
+      background-color: var(--cc-color-bg-neutral);
+      padding: 0.3em;
+    }
+    
+    cc-button {
+      margin-top: var(--cc-margin-top-btn-horizontal-form);
+    }
+  `,
 };
 
 export const allFormControlsStory = makeStory(conf,
@@ -45,7 +42,7 @@ export const allFormControlsStory = makeStory(conf,
         <ul>
           <li>Use <code>display: flex;</code> on the container of the form elements (typically the <code>form</code> element).</li>
           <li>Use <code>align-items: start;</code>.</li>
-          <li>Import <code>defaultThemeStyles</code> and use <code>margin-top: var(--margin-top-btn-horizontal-form);</code> on the <code>cc-button</code> element.</li>
+          <li>Use <code>margin-top: var(--cc-margin-top-btn-horizontal-form);</code> on the <code>cc-button</code> element.</li>
         </ul>
         <h1>All form controls - basic</h1>
         <form>

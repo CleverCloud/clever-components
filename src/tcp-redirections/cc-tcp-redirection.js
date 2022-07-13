@@ -5,7 +5,6 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import '../atoms/cc-loader.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { waitingStyles } from '../styles/waiting.js';
 
@@ -139,7 +138,6 @@ export class CcTcpRedirection extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       skeletonStyles,
       waitingStyles,
       // language=CSS
@@ -182,14 +180,14 @@ export class CcTcpRedirection extends LitElement {
         }
 
         .text:not(.skeleton) code {
-          background-color: var(--color-bg-neutral);
+          background-color: var(--cc-color-bg-neutral);
           border-radius: 0.25rem;
           font-family: var(--cc-ff-monospace);
           padding: 0.15rem 0.3rem;
         }
 
         .text-addendum:not(.skeleton) {
-          color: var(--color-text-light);
+          color: var(--cc-color-text-light);
         }
 
         .skeleton {

@@ -17,7 +17,6 @@ In your component, import the template and styles like this:
 
 ```js
 import { ccLink, linkStyles } from 'src/templates/cc-link.js';
-import { defaultThemeStyles } from 'src/styles/default-theme.js';
 ```
 
 When you need a link, use the `ccLink(url, content, skeleton)` function like this:
@@ -33,7 +32,6 @@ You also need to add the CSS styles in your LitElement `static get styles()` lik
 ```js
 static get styles () {
   return [
-    defaultThemeStyles,
     linkStyles,
     css`
       /* CSS for component goes here */

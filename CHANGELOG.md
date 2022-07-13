@@ -17,6 +17,12 @@ title: Changelog
 * `<cc-toggle>`: 
   * rename `--cc-text-transform` to `--cc-toggle-text-transform` (BREAKING CHANGE),
   * add CSS Custom Prop to customize `border-radius`, `font-weight`.
+* Introduce a public theme based on a CSS files (BREAKING CHANGE):
+  * move `default-theme` (design tokens) from a JavaScript file to a CSS file (BREAKING CHANGE),
+  * remove `default-theme` import from all components (BREAKING CHANGE),
+  * prefix decision design tokens with `cc-` (BREAKING CHANGE),
+  * define default text color using `cc-color-text-default` where necessary (BREAKING CHANGE),
+  * define default background colors using `cc-color-bg-default` where necessary (BREAKING CHANGE).
 
 ### Components
 

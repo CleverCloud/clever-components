@@ -167,23 +167,34 @@ export class CcPricingHeader extends LitElement {
 
         sl-select {
           --focus-ring: 0 0 0 .2em rgba(50, 115, 220, .25);
-          --sl-input-background-color-disabled: #eee;
+          --sl-input-background-color: var(--cc-color-bg-default, #fff);
+          --sl-input-background-color-disabled: var(--cc-color-bg-neutral-disabled, #eee);
+          --sl-input-background-color-hover: var(--cc-color-bg-default, #fff);
+          --sl-input-background-color-focus: var(--cc-color-bg-default, #fff);
           --sl-input-border-color-disabled: #eee;
-          --sl-input-border-color-focus: #777;
-          --sl-input-border-color-hover: #777;
+          --sl-input-border-color-focus: var(--cc-color-bg-neutral-hovered, #777);
+          --sl-input-border-color-hover: var(--cc-color-bg-neutral-hovered, #777);
           --sl-input-border-color: #aaa;
           --sl-input-border-radius-medium: 0.25em;
-          --sl-input-color-focus: #000;
-          --sl-input-color-hover: #000;
-          --sl-input-color: #000;
+          --sl-input-color-focus: var(--cc-color-text-default, #000);
+          --sl-input-color-hover: var(--cc-color-text-default, #000);
+          --sl-input-color: var(--cc-color-text-default, #000);
           animation: none;
         }
 
         sl-select::part(label),
         .estimated-cost--label {
-          color: #000;
           /* same value as out own inputs */
           padding-bottom: 0.35em;
+        }
+
+        sl-select::part(menu) {
+          background-color: var(--cc-color-bg-default, #fff);
+          color: var(--cc-color-text-default);
+        }
+
+        sl-menu-item::part(base) {
+          color: var(--cc-color-text-default);
         }
 
         .currency-select {
@@ -213,9 +224,10 @@ export class CcPricingHeader extends LitElement {
 
         .zone-item:hover::part(base),
         .zone-item:focus::part(base) {
-          --cc-zone-subtitle-color: #fff;
-          --cc-zone-tag-bdcolor: #fff;
+          --cc-zone-subtitle-color: var(--cc-color-text-inverted, #fff);
+          --cc-zone-tag-bdcolor: var(--cc-color-text-inverted, #fff);
           --cc-zone-tag-bgcolor: transparent;
+          color: var(--cc-color-text-inverted, #fff);
         }
 
         cc-zone {
@@ -233,7 +245,7 @@ export class CcPricingHeader extends LitElement {
         }
 
         sl-select.skeleton::part(base) {
-          --sl-input-background-color-disabled: #bbb;
+          --sl-input-background-color-disabled: var(--cc-color-bg-neutral-disabled, #bbb);
         }
       `,
     ];

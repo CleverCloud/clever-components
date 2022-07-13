@@ -5,7 +5,6 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { i18n } from '../lib/i18n.js';
 import { sortBy } from '../lib/utils.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 
@@ -149,7 +148,6 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       skeletonStyles,
       linkStyles,
       // language=CSS
@@ -203,12 +201,12 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
         }
 
         .invoice-text {
-          color: var(--color-text-light);
+          color: var(--cc-color-text-light);
         }
 
         .invoice-text code,
         .invoice-text strong {
-          color: var(--color-text-strongest);
+          color: var(--cc-color-text-strongest);
           font-weight: bold;
           white-space: nowrap;
         }
@@ -234,13 +232,13 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
         }
 
         th {
-          background-color: var(--color-bg-neutral-alt);
-          color: var(--color-text-strongest);
+          background-color: var(--cc-color-bg-neutral-alt, #eeeeee);
+          color: var(--cc-color-text-strongest);
         }
 
         td {
-          background-color: var(--color-bg-neutral);
-          color: var(--color-text-normal);
+          background-color: var(--cc-color-bg-neutral);
+          color: var(--cc-color-text-normal);
         }
 
         tr:not(:last-child) td {
@@ -258,7 +256,7 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
         }
 
         tr:hover td {
-          background-color: var(--color-bg-neutral-hovered);
+          background-color: var(--cc-color-bg-neutral-hovered, #f9f9f9);
         }
 
         table .skeleton {

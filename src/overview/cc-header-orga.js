@@ -6,7 +6,6 @@ import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { i18n } from '../lib/i18n.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
 const badgeSvg = new URL('../assets/badge-white.svg', import.meta.url).href;
@@ -90,7 +89,6 @@ export class CcHeaderOrga extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       skeletonStyles,
       // language=CSS
       css`
@@ -100,7 +98,7 @@ export class CcHeaderOrga extends LitElement {
         }
 
         .wrapper {
-          background-color: #fff;
+          background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid #bcc2d1;
           border-radius: 0.25rem;
           display: block;
@@ -109,7 +107,7 @@ export class CcHeaderOrga extends LitElement {
         }
 
         .wrapper.enterprise {
-          border-color: var(--color-bg-primary);
+          border-color: var(--cc-color-bg-primary);
           border-width: 2px;
         }
 
@@ -159,7 +157,7 @@ export class CcHeaderOrga extends LitElement {
         }
 
         .hotline_number:hover {
-          box-shadow: 0 1px 3px #888;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
         }
 
         .hotline_number:active {

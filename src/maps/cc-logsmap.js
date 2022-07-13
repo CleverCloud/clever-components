@@ -204,6 +204,7 @@ export class CcLogsMap extends LitElement {
     // language=CSS
     return css`
       :host {
+        background-color: var(--cc-color-bg-default, #fff);
         border: 1px solid #ccc;
         border-radius: 0.25rem;
         display: block;

@@ -3,7 +3,6 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { linkStyles } from '../templates/cc-link.js';
 
@@ -227,7 +226,6 @@ export class CcButton extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       skeletonStyles,
       linkStyles,
       // language=CSS
@@ -240,7 +238,7 @@ export class CcButton extends LitElement {
 
         /* RESET */
         button {
-          background: #fff;
+          background: unset;
           border: none;
           display: block;
           font-family: inherit;
@@ -270,34 +268,34 @@ export class CcButton extends LitElement {
 
         /* COLORS */
         .simple {
-          --btn-color: var(--color-text-strong);
+          --btn-color: var(--cc-color-text-strong);
         }
 
         .primary {
-          --btn-color: var(--color-bg-primary);
+          --btn-color: var(--cc-color-bg-primary);
         }
 
         .success {
-          --btn-color: var(--color-bg-success);
+          --btn-color: var(--cc-color-bg-success);
         }
 
         .warning {
-          --btn-color: var(--color-bg-warning);
+          --btn-color: var(--cc-color-bg-warning);
         }
 
         .danger {
-          --btn-color: var(--color-bg-danger);
+          --btn-color: var(--cc-color-bg-danger);
         }
 
         /* MODES */
         .btn {
           background-color: var(--btn-color);
           border-color: var(--btn-color);
-          color: var(--color-text-inverted);
+          color: var(--cc-color-text-inverted);
         }
 
         .outlined {
-          background-color: #fff;
+          background-color: transparent;
           color: var(--btn-color);
         }
 
@@ -324,7 +322,7 @@ export class CcButton extends LitElement {
         }
 
         .btn:enabled:hover {
-          box-shadow: 0 1px 3px #888;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
         }
 
         .btn:enabled:active {

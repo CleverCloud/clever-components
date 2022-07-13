@@ -1,5 +1,4 @@
 import { css, html, LitElement } from 'lit-element';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 
 /**
  * @typedef {import('./types.js').BadgeIntent} BadgeIntent
@@ -54,7 +53,6 @@ export class CcBadge extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       // language=CSS
       css`
         :host {
@@ -78,16 +76,15 @@ export class CcBadge extends LitElement {
 
         :host([weight="dimmed"]) {
           background-color: var(--accent-color, #ccc);
-          color: var(--color-text-default);
         }
 
         :host([weight="strong"]) {
           background-color: var(--accent-color, #777);
-          color: var(--color-text-inverted, #fff);
+          color: var(--cc-color-text-inverted, #fff);
         }
 
         :host([weight="outlined"]) {
-          background-color: var(--color-bg-default, #fff);
+          background-color: transparent;
           /* roughly 1px. We want the border to scale with the font size so that outlined
           badges still stand out as they should when font-size is increased. */
           box-shadow: inset 0 0 0 0.06em var(--accent-color, #777);
@@ -95,43 +92,43 @@ export class CcBadge extends LitElement {
         }
 
         :host([intent="info"]) {
-          --accent-color: var(--color-bg-primary);
+          --accent-color: var(--cc-color-bg-primary);
         }
 
         :host([intent="info"][weight="dimmed"]) {
-          --accent-color: var(--color-bg-primary-light);
+          --accent-color: var(--cc-color-bg-primary-light);
         }
 
         :host([intent="success"]) {
-          --accent-color: var(--color-bg-success);
+          --accent-color: var(--cc-color-bg-success);
         }
 
         :host([intent="success"][weight="dimmed"]) {
-          --accent-color: var(--color-bg-success-light);
+          --accent-color: var(--cc-color-bg-success-light);
         }
 
         :host([intent="danger"]) {
-          --accent-color: var(--color-bg-danger);
+          --accent-color: var(--cc-color-bg-danger);
         }
 
         :host([intent="danger"][weight="dimmed"]) {
-          --accent-color: var(--color-bg-danger-light);
+          --accent-color: var(--cc-color-bg-danger-light);
         }
 
         :host([intent="warning"]) {
-          --accent-color: var(--color-bg-warning);
+          --accent-color: var(--cc-color-bg-warning);
         }
 
         :host([intent="warning"][weight="dimmed"]) {
-          --accent-color: var(--color-bg-warning-light);
+          --accent-color: var(--cc-color-bg-warning-light);
         }
 
         :host([intent="neutral"]) {
-          --accent-color: var(--color-bg-strong);
+          --accent-color: var(--cc-color-bg-strong);
         }
 
         :host([intent="neutral"][weight="dimmed"]) {
-          --accent-color: var(--color-bg-neutral-alt);
+          --accent-color: var(--cc-color-bg-neutral-alt);
         }
 
         img {
