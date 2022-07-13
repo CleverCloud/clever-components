@@ -36,6 +36,9 @@ import { linkStyles } from '../templates/cc-link.js';
  * @event {CustomEvent} cc-button:click - Fires whenever the button is clicked.<br>If `delay` is set, fires after the specified `delay` (in seconds).
  *
  * @slot - The content of the button (text or HTML). If you want an image, please look at the `image` attribute.
+ * @cssprop {BorderRadius} --cc-button-border-radius - Sets the value of the border radius CSS property (defaults: `0.15em`).
+ * @cssprop {FontWeight} --cc-button-font-weight - Sets the value of the font weight CSS property (defaults: `bold`).
+ * @cssprop {TextTransform} --cc-button-text-transform - Sets the value of the text transform CSS property (defaults: `uppercase`).
  */
 export class CcButton extends LitElement {
 
@@ -249,15 +252,15 @@ export class CcButton extends LitElement {
         /* BASE */
         .btn {
           border: 1px solid #000;
-          border-radius: 0.15em;
+          border-radius: var(--cc-button-border-radius, 0.15em);
           cursor: pointer;
-          font-weight: bold;
+          font-weight: var(--cc-button-font-weight, bold);
           min-height: 2em;
           overflow: hidden;
           padding: 0 0.5em;
           /* used to absolutely position the <progress> */
           position: relative;
-          text-transform: uppercase;
+          text-transform: var(--cc-button-text-transform, uppercase);
           -moz-user-select: none;
           -webkit-user-select: none;
           -ms-user-select: none;

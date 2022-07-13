@@ -21,6 +21,7 @@ title: Changelog
 * New components:
   * `<cc-toaster>`
   * `<cc-toast>`
+* `<cc-button>`: add CSS Custom Props to customize `border-radius`, `font-weight` and `text-transform`.
 
 ...
 ## 8.0.1 (2022-07-15)
