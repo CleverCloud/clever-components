@@ -34,10 +34,12 @@ import { defaultThemeStyles } from '../styles/default-theme.js';
  * @event {CustomEvent<string>} cc-toggle:input - Fires the selected `value` whenever the selected `value` changes (single mode only).
  * @event {CustomEvent<string[]>} cc-toggle:input-multiple - Fires the selected `multipleValues` whenever the selected `multipleValues` changes (single mode only).
  *
- * @cssprop {TextTransform} --cc-text-transform - Apply a text transformation on labels (defaults: `uppercase`).
+ * @cssprop {BorderRadius} --cc-toggle-border-radius - Sets the value of the border radius CSS property (defaults: `0.15em`).
  * @cssprop {Color} --cc-toggle-color - The main color of the toggle (defaults: `#334252`). It must be defined directly on the element.
+ * @cssprop {FontWeight} --cc-toggle-font-weight - Sets the value of the font weight CSS property (defaults: `bold`).
  * @cssprop {Filter} --cc-toggle-img-filter - A CSS filter to apply on images of all choices (defaults: `none`). It must be defined directly on the element.
  * @cssprop {Filter} --cc-toggle-img-filter-selected - A CSS filter to apply on images of selected choices (defaults: `none`). It must be defined directly on the element.
+ * @cssprop {TextTransform} --cc-toggle-text-transform - Sets the value of the text transform CSS property (defaults: `uppercase`).
  */
 export class CcToggle extends LitElement {
 
@@ -228,6 +230,7 @@ export class CcToggle extends LitElement {
         label {
           /* used around the background */
           --space: 2px;
+          --border-radius: var(--cc-toggle-border-radius, 0.15em);
           align-items: center;
           border-color: var(--cc-toggle-color);
           border-style: solid;
@@ -235,12 +238,12 @@ export class CcToggle extends LitElement {
           cursor: pointer;
           display: grid;
           font-size: 0.85em;
-          font-weight: bold;
+          font-weight: var(--cc-toggle-font-weight, bold);
           gap: 0.6em;
           grid-auto-flow: column;
           padding: 0 0.6em;
           position: relative;
-          text-transform: var(--cc-text-transform, uppercase);
+          text-transform: var(--cc-toggle-text-transform, uppercase);
           -moz-user-select: none;
           -webkit-user-select: none;
           -ms-user-select: none;
@@ -253,11 +256,11 @@ export class CcToggle extends LitElement {
 
         label:first-of-type {
           border-left-width: 1px;
-          border-radius: 0.15em 0 0 0.15em;
+          border-radius: var(--border-radius) 0 0 var(--border-radius);
         }
 
         label:last-of-type {
-          border-radius: 0 0.15em 0.15em 0;
+          border-radius: 0 var(--border-radius) var(--border-radius) 0;
           border-right-width: 1px;
         }
 

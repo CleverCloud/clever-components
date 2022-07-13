@@ -14,6 +14,9 @@ title: Changelog
 * `<cc-input-number>`:
   * change default font-family to inherit instead of monospace (BREAKING CHANGE),
   * add CSS Custom Prop to change the `<input>` font-family.
+* `<cc-toggle>`: 
+  * rename `--cc-text-transform` to `--cc-toggle-text-transform` (BREAKING CHANGE),
+  * add CSS Custom Prop to customize `border-radius`, `font-weight`.
 
 ### Components
 
