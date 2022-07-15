@@ -6,7 +6,11 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-## For devs
+### Components
+
+* `<cc-env-var-form>`: fix the reset button not working.
+
+### For devs
 
 * storybook: limit the width of the preview (and center it)
 * storybook: add a `displayMode` option in `makeStory` to simplify story layout and code

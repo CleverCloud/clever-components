@@ -112,9 +112,15 @@ export class CcEnvVarEditorJson extends LitElement {
   }
 
   _onInput ({ detail: value }) {
+    this._variablesAsJson = value;
     const { variables, errors } = parseRawJson(value, this.parserOptions);
     this._setErrors(errors);
-    dispatchCustomEvent(this, 'change', variables);
+
+    // for INVALID_JSON and INVALID_JSON_FORMAT errors, the parsed 'variables' is an empty array: we don't want to dispatch this case
+    const hasJsonError = errors.some(({ type }) => type === ERROR_TYPES.INVALID_JSON || type === ERROR_TYPES.INVALID_JSON_FORMAT);
+    if (!hasJsonError) {
+      dispatchCustomEvent(this, 'change', variables);
+    }
   }
 
   update (changedProperties) {
