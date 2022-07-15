@@ -16,11 +16,6 @@ export default {
 
 const conf = {
   component: 'cc-env-var-linked-services',
-  css: `
-    cc-env-var-linked-services {
-      margin-bottom: 1rem;
-    }
-  `,
 };
 
 export const defaultStory = makeStory(conf, {

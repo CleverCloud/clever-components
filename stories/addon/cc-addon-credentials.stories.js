@@ -17,11 +17,6 @@ export default {
 
 const conf = {
   component: 'cc-addon-credentials',
-  css: `
-    cc-addon-credentials {
-      margin-bottom: 1rem;
-    }
-  `,
 };
 
 export const defaultStory = makeStory(conf, {

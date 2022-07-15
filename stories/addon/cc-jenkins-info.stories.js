@@ -9,11 +9,6 @@ export default {
 
 const conf = {
   component: 'cc-jenkins-info',
-  css: `
-    cc-jenkins-info {
-      margin-bottom: 1rem;
-    }
-  `,
 };
 
 const jenkinsLink = 'https://my-jenkins.example.com';

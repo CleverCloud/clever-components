@@ -9,11 +9,6 @@ export default {
 
 const conf = {
   component: 'cc-elasticsearch-info',
-  css: `
-    cc-elasticsearch-info {
-      margin-bottom: 1rem;
-    }
-  `,
 };
 
 const elasticsearchLink = { type: 'elasticsearch', href: 'https://my-elasticsearch.com' };

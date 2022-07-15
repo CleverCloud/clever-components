@@ -12,15 +12,7 @@ export default {
 
 const conf = {
   component: 'cc-logsmap',
-  // language=CSS
-  css: `
-    cc-logsmap {
-      display: inline-flex;
-      margin-bottom: 1rem;
-      margin-right: 1rem;
-      vertical-align: bottom;
-    }
-  `,
+  displayMode: 'flex-wrap',
 };
 
 const spreadDuration = 5000;

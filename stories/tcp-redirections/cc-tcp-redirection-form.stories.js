@@ -10,7 +10,6 @@ export default {
 
 const conf = {
   component: 'cc-tcp-redirection-form',
-  css: `cc-tcp-redirection-form { margin-bottom: 1rem; }`,
 };
 
 export const defaultStory = makeStory(conf, {

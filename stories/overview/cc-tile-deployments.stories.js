@@ -19,12 +19,13 @@ export default {
 
 const conf = {
   component: 'cc-tile-deployments',
-  css: `cc-tile-deployments {
-    display: inline-grid;
-    margin-bottom: 1rem;
-    margin-right: 1rem;
-    width: 275px;
-  }`,
+  displayMode: 'flex-wrap',
+  // language=CSS
+  css: `
+    cc-tile-deployments {
+      width: 275px;
+    }
+  `,
 };
 
 export const defaultStory = makeStory(conf, {

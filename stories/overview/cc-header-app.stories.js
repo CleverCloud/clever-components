@@ -30,11 +30,6 @@ export default {
 
 const conf = {
   component: 'cc-header-app',
-  css: `
-    cc-header-app:not(:last-child) {
-      margin-bottom: 1rem;
-    }
-  `,
 };
 
 export const defaultStory = makeStory(conf, {

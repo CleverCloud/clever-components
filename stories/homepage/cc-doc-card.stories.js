@@ -23,9 +23,9 @@ export default {
 
 const conf = {
   component: 'cc-doc-card',
+  displayMode: 'flex-wrap',
   // language=CSS
   css: `cc-doc-card {
-    margin-bottom: 1rem;
     width: 20em;
   }`,
 };

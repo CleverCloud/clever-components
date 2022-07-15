@@ -9,6 +9,7 @@ export default {
 
 const conf = {
   component: 'cc-html-frame',
+  // language=CSS
   css: `
     cc-html-frame {
       background-color: white;

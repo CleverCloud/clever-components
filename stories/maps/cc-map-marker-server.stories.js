@@ -9,13 +9,7 @@ export default {
 
 const conf = {
   component: 'cc-map-marker-server',
-  // language=CSS
-  css: `
-    cc-map-marker-server {
-      display: inline-block;
-      margin: 1rem;
-    }
-  `,
+  displayMode: 'flex-wrap',
 };
 
 export const defaultStory = makeStory(conf, {

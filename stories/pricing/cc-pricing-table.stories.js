@@ -65,10 +65,6 @@ export default {
 
 const conf = {
   component: 'cc-pricing-table',
-  // language=CSS
-  css: `cc-pricing-table {
-    margin-bottom: 1rem;
-  }`,
 };
 
 export const defaultStory = makeStory(conf, {

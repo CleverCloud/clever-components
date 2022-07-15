@@ -24,10 +24,10 @@ export default {
 
 const conf = {
   component: 'cc-article-card',
+  displayMode: 'flex-wrap',
   // language=CSS
   css: `
     cc-article-card {
-      margin-bottom: 1rem;
       width: 20em;
     }
   `,

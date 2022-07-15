@@ -47,9 +47,10 @@ export default {
 
 const conf = {
   component: 'cc-header-addon',
+  // language=CSS
   css: `
-    cc-header-addon {
-      margin-bottom: 1rem;
+    :host {
+      max-width: 82em !important;
     }
   `,
 };

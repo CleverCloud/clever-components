@@ -9,11 +9,6 @@ export default {
 
 const conf = {
   component: 'cc-warning-payment',
-  css: `
-    cc-warning-payment {
-      margin-bottom: 1rem;
-    }
-  `,
 };
 
 export const defaultStory = makeStory(conf, {

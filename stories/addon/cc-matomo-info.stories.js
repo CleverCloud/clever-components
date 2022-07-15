@@ -9,11 +9,6 @@ export default {
 
 const conf = {
   component: 'cc-matomo-info',
-  css: `
-    cc-matomo-info {
-      margin-bottom: 1rem;
-    }
-  `,
 };
 
 const matomoLink = 'https://my-matomo.example.com';

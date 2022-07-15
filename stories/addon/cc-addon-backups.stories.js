@@ -299,11 +299,6 @@ export default {
 
 const conf = {
   component: 'cc-addon-backups',
-  css: `
-    cc-addon-backups {
-      margin-bottom: 1rem;
-    }
-  `,
 };
 
 export const defaultStory = makeStory(conf, {

@@ -18,11 +18,12 @@ export default {
 
 const conf = {
   component: 'cc-toggle',
+  // language=CSS
   css: `
     :host {
       display: grid;
-      gap: 1rem 0.5rem;
-      grid-template-columns: repeat(4, min-content);
+      gap: 1rem;
+      grid-template-columns: repeat(var(--col-nb, 4), min-content);
     }
   `,
 };
@@ -120,23 +121,21 @@ export const legend = makeStory(conf, {
   items: normalAndSubtleItems.map((p) => ({ ...p, legend: 'The legend' })),
 });
 
-export const legendWithInline = makeStory({
-  ...conf,
-  css: `
+export const legendWithInline = makeStory(conf, {
+  // language=CSS
+  css: conf.css + `
     :host {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem 0.5rem;
+      --col-nb: 1;
     }
   `,
-}, {
   items: normalAndSubtleItems.map((p) => ({ ...p, legend: 'The legend', inline: true })),
 });
 
 export const multiple = makeStory(conf, {
+  // language=CSS
   css: conf.css + `
     :host {
-      grid-template-columns: repeat(3, min-content);
+      --col-nb: 3;
     }
   `,
   items: [
@@ -156,6 +155,7 @@ You can have a bit of control over the main color used by the component with \`-
 * You can set the color with  \`cc-toggle { --cc-toggle-color: blue }\`
 * You can have a different color when a specific value is selected  \`cc-toggle[value="TRUE"] { --cc-toggle-color: green }\`
 `,
+  // language=CSS
   css: conf.css + `
     cc-toggle {
       --cc-toggle-color: #3569aa;
@@ -171,6 +171,7 @@ export const textTransform = makeStory(conf, {
   docs: `
 You can have a bit of control over the text transformation of the labels used by the component with \`--cc-text-transform\`.:
 `,
+  // language=CSS
   css: conf.css + `
     cc-toggle {
       --cc-text-transform: none;
@@ -211,10 +212,10 @@ Here you can see a series of toolbar examples using CSS custom propreties of the
 * \`--cc-toggle-img-filter\` so we can tweak the color of the image from default \`#6999d3\` to gray or white.
 * \`--cc-toggle-img-filter-selected\` so we can tweak the color of the image from default \`#6999d3\` to gray or white. 
   `,
+  // language=CSS
   css: conf.css + `
     :host {
-      grid-template-columns: repeat(2, min-content);
-      justify-items: start;
+      --col-nb: 2;
     }
     cc-toggle {
       --cc-toggle-color: #3569aa;

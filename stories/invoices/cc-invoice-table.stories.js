@@ -53,10 +53,6 @@ export default {
 
 const conf = {
   component: 'cc-invoice-table',
-  // language=CSS
-  css: `cc-invoice-table {
-    margin-bottom: 1rem;
-  }`,
 };
 
 export const defaultStory = makeStory(conf, {

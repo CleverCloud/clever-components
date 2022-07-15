@@ -99,6 +99,9 @@ interface MakeStoryOptions {
   simulations?: Array<(Array<HTMLElement>): void>,
   // See Override argument types
   argTypes?: object,
+  // null => Displays components in a single column with a vertical gap (of 1em)
+  // "flex-wrap" => Displays components next to each other and wrap them on multiple lines when necessary
+  displayMode?: null | "flex-wrap",
 }
 ```
 
@@ -168,7 +171,7 @@ is equivalent to this example:
 
 ```js
 export const storyWithOneArg = makeStory({
-  component: 'cc-example-component'
+  component: 'cc-example-component',
   css: `cc-example-component { margin-botton }`,
   docs: 'the real docs',
   items: [{ one: 'ONE', two: false }],
@@ -297,5 +300,42 @@ export const storyWithSimulations = makeStory(conf, {
     },
   },
   items: [{ one: 'ONE', two: false }],
+});
+```
+
+### Change the default display
+
+By default:
+
+* components are displayed in a single column with a vertical gap (of 1em),
+* the container's width is limited (70em).
+
+You can trigger an "inline" mode where components are displayed next to each other and wrap them on multiple lines when necessary with this:
+
+```js
+export const storyWithInlineMode = makeStory(conf, {
+  displayMode: 'flex-wrap',
+  items: [
+    { one: 'ONE', two: false },
+    { one: 'ONE', two: false },
+  ],
+});
+```
+
+In some situations, it's better to override the default limited width of the story container.
+You can target the container with `:host` like this:
+
+```js
+export const storyWithFullWidthContainer = makeStory(conf, {
+  // language=CSS
+  css: `
+    :host {
+      max-width: 100% !important;
+    }
+  `,
+  items: [
+    { one: 'ONE', two: false },
+    { one: 'ONE', two: false },
+  ],
 });
 ```

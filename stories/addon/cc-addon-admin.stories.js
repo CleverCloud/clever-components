@@ -9,11 +9,6 @@ export default {
 
 const conf = {
   component: 'cc-addon-admin',
-  css: `
-    cc-addon-admin {
-      margin-bottom: 1rem;
-    }
-  `,
 };
 
 const addon = {

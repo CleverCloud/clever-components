@@ -9,11 +9,13 @@ export default {
 
 const conf = {
   component: 'cc-loader',
-  css: `cc-loader {
-    background: #eee;
-    display: inline-flex;
-    margin-right: 1rem;
-  }`,
+  displayMode: 'flex-wrap',
+  // language=CSS
+  css: `
+    cc-loader {
+      background: #eee;
+    }
+  `,
 };
 
 export const defaultStory = makeStory(conf, {

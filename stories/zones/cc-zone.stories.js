@@ -9,10 +9,6 @@ export default {
 
 const conf = {
   component: 'cc-zone',
-  // language=CSS
-  css: `cc-zone {
-    margin-bottom: 1rem;
-  }`,
 };
 
 const zoneDefault = {
@@ -77,7 +73,9 @@ export const skeleton = makeStory(conf, {
 // NOTE: We don't need an error state for now
 
 export const dataLoadedWithInfra = makeStory(conf, {
-  items: [{ zone: zoneWithInfra }, { zone: zoneWithInfra, mode: 'small' }, { zone: zoneWithInfra, mode: 'small-infra' }],
+  items: [{ zone: zoneWithInfra }, { zone: zoneWithInfra, mode: 'small' }, {
+    zone: zoneWithInfra, mode: 'small-infra',
+  }],
 });
 
 export const dataLoadedWithPrivate = makeStory(conf, {
@@ -85,11 +83,15 @@ export const dataLoadedWithPrivate = makeStory(conf, {
 });
 
 export const dataLoadedWithNoTags = makeStory(conf, {
-  items: [{ zone: zoneWithoutTags }, { zone: zoneWithoutTags, mode: 'small' }, { zone: zoneWithoutTags, mode: 'small-infra' }],
+  items: [{ zone: zoneWithoutTags }, { zone: zoneWithoutTags, mode: 'small' }, {
+    zone: zoneWithoutTags, mode: 'small-infra',
+  }],
 });
 
 export const dataLoadedWithManyTags = makeStory(conf, {
-  items: [{ zone: zoneWithManyTags }, { zone: zoneWithManyTags, mode: 'small' }, { zone: zoneWithManyTags, mode: 'small-infra' }],
+  items: [{ zone: zoneWithManyTags }, { zone: zoneWithManyTags, mode: 'small' }, {
+    zone: zoneWithManyTags, mode: 'small-infra',
+  }],
 });
 
 export const simulations = makeStory(conf, {

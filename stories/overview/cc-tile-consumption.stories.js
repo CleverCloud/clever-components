@@ -9,12 +9,13 @@ export default {
 
 const conf = {
   component: 'cc-tile-consumption',
-  css: `cc-tile-consumption {
-    display: inline-grid;
-    margin-bottom: 1rem;
-    margin-right: 1rem;    
-    width: 275px;
-  }`,
+  displayMode: 'flex-wrap',
+  // language=CSS
+  css: `
+    cc-tile-consumption {
+      width: 275px;
+    }
+  `,
 };
 
 export const defaultStory = makeStory(conf, {

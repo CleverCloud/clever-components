@@ -36,17 +36,12 @@ export default {
 
 const conf = {
   component: 'cc-invoice',
-  // language=CSS
-  css: `cc-invoice {
-    margin-bottom: 1rem;
-  }`,
 };
 
 export const defaultStory = makeStory(conf, {
   items: [{
     number: defaultNumber,
     invoice: defaultInvoice,
-    style: `height: 400px`,
   }],
 });
 
@@ -62,7 +57,6 @@ export const dataLoaded = makeStory(conf, {
   items: [{
     number: defaultNumber,
     invoice: defaultInvoice,
-    style: `height: 400px`,
   }],
 });
 

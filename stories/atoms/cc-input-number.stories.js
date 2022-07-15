@@ -30,11 +30,7 @@ export default {
 
 const conf = {
   component: 'cc-input-number',
-  css: `
-    cc-input-number {
-      margin: 0.5rem;
-    }
-  `,
+  displayMode: 'flex-wrap',
 };
 
 export const defaultStory = makeStory(conf, {
@@ -73,7 +69,6 @@ export const errorMessageWithHelpMessage = makeStory(conf, {
 });
 
 export const inline = makeStory(conf, {
-  css: `cc-input-number { margin: 1rem 0.5rem; }`,
   items: baseItems.map((p) => ({
     ...p,
     inline: true,
@@ -81,7 +76,6 @@ export const inline = makeStory(conf, {
 });
 
 export const inlineWithRequired = makeStory(conf, {
-  css: `cc-input-number { margin: 1rem 0.5rem; }`,
   items: baseItems.map((p) => ({
     ...p,
     inline: true,
@@ -90,7 +84,6 @@ export const inlineWithRequired = makeStory(conf, {
 });
 
 export const inlineWithErrorAndHelpMessages = makeStory(conf, {
-  css: `cc-input-number { margin: 1rem 0.5rem; }`,
   items: baseItems.map((p) => ({
     ...p,
     inline: true,

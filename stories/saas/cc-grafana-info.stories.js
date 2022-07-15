@@ -9,11 +9,6 @@ export default {
 
 const conf = {
   component: 'cc-grafana-info',
-  css: `
-    cc-grafana-info {
-      margin-bottom: 1rem;
-    }
-  `,
 };
 
 const grafanaLink = 'https://my-grafana.com';

@@ -21,9 +21,23 @@ const baseItems = [
   { label: 'The label', placeholder: 'No value yet...', value: 'Skeleton', skeleton: true },
   { label: 'The label', placeholder: 'No value yet...', multi: true },
   { label: 'The label', placeholder: 'No value yet...', multi: true, value: 'Simple value\nOther lines...' },
-  { label: 'The label', placeholder: 'No value yet...', multi: true, value: 'Disabled value\nOther lines...', disabled: true },
-  { label: 'The label', placeholder: 'No value yet...', multi: true, value: 'Readonly value\nOther lines...', readonly: true },
-  { label: 'The label', placeholder: 'No value yet...', multi: true, value: 'Skeleton\nOther lines...', skeleton: true },
+  {
+    label: 'The label',
+    placeholder: 'No value yet...',
+    multi: true,
+    value: 'Disabled value\nOther lines...',
+    disabled: true,
+  },
+  {
+    label: 'The label',
+    placeholder: 'No value yet...',
+    multi: true,
+    value: 'Readonly value\nOther lines...',
+    readonly: true,
+  },
+  {
+    label: 'The label', placeholder: 'No value yet...', multi: true, value: 'Skeleton\nOther lines...', skeleton: true,
+  },
 ];
 
 const tagsItems = [
@@ -59,9 +73,12 @@ export default {
 
 const conf = {
   component: 'cc-input-text',
+  displayMode: 'flex-wrap',
+  // language=CSS
   css: `
-    cc-input-text {
-      margin: 0.5rem;
+    cc-input-text[multi] {
+      /* Necessary because the container is a display:flex */
+      width: 100%;
     }
   `,
 };
@@ -81,12 +98,10 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const required = makeStory(conf, {
-  css: `cc-input-text { margin: 1rem 0.5rem; }`,
   items: baseItems.map((p) => ({ ...p, required: true })),
 });
 
 export const helpMessage = makeStory(conf, {
-  css: `cc-input-text { margin: 1rem 0.5rem; }`,
   items: baseItems.map((p) => ({
     ...p,
     required: true,
@@ -95,7 +110,6 @@ export const helpMessage = makeStory(conf, {
 });
 
 export const errorMessage = makeStory(conf, {
-  css: `cc-input-text { margin: 1rem 0.5rem; }`,
   items: baseItems.map((p) => ({
     ...p,
     required: true,
@@ -104,7 +118,6 @@ export const errorMessage = makeStory(conf, {
 });
 
 export const errorMessageWithHelpMessage = makeStory(conf, {
-  css: `cc-input-text { margin: 1rem 0.5rem; }`,
   items: baseItems.map((p) => ({
     ...p,
     required: true,
@@ -116,7 +129,6 @@ export const errorMessageWithHelpMessage = makeStory(conf, {
 });
 
 export const inline = makeStory(conf, {
-  css: `cc-input-text { margin: 1rem 0.5rem; }`,
   items: baseItems.map((p) => ({
     ...p,
     inline: true,
@@ -124,7 +136,6 @@ export const inline = makeStory(conf, {
 });
 
 export const inlineWithRequired = makeStory(conf, {
-  css: `cc-input-text { margin: 1rem 0.5rem; }`,
   items: baseItems.map((p) => ({
     ...p,
     inline: true,
@@ -133,7 +144,6 @@ export const inlineWithRequired = makeStory(conf, {
 });
 
 export const inlineWithErrorAndHelpMessages = makeStory(conf, {
-  css: `cc-input-text { margin: 1rem 0.5rem; }`,
   items: baseItems.map((p) => ({
     ...p,
     inline: true,
@@ -196,17 +206,26 @@ export const tags = makeStory(conf, {
 * Space separated values are highlighted with a colored background.
 * A \`cc-input-text:tags\` event is fired with the array of tags when the value changes (empty values are filtered out).
 * The \`tags\` feature does not work with \`multi\` or \`secret\`.`,
-  css: `cc-input-text { margin: 0.5rem; width: 300px; }`,
+  // language=CSS
+  css: `cc-input-text {
+    width: 300px;
+  }`,
   items: tagsItems,
 });
 
 export const tagsWithClipboard = makeStory(conf, {
-  css: `cc-input-text { margin: 0.5rem; width: 300px; }`,
+  // language=CSS
+  css: `cc-input-text {
+    width: 300px;
+  }`,
   items: tagsItems.map((p) => ({ ...p, clipboard: true })),
 });
 
 export const tagsWithLabel = makeStory(conf, {
-  css: `cc-input-text { margin: 1rem 0.5rem; width: 300px; }`,
+  // language=CSS
+  css: `cc-input-text {
+    width: 300px;
+  }`,
   items: tagsItems.map((p) => ({ ...p, label: 'Tags here' })),
 });
 

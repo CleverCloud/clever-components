@@ -13,11 +13,6 @@ export default {
 
 const conf = {
   component: 'cc-header-orga',
-  css: `
-    cc-header-orga:not(:last-child) {
-      margin-bottom: 1rem;
-    }
-  `,
 };
 
 export const defaultStory = makeStory(conf, {

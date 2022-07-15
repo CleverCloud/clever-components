@@ -12,15 +12,12 @@ export default {
 
 const conf = {
   component: 'cc-beta',
+  displayMode: 'flex-wrap',
 };
 
 export const defaultStory = makeStory(conf, {
+  // language=CSS
   css: `
-    cc-beta {
-      display: inline-block;
-      margin-bottom: 1rem;
-      margin-right: 1rem;
-    }
     cc-beta * {
       background-color: #ddd;
       height: 150px;
@@ -39,12 +36,9 @@ export const defaultStory = makeStory(conf, {
 
 export const withTiles = makeStory(conf, {
   docs: 'Here we set a size to the `<cc-beta>` container and we enable `fill` to make sure the tiles adapt their size to it.',
+  // language=CSS
   css: `
     cc-beta {
-      display: inline-block;
-      margin-bottom: 1rem;
-      margin-right: 1rem;
-      vertical-align: bottom;
       height: 300px;
       width: 300px;
     }
@@ -57,10 +51,9 @@ export const withTiles = makeStory(conf, {
 
 export const withMap = makeStory(conf, {
   docs: 'Here we set a size to the `<cc-beta>` container and we enable `fill` to make sure the map adapt its size to it.',
+  // language=CSS
   css: `
     cc-beta {
-      margin-bottom: 1rem;
-      margin-right: 1rem;
       height: 300px;
       width: 400px;
     }

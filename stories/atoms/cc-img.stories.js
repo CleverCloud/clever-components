@@ -9,11 +9,12 @@ export default {
 
 const conf = {
   component: 'cc-img',
+  displayMode: 'flex-wrap',
+  // language=CSS
   css: `
     cc-img {
       border-radius: 5px;
       height: 50px;
-      margin-right: 1rem;
       width: 50px
     }
   `,

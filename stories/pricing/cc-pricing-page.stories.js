@@ -95,19 +95,16 @@ export const dataLoadedWithCustomStyles = makeStory(conf, {
     cc-pricing-page::part(header) {
       border-radius: 5px;
       box-shadow: 0 0 0.5em #aaa;
-      margin: 0 1em;
       padding: 1em;
     }
 
     cc-pricing-page::part(estimation-selected-plans) {
       border-radius: 5px;
       box-shadow: 0 0 0.5em #aaa;
-      margin: 1em;
     }
 
     cc-pricing-page::part(estimation-recap) {
       box-shadow: 0 0 0.5em #aaa;
-      margin: 1em;
       overflow: hidden;
     }
 
@@ -115,7 +112,6 @@ export const dataLoadedWithCustomStyles = makeStory(conf, {
     cc-pricing-product-consumption {
       border-radius: 5px;
       box-shadow: 0 0 5px #aaa;
-      margin: 1em;
       overflow: hidden;
     }
 
@@ -126,11 +122,6 @@ export const dataLoadedWithCustomStyles = makeStory(conf, {
     h2 {
       font-size: 1.5em;
       font-weight: bold;
-      padding: 1rem 1rem 0;
-    }
-
-    .description {
-      padding: 1em;
     }
   `,
   items: [defaultItem],

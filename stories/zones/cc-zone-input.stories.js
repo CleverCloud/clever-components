@@ -11,10 +11,11 @@ export default {
 const conf = {
   component: 'cc-zone-input',
   // language=CSS
-  css: `cc-zone-input {
-    margin-bottom: 1rem;
-    height: 350px;
-  }`,
+  css: `
+    cc-zone-input {
+      height: 350px;
+    }
+  `,
 };
 
 export const ZONES = [

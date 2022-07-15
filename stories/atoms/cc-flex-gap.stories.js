@@ -9,6 +9,7 @@ export default {
 
 const conf = {
   component: 'cc-flex-gap',
+  // language=CSS
   css: `
     cc-flex-gap {
       background-color: #eee;

@@ -17,11 +17,6 @@ export default {
 
 const conf = {
   component: 'cc-addon-features',
-  css: `
-    cc-addon-features {
-      margin-bottom: 1rem;
-    }
-  `,
 };
 
 export const defaultStory = makeStory(conf, {
