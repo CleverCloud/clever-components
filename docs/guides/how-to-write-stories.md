@@ -168,7 +168,7 @@ is equivalent to this example:
 
 ```js
 export const storyWithOneArg = makeStory({
-  component: 'cc-example-component'
+  component: 'cc-example-component',
   css: `cc-example-component { margin-botton }`,
   docs: 'the real docs',
   items: [{ one: 'ONE', two: false }],
@@ -297,5 +297,27 @@ export const storyWithSimulations = makeStory(conf, {
     },
   },
   items: [{ one: 'ONE', two: false }],
+});
+```
+
+### Change the default display
+
+By default, the container's width is limited (70em).
+
+In some situations, it's better to override the default limited width of the story container.
+You can target the container with `:host` like this:
+
+```js
+export const storyWithFullWidthContainer = makeStory(conf, {
+  // language=CSS
+  css: `
+    :host {
+      max-width: 100% !important;
+    }
+  `,
+  items: [
+    { one: 'ONE', two: false },
+    { one: 'ONE', two: false },
+  ],
 });
 ```

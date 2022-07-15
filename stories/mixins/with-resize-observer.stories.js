@@ -53,6 +53,13 @@ export const defaultStory = () => {
   storyDom.innerHTML = `
     
     <style>
+      html,
+      body {
+        background-color: #fff;
+      }
+      body {
+        margin: 1em;
+      }
       table {
         border-collapse: collapse;
         margin-bottom: 1rem;

@@ -6,7 +6,9 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-...
+## For devs
+
+* storybook: limit the width of the preview (and center it)
 
 ## 8.0.0 (2022-07-01)
 

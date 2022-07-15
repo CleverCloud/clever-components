@@ -49,15 +49,14 @@ export default {
 const conf = {
   component: 'cc-doc-list',
   // language=CSS
-  css: `cc-doc-list {
-    margin-bottom: 1rem;
-    max-width: 70em;
-    width: 100%;
-  }
-  :host {
-    display: grid;
-    justify-items: center;
-  }
+  css: `
+    :host {
+      max-width: 92em !important;
+    }
+
+    cc-doc-list {
+      margin-bottom: 1rem;
+    }
   `,
 };
 

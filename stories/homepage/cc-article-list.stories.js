@@ -57,15 +57,8 @@ const conf = {
   component: 'cc-article-list',
   // language=CSS
   css: `
-    cc-article-list {
-      margin-bottom: 1rem;
-      max-width: 70em;
-      width: 100%;
-    }
-
     :host {
-      display: grid;
-      justify-items: center;
+      max-width: 92em !important;
     }
   `,
 };

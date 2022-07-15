@@ -1,11 +1,26 @@
 <link rel="stylesheet" href="/node_modules/github-markdown-css/github-markdown.css">
 <link rel="stylesheet" href="/node_modules/highlight.js/styles/vs.css">
 <style>
+
+html {
+  background-color: #f2f2f2;
+}
+
 body {
-  /* Sorry Storybook but our components aren't dark mode ready yet ;-) */
-  background-color: #fff;
   font-family: "Nunito Sans", -apple-system, ".SFNSText-Regular", "San Francisco", BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   overflow-y: scroll;
+  margin: 0;
+}
+
+.story-shadow-container {
+  /* Sorry Storybook but our components aren't dark mode ready yet ;-) */
+  background-color: #fff;
+  box-shadow: 0 0 1em #ddd;
+  box-sizing: border-box;
+  margin: 0 auto;
+  max-width: 72em;
+  padding: 1em;
+  width: 100%;
 }
 
 .title {

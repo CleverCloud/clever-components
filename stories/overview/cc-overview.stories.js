@@ -20,6 +20,9 @@ export default {
 const conf = {
   component: 'cc-overview',
   css: `
+    :host {
+      max-width: 100% !important;
+    }
     cc-overview {
       min-height: 750px;
       margin-bottom: 1rem;
@@ -28,6 +31,9 @@ const conf = {
 };
 
 const placeholderCss = `
+  :host {
+    max-width: 100% !important;
+  }
   cc-overview {
     margin-bottom: 1rem;
   }
