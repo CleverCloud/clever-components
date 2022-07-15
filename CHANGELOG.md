@@ -6,6 +6,9 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+...
+## 8.0.1 (2022-07-15)
+
 ### Components
 
 * `<cc-env-var-form>`: fix the reset button not working.
