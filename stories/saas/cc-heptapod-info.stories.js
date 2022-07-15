@@ -9,10 +9,10 @@ export default {
 
 const conf = {
   component: 'cc-heptapod-info',
+  // language=CSS
   css: `
     cc-heptapod-info {
       max-width: 40rem;
-      margin-bottom: 1rem;
     }
   `,
 };

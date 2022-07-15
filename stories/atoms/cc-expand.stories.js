@@ -18,6 +18,7 @@ export const notAStory = () => `@see stories below...`;
 
 export const defaultStory = makeStory(conf, {
   docs: `Change \`.box\` blocks (tomato background) height with the toggle and see how \`cc-expand\` (blue border) adapts its size.`,
+  // language=CSS
   css: `
     .knob {
       margin-bottom: 1rem;

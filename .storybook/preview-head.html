@@ -17,10 +17,18 @@ body {
   background-color: #fff;
   box-shadow: 0 0 1em #ddd;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
   margin: 0 auto;
   max-width: 72em;
   padding: 1em;
   width: 100%;
+}
+
+.story-shadow-container[display-mode="flex-wrap"] {
+  flex-wrap: wrap;
+  flex-direction: row;
 }
 
 .title {

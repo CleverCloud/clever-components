@@ -9,12 +9,6 @@ export default {
 
 const conf = {
   component: 'cc-pricing-product-consumption',
-  // language=CSS
-  css: `
-    cc-pricing-product-consumption {
-      margin-bottom: 1rem;
-    }
-  `,
 };
 
 const THIRTY_DAYS_IN_HOURS = 24 * 30;
@@ -323,7 +317,6 @@ export const dataLoadedWithCustomStyles = makeStory(conf, {
     cc-pricing-product-consumption {
       border-radius: 5px;
       box-shadow: 0 0 5px #aaa;
-      margin: 1rem;
       overflow: hidden;
     }
   `,

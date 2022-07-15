@@ -14,12 +14,6 @@ export default {
 
 const conf = {
   component: 'cc-pricing-product',
-  // language=CSS
-  css: `
-    cc-pricing-product {
-      margin-bottom: 1rem;
-    }
-  `,
 };
 
 export const defaultStory = makeStory(conf, {
@@ -121,11 +115,11 @@ export const dataLoadedWithCustomIcons = makeStory(conf, {
 });
 
 export const dataLoadedWithCustomStyles = makeStory(conf, {
+  // language=CSS
   css: `
     cc-pricing-product {
       border-radius: 5px;
       box-shadow:  0 0 5px #aaa;
-      margin: 1rem;
       overflow: hidden;
     }
   `,
@@ -217,11 +211,11 @@ export const dataLoadedWithTemporalityAll = makeStory(conf, {
 });
 
 export const simulations = makeStory(conf, {
+  // language=CSS
   css: `
     cc-pricing-product {
       border-radius: 5px;
       box-shadow:  0 0 5px #aaa;
-      margin: 1rem;
       overflow: hidden;
     }
   `,

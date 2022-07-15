@@ -9,12 +9,11 @@ export default {
 
 const conf = {
   component: 'cc-map-marker-dot',
+  displayMode: 'flex-wrap',
   // language=CSS
   css: `
     cc-map-marker-dot {
       --cc-map-marker-dot-size: 12px;
-      display: inline-block;
-      margin-right: 1rem;
     }
   `,
 };

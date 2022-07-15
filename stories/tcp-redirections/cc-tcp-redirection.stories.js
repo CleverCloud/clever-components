@@ -9,7 +9,6 @@ export default {
 
 const conf = {
   component: 'cc-tcp-redirection',
-  css: 'cc-tcp-redirection { margin-bottom: 1rem; }',
 };
 
 export const defaultStory = makeStory(conf, {

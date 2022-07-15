@@ -12,6 +12,7 @@ export default {
 
 const conf = {
   component: 'cc-block',
+  // language=CSS
   css: `
     cc-button,
     cc-input-text {

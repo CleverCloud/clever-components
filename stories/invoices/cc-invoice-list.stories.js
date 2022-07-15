@@ -22,10 +22,6 @@ export default {
 
 const conf = {
   component: 'cc-invoice-list',
-  // language=CSS
-  css: `cc-invoice-list {
-    margin-bottom: 1rem;
-  }`,
 };
 
 export const defaultStory = makeStory(conf, {

@@ -26,10 +26,7 @@ export default {
 
 const conf = {
   component: 'cc-datetime-relative',
-  css: `cc-datetime-relative {
-    display: inline-block;
-    margin-right: 1rem;
-  }`,
+  displayMode: 'flex-wrap',
 };
 
 export const now = makeStory(conf, {

@@ -14,10 +14,9 @@ export default {
 const conf = {
   component: 'cc-example-component',
   // You may need to add some CSS just for your stories.
-  // It's often needed to add some margin around your component.
   // language=CSS
   css: `cc-example-component {
-    margin-bottom: 1rem;
+    max-width: 30em;
   }`,
 };
 

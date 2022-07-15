@@ -10,9 +10,6 @@ export default {
 
 const conf = {
   component: 'cc-pricing-header',
-  css: `cc-pricing-header {
-    margin-bottom: 1rem;
-  }`,
 };
 
 const defaultItem = {
@@ -40,8 +37,7 @@ export const dataLoadedWithCustomStyles = makeStory(conf, {
     cc-pricing-header {
       border-radius: 5px;
       box-shadow: 0 0 0.5rem #aaa;
-      margin: 1rem;
-      padding: 1rem;
+      padding: 1em;
     }
   `,
   items: [defaultItem],

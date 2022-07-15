@@ -5,7 +5,7 @@ import { sequence } from './sequence.js';
 export function makeStory (...configs) {
 
   const {
-    name, docs, css, component, dom, items: rawItems = [{}], simulations = [], argTypes,
+    name, docs, css, component, dom, items: rawItems = [{}], simulations = [], argTypes, displayMode,
   } = Object.assign({}, ...configs);
 
   // In some rare conditions, we need to instanciate the items on story rendering (and each time it renders)
@@ -21,6 +21,7 @@ export function makeStory (...configs) {
     const container = document.createElement('div');
     // We use this for i18n HMR
     container.classList.add('story-shadow-container');
+    container.setAttribute('display-mode', displayMode);
     const shadow = container.attachShadow({ mode: 'open' });
 
     // If we have some custom CSS we add it in the shadow tree

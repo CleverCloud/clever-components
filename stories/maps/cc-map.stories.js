@@ -41,15 +41,7 @@ export default {
 
 const conf = {
   component: 'cc-map',
-  // language=CSS
-  css: `
-    cc-map {
-      display: inline-flex;
-      margin-bottom: 1rem;
-      margin-right: 1rem;
-      vertical-align: bottom;
-    }
-  `,
+  displayMode: 'flex-wrap',
 };
 
 export const defaultStory = makeStory(conf, {

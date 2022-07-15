@@ -9,6 +9,7 @@ title: Changelog
 ## For devs
 
 * storybook: limit the width of the preview (and center it)
+* storybook: add a `displayMode` option in `makeStory` to simplify story layout and code
 
 ## 8.0.0 (2022-07-01)
 

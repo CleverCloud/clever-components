@@ -43,11 +43,7 @@ export default {
 
 const conf = {
   component: 'cc-badge',
-  // language=CSS
-  css: `cc-badge {
-    margin-right: 1em;
-    margin-bottom: 1em;
-  }`,
+  displayMode: 'flex-wrap',
 };
 
 export const dimmed = makeStory(conf, {

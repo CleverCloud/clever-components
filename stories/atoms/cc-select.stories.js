@@ -31,10 +31,7 @@ export default {
 
 const conf = {
   component: 'cc-select',
-  // language=CSS
-  css: `cc-select {
-    margin-right: 1em;
-  }`,
+  displayMode: 'flex-wrap',
 };
 
 export const defaultStory = makeStory(conf, {
@@ -103,7 +100,6 @@ export const errorMessageWithHelpMessage = makeStory(conf, {
 });
 
 export const inline = makeStory(conf, {
-  css: `cc-select { margin: 1rem 0.5rem; }`,
   items: [
     {
       label: 'The label',
@@ -120,7 +116,6 @@ export const inline = makeStory(conf, {
 });
 
 export const inlineWithRequired = makeStory(conf, {
-  css: `cc-select { margin: 1rem 0.5rem; }`,
   items: [
     {
       label: 'The label',
@@ -139,7 +134,6 @@ export const inlineWithRequired = makeStory(conf, {
 });
 
 export const inlineWithErrorAndHelpMessages = makeStory(conf, {
-  css: `cc-select { margin: 1rem 0.5rem; }`,
   items: [
     {
       label: 'The label',

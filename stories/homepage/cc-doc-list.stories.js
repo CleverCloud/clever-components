@@ -53,10 +53,6 @@ const conf = {
     :host {
       max-width: 92em !important;
     }
-
-    cc-doc-list {
-      margin-bottom: 1rem;
-    }
   `,
 };
 

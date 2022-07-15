@@ -14,11 +14,6 @@ export default {
 
 const conf = {
   component: 'cc-error',
-  css: `
-    cc-error {
-      margin-bottom: 1rem;
-    }
-  `,
 };
 
 export const defaultStory = makeStory(conf, {

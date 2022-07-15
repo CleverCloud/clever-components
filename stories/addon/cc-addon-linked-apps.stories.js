@@ -72,11 +72,6 @@ export default {
 
 const conf = {
   component: 'cc-addon-linked-apps',
-  css: `
-    cc-addon-linked-apps {
-      margin-bottom: 1rem;
-    }
-  `,
 };
 
 export const defaultStory = makeStory(conf, {

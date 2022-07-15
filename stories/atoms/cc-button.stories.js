@@ -23,9 +23,11 @@ export default {
 
 const conf = {
   component: 'cc-button',
+  displayMode: 'flex-wrap',
+  // language=CSS
   css: `
-    cc-button {
-      margin: 0.5rem;
+    :host {
+      align-items: center;
     }
   `,
 };

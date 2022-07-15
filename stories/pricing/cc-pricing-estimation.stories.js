@@ -11,11 +11,6 @@ export default {
 
 const conf = {
   component: 'cc-pricing-estimation',
-  css: `
-    cc-pricing-estimation {
-      margin-bottom: 1rem;
-    }
-  `,
 };
 
 const pgExample = {

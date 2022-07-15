@@ -24,10 +24,6 @@ export default {
 
 const conf = {
   component: 'cc-env-var-editor-json',
-  // language=CSS
-  css: `cc-env-var-editor-json {
-    margin-bottom: 1rem;
-  }`,
 };
 
 export const defaultStory = makeStory(conf, {

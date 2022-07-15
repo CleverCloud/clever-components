@@ -19,23 +19,22 @@ export default {
 
 const conf = {
   component: 'cc-overview',
+  displayMode: 'blocks',
+  // language=CSS
   css: `
     :host {
       max-width: 100% !important;
     }
     cc-overview {
       min-height: 750px;
-      margin-bottom: 1rem;
     }
   `,
 };
 
+// language=CSS
 const placeholderCss = `
   :host {
     max-width: 100% !important;
-  }
-  cc-overview {
-    margin-bottom: 1rem;
   }
   cc-overview * {
     background-color: #eee;

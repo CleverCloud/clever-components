@@ -16,12 +16,13 @@ export default {
 
 const conf = {
   component: 'cc-tile-status-codes',
-  css: `cc-tile-status-codes {
-    display: inline-grid;
-    margin-bottom: 1rem;
-    margin-right: 1rem;    
-    width: 275px;
-  }`,
+  displayMode: 'flex-wrap',
+  // language=CSS
+  css: `
+    cc-tile-status-codes {
+      width: 275px;
+    }
+  `,
 };
 
 export const defaultStory = makeStory(conf, {

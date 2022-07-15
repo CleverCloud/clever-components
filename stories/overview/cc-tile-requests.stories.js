@@ -62,11 +62,14 @@ export default {
 
 const conf = {
   component: 'cc-tile-requests',
+  displayMode: 'flex-wrap',
+  // language=CSS
   css: `
+    :host {
+      max-width: 100% !important;
+    }
     cc-tile-requests {
-      display: inline-grid;
-      margin-bottom: 1rem;
-      margin-right: 1rem;
+      width: 275px;
     }
   `,
 };
