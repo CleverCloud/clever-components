@@ -1,9 +1,20 @@
 import { hmrPlugin, presets } from '@open-wc/dev-server-hmr';
+import { generateCustomElementsManifest } from './tasks/cem-analyzer.js';
+
+// This plugin generates and serves the CEM on demand.
+const cemAnalyzerPlugin = {
+  name: 'cem-analyzer-plugin',
+  async serve (context) {
+    if (context.path === '/dist/custom-elements.json') {
+      return generateCustomElementsManifest();
+    }
+  },
+};
 
 export default {
   port: 7777,
   nodeResolve: true,
-  // watch: true,
+  watch: true,
   mimeTypes: {},
   plugins: [
     {
@@ -48,5 +59,6 @@ export default {
       include: ['src/**/*'],
       presets: [presets.litElement],
     }),
+    cemAnalyzerPlugin,
   ],
 };

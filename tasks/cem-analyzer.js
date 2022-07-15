@@ -11,7 +11,9 @@ export async function generateCustomElementsManifest () {
   const tmpDir = 'node_modules/.tmp-cem';
   await fs.mkdir(tmpDir, { recursive: true });
 
-  spawnSync('npx', ['cem', 'analyze', '--litelement', '--outdir', tmpDir]);
+  const result = spawnSync('npx', ['cem', 'analyze', '--litelement', '--outdir', tmpDir]);
+  console.log(result.stdout.toString());
+  console.log(result.stderr.toString());
   const cemJson = await fs.readFile(tmpDir + '/custom-elements.json', 'utf8');
 
   // Rollback the package.json

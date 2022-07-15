@@ -12,6 +12,7 @@ fs.mkdirSync('dist', { recursive: true });
 
 export default {
   globs: ['src/**/cc-*.js'],
+  // globs: ['src/**/cc-*.js', '!src/components'],
   // dev: true,
   // watch: true,
   plugins: [

@@ -24,7 +24,7 @@ const SKELETON_INSTANCES = {
 };
 
 /**
- * @typedef {import('./types.js').InstancesState} InstancesState
+ * @__typedef {import('./types.js').InstancesState} InstancesState
  */
 
 /**

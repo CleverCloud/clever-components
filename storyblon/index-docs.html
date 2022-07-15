@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>@Storyblon</title>
+  <style>
+  html,
+  body {
+    margin: 0;
+    height: 100%;
+  }
+
+  body {
+    background-color: #fff;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr min-content;
+    box-sizing: border-box;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  }
+
+  .main {
+    overflow: auto;
+  }
+
+  api-docs {
+    max-width: unset;
+    margin: 1em;
+  }
+
+  api-docs.hidden {
+    visibility: hidden;
+  }
+
+  .component-list {
+    background-color: #eee;
+    grid-column: 1 / -1;
+    padding: 0.5em 1em;
+    gap: 1em;
+    display: flex;
+  }
+  </style>
+  <script type="module" src="https://cdn.skypack.dev/@api-viewer/docs"></script>
+  <script type="module">
+  {
+
+    const componentName = new URL(location.href).searchParams.get('component') ?? 'cc-tile-instances';
+    const completeJson = await fetch('/dist/custom-elements.json').then((r) => r.json());
+    const componentModule = completeJson.modules.find((m) => m.path.endsWith(`/${componentName}.js`));
+    const componentJson = {
+      ...completeJson,
+      modules: [componentModule],
+    };
+    console.log(componentJson);
+    const blob = new Blob([JSON.stringify(componentJson)], { type: 'application/json' });
+    const jsonUrl = URL.createObjectURL(blob);
+    const $apiDocs = document.querySelector('api-docs');
+    $apiDocs.src = jsonUrl;
+    setTimeout(() => {
+      $apiDocs.classList.remove('hidden');
+    }, 100);
+  }
+  </script>
+</head>
+<body>
+<div class="main">
+  <api-docs class="hidden"></api-docs>
+</div>
+<div class="component-list">
+  <a href="index.html">HOME</a>
+  <a href="index-docs.html?component=cc-button">cc-button</a>
+  <a href="index-docs.html?component=cc-input-text">cc-input-text</a>
+  <a href="index-docs.html?component=cc-header-app">cc-header-app</a>
+  <a href="index-docs.html?component=cc-tile-instances">cc-tile-instances</a>
+  <a href="index-docs.html?component=cc-warning-payment">cc-warning-payment</a>
+</div>
+</body>
+</html>

@@ -15,8 +15,21 @@
     margin: 1em;
   }
 
+  body {
+    margin: 1em;
+  }
+
   body > * {
-    margin-bottom: 1em;
+    margin: 0;
+  }
+
+  .properties {
+    background-color: #eee;
+    font-family: monospace;
+    font-size: 0.85em;
+    word-break: break-all;
+    white-space: pre-wrap;
+    margin: 0.5em 0;
   }
   </style>
   <script type="module">
@@ -43,10 +56,36 @@
   }
   import((`/src/components/${componentName}/${componentName}.variants.js`)).then(({ variants, style }) => {
     const $fragment = document.createDocumentFragment();
+    variants.length = Math.min(variants.length, 20);
     for (const properties of variants) {
+      const $div = document.createElement('div');
+      $div.classList.add('properties');
+      $div.innerHTML = Object
+        .entries(properties)
+        .map(([k, v]) => {
+          let value = JSON.stringify(v);
+          if (v === true) {
+            value = 'Ⓣ';
+          }
+          if (v === false) {
+            value = 'Ⓕ';
+          }
+          if (v === null) {
+            value = 'Ⓝ';
+          }
+          if (v === undefined) {
+            value = 'Ⓤ';
+          }
+          return `${k}=${value}`;
+        })
+        .join(' ');
+      $fragment.appendChild($div);
+
       const $component = document.createElement(componentName);
       for (const [name, value] of Object.entries(properties)) {
-        $component[name] = value;
+        if (value !== undefined) {
+          $component[name] = value;
+        }
       }
       $fragment.appendChild($component);
     }

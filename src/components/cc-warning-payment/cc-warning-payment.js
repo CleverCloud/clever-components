@@ -7,8 +7,8 @@ import { linkStyles } from '../../templates/cc-link.js';
 const warningSvg = new URL('../../assets/warning.svg', import.meta.url).href;
 
 /**
- * @typedef {import('./types.js').PaymentMethodError} PaymentMethodError
- * @typedef {import('./types.js').PaymentWarningModeType} PaymentWarningModeType
+ * @__typedef {import('./types.js').PaymentMethodError} PaymentMethodError
+ * @__typedef {import('./types.js').PaymentWarningModeType} PaymentWarningModeType
  */
 
 /**

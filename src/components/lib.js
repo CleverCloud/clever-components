@@ -34,3 +34,19 @@ export function getVariants (config, variants = [{}]) {
   });
   return getVariants(nextConfig, nextVariants);
 }
+
+export async function getVariantsFromComponent (componentName) {
+
+  const completeJson = await fetch('/dist/custom-elements.json').then((r) => r.json());
+  const componentModule = completeJson.modules.find((m) => m.path.endsWith(`/${componentName}.js`));
+
+  console.log(componentModule);
+
+  const propertiesFromCem = componentModule.declarations[0].members
+    ?.filter((m) => {
+      return m.kind === 'field' && m?.type?.text === 'boolean';
+    })
+    ?.map((m) => [m.name, [false, true]]);
+
+  return Object.fromEntries(propertiesFromCem);
+}
