@@ -116,6 +116,7 @@ export class CcEnvVarEditorExpert extends LitElement {
   }
 
   _onInput ({ detail: value }) {
+    this._variablesAsText = value;
     const { variables, errors } = parseRaw(value, this.parserOptions);
     this._setErrors(errors);
     dispatchCustomEvent(this, 'change', variables);

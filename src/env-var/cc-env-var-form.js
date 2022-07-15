@@ -168,13 +168,27 @@ export class CcEnvVarForm extends LitElement {
       this._expertVariables = this._currentVariables;
     }
     else if (mode === 'JSON') {
-      this._jsonVariables = this._currentVariables;
+      // clone to force an update/reset of the json form
+      this._jsonVariables = [...this._currentVariables];
     }
     this._mode = mode;
   }
 
-  _onResetForm () {
-    this.variables = this._initVariables;
+  _resetForm (variables) {
+    this._initVariables = variables;
+    this._isPristine = true;
+    if (variables == null) {
+      this._currentVariables = null;
+      this._expertVariables = null;
+      this._jsonVariables = null;
+    }
+    else {
+      // WARN: Array.prototype.sort edits in place
+      const sortedVariables = [...variables].sort((a, b) => a.name.localeCompare(b.name));
+      this._currentVariables = sortedVariables;
+      this._expertVariables = sortedVariables;
+      this._jsonVariables = sortedVariables;
+    }
   }
 
   _onUpdateForm () {
@@ -216,18 +230,7 @@ export class CcEnvVarForm extends LitElement {
     }
 
     if (changedProperties.has('variables')) {
-      this._initVariables = this.variables;
-      this._isPristine = true;
-      if (this.variables == null) {
-        this._currentVariables = null;
-        this._expertVariables = null;
-        this._jsonVariables = null;
-      }
-      else {
-        this._currentVariables = this.variables.sort((a, b) => a.name.localeCompare(b.name));
-        this._expertVariables = this.variables.sort((a, b) => a.name.localeCompare(b.name));
-        this._jsonVariables = this.variables.sort((a, b) => a.name.localeCompare(b.name));
-      }
+      this._resetForm(this.variables);
     }
     super.update(changedProperties);
   }
@@ -309,7 +312,7 @@ export class CcEnvVarForm extends LitElement {
       ${!this.readonly ? html`
         <cc-flex-gap class="button-bar">
 
-          <cc-button ?disabled=${isFormDisabled} @cc-button:click=${this._onResetForm}>${i18n('cc-env-var-form.reset')}</cc-button>
+          <cc-button @cc-button:click=${() => this._resetForm(this._initVariables)}>${i18n('cc-env-var-form.reset')}</cc-button>
 
           <div class="spacer"></div>
 
