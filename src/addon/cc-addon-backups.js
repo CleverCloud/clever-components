@@ -399,6 +399,10 @@ export class CcAddonBackups extends LitElement {
           margin-right: 0.5rem;
           vertical-align: baseline;
         }
+
+        cc-input-text {
+          --cc-input-font-family: var(--cc-ff-monospace, monospace);
+        }
       `,
     ];
   }

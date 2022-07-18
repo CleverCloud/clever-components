@@ -51,6 +51,8 @@ function arrayEquals (a, b) {
  * @event {CustomEvent} cc-input-text:requestimplicitsubmit - Fires when enter key is pressed in simple mode, in tags mode or when ctrl+enter is pressed in multi mode.
  * @event {CustomEvent<string[]>} cc-input-text:tags - Fires an array of tags whenever the `value` changes (separated by spaces).
  *
+ * @cssprop {FontFamily} --cc-input-font-family - The font-family for the input content (defaults: `inherit`).
+ *
  * @slot error - The error message to be displayed below the `<input>` element or below the help text. Please use a `<p>` tag.
  * @slot help - The help message to be displayed right below the `<input>` element. Please use a `<p>` tag.
  */
@@ -454,7 +456,7 @@ export class CcInputText extends LitElement {
           border: 1px solid #000;
           box-sizing: border-box;
           display: block;
-          font-family: monospace;
+          font-family: inherit;
           font-size: unset;
           margin: 0;
           padding: 0;
@@ -466,7 +468,7 @@ export class CcInputText extends LitElement {
         .input {
           background: none;
           border: none;
-          font-family: var(--cc-ff-monospace);
+          font-family: var(--cc-input-font-family, inherit);
           font-size: 0.85em;
           grid-area: 1 / 1 / 2 / 2;
           /* multiline behaviour */
@@ -510,6 +512,7 @@ export class CcInputText extends LitElement {
           height: auto;
           padding: 0 3px;
           word-break: break-all;
+          word-spacing: 1ch;
         }
 
         .input-underlayer {
@@ -526,7 +529,7 @@ export class CcInputText extends LitElement {
           --color: var(--color-bg-soft);
           background-color: var(--color);
           border-radius: 3px;
-          box-shadow: 0 0 0 2px var(--color);
+          font-family: var(--cc-input-font-family, inherit);
           padding: 1px 0;
         }
 

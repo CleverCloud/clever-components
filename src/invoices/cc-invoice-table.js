@@ -161,7 +161,7 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
         /*region COMMON*/
         /* we should use a class (something like "number-value") but it's not possible right now in i18n */
         code {
-          font-family: var(--cc-ff-monospace);
+          font-family: var(--cc-ff-monospace, monospace);
           font-size: 1rem;
         }
 

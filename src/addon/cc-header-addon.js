@@ -201,6 +201,10 @@ export class CcHeaderAddon extends LitElement {
           cursor: help;
         }
 
+        cc-input-text {
+          --cc-input-font-family: var(--cc-ff-monospace, monospace);
+        }
+
         /* SKELETON */
         .skeleton {
           background-color: #bbb;

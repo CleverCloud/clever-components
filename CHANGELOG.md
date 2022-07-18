@@ -6,10 +6,22 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+### ⚠️ BREAKING CHANGES
+
+* `<cc-input-text>`: 
+  * change default font-family to inherit instead of monospace (BREAKING CHANGE),
+  * add CSS Custom Prop to change the `<input>` font-family.
+* `<cc-input-number>`:
+  * change default font-family to inherit instead of monospace (BREAKING CHANGE),
+  * add CSS Custom Prop to change the `<input>` font-family.
+
+### Components
+
 * Replace error state after user action by `cc-toast` notification (`cc-grafana-info`, `cc-tcp-redirection-form`, `cc-env-var-form`). 
 * New components:
   * `<cc-toaster>`
   * `<cc-toast>`
+
 ...
 ## 8.0.1 (2022-07-15)
 

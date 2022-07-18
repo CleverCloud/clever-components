@@ -173,6 +173,10 @@ export class CcEnvVarCreate extends LitElement {
           flex: 100 1 20rem;
         }
 
+        cc-input-text {
+          --cc-input-font-family: var(--cc-ff-monospace, monospace);
+        }
+
         cc-button {
           align-self: flex-start;
           flex: 1 1 6rem;
@@ -187,7 +191,7 @@ export class CcEnvVarCreate extends LitElement {
         cc-error code {
           background-color: var(--color-bg-neutral);
           border-radius: 0.25rem;
-          font-family: var(--cc-ff-monospace);
+          font-family: var(--cc-ff-monospace, monospace);
           padding: 0.15rem 0.3rem;
         }
       `,

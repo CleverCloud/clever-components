@@ -138,7 +138,7 @@ export class CcEnvVarInput extends LitElement {
           box-sizing: border-box;
           display: inline-block;
           flex: 1 1 15rem;
-          font-family: var(--cc-ff-monospace);
+          font-family: var(--cc-ff-monospace, monospace);
           /* I have a bug on Linux between Chrome and FF with rem on inputs */
           font-size: 14px;
           line-height: 1.4rem;
@@ -169,6 +169,10 @@ export class CcEnvVarInput extends LitElement {
           align-self: flex-start;
           flex: 1 1 6rem;
           white-space: nowrap;
+        }
+
+        cc-input-text {
+          --cc-input-font-family: var(--cc-ff-monospace, monospace);
         }
       `,
     ];

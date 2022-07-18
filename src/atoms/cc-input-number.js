@@ -22,6 +22,7 @@ const decrementSvg = new URL('../assets/decrement.svg', import.meta.url).href;
  * @event {CustomEvent} cc-input-number:requestimplicitsubmit - Fires when enter key is pressed.
  *
  * @cssprop {Align} --cc-input-number-align - Change the alignment of the number present in the input (defaults: `right`).
+ * @cssprop {FontFamily} --cc-input-font-family - The font-family for the input content (defaults: `inherit`).
  *
  * @slot error - The error message to be displayed below the `<input>` element or below the help text. Please use a `<p>` tag.
  * @slot help - The help message to be displayed right below the `<input>` element. Please use a `<p>` tag.
@@ -326,7 +327,7 @@ export class CcInputNumber extends LitElement {
           border: 1px solid #000;
           box-sizing: border-box;
           display: block;
-          font-family: monospace;
+          font-family: inherit;
           font-size: unset;
           margin: 0;
           padding: 0;
@@ -350,7 +351,7 @@ export class CcInputNumber extends LitElement {
         input {
           background: none;
           border: none;
-          font-family: var(--cc-ff-monospace);
+          font-family: var(--cc-input-font-family, inherit);
           font-size: 0.85em;
           grid-area: 1 / 1 / 2 / 2;
           /* 2em with a 0.85em font-size ~ 1.7em */
