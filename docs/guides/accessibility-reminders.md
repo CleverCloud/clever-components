@@ -47,9 +47,14 @@ These do not make sense for a decorative `<svg>` and screen readers may try to a
 
 ## The `title` attribute
 
-We only use this attribute on interactive elements that contain only an image and no text (a close button containing an icon, a "+" button, etc.).
+We only use this attribute on interactive elements that contain only an image and no text (a close button containing an "x" icon, a "+" button, etc.).
 
-When we use this element, it should always be as a `description` and not as an `accessible name` (`aria-labelledby`, `aria-label`, content, `for / id`) because it is not robust enough.
+When we use this attribute, it should always be as a `description` and not as an `accessible name` because it is not robust enough.
+
+To use the `title` as a description, you must provide an accessible name:
+
+* use the `alt` attribute value if the button contains only an `<img>` tag.
+* use a visually hidden text if the button contains only a `<svg>` tag and hide the `<svg>` with `aria-hidden="true"`.
 
 ### Example
 This means that for a close button, we do this:
@@ -58,7 +63,14 @@ This means that for a close button, we do this:
   <img src="..." alt="Close this notification">
 </button>
 ```
-
+Or with an <svg>:
+```html
+<button title="Close this notification">
+  <svg aria-hidden="true">
+  </svg>
+  <span class="visually-hidden">Close this notification</span>
+</button>
+```
 **Note**: This means we provide redundant info for screen reader users (description = accessible name).
 These cases are rare because we try to provide a text next to the icon as much as possible (in which case, a `title` is unnecessary)
 
