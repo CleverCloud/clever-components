@@ -78,7 +78,6 @@ export class CcTcpRedirectionForm extends LitElement {
               ?skeleton=${skeleton}
               ?waiting=${redirection.waiting}
               ?private=${redirection.private}
-              ?error=${redirection.error}
             ></cc-tcp-redirection>
           `)}
         ` : ''}

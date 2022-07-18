@@ -2,7 +2,6 @@ import '../atoms/cc-loader.js';
 import '../molecules/cc-error.js';
 import './cc-env-var-form.js';
 import { css, html, LitElement } from 'lit-element';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { i18n } from '../lib/i18n.js';
 import { defaultThemeStyles } from '../styles/default-theme.js';
 
@@ -120,7 +119,10 @@ export class CcEnvVarLinkedServices extends LitElement {
       ${!this.error && this.services?.length > 0 ? html`
         <div class="service-list">
           ${this.services.map((s) => html`
-            <cc-env-var-form readonly .variables=${s.variables} heading=${this._getServiceHeading(s.name)} error="${ifDefined(s.error)}">
+            <cc-env-var-form readonly 
+                             .variables=${s.variables} 
+                             heading=${this._getServiceHeading(s.name)} 
+                             ?error="${s.error}">
               ${this._getServiceDescription(s.name)}
             </cc-env-var-form>
           `)}

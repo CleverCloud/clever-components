@@ -1,10 +1,11 @@
 import './cc-env-var-form.js';
 import '../smart/cc-smart-container.js';
 import { get as getAddon } from '@clevercloud/client/esm/api/v2/addon.js';
+import { i18n } from '../lib/i18n.js';
+import { notifyError, notifySuccess } from '../lib/notifications.js';
 import { fromCustomEvent, LastPromise, map, merge, unsubscribeWithSignal, withLatestFrom } from '../lib/observables.js';
 import { sendToApi } from '../lib/send-to-api.js';
 import { defineComponent } from '../lib/smart-manager.js';
-import { addErrorType } from '../lib/utils.js';
 
 defineComponent({
   selector: 'cc-env-var-form[context="config-provider"]',
@@ -28,13 +29,12 @@ defineComponent({
 
     const onSubmit$ = fromCustomEvent(component, 'cc-env-var-form:submit')
       .pipe(withLatestFrom(contextWithRealAddonId$));
-    const onDismissedErrors$ = fromCustomEvent(component, 'cc-env-var-form:dismissed-error');
 
     unsubscribeWithSignal(disconnectSignal, [
 
       error$.subscribe(console.error),
-      error$.subscribe((error) => {
-        component.error = error.type;
+      error$.subscribe(() => {
+        component.error = true;
         component.saving = false;
       }),
       addon_lp.value$.subscribe((addon) => {
@@ -48,30 +48,30 @@ defineComponent({
 
       onSubmit$.subscribe(([variables, { apiConfig, realAddonId }]) => {
 
-        component.error = null;
+        component.error = false;
         component.saving = true;
 
-        variables_lp.push(() => {
-          return updateConfiguration({ apiConfig, realAddonId, variables })
-            .then(() => variables)
-            .catch(addErrorType('saving'));
-        });
-      }),
-
-      onDismissedErrors$.subscribe(() => {
-        component.error = null;
-        component.saving = false;
+        updateConfiguration({ apiConfig, realAddonId, variables })
+          .then(() => {
+            component.variables = variables;
+            notifySuccess(component, i18n('cc-env-var-form.update.success'));
+          })
+          .catch(() => notifyError(component, i18n('cc-env-var-form.update.error')))
+          .finally(() => {
+            component.saving = false;
+          });
       }),
 
       context$.subscribe(({ apiConfig, ownerId, addonId }) => {
 
-        component.error = null;
+        component.error = false;
         component.saving = false;
         component.variables = null;
 
         if (apiConfig != null && ownerId != null && addonId != null) {
+
           addon_lp.push((signal) => {
-            return fetchAddon({ apiConfig, signal, ownerId, addonId }).catch(addErrorType('loading'));
+            return fetchAddon({ apiConfig, signal, ownerId, addonId });
           });
         }
       }),
@@ -79,7 +79,7 @@ defineComponent({
       contextWithRealAddonId$.subscribe(({ apiConfig, realAddonId }) => {
         if (apiConfig != null && realAddonId != null) {
           variables_lp.push((signal) => {
-            return fetchConfiguration({ apiConfig, signal, realAddonId }).catch(addErrorType('loading'));
+            return fetchConfiguration({ apiConfig, signal, realAddonId });
           });
         }
       }),
@@ -89,6 +89,7 @@ defineComponent({
 });
 
 function fetchAddon ({ apiConfig, signal, ownerId, addonId }) {
+
   return getAddon({ id: ownerId, addonId }).then(sendToApi({ apiConfig, signal }));
 }
 
@@ -97,7 +98,8 @@ async function fetchConfiguration ({ apiConfig, signal, realAddonId }) {
 }
 
 async function updateConfiguration ({ apiConfig, signal, realAddonId, variables }) {
-  return updateConfigProviderEnv({ realAddonId }, variables).then(sendToApi({ apiConfig, signal }));
+  return updateConfigProviderEnv({ realAddonId }, variables)
+    .then(sendToApi({ apiConfig, signal }));
 }
 
 // TODO clever-client

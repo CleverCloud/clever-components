@@ -1,4 +1,4 @@
-export type GrafanaErrorType = "resetting" | "loading" | "disabling" | "enabling" | "link-grafana" | false;
+export type GrafanaErrorType = "loading" | "link-grafana" | false;
 
 export type GrafanaStatusType = "enabled" | "disabled" | null;
 

@@ -16,7 +16,6 @@ import { linkStyles } from '../templates/cc-link.js';
 
 /**
  * @typedef {import('./types.js').ContextType} ContextType
- * @typedef {import('./types.js').ErrorType} ErrorType
  * @typedef {import('./types.js').Variable} Variable
  */
 
@@ -30,7 +29,6 @@ import { linkStyles } from '../templates/cc-link.js';
  *
  * @cssdisplay block
  *
- * @event {CustomEvent} cc-env-var-form:dismissed-error - Fires the type of error that was dismissed when the error button of an error message is clicked.
  * @event {CustomEvent} cc-env-var-form:restart-app - Fires whenever the restart app button is clicked.
  * @event {CustomEvent<Variable[]>} cc-env-var-form:submit - Fires the new list of variables whenever the submit button is clicked.
  *
@@ -43,7 +41,7 @@ export class CcEnvVarForm extends LitElement {
       addonName: { type: String, attribute: 'addon-name' },
       appName: { type: String, attribute: 'app-name' },
       context: { type: String, reflect: true },
-      error: { type: String, reflect: true },
+      error: { type: Boolean, reflect: true },
       heading: { type: String, reflect: true },
       parserOptions: { type: Object, attribute: 'parser-options' },
       readonly: { type: Boolean, reflect: true },
@@ -71,8 +69,8 @@ export class CcEnvVarForm extends LitElement {
     /** @type {ContextType} Defines where the form will be used so it can display the appropriate heading and description. */
     this.context = null;
 
-    /** @type {ErrorType} Displays an error message (saving or loading). */
-    this.error = null;
+    /** @type {boolean} Whether to displays a loading error message. */
+    this.error = false;
 
     /** @type {string|null} Sets a text to be used as a header title. */
     this.heading = null;
@@ -115,16 +113,6 @@ export class CcEnvVarForm extends LitElement {
       { label: i18n('cc-env-var-form.mode.expert'), value: 'EXPERT' },
       { label: 'JSON', value: 'JSON' },
     ];
-  }
-
-  _getErrorMessage () {
-    if (this.error === 'loading') {
-      return i18n('cc-env-var-form.error.loading');
-    }
-    if (this.error === 'saving') {
-      return i18n('cc-env-var-form.error.saving');
-    }
-    return i18n('cc-env-var-form.error.unknown');
   }
 
   _onChange ({ detail: changedVariables }) {
@@ -237,9 +225,9 @@ export class CcEnvVarForm extends LitElement {
 
   render () {
 
-    const isEditorDisabled = (this.saving || this.error != null);
+    const isEditorDisabled = (this.saving || this.error);
     const isFormDisabled = (this._currentVariables == null || this._isPristine || isEditorDisabled);
-    const hasOverlay = this.saving || this.error != null;
+    const hasOverlay = this.saving || this.error;
 
     return html`
       <div class="header">
@@ -292,15 +280,9 @@ export class CcEnvVarForm extends LitElement {
           ></cc-env-var-editor-json>
         </cc-expand>
 
-        ${this.error === 'loading' ? html`
+        ${this.error ? html`
           <div class="error-container">
-            <cc-error mode="info">${this._getErrorMessage()}</cc-error>
-          </div>
-        ` : ''}
-
-        ${this.error === 'saving' ? html`
-          <div class="error-container">
-            <cc-error mode="confirm" @cc-error:ok=${() => dispatchCustomEvent(this, 'dismissed-error')}>${this._getErrorMessage()}</cc-error>
+            <cc-error mode="info">${i18n('cc-env-var-form.error.loading')}</cc-error>
           </div>
         ` : ''}
 

@@ -57,4 +57,29 @@ body {
 .sbdocs-pre > div {
   margin: 1em 0;
 }
+cc-toaster.main {
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 1em;
+  z-index: 4000;
+}
+
 </style>
+<script type="module">
+  const toaster = document.createElement('cc-toaster');
+  toaster.className = 'main';
+  toaster.toastDefaultOptions = {
+    closeable: true,
+    showProgress: true,
+    timeout: 3000,
+  };
+  toaster.position = 'top-right';
+  toaster.animation = 'fade-and-slide';
+
+  document.addEventListener('cc:notify', (e) => {
+    toaster.show(e.detail);
+  });
+
+  document.body.appendChild(toaster);
+</script>

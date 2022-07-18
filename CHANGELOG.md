@@ -6,6 +6,7 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+* Replace error state after user action by `cc-toast` notification (`cc-grafana-info`, `cc-tcp-redirection-form`, `cc-env-var-form`). 
 * New components:
   * `<cc-toaster>`
   * `<cc-toast>`

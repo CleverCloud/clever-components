@@ -50,7 +50,7 @@ export function observeContainer (container, signal) {
 
 /**
  * @param {SmartComponentDefinition} definition
- * @param {(AbortSignal|null)} signal
+ * @param {AbortSignal?} signal
  */
 export function defineComponent (definition, signal) {
 

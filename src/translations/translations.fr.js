@@ -262,8 +262,6 @@ export const translations = {
   'cc-env-var-form.description.env-var': ({ appName }) => sanitize`Ces variables eront injectées en tant que variables d'environnement dans l'application <strong>${appName}</strong>. <a href="https://doc.clever-cloud.com/admin-console/environment-variables/">En savoir plus</a>`,
   'cc-env-var-form.description.exposed-config': ({ appName }) => sanitize`Configuration publiée pour les applications dépendantes. <a href="https://www.clever-cloud.com/doc/admin-console/service-dependencies/">En savoir plus</a><br>Ces variables ne seront pas injectées dans l'application <strong>${appName}</strong>, elles seront injectées en tant que variables d'environnement dans les applications qui ont <strong>${appName}</strong> dans leurs services liés.`,
   'cc-env-var-form.error.loading': `Une erreur est survenue pendant le chargement des variables.`,
-  'cc-env-var-form.error.saving': `Une erreur est survenue pendant la mise à jour des variables.`,
-  'cc-env-var-form.error.unknown': `Une erreur est survenue...`,
   'cc-env-var-form.heading.config-provider': `Variables`,
   'cc-env-var-form.heading.env-var': `Variables d'environnement`,
   'cc-env-var-form.heading.exposed-config': `Configuration publiée`,
@@ -272,6 +270,8 @@ export const translations = {
   'cc-env-var-form.reset': `Annuler les changements`,
   'cc-env-var-form.restart-app': `Redémarrer l'app pour appliquer les changements`,
   'cc-env-var-form.update': `Mettre à jour les changements`,
+  'cc-env-var-form.update.error': `Une erreur est survenue pendant la mise à jour des variables.`,
+  'cc-env-var-form.update.success': `Les variables ont été mises à jour avec succès.`,
   //#endregion
   //#region cc-env-var-input
   'cc-env-var-input.delete-button': `Enlever`,
@@ -300,15 +300,16 @@ export const translations = {
   //#region cc-grafana-info
   'cc-grafana-info.disable-description': `Désactiver Grafana supprimera et mettra fin aux accès à l'organisation du Grafana. Vous pourrez toujours recréer une nouvelle organisation Grafana.`,
   'cc-grafana-info.disable-title': `Désactiver Grafana`,
+  'cc-grafana-info.disable.error': `Une erreur s'est produite lors de la désactivation des tableaux de bord du Grafana.`,
+  'cc-grafana-info.disable.success': `Les tableaux de bords du Grafana ont été désactivés avec succès.`,
   'cc-grafana-info.documentation-description': `Ce service est utilisé pour visualiser nos métriques. Vous pouvez trouver la documentation et les détails de ces métriques ici.`,
   'cc-grafana-info.documentation-title': `Documentation`,
   'cc-grafana-info.enable-description': `L'activation de Grafana créera et fournira les accès à une organisation Grafana.`,
   'cc-grafana-info.enable-title': `Activer Grafana`,
-  'cc-grafana-info.error-disabling': `Une erreur s'est produite lors de la désactivation des tableaux de bord du Grafana.`,
-  'cc-grafana-info.error-enabling': `Une erreur s'est produite lors de l'activation des tableaux de bord du Grafana.`,
+  'cc-grafana-info.enable.error': `Une erreur s'est produite lors de l'activation des tableaux de bord du Grafana.`,
+  'cc-grafana-info.enable.success': `Les tableaux de bords du Grafana ont été activés avec succès.`,
   'cc-grafana-info.error-link-grafana': `Une erreur s'est produite lors du chargement du lien du Grafana.`,
   'cc-grafana-info.error-loading': `Une erreur s'est produite lors du chargement de l'état du Grafana.`,
-  'cc-grafana-info.error-resetting': `Une erreur s'est produite lors de la réinitialisation des tableaux de bord du Grafana.`,
   'cc-grafana-info.grafana-link-description': `Lien vers le Grafana qui contient les tableaux de bord des métriques Clever Cloud.`,
   'cc-grafana-info.grafana-link-title': `Grafana`,
   'cc-grafana-info.link.doc': `Lire la documentation`,
@@ -317,8 +318,10 @@ export const translations = {
   'cc-grafana-info.main-title': `Métriques dans Grafana`,
   'cc-grafana-info.reset-description': `Réinitialisez tous les tableaux de bord Clever Cloud à leur état initial.`,
   'cc-grafana-info.reset-title': `Réinitialiser tous les tableaux de bord`,
+  'cc-grafana-info.reset.error': `Une erreur s'est produite lors de la réinitialisation des tableaux de bord du Grafana.`,
+  'cc-grafana-info.reset.success': `Les tableaux de bords du grafana ont été réinitialisés avec succès.`,
   'cc-grafana-info.screenshot.addon.alt': `Capture d'écran d'un tableau de bord d'add-on dans Grafana`,
-  'cc-grafana-info.screenshot.addon.description': () => sanitize`<div class="test"> Ce tableau de bord comprend plusieurs graphiques à propos d'un add-on.</div> <br> Il fournit d'abord un panneau de présentation contenant les métriques système telles que <strong> le processeur, la mémoire, les disques et le réseau</strong>. <br> Pour les add-ons <strong>MySQL, PostgreSQL, MongoDB et Redis</strong>, un second panneau présente la base de données et des informations comme <strong>le nombre de connexions, de requêtes ou de transactions, d'erreurs ou de blocages ou encore d'opérations "tuples"<strong>.`,
+  'cc-grafana-info.screenshot.addon.description': () => sanitize`Ce tableau de bord comprend plusieurs graphiques à propos d'un add-on. <br> Il fournit d'abord un panneau de présentation contenant les métriques système telles que <strong> le processeur, la mémoire, les disques et le réseau</strong>. <br> Pour les add-ons <strong>MySQL, PostgreSQL, MongoDB et Redis</strong>, un second panneau présente la base de données et des informations comme <strong>le nombre de connexions, de requêtes ou de transactions, d'erreurs ou de blocages ou encore d'opérations "tuples"<strong>.`,
   'cc-grafana-info.screenshot.addon.title': `Aperçu du tableau de bord d'add-on`,
   'cc-grafana-info.screenshot.organisation.alt': `Capture d'écran d'un tableau de bord d'organisation dans Grafana`,
   'cc-grafana-info.screenshot.organisation.description': () => sanitize`Ce tableau de bord comprend plusieurs graphiques pour une organisation Clever Cloud. <br> Il fournit un graphique résumant le nombre d'<strong>applications (runtimes) et d'add-ons déployés</strong>. Il contient également le nombre de services <strong>par type</strong> ou <strong>par plan (flavor)</strong>. <br> Le <strong>graphique d'état</strong> affiche un état pour tous les déploiements effectués durant la plage de temps de Grafana. <br> Et enfin, il est possible de récupérerer des <strong>liens globaux et spécifiques</strong> (triés par nombre de requêtes) pour accéder au tableau de bord d'une application (runtime) ou d'un add-on.`,
@@ -571,10 +574,6 @@ export const translations = {
   //#region cc-tcp-redirection
   'cc-tcp-redirection.create-button': `Créer`,
   'cc-tcp-redirection.delete-button': `Supprimer`,
-  'cc-tcp-redirection.error.redirection-defined': ({ namespace, sourcePort }) => {
-    return sanitize`Une erreur est survenue pendant la suppression de la redirection du port <code>${sourcePort}</code> vers le port <code>4040</code> dans l'espace de nommage <strong>${namespace}</strong>.`;
-  },
-  'cc-tcp-redirection.error.redirection-not-defined': ({ namespace }) => sanitize`Une erreur est survenue pendant la création d'une redirection dans l'espace de nommage <strong>${namespace}</strong>.`,
   'cc-tcp-redirection.namespace-additionaldescription-cleverapps': () => sanitize`Cet espace de nommage est utilisé par tous les noms de domaine <em>cleverapps.io</em> (p. ex. <em>mon-application.cleverapps.io</em>).`,
   'cc-tcp-redirection.namespace-additionaldescription-default': () => sanitize`Cet espace de nommage est utilisé par tous les noms de domaine personnalisés (p. ex. <em>mon-application.fr</em>).`,
   'cc-tcp-redirection.namespace-private': `Cet espace de nommage vous est dédié.`,
@@ -582,9 +581,20 @@ export const translations = {
     return sanitize`Cette application a une redirection du port <code>${sourcePort}</code> vers le port <code>4040</code> dans l'espace de nommage <strong>${namespace}</strong>.`;
   },
   'cc-tcp-redirection.redirection-not-defined': ({ namespace }) => sanitize`Vous pouvez créer une redirection dans l'espace de nommage <strong>${namespace}</strong>.`,
-  'cc-tcp-redirection.retry-button': `Réessayer`,
   //#endregion
   //#region cc-tcp-redirection-form
+  'cc-tcp-redirection-form.create.error': ({ namespace }) => {
+    return sanitize`Une erreur est survenue pendant la création d'une redirection TCP dans l'espace de nommage <strong>${namespace}</strong>.`;
+  },
+  'cc-tcp-redirection-form.create.success': ({ namespace }) => {
+    return sanitize`La redirection TCP dans l'espace de nommage <strong>${namespace}</strong> a été créée avec succès.`;
+  },
+  'cc-tcp-redirection-form.delete.error': ({ namespace }) => {
+    return sanitize`Une erreur est survenue pendant la suppression de la redirection TCP dans l'espace de nommage <strong>${namespace}</strong>.`;
+  },
+  'cc-tcp-redirection-form.delete.success': ({ namespace }) => {
+    return sanitize`La redirection TCP dans l'espace de nommage <strong>${namespace}</strong> a été supprimée avec succès.`;
+  },
   'cc-tcp-redirection-form.description': () => sanitize`
     <p>
       Une redirection TCP permet d'obtenir un accès au port <code>4040</code> de l'application.<br>

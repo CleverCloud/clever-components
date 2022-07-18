@@ -1,7 +1,5 @@
 export type ContextType = "env-var" | "env-var-simple" | "env-var-addon" | "exposed-config" | "config-provider";
 
-export type ErrorType = "saving" | "loading";
-
 export type EnvType = "addon" | "app";
 
 export interface Service {

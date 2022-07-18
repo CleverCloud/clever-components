@@ -249,8 +249,6 @@ export const translations = {
   'cc-env-var-form.description.env-var': ({ appName }) => sanitize`These variables will be injected as environment variables in the application <strong>${appName}</strong>. <a href="https://doc.clever-cloud.com/admin-console/environment-variables/">Learn more</a>`,
   'cc-env-var-form.description.exposed-config': ({ appName }) => sanitize`Configuration exposed to dependent applications. <a href="https://www.clever-cloud.com/doc/admin-console/service-dependencies/">Learn more</a><br>These variables won't be injected in the application <strong>${appName}</strong>, they will be injected as environment variables in applications that have <strong>${appName}</strong> in their service dependencies.`,
   'cc-env-var-form.error.loading': `Something went wrong while loading variables.`,
-  'cc-env-var-form.error.saving': `Something went wrong while updating variables.`,
-  'cc-env-var-form.error.unknown': `Something went wrong...`,
   'cc-env-var-form.heading.config-provider': `Variables`,
   'cc-env-var-form.heading.env-var': `Environment variables`,
   'cc-env-var-form.heading.exposed-config': `Exposed configuration`,
@@ -259,6 +257,8 @@ export const translations = {
   'cc-env-var-form.reset': `Reset changes`,
   'cc-env-var-form.restart-app': `Restart the app to apply changes`,
   'cc-env-var-form.update': `Update changes`,
+  'cc-env-var-form.update.error': `Something went wrong while updating variables.`,
+  'cc-env-var-form.update.success': `Variables have been updated successfully.`,
   //#endregion
   //#region cc-env-var-input
   'cc-env-var-input.delete-button': `Remove`,
@@ -287,15 +287,16 @@ export const translations = {
   //#region cc-grafana-info
   'cc-grafana-info.disable-description': `Disabling Grafana will delete and end all accesses to this Grafana organisation. You will still be able to create another one.`,
   'cc-grafana-info.disable-title': `Disable Grafana`,
+  'cc-grafana-info.disable.error': `Something went wrong while disabling Grafana dashboards.`,
+  'cc-grafana-info.disable.success': `Grafana dashboards have been disabled successfully.`,
   'cc-grafana-info.documentation-description': `This service is used to visualize the our metrics data. You can find the documentation and details about those metrics here.`,
   'cc-grafana-info.documentation-title': `Documentation`,
   'cc-grafana-info.enable-description': `Enabling Grafana will create and provide all accesses to a Grafana organisation.`,
   'cc-grafana-info.enable-title': `Enable Grafana`,
-  'cc-grafana-info.error-disabling': `Something went wrong while disabling Grafana dashboards.`,
-  'cc-grafana-info.error-enabling': `Something went wrong while enabling Grafana dashboards.`,
+  'cc-grafana-info.enable.error': `Something went wrong while enabling Grafana dashboards.`,
+  'cc-grafana-info.enable.success': `Grafana dashboards have been enabled successfully.`,
   'cc-grafana-info.error-link-grafana': `Something went wrong while loading Grafana link.`,
   'cc-grafana-info.error-loading': `Something went wrong while loading Grafana state.`,
-  'cc-grafana-info.error-resetting': `Something went wrong while resetting Grafana dashboards.`,
   'cc-grafana-info.grafana-link-description': `Link to the Grafana which contains Clever Cloud metrics dashboards.`,
   'cc-grafana-info.grafana-link-title': `Grafana`,
   'cc-grafana-info.link.doc': `Read the documentation`,
@@ -304,6 +305,8 @@ export const translations = {
   'cc-grafana-info.main-title': `Metrics in Grafana`,
   'cc-grafana-info.reset-description': `Reset all Clever Cloud dashboards to their initial state.`,
   'cc-grafana-info.reset-title': `Reset all dashboards`,
+  'cc-grafana-info.reset.error': `Something went wrong while resetting Grafana dashboards.`,
+  'cc-grafana-info.reset.success': `Grafana dashboards have been reset successfully.`,
   'cc-grafana-info.screenshot.addon.alt': `Screenshot of an add-on dashboard in Grafana`,
   'cc-grafana-info.screenshot.addon.description': () => sanitize`This dashboard includes several graphs about an add-on. <br> First, it displays a panel containing system metrics like <strong>CPU, memory, disks and network</strong>. <br> For <strong>MySQL, PostgreSQL, MongoDB and Redis</strong> add-ons, a second panel will contain databases data and provides information like <strong>connections count, queries or transactions, errors or deadlocks and tuples operations<strong>.`,
   'cc-grafana-info.screenshot.addon.title': `Add-on dashboard preview`,
@@ -558,10 +561,6 @@ export const translations = {
   //#region cc-tcp-redirection
   'cc-tcp-redirection.create-button': `Create`,
   'cc-tcp-redirection.delete-button': `Delete`,
-  'cc-tcp-redirection.error.redirection-defined': ({ namespace, sourcePort }) => {
-    return sanitize`An error occurred while deleting the redirection from port <code>${sourcePort}</code> to port <code>4040</code> in the <strong>${namespace}</strong> namespace.`;
-  },
-  'cc-tcp-redirection.error.redirection-not-defined': ({ namespace }) => sanitize`An error occured while creating a redirection in the <strong>${namespace}</strong> namespace.`,
   'cc-tcp-redirection.namespace-additionaldescription-cleverapps': () => sanitize`This namespace is used by all <em>cleverapps.io</em> domains (e.g. <em>my-app.cleverapps.io</em>).`,
   'cc-tcp-redirection.namespace-additionaldescription-default': () => sanitize`This namespace is used by all custom domains (e.g. <em>my-app.com</em>).`,
   'cc-tcp-redirection.namespace-private': `This is your private namespace.`,
@@ -569,9 +568,20 @@ export const translations = {
     return sanitize`This application has a redirection from port <code>${sourcePort}</code> to port <code>4040</code> in the <strong>${namespace}</strong> namespace.`;
   },
   'cc-tcp-redirection.redirection-not-defined': ({ namespace }) => sanitize`You can create a redirection in the <strong>${namespace}</strong> namespace.`,
-  'cc-tcp-redirection.retry-button': `Retry`,
   //#endregion
   //#region cc-tcp-redirection-form
+  'cc-tcp-redirection-form.create.error': ({ namespace }) => {
+    return sanitize`Something went wrong while creating a TCP redirection in the <strong>${namespace}</strong> namespace.`;
+  },
+  'cc-tcp-redirection-form.create.success': ({ namespace }) => {
+    return sanitize`The TCP redirection in the <strong>${namespace}</strong> namespace has been created successfully.`;
+  },
+  'cc-tcp-redirection-form.delete.error': ({ namespace }) => {
+    return sanitize`Something went wrong while deleting the TCP redirection in the <strong>${namespace}</strong> namespace.`;
+  },
+  'cc-tcp-redirection-form.delete.success': ({ namespace }) => {
+    return sanitize`The TCP redirection in the <strong>${namespace}</strong> namespace has been deleted successfully.`;
+  },
   'cc-tcp-redirection-form.description': () => sanitize`
     <p>
       A TCP redirection allows you to route external traffic to the <code>4040</code> port of the application.<br>
@@ -583,7 +593,7 @@ export const translations = {
     </p>
   `,
   'cc-tcp-redirection-form.empty': `You do not have access to any namespaces.`,
-  'cc-tcp-redirection-form.error': `An error occured while loading TCP redirections.`,
+  'cc-tcp-redirection-form.error': `Something went wrong while loading TCP redirections.`,
   'cc-tcp-redirection-form.title': `TCP Redirections`,
   //#endregion
   //#region cc-tile-consumption
