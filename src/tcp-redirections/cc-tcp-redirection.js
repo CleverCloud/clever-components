@@ -187,7 +187,7 @@ export class CcTcpRedirection extends LitElement {
         }
 
         .text-addendum:not(.skeleton) {
-          color: var(--cc-color-text-light);
+          color: var(--cc-color-text-weak);
         }
 
         .skeleton {

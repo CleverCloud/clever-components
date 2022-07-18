@@ -335,7 +335,7 @@ export class CcEnvVarForm extends LitElement {
         }
 
         .description {
-          color: var(--cc-color-text-light);
+          color: var(--cc-color-text-weak);
           display: block;
           font-style: italic;
           line-height: 1.5;

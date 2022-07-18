@@ -16,7 +16,7 @@ export const tileStyles = css`
   }
 
   .tile_title {
-    color: var(--cc-color-text-light);
+    color: var(--cc-color-text-weak);
     font-size: 1.25rem;
     text-align: center;
   }

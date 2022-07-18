@@ -671,7 +671,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         }
 
         .interval-price {
-          color: var(--cc-color-text-light);
+          color: var(--cc-color-text-weak);
           font-style: italic;
           grid-column: interval-price / interval-price--end;
         }

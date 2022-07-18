@@ -201,7 +201,7 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
         }
 
         .invoice-text {
-          color: var(--cc-color-text-light);
+          color: var(--cc-color-text-weak);
         }
 
         .invoice-text code,

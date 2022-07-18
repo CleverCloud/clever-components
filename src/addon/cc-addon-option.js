@@ -76,7 +76,7 @@ export class CcAddonOption extends LitElement {
         }
 
         ::slotted(.option-warning) {
-          color: var(--cc-color-text-light);
+          color: var(--cc-color-text-weak);
           font-style: italic;
         }
 

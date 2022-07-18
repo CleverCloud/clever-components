@@ -23,6 +23,7 @@ title: Changelog
   * prefix decision design tokens with `cc-` (BREAKING CHANGE),
   * define default text color using `cc-color-text-default` where necessary (BREAKING CHANGE),
   * define default background colors using `cc-color-bg-default` where necessary (BREAKING CHANGE).
+* colors: change color decision names finishing with `-light` to `-weak` (for instance: `cc-color-text-weak`). (BREAKING CHANGE)
 
 ### Components
 

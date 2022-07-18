@@ -96,7 +96,7 @@ export class CcBadge extends LitElement {
         }
 
         :host([intent="info"][weight="dimmed"]) {
-          --accent-color: var(--cc-color-bg-primary-light);
+          --accent-color: var(--cc-color-bg-primary-weak);
         }
 
         :host([intent="success"]) {
@@ -104,7 +104,7 @@ export class CcBadge extends LitElement {
         }
 
         :host([intent="success"][weight="dimmed"]) {
-          --accent-color: var(--cc-color-bg-success-light);
+          --accent-color: var(--cc-color-bg-success-weak);
         }
 
         :host([intent="danger"]) {
@@ -112,7 +112,7 @@ export class CcBadge extends LitElement {
         }
 
         :host([intent="danger"][weight="dimmed"]) {
-          --accent-color: var(--cc-color-bg-danger-light);
+          --accent-color: var(--cc-color-bg-danger-weak);
         }
 
         :host([intent="warning"]) {
@@ -120,7 +120,7 @@ export class CcBadge extends LitElement {
         }
 
         :host([intent="warning"][weight="dimmed"]) {
-          --accent-color: var(--cc-color-bg-warning-light);
+          --accent-color: var(--cc-color-bg-warning-weak);
         }
 
         :host([intent="neutral"]) {

@@ -155,7 +155,7 @@ export class CcZone extends LitElement {
         }
 
         .subtitle {
-          color: var(--cc-zone-subtitle-color, var(--cc-color-text-light));
+          color: var(--cc-zone-subtitle-color, var(--cc-color-text-weak));
         }
 
         .infra-logo {

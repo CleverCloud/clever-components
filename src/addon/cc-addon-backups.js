@@ -370,7 +370,7 @@ export class CcAddonBackups extends LitElement {
         }
 
         .backup-text {
-          color: var(--cc-color-text-light);
+          color: var(--cc-color-text-weak);
         }
 
         .backup-text-details:not(.skeleton) strong {

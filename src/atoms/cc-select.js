@@ -174,7 +174,7 @@ export class CcSelect extends LitElement {
         }
 
         .required {
-          color: var(--cc-color-text-light);
+          color: var(--cc-color-text-weak);
           font-size: 0.9em;
           font-variant: small-caps;
         }
@@ -184,7 +184,7 @@ export class CcSelect extends LitElement {
         }
 
         slot[name='help']::slotted(*) {
-          color: var(--cc-color-text-light);
+          color: var(--cc-color-text-weak);
           font-size: 0.9em;
           margin: 0.3em 0 0 0;
         }
@@ -263,7 +263,7 @@ export class CcSelect extends LitElement {
         select[disabled] {
           background: var(--cc-color-bg-neutral-disabled);
           border-color: var(--cc-color-bg-neutral-disabled);
-          color: var(--cc-color-text-light);
+          color: var(--cc-color-text-weak);
           opacity: 1;
           pointer-events: none;
         }

@@ -217,7 +217,7 @@ export class CcBlock extends LitElement {
         }
 
         ::slotted(.cc-block_empty-msg) {
-          color: var(--cc-color-text-light);
+          color: var(--cc-color-text-weak);
           font-style: italic;
         }
       `,

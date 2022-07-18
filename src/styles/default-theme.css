@@ -57,7 +57,7 @@
   
   /* Usage: text less important than normal text.
   For instance: sidenotes, the required mention inside forms. */
-  --cc-color-text-light: var(--color-grey-80);
+  --cc-color-text-weak: var(--color-grey-80);
   
   /* Usage: info, main color used through the application.
   For instance: text color inside outlined primary cc-button. */
@@ -93,7 +93,7 @@
   /* Usage: minimal way to make content stand out.
   Weakest of all color options for danger content.
   For instance: notice, badge. */
-  --cc-color-bg-danger-light: var(--color-red-light);
+  --cc-color-bg-danger-weak: var(--color-red-light);
 
   /* Usage: default background color
   -- Not used at the moment - will be when we allow theme override. -- */
@@ -131,7 +131,7 @@
   /* Usage: minimal way to make content stand out.
   * Weakest of all color options for information content.
   For instance: notice, badge. */
-  --cc-color-bg-primary-light: var(--color-blue-light);
+  --cc-color-bg-primary-weak: var(--color-blue-light);
 
   /* Usage: content that needs to stand out a little more than primary content.
   For instance: some icons. */
@@ -154,7 +154,7 @@
   /* Usage: minimal way to make content stand out.
   * Weakest of all color options for success content.
   For instance: notice, badge. */
-  --cc-color-bg-success-light: var(--color-green-light);
+  --cc-color-bg-success-weak: var(--color-green-light);
   
   /* Usage: elements containing short texts with a "caution" / "warning" meaning and usually interactive.
   For instance: ? */
@@ -163,12 +163,12 @@
   /* Usage: elements containing a small chunk of text with a "caution" / "warning" meaning with text in --cc-color-text-default.
   * Weak of all color options for warning content
   For instance: badge */
-  --cc-color-bg-warning-light: var(--color-orange-light);
+  --cc-color-bg-warning-weak: var(--color-orange-light);
 
   /* Usage: elements containing sentences with a "caution" / "warning" meaning with text in --cc-color-text-default.
   * Weakest of all color options for warning content
   For instance: warning when no payment method is set */
-  --cc-color-bg-warning-lighter: var(--color-orange-lighter);
+  --cc-color-bg-warning-weaker: var(--color-orange-lighter);
   /*endregion*/
   
   /*region Color Decisions(border)*/

@@ -138,7 +138,7 @@ export class CcHeptapodInfo extends LitElement {
         }
 
         .pricing-item {
-          color: var(--cc-color-text-light);
+          color: var(--cc-color-text-weak);
           flex: 1 1 auto;
           text-align: center;
         }
@@ -150,7 +150,7 @@ export class CcHeptapodInfo extends LitElement {
         }
 
         .no-statistics {
-          color: var(--cc-color-text-light);
+          color: var(--cc-color-text-weak);
           font-style: italic;
           margin: 0.2rem;
         }

@@ -174,7 +174,7 @@ export class CcEnvVarLinkedServices extends LitElement {
         }
 
         .empty-msg {
-          color: var(--cc-color-text-light);
+          color: var(--cc-color-text-weak);
           font-style: italic;
         }
       `,
