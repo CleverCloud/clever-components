@@ -7,7 +7,6 @@ import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { i18n } from '../lib/i18n.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
 /** @type {Addon} */
@@ -123,13 +122,12 @@ export class CcHeaderAddon extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       skeletonStyles,
       // language=CSS
       css`
         :host {
           --cc-gap: 1rem;
-          background-color: #fff;
+          background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid #bcc2d1;
           border-radius: 0.25rem;
           display: block;
@@ -182,12 +180,10 @@ export class CcHeaderAddon extends LitElement {
           --cc-gap: 0.5rem;
           --cc-align-items: center;
           align-items: center;
-          background-color: var(--color-bg-neutral);
-          box-shadow: inset 0 6px 6px -6px #a4b1c9;
+          background-color: var(--cc-color-bg-neutral);
+          box-shadow: inset 0 6px 6px -6px rgba(0, 0, 0, 0.4);
           box-sizing: border-box;
-          color: #2e2e2e;
           font-size: 0.9rem;
-          font-style: italic;
           justify-content: end;
           padding: 0.6rem 1rem;
         }
@@ -199,6 +195,10 @@ export class CcHeaderAddon extends LitElement {
 
         [title] {
           cursor: help;
+        }
+
+        cc-input-text {
+          --cc-input-font-family: var(--cc-ff-monospace, monospace);
         }
 
         /* SKELETON */

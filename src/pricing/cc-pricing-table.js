@@ -329,7 +329,7 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
       // language=CSS
       css`
         :host {
-          background-color: #fff;
+          background-color: var(--cc-color-bg-default);
           display: block;
         }
 
@@ -345,7 +345,7 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
         }
 
         em[title] code {
-          color: blue;
+          color: var(--cc-color-text-primary-highlight, blue);
           font-family: monospace;
           font-weight: bold;
         }
@@ -364,7 +364,7 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
         }
 
         th {
-          background-color: #f6f6fb;
+          background-color: var(--cc-color-bg-neutral, #f6f6fb);
           padding: 1em 0.5em;
           text-align: left;
         }
@@ -383,7 +383,7 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
         }
 
         tr:hover td {
-          background-color: #f5f5f5;
+          background-color: var(--cc-color-bg-neutral-hovered, #f5f5f5);
         }
 
         table em[title] code {

@@ -76,7 +76,7 @@ export class CcDocList extends LitElement {
         }
 
         cc-error {
-          background-color: #fff;
+          background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid #bcc2d1;
           border-radius: 0.25em;
           padding: 1em;

@@ -5,7 +5,6 @@ import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 
 const infoSvg = new URL('../assets/info.svg', import.meta.url).href;
@@ -213,7 +212,6 @@ export class CcGrafanaInfo extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       linkStyles,
       // language=CSS
       css`

@@ -1,7 +1,6 @@
 import { ERROR_TYPES } from '@clevercloud/client/esm/utils/payment.js';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 import { linkStyles } from '../templates/cc-link.js';
 
 const warningSvg = new URL('../assets/warning.svg', import.meta.url).href;
@@ -96,14 +95,12 @@ export class CcWarningPayment extends LitElement {
   static get styles () {
     return [
       // language=CSS
-      defaultThemeStyles,
       linkStyles,
       css`
         :host {
-          background-color: var(--color-bg-warning-lighter);
-          border: var(--border-warning);
+          background-color: var(--cc-color-bg-warning-weaker);
+          border: var(--cc-border-warning);
           border-radius: 0.25em;
-          color: var(--color-text-default);
           display: grid;
           gap: 1em;
           grid-template-columns: min-content 1fr;

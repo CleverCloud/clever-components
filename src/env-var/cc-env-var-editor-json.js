@@ -4,7 +4,6 @@ import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import '../atoms/cc-input-text.js';
 import '../molecules/cc-error.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 import { linkStyles } from '../templates/cc-link.js';
 
 const SKELETON_VARIABLES = [
@@ -171,7 +170,6 @@ export class CcEnvVarEditorJson extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       linkStyles,
       // language=CSS
       css`
@@ -197,10 +195,14 @@ export class CcEnvVarEditorJson extends LitElement {
         /* i18n error message may contain <code> tags */
         cc-error code,
         .example code {
-          background-color: var(--color-bg-neutral);
+          background-color: var(--cc-color-bg-neutral, #eeeeee);
           border-radius: 0.25rem;
-          font-family: var(--cc-ff-monospace);
+          font-family: var(--cc-ff-monospace, monospace);
           padding: 0.15rem 0.3rem;
+        }
+
+        cc-input-text {
+          --cc-input-font-family: var(--cc-ff-monospace, monospace);
         }
       `,
     ];

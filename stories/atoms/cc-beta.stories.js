@@ -19,7 +19,7 @@ export const defaultStory = makeStory(conf, {
   // language=CSS
   css: `
     cc-beta * {
-      background-color: #ddd;
+      background-color: var(--cc-color-bg-neutral-alt);
       height: 150px;
       line-height: 150px;
       text-align: center;

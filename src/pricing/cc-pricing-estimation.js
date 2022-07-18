@@ -30,6 +30,7 @@ const SIGN_UP_URL = 'https://api.clever-cloud.com/v2/sessions/signup';
  *
  * @csspart selected-plans - Targets the inner selected plans (table in big mode, list in small mode).
  * @csspart recap - Targets the inner recap blue box.
+ * @cssprop {Color} --cc-pricing-estimation-recap-bg-color - Sets the value of the recap background color (`--cc-color-bg-primary` by default).
  */
 export class CcPricingEstimation extends withResizeObserver(LitElement) {
 
@@ -257,8 +258,6 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
     return [
       // language=CSS
       css`
-
-
         :host {
           display: block;
         }
@@ -278,7 +277,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
 
         .recap {
           align-items: center;
-          background-color: #3a3771;
+          background-color: var(--cc-pricing-estimation-recap-bg-color, var(--cc-color-bg-primary, #000000));
           border-radius: 0.2em;
           color: #fff;
           display: grid;
@@ -314,7 +313,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
         }
 
         .cc-link:focus {
-          box-shadow: 0 0 0 .2em #cbdcf6;
+          box-shadow: 0 0 0 .2em rgba(0, 0, 0, 0.4);
           outline: 0;
         }
 
@@ -359,7 +358,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
         }
 
         th {
-          background-color: #f6f6fb;
+          background-color: var(--cc-color-bg-neutral-alt);
           padding: 1em 0.5em;
           text-align: left;
         }
@@ -370,7 +369,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
         }
 
         tr:hover td {
-          background-color: #f5f5f5;
+          background-color: var(--cc-color-bg-neutral-hovered, #f5f5f5);
         }
 
         td.btn-col {

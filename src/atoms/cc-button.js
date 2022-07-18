@@ -3,7 +3,6 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { linkStyles } from '../templates/cc-link.js';
 
@@ -36,6 +35,9 @@ import { linkStyles } from '../templates/cc-link.js';
  * @event {CustomEvent} cc-button:click - Fires whenever the button is clicked.<br>If `delay` is set, fires after the specified `delay` (in seconds).
  *
  * @slot - The content of the button (text or HTML). If you want an image, please look at the `image` attribute.
+ * @cssprop {BorderRadius} --cc-button-border-radius - Sets the value of the border radius CSS property (defaults: `0.15em`).
+ * @cssprop {FontWeight} --cc-button-font-weight - Sets the value of the font weight CSS property (defaults: `bold`).
+ * @cssprop {TextTransform} --cc-button-text-transform - Sets the value of the text transform CSS property (defaults: `uppercase`).
  */
 export class CcButton extends LitElement {
 
@@ -224,7 +226,6 @@ export class CcButton extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       skeletonStyles,
       linkStyles,
       // language=CSS
@@ -237,7 +238,7 @@ export class CcButton extends LitElement {
 
         /* RESET */
         button {
-          background: #fff;
+          background: unset;
           border: none;
           display: block;
           font-family: inherit;
@@ -249,15 +250,15 @@ export class CcButton extends LitElement {
         /* BASE */
         .btn {
           border: 1px solid #000;
-          border-radius: 0.15em;
+          border-radius: var(--cc-button-border-radius, 0.15em);
           cursor: pointer;
-          font-weight: bold;
+          font-weight: var(--cc-button-font-weight, bold);
           min-height: 2em;
           overflow: hidden;
           padding: 0 0.5em;
           /* used to absolutely position the <progress> */
           position: relative;
-          text-transform: uppercase;
+          text-transform: var(--cc-button-text-transform, uppercase);
           -moz-user-select: none;
           -webkit-user-select: none;
           -ms-user-select: none;
@@ -267,34 +268,34 @@ export class CcButton extends LitElement {
 
         /* COLORS */
         .simple {
-          --btn-color: var(--color-text-strong);
+          --btn-color: var(--cc-color-text-strong);
         }
 
         .primary {
-          --btn-color: var(--color-bg-primary);
+          --btn-color: var(--cc-color-bg-primary);
         }
 
         .success {
-          --btn-color: var(--color-bg-success);
+          --btn-color: var(--cc-color-bg-success);
         }
 
         .warning {
-          --btn-color: var(--color-bg-warning);
+          --btn-color: var(--cc-color-bg-warning);
         }
 
         .danger {
-          --btn-color: var(--color-bg-danger);
+          --btn-color: var(--cc-color-bg-danger);
         }
 
         /* MODES */
         .btn {
           background-color: var(--btn-color);
           border-color: var(--btn-color);
-          color: var(--color-text-inverted);
+          color: var(--cc-color-text-inverted);
         }
 
         .outlined {
-          background-color: #fff;
+          background-color: transparent;
           color: var(--btn-color);
         }
 
@@ -321,7 +322,7 @@ export class CcButton extends LitElement {
         }
 
         .btn:enabled:hover {
-          box-shadow: 0 1px 3px #888;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
         }
 
         .btn:enabled:active {

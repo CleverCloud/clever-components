@@ -10,7 +10,6 @@ import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import { PricingConsumptionSimulator } from '../lib/pricing.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
 const arrowsLeftSvg = new URL('../assets/arrows-left.svg', import.meta.url).href;
@@ -488,12 +487,11 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
 
   static get styles () {
     return [
-      defaultThemeStyles,
       skeletonStyles,
       // language=CSS
       css`
         :host {
-          background-color: #fff;
+          background-color: var(--cc-color-bg-default);
           display: block;
         }
 
@@ -654,7 +652,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         }
 
         .interval-line.highlighted:not(.progressive) .interval {
-          background-color: var(--color-bg-soft);
+          background-color: var(--cc-color-bg-soft, #e5e5e5);
         }
 
         .interval-min,
@@ -673,7 +671,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         }
 
         .interval-price {
-          color: #333;
+          color: var(--cc-color-text-weak);
           font-style: italic;
           grid-column: interval-price / interval-price--end;
         }

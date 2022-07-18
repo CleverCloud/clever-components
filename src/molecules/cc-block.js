@@ -4,7 +4,6 @@ import '../atoms/cc-img.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { i18n } from '../lib/i18n.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 
 const downSvg = new URL('../assets/down.svg', import.meta.url).href;
 const upSvg = new URL('../assets/up.svg', import.meta.url).href;
@@ -121,11 +120,10 @@ export class CcBlock extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       // language=CSS
       css`
         :host {
-          background-color: #fff;
+          background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid #bcc2d1;
           border-radius: 0.25rem;
           box-sizing: border-box;
@@ -146,7 +144,7 @@ export class CcBlock extends LitElement {
 
         :host([state="open"]) .head:hover,
         :host([state="close"]) .head:hover {
-          background-color: #fafafa;
+          background-color: var(--cc-color-bg-neutral-hovered);
           cursor: pointer;
         }
 
@@ -159,7 +157,7 @@ export class CcBlock extends LitElement {
         }
 
         ::slotted([slot="title"]) {
-          color: var(--color-text-strong);
+          color: var(--cc-color-text-strong);
           flex: 1 1 0;
           font-size: 1.2rem;
           font-weight: bold;
@@ -170,7 +168,7 @@ export class CcBlock extends LitElement {
           --width: 8rem;
           --r: -45deg;
           --translate: 1.6rem;
-          background: var(--color-bg-strong);
+          background: var(--cc-color-bg-strong);
           color: white;
           font-size: 0.9rem;
           font-weight: bold;
@@ -219,7 +217,7 @@ export class CcBlock extends LitElement {
         }
 
         ::slotted(.cc-block_empty-msg) {
-          color: #555;
+          color: var(--cc-color-text-weak);
           font-style: italic;
         }
       `,

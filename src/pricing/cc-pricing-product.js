@@ -156,7 +156,6 @@ export class CcPricingProduct extends LitElement {
       skeletonStyles,
       css`
         :host {
-          background-color: #ffffff;
           display: block;
         }
 

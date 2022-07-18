@@ -2,7 +2,6 @@ import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
 const incrementSvg = new URL('../assets/increment.svg', import.meta.url).href;
@@ -22,6 +21,7 @@ const decrementSvg = new URL('../assets/decrement.svg', import.meta.url).href;
  * @event {CustomEvent} cc-input-number:requestimplicitsubmit - Fires when enter key is pressed.
  *
  * @cssprop {Align} --cc-input-number-align - Change the alignment of the number present in the input (defaults: `right`).
+ * @cssprop {FontFamily} --cc-input-font-family - The font-family for the input content (defaults: `inherit`).
  *
  * @slot error - The error message to be displayed below the `<input>` element or below the help text. Please use a `<p>` tag.
  * @slot help - The help message to be displayed right below the `<input>` element. Please use a `<p>` tag.
@@ -231,7 +231,6 @@ export class CcInputNumber extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       skeletonStyles,
       // language=CSS
       css`
@@ -256,6 +255,7 @@ export class CcInputNumber extends LitElement {
         .error-container {
           grid-area: error;
         }
+
         label {
           align-items: flex-end;
           cursor: pointer;
@@ -276,7 +276,7 @@ export class CcInputNumber extends LitElement {
         }
 
         .required {
-          color: var(--color-text-light);
+          color: var(--cc-color-text-weak);
           font-size: 0.9em;
           font-variant: small-caps;
         }
@@ -286,13 +286,13 @@ export class CcInputNumber extends LitElement {
         }
 
         slot[name='help']::slotted(*) {
-          color: var(--color-text-light);
+          color: var(--cc-color-text-weak);
           font-size: 0.9em;
           margin: 0.3em 0 0 0;
         }
         
         slot[name='error']::slotted(*) {
-          color: var(--color-text-danger);
+          color: var(--cc-color-text-danger);
           margin: 0.5em 0 0 0;
         }
         /*endregion*/
@@ -322,11 +322,12 @@ export class CcInputNumber extends LitElement {
         input {
           /* remove Safari box shadow */
           -webkit-appearance: none;
-          background: #fff;
+          background: none;
           border: 1px solid #000;
           box-sizing: border-box;
+          color: inherit;
           display: block;
-          font-family: monospace;
+          font-family: inherit;
           font-size: unset;
           margin: 0;
           padding: 0;
@@ -348,9 +349,8 @@ export class CcInputNumber extends LitElement {
 
         /* BASE */
         input {
-          background: none;
           border: none;
-          font-family: var(--cc-ff-monospace);
+          font-family: var(--cc-input-font-family, inherit);
           font-size: 0.85em;
           grid-area: 1 / 1 / 2 / 2;
           /* 2em with a 0.85em font-size ~ 1.7em */
@@ -369,8 +369,7 @@ export class CcInputNumber extends LitElement {
         }
 
         input[disabled] {
-          background-color: var(--color-bg-neutral-disabled);
-          color: var(--color-text-light);
+          color: var(--cc-color-text-weak);
           opacity: 1;
           pointer-events: none;
         }
@@ -382,7 +381,7 @@ export class CcInputNumber extends LitElement {
 
         /* We use this empty .ring element to decorate the input with background, border, box-shadows... */
         .ring {
-          background: #fff;
+          background: var(--cc-color-bg-default, #fff);
           border: 1px solid #aaa;
           border-radius: 0.25em;
           bottom: 0;
@@ -414,19 +413,19 @@ export class CcInputNumber extends LitElement {
         }
 
         :host([disabled]) .ring {
-          background: var(--color-bg-neutral-disabled);
-          border-color: var(--color-bg-neutral-disabled);
+          background: var(--cc-color-bg-neutral-disabled);
+          border-color: var(--cc-color-bg-neutral-disabled);
         }
 
         :host([readonly]) .ring {
-          background: var(--color-bg-neutral-readonly);
+          background: var(--cc-color-bg-neutral-readonly);
         }
 
         /* SKELETON */
         .skeleton .ring,
         .skeleton:hover .ring,
         .skeleton input:hover + .ring {
-          background-color: var(--color-bg-neutral-disabled);
+          background-color: var(--cc-color-bg-neutral-disabled);
           border-color: #eee;
           cursor: progress;
         }
@@ -468,11 +467,11 @@ export class CcInputNumber extends LitElement {
         }
 
         .btn:hover {
-          background-color: var(--color-bg-neutral-hovered);
+          background-color: var(--cc-color-bg-neutral-hovered);
         }
 
         .btn:active {
-          background-color: var(--color-bg-neutral-active);
+          background-color: var(--cc-color-bg-neutral-active);
         }
 
         /* We can do this because we set a visible focus state */

@@ -55,6 +55,10 @@ export const dataLoaded = makeStory(conf, {
 export const dataLoadedWithCustomStyles = makeStory(conf, {
   // language=CSS
   css: `
+    cc-pricing-estimation {
+      --cc-pricing-estimation-recap-bg-color: #3a3771;
+    }
+
     cc-pricing-estimation::part(selected-plans) {
       border-radius: 5px;
       box-shadow: 0 0 0.5em #aaa;

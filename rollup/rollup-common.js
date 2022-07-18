@@ -1,6 +1,7 @@
 import path from 'path';
 import alias from '@rollup/plugin-alias';
 import { importMetaAssets } from '@web/rollup-plugin-import-meta-assets';
+import CleanCSS from 'clean-css';
 import glob from 'glob';
 import babel from 'rollup-plugin-babel';
 import clear from 'rollup-plugin-clear';
@@ -64,6 +65,12 @@ const svgo = new SVGO({
 
 export function multiGlob (patterns, opts) {
   return patterns.flatMap((pattern) => glob.sync(pattern, opts));
+}
+
+export function minifyStylesheet (stylesheet) {
+  const minifiedStylesheet = new CleanCSS().minify(stylesheet);
+
+  return minifiedStylesheet.styles;
 }
 
 export function inputs (sourceDir, entryMapper) {

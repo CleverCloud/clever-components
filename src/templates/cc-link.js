@@ -29,19 +29,19 @@ export const linkStyles = css`
   .cc-link,
   .cc-link:visited,
   .cc-link:active {
-      color: var(--color-text-primary-highlight);
+      color: var(--cc-color-text-primary-highlight, blue);
   }
 
   .sanitized-link:enabled:hover,
   .cc-link:enabled:hover {
-    color: var(--color-text-primary);
+    color: var(--cc-color-text-primary);
   }
 
   .sanitized-link:focus,
   .cc-link:focus {
-    background-color: #fff;
+    background-color: var(--cc-color-bg-default, #fff);
     border-radius: 0.1rem;
-    box-shadow: 0 0 0 .1rem #fff, 0 0 0 .3rem rgba(50, 115, 220, .25);
+    box-shadow: 0 0 0 .1rem var(--cc-color-bg-default, #fff), 0 0 0 .3rem rgba(50, 115, 220, .25);
     outline: 0;
   }
 
@@ -54,7 +54,7 @@ export const linkStyles = css`
   .sanitized-link.skeleton,
   .cc-link .skeleton,
   .sanitized-link .skeleton {
-    background-color: hsl(209, 98%, 73%);
+    background-color: var(--cc-color-text-primary-weak, hsl(209, 98%, 73%));
     color: transparent;
   }
 `;

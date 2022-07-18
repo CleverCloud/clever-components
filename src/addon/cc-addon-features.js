@@ -4,7 +4,6 @@ import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { i18n } from '../lib/i18n.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
 const cpuSvg = new URL('../assets/cpu.svg', import.meta.url).href;
@@ -146,7 +145,6 @@ export class CcAddonFeatures extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       skeletonStyles,
       // language=CSS
       css`
@@ -157,7 +155,7 @@ export class CcAddonFeatures extends LitElement {
         .feature-list {
           --bdw: 2px;
           --cc-gap: 1rem;
-          --color: var(--color-bg-primary);
+          --color: var(--cc-color-bg-primary);
           --padding: 0.6rem;
         }
 
@@ -196,7 +194,7 @@ export class CcAddonFeatures extends LitElement {
         }
 
         .feature-name {
-          color: #fff;
+          color: var(--cc-color-text-inverted, #fff);
         }
 
         .skeleton .feature-name {
@@ -204,7 +202,7 @@ export class CcAddonFeatures extends LitElement {
         }
 
         .feature-value {
-          background-color: #fff;
+          background-color: var(--cc-color-bg-default, #fff);
           border-radius: var(--bdw);
           color: var(--color);
         }

@@ -3,7 +3,6 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { repeat } from 'lit-html/directives/repeat.js';
 import { dispatchCustomEvent } from '../lib/events.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 
 /**
  * @typedef {import('./types.js').Choice} Choice
@@ -34,10 +33,12 @@ import { defaultThemeStyles } from '../styles/default-theme.js';
  * @event {CustomEvent<string>} cc-toggle:input - Fires the selected `value` whenever the selected `value` changes (single mode only).
  * @event {CustomEvent<string[]>} cc-toggle:input-multiple - Fires the selected `multipleValues` whenever the selected `multipleValues` changes (single mode only).
  *
- * @cssprop {TextTransform} --cc-text-transform - Apply a text transformation on labels (defaults: `uppercase`).
+ * @cssprop {BorderRadius} --cc-toggle-border-radius - Sets the value of the border radius CSS property (defaults: `0.15em`).
  * @cssprop {Color} --cc-toggle-color - The main color of the toggle (defaults: `#334252`). It must be defined directly on the element.
+ * @cssprop {FontWeight} --cc-toggle-font-weight - Sets the value of the font weight CSS property (defaults: `bold`).
  * @cssprop {Filter} --cc-toggle-img-filter - A CSS filter to apply on images of all choices (defaults: `none`). It must be defined directly on the element.
  * @cssprop {Filter} --cc-toggle-img-filter-selected - A CSS filter to apply on images of selected choices (defaults: `none`). It must be defined directly on the element.
+ * @cssprop {TextTransform} --cc-toggle-text-transform - Sets the value of the text transform CSS property (defaults: `uppercase`).
  */
 export class CcToggle extends LitElement {
 
@@ -156,11 +157,10 @@ export class CcToggle extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       // language=CSS
       css`
         :host {
-          --cc-toggle-color: var(--color-bg-primary);
+          --cc-toggle-color: var(--cc-color-bg-primary, #000000);
           --cc-toggle-img-filter: none;
           --cc-toggle-img-filter-selected: none;
           --height: 2em;
@@ -203,13 +203,14 @@ export class CcToggle extends LitElement {
         }
 
         .toggle-group {
-          background-color: #fff;
+          background-color: var(--cc-color-bg-default, #fff);
           border-radius: 0.15em;
           box-sizing: border-box;
           display: flex;
           height: var(--height);
           line-height: 1.25;
           overflow: visible;
+          width: max-content;
         }
 
         /* We hide the <input> and only display the related <label> */
@@ -228,6 +229,7 @@ export class CcToggle extends LitElement {
         label {
           /* used around the background */
           --space: 2px;
+          --border-radius: var(--cc-toggle-border-radius, 0.15em);
           align-items: center;
           border-color: var(--cc-toggle-color);
           border-style: solid;
@@ -235,12 +237,12 @@ export class CcToggle extends LitElement {
           cursor: pointer;
           display: grid;
           font-size: 0.85em;
-          font-weight: bold;
+          font-weight: var(--cc-toggle-font-weight, bold);
           gap: 0.6em;
           grid-auto-flow: column;
           padding: 0 0.6em;
           position: relative;
-          text-transform: var(--cc-text-transform, uppercase);
+          text-transform: var(--cc-toggle-text-transform, uppercase);
           -moz-user-select: none;
           -webkit-user-select: none;
           -ms-user-select: none;
@@ -253,11 +255,11 @@ export class CcToggle extends LitElement {
 
         label:first-of-type {
           border-left-width: 1px;
-          border-radius: 0.15em 0 0 0.15em;
+          border-radius: var(--border-radius) 0 0 var(--border-radius);
         }
 
         label:last-of-type {
-          border-radius: 0 0.15em 0.15em 0;
+          border-radius: 0 var(--border-radius) var(--border-radius) 0;
           border-right-width: 1px;
         }
 
@@ -267,7 +269,7 @@ export class CcToggle extends LitElement {
 
         /* Used to display a background behind the text */
         label::before {
-          background-color: var(--color-bg);
+          background-color: var(--cc-color-bg);
           border-radius: .15em;
           bottom: var(--space);
           content: '';
@@ -305,8 +307,8 @@ export class CcToggle extends LitElement {
 
         /* NOT SELECTED */
         label {
-          --color-bg: #fff;
-          --color-txt: var(--color-text-normal);
+          --cc-color-bg: var(--cc-color-bg-default, #fff);
+          --color-txt: var(--cc-color-text-default);
         }
 
         img {
@@ -325,7 +327,7 @@ export class CcToggle extends LitElement {
         /* HOVERED */
         .display-normal input:not(:checked):enabled:hover + label,
         .display-subtle input:enabled:hover + label {
-          --color-bg: var(--color-bg-neutral-hovered);
+          --cc-color-bg: var(--cc-color-bg-neutral-hovered);
         }
 
         /* FOCUS */
@@ -350,8 +352,8 @@ export class CcToggle extends LitElement {
         }
 
         .display-normal input:checked + label {
-          --color-bg: var(--cc-toggle-color);
-          --color-txt: #fff;
+          --cc-color-bg: var(--cc-toggle-color);
+          --color-txt: var(--cc-color-text-inverted, #fff);
         }
 
         .display-subtle input:checked + label {

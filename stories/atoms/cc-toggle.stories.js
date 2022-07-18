@@ -174,7 +174,7 @@ You can have a bit of control over the text transformation of the labels used by
   // language=CSS
   css: conf.css + `
     cc-toggle {
-      --cc-text-transform: none;
+      --cc-toggle-text-transform: none;
     }
   `,
   items: normalAndSubtleItems,

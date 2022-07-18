@@ -6,7 +6,6 @@ import { cache } from 'lit-html/directives/cache.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import status from 'statuses';
 import { i18n } from '../lib/i18n.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 import { tileStyles } from '../styles/info-tiles.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { linkStyles } from '../templates/cc-link.js';
@@ -235,7 +234,6 @@ export class CcTileStatusCodes extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       tileStyles,
       skeletonStyles,
       linkStyles,
@@ -287,7 +285,7 @@ export class CcTileStatusCodes extends LitElement {
         }
 
         .tile_docs_link {
-          color: var(--color-text-highlight);
+          color: var(--cc-color-text-highlight);
           text-decoration: underline;
         }
       `,

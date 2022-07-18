@@ -3,7 +3,6 @@ import '../molecules/cc-error.js';
 import './cc-env-var-form.js';
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 
 /**
  * @typedef {import('./types.js').EnvType} EnvType
@@ -143,7 +142,6 @@ export class CcEnvVarLinkedServices extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       // language=CSS
       css`
         :host {
@@ -153,7 +151,7 @@ export class CcEnvVarLinkedServices extends LitElement {
         .loading,
         .empty-msg,
         .error {
-          background-color: #fff;
+          background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid #bcc2d1;
           border-radius: 0.25rem;
           box-sizing: border-box;
@@ -176,7 +174,7 @@ export class CcEnvVarLinkedServices extends LitElement {
         }
 
         .empty-msg {
-          color: var(--color-text-light);
+          color: var(--cc-color-text-weak);
           font-style: italic;
         }
       `,

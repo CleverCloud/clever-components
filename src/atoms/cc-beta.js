@@ -1,6 +1,5 @@
 import { css, html, LitElement } from 'lit-element';
 import { i18n } from '../lib/i18n.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 
 /**
  * @typedef {import('./types.js').PositionType} PositionType
@@ -41,7 +40,6 @@ export class CcBeta extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       // language=CSS
       css`
         :host {
@@ -59,8 +57,8 @@ export class CcBeta extends LitElement {
         .beta {
           --height: 1.75em;
           --width: 8em;
-          background: var(--color-bg-strong);
-          color: var(--color-text-inverted);
+          background: var(--cc-color-bg-strong, #000000);
+          color: var(--cc-color-text-inverted, #fff);
           font-size: 0.85em;
           font-weight: bold;
           height: var(--height);

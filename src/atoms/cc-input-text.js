@@ -3,7 +3,6 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 
 const clipboardSvg = new URL('../assets/clipboard.svg', import.meta.url).href;
@@ -50,6 +49,8 @@ function arrayEquals (a, b) {
  * @event {CustomEvent<string>} cc-input-text:input - Fires the `value` whenever the `value` changes.
  * @event {CustomEvent} cc-input-text:requestimplicitsubmit - Fires when enter key is pressed in simple mode, in tags mode or when ctrl+enter is pressed in multi mode.
  * @event {CustomEvent<string[]>} cc-input-text:tags - Fires an array of tags whenever the `value` changes (separated by spaces).
+ *
+ * @cssprop {FontFamily} --cc-input-font-family - The font-family for the input content (defaults: `inherit`).
  *
  * @slot error - The error message to be displayed below the `<input>` element or below the help text. Please use a `<p>` tag.
  * @slot help - The help message to be displayed right below the `<input>` element. Please use a `<p>` tag.
@@ -342,7 +343,6 @@ export class CcInputText extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       skeletonStyles,
       // language=CSS
       css`
@@ -401,7 +401,7 @@ export class CcInputText extends LitElement {
         }
 
         .required {
-          color: var(--color-text-light);
+          color: var(--cc-color-text-weak);
           font-size: 0.9em;
           font-variant: small-caps;
         }
@@ -411,13 +411,13 @@ export class CcInputText extends LitElement {
         }
 
         slot[name='help']::slotted(*) {
-          color: var(--color-text-light);
+          color: var(--cc-color-text-weak);
           font-size: 0.9em;
           margin: 0.3em 0 0 0;
         }
         
         slot[name='error']::slotted(*) {
-          color: var(--color-text-danger);
+          color: var(--cc-color-text-danger);
           margin: 0.5em 0 0 0;
         }
         /*endregion*/
@@ -450,11 +450,12 @@ export class CcInputText extends LitElement {
         .input {
           /* remove Safari box shadow */
           -webkit-appearance: none;
-          background: #fff;
+          background: none;
           border: 1px solid #000;
           box-sizing: border-box;
+          color: inherit;
           display: block;
-          font-family: monospace;
+          font-family: inherit;
           font-size: unset;
           margin: 0;
           padding: 0;
@@ -464,9 +465,8 @@ export class CcInputText extends LitElement {
 
         /* BASE */
         .input {
-          background: none;
           border: none;
-          font-family: var(--cc-ff-monospace);
+          font-family: var(--cc-input-font-family, inherit);
           font-size: 0.85em;
           grid-area: 1 / 1 / 2 / 2;
           /* multiline behaviour */
@@ -493,8 +493,7 @@ export class CcInputText extends LitElement {
         }
 
         .input[disabled] {
-          background-color: var(--color-bg-neutral-disabled);
-          color: var(--color-text-light);
+          color: var(--cc-color-text-weak);
           opacity: 1;
           pointer-events: none;
         }
@@ -510,6 +509,7 @@ export class CcInputText extends LitElement {
           height: auto;
           padding: 0 3px;
           word-break: break-all;
+          word-spacing: 1ch;
         }
 
         .input-underlayer {
@@ -523,16 +523,17 @@ export class CcInputText extends LitElement {
         }
 
         .input-underlayer .tag:not(:empty) {
-          --color: var(--color-bg-soft);
+          --color: var(--cc-color-bg-soft, #eeeeee);
           background-color: var(--color);
           border-radius: 3px;
-          box-shadow: 0 0 0 2px var(--color);
+          box-shadow: -1px 0 0 2px var(--color);
+          font-family: var(--cc-input-font-family, inherit);
           padding: 1px 0;
         }
 
         /* We use this empty .ring element to decorate the input with background, border, box-shadows... */
         .ring {
-          background: #fff;
+          background: var(--cc-color-bg-default, #fff);
           border: 1px solid #aaa;
           border-radius: 0.25em;
           bottom: 0;
@@ -555,19 +556,19 @@ export class CcInputText extends LitElement {
         }
 
         :host([disabled]) .ring {
-          background: var(--color-bg-neutral-disabled);
+          background: var(--cc-color-bg-neutral-disabled);
           border-color: #eee;
         }
 
         :host([readonly]) .ring {
-          background: #eee;
+          background: var(--cc-color-bg-neutral-hovered);
         }
 
         /* SKELETON */
         .skeleton .ring,
         .skeleton:hover .ring,
         .skeleton .input:hover + .ring {
-          background-color: var(--color-bg-neutral-disabled);
+          background-color: var(--cc-color-bg-neutral-disabled);
           border-color: #eee;
           cursor: progress;
         }
@@ -610,11 +611,11 @@ export class CcInputText extends LitElement {
         }
 
         .btn:hover {
-          background-color: var(--color-bg-neutral-hovered);
+          background-color: var(--cc-color-bg-neutral-hovered);
         }
 
         .btn:active {
-          background-color: var(--color-bg-neutral-active);
+          background-color: var(--cc-color-bg-neutral-active);
         }
 
         /* We can do this because we set a visible focus state */

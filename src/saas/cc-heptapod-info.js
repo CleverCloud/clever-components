@@ -4,7 +4,6 @@ import '../molecules/cc-error.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { i18n } from '../lib/i18n.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 import { skeletonStyles } from '../styles/skeleton.js';
 import { ccLink, linkStyles } from '../templates/cc-link.js';
 
@@ -104,7 +103,6 @@ export class CcHeptapodInfo extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       skeletonStyles,
       linkStyles,
       // language=CSS
@@ -135,25 +133,24 @@ export class CcHeptapodInfo extends LitElement {
           margin-left: 1rem;
         }
 
-
         .pricing {
           --cc-gap: 1rem;
         }
 
         .pricing-item {
-          color: var(--color-text-light);
+          color: var(--cc-color-text-weak);
           flex: 1 1 auto;
           text-align: center;
         }
 
         .pricing-item-value {
-          color: var(--color-text-primary-highlight);
+          color: var(--cc-color-text-primary-highlight);
           display: inline-block;
           font-weight: bold;
         }
 
         .no-statistics {
-          color: #555;
+          color: var(--cc-color-text-weak);
           font-style: italic;
           margin: 0.2rem;
         }

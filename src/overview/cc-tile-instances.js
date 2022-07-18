@@ -5,7 +5,6 @@ import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { animate, QUICK_SHRINK } from '../lib/animate.js';
 import { i18n } from '../lib/i18n.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 import { instanceDetailsStyles, tileStyles } from '../styles/info-tiles.js';
 import { waitingStyles } from '../styles/waiting.js';
 
@@ -133,7 +132,6 @@ export class CcTileInstances extends LitElement {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       tileStyles,
       instanceDetailsStyles,
       waitingStyles,
@@ -163,7 +161,7 @@ export class CcTileInstances extends LitElement {
         }
 
         .instances_status {
-          color: var(--status-color);
+          color: var(--status-color, #000000);
           flex: 1 1 0;
           font-size: 1.2rem;
           margin-left: 0.25rem;
@@ -175,7 +173,7 @@ export class CcTileInstances extends LitElement {
         }
 
         .count-bubble {
-          background-color: var(--status-color);
+          background-color: var(--status-color, #000000);
           bottom: calc(var(--bubble-d) / -2);
           position: absolute;
           right: calc(var(--bubble-d) / -2);

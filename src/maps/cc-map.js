@@ -7,7 +7,6 @@ import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import * as leaflet from '../lib/leaflet-esm.js';
 import { withResizeObserver } from '../mixins/with-resize-observer.js';
-import { defaultThemeStyles } from '../styles/default-theme.js';
 import { leafletStyles } from '../styles/leaflet.js';
 
 /**
@@ -336,11 +335,11 @@ export class CcMap extends withResizeObserver(LitElement) {
 
   static get styles () {
     return [
-      defaultThemeStyles,
       leafletStyles,
       // language=CSS
       css`
         :host {
+          background-color: var(--cc-color-bg-default, #fff);
           display: flex;
           flex-direction: column;
           height: 15rem;
@@ -380,8 +379,8 @@ export class CcMap extends withResizeObserver(LitElement) {
         }
 
         :host(:not(:empty)) .legend {
-          background-color: var(--color-bg-neutral);
-          box-shadow: inset 0 6px 6px -6px #a4b1c9;
+          background-color: var(--cc-color-bg-neutral);
+          box-shadow: inset 0 6px 6px -6px rgba(0, 0, 0, 0.4);
           box-sizing: border-box;
           font-size: 0.9rem;
           font-style: italic;
@@ -418,10 +417,10 @@ export class CcMap extends withResizeObserver(LitElement) {
 
         .msg {
           align-items: center;
-          background-color: white;
+          background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid #bcc2d1;
           border-radius: 0.25rem;
-          box-shadow: 0 0 1rem #aaa;
+          box-shadow: 0 0 1rem rgba(0, 0, 0, 0.4);
           display: flex;
           justify-content: center;
           padding: 1rem;
