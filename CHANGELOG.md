@@ -6,6 +6,10 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+...
+
+## 9.0.0 (2022-07-19)
+
 ### ⚠️ BREAKING CHANGES
 
 * `<cc-input-text>`: 
