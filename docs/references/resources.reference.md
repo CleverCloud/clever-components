@@ -43,6 +43,8 @@ Here's list of interesting things to read, watch and listen to if you're working
 * [VDOM vs lit-html - HTTP203](https://www.youtube.com/watch?v=uCHZJy2n8Qs)
 * [Layout Land - Jen Simmons](https://www.youtube.com/c/LayoutLand/videos)
 * [Git Dammit ! - Maxime Ghignet](https://www.youtube.com/watch?v=Rnh5QK__pLA)
+* [Making Impossible States Impossible" by Richard Feldman](https://www.youtube.com/watch?v=IcgmSRJHu_8)
+* [Simplify your UI management with (algebraic data) types - Matthias Le Brun](https://www.youtube.com/watch?v=ugoZKkKIJTE&t=56m40s)
 
 ## Slacks and discords to join
 
