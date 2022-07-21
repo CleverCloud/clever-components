@@ -36,10 +36,22 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
       error: { type: Boolean, reflect: true },
       selected: { type: String },
       zones: { type: Array },
-      _hovered: { type: String },
-      _legend: { type: String },
-      _points: { type: Array },
-      _sortedZones: { type: Array },
+      _hovered: {
+        type: String,
+        attribute: false,
+      },
+      _legend: {
+        type: String,
+        attribute: false,
+      },
+      _points: {
+        type: Array,
+        attribute: false,
+      },
+      _sortedZones: {
+        type: Array,
+        attribute: false,
+      },
     };
   }
 

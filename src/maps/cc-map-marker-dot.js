@@ -34,7 +34,10 @@ export class CcMapMarkerDot extends LitElement {
       count: { type: Number, reflect: true },
       size: { type: Array },
       tooltip: { type: Array },
-      _color: { type: String },
+      _color: {
+        type: String,
+        attribute: false,
+      },
     };
   }
 

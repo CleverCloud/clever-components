@@ -50,9 +50,9 @@ export class CcEnvVarForm extends LitElement {
       _currentVariables: { type: Array, attribute: false },
       _description: { type: String, attribute: false },
       _expertVariables: { type: Array, attribute: false },
+      _isPristine: { type: Boolean, attribute: false },
       _jsonVariables: { type: Array, attribute: false },
       _mode: { type: String, attribute: false },
-      _isPristine: { type: Boolean, attribute: false },
     };
   }
 

@@ -61,8 +61,8 @@ export class CcInputText extends LitElement {
     return {
       clipboard: { type: Boolean, reflect: true },
       disabled: { type: Boolean, reflect: true },
-      label: { type: String },
       inline: { type: Boolean, reflect: true },
+      label: { type: String },
       multi: { type: Boolean, reflect: true },
       name: { type: String, reflect: true },
       placeholder: { type: String },

@@ -42,7 +42,10 @@ export class CcPricingHeader extends LitElement {
       totalPrice: { type: Number, attribute: 'total-price' },
       zoneId: { type: String, attribute: 'zone-id' },
       zones: { type: Array },
-      _sortedZones: { type: Array },
+      _sortedZones: {
+        type: Array,
+        attribute: false,
+      },
     };
   }
 

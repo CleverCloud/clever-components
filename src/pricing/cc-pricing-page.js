@@ -37,7 +37,10 @@ export class CcPricingPage extends LitElement {
       currency: { type: Object },
       zoneId: { type: Object },
       zones: { type: Array },
-      _selectedPlans: { type: Object },
+      _selectedPlans: {
+        type: Object,
+        attribute: false,
+      },
     };
   }
 
