@@ -15,8 +15,9 @@ import '../molecules/cc-block-section.js';
 const mailSvg = new URL('../assets/mail-line.svg', import.meta.url).href;
 const mailStarSvg = new URL('../assets/mail-star-line.svg', import.meta.url).href;
 const trashSvg = new URL('../assets/trash-red.svg', import.meta.url).href;
-const tickSvg = new URL('../assets/tick.svg', import.meta.url).href;
-const errorSvg = new URL('../assets/error.svg', import.meta.url).href;
+const verifiedSvg = new URL('../assets/checkbox-circle-fill.svg', import.meta.url).href;
+const unverifiedSvg = new URL('../assets/spam-2-fill.svg', import.meta.url).href;
+const blankSvg = new URL('../assets/blank.svg', import.meta.url).href;
 
 /**
  * @typedef {import('./types.js').CcEmailState} CcEmailState
@@ -65,11 +66,8 @@ export class CcEmail extends LitElement {
     /** @type {CcEmailState} state of the component. */
     this.state = 'loading';
 
-    /** @type {PrimaryEmailAddress} the primary email state and data. */
-    this.primary = null;
-
-    /** @type {SecondaryEmailAddresses} the secondary emails state and data. */
-    this.secondary = null;
+    /** @type {CcEmailData} the data. */
+    this.data = null;
 
     /** @type {string} The value currently set on the add address text input. */
     this._addAddressInputValue = '';
@@ -90,8 +88,7 @@ export class CcEmail extends LitElement {
   static get properties () {
     return {
       state: { type: String },
-      primary: { type: Object },
-      secondary: { type: Object },
+      data: { type: Object },
       _addAddressInputValue: { type: String },
       _addAddressInputError: { type: String },
     };
@@ -115,7 +112,7 @@ export class CcEmail extends LitElement {
     if (this._isLoading()) {
       return fakeString(verifiedLabel.length);
     }
-    return this.primary?.address?.verified ? verifiedLabel : i18n('cc-email.primary.email.unverified');
+    return this.data?.primary?.address?.verified ? verifiedLabel : i18n('cc-email.primary.email.unverified');
   }
 
   _getInputError () {
@@ -161,12 +158,18 @@ export class CcEmail extends LitElement {
   }
 
   _onSendConfirmationEmail () {
-    dispatchCustomEvent(this, 'send-confirmation-email', this.primary.address.value);
+    dispatchCustomEvent(this, 'send-confirmation-email', this.data.primary.address.value);
+  }
+
+  resetForm () {
+    this._addAddressInputError = null;
+    this._addAddressInputValue = '';
   }
 
   reset () {
-    this._addAddressInputError = null;
-    this._addAddressInputValue = '';
+    this.state = 'loading';
+    this.data = null;
+    this.resetForm();
   }
 
   render () {
@@ -188,9 +191,13 @@ export class CcEmail extends LitElement {
 
   _renderPrimarySection () {
     const skeleton = this._isLoading();
-    const address = skeleton ? fakeString(35) : this.primary?.address?.value;
-    const verified = this.primary?.address?.verified;
+    const address = skeleton ? fakeString(35) : this.data?.primary?.address?.value;
+    const verified = this.data?.primary?.address?.verified;
     const shouldDisplayResendConfirmationEmail = !skeleton && !verified;
+
+    const badgeIntent = skeleton ? 'neutral' : verified ? 'success' : 'danger';
+    const badgeWeight = skeleton ? 'dimmed' : 'outlined';
+    const badgeIcon = skeleton ? blankSvg : verified ? verifiedSvg : unverifiedSvg;
 
     return html`
       <cc-block-section>
@@ -202,15 +209,19 @@ export class CcEmail extends LitElement {
             <div class="icon"><img src="${mailStarSvg}" alt=""/></div>
             <span class="${classMap({ skeleton: skeleton })}">${address}</span>  
           </div>
-          <div class="tag ${classMap({ skeleton: skeleton, verified: verified, unverified: !verified })}">
-            <img src="${verified ? tickSvg : errorSvg}" alt=""/>${this._getVerifiedTagLabel()}
-          </div>
+          <cc-badge
+            class="${classMap({ skeleton: skeleton })}"
+            intent="${badgeIntent}"
+            weight="${badgeWeight}"
+            icon-src="${badgeIcon}"
+            icon-alt=""
+          >${this._getVerifiedTagLabel()}</cc-badge>
         </cc-flex-gap>
         <cc-flex-gap>
           ${shouldDisplayResendConfirmationEmail ? html`
             <cc-button
                 @cc-button:click=${this._onSendConfirmationEmail}
-                ?waiting=${this.primary?.state === 'sending-confirmation-email'}
+                ?waiting=${this.data?.primary?.state === 'sending-confirmation-email'}
                 link
             >
               ${i18n('cc-email.primary.action.resend-confirmation-email')}
@@ -223,7 +234,7 @@ export class CcEmail extends LitElement {
 
   _renderSecondarySection () {
     /** @type {SecondaryEmailAddress[]} */
-    const addresses = [...(this._isLoading() ? [] : (this.secondary?.addresses || []))]
+    const addresses = [...(this._isLoading() ? [] : (this.data?.secondary?.addresses || []))]
       .sort((a1, a2) => a1.address.value.localeCompare(a2.address.value));
     const markingAsPrimary = addresses.some((item) => item.state === 'marking-as-primary');
 
@@ -233,8 +244,8 @@ export class CcEmail extends LitElement {
         <div slot="info">${i18n('cc-email.secondary.description')}</div>
 
         ${addresses.map((item) => {
-          const busy = item.state === 'marking-as-primary' | item.state === 'deleting';
-          const markingAsPrimaryDisabled = this.primary.address.verified === false;
+          const busy = item.state === 'marking-as-primary' || item.state === 'deleting';
+          const markingAsPrimaryDisabled = this.data?.primary.address.verified === false;
 
           return html`
             <cc-flex-gap class="address-line secondary">
@@ -270,7 +281,7 @@ export class CcEmail extends LitElement {
             label="${i18n('cc-email.secondary.address-input.label')}"
             required
             value="${this._addAddressInputValue}"
-            ?disabled=${this.secondary?.state === 'adding'}
+            ?disabled=${this.data?.secondary?.state === 'adding'}
             @cc-input-text:input=${this._onInput}
             @cc-input-text:requestimplicitsubmit=${this._onAdd}
         >
@@ -285,7 +296,7 @@ export class CcEmail extends LitElement {
         </cc-input-text>
         <cc-button
             primary
-            ?waiting=${this.secondary?.state === 'adding'}
+            ?waiting=${this.data?.secondary?.state === 'adding'}
             @cc-button:click=${this._onAdd}
         >
           ${i18n('cc-email.secondary.action.add')}
@@ -341,58 +352,6 @@ export class CcEmail extends LitElement {
 
         /*endregion*/
 
-        /*region TAG*/
-        .tag {
-          align-items: center;
-          border: 1px solid var(--cc-email-primary-tag-color);
-          border-radius: 9999px;
-
-          color: var(--cc-email-primary-tag-color);
-          display: flex;
-          flex-wrap: nowrap;
-
-          font-size: 0.85em;
-          padding: 0.3em 0.8em;
-
-          white-space: nowrap;
-        }
-        
-        .tag.v1 {
-          align-items: center;
-          border: 1px solid var(--cc-email-primary-tag-color);
-          border-radius: 0.25em;
-
-          color: var(--cc-email-primary-tag-color);
-          display: flex;
-          flex-wrap: nowrap;
-
-          font-size: 0.85em;
-          padding: 0.1em 0.3em;
-
-          white-space: nowrap;
-        }
-
-        .tag.verified {
-          --cc-email-primary-tag-color: var(--color-text-success);
-        }
-
-        .tag.unverified {
-          --cc-email-primary-tag-color: var(--color-text-danger);
-        }
-
-        .tag.skeleton {
-          border: none;
-        }
-
-        .tag > img {
-          margin-right: 0.5em;
-          min-height: 0;
-          padding: 0;
-          width: 1.2em;
-        }
-
-        /*endregion*/
-
         /*region FORM*/
         form {
           align-items: start;
@@ -407,8 +366,7 @@ export class CcEmail extends LitElement {
         form > cc-button {
           align-self: start;
           grid-area: button;
-          /*todo: use --margin-top-btn-horizontal-form when available (see #448)*/
-          margin-top: var(--margin-top-btn-horizontal-form);
+          margin-top: var(--cc-margin-top-btn-horizontal-form);
         }
 
         form > cc-error {

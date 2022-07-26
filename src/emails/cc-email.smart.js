@@ -3,6 +3,7 @@ import '../smart/cc-smart-container.js';
 // eslint-disable-next-line camelcase
 import { todo_addEmailAddress, todo_getEmailAddresses, todo_removeEmailAddress } from '@clevercloud/client/esm/api/v2/user.js';
 import { i18n } from '../lib/i18n.js';
+import { notify, notifyError, notifySuccess } from '../lib/notifications.js';
 import { fromCustomEvent, LastPromise, unsubscribeWithSignal, withLatestFrom } from '../lib/observables.js';
 import { sendToApi } from '../lib/send-to-api.js';
 import { defineComponent } from '../lib/smart-manager.js';
@@ -32,19 +33,21 @@ defineComponent({
       }),
       emails_lp.value$.subscribe(({ self, secondary }) => {
         component.state = 'loaded';
-        component.primary = {
-          address: {
-            value: self.email,
-            verified: self.emailValidated,
-          },
-        };
-        component.secondary = {
-          addresses: secondary.map((a) => ({
+        component.data = {
+          primary: {
             address: {
-              value: a,
-              verified: true,
+              value: self.email,
+              verified: self.emailValidated,
             },
-          })),
+          },
+          secondary: {
+            addresses: secondary.map((a) => ({
+              address: {
+                value: a,
+                verified: true,
+              },
+            })),
+          },
         };
       }),
       /* endregion*/
@@ -54,6 +57,16 @@ defineComponent({
         setStateOnPrimary(component, 'sending-confirmation-email');
 
         sendConfirmationEmail({ apiConfig, address })
+          .then(() => notify(component, {
+            intent: 'info',
+            title: i18n('cc-email.primary.action.resend-confirmation-email.success.title', { address }),
+            message: i18n('cc-email.primary.action.resend-confirmation-email.success.message'),
+            options: {
+              timeout: 0,
+              closeable: true,
+            },
+          }))
+          .catch(() => notifyError(component, i18n('cc-email.primary.action.resend-confirmation-email.error')))
           .finally(() => {
             setStateOnPrimary(component, null);
           });
@@ -67,7 +80,8 @@ defineComponent({
 
         addSecondaryEmailAddress({ apiConfig, address })
           .then(() => {
-            component.reset();
+            notifySuccess(component, i18n('cc-email.secondary.action.add.success'));
+            component.resetForm();
           })
           .catch((error) => {
             let inputError;
@@ -82,11 +96,11 @@ defineComponent({
             }
 
             if (inputError) {
-              // maybe in this case, we should not show a toast error
               setStateOnSecondary(component, null);
               component._addAddressInputError = inputError;
             }
           })
+          .catch(() => notifyError(component, i18n('cc-email.secondary.action.add.error')))
           .finally(() => {
             setStateOnSecondary(component, null);
           });
@@ -100,13 +114,19 @@ defineComponent({
 
         deleteSecondaryEmailAddress({ apiConfig, address })
           .then(() => {
-            component.secondary = {
-              addresses: [
-                ...component.secondary.addresses.filter((a) => a.address.value !== address),
-              ],
-              state: null,
+            notifySuccess(component, i18n('cc-email.secondary.action.delete.success'));
+
+            component.data = {
+              ...component.data,
+              secondary: {
+                addresses: [
+                  ...component.data.secondary.addresses.filter((a) => a.address.value !== address),
+                ],
+                state: null,
+              },
             };
-          });
+          })
+          .catch(() => notifyError(component, i18n('cc-email.secondary.action.delete.error')));
       }),
       /* endregion*/
 
@@ -116,8 +136,11 @@ defineComponent({
 
         markSecondaryEmailAddressAsPrimary({ apiConfig, address })
           .then(() => {
+            notifySuccess(component, i18n('cc-email.secondary.action.mark-as-primary.success'));
+
             emails_lp.push((signal) => fetchEmailAddresses({ apiConfig, signal }));
           })
+          .catch(() => notifyError(component, i18n('cc-email.secondary.action.mark-as-primary.error')))
           .finally(() => {
             // setStateOnSecondaryEmailAddress(component, address, null);
           });
@@ -127,9 +150,6 @@ defineComponent({
 
       context$.subscribe(({ apiConfig }) => {
         component.reset();
-        component.state = 'loading';
-        component.primary = null;
-        component.secondary = null;
 
         if (apiConfig != null) {
           emails_lp.push((signal) => fetchEmailAddresses({ apiConfig, signal }));
@@ -140,29 +160,38 @@ defineComponent({
 });
 
 function setStateOnSecondaryEmailAddress (component, address, state) {
-  component.secondary = {
-    addresses: [
-      ...component.secondary.addresses.filter((a) => a.address.value !== address),
-      {
-        ...component.secondary.addresses.find((a) => a.address.value === address),
-        state: state,
-      },
-    ],
-    state: component.secondary.state,
+  component.data = {
+    ...component.data,
+    secondary: {
+      addresses: [
+        ...component.data.secondary.addresses.filter((a) => a.address.value !== address),
+        {
+          ...component.data.secondary.addresses.find((a) => a.address.value === address),
+          state: state,
+        },
+      ],
+      state: component.data.secondary.state,
+    },
   };
 }
 
 function setStateOnPrimary (component, state) {
-  component.primary = {
-    ...component.primary,
-    state: state,
+  component.data = {
+    ...component.data,
+    primary: {
+      ...component.data.primary,
+      state: state,
+    },
   };
 }
 
 function setStateOnSecondary (component, state) {
-  component.secondary = {
-    ...component.secondary,
-    state: state,
+  component.data = {
+    ...component.data,
+    secondary: {
+      ...component.data.secondary,
+      state: state,
+    },
   };
 }
 
@@ -218,7 +247,7 @@ const RemoteApi = {
 
 const primaryEmailAddress = {
   email: 'mock@domain.com',
-  emailValidated: true,
+  emailValidated: false,
 };
 let secondaryEmailAddresses = [
   'secondary.1.mock@domain.com',
@@ -268,31 +297,19 @@ function fetchEmailAddresses ({ apiConfig, signal }) {
 }
 
 function sendConfirmationEmail ({ apiConfig, address }) {
-  return withNotifications(
-    { key: 'cc-email.primary.action.resend-confirmation-email', data: { address } },
-    api.sendConfirmationEmail({ apiConfig }),
-  );
+  return api.sendConfirmationEmail({ apiConfig });
 }
 
 function addSecondaryEmailAddress ({ apiConfig, address }) {
-  return withNotifications(
-    'cc-email.secondary.action.add',
-    api.addSecondaryEmailAddress({ apiConfig, address }),
-  );
+  return api.addSecondaryEmailAddress({ apiConfig, address });
 }
 
 function deleteSecondaryEmailAddress ({ apiConfig, address }) {
-  return withNotifications(
-    'cc-email.secondary.action.delete',
-    api.deleteSecondaryEmailAddress({ apiConfig, address }),
-  );
+  return api.deleteSecondaryEmailAddress({ apiConfig, address });
 }
 
 function markSecondaryEmailAddressAsPrimary ({ apiConfig, address }) {
-  return withNotifications(
-    'cc-email.secondary.action.mark-as-primary',
-    api.markSecondaryEmailAddressAsPrimary({ apiConfig, address }),
-  );
+  return api.markSecondaryEmailAddressAsPrimary({ apiConfig, address });
 }
 
 function getApi (mock) {
@@ -311,18 +328,4 @@ function getApi (mock) {
       };
     },
   });
-}
-
-function withNotifications (key, promise) {
-  const k = typeof key === 'string' ? key : key.key;
-  const d = typeof key === 'string' ? undefined : key.data;
-  return promise
-    .then((r) => {
-      console.log(i18n(`${k}.success`, d));
-      return r;
-    })
-    .catch((e) => {
-      console.log(i18n(`${k}.error`, d));
-      throw e;
-    });
 }
