@@ -11,7 +11,8 @@ import listImages from './cem/list-images.js';
 fs.mkdirSync('dist', { recursive: true });
 
 export default {
-  globs: ['src/**/cc-*.js'],
+  globs: ['src/components/**/cc-*.js'],
+  exclude: ['src/**/*.stories.js'],
   // dev: true,
   // watch: true,
   plugins: [
