@@ -1,7 +1,7 @@
 const commonjs = require('@rollup/plugin-commonjs');
 const json = require('@rollup/plugin-json');
 const { importMetaAssets } = require('@web/rollup-plugin-import-meta-assets');
-const { storybookRollupPlugin } = require('../stories/lib/markdown.cjs');
+const { storybookRollupPlugin } = require('../src/stories/lib/markdown.cjs');
 
 module.exports = {
   stories: [
@@ -12,9 +12,9 @@ module.exports = {
     // Prevent smart component Markdown example
     '!(../docs/**/*example*.md)',
     // Then regular CSF stories
-    '../stories/**/*.stories.js',
+    '../src/**/*.stories.js',
     // Then smart component Markdown docs
-    '../stories/**/*smart*.md',
+    '../src/**/*smart*.md',
   ],
   rollupConfig (config) {
 
