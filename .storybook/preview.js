@@ -1,4 +1,4 @@
-import '../stories/lib/i18n-control.js';
+import '../src/stories/lib/i18n-control.js';
 import { setCustomElementsManifest } from '@web/storybook-prebuilt/web-components.js';
 import customElementsManifest from '../dist/custom-elements.json';
 import { getAvailableLanguages } from '../src/lib/i18n.js';

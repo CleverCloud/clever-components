@@ -2,7 +2,7 @@ import { hmrPlugin, presets } from '@open-wc/dev-server-hmr';
 import rollupCommonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import { fromRollup, rollupAdapter } from '@web/dev-server-rollup';
-import { storybookWdsPlugin } from './stories/lib/markdown.cjs';
+import { storybookWdsPlugin } from './src/stories/lib/markdown.cjs';
 import { generateCustomElementsManifest } from './tasks/cem-analyzer.js';
 import { esbuildBundlePlugin } from './wds/esbuild-bundle-plugin.js';
 
