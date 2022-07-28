@@ -1,5 +1,6 @@
 import '../../src/emails/cc-email.js';
 import '../../src/emails/cc-email.smart.js';
+import { createStateMutator } from '../../src/emails/stateHelpers.js';
 import { makeStory, storyWait } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
@@ -250,31 +251,26 @@ export const simulationsWithPrimary = makeStory(conf, {
   ],
   simulations: [
     storyWait(1000, ([component]) => {
-      component.state = {
-        type: 'loaded',
-        data: {
+      createStateMutator(component).data(
+        {
           primary: primaryUnverified,
           secondaryAddresses: secondaryEmpty,
         },
-      };
+      );
     }),
     storyWait(2000, ([component]) => {
-      component.state = {
-        type: 'loaded',
-        data: {
+      createStateMutator(component).data(
+        {
           ...component.state.data,
           primary: { ...primaryUnverified, state: 'sending-confirmation-email' },
         },
-      };
+      );
     }),
     storyWait(2000, ([component]) => {
-      component.state = {
-        type: 'loaded',
-        data: {
-          ...component.state.data,
-          primary,
-        },
-      };
+      createStateMutator(component).data({
+        ...component.state.data,
+        primary,
+      });
     }),
   ],
 });
@@ -285,13 +281,10 @@ export const simulationsWithSecondary = makeStory(conf, {
   ],
   simulations: [
     storyWait(2000, ([component]) => {
-      component.state = {
-        type: 'loaded',
-        data: {
-          primary: primary,
-          secondaryAddresses: secondaryEmpty,
-        },
-      };
+      createStateMutator(component).data({
+        primary: primary,
+        secondaryAddresses: secondaryEmpty,
+      });
     }),
     storyWait(2000, ([component]) => {
       component.formInput('invalid email');
@@ -310,17 +303,14 @@ export const simulationsWithSecondary = makeStory(conf, {
     }),
     storyWait(2000, ([component]) => {
       component.resetForm();
-      component.state = {
-        type: 'loaded',
-        data: {
-          ...component.state.data,
-          secondaryAddresses: [
-            {
-              address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: false },
-            },
-          ],
-        },
-      };
+      createStateMutator(component).data({
+        ...component.state.data,
+        secondaryAddresses: [
+          {
+            address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: false },
+          },
+        ],
+      });
     }),
     storyWait(2000, ([component]) => {
       component.formInput(YET_ANOTHER_SAMPLE_EMAIL_ADDRESS);
@@ -331,99 +321,81 @@ export const simulationsWithSecondary = makeStory(conf, {
     storyWait(2000, ([component]) => {
       component.resetForm();
 
-      component.state = {
-        type: 'loaded',
-        data: {
-          ...component.state.data,
-          secondaryAddresses: [
-            {
-              address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: false },
-            },
-            {
-              address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: false },
-            },
-          ],
-        },
-      };
+      createStateMutator(component).data({
+        ...component.state.data,
+        secondaryAddresses: [
+          {
+            address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: false },
+          },
+          {
+            address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: false },
+          },
+        ],
+      });
     }),
     storyWait(2000, ([component]) => {
-      component.state = {
-        type: 'loaded',
-        data: {
-          ...component.state.data,
-          secondaryAddresses: [
-            {
-              address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
-            },
-            {
-              address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
-            },
-          ],
-        },
-      };
+      createStateMutator(component).data({
+        ...component.state.data,
+        secondaryAddresses: [
+          {
+            address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+          },
+          {
+            address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+          },
+        ],
+      });
     }),
     storyWait(2000, ([component]) => {
-      component.state = {
-        type: 'loaded',
-        data: {
-          ...component.state.data,
-          secondaryAddresses: [
-            {
-              address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
-              state: 'marking-as-primary',
-            },
-            {
-              address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
-            },
-          ],
-        },
-      };
+      createStateMutator(component).data({
+        ...component.state.data,
+        secondaryAddresses: [
+          {
+            address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+            state: 'marking-as-primary',
+          },
+          {
+            address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+          },
+        ],
+      });
     }),
     storyWait(2000, ([component]) => {
-      component.state = {
-        type: 'loaded',
-        data: {
-          primary: { address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true } },
-          secondaryAddresses: [
-            {
-              address: { value: SAMPLE_EMAIL_ADDRESS, verified: true },
-            },
-            {
-              address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
-            },
-          ],
-        },
-      };
+      createStateMutator(component).data({
+        primary: { address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true } },
+        secondaryAddresses: [
+          {
+            address: { value: SAMPLE_EMAIL_ADDRESS, verified: true },
+          },
+          {
+            address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+          },
+        ],
+      });
     }),
     storyWait(2000, ([component]) => {
-      component.state = {
-        type: 'loaded',
-        data: {
-          ...component.state.data,
-          secondaryAddresses: [
-            {
-              address: { value: SAMPLE_EMAIL_ADDRESS, verified: true },
-              state: 'deleting',
-            },
-            {
-              address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
-            },
-          ],
-        },
-      };
+      createStateMutator(component).data({
+        ...component.state.data,
+        secondaryAddresses: [
+          {
+            address: { value: SAMPLE_EMAIL_ADDRESS, verified: true },
+            state: 'deleting',
+          },
+          {
+            address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+          },
+        ],
+      });
     }),
     storyWait(2000, ([component]) => {
-      component.state = {
-        type: 'loaded',
-        data: {
-          ...component.state.data,
-          secondaryAddresses: [
-            {
-              address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
-            },
-          ],
-        },
-      };
+      createStateMutator(component).data({
+        ...component.state.data,
+        secondaryAddresses: [
+          {
+            address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+          },
+        ],
+      });
     }),
   ],
 });

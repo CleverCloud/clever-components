@@ -7,6 +7,7 @@ import { notify, notifyError, notifySuccess } from '../lib/notifications.js';
 import { fromCustomEvent, LastPromise, unsubscribeWithSignal, withLatestFrom } from '../lib/observables.js';
 import { sendToApi } from '../lib/send-to-api.js';
 import { defineComponent } from '../lib/smart-manager.js';
+import { createStateMutator } from './stateHelpers.js';
 
 defineComponent({
   selector: 'cc-email',
@@ -21,6 +22,11 @@ defineComponent({
    * @param disconnectSignal
    */
   onConnect (container, component, context$, disconnectSignal) {
+    /**
+     * @type {StateMutator<CcEmailData>}
+     */
+    const stateMutator = createStateMutator(component);
+
     const emails_lp = new LastPromise();
 
     const onSendConfirmationEmail$ = fromCustomEvent(component, 'cc-email:send-confirmation-email')
@@ -36,11 +42,11 @@ defineComponent({
       /* region LOAD_PRIMARY */
       emails_lp.error$.subscribe(console.error),
       emails_lp.error$.subscribe(() => {
-        stateHelper(component).loadingError();
+        stateMutator.error();
         // component.state = { type: 'error', error: 'loading' };
       }),
       emails_lp.value$.subscribe(({ self, secondary }) => {
-        stateHelper(component).newData(
+        stateMutator.data(
           {
             primary: {
               address: {
@@ -56,31 +62,12 @@ defineComponent({
             })),
           },
         );
-        // component.state = {
-        //   type: 'loaded',
-        //   data: {
-        //     primary: {
-        //       address: {
-        //         value: self.email,
-        //         verified: self.emailValidated,
-        //       },
-        //     },
-        //     secondary: {
-        //       addresses: secondary.map((a) => ({
-        //         address: {
-        //           value: a,
-        //           verified: true,
-        //         },
-        //       })),
-        //     },
-        //   },
-        // };
       }),
       /* endregion*/
 
       /* region SEND_CONFIRMATION_EMAIL */
       onSendConfirmationEmail$.subscribe(([address, { apiConfig }]) => {
-        setStateOnPrimary(component, 'sending-confirmation-email');
+        setStateOnPrimary('sending-confirmation-email');
 
         sendConfirmationEmail({ apiConfig, address })
           .then(() => notify(component, {
@@ -94,7 +81,7 @@ defineComponent({
           }))
           .catch(() => notifyError(component, i18n('cc-email.primary.action.resend-confirmation-email.error')))
           .finally(() => {
-            setStateOnPrimary(component, null);
+            setStateOnPrimary(null);
           });
       }),
       /* endregion*/
@@ -142,13 +129,13 @@ defineComponent({
 
       /* region DELETE_SECONDARY_ADDRESS */
       onDeleteSecondaryEmail$.subscribe(([address, { apiConfig }]) => {
-        setStateOnSecondaryEmailAddress(component, address, 'deleting');
+        setStateOnSecondaryEmailAddress(address, 'deleting');
 
         deleteSecondaryEmailAddress({ apiConfig, address })
           .then(() => {
             notifySuccess(component, i18n('cc-email.secondary.action.delete.success'));
 
-            stateHelper(component).newDataFn((oldData) => {
+            stateMutator.data((oldData) => {
               return {
                 ...oldData,
                 secondaryAddresses: [
@@ -156,18 +143,6 @@ defineComponent({
                 ],
               };
             });
-
-            // component.state = {
-            //   type: 'loaded',
-            //   data: {
-            //     ...component.state.data,
-            //     secondary: {
-            //       addresses: [
-            //         ...component.state.data.secondary.addresses.filter((a) => a.address.value !== address),
-            //       ],
-            //     },
-            //   },
-            // };
           })
           .catch(() => notifyError(component, i18n('cc-email.secondary.action.delete.error')));
       }),
@@ -175,7 +150,7 @@ defineComponent({
 
       /* region MARK_AS_PRIMARY */
       onMarkSecondaryEmailAsPrimary$.subscribe(([address, { apiConfig }]) => {
-        setStateOnSecondaryEmailAddress(component, address, 'marking-as-primary');
+        setStateOnSecondaryEmailAddress(address, 'marking-as-primary');
 
         markSecondaryEmailAddressAsPrimary({ apiConfig, address })
           .then(() => {
@@ -199,105 +174,39 @@ defineComponent({
         }
       }),
     ]);
+
+    function setStateOnSecondaryEmailAddress (address, state) {
+      stateMutator.data((oldData) => {
+        return {
+          ...oldData,
+          secondaryAddresses: oldData.secondaryAddresses.map((a) => {
+            if (a.address.value === address) {
+              return {
+                ...a,
+                state,
+              };
+            }
+            else {
+              return a;
+            }
+          }),
+        };
+      });
+    }
+
+    function setStateOnPrimary (state) {
+      stateMutator.data((oldData) => {
+        return {
+          ...oldData,
+          primary: {
+            ...oldData.primary,
+            state: state,
+          },
+        };
+      });
+    }
   },
 });
-
-function setStateOnSecondaryEmailAddress (component, address, state) {
-  stateHelper(component).newDataFn((oldData) => {
-    return {
-      ...oldData,
-      secondaryAddresses: oldData.secondaryAddresses.map((a) => {
-        if (a.address.value === address) {
-          return {
-            ...a,
-            state,
-          };
-        }
-        else {
-          return a;
-        }
-      }),
-    };
-  });
-
-  // component.state = {
-  //   type: 'loaded',
-  //   data: {
-  //     ...component.state.data,
-  //     secondary: {
-  //       addresses: component.state.data.secondary.addresses.map((a) => {
-  //         if (a.address.value === address) {
-  //           return {
-  //             ...a,
-  //             state,
-  //           };
-  //         }
-  //         else {
-  //           return a;
-  //         }
-  //       }),
-  //       state: component.state.data.secondary.state,
-  //     },
-  //   },
-  // };
-}
-
-function setStateOnPrimary (component, state) {
-  stateHelper(component).newDataFn((oldData) => {
-    return {
-      ...oldData,
-      primary: {
-        ...oldData.primary,
-        state: state,
-      },
-    };
-  });
-  // component.state = {
-  //   type: 'loaded',
-  //   data: {
-  //     ...component.state.data,
-  //     primary: {
-  //       ...component.state.data.primary,
-  //       state: state,
-  //     },
-  //   },
-  // };
-}
-
-/**
- * @param {CcEmail} component
- * @template T
- */
-function stateHelper (component) {
-  return {
-    loading () {
-      component.state = {
-        type: 'loading',
-      };
-    },
-    loadingError () {
-      component.state = {
-        type: 'error',
-        error: 'loading',
-      };
-    },
-    /**
-     * @param {CcEmailData} data
-     */
-    newData (data) {
-      component.state = {
-        type: 'loaded',
-        data,
-      };
-    },
-    /**
-     * @param {(oldData: CcEmailData) => CcEmailData} dataFn
-     */
-    newDataFn (dataFn) {
-      this.newData(dataFn(component.data));
-    },
-  };
-}
 
 // -- API calls
 

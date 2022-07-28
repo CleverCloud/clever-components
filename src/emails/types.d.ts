@@ -1,20 +1,6 @@
-export interface Loading {
-  type: 'loading',
-}
+import {State} from "./common";
 
-export interface Error<E> {
-  type: 'error',
-  error: E,
-}
-
-export interface Result<T> {
-  type: 'loaded',
-  data: T
-}
-
-export type CcEmailState = Loading | Error<'loading'> | Result<CcEmailData>;
-
-
+export type CcEmailState = State<CcEmailData>;
 
 export interface CcEmailData {
   primary:PrimaryEmailAddress;
