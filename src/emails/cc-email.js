@@ -68,8 +68,9 @@ export class CcEmail extends LitElement {
     /** @type {CcEmailState} state of the component. */
     this.state = { type: 'loading' };
 
-    /** @type {FormData} The form data. */
-    this._formData = {
+    /** @type {FormState} The form state. */
+    this._formState = {
+      type: 'idle',
       input: '',
     };
 
@@ -89,12 +90,12 @@ export class CcEmail extends LitElement {
     return {
       state: { type: String },
       data: { type: Object },
-      _formData: { type: Object },
+      _formState: { type: Object },
     };
   }
 
   updated (_changedProperties) {
-    if (this._formData.error != null) {
+    if (this._formState.error != null) {
       this._focusAddressInput();
     }
 
@@ -126,16 +127,16 @@ export class CcEmail extends LitElement {
   }
 
   _getInputError () {
-    if (this._formData.error === 'empty') {
+    if (this._formState.error === 'empty') {
       return i18n(`cc-email.secondary.address-input.error.empty`);
     }
-    if (this._formData.error === 'used') {
+    if (this._formState.error === 'used') {
       return i18n(`cc-email.secondary.address-input.error.used`);
     }
-    if (this._formData.error === 'invalid') {
+    if (this._formState.error === 'invalid') {
       return i18n(`cc-email.secondary.address-input.error.invalid`);
     }
-    if (this._formData.error === 'already-defined') {
+    if (this._formState.error === 'already-defined') {
       return i18n(`cc-email.secondary.address-input.error.already-defined`);
     }
   }
@@ -157,10 +158,10 @@ export class CcEmail extends LitElement {
   }
 
   _onAdd () {
-    this.formError(validateEmailAddress(this._formData.input));
+    this.formError(validateEmailAddress(this._formState.input));
 
-    if (this._formData.error == null) {
-      dispatchCustomEvent(this, 'add', this._formData.input);
+    if (this._formState.error == null) {
+      dispatchCustomEvent(this, 'add', this._formState.input);
     }
     else {
       this._focusAddressInput();
@@ -171,12 +172,27 @@ export class CcEmail extends LitElement {
     dispatchCustomEvent(this, 'send-confirmation-email', this.data.primary.address.value);
   }
 
+  formAdding () {
+    this._formState = {
+      type: 'adding',
+      input: this._formState.input,
+    };
+  }
+
+  formIdle () {
+    this._formState = {
+      type: 'idle',
+      input: this._formState.input,
+    };
+  }
+
   /**
    * @param {FormError} error
    */
   formError (error) {
-    this._formData = {
-      ...this._formData,
+    this._formState = {
+      type: 'idle',
+      input: this._formState.input,
       error: error,
     };
   }
@@ -185,14 +201,16 @@ export class CcEmail extends LitElement {
    * @param {string} input
    */
   formInput (input) {
-    this._formData = {
-      ...this._formData,
+    this._formState = {
+      type: 'idle',
       input: input,
+      error: this._formState.error,
     };
   }
 
   resetForm () {
-    this._formData = {
+    this._formState = {
+      type: 'idle',
       input: '',
     };
   }
@@ -264,7 +282,7 @@ export class CcEmail extends LitElement {
 
   _renderSecondarySection () {
     /** @type {SecondaryEmailAddress[]} */
-    const addresses = [...(this._isLoading() ? [] : (this.data?.secondary?.addresses || []))]
+    const addresses = [...(this._isLoading() ? [] : (this.data?.secondaryAddresses || []))]
       .sort((a1, a2) => a1.address.value.localeCompare(a2.address.value));
     const markingAsPrimary = addresses.some((item) => item.state === 'marking-as-primary');
 
@@ -310,12 +328,12 @@ export class CcEmail extends LitElement {
           <cc-input-text
             label="${i18n('cc-email.secondary.address-input.label')}"
             required
-            value="${this._formData.input}"
-            ?disabled=${this.data?.secondary?.state === 'adding'}
+            value="${this._formState.input}"
+            ?disabled=${this._formState.type === 'adding'}
             @cc-input-text:input=${this._onInput}
             @cc-input-text:requestimplicitsubmit=${this._onAdd}
         >
-          ${this._formData.error ? html`
+          ${this._formState.error ? html`
             <p slot="error">
               ${this._getInputError()}
             </p>
@@ -326,7 +344,7 @@ export class CcEmail extends LitElement {
         </cc-input-text>
         <cc-button
             primary
-            ?waiting=${this.data?.secondary?.state === 'adding'}
+            ?waiting=${this._formState.type === 'adding'}
             @cc-button:click=${this._onAdd}
         >
           ${i18n('cc-email.secondary.action.add')}

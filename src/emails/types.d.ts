@@ -18,17 +18,12 @@ export type CcEmailState = Loading | Error<'loading'> | Result<CcEmailData>;
 
 export interface CcEmailData {
   primary:PrimaryEmailAddress;
-  secondary:SecondaryEmailAddresses;
+  secondaryAddresses:SecondaryEmailAddress[];
 }
 
 export interface PrimaryEmailAddress {
   state?: 'sending-confirmation-email';
   address: EmailAddress;
-}
-
-export interface SecondaryEmailAddresses {
-  state?: 'adding';
-  addresses: SecondaryEmailAddress[];
 }
 
 export interface SecondaryEmailAddress {
@@ -46,3 +41,14 @@ export interface FormData {
   input: string;
   error?: FormError;
 }
+
+export interface FormIdle {
+  type: 'idle',
+  input: string,
+  error?: FormError,
+}
+export interface FormBusy<A> {
+  type: A,
+  input: string,
+}
+export type FormState = FormIdle | FormBusy<'adding'>;

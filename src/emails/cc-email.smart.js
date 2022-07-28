@@ -48,14 +48,12 @@ defineComponent({
                 verified: self.emailValidated,
               },
             },
-            secondary: {
-              addresses: secondary.map((a) => ({
-                address: {
-                  value: a,
-                  verified: true,
-                },
-              })),
-            },
+            secondaryAddresses: secondary.map((a) => ({
+              address: {
+                value: a,
+                verified: true,
+              },
+            })),
           },
         );
         // component.state = {
@@ -103,14 +101,14 @@ defineComponent({
 
       /* region ADD_SECONDARY_ADDRESS */
       onAddSecondaryEmail$.subscribe(([address, { apiConfig }]) => {
-        setStateOnSecondary(component, 'adding');
+        component.formAdding();
 
         addSecondaryEmailAddress({ apiConfig, address })
           .then(() => {
             notify(component, {
               intent: 'info',
-              title: i18n('cc-email.primary.action.add.success.title'),
-              message: i18n('cc-email.primary.action.add.success.message', { address }),
+              title: i18n('cc-email.secondary.action.add.success.title'),
+              message: i18n('cc-email.secondary.action.add.success.message', { address }),
               options: {
                 timeout: 0,
                 closeable: true,
@@ -131,13 +129,12 @@ defineComponent({
             }
 
             if (inputError) {
-              setStateOnSecondary(component, null);
               component.formError(inputError);
             }
           })
           .catch(() => notifyError(component, i18n('cc-email.secondary.action.add.error')))
           .finally(() => {
-            setStateOnSecondary(component, null);
+            component.formIdle();
           });
       }),
 
@@ -154,11 +151,9 @@ defineComponent({
             stateHelper(component).newDataFn((oldData) => {
               return {
                 ...oldData,
-                secondary: {
-                  addresses: [
-                    ...oldData.secondary.addresses.filter((a) => a.address.value !== address),
-                  ],
-                },
+                secondaryAddresses: [
+                  ...oldData.secondaryAddresses.filter((a) => a.address.value !== address),
+                ],
               };
             });
 
@@ -211,20 +206,17 @@ function setStateOnSecondaryEmailAddress (component, address, state) {
   stateHelper(component).newDataFn((oldData) => {
     return {
       ...oldData,
-      secondary: {
-        addresses: oldData.secondary.addresses.map((a) => {
-          if (a.address.value === address) {
-            return {
-              ...a,
-              state,
-            };
-          }
-          else {
-            return a;
-          }
-        }),
-        state: oldData.secondary.state,
-      },
+      secondaryAddresses: oldData.secondaryAddresses.map((a) => {
+        if (a.address.value === address) {
+          return {
+            ...a,
+            state,
+          };
+        }
+        else {
+          return a;
+        }
+      }),
     };
   });
 
@@ -266,28 +258,6 @@ function setStateOnPrimary (component, state) {
   //     ...component.state.data,
   //     primary: {
   //       ...component.state.data.primary,
-  //       state: state,
-  //     },
-  //   },
-  // };
-}
-
-function setStateOnSecondary (component, state) {
-  stateHelper(component).newDataFn((oldData) => {
-    return {
-      ...oldData,
-      secondary: {
-        ...oldData.secondary,
-        state: state,
-      },
-    };
-  });
-  // component.state = {
-  //   type: 'loaded',
-  //   data: {
-  //     ...component.state.data,
-  //     secondary: {
-  //       ...component.state.data.secondary,
   //       state: state,
   //     },
   //   },
@@ -381,7 +351,7 @@ const RemoteApi = {
 
 const primaryEmailAddress = {
   email: 'mock@domain.com',
-  emailValidated: false,
+  emailValidated: true,
 };
 let secondaryEmailAddresses = [
   'secondary.1.mock@domain.com',

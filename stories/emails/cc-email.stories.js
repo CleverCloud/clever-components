@@ -10,19 +10,15 @@ const HUGE_EMAIL_ADDRESS = `hugeemaila${'d'.repeat(500)}ress@clever-cloud.com`;
 
 const primary = { address: { value: SAMPLE_EMAIL_ADDRESS, verified: true } };
 const primaryUnverified = { address: { value: SAMPLE_EMAIL_ADDRESS, verified: false } };
-const secondary = {
-  addresses: [
-    {
-      address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
-    },
-    {
-      address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
-    },
-  ],
-};
-const secondaryEmpty = {
-  addresses: [],
-};
+const secondaryAddresses = [
+  {
+    address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+  },
+  {
+    address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+  },
+];
+const secondaryEmpty = [];
 
 export default {
   title: '🛠 Emails/<cc-email>',
@@ -43,7 +39,7 @@ export const defaultStory = makeStory(conf, {
         type: 'loaded',
         data: {
           primary,
-          secondary,
+          secondaryAddresses,
         },
       },
     },
@@ -74,10 +70,11 @@ export const errorWithEmptyEmail = makeStory(conf, {
         type: 'loaded',
         data: {
           primary,
-          secondary,
+          secondaryAddresses,
         },
       },
-      _formData: {
+      _formState: {
+        type: 'idle',
         input: '',
         error: 'empty',
       },
@@ -92,10 +89,11 @@ export const errorWithInvalidEmail = makeStory(conf, {
         type: 'loaded',
         data: {
           primary,
-          secondary,
+          secondaryAddresses,
         },
       },
-      _formData: {
+      _formState: {
+        type: 'idle',
         input: 'invalid e-mail !!',
         error: 'invalid',
       },
@@ -110,9 +108,7 @@ export const dataLoadedWithUnverifiedPrimaryEmailAddress = makeStory(conf, {
         type: 'loaded',
         data: {
           primary: primaryUnverified,
-          secondary: {
-            addresses: [],
-          },
+          secondaryAddresses: [],
         },
       },
     },
@@ -126,16 +122,14 @@ export const dataLoadedWithHugeEmail = makeStory(conf, {
         type: 'loaded',
         data: {
           primary: { address: { value: HUGE_EMAIL_ADDRESS, verified: true } },
-          secondary: {
-            addresses: [
-              {
-                address: { value: HUGE_EMAIL_ADDRESS, verified: true },
-              },
-              {
-                address: { value: HUGE_EMAIL_ADDRESS, verified: true },
-              },
-            ],
-          },
+          secondaryAddresses: [
+            {
+              address: { value: HUGE_EMAIL_ADDRESS, verified: true },
+            },
+            {
+              address: { value: HUGE_EMAIL_ADDRESS, verified: true },
+            },
+          ],
         },
       },
     },
@@ -149,9 +143,7 @@ export const dataLoadedWithNoSecondaryEmails = makeStory(conf, {
         type: 'loaded',
         data: {
           primary: { address: { value: HUGE_EMAIL_ADDRESS, verified: true } },
-          secondary: {
-            addresses: [],
-          },
+          secondaryAddresses: [],
         },
       },
     },
@@ -165,7 +157,7 @@ export const sendingConfirmationEmail = makeStory(conf, {
         type: 'loaded',
         data: {
           primary: { ...primaryUnverified, state: 'sending-confirmation-email' },
-          secondary,
+          secondaryAddresses,
         },
       },
     },
@@ -179,8 +171,12 @@ export const addingSecondary = makeStory(conf, {
         type: 'loaded',
         data: {
           primary,
-          secondary: { ...secondary, state: 'adding' },
+          secondaryAddresses,
         },
+      },
+      _formState: {
+        type: 'adding',
+        input: 'secondary@clever-cloud.com',
       },
     },
   ],
@@ -193,17 +189,15 @@ export const deletingSecondary = makeStory(conf, {
         type: 'loaded',
         data: {
           primary,
-          secondary: {
-            addresses: [
-              {
-                address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
-                state: 'deleting',
-              },
-              {
-                address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
-              },
-            ],
-          },
+          secondaryAddresses: [
+            {
+              address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+              state: 'deleting',
+            },
+            {
+              address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+            },
+          ],
         },
       },
     },
@@ -212,18 +206,16 @@ export const deletingSecondary = makeStory(conf, {
         type: 'loaded',
         data: {
           primary,
-          secondary: {
-            addresses: [
-              {
-                address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
-                state: 'deleting',
-              },
-              {
-                address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
-                state: 'deleting',
-              },
-            ],
-          },
+          secondaryAddresses: [
+            {
+              address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+              state: 'deleting',
+            },
+            {
+              address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+              state: 'deleting',
+            },
+          ],
         },
       },
     },
@@ -237,17 +229,15 @@ export const markingSecondaryAsPrimary = makeStory(conf, {
         type: 'loaded',
         data: {
           primary,
-          secondary: {
-            addresses: [
-              {
-                address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
-                state: 'marking-as-primary',
-              },
-              {
-                address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
-              },
-            ],
-          },
+          secondaryAddresses: [
+            {
+              address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+              state: 'marking-as-primary',
+            },
+            {
+              address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+            },
+          ],
         },
       },
     },
@@ -264,7 +254,7 @@ export const simulationsWithPrimary = makeStory(conf, {
         type: 'loaded',
         data: {
           primary: primaryUnverified,
-          secondary: secondaryEmpty,
+          secondaryAddresses: secondaryEmpty,
         },
       };
     }),
@@ -299,7 +289,7 @@ export const simulationsWithSecondary = makeStory(conf, {
         type: 'loaded',
         data: {
           primary: primary,
-          secondary: secondaryEmpty,
+          secondaryAddresses: secondaryEmpty,
         },
       };
     }),
@@ -307,36 +297,16 @@ export const simulationsWithSecondary = makeStory(conf, {
       component.formInput('invalid email');
     }),
     storyWait(2000, ([component]) => {
-      component.state = {
-        type: 'loaded',
-        data: {
-          ...component.state.data,
-          secondary: { ...secondaryEmpty, state: 'adding' },
-        },
-      };
+      component.formAdding();
     }),
     storyWait(2000, ([component]) => {
       component.formError('invalid');
-      component.state = {
-        type: 'loaded',
-        data: {
-          ...component.state.data,
-          secondary: { ...secondaryEmpty },
-        },
-      };
     }),
     storyWait(2000, ([component]) => {
       component.formInput(ANOTHER_SAMPLE_EMAIL_ADDRESS);
     }),
     storyWait(2000, ([component]) => {
-      component.formError(null);
-      component.state = {
-        type: 'loaded',
-        data: {
-          ...component.state.data,
-          secondary: { ...secondaryEmpty, state: 'adding' },
-        },
-      };
+      component.formAdding();
     }),
     storyWait(2000, ([component]) => {
       component.resetForm();
@@ -344,13 +314,11 @@ export const simulationsWithSecondary = makeStory(conf, {
         type: 'loaded',
         data: {
           ...component.state.data,
-          secondary: {
-            addresses: [
-              {
-                address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: false },
-              },
-            ],
-          },
+          secondaryAddresses: [
+            {
+              address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: false },
+            },
+          ],
         },
       };
     }),
@@ -358,20 +326,7 @@ export const simulationsWithSecondary = makeStory(conf, {
       component.formInput(YET_ANOTHER_SAMPLE_EMAIL_ADDRESS);
     }),
     storyWait(2000, ([component]) => {
-      component.state = {
-        type: 'loaded',
-        data: {
-          ...component.state.data,
-          secondary: {
-            addresses: [
-              {
-                address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: false },
-              },
-            ],
-            state: 'adding',
-          },
-        },
-      };
+      component.formAdding();
     }),
     storyWait(2000, ([component]) => {
       component.resetForm();
@@ -380,16 +335,14 @@ export const simulationsWithSecondary = makeStory(conf, {
         type: 'loaded',
         data: {
           ...component.state.data,
-          secondary: {
-            addresses: [
-              {
-                address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: false },
-              },
-              {
-                address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: false },
-              },
-            ],
-          },
+          secondaryAddresses: [
+            {
+              address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: false },
+            },
+            {
+              address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: false },
+            },
+          ],
         },
       };
     }),
@@ -398,16 +351,14 @@ export const simulationsWithSecondary = makeStory(conf, {
         type: 'loaded',
         data: {
           ...component.state.data,
-          secondary: {
-            addresses: [
-              {
-                address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
-              },
-              {
-                address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
-              },
-            ],
-          },
+          secondaryAddresses: [
+            {
+              address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+            },
+            {
+              address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+            },
+          ],
         },
       };
     }),
@@ -416,17 +367,15 @@ export const simulationsWithSecondary = makeStory(conf, {
         type: 'loaded',
         data: {
           ...component.state.data,
-          secondary: {
-            addresses: [
-              {
-                address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
-                state: 'marking-as-primary',
-              },
-              {
-                address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
-              },
-            ],
-          },
+          secondaryAddresses: [
+            {
+              address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+              state: 'marking-as-primary',
+            },
+            {
+              address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+            },
+          ],
         },
       };
     }),
@@ -435,16 +384,14 @@ export const simulationsWithSecondary = makeStory(conf, {
         type: 'loaded',
         data: {
           primary: { address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true } },
-          secondary: {
-            addresses: [
-              {
-                address: { value: SAMPLE_EMAIL_ADDRESS, verified: true },
-              },
-              {
-                address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
-              },
-            ],
-          },
+          secondaryAddresses: [
+            {
+              address: { value: SAMPLE_EMAIL_ADDRESS, verified: true },
+            },
+            {
+              address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+            },
+          ],
         },
       };
     }),
@@ -453,17 +400,15 @@ export const simulationsWithSecondary = makeStory(conf, {
         type: 'loaded',
         data: {
           ...component.state.data,
-          secondary: {
-            addresses: [
-              {
-                address: { value: SAMPLE_EMAIL_ADDRESS, verified: true },
-                state: 'deleting',
-              },
-              {
-                address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
-              },
-            ],
-          },
+          secondaryAddresses: [
+            {
+              address: { value: SAMPLE_EMAIL_ADDRESS, verified: true },
+              state: 'deleting',
+            },
+            {
+              address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+            },
+          ],
         },
       };
     }),
@@ -472,13 +417,11 @@ export const simulationsWithSecondary = makeStory(conf, {
         type: 'loaded',
         data: {
           ...component.state.data,
-          secondary: {
-            addresses: [
-              {
-                address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
-              },
-            ],
-          },
+          secondaryAddresses: [
+            {
+              address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+            },
+          ],
         },
       };
     }),
