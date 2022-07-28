@@ -1,4 +1,20 @@
-export type CcEmailState = 'loading' | 'loaded' | 'error-loading'
+export interface Loading {
+  type: 'loading',
+}
+
+export interface Error<E> {
+  type: 'error',
+  error: E,
+}
+
+export interface Result<T> {
+  type: 'loaded',
+  data: T
+}
+
+export type CcEmailState = Loading | Error<'loading'> | Result<CcEmailData>;
+
+
 
 export interface CcEmailData {
   primary:PrimaryEmailAddress;
@@ -6,17 +22,17 @@ export interface CcEmailData {
 }
 
 export interface PrimaryEmailAddress {
-  state: null | 'sending-confirmation-email';
+  state?: 'sending-confirmation-email';
   address: EmailAddress;
 }
 
 export interface SecondaryEmailAddresses {
-  state: null | 'adding';
+  state?: 'adding';
   addresses: SecondaryEmailAddress[];
 }
 
 export interface SecondaryEmailAddress {
-  state: null | 'marking-as-primary' | 'deleting';
+  state?: 'marking-as-primary' | 'deleting';
   address: EmailAddress;
 }
 

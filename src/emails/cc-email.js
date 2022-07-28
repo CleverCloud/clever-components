@@ -64,10 +64,7 @@ export class CcEmail extends LitElement {
     super();
 
     /** @type {CcEmailState} state of the component. */
-    this.state = 'loading';
-
-    /** @type {CcEmailData} the data. */
-    this.data = null;
+    this.state = { type: 'loading' };
 
     /** @type {string} The value currently set on the add address text input. */
     this._addAddressInputValue = '';
@@ -102,8 +99,19 @@ export class CcEmail extends LitElement {
     super.updated(_changedProperties);
   }
 
+  /**
+   * @return {CcEmailData | null}
+   */
+  get data () {
+    return this.state?.type === 'loaded' ? this.state.data : null;
+  }
+
   _isLoading () {
-    return this.state === 'loading';
+    return this.state?.type === 'loading';
+  }
+
+  _isError () {
+    return this.state?.type === 'error';
   }
 
   _getVerifiedTagLabel () {
@@ -167,8 +175,7 @@ export class CcEmail extends LitElement {
   }
 
   reset () {
-    this.state = 'loading';
-    this.data = null;
+    this.state = { type: 'loading' };
     this.resetForm();
   }
 
@@ -177,11 +184,11 @@ export class CcEmail extends LitElement {
       <cc-block>
         <div slot="title">${i18n('cc-email.title')}</div>
 
-        ${this.state === 'error-loading' ? html`
+        ${this._isError() ? html`
           <cc-error>${i18n('cc-email.loading.error')}</cc-error>
         ` : ''}
 
-        ${this.state !== 'error-loading' ? html`
+        ${!this._isError() ? html`
           ${this._renderPrimarySection()}
           ${this._renderSecondarySection()}
         ` : ''}

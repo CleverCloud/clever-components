@@ -13,6 +13,13 @@ defineComponent({
   params: {
     apiConfig: { type: Object },
   },
+  /**
+   *
+   * @param container
+   * @param {CcEmail} component
+   * @param context$
+   * @param disconnectSignal
+   */
   onConnect (container, component, context$, disconnectSignal) {
     const emails_lp = new LastPromise();
 
@@ -29,26 +36,47 @@ defineComponent({
       /* region LOAD_PRIMARY */
       emails_lp.error$.subscribe(console.error),
       emails_lp.error$.subscribe(() => {
-        component.state = 'error-loading';
+        stateHelper(component).loadingError();
+        // component.state = { type: 'error', error: 'loading' };
       }),
       emails_lp.value$.subscribe(({ self, secondary }) => {
-        component.state = 'loaded';
-        component.data = {
-          primary: {
-            address: {
-              value: self.email,
-              verified: self.emailValidated,
+        stateHelper(component).newData(
+          {
+            primary: {
+              address: {
+                value: self.email,
+                verified: self.emailValidated,
+              },
+            },
+            secondary: {
+              addresses: secondary.map((a) => ({
+                address: {
+                  value: a,
+                  verified: true,
+                },
+              })),
             },
           },
-          secondary: {
-            addresses: secondary.map((a) => ({
-              address: {
-                value: a,
-                verified: true,
-              },
-            })),
-          },
-        };
+        );
+        // component.state = {
+        //   type: 'loaded',
+        //   data: {
+        //     primary: {
+        //       address: {
+        //         value: self.email,
+        //         verified: self.emailValidated,
+        //       },
+        //     },
+        //     secondary: {
+        //       addresses: secondary.map((a) => ({
+        //         address: {
+        //           value: a,
+        //           verified: true,
+        //         },
+        //       })),
+        //     },
+        //   },
+        // };
       }),
       /* endregion*/
 
@@ -116,15 +144,28 @@ defineComponent({
           .then(() => {
             notifySuccess(component, i18n('cc-email.secondary.action.delete.success'));
 
-            component.data = {
-              ...component.data,
-              secondary: {
-                addresses: [
-                  ...component.data.secondary.addresses.filter((a) => a.address.value !== address),
-                ],
-                state: null,
-              },
-            };
+            stateHelper(component).newDataFn((oldData) => {
+              return {
+                ...oldData,
+                secondary: {
+                  addresses: [
+                    ...oldData.secondary.addresses.filter((a) => a.address.value !== address),
+                  ],
+                },
+              };
+            });
+
+            // component.state = {
+            //   type: 'loaded',
+            //   data: {
+            //     ...component.state.data,
+            //     secondary: {
+            //       addresses: [
+            //         ...component.state.data.secondary.addresses.filter((a) => a.address.value !== address),
+            //       ],
+            //     },
+            //   },
+            // };
           })
           .catch(() => notifyError(component, i18n('cc-email.secondary.action.delete.error')));
       }),
@@ -160,37 +201,123 @@ defineComponent({
 });
 
 function setStateOnSecondaryEmailAddress (component, address, state) {
-  component.data = {
-    ...component.data,
-    secondary: {
-      addresses: [
-        ...component.data.secondary.addresses.filter((a) => a.address.value !== address),
-        {
-          ...component.data.secondary.addresses.find((a) => a.address.value === address),
-          state: state,
-        },
-      ],
-      state: component.data.secondary.state,
-    },
-  };
+  stateHelper(component).newDataFn((oldData) => {
+    return {
+      ...oldData,
+      secondary: {
+        addresses: oldData.secondary.addresses.map((a) => {
+          if (a.address.value === address) {
+            return {
+              ...a,
+              state,
+            };
+          }
+          else {
+            return a;
+          }
+        }),
+        state: oldData.secondary.state,
+      },
+    };
+  });
+
+  // component.state = {
+  //   type: 'loaded',
+  //   data: {
+  //     ...component.state.data,
+  //     secondary: {
+  //       addresses: component.state.data.secondary.addresses.map((a) => {
+  //         if (a.address.value === address) {
+  //           return {
+  //             ...a,
+  //             state,
+  //           };
+  //         }
+  //         else {
+  //           return a;
+  //         }
+  //       }),
+  //       state: component.state.data.secondary.state,
+  //     },
+  //   },
+  // };
 }
 
 function setStateOnPrimary (component, state) {
-  component.data = {
-    ...component.data,
-    primary: {
-      ...component.data.primary,
-      state: state,
-    },
-  };
+  stateHelper(component).newDataFn((oldData) => {
+    return {
+      ...oldData,
+      primary: {
+        ...oldData.primary,
+        state: state,
+      },
+    };
+  });
+  // component.state = {
+  //   type: 'loaded',
+  //   data: {
+  //     ...component.state.data,
+  //     primary: {
+  //       ...component.state.data.primary,
+  //       state: state,
+  //     },
+  //   },
+  // };
 }
 
 function setStateOnSecondary (component, state) {
-  component.data = {
-    ...component.data,
-    secondary: {
-      ...component.data.secondary,
-      state: state,
+  stateHelper(component).newDataFn((oldData) => {
+    return {
+      ...oldData,
+      secondary: {
+        ...oldData.secondary,
+        state: state,
+      },
+    };
+  });
+  // component.state = {
+  //   type: 'loaded',
+  //   data: {
+  //     ...component.state.data,
+  //     secondary: {
+  //       ...component.state.data.secondary,
+  //       state: state,
+  //     },
+  //   },
+  // };
+}
+
+/**
+ * @param {CcEmail} component
+ * @template T
+ */
+function stateHelper (component) {
+  return {
+    loading () {
+      component.state = {
+        type: 'loading',
+      };
+    },
+    loadingError () {
+      component.state = {
+        type: 'error',
+        error: 'loading',
+      };
+    },
+    /**
+     * @param {CcEmailData} data
+     */
+    newData (data) {
+      component.state = {
+        type: 'loaded',
+        data,
+      };
+    },
+    /**
+     * @param {(oldData: CcEmailData) => CcEmailData} dataFn
+     */
+    newDataFn (dataFn) {
+      this.newData(dataFn(component.data));
     },
   };
 }
