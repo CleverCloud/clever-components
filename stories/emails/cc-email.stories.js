@@ -77,8 +77,10 @@ export const errorWithEmptyEmail = makeStory(conf, {
           secondary,
         },
       },
-      _addAddressInputValue: '',
-      _addAddressInputError: 'empty',
+      _formData: {
+        input: '',
+        error: 'empty',
+      },
     },
   ],
 });
@@ -93,8 +95,10 @@ export const errorWithInvalidEmail = makeStory(conf, {
           secondary,
         },
       },
-      _addAddressInputValue: 'invalid e-mail !!',
-      _addAddressInputError: 'invalid',
+      _formData: {
+        input: 'invalid e-mail !!',
+        error: 'invalid',
+      },
     },
   ],
 });
@@ -300,7 +304,7 @@ export const simulationsWithSecondary = makeStory(conf, {
       };
     }),
     storyWait(2000, ([component]) => {
-      component._addAddressInputValue = 'invalid email';
+      component.formInput('invalid email');
     }),
     storyWait(2000, ([component]) => {
       component.state = {
@@ -312,7 +316,7 @@ export const simulationsWithSecondary = makeStory(conf, {
       };
     }),
     storyWait(2000, ([component]) => {
-      component._addAddressInputError = 'invalid';
+      component.formError('invalid');
       component.state = {
         type: 'loaded',
         data: {
@@ -322,8 +326,10 @@ export const simulationsWithSecondary = makeStory(conf, {
       };
     }),
     storyWait(2000, ([component]) => {
-      component.resetForm();
-      component._addAddressInputValue = ANOTHER_SAMPLE_EMAIL_ADDRESS;
+      component.formInput(ANOTHER_SAMPLE_EMAIL_ADDRESS);
+    }),
+    storyWait(2000, ([component]) => {
+      component.formError(null);
       component.state = {
         type: 'loaded',
         data: {
@@ -349,25 +355,9 @@ export const simulationsWithSecondary = makeStory(conf, {
       };
     }),
     storyWait(2000, ([component]) => {
-      component.resetForm();
-      component._addAddressInputValue = YET_ANOTHER_SAMPLE_EMAIL_ADDRESS;
-      component.state = {
-        type: 'loaded',
-        data: {
-          ...component.state.data,
-          secondary: {
-            addresses: [
-              {
-                address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: false },
-              },
-            ],
-          },
-        },
-      };
+      component.formInput(YET_ANOTHER_SAMPLE_EMAIL_ADDRESS);
     }),
     storyWait(2000, ([component]) => {
-      component.resetForm();
-      component._addAddressInputValue = YET_ANOTHER_SAMPLE_EMAIL_ADDRESS;
       component.state = {
         type: 'loaded',
         data: {

@@ -23,6 +23,8 @@ const blankSvg = new URL('../assets/blank.svg', import.meta.url).href;
  * @typedef {import('./types.js').CcEmailState} CcEmailState
  * @typedef {import('./types.js').PrimaryEmailAddress} PrimaryEmailAddress
  * @typedef {import('./types.js').SecondaryEmailAddresses} SecondaryEmailAddresses
+ * @typedef {import('./types.js').FormData} FormData
+ * @typedef {import('./types.js').FormError} FormError
  */
 
 /**
@@ -66,8 +68,10 @@ export class CcEmail extends LitElement {
     /** @type {CcEmailState} state of the component. */
     this.state = { type: 'loading' };
 
-    /** @type {string} The value currently set on the add address text input. */
-    this._addAddressInputValue = '';
+    /** @type {FormData} The form data. */
+    this._formData = {
+      input: '',
+    };
 
     /**
      * @type {'empty'|'invalid'|'already-defined'|'used'|null}
@@ -79,20 +83,18 @@ export class CcEmail extends LitElement {
      *  | `already-defined` | the e-mail address is already defined as primary or secondary |
      *  | `used` | the e-mail address is already owned by another user account |
      */
-    this._addAddressInputError = null;
   }
 
   static get properties () {
     return {
       state: { type: String },
       data: { type: Object },
-      _addAddressInputValue: { type: String },
-      _addAddressInputError: { type: String },
+      _formData: { type: Object },
     };
   }
 
   updated (_changedProperties) {
-    if (this._addAddressInputError) {
+    if (this._formData.error != null) {
       this._focusAddressInput();
     }
 
@@ -124,16 +126,16 @@ export class CcEmail extends LitElement {
   }
 
   _getInputError () {
-    if (this._addAddressInputError === 'empty') {
+    if (this._formData.error === 'empty') {
       return i18n(`cc-email.secondary.address-input.error.empty`);
     }
-    if (this._addAddressInputError === 'used') {
+    if (this._formData.error === 'used') {
       return i18n(`cc-email.secondary.address-input.error.used`);
     }
-    if (this._addAddressInputError === 'invalid') {
+    if (this._formData.error === 'invalid') {
       return i18n(`cc-email.secondary.address-input.error.invalid`);
     }
-    if (this._addAddressInputError === 'already-defined') {
+    if (this._formData.error === 'already-defined') {
       return i18n(`cc-email.secondary.address-input.error.already-defined`);
     }
   }
@@ -151,14 +153,14 @@ export class CcEmail extends LitElement {
   }
 
   _onInput ({ detail: value }) {
-    this._addAddressInputValue = value;
+    this.formInput(value);
   }
 
   _onAdd () {
-    this._addAddressInputError = validateEmailAddress(this._addAddressInputValue);
+    this.formError(validateEmailAddress(this._formData.input));
 
-    if (!this._addAddressInputError) {
-      dispatchCustomEvent(this, 'add', this._addAddressInputValue);
+    if (this._formData.error == null) {
+      dispatchCustomEvent(this, 'add', this._formData.input);
     }
     else {
       this._focusAddressInput();
@@ -169,9 +171,30 @@ export class CcEmail extends LitElement {
     dispatchCustomEvent(this, 'send-confirmation-email', this.data.primary.address.value);
   }
 
+  /**
+   * @param {FormError} error
+   */
+  formError (error) {
+    this._formData = {
+      ...this._formData,
+      error: error,
+    };
+  }
+
+  /**
+   * @param {string} input
+   */
+  formInput (input) {
+    this._formData = {
+      ...this._formData,
+      input: input,
+    };
+  }
+
   resetForm () {
-    this._addAddressInputError = null;
-    this._addAddressInputValue = '';
+    this._formData = {
+      input: '',
+    };
   }
 
   reset () {
@@ -287,12 +310,12 @@ export class CcEmail extends LitElement {
           <cc-input-text
             label="${i18n('cc-email.secondary.address-input.label')}"
             required
-            value="${this._addAddressInputValue}"
+            value="${this._formData.input}"
             ?disabled=${this.data?.secondary?.state === 'adding'}
             @cc-input-text:input=${this._onInput}
             @cc-input-text:requestimplicitsubmit=${this._onAdd}
         >
-          ${this._addAddressInputError ? html`
+          ${this._formData.error ? html`
             <p slot="error">
               ${this._getInputError()}
             </p>

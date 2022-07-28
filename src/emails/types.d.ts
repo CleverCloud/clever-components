@@ -40,3 +40,9 @@ export interface EmailAddress {
   value: string;
   verified: boolean;
 }
+
+export type FormError = 'empty'|'invalid'|'already-defined'|'used';
+export interface FormData {
+  input: string;
+  error?: FormError;
+}

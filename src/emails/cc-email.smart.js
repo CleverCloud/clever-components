@@ -87,8 +87,8 @@ defineComponent({
         sendConfirmationEmail({ apiConfig, address })
           .then(() => notify(component, {
             intent: 'info',
-            title: i18n('cc-email.primary.action.resend-confirmation-email.success.title', { address }),
-            message: i18n('cc-email.primary.action.resend-confirmation-email.success.message'),
+            title: i18n('cc-email.primary.action.resend-confirmation-email.success.title'),
+            message: i18n('cc-email.primary.action.resend-confirmation-email.success.message', { address }),
             options: {
               timeout: 0,
               closeable: true,
@@ -104,11 +104,18 @@ defineComponent({
       /* region ADD_SECONDARY_ADDRESS */
       onAddSecondaryEmail$.subscribe(([address, { apiConfig }]) => {
         setStateOnSecondary(component, 'adding');
-        component._addAddressInputError = null;
 
         addSecondaryEmailAddress({ apiConfig, address })
           .then(() => {
-            notifySuccess(component, i18n('cc-email.secondary.action.add.success'));
+            notify(component, {
+              intent: 'info',
+              title: i18n('cc-email.primary.action.add.success.title'),
+              message: i18n('cc-email.primary.action.add.success.message', { address }),
+              options: {
+                timeout: 0,
+                closeable: true,
+              },
+            });
             component.resetForm();
           })
           .catch((error) => {
@@ -125,7 +132,7 @@ defineComponent({
 
             if (inputError) {
               setStateOnSecondary(component, null);
-              component._addAddressInputError = inputError;
+              component.formError(inputError);
             }
           })
           .catch(() => notifyError(component, i18n('cc-email.secondary.action.add.error')))
