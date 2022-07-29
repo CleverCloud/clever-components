@@ -73,35 +73,32 @@ export function minifyStylesheet (stylesheet) {
   return minifiedStylesheet.styles;
 }
 
-export function inputs (sourceDir, entryMapper) {
+export function getMainFiles (sourceDir) {
 
-  const filesToExposeGlobs = [
-    `${sourceDir}/index.js`,
-    `${sourceDir}/addon/*.js`,
-    `${sourceDir}/atoms/*.js`,
-    `${sourceDir}/env-var/*.js`,
-    `${sourceDir}/homepage/*.js`,
-    `${sourceDir}/invoices/*.js`,
+  const mainFilesPatterns = [
+    `${sourceDir}/components/**/*.js`,
     `${sourceDir}/lib/i18n.js`,
     `${sourceDir}/lib/smart-manager.js`,
-    `${sourceDir}/maps/*.js`,
-    `${sourceDir}/molecules/*.js`,
-    `${sourceDir}/notices/*.js`,
-    `${sourceDir}/overview/*.js`,
-    `${sourceDir}/pricing/*.js`,
-    `${sourceDir}/saas/*.js`,
-    `${sourceDir}/smart/*.js`,
-    `${sourceDir}/tcp-redirections/*.js`,
-    `${sourceDir}/toast/*.js`,
     `${sourceDir}/translations/*.js`,
-    `${sourceDir}/zones/*.js`,
   ];
 
-  const filesToExposePairs = filesToExposeGlobs
-    .flatMap((pattern) => glob.sync(pattern))
-    .map(entryMapper);
+  const ignorePatterns = [
+    `${sourceDir}/components/**/*.stories.js`,
+  ];
 
-  return Object.fromEntries(filesToExposePairs);
+  return multiGlob(mainFilesPatterns, { ignore: ignorePatterns });
+}
+
+export function getAllSourceFiles (sourceDir) {
+
+  const allSourceFilesPatterns = `${sourceDir}/**/*.js`;
+
+  const ignorePatterns = [
+    `${sourceDir}/**/*.stories.js`,
+    `${sourceDir}/stories/**/*`,
+  ];
+
+  return glob.sync(allSourceFilesPatterns, { ignore: ignorePatterns });
 }
 
 export function clearPlugin ({ outputDir }) {

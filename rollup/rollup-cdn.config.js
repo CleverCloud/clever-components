@@ -5,8 +5,8 @@ import resolve from '@rollup/plugin-node-resolve';
 import {
   babelPlugin,
   clearPlugin,
+  getMainFiles,
   importMetaUrlAssetsPlugin,
-  inputs,
   manualChunkOptions,
   minifyStylesheet,
   shimShadyRender,
@@ -22,11 +22,13 @@ const packageVersion = getVersion();
 const sourceDir = 'src';
 const outputDir = 'dist-cdn';
 
+const inputFilesPairs = getMainFiles(sourceDir).map((file) => {
+  const entryPath = path.parse(file).name;
+  return [entryPath, file];
+});
+
 export default {
-  input: inputs(sourceDir, (file) => {
-    const { name: entryPath } = path.parse(file);
-    return [entryPath, file];
-  }),
+  input: Object.fromEntries(inputFilesPairs),
   output: {
     dir: outputDir,
     sourcemap: true,
@@ -35,7 +37,6 @@ export default {
     hoistTransitiveImports: false,
   },
   treeshake: treeshakeOptions,
-  preserveModules: false,
   plugins: [
     clearPlugin({ outputDir }),
     json(),
