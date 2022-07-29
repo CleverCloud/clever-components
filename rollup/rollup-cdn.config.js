@@ -5,8 +5,8 @@ import resolve from '@rollup/plugin-node-resolve';
 import {
   babelPlugin,
   clearPlugin,
+  getMainFiles,
   importMetaUrlAssetsPlugin,
-  inputs,
   manualChunkOptions,
   minifyStylesheet,
   shimShadyRender,
@@ -22,12 +22,14 @@ const packageVersion = getVersion();
 const sourceDir = 'src';
 const outputDir = 'dist-cdn';
 
+const inputFilesPairs = getMainFiles(sourceDir).map((file) => {
+  const entryPath = path.parse(file).name;
+  return [entryPath, file];
+});
+
 export default {
   // defines the files to be included into the build: all components + smart manager + translations + i18n
-  input: inputs(sourceDir, (file) => {
-    const { name: entryPath } = path.parse(file);
-    return [entryPath, file];
-  }),
+  input: Object.fromEntries(inputFilesPairs),
   output: {
     dir: outputDir,
     sourcemap: true,
@@ -40,8 +42,6 @@ export default {
   },
   // fine-grained tree shaking options. Here we force tree shaking for leaflet and shoelace
   treeshake: treeshakeOptions,
-  // We don't want to preserve modules. On the contrary, we want optimized chunks
-  preserveModules: false,
   plugins: [
     // output directory cleanup
     clearPlugin({ outputDir }),
