@@ -1,6 +1,5 @@
 import path from 'path';
 import commonjs from '@rollup/plugin-commonjs';
-import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
 import {
   babelPlugin,
@@ -39,7 +38,6 @@ export default {
   treeshake: treeshakeOptions,
   plugins: [
     clearPlugin({ outputDir }),
-    json(),
     importMetaUrlAssetsPlugin(),
     shimShadyRender(),
     commonjs(),
