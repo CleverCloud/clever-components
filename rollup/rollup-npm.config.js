@@ -55,13 +55,13 @@ export default {
     copy({
       targets: [
         {
-          src: 'src/styles/default-theme.css',
-          dest: 'dist/styles',
+          src: `${sourceDir}/styles/default-theme.css`,
+          dest: `${outputDir}/styles`,
           transform: (stylesheet) => minifyStylesheet(stylesheet),
         },
         {
-          src: 'src/styles/undefined-components.css',
-          dest: 'dist/styles',
+          src: `${sourceDir}/styles/undefined-components.css`,
+          dest: `${outputDir}/styles`,
           transform: (stylesheet) => minifyStylesheet(stylesheet),
         },
       ],
