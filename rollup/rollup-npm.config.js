@@ -11,6 +11,7 @@ import {
   terserPlugin,
   visualizerPlugin,
 } from './rollup-common.js';
+import { indexGeneratorPlugin } from './rollup-plugin-index-generator.js';
 
 const sourceDir = 'src';
 const outputDir = 'dist';
@@ -69,6 +70,7 @@ export default {
         },
       ],
     }),
+    indexGeneratorPlugin(mainFiles),
     // help us visualize and analyze the bundle size
     visualizerPlugin({ outputDir }),
   ],
