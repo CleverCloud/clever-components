@@ -1,5 +1,4 @@
 import path from 'path';
-import json from '@rollup/plugin-json';
 import copy from 'rollup-plugin-copy';
 import {
   babelPlugin,
@@ -15,7 +14,6 @@ import { indexGeneratorPlugin } from './rollup-plugin-index-generator.js';
 
 const sourceDir = 'src';
 const outputDir = 'dist';
-
 
 const allSourceFiles = getAllSourceFiles(sourceDir);
 const mainFiles = getMainFiles(sourceDir);
@@ -47,8 +45,6 @@ export default {
   plugins: [
     // output directory cleanup
     clearPlugin({ outputDir }),
-    // transform .json files into ES6 modules. (Used by statuses library). TODO: we should get rid of this library
-    json(),
     // add (and optimize) svg files used in all new URL('...', import.meta.url) pattern.
     importMetaUrlAssetsPlugin(),
     // minify JS
