@@ -28,7 +28,7 @@ async function run () {
   const allMissingKeys = new Map();
   const allUnusedKeys = new Map();
 
-  const sourceFilepaths = await glob('./src/*/*.js', {
+  const sourceFilepaths = await glob('./src/**/*.js', {
     ignore: [
       './src/lib/*.js',
       './src/styles/*.js',
