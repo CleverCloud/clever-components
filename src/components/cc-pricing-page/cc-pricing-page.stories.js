@@ -4,7 +4,6 @@ import '../cc-pricing-product/cc-pricing-product.js';
 import './cc-pricing-page.smart.js';
 import { createStoryItem, makeStory } from '../../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
-import { ZONES } from '../cc-zone-input/cc-zone-input.stories.js';
 import {
   defaultStory as cellarStory,
   skeletonWithCellar as cellarSkeletonStory,
@@ -15,6 +14,7 @@ import {
   dataLoadedWithRuntimeNode as nodeStory,
   dataLoadedWithAddonPostgresql as postgresqlStory,
 } from '../cc-pricing-product/cc-pricing-product.stories.js';
+import { ZONES } from '../cc-zone-input/cc-zone-input.stories.js';
 
 export default {
   title: '🛠 pricing/<cc-pricing-page>',

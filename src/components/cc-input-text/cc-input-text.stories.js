@@ -1,7 +1,7 @@
 import './cc-input-text.js';
+import { allFormControlsStory } from '../../stories/all-form-controls.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
-import { allFormControlsStory } from '../../stories/all-form-controls.js';
 
 function widthContent (chars) {
   const rawContents = `_chars`;

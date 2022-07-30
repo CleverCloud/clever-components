@@ -1,7 +1,7 @@
 import '../../components/cc-expand/cc-expand.js';
 import { html, LitElement } from 'lit-element';
-import { withResizeObserver } from './with-resize-observer.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
+import { withResizeObserver } from './with-resize-observer.js';
 import docsPage from './with-resize-observer.md';
 // import { action } from '@storybook/addon-actions';
 const action = () => () => {

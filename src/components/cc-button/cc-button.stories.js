@@ -1,7 +1,7 @@
 import './cc-button.js';
+import { allFormControlsStory } from '../../stories/all-form-controls.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
-import { allFormControlsStory } from '../../stories/all-form-controls.js';
 
 const closeSvg = new URL('../../assets/close.svg', import.meta.url);
 const infoSvg = new URL('../../assets/info.svg', import.meta.url);
