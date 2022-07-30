@@ -1,4 +1,5 @@
 import './cc-addon-option-form.js';
+import '../cc-error/cc-error.js';
 import { html } from 'lit-element';
 import { makeStory } from '../../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
