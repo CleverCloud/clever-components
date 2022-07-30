@@ -1,7 +1,7 @@
 import './cc-invoice-list.js';
-import { PROCESSING_STATUS } from '../cc-invoice-table/cc-invoice-table.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
+import { PROCESSING_STATUS } from '../cc-invoice-table/cc-invoice-table.js';
 import { pendingInvoices, processedInvoices, processingInvoices } from '../cc-invoice-table/cc-invoice-table.stories.js';
 
 const fullInvoicesExample = [
