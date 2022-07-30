@@ -1,5 +1,7 @@
 import './cc-toaster.js';
 import '../cc-button/cc-button.js';
+import '../cc-input-number/cc-input-number.js';
+import '../cc-toggle/cc-toggle.js';
 import '../cc-flex-gap/cc-flex-gap.js';
 import '../cc-block/cc-block.js';
 import { html, render } from 'lit-html';
