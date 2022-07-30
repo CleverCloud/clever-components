@@ -1,4 +1,4 @@
-import '../../src/smart/cc-smart-container.js';
+import '../../src/components/cc-smart-container/cc-smart-container.js';
 import { expect } from '@bundled-es-modules/chai';
 import { stub as rawStub } from 'hanbi';
 import { Observable, unsubscribeWithSignal } from '../../src/lib/observables.js';
