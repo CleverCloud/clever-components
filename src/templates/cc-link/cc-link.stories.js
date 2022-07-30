@@ -1,7 +1,7 @@
 import { render } from 'lit-html';
+import { makeStory } from '../../stories/lib/make-story.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from './cc-link.js';
-import { makeStory } from '../../stories/lib/make-story.js';
 import docsPage from './cc-link.md';
 
 export default {

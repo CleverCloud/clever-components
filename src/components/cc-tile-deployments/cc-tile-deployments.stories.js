@@ -1,7 +1,7 @@
 import './cc-tile-deployments.js';
-import { createDateAgo } from '../cc-datetime-relative/cc-datetime-relative.stories.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
+import { createDateAgo } from '../cc-datetime-relative/cc-datetime-relative.stories.js';
 
 function deployment (state, action, dateAgoParams, uuid) {
   return {

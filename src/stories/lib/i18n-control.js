@@ -1,4 +1,6 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { addons } from '@web/storybook-prebuilt/addons.js';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { UPDATE_GLOBALS } from '@web/storybook-prebuilt/core-events.js';
 import { addTranslations, getAvailableLanguages, getLanguage, setLanguage } from '../../lib/i18n.js';
 import * as en from '../../translations/translations.en.js';

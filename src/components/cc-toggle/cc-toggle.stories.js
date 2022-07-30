@@ -1,7 +1,7 @@
 import './cc-toggle.js';
+import { allFormControlsStory } from '../../stories/all-form-controls.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
-import { allFormControlsStory } from '../../stories/all-form-controls.js';
 
 const boldSvg = new URL('../../stories/assets/bold.svg', import.meta.url);
 const centerSvg = new URL('../../stories/assets/center.svg', import.meta.url);

@@ -1,10 +1,10 @@
 import './cc-overview.js';
-import { withMap as betaWithMap, withTiles as betaWithTiles } from '../cc-beta/cc-beta.stories.js';
 import { createStoryItem, makeStory } from '../../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
-import { defaultStory as logsmap } from '../cc-logsmap/cc-logsmap.stories.js';
+import { withMap as betaWithMap, withTiles as betaWithTiles } from '../cc-beta/cc-beta.stories.js';
 import { defaultStory as headerApp } from '../cc-header-app/cc-header-app.stories.js';
 import { defaultStory as headerOrga } from '../cc-header-orga/cc-header-orga.stories.js';
+import { defaultStory as logsmap } from '../cc-logsmap/cc-logsmap.stories.js';
 import { defaultStory as consumption } from '../cc-tile-consumption/cc-tile-consumption.stories.js';
 import { defaultStory as deployments } from '../cc-tile-deployments/cc-tile-deployments.stories.js';
 import { defaultStory as instances } from '../cc-tile-instances/cc-tile-instances.stories.js';
