@@ -22,7 +22,7 @@ async function run () {
 
   let errors = false;
 
-  const sourceFilepaths = await glob('./src/*/*.js', {
+  const sourceFilepaths = await glob('./src/**/*.js', {
     ignore: [
       './src/lib/*.js',
       './src/styles/*.js',
