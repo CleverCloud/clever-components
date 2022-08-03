@@ -55,6 +55,7 @@
     "@bundled-es-modules/chai": "^4.2.2",
     "@custom-elements-manifest/analyzer": "^0.4.1",
     "@open-wc/dev-server-hmr": "^0.1.2",
+    "@open-wc/testing": "^3.0.0-next.5",
     "@rollup/plugin-alias": "^3.1.2",
     "@rollup/plugin-commonjs": "^18.1.0",
     "@rollup/plugin-json": "^4.1.0",
