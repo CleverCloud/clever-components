@@ -8,8 +8,7 @@ title: Changelog
 
 * `<cc-map>`: make dot markers not focusable.
 * `<cc-zone-input>`: make server markers not focusable.
-
-...
+* `<cc-toggle>`: update component host default `display` CSS property (BREAKING CHANGE).
 
 ## 9.0.0 (2022-07-19)
 
