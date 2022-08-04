@@ -112,6 +112,7 @@ export class CcToggle extends LitElement {
   render () {
 
     const classes = {
+      'toggle-group': this.choices?.length > 0,
       disabled: this.disabled,
       enabled: !this.disabled,
       'display-normal': !this.subtle,
@@ -130,7 +131,7 @@ export class CcToggle extends LitElement {
     return html`
       <fieldset>
         <legend>${this.legend}</legend>
-        <div class="toggle-group ${classMap(classes)}">
+        <div class=${classMap(classes)}>
           ${repeat(this.choices, ({ value }) => value, ({ label, image, value }) => html`
             <input
               type=${type}
