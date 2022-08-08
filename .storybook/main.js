@@ -3,6 +3,11 @@ const json = require('@rollup/plugin-json');
 const { importMetaAssets } = require('@web/rollup-plugin-import-meta-assets');
 const { storybookRollupPlugin } = require('../src/stories/lib/markdown.cjs');
 
+let createIconAssetsPlugin;
+import('../rollup/rollup-plugin-icon.js').then(module => {
+  createIconAssetsPlugin = module.createIconAssetsPlugin;
+});
+
 module.exports = {
   stories: [
     // Top level Markdown documents
@@ -41,6 +46,7 @@ module.exports = {
 
     config.plugins.unshift(json());
     config.plugins.unshift(commonjs());
+    config.plugins.unshift(createIconAssetsPlugin());
 
     return config;
   },

@@ -1,6 +1,7 @@
 import { hmrPlugin, presets } from '@open-wc/dev-server-hmr';
 import json from '@rollup/plugin-json';
-import { rollupAdapter } from '@web/dev-server-rollup';
+import { fromRollup, rollupAdapter } from '@web/dev-server-rollup';
+import { createIconAssetsPlugin } from './rollup/rollup-plugin-icon.js';
 import { storybookWdsPlugin } from './src/stories/lib/markdown.cjs';
 import { cemAnalyzerPlugin } from './wds/cem-analyzer-plugin.js';
 import { commonjsPluginWithConfig, esbuildBundlePluginWithConfig } from './wds/wds-common.js';
@@ -121,6 +122,7 @@ export default {
     hmrI18nPlugin,
     injectAuthForSmartComponentsPlugin,
     cemAnalyzerPlugin,
+    rollupAdapter(createIconAssetsPlugin()),
     hmrPlugin({
       include: ['src/**/*'],
       presets: [presets.lit],
