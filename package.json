@@ -109,7 +109,7 @@
     "text-table": "^0.2.0",
     "unified": "^9.2.1"
   },
-  "customElements": "dist/custom-elements.json",
+  "customElements": "node_modules/.tmp-cem/custom-elements.json",
   "volta": {
     "node": "16.13.2",
     "npm": "8.1.2"

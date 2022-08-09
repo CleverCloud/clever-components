@@ -191,7 +191,9 @@ export class CcButton extends LitElement {
         @click=${this._onClick}
         title="${ifDefined(imageOnlyText)}"
         aria-label="${ifDefined(imageOnlyText)}"
+        role="presentation"
       >
+        ${this.delay > 0 ? html`<img src="toto">` : ''}
         <!--
           When delay mechanism is set, we need a cancel label.
           We don't want the button width to change when the user clicks and toggles between normal and cancel mode.
