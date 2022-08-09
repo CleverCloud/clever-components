@@ -62,12 +62,6 @@ export class CcAddonAdmin extends LitElement {
     this._tags = [];
   }
 
-  set addon (addon) {
-    this._skeleton = (addon == null);
-    this._name = this._skeleton ? '' : addon.name;
-    this._tags = this._skeleton ? [] : addon.tags;
-  }
-
   _onNameInput ({ detail: name }) {
     this._name = name;
   }
@@ -90,6 +84,17 @@ export class CcAddonAdmin extends LitElement {
 
   _onDismissError () {
     this.error = false;
+  }
+
+  update (changedProperties) {
+
+    if (changedProperties.has('addon')) {
+      this._skeleton = (this.addon == null);
+      this._name = this._skeleton ? '' : this.addon.name;
+      this._tags = this._skeleton ? [] : this.addon.tags;
+    }
+
+    super.update(changedProperties);
   }
 
   render () {
