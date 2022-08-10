@@ -20,7 +20,7 @@ import { leafletStyles } from '../../styles/leaflet.js';
  *
  * ## Details
  *
- * * The component has a default height of 15rem and a default width 20rem but this can be overridden with CSS.
+ * * The component has a default height of 15em and a default width 20em but this can be overridden with CSS.
  * * When using `points`, you need to specify which HTML tag should be used to create and display the marker.
  * * The marker DOM element should expose `size`, `anchor` and `tooltip` to help this component place the marker and tooltip correctly on the map.
  * * When using `points`, you can specify some text for the tooltip but you can also specify which HTML tag to use to create and display the tooltip.
@@ -342,9 +342,9 @@ export class CcMap extends withResizeObserver(LitElement) {
           background-color: var(--cc-color-bg-default, #fff);
           display: flex;
           flex-direction: column;
-          height: 15rem;
+          height: 15em;
           position: relative;
-          width: 20rem;
+          width: 20em;
         }
 
         #cc-map-container {
@@ -363,7 +363,7 @@ export class CcMap extends withResizeObserver(LitElement) {
         :host([loading]) .legend,
         :host([error]) .legend,
         .legend.no-data {
-          filter: blur(.1rem);
+          filter: blur(.1em);
         }
 
         .leaflet-container {
@@ -382,9 +382,9 @@ export class CcMap extends withResizeObserver(LitElement) {
           background-color: var(--cc-color-bg-neutral);
           box-shadow: inset 0 6px 6px -6px rgba(0, 0, 0, 0.4);
           box-sizing: border-box;
-          font-size: 0.9rem;
+          font-size: 0.9em;
           font-style: italic;
-          padding: 0.4rem 1rem;
+          padding: 0.45em 1.1em;
         }
 
         .loader {
@@ -419,11 +419,11 @@ export class CcMap extends withResizeObserver(LitElement) {
           align-items: center;
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid #bcc2d1;
-          border-radius: 0.25rem;
-          box-shadow: 0 0 1rem rgba(0, 0, 0, 0.4);
+          border-radius: 0.25em;
+          box-shadow: 0 0 1em rgba(0, 0, 0, 0.4);
           display: flex;
           justify-content: center;
-          padding: 1rem;
+          padding: 1em;
         }
 
         .cc-map-marker {

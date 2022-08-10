@@ -36,7 +36,7 @@ export const dataLoadedWithCustomStyles = makeStory(conf, {
   css: `
     cc-pricing-header {
       border-radius: 5px;
-      box-shadow: 0 0 0.5rem #aaa;
+      box-shadow: 0 0 0.5em #aaa;
       padding: 1em;
     }
   `,

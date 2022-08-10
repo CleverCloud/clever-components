@@ -1,22 +1,22 @@
 /* This is a work in progress */
 
 cc-block:not(:defined) {
-  border-radius: .25rem;
+  border-radius: .25em;
   border: 1px solid #bcc2d1;
   display: grid;
-  grid-gap: 1rem;
-  padding: 1rem;
+  grid-gap: 1em;
+  padding: 1em;
 }
 
 cc-block:not(:defined) > [slot=title] {
   color: #3a3871;
-  font-size: 1.2rem;
+  font-size: 1.2em;
   font-weight: 700;
-  margin-bottom: .5rem;
+  margin-bottom: .5em;
 }
 
 cc-block[icon]:not(:defined) > [slot=title] {
-  padding-left: 2.5rem;
+  padding-left: 2.5em;
 }
 
 cc-flex-gap:not(:defined) {
@@ -27,26 +27,26 @@ cc-flex-gap:not(:defined) {
 
 cc-input-text:not(:defined) {
   background: #eee;
-  border-radius: .25rem;
+  border-radius: .25em;
   display: inline-block;
-  height: 2rem;
-  min-width: 18rem;
+  height: 2em;
+  min-width: 18em;
   vertical-align: top;
 }
 
 cc-tcp-redirection-form:not(:defined) {
   background: #eee;
-  border-radius: .25rem;
+  border-radius: .25em;
   display: block;
-  height: calc(3.8rem - 2px);
+  height: calc(3.8em - 2px);
 }
 
 cc-toggle:not(:defined) {
   background: #eee;
-  border-radius: .15rem;
+  border-radius: .15em;
   display: inline-block;
-  height: 2rem;
-  min-width: 10rem;
+  height: 2em;
+  min-width: 10em;
   vertical-align: top;
 }
 

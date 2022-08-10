@@ -179,8 +179,8 @@ export class CcAddonAdmin extends LitElement {
         }
 
         .one-line-form cc-input-text {
-          flex: 1 1 10rem;
-          margin-right: 0.5rem;
+          flex: 1 1 10em;
+          margin-right: 0.5em;
         }
       `,
     ];

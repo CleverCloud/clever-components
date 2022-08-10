@@ -40,8 +40,8 @@ export const linkStyles = css`
   .sanitized-link:focus,
   .cc-link:focus {
     background-color: var(--cc-color-bg-default, #fff);
-    border-radius: 0.1rem;
-    box-shadow: 0 0 0 .1rem var(--cc-color-bg-default, #fff), 0 0 0 .3rem rgba(50, 115, 220, .25);
+    border-radius: 0.1em;
+    box-shadow: 0 0 0 .1em var(--cc-color-bg-default, #fff), 0 0 0 .3em rgba(50, 115, 220, .25);
     outline: 0;
   }
 

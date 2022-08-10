@@ -144,11 +144,11 @@ async function updateListIndex (manifest) {
           margin: 0 auto;
           font-family: Arial, sans-serif;
           width: 100%;
-          max-width: 50rem;
+          max-width: 50em;
         }
         code {
           font-family: "SourceCodePro", "monaco", monospace;
-          font-size: 1rem;
+          font-size: 1em;
         }
         table {
           width: 100%;
@@ -158,7 +158,7 @@ async function updateListIndex (manifest) {
         }
         th,
         td {
-          padding: 0.25rem 0;
+          padding: 0.25em 0;
         }
       </style>
       <script src="https://components.clever-cloud.com/load.js?components=cc-datetime-relative" type="module"></script>

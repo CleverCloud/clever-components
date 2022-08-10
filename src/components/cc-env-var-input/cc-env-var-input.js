@@ -127,19 +127,18 @@ export class CcEnvVarInput extends LitElement {
       // language=CSS
       css`
         :host {
-          --cc-gap: 0.5rem;
+          --cc-gap: 0.5em;
           display: block;
         }
 
         .name {
           box-sizing: border-box;
           display: inline-block;
-          flex: 1 1 15rem;
+          flex: 1 1 17em;
           font-family: var(--cc-ff-monospace, monospace);
-          /* I have a bug on Linux between Chrome and FF with rem on inputs */
-          font-size: 14px;
-          line-height: 1.4rem;
-          padding-top: 0.3rem;
+          font-size: 0.875em;
+          line-height: 1.6em;
+          padding-top: 0.35em;
           word-break: break-all;
         }
 
@@ -152,19 +151,19 @@ export class CcEnvVarInput extends LitElement {
         }
 
         .input-btn {
-          flex: 2 1 27rem;
+          flex: 2 1 27em;
         }
 
         .value {
           align-self: self-start;
           /* 100 seems weird but it is necessary */
           /* it helps to have a button that almost does not grow except when it wraps on its own line */
-          flex: 100 1 20rem;
+          flex: 100 1 20em;
         }
 
         cc-button {
           align-self: flex-start;
-          flex: 1 1 6rem;
+          flex: 1 1 6em;
           white-space: nowrap;
         }
 

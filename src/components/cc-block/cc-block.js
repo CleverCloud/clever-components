@@ -125,7 +125,7 @@ export class CcBlock extends LitElement {
         :host {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid #bcc2d1;
-          border-radius: 0.25rem;
+          border-radius: 0.25em;
           box-sizing: border-box;
           display: grid;
           overflow: hidden;
@@ -135,11 +135,11 @@ export class CcBlock extends LitElement {
         .head {
           align-items: center;
           display: flex;
-          padding: 1rem;
+          padding: 1em;
         }
 
         :host([ribbon]) .head {
-          padding-left: 3.5rem;
+          padding-left: 3.5em;
         }
 
         :host([state="open"]) .head:hover,
@@ -150,27 +150,27 @@ export class CcBlock extends LitElement {
 
         cc-img {
           align-self: flex-start;
-          border-radius: 0.25rem;
-          height: 1.5rem;
-          margin-right: 1rem;
-          width: 1.5rem;
+          border-radius: 0.25em;
+          height: 1.5em;
+          margin-right: 1em;
+          width: 1.5em;
         }
 
         ::slotted([slot="title"]) {
           color: var(--cc-color-text-strong);
           flex: 1 1 0;
-          font-size: 1.2rem;
+          font-size: 1.2em;
           font-weight: bold;
         }
 
         .info-ribbon {
-          --height: 1.5rem;
-          --width: 8rem;
+          --height: 1.5em;
+          --width: 8em;
           --r: -45deg;
-          --translate: 1.6rem;
+          --translate: 1.6em;
           background: var(--cc-color-bg-strong);
           color: white;
-          font-size: 0.9rem;
+          font-size: 0.9em;
           font-weight: bold;
           height: var(--height);
           left: calc(var(--width) / -2);
@@ -185,16 +185,16 @@ export class CcBlock extends LitElement {
 
         .main {
           display: grid;
-          grid-gap: 1rem;
-          padding: 0.5rem 1rem 1rem;
+          grid-gap: 1em;
+          padding: 0.5em 1em 1em;
         }
 
         :host([no-head]) .main {
-          padding: 1rem;
+          padding: 1em;
         }
 
         .main-wrapper--overlay {
-          filter: blur(0.3rem);
+          filter: blur(0.3em);
           opacity: 0.35;
         }
 
@@ -205,7 +205,7 @@ export class CcBlock extends LitElement {
         }
 
         :host([ribbon]) .main-wrapper {
-          padding-left: 2.5rem;
+          padding-left: 2.5em;
         }
 
         ::slotted([slot="overlay"]) {

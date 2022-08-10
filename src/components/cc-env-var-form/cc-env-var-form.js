@@ -315,22 +315,22 @@ export class CcEnvVarForm extends LitElement {
         :host {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid #bcc2d1;
-          border-radius: 0.25rem;
+          border-radius: 0.25em;
           display: block;
-          padding: 1rem;
+          padding: 1em;
         }
 
         .header {
           align-items: flex-start;
           display: flex;
           justify-content: center;
-          margin-bottom: 0.5rem;
+          margin-bottom: 0.5em;
         }
 
         .heading {
           color: var(--cc-color-text-strong);
           flex: 1 1 0;
-          font-size: 1.2rem;
+          font-size: 1.2em;
           font-weight: bold;
         }
 
@@ -339,12 +339,12 @@ export class CcEnvVarForm extends LitElement {
           display: block;
           font-style: italic;
           line-height: 1.5;
-          margin-bottom: 1rem;
+          margin-bottom: 1em;
         }
 
         .hasOverlay {
           --cc-skeleton-state: paused;
-          filter: blur(0.3rem);
+          filter: blur(0.3em);
         }
 
         .overlay-container {
@@ -353,8 +353,8 @@ export class CcEnvVarForm extends LitElement {
 
         cc-expand {
           /* We need to spread so the focus rings can be visible even with cc-expand default overflow:hidden */
-          margin: -0.25rem;
-          padding: 0.25rem;
+          margin: -0.25em;
+          padding: 0.25em;
         }
 
         .error-container {
@@ -378,8 +378,8 @@ export class CcEnvVarForm extends LitElement {
         }
 
         .button-bar {
-          --cc-gap: 1rem;
-          margin-top: 1.5rem;
+          --cc-gap: 1em;
+          margin-top: 1.5em;
         }
 
         .spacer {

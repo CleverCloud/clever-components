@@ -81,7 +81,7 @@ export class CcTileConsumption extends LitElement {
         .line {
           align-items: center;
           display: flex;
-          padding: 0.5rem 0;
+          padding: 0.5em 0;
           width: 100%;
         }
 

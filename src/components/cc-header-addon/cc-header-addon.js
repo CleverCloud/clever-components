@@ -126,10 +126,10 @@ export class CcHeaderAddon extends LitElement {
       // language=CSS
       css`
         :host {
-          --cc-gap: 1rem;
+          --cc-gap: 1em;
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid #bcc2d1;
-          border-radius: 0.25rem;
+          border-radius: 0.25em;
           display: block;
           overflow: hidden;
         }
@@ -139,9 +139,9 @@ export class CcHeaderAddon extends LitElement {
         }
 
         .logo {
-          border-radius: 0.25rem;
-          height: 3.25rem;
-          width: 3.25rem;
+          border-radius: 0.25em;
+          height: 3.25em;
+          width: 3.25em;
         }
 
         .details {
@@ -150,13 +150,13 @@ export class CcHeaderAddon extends LitElement {
 
         .name,
         .description-label {
-          margin-bottom: 0.35rem;
+          margin-bottom: 0.35em;
         }
 
         .name {
-          font-size: 1.1rem;
+          font-size: 1.1em;
           font-weight: bold;
-          min-width: 12rem;
+          min-width: 11em;
         }
 
         .description {
@@ -177,15 +177,15 @@ export class CcHeaderAddon extends LitElement {
         }
 
         .messages {
-          --cc-gap: 0.5rem;
+          --cc-gap: 0.57em;
           --cc-align-items: center;
           align-items: center;
           background-color: var(--cc-color-bg-neutral);
           box-shadow: inset 0 6px 6px -6px rgba(0, 0, 0, 0.4);
           box-sizing: border-box;
-          font-size: 0.9rem;
+          font-size: 0.9em;
           justify-content: end;
-          padding: 0.6rem 1rem;
+          padding: 0.7em 1.1em;
         }
 
         cc-zone {

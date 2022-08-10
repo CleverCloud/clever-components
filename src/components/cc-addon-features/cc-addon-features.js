@@ -154,9 +154,9 @@ export class CcAddonFeatures extends LitElement {
 
         .feature-list {
           --bdw: 2px;
-          --cc-gap: 1rem;
+          --cc-gap: 1em;
           --color: var(--cc-color-bg-primary);
-          --padding: 0.6rem;
+          --padding: 0.6em;
         }
 
         .feature {
@@ -170,7 +170,7 @@ export class CcAddonFeatures extends LitElement {
         .feature-icon {
           margin: calc(var(--padding) / 2) 0 calc(var(--padding) / 2) var(--padding);
           position: relative;
-          width: 1.3rem;
+          width: 1.3em;
         }
 
         .feature-icon_img {

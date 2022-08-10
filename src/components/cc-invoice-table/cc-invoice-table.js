@@ -160,7 +160,6 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
         /* we should use a class (something like "number-value") but it's not possible right now in i18n */
         code {
           font-family: var(--cc-ff-monospace, monospace);
-          font-size: 1rem;
         }
 
         .credit-note {
@@ -172,7 +171,7 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
         }
 
         .links {
-          --cc-gap: 1rem;
+          --cc-gap: 1em;
           --cc-align-items: center;
         }
 
@@ -181,23 +180,23 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
         /*region SMALL*/
         .invoice-list {
           display: grid;
-          gap: 1.5rem;
+          gap: 1.5em;
         }
 
         .invoice {
           display: flex;
-          line-height: 1.5rem;
+          line-height: 1.5em;
         }
 
         .invoice-icon,
         .invoice-text {
-          margin-right: 0.5rem;
+          margin-right: 0.5em;
         }
 
         .invoice-icon {
           flex: 0 0 auto;
-          height: 1.5rem;
-          width: 1.5rem;
+          height: 1.5em;
+          width: 1.5em;
         }
 
         .invoice-text {
@@ -227,7 +226,7 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
 
         th,
         td {
-          padding: 0.5rem 1rem;
+          padding: 0.5em 1em;
           text-align: left;
         }
 

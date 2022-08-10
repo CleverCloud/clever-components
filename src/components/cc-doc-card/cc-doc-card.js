@@ -93,7 +93,7 @@ export class CcDocCard extends LitElement {
                   "link link";
           grid-template-columns: min-content 1fr;
           grid-template-rows: min-content 1fr min-content;
-          padding: 1rem;
+          padding: 1em;
         }
         
         .images {

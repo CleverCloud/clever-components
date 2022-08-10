@@ -57,8 +57,8 @@ export const emptyWithLegendInSlot = makeStory(conf, {
 
 export const emptyWithDifferentSizes = makeStory(conf, {
   items: [
-    { style: 'height:10rem; width:30rem' },
-    { style: 'height:20rem; width:15rem' },
+    { style: 'height:10em; width:30em' },
+    { style: 'height:20em; width:15em' },
   ],
 });
 

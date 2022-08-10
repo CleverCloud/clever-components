@@ -15,6 +15,7 @@ title: Changelog
 * `<cc-toggle>`: update component host default `display` CSS property (BREAKING CHANGE).
 * `<cc-input-text>`: set default font back to `--cc-ff-monospace` when the input contains tags (BREAKING CHANGE).
 * Introduce a new project file structure (BREAKING CHANGE).
+* all components: change `rem` units to `em` (BREAKING CHANGE).
 
 ### Components
 
@@ -25,6 +26,7 @@ title: Changelog
 ### For devs
 
 * Improve display of `components:check-i18n` task.
+...
 
 ## 9.0.0 (2022-07-19)
 

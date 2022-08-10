@@ -62,13 +62,13 @@ export const defaultStory = () => {
       }
       table {
         border-collapse: collapse;
-        margin-bottom: 1rem;
+        margin-bottom: 1em;
       }
       table,
       th,
       td {
         border: 1px solid #bbb;
-        padding: 0.5rem;
+        padding: 0.5em;
       }
       th {
         background-color: #f5f5f5;
@@ -81,18 +81,18 @@ export const defaultStory = () => {
       }
       
       .color {
-        border-radius: 0.25rem;
+        border-radius: 0.25em;
         display: inline-block;
-        height: 1rem;
-        margin-right: 0.5rem;
+        height: 1em;
+        margin-right: 0.5em;
         vertical-align: middle;
-        width: 1rem;
+        width: 1em;
       }
       
       pre {
         background-color: #f5f5f5;
-        border-radius: 0.25rem;
-        padding: 1rem;
+        border-radius: 0.25em;
+        padding: 1em;
       }
       
       .attributes {
@@ -104,7 +104,7 @@ export const defaultStory = () => {
         border: 1px solid #000;
         box-sizing: border-box;
         display: inline-block;
-        padding: 1rem;
+        padding: 1em;
         overflow: hidden;
       }
       

@@ -32,7 +32,7 @@ export class CcBlockSection extends LitElement {
         :host {
           background-color: var(--cc-color-bg-default, #fff);
           display: grid;
-          grid-gap: 1rem;
+          grid-gap: 1em;
         }
 
         /*
@@ -46,8 +46,8 @@ export class CcBlockSection extends LitElement {
          */
         :host(:not(:first-of-type)) {
           border-top: 1px solid #bcc2d1;
-          margin-top: 1rem;
-          padding-top: 2rem;
+          margin-top: 1em;
+          padding-top: 2em;
         }
 
         ::slotted([slot="title"]) {
@@ -62,23 +62,23 @@ export class CcBlockSection extends LitElement {
         .section {
           display: flex;
           flex-wrap: wrap;
-          margin: -0.5rem -1.5rem;
+          margin: -0.5em -1.5em;
         }
 
         ::slotted([slot="info"]),
         .main {
-          margin: 0.5rem 1.5rem;
+          margin: 0.5em 1.5em;
         }
 
         ::slotted([slot="info"]) {
-          flex: 1 1 15rem;
+          flex: 1 1 15em;
           line-height: 1.5;
         }
 
         .main {
           display: grid;
-          flex: 2 2 30rem;
-          grid-gap: 1rem;
+          flex: 2 2 30em;
+          grid-gap: 1em;
         }
       `,
     ];

@@ -101,20 +101,20 @@ export class CcAddonLinkedApps extends LitElement {
         .application {
           align-items: flex-start;
           display: flex;
-          line-height: 1.6rem;
+          line-height: 1.6em;
         }
 
         .logo {
-          border-radius: 0.25rem;
+          border-radius: 0.25em;
           flex: 0 0 auto;
-          height: 1.6rem;
-          width: 1.6rem;
+          height: 1.6em;
+          width: 1.6em;
         }
 
         .details {
           --cc-align-items: center;
-          --cc-gap: 0.5rem;
-          margin-left: 0.5rem;
+          --cc-gap: 0.5em;
+          margin-left: 0.5em;
         }
 
         /* SKELETON */

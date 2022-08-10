@@ -153,22 +153,22 @@ export class CcEnvVarCreate extends LitElement {
       // language=CSS
       css`
         :host {
-          --cc-gap: 0.5rem;
+          --cc-gap: 0.5em;
           display: block;
         }
 
         .name {
-          flex: 1 1 15rem;
+          flex: 1 1 15em;
         }
 
         .input-btn {
-          flex: 2 1 27rem;
+          flex: 2 1 27em;
         }
 
         .value {
           /* 100 seems weird but it is necessary */
           /* it helps to have a button that almost does not grow except when it wraps on its own line */
-          flex: 100 1 20rem;
+          flex: 100 1 20em;
         }
 
         cc-input-text {
@@ -177,20 +177,20 @@ export class CcEnvVarCreate extends LitElement {
 
         cc-button {
           align-self: flex-start;
-          flex: 1 1 6rem;
+          flex: 1 1 6em;
           white-space: nowrap;
         }
 
         cc-error {
-          margin: 0.5rem 0;
+          margin: 0.5em 0;
         }
 
         /* i18n error message may contain <code> tags */
         cc-error code {
           background-color: var(--cc-color-bg-neutral, #eeeeee);
-          border-radius: 0.25rem;
+          border-radius: 0.25em;
           font-family: var(--cc-ff-monospace, monospace);
-          padding: 0.15rem 0.3rem;
+          padding: 0.15em 0.3em;
         }
       `,
     ];

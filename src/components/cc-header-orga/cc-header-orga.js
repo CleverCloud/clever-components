@@ -93,14 +93,14 @@ export class CcHeaderOrga extends LitElement {
       // language=CSS
       css`
         :host {
-          --cc-gap: 1rem;
+          --cc-gap: 1em;
           display: block;
         }
 
         .wrapper {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid #bcc2d1;
-          border-radius: 0.25rem;
+          border-radius: 0.25em;
           display: block;
           overflow: hidden;
           padding: var(--cc-gap);
@@ -112,9 +112,9 @@ export class CcHeaderOrga extends LitElement {
         }
 
         .logo {
-          border-radius: 0.25rem;
-          height: 3.25rem;
-          width: 3.25rem;
+          border-radius: 0.25em;
+          height: 3.25em;
+          width: 3.25em;
         }
 
         .details,
@@ -133,9 +133,9 @@ export class CcHeaderOrga extends LitElement {
         }
 
         .name {
-          font-size: 1.1rem;
+          font-size: 1.1em;
           font-weight: bold;
-          min-width: 12rem;
+          min-width: 11em;
         }
 
         .hotline_number {

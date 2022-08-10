@@ -76,13 +76,13 @@ export class CcError extends LitElement {
               align-items: center;
               background-color: var(--cc-color-bg-default, #fff);
               border: 1px solid #bcc2d1;
-              border-radius: 0.25rem;
-              box-shadow: 0 0 1rem rgba(0, 0, 0, 0.4);
+              border-radius: 0.25em;
+              box-shadow: 0 0 1em rgba(0, 0, 0, 0.4);
               display: grid;
-              grid-gap: 1rem;
+              grid-gap: 1em;
               justify-content: center;
               justify-items: center;
-              padding: 1rem;
+              padding: 1em;
           }
 
           :host([mode="loading"]) {
@@ -90,17 +90,17 @@ export class CcError extends LitElement {
           }
 
           cc-loader {
-              height: 1.5rem;
-              width: 1.5rem;
+              height: 1.5em;
+              width: 1.5em;
           }
 
           img {
               display: inline-block;
-              height: 1rem;
-              margin-right: 0.4rem;
-              margin-top: 0.1rem;
+              height: 1em;
+              margin-right: 0.4em;
+              margin-top: 0.1em;
               vertical-align: text-top;
-              width: 1rem;
+              width: 1em;
           }
 
           cc-button {

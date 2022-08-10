@@ -122,19 +122,19 @@ export class CcHeptapodInfo extends LitElement {
         }
 
         .header-logo {
-          height: 3.25rem;
-          width: 3.25rem;
+          height: 3.25em;
+          width: 3.25em;
         }
 
         .header-content {
           display: flex;
           flex-direction: column;
           justify-content: center;
-          margin-left: 1rem;
+          margin-left: 1em;
         }
 
         .pricing {
-          --cc-gap: 1rem;
+          --cc-gap: 1em;
         }
 
         .pricing-item {
@@ -152,7 +152,7 @@ export class CcHeptapodInfo extends LitElement {
         .no-statistics {
           color: var(--cc-color-text-weak);
           font-style: italic;
-          margin: 0.2rem;
+          margin: 0.2em;
         }
 
         /* SKELETON */

@@ -293,7 +293,7 @@ export const dataLoadedWithHeptapod = makeStory(conf, {
 export const dataLoadedWithCustomHead = makeStory(conf, {
   items: [{
     ...baseCellar,
-    innerHTML: `<div slot="head" style="padding: 1rem; background-color: lime;">The whole head section can be overriden with the head slot...</div>`,
+    innerHTML: `<div slot="head" style="padding: 1em; background-color: lime;">The whole head section can be overriden with the head slot...</div>`,
   }],
 });
 

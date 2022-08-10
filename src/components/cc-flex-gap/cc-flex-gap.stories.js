@@ -16,10 +16,10 @@ const conf = {
     }
     
     cc-flex-gap > * {
-      border-radius: 0.25rem;
-      border:1px solid #000;
+      border-radius: 0.25em;
+      border: 1px solid #000;
       flex: 1 1 0;
-      padding: 0.5rem 1rem;
+      padding: 0.5em 1em;
     }
   `,
 };
@@ -29,7 +29,7 @@ const flexItemsHtml = Array.from(new Array(15))
   .join('');
 
 export const defaultStory = makeStory(conf, {
-  items: [{ innerHTML: flexItemsHtml, style: '--cc-gap: 1rem' }],
+  items: [{ innerHTML: flexItemsHtml, style: '--cc-gap: 1em' }],
 });
 
 export const noGap = makeStory(conf, {
@@ -37,22 +37,22 @@ export const noGap = makeStory(conf, {
 });
 
 export const smallGap = makeStory(conf, {
-  items: [{ innerHTML: flexItemsHtml, style: '--cc-gap: 0.5rem' }],
+  items: [{ innerHTML: flexItemsHtml, style: '--cc-gap: 0.5em' }],
 });
 
 export const bigGap = makeStory(conf, {
-  items: [{ innerHTML: flexItemsHtml, style: '--cc-gap: 2rem' }],
+  items: [{ innerHTML: flexItemsHtml, style: '--cc-gap: 2em' }],
 });
 
 export const alignItems = makeStory(conf, {
   items: [
     {
       innerHTML: `
-        <div style="height: 1rem">One</div>
-        <div style="height: 3rem">Two</div>
-        <div style="height: 9rem">Three</div>
+        <div style="height: 1em">One</div>
+        <div style="height: 3em">Two</div>
+        <div style="height: 9em">Three</div>
       `,
-      style: '--cc-gap: 1rem; --cc-align-items: center',
+      style: '--cc-gap: 1em; --cc-align-items: center',
     },
   ],
 });

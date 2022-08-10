@@ -338,29 +338,29 @@ export class CcAddonBackups extends LitElement {
       css`
         :host {
           display: grid;
-          grid-gap: 1rem;
+          grid-gap: 1em;
           line-height: 1.5;
         }
 
         .backup-list {
           display: grid;
-          grid-gap: 1.5rem;
+          grid-gap: 1.5em;
         }
 
         .backup {
           display: flex;
-          line-height: 1.5rem;
+          line-height: 1.5em;
         }
 
         .backup-icon,
         .backup-text {
-          margin-right: 0.5rem;
+          margin-right: 0.5em;
         }
 
         .backup-icon {
           flex: 0 0 auto;
-          height: 1.5rem;
-          width: 1.5rem;
+          height: 1.5em;
+          width: 1.5em;
         }
 
         .backup-icon img {
@@ -387,14 +387,14 @@ export class CcAddonBackups extends LitElement {
         }
 
         .overlay {
-          box-shadow: 0 0 1rem rgba(0, 0, 0, 0.4);
-          margin: 2rem;
+          box-shadow: 0 0 1em rgba(0, 0, 0, 0.4);
+          margin: 2em;
           max-width: 80%;
         }
 
         .cc-link,
         cc-button[link] {
-          margin-right: 0.5rem;
+          margin-right: 0.5em;
           vertical-align: baseline;
         }
 

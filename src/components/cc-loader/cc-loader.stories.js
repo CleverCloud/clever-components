@@ -20,29 +20,29 @@ const conf = {
 
 export const defaultStory = makeStory(conf, {
   items: [
-    { style: 'width: 5rem; height: 5rem' },
-    { style: 'width: 5rem; height: 5rem; --cc-loader-color: red' },
-    { style: 'width: 5rem; height: 5rem; --cc-loader-color: green' },
+    { style: 'width: 5em; height: 5em' },
+    { style: 'width: 5em; height: 5em; --cc-loader-color: red' },
+    { style: 'width: 5em; height: 5em; --cc-loader-color: green' },
   ],
 });
 
 export const smallContainer = makeStory(conf, {
-  items: [{ style: 'width: 1rem; height: 1rem' }],
+  items: [{ style: 'width: 1em; height: 1em' }],
 });
 
 export const bigContainerWithHorizontallyCentered = makeStory(conf, {
-  items: [{ style: 'width: 12rem; height: 6rem' }],
+  items: [{ style: 'width: 12em; height: 6em' }],
 });
 
 export const bigContainerWithVerticallyCentered = makeStory(conf, {
-  items: [{ style: 'width: 6rem; height: 10rem;' }],
+  items: [{ style: 'width: 6em; height: 10em;' }],
 });
 
 export const customColor = makeStory(conf, {
   items: [
-    { style: 'width: 12rem; height: 6rem; --cc-loader-color: red' },
-    { style: 'width: 12rem; height: 6rem; --cc-loader-color: green' },
-    { style: 'width: 12rem; height: 6rem; --cc-loader-color: orange' },
+    { style: 'width: 12em; height: 6em; --cc-loader-color: red' },
+    { style: 'width: 12em; height: 6em; --cc-loader-color: green' },
+    { style: 'width: 12em; height: 6em; --cc-loader-color: orange' },
   ],
 });
 
