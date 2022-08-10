@@ -6,6 +6,7 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+* `<cc-map>`: make dot markers not focusable.
 ...
 
 ## 9.0.0 (2022-07-19)

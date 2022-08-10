@@ -151,7 +151,7 @@ export class CcMap extends withResizeObserver(LitElement) {
     // Create marker and add it to the map
     const marker = leaflet
       // We don't use for riseOnHover: true, it's up to the user to do it with zIndexOffset
-      .marker([point.lat, point.lon], { icon, zIndexOffset: point.zIndexOffset })
+      .marker([point.lat, point.lon], { icon, zIndexOffset: point.zIndexOffset, keyboard: false })
       .addTo(this._pointsLayer);
 
     marker
