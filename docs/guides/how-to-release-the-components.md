@@ -1,10 +1,7 @@
 ---
-kind: 🏠 Home
-title: Releases
+kind: 📌 Docs
 ---
-# Clever Components releases
-
-## How do I release a new version?
+# How to release the components?
 
 Here's the guide to create a new release:
 
