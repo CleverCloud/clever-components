@@ -38,7 +38,7 @@ const placeholderCss = `
   }
   cc-overview * {
     background-color: #eee;
-    padding: 1rem;
+    padding: 1em;
   }
   cc-overview .main {
     min-height: 200px;

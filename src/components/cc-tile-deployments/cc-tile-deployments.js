@@ -110,7 +110,7 @@ export class CcTileDeployments extends LitElement {
       css`
         .tile_body {
           align-items: start;
-          grid-gap: 1rem;
+          grid-gap: 1em;
           grid-template-columns: auto auto auto;
           justify-content: space-between;
         }

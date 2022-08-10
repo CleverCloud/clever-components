@@ -147,13 +147,13 @@ export class CcTcpRedirection extends LitElement {
         }
 
         .wrapper {
-          --cc-gap: 0.8rem;
+          --cc-gap: 0.8em;
         }
 
         .icon {
           flex: 0 0 auto;
-          height: 1.5rem;
-          width: 1.5rem;
+          height: 1.5em;
+          width: 1.5em;
         }
 
         .icon img {
@@ -171,8 +171,8 @@ export class CcTcpRedirection extends LitElement {
         }
 
         .text-wrapper {
-          flex: 1 1 30rem;
-          line-height: 1.6rem;
+          flex: 1 1 30em;
+          line-height: 1.6em;
         }
 
         .text strong {
@@ -181,9 +181,9 @@ export class CcTcpRedirection extends LitElement {
 
         .text:not(.skeleton) code {
           background-color: var(--cc-color-bg-neutral);
-          border-radius: 0.25rem;
+          border-radius: 0.25em;
           font-family: var(--cc-ff-monospace);
-          padding: 0.15rem 0.3rem;
+          padding: 0.15em 0.3em;
         }
 
         .text-addendum:not(.skeleton) {

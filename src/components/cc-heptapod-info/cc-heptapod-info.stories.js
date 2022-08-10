@@ -12,7 +12,7 @@ const conf = {
   // language=CSS
   css: `
     cc-heptapod-info {
-      max-width: 40rem;
+      max-width: 40em;
     }
   `,
 };

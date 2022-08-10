@@ -92,7 +92,7 @@ export class CcInvoice extends LitElement {
 
         [slot="button"] {
           align-self: start;
-          margin-left: 1rem;
+          margin-left: 1em;
         }
 
         .has-errors {
@@ -110,7 +110,7 @@ export class CcInvoice extends LitElement {
 
         .frame {
           /* height and max-width are roughly set to have a standard letter / A4 paper ratio */
-          box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.4);
+          box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.4);
           height: 31cm;
           max-width: 22cm;
           width: 100%;

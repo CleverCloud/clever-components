@@ -132,7 +132,7 @@ export class CcEnvVarEditorSimple extends LitElement {
     return css`
       :host {
         display: grid;
-        grid-gap: 0.5rem;
+        grid-gap: 0.5em;
       }
 
       :host([hidden]) {
@@ -140,13 +140,13 @@ export class CcEnvVarEditorSimple extends LitElement {
       }
 
       cc-env-var-create {
-        margin-bottom: 1rem;
+        margin-bottom: 1em;
       }
 
       .message {
         color: var(--cc-color-text-weak);
         font-style: italic;
-        margin: 0.2rem;
+        margin: 0.2em;
       }
     `;
   }

@@ -188,7 +188,7 @@ export const defaultStory = makeStory(conf, {
         <div class="knob">
           <cc-block class="buttons">
             <p>Click on buttons to trigger a toast</p>
-            <cc-flex-gap style="--cc-gap: 0.5rem;">${intents.map(_renderButton)}</cc-flex-gap>
+            <cc-flex-gap style="--cc-gap: 0.5em;">${intents.map(_renderButton)}</cc-flex-gap>
           </cc-block>
           
           <cc-block class="options">

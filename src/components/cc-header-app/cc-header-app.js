@@ -323,10 +323,10 @@ export class CcHeaderApp extends LitElement {
       // language=CSS
       css`
         :host {
-          --cc-gap: 1rem;
+          --cc-gap: 1em;
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid #bcc2d1;
-          border-radius: 0.25rem;
+          border-radius: 0.25em;
           display: block;
           overflow: hidden;
         }
@@ -342,10 +342,10 @@ export class CcHeaderApp extends LitElement {
 
         .flavor-logo {
           align-self: flex-start;
-          border-radius: 0.25rem;
-          height: 3.25rem;
+          border-radius: 0.25em;
+          height: 3.25em;
           overflow: hidden;
-          width: 3.25rem;
+          width: 3.25em;
         }
 
         .flavor-logo_img {
@@ -366,9 +366,9 @@ export class CcHeaderApp extends LitElement {
         }
 
         .name {
-          font-size: 1.1rem;
+          font-size: 1.1em;
           font-weight: bold;
-          min-width: 12rem;
+          min-width: 11em;
         }
 
         .commit {
@@ -377,10 +377,10 @@ export class CcHeaderApp extends LitElement {
         }
 
         .commit_img {
-          height: 1.1rem;
-          margin-right: 0.2rem;
+          height: 1.1em;
+          margin-right: 0.2em;
           overflow: hidden;
-          width: 1.1rem;
+          width: 1.1em;
         }
 
         /* We hide the right part of the commit this way so this can be part of a copy/paste */
@@ -402,20 +402,20 @@ export class CcHeaderApp extends LitElement {
         }
 
         .messages {
-          --cc-gap: 0.5rem;
+          --cc-gap: 0.57em;
           --cc-align-items: center;
           align-items: center;
           background-color: var(--cc-color-bg-neutral);
           box-shadow: inset 0 6px 6px -6px rgba(0, 0, 0, 0.4);
           box-sizing: border-box;
-          font-size: 0.9rem;
+          font-size: 0.9em;
           font-style: italic;
-          padding: 0.4rem 1rem;
+          padding: 0.45em 1.1em;
         }
 
         .status-icon {
-          height: 1.25rem;
-          min-width: 1.25rem;
+          height: 1.25em;
+          min-width: 1.25em;
         }
 
         .spacer {

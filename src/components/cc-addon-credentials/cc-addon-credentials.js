@@ -128,12 +128,12 @@ export class CcAddonCredentials extends LitElement {
         }
 
         .credential-list {
-          --cc-gap: 1rem;
+          --cc-gap: 1em;
         }
 
         cc-input-text {
           --cc-input-font-family: var(--cc-ff-monospace, monospace);
-          flex: 1 0 18rem;
+          flex: 1 0 18em;
         }
 
         /* SKELETON */

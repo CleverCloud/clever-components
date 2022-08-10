@@ -247,7 +247,7 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
         :host {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid #bcc2d1;
-          border-radius: 0.25rem;
+          border-radius: 0.25em;
           box-sizing: border-box;
           display: flex;
           overflow: hidden;
@@ -277,13 +277,13 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
         }
 
         :host(:not([error])[w-gte-600]) .zone-list-wrapper {
-          flex-basis: 24rem;
-          max-width: 24rem;
+          flex-basis: 24em;
+          max-width: 24em;
         }
 
         :host([error]) .zone-list-wrapper {
           display: flex;
-          padding: 1rem;
+          padding: 1em;
         }
 
         :host([error]) cc-error {
@@ -291,11 +291,11 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
         }
 
         .zone-list {
-          margin: 0.5rem;
+          margin: 0.5em;
         }
 
         .zone-list:not(:hover):focus-within {
-          border-radius: 0.25rem;
+          border-radius: 0.25em;
           box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
           outline: 0;
         }
@@ -317,16 +317,16 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
           border: 0;
           box-sizing: border-box;
           display: block;
-          margin: -0.5rem;
+          margin: -0.5em;
           outline: none;
         }
 
         .label {
           border: 2px solid var(--bd-color, transparent);
-          border-radius: 0.25rem;
+          border-radius: 0.25em;
           box-sizing: border-box;
           display: block;
-          padding: 0.5rem;
+          padding: 0.5em;
         }
 
         label {

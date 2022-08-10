@@ -246,8 +246,8 @@ export class CcTileStatusCodes extends LitElement {
         }
 
         .docs-toggle {
-          font-size: 1rem;
-          margin: 0 0 0 1rem;
+          font-size: 0.8em;
+          margin: 0 0 0 1em;
         }
 
         .tile_body {
@@ -275,7 +275,7 @@ export class CcTileStatusCodes extends LitElement {
 
         .tile_docs {
           align-self: center;
-          font-size: 0.9rem;
+          font-size: 0.9em;
           font-style: italic;
         }
 

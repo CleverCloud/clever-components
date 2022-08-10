@@ -20,7 +20,7 @@ import { i18n } from '../../lib/i18n.js';
  * * This component wraps `<cc-map>` with a clickable toggle for the mode.
  * * It has predefined i18n label for the toggle and the legend (to display logs).
  * * The legend is contextualized to an organization or an app so you MUST set either `orgaName` or `appName` but not both.
- * * The component has a default height of 15rem and a default width 20rem but this can be overridden with CSS.
+ * * The component has a default height of 15em and a default width 20em but this can be overridden with CSS.
  *
  * @cssdisplay block
  *
@@ -206,18 +206,18 @@ export class CcLogsMap extends LitElement {
       :host {
         background-color: var(--cc-color-bg-default, #fff);
         border: 1px solid #ccc;
-        border-radius: 0.25rem;
+        border-radius: 0.25em;
         display: block;
-        height: 15rem;
+        height: 15em;
         overflow: hidden;
         position: relative;
-        width: 20rem;
+        width: 20em;
       }
 
       cc-toggle {
-        left: 0.5rem;
+        left: 0.5em;
         position: absolute;
-        top: 0.5rem;
+        top: 0.5em;
         z-index: 2;
       }
 

@@ -41,7 +41,7 @@ export class CcOverview extends withResizeObserver(LitElement) {
 
     /** @protected */
     this.breakpoints = {
-      // ceiled width with 275px tiles and 1rem (16px) gap
+      // ceiled width with 275px tiles and 1em (16px) gap
       width: [570, 860, 1150],
     };
   }
@@ -59,7 +59,7 @@ export class CcOverview extends withResizeObserver(LitElement) {
         /* We ask the user to specify this number (if > 1) because the information is known and detecting it automatically and properly requires a MutationObserver to count them in the \`<slot>\` and it seems overkill. */
         --cc-overview-head-count: 1;
         display: grid;
-        grid-gap: 1rem;
+        grid-gap: 1em;
       }
 
       /*region GRID LAYOUT*/
@@ -125,7 +125,7 @@ export class CcOverview extends withResizeObserver(LitElement) {
         grid-column: main-start / main-end;
         grid-row: main-start / main-end;
         height: auto;
-        min-height: 25rem;
+        min-height: 25em;
         width: auto;
       }
     `;

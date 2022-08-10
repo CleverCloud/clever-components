@@ -5,19 +5,19 @@ export const tileStyles = css`
   :host {
     background-color: var(--cc-color-bg-default, #fff);
     border: 1px solid #bcc2d1;
-    border-radius: 0.25rem;
+    border-radius: 0.25em;
     box-sizing: border-box;
     display: grid;
-    grid-gap: 1rem;
+    grid-gap: 1em;
     grid-template-rows: auto 1fr;
-    min-height: 9rem;
+    min-height: 9em;
     overflow: hidden;
-    padding: 1rem;
+    padding: 1em;
   }
 
   .tile_title {
     color: var(--cc-color-text-weak);
-    font-size: 1.25rem;
+    font-size: 1.25em;
     text-align: center;
   }
   
@@ -39,19 +39,19 @@ export const tileStyles = css`
 // language=CSS
 export const instanceDetailsStyles = css`
   :host {
-    --bubble-d: 1.5rem;
+    --bubble-d: 1.5em;
     --bubble-r: calc(var(--bubble-d) / 2);
   }
 
   .size-label {
     background-color: var(--cc-color-bg-neutral);
     border: 1px solid #484848;
-    border-radius: 0.25rem;
+    border-radius: 0.25em;
     box-sizing: border-box;
     display: block;
     font-weight: bold;
-    height: 1.65rem;
-    line-height: 1.65rem;
+    height: 1.65em;
+    line-height: 1.65em;
     padding: 0 var(--bubble-r);
     text-align: center;
   }

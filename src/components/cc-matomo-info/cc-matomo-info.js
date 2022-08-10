@@ -109,7 +109,7 @@ export class CcMatomoInfo extends LitElement {
       // language=CSS
       css`
         :host {
-          --cc-gap: 1rem;
+          --cc-gap: 1em;
           display: block;
         }
 
@@ -127,11 +127,11 @@ export class CcMatomoInfo extends LitElement {
         }
 
         cc-img {
-          border-radius: 0.25rem;
+          border-radius: 0.25em;
           flex: 0 0 auto;
-          height: 1.5rem;
-          margin-right: 0.5rem;
-          width: 1.5rem;
+          height: 1.5em;
+          margin-right: 0.5em;
+          width: 1.5em;
         }
 
         .application-list > * {

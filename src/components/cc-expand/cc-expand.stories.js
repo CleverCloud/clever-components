@@ -21,7 +21,7 @@ export const defaultStory = makeStory(conf, {
   // language=CSS
   css: `
     .knob {
-      margin-bottom: 1rem;
+      margin-bottom: 1em;
     }
     cc-toggle {
       margin: 0;
@@ -29,7 +29,7 @@ export const defaultStory = makeStory(conf, {
     cc-expand {
       border: 3px solid blue;
     }
-    .box { background-color: tomato; margin: 1rem; }
+    .box { background-color: tomato; margin: 1em; }
     .box[data-size="small"] { height: 60px }
     .box[data-size="medium"] { height: 120px }
     .box[data-size="big"] { height: 180px }

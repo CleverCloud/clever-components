@@ -156,15 +156,15 @@ export class CcTileInstances extends LitElement {
         }
 
         .instances_status-img {
-          height: 1.75rem;
-          width: 1.75rem;
+          height: 1.75em;
+          width: 1.75em;
         }
 
         .instances_status {
           color: var(--status-color, #000000);
           flex: 1 1 0;
-          font-size: 1.2rem;
-          margin-left: 0.25rem;
+          font-size: 1.2em;
+          margin-left: 0.25em;
         }
 
         .size-label {

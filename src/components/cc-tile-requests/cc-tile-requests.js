@@ -290,8 +290,8 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
         }
 
         .docs-toggle {
-          font-size: 1rem;
-          margin: 0 0 0 1rem;
+          font-size: 0.8em;
+          margin: 0 0 0 1em;
         }
 
         .chart-container {
@@ -325,7 +325,7 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
 
         .tile_docs {
           align-self: center;
-          font-size: 0.9rem;
+          font-size: 0.9em;
           font-style: italic;
         }
 

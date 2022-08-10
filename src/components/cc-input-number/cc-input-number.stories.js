@@ -156,7 +156,7 @@ export const customWidth = makeStory(conf, {
   css: `
     cc-input-number {
       display: block;
-      margin: 0.5rem;
+      margin: 0.5em;
     }
   `,
   items: Array

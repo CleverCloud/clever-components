@@ -22,7 +22,6 @@ const conf = {
   css: `
     :host {
       display: grid;
-      gap: 1rem;
       grid-template-columns: repeat(var(--col-nb, 4), min-content);
     }
   `,

@@ -233,10 +233,6 @@ export class CcSelect extends LitElement {
           outline: 0;
         }
 
-        option {
-          padding: 1rem 0;
-        }
-
         .selectWrapper {
           display: inline-flex;
           position: relative;

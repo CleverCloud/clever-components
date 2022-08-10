@@ -102,8 +102,8 @@ export class CcTileScalability extends LitElement {
       css`
         .tile_body {
           align-items: center;
-          grid-column-gap: 2rem;
-          grid-row-gap: 1rem;
+          grid-column-gap: 2em;
+          grid-row-gap: 1em;
           grid-template-columns: auto 1fr;
         }
 
@@ -117,7 +117,7 @@ export class CcTileScalability extends LitElement {
         .separator {
           border-top: 1px dashed #8C8C8C;
           flex: 1 1 0;
-          width: 1.5rem;
+          width: 1.5em;
         }
 
         [title] {
