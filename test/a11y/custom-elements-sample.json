@@ -1,0 +1,179 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/components/cc-addon-backups/cc-addon-backups.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A components to display backups available for an add-on.\n\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/components/cc-addon-backups/cc-addon-backups.js)\n\n🎨 default CSS display: `grid`\n\n## Details\n\n* When `backups` is nullish, a skeleton screen UI pattern is displayed (loading hint).",
+          "name": "CcAddonBackups",
+          "members": [
+            {
+              "kind": "field",
+              "name": "backups",
+              "privacy": "public",
+              "type": {
+                "text": "BackupDetails|null"
+              },
+              "description": "Sets the different details about an add-on and its backup.",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Displays an error message.",
+              "default": "false"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "backups",
+              "fieldName": "backups"
+            },
+            {
+              "name": "error",
+              "fieldName": "error"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit-element"
+          },
+          "cssDisplay": "grid",
+          "tagName": "cc-addon-backups",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "CcAddonBackups",
+          "declaration": {
+            "name": "CcAddonBackups",
+            "module": "src/components/cc-addon-backups/cc-addon-backups.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "cc-addon-backups",
+          "declaration": {
+            "name": "CcAddonBackups",
+            "module": "src/components/cc-addon-backups/cc-addon-backups.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/cc-addon-admin/cc-addon-admin.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A component displaying the admin interface of an add-on to edit its name or delete the add-on.\n\n🧐 [component's source code on GitHub](https://github.com/CleverCloud/clever-components/blob/master/src/components/cc-addon-admin/cc-addon-admin.js)\n\n🎨 default CSS display: `block`\n\n## Details\n\n* When addon is nullish, a skeleton screen UI pattern is displayed (loading hint).",
+          "name": "CcAddonAdmin",
+          "members": [
+            {
+              "kind": "field",
+              "name": "addon",
+              "type": {
+                "text": "Addon|null"
+              },
+              "description": "Sets the add-on details (name and tags).",
+              "default": "null",
+              "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "privacy": "public",
+              "type": {
+                "text": "ErrorType"
+              },
+              "description": "Sets the error state on the component.",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "saving",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Enables the saving state (form is disabled and blurred).",
+              "default": "false"
+            }
+          ],
+          "events": [
+            {
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Fires when the delete button is clicked.",
+              "name": "cc-addon-admin:delete-addon"
+            },
+            {
+              "type": {
+                "text": "CustomEvent<string>"
+              },
+              "description": "Fires the new name of the add-on when update name button is clicked.",
+              "name": "cc-addon-admin:update-name"
+            },
+            {
+              "type": {
+                "text": "CustomEvent<string[]>"
+              },
+              "description": "Fires the new list of tags when update tags button is clicked.",
+              "name": "cc-addon-admin:update-tags"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "addon",
+              "fieldName": "addon"
+            },
+            {
+              "name": "error",
+              "fieldName": "error"
+            },
+            {
+              "name": "saving",
+              "fieldName": "saving"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit-element"
+          },
+          "cssDisplay": "block",
+          "tagName": "cc-addon-admin",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "CcAddonAdmin",
+          "declaration": {
+            "name": "CcAddonAdmin",
+            "module": "src/components/cc-addon-admin/cc-addon-admin.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "cc-addon-admin",
+          "declaration": {
+            "name": "CcAddonAdmin",
+            "module": "src/components/cc-addon-admin/cc-addon-admin.js"
+          }
+        }
+      ]
+    }
+  ]
+}

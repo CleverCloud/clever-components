@@ -12,6 +12,7 @@ const cemAnalyzerPlugin = {
 };
 
 export default {
+  nodeResolve: true,
   mimeTypes: {
     '**/*.json': 'js',
     '.**/*.json': 'js',
