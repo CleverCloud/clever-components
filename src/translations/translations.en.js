@@ -368,6 +368,8 @@ export const translations = {
   'cc-heptapod-info.storage-description': `Storage size`,
   //#endregion
   //#region cc-input-number
+  'cc-input-number.decrease': `decrease`,
+  'cc-input-number.increase': `increase`,
   'cc-input-number.required': `required`,
   //#endregion
   //#region cc-input-text
@@ -532,6 +534,7 @@ export const translations = {
   'cc-pricing-table.feature.has-metrics': `Metrics`,
   'cc-pricing-table.feature.max-db-size': `Max DB size`,
   'cc-pricing-table.feature.memory': `RAM`,
+  'cc-pricing-table.feature.toggle': `Switch layout`,
   'cc-pricing-table.feature.version': `Version`,
   'cc-pricing-table.plan': `Plan`,
   'cc-pricing-table.price': ({ price, code, digits }) => formatCurrency(lang, price, {

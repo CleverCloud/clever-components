@@ -17,6 +17,14 @@ export default {
     '**/*.json': 'js',
     '.**/*.json': 'js',
   },
+  testRunnerHtml: (testFramework) => `
+    <html>
+      <body>
+        <link rel="stylesheet" href="src/styles/default-theme.css" >
+        <script type="module" src="${testFramework}"></script>
+      </body>
+    </html>
+  `,
   plugins: [
     cemAnalyzerPlugin,
     rollupAdapter(json()),

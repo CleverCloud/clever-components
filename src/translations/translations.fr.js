@@ -382,6 +382,8 @@ export const translations = {
   //#endregion
   //#region cc-input-number
   'cc-input-number.required': `obligatoire`,
+  'cc-input-number.increase': `incrémenter`,
+  'cc-input-number.decrease': `décrémenter`,
   //#endregion
   //#region cc-input-text
   'cc-input-text.clipboard': `Copier dans le presse-papier`,
@@ -545,6 +547,7 @@ export const translations = {
   'cc-pricing-table.feature.has-metrics': `Métriques`,
   'cc-pricing-table.feature.max-db-size': `Taille BDD max`,
   'cc-pricing-table.feature.memory': `RAM`,
+  'cc-pricing-table.feature.toggle': `Changer d'affichage`,
   'cc-pricing-table.feature.version': `Version`,
   'cc-pricing-table.plan': `Plan`,
   'cc-pricing-table.price': ({ price, code, digits }) => formatCurrency(lang, price, {

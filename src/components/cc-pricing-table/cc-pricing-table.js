@@ -245,7 +245,9 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
               hide-text
               circle
               @cc-button:click=${() => this._onToggleState(plan)}
-            ></cc-button>
+            >
+                ${i18n('cc-pricing-table.feature.toggle')}
+            </cc-button>
 
             <div class="feature-list">
               ${this._renderSmallPlanFeatures(plan.features)}
@@ -301,7 +303,9 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
           <tr>
             ${this.action === 'add' ? html`
               <td class="btn-col">
-                <cc-button image=${plusSvg} hide-text circle @cc-button:click=${() => this._onAddPlan(plan)}></cc-button>
+                <cc-button image=${plusSvg} hide-text circle @cc-button:click=${() => this._onAddPlan(plan)}>
+                  ${i18n('cc-pricing-table.add-button')}
+                </cc-button>
               </td>
             ` : ''}
             <td>${plan.name}</td>

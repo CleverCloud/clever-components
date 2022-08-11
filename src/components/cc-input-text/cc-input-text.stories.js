@@ -42,24 +42,29 @@ const baseItems = [
 
 const tagsItems = [
   {
+    label: 'The label',
     placeholder: 'No value yet...',
     tags: [],
   },
   {
+    label: 'The label',
     placeholder: 'No value yet...',
     tags: ['simple', 'simple:very-very-very-very-long', 'foo', 'bar', 'simple:foooobar'],
   },
   {
+    label: 'The label',
     placeholder: 'No value yet...',
     tags: ['disabled', 'disabled:very-very-very-very-long', 'foo', 'bar', 'disabled:foooobar'],
     disabled: true,
   },
   {
+    label: 'The label',
     placeholder: 'No value yet...',
     tags: ['readonly', 'disabled:very-very-very-very-long', 'foo', 'bar', 'readonly:foooobar'],
     readonly: true,
   },
   {
+    label: 'The label',
     placeholder: 'No value yet...',
     tags: ['skeleton', 'skeleton:very-very-very-very-long', 'foo', 'bar', 'skeleton:foooobar'],
     skeleton: true,
@@ -165,20 +170,20 @@ export const clipboardWithAutoAdjust = makeStory(conf, {
 * This has no effect in \`multi\` mode.
 `,
   items: [
-    { value: widthContent(10), clipboard: true, readonly: true },
-    { value: widthContent(20), clipboard: true, readonly: true },
-    { value: widthContent(40), clipboard: true, readonly: true },
-    { value: widthContent(60), clipboard: true, readonly: true },
+    { label: 'The label', value: widthContent(10), clipboard: true, readonly: true },
+    { label: 'The label', value: widthContent(20), clipboard: true, readonly: true },
+    { label: 'The label', value: widthContent(40), clipboard: true, readonly: true },
+    { label: 'The label', value: widthContent(60), clipboard: true, readonly: true },
   ],
 });
 
 export const clipboardWithAutoAdjustAndCssOverride = makeStory(conf, {
   docs: `When auto-adjust is triggered (\`clipboard\` and \`readonly\`), you can override/fix the width with CSS.`,
   items: [
-    { value: widthContent(10), clipboard: true, readonly: true, style: 'width: 280px' },
-    { value: widthContent(20), clipboard: true, readonly: true, style: 'width: 280px' },
-    { value: widthContent(40), clipboard: true, readonly: true, style: 'width: 280px' },
-    { value: widthContent(60), clipboard: true, readonly: true, style: 'width: 280px' },
+    { label: 'The label', value: widthContent(20), clipboard: true, readonly: true, style: 'width: 280px' },
+    { label: 'The label', value: widthContent(10), clipboard: true, readonly: true, style: 'width: 280px' },
+    { label: 'The label', value: widthContent(40), clipboard: true, readonly: true, style: 'width: 280px' },
+    { label: 'The label', value: widthContent(60), clipboard: true, readonly: true, style: 'width: 280px' },
   ],
 });
 
@@ -221,14 +226,6 @@ export const tagsWithClipboard = makeStory(conf, {
   items: tagsItems.map((p) => ({ ...p, clipboard: true })),
 });
 
-export const tagsWithLabel = makeStory(conf, {
-  // language=CSS
-  css: `cc-input-text {
-    width: 300px;
-  }`,
-  items: tagsItems.map((p) => ({ ...p, label: 'Tags here' })),
-});
-
 export const allFormControls = allFormControlsStory;
 
 enhanceStoriesNames({
@@ -248,6 +245,5 @@ enhanceStoriesNames({
   longValue,
   tags,
   tagsWithClipboard,
-  tagsWithLabel,
   allFormControls,
 });

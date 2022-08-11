@@ -20,7 +20,7 @@ const minMaxItems = [
   { value: 5, min: 0, max: 10, label: 'Min: 0, Max: 10', disabled: true },
   { value: 11, min: 0, max: 10, label: 'Min: 0, Max: 10', disabled: true },
   { value: 10, min: 0, max: 10, label: 'Min 0, Max: 10', readonly: true },
-  { value: 25, min: 0, max: 10, label: '', skeleton: true },
+  { value: 25, min: 0, max: 10, label: 'Min 0, Max: 10', skeleton: true },
 ];
 
 export default {

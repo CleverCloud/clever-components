@@ -187,7 +187,7 @@ export class CcInputNumber extends LitElement {
       <div class="meta-input">
         ${controls ? html`
           <button class="btn" @click=${this._onDecrement} ?disabled=${this.disabled || this.readonly || minDisabled}>
-            <img class="btn-img" src=${decrementSvg} alt="">
+            <img class="btn-img" src=${decrementSvg} alt="${i18n('cc-input-number.decrease')}">
           </button>
         ` : ''}
         <div class="wrapper ${classMap({ skeleton: this.skeleton })}">
@@ -214,7 +214,7 @@ export class CcInputNumber extends LitElement {
         </div>
         ${controls ? html`
           <button class="btn" @click=${this._onIncrement} ?disabled=${this.disabled || this.readonly || maxDisabled}>
-            <img class="btn-img" src=${incrementSvg} alt="">
+            <img class="btn-img" src=${incrementSvg} alt="${i18n('cc-input-number.increase')}">
           </button>
         ` : ''}
       </div>
