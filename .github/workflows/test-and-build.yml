@@ -1,0 +1,33 @@
+name: Tests and build
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: volta-cli/action@v1
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm run test
+      - name: Check lint
+        run: npm run lint && npm run components:check-lit
+      - name: Check i18n
+        run: npm run components:check-i18n
+
+      - name: Build components
+        run: npm run components:build
+      - name: Build documentation
+        run: npm run components:docs
+      - name: Build CDN
+        run: GIT_TAG_NAME=fake npm run components:build-cdn
