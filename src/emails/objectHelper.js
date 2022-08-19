@@ -1,5 +1,3 @@
-import { isArray } from 'chart.js/helpers';
-
 export const isObject = (o) => {
   return Object(o) === o;
 };
@@ -7,8 +5,20 @@ export const isArrayIndex = (o) => {
   return Math.abs(o) >> 0 === +o;
 };
 
+export const get = (obj, path, defValue) => {
+  if (!path) {
+    return undefined;
+  }
+  const pathArray = Array.isArray(path) ? path : path.match(/([^[.\]])+/g);
+  const result = pathArray.reduce(
+    (prevObj, key) => prevObj && prevObj[key],
+    obj,
+  );
+  return result === undefined ? defValue : result;
+};
+
 /**
- * it doesnt deep clone
+ * todo: this method should deep clone along the path
  *
  * @param obj
  * @param path
@@ -48,7 +58,7 @@ export function set (obj, path, value) {
 }
 
 /**
- * it doesnt deep clone
+ * todo: this method should deep clone along the path
  *
  * @param obj
  * @param path

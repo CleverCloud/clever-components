@@ -123,7 +123,7 @@ export class CcEmail extends LitElement {
     if (this._isLoading()) {
       return fakeString(verifiedLabel.length);
     }
-    return this.data?.primary?.address?.verified ? verifiedLabel : i18n('cc-email.primary.email.unverified');
+    return this.data?.primary?.data?.verified ? verifiedLabel : i18n('cc-email.primary.email.unverified');
   }
 
   _getInputError () {
@@ -169,7 +169,7 @@ export class CcEmail extends LitElement {
   }
 
   _onSendConfirmationEmail () {
-    dispatchCustomEvent(this, 'send-confirmation-email', this.data.primary.address.value);
+    dispatchCustomEvent(this, 'send-confirmation-email', this.data.primary.data.address);
   }
 
   formAdding () {
@@ -239,8 +239,8 @@ export class CcEmail extends LitElement {
 
   _renderPrimarySection () {
     const skeleton = this._isLoading();
-    const address = skeleton ? fakeString(35) : this.data?.primary?.address?.value;
-    const verified = this.data?.primary?.address?.verified;
+    const address = skeleton ? fakeString(35) : this.data?.primary?.data?.address;
+    const verified = this.data?.primary?.data?.verified;
     const shouldDisplayResendConfirmationEmail = !skeleton && !verified;
 
     const badgeIntent = skeleton ? 'neutral' : verified ? 'success' : 'danger';
@@ -281,9 +281,9 @@ export class CcEmail extends LitElement {
   }
 
   _renderSecondarySection () {
-    /** @type {SecondaryEmailAddress[]} */
+    /** @type {InnerState<EmailAddress, SecondaryState>[]} */
     const addresses = [...(this._isLoading() ? [] : (this.data?.secondaryAddresses || []))]
-      .sort((a1, a2) => a1.address.value.localeCompare(a2.address.value));
+      .sort((a1, a2) => a1.data.address.localeCompare(a2.data.address));
     const markingAsPrimary = addresses.some((item) => item.state === 'marking-as-primary');
 
     return html`
@@ -293,17 +293,17 @@ export class CcEmail extends LitElement {
 
         ${addresses.map((item) => {
           const busy = item.state === 'marking-as-primary' || item.state === 'deleting';
-          const markingAsPrimaryDisabled = this.data?.primary.address.verified === false;
+          const markingAsPrimaryDisabled = this.data?.primary.data.verified === false;
 
           return html`
             <cc-flex-gap class="address-line secondary">
-              <div class="address ${classMap({ loading: item.state })}">
+              <div class="address ${classMap({ loading: busy })}">
                 <div class="icon"><img src="${mailSvg}" alt=""/></div>
-                <span>${item.address.value}</span>
+                <span>${item.data.address}</span>
               </div>
               <cc-flex-gap class="buttons">
                 <cc-button
-                    @cc-button:click=${() => this._onMarkAsPrimary(item.address.value)}
+                    @cc-button:click=${() => this._onMarkAsPrimary(item.data.address)}
                     ?waiting="${item.state === 'marking-as-primary'}"
                     ?disabled="${markingAsPrimary || busy || markingAsPrimaryDisabled}"
                 >
@@ -313,7 +313,7 @@ export class CcEmail extends LitElement {
                     danger
                     outlined
                     image=${trashSvg}
-                    @cc-button:click=${() => this._onDelete(item.address.value)}
+                    @cc-button:click=${() => this._onDelete(item.data.address)}
                     ?waiting="${item.state === 'deleting'}"
                     ?disabled="${busy}"
                 >
@@ -333,7 +333,7 @@ export class CcEmail extends LitElement {
             @cc-input-text:input=${this._onInput}
             @cc-input-text:requestimplicitsubmit=${this._onAdd}
         >
-          ${this._formState.error ? html`
+          ${this._formState.error != null ? html`
             <p slot="error">
               ${this._getInputError()}
             </p>

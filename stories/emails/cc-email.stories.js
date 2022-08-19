@@ -9,14 +9,16 @@ const ANOTHER_SAMPLE_EMAIL_ADDRESS = 'another.sample.email@clever-cloud.com';
 const YET_ANOTHER_SAMPLE_EMAIL_ADDRESS = 'yet.another.sample.email@clever-cloud.com';
 const HUGE_EMAIL_ADDRESS = `hugeemaila${'d'.repeat(500)}ress@clever-cloud.com`;
 
-const primary = { address: { value: SAMPLE_EMAIL_ADDRESS, verified: true } };
-const primaryUnverified = { address: { value: SAMPLE_EMAIL_ADDRESS, verified: false } };
+const primary = { data: { address: SAMPLE_EMAIL_ADDRESS, verified: true }, state: 'idle' };
+const primaryUnverified = { data: { address: SAMPLE_EMAIL_ADDRESS, verified: false }, state: 'idle' };
 const secondaryAddresses = [
   {
-    address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+    data: { address: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+    state: 'idle',
   },
   {
-    address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+    data: { address: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+    state: 'idle',
   },
 ];
 const secondaryEmpty = [];
@@ -122,13 +124,15 @@ export const dataLoadedWithHugeEmail = makeStory(conf, {
       state: {
         type: 'loaded',
         data: {
-          primary: { address: { value: HUGE_EMAIL_ADDRESS, verified: true } },
+          primary: { data: { address: HUGE_EMAIL_ADDRESS, verified: true }, state: 'idle' },
           secondaryAddresses: [
             {
-              address: { value: HUGE_EMAIL_ADDRESS, verified: true },
+              data: { address: HUGE_EMAIL_ADDRESS, verified: true },
+              state: 'idle',
             },
             {
-              address: { value: HUGE_EMAIL_ADDRESS, verified: true },
+              data: { address: HUGE_EMAIL_ADDRESS, verified: true },
+              state: 'idle',
             },
           ],
         },
@@ -143,7 +147,7 @@ export const dataLoadedWithNoSecondaryEmails = makeStory(conf, {
       state: {
         type: 'loaded',
         data: {
-          primary: { address: { value: HUGE_EMAIL_ADDRESS, verified: true } },
+          primary: { data: { address: HUGE_EMAIL_ADDRESS, verified: true }, state: 'idle' },
           secondaryAddresses: [],
         },
       },
@@ -192,11 +196,12 @@ export const deletingSecondary = makeStory(conf, {
           primary,
           secondaryAddresses: [
             {
-              address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+              data: { address: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
               state: 'deleting',
             },
             {
-              address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+              data: { address: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+              state: 'idle',
             },
           ],
         },
@@ -209,11 +214,11 @@ export const deletingSecondary = makeStory(conf, {
           primary,
           secondaryAddresses: [
             {
-              address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+              data: { address: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
               state: 'deleting',
             },
             {
-              address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+              data: { address: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
               state: 'deleting',
             },
           ],
@@ -232,11 +237,12 @@ export const markingSecondaryAsPrimary = makeStory(conf, {
           primary,
           secondaryAddresses: [
             {
-              address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+              data: { address: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
               state: 'marking-as-primary',
             },
             {
-              address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+              data: { address: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+              state: 'idle',
             },
           ],
         },
@@ -307,7 +313,8 @@ export const simulationsWithSecondary = makeStory(conf, {
         ...component.state.data,
         secondaryAddresses: [
           {
-            address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: false },
+            data: { address: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: false },
+            state: 'idle',
           },
         ],
       });
@@ -325,23 +332,12 @@ export const simulationsWithSecondary = makeStory(conf, {
         ...component.state.data,
         secondaryAddresses: [
           {
-            address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: false },
+            data: { address: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: false },
+            state: 'idle',
           },
           {
-            address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: false },
-          },
-        ],
-      });
-    }),
-    storyWait(2000, ([component]) => {
-      createStateMutator(component).data({
-        ...component.state.data,
-        secondaryAddresses: [
-          {
-            address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
-          },
-          {
-            address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+            data: { address: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: false },
+            state: 'idle',
           },
         ],
       });
@@ -351,24 +347,42 @@ export const simulationsWithSecondary = makeStory(conf, {
         ...component.state.data,
         secondaryAddresses: [
           {
-            address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+            data: { address: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+            state: 'idle',
+          },
+          {
+            data: { address: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+            state: 'idle',
+          },
+        ],
+      });
+    }),
+    storyWait(2000, ([component]) => {
+      createStateMutator(component).data({
+        ...component.state.data,
+        secondaryAddresses: [
+          {
+            data: { address: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
             state: 'marking-as-primary',
           },
           {
-            address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+            data: { address: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+            state: 'idle',
           },
         ],
       });
     }),
     storyWait(2000, ([component]) => {
       createStateMutator(component).data({
-        primary: { address: { value: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true } },
+        primary: { data: { address: ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true }, state: 'idle' },
         secondaryAddresses: [
           {
-            address: { value: SAMPLE_EMAIL_ADDRESS, verified: true },
+            data: { address: SAMPLE_EMAIL_ADDRESS, verified: true },
+            state: 'idle',
           },
           {
-            address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+            data: { address: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+            state: 'idle',
           },
         ],
       });
@@ -378,11 +392,12 @@ export const simulationsWithSecondary = makeStory(conf, {
         ...component.state.data,
         secondaryAddresses: [
           {
-            address: { value: SAMPLE_EMAIL_ADDRESS, verified: true },
+            data: { address: SAMPLE_EMAIL_ADDRESS, verified: true },
             state: 'deleting',
           },
           {
-            address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+            data: { address: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+            state: 'idle',
           },
         ],
       });
@@ -392,7 +407,8 @@ export const simulationsWithSecondary = makeStory(conf, {
         ...component.state.data,
         secondaryAddresses: [
           {
-            address: { value: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+            data: { address: YET_ANOTHER_SAMPLE_EMAIL_ADDRESS, verified: true },
+            state: 'idle',
           },
         ],
       });

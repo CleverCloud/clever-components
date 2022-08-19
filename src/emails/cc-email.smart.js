@@ -7,8 +7,7 @@ import { notify, notifyError, notifySuccess } from '../lib/notifications.js';
 import { fromCustomEvent, LastPromise, unsubscribeWithSignal, withLatestFrom } from '../lib/observables.js';
 import { sendToApi } from '../lib/send-to-api.js';
 import { defineComponent } from '../lib/smart-manager.js';
-import { set, unset } from './objectHelper.js';
-import { createStateMutator } from './stateHelpers.js';
+import { createStateHelper } from './stateHelpers.js';
 
 defineComponent({
   selector: 'cc-email',
@@ -24,9 +23,19 @@ defineComponent({
    */
   onConnect (container, component, context$, disconnectSignal) {
     /**
-     * @type {StateMutator<CcEmailData>}
+     * @type {StateHelper<CcEmailData>}
      */
-    const stateMutator = createStateMutator(component);
+    const stateHelper = createStateHelper(component);
+
+    /**
+     * @type {InnerStateHelper<EmailAddress, PrimaryState>}
+     */
+    const primaryStateHelper = stateHelper.createInnerStateHelper('primary');
+    /**
+     * @type {InnerListStateHelper<EmailAddress, SecondaryState>}
+     */
+    const secondaryStateHelper = stateHelper.createInnerListStateHelper('secondaryAddresses');
+    const findSecondaryByAddress = (address) => (d) => d.address === address;
 
     const emails_lp = new LastPromise();
 
@@ -41,25 +50,23 @@ defineComponent({
 
     unsubscribeWithSignal(disconnectSignal, [
       /* region LOAD_PRIMARY */
-      emails_lp.error$.subscribe(console.error),
-      emails_lp.error$.subscribe(() => {
-        stateMutator.error();
+      emails_lp.error$.subscribe((error) => {
+        console.error(error);
+        stateHelper.mutator.error();
       }),
       emails_lp.value$.subscribe(({ self, secondary }) => {
-        stateMutator.data(
+        stateHelper.mutator.data(
           {
-            primary: {
-              address: {
-                value: self.email,
-                verified: self.emailValidated,
-              },
-            },
-            secondaryAddresses: secondary.map((a) => ({
-              address: {
-                value: a,
+            primary: primaryStateHelper.create({
+              address: self.email,
+              verified: self.emailValidated,
+            }),
+            secondaryAddresses: secondaryStateHelper.create(
+              secondary.map((a) => ({
+                address: a,
                 verified: true,
-              },
-            })),
+              })),
+            ),
           },
         );
       }),
@@ -67,7 +74,7 @@ defineComponent({
 
       /* region SEND_CONFIRMATION_EMAIL */
       onSendConfirmationEmail$.subscribe(([address, { apiConfig }]) => {
-        setStateOnPrimary('sending-confirmation-email');
+        primaryStateHelper.setState('sending-confirmation-email');
 
         sendConfirmationEmail({ apiConfig, address })
           .then(() => notify(component, {
@@ -81,7 +88,7 @@ defineComponent({
           }))
           .catch(() => notifyError(component, i18n('cc-email.primary.action.resend-confirmation-email.error')))
           .finally(() => {
-            setStateOnPrimary(null);
+            primaryStateHelper.resetState();
           });
       }),
       /* endregion*/
@@ -129,16 +136,14 @@ defineComponent({
 
       /* region DELETE_SECONDARY_ADDRESS */
       onDeleteSecondaryEmail$.subscribe(([address, { apiConfig }]) => {
-        setStateOnSecondaryEmailAddress(address, 'deleting');
+        const itemFinder = findSecondaryByAddress(address);
+
+        secondaryStateHelper.forItem(itemFinder).setState('deleting');
 
         deleteSecondaryEmailAddress({ apiConfig, address })
           .then(() => {
             notifySuccess(component, i18n('cc-email.secondary.action.delete.success'));
-
-            stateMutator.data((oldData) => {
-              const index = oldData.secondaryAddresses.findIndex((a) => a.address.value === address);
-              return unset(oldData, `secondaryAddresses[${index}]`);
-            });
+            secondaryStateHelper.remove(itemFinder);
           })
           .catch(() => notifyError(component, i18n('cc-email.secondary.action.delete.error')));
       }),
@@ -146,29 +151,25 @@ defineComponent({
 
       /* region MARK_AS_PRIMARY */
       onMarkSecondaryEmailAsPrimary$.subscribe(([address, { apiConfig }]) => {
-        setStateOnSecondaryEmailAddress(address, 'marking-as-primary');
+        const itemFinder = findSecondaryByAddress(address);
+
+        secondaryStateHelper.forItem(itemFinder).setState('marking-as-primary');
 
         markSecondaryEmailAddressAsPrimary({ apiConfig, address })
           .then(() => {
             notifySuccess(component, i18n('cc-email.secondary.action.mark-as-primary.success'));
 
-            stateMutator.data((oldData) => {
-              const index = oldData.secondaryAddresses.findIndex((a) => a.address.value === address);
-              const primary = oldData.primary.address.value;
-              const m1 = set(oldData, 'primary.address.value', address);
-              return set(m1, `secondaryAddresses[${index}]`, {
-                address: {
-                  value: primary,
-                  verified: true,
-                },
-              });
+            const primary = primaryStateHelper.getData().address;
+            primaryStateHelper.set({
+              address: address,
+              verified: true,
             });
-
+            secondaryStateHelper.forItem(itemFinder).set({
+              address: primary,
+              verified: true,
+            });
           })
-          .catch(() => notifyError(component, i18n('cc-email.secondary.action.mark-as-primary.error')))
-          .finally(() => {
-            // setStateOnSecondaryEmailAddress(component, address, null);
-          });
+          .catch(() => notifyError(component, i18n('cc-email.secondary.action.mark-as-primary.error')));
       }),
 
       /* endregion */
@@ -181,20 +182,6 @@ defineComponent({
         }
       }),
     ]);
-
-    function setStateOnSecondaryEmailAddress (address, state) {
-      stateMutator.data((oldData) => {
-        const index = oldData.secondaryAddresses.findIndex((a) => a.address.value === address);
-
-        return set(oldData, `secondaryAddresses[${index}].state`, state);
-      });
-    }
-
-    function setStateOnPrimary (state) {
-      stateMutator.data((oldData) => {
-        return set(oldData, 'primary.state', state);
-      });
-    }
   },
 });
 

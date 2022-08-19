@@ -1,24 +1,17 @@
-import {State} from "./common";
+import {InnerState, State} from "./common";
 
 export type CcEmailState = State<CcEmailData>;
 
 export interface CcEmailData {
-  primary:PrimaryEmailAddress;
-  secondaryAddresses:SecondaryEmailAddress[];
+  primary: InnerState<EmailAddress, PrimaryState>;
+  secondaryAddresses: InnerState<EmailAddress, SecondaryState>[];
 }
 
-export interface PrimaryEmailAddress {
-  state?: 'sending-confirmation-email';
-  address: EmailAddress;
-}
-
-export interface SecondaryEmailAddress {
-  state?: 'marking-as-primary' | 'deleting';
-  address: EmailAddress;
-}
+export type PrimaryState = 'sending-confirmation-email'
+export type SecondaryState = 'marking-as-primary' | 'deleting'
 
 export interface EmailAddress {
-  value: string;
+  address: string;
   verified: boolean;
 }
 
