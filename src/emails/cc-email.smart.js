@@ -49,11 +49,29 @@ defineComponent({
       .pipe(withLatestFrom(context$));
 
     unsubscribeWithSignal(disconnectSignal, [
-      /* region LOAD_PRIMARY */
+      // region => When component loads,
+      // 1. we reset the component
+      // 2. we fetch primary and secondary email addresses
+      context$.subscribe(({ apiConfig }) => {
+        component.reset();
+
+        if (apiConfig != null) {
+          emails_lp.push((signal) => fetchEmailAddresses({ apiConfig, signal }));
+        }
+      }),
+      // endregion
+
+      // region => When server responds with error,
+      // 1. we log error
+      // 2. we set component state to error
       emails_lp.error$.subscribe((error) => {
         console.error(error);
         stateHelper.mutator.error();
       }),
+      // endregion
+
+      // region => When server responds with success,
+      // 1. we set component state to loaded with the right data
       emails_lp.value$.subscribe(({ self, secondary }) => {
         stateHelper.mutator.data(
           {
@@ -70,9 +88,14 @@ defineComponent({
           },
         );
       }),
-      /* endregion*/
+      // endregion
 
-      /* region SEND_CONFIRMATION_EMAIL */
+      // region => When user asks for sending a new confirmation email
+      // 1. change 'primary' state to 'sending-confirmation-email'
+      // 2. call HTTP endpoint
+      // 2.a on error: display an error toast
+      // 2.b on success: display a success toast
+      // 3. reset 'primary' state to 'idle'
       onSendConfirmationEmail$.subscribe(([address, { apiConfig }]) => {
         primaryStateHelper.setState('sending-confirmation-email');
 
@@ -91,9 +114,17 @@ defineComponent({
             primaryStateHelper.resetState();
           });
       }),
-      /* endregion*/
+      // endregion
 
-      /* region ADD_SECONDARY_ADDRESS */
+      // region => When user adds a new email address
+      // 1. change 'form' state to 'adding'
+      // 2. call HTTP endpoint
+      // 2.a on error:
+      // 2.a.1. if error is identified, change 'form' state to 'error'
+      // 2.a.b. else show error toast and change 'form' state to 'idle'
+      // 2.b on success:
+      // 2.b.1 show success toast
+      // 2.b.2 reset form
       onAddSecondaryEmail$.subscribe(([address, { apiConfig }]) => {
         component.formAdding();
 
@@ -125,16 +156,23 @@ defineComponent({
             if (inputError) {
               component.formError(inputError);
             }
-          })
-          .catch(() => notifyError(component, i18n('cc-email.secondary.action.add.error')))
-          .finally(() => {
-            component.formIdle();
+            else {
+              notifyError(component, i18n('cc-email.secondary.action.add.error'));
+              component.formIdle();
+            }
           });
       }),
+      // endregion
 
-      /* endregion*/
-
-      /* region DELETE_SECONDARY_ADDRESS */
+      // region => When user deletes a secondary email address
+      // 1. change item state to 'deleting'
+      // 2. call HTTP endpoint
+      // 2.a on error:
+      // 2.a.1 show error toast
+      // 2.a.2 reset item state
+      // 2.b on success:
+      // 2.b.1 show success toast
+      // 2.b.2 remove item
       onDeleteSecondaryEmail$.subscribe(([address, { apiConfig }]) => {
         const itemFinder = findSecondaryByAddress(address);
 
@@ -145,11 +183,22 @@ defineComponent({
             notifySuccess(component, i18n('cc-email.secondary.action.delete.success'));
             secondaryStateHelper.remove(itemFinder);
           })
-          .catch(() => notifyError(component, i18n('cc-email.secondary.action.delete.error')));
+          .catch(() => {
+            notifyError(component, i18n('cc-email.secondary.action.delete.error'));
+            secondaryStateHelper.forItem(itemFinder).resetState();
+          });
       }),
-      /* endregion*/
+      // endregion
 
-      /* region MARK_AS_PRIMARY */
+      // region => When user marks a secondary email address as primary
+      // 1. change item state to 'marking-as-primary'
+      // 2. call HTTP endpoint
+      // 2.a on error:
+      // 2.a.1 show error toast
+      // 2.a.2 reset item state
+      // 2.b on success:
+      // 2.b.1 show success toast
+      // 2.b.2 make secondary primary, and primary secondary
       onMarkSecondaryEmailAsPrimary$.subscribe(([address, { apiConfig }]) => {
         const itemFinder = findSecondaryByAddress(address);
 
@@ -169,18 +218,13 @@ defineComponent({
               verified: true,
             });
           })
-          .catch(() => notifyError(component, i18n('cc-email.secondary.action.mark-as-primary.error')));
+          .catch(() => {
+            notifyError(component, i18n('cc-email.secondary.action.mark-as-primary.error'));
+            secondaryStateHelper.forItem(itemFinder).resetState();
+          });
       }),
+      // endregion
 
-      /* endregion */
-
-      context$.subscribe(({ apiConfig }) => {
-        component.reset();
-
-        if (apiConfig != null) {
-          emails_lp.push((signal) => fetchEmailAddresses({ apiConfig, signal }));
-        }
-      }),
     ]);
   },
 });
@@ -237,7 +281,7 @@ const RemoteApi = {
 
 const primaryEmailAddress = {
   email: 'mock@domain.com',
-  emailValidated: true,
+  emailValidated: false,
 };
 let secondaryEmailAddresses = [
   'secondary.1.mock@domain.com',
@@ -254,20 +298,36 @@ const MockApi = {
   },
 
   sendConfirmationEmail ({ apiConfig }) {
+    // throw new Error('fatal');
     return {};
   },
 
   addSecondaryEmailAddress ({ apiConfig, address }) {
+    if (address === 'oups@oups.com') {
+      throw new Error('fatal');
+    }
+    if (address.length > 100) {
+      const error = new Error('invalid');
+      error.id = 550;
+      throw error;
+    }
+    if ([...secondaryEmailAddresses, primaryEmailAddress.email].includes(address)) {
+      const error = new Error('already-defined');
+      error.id = 101;
+      throw error;
+    }
     secondaryEmailAddresses.push(address);
     return {};
   },
 
   deleteSecondaryEmailAddress ({ apiConfig, address }) {
+    // throw new Error('fatal');
     secondaryEmailAddresses = secondaryEmailAddresses.filter((a) => a !== address);
     return {};
   },
 
   markSecondaryEmailAddressAsPrimary ({ apiConfig, address }) {
+    // throw new Error('fatal');
     secondaryEmailAddresses = secondaryEmailAddresses.filter((a) => a !== address);
     secondaryEmailAddresses.push(primaryEmailAddress.email);
     primaryEmailAddress.email = address;
