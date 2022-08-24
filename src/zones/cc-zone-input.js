@@ -86,7 +86,7 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
         name: zone.name,
         lat: zone.lat,
         lon: zone.lon,
-        marker: { tag: 'cc-map-marker-server', state: this._getState(zone.name) },
+        marker: { tag: 'cc-map-marker-server', state: this._getState(zone.name), keyboard: false },
         tooltip: { tag: 'cc-zone', zone, mode: 'small' },
         zIndexOffset: this._getZIndexOffset(zone.name),
       }));

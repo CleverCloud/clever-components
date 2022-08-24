@@ -28,7 +28,7 @@ import { dispatchCustomEvent } from '../lib/events.js';
  * * Multiple mode uses native `input[type=checkbox]` under the hood to keep native behaviour (a11y, keyboards...).
  * * We decided to use a JavaScript array of objects for the choices because it's way simpler to implement and not that dirtier to use.
  *
- * @cssdisplay flex
+ * @cssdisplay inline-flex
  *
  * @event {CustomEvent<string>} cc-toggle:input - Fires the selected `value` whenever the selected `value` changes (single mode only).
  * @event {CustomEvent<string[]>} cc-toggle:input-multiple - Fires the selected `multipleValues` whenever the selected `multipleValues` changes (single mode only).
@@ -164,13 +164,13 @@ export class CcToggle extends LitElement {
           --cc-toggle-img-filter: none;
           --cc-toggle-img-filter-selected: none;
           --height: 2em;
-          display: flex;
-          flex-direction: column;
+          display: inline-flex;
         }
 
         /* RESET */
         fieldset {
           border: 0;
+          display: inline-block;
           margin: 0;
           min-width: 0;
           padding: 0;
@@ -179,12 +179,10 @@ export class CcToggle extends LitElement {
         /* RESET */
         legend {
           color: inherit;
-          display: block;
           line-height: inherit;
           max-width: 100%;
           padding: 0;
           white-space: normal;
-          width: 100%;
         }
 
         legend:not(:empty) {
