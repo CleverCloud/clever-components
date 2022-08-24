@@ -70,8 +70,11 @@
     margin: 0;
   }
 
-  /* This is temporary, to override the display: inline-block of cc-input-text */
-  [hidden] {
+  p {
+    margin: 0.2rem;
+  }
+
+  .hidden {
     display: none;
   }
   </style>
@@ -100,19 +103,23 @@
 </cc-expand>
 
 <section>
-  <dl hidden>
+  <div id="styles-warning" class="hidden">
+    <p>This version does not support the component theme.</p>
+    <p>Styles are included in the component JavaScript files.</p>
+  </div>
+  <dl id="styles-area">
     <dt>Styles URL:</dt>
-    <dd><a id="cdn-styles-url" target="_blank" href="https://components.clever-cloud.com/styles.css">https://components.clever-cloud.com/styles.css</a></dd>
+    <dd><a id="cdn-styles-url" target="_blank">?</a></dd>
   </dl>
   <dl>
     <dt>Script URL:</dt>
-    <dd><a id="cdn-script-url" target="_blank" href="https://components.clever-cloud.com/load.js">https://components.clever-cloud.com/load.js</a></dd>
+    <dd><a id="cdn-script-url" target="_blank">?</a></dd>
   </dl>
-  
+
 </section>
 
 <section class="cdn-urls">
-  <cc-input-text id="cdn-styles" label="Styles to include:" readonly clipboard hidden></cc-input-text>
+  <cc-input-text id="cdn-styles" label="Styles to include:" readonly clipboard></cc-input-text>
   <cc-input-text id="cdn-script" label="Script to include:" readonly clipboard></cc-input-text>
 </section>
 
@@ -120,7 +127,10 @@
 
 import semver from 'https://jspm.dev/es-semver@1';
 
+const CDN_ORIGIN = new URL(import.meta.url).origin;
+
 const FIRST_CDN_VERSION = '5.3.1';
+let manifest_version = 0;
 
 function $ (selector) {
   return document.querySelector(selector);
@@ -130,7 +140,7 @@ function $$ (selector) {
   return Array.from(document.querySelectorAll(selector));
 }
 
-fetch('https://components.clever-cloud.com/versions-list.json?t=' + (new Date().getTime()))
+fetch(CDN_ORIGIN + '/versions-list.json?t=' + (new Date().getTime()))
   .then((r) => r.json())
   .then((versionList) => {
     versionList.reverse();
@@ -148,31 +158,62 @@ function updateComponentList () {
   if (version === '') {
     return;
   }
-  fetch(`https://components.clever-cloud.com/deps-manifest-${version}.json`)
+  fetch(CDN_ORIGIN + `/deps-manifest-${version}.json`)
     .then((r) => r.json())
     .then((manifest) => {
       const components = manifest.files
         .filter((file) => file.id.startsWith('cc-'));
+      manifest_version = manifest.manifestVersion;
       $('#components-choice').innerHTML = components
         .map((file) => `<label class="choice-label"><input class="choice-input" type="checkbox" name="components" value="${file.id}">${file.id}</label>`)
         .join('');
       $('#component-count').textContent = components.length;
     })
-    .then(updateUrl)
+    .then(() => {
+      updateStylesSection();
+      updateScriptSection();
+    })
     .catch(console.error);
 }
 
-function updateUrl () {
+function updateStylesSection () {
+  const version = $('#version-choice').value;
+  const stylesheetUrl = new URL('/styles.css', CDN_ORIGIN);
+
+  if (version !== '') {
+    stylesheetUrl.searchParams.set('version', version);
+  }
+
+  if (manifest_version === '2') {
+    const stylesheetUrlString = stylesheetUrl.toString().replace(/%2C/g, ',');
+    // update texts & values to display the stylesheet URL
+    $('#cdn-styles-url').href = stylesheetUrlString;
+    $('#cdn-styles-url').textContent = stylesheetUrlString;
+    $('#cdn-styles').value = `<link rel="stylesheet" href="${stylesheetUrlString}">`;
+
+    // Show stylesheet Url areas and hide warning about theme
+    $('#styles-area').classList.remove('hidden');
+    $('#cdn-styles').classList.remove('hidden');
+    $('#styles-warning').classList.add('hidden');
+  }
+  else {
+    // Show warning about theme and hide stylesheet Url areas
+    $('#styles-warning').classList.remove('hidden');
+    $('#styles-area').classList.add('hidden');
+    $('#cdn-styles').classList.add('hidden');
+  }
+}
+
+function updateScriptSection () {
   const version = $('#version-choice').value;
   const lang = $('#lang-choice').value;
   const components = $$('#components-choice input:checked')
     .map((node) => node.value)
     .join(',');
-  const url = new URL('https://components.clever-cloud.com/load.js');
-  const stylesheetUrl = new URL('https://components.clever-cloud.com/styles.css')
+  const url = new URL('/load.js', CDN_ORIGIN);
+
   if (version !== '') {
     url.searchParams.set('version', version);
-    stylesheetUrl.searchParams.set('version', version);
   }
   if (lang !== '') {
     url.searchParams.set('lang', lang);
@@ -181,18 +222,14 @@ function updateUrl () {
     url.searchParams.set('components', components);
   }
   const urlString = url.toString().replace(/%2C/g, ',');
-  const stylesheetUrlString = stylesheetUrl.toString().replace(/%2C/g, ',');
   $('#cdn-script-url').href = urlString;
   $('#cdn-script-url').textContent = urlString;
-  $('#cdn-styles-url').href = stylesheetUrlString;
-  $('#cdn-styles-url').textContent = stylesheetUrlString;
-  $('#cdn-styles').value = `<link rel="stylesheet" href="${stylesheetUrlString}">`;
   $('#cdn-script').value = `<script type="module" src="${urlString}"><` + `/script>`;
 }
 
 $('#version-choice').addEventListener('input', updateComponentList);
-$('#lang-choice').addEventListener('cc-toggle:input', updateUrl);
-$('#components-choice').addEventListener('input', updateUrl);
+$('#lang-choice').addEventListener('cc-toggle:input', updateScriptSection);
+$('#components-choice').addEventListener('input', updateScriptSection);
 </script>
 
 </body>
