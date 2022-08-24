@@ -6,6 +6,9 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+* `<cc-map>`: make dot markers not focusable.
+* `<cc-zone-input>`: make server markers not focusable.
+
 ...
 
 ## 9.0.0 (2022-07-19)
