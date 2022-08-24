@@ -109,11 +109,11 @@
   </div>
   <dl id="styles-area">
     <dt>Styles URL:</dt>
-    <dd><a id="cdn-styles-url" target="_blank" href="https://components.clever-cloud.com/styles.css">https://components.clever-cloud.com/styles.css</a></dd>
+    <dd><a id="cdn-styles-url" target="_blank">?</a></dd>
   </dl>
   <dl>
     <dt>Script URL:</dt>
-    <dd><a id="cdn-script-url" target="_blank" href="https://components.clever-cloud.com/load.js">https://components.clever-cloud.com/load.js</a></dd>
+    <dd><a id="cdn-script-url" target="_blank">?</a></dd>
   </dl>
 
 </section>
@@ -127,6 +127,8 @@
 
 import semver from 'https://jspm.dev/es-semver@1';
 
+const CDN_ORIGIN = new URL(import.meta.url).origin;
+
 const FIRST_CDN_VERSION = '5.3.1';
 let manifest_version = 0;
 
@@ -138,7 +140,7 @@ function $$ (selector) {
   return Array.from(document.querySelectorAll(selector));
 }
 
-fetch('https://components.clever-cloud.com/versions-list.json?t=' + (new Date().getTime()))
+fetch(CDN_ORIGIN + '/versions-list.json?t=' + (new Date().getTime()))
   .then((r) => r.json())
   .then((versionList) => {
     versionList.reverse();
@@ -156,7 +158,7 @@ function updateComponentList () {
   if (version === '') {
     return;
   }
-  fetch(`https://components.clever-cloud.com/deps-manifest-${version}.json`)
+  fetch(CDN_ORIGIN + `/deps-manifest-${version}.json`)
     .then((r) => r.json())
     .then((manifest) => {
       const components = manifest.files
@@ -167,7 +169,7 @@ function updateComponentList () {
         .join('');
       $('#component-count').textContent = components.length;
     })
-    .then(() => { 
+    .then(() => {
       updateStylesSection();
       updateScriptSection();
     })
@@ -176,24 +178,25 @@ function updateComponentList () {
 
 function updateStylesSection () {
   const version = $('#version-choice').value;
-  const stylesheetUrl = new URL('https://components.clever-cloud.com/styles.css');
-  
+  const stylesheetUrl = new URL('/styles.css', CDN_ORIGIN);
+
   if (version !== '') {
     stylesheetUrl.searchParams.set('version', version);
   }
 
-  if (manifest_version === "2") {
+  if (manifest_version === '2') {
     const stylesheetUrlString = stylesheetUrl.toString().replace(/%2C/g, ',');
     // update texts & values to display the stylesheet URL
     $('#cdn-styles-url').href = stylesheetUrlString;
     $('#cdn-styles-url').textContent = stylesheetUrlString;
     $('#cdn-styles').value = `<link rel="stylesheet" href="${stylesheetUrlString}">`;
-    
+
     // Show stylesheet Url areas and hide warning about theme
     $('#styles-area').classList.remove('hidden');
     $('#cdn-styles').classList.remove('hidden');
     $('#styles-warning').classList.add('hidden');
-  } else {
+  }
+  else {
     // Show warning about theme and hide stylesheet Url areas
     $('#styles-warning').classList.remove('hidden');
     $('#styles-area').classList.add('hidden');
@@ -207,7 +210,7 @@ function updateScriptSection () {
   const components = $$('#components-choice input:checked')
     .map((node) => node.value)
     .join(',');
-  const url = new URL('https://components.clever-cloud.com/load.js');
+  const url = new URL('/load.js', CDN_ORIGIN);
 
   if (version !== '') {
     url.searchParams.set('version', version);
