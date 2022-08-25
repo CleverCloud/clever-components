@@ -1,7 +1,9 @@
 import { promises as fs } from 'fs';
 import util from 'util';
+import chalk from 'chalk';
 import rawGlob from 'glob';
 import { extractFromCode } from 'i18n-extract';
+import table from 'text-table';
 import { translations as en } from '../src/translations/translations.en.js';
 import { translations as fr } from '../src/translations/translations.fr.js';
 
@@ -20,7 +22,11 @@ async function getUsedKeys (sourceFilepaths) {
 
 async function run () {
 
+  const startTime = process.hrtime();
+
   let errors = false;
+  const allMissingKeys = new Map();
+  const allUnusedKeys = new Map();
 
   const sourceFilepaths = await glob('./src/*/*.js', {
     ignore: [
@@ -32,10 +38,15 @@ async function run () {
 
   const usedKeysByFile = await getUsedKeys(sourceFilepaths);
 
+  console.log(
+    chalk
+      .bgWhite
+      .black
+      .bold(`\n ⌛ Checking translations for ${sourceFilepaths.length} files... `),
+  );
+
   // MISSING KEYS
   sourceFilepaths.forEach((src) => {
-    console.log(`Inspecting translations for ${src}`);
-
     Object.entries(translationsByLang).forEach(([lang, translations]) => {
 
       const missingKeys = usedKeysByFile[src]
@@ -43,17 +54,34 @@ async function run () {
 
       if (missingKeys.length !== 0) {
         errors = true;
-        const formattedLog = missingKeys
-          .map((k) => `  MISSING (${lang}): ${k}`)
-          .join('\n');
-        console.log(formattedLog);
+
+        missingKeys.forEach((key) => {
+          if (!allMissingKeys.has(key)) {
+            allMissingKeys.set(key, new Set());
+          }
+          allMissingKeys.set(key, allMissingKeys.get(key).add(lang));
+        });
       }
     });
   });
 
+  const hasMissingKeys = allMissingKeys.size !== 0;
+  if (hasMissingKeys) {
+    console.log(
+      chalk
+        .bgRed
+        .bold(`\n ⛔ ${allMissingKeys.size} keys are missing `),
+    );
+
+    const formattedMissingKeys = [];
+    allMissingKeys.forEach((values, key) => {
+      formattedMissingKeys.push(['> ' + key, [...values].join(',')]);
+    });
+    console.log(table(formattedMissingKeys));
+  }
+
   // UNUSED KEYS
-  const allUsedKeys = Object.values(usedKeysByFile)
-    .reduce((a, b) => [...a, ...b]);
+  const allUsedKeys = Object.values(usedKeysByFile).flat();
 
   Object.entries(translationsByLang).forEach(([lang, translations]) => {
 
@@ -64,13 +92,47 @@ async function run () {
 
     if (unusedKeys.length !== 0) {
       errors = true;
-      const formattedLog = unusedKeys
-        .map((k) => `  UNUSED (${lang}): ${k}`)
-        .join('\n');
-      console.log(formattedLog);
+
+      unusedKeys.forEach((key) => {
+        if (!allUnusedKeys.has(key)) {
+          allUnusedKeys.set(key, new Set());
+        }
+        allUnusedKeys.set(key, allUnusedKeys.get(key).add(lang));
+      });
     }
   });
 
+  const hasUnusedKeys = allUnusedKeys.size !== 0;
+  if (hasUnusedKeys) {
+    console.log(
+      chalk
+        .bgYellow
+        .black
+        .bold(`\n ⚠️  ${allUnusedKeys.size} keys are unused `),
+    );
+
+    const formattedUnusedKeys = [];
+    allUnusedKeys.forEach((values, key) => {
+      formattedUnusedKeys.push(['> ' + key, [...values].join(',')]);
+    });
+    console.log(table(formattedUnusedKeys));
+  }
+
+  // no error message
+  if (!hasMissingKeys && !hasUnusedKeys) {
+    console.log(
+      chalk
+        .bgGreen
+        .bold(` 🎉 No keys were found missing or unused! `),
+    );
+  }
+
+  // script duration
+  const elapsedTime = process.hrtime(startTime);
+  const durationInSeconds = (elapsedTime[0] + (elapsedTime[1] / 1e9)).toFixed(2);
+  console.log(chalk.italic(`\nDone in ${durationInSeconds}s.`));
+
+  // fail task when errors
   if (errors) {
     process.exit(1);
   }

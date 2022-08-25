@@ -17,6 +17,10 @@ title: Changelog
 * `<cc-zone-input>`: make server markers not focusable.
 * `<cc-addon-admin>`: fix skeleton mode
 
+### For devs
+
+* Improve display of `components:check-i18n` task.
+
 ## 9.0.0 (2022-07-19)
 
 ### ⚠️ BREAKING CHANGES
