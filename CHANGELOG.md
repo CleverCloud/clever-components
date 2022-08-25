@@ -10,6 +10,7 @@ title: Changelog
 
 * `<cc-toggle>`: update component host default `display` CSS property (BREAKING CHANGE).
 * `<cc-input-text>`: set default font back to `--cc-ff-monospace` when the input contains tags (BREAKING CHANGE).
+* Introduce a new project file structure (BREAKING CHANGE).
 
 ### Components
 
