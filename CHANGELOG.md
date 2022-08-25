@@ -6,9 +6,15 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+### ⚠️ BREAKING CHANGES
+
+* `<cc-toggle>`: update component host default `display` CSS property (BREAKING CHANGE).
+* `<cc-input-text>`: set default font back to `--cc-ff-monospace` when the input contains tags (BREAKING CHANGE).
+
+### Components
+
 * `<cc-map>`: make dot markers not focusable.
 * `<cc-zone-input>`: make server markers not focusable.
-* `<cc-toggle>`: update component host default `display` CSS property (BREAKING CHANGE).
 * `<cc-addon-admin>`: fix skeleton mode
 
 ## 9.0.0 (2022-07-19)
