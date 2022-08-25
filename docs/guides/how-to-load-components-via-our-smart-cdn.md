@@ -19,7 +19,7 @@ WARNING: This `<link>` tag is only required starting from version `9.0.0`.
 Then you need a `<script>` tag to load the components and init the i18n system if necessary:
 
 ```html
-<script type="module" src="https://components.clever-cloud.com/load.js?version=9.0.0&lang=fr&components=cc-toggle,cc-tile-requests"></link>
+<script type="module" src="https://components.clever-cloud.com/load.js?version=9.0.0&lang=fr&components=cc-toggle,cc-tile-requests"></script>
 ```
 
 INFO: This URL supports three query params: `version`, `lang` and `components`.
