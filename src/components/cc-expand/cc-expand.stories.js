@@ -1,6 +1,6 @@
 import './cc-expand.js';
 import '../cc-toggle/cc-toggle.js';
-import { html, render } from 'lit-html';
+import { html, render } from 'lit';
 import { makeStory } from '../../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 

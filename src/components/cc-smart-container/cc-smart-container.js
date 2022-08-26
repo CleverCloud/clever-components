@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit';
 import { unsubscribeWithSignal } from '../../lib/observables.js';
 import { defineComponent, observeContainer, updateContext } from '../../lib/smart-manager.js';
 

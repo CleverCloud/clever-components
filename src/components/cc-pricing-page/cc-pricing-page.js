@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit';
 import '../cc-pricing-header/cc-pricing-header.js';
 import '../cc-pricing-product/cc-pricing-product.js';
 import '../cc-pricing-estimation/cc-pricing-estimation.js';

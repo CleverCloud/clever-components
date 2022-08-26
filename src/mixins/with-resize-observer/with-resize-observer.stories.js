@@ -1,5 +1,5 @@
 import '../../components/cc-expand/cc-expand.js';
-import { html, LitElement } from 'lit-element';
+import { html, LitElement } from 'lit';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 import { withResizeObserver } from './with-resize-observer.js';
 import docsPage from './with-resize-observer.md';

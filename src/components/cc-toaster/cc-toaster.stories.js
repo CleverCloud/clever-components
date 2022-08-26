@@ -4,7 +4,7 @@ import '../cc-input-number/cc-input-number.js';
 import '../cc-toggle/cc-toggle.js';
 import '../cc-flex-gap/cc-flex-gap.js';
 import '../cc-block/cc-block.js';
-import { html, render } from 'lit-html';
+import { html, render } from 'lit';
 import { sanitize } from '../../lib/i18n-sanitize.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';

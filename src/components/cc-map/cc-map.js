@@ -1,7 +1,7 @@
 import '../cc-loader/cc-loader.js';
 import '../cc-error/cc-error.js';
-import { css, html, LitElement } from 'lit-element';
-import { classMap } from 'lit-html/directives/class-map.js';
+import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { WORLD_GEOJSON } from '../../assets/world-110m.geo.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';

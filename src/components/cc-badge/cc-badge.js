@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit';
 
 /**
  * @typedef {import('./cc-badge.types.js').BadgeIntent} BadgeIntent

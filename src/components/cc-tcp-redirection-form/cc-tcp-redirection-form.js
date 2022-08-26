@@ -2,7 +2,7 @@ import '../cc-badge/cc-badge.js';
 import '../cc-block/cc-block.js';
 import '../cc-error/cc-error.js';
 import '../cc-tcp-redirection/cc-tcp-redirection.js';
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit';
 import { i18n } from '../../lib/i18n.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 

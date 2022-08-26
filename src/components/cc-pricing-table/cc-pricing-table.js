@@ -1,7 +1,7 @@
 import '../cc-button/cc-button.js';
 import '../cc-img/cc-img.js';
-import { css, html, LitElement } from 'lit-element';
-import { classMap } from 'lit-html/directives/class-map.js';
+import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { withResizeObserver } from '../../mixins/with-resize-observer/with-resize-observer.js';

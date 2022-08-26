@@ -1,9 +1,9 @@
 import '../cc-zone/cc-zone.js';
 import '../cc-map/cc-map.js';
 import '../cc-map-marker-server/cc-map-marker-server.js';
-import { css, html, LitElement } from 'lit-element';
-import { classMap } from 'lit-html/directives/class-map.js';
-import { repeat } from 'lit-html/directives/repeat.js';
+import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
+import { repeat } from 'lit/directives/repeat.js';
 import { scrollChildIntoParent } from '../../lib/dom.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';

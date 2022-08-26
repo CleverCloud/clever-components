@@ -2,7 +2,7 @@
 // DOCS: Put all imports here.
 // DOCS: Always keep the ".js" at the end when you reference a file directly [error in ESLint].
 // DOCS: We enforce import order [fixed by ESLint].
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit';
 
 // DOCS: You may prepare URLs for assets like SVG files here:
 const warningSvg = new URL('../assets/warning.svg', import.meta.url).href;

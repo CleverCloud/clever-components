@@ -1,8 +1,8 @@
 import '../cc-flex-gap/cc-flex-gap.js';
 import '../cc-block/cc-block.js';
 import '../cc-error/cc-error.js';
-import { css, html, LitElement } from 'lit-element';
-import { classMap } from 'lit-html/directives/class-map.js';
+import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 

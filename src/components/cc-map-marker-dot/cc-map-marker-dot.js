@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit';
 
 // Generated with https://components.ai/color-scale/
 // Canvas at #F5F5F5 (map country color)

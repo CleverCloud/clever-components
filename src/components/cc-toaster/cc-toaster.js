@@ -1,6 +1,6 @@
-import { css, html, LitElement } from 'lit-element';
-import { classMap } from 'lit-html/directives/class-map.js';
-import { repeat } from 'lit-html/directives/repeat.js';
+import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
+import { repeat } from 'lit/directives/repeat.js';
 import '../cc-toast/cc-toast.js';
 
 /**

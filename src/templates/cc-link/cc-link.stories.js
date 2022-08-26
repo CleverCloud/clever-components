@@ -1,4 +1,4 @@
-import { render } from 'lit-html';
+import { render } from 'lit';
 import { makeStory } from '../../stories/lib/make-story.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from './cc-link.js';

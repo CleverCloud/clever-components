@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit';
 import '../cc-button/cc-button.js';
 import '../cc-select/cc-select.js';
 import '../cc-toggle/cc-toggle.js';
