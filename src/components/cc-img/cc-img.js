@@ -57,12 +57,11 @@ export class CcImg extends LitElement {
     this.skeleton = false;
   }
 
-  update (changedProperties) {
+  willUpdate (changedProperties) {
     if (changedProperties.has('src')) {
       this._error = false;
       this._loaded = false;
     }
-    super.update(changedProperties);
   }
 
   render () {

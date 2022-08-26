@@ -83,11 +83,10 @@ export class CcMapMarkerDot extends LitElement {
     return COLOR_PALETTE[colorIndex];
   }
 
-  update (changedProperties) {
+  willUpdate (changedProperties) {
     if (changedProperties.has('count')) {
       this._color = this._getColorFromCount(this.count);
     }
-    super.update(changedProperties);
   }
 
   render () {

@@ -86,15 +86,13 @@ export class CcAddonAdmin extends LitElement {
     this.error = false;
   }
 
-  update (changedProperties) {
+  willUpdate (changedProperties) {
 
     if (changedProperties.has('addon')) {
       this._skeleton = (this.addon == null);
       this._name = this._skeleton ? '' : this.addon.name;
       this._tags = this._skeleton ? [] : this.addon.tags;
     }
-
-    super.update(changedProperties);
   }
 
   render () {

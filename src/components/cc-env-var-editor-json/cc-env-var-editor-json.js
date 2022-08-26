@@ -122,7 +122,7 @@ export class CcEnvVarEditorJson extends LitElement {
     }
   }
 
-  update (changedProperties) {
+  willUpdate (changedProperties) {
     if (changedProperties.has('variables')) {
       this._skeleton = (this.variables == null);
       const vars = this._skeleton ? SKELETON_VARIABLES : this.variables;
@@ -131,7 +131,6 @@ export class CcEnvVarEditorJson extends LitElement {
       this._variablesAsJson = toJson(filteredVariables);
       this._setErrors([]);
     }
-    super.update(changedProperties);
   }
 
   render () {

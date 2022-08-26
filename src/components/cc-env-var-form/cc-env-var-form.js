@@ -192,7 +192,7 @@ export class CcEnvVarForm extends LitElement {
     }
   }
 
-  update (changedProperties) {
+  willUpdate (changedProperties) {
 
     if (changedProperties.has('context') || changedProperties.has('addonName') || changedProperties.has('appName')) {
       if (this.context === 'env-var') {
@@ -219,7 +219,6 @@ export class CcEnvVarForm extends LitElement {
     if (changedProperties.has('variables')) {
       this._resetForm(this.variables);
     }
-    super.update(changedProperties);
   }
 
   render () {

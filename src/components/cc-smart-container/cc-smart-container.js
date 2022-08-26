@@ -41,8 +41,7 @@ export class CcSmartContainer extends LitElement {
     delete this._abortController;
   }
 
-  update (changedProperties) {
-    super.update(changedProperties);
+  willUpdate (changedProperties) {
     updateContext(this, { ...this.parentContext, ...this.context });
   }
 

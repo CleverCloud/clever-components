@@ -144,9 +144,7 @@ export class CcExampleComponent extends LitElement {
 
   // If you need to hook some code when a property changes (before the render)
   // It's often needed when you have a private property that depends on a public property
-  update (changeProperties) {
-    // Do something
-    super.update(changeProperties);
+  willUpdate (changeProperties) {
   }
 
   // If you need to setup some code before the first render, use this.
