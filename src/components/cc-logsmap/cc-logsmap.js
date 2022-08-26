@@ -1,7 +1,7 @@
 import '../cc-toggle/cc-toggle.js';
 import '../cc-map-marker-dot/cc-map-marker-dot.js';
 import '../cc-map/cc-map.js';
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 

@@ -1,5 +1,5 @@
 import '../../components/cc-error/cc-error.js';
-import { html } from 'lit-element';
+import { html } from 'lit';
 import { i18n } from '../../lib/i18n.js';
 
 const encryptionAtRestSvg = new URL('../../assets/encryption-at-rest.svg', import.meta.url).href;

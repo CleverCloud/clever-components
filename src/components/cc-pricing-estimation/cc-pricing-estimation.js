@@ -1,7 +1,7 @@
 import '../cc-button/cc-button.js';
 import '../cc-error/cc-error.js';
 import '../cc-input-number/cc-input-number.js';
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { withResizeObserver } from '../../mixins/with-resize-observer/with-resize-observer.js';

@@ -1,8 +1,8 @@
 import '../cc-expand/cc-expand.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-error/cc-error.js';
-import { css, html, LitElement } from 'lit-element';
-import { classMap } from 'lit-html/directives/class-map.js';
+import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { animate, QUICK_SHRINK } from '../../lib/animate.js';
 import { i18n } from '../../lib/i18n.js';
 import { instanceDetailsStyles, tileStyles } from '../../styles/info-tiles.js';

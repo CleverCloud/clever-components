@@ -1,6 +1,6 @@
-import { css, html } from 'lit-element';
-import { classMap } from 'lit-html/directives/class-map.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { css, html } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 function isDifferentOrigin (rawUrl) {
   try {

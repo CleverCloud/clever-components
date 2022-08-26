@@ -1,8 +1,8 @@
 import '../cc-button/cc-button.js';
 import '../cc-flex-gap/cc-flex-gap.js';
 import '../cc-input-text/cc-input-text.js';
-import { css, html, LitElement } from 'lit-element';
-import { classMap } from 'lit-html/directives/class-map.js';
+import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';

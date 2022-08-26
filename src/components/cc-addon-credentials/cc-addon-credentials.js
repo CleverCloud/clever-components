@@ -2,8 +2,8 @@ import '../cc-input-text/cc-input-text.js';
 import '../cc-flex-gap/cc-flex-gap.js';
 import '../cc-block/cc-block.js';
 import '../cc-error/cc-error.js';
-import { css, html, LitElement } from 'lit-element';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { css, html, LitElement } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 

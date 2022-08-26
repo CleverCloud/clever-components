@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit';
 
 /**
  * A display component with mostly HTML+CSS to separate a `<cc-block>` into different sections.

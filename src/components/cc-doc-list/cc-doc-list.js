@@ -1,6 +1,6 @@
 import '../cc-doc-card/cc-doc-card.js';
 import '../cc-error/cc-error.js';
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit';
 import { i18n } from '../../lib/i18n.js';
 
 const DOC_SKELETON_NUMBER = 9;

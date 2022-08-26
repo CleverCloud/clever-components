@@ -1,9 +1,9 @@
 import '../cc-button/cc-button.js';
 import '../cc-error/cc-error.js';
 import { ArcElement, Chart, DoughnutController, Legend, Tooltip } from 'chart.js';
-import { css, html, LitElement } from 'lit-element';
-import { cache } from 'lit-html/directives/cache.js';
-import { classMap } from 'lit-html/directives/class-map.js';
+import { css, html, LitElement } from 'lit';
+import { cache } from 'lit/directives/cache.js';
+import { classMap } from 'lit/directives/class-map.js';
 import status from 'statuses';
 import { i18n } from '../../lib/i18n.js';
 import { tileStyles } from '../../styles/info-tiles.js';

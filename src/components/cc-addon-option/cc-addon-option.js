@@ -1,7 +1,7 @@
 import '../cc-img/cc-img.js';
 import '../cc-toggle/cc-toggle.js';
-import { css, html, LitElement } from 'lit-element';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { css, html, LitElement } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 

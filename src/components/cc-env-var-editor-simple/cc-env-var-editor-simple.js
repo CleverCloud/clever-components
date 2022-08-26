@@ -1,7 +1,7 @@
 import '../cc-env-var-create/cc-env-var-create.js';
 import '../cc-env-var-input/cc-env-var-input.js';
-import { css, html, LitElement } from 'lit-element';
-import { repeat } from 'lit-html/directives/repeat.js';
+import { css, html, LitElement } from 'lit';
+import { repeat } from 'lit/directives/repeat.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 
