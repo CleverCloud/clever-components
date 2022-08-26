@@ -163,7 +163,6 @@ export class CcInputNumber extends LitElement {
     if (changedProperties.has('value')) {
       this._invalid = !this._input.checkValidity();
     }
-    super.update(changedProperties);
   }
 
   render () {
