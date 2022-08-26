@@ -183,13 +183,12 @@ export class CcHeaderApp extends LitElement {
     dispatchCustomEvent(this, 'stop');
   }
 
-  update (changeProperties) {
+  willUpdate (changeProperties) {
     if (changeProperties.has('status')) {
       this._lastUserAction = (changeProperties.get('status') !== this.status)
         ? null
         : this._lastUserAction;
     }
-    super.update(changeProperties);
   }
 
   render () {

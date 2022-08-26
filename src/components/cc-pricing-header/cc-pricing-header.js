@@ -89,11 +89,10 @@ export class CcPricingHeader extends LitElement {
     dispatchCustomEvent(this, 'change-zone', zoneName);
   }
 
-  update (changedProperties) {
+  willUpdate (changedProperties) {
     if (changedProperties.has('zones')) {
       this._sortedZones = sortZones(this.zones);
     }
-    super.update(changedProperties);
   }
 
   render () {

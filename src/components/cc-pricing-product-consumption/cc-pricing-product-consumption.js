@@ -255,7 +255,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
     dispatchCustomEvent(this, 'cc-pricing-product:add-plan', plan);
   }
 
-  update (changedProperties) {
+  willUpdate (changedProperties) {
     if (changedProperties.has('sections') && Array.isArray(this.sections)) {
 
       this._state = {};
@@ -272,7 +272,6 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
 
       this._simulator = new PricingConsumptionSimulator(this.sections);
     }
-    super.update(changedProperties);
   }
 
   render () {

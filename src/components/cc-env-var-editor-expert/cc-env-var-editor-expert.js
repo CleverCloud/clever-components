@@ -121,7 +121,7 @@ export class CcEnvVarEditorExpert extends LitElement {
     dispatchCustomEvent(this, 'change', variables);
   }
 
-  update (changedProperties) {
+  willUpdate (changedProperties) {
     if (changedProperties.has('variables')) {
       this._skeleton = (this.variables == null);
       const vars = this._skeleton ? SKELETON_VARIABLES : this.variables;
@@ -130,7 +130,6 @@ export class CcEnvVarEditorExpert extends LitElement {
       this._variablesAsText = toNameEqualsValueString(filteredVariables);
       this._setErrors([]);
     }
-    super.update(changedProperties);
   }
 
   render () {

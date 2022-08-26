@@ -141,13 +141,12 @@ export class CcButton extends LitElement {
     }
   }
 
-  update (changedProperties) {
+  willUpdate (changedProperties) {
     if (changedProperties.has('disabled')) {
       if (this.disabled === true) {
         this._cancelClick();
       }
     }
-    super.update(changedProperties);
   }
 
   render () {

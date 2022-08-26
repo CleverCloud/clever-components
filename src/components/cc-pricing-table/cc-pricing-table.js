@@ -195,7 +195,7 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
     });
   }
 
-  update (changedProperties) {
+  willUpdate (changedProperties) {
 
     if (changedProperties.has('plans') && Array.isArray(this.plans)) {
       this._plans = this.plans
@@ -207,8 +207,6 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
       this._features = this.features
         .filter((feature) => AVAILABLE_FEATURES.includes(feature.code));
     }
-
-    super.update(changedProperties);
   }
 
   render () {
