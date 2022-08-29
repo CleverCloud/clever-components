@@ -39,7 +39,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
       currency: { type: Object },
       selectedPlans: { type: Array, attribute: 'selected-plans' },
       totalPrice: { type: Number, attribute: 'total-price' },
-      _size: { type: String },
+      _size: { type: String, state: true },
     };
   }
 

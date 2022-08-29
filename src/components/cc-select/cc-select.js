@@ -29,9 +29,9 @@ export class CcSelect extends LitElement {
       placeholder: { type: String },
       required: { type: Boolean },
       value: { type: String },
-      _uniqueErrorId: { type: String, attribute: false },
-      _uniqueHelpId: { type: String, attribute: false },
-      _uniqueInputId: { type: String, attribute: false },
+      _uniqueErrorId: { type: String, state: true },
+      _uniqueHelpId: { type: String, state: true },
+      _uniqueInputId: { type: String, state: true },
     };
   }
 

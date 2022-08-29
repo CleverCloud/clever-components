@@ -37,7 +37,7 @@ export class CcInvoiceList extends withResizeObserver(LitElement) {
     return {
       error: { type: Boolean },
       invoices: { type: Array },
-      _yearFilter: { type: Number },
+      _yearFilter: { type: Number, state: true },
     };
   }
 

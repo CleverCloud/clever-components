@@ -34,9 +34,9 @@ export class CcAddonAdmin extends LitElement {
       addon: { type: Object },
       error: { type: String },
       saving: { type: Boolean },
-      _name: { type: String, attribute: false },
-      _skeleton: { type: Boolean, attribute: false },
-      _tags: { type: Array, attribute: false },
+      _name: { type: String, state: true },
+      _skeleton: { type: Boolean, state: true },
+      _tags: { type: Array, state: true },
     };
   }
 

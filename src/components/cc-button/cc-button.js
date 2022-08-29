@@ -56,7 +56,7 @@ export class CcButton extends LitElement {
       success: { type: Boolean },
       waiting: { type: Boolean, reflect: true },
       warning: { type: Boolean },
-      _cancelMode: { type: Boolean, attribute: false },
+      _cancelMode: { type: Boolean, state: true },
     };
   }
 

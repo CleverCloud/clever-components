@@ -67,7 +67,7 @@ export class CcExampleComponent extends LitElement {
       // Private properties are prefixed with `_`
       // If it's described here, a change will trigger render().
       // Disable attribute for private properties.
-      _privateFoobar: { type: Boolean, attribute: false },
+      _privateFoobar: { type: Boolean, state: true },
     };
   }
 

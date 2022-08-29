@@ -40,7 +40,7 @@ export class CcLogsMap extends LitElement {
       orgaName: { type: String, attribute: 'orga-name' },
       viewZoom: { type: Number, attribute: 'view-zoom' },
       // Internal state for child component <cc-map>
-      _points: { type: Array, attribute: false },
+      _points: { type: Array, state: true },
     };
   }
 

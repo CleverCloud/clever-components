@@ -33,10 +33,10 @@ export class CcEnvVarEditorJson extends LitElement {
       parserOptions: { type: Object },
       readonly: { type: Boolean },
       variables: { type: Array },
-      _errors: { type: Array },
-      _formattedErrors: { type: Array, attribute: false },
-      _skeleton: { type: Boolean, attribute: false },
-      _variablesAsJson: { type: String, attribute: false },
+      _errors: { type: Array, state: true },
+      _formattedErrors: { type: Array, state: true },
+      _skeleton: { type: Boolean, state: true },
+      _variablesAsJson: { type: String, state: true },
     };
   }
 

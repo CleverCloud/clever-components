@@ -41,8 +41,8 @@ export class CcAddonBackups extends LitElement {
     return {
       backups: { type: Object },
       error: { type: Boolean },
-      _overlay: { type: String, attribute: false },
-      _selectedBackup: { type: Object, attribute: false },
+      _overlay: { type: String, state: true },
+      _selectedBackup: { type: Object, state: true },
     };
   }
 

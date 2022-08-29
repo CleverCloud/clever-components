@@ -49,9 +49,9 @@ export class CcTileStatusCodes extends LitElement {
     return {
       error: { type: Boolean, reflect: true },
       statusCodes: { type: Object, attribute: 'status-codes' },
-      _docs: { type: Boolean, attribute: false },
-      _empty: { type: Boolean, attribute: false },
-      _skeleton: { type: Boolean, attribute: false },
+      _docs: { type: Boolean, state: true },
+      _empty: { type: Boolean, state: true },
+      _skeleton: { type: Boolean, state: true },
     };
   }
 

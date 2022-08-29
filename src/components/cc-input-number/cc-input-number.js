@@ -42,10 +42,10 @@ export class CcInputNumber extends LitElement {
       skeleton: { type: Boolean, reflect: true },
       step: { type: Number },
       value: { type: Number },
-      _invalid: { type: Boolean, attribute: false },
-      _uniqueErrorId: { type: Boolean, attribute: false },
-      _uniqueHelpId: { type: Boolean, attribute: false },
-      _uniqueInputId: { type: Boolean, attribute: false },
+      _invalid: { type: Boolean, state: true },
+      _uniqueErrorId: { type: Boolean, state: true },
+      _uniqueHelpId: { type: Boolean, state: true },
+      _uniqueInputId: { type: Boolean, state: true },
     };
   }
 

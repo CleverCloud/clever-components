@@ -78,8 +78,8 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
       icon: { type: String },
       name: { type: String },
       sections: { type: Array },
-      _size: { type: String },
-      _state: { type: Object },
+      _size: { type: String, state: true },
+      _state: { type: Object, state: true },
     };
   }
 

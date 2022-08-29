@@ -34,7 +34,7 @@ export class CcBlock extends LitElement {
       noHead: { type: Boolean, attribute: 'no-head', reflect: true },
       ribbon: { type: String, reflect: true },
       state: { type: String, reflect: true },
-      _overlay: { type: Boolean, attribute: false },
+      _overlay: { type: Boolean, state: true },
     };
   }
 

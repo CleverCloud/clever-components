@@ -76,7 +76,7 @@ export class CcHeaderApp extends LitElement {
       startingCommit: { type: String, attribute: 'starting-commit' },
       status: { type: String },
       zone: { type: Object },
-      _lastUserAction: { type: String, attribute: false },
+      _lastUserAction: { type: String, state: true },
     };
   }
 

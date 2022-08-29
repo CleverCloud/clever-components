@@ -31,8 +31,8 @@ export class CcEnvVarCreate extends LitElement {
       disabled: { type: Boolean },
       mode: { type: String },
       variablesNames: { type: Array, attribute: 'variables-names' },
-      _variableName: { type: String, attribute: false },
-      _variableValue: { type: String, attribute: false },
+      _variableName: { type: String, state: true },
+      _variableValue: { type: String, state: true },
     };
   }
 
