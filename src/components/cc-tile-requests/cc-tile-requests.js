@@ -43,10 +43,10 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
     return {
       data: { type: Array },
       error: { type: Boolean, reflect: true },
-      _barCount: { type: Number, attribute: false },
-      _docs: { type: Boolean, attribute: false },
-      _empty: { type: Boolean, attribute: false },
-      _skeleton: { type: Boolean, attribute: false },
+      _barCount: { type: Number, state: true },
+      _docs: { type: Boolean, state: true },
+      _empty: { type: Boolean, state: true },
+      _skeleton: { type: Boolean, state: true },
     };
   }
 

@@ -21,8 +21,8 @@ export class CcImg extends LitElement {
       skeleton: { type: Boolean, reflect: true },
       src: { type: String },
       text: { type: String },
-      _error: { type: Boolean, attribute: false },
-      _loaded: { type: Boolean, attribute: false },
+      _error: { type: Boolean, state: true },
+      _loaded: { type: Boolean, state: true },
     };
   }
 

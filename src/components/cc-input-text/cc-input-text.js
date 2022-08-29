@@ -72,12 +72,12 @@ export class CcInputText extends LitElement {
       skeleton: { type: Boolean, reflect: true },
       tags: { type: Array },
       value: { type: String },
-      _copyOk: { type: Boolean, attribute: false },
-      _showSecret: { type: Boolean, attribute: false },
-      _tagsEnabled: { type: Boolean, attribute: false },
-      _uniqueErrorId: { type: String, attribute: false },
-      _uniqueHelpId: { type: String, attribute: false },
-      _uniqueInputId: { type: String, attribute: false },
+      _copyOk: { type: Boolean, state: true },
+      _showSecret: { type: Boolean, state: true },
+      _tagsEnabled: { type: Boolean, state: true },
+      _uniqueErrorId: { type: String, state: true },
+      _uniqueHelpId: { type: String, state: true },
+      _uniqueInputId: { type: String, state: true },
     };
   }
 

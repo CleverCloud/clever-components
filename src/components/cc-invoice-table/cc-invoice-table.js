@@ -38,7 +38,7 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
   static get properties () {
     return {
       invoices: { type: Array },
-      _width: { type: Number },
+      _width: { type: Number, state: true },
     };
   }
 

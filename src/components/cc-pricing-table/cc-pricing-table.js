@@ -63,9 +63,9 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
       features: { type: Array },
       plans: { type: Array },
       temporality: { type: Array },
-      _features: { type: Array },
-      _plans: { type: Array },
-      _size: { type: String },
+      _features: { type: Array, state: true },
+      _plans: { type: Array, state: true },
+      _size: { type: String, state: true },
     };
   }
 

@@ -47,12 +47,12 @@ export class CcEnvVarForm extends LitElement {
       restartApp: { type: Boolean, attribute: 'restart-app' },
       saving: { type: Boolean, reflect: true },
       variables: { type: Array },
-      _currentVariables: { type: Array, attribute: false },
-      _description: { type: String, attribute: false },
-      _expertVariables: { type: Array, attribute: false },
-      _jsonVariables: { type: Array, attribute: false },
-      _mode: { type: String, attribute: false },
-      _isPristine: { type: Boolean, attribute: false },
+      _currentVariables: { type: Array, state: true },
+      _description: { type: String, state: true },
+      _expertVariables: { type: Array, state: true },
+      _jsonVariables: { type: Array, state: true },
+      _mode: { type: String, state: true },
+      _isPristine: { type: Boolean, state: true },
     };
   }
 

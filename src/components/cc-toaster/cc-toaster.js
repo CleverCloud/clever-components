@@ -94,7 +94,7 @@ export class CcToaster extends LitElement {
       maxToasts: { type: Number, attribute: 'max-toasts' },
       position: { type: String },
       toastDefaultOptions: { type: Object, attribute: 'toast-default-options' },
-      _toasts: { type: Array, attribute: false },
+      _toasts: { type: Array, state: true },
     };
   }
 
