@@ -133,8 +133,7 @@ export function babelPlugin () {
         'template-html-minifier',
         {
           modules: {
-            'lit-html': ['html'],
-            'lit-element': [
+            lit: [
               'html',
               { name: 'css', encapsulation: 'style' },
             ],
