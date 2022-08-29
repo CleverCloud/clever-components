@@ -171,8 +171,8 @@ export const manualChunkOptions = (id) => {
   const isSmall = id.endsWith('src/lib/events.js')
     || id.endsWith('src/styles/skeleton.js')
     || id.endsWith('src/styles/waiting.js')
-    || id.endsWith('lit-html/directives/if-defined.js')
-    || id.endsWith('lit-html/directives/class-map.js');
+    || id.endsWith('lit/directives/if-defined.js')
+    || id.endsWith('lit/directives/class-map.js');
   if (isSmall) {
     return 'vendor';
   }
