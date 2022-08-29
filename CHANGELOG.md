@@ -6,10 +6,6 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
-### Components
-
-* `<cc-env-var-form>`: fix toggling to JSON mode while in skeleton state.
-
 ### ⚠️ BREAKING CHANGES
 
 * `<cc-toggle>`: update component host default `display` CSS property (BREAKING CHANGE).
@@ -22,11 +18,12 @@ title: Changelog
 * `<cc-map>`: make dot markers not focusable.
 * `<cc-zone-input>`: make server markers not focusable.
 * `<cc-addon-admin>`: fix skeleton mode
+* `<cc-env-var-form>`: fix toggling to JSON mode while in skeleton state.
 
 ### For devs
 
 * Improve display of `components:check-i18n` task.
-...
+* Upgrade from `lit-element@2.5.1` to `lit@2.3.1`
 
 ## 9.0.0 (2022-07-19)
 
