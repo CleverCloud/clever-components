@@ -124,7 +124,7 @@ export default {
     cemAnalyzerPlugin,
     hmrPlugin({
       include: ['src/**/*'],
-      presets: [presets.litElement],
+      presets: [presets.lit],
     }),
     rollupAdapter(json()),
     esbuildBundlePlugin({
