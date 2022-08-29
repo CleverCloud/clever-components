@@ -1,5 +1,4 @@
 import path from 'path';
-import alias from '@rollup/plugin-alias';
 import { importMetaAssets } from '@web/rollup-plugin-import-meta-assets';
 import CleanCSS from 'clean-css';
 import glob from 'glob';
@@ -168,19 +167,6 @@ export function visualizerPlugin ({ outputDir, packageVersion }) {
     brotliSize: true,
   });
 };
-
-// https://github.com/Polymer/lit-element/issues/909
-// LitElement imports some legacy code for IE11 but we don't want/need it
-export function shimShadyRender () {
-  return alias({
-    entries: [
-      {
-        find: 'lit-html/lib/shady-render.js',
-        replacement: 'lit-html/lit-html.js',
-      },
-    ],
-  });
-}
 
 export const manualChunkOptions = (id) => {
   const isSmall = id.endsWith('src/lib/events.js')
