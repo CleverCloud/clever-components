@@ -9,7 +9,6 @@ import {
   importMetaUrlAssetsPlugin,
   manualChunkOptions,
   minifyStylesheet,
-  shimShadyRender,
   terserPlugin,
   treeshakeOptions,
   visualizerPlugin,
@@ -49,8 +48,6 @@ export default {
     json(),
     // add (and optimize) svg files used in all new URL('...', import.meta.url) pattern.
     importMetaUrlAssetsPlugin(),
-    // exclude IE11 compatibility shim that is provided by LitElement. TODO: to be removed when moving to Lit 2
-    shimShadyRender(),
     // convert CommonJS modules to ESM
     commonjs(),
     // support resolving module using Node resolution algorithm. TODO: figure out why we need that
