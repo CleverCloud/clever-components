@@ -19,7 +19,7 @@ const SKELETON_FOOBAR = [
 ];
 
 /**
- * @typedef {import('./types.js').ExampleInterface} ExampleInterface
+ * @typedef {import('./cc-example-component.types.js').ExampleInterface} ExampleInterface
  */
 
 /**
@@ -66,7 +66,7 @@ export class CcExampleComponent extends LitElement {
       enabled: { type: Boolean, reflect: true },
       // Private properties are prefixed with `_`
       // If it's described here, a change will trigger render().
-      // Disable attribute for private properties.
+      // Use state: true for private properties.
       _privateFoobar: { type: Boolean, state: true },
     };
   }
@@ -157,7 +157,6 @@ export class CcExampleComponent extends LitElement {
   // Use this one instead of update when you have a "firstUpdated"
   updated (changeProperties) {
     // Do something
-    super.updated(changeProperties);
   }
 
   // DOCS: 8. LitElement's render method
