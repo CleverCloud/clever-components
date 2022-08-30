@@ -156,7 +156,7 @@ export class CcEnvVarForm extends LitElement {
     }
     else if (mode === 'JSON') {
       // clone to force an update/reset of the json form
-      this._jsonVariables = [...this._currentVariables];
+      this._jsonVariables = this._currentVariables != null ? [...this._currentVariables] : null;
     }
     this._mode = mode;
   }
