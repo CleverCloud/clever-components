@@ -32,9 +32,11 @@ export function withResizeObserver (ParentClass) {
         return;
       }
       const ro = new window.ResizeObserver(() => {
-        // NOTE: We could use entries[0].borderBoxSize.inlineSize but not supported in Chrome, Safari or polyfill
-        const { width } = this.getBoundingClientRect();
-        this._onResize({ width });
+        window.requestAnimationFrame(() => {
+          // NOTE: We could use entries[0].borderBoxSize.inlineSize but not supported in Chrome, Safari or polyfill
+          const { width } = this.getBoundingClientRect();
+          this._onResize({ width });
+        });
       });
       ro.observe(this);
       this._unobserveResize = () => ro.unobserve(this);

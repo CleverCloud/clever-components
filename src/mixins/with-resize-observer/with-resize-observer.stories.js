@@ -8,6 +8,12 @@ const action = () => () => {
 };
 
 class WithHtml extends withResizeObserver(window.HTMLElement) {
+  static get properties () {
+    return {
+      breakpoints: { type: Object },
+    };
+  }
+
   constructor () {
     super();
     this.breakpoints = {
@@ -23,6 +29,12 @@ class WithHtml extends withResizeObserver(window.HTMLElement) {
 window.customElements.define('html-element', WithHtml);
 
 class WithLit extends withResizeObserver(LitElement) {
+  static get properties () {
+    return {
+      breakpoints: { type: Object },
+    };
+  }
+
   constructor () {
     super();
     this.breakpoints = {
@@ -180,4 +192,58 @@ export const defaultStory = () => {
   return storyDom;
 };
 
-enhanceStoriesNames({ defaultStory });
+export const liveResize = () => {
+  const storyDom = document.createElement('div');
+  storyDom.innerHTML = `
+    
+    <style>
+      html,
+      body {
+        background-color: #fff;
+      }
+      body {
+        margin: 1em;
+      }
+      .container {
+        border: 1px solid #000;
+        box-sizing: border-box;
+        display: inline-block;
+        padding: 1rem;
+        overflow: hidden;
+      }
+      
+      .container[w-lt-200] {
+        background: lime;
+      }
+
+      .container[w-gte-200][w-lt-500] {
+        background: orange;
+      }
+      
+      .container[w-gte-500][w-lt-800] {
+        background: darkolivegreen;
+      }
+      
+      .container[w-gte-800][w-lt-1000] {
+        background: deepskyblue;
+      }
+      
+      .container[w-gte-1000] {
+        background: tomato;
+      }
+    </style>
+    
+    <p>Resize me and see my background color changing when reaching breakpoints: [200, 500, 800, 1000]</p>
+    
+    <lit-element class="container" breakpoints='{"width": [200, 500, 800, 1000]}'>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      Quisque bibendum odio at nibh finibus, eu lacinia ante aliquam.
+      Interdum et malesuada fames ac ante ipsum primis in faucibus.
+      Curabitur nec sollicitudin augue.
+    </lit-element>
+  `;
+
+  return storyDom;
+};
+
+enhanceStoriesNames({ defaultStory, liveResize });
