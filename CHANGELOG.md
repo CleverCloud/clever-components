@@ -6,6 +6,10 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+### Components
+
+* `<cc-env-var-form>`: fix toggling to JSON mode while in skeleton state.
+
 ### ⚠️ BREAKING CHANGES
 
 * `<cc-toggle>`: update component host default `display` CSS property (BREAKING CHANGE).
