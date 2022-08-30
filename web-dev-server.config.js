@@ -77,12 +77,12 @@ const injectAuthForSmartComponentsPlugin = {
       OAUTH_CONSUMER_SECRET,
     } = process.env;
 
-    const SMART_COMPONENT_STORY_REGEX = /^\/stories\/.*\/cc-.*\.smart.*\.md$/;
+    const SMART_COMPONENT_STORY_REGEX = /^\/src\/components\/.*\/cc-.*\.smart.*\.md$/;
     if (SMART_COMPONENT_STORY_REGEX.test(context.path)) {
 
       // language=JavaScript
       context.body += `
-        import { updateRootContext } from '../../src/lib/smart-manager.js';
+        import { updateRootContext } from '../../lib/smart-manager.js';
 
         updateRootContext({
           apiConfig: {
