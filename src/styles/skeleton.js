@@ -1,6 +1,6 @@
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
 
-export const innerSkeletonStyles = css`
+export const innerSkeletonStyles = unsafeCSS(`
   animation-direction: alternate;
   animation-duration: 500ms;
   animation-iteration-count: infinite;
@@ -12,7 +12,7 @@ export const innerSkeletonStyles = css`
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
-`;
+`);
 
 // language=CSS
 export const skeletonPulseStyles = css`
@@ -32,6 +32,6 @@ export const skeletonStyles = css`
   ${skeletonPulseStyles}
 
   .skeleton {
-    ${innerSkeletonStyles}
+    ${innerSkeletonStyles};
   }
 `;
