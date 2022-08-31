@@ -1,4 +1,5 @@
 import { css, html, LitElement } from 'lit';
+import { innerSkeletonStyles, skeletonPulseStyles } from '../../styles/skeleton.js';
 
 /**
  * @typedef {import('./cc-badge.types.js').BadgeIntent} BadgeIntent
@@ -17,6 +18,7 @@ export class CcBadge extends LitElement {
       iconAlt: { type: String, attribute: 'icon-alt' },
       iconSrc: { type: String, attribute: 'icon-src' },
       intent: { type: String, reflect: true },
+      skeleton: { type: Boolean, reflect: true },
       weight: { type: String, reflect: true },
     };
   }
@@ -36,6 +38,9 @@ export class CcBadge extends LitElement {
     /** @type {BadgeIntent} Sets the accent color used for the badge. */
     this.intent = 'neutral';
 
+    /** @type {boolean} Whether the component should be displayed as skeleton. */
+    this.skeleton = false;
+
     /** @type {BadgeWeight} Sets the style of the badge depending on how much one wants it to stand out. */
     this.weight = 'dimmed';
   }
@@ -53,6 +58,7 @@ export class CcBadge extends LitElement {
 
   static get styles () {
     return [
+      skeletonPulseStyles,
       // language=CSS
       css`
         :host {
@@ -62,6 +68,19 @@ export class CcBadge extends LitElement {
           font-size: 0.8em;
           gap: 0.3em;
           padding: 0.2em 0.8em;
+        }
+        
+        :host([skeleton]) {
+          background-color: #bbb !important;
+          ${innerSkeletonStyles};
+        }
+        
+        :host([skeleton][weight="outlined"]) {
+          box-shadow: inset 0 0 0 0.06em #777;
+        }
+        
+        :host([skeleton]) img {
+          visibility: hidden;
         }
 
         :host([circle]) {
