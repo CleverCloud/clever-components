@@ -1,8 +1,8 @@
-import '../../src/emails/cc-email.js';
-import '../../src/emails/cc-email.smart.js';
-import { createStateMutator } from '../../src/emails/stateHelpers.js';
-import { makeStory, storyWait } from '../lib/make-story.js';
-import { enhanceStoriesNames } from '../lib/story-names.js';
+import './cc-email.js';
+import './cc-email.smart.js';
+import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
+import { createStateMutator } from './stateHelpers.js';
 
 const SAMPLE_EMAIL_ADDRESS = 'sample.email@clever-cloud.com';
 const ANOTHER_SAMPLE_EMAIL_ADDRESS = 'another.sample.email@clever-cloud.com';

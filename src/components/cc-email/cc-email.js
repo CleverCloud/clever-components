@@ -1,30 +1,31 @@
-import { css, html, LitElement } from 'lit-element';
-import { classMap } from 'lit-html/directives/class-map.js';
-import { validateEmailAddress } from '../lib/email.js';
-import { dispatchCustomEvent } from '../lib/events.js';
-import { fakeString } from '../lib/fake-strings.js';
-import { i18n } from '../lib/i18n.js';
-import { skeletonStyles } from '../styles/skeleton.js';
-import '../atoms/cc-flex-gap.js';
-import '../atoms/cc-button.js';
-import '../atoms/cc-input-text.js';
-import '../molecules/cc-error.js';
-import '../molecules/cc-block.js';
-import '../molecules/cc-block-section.js';
+import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
+import { validateEmailAddress } from '../../lib/email.js';
+import { dispatchCustomEvent } from '../../lib/events.js';
+import { fakeString } from '../../lib/fake-strings.js';
+import { i18n } from '../../lib/i18n.js';
+import { skeletonStyles } from '../../styles/skeleton.js';
+import '../cc-flex-gap/cc-flex-gap.js';
+import '../cc-button/cc-button.js';
+import '../cc-badge/cc-badge.js';
+import '../cc-input-text/cc-input-text.js';
+import '../cc-error/cc-error.js';
+import '../cc-block/cc-block.js';
+import '../cc-block-section/cc-block-section.js';
 
-const mailSvg = new URL('../assets/mail-line.svg', import.meta.url).href;
-const mailStarSvg = new URL('../assets/mail-star-line.svg', import.meta.url).href;
-const trashSvg = new URL('../assets/trash-red.svg', import.meta.url).href;
-const verifiedSvg = new URL('../assets/checkbox-circle-fill.svg', import.meta.url).href;
-const unverifiedSvg = new URL('../assets/spam-2-fill.svg', import.meta.url).href;
-const blankSvg = new URL('../assets/blank.svg', import.meta.url).href;
+const mailSvg = new URL('../../assets/mail-line.svg', import.meta.url).href;
+const mailStarSvg = new URL('../../assets/mail-star-line.svg', import.meta.url).href;
+const trashSvg = new URL('../../assets/trash-red.svg', import.meta.url).href;
+const verifiedSvg = new URL('../../assets/checkbox-circle-fill.svg', import.meta.url).href;
+const unverifiedSvg = new URL('../../assets/spam-2-fill.svg', import.meta.url).href;
+const blankSvg = new URL('../../assets/blank.svg', import.meta.url).href;
 
 /**
- * @typedef {import('./types.js').CcEmailState} CcEmailState
- * @typedef {import('./types.js').PrimaryEmailAddress} PrimaryEmailAddress
- * @typedef {import('./types.js').SecondaryEmailAddresses} SecondaryEmailAddresses
- * @typedef {import('./types.js').FormData} FormData
- * @typedef {import('./types.js').FormError} FormError
+ * @typedef {import('./cc-email.types.js').CcEmailState} CcEmailState
+ * @typedef {import('./cc-email.types.js').PrimaryEmailAddress} PrimaryEmailAddress
+ * @typedef {import('./cc-email.types.js').SecondaryEmailAddresses} SecondaryEmailAddresses
+ * @typedef {import('./cc-email.types.js').FormData} FormData
+ * @typedef {import('./cc-email.types.js').FormError} FormError
  */
 
 /**

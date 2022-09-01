@@ -1,12 +1,12 @@
 import './cc-email.js';
-import '../smart/cc-smart-container.js';
+import '../cc-smart-container/cc-smart-container.js';
 // eslint-disable-next-line camelcase
 import { todo_addEmailAddress, todo_getEmailAddresses, todo_removeEmailAddress } from '@clevercloud/client/esm/api/v2/user.js';
-import { i18n } from '../lib/i18n.js';
-import { notify, notifyError, notifySuccess } from '../lib/notifications.js';
-import { fromCustomEvent, LastPromise, unsubscribeWithSignal, withLatestFrom } from '../lib/observables.js';
-import { sendToApi } from '../lib/send-to-api.js';
-import { defineComponent } from '../lib/smart-manager.js';
+import { i18n } from '../../lib/i18n.js';
+import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
+import { fromCustomEvent, LastPromise, unsubscribeWithSignal, withLatestFrom } from '../../lib/observables.js';
+import { sendToApi } from '../../lib/send-to-api.js';
+import { defineComponent } from '../../lib/smart-manager.js';
 import { createStateHelper } from './stateHelpers.js';
 
 defineComponent({
