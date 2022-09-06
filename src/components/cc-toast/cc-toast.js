@@ -1,3 +1,4 @@
+import { animate, AnimateController } from '@lit-labs/motion';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -32,9 +33,9 @@ const dangerSvg = new URL('../../assets/spam-2-line.svg', import.meta.url).href;
  *
  * ## Technical details
  *
- * The timer is implemented using the [Animation API](https://developer.mozilla.org/en-US/docs/Web/API/Element/animate).
- * This API is not only used to animate the progress bar, but also to control the pause/resume of the timer.
- * This means that, even if the progress bar is not displayed (`showProgress = false`), the API is still used to handle the timeout.
+ * The timer is implemented using [AnimateController from @lit-labs/motion](https://github.com/lit/lit/tree/main/packages/labs/motion).
+ * This Lit reactive controller is not only used to animate the progress bar, but also to control the pause/resume of the timer.
+ * This means that, even if the progress bar is not displayed (`showProgress = false`), the controller is still used to handle the timeout.
  * As a consequence, even when the progress bar should not be displayed, the DOM node to animate is still there, and we just make sure it is invisible to the user.
  *
  * @cssdisplay block
@@ -75,8 +76,15 @@ export class CcToast extends LitElement {
     /** @type {number} The amount of time (in millis) before the `cc-toast:dismiss` event is fired. The timer starts as soon as the component is attached to the DOM. */
     this.timeout = 5000;
 
-    /** @type {Animation} animation controlling the timout and animating the progress bar. */
-    this._animation = null;
+    this._progressAnimateCtrl = new AnimateController(this, {
+      defaultOptions: {
+        keyframeOptions: {
+          easing: 'linear',
+        },
+        in: [{ width: '100%' }],
+      },
+      onComplete: () => this._dismiss(),
+    });
   }
 
   /* region PRIVATE METHODS*/
@@ -119,43 +127,13 @@ export class CcToast extends LitElement {
   }
 
   _pause () {
-    this._animation?.pause();
+    this._progressAnimateCtrl.isAnimating && this._progressAnimateCtrl.pause();
   }
 
   _resume () {
-    this._animation?.play();
+    this._progressAnimateCtrl.isAnimating && this._progressAnimateCtrl.play();
   }
   /* endregion*/
-
-  disconnectedCallback () {
-    super.disconnectedCallback();
-    this._animation?.finish();
-    this._animation = null;
-  }
-
-  firstUpdated (_changedProperties) {
-    if (this.timeout <= 0) {
-      return;
-    }
-
-    this._animation = this.shadowRoot.querySelector('.progress-bar-track').animate(
-      [
-        { width: '100%' },
-        { width: 0 },
-      ],
-      {
-        duration: this.timeout,
-        fill: 'forwards',
-        easing: 'linear',
-      },
-    );
-    this._animation.finished.then(() => {
-      this._animation = null;
-      this._dismiss();
-    });
-
-    this._animation.play();
-  }
 
   render () {
     const tabIndex = (this.timeout > 0) ? '0' : undefined;
@@ -188,7 +166,9 @@ export class CcToast extends LitElement {
 
           ${this.timeout > 0 ? html`
             <div class="progress-bar ${classMap({ invisible: !this.showProgress })}">
-              <div class="progress-bar-track"></div>
+              <div class="progress-bar-track" 
+                   ${animate({ keyframeOptions: { duration: this.timeout } })}
+              ></div>
             </div>
           ` : ''}
         </div>
@@ -320,6 +300,7 @@ export class CcToast extends LitElement {
         .progress-bar-track {
           background-color: var(--toast-color);
           height: 100%;
+          width: 0;
         }
 
         .progress-bar.invisible {
