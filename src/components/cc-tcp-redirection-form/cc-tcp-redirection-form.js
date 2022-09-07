@@ -3,18 +3,18 @@ import '../cc-block/cc-block.js';
 import '../cc-error/cc-error.js';
 import '../cc-tcp-redirection/cc-tcp-redirection.js';
 import { css, html, LitElement } from 'lit';
-import { i18n } from '../../lib/i18n.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
+import { i18n } from '../../lib/i18n.js';
 
 const SKELETON_REDIRECTIONS = [
-  { namespace: 'default', sourcePort: 1234 },
-  { namespace: 'cleverapps' },
+  { state: 'loading', namespace: 'default', sourcePort: 1234 },
+  { state: 'loading', namespace: 'cleverapps' },
 ];
 
 /**
+ * @typedef {import('./cc-tcp-redirection-form.types.js').RedirectionFormState} RedirectionFormState
+ * @typedef {import('./cc-tcp-redirection-form.types.js').RedirectionState} RedirectionState
  * @typedef {import('./cc-tcp-redirection-form.types.js').ContextRedirectionType} ContextRedirectionType
- * @typedef {import('./cc-tcp-redirection-form.types.js').Redirection} Redirection
- * @typedef {import('./cc-tcp-redirection-form.types.js').RedirectionNamespace} RedirectionNamespace
  */
 
 /**
@@ -30,8 +30,7 @@ export class CcTcpRedirectionForm extends LitElement {
   static get properties () {
     return {
       context: { type: String },
-      error: { type: Boolean },
-      redirections: { type: Array },
+      redirections: { type: Object },
     };
   }
 
@@ -41,51 +40,54 @@ export class CcTcpRedirectionForm extends LitElement {
     /** @type {ContextRedirectionType} Defines in which context the form is used so it can show the appropriate description or lack thereof (defaults to user). */
     this.context = 'user';
 
-    /** @type {boolean} Sets a loading error state. */
-    this.error = false;
-
-    /** @type {Redirection[]|null} Sets the list of redirections. */
-    this.redirections = null;
+    /** @type {RedirectionFormState} Sets the list of redirections. */
+    this.redirections = { state: 'loading' };
   }
 
   _getRedirectionCount () {
-    if (this.context === 'admin' && this.redirections != null) {
-      const howManyRedirections = this.redirections.filter(({ sourcePort }) => sourcePort != null).length;
+    if (this.context === 'admin' && this.redirections.state === 'loaded') {
+      const howManyRedirections = this.redirections.value.filter(({ sourcePort }) => sourcePort != null).length;
       if (howManyRedirections >= 1) {
-        return html`<cc-badge circle weight="strong">${howManyRedirections}</cc-badge>`;
+        return html`
+          <cc-badge circle weight="strong">${howManyRedirections}</cc-badge>
+        `;
       }
     }
     return '';
   }
 
   render () {
-    const skeleton = (this.redirections == null);
-    const redirections = skeleton ? SKELETON_REDIRECTIONS : this.redirections;
+
     const blockState = (this.context === 'admin') ? 'close' : 'off';
 
     return html`
       <cc-block state="${blockState}">
         <div slot="title">${i18n('cc-tcp-redirection-form.title')}${this._getRedirectionCount()}</div>
+
         ${this.context === 'user' ? html`
           <div class="description">${i18n('cc-tcp-redirection-form.description')}</div>
         ` : ''}
-        ${!this.error && redirections.length > 0 ? html`
-          ${redirections.map((redirection) => html`
-            <cc-tcp-redirection
-              namespace=${redirection.namespace}
-              .sourcePort=${redirection.sourcePort}
-              ?skeleton=${skeleton}
-              ?waiting=${redirection.waiting}
-              ?private=${redirection.private}
-            ></cc-tcp-redirection>
+
+        ${this.redirections.state === 'loading' ? html`
+          ${SKELETON_REDIRECTIONS.map((redirection) => html`
+            <cc-tcp-redirection .redirection=${redirection}></cc-tcp-redirection>
           `)}
         ` : ''}
-        ${!this.error && redirections.length === 0 ? html`
+
+        ${this.redirections.state === 'loaded' ? html`
+          ${this.redirections.value.map((redirection) => html`
+            <cc-tcp-redirection .redirection=${redirection}></cc-tcp-redirection>
+          `)}
+        ` : ''}
+
+        ${this.redirections.state === 'loaded' && this.redirections.value.length === 0 ? html`
           <div class="cc-block_empty-msg">${i18n('cc-tcp-redirection-form.empty')}</div>
         ` : ''}
-        ${this.error ? html`
+
+        ${this.redirections.state === 'error-loading' ? html`
           <cc-error>${i18n('cc-tcp-redirection-form.error')}</cc-error>
         ` : ''}
+
       </cc-block>
     `;
   }
