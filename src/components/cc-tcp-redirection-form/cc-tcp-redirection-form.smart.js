@@ -1,3 +1,4 @@
+import { produce } from '../../lib/immer.js';
 import './cc-tcp-redirection-form.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { addTcpRedir, getTcpRedirs, removeTcpRedir } from '@clevercloud/client/esm/api/v2/application.js';
@@ -56,15 +57,10 @@ defineComponent({
     }, { signal: updateSignal });
 
     target.on('update-redirection', (newRedirection) => {
-      component.redirections = {
-        ...component.redirections,
-        value: component.redirections.value.map((redirection) => {
-          if (redirection.namespace === newRedirection.namespace) {
-            return { ...redirection, ...newRedirection };
-          }
-          return redirection;
-        }),
-      };
+      component.redirections = produce(component.redirections, (draft) => {
+        const redirection = draft.value.find((r) => r.namespace === newRedirection.namespace);
+        Object.assign(redirection, newRedirection);
+      });
     }, { signal: updateSignal });
 
     component.addEventListener('cc-tcp-redirection:create', ({ detail }) => {
