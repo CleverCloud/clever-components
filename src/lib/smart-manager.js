@@ -54,6 +54,29 @@ export function observeContainer (container, signal) {
  */
 export function defineComponent (definition, signal) {
 
+  // TMP: new smart component API
+  if (definition.onConnect == null && definition.onContextUpdate != null) {
+
+    definition.onConnect = (container, component, context$, disconnectSignal) => {
+
+      let lastUpdateContextOrDisconnectController;
+
+      context$.subscribe((context) => {
+
+        if (lastUpdateContextOrDisconnectController != null) {
+          lastUpdateContextOrDisconnectController.abort();
+        }
+
+        lastUpdateContextOrDisconnectController = new AbortController();
+        disconnectSignal.addEventListener('abort', () => lastUpdateContextOrDisconnectController.abort(), { once: true });
+        const updateSignal = lastUpdateContextOrDisconnectController.signal;
+
+        definition.onContextUpdate({ container, component, context, updateSignal });
+      });
+
+    };
+  }
+
   smartComponentDefinitions.add(definition);
   updateEverything();
 

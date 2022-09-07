@@ -13,3 +13,16 @@ export function dispatchCustomEvent (node, eventNameOrSuffix, detail) {
   node.dispatchEvent(event);
   return event;
 }
+
+export class CcEventTarget extends EventTarget {
+
+  dispatch (type, data) {
+    const event = new Event(type);
+    event.data = data;
+    super.dispatchEvent(event);
+  }
+
+  on (type, callback, options) {
+    super.addEventListener(type, (event) => callback(event.data, event), options);
+  }
+}

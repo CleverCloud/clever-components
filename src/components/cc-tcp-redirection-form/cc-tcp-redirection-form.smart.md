@@ -5,6 +5,19 @@ title: '💡 Smart'
 
 # 💡 Smart `<cc-tcp-redirection-form>`
 
+<button class="toggle">null</button>
+<button class="toggle" data-id="app_8f5610ab-1d9f-41b6-854f-85d9a115e417">node</button>
+<button class="toggle" data-id="app_b75977aa-563f-40fd-a592-224a5f6afbd6">java</button>
+<button class="connect">connect</button>
+<button class="disconnect">disconnect</button>
+
+<cc-smart-container context='{
+  "ownerId": "orga_3547a882-d464-4c34-8168-add4b3e0c135"
+}'>
+  <cc-tcp-redirection-form></cc-tcp-redirection-form>
+</cc-smart-container>
+<div class="inert"></div>
+
 ## ℹ️ Details
 
 <table>
