@@ -12,8 +12,7 @@ const noRedirectionSvg = new URL('../../assets/redirection-off.svg', import.meta
 const redirectionSvg = new URL('../../assets/redirection-on.svg', import.meta.url).href;
 
 /**
- * @typedef {import('./cc-tcp-redirection.types.js').RedirectionNamespace} RedirectionNamespace
- * @typedef {import('./cc-tcp-redirection.types.js').Redirection} Redirection
+ * @typedef {import('./cc-tcp-redirection.types.js').RedirectionState} RedirectionState
  */
 
 /**
@@ -28,31 +27,15 @@ export class CcTcpRedirection extends LitElement {
 
   static get properties () {
     return {
-      namespace: { type: String },
-      private: { type: Boolean },
-      skeleton: { type: Boolean },
-      sourcePort: { type: Number, attribute: 'source-port' },
-      waiting: { type: Boolean },
+      redirection: { type: Object },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {string|null} Sets the name of the namespace. */
-    this.namespace = null;
-
-    /** @type {boolean} Set if this namespace is dedicated to the customer. */
-    this.private = false;
-
-    /** @type {boolean} Enables skeleton screen UI pattern (loading hint). */
-    this.skeleton = false;
-
-    /** @type {number|null} Sets the source of the redirection if any. */
-    this.sourcePort = null;
-
-    /** @type {boolean} Sets the waiting state. You should set this to true while an action is in progress. */
-    this.waiting = false;
+    /** @type {RedirectionState} */
+    this.redirection = { state: 'loading' };
   }
 
   _getButtonText () {
@@ -62,17 +45,17 @@ export class CcTcpRedirection extends LitElement {
   }
 
   _getHelpText () {
-    const { namespace, sourcePort } = this;
+    const { namespace, sourcePort } = this.redirection;
     return this._isRedirectionDefined()
       ? i18n('cc-tcp-redirection.redirection-defined', { namespace, sourcePort })
       : i18n('cc-tcp-redirection.redirection-not-defined', { namespace });
   }
 
   _getHelpTextAddendum () {
-    if (this.private) {
+    if (this.redirection.private) {
       return i18n('cc-tcp-redirection.namespace-private');
     }
-    switch (this.namespace) {
+    switch (this.redirection.namespace) {
       case 'default':
         return i18n('cc-tcp-redirection.namespace-additionaldescription-default');
       case 'cleverapps':
@@ -90,44 +73,47 @@ export class CcTcpRedirection extends LitElement {
   }
 
   _isRedirectionDefined () {
-    return this.sourcePort != null;
+    return this.redirection.sourcePort != null;
   }
 
   _onCreate () {
-    dispatchCustomEvent(this, 'create', { namespace: this.namespace });
+    const { namespace } = this.redirection;
+    dispatchCustomEvent(this, 'create', { namespace });
   }
 
   _onDelete () {
-    dispatchCustomEvent(this, 'delete', { namespace: this.namespace, sourcePort: this.sourcePort });
+    const { namespace, sourcePort } = this.redirection;
+    dispatchCustomEvent(this, 'delete', { namespace, sourcePort });
   }
 
   render () {
+    const state = this.redirection.state;
     return html`
       <cc-flex-gap class="wrapper">
-        <div class="icon ${classMap({ skeleton: this.skeleton })}">
-          ${!this.waiting && !this.skeleton ? html`
+        <div class="icon ${classMap({ skeleton: state === 'loading' })}">
+          ${state === 'loaded' ? html`
             <img src=${this._getIconUrl()} alt="">
           ` : ''}
-          ${this.waiting ? html`
+          ${state === 'waiting' ? html`
             <cc-loader></cc-loader>
           ` : ''}
         </div>
-        <cc-flex-gap class="text-button ${classMap({ 'cc-waiting': this.waiting })}">
+        <cc-flex-gap class="text-button ${classMap({ 'cc-waiting': state === 'waiting' })}">
           <div class="text-wrapper">
-            <span class="text ${classMap({ skeleton: this.skeleton })}">${this._getHelpText()}</span>
+            <span class="text ${classMap({ skeleton: state === 'loading' })}">${this._getHelpText()}</span>
             ${this._getHelpTextAddendum() != null ? html`
               <br>
-              <span class="text-addendum ${classMap({ skeleton: this.skeleton })}">${this._getHelpTextAddendum()}</span>
+              <span class="text-addendum ${classMap({ skeleton: state === 'loading' })}">${this._getHelpTextAddendum()}</span>
             ` : ''}
           </div>
           <cc-button
-              outlined
-              ?skeleton=${this.skeleton}
-              ?waiting=${this.waiting}
-              ?danger=${this._isRedirectionDefined()}
-              delay=${this._isRedirectionDefined() ? 3 : 0}
-              ?primary=${!this._isRedirectionDefined()}
-              @cc-button:click=${this._isRedirectionDefined() ? this._onDelete : this._onCreate}
+            outlined
+            ?skeleton=${state === 'loading'}
+            ?waiting=${state === 'waiting'}
+            ?danger=${this._isRedirectionDefined()}
+            delay=${this._isRedirectionDefined() ? 3 : 0}
+            ?primary=${!this._isRedirectionDefined()}
+            @cc-button:click=${this._isRedirectionDefined() ? this._onDelete : this._onCreate}
           >
             ${this._getButtonText()}
           </cc-button>

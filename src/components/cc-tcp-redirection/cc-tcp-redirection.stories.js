@@ -13,25 +13,27 @@ const conf = {
 
 export const defaultStory = makeStory(conf, {
   items: [
-    { namespace: 'default', sourcePort: 5220 },
-    { namespace: 'cleverapps' },
+    { redirection: { state: 'loaded', namespace: 'default', sourcePort: 5220 } },
+    { redirection: { state: 'loaded', namespace: 'cleverapps' } },
   ],
 });
 
 const baseItems = [
-  { namespace: 'customer-name', private: true },
-  { namespace: 'default' },
-  { namespace: 'cleverapps' },
-  { namespace: 'alternative' },
+  { redirection: { state: 'loaded', namespace: 'customer-name', private: true } },
+  { redirection: { state: 'loaded', namespace: 'default' } },
+  { redirection: { state: 'loaded', namespace: 'cleverapps' } },
+  { redirection: { state: 'loaded', namespace: 'alternative' } },
 ];
 
-const baseItemsWithRedirection = baseItems.map((p, i) => ({ ...p, sourcePort: 1000 + i }));
+const baseItemsWithRedirection = baseItems.map((props, i) => {
+  return { redirection: { ...props.redirection, sourcePort: 1000 + i } };
+});
 
 export const loading = makeStory(conf, {
   items: [
-    { skeleton: true, namespace: 'customer-name', sourcePort: 1234, private: true },
-    { skeleton: true, namespace: 'default' },
-    { skeleton: true, namespace: 'cleverapps' },
+    { redirection: { state: 'loading', namespace: 'customer-name', sourcePort: 1234, private: true } },
+    { redirection: { state: 'loading', namespace: 'default' } },
+    { redirection: { state: 'loading', namespace: 'cleverapps' } },
   ],
 });
 
@@ -44,11 +46,15 @@ export const dataLoadedWithNoRedirection = makeStory(conf, {
 });
 
 export const waitingWithRedirection = makeStory(conf, {
-  items: baseItemsWithRedirection.map((p) => ({ ...p, waiting: true })),
+  items: baseItemsWithRedirection.map((props) => {
+    return { redirection: { ...props.redirection, state: 'waiting' } };
+  }),
 });
 
 export const waitingWithNoRedirection = makeStory(conf, {
-  items: baseItems.map((p) => ({ ...p, waiting: true })),
+  items: baseItems.map((props) => {
+    return { redirection: { ...props.redirection, state: 'waiting' } };
+  }),
 });
 
 enhanceStoriesNames({

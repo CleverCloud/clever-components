@@ -1,10 +1,19 @@
-export interface RedirectionNamespace {
-  namespace: string,
+export type RedirectionState = RedirectionStateLoading | RedirectionStateLoaded | RedirectionStateWaiting;
+
+interface RedirectionStateLoading {
+  state: 'loading';
 }
 
-export interface Redirection {
-  namespace: string,
-  sourcePort: number,
+interface RedirectionStateLoaded {
+  state: 'loaded';
+  namespace: string;
+  private: boolean;
+  sourcePort?: number;
 }
 
-export type ContextRedirectionType = "user" | "admin";
+interface RedirectionStateWaiting {
+  state: 'waiting';
+  namespace: string;
+  private: boolean;
+  sourcePort?: number;
+}
