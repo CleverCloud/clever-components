@@ -10,7 +10,6 @@ import { notifyError, notifySuccess } from '../../lib/notifications.js';
 
 document.addEventListener('click', (e) => {
   if (e.target.matches('button.toggle')) {
-    console.log('e.target.dataset.id', e.target.dataset.id);
     const $container = document.querySelector('cc-smart-container');
     $container.context = {
       ...$container.context,
@@ -38,72 +37,77 @@ defineComponent({
   },
   onContextUpdate ({ component, context, updateSignal }) {
 
+    const target = new CcEventTarget();
+
     // Pierre : c'est un peu chiant de devoir check si tout est différent de null pour faire le fetch
     // Pierre : plus de magie pour faciliter l'écriture de tout ça avec des helpers
     // Pierre : nommage sur le onContextUpdate et sur le updateSignal, il faut creuser un peu
 
     const { apiConfig, ownerId, appId } = context;
 
-    component.redirections = null;
-    component.error = false;
+    if (apiConfig == null || ownerId == null || appId == null) {
+      return;
+    }
 
-    const target = new CcEventTarget();
+    component.redirections = { state: 'loading' };
 
-    target.on('update-redirection', (newRedirection) => {
-      component.redirections = component.redirections.map((redirection) => {
-        if (redirection.namespace === newRedirection.namespace) {
-          return { ...redirection, ...newRedirection };
-        }
-        return redirection;
-      });
-    }, { signal: updateSignal });
-
-    target.on('api-ok', (redirections) => {
+    target.on('redirections', (redirections) => {
       component.redirections = redirections;
     }, { signal: updateSignal });
 
-    target.on('api-ko', (error) => {
-      console.error(error);
-      component.error = true;
+    target.on('update-redirection', (newRedirection) => {
+      component.redirections = {
+        ...component.redirections,
+        value: component.redirections.value.map((redirection) => {
+          if (redirection.namespace === newRedirection.namespace) {
+            return { ...redirection, ...newRedirection };
+          }
+          return redirection;
+        }),
+      };
     }, { signal: updateSignal });
 
     component.addEventListener('cc-tcp-redirection:create', ({ detail }) => {
       const namespace = detail.namespace;
-      target.dispatch('update-redirection', { namespace, waiting: true });
+      target.dispatch('update-redirection', { namespace, state: 'waiting' });
       createTcpRedirection({ apiConfig, ownerId, appId, namespace })
         .then((redirection) => {
-          target.dispatch('update-redirection', { namespace, waiting: false, sourcePort: redirection.port });
+          target.dispatch('update-redirection', { namespace, state: 'loaded', sourcePort: redirection.port });
           notifySuccess(component, i18n('cc-tcp-redirection-form.create.success', { namespace }));
         })
         .catch(() => {
-          target.dispatch('update-redirection', { namespace, waiting: false });
+          target.dispatch('update-redirection', { namespace, state: 'loaded' });
           notifyError(component, i18n('cc-tcp-redirection-form.create.error', { namespace }));
         });
     }, { signal: updateSignal });
 
     component.addEventListener('cc-tcp-redirection:delete', ({ detail }) => {
       const { namespace, sourcePort } = detail;
-      target.dispatch('update-redirection', { namespace, waiting: true });
+      target.dispatch('update-redirection', { namespace, state: 'waiting' });
       deleteTcpRedirection({ apiConfig, ownerId, appId, namespace, sourcePort })
         .then((redirection) => {
-          target.dispatch('update-redirection', { namespace, waiting: false, sourcePort: null });
+          target.dispatch('update-redirection', { namespace, state: 'loaded', sourcePort: null });
           notifySuccess(component, i18n('cc-tcp-redirection-form.delete.success', { namespace }));
         })
         .catch(() => {
-          target.dispatch('update-redirection', { namespace, waiting: false });
+          target.dispatch('update-redirection', { namespace, state: 'loaded' });
           notifyError(component, i18n('cc-tcp-redirection-form.delete.error', { namespace }));
         });
     }, { signal: updateSignal });
 
-    if (apiConfig != null && ownerId != null && appId != null) {
-      fetchTcpRedirectionsAndNamespaces({ apiConfig, signal: updateSignal, ownerId, appId })
-        .then((redirections) => {
-          target.dispatch('api-ok', redirections);
-        })
-        .catch((error) => {
-          target.dispatch('api-ko', error);
+    fetchTcpRedirectionsAndNamespaces({ apiConfig, signal: updateSignal, ownerId, appId })
+      .then((redirections) => {
+        target.dispatch('redirections', {
+          state: 'loaded',
+          value: redirections.map((r) => ({ state: 'loaded', ...r })),
         });
-    }
+      })
+      .catch((error) => {
+        console.error(error);
+        target.dispatch('redirections', {
+          state: 'error-loading',
+        });
+      });
   },
 });
 
