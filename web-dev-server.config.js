@@ -3,7 +3,7 @@ import rollupCommonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import { fromRollup, rollupAdapter } from '@web/dev-server-rollup';
 import { storybookWdsPlugin } from './src/stories/lib/markdown.cjs';
-import { generateCustomElementsManifest } from './tasks/cem-analyzer.js';
+import { cemAnalyzerPlugin } from './wds/cem-analyzer-plugin.js';
 import { esbuildBundlePlugin } from './wds/esbuild-bundle-plugin.js';
 
 const commonjs = fromRollup(rollupCommonjs);
@@ -94,16 +94,6 @@ const injectAuthForSmartComponentsPlugin = {
           },
         });
       `;
-    }
-  },
-};
-
-// This plugin generates and serves the CEM on demand.
-const cemAnalyzerPlugin = {
-  name: 'cem-analyzer-plugin',
-  async serve (context) {
-    if (context.path === '/dist/custom-elements.json') {
-      return generateCustomElementsManifest();
     }
   },
 };
