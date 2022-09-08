@@ -97,5 +97,6 @@ enhanceStoriesNames({
   defaultStory,
   skeleton,
   error,
+  noVersion,
   simulations,
 });

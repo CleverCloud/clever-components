@@ -55,5 +55,6 @@ enhanceStoriesNames({
   confirm,
   notice,
   noticeInfo,
+  noticeLoading,
   noticeConfirm,
 });

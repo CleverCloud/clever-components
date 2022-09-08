@@ -126,6 +126,7 @@ export const simulationsWithError = makeStory(conf, {
 });
 
 enhanceStoriesNames({
+  defaultStory,
   skeleton,
   error,
   empty,
