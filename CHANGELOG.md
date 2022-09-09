@@ -25,7 +25,18 @@ title: Changelog
 ### For devs
 
 * Improve display of `components:check-i18n` task.
-* Upgrade from `lit-element@2.5.1` to `lit@2.3.1`
+* Upgrade from `lit-element@2.5.1` to `lit@2.3.1`.
+* Upgrade from `@web/dev-server@0.1.29` to `@web/dev-server@0.1.34`.
+* Upgrade from `@open-wc/dev-server-hmr@0.1.2` to `@web/dev-server@0.1.3`.
+* Upgrade from `@open-wc/dev-server-hmr@0.1.2` to `@web/dev-server@0.1.3`.
+* Upgrade from `@web/dev-server-rollup@0.3.13` to `@web/dev-server@0.3.19`.
+* Upgrade from `@web/dev-server-storybook@0.4.1` to `@web/dev-server@0.5.4`.
+* Upgrade from `@web/rollup-plugin-import-meta-assets@0.4.1` to `@web/dev-server@0.5.4`.
+* Upgrade from `@web/rollup-plugin-import-meta-assets@1.0.6` to `@web/rollup-plugin-import-meta-assets@1.0.7`.
+* Upgrade from `@web/test-runner@0.13.4` to `@web/test-runner@0.14.0`.
+* Upgrade from `@web/test-runner-mocha@0.7.2` to `@web/test-runner-mocha@0.7.5`.
+* Upgrade from `@custom-elements-manifest/analyzer@0.4.1` to `@custom-elements-manifest/analyzer@0.6.4`.
+* Fix Custom Element Manifest generation web dev server plugin: disable caching
 
 ## 9.0.0 (2022-07-19)
 
