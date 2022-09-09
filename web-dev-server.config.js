@@ -1,16 +1,9 @@
 import { hmrPlugin, presets } from '@open-wc/dev-server-hmr';
-import rollupCommonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
-import { fromRollup, rollupAdapter } from '@web/dev-server-rollup';
+import { rollupAdapter } from '@web/dev-server-rollup';
 import { storybookWdsPlugin } from './src/stories/lib/markdown.cjs';
 import { cemAnalyzerPlugin } from './wds/cem-analyzer-plugin.js';
-import { esbuildBundlePlugin } from './wds/esbuild-bundle-plugin.js';
-
-const commonjs = fromRollup(rollupCommonjs);
-
-function commonJsIdentifiers (ids) {
-  return ids.map((id) => `**/node_modules/${id}/**/*`);
-}
+import { commonjsPluginWithConfig, esbuildBundlePluginWithConfig } from './wds/wds-common.js';
 
 const hmrI18nPlugin = {
   name: 'hmr-i18n',
@@ -133,21 +126,7 @@ export default {
       presets: [presets.lit],
     }),
     rollupAdapter(json()),
-    esbuildBundlePlugin({
-      pathsToBundle: [
-        '/src/lib/leaflet-esm.js',
-        '/node_modules/rxjs/dist/esm5/index.js',
-        '/node_modules/chart.js/dist/chart.esm.js',
-      ],
-    }),
-    commonjs({
-      // the commonjs plugin is slow, list the required packages explicitly:
-      include: commonJsIdentifiers([
-        'statuses',
-        // used by clever-client
-        'oauth-1.0a',
-        'component-emitter',
-      ]),
-    }),
+    esbuildBundlePluginWithConfig,
+    commonjsPluginWithConfig,
   ],
 };

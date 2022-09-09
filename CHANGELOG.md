@@ -48,6 +48,10 @@ title: Changelog
 * Introduce a new defineSmartComponent function
 * Add `FocusLostController`, a Lit Reactive Controller that helps manage focus loss.
 * Add new eslint plugin `eslint-plugin-lit-a11y` to prevent accessibility issues.
+* Add new dependency `@open-wc/testing` to allow Web Test Runner to run tests for accessibility issues.
+* Add new dependency `@web/test-runner-commands` so that Web Test Runner can test both on desktop and mobile.
+* Add new helpers to extract stories and run accessibility test on them.
+* Add new test files in most of the component folders. These test files only contain accessibility tests for the moment.
 
 ## 9.0.0 (2022-07-19)
 
