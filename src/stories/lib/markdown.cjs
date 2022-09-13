@@ -49,7 +49,7 @@ function markdownToCsfWithDocsPage (markdownText) {
     .use(remarkGfm)
     .use(frontmatter, ['yaml'])
     .use(highlight)
-    .use(remark2Html);
+    .use(remark2Html, { sanitize: false });
 
   const markdownAst = processor.parse(markdownText);
 
