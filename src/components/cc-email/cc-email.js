@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { validateEmailAddress } from '../../lib/email.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { fakeString } from '../../lib/fake-strings.js';
@@ -20,12 +21,18 @@ const verifiedSvg = new URL('../../assets/checkbox-circle-fill.svg', import.meta
 const unverifiedSvg = new URL('../../assets/spam-2-fill.svg', import.meta.url).href;
 const blankSvg = new URL('../../assets/blank.svg', import.meta.url).href;
 
+/** @type{PrimaryEmailAddressState} */
+const SKELETON_PRIMARY_EMAIL = {
+  state: 'idle',
+  address: fakeString(35),
+  verified: true,
+};
+
 /**
- * @typedef {import('./cc-email.types.js').CcEmailState} CcEmailState
- * @typedef {import('./cc-email.types.js').PrimaryEmailAddress} PrimaryEmailAddress
- * @typedef {import('./cc-email.types.js').SecondaryEmailAddresses} SecondaryEmailAddresses
- * @typedef {import('./cc-email.types.js').FormData} FormData
- * @typedef {import('./cc-email.types.js').FormError} FormError
+ * @typedef {import('./cc-email.types.js').EmailsState} EmailsState
+ * @typedef {import('./cc-email.types.js').PrimaryEmailAddressState} PrimaryEmailAddressState
+ * @typedef {import('./cc-email.types.js').SecondaryEmailAddressState} SecondaryEmailAddressState
+ * @typedef {import('./cc-email.types.js').NewEmailFormState} NewEmailFormState
  */
 
 /**
@@ -63,260 +70,189 @@ const blankSvg = new URL('../../assets/blank.svg', import.meta.url).href;
  */
 export class CcEmail extends LitElement {
 
+  static get properties () {
+    return {
+      emails: { type: Object },
+      newEmailForm: { type: Object },
+    };
+  }
+
   constructor () {
     super();
 
-    /** @type {CcEmailState} state of the component. */
-    this.state = { type: 'loading' };
+    /** @type {EmailsState}  */
+    this.emails = { state: 'loading' };
 
-    /** @type {FormState} The form state. */
-    this._formState = {
-      type: 'idle',
-      input: '',
+    /** @type {NewEmailFormState} The form state. */
+    this.newEmailForm = {
+      state: 'idle',
+      address: {
+        value: '',
+      },
     };
 
-    /**
-     * @type {'empty'|'invalid'|'already-defined'|'used'|null}
-     * The code of the error message displayed bellow the address text input.
-     *  | code |  |
-     *  | --- | --- |
-     *  | `empty` | the text input is empty |
-     *  | `invalid` | the text input is not a valid e-mail address |
-     *  | `already-defined` | the e-mail address is already defined as primary or secondary |
-     *  | `used` | the e-mail address is already owned by another user account |
-     */
+    this._inputRef = createRef();
   }
 
-  static get properties () {
-    return {
-      state: { type: String },
-      data: { type: Object },
-      _formState: { type: Object },
-    };
+  _getVerifiedTagLabel (isVerififed) {
+    return isVerififed
+      ? i18n('cc-email.primary.email.verified')
+      : i18n('cc-email.primary.email.unverified');
   }
 
-  updated (_changedProperties) {
-    if (this._formState.error != null) {
-      this._focusAddressInput();
-    }
-
-    super.updated(_changedProperties);
-  }
-
-  /**
-   * @return {CcEmailData | null}
-   */
-  get data () {
-    return this.state?.type === 'loaded' ? this.state.data : null;
-  }
-
-  _isLoading () {
-    return this.state?.type === 'loading';
-  }
-
-  _isError () {
-    return this.state?.type === 'error';
-  }
-
-  _getVerifiedTagLabel () {
-    const verifiedLabel = i18n('cc-email.primary.email.verified');
-
-    if (this._isLoading()) {
-      return fakeString(verifiedLabel.length);
-    }
-    return this.data?.primary?.data?.verified ? verifiedLabel : i18n('cc-email.primary.email.unverified');
-  }
-
-  _getInputError () {
-    if (this._formState.error === 'empty') {
+  _getInputError (error) {
+    if (error === 'empty') {
       return i18n(`cc-email.secondary.address-input.error.empty`);
     }
-    if (this._formState.error === 'used') {
+    if (error === 'used') {
       return i18n(`cc-email.secondary.address-input.error.used`);
     }
-    if (this._formState.error === 'invalid') {
+    if (error === 'invalid') {
       return i18n(`cc-email.secondary.address-input.error.invalid`);
     }
-    if (this._formState.error === 'already-defined') {
+    if (error === 'already-defined') {
       return i18n(`cc-email.secondary.address-input.error.already-defined`);
     }
   }
 
-  _focusAddressInput () {
-    this.shadowRoot.querySelector('cc-input-text').focus();
-  }
-
-  _onDelete (address) {
-    dispatchCustomEvent(this, 'delete', address);
+  _onSendConfirmationEmail () {
+    dispatchCustomEvent(this, 'send-confirmation-email', this.emails.primary.address);
   }
 
   _onMarkAsPrimary (address) {
     dispatchCustomEvent(this, 'mark-as-primary', address);
   }
 
-  _onInput ({ detail: value }) {
-    this.formInput(value);
+  _onDelete (address) {
+    dispatchCustomEvent(this, 'delete', address);
   }
 
-  _onAdd () {
-    this.formError(validateEmailAddress(this._formState.input));
+  _onAddNewEmail () {
 
-    if (this._formState.error == null) {
-      dispatchCustomEvent(this, 'add', this._formState.input);
+    const newEmailAddress = this._inputRef.value.value;
+    const error = validateEmailAddress(newEmailAddress);
+
+    this.newEmailForm = {
+      state: 'idle',
+      address: {
+        value: newEmailAddress,
+        error,
+      },
+    };
+
+    if (error == null) {
+      dispatchCustomEvent(this, 'add', newEmailAddress);
     }
-    else {
-      this._focusAddressInput();
-    }
-  }
-
-  _onSendConfirmationEmail () {
-    dispatchCustomEvent(this, 'send-confirmation-email', this.data.primary.data.address);
-  }
-
-  formAdding () {
-    this._formState = {
-      type: 'adding',
-      input: this._formState.input,
-    };
-  }
-
-  formIdle () {
-    this._formState = {
-      type: 'idle',
-      input: this._formState.input,
-    };
-  }
-
-  /**
-   * @param {FormError} error
-   */
-  formError (error) {
-    this._formState = {
-      type: 'idle',
-      input: this._formState.input,
-      error: error,
-    };
-  }
-
-  /**
-   * @param {string} input
-   */
-  formInput (input) {
-    this._formState = {
-      type: 'idle',
-      input: input,
-      error: this._formState.error,
-    };
-  }
-
-  resetForm () {
-    this._formState = {
-      type: 'idle',
-      input: '',
-    };
-  }
-
-  reset () {
-    this.state = { type: 'loading' };
-    this.resetForm();
   }
 
   render () {
+    const state = this.emails.state;
     return html`
       <cc-block>
         <div slot="title">${i18n('cc-email.title')}</div>
 
-        ${this._isError() ? html`
-          <cc-error>${i18n('cc-email.loading.error')}</cc-error>
+        ${state === 'loading' ? html`
+          ${this._renderPrimarySection(state, SKELETON_PRIMARY_EMAIL)}
+          ${this._renderSecondarySection([])}
         ` : ''}
 
-        ${!this._isError() ? html`
-          ${this._renderPrimarySection()}
-          ${this._renderSecondarySection()}
+        ${state === 'loaded' ? html`
+          ${this._renderPrimarySection(state, this.emails.primary)}
+          ${this._renderSecondarySection(this.emails.secondary)}
+        ` : ''}
+
+        ${state === 'error-loading' ? html`
+          <cc-error>${i18n('cc-email.loading.error')}</cc-error>
         ` : ''}
       </cc-block>
     `;
   }
 
-  _renderPrimarySection () {
-    const skeleton = this._isLoading();
-    const address = skeleton ? fakeString(35) : this.data?.primary?.data?.address;
-    const verified = this.data?.primary?.data?.verified;
-    const shouldDisplayResendConfirmationEmail = !skeleton && !verified;
+  /**
+   * @param {string} state
+   * @param {PrimaryEmailAddressState} primaryEmail
+   * @returns {TemplateResult<1>}
+   */
+  _renderPrimarySection (state, primaryEmail) {
 
-    const badgeIntent = skeleton ? 'neutral' : verified ? 'success' : 'danger';
-    const badgeWeight = skeleton ? 'dimmed' : 'outlined';
-    const badgeIcon = skeleton ? blankSvg : verified ? verifiedSvg : unverifiedSvg;
+    const skeleton = state === 'loading';
+    const badgeIntent = primaryEmail.verified ? 'success' : 'danger';
+    const badgeIcon = primaryEmail.verified ? verifiedSvg : unverifiedSvg;
+    const shouldDisplayResendConfirmationEmail = state === 'loaded' && !primaryEmail.verified;
 
     return html`
       <cc-block-section>
         <div slot="title">${i18n('cc-email.primary.title')}</div>
         <div slot="info">${i18n('cc-email.primary.description')}</div>
-        
+
         <cc-flex-gap class="address-line primary">
           <div class="address">
             <div class="icon"><img src="${mailStarSvg}" alt=""/></div>
-            <span class="${classMap({ skeleton: skeleton })}">${address}</span>  
+            <span class="${classMap({ skeleton })}">${primaryEmail.address}</span>
           </div>
           <cc-badge
-            class="${classMap({ skeleton: skeleton })}"
+            class="${classMap({ skeleton })}"
             intent="${badgeIntent}"
-            weight="${badgeWeight}"
+            weight="dimmed"
             icon-src="${badgeIcon}"
             icon-alt=""
-          >${this._getVerifiedTagLabel()}</cc-badge>
+          >${this._getVerifiedTagLabel(primaryEmail.verified)}
+          </cc-badge>
         </cc-flex-gap>
-        <cc-flex-gap>
-          ${shouldDisplayResendConfirmationEmail ? html`
-            <cc-button
-                @cc-button:click=${this._onSendConfirmationEmail}
-                ?waiting=${this.data?.primary?.state === 'sending-confirmation-email'}
-                link
-            >
-              ${i18n('cc-email.primary.action.resend-confirmation-email')}
-            </cc-button>
-          ` : ''}
-        </cc-flex-gap>
+
+        ${shouldDisplayResendConfirmationEmail ? html`
+          <cc-button
+            @cc-button:click=${this._onSendConfirmationEmail}
+            ?waiting=${primaryEmail.state === 'sending-confirmation'}
+            link
+          >
+            ${i18n('cc-email.primary.action.resend-confirmation-email')}
+          </cc-button>
+        ` : ''}
+
       </cc-block-section>
     `;
   }
 
-  _renderSecondarySection () {
-    /** @type {InnerState<EmailAddress, SecondaryState>[]} */
-    const addresses = [...(this._isLoading() ? [] : (this.data?.secondaryAddresses || []))]
-      .sort((a1, a2) => a1.data.address.localeCompare(a2.data.address));
-    const markingAsPrimary = addresses.some((item) => item.state === 'marking-as-primary');
+  /**
+   * @param {SecondaryEmailAddressState[]} emailList
+   * @returns {TemplateResult<1>}
+   */
+  _renderSecondarySection (emailList) {
+
+    const isMarkingAsPrimary = emailList.some((email) => email.state === 'marking-as-primary');
 
     return html`
       <cc-block-section>
         <div slot="title">${i18n('cc-email.secondary.title')}</div>
         <div slot="info">${i18n('cc-email.secondary.description')}</div>
 
-        ${addresses.map((item) => {
-          const busy = item.state === 'marking-as-primary' || item.state === 'deleting';
-          const markingAsPrimaryDisabled = this.data?.primary.data.verified === false;
+        ${emailList.map((email) => {
+
+          const busy = email.state === 'marking-as-primary' || email.state === 'deleting';
+          const primaryEmailUnverified = !this.emails.primary.verified;
 
           return html`
             <cc-flex-gap class="address-line secondary">
               <div class="address ${classMap({ loading: busy })}">
-                <div class="icon"><img src="${mailSvg}" alt=""/></div>
-                <span>${item.data.address}</span>
+                <div class="icon"><img src="${mailSvg}" alt=""></div>
+                <span>${email.address}</span>
               </div>
               <cc-flex-gap class="buttons">
                 <cc-button
-                    @cc-button:click=${() => this._onMarkAsPrimary(item.data.address)}
-                    ?waiting="${item.state === 'marking-as-primary'}"
-                    ?disabled="${markingAsPrimary || busy || markingAsPrimaryDisabled}"
+                  @cc-button:click=${() => this._onMarkAsPrimary(email.address)}
+                  ?waiting="${email.state === 'marking-as-primary'}"
+                  ?disabled=${busy || isMarkingAsPrimary || primaryEmailUnverified}
                 >
                   ${i18n('cc-email.secondary.action.mark-as-primary')}
                 </cc-button>
                 <cc-button
-                    danger
-                    outlined
-                    image=${trashSvg}
-                    @cc-button:click=${() => this._onDelete(item.data.address)}
-                    ?waiting="${item.state === 'deleting'}"
-                    ?disabled="${busy}"
+                  danger
+                  outlined
+                  image=${trashSvg}
+                  @cc-button:click=${() => this._onDelete(email.address)}
+                  ?waiting="${email.state === 'deleting'}"
+                  ?disabled=${busy}
                 >
                   ${i18n('cc-email.secondary.action.delete')}
                 </cc-button>
@@ -324,33 +260,34 @@ export class CcEmail extends LitElement {
             </cc-flex-gap>
           `;
         })}
-        
+
         <form>
           <cc-input-text
+            ${ref(this._inputRef)}
             label="${i18n('cc-email.secondary.address-input.label')}"
             required
-            value="${this._formState.input}"
-            ?disabled=${this._formState.type === 'adding'}
-            @cc-input-text:input=${this._onInput}
-            @cc-input-text:requestimplicitsubmit=${this._onAdd}
-        >
-          ${this._formState.error != null ? html`
-            <p slot="error">
-              ${this._getInputError()}
+            value="${this.newEmailForm.address.value}"
+            ?disabled=${this.newEmailForm.state === 'adding'}
+            @cc-input-text:requestimplicitsubmit=${this._onAddNewEmail}
+          >
+            ${this.newEmailForm.address.error != null ? html`
+              <p slot="error">
+                ${this._getInputError(this.newEmailForm.address.error)}
+              </p>
+            ` : ''}
+            <p slot="help">
+              ${i18n('cc-email.secondary.address-input.format')}
             </p>
-          ` : ''}
-          <p slot="help">
-            ${i18n('cc-email.secondary.address-input.format')}
-          </p>
-        </cc-input-text>
-        <cc-button
+          </cc-input-text>
+          <cc-button
             primary
-            ?waiting=${this._formState.type === 'adding'}
-            @cc-button:click=${this._onAdd}
-        >
-          ${i18n('cc-email.secondary.action.add')}
-        </cc-button>
-      </form>
+            ?waiting=${this.newEmailForm.state === 'adding'}
+            @cc-button:click=${this._onAddNewEmail}
+          >
+            ${i18n('cc-email.secondary.action.add')}
+          </cc-button>
+        </form>
+
       </cc-block-section>
     `;
   }
@@ -370,11 +307,11 @@ export class CcEmail extends LitElement {
         }
 
         /*region ADDRESS*/
-        
+
         .address-line .address.loading {
           opacity: 0.5;
         }
-        
+
         .address-line .address .icon {
           display: flex;
         }
@@ -407,7 +344,7 @@ export class CcEmail extends LitElement {
           display: flex;
           gap: 1em;
         }
-        
+
         form > cc-input-text {
           flex: 1 1 0;
         }
