@@ -174,18 +174,15 @@ defineComponent({
 
     fetchEmailAddresses({ apiConfig, signal: updateSignal })
       .then(({ primary, secondary }) => {
-        component.emails = produce(component.emails, (draft) => {
+        updateComponent(component, 'emails', (draft) => {
           draft.state = 'loaded';
-          draft.primary = {
-            state: 'idle',
-            ...primary,
-          };
+          draft.primary = { state: 'idle', ...primary };
           draft.secondary = secondary.map((address) => ({ state: 'idle', address }));
         });
       })
       .catch((error) => {
         console.error(error);
-        component.emails = produce(component.emails, (draft) => {
+        updateComponent(component, 'emails', (draft) => {
           draft.state = 'error-loading';
         });
       });
@@ -198,11 +195,12 @@ function sleep (delay) {
 }
 
 async function fetchEmailAddresses ({ apiConfig, signal }) {
+  await sleep(2000);
   return {
     primary: {
       address: 'primary@example.com',
-      verified: true,
-      // verified: false,
+      // verified: true,
+      verified: false,
     },
     secondary: ['secondary@example.com', 'other-secondary@example.com'],
   };
