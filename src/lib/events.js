@@ -1,3 +1,5 @@
+import { produce } from 'immer';
+
 /**
  * Send a custom event in the format node => tagName:eventSuffix
  * @param {Window|Node} node
@@ -25,4 +27,17 @@ export class CcEventTarget extends EventTarget {
   on (type, callback, options) {
     super.addEventListener(type, (event) => callback(event.data, event), options);
   }
+}
+
+export function getComponentUpdater (component, signal) {
+
+  const target = new CcEventTarget();
+
+  target.on('update-component', ({ property, callback }) => {
+    component[property] = produce(component[property], callback);
+  }, { signal });
+
+  return (property, callback) => {
+    target.dispatch('update-component', { property, callback });
+  };
 }

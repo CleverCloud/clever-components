@@ -7,8 +7,7 @@ import {
   todo_getConfirmationEmail as sendConfirmationEmail,
   todo_getEmailAddresses as getSecondaryEmailAddresses,
 } from '@clevercloud/client/esm/api/v2/user.js';
-import { produce } from 'immer';
-import { CcEventTarget } from '../../lib/events.js';
+import { getComponentUpdater } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
@@ -21,12 +20,12 @@ defineComponent({
   },
   onContextUpdate ({ container, component, context, updateSignal }) {
 
-    const target = new CcEventTarget();
-
     const { apiConfig } = context;
     if (apiConfig == null) {
       return;
     }
+
+    const updateComponent = getComponentUpdater(component, updateSignal);
 
     // Reset component
     component.emails = { state: 'loading' };
@@ -37,18 +36,10 @@ defineComponent({
       },
     };
 
-    function updateComponent (component, property, callback) {
-      target.dispatch('update-component', { component, property, callback });
-    }
-
-    target.on('update-component', ({ component, property, callback }) => {
-      component[property] = produce(component[property], callback);
-    }, { signal: updateSignal });
-
     component.addEventListener('cc-email:send-confirmation-email', ({ detail }) => {
       const address = component.emails.primary.address;
-      updateComponent(component, 'emails', (draft) => {
-        draft.primary.state = 'sending-confirmation';
+      updateComponent('emails', (emails) => {
+        emails.primary.state = 'sending-confirmation';
       });
       doSendConfirmationEmail({ apiConfig, signal: updateSignal })
         .then(() => {
@@ -64,26 +55,26 @@ defineComponent({
         })
         .catch(() => notifyError(component, i18n('cc-email.primary.action.resend-confirmation-email.error')))
         .finally(() => {
-          updateComponent(component, 'emails', (draft) => {
-            draft.primary.state = 'idle';
+          updateComponent('emails', (emails) => {
+            emails.primary.state = 'idle';
           });
         });
     }, { signal: updateSignal });
 
     component.addEventListener('cc-email:mark-as-primary', ({ detail }) => {
       const address = detail;
-      updateComponent(component, 'emails', (draft) => {
-        const email = draft.secondary.find((e) => e.address === address);
+      updateComponent('emails', (emails) => {
+        const email = emails.secondary.find((e) => e.address === address);
         email.state = 'marking-as-primary';
       });
       doMarkEmailAddressAsPrimary({ apiConfig, signal: updateSignal, address })
         .then(() => {
           notifySuccess(component, i18n('cc-email.secondary.action.mark-as-primary.success'));
-          updateComponent(component, 'emails', (draft) => {
-            const primaryEmail = draft.primary.address;
-            draft.primary.address = address;
-            const emailIndex = draft.secondary.findIndex((e) => e.address === address);
-            draft.secondary[emailIndex] = {
+          updateComponent('emails', (emails) => {
+            const primaryEmail = emails.primary.address;
+            emails.primary.address = address;
+            const emailIndex = emails.secondary.findIndex((e) => e.address === address);
+            emails.secondary[emailIndex] = {
               state: 'idle',
               address: primaryEmail,
             };
@@ -91,8 +82,8 @@ defineComponent({
         })
         .catch(() => {
           notifyError(component, i18n('cc-email.secondary.action.mark-as-primary.error'));
-          updateComponent(component, 'emails', (draft) => {
-            const email = draft.secondary.find((e) => e.address === address);
+          updateComponent('emails', (emails) => {
+            const email = emails.secondary.find((e) => e.address === address);
             email.state = 'idle';
           });
         })
@@ -102,21 +93,21 @@ defineComponent({
 
     component.addEventListener('cc-email:delete', ({ detail }) => {
       const address = detail;
-      updateComponent(component, 'emails', (draft) => {
-        const email = draft.secondary.find((e) => e.address === address);
+      updateComponent('emails', (emails) => {
+        const email = emails.secondary.find((e) => e.address === address);
         email.state = 'deleting';
       });
       doDeleteEmailAddress({ apiConfig, signal: updateSignal, address })
         .then(() => {
           notifySuccess(component, i18n('cc-email.secondary.action.delete.success'));
-          updateComponent(component, 'emails', (draft) => {
-            draft.secondary = draft.secondary.filter((email) => email.address !== address);
+          updateComponent('emails', (emails) => {
+            emails.secondary = emails.secondary.filter((email) => email.address !== address);
           });
         })
         .catch(() => {
           notifyError(component, i18n('cc-email.secondary.action.delete.error'));
-          updateComponent(component, 'emails', (draft) => {
-            const email = draft.secondary.find((e) => e.address === address);
+          updateComponent('emails', (emails) => {
+            const email = emails.secondary.find((e) => e.address === address);
             email.state = 'idle';
           });
         })
@@ -125,8 +116,8 @@ defineComponent({
     }, { signal: updateSignal });
 
     component.addEventListener('cc-email:add', ({ detail }) => {
-      updateComponent(component, 'newEmailForm', (draft) => {
-        draft.state = 'adding';
+      updateComponent('newEmailForm', (newEmailForm) => {
+        newEmailForm.state = 'adding';
       });
       const address = detail;
       doAddSecondaryEmailAddress({ apiConfig, signal: updateSignal, address })
@@ -140,10 +131,10 @@ defineComponent({
               closeable: true,
             },
           });
-          updateComponent(component, 'newEmailForm', (draft) => {
-            draft.state = 'idle';
-            draft.address.value = '';
-            draft.address.error = null;
+          updateComponent('newEmailForm', (newEmailForm) => {
+            newEmailForm.state = 'idle';
+            newEmailForm.address.value = '';
+            newEmailForm.address.error = null;
           });
         })
         .catch((error) => {
@@ -165,25 +156,25 @@ defineComponent({
             // If the error is null, we should roll it back to null
           }
 
-          updateComponent(component, 'newEmailForm', (draft) => {
-            draft.state = 'idle';
-            draft.address.error = formError;
+          updateComponent('newEmailForm', (newEmailForm) => {
+            newEmailForm.state = 'idle';
+            newEmailForm.address.error = formError;
           });
         });
     }, { signal: updateSignal });
 
     fetchEmailAddresses({ apiConfig, signal: updateSignal })
       .then(({ primary, secondary }) => {
-        updateComponent(component, 'emails', (draft) => {
-          draft.state = 'loaded';
-          draft.primary = { state: 'idle', ...primary };
-          draft.secondary = secondary.map((address) => ({ state: 'idle', address }));
+        updateComponent('emails', (newEmailForm) => {
+          newEmailForm.state = 'loaded';
+          newEmailForm.primary = { state: 'idle', ...primary };
+          newEmailForm.secondary = secondary.map((address) => ({ state: 'idle', address }));
         });
       })
       .catch((error) => {
         console.error(error);
-        updateComponent(component, 'emails', (draft) => {
-          draft.state = 'error-loading';
+        updateComponent('emails', (emails) => {
+          emails.state = 'error-loading';
         });
       });
 
@@ -199,8 +190,8 @@ async function fetchEmailAddresses ({ apiConfig, signal }) {
   return {
     primary: {
       address: 'primary@example.com',
-      // verified: true,
-      verified: false,
+      verified: true,
+      // verified: false,
     },
     secondary: ['secondary@example.com', 'other-secondary@example.com'],
   };
