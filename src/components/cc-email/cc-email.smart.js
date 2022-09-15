@@ -1,106 +1,97 @@
 import './cc-email.js';
 import '../cc-smart-container/cc-smart-container.js';
 // eslint-disable-next-line camelcase
-import { todo_addEmailAddress, todo_getEmailAddresses, todo_removeEmailAddress } from '@clevercloud/client/esm/api/v2/user.js';
+import { get as getSelf } from '@clevercloud/client/esm/api/v2/organisation.js';
+import {
+  todo_addEmailAddress as addSecondaryEmailAddress,
+  todo_getConfirmationEmail as sendConfirmationEmail,
+  todo_getEmailAddresses as getSecondaryEmailAddresses,
+} from '@clevercloud/client/esm/api/v2/user.js';
+import { produce } from 'immer';
+import { CcEventTarget } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
-import { fromCustomEvent, LastPromise, unsubscribeWithSignal, withLatestFrom } from '../../lib/observables.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineComponent } from '../../lib/smart-manager.js';
-import { createStateHelper } from './stateHelpers.js';
 
 defineComponent({
   selector: 'cc-email',
   params: {
     apiConfig: { type: Object },
   },
-  /**
-   *
-   * @param container
-   * @param {CcEmail} component
-   * @param context$
-   * @param disconnectSignal
-   */
-  onConnect (container, component, context$, disconnectSignal) {
-    /**
-     * @type {StateHelper<CcEmailData>}
-     */
-    const stateHelper = createStateHelper(component);
+  onContextUpdate ({ container, component, context, updateSignal }) {
 
-    /**
-     * @type {InnerStateHelper<EmailAddress, PrimaryState>}
-     */
-    const primaryStateHelper = stateHelper.createInnerStateHelper('primary');
-    /**
-     * @type {InnerListStateHelper<EmailAddress, SecondaryState>}
-     */
-    const secondaryStateHelper = stateHelper.createInnerListStateHelper('secondaryAddresses');
-    const findSecondaryByAddress = (address) => (d) => d.address === address;
+    const target = new CcEventTarget();
 
-    const emails_lp = new LastPromise();
+    const { apiConfig } = context;
+    if (apiConfig == null) {
+      return;
+    }
 
-    const onSendConfirmationEmail$ = fromCustomEvent(component, 'cc-email:send-confirmation-email')
-      .pipe(withLatestFrom(context$));
-    const onAddSecondaryEmail$ = fromCustomEvent(component, 'cc-email:add')
-      .pipe(withLatestFrom(context$));
-    const onDeleteSecondaryEmail$ = fromCustomEvent(component, 'cc-email:delete')
-      .pipe(withLatestFrom(context$));
-    const onMarkSecondaryEmailAsPrimary$ = fromCustomEvent(component, 'cc-email:mark-as-primary')
-      .pipe(withLatestFrom(context$));
+    // Reset component
+    component.emails = { state: 'loading' };
+    component.newEmailForm = {
+      state: 'idle',
+      address: {
+        value: '',
+      },
+    };
 
-    unsubscribeWithSignal(disconnectSignal, [
-      // region => When component loads,
-      // 1. we reset the component
-      // 2. we fetch primary and secondary email addresses
-      context$.subscribe(({ apiConfig }) => {
-        component.reset();
+    target.on('emails', (emails) => {
+      component.emails = emails;
+    }, { signal: updateSignal });
 
-        if (apiConfig != null) {
-          emails_lp.push((signal) => fetchEmailAddresses({ apiConfig, signal }));
-        }
-      }),
-      // endregion
+    target.on('primary-sending-confirmation', () => {
+      component.emails = produce(component.emails, (draft) => {
+        draft.primary.state = 'sending-confirmation';
+      });
+    }, { signal: updateSignal });
 
-      // region => When server responds with error,
-      // 1. we log error
-      // 2. we set component state to error
-      emails_lp.error$.subscribe((error) => {
-        console.error(error);
-        stateHelper.mutator.error();
-      }),
-      // endregion
+    target.on('primary-idle', () => {
+      component.emails = produce(component.emails, (draft) => {
+        draft.primary.state = 'idle';
+      });
+    }, { signal: updateSignal });
 
-      // region => When server responds with success,
-      // 1. we set component state to loaded with the right data
-      emails_lp.value$.subscribe(({ self, secondary }) => {
-        stateHelper.mutator.data(
-          {
-            primary: primaryStateHelper.create({
-              address: self.email,
-              verified: self.emailValidated,
-            }),
-            secondaryAddresses: secondaryStateHelper.create(
-              secondary.map((a) => ({
-                address: a,
-                verified: true,
-              })),
-            ),
-          },
-        );
-      }),
-      // endregion
+    target.on('secondary-email', ({ address, state }) => {
+      component.emails = produce(component.emails, (draft) => {
+        const email = draft.secondary.find((e) => e.address === address);
+        email.state = state;
+      });
+    }, { signal: updateSignal });
 
-      // region => When user asks for sending a new confirmation email
-      // 1. change 'primary' state to 'sending-confirmation-email'
-      // 2. call HTTP endpoint
-      // 2.a on error: display an error toast
-      // 2.b on success: display a success toast
-      // 3. reset 'primary' state to 'idle'
-      onSendConfirmationEmail$.subscribe(([address, { apiConfig }]) => {
-        primaryStateHelper.setState('sending-confirmation-email');
+    target.on('mark-as-primary', ({ address }) => {
+      component.emails = produce(component.emails, (draft) => {
+        const primaryEmail = draft.primary.address;
+        draft.primary.address = address;
+        const emailIndex = draft.secondary.findIndex((e) => e.address === address);
+        draft.secondary[emailIndex] = {
+          state: 'idle',
+          address: primaryEmail,
+        };
+      });
+    }, { signal: updateSignal });
 
-        sendConfirmationEmail({ apiConfig, address })
-          .then(() => notify(component, {
+    target.on('delete', ({ address }) => {
+      component.emails = produce(component.emails, (draft) => {
+        draft.secondary = draft.secondary.filter((email) => email.address !== address);
+      });
+    }, { signal: updateSignal });
+
+    target.on('newEmailForm', ({ state, value, error }) => {
+      component.newEmailForm = produce(component.newEmailForm, (draft) => {
+        draft.state = 'idle';
+        draft.address.value = value ?? '';
+        draft.address.error = error;
+      });
+    }, { signal: updateSignal });
+
+    component.addEventListener('cc-email:send-confirmation-email', ({ detail }) => {
+      const address = component.emails.primary.address;
+      target.dispatch('primary-sending-confirmation');
+      doSendConfirmationEmail({ apiConfig, signal: updateSignal })
+        .then(() => {
+          return notify(component, {
             intent: 'info',
             title: i18n('cc-email.primary.action.resend-confirmation-email.success.title'),
             message: i18n('cc-email.primary.action.resend-confirmation-email.success.message', { address }),
@@ -108,274 +99,155 @@ defineComponent({
               timeout: 0,
               closeable: true,
             },
-          }))
-          .catch(() => notifyError(component, i18n('cc-email.primary.action.resend-confirmation-email.error')))
-          .finally(() => {
-            primaryStateHelper.resetState();
           });
-      }),
-      // endregion
+        })
+        .catch(() => notifyError(component, i18n('cc-email.primary.action.resend-confirmation-email.error')))
+        .finally(() => {
+          target.dispatch('primary-idle');
+        });
+    }, { signal: updateSignal });
 
-      // region => When user adds a new email address
-      // 1. change 'form' state to 'adding'
-      // 2. call HTTP endpoint
-      // 2.a on error:
-      // 2.a.1. if error is identified, change 'form' state to 'error'
-      // 2.a.b. else show error toast and change 'form' state to 'idle'
-      // 2.b on success:
-      // 2.b.1 show success toast
-      // 2.b.2 reset form
-      onAddSecondaryEmail$.subscribe(([address, { apiConfig }]) => {
-        component.formAdding();
+    component.addEventListener('cc-email:mark-as-primary', ({ detail }) => {
+      const address = detail;
+      target.dispatch('secondary-email', { address, state: 'marking-as-primary' });
+      doMarkEmailAddressAsPrimary({ apiConfig, signal: updateSignal, address })
+        .then(() => {
+          notifySuccess(component, i18n('cc-email.secondary.action.mark-as-primary.success'));
+          target.dispatch('mark-as-primary', { address });
+        })
+        .catch(() => {
+          notifyError(component, i18n('cc-email.secondary.action.mark-as-primary.error'));
+          target.dispatch('secondary-email', { address, state: 'idle' });
+        })
+        .finally(() => {
+        });
+    }, { signal: updateSignal });
 
-        addSecondaryEmailAddress({ apiConfig, address })
-          .then(() => {
-            notify(component, {
-              intent: 'info',
-              title: i18n('cc-email.secondary.action.add.success.title'),
-              message: i18n('cc-email.secondary.action.add.success.message', { address }),
-              options: {
-                timeout: 0,
-                closeable: true,
-              },
-            });
-            component.resetForm();
-          })
-          .catch((error) => {
-            let inputError;
-            if (error.id === 550) {
-              inputError = 'invalid';
-            }
-            else if (error.id === 101) {
-              inputError = 'already-defined';
-            }
-            else if (error.id === 1004) {
-              inputError = 'used';
-            }
+    component.addEventListener('cc-email:delete', ({ detail }) => {
+      const address = detail;
+      target.dispatch('secondary-email', { address, state: 'deleting' });
+      doDeleteEmailAddress({ apiConfig, signal: updateSignal, address })
+        .then(() => {
+          notifySuccess(component, i18n('cc-email.secondary.action.delete.success'));
+          target.dispatch('delete', { address });
+        })
+        .catch(() => {
+          notifyError(component, i18n('cc-email.secondary.action.delete.error'));
+          target.dispatch('secondary-email', { address, state: 'idle' });
+        })
+        .finally(() => {
+        });
+    }, { signal: updateSignal });
 
-            if (inputError) {
-              component.formError(inputError);
-            }
-            else {
-              notifyError(component, i18n('cc-email.secondary.action.add.error'));
-              component.formIdle();
-            }
+    component.addEventListener('cc-email:add', ({ detail }) => {
+      component.newEmailForm = produce(component.newEmailForm, (draft) => {
+        draft.state = 'adding';
+      });
+      const address = detail;
+      doAddSecondaryEmailAddress({ apiConfig, signal: updateSignal, address })
+        .then(() => {
+          notify(component, {
+            intent: 'info',
+            title: i18n('cc-email.secondary.action.add.success.title'),
+            message: i18n('cc-email.secondary.action.add.success.message', { address }),
+            options: {
+              timeout: 0,
+              closeable: true,
+            },
           });
-      }),
-      // endregion
+          target.dispatch('newEmailForm', { state: 'idle' });
+        })
+        .catch((error) => {
+          // Should we toast if we also display an inlined error message?
+          notifyError(component, i18n('cc-email.secondary.action.add.error'));
 
-      // region => When user deletes a secondary email address
-      // 1. change item state to 'deleting'
-      // 2. call HTTP endpoint
-      // 2.a on error:
-      // 2.a.1 show error toast
-      // 2.a.2 reset item state
-      // 2.b on success:
-      // 2.b.1 show success toast
-      // 2.b.2 remove item
-      onDeleteSecondaryEmail$.subscribe(([address, { apiConfig }]) => {
-        const itemFinder = findSecondaryByAddress(address);
+          let formError;
+          if (error.id === 101) {
+            formError = 'already-defined';
+          }
+          else if (error.id === 550) {
+            formError = 'invalid';
+          }
+          else if (error.id === 1004) {
+            formError = 'used';
+          }
+          else {
+            // maybe we should only toast here
+            // If the error is null, we should roll it back to null
+          }
 
-        secondaryStateHelper.forItem(itemFinder).setState('deleting');
+          target.dispatch('newEmailForm', { state: 'idle', value: address, error: formError });
+        });
+    }, { signal: updateSignal });
 
-        deleteSecondaryEmailAddress({ apiConfig, address })
-          .then(() => {
-            notifySuccess(component, i18n('cc-email.secondary.action.delete.success'));
-            secondaryStateHelper.remove(itemFinder);
-          })
-          .catch(() => {
-            notifyError(component, i18n('cc-email.secondary.action.delete.error'));
-            secondaryStateHelper.forItem(itemFinder).resetState();
-          });
-      }),
-      // endregion
+    fetchEmailAddresses({ apiConfig, signal: updateSignal })
+      .then(({ primary, secondary }) => {
+        target.dispatch('emails', {
+          state: 'loaded',
+          primary: {
+            state: 'idle',
+            ...primary,
+          },
+          secondary: secondary.map((address) => ({ state: 'idle', address })),
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        target.dispatch('emails', {
+          state: 'error-loading',
+        });
+      });
 
-      // region => When user marks a secondary email address as primary
-      // 1. change item state to 'marking-as-primary'
-      // 2. call HTTP endpoint
-      // 2.a on error:
-      // 2.a.1 show error toast
-      // 2.a.2 reset item state
-      // 2.b on success:
-      // 2.b.1 show success toast
-      // 2.b.2 make secondary primary, and primary secondary
-      onMarkSecondaryEmailAsPrimary$.subscribe(([address, { apiConfig }]) => {
-        const itemFinder = findSecondaryByAddress(address);
-
-        secondaryStateHelper.forItem(itemFinder).setState('marking-as-primary');
-
-        markSecondaryEmailAddressAsPrimary({ apiConfig, address })
-          .then(() => {
-            notifySuccess(component, i18n('cc-email.secondary.action.mark-as-primary.success'));
-
-            const primary = primaryStateHelper.getData().address;
-            primaryStateHelper.set({
-              address: address,
-              verified: true,
-            });
-            secondaryStateHelper.forItem(itemFinder).set({
-              address: primary,
-              verified: true,
-            });
-          })
-          .catch(() => {
-            notifyError(component, i18n('cc-email.secondary.action.mark-as-primary.error'));
-            secondaryStateHelper.forItem(itemFinder).resetState();
-          });
-      }),
-      // endregion
-
-    ]);
   },
 });
 
-// -- API calls
-
-const RemoteApi = {
-
-  fetchPrimaryEmailAddress ({ apiConfig, signal }) {
-    return Promise.resolve({
-      method: 'get',
-      url: `/v2/self`,
-      headers: { Accept: 'application/json' },
-      // no query params
-      // no body
-    })
-      .then(sendToApi({ apiConfig, signal }));
-  },
-
-  fetchSecondaryEmailAddresses ({ apiConfig, signal }) {
-    return todo_getEmailAddresses()
-      .then(sendToApi({ apiConfig, signal }));
-  },
-
-  sendConfirmationEmail ({ apiConfig }) {
-    return Promise.resolve({
-      method: 'get',
-      url: `/v2/self/confirmation_email`,
-      headers: { Accept: 'application/json' },
-      // no query params
-      // no body
-    })
-      .then(sendToApi({ apiConfig }));
-  },
-
-  addSecondaryEmailAddress ({ apiConfig, address }) {
-    return todo_addEmailAddress({ email: address }, {})
-      .then(sendToApi({ apiConfig }));
-  },
-
-  deleteSecondaryEmailAddress ({ apiConfig, address }) {
-    return todo_removeEmailAddress({ email: address })
-      .then(sendToApi({ apiConfig }));
-  },
-
-  markSecondaryEmailAddressAsPrimary ({ apiConfig, address }) {
-    return todo_addEmailAddress({ email: address }, {
-      // eslint-disable-next-line camelcase
-      make_primary: true,
-    })
-      .then(sendToApi({ apiConfig }));
-  },
-};
-
-const primaryEmailAddress = {
-  email: 'mock@domain.com',
-  emailValidated: false,
-};
-let secondaryEmailAddresses = [
-  'secondary.1.mock@domain.com',
-  'secondary.2.mock@domain.com',
-  'anotherSecondary.2.mock@domain.com',
-];
-const MockApi = {
-  fetchPrimaryEmailAddress ({ apiConfig, signal }) {
-    return primaryEmailAddress;
-  },
-
-  fetchSecondaryEmailAddresses: function ({ apiConfig, signal }) {
-    return secondaryEmailAddresses;
-  },
-
-  sendConfirmationEmail ({ apiConfig }) {
-    // throw new Error('fatal');
-    return {};
-  },
-
-  addSecondaryEmailAddress ({ apiConfig, address }) {
-    if (address === 'oups@oups.com') {
-      throw new Error('fatal');
-    }
-    if (address.length > 100) {
-      const error = new Error('invalid');
-      error.id = 550;
-      throw error;
-    }
-    if ([...secondaryEmailAddresses, primaryEmailAddress.email].includes(address)) {
-      const error = new Error('already-defined');
-      error.id = 101;
-      throw error;
-    }
-    secondaryEmailAddresses.push(address);
-    return {};
-  },
-
-  deleteSecondaryEmailAddress ({ apiConfig, address }) {
-    // throw new Error('fatal');
-    secondaryEmailAddresses = secondaryEmailAddresses.filter((a) => a !== address);
-    return {};
-  },
-
-  markSecondaryEmailAddressAsPrimary ({ apiConfig, address }) {
-    // throw new Error('fatal');
-    secondaryEmailAddresses = secondaryEmailAddresses.filter((a) => a !== address);
-    secondaryEmailAddresses.push(primaryEmailAddress.email);
-    primaryEmailAddress.email = address;
-    return {};
-  },
-};
-
-const api = getApi(true);
-
-function fetchEmailAddresses ({ apiConfig, signal }) {
-  return Promise.all([
-    api.fetchPrimaryEmailAddress({ apiConfig, signal }),
-    api.fetchSecondaryEmailAddresses({ apiConfig, signal }),
-  ]).then(([self, secondary]) => {
-    return { self, secondary };
-  });
+function sleep (delay) {
+  return new Promise((resolve) => setTimeout(resolve, delay));
 }
 
-function sendConfirmationEmail ({ apiConfig, address }) {
-  return api.sendConfirmationEmail({ apiConfig });
-}
-
-function addSecondaryEmailAddress ({ apiConfig, address }) {
-  return api.addSecondaryEmailAddress({ apiConfig, address });
-}
-
-function deleteSecondaryEmailAddress ({ apiConfig, address }) {
-  return api.deleteSecondaryEmailAddress({ apiConfig, address });
-}
-
-function markSecondaryEmailAddressAsPrimary ({ apiConfig, address }) {
-  return api.markSecondaryEmailAddressAsPrimary({ apiConfig, address });
-}
-
-function getApi (mock) {
-  if (!mock) {
-    return RemoteApi;
-  }
-  return new Proxy(MockApi, {
-    get (target, prop, receiver) {
-      return function () {
-        return new Promise((resolve, reject) => {
-          setTimeout(() => resolve(), 500);
-        })
-          .then(() => {
-            return target[prop].apply(this, arguments);
-          });
-      };
+async function fetchEmailAddresses ({ apiConfig, signal }) {
+  return {
+    primary: {
+      address: 'primary@example.com',
+      verified: true,
+      // verified: false,
     },
-  });
+    secondary: ['secondary@example.com', 'other-secondary@example.com'],
+  };
+  return Promise
+    .all([
+      getSelf({}).then(sendToApi({ apiConfig, signal })),
+      getSecondaryEmailAddresses().then(sendToApi({ apiConfig, signal })),
+    ])
+    .then(([self, secondary]) => {
+      return {
+        primary: {
+          address: self.email,
+          verified: self.emailValidated,
+        },
+        secondary,
+      };
+    });
+}
+
+async function doSendConfirmationEmail ({ apiConfig, signal }) {
+  await sleep(2000);
+  return;
+  return sendConfirmationEmail().then(sendToApi({ apiConfig, signal }));
+}
+
+async function doAddSecondaryEmailAddress ({ apiConfig, signal, address }) {
+  await sleep(2000);
+  return;
+  return addSecondaryEmailAddress({ email: address }, {}).then(sendToApi({ apiConfig }));
+}
+
+async function doMarkEmailAddressAsPrimary ({ apiConfig, signal, address }) {
+  await sleep(2000);
+  return;
+}
+
+async function doDeleteEmailAddress ({ apiConfig, signal, address }) {
+  await sleep(2000);
+  return;
 }

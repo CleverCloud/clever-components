@@ -8,6 +8,7 @@ import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-flex-gap/cc-flex-gap.js';
 import '../cc-button/cc-button.js';
+import '../cc-expand/cc-expand.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-error/cc-error.js';
@@ -227,39 +228,41 @@ export class CcEmail extends LitElement {
         <div slot="title">${i18n('cc-email.secondary.title')}</div>
         <div slot="info">${i18n('cc-email.secondary.description')}</div>
 
-        ${emailList.map((email) => {
+        <cc-expand>
+          ${emailList.map((email) => {
 
-          const busy = email.state === 'marking-as-primary' || email.state === 'deleting';
-          const primaryEmailUnverified = !this.emails.primary.verified;
+            const busy = email.state === 'marking-as-primary' || email.state === 'deleting';
+            const primaryEmailUnverified = !this.emails.primary.verified;
 
-          return html`
-            <cc-flex-gap class="address-line secondary">
-              <div class="address ${classMap({ loading: busy })}">
-                <div class="icon"><img src="${mailSvg}" alt=""></div>
-                <span>${email.address}</span>
-              </div>
-              <cc-flex-gap class="buttons">
-                <cc-button
-                  @cc-button:click=${() => this._onMarkAsPrimary(email.address)}
-                  ?waiting="${email.state === 'marking-as-primary'}"
-                  ?disabled=${busy || isMarkingAsPrimary || primaryEmailUnverified}
-                >
-                  ${i18n('cc-email.secondary.action.mark-as-primary')}
-                </cc-button>
-                <cc-button
-                  danger
-                  outlined
-                  image=${trashSvg}
-                  @cc-button:click=${() => this._onDelete(email.address)}
-                  ?waiting="${email.state === 'deleting'}"
-                  ?disabled=${busy}
-                >
-                  ${i18n('cc-email.secondary.action.delete')}
-                </cc-button>
+            return html`
+              <cc-flex-gap class="address-line secondary">
+                <div class="address ${classMap({ loading: busy })}">
+                  <div class="icon"><img src="${mailSvg}" alt=""></div>
+                  <span>${email.address}</span>
+                </div>
+                <cc-flex-gap class="buttons">
+                  <cc-button
+                    @cc-button:click=${() => this._onMarkAsPrimary(email.address)}
+                    ?waiting="${email.state === 'marking-as-primary'}"
+                    ?disabled=${busy || isMarkingAsPrimary || primaryEmailUnverified}
+                  >
+                    ${i18n('cc-email.secondary.action.mark-as-primary')}
+                  </cc-button>
+                  <cc-button
+                    danger
+                    outlined
+                    image=${trashSvg}
+                    @cc-button:click=${() => this._onDelete(email.address)}
+                    ?waiting="${email.state === 'deleting'}"
+                    ?disabled=${busy}
+                  >
+                    ${i18n('cc-email.secondary.action.delete')}
+                  </cc-button>
+                </cc-flex-gap>
               </cc-flex-gap>
-            </cc-flex-gap>
-          `;
-        })}
+            `;
+          })}
+        </cc-expand>
 
         <form>
           <cc-input-text

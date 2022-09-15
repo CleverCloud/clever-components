@@ -4,7 +4,7 @@ title: '💡 Smart'
 ---
 # 💡 Smart `<cc-email>`
 
-<cc-smart-container>
+<cc-smart-container context='{}'>
   <cc-email></cc-email>
 </cc-smart-container>
 
