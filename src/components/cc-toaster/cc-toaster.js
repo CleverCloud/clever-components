@@ -1,7 +1,48 @@
+import { animate, fadeIn, fadeOut, none } from '@lit-labs/motion';
 import { css, html, LitElement } from 'lit';
-import { classMap } from 'lit/directives/class-map.js';
 import { repeat } from 'lit/directives/repeat.js';
 import '../cc-toast/cc-toast.js';
+
+const slideFromTop = [{ transform: 'translateY(-100%)' }];
+const slideFromBottom = [{ transform: 'translateY(100%)' }];
+const slideToLeft = [{ transform: 'translateX(-100%)' }];
+const slideToRight = [{ transform: 'translateX(100%)' }];
+const fadeAnimation = {
+  in: fadeIn,
+  out: fadeOut,
+};
+const slideAnimationSpecs = {
+  top: {
+    in: slideFromTop,
+    out: none,
+  },
+  'top-left': {
+    in: slideFromTop,
+    out: slideToLeft,
+  },
+  'top-right': {
+    in: slideFromTop,
+    out: slideToRight,
+  },
+  bottom: {
+    in: slideFromBottom,
+    out: none,
+  },
+  'bottom-left': {
+    in: slideFromBottom,
+    out: slideToLeft,
+  },
+  'bottom-right': {
+    in: slideFromBottom,
+    out: slideToRight,
+  },
+};
+const withFade = (spec) => {
+  return {
+    in: [{ ...spec.in[0], opacity: 0 }],
+    out: [{ ...spec.out[0], opacity: 0 }],
+  };
+};
 
 /**
  * @typedef {import('./cc-toaster.types.js').ToastPosition} ToastPosition
@@ -115,6 +156,8 @@ export class CcToaster extends LitElement {
 
     /** @type {Array<Toast>} Internal array of toasts currently displayed */
     this._toasts = [];
+
+    this._mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   }
 
   /**
@@ -137,7 +180,7 @@ export class CcToaster extends LitElement {
 
       if (activeToasts.length >= this.maxToasts) {
         const lastToast = activeToasts[activeToasts.length - 1];
-        this._startDismissing(lastToast);
+        this._dismiss(lastToast);
       }
     }
 
@@ -146,7 +189,7 @@ export class CcToaster extends LitElement {
     this._toasts = [toast, ...this._toasts];
 
     return () => {
-      this._startDismissing(toast);
+      this._dismiss(toast);
     };
   }
 
@@ -162,7 +205,6 @@ export class CcToaster extends LitElement {
     return {
       ...notification,
       key: Math.random().toString(36).slice(2),
-      dismissing: false,
       options: {
         // Same defaults as cc-toast
         closeable: false,
@@ -174,52 +216,65 @@ export class CcToaster extends LitElement {
     };
   }
 
-  _startDismissing (toastToDismiss) {
-    toastToDismiss.dismissing = true;
-    this.requestUpdate();
-  }
-
-  // TODO: in the future (when we have Lit2) we may want to implement that with https://github.com/lit/lit/tree/main/packages/labs/motion
-  _finishDismissing (toastToRemove) {
-    this._toasts = this._toasts.filter((toast) => (toast !== toastToRemove));
+  _dismiss (toastToDismiss) {
+    this._toasts = this._toasts.filter((toast) => (toast !== toastToDismiss));
   }
 
   /* endregion */
 
   render () {
-    const positions = this.position.split('-');
-    if (positions.length === 1) {
-      positions.push('center');
-    }
+    const positionsClasses = this.position.split('-').join(' ');
+
     return html`
-      <div class="toaster ${positions.join(' ')} ${this.animation}" aria-live="polite" aria-atomic="true">
+      <div class="toaster ${positionsClasses}" aria-live="polite" aria-atomic="true">
         ${repeat(this._toasts, (toast) => toast.key, (toast) => this._renderToast(toast))}
       </div>
     `;
+  }
+
+  _getInOutAnimations () {
+    if (this.animation === 'fade') {
+      return fadeAnimation;
+    }
+    if (this.animation === 'slide') {
+      return slideAnimationSpecs[this.position];
+    }
+    if (this.animation === 'fade-and-slide') {
+      return withFade(slideAnimationSpecs[this.position]);
+    }
+  }
+
+  _getAnimationDirective () {
+    const keyframeOptions = {
+      duration: 400,
+      easing: 'ease',
+    };
+
+    if (this._mediaQuery != null && this._mediaQuery.matches) {
+      return null;
+    }
+    else {
+      return animate({
+        keyframeOptions,
+        ...this._getInOutAnimations(),
+      });
+    }
   }
 
   /**
    * @param {Toast} toast
    */
   _renderToast (toast) {
-    const dismissing = toast.dismissing;
-
-    // We're only interested in the "dismiss" animation (not the "show" animation)
-    const onAnimationEnd = dismissing
-      ? () => this._finishDismissing(toast)
-      : () => null;
-
     return html`
       <cc-toast
-        class="${classMap({ dismissing })}"
         intent="${toast.intent}"
         .heading=${toast.title}
         .message=${toast.message}
         .timeout=${toast.options.timeout}
         ?closeable=${toast.options.closeable}
         ?show-progress=${toast.options.showProgress}
-        @animationend=${onAnimationEnd}
-        @cc-toast:dismiss=${() => this._startDismissing(toast)}
+        ${this._getAnimationDirective()}
+        @cc-toast:dismiss=${() => this._dismiss(toast)}
       ></cc-toast>
     `;
   }
@@ -251,136 +306,6 @@ export class CcToaster extends LitElement {
 
         .toaster.bottom {
           flex-direction: column-reverse;
-        }
-
-        /*endregion*/
-
-        /*region ANIMATION*/
-        @media (prefers-reduced-motion) {
-          cc-toast {
-            animation-duration: 0s !important;
-          }
-        }
-
-        cc-toast {
-          animation-duration: 0.4s;
-          animation-fill-mode: forwards;
-          animation-timing-function: ease;
-        }
-
-        .toaster.fade cc-toast {
-          animation-name: fade;
-        }
-
-        .toaster.slide.top cc-toast {
-          animation-name: slide-down;
-        }
-
-        .toaster.slide.bottom cc-toast {
-          animation-name: slide-up;
-        }
-
-        .toaster.fade-and-slide.top cc-toast {
-          animation-name: fade, slide-down;
-        }
-
-        .toaster.fade-and-slide.bottom cc-toast {
-          animation-name: fade, slide-up;
-        }
-
-        .toaster.fade cc-toast.dismissing {
-          animation-duration: 0.4s;
-          animation-name: fade-out;
-        }
-
-        /* use a 0s fake animation so that an animationend event is still fired */
-        .toaster.slide.center cc-toast.dismissing {
-          animation-duration: 0s;
-          animation-name: no-animation;
-        }
-
-        .toaster.slide.left cc-toast.dismissing {
-          animation-name: slide-left-out;
-        }
-
-        .toaster.slide.right cc-toast.dismissing {
-          animation-name: slide-right-out;
-        }
-
-        .toaster.fade-and-slide.center cc-toast.dismissing {
-          animation-name: fade-out;
-        }
-
-        .toaster.fade-and-slide.left cc-toast.dismissing {
-          animation-name: fade-out, slide-left-out;
-        }
-
-        .toaster.fade-and-slide.right cc-toast.dismissing {
-          animation-name: fade-out, slide-right-out;
-        }
-
-
-        @keyframes fade {
-          0% {
-            opacity: 0;
-          }
-          100% {
-            opacity: 1;
-          }
-        }
-
-        @keyframes slide-down {
-          0% {
-            transform: translateY(-100%);
-          }
-          100% {
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes slide-up {
-          0% {
-            transform: translateY(100%);
-          }
-          100% {
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes fade-out {
-          0% {
-            opacity: 1;
-          }
-          100% {
-            opacity: 0;
-          }
-        }
-
-        @keyframes slide-left-out {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-100%);
-          }
-        }
-
-        @keyframes slide-right-out {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(100%);
-          }
-        }
-
-        @keyframes no-animation {
-          from {
-            transform: translateX(0);
-          }
-          to {
-            transform: translateX(0);
-          }
         }
 
         /*endregion*/
