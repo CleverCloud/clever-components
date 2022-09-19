@@ -1,6 +1,19 @@
 import { Subject } from './observables.js';
 import { objectEquals } from './utils.js';
 
+// In the global space of this module (for any module importing it), we maintain:
+// * a rootContext object
+// * a smartContainers Set with all containers currently in the page
+// * a smartComponentDefinitions Set with all definitions currently in the page
+
+// On each container, we maintain:
+// * a Map on container[COMPONENTS] with all components keyed by definition object
+// * an object with the current context on container[CURRENT_CONTEXT]
+
+// On each component, we maintain:
+// * a map on component[META] with pointers to context$, disconnectionController keyed by definition object
+// * an object with the last context on component[LAST_CONTEXT]
+
 /**
  * @typedef SmartComponentDefinition
  * @property {String} selector
