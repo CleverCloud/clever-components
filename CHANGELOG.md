@@ -12,6 +12,7 @@ title: Changelog
 * `<cc-input-text>`: set default font back to `--cc-ff-monospace` when the input contains tags (BREAKING CHANGE).
 * Introduce a new project file structure (BREAKING CHANGE).
 * all components: change `rem` units to `em` (BREAKING CHANGE).
+* `<cc-select>`: use the `value` property of the select element instead of the `selected` attribute. The `value` prop should always be set when using the `<cc-select>` component. It may be set to an empty string if a `placeholder` is provided (BREAKING CHANGE).
 
 ### Components
 

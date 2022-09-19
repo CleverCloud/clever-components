@@ -10,6 +10,11 @@ import { i18n } from '../../lib/i18n.js';
 /**
  * A component wrapping native select element and its label.
  *
+ * Caution:
+ *
+ *   * Setting an empty / undefined value displays a `<select>` element with no selected value unless a placeholder is set.
+ *   * Setting a value that does not match any option displays a `<select>` element with no selected value.
+ *
  * @cssdisplay inline-block
  *
  * @event {CustomEvent<string>} cc-select:input - Fires the `value` whenever the `value` changes.
@@ -55,17 +60,17 @@ export class CcSelect extends LitElement {
     /** @type {Option[]|[]} Sets the list of options displayed inside the select element. */
     this.options = [];
 
-    /** @type {string|null} Sets a default option with empty value. */
+    /** @type {string|null} Sets a disabled option with empty value. This option will always be the first of the list. It can be selected by default by setting `value=''`. */
     this.placeholder = null;
 
     /** @type {boolean} Sets the "required" text inside the label */
     this.required = false;
 
-    /** @type {string|null} Sets the selected value of the element. */
+    /** @type {string|null} Sets the selected value of the element. This prop should always be set. It should always match one of the option values. */
     this.value = null;
 
     // use this unique id for isolation (Safari seems to have a bug)
-    /** @type {string} used by the aria-describedby attribute on the `<select>` element and the `id` attribute on the error slot container */
+    /** @type {string} used by the `aria-describedby` attribute on the `<select>` element and the `id` attribute on the error slot container */
     this._uniqueErrorId = Math.random().toString(36).slice(2);
 
     // use this unique id for isolation (Safari seems to have a bug)
@@ -73,8 +78,19 @@ export class CcSelect extends LitElement {
     this._uniqueHelpId = Math.random().toString(36).slice(2);
 
     // use this unique name for isolation (Safari seems to have a bug)
-    /** @type {string} used by the for/id relation between `<label>` and `<select>` */
+    /** @type {string} used by the `for`/`id` relation between `<label>` and `<select>` */
     this._uniqueInputId = Math.random().toString(36).slice(2);
+  }
+
+  updated (changedProperties) {
+    /*
+     * The `<select>` value must match the value of an `<option>` element.
+     * We need to make sure the value of the `<select>` element in only updated after
+     * `<option>` elements have been rendered.
+    */
+    if (changedProperties.has('value') || changedProperties.has('options')) {
+      this.shadowRoot.querySelector('select').value = this.value;
+    }
   }
 
   /**
@@ -103,17 +119,13 @@ export class CcSelect extends LitElement {
           ?disabled=${this.disabled}
           aria-describedby="${this._uniqueHelpId} ${this._uniqueErrorId}"
           @input=${this._onSelectInput}
+          .value=${this.value}
         >
           ${this.placeholder != null && this.placeholder !== '' ? html`
-            <option value="" disabled selected>${this.placeholder}</option>
+            <option value="" disabled>${this.placeholder}</option>
           ` : ''}
           ${this.options.map((option) => html`
-            <option
-              value=${option.value}
-              ?selected=${option.value === this.value}
-            >
-              ${option.label}
-            </option>
+            <option value=${option.value}>${option.label}</option>
           `)}
         </select>
       </div>
