@@ -2,9 +2,9 @@ import './cc-invoice-list.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { fetchAllInvoices } from '../../lib/api-helpers.js';
 import { LastPromise, unsubscribeWithSignal } from '../../lib/observables.js';
-import { defineComponent } from '../../lib/smart-manager.js';
+import { defineSmartComponentWithObservables } from '../../lib/define-smart-component-with-observables.js';
 
-defineComponent({
+defineSmartComponentWithObservables({
   selector: 'cc-invoice-list',
   params: {
     apiConfig: { type: Object },

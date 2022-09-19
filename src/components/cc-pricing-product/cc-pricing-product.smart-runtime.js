@@ -6,9 +6,9 @@ import { fetchPriceSystem } from '../../lib/api-helpers.js';
 import { LastPromise, unsubscribeWithSignal } from '../../lib/observables.js';
 import { formatRuntimeProduct, getRunnerProduct } from '../../lib/product.js';
 import { sendToApi } from '../../lib/send-to-api.js';
-import { defineComponent } from '../../lib/smart-manager.js';
+import { defineSmartComponentWithObservables } from '../../lib/define-smart-component-with-observables.js';
 
-defineComponent({
+defineSmartComponentWithObservables({
   selector: 'cc-pricing-product[mode="runtime"]',
   params: {
     productId: { type: String },

@@ -3,9 +3,9 @@ import '../cc-smart-container/cc-smart-container.js';
 import { getAddon, getJenkinsUpdates } from '@clevercloud/client/esm/api/v4/addon-providers.js';
 import { LastPromise, unsubscribeWithSignal } from '../../lib/observables.js';
 import { sendToApi } from '../../lib/send-to-api.js';
-import { defineComponent } from '../../lib/smart-manager.js';
+import { defineSmartComponentWithObservables } from '../../lib/define-smart-component-with-observables.js';
 
-defineComponent({
+defineSmartComponentWithObservables({
   selector: 'cc-jenkins-info',
   params: {
     apiConfig: { type: Object },

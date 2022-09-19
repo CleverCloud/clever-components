@@ -3,7 +3,7 @@ import '../cc-smart-container/cc-smart-container.js';
 import { fetchPriceSystem } from '../../lib/api-helpers.js';
 import { LastPromise, unsubscribeWithSignal } from '../../lib/observables.js';
 import { formatAddonCellar, formatAddonFsbucket, formatAddonHeptapod, formatAddonPulsar } from '../../lib/product.js';
-import { defineComponent } from '../../lib/smart-manager.js';
+import { defineSmartComponentWithObservables } from '../../lib/define-smart-component-with-observables.js';
 
 const PRODUCTS = {
   cellar: {
@@ -41,7 +41,7 @@ const PRODUCTS = {
   },
 };
 
-defineComponent({
+defineSmartComponentWithObservables({
   selector: 'cc-pricing-product-consumption',
   params: {
     currency: { type: Object },

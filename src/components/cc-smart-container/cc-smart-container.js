@@ -1,16 +1,11 @@
 import { css, html, LitElement } from 'lit';
-import { unsubscribeWithSignal } from '../../lib/observables.js';
-import { defineComponent, observeContainer, updateContext } from '../../lib/smart-manager.js';
+import { defineSmartComponentCore, observeContainer, updateContext } from '../../lib/smart-manager.js';
 
 // Special case to propagate/merge contexts trough containers
-defineComponent({
+defineSmartComponentCore({
   selector: 'cc-smart-container',
-  onConnect (container, component, context$, disconnectSignal) {
-    unsubscribeWithSignal(disconnectSignal, [
-      context$.subscribe((context) => {
-        component.parentContext = context;
-      }),
-    ]);
+  onContextUpdate (container, component, context) {
+    component.parentContext = context;
   },
 });
 

@@ -5,9 +5,9 @@ import { getAllZones } from '@clevercloud/client/esm/api/v4/product.js';
 import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
 import { LastPromise, unsubscribeWithSignal } from '../../lib/observables.js';
 import { sendToApi } from '../../lib/send-to-api.js';
-import { defineComponent } from '../../lib/smart-manager.js';
+import { defineSmartComponentWithObservables } from '../../lib/define-smart-component-with-observables.js';
 
-defineComponent({
+defineSmartComponentWithObservables({
   selector: 'cc-addon-linked-apps',
   params: {
     apiConfig: { type: Object },

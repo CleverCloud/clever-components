@@ -6,9 +6,9 @@ import { THIRTY_SECONDS } from '@clevercloud/client/esm/request.fetch-with-timeo
 import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
 import { LastPromise, unsubscribeWithSignal } from '../../lib/observables.js';
 import { sendToApi, sendToWarp } from '../../lib/send-to-api.js';
-import { defineComponent } from '../../lib/smart-manager.js';
+import { defineSmartComponentWithObservables } from '../../lib/define-smart-component-with-observables.js';
 
-defineComponent({
+defineSmartComponentWithObservables({
   selector: 'cc-tile-status-codes',
   params: {
     apiConfig: { type: Object },

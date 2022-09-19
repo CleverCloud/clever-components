@@ -3,9 +3,9 @@ import '../cc-smart-container/cc-smart-container.js';
 import { getAllEnvVars } from '@clevercloud/client/esm/api/v2/addon.js';
 import { LastPromise, unsubscribeWithSignal } from '../../lib/observables.js';
 import { sendToApi } from '../../lib/send-to-api.js';
-import { defineComponent } from '../../lib/smart-manager.js';
+import { defineSmartComponentWithObservables } from '../../lib/define-smart-component-with-observables.js';
 
-defineComponent({
+defineSmartComponentWithObservables({
   selector: 'cc-env-var-form[context="env-var-addon"]',
   params: {
     apiConfig: { type: Object },
