@@ -6,14 +6,14 @@ import {
   getGrafanaOrganisation,
   resetGrafanaOrganisation,
 } from '../../lib/api-helpers.js';
+import { defineSmartComponentWithObservables } from '../../lib/define-smart-component-with-observables.js';
 import { i18n } from '../../lib/i18n.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { fromCustomEvent, LastPromise, unsubscribeWithSignal, withLatestFrom } from '../../lib/observables.js';
 import { sendToApi } from '../../lib/send-to-api.js';
-import { defineComponent } from '../../lib/smart-manager.js';
 
 // TODO, we need to refactor this one to make it more like the others
-defineComponent({
+defineSmartComponentWithObservables({
   selector: 'cc-grafana-info',
   params: {
     apiConfig: { type: Object },

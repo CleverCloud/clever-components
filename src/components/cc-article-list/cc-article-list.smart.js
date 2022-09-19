@@ -2,13 +2,13 @@ import './cc-article-list.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { request } from '@clevercloud/client/esm/request.fetch.js';
 import { withCache } from '@clevercloud/client/esm/with-cache.js';
+import { defineSmartComponentWithObservables } from '../../lib/define-smart-component-with-observables.js';
 import { LastPromise, unsubscribeWithSignal } from '../../lib/observables.js';
-import { defineComponent } from '../../lib/smart-manager.js';
 import { parseRssFeed } from '../../lib/xml-parser.js';
 
 const FOUR_HOURS = 1000 * 60 * 60 * 4;
 
-defineComponent({
+defineSmartComponentWithObservables({
   selector: 'cc-article-list',
   params: {
     lang: { type: String },

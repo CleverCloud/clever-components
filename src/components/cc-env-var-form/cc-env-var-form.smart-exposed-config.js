@@ -3,13 +3,13 @@ import '../cc-smart-container/cc-smart-container.js';
 import { getAllExposedEnvVars, updateAllExposedEnvVars } from '@clevercloud/client/esm/api/v2/application.js';
 import { toNameValueObject } from '@clevercloud/client/esm/utils/env-vars.js';
 import { fetchApp } from '../../lib/api-helpers.js';
+import { defineSmartComponentWithObservables } from '../../lib/define-smart-component-with-observables.js';
 import { i18n } from '../../lib/i18n.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { fromCustomEvent, LastPromise, merge, unsubscribeWithSignal, withLatestFrom } from '../../lib/observables.js';
 import { sendToApi } from '../../lib/send-to-api.js';
-import { defineComponent } from '../../lib/smart-manager.js';
 
-defineComponent({
+defineSmartComponentWithObservables({
   selector: 'cc-env-var-form[context="exposed-config"]',
   params: {
     apiConfig: { type: Object },

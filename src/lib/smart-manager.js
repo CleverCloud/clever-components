@@ -1,4 +1,3 @@
-import { Subject } from './observables.js';
 import { objectEquals } from './utils.js';
 
 // In the global space of this module (for any module importing it), we maintain:
@@ -11,20 +10,20 @@ import { objectEquals } from './utils.js';
 // * an object with the current context on container[CURRENT_CONTEXT]
 
 // On each component, we maintain:
-// * a map on component[META] with pointers to context$, disconnectionController keyed by definition object
 // * an object with the last context on component[LAST_CONTEXT]
 
 /**
  * @typedef SmartComponentDefinition
  * @property {String} selector
- * @property {Object} params
- * @property {Function} onConnect
+ * @property {Object?} params
+ * @property {Function?} onConnect
+ * @property {Function?} onContextUpdate
+ * @property {Function?} onDisconnect
  */
 
 const COMPONENTS = Symbol('COMPONENTS');
 const CURRENT_CONTEXT = Symbol('CURRENT_CONTEXT');
 const LAST_CONTEXT = Symbol('LAST_CONTEXT');
-const META = Symbol('META');
 let rootContext = {};
 
 /** @type {Set<CcSmartContainer>} */
@@ -65,7 +64,7 @@ export function observeContainer (container, signal) {
  * @param {SmartComponentDefinition} definition
  * @param {AbortSignal?} signal
  */
-export function defineComponent (definition, signal) {
+export function defineSmartComponentCore (definition, signal) {
 
   smartComponentDefinitions.add(definition);
   updateEverything();
@@ -148,17 +147,8 @@ export function updateRootContext (context) {
  * @param {Element} component
  */
 function connectComponent (container, definition, component) {
-
-  const context$ = new Subject();
-  const disconnectionController = new AbortController();
-
-  if (component[META] == null) {
-    component[META] = new Map();
-  }
-  component[META].set(definition, { context$, disconnectionController });
   component[LAST_CONTEXT] = {};
-
-  definition.onConnect(container, component, context$, disconnectionController.signal);
+  definition.onConnect?.(container, component);
 }
 
 /**
@@ -173,7 +163,7 @@ function updateComponentContext (container, definition, component) {
     return;
   }
   component[LAST_CONTEXT] = filteredContext;
-  component[META].get(definition).context$.next(filteredContext);
+  definition.onContextUpdate?.(container, component, filteredContext);
 }
 
 /**
@@ -182,9 +172,8 @@ function updateComponentContext (container, definition, component) {
  * @param {Element} component
  */
 function disconnectComponent (container, definition, component) {
-  component[META].get(definition).disconnectionController.abort();
-  component[META].delete(definition);
   delete component[LAST_CONTEXT];
+  definition.onDisconnect?.(container, component);
 }
 
 // LOW LEVEL HELPERS

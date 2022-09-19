@@ -1,10 +1,10 @@
 import './cc-invoice.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { fetchInvoice, fetchInvoiceHtml } from '../../lib/api-helpers.js';
+import { defineSmartComponentWithObservables } from '../../lib/define-smart-component-with-observables.js';
 import { LastPromise, unsubscribeWithSignal } from '../../lib/observables.js';
-import { defineComponent } from '../../lib/smart-manager.js';
 
-defineComponent({
+defineSmartComponentWithObservables({
   selector: 'cc-invoice',
   params: {
     apiConfig: { type: Object },

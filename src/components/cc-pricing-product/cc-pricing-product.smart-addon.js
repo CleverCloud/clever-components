@@ -3,12 +3,12 @@ import '../cc-smart-container/cc-smart-container.js';
 import { getAllAddonProviders } from '@clevercloud/client/esm/api/v2/product.js';
 import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
 import { fetchPriceSystem } from '../../lib/api-helpers.js';
+import { defineSmartComponentWithObservables } from '../../lib/define-smart-component-with-observables.js';
 import { LastPromise, unsubscribeWithSignal } from '../../lib/observables.js';
 import { formatAddonProduct } from '../../lib/product.js';
 import { sendToApi } from '../../lib/send-to-api.js';
-import { defineComponent } from '../../lib/smart-manager.js';
 
-defineComponent({
+defineSmartComponentWithObservables({
   selector: 'cc-pricing-product[mode="addon"]',
   params: {
     productId: { type: String },
