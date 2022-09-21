@@ -41,6 +41,7 @@ title: Changelog
 * Fix Custom Element Manifest generation web dev server plugin: disable caching
 * Add JSDoc based typechecking with TypeScript's CLI (just utils.js for now)
 * Rollback the smart-manager to the old low level API and move the observable API to a different module
+* Introduce a new defineSmartComponent function
 
 ## 9.0.0 (2022-07-19)
 
