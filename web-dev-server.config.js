@@ -21,7 +21,8 @@ const hmrI18nPlugin = {
     if (TRANSLATION_FILE_REGEX.test(context.path)) {
       // language=JavaScript
       context.body += `
-        ;;
+        ;
+        ;
         // Injected by custom HMR for i18n
         import { addTranslations } from '../lib/i18n.js';
         import { forceReRender } from '@web/storybook-prebuilt/web-components.js';
@@ -84,6 +85,22 @@ const injectAuthForSmartComponentsPlugin = {
       context.body += `
         import { updateRootContext } from '../../lib/smart-manager.js';
 
+        updateRootContext({
+          apiConfig: {
+            API_HOST: '${API_HOST}',
+            API_OAUTH_TOKEN: '${API_OAUTH_TOKEN}',
+            API_OAUTH_TOKEN_SECRET: '${API_OAUTH_TOKEN_SECRET}',
+            OAUTH_CONSUMER_KEY: '${OAUTH_CONSUMER_KEY}',
+            OAUTH_CONSUMER_SECRET: '${OAUTH_CONSUMER_SECRET}',
+          },
+        });
+      `;
+    }
+
+    if (context.path === '/demo-smart/index.js') {
+
+      // language=JavaScript
+      context.body += `
         updateRootContext({
           apiConfig: {
             API_HOST: '${API_HOST}',
