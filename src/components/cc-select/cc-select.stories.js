@@ -39,6 +39,7 @@ export const defaultStory = makeStory(conf, {
     {
       label: 'Favourite artist',
       placeholder: '-- Select an artist --',
+      value: '',
       options: baseOptions,
     },
     {
@@ -55,6 +56,7 @@ export const required = makeStory(conf, {
       label: 'Favourite artist',
       placeholder: '-- Select an artist --',
       required: true,
+      value: '',
       options: baseOptions,
     },
   ],
@@ -66,6 +68,7 @@ export const helpMessage = makeStory(conf, {
       label: 'Favourite artist',
       placeholder: '-- Select an artist --',
       required: true,
+      value: '',
       options: baseOptions,
       innerHTML: '<p slot="help">There can be only one.</p>',
     },
@@ -78,6 +81,7 @@ export const errorMessage = makeStory(conf, {
       label: 'Favourite artist',
       placeholder: '-- Select an artist --',
       required: true,
+      value: '',
       options: baseOptions,
       innerHTML: '<p slot="error">A value must be selected.</p>',
     },
@@ -90,6 +94,7 @@ export const errorMessageWithHelpMessage = makeStory(conf, {
       label: 'Favourite artist',
       placeholder: '-- Select an artist --',
       required: true,
+      value: '',
       options: baseOptions,
       innerHTML: `
         <p slot="help">There can be only one.</p>
@@ -104,12 +109,14 @@ export const inline = makeStory(conf, {
     {
       label: 'The label',
       inline: true,
+      value: 'LENNON',
       options: baseOptions,
     },
     {
       label: 'Favourite artist',
       placeholder: '-- Select an artist --',
       inline: true,
+      value: '',
       options: baseOptions,
     },
   ],
@@ -121,6 +128,7 @@ export const inlineWithRequired = makeStory(conf, {
       label: 'The label',
       inline: true,
       required: true,
+      value: 'LENNON',
       options: baseOptions,
     },
     {
@@ -128,6 +136,7 @@ export const inlineWithRequired = makeStory(conf, {
       placeholder: '-- Select an artist --',
       inline: true,
       required: true,
+      value: '',
       options: baseOptions,
     },
   ],
@@ -140,6 +149,7 @@ export const inlineWithErrorAndHelpMessages = makeStory(conf, {
       inline: true,
       required: true,
       options: baseOptions,
+      value: 'LENNON',
       innerHTML: `
         <p slot="help">There can be only one.</p>
         <p slot="error">A value must be selected.</p>
@@ -150,6 +160,7 @@ export const inlineWithErrorAndHelpMessages = makeStory(conf, {
       placeholder: '-- Select an artist --',
       inline: true,
       required: true,
+      value: '',
       options: baseOptions,
       innerHTML: `
         <p slot="help">There can be only one.</p>
@@ -163,7 +174,7 @@ export const disabled = makeStory(conf, {
   items: [
     {
       label: 'Favourite artist',
-      placeholder: '-- Select an artist --',
+      value: 'LENNON',
       disabled: true,
       options: baseOptions,
     },
@@ -185,6 +196,7 @@ export const longContentWihFixedWidth = makeStory(
         label: longContent,
         placeholder: '-- Select an artist --',
         required: true,
+        value: '',
         options: [...baseOptions.map(() => ({ label: longContent }))],
       },
     ],
