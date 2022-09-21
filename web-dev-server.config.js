@@ -95,6 +95,22 @@ const injectAuthForSmartComponentsPlugin = {
         });
       `;
     }
+
+    if (context.path === '/demo-smart/index.js') {
+
+      // language=JavaScript
+      context.body += `
+        updateRootContext({
+          apiConfig: {
+            API_HOST: '${API_HOST}',
+            API_OAUTH_TOKEN: '${API_OAUTH_TOKEN}',
+            API_OAUTH_TOKEN_SECRET: '${API_OAUTH_TOKEN_SECRET}',
+            OAUTH_CONSUMER_KEY: '${OAUTH_CONSUMER_KEY}',
+            OAUTH_CONSUMER_SECRET: '${OAUTH_CONSUMER_SECRET}',
+          },
+        });
+      `;
+    }
   },
 };
 
