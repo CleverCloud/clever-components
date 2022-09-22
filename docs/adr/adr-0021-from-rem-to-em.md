@@ -115,9 +115,10 @@ We will continue to follow the progress on this subject.
 ### In English:
 
 * [The Surprising Truth about Pixels and Accessibility by Josh W Comeau](https://www.joshwcomeau.com/css/surprising-truth-about-pixels-and-accessibility/#the-625-trick),
-* [People don't change the default 16px font size in their browser (You wish!), by Nicolas Hoizey](https://nicolas-hoizey.com/articles/2016/03/02/people-don-t-change-the-default-16px-font-size-in-their-browser/)
+* [People don't change the default 16px font size in their browser (You wish!), by Nicolas Hoizey](https://nicolas-hoizey.com/articles/2016/03/02/people-don-t-change-the-default-16px-font-size-in-their-browser/).
 
 ### In French:
 
 * <a href="https://www.lalutineduweb.fr/accessibilite-personne-ne-le-fait/" lang="fr">Accessibilité : personne ne le fait donc on s’en fiche, par Julie Moynat</a>,
 * <a href="https://nicolas-hoizey.com/talks/2013/10/10/un-petit-pas-pour-l-em-un-grand-pas-pour-le-web/" lang="fr">Un petit pas pour l’em, un grand pas pour le Web, par Nicolas Hoizey</a>,
+* <a href="https://code-garage.fr/blog/css-px-em-ou-rem-pour-dimensionner-ses-textes/" lang="fr">Faut-il utiliser px, em ou rem pour dimensionner ses textes en CSS ?, par Nicolas Brondin-Bernard</a>.
