@@ -62,6 +62,32 @@ export const dataLoadedWithStrictMode = makeStory(conf, {
   items: [{ variables: VARIABLES_FULL, mode: 'strict' }],
 });
 
+export const dataLoadedWithSecretVarsAll = makeStory(conf, {
+  items: [{
+    variables: [
+      { name: '_SECRET_VARS', value: '*' },
+      { name: 'ONE', value: 'the one' },
+      { name: 'TWO', value: 'the two' },
+      { name: 'THREE', value: 'the three' },
+      { name: 'PRIVATE_KEY', value: '0KAip5wCv3RkGww60bRTwzlywvlZ8N' },
+      { name: 'SOME_SECRET', value: 'KAkwvp7uHL' },
+    ],
+  }],
+});
+
+export const dataLoadedWithSecretVarsSome = makeStory(conf, {
+  items: [{
+    variables: [
+      { name: '_SECRET_VARS', value: 'PRIVATE_KEY,SOME_SECRET' },
+      { name: 'ONE', value: 'the one' },
+      { name: 'TWO', value: 'the two' },
+      { name: 'THREE', value: 'the three' },
+      { name: 'PRIVATE_KEY', value: '0KAip5wCv3RkGww60bRTwzlywvlZ8N' },
+      { name: 'SOME_SECRET', value: 'KAkwvp7uHL' },
+    ],
+  }],
+});
+
 enhanceStoriesNames({
   defaultStory,
   skeleton,
@@ -72,4 +98,6 @@ enhanceStoriesNames({
   dataLoadedWithDisabled,
   dataLoadedWithReadonly,
   dataLoadedWithStrictMode,
+  dataLoadedWithSecretVarsAll,
+  dataLoadedWithSecretVarsSome,
 });

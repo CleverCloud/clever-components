@@ -85,7 +85,40 @@ export const dataLoadedWithCustomHeadingAndDescription = makeStory(conf, {
 });
 
 export const dataLoadedWithStrictMode = makeStory(conf, {
-  items: [{ appName: 'Foobar backend python (strict mode)', context: 'env-var', variables: VARIABLES_FULL, parserOptions: { mode: 'strict' } }],
+  items: [{
+    appName: 'Foobar backend python (strict mode)', context: 'env-var', variables: VARIABLES_FULL,
+    parserOptions: { mode: 'strict' },
+  }],
+});
+
+export const dataLoadedWithSecretVarsAll = makeStory(conf, {
+  items: [{
+    appName: 'Foobar backend python',
+    context: 'env-var',
+    variables: [
+      { name: '_SECRET_VARS', value: '*' },
+      { name: 'ONE', value: 'the one' },
+      { name: 'TWO', value: 'the two' },
+      { name: 'THREE', value: 'the three' },
+      { name: 'PRIVATE_KEY', value: '0KAip5wCv3RkGww60bRTwzlywvlZ8N' },
+      { name: 'SOME_SECRET', value: 'KAkwvp7uHL' },
+    ],
+  }],
+});
+
+export const dataLoadedWithSecretVarsSome = makeStory(conf, {
+  items: [{
+    appName: 'Foobar backend python',
+    context: 'env-var',
+    variables: [
+      { name: '_SECRET_VARS', value: 'PRIVATE_KEY,SOME_SECRET' },
+      { name: 'ONE', value: 'the one' },
+      { name: 'TWO', value: 'the two' },
+      { name: 'THREE', value: 'the three' },
+      { name: 'PRIVATE_KEY', value: '0KAip5wCv3RkGww60bRTwzlywvlZ8N' },
+      { name: 'SOME_SECRET', value: 'KAkwvp7uHL' },
+    ],
+  }],
 });
 
 export const saving = makeStory(conf, {
@@ -120,6 +153,8 @@ enhanceStoriesNames({
   dataLoadedWithRestartButton,
   dataLoadedWithCustomHeadingAndDescription,
   dataLoadedWithStrictMode,
+  dataLoadedWithSecretVarsAll,
+  dataLoadedWithSecretVarsSome,
   saving,
   errorWithLoading,
   errorWithLoadingAndReadonly,

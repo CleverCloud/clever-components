@@ -34,6 +34,7 @@ export class CcEnvVarInput extends LitElement {
       // NOT USED FOR NOW
       new: { type: Boolean },
       readonly: { type: Boolean },
+      secret: { type: Boolean },
       skeleton: { type: Boolean },
       value: { type: String },
     };
@@ -59,6 +60,9 @@ export class CcEnvVarInput extends LitElement {
 
     /** @type {boolean} Sets `readonly` attribute on input and hides button. */
     this.readonly = false;
+
+    /** @type {boolean} TODO */
+    this.secret = false;
 
     /** @type {boolean} Enables skeleton screen UI pattern (loading hint). */
     this.skeleton = false;
@@ -95,8 +99,10 @@ export class CcEnvVarInput extends LitElement {
             class="value"
             name="value"
             value=${this.value}
-            multi
+            TODO="we need secret for multi vv"
+            ?multi=${this.secret ? this.value.includes('\n') : true}
             clipboard
+            ?secret=${this.secret}
             ?disabled=${this.deleted || this.disabled}
             ?skeleton=${this.skeleton}
             ?readonly=${this.readonly}

@@ -47,6 +47,10 @@ export const editedAndDeleted = makeStory(conf, {
   items: [{ name: 'EDITED_DELETED', value: 'edited deleted value', edited: true, deleted: true }],
 });
 
+export const secret = makeStory(conf, {
+  items: [{ name: 'SECRET', value: 'secret value', secret: true }],
+});
+
 export const longName = makeStory(conf, {
   items: [{
     name: 'VERY_LONG_NAME_THAT_IS_ACTUALLY_TOO_LONG_TOO_DISPLAY_OMG_WHAT_IS_HAPPENING',

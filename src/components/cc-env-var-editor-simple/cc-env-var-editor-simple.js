@@ -50,6 +50,14 @@ export class CcEnvVarEditorSimple extends LitElement {
     this.variables = null;
   }
 
+  _isSecret (name) {
+    if (name === '_SECRET_VARS') {
+      return false;
+    }
+    const secretVarsSetting = this.variables.find(({ name }) => name === '_SECRET_VARS');
+    return secretVarsSetting.value === '*' || secretVarsSetting.value.split(',').includes(name);
+  }
+
   _onCreate ({ detail: newVar }) {
     this.variables = [...this.variables, newVar];
     dispatchCustomEvent(this, 'change', this.variables);
@@ -117,6 +125,7 @@ export class CcEnvVarEditorSimple extends LitElement {
           ?edited=${isEdited}
           ?deleted=${isDeleted}
           ?skeleton=${skeleton}
+          ?secret=${this._isSecret(name)}
           ?disabled=${this.disabled}
           ?readonly=${this.readonly}
           @cc-env-var-input:input=${this._onInput}
