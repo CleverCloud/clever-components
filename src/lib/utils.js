@@ -42,11 +42,12 @@ export function arrayEquals (a, b) {
   return true;
 }
 
-export const unique = [(a, b, i, array) => {
-  if (i === array.length - 1) {
+export function unique (item, index, array) {
+  if (index === array.length - 1) {
     return Array.from(new Set(array));
   }
-}, []];
+  return [];
+};
 
 export function sortBy (propertyName, desc = false) {
   return (a, b) => {

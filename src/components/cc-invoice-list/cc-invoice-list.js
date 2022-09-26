@@ -74,8 +74,7 @@ export class CcInvoiceList extends withResizeObserver(LitElement) {
 
     const processedInvoicesYears = processedInvoices
       .map((invoice) => getYearAsString(invoice.emissionDate))
-      .reduce(...unique)
-      .map((year) => String(year));
+      .flatMap(unique);
 
     const yearChoices = processedInvoicesYears
       .map((year) => ({ label: year, value: year }))
@@ -115,21 +114,21 @@ export class CcInvoiceList extends withResizeObserver(LitElement) {
           <cc-block-section>
             <div slot="title">${i18n('cc-invoice-list.processed')}</div>
             ${hasYearSelector ? html`
-                <cc-toggle
-                  legend=${i18n('cc-invoice-list.year')}
-                  .choices=${yearChoices}
-                  value=${yearFilter}
-                  inline
-                  @cc-toggle:input=${this._onYearFilterValue}
-                ></cc-toggle>
-                <cc-select
-                  label=${i18n('cc-invoice-list.year')}
-                  .options=${yearChoices}
-                  value=${yearFilter}
-                  inline
-                  @cc-select:input=${this._onYearFilterValue}
-                ></cc-select>
-              ` : ''}
+              <cc-toggle
+                legend=${i18n('cc-invoice-list.year')}
+                .choices=${yearChoices}
+                value=${yearFilter}
+                inline
+                @cc-toggle:input=${this._onYearFilterValue}
+              ></cc-toggle>
+              <cc-select
+                label=${i18n('cc-invoice-list.year')}
+                .options=${yearChoices}
+                value=${yearFilter}
+                inline
+                @cc-select:input=${this._onYearFilterValue}
+              ></cc-select>
+            ` : ''}
             ${skeleton || filteredProcessedInvoices.length > 0 ? html`
               <cc-invoice-table .invoices=${skeleton ? null : filteredProcessedInvoices}></cc-invoice-table>
             ` : ''}
@@ -162,7 +161,7 @@ export class CcInvoiceList extends withResizeObserver(LitElement) {
         :host([w-lt-520]) cc-toggle {
           display: none;
         }
-        
+
         :host([w-gte-520]) cc-select {
           display: none;
         }
