@@ -42,13 +42,6 @@ export function arrayEquals (a, b) {
   return true;
 }
 
-export function addErrorType (type) {
-  return (err) => {
-    err.type = type;
-    throw err;
-  };
-}
-
 export const unique = [(a, b, i, array) => {
   if (i === array.length - 1) {
     return Array.from(new Set(array));
