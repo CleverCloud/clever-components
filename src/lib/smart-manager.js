@@ -21,9 +21,6 @@ import { objectEquals } from './utils.js';
  * @property {Function} onDisconnect
  */
 
-const COMPONENTS = Symbol('COMPONENTS');
-const CURRENT_CONTEXT = Symbol('CURRENT_CONTEXT');
-const LAST_CONTEXT = Symbol('LAST_CONTEXT');
 let rootContext = {};
 
 /** @type {Set<CcSmartContainer>} */
@@ -32,13 +29,17 @@ const smartContainers = new Set();
 /** @type {Set<SmartComponentDefinition>} */
 const smartComponentDefinitions = new Set();
 
+const containerComponents = new WeakMap();
+const containerCurrentContext = new WeakMap();
+const componentLastContext = new WeakMap();
+
 /**
  * @param {CcSmartContainer} container
  * @param {AbortSignal} signal
  */
 export function observeContainer (container, signal) {
 
-  container[COMPONENTS] = new Map();
+  containerComponents.set(container, new Map());
   smartContainers.add(container);
 
   // TODO: Seems like debouncing this reduces the number of call but is it really necessary?
@@ -51,11 +52,11 @@ export function observeContainer (container, signal) {
     smartContainers.delete(container);
 
     // Properly disconnect components
-    container[COMPONENTS].forEach((allComponents, definition) => {
+    containerComponents.get(container).forEach((allComponents, definition) => {
       allComponents.forEach((component) => disconnectComponent(container, definition, component));
     });
-    delete container[COMPONENTS];
-    delete container[CURRENT_CONTEXT];
+    containerComponents.delete(container);
+    containerCurrentContext.delete(container);
 
   }, { once: true });
 }
@@ -76,9 +77,9 @@ export function defineSmartComponentCore (definition, signal) {
 
       // Properly disconnect components
       smartContainers.forEach((container) => {
-        const allComponents = container[COMPONENTS].get(definition) ?? [];
+        const allComponents = containerComponents.get(container).get(definition) ?? [];
         allComponents.forEach((component) => disconnectComponent(container, definition, component));
-        container[COMPONENTS].delete(definition);
+        containerComponents.get(container).delete(definition);
       });
 
     }, { once: true });
@@ -97,8 +98,8 @@ function updateEverything () {
       const allDefinitionComponents = Array.from(container.querySelectorAll(definition.selector))
         .filter((c) => closestParent(c, 'cc-smart-container') === container);
 
-      const previousComponents = container[COMPONENTS].get(definition) ?? [];
-      container[COMPONENTS].set(definition, allDefinitionComponents);
+      const previousComponents = containerComponents.get(container).get(definition) ?? [];
+      containerComponents.get(container).set(definition, allDefinitionComponents);
 
       // connected
       allDefinitionComponents
@@ -129,7 +130,7 @@ function updateEverything () {
  * @param {Object} context
  */
 export function updateContext (container, context) {
-  container[CURRENT_CONTEXT] = context;
+  containerCurrentContext.set(container, context);
   updateEverything();
 }
 
@@ -147,7 +148,7 @@ export function updateRootContext (context) {
  * @param {Element} component
  */
 function connectComponent (container, definition, component) {
-  component[LAST_CONTEXT] = {};
+  componentLastContext.set(component, {});
   definition.onConnect?.(container, component);
 }
 
@@ -157,12 +158,12 @@ function connectComponent (container, definition, component) {
  * @param {Element} component
  */
 function updateComponentContext (container, definition, component) {
-  const currentContext = { ...rootContext, ...container[CURRENT_CONTEXT] };
+  const currentContext = { ...rootContext, ...containerCurrentContext.get(container) };
   const filteredContext = filterContext(currentContext, definition.params);
-  if (objectEquals(component[LAST_CONTEXT], filteredContext)) {
+  if (objectEquals(componentLastContext.get(component), filteredContext)) {
     return;
   }
-  component[LAST_CONTEXT] = filteredContext;
+  componentLastContext.set(component, filteredContext);
   definition.onContextUpdate?.(container, component, filteredContext);
 }
 
@@ -172,7 +173,7 @@ function updateComponentContext (container, definition, component) {
  * @param {Element} component
  */
 function disconnectComponent (container, definition, component) {
-  delete component[LAST_CONTEXT];
+  componentLastContext.delete(component);
   definition.onDisconnect?.(container, component);
 }
 
