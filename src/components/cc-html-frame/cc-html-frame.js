@@ -31,7 +31,7 @@ export class CcHtmlFrame extends LitElement {
     return {
       loading: { type: Boolean, reflect: true },
       sandbox: { type: String },
-      title: { type: String },
+      iframeTitle: { type: String, attribute: 'iframe-title' },
     };
   }
 
@@ -45,7 +45,7 @@ export class CcHtmlFrame extends LitElement {
     this.sandbox = null;
 
     /** @type {string} Sets `title` attribute on the inner `<iframe>` element. */
-    this.title = '';
+    this.iframeTitle = '';
   }
 
   // As explained in the docs, this implemententation does not trigger an OOP iframe
@@ -88,7 +88,7 @@ export class CcHtmlFrame extends LitElement {
 
   render () {
     return html`
-      <iframe title=${this.title} src="about:blank" sandbox=${ifDefined(this.sandbox ?? undefined)}></iframe>
+      <iframe title=${this.iframeTitle} src="about:blank" sandbox=${ifDefined(this.sandbox ?? undefined)}></iframe>
       ${this.loading ? html`
         <cc-loader></cc-loader>
       ` : ''}

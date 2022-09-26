@@ -13,6 +13,7 @@ title: Changelog
 * Introduce a new project file structure (BREAKING CHANGE).
 * all components: change `rem` units to `em` (BREAKING CHANGE).
 * `<cc-select>`: use the `value` property of the select element instead of the `selected` attribute. The `value` prop should always be set when using the `<cc-select>` component. It may be set to an empty string if a `placeholder` is provided (BREAKING CHANGE).
+* `<cc-html-frame>`: change `title` prop to `iframeTitle` (`iframe-title` when used as an attribute) to avoid conflicts with the native `title` attribute (BREAKING CHANGE).
 
 ### Components
 

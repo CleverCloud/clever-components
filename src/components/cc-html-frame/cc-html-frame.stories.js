@@ -21,7 +21,7 @@ const conf = {
 export const defaultStory = makeStory(conf, {
   items: [
     {
-      title: 'Hello world document',
+      iframeTitle: 'Hello world document',
       innerHTML: `<template><h1>Hello World</h1></template>`,
     },
   ],
@@ -30,7 +30,7 @@ export const defaultStory = makeStory(conf, {
 export const heightAndWidth = makeStory(conf, {
   items: [
     {
-      title: 'Hello world document',
+      iframeTitle: 'Hello world document',
       innerHTML: '<template><h1>Hello World</h1></template>',
       style: 'height: 600px; width: 400px',
     },
@@ -41,21 +41,21 @@ export const defaultCss = makeStory(conf, {
   css: ``,
   items: [
     {
-      title: 'hello world document',
+      iframeTitle: 'hello world document',
       innerHTML: '<template><h1>Hello World</h1></template>',
     },
   ],
 });
 
 export const loading = makeStory(conf, {
-  items: [{ loading: true, title: 'loading' }],
+  items: [{ loading: true, iframeTitle: 'loading' }],
 });
 
 export const script = makeStory(conf, {
   docs: 'By default, scripts inside the inner `<iframe>` are executed.',
   items: [
     {
-      title: 'Hello world document',
+      iframeTitle: 'Hello world document',
       innerHTML: `
         <template>
           <h1>Hello World</h1>
@@ -76,7 +76,7 @@ export const sameOrigin = makeStory(conf, {
   docs: 'By default, the inner `<iframe>` shares the same origin as the parent window and therefore has access to the same local storage.',
   items: [
     {
-      title: 'Hello world document',
+      iframeTitle: 'Hello world document',
       innerHTML: `
         <template>
           <h1>Hello World</h1>
@@ -94,7 +94,7 @@ export const sandbox = makeStory(conf, {
   docs: 'You can use the same `sandbox` attribute as with a normal `<iframe>`. When set to `sandbox=""`, many things inside the iframe are disabled, including scripts.',
   items: [
     {
-      title: 'Hello world document',
+      iframeTitle: 'Hello world document',
       sandbox: '',
       innerHTML: `
         <template>
@@ -113,7 +113,7 @@ export const sandboxWithAllowScripts = makeStory(conf, {
   docs: 'You can use the same `sandbox` attribute as with a normal `<iframe>`. When set to `sandbox="allow-scripts"`, the scripts will run but access to APIs like local storage or cookies will still be disabled.',
   items: [
     {
-      title: 'Hello world document',
+      iframeTitle: 'Hello world document',
       sandbox: 'allow-scripts',
       innerHTML: `
         <template>
