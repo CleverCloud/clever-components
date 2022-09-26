@@ -4,7 +4,8 @@ import { defineSmartComponentCore, observeContainer, updateContext } from '../..
 // Special case to propagate/merge contexts trough containers
 defineSmartComponentCore({
   selector: 'cc-smart-container',
-  onContextUpdate (container, component, context) {
+  /** @param {CcSmartContainer} component */
+  onContextUpdate: (container, component, context) => {
     component.parentContext = context;
   },
 });
@@ -36,7 +37,7 @@ export class CcSmartContainer extends LitElement {
     delete this._abortController;
   }
 
-  willUpdate (changedProperties) {
+  willUpdate () {
     updateContext(this, { ...this.parentContext, ...this.context });
   }
 

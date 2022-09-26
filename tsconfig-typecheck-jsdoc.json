@@ -1,6 +1,8 @@
 {
   "include": [
-    "src/lib/utils.js"
+    "src/lib/utils.js",
+    "src/lib/smart-manager.js",
+    "src/components/cc-smart-container/cc-smart-container.js"
   ],
   "compilerOptions": {
     "allowJs": true,
@@ -12,7 +14,7 @@
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
-    "noImplicitOverride": true,
+    "noImplicitOverride": false,
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noPropertyAccessFromIndexSignature": false,

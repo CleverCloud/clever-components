@@ -13,28 +13,40 @@ import { objectEquals } from './utils.js';
 // * an object with the last context on component[LAST_CONTEXT]
 
 /**
- * @typedef SmartComponentDefinition
- * @property {String} selector
- * @property {Object} params
- * @property {Function} onConnect
- * @property {Function} onContextUpdate
- * @property {Function} onDisconnect
+ * @typedef {Element} SmartContainer
+ * @property {object} context
+ */
+
+/**
+ * @template {Record<string, {type: object}>} Context
+ * @template {Record<keyof Context, any>} FilteredContext
+ * @typedef {object} SmartComponentDefinition
+ * @property {string} selector
+ * @property {Context} [params]
+ * @property {(container: SmartContainer, component: Element) => void} [onConnect]
+ * @property {(container: SmartContainer, component: Element, context: FilteredContext) => void} [onContextUpdate]
+ * @property {(container: SmartContainer, component: Element) => void} [onDisconnect]
  */
 
 let rootContext = {};
 
-/** @type {Set<CcSmartContainer>} */
+/** @type {Set<SmartContainer>} */
 const smartContainers = new Set();
 
-/** @type {Set<SmartComponentDefinition>} */
+/** @type {Set<SmartComponentDefinition<?,?>>} */
 const smartComponentDefinitions = new Set();
 
+/** @type {WeakMap<SmartContainer, Map<SmartComponentDefinition<?,?>, Element[]>>} */
 const containerComponents = new WeakMap();
+
+/** @type {WeakMap<SmartContainer, object>} */
 const containerCurrentContext = new WeakMap();
+
+/** @type {WeakMap<Element, object>} */
 const componentLastContext = new WeakMap();
 
 /**
- * @param {CcSmartContainer} container
+ * @param {SmartContainer} container
  * @param {AbortSignal} signal
  */
 export function observeContainer (container, signal) {
@@ -61,9 +73,19 @@ export function observeContainer (container, signal) {
   }, { once: true });
 }
 
+// NOTE: The function below has some repetition with the SmartComponentDefinition typedef at the beginning of the file
+// It is necessary because TypeScript has difficulties with JSDoc and generics
+
 /**
- * @param {SmartComponentDefinition} definition
- * @param {AbortSignal?} signal
+ * @template {Record<string, {type: object}>} Context
+ * @template {Record<keyof Context, any>} FilteredContext
+ * @param {object} definition
+ * @param {string} definition.selector
+ * @param {Context} [definition.params]
+ * @param {(container: SmartContainer, component: Element) => void} [definition.onConnect]
+ * @param {(container: SmartContainer, component: Element, context: FilteredContext) => void} [definition.onContextUpdate]
+ * @param {(container: SmartContainer, component: Element) => void} [definition.onDisconnect]
+ * @param {AbortSignal} [signal]
  */
 export function defineSmartComponentCore (definition, signal) {
 
@@ -88,13 +110,17 @@ export function defineSmartComponentCore (definition, signal) {
 
 function updateEverything () {
 
+  /** @type {[SmartContainer, SmartComponentDefinition<?,?>, Element][]} */
   const allDisconnectedComponents = [];
+  /** @type {[SmartContainer, SmartComponentDefinition<?,?>, Element][]} */
   const allConnectedComponents = [];
+  /** @type {[SmartContainer, SmartComponentDefinition<?,?>, Element][]} */
   const allIdleComponents = [];
 
   smartContainers.forEach((container) => {
     smartComponentDefinitions.forEach((definition) => {
 
+      /** @type {Element[]} */
       const allDefinitionComponents = Array.from(container.querySelectorAll(definition.selector))
         .filter((c) => closestParent(c, 'cc-smart-container') === container);
 
@@ -126,7 +152,7 @@ function updateEverything () {
 }
 
 /**
- * @param {CcSmartContainer} container
+ * @param {SmartContainer} container
  * @param {Object} context
  */
 export function updateContext (container, context) {
@@ -143,8 +169,9 @@ export function updateRootContext (context) {
 }
 
 /**
- * @param {CcSmartComponent} container
- * @param {SmartComponentDefinition} definition
+ * @template Context
+ * @param {SmartContainer} container
+ * @param {SmartComponentDefinition<?,?>} definition
  * @param {Element} component
  */
 function connectComponent (container, definition, component) {
@@ -153,8 +180,8 @@ function connectComponent (container, definition, component) {
 }
 
 /**
- * @param {CcSmartComponent} container
- * @param {SmartComponentDefinition} definition
+ * @param {SmartContainer} container
+ * @param {SmartComponentDefinition<?,?>} definition
  * @param {Element} component
  */
 function updateComponentContext (container, definition, component) {
@@ -168,8 +195,8 @@ function updateComponentContext (container, definition, component) {
 }
 
 /**
- * @param {CcSmartComponent} container
- * @param {SmartComponentDefinition} definition
+ * @param {SmartContainer} container
+ * @param {SmartComponentDefinition<?,?>} definition
  * @param {Element} component
  */
 function disconnectComponent (container, definition, component) {
@@ -180,7 +207,6 @@ function disconnectComponent (container, definition, component) {
 // LOW LEVEL HELPERS
 
 /**
- *
  * @param {Element} element
  * @param {String} selector
  * @return {Element}
@@ -190,10 +216,9 @@ function closestParent (element, selector) {
 }
 
 /**
- *
- * @param {Object|null} source
- * @param {Object|null} keyObject
- * @return {Object}
+ * @param {Record<string, any>|null} source
+ * @param {Record<string, any>|null} keyObject
+ * @return {Record<string, any>}
  */
 function filterContext (source, keyObject) {
   if (source == null) {
