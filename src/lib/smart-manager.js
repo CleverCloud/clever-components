@@ -18,13 +18,11 @@ import { objectEquals } from './utils.js';
  */
 
 /**
- * @template {Record<string, {type: object}>} Context
- * @template {Record<keyof Context, any>} FilteredContext
  * @typedef {object} SmartComponentDefinition
  * @property {string} selector
  * @property {Context} [params]
  * @property {(container: SmartContainer, component: Element) => void} [onConnect]
- * @property {(container: SmartContainer, component: Element, context: FilteredContext) => void} [onContextUpdate]
+ * @property {(container: SmartContainer, component: Element, context: object) => void} [onContextUpdate]
  * @property {(container: SmartContainer, component: Element) => void} [onDisconnect]
  */
 

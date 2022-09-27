@@ -2,6 +2,7 @@
   "include": [
     "src/lib/utils.js",
     "src/lib/smart-manager.js",
+    "src/lib/define-smart-component.js",
     "src/components/cc-smart-container/cc-smart-container.js"
   ],
   "compilerOptions": {

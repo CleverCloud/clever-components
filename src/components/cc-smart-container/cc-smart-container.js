@@ -1,14 +1,20 @@
 import { css, html, LitElement } from 'lit';
 import { defineSmartComponentCore, observeContainer, updateContext } from '../../lib/smart-manager.js';
 
+/**
+ * @typedef {import('./cc-smart-container.types.js').SmartComponentDefinitionFoo} SmartComponentDefinitionFoo
+ */
+
 // Special case to propagate/merge contexts trough containers
-defineSmartComponentCore({
+defineSmartComponentCore(/** @type{SmartComponentDefinitionFoo} */ ({
   selector: 'cc-smart-container',
-  /** @param {CcSmartContainer} component */
+  params: {
+    foo: { type: String },
+  },
   onContextUpdate: (container, component, context) => {
     component.parentContext = context;
   },
-});
+}));
 
 export class CcSmartContainer extends LitElement {
 
