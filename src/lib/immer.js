@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 // immer uses a non standard global property from Node.js "process"
 window.process = {
   env: {

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { objectEquals } from './utils.js';
 
 // In the global space of this module (for any module importing it), we maintain:

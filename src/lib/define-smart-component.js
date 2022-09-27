@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { produce } from './immer.js';
 import { defineSmartComponentCore } from './smart-manager.js';
 
@@ -12,7 +14,7 @@ const META = Symbol('META');
 
 /**
  * @param {SmartComponentDefinition} definition
- * @param {AbortSignal?} signal
+ * @param {AbortSignal} [signal]
  */
 export function defineSmartComponent (definition, signal) {
 
