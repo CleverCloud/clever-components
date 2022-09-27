@@ -39,6 +39,7 @@ title: Changelog
 * Upgrade from `@web/test-runner-mocha@0.7.2` to `@web/test-runner-mocha@0.7.5`.
 * Upgrade from `@custom-elements-manifest/analyzer@0.4.1` to `@custom-elements-manifest/analyzer@0.6.4`.
 * Fix Custom Element Manifest generation web dev server plugin: disable caching
+* Add JSDoc based typechecking with TypeScript's CLI (just utils.js for now)
 
 ## 9.0.0 (2022-07-19)
 
