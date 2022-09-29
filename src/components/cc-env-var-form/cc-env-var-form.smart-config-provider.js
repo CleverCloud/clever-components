@@ -1,13 +1,20 @@
 import './cc-env-var-form.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { get as getAddon } from '@clevercloud/client/esm/api/v2/addon.js';
+import { defineSmartComponentWithObservables } from '../../lib/define-smart-component-with-observables.js';
 import { i18n } from '../../lib/i18n.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
-import { fromCustomEvent, LastPromise, map, merge, unsubscribeWithSignal, withLatestFrom } from '../../lib/observables.js';
+import {
+  fromCustomEvent,
+  LastPromise,
+  map,
+  merge,
+  unsubscribeWithSignal,
+  withLatestFrom,
+} from '../../lib/observables.js';
 import { sendToApi } from '../../lib/send-to-api.js';
-import { defineComponent } from '../../lib/smart-manager.js';
 
-defineComponent({
+defineSmartComponentWithObservables({
   selector: 'cc-env-var-form[context="config-provider"]',
   params: {
     apiConfig: { type: Object },
