@@ -22,8 +22,14 @@ function enhanceStoryName (defaultName) {
   if (defaultName === 'empty') {
     return '🕳 Empty (no data)';
   }
-  if (defaultName.startsWith('loading') || defaultName.startsWith('waiting') || defaultName === 'saving' || defaultName.startsWith('skeleton')) {
+  if (defaultName.startsWith('loading') || defaultName.startsWith('waiting') || defaultName === 'saving' || defaultName.startsWith('updating') || defaultName.startsWith('skeleton')) {
     return '⌛ ' + formatStoryName(defaultName);
+  }
+  if (defaultName.startsWith('editing')) {
+    return '📝 ' + formatStoryName(defaultName);
+  }
+  if (defaultName.startsWith('deleting')) {
+    return '🗑️ ' + formatStoryName(defaultName);
   }
   if (defaultName.startsWith('empty')) {
     return '🕳 ' + formatStoryName(defaultName);
