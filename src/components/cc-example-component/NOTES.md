@@ -29,3 +29,12 @@ error TS2339: Property 'name' does not exist on type 'PersonState'
 "--src/lib/smart-manager.js",
 "--src/lib/define-smart-component.js",
 "--src/components/cc-smart-container/cc-smart-container.js"
+
+## Links
+
+* https://usecsv.com/community/javascript-jsdoc
+* https://medium.com/brain-bites/my-short-journey-from-typescript-to-javascript-with-jsdoc-and-back-c2d905d0e15f
+* https://github.com/DavidWells/types-with-jsdocs
+* https://github.com/microsoft/TypeScript/issues/27387
+* https://docs.joshuatz.com/cheatsheets/js/jsdoc/
+* https://catchts.com/callbacks#cb_structure
