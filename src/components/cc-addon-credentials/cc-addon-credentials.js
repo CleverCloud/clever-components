@@ -48,7 +48,7 @@ export class CcAddonCredentials extends LitElement {
     this.icon = null;
 
     /** @type {string|null} Sets the display name of the add-on. */
-    this.name = null;
+    this.firstname = null;
 
     /** @type {ToggleStateType} Sets the toggle state of the inner block. */
     this.toggleState = 'off';

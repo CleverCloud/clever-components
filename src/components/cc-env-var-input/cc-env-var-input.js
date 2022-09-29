@@ -52,7 +52,7 @@ export class CcEnvVarInput extends LitElement {
     this.edited = false;
 
     /** @type {string|null} Sets the name of the environment variable. */
-    this.name = null;
+    this.firstname = null;
 
     /** @type {boolean}  Declares the variable as "new" (compared to server side state). */
     this.new = false;

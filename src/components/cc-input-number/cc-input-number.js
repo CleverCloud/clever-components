@@ -73,7 +73,7 @@ export class CcInputNumber extends LitElement {
     this.min = null;
 
     /** @type {string|null} Sets `name` attribute on inner native `<input>` element. */
-    this.name = null;
+    this.firstname = null;
 
     /** @type {boolean} Sets `readonly` attribute on inner native `<input>` element. */
     this.readonly = false;

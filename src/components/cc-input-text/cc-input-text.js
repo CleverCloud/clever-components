@@ -102,7 +102,7 @@ export class CcInputText extends LitElement {
     this.multi = false;
 
     /** @type {string|null} Sets `name` attribute on inner native `<input>/<textarea>` element. */
-    this.name = null;
+    this.firstname = null;
 
     /** @type {string} Sets `placeholder` attribute on inner native `<input>/<textarea>` element. */
     this.placeholder = '';

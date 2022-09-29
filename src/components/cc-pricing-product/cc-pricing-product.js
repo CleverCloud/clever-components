@@ -80,7 +80,7 @@ export class CcPricingProduct extends LitElement {
     this.icon = null;
 
     /** @type {string|null} Sets the name of the product (can be overriden with the `name` slot). */
-    this.name = null;
+    this.firstname = null;
 
     /** @type {Plan[]|null} Sets the list of plans. */
     this.plans = null;

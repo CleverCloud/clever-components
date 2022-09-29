@@ -99,7 +99,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
     this.icon = null;
 
     /** @type {string|null} Sets the name of the product */
-    this.name = null;
+    this.firstname = null;
 
     /** @type {Section[]|null} Sets the different sections with their `type` and `intervals` */
     this.sections = null;

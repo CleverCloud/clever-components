@@ -52,7 +52,7 @@ export class CcSelect extends LitElement {
     this.inline = false;
 
     /** @type {string|null} Sets `name` attribute on inner native `<select>` element. */
-    this.name = null;
+    this.firstname = null;
 
     /** @type {string|null} Sets label for the input. Mandatory but can be hidden if necessary. */
     this.label = null;
