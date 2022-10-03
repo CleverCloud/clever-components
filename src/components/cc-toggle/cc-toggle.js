@@ -84,10 +84,6 @@ export class CcToggle extends LitElement {
 
     /** @type {string|null} Sets the selected value (single mode only). */
     this.value = null;
-
-    // use this unique name for isolation (Safari seems to have a bug)
-    /** @type {string} */
-    this._uniqueName = Math.random().toString(36).slice(2);
   }
 
   _onChange (e) {
@@ -134,7 +130,7 @@ export class CcToggle extends LitElement {
           ${repeat(this.choices, ({ value }) => value, ({ label, image, value }) => html`
             <input
               type=${type}
-              name=${this._uniqueName}
+              name="toggle"
               .value=${value}
               id=${value}
               ?disabled=${this.disabled}

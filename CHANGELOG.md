@@ -24,6 +24,7 @@ title: Changelog
 * `<cc-input-text>`: remove the unique id generation technique and rely on Shadow DOM isolation instead.
 * `<cc-input-number>`: remove the unique id generation technique and rely on Shadow DOM isolation instead.
 * `<cc-select>`: remove the unique id generation technique and rely on Shadow DOM isolation instead.
+* `<cc-toggle>`: remove the unique name generation technique and rely on Shadow DOM isolation instead.
 * New component:
   * `<cc-action-dispatcher>`
 
