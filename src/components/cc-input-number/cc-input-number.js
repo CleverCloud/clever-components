@@ -43,9 +43,6 @@ export class CcInputNumber extends LitElement {
       step: { type: Number },
       value: { type: Number },
       _invalid: { type: Boolean, state: true },
-      _uniqueErrorId: { type: Boolean, state: true },
-      _uniqueHelpId: { type: Boolean, state: true },
-      _uniqueInputId: { type: Boolean, state: true },
     };
   }
 
@@ -92,18 +89,6 @@ export class CcInputNumber extends LitElement {
 
     /** @type {boolean} */
     this._invalid = false;
-
-    // use this unique id for isolation (Safari seems to have a bug)
-    /** @type {string} used by the `aria-describedby` attribute on the `<input>` element and the `id` attribute on the error slot container */
-    this._uniqueErrorId = Math.random().toString(36).slice(2);
-
-    // use this unique id for isolation (Safari seems to have a bug)
-    /** @type {string} used by the `aria-describedby` attribute on the `<input>` element and the `id` attribute on the help text container */
-    this._uniqueHelpId = Math.random().toString(36).slice(2);
-
-    // use this unique name for isolation (Safari seems to have a bug)
-    /** @type {string} used by the for/id relation between `<label>` and `<input>` */
-    this._uniqueInputId = Math.random().toString(36).slice(2);
   }
 
   /**
@@ -175,7 +160,7 @@ export class CcInputNumber extends LitElement {
     return html`
 
       ${this.label != null ? html`
-        <label for=${this._uniqueInputId}>
+        <label for="input-id">
           <span>${this.label}</span>
           ${this.required ? html`
             <span class="required">${i18n('cc-input-number.required')}</span>
@@ -192,7 +177,7 @@ export class CcInputNumber extends LitElement {
         <div class="wrapper ${classMap({ skeleton: this.skeleton })}">
 
           <input
-            id=${this._uniqueInputId}
+            id="input-id"
             type="number"
             class="input ${classMap({ error: this._invalid })}"
             ?disabled=${this.disabled || this.skeleton}
@@ -203,7 +188,7 @@ export class CcInputNumber extends LitElement {
             .value=${value}
             name=${this.name ?? ''}
             spellcheck="false"
-            aria-describedby="${this._uniqueHelpId} ${this._uniqueErrorId}"
+            aria-describedby="help-id error-id"
             @focus=${this._onFocus}
             @input=${this._onInput}
             @keydown=${this._onKeyEvent}
@@ -218,11 +203,11 @@ export class CcInputNumber extends LitElement {
         ` : ''}
       </div>
 
-      <div class="help-container" id=${this._uniqueHelpId}>
+      <div class="help-container" id="help-id">
         <slot name="help"></slot>
       </div>
 
-      <div class="error-container" id=${this._uniqueErrorId}>
+      <div class="error-container" id="error-id">
         <slot name="error"></slot>
       </div>
     `;
