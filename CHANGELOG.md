@@ -21,6 +21,7 @@ title: Changelog
 * `<cc-addon-admin>`: fix skeleton mode
 * `<cc-env-var-form>`: fix toggling to JSON mode while in skeleton state.
 * `<cc-badge>`: add skeleton mode
+* `<cc-input-text>`: remove the unique id generation technique and rely on Shadow DOM isolation instead.
 * New component:
   * `<cc-action-dispatcher>`
 
