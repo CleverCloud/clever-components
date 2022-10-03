@@ -68,18 +68,6 @@ export class CcSelect extends LitElement {
 
     /** @type {string|null} Sets the selected value of the element. This prop should always be set. It should always match one of the option values. */
     this.value = null;
-
-    // use this unique id for isolation (Safari seems to have a bug)
-    /** @type {string} used by the `aria-describedby` attribute on the `<select>` element and the `id` attribute on the error slot container */
-    this._uniqueErrorId = Math.random().toString(36).slice(2);
-
-    // use this unique id for isolation (Safari seems to have a bug)
-    /** @type {string} used by the `aria-describedby` attribute on the `<select>` element and the `id` attribute on the help text container */
-    this._uniqueHelpId = Math.random().toString(36).slice(2);
-
-    // use this unique name for isolation (Safari seems to have a bug)
-    /** @type {string} used by the `for`/`id` relation between `<label>` and `<select>` */
-    this._uniqueInputId = Math.random().toString(36).slice(2);
   }
 
   updated (changedProperties) {
@@ -107,7 +95,7 @@ export class CcSelect extends LitElement {
 
   render () {
     return html`
-      <label for=${this._uniqueInputId}>
+      <label for="input-id">
         <span>${this.label}</span>
         ${this.required ? html`
           <span class="required">${i18n('cc-select.required')}</span>
@@ -115,9 +103,9 @@ export class CcSelect extends LitElement {
       </label>
       <div class="selectWrapper ${classMap({ disabled: this.disabled })}">
         <select
-          id=${this._uniqueInputId}
+          id="input-id"
           ?disabled=${this.disabled}
-          aria-describedby="${this._uniqueHelpId} ${this._uniqueErrorId}"
+          aria-describedby="help-id error-id"
           @input=${this._onSelectInput}
           .value=${this.value}
         >
@@ -130,11 +118,11 @@ export class CcSelect extends LitElement {
         </select>
       </div>
 
-      <div class="help-container" id=${this._uniqueHelpId}>
+      <div class="help-container" id="help-id">
         <slot name="help"></slot>
       </div>
 
-      <div class="error-container" id=${this._uniqueErrorId}>
+      <div class="error-container" id="error-id">
         <slot name="error"></slot>
       </div>
     `;
