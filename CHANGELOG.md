@@ -46,6 +46,7 @@ title: Changelog
 * Add JSDoc based typechecking with TypeScript's CLI (just utils.js for now)
 * Rollback the smart-manager to the old low level API and move the observable API to a different module
 * Introduce a new defineSmartComponent function
+* Add `FocusLostController`, a Lit Reactive Controller that helps manage focus loss.
 
 ## 9.0.0 (2022-07-19)
 

@@ -22,7 +22,7 @@ Array
 
 // Use emojis to sort story categories/kinds
 // Docs, then components, then stuffs for devs (mixins and inner styles)
-const EMOJI_SORT = ['🏠', '📌', '🧬', '🛠', '🔀', '♻️'];
+const EMOJI_SORT = ['🏠', '📌', '🧬', '🛠', '🔀', '🕹', '♻️'];
 
 export const parameters = {
   options: {
