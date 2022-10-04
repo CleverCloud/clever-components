@@ -1,10 +1,22 @@
-export interface RedirectionNamespace {
-  namespace: string,
+import { TcpRedirectionState } from "../cc-tcp-redirection/cc-tcp-redirection.types";
+
+export type TcpRedirectionFormContextType = "user" | "admin";
+
+export type TcpRedirectionFormState =
+  TcpRedirectionFormStateLoading
+  | TcpRedirectionFormStateLoaded
+  | TcpRedirectionFormStateError;
+
+interface TcpRedirectionFormStateLoading {
+  state: "loading";
 }
 
-export interface Redirection {
-  namespace: string,
-  sourcePort: number,
+interface TcpRedirectionFormStateLoaded {
+  state: "loaded";
+  value: TcpRedirectionState[]
 }
 
-export type ContextRedirectionType = "user" | "admin";
+interface TcpRedirectionFormStateError {
+  state: "error";
+}
+

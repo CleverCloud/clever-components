@@ -12,8 +12,7 @@ const noRedirectionSvg = new URL('../../assets/redirection-off.svg', import.meta
 const redirectionSvg = new URL('../../assets/redirection-on.svg', import.meta.url).href;
 
 /**
- * @typedef {import('./cc-tcp-redirection.types.js').RedirectionNamespace} RedirectionNamespace
- * @typedef {import('./cc-tcp-redirection.types.js').Redirection} Redirection
+ * @typedef {import('./cc-tcp-redirection.types.js').TcpRedirectionState} TcpRedirectionState
  */
 
 /**
@@ -21,58 +20,42 @@ const redirectionSvg = new URL('../../assets/redirection-on.svg', import.meta.ur
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<RedirectionNamespace>} cc-tcp-redirection:create - Fires a redirection namespace whenever the create button is clicked.
- * @event {CustomEvent<Redirection>} cc-tcp-redirection:delete - Fires a redirection whenever the delete button is clicked.
+ * @event {CustomEvent<CreateTcpRedirection>} cc-tcp-redirection:create - Fires a redirection namespace whenever the create button is clicked.
+ * @event {CustomEvent<DeleteTcpRedirection>} cc-tcp-redirection:delete - Fires a redirection whenever the delete button is clicked.
  */
 export class CcTcpRedirection extends LitElement {
 
   static get properties () {
     return {
-      namespace: { type: String },
-      private: { type: Boolean },
-      skeleton: { type: Boolean },
-      sourcePort: { type: Number, attribute: 'source-port' },
-      waiting: { type: Boolean },
+      redirection: { type: Object },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {string|null} Sets the name of the namespace. */
-    this.namespace = null;
-
-    /** @type {boolean} Set if this namespace is dedicated to the customer. */
-    this.private = false;
-
-    /** @type {boolean} Enables skeleton screen UI pattern (loading hint). */
-    this.skeleton = false;
-
-    /** @type {number|null} Sets the source of the redirection if any. */
-    this.sourcePort = null;
-
-    /** @type {boolean} Sets the waiting state. You should set this to true while an action is in progress. */
-    this.waiting = false;
+    /** @type {TcpRedirectionState} Sets the name of the namespace. */
+    this.redirection = { state: 'loading' };
   }
 
-  _getButtonText () {
-    return this._isRedirectionDefined()
+  _getButtonText (redirection) {
+    return (redirection.sourcePort != null)
       ? i18n('cc-tcp-redirection.delete-button')
       : i18n('cc-tcp-redirection.create-button');
   }
 
-  _getHelpText () {
-    const { namespace, sourcePort } = this;
-    return this._isRedirectionDefined()
+  _getHelpText (redirection) {
+    const { namespace, sourcePort } = redirection;
+    return (sourcePort != null)
       ? i18n('cc-tcp-redirection.redirection-defined', { namespace, sourcePort })
       : i18n('cc-tcp-redirection.redirection-not-defined', { namespace });
   }
 
-  _getHelpTextAddendum () {
-    if (this.private) {
+  _getHelpTextAddendum (redirection) {
+    if (redirection.isPrivate) {
       return i18n('cc-tcp-redirection.namespace-private');
     }
-    switch (this.namespace) {
+    switch (redirection.namespace) {
       case 'default':
         return i18n('cc-tcp-redirection.namespace-additionaldescription-default');
       case 'cleverapps':
@@ -82,54 +65,73 @@ export class CcTcpRedirection extends LitElement {
     }
   }
 
-  _getIconUrl () {
-    if (this._isRedirectionDefined()) {
-      return redirectionSvg;
-    }
-    return noRedirectionSvg;
-  }
-
-  _isRedirectionDefined () {
-    return this.sourcePort != null;
+  _getIconUrl (redirection) {
+    return (redirection.sourcePort != null)
+      ? redirectionSvg
+      : noRedirectionSvg;
   }
 
   _onCreate () {
-    dispatchCustomEvent(this, 'create', { namespace: this.namespace });
+    const { namespace } = this.redirection;
+    dispatchCustomEvent(this, 'create', { namespace });
   }
 
   _onDelete () {
-    dispatchCustomEvent(this, 'delete', { namespace: this.namespace, sourcePort: this.sourcePort });
+    const { namespace, sourcePort } = this.redirection;
+    dispatchCustomEvent(this, 'delete', { namespace, sourcePort });
   }
 
   render () {
+
+    const state = this.redirection.state;
+    const skeleton = state === 'loading';
+
+    // Use a fake redirection for skeleton mode
+    const redirection = skeleton
+      ? { namespace: 'default', isPrivate: false }
+      : this.redirection;
+
+    const isRedirectionDefined = (redirection.sourcePort != null);
+    const helpTextAddendum = this._getHelpTextAddendum(redirection);
+
     return html`
       <cc-flex-gap class="wrapper">
-        <div class="icon ${classMap({ skeleton: this.skeleton })}">
-          ${!this.waiting && !this.skeleton ? html`
-            <img src=${this._getIconUrl()} alt="">
-          ` : ''}
-          ${this.waiting ? html`
+
+        ${skeleton ? html`
+          <div class="icon skeleton"></div>
+        ` : ''}
+
+        ${state === 'loaded' ? html`
+          <div class="icon">
+            <img src=${this._getIconUrl(redirection)} alt="">
+          </div>
+        ` : ''}
+
+        ${state === 'waiting' ? html`
+          <div class="icon">
             <cc-loader></cc-loader>
-          ` : ''}
-        </div>
-        <cc-flex-gap class="text-button ${classMap({ 'cc-waiting': this.waiting })}">
+          </div>
+        ` : ''}
+
+        <cc-flex-gap class="text-button ${classMap({ 'cc-waiting': skeleton })}">
           <div class="text-wrapper">
-            <span class="text ${classMap({ skeleton: this.skeleton })}">${this._getHelpText()}</span>
-            ${this._getHelpTextAddendum() != null ? html`
+            <span class="text ${classMap({ skeleton })}">${(this._getHelpText(redirection))}</span>
+            ${helpTextAddendum != null ? html`
               <br>
-              <span class="text-addendum ${classMap({ skeleton: this.skeleton })}">${this._getHelpTextAddendum()}</span>
+              <span class="text-addendum ${classMap({ skeleton })}">${helpTextAddendum}</span>
             ` : ''}
           </div>
+
           <cc-button
-              outlined
-              ?skeleton=${this.skeleton}
-              ?waiting=${this.waiting}
-              ?danger=${this._isRedirectionDefined()}
-              delay=${this._isRedirectionDefined() ? 3 : 0}
-              ?primary=${!this._isRedirectionDefined()}
-              @cc-button:click=${this._isRedirectionDefined() ? this._onDelete : this._onCreate}
+            outlined
+            ?skeleton=${skeleton}
+            ?waiting=${state === 'waiting'}
+            ?danger=${isRedirectionDefined}
+            delay=${isRedirectionDefined ? 3 : 0}
+            ?primary=${!isRedirectionDefined}
+            @cc-button:click=${isRedirectionDefined ? this._onDelete : this._onCreate}
           >
-            ${this._getButtonText()}
+            ${this._getButtonText(redirection)}
           </cc-button>
         </cc-flex-gap>
       </cc-flex-gap>
