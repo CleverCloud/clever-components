@@ -47,6 +47,7 @@ title: Changelog
 * Rollback the smart-manager to the old low level API and move the observable API to a different module
 * Introduce a new defineSmartComponent function
 * Add `FocusLostController`, a Lit Reactive Controller that helps manage focus loss.
+* Add new eslint plugin `eslint-plugin-lit-a11y` to prevent accessibility issues.
 
 ## 9.0.0 (2022-07-19)
 
