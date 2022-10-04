@@ -48,7 +48,7 @@ export const defaultCss = makeStory(conf, {
 });
 
 export const loading = makeStory(conf, {
-  items: [{ loading: true }],
+  items: [{ loading: true, title: 'loading' }],
 });
 
 export const script = makeStory(conf, {

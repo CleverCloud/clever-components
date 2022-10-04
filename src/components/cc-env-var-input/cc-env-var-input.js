@@ -92,6 +92,8 @@ export class CcEnvVarInput extends LitElement {
         <cc-flex-gap class="input-btn">
 
           <cc-input-text
+            label="${i18n('cc-env-var-input.value-label', { variableName: this.name })}"
+            hidden-label
             class="value"
             name="value"
             value=${this.value}

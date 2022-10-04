@@ -7,5 +7,5 @@ import * as storiesModule from './cc-zone-input.stories.js';
 const storiesToTest = getStories(storiesModule);
 
 describe(`Component: ${storiesModule.default.component}`, function () {
-  testAccessibility(storiesToTest);
+  testAccessibility(storiesToTest, ['scrollable-region-focusable']);
 });

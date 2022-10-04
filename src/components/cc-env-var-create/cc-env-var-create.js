@@ -96,27 +96,26 @@ export class CcEnvVarCreate extends LitElement {
       : isNameInvalidSimple || isNameAlreadyDefined;
 
     return html`
-      <cc-flex-gap>
-
+      <div class="inline-form">
         <cc-input-text
+          label=${i18n('cc-env-var-create.name.label')}
           class="name"
           name="name"
           value=${this._variableName}
           ?disabled=${this.disabled}
-          placeholder=${i18n('cc-env-var-create.name.placeholder')}
           @cc-input-text:input=${this._onNameInput}
           @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, hasErrors)}
         ></cc-input-text>
 
-        <cc-flex-gap class="input-btn">
+        <div class="input-btn">
 
           <cc-input-text
+            label=${i18n('cc-env-var-create.value.label')}
             class="value"
             name="value"
             value=${this._variableValue}
             multi
             ?disabled=${this.disabled}
-            placeholder=${i18n('cc-env-var-create.value.placeholder')}
             @cc-input-text:input=${this._onValueInput}
             @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, hasErrors)}
           ></cc-input-text>
@@ -127,9 +126,9 @@ export class CcEnvVarCreate extends LitElement {
             @cc-button:click=${this._onSubmit}
           >${i18n('cc-env-var-create.create-button')}
           </cc-button>
-        </cc-flex-gap>
-      </cc-flex-gap>
-
+        </div>
+      </div>
+      
       ${(isNameInvalidStrict && this.mode === 'strict' && this._variableName !== '') ? html`
         <cc-error>${i18n(`cc-env-var-create.errors.invalid-name`, { name: this._variableName })}</cc-error>
       ` : ''}
@@ -153,8 +152,13 @@ export class CcEnvVarCreate extends LitElement {
       // language=CSS
       css`
         :host {
-          --cc-gap: 0.5em;
           display: block;
+        }
+        
+        .inline-form {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5em;
         }
 
         .name {
@@ -162,7 +166,10 @@ export class CcEnvVarCreate extends LitElement {
         }
 
         .input-btn {
+          display: flex;
           flex: 2 1 27em;
+          flex-wrap: wrap;
+          gap: 1em 0.5em;
         }
 
         .value {
@@ -178,6 +185,7 @@ export class CcEnvVarCreate extends LitElement {
         cc-button {
           align-self: flex-start;
           flex: 1 1 6em;
+          margin-top: auto;
           white-space: nowrap;
         }
 

@@ -139,8 +139,12 @@ export class CcEnvVarEditorSimple extends LitElement {
         display: none;
       }
 
+      /* Negative margin + padding to make the background-color span through the full width of the cc-block, despite the cc-block padding */
       cc-env-var-create {
-        margin-bottom: 1em;
+        background-color: var(--cc-color-bg-neutral);
+        margin-bottom: 0.5em;
+        margin-inline: -1em;
+        padding: 1em;
       }
 
       .message {

@@ -142,6 +142,8 @@ export class CcEnvVarEditorExpert extends LitElement {
           </div>
         ` : ''}
       <cc-input-text
+        label=${i18n('cc-env-var-editor-expert.label')}
+        hidden-label
         multi
         clipboard
         value=${this._variablesAsText}

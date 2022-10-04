@@ -67,14 +67,16 @@ export const translations = {
   'cc-action-dispatcher.unresponsive-instances': `VMs muettes`,
   //#endregion
   //#region cc-addon-admin
-  'cc-addon-admin.addon-name': `Nom de l'add-on`,
-  'cc-addon-admin.admin': `Administration`,
+  'cc-addon-admin.admin': `Administration de l'add-on`,
   'cc-addon-admin.danger-zone': `Zone de danger`,
   'cc-addon-admin.delete': `Supprimer l'add-on`,
   'cc-addon-admin.delete-description': () => sanitize`La machine virtuelle sera arrêtée dans 24 heures.<br>Les backups seront gardés suivant la politique de rétention.<br>Supprimer cet add-on le rendra directement indisponible.`,
   'cc-addon-admin.error-loading': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
   'cc-addon-admin.error-saving': `Une erreur est survenue pendant la sauvegarde des modifications`,
-  'cc-addon-admin.tags': `Tags`,
+  'cc-addon-admin.heading.name': `Nom`,
+  'cc-addon-admin.heading.tags': `Tags`,
+  'cc-addon-admin.input.name': `Nom de l'add-on`,
+  'cc-addon-admin.input.tags': `Tags de l'add-on`,
   'cc-addon-admin.tags-description': `Les tags vous permettent de classer vos applications et add-ons afin de les catégoriser`,
   'cc-addon-admin.tags-empty': `Pas de tags définis`,
   'cc-addon-admin.tags-update': `Mettre à jour les tags`,
@@ -237,8 +239,8 @@ export const translations = {
   'cc-env-var-create.errors.already-defined-name': ({ name }) => sanitize`Le nom <code>${name}</code> est déjà défini`,
   'cc-env-var-create.errors.invalid-name': ({ name }) => sanitize`Le nom <code>${name}</code> n'est pas valide`,
   'cc-env-var-create.info.java-prop': ({ name }) => sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-formats">plus de détails</a>`,
-  'cc-env-var-create.name.placeholder': `NOM_DE_LA_VARIABLE`,
-  'cc-env-var-create.value.placeholder': `valeur de la variable`,
+  'cc-env-var-create.name.label': `Nom de la variable`,
+  'cc-env-var-create.value.label': `Valeur de la variable`,
   //#endregion
   //#region cc-env-var-editor-expert
   'cc-env-var-editor-expert.errors.duplicated-name': ({ name }) => sanitize`attention, le nom <code>${name}</code> est déjà défini`,
@@ -250,6 +252,7 @@ export const translations = {
   'cc-env-var-editor-expert.errors.unknown': `Erreur inconnue`,
   'cc-env-var-editor-expert.example': () => sanitize`Format : <code>NOM_DE_LA_VARIABLE="valeur de la variable"</code> <br> Chaque variable doit être séparée par des sauts de ligne, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#format">en savoir plus</a>.`,
   'cc-env-var-editor-expert.info.java-prop': ({ name }) => sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-formats">plus de détails</a>`,
+  'cc-env-var-editor-expert.label': () => sanitize`Edition des variables. Format : <code>NOM_DE_LA_VARIABLE="valeur de la variable"</code> <br> Chaque variable doit être séparée par des sauts de ligne`,
   //#endregion
   //#region cc-env-var-editor-json
   'cc-env-var-editor-json.errors.duplicated-name': ({ name }) => sanitize`attention, le nom <code>${name}</code> est déjà défini`,
@@ -261,13 +264,14 @@ export const translations = {
   'cc-env-var-editor-json.errors.unknown': `Erreur inconnue`,
   'cc-env-var-editor-json.example': () => sanitize`Format : <code>{ "name": "NOM_DE_LA_VARIABLE", "value": "valeur de la variable" }</code> <br> Tableau d'objets respectant le format ci-dessus, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#format">en savoir plus</a>.`,
   'cc-env-var-editor-json.info.java-prop': ({ name }) => sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-formats">plus de détails</a>`,
+  'cc-env-var-editor-json.label': () => sanitize`Edition des variables. Format : <code>{ "name": "NOM_DE_LA_VARIABLE", "value": "valeur de la variable" }</code> <br> Tableau d'objets respectant le format ci-dessus,`,
   //#endregion
   //#region cc-env-var-editor-simple
   'cc-env-var-editor-simple.empty-data': `Il n'y a pas de variable.`,
   //#endregion
   //#region cc-env-var-form
   'cc-env-var-form.description.config-provider': ({ addonName }) => sanitize`Configuration publiée pour les applications dépendantes. <a href="https://www.clever-cloud.com/doc/deploy/addon/config-provider/">En savoir plus</a><br>Ces seront injectées en tant que variables d'environnement dans les applications qui ont l'add-on <strong>${addonName}</strong> dans leurs services liés.<br>À chaque fois que vous mettez à jour les changements, toutes les applications dépendantes seront redémarrées automatiquement.`,
-  'cc-env-var-form.description.env-var': ({ appName }) => sanitize`Ces variables eront injectées en tant que variables d'environnement dans l'application <strong>${appName}</strong>. <a href="https://doc.clever-cloud.com/admin-console/environment-variables/">En savoir plus</a>`,
+  'cc-env-var-form.description.env-var': ({ appName }) => sanitize`Ces variables seront injectées en tant que variables d'environnement dans l'application <strong>${appName}</strong>. <a href="https://doc.clever-cloud.com/admin-console/environment-variables/">En savoir plus</a>`,
   'cc-env-var-form.description.exposed-config': ({ appName }) => sanitize`Configuration publiée pour les applications dépendantes. <a href="https://www.clever-cloud.com/doc/admin-console/service-dependencies/">En savoir plus</a><br>Ces variables ne seront pas injectées dans l'application <strong>${appName}</strong>, elles seront injectées en tant que variables d'environnement dans les applications qui ont <strong>${appName}</strong> dans leurs services liés.`,
   'cc-env-var-form.error.loading': `Une erreur est survenue pendant le chargement des variables.`,
   'cc-env-var-form.heading.config-provider': `Variables`,
@@ -284,6 +288,7 @@ export const translations = {
   //#region cc-env-var-input
   'cc-env-var-input.delete-button': `Enlever`,
   'cc-env-var-input.keep-button': `Garder`,
+  'cc-env-var-input.value-label': ({ variableName }) => `valeur de la variable ${variableName}`,
   'cc-env-var-input.value-placeholder': `valeur de la variable`,
   //#endregion
   //#region cc-env-var-linked-services
@@ -343,6 +348,8 @@ export const translations = {
   'cc-header-addon.creation-date.full': ({ date }) => formatDate(lang, date),
   'cc-header-addon.creation-date.short': ({ date }) => formatDateOnly(lang, date),
   'cc-header-addon.error': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
+  'cc-header-addon.id-label': `Identifiant de l'add-on`,
+  'cc-header-addon.id-label-alternative': () => sanitize`Identifiant alternatif de l'add-on (<span lang="en">real id</span>)`,
   'cc-header-addon.plan': `Plan`,
   'cc-header-addon.version': `Version`,
   //#endregion
@@ -378,7 +385,7 @@ export const translations = {
   'cc-header-orga.hotline': `Numéro d'urgence :`,
   //#endregion
   //#region cc-heptapod-info
-  'cc-heptapod-info.description': () => sanitize`Cette instance Heptapod héberge des dépôts Mercurial. Plus d'informations sur <a href="https://about.heptapod.host" rel="noreferrer noopener">https://about.heptapod.host</a>.`,
+  'cc-heptapod-info.description': () => sanitize`Cette instance Heptapod héberge des dépôts Mercurial. Plus d'informations sur <a href="https://about.heptapod.host">https://about.heptapod.host</a>.`,
   'cc-heptapod-info.error-loading': `Une erreur est survenue pendant le chargement des informations d'utilisation.`,
   'cc-heptapod-info.not-in-use': `Vous n'utilisez pas ce service Heptapod.`,
   'cc-heptapod-info.price-description': `Prix estimé`,
@@ -389,6 +396,8 @@ export const translations = {
   'cc-heptapod-info.storage-description': `Stockage utilisé`,
   //#endregion
   //#region cc-input-number
+  'cc-input-number.decrease': `décrémenter`,
+  'cc-input-number.increase': `incrémenter`,
   'cc-input-number.required': `obligatoire`,
   //#endregion
   //#region cc-input-text
@@ -537,13 +546,16 @@ export const translations = {
   'cc-pricing-product-consumption.private-users.title': `Utilisateurs privés :`,
   'cc-pricing-product-consumption.public-users.label': `utilisateurs publics`,
   'cc-pricing-product-consumption.public-users.title': `Utilisateurs publics :`,
+  'cc-pricing-product-consumption.quantity': `Quantité`,
+  'cc-pricing-product-consumption.size': ({ bytes }) => `Taille en ${getUnit(bytes)}`,
   'cc-pricing-product-consumption.storage.label': `stockage`,
   'cc-pricing-product-consumption.storage.title': `Stockage :`,
   'cc-pricing-product-consumption.subtotal.title': `Sous-total (30 jours) :`,
+  'cc-pricing-product-consumption.toggle-btn.label': `Afficher plus de details`,
   'cc-pricing-product-consumption.total.title': `Total estimé (30 jours) :`,
   //#endregion
   //#region cc-pricing-table
-  'cc-pricing-table.add-button': `Ajouter`,
+  'cc-pricing-table.add-button': `Ajouter le produit à l'estimation`,
   'cc-pricing-table.feature.connection-limit': `Limite de connexions`,
   'cc-pricing-table.feature.cpu': `vCPUs`,
   'cc-pricing-table.feature.databases': `Bases de données`,
@@ -553,6 +565,7 @@ export const translations = {
   'cc-pricing-table.feature.has-metrics': `Métriques`,
   'cc-pricing-table.feature.max-db-size': `Taille BDD max`,
   'cc-pricing-table.feature.memory': `RAM`,
+  'cc-pricing-table.feature.toggle': `Basculer l'affichage`,
   'cc-pricing-table.feature.version': `Version`,
   'cc-pricing-table.plan': `Plan`,
   'cc-pricing-table.price': ({ price, code, digits }) => formatCurrency(lang, price, {

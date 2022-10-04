@@ -373,7 +373,9 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
             hide-text
             circle
             @cc-button:click=${() => this._onToggleState(type)}
-          ></cc-button>
+          >
+            ${i18n('cc-pricing-product-consumption.toggle-btn.label')}
+          </cc-button>
         </div>
 
         <div class="input-wrapper">
@@ -408,6 +410,8 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
     if (this._isTypeBytes(type)) {
       return html`
         <cc-input-number
+          label=${i18n('cc-pricing-product-consumption.size', { bytes: unitValue })}
+          hidden-label
           class="input-quantity"
           value=${quantity}
           min="0"
@@ -426,6 +430,8 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
     else {
       return html`
         <cc-input-number
+          label=${i18n('cc-pricing-product-consumption.quantity')}
+          hidden-label
           class="input-quantity"
           value=${quantity}
           min="0"

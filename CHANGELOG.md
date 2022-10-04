@@ -18,13 +18,36 @@ title: Changelog
 
 * `<cc-map>`: make dot markers not focusable.
 * `<cc-zone-input>`: make server markers not focusable.
-* `<cc-addon-admin>`: fix skeleton mode
+* `<cc-addon-admin>`: 
+  * fix skeleton mode
+  * add visually hidden label for `addon name` and `addon tags` input fields so that these fields can be identified by assistive technologies.
 * `<cc-env-var-form>`: fix toggling to JSON mode while in skeleton state.
 * `<cc-badge>`: add skeleton mode
-* `<cc-input-text>`: remove the unique id generation technique and rely on Shadow DOM isolation instead.
-* `<cc-input-number>`: remove the unique id generation technique and rely on Shadow DOM isolation instead.
+* `<cc-input-text>`: 
+  * remove the unique id generation technique and rely on Shadow DOM isolation instead.
+  * add `hiddenLabel` prop to allow the label to be visually hidden in some cases.
+* `<cc-input-number>`: 
+  * remove the unique id generation technique and rely on Shadow DOM isolation instead.
+  * update stories to always show visible labels.
+  * remove `tagsWithLabel` story since there is always a visible label now.
+  * add `alt` attribute values for controls (+ / -) so that they can be identified by assistive technologies.
+  * add `hiddenLabel` prop to allow the label to be visually hidden in some cases.
 * `<cc-select>`: remove the unique id generation technique and rely on Shadow DOM isolation instead.
 * `<cc-toggle>`: remove the unique name generation technique and rely on Shadow DOM isolation instead.
+* `accessibility Styles`: add new `accessibilityStyles` containing a `visually-hidden` class to hide content visually but not from assistive technologies.
+* `<cc-env-var-create>`: add visually hidden label for all input fields so that these fields can be identified by assistive technologies.
+* `<cc-env-var-editor-expert>`: add visually hidden label for the `<textarea>` so that it can be identified by assistive technologies.
+* `<cc-env-var-editor-json>`: add visually hidden label for the `<textarea>` so that it can be identified by assistive technologies.
+* `<cc-env-var-editor>`: add visually hidden label for the `<textarea>` so that it can be identified by assistive technologies.
+* `<cc-env-var-input>`: add visually hidden label for the input field so that it can be identified by assistive technologies.
+* `<cc-header-addon>`: add visually hidden label for `addonId` and `realAddonId` input fields so that these fields can be identified by assistive technologies.
+* `<cc-html-frame> loading story`: add a `title` attribute so that it can be identified by assistive technologies.
+* `<cc-invoice>`: add a `title` on the `<cc-html-frame>` so that the `<iframe>` can be identified by assistive technologies.
+* `<cc-pricing-estimation>`: add visually hidden label for `<cc-input-number>` showing the quantity so that they can be identified by assistive technologies. 
+* `<cc-pricing-product-consumption>`:
+  * add text content to `<cc-button>` elements (toggle State buttons) so that they can be identified by assistive technologies.
+  * add visually hidden label for `<cc-input-number>` showing the size or the quantity so that they can be identified by assistive technologies.
+* `<cc-pricing-table>`: add text content to `<cc-button>` elements (toggle State and add buttons) so that they can be identified by assistive technologies.
 * New component:
   * `<cc-action-dispatcher>`
 

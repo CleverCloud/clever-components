@@ -86,8 +86,8 @@ export class CcHeaderAddon extends LitElement {
           <div class="details">
             <div class="name"><span class="${classMap({ skeleton })}">${addon.name}</span></div>
             <cc-flex-gap>
-              <cc-input-text readonly clipboard value="${ifDefined(addon.id)}" ?skeleton=${skeleton}></cc-input-text>
-              <cc-input-text readonly clipboard value="${ifDefined(addon.realId)}" ?skeleton=${skeleton}></cc-input-text>
+              <cc-input-text label=${i18n('cc-header-addon.id-label')} hidden-label readonly clipboard value="${ifDefined(addon.id)}" ?skeleton=${skeleton}></cc-input-text>
+              <cc-input-text label=${i18n('cc-header-addon.id-label-alternative')} hidden-label readonly clipboard value="${ifDefined(addon.realId)}" ?skeleton=${skeleton}></cc-input-text>
             </cc-flex-gap>
           </div>
 

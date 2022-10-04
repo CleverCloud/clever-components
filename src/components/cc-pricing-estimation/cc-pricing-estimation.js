@@ -170,6 +170,8 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
           <td>${plan.name}</td>
           <td>
             <cc-input-number
+              label=${i18n('cc-pricing-estimation.quantity')}
+              hidden-label
               class="input-number"
               value=${plan.quantity}
               min="0"
@@ -226,6 +228,8 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
           <div class="product-name">${plan.productName}</div>
 
           <cc-input-number
+            label=${i18n('cc-pricing-estimation.quantity')}
+            hidden-label
             class="input-number"
             value=${plan.quantity}
             min="0"
