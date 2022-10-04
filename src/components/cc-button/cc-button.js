@@ -123,6 +123,11 @@ export class CcButton extends LitElement {
 
     e.stopPropagation();
 
+    // we need to check that because we use aria-disabled which doesn't prevent the onclick event to be fired.
+    if (this.disabled) {
+      return;
+    }
+
     // delay=0 is needed in some situations where you want the button to have the same width
     // as buttons with delay > 0 but without any delay
     if (this.delay == null || this.delay === 0 || this.link) {
@@ -182,11 +187,14 @@ export class CcButton extends LitElement {
       ? (this.textContent ?? '')
       : undefined;
 
+    const tabIndex = this.skeleton ? -1 : null;
+
     return html`
       <button
         type="button"
+        tabindex="${ifDefined(tabIndex)}"
         class=${classMap(modes)}
-        ?disabled=${this.disabled || this.skeleton || this.waiting}
+        aria-disabled="${this.disabled || this.skeleton || this.waiting}"
         @click=${this._onClick}
         title="${ifDefined(imageOnlyText)}"
         aria-label="${ifDefined(imageOnlyText)}"
@@ -315,21 +323,21 @@ export class CcButton extends LitElement {
         }
 
         /* STATES */
-        .btn:enabled:focus {
+        .btn:not([aria-disabled = "true"]):focus {
           box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
           outline: 0;
         }
 
-        .btn:enabled:hover {
+        .btn:not([aria-disabled = "true"]):hover {
           box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
         }
 
-        .btn:enabled:active {
+        .btn:not([aria-disabled = "true"]):active {
           box-shadow: none;
           outline: 0;
         }
-
-        button:disabled {
+        
+        button[aria-disabled = "true"] {
           cursor: inherit;
           opacity: .5;
         }
