@@ -75,9 +75,6 @@ export class CcInputText extends LitElement {
       _copyOk: { type: Boolean, state: true },
       _showSecret: { type: Boolean, state: true },
       _tagsEnabled: { type: Boolean, state: true },
-      _uniqueErrorId: { type: String, state: true },
-      _uniqueHelpId: { type: String, state: true },
-      _uniqueInputId: { type: String, state: true },
     };
   }
 
@@ -133,21 +130,9 @@ export class CcInputText extends LitElement {
 
     /** @type {boolean} */
     this._tagsEnabled = false;
-
-    // use this unique id for isolation (Safari seems to have a bug)
-    /** @type {string} used by the `aria-describedby` attribute on the `<input>` element and the `id` attribute on the error slot container */
-    this._uniqueErrorId = Math.random().toString(36).slice(2);
-
-    // use this unique id for isolation (Safari seems to have a bug)
-    /** @type {string} used by the `aria-describedby` attribute on the `<input>` element and the `id` attribute on the help text container */
-    this._uniqueHelpId = Math.random().toString(36).slice(2);
-
-    // use this unique name for isolation (Safari seems to have a bug)
-    /** @type {string} used by the for/id relation between `<label>` and `<input>` */
-    this._uniqueInputId = Math.random().toString(36).slice(2);
   }
 
-  // In general, we try to use LitELement's update() lifecycle callback but in this situation,
+  // In general, we try to use LitElement's update() lifecycle callback but in this situation,
   // overriding get/set makes more sense
   get tags () {
     return this._tagsEnabled
@@ -248,7 +233,7 @@ export class CcInputText extends LitElement {
     return html`
 
       ${this.label != null ? html`
-        <label for=${this._uniqueInputId}>
+        <label for="input-id">
           <span>${this.label}</span>
           ${this.required ? html`
             <span class="required">${i18n('cc-input-text.required')}</span>
@@ -273,7 +258,7 @@ export class CcInputText extends LitElement {
               --></div>
             ` : ''}
             <textarea
-              id=${this._uniqueInputId}
+              id="input-id"
               class="input ${classMap({ 'input-tags': this._tagsEnabled })}"
               style="--rows: ${rows}"
               rows=${rows}
@@ -284,7 +269,7 @@ export class CcInputText extends LitElement {
               placeholder=${this.placeholder}
               spellcheck="false"
               wrap="${ifDefined(this._tagsEnabled ? 'soft' : undefined)}"
-              aria-describedby="${this._uniqueHelpId} ${this._uniqueErrorId}"
+              aria-describedby="help-id error-id"
               @focus=${this._onFocus}
             ></textarea>
           ` : ''}
@@ -299,7 +284,7 @@ export class CcInputText extends LitElement {
               <div class="input input-mirror">${value}</div>
             ` : ''}
             <input
-              id=${this._uniqueInputId}
+              id="input-id"
               type=${this.secret && !this._showSecret ? 'password' : 'text'}
               class="input"
               ?disabled=${this.disabled || this.skeleton}
@@ -308,7 +293,7 @@ export class CcInputText extends LitElement {
               name=${ifDefined(this.name ?? undefined)}
               placeholder=${this.placeholder}
               spellcheck="false"
-              aria-describedby="${this._uniqueHelpId} ${this._uniqueErrorId}"
+              aria-describedby="help-id error-id"
               @focus=${this._onFocus}
             >
           ` : ''}
@@ -331,11 +316,11 @@ export class CcInputText extends LitElement {
       </div>
 
       
-      <div class="help-container" id=${this._uniqueHelpId}>
+      <div class="help-container" id="help-id">
         <slot name="help"></slot>
       </div>
 
-      <div class="error-container" id=${this._uniqueErrorId}>
+      <div class="error-container" id="error-id">
         <slot name="error"></slot>
       </div>
     `;
