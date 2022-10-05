@@ -84,4 +84,5 @@ export const preselectedKibana = makeStory(conf, {
 enhanceStoriesNames({
   defaultStory,
   noFlavorDetailsYet,
+  preselectedKibana,
 });

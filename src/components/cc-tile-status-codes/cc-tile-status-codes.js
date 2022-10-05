@@ -80,6 +80,10 @@ export class CcTileStatusCodes extends LitElement {
 
   firstUpdated () {
 
+    if (this.error) {
+      return;
+    }
+
     this._ctx = this.renderRoot.getElementById('chart');
     this._chart = new Chart(this._ctx, {
       type: 'doughnut',
@@ -148,7 +152,7 @@ export class CcTileStatusCodes extends LitElement {
   // updated and not udpate because we need this._chart before
   updated (changedProperties) {
 
-    if (changedProperties.has('statusCodes')) {
+    if (changedProperties.has('statusCodes') && !this.error) {
 
       this._skeleton = (this.statusCodes == null);
 

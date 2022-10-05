@@ -208,6 +208,7 @@ export const allFormControls = allFormControlsStory;
 enhanceStoriesNames({
   defaultStory,
   required,
+  disabled,
   helpMessage,
   errorMessage,
   errorMessageWithHelpMessage,

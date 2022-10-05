@@ -1,11 +1,15 @@
 module.exports = {
-  'extends': 'standard',
+  'extends': [
+    'standard',
+    'plugin:lit-a11y/recommended',
+  ],
   'env': {
     'browser': true,
   },
   'plugins': [
     'import',
     'lit',
+    'lit-a11y',
   ],
   'rules': {
     // custom rules
@@ -31,6 +35,8 @@ module.exports = {
     'import/no-useless-path-segments': ['error', { 'noUselessIndex': true }],
     'import/order': ['error', { 'alphabetize': { 'order': 'asc', 'caseInsensitive': true } }],
     'line-comment-position': ['error', { 'position': 'above' }],
+    // redundant role may be necessary sometimes
+    'lit-a11y/no-redundant-role': 'warn',
     'lit/attribute-value-entities': 'error',
     'lit/binding-positions': 'error',
     'lit/no-duplicate-template-bindings': 'error',
@@ -46,7 +52,6 @@ module.exports = {
     'padded-blocks': 'off',
     'quotes': ['error', 'single', { 'allowTemplateLiterals': true }],
     'semi': ['error', 'always'],
-    'sort-lit-element-css-declarations': ['error'],
     'spaced-comment': ['error', 'always', { 'markers': ['#region', '#endregion'] }],
   },
 };

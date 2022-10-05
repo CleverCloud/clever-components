@@ -2,6 +2,7 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
+import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 
 const incrementSvg = new URL('../../assets/increment.svg', import.meta.url).href;
@@ -34,6 +35,7 @@ export class CcInputNumber extends LitElement {
       disabled: { type: Boolean, reflect: true },
       inline: { type: Boolean, reflect: true },
       label: { type: String },
+      hiddenLabel: { type: Boolean, attribute: 'hidden-label' },
       max: { type: Number },
       min: { type: Number },
       name: { type: String, reflect: true },
@@ -62,6 +64,9 @@ export class CcInputNumber extends LitElement {
 
     /** @type {string|null} Sets label for the input. */
     this.label = null;
+
+    /** @type {boolean} Hides the label visually if `true`. */
+    this.hiddenLabel = false;
 
     /** @type {number|null} Sets the max range of the `<input>` element. */
     this.max = null;
@@ -160,7 +165,7 @@ export class CcInputNumber extends LitElement {
     return html`
 
       ${this.label != null ? html`
-        <label for="input-id">
+        <label class=${classMap({ 'visually-hidden': this.hiddenLabel })} for="input-id">
           <span>${this.label}</span>
           ${this.required ? html`
             <span class="required">${i18n('cc-input-number.required')}</span>
@@ -171,7 +176,7 @@ export class CcInputNumber extends LitElement {
       <div class="meta-input">
         ${controls ? html`
           <button class="btn" @click=${this._onDecrement} ?disabled=${this.disabled || this.readonly || minDisabled}>
-            <img class="btn-img" src=${decrementSvg} alt="">
+            <img class="btn-img" src=${decrementSvg} alt="${i18n('cc-input-number.decrease')}">
           </button>
         ` : ''}
         <div class="wrapper ${classMap({ skeleton: this.skeleton })}">
@@ -198,7 +203,7 @@ export class CcInputNumber extends LitElement {
         </div>
         ${controls ? html`
           <button class="btn" @click=${this._onIncrement} ?disabled=${this.disabled || this.readonly || maxDisabled}>
-            <img class="btn-img" src=${incrementSvg} alt="">
+            <img class="btn-img" src=${incrementSvg} alt="${i18n('cc-input-number.increase')}">
           </button>
         ` : ''}
       </div>
@@ -215,6 +220,7 @@ export class CcInputNumber extends LitElement {
 
   static get styles () {
     return [
+      accessibilityStyles,
       skeletonStyles,
       // language=CSS
       css`

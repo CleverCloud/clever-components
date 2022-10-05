@@ -108,10 +108,11 @@ export class CcAddonAdmin extends LitElement {
         ${!loadingError ? html`
 
           <cc-block-section>
-            <div slot="title">${i18n('cc-addon-admin.addon-name')}</div>
+            <div slot="title">${i18n('cc-addon-admin.heading.name')}</div>
             <div slot="info"></div>
             <div class="one-line-form">
               <cc-input-text
+                label="${i18n('cc-addon-admin.input.name')}"
                 ?skeleton=${this._skeleton}
                 ?disabled=${isFormDisabled}
                 .value=${this._name}
@@ -123,10 +124,11 @@ export class CcAddonAdmin extends LitElement {
           </cc-block-section>
 
           <cc-block-section>
-            <div slot="title">${i18n('cc-addon-admin.tags')}</div>
+            <div slot="title">${i18n('cc-addon-admin.heading.tags')}</div>
             <div slot="info">${i18n('cc-addon-admin.tags-description')}</div>
             <div class="one-line-form">
               <cc-input-text
+                label="${i18n('cc-addon-admin.input.tags')}"
                 ?skeleton=${this._skeleton}
                 ?disabled=${isFormDisabled}
                 .tags=${this._tags}
@@ -179,6 +181,10 @@ export class CcAddonAdmin extends LitElement {
         .one-line-form cc-input-text {
           flex: 1 1 10em;
           margin-right: 0.5em;
+        }
+        
+        .one-line-form cc-button {
+          margin-top: var(--cc-margin-top-btn-horizontal-form);
         }
       `,
     ];

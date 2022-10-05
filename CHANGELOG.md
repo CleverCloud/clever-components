@@ -13,18 +13,45 @@ title: Changelog
 * Introduce a new project file structure (BREAKING CHANGE).
 * all components: change `rem` units to `em` (BREAKING CHANGE).
 * `<cc-select>`: use the `value` property of the select element instead of the `selected` attribute. The `value` prop should always be set when using the `<cc-select>` component. It may be set to an empty string if a `placeholder` is provided (BREAKING CHANGE).
+* `<cc-html-frame>`: change `title` prop to `iframeTitle` (`iframe-title` when used as an attribute) to avoid conflicts with the native `title` attribute (BREAKING CHANGE).
 
 ### Components
 
 * `<cc-map>`: make dot markers not focusable.
 * `<cc-zone-input>`: make server markers not focusable.
-* `<cc-addon-admin>`: fix skeleton mode
+* `<cc-addon-admin>`: 
+  * fix skeleton mode
+  * add visually hidden label for `addon name` and `addon tags` input fields so that these fields can be identified by assistive technologies.
 * `<cc-env-var-form>`: fix toggling to JSON mode while in skeleton state.
 * `<cc-badge>`: add skeleton mode
-* `<cc-input-text>`: remove the unique id generation technique and rely on Shadow DOM isolation instead.
-* `<cc-input-number>`: remove the unique id generation technique and rely on Shadow DOM isolation instead.
+* `<cc-input-text>`: 
+  * remove the unique id generation technique and rely on Shadow DOM isolation instead.
+  * add `hiddenLabel` prop to allow the label to be visually hidden in some cases.
+* `<cc-input-number>`: 
+  * remove the unique id generation technique and rely on Shadow DOM isolation instead.
+  * update stories to always show visible labels.
+  * remove `tagsWithLabel` story since there is always a visible label now.
+  * add `alt` attribute values for controls (+ / -) so that they can be identified by assistive technologies.
+  * add `hiddenLabel` prop to allow the label to be visually hidden in some cases.
 * `<cc-select>`: remove the unique id generation technique and rely on Shadow DOM isolation instead.
 * `<cc-toggle>`: remove the unique name generation technique and rely on Shadow DOM isolation instead.
+* `accessibility Styles`: add new `accessibilityStyles` containing a `visually-hidden` class to hide content visually but not from assistive technologies.
+* `<cc-env-var-create>`: add visually hidden label for all input fields so that these fields can be identified by assistive technologies.
+* `<cc-env-var-editor-expert>`: add visually hidden label for the `<textarea>` so that it can be identified by assistive technologies.
+* `<cc-env-var-editor-json>`: add visually hidden label for the `<textarea>` so that it can be identified by assistive technologies.
+* `<cc-env-var-editor>`: add visually hidden label for the `<textarea>` so that it can be identified by assistive technologies.
+* `<cc-env-var-input>`: add visually hidden label for the input field so that it can be identified by assistive technologies.
+* `<cc-header-addon>`: add visually hidden label for `addonId` and `realAddonId` input fields so that these fields can be identified by assistive technologies.
+* `<cc-html-frame> loading story`: add a `title` attribute so that it can be identified by assistive technologies.
+* `<cc-invoice>`: add a `title` on the `<cc-html-frame>` so that the `<iframe>` can be identified by assistive technologies.
+* `<cc-pricing-estimation>`: add visually hidden label for `<cc-input-number>` showing the quantity so that they can be identified by assistive technologies. 
+* `<cc-pricing-product-consumption>`:
+  * add text content to `<cc-button>` elements (toggle State buttons) so that they can be identified by assistive technologies.
+  * add visually hidden label for `<cc-input-number>` showing the size or the quantity so that they can be identified by assistive technologies.
+* `<cc-pricing-table>`: add text content to `<cc-button>` elements (toggle State and add buttons) so that they can be identified by assistive technologies.
+* `resizeObserver`: add `window.requestAnimationFrame` in the resize observer callback to mitigate the `resize observer loop limit exceeded issue`.
+* stories: fix several stories not being passed to `enhancedStoryNames`. 
+* `<cc-tile-status-codes>`: fix JavaScript errors in case initial loading fails (error state).
 * New component:
   * `<cc-action-dispatcher>`
 
@@ -47,6 +74,11 @@ title: Changelog
 * Rollback the smart-manager to the old low level API and move the observable API to a different module
 * Introduce a new defineSmartComponent function
 * Add `FocusLostController`, a Lit Reactive Controller that helps manage focus loss.
+* Add new eslint plugin `eslint-plugin-lit-a11y` to prevent accessibility issues.
+* Add new dependency `@open-wc/testing` to allow Web Test Runner to run tests for accessibility issues.
+* Add new dependency `@web/test-runner-commands` so that Web Test Runner can test both on desktop and mobile.
+* Add new helpers to extract stories and run accessibility test on them.
+* Add new test files in most of the component folders. These test files only contain accessibility tests for the moment.
 
 ## 9.0.0 (2022-07-19)
 

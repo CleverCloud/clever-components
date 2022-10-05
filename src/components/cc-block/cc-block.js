@@ -71,12 +71,14 @@ export class CcBlock extends LitElement {
     const isToggleEnabled = (this.state === 'open' || this.state === 'close');
     const isOpen = (this.state !== 'close');
 
+    /* TODO when reworking the component, check this a11y issue https://github.com/CleverCloud/clever-components/issues/225#issuecomment-1239462826 */
+    /* eslint-disable lit-a11y/click-events-have-key-events */
     return html`
 
       ${this.ribbon != null && this.ribbon !== '' ? html`
         <div class="info-ribbon">${this.ribbon}</div>
       ` : ''}
-
+      
       ${!this.noHead ? html`
         <div class="head" @click=${this._clickToggle}>
           ${this.icon != null ? html`
