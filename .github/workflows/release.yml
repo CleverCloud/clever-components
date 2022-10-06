@@ -1,0 +1,15 @@
+on:
+  push:
+    branches:
+      - master
+name: release
+jobs:
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: google-github-actions/release-please-action@v3
+        id: release
+        with:
+          release-type: node
+          include-v-in-tag: false
