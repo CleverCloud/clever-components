@@ -27,6 +27,7 @@ title: Changelog
 * `<cc-input-text>`: 
   * remove the unique id generation technique and rely on Shadow DOM isolation instead.
   * add `hiddenLabel` prop to allow the label to be visually hidden in some cases.
+  * add red border and redish focus ring when error slot is used
 * `<cc-input-number>`: 
   * remove the unique id generation technique and rely on Shadow DOM isolation instead.
   * update stories to always show visible labels.
