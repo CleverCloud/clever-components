@@ -15,6 +15,7 @@ const decrementSvg = new URL('../../assets/decrement.svg', import.meta.url).href
  *
  * * Uses a native `<input>` with a type `number` without native arrows mode
  * * The `controls` feature enables the "arrow" mode but with an increment/decrement button on the side of the input
+ * * When an error slot is used, the input is decorated with a red border and a redish focus ring. You have to be aware that it uses the [`slotchange`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLSlotElement/slotchange_event) event which doesn't fire if the children of a slotted node change.
  *
  * @cssdisplay inline-block
  *
@@ -45,6 +46,7 @@ export class CcInputNumber extends LitElement {
       step: { type: Number },
       value: { type: Number },
       _invalid: { type: Boolean, state: true },
+      _hasError: { type: Boolean, state: true },
     };
   }
 
@@ -94,6 +96,9 @@ export class CcInputNumber extends LitElement {
 
     /** @type {boolean} */
     this._invalid = false;
+
+    /** @type {boolean} */
+    this._hasError = false;
   }
 
   /**
@@ -142,6 +147,10 @@ export class CcInputNumber extends LitElement {
     dispatchCustomEvent(this, 'input', this.value);
   }
 
+  _onErrorSlotChanged (event) {
+    this._hasError = event.target.assignedNodes()?.length > 0;
+  }
+
   firstUpdated () {
     /** @type {HTMLInputElement} */
     this._input = this.shadowRoot.querySelector('.input');
@@ -184,7 +193,7 @@ export class CcInputNumber extends LitElement {
           <input
             id="input-id"
             type="number"
-            class="input ${classMap({ error: this._invalid })}"
+            class="input ${classMap({ error: this._invalid || this._hasError })}"
             ?disabled=${this.disabled || this.skeleton}
             ?readonly=${this.readonly}
             min=${this.min ?? ''}
@@ -213,7 +222,7 @@ export class CcInputNumber extends LitElement {
       </div>
 
       <div class="error-container" id="error-id">
-        <slot name="error"></slot>
+        <slot name="error" @slotchange="${this._onErrorSlotChanged}"></slot>
       </div>
     `;
   }
@@ -390,12 +399,11 @@ export class CcInputNumber extends LitElement {
         }
 
         input:focus.error + .ring {
-          /*border-color: #777;*/
-          box-shadow: 0 0 0 .2em rgba(255, 0, 0, .25);
+          box-shadow: 0 0 0 .2em var(--cc-color-border-danger-weak);
         }
 
         input.error + .ring {
-          border-color: hsl(351, 70%, 47%);
+          border-color: var(--cc-color-border-danger) !important;
         }
 
         input:hover + .ring {
