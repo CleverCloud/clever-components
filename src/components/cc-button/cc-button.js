@@ -405,7 +405,7 @@ export class CcButton extends LitElement {
 
         .txt-only .text-wrapper {
           gap: 0;
-          grid-template-columns: 1fr;
+          grid-template-columns: auto;
         }
 
         .img-only .text-wrapper {
