@@ -91,9 +91,13 @@
   --cc-color-bg-danger: var(--color-red);
 
   /* Usage: minimal way to make content stand out.
-  Weakest of all color options for danger content.
   For instance: notice, badge. */
   --cc-color-bg-danger-weak: var(--color-red-light);
+
+  /* Usage: minimal way to make content stand out.
+  Weakest of all color options for danger content.
+  For instance: notice, badge. */
+  --cc-color-bg-danger-weaker: var(--color-red-lighter);
 
   /* Usage: default background color
   -- Not used at the moment - will be when we allow theme override. -- */
