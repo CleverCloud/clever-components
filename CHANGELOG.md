@@ -54,6 +54,7 @@ title: Changelog
 * `resizeObserver`: add `window.requestAnimationFrame` in the resize observer callback to mitigate the `resize observer loop limit exceeded issue`.
 * stories: fix several stories not being passed to `enhancedStoryNames`. 
 * `<cc-tile-status-codes>`: fix JavaScript errors in case initial loading fails (error state).
+* `<cc-button>`: add a new `accessibleName` prop to override the `aria-label` and `title` values.
 * New component:
   * `<cc-action-dispatcher>`
 

@@ -43,6 +43,7 @@ export class CcButton extends LitElement {
 
   static get properties () {
     return {
+      accessibleName: { type: String, attribute: 'accessible-name' },
       circle: { type: Boolean },
       danger: { type: Boolean },
       delay: { type: Number },
@@ -62,6 +63,9 @@ export class CcButton extends LitElement {
 
   constructor () {
     super();
+
+    /** @type {string|null} Forces the values of the `aria-label` and `title` attributes on the `button` element. CAUTION: The accessible name should always start with the visible text if there is one. For instance "add to estimation - NodeJS XS" */
+    this.accessibleName = null;
 
     /** @type {boolean} Sets button UI to a circle form when in `hide-text` and `image` mode. */
     this.circle = false;
@@ -113,6 +117,40 @@ export class CcButton extends LitElement {
   _cancelClick () {
     clearTimeout(this._timeoutId);
     this._cancelMode = false;
+  }
+
+  /**
+   * The `aria-label` attribute should only be set if the `accessibleName` prop is set or if the button only shows an image with no text.
+   *
+   * @returns {string|undefined} the value of the `aria-label` attribute or `undefined` if the attribute should not be set.
+   */
+  _getAriaLabel () {
+    if (this.accessibleName != null) {
+      return this.accessibleName.trim() ?? '';
+    }
+
+    if (this.hideText && this.image != null) {
+      return this.textContent?.trim() ?? '';
+    }
+
+    return undefined;
+  }
+
+  /**
+   * The `title` attribute should only be set if the `accessibleName` prop is set or if the button only shows an image with no text.
+   *
+   * @returns {string|undefined} the value of the `title` attribute or `undefined` if the attribute should not be set.
+   */
+  _getTitle () {
+    if (this.accessibleName != null) {
+      return this.accessibleName.trim() ?? '';
+    }
+
+    if (this.hideText && this.image != null) {
+      return this.textContent.trim() ?? '';
+    }
+
+    return undefined;
   }
 
   // We tried to reuse native clicks from the inner <button>
@@ -183,10 +221,6 @@ export class CcButton extends LitElement {
     // circle mode should only appear in hide-text mode if we have an image
     modes.circle = this.circle && this.hideText && this.image;
 
-    const imageOnlyText = (this.image != null && this.hideText)
-      ? (this.textContent?.trim() ?? '')
-      : undefined;
-
     const tabIndex = this.skeleton ? -1 : null;
 
     return html`
@@ -196,8 +230,8 @@ export class CcButton extends LitElement {
         class=${classMap(modes)}
         aria-disabled="${this.disabled || this.skeleton || this.waiting}"
         @click=${this._onClick}
-        title="${ifDefined(imageOnlyText)}"
-        aria-label="${ifDefined(imageOnlyText)}"
+        title="${ifDefined(this._getTitle())}"
+        aria-label="${ifDefined(this._getAriaLabel())}"
       >
         <!--
           When delay mechanism is set, we need a cancel label.
