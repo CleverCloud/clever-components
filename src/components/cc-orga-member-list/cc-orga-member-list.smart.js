@@ -130,8 +130,8 @@ defineSmartComponent({
         updateComponent('members', {
           state: 'loaded',
           value: memberList.map((member) => ({ state: 'loaded', ...member })),
-          filterIdentity: '',
-          filterDisabledMfaOnly: false,
+          identityFilter: '',
+          mfaFilter: false,
         });
       })
       .catch((error) => {

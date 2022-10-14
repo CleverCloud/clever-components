@@ -55,6 +55,8 @@ export const defaultStory = makeStory(conf, {
     members: {
       state: 'loaded',
       value: baseMemberList,
+      identityFilter: '',
+      mfaFilter: false,
     },
   }],
 });

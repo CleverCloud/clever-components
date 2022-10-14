@@ -36,10 +36,7 @@ export class CcOrgaMemberList extends LitElement {
   static get properties () {
     return {
       inviteMemberForm: { type: Object },
-      members: { type: Object },
-      // TODO: right now, we have no way to reset those => public props + live. Should be part of the state no ? Or maybe a third state with a idle because it's a form ?
-      _filterIdentity: { type: String, state: true },
-      _showDisabledMfaOnly: { type: Boolean, state: true },
+      members: { type: Object }
     };
   }
 
@@ -63,19 +60,16 @@ export class CcOrgaMemberList extends LitElement {
     /** @type {OrgaMemberListState} Sets the state of the member list. */
     this.members = { state: 'loading' };
 
-    /** @type {string} Sets the name/email criterion to filter the member list. */
-    this._filterIdentity = '';
-
-    /** @type {boolean} Toggles the filter to display only members with disabled TFA or all members. */
-    this._showDisabledMfaOnly = false;
-
     new LostFocusController(this, 'cc-orga-member-card', ({ suggestedElement }) => {
-      // react to focus loss
-      console.log(suggestedElement);
+      if (suggestedElement == null) {
+        this._noResultMessageRef.value?.focus();
+      }
+      suggestedElement?.focusDeleteBtn();
     });
 
     this._inviteMemberEmailRef = createRef();
     this._inviteMemberRoleRef = createRef();
+    this._noResultMessageRef = createRef();
   }
 
   _getRoles () {
@@ -89,18 +83,19 @@ export class CcOrgaMemberList extends LitElement {
 
   /**
    * @param {OrgaMemberCardState[]} members
+   * @param {string} identityFilter
+   * @param {boolean} mfaFilter
    * @return {OrgaMemberCardState[]}
    * @private
    */
-  _getFilteredMemberList (members) {
-
+  _getFilteredMemberList (members, identityFilter, mfaFilter) {
     const filteredMemberList = members.filter((member) => {
 
-      const matchIdentity = this._filterIdentity === ''
-        || member.name?.toLowerCase().includes(this._filterIdentity)
-        || member.email.toLowerCase().includes(this._filterIdentity);
+      const matchIdentity = identityFilter === ''
+        || member.name?.toLowerCase().includes(identityFilter)
+        || member.email.toLowerCase().includes(identityFilter);
 
-      const matchMfaDisabled = !this._showDisabledMfaOnly || !member.isMfaEnabled;
+      const matchMfaDisabled = !mfaFilter || !member.isMfaEnabled;
 
       return matchIdentity && matchMfaDisabled;
     });
@@ -137,11 +132,17 @@ export class CcOrgaMemberList extends LitElement {
   }
 
   _onFilterIdentity ({ detail: value }) {
-    this._filterIdentity = value?.trim().toLowerCase();
-    // this.members = {
-    //   ...this.members,
-    //   identityFilter: value?.trim().toLowerCase()
-    // }
+    this.members = {
+      ...this.members,
+      identityFilter: value?.trim().toLowerCase()
+    }
+  }
+
+  _onFilterMfa () {
+    this.members = {
+      ...this.members,
+      mfaFilter: !this.members.mfaFilter,
+    }
   }
 
   /*TODO Document*/
@@ -165,10 +166,6 @@ export class CcOrgaMemberList extends LitElement {
     }
   }
 
-  _onFilterMfa () {
-    this._showDisabledMfaOnly = !this._showDisabledMfaOnly;
-  }
-
   _onToggleCardEditing ({ detail: { memberId, newState } }) {
     this.members = {
       ...this.members,
@@ -182,7 +179,6 @@ export class CcOrgaMemberList extends LitElement {
 
   /*TODO Document*/
   resetLastAdminErrors () {
-    console.log('RESET ADMIN ERRORS')
     const adminList = this._getAdminList();
     if (adminList.length > 1) {
       this.members = {
@@ -214,7 +210,7 @@ export class CcOrgaMemberList extends LitElement {
         ` : ''}
 
         ${this.members.state === 'loaded' ? html`
-          ${this._renderLoaded(this.members.value)}
+          ${this._renderLoaded(this.members.value, this.members.identityFilter, this.members.mfaFilter)}
         ` : ''}
 
         ${this.members.state === 'error' ? html`
@@ -280,15 +276,17 @@ export class CcOrgaMemberList extends LitElement {
   }
 
   /**
-   * @param {OrgaMemberCardState[]} members
+   * @param {OrgaMemberCardState[]} memberList
+   * @param {string} identityFilter
+   * @param {boolean} mfaFilter
    * @return {TemplateResult<1>}
    * @private
    */
-  _renderLoaded (members) {
+  _renderLoaded (memberList, identityFilter, mfaFilter) {
 
-    const containsAtLeast2Members = members.length >= 2;
-    const containsDisabledMfa = members.some((member) => !member.isMfaEnabled);
-    const filteredMemberList = this._getFilteredMemberList(members);
+    const containsAtLeast2Members = memberList.length >= 2;
+    const containsDisabledMfa = memberList.some((member) => !member.isMfaEnabled);
+    const filteredMemberList = this._getFilteredMemberList(memberList, identityFilter, mfaFilter);
     const isMemberListEmpty = filteredMemberList.length === 0;
     this.resetLastAdminErrors();
 
@@ -297,12 +295,12 @@ export class CcOrgaMemberList extends LitElement {
         <div class="filters">
           <cc-input-text
             label=${i18n('cc-orga-member-list.filter-name')}
-            .value=${this._filterIdentity}
+            .value=${identityFilter}
             @cc-input-text:input=${this._onFilterIdentity}
           ></cc-input-text>
           ${containsDisabledMfa ? html`
             <label class="filters__mfa" for="filter-mfa">
-              <input id="filter-mfa" type="checkbox" @change=${this._onFilterMfa} .checked=${this._showDisabledMfaOnly}>
+              <input id="filter-mfa" type="checkbox" @change=${this._onFilterMfa} .checked=${mfaFilter}>
               ${i18n('cc-orga-member-list.mfa-label')}
             </label>
           ` : ''}
@@ -322,7 +320,7 @@ export class CcOrgaMemberList extends LitElement {
         `)}
 
         ${isMemberListEmpty ? html`
-          <p>
+          <p ${ref(this._noResultMessageRef)} tabindex="-1">
             ${i18n('cc-orga-member-list.no-result')}
           </p>
         ` : ''}
@@ -391,7 +389,6 @@ export class CcOrgaMemberList extends LitElement {
           height: 0.9em;
           width: 0.9em;
         }
-
         /*endregion */
 
         /*region member list  */

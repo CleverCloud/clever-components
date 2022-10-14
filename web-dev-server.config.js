@@ -14,8 +14,7 @@ const hmrI18nPlugin = {
     if (TRANSLATION_FILE_REGEX.test(context.path)) {
       // language=JavaScript
       context.body += `
-        ;
-        ;
+        ;;
         // Injected by custom HMR for i18n
         import { addTranslations } from '../lib/i18n.js';
         import { forceReRender } from '@web/storybook-prebuilt/web-components.js';

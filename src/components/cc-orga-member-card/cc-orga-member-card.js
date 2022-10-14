@@ -121,7 +121,7 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
   * Focus the delete button within the card.
   * To be used when a card is removed, and you want to focus another card (LostFocusController).
   */
-  focusDelete () {
+  focusDeleteBtn () {
     this._removeButtonRef.value.focus();
   }
 
