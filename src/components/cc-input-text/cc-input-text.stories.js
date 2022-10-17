@@ -1,6 +1,6 @@
 import './cc-input-text.js';
 import { allFormControlsStory } from '../../stories/all-form-controls.js';
-import { makeStory } from '../../stories/lib/make-story.js';
+import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 function widthContent (chars) {
@@ -228,6 +228,36 @@ export const tagsWithClipboard = makeStory(conf, {
 
 export const allFormControls = allFormControlsStory;
 
+export const simulation = makeStory(conf, {
+  items: [{}],
+  simulations: [
+    storyWait(0, ([component]) => {
+      component.innerHTML = `
+        <p slot="help">No error slot, no focus</p>
+      `;
+    }),
+    storyWait(2000, ([component]) => {
+      component.innerHTML = `
+        <p slot="help">With error, no focus</p>
+        <p slot="error">This is an error message</p>
+      `;
+    }),
+    storyWait(2000, ([component]) => {
+      component.innerHTML = `
+        <p slot="help">With error, with focus</p>
+        <p slot="error">This is an error message</p>
+      `;
+      component.focus();
+    }),
+    storyWait(2000, ([component]) => {
+      component.innerHTML = `
+        <p slot="help">No error slot, with focus</p>
+      `;
+      component.focus();
+    }),
+  ],
+});
+
 enhanceStoriesNames({
   defaultStory,
   required,
@@ -246,4 +276,5 @@ enhanceStoriesNames({
   tags,
   tagsWithClipboard,
   allFormControls,
+  simulation,
 });

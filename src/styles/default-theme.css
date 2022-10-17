@@ -174,6 +174,12 @@
   /*region Color Decisions(border)*/
   /* Usage: with default background for an "outlined" style or warning background for "plain" style" ? */
   --cc-border-warning: 1px solid var(--color-yellow);
+
+  /* Usage: for danger border */
+  --cc-color-border-danger: var(--color-red);
+
+  /* Usage: for danger border */
+  --cc-color-border-danger-weak: var(--color-red-light);
   /*endregion*/
     
   /*region Margin Decisions*/

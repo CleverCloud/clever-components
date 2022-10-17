@@ -44,6 +44,7 @@ function arrayEquals (a, b) {
  * * When you use it with `readonly` \+ `clipboard` \+ NOT `multi`, the width of the input auto adapts to the length of the content.
  * * The `secret` feature only works for simple line mode (when `multi` is false).
  * * The `tags` feature enables a space-separated-value input wrapped on several lines where line breaks are not allowed. Don't use it with `multi` or `secret`.
+ * * When an error slot is used, the input is decorated with a red border and a redish focus ring. You have to be aware that it uses the [`slotchange`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLSlotElement/slotchange_event) event which doesn't fire if the children of a slotted node change.
  *
  * @cssdisplay inline-block / block (with `[multi]`)
  *
@@ -77,6 +78,7 @@ export class CcInputText extends LitElement {
       _copyOk: { type: Boolean, state: true },
       _showSecret: { type: Boolean, state: true },
       _tagsEnabled: { type: Boolean, state: true },
+      _hasError: { type: Boolean, state: true },
     };
   }
 
@@ -135,6 +137,8 @@ export class CcInputText extends LitElement {
 
     /** @type {boolean} */
     this._tagsEnabled = false;
+
+    this._hasError = false;
   }
 
   // In general, we try to use LitElement's update() lifecycle callback but in this situation,
@@ -222,8 +226,11 @@ export class CcInputText extends LitElement {
     }
   }
 
-  render () {
+  _onErrorSlotChanged (event) {
+    this._hasError = event.target.assignedNodes()?.length > 0;
+  }
 
+  render () {
     const value = this.value ?? '';
     const rows = value.split('\n').length;
     const clipboard = (this.clipboard && !this.disabled && !this.skeleton);
@@ -264,7 +271,7 @@ export class CcInputText extends LitElement {
             ` : ''}
             <textarea
               id="input-id"
-              class="input ${classMap({ 'input-tags': this._tagsEnabled })}"
+              class="input ${classMap({ 'input-tags': this._tagsEnabled, error: this._hasError })}"
               style="--rows: ${rows}"
               rows=${rows}
               ?disabled=${this.disabled || this.skeleton}
@@ -291,7 +298,7 @@ export class CcInputText extends LitElement {
             <input
               id="input-id"
               type=${this.secret && !this._showSecret ? 'password' : 'text'}
-              class="input"
+              class="input ${classMap({ error: this._hasError })}"
               ?disabled=${this.disabled || this.skeleton}
               ?readonly=${this.readonly}
               .value=${value}
@@ -325,8 +332,8 @@ export class CcInputText extends LitElement {
         <slot name="help"></slot>
       </div>
 
-      <div class="error-container" id="error-id">
-        <slot name="error"></slot>
+      <div class="error-container" id="error-id" >
+        <slot name="error" @slotchange="${this._onErrorSlotChanged}"></slot>
       </div>
     `;
   }
@@ -536,10 +543,18 @@ export class CcInputText extends LitElement {
           top: 0;
           z-index: 0;
         }
+        
+        .input.error + .ring {
+          border-color: var(--cc-color-border-danger) !important;
+        }
 
         .input:focus + .ring {
           border-color: #777;
           box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
+        }
+
+        .input:focus.error + .ring {
+          box-shadow: 0 0 0 .2em var(--cc-color-border-danger-weak);
         }
 
         .input:hover + .ring {

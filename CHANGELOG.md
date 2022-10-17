@@ -27,12 +27,14 @@ title: Changelog
 * `<cc-input-text>`: 
   * remove the unique id generation technique and rely on Shadow DOM isolation instead.
   * add `hiddenLabel` prop to allow the label to be visually hidden in some cases.
+  * add red border and redish focus ring when error slot is used
 * `<cc-input-number>`: 
   * remove the unique id generation technique and rely on Shadow DOM isolation instead.
   * update stories to always show visible labels.
   * remove `tagsWithLabel` story since there is always a visible label now.
   * add `alt` attribute values for controls (+ / -) so that they can be identified by assistive technologies.
   * add `hiddenLabel` prop to allow the label to be visually hidden in some cases.
+  * add red border and redish focus ring when error slot is used
 * `<cc-select>`: remove the unique id generation technique and rely on Shadow DOM isolation instead.
 * `<cc-toggle>`: remove the unique name generation technique and rely on Shadow DOM isolation instead.
 * `accessibility Styles`: add new `accessibilityStyles` containing a `visually-hidden` class to hide content visually but not from assistive technologies.
