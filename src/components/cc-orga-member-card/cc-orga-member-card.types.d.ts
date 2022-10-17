@@ -4,14 +4,13 @@ interface OrgaMember {
   id: string;
   email: string;
   role: OrgaMemberRole;
-  name?: string;
-  avatar?: string;
-  jobTitle?: string;
-  isMfaEnabled: boolean;
-  isCurrentUser: boolean;
+  name?: string; // Sets the name of the user. Since this info is not mandatory in the account creation, some users may not have a name.
+  avatar?: string; // Sets the profil picture of the user. If no avatar is provided, a fallback image is displayed.
+  jobTitle?: string; // Displays the job title as a tooltip when hovering the name / email of the user.
+  isMfaEnabled: boolean; // Sets the two-factor auth badge to enabled or disabled.
+  isCurrentUser: boolean; // If true, displays a "Your account" badge on top of the email, next to the name of the user.
 }
 
-// TODO: to export or not?
 export type OrgaMemberCardState =
   OrgaMemberCardStateLoaded
   | OrgaMemberCardStateLoading
@@ -41,8 +40,13 @@ interface OrgaMemberCardStateDeleting extends OrgaMember {
   state: 'deleting',
 }
 
-// TODO: discuss the Payload suffix
-export interface EditMemberPayload {
-  id: string,
+interface UpdateMember {
+  memberId: string,
   role: string,
+  memberIdentity: string,
+}
+
+interface DeleteMember {
+  memberId: string,
+  memberIdentity: string,
 }

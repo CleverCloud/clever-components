@@ -10,7 +10,7 @@ import '../cc-button/cc-button.js';
 import '../cc-img/cc-img.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-select/cc-select.js';
-import '../cc-stretch-to-max-content/cc-stretch-to-max-content.js';
+import '../cc-stretch/cc-stretch.js';
 
 const tickSvg = new URL('../../assets/tick.svg', import.meta.url).href;
 const tickBlueSvg = new URL('../../assets/tick-blue.svg', import.meta.url).href;
@@ -26,46 +26,53 @@ const BREAKPOINT_TINY = 350;
 
 /**
  * @typedef {import('./cc-orga-member-card.types.js').OrgaMemberCardState} OrgaMemberCardState
- * @typedef {import('./cc-orga-member-card.types.js').EditMemberPayload} EditMemberPayload
+ * @typedef {import('./cc-orga-member-card.types.js').DeleteMember} DeleteMember
+ * @typedef {import('./cc-orga-member-card.types.js').UpdateMember} UpdateMember
  */
 
 /**
- * A component displaying information about a member from a given organisation.
+ * A component showing information about a member from a given organisation.
  *
  * ## Details
  *
- * * This component also provides a way to edit the role of the member.
+ * - This component provides a way to delete the member from the organisation.
+ * - This component provides a way to edit the role of the member within a given organisation.
  *
  * @cssdisplay block
  *
- * TODO change event types
- * @event {CustomEvent<EditMemberPayload>} cc-orga-member-card:update - Fires the `id` of the member and the new `role` to be updated.
- * @event {CustomEvent<string>} cc-orga-member-card:delete - Fires the `id` of the member to be removed from the org.
- * @event {CustomEvent} cc-orga-member-card:toggle-editing - Fires the `id` of the member related to the card and `isEditing` boolean to specify when card is in edit mode or not. This allows the list component to close all other cards in edit mode to leave only one pending edition at once.
+ * @event {CustomEvent} cc-orga-member-card:toggle-editing - Fires the `id` of the member related to the card and `isEditing` boolean to specify when card is in edit mode or not. This allows the list component to close all other cards in edit mode to leave only one in edit mode at once.
+ * @event {CustomEvent<DeleteMember>} cc-orga-member-card:delete - Fires the `id` of the member to be removed from the org with their name or email.
+ * @event {CustomEvent<UpdateMember>} cc-orga-member-card:update - Fires the `id` of the member, their new `role` and their name or email.
  */
 export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
 
   static get properties () {
     return {
       member: { type: Object },
-      _size: { type: String, attribute: false },
+      _size: { type: String, state: true },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {OrgaMemberCardState} Sets the state and data of the member */
+    /** @type {OrgaMemberCardState} Sets the state and data of the member. */
     this.member = { state: 'loading' };
 
     /** @protected */
     this.breakpoints = {
-      // used to switch to buttons wrapping below when component width < 740 and vertical card layout when < 580
+      // used to switch to buttons wrapping below when component width < 740 and vertical card layout when < 580, buttons and badges below each other when < 350.
       width: [BREAKPOINT_TINY, BREAKPOINT_SMALL, BREAKPOINT_MEDIUM],
     };
 
-    this._roleRef = createRef();
+    /** @type {Ref<CcInputText>} */
     this._removeButtonRef = createRef();
+
+    /** @type {Ref<CcSelect>} */
+    this._roleRef = createRef();
+
+    /** @type {string} Set by `withResizeObserver` mixin. See the `onResize` method for more info. */
+    this._size = '';
   }
 
   _getRoleOptions () {
@@ -77,17 +84,36 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
     ];
   }
 
-  onResize ({ width }) {
-    this._size = width;
+  /* The accessible name provides more info than the visible text. It mentions the member being edited / to be edited. */
+  _getFirstBtnAccessibleName () {
+    const memberIdentity = this.member.name ?? this.member.email;
+    if (this.member.state === 'editing' || this.member.state === 'updating') {
+      return i18n('cc-orga-member-card.btn.cancel.accessible-name', { memberIdentity });
+    }
+    else {
+      return i18n('cc-orga-member-card.btn.edit.accessible-name', { memberIdentity });
+    }
   }
 
-  _onRemoveMember () {
-    dispatchCustomEvent(this, 'delete', {
-      memberId: this.member.id,
-      userIdentity: this.member.name ?? this.member.email,
-    });
+  /* The accessible name provides more info than the visible text. It mentions the member to remove if relevant (no need to specify it for the "leave" button). */
+  _getSecondBtnAccessibleName () {
+    const memberIdentity = this.member.name ?? this.member.email;
+    if (this.member.state === 'editing' || this.member.state === 'updating') {
+      return i18n('cc-orga-member-card.btn.validate.accessible-name', { memberIdentity });
+    }
+
+    if (this.member.isCurrentUser) {
+      return i18n('cc-orga-member-card.btn.leave.accessible-name');
+    }
+
+    return i18n('cc-orga-member-card.btn.delete.accessible-name', { memberIdentity });
   }
 
+  /*
+  * Switch the state between `loaded` and `editing`.
+  * Dispatch a `toggle-editing` event so that `cc-orga-member-list` may close all other cards in edit mode.
+  * Focus the role `select` element after entering edit mode.
+  */
   async _onToggleEdit () {
     const newState = this.member.state === 'loaded' ? 'editing' : 'loaded';
 
@@ -96,7 +122,7 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
       state: newState,
     };
 
-    // edit toggling is managed by `cc-orga-member-list` so that only one card can be edited at a time.
+    // warn the `cc-orga-member-list` component so that it closes all other cards.
     dispatchCustomEvent(this, 'toggle-editing', {
       memberId: this.member.id,
       newState,
@@ -109,11 +135,20 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
     }
   }
 
-  _onRoleSubmit () {
+  _onDeleteMember () {
+    // since not every member has set a name, we send either the name or the email to provide context in the toast message
+    dispatchCustomEvent(this, 'delete', {
+      memberId: this.member.id,
+      memberIdentity: this.member.name ?? this.member.email,
+    });
+  }
+
+  _onUpdateMember () {
+    // since not every member has set a name, we send either the name or the email to provide context in the toast message
     dispatchCustomEvent(this, 'update', {
       memberId: this.member.id,
       role: this._roleRef.value.value,
-      userIdentity: this.member.name ?? this.member.email,
+      memberIdentity: this.member.name ?? this.member.email,
     });
   }
 
@@ -123,6 +158,11 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
   */
   focusDeleteBtn () {
     this._removeButtonRef.value.focus();
+  }
+
+  /* Used by the `withResizeObserver` mixin. */
+  onResize ({ width }) {
+    this._size = width;
   }
 
   render () {
@@ -146,7 +186,6 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
           </p>
         ` : ''}
         <p class="email">${this.member.email}</p>
-        
       </div>
 
       ${this._renderStatusArea()}
@@ -155,28 +194,44 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
     `;
   }
 
-  // TODO: document the "visible because same size"
+  /*
+  * This sub render heavily relies on `cc-stretch`:
+  *
+  *  - to make sure all badges are centered in desktop within a column which size is based on the longest text present inside.
+  *  - to make sure there is no layout shifts when switching between edit and readonly modes.
+  */
   _renderStatusArea () {
+
     const isEditing = this.member.state === 'editing' || this.member.state === 'updating';
     const waiting = this.member.state === 'updating' || this.member.state === 'deleting';
     const hasError = this.member.error === 'last-admin';
+
     return html`
-      <cc-stretch-to-max-content class="status ${classMap({ waiting })}" visible-element-id=${isEditing ? 'status-editing' : 'status-readonly'}>
+      <cc-stretch
+        class="status ${classMap({ waiting })}"
+        visible-element-id=${isEditing ? 'status-editing' : 'status-readonly'}
+      >
         <div id="status-readonly" class="status__role-mfa">
-          <cc-stretch-to-max-content ?disable-stretching=${this._size < BREAKPOINT_MEDIUM} ?center-content=${this._size > BREAKPOINT_SMALL} visible-element-id=${this.member.role}>
+          <cc-stretch
+            ?disable-stretching=${this._size < BREAKPOINT_MEDIUM}
+            visible-element-id=${this.member.role}
+          >
             ${this._getRoleOptions().map((role) => html`
                 <cc-badge id="${role.value}" intent="info" weight="dimmed">${role.label}</cc-badge>
             `)}
-          </cc-stretch-to-max-content>
+          </cc-stretch>
 
-          <cc-stretch-to-max-content ?center-content=${this._size > BREAKPOINT_SMALL} visible-element-id=${this.member.isMfaEnabled ? 'badge-mfa-enabled' : 'badge-mfa-disabled'}>
+          <cc-stretch
+            ?disable-stretching=${this._size < BREAKPOINT_MEDIUM}
+            visible-element-id=${this.member.isMfaEnabled ? 'badge-mfa-enabled' : 'badge-mfa-disabled'}
+          >
             <cc-badge id="badge-mfa-enabled" intent="success" weight="outlined" icon-src="${tickSvg}">
               ${i18n('cc-orga-member-card.mfa-enabled')}
             </cc-badge>
             <cc-badge id="badge-mfa-disabled" intent="danger" weight="outlined" icon-src="${errorSvg}">
               ${i18n('cc-orga-member-card.mfa-disabled')}
             </cc-badge>
-          </cc-stretch-to-max-content>
+          </cc-stretch>
         </div>
 
         <cc-select
@@ -189,22 +244,31 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
           ${ref(this._roleRef)}
         >
         </cc-select>
-      </cc-stretch-to-max-content>
+      </cc-stretch>
+      <!-- 
+        a11y: we need the live region to be present within the DOM from the start and insert content dynamically inside it.
+        We have to add a conditional class to the wrapper when it does not contain any message to cancel the gap applied automatically within the grid. 
+       -->
       <div class="error-wrapper ${classMap({ 'out-of-flow': !hasError })}" aria-live="polite" aria-atomic="true">
+        <!-- TODO replace the <p> with a <cc-notice> when it's ready -->
         ${hasError ? html`<p>${i18n('cc-orga-member-card.error-last-admin')}</p>` : ''}
       </div>
     `;
   }
 
+  /*
+  * This sub render also relies on `cc-stretch` to make sure buttons have the same size whatever their visible text may be (edit vs readonly mode).
+  * We rely on the `accessible-name` prop on `cc-button` to make sure assistive get the relevant text with some context in addition.
+  */
   _renderActionBtns () {
+
     const isBtnImgOnly = (this._size > BREAKPOINT_MEDIUM);
     const waiting = this.member.state === 'updating' || this.member.state === 'deleting';
     const isEditing = this.member.state === 'editing' || this.member.state === 'updating';
     const hasError = this.member.error === 'last-admin';
     const firstBtnIcon = isEditing ? closeSvg : penSvg;
     const secondBtnIcon = isEditing ? tickBlueSvg : trashSvg;
-    const removeOrLeaveTextId = this.member.isCurrentUser ? 'btn-content-leave' : 'btn-content-remove';
-    const removeOrLeaveTextString = this.member.isCurrentUser ? i18n('cc-orga-member-card.btn-leave') : i18n('cc-orga-member-card.btn-remove');
+    const removeOrLeaveSpanId = this.member.isCurrentUser ? 'btn-content-leave' : 'btn-content-remove';
 
     return html`
 
@@ -217,13 +281,13 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
           ?circle=${isBtnImgOnly}
           ?disabled=${waiting}
           ?hide-text=${isBtnImgOnly}
-          accessible-name=${isEditing ? i18n('cc-orga-member-card.btn-cancel') : i18n('cc-orga-member-card.btn-edit')}
+          accessible-name=${this._getFirstBtnAccessibleName()}
           @cc-button:click=${this._onToggleEdit}
         >
-          <cc-stretch-to-max-content center-content visible-element-id=${isEditing ? 'btn-content-cancel' : 'btn-content-edit'}>
-            <span id="btn-content-edit">${i18n('cc-orga-member-card.btn-edit')}</span>
-            <span id="btn-content-cancel">${i18n('cc-orga-member-card.btn-cancel')}</span>
-          </cc-stretch-to-max-content>
+          <cc-stretch visible-element-id=${isEditing ? 'btn-content-cancel' : 'btn-content-edit'}>
+            <span id="btn-content-edit">${i18n('cc-orga-member-card.btn.edit.visible-text')}</span>
+            <span id="btn-content-cancel">${i18n('cc-orga-member-card.btn.cancel.visible-text')}</span>
+          </cc-stretch>
         </cc-button>
   
         <cc-button
@@ -236,15 +300,15 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
           ?circle=${isBtnImgOnly}
           ?hide-text=${isBtnImgOnly}
           ?waiting=${waiting}
-          accessible-name=${isEditing ? i18n('cc-orga-member-card.btn-validate') : removeOrLeaveTextString}
-          @cc-button:click=${this._onRemoveMember}
+          accessible-name=${this._getSecondBtnAccessibleName()}
+          @cc-button:click=${isEditing ? this._onUpdateMember : this._onDeleteMember}
           ${ref(this._removeButtonRef)}
         >
-          <cc-stretch-to-max-content center-content visible-element-id=${isEditing ? 'btn-content-validate' : removeOrLeaveTextId}>
-            <span id="btn-content-leave">${i18n('cc-orga-member-card.btn-leave')}</span>
-            <span id="btn-content-remove">${i18n('cc-orga-member-card.btn-remove')}</span>
-            <span id="btn-content-validate">${i18n('cc-orga-member-card.btn-validate')}</span>
-          </cc-stretch-to-max-content>
+          <cc-stretch visible-element-id=${isEditing ? 'btn-content-validate' : removeOrLeaveSpanId}>
+            <span id="btn-content-leave">${i18n('cc-orga-member-card.btn.leave.visible-text')}</span>
+            <span id="btn-content-remove">${i18n('cc-orga-member-card.btn.delete.visible-text')}</span>
+            <span id="btn-content-validate">${i18n('cc-orga-member-card.btn.validate.visible-text')}</span>
+          </cc-stretch>
         </cc-button>
       </div>
     `;
@@ -259,13 +323,8 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
           align-items: center;
           display: grid;
           gap: 1em;
-          grid-auto-flow: row;
           grid-template-areas: "avatar identity status actions";
           grid-template-columns: max-content 1fr max-content max-content;
-        }
-
-        .waiting {
-          opacity: 0.5;
         }
 
         .avatar {
@@ -280,7 +339,7 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
           flex-direction: column;
           gap: 0.3em;
           grid-area: identity;
-          justify-content: center;
+          /* makes the email address wrap if needed */
           word-break: break-all;
         }
         
@@ -289,43 +348,46 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
         }
 
         .actions {
-          display: grid;
+          display: flex;
           gap: 0.5em;
           grid-area: actions;
-          grid-template-columns: max-content max-content;
         }
         
         .status__role-mfa {
           align-items: center;
-          display: grid;
-          gap: 0.5em;
-          grid-template-columns: min-content max-content;
-        }
-
-        p {
-          margin: 0;
-        }
-
-        cc-badge {
-          width: max-content;
+          display: flex;
+          gap: 0.8em 0.5em;
         }
         
         .error-wrapper {
           display: flex;
           grid-area: unset;
+          /* always leave the first column containing only the avatar. */
           grid-column: 2 / -1;
           justify-content: end;
         }
 
+        /* 
+        * This is to avoid rendering a gap when there is no error message.
+        */
         .error-wrapper.out-of-flow {
           grid-area: avatar / actions;
         }
 
+        /* TODO remove this when we implement cc-notice */
         .error-wrapper p {
           background-color: var(--cc-color-bg-danger-weaker);
-          border: 1px solid var(--cc-color-bg-danger);
+          border: 1px solid var(--cc-color-border-danger-weak);
           border-radius: 0.4em;
           padding: 0.5em 1em;
+        }
+        
+        .waiting {
+          opacity: 0.5;
+        }
+
+        p {
+          margin: 0;
         }
         /*endregion */
 
@@ -366,13 +428,13 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
         }
         
         :host([w-lt-350]) .actions {
-          grid-template-columns: 1fr;
+          flex-direction: column;
           justify-self: stretch;
         }
 
         :host([w-lt-350]) .status__role-mfa {
-          grid-auto-flow: row;
-          grid-template-columns: auto;
+          align-items: start;
+          flex-direction: column;
           width: 100%;
         }
         /*endregion */

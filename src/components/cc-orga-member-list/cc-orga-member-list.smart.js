@@ -55,7 +55,7 @@ defineSmartComponent({
         });
     });
 
-    onEvent('cc-orga-member-card:update', ({ memberId, role, userIdentity }) => {
+    onEvent('cc-orga-member-card:update', ({ memberId, role, memberIdentity }) => {
 
       // TODO: I guess we should check for last admin stuffs here
       // We still need to decide when to remove this 'last-admin' error
@@ -73,9 +73,9 @@ defineSmartComponent({
         member.role = role;
       });
 
-      editMember({ apiConfig, ownerId, memberId, role, userIdentity })
+      editMember({ apiConfig, ownerId, memberId, role, memberIdentity })
         .then(() => {
-          notifySuccess(component, i18n('cc-orga-member-list.edit-success', { userIdentity }));
+          notifySuccess(component, i18n('cc-orga-member-list.edit-success', { memberIdentity }));
           updateMember(memberId, (member) => {
             member.state = 'loaded';
             member.role = role;
@@ -93,14 +93,14 @@ defineSmartComponent({
           }
         })
         .catch(() => {
-          notifyError(component, i18n('cc-orga-member-list.edit-error', { userIdentity }));
+          notifyError(component, i18n('cc-orga-member-list.edit-error', { memberIdentity }));
           updateMember(memberId, (member) => {
             member.state = 'loaded';
           });
         });
     });
 
-    onEvent('cc-orga-member-card:delete', ({ memberId, userIdentity }) => {
+    onEvent('cc-orga-member-card:delete', ({ memberId, memberIdentity }) => {
 
       updateMember(memberId, (member) => {
         member.state = 'deleting';
@@ -108,13 +108,13 @@ defineSmartComponent({
 
       deleteMember({ apiConfig, ownerId, memberId })
         .then(() => {
-          notifySuccess(component, i18n('cc-orga-member-list.remove-success', { userIdentity }));
+          notifySuccess(component, i18n('cc-orga-member-list.remove-success', { memberIdentity }));
           updateComponent('members', (members) => {
             members.value = members.value.filter((member) => member.id !== memberId);
           });
         })
         .catch(() => {
-          notifyError(component, i18n('cc-orga-member-list.remove-error', { userIdentity }));
+          notifyError(component, i18n('cc-orga-member-list.remove-error', { memberIdentity }));
           updateMember(memberId, (member) => {
             member.state = 'loaded';
           });

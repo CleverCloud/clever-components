@@ -471,11 +471,16 @@ export const translations = {
   'cc-matomo-info.open-matomo.title': `Access Matomo`,
   //#endregion
   //#region cc-orga-member-card
-  'cc-orga-member-card.btn-cancel': `Cancel`,
-  'cc-orga-member-card.btn-edit': `Edit`,
-  'cc-orga-member-card.btn-leave': `Leave`,
-  'cc-orga-member-card.btn-remove': `Remove`,
-  'cc-orga-member-card.btn-validate': `Validate`,
+  'cc-orga-member-card.btn.cancel.accessible-name': ({ memberIdentity }) => `Cancel editing - ${memberIdentity}`,
+  'cc-orga-member-card.btn.cancel.visible-text': `Cancel`,
+  'cc-orga-member-card.btn.edit.accessible-name': ({ memberIdentity }) => `Edit - ${memberIdentity}`,
+  'cc-orga-member-card.btn.edit.visible-text': `Edit`,
+  'cc-orga-member-card.btn.leave.accessible-name': `Leave`,
+  'cc-orga-member-card.btn.leave.visible-text': `Leave`,
+  'cc-orga-member-card.btn.delete.accessible-name': ({ memberIdentity }) => `Remove - ${memberIdentity}`,
+  'cc-orga-member-card.btn.delete.visible-text': `Remove`,
+  'cc-orga-member-card.btn.validate.accessible-name': ({ memberIdentity }) => `Validate the edit - ${memberIdentity}`,
+  'cc-orga-member-card.btn.validate.visible-text': `Validate`,
   'cc-orga-member-card.current-user': `Your account`,
   'cc-orga-member-card.error-last-admin': `Choose a new admin before you can remove or edit this user.`,
   'cc-orga-member-card.label-role': `Role`,
@@ -487,8 +492,8 @@ export const translations = {
   'cc-orga-member-card.role-manager': `Manager`,
   //#endregion
   //#region cc-orga-member-list
-  'cc-orga-member-list.edit-error': ({ userIdentity }) => `Something went wrong while editing ${userIdentity}.`,
-  'cc-orga-member-list.edit-success': ({ userIdentity }) => `The role of ${userIdentity} has been modified.`,
+  'cc-orga-member-list.edit-error': ({ memberIdentity }) => `Something went wrong while editing ${memberIdentity}.`,
+  'cc-orga-member-list.edit-success': ({ memberIdentity }) => `The role of ${memberIdentity} has been modified.`,
   'cc-orga-member-list.error': `Something went wrong while loading the organisation member list.`,
   'cc-orga-member-list.filter-name': `Filter by name or email address`,
   'cc-orga-member-list.heading': `Members`,
@@ -498,7 +503,7 @@ export const translations = {
   'cc-orga-member-list.invite.email-format': `name@example.com`,
   'cc-orga-member-list.invite.email-label': `Email address`,
   'cc-orga-member-list.invite.heading': `Invite a member`,
-  'cc-orga-member-list.invite.info': () => sanitize`More information about roles in the <a href="https://www.clever-cloud.com/doc/account/organizations/#roles-and-privileges">Roles and Organisations</a> page`,
+  'cc-orga-member-list.invite.info': () => sanitize`More information about roles in the <a href="https://www.clever-cloud.com/doc/account/organizations/#roles-and-privileges">Roles and Organisations</a> page.`,
   'cc-orga-member-list.invite.role-accounting': `Accountant`,
   'cc-orga-member-list.invite.role-admin': `Admin`,
   'cc-orga-member-list.invite.role-developer': `Developer`,
@@ -509,8 +514,8 @@ export const translations = {
   'cc-orga-member-list.invite.submit-success': ({ userEmail }) => `${userEmail} has been invited into this organisation.`,
   'cc-orga-member-list.mfa-label': `2FA disabled only`,
   'cc-orga-member-list.no-result': `No results matching your criteria.`,
-  'cc-orga-member-list.remove-error': ({ userIdentity }) => `Something went wrong while trying to remove ${userIdentity} from this organisation.`,
-  'cc-orga-member-list.remove-success': ({ userIdentity }) => `${userIdentity} has been removed from this organisation.`,
+  'cc-orga-member-list.remove-error': ({ memberIdentity }) => `Something went wrong while trying to remove ${memberIdentity} from this organisation.`,
+  'cc-orga-member-list.remove-success': ({ memberIdentity }) => `${memberIdentity} has been removed from this organisation.`,
   //#endregion
   //#region cc-payment-warning
   'cc-payment-warning.billing-page-link': ({ orgaName, orgaBillingLink }) => sanitize`<a href="${orgaBillingLink}" aria-label="Go to the billing page - ${orgaName}">Go to the billing page</a>`,

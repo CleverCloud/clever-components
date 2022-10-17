@@ -484,11 +484,16 @@ export const translations = {
   'cc-matomo-info.open-matomo.title': `Accéder à Matomo`,
   //#endregion
   //#region cc-orga-member-card
-  'cc-orga-member-card.btn-cancel': `Annuler`,
-  'cc-orga-member-card.btn-edit': `Modifier`,
-  'cc-orga-member-card.btn-leave': `Quitter`,
-  'cc-orga-member-card.btn-remove': `Supprimer`,
-  'cc-orga-member-card.btn-validate': `Valider`,
+  'cc-orga-member-card.btn.cancel.accessible-name': ({ memberIdentity }) => `Annuler modification - ${memberIdentity}`,
+  'cc-orga-member-card.btn.cancel.visible-text': `Annuler`,
+  'cc-orga-member-card.btn.delete.accessible-name': ({ memberIdentity }) => `Supprimer - ${memberIdentity}`,
+  'cc-orga-member-card.btn.delete.visible-text': `Supprimer`,
+  'cc-orga-member-card.btn.edit.accessible-name': ({ memberIdentity }) => `Modifier - ${memberIdentity}`,
+  'cc-orga-member-card.btn.edit.visible-text': `Modifier`,
+  'cc-orga-member-card.btn.leave.accessible-name': `Quitter`,
+  'cc-orga-member-card.btn.leave.visible-text': `Quitter`,
+  'cc-orga-member-card.btn.validate.accessible-name': ({ memberIdentity }) => `Valider la modification - ${memberIdentity}`,
+  'cc-orga-member-card.btn.validate.visible-text': `Valider`,
   'cc-orga-member-card.current-user': `Votre compte`,
   'cc-orga-member-card.error-last-admin': `Désignez un nouvel admin avant de pouvoir supprimer ou modifier cet utilisateur.`,
   'cc-orga-member-card.label-role': `Rôle`,
@@ -500,8 +505,8 @@ export const translations = {
   'cc-orga-member-card.role-manager': `Manager`,
   //#endregion
   //#region cc-orga-member-list
-  'cc-orga-member-list.edit-error': ({ userIdentity }) => `Une erreur est survenue lors de la modification de ${userIdentity}.`,
-  'cc-orga-member-list.edit-success': ({ userIdentity }) => `Le rôle de ${userIdentity} a bien été modifié.`,
+  'cc-orga-member-list.edit-error': ({ memberIdentity }) => `Une erreur est survenue lors de la modification de ${memberIdentity}.`,
+  'cc-orga-member-list.edit-success': ({ memberIdentity }) => `Le rôle de ${memberIdentity} a bien été modifié.`,
   'cc-orga-member-list.error': `Une erreur est survenue pendant le chargement de la liste des membres.`,
   'cc-orga-member-list.filter-name': `Filtrer par nom ou adresse e-mail`,
   'cc-orga-member-list.heading': `Membres`,
@@ -522,8 +527,8 @@ export const translations = {
   'cc-orga-member-list.invite.submit-success': ({ userEmail }) => `${userEmail} a été invité dans l'organisation.`,
   'cc-orga-member-list.mfa-label': `Seulement 2FA désactivée`,
   'cc-orga-member-list.no-result': `Aucun résultat ne correspond à vos critères de recherche.`,
-  'cc-orga-member-list.remove-error': ({ userIdentity }) => `Une erreur est survenue lors la suppression de ${userIdentity}.`,
-  'cc-orga-member-list.remove-success': ({ userIdentity }) => `${userIdentity} a été supprimé de l'organisation.`,
+  'cc-orga-member-list.remove-error': ({ memberIdentity }) => `Une erreur est survenue lors la suppression de ${memberIdentity}.`,
+  'cc-orga-member-list.remove-success': ({ memberIdentity }) => `${memberIdentity} a été supprimé de l'organisation.`,
   //#endregion
   //#region cc-payment-warning
   'cc-payment-warning.billing-page-link': ({ orgaName, orgaBillingLink }) => sanitize`<a href="${orgaBillingLink}" aria-label="Se rendre sur la page de facturation - ${orgaName}">Se rendre sur la page de facturation</a>`,
