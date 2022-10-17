@@ -135,6 +135,17 @@ As you can see here, \`hide-text\` can only be used if there is an \`image\`:
   ],
 });
 
+export const accessibleName = makeStory(conf, {
+  dom: (container) => {
+    container.innerHTML = `
+        <p>The accessible name can be checked by using the accessibility inspector of your browser.</p>
+        <p>You may also hover the buttons because we populate the <code>title</code> attribute with the same value.</p>
+        <cc-button accessible-name="Add to estimation - NodeJS XS" primary>Add to estimation</cc-button>
+        <cc-button accessible-name="Remove from estimation - NodeJS XS" danger outlined>Remove from estimation</cc-button>
+    `;
+  },
+});
+
 export const skeleton = makeStory(conf, {
   docs: `You should use the \`skeleton\` mode when you don't know the label of the button yet. If you already know it, you should just use \`disabled\` while you wait for something.`,
   items: baseItems.map((p) => ({ ...p, skeleton: true })),
@@ -182,6 +193,7 @@ enhanceStoriesNames({
   delayAndDisabled,
   image,
   hideText,
+  accessibleName,
   skeleton,
   circle,
   waitingAndCircle,
