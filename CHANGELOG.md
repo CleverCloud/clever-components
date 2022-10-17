@@ -57,7 +57,7 @@ title: Changelog
 * `<cc-button>`: add a new `accessibleName` prop to override the `aria-label` and `title` values.
 * New component:
   * `<cc-action-dispatcher>`
-  * `<cc-stretch?>` TO UPDATE WHEN WE CHOOSE THE NAME
+  * `<cc-stretch>`
 
 ### For devs
 
