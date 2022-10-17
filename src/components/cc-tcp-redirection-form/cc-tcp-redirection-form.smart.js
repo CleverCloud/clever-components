@@ -2,83 +2,90 @@ import './cc-tcp-redirection-form.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { addTcpRedir, getTcpRedirs, removeTcpRedir } from '@clevercloud/client/esm/api/v2/application.js';
 import { getNamespaces } from '@clevercloud/client/esm/api/v2/organisation.js';
-import { defineSmartComponentWithObservables } from '../../lib/define-smart-component-with-observables.js';
+import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { i18n } from '../../lib/i18n.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
-import { fromCustomEvent, LastPromise, unsubscribeWithSignal, withLatestFrom } from '../../lib/observables.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 
-defineSmartComponentWithObservables({
+defineSmartComponent({
   selector: 'cc-tcp-redirection-form',
   params: {
     apiConfig: { type: Object },
     ownerId: { type: String },
     appId: { type: String },
   },
-  onConnect: function (container, component, context$, disconnectSignal) {
+  onContextUpdate ({ container, component, context, onEvent, updateComponent, signal }) {
 
-    const redirections_lp = new LastPromise();
+    const { apiConfig, ownerId, appId } = context;
 
-    const onCreate$ = fromCustomEvent(component, 'cc-tcp-redirection:create')
-      .pipe(withLatestFrom(context$));
-    const onDelete$ = fromCustomEvent(component, 'cc-tcp-redirection:delete')
-      .pipe(withLatestFrom(context$));
-
-    // TODO: we may need to rework this into something more "Observable" like
-    function updateRedirectionState (namespace, newState) {
-      component.redirections = component.redirections.map((redirection) => {
-        if (redirection.namespace === namespace) {
-          return { ...redirection, ...newState };
+    function updateRedirection (namespace, callback) {
+      updateComponent('redirections', (redirections) => {
+        const redirection = redirections.value.find((r) => r.namespace === namespace);
+        if (redirection != null) {
+          callback(redirection);
         }
-        return redirection;
       });
     }
 
-    unsubscribeWithSignal(disconnectSignal, [
+    onEvent('cc-tcp-redirection:create', ({ namespace }) => {
+      updateRedirection(namespace, (redirection) => {
+        redirection.state = 'waiting';
+      });
+      createTcpRedirection({ apiConfig, ownerId, appId, namespace })
+        .then(({ port }) => {
+          notifySuccess(component, i18n('cc-tcp-redirection-form.create.success', { namespace }));
+          updateRedirection(namespace, (redirection) => {
+            redirection.state = 'loaded';
+            redirection.sourcePort = port;
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          notifyError(component, i18n('cc-tcp-redirection-form.create.error', { namespace }));
+          updateRedirection(namespace, (redirection) => {
+            redirection.state = 'loaded';
+          });
+        });
+    });
 
-      redirections_lp.error$.subscribe(console.error),
-      redirections_lp.error$.subscribe(() => (component.error = true)),
-      redirections_lp.value$.subscribe((redirections) => (component.redirections = redirections)),
+    onEvent('cc-tcp-redirection:delete', ({ namespace, sourcePort }) => {
+      updateRedirection(namespace, (redirection) => {
+        redirection.state = 'waiting';
+      });
+      deleteTcpRedirection({ apiConfig, ownerId, appId, sourcePort, namespace })
+        .then(() => {
+          notifySuccess(component, i18n('cc-tcp-redirection-form.delete.success', { namespace }));
+          updateRedirection(namespace, (redirection) => {
+            redirection.state = 'loaded';
+            redirection.sourcePort = null;
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          notifyError(component, i18n('cc-tcp-redirection-form.delete.error', { namespace }));
+          updateRedirection(namespace, (redirection) => {
+            redirection.state = 'loaded';
+          });
+        });
+    });
 
-      onCreate$.subscribe(([redirection, { apiConfig, ownerId, appId }]) => {
-        const { namespace } = redirection;
-        updateRedirectionState(namespace, { waiting: true });
-        createTcpRedirection({ apiConfig, ownerId, appId, namespace })
-          .then(({ port }) => {
-            updateRedirectionState(namespace, { sourcePort: port });
-            notifySuccess(component, i18n('cc-tcp-redirection-form.create.success', { namespace }));
-          })
-          .catch(() => notifyError(component, i18n('cc-tcp-redirection-form.create.error', { namespace })))
-          .finally(() => updateRedirectionState(namespace, { waiting: false }));
-      }),
+    updateComponent('redirections', { state: 'loading' });
 
-      onDelete$.subscribe(([redirection, { apiConfig, ownerId, appId }]) => {
-        const { namespace, sourcePort } = redirection;
-        updateRedirectionState(namespace, { waiting: true });
-        deleteTcpRedirection({ apiConfig, ownerId, appId, sourcePort, namespace })
-          .then(() => {
-            updateRedirectionState(namespace, { sourcePort: null });
-            notifySuccess(component, i18n('cc-tcp-redirection-form.delete.success', { namespace }));
-          })
-          .catch(() => notifyError(component, i18n('cc-tcp-redirection-form.delete.error', { namespace })))
-          .finally(() => updateRedirectionState(namespace, { waiting: false }));
-      }),
-
-      context$.subscribe(({ apiConfig, ownerId, appId }) => {
-
-        component.error = false;
-        component.redirections = null;
-
-        if (apiConfig != null && ownerId != null && appId != null) {
-          redirections_lp.push((signal) => fetchTcpRedirectionsAndNamespaces({ apiConfig, signal, ownerId, appId }));
-        }
-      }),
-
-    ]);
+    fetchTcpRedirectionsAndNamespaces({ apiConfig, ownerId, appId, signal })
+      .then((redirections) => {
+        updateComponent('redirections', {
+          state: 'loaded',
+          value: redirections.map((r) => ({ state: 'loaded', ...r })),
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        updateComponent('redirections', { state: 'error' });
+      });
   },
 });
 
-function fetchTcpRedirectionsAndNamespaces ({ apiConfig, signal, ownerId, appId }) {
+async function fetchTcpRedirectionsAndNamespaces ({ apiConfig, signal, ownerId, appId }) {
   return Promise
     .all([
       getNamespaces({ id: ownerId }).then(sendToApi({ apiConfig, signal })),
@@ -92,12 +99,12 @@ function fetchTcpRedirectionsAndNamespaces ({ apiConfig, signal, ownerId, appId 
     });
 }
 
-function createTcpRedirection ({ apiConfig, ownerId, appId, namespace }) {
+async function createTcpRedirection ({ apiConfig, ownerId, appId, namespace }) {
   return addTcpRedir({ id: ownerId, appId, payment: 'accepted' }, { namespace })
     .then(sendToApi({ apiConfig }));
 }
 
-function deleteTcpRedirection ({ apiConfig, ownerId, appId, sourcePort, namespace }) {
+async function deleteTcpRedirection ({ apiConfig, ownerId, appId, sourcePort, namespace }) {
   return removeTcpRedir({ id: ownerId, appId, sourcePort, namespace })
     .then(sendToApi({ apiConfig }));
 }
