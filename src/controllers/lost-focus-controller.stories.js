@@ -16,7 +16,6 @@ class MyList extends LitElement {
     super();
     this.items = [];
 
-    // eslint-disable-next-line no-new
     new LostFocusController(this, '.item', ({ suggestedElement }) => {
       suggestedElement?.querySelector('cc-button').focus();
     });

@@ -48,6 +48,7 @@ module.exports = {
     'lit/no-useless-template-literals': 'error',
     'lit/no-value-attribute': 'error',
     'multiline-ternary': 'off',
+    'no-new': 'off',
     'operator-linebreak': ['error', 'before'],
     'padded-blocks': 'off',
     'quotes': ['error', 'single', { 'allowTemplateLiterals': true }],

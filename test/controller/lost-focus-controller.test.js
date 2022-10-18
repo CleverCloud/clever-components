@@ -20,7 +20,6 @@ describe('lost-focus-controller', () => {
         super();
         this.items = ['1', '2', '3'];
 
-        // eslint-disable-next-line no-new
         new LostFocusController(this, '.item', (event) => {
           dispatchCustomEvent(this, 'my-element:lostFocus', event);
         });
