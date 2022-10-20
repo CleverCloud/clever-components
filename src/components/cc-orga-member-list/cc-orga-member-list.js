@@ -1,7 +1,10 @@
 import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { live } from 'lit/directives/live.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { LostFocusController } from '../../controllers/lost-focus-controller.js';
+import { validateEmailAddress } from '../../lib/email.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import '../cc-block/cc-block.js';
@@ -13,19 +16,21 @@ import '../cc-badge/cc-badge.js';
 import '../cc-error/cc-error.js';
 import '../cc-select/cc-select.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
-import { validateEmailAddress } from '../../lib/email.js';
-import { classMap } from 'lit/directives/class-map.js';
-import { LostFocusController } from "../../controllers/lost-focus-controller.js";
 
 /**
- * @typedef {import('./cc-orga-member-list.types.js').InviteMemberFormState} InviteMemberFormState
- * @typedef {import('./cc-orga-member-list.types.js').StateMemberInvite} StateMemberInvite
+ * @typedef {import('./cc-orga-member-list.types.js').OrgaMemberInviteFormState} OrgaMemberInviteFormState
+ * @typedef {import('./cc-orga-member-list.types.js').OrgaMemberListState} OrgaMemberListState
+ * @typedef {import('./cc-orga-member-list.types.js').OrgaMemberContext} OrgaMemberContext
  */
 
 /**
- * A component displaying the list of members from an organisation.
- * The list can be filtered by name or email. One can also choose to display only users with Tfa disabled.
+ * A component displaying the list of the members belonging to a given organisation.
+ * The list can be filtered by name or email.
+ * One can also choose to only show users with Two-Factor Auth (2FA) disabled.
  *
+ * Users may remove
+ *
+ * TODO update all this
  * @event {CustomEvent<InviteMemberPayload>} cc-orga-member-list:invite - Fires the `email` and `role` information inside an object whenever the invite button is clicked.
  *
  * @cssdisplay block
@@ -35,30 +40,32 @@ export class CcOrgaMemberList extends LitElement {
 
   static get properties () {
     return {
-      inviteMemberForm: { type: Object },
-      members: { type: Object }
+      memberManager: { type: Object },
     };
   }
 
   // TODO: discuss the idea of exposing the init sate here or as a const => si ça marche pas, on fait un static get comme d'hab
-  static INVITE_FORM_INIT_STATE = {
-    state: 'idle',
-    email: {
-      value: '',
-    },
-    role: {
-      value: 'DEVELOPER',
-    },
+  static get INVITE_FORM_INIT_STATE () {
+    return {
+      state: 'idle',
+      email: {
+        value: '',
+      },
+      role: {
+        value: 'DEVELOPER',
+      },
+    };
   };
 
   constructor () {
     super();
 
-    /** @type {InviteMemberFormState} Sets the state of the member invite form. */
-    this.inviteMemberForm = CcOrgaMemberList.INVITE_FORM_INIT_STATE;
-
-    /** @type {OrgaMemberListState} Sets the state of the member list. */
-    this.members = { state: 'loading' };
+    /** @type {OrgaMemberManagerState} Sets the state of the member manager (invite form if admin and list). */
+    this.memberManager = {
+      state: 'user',
+      inviteMemberForm: CcOrgaMemberList.INVITE_FORM_INIT_STATE,
+      members: { state: 'loading' },
+    };
 
     new LostFocusController(this, 'cc-orga-member-card', ({ suggestedElement }) => {
       if (suggestedElement == null) {
@@ -125,7 +132,7 @@ export class CcOrgaMemberList extends LitElement {
       },
     };
 
-    /*TODO should we introduce null in the data model then ?*/
+    /* TODO should we introduce null in the data model then ?*/
     if (emailError == null) {
       dispatchCustomEvent(this, 'invite', { email, role });
     }
@@ -134,23 +141,23 @@ export class CcOrgaMemberList extends LitElement {
   _onFilterIdentity ({ detail: value }) {
     this.members = {
       ...this.members,
-      identityFilter: value?.trim().toLowerCase()
-    }
+      identityFilter: value?.trim().toLowerCase(),
+    };
   }
 
   _onFilterMfa () {
     this.members = {
       ...this.members,
       mfaFilter: !this.members.mfaFilter,
-    }
+    };
   }
 
-  /*TODO Document*/
+  /* TODO Document*/
   _getAdminList () {
     return this.members.value.filter((m) => m.role === 'ADMIN');
   }
 
-  /*TODO Document*/
+  /* TODO Document*/
   _checkIsLastAdmin (event) {
     const adminList = this._getAdminList();
     if (adminList.length === 1 && adminList[0].id === event.detail.memberId) {
@@ -159,10 +166,10 @@ export class CcOrgaMemberList extends LitElement {
         ...this.members,
         value: this.members.value.map((member) => {
           return (member.id === event.detail.memberId)
-              ? { ...member, error: 'last-admin' }
-              : { ...member };
+            ? { ...member, error: 'last-admin' }
+            : { ...member };
         }),
-      }
+      };
     }
   }
 
@@ -177,7 +184,7 @@ export class CcOrgaMemberList extends LitElement {
     };
   }
 
-  /*TODO Document*/
+  /* TODO Document*/
   resetLastAdminErrors () {
     const adminList = this._getAdminList();
     if (adminList.length > 1) {
@@ -187,14 +194,14 @@ export class CcOrgaMemberList extends LitElement {
           ...member,
           error: null,
         })),
-      }
+      };
     }
   }
 
   render () {
     return html`
 
-      ${this._renderInviteForm()}
+      ${this.context === 'admin' ? this._renderInviteForm() : ''}
 
       <cc-block>
 
@@ -311,7 +318,7 @@ export class CcOrgaMemberList extends LitElement {
 
         ${repeat(filteredMemberList, (member) => member.id, (member) => html`
           <cc-orga-member-card
-            class=${classMap({ 'editing': member.state === 'editing'})}
+            class=${classMap({ editing: member.state === 'editing' })}
             .member=${member}
             @cc-orga-member-card:toggle-editing=${this._onToggleCardEditing}
             @cc-orga-member-card:update=${this._checkIsLastAdmin}

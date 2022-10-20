@@ -30,6 +30,15 @@ export const defaultStory = makeStory(conf, {
   items: [{ member: baseMember }],
 });
 
+export const dataLoadedWithAdminRights = makeStory(conf, {
+  items: [{
+    member: {
+      ...baseMember,
+      hasAdminRights: true,
+    },
+  }],
+});
+
 export const dataLoadedWithNoName = makeStory(conf, {
   items: [{
     member: {
@@ -100,6 +109,7 @@ export const editing = makeStory(conf, {
     member: {
       ...baseMember,
       state: 'editing',
+      hasAdminRights: true,
     },
   }],
 });
@@ -111,6 +121,7 @@ export const errorWithStateLoaded = makeStory(conf, {
     member: {
       ...baseMember,
       state: 'loaded',
+      hasAdminRights: true,
       role: 'ADMIN',
       error: 'last-admin',
     },
@@ -123,6 +134,7 @@ export const errorWithStateEditing = makeStory(conf, {
     member: {
       ...baseMember,
       state: 'editing',
+      hasAdminRights: true,
       role: 'ADMIN',
       error: 'last-admin',
     },
@@ -134,6 +146,7 @@ export const updatingMemberRole = makeStory(conf, {
     member: {
       ...baseMember,
       state: 'updating',
+      hasAdminRights: true,
     },
   }],
 });
@@ -143,6 +156,13 @@ export const deletingMember = makeStory(conf, {
     member: {
       ...baseMember,
       state: 'deleting',
+      hasAdminRights: true,
+    },
+  }, {
+    member: {
+      ...baseMember,
+      state: 'deleting',
+      isCurrentUser: true,
     },
   }],
 });
@@ -180,6 +200,7 @@ export const simulations = makeStory(conf, {
 
 enhanceStoriesNames({
   defaultStory,
+  dataLoadedWithAdminRights,
   dataLoadedWithNoName,
   dataLoadedWithNoAvatar,
   dataLoadedWithLongEmail,

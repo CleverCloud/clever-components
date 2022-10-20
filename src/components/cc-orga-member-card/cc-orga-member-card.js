@@ -217,7 +217,7 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
             visible-element-id=${this.member.role}
           >
             ${this._getRoleOptions().map((role) => html`
-                <cc-badge id="${role.value}" intent="info" weight="dimmed">${role.label}</cc-badge>
+              <cc-badge id="${role.value}" intent="info" weight="dimmed">${role.label}</cc-badge>
             `)}
           </cc-stretch>
 
@@ -273,43 +273,47 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
     return html`
 
       <div class="actions">
-        <cc-button
-          class="actions__first"
-          ?primary=${!isEditing}
-          outlined
-          image=${firstBtnIcon}
-          ?circle=${isBtnImgOnly}
-          ?disabled=${waiting}
-          ?hide-text=${isBtnImgOnly}
-          accessible-name=${this._getFirstBtnAccessibleName()}
-          @cc-button:click=${this._onToggleEdit}
-        >
-          <cc-stretch visible-element-id=${isEditing ? 'btn-content-cancel' : 'btn-content-edit'}>
-            <span id="btn-content-edit">${i18n('cc-orga-member-card.btn.edit.visible-text')}</span>
-            <span id="btn-content-cancel">${i18n('cc-orga-member-card.btn.cancel.visible-text')}</span>
-          </cc-stretch>
-        </cc-button>
+        ${this.member.hasAdminRights ? html`
+            <cc-button
+              class="actions__first"
+              ?primary=${!isEditing}
+              outlined
+              image=${firstBtnIcon}
+              ?circle=${isBtnImgOnly}
+              ?disabled=${waiting}
+              ?hide-text=${isBtnImgOnly}
+              accessible-name=${this._getFirstBtnAccessibleName()}
+              @cc-button:click=${this._onToggleEdit}
+            >
+              <cc-stretch visible-element-id=${isEditing ? 'btn-content-cancel' : 'btn-content-edit'}>
+                <span id="btn-content-edit">${i18n('cc-orga-member-card.btn.edit.visible-text')}</span>
+                <span id="btn-content-cancel">${i18n('cc-orga-member-card.btn.cancel.visible-text')}</span>
+              </cc-stretch>
+            </cc-button>
+        ` : ''}
   
-        <cc-button
-          class="actions__second"
-          ?danger=${!isEditing}
-          ?primary=${isEditing}
-          outlined
-          image=${secondBtnIcon}
-          ?disabled=${hasError}
-          ?circle=${isBtnImgOnly}
-          ?hide-text=${isBtnImgOnly}
-          ?waiting=${waiting}
-          accessible-name=${this._getSecondBtnAccessibleName()}
-          @cc-button:click=${isEditing ? this._onUpdateMember : this._onDeleteMember}
-          ${ref(this._removeButtonRef)}
-        >
-          <cc-stretch visible-element-id=${isEditing ? 'btn-content-validate' : removeOrLeaveSpanId}>
-            <span id="btn-content-leave">${i18n('cc-orga-member-card.btn.leave.visible-text')}</span>
-            <span id="btn-content-remove">${i18n('cc-orga-member-card.btn.delete.visible-text')}</span>
-            <span id="btn-content-validate">${i18n('cc-orga-member-card.btn.validate.visible-text')}</span>
-          </cc-stretch>
-        </cc-button>
+        ${(this.member.hasAdminRights || this.member.isCurrentUser) ? html`
+            <cc-button
+              class="actions__second"
+              ?danger=${!isEditing}
+              ?primary=${isEditing}
+              outlined
+              image=${secondBtnIcon}
+              ?disabled=${hasError}
+              ?circle=${isBtnImgOnly}
+              ?hide-text=${isBtnImgOnly}
+              ?waiting=${waiting}
+              accessible-name=${this._getSecondBtnAccessibleName()}
+              @cc-button:click=${isEditing ? this._onUpdateMember : this._onDeleteMember}
+              ${ref(this._removeButtonRef)}
+            >
+              <cc-stretch visible-element-id=${isEditing ? 'btn-content-validate' : removeOrLeaveSpanId}>
+                <span id="btn-content-leave">${i18n('cc-orga-member-card.btn.leave.visible-text')}</span>
+                <span id="btn-content-remove">${i18n('cc-orga-member-card.btn.delete.visible-text')}</span>
+                <span id="btn-content-validate">${i18n('cc-orga-member-card.btn.validate.visible-text')}</span>
+              </cc-stretch>
+            </cc-button>
+        ` : ''}
       </div>
     `;
   }

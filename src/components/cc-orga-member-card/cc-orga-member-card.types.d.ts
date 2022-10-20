@@ -11,34 +11,53 @@ interface OrgaMember {
   isCurrentUser: boolean; // If true, displays a "Your account" badge on top of the email, next to the name of the user.
 }
 
-export type OrgaMemberCardState =
-  OrgaMemberCardStateLoaded
-  | OrgaMemberCardStateLoading
-  | OrgaMemberCardStateEditing
-  | OrgaMemberCardStateUpdating
-  | OrgaMemberCardStateDeleting;
+/*
+* Admin = edit + remove / leave (if isCurrentUser)
+*   - can be loaded
+*   - can be editing
+*   - can be updating
+*   - can be deleting
+* isCurrentUser Not Admin = leave
+*   - can be loaded
+*   - can be "deleting" (or should it "leaving" ?)
+* Simple user = no btns
+*   - can be loaded
+* */
+
+type OrgaMemberCardState = OrgaMemberCardStateLoading
+    | OrgaMemberLoaded
+    | OrgaMemberCardStateEditing
+    | OrgaMemberCardStateUpdating
+    | OrgaMemberCardStateDeleting;
+
+interface OrgaMemberCardStateLoadedContextUser extends OrgaMember {
+  context: 'user';
+}
+
+interface OrgaMemberCardStateLoadedContextAdmin extends OrgaMember {
+  context: 'admin';
+}
 
 interface OrgaMemberCardStateLoading {
   state: 'loading';
 }
 
-interface OrgaMemberCardStateLoaded extends OrgaMember {
-  state: 'loaded';
+interface OrgaMemberCardStateEditing extends OrgaMember {
+  context: 'admin';
+  state: 'editing';
   error?: 'last-admin';
 }
 
-interface OrgaMemberCardStateEditing extends OrgaMember {
-  state: 'editing',
-  error?: 'last-admin',
-}
-
 interface OrgaMemberCardStateUpdating extends OrgaMember {
-  state: 'updating',
+  context: 'admin';
+  state: 'updating';
 }
 
 interface OrgaMemberCardStateDeleting extends OrgaMember {
-  state: 'deleting',
+  context: 'admin' | 'user'; // not great, should we go for "leaving" with a type that enforces isCurrentUser to be true ?
+  state: 'deleting';
 }
+
 
 interface UpdateMember {
   memberId: string,
