@@ -30,11 +30,21 @@ export const defaultStory = makeStory(conf, {
   items: [{ member: baseMember }],
 });
 
-export const dataLoadedWithAdminRights = makeStory(conf, {
+export const dataLoadedWithEditAndDelete = makeStory(conf, {
+  items: [{
+    member: { ...baseMember },
+    authorisations: {
+      edit: true,
+      delete: true,
+    },
+  }],
+});
+
+export const dataLoadedWithIsCurrentUser = makeStory(conf, {
   items: [{
     member: {
       ...baseMember,
-      hasAdminRights: true,
+      isCurrentUser: true,
     },
   }],
 });
@@ -72,15 +82,6 @@ export const dataLoadedWith2faEnabled = makeStory(conf, {
     member: {
       ...baseMember,
       isMfaEnabled: true,
-    },
-  }],
-});
-
-export const dataLoadedWithIsCurrentUser = makeStory(conf, {
-  items: [{
-    member: {
-      ...baseMember,
-      isCurrentUser: true,
     },
   }],
 });
@@ -200,7 +201,7 @@ export const simulations = makeStory(conf, {
 
 enhanceStoriesNames({
   defaultStory,
-  dataLoadedWithAdminRights,
+  dataLoadedWithEditAndDelete,
   dataLoadedWithNoName,
   dataLoadedWithNoAvatar,
   dataLoadedWithLongEmail,

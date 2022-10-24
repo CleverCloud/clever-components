@@ -473,12 +473,12 @@ export const translations = {
   //#region cc-orga-member-card
   'cc-orga-member-card.btn.cancel.accessible-name': ({ memberIdentity }) => `Cancel editing member - ${memberIdentity}`,
   'cc-orga-member-card.btn.cancel.visible-text': `Cancel`,
+  'cc-orga-member-card.btn.delete.accessible-name': ({ memberIdentity }) => `Remove the member - ${memberIdentity}`,
+  'cc-orga-member-card.btn.delete.visible-text': `Remove`,
   'cc-orga-member-card.btn.edit.accessible-name': ({ memberIdentity }) => `Edit the member- ${memberIdentity}`,
   'cc-orga-member-card.btn.edit.visible-text': `Edit`,
   'cc-orga-member-card.btn.leave.accessible-name': `Leave`,
   'cc-orga-member-card.btn.leave.visible-text': `Leave`,
-  'cc-orga-member-card.btn.delete.accessible-name': ({ memberIdentity }) => `Remove the member - ${memberIdentity}`,
-  'cc-orga-member-card.btn.delete.visible-text': `Remove`,
   'cc-orga-member-card.btn.validate.accessible-name': ({ memberIdentity }) => `Validate the edit of the member - ${memberIdentity}`,
   'cc-orga-member-card.btn.validate.visible-text': `Validate`,
   'cc-orga-member-card.current-user': `Your account`,
@@ -492,8 +492,9 @@ export const translations = {
   'cc-orga-member-card.role-manager': `Manager`,
   //#endregion
   //#region cc-orga-member-list
-  'cc-orga-member-list.edit-error': ({ memberIdentity }) => `Something went wrong while editing ${memberIdentity}.`,
-  'cc-orga-member-list.edit-success': ({ memberIdentity }) => `The role of ${memberIdentity} has been modified.`,
+  'cc-orga-member-list.edit-error': ({ memberIdentity }) => sanitize`Something went wrong while editing <strong>${memberIdentity}</strong>.`,
+  'cc-orga-member-list.edit-error-unauthorised': ({ memberIdentity }) => sanitize`You are not authorised to edit the member <strong>${memberIdentity}</strong>.`,
+  'cc-orga-member-list.edit-success': ({ memberIdentity }) => sanitize`The role of <strong>${memberIdentity}</strong> has been modified.`,
   'cc-orga-member-list.error': `Something went wrong while loading the organisation member list.`,
   'cc-orga-member-list.filter-name': `Filter by name or email address`,
   'cc-orga-member-list.heading': `Members`,
@@ -510,12 +511,12 @@ export const translations = {
   'cc-orga-member-list.invite.role-label': `Role`,
   'cc-orga-member-list.invite.role-manager': `Manager`,
   'cc-orga-member-list.invite.submit': `Invite`,
-  'cc-orga-member-list.invite.submit-error': ({ userEmail }) => `Something went wrong when trying to invite ${userEmail}.`,
-  'cc-orga-member-list.invite.submit-success': ({ userEmail }) => `${userEmail} has been invited into this organisation.`,
+  'cc-orga-member-list.invite.submit-error': ({ userEmail }) => sanitize`Something went wrong when trying to invite <strong>${userEmail}</strong>.`,
+  'cc-orga-member-list.invite.submit-success': ({ userEmail }) => sanitize`<strong>${userEmail}</strong> has been invited into this organisation.`,
   'cc-orga-member-list.mfa-label': `2FA disabled only`,
   'cc-orga-member-list.no-result': `No results matching your criteria.`,
-  'cc-orga-member-list.remove-error': ({ memberIdentity }) => `Something went wrong while trying to remove ${memberIdentity} from this organisation.`,
-  'cc-orga-member-list.remove-success': ({ memberIdentity }) => `${memberIdentity} has been removed from this organisation.`,
+  'cc-orga-member-list.remove-error': ({ memberIdentity }) => sanitize`Something went wrong while trying to remove <strong>${memberIdentity}</strong> from this organisation.`,
+  'cc-orga-member-list.remove-success': ({ memberIdentity }) => sanitize`<strong>${memberIdentity}</strong> has been removed from this organisation.`,
   //#endregion
   //#region cc-payment-warning
   'cc-payment-warning.billing-page-link': ({ orgaName, orgaBillingLink }) => sanitize`<a href="${orgaBillingLink}" aria-label="Go to the billing page - ${orgaName}">Go to the billing page</a>`,

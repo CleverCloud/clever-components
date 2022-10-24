@@ -12,6 +12,10 @@ import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { CcOrgaMemberList } from './cc-orga-member-list.js';
 
+const delay = (success) => new Promise((resolve, reject) => {
+  setTimeout(() => success ? resolve('response') : reject(new Error('toto')), 2000);
+});
+
 defineSmartComponent({
   selector: 'cc-orga-member-list',
   params: {
@@ -31,10 +35,6 @@ defineSmartComponent({
       });
     }
 
-    function getAdminList () {
-      return component.members.value.filter((m) => m.role === 'ADMIN');
-    }
-
     onEvent('cc-orga-member-list:invite', ({ email, role }) => {
 
       updateComponent('inviteMemberForm', (inviteMemberForm) => {
@@ -45,7 +45,7 @@ defineSmartComponent({
       postNewMember({ apiConfig, ownerId, email, role })
         .then(() => {
           notifySuccess(component, i18n('cc-orga-member-list.invite.submit-success', { userEmail: email }));
-          updateComponent('inviteMemberForm', CcOrgaMemberList.INVITE_FORM_INIT_STATE);
+          updateComponent('inviteMemberForm', CcOrgaMemberList.INIT_INVITE_FORM_STATE);
         })
         .catch(() => {
           notifyError(component, i18n('cc-orga-member-list.invite.submit-error', { userEmail: email }));
@@ -56,16 +56,6 @@ defineSmartComponent({
     });
 
     onEvent('cc-orga-member-card:update', ({ memberId, role, memberIdentity }) => {
-
-      // TODO: I guess we should check for last admin stuffs here
-      // We still need to decide when to remove this 'last-admin' error
-      const adminList = getAdminList();
-      if (adminList.length === 1 && adminList[0].id === memberId && role !== 'ADMIN') {
-        updateMember(memberId, (member) => {
-          member.error = 'last-admin';
-        });
-        return;
-      }
 
       updateMember(memberId, (member) => {
         member.state = 'updating';
@@ -80,20 +70,15 @@ defineSmartComponent({
             member.state = 'loaded';
             member.role = role;
           });
-
-          /* TODO: discuss the error reset. Shouldn't null be part of the data model ? */
-          const adminList = getAdminList();
-          if (adminList.length > 1) {
-            console.log('SET NEW ADMIN');
-            updateComponent('members', (members) => {
-              members.value.forEach((member) => {
-                member.error = null;
-              });
-            });
-          }
         })
-        .catch(() => {
-          notifyError(component, i18n('cc-orga-member-list.edit-error', { memberIdentity }));
+        .catch((error) => {
+          if (error.id === 6451) {
+            notifyError(component, i18n('cc-orga-member-list.edit-error-unauthorised', { memberIdentity }));
+          }
+          else {
+            notifyError(component, i18n('cc-orga-member-list.edit-error', { memberIdentity }));
+          }
+
           updateMember(memberId, (member) => {
             member.state = 'loaded';
           });
@@ -122,11 +107,21 @@ defineSmartComponent({
     });
 
     // Reset the component before loading
-    updateComponent('inviteMemberForm', CcOrgaMemberList.INVITE_FORM_INIT_STATE);
+    component.authorisations = CcOrgaMemberList.INIT_AUTHORISATIONS;
+    updateComponent('inviteMemberForm', CcOrgaMemberList.INIT_INVITE_FORM_STATE);
     updateComponent('members', { state: 'loading' });
 
     getMemberList({ apiConfig, ownerId, signal })
       .then((memberList) => {
+        const currentUser = memberList.find((member) => member.isCurrentUser);
+        const hasAdminRights = currentUser.role === 'ADMIN' || currentUser.role === 'MANAGER';
+
+        component.authorisations = {
+          invite: hasAdminRights,
+          edit: hasAdminRights,
+          delete: hasAdminRights,
+        };
+
         updateComponent('members', {
           state: 'loaded',
           value: memberList.map((member) => ({ state: 'loaded', ...member })),
@@ -141,15 +136,13 @@ defineSmartComponent({
   },
 });
 
-// -----------------------------------------------------------------------------------
-
 function getMemberList ({ apiConfig, ownerId, signal }) {
   return Promise
     .all([
       getId().then(sendToApi({ apiConfig, signal })),
       getAllMembers({ id: ownerId }).then(sendToApi({ apiConfig, signal })),
     ])
-    .then(([userId, memberList]) => {
+    .then(([{ ownerId }, memberList]) => {
       return memberList
         .map(({ member, role, job }) => ({
           // TODO cleanup empty string stuffs
@@ -160,13 +153,13 @@ function getMemberList ({ apiConfig, ownerId, signal }) {
           role: role,
           email: member.email,
           isMfaEnabled: member.preferredMFA === 'TOTP',
-          isCurrentUser: member.id === userId,
+          isCurrentUser: member.id === ownerId,
         }))
         .sort((a, b) => {
-          if (a.id === userId) {
+          if (a.id === ownerId) {
             return -1;
           }
-          if (b.id === userId) {
+          if (b.id === ownerId) {
             return 1;
           }
           return a.email.localeCompare(b.email, { sensitivity: 'base' });
@@ -177,26 +170,15 @@ function getMemberList ({ apiConfig, ownerId, signal }) {
 function postNewMember ({ apiConfig, ownerId, email, role }) {
   return addMember({ id: ownerId }, { email, role, job: null })
     /* .then(sendToApi({ apiConfig }));*/
-    .then(() => new Promise((resolve, reject) => {
-      setTimeout(() => resolve('response'), 2000);
-      /* setTimeout(() => reject(new Error('toto')), 2000);*/
-    }));
+    .then(() => delay(false));
 }
 
 function deleteMember ({ apiConfig, ownerId, memberId }) {
   return removeMember({ id: ownerId, userId: memberId })
-    /* .then(sendToApi({ apiConfig })); */
-    .then(() => new Promise((resolve, reject) => {
-      setTimeout(() => resolve('response'), 200);
-      // setTimeout(() => reject(new Error('NOPE')), 2000);
-    }));
+    .then(sendToApi({ apiConfig }));
 }
 
 function editMember ({ apiConfig, ownerId, memberId, role }) {
   return updateMember({ id: ownerId, userId: memberId }, { role })
-    /* .then(sendToApi({ apiConfig }));*/
-    .then(() => new Promise((resolve, reject) => {
-      setTimeout(() => resolve(), 2000);
-      // setTimeout(() => reject(new Error('NOPE')), 2000);
-    }));
+    .then(sendToApi({ apiConfig }));
 }

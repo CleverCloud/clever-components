@@ -199,3 +199,8 @@
   --cc-margin-top-btn-horizontal-form: 1.6em;
   /*endregion*/
 }
+
+cc-stretch {
+  visibility: hidden;
+  border: solid 2px blue;
+}

@@ -1,24 +1,6 @@
-import {
-  OrgaMemberCardState, OrgaMemberCardStateDeleting, OrgaMemberCardStateEditing,
-  OrgaMemberCardStateLoaded, OrgaMemberCardStateLoading, OrgaMemberCardStateUpdating,
-  OrgaMemberRole
-} from '../cc-orga-member-card/cc-orga-member-card.types';
+import { OrgaMemberCardState, OrgaMemberRole } from '../cc-orga-member-card/cc-orga-member-card.types';
 
-
-type OrgaMemberManagerState = OrgaMemberManagerStateUser | OrgaMemberManagerStateAdmin;
-
-interface OrgaMemberManagerStateUser {
-  context: 'user'; // state or context ?
-  members: OrgaMemberListState;
-}
-
-interface OrgaMemberManagerStateAdmin {
-  context: 'admin'; // state or context ?
-  inviteForm: OrgaMemberInviteFormState;
-  members: OrgaMemberListState;
-}
-
-export interface OrgaMemberInviteFormState {
+export interface OrgaMemberInviteForm {
   state: 'idle' | 'inviting';
   email: EmailFormField;
   role: RoleFormField;
@@ -50,7 +32,13 @@ interface OrgaMemberListStateError {
   state: 'error';
 }
 
-export interface InviteMemberPayload {
+export interface InviteMember {
   email: string,
   role: string,
+}
+
+interface Authorisations {
+  invite: boolean;
+  edit: boolean;
+  delete: boolean;
 }

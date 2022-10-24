@@ -20,7 +20,7 @@ import { linkStyles } from '../../templates/cc-link/cc-link.js';
 /**
  * @typedef {import('./cc-orga-member-list.types.js').OrgaMemberInviteFormState} OrgaMemberInviteFormState
  * @typedef {import('./cc-orga-member-list.types.js').OrgaMemberListState} OrgaMemberListState
- * @typedef {import('./cc-orga-member-list.types.js').OrgaMemberContext} OrgaMemberContext
+ * @typedef {import('./cc-orga-member-list.types.js').Authorisations} Authorisations
  */
 
 /**
@@ -28,24 +28,28 @@ import { linkStyles } from '../../templates/cc-link/cc-link.js';
  * The list can be filtered by name or email.
  * One can also choose to only show users with Two-Factor Auth (2FA) disabled.
  *
- * Users may remove
+ * Depending on the authorisations:
  *
- * TODO update all this
- * @event {CustomEvent<InviteMemberPayload>} cc-orga-member-list:invite - Fires the `email` and `role` information inside an object whenever the invite button is clicked.
+ *  - Users may remove members,
+ *  - Users may edit the role of members.
  *
- * @cssdisplay block
+ *
+ * @event {CustomEvent<InviteMember>} cc-orga-member-list:invite - Fires the `email` and `role` information inside an object whenever the invite button is clicked.
+ *
+ * @cssdisplay flex
  */
 
 export class CcOrgaMemberList extends LitElement {
 
   static get properties () {
     return {
-      memberManager: { type: Object },
+      authorisations: { type: Object },
+      inviteMemberForm: { type: Object },
+      members: { type: Object },
     };
   }
 
-  // TODO: discuss the idea of exposing the init sate here or as a const => si ça marche pas, on fait un static get comme d'hab
-  static get INVITE_FORM_INIT_STATE () {
+  static get INIT_INVITE_FORM_STATE () {
     return {
       state: 'idle',
       email: {
@@ -57,21 +61,33 @@ export class CcOrgaMemberList extends LitElement {
     };
   };
 
+  static get INIT_AUTHORISATIONS () {
+    return {
+      invite: false,
+      edit: false,
+      delete: false,
+    };
+  };
+
   constructor () {
     super();
 
-    /** @type {OrgaMemberManagerState} Sets the state of the member manager (invite form if admin and list). */
-    this.memberManager = {
-      state: 'user',
-      inviteMemberForm: CcOrgaMemberList.INVITE_FORM_INIT_STATE,
-      members: { state: 'loading' },
-    };
+    /** @type {Authorisations} Sets the authorisations that control the display of the invite form and the edit / remove buttons. */
+    this.authorisations = CcOrgaMemberList.INIT_AUTHORISATIONS;
+
+    /** @type {OrgaMemberInviteFormState} Sets the state of the member invite form. */
+    this.inviteMemberForm = CcOrgaMemberList.INIT_INVITE_FORM_STATE;
+
+    /** @type {OrgaMemberListState} Sets the state of the member list. */
+    this.members = { state: 'loading' };
 
     new LostFocusController(this, 'cc-orga-member-card', ({ suggestedElement }) => {
       if (suggestedElement == null) {
         this._noResultMessageRef.value?.focus();
       }
-      suggestedElement?.focusDeleteBtn();
+      else {
+        suggestedElement.focusDeleteBtn();
+      }
     });
 
     this._inviteMemberEmailRef = createRef();
@@ -79,7 +95,7 @@ export class CcOrgaMemberList extends LitElement {
     this._noResultMessageRef = createRef();
   }
 
-  _getRoles () {
+  _getRoleOptions () {
     return [
       { value: 'ADMIN', label: i18n('cc-orga-member-list.invite.role-admin') },
       { value: 'DEVELOPER', label: i18n('cc-orga-member-list.invite.role-developer') },
@@ -90,7 +106,7 @@ export class CcOrgaMemberList extends LitElement {
 
   /**
    * @param {OrgaMemberCardState[]} members
-   * @param {string} identityFilter
+   * @param {string|null} identityFilter
    * @param {boolean} mfaFilter
    * @return {OrgaMemberCardState[]}
    * @private
@@ -98,7 +114,8 @@ export class CcOrgaMemberList extends LitElement {
   _getFilteredMemberList (members, identityFilter, mfaFilter) {
     const filteredMemberList = members.filter((member) => {
 
-      const matchIdentity = identityFilter === ''
+      const matchIdentity = identityFilter == null
+        || identityFilter === ''
         || member.name?.toLowerCase().includes(identityFilter)
         || member.email.toLowerCase().includes(identityFilter);
 
@@ -112,15 +129,14 @@ export class CcOrgaMemberList extends LitElement {
 
   _onSubmit () {
 
-    const existingEmails = this.members.value.map((m) => m.email);
+    const existingEmails = this.members.value.map((member) => member.email);
     const email = this._inviteMemberEmailRef.value.value;
     const role = this._inviteMemberRoleRef.value.value;
 
-    // TODO: maybe move the list and duplication detection in the validateEmailAddress
     const duplicateEmailError = existingEmails.includes(email) ? 'duplicate' : null;
     const emailError = validateEmailAddress(email) ?? duplicateEmailError;
 
-    // We need to re-apply the value retrieve from the DOM via refs to the template (with potential errors)
+    // We need to re-apply the value retrieved from the DOM via refs to the template (with potential errors)
     this.inviteMemberForm = {
       ...this.inviteMemberForm,
       email: {
@@ -132,7 +148,6 @@ export class CcOrgaMemberList extends LitElement {
       },
     };
 
-    /* TODO should we introduce null in the data model then ?*/
     if (emailError == null) {
       dispatchCustomEvent(this, 'invite', { email, role });
     }
@@ -152,16 +167,27 @@ export class CcOrgaMemberList extends LitElement {
     };
   }
 
-  /* TODO Document*/
+  /**
+  * @return {OrgaMemberCardState[]} AdminMembers - the list of admins in the organisation. Used to ensure we don't allow deletion of the last admin.
+  */
   _getAdminList () {
-    return this.members.value.filter((m) => m.role === 'ADMIN');
+    return this.members.value.filter((member) => member.role === 'ADMIN');
   }
 
-  /* TODO Document*/
+  /**
+   * Triggered when trying to edit or delete a member.
+   * Checks whether the member is the last admin of the org.
+   * If not, we let the event go through to the smart component.
+   * If last admin, we set the error message.
+   *
+   * @param {event} event - the edit / delete event. We stop its propagation if it's related to the last admin.
+  */
   _checkIsLastAdmin (event) {
     const adminList = this._getAdminList();
     if (adminList.length === 1 && adminList[0].id === event.detail.memberId) {
+      // Prevent event from reaching the smart component
       event.stopPropagation();
+      // set 'last-admin' error on the member card
       this.members = {
         ...this.members,
         value: this.members.value.map((member) => {
@@ -173,18 +199,7 @@ export class CcOrgaMemberList extends LitElement {
     }
   }
 
-  _onToggleCardEditing ({ detail: { memberId, newState } }) {
-    this.members = {
-      ...this.members,
-      value: this.members.value.map((member) => {
-        return (member.id === memberId)
-          ? { ...member, state: newState }
-          : { ...member, state: 'loaded' };
-      }),
-    };
-  }
-
-  /* TODO Document*/
+  /* Everytime we render a new list, remove "last-admin" error if the list contains more than 1 admin. */
   resetLastAdminErrors () {
     const adminList = this._getAdminList();
     if (adminList.length > 1) {
@@ -198,10 +213,24 @@ export class CcOrgaMemberList extends LitElement {
     }
   }
 
+  /**
+  * Close all other cards.
+  * */
+  _onToggleCardEditing ({ detail: { memberId, newState } }) {
+    this.members = {
+      ...this.members,
+      value: this.members.value.map((member) => {
+        return (member.id === memberId)
+          ? { ...member, state: newState }
+          : { ...member, state: 'loaded' };
+      }),
+    };
+  }
+
   render () {
     return html`
 
-      ${this.context === 'admin' ? this._renderInviteForm() : ''}
+      ${this.authorisations.invite ? this._renderInviteForm() : ''}
 
       <cc-block>
 
@@ -235,7 +264,7 @@ export class CcOrgaMemberList extends LitElement {
       <cc-block>
         <div slot="title">${i18n('cc-orga-member-list.invite.heading')}</div>
         <p class="info">${i18n('cc-orga-member-list.invite.info')}</p>
-        <!-- todo: do we need this form tag right now? -->
+        
         <form class="invite-form">
 
           <cc-input-text
@@ -252,7 +281,7 @@ export class CcOrgaMemberList extends LitElement {
 
           <cc-select
             label=${i18n('cc-orga-member-list.invite.role-label')}
-            .options=${this._getRoles()}
+            .options=${this._getRoleOptions()}
             .value=${live(this.inviteMemberForm.role.value)}
             required
             ?disabled=${isFormDisabled}
@@ -294,7 +323,9 @@ export class CcOrgaMemberList extends LitElement {
     const containsAtLeast2Members = memberList.length >= 2;
     const containsDisabledMfa = memberList.some((member) => !member.isMfaEnabled);
     const filteredMemberList = this._getFilteredMemberList(memberList, identityFilter, mfaFilter);
-    const isMemberListEmpty = filteredMemberList.length === 0;
+    const isFilteredMemberListEmpty = filteredMemberList.length === 0;
+
+    // Everytime we render a new list, check that "last-admin" errors are still relevant and remove them if not.
     this.resetLastAdminErrors();
 
     return html`
@@ -302,12 +333,12 @@ export class CcOrgaMemberList extends LitElement {
         <div class="filters">
           <cc-input-text
             label=${i18n('cc-orga-member-list.filter-name')}
-            .value=${identityFilter}
+            .value=${live(identityFilter)}
             @cc-input-text:input=${this._onFilterIdentity}
           ></cc-input-text>
           ${containsDisabledMfa ? html`
             <label class="filters__mfa" for="filter-mfa">
-              <input id="filter-mfa" type="checkbox" @change=${this._onFilterMfa} .checked=${mfaFilter}>
+              <input id="filter-mfa" type="checkbox" @change=${this._onFilterMfa} .checked=${live(mfaFilter)}>
               ${i18n('cc-orga-member-list.mfa-label')}
             </label>
           ` : ''}
@@ -315,10 +346,13 @@ export class CcOrgaMemberList extends LitElement {
       ` : ''}
 
       <div class="member-list">
-
         ${repeat(filteredMemberList, (member) => member.id, (member) => html`
           <cc-orga-member-card
             class=${classMap({ editing: member.state === 'editing' })}
+            .authorisations=${{
+              edit: this.authorisations.edit,
+              delete: this.authorisations.delete,
+            }}
             .member=${member}
             @cc-orga-member-card:toggle-editing=${this._onToggleCardEditing}
             @cc-orga-member-card:update=${this._checkIsLastAdmin}
@@ -326,7 +360,7 @@ export class CcOrgaMemberList extends LitElement {
           ></cc-orga-member-card>
         `)}
 
-        ${isMemberListEmpty ? html`
+        ${isFilteredMemberListEmpty ? html`
           <p ${ref(this._noResultMessageRef)} tabindex="-1">
             ${i18n('cc-orga-member-list.no-result')}
           </p>
@@ -343,28 +377,15 @@ export class CcOrgaMemberList extends LitElement {
         :host {
           display: flex;
           flex-direction: column;
-          gap: 2em;
-        }
-
-        .member-count {
-          font-size: 0.8em;
-          margin-left: 0.2em;
-          padding: 0.1em;
+          gap: 1.5em;
         }
 
         /*region invite form */
         .invite-form {
-          align-items: flex-start;
+          align-items: start;
           display: flex;
           flex-wrap: wrap;
           gap: 1em;
-        }
-
-        .field-group {
-          display: flex;
-          flex-flow: row wrap;
-          gap: 1em;
-          margin-bottom: 1em;
         }
 
         .info {
@@ -382,36 +403,23 @@ export class CcOrgaMemberList extends LitElement {
 
         .submit {
           display: flex;
-          justify-content: flex-end;
+          justify-content: end;
           width: 100%;
-        }
-
-        .filters__mfa {
-          align-items: center;
-          display: flex;
-          gap: 0.3em;
-        }
-
-        .filters__mfa input {
-          height: 0.9em;
-          width: 0.9em;
         }
         /*endregion */
 
         /*region member list  */
-        cc-badge {
-          font-size: 0.7em;
+        .member-count {
+          font-size: 0.8em;
+          margin-left: 0.2em;
+          padding: 0.1em;
           vertical-align: middle;
         }
 
         .member-list {
           display: flex;
           flex-direction: column;
-          gap: 1.5em;
-        }
-
-        .filters cc-input-text {
-          width: min(100%, 25em);
+          gap: 2em;
         }
 
         .filters {
@@ -420,30 +428,31 @@ export class CcOrgaMemberList extends LitElement {
           flex-wrap: wrap;
           gap: 1em 0.5em;
           justify-content: space-between;
-          margin-bottom: 0.25em;
-          position: relative;
+          margin-bottom: 1em;
         }
 
-        label input {
-          margin: 0;
+        .filters cc-input-text {
+          width: min(100%, 25em);
         }
-
-        .editing {
-          background-color: var(--cc-color-bg-neutral);
-          box-shadow: 0 0 0 1em var(--cc-color-bg-neutral);
-        }
-
-        .error {
+        
+        .filters__mfa {
           align-items: center;
           display: flex;
-          gap: 1em;
-          justify-content: center;
+          gap: 0.5em;
         }
 
-        .error img {
-          height: 1.5em;
-          width: 1.5em;
+        .filters__mfa input {
+          height: 1.2em;
+          margin: 0;
+          width: 1.2em;
         }
+
+        cc-orga-member-card.editing {
+          background-color: var(--cc-color-bg-neutral);
+          /* box-shadow is used to make the background spread full width (cancel the parent padding) */
+          box-shadow: 0 0 0 1em var(--cc-color-bg-neutral);
+        }
+        /*endregion */
       `,
     ];
   }

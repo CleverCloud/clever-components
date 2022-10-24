@@ -505,8 +505,8 @@ export const translations = {
   'cc-orga-member-card.role-manager': `Manager`,
   //#endregion
   //#region cc-orga-member-list
-  'cc-orga-member-list.edit-error': ({ memberIdentity }) => `Une erreur est survenue lors de la modification de ${memberIdentity}.`,
-  'cc-orga-member-list.edit-success': ({ memberIdentity }) => `Le rôle de ${memberIdentity} a bien été modifié.`,
+  'cc-orga-member-list.edit-error': ({ memberIdentity }) => sanitize`Une erreur est survenue lors de la modification de <strong>${memberIdentity}</strong>.`,
+  'cc-orga-member-list.edit-success': ({ memberIdentity }) => sanitize`Le rôle de <strong>${memberIdentity}</strong> a bien été modifié.`,
   'cc-orga-member-list.error': `Une erreur est survenue pendant le chargement de la liste des membres.`,
   'cc-orga-member-list.filter-name': `Filtrer par nom ou adresse e-mail`,
   'cc-orga-member-list.heading': `Membres`,
@@ -523,12 +523,13 @@ export const translations = {
   'cc-orga-member-list.invite.role-label': `Rôle`,
   'cc-orga-member-list.invite.role-manager': `Manager`,
   'cc-orga-member-list.invite.submit': `Inviter`,
-  'cc-orga-member-list.invite.submit-error': ({ userEmail }) => `Une erreur est survenue lors de l'invitation de ${userEmail} dans l'organisation.`,
-  'cc-orga-member-list.invite.submit-success': ({ userEmail }) => `${userEmail} a été invité dans l'organisation.`,
+  'cc-orga-member-list.invite.submit-error': ({ userEmail }) => sanitize`Une erreur est survenue lors de l'invitation de <strong>${userEmail}</strong> dans l'organisation.`,
+  'cc-orga-member-list.invite.submit-success': ({ userEmail }) => sanitize`<strong>${userEmail}</strong> a été invité dans l'organisation.`,
   'cc-orga-member-list.mfa-label': `Seulement 2FA désactivée`,
   'cc-orga-member-list.no-result': `Aucun résultat ne correspond à vos critères de recherche.`,
-  'cc-orga-member-list.remove-error': ({ memberIdentity }) => `Une erreur est survenue lors la suppression de ${memberIdentity}.`,
-  'cc-orga-member-list.remove-success': ({ memberIdentity }) => `${memberIdentity} a été supprimé de l'organisation.`,
+  'cc-orga-member-list.remove-error': ({ memberIdentity }) => sanitize`Une erreur est survenue lors la suppression de <strong>${memberIdentity}</strong>.`,
+  'cc-orga-member-list.remove-success': ({ memberIdentity }) => sanitize`<strong>${memberIdentity}</strong> a été supprimé de l'organisation.`,
+  'cc-orga-member-list.edit-error-unauthorised': ({ memberIdentity }) => sanitize`Vous n'êtes pas autorisé à modifier le membre <strong>${memberIdentity}</strong>.`,
   //#endregion
   //#region cc-payment-warning
   'cc-payment-warning.billing-page-link': ({ orgaName, orgaBillingLink }) => sanitize`<a href="${orgaBillingLink}" aria-label="Se rendre sur la page de facturation - ${orgaName}">Se rendre sur la page de facturation</a>`,

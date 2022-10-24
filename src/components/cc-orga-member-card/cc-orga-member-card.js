@@ -28,6 +28,7 @@ const BREAKPOINT_TINY = 350;
  * @typedef {import('./cc-orga-member-card.types.js').OrgaMemberCardState} OrgaMemberCardState
  * @typedef {import('./cc-orga-member-card.types.js').DeleteMember} DeleteMember
  * @typedef {import('./cc-orga-member-card.types.js').UpdateMember} UpdateMember
+ * @typedef {import('./cc-orga-member-card.types.js').Authorisations} Authorisations
  */
 
 /**
@@ -48,6 +49,7 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
 
   static get properties () {
     return {
+      authorisations: { type: Object },
       member: { type: Object },
       _size: { type: String, state: true },
     };
@@ -55,6 +57,12 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
 
   constructor () {
     super();
+
+    /** @type {Authorisations} Sets the authorisations that control the display of the edit / remove buttons. */
+    this.authorisations = {
+      edit: false,
+      delete: false,
+    };
 
     /** @type {OrgaMemberCardState} Sets the state and data of the member. */
     this.member = { state: 'loading' };
@@ -162,6 +170,7 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
 
   /* Used by the `withResizeObserver` mixin. */
   onResize ({ width }) {
+    console.log('RESIZING', this.member.id, width);
     this._size = width;
   }
 
@@ -271,9 +280,9 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
     const removeOrLeaveSpanId = this.member.isCurrentUser ? 'btn-content-leave' : 'btn-content-remove';
 
     return html`
-
+      
       <div class="actions">
-        ${this.member.hasAdminRights ? html`
+        ${this.authorisations.edit ? html`
             <cc-button
               class="actions__first"
               ?primary=${!isEditing}
@@ -292,7 +301,7 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
             </cc-button>
         ` : ''}
   
-        ${(this.member.hasAdminRights || this.member.isCurrentUser) ? html`
+        ${(this.authorisations.delete || this.member.isCurrentUser) ? html`
             <cc-button
               class="actions__second"
               ?danger=${!isEditing}
@@ -326,7 +335,7 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
         :host {
           align-items: center;
           display: grid;
-          gap: 1em;
+          gap: 0.5em 1em;
           grid-template-areas: "avatar identity status actions";
           grid-template-columns: max-content 1fr max-content max-content;
         }
@@ -355,12 +364,14 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
           display: flex;
           gap: 0.5em;
           grid-area: actions;
+          justify-content: space-evenly;
+          min-width: 4em;
         }
         
         .status__role-mfa {
           align-items: center;
           display: flex;
-          gap: 0.8em 0.5em;
+          gap: 0.5em 1em;
         }
         
         .error-wrapper {

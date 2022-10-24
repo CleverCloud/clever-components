@@ -8,56 +8,37 @@ interface OrgaMember {
   avatar?: string; // Sets the profil picture of the user. If no avatar is provided, a fallback image is displayed.
   jobTitle?: string; // Displays the job title as a tooltip when hovering the name / email of the user.
   isMfaEnabled: boolean; // Sets the two-factor auth badge to enabled or disabled.
-  isCurrentUser: boolean; // If true, displays a "Your account" badge on top of the email, next to the name of the user.
+  isCurrentUser: boolean; // If true, displays a "Your account" badge on top of the email, next to the name of the user and displays a "Leave" Button.
 }
 
-/*
-* Admin = edit + remove / leave (if isCurrentUser)
-*   - can be loaded
-*   - can be editing
-*   - can be updating
-*   - can be deleting
-* isCurrentUser Not Admin = leave
-*   - can be loaded
-*   - can be "deleting" (or should it "leaving" ?)
-* Simple user = no btns
-*   - can be loaded
-* */
-
-type OrgaMemberCardState = OrgaMemberCardStateLoading
-    | OrgaMemberLoaded
-    | OrgaMemberCardStateEditing
-    | OrgaMemberCardStateUpdating
-    | OrgaMemberCardStateDeleting;
-
-interface OrgaMemberCardStateLoadedContextUser extends OrgaMember {
-  context: 'user';
-}
-
-interface OrgaMemberCardStateLoadedContextAdmin extends OrgaMember {
-  context: 'admin';
-}
+export type OrgaMemberCardState =
+  OrgaMemberCardStateLoaded
+  | OrgaMemberCardStateLoading
+  | OrgaMemberCardStateEditing
+  | OrgaMemberCardStateUpdating
+  | OrgaMemberCardStateDeleting;
 
 interface OrgaMemberCardStateLoading {
   state: 'loading';
 }
 
-interface OrgaMemberCardStateEditing extends OrgaMember {
-  context: 'admin';
-  state: 'editing';
+interface OrgaMemberCardStateLoaded extends OrgaMember {
+  state: 'loaded';
   error?: 'last-admin';
 }
 
+interface OrgaMemberCardStateEditing extends OrgaMember {
+  state: 'editing',
+  error?: 'last-admin',
+}
+
 interface OrgaMemberCardStateUpdating extends OrgaMember {
-  context: 'admin';
-  state: 'updating';
+  state: 'updating',
 }
 
 interface OrgaMemberCardStateDeleting extends OrgaMember {
-  context: 'admin' | 'user'; // not great, should we go for "leaving" with a type that enforces isCurrentUser to be true ?
-  state: 'deleting';
+  state: 'deleting',
 }
-
 
 interface UpdateMember {
   memberId: string,
@@ -68,4 +49,9 @@ interface UpdateMember {
 interface DeleteMember {
   memberId: string,
   memberIdentity: string,
+}
+
+interface Authorisations {
+  edit: boolean;
+  delete: boolean;
 }

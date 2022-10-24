@@ -8,7 +8,7 @@ title: '💡 Smart'
 
 TODO: A RETIRER
 <cc-smart-container context='{
-    "ownerId": "orga_3547a882-d464-4c34-8168-add4b3e0c135"
+    "ownerId": "orga_927acbf6-34fe-4563-b651-28460344d2e0"
 }'>
     <cc-orga-member-list>
     </cc-orga-member-list>

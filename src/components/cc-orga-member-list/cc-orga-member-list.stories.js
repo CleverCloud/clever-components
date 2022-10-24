@@ -27,18 +27,18 @@ const baseMemberList = [{
 {
   state: 'loaded',
   id: 'member3',
-  name: 'Veryveryveryveryveryveryveryveryvery long name',
-  role: 'MANAGER',
-  email: 'very-very-very-long-email-address@very-very-very-very-very-very-very-long-example.com',
-  isMfaEnabled: true,
-},
-{
-  state: 'loaded',
-  id: 'member4',
   avatar: 'http://placekitten.com/205/205',
   role: 'ACCOUNTING',
   email: 'june.doe@example.com',
   isMfaEnabled: false,
+},
+{
+  state: 'loaded',
+  id: 'member4',
+  name: 'Veryveryveryveryveryveryveryveryvery long name',
+  role: 'MANAGER',
+  email: 'very-very-very-long-email-address@very-very-very-very-very-very-very-long-example.com',
+  isMfaEnabled: true,
 }];
 
 export default {
@@ -54,15 +54,24 @@ export const defaultStory = makeStory(conf, {
   items: [{
     members: {
       state: 'loaded',
-      value: baseMemberList,
+      value: baseMemberList.map((member) => {
+        return member.isCurrentUser
+          ? { ...member, role: 'DEVELOPER' }
+          : member;
+      }),
       identityFilter: '',
       mfaFilter: false,
     },
   }],
 });
 
-export const defaultWithInviteLongEmail = makeStory(conf, {
+export const formWithInviteLongEmail = makeStory(conf, {
   items: [{
+    authorisations: {
+      invite: true,
+      edit: true,
+      delete: true,
+    },
     inviteMemberForm: {
       state: 'idle',
       email: {
@@ -81,6 +90,11 @@ export const defaultWithInviteLongEmail = makeStory(conf, {
 
 export const errorWithInviteEmptyEmail = makeStory(conf, {
   items: [{
+    authorisations: {
+      invite: true,
+      edit: true,
+      delete: true,
+    },
     inviteMemberForm: {
       state: 'idle',
       email: {
@@ -100,6 +114,11 @@ export const errorWithInviteEmptyEmail = makeStory(conf, {
 
 export const errorWithInviteBadEmail = makeStory(conf, {
   items: [{
+    authorisations: {
+      invite: true,
+      edit: true,
+      delete: true,
+    },
     inviteMemberForm: {
       state: 'idle',
       email: {
@@ -119,6 +138,11 @@ export const errorWithInviteBadEmail = makeStory(conf, {
 
 export const errorWithInviteMemberAlreadyInsideOrganisation = makeStory(conf, {
   items: [{
+    authorisations: {
+      invite: true,
+      edit: true,
+      delete: true,
+    },
     inviteMemberForm: {
       state: 'idle',
       email: {
@@ -139,6 +163,11 @@ export const errorWithInviteMemberAlreadyInsideOrganisation = makeStory(conf, {
 
 export const waitingWithInviteMember = makeStory(conf, {
   items: [{
+    authorisations: {
+      invite: true,
+      edit: true,
+      delete: true,
+    },
     inviteMemberForm: {
       state: 'inviting',
       email: {
@@ -157,6 +186,11 @@ export const waitingWithInviteMember = makeStory(conf, {
 
 export const simulationsWithInviteMember = makeStory(conf, {
   items: [{
+    authorisations: {
+      invite: true,
+      edit: true,
+      delete: true,
+    },
     members: {
       state: 'loaded',
       value: baseMemberList,
@@ -227,7 +261,60 @@ export const dataLoaded = makeStory(conf, {
 
 export const dataLoadedWithOnlyOneMember = makeStory(conf, {
   items: [{
+    authorisations: {
+      invite: true,
+      edit: true,
+      delete: true,
+    },
     members: { state: 'loaded', value: [baseMemberList[0]] },
+  }],
+});
+
+export const dataLoadedWithNameFilter = makeStory(conf, {
+  items: [{
+    authorisations: {
+      invite: true,
+      edit: true,
+      delete: true,
+    },
+    members: {
+      state: 'loaded',
+      value: baseMemberList,
+      identityFilter: 'very',
+      mfaFilter: false,
+    },
+  }],
+});
+
+export const dataLoadedWith2faDisabledFilter = makeStory(conf, {
+  items: [{
+    authorisations: {
+      invite: true,
+      edit: true,
+      delete: true,
+    },
+    members: {
+      state: 'loaded',
+      value: baseMemberList,
+      identityFilter: '',
+      mfaFilter: true,
+    },
+  }],
+});
+
+export const dataLoadedWithNoResultFilters = makeStory(conf, {
+  items: [{
+    authorisations: {
+      invite: true,
+      edit: true,
+      delete: true,
+    },
+    members: {
+      state: 'loaded',
+      value: baseMemberList,
+      identityFilter: 'very-very',
+      mfaFilter: true,
+    },
   }],
 });
 
@@ -245,6 +332,11 @@ export const dataLoadedWithTwoFactorAuthenticationEnabledOnly = makeStory(conf, 
 
 export const errorWithDeletingLastAdmin = makeStory(conf, {
   items: [{
+    authorisations: {
+      invite: true,
+      edit: true,
+      delete: true,
+    },
     members: {
       state: 'loaded',
       value: baseMemberList.map((baseMember) => {
@@ -262,6 +354,11 @@ export const errorWithDeletingLastAdmin = makeStory(conf, {
 
 export const errorWithEditingLastAdmin = makeStory(conf, {
   items: [{
+    authorisations: {
+      invite: true,
+      edit: true,
+      delete: true,
+    },
     members: {
       state: 'loaded',
       value: baseMemberList.map((baseMember) => {
@@ -279,7 +376,13 @@ export const errorWithEditingLastAdmin = makeStory(conf, {
 });
 
 export const simulationsWithMemberList = makeStory(conf, {
-  items: [{}],
+  items: [{
+    authorisations: {
+      invite: true,
+      edit: true,
+      delete: true,
+    },
+  }],
   simulations: [
     storyWait(2000, ([component]) => {
       component.members = {
@@ -292,7 +395,7 @@ export const simulationsWithMemberList = makeStory(conf, {
 
 enhanceStoriesNames({
   defaultStory,
-  defaultWithInviteLongEmail,
+  formWithInviteLongEmail,
   errorWithInviteEmptyEmail,
   errorWithInviteBadEmail,
   errorWithInviteMemberAlreadyInsideOrganisation,
@@ -301,8 +404,11 @@ enhanceStoriesNames({
   loadingWithMemberList,
   errorWithLoadingMemberList,
   dataLoaded,
+  dataLoadedWithNameFilter,
+  dataLoadedWith2faDisabledFilter,
   dataLoadedWithOnlyOneMember,
   dataLoadedWithTwoFactorAuthenticationEnabledOnly,
+  dataLoadedWithNoResultFilters,
   errorWithDeletingLastAdmin,
   errorWithEditingLastAdmin,
   simulationsWithMemberList,
