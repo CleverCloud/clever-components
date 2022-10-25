@@ -107,11 +107,11 @@ export class CcOrgaMemberList extends LitElement {
   /**
    * @param {OrgaMemberCardState[]} members
    * @param {string|null} identityFilter
-   * @param {boolean} mfaFilter
+   * @param {boolean} mfaDisabledOnlyFilter
    * @return {OrgaMemberCardState[]}
    * @private
    */
-  _getFilteredMemberList (members, identityFilter, mfaFilter) {
+  _getFilteredMemberList (members, identityFilter, mfaDisabledOnlyFilter) {
     const filteredMemberList = members.filter((member) => {
 
       const matchIdentity = identityFilter == null
@@ -119,7 +119,7 @@ export class CcOrgaMemberList extends LitElement {
         || member.name?.toLowerCase().includes(identityFilter)
         || member.email.toLowerCase().includes(identityFilter);
 
-      const matchMfaDisabled = !mfaFilter || !member.isMfaEnabled;
+      const matchMfaDisabled = !mfaDisabledOnlyFilter || !member.isMfaEnabled;
 
       return matchIdentity && matchMfaDisabled;
     });
@@ -163,7 +163,7 @@ export class CcOrgaMemberList extends LitElement {
   _onFilterMfa () {
     this.members = {
       ...this.members,
-      mfaFilter: !this.members.mfaFilter,
+      mfaDisabledOnlyFilter: !this.members.mfaDisabledOnlyFilter,
     };
   }
 
@@ -178,10 +178,10 @@ export class CcOrgaMemberList extends LitElement {
    * Triggered when trying to edit or delete a member.
    * Checks whether the member is the last admin of the org.
    * If not, we let the event go through to the smart component.
-   * If last admin, we set the error message.
+   * If last admin, we stop the event here, and we set the error message.
    *
    * @param {event} event - the edit / delete event. We stop its propagation if it's related to the last admin.
-  */
+   */
   _checkIsLastAdmin (event) {
     const adminList = this._getAdminList();
     if (adminList.length === 1 && adminList[0].id === event.detail.memberId) {
@@ -199,7 +199,9 @@ export class CcOrgaMemberList extends LitElement {
     }
   }
 
-  /* Everytime we render a new list, remove "last-admin" error if the list contains more than 1 admin. */
+  /**
+   * Everytime we render a new list, remove "last-admin" error if the list contains more than 1 admin.
+   */
   resetLastAdminErrors () {
     const adminList = this._getAdminList();
     if (adminList.length > 1) {
@@ -246,7 +248,7 @@ export class CcOrgaMemberList extends LitElement {
         ` : ''}
 
         ${this.members.state === 'loaded' ? html`
-          ${this._renderLoaded(this.members.value, this.members.identityFilter, this.members.mfaFilter)}
+          ${this._renderLoaded(this.members.value, this.members.identityFilter, this.members.mfaDisabledOnlyFilter)}
         ` : ''}
 
         ${this.members.state === 'error' ? html`
@@ -314,15 +316,17 @@ export class CcOrgaMemberList extends LitElement {
   /**
    * @param {OrgaMemberCardState[]} memberList
    * @param {string} identityFilter
-   * @param {boolean} mfaFilter
+   * @param {boolean} mfaDisabledOnlyFilter
    * @return {TemplateResult<1>}
    * @private
    */
-  _renderLoaded (memberList, identityFilter, mfaFilter) {
+  _renderLoaded (memberList, identityFilter, mfaDisabledOnlyFilter) {
 
+    // We only display filters if the member list contains at least 2 members
     const containsAtLeast2Members = memberList.length >= 2;
+    // We only display the mfa disabled filter if the member list contains at least one member with mfa disabled
     const containsDisabledMfa = memberList.some((member) => !member.isMfaEnabled);
-    const filteredMemberList = this._getFilteredMemberList(memberList, identityFilter, mfaFilter);
+    const filteredMemberList = this._getFilteredMemberList(memberList, identityFilter, mfaDisabledOnlyFilter);
     const isFilteredMemberListEmpty = filteredMemberList.length === 0;
 
     // Everytime we render a new list, check that "last-admin" errors are still relevant and remove them if not.
@@ -338,7 +342,7 @@ export class CcOrgaMemberList extends LitElement {
           ></cc-input-text>
           ${containsDisabledMfa ? html`
             <label class="filters__mfa" for="filter-mfa">
-              <input id="filter-mfa" type="checkbox" @change=${this._onFilterMfa} .checked=${live(mfaFilter)}>
+              <input id="filter-mfa" type="checkbox" @change=${this._onFilterMfa} .checked=${live(mfaDisabledOnlyFilter)}>
               ${i18n('cc-orga-member-list.mfa-label')}
             </label>
           ` : ''}
@@ -393,6 +397,8 @@ export class CcOrgaMemberList extends LitElement {
           margin: 0.5em 0;
         }
 
+        /* 100 is a weird value but this makes the input grow as much as possible 
+        without pushing the select to a new line until the input width reaches 18em */
         .invite-form cc-input-text {
           flex: 100 1 18em;
         }
@@ -412,8 +418,6 @@ export class CcOrgaMemberList extends LitElement {
         .member-count {
           font-size: 0.8em;
           margin-left: 0.2em;
-          padding: 0.1em;
-          vertical-align: middle;
         }
 
         .member-list {
@@ -426,13 +430,13 @@ export class CcOrgaMemberList extends LitElement {
           align-items: end;
           display: flex;
           flex-wrap: wrap;
-          gap: 1em 0.5em;
+          gap: 1em 2.5em;
           justify-content: space-between;
           margin-bottom: 1em;
         }
 
         .filters cc-input-text {
-          width: min(100%, 25em);
+          flex: 1 1 25em;
         }
         
         .filters__mfa {

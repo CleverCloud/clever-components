@@ -170,7 +170,6 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
 
   /* Used by the `withResizeObserver` mixin. */
   onResize ({ width }) {
-    console.log('RESIZING', this.member.id, width);
     this._size = width;
   }
 
@@ -398,7 +397,7 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
         }
         
         .waiting {
-          opacity: 0.5;
+          opacity: 0.6;
         }
 
         p {
