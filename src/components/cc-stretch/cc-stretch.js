@@ -32,10 +32,14 @@ export class CcStretch extends LitElement {
   constructor () {
     super();
 
-    /** @type {boolean} Disables stretching by setting hidden elements to `display: none;`. May be useful if you need stretching only under specific conditions (the size of the parent component for instance). */
+    /** @type {boolean} Disables stretching by setting hidden elements to `display: none;`.
+     * May be useful if you need stretching only under specific conditions (the size of the parent component for instance).
+     */
     this.disableStretching = false;
 
-    /** @type {string|null} Sets the slotted element(s) matching this `id` to `visibility: inherit;`. This makes the element visible unless one of its parents is set to `visibility: hidden;` (in case you nest several `cc-stretch` for instance. */
+    /** @type {string|null} Sets the slotted element(s) matching this `id` to `visibility: inherit;`.
+     * This makes the element visible unless one of its parents is set to `visibility: hidden;` (in case you nest several `cc-stretch` for instance).
+     */
     this.visibleElementId = null;
   }
 
