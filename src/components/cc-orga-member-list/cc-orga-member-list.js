@@ -127,7 +127,7 @@ export class CcOrgaMemberList extends LitElement {
     return filteredMemberList;
   }
 
-  _onSubmit () {
+  _onInviteMember () {
 
     const existingEmails = this.members.value.map((member) => member.email);
     const email = this._inviteMemberEmailRef.value.value;
@@ -200,7 +200,7 @@ export class CcOrgaMemberList extends LitElement {
   }
 
   /**
-   * Everytime we render a new list, remove "last-admin" error if the list contains more than 1 admin.
+   * Everytime we render a new list, remove the "last-admin" error if the list contains more than 1 admin.
    */
   resetLastAdminErrors () {
     const adminList = this._getAdminList();
@@ -216,8 +216,8 @@ export class CcOrgaMemberList extends LitElement {
   }
 
   /**
-  * Close all other cards.
-  * */
+  * Close all cards and leave the one that fired the event
+  */
   _onToggleCardEditing ({ detail: { memberId, newState } }) {
     this.members = {
       ...this.members,
@@ -274,7 +274,7 @@ export class CcOrgaMemberList extends LitElement {
             .value=${live(this.inviteMemberForm.email.value)}
             required
             ?disabled=${isFormDisabled}
-            @cc-input-text:requestimplicitsubmit=${this._onSubmit}
+            @cc-input-text:requestimplicitsubmit=${this._onInviteMember}
             ${ref(this._inviteMemberEmailRef)}
           >
             <p slot="help">${i18n('cc-orga-member-list.invite.email-format')}</p>
@@ -292,7 +292,7 @@ export class CcOrgaMemberList extends LitElement {
           </cc-select>
 
           <div class="submit">
-            <cc-button primary ?waiting=${isFormDisabled} @cc-button:click=${this._onSubmit}>
+            <cc-button primary ?waiting=${isFormDisabled} @cc-button:click=${this._onInviteMember}>
               ${i18n('cc-orga-member-list.invite.submit')}
             </cc-button>
           </div>
@@ -423,7 +423,7 @@ export class CcOrgaMemberList extends LitElement {
         .member-list {
           display: flex;
           flex-direction: column;
-          gap: 2em;
+          gap: 1.5em;
         }
 
         .filters {

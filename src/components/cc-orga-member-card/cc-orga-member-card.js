@@ -1,7 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { live } from 'lit/directives/live.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
@@ -246,7 +245,7 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
           id="status-editing"
           label="${i18n('cc-orga-member-card.label-role')}"
           .options=${this._getRoleOptions()}
-          .value=${live(this.member.role)}
+          .value=${this.member.role}
           ?inline=${this._size > BREAKPOINT_TINY}
           ?disabled=${this.member.state === 'updating'}
           ${ref(this._roleRef)}

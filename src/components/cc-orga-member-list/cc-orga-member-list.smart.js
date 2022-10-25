@@ -12,10 +12,6 @@ import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { CcOrgaMemberList } from './cc-orga-member-list.js';
 
-const delay = (success) => new Promise((resolve, reject) => {
-  setTimeout(() => success ? resolve('response') : reject(new Error('toto')), 2000);
-});
-
 defineSmartComponent({
   selector: 'cc-orga-member-list',
   params: {
@@ -59,8 +55,6 @@ defineSmartComponent({
 
       updateMember(memberId, (member) => {
         member.state = 'updating';
-        // TODO: we need to discuss this
-        member.role = role;
       });
 
       editMember({ apiConfig, ownerId, memberId, role, memberIdentity })
@@ -145,7 +139,6 @@ function getMemberList ({ apiConfig, ownerId, signal }) {
     .then(([{ ownerId }, memberList]) => {
       return memberList
         .map(({ member, role, job }) => ({
-          // TODO cleanup empty string stuffs
           id: member.id,
           avatar: member.avatar,
           name: member.name,
@@ -156,6 +149,7 @@ function getMemberList ({ apiConfig, ownerId, signal }) {
           isCurrentUser: member.id === ownerId,
         }))
         .sort((a, b) => {
+          // currentUser first, then alphabetical order - case-insensitive
           if (a.id === ownerId) {
             return -1;
           }
@@ -170,15 +164,26 @@ function getMemberList ({ apiConfig, ownerId, signal }) {
 function postNewMember ({ apiConfig, ownerId, email, role }) {
   return addMember({ id: ownerId }, { email, role, job: null })
     /* .then(sendToApi({ apiConfig }));*/
-    .then(() => delay(false));
+    .then(() => fakeApi(true));
 }
 
 function deleteMember ({ apiConfig, ownerId, memberId }) {
   return removeMember({ id: ownerId, userId: memberId })
-    .then(sendToApi({ apiConfig }));
+    // .then(sendToApi({ apiConfig }));
+
+      .then(() => fakeApi(true));
 }
 
 function editMember ({ apiConfig, ownerId, memberId, role }) {
   return updateMember({ id: ownerId, userId: memberId }, { role })
-    .then(sendToApi({ apiConfig }));
+  // .then(sendToApi({ apiConfig }));
+
+    .then(() => fakeApi(false));
 }
+
+const fakeApi = (shouldResolve) => new Promise((resolve, reject) => {
+  setTimeout(() => shouldResolve
+    ? resolve('response')
+    : reject(new Error('Fake error from fake API'))
+  , 2000);
+});
