@@ -1,0 +1,137 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Polymer/tachometer/master/config.schema.json",
+  "root": "../",
+  "sampleSize": 5,
+  "timeout": 0,
+  "autoSampleConditions": [
+    "0%",
+    "10%"
+  ],
+  "benchmarks": [
+    {
+      "browser": {
+        "name": "chrome",
+        "headless": true,
+        "windowSize": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      "measurement": [
+        {
+          "mode": "performance",
+          "entryName": "addLogs"
+        },
+        {
+          "mode": "performance",
+          "entryName": "addLog"
+        },
+        {
+          "mode": "performance",
+          "entryName": "clear"
+        }
+      ],
+      "expand": [
+        {
+          "name": "chrome-dom",
+          "browser": {
+            "name": "chrome",
+            "headless": true,
+            "windowSize": {
+              "width": 800,
+              "height": 600
+            }
+          },
+          "url": "bench.html?count=10000&mode=dom"
+        },
+        {
+          "name": "chrome-lit-map",
+          "browser": {
+            "name": "chrome",
+            "headless": true,
+            "windowSize": {
+              "width": 800,
+              "height": 600
+            }
+          },
+          "url": "bench.html?count=10000&mode=lit-map"
+        },
+        {
+          "name": "chrome-lit-repeat",
+          "browser": {
+            "name": "chrome",
+            "headless": true,
+            "windowSize": {
+              "width": 800,
+              "height": 600
+            }
+          },
+          "url": "bench.html?count=10000&mode=lit-repeat"
+        },
+        {
+          "name": "chrome-lit-virtualizer",
+          "browser": {
+            "name": "chrome",
+            "headless": true,
+            "windowSize": {
+              "width": 800,
+              "height": 600
+            }
+          },
+          "url": "bench.html?count=10000&mode=lit-virtualizer"
+        },
+
+
+
+        {
+          "name": "firefox-dom",
+          "browser": {
+            "name": "firefox",
+            "headless": true,
+            "windowSize": {
+              "width": 800,
+              "height": 600
+            }
+          },
+          "url": "bench.html?count=10000&mode=dom"
+        },
+        {
+          "name": "firefox-lit-map",
+          "browser": {
+            "name": "firefox",
+            "headless": true,
+            "windowSize": {
+              "width": 800,
+              "height": 600
+            }
+          },
+          "url": "bench.html?count=10000&mode=lit-map"
+        },
+        {
+          "name": "firefox-lit-repeat",
+          "browser": {
+            "name": "firefox",
+            "headless": true,
+            "windowSize": {
+              "width": 800,
+              "height": 600
+            }
+          },
+          "url": "bench.html?count=10000&mode=lit-repeat"
+        },
+        {
+          "name": "firefox-lit-virtualizer",
+          "browser": {
+            "name": "firefox",
+            "headless": true,
+            "windowSize": {
+              "width": 800,
+              "height": 600
+            }
+          },
+          "url": "bench.html?count=10000&mode=lit-virtualizer"
+        }
+      ]
+    }
+  ]
+}

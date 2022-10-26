@@ -1,9 +1,10 @@
 import { hmrPlugin, presets } from '@open-wc/dev-server-hmr';
 import json from '@rollup/plugin-json';
-import { fromRollup, rollupAdapter } from '@web/dev-server-rollup';
+import { fromRollup,rollupAdapter } from '@web/dev-server-rollup';
 import { createIconAssetsPlugin } from './rollup/rollup-plugin-icon.js';
 import { storybookWdsPlugin } from './src/stories/lib/markdown.cjs';
 import { cemAnalyzerPlugin } from './wds/cem-analyzer-plugin.js';
+import { logsSseMockMiddleware } from './wds/logs-sse-mock-middleware.js';
 import { commonjsPluginWithConfig, esbuildBundlePluginWithConfig } from './wds/wds-common.js';
 
 const hmrI18nPlugin = {
@@ -130,5 +131,8 @@ export default {
     rollupAdapter(json()),
     esbuildBundlePluginWithConfig,
     commonjsPluginWithConfig,
+  ],
+  middleware: [
+    logsSseMockMiddleware,
   ],
 };

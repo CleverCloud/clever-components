@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>POC logs</title>
+  <link rel="stylesheet" href="/src/styles/default-theme.css">
+  <style>
+    html {
+      height: 100%;
+      width: 100%;
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+      display: flex;
+    }
+    body {
+      flex: 1;
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      grid-template-rows: max-content 1fr 150px;
+      grid-gap: 1em;
+    }
+
+    .left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3em;
+      padding: 0.5em;
+      min-height: 0;
+      overflow: auto;
+      border: 1px solid #ccc;
+      grid-row: 1 / span 2;
+    }
+
+    .spacer {
+      flex: 1;
+    }
+
+    .ctrl {
+      padding: 0.2em;
+      border: 1px solid #ccc;
+      display: flex;
+      gap: 2em;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .wrapper {
+      flex-direction: column;
+      display: flex;
+      align-items: stretch;
+      padding: 0.2em;
+      border: 1px solid #ccc;
+      min-height: 0;
+      min-width: 0;
+    }
+
+    .stats {
+      flex-direction: column;
+      display: flex;
+      align-items: stretch;
+      padding: 0.2em;
+      border: 1px solid #ccc;
+    }
+
+    .chart {
+      display: flex;
+      padding: 0.2em;
+      border: 1px solid #ccc;
+    }
+
+    .chartWrapper {
+      display: flex;
+      margin: 0 auto;
+      padding: 0.2em;
+      width: 99%;
+    }
+
+    cc-logs {
+      min-height: 0;
+      min-width: 0;
+      flex:1;
+    }
+
+    cc-logs-dom {
+      min-height: 0;
+      min-width: 0;
+      flex:1;
+    }
+
+    cc-toaster {
+      position: absolute;
+      top: 1em;
+      right: 1em;
+    }
+
+    hr {
+      margin-left: 0;
+      margin-right: 0;
+      border: none;
+      height: 1px;
+      background-color: #333;
+    }
+  </style>
+  <script src="index.js" type="module"></script>
+</head>
+<body>
+<div class="left">
+  <cc-button class="set-btn" data-set='clear'>❌ clear</cc-button>
+  <hr>
+  <cc-button class="set-btn" data-set='random'>🔀 random 🐌</cc-button>
+  <cc-button class="set-btn" data-set='random' data-rate='100'>🔀 random 🐇</cc-button>
+  <cc-button class="set-btn" data-set='random' data-rate='10'>🔀 random 🐎</cc-button>
+  <cc-button class="set-btn" data-set='random' data-rate='1'>🔀 random 🚀</cc-button>
+  <cc-button class="set-btn" data-set='stop'>🟥 stop</cc-button>
+  <hr>
+  <cc-button class="set-btn" data-set='add-random' data-count='1'>🔀 add 1</cc-button>
+  <cc-button class="set-btn" data-set='add-random' data-count='10'>🔀 add 10</cc-button>
+  <cc-button class="set-btn" data-set='add-random' data-count='100'>🔀 add 100</cc-button>
+  <cc-button class="set-btn" data-set='add-random' data-count='1000'>🔀 add 1,000</cc-button>
+  <cc-button class="set-btn" data-set='add-random' data-count='10000'>🔀 add 10,000</cc-button>
+  <cc-button class="set-btn" data-set='add-random' data-count='100000'>🔀 add 100,000</cc-button>
+  <div class="spacer"></div>
+<!--  <hr>-->
+</div>
+<div class="ctrl">
+
+</div>
+<div class="wrapper">
+</div>
+
+<div class="stats">
+  <div id="measure">
+
+  </div>
+  <hr>
+  <div id="count">
+
+  </div>
+</div>
+
+<div class="chart">
+  <div class="chartWrapper">
+    <canvas id="chart"></canvas>
+  </div>
+</div>
+
+<cc-toaster
+    animation="fade-and-slide"
+    position="top-right"
+    toast-default-options='{"timeout": 5000, "closeable": true, "showProgress": true}'
+></cc-toaster>
+
+</body>
+</html>

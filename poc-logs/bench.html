@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Logs bench</title>
+  <script>
+
+  </script>
+  <style>
+    html {
+      height: 100%;
+      width: 100%;
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+      display: flex;
+    }
+    body {
+      flex: 1;
+      display: flex;
+      align-items: stretch;
+    }
+
+    #logs {
+      flex: 1;
+      border: 1px solid #ccc;
+      min-height: 0;
+      min-width: 0;
+    }
+  </style>
+</head>
+<body>
+
+</body>
+
+<script type="module">
+  import '../src/components/cc-logs/cc-logs.js';
+  import '../src/components/cc-logs/cc-logs-dom.js';
+  import { randomLog, randomLogs, waitForNextRepaint } from './utils.js';
+
+  // -- parse params ------
+  const searchParams = new URLSearchParams(window.location.search);
+  const getParam = (param, fallback) => {
+    if (searchParams.has(param)) {
+      return searchParams.get(param);
+    }
+    return fallback;
+  }
+  const mode = getParam('mode', 'lit-map')
+
+  const useLit = mode.startsWith('lit-');
+  const useVirtualizer = mode === 'lit-virtualizer'
+  const useRepeat = mode === 'lit-repeat'
+  const count = parseInt(getParam('count', '100'));
+
+  console.log({
+    useLit, useVirtualizer, count
+  });
+
+
+
+  // -- init and add logs element ------
+  const $logs = useLit ? document.createElement('cc-logs') : document.createElement('cc-logs-dom');
+  $logs.setAttribute('id', 'logs');
+  $logs.withVirtualizer = useVirtualizer;
+  $logs.withRepeat = useRepeat;
+  $logs.limit = 0;
+  document.body.appendChild($logs)
+
+  // -- generate random logs ------
+
+  const logs = randomLogs(count);
+  const additionalLog = randomLog();
+
+  // -- bench ------
+  let bench;
+  try {
+    bench = await import('/bench.js');
+    console.log('benchmark is on');
+  } catch (e) {
+    console.log('benchmark is off');
+  }
+
+  bench?.start();
+
+  performance.mark('addLogs-start');
+  $logs.addLogs(logs);
+  await waitForNextRepaint();
+  performance.mark('addLogs-stop');
+  performance.measure('addLogs', 'addLogs-start', 'addLogs-stop');
+
+  performance.mark('addLog-start');
+  $logs.addLog(additionalLog);
+  await waitForNextRepaint();
+  performance.mark('addLog-stop');
+  performance.measure('addLog', 'addLog-start', 'addLog-stop');
+
+  performance.mark('clear-start');
+  $logs.clear();
+  await waitForNextRepaint();
+  performance.mark('clear-stop');
+  performance.measure('clear', 'clear-start', 'clear-stop');
+
+  bench?.stop();
+</script>
+</html>

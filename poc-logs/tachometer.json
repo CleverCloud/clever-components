@@ -1,0 +1,106 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Polymer/tachometer/master/config.schema.json",
+  "root": "../",
+  "sampleSize": 5,
+  "timeout": 0,
+  "autoSampleConditions": [
+    "0%",
+    "10%"
+  ],
+  "benchmarks": [
+    {
+      "browser": {
+        "name": "chrome",
+        "headless": true,
+        "windowSize": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      "measurement": [
+        {
+          "mode": "performance",
+          "entryName": "addLogs"
+        },
+        {
+          "mode": "performance",
+          "entryName": "addLog"
+        },
+        {
+          "mode": "performance",
+          "entryName": "clear"
+        }
+      ],
+      "expand": [
+        {
+          "name": "dom-100",
+          "url": "bench.html?count=100&mode=dom"
+        },
+        {
+          "name": "lit-map-100",
+          "url": "bench.html?count=100&mode=lit-map"
+        },
+        {
+          "name": "lit-repeat-100",
+          "url": "bench.html?count=100&mode=lit-repeat"
+        },
+        {
+          "name": "lit-virtualizer-100",
+          "url": "bench.html?count=100&mode=lit-virtualizer"
+        },
+
+        {
+          "name": "dom-1000",
+          "url": "bench.html?count=1000&mode=dom"
+        },
+        {
+          "name": "lit-map-1000",
+          "url": "bench.html?count=1000&mode=lit-map"
+        },
+        {
+          "name": "lit-repeat-1000",
+          "url": "bench.html?count=1000&mode=lit-repeat"
+        },
+        {
+          "name": "lit-virtualizer-1000",
+          "url": "bench.html?count=1000&mode=lit-virtualizer"
+        },
+
+        {
+          "name": "dom-10000",
+          "url": "bench.html?count=10000&mode=dom"
+        },
+        {
+          "name": "lit-map-10000",
+          "url": "bench.html?count=10000&mode=lit-map"
+        },
+        {
+          "name": "lit-repeat-10000",
+          "url": "bench.html?count=10000&mode=lit-repeat"
+        },
+        {
+          "name": "lit-virtualizer-10000",
+          "url": "bench.html?count=10000&mode=lit-virtualizer"
+        },
+
+
+        {
+          "name": "dom-100000",
+          "url": "bench.html?count=100000&mode=dom"
+        },
+        {
+          "name": "lit-map-100000",
+          "url": "bench.html?count=100000&mode=lit-map"
+        },
+        {
+          "name": "lit-repeat-100000",
+          "url": "bench.html?count=100000&mode=lit-repeat"
+        },
+        {
+          "name": "lit-virtualizer-100000",
+          "url": "bench.html?count=100000&mode=lit-virtualizer"
+        }
+      ]
+    }
+  ]
+}

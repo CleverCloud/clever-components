@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Benchmark results</title>
+  <style>
+    html {
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    }
+
+    canvas {
+      height: 500px;
+    }
+  </style>
+</head>
+<body>
+<h1>Benchmark results</h1>
+<section>
+  <h2>Add logs</h2>
+  <p>Add multiple logs at once</p>
+  <div>
+    <canvas id="addLogs"></canvas>
+  </div>
+  <div>
+    <canvas id="addLogs-browser"></canvas>
+  </div>
+</section>
+<section>
+  <h2>Add one log</h2>
+  <p>Add one log after multiple logs were added</p>
+  <div>
+    <canvas id="addLog"></canvas>
+  </div>
+  <div>
+    <canvas id="addLog-browser"></canvas>
+  </div>
+</section>
+<section>
+  <h2>Clear</h2>
+  <p>Clear all logs</p>
+  <div>
+    <canvas id="clear"></canvas>
+  </div>
+  <div>
+    <canvas id="clear-browser"></canvas>
+  </div>
+</section>
+</body>
+
+<script type="module">
+  import rawResultsByCount from '../results/stats.json';
+  import rawResultsByBrowser from '../results/stats-browsers.json';
+  import Chart from 'chart.js/auto';
+  import ChartDataLabels from 'chartjs-plugin-datalabels';
+  import { round2 } from './utils.js';
+  Chart.register(ChartDataLabels);
+
+  const reduce = (rawResult) => {
+    return Object.fromEntries(rawResult.benchmarks.map((r) => {
+      return [
+        r.name,
+        r.samples.reduce((p, c) => p + c, 0) / r.samples.length,
+      ];
+    }))
+  }
+
+  const byCount = reduce(rawResultsByCount);
+  const byBrowser = reduce(rawResultsByBrowser);
+  const colors = ['#003f5c', '#7a5195', '#ef5675', '#ffa600'];
+
+  const drawChart = (elementId, name, series, categories, stats) => {
+    const data = (d) => {
+      return stats[`${d} [${name}]`];
+    }
+
+    const dataset = (serie, color) => {
+      const ds = {
+        label: serie,
+        data: categories.map(c => data(`${serie}-${c}`)),
+        borderWidth: 2,
+        fill: true,
+        borderColor: color,
+        backgroundColor: color,
+      };
+      return ds
+    }
+
+    new Chart(document.getElementById(elementId), {
+      type: 'bar',
+      data: {
+        labels: categories.map(c => typeof c === 'number' ? new Intl.NumberFormat().format(c) : c),
+        datasets: series.map((s, i) => dataset(s, colors[i])),
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        minBarLength: 3,
+        plugins: {
+          datalabels: {
+            formatter: round2,
+            align: 'top',
+            anchor: 'end',
+            font: {
+              weight: 'bold'
+            }
+          },
+        }
+      }
+    });
+  }
+
+  const countSeries = ['lit-map', 'lit-repeat', 'lit-virtualizer', 'dom'];
+  const countCategories = [100, 1000, 10000, 100000];
+  const browserSeries = ['chrome', 'firefox'];
+  const browserCategories = ['lit-map', 'lit-repeat', 'lit-virtualizer', 'dom'];
+
+  drawChart('addLogs', 'addLogs', countSeries, countCategories, byCount);
+  drawChart('addLog', 'addLog', countSeries, countCategories, byCount);
+  drawChart('clear', 'clear', countSeries, countCategories, byCount);
+
+  drawChart('addLogs-browser', 'addLogs', browserSeries, browserCategories, byBrowser);
+  drawChart('addLog-browser', 'addLog', browserSeries, browserCategories, byBrowser);
+  drawChart('clear-browser', 'clear', browserSeries, browserCategories, byBrowser);
+</script>
+</html>
