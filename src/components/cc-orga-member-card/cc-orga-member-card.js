@@ -211,6 +211,7 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
   */
   _renderStatusArea () {
 
+    const _refRole_ = this._roleRef;
     const isEditing = this.member.state === 'editing' || this.member.state === 'updating';
     const waiting = this.member.state === 'updating' || this.member.state === 'deleting';
     const hasError = this.member.error === 'last-admin';
@@ -250,7 +251,7 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
           .value=${this.member.role}
           ?inline=${this._size > BREAKPOINT_TINY}
           ?disabled=${this.member.state === 'updating'}
-          ${ref(this._roleRef)}
+          ${ref(_refRole_)}
         >
         </cc-select>
       </cc-stretch>
@@ -271,6 +272,7 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
   */
   _renderActionBtns () {
 
+    const _refBtn__ = this._removeButtonRef;
     const isBtnImgOnly = (this._size > BREAKPOINT_MEDIUM);
     const waiting = this.member.state === 'updating' || this.member.state === 'deleting';
     const isEditing = this.member.state === 'editing' || this.member.state === 'updating';
@@ -314,7 +316,7 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
               ?waiting=${waiting}
               accessible-name=${this._getSecondBtnAccessibleName()}
               @cc-button:click=${isEditing ? this._onUpdateMember : this._onDeleteMember}
-              ${ref(this._removeButtonRef)}
+              ${ref(_refBtn__)}
             >
               <cc-stretch visible-element-id=${isEditing ? 'btn-content-validate' : removeOrLeaveSpanId}>
                 <span id="btn-content-leave">${i18n('cc-orga-member-card.btn.leave.visible-text')}</span>
