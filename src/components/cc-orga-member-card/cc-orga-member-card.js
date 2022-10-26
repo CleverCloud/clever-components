@@ -147,6 +147,7 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
     dispatchCustomEvent(this, 'delete', {
       memberId: this.member.id,
       memberIdentity: this.member.name ?? this.member.email,
+      isCurrentUser: this.member.isCurrentUser,
     });
   }
 
@@ -156,6 +157,7 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
       memberId: this.member.id,
       role: this._roleRef.value.value,
       memberIdentity: this.member.name ?? this.member.email,
+      isCurrentUser: this.member.isCurrentUser,
     });
   }
 

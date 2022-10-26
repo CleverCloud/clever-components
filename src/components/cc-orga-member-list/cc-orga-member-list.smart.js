@@ -22,6 +22,16 @@ defineSmartComponent({
 
     const { apiConfig, ownerId } = context;
 
+    function refreshAuthorisations (role) {
+      const hasAdminRights = role === 'ADMIN' || role === 'MANAGER';
+
+      component.authorisations = {
+        invite: hasAdminRights,
+        edit: hasAdminRights,
+        delete: hasAdminRights,
+      };
+    }
+
     function updateMember (memberId, callback) {
       updateComponent('members', (members) => {
         const member = members.value.find((member) => member.id === memberId);
@@ -51,18 +61,24 @@ defineSmartComponent({
         });
     });
 
-    onEvent('cc-orga-member-card:update', ({ memberId, role, memberIdentity }) => {
+    onEvent('cc-orga-member-card:update', ({ memberId, role, memberIdentity, isCurrentUser }) => {
 
       updateMember(memberId, (member) => {
         member.state = 'updating';
+        member.role = role;
       });
 
-      editMember({ apiConfig, ownerId, memberId, role, memberIdentity })
+      editMember({ apiConfig, ownerId, memberId, role, memberIdentity, isCurrentUser })
         .then(() => {
           notifySuccess(component, i18n('cc-orga-member-list.edit-success', { memberIdentity }));
+
           updateMember(memberId, (member) => {
             member.state = 'loaded';
             member.role = role;
+
+            if (member.isCurrentUser) {
+              refreshAuthorisations(role);
+            }
           });
         })
         .catch((error) => {
@@ -70,6 +86,7 @@ defineSmartComponent({
             notifyError(component, i18n('cc-orga-member-list.edit-error-unauthorised', { memberIdentity }));
           }
           else {
+            console.error(error);
             notifyError(component, i18n('cc-orga-member-list.edit-error', { memberIdentity }));
           }
 
@@ -108,14 +125,8 @@ defineSmartComponent({
     getMemberList({ apiConfig, ownerId, signal })
       .then((memberList) => {
         const currentUser = memberList.find((member) => member.isCurrentUser);
-        const hasAdminRights = currentUser.role === 'ADMIN' || currentUser.role === 'MANAGER';
 
-        component.authorisations = {
-          invite: hasAdminRights,
-          edit: hasAdminRights,
-          delete: hasAdminRights,
-        };
-
+        refreshAuthorisations(currentUser.role);
         updateComponent('members', {
           state: 'loaded',
           value: memberList.map((member) => ({ state: 'loaded', ...member })),
@@ -169,16 +180,16 @@ function postNewMember ({ apiConfig, ownerId, email, role }) {
 
 function deleteMember ({ apiConfig, ownerId, memberId }) {
   return removeMember({ id: ownerId, userId: memberId })
-    // .then(sendToApi({ apiConfig }));
+  // .then(sendToApi({ apiConfig }));
 
-      .then(() => fakeApi(true));
+    .then(() => fakeApi(true));
 }
 
 function editMember ({ apiConfig, ownerId, memberId, role }) {
   return updateMember({ id: ownerId, userId: memberId }, { role })
   // .then(sendToApi({ apiConfig }));
 
-    .then(() => fakeApi(false));
+    .then(() => fakeApi(true));
 }
 
 const fakeApi = (shouldResolve) => new Promise((resolve, reject) => {

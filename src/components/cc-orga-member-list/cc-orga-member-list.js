@@ -82,8 +82,11 @@ export class CcOrgaMemberList extends LitElement {
     this.members = { state: 'loading' };
 
     new LostFocusController(this, 'cc-orga-member-card', ({ suggestedElement }) => {
-      if (suggestedElement == null) {
-        this._noResultMessageRef.value?.focus();
+      if (suggestedElement == null && this._noResultMessageRef.value !== undefined) {
+        this._noResultMessageRef.value.focus();
+      }
+      else if (suggestedElement == null) {
+        this._memberListHeadingRef.value.focus();
       }
       else {
         suggestedElement.focusDeleteBtn();
@@ -92,6 +95,7 @@ export class CcOrgaMemberList extends LitElement {
 
     this._inviteMemberEmailRef = createRef();
     this._inviteMemberRoleRef = createRef();
+    this._memberListHeadingRef = createRef();
     this._noResultMessageRef = createRef();
   }
 
@@ -153,6 +157,13 @@ export class CcOrgaMemberList extends LitElement {
     }
   }
 
+  /**
+   * This modifies the members prop, triggering a new render.
+   * Everytime there is a new render, the list is filtered based on the filter values from the member prop.
+   *
+   * @param {Event}
+   * @private
+   */
   _onFilterIdentity ({ detail: value }) {
     this.members = {
       ...this.members,
@@ -160,7 +171,13 @@ export class CcOrgaMemberList extends LitElement {
     };
   }
 
-  _onFilterMfa () {
+  /**
+   * This modifies the members prop, triggering a new render.
+   * Everytime there is a new render, the list is filtered based on the filter values from the member prop.
+   *
+   * @private
+   */
+  _onFilterMfaDisabledOnly () {
     this.members = {
       ...this.members,
       mfaDisabledOnlyFilter: !this.members.mfaDisabledOnlyFilter,
@@ -202,7 +219,7 @@ export class CcOrgaMemberList extends LitElement {
   /**
    * Everytime we render a new list, remove the "last-admin" error if the list contains more than 1 admin.
    */
-  resetLastAdminErrors () {
+  _resetLastAdminErrors () {
     const adminList = this._getAdminList();
     if (adminList.length > 1) {
       this.members = {
@@ -230,13 +247,14 @@ export class CcOrgaMemberList extends LitElement {
   }
 
   render () {
+
     return html`
 
       ${this.authorisations.invite ? this._renderInviteForm() : ''}
 
       <cc-block>
 
-        <div slot="title">
+        <div slot="title" ${ref(this._memberListHeadingRef)} tabindex="-1">
           ${i18n('cc-orga-member-list.heading')}
           ${this.members.state === 'loaded' ? html`
             <cc-badge class="member-count" weight="dimmed" intent="neutral" circle>${this.members.value.length}</cc-badge>
@@ -330,7 +348,7 @@ export class CcOrgaMemberList extends LitElement {
     const isFilteredMemberListEmpty = filteredMemberList.length === 0;
 
     // Everytime we render a new list, check that "last-admin" errors are still relevant and remove them if not.
-    this.resetLastAdminErrors();
+    this._resetLastAdminErrors();
 
     return html`
       ${containsAtLeast2Members ? html`
@@ -342,7 +360,7 @@ export class CcOrgaMemberList extends LitElement {
           ></cc-input-text>
           ${containsDisabledMfa ? html`
             <label class="filters__mfa" for="filter-mfa">
-              <input id="filter-mfa" type="checkbox" @change=${this._onFilterMfa} .checked=${live(mfaDisabledOnlyFilter)}>
+              <input id="filter-mfa" type="checkbox" @change=${this._onFilterMfaDisabledOnly} .checked=${live(mfaDisabledOnlyFilter)}>
               ${i18n('cc-orga-member-list.mfa-label')}
             </label>
           ` : ''}
