@@ -6,6 +6,10 @@ title: Changelog
 
 ## Unreleased (????-??-??)
 
+...
+
+## 9.0.1 (2022-10-28)
+
 * `<cc-button>`: fix layout bug that occurred on Safari with the `<cc-header-app>` component. 
 
 ## 9.0.0 (2022-07-19)
