@@ -1,6 +1,7 @@
 :root {
   --cc-ff-monospace: "SourceCodePro", "monaco", monospace;
-    
+
+  /* All custom properties are sorted alphabetically within each region. */
   /*region Color choices*/
   /* color choices - these should not be referenced inside components (use decisions below instead)
     tool used for grey shades: https://mdigi.tools/color-shades/#333333 (10 or 11 steps)    
