@@ -60,10 +60,13 @@ export class CcSelect extends LitElement {
     /** @type {Option[]|[]} Sets the list of options displayed inside the select element. */
     this.options = [];
 
-    /** @type {string|null} Sets a disabled option with empty value. This option will always be the first of the list. It can be selected by default by setting `value=''`. */
+    /** @type {string|null} Sets a disabled option with empty value.
+     * This option will always be the first of the list. It can be selected by default by setting `value=''`.
+     * This option is only selectable by the user if the field is optional (`required=false`).
+     */
     this.placeholder = null;
 
-    /** @type {boolean} Sets the "required" text inside the label */
+    /** @type {boolean} Sets the "required" text inside the label. If a placeholder is set, it won't be selectable by the user, it may only be selected as a default value. */
     this.required = false;
 
     /** @type {string|null} Sets the selected value of the element. This prop should always be set. It should always match one of the option values. */
@@ -110,7 +113,7 @@ export class CcSelect extends LitElement {
           .value=${this.value}
         >
           ${this.placeholder != null && this.placeholder !== '' ? html`
-            <option value="" disabled>${this.placeholder}</option>
+            <option value="" ?disabled=${this.required}>${this.placeholder}</option>
           ` : ''}
           ${this.options.map((option) => html`
             <option value=${option.value}>${option.label}</option>
