@@ -1,6 +1,6 @@
 import './cc-select.js';
 import { allFormControlsStory } from '../../stories/all-form-controls.js';
-import { makeStory } from '../../stories/lib/make-story.js';
+import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const baseOptions = [
@@ -203,6 +203,41 @@ export const longContentWihFixedWidth = makeStory(
   },
 );
 
+export const simulation = makeStory(conf, {
+  items: [{
+    label: 'Favourite artist',
+    placeholder: '-- Select an artist --',
+    value: '',
+    options: baseOptions,
+  }],
+  simulations: [
+    storyWait(0, ([component]) => {
+      component.innerHTML = `
+        <p slot="help">No error slot, no focus</p>
+      `;
+    }),
+    storyWait(2000, ([component]) => {
+      component.innerHTML = `
+        <p slot="help">With error, no focus</p>
+        <p slot="error">This is an error message</p>
+      `;
+    }),
+    storyWait(2000, ([component]) => {
+      component.innerHTML = `
+        <p slot="help">With error, with focus</p>
+        <p slot="error">This is an error message</p>
+      `;
+      component.focus();
+    }),
+    storyWait(2000, ([component]) => {
+      component.innerHTML = `
+        <p slot="help">No error slot, with focus</p>
+      `;
+      component.focus();
+    }),
+  ],
+});
+
 export const allFormControls = allFormControlsStory;
 
 enhanceStoriesNames({
@@ -216,5 +251,6 @@ enhanceStoriesNames({
   inlineWithRequired,
   inlineWithErrorAndHelpMessages,
   longContentWihFixedWidth,
+  simulation,
   allFormControls,
 });

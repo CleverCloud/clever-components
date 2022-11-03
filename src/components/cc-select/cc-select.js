@@ -34,9 +34,7 @@ export class CcSelect extends LitElement {
       placeholder: { type: String },
       required: { type: Boolean },
       value: { type: String },
-      _uniqueErrorId: { type: String, state: true },
-      _uniqueHelpId: { type: String, state: true },
-      _uniqueInputId: { type: String, state: true },
+      _hasError: { type: Boolean, state: true },
     };
   }
 
@@ -71,6 +69,8 @@ export class CcSelect extends LitElement {
 
     /** @type {string|null} Sets the selected value of the element. This prop should always be set. It should always match one of the option values. */
     this.value = null;
+
+    this._hasError = false;
   }
 
   updated (changedProperties) {
@@ -96,6 +96,10 @@ export class CcSelect extends LitElement {
     dispatchCustomEvent(this, 'input', this.value);
   }
 
+  _onErrorSlotChanged (event) {
+    this._hasError = event.target.assignedNodes()?.length > 0;
+  }
+
   render () {
     return html`
       <label for="input-id">
@@ -107,6 +111,7 @@ export class CcSelect extends LitElement {
       <div class="selectWrapper ${classMap({ disabled: this.disabled })}">
         <select
           id="input-id"
+          class="${classMap({ error: this._hasError })}"
           ?disabled=${this.disabled}
           aria-describedby="help-id error-id"
           @input=${this._onSelectInput}
@@ -126,7 +131,7 @@ export class CcSelect extends LitElement {
       </div>
 
       <div class="error-container" id="error-id">
-        <slot name="error"></slot>
+        <slot name="error" @slotchange="${this._onErrorSlotChanged}"></slot>
       </div>
     `;
   }
@@ -234,6 +239,14 @@ export class CcSelect extends LitElement {
           border-color: #777;
           box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
           outline: 0;
+        }
+        
+        select.error {
+          border-color: var(--cc-color-border-danger) !important;
+        }
+        
+        select.error:focus {
+          box-shadow: 0 0 0 .2em var(--cc-color-border-danger-weak);
         }
 
         .selectWrapper {
