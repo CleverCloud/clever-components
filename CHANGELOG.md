@@ -89,6 +89,7 @@ title: Changelog
 * Update eslint `no-new` rule from "error" to "off".
 * `<cc-tcp-redirection-form>`: rework state, types and smart for TCP redirection components.
 * Refactor type files from the new file structure.
+* Update our CEM support-typedef-jsdoc plugin with some tests and new features.
 
 ## 9.0.0 (2022-07-19)
 
