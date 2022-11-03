@@ -21,8 +21,8 @@ const SKELETON_BACKUPS = {
 };
 
 /**
- * @typedef {import('./cc-addon-backups.types.js').BackupDetails} BackupDetails
  * @typedef {import('./cc-addon-backups.types.js').Backup} Backup
+ * @typedef {import('./cc-addon-backups.types.js').BackupDetails} BackupDetails
  * @typedef {import('./cc-addon-backups.types.js').OverlayType} OverlayType
  */
 

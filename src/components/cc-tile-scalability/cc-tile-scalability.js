@@ -15,7 +15,7 @@ const SKELETON_SCALABILITY = {
 };
 
 /**
- * @typedef {import('./cc-tile-scalability.types.js').Scalability} Scalability
+ * @typedef {import('../common.types.js').Scalability} Scalability
  */
 
 /**

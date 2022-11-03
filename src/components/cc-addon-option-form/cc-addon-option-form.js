@@ -7,7 +7,7 @@ import { i18n } from '../../lib/i18n.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 
 /**
- * @typedef {import('./cc-addon-option-form.types.js').Option} Option
+ * @typedef {import('../common.types.js').AddonOption} AddonOption
  */
 
 /**
@@ -15,7 +15,7 @@ import { linkStyles } from '../../templates/cc-link/cc-link.js';
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<Object>} cc-addon-option-form:submit - Fires when the form is submitted.
+ * @event {CustomEvent<object>} cc-addon-option-form:submit - Fires when the form is submitted.
  *
  * @slot description - The description of the add-on and available options.
  */
@@ -31,13 +31,13 @@ export class CcAddonOptionForm extends LitElement {
   constructor () {
     super();
 
-    /** @type {Option[]} List of Option object to render. */
+    /** @type {AddonOption[]} List of Option object to render. */
     this.options = null;
 
     /** @type {string} Title of the whole options form. */
     this.title = null;
 
-    /** @type {Object} */
+    /** @type {object} */
     this._optionsStates = {};
   }
 

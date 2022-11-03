@@ -9,10 +9,6 @@ import { i18n } from '../../lib/i18n.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 
 /**
- * @typedef {import('./cc-env-var-create.types.js').Variable} Variable
- */
-
-/**
  * A small form to create a new environment variable with validations on the name.
  *
  * ## Details

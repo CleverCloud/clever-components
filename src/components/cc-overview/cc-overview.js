@@ -2,7 +2,7 @@ import { css, html, LitElement } from 'lit';
 import { withResizeObserver } from '../../mixins/with-resize-observer/with-resize-observer.js';
 
 /**
- * @typedef {import('./cc-overview.types.js').ModeType} ModeType
+ * @typedef {import('./cc-overview.types.js').OverviewModeType} OverviewModeType
  */
 
 /**
@@ -36,7 +36,7 @@ export class CcOverview extends withResizeObserver(LitElement) {
   constructor () {
     super();
 
-    /** @type {ModeType|null} Sets the mode of the layout for the overview */
+    /** @type {OverviewModeType|null} Sets the mode of the layout for the overview */
     this.mode = null;
 
     /** @protected */

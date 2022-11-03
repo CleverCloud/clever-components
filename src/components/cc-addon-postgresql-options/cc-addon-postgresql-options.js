@@ -6,8 +6,7 @@ import { i18n } from '../../lib/i18n.js';
 import { ccAddonEncryptionAtRestOption } from '../../templates/cc-addon-encryption-at-rest-option/cc-addon-encryption-at-rest-option.js';
 
 /**
- * @typedef {import('./cc-addon-postgresql-options.types.js').Option} Option
- * @typedef {import('./cc-addon-postgresql-options.types.js').GenericOptions} GenericOptions
+ * @typedef {import('../common.types.js').AddonOption} AddonOption
  */
 
 /**
@@ -15,7 +14,7 @@ import { ccAddonEncryptionAtRestOption } from '../../templates/cc-addon-encrypti
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<GenericOptions>} cc-addon-postgresql-options:submit - Fires when the form is submitted.
+ * @event {CustomEvent<AddonOption>} cc-addon-postgresql-options:submit - Fires when the form is submitted.
  */
 export class CcAddonPostgresqlOptions extends LitElement {
 
@@ -28,7 +27,7 @@ export class CcAddonPostgresqlOptions extends LitElement {
   constructor () {
     super();
 
-    /** @type {Option[]} List of options for this add-on. */
+    /** @type {AddonOption[]} List of options for this add-on. */
     this.options = [];
   }
 

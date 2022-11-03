@@ -8,7 +8,7 @@ import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 
 /**
- * @typedef {import('./cc-addon-admin.types.js').Addon} Addon
+ * @typedef {import('../common.types.js').Addon} Addon
  * @typedef {import('./cc-addon-admin.types.js').ErrorType} ErrorType
  */
 
@@ -19,7 +19,6 @@ import { i18n } from '../../lib/i18n.js';
  *
  * * When addon is nullish, a skeleton screen UI pattern is displayed (loading hint).
  *
-
  *
  * @cssdisplay block
  *
@@ -101,12 +100,10 @@ export class CcAddonAdmin extends LitElement {
     const loadingError = (this.error === 'loading');
 
     return html`
-
       <cc-block>
         <div slot="title">${i18n('cc-addon-admin.admin')}</div>
 
         ${!loadingError ? html`
-
           <cc-block-section>
             <div slot="title">${i18n('cc-addon-admin.heading.name')}</div>
             <div slot="info"></div>

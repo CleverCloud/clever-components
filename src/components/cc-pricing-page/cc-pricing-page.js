@@ -8,7 +8,7 @@ import { dispatchCustomEvent } from '../../lib/events.js';
 const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
 
 /**
- * @typedef {import('./cc-pricing-page.types.js').Currency} Currency
+ * @typedef {import('../common.types.js').Currency} Currency
  * @typedef {import('../common.types.js').Zone} Zone
  */
 

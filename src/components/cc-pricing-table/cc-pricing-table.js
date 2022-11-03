@@ -34,11 +34,11 @@ const DEFAULT_TEMPORALITY = [
 ];
 
 /**
- * @typedef {import('./cc-pricing-table.types.js').ActionType} ActionType
- * @typedef {import('./cc-pricing-table.types.js').Currency} Currency
- * @typedef {import('./cc-pricing-table.types.js').Feature} Feature
- * @typedef {import('./cc-pricing-table.types.js').Plan} Plan
- * @typedef {import('./cc-pricing-table.types.js').Temporality} Temporality
+ * @typedef {import('../common.types.js').ActionType} ActionType
+ * @typedef {import('../common.types.js').Currency} Currency
+ * @typedef {import('../common.types.js').Feature} Feature
+ * @typedef {import('../common.types.js').Plan} Plan
+ * @typedef {import('../common.types.js').Temporality} Temporality
  */
 
 /**

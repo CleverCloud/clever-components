@@ -22,7 +22,7 @@ const SKELETON_ADDON = {
 const SKELETON_VERSION = '????????';
 
 /**
- * @typedef {import('./cc-header-addon.types.js').Addon} Addon
+ * @typedef {import('../common.types.js').Addon} Addon
  * @typedef {import('../common.types.js').Zone} Zone
  */
 

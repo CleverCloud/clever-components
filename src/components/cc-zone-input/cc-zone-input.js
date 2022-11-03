@@ -13,7 +13,7 @@ import { withResizeObserver } from '../../mixins/with-resize-observer/with-resiz
 const SKELETON_ZONES = new Array(6).fill(null);
 
 /**
- * @typedef {import('../maps/types.js').Point} Point
+ * @typedef {import('../common.types.js').Point} Point
  * @typedef {import('../common.types.js').Zone} Zone
  */
 

@@ -12,7 +12,7 @@ const warningSvg = new URL('../../assets/alert-line.svg', import.meta.url).href;
 const dangerSvg = new URL('../../assets/spam-2-line.svg', import.meta.url).href;
 
 /**
- * @typedef {import('./cc-toast.types.js').NotificationIntent} NotificationIntent
+ * @typedef {import('../common.types.js').NotificationIntent} NotificationIntent
  */
 
 /**

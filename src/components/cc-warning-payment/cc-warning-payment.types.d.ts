@@ -1,7 +1,7 @@
-export type PaymentWarningModeType = "home" | "overview" | "billing";
+type PaymentWarningModeType = "home" | "overview" | "billing";
 
-export interface PaymentMethodError {
-  type: number,
-  orgaName?: string,
-  orgaBillingLink?: string,
+interface PaymentMethodError {
+  type: number;
+  orgaName?: string;
+  orgaBillingLink?: string;
 }

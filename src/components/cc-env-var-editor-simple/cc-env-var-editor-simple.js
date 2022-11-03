@@ -12,7 +12,7 @@ const SKELETON_VARIABLES = [
 ];
 
 /**
- * @typedef {import('./cc-env-var-editor-simple.types.js').Variable} Variable
+ * @typedef {import('../common.types.js').Variable} Variable
  */
 
 /**

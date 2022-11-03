@@ -76,10 +76,10 @@ title: Changelog
 * Upgrade from `@web/test-runner@0.13.4` to `@web/test-runner@0.14.0`.
 * Upgrade from `@web/test-runner-mocha@0.7.2` to `@web/test-runner-mocha@0.7.5`.
 * Upgrade from `@custom-elements-manifest/analyzer@0.4.1` to `@custom-elements-manifest/analyzer@0.6.4`.
-* Fix Custom Element Manifest generation web dev server plugin: disable caching
-* Add JSDoc based typechecking with TypeScript's CLI (just utils.js for now)
-* Rollback the smart-manager to the old low level API and move the observable API to a different module
-* Introduce a new defineSmartComponent function
+* Fix Custom Element Manifest generation web dev server plugin: disable caching.
+* Add JSDoc based typechecking with TypeScript's CLI (just utils.js for now).
+* Rollback the smart-manager to the old low level API and move the observable API to a different module.
+* Introduce a new defineSmartComponent function.
 * Add `FocusLostController`, a Lit Reactive Controller that helps manage focus loss.
 * Add new eslint plugin `eslint-plugin-lit-a11y` to prevent accessibility issues.
 * Add new dependency `@open-wc/testing` to allow Web Test Runner to run tests for accessibility issues.
@@ -87,7 +87,8 @@ title: Changelog
 * Add new helpers to extract stories and run accessibility test on them.
 * Add new test files in most of the component folders. These test files only contain accessibility tests for the moment.
 * Update eslint `no-new` rule from "error" to "off".
-* `<cc-tcp-redirection-form>`: rework state, types and smart for TCP redirection components
+* `<cc-tcp-redirection-form>`: rework state, types and smart for TCP redirection components.
+* Refactor type files from the new file structure.
 
 ## 9.0.0 (2022-07-19)
 

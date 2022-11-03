@@ -9,8 +9,7 @@ const KIBANA_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-kib
 const APM_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-apm.svg';
 
 /**
- * @typedef {import('./cc-addon-elasticsearch-options.types.js').Option} Option
- * @typedef {import('./cc-addon-elasticsearch-options.types.js').ElasticOptions} ElasticOptions
+ * @typedef {import('../common.types.js').AddonOption} AddonOption
  */
 
 /**
@@ -18,7 +17,7 @@ const APM_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-apm.sv
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<ElasticOptions>} cc-addon-elasticsearch-options:submit - Fires when the form is submitted.
+ * @event {CustomEvent<AddonOption>} cc-addon-elasticsearch-options:submit - Fires when the form is submitted.
  */
 export class CcAddonElasticsearchOptions extends LitElement {
 
@@ -31,7 +30,7 @@ export class CcAddonElasticsearchOptions extends LitElement {
   constructor () {
     super();
 
-    /** @type {Option[]} List of options for this add-on. */
+    /** @type {AddonOption[]} List of options for this add-on. */
     this.options = [];
   }
 
