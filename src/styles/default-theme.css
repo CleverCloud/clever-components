@@ -195,4 +195,13 @@
   */
   --cc-margin-top-btn-horizontal-form: 1.6em;
   /*endregion*/
+
+  /*region Miscellaneous*/
+  /**
+   * An opacity value that passes a11y tests.
+   * Usage: when an interactive item is disable, its opacity can be updated to visually enhanced the disabled state.
+   * For instance: when updating/deleting an item and waiting for the server callback.
+   */
+  --cc-opacity-when-disabled: 0.65;
+  /*endregion*/
 }
