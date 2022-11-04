@@ -94,6 +94,10 @@ title: Changelog
 * Refactor type files from the new file structure.
 * Update our CEM support-typedef-jsdoc plugin with some tests and new features.
 
+## 9.0.1 (2022-10-28)
+
+* `<cc-button>`: fix layout bug that occurred on Safari with the `<cc-header-app>` component.
+
 ## 9.0.0 (2022-07-19)
 
 ### ⚠️ BREAKING CHANGES
