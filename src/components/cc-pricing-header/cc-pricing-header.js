@@ -20,8 +20,7 @@ const SKELETON_ZONES = [];
 const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
 
 /**
- * @typedef {import('./cc-pricing-header.types.js').Currency} Currency
- * @typedef {import('./cc-pricing-header.types.js').Plan} Plan
+ * @typedef {import('../common.types.js').Currency} Currency
  * @typedef {import('../common.types.js').Zone} Zone
  */
 

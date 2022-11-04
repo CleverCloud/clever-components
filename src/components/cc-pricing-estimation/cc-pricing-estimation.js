@@ -16,8 +16,8 @@ const CONTACT_URL = 'https://www.clever-cloud.com/en/contact-sales';
 const SIGN_UP_URL = 'https://api.clever-cloud.com/v2/sessions/signup';
 
 /**
- * @typedef {import('./cc-pricing-estimation.types.js').Currency} Currency
- * @typedef {import('./cc-pricing-estimation.types.js').Plan} Plan
+ * @typedef {import('../common.types.js').Currency} Currency
+ * @typedef {import('../common.types.js').Plan} Plan
  */
 
 /**

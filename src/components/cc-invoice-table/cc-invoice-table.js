@@ -25,7 +25,7 @@ const SKELETON_INVOICES = [
 ];
 
 /**
- * @typedef {import('./cc-invoice-table.types.js').Invoice} Invoice
+ * @typedef {import('../common.types.js').Invoice} Invoice
  */
 
 /**

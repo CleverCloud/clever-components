@@ -6,15 +6,14 @@ import { i18n } from '../../lib/i18n.js';
 import { ccAddonEncryptionAtRestOption } from '../../templates/cc-addon-encryption-at-rest-option/cc-addon-encryption-at-rest-option.js';
 
 /**
- * @typedef {import('./cc-addon-mongodb-options.types.js').Option} Option
- * @typedef {import('./cc-addon-mongodb-options.types.js').GenericOptions} GenericOptions
+ * @typedef {import('../common.types.js').AddonOption} AddonOption
  */
 /**
  * A component that displays the available options of a MongoDB add-on.
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<GenericOptions>} cc-addon-mongodb-options:submit - Fires when the form is submitted.
+ * @event {CustomEvent<AddonOption>} cc-addon-mongodb-options:submit - Fires when the form is submitted.
  */
 export class CcAddonMongodbOptions extends LitElement {
 
@@ -27,8 +26,9 @@ export class CcAddonMongodbOptions extends LitElement {
   constructor () {
     super();
 
-    /** @type {Option[]} List of options for this add-on. */
+    /** @type {AddonOption[]} List of options for this add-on. */
     this.options = [];
+
   }
 
   _onFormOptionsSubmit ({ detail }) {

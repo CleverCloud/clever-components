@@ -1,7 +1,7 @@
 interface TcpRedirection {
-  namespace: string,
-  isPrivate: boolean,
-  sourcePort?: number,
+  namespace: string;
+  isPrivate: boolean;
+  sourcePort?: number;
 }
 
 export type TcpRedirectionState = TcpRedirectionStateLoading | TcpRedirectionStateLoaded | TcpRedirectionStateWaiting;

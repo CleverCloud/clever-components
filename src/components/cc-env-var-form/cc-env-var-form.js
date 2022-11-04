@@ -15,7 +15,8 @@ import { linkStyles } from '../../templates/cc-link/cc-link.js';
 
 /**
  * @typedef {import('./cc-env-var-form.types.js').ContextType} ContextType
- * @typedef {import('./cc-env-var-form.types.js').Variable} Variable
+ * @typedef {import('../common.types.js').ParserOptions} ParserOptions
+ * @typedef {import('../common.types.js').Variable} Variable
  */
 
 /**

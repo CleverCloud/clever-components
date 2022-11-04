@@ -6,10 +6,9 @@ import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 
 /**
- * @typedef {import('./cc-logsmap.types.js').HeatmapPoint} HeatmapPoint
- * @typedef {import('./cc-logsmap.types.js').MapModeType} MapModeType
- * @typedef {import('./cc-logsmap.types.js').Point} Point
- * @typedef {import('./cc-logsmap.types.js').PointsOptions} PointsOptions
+ * @typedef {import('../common.types.js').HeatmapPoint} HeatmapPoint
+ * @typedef {import('../common.types.js').MapModeType} MapModeType
+ * @typedef {import('../common.types.js').Point} Point
  */
 
 /**
@@ -47,7 +46,7 @@ export class CcLogsMap extends LitElement {
   constructor () {
     super();
 
-    /** @type {String} Sets the name of the app for which we display the logs (don't use it with `orgaName`). */
+    /** @type {string} Sets the name of the app for which we display the logs (don't use it with `orgaName`). */
     this.appName = null;
 
     // Centered on Paris by default

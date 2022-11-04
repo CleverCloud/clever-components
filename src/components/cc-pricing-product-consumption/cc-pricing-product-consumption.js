@@ -44,11 +44,9 @@ const SKELETON_INTERVALS = [
 ];
 
 /**
- * @typedef {import('./cc-pricing-product-consumption.types.js').ActionType} ActionType
- * @typedef {import('./cc-pricing-product-consumption.types.js').Interval} Interval
- * @typedef {import('./cc-pricing-product-consumption.types.js').Currency} Currency
- * @typedef {import('./cc-pricing-product-consumption.types.js').Plan} Plan
- * @typedef {import('./cc-pricing-product-consumption.types.js').Section} Section
+ * @typedef {import('../common.types.js').ActionType} ActionType
+ * @typedef {import('../common.types.js').Currency} Currency
+ * @typedef {import('../common.types.js').PricingSection} PricingSection
  */
 
 /**
@@ -101,7 +99,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
     /** @type {string|null} Sets the name of the product */
     this.name = null;
 
-    /** @type {Section[]|null} Sets the different sections with their `type` and `intervals` */
+    /** @type {PricingSection[]|null} Sets the different sections with their `type` and `intervals` */
     this.sections = null;
 
     this._simulator = new PricingConsumptionSimulator();

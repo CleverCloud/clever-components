@@ -6,7 +6,7 @@ import { i18n } from '../../lib/i18n.js';
 
 /**
  * @typedef {import('./cc-env-var-linked-services.types.js').EnvType} EnvType
- * @typedef {import('./cc-env-var-linked-services.types.js').Service} Service
+ * @typedef {import('../common.types.js').Service} Service
  */
 
 /**

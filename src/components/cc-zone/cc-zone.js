@@ -18,7 +18,7 @@ const SKELETON_ZONE = {
 const PRIVATE_ZONE = 'scope:private';
 
 /**
- * @typedef {import('./cc-zone.types.js').ModeType} ModeType
+ * @typedef {import('./cc-zone.types.js').ZoneModeType} ZoneModeType
  * @typedef {import('../common.types.js').Zone} Zone
  */
 
@@ -51,7 +51,7 @@ export class CcZone extends LitElement {
   constructor () {
     super();
 
-    /** @type {ModeType} Sets the mode of the component. */
+    /** @type {ZoneModeType} Sets the mode of the component. */
     this.mode = 'default';
 
     /** @type {Zone|null} Sets the different details of the zone. */

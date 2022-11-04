@@ -14,9 +14,9 @@ const SKELETON_VARIABLES = [
 ];
 
 /**
- * @typedef {import('./cc-env-var-editor-expert.types.js').ParseError} ParseError
- * @typedef {import('./cc-env-var-editor-expert.types.js').ParserOptions} ParserOptions
- * @typedef {import('./cc-env-var-editor-expert.types.js').Variable} Variable
+ * @typedef {import('../common.types.js').ParseError} ParseError
+ * @typedef {import('../common.types.js').ParserOptions} ParserOptions
+ * @typedef {import('../common.types.js').Variable} Variable
  */
 
 /**

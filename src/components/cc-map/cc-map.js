@@ -10,9 +10,8 @@ import { withResizeObserver } from '../../mixins/with-resize-observer/with-resiz
 import { leafletStyles } from '../../styles/leaflet.js';
 
 /**
- * @typedef {import('./cc-map.types.js').HeatmapPoint} HeatmapPoint
- * @typedef {import('./cc-map.types.js').MapModeType} MapModeType
- * @typedef {import('./cc-map.types.js').Point} Point
+ * @typedef {import('../common.types.js').HeatmapPoint} HeatmapPoint
+ * @typedef {import('../common.types.js').MapModeType} MapModeType
  */
 
 /**

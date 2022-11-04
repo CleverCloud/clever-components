@@ -6,8 +6,7 @@ import { i18n } from '../../lib/i18n.js';
 import { ccAddonEncryptionAtRestOption } from '../../templates/cc-addon-encryption-at-rest-option/cc-addon-encryption-at-rest-option.js';
 
 /**
- * @typedef {import('./cc-addon-mysql-options.types.js').Option} Option
- * @typedef {import('./cc-addon-mysql-options.types.js').GenericOptions} GenericOptions
+ * @typedef {import('../common.types.js').AddonOption} AddonOption
  */
 
 /**
@@ -28,7 +27,7 @@ export class CcAddonMysqlOptions extends LitElement {
   constructor () {
     super();
 
-    /** @type {Option[]} List of options for this add-on. */
+    /** @type {AddonOption[]} List of options for this add-on. */
     this.options = [];
   }
 

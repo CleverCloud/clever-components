@@ -27,13 +27,13 @@ export class CcBadge extends LitElement {
   constructor () {
     super();
 
-    /** @type {Boolean} Sets the badge to a bubble style. Should only be used to display 1 or 2 digits figures. */
+    /** @type {boolean} Sets the badge to a bubble style. Should only be used to display 1 or 2 digits figures. */
     this.circle = false;
 
-    /** @type {String|null} Sets the `alt` attribute value on the `<img>` tag. Only use if the image conveys additional info compared to surrounding text. */
+    /** @type {string|null} Sets the `alt` attribute value on the `<img>` tag. Only use if the image conveys additional info compared to surrounding text. */
     this.iconAlt = null;
 
-    /** @type {String|null} Sets the icon displayed on the left of the text inside the badge. */
+    /** @type {string|null} Sets the icon displayed on the left of the text inside the badge. */
     this.iconSrc = null;
 
     /** @type {BadgeIntent} Sets the accent color used for the badge. */

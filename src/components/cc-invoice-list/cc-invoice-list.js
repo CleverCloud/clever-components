@@ -23,7 +23,7 @@ function maxFromStrings (strings) {
 }
 
 /**
- * @typedef {import('./cc-invoice-list.types.js').Invoice} Invoice
+ * @typedef {import('../common.types.js').Invoice} Invoice
  */
 
 /**

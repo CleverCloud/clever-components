@@ -23,7 +23,7 @@ const SKELETON_INSTANCES = {
 };
 
 /**
- * @typedef {import('./cc-tile-instances.types.js').InstancesState} InstancesState
+ * @typedef {import('../common.types.js').InstancesState} InstancesState
  */
 
 /**
