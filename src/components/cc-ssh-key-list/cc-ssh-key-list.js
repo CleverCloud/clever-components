@@ -12,6 +12,7 @@ import { LostFocusController } from '../../controllers/lost-focus-controller.js'
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { i18n } from '../../lib/i18n.js';
+import { sortBy } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 
 const deleteSvg = new URL('../../assets/trash-red.svg', import.meta.url).href;
@@ -288,11 +289,12 @@ export class CcSshKeyList extends LitElement {
    * @param {SshKeyState[]} keys
    */
   _renderKeyList (type, keys) {
+    const sortedKeys = [...keys].sort(sortBy('name'));
     const skeleton = (type === 'skeleton');
     return html`
       <div class="key-list">
 
-        ${repeat(keys, (key) => key.name, (key) => {
+        ${repeat(sortedKeys, (key) => key.name, (key) => {
           const name = key.name;
           const isDisabled = !skeleton && key.state !== 'idle';
           const classes = {
