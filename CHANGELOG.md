@@ -4,7 +4,7 @@ title: Changelog
 ---
 # Clever Components changelog
 
-## Unreleased (????-??-??)
+## 10.0.0 (2022-11-07)
 
 ### ⚠️ BREAKING CHANGES
 
@@ -40,7 +40,7 @@ title: Changelog
   * only disable the placeholder option if the component is in required mode.
   * add red border and redish focus ring when error slot is used.
 * `<cc-toggle>`: remove the unique name generation technique and rely on Shadow DOM isolation instead.
-* `accessibility Styles`: add new `accessibilityStyles` containing a `visually-hidden` class to hide content visually but not from assistive technologies.
+* `accessibility styles`: add new `accessibilityStyles` containing a `visually-hidden` class to hide content visually but not from assistive technologies.
 * `<cc-env-var-create>`: add visually hidden label for all input fields so that these fields can be identified by assistive technologies.
 * `<cc-env-var-editor-expert>`: add visually hidden label for the `<textarea>` so that it can be identified by assistive technologies.
 * `<cc-env-var-editor-json>`: add visually hidden label for the `<textarea>` so that it can be identified by assistive technologies.
