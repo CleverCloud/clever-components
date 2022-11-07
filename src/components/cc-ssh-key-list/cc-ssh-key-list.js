@@ -6,7 +6,6 @@ import '../cc-block/cc-block.js';
 import '../cc-block-section/cc-block-section.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { live } from 'lit/directives/live.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
@@ -244,7 +243,7 @@ export class CcSshKeyList extends LitElement {
         <cc-input-text
           ?disabled=${this.createSshKeyForm.state === 'creating'}
           @cc-input-text:requestimplicitsubmit=${this._onCreateKey}
-          .value="${live(this.createSshKeyForm.name?.value)}"
+          .value="${this.createSshKeyForm.name?.value}"
           class="create-form__name"
           label=${i18n('cc-ssh-key-list.add.name')}
           required
@@ -257,7 +256,7 @@ export class CcSshKeyList extends LitElement {
         <cc-input-text
           ?disabled=${this.createSshKeyForm.state === 'creating'}
           @cc-input-text:requestimplicitsubmit=${this._onCreateKey}
-          .value="${live(this.createSshKeyForm.publicKey?.value)}"
+          .value="${this.createSshKeyForm.publicKey?.value}"
           class="create-form__public-key"
           label=${i18n('cc-ssh-key-list.add.public-key')}
           required
