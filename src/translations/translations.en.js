@@ -593,7 +593,7 @@ export const translations = {
   'cc-ssh-key-list.error.private-key': `Invalid format: did you enter your private key instead of your public key?`,
   'cc-ssh-key-list.error.required.name': `Enter a name for your SSH key`,
   'cc-ssh-key-list.error.required.public-key': `Enter the public key value`,
-  'cc-ssh-key-list.github.empty': `There are no SSH keys available for import from your Github account.`,
+  'cc-ssh-key-list.github.empty': `There are no SSH keys available for import from your GitHub account.`,
   'cc-ssh-key-list.github.import': `Import`,
   'cc-ssh-key-list.github.import.a11y': ({ name }) => `Import the GitHub SSH key - ${name}`,
   'cc-ssh-key-list.github.info': () => sanitize`<p>These are the SSH keys from your GitHub account. You can import them to associate them to your Clever Cloud account.</p>`,
