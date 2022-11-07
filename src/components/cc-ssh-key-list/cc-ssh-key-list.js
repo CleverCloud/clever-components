@@ -6,13 +6,13 @@ import '../cc-block/cc-block.js';
 import '../cc-block-section/cc-block-section.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { live } from 'lit/directives/live.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { i18n } from '../../lib/i18n.js';
+import { sortBy } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 
 const deleteSvg = new URL('../../assets/trash-red.svg', import.meta.url).href;
@@ -244,7 +244,7 @@ export class CcSshKeyList extends LitElement {
         <cc-input-text
           ?disabled=${this.createSshKeyForm.state === 'creating'}
           @cc-input-text:requestimplicitsubmit=${this._onCreateKey}
-          .value="${live(this.createSshKeyForm.name?.value)}"
+          .value="${this.createSshKeyForm.name?.value}"
           class="create-form__name"
           label=${i18n('cc-ssh-key-list.add.name')}
           required
@@ -257,7 +257,7 @@ export class CcSshKeyList extends LitElement {
         <cc-input-text
           ?disabled=${this.createSshKeyForm.state === 'creating'}
           @cc-input-text:requestimplicitsubmit=${this._onCreateKey}
-          .value="${live(this.createSshKeyForm.publicKey?.value)}"
+          .value="${this.createSshKeyForm.publicKey?.value}"
           class="create-form__public-key"
           label=${i18n('cc-ssh-key-list.add.public-key')}
           required
@@ -289,11 +289,12 @@ export class CcSshKeyList extends LitElement {
    * @param {SshKeyState[]} keys
    */
   _renderKeyList (type, keys) {
+    const sortedKeys = [...keys].sort(sortBy('name'));
     const skeleton = (type === 'skeleton');
     return html`
       <div class="key-list">
 
-        ${repeat(keys, (key) => key.name, (key) => {
+        ${repeat(sortedKeys, (key) => key.name, (key) => {
           const name = key.name;
           const isDisabled = !skeleton && key.state !== 'idle';
           const classes = {
