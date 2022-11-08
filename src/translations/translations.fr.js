@@ -264,7 +264,7 @@ export const translations = {
   'cc-env-var-editor-json.errors.unknown': `Erreur inconnue`,
   'cc-env-var-editor-json.example': () => sanitize`Format : <code>{ "name": "NOM_DE_LA_VARIABLE", "value": "valeur de la variable" }</code> <br> Tableau d'objets respectant le format ci-dessus, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#format">en savoir plus</a>.`,
   'cc-env-var-editor-json.info.java-prop': ({ name }) => sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-formats">plus de détails</a>`,
-  'cc-env-var-editor-json.label': () => sanitize`Edition des variables. Format : <code>{ "name": "NOM_DE_LA_VARIABLE", "value": "valeur de la variable" }</code> <br> Tableau d'objets respectant le format ci-dessus,`,
+  'cc-env-var-editor-json.label': `Edition des variables. Tableau d'objets respectant le format : { "name": "NOM_DE_LA_VARIABLE", "value": "valeur de la variable" }.`,
   //#endregion
   //#region cc-env-var-editor-simple
   'cc-env-var-editor-simple.empty-data': `Il n'y a pas de variable.`,
