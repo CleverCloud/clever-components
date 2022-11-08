@@ -239,7 +239,7 @@ export const translations = {
   'cc-env-var-editor-expert.errors.unknown': `Unknown Error`,
   'cc-env-var-editor-expert.example': () => sanitize`Format: <code>VARIABLE_NAME="variable value"</code> <br> Every variable must be separated by a line break, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#format">learn more</a>.`,
   'cc-env-var-editor-expert.info.java-prop': ({ name }) => sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-formats">more details</a>`,
-  'cc-env-var-editor-expert.label': () => sanitize`Variable editing. Format: <code>VARIABLE_NAME="variable value"</code>. Every variable must be separated by a line break.`,
+  'cc-env-var-editor-expert.label': `Variable editing. Format: VARIABLE_NAME="variable value". Every variable must be separated by a line break.`,
   //#endregion
   //#region cc-env-var-editor-json
   'cc-env-var-editor-json.errors.duplicated-name': ({ name }) => sanitize`be careful, the name <code>${name}</code> is already defined`,
