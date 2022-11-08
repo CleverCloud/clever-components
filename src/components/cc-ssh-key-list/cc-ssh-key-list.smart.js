@@ -51,9 +51,11 @@ defineSmartComponent({
 
       addKey({ apiConfig, key: { name, key: publicKey } })
         .then(() => {
-          updateComponent('createSshKeyForm', CcSshKeyList.CREATE_FORM_INIT_STATE);
           // re-fetching keys because we need fingerprint info sent from API to properly display newly created keys
-          refreshList().then(() => notifySuccess(component, i18n('cc-ssh-key-list.success.add', { name })));
+          refreshList().then(() => {
+            notifySuccess(component, i18n('cc-ssh-key-list.success.add', { name }));
+            updateComponent('createSshKeyForm', CcSshKeyList.CREATE_FORM_INIT_STATE);
+          });
         })
         .catch((error) => {
           console.error(error);
