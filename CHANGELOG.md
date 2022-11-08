@@ -4,6 +4,15 @@ title: Changelog
 ---
 # Clever Components changelog
 
+## [10.0.1](https://github.com/CleverCloud/clever-components/compare/10.0.0...10.0.1) (2022-11-08)
+
+
+### Bug Fixes
+
+* **cc-env-var-editor-expert:** set proper value for the editor hidden label ([e63c282](https://github.com/CleverCloud/clever-components/commit/e63c2820ada376501b8b9c10bec045200c15261a))
+* **cc-env-var-editor-json:** set proper value for the editor hidden label ([eddad2f](https://github.com/CleverCloud/clever-components/commit/eddad2f423a59b70eed44c983da5cf567aaec2bb))
+* **cc-ssh-key-list:** improve UX when adding a new key ([befe7aa](https://github.com/CleverCloud/clever-components/commit/befe7aa20f73eacf5fa6d618db6e28da8ed5c0eb))
+
 ## 10.0.0 (2022-11-07)
 
 ### ⚠️ BREAKING CHANGES
