@@ -27,7 +27,7 @@ Publishing the release is not done automatically.
 You must get the fresh released code:
 
 ```sh
-VERSION=${version} git fetch origin "$VERSION" && git checkout "$VERSION" && git reset --hard "$VERSION"
+VERSION=${version} && git fetch --tags origin "$VERSION" && git checkout "$VERSION" && git reset --hard "$VERSION"
 ```
 
 Publishing on npmjs.com (stable):
