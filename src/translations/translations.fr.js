@@ -522,6 +522,28 @@ export const translations = {
   'cc-notice.icon-alt.success': `Succès`,
   'cc-notice.icon-alt.warning': `Avertissement`,
   //#endregion
+  //#region cc-orga-member-card
+  'cc-orga-member-card.btn.cancel.accessible-name': ({ memberIdentity }) => `Annuler la modification du membre - ${memberIdentity}`,
+  'cc-orga-member-card.btn.cancel.visible-text': `Annuler`,
+  'cc-orga-member-card.btn.delete.accessible-name': ({ memberIdentity }) => `Supprimer le membre - ${memberIdentity}`,
+  'cc-orga-member-card.btn.delete.visible-text': `Supprimer`,
+  'cc-orga-member-card.btn.edit.accessible-name': ({ memberIdentity }) => `Modifier le membre - ${memberIdentity}`,
+  'cc-orga-member-card.btn.edit.visible-text': `Modifier`,
+  'cc-orga-member-card.btn.leave.accessible-name': `Quitter l'organisation`,
+  'cc-orga-member-card.btn.leave.visible-text': `Quitter`,
+  'cc-orga-member-card.btn.validate.accessible-name': ({ memberIdentity }) => `Valider la modification du membre - ${memberIdentity}`,
+  'cc-orga-member-card.btn.validate.visible-text': `Valider`,
+  'cc-orga-member-card.current-user': `Votre compte`,
+  'cc-orga-member-card.error.last-admin.heading': `Vous êtes le dernier admin de l'organisation`,
+  'cc-orga-member-card.error.last-admin.text': `Veuillez désigner un nouvel admin avant de pouvoir modifier votre rôle ou quitter l'organisation.`,
+  'cc-orga-member-card.mfa-disabled': `2FA désactivée`,
+  'cc-orga-member-card.mfa-enabled': `2FA activée`,
+  'cc-orga-member-card.role.accounting': `Comptable`,
+  'cc-orga-member-card.role.admin': `Admin`,
+  'cc-orga-member-card.role.developer': `Développeur`,
+  'cc-orga-member-card.role.label': `Rôle`,
+  'cc-orga-member-card.role.manager': `Manager`,
+  //#endregion
   //#region cc-payment-warning
   'cc-payment-warning.billing-page-link': ({ orgaName, orgaBillingLink }) => sanitize`<a href="${orgaBillingLink}" aria-label="Se rendre sur la page de facturation - ${orgaName}">Se rendre sur la page de facturation</a>`,
   'cc-payment-warning.generic.default-payment-method-is-expired': ({ orgaName }) => sanitize`<strong>${orgaName}</strong> a un moyen de paiement enregistré mais il est expiré.`,

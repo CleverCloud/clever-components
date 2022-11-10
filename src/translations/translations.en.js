@@ -509,6 +509,28 @@ export const translations = {
   'cc-notice.icon-alt.success': `Success`,
   'cc-notice.icon-alt.warning': `Warning`,
   //#endregion
+  //#region cc-orga-member-card
+  'cc-orga-member-card.btn.cancel.accessible-name': ({ memberIdentity }) => `Cancel editing member - ${memberIdentity}`,
+  'cc-orga-member-card.btn.cancel.visible-text': `Cancel`,
+  'cc-orga-member-card.btn.delete.accessible-name': ({ memberIdentity }) => `Remove the member - ${memberIdentity}`,
+  'cc-orga-member-card.btn.delete.visible-text': `Remove`,
+  'cc-orga-member-card.btn.edit.accessible-name': ({ memberIdentity }) => `Edit the member - ${memberIdentity}`,
+  'cc-orga-member-card.btn.edit.visible-text': `Edit`,
+  'cc-orga-member-card.btn.leave.accessible-name': `Leave the organisation`,
+  'cc-orga-member-card.btn.leave.visible-text': `Leave`,
+  'cc-orga-member-card.btn.validate.accessible-name': ({ memberIdentity }) => `Validate the edit of the member - ${memberIdentity}`,
+  'cc-orga-member-card.btn.validate.visible-text': `Validate`,
+  'cc-orga-member-card.current-user': `Your account`,
+  'cc-orga-member-card.error.last-admin.heading': `You are the last admin of the organisation`,
+  'cc-orga-member-card.error.last-admin.text': `Please add a new admin before you can edit your role or leave the organisation.`,
+  'cc-orga-member-card.mfa-disabled': `2FA disabled`,
+  'cc-orga-member-card.mfa-enabled': `2FA enabled`,
+  'cc-orga-member-card.role.accounting': `Accountant`,
+  'cc-orga-member-card.role.admin': `Admin`,
+  'cc-orga-member-card.role.developer': `Developer`,
+  'cc-orga-member-card.role.label': `Role`,
+  'cc-orga-member-card.role.manager': `Manager`,
+  //#endregion
   //#region cc-payment-warning
   'cc-payment-warning.billing-page-link': ({ orgaName, orgaBillingLink }) => sanitize`<a href="${orgaBillingLink}" aria-label="Go to the billing page - ${orgaName}">Go to the billing page</a>`,
   'cc-payment-warning.generic.default-payment-method-is-expired': ({ orgaName }) => sanitize`<strong>${orgaName}</strong> has a default payment method but it has expired.`,
