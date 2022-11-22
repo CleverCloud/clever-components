@@ -11,6 +11,8 @@ import { skeletonStyles } from '../../styles/skeleton.js';
  * A component to highlight a small chunk of text.
  *
  * @cssdisplay inline-block
+ *
+ * @cssprop {JustifyContent} --cc-badge-justify-content - Specify how the content should be distributed / positioned horizontally within the grid (Default: `center`. Possible values: https://developer.mozilla.org/en-US/docs/Web/CSS/justify-items).
  */
 export class CcBadge extends LitElement {
   static get properties () {
@@ -82,8 +84,9 @@ export class CcBadge extends LitElement {
         }
 
         .cc-badge {
-          display: inline-flex;
+          display: flex;
           align-items: center;
+          justify-content: var(--cc-badge-justify-content, center);
           padding: 0.2em 0.8em;
           border-radius: 1em;
           font-size: 0.8em;
