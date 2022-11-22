@@ -101,7 +101,7 @@ export class CcBadge extends LitElement {
         }
 
         .skeleton.outlined {
-          box-shadow: inset 0 0 0 0.06em #777 !important;
+          border: 0.06em solid #777 !important;
         }
 
         .skeleton img {
@@ -119,19 +119,21 @@ export class CcBadge extends LitElement {
         }
 
         .dimmed {
+          border: 0.06em solid var(--accent-color, #ccc);
           background-color: var(--accent-color, #ccc);
         }
 
         .strong {
+          border: 0.06em solid var(--accent-color, #777);
           background-color: var(--accent-color, #777);
           color: var(--cc-color-text-inverted, #fff);
         }
 
         .outlined {
-          background-color: transparent;
           /* roughly 1px. We want the border to scale with the font size so that outlined
           badges still stand out as they should when font-size is increased. */
-          box-shadow: inset 0 0 0 0.06em var(--accent-color, #777);
+          border: 0.06em solid var(--accent-color, #777);
+          background-color: transparent;
           color: var(--accent-color, #777);
         }
 
