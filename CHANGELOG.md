@@ -4,6 +4,19 @@ title: Changelog
 ---
 # Clever Components changelog
 
+## [10.1.0](https://github.com/CleverCloud/clever-components/compare/10.0.1...10.1.0) (2022-11-24)
+
+
+### Features
+
+* **cc-button:** display waiting state when in link mode ([f9cbe9d](https://github.com/CleverCloud/clever-components/commit/f9cbe9d57425d23687be7670594e03fda733acd8)), closes [#628](https://github.com/CleverCloud/clever-components/issues/628)
+* **cc-email:** init component ([fb118e3](https://github.com/CleverCloud/clever-components/commit/fb118e399772b5690ae387c79985d7980024315e)), closes [#435](https://github.com/CleverCloud/clever-components/issues/435)
+
+
+### Bug Fixes
+
+* match typecheck tsconfig with typescript dependency version ([1d1e306](https://github.com/CleverCloud/clever-components/commit/1d1e306f8249d28f5d30743059dfcabd19cb8ba1))
+
 ## [10.0.1](https://github.com/CleverCloud/clever-components/compare/10.0.0...10.0.1) (2022-11-08)
 
 
