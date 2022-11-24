@@ -221,6 +221,38 @@ export const translations = {
   'cc-elasticsearch-info.link.kibana': `Open Kibana`,
   'cc-elasticsearch-info.text': `This add-on is part of the Elastic Stack offer. You can find the documentation and linked services right below.`,
   //#endregion
+  //#region cc-email-list
+  'cc-email-list.loading.error': `Something went wrong while loading email addresses.`,
+  'cc-email-list.primary.action.resend-confirmation-email': `Resend a confirmation email`,
+  'cc-email-list.primary.action.resend-confirmation-email.error': ({ address }) => sanitize`Something went wrong while sending the confirmation email to <strong>${address}</strong>.`,
+  'cc-email-list.primary.action.resend-confirmation-email.success.message': ({ address }) => sanitize`To complete the process, you must click on the link that has been sent to you by email at <strong>${address}</strong>.`,
+  'cc-email-list.primary.action.resend-confirmation-email.success.title': `A confirmation email has been sent`,
+  'cc-email-list.primary.description': `This is the address used to create your account. All notifications are sent to this address.`,
+  'cc-email-list.primary.email.unverified': `Not verified`,
+  'cc-email-list.primary.email.verified': `Verified`,
+  'cc-email-list.primary.title': `Primary email address`,
+  'cc-email-list.secondary.action.add': `Add email address`,
+  'cc-email-list.secondary.action.add.error': ({ address }) => sanitize`Something went wrong while adding the secondary email address <strong>${address}</strong>.`,
+  'cc-email-list.secondary.action.add.success.message': ({ address }) => sanitize`To complete the process you must confirm your registration by clicking on the link that was sent to you by email at <strong>${address}</strong>.`,
+  'cc-email-list.secondary.action.add.success.title': `Secondary email address addition has been taken into account`,
+  'cc-email-list.secondary.action.delete.accessible-name': ({ address }) => `Delete - ${address}`,
+  'cc-email-list.secondary.action.delete.error': ({ address }) => sanitize`Something went wrong while deleting secondary email address <strong>${address}</strong>.`,
+  'cc-email-list.secondary.action.delete.name': `Delete`,
+  'cc-email-list.secondary.action.delete.success': ({ address }) => sanitize`Secondary email address <strong>${address}</strong> deleted successfully.`,
+  'cc-email-list.secondary.action.mark-as-primary.accessible-name': ({ address }) => `Mark as primary - ${address}`,
+  'cc-email-list.secondary.action.mark-as-primary.error': ({ address }) => sanitize`Something went wrong while marking secondary email address <strong>${address}</strong> as primary.`,
+  'cc-email-list.secondary.action.mark-as-primary.name': `Mark as primary`,
+  'cc-email-list.secondary.action.mark-as-primary.success': ({ address }) => sanitize`Secondary email address <strong>${address}</strong> has been successfully marked as primary.`,
+  'cc-email-list.secondary.address-input.error.already-defined': `This email address already belongs to you`,
+  'cc-email-list.secondary.address-input.error.empty': `You must enter an email address`,
+  'cc-email-list.secondary.address-input.error.invalid': () => sanitize`Invalid email address format.<br>Example: john.doe@example.com.`,
+  'cc-email-list.secondary.address-input.error.used': `This email address does not belong to you`,
+  'cc-email-list.secondary.address-input.format': `name@domain.com`,
+  'cc-email-list.secondary.address-input.label': `Email address`,
+  'cc-email-list.secondary.description': `Unlike the primary email address, no notifications are sent to these addresses. You can be invited inside an organisation with any of your secondary email addresses.`,
+  'cc-email-list.secondary.title': `Secondary email addresses`,
+  'cc-email-list.title': `Email addresses`,
+  //#endregion
   //#region cc-env-var-create
   'cc-env-var-create.create-button': `Add`,
   'cc-env-var-create.errors.already-defined-name': ({ name }) => sanitize`Name <code>${name}</code> is already defined`,
@@ -368,7 +400,7 @@ export const translations = {
   'cc-header-app.user-action-msg.deploy-will-begin': `A new deployment is about to begin...`,
   //#endregion
   //#region cc-header-orga
-  'cc-header-orga.error': `Something went wrong while loading organization info.`,
+  'cc-header-orga.error': `Something went wrong while loading organisation info.`,
   'cc-header-orga.hotline': `Hotline:`,
   //#endregion
   //#region cc-heptapod-info

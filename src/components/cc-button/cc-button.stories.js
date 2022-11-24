@@ -113,7 +113,9 @@ Here you can see this combination in various situations:
     { innerHTML: 'Waiting', image: warningSvg, waiting: true },
     { innerHTML: 'Delay', image: warningSvg, delay: 3 },
     { innerHTML: 'Link', image: warningSvg, link: true },
+    { innerHTML: 'Waiting link', image: warningSvg, link: true, waiting: true },
     { innerHTML: 'Skeleton', image: warningSvg, skeleton: true },
+    { innerHTML: 'Skeleton link', image: warningSvg, link: true, skeleton: true },
   ],
 });
 

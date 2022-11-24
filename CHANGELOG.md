@@ -32,6 +32,7 @@ title: Changelog
   * fix skeleton mode
   * add visually hidden label for `addon name` and `addon tags` input fields so that these fields can be identified by assistive technologies.
 * `<cc-env-var-form>`: fix toggling to JSON mode while in skeleton state.
+* `<cc-button>`: display progress bar during waiting state when button is in link mode.
 * `<cc-badge>`: add skeleton mode
 * `<cc-input-text>`: 
   * remove the unique id generation technique and rely on Shadow DOM isolation instead.
@@ -73,6 +74,7 @@ title: Changelog
   * `<cc-action-dispatcher>`
   * `<cc-ssh-key-list>`
   * `<cc-stretch>`
+  * `<cc-email-list>`
 
 ### For devs
 
