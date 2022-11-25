@@ -1,4 +1,8 @@
 import './cc-button.js';
+import {
+  iconRemixCloseLine as iconClose,
+  iconRemixErrorWarningFill as iconError,
+} from '../../assets/cc-remix.icons.js';
 import { allFormControlsStory } from '../../stories/all-form-controls.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
@@ -119,6 +123,19 @@ Here you can see this combination in various situations:
   ],
 });
 
+export const icon = makeStory(conf, {
+  css: `cc-button { --cc-icon-size: 20px; }`,
+  items: [
+    { innerHTML: 'Basic', icon: iconError, primary: true },
+    { innerHTML: 'Outlined', icon: iconError, outlined: true },
+    { innerHTML: 'Disabled', icon: iconError, disabled: true },
+    { innerHTML: 'Waiting', icon: iconError, waiting: true },
+    { innerHTML: 'Delay', icon: iconError, delay: 3 },
+    { innerHTML: 'Link', icon: iconError, link: true },
+    { innerHTML: 'Skeleton', icon: iconError, skeleton: true },
+  ],
+});
+
 export const hideText = makeStory(conf, {
   docs: `
 If you need a button with just an image:
@@ -128,11 +145,13 @@ If you need a button with just an image:
 * add the \`hide-text\` attribute to hide the text
   * The slotted text is used to set \`title\` and \`aria-label\` attributes on the inner \`<button>\`
 
-As you can see here, \`hide-text\` can only be used if there is an \`image\`:
+As you can see here, \`hide-text\` can only be used if there is an \`image\` or an \`icon\`:
   `,
+  css: `cc-button { --cc-icon-size: 20px; }`,
   items: [
     { image: closeSvg, innerHTML: 'Close foo', hideText: true },
     { image: infoSvg, innerHTML: 'Info bar', hideText: true },
+    { icon: iconError, innerHTML: 'Info bar', hideText: true },
     { innerHTML: 'hide-text but no image', hideText: true },
   ],
 });
@@ -163,11 +182,13 @@ If you need a button with just an image in a circle form:
   * The slotted text is used to set \`title\` and \`aria-label\` attributes on the inner \`<button>\`
 * add the \`circle\` attribute to get the circle form
 
-As you can see here, \`circle\` can only be used if there is an \`image\` and in \`hide-text\` :
+As you can see here, \`circle\` can only be used if there is an \`image\` or an \`icon\` and in \`hide-text\` :
   `,
+  css: `cc-button { --cc-icon-size: 24px; }`,
   items: [
     { image: closeSvg, innerHTML: 'Close foo', hideText: true, circle: true },
     { image: infoSvg, innerHTML: 'Info bar', hideText: true, circle: true },
+    { icon: iconClose, innerHTML: 'Close foo', hideText: true, circle: true },
     { innerHTML: 'hide-text but no image', hideText: true, circle: true },
     { image: closeSvg, innerHTML: 'image but no hide-text', circle: true },
   ],
@@ -194,6 +215,7 @@ enhanceStoriesNames({
   delayAndOutlined,
   delayAndDisabled,
   image,
+  icon,
   hideText,
   accessibleName,
   skeleton,
