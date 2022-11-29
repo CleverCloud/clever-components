@@ -8,7 +8,7 @@ export function validateEmailAddress (address) {
   if (address == null || address === '') {
     return 'empty';
   }
-  if (!address.match(/\S+@\S+\.\S+/gm)) {
+  if (!address.match(/^\S+@\S+\.\S+$/gm)) {
     return 'invalid';
   }
 
