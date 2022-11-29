@@ -2,8 +2,7 @@ import { ERROR_TYPES } from '@clevercloud/client/esm/utils/payment.js';
 import { css, html, LitElement } from 'lit';
 import { i18n } from '../../lib/i18n.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
-
-const warningSvg = new URL('../../assets/warning.svg', import.meta.url).href;
+import '../cc-notice/cc-notice.js';
 
 /**
  * @typedef {import('./cc-warning-payment.types.js').PaymentMethodError} PaymentMethodError
@@ -13,7 +12,7 @@ const warningSvg = new URL('../../assets/warning.svg', import.meta.url).href;
 /**
  * A component to display a warning block with details about payment methods errors.
  *
- * @cssdisplay grid
+ * @cssdisplay block
  */
 export class CcWarningPayment extends LitElement {
 
@@ -34,22 +33,64 @@ export class CcWarningPayment extends LitElement {
     this.mode = 'billing';
   }
 
+  /**
+   * @param {PaymentMethodError} error
+   */
+  _getOrgaError ({ type }) {
+    if (type === ERROR_TYPES.NO_PAYMENT_METHOD) {
+      return {
+        title: i18n('cc-payment-warning.orga.no-payment-method.title'),
+        error: i18n('cc-payment-warning.orga.no-payment-method'),
+      };
+    }
+    if (type === ERROR_TYPES.NO_DEFAULT_PAYMENT_METHOD) {
+      return {
+        title: i18n('cc-payment-warning.orga.no-default-payment-method.title'),
+        error: i18n('cc-payment-warning.orga.no-default-payment-method'),
+      };
+    }
+    if (type === ERROR_TYPES.DEFAULT_PAYMENT_METHOD_IS_EXPIRED) {
+      return {
+        title: i18n('cc-payment-warning.orga.default-payment-method-is-expired.title'),
+        error: i18n('cc-payment-warning.orga.default-payment-method-is-expired'),
+      };
+    }
+  }
+
   render () {
+
+    const { title, error } = (this.mode === 'overview' || this.mode === 'billing') ? this._getOrgaError(this.errors[0]) : '';
+    const link = (this.mode === 'overview') ? i18n('cc-payment-warning.billing-page-link', this.errors[0]) : '';
+
     return html`
-      <img class="icon" src="${warningSvg}" alt="">
-      <div>
         ${this.mode === 'home' ? html`
-          <div>${i18n('cc-payment-warning.home', { orgaCount: this.errors.length })}</div>
-          <ul>
-            ${this.errors.map((error) => html`
-              <li>${this._renderHomeItem(error)}</li>
-            `)}
-          </ul>
+          <cc-notice
+            .heading="${i18n('cc-payment-warning.home.title')}"
+            intent="warning"
+          >
+            <div slot="message" class="error-container">
+              <span>${i18n('cc-payment-warning.home', { orgaCount: this.errors.length })}</span>
+              <ul>
+                ${this.errors.map((error) => html`
+                  <li>${this._renderHomeItem(error)}</li>
+                `)}
+              </ul>
+            </div>
+          </cc-notice>
         ` : ''}
 
-        ${(this.mode === 'overview' || this.mode === 'billing') ? this._renderOrgaError(this.errors[0]) : ''}
-        ${(this.mode === 'overview') ? i18n('cc-payment-warning.billing-page-link', this.errors[0]) : ''}
-      </div>
+
+        ${(this.mode === 'overview' || this.mode === 'billing') ? html`
+          <cc-notice
+            .heading="${title}"
+            intent="warning"
+          >
+            <div slot="message">
+              ${error}
+              ${link}
+            </div>
+          </cc-notice>
+        ` : ''}
     `;
   }
 
@@ -77,44 +118,22 @@ export class CcWarningPayment extends LitElement {
     }
   }
 
-  /**
-   * @param {PaymentMethodError} error
-   */
-  _renderOrgaError ({ type }) {
-    if (type === ERROR_TYPES.NO_PAYMENT_METHOD) {
-      return i18n('cc-payment-warning.orga.no-payment-method');
-    }
-    if (type === ERROR_TYPES.NO_DEFAULT_PAYMENT_METHOD) {
-      return i18n('cc-payment-warning.orga.no-default-payment-method');
-    }
-    if (type === ERROR_TYPES.DEFAULT_PAYMENT_METHOD_IS_EXPIRED) {
-      return i18n('cc-payment-warning.orga.default-payment-method-is-expired');
-    }
-  }
-
   static get styles () {
     return [
       // language=CSS
       linkStyles,
       css`
         :host {
-          background-color: var(--cc-color-bg-warning-weaker);
-          border: var(--cc-border-warning);
-          border-radius: 0.25em;
-          display: grid;
-          gap: 1em;
-          grid-template-columns: min-content 1fr;
-          line-height: 1.5;
-          padding: 1em;
+          display: block;
         }
-
-        .icon {
-          height: 1.25em;
-        }
-
+        
         ul {
           margin: 0.5em 0 0 1.5em;
           padding: 0;
+        }
+        
+        li {
+          margin-top: 0.5em;
         }
       `,
     ];
