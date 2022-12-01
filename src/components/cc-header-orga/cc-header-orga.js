@@ -94,34 +94,35 @@ export class CcHeaderOrga extends LitElement {
       css`
         :host {
           --cc-gap: 1em;
+
           display: block;
         }
 
         .wrapper {
-          background-color: var(--cc-color-bg-default, #fff);
-          border: 1px solid #bcc2d1;
-          border-radius: 0.25em;
           display: block;
           overflow: hidden;
           padding: var(--cc-gap);
+          border: 1px solid #bcc2d1;
+          background-color: var(--cc-color-bg-default, #fff);
+          border-radius: 0.25em;
         }
 
         .wrapper.enterprise {
-          border-color: var(--cc-color-bg-primary);
           border-width: 2px;
+          border-color: var(--cc-color-bg-primary);
         }
 
         .logo {
-          border-radius: 0.25em;
-          height: 3.25em;
           width: 3.25em;
+          height: 3.25em;
+          border-radius: 0.25em;
         }
 
         .details,
         .hotline {
-          align-items: flex-start;
           display: flex;
           flex-direction: column;
+          align-items: flex-start;
         }
 
         .details {
@@ -133,9 +134,9 @@ export class CcHeaderOrga extends LitElement {
         }
 
         .name {
+          min-width: 11em;
           font-size: 1.1em;
           font-weight: bold;
-          min-width: 11em;
         }
 
         .hotline_number {
@@ -148,16 +149,17 @@ export class CcHeaderOrga extends LitElement {
         }
 
         /* We can do this because we set a visible focus state */
+
         .hotline_number::-moz-focus-inner {
           border: 0;
         }
 
         .hotline_number:focus {
-          box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
+          box-shadow: 0 0 0 0.2em rgb(50 115 220 / 25%);
         }
 
         .hotline_number:hover {
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+          box-shadow: 0 1px 3px rgb(0 0 0 / 40%);
         }
 
         .hotline_number:active {
@@ -175,6 +177,7 @@ export class CcHeaderOrga extends LitElement {
         }
 
         /* SKELETON */
+
         .skeleton {
           background-color: #bbb;
         }

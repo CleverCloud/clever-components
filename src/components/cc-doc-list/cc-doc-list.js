@@ -72,14 +72,14 @@ export class CcDocList extends LitElement {
         .doc-wrapper {
           display: grid;
           gap: 1em;
-          grid-template-columns: repeat( auto-fit, minmax(20em, 1fr) );
+          grid-template-columns: repeat(auto-fit, minmax(20em, 1fr));
         }
 
         cc-error {
-          background-color: var(--cc-color-bg-default, #fff);
-          border: 1px solid #bcc2d1;
-          border-radius: 0.25em;
           padding: 1em;
+          border: 1px solid #bcc2d1;
+          background-color: var(--cc-color-bg-default, #fff);
+          border-radius: 0.25em;
           text-align: center;
         }
 

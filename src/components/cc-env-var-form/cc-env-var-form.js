@@ -236,7 +236,7 @@ export class CcEnvVarForm extends LitElement {
         ` : ''}
 
         <cc-toggle
-          class="mode-switcher ${classMap({ hasOverlay })}"
+          class="mode-switcher ${classMap({ 'has-overlay': hasOverlay })}"
           value=${this._mode}
           .choices=${this._getModes()}
           ?disabled=${isEditorDisabled}
@@ -247,7 +247,7 @@ export class CcEnvVarForm extends LitElement {
       <slot class="description">${this._description}</slot>
 
       <div class="overlay-container">
-        <cc-expand class=${classMap({ hasOverlay })}>
+        <cc-expand class=${classMap({ 'has-overlay': hasOverlay })}>
           <cc-env-var-editor-simple
             mode=${this.parserOptions.mode ?? ''}
             ?hidden=${this._mode !== 'SIMPLE'}
@@ -313,37 +313,38 @@ export class CcEnvVarForm extends LitElement {
       // language=CSS
       css`
         :host {
-          background-color: var(--cc-color-bg-default, #fff);
-          border: 1px solid #bcc2d1;
-          border-radius: 0.25em;
           display: block;
           padding: 1em;
+          border: 1px solid #bcc2d1;
+          background-color: var(--cc-color-bg-default, #fff);
+          border-radius: 0.25em;
         }
 
         .header {
-          align-items: flex-start;
           display: flex;
+          align-items: flex-start;
           justify-content: center;
           margin-bottom: 0.5em;
         }
 
         .heading {
-          color: var(--cc-color-text-strong);
           flex: 1 1 0;
+          color: var(--cc-color-text-strong);
           font-size: 1.2em;
           font-weight: bold;
         }
 
         .description {
-          color: var(--cc-color-text-weak);
           display: block;
+          margin-bottom: 1em;
+          color: var(--cc-color-text-weak);
           font-style: italic;
           line-height: 1.5;
-          margin-bottom: 1em;
         }
 
-        .hasOverlay {
+        .has-overlay {
           --cc-skeleton-state: paused;
+
           filter: blur(0.3em);
         }
 
@@ -359,27 +360,28 @@ export class CcEnvVarForm extends LitElement {
         }
 
         .error-container {
-          align-items: center;
-          display: flex;
-          flex-direction: column;
-          height: 100%;
-          justify-content: center;
-          left: 0;
           position: absolute;
           top: 0;
+          left: 0;
+          display: flex;
           width: 100%;
+          height: 100%;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
         }
 
         .saving-loader {
-          height: 100%;
-          left: 0;
           position: absolute;
           top: 0;
+          left: 0;
           width: 100%;
+          height: 100%;
         }
 
         .button-bar {
           --cc-gap: 1em;
+
           margin-top: 1.5em;
         }
 

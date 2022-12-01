@@ -323,11 +323,12 @@ export class CcHeaderApp extends LitElement {
       css`
         :host {
           --cc-gap: 1em;
-          background-color: var(--cc-color-bg-default, #fff);
-          border: 1px solid #bcc2d1;
-          border-radius: 0.25em;
+
           display: block;
           overflow: hidden;
+          border: 1px solid #bcc2d1;
+          background-color: var(--cc-color-bg-default, #fff);
+          border-radius: 0.25em;
         }
 
         cc-error {
@@ -340,17 +341,17 @@ export class CcHeaderApp extends LitElement {
         }
 
         .flavor-logo {
-          align-self: flex-start;
-          border-radius: 0.25em;
-          height: 3.25em;
           overflow: hidden;
           width: 3.25em;
+          height: 3.25em;
+          align-self: flex-start;
+          border-radius: 0.25em;
         }
 
         .flavor-logo_img {
           display: block;
-          height: 100%;
           width: 100%;
+          height: 100%;
         }
 
         .skeleton .flavor-logo_img {
@@ -365,24 +366,25 @@ export class CcHeaderApp extends LitElement {
         }
 
         .name {
+          min-width: 11em;
           font-size: 1.1em;
           font-weight: bold;
-          min-width: 11em;
         }
 
         .commit {
-          align-items: flex-start;
           display: flex;
+          align-items: flex-start;
         }
 
         .commit_img {
-          height: 1.1em;
-          margin-right: 0.2em;
           overflow: hidden;
           width: 1.1em;
+          height: 1.1em;
+          margin-right: 0.2em;
         }
 
         /* We hide the right part of the commit this way so this can be part of a copy/paste */
+
         .commit_rest {
           font-size: 0;
         }
@@ -392,8 +394,8 @@ export class CcHeaderApp extends LitElement {
         }
 
         cc-button {
-          flex: 1 1 auto;
           min-width: 0;
+          flex: 1 1 auto;
         }
 
         :host([disable-buttons]) cc-button {
@@ -403,18 +405,19 @@ export class CcHeaderApp extends LitElement {
         .messages {
           --cc-gap: 0.57em;
           --cc-align-items: center;
-          align-items: center;
-          background-color: var(--cc-color-bg-neutral);
-          box-shadow: inset 0 6px 6px -6px rgba(0, 0, 0, 0.4);
+
           box-sizing: border-box;
+          align-items: center;
+          padding: 0.45em 1.1em;
+          background-color: var(--cc-color-bg-neutral);
+          box-shadow: inset 0 6px 6px -6px rgb(0 0 0 / 40%);
           font-size: 0.9em;
           font-style: italic;
-          padding: 0.45em 1.1em;
         }
 
         .status-icon {
-          height: 1.25em;
           min-width: 1.25em;
+          height: 1.25em;
         }
 
         .spacer {
@@ -431,6 +434,7 @@ export class CcHeaderApp extends LitElement {
         }
 
         /* SKELETON */
+
         .skeleton {
           background-color: #bbb;
         }

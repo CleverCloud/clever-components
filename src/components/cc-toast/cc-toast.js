@@ -182,101 +182,108 @@ export class CcToast extends LitElement {
       css`
         :host {
           --padding: 0.8em;
+
           display: block;
         }
 
-        /*region COMMON*/
+        /* region COMMON */
+
         .toast {
-          align-items: stretch;
-          background-color: var(--toast-color);
-          border: 1px solid var(--toast-color);
-          border-radius: 0.3em;
-          box-shadow: 0 2px 4px rgba(38, 38, 38, .25),
-                      0 5px 15px rgba(38, 38, 38, .25);
           display: flex;
           overflow: hidden;
+          align-items: stretch;
+          border: 1px solid var(--toast-color);
+          background-color: var(--toast-color);
+          border-radius: 0.3em;
+          box-shadow: 0 2px 4px rgb(38 38 38 / 25%),
+            0 5px 15px rgb(38 38 38 / 25%);
           pointer-events: all;
         }
-        /*endregion*/
+        /* endregion */
 
-        /*region COLOR*/
-        :host([intent="info"]) {
+        /* region COLOR */
+
+        :host([intent='info']) {
           --toast-color: var(--cc-color-bg-primary);
         }
 
-        :host([intent="success"]) {
+        :host([intent='success']) {
           --toast-color: var(--cc-color-bg-success);
         }
 
-        :host([intent="warning"]) {
+        :host([intent='warning']) {
           --toast-color: var(--cc-color-bg-warning);
         }
 
-        :host([intent="danger"]) {
+        :host([intent='danger']) {
           --toast-color: var(--cc-color-bg-danger);
         }
-        /*endregion*/
+        /* endregion */
 
-        /*region ICON*/
+        /* region ICON */
+
         .icon-wrapper {
-          align-items: center;
-          background-color: var(--toast-color);
-          border-right: 1px solid var(--toast-color);
           display: flex;
+          align-items: center;
           padding: var(--padding);
+          border-right: 1px solid var(--toast-color);
+          background-color: var(--toast-color);
         }
 
         .icon {
           --size: 1.8em;
+
           display: block;
-          height: var(--size);
           width: var(--size);
+          height: var(--size);
         }
-        /*endregion*/
+        /* endregion */
         
         .right {
-          background-color: var(--cc-color-bg-default);
+          position: relative;
           display: flex;
           flex: 1 1 auto;
           justify-content: stretch;
-          position: relative;
+          background-color: var(--cc-color-bg-default);
         }
         
-        /*region CONTENT*/
+        /* region CONTENT */
+
         .content {
-          align-self: center;
-          color: var(--toast-color);
           display: flex;
           flex: 1 1 auto;
           flex-direction: column;
-          gap: 0.5em;
+          align-self: center;
           justify-content: center;
           padding: var(--padding);
+          color: var(--toast-color);
+          gap: 0.5em;
         }
 
         .heading {
           font-weight: bold;
         }
 
-        /*endregion*/
+        /* endregion */
 
-        /*region CLOSE_BUTTON*/
+        /* region CLOSE_BUTTON */
+
         .close-button {
+          width: auto;
+          height: auto;
           align-self: start;
-          background-color: transparent;
+          padding: 0.2em;
           border: none;
+          margin: 0.25em;
+          background-color: transparent;
           border-radius: 0.15em;
           cursor: pointer;
-          height: auto;
-          margin: 0.25em;
-          padding: 0.20em;
-          width: auto;
         }
 
         .close-button img {
           display: block;
-          height: 1em;
           width: 1em;
+          height: 1em;
         }
 
         .close-button:hover {
@@ -284,29 +291,30 @@ export class CcToast extends LitElement {
         }
         
         .close-button:enabled:focus {
-          box-shadow: 0 0 0 .15em rgba(50, 115, 220, .25);
+          box-shadow: 0 0 0 0.15em rgb(50 115 220 / 25%);
           outline: 0;
         }
-        /*endregion*/
+        /* endregion */
 
         /* region PROGRESS */
+
         .progress-bar {
-          bottom: 0;
-          height: 0.3em;
           position: absolute;
+          bottom: 0;
           width: 100%;
+          height: 0.3em;
         }
 
         .progress-bar-track {
-          background-color: var(--toast-color);
-          height: 100%;
           width: 0;
+          height: 100%;
+          background-color: var(--toast-color);
         }
 
         .progress-bar.invisible {
           height: 0;
         }
-        /*endregion*/
+        /* endregion */
       `,
     ];
   }

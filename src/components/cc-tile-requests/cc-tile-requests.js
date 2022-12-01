@@ -284,22 +284,22 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
       // language=CSS
       css`
         .tile_title {
-          align-items: center;
           display: flex;
+          align-items: center;
           justify-content: space-between;
         }
 
         .docs-toggle {
-          font-size: 0.8em;
           margin: 0 0 0 1em;
+          font-size: 0.8em;
         }
 
         .chart-container {
-          /* We need this because: https://github.com/chartjs/Chart.js/issues/4156 */
-          height: 100%;
-          min-width: 0;
           position: absolute;
           width: 100%;
+          min-width: 0;
+          /* We need this because: https://github.com/chartjs/Chart.js/issues/4156 */
+          height: 100%;
         }
 
         /*
@@ -307,6 +307,7 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
           this way, we can just hide the docs
           and let the tile take at least the height of the docs text content
          */
+
         .tile_body,
         .tile_message,
         .tile_docs {
@@ -314,13 +315,14 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
         }
 
         /* See above why we hide instead of display:none */
+
         .tile--hidden {
           visibility: hidden;
         }
 
         .tile_body {
-          min-height: 140px;
           position: relative;
+          min-height: 140px;
         }
 
         .tile_docs {

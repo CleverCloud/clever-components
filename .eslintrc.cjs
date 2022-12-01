@@ -20,7 +20,6 @@ module.exports = {
     'i18n-order': ['error'],
     'i18n-valid-key': ['error'],
     'i18n-valid-value': ['error'],
-    'sort-lit-element-css-declarations': ['error'],
     // other rules
     'accessor-pairs': 'off',
     'arrow-parens': ['error', 'always'],

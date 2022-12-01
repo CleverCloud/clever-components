@@ -109,23 +109,25 @@ export class CcJenkinsInfo extends LitElement {
       css`
         :host {
           --cc-gap: 1em;
+
           display: block;
         }
 
         .cc-link {
-          align-items: center;
           display: flex;
+          align-items: center;
         }
 
         cc-img {
-          border-radius: 0.25em;
-          flex: 0 0 auto;
-          height: 1.5em;
-          margin-right: 0.5em;
           width: 1.5em;
+          height: 1.5em;
+          flex: 0 0 auto;
+          margin-right: 0.5em;
+          border-radius: 0.25em;
         }
 
         /* SKELETON */
+
         .skeleton {
           background-color: #bbb;
         }

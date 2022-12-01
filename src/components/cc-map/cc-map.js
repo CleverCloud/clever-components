@@ -338,17 +338,17 @@ export class CcMap extends withResizeObserver(LitElement) {
       // language=CSS
       css`
         :host {
-          background-color: var(--cc-color-bg-default, #fff);
-          display: flex;
-          flex-direction: column;
-          height: 15em;
           position: relative;
+          display: flex;
           width: 20em;
+          height: 15em;
+          flex-direction: column;
+          background-color: var(--cc-color-bg-default, #fff);
         }
 
         #cc-map-container {
-          flex: 1 1 0;
           width: 100%;
+          flex: 1 1 0;
         }
 
         :host([loading]) .leaflet-control-container,
@@ -362,51 +362,51 @@ export class CcMap extends withResizeObserver(LitElement) {
         :host([loading]) .legend,
         :host([error]) .legend,
         .legend.no-data {
-          filter: blur(.1em);
+          filter: blur(0.1em);
         }
 
         .leaflet-container {
-          background-color: #aadaff;
           z-index: 1;
+          background-color: #aadaff;
         }
 
         .map-country {
           fill: #f5f5f5;
-          fill-opacity: 1;
+          fill-opacity: 100%;
           stroke: #ddd;
           stroke-width: 1;
         }
 
         :host(:not(:empty)) .legend {
-          background-color: var(--cc-color-bg-neutral);
-          box-shadow: inset 0 6px 6px -6px rgba(0, 0, 0, 0.4);
           box-sizing: border-box;
+          padding: 0.45em 1.1em;
+          background-color: var(--cc-color-bg-neutral);
+          box-shadow: inset 0 6px 6px -6px rgb(0 0 0 / 40%);
           font-size: 0.9em;
           font-style: italic;
-          padding: 0.45em 1.1em;
         }
 
         .loader {
-          height: 100%;
-          left: 0;
           position: absolute;
-          top: 0;
-          width: 100%;
           /* Over Leaflet */
           z-index: 2000;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
         }
 
         .msg-container {
-          align-items: center;
-          display: flex;
-          height: 100%;
-          justify-content: center;
-          left: 0;
           position: absolute;
-          top: 0;
-          width: 100%;
           /* Over Leaflet */
           z-index: 2000;
+          top: 0;
+          left: 0;
+          display: flex;
+          width: 100%;
+          height: 100%;
+          align-items: center;
+          justify-content: center;
         }
 
         cc-error,
@@ -415,19 +415,19 @@ export class CcMap extends withResizeObserver(LitElement) {
         }
 
         .msg {
-          align-items: center;
-          background-color: var(--cc-color-bg-default, #fff);
-          border: 1px solid #bcc2d1;
-          border-radius: 0.25em;
-          box-shadow: 0 0 1em rgba(0, 0, 0, 0.4);
           display: flex;
+          align-items: center;
           justify-content: center;
           padding: 1em;
+          border: 1px solid #bcc2d1;
+          background-color: var(--cc-color-bg-default, #fff);
+          border-radius: 0.25em;
+          box-shadow: 0 0 1em rgb(0 0 0 / 40%);
         }
 
         .cc-map-marker {
-          align-items: center;
           display: flex;
+          align-items: center;
           justify-content: center;
         }
       `,

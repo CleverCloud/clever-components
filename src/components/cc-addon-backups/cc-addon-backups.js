@@ -358,15 +358,15 @@ export class CcAddonBackups extends LitElement {
         }
 
         .backup-icon {
-          flex: 0 0 auto;
-          height: 1.5em;
           width: 1.5em;
+          height: 1.5em;
+          flex: 0 0 auto;
         }
 
         .backup-icon img {
           display: block;
-          height: 100%;
           width: 100%;
+          height: 100%;
         }
 
         .backup-text {
@@ -382,14 +382,15 @@ export class CcAddonBackups extends LitElement {
         }
 
         /* SKELETON */
+
         .skeleton {
           background-color: #bbb;
         }
 
         .overlay {
-          box-shadow: 0 0 1em rgba(0, 0, 0, 0.4);
-          margin: 2em;
           max-width: 80%;
+          margin: 2em;
+          box-shadow: 0 0 1em rgb(0 0 0 / 40%);
         }
 
         .cc-link,

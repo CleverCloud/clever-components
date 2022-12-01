@@ -179,8 +179,8 @@ export class CcEnvVarCreate extends LitElement {
         }
 
         cc-button {
-          align-self: flex-start;
           flex: 1 1 6em;
+          align-self: flex-start;
           margin-top: auto;
           white-space: nowrap;
         }
@@ -190,11 +190,12 @@ export class CcEnvVarCreate extends LitElement {
         }
 
         /* i18n error message may contain <code> tags */
+
         cc-error code {
-          background-color: var(--cc-color-bg-neutral, #eeeeee);
+          padding: 0.15em 0.3em;
+          background-color: var(--cc-color-bg-neutral, #eee);
           border-radius: 0.25em;
           font-family: var(--cc-ff-monospace, monospace);
-          padding: 0.15em 0.3em;
         }
       `,
     ];

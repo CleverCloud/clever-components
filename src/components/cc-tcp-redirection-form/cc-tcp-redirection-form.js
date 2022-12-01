@@ -105,9 +105,9 @@ export class CcTcpRedirectionForm extends LitElement {
         }
 
         cc-badge {
+          margin-left: 0.5em;
           /* cc-block title changes the font-size to 1.2em, which makes our badge way too big */
           font-size: 0.8em;
-          margin-left: 0.5em;
           vertical-align: middle;
         }
 
@@ -121,10 +121,10 @@ export class CcTcpRedirectionForm extends LitElement {
         }
 
         .description code {
+          padding: 0.15em 0.3em;
           background-color: var(--cc-color-bg-neutral);
           border-radius: 0.25em;
           font-family: var(--cc-ff-monospace);
-          padding: 0.15em 0.3em;
         }
       `,
     ];

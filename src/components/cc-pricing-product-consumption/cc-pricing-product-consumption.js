@@ -494,45 +494,48 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
       // language=CSS
       css`
         :host {
-          background-color: var(--cc-color-bg-default);
           display: block;
+          background-color: var(--cc-color-bg-default);
         }
 
         :host([error]) {
           --cc-skeleton-state: paused;
         }
 
-        /*region COMMON*/
+        /* region COMMON */
+
         .head {
-          border-radius: 0.25em;
           display: grid;
+          padding: 1em 1em 0;
+          border-radius: 0.25em;
           gap: 1em;
           grid-auto-rows: min-content;
-          padding: 1em 1em 0 1em;
         }
 
         /* We cannot use cc-flex-gap because of a double slot */
+
         .head-info {
           display: flex;
           flex-wrap: wrap;
+          margin: -0.5em;
           /* reset gap for browsers that support gap for flexbox */
           gap: 0;
-          margin: -0.5em;
         }
 
         .product-logo,
-        slot[name="icon"]::slotted(*),
+        slot[name='icon']::slotted(*),
         .name-wrapper {
           margin: 0.5em;
         }
 
         .product-logo,
-        slot[name=icon]::slotted(*) {
+        slot[name='icon']::slotted(*) {
           --cc-img-fit: contain;
-          border-radius: 0.25em;
+
           display: block;
-          height: 3em;
           width: 3em;
+          height: 3em;
+          border-radius: 0.25em;
         }
 
         .name-wrapper {
@@ -545,18 +548,23 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         }
 
         /* Slotted description */
+
         .description {
           line-height: 1.5;
         }
 
         .body {
-          align-items: center;
           display: grid;
           overflow: visible;
+          align-items: center;
           white-space: nowrap;
         }
 
-        /* these elements could be removed but they help the readability of the whole template in source code and browser devtools */
+        /* 
+          these elements could be removed but they help the readability of the whole template
+          in source code and browser devtools
+        */
+
         .section,
         .section-header,
         .interval-line {
@@ -564,12 +572,12 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         }
 
         hr {
-          border-color: #e5e5e5;
-          border-style: solid;
-          border-width: 1px 0 0 0;
-          grid-column: 1 / -1;
-          margin: 1em 0;
           width: 100%;
+          border-width: 1px 0 0;
+          border-style: solid;
+          border-color: #e5e5e5;
+          margin: 1em 0;
+          grid-column: 1 / -1;
         }
 
         hr.last {
@@ -577,17 +585,17 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         }
 
         .section-icon {
-          grid-column: section-icon / span 1;
+          width: 1em;
           height: 1em;
           margin-right: 1em;
-          width: 1em;
+          grid-column: section-icon / span 1;
         }
 
         .section-title {
           display: flex;
+          justify-content: space-between;
           font-weight: bold;
           grid-column: title / title--end;
-          justify-content: space-between;
         }
 
         .section-title.section-title--subtotal,
@@ -608,20 +616,21 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         }
 
         .input-wrapper {
-          align-items: end;
           display: flex;
-          grid-column: input-wrapper / input-wrapper--end;
-          margin: 1em 0;
           width: 100%;
+          align-items: end;
+          margin: 1em 0;
+          grid-column: input-wrapper / input-wrapper--end;
         }
 
         .input-quantity {
-          flex: 1 1 0;
           min-width: 10ch;
+          flex: 1 1 0;
         }
 
         .input-unit {
           --cc-text-transform: none;
+
           margin-left: 0.5em;
         }
 
@@ -643,15 +652,15 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         .interval-price,
         .estimated-price {
           align-self: stretch;
-          margin: 0.1em 0;
-          padding-left: 0.25em;
           padding-top: 0.15em;
+          padding-left: 0.25em;
+          margin: 0.1em 0;
         }
 
         .interval,
         .interval-price {
-          padding-bottom: 0.15em;
           padding-right: 0.25em;
+          padding-bottom: 0.15em;
         }
 
         .interval-line.highlighted:not(.progressive) .interval {
@@ -693,20 +702,20 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         }
 
         .button-bar {
-          grid-column: start / end;
           margin-bottom: 1em;
+          grid-column: start / end;
         }
 
         .skeleton {
           background-color: #bbb;
         }
 
-        /*endregion*/
+        /* endregion */
 
-        /*region BIG*/
+        /* region BIG */
+
         .body--big {
-          grid-template-columns:
-            1em
+          grid-template-columns: 1em
             [start section-icon] 2em
             [title input-wrapper interval-min] min-content
             [interval-min-sign] min-content
@@ -736,16 +745,16 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         }
 
         .body--big .estimated-price {
-          grid-column: estimated-price / span 1;
           margin-left: 2em;
+          grid-column: estimated-price / span 1;
         }
 
-        /*endregion*/
+        /* endregion */
 
-        /*region SMALL*/
+        /* region SMALL */
+
         .body--small {
-          grid-template-columns:
-            1em
+          grid-template-columns: 1em
             [start section-icon] 2em
             [title input-wrapper interval-min interval-price] min-content
             [interval-min-sign] min-content
@@ -768,10 +777,10 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         .body--small .section--closed .interval,
         .body--small .section--closed .interval-price {
           height: 0;
-          margin-bottom: 0;
-          margin-top: 0;
-          padding-bottom: 0;
           padding-top: 0;
+          padding-bottom: 0;
+          margin-top: 0;
+          margin-bottom: 0;
           visibility: hidden;
         }
 
@@ -783,7 +792,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
           display: none;
         }
 
-        /*endregion*/
+        /* endregion */
       `,
     ];
   }

@@ -96,7 +96,7 @@ export class CcAddonOptionForm extends LitElement {
           justify-content: flex-end;
         }
 
-        [name="description"] {
+        [name='description'] {
           line-height: 1.5;
         }
       `,

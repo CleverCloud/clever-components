@@ -153,15 +153,15 @@ export class CcTcpRedirection extends LitElement {
         }
 
         .icon {
-          flex: 0 0 auto;
-          height: 1.5em;
           width: 1.5em;
+          height: 1.5em;
+          flex: 0 0 auto;
         }
 
         .icon img {
           display: block;
-          height: 100%;
           width: 100%;
+          height: 100%;
         }
 
         .icon cc-loader {
@@ -182,10 +182,10 @@ export class CcTcpRedirection extends LitElement {
         }
 
         .text:not(.skeleton) code {
+          padding: 0.15em 0.3em;
           background-color: var(--cc-color-bg-neutral);
           border-radius: 0.25em;
           font-family: var(--cc-ff-monospace);
-          padding: 0.15em 0.3em;
         }
 
         .text-addendum:not(.skeleton) {

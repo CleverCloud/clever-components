@@ -287,14 +287,15 @@ export class CcToaster extends LitElement {
         }
 
         .toaster {
-          align-items: center;
           display: flex;
           flex-direction: column;
+          align-items: center;
           gap: 1em;
           pointer-events: none;
         }
 
-        /*region POSITION*/
+        /* region POSITION */
+
         .toaster.left {
           align-items: start;
         }
@@ -307,7 +308,7 @@ export class CcToaster extends LitElement {
           flex-direction: column-reverse;
         }
 
-        /*endregion*/
+        /* endregion */
       `,
     ];
   }

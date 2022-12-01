@@ -108,7 +108,7 @@ export class CcSelect extends LitElement {
           <span class="required">${i18n('cc-select.required')}</span>
         ` : ''}
       </label>
-      <div class="selectWrapper ${classMap({ disabled: this.disabled })}">
+      <div class="select-wrapper ${classMap({ disabled: this.disabled })}">
         <select
           id="input-id"
           class="${classMap({ error: this._hasError })}"
@@ -140,17 +140,21 @@ export class CcSelect extends LitElement {
     return [
       // language=CSS
       css`
+        /* stylelint-disable no-duplicate-selectors */
+
         :host {
           display: inline-block;
         }
 
-        /*region Common to cc-input-* & cc-select*/
+        /* region Common to cc-input-* & cc-select */
+
         :host([inline]) {
           display: inline-grid;
           gap: 0 1em;
-          grid-template-areas: "label input"
-                              ". help"
-                              ". error";
+          grid-template-areas: 
+            'label input'
+            '. help'
+            '. error';
           grid-template-columns: auto 1fr;
         }
 
@@ -163,22 +167,22 @@ export class CcSelect extends LitElement {
         }
 
         label {
-          align-items: flex-end;
-          cursor: pointer;
           display: flex;
-          gap: 2em;
+          align-items: flex-end;
           justify-content: space-between;
-          line-height: 1.25em;
           padding-bottom: 0.35em;
+          cursor: pointer;
+          gap: 2em;
+          line-height: 1.25em;
         }
 
         :host([inline]) label {
           flex-direction: column;
+          justify-content: center;
+          padding: 0;
           gap: 0;
           grid-area: label;
-          justify-content: center;
           line-height: normal;
-          padding: 0;
         }
 
         .required {
@@ -192,42 +196,43 @@ export class CcSelect extends LitElement {
         }
 
         slot[name='help']::slotted(*) {
+          margin: 0.3em 0 0;
           color: var(--cc-color-text-weak);
           font-size: 0.9em;
-          margin: 0.3em 0 0 0;
         }
         
         slot[name='error']::slotted(*) {
+          margin: 0.5em 0 0;
           color: var(--cc-color-text-danger);
-          margin: 0.5em 0 0 0;
         }
-        /*endregion*/
+        /* endregion */
 
         /* RESET */
+
         select {
+          width: 100%;
+          padding: 0;
+          border: none;
+          margin: 0;
           -moz-appearance: none;
           -webkit-appearance: none;
           appearance: none;
           background: none;
-          border: none;
           color: inherit;
           cursor: inherit;
           font-family: inherit;
           font-size: inherit;
           line-height: inherit;
-          margin: 0;
-          padding: 0;
-          width: 100%;
         }
 
         select {
-          background-color: var(--cc-color-bg-default, #fff);
-          border: 1px solid #aaa;
-          border-radius: 0.25em;
-          box-sizing: border-box;
-          grid-area: input;
           height: 2em;
+          box-sizing: border-box;
           padding: 0 3em 0 0.5em;
+          border: 1px solid #aaa;
+          background-color: var(--cc-color-bg-default, #fff);
+          border-radius: 0.25em;
+          grid-area: input;
         }
 
         select:hover {
@@ -237,7 +242,7 @@ export class CcSelect extends LitElement {
 
         select:focus {
           border-color: #777;
-          box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
+          box-shadow: 0 0 0 0.2em rgb(50 115 220 / 25%);
           outline: 0;
         }
         
@@ -246,35 +251,35 @@ export class CcSelect extends LitElement {
         }
         
         select.error:focus {
-          box-shadow: 0 0 0 .2em var(--cc-color-border-danger-weak);
+          box-shadow: 0 0 0 0.2em var(--cc-color-border-danger-weak);
         }
 
-        .selectWrapper {
-          display: inline-flex;
+        .select-wrapper {
           position: relative;
-          vertical-align: top;
+          display: inline-flex;
           width: 100%;
+          vertical-align: top;
         }
 
-        .selectWrapper::after {
-          background-color: var(--cc-color-bg-primary, #000000);
+        .select-wrapper::after {
+          position: absolute;
+          top: 50%;
+          right: 0.5em;
+          width: 0.8em;
+          height: 0.5em;
+          background-color: var(--cc-color-bg-primary, #000);
           clip-path: polygon(100% 0%, 0 0%, 50% 100%);
           content: '';
-          height: 0.5em;
-          position: absolute;
-          right: 0.5em;
-          top: 50%;
           transform: translateY(-50%);
-          width: 0.8em;
         }
 
         .disabled::after {
-          background-color: hsl(0, 0%, 62%);
+          background-color: hsl(0deg 0% 62%);
         }
 
         select[disabled] {
-          background: var(--cc-color-bg-neutral-disabled);
           border-color: var(--cc-color-bg-neutral-disabled);
+          background: var(--cc-color-bg-neutral-disabled);
           color: var(--cc-color-text-weak);
           opacity: 1;
           pointer-events: none;

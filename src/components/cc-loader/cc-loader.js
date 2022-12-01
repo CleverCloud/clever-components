@@ -31,12 +31,12 @@ export class CcLoader extends LitElement {
         }
 
         svg {
-          animation: progress-circular-rotate 1.75s linear infinite;
-          height: 100%;
-          margin: auto;
-          max-height: 2.5em;
-          max-width: 2.5em;
           width: 100%;
+          max-width: 2.5em;
+          height: 100%;
+          max-height: 2.5em;
+          margin: auto;
+          animation: progress-circular-rotate 1.75s linear infinite;
         }
 
         circle {
@@ -48,9 +48,11 @@ export class CcLoader extends LitElement {
         }
 
         @keyframes progress-circular-rotate {
+
           0% {
             transform: rotate(0turn);
           }
+
           100% {
             transform: rotate(1turn);
           }
@@ -58,14 +60,17 @@ export class CcLoader extends LitElement {
 
         /* radius is set at 16px => perimeter: 100.53096491487 ~= 100 */
         @keyframes progress-circular-dash {
+
           0% {
             stroke-dasharray: 0, 100px;
             stroke-dashoffset: 0;
           }
+
           50% {
             stroke-dasharray: 80px, 100px;
             stroke-dashoffset: 0;
           }
+
           100% {
             stroke-dasharray: 80px, 100px;
             stroke-dashoffset: -100px;

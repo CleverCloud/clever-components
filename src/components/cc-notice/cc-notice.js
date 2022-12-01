@@ -132,15 +132,16 @@ export class CcNotice extends LitElement {
     return [
       // language=CSS
       css`
-
         :host {
           display: block;
         }
 
         .wrapper {
-          align-items: center;
-          border-radius: 0.25em;
+          position: relative;
           display: grid;
+          align-items: center;
+          padding: 0.75em;
+          border-radius: 0.25em;
           gap: 0.5em;
           grid-template-areas: 
             'icon heading'
@@ -148,28 +149,26 @@ export class CcNotice extends LitElement {
           grid-template-columns: auto 1fr;
           grid-template-rows: auto auto;
           line-height: 1.4;
-          padding: 0.75em;
-          position: relative;
         }
 
-        :host([intent="success"]) .wrapper {
-          background-color: var(--cc-color-bg-success-weaker);
+        :host([intent='success']) .wrapper {
           border: 1px solid var(--cc-color-border-success-weak);
+          background-color: var(--cc-color-bg-success-weaker);
         }
 
-        :host([intent="warning"]) .wrapper {
-          background-color: var(--cc-color-bg-warning-weaker);
+        :host([intent='warning']) .wrapper {
           border: 1px solid var(--cc-color-border-warning-weak);
+          background-color: var(--cc-color-bg-warning-weaker);
         }
 
-        :host([intent="info"]) .wrapper {
-          background-color: var(--cc-color-bg-primary-weaker);
+        :host([intent='info']) .wrapper {
           border: 1px solid var(--cc-color-border-primary-weak);
+          background-color: var(--cc-color-bg-primary-weaker);
         }
 
-        :host([intent="danger"]) .wrapper {
-          background-color: var(--cc-color-bg-danger-weaker);
+        :host([intent='danger']) .wrapper {
           border: 1px solid var(--cc-color-border-danger-weak);
+          background-color: var(--cc-color-bg-danger-weaker);
         }
 
         .wrapper.closeable {
@@ -177,14 +176,13 @@ export class CcNotice extends LitElement {
         }
         
         .wrapper.no-icon {
-          grid-template-areas: 
+          grid-template-areas:
             'heading'
             'message';
         }
         
         .wrapper.no-heading {
-          grid-template-areas: 
-            'icon message';
+          grid-template-areas: 'icon message';
           grid-template-columns: auto 1fr;
           grid-template-rows: auto;
         }
@@ -209,49 +207,49 @@ export class CcNotice extends LitElement {
         }
 
         .notice-icon {
-          grid-area: icon;
-          height: 1.5em;
           width: 1.5em;
+          height: 1.5em;
+          grid-area: icon;
         }
 
         .close-button {
-          background-color: transparent;
-          border: none;
-          border-radius: 0.15em;
-          cursor: pointer;
+          position: absolute;
+          top: 0.5em;
+          right: 0.5em;
+          width: auto;
           height: auto;
           padding: 0.2em;
-          position: absolute;
-          right: 0.5em;
-          top: 0.5em;
-          width: auto;
+          border: none;
+          background-color: transparent;
+          border-radius: 0.15em;
+          cursor: pointer;
         }
         
-        :host([intent="success"]) .close-button:hover {
+        :host([intent='success']) .close-button:hover {
           background-color: var(--cc-color-bg-success-hovered);
         }
         
-        :host([intent="warning"]) .close-button:hover {
+        :host([intent='warning']) .close-button:hover {
           background-color: var(--cc-color-bg-warning-hovered);
         }
         
-        :host([intent="info"]) .close-button:hover {
+        :host([intent='info']) .close-button:hover {
           background-color: var(--cc-color-bg-primary-hovered);
         }
         
-        :host([intent="danger"]) .close-button:hover {
+        :host([intent='danger']) .close-button:hover {
           background-color: var(--cc-color-bg-danger-hovered);
         }
         
         .close-button:focus {
-          box-shadow: 0 0 0 .15em rgba(50, 115, 220, .25);
+          box-shadow: 0 0 0 0.15em rgb(50 115 220 / 25%);
           outline: 0;
         }
 
         .close-button img {
           display: block;
-          height: 1em;
           width: 1em;
+          height: 1em;
         }
       `,
     ];

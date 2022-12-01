@@ -67,12 +67,12 @@ export class CcAddonOption extends LitElement {
       // language=CSS
       css`
         :host {
+          display: grid;
+          padding: 1em;
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: 0.25em;
-          display: grid;
           grid-gap: 1em;
           grid-template-columns: min-content 1fr;
-          padding: 1em;
         }
 
         ::slotted(.option-warning) {
@@ -86,33 +86,33 @@ export class CcAddonOption extends LitElement {
         }
 
         .option-name {
+          min-height: 1.6em;
           font-weight: bold;
           line-height: 1.6;
-          min-height: 1.6em;
         }
 
         :host(:not([enabled])) {
-          background-color: var(--cc-color-bg-neutral);
           border: 2px solid #f8f8f8;
+          background-color: var(--cc-color-bg-neutral);
         }
 
         :host([enabled]) {
-          border: 2px solid var(--cc-color-bg-success, #000000);
+          border: 2px solid var(--cc-color-bg-success, #000);
         }
 
         .logo {
-          border-radius: 0.25em;
-          height: 1.6em;
           width: 1.6em;
+          height: 1.6em;
+          border-radius: 0.25em;
         }
 
         cc-toggle {
-          justify-self: end;
           margin-top: 0.5em;
+          justify-self: end;
         }
 
         :host([enabled]) cc-toggle {
-          --cc-toggle-color: var(--cc-color-bg-success, #000000);
+          --cc-toggle-color: var(--cc-color-bg-success, #000);
         }
 
         .option-details {

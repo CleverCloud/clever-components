@@ -245,12 +245,12 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
       // language=CSS
       css`
         :host {
-          background-color: var(--cc-color-bg-default, #fff);
-          border: 1px solid #bcc2d1;
-          border-radius: 0.25em;
-          box-sizing: border-box;
           display: flex;
           overflow: hidden;
+          box-sizing: border-box;
+          border: 1px solid #bcc2d1;
+          background-color: var(--cc-color-bg-default, #fff);
+          border-radius: 0.25em;
         }
 
         cc-map,
@@ -259,10 +259,10 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
         }
 
         cc-map {
-          border-right: 1px solid #bcc2d1;
-          flex-basis: 0;
-          height: 100%;
           width: 100%;
+          height: 100%;
+          flex-basis: 0;
+          border-right: 1px solid #bcc2d1;
         }
 
         :host([w-lt-600]) cc-map,
@@ -271,14 +271,14 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
         }
 
         .zone-list-wrapper {
-          box-sizing: border-box;
-          height: 100%;
           overflow: auto;
+          height: 100%;
+          box-sizing: border-box;
         }
 
         :host(:not([error])[w-gte-600]) .zone-list-wrapper {
-          flex-basis: 24em;
           max-width: 24em;
+          flex-basis: 24em;
         }
 
         :host([error]) .zone-list-wrapper {
@@ -296,7 +296,7 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
 
         .zone-list:not(:hover):focus-within {
           border-radius: 0.25em;
-          box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
+          box-shadow: 0 0 0 0.2em rgb(50 115 220 / 25%);
           outline: 0;
         }
 
@@ -311,22 +311,22 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
         }
 
         input {
+          display: block;
+          box-sizing: border-box;
+          border: 0;
+          margin: -0.5em;
           -moz-appearance: none;
           -webkit-appearance: none;
           appearance: none;
-          border: 0;
-          box-sizing: border-box;
-          display: block;
-          margin: -0.5em;
           outline: none;
         }
 
         .label {
+          display: block;
+          box-sizing: border-box;
+          padding: 0.5em;
           border: 2px solid var(--bd-color, transparent);
           border-radius: 0.25em;
-          box-sizing: border-box;
-          display: block;
-          padding: 0.5em;
         }
 
         label {
@@ -334,7 +334,7 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
         }
 
         input:checked + .label {
-          --bd-color: var(--cc-color-bg-primary-highlight, #000000);
+          --bd-color: var(--cc-color-bg-primary-highlight, #000);
         }
 
         label.hovered,

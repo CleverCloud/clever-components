@@ -89,7 +89,7 @@ export class CcInvoice extends LitElement {
           display: block;
         }
 
-        [slot="button"] {
+        [slot='button'] {
           align-self: start;
           margin-left: 1em;
         }
@@ -108,11 +108,11 @@ export class CcInvoice extends LitElement {
         }
 
         .frame {
-          /* height and max-width are roughly set to have a standard letter / A4 paper ratio */
-          box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.4);
-          height: 31cm;
-          max-width: 22cm;
           width: 100%;
+          max-width: 22cm;
+          height: 31cm;
+          /* height and max-width are roughly set to have a standard letter / A4 paper ratio */
+          box-shadow: 0 0 0.5em rgb(0 0 0 / 40%);
         }
       `,
     ];

@@ -133,10 +133,12 @@ export class CcAddonCredentials extends LitElement {
 
         cc-input-text {
           --cc-input-font-family: var(--cc-ff-monospace, monospace);
+
           flex: 1 0 18em;
         }
 
         /* SKELETON */
+
         .skeleton {
           background-color: #bbb;
         }

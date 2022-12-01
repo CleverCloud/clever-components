@@ -24,6 +24,8 @@ jobs:
         run: npm run lint && npm run components:check-lit
       - name: Check i18n
         run: npm run components:check-i18n
+      - name: Check stylelint
+        run: npm run stylelint:ci
 
       - name: Build components
         run: npm run components:build

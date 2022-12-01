@@ -90,15 +90,15 @@ export class CcImg extends LitElement {
 
         .wrapper,
         img {
-          height: 100%;
           width: 100%;
+          height: 100%;
         }
 
         .wrapper {
-          align-items: center;
-          display: flex;
-          justify-content: center;
           position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
 
         .wrapper.skeleton {
@@ -106,17 +106,17 @@ export class CcImg extends LitElement {
         }
 
         .wrapper.text {
-          background-color: var(--cc-color-bg-neutral,#eee);
+          background-color: var(--cc-color-bg-neutral, #eee);
         }
 
         img {
-          display: block;
+          position: absolute;
+          top: 0;
           left: 0;
+          display: block;
           object-fit: var(--cc-img-fit, cover);
           object-position: center center;
           opacity: 0;
-          position: absolute;
-          top: 0;
           transition: opacity 150ms ease-in-out;
         }
 
@@ -125,9 +125,9 @@ export class CcImg extends LitElement {
         }
 
         .error-msg {
-          font-size: 0.85em;
           overflow: hidden;
           padding: 0.3em;
+          font-size: 0.85em;
           text-align: center;
           text-overflow: ellipsis;
           white-space: nowrap;

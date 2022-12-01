@@ -99,25 +99,27 @@ export class CcAddonLinkedApps extends LitElement {
         }
 
         .application {
-          align-items: flex-start;
           display: flex;
+          align-items: flex-start;
           line-height: 1.6em;
         }
 
         .logo {
-          border-radius: 0.25em;
-          flex: 0 0 auto;
-          height: 1.6em;
           width: 1.6em;
+          height: 1.6em;
+          flex: 0 0 auto;
+          border-radius: 0.25em;
         }
 
         .details {
           --cc-align-items: center;
           --cc-gap: 0.5em;
+
           margin-left: 0.5em;
         }
 
         /* SKELETON */
+
         .name.skeleton {
           background-color: #bbb;
         }

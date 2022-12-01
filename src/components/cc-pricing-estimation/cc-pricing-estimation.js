@@ -266,7 +266,8 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
           display: block;
         }
 
-        /*region COMMON*/
+        /* region COMMON */
+
         .input-number {
           --cc-input-number-align: center;
           /* This is enough to display up to 999 */
@@ -274,20 +275,20 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
         }
 
         .empty-text {
-          font-style: italic;
           padding: 1em 0;
+          font-style: italic;
           text-align: center;
         }
 
         .recap {
+          display: grid;
           align-items: center;
-          background-color: var(--cc-pricing-estimation-recap-bg-color, var(--cc-color-bg-primary, #000000));
+          padding: 2em;
+          background-color: var(--cc-pricing-estimation-recap-bg-color, var(--cc-color-bg-primary, #000));
           border-radius: 0.2em;
           color: #fff;
-          display: grid;
           gap: 1em;
           justify-items: center;
-          padding: 2em;
           white-space: nowrap;
         }
 
@@ -309,15 +310,15 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
         }
 
         .cc-link {
+          display: inline-block;
           border-radius: 0.2em;
           cursor: pointer;
-          display: inline-block;
           font-weight: bold;
           text-decoration: none;
         }
 
         .cc-link:focus {
-          box-shadow: 0 0 0 .2em rgba(0, 0, 0, 0.4);
+          box-shadow: 0 0 0 0.2em rgb(0 0 0 / 40%);
           outline: 0;
         }
 
@@ -331,30 +332,31 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
         }
 
         .recap-contact .cc-link:hover {
-          background-color: rgba(255, 255, 255, 0.9);
+          background-color: rgb(255 255 255 / 90%);
         }
 
         .recap-signup .cc-link {
-          background-color: transparent;
           border: 1px solid #ccc;
+          background-color: transparent;
           color: #fff;
         }
 
         .recap-signup .cc-link:hover {
-          background-color: rgba(255, 255, 255, 0.1);
+          background-color: rgb(255 255 255 / 10%);
         }
 
-        /*endregion*/
+        /* endregion */
 
-        /*region BIG*/
+        /* region BIG */
+
         .number-align {
           text-align: right;
         }
 
         table {
+          width: 100%;
           border-collapse: collapse;
           border-spacing: 0;
-          width: 100%;
         }
 
         tr:nth-child(n+3) {
@@ -362,13 +364,13 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
         }
 
         th {
-          background-color: var(--cc-color-bg-neutral-alt);
           padding: 1em 0.5em;
+          background-color: var(--cc-color-bg-neutral-alt);
           text-align: left;
         }
 
         td {
-          padding: 0.5em 0.5em;
+          padding: 0.5em;
           white-space: nowrap;
         }
 
@@ -381,9 +383,9 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
         }
 
         :host([w-gte-600]) .recap {
-          grid-template-areas:
-            "text contact signup"
-            "total contact signup";
+          grid-template-areas: 
+            'text contact signup'
+            'total contact signup';
           grid-template-columns: 1fr min-content min-content;
         }
 
@@ -400,17 +402,18 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
           padding: 0.75em 1em;
         }
 
-        /*endregion*/
+        /* endregion */
 
-        /*region SMALL*/
+        /* region SMALL */
+
         .plan {
-          align-items: center;
-          border-top: 1px solid #e5e5e5;
           display: grid;
+          align-items: center;
+          padding: 1em;
+          border-top: 1px solid #e5e5e5;
+          margin: 0;
           gap: 0 1em;
           grid-template-columns: min-content [main-start] 1fr min-content [main-end];
-          margin: 0;
-          padding: 1em;
         }
 
         .product-name {
@@ -419,8 +422,8 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
         }
 
         .plan-name {
-          grid-column: main-start / main-end;
           margin-top: 1em;
+          grid-column: main-start / main-end;
         }
 
         .plan-name-label {
@@ -431,8 +434,8 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
         .feature-list {
           display: flex;
           flex-wrap: wrap;
-          grid-column: main-start / main-end;
           margin-top: 0.5em;
+          grid-column: main-start / main-end;
         }
 
         .feature {
@@ -442,8 +445,8 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
         }
 
         .feature:not(:last-child)::after {
-          content: ',';
           padding-right: 0.5em;
+          content: ',';
         }
 
         .feature-name {
@@ -453,16 +456,16 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
         }
 
         .feature-name::after {
-          content: ' :';
           padding-right: 0.25em;
+          content: ' :';
         }
 
         :host([w-lt-600]) .recap {
-          grid-template-areas:
-            "text total"
-            "contact signup";
-          grid-template-columns: min-content min-content;
           justify-content: center;
+          grid-template-areas: 
+            'text total'
+            'contact signup';
+          grid-template-columns: min-content min-content;
         }
 
         :host([w-lt-600]) .recap-total {
@@ -473,7 +476,7 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
           padding: 0.75em 1em;
         }
 
-        /*endregion*/
+        /* endregion */
       `,
     ];
   }

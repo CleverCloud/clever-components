@@ -110,28 +110,29 @@ export class CcMatomoInfo extends LitElement {
       css`
         :host {
           --cc-gap: 1em;
+
           display: block;
         }
 
-        [slot="info"] p:first-child {
+        [slot='info'] p:first-child {
           margin-top: 0;
         }
 
-        [slot="info"] p:last-child {
+        [slot='info'] p:last-child {
           margin-bottom: 0;
         }
 
         .cc-link {
-          align-items: center;
           display: inline-flex;
+          align-items: center;
         }
 
         cc-img {
-          border-radius: 0.25em;
-          flex: 0 0 auto;
-          height: 1.5em;
-          margin-right: 0.5em;
           width: 1.5em;
+          height: 1.5em;
+          flex: 0 0 auto;
+          margin-right: 0.5em;
+          border-radius: 0.25em;
         }
 
         .application-list > * {
