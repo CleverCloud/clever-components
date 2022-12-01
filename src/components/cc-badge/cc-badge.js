@@ -96,6 +96,7 @@ export class CcBadge extends LitElement {
         /* skeleton is more important */
 
         .skeleton {
+          border: 0.06em solid #bbb !important;
           background-color: #bbb !important;
           color: transparent !important;
         }
