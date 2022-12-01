@@ -4,6 +4,26 @@ title: Changelog
 ---
 # Clever Components changelog
 
+## [10.2.0](https://github.com/CleverCloud/clever-components/compare/10.1.0...10.2.0) (2022-12-01)
+
+
+### Features
+
+* **cc-notice:** init component ([60e811c](https://github.com/CleverCloud/clever-components/commit/60e811c6feb23f85928b86cd3d5a9b8e41ebfedc)), closes [#343](https://github.com/CleverCloud/clever-components/issues/343)
+* **cc-orga-member-card:** init component ([e0c1888](https://github.com/CleverCloud/clever-components/commit/e0c1888cff2b991167eceacaa960b17889a67006)), closes [#412](https://github.com/CleverCloud/clever-components/issues/412)
+* **cc-orga-member-list:** init component ([3bc272d](https://github.com/CleverCloud/clever-components/commit/3bc272d10dbff2a1bd623afde58ba362528dab81))
+* **stylelint:** add new tool ([76e75b3](https://github.com/CleverCloud/clever-components/commit/76e75b36a359c7e4e5873f8028c37d45b3cde53f)), closes [#122](https://github.com/CleverCloud/clever-components/issues/122)
+
+
+### Bug Fixes
+
+* **cc-badge / cc-stretch:** prevent layout shifts on Safari ([ffd55ad](https://github.com/CleverCloud/clever-components/commit/ffd55add70ded8d470abe2228539902c0625bc4d)), closes [#647](https://github.com/CleverCloud/clever-components/issues/647)
+* **cc-badge:** make the badge content grow with the badge ([c313f54](https://github.com/CleverCloud/clever-components/commit/c313f54ad80ed1ad26a50189ca0ec615bb414178))
+* **cc-badge:** set consistent border display with webkit ([131aff7](https://github.com/CleverCloud/clever-components/commit/131aff79fbad527eaa8eb0bb4ca5984d4ca19f3c)), closes [#630](https://github.com/CleverCloud/clever-components/issues/630)
+* **cc-button:** set default background color ([ba6e9c1](https://github.com/CleverCloud/clever-components/commit/ba6e9c1c8add174ba5fbea718613cf7c75334a9b)), closes [#643](https://github.com/CleverCloud/clever-components/issues/643)
+* **email:** update pattern to forbid spaces ([30cbfbd](https://github.com/CleverCloud/clever-components/commit/30cbfbd8dfe0f1b03c0455ef71674e41f8bc1d3b))
+* **with-resize-observer:** prevent layout shifts ([07cc728](https://github.com/CleverCloud/clever-components/commit/07cc7283ee11dc41d9b27984d60e22af5459d816))
+
 ## [10.1.0](https://github.com/CleverCloud/clever-components/compare/10.0.1...10.1.0) (2022-11-24)
 
 
