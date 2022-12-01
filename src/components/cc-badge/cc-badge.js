@@ -178,6 +178,7 @@ export class CcBadge extends LitElement {
         }
 
         img {
+          width: 1em;
           height: 1em;
         }
       `,

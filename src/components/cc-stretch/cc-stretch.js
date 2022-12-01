@@ -75,7 +75,6 @@ export class CcStretch extends LitElement {
       css`
         :host {
           display: inline-grid;
-          width: max-content;
           align-items: var(--cc-stretch-align-items, center);
           justify-items: var(--cc-stretch-justify-items, center);
         }
