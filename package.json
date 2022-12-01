@@ -40,6 +40,7 @@
     "storybook:build": "build-storybook -o storybook-static${STORYBOOK_PATH}",
     "storybook:dev": "wds",
     "stylelint": "stylelint --config ./stylelint.config.json src/components/*/*.js",
+    "stylelint:ci": "stylelint --config ./stylelint.config.json src/components/*/*.js --formatter github",
     "stylelint:fix": "stylelint --config ./stylelint.config.json src/components/*/*.js --fix",
     "typecheck": "tsc -p tsconfig-typecheck-jsdoc.json"
   },
