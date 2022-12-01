@@ -9,6 +9,7 @@ Here's list of interesting things to read, watch and listen to if you're working
 ## Articles, docs...
 
 * [Atomic Design](https://bradfrost.com/blog/post/atomic-web-design/)
+* [Defensive CSS](https://defensivecss.dev/)
 * [Design tokens — What are they & how will they help you?](https://lukasoppermann.medium.com/design-tokens-what-are-they-how-will-they-help-you-b73f80f602ab)
 * [Effective Skeleton Screens](https://timkadlec.com/remembers/2020-11-02-skeleton-screens/)
 * [Lit docs](https://lit.dev/)
