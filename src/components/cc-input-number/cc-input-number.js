@@ -233,17 +233,21 @@ export class CcInputNumber extends LitElement {
       skeletonStyles,
       // language=CSS
       css`
+        /* stylelint-disable no-duplicate-selectors */
+
         :host {
           display: inline-block;
         }
 
-        /*region Common to cc-input-* & cc-select*/
+        /* region Common to cc-input-* & cc-select */
+
         :host([inline]) {
           display: inline-grid;
           gap: 0 1em;
-          grid-template-areas: "label input"
-                              ". help"
-                              ". error";
+          grid-template-areas: 
+            'label input'
+            '. help'
+            '. error';
           grid-template-columns: auto 1fr;
         }
 
@@ -256,22 +260,22 @@ export class CcInputNumber extends LitElement {
         }
 
         label {
-          align-items: flex-end;
-          cursor: pointer;
           display: flex;
-          gap: 2em;
+          align-items: flex-end;
           justify-content: space-between;
-          line-height: 1.25em;
           padding-bottom: 0.35em;
+          cursor: pointer;
+          gap: 2em;
+          line-height: 1.25em;
         }
 
         :host([inline]) label {
           flex-direction: column;
+          justify-content: center;
+          padding: 0;
           gap: 0;
           grid-area: label;
-          justify-content: center;
           line-height: normal;
-          padding: 0;
         }
 
         .required {
@@ -285,83 +289,88 @@ export class CcInputNumber extends LitElement {
         }
 
         slot[name='help']::slotted(*) {
+          margin: 0.3em 0 0;
           color: var(--cc-color-text-weak);
           font-size: 0.9em;
-          margin: 0.3em 0 0 0;
         }
         
         slot[name='error']::slotted(*) {
+          margin: 0.5em 0 0;
           color: var(--cc-color-text-danger);
-          margin: 0.5em 0 0 0;
         }
-        /*endregion*/
+        /* endregion */
 
         .meta-input {
-          box-sizing: border-box;
-          display: inline-flex;
-          grid-area: input;
-          height: max-content;
-          overflow: visible;
           /* link to position:absolute of .ring */
           position: relative;
-          vertical-align: top;
+          display: inline-flex;
+          overflow: visible;
           width: 100%;
+          height: max-content;
+          box-sizing: border-box;
+          grid-area: input;
+          vertical-align: top;
         }
 
         .wrapper {
           display: grid;
-          flex: 1 1 0;
-          min-width: 0;
           overflow: hidden;
+          min-width: 0;
+          flex: 1 1 0;
           /* see input to know why 0.15em */
           padding: 0.15em 0.5em;
         }
 
         /* RESET */
+
         input {
+          display: block;
+          width: 100%;
+          box-sizing: border-box;
+          padding: 0;
+          border: 1px solid #000;
+          margin: 0;
           /* remove Safari box shadow */
           -webkit-appearance: none;
           background: none;
-          border: 1px solid #000;
-          box-sizing: border-box;
           color: inherit;
-          display: block;
           font-family: inherit;
           font-size: unset;
-          margin: 0;
-          padding: 0;
           resize: none;
-          width: 100%;
         }
 
         /* remove spinner firefox */
-        input[type="number"] {
+
+        input[type='number'] {
           -moz-appearance: textfield;
         }
 
         /* remove spinner safari */
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-          -webkit-appearance: none;
+
+        input[type='number']::-webkit-inner-spin-button,
+        input[type='number']::-webkit-outer-spin-button {
           margin: 0;
+          -webkit-appearance: none;
         }
 
         /* BASE */
+
         input {
+          z-index: 2;
+          overflow: hidden;
+          /* 2em with a 0.85em font-size ~ 1.7em */
+          /* (2em - 1.7em) / 2 ~ 0.15em of padding (top and bottom) on the wrapper */
+          height: 2em;
           border: none;
           font-family: var(--cc-input-font-family, inherit);
           font-size: 0.85em;
           grid-area: 1 / 1 / 2 / 2;
-          /* 2em with a 0.85em font-size ~ 1.7em */
-          /* (2em - 1.7em) / 2 ~ 0.15em of padding (top and bottom) on the wrapper */
-          height: 2em;
           line-height: 2em;
-          overflow: hidden;
           text-align: var(--cc-input-number-align, left);
-          z-index: 2;
         }
 
         /* STATES */
+
         input:focus,
         input:active {
           outline: 0;
@@ -374,32 +383,33 @@ export class CcInputNumber extends LitElement {
         }
 
         button[disabled] {
-          opacity: .5;
+          opacity: 0.5;
           pointer-events: none;
         }
 
         /* We use this empty .ring element to decorate the input with background, border, box-shadows... */
+
         .ring {
-          background: var(--cc-color-bg-default, #fff);
-          border: 1px solid #aaa;
-          border-radius: 0.25em;
+          position: absolute;
+          z-index: 0;
+          top: 0;
+          right: 0;
           bottom: 0;
-          box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
           left: 0;
           overflow: hidden;
-          position: absolute;
-          right: 0;
-          top: 0;
-          z-index: 0;
+          border: 1px solid #aaa;
+          background: var(--cc-color-bg-default, #fff);
+          border-radius: 0.25em;
+          box-shadow: 0 0 0 0 rgb(255 255 255 / 0%);
         }
 
         input:focus + .ring {
           border-color: #777;
-          box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
+          box-shadow: 0 0 0 0.2em rgb(50 115 220 / 25%);
         }
 
         input:focus.error + .ring {
-          box-shadow: 0 0 0 .2em var(--cc-color-border-danger-weak);
+          box-shadow: 0 0 0 0.2em var(--cc-color-border-danger-weak);
         }
 
         input.error + .ring {
@@ -411,8 +421,8 @@ export class CcInputNumber extends LitElement {
         }
 
         :host([disabled]) .ring {
-          background: var(--cc-color-bg-neutral-disabled);
           border-color: var(--cc-color-bg-neutral-disabled);
+          background: var(--cc-color-bg-neutral-disabled);
         }
 
         :host([readonly]) .ring {
@@ -420,11 +430,12 @@ export class CcInputNumber extends LitElement {
         }
 
         /* SKELETON */
+
         .skeleton .ring,
         .skeleton:hover .ring,
         .skeleton input:hover + .ring {
-          background-color: var(--cc-color-bg-neutral-disabled);
           border-color: #eee;
+          background-color: var(--cc-color-bg-neutral-disabled);
           cursor: progress;
         }
 
@@ -433,28 +444,29 @@ export class CcInputNumber extends LitElement {
         }
 
         /* RESET */
+
         .btn {
-          background: transparent;
-          border: none;
           display: block;
+          padding: 0;
+          border: none;
+          margin: 0;
+          background: transparent;
           font-family: inherit;
           font-size: unset;
-          margin: 0;
-          padding: 0;
         }
 
         .btn {
+          z-index: 2;
+          width: 1.6em;
+          height: 1.6em;
+          flex-shrink: 0;
+          margin: 0.2em;
           border-radius: 0.15em;
           cursor: pointer;
-          flex-shrink: 0;
-          height: 1.6em;
-          margin: 0.2em;
-          width: 1.6em;
-          z-index: 2;
         }
 
         .btn:focus {
-          box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
+          box-shadow: 0 0 0 0.2em rgb(50 115 220 / 25%);
           outline: 0;
         }
 
@@ -473,17 +485,18 @@ export class CcInputNumber extends LitElement {
         }
 
         /* We can do this because we set a visible focus state */
+
         .btn::-moz-focus-inner {
           border: 0;
         }
 
         .btn-img {
-          box-sizing: border-box;
-          filter: grayscale(100%);
-          height: 100%;
-          opacity: 0.6;
-          padding: 15%;
           width: 100%;
+          height: 100%;
+          box-sizing: border-box;
+          padding: 15%;
+          filter: grayscale(100%);
+          opacity: 0.6;
         }
 
         .btn-img:hover {

@@ -125,18 +125,18 @@ export class CcBlock extends LitElement {
       // language=CSS
       css`
         :host {
-          background-color: var(--cc-color-bg-default, #fff);
-          border: 1px solid #bcc2d1;
-          border-radius: 0.25em;
-          box-sizing: border-box;
+          position: relative;
           display: grid;
           overflow: hidden;
-          position: relative;
+          box-sizing: border-box;
+          border: 1px solid #bcc2d1;
+          background-color: var(--cc-color-bg-default, #fff);
+          border-radius: 0.25em;
         }
 
         .head {
-          align-items: center;
           display: flex;
+          align-items: center;
           padding: 1em;
         }
 
@@ -144,23 +144,23 @@ export class CcBlock extends LitElement {
           padding-left: 3.5em;
         }
 
-        :host([state="open"]) .head:hover,
-        :host([state="close"]) .head:hover {
+        :host([state='open']) .head:hover,
+        :host([state='close']) .head:hover {
           background-color: var(--cc-color-bg-neutral-hovered);
           cursor: pointer;
         }
 
         cc-img {
-          align-self: flex-start;
-          border-radius: 0.25em;
-          height: 1.5em;
-          margin-right: 1em;
           width: 1.5em;
+          height: 1.5em;
+          align-self: flex-start;
+          margin-right: 1em;
+          border-radius: 0.25em;
         }
 
-        ::slotted([slot="title"]) {
-          color: var(--cc-color-text-strong);
+        ::slotted([slot='title']) {
           flex: 1 1 0;
+          color: var(--cc-color-text-strong);
           font-size: 1.2em;
           font-weight: bold;
         }
@@ -170,25 +170,26 @@ export class CcBlock extends LitElement {
           --width: 8em;
           --r: -45deg;
           --translate: 1.6em;
+
+          position: absolute;
+          z-index: 2;
+          top: calc(var(--height) / -2);
+          left: calc(var(--width) / -2);
+          width: var(--width);
+          height: var(--height);
           background: var(--cc-color-bg-strong);
           color: white;
           font-size: 0.9em;
           font-weight: bold;
-          height: var(--height);
-          left: calc(var(--width) / -2);
           line-height: var(--height);
-          position: absolute;
           text-align: center;
-          top: calc(var(--height) / -2);
           transform: rotate(var(--r)) translateY(var(--translate));
-          width: var(--width);
-          z-index: 2;
         }
 
         .main {
           display: grid;
-          grid-gap: 1em;
           padding: 0.5em 1em 1em;
+          grid-gap: 1em;
         }
 
         :host([no-head]) .main {
@@ -201,8 +202,9 @@ export class CcBlock extends LitElement {
         }
 
         /* superpose main and overlay */
+
         .main-wrapper,
-        ::slotted([slot="overlay"]) {
+        ::slotted([slot='overlay']) {
           grid-area: 2 / 1 / auto / auto;
         }
 
@@ -210,12 +212,12 @@ export class CcBlock extends LitElement {
           padding-left: 2.5em;
         }
 
-        ::slotted([slot="overlay"]) {
-          align-content: center;
-          display: grid;
-          justify-items: center;
+        ::slotted([slot='overlay']) {
           /* we have a few z-index:2 on atoms */
           z-index: 10;
+          display: grid;
+          align-content: center;
+          justify-items: center;
         }
 
         ::slotted(.cc-block_empty-msg) {

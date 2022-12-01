@@ -105,32 +105,33 @@ export class CcZone extends LitElement {
       css`
         :host {
           --lh: 1.5em;
+
           display: flex;
         }
 
-        :host([mode="small"]),
-        :host([mode="small-infra"]) {
+        :host([mode='small']),
+        :host([mode='small-infra']) {
           --lh: 1em;
         }
 
         .flag {
-          border-radius: 0.15em;
-          box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
           display: inline-block;
+          width: 2em;
           height: var(--lh);
           margin-right: 1em;
-          width: 2em;
+          border-radius: 0.15em;
+          box-shadow: 0 0 3px rgb(0 0 0 / 40%);
         }
 
-        :host([mode="small"]) .flag,
-        :host([mode="small-infra"]) .flag {
-          margin-right: 0.5em;
+        :host([mode='small']) .flag,
+        :host([mode='small-infra']) .flag {
           width: 1.33em;
+          margin-right: 0.5em;
         }
 
         .wrapper-details-logo {
-          flex: 1 1 0;
           min-height: var(--lh);
+          flex: 1 1 0;
         }
 
         .wrapper-details {
@@ -138,15 +139,15 @@ export class CcZone extends LitElement {
         }
 
         .details {
-          align-self: center;
           flex: 1 1 0;
+          align-self: center;
           line-height: var(--lh);
         }
 
-        :host([mode="small"]) .title,
-        :host([mode="small"]) .subtitle,
-        :host([mode="small-infra"]) .title,
-        :host([mode="small-infra"]) .subtitle {
+        :host([mode='small']) .title,
+        :host([mode='small']) .subtitle,
+        :host([mode='small-infra']) .title,
+        :host([mode='small-infra']) .subtitle {
           font-size: 0.8em;
         }
 
@@ -160,14 +161,15 @@ export class CcZone extends LitElement {
 
         .infra-logo {
           --cc-img-fit: contain;
+
+          width: 4em;
           height: var(--lh);
           margin-left: 0.5em;
-          width: 4em;
         }
 
-        :host([mode="small"]) .tag-list,
-        :host([mode="small"]) .infra-logo,
-        :host([mode="small-infra"]) .tag-list {
+        :host([mode='small']) .tag-list,
+        :host([mode='small']) .infra-logo,
+        :host([mode='small-infra']) .tag-list {
           display: none;
         }
 
@@ -176,15 +178,15 @@ export class CcZone extends LitElement {
         }
 
         .tag {
-          background-color: var(--cc-zone-tag-bgcolor, var(--cc-color-bg-soft, #eeeeee));
-          border: 1px solid var(--cc-zone-tag-bdcolor, transparent);
-          border-radius: 0.25em;
           box-sizing: border-box;
+          padding: 0.1em 0.3em;
+          border: 1px solid var(--cc-zone-tag-bdcolor, transparent);
+          margin-top: 0.5em;
+          background-color: var(--cc-zone-tag-bgcolor, var(--cc-color-bg-soft, #eee));
+          border-radius: 0.25em;
           font-family: var(--cc-ff-monospace);
           font-size: 0.8em;
           line-height: 1.5;
-          margin-top: 0.5em;
-          padding: 0.1em 0.3em;
         }
 
         .skeleton {

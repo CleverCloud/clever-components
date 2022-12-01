@@ -164,7 +164,7 @@ export class CcPricingHeader extends LitElement {
         }
 
         sl-select {
-          --focus-ring: 0 0 0 .2em rgba(50, 115, 220, .25);
+          --focus-ring: 0 0 0 0.2em rgb(50 115 220 / 25%);
           --sl-input-background-color: var(--cc-color-bg-default, #fff);
           --sl-input-background-color-disabled: var(--cc-color-bg-neutral-disabled, #eee);
           --sl-input-background-color-hover: var(--cc-color-bg-default, #fff);
@@ -177,6 +177,7 @@ export class CcPricingHeader extends LitElement {
           --sl-input-color-focus: var(--cc-color-text-default, #000);
           --sl-input-color-hover: var(--cc-color-text-default, #000);
           --sl-input-color: var(--cc-color-text-default, #000);
+
           animation: none;
         }
 
@@ -196,8 +197,8 @@ export class CcPricingHeader extends LitElement {
         }
 
         .currency-select {
-          flex: 1 1 0;
           min-width: 10em;
+          flex: 1 1 0;
         }
 
         .zone-select {
@@ -210,11 +211,13 @@ export class CcPricingHeader extends LitElement {
 
         /* The label is not used in the list display
         It's only used for the current selected value */
+
         .zone-item::part(label) {
           display: none;
         }
 
         /* Expand the cc-zone to the whole width */
+
         .zone-item::part(prefix) {
           display: block;
           flex: 1 1 0;
@@ -225,6 +228,7 @@ export class CcPricingHeader extends LitElement {
           --cc-zone-subtitle-color: var(--cc-color-text-inverted, #fff);
           --cc-zone-tag-bdcolor: var(--cc-color-text-inverted, #fff);
           --cc-zone-tag-bgcolor: transparent;
+
           color: var(--cc-color-text-inverted, #fff);
         }
 
@@ -233,8 +237,8 @@ export class CcPricingHeader extends LitElement {
         }
 
         .estimated-cost--value {
-          font-weight: bold;
           height: var(--sl-input-height-medium);
+          font-weight: bold;
           line-height: var(--sl-input-height-medium);
         }
 

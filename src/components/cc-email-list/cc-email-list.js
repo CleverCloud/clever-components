@@ -345,16 +345,16 @@ export class CcEmailList extends LitElement {
         }
 
         .secondary-addresses {
-          margin: 0;
           padding: 0;
+          margin: 0;
         }
 
-        /*region address-line*/
+        /* region address-line */
 
         .address-line {
-          align-items: center;
           display: flex;
           flex-wrap: wrap;
+          align-items: center;
           gap: 1em;
         }
 
@@ -363,8 +363,8 @@ export class CcEmailList extends LitElement {
         }
 
         .address {
-          align-items: center;
           display: flex;
+          align-items: center;
           gap: 1em;
         }
 
@@ -384,22 +384,23 @@ export class CcEmailList extends LitElement {
           min-width: 15em;
         }
 
-        /*endregion*/
+        /* endregion */
 
         .buttons {
-          align-items: center;
           display: flex;
           flex-wrap: wrap;
+          align-items: center;
           gap: 1em;
         }
 
-        /*region FORM*/
+        /* region FORM */
+
         form {
-          align-items: start;
           display: flex;
           flex-wrap: wrap;
-          gap: 0 1em;
+          align-items: start;
           justify-content: flex-end;
+          gap: 0 1em;
         }
 
         form > cc-input-text {
@@ -410,7 +411,7 @@ export class CcEmailList extends LitElement {
           margin-top: var(--cc-margin-top-btn-horizontal-form);
         }
 
-        /*endregion*/
+        /* endregion */
 
         .skeleton {
           background-color: #bbb;

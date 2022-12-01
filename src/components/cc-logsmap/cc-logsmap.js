@@ -203,53 +203,53 @@ export class CcLogsMap extends LitElement {
     // language=CSS
     return css`
       :host {
-        background-color: var(--cc-color-bg-default, #fff);
-        border: 1px solid #ccc;
-        border-radius: 0.25em;
-        display: block;
-        height: 15em;
-        overflow: hidden;
         position: relative;
+        display: block;
+        overflow: hidden;
         width: 20em;
+        height: 15em;
+        border: 1px solid #ccc;
+        background-color: var(--cc-color-bg-default, #fff);
+        border-radius: 0.25em;
       }
 
       cc-toggle {
-        left: 0.5em;
         position: absolute;
-        top: 0.5em;
         z-index: 2;
+        top: 0.5em;
+        left: 0.5em;
       }
 
       cc-map {
-        height: 100%;
-        left: 0;
         position: absolute;
-        top: 0;
-        width: 100%;
         z-index: 1;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
       }
 
-      cc-map[view-zoom="1"] {
+      cc-map[view-zoom='1'] {
         --cc-map-marker-dot-size: 6px;
       }
 
-      cc-map[view-zoom="2"] {
+      cc-map[view-zoom='2'] {
         --cc-map-marker-dot-size: 8px;
       }
 
-      cc-map[view-zoom="3"] {
+      cc-map[view-zoom='3'] {
         --cc-map-marker-dot-size: 10px;
       }
 
-      cc-map[view-zoom="4"] {
+      cc-map[view-zoom='4'] {
         --cc-map-marker-dot-size: 12px;
       }
 
-      cc-map[view-zoom="5"] {
+      cc-map[view-zoom='5'] {
         --cc-map-marker-dot-size: 14px;
       }
 
-      cc-map[view-zoom="6"] {
+      cc-map[view-zoom='6'] {
         --cc-map-marker-dot-size: 16px;
       }
     `;

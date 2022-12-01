@@ -122,8 +122,8 @@ export class CcHeptapodInfo extends LitElement {
         }
 
         .header-logo {
-          height: 3.25em;
           width: 3.25em;
+          height: 3.25em;
         }
 
         .header-content {
@@ -138,24 +138,25 @@ export class CcHeptapodInfo extends LitElement {
         }
 
         .pricing-item {
-          color: var(--cc-color-text-weak);
           flex: 1 1 auto;
+          color: var(--cc-color-text-weak);
           text-align: center;
         }
 
         .pricing-item-value {
-          color: var(--cc-color-text-primary-highlight);
           display: inline-block;
+          color: var(--cc-color-text-primary-highlight);
           font-weight: bold;
         }
 
         .no-statistics {
+          margin: 0.2em;
           color: var(--cc-color-text-weak);
           font-style: italic;
-          margin: 0.2em;
         }
 
         /* SKELETON */
+
         .skeleton {
           background-color: #bbb;
           color: transparent;

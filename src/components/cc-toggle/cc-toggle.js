@@ -155,87 +155,94 @@ export class CcToggle extends LitElement {
     return [
       // language=CSS
       css`
+        /* stylelint-disable no-duplicate-selectors */
+
         :host {
-          --cc-toggle-color: var(--cc-color-bg-primary, #000000);
+          --cc-toggle-color: var(--cc-color-bg-primary, #000);
           --cc-toggle-img-filter: none;
           --cc-toggle-img-filter-selected: none;
           --height: 2em;
+
           display: inline-flex;
         }
 
         /* RESET */
+
         fieldset {
-          border: 0;
           display: inline-block;
-          margin: 0;
           min-width: 0;
           padding: 0;
+          border: 0;
+          margin: 0;
         }
 
         /* RESET */
+
         legend {
-          color: inherit;
-          line-height: inherit;
           max-width: 100%;
           padding: 0;
+          color: inherit;
+          line-height: inherit;
           white-space: normal;
         }
 
         legend:not(:empty) {
-          line-height: 1.25em;
           padding-bottom: 0.35em;
+          line-height: 1.25em;
         }
 
         :host([inline]) legend {
+          width: max-content;
+          padding: 0;
+          margin-right: 1em;
           /* cannot use flex to change legend position. Only solution is float. */
           float: left;
           /* used to vertically center the floated element. */
           line-height: var(--height);
-          margin-right: 1em;
-          padding: 0;
-          width: max-content;
         }
 
         .toggle-group {
-          background-color: var(--cc-color-bg-default, #fff);
-          border-radius: 0.15em;
-          box-sizing: border-box;
           display: flex;
-          height: var(--height);
-          line-height: 1.25;
           overflow: visible;
           width: max-content;
+          height: var(--height);
+          box-sizing: border-box;
+          background-color: var(--cc-color-bg-default, #fff);
+          border-radius: 0.15em;
+          line-height: 1.25;
         }
 
         /* We hide the <input> and only display the related <label> */
+
         input {
+          display: block;
+          width: 0;
+          height: 0;
+          border: 0;
+          margin: 0;
           -moz-appearance: none;
           -webkit-appearance: none;
           appearance: none;
-          border: 0;
-          display: block;
-          height: 0;
-          margin: 0;
           outline: none;
-          width: 0;
         }
 
         label {
           /* used around the background */
           --space: 2px;
           --border-radius: var(--cc-toggle-border-radius, 0.15em);
+
+          position: relative;
+          display: grid;
           align-items: center;
-          border-color: var(--cc-toggle-color);
+          padding: 0 0.6em;
           border-style: solid;
+          border-color: var(--cc-toggle-color);
           color: var(--color-txt);
           cursor: pointer;
-          display: grid;
           font-size: 0.85em;
           font-weight: var(--cc-toggle-font-weight, bold);
           gap: 0.6em;
           grid-auto-flow: column;
-          padding: 0 0.6em;
-          position: relative;
           text-transform: var(--cc-toggle-text-transform, uppercase);
           -moz-user-select: none;
           -webkit-user-select: none;
@@ -253,8 +260,8 @@ export class CcToggle extends LitElement {
         }
 
         label:last-of-type {
-          border-radius: 0 var(--border-radius) var(--border-radius) 0;
           border-right-width: 1px;
+          border-radius: 0 var(--border-radius) var(--border-radius) 0;
         }
 
         label:not(:first-of-type) {
@@ -262,30 +269,32 @@ export class CcToggle extends LitElement {
         }
 
         /* Used to display a background behind the text */
+
         label::before {
-          background-color: var(--cc-color-bg);
-          border-radius: .15em;
-          bottom: var(--space);
-          content: '';
-          display: block;
-          left: var(--space);
           position: absolute;
-          right: var(--space);
-          top: var(--space);
           z-index: 0;
+          top: var(--space);
+          right: var(--space);
+          bottom: var(--space);
+          left: var(--space);
+          display: block;
+          background-color: var(--cc-color-bg);
+          border-radius: 0.15em;
+          content: '';
         }
 
         /* Used to display a bottom line in display subtle */
+
         .display-subtle label::after {
-          background-color: var(--color-subtle-border);
+          position: absolute;
+          z-index: 0;
+          right: 0.25em;
           bottom: 0;
-          content: '';
+          left: 0.25em;
           display: block;
           height: var(--space);
-          left: 0.25em;
-          position: absolute;
-          right: 0.25em;
-          z-index: 0;
+          background-color: var(--color-subtle-border);
+          content: '';
         }
 
         label span,
@@ -295,11 +304,12 @@ export class CcToggle extends LitElement {
 
         img {
           display: block;
-          height: 1.45em;
           width: 1.45em;
+          height: 1.45em;
         }
 
         /* NOT SELECTED */
+
         label {
           --cc-color-bg: var(--cc-color-bg-default, #fff);
           --color-txt: var(--cc-color-text-default);
@@ -310,8 +320,9 @@ export class CcToggle extends LitElement {
         }
 
         /* DISABLED */
+
         .toggle-group.disabled {
-          opacity: .5;
+          opacity: 0.5;
         }
 
         .disabled label {
@@ -319,15 +330,17 @@ export class CcToggle extends LitElement {
         }
 
         /* HOVERED */
+
         .display-normal input:not(:checked):enabled:hover + label,
         .display-subtle input:enabled:hover + label {
           --cc-color-bg: var(--cc-color-bg-neutral-hovered);
         }
 
         /* FOCUS */
+
         .toggle-group.mode-single.enabled:not(:hover):focus-within,
         .toggle-group.mode-multiple.enabled:not(:hover) input:enabled:focus + label {
-          box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
+          box-shadow: 0 0 0 0.2em rgb(50 115 220 / 25%);
           outline: 0;
         }
 
@@ -336,11 +349,13 @@ export class CcToggle extends LitElement {
         }
 
         /* ACTIVE */
+
         input:enabled:active + label::before {
           transform: scale(0.95);
         }
 
         /* SELECTED */
+
         input:checked + label img {
           filter: var(--cc-toggle-img-filter-selected);
         }

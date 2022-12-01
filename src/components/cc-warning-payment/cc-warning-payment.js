@@ -128,8 +128,8 @@ export class CcWarningPayment extends LitElement {
         }
         
         ul {
-          margin: 0.5em 0 0 1.5em;
           padding: 0;
+          margin: 0.5em 0 0 1.5em;
         }
         
         li {

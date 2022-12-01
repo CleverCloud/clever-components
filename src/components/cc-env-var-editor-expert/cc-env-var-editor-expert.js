@@ -184,23 +184,23 @@ export class CcEnvVarEditorExpert extends LitElement {
 
         .error-list {
           display: grid;
-          grid-gap: 0.75em;
           margin-top: 1em;
+          grid-gap: 0.75em;
         }
 
         .example {
-          line-height: 1.5;
           padding-bottom: 1em;
+          line-height: 1.5;
         }
 
-
         /* i18n error message may contain <code> tags */
+
         cc-error code,
         .example code {
-          background-color: var(--cc-color-bg-neutral, #eeeeee);
+          padding: 0.15em 0.3em;
+          background-color: var(--cc-color-bg-neutral, #eee);
           border-radius: 0.25em;
           font-family: var(--cc-ff-monospace, monospace);
-          padding: 0.15em 0.3em;
         }
 
         cc-input-text {

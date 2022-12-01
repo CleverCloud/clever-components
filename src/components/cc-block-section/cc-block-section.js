@@ -30,47 +30,53 @@ export class CcBlockSection extends LitElement {
       // language=CSS
       css`
         :host {
-          background-color: var(--cc-color-bg-default, #fff);
           display: grid;
+          background-color: var(--cc-color-bg-default, #fff);
           grid-gap: 1em;
         }
 
         /*
-        REQUIREMENT #1: We want to style <cc-block-section> elements but only when they are used inside the default slot of a <cc-block>.
-        => This can be done from the <cc-block> with CSS only ::slotted(cc-block-section).
-        REQUIREMENT #2: As the point is to add separation lines/borders, we don't want to style the first one.
-        => This cannot be done with ::slotted(cc-block-section:first-of-type).
-        SOLUTION: Add the margin directly in <cc-block-section> with :host(:not(:first-of-type))
-        WARNINGS #1: This breaks the "don't add margin on the :host, do it on the parent" but we exlained why we cannot do it.
-        WARNINGS 21: This code will work even if the parent is not a <cc-block>. We could do something to prevent this pb with connectedCallback and a class or an attribute but it's a bit much just for this.
-         */
+          REQUIREMENT #1: We want to style <cc-block-section> elements
+                          but only when they are used inside the default slot of a <cc-block>.
+          => This can be done from the <cc-block> with CSS only ::slotted(cc-block-section).
+          REQUIREMENT #2: As the point is to add separation lines/borders, we don't want to style the first one.
+          => This cannot be done with ::slotted(cc-block-section:first-of-type).
+          SOLUTION: Add the margin directly in <cc-block-section> with :host(:not(:first-of-type))
+          WARNINGS #1: This breaks the "don't add margin on the :host,
+                       do it on the parent" but we exlained why we cannot do it.
+          WARNINGS 21: This code will work even if the parent is not a <cc-block>.
+                       We could do something to prevent this pb with connectedCallback
+                       and a class or an attribute but it's a bit much just for this.
+       */
+
         :host(:not(:first-of-type)) {
+          padding-top: 2em;
           border-top: 1px solid #bcc2d1;
           margin-top: 1em;
-          padding-top: 2em;
         }
 
-        ::slotted([slot="title"]) {
+        ::slotted([slot='title']) {
           font-weight: bold;
         }
 
-        ::slotted([slot="title"].danger) {
+        ::slotted([slot='title'].danger) {
           color: var(--cc-color-text-danger);
         }
 
         /* TODO: We may want to adapt cc-flex-gap for this case one day */
+
         .section {
           display: flex;
           flex-wrap: wrap;
           margin: -0.5em -1.5em;
         }
 
-        ::slotted([slot="info"]),
+        ::slotted([slot='info']),
         .main {
           margin: 0.5em 1.5em;
         }
 
-        ::slotted([slot="info"]) {
+        ::slotted([slot='info']) {
           flex: 1 1 15em;
           line-height: 1.5;
         }

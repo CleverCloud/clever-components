@@ -156,8 +156,9 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
           display: block;
         }
 
-        /*region COMMON*/
+        /* region COMMON */
         /* we should use a class (something like "number-value") but it's not possible right now in i18n */
+
         code {
           font-family: var(--cc-ff-monospace, monospace);
         }
@@ -175,9 +176,10 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
           --cc-align-items: center;
         }
 
-        /*endregion*/
+        /* endregion */
 
-        /*region SMALL*/
+        /* region SMALL */
+
         .invoice-list {
           display: grid;
           gap: 1.5em;
@@ -194,9 +196,9 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
         }
 
         .invoice-icon {
-          flex: 0 0 auto;
-          height: 1.5em;
           width: 1.5em;
+          height: 1.5em;
+          flex: 0 0 auto;
         }
 
         .invoice-text {
@@ -215,13 +217,14 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
           background-color: #bbb;
           color: transparent;
         }
-        /*endregion*/
+        /* endregion */
 
-        /*region BIG*/
+        /* region BIG */
+
         table {
+          overflow: hidden;
           border-collapse: collapse;
           border-radius: 5px;
-          overflow: hidden;
         }
 
         th,
@@ -231,7 +234,7 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
         }
 
         th {
-          background-color: var(--cc-color-bg-neutral-alt, #eeeeee);
+          background-color: var(--cc-color-bg-neutral-alt, #eee);
           color: var(--cc-color-text-strongest);
         }
 
@@ -245,6 +248,7 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
         }
 
         /* applied on th and td */
+
         .number {
           text-align: right;
         }
@@ -262,7 +266,7 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
           background-color: #bbb;
         }
 
-        /*endregion*/
+        /* endregion */
       `,
     ];
   }

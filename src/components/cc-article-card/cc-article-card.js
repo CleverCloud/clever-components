@@ -85,24 +85,24 @@ export class CcArticleCard extends LitElement {
       // language=CSS
       css`
         :host {
-          background-color: var(--cc-color-bg-default, #fff);
-          border: 1px solid #bcc2d1;
-          border-radius: 0.25em;
-          box-sizing: border-box;
           display: grid;
+          overflow: hidden;
+          box-sizing: border-box;
+          padding: 1em;
+          border: 1px solid #bcc2d1;
+          background-color: var(--cc-color-bg-default, #fff);
+          border-radius: 0.25em;
           gap: 1em;
           grid-template-columns: 1fr;
           grid-template-rows: min-content min-content 1fr min-content;
-          overflow: hidden;
-          padding: 1em;
         }
 
         .image {
-          border-bottom: 1px solid #bcc2d1;
           display: block;
           height: 8em;
+          border-bottom: 1px solid #bcc2d1;
+          margin: -1em -1em 0;
           justify-self: stretch;
-          margin: -1em -1em 0 -1em;
         }
 
         .title {

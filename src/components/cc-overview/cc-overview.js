@@ -56,13 +56,19 @@ export class CcOverview extends withResizeObserver(LitElement) {
     // language=CSS
     return css`
       :host {
-        /* We ask the user to specify this number (if > 1) because the information is known and detecting it automatically and properly requires a MutationObserver to count them in the \`<slot>\` and it seems overkill. */
+        /*
+          We ask the user to specify this number (if > 1)
+          because the information is known and detecting it automatically and properly requires a MutationObserver
+          to count them in the \` < slot >\` and it seems overkill.
+        */
         --cc-overview-head-count: 1;
+
         display: grid;
         grid-gap: 1em;
       }
 
-      /*region GRID LAYOUT*/
+      /* region GRID LAYOUT */
+
       :host([w-lt-570]) {
         grid-template-columns: [main-start] 1fr [main-end];
       }
@@ -79,54 +85,61 @@ export class CcOverview extends withResizeObserver(LitElement) {
         grid-template-columns: [main-start] 1fr 1fr 1fr [main-end] 1fr;
       }
 
-      /*endregion*/
+      /* endregion */
 
-      /*region GRID LAYOUT (app)*/
-      :host([mode="app"][w-lt-570]) {
+      /* region GRID LAYOUT (app) */
+
+      :host([mode='app'][w-lt-570]) {
         grid-template-rows: repeat(calc(var(--cc-overview-head-count) + 6), min-content) [main-start] 1fr [main-end];
       }
 
-      :host([mode="app"][w-gte-570][w-lt-860]) {
+      :host([mode='app'][w-gte-570][w-lt-860]) {
         grid-template-rows: repeat(calc(var(--cc-overview-head-count) + 3), min-content) [main-start] 1fr [main-end];
       }
 
-      :host([mode="app"][w-gte-860][w-lt-1150]) {
-        grid-template-rows: repeat(calc(var(--cc-overview-head-count) + 1), min-content) [main-start] min-content 1fr 1fr [main-end];
+      :host([mode='app'][w-gte-860][w-lt-1150]) {
+        grid-template-rows: repeat(calc(var(--cc-overview-head-count) + 1), min-content) 
+          [main-start] min-content 1fr 1fr [main-end];
       }
 
-      :host([mode="app"][w-gte-1150]) {
-        grid-template-rows: repeat(calc(var(--cc-overview-head-count) + 1), min-content) [main-start] 1fr 1fr [main-end];
+      :host([mode='app'][w-gte-1150]) {
+        grid-template-rows: repeat(calc(var(--cc-overview-head-count) + 1), min-content)
+          [main-start] 1fr 1fr [main-end];
       }
 
-      /*endregion*/
+      /* endregion */
 
-      /*region GRID LAYOUT (orga)*/
-      :host([mode="orga"][w-lt-570]) {
+      /* region GRID LAYOUT (orga) */
+
+      :host([mode='orga'][w-lt-570]) {
         grid-template-rows: repeat(calc(var(--cc-overview-head-count) + 2), min-content) [main-start] 1fr [main-end];
       }
 
-      :host([mode="orga"][w-gte-570][w-lt-860]) {
+      :host([mode='orga'][w-gte-570][w-lt-860]) {
         grid-template-rows: repeat(calc(var(--cc-overview-head-count) + 1), min-content) [main-start] 1fr [main-end];
       }
 
-      :host([mode="orga"][w-gte-860]) {
-        grid-template-rows: repeat(calc(var(--cc-overview-head-count) + 0), min-content) [main-start] 1fr 1fr [main-end];
+      :host([mode='orga'][w-gte-860]) {
+        grid-template-rows: repeat(calc(var(--cc-overview-head-count) + 0), min-content) 
+          [main-start] 1fr 1fr [main-end];
       }
 
-      /*endregion*/
+      /* endregion */
 
       /* .head TILE POSITION/SIZE */
+
       ::slotted(*.head) {
         grid-column: 1 / -1;
       }
 
       /* .main TILE POSITION/SIZE */
+
       ::slotted(*.main) {
-        grid-column: main-start / main-end;
-        grid-row: main-start / main-end;
+        width: auto;
         height: auto;
         min-height: 25em;
-        width: auto;
+        grid-column: main-start / main-end;
+        grid-row: main-start / main-end;
       }
     `;
   }

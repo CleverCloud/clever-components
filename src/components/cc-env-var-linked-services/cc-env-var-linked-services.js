@@ -151,11 +151,11 @@ export class CcEnvVarLinkedServices extends LitElement {
         .loading,
         .empty-msg,
         .error {
-          background-color: var(--cc-color-bg-default, #fff);
-          border: 1px solid #bcc2d1;
-          border-radius: 0.25em;
           box-sizing: border-box;
           padding: 1em;
+          border: 1px solid #bcc2d1;
+          background-color: var(--cc-color-bg-default, #fff);
+          border-radius: 0.25em;
         }
 
         .loading {
@@ -163,9 +163,9 @@ export class CcEnvVarLinkedServices extends LitElement {
         }
 
         cc-loader {
+          width: 1.5em;
           height: 1.5em;
           margin-right: 1em;
-          width: 1.5em;
         }
 
         .service-list {

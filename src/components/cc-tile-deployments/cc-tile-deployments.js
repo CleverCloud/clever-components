@@ -110,24 +110,24 @@ export class CcTileDeployments extends LitElement {
       css`
         .tile_body {
           align-items: start;
+          justify-content: space-between;
           grid-gap: 1em;
           grid-template-columns: auto auto auto;
-          justify-content: space-between;
         }
 
         .state {
           font-weight: bold;
         }
 
-        .state[data-state="CANCELLED"] {
+        .state[data-state='CANCELLED'] {
           color: var(--cc-color-text-warning);
         }
 
-        .state[data-state="FAIL"] {
+        .state[data-state='FAIL'] {
           color: var(--cc-color-text-danger);
         }
 
-        .state[data-state="OK"] {
+        .state[data-state='OK'] {
           color: var(--cc-color-text-success);
         }
 

@@ -100,14 +100,14 @@ export class CcHtmlFrame extends LitElement {
       // language=CSS
       css`
         :host {
-          display: block;
           position: relative;
+          display: block;
         }
 
         iframe {
-          border: none;
-          height: 100%;
           width: 100%;
+          height: 100%;
+          border: none;
         }
 
         :host([loading]) iframe {
@@ -115,11 +115,11 @@ export class CcHtmlFrame extends LitElement {
         }
 
         cc-loader {
-          height: 100%;
-          left: 0;
           position: absolute;
           top: 0;
+          left: 0;
           width: 100%;
+          height: 100%;
         }
       `,
     ];

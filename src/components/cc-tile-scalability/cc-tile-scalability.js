@@ -108,16 +108,16 @@ export class CcTileScalability extends LitElement {
         }
 
         .info {
-          align-items: center;
           display: flex;
-          justify-content: center;
           width: 100%;
+          align-items: center;
+          justify-content: center;
         }
 
         .separator {
-          border-top: 1px dashed #8C8C8C;
-          flex: 1 1 0;
           width: 1.5em;
+          flex: 1 1 0;
+          border-top: 1px dashed #8c8c8c;
         }
 
         [title] {

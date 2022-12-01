@@ -331,19 +331,20 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
       // language=CSS
       css`
         :host {
-          background-color: var(--cc-color-bg-default);
           display: block;
+          background-color: var(--cc-color-bg-default);
         }
 
-        /*region COMMON*/
+        /* region COMMON */
+
         .number-align {
           text-align: right;
         }
 
         em[title] {
+          position: relative;
           cursor: help;
           font-style: normal;
-          position: relative;
         }
 
         em[title] code {
@@ -352,13 +353,14 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
           font-weight: bold;
         }
 
-        /*endregion*/
+        /* endregion */
 
-        /*region BIG*/
+        /* region BIG */
+
         table {
+          width: 100%;
           border-collapse: collapse;
           border-spacing: 0;
-          width: 100%;
         }
 
         tr:nth-child(n+3) {
@@ -366,8 +368,8 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
         }
 
         th {
-          background-color: var(--cc-color-bg-neutral, #f6f6fb);
           padding: 1em 0.5em;
+          background-color: var(--cc-color-bg-neutral, #f6f6fb);
           text-align: left;
         }
 
@@ -376,7 +378,7 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
         }
 
         td {
-          padding: 0.5em 0.5em;
+          padding: 0.5em;
           white-space: nowrap;
         }
 
@@ -389,25 +391,26 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
         }
 
         table em[title] code {
-          box-sizing: border-box;
-          left: 100%;
-          padding: 0 0.15em;
           position: absolute;
+          left: 100%;
+          box-sizing: border-box;
+          padding: 0 0.15em;
         }
 
-        /*endregion*/
+        /* endregion */
 
-        /*region SMALL*/
+        /* region SMALL */
+
         .plan {
-          align-items: center;
-          border-top: 1px solid #e5e5e5;
           display: grid;
-          grid-template-columns: min-content [main-start] 1fr [main-end] min-content;
-          margin: 0;
+          align-items: center;
           padding: 1em;
+          border-top: 1px solid #e5e5e5;
+          margin: 0;
+          grid-template-columns: min-content [main-start] 1fr [main-end] min-content;
         }
 
-        :host([action="none"]) .plan {
+        :host([action='none']) .plan {
           grid-template-columns: [main-start] 1fr [main-end] min-content;
         }
 
@@ -428,32 +431,32 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
           margin-top: 1em;
         }
 
-        .plan[data-state="closed"] .feature-list {
+        .plan[data-state='closed'] .feature-list {
           display: flex;
           flex-wrap: wrap;
         }
 
         .feature {
-          border-bottom: 1px solid #e5e5e5;
           display: flex;
           justify-content: space-between;
           padding: 0.75em 0;
+          border-bottom: 1px solid #e5e5e5;
         }
 
         .feature-list:last-child .feature:last-child {
           border: none;
         }
 
-        .plan[data-state="closed"] .feature {
+        .plan[data-state='closed'] .feature {
+          padding: 0;
           border: none;
           line-height: 1.5;
-          padding: 0;
           white-space: nowrap;
         }
 
-        .plan[data-state="closed"] .feature:not(:last-child)::after {
-          content: ',';
+        .plan[data-state='closed'] .feature:not(:last-child)::after {
           padding-right: 0.5em;
+          content: ',';
         }
 
         .feature-name {
@@ -461,16 +464,16 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
           font-weight: bold;
         }
 
-        .plan[data-state="closed"] .feature-name::after {
-          content: ' :';
+        .plan[data-state='closed'] .feature-name::after {
           padding-right: 0.25em;
+          content: ' :';
         }
 
-        .plan[data-state="opened"] .feature-value {
+        .plan[data-state='opened'] .feature-value {
           margin-right: 0.5em;
         }
 
-        /*endregion*/
+        /* endregion */
       `,
     ];
   }

@@ -74,10 +74,10 @@ export class CcStretch extends LitElement {
       // language=CSS
       css`
         :host {
-          align-items: var(--cc-stretch-align-items, center);
           display: inline-grid;
-          justify-items: var(--cc-stretch-justify-items, center);
           width: max-content;
+          align-items: var(--cc-stretch-align-items, center);
+          justify-items: var(--cc-stretch-justify-items, center);
         }
 
         :host([disable-stretching]) slot::slotted(:not(.cc-stretch--visible)) {
@@ -94,6 +94,7 @@ export class CcStretch extends LitElement {
          * In a parent with "visibility: hidden", a child with "visibility: visible" is visible.
          * With inherit, the visibility of the child depends on the visibility of the parents, which is what we want.
          */
+
         slot::slotted(.cc-stretch--visible) {
           visibility: inherit;
         }

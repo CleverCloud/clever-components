@@ -43,58 +43,61 @@ export class CcBeta extends LitElement {
       // language=CSS
       css`
         :host {
+          position: relative;
           display: grid;
           overflow: hidden;
-          position: relative;
         }
 
         :host([fill]) ::slotted(*) {
-          box-sizing: border-box;
-          height: 100%;
           width: 100%;
+          height: 100%;
+          box-sizing: border-box;
         }
 
         .beta {
           --height: 1.75em;
           --width: 8em;
-          background: var(--cc-color-bg-strong, #000000);
+
+          position: absolute;
+          z-index: 2;
+          width: var(--width);
+          height: var(--height);
+          background: var(--cc-color-bg-strong, #000);
           color: var(--cc-color-text-inverted, #fff);
           font-size: 0.85em;
           font-weight: bold;
-          height: var(--height);
           line-height: var(--height);
-          position: absolute;
           text-align: center;
           transform: rotate(var(--r)) translateY(var(--translate));
-          width: var(--width);
-          z-index: 2;
         }
 
-        :host([position^="top-"]) .beta {
+        :host([position^='top-']) .beta {
           --translate: 1.85em;
+
           top: calc(var(--height) / -2);
         }
 
-        :host([position^="bottom-"]) .beta {
+        :host([position^='bottom-']) .beta {
           --translate: -1.85em;
+
           bottom: calc(var(--height) / -2);
         }
 
-        :host([position$="-left"]) .beta {
+        :host([position$='-left']) .beta {
           left: calc(var(--width) / -2);
         }
 
-        :host([position$="-right"]) .beta {
+        :host([position$='-right']) .beta {
           right: calc(var(--width) / -2);
         }
 
-        :host([position="top-left"]) .beta,
-        :host([position="bottom-right"]) .beta {
+        :host([position='top-left']) .beta,
+        :host([position='bottom-right']) .beta {
           --r: -45deg;
         }
 
-        :host([position="bottom-left"]) .beta,
-        :host([position="top-right"]) .beta {
+        :host([position='bottom-left']) .beta,
+        :host([position='top-right']) .beta {
           --r: 45deg;
         }
       `,

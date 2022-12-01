@@ -81,19 +81,19 @@ export class CcDocCard extends LitElement {
       // language=CSS
       css`
         :host {
-          background-color: var(--cc-color-bg-default, #fff);
-          border: 1px solid #bcc2d1;
-          border-radius: 0.25em;
-          box-sizing: border-box;
           display: grid;
+          box-sizing: border-box;
+          padding: 1em;
+          border: 1px solid #bcc2d1;
+          background-color: var(--cc-color-bg-default, #fff);
+          border-radius: 0.25em;
           gap: 1em;
-          grid-template-areas:
-                  "img title"
-                  "desc desc"
-                  "link link";
+          grid-template-areas: 
+            'img title'
+            'desc desc'
+            'link link';
           grid-template-columns: min-content 1fr;
           grid-template-rows: min-content 1fr min-content;
-          padding: 1em;
         }
         
         .images {
@@ -103,9 +103,9 @@ export class CcDocCard extends LitElement {
         }
 
         cc-img {
-          border-radius: 0.25em;
-          height: 2em;
           width: 2em;
+          height: 2em;
+          border-radius: 0.25em;
         }
 
         .title {

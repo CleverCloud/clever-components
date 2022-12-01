@@ -79,15 +79,15 @@ export class CcTileConsumption extends LitElement {
       // language=CSS
       css`
         .line {
-          align-items: center;
           display: flex;
-          padding: 0.5em 0;
           width: 100%;
+          align-items: center;
+          padding: 0.5em 0;
         }
 
         .separator {
-          border-top: 1px dotted #8C8C8C;
           flex: 1 1 0;
+          border-top: 1px dotted #8c8c8c;
           margin: 0 10px;
         }
 

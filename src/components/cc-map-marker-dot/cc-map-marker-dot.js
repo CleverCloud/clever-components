@@ -109,21 +109,25 @@ export class CcMapMarkerDot extends LitElement {
 
         div {
           --dot-size: var(--cc-map-marker-dot-size, 6px);
+
+          width: var(--dot-size);
+          height: var(--dot-size);
           animation: pulse 2s infinite;
           background: var(--dot-color);
           border-radius: 50%;
           cursor: pointer;
-          height: var(--dot-size);
-          width: var(--dot-size);
         }
 
         @keyframes pulse {
+
           0% {
             box-shadow: 0 0 0 0 var(--dot-color-half);
           }
+
           70% {
             box-shadow: 0 0 0 var(--dot-size) var(--dot-color-zero);
           }
+
           100% {
             box-shadow: 0 0 0 0 var(--dot-color-zero);
           }

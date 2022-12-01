@@ -362,13 +362,15 @@ export class CcSshKeyList extends LitElement {
       skeletonStyles,
       // language=CSS
       css`
-        /*region global*/
+        /* region global */
+
         :host {
           display: block;
         }
-        /*endregion*/
+        /* endregion */
 
-        /*region creation form*/
+        /* region creation form */
+
         .create-form {
           display: flex;
           flex-direction: column;
@@ -382,23 +384,25 @@ export class CcSshKeyList extends LitElement {
         .create-form__footer {
           margin-inline-start: auto;
         }
-        /*endregion*/
+        /* endregion */
 
-        /*region key list*/
+        /* region key list */
+
         .key-list {
           display: flex;
           flex-direction: column;
           gap: 2.5em;
         }
-        /*endregion*/
+        /* endregion */
 
-        /*region key item*/
+        /* region key item */
+
         .key {
           display: grid;
           gap: 0.5em 0.75em;
-          grid-template-areas:
-            "key-icon key-name"
-            ". key-form";
+          grid-template-areas: 
+            'key-icon key-name'
+            '. key-form';
           grid-template-columns: min-content 1fr;
         }
 
@@ -408,9 +412,9 @@ export class CcSshKeyList extends LitElement {
         }
 
         .key__icon {
-          grid-area: key-icon;
-          height: 1.25em;
           width: 1.25em;
+          height: 1.25em;
+          grid-area: key-icon;
         }
 
         .key__name {
@@ -421,39 +425,41 @@ export class CcSshKeyList extends LitElement {
         }
 
         .key__form {
-          align-items: center;
           display: flex;
           flex-wrap: wrap;
+          align-items: center;
+          justify-content: flex-end;
           gap: 1em;
           grid-area: key-form;
-          justify-content: flex-end;
         }
 
         /* TODO tokenize border & border-color */
+
         .key__fingerprint {
+          flex-basis: min(100%, 21.25em);
+          flex-grow: 1;
+          padding: 0.5em 0.75em;
           background-color: var(--cc-color-bg-neutral);
           border-inline-start: 5px solid #a6a6a6;
           border-radius: 0.125em;
-          flex-basis: min(100%, 21.25em);
-          flex-grow: 1;
           font-family: var(--cc-ff-monospace);
           line-height: 1.5;
-          padding: 0.5em 0.75em;
           word-break: break-word;
         }
-        /*endregion*/
+        /* endregion */
 
-        /*region misc*/
+        /* region misc */
         /* TODO tokenize border & border-color */
-        [slot=info] code {
-          background-color: var(--cc-color-bg-neutral);
-          border: 1px solid #d9d9d9;
-          border-radius: 0.25em;
+
+        [slot='info'] code {
           display: inline-block;
+          padding: 0.25em 0.75em;
+          border: 1px solid #d9d9d9;
+          background-color: var(--cc-color-bg-neutral);
+          border-radius: 0.25em;
           font-family: var(--cc-ff-monospace);
           font-size: 0.9em;
           line-height: 2;
-          padding: 0.25em 0.75em;
           white-space: pre-wrap;
           word-break: break-all;
         }
@@ -463,17 +469,17 @@ export class CcSshKeyList extends LitElement {
         }
 
         .info-msg {
+          margin-top: 1em;
+          margin-bottom: 0;
           color: var(--cc-color-text-weak);
           font-style: italic;
           line-height: 1.5;
-          margin-bottom: 0;
-          margin-top: 1em;
         }
 
         .align-end {
           text-align: end;
         }
-        /*endregion*/
+        /* endregion */
       `,
     ];
   }

@@ -77,20 +77,23 @@ export class CcMapMarkerServer extends LitElement {
 
         svg {
           display: block;
+          width: 32px;
+          /* 
+            Exception to the "rem everywhere rule" because of the way leaflet positions markers and tooltips, 
+            same as this.size
+          */
+          height: 32px;
           /* A filter:drop-shadow will match the shape, a box-shadow would just be a rectangle */
           filter: drop-shadow(0 0 2px #555);
-          /* Exception to the "rem everywhere rule" because of the way leaflet positions markers and tooltips, same as this.size */
-          height: 32px;
-          width: 32px;
         }
 
-        :host(:not([state="default"])) svg {
+        :host(:not([state='default'])) svg {
           transform: scale(1.2);
           transform-origin: center bottom;
         }
 
-        :host([state="selected"]) svg {
-          filter: drop-shadow(0 0 2px #E307D9);
+        :host([state='selected']) svg {
+          filter: drop-shadow(0 0 2px #e307d9);
         }
 
         path {
@@ -98,32 +101,32 @@ export class CcMapMarkerServer extends LitElement {
           stroke: #333;
         }
 
-        :host([state="selected"]) path {
-          fill: url(#gradient);
+        :host([state='selected']) path {
+          fill: url('#gradient');
           stroke: #000;
         }
 
         .gradient-1 {
-          stop-color: #F19175;
+          stop-color: #f19175;
         }
 
         .gradient-2 {
-          stop-color: #CF3942;
+          stop-color: #cf3942;
         }
 
         .gradient-3 {
-          stop-color: #E307D9;
+          stop-color: #e307d9;
         }
 
         rect {
           fill: #333;
         }
 
-        :host(:not([state="default"])) rect {
+        :host(:not([state='default'])) rect {
           fill: #000;
         }
 
-        :host([state="selected"]) circle {
+        :host([state='selected']) circle {
           animation: var(--duration) var(--delay) infinite led-half;
         }
 
@@ -163,12 +166,15 @@ export class CcMapMarkerServer extends LitElement {
         }
 
         @keyframes led-half {
+
           0% {
             visibility: hidden;
           }
+
           20% {
             visibility: hidden;
           }
+
           100% {
             visibility: visible;
           }

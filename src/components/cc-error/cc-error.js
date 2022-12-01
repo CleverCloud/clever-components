@@ -70,41 +70,41 @@ export class CcError extends LitElement {
             display: block;
           }
 
-          :host([mode="info"]),
-          :host([mode="loading"]),
-          :host([mode="confirm"]) {
-              align-items: center;
-              background-color: var(--cc-color-bg-default, #fff);
-              border: 1px solid #bcc2d1;
-              border-radius: 0.25em;
-              box-shadow: 0 0 1em rgba(0, 0, 0, 0.4);
-              display: grid;
-              grid-gap: 1em;
-              justify-content: center;
-              justify-items: center;
-              padding: 1em;
+          :host([mode='info']),
+          :host([mode='loading']),
+          :host([mode='confirm']) {
+            display: grid;
+            align-items: center;
+            justify-content: center;
+            padding: 1em;
+            border: 1px solid #bcc2d1;
+            background-color: var(--cc-color-bg-default, #fff);
+            border-radius: 0.25em;
+            box-shadow: 0 0 1em rgb(0 0 0 / 40%);
+            grid-gap: 1em;
+            justify-items: center;
           }
 
-          :host([mode="loading"]) {
-              grid-template-columns: min-content auto;
+          :host([mode='loading']) {
+            grid-template-columns: min-content auto;
           }
 
           cc-loader {
-              height: 1.5em;
-              width: 1.5em;
+            width: 1.5em;
+            height: 1.5em;
           }
 
           img {
-              display: inline-block;
-              height: 1em;
-              margin-right: 0.4em;
-              margin-top: 0.1em;
-              vertical-align: text-top;
-              width: 1em;
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            margin-top: 0.1em;
+            margin-right: 0.4em;
+            vertical-align: text-top;
           }
 
           cc-button {
-              display: block;
+            display: block;
           }
       `,
     ];

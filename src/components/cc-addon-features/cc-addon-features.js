@@ -160,36 +160,36 @@ export class CcAddonFeatures extends LitElement {
         }
 
         .feature {
-          background-color: var(--color);
-          border: var(--bdw) solid var(--color);
-          border-radius: calc(2 * var(--bdw));
           display: flex;
           flex-wrap: wrap;
+          border: var(--bdw) solid var(--color);
+          background-color: var(--color);
+          border-radius: calc(2 * var(--bdw));
         }
 
         .feature-icon {
-          margin: calc(var(--padding) / 2) 0 calc(var(--padding) / 2) var(--padding);
           position: relative;
           width: 1.3em;
+          margin: calc(var(--padding) / 2) 0 calc(var(--padding) / 2) var(--padding);
         }
 
         .feature-icon_img {
-          display: block;
-          height: 100%;
-          left: 0;
-          object-fit: contain;
-          object-position: center center;
           position: absolute;
           top: 0;
+          left: 0;
+          display: block;
           width: 100%;
+          height: 100%;
+          object-fit: contain;
+          object-position: center center;
         }
 
         .feature-name,
         .feature-value {
           box-sizing: border-box;
           flex: 1 1 auto;
-          font-weight: bold;
           padding: calc(var(--padding) / 2) var(--padding);
+          font-weight: bold;
           text-align: center;
         }
 

@@ -82,15 +82,16 @@ export class CcBadge extends LitElement {
         }
 
         .cc-badge {
-          align-items: center;
-          border-radius: 1em;
           display: inline-flex;
+          align-items: center;
+          padding: 0.2em 0.8em;
+          border-radius: 1em;
           font-size: 0.8em;
           gap: 0.3em;
-          padding: 0.2em 0.8em;
         }
 
         /* skeleton is more important */
+
         .skeleton {
           background-color: #bbb !important;
           color: transparent !important;
@@ -105,13 +106,13 @@ export class CcBadge extends LitElement {
         }
 
         .circle {
+          width: 1.5em;
+          height: 1.5em;
+          min-height: unset;
+          justify-content: center;
+          padding: 0;
           border-radius: 50%;
           font-size: 1em;
-          height: 1.5em;
-          justify-content: center;
-          min-height: unset;
-          padding: 0;
-          width: 1.5em;
         }
 
         .dimmed {

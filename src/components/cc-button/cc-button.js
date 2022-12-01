@@ -271,43 +271,48 @@ export class CcButton extends LitElement {
       linkStyles,
       // language=CSS
       css`
+        /* stylelint-disable no-duplicate-selectors */
+
         :host {
-          box-sizing: border-box;
           display: inline-block;
+          box-sizing: border-box;
           vertical-align: middle;
         }
 
         /* RESET */
+
         button {
-          background: unset;
-          border: none;
           display: block;
+          padding: 0;
+          border: none;
+          margin: 0;
+          background: unset;
           font-family: inherit;
           font-size: unset;
-          margin: 0;
-          padding: 0;
         }
 
         /* BASE */
+
         .btn {
+          /* used to absolutely position the <progress> */
+          position: relative;
+          overflow: hidden;
+          width: 100%;
+          min-height: 2em;
+          padding: 0 0.5em;
           border: 1px solid #000;
           border-radius: var(--cc-button-border-radius, 0.15em);
           cursor: pointer;
           font-weight: var(--cc-button-font-weight, bold);
-          min-height: 2em;
-          overflow: hidden;
-          padding: 0 0.5em;
-          /* used to absolutely position the <progress> */
-          position: relative;
           text-transform: var(--cc-button-text-transform, uppercase);
           -moz-user-select: none;
           -webkit-user-select: none;
           -ms-user-select: none;
           user-select: none;
-          width: 100%;
         }
 
         /* COLORS */
+
         .simple {
           --btn-color: var(--cc-color-text-strong);
         }
@@ -329,9 +334,10 @@ export class CcButton extends LitElement {
         }
 
         /* MODES */
+
         .btn {
-          background-color: var(--btn-color);
           border-color: var(--btn-color);
+          background-color: var(--btn-color);
           color: var(--cc-color-text-inverted);
         }
 
@@ -345,40 +351,42 @@ export class CcButton extends LitElement {
         }
 
         /* special case: we want to keep simple buttons subtle */
+
         .simple {
           border-color: var(--color-grey-medium);
         }
 
         .img-only {
+          width: 1.75em;
           height: 1.75em;
           min-height: 0;
           padding: 0;
-          width: 1.75em;
         }
 
         /* STATES */
-        .btn:not([aria-disabled = "true"]):focus {
-          box-shadow: 0 0 0 .2em rgba(50, 115, 220, .25);
+
+        .btn:not([aria-disabled='true']):focus {
+          box-shadow: 0 0 0 0.2em rgb(50 115 220 / 25%);
           outline: 0;
         }
 
-        .btn:not([aria-disabled = "true"]):hover {
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        .btn:not([aria-disabled='true']):hover {
+          box-shadow: 0 1px 3px rgb(0 0 0 / 40%);
         }
 
-        .btn:not([aria-disabled = "true"]):active {
+        .btn:not([aria-disabled='true']):active {
           box-shadow: none;
           outline: 0;
         }
         
-        button[aria-disabled = "true"] {
+        button[aria-disabled='true'] {
           cursor: inherit;
-          opacity: .5;
+          opacity: 0.5;
         }
 
         .skeleton {
-          background-color: #bbb;
           border-color: #777;
+          background-color: #bbb;
           color: transparent;
         }
 
@@ -387,20 +395,22 @@ export class CcButton extends LitElement {
         }
 
         /* TRANSITIONS */
+
         .btn {
-          box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+          box-shadow: 0 0 0 0 rgb(255 255 255 / 0%);
           transition: box-shadow 75ms ease-in-out;
         }
 
         /* Grid to place image + text and superpose "cancel mode text" */
+
         .text-wrapper {
-          align-items: center;
           display: grid;
+          width: 100%;
+          height: 100%;
+          align-items: center;
+          justify-content: center;
           gap: 0.5em;
           grid-template-columns: min-content 1fr;
-          height: 100%;
-          justify-content: center;
-          width: 100%;
         }
 
         .txt-only .text-wrapper {
@@ -415,8 +425,8 @@ export class CcButton extends LitElement {
 
         img {
           display: block;
-          height: 1.25em;
           width: 1.25em;
+          height: 1.25em;
         }
 
         .img-only .text-normal {
@@ -454,6 +464,7 @@ export class CcButton extends LitElement {
         }
 
         /* progress bar for delay, see https://css-tricks.com/html5-progress-element */
+
         progress,
         progress::-webkit-progress-bar {
           background-color: #fff;
@@ -475,26 +486,28 @@ export class CcButton extends LitElement {
         }
 
         progress.delay {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 0;
+          height: 0.2em;
+          border: none;
           -webkit-appearance: none;
           -moz-appearance: none;
           appearance: none;
-          border: none;
-          bottom: 0;
-          height: 0.2em;
-          left: 0;
-          position: absolute;
-          width: 0;
         }
 
         progress.delay.active {
-          transition: width var(--delay) linear;
           width: 100%;
+          transition: width var(--delay) linear;
         }
 
         @keyframes waiting {
+
           from {
             left: -52%;
           }
+
           to {
             left: 52%;
           }
@@ -502,40 +515,46 @@ export class CcButton extends LitElement {
 
         progress.waiting {
           --width: 25%;
+
+          position: absolute;
+          bottom: 0;
+          width: var(--width);
+          height: 0.2em;
+          border: none;
+          margin-left: calc(50% - calc(var(--width) / 2));
           animation: 1s ease-in-out 0s infinite alternate waiting;
           -webkit-appearance: none;
           -moz-appearance: none;
           appearance: none;
-          border: none;
-          bottom: 0;
-          height: 0.2em;
-          margin-left: calc(50% - calc(var(--width) / 2));
-          position: absolute;
-          width: var(--width);
         }
 
         /* circle waiting mode - keyframes */
         @keyframes rotate {
+
           100% {
             transform: rotate(360deg);
           }
         }
 
         @keyframes stretch {
+
           0% {
             stroke-dasharray: 1, 200;
             stroke-dashoffset: 0;
           }
+
           50% {
             stroke-dasharray: 90, 200;
             stroke-dashoffset: -35px;
           }
+
           100% {
             stroke-dashoffset: -124px;
           }
         }
 
         /* circle waiting mode - partial opacity */
+
         :host([waiting]) button.circle {
           opacity: 1;
         }
@@ -545,35 +564,40 @@ export class CcButton extends LitElement {
         }
 
         /* circle waiting mode - core animation */
+
         .circle-loader {
           --bcw-speed: 2s;
+
+          position: absolute;
           animation: rotate var(--bcw-speed) linear infinite;
           inset: 0;
-          position: absolute;
           transform-origin: center;
           vertical-align: middle;
         }
 
         .circle-loader circle {
           animation: stretch calc(var(--bcw-speed) * 0.75) ease-in-out infinite;
-          stroke: currentColor;
+          stroke: currentcolor;
           stroke-dasharray: 1, 200;
           stroke-dashoffset: 0;
           stroke-linecap: round;
         }
 
         /* We can do this because we set a visible focus state */
+
         button::-moz-focus-inner {
           border: 0;
         }
 
         /* button that looks like a cc-link */
+
         .cc-link {
           --btn-color: var(--color-text-strong);
-          cursor: pointer;
-          min-height: 2em;
-          overflow: hidden;
+
           position: relative;
+          overflow: hidden;
+          min-height: 2em;
+          cursor: pointer;
           text-decoration: underline;
         }
 

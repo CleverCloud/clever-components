@@ -114,9 +114,9 @@ export class CcActionDispatcher extends LitElement {
         }
 
         .text {
-          align-items: center;
           display: flex;
           flex-wrap: wrap;
+          align-items: center;
           gap: 1em;
         }
 
@@ -126,9 +126,9 @@ export class CcActionDispatcher extends LitElement {
         }
 
         .number-block {
+          padding: 1em;
           background-color: var(--cc-color-bg-neutral);
           border-radius: 0.25em;
-          padding: 1em;
           text-align: center;
         }
 
@@ -137,10 +137,10 @@ export class CcActionDispatcher extends LitElement {
         }
 
         .number-block-number {
+          margin-top: 0.5em;
           color: var(--cc-color-text-primary-highlight);
           font-size: 1.5em;
           font-weight: bold;
-          margin-top: 0.5em;
         }
 
         .instance-list-label {
@@ -148,9 +148,9 @@ export class CcActionDispatcher extends LitElement {
         }
 
         .instance-list {
+          margin-top: 0.5em;
           font-family: var(--cc-ff-monospace, monospace);
           line-height: 1.6;
-          margin-top: 0.5em;
         }
       `,
     ];

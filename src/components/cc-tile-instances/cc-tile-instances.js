@@ -142,41 +142,41 @@ export class CcTileInstances extends LitElement {
         }
 
         .instances {
-          align-items: center;
           display: flex;
           width: 100%;
+          align-items: center;
         }
 
-        .instances[data-type=running] {
+        .instances[data-type='running'] {
           --status-color: var(--color-legacy-green);
         }
 
-        .instances[data-type=deploying] {
+        .instances[data-type='deploying'] {
           --status-color: var(--color-legacy-blue);
         }
 
         .instances_status-img {
-          height: 1.75em;
           width: 1.75em;
+          height: 1.75em;
         }
 
         .instances_status {
-          color: var(--status-color, #000000);
           flex: 1 1 0;
-          font-size: 1.2em;
           margin-left: 0.25em;
+          color: var(--status-color, #000);
+          font-size: 1.2em;
         }
 
         .size-label {
-          margin: var(--bubble-r);
           position: relative;
+          margin: var(--bubble-r);
         }
 
         .count-bubble {
-          background-color: var(--status-color, #000000);
-          bottom: calc(var(--bubble-d) / -2);
           position: absolute;
           right: calc(var(--bubble-d) / -2);
+          bottom: calc(var(--bubble-d) / -2);
+          background-color: var(--status-color, #000);
         }
       `,
     ];

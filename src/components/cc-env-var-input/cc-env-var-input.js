@@ -125,17 +125,18 @@ export class CcEnvVarInput extends LitElement {
       css`
         :host {
           --cc-gap: 0.5em;
+
           display: block;
         }
 
         .name {
-          box-sizing: border-box;
           display: inline-block;
+          box-sizing: border-box;
           flex: 1 1 17em;
+          padding-top: 0.35em;
           font-family: var(--cc-ff-monospace, monospace);
           font-size: 0.875em;
           line-height: 1.6em;
-          padding-top: 0.35em;
           word-break: break-all;
         }
 
@@ -152,15 +153,15 @@ export class CcEnvVarInput extends LitElement {
         }
 
         .value {
-          align-self: self-start;
           /* 100 seems weird but it is necessary */
           /* it helps to have a button that almost does not grow except when it wraps on its own line */
           flex: 100 1 20em;
+          align-self: self-start;
         }
 
         cc-button {
-          align-self: flex-start;
           flex: 1 1 6em;
+          align-self: flex-start;
           white-space: nowrap;
         }
 
