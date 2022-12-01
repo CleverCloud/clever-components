@@ -31,12 +31,19 @@ export function withResizeObserver (ParentClass) {
       if (window.ResizeObserver == null) {
         return;
       }
+      let first = true;
       const ro = new window.ResizeObserver(() => {
-        window.requestAnimationFrame(() => {
-          // NOTE: We could use entries[0].borderBoxSize.inlineSize but not supported in Chrome, Safari or polyfill
-          const { width } = this.getBoundingClientRect();
+        // NOTE: We could use entries[0].borderBoxSize.inlineSize but not supported in Chrome, Safari or polyfill
+        const { width } = this.getBoundingClientRect();
+        if (first) {
+          first = false;
           this._onResize({ width });
-        });
+        }
+        else {
+          window.requestAnimationFrame(() => {
+            this._onResize({ width });
+          });
+        }
       });
       ro.observe(this);
       this._unobserveResize = () => ro.unobserve(this);

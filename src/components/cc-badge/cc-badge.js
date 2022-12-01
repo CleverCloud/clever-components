@@ -11,6 +11,8 @@ import { skeletonStyles } from '../../styles/skeleton.js';
  * A component to highlight a small chunk of text.
  *
  * @cssdisplay inline-block
+ *
+ * @cssprop {JustifyContent} --cc-badge-justify-content - Specify how the content should be distributed / positioned horizontally within the grid (Default: `center`. Possible values: https://developer.mozilla.org/en-US/docs/Web/CSS/justify-items).
  */
 export class CcBadge extends LitElement {
   static get properties () {
@@ -82,8 +84,9 @@ export class CcBadge extends LitElement {
         }
 
         .cc-badge {
-          display: inline-flex;
+          display: flex;
           align-items: center;
+          justify-content: var(--cc-badge-justify-content, center);
           padding: 0.2em 0.8em;
           border-radius: 1em;
           font-size: 0.8em;
@@ -98,7 +101,7 @@ export class CcBadge extends LitElement {
         }
 
         .skeleton.outlined {
-          box-shadow: inset 0 0 0 0.06em #777 !important;
+          border: 0.06em solid #777 !important;
         }
 
         .skeleton img {
@@ -116,19 +119,21 @@ export class CcBadge extends LitElement {
         }
 
         .dimmed {
+          border: 0.06em solid var(--accent-color, #ccc);
           background-color: var(--accent-color, #ccc);
         }
 
         .strong {
+          border: 0.06em solid var(--accent-color, #777);
           background-color: var(--accent-color, #777);
           color: var(--cc-color-text-inverted, #fff);
         }
 
         .outlined {
-          background-color: transparent;
           /* roughly 1px. We want the border to scale with the font size so that outlined
           badges still stand out as they should when font-size is increased. */
-          box-shadow: inset 0 0 0 0.06em var(--accent-color, #777);
+          border: 0.06em solid var(--accent-color, #777);
+          background-color: transparent;
           color: var(--accent-color, #777);
         }
 
@@ -173,6 +178,7 @@ export class CcBadge extends LitElement {
         }
 
         img {
+          width: 1em;
           height: 1em;
         }
       `,
