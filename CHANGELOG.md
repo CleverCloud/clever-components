@@ -4,6 +4,13 @@ title: Changelog
 ---
 # Clever Components changelog
 
+## [10.2.1](https://github.com/CleverCloud/clever-components/compare/10.2.0...10.2.1) (2022-12-02)
+
+
+### Bug Fixes
+
+* **cc-badge:** override border in skeleton mode ([ab57a57](https://github.com/CleverCloud/clever-components/commit/ab57a57bc738cbaef17f719e4c8e1e8871ca9535)), closes [#654](https://github.com/CleverCloud/clever-components/issues/654)
+
 ## [10.2.0](https://github.com/CleverCloud/clever-components/compare/10.1.0...10.2.0) (2022-12-01)
 
 
