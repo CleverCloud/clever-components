@@ -17,6 +17,10 @@ const conf = {
       font-size: 1.2em;
     }
     
+    h2 {
+      font-size: 1em;
+    }
+    
     .showcase-controls {
       display: flex;
       flex-wrap: wrap;
@@ -26,7 +30,7 @@ const conf = {
     }
     
     cc-stretch {
-      border: 0.2em solid red;
+      border: 0.3em solid red;
     }
     
     cc-toggle {
@@ -48,6 +52,10 @@ const conf = {
       flex-wrap: wrap;
       gap: 1em;
       margin-top: 1em;
+    }
+    
+    .test-container {
+      border: 0.06em solid blue;
     }
   `,
 };
@@ -156,6 +164,49 @@ export const defaultStory = makeStory(conf, {
   },
 });
 
+export const differentLayouts = makeStory(conf, {
+  dom: (container) => {
+    const displayTypes = [
+      {
+        heading: 'block',
+        styles: 'display: block;',
+      },
+      {
+        heading: 'flex - Row',
+        styles: 'display: flex;',
+      },
+      {
+        heading: 'flex - Column',
+        styles: 'display: flex; flex-direction: column;',
+      },
+      {
+        heading: 'Grid',
+        styles: 'display: grid;',
+      },
+    ];
+    render(html`
+        <h1>Showing the component in different <code>CSS Display</code> contexts</h1>
+        <p>All <code>&lt;cc-stretch&gt;</code> (thick red border) should have the size of their content and not their container (thin blue border).</p>
+        ${displayTypes.map(({ heading, styles }) => template({ heading, styles }))}
+    `, container);
+
+    function template ({ heading, styles }) {
+      return html`
+        <h2>Container set to: ${heading}</h2>
+        <div class="test-container" style=${styles}>
+          <cc-stretch
+            visible-element-id="item-3"
+          >
+            <p id="item-1"><code>id="item-1"</code><br>A short content</p>
+            <p id="item-2"><code>id="item-2"</code><br>A longer content ?</p>
+            <p id="item-3"><code>id="item-3"</code><br>The very long content the component bases it's <code>width</code> on.<br>It also bases its <code>height</code> on this content.</p>
+          </cc-stretch>
+        </div>
+      `;
+    }
+  },
+});
+
 export const simulation = makeStory(conf, {
   items: [{
     visibleElementId: 'item-1',
@@ -177,5 +228,6 @@ export const simulation = makeStory(conf, {
 
 enhanceStoriesNames({
   defaultStory,
+  differentLayouts,
   simulation,
 });
