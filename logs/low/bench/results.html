@@ -5,7 +5,7 @@
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Benchmark results</title>
+  <title>logs :: low :: bench :: results</title>
   <style>
     html {
       font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
@@ -51,11 +51,11 @@
 </body>
 
 <script type="module">
-  import rawResultsByCount from '../results/stats.json';
-  import rawResultsByBrowser from '../results/stats-browsers.json';
+  import rawResultsByCount from './results/stats.json';
+  import rawResultsByBrowser from './results/stats-browsers.json';
   import Chart from 'chart.js/auto';
   import ChartDataLabels from 'chartjs-plugin-datalabels';
-  import { round2 } from './utils.js';
+  import { round2 } from '../../utils/utils.js';
   Chart.register(ChartDataLabels);
 
   const reduce = (rawResult) => {

@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/Polymer/tachometer/master/config.schema.json",
-  "root": "../",
-  "sampleSize": 5,
+  "root": "../../../",
+  "sampleSize": 2,
   "timeout": 0,
   "autoSampleConditions": [
     "0%",

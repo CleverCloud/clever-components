@@ -1,14 +1,14 @@
 import Chart from 'chart.js/auto';
 import { html, render } from 'lit';
-import { addTranslations, setLanguage } from '../src/lib/i18n.js';
-import { lang, translations } from '../src/translations/translations.en.js';
-import '../src/components/cc-logs/cc-logs.js';
-import '../src/components/cc-logs/cc-logs-dom.js';
-import '../src/components/cc-button/cc-button.js';
-import '../src/components/cc-toaster/cc-toaster.js';
-import '../src/components/cc-toggle/cc-toggle.js';
-import '../src/components/cc-input-number/cc-input-number.js';
-import { parseInteger, randomLogs, round2, waitForNextRepaint } from './utils.js';
+import { addTranslations, setLanguage } from '../../src/lib/i18n.js';
+import { lang, translations } from '../../src/translations/translations.en.js';
+import '../../src/components/cc-logs/cc-logs.js';
+import '../../src/components/cc-logs/cc-logs-dom.js';
+import '../../src/components/cc-button/cc-button.js';
+import '../../src/components/cc-toaster/cc-toaster.js';
+import '../../src/components/cc-toggle/cc-toggle.js';
+import '../../src/components/cc-input-number/cc-input-number.js';
+import { parseInteger, randomLogs, round2, waitForNextRepaint } from '../utils/utils.js';
 
 addTranslations(lang, translations);
 setLanguage(lang);
@@ -34,17 +34,11 @@ function stop () {
 
 async function addRandomLogs (count) {
   const logs = randomLogs(count);
-  const { name, value } = await measure(`add-${count}`, () => getLogsElement().addLogs(logs));
+  const { value } = await measure(`add-${count}`, () => getLogsElement().addLogs(logs));
   const total = refreshCount();
-  if (name.endsWith('-1')) {
-    if (total % 10 === 0) {
-      addData(new Intl.NumberFormat().format(total), value);
-    }
+  if (total % 10 === 0) {
+    addData(new Intl.NumberFormat().format(total), value);
   }
-}
-
-async function addRandomLog () {
-  await addRandomLogs(1);
 }
 
 function clearLogs () {
@@ -92,7 +86,7 @@ const sets = {
   random: {
     async run (options) {
       await addRandomLogs(100);
-      repeat(addRandomLog, parseInteger('rate', options.rate, 1000));
+      repeat(async () => await addRandomLogs(parseInt(getMicrobatching())), parseInteger('rate', options.rate, 1000));
     },
   },
   stop: {
@@ -136,14 +130,14 @@ const $ctrl = document.querySelector('.ctrl');
 const $logsWrapper = document.querySelector('.wrapper');
 
 const modes = [
-  { label: 'lit-map', value: 'lit-map' },
-  { label: 'lit-repeat', value: 'lit-repeat' },
   { label: 'lit-virtualizer', value: 'lit-virtualizer' },
+  { label: 'lit-repeat', value: 'lit-repeat' },
+  { label: 'lit-map', value: 'lit-map' },
   { label: 'dom', value: 'dom' },
 ];
 
 const ctrlModel = {
-  mode: 'lit-map',
+  mode: 'lit-virtualizer',
   limit: 0,
   follow: true,
   wrapLines: true,
@@ -175,7 +169,9 @@ const onLimitChanged = ({ detail: limit }) => {
 function refreshCtrl () {
   render(html`
     <cc-toggle .choices=${modes} value=${ctrlModel.mode} @cc-toggle:input=${onModeChanged}></cc-toggle>
-
+    
+    <div style="flex:1"></div>
+    
     <label for="follow">
       <input id="follow" type="checkbox" @change=${onFollowChanged} .checked=${ctrlModel.follow}> Follow
     </label>
@@ -280,4 +276,9 @@ function clearData () {
     dataset.data = [];
   });
   chart.update();
+}
+
+// ---
+function getMicrobatching () {
+  return document.querySelector('#microbatching').value;
 }

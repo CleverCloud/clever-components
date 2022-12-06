@@ -1,0 +1,142 @@
+[
+  {
+    "id": 14,
+    "uuid": "deployment_fb3a49df-2cad-4b9d-9227-95293c4ae8ac",
+    "date": 1671202659132,
+    "state": "OK",
+    "action": "DEPLOY",
+    "commit": "6937a5066f524c61aeec6d69465c4bbdf34f7f21",
+    "cause": "Git",
+    "instances": 1,
+    "author": {
+      "id": "user_f704a8cf-28d5-449d-b269-1db6a2e932c7",
+      "name": "Pierre DE SOYRES"
+    }
+  },
+  {
+    "id": 13,
+    "uuid": "deployment_57e06282-c3b9-4996-b4cb-40c6bdb2bb48",
+    "date": 1671202530300,
+    "state": "OK",
+    "action": "DEPLOY",
+    "commit": "7fee9f96611af45244654a8566d644c2bc6fec13",
+    "cause": "Git",
+    "instances": 1,
+    "author": {
+      "id": "user_f704a8cf-28d5-449d-b269-1db6a2e932c7",
+      "name": "Pierre DE SOYRES"
+    }
+  },
+  {
+    "id": 12,
+    "uuid": "deployment_affa0c70-87d3-413a-86d3-d3900325fb72",
+    "date": 1671197446284,
+    "state": "OK",
+    "action": "UNDEPLOY",
+    "commit": null,
+    "cause": "Console",
+    "instances": 0,
+    "author": {
+      "id": "user_f704a8cf-28d5-449d-b269-1db6a2e932c7",
+      "name": "Pierre DE SOYRES"
+    }
+  },
+  {
+    "id": 11,
+    "uuid": "deployment_2f6b6c9c-c596-4e98-a007-dad7febc35b6",
+    "date": 1671196906403,
+    "state": "OK",
+    "action": "DEPLOY",
+    "commit": "72d778813c67b19497da3a3e4ac930ced0758b0e",
+    "cause": "Git",
+    "instances": 1,
+    "author": {
+      "id": "user_f704a8cf-28d5-449d-b269-1db6a2e932c7",
+      "name": "Pierre DE SOYRES"
+    }
+  },
+  {
+    "id": 10,
+    "uuid": "deployment_71b4693f-1a80-4e56-b51d-03a04ecadf3f",
+    "date": 1671196755618,
+    "state": "OK",
+    "action": "DEPLOY",
+    "commit": "2d988e08ca7bc2d5f35cbccdea8a940305c83265",
+    "cause": "Git",
+    "instances": 1,
+    "author": {
+      "id": "user_f704a8cf-28d5-449d-b269-1db6a2e932c7",
+      "name": "Pierre DE SOYRES"
+    }
+  },
+  {
+    "id": 9,
+    "uuid": "deployment_910f7bb3-a0ca-469e-bf39-02bc45aa5037",
+    "date": 1671196371491,
+    "state": "OK",
+    "action": "DEPLOY",
+    "commit": "c1721e72333bc6736aa368d13eb32488f5e749d3",
+    "cause": "Git",
+    "instances": 1,
+    "author": {
+      "id": "user_f704a8cf-28d5-449d-b269-1db6a2e932c7",
+      "name": "Pierre DE SOYRES"
+    }
+  },
+  {
+    "id": 8,
+    "uuid": "deployment_fce65f2e-fefe-483a-bda1-4813eb05a584",
+    "date": 1671196342827,
+    "state": "OK",
+    "action": "DEPLOY",
+    "commit": "02dd43f27dc3ea0ad1ea7f6113b11eece1576079",
+    "cause": "Git",
+    "instances": 1,
+    "author": {
+      "id": "user_f704a8cf-28d5-449d-b269-1db6a2e932c7",
+      "name": "Pierre DE SOYRES"
+    }
+  },
+  {
+    "id": 7,
+    "uuid": "deployment_2e031948-309a-4fad-b44a-843d048f487f",
+    "date": 1671196017123,
+    "state": "OK",
+    "action": "DEPLOY",
+    "commit": "184e3d4cfc77f827e7823ea9b975d91650560487",
+    "cause": "Git",
+    "instances": 1,
+    "author": {
+      "id": "user_f704a8cf-28d5-449d-b269-1db6a2e932c7",
+      "name": "Pierre DE SOYRES"
+    }
+  },
+  {
+    "id": 6,
+    "uuid": "deployment_ccc0159e-53ce-4521-8037-131860ab2f4c",
+    "date": 1671195861870,
+    "state": "OK",
+    "action": "DEPLOY",
+    "commit": "0f4cda957474b586ee8505f24a60a8a4b3952ab4",
+    "cause": "Git",
+    "instances": 1,
+    "author": {
+      "id": "user_f704a8cf-28d5-449d-b269-1db6a2e932c7",
+      "name": "Pierre DE SOYRES"
+    }
+  },
+  {
+    "id": 5,
+    "uuid": "deployment_f8dd852f-f99a-4f65-ba19-db6b4c04ec1c",
+    "date": 1671195319454,
+    "state": "OK",
+    "action": "DEPLOY",
+    "commit": "292c351000151d46d9a5ed42140177b8c6627bc9",
+    "cause": "Git",
+    "instances": 1,
+    "author": {
+      "id": "user_f704a8cf-28d5-449d-b269-1db6a2e932c7",
+      "name": "Pierre DE SOYRES"
+    }
+  }
+]

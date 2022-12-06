@@ -5,7 +5,7 @@
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Logs bench</title>
+  <title>logs :: low :: bench</title>
   <script>
 
   </script>
@@ -35,9 +35,9 @@
 </body>
 
 <script type="module">
-  import '../src/components/cc-logs/cc-logs.js';
-  import '../src/components/cc-logs/cc-logs-dom.js';
-  import { randomLog, randomLogs, waitForNextRepaint } from './utils.js';
+  import '../../../src/components/cc-logs/cc-logs.js';
+  import '../../../src/components/cc-logs/cc-logs-dom.js';
+  import { randomLog, randomLogs, waitForNextRepaint } from '../../utils/utils.js';
 
   // -- parse params ------
   const searchParams = new URLSearchParams(window.location.search);
@@ -76,7 +76,7 @@
   // -- bench ------
   let bench;
   try {
-    bench = await import('/bench.js');
+    bench = await import('/home/pierre/dev/clever-components/logs/low/bench/bench.html');
     console.log('benchmark is on');
   } catch (e) {
     console.log('benchmark is off');

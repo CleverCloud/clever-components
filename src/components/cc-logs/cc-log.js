@@ -1,14 +1,12 @@
-import '../cc-button/cc-button.js';
 import '../cc-badge/cc-badge.js';
-import '../cc-datetime-relative/cc-datetime-relative.js';
 import { css, html, LitElement } from 'lit';
-import { classMap } from 'lit/directives/class-map.js';
 
 export class CcLog extends LitElement {
   static get properties () {
     return {
       log: { type: Object },
-      wrap: { type: Boolean },
+      excludeMetadata: { type: Array },
+      customMetadataRenderers: { type: Object, attribute: 'custom-metadata-renderers' },
     };
   }
 
@@ -16,7 +14,9 @@ export class CcLog extends LitElement {
     super();
 
     this.log = null;
-    this.wrap = true;
+    this.excludeMetadata = [];
+    this.customMetadataRenderers = {};
+    this._defaultMetadataRenderer = (key, value) => html`<cc-badge>${key}: ${value}</cc-badge>`;
   }
 
   _onClick () {
@@ -49,8 +49,23 @@ export class CcLog extends LitElement {
   render () {
     return html`
       <span class="timestamp">${this.log.timestamp}</span>
-      <span class="message ${classMap({ wrap: this.wrap })}">${this.log.message}</span>
+      ${this._renderMetadata(this.log, this.excludeMetadata || [])}
+      <span class="message">${this.log.message}</span>
     `;
+  }
+
+  _renderMetadata (log, exclude) {
+    if (log.metadata == null) {
+      return null;
+    }
+
+    return Object.entries(log.metadata)
+      .filter(([key]) => !exclude.includes(key))
+      .map(([key, v]) => this._renderSingleMetadata(key, v, log));
+  }
+
+  _renderSingleMetadata (key, value, log) {
+    return (this.customMetadataRenderers[key] ?? this._defaultMetadataRenderer)(key, value, log);
   }
 
   static get styles () {
@@ -67,14 +82,13 @@ export class CcLog extends LitElement {
         }
         
         .message {
-          flex: 1;
-          white-space: nowrap;
+          
         }
         
-        .message.wrap {
-          white-space: normal;          
+        cc-badge {
+          margin-left: 0.3em;
         }
-
+        
         .timestamp {
           color: #777;
           margin-right: 0.3em;

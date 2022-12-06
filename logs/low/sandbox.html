@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>POC logs</title>
+  <title>logs :: low :: sandbox</title>
   <link rel="stylesheet" href="/src/styles/default-theme.css">
   <style>
     html {
@@ -101,12 +101,13 @@
       background-color: #333;
     }
   </style>
-  <script src="index.js" type="module"></script>
+  <script src="sandbox.js" type="module"></script>
 </head>
 <body>
 <div class="left">
   <cc-button class="set-btn" data-set='clear'>❌ clear</cc-button>
   <hr>
+  <cc-input-number id="microbatching" label="Batch" value="1" inline="true" controls="true" min="1"></cc-input-number>
   <cc-button class="set-btn" data-set='random'>🔀 random 🐌</cc-button>
   <cc-button class="set-btn" data-set='random' data-rate='100'>🔀 random 🐇</cc-button>
   <cc-button class="set-btn" data-set='random' data-rate='10'>🔀 random 🐎</cc-button>

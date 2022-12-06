@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>logs :: hot</title>
+
+  <link rel="stylesheet" href="/src/styles/default-theme.css">
+  <style>
+    html {
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+      height: 100%;
+      display: flex;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+      flex: 1;
+    }
+
+    .ctrl {
+      display: flex;
+      flex-direction: row;
+      gap: 0.3em;
+      border-bottom: 1px solid gray;
+      padding-bottom: 1em;
+      align-items: center;
+    }
+
+    .spacer {
+      flex: 1;
+    }
+
+    .timeline-wrapper {
+      padding: 0.5em;
+      border: 1px solid #aaa;
+    }
+
+    cc-logs-hot {
+      flex: 1;
+      min-height: 0;
+    }
+
+  </style>
+  <script src="hot.js" type="module"></script>
+</head>
+<body>
+<div class="ctrl">
+  <cc-button data-action="start" data-instances="2" data-build="true" data-separate-build="true">Start Force build (2/separate build)</cc-button>
+  <cc-button data-action="scaleUp" data-instances="2">ScaleUp +2</cc-button>
+  <cc-button data-action="scaleDown" data-instances="1">ScaleDown -1</cc-button>
+  <cc-button data-action="commit" data-separate-build="false">Commit</cc-button>
+  <cc-button data-action="restart" data-separate-build="true">Restart</cc-button>
+  <cc-button data-action="stop">Stop</cc-button>
+  <div class="spacer"></div>
+  <cc-button data-action="toggle_timeline">Show/hide timeline</cc-button>
+  <cc-button data-action="timeline_follow">Toggle timeline follow</cc-button>
+</div>
+<div class="timeline-wrapper" style="display: none">
+  <cc-instances-timeline></cc-instances-timeline>
+</div>
+
+<cc-logs-hot></cc-logs-hot>
+</body>
+</html>

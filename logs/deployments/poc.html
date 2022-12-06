@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>logs :: deployments :: POC</title>
+  <link rel="stylesheet" href="/src/styles/default-theme.css">
+  <style>
+    html {
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    }
+
+    .ctrl {
+      padding: 0.2em;
+      border: 1px solid #ccc;
+      display: flex;
+      gap: 2em;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    cc-logs-poc {
+      padding: 0.2em;
+      margin: 2em;
+    }
+
+  </style>
+  <script src="poc.js" type="module"></script>
+</head>
+<body>
+
+<div class="ctrl">
+  <cc-select inline="true" label="Scenarios"></cc-select>
+  <cc-button data-action="start">⏯ start</cc-button>
+  <cc-button data-action="stop">⏹ stop</cc-button>
+</div>
+
+<cc-logs-poc></cc-logs-poc>
+
+</body>
+</html>

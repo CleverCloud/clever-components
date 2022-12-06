@@ -14,6 +14,7 @@ export class CcLogs extends LitElement {
       wrapLines: { type: Boolean, attribute: 'wrap-line' },
       withVirtualizer: { type: Boolean, attribute: 'with-virtualizer' },
       withRepeat: { type: Boolean, attribute: 'with-repeat' },
+      customMetadataRenderers: { type: Object, attribute: 'custom-metadata-renderers' },
     };
   }
 
@@ -24,14 +25,15 @@ export class CcLogs extends LitElement {
     this.limit = 0;
     this.follow = false;
     this.wrapLines = false;
-    this.withVirtualizer = false;
+    this.withVirtualizer = true;
     this.withRepeat = false;
+    this.customMetadataRenderers = {};
 
     /** @type {Ref<HTMLElement>} */
     this._logsRef = createRef();
   }
 
-  _scrollBottom () {
+  scrollBottom () {
     window.requestAnimationFrame(() => {
       const element = this._logsRef.value;
       if (element != null) {
@@ -89,7 +91,7 @@ export class CcLogs extends LitElement {
   updated (_changedProperties) {
     if (_changedProperties.has('logs') || _changedProperties.has('follow')) {
       if (this.follow) {
-        this._scrollBottom();
+        this.scrollBottom();
       }
     }
   }
@@ -106,7 +108,11 @@ export class CcLogs extends LitElement {
 
   _renderLog (log) {
     return html`
-      <cc-log class="${classMap({ wrap: this.wrapLines })}" .log=${log} .wrap=${this.wrapLines}></cc-log>
+      <cc-log class="${classMap({ wrap: this.wrapLines })}" 
+              .log=${log} 
+              .wrap=${this.wrapLines}
+              .customMetadataRenderers=${this.customMetadataRenderers}
+      ></cc-log>
     `;
   }
 
@@ -130,26 +136,22 @@ export class CcLogs extends LitElement {
       css`
         :host {
           display: flex;
+          flex-direction: column;
         }
         
         #logs {
-          align-items: stretch;
-          display: flex;
           flex: 1;
-          flex-direction: column;
-          flex-wrap: nowrap;
+          display: block;
           font-family: var(--cc-ff-monospace, monospace);
           font-size: 0.9em;
-          gap: 0.15em;
           overflow: auto;
-        }
-
-        lit-virtualizer {
-          flex: 1;
         }
 
         cc-log {
           white-space: nowrap;
+        }
+        cc-log:not(:last-child) {
+          padding-bottom: 0.25em;
         }
         
         cc-log.wrap {

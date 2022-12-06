@@ -43,7 +43,8 @@
     "stylelint:ci": "stylelint --config ./stylelint.config.json src/components/*/*.js --formatter github",
     "stylelint:fix": "stylelint --config ./stylelint.config.json src/components/*/*.js --fix",
     "typecheck": "tsc -p tsconfig-typecheck-jsdoc.json",
-    "bench-logs": "npx tachometer --config poc-logs/tachometer.json --json-file results/stats.json"
+    "logs:bench": "npx tachometer --config logs/low/bench/tachometer.json --json-file logs/low/bench/results/stats.json",
+    "logs:bench:browser": "npx tachometer --config logs/low/bench/tachometer.json --json-file logs/low/bench/results/stats-browsers.json"
   },
   "dependencies": {
     "@clevercloud/client": "^7.10.0",
@@ -107,6 +108,7 @@
     "lit-analyzer": "^1.2.1",
     "mime-types": "^2.1.30",
     "mocha": "^10.0.0",
+    "node-fetch": "^3.3.0",
     "node-static": "^0.7.11",
     "postcss-styled": "^0.34.0",
     "remark-frontmatter": "^3.0.0",

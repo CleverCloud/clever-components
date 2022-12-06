@@ -470,6 +470,28 @@ export const translations = {
   'cc-jenkins-info.update.title': `Updates`,
   'cc-jenkins-info.update.up-to-date': `Your Jenkins version is up-to-date.`,
   //#endregion
+  //#region cc-logs-poc
+  'cc-logs-poc.step.build--build-command': `Build command execution`,
+  'cc-logs-poc.step.build--clone': `Application source installation`,
+  'cc-logs-poc.step.build-cache': `Build cache`,
+  'cc-logs-poc.step.build-cache--check': `Check for build cache`,
+  'cc-logs-poc.step.deployment-asked': `Deployment asked`,
+  'cc-logs-poc.step.deployment-error': `Deployment error`,
+  'cc-logs-poc.step.deployment-success': `Deployment success`,
+  'cc-logs-poc.step.post-build-hook': `Post-build hook execution`,
+  'cc-logs-poc.step.post-build-hook--check': `Checking for post-build hook`,
+  'cc-logs-poc.step.post-build-hook--run': `Post-build hook execution`,
+  'cc-logs-poc.step.post-build-hook--skip': () => sanitize`Post-build hook not found. Did you know you could run some custom command just after the build? More on the <a href="https://www.clever-cloud.com/doc/develop/build-hooks/">Hooks page</a>.`,
+  'cc-logs-poc.step.post-run-hook--check': ``,
+  'cc-logs-poc.step.post-run-hook--skip': ``,
+  'cc-logs-poc.step.pre-build-hook--check': ``,
+  'cc-logs-poc.step.pre-build-hook--run': ``,
+  'cc-logs-poc.step.pre-run-hook--check': ``,
+  'cc-logs-poc.step.pre-run-hook--run': ``,
+  'cc-logs-poc.step.prepare-instance--inject-env': ``,
+  'cc-logs-poc.step.prepare-instance--start-vm': ``,
+  'cc-logs-poc.step.start-app': ``,
+  //#endregion
   //#region cc-logsmap
   'cc-logsmap.legend.heatmap': ({ orgaName }) => sanitize`Heatmap of HTTP requests received by all apps from <strong>${orgaName}</strong> during the last 24 hours.`,
   'cc-logsmap.legend.heatmap.app': ({ appName }) => sanitize`Heatmap of HTTP requests received by <strong>${appName}</strong> during the last 24 hours.`,
