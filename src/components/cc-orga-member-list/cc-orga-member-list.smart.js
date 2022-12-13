@@ -69,19 +69,19 @@ defineSmartComponent({
 
       postNewMember({ apiConfig, ownerId, email, role })
         .then(() => {
-          notifySuccess(component, i18n('cc-orga-member-list.invite.submit.success', { userEmail: email }));
+          notifySuccess(i18n('cc-orga-member-list.invite.submit.success', { userEmail: email }));
           updateComponent('inviteMemberForm', CcOrgaMemberList.INIT_INVITE_FORM_STATE);
         })
         .catch((error) => {
           console.error(error);
           if (error.id === UNAUTHORISED_ADMIN_ADDITION) {
-            notifyError(component, i18n('cc-orga-member-list.error.unauthorised.text'), i18n('cc-orga-member-list.error.unauthorised.heading'));
+            notifyError(i18n('cc-orga-member-list.error.unauthorised.text'), i18n('cc-orga-member-list.error.unauthorised.heading'));
           }
           else if (error.message === RATE_LIMIT_EXCEEDED) {
-            notifyError(component, i18n('cc-orga-member-list.invite.submit.error-rate-limit.message'), i18n('cc-orga-member-list.invite.submit.error-rate-limit.title'));
+            notifyError(i18n('cc-orga-member-list.invite.submit.error-rate-limit.message'), i18n('cc-orga-member-list.invite.submit.error-rate-limit.title'));
           }
           else {
-            notifyError(component, i18n('cc-orga-member-list.invite.submit.error', { userEmail: email }));
+            notifyError(i18n('cc-orga-member-list.invite.submit.error', { userEmail: email }));
           }
 
           updateComponent('inviteMemberForm', (inviteMemberForm) => {
@@ -97,7 +97,7 @@ defineSmartComponent({
        * We need to check if a Manager tries to edit an Admin and throw an error if that's the case.
        */
       if (isManagerEditingAdmin(role)) {
-        notifyError(component, i18n('cc-orga-member-list.error.unauthorised.text'), i18n('cc-orga-member-list.error.unauthorised.heading'));
+        notifyError(i18n('cc-orga-member-list.error.unauthorised.text'), i18n('cc-orga-member-list.error.unauthorised.heading'));
         return;
       }
 
@@ -107,7 +107,7 @@ defineSmartComponent({
 
       editMember({ apiConfig, ownerId, id, newRole, name, email, isCurrentUser })
         .then(() => {
-          notifySuccess(component, i18n('cc-orga-member-list.edit.success', { memberIdentity: name ?? email }));
+          notifySuccess(i18n('cc-orga-member-list.edit.success', { memberIdentity: name ?? email }));
           updateMember(id, (member) => {
             member.state = 'loaded';
             member.role = newRole;
@@ -120,13 +120,13 @@ defineSmartComponent({
         .catch((error) => {
           console.error(error);
           if (error.id === UNAUTHORISED_ADMIN_ADDITION || error.id === UNAUTHORISED_ADMIN_DELETION) {
-            notifyError(component, i18n('cc-orga-member-list.error.unauthorised.text'), i18n('cc-orga-member-list.error.unauthorised.heading'));
+            notifyError(i18n('cc-orga-member-list.error.unauthorised.text'), i18n('cc-orga-member-list.error.unauthorised.heading'));
           }
           else if (error.id === MEMBER_NOT_FOUND) {
-            notifyError(component, i18n('cc-orga-member-list.error-member-not-found.text'), i18n('cc-orga-member-list.error-member-not-found.heading'));
+            notifyError(i18n('cc-orga-member-list.error-member-not-found.text'), i18n('cc-orga-member-list.error-member-not-found.heading'));
           }
           else {
-            notifyError(component, i18n('cc-orga-member-list.edit.error', { memberIdentity: name ?? email }));
+            notifyError(i18n('cc-orga-member-list.edit.error', { memberIdentity: name ?? email }));
           }
 
           updateMember(id, (member) => {
@@ -142,7 +142,7 @@ defineSmartComponent({
 
       deleteMember({ apiConfig, ownerId, id })
         .then(() => {
-          notifySuccess(component, i18n('cc-orga-member-list.delete.success', { memberIdentity: name ?? email }));
+          notifySuccess(i18n('cc-orga-member-list.delete.success', { memberIdentity: name ?? email }));
           updateComponent('members', (members) => {
             members.value = members.value.filter((member) => member.id !== id);
           });
@@ -150,13 +150,13 @@ defineSmartComponent({
         .catch((error) => {
           console.error(error);
           if (error.id === UNAUTHORISED_ADMIN_DELETION) {
-            notifyError(component, i18n('cc-orga-member-list.error.unauthorised.text'), i18n('cc-orga-member-list.error.unauthorised.heading'));
+            notifyError(i18n('cc-orga-member-list.error.unauthorised.text'), i18n('cc-orga-member-list.error.unauthorised.heading'));
           }
           else if (error.id === MEMBER_NOT_FOUND) {
-            notifyError(component, i18n('cc-orga-member-list.error-member-not-found.text'), i18n('cc-orga-member-list.error-member-not-found.heading'));
+            notifyError(i18n('cc-orga-member-list.error-member-not-found.text'), i18n('cc-orga-member-list.error-member-not-found.heading'));
           }
           else {
-            notifyError(component, i18n('cc-orga-member-list.delete.error', { memberIdentity: name ?? email }));
+            notifyError(i18n('cc-orga-member-list.delete.error', { memberIdentity: name ?? email }));
           }
 
           updateMember(id, (member) => {
@@ -176,14 +176,14 @@ defineSmartComponent({
 
       deleteMember({ apiConfig, ownerId, id })
         .then(() => {
-          notifySuccess(component, i18n('cc-orga-member-list.leave.success'));
+          notifySuccess(i18n('cc-orga-member-list.leave.success'));
           updateAuthorisations();
           updateComponent('members', { state: 'error' });
           window.dispatchEvent(new Event('orga-member-leave-success'));
         })
         .catch((error) => {
           console.error(error);
-          notifyError(component, i18n('cc-orga-member-list.leave.error'));
+          notifyError(i18n('cc-orga-member-list.leave.error'));
           updateMember(id, (member) => {
             member.state = 'loaded';
           });

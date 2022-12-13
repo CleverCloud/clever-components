@@ -62,7 +62,7 @@ defineSmartComponent({
 
       api.sendConfirmationEmail(address)
         .then(() => {
-          notify(component, {
+          notify({
             intent: 'info',
             title: i18n('cc-email-list.primary.action.resend-confirmation-email.success.title'),
             message: i18n('cc-email-list.primary.action.resend-confirmation-email.success.message', { address }),
@@ -74,7 +74,7 @@ defineSmartComponent({
         })
         .catch((error) => {
           console.error(error);
-          notifyError(component, i18n('cc-email-list.primary.action.resend-confirmation-email.error', { address }));
+          notifyError(i18n('cc-email-list.primary.action.resend-confirmation-email.error', { address }));
         })
         .finally(() => {
           updateComponent('emails', (emails) => {
@@ -94,7 +94,7 @@ defineSmartComponent({
 
       api.addSecondaryEmailAddress(address)
         .then(() => {
-          notify(component, {
+          notify({
             intent: 'info',
             title: i18n('cc-email-list.secondary.action.add.success.title'),
             message: i18n('cc-email-list.secondary.action.add.success.message', { address }),
@@ -126,7 +126,7 @@ defineSmartComponent({
           }
           else {
             console.error(error);
-            notifyError(component, i18n('cc-email-list.secondary.action.add.error', { address }));
+            notifyError(i18n('cc-email-list.secondary.action.add.error', { address }));
             updateComponent('addEmailForm', (addEmailForm) => {
               addEmailForm.state = 'idle';
             });
@@ -143,7 +143,7 @@ defineSmartComponent({
 
       api.deleteSecondaryEmailAddress(address)
         .then(() => {
-          notifySuccess(component, i18n('cc-email-list.secondary.action.delete.success', { address }));
+          notifySuccess(i18n('cc-email-list.secondary.action.delete.success', { address }));
 
           updateComponent('emails', (emails) => {
             emails.value.secondaryAddresses = emails.value.secondaryAddresses.filter((a) => a.address !== address);
@@ -151,7 +151,7 @@ defineSmartComponent({
         })
         .catch((error) => {
           console.error(error);
-          notifyError(component, i18n('cc-email-list.secondary.action.delete.error', { address }));
+          notifyError(i18n('cc-email-list.secondary.action.delete.error', { address }));
           updateSecondary(address, (secondaryAddressState) => {
             secondaryAddressState.state = 'idle';
           });
@@ -166,7 +166,7 @@ defineSmartComponent({
 
       api.markSecondaryEmailAddressAsPrimary(address)
         .then(() => {
-          notifySuccess(component, i18n('cc-email-list.secondary.action.mark-as-primary.success', { address }));
+          notifySuccess(i18n('cc-email-list.secondary.action.mark-as-primary.success', { address }));
 
           const primaryAddress = component.emails.value.primaryAddress.address;
 
@@ -180,7 +180,7 @@ defineSmartComponent({
         })
         .catch((error) => {
           console.error(error);
-          notifyError(component, i18n('cc-email-list.secondary.action.mark-as-primary.error', { address }));
+          notifyError(i18n('cc-email-list.secondary.action.mark-as-primary.error', { address }));
           updateSecondary(address, (secondaryAddressState) => {
             secondaryAddressState.state = 'idle';
           });

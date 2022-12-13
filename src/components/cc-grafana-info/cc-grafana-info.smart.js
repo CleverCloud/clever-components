@@ -56,8 +56,8 @@ defineSmartComponentWithObservables({
         component.waiting = 'resetting';
 
         doResetGrafanaOrganisation({ apiConfig, ownerId })
-          .then(() => notifySuccess(component, i18n('cc-grafana-info.reset.success')))
-          .catch(() => notifyError(component, i18n('cc-grafana-info.reset.error')))
+          .then(() => notifySuccess(i18n('cc-grafana-info.reset.success')))
+          .catch(() => notifyError(i18n('cc-grafana-info.reset.error')))
           .finally(() => {
             component.waiting = false;
           });
@@ -72,9 +72,9 @@ defineSmartComponentWithObservables({
           .then(() => {
             component.status = 'disabled';
             component.link = null;
-            notifySuccess(component, i18n('cc-grafana-info.disable.success'));
+            notifySuccess(i18n('cc-grafana-info.disable.success'));
           })
-          .catch(() => notifyError(component, i18n('cc-grafana-info.disable.error')))
+          .catch(() => notifyError(i18n('cc-grafana-info.disable.error')))
           .finally(() => {
             component.waiting = false;
           });
@@ -88,9 +88,9 @@ defineSmartComponentWithObservables({
         enableGrafanaOrganisation({ apiConfig, ownerId })
           .then(() => {
             grafana_lp.push((signal) => fetchGrafanaOrganisation({ apiConfig, signal, ownerId, grafanaBaseLink }));
-            notifySuccess(component, i18n('cc-grafana-info.enable.success'));
+            notifySuccess(i18n('cc-grafana-info.enable.success'));
           })
-          .catch(() => notifyError(component, i18n('cc-grafana-info.enable.error')))
+          .catch(() => notifyError(i18n('cc-grafana-info.enable.error')))
           .finally(() => {
             component.waiting = false;
           });

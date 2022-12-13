@@ -53,13 +53,13 @@ defineSmartComponent({
         .then(() => {
           // re-fetching keys because we need fingerprint info sent from API to properly display newly created keys
           refreshList().then(() => {
-            notifySuccess(component, i18n('cc-ssh-key-list.success.add', { name }));
+            notifySuccess(i18n('cc-ssh-key-list.success.add', { name }));
             updateComponent('createSshKeyForm', CcSshKeyList.CREATE_FORM_INIT_STATE);
           });
         })
         .catch((error) => {
           console.error(error);
-          notifyError(component, error, i18n('cc-ssh-key-list.error.add', { name }));
+          notifyError(error, i18n('cc-ssh-key-list.error.add', { name }));
           updateComponent('createSshKeyForm', (createSshKeyForm) => {
             createSshKeyForm.state = 'idle';
           });
@@ -75,11 +75,11 @@ defineSmartComponent({
       deleteKey({ apiConfig, key: { name } })
         .then(() => {
           // refreshing both personal and GitHub keys because we don't know if we should add the deleting key back to the GitHub list
-          refreshList().then(() => notifySuccess(component, i18n('cc-ssh-key-list.success.delete', { name })));
+          refreshList().then(() => notifySuccess(i18n('cc-ssh-key-list.success.delete', { name })));
         })
         .catch((error) => {
           console.error(error);
-          notifyError(component, error, i18n('cc-ssh-key-list.error.delete', { name }));
+          notifyError(error, i18n('cc-ssh-key-list.error.delete', { name }));
           updateComponent('keyData', (keyData) => {
             const key = keyData.personalKeys.find((key) => key.name === name);
             key.state = 'idle';
@@ -95,7 +95,7 @@ defineSmartComponent({
 
       importKey({ apiConfig, key: { name, key } })
         .then(() => {
-          notifySuccess(component, i18n('cc-ssh-key-list.success.import', { name }));
+          notifySuccess(i18n('cc-ssh-key-list.success.import', { name }));
           updateComponent('keyData', (keyData) => {
             keyData.personalKeys.push({ state: 'idle', name, fingerprint });
             keyData.githubKeys = keyData.githubKeys.filter((k) => k.name !== name);
@@ -103,7 +103,7 @@ defineSmartComponent({
         })
         .catch((error) => {
           console.error(error);
-          notifyError(component, error, i18n('cc-ssh-key-list.error.import', { name }));
+          notifyError(error, i18n('cc-ssh-key-list.error.import', { name }));
           updateComponent('keyData', (keyData) => {
             const key = keyData.githubKeys.find((key) => key.name === name);
             key.state = 'idle';
