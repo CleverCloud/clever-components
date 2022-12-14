@@ -20,25 +20,38 @@ You can add some details in parens when the selector is more complex.
   <tr><td><strong>Requires auth</strong> <td>Yes/No
 </table>
 
+## 👋️ Events fired
+
+<!-- Here we describe the different events fired by the smart component. -->
+
+| Name              | Payload            | Details                                            |
+|-------------------|--------------------|----------------------------------------------------|
+| `some-event-name` | `SomeEventPayload` | Some details about when or why this event is fired |
+
+```ts
+interface SomeEventPayload {
+    id: string,
+}
+```
+
 ## ⚙️ Params
 
 <!-- Here we describe the different params. -->
 
-<table>
-  <tr><th>Name                   <th>Type                   <th>Details                       <th>Default
-  <tr><td><code>apiConfig</code> <td><code>ApiConfig</code> <td>Some details about this param <td>defaut value if necessary
-  <tr><td><code>paramFoo</code>  <td><code>String</code>    <td>Some details about this param <td>defaut value if necessary
-</table>
+| Name        | Type         | Details                       | Default                   |
+|-------------|--------------|-------------------------------|---------------------------|
+| `apiConfig` | `ApiConfig`  | Some details about this param | defaut value if necessary |
+| `paramFoo`  | `string`     | Some details about this param | defaut value if necessary |
 
 <!-- If some params are objects, out the type definitions here. Remove this if you don't need it. -->
 
-```js
+```ts
 interface ApiConfig {
-  API_HOST: String,
-  API_OAUTH_TOKEN: String,
-  API_OAUTH_TOKEN_SECRET: String,
-  OAUTH_CONSUMER_KEY: String,
-  OAUTH_CONSUMER_SECRET: String,
+  API_HOST: string,
+  API_OAUTH_TOKEN: string,
+  API_OAUTH_TOKEN_SECRET: string,
+  OAUTH_CONSUMER_KEY: string,
+  OAUTH_CONSUMER_SECRET: string,
 }
 ```
 
@@ -52,11 +65,10 @@ interface ApiConfig {
 
 <!-- List API endpoints used by the component here with the details. -->
 
-<table>
-  <tr><th>Method <th>URL                                                   <th>Cache?
-  <tr><td>GET    <td><code>/v2/products/instances</code>                   <td>1 day
-  <tr><td>GET    <td><code>/organisations/{id}/applications/{appId}</code> <td>Default
-</table>
+| Method | URL                                        | Cache?  |
+|--------|--------------------------------------------|---------|
+| `GET`  | `/v2/products/instances`                   | 1 day   |
+| `GET`  | `/organisations/{id}/applications/{appId}` | Default |
 
 ## ⬇️️ Examples
 
@@ -74,9 +86,3 @@ Some quick description of the example.
 </cc-smart-container>
 ```
 
-<!-- Use the component directly here. You will need to import/load the smart definition, for now we add the import in the story. -->
-<!-- You don't need this if auth is required. -->
-
-<cc-smart-container context='{ "apiConfig": {}, "paramFoo": "foobar" }'>
-  <cc-example-component></cc-example-component>
-</cc-smart-container>
