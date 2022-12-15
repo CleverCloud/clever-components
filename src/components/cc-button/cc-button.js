@@ -1,3 +1,4 @@
+import '../cc-icon/cc-icon.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -5,6 +6,10 @@ import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
+
+/**
+ * @typedef {import('../cc-icon/cc-icon.types.js').IconModel} IconModel
+ */
 
 /**
  * Wraps a `<button>` with a skeleton state, some modes and a delay mechanism.
@@ -49,6 +54,7 @@ export class CcButton extends LitElement {
       delay: { type: Number },
       disabled: { type: Boolean, reflect: true },
       hideText: { type: Boolean, attribute: 'hide-text' },
+      icon: { type: Object },
       image: { type: String },
       link: { type: Boolean, reflect: true },
       outlined: { type: Boolean },
@@ -84,6 +90,9 @@ export class CcButton extends LitElement {
 
     /** @type {boolean} Hides the text and only displays the image specified with `image`. The slotted text will be added as `title` and `aria-label` on the inner `<button>`. */
     this.hideText = false;
+
+    /** @type {IconModel|null} If set, enables icon mode and displays the required icon in the <cc-icon> component. */
+    this.icon = null;
 
     /** @type {string|null} If set, enables icon mode and sets the `src` of the inner native `<img>` element. */
     this.image = null;
@@ -129,7 +138,7 @@ export class CcButton extends LitElement {
       return this.accessibleName.trim() ?? '';
     }
 
-    if (this.hideText && this.image != null) {
+    if (this.hideText && (this.image != null || this.icon != null)) {
       return this.textContent?.trim() ?? '';
     }
 
@@ -146,7 +155,7 @@ export class CcButton extends LitElement {
       return this.accessibleName.trim() ?? '';
     }
 
-    if (this.hideText && this.image != null) {
+    if (this.hideText && (this.image != null || this.icon != null)) {
       return this.textContent.trim() ?? '';
     }
 
@@ -202,8 +211,8 @@ export class CcButton extends LitElement {
       warning: !this.primary && !this.success && this.warning && !this.danger && !this.link,
       danger: !this.primary && !this.success && !this.warning && this.danger && !this.link,
       skeleton: this.skeleton,
-      'img-only': this.image != null && this.hideText,
-      'txt-only': this.image == null,
+      'img-only': (this.image != null || this.icon != null) && this.hideText,
+      'txt-only': this.image == null && this.icon == null,
       btn: !this.link,
       'cc-link': this.link,
     };
@@ -219,7 +228,7 @@ export class CcButton extends LitElement {
     modes.outlined = (this.outlined || modes.simple) && !this.link;
 
     // circle mode should only appear in hide-text mode if we have an image
-    modes.circle = this.circle && this.hideText && this.image;
+    modes.circle = this.circle && this.hideText && (this.image || this.icon);
 
     const tabIndex = this.skeleton ? -1 : null;
 
@@ -242,6 +251,9 @@ export class CcButton extends LitElement {
         <div class="text-wrapper ${classMap({ 'cancel-mode': this._cancelMode })}">
           ${this.image != null ? html`
             <img src=${this.image} alt="">
+          ` : ''}
+          ${this.icon != null ? html`
+            <cc-icon .icon="${this.icon}"></cc-icon>
           ` : ''}
           <div class="text-normal">
             <slot></slot>
@@ -391,6 +403,7 @@ export class CcButton extends LitElement {
           color: transparent;
         }
 
+        .skeleton cc-icon,
         .skeleton img {
           visibility: hidden;
         }
@@ -434,6 +447,7 @@ export class CcButton extends LitElement {
           display: none;
         }
 
+        cc-icon,
         img,
         .text-normal,
         .text-cancel {
@@ -446,6 +460,7 @@ export class CcButton extends LitElement {
           font-size: 0.85em;
         }
 
+        cc-icon,
         img {
           grid-column: 1 / 2;
         }
@@ -458,6 +473,7 @@ export class CcButton extends LitElement {
           grid-column: 1 / -1;
         }
 
+        .text-wrapper.cancel-mode cc-icon,
         .text-wrapper.cancel-mode img,
         .text-wrapper.cancel-mode .text-normal,
         .text-wrapper:not(.cancel-mode) .text-cancel {

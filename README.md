@@ -51,3 +51,5 @@ The respective copyrights are at the top of each file:
 
 * src/lib/leaflet-heat.js
 * src/lib/simpleheat.js
+
+Icons are powered by [Remix Icon](https://remixicon.com/).

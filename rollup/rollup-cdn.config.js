@@ -14,6 +14,7 @@ import {
   visualizerPlugin,
 } from './rollup-common.js';
 import { depsManifestPlugin } from './rollup-plugin-deps-manifest.js';
+import { createIconAssetsPlugin } from './rollup-plugin-icon.js';
 import { stylesAssetsPlugin } from './rollup-plugin-styles-assets.js';
 
 const packageVersion = getVersion();
@@ -52,6 +53,8 @@ export default {
     commonjs(),
     // support resolving module using Node resolution algorithm. TODO: figure out why we need that
     resolve(),
+    // deliver SVG icons in form of ES modules
+    createIconAssetsPlugin(),
     // minify JS
     terserPlugin(),
     // minify HTML and CSS inside components

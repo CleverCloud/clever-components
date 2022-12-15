@@ -4,9 +4,9 @@
 // DOCS: We enforce import order [fixed by ESLint].
 import { css, html, LitElement } from 'lit';
 
-// DOCS: You may prepare URLs for assets like SVG files here:
-const warningSvg = new URL('../assets/warning.svg', import.meta.url).href;
-const noRedirectionSvg = new URL('../assets/redirection-off.svg', import.meta.url).href;
+// DOCS: Import the icon(s), using an alias being recommended (better meaning, cleaner future update, shorter variable name, etc.).
+import { iconCleverRedirectionOn as iconRedirOn } from '../src/assets/cc-clever.icons.js';
+import { iconRemixCloudFill as iconLogo } from '../src/assets/cc-remix.icons.js';
 
 // DOCS: You may setup/init some stuffs here but this should be rare and most of the setup should happen in the component.
 const MY_AWESOME_CONST = 'foobar';
@@ -170,6 +170,10 @@ export class CcExampleComponent extends LitElement {
       <div>
         This is <code>cc-example-component</code>
         ${this._renderSubpart()}
+        
+        <!-- icon usage -->
+        <cc-icon .icon="${iconLogo}" size="xl"></cc-icon>
+        <cc-icon .icon="${iconRedirOn}" style="--cc-icon-color: #d74d4e;"></cc-icon>
       </div>
     `;
   }

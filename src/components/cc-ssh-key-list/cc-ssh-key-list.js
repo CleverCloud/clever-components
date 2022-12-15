@@ -1,5 +1,6 @@
 import '../cc-button/cc-button.js';
 import '../cc-badge/cc-badge.js';
+import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-block/cc-block.js';
@@ -8,16 +9,17 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
+import {
+  iconRemixAddCircleFill as iconAdd,
+  iconRemixDeleteBin_5Fill as iconBin,
+  iconRemixKey_2Fill as iconKey,
+} from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { i18n } from '../../lib/i18n.js';
 import { sortBy } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
-
-const deleteSvg = new URL('../../assets/trash-red.svg', import.meta.url).href;
-const importSvg = new URL('../../assets/add-circle-fill-blue.svg', import.meta.url).href;
-const keySvg = new URL('../../assets/key-reverse.svg', import.meta.url).href;
 
 const SKELETON_KEYS = [{
   state: 'idle',
@@ -306,7 +308,9 @@ export class CcSshKeyList extends LitElement {
 
           return html`
             <div class="key ${classMap(classes)}">
-              <cc-img class="key__icon" src=${!skeleton ? keySvg : ''} ?skeleton=${skeleton}></cc-img>
+              <div class="key__icon">
+                <cc-icon .icon="${iconKey}" size="lg" ?skeleton=${skeleton}></cc-icon>
+              </div>
               <div class="key__name">
                 <span class=${classMap({ skeleton })}>${(name)}</span>
               </div>
@@ -317,10 +321,10 @@ export class CcSshKeyList extends LitElement {
                   <cc-button
                     @cc-button:click=${() => this._onDeleteKey(key)}
                     accessible-name="${i18n('cc-ssh-key-list.personal.delete.a11y', { name })}"
-                    class="key__button"
+                    class="key__button key__button--personal"
+                    .icon="${iconBin}"
                     ?disabled=${isDisabled}
                     danger
-                    image=${deleteSvg}
                     outlined
                     ?waiting=${isDisabled}>
                     ${i18n('cc-ssh-key-list.personal.delete')}
@@ -331,9 +335,9 @@ export class CcSshKeyList extends LitElement {
                   <cc-button
                     @cc-button:click=${() => this._onImportKey(key)}
                     accessible-name="${i18n('cc-ssh-key-list.github.import.a11y', { name })}"
-                    class="key__button"
+                    class="key__button key__button--github"
+                    .icon="${iconAdd}"
                     ?disabled=${isDisabled}
-                    image=${importSvg}
                     ?waiting=${isDisabled}>
                     ${i18n('cc-ssh-key-list.github.import')}
                   </cc-button>
@@ -341,8 +345,8 @@ export class CcSshKeyList extends LitElement {
 
                 ${type === 'skeleton' ? html`
                   <cc-button
-                    class="key__button"
-                    image=${deleteSvg}
+                    class="key__button key__button--skeleton"
+                    .icon="${iconAdd}"
                     skeleton
                   >
                     ${fakeString(10)}
@@ -365,6 +369,8 @@ export class CcSshKeyList extends LitElement {
         /* region global */
 
         :host {
+          --skeleton-color: #bbb;
+
           display: block;
         }
         /* endregion */
@@ -412,12 +418,11 @@ export class CcSshKeyList extends LitElement {
         }
 
         .key__icon {
-          width: 1.25em;
-          height: 1.25em;
           grid-area: key-icon;
         }
 
         .key__name {
+          align-self: flex-end;
           font-size: 1.125em;
           font-weight: bold;
           grid-area: key-name;
@@ -446,6 +451,18 @@ export class CcSshKeyList extends LitElement {
           line-height: 1.5;
           word-break: break-word;
         }
+
+        .key__button--personal {
+          --cc-icon-size: 18px;
+        }
+
+        .key__button--github {
+          --cc-icon-size: 20px;
+        }
+
+        .key__button--skeleton {
+          --cc-icon-size: 20px;
+        }
         /* endregion */
 
         /* region misc */
@@ -465,7 +482,7 @@ export class CcSshKeyList extends LitElement {
         }
 
         .key--skeleton .skeleton {
-          background-color: var(--cc-color-bg-neutral);
+          background-color: var(--skeleton-color);
         }
 
         .info-msg {
