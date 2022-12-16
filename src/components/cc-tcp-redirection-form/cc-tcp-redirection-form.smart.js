@@ -33,7 +33,7 @@ defineSmartComponent({
       });
       createTcpRedirection({ apiConfig, ownerId, appId, namespace })
         .then(({ port }) => {
-          notifySuccess(component, i18n('cc-tcp-redirection-form.create.success', { namespace }));
+          notifySuccess(i18n('cc-tcp-redirection-form.create.success', { namespace }));
           updateRedirection(namespace, (redirection) => {
             redirection.state = 'loaded';
             redirection.sourcePort = port;
@@ -41,7 +41,7 @@ defineSmartComponent({
         })
         .catch((error) => {
           console.error(error);
-          notifyError(component, i18n('cc-tcp-redirection-form.create.error', { namespace }));
+          notifyError(i18n('cc-tcp-redirection-form.create.error', { namespace }));
           updateRedirection(namespace, (redirection) => {
             redirection.state = 'loaded';
           });
@@ -54,7 +54,7 @@ defineSmartComponent({
       });
       deleteTcpRedirection({ apiConfig, ownerId, appId, sourcePort, namespace })
         .then(() => {
-          notifySuccess(component, i18n('cc-tcp-redirection-form.delete.success', { namespace }));
+          notifySuccess(i18n('cc-tcp-redirection-form.delete.success', { namespace }));
           updateRedirection(namespace, (redirection) => {
             redirection.state = 'loaded';
             redirection.sourcePort = null;
@@ -62,7 +62,7 @@ defineSmartComponent({
         })
         .catch((error) => {
           console.error(error);
-          notifyError(component, i18n('cc-tcp-redirection-form.delete.error', { namespace }));
+          notifyError(i18n('cc-tcp-redirection-form.delete.error', { namespace }));
           updateRedirection(namespace, (redirection) => {
             redirection.state = 'loaded';
           });

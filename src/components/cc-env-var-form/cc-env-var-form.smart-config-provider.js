@@ -61,9 +61,9 @@ defineSmartComponentWithObservables({
         updateConfiguration({ apiConfig, realAddonId, variables })
           .then(() => {
             component.variables = variables;
-            notifySuccess(component, i18n('cc-env-var-form.update.success'));
+            notifySuccess(i18n('cc-env-var-form.update.success'));
           })
-          .catch(() => notifyError(component, i18n('cc-env-var-form.update.error')))
+          .catch(() => notifyError(i18n('cc-env-var-form.update.error')))
           .finally(() => {
             component.saving = false;
           });
