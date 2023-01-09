@@ -378,9 +378,9 @@ export class CcButton extends LitElement {
 
         /* STATES */
 
-        .btn:not([aria-disabled='true']):focus {
-          box-shadow: 0 0 0 0.2em rgb(50 115 220 / 25%);
-          outline: 0;
+        .btn:focus {
+          outline: var(--cc-focus-outline, #000 solid 2px);
+          outline-offset: var(--cc-focus-outline-offset, 2px);
         }
 
         .btn:not([aria-disabled='true']):hover {

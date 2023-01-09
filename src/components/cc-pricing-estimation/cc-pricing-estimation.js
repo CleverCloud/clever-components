@@ -318,8 +318,8 @@ export class CcPricingEstimation extends withResizeObserver(LitElement) {
         }
 
         .cc-link:focus {
-          box-shadow: 0 0 0 0.2em rgb(0 0 0 / 40%);
-          outline: 0;
+          outline: var(--cc-focus-outline, #000 solid 2px);
+          outline-offset: var(--cc-focus-outline-offset, 2px);
         }
 
         .cc-link::-moz-focus-inner {

@@ -155,7 +155,8 @@ export class CcHeaderOrga extends LitElement {
         }
 
         .hotline_number:focus {
-          box-shadow: 0 0 0 0.2em rgb(50 115 220 / 25%);
+          outline: var(--cc-focus-outline, #000 solid 2px);
+          outline-offset: var(--cc-focus-outline-offset, 2px);
         }
 
         .hotline_number:hover {

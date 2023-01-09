@@ -235,6 +235,12 @@
   --cc-margin-top-btn-horizontal-form: 1.6em;
   /*endregion*/
 
+  /*region Focus Outline*/
+  --cc-focus-outline: var(--color-blue-60) solid 2px;
+  --cc-focus-outline-error: var(--color-red-100) solid 2px;
+  --cc-focus-outline-offset: 2px;
+  /*endregion*/
+
   /*region Miscellaneous*/
   /**
    * An opacity value that passes a11y tests.

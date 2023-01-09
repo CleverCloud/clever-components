@@ -242,8 +242,8 @@ export class CcNotice extends LitElement {
         }
         
         .close-button:focus {
-          box-shadow: 0 0 0 0.15em rgb(50 115 220 / 25%);
-          outline: 0;
+          outline: var(--cc-focus-outline, #000 solid 2px);
+          outline-offset: var(--cc-focus-outline-offset, 2px);
         }
 
         .close-button img {
