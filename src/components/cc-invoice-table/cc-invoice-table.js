@@ -11,7 +11,7 @@ import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 const fileSvg = new URL('../../assets/file.svg', import.meta.url).href;
 
 // TODO: Move to clever-client
-export const PENDING_STATUSES = ['PENDING', 'PAYMENTHELD'];
+export const PENDING_STATUSES = ['PENDING', 'PAYMENTHELD', 'WONTPAY'];
 export const PROCESSING_STATUS = 'PROCESSING';
 export const PROCESSED_STATUSES = ['PAID', 'CANCELED', 'REFUNDED'];
 
