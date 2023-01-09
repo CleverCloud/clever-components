@@ -4,6 +4,23 @@ title: Changelog
 ---
 # Clever Components changelog
 
+## [10.3.0](https://github.com/CleverCloud/clever-components/compare/10.2.1...10.3.0) (2023-01-09)
+
+
+### Features
+
+* **cc-button:** add 'icon' property with 'cc-icon' ([18724b6](https://github.com/CleverCloud/clever-components/commit/18724b6cc50d237a8c9e2d2a2462fabfbef19589))
+* **cc-icon:** init ([64e87e1](https://github.com/CleverCloud/clever-components/commit/64e87e175a14111cef49d40933decefa4ca5237c))
+* **cc-ssh-key-list:** implement 'cc-icon' ([e12dd10](https://github.com/CleverCloud/clever-components/commit/e12dd10cce4ee926346d6e22a306d4e896b0041a))
+* **notifications:** dispatch notify events from window by default ([fcda35c](https://github.com/CleverCloud/clever-components/commit/fcda35c8cf19fda425a5418e5c1fd6ce6b666d37)), closes [#663](https://github.com/CleverCloud/clever-components/issues/663)
+
+
+### Bug Fixes
+
+* **cc-icon:** force svg size to resolve safari 15 issue ([6ca44c1](https://github.com/CleverCloud/clever-components/commit/6ca44c143339ff6ea9a7b104de03a85dd0e8e99e)), closes [#681](https://github.com/CleverCloud/clever-components/issues/681)
+* **cc-invoice-table:** "WONTPAY" is part of pending invoices ([af244ed](https://github.com/CleverCloud/clever-components/commit/af244eda32dc081b80b271626a5b166da16b908d))
+* **cc-stretch:** rollback width max-content rule ([245ac95](https://github.com/CleverCloud/clever-components/commit/245ac9559d6f12961d5a6a322c4a3e7f30691e48)), closes [#657](https://github.com/CleverCloud/clever-components/issues/657)
+
 ## [10.2.1](https://github.com/CleverCloud/clever-components/compare/10.2.0...10.2.1) (2022-12-02)
 
 
