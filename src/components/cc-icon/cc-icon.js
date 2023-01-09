@@ -132,9 +132,11 @@ export class CcIcon extends LitElement {
         }
 
         svg {
+          width: 100%;
+          height: 100%;
           fill: var(--cc-icon-color, currentColor);
         }
-        
+
         .skeleton {
           width: var(--size, 1em);
           height: var(--size, 1em);
