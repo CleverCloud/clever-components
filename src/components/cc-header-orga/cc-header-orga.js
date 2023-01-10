@@ -4,11 +4,13 @@ import '../cc-error/cc-error.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import {
+  iconRemixCheckboxCircleFill as iconBadge,
+  iconRemixPhoneFill as iconPhone,
+} from '../../assets/cc-remix.icons.js';
+
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
-
-const badgeSvg = new URL('../../assets/badge-white.svg', import.meta.url).href;
-const phoneSvg = new URL('../../assets/phone.svg', import.meta.url).href;
 
 const SKELETON_ORGA = {
   name: '??????????????????????????',
@@ -69,14 +71,14 @@ export class CcHeaderOrga extends LitElement {
             <div class="name ${classMap({ skeleton })}">${orga.name}</div>
             ${orga.cleverEnterprise ? html`
               <div class="spacer"></div>
-              <cc-badge weight="strong" intent="info" icon-src=${badgeSvg}>Clever Cloud Enterprise</cc-badge>
+              <cc-badge weight="strong" intent="info" .icon=${iconBadge}>Clever Cloud Enterprise</cc-badge>
             ` : ''}
           </div>
           ${(orga.emergencyNumber != null) ? html`
             <div class="hotline">
               <div class="hotline_label">${i18n('cc-header-orga.hotline')}</div>
               <a class="hotline_number" href="tel:${orga.emergencyNumber}">
-                <cc-badge weight="outlined" intent="info" icon-src=${phoneSvg}>${orga.emergencyNumber}</cc-badge>
+                <cc-badge weight="outlined" intent="info" .icon=${iconPhone}>${orga.emergencyNumber}</cc-badge>
               </a>
             </div>
           ` : ''}
