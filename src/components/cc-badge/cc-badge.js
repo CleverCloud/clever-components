@@ -1,10 +1,13 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
+import '../cc-icon/cc-icon.js';
 
 /**
  * @typedef {import('./cc-badge.types.js').BadgeIntent} BadgeIntent
  * @typedef {import('./cc-badge.types.js').BadgeWeight} BadgeWeight
+ * @typedef {import('../common.types.js').IconModel} IconModel
  */
 
 /**
@@ -18,8 +21,8 @@ export class CcBadge extends LitElement {
   static get properties () {
     return {
       circle: { type: Boolean },
+      icon: { type: Object },
       iconAlt: { type: String, attribute: 'icon-alt' },
-      iconSrc: { type: String, attribute: 'icon-src' },
       intent: { type: String },
       skeleton: { type: Boolean },
       weight: { type: String },
@@ -32,11 +35,11 @@ export class CcBadge extends LitElement {
     /** @type {boolean} Sets the badge to a bubble style. Should only be used to display 1 or 2 digits figures. */
     this.circle = false;
 
+    /** @type {IconModel|null} If set, enables icon mode and displays the required icon in the <cc-icon> component. */
+    this.icon = null;
+
     /** @type {string|null} Sets the `alt` attribute value on the `<img>` tag. Only use if the image conveys additional info compared to surrounding text. */
     this.iconAlt = null;
-
-    /** @type {string|null} Sets the icon displayed on the left of the text inside the badge. */
-    this.iconSrc = null;
 
     /** @type {BadgeIntent} Sets the accent color used for the badge. */
     this.intent = 'neutral';
@@ -64,8 +67,8 @@ export class CcBadge extends LitElement {
 
     return html`
       <span class="cc-badge ${classMap(modes)}">
-        ${this.iconSrc != null ? html`
-          <img src=${this.iconSrc} alt=${this.iconAlt ?? ''}>
+        ${this.icon != null ? html`
+          <cc-icon .icon=${this.icon} accessible-name=${ifDefined(this.iconAlt)}></cc-icon>
         ` : ''}
         <span>
           <slot></slot>
@@ -105,7 +108,7 @@ export class CcBadge extends LitElement {
           border: 0.06em solid #777 !important;
         }
 
-        .skeleton img {
+        .skeleton cc-icon {
           visibility: hidden !important;
         }
 

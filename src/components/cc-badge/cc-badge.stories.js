@@ -1,12 +1,13 @@
 import './cc-badge.js';
+import {
+  iconRemixErrorWarningFill as iconError,
+  iconRemixInformationFill as iconInfo,
+  iconRemixCheckFill as iconSuccess,
+  iconRemixAlertFill as iconWarning,
+  iconRemixFlagFill as iconNeutral,
+} from '../../assets/cc-remix.icons.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
-
-const infoSvg = new URL('../../assets/info.svg', import.meta.url);
-const warningSvg = new URL('../../assets/warning.svg', import.meta.url);
-const errorSvg = new URL('../../assets/error.svg', import.meta.url);
-const tickSvg = new URL('../../assets/tick.svg', import.meta.url);
-const badgeSvg = new URL('../../assets/badge-white.svg', import.meta.url);
 
 const baseItems = [
   {
@@ -41,35 +42,35 @@ const iconsItems = [
     intent: 'info',
     weight: 'dimmed',
     innerHTML: 'this is info',
-    iconSrc: infoSvg,
+    icon: iconInfo,
     iconAlt: 'Info',
   },
   {
     intent: 'success',
     weight: 'outlined',
     innerHTML: 'this is success',
-    iconSrc: tickSvg,
+    icon: iconSuccess,
     iconAlt: 'Success',
   },
   {
     intent: 'danger',
     weight: 'outlined',
     innerHTML: 'this is danger',
-    iconSrc: errorSvg,
+    icon: iconError,
     iconAlt: 'Error',
   },
   {
     intent: 'warning',
     weight: 'strong',
     innerHTML: 'this is warning',
-    iconSrc: warningSvg,
+    icon: iconWarning,
     iconAlt: 'Warning',
   },
   {
     intent: 'neutral',
     weight: 'strong',
     innerHTML: 'this is neutral',
-    iconSrc: badgeSvg,
+    icon: iconNeutral,
   },
 ];
 
