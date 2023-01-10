@@ -2,22 +2,23 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref } from 'lit/directives/ref.js';
+import {
+  iconRemixErrorWarningFill as iconError,
+  iconRemixCheckFill as iconCheck,
+  iconRemixCloseFill as iconCross,
+  iconRemixEditFill as iconPen,
+  iconRemixDeleteBin_5Fill as iconBin,
+  iconRemixAccountCircleFill as iconAvatar,
+} from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { withResizeObserver } from '../../mixins/with-resize-observer/with-resize-observer.js';
 import '../cc-button/cc-button.js';
 import '../cc-img/cc-img.js';
+import '../cc-icon/cc-icon.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-select/cc-select.js';
 import '../cc-stretch/cc-stretch.js';
-
-const tickSvg = new URL('../../assets/tick.svg', import.meta.url).href;
-const tickBlueSvg = new URL('../../assets/tick-blue.svg', import.meta.url).href;
-const closeSvg = new URL('../../assets/delete-neutral.svg', import.meta.url).href;
-const trashSvg = new URL('../../assets/trash-red.svg', import.meta.url).href;
-const errorSvg = new URL('../../assets/error.svg', import.meta.url).href;
-const penSvg = new URL('../../assets/pen.svg', import.meta.url).href;
-const profileSvg = new URL('../../assets/profile.svg', import.meta.url).href;
 
 const BREAKPOINT_MEDIUM = 740;
 const BREAKPOINT_SMALL = 580;
@@ -229,7 +230,6 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
 
   render () {
 
-    const avatar = this.member.avatar ?? profileSvg;
     const waiting = this.member.state === 'updating' || this.member.state === 'deleting';
     const hasName = this.member.name != null;
     const hasError = this.member.error;
@@ -237,7 +237,11 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
 
     return html`
       <div class="wrapper ${classMap({ 'has-actions': hasAdminRights, 'has-error': hasError })}">
-        <cc-img class="avatar ${classMap({ waiting })}" src=${avatar}></cc-img>
+        ${this.member.avatar == null ? html`
+          <cc-icon class="avatar ${classMap({ waiting })}" .icon=${iconAvatar}></cc-icon>
+        ` : html`
+          <cc-img class="avatar ${classMap({ waiting })}" src=${this.member.avatar}></cc-img>
+        `}
         <div
             class="identity ${classMap({ waiting })}"
             title="${ifDefined(this.member.jobTitle ?? undefined)}"
@@ -302,10 +306,10 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
           <cc-stretch
             visible-element-id=${this.member.isMfaEnabled ? 'badge-mfa-enabled' : 'badge-mfa-disabled'}
           >
-            <cc-badge id="badge-mfa-enabled" intent="success" weight="outlined" icon-src="${tickSvg}">
+            <cc-badge id="badge-mfa-enabled" intent="success" weight="outlined" .icon="${iconCheck}">
               ${i18n('cc-orga-member-card.mfa-enabled')}
             </cc-badge>
-            <cc-badge id="badge-mfa-disabled" intent="danger" weight="outlined" icon-src="${errorSvg}">
+            <cc-badge id="badge-mfa-disabled" intent="danger" weight="outlined" .icon="${iconError}">
               ${i18n('cc-orga-member-card.mfa-disabled')}
             </cc-badge>
           </cc-stretch>
@@ -336,8 +340,8 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
     const waiting = this.member.state === 'updating' || this.member.state === 'deleting';
     const isEditing = this.member.state === 'editing' || this.member.state === 'updating';
     const hasError = this.member.error;
-    const firstBtnIcon = isEditing ? closeSvg : penSvg;
-    const secondBtnIcon = isEditing ? tickBlueSvg : trashSvg;
+    const firstBtnIcon = isEditing ? iconCross : iconPen;
+    const secondBtnIcon = isEditing ? iconCheck : iconBin;
 
     return html`
       
@@ -345,7 +349,7 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
         <cc-button
           ?primary=${!isEditing}
           outlined
-          image=${firstBtnIcon}
+          .icon=${firstBtnIcon}
           ?circle=${isBtnImgOnly}
           ?disabled=${waiting}
           ?hide-text=${isBtnImgOnly}
@@ -362,7 +366,7 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
           ?danger=${!isEditing}
           ?primary=${isEditing}
           outlined
-          image=${secondBtnIcon}
+          .icon=${secondBtnIcon}
           ?disabled=${hasError}
           ?circle=${isBtnImgOnly}
           ?hide-text=${isBtnImgOnly}
@@ -413,11 +417,17 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
             '. error error error';
         }
 
+        :host(.editing) .actions cc-button {
+          --cc-icon-size: 1.4em;
+        }
+
         p {
           margin: 0;
         }
 
         .avatar {
+          --cc-icon-color: #595959;
+
           width: 3em;
           height: 3em;
           clip-path: circle(50% at 50% 50%);
