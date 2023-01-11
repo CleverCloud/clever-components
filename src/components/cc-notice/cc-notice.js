@@ -1,14 +1,15 @@
 import { css, html, LitElement } from 'lit';
-import '../cc-img/cc-img.js';
 import { classMap } from 'lit/directives/class-map.js';
+import {
+  iconRemixAlertFill as iconWarning,
+  iconRemixCheckboxCircleFill as iconSuccess,
+  iconRemixCloseLine as iconClose,
+  iconRemixInformationFill as iconInfo,
+  iconRemixSpam_2Fill as iconDanger,
+} from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
-
-const closeSvg = new URL('../../assets/close-gray.svg', import.meta.url).href;
-const dangerSvg = new URL('../../assets/spam-2-fill.svg', import.meta.url).href;
-const infoSvg = new URL('../../assets/information-fill.svg', import.meta.url).href;
-const successSvg = new URL('../../assets/checkbox-circle-fill.svg', import.meta.url).href;
-const warningSvg = new URL('../../assets/alert-fill.svg', import.meta.url).href;
+import '../cc-icon/cc-icon.js';
 
 /**
  * @typedef {import('./cc-notice.types.js').NoticeIntent} NoticeIntent
@@ -59,16 +60,16 @@ export class CcNotice extends LitElement {
 
   _getIcon () {
     if (this.intent === 'danger') {
-      return dangerSvg;
+      return iconDanger;
     }
     if (this.intent === 'info') {
-      return infoSvg;
+      return iconInfo;
     }
     if (this.intent === 'success') {
-      return successSvg;
+      return iconSuccess;
     }
     if (this.intent === 'warning') {
-      return warningSvg;
+      return iconWarning;
     }
   }
 
@@ -104,7 +105,7 @@ export class CcNotice extends LitElement {
       <div class="wrapper ${classMap(layout)}">
         ${!this.noIcon ? html`
           <slot name="icon">
-            <img src="${this._getIcon()}" alt="${this._getIconAlt()}" class="notice-icon">
+            <cc-icon .icon="${this._getIcon()}" accessible-name="${this._getIconAlt()}" class="notice-icon"></cc-icon>
           </slot>
         ` : ''}
         ${this.heading != null ? html`
@@ -121,7 +122,7 @@ export class CcNotice extends LitElement {
             <button class="close-button"
               @click=${this._onCloseButtonClick}
               title="${i18n('cc-toast.close')}">
-              <img src="${closeSvg}" alt="${i18n('cc-notice.close')}">
+              <cc-icon size="lg" .icon="${iconClose}" accessible-name="${i18n('cc-notice.close')}"></cc-icon>
             </button>
         ` : ''}
       </div>
@@ -152,21 +153,29 @@ export class CcNotice extends LitElement {
         }
 
         :host([intent='success']) .wrapper {
+          --cc-icon-color: var(--cc-color-text-success);
+          
           border: 1px solid var(--cc-color-border-success-weak);
           background-color: var(--cc-color-bg-success-weaker);
         }
 
         :host([intent='warning']) .wrapper {
+          --cc-icon-color: var(--cc-color-text-warning);
+
           border: 1px solid var(--cc-color-border-warning-weak);
           background-color: var(--cc-color-bg-warning-weaker);
         }
 
         :host([intent='info']) .wrapper {
+          --cc-icon-color: var(--cc-color-text-primary);
+
           border: 1px solid var(--cc-color-border-primary-weak);
           background-color: var(--cc-color-bg-primary-weaker);
         }
 
         :host([intent='danger']) .wrapper {
+          --cc-icon-color: var(--cc-color-text-danger);
+
           border: 1px solid var(--cc-color-border-danger-weak);
           background-color: var(--cc-color-bg-danger-weaker);
         }
@@ -213,12 +222,14 @@ export class CcNotice extends LitElement {
         }
 
         .close-button {
+          --cc-icon-color: var(--cc-color-text-weak);
+        
           position: absolute;
           top: 0.5em;
           right: 0.5em;
           width: auto;
           height: auto;
-          padding: 0.2em;
+          padding: 0;
           border: none;
           background-color: transparent;
           border-radius: var(--cc-border-radius-small, 0.15em);
