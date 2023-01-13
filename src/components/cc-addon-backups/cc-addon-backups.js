@@ -5,13 +5,15 @@ import '../cc-block/cc-block.js';
 import '../cc-error/cc-error.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import {
+  iconRemixCloseLine as iconClose,
+  iconRemixHistoryLine as iconBackup,
+} from '../../assets/cc-remix.icons.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
-
-const backupSvg = new URL('../../assets/backup.svg', import.meta.url).href;
-const closeSvg = new URL('../../assets/close.svg', import.meta.url).href;
+import '../cc-icon/cc-icon.js';
 
 /** @type {BackupDetails} */
 const SKELETON_BACKUPS = {
@@ -239,7 +241,7 @@ export class CcAddonBackups extends LitElement {
           <div class="backup-list">
             ${backupDetails.list.map((backup) => html`
               <div class="backup">
-                <span class="backup-icon"><img src=${backupSvg} alt=""></span>
+                <span class="backup-icon"><cc-icon .icon=${iconBackup} size="lg"></cc-icon></span>
                 <span class="backup-text">
                   <span class="backup-text-details ${classMap({ skeleton })}">${this._getBackupText(backup)}</span>
                   <br>
@@ -268,8 +270,9 @@ export class CcAddonBackups extends LitElement {
             <cc-block class="overlay">
               <div slot="title">${i18n('cc-addon-backups.restore', this._selectedBackup)}</div>
               <cc-button
+                class="overlay-close-btn"
                 slot="button"
-                image=${closeSvg}
+                .icon=${iconClose}
                 hide-text
                 outlined
                 primary
@@ -301,8 +304,9 @@ export class CcAddonBackups extends LitElement {
             <cc-block class="overlay">
               <div slot="title">${i18n('cc-addon-backups.delete', this._selectedBackup)}</div>
               <cc-button
+                class="overlay-close-btn"
                 slot="button"
-                image=${closeSvg}
+                .icon=${iconClose}
                 hide-text
                 outlined
                 primary
@@ -358,15 +362,7 @@ export class CcAddonBackups extends LitElement {
         }
 
         .backup-icon {
-          width: 1.5em;
-          height: 1.5em;
-          flex: 0 0 auto;
-        }
-
-        .backup-icon img {
-          display: block;
-          width: 100%;
-          height: 100%;
+          --cc-icon-color: #012a51;
         }
 
         .backup-text {
@@ -391,6 +387,10 @@ export class CcAddonBackups extends LitElement {
           max-width: 80%;
           margin: 2em;
           box-shadow: 0 0 1em rgb(0 0 0 / 40%);
+        }
+
+        .overlay-close-btn {
+          --cc-icon-size: 1.4em;
         }
 
         .cc-link,
