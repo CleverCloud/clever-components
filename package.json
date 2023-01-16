@@ -129,7 +129,7 @@
   },
   "customElements": "dist/custom-elements.json",
   "volta": {
-    "node": "16.13.2",
-    "npm": "8.1.2"
+    "node": "18.13.0",
+    "npm": "8.19.3"
   }
 }
