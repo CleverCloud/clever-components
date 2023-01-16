@@ -4,13 +4,12 @@ import { BarController, BarElement, CategoryScale, Chart, LinearScale, Title, To
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { iconCleverInfo as iconInfo } from '../../assets/cc-clever.icons.js';
+import { iconRemixCloseLine as iconClose } from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../lib/i18n.js';
 import { withResizeObserver } from '../../mixins/with-resize-observer/with-resize-observer.js';
 import { tileStyles } from '../../styles/info-tiles.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
-
-const closeSvg = new URL('../../assets/close.svg', import.meta.url).href;
-const infoSvg = new URL('../../assets/info.svg', import.meta.url).href;
 
 Chart.register(BarController, BarElement, Tooltip, CategoryScale, LinearScale, Title);
 
@@ -251,8 +250,8 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
       <div class="tile_title tile_title--image">
         ${i18n('cc-tile-requests.title')}
         <cc-button
-          class="docs-toggle"
-          image=${displayDocs ? closeSvg : infoSvg}
+          class="docs-toggle ${displayDocs ? 'close' : 'info'}"
+          .icon=${displayDocs ? iconClose : iconInfo}
           hide-text
           outlined
           primary
@@ -292,6 +291,14 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
         .docs-toggle {
           margin: 0 0 0 1em;
           font-size: 0.8em;
+        }
+
+        .docs-toggle.close {
+          --cc-icon-size: 1.5em;
+        }
+
+        .docs-toggle.info {
+          --cc-icon-size: 1.25em;
         }
 
         .chart-container {
