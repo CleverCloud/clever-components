@@ -1,20 +1,24 @@
 import '../cc-block/cc-block.js';
 import '../cc-error/cc-error.js';
+import '../cc-icon/cc-icon.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import {
+  iconCleverRam as iconRam,
+} from '../../assets/cc-clever.icons.js';
+import {
+  iconRemixCpuLine as iconCpu,
+  iconRemixDatabase_2Fill as iconDisk,
+} from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 
-const cpuSvg = new URL('../../assets/cpu-fill.svg', import.meta.url).href;
-const diskSvg = new URL('../../assets/disk.svg', import.meta.url).href;
-const ramSvg = new URL('../../assets/ram-fill.svg', import.meta.url).href;
-
 const featureIcons = {
-  cpus: cpuSvg,
-  vcpus: cpuSvg,
-  disk: diskSvg,
-  memory: ramSvg,
-  ram: ramSvg,
+  cpus: iconCpu,
+  vcpus: iconCpu,
+  disk: iconDisk,
+  memory: iconRam,
+  ram: iconRam,
 };
 
 const SORT_FEATURES = ['cpus', 'vcpus', 'memory', 'disk'];
@@ -125,7 +129,7 @@ export class CcAddonFeatures extends LitElement {
               <div class="feature ${classMap({ skeleton })}">
                 ${feature.icon != null ? html`
                   <div class="feature-icon">
-                    <img class="feature-icon_img" src="${feature.icon}" alt="">
+                    <cc-icon size="lg" class="feature-icon_img" .icon="${feature.icon}"></cc-icon>
                   </div>
                 ` : ''}
                 <div class="feature-name">${feature.name}</div>
@@ -170,20 +174,14 @@ export class CcAddonFeatures extends LitElement {
         }
 
         .feature-icon {
-          position: relative;
+          display: inline-flex;
           width: 1.3em;
-          margin: calc(var(--padding) / 2) 0 calc(var(--padding) / 2) var(--padding);
+          align-items: center;
+          margin-inline-start: var(--padding);
         }
 
         .feature-icon_img {
-          position: absolute;
-          top: 0;
-          left: 0;
-          display: block;
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-          object-position: center center;
+          --cc-icon-color: var(--cc-color-text-inverted);
         }
 
         .feature-name,
