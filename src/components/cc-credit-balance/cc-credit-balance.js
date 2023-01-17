@@ -77,6 +77,7 @@ export class CcCreditBalance extends LitElement {
               <div slot="title">Current Consumption</div>
               <div slot="info">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab amet architecto aut consequatur, cupiditate debitis dicta doloribus dolorum eius et impedit iusto laudantium minus modi nobis quam quidem sit voluptas.</div>
             <div class="container">
+              <span class="total">${this._total} € :</span>
               <div class="svg-item free">
                 <svg width="100%" height="100%" viewBox="0 0 40 40" class="donut" style="--consumed: ${this._free.consumed}; --remaining: ${this._free.remaining};">
                   <circle class="donut-hole" cx="20" cy="20" r="15.91549430918954" fill="#fff"></circle>
@@ -120,8 +121,6 @@ export class CcCreditBalance extends LitElement {
                 </svg>
               </div>
               <p class="legend-extra">Dépassement</p>
-              <span class="equal">=</span>
-              <span class="total">${this._total} €</span>
             </div>
           </cc-block-section>
       </cc-block>
@@ -143,15 +142,11 @@ export class CcCreditBalance extends LitElement {
           font-size: 3em;
         }
         
-        .equal {
-          margin-right: 0.4em;
-          grid-area: equal;
-        }
-        
         .total {
           color: var(--cc-color-text-strong);
           font-size: 3.5em;
           grid-area: total;
+          margin-right: 0.5em;
         }
         
         
@@ -171,9 +166,9 @@ export class CcCreditBalance extends LitElement {
           font-weight: bold;
           gap: 0.5em 0;
           grid-template-areas: 
-            'free plus-free prepaid plus-prepaid extra equal total'
-            'legend-free . legend-prepaid . legend-extra . .';
-          grid-template-columns: 1fr auto 1fr auto 1fr auto auto;
+            'total free plus-free prepaid plus-prepaid extra'
+            '. legend-free . legend-prepaid . legend-extra';
+          grid-template-columns: max-content auto 1fr auto 1fr auto;
           justify-items: center;
         }
         
