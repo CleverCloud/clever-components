@@ -77,12 +77,12 @@ export class CcCreditBalance extends LitElement {
               <div slot="title">Current Consumption</div>
               <div slot="info">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab amet architecto aut consequatur, cupiditate debitis dicta doloribus dolorum eius et impedit iusto laudantium minus modi nobis quam quidem sit voluptas.</div>
             <div class="container">
-              <span class="total">${this._total} € :</span>
+              <span class="total">${this._total} €</span>
               <div class="svg-item free">
                 <svg width="100%" height="100%" viewBox="0 0 40 40" class="donut" style="--consumed: ${this._free.consumed}; --remaining: ${this._free.remaining};">
                   <circle class="donut-hole" cx="20" cy="20" r="15.91549430918954" fill="#fff"></circle>
                   <circle class="donut-ring" cx="20" cy="20" r="15.91549430918954" fill="transparent" stroke-width="3.5"></circle>
-                  <circle class="donut-segment donut-segment-2" cx="20" cy="20" r="15.91549430918954" fill="transparent" stroke-width="3.5" stroke-dasharray="${this._free.remaining} ${this._free.consumed}" stroke-dashoffset="25"></circle>
+                  <circle class="donut-segment donut-segment-2" cx="20" cy="20" r="15.91549430918954" fill="transparent" stroke-width="3.5" stroke-dasharray="${this._free.consumed} ${this._free.remaining}" stroke-dashoffset="25"></circle>
                   <g class="donut-text donut-text-1">
 
                     <text y="50%">
@@ -98,7 +98,7 @@ export class CcCreditBalance extends LitElement {
                 <svg width="100%" height="100%" viewBox="0 0 40 40" class="donut" style="--consumed: ${this._prepaid.remaining}; --remaining: ${this._prepaid.consumed};">
                   <circle class="donut-hole" cx="20" cy="20" r="15.91549430918954" fill="#fff"></circle>
                   <circle class="donut-ring" cx="20" cy="20" r="15.91549430918954" fill="transparent" stroke-width="3.5"></circle>
-                  <circle class="donut-segment donut-segment-3" cx="20" cy="20" r="15.91549430918954" fill="transparent" stroke-width="3.5" stroke-dasharray="${this._prepaid.remaining} ${this._prepaid.consumed}" stroke-dashoffset="25"></circle>
+                  <circle class="donut-segment donut-segment-3" cx="20" cy="20" r="15.91549430918954" fill="transparent" stroke-width="3.5" stroke-dasharray="${this._prepaid.consumed} ${this._prepaid.remaining}" stroke-dashoffset="25"></circle>
                   <g class="donut-text donut-text-2">
 
                     <text y="50%">
@@ -144,7 +144,7 @@ export class CcCreditBalance extends LitElement {
         
         .total {
           color: var(--cc-color-text-strong);
-          font-size: 3.5em;
+          font-size: 6em;
           grid-area: total;
           margin-right: 0.5em;
         }
@@ -166,9 +166,10 @@ export class CcCreditBalance extends LitElement {
           font-weight: bold;
           gap: 0.5em 0;
           grid-template-areas: 
-            'total free plus-free prepaid plus-prepaid extra'
-            '. legend-free . legend-prepaid . legend-extra';
-          grid-template-columns: max-content auto 1fr auto 1fr auto;
+            'total total total total total'
+            'free plus-free prepaid plus-prepaid extra'
+            'legend-free . legend-prepaid . legend-extra';
+          grid-template-columns: auto 1fr auto 1fr auto;
           justify-items: center;
         }
         
