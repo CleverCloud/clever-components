@@ -143,10 +143,10 @@ export class CcCreditBalance extends LitElement {
         }
         
         .total {
+          margin-right: 0.5em;
           color: var(--cc-color-text-strong);
           font-size: 6em;
           grid-area: total;
-          margin-right: 0.5em;
         }
         
         
@@ -162,14 +162,17 @@ export class CcCreditBalance extends LitElement {
 
         .container {
           display: grid;
+          width: max-content;
           align-items: center;
           font-weight: bold;
-          gap: 0.5em 0;
+          gap: 0.5em 1em;
           grid-template-areas: 
-            'total total total total total'
-            'free plus-free prepaid plus-prepaid extra'
-            'legend-free . legend-prepaid . legend-extra';
-          grid-template-columns: auto 1fr auto 1fr auto;
+            'total free legend-free '
+            'total plus-free .'
+            'total prepaid legend-prepaid'
+            'total plus-prepaid .'
+            'total extra legend-extra';
+          grid-template-columns: auto 10em auto;
           justify-items: center;
         }
         
