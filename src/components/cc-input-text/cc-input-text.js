@@ -1,15 +1,17 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import {
+  iconRemixClipboardLine as iconClipboard,
+  iconRemixEyeOffLine as iconEyeClosed,
+  iconRemixEyeLine as iconEyeOpen,
+  iconRemixCheckLine as iconCheck,
+} from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
-
-const clipboardSvg = new URL('../../assets/clipboard.svg', import.meta.url).href;
-const eyeClosedSvg = new URL('../../assets/eye-closed.svg', import.meta.url).href;
-const eyeOpenSvg = new URL('../../assets/eye-open.svg', import.meta.url).href;
-const tickSvg = new URL('../../assets/tick.svg', import.meta.url).href;
+import '../cc-icon/cc-icon.js';
 
 const TAG_SEPARATOR = ' ';
 
@@ -52,6 +54,7 @@ function arrayEquals (a, b) {
  * @event {CustomEvent} cc-input-text:requestimplicitsubmit - Fires when enter key is pressed in simple mode, in tags mode or when ctrl+enter is pressed in multi mode.
  * @event {CustomEvent<string[]>} cc-input-text:tags - Fires an array of tags whenever the `value` changes (separated by spaces).
  *
+ * @cssprop {Color} --cc-input-btn-icon-color - The color for the icon within the clipboard/secret button (defaults: `#595959`).
  * @cssprop {FontFamily} --cc-input-font-family - The font-family for the input content (defaults: `inherit` or `--cc-ff-monospace` when using the tags mode).
  *
  * @slot error - The error message to be displayed below the `<input>` element or below the help text. Please use a `<p>` tag.
@@ -315,14 +318,25 @@ export class CcInputText extends LitElement {
 
         ${secret ? html`
           <button class="btn" @click=${this._onClickSecret}
-            title=${this._showSecret ? i18n('cc-input-text.secret.hide') : i18n('cc-input-text.secret.show')}>
-            <img class="btn-img" src=${this._showSecret ? eyeClosedSvg : eyeOpenSvg} alt="">
+            title=${this._showSecret ? i18n('cc-input-text.secret.hide') : i18n('cc-input-text.secret.show')}
+          >
+            <cc-icon
+              class="btn-img"
+              .icon=${this._showSecret ? iconEyeClosed : iconEyeOpen}
+              accessible-name=${this._showSecret ? i18n('cc-input-text.secret.hide') : i18n('cc-input-text.secret.show')}
+              size="lg"
+            ></cc-icon>
           </button>
         ` : ''}
 
         ${clipboard ? html`
           <button class="btn" @click=${this._onClickCopy} title=${i18n('cc-input-text.clipboard')}>
-            <img class="btn-img" src=${this._copyOk ? tickSvg : clipboardSvg} alt="">
+            <cc-icon
+              class="btn-img"
+              .icon=${this._copyOk ? iconCheck : iconClipboard}
+              accessible-name=${i18n('cc-input-text.clipboard')}
+              size="lg"
+            ></cc-icon>
           </button>
         ` : ''}
       </div>
@@ -646,17 +660,14 @@ export class CcInputText extends LitElement {
         }
 
         .btn-img {
-          width: 100%;
-          height: 100%;
+          --cc-icon-color: var(--cc-input-btn-icons-color, #595959);
+          
           box-sizing: border-box;
           padding: 15%;
-          filter: grayscale(100%);
-          opacity: 0.6;
         }
 
         .btn-img:hover {
-          filter: grayscale(0%);
-          opacity: 1;
+          --cc-icon-color: var(--cc-color-text-primary);
         }
       `,
     ];
