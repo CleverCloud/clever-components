@@ -1,13 +1,12 @@
 import { css, html, LitElement } from 'lit';
-import '../cc-img/cc-img.js';
+import '../cc-icon/cc-icon.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { iconRemixFileTextLine as iconFile } from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../lib/i18n.js';
 import { sortBy } from '../../lib/utils.js';
 import { withResizeObserver } from '../../mixins/with-resize-observer/with-resize-observer.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
-
-const fileSvg = new URL('../../assets/file.svg', import.meta.url).href;
 
 // TODO: Move to clever-client
 export const PENDING_STATUSES = ['PENDING', 'PAYMENTHELD', 'WONTPAY'];
@@ -118,7 +117,7 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
       <div class="invoice-list">
         ${invoiceList.map((invoice) => html`
           <div class="invoice">
-            <cc-img class="invoice-icon" src=${fileSvg}></cc-img>
+            <cc-icon class="invoice-icon" size="lg" .icon=${iconFile}></cc-icon>
             <div class="invoice-text ${classMap({ skeleton })}">
               ${i18n('cc-invoice-table.text', {
                 number: invoice.number,
@@ -197,8 +196,8 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
         }
 
         .invoice-icon {
-          width: 1.5em;
-          height: 1.5em;
+          --cc-icon-color: var(--cc-color-text-primary);
+
           flex: 0 0 auto;
         }
 
