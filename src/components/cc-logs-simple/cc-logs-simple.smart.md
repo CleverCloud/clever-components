@@ -1,12 +1,12 @@
 ---
-kind: '🛠 Logs/<cc-logs-poc>'
+kind: '🛠 Logs/<cc-logs-simple>'
 title: '💡 Smart'
 ---
 
-# 💡 Smart `<cc-logs-poc>`
+# 💡 Smart `<cc-logs-simple>`
 
 <cc-smart-container context='{"ownerId": "user_f704a8cf-28d5-449d-b269-1db6a2e932c7", "sourceType": "app", "sourceId": "app_3af80970-d8bf-47ab-af5c-e56fb6c481f4"}'>
-  <cc-logs></cc-logs>
+  <cc-logs-simple></cc-logs-simple>
 </cc-smart-container>
 
 ## ℹ️ Details
@@ -60,6 +60,6 @@ interface ApiConfig {
   "ownerId": "",
   "appId": ""
 }'>
-  <cc-logs></cc-logs>
+  <cc-logs-simple></cc-logs-simple>
 </cc-smart-container>
 ```

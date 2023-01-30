@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import './cc-logs-poc.js';
+import './cc-logs-simple.js';
 import '../cc-smart-container/cc-smart-container.js';
 import {
   getAllDeployments,
@@ -9,12 +9,13 @@ import {
 } from '@clevercloud/client/esm/api/v2/application.js';
 import { getOldLogs } from '@clevercloud/client/esm/api/v2/log.js';
 import { LogsStream } from '@clevercloud/client/esm/streams/logs.browser.js';
+import { random, randomCommit, randomPick, randomString } from '../../../logs/utils/utils.js';
 import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { objectEquals } from '../../lib/utils.js';
 
 defineSmartComponent({
-  selector: 'cc-logs-poc',
+  selector: 'cc-logs-simple',
   params: {
     apiConfig: { type: Object },
     ownerId: { type: String },
@@ -124,13 +125,20 @@ defineSmartComponent({
     };
 
     const convertLog = async (log) => {
+      const timestamp = log['@timestamp'];
+      const id = log.id || (`${timestamp}${Math.random().toString(36).slice(2)}`);
+      const instance = await getInstance(log.host);
+
       return {
-        raw: log,
-        id: log.id || Math.random().toString(36).slice(2),
-        timestamp: log['@timestamp'],
-        level: log.syslog_severity,
+        id,
+        timestamp,
         message: log.message,
-        instance: await getInstance(log.host),
+        metadata: {
+          instanceId: instance.id,
+          instanceState: instance.state,
+          // deploymentId: log.deploymentId,
+          level: log.syslog_severity,
+        },
       };
     };
 
@@ -142,7 +150,7 @@ defineSmartComponent({
           component.addLog(await convertLog(log));
         },
         onError (error) {
-          console.error('Error while subscribing to liv logs', error);
+          console.error('Error while subscribing to live logs', error);
         },
       });
     };
@@ -265,16 +273,76 @@ function getApi ({ apiConfig, ownerId, sourceId }) {
   return _api;
 }
 
+const OLD_LOGS_COUNT = 2000;
+const DEPLOYMENTS_COUNT = 100;
+
 function mockApi ({ apiConfig, ownerId, sourceId }) {
+  let deployNumber = 0;
+
+  const instancesMap = {};
+  const runningInstances = [];
+  const now = new Date().getTime();
+  const deploymentsMap = Object.fromEntries(Array(DEPLOYMENTS_COUNT).fill(0).map((_, i) => {
+    const state = i < DEPLOYMENTS_COUNT - 1 ? 'DELETED' : 'UP';
+    const date = now - (DEPLOYMENTS_COUNT - i) * 3600000;
+
+    const deployId = `deployment_${randomString()}`;
+    const commit = randomCommit();
+    deployNumber++;
+
+    const instances = Array(random(1, 3)).fill(0).map((_, i) => {
+      const instance = {
+        id: randomString(),
+        appId: sourceId,
+        ip: `46.252.181.${random(0, 254)}`,
+        appPort: random(11000, 12000),
+        state: state,
+        flavor: {
+          name: 'nano',
+          mem: 512,
+          cpus: 1,
+          price: 0.1431844215,
+        },
+        commit: commit,
+        deployNumber: deployNumber,
+        deployId: deployId,
+        instanceNumber: i,
+        displayName: `${randomString(5)} ${randomString(5)}`,
+        creationDate: date,
+      };
+      instancesMap[instance.id] = instance;
+
+      if (state === 'UP') {
+        runningInstances.push(instance);
+      }
+
+      return instance;
+    });
+
+    return [deployNumber, {
+      uuid: deployId,
+      id: deployNumber,
+      date: date,
+      state: 'OK',
+      action: 'DEPLOY',
+      commit: commit,
+      cause: 'Console',
+      instances: instances.length,
+      $instances: instances,
+
+    }];
+  }));
+
   return {
     openLogsStream (deploymentId, instanceId, { onLog, onError }) {
       const evtSource = new EventSource('/logs-sse-mock?rate=100&limit=1000');
+      const instance = randomPick(runningInstances);
+
       evtSource.onmessage = function (e) {
         const log = {
-          message: '[GET]',
-          '@version': '1',
-          '@timestamp': '2022-10-21T15:45:08.587Z',
-          host: 'ed19fdef-fd7f-4da2-8aa5-330c5822c8d2',
+          message: randomString(random(15, 100)),
+          '@timestamp': new Date().toISOString(),
+          host: instance.id,
           type: 'syslog',
           tags: ['tcp', 'syslog', 'customers'],
           syslog_pri: '30',
@@ -283,11 +351,8 @@ function mockApi ({ apiConfig, ownerId, sourceId }) {
           syslog_facility_code: 3,
           syslog_facility: 'daemon',
           syslog_severity: 'informational',
-          appId: 'app_3af80970-d8bf-47ab-af5c-e56fb6c481f4',
-          deploymentId: 'deployment_e9e065ef-c2f6-4553-a1ef-45dac03d11c1',
-          '@source': '185.42.117.43',
-          '@source_host': 'ed19fdef-fd7f-4da2-8aa5-330c5822c8d2',
-          '@message': '[GET]',
+          appId: sourceId,
+          deploymentId: instance.deployId,
           zone: 'par',
         };
         onLog(log);
@@ -300,7 +365,31 @@ function mockApi ({ apiConfig, ownerId, sourceId }) {
       return () => evtSource.close();
     },
     fetchOldLogs (deploymentId, instanceId) {
+      return Promise.resolve(Array(OLD_LOGS_COUNT).fill(0).map(() => {
+        const instance = randomPick(runningInstances);
 
+        return {
+          message: randomString(random(15, 100)),
+          '@timestamp': new Date().toISOString(),
+          host: instance.id,
+          syslog_severity: 'informational',
+          deploymentId: instance.deployId,
+          appId: sourceId,
+          zone: 'par',
+        };
+      }));
+    },
+    getDeployment (deploymentId) {
+      return Promise.resolve(deploymentsMap[deploymentId]);
+    },
+    getDeployments () {
+      return Promise.resolve(Object.values(deploymentsMap));
+    },
+    getInstances (deployments) {
+      return Promise.resolve(deployments.flatMap((d) => d.$instances));
+    },
+    getInstance (instanceId) {
+      return Promise.resolve(instancesMap[instanceId]);
     },
   };
 }
@@ -323,7 +412,7 @@ function realApi ({ apiConfig, ownerId, sourceId }) {
       return getOldLogs({
         appId: sourceId,
         // deployment_id: deploymentId,
-        limit: 2000,
+        limit: OLD_LOGS_COUNT,
         // since,
         // before,
       })
@@ -334,8 +423,7 @@ function realApi ({ apiConfig, ownerId, sourceId }) {
         .then(sendToApi({ apiConfig }));
     },
     getDeployments () {
-      // TODO: take care, there is limit of 100!
-      return getAllDeployments({ id: ownerId, appId: sourceId, limit: 100 })
+      return getAllDeployments({ id: ownerId, appId: sourceId, limit: DEPLOYMENTS_COUNT })
         .then(sendToApi({ apiConfig }));
     },
     getInstances (deployments) {

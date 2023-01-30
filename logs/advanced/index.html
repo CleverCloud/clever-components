@@ -5,7 +5,7 @@
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>logs :: hot</title>
+  <title>logs :: advanced :: POC</title>
 
   <link rel="stylesheet" href="/src/styles/default-theme.css">
   <style>
@@ -39,20 +39,20 @@
       border: 1px solid #aaa;
     }
 
-    cc-logs-hot {
+    cc-logs-advanced {
       flex: 1;
       min-height: 0;
     }
 
   </style>
-  <script src="hot.js" type="module"></script>
+  <script src="index.js" type="module"></script>
 </head>
 <body>
 <div class="ctrl">
-  <cc-button data-action="start" data-instances="2" data-build="true" data-separate-build="true">Start Force build (2/separate build)</cc-button>
+  <cc-button data-action="start" data-instances="2" data-build="true" data-separate-build="true">Start (2)</cc-button>
   <cc-button data-action="scaleUp" data-instances="2">ScaleUp +2</cc-button>
   <cc-button data-action="scaleDown" data-instances="1">ScaleDown -1</cc-button>
-  <cc-button data-action="commit" data-separate-build="false">Commit</cc-button>
+  <cc-button data-action="commit" data-separate-build="true">Commit</cc-button>
   <cc-button data-action="restart" data-separate-build="true">Restart</cc-button>
   <cc-button data-action="stop">Stop</cc-button>
   <div class="spacer"></div>
@@ -63,6 +63,6 @@
   <cc-instances-timeline></cc-instances-timeline>
 </div>
 
-<cc-logs-hot></cc-logs-hot>
+<cc-logs-advanced></cc-logs-advanced>
 </body>
 </html>

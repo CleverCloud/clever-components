@@ -1,6 +1,6 @@
 import { hmrPlugin, presets } from '@open-wc/dev-server-hmr';
 import json from '@rollup/plugin-json';
-import { fromRollup,rollupAdapter } from '@web/dev-server-rollup';
+import { fromRollup, rollupAdapter } from '@web/dev-server-rollup';
 import { createIconAssetsPlugin } from './rollup/rollup-plugin-icon.js';
 import { storybookWdsPlugin } from './src/stories/lib/markdown.cjs';
 import { cemAnalyzerPlugin } from './wds/cem-analyzer-plugin.js';
@@ -91,7 +91,8 @@ const injectAuthForSmartComponentsPlugin = {
       `;
     }
 
-    if (context.path === '/demo-smart/index.js') {
+    if (context.path === '/demo-smart/index.js'
+      || context.path === '/logs/simple/index.js') {
 
       // language=JavaScript
       context.body += `

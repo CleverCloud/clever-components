@@ -25,7 +25,7 @@ function formatDate (timestamp) {
   return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
 }
 
-export class CcLogsHot extends LitElement {
+export class CcLogsAdvanced extends LitElement {
   static get properties () {
     return {
       logs: { type: Array },
@@ -590,4 +590,4 @@ export class CcLogsHot extends LitElement {
 
 }
 
-window.customElements.define('cc-logs-hot', CcLogsHot);
+window.customElements.define('cc-logs-advanced', CcLogsAdvanced);

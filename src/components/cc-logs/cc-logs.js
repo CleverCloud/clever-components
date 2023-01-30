@@ -11,6 +11,7 @@ export class CcLogs extends LitElement {
       logs: { type: Array },
       limit: { type: Number },
       follow: { type: Boolean },
+      followOnScroll: { type: Boolean, attribute: 'follow-on-scroll' },
       wrapLines: { type: Boolean, attribute: 'wrap-line' },
       withVirtualizer: { type: Boolean, attribute: 'with-virtualizer' },
       withRepeat: { type: Boolean, attribute: 'with-repeat' },
@@ -24,6 +25,7 @@ export class CcLogs extends LitElement {
     this.logs = [];
     this.limit = 0;
     this.follow = false;
+    this.followOnScroll = false;
     this.wrapLines = false;
     this.withVirtualizer = true;
     this.withRepeat = false;
@@ -42,12 +44,16 @@ export class CcLogs extends LitElement {
     });
   }
 
-  _onLogScroll () {
+  _getScrollListener () {
+    if (!this.followOnScroll) {
+      return null;
+    }
+
     let lastKnownScrollPosition = 0;
     let ticking = false;
 
     const listener = (e, scrollPosition) => {
-      this.follow = scrollPosition + e.offsetHeight >= e.scrollHeight;
+      this.follow = scrollPosition + e.offsetHeight >= e.scrollHeight - 10;
       console.log('follow', this.follow);
     };
 
@@ -100,7 +106,7 @@ export class CcLogs extends LitElement {
     const __refName = this._logsRef;
 
     return html`
-      <div id="logs" ${ref(__refName)}>
+      <div id="logs" ${ref(__refName)} @scroll=${this._getScrollListener()}>
         ${this._renderBigList(this.logs, (log) => this._renderLog(log), this.withVirtualizer, this.withRepeat)}
       </div>
     `;

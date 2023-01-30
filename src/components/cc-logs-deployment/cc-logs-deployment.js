@@ -139,7 +139,7 @@ function formatDate (date) {
   );
 }
 
-export class CcLogsPoc extends LitElement {
+export class CcLogsDeployment extends LitElement {
   static get properties () {
     return {
       steps: { type: Array },
@@ -1126,4 +1126,4 @@ export class CcLogsPoc extends LitElement {
   }
 }
 
-window.customElements.define('cc-logs-poc', CcLogsPoc);
+window.customElements.define('cc-logs-deployment', CcLogsDeployment);

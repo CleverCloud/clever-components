@@ -10,7 +10,7 @@ import {
   sendLogs,
 } from '../utils/utils.js';
 import '../../src/components/cc-button/cc-button.js';
-import '../../src/components/cc-logs-hot/cc-logs-hot.js';
+import '../../src/components/cc-logs-advanced/cc-logs-advanced.js';
 
 function parseDateTime (str) {
   const s1 = str.split(' ');
@@ -146,10 +146,11 @@ const logSources = [
   'cron',
   'sys',
   'app',
+  'worker',
 ];
 
 // const $timeline = document.querySelector('cc-instances-timeline');
-// const $logs = document.querySelector('cc-logs-hot');
+// const $logs = document.querySelector('cc-logs-advanced');
 
 class Logger {
   constructor (timeline, logs) {
@@ -187,7 +188,7 @@ class Logger {
 
 const logView = new Logger(
   document.querySelector('cc-instances-timeline'),
-  document.querySelector('cc-logs-hot'),
+  document.querySelector('cc-logs-advanced'),
 );
 
 let instanceIdx = 0;
@@ -366,8 +367,12 @@ async function stopAllInstances (deployment = null) {
 // ----------------------------------------
 
 export function randomMetadata (step) {
+  const level = (step === 'run' || step === 'build' || step.endsWith('Hook'))
+    ? 'INFO'
+    : randomPick(logLevels);
+
   return {
-    level: randomPick(logLevels),
+    level,
     step,
     source: randomPick(logSources),
   };

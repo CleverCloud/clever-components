@@ -1,6 +1,6 @@
 import { addTranslations, setLanguage } from '../../src/lib/i18n.js';
 import { lang, translations } from '../../src/translations/translations.en.js';
-import '../../src/components/cc-logs-poc/cc-logs-poc.js';
+import '../../src/components/cc-logs-deployment/cc-logs-deployment.js';
 import '../../src/components/cc-button/cc-button.js';
 import '../../src/components/cc-select/cc-select.js';
 import { randomLogs, sendLogs, sleep } from '../utils/utils.js';
@@ -9,9 +9,9 @@ addTranslations(lang, translations);
 setLanguage(lang);
 
 /**
- * @type {CcLogsPoc}
+ * @type {CcLogsDeployment}
  */
-const $poc = document.querySelector('cc-logs-poc');
+const $poc = document.querySelector('cc-logs-deployment');
 
 const deploy = (reason, withBuild) => {
   return [

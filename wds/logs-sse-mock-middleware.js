@@ -17,10 +17,10 @@ export const logsSseMockMiddleware = async (ctx, next) => {
       ctx.sse.send(date);
       console.log('send Date : ' + date);
       n++;
-      if (n >= limit) {
-        console.log('send manual close');
-        ctx.sse.sendEnd();
-      }
+      // if (n >= limit) {
+      //   console.log('send manual close');
+      //   ctx.sse.sendEnd();
+      // }
     }, rate);
     ctx.sse.on('close', (...args) => {
       console.log('clear interval');
