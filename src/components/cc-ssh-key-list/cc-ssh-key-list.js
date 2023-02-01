@@ -7,6 +7,7 @@ import '../cc-block/cc-block.js';
 import '../cc-block-section/cc-block-section.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { live } from 'lit/directives/live.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import {
@@ -109,29 +110,40 @@ export class CcSshKeyList extends LitElement {
     const name = rawName.trim();
     const publicKey = rawPublicKey.trim();
 
+    // looking for potential form errors
+    const isNameFilled = name?.length > 0;
+    const isPublicKeyFilled = publicKey?.length > 0;
+
+    const mailError = isNameFilled ? null : 'required';
+    let publicKeyError = isPublicKeyFilled ? null : 'required';
+
+    const isPublicKeyPrivate = isPublicKeyFilled && rawPublicKey.toLowerCase().match(' private ');
+    if (isPublicKeyPrivate) {
+      publicKeyError = 'private-key';
+    }
+
+    // updating the model
     this.createSshKeyForm = {
       state: 'idle',
       name: {
         value: name,
-        error: (name?.length > 0) ? null : 'required',
+        error: mailError,
       },
       publicKey: {
         value: publicKey,
-        error: (publicKey?.length > 0) ? null : 'required',
+        error: publicKeyError,
       },
     };
 
-    // testing if submitted key is possibly a private key
-    if (publicKey.toLowerCase().match(' private ')) {
-      this.createSshKeyForm.publicKey.error = 'private-key';
-    }
-
-    // auto focus input on error
-    if (this.createSshKeyForm.name.error != null) {
-      this._createFormNameRef.value.focus();
-    }
-    else if (this.createSshKeyForm.publicKey.error != null) {
-      this._createFormPublicKeyRef.value.focus();
+    const hasFormErrors = !isNameFilled || !isPublicKeyFilled || isPublicKeyPrivate;
+    if (hasFormErrors) {
+      // auto focus input on error
+      if (this.createSshKeyForm.name.error != null) {
+        this._createFormNameRef.value.focus();
+      }
+      else if (this.createSshKeyForm.publicKey.error != null) {
+        this._createFormPublicKeyRef.value.focus();
+      }
     }
     else {
       // trigger key creation if client form validation is successful
@@ -246,7 +258,7 @@ export class CcSshKeyList extends LitElement {
         <cc-input-text
           ?disabled=${this.createSshKeyForm.state === 'creating'}
           @cc-input-text:requestimplicitsubmit=${this._onCreateKey}
-          .value="${this.createSshKeyForm.name?.value}"
+          .value="${live(this.createSshKeyForm.name?.value)}"
           class="create-form__name"
           label=${i18n('cc-ssh-key-list.add.name')}
           required
@@ -259,7 +271,7 @@ export class CcSshKeyList extends LitElement {
         <cc-input-text
           ?disabled=${this.createSshKeyForm.state === 'creating'}
           @cc-input-text:requestimplicitsubmit=${this._onCreateKey}
-          .value="${this.createSshKeyForm.publicKey?.value}"
+          .value="${live(this.createSshKeyForm.publicKey?.value)}"
           class="create-form__public-key"
           label=${i18n('cc-ssh-key-list.add.public-key')}
           required
