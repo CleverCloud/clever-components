@@ -1,6 +1,6 @@
 import '../cc-button/cc-button.js';
 import '../cc-badge/cc-badge.js';
-import '../cc-logs/cc-logs.js';
+import '../cc-logs-poc/cc-logs-poc.js';
 import '../cc-datetime-relative/cc-datetime-relative.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
@@ -120,12 +120,12 @@ export class CcLogsSimple extends LitElement {
           </button>
         `)}
       </div>
-      <cc-logs 
+      <cc-logs-poc 
         .logs=${this._visibleLogs}
         .limit=${500}
         ?follow=${true}
         .customMetadataRenderers=${this._getCustomMetadataRenderers()}
-      ></cc-logs>
+      ></cc-logs-poc>
     `;
   }
 
@@ -200,7 +200,7 @@ export class CcLogsSimple extends LitElement {
         padding: 1em;
       }
       
-      cc-logs {
+      cc-logs-poc {
         border: 1px solid #ccc;
         flex: 1;
         min-height: 0;

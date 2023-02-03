@@ -2,7 +2,7 @@ import '../cc-button/cc-button.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-datetime-relative/cc-datetime-relative.js';
 import '../cc-loader/cc-loader.js';
-import '../cc-logs/cc-logs.js';
+import '../cc-logs-poc/cc-logs-poc.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
@@ -444,7 +444,7 @@ export class CcLogsDeployment extends LitElement {
         ${hasLogs
           ? html`
             <cc-button @cc-button:click=${() => this._toggleLogs(step)} ?link=${true}>${isLogsShown ? 'hide logs' : 'show logs'}</cc-button>
-            ${isLogsShown ? html`<cc-logs ?withVirtualizer=${true} ?follow=${true} .logs=${step.logs}></cc-logs>` : ''}
+            ${isLogsShown ? html`<cc-logs-poc ?withVirtualizer=${true} ?follow=${true} .logs=${step.logs}></cc-logs-poc>` : ''}
           ` : ''
         }
       </div>
@@ -1055,7 +1055,7 @@ export class CcLogsDeployment extends LitElement {
           max-width: 500px;
         }
         
-        cc-logs {
+        cc-logs-poc {
           border: 1px solid var(--cc-color-bg-soft);
           padding: 0.5em;
           max-height: 300px;

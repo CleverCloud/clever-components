@@ -1,11 +1,11 @@
-import './cc-log.js';
+import './cc-log-poc.js';
 import { virtualize } from '@lit-labs/virtualizer/virtualize.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 
-export class CcLogs extends LitElement {
+export class CcLogsPoc extends LitElement {
   static get properties () {
     return {
       logs: { type: Array },
@@ -117,11 +117,11 @@ export class CcLogs extends LitElement {
 
   _renderLog (log) {
     return html`
-      <cc-log class="${classMap({ wrap: this.wrapLines })}" 
+      <cc-log-poc class="${classMap({ wrap: this.wrapLines })}" 
               .log=${log} 
               .wrap=${this.wrapLines}
               .customMetadataRenderers=${this.customMetadataRenderers}
-      ></cc-log>
+      ></cc-log-poc>
     `;
   }
 
@@ -156,14 +156,14 @@ export class CcLogs extends LitElement {
           overflow: auto;
         }
 
-        cc-log {
+        cc-log-poc {
           white-space: nowrap;
         }
-        cc-log:not(:last-child) {
+        cc-log-poc:not(:last-child) {
           padding-bottom: 0.25em;
         }
         
-        cc-log.wrap {
+        cc-log-poc.wrap {
           white-space: normal;
         }
         
@@ -185,4 +185,4 @@ export class CcLogs extends LitElement {
   }
 }
 
-window.customElements.define('cc-logs', CcLogs);
+window.customElements.define('cc-logs-poc', CcLogsPoc);

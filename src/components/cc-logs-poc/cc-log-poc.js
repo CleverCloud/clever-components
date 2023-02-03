@@ -1,7 +1,7 @@
 import '../cc-badge/cc-badge.js';
 import { css, html, LitElement } from 'lit';
 
-export class CcLog extends LitElement {
+export class CcLogPoc extends LitElement {
   static get properties () {
     return {
       log: { type: Object },
@@ -101,4 +101,4 @@ export class CcLog extends LitElement {
   }
 }
 
-window.customElements.define('cc-log', CcLog);
+window.customElements.define('cc-log-poc', CcLogPoc);

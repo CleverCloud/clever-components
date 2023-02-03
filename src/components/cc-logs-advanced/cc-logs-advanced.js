@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
-import '../cc-logs/cc-logs.js';
+import '../cc-logs-poc/cc-logs-poc.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-button/cc-button.js';
@@ -53,7 +53,7 @@ export class CcLogsAdvanced extends LitElement {
     this._metaFilters = {};
     this._filteredLogs = [];
 
-    /** @type {Ref<CcLogs>} */
+    /** @type {Ref<CcLogsPoc>} */
     this._logsRef = createRef();
     this._inputRef = createRef();
   }
@@ -309,12 +309,12 @@ export class CcLogsAdvanced extends LitElement {
           ?circle=${true}
           .icon=${searchIcon}
         ></cc-button>
-        <cc-logs
+        <cc-logs-poc
           .logs=${this._filteredLogs}
           .customMetadataRenderers=${customMetadataRenderers}
           ${ref(__logsRef)}
           ?follow=${true}
-        ></cc-logs>
+        ></cc-logs-poc>
       </div>
     `;
   }
@@ -575,7 +575,7 @@ export class CcLogsAdvanced extends LitElement {
           grid-gap: 0.5em;
         }
 
-        cc-logs {
+        cc-logs-poc {
           border: 1px solid #aaa;
           border-radius: 3px;
           flex: 1;

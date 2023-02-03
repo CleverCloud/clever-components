@@ -1,4 +1,4 @@
-import './cc-log.js';
+import './cc-log-poc.js';
 import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 
@@ -41,7 +41,7 @@ export class CcLogsDom extends LitElement {
 
   addLogs (logs) {
     for (const log of logs) {
-      const $log = document.createElement('cc-log');
+      const $log = document.createElement('cc-log-poc');
       $log.log = log;
       $log.wrap = this.wrapLines;
       this._logsRef.value.appendChild($log);

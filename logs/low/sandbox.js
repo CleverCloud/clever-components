@@ -2,8 +2,8 @@ import Chart from 'chart.js/auto';
 import { html, render } from 'lit';
 import { addTranslations, setLanguage } from '../../src/lib/i18n.js';
 import { lang, translations } from '../../src/translations/translations.en.js';
-import '../../src/components/cc-logs/cc-logs.js';
-import '../../src/components/cc-logs/cc-logs-dom.js';
+import '../../src/components/cc-logs-poc/cc-logs-poc.js';
+import '../../src/components/cc-logs-poc/cc-logs-dom.js';
 import '../../src/components/cc-button/cc-button.js';
 import '../../src/components/cc-toaster/cc-toaster.js';
 import '../../src/components/cc-toggle/cc-toggle.js';
@@ -199,7 +199,7 @@ async function refreshLogs (modeChanged = false) {
     const useRepeat = mode === 'lit-repeat';
 
     if (useLit) {
-      $logs = document.createElement('cc-logs');
+      $logs = document.createElement('cc-logs-poc');
       $logs.withVirtualizer = useVirtualizer;
       $logs.withRepeat = useRepeat;
     }
