@@ -124,6 +124,24 @@ defineSmartComponent({
       return instance;
     };
 
+    const getSource = (log) => {
+      const p = log.syslog_program;
+
+      if (p === 'CROND') {
+        return 'cron';
+      }
+      if (p === '/home/bas/rubydeployer/deployer.rb') {
+        return 'clever';
+      }
+      if (p === 'env') {
+        return 'clever';
+      }
+      if (p === 'deploy-node.sh') {
+        return 'app';
+      }
+      return 'clever';
+    };
+
     const convertLog = async (log) => {
       const timestamp = log['@timestamp'];
       const id = log.id || (`${timestamp}${Math.random().toString(36).slice(2)}`);
@@ -132,12 +150,14 @@ defineSmartComponent({
       return {
         id,
         timestamp,
+        raw: log,
         message: log.message,
         metadata: {
           instanceId: instance.id,
           instanceState: instance.state,
           // deploymentId: log.deploymentId,
           level: log.syslog_severity,
+          source: getSource(log),
         },
       };
     };
@@ -146,7 +166,6 @@ defineSmartComponent({
     const subscribeToLiveLogs = async () => {
       unsubscribeToLiveLogs = api.openLogsStream(deploymentId, instanceId, {
         async onLog (log) {
-          console.debug('live log', log);
           component.addLog(await convertLog(log));
         },
         onError (error) {
@@ -217,6 +236,7 @@ defineSmartComponent({
     // this function is useful for live mode
     const refreshCurrentInstances = async () => {
       console.info('refreshing current instances');
+      let needRefresh = false;
       Array.from(instancesMap.keys())
         .filter((instance) => instance.state !== 'DELETED')
         .forEach((id) => {
@@ -224,11 +244,7 @@ defineSmartComponent({
             .then((instance) => {
               if (!objectEquals(instance.raw, instancesMap.get(id).raw)) {
                 instancesMap.set(id, instance);
-                refreshComponentInstances();
-                // setInstances([
-                //   ...component.instances.filter((i) => i.id !== id),
-                //   instance,
-                // ]);
+                needRefresh = true;
               }
             })
             .catch((e) => {
@@ -236,6 +252,9 @@ defineSmartComponent({
             })
           ;
         });
+      if (needRefresh) {
+        refreshComponentInstances();
+      }
     };
 
     refreshInstances().then(() => {

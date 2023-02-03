@@ -53,8 +53,11 @@ export class CcLogs extends LitElement {
     let ticking = false;
 
     const listener = (e, scrollPosition) => {
+      const old = this.follow;
       this.follow = scrollPosition + e.offsetHeight >= e.scrollHeight - 10;
-      console.log('follow', this.follow);
+      if (old !== this.follow) {
+        console.log('follow', this.follow);
+      }
     };
 
     return (e) => {

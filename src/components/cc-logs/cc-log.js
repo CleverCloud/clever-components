@@ -20,6 +20,8 @@ export class CcLog extends LitElement {
   }
 
   _onClick () {
+    console.log(this.log);
+
     const listener = (e) => {
       e.clipboardData.setData('text/markdown', '`' + this.log.message + '`');
       e.clipboardData.setData('text/html', '<code>' + this.log.message + '</code>');

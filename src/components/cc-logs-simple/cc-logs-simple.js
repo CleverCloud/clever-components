@@ -124,7 +124,6 @@ export class CcLogsSimple extends LitElement {
         .logs=${this._visibleLogs}
         .limit=${500}
         ?follow=${true}
-        ?follow-on-scroll=${true}
         .customMetadataRenderers=${this._getCustomMetadataRenderers()}
       ></cc-logs>
     `;
