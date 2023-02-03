@@ -6,6 +6,8 @@
     tool used for grey shades: https://mdigi.tools/color-shades/#333333 (10 or 11 steps)
   */
   --color-blue-100: #012a51;
+   /*TODO: find a new token for 80 if we agree to have this on tile-metrics. */
+  --color-blue-80: #002c9d;
   --color-blue-70: #0061bd;
   --color-blue-60: #3569aa;
   --color-blue-30: #cedcff;

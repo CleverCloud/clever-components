@@ -142,3 +142,12 @@ export async function fetchAllZones ({ signal }) {
   return getAllZones()
     .then(sendToApi({ signal, cacheDelay: ONE_DAY }));
 }
+
+// TODO: move this to clever client
+export function getAppMetrics (params) {
+  return Promise.resolve({
+    method: 'get',
+    url: `/v4/metrics/organisations/${params.id}/resources/${params.appId}/metrics?interval="P1D"&span="PT1H"&only=cpu&only=mem`,
+    headers: { Accept: 'application/json' },
+  });
+}

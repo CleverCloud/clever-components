@@ -791,6 +791,18 @@ export const translations = {
   'cc-tile-instances.status.running': `En ligne`,
   'cc-tile-instances.title': `Instances`,
   //#endregion
+  //#region cc-tile-metrics
+  'cc-tile-metrics.about-btn': `À propos de ce graphe...`,
+  'cc-tile-metrics.close-btn': `Afficher le graphe`,
+  'cc-tile-metrics.cpu': `CPU`,
+  'cc-tile-metrics.docs.msg': ({ grafanaLink, metricsLink }) => sanitize`Métriques serveur reçues durant les dernières 24 heures. Chaque barre représente une fenêtre de temps de  <strong>1 heure</strong>. <br> En savoir plus : <br> <a href="${grafanaLink}">Grafana</a>, <a href="${metricsLink}">Métriques</a>`,
+  'cc-tile-metrics.empty': `Pas de métriques. L'application est arrêtée.`,
+  'cc-tile-metrics.error': `Une erreur est survenue pendant le chargement des métriques.`,
+  'cc-tile-metrics.link-to-grafana': `Ouvrir grafana`,
+  'cc-tile-metrics.mem': `RAM`,
+  'cc-tile-metrics.percent': ({ percent }) => formatPercent(lang, percent),
+  'cc-tile-metrics.title': `Métriques`,
+  //#endregion
   //#region cc-tile-requests
   'cc-tile-requests.about-btn': `À propos de ce graphe...`,
   'cc-tile-requests.close-btn': `Afficher le graphe`,
