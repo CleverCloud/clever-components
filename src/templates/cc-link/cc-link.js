@@ -14,11 +14,11 @@ function isDifferentOrigin (rawUrl) {
 }
 
 // NOTE: we could just create raw DOM but here we benefit from lit-html safe/escaping system on "content"
-export const ccLink = (url, content, skeleton = false) => {
+export const ccLink = (url, content, skeleton = false, title) => {
   const href = (url != null) ? url : undefined;
   const target = isDifferentOrigin(href) ? '_blank' : undefined;
   const rel = isDifferentOrigin(href) ? 'noopener noreferrer' : undefined;
-  return html`<a class="cc-link ${classMap({ skeleton })}" href=${ifDefined(href)} target=${ifDefined(target)} rel=${ifDefined(rel)}>${content}</a>`;
+  return html`<a class="cc-link ${classMap({ skeleton })}" href=${ifDefined(href)} target=${ifDefined(target)} rel=${ifDefined(rel)} title="${ifDefined(title)}">${content}</a>`;
 };
 
 // language=CSS
