@@ -1,6 +1,7 @@
 ---
-kind: '📌 Docs/Architecture Decision Records'
+kind: '📌 Architecture Decision Records'
 ---
+
 # ADR 0010: Introducing HTML in translation strings
 
 🗓️ 2020-01-19 · ✍️ Hubert Sablonnière

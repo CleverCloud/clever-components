@@ -1,6 +1,7 @@
 ---
-kind: '📌 Docs/Architecture Decision Records'
+kind: '📌 Architecture Decision Records'
 ---
+
 # ADR 0006: Why the `<cc-overview>` uses slots?
 
 🗓️ 2019-10-17 · ✍️ Hubert Sablonnière

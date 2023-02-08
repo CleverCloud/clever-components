@@ -1,5 +1,6 @@
 ---
-kind: '📌 Docs'
+kind: '🏡 Getting Started'
+title: 'Breaking change policy'
 ---
 
 # Breaking change policy

@@ -1,6 +1,7 @@
 ---
-kind: '📌 Docs/Architecture Decision Records'
+kind: '📌 Architecture Decision Records'
 ---
+
 # ADR 0023: Adding Stylelint
 
 🗓️ 2023-02-13 · ✍️ Mathieu Degand

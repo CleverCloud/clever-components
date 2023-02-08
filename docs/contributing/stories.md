@@ -1,7 +1,9 @@
 ---
-kind: '📌 Docs'
+kind: '👋 Contributing'
+title: 'Writing stories'
 ---
-# How to write stories
+
+# Writing stories
 
 We're trying to enforce a few names/titles for our stories.
 This is a great way for developers not to forget cases like error, empty, skeleton/loading...
@@ -14,7 +16,7 @@ This is also a great way for users to recognize patterns in our components.
 * Think about what happens if it fails (error in general).
 * Think about what happens while we're waiting for the data (loading, updating...).
 * Think about what happens if there are no data.
-* Try to show off a time-simulation like "loading" then "data is loaded". 
+* Try to show off a time-simulation like "loading" then "data is loaded".
 
 ## Generic names
 
@@ -29,7 +31,7 @@ We want to keep consistency between our stories so we're proposing special names
 * 📈 If you're showing off a component with data in a time-simulation like "loading" then "data is loaded", start your story name with `simulation`.
 * 🔥 If you're showing off a component with an error, start your story name with `error`.
 
-NOTE: If you need to specify some details about your story, use `with` and it will trigger parens in the displayed title.
+<cc-notice intent="info" message="If you need to specify some details about your story, use `with` and it will trigger parens in the displayed title."></cc-notice>
 
 Examples:
 
@@ -178,7 +180,7 @@ export const storyWithOneArg = makeStory({
 });
 ```
 
-**NOTE:** You can also provide a function to `items` as long as it returns the same kind of array of objects.
+<cc-notice intent="info" message="You can also provide a function to `items` as long as it returns the same kind of array of objects."></cc-notice>
 
 This is very handy when you deal with dates and want to make sure the properties are generated when the story is rendered.
 
@@ -289,7 +291,7 @@ export const storyWithSimulations = makeStory(conf, {
 If you want, you can override the argument types of the story to improve the controls with the `argTypes` property.
 See https://storybook.js.org/docs/web-components/api/argtypes for more details.
 
-Here's an example where we provide a 2-choice radio input for the `one` property: 
+Here's an example where we provide a 2-choice radio input for the `one` property:
 
 ```js
 export const storyWithSimulations = makeStory(conf, {

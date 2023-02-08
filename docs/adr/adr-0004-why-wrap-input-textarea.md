@@ -1,6 +1,7 @@
 ---
-kind: '📌 Docs/Architecture Decision Records'
+kind: '📌 Architecture Decision Records'
 ---
+
 # ADR 0004: Why do we wrap `<input>` and `<textarea>` in a `div.wrapper` and puts styles on this wrapper?
 
 🗓️ 2019-10-05 · ✍️ Hubert Sablonnière

@@ -1,6 +1,7 @@
 ---
-kind: '📌 Docs/Architecture Decision Records'
+kind: '📌 Architecture Decision Records'
 ---
+
 # ADR 0002: Why we changed the way i18n works?
 
 🗓️ 2019-10-15 · ✍️ Hubert Sablonnière
