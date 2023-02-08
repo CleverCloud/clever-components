@@ -340,8 +340,8 @@ export class CcToggle extends LitElement {
 
         .toggle-group.mode-single.enabled:not(:hover):focus-within,
         .toggle-group.mode-multiple.enabled:not(:hover) input:enabled:focus + label {
-          box-shadow: 0 0 0 0.2em rgb(50 115 220 / 25%);
-          outline: 0;
+          outline: var(--cc-focus-outline, #000 solid 2px);
+          outline-offset: var(--cc-focus-outline-offset, 2px);
         }
 
         .toggle-group.mode-multiple.enabled:not(:hover) input:enabled:focus + label {

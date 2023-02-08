@@ -41,8 +41,8 @@ export const linkStyles = css`
   .cc-link:focus {
     background-color: var(--cc-color-bg-default, #fff);
     border-radius: 0.1em;
-    box-shadow: 0 0 0 .1em var(--cc-color-bg-default, #fff), 0 0 0 .3em rgba(50, 115, 220, .25);
-    outline: 0;
+    outline: var(--cc-focus-outline, #000000 solid 2px);
+    outline-offset: var(--cc-focus-outline-offset, 2px);
   }
 
   .sanitized-link::-moz-focus-inner,
