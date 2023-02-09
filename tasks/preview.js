@@ -1,11 +1,8 @@
-import { exec as execRaw } from 'child_process';
 import fs from 'fs/promises';
-import { promisify } from 'util';
 import chalk from 'chalk';
 import textTable from 'text-table';
 import { CellarClient } from './cellar-client.js';
-
-const exec = promisify(execRaw);
+import { getCurrentAuthor, getCurrentBranch, getCurrentCommit } from './git-utils.js';
 
 // !! WARNINGS !!
 // * We're still depending on git with exec
@@ -19,7 +16,7 @@ const cellar = new CellarClient({
 async function run () {
 
   const [command, branch] = process.argv.slice(2);
-  const currentBranch = await getCurrentBranch();
+  const currentBranch = getCurrentBranch();
 
   switch (command) {
     case 'get':
@@ -33,21 +30,6 @@ async function run () {
   }
 
   throw new Error('Unknown command!');
-}
-
-async function getCurrentBranch () {
-  const { stdout } = await exec('git branch --show-current');
-  return stdout.trim();
-}
-
-async function getCurrentCommit () {
-  const { stdout } = await exec('git rev-parse HEAD');
-  return stdout.trim();
-}
-
-async function getCurrentAuthor () {
-  const { stdout } = await exec(`git log -1 --pretty=format:'%an'`);
-  return stdout.trim();
 }
 
 async function getPreview (branch) {
@@ -86,8 +68,8 @@ async function publishPreviewBranch (branch) {
     branch,
     url: `https://clever-components-preview.cellar-c2.services.clever-cloud.com/${branch}/index.html`,
     updatedAt: new Date().toISOString(),
-    commitId: await getCurrentCommit(),
-    author: await getCurrentAuthor(),
+    commitId: getCurrentCommit(),
+    author: getCurrentAuthor(),
   };
   const previewIndex = manifest.previews.findIndex((p) => p.branch === branch);
   if (previewIndex !== -1) {
@@ -182,7 +164,7 @@ async function updateListIndex (manifest) {
         </tr>
         ${manifest.previews.map((p) => `
           <tr>
-            <td><a href="https://clever-components-preview.cellar-c2.services.clever-cloud.com/${p.branch}/index.html"><code>${p.branch}</code></a></td>
+            <td><a href="${p.url}"><code>${p.branch}</code></a></td>
             <td><cc-datetime-relative datetime="${p.updatedAt}">${p.updatedAt}</cc-datetime-relative></td>
             <td><span title="${p.commitId}">${p.commitId.substr(0, 8)}</span></td>
             <td>${p.author}</td>

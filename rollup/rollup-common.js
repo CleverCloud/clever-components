@@ -8,6 +8,8 @@ import { terser } from 'rollup-plugin-terser';
 import visualizer from 'rollup-plugin-visualizer';
 import SVGO from 'svgo';
 
+export const SOURCE_DIR = 'src';
+
 const svgo = new SVGO({
   // See https://github.com/svg/svgo#what-it-can-do
   plugins: [
@@ -72,32 +74,32 @@ export function minifyStylesheet (stylesheet) {
   return minifiedStylesheet.styles;
 }
 
-export function getMainFiles (sourceDir) {
+export function getMainFiles () {
 
   const mainFilesPatterns = [
-    `${sourceDir}/assets/*.icons.js`,
-    `${sourceDir}/components/**/*.js`,
-    `${sourceDir}/lib/i18n.js`,
-    `${sourceDir}/lib/smart-manager.js`,
-    `${sourceDir}/translations/*.js`,
+    `${SOURCE_DIR}/assets/*.icons.js`,
+    `${SOURCE_DIR}/components/**/*.js`,
+    `${SOURCE_DIR}/lib/i18n.js`,
+    `${SOURCE_DIR}/lib/smart-manager.js`,
+    `${SOURCE_DIR}/translations/*.js`,
   ];
 
   const ignorePatterns = [
-    `${sourceDir}/components/**/*.stories.js`,
-    `${sourceDir}/components/**/*.test.js`,
+    `${SOURCE_DIR}/components/**/*.stories.js`,
+    `${SOURCE_DIR}/components/**/*.test.js`,
   ];
 
   return multiGlob(mainFilesPatterns, { ignore: ignorePatterns });
 }
 
-export function getAllSourceFiles (sourceDir) {
+export function getAllSourceFiles () {
 
-  const allSourceFilesPatterns = `${sourceDir}/**/*.js`;
+  const allSourceFilesPatterns = `${SOURCE_DIR}/**/*.js`;
 
   const ignorePatterns = [
-    `${sourceDir}/**/*.test.js`,
-    `${sourceDir}/**/*.stories.js`,
-    `${sourceDir}/stories/**/*`,
+    `${SOURCE_DIR}/**/*.test.js`,
+    `${SOURCE_DIR}/**/*.stories.js`,
+    `${SOURCE_DIR}/stories/**/*`,
   ];
 
   return glob.sync(allSourceFilesPatterns, { ignore: ignorePatterns });

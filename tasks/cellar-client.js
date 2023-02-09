@@ -10,6 +10,7 @@ const glob = promisify(rawGlob);
 const ONE_YEAR = 365 * 24 * 60 * 60;
 export const LONG_CACHE = `public, max-age=${ONE_YEAR}, immutable`;
 export const NO_CACHE = `no-cache, max-age=0`;
+export const CELLAR_HOST = 'cellar-c2.services.clever-cloud.com';
 
 export class CellarClient {
 
@@ -21,7 +22,7 @@ export class CellarClient {
 
     this._bucket = bucket;
     this._client = new AWS.S3Client({
-      endpoint: 'https://cellar-c2.services.clever-cloud.com',
+      endpoint: `https://${CELLAR_HOST}`,
       credentials: { accessKeyId, secretAccessKey },
       region: 'REGION',
     });
@@ -60,6 +61,10 @@ export class CellarClient {
       .then(() => console.log(`PUT    ${key}`));
   }
 
+  /**
+   * @param {string} key
+   * @return {Promise<void>}
+   */
   deleteObject ({ key }) {
     return this._client
       .send(new AWS.DeleteObjectCommand({
@@ -69,9 +74,17 @@ export class CellarClient {
       .then(() => console.log(`DELETE ${key}`));
   }
 
+  /**
+   * @param {Array<{key: string}>} objects
+   * @return {Promise<Awaited<void>[]>}
+   */
+  deleteObjects (objects) {
+    return Promise.all(objects.map((o) => this.deleteObject(o)));
+  }
+
   async deleteManyObjects ({ prefix }) {
     const remoteKeys = await this.listKeys({ prefix });
-    return Promise.all(remoteKeys.map((key) => this.deleteObject({ key })));
+    return this.deleteObjects(remoteKeys.map((key) => ({ key })));
   }
 
   async sync ({ localDir, remoteDir = '', deleteRemoved = false, cacheControl }) {
@@ -91,9 +104,7 @@ export class CellarClient {
       const remoteKeys = await this.listKeys({ prefix: `${remoteDir}/` });
       const removedKeys = remoteKeys
         .filter((remoteKey) => localFilesWithKeys.find((file) => file.key === remoteKey) == null);
-      await Promise.all(
-        removedKeys.map((key) => this.deleteObject({ key })),
-      );
+      return this.deleteObjects(removedKeys.map((key) => ({ key })));
     }
   }
 }

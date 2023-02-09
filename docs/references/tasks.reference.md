@@ -12,23 +12,6 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
 * See config in `rollup/rollup-npm.config.js` for more details.
 * TODO: link to detailed build documentation
 
-## `npm run components:build-cdn`
-
-* Build components for our smart CDN with [Rollup](https://rollupjs.org/) in `dist-cdn` folder.
-* See config in `rollup/rollup-cdn.config.js` for more details.
-* Requires a `GIT_TAG_NAME` environment variable, you can use `x.y.z` when doing some local tests.
-* TODO: link to detailed build documentation
-
-## `npm run components:build-cdn:versions-list`
-
-* Build the version `versions-list.json` file in `dist-cdn`, so it can be uploaded on the smart CDN.
-* This is based on the list of tags on the [GitHub repo](https://github.com/CleverCloud/clever-components).
-
-## `npm run components:publish-cdn`
-
-* Upload all assets in `dist-cdn` to the remote object storage.
-* TODO: link to detailed build documentation about the CDN mode
-
 ## `npm run components:check-i18n`
 
 * Check translations between components and translation files with [i18n-extract](https://github.com/oliviertassinari/i18n-extract).
@@ -89,6 +72,52 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
 
 * Delete a branch on the preview system.
 * It uses current branch name by default, but you can provide a CLI param to override the name.
+
+## `npm run cdn-release:build`
+
+* Build components for our smart CDN with [Rollup](https://rollupjs.org/) in `dist-cdn` folder.
+* See config in `rollup/rollup-cdn.config.js` for more details.
+* Requires a `VERSION` environment variable, you can use `0.0.0` when doing some local tests.
+* TODO: link to detailed build documentation
+
+## `npm run cdn-release:publish`
+
+* Upload all assets in `dist-cdn` to the CDN remote object storage.
+* TODO: link to detailed build documentation about the CDN mode
+
+## `npm run cdn-release:ui`
+
+* Upload all assets in `cdn-ui` to the CDN remote object storage.
+* TODO: link to detailed build documentation about the CDN mode
+
+## `npm run cdn-preview:build`
+
+* Builds a CDN preview.
+* It uses current branch name by default, but you can provide a `PREVIEW` environment variable to override the name.
+ 
+## `npm run cdn-preview:get`
+
+* Get details of a CDN preview.
+* It uses current branch name by default, but you can provide a CLI param to override the name.
+
+## `npm run cdn-preview:list`
+
+* List all the available CDN previews.
+
+## `npm run cdn-preview:publish`
+
+* Publish (create or update) a CDN preview.
+* It uses current branch name by default, but you can provide a CLI param to override the name.
+
+## `npm run cdn-preview:delete`
+
+* Delete a CDN preview.
+* It uses current branch name by default, but you can provide a CLI param to override the name.
+
+## `npm run cdn-preview:ui`
+
+* Upload all assets in `cdn-ui` to the preview CDN remote object storage.
+* TODO: link to detailed build documentation about the CDN mode
 
 ## `npm run start`
 

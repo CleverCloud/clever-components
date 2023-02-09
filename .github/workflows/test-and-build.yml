@@ -44,4 +44,4 @@ jobs:
       - name: '[Build] Documentation'
         run: npm run components:docs
       - name: '[Build] CDN'
-        run: GIT_TAG_NAME=fake npm run components:build-cdn
+        run: VERSION=0.0.0 npm run cdn-release:build

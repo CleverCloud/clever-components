@@ -6,19 +6,18 @@ import {
   getAllSourceFiles,
   getMainFiles,
   importMetaUrlAssetsPlugin,
-  minifyStylesheet,
+  minifyStylesheet, SOURCE_DIR,
   terserPlugin,
   visualizerPlugin,
 } from './rollup-common.js';
 import { indexGeneratorPlugin } from './rollup-plugin-index-generator.js';
 
-const sourceDir = 'src';
 const outputDir = 'dist';
 
-const allSourceFiles = getAllSourceFiles(sourceDir);
-const mainFiles = getMainFiles(sourceDir);
+const allSourceFiles = getAllSourceFiles();
+const mainFiles = getMainFiles();
 
-const inputFilesPairs = allSourceFiles.map((sourceDir, (file) => {
+const inputFilesPairs = allSourceFiles.map((SOURCE_DIR, (file) => {
 
   const isMainFile = mainFiles.includes(file);
   const { dir, name } = path.parse(file);
@@ -27,7 +26,7 @@ const inputFilesPairs = allSourceFiles.map((sourceDir, (file) => {
   // other files are kept in the same path
   const entryPath = isMainFile
     ? name
-    : path.relative(sourceDir, path.join(dir, name));
+    : path.relative(SOURCE_DIR, path.join(dir, name));
 
   return [entryPath, file];
 }));
@@ -55,12 +54,12 @@ export default {
     copy({
       targets: [
         {
-          src: `${sourceDir}/styles/default-theme.css`,
+          src: `${SOURCE_DIR}/styles/default-theme.css`,
           dest: `${outputDir}/styles`,
           transform: (stylesheet) => minifyStylesheet(stylesheet),
         },
         {
-          src: `${sourceDir}/styles/undefined-components.css`,
+          src: `${SOURCE_DIR}/styles/undefined-components.css`,
           dest: `${outputDir}/styles`,
           transform: (stylesheet) => minifyStylesheet(stylesheet),
         },
