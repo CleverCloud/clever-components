@@ -7,7 +7,6 @@ import '../cc-block/cc-block.js';
 import '../cc-block-section/cc-block-section.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { live } from 'lit/directives/live.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import {
@@ -167,6 +166,26 @@ export class CcSshKeyList extends LitElement {
     dispatchCustomEvent(this, 'import', sshKey);
   }
 
+  _onNameInput ({ detail: name }) {
+    this.createSshKeyForm = {
+      ...this.createSshKeyForm,
+      name: {
+        ...this.createSshKeyForm.name,
+        value: name,
+      },
+    };
+  }
+
+  _onPublicKeyInput ({ detail: publicKey }) {
+    this.createSshKeyForm = {
+      ...this.createSshKeyForm,
+      publicKey: {
+        ...this.createSshKeyForm.publicKey,
+        value: publicKey,
+      },
+    };
+  }
+
   render () {
     const state = this.keyData.state;
 
@@ -257,8 +276,9 @@ export class CcSshKeyList extends LitElement {
       <div class="create-form">
         <cc-input-text
           ?disabled=${this.createSshKeyForm.state === 'creating'}
+          @cc-input-text:input=${this._onNameInput}
           @cc-input-text:requestimplicitsubmit=${this._onCreateKey}
-          .value="${live(this.createSshKeyForm.name?.value)}"
+          .value="${this.createSshKeyForm.name?.value}"
           class="create-form__name"
           label=${i18n('cc-ssh-key-list.add.name')}
           required
@@ -270,8 +290,9 @@ export class CcSshKeyList extends LitElement {
         </cc-input-text>
         <cc-input-text
           ?disabled=${this.createSshKeyForm.state === 'creating'}
+          @cc-input-text:input=${this._onPublicKeyInput}
           @cc-input-text:requestimplicitsubmit=${this._onCreateKey}
-          .value="${live(this.createSshKeyForm.publicKey?.value)}"
+          .value="${this.createSshKeyForm.publicKey?.value}"
           class="create-form__public-key"
           label=${i18n('cc-ssh-key-list.add.public-key')}
           required
