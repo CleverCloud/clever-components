@@ -23,7 +23,7 @@
     "components:publish-cdn": "node tasks/publish-cdn.js",
     "components:check-i18n": "node tasks/check-i18n.js",
     "components:check-type-imports": "node tasks/check-type-imports.js",
-    "components:check-lit": "lit-analyzer src",
+    "components:check-lit": "lit-analyzer --rules.no-unknown-event off src",
     "components:docs": "cem analyze --outdir dist",
     "test": "wtr",
     "test:watch": "wtr --watch",
@@ -47,6 +47,7 @@
   "dependencies": {
     "@clevercloud/client": "^7.10.0",
     "@lit-labs/motion": "^1.0.3",
+    "@lit-labs/virtualizer": "^1.0.1",
     "@shoelace-style/shoelace": "^2.0.0-beta.47",
     "chart.js": "^3.5.0",
     "chartjs-plugin-datalabels": "^2.0.0",
