@@ -81,6 +81,32 @@ export function sortBy (propertyName, desc = false) {
 }
 
 /**
+ * @template {Object<string, any>} T
+ * @param {Array<T>} array
+ * @param {string} key
+ * @return {Object<string, Array<T>>}
+ */
+export function groupBy (array, key) {
+  /** @type {Object<string, Array<T>>} */
+  const groups = {};
+
+  for (const value of array) {
+    const prop = value[key];
+
+    if (prop != null) {
+      let group = groups[prop];
+      if (group == null) {
+        group = [];
+        groups[prop] = group;
+      }
+      group.push(value);
+    }
+  }
+
+  return groups;
+}
+
+/**
  * @template InputType
  * @template OutputType
  * @param {InputType[]} array
@@ -89,4 +115,31 @@ export function sortBy (propertyName, desc = false) {
  */
 export function asyncMap (array, asyncCallback) {
   return Promise.all(array.map(asyncCallback));
+}
+
+/**
+ * Create an array of numbers, starting from `start` and ending at `end`.
+ *
+ * @param {number} start - The number to start with.
+ * @param {number} end - The number to end with.
+ * @return Array<number>
+ */
+export function range (start, end) {
+  const s = Math.min(start, end);
+  const e = Math.max(start, end);
+  const result = [];
+  for (let i = s; i <= e; i++) {
+    result.push(i);
+  }
+  return result;
+}
+
+/**
+ *
+ * @param {number} min
+ * @param {number} max
+ * @return {number}
+ */
+export function random (min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
 }

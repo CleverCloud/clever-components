@@ -470,6 +470,13 @@ export const translations = {
   'cc-jenkins-info.update.title': `Updates`,
   'cc-jenkins-info.update.up-to-date': `Your Jenkins version is up-to-date.`,
   //#endregion
+  //#region cc-logs
+  'cc-logs.copied.multi': ({ count }) => `Copied (${count} lines)`,
+  'cc-logs.copied.single': `Copied`,
+  'cc-logs.copy': `Copy`,
+  'cc-logs.select-button.label': ({ index }) => `Select the line ${index}`,
+  'cc-logs.unselect-button.label': ({ index }) => `Unselect the line ${index}`,
+  //#endregion
   //#region cc-logsmap
   'cc-logsmap.legend.heatmap': ({ orgaName }) => sanitize`Heatmap of HTTP requests received by all apps from <strong>${orgaName}</strong> during the last 24 hours.`,
   'cc-logsmap.legend.heatmap.app': ({ appName }) => sanitize`Heatmap of HTTP requests received by <strong>${appName}</strong> during the last 24 hours.`,

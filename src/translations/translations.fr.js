@@ -483,6 +483,13 @@ export const translations = {
   'cc-jenkins-info.update.title': `Mises à jour`,
   'cc-jenkins-info.update.up-to-date': `Votre version de Jenkins est à jour.`,
   //#endregion
+  //#region cc-logs
+  'cc-logs.copied.multi': ({ count }) => `Copiées (${count} lignes)`,
+  'cc-logs.copied.single': `Copiée`,
+  'cc-logs.copy': `Copier`,
+  'cc-logs.select-button.label': ({ index }) => `Sélectionner la ligne ${index}`,
+  'cc-logs.unselect-button.label': ({ index }) => `Désélectionner la ligne ${index}`,
+  //#endregion
   //#region cc-logsmap
   'cc-logsmap.legend.heatmap': ({ orgaName }) => sanitize`Carte de chaleur des requêtes HTTP reçues par les applications de <strong>${orgaName}</strong> durant les dernières 24 heures.`,
   'cc-logsmap.legend.heatmap.app': ({ appName }) => sanitize`Carte de chaleur des requêtes HTTP reçues par l'application <strong>${appName}</strong> durant les dernières 24 heures.`,
