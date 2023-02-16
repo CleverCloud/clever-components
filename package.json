@@ -49,7 +49,7 @@
   "dependencies": {
     "@clevercloud/client": "^7.10.0",
     "@lit-labs/motion": "^1.0.3",
-    "@lit-labs/virtualizer": "^0.7.2",
+    "@lit-labs/virtualizer": "^1.0.1",
     "@shoelace-style/shoelace": "^2.0.0-beta.47",
     "chart.js": "^3.5.0",
     "chartjs-plugin-datalabels": "^2.0.0",

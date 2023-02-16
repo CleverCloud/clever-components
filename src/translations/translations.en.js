@@ -470,6 +470,9 @@ export const translations = {
   'cc-jenkins-info.update.title': `Updates`,
   'cc-jenkins-info.update.up-to-date': `Your Jenkins version is up-to-date.`,
   //#endregion
+  //#region cc-logs
+  'cc-logs.error': `Une erreur est survenue pendant le chargement des données`,
+  //#endregion
   //#region cc-logs-poc
   'cc-logs-poc.step.build--build-command': `Build command execution`,
   'cc-logs-poc.step.build--clone': `Application source installation`,
