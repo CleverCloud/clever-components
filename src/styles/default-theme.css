@@ -1,8 +1,8 @@
 :root {
   --cc-ff-monospace: "SourceCodePro", "monaco", monospace;
-  
+
   /* All custom properties are sorted alphabetically within each region. */
-  
+
   /*region Color choices*/
   /* color choices - these should not be referenced inside components (use decisions below instead)
     tool used for grey shades: https://mdigi.tools/color-shades/#333333 (10 or 11 steps)
@@ -55,7 +55,7 @@
   /* Usage: Sensitive information that require attention.
   For instance: error messages */
   --cc-color-text-danger: var(--color-red-100);
-  
+
   /* Usage: regular text. */
   --cc-color-text-default: var(--color-grey-90);
 

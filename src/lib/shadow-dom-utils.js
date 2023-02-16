@@ -45,3 +45,34 @@ export function isParentOf (parent, child) {
 
   return false;
 }
+
+/**
+ * Same as document.elementsFromPoint() but with the capability to traverse shadow DOM.
+ *
+ * @param {number} x
+ * @param {number} y
+ * @param {Document|ShadowRoot} element
+ * @return {Array<Element>}
+ */
+export function elementsFromPoint (x, y, element = document) {
+  let elements = element.elementsFromPoint(x, y);
+  if (elements.length === 0) {
+    return [];
+  }
+
+  let shadow = elements[0].shadowRoot;
+  while (shadow != null) {
+    const items = shadow.elementsFromPoint(x, y);
+    if (items.length === 0) {
+      shadow = null;
+    }
+    else if (elements.includes(items[0])) {
+      shadow = null;
+    }
+    else {
+      elements = [...items, elements];
+      shadow = items[0].shadowRoot;
+    }
+  }
+  return elements;
+}
