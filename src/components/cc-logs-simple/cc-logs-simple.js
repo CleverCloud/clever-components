@@ -191,38 +191,38 @@ export class CcLogsSimple extends LitElement {
       }
       
       #instances {
-        background-color: #eee;
         display: flex;
-        flex-direction: column;
-        gap: 0.5em;
-        min-height: 0;
         overflow: auto;
+        min-height: 0;
+        flex-direction: column;
         padding: 1em;
+        background-color: #eee;
+        gap: 0.5em;
       }
       
       cc-logs-poc {
-        border: 1px solid #ccc;
-        flex: 1;
-        min-height: 0;
         overflow: auto;
+        min-height: 0;
+        flex: 1;
         padding: 0.3em;
+        border: 1px solid #ccc;
       }
       
       
       .instance {
-        background-color: var(--cc-color-bg-default);
-        border: 1px solid #888;
-        border-radius: var(--cc-button-border-radius, 0.15em);
-        box-sizing: border-box;
-        cursor: pointer;
         display: flex;
+        box-sizing: border-box;
         flex-direction: column;
+        justify-content: stretch;
+        padding: 0.3em;
+        border: 1px solid #888;
+        margin: 0;
+        background-color: var(--cc-color-bg-default);
+        border-radius: var(--cc-button-border-radius, 0.15em);
+        cursor: pointer;
         font-family: inherit;
         font-size: unset;
         gap: 0.3em;
-        justify-content: stretch;
-        margin: 0;
-        padding: 0.3em;
         text-align: unset;
       }
 
@@ -231,8 +231,8 @@ export class CcLogsSimple extends LitElement {
       }
       
       .instance-description {
-        align-items: center;
         display: flex;
+        align-items: center;
         gap: 0.3em;
       }
       
@@ -243,24 +243,19 @@ export class CcLogsSimple extends LitElement {
       .instance-state {
         height: 1em;
       }
-      .instance-index {
-        
-      }
+
       .instance-name {
         flex: 1;
         justify-self: left;
       }
       
       .instance-deployment {
+        display: flex;
         align-items: center;
         color: var(--cc-color-text-weak);
-        display: flex;
         gap: 0.3em;
       }
       
-      .instance-commit {
-        
-      }
       .instance-date {
         justify-self: end;
       }
@@ -275,22 +270,23 @@ export class CcLogsSimple extends LitElement {
       }
       
       .log .timestamp {
-        color: #777;
         margin-right: 0.3em;
+        color: #777;
         -webkit-user-select: none;
         user-select: none;
       }
       
       .cursor::after {
+        display: inline-block;
+        width: 8px;
+        height: 20px;
         animation: cursor-blink 1.5s steps(2) infinite;
         background: #777;
-        content: "";
-        display: inline-block;
-        height: 20px;
-        width: 8px;
+        content: '';
       }
 
       @keyframes cursor-blink {
+
         0% {
           opacity: 0;
         }

@@ -149,16 +149,17 @@ export class CcLogsPoc extends LitElement {
         }
         
         #logs {
-          flex: 1;
           display: block;
+          overflow: auto;
+          flex: 1;
           font-family: var(--cc-ff-monospace, monospace);
           font-size: 0.9em;
-          overflow: auto;
         }
 
         cc-log-poc {
           white-space: nowrap;
         }
+
         cc-log-poc:not(:last-child) {
           padding-bottom: 0.25em;
         }
@@ -168,15 +169,16 @@ export class CcLogsPoc extends LitElement {
         }
         
         .cursor::after {
+          display: inline-block;
+          width: 8px;
+          height: 20px;
           animation: cursor-blink 1.5s steps(2) infinite;
           background: #777;
-          content: "";
-          display: inline-block;
-          height: 20px;
-          width: 8px;
+          content: '';
         }
 
         @keyframes cursor-blink {
+
           0% {
             opacity: 0;
           }

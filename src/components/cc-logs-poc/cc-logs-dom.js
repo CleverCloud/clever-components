@@ -87,15 +87,15 @@ export class CcLogsDom extends LitElement {
         }
 
         #logs {
-          align-items: stretch;
           display: flex;
+          overflow: auto;
           flex: 1;
           flex-direction: column;
           flex-wrap: nowrap;
+          align-items: stretch;
           font-family: var(--cc-ff-monospace, monospace);
           font-size: 0.9em;
           gap: 0.15em;
-          overflow: auto;
         }
 
         cc-log {

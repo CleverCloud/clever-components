@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>logs :: deployments :: POC</title>
+  <link rel="stylesheet" href="/src/styles/default-theme.css">
+  <style>
+    html {
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    }
+
+    .ctrl {
+      padding: 0.2em;
+      border-bottom: 1px solid #ccc;
+      display: flex;
+      gap: 2em;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 2em;
+    }
+
+    cc-logs-poc {
+      padding: 0.2em;
+      margin: 2em;
+    }
+
+  </style>
+  <script src="multi.js" type="module"></script>
+</head>
+<body>
+
+<div class="ctrl">
+  <cc-select inline="true" label="Scenarios"></cc-select>
+  <cc-input-number inline="true" label="Instances count" value="2"></cc-input-number>
+  <label for="dedicatedBuildInstance">
+    <input id="dedicatedBuildInstance" type="checkbox">
+    Dedicated build instance
+  </label>
+  <cc-button data-action="start">⏯ start</cc-button>
+
+</div>
+
+<cc-logs-deployment-multi></cc-logs-deployment-multi>
+
+</body>
+</html>

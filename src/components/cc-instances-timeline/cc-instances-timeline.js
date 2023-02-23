@@ -579,10 +579,10 @@ export class CcInstancesTimeline extends withResizeObserver(LitElement) {
       css`
         :host {
           display: block;
+          color: var(--cc-color-text-default);
           -webkit-user-select: none; /* Safari */
           -ms-user-select: none; /* IE 10 and IE 11 */
           user-select: none; /* Standard syntax */
-          color: var(--cc-color-text-default);
         }
         
         .main {
@@ -592,41 +592,44 @@ export class CcInstancesTimeline extends withResizeObserver(LitElement) {
         
         .background {
           position: absolute;
-          color: transparent;
           z-index: 5;
+          color: transparent;
         }
+
         .dragging {
           cursor: col-resize;
         }
 
         .instance {
-          display: flex;
-          align-items: center;
-          gap: 0.3em;
           position: absolute;
-          background-color: #ccc;
-          border: 1px solid #aaa;
-          font-size: 1em;
-          padding: 0.2em;
-          border-radius: 3px;
           z-index: 2;
-          flex-wrap: nowrap;
-          white-space: nowrap;
+          display: flex;
           overflow: clip;
-          /*cursor: pointer;*/
-          /*transition: left 0.15s linear;*/
+          flex-wrap: nowrap;
+          align-items: center;
+          padding: 0.2em;
+          border: 1px solid #aaa;
+          background-color: #ccc;
+          border-radius: 3px;
+          font-size: 1em;
+          gap: 0.3em;
+          white-space: nowrap;
+          /* cursor: pointer; */
+          /* transition: left 0.15s linear; */
         }
+
         .instance.up {
-          border-top-right-radius: 0;
-          border-bottom-right-radius: 0;
-          border-right: 0;
           border-color: var(--cc-color-border-success-weak);
+          border-right: 0;
           background-color: var(--cc-color-bg-success-weaker);
+          border-bottom-right-radius: 0;
+          border-top-right-radius: 0;
         }
+
         .instance.deleted {
           border-color: var(--cc-color-bg-soft);
           background-color: var(--cc-color-bg-neutral);
-          color: var(--cc-color-text-weak)
+          color: var(--cc-color-text-weak);
         }
 
         .measure {
@@ -634,17 +637,17 @@ export class CcInstancesTimeline extends withResizeObserver(LitElement) {
         }
 
         .axis {
-          width: calc(100% - 2px);
           position: absolute;
-          display: flex;
-          border-top: 2px solid #aaa;
           left: 1px;
+          display: flex;
+          width: calc(100% - 2px);
           padding-top: 0.2em;
+          border-top: 2px solid #aaa;
         }
 
         .axis-unit {
-          font-size: 0.9em;
           margin-top: 1.2em;
+          font-size: 0.9em;
         }
 
         .spacer {
@@ -652,91 +655,90 @@ export class CcInstancesTimeline extends withResizeObserver(LitElement) {
         }
 
         .cursor {
-          width: 0;
-          border-right: 1px dashed #000;
           position: absolute;
           z-index: 3;
+          width: 0;
+          border-right: 1px dashed #000;
         }
         
         .selection {
-          opacity: 0.5;
-          background-color: #eee;
           position: absolute;
           z-index: 3;
+          background-color: #eee;
+          opacity: 0.5;
         }
         
         .date {
-          font-size: 0.9em;
-          background-color: #eee;
-          
-          border-radius: 3px;
-          padding: 2px;
           display: flex;
           align-items: center;
           justify-content: center;
+          padding: 2px;
           border-bottom: 1px solid #000;
+          background-color: #eee;
+          border-radius: 3px;
+          font-size: 0.9em;
         }
         
         .tick {
+          position: absolute;
           width: 1px;
           background-color: var(--cc-color-bg-soft);
-          position: absolute;
-          /*transition: left 0.15s linear;*/
+          /* transition: left 0.15s linear; */
         }
         
         .tick-date {
-          font-size: 0.9em;
-          color: var(--cc-color-text-weak);
           position: absolute;
           display: flex;
+          color: var(--cc-color-text-weak);
+          font-size: 0.9em;
         }
         
         .deployment-bound {
-          width: 1px;
-          border-right: 1px solid var(--cc-color-bg-primary);
           position: absolute;
           z-index: 3;
-          /*transition: left 0.15s linear;*/
+          width: 1px;
+          border-right: 1px solid var(--cc-color-bg-primary);
+          /* transition: left 0.15s linear; */
         }
         
         .deployment-label {
           position: absolute;
           z-index: 2;
-          background-color: white;
-          border: 1px solid var(--cc-color-bg-primary);
-          border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
           padding: 2px;
-          /*transition: left 0.15s linear;*/
+          border: 1px solid var(--cc-color-bg-primary);
+          background-color: white;
+          border-radius: 50%;
+          /* transition: left 0.15s linear; */
         }
         
         .bucket {
-          background-color: var(--cc-color-bg-primary-weaker);
-          /*border: 1px solid var(--cc-color-bg-primary);*/
+          /* border: 1px solid var(--cc-color-bg-primary); */
           position: absolute;
           display: flex;
           align-items: center;
+          
+          /* transition: left 0.15s linear; */
+          justify-content: center;
+          background-color: var(--cc-color-bg-primary-weaker);
           color: var(--cc-color-text-primary);
           font-size: 0.8em;
-          
-          /*transition: left 0.15s linear;*/
-          justify-content: center;
         }
 
         cc-icon {
           min-width: 1em;
-          min-height: 1em;
           max-width: 1em;
+          min-height: 1em;
           max-height: 1em;
         }
         
         cc-loader {
-          min-width: 1em;
-          min-height: 1em;
           width: 1em;
+          min-width: 1em;
           height: 1em;
+          min-height: 1em;
         }
       `,
     ];

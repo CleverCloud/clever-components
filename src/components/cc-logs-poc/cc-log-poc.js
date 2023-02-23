@@ -83,17 +83,13 @@ export class CcLogPoc extends LitElement {
           cursor: pointer;
         }
         
-        .message {
-          
-        }
-        
         cc-badge {
           margin-left: 0.3em;
         }
         
         .timestamp {
-          color: #777;
           margin-right: 0.3em;
+          color: #777;
           -webkit-user-select: none;
           user-select: none;
         }

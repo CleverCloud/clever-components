@@ -457,28 +457,28 @@ export class CcLogsAdvanced extends LitElement {
         }
 
         h1 {
-          margin: 0;
           padding: 0;
-          font-size: 1.2em;
+          margin: 0;
           color: var(--cc-color-text-primary);
+          font-size: 1.2em;
         }
 
         .left {
           display: flex;
-          flex-direction: column;
-          min-height: 0;
-          gap: 0.5em;
           width: 22em;
+          min-height: 0;
+          flex-direction: column;
+          gap: 0.5em;
         }
 
         /* region filters */
 
         .filters {
-          border: 1px solid #aaa;
-          border-radius: 3px;
-          padding: 0.3em;
           display: flex;
           flex-direction: column;
+          padding: 0.3em;
+          border: 1px solid #aaa;
+          border-radius: 3px;
           gap: 0.5em;
         }
 
@@ -490,14 +490,13 @@ export class CcLogsAdvanced extends LitElement {
 
         /* endregion */
 
-
         .filter-ctrl {
-          flex: 1;
           overflow: auto;
           min-height: 0;
+          flex: 1;
+          padding: 0.3em;
           border: 1px solid #aaa;
           border-radius: 3px;
-          padding: 0.3em;
         }
 
         .deployment-filters {
@@ -506,16 +505,15 @@ export class CcLogsAdvanced extends LitElement {
 
         .filter-ctrl--level-0 {
           display: flex;
-          padding: 0.7em;
           flex-direction: column;
+          padding: 0.7em;
         }
 
         .deployment-filter {
           display: grid;
-          grid-template-columns: min-content max-content 1fr max-content;
-
           align-items: center;
           grid-gap: 0.2em;
+          grid-template-columns: min-content max-content 1fr max-content;
         }
 
         .instance-filters {
@@ -525,32 +523,29 @@ export class CcLogsAdvanced extends LitElement {
 
         .instance-filter {
           display: grid;
-          grid-template-columns: min-content max-content 1fr max-content;
           align-items: center;
-          grid-gap: 0.2em;
-
           color: var(--cc-color-text-default);
+          grid-gap: 0.2em;
+          grid-template-columns: min-content max-content 1fr max-content;
         }
 
         .meta-value-filters {
           display: flex;
-
         }
 
         .meta-value-filter {
           display: grid;
-          grid-template-columns: min-content 1fr max-content;
           color: var(--cc-color-text-default);
+          grid-template-columns: min-content 1fr max-content;
         }
-
 
         .counter {
           justify-self: end;
         }
         
         span.counter {
-          font-style: italic;
           color: var(--cc-color-text-weak);
+          font-style: italic;
         }
         
         cc-badge.counter {
@@ -559,31 +554,29 @@ export class CcLogsAdvanced extends LitElement {
         }
 
         cc-loader {
-          height: 1em;
           width: 1em;
+          height: 1em;
         }
 
-
-        /*region right*/
+        /* region right */
 
         .right {
-          flex: 1;
           display: grid;
+          flex: 1;
+          grid-gap: 0.5em;
           grid-template-columns: 1fr min-content;
           grid-template-rows: min-content 1fr;
-
-          grid-gap: 0.5em;
         }
 
         cc-logs-poc {
-          border: 1px solid #aaa;
-          border-radius: 3px;
           flex: 1;
           padding: 0.5em;
+          border: 1px solid #aaa;
+          border-radius: 3px;
           grid-column: 1 / span 2;
         }
 
-        /*endregion*/
+        /* endregion */
 
       `];
   }

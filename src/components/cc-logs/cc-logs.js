@@ -1,6 +1,7 @@
 import '../cc-badge/cc-badge.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
+import '@lit-labs/virtualizer';
 import { virtualize } from '@lit-labs/virtualizer/virtualize.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
@@ -315,28 +316,24 @@ export class CcLogsComponent extends LitElement {
     const onUnpinned = this.follow ? this._onUnpinned : null;
 
     return html`
-      <div id="logs" ${ref(__refName)} @scroll=${onScroll} @wheel=${onWheel} @unpinned=${onUnpinned}>
-        ${
-          virtualize({
-            scroller: true,
-            items: logs,
-            keyFunction: (it) => it.id ?? it.timestamp,
-            renderItem: (item, index) => {
-              return this._renderLog(
-                item,
-                this.wrapLines,
-                this._timestampFormatter,
-                this.metadataRenderers,
-                this.messageRenderer,
-                index === lastLogIndex,
-              );
-            },
-            layout: {
-              pin,
-            },
-          })
-        }
-      </div>
+      <lit-virtualizer 
+        id="logs" ${ref(__refName)} @scroll=${onScroll} @wheel=${onWheel} @unpinned=${onUnpinned}
+        .items=${logs}
+        .keyFunction=${(it) => it.id ?? it.timestamp}               
+        .renderItem=${(item, index) => {
+          return this._renderLog(
+            item,
+            this.wrapLines,
+            this._timestampFormatter,
+            this.metadataRenderers,
+            this.messageRenderer,
+            index === lastLogIndex,
+          );
+        }}
+        ?scroller=${true}
+        .layout=${{ pin }}
+      >
+      </lit-virtualizer>
     `;
   }
 
@@ -425,14 +422,14 @@ export class CcLogsComponent extends LitElement {
         }
 
         #logs {
+          overflow: auto;
           font-family: var(--cc-ff-monospace, monospace);
           font-size: 0.8em;
-          overflow: auto;
         }
 
         .log {
-          white-space: nowrap;
           line-height: 1.7em;
+          white-space: nowrap;
         }
 
         .log.wrap {
