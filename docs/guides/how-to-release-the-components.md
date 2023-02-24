@@ -22,7 +22,15 @@ For instance, a branch named `hotfix/9.0.x` will have a dedicated release PR mai
 
 ## Publishing phase
 
-Publishing the release is not done automatically.
+Clever components are published on two systems:
+
+* Package on npmjs.com
+* CDN on Clever Cloud
+
+Both publications are done automatically by a dedicated GitHub action.
+But you still can perform them manually.
+
+### Publish Package on npmjs.com
 
 You must get the fresh released code:
 
@@ -30,14 +38,51 @@ You must get the fresh released code:
 VERSION=${version} && git fetch --tags origin "$VERSION" && git checkout "$VERSION" && git reset --hard "$VERSION"
 ```
 
+Then you must install dependencies:
+
+```sh
+npm ci
+```
+
 Publishing on npmjs.com (stable):
 
 ```sh
-npm publish  --access public
+npm publish --access public
 ```
 
 Publishing on npmjs.com (beta):
 
 ```sh
-npm publish  --access public --tag beta
+npm publish --access public --tag beta
+```
+
+### Publish CDN on Clever Cloud
+
+CDN is hosted on Clever Cloud in a dedicated Cellar bucket.
+Publishing to Cellar requires two secrets:
+* SMART_CDN_CELLAR_KEY_ID
+* SMART_CDN_CELLAR_SECRET_KEY
+
+You must get the fresh released code:
+
+```sh
+VERSION=${version} && git fetch --tags origin "$VERSION" && git checkout "$VERSION" && git reset --hard "$VERSION"
+```
+
+Then you must install dependencies:
+
+```sh
+npm ci
+```
+
+Then you must build the CDN with:
+
+```sh
+GIT_TAG_NAME=${version} && npm run components:build-cdn && npm run components:build-cdn:versions-list
+```
+
+Publication is done with:
+
+```sh
+GIT_TAG_NAME=${version} && SMART_CDN_CELLAR_KEY_ID=${***} && SMART_CDN_CELLAR_SECRET_KEY=${***} && npm run components:publish-cdn
 ```
