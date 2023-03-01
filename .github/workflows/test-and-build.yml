@@ -12,30 +12,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: volta-cli/action@v4
-
-      - name: Install dependencies
+      - name: '[Prepare] Checkout'
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: '[Prepare] Setup Node.js'
+        uses: volta-cli/action@v4
+      - name: '[Prepare] Install dependencies'
         run: npm ci
 
-      - name: Run tests
-        run: npm run test
-      - name: Check lint
-        run: npm run lint && npm run components:check-lit
-      - name: Check i18n
-        run: npm run components:check-i18n
-      - name: Check stylelint
-        run: npm run stylelint:ci
-      - name: Check types
+      - name: '[Code quality] Check ESLint'
+        run: npm run lint
+      - name: '[Code quality] Check Lit'
+        run: npm run components:check-lit
+      - name: '[Code quality] Check types'
         run: npm run typecheck
-      - name: Check types imports
+      - name: '[Code quality] Check types imports'
         run: npm run components:check-type-imports
-      - name: Custom element manifest tests
+      - name: '[Code quality] Check Stylelint'
+        run: npm run stylelint:ci
+      - name: '[Code quality] Check i18n'
+        run: npm run components:check-i18n
+
+      - name: '[Unit tests] Clever components'
+        run: npm run test
+      - name: '[Unit tests] Custom element manifest generation'
         run: npm run test:cem
 
-      - name: Build components
+      - name: '[Build] Clever components'
         run: npm run components:build
-      - name: Build documentation
+      - name: '[Build] Documentation'
         run: npm run components:docs
-      - name: Build CDN
+      - name: '[Build] CDN'
         run: GIT_TAG_NAME=fake npm run components:build-cdn
