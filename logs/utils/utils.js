@@ -129,3 +129,46 @@ export function groupBy (array, keyFn) {
   }
   return result;
 }
+
+export function last (array) {
+  if (array == null) {
+    return null;
+  }
+
+  if (array.length === 0) {
+    return null;
+  }
+
+  return array[array.length - 1];
+}
+
+/**
+ *
+ * @param {Array<T>} nodes
+ * @param {(T) => boolean} predicate
+ * @param {(T) => Array<T>} childrenFn
+ * @return {null|T}
+ * @template T
+ */
+export function treeFind (nodes, predicate, childrenFn = (n) => n.children) {
+  let result = null;
+  treeWalk(nodes, (node) => {
+    if (predicate(node)) {
+      result = node;
+      return false;
+    }
+  }, childrenFn);
+  return result;
+}
+
+export function treeWalk (nodes, fn, childrenFn = (n) => n.children) {
+  for (const node of nodes) {
+    if (fn(node) === false) {
+      return;
+    }
+    const children = childrenFn(node);
+    if (children?.length > 0) {
+      treeWalk(children, fn, childrenFn);
+    }
+  }
+}

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>logs :: deployments :: POC</title>
+  <title>logs :: deployments :: Event based</title>
   <link rel="stylesheet" href="/src/styles/default-theme.css">
   <style>
     html {
@@ -19,13 +19,13 @@
       align-items: center;
     }
 
-    cc-logs-deployment {
+    cc-logs-deployment-event-based {
       padding: 0.2em;
       margin: 2em;
     }
 
   </style>
-  <script src="index.js" type="module"></script>
+  <script src="event-based.js" type="module"></script>
 </head>
 <body>
 
@@ -35,7 +35,7 @@
   <cc-button data-action="stop">⏹ stop</cc-button>
 </div>
 
-<cc-logs-deployment></cc-logs-deployment>
+<cc-logs-deployment-event-based></cc-logs-deployment-event-based>
 
 </body>
 </html>
