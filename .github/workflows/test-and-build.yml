@@ -26,6 +26,12 @@ jobs:
         run: npm run components:check-i18n
       - name: Check stylelint
         run: npm run stylelint:ci
+      - name: Check types
+        run: npm run typecheck
+      - name: Check types imports
+        run: npm run components:check-type-imports
+      - name: Custom element manifest tests
+        run: npm run test:cem
 
       - name: Build components
         run: npm run components:build
