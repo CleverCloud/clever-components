@@ -73,7 +73,7 @@
 
   /* Usage: Very contrasted text but not black and not default text color.
   For instance: headings. */
-  --cc-color-text-strong: var(--color-blue-100);
+  --cc-color-text-primary-strongest: var(--color-blue-100);
 
   /* Usage: bold text that needs to stand out from normal / light variants.
   For instance: text inside <strong> tags. */

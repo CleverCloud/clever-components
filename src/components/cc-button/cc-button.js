@@ -327,7 +327,7 @@ export class CcButton extends LitElement {
         /* COLORS */
 
         .simple {
-          --btn-color: var(--cc-color-text-strong);
+          --btn-color: var(--cc-color-text-primary-strongest);
         }
 
         .primary {
