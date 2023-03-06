@@ -1,12 +1,14 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import {
+  iconRemixAddLine as iconIncrement,
+  iconRemixSubtractLine as iconDecrement,
+} from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
-
-const incrementSvg = new URL('../../assets/increment.svg', import.meta.url).href;
-const decrementSvg = new URL('../../assets/decrement.svg', import.meta.url).href;
+import '../cc-icon/cc-icon.js';
 
 /**
  * A custom number input with controls mode.
@@ -23,6 +25,7 @@ const decrementSvg = new URL('../../assets/decrement.svg', import.meta.url).href
  * @event {CustomEvent} cc-input-number:requestimplicitsubmit - Fires when enter key is pressed.
  *
  * @cssprop {Align} --cc-input-number-align - Change the alignment of the number present in the input (defaults: `right`).
+ * @cssprop {Color} --cc-input-btn-icon-color - The color for the icon within the +/- buttons (defaults: `#595959`).
  * @cssprop {FontFamily} --cc-input-font-family - The font-family for the input content (defaults: `inherit`).
  *
  * @slot error - The error message to be displayed below the `<input>` element or below the help text. Please use a `<p>` tag.
@@ -185,7 +188,7 @@ export class CcInputNumber extends LitElement {
       <div class="meta-input">
         ${controls ? html`
           <button class="btn" @click=${this._onDecrement} ?disabled=${this.disabled || this.readonly || minDisabled}>
-            <img class="btn-img" src=${decrementSvg} alt="${i18n('cc-input-number.decrease')}">
+            <cc-icon class="btn-img" .icon=${iconDecrement} accessible-name="${i18n('cc-input-number.decrease')}" size="lg"></cc-icon>
           </button>
         ` : ''}
         <div class="wrapper ${classMap({ skeleton: this.skeleton })}">
@@ -212,7 +215,7 @@ export class CcInputNumber extends LitElement {
         </div>
         ${controls ? html`
           <button class="btn" @click=${this._onIncrement} ?disabled=${this.disabled || this.readonly || maxDisabled}>
-            <img class="btn-img" src=${incrementSvg} alt="${i18n('cc-input-number.increase')}">
+            <cc-icon class="btn-img" .icon=${iconIncrement} accessible-name="${i18n('cc-input-number.increase')}" size="lg"></cc-icon>
           </button>
         ` : ''}
       </div>
@@ -493,17 +496,14 @@ export class CcInputNumber extends LitElement {
         }
 
         .btn-img {
-          width: 100%;
-          height: 100%;
+          --cc-icon-color: var(--cc-input-btn-icons-color, #595959);
+          
           box-sizing: border-box;
           padding: 15%;
-          filter: grayscale(100%);
-          opacity: 0.6;
         }
 
         .btn-img:hover {
-          filter: grayscale(0%);
-          opacity: 1;
+          --cc-icon-color: var(--cc-color-text-primary);
         }
       `,
     ];
