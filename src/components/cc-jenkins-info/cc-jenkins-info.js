@@ -1,14 +1,14 @@
+import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
 import '../cc-error/cc-error.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
-
-const infoSvg = new URL('../../assets/info.svg', import.meta.url).href;
 
 const JENKINS_LOGO_URL = 'https://assets.clever-cloud.com/logos/jenkins.svg';
 const JENKINS_DOCUMENTATION = 'https://www.clever-cloud.com/doc/deploy/addon/jenkins/';
@@ -74,7 +74,7 @@ export class CcJenkinsInfo extends LitElement {
             <div slot="info">${i18n('cc-jenkins-info.documentation.text')}</div>
             <div class="one-line-form">
               ${ccLink(JENKINS_DOCUMENTATION, html`
-                <cc-img src="${infoSvg}"></cc-img><span>${i18n('cc-jenkins-info.documentation.link')}</span>
+                <cc-icon size="lg" .icon=${iconInfo}></cc-icon><span>${i18n('cc-jenkins-info.documentation.link')}</span>
               `)}
             </div>
           </cc-block-section>
@@ -84,7 +84,7 @@ export class CcJenkinsInfo extends LitElement {
             <div slot="info">${i18n('cc-jenkins-info.update.text')}</div>
             <div class="one-line-form">
               ${ccLink(this.jenkinsManageLink, html`
-                <cc-img src="${infoSvg}"></cc-img>
+                <cc-icon size="lg" .icon=${iconInfo}></cc-icon>
                 <span class="${classMap({ skeleton: (this.versions == null) })}">
                   ${hasNewVersion ? i18n('cc-jenkins-info.update.new-version', { version: versions.available }) : i18n('cc-jenkins-info.update.up-to-date')}
                 </span>
@@ -124,6 +124,11 @@ export class CcJenkinsInfo extends LitElement {
           flex: 0 0 auto;
           margin-right: 0.5em;
           border-radius: var(--cc-border-radius-default, 0.25em);
+        }
+
+        cc-icon {
+          flex: 0 0 auto;
+          margin-right: 0.5em;
         }
 
         /* SKELETON */
