@@ -2,13 +2,13 @@ import { css, html, LitElement } from 'lit';
 import '../cc-block/cc-block.js';
 import '../cc-error/cc-error.js';
 import '../cc-html-frame/cc-html-frame.js';
+import '../cc-icon/cc-icon.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { iconRemixFileTextLine as iconFile } from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
-
-const fileSvg = new URL('../../assets/file.svg', import.meta.url).href;
 
 /** @type {Invoice} */
 const SKELETON_INVOICE = {
@@ -61,7 +61,7 @@ export class CcInvoice extends LitElement {
     const amount = invoice.total.amount;
 
     return html`
-      <cc-block image=${fileSvg} class=${classMap({ 'has-errors': this.error })}>
+      <cc-block .icon=${iconFile} class=${classMap({ 'has-errors': this.error })}>
         <div slot="title">${i18n('cc-invoice.title')} ${number}</div>
         ${!this.error ? html`
           <div slot="button">${ccLink(invoice.downloadUrl, i18n('cc-invoice.download-pdf'), skeleton)}</div>
@@ -92,6 +92,10 @@ export class CcInvoice extends LitElement {
         [slot='button'] {
           align-self: start;
           margin-left: 1em;
+        }
+
+        cc-block {
+          --cc-icon-color: var(--cc-color-text-primary);
         }
 
         .has-errors {
