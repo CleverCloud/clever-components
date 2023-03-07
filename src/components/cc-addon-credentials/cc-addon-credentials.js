@@ -90,7 +90,7 @@ export class CcAddonCredentials extends LitElement {
 
   render () {
     return html`
-      <cc-block icon=${ifDefined(this.icon ?? undefined)} state=${this.toggleState}>
+      <cc-block image=${ifDefined(this.icon ?? undefined)} state=${this.toggleState}>
         <div slot="title">${i18n('cc-addon-credentials.title', { name: this.name })}</div>
 
         ${!this.error ? html`

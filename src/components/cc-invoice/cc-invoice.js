@@ -61,7 +61,7 @@ export class CcInvoice extends LitElement {
     const amount = invoice.total.amount;
 
     return html`
-      <cc-block icon=${fileSvg} class=${classMap({ 'has-errors': this.error })}>
+      <cc-block image=${fileSvg} class=${classMap({ 'has-errors': this.error })}>
         <div slot="title">${i18n('cc-invoice.title')} ${number}</div>
         ${!this.error ? html`
           <div slot="button">${ccLink(invoice.downloadUrl, i18n('cc-invoice.download-pdf'), skeleton)}</div>

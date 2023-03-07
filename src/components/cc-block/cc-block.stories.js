@@ -2,6 +2,7 @@ import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-loader/cc-loader.js';
 import './cc-block.js';
+import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
@@ -52,9 +53,27 @@ export const overlayWithErrorAlert = makeStory(conf, {
   }],
 });
 
+export const image = makeStory(conf, {
+  items: [{
+    image: 'https://assets.clever-cloud.com/logos/nodejs.svg',
+    innerHTML: htmlExample,
+  }],
+});
+
 export const icon = makeStory(conf, {
   items: [{
-    icon: 'https://assets.clever-cloud.com/logos/nodejs.svg',
+    icon: iconInfo,
+    innerHTML: htmlExample,
+  }],
+});
+
+export const imageAndIcon = makeStory(conf, {
+  docs: `
+If you set both \`image\` and \`icon\` properties, the \`image\` property will be ignored:
+  `,
+  items: [{
+    image: 'https://assets.clever-cloud.com/logos/nodejs.svg',
+    icon: iconInfo,
     innerHTML: htmlExample,
   }],
 });
@@ -139,9 +158,17 @@ export const stateWithOverflow = makeStory(conf, {
   }],
 });
 
+export const imageAndOpen = makeStory(conf, {
+  items: [{
+    image: 'https://assets.clever-cloud.com/logos/nodejs.svg',
+    innerHTML: htmlExample,
+    state: 'open',
+  }],
+});
+
 export const iconAndOpen = makeStory(conf, {
   items: [{
-    icon: 'https://assets.clever-cloud.com/logos/nodejs.svg',
+    icon: iconInfo,
     innerHTML: htmlExample,
     state: 'open',
   }],
@@ -151,7 +178,9 @@ enhanceStoriesNames({
   defaultStory,
   overlayWithLoader,
   overlayWithErrorAlert,
+  image,
   icon,
+  imageAndIcon,
   button,
   noHead,
   ribbon,
@@ -160,5 +189,6 @@ enhanceStoriesNames({
   stateWithOpen,
   stateWithClose,
   stateWithOverflow,
+  imageAndOpen,
   iconAndOpen,
 });
