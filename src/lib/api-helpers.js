@@ -101,6 +101,7 @@ export function getGrafanaOrganisation (params) {
     headers: { Accept: 'application/json' },
   });
 }
+
 /**
  * POST /v4/saas/grafana/{id}
  * @param {Object} params
@@ -113,6 +114,7 @@ export function createGrafanaOrganisation (params) {
     headers: { Accept: 'application/json' },
   });
 }
+
 /**
  * DELETE /v4/saas/grafana/{id}
  * @param {Object} params
@@ -125,6 +127,7 @@ export function deleteGrafanaOrganisation (params) {
     headers: { Accept: 'application/json' },
   });
 }
+
 /**
  * POST /v4/saas/grafana/{id}/reset
  * @param {Object} params
@@ -141,4 +144,14 @@ export function resetGrafanaOrganisation (params) {
 export async function fetchAllZones ({ signal }) {
   return getAllZones()
     .then(sendToApi({ signal, cacheDelay: ONE_DAY }));
+}
+
+// TODO: move this to clever client
+export function getAppMetrics (params) {
+  return Promise.resolve({
+    method: 'get',
+    // TODO: Handle query params properly. (https://github.com/CleverCloud/clever-client.js/issues/76)
+    url: `/v4/stats/organisations/${params.id}/resources/${params.appId}/metrics?interval=P1D&span=PT1H&only=cpu&only=mem`,
+    headers: { Accept: 'application/json' },
+  });
 }

@@ -6,6 +6,7 @@
     tool used for grey shades: https://mdigi.tools/color-shades/#333333 (10 or 11 steps)
   */
   --color-blue-100: #012a51;
+  --color-blue-80: #002c9d;
   --color-blue-70: #0061bd;
   --color-blue-60: #3569aa;
   --color-blue-30: #cedcff;
@@ -70,6 +71,10 @@
   /* Usage: information that need to stand out a little bit more than the rest of the text.
   For instance: links. */
   --cc-color-text-primary-highlight: var(--color-blue-70);
+
+  /* Usage: More contrasted text than primary.
+  For instance: percentage chart value. */
+  --cc-color-text-primary-strong: var(--color-blue-80);
 
   /* Usage: Very contrasted text but not black and not default text color.
   For instance: headings. */
