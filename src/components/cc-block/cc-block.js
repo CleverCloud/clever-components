@@ -4,10 +4,11 @@ import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import {
+  iconRemixArrowDownSFill as iconDown,
+  iconRemixArrowUpSFill as iconUp,
+} from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../lib/i18n.js';
-
-const downSvg = new URL('../../assets/down.svg', import.meta.url).href;
-const upSvg = new URL('../../assets/up.svg', import.meta.url).href;
 
 /**
  * @typedef {import('../common.types.js').IconModel} IconModel
@@ -96,7 +97,8 @@ export class CcBlock extends LitElement {
           <slot name="title"></slot>
           ${isToggleEnabled ? html`
             <cc-button
-              image=${isOpen ? upSvg : downSvg}
+              class="toggle_button"
+              .icon=${isOpen ? iconUp : iconDown}
               hide-text
               outlined
               primary
@@ -147,6 +149,7 @@ export class CcBlock extends LitElement {
           display: flex;
           align-items: center;
           padding: 1em;
+          color: var(--cc-color-text-primary-strongest);
         }
 
         :host([ribbon]) .head {
@@ -171,10 +174,13 @@ export class CcBlock extends LitElement {
           align-self: flex-start;
           margin-right: 1em;
         }
+        
+        .toggle_button {
+          --cc-icon-size: 1.5em;
+        }
 
         ::slotted([slot='title']) {
           flex: 1 1 0;
-          color: var(--cc-color-text-primary-strongest);
           font-size: 1.2em;
           font-weight: bold;
         }
