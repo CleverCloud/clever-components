@@ -15,6 +15,7 @@ module.exports = {
     // custom rules
     'i18n-always-arrow-with-sanitize': ['error'],
     'i18n-always-sanitize-with-html': ['error'],
+    'i18n-always-template-literal-sanitize': ['error'],
     'i18n-no-paramless-arrow': ['error'],
     'i18n-no-sanitize-without-html': ['error'],
     'i18n-order': ['error'],

@@ -219,7 +219,7 @@ export const translations = {
   'cc-datetime-relative.title': ({ date }) => formatDate(lang, date),
   //#endregion
   //#region cc-doc-card
-  'cc-doc-card.link': ({ link, product }) => sanitize(`<a href=${link} aria-label="Lire la documentation - ${product}">Lire la documentation</a>`),
+  'cc-doc-card.link': ({ link, product }) => sanitize`<a href=${link} aria-label="Lire la documentation - ${product}">Lire la documentation</a>`,
   'cc-doc-card.skeleton-link-title': `Lire la documentation`,
   //#endregion
   //#region cc-doc-list
