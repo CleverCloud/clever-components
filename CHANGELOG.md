@@ -4,6 +4,21 @@ title: Changelog
 ---
 # Clever Components changelog
 
+## [10.4.0](https://github.com/CleverCloud/clever-components/compare/10.3.0...10.4.0) (2023-03-08)
+
+
+### Features
+
+* **cc-link:** add title property ([d5c2d8c](https://github.com/CleverCloud/clever-components/commit/d5c2d8c841382e0affb32116f50c6142483f282b))
+* **cc-tile-metrics:** init component ([73aeb7c](https://github.com/CleverCloud/clever-components/commit/73aeb7c43b83241b24e20ffc5cc1c43d0fc48820)), closes [#240](https://github.com/CleverCloud/clever-components/issues/240)
+
+
+### Bug Fixes
+
+* **cc-ssh-key-list:** creation form mistakenly updated ([26cba28](https://github.com/CleverCloud/clever-components/commit/26cba289d26615dfc3596e12886b75dffcf8e146))
+* **cc-ssh-key-list:** proper form validation when adding a new key in some cases ([ec0c6f1](https://github.com/CleverCloud/clever-components/commit/ec0c6f121667626b20a7a2cf54fb1301c8e2913b))
+* **focus outline:** use contrasted focus outline ([bfd60c1](https://github.com/CleverCloud/clever-components/commit/bfd60c125204ce5fe5448a7ed8598bbb9026de08)), closes [#281](https://github.com/CleverCloud/clever-components/issues/281)
+
 ## [10.3.0](https://github.com/CleverCloud/clever-components/compare/10.2.1...10.3.0) (2023-01-09)
 
 
