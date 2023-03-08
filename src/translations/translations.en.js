@@ -778,6 +778,28 @@ export const translations = {
   'cc-tile-instances.status.running': `Running`,
   'cc-tile-instances.title': `Instances`,
   //#endregion
+  //#region cc-tile-metrics
+  'cc-tile-metrics.a11y.table-header.cpu': `CPU usage over 24h`,
+  'cc-tile-metrics.a11y.table-header.mem': `RAM usage over 24h`,
+  'cc-tile-metrics.a11y.table-header.timestamp': `Timestamp`,
+  'cc-tile-metrics.about-btn': `Show details about this chart`,
+  'cc-tile-metrics.close-btn': `Display chart`,
+  'cc-tile-metrics.docs.more-metrics': `More metrics: `,
+  'cc-tile-metrics.docs.msg': () => sanitize`<p>Server metrics received in the last 24 hours.</p> 
+    <p>Each bar represents a time window of <strong>1 hour</strong>.</p>
+    <p>The percentage shown is the average over the last hour.</p>`,
+  'cc-tile-metrics.empty': `No metrics. Application is stopped.`,
+  'cc-tile-metrics.error': `Something went wrong while loading metrics.`,
+  'cc-tile-metrics.grafana': `Grafana`,
+  'cc-tile-metrics.legend.cpu': `CPU usage over 24h`,
+  'cc-tile-metrics.legend.mem': `RAM usage over 24h`,
+  'cc-tile-metrics.link-to-grafana': `Open Grafana`,
+  'cc-tile-metrics.link-to-metrics': `Open Metrics`,
+  'cc-tile-metrics.metrics-link': `Metrics`,
+  'cc-tile-metrics.percent': ({ percent }) => formatPercent(lang, percent),
+  'cc-tile-metrics.timestamp-format': ({ timestamp }) => formatDate(lang, timestamp),
+  'cc-tile-metrics.title': `Server metrics`,
+  //#endregion
   //#region cc-tile-requests
   'cc-tile-requests.about-btn': `About this chart...`,
   'cc-tile-requests.close-btn': `Display chart`,

@@ -160,7 +160,7 @@ export class CcBlock extends LitElement {
 
         ::slotted([slot='title']) {
           flex: 1 1 0;
-          color: var(--cc-color-text-strong);
+          color: var(--cc-color-text-primary-strongest);
           font-size: 1.2em;
           font-weight: bold;
         }

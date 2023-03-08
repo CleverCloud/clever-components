@@ -791,6 +791,28 @@ export const translations = {
   'cc-tile-instances.status.running': `En ligne`,
   'cc-tile-instances.title': `Instances`,
   //#endregion
+  //#region cc-tile-metrics
+  'cc-tile-metrics.a11y.table-header.cpu': `Utilisation CPU sur 24h`,
+  'cc-tile-metrics.a11y.table-header.mem': `Utilisation RAM sur 24h`,
+  'cc-tile-metrics.a11y.table-header.timestamp': `Timestamp`,
+  'cc-tile-metrics.about-btn': `Afficher plus d'informations à propos de ce graphique`,
+  'cc-tile-metrics.close-btn': `Afficher le graphique`,
+  'cc-tile-metrics.docs.more-metrics': `Plus de métriques : `,
+  'cc-tile-metrics.docs.msg': () => sanitize`<p>Métriques reçues durant les dernières 24 heures.</p>
+    <p>Chaque barre représente une fenêtre de temps de <strong>1 heure</strong>.</p> 
+    <p>Le pourcentage affiché représente une moyenne sur la dernière heure.</p>`,
+  'cc-tile-metrics.empty': `Pas de métriques. L'application est arrêtée.`,
+  'cc-tile-metrics.error': `Une erreur est survenue pendant le chargement des métriques.`,
+  'cc-tile-metrics.grafana': `Grafana`,
+  'cc-tile-metrics.legend.cpu': `Utilisation CPU sur 24h`,
+  'cc-tile-metrics.legend.mem': `Utilisation RAM sur 24h`,
+  'cc-tile-metrics.link-to-grafana': `Ouvrir Grafana`,
+  'cc-tile-metrics.link-to-metrics': `Ouvrir Métriques`,
+  'cc-tile-metrics.metrics-link': `Métriques`,
+  'cc-tile-metrics.percent': ({ percent }) => formatPercent(lang, percent),
+  'cc-tile-metrics.timestamp-format': ({ timestamp }) => formatDate(lang, timestamp),
+  'cc-tile-metrics.title': `Métriques serveur`,
+  //#endregion
   //#region cc-tile-requests
   'cc-tile-requests.about-btn': `À propos de ce graphe...`,
   'cc-tile-requests.close-btn': `Afficher le graphe`,

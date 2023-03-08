@@ -45,7 +45,7 @@
     "typecheck": "tsc -p tsconfig-typecheck-jsdoc.json"
   },
   "dependencies": {
-    "@clevercloud/client": "^7.10.0",
+    "@clevercloud/client": "^7.11.0",
     "@lit-labs/motion": "^1.0.3",
     "@shoelace-style/shoelace": "^2.0.0-beta.47",
     "chart.js": "^3.5.0",
