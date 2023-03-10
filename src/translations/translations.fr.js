@@ -496,6 +496,22 @@ export const translations = {
   'cc-logs.select-button.label': ({ index }) => `Sélectionner la ligne ${index}`,
   'cc-logs.unselect-button.label': ({ index }) => `Désélectionner la ligne ${index}`,
   //#endregion
+  //#region cc-logs-controller
+  'cc-logs-controller.palette': `Thème`,
+  'cc-logs-controller.palette.default': `Thème par défaut`,
+  'cc-logs-controller.scroll-to-bottom': `Défiler vers le bas`,
+  'cc-logs-controller.show-logs-options': `Options`,
+  'cc-logs-controller.timestamp-display': `Format de date`,
+  'cc-logs-controller.timestamp-display.datetime-iso': `Date et heure ISO`,
+  'cc-logs-controller.timestamp-display.datetime-short': `Date et heure`,
+  'cc-logs-controller.timestamp-display.none': `Ne pas afficher`,
+  'cc-logs-controller.timestamp-display.time-iso': `Heure ISO`,
+  'cc-logs-controller.timestamp-display.time-short': `Heure`,
+  'cc-logs-controller.timezone': `Zone`,
+  'cc-logs-controller.timezone.local': `Heure locale`,
+  'cc-logs-controller.timezone.utc': `UTC`,
+  'cc-logs-controller.wrap-lines': `Forcer le retour à la ligne`,
+  //#endregion
   //#region cc-logsmap
   'cc-logsmap.legend.heatmap': ({ orgaName }) => sanitize`Carte de chaleur des requêtes HTTP reçues par les applications de <strong>${orgaName}</strong> durant les dernières 24 heures.`,
   'cc-logsmap.legend.heatmap.app': ({ appName }) => sanitize`Carte de chaleur des requêtes HTTP reçues par l'application <strong>${appName}</strong> durant les dernières 24 heures.`,

@@ -483,6 +483,22 @@ export const translations = {
   'cc-logs.select-button.label': ({ index }) => `Select the line ${index}`,
   'cc-logs.unselect-button.label': ({ index }) => `Unselect the line ${index}`,
   //#endregion
+  //#region cc-logs-controller
+  'cc-logs-controller.palette': `Color scheme`,
+  'cc-logs-controller.palette.default': `Default scheme`,
+  'cc-logs-controller.scroll-to-bottom': `Scroll to bottom`,
+  'cc-logs-controller.show-logs-options': `Options`,
+  'cc-logs-controller.timestamp-display': `Date format`,
+  'cc-logs-controller.timestamp-display.datetime-iso': `Date and hour ISO`,
+  'cc-logs-controller.timestamp-display.datetime-short': `Date and hour`,
+  'cc-logs-controller.timestamp-display.none': `Do not display`,
+  'cc-logs-controller.timestamp-display.time-iso': `Hour ISO`,
+  'cc-logs-controller.timestamp-display.time-short': `Hour`,
+  'cc-logs-controller.timezone': `Time zone`,
+  'cc-logs-controller.timezone.local': `Local`,
+  'cc-logs-controller.timezone.utc': `UTC`,
+  'cc-logs-controller.wrap-lines': `Force lines wrap`,
+  //#endregion
   //#region cc-logsmap
   'cc-logsmap.legend.heatmap': ({ orgaName }) => sanitize`Heatmap of HTTP requests received by all apps from <strong>${orgaName}</strong> during the last 24 hours.`,
   'cc-logsmap.legend.heatmap.app': ({ appName }) => sanitize`Heatmap of HTTP requests received by <strong>${appName}</strong> during the last 24 hours.`,
