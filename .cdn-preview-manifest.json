@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "previews": [
+    {
+      "branch": "cc-pricing-update",
+      "url": "https://clever-components-preview.cellar-c2.services.clever-cloud.com/cc-pricing-update/index.html",
+      "updatedAt": "2023-03-08T17:14:11.395Z",
+      "commitId": "26fd4eb6327760345dfb8990131900c84c0915ca",
+      "author": "Florian Sanders"
+    },
+    {
+      "branch": "add-new-preview-cdn-system",
+      "url": "https://clever-components-preview.cellar-c2.services.clever-cloud.com/add-new-preview-cdn-system/index.html",
+      "updatedAt": "2023-02-09T16:25:59.304Z",
+      "commitId": "245ebd0cd7621224e931851ff4ef37eaf6dbd243",
+      "author": "Hubert SABLONNIÈRE"
+    }
+  ]
+}
