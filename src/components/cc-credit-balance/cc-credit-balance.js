@@ -1,4 +1,5 @@
 import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 
 import '../cc-block/cc-block.js';
 import '../cc-block-section/cc-block-section.js';
@@ -13,12 +14,10 @@ export class CcCreditBalance extends LitElement {
   static get properties () {
     return {
       case: { type: String },
-      extra: { type: String },
-      free: { Type: Object },
-      prepaid: { Type: Object },
-      _free: { type: Object },
-      _prepaid: { type: Object },
-      _total: { type: String },
+      totalFreeCredits: { type: Number, attribute: 'total-free-credits' },
+      totalPrepaidCredits: { type: Number, attribute: 'total-prepaid-credits' },
+      totalConsumption: { type: Number, attribute: 'total-consumption' },
+      layout: { type: String, reflect: true },
     };
   }
 
@@ -27,102 +26,65 @@ export class CcCreditBalance extends LitElement {
 
     this.case = '';
 
-    this.extra = '0';
+    /** @type {number} . */
+    this.totalFreeCredits = 0;
 
-    this.free = {
-      consumed: 0,
-      total: 0,
-    };
+    /** @type {number} . */
+    this.totalPrepaidCredits = 0;
 
-    this.prepaid = {
-      consumed: 0,
-      total: 0,
-    };
-
-    this._free = {
-      consumed: 0,
-      remaining: 0,
-    };
-
-    this._prepaid = {
-      consumed: 0,
-      remaining: 0,
-    };
-
-    this._total = 0;
+    /** @type {number} . */
+    this.totalConsumption = 0;
   }
 
-  update (changedProperties) {
-    this._free.consumed = (this.free.consumed > 0 || this.free.total > 0)
-      ? (this.free.consumed / this.free.total) * 100
-      : 0;
-    this._free.remaining = 100 - this._free.consumed;
-
-    this._prepaid.consumed = (this.prepaid.consumed > 0 || this.prepaid.total > 0)
-      ? (this.prepaid.consumed / this.prepaid.total) * 100
-      : 0;
-    this._prepaid.remaining = 100 - this._prepaid.consumed;
-
-    this._total = this.free.consumed + this.prepaid.consumed + this.extra;
-
-    super.update(changedProperties);
+  _getPercent (rawFigure, max) {
+    return ((rawFigure / max) * 100).toFixed(2) ?? 0;
   }
 
   render () {
+    const totalCredits = this.totalFreeCredits + this.totalPrepaidCredits;
+    const extraConsumption = this.totalConsumption > totalCredits ? this.totalConsumption - totalCredits : 0;
+    const creditsRemaining = this.totalConsumption < totalCredits ? totalCredits - this.totalConsumption : 0;
+    const max = this.totalConsumption + creditsRemaining;
+
+    const totalFreeCreditsPercent = this.totalFreeCredits > 0 ? `${this._getPercent(this.totalFreeCredits, max)}%` : '';
+    const totalPrepaidCreditsPercent = this.totalPrepaidCredits > 0 ? `${this._getPercent(this.totalPrepaidCredits, max)}%` : '';
+    const totalExtraPercent = extraConsumption > 0 ? `${this._getPercent(extraConsumption, max)}%` : '';
+    const totalRemainingPercent = creditsRemaining > 0 ? `${this._getPercent(creditsRemaining, max)}%` : '';
+    const totalConsumptionPercent = this.totalConsumption > 0 ? `${this._getPercent(this.totalConsumption, max)}%` : '';
+
+    const creditsGridTemplateRows = `grid-template-rows: ${totalExtraPercent} ${totalPrepaidCreditsPercent} ${totalFreeCreditsPercent}`;
+    const consumptionGridTemplateRows = `grid-template-rows: ${totalRemainingPercent} ${totalConsumptionPercent}`;
+
     return html`
       <h1>${this.case}</h1>
       <cc-block>
           <div slot="title">Credit balance & Consumption</div>
-          <cc-block-section>
-              <div slot="title">Current Consumption</div>
-              <div slot="info">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab amet architecto aut consequatur, cupiditate debitis dicta doloribus dolorum eius et impedit iusto laudantium minus modi nobis quam quidem sit voluptas.</div>
-            <div class="container">
-              <span class="total">${this._total} €</span>
-              <div class="svg-item free">
-                <svg width="100%" height="100%" viewBox="0 0 40 40" class="donut" style="--consumed: ${this._free.consumed}; --remaining: ${this._free.remaining};">
-                  <circle class="donut-hole" cx="20" cy="20" r="15.91549430918954" fill="#fff"></circle>
-                  <circle class="donut-ring" cx="20" cy="20" r="15.91549430918954" fill="transparent" stroke-width="3.5"></circle>
-                  <circle class="donut-segment donut-segment-2" cx="20" cy="20" r="15.91549430918954" fill="transparent" stroke-width="3.5" stroke-dasharray="${this._free.consumed} ${this._free.remaining}" stroke-dashoffset="25"></circle>
-                  <g class="donut-text donut-text-1">
-
-                    <text y="50%">
-                      <tspan x="50%" text-anchor="middle" class="donut-percent">${this.free.consumed} €</tspan>
-                    </text>
-                  </g>
-                </svg>
+          <div class="graph">
+            <div class="credits-graph" style=${creditsGridTemplateRows}>  
+              <div class="extra ${classMap({ hidden: extraConsumption === 0 })}">
+                <p>Dépassement de consommation <br><span class="color-box"></span>${totalExtraPercent}</p>
+                <div></div>
               </div>
-              <p class="legend-free">Gratuits (${this.free.total} €)</p>
-              
-              <span class="plus plus-free">+</span>
-              <div class="svg-item prepaid">
-                <svg width="100%" height="100%" viewBox="0 0 40 40" class="donut" style="--consumed: ${this._prepaid.remaining}; --remaining: ${this._prepaid.consumed};">
-                  <circle class="donut-hole" cx="20" cy="20" r="15.91549430918954" fill="#fff"></circle>
-                  <circle class="donut-ring" cx="20" cy="20" r="15.91549430918954" fill="transparent" stroke-width="3.5"></circle>
-                  <circle class="donut-segment donut-segment-3" cx="20" cy="20" r="15.91549430918954" fill="transparent" stroke-width="3.5" stroke-dasharray="${this._prepaid.consumed} ${this._prepaid.remaining}" stroke-dashoffset="25"></circle>
-                  <g class="donut-text donut-text-2">
-
-                    <text y="50%">
-                      <tspan x="50%" text-anchor="middle" class="donut-percent">${this.prepaid.consumed} €</tspan>
-                    </text>
-                  </g>
-                </svg>
+              <div class="prepaid ${classMap({ hidden: this.totalPrepaidCredits === 0 })}">
+                <p>Crédits prépayés <br><span class="color-box"></span>${totalPrepaidCreditsPercent}</p>
+                <div></div>
               </div>
-              <p class="legend-prepaid">Prépayés (${this.prepaid.total} €)</p>
-              <span class="plus plus-prepaid">+</span>
-              <div class="svg-item extra">
-                <svg width="100%" height="100%" viewBox="0 0 40 40" class="donut">
-                  <circle cx="20" cy="20" r="15.91549430918954" fill="#eee"></circle>
-                  <g class="donut-text donut-text-3">
-
-                    <text y="50%" transform="translate(0, 2)">
-                      <tspan x="50%" text-anchor="middle" class="donut-percent">${this.extra} €</tspan>
-                    </text>
-                  </g>
-                </svg>
+              <div class="free ${classMap({ hidden: this.totalFreeCredits === 0 })}">
+                <p>Crédits gratuis <br><span class="color-box"></span>${totalFreeCreditsPercent}</p>
+                <div></div>
               </div>
-              <p class="legend-extra">Dépassement</p>
             </div>
-          </cc-block-section>
+            <div class="consumption-graph" style=${consumptionGridTemplateRows}>
+              <div class="remaining ${classMap({ hidden: creditsRemaining === 0 })}">
+                <div></div>
+                <p>Crédits restants <br><span class="color-box"></span>${totalRemainingPercent}</p>
+              </div>
+              <div class="consumption ${classMap({ hidden: this.totalConsumption === 0 })}">
+                <div></div>
+                <p>Consommation totale <br><span class="color-box"></span>${totalConsumptionPercent}</p>
+              </div>
+            </div>
+          </div>
       </cc-block>
     `;
   }
@@ -133,174 +95,97 @@ export class CcCreditBalance extends LitElement {
       css`
         :host {
           display: block;
-          font-family: 'Arial', 'Helvetica Neue', 'Helvetica', sans-serif;
-        }
-        
-        .plus,
-        .equal {
-          color: var(--cc-color-text-weak);
-          font-size: 3em;
-        }
-        
-        .total {
-          margin-right: 0.5em;
-          color: var(--cc-color-text-strong);
-          font-size: 6em;
-          grid-area: total;
-        }
-        
-        
-        .legend-free {
-          grid-area: legend-free;
-        }
-        
-        .svg-item {
-          width: 100%;
-          margin: 0 auto;
-          animation: donutfade 1s;
         }
 
-        .container {
+        .hidden {
+          display: none !important;
+        }
+
+        .graph {
           display: grid;
-          width: max-content;
-          align-items: center;
-          font-weight: bold;
-          gap: 0.5em 1em;
-          grid-template-areas: 
-            'total free legend-free '
-            'total plus-free .'
-            'total prepaid legend-prepaid'
-            'total plus-prepaid .'
-            'total extra legend-extra';
-          grid-template-columns: auto 10em auto;
-          justify-items: center;
+          overflow: hidden;
+          height: 20em;
+          border-radius: 0.5em;
+          gap: 0.2em;
+          grid-template-columns: max-content max-content;
         }
+
         
-        p {
-          margin: 0;
+        .credits-graph {
+          display: grid;
+          width: 100%;
+          gap: 0.2em;
         }
-        
-        .free {
-          grid-area: free;
+
+        .consumption-graph {
+          display: grid;
+          width: 100%;
+          gap: 0.2em;
         }
-        
-        .plus-free {
-          grid-area: plus-free;
-        }
-        
+
+        .extra,
+        .free,
         .prepaid {
-          grid-area: prepaid;
+          position: relative;
+          display: grid;
+          align-items: center;
+          gap: 1.5em;
+          grid-auto-rows: 100%;
+          grid-template-columns: auto 3em;
         }
 
-        .plus-prepaid {
-          grid-area: plus-prepaid;
-        }
-        
-        .extra {
-          grid-area: extra;
-        }
-        
-        .legend-extra {
-          grid-area: legend-extra;
-        }
-        
-        .legend-free {
-          grid-area: legend-free;
+        .extra p,
+        .free p,
+        .prepaid p {
+          line-height: 1.5;
+          text-align: end;
         }
 
-        .legend-prepaid {
-          grid-area: legend-prepaid;
-        }
-        
-        .donut-ring {
-          stroke: #ebebeb;
-        }
-
-        .donut-segment {
-          stroke: #ff6200;
-          transform-origin: center;
+        .extra div,
+        .prepaid div,
+        .free div,
+        .remaining div,
+        .consumption div {
+          height: 100%;
         }
 
-        .donut-segment-2 {
-          animation: donut1 3s;
-          stroke: var(--cc-color-text-success);
+        .remaining,
+        .consumption {
+          display: grid;
+          align-items: center;
+          gap: 1.5em;
+          grid-auto-rows: 100%;
+          grid-template-columns: 1em 10em;
         }
 
-        .donut-segment-3 {
-          animation: donut2 3s;
-          stroke: var(--cc-color-text-primary);
+        .free div,
+        .free .color-box {
+          background-color: #56ac69;
         }
 
-        .donut-segment-4 {
-          animation: donut3 3s;
-          stroke: #ed1e79;
+        .color-box {
+          display: inline-block;
+          width: 1.5em;
+          height: 1em;
+          margin-right: 0.5em;
+          vertical-align: text-top;
         }
 
-        .segment-1 {
-          fill: #ccc;
+        .prepaid div,
+        .prepaid .color-box {
+          background-color: #4f5678;
         }
 
-        .segment-2 {
-          fill: aqua;
+        .remaining div,
+        .extra div,
+        .extra .color-box,
+        .remaining .color-box {
+          background-color: #c5c5c5;
         }
 
-        .segment-3 {
-          fill: #164c8a;
-        }
-
-        .segment-4 {
-          fill: #ed1e79;
-        }
-
-        .donut-percent {
-          animation: donutfadelong 1s;
-        }
-
-        .donut-text {
-          fill: #ff6200;
-          font-family: 'Arial', 'Helvetica', sans-serif;
-          transform: translateY(8%);
-        }
-
-        .donut-text-1 {
-          fill: var(--cc-color-text-success);
-        }
-
-        .donut-text-2 {
-          fill: var(--cc-color-text-primary);
-        }
-
-        .donut-text-3 {
-          fill: var(--cc-color-text-danger);
-          transform: translateY(3%);
-        }
-
-        .donut-label {
-          fill: #000;
-          font-size: 0.28em;
-          font-weight: bold;
-          line-height: 1;
-        }
-
-        .donut-percent {
-          font-size: 0.5em;
-          font-weight: bold;
-          line-height: 1;
-        }
-
-        .donut-data {
-          animation: donutfadelong 1s;
-          color: #666;
-          fill: #666;
-          font-size: 0.2em;
-          line-height: 1;
-          text-align: center;
-          text-anchor: middle;
-        }
-        
-        .svg-item p {
-          color: var(--cc-color-text-weak);
-          text-align: center;
+        .consumption div,
+        .consumption .color-box {
+          background-color: #b461c9;
         }
       `,
     ];
