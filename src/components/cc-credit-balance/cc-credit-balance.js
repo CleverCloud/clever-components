@@ -52,36 +52,38 @@ export class CcCreditBalance extends LitElement {
     const totalRemainingPercent = creditsRemaining > 0 ? `${this._getPercent(creditsRemaining, max)}%` : '';
     const totalConsumptionPercent = this.totalConsumption > 0 ? `${this._getPercent(this.totalConsumption, max)}%` : '';
 
-    const creditsGridTemplateColumns = `grid-template-columns: ${totalFreeCreditsPercent} ${totalPrepaidCreditsPercent} ${totalExtraPercent}`;
-    const consumptionGridTemplateColumns = `grid-template-columns: ${totalConsumptionPercent} ${totalRemainingPercent}`;
+    const creditsGridTemplateRows = `grid-template-rows: ${totalExtraPercent} ${totalPrepaidCreditsPercent} ${totalFreeCreditsPercent}`;
+    const consumptionGridTemplateRows = `grid-template-rows: ${totalRemainingPercent} ${totalConsumptionPercent}`;
 
     return html`
       <h1>${this.case}</h1>
       <cc-block>
           <div slot="title">Credit balance & Consumption</div>
-          <div class="graph">
-            <div class="credits-graph" style=${creditsGridTemplateColumns}>    
-              <div class="free ${classMap({ hidden: this.totalFreeCredits === 0 })}">
-                <p class="label">Crédits gratuis <br><span class="color-box"></span>${totalFreeCreditsPercent}</p>
-                <div></div>
+          <div class="container">
+            <div class="graph">
+              <div class="credits-graph" style=${creditsGridTemplateRows}>  
+                <div class="extra ${classMap({ hidden: extraConsumption === 0 })}">
+                  <p class="label ${classMap({ shifted: this._getPercent(extraConsumption, max) <= 5 })}">Dépassement de consommation <br><span class="color-box"></span>${totalExtraPercent}</p>
+                  <div></div>
+                </div>
+                <div class="prepaid ${classMap({ hidden: this.totalPrepaidCredits === 0 })}">
+                  <p class="label ${classMap({ shifted: this._getPercent(this.totalPrepaidCredits, max) <= 5 })}">Crédits prépayés <br><span class="color-box"></span>${totalPrepaidCreditsPercent}</p>
+                  <div></div>
+                </div>
+                <div class="free ${classMap({ hidden: this.totalFreeCredits === 0 })}">
+                  <p class="label ${classMap({ shifted: this._getPercent(this.totalFreeCredits, max) <= 5 })}">Crédits gratuis <br><span class="color-box"></span>${totalFreeCreditsPercent}</p>
+                  <div></div>
+                </div>
               </div>
-              <div class="prepaid ${classMap({ hidden: this.totalPrepaidCredits === 0 })}">
-                <p class="label">Crédits prépayés <br><span class="color-box"></span>${totalPrepaidCreditsPercent}</p>
-                <div></div>
-              </div>
-              <div class="extra ${classMap({ hidden: extraConsumption === 0 })}">
-                <p class="label">Dépassement de consommation <br><span class="color-box"></span>${totalExtraPercent}</p>
-                <div></div>
-              </div>
-            </div>
-            <div class="consumption-graph" style=${consumptionGridTemplateColumns}>
-              <div class="consumption ${classMap({ hidden: this.totalConsumption === 0 })}">
-                <div></div>
-                <p class="label">Consommation totale <br><span class="color-box"></span>${totalConsumptionPercent}</p>
-              </div>
-              <div class="remaining ${classMap({ hidden: creditsRemaining === 0 })}">
-                <div></div>
-                <p class="label">Crédits restants <br><span class="color-box"></span>${totalRemainingPercent}</p>
+              <div class="consumption-graph" style=${consumptionGridTemplateRows}>
+                <div class="remaining ${classMap({ hidden: creditsRemaining === 0 })}">
+                  <div></div>
+                  <p class="label ${classMap({ shifted: this._getPercent(creditsRemaining, max) <= 5 })}">Crédits restants <br><span class="color-box"></span>${totalRemainingPercent}</p>
+                </div>
+                <div class="consumption ${classMap({ hidden: this.totalConsumption === 0 })}">
+                  <div></div>
+                  <p class="label ${classMap({ shifted: this._getPercent(this.totalConsumption, max) <= 5 })}">Consommation totale <br><span class="color-box"></span>${totalConsumptionPercent}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -95,35 +97,34 @@ export class CcCreditBalance extends LitElement {
       css`
         :host {
           display: block;
-          box-sizing: border-box;
         }
 
         .hidden {
-          position: absolute;
           display: none !important;
+        }
+
+        .container {
+          display: flex;
+          min-height: 40em;
+          align-items: center;
+          justify-content: center;
         }
 
         .graph {
           display: grid;
-          width: 30em;
-          height: 30em;
-          align-content: center;
+          height: 20em;
           border-radius: 0.5em;
-          gap: 0.2em;
-          grid-template-rows: max-content max-content;
+          grid-template-columns: max-content max-content;
         }
 
-        
         .credits-graph {
           display: grid;
           width: 100%;
-          gap: 0.2em;
         }
 
         .consumption-graph {
           display: grid;
           width: 100%;
-          gap: 0.2em;
         }
 
         .extra,
@@ -133,35 +134,28 @@ export class CcCreditBalance extends LitElement {
           display: grid;
           align-items: center;
           gap: 1.5em;
-          grid-auto-columns: 100%;
-          grid-template-rows: 3em;
+          grid-auto-rows: 100%;
+          grid-template-columns: 3em;
         }
 
         .label {
           position: absolute;
-          width: max-content;
+          top: 50%;
+          min-width: 10em;
+          margin: 0;
           line-height: 1.5;
-          text-align: end;
         }
 
-        .free .label {
-          top: -5em;
+        .label.shifted {
+          transform: translate(-215%, -50%) !important;
         }
 
+        .extra .label,
+        .free .label,
         .prepaid .label {
-          top: -8em;
-        }
-
-        .extra .label {
-          top: -14em;
-        }
-
-        .consumption .label {
-          bottom: -5em;
-        }
-
-        .remaining .label {
-          bottom: -8em;
+          left: 0;
+          text-align: end;
+          transform: translate(-115%, -50%);
         }
 
         .extra div,
@@ -169,7 +163,6 @@ export class CcCreditBalance extends LitElement {
         .free div,
         .remaining div,
         .consumption div {
-          position: relative;
           height: 100%;
         }
 
@@ -179,8 +172,8 @@ export class CcCreditBalance extends LitElement {
           display: grid;
           align-items: center;
           gap: 1.5em;
-          grid-auto-columns: 100%;
-          grid-template-rows: 1em;
+          grid-auto-rows: 100%;
+          grid-template-columns: 1em;
         }
 
         .free div,
