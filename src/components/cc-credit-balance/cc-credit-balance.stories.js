@@ -34,7 +34,35 @@ export const defaultStory = makeStory(conf, {
     totalFreeCredits: 1,
     totalPrepaidCredits: 1,
     totalConsumption: 1000,
+  },
+  {
+    case: 'Extra consumption of 0 €',
+    totalFreeCredits: 25,
+    totalPrepaidCredits: 10,
+    totalConsumption: 1000,
+  },
+  {
+    case: 'Extra consumption of 0 €',
+    totalFreeCredits: 20,
+    totalPrepaidCredits: 0,
+    totalConsumption: 10000,
+  },
+  {
+    case: 'Extra consumption of 0 €',
+    totalFreeCredits: 20,
+    totalPrepaidCredits: 10000,
+    totalConsumption: 10030,
   }],
+});
+
+export const testStory = makeStory(conf, {
+  items: [
+    {
+      case: 'Extra consumption of 0 €',
+      totalFreeCredits: 25,
+      totalPrepaidCredits: 10,
+      totalConsumption: 1000,
+    }],
 });
 
 enhanceStoriesNames({
