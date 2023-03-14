@@ -61,23 +61,32 @@ export class CcZone extends LitElement {
   // This is a bit irregular to do this but we need to reuse this text logic in a <select>.
   // Moving this to a separated module feels overkill right now.
   static getText (zone) {
-    const { title, subtitle } = CcZone._getTextParts(zone);
-    return [title, subtitle].filter((a) => a != null).join(', ');
+    const { title, subtitle, infra } = CcZone._getTextParts(zone);
+    const titleAndSubtitle = [title, subtitle].filter((a) => a != null).join(', ');
+    return (infra != null)
+      ? `${titleAndSubtitle} (${infra})`
+      : titleAndSubtitle;
   }
 
   static _getTextParts (zone) {
-    return (zone.tags.includes(PRIVATE_ZONE) && zone.displayName != null)
-      ? { title: zone.displayName }
-      : { title: zone.city, subtitle: i18n('cc-zone.country', { code: zone.countryCode, name: zone.country }) };
+    if (zone.tags.includes(PRIVATE_ZONE) && zone.displayName != null) {
+      return { title: zone.displayName };
+    }
+
+    const infraTag = zone.tags.find((t) => t.startsWith('infra:'));
+    const infraSlug = infraTag?.split(':')[1] ?? null;
+    return {
+      title: zone.city,
+      subtitle: i18n('cc-zone.country', { code: zone.countryCode, name: zone.country }),
+      infra: infraSlug,
+    };
   }
 
   render () {
 
     const skeleton = (this.zone == null);
     const zone = skeleton ? SKELETON_ZONE : this.zone;
-    const { title, subtitle } = CcZone._getTextParts(zone);
-    const infraTag = zone.tags.find((t) => t.startsWith('infra:'));
-    const infraProviderSlug = infraTag?.split(':')[1] ?? null;
+    const { title, subtitle, infra } = CcZone._getTextParts(zone);
 
     return html`
       <cc-img class="flag" ?skeleton=${skeleton} src=${ifDefined(getFlagUrl(zone.countryCode))} text=${ifDefined(zone.countryCode)}></cc-img>
@@ -87,8 +96,8 @@ export class CcZone extends LitElement {
             <span class="title ${classMap({ skeleton })}">${title}</span>
             <span class="subtitle ${classMap({ skeleton })}">${subtitle}</span>
           </div>
-          ${infraProviderSlug != null ? html`
-            <cc-img class="infra-logo" src=${ifDefined(getInfraProviderLogoUrl(infraProviderSlug))} text=${ifDefined(infraProviderSlug)}></cc-img>
+          ${infra != null ? html`
+            <cc-img class="infra-logo" src=${getInfraProviderLogoUrl(infra)} text=${infra}></cc-img>
           ` : ''}
         </div>
         <cc-flex-gap class="tag-list">
