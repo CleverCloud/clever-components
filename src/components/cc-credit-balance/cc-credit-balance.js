@@ -18,6 +18,7 @@ export class CcCreditBalance extends LitElement {
       totalPrepaidCredits: { type: Number, attribute: 'total-prepaid-credits' },
       totalConsumption: { type: Number, attribute: 'total-consumption' },
       layout: { type: String, reflect: true },
+      _max: { type: Number },
     };
   }
 
@@ -34,26 +35,40 @@ export class CcCreditBalance extends LitElement {
 
     /** @type {number} . */
     this.totalConsumption = 0;
+
+    this._max = 0;
   }
 
   _getPercent (rawFigure, max) {
     return ((rawFigure / max) * 100).toFixed(2) ?? 0;
   }
 
+  _getTemplateRowValue (rawPercent) {
+    if (rawPercent === 0) {
+      return '';
+    }
+
+    if (rawPercent < 5) {
+      return '5%';
+    }
+
+    return `${rawPercent}%`;
+  }
+
   render () {
     const totalCredits = this.totalFreeCredits + this.totalPrepaidCredits;
     const extraConsumption = this.totalConsumption > totalCredits ? this.totalConsumption - totalCredits : 0;
-    const creditsRemaining = this.totalConsumption < totalCredits ? totalCredits - this.totalConsumption : 0;
-    const max = this.totalConsumption + creditsRemaining;
+    const remainingCredits = this.totalConsumption < totalCredits ? totalCredits - this.totalConsumption : 0;
+    const max = this.totalConsumption + remainingCredits;
 
-    const totalFreeCreditsPercent = this.totalFreeCredits > 0 ? `${this._getPercent(this.totalFreeCredits, max)}%` : '';
-    const totalPrepaidCreditsPercent = this.totalPrepaidCredits > 0 ? `${this._getPercent(this.totalPrepaidCredits, max)}%` : '';
-    const totalExtraPercent = extraConsumption > 0 ? `${this._getPercent(extraConsumption, max)}%` : '';
-    const totalRemainingPercent = creditsRemaining > 0 ? `${this._getPercent(creditsRemaining, max)}%` : '';
-    const totalConsumptionPercent = this.totalConsumption > 0 ? `${this._getPercent(this.totalConsumption, max)}%` : '';
+    const freeCreditsPercent = this._getPercent(this.totalFreeCredits, max);
+    const prepaidCreditsPercent = this._getPercent(this.totalPrepaidCredits, max);
+    const remainingCreditsPercent = this._getPercent(remainingCredits, max);
+    const extraConsumptionPercent = this._getPercent(extraConsumption, max);
+    const consumptionPercent = this._getPercent(this.totalConsumption, max);
 
-    const creditsGridTemplateRows = `grid-template-rows: ${totalExtraPercent} ${totalPrepaidCreditsPercent} ${totalFreeCreditsPercent}`;
-    const consumptionGridTemplateRows = `grid-template-rows: ${totalRemainingPercent} ${totalConsumptionPercent}`;
+    const creditsGridTemplateRows = `grid-template-rows: ${this._getTemplateRowValue(extraConsumptionPercent)} ${this._getTemplateRowValue(prepaidCreditsPercent)} ${this._getTemplateRowValue(freeCreditsPercent)}`;
+    const consumptionGridTemplateRows = `grid-template-rows: ${this._getTemplateRowValue(remainingCreditsPercent)} ${this._getTemplateRowValue(consumptionPercent)}`;
 
     return html`
       <h1>${this.case}</h1>
@@ -63,26 +78,26 @@ export class CcCreditBalance extends LitElement {
             <div class="graph">
               <div class="credits-graph" style=${creditsGridTemplateRows}>  
                 <div class="extra ${classMap({ hidden: extraConsumption === 0 })}">
-                  <p class="label ${classMap({ shifted: this._getPercent(extraConsumption, max) <= 5 })}">Dépassement de consommation <br><span class="color-box"></span>${totalExtraPercent}</p>
+                  <p class="label ${classMap({ shifted: this._getPercent(extraConsumption, max) <= 5 })}">Dépassement de consommation <br><span class="color-box"></span>${extraConsumption} €</p>
                   <div></div>
                 </div>
                 <div class="prepaid ${classMap({ hidden: this.totalPrepaidCredits === 0 })}">
-                  <p class="label ${classMap({ shifted: this._getPercent(this.totalPrepaidCredits, max) <= 5 })}">Crédits prépayés <br><span class="color-box"></span>${totalPrepaidCreditsPercent}</p>
+                  <p class="label ${classMap({ shifted: this._getPercent(this.totalPrepaidCredits, max) <= 5 })}">Crédits prépayés <br><span class="color-box"></span>${this.totalPrepaidCredits} €</p>
                   <div></div>
                 </div>
                 <div class="free ${classMap({ hidden: this.totalFreeCredits === 0 })}">
-                  <p class="label ${classMap({ shifted: this._getPercent(this.totalFreeCredits, max) <= 5 })}">Crédits gratuis <br><span class="color-box"></span>${totalFreeCreditsPercent}</p>
+                  <p class="label ${classMap({ shifted: this._getPercent(this.totalFreeCredits, max) <= 5 })}">Crédits gratuis <br><span class="color-box"></span>${this.totalFreeCredits} €</p>
                   <div></div>
                 </div>
               </div>
               <div class="consumption-graph" style=${consumptionGridTemplateRows}>
-                <div class="remaining ${classMap({ hidden: creditsRemaining === 0 })}">
+                <div class="remaining ${classMap({ hidden: remainingCredits === 0 })}">
                   <div></div>
-                  <p class="label ${classMap({ shifted: this._getPercent(creditsRemaining, max) <= 5 })}">Crédits restants <br><span class="color-box"></span>${totalRemainingPercent}</p>
+                  <p class="label ${classMap({ shifted: this._getPercent(remainingCredits, max) <= 5 })}">Crédits restants <br><span class="color-box"></span>${remainingCredits} €</p>
                 </div>
                 <div class="consumption ${classMap({ hidden: this.totalConsumption === 0 })}">
                   <div></div>
-                  <p class="label ${classMap({ shifted: this._getPercent(this.totalConsumption, max) <= 5 })}">Consommation totale <br><span class="color-box"></span>${totalConsumptionPercent}</p>
+                  <p class="label ${classMap({ shifted: this._getPercent(this.totalConsumption, max) <= 5 })}">Consommation totale <br><span class="color-box"></span>${this.totalConsumption} €</p>
                 </div>
               </div>
             </div>
