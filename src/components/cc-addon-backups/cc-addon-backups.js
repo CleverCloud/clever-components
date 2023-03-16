@@ -2,7 +2,7 @@ import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
-import '../cc-error/cc-error.js';
+import '../cc-notice/cc-notice.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import {
@@ -261,7 +261,7 @@ export class CcAddonBackups extends LitElement {
         ` : ''}
 
         ${this.error ? html`
-          <cc-error>${i18n('cc-addon-backups.loading-error')}</cc-error>
+          <cc-notice intent="warning" message="${i18n('cc-addon-backups.loading-error')}"></cc-notice>
         ` : ''}
 
         <!-- The restore and delete overlays are quite similar but's it's easier to read with a big if and some copy/paste than 8 ifs -->
