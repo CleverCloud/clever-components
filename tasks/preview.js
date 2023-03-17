@@ -22,6 +22,8 @@ async function run () {
   const currentBranch = await getCurrentBranch();
 
   switch (command) {
+    case 'get':
+      return getPreview(branch ?? currentBranch);
     case 'list':
       return listPreviews();
     case 'publish':
@@ -48,23 +50,26 @@ async function getCurrentAuthor () {
   return stdout.trim();
 }
 
+async function getPreview (branch) {
+  const manifest = await getManifest();
+  const preview = manifest.previews.find((p) => p.branch === branch);
+
+  if (preview == null) {
+    console.log(`No preview for branch ${branch} could be found.`);
+    process.exit(1);
+  }
+  else {
+    console.log(textTable([previewToPrintableDetails(preview)]));
+  }
+}
+
 async function listPreviews () {
   const manifest = await getManifest();
   if (manifest.previews.length === 0) {
     console.log('No previews right now.');
   }
   else {
-
-    const table = manifest.previews.map((p) => {
-      return [
-        ...p.updatedAt.substr(0, 19).split('T'),
-        chalk.red(p.commitId.substr(0, 8)),
-        chalk.yellow(p.branch),
-        chalk.green(p.author),
-        '\n  ' + chalk.italic(chalk.blue(p.url)),
-      ];
-    });
-
+    const table = manifest.previews.map((p) => previewToPrintableDetails(p));
     console.log(textTable(table));
   }
 }
@@ -195,8 +200,18 @@ async function updateListIndex (manifest) {
   });
 }
 
+function previewToPrintableDetails (p) {
+  return [
+    ...p.updatedAt.substr(0, 19).split('T'),
+    chalk.red(p.commitId.substr(0, 8)),
+    chalk.yellow(p.branch),
+    chalk.green(p.author),
+    '\n  ' + chalk.italic(chalk.blue(p.url)),
+  ];
+}
+
 run().catch((e) => {
   console.error(e);
-  console.log('Available commands are: list, publish [branch?], delete [branch?]');
+  console.log('Available commands are: get [branch?], list, publish [branch?], delete [branch?]');
   process.exit(1);
 });
