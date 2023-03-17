@@ -4,6 +4,19 @@ title: Changelog
 ---
 # Clever Components changelog
 
+## [10.5.0](https://github.com/CleverCloud/clever-components/compare/10.4.0...10.5.0) (2023-03-17)
+
+
+### Features
+
+* **cc-overview:** add cc-tile-metrics to the app-mode story ([e710e61](https://github.com/CleverCloud/clever-components/commit/e710e61132f145655ea22515800e682e35670c1d)), closes [#722](https://github.com/CleverCloud/clever-components/issues/722)
+* **cc-zone:** add infra if any to the getText() static method ([e0cfacb](https://github.com/CleverCloud/clever-components/commit/e0cfacb6be5f59c71203b43f7b7c1fa038282744)), closes [#724](https://github.com/CleverCloud/clever-components/issues/724)
+
+
+### Bug Fixes
+
+* **eslint:** check for improper sanitize function usage ([1947db0](https://github.com/CleverCloud/clever-components/commit/1947db0720477e15ee4d4512d175d368ba8b57d9))
+
 ## [10.4.0](https://github.com/CleverCloud/clever-components/compare/10.3.0...10.4.0) (2023-03-08)
 
 
