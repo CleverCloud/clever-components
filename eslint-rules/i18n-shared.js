@@ -21,6 +21,30 @@ function isLanguageTranslation (node) {
     && (node.name === 'LANGUAGE');
 }
 
+/**
+ * Returns the closest parent from a node that matches the specified type.
+ * If no type is specified, returns the direct parent.
+ * If no node is found, returns the root node (matching the 'Program' type).
+ * @param node
+ * @param {String|null} type
+ * @returns {*|null}
+ */
+function getClosestParentFromType (node, type) {
+  if (node == null) {
+    return null;
+  }
+  if (type == null) {
+    return node.parent;
+  }
+
+  let directParent = node;
+  do {
+    directParent = directParent.parent;
+  } while (directParent.parent?.type !== type && directParent.type !== 'Program');
+
+  return directParent.parent;
+}
+
 function getTranslationProperties (node) {
   return node.declaration.declarations[0].init.properties
     .filter((node) => !isLanguageTranslation(node.key));
@@ -47,6 +71,7 @@ function isSanitizeTagFunction (node) {
 module.exports = {
   isTranslationFile,
   isMainTranslationNode,
+  getClosestParentFromType,
   getTranslationProperties,
   parseTemplate,
   isSanitizeTagFunction,

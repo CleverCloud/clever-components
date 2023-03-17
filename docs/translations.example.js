@@ -102,7 +102,7 @@ export const translations = {
     return sanitize`<em>good</em> ${foo}`;
   },
 
-  // The sanitize tag function is must always be used when the translation contains HTML!
+  // The sanitize tag function must always be used when the translation contains HTML!
   // ESlint "translations-always-sanitize-with-html"
   'cc-bad.html-no-sanitize': () => sanitize`<em>bad</em>`,
   'cc-bad.html-no-sanitize-params': ({ foo }) => sanitize`<em>bad</em> ${foo}`,
@@ -125,4 +125,9 @@ export const translations = {
   // The sanitize tag function must always be used in an arrow function!
   // Enforced by ESlint rule "i18n-always-arrow-with-sanitize"
   'cc-bad.sanitize-without-arrow': () => sanitize`<em>bad</em>`,
+
+  // The sanitize tag function must also be used as a template literal and not
+  // a regular function that returns a template literal (for security reasons).
+  // Enforced by ESlint rule "i18n-always-template-literal-sanitize"
+  'cc-bad.sanitize-without-template-literal': () => sanitize(`<em>bad</em>`),
 };

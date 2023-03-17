@@ -206,7 +206,7 @@ export const translations = {
   'cc-datetime-relative.title': ({ date }) => formatDate(lang, date),
   //#endregion
   //#region cc-doc-card
-  'cc-doc-card.link': ({ link, product }) => sanitize(`<a href=${link} aria-label="Read the documentation - ${product}">Read the documentation</a>`),
+  'cc-doc-card.link': ({ link, product }) => sanitize`<a href=${link} aria-label="Read the documentation - ${product}">Read the documentation</a>`,
   'cc-doc-card.skeleton-link-title': `Read the documentation`,
   //#endregion
   //#region cc-doc-list
