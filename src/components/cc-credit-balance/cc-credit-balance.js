@@ -37,7 +37,7 @@ export class CcCreditBalance extends LitElement {
     /** @type {number} . */
     this.totalConsumption = 0;
 
-    this._offSet = 0;
+    this._creditsColumnOffSet = 0;
 
     this._max = 0;
   }
@@ -46,19 +46,28 @@ export class CcCreditBalance extends LitElement {
     return ((rawFigure / max) * 100) ?? 0;
   }
 
-  _getProportionalComputedHeight (rawPercent, numberOfItems) {
+  _computeValues () {
+    // je prends la hauteur totale dispo,
+    // je prends tous les %,
+    // je compte le nb de % < 5,
+    // je soustrais 1 par nb de < 5
+  }
+
+  _getProportionalComputedHeight (rawPercent, numberOfItems, columnName) {
     if (rawPercent === 0) {
       return 0;
     }
 
-    const containerHeightMinusGaps = 20 - ((numberOfItems - 1) * 0.2) - this._offSet;
+    const containerHeightMinusGaps = 20 - ((numberOfItems - 1) * 0.2) - this._creditsColumnOffSet;
     const computedHeight = (containerHeightMinusGaps * (rawPercent / 100));
-
-    if (computedHeight < 1) {
-      this._offSet += 0.5;
+    console.log(rawPercent);
+    if (rawPercent < 5 && columnName === 'credits') {
+      this._creditsColumnOffSet += 0.5;
     }
 
-    console.log(computedHeight);
+    if (rawPercent < 5 && columnName === 'consumption') {
+      this._consumptionColumnOffSet += 0.5;
+    }
 
     return Math.max(computedHeight, 1);
   }
@@ -67,6 +76,7 @@ export class CcCreditBalance extends LitElement {
     const computedValue = computedHeight > 0
       ? `${computedHeight}em`
       : '';
+
     const styles = {
       height: computedValue,
     };
@@ -89,11 +99,11 @@ export class CcCreditBalance extends LitElement {
     const numberOfCreditItems = [extraConsumption, this.totalFreeCredits, this.totalPrepaidCredits].filter((number) => number > 0).length;
     const numberOfConsumptionItems = [remainingCredits, this.totalConsumption].filter((number) => number > 0).length;
 
-    const freeCreditsComputedHeight = this._getProportionalComputedHeight(freeCreditsPercent, numberOfCreditItems);
-    const prepaidCreditsComputedHeight = this._getProportionalComputedHeight(prepaidCreditsPercent, numberOfCreditItems);
-    const extraConsumptionComputedHeight = this._getProportionalComputedHeight(extraConsumptionPercent, numberOfCreditItems);
-    const remainingCreditsComputedHeight = this._getProportionalComputedHeight(remainingCreditsPercent, numberOfConsumptionItems);
-    const consumptionComputedHeight = this._getProportionalComputedHeight(consumptionPercent, numberOfConsumptionItems);
+    const freeCreditsComputedHeight = this._getProportionalComputedHeight(freeCreditsPercent, numberOfCreditItems, 'credits');
+    const prepaidCreditsComputedHeight = this._getProportionalComputedHeight(prepaidCreditsPercent, numberOfCreditItems, 'credits');
+    const extraConsumptionComputedHeight = this._getProportionalComputedHeight(extraConsumptionPercent, numberOfCreditItems, 'credits');
+    const remainingCreditsComputedHeight = this._getProportionalComputedHeight(remainingCreditsPercent, numberOfConsumptionItems, 'consumption');
+    const consumptionComputedHeight = this._getProportionalComputedHeight(consumptionPercent, numberOfConsumptionItems, 'consumption');
 
     return html`
       <h1>${this.case}</h1>
