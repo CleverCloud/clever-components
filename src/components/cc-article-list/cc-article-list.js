@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { i18n } from '../../lib/i18n.js';
 import '../cc-article-card/cc-article-card.js';
-import '../cc-error/cc-error.js';
+import '../cc-notice/cc-notice.js';
 
 const ARTICLE_SKELETON_NUMBER = 9;
 
@@ -40,7 +40,7 @@ export class CcArticleList extends LitElement {
     return html`
       <div class="article-container">
         ${this.error ? html`
-          <cc-error>${i18n('cc-article-list.error')}</cc-error>
+          <cc-notice intent="warning" message="${i18n('cc-article-list.error')}"></cc-notice>
         ` : ''}
         ${skeleton && !this.error ? html`
           ${new Array(ARTICLE_SKELETON_NUMBER).fill(html`
@@ -74,14 +74,6 @@ export class CcArticleList extends LitElement {
           display: grid;
           gap: 1em;
           grid-template-columns: repeat(auto-fit, minmax(20em, 1fr));
-        }
-
-        cc-error {
-          padding: 1em;
-          border: 1px solid var(--cc-color-border-neutral, #aaa);
-          background-color: var(--cc-color-bg-default, #fff);
-          border-radius: var(--cc-border-radius-default, 0.25em);
-          text-align: center;
         }
       `,
     ];
