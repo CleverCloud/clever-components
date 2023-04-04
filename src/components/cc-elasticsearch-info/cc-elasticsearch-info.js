@@ -1,7 +1,7 @@
 import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 import '../cc-block/cc-block.js';
-import '../cc-error/cc-error.js';
+import '../cc-notice/cc-notice.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
@@ -54,12 +54,14 @@ export class CcElasticsearchInfo extends LitElement {
     const kibanaLink = links.find(({ type }) => type === 'kibana');
     const apmLink = links.find(({ type }) => type === 'apm');
 
+    if (this.error) {
+      return html`<cc-notice intent="warning" message="${i18n('cc-elasticsearch-info.error')}"></cc-notice>`;
+    }
+
     return html`
 
       <cc-block ribbon=${i18n('cc-elasticsearch-info.info')} no-head>
-
-        ${!this.error ? html`
-          <div class="info-text">${i18n('cc-elasticsearch-info.text')}</div>
+         <div class="info-text">${i18n('cc-elasticsearch-info.text')}</div>
 
           <div class="link-list">
             ${ccLink(ELASTICSEARCH_DOCUMENTATION, html`
@@ -85,12 +87,6 @@ export class CcElasticsearchInfo extends LitElement {
               `)}
             ` : ''}
           </div>
-        ` : ''}
-
-        ${this.error ? html`
-          <cc-error>${i18n('cc-elasticsearch-info.error')}</cc-error>
-        ` : ''}
-
       </cc-block>
     `;
   }
@@ -133,10 +129,6 @@ export class CcElasticsearchInfo extends LitElement {
 
         .skeleton {
           background-color: #bbb;
-        }
-
-        cc-error {
-          text-align: center;
         }
       `,
     ];
