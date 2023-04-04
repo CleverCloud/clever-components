@@ -1,5 +1,5 @@
 import '../cc-block/cc-block.js';
-import '../cc-error/cc-error.js';
+import '../cc-notice/cc-notice.js';
 import '../cc-icon/cc-icon.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
@@ -122,8 +122,9 @@ export class CcAddonFeatures extends LitElement {
       <cc-block>
         <div slot="title">${i18n('cc-addon-features.title')}</div>
 
+        <div>${i18n('cc-addon-features.details')}</div>
+        
         ${!this.error ? html`
-          <div>${i18n('cc-addon-features.details')}</div>
           <div class="feature-list">
             ${features.map((feature) => html`
               <div class="feature ${classMap({ skeleton })}">
@@ -140,7 +141,7 @@ export class CcAddonFeatures extends LitElement {
         ` : ''}
 
         ${this.error ? html`
-          <cc-error>${i18n('cc-addon-features.loading-error')}</cc-error>
+          <cc-notice intent="warning" message="${i18n('cc-addon-features.loading-error')}"></cc-notice>
         ` : ''}
       </cc-block>
     `;
