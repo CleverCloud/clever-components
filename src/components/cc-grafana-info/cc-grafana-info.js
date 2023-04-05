@@ -224,7 +224,7 @@ export class CcGrafanaInfo extends LitElement {
           height: 1.5em;
           flex: 0 0 auto;
           margin-right: 0.5em;
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
         }
 
         .cc-link {
@@ -235,7 +235,7 @@ export class CcGrafanaInfo extends LitElement {
         .dashboard-screenshot {
           width: 100%;
           max-width: 50em;
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
         }
 
         p {

@@ -16,7 +16,7 @@ const conf = {
     }
     
     cc-flex-gap > * {
-      border-radius: 0.25em;
+      border-radius: var(--cc-border-radius-default, 0.25em);
       border: 1px solid #000;
       flex: 1 1 0;
       padding: 0.5em 1em;

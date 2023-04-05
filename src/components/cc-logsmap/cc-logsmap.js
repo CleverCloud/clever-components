@@ -210,7 +210,7 @@ export class CcLogsMap extends LitElement {
         height: 15em;
         border: 1px solid #ccc;
         background-color: var(--cc-color-bg-default, #fff);
-        border-radius: 0.25em;
+        border-radius: var(--cc-border-radius-default, 0.25em);
       }
 
       cc-toggle {

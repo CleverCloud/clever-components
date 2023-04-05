@@ -128,7 +128,7 @@ export class CcActionDispatcher extends LitElement {
         .number-block {
           padding: 1em;
           background-color: var(--cc-color-bg-neutral);
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
           text-align: center;
         }
 

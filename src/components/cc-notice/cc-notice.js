@@ -141,7 +141,7 @@ export class CcNotice extends LitElement {
           display: grid;
           align-items: center;
           padding: 0.75em;
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
           gap: 0.5em;
           grid-template-areas: 
             'icon heading'

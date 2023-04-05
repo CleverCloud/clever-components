@@ -104,7 +104,7 @@ export class CcHeaderOrga extends LitElement {
           padding: var(--cc-gap);
           border: 1px solid #bcc2d1;
           background-color: var(--cc-color-bg-default, #fff);
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
         }
 
         .wrapper.enterprise {
@@ -115,7 +115,7 @@ export class CcHeaderOrga extends LitElement {
         .logo {
           width: 3.25em;
           height: 3.25em;
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
         }
 
         .details,

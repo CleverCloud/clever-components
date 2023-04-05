@@ -192,7 +192,7 @@ export class CcZone extends LitElement {
           border: 1px solid var(--cc-zone-tag-bdcolor, transparent);
           margin-top: 0.5em;
           background-color: var(--cc-zone-tag-bgcolor, var(--cc-color-bg-soft, #eee));
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
           font-family: var(--cc-ff-monospace);
           font-size: 0.8em;
           line-height: 1.5;

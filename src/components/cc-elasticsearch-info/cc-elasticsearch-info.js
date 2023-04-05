@@ -117,7 +117,7 @@ export class CcElasticsearchInfo extends LitElement {
           height: 1.5em;
           flex: 0 0 auto;
           margin-right: 0.5em;
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
         }
 
         /* SKELETON */

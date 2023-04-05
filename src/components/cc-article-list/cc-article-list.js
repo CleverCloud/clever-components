@@ -80,7 +80,7 @@ export class CcArticleList extends LitElement {
           padding: 1em;
           border: 1px solid #bcc2d1;
           background-color: var(--cc-color-bg-default, #fff);
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
           text-align: center;
         }
       `,

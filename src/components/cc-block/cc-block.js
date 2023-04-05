@@ -131,7 +131,7 @@ export class CcBlock extends LitElement {
           box-sizing: border-box;
           border: 1px solid #bcc2d1;
           background-color: var(--cc-color-bg-default, #fff);
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
         }
 
         .head {
@@ -155,7 +155,7 @@ export class CcBlock extends LitElement {
           height: 1.5em;
           align-self: flex-start;
           margin-right: 1em;
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
         }
 
         ::slotted([slot='title']) {

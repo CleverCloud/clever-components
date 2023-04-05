@@ -132,7 +132,7 @@ export class CcHeaderAddon extends LitElement {
           overflow: hidden;
           border: 1px solid #bcc2d1;
           background-color: var(--cc-color-bg-default, #fff);
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
         }
 
         .main {
@@ -142,7 +142,7 @@ export class CcHeaderAddon extends LitElement {
         .logo {
           width: 3.25em;
           height: 3.25em;
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
         }
 
         .details {

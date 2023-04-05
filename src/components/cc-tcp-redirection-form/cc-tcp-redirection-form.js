@@ -123,7 +123,7 @@ export class CcTcpRedirectionForm extends LitElement {
         .description code {
           padding: 0.15em 0.3em;
           background-color: var(--cc-color-bg-neutral);
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
           font-family: var(--cc-ff-monospace);
         }
       `,

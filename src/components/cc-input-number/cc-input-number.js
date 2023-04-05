@@ -399,7 +399,7 @@ export class CcInputNumber extends LitElement {
           overflow: hidden;
           border: 1px solid #aaa;
           background: var(--cc-color-bg-default, #fff);
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
           box-shadow: 0 0 0 0 rgb(255 255 255 / 0%);
         }
 

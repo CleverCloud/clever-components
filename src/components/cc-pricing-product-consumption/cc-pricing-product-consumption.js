@@ -507,7 +507,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         .head {
           display: grid;
           padding: 1em 1em 0;
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
           gap: 1em;
           grid-auto-rows: min-content;
         }
@@ -535,7 +535,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
           display: block;
           width: 3em;
           height: 3em;
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
         }
 
         .name-wrapper {

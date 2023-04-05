@@ -199,7 +199,7 @@ export class CcEnvVarEditorJson extends LitElement {
         .example code {
           padding: 0.15em 0.3em;
           background-color: var(--cc-color-bg-neutral, #eee);
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
           font-family: var(--cc-ff-monospace, monospace);
         }
 

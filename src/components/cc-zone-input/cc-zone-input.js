@@ -250,7 +250,7 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
           box-sizing: border-box;
           border: 1px solid #bcc2d1;
           background-color: var(--cc-color-bg-default, #fff);
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
         }
 
         cc-map,
@@ -295,7 +295,7 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
         }
 
         .zone-list:not(:hover):focus-within {
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
@@ -326,7 +326,7 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
           box-sizing: border-box;
           padding: 0.5em;
           border: 2px solid var(--bd-color, transparent);
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
         }
 
         label {

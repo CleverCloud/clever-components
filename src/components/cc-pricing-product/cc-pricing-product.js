@@ -189,7 +189,7 @@ export class CcPricingProduct extends LitElement {
           display: block;
           width: 3em;
           height: 3em;
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
         }
 
         .name {

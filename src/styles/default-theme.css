@@ -246,6 +246,11 @@
   --cc-focus-outline-offset: 2px;
   /*endregion*/
 
+  /*region border radius */
+  /* Beware: since we use `em` units, the computed value of these tokens might vary even within the same component */
+  --cc-border-radius-default: 0.25em;
+  /*endregion */
+
   /*region Miscellaneous*/
   /**
    * An opacity value that passes a11y tests.
