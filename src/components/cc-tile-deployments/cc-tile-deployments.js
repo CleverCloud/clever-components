@@ -1,7 +1,10 @@
 import '../cc-datetime-relative/cc-datetime-relative.js';
-import '../cc-error/cc-error.js';
+import '../cc-icon/cc-icon.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import {
+  iconRemixAlertFill as iconAlert,
+} from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../lib/i18n.js';
 import { tileStyles } from '../../styles/info-tiles.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
@@ -96,7 +99,12 @@ export class CcTileDeployments extends LitElement {
       ` : ''}
 
       ${this.error ? html`
-        <cc-error class="tile_message">${i18n('cc-tile-deployments.error')}</cc-error>
+        <div class="tile_message">
+          <div class="error-message">
+            <cc-icon .icon="${iconAlert}" accessible-name="${i18n('cc-tile-deployments.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
+            <p>${i18n('cc-tile-deployments.error')}</p>
+          </div>
+        </div>
       ` : ''}
     `;
   }
@@ -137,6 +145,24 @@ export class CcTileDeployments extends LitElement {
 
         .skeleton {
           background-color: #bbb;
+        }
+
+        .error-message {
+          display: grid;
+          gap: 0.75em;
+          grid-template-columns: min-content 1fr;
+          text-align: left;
+        }
+
+        .error-message p {
+          margin: 0;
+        }
+
+        .icon-warning {
+          align-self: center;
+          color: var(--cc-color-text-warning);
+
+          --cc-icon-size: 1.25em;
         }
       `,
     ];
