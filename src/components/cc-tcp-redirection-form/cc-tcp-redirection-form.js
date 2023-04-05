@@ -1,6 +1,6 @@
 import '../cc-badge/cc-badge.js';
 import '../cc-block/cc-block.js';
-import '../cc-error/cc-error.js';
+import '../cc-notice/cc-notice.js';
 import '../cc-tcp-redirection/cc-tcp-redirection.js';
 import { css, html, LitElement } from 'lit';
 import { i18n } from '../../lib/i18n.js';
@@ -76,7 +76,7 @@ export class CcTcpRedirectionForm extends LitElement {
         ` : ''}
 
         ${state === 'error' ? html`
-          <cc-error>${i18n('cc-tcp-redirection-form.error')}</cc-error>
+          <cc-notice intent="warning" message="${i18n('cc-tcp-redirection-form.error')}"></cc-notice>
         ` : ''}
 
       </cc-block>
