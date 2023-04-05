@@ -276,7 +276,7 @@ export class CcToast extends LitElement {
           border: none;
           margin: 0.25em;
           background-color: transparent;
-          border-radius: 0.15em;
+          border-radius: var(--cc-border-radius-small, 0.15em);
           cursor: pointer;
         }
 

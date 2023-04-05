@@ -128,7 +128,7 @@ export class CcZone extends LitElement {
           width: 2em;
           height: var(--lh);
           margin-right: 1em;
-          border-radius: 0.15em;
+          border-radius: var(--cc-border-radius-small, 0.15em);
           box-shadow: 0 0 3px rgb(0 0 0 / 40%);
         }
 

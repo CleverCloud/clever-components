@@ -249,6 +249,7 @@
   /*region border radius */
   /* Beware: since we use `em` units, the computed value of these tokens might vary even within the same component */
   --cc-border-radius-default: 0.25em;
+  --cc-border-radius-small: 0.15em;
   /*endregion */
 
   /*region Miscellaneous*/

@@ -208,7 +208,7 @@ export class CcToggle extends LitElement {
           height: var(--height);
           box-sizing: border-box;
           background-color: var(--cc-color-bg-default, #fff);
-          border-radius: 0.15em;
+          border-radius: var(--cc-border-radius-small, 0.15em);
           line-height: 1.25;
         }
 
@@ -279,7 +279,7 @@ export class CcToggle extends LitElement {
           left: var(--space);
           display: block;
           background-color: var(--cc-color-bg);
-          border-radius: 0.15em;
+          border-radius: var(--cc-border-radius-small, 0.15em);
           content: '';
         }
 

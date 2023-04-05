@@ -616,7 +616,7 @@ export class CcInputText extends LitElement {
           height: 1.6em;
           flex-shrink: 0;
           margin: 0.2em 0.2em 0.2em 0;
-          border-radius: 0.15em;
+          border-radius: var(--cc-border-radius-small, 0.15em);
           cursor: pointer;
         }
 

@@ -379,7 +379,7 @@ export class CcTileMetrics extends withResizeObserver(LitElement) {
           justify-content: center;
           /* TODO: Change variable when we have proper border token */
           border: 1px solid var(--cc-color-bg-strong);
-          border-radius: 0.15em;
+          border-radius: var(--cc-border-radius-small, 0.15em);
           box-shadow: rgb(255 255 255 / 0%) 0 0 0 0;
           transition: box-shadow 75ms ease-in-out 0s;
         }

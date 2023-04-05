@@ -221,7 +221,7 @@ export class CcNotice extends LitElement {
           padding: 0.2em;
           border: none;
           background-color: transparent;
-          border-radius: 0.15em;
+          border-radius: var(--cc-border-radius-small, 0.15em);
           cursor: pointer;
         }
         
