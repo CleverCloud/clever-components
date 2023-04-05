@@ -1,11 +1,13 @@
 import '../cc-button/cc-button.js';
-import '../cc-error/cc-error.js';
 import { BarController, BarElement, CategoryScale, Chart, LinearScale, Title, Tooltip } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { iconCleverInfo as iconInfo } from '../../assets/cc-clever.icons.js';
-import { iconRemixCloseLine as iconClose } from '../../assets/cc-remix.icons.js';
+import {
+  iconRemixAlertFill as iconAlert,
+  iconRemixCloseLine as iconClose,
+} from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../lib/i18n.js';
 import { withResizeObserver } from '../../mixins/with-resize-observer/with-resize-observer.js';
 import { tileStyles } from '../../styles/info-tiles.js';
@@ -268,7 +270,12 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
 
       <div class="tile_message ${classMap({ 'tile--hidden': !displayEmpty })}">${i18n('cc-tile-requests.empty')}</div>
 
-      <cc-error class="tile_message ${classMap({ 'tile--hidden': !displayError })}">${i18n('cc-tile-requests.error')}</cc-error>
+      <div class="tile_message ${classMap({ 'tile--hidden': !displayError })}">
+        <div class="error-message">
+          <cc-icon .icon="${iconAlert}" accessible-name="${i18n('cc-tile-requests.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
+          <p>${i18n('cc-tile-requests.error')}</p>
+        </div>
+      </div>
 
       <div class="tile_docs ${classMap({ 'tile--hidden': !displayDocs })}">
         <p>${i18n('cc-tile-requests.docs.msg', { windowHours: 24 / this._barCount })}</p>
@@ -341,6 +348,24 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
         .tile_docs_link {
           color: var(--cc-color-text-primary-highlight);
           text-decoration: underline;
+        }
+
+        .error-message {
+          display: grid;
+          gap: 0.75em;
+          grid-template-columns: min-content 1fr;
+          text-align: left;
+        }
+
+        .error-message p {
+          margin: 0;
+        }
+
+        .icon-warning {
+          align-self: center;
+          color: var(--cc-color-text-warning);
+
+          --cc-icon-size: 1.25em;
         }
       `,
     ];
