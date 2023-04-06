@@ -314,7 +314,7 @@ export class CcEnvVarForm extends LitElement {
       css`
         :host {
           display: block;
-          padding: 1em;
+          padding: 0.5em 1em;
           border: 1px solid #bcc2d1;
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: 0.25em;
@@ -324,7 +324,7 @@ export class CcEnvVarForm extends LitElement {
           display: flex;
           align-items: flex-start;
           justify-content: center;
-          margin-bottom: 0.5em;
+          margin-block: 0.5em;
         }
 
         .heading {
@@ -336,7 +336,7 @@ export class CcEnvVarForm extends LitElement {
 
         .description {
           display: block;
-          margin-bottom: 1em;
+          margin-bottom: 0.5em;
           color: var(--cc-color-text-weak);
           font-style: italic;
           line-height: 1.5;
@@ -353,10 +353,10 @@ export class CcEnvVarForm extends LitElement {
         }
 
         cc-expand {
+          padding: 0.5em 1em;
           /* We need to spread so the focus rings can be visible even with cc-expand default overflow:hidden */
           /* It also allows cc-env-var-create to span through the whole width of the cc-block in simple mode */
           margin-inline: -1em;
-          padding-inline: 1em;
         }
 
         .error-container {
@@ -382,7 +382,8 @@ export class CcEnvVarForm extends LitElement {
         .button-bar {
           --cc-gap: 1em;
 
-          margin-top: 1.5em;
+          margin-top: 1em;
+          margin-bottom: 0.5em;
         }
 
         .spacer {
