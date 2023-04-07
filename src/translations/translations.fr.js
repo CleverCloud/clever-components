@@ -58,14 +58,6 @@ function formatFlavor (f) {
 
 export const translations = {
   LANGUAGE: 'Français',
-  //#region cc-action-dispatcher
-  'cc-action-dispatcher.context': `Ce bouton permet d'envoyer un ping à toutes les VMs sur Clever Cloud.`,
-  'cc-action-dispatcher.error-message': `Une erreur est survenue pendant l'envoi d'actions aux VMs.`,
-  'cc-action-dispatcher.number-of-pings': `Nombre de VMs`,
-  'cc-action-dispatcher.number-of-pongs': `Nombre de VMs répondantes`,
-  'cc-action-dispatcher.ping-button-content': `Envoyer le ping`,
-  'cc-action-dispatcher.unresponsive-instances': `VMs muettes`,
-  //#endregion
   //#region cc-addon-admin
   'cc-addon-admin.admin': `Administration de l'add-on`,
   'cc-addon-admin.danger-zone': `Zone de danger`,
