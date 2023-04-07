@@ -801,13 +801,6 @@ export const translations = {
   'cc-tcp-redirection-form.error': `Une erreur est survenue pendant le chargement des redirections TCP.`,
   'cc-tcp-redirection-form.title': `Redirections TCP`,
   //#endregion
-  //#region cc-tile-consumption
-  'cc-tile-consumption.amount': ({ amount }) => formatCurrency(lang, amount),
-  'cc-tile-consumption.error': `Une erreur est survenue pendant le chargement de la consommation.`,
-  'cc-tile-consumption.last-30-days': `30 derniers jours`,
-  'cc-tile-consumption.title': `Consommation de crédits`,
-  'cc-tile-consumption.yesterday': `Hier`,
-  //#endregion
   //#region cc-tile-deployments
   'cc-tile-deployments.empty': `Pas encore de déploiement.`,
   'cc-tile-deployments.error': `Une erreur est survenue pendant le chargement des déploiements.`,

@@ -788,13 +788,6 @@ export const translations = {
   'cc-tcp-redirection-form.error': `Something went wrong while loading TCP redirections.`,
   'cc-tcp-redirection-form.title': `TCP Redirections`,
   //#endregion
-  //#region cc-tile-consumption
-  'cc-tile-consumption.amount': ({ amount }) => formatCurrency(lang, amount),
-  'cc-tile-consumption.error': `Something went wrong while loading consumption info.`,
-  'cc-tile-consumption.last-30-days': `Last 30 days`,
-  'cc-tile-consumption.title': `Credits consumption`,
-  'cc-tile-consumption.yesterday': `Yesterday`,
-  //#endregion
   //#region cc-tile-deployments
   'cc-tile-deployments.empty': `No deployments yet.`,
   'cc-tile-deployments.error': `Something went wrong while loading deployments info.`,
