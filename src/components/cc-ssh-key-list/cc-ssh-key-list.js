@@ -506,7 +506,7 @@ export class CcSshKeyList extends LitElement {
           padding: 0.25em 0.75em;
           border: 1px solid #d9d9d9;
           background-color: var(--cc-color-bg-neutral);
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
           font-family: var(--cc-ff-monospace);
           font-size: 0.9em;
           line-height: 2;

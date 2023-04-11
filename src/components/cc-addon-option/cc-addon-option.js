@@ -70,7 +70,7 @@ export class CcAddonOption extends LitElement {
           display: grid;
           padding: 1em;
           background-color: var(--cc-color-bg-default, #fff);
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
           grid-gap: 1em;
           grid-template-columns: min-content 1fr;
         }
@@ -103,7 +103,7 @@ export class CcAddonOption extends LitElement {
         .logo {
           width: 1.6em;
           height: 1.6em;
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
         }
 
         cc-toggle {

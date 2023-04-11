@@ -93,7 +93,7 @@ export const defaultStory = () => {
       }
       
       .color {
-        border-radius: 0.25em;
+        border-radius: var(--cc-border-radius-default, 0.25em);
         display: inline-block;
         height: 1em;
         margin-right: 0.5em;
@@ -103,7 +103,7 @@ export const defaultStory = () => {
       
       pre {
         background-color: #f5f5f5;
-        border-radius: 0.25em;
+        border-radius: var(--cc-border-radius-default, 0.25em);
         padding: 1em;
       }
       

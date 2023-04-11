@@ -328,7 +328,7 @@ export class CcHeaderApp extends LitElement {
           overflow: hidden;
           border: 1px solid #bcc2d1;
           background-color: var(--cc-color-bg-default, #fff);
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
         }
 
         cc-error {
@@ -345,7 +345,7 @@ export class CcHeaderApp extends LitElement {
           width: 3.25em;
           height: 3.25em;
           align-self: flex-start;
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
         }
 
         .flavor-logo_img {

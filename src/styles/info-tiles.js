@@ -3,16 +3,16 @@ import { css } from 'lit';
 // language=CSS
 export const tileStyles = css`
   :host {
-    background-color: var(--cc-color-bg-default, #fff);
-    border: 1px solid #bcc2d1;
-    border-radius: 0.25em;
-    box-sizing: border-box;
     display: grid;
+    overflow: hidden;
+    min-height: 9em;
+    box-sizing: border-box;
+    padding: 1em;
+    border: 1px solid #bcc2d1;
+    background-color: var(--cc-color-bg-default, #fff);
+    border-radius: var(--cc-border-radius-default, 0.25em);
     grid-gap: 1em;
     grid-template-rows: auto 1fr;
-    min-height: 9em;
-    overflow: hidden;
-    padding: 1em;
   }
 
   .tile_title {
@@ -26,8 +26,8 @@ export const tileStyles = css`
   }
 
   .tile_body {
-    align-content: center;
     display: grid;
+    align-content: center;
   }
 
   .tile_message {
@@ -44,27 +44,27 @@ export const instanceDetailsStyles = css`
   }
 
   .size-label {
-    background-color: var(--cc-color-bg-neutral);
-    border: 1px solid #484848;
-    border-radius: 0.25em;
-    box-sizing: border-box;
     display: block;
-    font-weight: bold;
     height: 1.65em;
-    line-height: 1.65em;
+    box-sizing: border-box;
     padding: 0 var(--bubble-r);
+    border: 1px solid #484848;
+    background-color: var(--cc-color-bg-neutral);
+    border-radius: var(--cc-border-radius-default, 0.25em);
+    font-weight: bold;
+    line-height: 1.65em;
     text-align: center;
   }
 
   .count-bubble {
+    display: block;
+    width: var(--bubble-d);
+    height: var(--bubble-d);
     background-color: var(--color-legacy-grey, #000);
     border-radius: 50%;
     color: var(--cc-color-text-inverted, #fff);
-    display: block;
     font-weight: bold;
-    height: var(--bubble-d);
     line-height: var(--bubble-d);
     text-align: center;
-    width: var(--bubble-d);
   }
 `;

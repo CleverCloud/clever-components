@@ -108,7 +108,7 @@ export class CcAddonLinkedApps extends LitElement {
           width: 1.6em;
           height: 1.6em;
           flex: 0 0 auto;
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
         }
 
         .details {

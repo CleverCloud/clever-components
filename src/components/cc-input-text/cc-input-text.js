@@ -551,7 +551,7 @@ export class CcInputText extends LitElement {
           overflow: hidden;
           border: 1px solid #aaa;
           background: var(--cc-color-bg-default, #fff);
-          border-radius: 0.25em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
           box-shadow: 0 0 0 0 rgb(255 255 255 / 0%);
         }
         
@@ -616,7 +616,7 @@ export class CcInputText extends LitElement {
           height: 1.6em;
           flex-shrink: 0;
           margin: 0.2em 0.2em 0.2em 0;
-          border-radius: 0.15em;
+          border-radius: var(--cc-border-radius-small, 0.15em);
           cursor: pointer;
         }
 
