@@ -5,10 +5,10 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import {
   iconCleverGrafana as iconGrafana,
   iconCleverInfo as iconInfo,
-  iconCleverCpu as iconCpu,
   iconCleverRam as iconMem,
 } from '../../assets/cc-clever.icons.js';
 import {
+  iconRemixCpuLine as iconCpu,
   iconRemixCloseLine as iconClose,
 } from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../lib/i18n.js';
@@ -19,6 +19,7 @@ import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import '../cc-button/cc-button.js';
 import '../cc-error/cc-error.js';
+import '../cc-icon/cc-icon.js';
 
 Chart.register(BarController, BarElement, Tooltip, CategoryScale, LinearScale, Title);
 
@@ -271,7 +272,7 @@ export class CcTileMetrics extends withResizeObserver(LitElement) {
       </div>
       <div class="tile_body ${classMap({ 'tile--hidden': panel !== 'chart' })}">
         <div class="category" aria-hidden="true">
-          <cc-icon class="icon--cpu" .icon=${iconCpu}></cc-icon>
+          <cc-icon size="lg" class="icon--cpu" .icon=${iconCpu}></cc-icon>
           <div class="chart-container-wrapper chart-cpu">
             <div class="chart-container ${classMap({ skeleton: state === 'loading' })}">
               <canvas id="cpu_chart" ${ref(this._cpuCtxRef)}></canvas>
@@ -284,7 +285,7 @@ export class CcTileMetrics extends withResizeObserver(LitElement) {
           <div class="legend-cpu">${i18n('cc-tile-metrics.legend.cpu')}</div>
         </div>
         <div class="category" aria-hidden="true">
-          <cc-icon class="icon--mem" .icon=${iconMem}></cc-icon>
+          <cc-icon size="lg" class="icon--mem" .icon=${iconMem}></cc-icon>
           <div class="chart-container-wrapper chart-mem">
             <div class="chart-container ${classMap({ skeleton: state === 'loading' })}">
               <canvas id="mem_chart" ${ref(this._memCtxRef)}></canvas>
@@ -527,7 +528,8 @@ export class CcTileMetrics extends withResizeObserver(LitElement) {
         }
 
         .icon--info {
-          --cc-icon-size: 1em;
+          --cc-icon-color: var(--color-blue-60);
+          --cc-icon-size: 1.25em;
         }
 
         .icon--grafana {
@@ -537,14 +539,12 @@ export class CcTileMetrics extends withResizeObserver(LitElement) {
         .icon--cpu {
           grid-area: icon-cpu;
 
-          --cc-icon-size: 1.25em;
           --cc-icon-color: var(--cc-color-text-weak);
         }
 
         .icon--mem {
           grid-area: icon-mem;
 
-          --cc-icon-size: 1.25em;
           --cc-icon-color: var(--cc-color-text-weak);
         }
         
