@@ -27,6 +27,7 @@ interface AddonProvider {
 interface AddonOption {
   name: string;
   enabled: boolean;
+  icon?: IconModel;
   // Option specific params
   flavor: Flavor; // for "apm" and "kibana" options
   price: number; // for "encryption" option
