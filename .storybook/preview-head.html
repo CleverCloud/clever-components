@@ -84,7 +84,7 @@ cc-toaster.main {
   toaster.position = 'top-right';
   toaster.animation = 'fade-and-slide';
 
-  document.addEventListener('cc:notify', (e) => {
+  window.addEventListener('cc:notify', (e) => {
     toaster.show(e.detail);
   });
 
