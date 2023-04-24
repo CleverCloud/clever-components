@@ -1,6 +1,8 @@
 :root {
   --cc-ff-monospace: "SourceCodePro", "monaco", monospace;
-/* All custom properties are sorted alphabetically within each region. */
+  
+  /* All custom properties are sorted alphabetically within each region. */
+  
   /*region Color choices*/
   /* color choices - these should not be referenced inside components (use decisions below instead)
     tool used for grey shades: https://mdigi.tools/color-shades/#333333 (10 or 11 steps)
@@ -52,17 +54,13 @@
   /* Usage: Sensitive information that require attention.
   For instance: error messages */
   --cc-color-text-danger: var(--color-red-100);
-  /* Usage: regular text.
-  -- Not used at the moment - will be when we allow theme override. -- */
+  
+  /* Usage: regular text. */
   --cc-color-text-default: var(--color-grey-90);
 
   /* Usage: Opposite of default text color - use this with plain backgrounds like primary / success / danger, etc.
   For instance: text inside primary cc-button. */
   --cc-color-text-inverted: var(--color-white);
-
-  /* Usage: text less important than normal text.
-  For instance: sidenotes, the required mention inside forms. */
-  --cc-color-text-weak: var(--color-grey-80);
 
   /* Usage: info, main color used through the application.
   For instance: text color inside outlined primary cc-button. */
@@ -91,6 +89,10 @@
   /* Usage: cautionnary text.
   For instance: text saying an app is stopped. */
   --cc-color-text-warning: var(--color-orange-100);
+
+  /* Usage: text less important than normal text.
+  For instance: sidenotes, the required mention inside forms. */
+  --cc-color-text-weak: var(--color-grey-80);
   /*endregion*/
 
   /*region Color Decisions (background)*/
@@ -211,6 +213,12 @@
 
   /*region Color Decisions(border)*/
 
+  /* Usage: for danger border */
+  --cc-color-border-danger: var(--color-red-100);
+
+  /* Usage: for danger border */
+  --cc-color-border-danger-weak: var(--color-red-20);
+
   /* Usage: for primary border */
   --cc-color-border-primary-weak: var(--color-blue-20);
 
@@ -220,11 +228,6 @@
   /* Usage: for warning border */
   --cc-color-border-warning-weak: var(--color-orange-20);
 
-  /* Usage: for danger border */
-  --cc-color-border-danger: var(--color-red-100);
-
-  /* Usage: for danger border */
-  --cc-color-border-danger-weak: var(--color-red-20);
   /*endregion*/
 
   /*region Margin Decisions*/
