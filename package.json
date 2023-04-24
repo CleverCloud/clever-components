@@ -32,7 +32,7 @@
     "test:cem:watch": "mocha --watch cem/test/*.js",
     "lint": "eslint --rulesdir eslint-rules rollup/*.js cem src tasks test wds",
     "lint:fix": "eslint --rulesdir eslint-rules --fix rollup/*.js cem src tasks test wds",
-    "prepack": "npm run test && npm run lint && npm run components:check-lit && npm run typecheck && npm run components:check-i18n && npm run components:build && npm run components:check-type-imports && npm run components:docs && npm run stylelint",
+    "prepack": "npm run lint && npm run stylelint && npm run components:check-lit && npm run typecheck && npm run components:check-i18n && npm run components:check-type-imports && npm run test && npm run components:build && npm run components:docs",
     "prestorybook:build": "npm run components:docs",
     "preview:get": "node tasks/preview.js get",
     "preview:list": "node tasks/preview.js list",
