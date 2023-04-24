@@ -2,10 +2,17 @@
  * Format a given number
  * @param {String} lang - BCP 47 language tag
  * @param {Number} value
+ * @param {Object} options
+ * @param {Number} options.minimumFractionDigits
+ * @param {Number} options.maximumFractionDigits
  * @returns {String}
  */
-export function formatNumber (lang, value) {
-  const nf = new Intl.NumberFormat(lang);
+export function formatNumber (lang, value, options = {}) {
+  const { minimumFractionDigits, maximumFractionDigits } = options;
+  const nf = new Intl.NumberFormat(lang, {
+    minimumFractionDigits,
+    maximumFractionDigits,
+  });
   return nf.format(value);
 }
 
