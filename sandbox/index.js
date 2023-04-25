@@ -11,18 +11,25 @@ window.addEventListener('cc:notify', (event) => {
 });
 
 const sandboxes = [
+  'cc-ansi-palette',
   'cc-logs',
 ];
 
 const $listContainer = document.querySelector('.sandboxes-list');
 const $sandboxContainer = document.querySelector('.sandbox-container');
 
+console.log(sandboxes);
+
 // list of sandboxes
-const htmlList = sandboxes.map((s) => `<li><a href="?component=${s}">${s}</a></li>`);
+const htmlList = sandboxes.map((s) => `<li><a href="?component=${s}">${s}</a></li>`).join('');
 $listContainer.innerHTML = `<ul>${htmlList}</ul>`;
 
 // get component name from URL
-const { component } = Object.fromEntries(new URL(document.location).searchParams.entries());
+let { component } = Object.fromEntries(new URL(document.location).searchParams.entries());
+
+if (component == null) {
+  component = sandboxes[0];
+}
 
 if (!sandboxes.includes(component)) {
   $sandboxContainer.innerHTML = '<cc-notice intent="danger" message="No sandbox found !"></cc-notice>';
