@@ -174,6 +174,12 @@ export const translations = {
   'cc-addon-redis-options.description': `Choose the options you want for your Redis add-on.`,
   'cc-addon-redis-options.title': `Options for the Redis add-on`,
   //#endregion
+  //#region cc-ansi-palette
+  'cc-ansi-palette.fg-bg': ({ foreground, background }) => `Foreground: ${foreground}, Background: ${background}`,
+  'cc-ansi-palette.hover': ({ color }) => `Hover background: ${color}`,
+  'cc-ansi-palette.ratio': ({ ratio }) => formatNumber(lang, ratio, { minimumFractionDigits: 2, maximumFractionDigits: 2 }).padStart(5, '0'),
+  'cc-ansi-palette.selected': ({ color }) => `Selected background: ${color}`,
+  //#endregion
   //#region cc-article-card
   'cc-article-card.date': ({ date }) => formatDateOnly(lang, date),
   //#endregion

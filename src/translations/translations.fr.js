@@ -187,6 +187,12 @@ export const translations = {
   'cc-addon-redis-options.description': `Sélectionnez les options que vous souhaitez pour votre add-on Redis.`,
   'cc-addon-redis-options.title': `Options pour l'add-on Redis`,
   //#endregion
+  //#region cc-ansi-palette
+  'cc-ansi-palette.fg-bg': ({ foreground, background }) => `Texte: ${foreground}, Fond: ${background}`,
+  'cc-ansi-palette.hover': ({ color }) => `Survol: ${color}`,
+  'cc-ansi-palette.ratio': ({ ratio }) => formatNumber(lang, ratio, { minimumFractionDigits: 2, maximumFractionDigits: 2 }).padStart(5, '0'),
+  'cc-ansi-palette.selected': ({ color }) => `Selection: ${color}`,
+  //#endregion
   //#region cc-article-card
   'cc-article-card.date': ({ date }) => formatDateOnly(lang, date),
   //#endregion
