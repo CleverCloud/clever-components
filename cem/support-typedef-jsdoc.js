@@ -133,7 +133,7 @@ export default function supportTypedefJsdoc () {
       const types = getTypesFromConstructor(constructorNode, ts);
 
       // This finds the comment where the imports are located
-      const typeDefNode = node?.jsDoc?.filter((node) => node.tags.find((tag) => tag.kind === ts.SyntaxKind.JSDocTypedefTag))?.[0];
+      const typeDefNode = node?.jsDoc?.filter((node) => node.tags?.find((tag) => tag.kind === ts.SyntaxKind.JSDocTypedefTag))?.[0];
 
       const moduleDir = path.parse(moduleDoc.path).dir;
 
