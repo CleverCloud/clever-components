@@ -15,10 +15,10 @@ import { objectEquals } from './utils.js';
 /**
  * @typedef SmartComponentDefinition
  * @property {String} selector
- * @property {Object?} params
- * @property {Function?} onConnect
- * @property {Function?} onContextUpdate
- * @property {Function?} onDisconnect
+ * @property {Object} [params]
+ * @property {Function} [onConnect]
+ * @property {Function} [onContextUpdate]
+ * @property {Function} [onDisconnect]
  */
 
 const COMPONENTS = Symbol('COMPONENTS');
@@ -62,7 +62,7 @@ export function observeContainer (container, signal) {
 
 /**
  * @param {SmartComponentDefinition} definition
- * @param {AbortSignal?} signal
+ * @param {AbortSignal} [signal]
  */
 export function defineSmartComponentCore (definition, signal) {
 

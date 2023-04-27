@@ -27,7 +27,7 @@ const META = Symbol('META');
  *   ) => void,
  *   signal?: AbortSignal,
  * }) => void} definition.onContextUpdate
- * @param {AbortSignal?} signal
+ * @param {AbortSignal} [signal]
  */
 export function defineSmartComponent (definition, signal) {
 
