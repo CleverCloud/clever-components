@@ -89,7 +89,7 @@ export class CcArticleCard extends LitElement {
           overflow: hidden;
           box-sizing: border-box;
           padding: 1em;
-          border: 1px solid #bcc2d1;
+          border: 1px solid var(--cc-color-border-neutral, #aaa);
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-default, 0.25em);
           gap: 1em;
@@ -100,7 +100,7 @@ export class CcArticleCard extends LitElement {
         .image {
           display: block;
           height: 8em;
-          border-bottom: 1px solid #bcc2d1;
+          border-bottom: 1px solid var(--cc-color-border-neutral, #aaa);
           margin: -1em -1em 0;
           justify-self: stretch;
         }

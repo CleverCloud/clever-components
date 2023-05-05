@@ -77,7 +77,7 @@ export class CcError extends LitElement {
             align-items: center;
             justify-content: center;
             padding: 1em;
-            border: 1px solid #bcc2d1;
+            border: 1px solid var(--cc-color-border-neutral, #aaa);
             background-color: var(--cc-color-bg-default, #fff);
             border-radius: var(--cc-border-radius-default, 0.25em);
             box-shadow: 0 0 1em rgb(0 0 0 / 40%);

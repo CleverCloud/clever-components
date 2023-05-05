@@ -8,7 +8,7 @@ export const tileStyles = css`
     min-height: 9em;
     box-sizing: border-box;
     padding: 1em;
-    border: 1px solid #bcc2d1;
+    border: 1px solid var(--cc-color-border-neutral, #aaa);
     background-color: var(--cc-color-bg-default, #fff);
     border-radius: var(--cc-border-radius-default, 0.25em);
     grid-gap: 1em;
@@ -48,7 +48,7 @@ export const instanceDetailsStyles = css`
     height: 1.65em;
     box-sizing: border-box;
     padding: 0 var(--bubble-r);
-    border: 1px solid #484848;
+    border: 1px solid var(--cc-color-border-neutral, #aaa);
     background-color: var(--cc-color-bg-neutral);
     border-radius: var(--cc-border-radius-default, 0.25em);
     font-weight: bold;

@@ -315,7 +315,7 @@ export class CcEnvVarForm extends LitElement {
         :host {
           display: block;
           padding: 0.5em 1em;
-          border: 1px solid #bcc2d1;
+          border: 1px solid var(--cc-color-border-neutral, #aaa);
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-default, 0.25em);
         }

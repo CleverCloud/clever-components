@@ -208,7 +208,7 @@ export class CcLogsMap extends LitElement {
         overflow: hidden;
         width: 20em;
         height: 15em;
-        border: 1px solid #ccc;
+        border: 1px solid var(--cc-color-border-neutral, #aaa);
         background-color: var(--cc-color-bg-default, #fff);
         border-radius: var(--cc-border-radius-default, 0.25em);
       }
