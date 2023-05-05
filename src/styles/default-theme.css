@@ -227,6 +227,10 @@
   * For instance: click targets like input fields */
   --cc-color-border-neutral-strong: var(--color-grey-50);
 
+  /* Usage: for very subtle decorative borders
+  * For instance: row separators within a table. */
+  --cc-color-border-neutral-weak: var(--color-grey-15);
+
   /* Usage: for primary border */
   --cc-color-border-primary-weak: var(--color-blue-20);
 
