@@ -5,7 +5,7 @@ import { sequence } from './sequence.js';
 export function makeStory (...configs) {
 
   const {
-    name, docs, css, component, dom, items: rawItems = [{}], simulations = [], argTypes, displayMode,
+    name, docs, css, component, dom, lazy, items: rawItems = [{}], simulations = [], argTypes, displayMode,
   } = Object.assign({}, ...configs);
 
   // In some rare conditions, we need to instanciate the items on story rendering (and each time it renders)
@@ -14,10 +14,9 @@ export function makeStory (...configs) {
     : rawItems;
 
   const storyFn = (storyArgs, { globals }) => {
-
     setLanguage(globals.locale);
 
-    // We create a shadow tree so we can add some custom isolated CSS for each stories
+    // We create a shadow tree so we can add some custom isolated CSS for each story
     const container = document.createElement('div');
     // We use this for i18n HMR
     container.classList.add('story-shadow-container');
@@ -35,7 +34,23 @@ export function makeStory (...configs) {
     if (dom != null) {
       const wrapper = document.createElement('div');
       shadow.appendChild(wrapper);
-      dom(wrapper);
+      if (lazy) {
+        let onDisconnect;
+        wrapper.innerHTML = '<span>Loading</span>';
+        lazyStoryHandler(wrapper,
+          () => {
+            onDisconnect = dom(wrapper);
+          }, () => {
+            runCallback(onDisconnect);
+          });
+      }
+      else {
+        const onDisconnect = dom(wrapper);
+        if (onDisconnect != null) {
+          lazyStoryHandler(wrapper, null, onDisconnect);
+        }
+      }
+
       return container;
     }
 
@@ -87,16 +102,25 @@ export function makeStory (...configs) {
   // We use the values of the first item for the args
   storyFn.args = { ...items[0] };
 
-  storyFn.parameters = {
-    docs: {
-      description: {
-        story: (docs ?? '').trim(),
+  if (dom != null && lazy) {
+    storyFn.parameters = {
+      docs: {
+        disable: true,
       },
-      source: {
-        code: getSourceCode(component, items, dom),
+    };
+  }
+  else {
+    storyFn.parameters = {
+      docs: {
+        description: {
+          story: (docs ?? '').trim(),
+        },
+        source: {
+          code: getSourceCode(component, items, dom),
+        },
       },
-    },
-  };
+    };
+  }
 
   storyFn.argTypes = argTypes;
   storyFn.docs = docs;
@@ -110,6 +134,34 @@ export function makeStory (...configs) {
 
   return storyFn;
 }
+
+function runCallback (callback) {
+  if (callback == null) {
+    return;
+  }
+  if (typeof callback === 'function') {
+    callback();
+  }
+  else if (typeof callback === 'object' && typeof callback.then === 'function') {
+    callback.then((c) => runCallback(c));
+  }
+}
+
+const lazyStoryHandler = (element, onConnect, onDisconnect) => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.intersectionRatio === 1) {
+        runCallback(onConnect);
+      }
+      else if (entry.intersectionRatio === 0) {
+        observer.disconnect();
+        runCallback(onDisconnect);
+      }
+    });
+  });
+
+  observer.observe(element);
+};
 
 function normalize (text) {
   return text.toLowerCase().replace(/[-:]/g, '');
