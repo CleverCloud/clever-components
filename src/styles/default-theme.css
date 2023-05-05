@@ -219,6 +219,10 @@
   /* Usage: for danger border */
   --cc-color-border-danger-weak: var(--color-red-20);
 
+  /* Usage: for contrasted borders.
+  * For instance: click targets like input fields */
+  --cc-color-border-neutral-strong: var(--color-grey-50);
+
   /* Usage: for primary border */
   --cc-color-border-primary-weak: var(--color-blue-20);
 

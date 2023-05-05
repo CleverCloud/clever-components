@@ -229,7 +229,7 @@ export class CcSelect extends LitElement {
           height: 2em;
           box-sizing: border-box;
           padding: 0 3em 0 0.5em;
-          border: 1px solid #aaa;
+          border: 1px solid var(--cc-color-border-neutral-strong, #aaa);
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-default, 0.25em);
           grid-area: input;
