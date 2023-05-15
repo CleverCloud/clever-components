@@ -15,7 +15,7 @@ export function notify (notification, target = window) {
 
 /**
  * @param {string} message
- * @param {string?} title
+ * @param {string} [title]
  * @return {CustomEvent} the <code>cc:notify</code> event that has been dispatched.
  */
 export function notifyError (message, title) {
@@ -28,7 +28,7 @@ export function notifyError (message, title) {
 
 /**
  * @param {string} message
- * @param {string?} title
+ * @param {string} [title]
  * @return {CustomEvent} the <code>cc:notify</code> event that has been dispatched.
  */
 export function notifySuccess (message, title) {

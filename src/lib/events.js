@@ -2,7 +2,7 @@
  * Send a custom event in the format node => tagName:eventSuffix
  * @param {Window|Node} node
  * @param {String} eventNameOrSuffix - In case of an eventName it will dispatch the event associated to the node or dispatch the event directly if there's a suffix in the eventName
- * @param {any?} detail
+ * @param {any} [detail]
  * @return {CustomEvent} the event that has been dispatched.
  */
 export function dispatchCustomEvent (node, eventNameOrSuffix, detail) {

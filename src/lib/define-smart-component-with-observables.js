@@ -15,9 +15,9 @@ const META = Symbol('META');
 /**
  * @param {object} definition
  * @param {string} definition.selector
- * @param {object?} definition.params
+ * @param {object} [definition.params]
  * @param {(container: SmartContainer, component: Element, context$: Observable<object>, signal: AbortSignal) => void} definition.onConnect
- * @param {AbortSignal?} signal
+ * @param {AbortSignal} [signal]
  */
 export function defineSmartComponentWithObservables (definition, signal) {
 

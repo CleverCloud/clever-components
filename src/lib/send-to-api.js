@@ -14,7 +14,7 @@ import { withOptions } from '@clevercloud/client/esm/with-options.js';
  * @param {String} apiConfig.OAUTH_CONSUMER_KEY
  * @param {String} apiConfig.OAUTH_CONSUMER_SECRET
  * @param {AbortSignal} signal
- * @param {Number?} cacheDelay
+ * @param {Number} [cacheDelay]
  * @return {function(*=): (any | undefined)}
  */
 export function sendToApi ({ apiConfig = {}, signal, cacheDelay, timeout }) {
@@ -38,7 +38,7 @@ export function sendToApi ({ apiConfig = {}, signal, cacheDelay, timeout }) {
  * @param {Object} apiConfig
  * @param {String} apiConfig.WARP_10_HOST
  * @param {AbortSignal} signal
- * @param {Number?} cacheDelay
+ * @param {Number} [cacheDelay]
  * @return {function(*=): (any | undefined)}
  */
 export function sendToWarp ({ apiConfig = {}, signal, cacheDelay, timeout }) {
