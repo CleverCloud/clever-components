@@ -549,7 +549,7 @@ export class CcInputText extends LitElement {
           bottom: 0;
           left: 0;
           overflow: hidden;
-          border: 1px solid #aaa;
+          border: 1px solid var(--cc-color-border-neutral-strong, #aaa);
           background: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-default, 0.25em);
           box-shadow: 0 0 0 0 rgb(255 255 255 / 0%);

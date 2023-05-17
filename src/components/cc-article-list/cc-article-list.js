@@ -78,7 +78,7 @@ export class CcArticleList extends LitElement {
 
         cc-error {
           padding: 1em;
-          border: 1px solid #bcc2d1;
+          border: 1px solid var(--cc-color-border-neutral, #aaa);
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-default, 0.25em);
           text-align: center;

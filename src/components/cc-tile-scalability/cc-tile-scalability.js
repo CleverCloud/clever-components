@@ -117,7 +117,7 @@ export class CcTileScalability extends LitElement {
         .separator {
           width: 1.5em;
           flex: 1 1 0;
-          border-top: 1px dashed #8c8c8c;
+          border-top: 1px dashed var(--cc-color-border-neutral-strong, #8c8c8c);
         }
 
         [title] {

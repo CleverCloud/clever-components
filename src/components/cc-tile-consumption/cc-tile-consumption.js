@@ -87,7 +87,7 @@ export class CcTileConsumption extends LitElement {
 
         .separator {
           flex: 1 1 0;
-          border-top: 1px dotted #8c8c8c;
+          border-top: 1px dotted var(--cc-color-border-neutral-strong, #8c8c8c);
           margin: 0 10px;
         }
 

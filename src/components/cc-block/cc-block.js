@@ -129,7 +129,7 @@ export class CcBlock extends LitElement {
           display: grid;
           overflow: hidden;
           box-sizing: border-box;
-          border: 1px solid #bcc2d1;
+          border: 1px solid var(--cc-color-border-neutral, #aaa);
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-default, 0.25em);
         }

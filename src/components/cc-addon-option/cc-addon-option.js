@@ -92,7 +92,7 @@ export class CcAddonOption extends LitElement {
         }
 
         :host(:not([enabled])) {
-          border: 2px solid #f8f8f8;
+          border: 2px solid var(--cc-color-border-neutral-weak, #eee);
           background-color: var(--cc-color-bg-neutral);
         }
 

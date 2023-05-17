@@ -504,7 +504,7 @@ export class CcSshKeyList extends LitElement {
         [slot='info'] code {
           display: inline-block;
           padding: 0.25em 0.75em;
-          border: 1px solid #d9d9d9;
+          border: 1px solid var(--cc-color-border-neutral-weak, #eee);
           background-color: var(--cc-color-bg-neutral);
           border-radius: var(--cc-border-radius-default, 0.25em);
           font-family: var(--cc-ff-monospace);

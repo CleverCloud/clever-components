@@ -244,7 +244,7 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
         }
 
         tr:not(:last-child) td {
-          border-bottom: 1px solid #ddd;
+          border-bottom: 1px solid var(--cc-color-border-neutral-weak, #eee);
         }
 
         /* applied on th and td */

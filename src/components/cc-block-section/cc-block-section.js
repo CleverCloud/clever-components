@@ -51,7 +51,7 @@ export class CcBlockSection extends LitElement {
 
         :host(:not(:first-of-type)) {
           padding-top: 2em;
-          border-top: 1px solid #bcc2d1;
+          border-top: 1px solid var(--cc-color-border-neutral-weak, #eee);
           margin-top: 1em;
         }
 

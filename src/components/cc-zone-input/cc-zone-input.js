@@ -248,7 +248,7 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
           display: flex;
           overflow: hidden;
           box-sizing: border-box;
-          border: 1px solid #bcc2d1;
+          border: 1px solid var(--cc-color-border-neutral, #aaa);
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-default, 0.25em);
         }
@@ -262,7 +262,7 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
           width: 100%;
           height: 100%;
           flex-basis: 0;
-          border-right: 1px solid #bcc2d1;
+          border-right: 1px solid var(--cc-color-border-neutral, #aaa);
         }
 
         :host([w-lt-600]) cc-map,
