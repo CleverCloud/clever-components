@@ -6,7 +6,7 @@ import { i18n } from '../../lib/i18n.js';
 import { withResizeObserver } from '../../mixins/with-resize-observer/with-resize-observer.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import '../cc-loader/cc-loader.js';
-import '../cc-error/cc-error.js';
+import '../cc-notice/cc-notice.js';
 import '../cc-icon/cc-icon.js';
 
 // 800 seems like a good arbitrary value for the content we need to display.
@@ -235,7 +235,7 @@ export class CcPricingProduct extends withResizeObserver(LitElement) {
     return html`
 
       ${this.product.state === 'error' ? html`
-        <cc-error>${i18n('cc-pricing-product.error')}</cc-error>
+        <cc-notice intent="warning" message=${i18n('cc-pricing-product.error')}></cc-notice>
       ` : ''}
       ${this.product.state === 'loading' ? html`
         <cc-loader></cc-loader>
