@@ -118,8 +118,10 @@ interface Feature {
 }
 
 interface PricingSection {
-  type: SectionType;
-  intervals?: PricingInterval[];
+  type: SectionType,
+  progressive?: boolean, // defaults to false
+  secability?: number, // defaults to 1
+  intervals: PricingInterval[],
 }
 
 interface PricingInterval {
@@ -128,7 +130,7 @@ interface PricingInterval {
   price: number;    // "euros / byte / 30 days" or just "euros / byte" for timeless sections like traffic
 }
 
-type SectionType = "storage" | "inbound-traffic" | "outbound-traffic";
+type SectionType = "inbound-traffic" | "outbound-traffic" | "storage" | "private-users" | "public-users";
 
 type ActionType = "add" | "none";
 
