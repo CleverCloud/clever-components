@@ -6577,9 +6577,9 @@ const rawAddonProviders = [
           {
             'name': 'Databases',
             'type': 'NUMBER',
-            'value': '100',
-            'computable_value': '100',
-            'name_code': null,
+            'value': '1',
+            'computable_value': '1',
+            'name_code': 'databases',
           },
         ],
         'zones': [
@@ -6630,9 +6630,9 @@ const rawAddonProviders = [
           {
             'name': 'Databases',
             'type': 'NUMBER',
-            'value': '100',
-            'computable_value': '100',
-            'name_code': null,
+            'value': '10',
+            'computable_value': '10',
+            'name_code': 'databases',
           },
         ],
         'zones': [
@@ -6669,9 +6669,9 @@ const rawAddonProviders = [
           {
             'name': 'Databases',
             'type': 'NUMBER',
-            'value': '100',
-            'computable_value': '100',
-            'name_code': null,
+            'value': '10',
+            'computable_value': '10',
+            'name_code': 'databases',
           },
           {
             'name': 'Size',
@@ -6722,9 +6722,9 @@ const rawAddonProviders = [
           {
             'name': 'Databases',
             'type': 'NUMBER',
-            'value': '100',
-            'computable_value': '100',
-            'name_code': null,
+            'value': '5',
+            'computable_value': '5',
+            'name_code': 'databases',
           },
           {
             'name': 'Type',
@@ -6789,9 +6789,9 @@ const rawAddonProviders = [
           {
             'name': 'Databases',
             'type': 'NUMBER',
-            'value': '100',
-            'computable_value': '100',
-            'name_code': null,
+            'value': '10',
+            'computable_value': '10',
+            'name_code': 'databases',
           },
         ],
         'zones': [
@@ -6842,9 +6842,9 @@ const rawAddonProviders = [
           {
             'name': 'Databases',
             'type': 'NUMBER',
-            'value': '100',
-            'computable_value': '100',
-            'name_code': null,
+            'value': '20',
+            'computable_value': '20',
+            'name_code': 'databases',
           },
         ],
         'zones': [
@@ -6862,7 +6862,7 @@ const rawAddonProviders = [
       {
         'name': 'Databases',
         'type': 'NUMBER',
-        'name_code': null,
+        'name_code': 'databases',
       },
       {
         'name': 'Type',
@@ -6889,14 +6889,12 @@ const rawAddonProviders = [
 ];
 /* eslint-enable quote-props */
 
-const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
-
 export function getFullProductAddon (addonProviderId, addonFeatures) {
   const rawAddonProvider = rawAddonProviders.find((addonProvider) => addonProvider.id === addonProviderId);
-  return formatAddonProduct(rawAddonProvider, rawPriceSystem, addonFeatures, CURRENCY_EUR);
+  return formatAddonProduct(rawAddonProvider, rawPriceSystem, addonFeatures);
 }
 
 export function getProductAddon (addonProviderId) {
-  const { plans, features } = getFullProductAddon(addonProviderId);
-  return { plans, features };
+  const { plans, productFeatures } = getFullProductAddon(addonProviderId);
+  return { plans, productFeatures };
 }

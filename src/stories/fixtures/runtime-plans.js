@@ -5020,6 +5020,6 @@ export function getFullProductRuntime (runtimeVariantSlug) {
 }
 
 export function getProductRuntime (runtimeVariantSlug) {
-  const { plans, features } = getFullProductRuntime(runtimeVariantSlug);
-  return { plans, features };
+  const { plans, productFeatures } = getFullProductRuntime(runtimeVariantSlug);
+  return { plans, productFeatures };
 }
