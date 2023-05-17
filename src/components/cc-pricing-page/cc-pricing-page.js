@@ -1,136 +1,175 @@
 import { css, html, LitElement } from 'lit';
-import '../cc-pricing-header/cc-pricing-header.js';
-import '../cc-pricing-product/cc-pricing-product.js';
-import '../cc-pricing-estimation/cc-pricing-estimation.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 
 /** @type {Currency} */
-const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
+// FIXME: this code is duplicated across all pricing components (see issue #732 for more details)
+const DEFAULT_CURRENCY = { code: 'EUR', changeRate: 1 };
+/** @type {Temporality} */
+// FIXME: this code is duplicated across all pricing components (see issue #732 for more details)
+const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
 
 /**
+ * @typedef {import('../cc-pricing-estimation/cc-pricing-estimation.js').CcPricingEstimation} CcPricingEstimation
+ * @typedef {import('../cc-pricing-header/cc-pricing-header.js').CcPricingHeader} CcPricingHeader
+ * @typedef {import('../cc-pricing-product/cc-pricing-product.js').CcPricingProduct} CcPricingProduct
  * @typedef {import('../common.types.js').Currency} Currency
- * @typedef {import('../common.types.js').Zone} Zone
+ * @typedef {import('./cc-pricing-page.types.js').SelectedPlans} SelectedPlans
+ * @typedef {import('../common.types.js').Temporality} Temporality
  */
 
 /**
- * A component to display a pricing simulator with a list of `<cc-pricing-product>` in the default slot.
+ * A component used to make slotted pricing components communicate together.
+ *
+ * **Note:**
+ *
+ * This component only contains a slot and it has no specific styling.
+ * The goal of this component is to receive pricing components (using the default slot) and allow them to communicate together.
+ *
+ * To do so, the component relies on a mutation observer that detects slotted pricing components and keeps refs of the corresponding DOM elements.
+ * It listens to pricing related events and updates the relevant pricing DOM elements depending on the event.
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<Currency>} cc-pricing-page:change-currency - Fires the `currency` whenever the currency selection changes.
- * @event {CustomEvent<string>} cc-pricing-page:change-zone - Fires the `zoneId` (zone name) whenever the zone selection changes.
- *
- * @slot - The main part of the simulator, this is where you list <cc-pricing-product*> components.
- * @slot estimation-header - Content between the main slot containing products and the bottom estimation block.
- * @slot resources - Content between the top header block and the main slot containing products.
- *
- * @csspart header - Targets the inner `<cc-pricing-header>`.
- * @csspart estimation-selected-plans - Targets the inner `<cc-pricing-estimation>` part `selected-plans`.
- * @csspart estimation-recap - Targets the inner `<cc-pricing-estimation>` part `recap`.
- * @cssprop {Color} --cc-pricing-estimation-recap-bg-color - Sets the value of the recap (part of the inner `cc-pricing-estimation` component) background color (#000000 by default).
+ * @slot - Use this slot to insert your pricing components and their related content (headings, descriptions, etc.)
  */
 export class CcPricingPage extends LitElement {
 
   static get properties () {
     return {
-      currencies: { type: Array },
-      currency: { type: Object },
-      zoneId: { type: Object },
-      zones: { type: Array },
-      _selectedPlans: { type: Object, state: true },
+      selectedCurrency: { type: Object, attribute: 'selected-currency' },
+      selectedPlans: { type: Object, attribute: 'selected-plans' },
+      selectedTemporality: { type: Object, attribute: 'selected-temporality' },
+      selectedZoneId: { type: String, attribute: 'selected-zone-id' },
+      _headerElement: { type: Object, state: true },
+      _productElements: { type: Array, state: true },
+      _estimationElement: { type: Object, state: true },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {Currency[]|null} Sets the list of currencies available for selection. */
-    this.currencies = null;
-
     /** @type {Currency} Sets the current selected currency. */
-    this.currency = CURRENCY_EUR;
+    this.selectedCurrency = DEFAULT_CURRENCY;
 
-    /** @type {string|null} Sets the current selected zone by its ID/name. */
-    this.zoneId = null;
+    /** @type {SelectedPlans} Sets the current selected plans. */
+    this.selectedPlans = {};
 
-    /** @type {Zone[]|null} Sets the list of zones available for selection. */
-    this.zones = null;
+    /** @type {Temporality} Sets the current selected temporality. */
+    this.selectedTemporality = DEFAULT_TEMPORALITY;
 
-    this._selectedPlans = {};
-  }
+    /** @type {string} Sets the current selected zone by referencing its ID/name. */
+    this.selectedZoneId = 'par';
 
-  _getTotalPrice () {
-    return Object.values(this._selectedPlans)
-      .map(({ price, quantity }) => price * 24 * 30 * quantity)
-      .reduce((a, b) => a + b, 0);
+    /** @type {CcPricingHeader|null} */
+    this._headerElement = null;
+
+    /** @type {CcPricingProduct[]|null} */
+    this._productElements = null;
+
+    /** @type {CcPricingEstimation[]|null} */
+    this._estimationElement = null;
   }
 
   _getPlanId (plan) {
     return plan.id ?? `${plan.productName}/${plan.name}`;
   }
 
+  /**
+   * Query pricing components from light DOM and store in their corresponding state props.
+   */
+  _updateElementReferences () {
+    this._headerElement = this.querySelector('cc-pricing-header');
+    this._productElements = Array.from(this.querySelectorAll('cc-pricing-product, cc-pricing-product-consumption'));
+    this._estimationElement = this.querySelector('cc-pricing-estimation');
+  }
+
   _onAddPlan ({ detail: plan }) {
     const planId = this._getPlanId(plan);
-    if (this._selectedPlans[planId] == null) {
-      this._selectedPlans[planId] = { ...plan, quantity: 0 };
+    if (this.selectedPlans[planId] == null) {
+      this.selectedPlans[planId] = { ...plan, quantity: 0 };
     }
-    this._selectedPlans[planId].quantity += 1;
+    this.selectedPlans[planId].quantity += 1;
     this.requestUpdate();
+  }
+
+  _onChangeCurrency ({ detail: currency }) {
+    this.selectedCurrency = currency;
+  }
+
+  _onChangeTemporality ({ detail: temporality }) {
+    this.selectedTemporality = temporality;
   }
 
   _onChangeQuantity ({ detail: plan }) {
     const planId = this._getPlanId(plan);
-    this._selectedPlans[planId].quantity = plan.quantity;
+    this.selectedPlans[planId].quantity = plan.quantity;
     this.requestUpdate();
   }
 
   _onDeletePlan ({ detail: plan }) {
     const planId = this._getPlanId(plan);
-    delete this._selectedPlans[planId];
+    delete this.selectedPlans[planId];
     this.requestUpdate();
   }
 
-  _onChangeCurrency ({ detail: currency }) {
-    dispatchCustomEvent(this, 'change-currency', currency);
+  /**
+  * When the component is connected to the DOM:
+  *
+  * - we update the list of slotted pricing components,
+  * - we set up a MutationObserver that will keep the list of slotted pricing components updated.
+  */
+  connectedCallback () {
+    super.connectedCallback();
+    this._updateElementReferences();
+    this._observer = new MutationObserver(() => this._updateElementReferences());
+    this._observer.observe(this, {
+      childList: true,
+      subtree: true,
+    });
   }
 
-  _onChangeZone ({ detail: zoneId }) {
-    dispatchCustomEvent(this, 'change-zone', zoneId);
+  disconnectedCallback () {
+    super.disconnectedCallback();
+    this._observer.disconnect();
+  }
+
+  /**
+   * Everytime any of the props change, we pass the current prop values to all the slotted pricing components.
+   * In other words, we keep the slotted pricing components synced with the pricing page state.
+   *
+   * Note that the pricing page component itself updates the `selectedPlans` prop when the quantity of plans changes.
+   * This triggers the willUpdate lifecycle hook right below.
+   * It updates the pricing estimation `selectedPlans` prop as a result.
+   */
+  willUpdate () {
+    this._productElements?.forEach((productElement) => {
+      productElement.currency = this.selectedCurrency;
+      productElement.temporalities = [this.selectedTemporality];
+    });
+
+    if (this._headerElement != null) {
+      this._headerElement.selectedCurrency = this.selectedCurrency ?? DEFAULT_CURRENCY;
+      this._headerElement.selectedTemporality = this.selectedTemporality ?? DEFAULT_TEMPORALITY;
+    }
+
+    if (this._estimationElement != null) {
+      this._estimationElement.selectedCurrency = this.selectedCurrency ?? DEFAULT_CURRENCY;
+      this._estimationElement.selectedTemporality = this.selectedTemporality ?? DEFAULT_TEMPORALITY;
+      this._estimationElement.selectedPlans = Object.values(this.selectedPlans);
+    }
   }
 
   render () {
-
-    const selectedPlans = Object.values(this._selectedPlans);
-    const totalPrice = this._getTotalPrice();
-
     return html`
-
-      <cc-pricing-header
-        part="header"
-        .currency=${this.currency}
-        .currencies=${this.currencies}
-        .totalPrice=${totalPrice}
-        .zoneId=${this.zoneId}
-        .zones=${this.zones}
+      <slot
         @cc-pricing-header:change-currency=${this._onChangeCurrency}
-        @cc-pricing-header:change-zone=${this._onChangeZone}
-      ></cc-pricing-header>
-
-      <slot name="resources"></slot>
-
-      <!-- default slot where <cc-pricing-product*> go -->
-      <slot @cc-pricing-product:add-plan=${this._onAddPlan}></slot>
-
-      <slot name="estimation-header"></slot>
-
-      <cc-pricing-estimation
-        exportparts="selected-plans: estimation-selected-plans, recap: estimation-recap"
-        .currency=${this.currency}
-        .selectedPlans=${selectedPlans}
-        .totalPrice=${totalPrice}
+        @cc-pricing-header:change-temporality=${this._onChangeTemporality}
+        @cc-pricing-product:add-plan=${this._onAddPlan}
         @cc-pricing-estimation:change-quantity=${this._onChangeQuantity}
         @cc-pricing-estimation:delete-plan=${this._onDeletePlan}
-      ></cc-pricing-estimation>
+        @cc-pricing-estimation:change-temporality=${this._onChangeTemporality}
+        @cc-pricing-estimation:change-currency=${this._onChangeCurrency}
+      ></slot>
     `;
   }
 
@@ -138,9 +177,9 @@ export class CcPricingPage extends LitElement {
     return [
       // language=CSS
       css`
-          :host {
-            display: contents;
-          }
+        :host {
+          display: block;
+        }
       `,
     ];
   }
