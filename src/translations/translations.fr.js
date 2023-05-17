@@ -624,7 +624,39 @@ export const translations = {
   'cc-pricing-header.selected-zone': `Zone : `,
   //#endregion
   //#region cc-pricing-product
+  'cc-pricing-product.add-button': ({ productName, size }) => `Ajouter ${productName} - ${size} à l'estimation`,
   'cc-pricing-product.error': `Une erreur est survenue pendant le chargement des prix.`,
+  'cc-pricing-product.feature.connection-limit': `Limite de connexions`,
+  'cc-pricing-product.feature.cpu': `vCPUs`,
+  'cc-pricing-product.feature.databases': `Bases de données`,
+  'cc-pricing-product.feature.disk-size': `Taille du disque`,
+  'cc-pricing-product.feature.gpu': `GPUs`,
+  'cc-pricing-product.feature.has-logs': `Logs`,
+  'cc-pricing-product.feature.has-metrics': `Métriques`,
+  'cc-pricing-product.feature.max-db-size': `Taille BDD max`,
+  'cc-pricing-product.feature.memory': `RAM`,
+  'cc-pricing-product.feature.version': `Version`,
+  'cc-pricing-product.plan': `Plan`,
+  'cc-pricing-product.price': ({ price, code, digits }) => formatCurrency(lang, price, {
+    currency: code,
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  }),
+  'cc-pricing-product.price-name.1000-minutes': `Prix (${formatNumber(lang, 1000)} minutes)`,
+  'cc-pricing-product.price-name.30-days': () => sanitize`Prix/30&nbsp;jours`,
+  'cc-pricing-product.price-name.day': `Prix/jour`,
+  'cc-pricing-product.price-name.hour': `Prix/heure`,
+  'cc-pricing-product.price-name.minute': `Prix/minute`,
+  'cc-pricing-product.price-name.second': `Prix/seconde`,
+  'cc-pricing-product.type.boolean': ({ boolean }) => `${boolean ? 'Oui' : 'Non'}`,
+  'cc-pricing-product.type.boolean-shared': ({ shared }) => `${shared ? 'Partagé' : 'Dédié'}`,
+  'cc-pricing-product.type.bytes': ({ bytes }) => formatBytes(bytes, 0, 3),
+  'cc-pricing-product.type.number': ({ number }) => formatNumber(lang, number),
+  'cc-pricing-product.type.number-cpu-runtime': ({ cpu, shared }) => {
+    return shared
+      ? sanitize`<em title="Accès au vCPU moins prioritaire">${formatNumber(lang, cpu)}<code>*</code></em>`
+      : formatNumber(lang, cpu);
+  },
   //#endregion
   //#region cc-pricing-product-consumption
   'cc-pricing-product-consumption.add': `Ajouter`,

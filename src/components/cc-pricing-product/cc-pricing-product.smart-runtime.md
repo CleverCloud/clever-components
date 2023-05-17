@@ -14,115 +14,82 @@ title: '💡 Smart (runtime)'
 
 ## ⚙️ Params
 
-<table>
-  <tr><th>Name                      <th>Type                  <th>Details                                                                                                                <th>Default
-  <tr><td><code>productId</code>    <td><code>String</code>   <td>Variant slug from <a href="https://api.clever-cloud.com/v2/products/instances"><code>/v2/products/instances</code></a> <td>
-  <tr><td><code>zoneId</code>       <td><code>String</code>   <td>Name from <a href="https://api.clever-cloud.com/v4/products/zones"><code>/v4/products/zones</code></a>                 <td><code>par</code>
-  <tr><td><code>currency</code>     <td><code>Currency</code> <td>Currency info                                                                                                          <td><code>{ code: 'EUR', changeRate: 1 }</code>
-</table>
+| Name        | Type        | Details                                                                                          | Default |
+|-------------|-------------|--------------------------------------------------------------------------------------------------|---------|
+| `apiConfig` | `ApiConfig` | Object with API configuration (only `API_HOST` is required for this component)                   |         |
+| `productId` | `string`    | Variant slug from [`/v2/products/instances`](https://api.clever-cloud.com/v2/products/instances) |         |
+| `zoneId`    | `string`    | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones)                 | `par`   |
 
 ```ts
-interface Currency {
-  code: string,       // ISO 4217 currency code
-  changeRate: number, // based on euros
+interface ApiConfig {
+  API_HOST: string,
 }
 ```
 
 ## 🌐 API endpoints
 
-<table>
-  <tr><th>Method <th>URL                                           <th>Cache?
-  <tr><td>GET    <td><code>/v2/products/instances</code>           <td>1 day
-  <tr><td>GET    <td><code>/v4/billing/price-system?zone_id</code> <td>1 day
-</table>
+| Method | Type                               | Cache? |
+|--------|:-----------------------------------|--------|
+| `GET`  | `/v2/products/instances`           | 1 day  |
+| `GET`  | `/v4/billing/price-system?zone_id` | 1 day  |
 
 ## ⬇️️ Examples
 
 ### Simple
 
-Simple example based on default zone and currency.
+Simple example based on default zone.
 
 ```html
-<cc-smart-container context='{ "productId": "node" }'>
+<cc-smart-container context='{
+    "apiConfig": {
+      API_HOST: "",
+    },
+    "productId": "node",
+}'>
   <cc-pricing-product mode="runtime"></cc-pricing-product>
 </cc-smart-container>
 ```
-
-<cc-smart-container context='{ "productId": "node" }'>
-  <cc-pricing-product mode="runtime"></cc-pricing-product>
-</cc-smart-container>
 
 ### Special case for Jenkins runner
 
 ```html
-<cc-smart-container context='{ "productId": "jenkins-runner" }'>
-  <cc-pricing-product mode="runtime" action="none" temporality='[{"type":"minute","digits":5}]'></cc-pricing-product>
+<cc-smart-container context='{
+    "apiConfig": {
+      API_HOST: "",
+    },
+    "productId": "jenkins-runner",
+}'>
+  <cc-pricing-product mode="runtime" action="none" temporalities='[{"type":"minute","digits":5}]'></cc-pricing-product>
 </cc-smart-container>
 ```
-
-<cc-smart-container context='{ "productId": "jenkins-runner" }'>
-  <cc-pricing-product mode="runtime" action="none" temporality='[{"type":"minute","digits":5}]'></cc-pricing-product>
-</cc-smart-container>
 
 ### Special case for Heptapod runner
 
 ```html
-<cc-smart-container context='{ "productId": "heptapod-runner" }'>
-  <cc-pricing-product mode="runtime" action="none" temporality='[{"type":"minute","digits":5}]'></cc-pricing-product>
+<cc-smart-container context='{
+    "apiConfig": {
+      API_HOST: "",
+    },
+    "productId": "heptapod-runner",
+}'>
+  <cc-pricing-product mode="runtime" action="none" temporalities='[{"type":"minute","digits":5}]'></cc-pricing-product>
 </cc-smart-container>
 ```
 
-<cc-smart-container context='{ "productId": "heptapod-runner" }'>
-  <cc-pricing-product mode="runtime" action="none" temporality='[{"type":"minute","digits":5}]'></cc-pricing-product>
-</cc-smart-container>
+### Zone
 
-### Zone and currency
-
-Simple example with custom zone and custom currency.
+Simple example with custom zone.
 
 NOTE: Prices are the same on all zones right now.
 
 ```html
-<cc-smart-container context='{ "productId": "node", "zoneId": "rbx", "currency": { "code": "USD", "changeRate": 1.1802 } }'>
+<cc-smart-container context='{
+    "apiConfig": {
+      API_HOST: "",
+    },
+    "productId": "node",
+    "zoneId": "rbx",
+}'>
   <cc-pricing-product mode="runtime"></cc-pricing-product>
 </cc-smart-container>
 ```
-
-<cc-smart-container context='{ "productId": "node", "zoneId": "rbx", "currency": { "code": "USD", "changeRate": 1.1802 } }'>
-  <cc-pricing-product mode="runtime"></cc-pricing-product>
-</cc-smart-container>
-
-### Override name, icons, description
-
-As described in the `<cc-pricing-product>` stories, you can set the name or icon via slots.
-This will override the data that comes from the smart component:
-
-```html
-<cc-smart-container context='{ "productId": "jar" }'>
-  <cc-pricing-product mode="runtime">
-    <img slot="icon" src="https://assets.clever-cloud.com/logos/java-jar.svg" alt="">
-    <img slot="icon" src="https://assets.clever-cloud.com/logos/scala.svg" alt="">
-    <img slot="icon" src="https://assets.clever-cloud.com/logos/maven.svg" alt="">
-    <img slot="icon" src="https://assets.clever-cloud.com/logos/gradle.svg" alt="">
-    <div slot="name">JVM: Java, Scala...</div>
-    <div>
-      Bla bla about JVM based apps using Java, Scala etc...
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa. Mauris dignissim accumsan ex, at vestibulum lectus fermentum id.
-    </div>
-  </cc-pricing-product>
-</cc-smart-container>
-```
-
-<cc-smart-container context='{ "productId": "jar" }'>
-  <cc-pricing-product mode="runtime">
-    <img slot="icon" src="https://assets.clever-cloud.com/logos/java-jar.svg" alt="">
-    <img slot="icon" src="https://assets.clever-cloud.com/logos/scala.svg" alt="">
-    <img slot="icon" src="https://assets.clever-cloud.com/logos/maven.svg" alt="">
-    <img slot="icon" src="https://assets.clever-cloud.com/logos/gradle.svg" alt="">
-    <div slot="name">JVM: Java, Scala...</div>
-    <div>
-      Bla bla about JVM based apps using Java, Scala etc...
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa. Mauris dignissim accumsan ex, at vestibulum lectus fermentum id.
-    </div>
-  </cc-pricing-product>
-</cc-smart-container>
