@@ -16,11 +16,35 @@ const defaultItem = {
   currencies: [
     { code: 'EUR', changeRate: 1 },
     { code: 'GBP', changeRate: 0.88603 },
-    { code: 'USD', changeRate: 1.2091 },
+    { code: 'USD', changeRate: 1.1717 },
   ],
-  zones: ZONES,
-  zoneId: 'par',
-  totalPrice: 720,
+  temporalities: [
+    {
+      type: 'second',
+      digits: 7,
+    },
+    {
+      type: 'minute',
+      digits: 5,
+    },
+    {
+      type: 'hour',
+      digits: 3,
+    },
+    {
+      type: 'day',
+      digits: 2,
+    },
+    {
+      type: '30-days',
+      digits: 2,
+    },
+  ],
+  zones: {
+    state: 'loaded',
+    value: ZONES,
+  },
+  selectedZoneId: 'par',
 };
 
 export const defaultStory = makeStory(conf, {
@@ -31,33 +55,40 @@ export const skeleton = makeStory(conf, {
   items: [{}],
 });
 
-export const dataLoadedWithCustomStyles = makeStory(conf, {
-  // language=CSS
-  css: `
-    cc-pricing-header {
-      border-radius: 5px;
-      box-shadow: 0 0 0.5em #aaa;
-      padding: 1em;
-    }
-  `,
-  items: [defaultItem],
-});
-
 export const dataLoadedWithDollars = makeStory(conf, {
   items: [{
     ...defaultItem,
-    currency: { code: 'USD', changeRate: 1.21 },
-    zoneId: 'nyc',
+    selectedCurrency: { code: 'USD', changeRate: 1.1717 },
+    selectedZoneId: 'nyc',
+  }],
+});
+
+export const dataLoadedWithMinute = makeStory(conf, {
+  items: [{
+    ...defaultItem,
+    selectedTemporality: { type: 'minute', digits: 2 },
+    selectedZoneId: 'nyc',
   }],
 });
 
 export const simulations = makeStory(conf, {
-  items: [{}],
+  items: [{
+    currencies: defaultItem.currencies,
+    temporalities: defaultItem.temporalities,
+  }],
   simulations: [
     storyWait(2000, ([component]) => {
-      component.currencies = defaultItem.currencies;
-      component.zones = defaultItem.zones;
-      component.zoneId = defaultItem.zones[0].name;
+      component.zones = {
+        state: 'loaded',
+        value: ZONES,
+      };
+      component.selectedZoneId = 'par';
+    }),
+    storyWait(2000, ([component]) => {
+      component.selectedTemporality = defaultItem.temporalities[3];
+    }),
+    storyWait(2000, ([component]) => {
+      component.selectedCurrency = defaultItem.currencies[1];
     }),
   ],
 });
@@ -69,7 +100,7 @@ export const simulations = makeStory(conf, {
 enhanceStoriesNames({
   defaultStory,
   skeleton,
-  dataLoadedWithCustomStyles,
   dataLoadedWithDollars,
+  dataLoadedWithMinute,
   simulations,
 });

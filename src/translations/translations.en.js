@@ -605,10 +605,15 @@ export const translations = {
   'cc-pricing-estimation.sign-up': `Sign Up`,
   //#endregion
   //#region cc-pricing-header
-  'cc-pricing-header.currency-text': `Currency: `,
-  'cc-pricing-header.est-cost': `Estimated Cost: `,
-  'cc-pricing-header.price': ({ price, code }) => `${formatCurrency(lang, price, { currency: code })}`,
-  'cc-pricing-header.selected-zone': `Zone: `,
+  'cc-pricing-header.label.currency': `Currency`,
+  'cc-pricing-header.label.temporality': `Temporality`,
+  'cc-pricing-header.label.zone': `Zone`,
+  'cc-pricing-header.price-name.1000-minutes': `Price (${formatNumber(lang, 1000)} minutes)`,
+  'cc-pricing-header.price-name.30-days': () => sanitize`Price/30&nbsp;days`,
+  'cc-pricing-header.price-name.day': `Price/Day`,
+  'cc-pricing-header.price-name.hour': `Price/Hour`,
+  'cc-pricing-header.price-name.minute': `Price/Minute`,
+  'cc-pricing-header.price-name.second': `Price/Second`,
   //#endregion
   //#region cc-pricing-product
   'cc-pricing-product.add-button': ({ productName, size }) => `Add ${productName} - ${size} to the cost estimate`,

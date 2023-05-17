@@ -618,10 +618,15 @@ export const translations = {
   'cc-pricing-estimation.sign-up': `S'inscrire`,
   //#endregion
   //#region cc-pricing-header
-  'cc-pricing-header.currency-text': `Devise : `,
-  'cc-pricing-header.est-cost': `Total Estimé : `,
-  'cc-pricing-header.price': ({ price, code }) => `${formatCurrency(lang, price, { currency: code })}`,
-  'cc-pricing-header.selected-zone': `Zone : `,
+  'cc-pricing-header.label.currency': `Devise`,
+  'cc-pricing-header.label.temporality': `Temporalité`,
+  'cc-pricing-header.label.zone': `Zone`,
+  'cc-pricing-header.price-name.1000-minutes': `Prix (${formatNumber(lang, 1000)} minutes)`,
+  'cc-pricing-header.price-name.30-days': () => sanitize`Prix/30&nbsp;jours`,
+  'cc-pricing-header.price-name.day': `Prix/jour`,
+  'cc-pricing-header.price-name.hour': `Prix/heure`,
+  'cc-pricing-header.price-name.minute': `Prix/minute`,
+  'cc-pricing-header.price-name.second': `Prix/seconde`,
   //#endregion
   //#region cc-pricing-product
   'cc-pricing-product.add-button': ({ productName, size }) => `Ajouter ${productName} - ${size} à l'estimation`,
