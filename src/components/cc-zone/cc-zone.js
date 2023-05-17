@@ -1,4 +1,3 @@
-import '../cc-flex-gap/cc-flex-gap.js';
 import '../cc-img/cc-img.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
@@ -100,9 +99,9 @@ export class CcZone extends LitElement {
             <cc-img class="infra-logo" src=${getInfraProviderLogoUrl(infra)} text=${infra}></cc-img>
           ` : ''}
         </div>
-        <cc-flex-gap class="tag-list">
+        <div class="tag-list">
           ${zone.tags.map((t) => html`<span class="tag ${classMap({ skeleton })}">${t}</span>`)}
-        </cc-flex-gap>
+        </div>
       </div>
     `;
   }
@@ -183,10 +182,14 @@ export class CcZone extends LitElement {
         }
 
         .tag-list {
-          --cc-gap: 0.5em;
+          display: flex;
+          flex-wrap: wrap;
+          margin-top: 0.1em;
+          gap: 0.5em;
         }
 
         .tag {
+          display: flex;
           box-sizing: border-box;
           padding: 0.1em 0.3em;
           border: 1px solid var(--cc-zone-tag-bdcolor, transparent);
