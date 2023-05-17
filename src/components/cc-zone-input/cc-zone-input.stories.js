@@ -103,15 +103,6 @@ export const ZONES = [
     lon: 13.39,
     tags: ['region:eu', 'scope:private'],
   },
-  {
-    name: 'nyc',
-    country: 'United States',
-    countryCode: 'US',
-    city: 'New York City',
-    lat: 40.71,
-    lon: -74.01,
-    tags: ['infra:bso'],
-  },
 ];
 
 export const defaultStory = makeStory(conf, {
