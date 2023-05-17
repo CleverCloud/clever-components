@@ -34,51 +34,141 @@ const nodeExample = {
 
 const selectedPlans = [pgExample, cellarExample, nodeExample];
 
-const totalPrice = selectedPlans
-  .map((plan) => plan.price * plan.quantity * 24 * 30)
-  .reduce((a, b) => a + b, 0);
-
-const defaultItem = { selectedPlans, totalPrice };
+const defaultItem = {
+  currencies: [
+    { code: 'EUR', changeRate: 1 },
+    { code: 'GBP', changeRate: 0.88603 },
+    { code: 'USD', changeRate: 1.1717 },
+  ],
+  temporalities: [
+    {
+      type: 'second',
+      digits: 7,
+    },
+    {
+      type: 'minute',
+      digits: 5,
+    },
+    {
+      type: 'hour',
+      digits: 3,
+    },
+    {
+      type: 'day',
+      digits: 2,
+    },
+    {
+      type: '30-days',
+      digits: 2,
+    },
+  ],
+  selectedPlans,
+};
 
 export const defaultStory = makeStory(conf, {
   items: [defaultItem],
 });
 
 export const empty = makeStory(conf, {
-  items: [{}],
+  items: [{
+    currencies: [
+      { code: 'EUR', changeRate: 1 },
+      { code: 'GBP', changeRate: 0.88603 },
+      { code: 'USD', changeRate: 1.1717 },
+    ],
+    temporalities: [
+      {
+        type: 'second',
+        digits: 7,
+      },
+      {
+        type: 'minute',
+        digits: 5,
+      },
+      {
+        type: 'hour',
+        digits: 3,
+      },
+      {
+        type: 'day',
+        digits: 2,
+      },
+      {
+        type: '30-days',
+        digits: 2,
+      },
+    ],
+  }],
 });
 
 export const dataLoaded = makeStory(conf, {
   items: [defaultItem],
 });
 
-export const dataLoadedWithCustomStyles = makeStory(conf, {
+export const dataLoadedWithToggle = makeStory(conf, {
+  items: [{
+    ...defaultItem,
+    isToggleEnabled: true,
+  }],
+});
+
+export const dataLoadedWithCustomFooter = makeStory(conf, {
   // language=CSS
   css: `
-    cc-pricing-estimation {
-      --cc-pricing-estimation-recap-bg-color: #3a3771;
+    p[slot=footer] {
+      margin-top: 2em;
+      margin-bottom: 0;
     }
 
-    cc-pricing-estimation::part(selected-plans) {
-      border-radius: 5px;
-      box-shadow: 0 0 0.5em #aaa;
-      margin: 1em 0;
-      overflow: hidden;
-    }
-
-    cc-pricing-estimation::part(recap) {
-      box-shadow: 0 0 0.5em #aaa;
-      margin: 1em 0;
-      overflow: hidden;
+    a {
+      color: var(--cc-color-text-primary-highlight);
     }
   `,
-  items: [defaultItem],
+  items: [{
+    ...defaultItem,
+    innerHTML: '<p slot="footer">Here is my custom footer with a great link leading to <a href="https://www.clever-cloud.com/">Clever Cloud</a>.</p>',
+  }],
 });
 
 export const dataLoadedWithDollars = makeStory(conf, {
   items: [{
     ...defaultItem,
-    currency: { code: 'USD', changeRate: 1.1802 },
+    selectedCurrency: { code: 'USD', changeRate: 1.1717 },
+  }],
+});
+
+export const dataLoadedWithTemporalitySecond7Digits = makeStory(conf, {
+  items: [{
+    ...defaultItem,
+    selectedTemporality: { type: 'second', digits: 7 },
+  }],
+});
+
+export const dataLoadedWithTemporalityMinute5Digits = makeStory(conf, {
+  items: [{
+    ...defaultItem,
+    selectedTemporality: { type: 'minute', digits: 5 },
+  }],
+});
+
+export const dataLoadedWithTemporalityHour3Digits = makeStory(conf, {
+  items: [{
+    ...defaultItem,
+    selectedTemporality: { type: 'hour', digits: 3 },
+  }],
+});
+
+export const dataLoadedWithTemporalityDay2Digits = makeStory(conf, {
+  items: [{
+    ...defaultItem,
+    selectedTemporality: { type: 'day', digits: 2 },
+  }],
+});
+
+export const dataLoadedWithTemporality30Days1Digit = makeStory(conf, {
+  items: [{
+    ...defaultItem,
+    selectedTemporality: { type: '30-days', digits: 1 },
   }],
 });
 
@@ -89,6 +179,12 @@ enhanceStoriesNames({
   defaultStory,
   empty,
   dataLoaded,
+  dataLoadedWithToggle,
+  dataLoadedWithCustomFooter,
   dataLoadedWithDollars,
-  dataLoadedWithCustomStyles,
+  dataLoadedWithTemporalitySecond7Digits,
+  dataLoadedWithTemporalityMinute5Digits,
+  dataLoadedWithTemporalityHour3Digits,
+  dataLoadedWithTemporalityDay2Digits,
+  dataLoadedWithTemporality30Days1Digit,
 });
