@@ -681,41 +681,6 @@ export const translations = {
   'cc-pricing-product-consumption.toggle-btn.label': `Show more details`,
   'cc-pricing-product-consumption.total.title': `Estimated total (30 days):`,
   //#endregion
-  //#region cc-pricing-table
-  'cc-pricing-table.add-button': `Add the product to the cost estimate`,
-  'cc-pricing-table.feature.connection-limit': `Connection limit`,
-  'cc-pricing-table.feature.cpu': `vCPUs`,
-  'cc-pricing-table.feature.databases': `Databases`,
-  'cc-pricing-table.feature.disk-size': `Disk size`,
-  'cc-pricing-table.feature.gpu': `GPUs`,
-  'cc-pricing-table.feature.has-logs': `Logs`,
-  'cc-pricing-table.feature.has-metrics': `Metrics`,
-  'cc-pricing-table.feature.max-db-size': `Max DB size`,
-  'cc-pricing-table.feature.memory': `RAM`,
-  'cc-pricing-table.feature.toggle': `Switch layout`,
-  'cc-pricing-table.feature.version': `Version`,
-  'cc-pricing-table.plan': `Plan`,
-  'cc-pricing-table.price': ({ price, code, digits }) => formatCurrency(lang, price, {
-    currency: code,
-    minimumFractionDigits: digits,
-    maximumFractionDigits: digits,
-  }),
-  'cc-pricing-table.price-name.1000-minutes': `Price (${formatNumber(lang, 1000)} minutes)`,
-  'cc-pricing-table.price-name.30-days': () => sanitize`Price (30&nbsp;days)`,
-  'cc-pricing-table.price-name.day': `Price (day)`,
-  'cc-pricing-table.price-name.hour': `Price (hour)`,
-  'cc-pricing-table.price-name.minute': `Price (minute)`,
-  'cc-pricing-table.price-name.second': `Price (second)`,
-  'cc-pricing-table.type.boolean': ({ boolean }) => `${boolean ? 'Yes' : 'No'}`,
-  'cc-pricing-table.type.boolean-shared': ({ shared }) => `${shared ? 'Shared' : 'Dedicated'}`,
-  'cc-pricing-table.type.bytes': ({ bytes }) => formatBytes(bytes, 0, 3),
-  'cc-pricing-table.type.number': ({ number }) => formatNumber(lang, number),
-  'cc-pricing-table.type.number-cpu-runtime': ({ cpu, shared }) => {
-    return shared
-      ? sanitize`<em title="Lower priority access to vCPU">${formatNumber(lang, cpu)}<code>*</code></em>`
-      : formatNumber(lang, cpu);
-  },
-  //#endregion
   //#region cc-select
   'cc-select.required': `required`,
   //#endregion
