@@ -2,7 +2,7 @@ import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-input-number/cc-input-number.js';
 import '../cc-toggle/cc-toggle.js';
-import '../cc-error/cc-error.js';
+import '../cc-notice/cc-notice.js';
 import '../cc-loader/cc-loader.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
@@ -344,7 +344,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
   render () {
     return html`
       ${this.product.state === 'error' ? html`
-        <cc-error>${i18n('cc-pricing-product-consumption.error')}</cc-error>
+        <cc-notice intent="warning" message=${i18n('cc-pricing-product-consumption.error')}></cc-notice>
       ` : ''}
 
       ${this.product.state === 'loading' ? html`
