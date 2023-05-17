@@ -1,4 +1,4 @@
-import './cc-pricing-product-consumption.smart.js';
+import './cc-pricing-product-consumption.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
@@ -16,7 +16,6 @@ const ONE_GIGABYTE = 1e9;
 
 const baseCellar = {
   name: 'Cellar',
-  icon: 'https://assets.clever-cloud.com/logos/cellar.svg',
   sections: [
     {
       type: 'storage',
@@ -61,7 +60,6 @@ const baseCellar = {
 
 const baseFsBucket = {
   name: 'FS Bucket',
-  icon: 'https://assets.clever-cloud.com/logos/fsbucket.svg',
   sections: [
     {
       type: 'storage',
@@ -82,7 +80,6 @@ const baseFsBucket = {
 
 const basePulsar = {
   name: 'Pulsar',
-  icon: 'https://assets.clever-cloud.com/logos/pulsar.svg',
   sections: [
     {
       type: 'storage',
@@ -176,7 +173,6 @@ const basePulsar = {
 
 const baseHeptapod = {
   name: 'Heptapod',
-  icon: 'https://assets.clever-cloud.com/logos/heptapod.svg',
   sections: [
     {
       type: 'storage',
@@ -222,205 +218,139 @@ const baseHeptapod = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [baseCellar],
-});
-
-export const skeleton = makeStory(conf, {
-  items: [{}],
-});
-
-export const skeletonWithCellar = makeStory(conf, {
   items: [{
-    ...baseCellar,
-    sections: baseCellar.sections.map(({ type }) => ({ type })),
+    product: {
+      state: 'loaded',
+      ...baseCellar,
+    },
   }],
 });
 
-export const skeletonWithFsBucket = makeStory(conf, {
+export const loading = makeStory(conf, {
   items: [{
-    ...baseFsBucket,
-    sections: baseFsBucket.sections.map(({ type }) => ({ type })),
-  }],
-});
-
-export const skeletonWithPulsar = makeStory(conf, {
-  items: [{
-    ...basePulsar,
-    sections: basePulsar.sections.map(({ type }) => ({ type })),
+    product: {
+      state: 'loading',
+    },
   }],
 });
 
 export const error = makeStory(conf, {
-  items: [{ error: true }],
-});
-
-export const errorWithCellar = makeStory(conf, {
   items: [{
-    ...baseCellar,
-    sections: baseCellar.sections.map(({ type }) => ({ type })),
-    error: true,
-  }],
-});
-
-export const errorWithFsBucket = makeStory(conf, {
-  items: [{
-    ...baseFsBucket,
-    sections: baseFsBucket.sections.map(({ type }) => ({ type })),
-    error: true,
-  }],
-});
-
-export const errorWithPulsar = makeStory(conf, {
-  items: [{
-    ...basePulsar,
-    sections: basePulsar.sections.map(({ type }) => ({ type })),
-    error: true,
+    product: {
+      state: 'error',
+    },
   }],
 });
 
 export const dataLoadedWithFsBucket = makeStory(conf, {
-  items: [baseFsBucket],
+  items: [{
+    product: {
+      state: 'loaded',
+      ...baseFsBucket,
+    },
+  }],
 });
 
 export const dataLoadedWithPulsar = makeStory(conf, {
-  items: [basePulsar],
+  items: [{
+    product: {
+      state: 'loaded',
+      ...basePulsar,
+    },
+  }],
 });
 
 export const dataLoadedWithHeptapod = makeStory(conf, {
-  items: [baseHeptapod],
-});
-
-export const dataLoadedWithCustomHead = makeStory(conf, {
   items: [{
-    ...baseCellar,
-    innerHTML: `<div slot="head" style="padding: 1em; background-color: lime;">The whole head section can be overriden with the head slot...</div>`,
-  }],
-});
-
-export const dataLoadedWithEmptyHead = makeStory(conf, {
-  items: [{
-    ...baseCellar,
-    innerHTML: `<div slot="head"></div>`,
-  }],
-});
-
-export const dataLoadedWithCustomDescription = makeStory(conf, {
-  items: [{
-    ...baseCellar,
-    innerHTML: 'Description can be overriden with default slot...',
-  }],
-});
-
-export const dataLoadedWithCustomStyles = makeStory(conf, {
-  // language=CSS
-  css: `
-    cc-pricing-product-consumption {
-      border-radius: 5px;
-      box-shadow: 0 0 5px #aaa;
-      overflow: hidden;
-    }
-  `,
-  items: [{
-    ...baseCellar,
-    innerHTML: 'Description can be overriden with default slot. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa. Mauris dignissim accumsan ex, at vestibulum lectus fermentum id. Quisque nec magna arcu. Quisque in metus sed erat sodales euismod eget id purus. Sed sagittis rhoncus mauris.',
+    product: {
+      state: 'loaded',
+      ...baseHeptapod,
+    },
   }],
 });
 
 export const dataLoadedWithNoAction = makeStory(conf, {
   items: [{
-    ...baseCellar,
     action: 'none',
+    product: {
+      state: 'loaded',
+      ...baseCellar,
+    },
   }],
 });
 
 export const dataLoadedWithDollars = makeStory(conf, {
   items: [{
-    ...baseCellar,
     currency: { code: 'USD', changeRate: 1.25 },
+    product: {
+      state: 'loaded',
+      ...baseCellar,
+    },
   }],
 });
 
 export const simulationsWithCellar = makeStory(conf, {
   items: [{
-    innerHTML: 'Cellar is an awesome object storage service!',
+    product: { state: 'loading' },
   }],
   simulations: [
-    storyWait(1000, ([component]) => {
-      component.icon = baseCellar.icon;
-      component.name = baseCellar.name;
-      component.sections = baseCellar.sections.map(({ type }) => ({ type }));
-    }),
-    storyWait(3000, ([component]) => {
-      component.sections = baseCellar.sections;
+    storyWait(2000, ([component]) => {
+      component.product = {
+        state: 'loaded',
+        ...baseCellar,
+      };
     }),
   ],
 });
 
 export const simulationsWithFsBucket = makeStory(conf, {
   items: [{
-    innerHTML: 'FS bucket is an awesome service!',
+    product: { state: 'loading' },
   }],
   simulations: [
-    storyWait(1000, ([component]) => {
-      component.icon = baseFsBucket.icon;
-      component.name = baseFsBucket.name;
-      component.sections = baseFsBucket.sections.map(({ type }) => ({ type }));
-    }),
-    storyWait(3000, ([component]) => {
-      component.sections = baseFsBucket.sections;
+    storyWait(2000, ([component]) => {
+      component.product = {
+        state: 'loaded',
+        ...baseFsBucket,
+      };
     }),
   ],
 });
 
 export const simulationsWithPulsar = makeStory(conf, {
   items: [{
-    innerHTML: 'Pulsar is an awesome service!',
+    product: { state: 'loading' },
   }],
   simulations: [
-    storyWait(1000, ([component]) => {
-      component.icon = basePulsar.icon;
-      component.name = basePulsar.name;
-      component.sections = basePulsar.sections.map(({ type }) => ({ type }));
-    }),
-    storyWait(3000, ([component]) => {
-      component.sections = basePulsar.sections;
+    storyWait(2000, ([component]) => {
+      component.product = {
+        state: 'loaded',
+        ...basePulsar,
+      };
     }),
   ],
 });
 
 export const simulationsWithError = makeStory(conf, {
   items: [{
-    innerHTML: 'Cellar is an awesome object storage service!',
+    product: { state: 'loading' },
   }],
   simulations: [
-    storyWait(1000, ([component]) => {
-      component.icon = baseCellar.icon;
-      component.name = baseCellar.name;
-      component.sections = baseCellar.sections.map(({ type }) => ({ type }));
-    }),
-    storyWait(3000, ([component]) => {
-      component.error = true;
+    storyWait(2000, ([component]) => {
+      component.product = {
+        state: 'error',
+      };
     }),
   ],
 });
 
 enhanceStoriesNames({
   defaultStory,
-  skeleton,
-  skeletonWithCellar,
-  skeletonWithFsBucket,
-  skeletonWithPulsar,
+  loading,
   error,
-  errorWithCellar,
-  errorWithFsBucket,
-  errorWithPulsar,
   dataLoadedWithFsBucket,
   dataLoadedWithPulsar,
   dataLoadedWithHeptapod,
-  dataLoadedWithCustomHead,
-  dataLoadedWithEmptyHead,
-  dataLoadedWithCustomDescription,
-  dataLoadedWithCustomStyles,
   dataLoadedWithNoAction,
   dataLoadedWithDollars,
   simulationsWithCellar,
