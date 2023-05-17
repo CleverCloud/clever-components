@@ -694,41 +694,6 @@ export const translations = {
   'cc-pricing-product-consumption.toggle-btn.label': `Afficher plus de details`,
   'cc-pricing-product-consumption.total.title': `Total estimé (30 jours) :`,
   //#endregion
-  //#region cc-pricing-table
-  'cc-pricing-table.add-button': `Ajouter le produit à l'estimation`,
-  'cc-pricing-table.feature.connection-limit': `Limite de connexions`,
-  'cc-pricing-table.feature.cpu': `vCPUs`,
-  'cc-pricing-table.feature.databases': `Bases de données`,
-  'cc-pricing-table.feature.disk-size': `Taille du disque`,
-  'cc-pricing-table.feature.gpu': `GPUs`,
-  'cc-pricing-table.feature.has-logs': `Logs`,
-  'cc-pricing-table.feature.has-metrics': `Métriques`,
-  'cc-pricing-table.feature.max-db-size': `Taille BDD max`,
-  'cc-pricing-table.feature.memory': `RAM`,
-  'cc-pricing-table.feature.toggle': `Basculer l'affichage`,
-  'cc-pricing-table.feature.version': `Version`,
-  'cc-pricing-table.plan': `Plan`,
-  'cc-pricing-table.price': ({ price, code, digits }) => formatCurrency(lang, price, {
-    currency: code,
-    minimumFractionDigits: digits,
-    maximumFractionDigits: digits,
-  }),
-  'cc-pricing-table.price-name.1000-minutes': `Prix (${formatNumber(lang, 1000)} minutes)`,
-  'cc-pricing-table.price-name.30-days': () => sanitize`Prix (30&nbsp;jours)`,
-  'cc-pricing-table.price-name.day': `Prix (jour)`,
-  'cc-pricing-table.price-name.hour': `Prix (heure)`,
-  'cc-pricing-table.price-name.minute': `Prix (minute)`,
-  'cc-pricing-table.price-name.second': `Prix (seconde)`,
-  'cc-pricing-table.type.boolean': ({ boolean }) => `${boolean ? 'Oui' : 'Non'}`,
-  'cc-pricing-table.type.boolean-shared': ({ shared }) => `${shared ? 'Partagé' : 'Dédié'}`,
-  'cc-pricing-table.type.bytes': ({ bytes }) => formatBytes(bytes, 0, 3),
-  'cc-pricing-table.type.number': ({ number }) => formatNumber(lang, number),
-  'cc-pricing-table.type.number-cpu-runtime': ({ cpu, shared }) => {
-    return shared
-      ? sanitize`<em title="Accès au vCPU moins prioritaire">${formatNumber(lang, cpu)}<code>*</code></em>`
-      : formatNumber(lang, cpu);
-  },
-  //#endregion
   //#region cc-select
   'cc-select.required': `obligatoire`,
   //#endregion
