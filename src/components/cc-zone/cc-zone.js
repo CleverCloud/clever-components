@@ -37,6 +37,10 @@ const PRIVATE_ZONE = 'scope:private';
  * @cssprop {Color} --cc-zone-subtitle-color - Text color of the subtitle (country name) (defaults to #555)
  * @cssprop {Color} --cc-zone-tag-bdcolor - Border color of the tags (defaults to transparent)
  * @cssprop {Color} --cc-zone-tag-bgcolor - Background color of the tags (defaults to rgba(50, 50, 255, 0.15))
+ * @cssprop {FontWeight} --cc-zone-tag-category-font-weight - Font weight of the first half of the tag (defaults to `normal`)
+ * @cssprop {FontFamily} --cc-zone-tag-font-family - Font Family of the tags (defaults to --cc-ff-monospace)
+ * @cssprop {Color} --cc-zone-tag-textcolor - Text color of the tags (defaults to --cc-color-text-default)
+ * @cssprop {Color} --cc-zone-tag-padding - Padding of the tag (defaults to `0.1em 0.3em`)
  */
 export class CcZone extends LitElement {
 
@@ -100,9 +104,34 @@ export class CcZone extends LitElement {
           ` : ''}
         </div>
         <div class="tag-list">
-          ${zone.tags.map((t) => html`<span class="tag ${classMap({ skeleton })}">${t}</span>`)}
+          ${zone.tags.map((tag) => this._renderTag(tag, skeleton))}
         </div>
       </div>
+    `;
+  }
+
+  /**
+   * @param {string} tag - the tag to render
+   * @param {boolean} skeleton - display as skeleton or not
+   */
+  _renderTag (tag, skeleton) {
+
+    if (tag.includes(':')) {
+      // Most of tags are strings separated by ":" but we need to split them in case
+      // implementers want to emphasize the category (what is before ":") using `--cc-zone-tag-category-font-weight`
+      const [category, value] = tag.split(':');
+
+      return html`
+        <span class="tag ${classMap({ skeleton })}">
+          <span class="tag__category">${category}:</span>
+          <span>${value}</span>
+        </span>
+      `;
+    }
+
+    // When the tag is not made of two parts, we don't want any specific styling
+    return html`
+      <span class="tag ${classMap({ skeleton })}">${tag}</span>
     `;
   }
 
@@ -191,14 +220,18 @@ export class CcZone extends LitElement {
         .tag {
           display: flex;
           box-sizing: border-box;
-          padding: 0.1em 0.3em;
+          padding: var(--cc-zone-tag-padding, 0.1em 0.3em);
           border: 1px solid var(--cc-zone-tag-bdcolor, transparent);
-          margin-top: 0.5em;
           background-color: var(--cc-zone-tag-bgcolor, var(--cc-color-bg-soft, #eee));
           border-radius: var(--cc-border-radius-default, 0.25em);
-          font-family: var(--cc-ff-monospace);
+          color: var(--cc-zone-tag-textcolor, var(--cc-color-text-default, #000));
+          font-family: var(--cc-zone-tag-font-family, var(--cc-ff-monospace));
           font-size: 0.8em;
           line-height: 1.5;
+        }
+
+        .tag__category {
+          font-weight: var(--cc-zone-tag-category-font-weight, normal);
         }
 
         .skeleton {
