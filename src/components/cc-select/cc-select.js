@@ -241,7 +241,7 @@ export class CcSelect extends LitElement {
         }
 
         select:focus {
-          border-color: #777;
+          border-color: var(--cc-color-border-neutral-focused, #777);
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
