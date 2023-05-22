@@ -428,7 +428,7 @@ export class CcInputNumber extends LitElement {
         }
 
         :host([readonly]) .ring {
-          background: var(--cc-color-bg-neutral-readonly);
+          background: var(--cc-color-bg-neutral-readonly, #aaa);
         }
 
         /* SKELETON */

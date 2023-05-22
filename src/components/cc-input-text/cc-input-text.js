@@ -580,7 +580,7 @@ export class CcInputText extends LitElement {
         }
 
         :host([readonly]) .ring {
-          background: var(--cc-color-bg-neutral-hovered);
+          background: var(--cc-color-bg-neutral-readonly, #aaa);
         }
 
         /* SKELETON */
