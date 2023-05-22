@@ -236,7 +236,7 @@ export class CcSelect extends LitElement {
         }
 
         select:hover {
-          border-color: #777;
+          border-color: var(--cc-color-border-neutral-hovered, #777);
           cursor: pointer;
         }
 

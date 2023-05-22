@@ -419,7 +419,7 @@ export class CcInputNumber extends LitElement {
         }
 
         input:hover + .ring {
-          border-color: #777;
+          border-color: var(--cc-color-border-neutral-hovered, #777);
         }
 
         :host([disabled]) .ring {
