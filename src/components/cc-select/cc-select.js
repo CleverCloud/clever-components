@@ -279,7 +279,7 @@ export class CcSelect extends LitElement {
         }
 
         select[disabled] {
-          border-color: var(--cc-color-bg-neutral-disabled);
+          border-color: var(--cc-color-border-neutral-disabled, #777);
           background: var(--cc-color-bg-neutral-disabled);
           color: var(--cc-color-text-weak);
           opacity: 1;

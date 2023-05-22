@@ -423,7 +423,7 @@ export class CcInputNumber extends LitElement {
         }
 
         :host([disabled]) .ring {
-          border-color: var(--cc-color-bg-neutral-disabled);
+          border-color: var(--cc-color-border-neutral-disabled, #777);
           background: var(--cc-color-bg-neutral-disabled);
         }
 
@@ -436,7 +436,7 @@ export class CcInputNumber extends LitElement {
         .skeleton .ring,
         .skeleton:hover .ring,
         .skeleton input:hover + .ring {
-          border-color: #eee;
+          border-color: var(--cc-color-border-neutral-disabled, #777);
           background-color: var(--cc-color-bg-neutral-disabled);
           cursor: progress;
         }

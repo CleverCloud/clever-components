@@ -575,7 +575,7 @@ export class CcInputText extends LitElement {
         }
 
         :host([disabled]) .ring {
-          border-color: #eee;
+          border-color: var(--cc-color-border-neutral-disabled, #eee);
           background: var(--cc-color-bg-neutral-disabled);
         }
 
@@ -588,7 +588,7 @@ export class CcInputText extends LitElement {
         .skeleton .ring,
         .skeleton:hover .ring,
         .skeleton .input:hover + .ring {
-          border-color: #eee;
+          border-color: var(--cc-color-border-neutral-disabled, #eee);
           background-color: var(--cc-color-bg-neutral-disabled);
           cursor: progress;
         }
