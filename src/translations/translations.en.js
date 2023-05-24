@@ -247,7 +247,7 @@ export const translations = {
   'cc-email-list.secondary.address-input.error.empty': `You must enter an email address`,
   'cc-email-list.secondary.address-input.error.invalid': () => sanitize`Invalid email address format.<br>Example: john.doe@example.com.`,
   'cc-email-list.secondary.address-input.error.used': `This email address does not belong to you`,
-  'cc-email-list.secondary.address-input.format': `name@domain.com`,
+  'cc-email-list.secondary.address-input.format': `name@example.com`,
   'cc-email-list.secondary.address-input.label': `Email address`,
   'cc-email-list.secondary.description': `Unlike the primary email address, no notifications are sent to these addresses. You can be invited inside an organisation with any of your secondary email addresses.`,
   'cc-email-list.secondary.title': `Secondary email addresses`,
