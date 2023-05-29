@@ -404,7 +404,7 @@ export class CcInputNumber extends LitElement {
         }
 
         input:focus + .ring {
-          border-color: #777;
+          border-color: var(--cc-color-border-neutral-focused, #777);
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
@@ -419,16 +419,16 @@ export class CcInputNumber extends LitElement {
         }
 
         input:hover + .ring {
-          border-color: #777;
+          border-color: var(--cc-color-border-neutral-hovered, #777);
         }
 
         :host([disabled]) .ring {
-          border-color: var(--cc-color-bg-neutral-disabled);
+          border-color: var(--cc-color-border-neutral-disabled, #777);
           background: var(--cc-color-bg-neutral-disabled);
         }
 
         :host([readonly]) .ring {
-          background: var(--cc-color-bg-neutral-readonly);
+          background: var(--cc-color-bg-neutral-readonly, #aaa);
         }
 
         /* SKELETON */
@@ -436,7 +436,7 @@ export class CcInputNumber extends LitElement {
         .skeleton .ring,
         .skeleton:hover .ring,
         .skeleton input:hover + .ring {
-          border-color: #eee;
+          border-color: var(--cc-color-border-neutral-disabled, #777);
           background-color: var(--cc-color-bg-neutral-disabled);
           cursor: progress;
         }

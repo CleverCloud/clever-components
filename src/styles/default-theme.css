@@ -223,6 +223,18 @@
   * For instance: block & card borders */
   --cc-color-border-neutral: var(--color-grey-30);
 
+  /* Usage: for disabled borders
+  * For instance: disabled input / select borders */
+  --cc-color-border-neutral-disabled: var(--color-grey-15);
+
+  /* Usage: for focused borders
+  * For instance: focused input / select borders */
+  --cc-color-border-neutral-focused: var(--color-grey-70);
+
+  /* Usage: for borders on hover
+  * For instance: input / select borders on hover */
+  --cc-color-border-neutral-hovered: var(--color-grey-70);
+
   /* Usage: for contrasted borders.
   * For instance: click targets like input fields */
   --cc-color-border-neutral-strong: var(--color-grey-50);

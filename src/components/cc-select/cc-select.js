@@ -236,12 +236,12 @@ export class CcSelect extends LitElement {
         }
 
         select:hover {
-          border-color: #777;
+          border-color: var(--cc-color-border-neutral-hovered, #777);
           cursor: pointer;
         }
 
         select:focus {
-          border-color: #777;
+          border-color: var(--cc-color-border-neutral-focused, #777);
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
@@ -279,7 +279,7 @@ export class CcSelect extends LitElement {
         }
 
         select[disabled] {
-          border-color: var(--cc-color-bg-neutral-disabled);
+          border-color: var(--cc-color-border-neutral-disabled, #777);
           background: var(--cc-color-bg-neutral-disabled);
           color: var(--cc-color-text-weak);
           opacity: 1;
