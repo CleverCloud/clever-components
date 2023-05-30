@@ -78,7 +78,7 @@ export class CcBlock extends LitElement {
       ${this.ribbon != null && this.ribbon !== '' ? html`
         <div class="info-ribbon">${this.ribbon}</div>
       ` : ''}
-      
+
       ${!this.noHead ? html`
         <div class="head" @click=${this._clickToggle}>
           ${this.icon != null ? html`
@@ -92,7 +92,7 @@ export class CcBlock extends LitElement {
               outlined
               primary
               @cc-button:click=${this._clickToggle}
-            >${(this.state === 'close') ? i18n('cc-block.toggle.close') : i18n('cc-block.toggle.open')}
+            >${i18n((this.state === 'close') ? 'cc-block.toggle.open' : 'cc-block.toggle.close')}
             </cc-button>
           ` : ''}
           <slot name="button"></slot>
