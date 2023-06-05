@@ -13,7 +13,7 @@ If the components are displayed in black and white, it means you forgot or faile
 
 ## Using npm
 
-The CSS file is available at `/dist/styles/default-themes.css` in the npm package [`@clevercloud/components`](https://www.npmjs.com/package/@clevercloud/components).
+The CSS file is available at `/dist/styles/default-theme.css` in the npm package [`@clevercloud/components`](https://www.npmjs.com/package/@clevercloud/components).
 
 The specific solution to import this CSS file depends a lot on your project stack and config.
 
@@ -22,7 +22,7 @@ The specific solution to import this CSS file depends a lot on your project stac
 If your toolchain supports it, you can import the CSS file like this:
 
 ```html
-<link rel="stylesheet" src="/node_modules/@clevercloud/components/dist/styles/default-themes.css">
+<link rel="stylesheet" src="/node_modules/@clevercloud/components/dist/styles/default-theme.css">
 ```
 
 ### Importing CSS from CSS
@@ -30,13 +30,13 @@ If your toolchain supports it, you can import the CSS file like this:
 If your toolchain supports it, you can import the CSS file like this:
 
 ```css
-@import '@clevercloud/components/dist/styles/default-themes.css';
+@import '@clevercloud/components/dist/styles/default-theme.css';
 ```
 
 If it doesn't work, you could try directly from the `node_modules` folder:
 
 ```css
-@import '/node_modules/@clevercloud/components/dist/styles/default-themes.css';
+@import '/node_modules/@clevercloud/components/dist/styles/default-theme.css';
 ```
 
 ### Importing CSS from JavaScript
@@ -44,7 +44,7 @@ If it doesn't work, you could try directly from the `node_modules` folder:
 If your bundler supports it, you can import the CSS file like this:
 
 ```js
-import '@clevercloud/components/dist/styles/default-themes.css';
+import '@clevercloud/components/dist/styles/default-theme.css';
 ```
 
 ## Copy-pasting the file
