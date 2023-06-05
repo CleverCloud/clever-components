@@ -10,7 +10,6 @@ import {
   terserPlugin,
   visualizerPlugin,
 } from './rollup-common.js';
-import { createIconAssetsPlugin } from './rollup-plugin-icon.js';
 import { indexGeneratorPlugin } from './rollup-plugin-index-generator.js';
 
 const sourceDir = 'src';
@@ -48,8 +47,6 @@ export default {
     clearPlugin({ outputDir }),
     // add (and optimize) svg files used in all new URL('...', import.meta.url) pattern.
     importMetaUrlAssetsPlugin(),
-    // deliver SVG icons in form of ES modules
-    createIconAssetsPlugin(),
     // minify JS
     terserPlugin(),
     // minify HTML and CSS inside components

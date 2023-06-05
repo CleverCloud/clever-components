@@ -1,6 +1,5 @@
 import json from '@rollup/plugin-json';
 import { rollupAdapter } from '@web/dev-server-rollup';
-import { createIconAssetsPlugin } from './rollup/rollup-plugin-icon.js';
 import { cemAnalyzerPlugin } from './wds/cem-analyzer-plugin.js';
 import { commonjsPluginWithConfig, esbuildBundlePluginWithConfig } from './wds/wds-common.js';
 
@@ -27,7 +26,6 @@ export default {
   `,
   plugins: [
     cemAnalyzerPlugin,
-    rollupAdapter(createIconAssetsPlugin()),
     rollupAdapter(json()),
     esbuildBundlePluginWithConfig,
     commonjsPluginWithConfig,
