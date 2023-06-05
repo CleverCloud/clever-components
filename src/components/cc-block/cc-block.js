@@ -92,7 +92,7 @@ export class CcBlock extends LitElement {
               outlined
               primary
               @cc-button:click=${this._clickToggle}
-            >${(this.state === 'close') ? i18n('cc-block.toggle.close') : i18n('cc-block.toggle.open')}
+            >${isOpen ? i18n('cc-block.toggle.close') : i18n('cc-block.toggle.open')}
             </cc-button>
           ` : ''}
           <slot name="button"></slot>
