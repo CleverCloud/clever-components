@@ -8,7 +8,7 @@ import { skeletonStyles } from '../../styles/skeleton.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 
 /**
- * @typedef {import('../cc-icon/cc-icon.types.js').IconModel} IconModel
+ * @typedef {import('../common.types.js').IconModel} IconModel
  */
 
 /**

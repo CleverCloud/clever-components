@@ -56,6 +56,10 @@ interface Variable {
   value: string;
 }
 
+export interface IconModel {
+  content: string;
+}
+
 interface InvoiceAmount {
   amount: Number;
   currency: string;
