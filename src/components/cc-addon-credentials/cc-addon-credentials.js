@@ -27,7 +27,7 @@ export class CcAddonCredentials extends LitElement {
     return {
       credentials: { type: Array },
       error: { type: Boolean },
-      icon: { type: String },
+      image: { type: String },
       name: { type: String },
       toggleState: { type: Boolean, attribute: 'toggle-state' },
       type: { type: String },
@@ -43,8 +43,8 @@ export class CcAddonCredentials extends LitElement {
     /** @type {boolean} Displays an error message. */
     this.error = false;
 
-    /** @type {string|null} Sets the URL of the icon to use. */
-    this.icon = null;
+    /** @type {string|null} Sets the URL of the image to use. An icon image is expected. */
+    this.image = null;
 
     /** @type {string|null} Sets the display name of the add-on. */
     this.name = null;
@@ -90,7 +90,7 @@ export class CcAddonCredentials extends LitElement {
 
   render () {
     return html`
-      <cc-block image=${ifDefined(this.icon ?? undefined)} state=${this.toggleState}>
+      <cc-block image=${ifDefined(this.image ?? undefined)} state=${this.toggleState}>
         <div slot="title">${i18n('cc-addon-credentials.title', { name: this.name })}</div>
 
         ${!this.error ? html`
