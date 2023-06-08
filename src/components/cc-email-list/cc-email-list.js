@@ -219,7 +219,6 @@ export class CcEmailList extends LitElement {
               weight="outlined"
               ?skeleton="${skeleton}"
               icon-src="${badgeIcon}"
-              icon-alt=""
           >${this._getVerifiedTagLabel(primaryAddress.verified)}
           </cc-badge>
         </div>

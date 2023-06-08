@@ -22,7 +22,7 @@ export class CcBadge extends LitElement {
     return {
       circle: { type: Boolean },
       icon: { type: Object },
-      iconAlt: { type: String, attribute: 'icon-alt' },
+      iconAccessibleName: { type: String, attribute: 'icon-accessible-name' },
       intent: { type: String },
       skeleton: { type: Boolean },
       weight: { type: String },
@@ -38,8 +38,8 @@ export class CcBadge extends LitElement {
     /** @type {IconModel|null} If set, enables icon mode and displays the required icon in the <cc-icon> component. */
     this.icon = null;
 
-    /** @type {string|null} Sets the `alt` attribute value on the `<img>` tag. Only use if the image conveys additional info compared to surrounding text. */
-    this.iconAlt = null;
+    /** @type {string|null} Sets the `accessible-name` attribute value on the `<cc-icon>` tag. Only use if the icon conveys additional info compared to surrounding text. Check the `<cc-icon>` documentation for more details. */
+    this.iconAccessibleName = null;
 
     /** @type {BadgeIntent} Sets the accent color used for the badge. */
     this.intent = 'neutral';
@@ -68,7 +68,7 @@ export class CcBadge extends LitElement {
     return html`
       <span class="cc-badge ${classMap(modes)}">
         ${this.icon != null ? html`
-          <cc-icon .icon=${this.icon} accessible-name=${ifDefined(this.iconAlt)}></cc-icon>
+          <cc-icon .icon=${this.icon} accessible-name=${ifDefined(this.iconAccessibleName)}></cc-icon>
         ` : ''}
         <span>
           <slot></slot>
