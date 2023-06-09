@@ -42,9 +42,9 @@ This file does not import all languages anymore.
 It's up to the user to do so:
  
 ```js
-import * as en from '@clevercloud/components/dist/translations/translations.en.js';
-import * as fr from '@clevercloud/components/dist/translations/translations.fr.js';
-import { addTranslations, setLanguage } from '@clevercloud/components/dist/lib/i18n.js';
+import * as en from '@clevercloud/components/dist/translations.en.js';
+import * as fr from '@clevercloud/components/dist/translations.fr.js';
+import { addTranslations, setLanguage } from '@clevercloud/components/dist/i18n.js';
 
 // Init languages
 addTranslations(en.lang, en.translations);
@@ -57,10 +57,10 @@ setLanguage(en.lang);
 It can also be done asynchronously:
 
 ```js
-import { addTranslations, setLanguage } from '@clevercloud/components/dist/lib/i18n.js';
+import { addTranslations, setLanguage } from '@clevercloud/components/dist/i18n.js';
 
 // When french is detected as default lang
-import('@clevercloud/components/dist/translations/translations.fr.js')
+import('@clevercloud/components/dist/translations.fr.js')
   .then(({ lang, translations }) => {
     addTranslations(lang, translations);
     setLanguage(lang);

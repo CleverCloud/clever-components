@@ -29,10 +29,10 @@ It's always better if you can only load the language you need.
 
 ```js
 // Import function from system
-import { addTranslations, setLanguage } from '@clevercloud/components/dist/lib/i18n.js';
+import { addTranslations, setLanguage } from '@clevercloud/components/dist/i18n.js';
 
 // Load the language files asynchronously (ex: french only) 
-import('@clevercloud/components/dist/translations/translations.fr.js')
+import('@clevercloud/components/dist/translations.fr.js')
   .then(({ lang, translations }) => {
     // Register languages (ex: french)
     addTranslations(lang, translations);
@@ -45,11 +45,11 @@ import('@clevercloud/components/dist/translations/translations.fr.js')
 
 ```js
 // Load the language files synchronously (ex: english and french) 
-import * as en from '@clevercloud/components/dist/translations/translations.en.js';
-import * as fr from '@clevercloud/components/dist/translations/translations.fr.js';
+import * as en from '@clevercloud/components/dist/translations.en.js';
+import * as fr from '@clevercloud/components/dist/translations.fr.js';
 
 // Import function from system
-import { addTranslations, setLanguage } from '@clevercloud/components/dist/lib/i18n.js';
+import { addTranslations, setLanguage } from '@clevercloud/components/dist/i18n.js';
 
 // Register languages
 addTranslations(en.lang, en.translations);
