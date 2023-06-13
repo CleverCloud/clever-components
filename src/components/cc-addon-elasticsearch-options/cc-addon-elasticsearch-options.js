@@ -1,9 +1,13 @@
 import '../cc-addon-option-form/cc-addon-option-form.js';
-import '../cc-error/cc-error.js';
 import { css, html, LitElement } from 'lit';
+import {
+  iconRemixAlertFill as iconAlert,
+} from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
-import { ccAddonEncryptionAtRestOption } from '../../templates/cc-addon-encryption-at-rest-option/cc-addon-encryption-at-rest-option.js';
+import {
+  ccAddonEncryptionAtRestOption,
+} from '../../templates/cc-addon-encryption-at-rest-option/cc-addon-encryption-at-rest-option.js';
 
 const KIBANA_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-kibana.svg';
 const APM_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-apm.svg';
@@ -41,12 +45,15 @@ export class CcAddonElasticsearchOptions extends LitElement {
   _getApmOption ({ enabled, flavor }) {
     const description = html`
       <div class="option-details">${i18n('cc-addon-elasticsearch-options.description.apm')}</div>
-      <cc-error class="option-warning">
-        ${i18n('cc-addon-elasticsearch-options.warning.apm')}
-        ${flavor != null ? html`
-          ${i18n('cc-addon-elasticsearch-options.warning.apm.details', flavor)}
-        ` : ''}
-      </cc-error>
+      <div class="option-warning">
+        <cc-icon .icon="${iconAlert}" accessible-name="${i18n('cc-addon-elasticsearch-options.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
+        <p>
+          ${i18n('cc-addon-elasticsearch-options.warning.apm')}
+          ${flavor != null ? html`
+            ${i18n('cc-addon-elasticsearch-options.warning.apm.details', flavor)}
+          ` : ''}
+        </p>
+      </div>
     `;
 
     return {
@@ -61,12 +68,15 @@ export class CcAddonElasticsearchOptions extends LitElement {
   _getKibanaOption ({ enabled, flavor }) {
     const description = html`
       <div class="option-details">${i18n('cc-addon-elasticsearch-options.description.kibana')}</div>
-      <cc-error class="option-warning">
-        ${i18n('cc-addon-elasticsearch-options.warning.kibana')}
-        ${flavor != null ? html`
-          ${i18n('cc-addon-elasticsearch-options.warning.kibana.details', flavor)}
-        ` : ''}
-      </cc-error>
+      <div class="option-warning">
+        <cc-icon .icon="${iconAlert}" accessible-name="${i18n('cc-addon-elasticsearch-options.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
+        <p>
+          ${i18n('cc-addon-elasticsearch-options.warning.kibana')}
+          ${flavor != null ? html`
+            ${i18n('cc-addon-elasticsearch-options.warning.kibana.details', flavor)}
+          ` : ''}
+        </p>
+      </div>
     `;
 
     return {
