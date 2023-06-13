@@ -3,7 +3,7 @@ import { css, html, LitElement } from 'lit';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import '../cc-input-text/cc-input-text.js';
-import '../cc-error/cc-error.js';
+import '../cc-notice/cc-notice.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 
 const SKELETON_VARIABLES = [
@@ -67,43 +67,43 @@ export class CcEnvVarEditorJson extends LitElement {
       if (type === ERROR_TYPES.INVALID_NAME) {
         return {
           msg: i18n('cc-env-var-editor-json.errors.invalid-name', { name }),
-          isNotice: false,
+          isWarning: false,
         };
       }
       if (type === ERROR_TYPES.DUPLICATED_NAME) {
         return {
           msg: i18n('cc-env-var-editor-json.errors.duplicated-name', { name }),
-          isNotice: false,
+          isWarning: false,
         };
       }
       if (type === ERROR_TYPES.INVALID_JSON) {
         return {
           msg: i18n('cc-env-var-editor-json.errors.invalid-json'),
-          isNotice: false,
+          isWarning: false,
         };
       }
       if (type === ERROR_TYPES.INVALID_JSON_FORMAT) {
         return {
           msg: i18n('cc-env-var-editor-json.errors.invalid-json-format'),
-          isNotice: false,
+          isWarning: false,
         };
       }
       if (type === ERROR_TYPES.INVALID_JSON_ENTRY) {
         return {
           msg: i18n('cc-env-var-editor-json.errors.invalid-json-entry'),
-          isNotice: false,
+          isWarning: false,
         };
       }
       if (type === ERROR_TYPES.INVALID_NAME_STRICT) {
         return {
           msg: i18n('cc-env-var-editor-json.errors.invalid-name-strict', { name }),
-          isNotice: false,
+          isWarning: false,
         };
       }
       if (type === ERROR_TYPES.JAVA_INFO) {
         return {
           msg: i18n('cc-env-var-editor-json.info.java-prop', { name }),
-          isNotice: true,
+          isWarning: true,
         };
       }
       return { line: '?', msg: i18n('cc-env-var-editor-json.errors.unknown') };
@@ -156,13 +156,13 @@ export class CcEnvVarEditorJson extends LitElement {
 
       ${this._errors.length > 0 ? html`
         <div class="error-list">
-          ${this._errors.map(({ msg, isNotice }) => html`
-            ${!isNotice ? html`
-              <cc-error> ${msg}</cc-error>
-            ` : ''}
-            ${isNotice ? html`
-              <cc-error notice>${msg}</cc-error>
-            ` : ''}
+          ${this._errors.map(({ msg, isWarning }) => html`
+            <cc-notice intent="${!isWarning ? 'warning' : 'info'}">
+              <div slot="message">
+                ${msg}
+              </div>
+            </cc-notice>
+
           `)}
         </div>
       ` : ''}
@@ -195,7 +195,7 @@ export class CcEnvVarEditorJson extends LitElement {
 
         /* i18n error message may contain <code> tags */
 
-        cc-error code,
+        cc-notice code,
         .example code {
           padding: 0.15em 0.3em;
           background-color: var(--cc-color-bg-neutral, #eee);
