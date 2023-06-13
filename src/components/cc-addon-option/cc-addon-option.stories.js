@@ -1,4 +1,3 @@
-import './cc-addon-option.js';
 import { iconRemixShieldKeyholeFill as iconEncryptionAtRest } from '../../assets/cc-remix.icons.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
@@ -12,10 +11,10 @@ const htmlExample = `
 <div class="option-details">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed libero risus,
 porttitor et turpis sed, mollis ultricies quam. Sed quis fermentum sem, sed dictum sapien.
 Donec rutrum ante vel dolor bibendum, eu pretium velit gravida</div>
-<cc-error class="option-warning">
-Nullam non nulla convallis, tincidunt nibh at, blandit eros. Cras arcu quam, faucibus eget neque id,
-scelerisque ornare neque
-</cc-error>
+<div class="option-warning">
+    <p>Nullam non nulla convallis, tincidunt nibh at, blandit eros. Cras arcu quam, faucibus eget neque id,
+      scelerisque ornare neque</p>
+</div>
 `;
 
 const optionExample = {
