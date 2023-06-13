@@ -1,5 +1,5 @@
 import '../cc-loader/cc-loader.js';
-import '../cc-error/cc-error.js';
+import '../cc-notice/cc-notice.js';
 import '../cc-env-var-form/cc-env-var-form.js';
 import { css, html, LitElement } from 'lit';
 import { i18n } from '../../lib/i18n.js';
@@ -134,7 +134,7 @@ export class CcEnvVarLinkedServices extends LitElement {
 
       ${this.error ? html`
         <div class="error">
-          <cc-error>${this._getErrorMessage()}</cc-error>
+          <cc-notice intent="warning" .message="${this._getErrorMessage()}"></cc-notice>
         </div>
       ` : ''}
     `;
@@ -149,15 +149,14 @@ export class CcEnvVarLinkedServices extends LitElement {
         }
 
         .loading,
-        .empty-msg,
-        .error {
+        .empty-msg {
           box-sizing: border-box;
           padding: 1em;
           border: 1px solid var(--cc-color-border-neutral, #aaa);
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-default, 0.25em);
         }
-
+        
         .loading {
           display: flex;
         }
