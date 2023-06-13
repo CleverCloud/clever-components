@@ -80,6 +80,18 @@ export const orgaMode = makeStory(conf, {
   }],
 });
 
+export const orgaModeWithError = makeStory(conf, {
+  items: [{
+    mode: 'orga',
+    children: () => [
+      createStoryItem(headerOrga, { class: 'head', error: true }),
+      createStoryItem(statusCodes, { error: true }),
+      createStoryItem(requests, { style: '', error: true }),
+      createStoryItem(logsmap, { class: 'main', error: true }),
+    ],
+  }],
+});
+
 export const orgaModeWithTwoHeads = makeStory(conf, {
   docs: 'If you place two or more heads in your overview, you\'ll need to specify how many with the CSS custom property: `--cc-overview-head-count: 2`.',
   css: placeholderCss,
@@ -110,6 +122,22 @@ export const appMode = makeStory(conf, {
       createStoryItem(statusCodes),
       createStoryItem(requests, { style: '' }),
       createStoryItem(logsmap, { class: 'main' }),
+    ],
+  }],
+});
+
+export const appModeWithError = makeStory(conf, {
+  items: [{
+    mode: 'app',
+    children: () => [
+      createStoryItem(headerApp, { class: 'head', error: true }),
+      createStoryItem(instances, { error: true }),
+      createStoryItem(scalability, { error: true }),
+      createStoryItem(deployments, { error: true }),
+      createStoryItem(metrics, { metrics: { state: 'error' } }),
+      createStoryItem(statusCodes, { error: true }),
+      createStoryItem(requests, { style: '', error: true }),
+      createStoryItem(logsmap, { class: 'main', error: true }),
     ],
   }],
 });
@@ -152,4 +180,13 @@ export const appModeWithTwoHeads = makeStory(conf, {
   ],
 });
 
-enhanceStoriesNames({ defaultStory, orgaMode, orgaModeWithTwoHeads, appMode, appModeWithBeta, appModeWithTwoHeads });
+enhanceStoriesNames({
+  defaultStory,
+  orgaMode,
+  orgaModeWithError,
+  orgaModeWithTwoHeads,
+  appMode,
+  appModeWithError,
+  appModeWithBeta,
+  appModeWithTwoHeads,
+});
