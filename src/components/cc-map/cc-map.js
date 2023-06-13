@@ -1,7 +1,10 @@
 import '../cc-loader/cc-loader.js';
-import '../cc-error/cc-error.js';
+import '../cc-icon/cc-icon.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import {
+  iconRemixAlertFill as iconAlert,
+} from '../../assets/cc-remix.icons.js';
 import { WORLD_GEOJSON } from '../../assets/world-110m.geo.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
@@ -322,7 +325,11 @@ export class CcMap extends withResizeObserver(LitElement) {
       ${this.error || noHeatmapPoints ? html`
         <div class="msg-container">
           ${this.error ? html`
-            <cc-error mode=${errorMode}>${i18n('cc-map.error')}</cc-error>
+              <div class="error-message ${classMap({ 'error-loading': errorMode === 'loading' })}">
+                ${errorMode === 'loading' ? html`<cc-loader class="loader-error"></cc-loader>` : ''}
+                <cc-icon .icon="${iconAlert}" accessible-name="${i18n('cc-map.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
+                <p>${i18n('cc-map.error')}</p>
+              </div>
           ` : ''}
           ${noHeatmapPoints ? html`
             <div class="msg">${i18n('cc-map.no-points')}</div>
@@ -395,6 +402,10 @@ export class CcMap extends withResizeObserver(LitElement) {
           width: 100%;
           height: 100%;
         }
+        
+        .loader-error {
+          height: 1.5em;
+        }
 
         .msg-container {
           position: absolute;
@@ -407,11 +418,6 @@ export class CcMap extends withResizeObserver(LitElement) {
           height: 100%;
           align-items: center;
           justify-content: center;
-        }
-
-        cc-error,
-        .msg {
-          max-width: 80%;
         }
 
         .msg {
@@ -429,6 +435,38 @@ export class CcMap extends withResizeObserver(LitElement) {
           display: flex;
           align-items: center;
           justify-content: center;
+        }
+
+        .error-message {
+          display: grid;
+          align-items: center;
+          padding: 1em;
+          border: 1px solid #bcc2d1;
+          background-color: var(--cc-color-bg-default, #fff);
+          border-radius: var(--cc-border-radius-default, 0.25em);
+          box-shadow: 0 0 1em rgb(0 0 0 / 40%);
+          gap: 0.5em;
+          grid-template-columns: min-content 1fr;
+          text-align: center;
+        }
+        
+        .error-message.error-loading {
+          grid-template-columns: auto 1fr;
+        }
+
+        .error-message.error-loading .icon-warning {
+          display: none;
+        }
+
+        .error-message p {
+          margin: 0;
+        }
+
+        .icon-warning {
+          align-self: center;
+          color: var(--cc-color-text-warning);
+
+          --cc-icon-size: 1.25em;
         }
       `,
     ];
