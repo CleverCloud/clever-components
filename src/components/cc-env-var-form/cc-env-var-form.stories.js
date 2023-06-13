@@ -3,7 +3,7 @@ import './cc-env-var-form.js';
 import './cc-env-var-form.smart-config-provider.js';
 import './cc-env-var-form.smart-env-var-addon.js';
 import './cc-env-var-form.smart-exposed-config.js';
-import { makeStory } from '../../stories/lib/make-story.js';
+import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const VARIABLES_FULL = [
@@ -93,15 +93,16 @@ export const saving = makeStory(conf, {
 });
 
 export const errorWithLoading = makeStory(conf, {
-  items: [{ appName: 'Foobar backend python', context: 'env-var', error: 'loading' }],
+  items: [{ appName: 'Foobar backend python', context: 'env-var', error: true }],
 });
 
-export const errorWithLoadingAndReadonly = makeStory(conf, {
-  items: [{ appName: 'Foobar backend python', context: 'env-var', error: 'loading', readonly: true }],
-});
-
-export const errorWithSaving = makeStory(conf, {
-  items: [{ appName: 'Foobar backend python', context: 'env-var', variables: VARIABLES_FULL, error: 'saving' }],
+export const simulations = makeStory(conf, {
+  items: [{ appName: 'Foobar backend python', context: 'env-var' }],
+  simulations: [
+    storyWait(2000, ([component]) => {
+      component.error = 'loading';
+    }),
+  ],
 });
 
 enhanceStoriesNames({
@@ -122,6 +123,5 @@ enhanceStoriesNames({
   dataLoadedWithStrictMode,
   saving,
   errorWithLoading,
-  errorWithLoadingAndReadonly,
-  errorWithSaving,
+  simulations,
 });

@@ -2,7 +2,7 @@ import '../cc-button/cc-button.js';
 import '../cc-expand/cc-expand.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-toggle/cc-toggle.js';
-import '../cc-error/cc-error.js';
+import '../cc-notice/cc-notice.js';
 import '../cc-env-var-editor-expert/cc-env-var-editor-expert.js';
 import '../cc-env-var-editor-json/cc-env-var-editor-json.js';
 import '../cc-env-var-editor-simple/cc-env-var-editor-simple.js';
@@ -83,7 +83,7 @@ export class CcEnvVarForm extends LitElement {
     /** @type {boolean} Displays the restart app button. */
     this.restartApp = false;
 
-    /** @type {boolean} Enables saving sate (form is disabled and loader is displayed). */
+    /** @type {boolean} Enables saving state (form is disabled and loader is displayed). */
     this.saving = false;
 
     // this.variables is let to null by default (this triggers skeleton screen)
@@ -234,53 +234,58 @@ export class CcEnvVarForm extends LitElement {
           <div class="heading">${this.heading}</div>
         ` : ''}
 
-        <cc-toggle
-          class="mode-switcher ${classMap({ 'has-overlay': hasOverlay })}"
-          value=${this._mode}
-          .choices=${this._getModes()}
-          ?disabled=${isEditorDisabled}
-          @cc-toggle:input=${this._onToggleMode}
-        ></cc-toggle>
+        ${!this.error ? html`
+          <cc-toggle
+            class="mode-switcher ${classMap({ 'has-overlay': hasOverlay })}"
+            value=${this._mode}
+            .choices=${this._getModes()}
+            ?disabled=${isEditorDisabled}
+            @cc-toggle:input=${this._onToggleMode}
+          ></cc-toggle>
+        ` : ''}
       </div>
 
       <slot class="description">${this._description}</slot>
 
       <div class="overlay-container">
-        <cc-expand class=${classMap({ 'has-overlay': hasOverlay })}>
-          <cc-env-var-editor-simple
-            mode=${this.parserOptions.mode ?? ''}
-            ?hidden=${this._mode !== 'SIMPLE'}
-            .variables=${this._currentVariables}
-            ?disabled=${isEditorDisabled}
-            ?readonly=${this.readonly}
-            @cc-env-var-editor-simple:change=${this._onChange}
-            @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
-          ></cc-env-var-editor-simple>
 
-          <cc-env-var-editor-expert
-            ?hidden=${this._mode !== 'EXPERT'}
-            .parserOptions=${this.parserOptions}
-            .variables=${this._expertVariables}
-            ?disabled=${isEditorDisabled}
-            ?readonly=${this.readonly}
-            @cc-env-var-editor-expert:change=${this._onChange}
-            @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
-          ></cc-env-var-editor-expert>
+        ${!this.error ? html`
+          <cc-expand class=${classMap({ 'has-overlay': hasOverlay })}>
+            <cc-env-var-editor-simple
+              mode=${this.parserOptions.mode ?? ''}
+              ?hidden=${this._mode !== 'SIMPLE'}
+              .variables=${this._currentVariables}
+              ?disabled=${isEditorDisabled}
+              ?readonly=${this.readonly}
+              @cc-env-var-editor-simple:change=${this._onChange}
+              @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
+            ></cc-env-var-editor-simple>
 
-          <cc-env-var-editor-json
-            ?hidden=${this._mode !== 'JSON'}
-            .parserOptions=${this.parserOptions}
-            .variables=${this._jsonVariables}
-            ?disabled=${isEditorDisabled}
-            ?readonly=${this.readonly}
-            @cc-env-var-editor-json:change=${this._onChange}
-            @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
-          ></cc-env-var-editor-json>
-        </cc-expand>
+            <cc-env-var-editor-expert
+              ?hidden=${this._mode !== 'EXPERT'}
+              .parserOptions=${this.parserOptions}
+              .variables=${this._expertVariables}
+              ?disabled=${isEditorDisabled}
+              ?readonly=${this.readonly}
+              @cc-env-var-editor-expert:change=${this._onChange}
+              @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
+            ></cc-env-var-editor-expert>
+
+            <cc-env-var-editor-json
+              ?hidden=${this._mode !== 'JSON'}
+              .parserOptions=${this.parserOptions}
+              .variables=${this._jsonVariables}
+              ?disabled=${isEditorDisabled}
+              ?readonly=${this.readonly}
+              @cc-env-var-editor-json:change=${this._onChange}
+              @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
+            ></cc-env-var-editor-json>
+          </cc-expand>
+        ` : ''}
 
         ${this.error ? html`
           <div class="error-container">
-            <cc-error mode="info">${i18n('cc-env-var-form.error.loading')}</cc-error>
+            <cc-notice intent="warning" message="${i18n('cc-env-var-form.error.loading')}"></cc-notice>
           </div>
         ` : ''}
 
@@ -289,7 +294,7 @@ export class CcEnvVarForm extends LitElement {
         ` : ''}
       </div>
 
-      ${!this.readonly ? html`
+      ${!this.readonly && !this.error ? html`
         <div class="button-bar">
 
           <cc-button @cc-button:click=${() => this._resetForm(this._initVariables)}>${i18n('cc-env-var-form.reset')}</cc-button>
@@ -360,18 +365,6 @@ export class CcEnvVarForm extends LitElement {
           margin-inline: -1em;
         }
 
-        .error-container {
-          position: absolute;
-          top: 0;
-          left: 0;
-          display: flex;
-          width: 100%;
-          height: 100%;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-        }
-
         .saving-loader {
           position: absolute;
           top: 0;
@@ -390,6 +383,10 @@ export class CcEnvVarForm extends LitElement {
 
         .spacer {
           flex: 1 1 0;
+        }
+        
+        .error-container {
+          padding-bottom: 0.5em;
         }
       `,
     ];
