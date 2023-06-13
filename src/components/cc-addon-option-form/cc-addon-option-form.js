@@ -100,6 +100,24 @@ export class CcAddonOptionForm extends LitElement {
         [name='description'] {
           line-height: 1.5;
         }
+
+        .option-warning {
+          display: grid;
+          gap: 0.5em;
+          grid-template-columns: min-content 1fr;
+          text-align: left;
+        }
+
+        .option-warning p {
+          margin: 0;
+        }
+
+        .icon-warning {
+          align-self: center;
+          color: var(--cc-color-text-warning);
+
+          --cc-icon-size: 1.25em;
+        }
       `,
     ];
   }

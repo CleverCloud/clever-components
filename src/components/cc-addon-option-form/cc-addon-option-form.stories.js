@@ -1,17 +1,21 @@
 import './cc-addon-option-form.js';
-import '../cc-error/cc-error.js';
 import { html } from 'lit';
+import {
+  iconRemixAlertFill as iconAlert,
+} from '../../assets/cc-remix.icons.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const htmlExample = html`
-<div class="option-details">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed libero risus,
-porttitor et turpis sed, mollis ultricies quam. Sed quis fermentum sem, sed dictum sapien.
-Donec rutrum ante vel dolor bibendum, eu pretium velit gravida</div>
-<cc-error class="option-warning">
-Nullam non nulla convallis, tincidunt nibh at, blandit eros. Cras arcu quam, faucibus eget neque id,
-scelerisque ornare neque
-</cc-error>
+  <div class="option-details">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed libero risus,
+    porttitor et turpis sed, mollis ultricies quam. Sed quis fermentum sem, sed dictum sapien.
+    Donec rutrum ante vel dolor bibendum, eu pretium velit gravida
+  </div>
+  <div class="option-warning">
+    <cc-icon .icon="${iconAlert}" accessible-name="Warning" class="icon-warning"></cc-icon>
+    <p>Nullam non nulla convallis, tincidunt nibh at, blandit eros. Cras arcu quam, faucibus eget neque id,
+      scelerisque ornare neque</p>
+  </div>
 `;
 
 export default {
