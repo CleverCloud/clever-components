@@ -133,6 +133,7 @@ export const translations = {
   'cc-addon-elasticsearch-options.description': () => sanitize`Cet add-on fait partie de l'offre Suite Elastic qui inclue deux options. Ces options sont déployées comme des applications et seront gérées et mises à jour par Clever Cloud. Elles apparaîtront donc comme des applications habituelles que vous pouvez arrêter, supprimer, scaler comme n'importe quelle autre application. <strong>Activer ces options augmentera votre consommation de crédits.</strong>`,
   'cc-addon-elasticsearch-options.description.apm': () => sanitize`Elastic APM est un serveur de monitoring de performance applicative pour la Suite Elastic. Déployer cette option permet d'envoyer automatiquement les métriques de toute application liée à cette instance d'add-on Elasticsearch, en supposant que vous utilisez bien l'agent Elastic APM dans les dépendances de vos applications. Retrouvez plus de détails dans <a href="https://www.elastic.co/guide/en/apm/get-started/current/overview.html">la documentation officielle de APM server</a>.`,
   'cc-addon-elasticsearch-options.description.kibana': () => sanitize`Kibana est l'interface d'administration de la Suite Elastic. Kibana vous permet de visualiser vos données Elasticsearch et de naviguer dans la Suite Elastic. Vous voulez effectuer le suivi de la charge de travail liée à la recherche ou comprendre le flux des requêtes dans vos applications ? Kibana est là pour ça. Retrouvez plus de détails dans <a href="https://www.elastic.co/guide/en/kibana/master/index.html">la documentation officielle de Kibana</a>.`,
+  'cc-addon-elasticsearch-options.error.icon-a11y-name': `Avertissement`,
   'cc-addon-elasticsearch-options.title': `Options pour la Suite Elastic`,
   'cc-addon-elasticsearch-options.warning.apm': `Si vous activez cette option, nous allons déployer et gérer pour vous un APM server, ce qui entraînera des coûts supplémentaires.`,
   'cc-addon-elasticsearch-options.warning.apm.details': (flavor) => sanitize`Par défaut, l'app sera démarrée sur une <strong title="${formatFlavor(flavor)}">instance ${flavor.name}</strong> qui coûte environ <strong>${formatCurrency(lang, flavor.monthlyCost)} par mois</strong>. `,
@@ -141,6 +142,7 @@ export const translations = {
   //#endregion
   //#region cc-addon-encryption-at-rest-option
   'cc-addon-encryption-at-rest-option.description': () => sanitize`Le chiffrement au repos chiffre l'intégralité du disque de données afin de ne pas y stocker d'informations en clair. Grâce à cette sécurité, l'accès physique au disque empêchera toute lecture des données stockées. Plus d'information dans notre <a href="https://www.clever-cloud.com/doc/administrate/encryption-at-rest/">documentation</a>.`,
+  'cc-addon-encryption-at-rest-option.error.icon-a11y-name': `Avertissement`,
   'cc-addon-encryption-at-rest-option.title': `Chiffrement au repos`,
   'cc-addon-encryption-at-rest-option.warning': ({ percent, price }) => {
     return sanitize`Cette option est actuellement gratuite. Dans le futur, elle sera facturée ${formatPercent(lang, percent)} du prix du plan, ce qui dans ce cas fait <strong>${formatCurrency(lang, price)} par mois.</strong>`;
@@ -485,6 +487,7 @@ export const translations = {
   //#endregion
   //#region cc-map
   'cc-map.error': `Une erreur est survenue pendant le chargement des données de la carte.`,
+  'cc-map.error.icon-a11y-name': `Avertissement`,
   'cc-map.no-points': `Pas de données à afficher sur la carte en ce moment.`,
   //#endregion
   //#region cc-matomo-info
@@ -804,6 +807,7 @@ export const translations = {
   //#region cc-tile-deployments
   'cc-tile-deployments.empty': `Pas encore de déploiement.`,
   'cc-tile-deployments.error': `Une erreur est survenue pendant le chargement des déploiements.`,
+  'cc-tile-deployments.error.icon-a11y-name': `Avertissement`,
   'cc-tile-deployments.state.cancelled': `Annulé`,
   'cc-tile-deployments.state.failed': `Échoué`,
   'cc-tile-deployments.state.started': `Démarré`,
@@ -813,6 +817,7 @@ export const translations = {
   //#region cc-tile-instances
   'cc-tile-instances.empty': `Pas d'instance. L'application est arrêtée.`,
   'cc-tile-instances.error': `Une erreur est survenue pendant le chargement des instances.`,
+  'cc-tile-instances.error.icon-a11y-name': `Avertissement`,
   'cc-tile-instances.status.deploying': `Déploiement`,
   'cc-tile-instances.status.running': `En ligne`,
   'cc-tile-instances.title': `Instances`,
@@ -829,6 +834,7 @@ export const translations = {
     <p>Le pourcentage affiché représente une moyenne sur la dernière heure.</p>`,
   'cc-tile-metrics.empty': `Pas de métriques. L'application est arrêtée.`,
   'cc-tile-metrics.error': `Une erreur est survenue pendant le chargement des métriques.`,
+  'cc-tile-metrics.error.icon-a11y-name': `Avertissement`,
   'cc-tile-metrics.grafana': `Grafana`,
   'cc-tile-metrics.legend.cpu': `Utilisation CPU sur 24h`,
   'cc-tile-metrics.legend.mem': `Utilisation RAM sur 24h`,
@@ -855,6 +861,7 @@ export const translations = {
   },
   'cc-tile-requests.empty': `Il n'y a pas de données à afficher pour l'instant.`,
   'cc-tile-requests.error': `Une erreur est survenue pendant le chargement des requêtes.`,
+  'cc-tile-requests.error.icon-a11y-name': `Avertissement`,
   'cc-tile-requests.requests-count': ({ requestCount }) => formatNumberUnit(requestCount),
   'cc-tile-requests.requests-nb': ({ value, windowHours }) => {
     const request = plural(value, 'requête');
@@ -871,6 +878,7 @@ export const translations = {
   //#endregion
   //#region cc-tile-scalability
   'cc-tile-scalability.error': `Une erreur est survenue pendant le chargement de la configuration de scalabilité.`,
+  'cc-tile-scalability.error.icon-a11y-name': `Avertissement`,
   'cc-tile-scalability.flavor-info': (flavor) => formatFlavor(flavor),
   'cc-tile-scalability.number': `Nombre`,
   'cc-tile-scalability.size': `Taille`,
@@ -883,6 +891,7 @@ export const translations = {
   'cc-tile-status-codes.docs.msg': `Répartition des codes de réponses HTTP envoyés durant les dernières 24 heures. Cliquez sur les éléments de légende pour cacher/montrer certaines catégories de codes.`,
   'cc-tile-status-codes.empty': `Il n'y a pas de données à afficher pour l'instant.`,
   'cc-tile-status-codes.error': `Une erreur est survenue pendant le chargement des codes de réponses HTTP.`,
+  'cc-tile-status-codes.error.icon-a11y-name': `Avertissement`,
   'cc-tile-status-codes.title': `Codes de réponses HTTP`,
   'cc-tile-status-codes.tooltip': ({ value, percent }) => {
     const request = plural(value, 'requête');

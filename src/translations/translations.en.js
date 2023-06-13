@@ -120,6 +120,7 @@ export const translations = {
   'cc-addon-elasticsearch-options.description': () => sanitize`This add-on is part of the Elastic Stack offer which includes two options. Both these options will be deployed as applications, managed and updated by Clever Cloud on your behalf. They will appear as regular applications that you can stop, scale up or down automatically like one of your own applications. As such, <strong>enabling these options will result in an increase in credits consumption</strong> as well.`,
   'cc-addon-elasticsearch-options.description.apm': () => sanitize`Elastic APM server is an application performance monitoring system built on the Elastic Stack. Deploying this will allow you to automatically send APM metrics from any applications linked to the Elasticsearch add-on instance, providing you add the Elastic APM agent to the application code. Learn more in the <a href="https://www.elastic.co/guide/en/apm/get-started/current/overview.html">official APM server documentation</a>.`,
   'cc-addon-elasticsearch-options.description.kibana': () => sanitize`Kibana is the admin UI for the Elastic Stack. It lets you visualize your Elasticsearch data and navigate the stack so you can do anything from tracking query load to understanding the way requests flow through your apps. Learn more in the <a href="https://www.elastic.co/guide/en/kibana/master/index.html">official Kibana documentation</a>.`,
+  'cc-addon-elasticsearch-options.error.icon-a11y-name': `Warning`,
   'cc-addon-elasticsearch-options.title': `Options for the Elastic Stack`,
   'cc-addon-elasticsearch-options.warning.apm': `If you enable this option, we'll deploy and manage an Elastic APM server application for you, this will lead to additional costs.`,
   'cc-addon-elasticsearch-options.warning.apm.details': (flavor) => sanitize`By default, the app will start on a <strong title="${formatFlavor(flavor)}">${flavor.name} instance</strong> which costs around <strong>${formatCurrency(lang, flavor.monthlyCost)} per month</strong>.`,
@@ -128,6 +129,7 @@ export const translations = {
   //#endregion
   //#region cc-addon-encryption-at-rest-option
   'cc-addon-encryption-at-rest-option.description': () => sanitize`Encryption at rest encrypts the entire data disk of your add-on. It prevents reading the stored data in case of a physical access to the hard drive. More information in our <a href="https://www.clever-cloud.com/doc/administrate/encryption-at-rest/">documentation</a>.`,
+  'cc-addon-encryption-at-rest-option.error.icon-a11y-name': `Warning`,
   'cc-addon-encryption-at-rest-option.title': `Encryption at rest`,
   'cc-addon-encryption-at-rest-option.warning': ({ percent, price }) => {
     return sanitize`This option is currently free. In the future, it will be billed ${formatPercent(lang, percent)} of the plan price, which amounts to <strong>${formatCurrency(lang, price)} per month</strong> here.`;
@@ -472,6 +474,7 @@ export const translations = {
   //#endregion
   //#region cc-map
   'cc-map.error': `Something went wrong while trying to fetch data for the map.`,
+  'cc-map.error.icon-a11y-name': `Warning`,
   'cc-map.no-points': `No data to display on the map right now.`,
   //#endregion
   //#region cc-matomo-info
@@ -791,6 +794,7 @@ export const translations = {
   //#region cc-tile-deployments
   'cc-tile-deployments.empty': `No deployments yet.`,
   'cc-tile-deployments.error': `Something went wrong while loading deployments info.`,
+  'cc-tile-deployments.error.icon-a11y-name': `Warning`,
   'cc-tile-deployments.state.cancelled': `Cancelled`,
   'cc-tile-deployments.state.failed': `Failed`,
   'cc-tile-deployments.state.started': `Started`,
@@ -800,6 +804,7 @@ export const translations = {
   //#region cc-tile-instances
   'cc-tile-instances.empty': `No instances. Your app is stopped.`,
   'cc-tile-instances.error': `Something went wrong while loading instances.`,
+  'cc-tile-instances.error.icon-a11y-name': `Warning`,
   'cc-tile-instances.status.deploying': `Deploying`,
   'cc-tile-instances.status.running': `Running`,
   'cc-tile-instances.title': `Instances`,
@@ -816,6 +821,7 @@ export const translations = {
     <p>The percentage shown is the average over the last hour.</p>`,
   'cc-tile-metrics.empty': `No metrics. Application is stopped.`,
   'cc-tile-metrics.error': `Something went wrong while loading metrics.`,
+  'cc-tile-metrics.error.icon-a11y-name': `Warning`,
   'cc-tile-metrics.grafana': `Grafana`,
   'cc-tile-metrics.legend.cpu': `CPU usage over 24h`,
   'cc-tile-metrics.legend.mem': `RAM usage over 24h`,
@@ -842,6 +848,7 @@ export const translations = {
   },
   'cc-tile-requests.empty': `No data to display for now.`,
   'cc-tile-requests.error': `Something went wrong while loading HTTP requests.`,
+  'cc-tile-requests.error.icon-a11y-name': `Warning`,
   'cc-tile-requests.requests-count': ({ requestCount }) => formatNumberUnit(requestCount),
   'cc-tile-requests.requests-nb': ({ value, windowHours }) => {
     const request = plural(value, 'request');
@@ -858,6 +865,7 @@ export const translations = {
   //#endregion
   //#region cc-tile-scalability
   'cc-tile-scalability.error': `Something went wrong while loading scalability config.`,
+  'cc-tile-scalability.error.icon-a11y-name': `Warning`,
   'cc-tile-scalability.flavor-info': (flavor) => formatFlavor(flavor),
   'cc-tile-scalability.number': `Number`,
   'cc-tile-scalability.size': `Size`,
@@ -870,6 +878,7 @@ export const translations = {
   'cc-tile-status-codes.docs.msg': `Repartition of HTTP response codes returned in the last 24 hours. Click on legend items to show/hide HTTP code categories.`,
   'cc-tile-status-codes.empty': `No data to display for now.`,
   'cc-tile-status-codes.error': `Something went wrong while loading HTTP response codes.`,
+  'cc-tile-status-codes.error.icon-a11y-name': `Warning`,
   'cc-tile-status-codes.title': `HTTP response codes`,
   'cc-tile-status-codes.tooltip': ({ value, percent }) => {
     const request = plural(value, 'request');
