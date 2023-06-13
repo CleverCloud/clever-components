@@ -17,6 +17,7 @@ import '../cc-button/cc-button.js';
 import '../cc-img/cc-img.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-badge/cc-badge.js';
+import '../cc-notice/cc-notice.js';
 import '../cc-select/cc-select.js';
 import '../cc-stretch/cc-stretch.js';
 
@@ -266,12 +267,13 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
           We have to add a conditional class to the wrapper when it does not contain any message to cancel the gap applied automatically within the grid. 
          -->
         <div class="error-wrapper ${classMap({ 'out-of-flow': !hasError })}" aria-live="polite" aria-atomic="true">
-          <!-- TODO replace the <p> with a <cc-notice> when it's ready -->
           ${hasError ? html`
-            <div class="error">
-              <p><strong>${i18n('cc-orga-member-card.error.last-admin.heading')}</strong></p>
-              <p>${i18n('cc-orga-member-card.error.last-admin.text')}</p>
-            </div>
+              <cc-notice 
+                intent="danger" 
+                heading="${i18n('cc-orga-member-card.error.last-admin.heading')}"
+                message="${i18n('cc-orga-member-card.error.last-admin.text')}"
+                no-icon>
+                </cc-notice>
           ` : ''}
         </div>
       </div>
@@ -483,18 +485,6 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
 
         .error-wrapper.out-of-flow {
           grid-area: avatar;
-        }
-
-        /* TODO remove this when we implement cc-notice */
-
-        .error {
-          display: flex;
-          flex-direction: column;
-          padding: 0.5em 1em;
-          border: 1px solid var(--cc-color-border-danger-weak);
-          background-color: var(--cc-color-bg-danger-weaker);
-          border-radius: 0.4em;
-          gap: 0.5em;
         }
 
         .waiting {
