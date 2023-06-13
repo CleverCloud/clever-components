@@ -1,5 +1,5 @@
 import '../cc-input-text/cc-input-text.js';
-import '../cc-error/cc-error.js';
+import '../cc-notice/cc-notice.js';
 import { ERROR_TYPES, parseRaw, toNameEqualsValueString } from '@clevercloud/client/esm/utils/env-vars.js';
 import { css, html, LitElement } from 'lit';
 import { dispatchCustomEvent } from '../../lib/events.js';
@@ -71,42 +71,42 @@ export class CcEnvVarEditorExpert extends LitElement {
         return {
           line: pos.line,
           msg: i18n('cc-env-var-editor-expert.errors.invalid-name', { name }),
-          isNotice: false,
+          isWarning: false,
         };
       }
       if (type === ERROR_TYPES.DUPLICATED_NAME) {
         return {
           line: pos.line,
           msg: i18n('cc-env-var-editor-expert.errors.duplicated-name', { name }),
-          isNotice: false,
+          isWarning: false,
         };
       }
       if (type === ERROR_TYPES.INVALID_LINE) {
         return {
           line: pos.line,
           msg: i18n('cc-env-var-editor-expert.errors.invalid-line'),
-          isNotice: false,
+          isWarning: false,
         };
       }
       if (type === ERROR_TYPES.INVALID_VALUE) {
         return {
           line: pos.line,
           msg: i18n('cc-env-var-editor-expert.errors.invalid-value'),
-          isNotice: false,
+          isWarning: false,
         };
       }
       if (type === ERROR_TYPES.INVALID_NAME_STRICT) {
         return {
           line: pos.line,
           msg: i18n('cc-env-var-editor-expert.errors.invalid-name-strict', { name }),
-          isNotice: false,
+          isWarning: false,
         };
       }
       if (type === ERROR_TYPES.JAVA_INFO) {
         return {
           line: pos.line,
           msg: i18n('cc-env-var-editor-expert.info.java-prop', { name }),
-          isNotice: true,
+          isWarning: true,
         };
       }
 
@@ -155,14 +155,12 @@ export class CcEnvVarEditorExpert extends LitElement {
 
       ${this._errors.length > 0 ? html`
         <div class="error-list">
-          ${this._errors.map(({ line, msg, isNotice }) => html`
-            ${!isNotice ? html`
-              <cc-error><strong>${i18n('cc-env-var-editor-expert.errors.line')} ${line}:</strong> ${msg}</cc-error>
-            ` : ''}
-            ${isNotice ? html`
-              <cc-error notice><strong>${i18n('cc-env-var-editor-expert.errors.line')} ${line}:</strong> ${msg}
-              </cc-error>
-            ` : ''}
+          ${this._errors.map(({ line, msg, isWarning }) => html`
+            <cc-notice intent="${!isWarning ? 'warning' : 'info'}">
+                <div slot="message">
+                  <strong>${i18n('cc-env-var-editor-expert.errors.line')} ${line}:</strong> ${msg}
+                </div>
+            </cc-notice>
           `)}
         </div>
       ` : ''}
@@ -195,7 +193,7 @@ export class CcEnvVarEditorExpert extends LitElement {
 
         /* i18n error message may contain <code> tags */
 
-        cc-error code,
+        cc-notice code,
         .example code {
           padding: 0.15em 0.3em;
           background-color: var(--cc-color-bg-neutral, #eee);

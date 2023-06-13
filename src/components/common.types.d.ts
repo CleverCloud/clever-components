@@ -191,8 +191,9 @@ type AppStatus = "restart-failed" | "restarting" | "restarting-with-downtime"
   | "running" | "start-failed" | "starting" | "stopped" | "unknown";
 
 interface ParseError {
-  line: number;
+  line?: number;
   msg: string;
+  isWarning: Boolean;
 }
 
 interface ParserOptions {
