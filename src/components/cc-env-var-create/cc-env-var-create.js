@@ -1,5 +1,4 @@
 import '../cc-button/cc-button.js';
-import '../cc-flex-gap/cc-flex-gap.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-error/cc-error.js';
 import { validateName } from '@clevercloud/client/esm/utils/env-vars.js';
