@@ -1,5 +1,4 @@
 import '../cc-button/cc-button.js';
-import '../cc-flex-gap/cc-flex-gap.js';
 import '../cc-error/cc-error.js';
 import '../cc-zone/cc-zone.js';
 import { css, html, LitElement } from 'lit';
@@ -214,7 +213,7 @@ export class CcHeaderApp extends LitElement {
     const disableButtonsTitle = this.disableButtons ? i18n('cc-header-app.disable-buttons') : undefined;
 
     return html`
-      <cc-flex-gap class="main">
+      <div class="main">
         <div class="flavor-logo ${classMap({ skeleton })}" title=${ifDefined(variantName)}>
           <!-- image has a presentation role => alt="" -->
           <img class="flavor-logo_img" src=${ifDefined(variantLogo)} alt="">
@@ -222,14 +221,14 @@ export class CcHeaderApp extends LitElement {
 
         <div class="details">
           <div class="name"><span class=${classMap({ skeleton })}>${name}</span></div>
-          <cc-flex-gap class="commits">
+          <div class="commits">
             ${this._renderCommit(commit, 'git', skeleton)}
             ${isRunning ? this._renderCommit(this.runningCommit, 'running', skeleton) : ''}
             ${isDeploying ? this._renderCommit(this.startingCommit, 'starting', skeleton) : ''}
-          </cc-flex-gap>
+          </div>
         </div>
 
-        <cc-flex-gap class="buttons">
+        <div class="buttons">
 
           ${canStart ? html`
             <cc-button title=${ifDefined(disableButtonsTitle)} ?disabled=${shouldDisableAllButtons} @cc-button:click=${() => this._onStart('normal')}>
@@ -268,10 +267,10 @@ export class CcHeaderApp extends LitElement {
             @cc-button:click=${this._onStop}
           >${i18n('cc-header-app.action.stop')}</cc-button>
 
-        </cc-flex-gap>
-      </cc-flex-gap>
+        </div>
+      </div>
 
-      <cc-flex-gap class="messages ${classMap({ 'cc-waiting': isDeploying })}">
+      <div class="messages ${classMap({ 'cc-waiting': isDeploying })}">
         ${(shouldDisplayStatusMessage) ? html`
           <!-- image has a presentation role => alt="" -->
           <img class="status-icon" src=${statusIcon[status] || unknownSvg} alt="">
@@ -287,7 +286,7 @@ export class CcHeaderApp extends LitElement {
           <span class="spacer"></span>
           <cc-zone .zone=${this.zone} mode="small-infra"></cc-zone>
         ` : ''}
-      </cc-flex-gap>
+      </div>
     `;
   }
 
@@ -322,8 +321,6 @@ export class CcHeaderApp extends LitElement {
       // language=CSS
       css`
         :host {
-          --cc-gap: 1em;
-
           display: block;
           overflow: hidden;
           border: 1px solid var(--cc-color-border-neutral, #aaa);
@@ -332,12 +329,15 @@ export class CcHeaderApp extends LitElement {
         }
 
         cc-error {
-          padding: var(--cc-gap);
+          padding: 1em;
           text-align: center;
         }
 
         .main {
-          padding: var(--cc-gap);
+          display: flex;
+          flex-wrap: wrap;
+          padding: 1em;
+          gap: 1em;
         }
 
         .flavor-logo {
@@ -360,13 +360,18 @@ export class CcHeaderApp extends LitElement {
 
         .details {
           display: flex;
-          flex: 1 1 0;
+          flex: 1 1 max-content;
           flex-direction: column;
           justify-content: space-between;
         }
 
+        .commits {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1em;
+        }
+
         .name {
-          min-width: 11em;
           font-size: 1.1em;
           font-weight: bold;
         }
@@ -390,7 +395,10 @@ export class CcHeaderApp extends LitElement {
         }
 
         .buttons {
+          display: flex;
+          flex-wrap: wrap;
           align-self: center;
+          gap: 1em;
         }
 
         cc-button {
@@ -403,16 +411,16 @@ export class CcHeaderApp extends LitElement {
         }
 
         .messages {
-          --cc-gap: 0.57em;
-          --cc-align-items: center;
-
+          display: flex;
           box-sizing: border-box;
+          flex-wrap: wrap;
           align-items: center;
           padding: 0.45em 1.1em;
           background-color: var(--cc-color-bg-neutral);
           box-shadow: inset 0 6px 6px -6px rgb(0 0 0 / 40%);
           font-size: 0.9em;
           font-style: italic;
+          gap: 0.57em;
         }
 
         .status-icon {
