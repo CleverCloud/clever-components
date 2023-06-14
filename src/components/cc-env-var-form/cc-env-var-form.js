@@ -2,7 +2,6 @@ import '../cc-button/cc-button.js';
 import '../cc-expand/cc-expand.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-toggle/cc-toggle.js';
-import '../cc-flex-gap/cc-flex-gap.js';
 import '../cc-error/cc-error.js';
 import '../cc-env-var-editor-expert/cc-env-var-editor-expert.js';
 import '../cc-env-var-editor-json/cc-env-var-editor-json.js';
@@ -291,7 +290,7 @@ export class CcEnvVarForm extends LitElement {
       </div>
 
       ${!this.readonly ? html`
-        <cc-flex-gap class="button-bar">
+        <div class="button-bar">
 
           <cc-button @cc-button:click=${() => this._resetForm(this._initVariables)}>${i18n('cc-env-var-form.reset')}</cc-button>
 
@@ -302,7 +301,7 @@ export class CcEnvVarForm extends LitElement {
           ` : ''}
 
           <cc-button success ?disabled=${isFormDisabled} @cc-button:click=${this._onUpdateForm}>${i18n('cc-env-var-form.update')}</cc-button>
-        </cc-flex-gap>
+        </div>
       ` : ''}
     `;
   }
@@ -322,8 +321,10 @@ export class CcEnvVarForm extends LitElement {
 
         .header {
           display: flex;
+          flex-wrap: wrap;
           align-items: flex-start;
           justify-content: center;
+          gap: 0.5em;
           margin-block: 0.5em;
         }
 
@@ -380,10 +381,11 @@ export class CcEnvVarForm extends LitElement {
         }
 
         .button-bar {
-          --cc-gap: 1em;
-
+          display: flex;
+          flex-wrap: wrap;
           margin-top: 1em;
           margin-bottom: 0.5em;
+          gap: 1em;
         }
 
         .spacer {
