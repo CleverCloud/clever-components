@@ -1,4 +1,3 @@
-import '../cc-flex-gap/cc-flex-gap.js';
 import '../cc-block/cc-block.js';
 import '../cc-error/cc-error.js';
 import { css, html, LitElement } from 'lit';
@@ -69,7 +68,7 @@ export class CcHeptapodInfo extends LitElement {
         </div>
 
         ${!this.error && !isNotUsed ? html`
-          <cc-flex-gap class="pricing">
+          <div class="pricing">
             <div class="pricing-item">
               <div class="pricing-item-value ${classMap({ skeleton })}">${statistics.privateActiveUsers}</div>
               <div>${i18n('cc-heptapod-info.private-active-users-description')}</div>
@@ -86,7 +85,7 @@ export class CcHeptapodInfo extends LitElement {
               <div class="pricing-item-value ${classMap({ skeleton })}">${i18n('cc-heptapod-info.price-value', statistics)}</div>
               <div>${i18n('cc-heptapod-info.price-description')}</div>
             </div>
-          </cc-flex-gap>
+          </div>
         ` : ''}
 
         ${!this.error && isNotUsed ? html`
@@ -119,6 +118,8 @@ export class CcHeptapodInfo extends LitElement {
 
         .header {
           display: flex;
+          flex-wrap: wrap;
+          gap: 0.5em 1em;
         }
 
         .header-logo {
@@ -130,11 +131,12 @@ export class CcHeptapodInfo extends LitElement {
           display: flex;
           flex-direction: column;
           justify-content: center;
-          margin-left: 1em;
         }
 
         .pricing {
-          --cc-gap: 1em;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1em;
         }
 
         .pricing-item {
