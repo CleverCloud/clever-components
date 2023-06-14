@@ -9,7 +9,7 @@ You can run all tests by using the `npm run test` command.
 This command runs `*.test.js` files from the `test` folder as well as from the `src/components` folder.
 
 **Note:**
-Some components don't have any test files because they are purely made for layout purposes and do not implement any semantics or interactions (`cc-flex-gap` for instance).
+Some components don't have any test files because they are purely made for layout purposes and do not implement any semantics or interactions (`cc-expand` for instance).
 
 ## How to create tests for your component?
 

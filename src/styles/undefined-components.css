@@ -19,12 +19,6 @@ cc-block[icon]:not(:defined) > [slot=title] {
   padding-left: 2.5em;
 }
 
-cc-flex-gap:not(:defined) {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--cc-gap);
-}
-
 cc-input-text:not(:defined) {
   background: #eee;
   border-radius: .25em;
