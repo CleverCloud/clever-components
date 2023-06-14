@@ -1,5 +1,4 @@
 import '../cc-button/cc-button.js';
-import '../cc-flex-gap/cc-flex-gap.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
@@ -95,7 +94,7 @@ export class CcTcpRedirection extends LitElement {
     const helpTextAddendum = this._getHelpTextAddendum(redirection);
 
     return html`
-      <cc-flex-gap class="wrapper">
+      <div class="wrapper">
 
         ${skeleton ? html`
           <div class="icon skeleton"></div>
@@ -113,7 +112,7 @@ export class CcTcpRedirection extends LitElement {
           </div>
         ` : ''}
 
-        <cc-flex-gap class="text-button ${classMap({ 'cc-waiting': skeleton })}">
+        <div class="text-button ${classMap({ 'cc-waiting': skeleton })}">
           <div class="text-wrapper">
             <span class="text ${classMap({ skeleton })}">${(this._getHelpText(redirection))}</span>
             ${helpTextAddendum != null ? html`
@@ -133,8 +132,8 @@ export class CcTcpRedirection extends LitElement {
           >
             ${this._getButtonText(redirection)}
           </cc-button>
-        </cc-flex-gap>
-      </cc-flex-gap>
+        </div>
+      </div>
     `;
   }
 
@@ -149,7 +148,9 @@ export class CcTcpRedirection extends LitElement {
         }
 
         .wrapper {
-          --cc-gap: 0.8em;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.8em;
         }
 
         .icon {
@@ -169,7 +170,10 @@ export class CcTcpRedirection extends LitElement {
         }
 
         .text-button {
+          display: flex;
           flex: 1 1 0;
+          flex-wrap: wrap;
+          gap: 1em;
         }
 
         .text-wrapper {
