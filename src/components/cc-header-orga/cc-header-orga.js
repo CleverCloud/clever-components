@@ -1,6 +1,5 @@
 import '../cc-badge/cc-badge.js';
 import '../cc-img/cc-img.js';
-import '../cc-flex-gap/cc-flex-gap.js';
 import '../cc-error/cc-error.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
@@ -58,7 +57,7 @@ export class CcHeaderOrga extends LitElement {
       .join('');
 
     return html`
-      <cc-flex-gap class="wrapper ${classMap({ enterprise: orga.cleverEnterprise })}">
+      <div class="wrapper ${classMap({ enterprise: orga.cleverEnterprise })}">
 
         ${this.error ? html`
           <cc-error>${i18n('cc-header-orga.error')}</cc-error>
@@ -73,7 +72,6 @@ export class CcHeaderOrga extends LitElement {
               <cc-badge weight="strong" intent="info" icon-src=${badgeSvg}>Clever Cloud Enterprise</cc-badge>
             ` : ''}
           </div>
-          <div class="spacer"></div>
           ${(orga.emergencyNumber != null) ? html`
             <div class="hotline">
               <div class="hotline_label">${i18n('cc-header-orga.hotline')}</div>
@@ -83,7 +81,7 @@ export class CcHeaderOrga extends LitElement {
             </div>
           ` : ''}
         ` : ''}
-      </cc-flex-gap>
+      </div>
     `;
   }
 
@@ -93,18 +91,18 @@ export class CcHeaderOrga extends LitElement {
       // language=CSS
       css`
         :host {
-          --cc-gap: 1em;
-
           display: block;
         }
 
         .wrapper {
-          display: block;
+          display: flex;
           overflow: hidden;
-          padding: var(--cc-gap);
+          flex-wrap: wrap;
+          padding: 1em;
           border: 1px solid var(--cc-color-border-neutral, #aaa);
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-default, 0.25em);
+          gap: 1em;
         }
 
         .wrapper.enterprise {
@@ -126,15 +124,17 @@ export class CcHeaderOrga extends LitElement {
         }
 
         .details {
+          flex: 100 1 max-content;
           justify-content: center;
+          row-gap: 0.2em;
         }
 
         .hotline {
+          flex: 1 1 auto;
           justify-content: space-between;
         }
 
         .name {
-          min-width: 11em;
           font-size: 1.1em;
           font-weight: bold;
         }
@@ -171,10 +171,6 @@ export class CcHeaderOrga extends LitElement {
           /* Prevent space below badge because of text lines */
           display: flex;
           text-decoration: underline;
-        }
-
-        .spacer {
-          flex: 1 1 0;
         }
 
         /* SKELETON */
