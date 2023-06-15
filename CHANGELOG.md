@@ -687,6 +687,7 @@ title: Changelog
 * Add new npm script `components:build-cdn:versions-list` to update the list of available versions (published on CDN)
 * Add Jenkinsfile to automate CDN publication on new tag
 
+
 ## 5.3.1 (2020-11-16)
 
 * `<cc-tile-requests>`: fix broken display when value is 0
