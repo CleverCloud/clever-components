@@ -241,10 +241,6 @@ export class CcTileMetrics extends withResizeObserver(LitElement) {
 
   render () {
 
-    // TMP variables named with specific length for lit-analyzer bug (related to tsconfig.json `globalAttributes`)
-    const cpuCtxRef = this._cpuCtxRef;
-    const memCtxRef = this._memCtxRef;
-
     const state = this.metrics.state;
 
     const lastCpuValue = (state === 'loaded') ? this.metrics.value.cpuData[this.metrics.value.cpuData.length - 1].value : 0;
@@ -278,7 +274,7 @@ export class CcTileMetrics extends withResizeObserver(LitElement) {
           <cc-icon class="icon--cpu" .icon=${iconCpu}></cc-icon>
           <div class="chart-container-wrapper chart-cpu">
             <div class="chart-container ${classMap({ skeleton: state === 'loading' })}">
-              <canvas id="cpu_chart" ${ref(cpuCtxRef)}></canvas>
+              <canvas id="cpu_chart" ${ref(this._cpuCtxRef)}></canvas>
             </div>
           </div>
           <div class="current-percentage percent-cpu ${classMap({
@@ -291,7 +287,7 @@ export class CcTileMetrics extends withResizeObserver(LitElement) {
           <cc-icon class="icon--mem" .icon=${iconMem}></cc-icon>
           <div class="chart-container-wrapper chart-mem">
             <div class="chart-container ${classMap({ skeleton: state === 'loading' })}">
-              <canvas id="mem_chart" ${ref(memCtxRef)}></canvas>
+              <canvas id="mem_chart" ${ref(this._memCtxRef)}></canvas>
             </div>
           </div>
           <div class="current-percentage percent-mem ${classMap({
