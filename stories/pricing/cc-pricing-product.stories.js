@@ -41,6 +41,189 @@ export const loading = makeStory(conf, {
   ],
 });
 
+export const dataLoadedWithCustomProductFeatures = makeStory(conf, {
+  items: [
+    {
+      name: 'Gitlab',
+      icon: 'https://about.gitlab.com/images/press/press-kit-icon.svg',
+      features: [
+        {
+          code: 'disk-size',
+          type: 'bytes',
+        },
+        {
+          code: 'Logs',
+          type: 'boolean',
+        },
+        {
+          code: 'Backup frequency (seconds)',
+          type: 'number',
+        },
+        {
+          code: 'Backup retention (seconds)',
+          type: 'number',
+        },
+        {
+          code: 'memory',
+          type: 'bytes',
+        },
+        {
+          code: 'Migration',
+          type: 'boolean',
+        },
+        {
+          code: 'cpu',
+          type: 'number',
+        },
+        {
+          code: 'Dedicated',
+          type: 'string',
+        },
+      ],
+      plans: [
+        {
+          name: 'XS Big Space',
+          price: 0.0243055555555556,
+          features: [
+            {
+              code: 'Dedicated',
+              type: 'string',
+              value: 'dedicated',
+            },
+            {
+              code: 'disk-size',
+              type: 'bytes',
+              value: '8358709120',
+            },
+            {
+              code: 'Backup frequency (seconds)',
+              type: 'number',
+              value: '54200',
+            },
+            {
+              code: 'Backup retention (seconds)',
+              type: 'number',
+              value: '803601',
+            },
+            {
+              code: 'cpu',
+              type: 'number',
+              value: '3',
+            },
+            {
+              code: 'memory',
+              type: 'bytes',
+              value: '5013741824',
+            },
+            {
+              code: 'Logs',
+              type: 'boolean',
+              value: 'true',
+            },
+            {
+              code: 'Migration',
+              type: 'boolean',
+              value: 'true',
+            },
+          ],
+        },
+        {
+          name: 'XS Medium Space',
+          price: 0.0243055555555556,
+          features: [
+            {
+              code: 'Dedicated',
+              type: 'string',
+              value: 'dedicated',
+            },
+            {
+              code: 'disk-size',
+              type: 'bytes',
+              value: '5368709120',
+            },
+            {
+              code: 'Backup frequency (seconds)',
+              type: 'number',
+              value: '86400',
+            },
+            {
+              code: 'Backup retention (seconds)',
+              type: 'number',
+              value: '604800',
+            },
+            {
+              code: 'cpu',
+              type: 'number',
+              value: '2',
+            },
+            {
+              code: 'memory',
+              type: 'bytes',
+              value: '1073741824',
+            },
+            {
+              code: 'Logs',
+              type: 'boolean',
+              value: 'true',
+            },
+            {
+              code: 'Migration',
+              type: 'boolean',
+              value: 'true',
+            },
+          ],
+        },
+        {
+          name: 'XS Small Space',
+          price: 0.032541658,
+          features: [
+            {
+              code: 'Dedicated',
+              type: 'string',
+              value: 'shared',
+            },
+            {
+              code: 'disk-size',
+              type: 'bytes',
+              value: '54779821',
+            },
+            {
+              code: 'Backup frequency (seconds)',
+              type: 'number',
+              value: '587740',
+            },
+            {
+              code: 'Backup retention (seconds)',
+              type: 'number',
+              value: '368514',
+            },
+            {
+              code: 'cpu',
+              type: 'number',
+              value: '1',
+            },
+            {
+              code: 'memory',
+              type: 'bytes',
+              value: '20047872',
+            },
+            {
+              code: 'Logs',
+              type: 'boolean',
+              value: 'false',
+            },
+            {
+              code: 'Migration',
+              type: 'boolean',
+              value: 'false',
+            },
+          ],
+        },
+      ],
+    },
+  ],
+});
+
 export const error = makeStory(conf, {
   items: [{ error: true }],
 });
@@ -243,6 +426,7 @@ enhanceStoriesNames({
   defaultStory,
   loading,
   error,
+  dataLoadedWithCustomProductFeatures,
   dataLoadedWithRuntimeNode,
   dataLoadedWithAddonElasticsearch,
   dataLoadedWithAddonMongodb,

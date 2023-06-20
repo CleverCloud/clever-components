@@ -24,7 +24,6 @@ const FEATURES_I18N = {
   memory: () => i18n('cc-pricing-table.feature.memory'),
   version: () => i18n('cc-pricing-table.feature.version'),
 };
-const AVAILABLE_FEATURES = Object.keys(FEATURES_I18N);
 const NUMBER_FEATURE_TYPES = ['bytes', 'number', 'number-cpu-runtime'];
 
 /** @type {Temporality[]} */
@@ -63,7 +62,6 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
       features: { type: Array },
       plans: { type: Array },
       temporality: { type: Array },
-      _features: { type: Array },
       _plans: { type: Array },
       _size: { type: String },
     };
@@ -87,9 +85,6 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
     /** @type {Temporality[]} Sets the ordered list of time windows you want to display the prices in (defaults to day and 30 days with 2 fraction digits). */
     this.temporality = DEFAULT_TEMPORALITY;
 
-    /** @type {Feature[]|null} */
-    this._features = [];
-
     /** @type {Plan[]|null} */
     this._plans = [];
 
@@ -102,9 +97,16 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
   }
 
   _getFeatureName (feature) {
-    if (feature != null && FEATURES_I18N[feature.code] != null) {
+
+    if (feature == null) {
+      return '';
+    }
+
+    if (FEATURES_I18N[feature.code] != null) {
       return FEATURES_I18N[feature.code]();
     }
+
+    return feature.code;
   }
 
   _getFeatureValue (feature) {
@@ -203,11 +205,6 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
         .sort((a, b) => a.price - b.price);
     }
 
-    if (changedProperties.has('features') && Array.isArray(this.features)) {
-      this._features = this.features
-        .filter((feature) => AVAILABLE_FEATURES.includes(feature.code));
-    }
-
     super.update(changedProperties);
   }
 
@@ -267,7 +264,7 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
   }
 
   _renderSmallPlanFeatures (planFeatures) {
-    return this._features.map((feature) => {
+    return this.features.map((feature) => {
       const currentFeature = planFeatures.find((f) => feature.code === f.code);
       if (currentFeature == null) {
         return '';
@@ -290,7 +287,7 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
             <th class="btn-col"></th>
           ` : ''}
           <th>${i18n('cc-pricing-table.plan')}</th>
-          ${this._features.map((feature) => html`
+          ${this.features.map((feature) => html`
             <th class=${classMap({ 'number-align': NUMBER_FEATURE_TYPES.includes(feature.type) })}>${this._getFeatureName(feature)}</th>
           `)}
           ${temporality.map(({ type }) => html`
@@ -316,7 +313,7 @@ export class CcPricingTable extends withResizeObserver(LitElement) {
   }
 
   _renderBigPlanFeatures (planFeatures) {
-    return this._features.map((feature) => {
+    return this.features.map((feature) => {
       const currentFeature = planFeatures.find((f) => feature.code === f.code);
       return html`
         <td class=${classMap({ 'number-align': NUMBER_FEATURE_TYPES.includes(feature.type) })}>${this._getFeatureValue(currentFeature)}</td>

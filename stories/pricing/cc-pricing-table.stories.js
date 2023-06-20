@@ -5,7 +5,6 @@ import { makeStory } from '../lib/make-story.js';
 import { enhanceStoriesNames } from '../lib/story-names.js';
 
 // Feature order is not the same between plans
-// Some features will be ignored because they cannot be translated
 // Some features will be ignored because they are not listed
 // Some features are missing for some plans
 const fakeProductPlans = [
