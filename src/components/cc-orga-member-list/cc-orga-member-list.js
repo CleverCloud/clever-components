@@ -343,7 +343,6 @@ export class CcOrgaMemberList extends LitElement {
   }
 
   render () {
-    const _refTitle = this._memberListHeadingRef;
 
     return html`
 
@@ -353,7 +352,7 @@ export class CcOrgaMemberList extends LitElement {
         ${this.authorisations.invite ? this._renderInviteForm() : ''}
         
         <cc-block-section>
-          <div slot="title" ${ref(_refTitle)} tabindex="-1">
+          <div slot="title" ${ref(this._memberListHeadingRef)} tabindex="-1">
             ${i18n('cc-orga-member-list.list.heading')}
             ${this.members.state === 'loaded' ? html`
               <cc-badge class="member-count" weight="dimmed" intent="neutral" circle>${this.members.value.length}</cc-badge>
@@ -379,8 +378,6 @@ export class CcOrgaMemberList extends LitElement {
 
   _renderInviteForm () {
 
-    const _refEmail = this._inviteMemberEmailRef;
-    const __refRole = this._inviteMemberRoleRef;
     const isFormDisabled = this.inviteMemberForm.state === 'inviting';
 
     return html`
@@ -396,7 +393,7 @@ export class CcOrgaMemberList extends LitElement {
             ?disabled=${isFormDisabled}
             @cc-input-text:requestimplicitsubmit=${this._onInviteMember}
             @cc-input-text:input=${this._onEmailInput}
-            ${ref(_refEmail)}
+            ${ref(this._inviteMemberEmailRef)}
           >
             <p slot="help">${i18n('cc-orga-member-list.invite.email.format')}</p>
             ${this._renderFormEmailError()}
@@ -409,7 +406,7 @@ export class CcOrgaMemberList extends LitElement {
             required
             ?disabled=${isFormDisabled}
             @cc-select:input=${this._onRoleInput}
-            ${ref(__refRole)}
+            ${ref(this._inviteMemberRoleRef)}
           >
           </cc-select>
 
