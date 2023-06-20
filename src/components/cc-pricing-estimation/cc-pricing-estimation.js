@@ -364,7 +364,6 @@ export class CcPricingEstimation extends LitElement {
 
   render () {
     const totalPrice = this._getTotalPrice();
-    const _refTotal = this._totalRef;
 
     return html`
       ${this.isToggleEnabled
@@ -376,7 +375,7 @@ export class CcPricingEstimation extends LitElement {
         
         ${this.selectedPlans.map((plan) => this._renderSelectedPlan(plan))}
         
-        <p class="content__total" tabindex="-1" ${ref(_refTotal)}>
+        <p class="content__total" tabindex="-1" ${ref(this._totalRef)}>
           <strong>
             <span class="visually-hidden">
               ${i18n('cc-pricing-estimation.total.label')}
