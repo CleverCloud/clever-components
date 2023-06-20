@@ -103,7 +103,7 @@
     "highlight.js": "^10.7.2",
     "i18n-extract": "^0.6.7",
     "js-yaml": "^4.1.0",
-    "lit-analyzer": "^1.2.1",
+    "lit-analyzer": "2.0.0-pre.3",
     "mime-types": "^2.1.30",
     "mocha": "^10.0.0",
     "node-static": "^0.7.11",
