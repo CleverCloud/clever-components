@@ -576,6 +576,7 @@ export class CcButton extends LitElement {
           opacity: 1;
         }
 
+        :host([waiting]) button.circle .text-wrapper cc-icon,
         :host([waiting]) button.circle .text-wrapper img {
           opacity: 0.25;
         }
