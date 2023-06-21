@@ -14,18 +14,17 @@ title: '💡 Smart (add-on)'
 
 ## ⚙️ Params
 
-<table>
-  <tr><th>Name                       <th>Type                  <th>Details                                                                                                                <th>Default
-  <tr><td><code>productId</code>     <td><code>String</code>   <td>id from <a href="https://api.clever-cloud.com/v2/products/addonproviders"><code>/v2/products/addonproviders</code></a> <td>
-  <tr><td><code>zoneId</code>        <td><code>String</code>   <td>Name from <a href="https://api.clever-cloud.com/v4/products/zones"><code>/v4/products/zones</code></a>                 <td><code>par</code>
-  <tr><td><code>currency</code>      <td><code>Currency</code> <td>Currency info                                                                                                          <td><code>{ code: 'EUR', changeRate: 1 }</code>
-  <tr><td><code>addonFeatures</code> <td><code>String[]</code> <td>List of feature codes as describe in the component API.                                                                <td><code>undefined</code>
-</table>
+| Name            | Type        | Details                                                                                          | Default |
+|-----------------|-------------|--------------------------------------------------------------------------------------------------|---------|
+| `apiConfig`     | `ApiConfig` | Object with API configuration (only `API_HOST` is required for this component)                   |         |
+| `productId`     | `string`    | id from [`/v2/products/addonproviders`](https://api.clever-cloud.com/v2/products/addonproviders) |         |
+| `zoneId`        | `string`    | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones)                 | `par`   |
+| `addonFeatures` | `string[]`  | List of feature codes as describe in the component API.                                          |         |
+
 
 ```ts
-interface Currency {
-  code: string,       // ISO 4217 currency code
-  changeRate: number, // based on euros
+interface ApiConfig {
+  API_HOST: string,
 }
 ```
 
@@ -35,43 +34,45 @@ interface Currency {
 
 ## 🌐 API endpoints
 
-<table>
-  <tr><th>Method <th>URL                                           <th>Cache?
-  <tr><td>GET    <td><code>/v2/products/addonproviders</code>      <td>1 day
-  <tr><td>GET    <td><code>/v4/billing/price-system?zone_id</code> <td>1 day
-</table>
+| Method | Type                               | Cache? |
+|--------|:-----------------------------------|--------|
+| `GET`  | `/v2/products/addonproviders`      | 1 day  |
+| `GET`  | `/v4/billing/price-system?zone_id` | 1 day  |
 
 ## ⬇️️ Examples
 
 ### Simple
 
-Simple example based on default zone and currency.
+Simple example based on default zone.
 
 ```html
-<cc-smart-container context='{ "productId": "postgresql-addon" }'>
+<cc-smart-container context='{
+    "apiConfig": {
+      API_HOST: "",
+    },
+    "productId": "postgresql-addon",
+}'>
   <cc-pricing-product mode="addon"></cc-pricing-product>
 </cc-smart-container>
 ```
 
-<cc-smart-container context='{ "productId": "postgresql-addon" }'>
-  <cc-pricing-product mode="addon"></cc-pricing-product>
-</cc-smart-container>
+### Zone
 
-### Zone and currency
-
-Simple example with custom zone and custom currency.
+Simple example with custom zone.
 
 NOTE: Prices are the same on all zones right now.
 
 ```html
-<cc-smart-container context='{ "productId": "postgresql-addon", "zoneId": "rbx", "currency": { "code": "USD", "changeRate": 1.1802 } }'>
+<cc-smart-container context='{
+    "apiConfig": {
+      API_HOST: "",
+    },
+    "productId": "postgresql-addon",
+    "zoneId": "rbx",
+}'>
   <cc-pricing-product mode="addon"></cc-pricing-product>
 </cc-smart-container>
 ```
-
-<cc-smart-container context='{ "productId": "postgresql-addon", "zoneId": "rbx", "currency": { "code": "USD", "changeRate": 1.1802 } }'>
-  <cc-pricing-product mode="addon"></cc-pricing-product>
-</cc-smart-container>
 
 ### With feature list
 
@@ -79,11 +80,14 @@ Setting `addonFeatures` is the only way to enforce a sort order on the feature l
 It's also a good way to filter features.
 
 ```html
-<cc-smart-container context='{ "productId": "postgresql-addon", "addonFeatures": ["cpu", "memory", "disk-size"] }'>
+<cc-smart-container context='{
+    "apiConfig": {
+      API_HOST: "",
+    },
+    "productId": "postgresql-addon",
+    "addonFeatures": ["cpu", "memory", "disk-size"],
+}'>
   <cc-pricing-product mode="addon"></cc-pricing-product>
 </cc-smart-container>
 ```
 
-<cc-smart-container context='{ "productId": "postgresql-addon", "addonFeatures": ["cpu", "memory", "disk-size"] }'>
-  <cc-pricing-product mode="addon"></cc-pricing-product>
-</cc-smart-container>

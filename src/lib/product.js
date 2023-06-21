@@ -1,9 +1,7 @@
 export function formatAddonProduct (addonProvider, priceSystem, selectedFeatures) {
   return {
     name: addonProvider.name,
-    icon: addonProvider.logoUrl,
-    description: addonProvider.longDesc,
-    features: formatAddonFeatures(addonProvider.features, selectedFeatures),
+    productFeatures: formatAddonFeatures(addonProvider.features, selectedFeatures),
     plans: formatAddonPlans(addonProvider.plans, priceSystem, selectedFeatures),
   };
 }
@@ -142,9 +140,7 @@ export function formatRuntimeProduct (runtime, priceSystem) {
   const features = formatRuntimeFeatures(runtime);
   return {
     name: runtime.variant.name,
-    icon: runtime.variant.logo,
-    // The runtime description is not really useful here
-    features,
+    productFeatures: features,
     plans: formatRuntimePlans(runtime.flavors, priceSystem, features),
   };
 }

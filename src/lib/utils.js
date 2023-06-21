@@ -90,3 +90,19 @@ export function sortBy (propertyName, desc = false) {
 export function asyncMap (array, asyncCallback) {
   return Promise.all(array.map(asyncCallback));
 }
+
+/**
+  * Returns the currency symbol corresponding to the given currency.
+  *
+  * @param {string} currency - the currency to get the symbol for
+  */
+export function getCurrencySymbol (currency) {
+  // The lang does not really matter
+  const nf = new Intl.NumberFormat('en', { style: 'currency', currency });
+  return nf
+    .formatToParts(0)
+    .find((p) => p.type === 'currency')
+    .value
+  // Safari does not support currencySymbol: 'narrow' in Intl.NumberFormat so we need to do this #sorry
+    .replace('$US', '$');
+}

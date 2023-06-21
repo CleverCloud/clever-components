@@ -1,23 +1,50 @@
-import '../cc-button/cc-button.js';
-import '../cc-error/cc-error.js';
-import '../cc-input-number/cc-input-number.js';
 import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
+import { createRef, ref } from 'lit/directives/ref.js';
+import {
+  iconRemixDeleteBin_4Line as iconBin,
+  iconRemixArrowDownSLine as iconArrowDown,
+  iconRemixAddLine as iconAdd,
+  iconRemixSubtractLine as iconSubtract,
+} from '../../assets/cc-remix.icons.js';
+import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
-import { withResizeObserver } from '../../mixins/with-resize-observer/with-resize-observer.js';
-import { ccLink } from '../../templates/cc-link/cc-link.js';
+import '@shoelace-style/shoelace/dist/components/select/select.js';
+import '@shoelace-style/shoelace/dist/components/option/option.js';
+import { getCurrencySymbol } from '../../lib/utils.js';
+import { accessibilityStyles } from '../../styles/accessibility.js';
+import { shoelaceStyles } from '../../styles/shoelace.js';
+import '../cc-button/cc-button.js';
+import '../cc-icon/cc-icon.js';
+import '../cc-badge/cc-badge.js';
 
-const deleteSvg = new URL('../../assets/delete.svg', import.meta.url).href;
+const FEATURES_I18N = {
+  'connection-limit': () => i18n('cc-pricing-estimation.feature.connection-limit'),
+  cpu: () => i18n('cc-pricing-estimation.feature.cpu'),
+  databases: () => i18n('cc-pricing-estimation.feature.databases'),
+  'disk-size': () => i18n('cc-pricing-estimation.feature.disk-size'),
+  gpu: () => i18n('cc-pricing-estimation.feature.gpu'),
+  'has-logs': () => i18n('cc-pricing-estimation.feature.has-logs'),
+  'has-metrics': () => i18n('cc-pricing-estimation.feature.has-metrics'),
+  'max-db-size': () => i18n('cc-pricing-estimation.feature.max-db-size'),
+  memory: () => i18n('cc-pricing-estimation.feature.memory'),
+  version: () => i18n('cc-pricing-estimation.feature.version'),
+};
+const AVAILABLE_FEATURES = Object.keys(FEATURES_I18N);
 
 /** @type {Currency} */
-const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
+// FIXME: this code is duplicated across all pricing components (see issue #732 for more details)
+const DEFAULT_CURRENCY = { code: 'EUR', changeRate: 1 };
 
-const CONTACT_URL = 'https://www.clever-cloud.com/en/contact-sales';
-const SIGN_UP_URL = 'https://api.clever-cloud.com/v2/sessions/signup';
+/** @type {Temporality} */
+// FIXME: this code is duplicated across all pricing components (see issue #732 for more details)
+const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
 
 /**
  * @typedef {import('../common.types.js').Currency} Currency
  * @typedef {import('../common.types.js').Plan} Plan
+ * @typedef {import('../common.types.js').Temporality} Temporality
  */
 
 /**
@@ -26,455 +53,917 @@ const SIGN_UP_URL = 'https://api.clever-cloud.com/v2/sessions/signup';
  * @cssdisplay block
  *
  * @event {CustomEvent<Plan>} cc-pricing-estimation:change-quantity - Fires the plan with a modified quantity whenever the quantity on the input changes.
- * @event {CustomEvent<Plan>} cc-pricing-estimation:delete-plan - Fires the plan whenever a delete button is clicked.
+ * @event {CustomEvent<Currency>} cc-pricing-estimation:change-currency - Fires the `currency` whenever the currency selection changes.
+ * @event {CustomEvent<Temporality>} cc-pricing-estimation:change-temporality - Fires the `temporality` whenever the temporality selection changes.
+ * @event {CustomEvent<Plan>} cc-pricing-estimation:delete-plan - Fires the plan whenever a delete button is clicked or when the quantity reaches 0.
  *
- * @csspart selected-plans - Targets the inner selected plans (table in big mode, list in small mode).
- * @csspart recap - Targets the inner recap blue box.
- * @cssprop {Color} --cc-pricing-estimation-recap-bg-color - Sets the value of the recap background color (`--cc-color-bg-primary` by default).
+ * @slot footer - Content at the bottom of the component. Typically used to insert links and call to action elements.
+ * @cssprop {Background} --cc-pricing-estimation-counter-bg - Sets the background (color or gradient) of the product counter (defaults: `var(--cc-color-bg-strong)`).
+ * @cssprop {Color} --cc-pricing-hovered-color - Sets the text color used on hover (defaults: `purple`).
+ * @cssprop {Color} --cc-pricing-estimation-counter-color - Sets the text color of the product counter (defaults: `var(--cc-color-text-inverted)`).
  */
-export class CcPricingEstimation extends withResizeObserver(LitElement) {
+export class CcPricingEstimation extends LitElement {
 
   static get properties () {
     return {
-      currency: { type: Object },
+      currencies: { type: Array },
+      isToggleEnabled: { type: Boolean, attribute: 'is-toggle-enabled' },
+      selectedCurrency: { type: Object, attribute: 'selected-currency' },
       selectedPlans: { type: Array, attribute: 'selected-plans' },
-      totalPrice: { type: Number, attribute: 'total-price' },
-      _size: { type: String, state: true },
+      selectedTemporality: { type: Object, attribute: 'selected-temporality' },
+      temporalities: { type: Array },
+      _isCollapsed: { type: Boolean, state: true },
     };
   }
 
   constructor () {
     super();
 
-    this.breakpoints = {
-      width: [600],
-    };
+    /** @type {Currency[]} Sets the list of currencies. */
+    this.currencies = [DEFAULT_CURRENCY];
+
+    /** @type {boolean} Switches the display to toggle.
+     * Should be set to true when you want the content of the estimation to be hidden by default, with a button to show / hide it (for instance when the viewport is reduced).
+     * You may use JavaScript (for instance a `change` listener on `window.matchMedia`) to sync this prop with a media query breakpoint
+     * so that when you switch the positioning of the component with CSS it also enables the toggle mode.
+     */
+    this.isToggleEnabled = false;
 
     /** @type {Currency} Sets the current currency. */
-    this.currency = CURRENCY_EUR;
+    this.selectedCurrency = DEFAULT_CURRENCY;
 
-    /** @type {Plan[]|null} Sets the list of selected plans with their quantity. */
-    this.selectedPlans = null;
+    /** @type {Plan[]} Sets the list of selected plans with their quantity. */
+    this.selectedPlans = [];
 
-    /** @type {number} Sets the total estimated price for all selected plans. */
-    this.totalPrice = 0;
+    /** @type {Temporality} Sets the current temporality. */
+    this.selectedTemporality = DEFAULT_TEMPORALITY;
 
-    /** @type {number|null} Sets the total estimated price for all selected plans. */
-    this._size = null;
+    /** @type {Temporality[]} Sets the list of temporalities. */
+    this.temporalities = [DEFAULT_TEMPORALITY];
+
+    /** @type {boolean} Collapses the component if `isToggleEnabled` is also set to `true`. */
+    this._isCollapsed = false;
+
+    this._totalRef = createRef();
+
+    new LostFocusController(this, '.plan', ({ suggestedElement }) => {
+      if (suggestedElement != null) {
+        suggestedElement.querySelector('.plan__toggle__header').focus();
+      }
+      else {
+        this._totalRef.value?.focus();
+      }
+    });
   }
 
-  onResize ({ width }) {
-    this._size = width;
+  /**
+   * Returns the localized "estimated/temporality" based on the given temporality type.
+   *
+   * @param {Temporality['type']} type - the temporality type
+   */
+  _getEstimatedPriceLabel (type) {
+    if (type === 'second') {
+      return i18n('cc-pricing-estimation.estimated-price-name.second');
+    }
+    if (type === 'minute') {
+      return i18n('cc-pricing-estimation.estimated-price-name.minute');
+    }
+    if (type === 'hour') {
+      return i18n('cc-pricing-estimation.estimated-price-name.hour');
+    }
+    if (type === '1000-minutes') {
+      return i18n('cc-pricing-estimation.estimated-price-name.1000-minutes');
+    }
+    if (type === 'day') {
+      return i18n('cc-pricing-estimation.estimated-price-name.day');
+    }
+    if (type === '30-days') {
+      return i18n('cc-pricing-estimation.estimated-price-name.30-days');
+    }
   }
 
-  _getTotalPrices (plan) {
-
-    const planPriceDaily = plan.price * 24;
-    const totalPricePerDay = planPriceDaily * plan.quantity * this.currency.changeRate;
-    const totalPriceDailyWithCode = { price: totalPricePerDay, code: this.currency.code };
-
-    const priceMonthly = planPriceDaily * 30;
-    const totalPriceMonthly = priceMonthly * plan.quantity * this.currency.changeRate;
-    const totalPriceMonthlyWithCode = { price: totalPriceMonthly, code: this.currency.code };
-
-    return { totalPriceDailyWithCode, totalPriceMonthlyWithCode };
+  /**
+   * Returns the translated string corresponding to a feature code.
+   *
+   * @param {Feature} feature - the feature to translate
+   * @return {string|void} the translated feature name if a translation exists or nothing if the translation does not exist
+   */
+  _getFeatureName (feature) {
+    if (feature != null && FEATURES_I18N[feature.code] != null) {
+      return FEATURES_I18N[feature.code]();
+    }
   }
 
-  _onChangeQuantity (plan, quantity) {
-    dispatchCustomEvent(this, 'change-quantity', { ...plan, quantity });
+  /**
+   * Returns the formatted value corresponding to a feature
+   *
+   * @param {feature} feature - the feature to get the formatted value from
+   * @return {string} the formatted value for the given feature or the feature value itself if it does not require any formatting
+   */
+  _getFeatureValue (feature) {
+    if (feature == null) {
+      return '';
+    }
+    switch (feature.type) {
+      case 'boolean':
+        return i18n('cc-pricing-estimation.type.boolean', { boolean: feature.value === 'true' });
+      case 'boolean-shared':
+        return i18n('cc-pricing-estimation.type.boolean-shared', { boolean: feature.value === 'shared' });
+      case 'bytes':
+        return (feature.code === 'memory' && feature.value === '0')
+          ? i18n('cc-pricing-estimation.type.boolean-shared', { shared: true })
+          : i18n('cc-pricing-estimation.type.bytes', { bytes: Number(feature.value) });
+      case 'number':
+        return (feature.code === 'cpu' && feature.value === '0')
+          ? i18n('cc-pricing-estimation.type.boolean-shared', { shared: true })
+          : i18n('cc-pricing-estimation.type.number', { number: Number(feature.value) });
+      case 'number-cpu-runtime':
+        return i18n('cc-pricing-estimation.type.number-cpu-runtime', {
+          cpu: feature.value.cpu,
+          shared: feature.value.shared,
+        });
+      case 'string':
+        return feature.value;
+    }
   }
 
+  /**
+   * Returns the number of products currently in the selectedPlans.
+   *
+   * @return {number} total number of products
+   */
+  _getProductCount () {
+    return this.selectedPlans
+      .reduce((itemCount, plan) => {
+        return itemCount + plan.quantity;
+      }, 0);
+  }
+
+  /**
+   * Returns the price computed based on the given temporality
+   *
+   * @param {Temporality['type']} type - the temporality type
+   * @param {number} hourlyPrice - the hourly price to compute
+   * @return {number} the computed price based on the given temporality
+   */
+  _getPrice (type, hourlyPrice) {
+    if (type === 'second') {
+      return hourlyPrice / 60 / 60 * this.selectedCurrency.changeRate;
+    }
+    if (type === 'minute') {
+      return hourlyPrice / 60 * this.selectedCurrency.changeRate;
+    }
+    if (type === 'hour') {
+      return hourlyPrice * this.selectedCurrency.changeRate;
+    }
+    if (type === '1000-minutes') {
+      return hourlyPrice / 60 * 1000 * this.selectedCurrency.changeRate;
+    }
+    if (type === 'day') {
+      return hourlyPrice * 24 * this.selectedCurrency.changeRate;
+    }
+    if (type === '30-days') {
+      return hourlyPrice * 24 * 30 * this.selectedCurrency.changeRate;
+    }
+  }
+
+  /**
+   * Returns the translated price label corresponding to a temporality
+   *
+   * @param {Temporality['type']} type - the temporality type
+   * @return {string} the translated label corresponding to the given temporality
+   */
+  _getPriceLabel (type) {
+    if (type === 'second') {
+      return i18n('cc-pricing-estimation.price-name.second');
+    }
+    if (type === 'minute') {
+      return i18n('cc-pricing-estimation.price-name.minute');
+    }
+    if (type === 'hour') {
+      return i18n('cc-pricing-estimation.price-name.hour');
+    }
+    if (type === '1000-minutes') {
+      return i18n('cc-pricing-estimation.price-name.1000-minutes');
+    }
+    if (type === 'day') {
+      return i18n('cc-pricing-estimation.price-name.day');
+    }
+    if (type === '30-days') {
+      return i18n('cc-pricing-estimation.price-name.30-days');
+    }
+  }
+
+  /**
+   * Gets the computed price based on a given temporality.
+   * Returns the localized and formatted price based on the language and the given number of digits.
+   *
+   * @param {Temporality['type']} type - the temporality type
+   * @param {number} hourlyPrice - the price to base the calculations on
+   * @param {number} digits - the number of digits to be used for price rounding
+   */
+  _getPriceValue (type, hourlyPrice, digits) {
+    const price = this._getPrice(type, hourlyPrice);
+    if (price != null) {
+      return i18n('cc-pricing-estimation.price', { price, code: this.selectedCurrency.code, digits });
+    }
+  }
+
+  /**
+   * Returns the total price for a given plan (factoring its quantity)
+   *
+   * @param {Plan} plan - the plan to compute the total for
+   * @return {number} the total price for the given plan
+   */
+  _getTotalPlanPrice (plan) {
+    const price = this._getPrice(this.selectedTemporality.type, plan.price);
+    return price * plan.quantity;
+  }
+
+  /**
+   * Returns the total price by adding the total price of each plan within selectedPlans
+   *
+   * @return {number} the total price (counting all plans)
+   */
+  _getTotalPrice () {
+    return this.selectedPlans
+      ?.map((plan) => this._getTotalPlanPrice(plan))
+      .reduce((a, b) => a + b, 0);
+  }
+
+  /**
+   * Dispatches a `cc-pricing-estimation:change-currency` event with the currency as payload.
+   *
+   * @param {Event} e - the event that called this method
+   */
+  _onCurrencyChange (e) {
+    const currency = this.currencies.find((c) => c.code === e.target.value);
+    dispatchCustomEvent(this, 'change-currency', currency);
+  }
+
+  /**
+   * Dispatches a `cc-pricing-estimation:change-quantity` event with the plan which quantity has been reduced by 1.
+   * If quantity = 0, dispatches a `cc-pricing-estimation:delete-plan` instead with the plan as payload.
+   *
+   * @param {Plan} plan - the plan to modify
+   */
+  _onDecreaseQuantity (plan) {
+    const quantity = plan.quantity - 1;
+
+    if (quantity > 0) {
+      dispatchCustomEvent(this, 'change-quantity', { ...plan, quantity });
+    }
+    else {
+      dispatchCustomEvent(this, 'delete-plan', plan);
+    }
+  }
+
+  /**
+   * Dispatches a `cc-pricing-estimation:delete-plan` event with the plan as its payload
+   *
+   * @param {Plan} plan - the plan to delete
+   */
   _onDeletePlan (plan) {
     dispatchCustomEvent(this, 'delete-plan', plan);
   }
 
+  /**
+   * Dispatches a `cc-pricing-estimation:change-quantity` event with the plan which quantity has been increased by 1.
+   *
+   * @param {Plan} plan - the plan to modify
+   */
+  _onIncreaseQuantity (plan) {
+    const quantity = plan.quantity + 1;
+    dispatchCustomEvent(this, 'change-quantity', { ...plan, quantity });
+  }
+
+  /**
+   * Dispatches a `cc-pricing-estimation:change-temporality` event with the selected temporality as its payload.
+   *
+   * @param {Event} e - the event that called this method
+   */
+  _onTemporalityChange (e) {
+    const temporality = this.temporalities.find((t) => t.type === e.target.value);
+    dispatchCustomEvent(this, 'change-temporality', temporality);
+  }
+
+  /**
+   * Toggles the `_isCollapsed` property to show / hide the component content (when `this.isToggleEnabled === true`)
+   */
+  _onToggle () {
+    this._isCollapsed = !this._isCollapsed;
+  }
+
+  willUpdate (changedProperties) {
+    // This is not done within the `render` function because we only want to reset this value in specific cases.
+    // If `isToggleEnabled` is set to true, we need to make sure the content is hidden by default
+    if (changedProperties.has('isToggleEnabled') && this.isToggleEnabled === true) {
+      this._isCollapsed = true;
+    }
+  }
+
   render () {
-    // We don't really have a good way to detect when the component should switch between bit and small mode.
-    // Also, when this component is used several times in the page, it's better if all instances switch at the same breakpoint.
-    // 950 seems like a good arbitrary value for the content we need to display.
-    return html`
+    const totalPrice = this._getTotalPrice();
+    const _refTotal = this._totalRef;
 
-      ${(this._size > 950)
-        ? this._renderBigEstimation()
-        : this._renderSmallEstimation()
+    return html`
+      ${this.isToggleEnabled
+        ? this._renderHeaderWithToggle(totalPrice)
+        : this._renderHeaderWithoutToggle()
       }
+      
+      <div class="content ${classMap({ 'content--hidden': this.isToggleEnabled && this._isCollapsed })}">
+        
+        ${this.selectedPlans.map((plan) => this._renderSelectedPlan(plan))}
+        
+        <p class="content__total" tabindex="-1" ${ref(_refTotal)}>
+          <strong>
+            <span class="visually-hidden">
+              ${i18n('cc-pricing-estimation.total.label')}
+            </span>
+            ${i18n('cc-pricing-estimation.price', {
+              price: totalPrice,
+              code: this.selectedCurrency.code,
+              digits: this.selectedTemporality.digits,
+            })}
+          </strong>
+          <span>${i18n('cc-pricing-estimation.tax-excluded')}</span>
+          <span class="content__total__estimated">${this._getEstimatedPriceLabel(this.selectedTemporality.type)}</span>
+        </p>
 
-      <div class="recap" part="recap">
-        <div class="recap-text">${i18n('cc-pricing-estimation.monthly-est')}</div>
-        <div class="recap-total">
-          ${i18n('cc-pricing-estimation.price', {
-            price: this.totalPrice * this.currency.changeRate, code: this.currency.code,
-          })}
-        </div>
-        <div class="recap-contact">
-          ${ccLink(CONTACT_URL, i18n('cc-pricing-estimation.sales'))}
-        </div>
-        <div class="recap-signup">
-          ${ccLink(SIGN_UP_URL, i18n('cc-pricing-estimation.sign-up'))}
-        </div>
+        ${this._renderSelectForm()}
+
+        <slot name="footer"></slot>
       </div>
     `;
   }
 
-  _renderBigEstimation () {
+  /**
+   * @param {number} totalPrice
+   */
+  _renderHeaderWithToggle (totalPrice) {
+    const productCount = this._getProductCount();
+
     return html`
-      <div part="selected-plans">
-        <table>
-          <tr>
-            <th class="btn-col"></th>
-            <th>${i18n('cc-pricing-estimation.product')}</th>
-            <th>${i18n('cc-pricing-estimation.plan')}</th>
-            <th>${i18n('cc-pricing-estimation.quantity')}</th>
-            <th class="number-align">${i18n('cc-pricing-estimation.price-name-daily')}</th>
-            <th class="number-align">${i18n('cc-pricing-estimation.price-name-monthly')}</th>
-          </tr>
-          ${this._renderBigSelectedPlans()}
-        </table>
+      <div class="header header--toggle">
+        <strong class="header__heading">${i18n('cc-pricing-estimation.heading')}</strong>
+        <span class="header__badge">
+          ${productCount}
+          <span class="visually-hidden">${i18n('cc-pricing-estimation.count.label', { productCount })}</span>
+        </span>
+        <p class="header__total ${classMap({ 'header__total--hidden': !this._isCollapsed })}">
+          <strong>
+            ${i18n('cc-pricing-estimation.price', {
+              price: totalPrice,
+              code: this.selectedCurrency.code,
+              digits: this.selectedTemporality.digits,
+            })}
+          </strong> 
+          <span>${i18n('cc-pricing-estimation.tax-excluded')}</span>
+        </p>
+        <button class="header__toggle-btn" @click="${this._onToggle}">
+          ${this._isCollapsed ? i18n('cc-pricing-estimation.show') : i18n('cc-pricing-estimation.hide')}
+        </button>
       </div>
     `;
   }
 
-  _renderBigSelectedPlans () {
+  _renderHeaderWithoutToggle () {
+    const productCount = this._getProductCount();
 
-    const selectedPlans = this.selectedPlans ?? [];
-
-    if (selectedPlans.length === 0) {
-      return html`
-        <tr>
-          <td colspan="6" class="empty-text">
-            ${i18n('cc-pricing-estimation.empty-list')}
-          </td>
-        </tr>
-      `;
-    }
-
-    return selectedPlans.map((plan) => {
-
-      const { totalPriceDailyWithCode, totalPriceMonthlyWithCode } = this._getTotalPrices(plan);
-
-      return html`
-        <tr>
-          <td class="btn-col">
-            <cc-button
-              danger
-              outlined
-              image=${deleteSvg}
-              hide-text
-              circle
-              @cc-button:click=${() => this._onDeletePlan(plan)}
-            >
-              ${i18n('cc-pricing-estimation.delete')}
-            </cc-button>
-          </td>
-          <td>${plan.productName}</td>
-          <td>${plan.name}</td>
-          <td>
-            <cc-input-number
-              label=${i18n('cc-pricing-estimation.quantity')}
-              hidden-label
-              class="input-number"
-              value=${plan.quantity}
-              min="0"
-              controls
-              @cc-input-number:input=${(e) => this._onChangeQuantity(plan, e.detail)}
-            ></cc-input-number>
-          </td>
-          <td class="number-align">${i18n('cc-pricing-estimation.price', totalPriceDailyWithCode)}</td>
-          <td class="number-align">${i18n('cc-pricing-estimation.price', totalPriceMonthlyWithCode)}</td>
-        </tr>
-      `;
-    });
-  }
-
-  _renderSmallEstimation () {
     return html`
-      <div class="container" part="selected-plans">
-        ${this._renderSmallSelectedPlans()}
+      <div class="header">
+        <strong class="header__heading">${i18n('cc-pricing-estimation.heading')}</strong>
+        <span class="header__badge">
+          ${productCount}
+          <span class="visually-hidden">${i18n('cc-pricing-estimation.count.label', { productCount })}</span>
+        </span>
       </div>
     `;
   }
 
-  _renderSmallSelectedPlans () {
+  /**
+   * @param {Plan} plan - the plan to render
+   */
+  _renderSelectedPlan (plan) {
+    const totalPlanPrice = this._getTotalPlanPrice(plan);
+    const hasFeatures = Array.isArray(plan.features);
 
-    const selectedPlans = this.selectedPlans ?? [];
+    return html`
+      <div class="plan">
+        <details class="plan__toggle">
+          <summary class="plan__toggle__header">
+            <span class="plan__toggle__header__name">
+              ${plan.productName}
+              <span class="plan__toggle__header__name__plan"> &ndash; ${plan.name}</span>
+            </span>
 
-    if (selectedPlans.length === 0) {
-      return html`
-        <div class="empty-text">
-          ${i18n('cc-pricing-estimation.empty-list')}
-        </div>
-      `;
-    }
+            <span class="plan__toggle__header__total"> 
+              ${i18n('cc-pricing-estimation.price', {
+                price: totalPlanPrice,
+                code: this.selectedCurrency.code,
+                digits: this.selectedTemporality.digits,
+              })}
+            </span>
 
-    return selectedPlans.map((plan) => {
-
-      const { totalPriceDailyWithCode, totalPriceMonthlyWithCode } = this._getTotalPrices(plan);
-
-      return html`
-        <div class="plan">
-
-          <cc-button
-            class="delete-btn"
-            danger
-            outlined
-            image=${deleteSvg}
-            hide-text
-            circle
-            @cc-button:click=${() => this._onDeletePlan(plan)}
-          >
-            ${i18n('cc-pricing-estimation.delete')}
-          </cc-button>
-
-          <div class="product-name">${plan.productName}</div>
-
-          <cc-input-number
-            label=${i18n('cc-pricing-estimation.quantity')}
-            hidden-label
-            class="input-number"
-            value=${plan.quantity}
-            min="0"
-            controls
-            @cc-input-number:input=${(e) => this._onChangeQuantity(plan, e.detail)}
-          ></cc-input-number>
-
-          <div class="plan-name">
-            <span class="plan-name-label">${i18n('cc-pricing-estimation.plan')}</span>
-            <span class="plan-name-text">${plan.name}</span>
-          </div>
-
-          <div class="feature-list">
-            <div class="feature">
-              <div class="feature-name">${i18n('cc-pricing-estimation.price-name-daily')}</div>
-              <div class="feature-value">${i18n('cc-pricing-table.price', totalPriceDailyWithCode)}
-              </div>
+            <span class="plan__toggle__header__expand">
+              <cc-icon .icon=${iconArrowDown}></cc-icon>
+            </span>
+          </summary>
+          ${hasFeatures ? html`
+            <dl class="plan__features">
+              ${plan.features?.map((feature) => {
+                if (AVAILABLE_FEATURES.includes(feature.code)) {
+                  return html`
+                    <div class="plan__features__feature">
+                      <dt>${this._getFeatureName(feature)}</dt>
+                      <dd>${this._getFeatureValue(feature)}</dd>
+                    </div>
+                  `;
+                }
+                return '';
+              })}
+            </dl>
+          ` : ''}
+          <div class="plan__price">
+            <span>
+              <span class="visually-hidden">${i18n('cc-pricing-estimation.price.unit.label')}</span>
+              ${this._getPriceValue(this.selectedTemporality.type, plan.price, this.selectedTemporality.digits)}
+            </span>
+            <div class="plan__price__quantity">
+              <button
+                @click="${() => this._onDecreaseQuantity(plan)}"
+                title="${i18n('cc-pricing-estimation.plan.qty.btn.decrease', {
+                  productName: plan.productName,
+                  planName: plan.name,
+                })}"
+              >
+                <cc-icon
+                  .icon=${iconSubtract}
+                  accessible-name=${i18n('cc-pricing-estimation.plan.qty.btn.decrease', {
+                    productName: plan.productName,
+                    planName: plan.name,
+                  })}
+                ></cc-icon>
+              </button>
+              <strong class="plan__price__quantity__counter" aria-live="polite" aria-atomic="true">
+                <span class="visually-hidden">${i18n('cc-pricing-estimation.plan.qty.label')}</span>
+                ${plan.quantity}
+              </strong>
+              <button
+                @click="${() => this._onIncreaseQuantity(plan)}"
+                title="${i18n('cc-pricing-estimation.plan.qty.btn.increase', {
+                  productName: plan.productName,
+                  planName: plan.name,
+                })}"
+              >
+                <cc-icon
+                  .icon=${iconAdd}
+                  accessible-name=${i18n('cc-pricing-estimation.plan.qty.btn.increase', {
+                    productName: plan.productName,
+                    planName: plan.name,
+                  })}
+                ></cc-icon>
+              </button>
             </div>
-            <div class="feature">
-              <div class="feature-name">${i18n('cc-pricing-estimation.price-name-monthly')}</div>
-              <div class="feature-value">${i18n('cc-pricing-estimation.price', totalPriceMonthlyWithCode)}</div>
-            </div>
+            <strong class="plan__price__total" aria-live="polite" aria-atomic="true">
+              <span class="visually-hidden">
+                ${i18n('cc-pricing-estimation.plan.total.label', {
+                  productName: plan.productName,
+                  planName: plan.name,
+                })}
+              </span>
+              ${i18n('cc-pricing-estimation.price', {
+                price: totalPlanPrice,
+                code: this.selectedCurrency.code,
+                digits: this.selectedTemporality.digits,
+              })}
+            </strong>
           </div>
-        </div>
-      `;
-    });
+        </details>
+        <button
+          class="plan__delete"
+          title="${i18n('cc-pricing-estimation.plan.delete', {
+            productName: plan.productName,
+            planName: plan.name,
+          })}"
+          @click="${() => this._onDeletePlan(plan)}"
+        >
+          <cc-icon
+            .icon=${iconBin}
+            accessible-name="${i18n('cc-pricing-estimation.plan.delete', {
+              productName: plan.productName,
+              planName: plan.name,
+            })}"
+          ></cc-icon>
+        </button>
+      </div>
+    `;
+  }
+
+  _renderSelectForm () {
+
+    return html`
+      <div class="form">
+        <sl-select
+          label="${i18n('cc-pricing-estimation.label.temporality')}"
+          class="temporality-select"
+          hoist
+          placement="top"
+          value=${this.selectedTemporality?.type}
+          @sl-change=${this._onTemporalityChange}
+        >
+          ${this.temporalities.map((temporality) => html`
+            <sl-option value=${temporality.type}>${this._getPriceLabel(temporality.type)}</sl-option>
+          `)}
+          <cc-icon slot="expand-icon" .icon=${iconArrowDown} size="xl"></cc-icon>
+        </sl-select>
+
+        <sl-select
+          label="${i18n('cc-pricing-estimation.label.currency')}"
+          class="currency-select"
+          hoist
+          placement="top"
+          value=${this.selectedCurrency?.code}
+          @sl-change=${this._onCurrencyChange}
+        >
+          ${this.currencies.map((currency) => html`
+            <sl-option value=${currency.code}>${getCurrencySymbol(currency.code)}  ${currency.code}</sl-option>
+          `)}
+          <cc-icon slot="expand-icon" .icon=${iconArrowDown} size="xl"></cc-icon>
+        </sl-select>
+      </div>
+    `;
   }
 
   static get styles () {
     return [
+      accessibilityStyles,
+      shoelaceStyles,
       // language=CSS
       css`
         :host {
           display: block;
-        }
-
-        /* region COMMON */
-
-        .input-number {
-          --cc-input-number-align: center;
-          /* This is enough to display up to 999 */
-          width: 13ch;
-        }
-
-        .empty-text {
-          padding: 1em 0;
-          font-style: italic;
-          text-align: center;
-        }
-
-        .recap {
-          display: grid;
-          align-items: center;
           padding: 2em;
-          background-color: var(--cc-pricing-estimation-recap-bg-color, var(--cc-color-bg-primary, #000));
-          border-radius: 0.2em;
-          color: #fff;
-          gap: 1em;
-          justify-items: center;
-          white-space: nowrap;
         }
 
-        .recap-text {
-          grid-area: text;
+        button {
+          border: none;
+          background: transparent;
         }
 
-        .recap-total {
-          font-weight: bold;
-          grid-area: total;
-        }
-
-        .recap-contact {
-          grid-area: contact;
-        }
-
-        .recap-signup {
-          grid-area: signup;
-        }
-
-        .cc-link {
-          display: inline-block;
-          border-radius: 0.2em;
-          cursor: pointer;
-          font-weight: bold;
-          text-decoration: none;
-        }
-
-        .cc-link:focus {
-          outline: var(--cc-focus-outline, #000 solid 2px);
+        sl-select::part(form-control-input):focus-within,
+        summary:focus-visible,
+        button:focus {
+          outline: var(--cc-focus-outline, #000);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
 
-        .cc-link::-moz-focus-inner {
-          border: 0;
+        /* region header */
+
+        .header {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: space-between;
+          color: var(--cc-color-text-default, #000);
         }
-
-        .recap-contact .cc-link {
-          background-color: #fff;
-          color: #3a3871;
-        }
-
-        .recap-contact .cc-link:hover {
-          background-color: rgb(255 255 255 / 90%);
-        }
-
-        .recap-signup .cc-link {
-          border: 1px solid #ccc;
-          background-color: transparent;
-          color: #fff;
-        }
-
-        .recap-signup .cc-link:hover {
-          background-color: rgb(255 255 255 / 10%);
-        }
-
-        /* endregion */
-
-        /* region BIG */
-
-        .number-align {
-          text-align: right;
-        }
-
-        table {
-          width: 100%;
-          border-collapse: collapse;
-          border-spacing: 0;
-        }
-
-        tr:nth-child(n+3) {
-          border-top: 1px solid #e5e5e5;
-        }
-
-        th {
-          padding: 1em 0.5em;
-          background-color: var(--cc-color-bg-neutral-alt);
-          text-align: left;
-        }
-
-        td {
-          padding: 0.5em;
-          white-space: nowrap;
-        }
-
-        tr:hover td {
-          background-color: var(--cc-color-bg-neutral-hovered, #f5f5f5);
-        }
-
-        td.btn-col {
-          padding: 0.25em 0.5em;
-        }
-
-        :host([w-gte-600]) .recap {
+              
+        .header--toggle {
+          display: grid;
+          align-items: center;
+          gap: 0 0.5em;
           grid-template-areas: 
-            'text contact signup'
-            'total contact signup';
-          grid-template-columns: 1fr min-content min-content;
+            'heading counter btn'
+            'total total total';
+          grid-template-columns: auto 1fr auto;
+          line-height: 1.5;
+        }
+              
+        .header__heading {
+          font-size: 1.3em;
+          font-weight: bold;
+          grid-area: heading;
+        }
+              
+        .header__badge {
+          display: inline-flex;
+          width: max-content;
+          min-width: 1.7em;
+          height: 1.7em;
+          align-items: center;
+          justify-content: center;
+          background: var(--cc-pricing-estimation-counter-bg, var(--cc-color-bg-strong, #000));
+          border-radius: 50%;
+          color: var(--cc-pricing-estimation-counter-color, var(--cc-color-text-inverted, #fff));
+          font-size: 0.9em;
+          font-weight: bold;
+          grid-area: counter;
         }
 
-        :host([w-gte-600]) .recap-text,
-        :host([w-gte-600]) .recap-total {
-          justify-self: start;
+        .header__toggle-btn {
+          color: var(--cc-color-text-primary-highlight, blue);
+          cursor: pointer;
+          font-size: 1em;
+          font-weight: 500;
+          grid-area: btn;
+          justify-self: flex-end;
+          text-decoration: none;
         }
 
-        :host([w-gte-600]) .recap-total {
-          font-size: 2em;
+        .header__toggle-btn:hover {
+          color: var(--cc-pricing-hovered-color, purple);
         }
 
-        :host([w-gte-600]) .cc-link {
-          padding: 0.75em 1em;
+        .header__total {
+          margin: 0;
+          font-size: 1.1em;
+          grid-area: total;
+        }
+
+        .header__total--hidden {
+          display: none;
+        }
+
+        .header__total strong {
+          font-weight: bold;
         }
 
         /* endregion */
 
-        /* region SMALL */
+        /* region content */
+              
+        .content {
+          margin-top: 1em;
+        }
+
+        .content--hidden {
+          display: none;
+        }
+
+        /* region plan section */
 
         .plan {
           display: grid;
           align-items: center;
-          padding: 1em;
-          border-top: 1px solid #e5e5e5;
+          border-bottom: solid 1px var(--cc-color-border-neutral-weak, #eee);
+          column-gap: 0.5em;
+          grid-template-areas: 
+            'plan-header plan-delete'
+            'plan-features plan-features'
+            'plan-price plan-price';
+          grid-template-columns: 1fr auto;
+          padding-block: 1em;
+        }
+
+        .plan__toggle {
+          display: contents;
+        }
+
+        .plan__delete {
+          --cc-icon-color: var(--cc-color-text-danger);
+          --cc-icon-size: 1.2em;
+
+          width: 1.5em;
+          height: 1.5em;
+          padding: 0;
+          cursor: pointer;
+          grid-area: plan-delete;
+          transition: transform 0.2s ease-in;
+        }
+
+        .plan__delete:hover {
+          --cc-icon-color: var(--cc-pricing-hovered-color, purple);
+        }
+
+        .plan__toggle__header {
+          display: grid;
+          box-sizing: border-box;
+          align-items: center;
+          cursor: pointer;
+          gap: 0.5em;
+          grid-area: plan-header;
+          grid-template-columns: auto 1fr auto;
+          /* Remove the summary icon */
+          list-style: none;
+        }
+
+        /* Remove the summary icon on WebKit */
+
+        .plan__toggle__header::-webkit-details-marker {
+          display: none;
+        }
+
+        .plan__toggle__header__name {
+          font-weight: 600;
+        }
+
+        .plan__toggle__header__name__plan {
+          font-weight: normal;
+        }
+
+        .plan__toggle__header__total {
+          font-weight: 600;
+          justify-self: flex-end;
+        }
+
+        .plan__toggle[open] .plan__toggle__header__total {
+          visibility: hidden;
+        }
+
+        .plan__toggle__header__expand {
+          --cc-icon-size: 1.5em;
+
+          box-sizing: border-box;
+          transition: transform 0.2s ease-in;
+        }
+
+        .plan__toggle[open] .plan__toggle__header__expand {
+          transform: rotate(-180deg);
+        }
+
+        .plan__toggle__header .plan__toggle__header__expand cc-icon {
+          transition: transform 0.2s ease-in;
+        }
+
+        .plan__toggle__header:hover {
+          --cc-icon-color: var(--cc-pricing-hovered-color, purple);
+
+          color: var(--cc-pricing-hovered-color, purple);
+        }
+
+        dl,
+        dt,
+        dd {
+          padding: 0;
           margin: 0;
-          gap: 0 1em;
-          grid-template-columns: min-content [main-start] 1fr min-content [main-end];
         }
 
-        .product-name {
-          font-size: 1.2em;
-          font-weight: bold;
-        }
-
-        .plan-name {
-          margin-top: 1em;
-          grid-column: main-start / main-end;
-        }
-
-        .plan-name-label {
-          font-style: italic;
-          font-weight: bold;
-        }
-
-        .feature-list {
+        .plan__features {
           display: flex;
           flex-wrap: wrap;
-          margin-top: 0.5em;
-          grid-column: main-start / main-end;
-        }
-
-        .feature {
-          display: flex;
-          justify-content: space-between;
+          margin-top: 1em;
+          color: var(--cc-color-text-weak, #333);
+          font-size: 0.9em;
+          gap: 0 0.5em;
+          grid-area: plan-features;
           line-height: 1.5;
         }
 
-        .feature:not(:last-child)::after {
-          padding-right: 0.5em;
+        .plan__features__feature {
+          display: flex;
+          gap: 0.2em;
+        }
+
+        .plan__features__feature dt {
+          font-weight: 600;
+        }
+            
+        .plan__features__feature:not(:last-child) dd::after {
           content: ',';
         }
 
-        .feature-name {
-          font-style: italic;
+        .plan__price {
+          display: grid;
+          align-items: center;
+          justify-content: space-between;
+          margin-top: 1em;
+          color: var(--cc-color-text-default, #000);
+          gap: 0.5em 0.2em;
+          grid-area: plan-price;
+          grid-template-columns: 1fr auto 1fr;
+        }
+
+        .plan__price__quantity {
+          display: flex;
+          align-items: center;
+          gap: 0.1em;
+        }
+
+        .plan__price__quantity__counter {
+          min-width: 2em;
           font-weight: bold;
-          white-space: nowrap;
+          text-align: center;
         }
 
-        .feature-name::after {
-          padding-right: 0.25em;
-          content: ' :';
+        .plan__price__quantity button {
+          display: grid;
+          width: 1.3em;
+          height: 1.3em;
+          padding: 0;
+          border: 1px solid var(--cc-color-border-neutral-strong);
+          background-color: var(--cc-color-bg-default, #000);
+          color: var(--cc-color-text-default, #000);
+          font-size: 1em;
+          place-content: center;
         }
 
-        :host([w-lt-600]) .recap {
-          justify-content: center;
-          grid-template-areas: 
-            'text total'
-            'contact signup';
-          grid-template-columns: min-content min-content;
+        .plan__price__quantity button:hover {
+          --cc-icon-color: var(--cc-pricing-hovered-color);
+
+          border-color: var(--cc-color-border-hovered);
         }
 
-        :host([w-lt-600]) .recap-total {
-          font-size: 1.5em;
+        .plan__price__total {
+          font-weight: bold;
+          justify-self: flex-end;
         }
 
-        :host([w-lt-600]) .cc-link {
-          padding: 0.75em 1em;
+        /* endregion */
+              
+        /* region content total */
+
+        .content__total {
+          text-align: right;
         }
+              
+        .content__total strong {
+          color: var(--cc-color-text-default, #000);
+          font-size: 1.3em;
+          font-weight: 600;
+        }
+              
+        .content__total__estimated {
+          display: block;
+          color: var(--cc-color-text-weak, #333);
+        }
+
+        /* endregion */
+            
+        /* endregion */
+
+        /* region select form */
+
+        .form {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1em;
+        }
+
+        /* region cc-pricing-header styles */
+
+        sl-select {
+          --cc-icon-size: 1.4em;
+          --sl-input-background-color: var(--cc-color-bg-default, #fff);
+          --sl-input-background-color-disabled: var(--cc-color-bg-neutral-disabled, #eee);
+          --sl-input-background-color-hover: var(--cc-color-bg-default, #fff);
+          --sl-input-background-color-focus: var(--cc-color-bg-default, #fff);
+          --sl-input-border-color: var(--cc-color-border-neutral-weak, #aaa);
+          --sl-input-border-color-disabled: var(--cc-color-border-disabled, #eee);
+          --sl-input-border-color-focus: var(--cc-color-border-focused, #777);
+          --sl-input-border-radius-medium: var(--cc-border-radius-default, 0.25em);
+          --sl-input-color: var(--cc-color-text-default, #000);
+          --sl-input-color-hover: var(--cc-pricing-hovered-color, #000);
+          --sl-input-font-family: initial;
+          --sl-input-height-medium: 2.865em;
+          --sl-input-label-color: var(--cc-color-text-default, #000);
+              
+          flex: 1 1 10.5em;
+          animation: none;
+        }
+
+        sl-select::part(form-control-input):focus-within {
+          outline: var(--cc-focus-outline, #000);
+          outline-offset: var(--cc-focus-outline-offset, 2px);
+        }
+
+        sl-select::part(form-control-label) {
+          /* same value as out own inputs */
+          padding-bottom: 0.35em;
+        }
+
+        sl-select::part(display-input) {
+          font-family: inherit;
+          font-weight: bold;
+        }
+
+        sl-select::part(combobox) {
+          padding: 0.75rem 0.875rem;
+        }
+
+        sl-select::part(combobox):hover {
+          --cc-icon-color: var(--cc-pricing-hovered-color);
+
+          border: 1px solid var(--cc-color-border-hovered, #777);
+        }
+
+        sl-option::part(base) {
+          background-color: transparent;
+          color: var(--cc-color-text-default, #000);
+        }
+
+        sl-option::part(base):hover,
+        sl-option:focus-within {
+          background-color: var(--cc-color-bg-neutral-hovered, #eee);
+        }
+
+        sl-option::part(checked-icon) {
+          width: 0.7em;
+          height: 0.7em;
+          margin-right: 0.5em;
+        }
+
+        /* endregion */
 
         /* endregion */
       `,

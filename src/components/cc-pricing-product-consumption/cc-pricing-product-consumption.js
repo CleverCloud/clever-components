@@ -1,70 +1,67 @@
 import '../cc-button/cc-button.js';
-import '../cc-img/cc-img.js';
+import '../cc-icon/cc-icon.js';
 import '../cc-input-number/cc-input-number.js';
 import '../cc-toggle/cc-toggle.js';
-import '../cc-error/cc-error.js';
+import '../cc-notice/cc-notice.js';
+import '../cc-loader/cc-loader.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
+import {
+  iconCleverArrowsLeft as iconArrowsLeft,
+  iconCleverArrowsRight as iconArrowsRight,
+  iconCleverSum as iconSum,
+} from '../../assets/cc-clever.icons.js';
+import {
+  iconRemixArrowDownSLine as iconArrowDown,
+  iconRemixAddLine as iconPlus,
+  iconRemixDatabase_2Fill as iconDisk,
+  iconRemixUser_3Fill as iconUser,
+} from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { PricingConsumptionSimulator } from '../../lib/pricing.js';
 import { withResizeObserver } from '../../mixins/with-resize-observer/with-resize-observer.js';
-import { skeletonStyles } from '../../styles/skeleton.js';
 
-const arrowsLeftSvg = new URL('../../assets/arrows-left.svg', import.meta.url).href;
-const arrowsRightSvg = new URL('../../assets/arrows-right.svg', import.meta.url).href;
-const downSvg = new URL('../../assets/down.svg', import.meta.url).href;
-const plusSvg = new URL('../../assets/plus.svg', import.meta.url).href;
-const storageSvg = new URL('../../assets/storage.svg', import.meta.url).href;
-const sumSvg = new URL('../../assets/sum.svg', import.meta.url).href;
-const upSvg = new URL('../../assets/up.svg', import.meta.url).href;
-const userSvg = new URL('../../assets/user.svg', import.meta.url).href;
+const BREAKPOINT = 600;
 
+// FIXME: this code is duplicated across all pricing components (see issue #732 for more details)
 const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
+
 const INFINITY = '∞';
 const THIRTY_DAYS_IN_HOURS = 24 * 30;
 const ONE_GIGABYTE = 1e9;
 
 const ICONS = {
-  storage: storageSvg,
-  'inbound-traffic': arrowsRightSvg,
-  'outbound-traffic': arrowsLeftSvg,
-  'private-users': userSvg,
-  'public-users': userSvg,
+  storage: iconDisk,
+  'inbound-traffic': iconArrowsRight,
+  'outbound-traffic': iconArrowsLeft,
+  'private-users': iconUser,
+  'public-users': iconUser,
 };
-
-const SKELETON_NAME = '??????????';
-/** @type {Interval} */
-const SKELETON_INTERVALS = [
-  { minRange: 0, maxRange: 1e8, price: 0 },
-  { minRange: 1e8, maxRange: 1e12, price: 0.0001 },
-  { minRange: 1e12, maxRange: 1e13, price: 0.00001 },
-  { minRange: 1e13, price: 0.000001 },
-];
 
 /**
  * @typedef {import('../common.types.js').ActionType} ActionType
  * @typedef {import('../common.types.js').Currency} Currency
- * @typedef {import('../common.types.js').PricingSection} PricingSection
+ * @typedef {import('./cc-pricing-product-consumption.types.js').PricingProductConsumptionState} PricingProductConsumptionState
+ * @typedef {import('./cc-pricing-product-consumption.types.js').SectionStates} SectionStates
  */
 
 /**
- * A component to simulate pricing for products with consumption based pricings (Cellar, FS Buckets, Pulsar...).
+ * A component to simulate pricing for products with consumption based pricing (Cellar, FS Buckets, Pulsar...).
  *
  * ## Details
  *
  * * Interval prices are defined in "euros / byte / 30 days" or just "euros / byte" for timeless sections like traffic.
  * * Interval ranges are defined in bytes.
  * * To comply with `<cc-pricing-product>`, the price in the event `cc-pricing-product:add-plan` is in "euros / 1 hour".
- * * When a section has a nullish `intervals`, a skeleton screen UI pattern is displayed for this section (loading hint).
+ *
+ * **Note:** This component relies on the `resizeObserver` mixin to change its layout with `600px` as a width breakpoint.
  *
  * @cssdisplay block
  *
  * @event {CustomEvent<Plan>} cc-pricing-product:add-plan - Fires the plan whenever the "add" button is clicked.
  *
- * @slot - The description of the product.
- * @slot head - Override the whole head section (with the icon, name and description).
+ * @cssprop {Color} --cc-pricing-hovered-color - Sets the text color used on hover (defaults: `purple`).
  */
 export class CcPricingProductConsumption extends withResizeObserver(LitElement) {
 
@@ -72,12 +69,8 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
     return {
       action: { type: String },
       currency: { type: Object },
-      error: { type: Boolean, reflect: true },
-      icon: { type: String },
-      name: { type: String },
-      sections: { type: Array },
+      product: { type: Object },
       _size: { type: String, state: true },
-      _state: { type: Object, state: true },
     };
   }
 
@@ -90,30 +83,29 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
     /** @type {Currency} Sets the currency used to display the prices (defaults to euros) */
     this.currency = CURRENCY_EUR;
 
-    /** @type {boolean} Displays an error message */
-    this.error = false;
-
-    /** @type {string|null} Sets the url of the product icon/logo image */
-    this.icon = null;
-
-    /** @type {string|null} Sets the name of the product */
-    this.name = null;
-
-    /** @type {PricingSection[]|null} Sets the different sections with their `type` and `intervals` */
-    this.sections = null;
+    /** @type {PricingProductConsumptionState} Sets the state of the product */
+    this.product = { state: 'loading' };
 
     this._simulator = new PricingConsumptionSimulator();
 
-    /** @type {number|null} Sets the name of the product */
+    /** @type {number|null} Set by the `withResizeObserver` mixin. The width of the component in `px`. See the `onResize` method for more info. */
     this._size = null;
 
-    this._state = {};
+    /** @type {SectionStates} Sets the state of the section. It is modified everytime the quantity is changed, the section is shown / hidden, or if the unit value changes. */
+    this._sectionStates = {};
   }
 
+  /* Used by the `withResizeObserver` mixin. */
   onResize ({ width }) {
     this._size = width;
   }
 
+  /**
+   * Returns the translated section title depending on its type
+   *
+   * @param {SectionType|"total"} type - the type of the pricing section
+   * @return {string} the translated section title based on the section type
+   */
   _getTitle (type) {
     switch (type) {
       case 'storage':
@@ -131,6 +123,12 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
     }
   }
 
+  /**
+   * Returns the translated label depending on the section type
+   *
+   * @param {SectionType} type - the type of the pricing section
+   * @return {string} the translated label corresponding to the given section type
+   */
   _getLabel (type) {
     switch (type) {
       case 'storage':
@@ -146,6 +144,12 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
     }
   }
 
+  /**
+   * Returns the currency code and the computed price factored with the currency changerate
+   *
+   * @param {number} amount - the amount to base the calculation on
+   * @return {Object} An object containing the computed price and the currency code
+   */
   _getCurrencyValue (amount) {
     return {
       price: amount * this.currency.changeRate,
@@ -153,6 +157,66 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
     };
   }
 
+  /**
+   * Returns the localized maximum range to display if the values from this section type are expressed in bytes
+   * or the raw maximum range if the values are expressed as raw numbers.
+   *
+   * @param {SectionType} type - the type of the section related to the maximum range to process
+   * @param {number} maxRange - the maximum range expressed as a raw number
+   *
+   * @return {string|number} the localized maximum range (if maxRange is null, returns `INFINITY`) or the raw maximum range itself
+   */
+  _getMaxRange (type, maxRange) {
+    if (maxRange == null) {
+      return INFINITY;
+    }
+    if (this._isTypeBytes(type)) {
+      return i18n('cc-pricing-product-consumption.bytes', { bytes: maxRange });
+    }
+    return maxRange;
+  }
+
+  /**
+   * Returns the localized minimum range to display if the values from this section type are expressed in bytes
+   * or the raw minimum range if the values are expressed as raw numbers.
+   *
+   * @param {SectionType} type - the type of the section related to the minimum range to process
+   * @param {number} minRange - the minimum range expressed as a raw number
+   *
+   * @return {string|number} the localized minimum range or the raw minimum range itself
+   */
+  _getMinRange (type, minRange) {
+    return this._isTypeBytes(type)
+      ? i18n('cc-pricing-product-consumption.bytes', { bytes: minRange })
+      : minRange;
+  }
+
+  /**
+   * Returns the localized interval price depending on the given section type.
+   *
+   * @param {SectionPrice} type - the section type related to the interval price to process
+   * @param {number} intervalPrice - the interval price to localize
+   */
+  _getIntervalPrice (type, intervalPrice) {
+
+    if (intervalPrice === 0) {
+      return i18n('cc-pricing-product-consumption.price-interval.free');
+    }
+
+    // type bytes interval prices are specified for 1 byte but we want to display a unit price for 1 gigabyte
+    return this._isTypeBytes(type)
+      ? i18n('cc-pricing-product-consumption.price-interval.bytes', this._getCurrencyValue(intervalPrice * ONE_GIGABYTE))
+      : i18n('cc-pricing-product-consumption.price-interval.users', {
+        ...this._getCurrencyValue(intervalPrice),
+        userCount: this.product.sections.find((s) => s.type === type).secability ?? 1,
+      });
+  }
+
+  /**
+   * Returns the localized and formatted units based with their corresponding value in bytes.
+   *
+   * @return {Array} An array containing objects with a label (localized unit) and a value (the corresponding value in bytes).
+   */
   _getUnits () {
     return [
       {
@@ -170,69 +234,36 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
     ];
   }
 
+  /**
+   * Checks if the section type is one of the sections with values expressed in bytes or not.
+   *
+   * @param {SectionType} type - the type of the section to check
+   * @return {boolean} true if values from this section are expressed in bytes, false otherwise
+   */
   _isTypeBytes (type) {
     return ['storage', 'inbound-traffic', 'outbound-traffic'].includes(type);
   }
 
-  _getMinRange (type, minRange) {
-    return this._isTypeBytes(type)
-      ? i18n('cc-pricing-product-consumption.bytes', { bytes: minRange })
-      : minRange;
-  }
-
-  _getMaxRange (type, maxRange) {
-    if (maxRange == null) {
-      return INFINITY;
-    }
-    if (this._isTypeBytes(type)) {
-      return i18n('cc-pricing-product-consumption.bytes', { bytes: maxRange });
-    }
-    return maxRange;
-  }
-
-  _getIntervalPrice (type, intervalPrice) {
-
-    if (intervalPrice === 0) {
-      return i18n('cc-pricing-product-consumption.price-interval.free');
-    }
-
-    // type bytes interval prices are specified for 1 byte but we want to display a unit price for 1 gigabyte
-    return this._isTypeBytes(type)
-      ? i18n('cc-pricing-product-consumption.price-interval.bytes', this._getCurrencyValue(intervalPrice * ONE_GIGABYTE))
-      : i18n('cc-pricing-product-consumption.price-interval.users', {
-        ...this._getCurrencyValue(intervalPrice),
-        userCount: this.sections.find((s) => s.type === type).secability ?? 1,
-      });
-  }
-
+  /**
+   * Updates the simulator quantity.
+   *
+   * @param {SectionType} type - the type of the section to update within the simulator
+   */
   _updateSimulatorQuantity (type) {
-    const quantity = this._state[type].quantity;
+    const quantity = this._sectionStates[type].quantity;
     const factor = this._isTypeBytes(type)
-      ? parseInt(this._state[type].unitValue)
+      ? parseInt(this._sectionStates[type].unitValue)
       : 1;
     this._simulator.setQuantity(type, quantity * factor);
   }
 
-  _onToggleState (type) {
-    this._state[type].isClosed = !this._state[type].isClosed;
-    this.requestUpdate();
-  }
-
-  _onInputValue (type, quantity) {
-    this._state[type].quantity = isNaN(quantity) ? 0 : quantity;
-    this._updateSimulatorQuantity(type);
-    this.requestUpdate();
-  }
-
-  _onToggleUnit (type, unitValue) {
-    this._state[type].unitValue = unitValue;
-    this._updateSimulatorQuantity(type);
-    this.requestUpdate();
-  }
-
+  /**
+   * Creates a plan object based on the component data.
+   * Dispatches a `cc-pricing-product:add-plan` event with the plan as its payload.
+   */
   _onAddPlan () {
 
-    const name = (this.sections ?? [])
+    const name = (this.product?.sections ?? [])
       .map(({ type }) => {
         const title = this._getTitle(type);
         const quantity = this._isTypeBytes(type)
@@ -243,7 +274,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
       .join(', ');
 
     const plan = {
-      productName: this.name,
+      productName: this.product.name,
       name,
       // As explained above, interval prices are expected to be in "euros / byte / 30 days" or just "euros / byte" for timeless sections like traffic
       // To comply with `<cc-pricing-product>`, the price in this event is in "euros / 1 hour"
@@ -253,12 +284,50 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
     dispatchCustomEvent(this, 'cc-pricing-product:add-plan', plan);
   }
 
-  willUpdate (changedProperties) {
-    if (changedProperties.has('sections') && Array.isArray(this.sections)) {
+  /**
+   * Updates the quantity.
+   * Triggers an update of the simulator so that it retrieves the new quantity.
+   *
+   * @param {SectionType} type - the type of the section to update
+   * @param {number} quantity - the quantity to set
+   */
+  _onInputValue (type, quantity) {
+    this._sectionStates[type].quantity = isNaN(quantity) ? 0 : quantity;
+    this._updateSimulatorQuantity(type);
+    this.requestUpdate();
+  }
 
-      this._state = {};
-      this.sections.forEach(({ type }) => {
-        this._state[type] = {
+  /**
+   * Updates the selected unit.
+   * Triggers an update of the simulator so that it retrieves the new unit.
+   *
+   * @param {SectionType} type - the type of the section to update
+   * @param {number} unitValue - the unit to set
+   */
+  _onToggleUnit (type, unitValue) {
+    this._sectionStates[type].unitValue = unitValue;
+    this._updateSimulatorQuantity(type);
+    this.requestUpdate();
+  }
+
+  /**
+   * Toggles the `isClosed` property to show / hide a section.
+   *
+   * @param {SectionType} type - the type of the section to toggle
+   */
+  _onToggleState (type) {
+    this._sectionStates[type].isClosed = !this._sectionStates[type].isClosed;
+    this.requestUpdate();
+  }
+
+  willUpdate (changedProperties) {
+    // This is not done within the `render` function because we only want to reset this value in specific cases.
+    // We reset the simulator & section states only if the product has changed.
+    if (changedProperties.has('product') && Array.isArray(this.product.sections)) {
+
+      this._sectionStates = {};
+      this.product.sections.forEach(({ type }) => {
+        this._sectionStates[type] = {
           // In small mode, sections are closed by default
           isClosed: true,
           // The number input is set to 0 by default
@@ -268,93 +337,80 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         };
       });
 
-      this._simulator = new PricingConsumptionSimulator(this.sections);
+      this._simulator = new PricingConsumptionSimulator(this.product.sections);
     }
   }
 
   render () {
+    return html`
+      ${this.product.state === 'error' ? html`
+        <cc-notice intent="warning" message=${i18n('cc-pricing-product-consumption.error')}></cc-notice>
+      ` : ''}
 
-    const someNullishIntervals = this.sections
-      ?.some(({ intervals }) => intervals == null) ?? true;
-    const everyQuantityAtZero = this.sections
-      ?.map(({ type }) => this._simulator.getQuantity(type))
-      ?.every((quantity) => quantity === 0) ?? true;
+      ${this.product.state === 'loading' ? html`
+        <cc-loader></cc-loader>
+      ` : ''}
 
-    const name = this.name ?? SKELETON_NAME;
+      ${this.product.state === 'loaded' ? this._renderLoaded(this.product.sections) : ''}
+    `;
+  }
 
+  /**
+   * @param {PricingSection[]} sections
+   */
+  _renderLoaded (sections) {
     const bodyClasses = {
-      'body--big': (this._size > 600),
-      'body--small': (this._size <= 600),
+      'body--big': (this._size > BREAKPOINT),
+      'body--small': (this._size <= BREAKPOINT),
     };
 
+    const someNullishIntervals = sections
+      .some(({ intervals }) => intervals == null);
+    const everyQuantityAtZero = sections
+      .map(({ type }) => this._simulator.getQuantity(type))
+      .every((quantity) => quantity === 0);
+
     return html`
-      <slot name="head">
-        <div class="head">
-          <div class="head-info">
-            <cc-img class="product-logo" src="${ifDefined(this.icon ?? undefined)}" ?skeleton=${this.icon == null}></cc-img>
-            <div class="name-wrapper">
-              <span class="name ${classMap({ skeleton: (this.name == null) })}">${name}</span>
-            </div>
-          </div>
-
-          ${!this.error ? html`
-            <slot></slot>
-          ` : ''}
-        </div>
-        <hr>
-      </slot>
-
       <div class="body ${classMap(bodyClasses)}">
-
-        ${this.error && (this.sections == null) ? html`
-          <cc-error class="error-global">${i18n('cc-pricing-product-consumption.error')}</cc-error>
-          <hr>
-        ` : ''}
-
-        ${this.sections?.map((section) => html`
-          ${this._renderSection(section)}
-          <hr>
-        `)}
-
+        ${sections.map((section) => this._renderSection(section))}
+  
         <div class="section">
           <div class="section-header">
-            <cc-img class="section-icon" src=${sumSvg}></cc-img>
+            <cc-icon class="section-icon" .icon=${iconSum}></cc-icon>
             <div class="section-title section-title--total">
               <div class="section-title-text">${this._getTitle('total')}</div>
               <div class="section-title-price">${i18n('cc-pricing-product-consumption.price', this._getCurrencyValue(this._simulator.getTotalPrice()))}</div>
             </div>
           </div>
         </div>
-
         <hr class="${classMap({ last: this.action === 'none' })}">
-
+  
         ${(this.action === 'add') ? html`
           <div class="button-bar">
             <cc-button
-              image=${plusSvg}
+              .icon=${iconPlus}
               ?disabled=${(someNullishIntervals || everyQuantityAtZero)}
               @cc-button:click=${this._onAddPlan}
-            >${i18n('cc-pricing-product-consumption.add')}
+            >
+              ${i18n('cc-pricing-product-consumption.add')}
             </cc-button>
           </div>
         ` : ''}
-
       </div>
     `;
   }
 
   /**
-   * @param {Section} section
+   * @param {PricingSection} section
    */
   _renderSection (section) {
 
-    const skeleton = (section.intervals == null);
-    const intervals = section.intervals ?? SKELETON_INTERVALS;
+    const intervals = section.intervals;
     const progressive = section.progressive;
 
     const type = section.type;
     const icon = ICONS[type];
-    const { isClosed, quantity, unitValue } = this._state[type];
+    const { isClosed, quantity, unitValue } = this._sectionStates[type];
     const sectionPrice = this._simulator.getSectionPrice(type);
     const maxInterval = this._simulator.getMaxInterval(type);
 
@@ -362,48 +418,46 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
       <div class="section ${classMap({ 'section--closed': isClosed })}">
 
         <div class="section-header">
-          <cc-img class="section-icon" src=${icon}></cc-img>
+          <cc-icon class="section-icon" .icon=${icon}></cc-icon>
           <div class="section-title">${this._getTitle(type)}</div>
-          <cc-button
-            class="section-toggle-btn"
-            image=${isClosed ? downSvg : upSvg}
-            ?disabled=${skeleton}
-            hide-text
-            circle
-            @cc-button:click=${() => this._onToggleState(type)}
-          >
-            ${i18n('cc-pricing-product-consumption.toggle-btn.label')}
-          </cc-button>
         </div>
 
         <div class="input-wrapper">
-          ${this._renderInput({ type, quantity, unitValue, skeleton })}
+          ${this._renderInput({ type, quantity, unitValue })}
         </div>
 
-        ${this._renderIntervals({ type, progressive, intervals, maxInterval, skeleton })}
+        <button
+          aria-controls=${section.type}
+          aria-expanded=${this._sectionStates[type].isClosed === false}
+          class="section-toggle-btn"
+          @click=${() => this._onToggleState(type)}
+        >
+          <span>${i18n('cc-pricing-product-consumption.toggle-btn.label')}</span>
+          <cc-icon class="expand-icon" .icon=${iconArrowDown}></cc-icon>
+        </button>
+        
+        <div id=${section.type} class="interval-list">
+          ${this._renderIntervalList({ type, progressive, intervals, maxInterval })}
+        </div>
 
-        ${!this.error ? html`
-          <div class="section-title section-title--subtotal">
-            <div class="section-title-text">${i18n('cc-pricing-product-consumption.subtotal.title')}</div>
-            <div class="section-title-price">
-              <span class=${classMap({ skeleton })}>
-                ${i18n('cc-pricing-product-consumption.price', this._getCurrencyValue(sectionPrice))}
-              </span>
-            </div>
+        <div class="section-title section-title--subtotal">
+          <div class="section-title-text">${i18n('cc-pricing-product-consumption.subtotal.title')}</div>
+          <div class="section-title-price">
+            ${i18n('cc-pricing-product-consumption.price', this._getCurrencyValue(sectionPrice))}
           </div>
-        ` : ''}
-
+        </div>
       </div>
+      <hr>
     `;
   }
 
   /**
-   * @param {SectionType} type
-   * @param {Number} quantity
-   * @param {Number} unitValue
-   * @param {boolean} skeleton
+   * @param {Object} plan
+   * @param {SectionType} plan.type
+   * @param {number} plan.quantity
+   * @param {number} plan.unitValue
    */
-  _renderInput ({ type, quantity, unitValue, skeleton }) {
+  _renderInput ({ type, quantity, unitValue }) {
 
     if (this._isTypeBytes(type)) {
       return html`
@@ -413,14 +467,12 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
           class="input-quantity"
           value=${quantity}
           min="0"
-          ?disabled=${skeleton}
           @cc-input-number:input=${(e) => this._onInputValue(type, e.detail)}
         ></cc-input-number>
         <cc-toggle
           class="input-unit"
           value=${unitValue}
           .choices=${this._getUnits()}
-          ?disabled=${skeleton}
           @cc-toggle:input=${(e) => this._onToggleUnit(type, e.detail)}
         ></cc-toggle>
       `;
@@ -433,7 +485,6 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
           class="input-quantity"
           value=${quantity}
           min="0"
-          ?disabled=${skeleton}
           @cc-input-number:input=${(e) => this._onInputValue(type, e.detail)}
         ></cc-input-number>
       `;
@@ -442,17 +493,11 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
 
   /**
    * @param {SectionType} type
+   * @param {boolean} progressive
    * @param {Interval[]} intervals
    * @param {Interval} maxInterval
-   * @param {boolean} skeleton
    */
-  _renderIntervals ({ type, progressive, intervals, maxInterval, skeleton }) {
-
-    if (this.error) {
-      return html`
-        <cc-error>${i18n('cc-pricing-product-consumption.error')}</cc-error>
-      `;
-    }
+  _renderIntervalList ({ type, progressive, intervals, maxInterval }) {
 
     return intervals.map((interval, intervalIndex) => {
 
@@ -469,20 +514,16 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
       return html`
         <div class="interval-line ${classMap({ progressive, highlighted })}">
           <div class="interval interval-min">
-            <span class="${classMap({ skeleton })}">${minRange}</span>
+            ${minRange}
           </div>
           <div class="interval interval-min-sign">&le;</div>
           <div class="interval interval-label"> ${this._getLabel(type)}</div>
           <div class="interval interval-max-sign">&lt;</div>
-          <div class="interval interval-max">
-            <span class="${classMap({ skeleton })}">${maxRange}</span>
-          </div>
+          <div class="interval interval-max">${maxRange}</div>
           <div class="interval-price ${classMap({ 'interval-price--free': (interval.price === 0) })}">
-            <span class="${classMap({ skeleton })}">${intervalPrice}</span>
+            ${intervalPrice}
           </div>
-          <div class="estimated-price">
-            <span class="${classMap({ skeleton })}">${estimatedPrice}</span>
-          </div>
+          <div class="estimated-price">${estimatedPrice}</div>
         </div>
       `;
     });
@@ -490,67 +531,21 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
 
   static get styles () {
     return [
-      skeletonStyles,
       // language=CSS
       css`
         :host {
           display: block;
-          background-color: var(--cc-color-bg-default);
-        }
-
-        :host([error]) {
-          --cc-skeleton-state: paused;
+          color: var(--cc-color-text-default, #000);
         }
 
         /* region COMMON */
-
-        .head {
-          display: grid;
-          padding: 1em 1em 0;
-          border-radius: var(--cc-border-radius-default, 0.25em);
-          gap: 1em;
-          grid-auto-rows: min-content;
+        
+        cc-notice {
+          max-width: max-content;
         }
 
-        /* We cannot use cc-flex-gap because of a double slot */
-
-        .head-info {
-          display: flex;
-          flex-wrap: wrap;
-          margin: -0.5em;
-          /* reset gap for browsers that support gap for flexbox */
-          gap: 0;
-        }
-
-        .product-logo,
-        slot[name='icon']::slotted(*),
-        .name-wrapper {
-          margin: 0.5em;
-        }
-
-        .product-logo,
-        slot[name='icon']::slotted(*) {
-          --cc-img-fit: contain;
-
-          display: block;
-          width: 3em;
-          height: 3em;
-          border-radius: var(--cc-border-radius-default, 0.25em);
-        }
-
-        .name-wrapper {
-          align-self: center;
-          font-weight: bold;
-        }
-
-        .name {
-          font-size: 1.5em;
-        }
-
-        /* Slotted description */
-
-        .description {
-          line-height: 1.5;
+        cc-loader {
+          min-height: 20em;
         }
 
         .body {
@@ -575,7 +570,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
           width: 100%;
           border-width: 1px 0 0;
           border-style: solid;
-          border-color: #e5e5e5;
+          border-color: var(--cc-color-border-neutral-weak, #e5e5e5);
           margin: 1em 0;
           grid-column: 1 / -1;
         }
@@ -585,14 +580,17 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         }
 
         .section-icon {
-          width: 1em;
-          height: 1em;
+          --cc-icon-color: var(--cc-color-text-primary, #000);
+          --cc-icon-size: 1em;
+          
+          align-self: center;
           margin-right: 1em;
           grid-column: section-icon / span 1;
         }
 
         .section-title {
           display: flex;
+          align-self: center;
           justify-content: space-between;
           font-weight: bold;
           grid-column: title / title--end;
@@ -629,38 +627,31 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         }
 
         .input-unit {
-          --cc-text-transform: none;
+          --cc-toggle-text-transform: capitalize;
 
           margin-left: 0.5em;
         }
 
-        cc-error {
-          grid-column: interval-min / end;
-          line-height: 1.5;
-          white-space: normal;
-        }
-
-        cc-error.error-global {
-          grid-column: start / end;
+        .interval-list {
+          display: contents;
         }
 
         .interval-line {
-          --bdrs: 5px;
+          --bdrs: var(--cc-border-radius-default, 0.25em);
         }
 
         .interval,
         .interval-price,
         .estimated-price {
           align-self: stretch;
-          padding-top: 0.15em;
-          padding-left: 0.25em;
+          padding-top: 0.5em;
+          padding-left: 0.5em;
           margin: 0.1em 0;
         }
 
-        .interval,
-        .interval-price {
-          padding-right: 0.25em;
-          padding-bottom: 0.15em;
+        .interval {
+          padding-right: 0.5em;
+          padding-bottom: 0.5em;
         }
 
         .interval-line.highlighted:not(.progressive) .interval {
@@ -683,9 +674,11 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         }
 
         .interval-price {
-          color: var(--cc-color-text-weak);
+          align-self: center;
+          color: var(--cc-color-text-weak, #333);
           font-style: italic;
           grid-column: interval-price / interval-price--end;
+          padding-block: 0;
         }
 
         .interval-max {
@@ -706,17 +699,13 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
           grid-column: start / end;
         }
 
-        .skeleton {
-          background-color: #bbb;
-        }
-
         /* endregion */
 
         /* region BIG */
 
         .body--big {
-          grid-template-columns: 1em
-            [start section-icon] 2em
+          grid-template-columns: 
+            [start section-icon] 1.5em
             [title input-wrapper interval-min] min-content
             [interval-min-sign] min-content
             [interval-label] min-content
@@ -725,7 +714,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
             [interval-price input-wrapper--end] min-content
             [estimated-price interval-price--end] min-content
             [title--end title-total--end] 1fr
-            [end] 1em;
+            [end] 0;
         }
 
         .body--big .section-title--subtotal {
@@ -754,24 +743,15 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         /* region SMALL */
 
         .body--small {
-          grid-template-columns: 1em
-            [start section-icon] 2em
+          grid-template-columns:
+            [start section-icon] 1.5em
             [title input-wrapper interval-min interval-price] min-content
             [interval-min-sign] min-content
             [interval-label] min-content
             [interval-max-sign] min-content
             [interval-max toggle-btn title--end] min-content
             [input-wrapper--end interval-price--end title-total--end] 1fr
-            [end] 1em;
-        }
-
-        .body--small .section-toggle-btn {
-          grid-column: toggle-btn / end;
-          justify-self: end;
-        }
-
-        .body--small .section--closed .input-wrapper {
-          margin-bottom: 0.5em;
+            [end];
         }
 
         .body--small .section--closed .interval,
@@ -785,13 +765,45 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
         }
 
         .body--small .interval-price {
-          margin-bottom: 1em;
+          margin-bottom: 1.5em;
         }
 
         .body--small .estimated-price {
           display: none;
         }
+        
+        .body--small .input-wrapper {
+          margin-bottom: 0.5em;
+        }
+        
+        .section-toggle-btn {
+          display: flex;
+          align-items: center;
+          padding: 0;
+          border: none;
+          background: transparent;
+          color: var(--cc-color-text-primary-highlight, blue);
+          font-size: 1em;
+          grid-column: input-wrapper / -1;
+          margin-block: 0.5em;
+        }
 
+        .section-toggle-btn:hover {
+          color: var(--cc-pricing-hovered-color, purple);
+        }
+
+        .expand-icon {
+          --cc-icon-color: var(--cc-color-text-default, #000);
+          --cc-icon-size: 1.5em;
+          
+          transform: rotate(0deg);
+          transition: transform 0.2s ease;
+        }
+
+        .section:not(.section--closed) .expand-icon {
+          transform: rotate(180deg);
+          transition: transform 0.2s ease;
+        }
         /* endregion */
       `,
     ];

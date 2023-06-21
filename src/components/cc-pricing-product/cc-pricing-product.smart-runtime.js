@@ -1,70 +1,51 @@
-import './cc-pricing-product.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { getAvailableInstances } from '@clevercloud/client/esm/api/v2/product.js';
 import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
 import { fetchPriceSystem } from '../../lib/api-helpers.js';
-import { defineSmartComponentWithObservables } from '../../lib/define-smart-component-with-observables.js';
-import { LastPromise, unsubscribeWithSignal } from '../../lib/observables.js';
+import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { formatRuntimeProduct, getRunnerProduct } from '../../lib/product.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import './cc-pricing-product.js';
 
-defineSmartComponentWithObservables({
+defineSmartComponent({
   selector: 'cc-pricing-product[mode="runtime"]',
   params: {
+    apiConfig: { type: Object },
     productId: { type: String },
     zoneId: { type: String },
-    currency: { type: Object },
   },
-  onConnect (container, component, context$, disconnectSignal) {
+  onContextUpdate ({ context, updateComponent, signal }) {
+    const { apiConfig, productId, zoneId } = context;
 
-    const product_lp = new LastPromise();
+    // Reset the component before loading
+    updateComponent('state', { state: 'loading' });
 
-    unsubscribeWithSignal(disconnectSignal, [
-
-      product_lp.error$.subscribe(console.error),
-      product_lp.error$.subscribe(() => (component.error = true)),
-      product_lp.value$.subscribe((product) => {
-        component.name = product.name;
-        component.icon = product.icon;
-        component.description = product.description;
-        component.plans = product.plans;
-        component.features = product.features;
-      }),
-
-      context$.subscribe(({ productId, zoneId, currency }) => {
-
-        component.error = false;
-        component.name = null;
-        component.icon = null;
-        component.description = null;
-        component.plans = null;
-        component.features = null;
-
-        if (currency != null) {
-          component.currency = currency;
-        }
-
-        product_lp.push((signal) => fetchRuntimeProduct({ signal, productId, zoneId }));
-      }),
-
-    ]);
-
+    fetchRuntimeProduct({ apiConfig, productId, zoneId, signal })
+      .then((productDetails) => {
+        updateComponent('product', {
+          state: 'loaded',
+          name: productDetails.name,
+          productFeatures: productDetails.productFeatures,
+          plans: productDetails.plans,
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        updateComponent('product', { state: 'error' });
+      });
   },
 });
 
-async function fetchRuntimeProduct ({ signal, productId, zoneId = 'PAR' }) {
-
-  const [runtime, priceSystem] = await Promise.all([
-    fetchRuntime({ signal, productId }),
-    fetchPriceSystem({ signal, zoneId }),
-  ]);
-
-  return formatRuntimeProduct(runtime, priceSystem);
+function fetchRuntimeProduct ({ apiConfig, productId, zoneId, signal }) {
+  return Promise.all([
+    fetchRuntime({ apiConfig, productId, signal }),
+    fetchPriceSystem({ zoneId, signal }),
+  ]).then(([runtime, priceSystem]) => formatRuntimeProduct(runtime, priceSystem));
 }
 
-function fetchRuntime ({ signal, productId }) {
+function fetchRuntime ({ apiConfig, productId, signal }) {
   return getAvailableInstances()
-    .then(sendToApi({ signal, cacheDelay: ONE_DAY }))
+    .then(sendToApi({ apiConfig, cacheDelay: ONE_DAY, signal }))
     .then((allRuntimes) => {
       const runtime = allRuntimes.find((f) => f.variant.slug === productId);
       if (runtime == null) {
