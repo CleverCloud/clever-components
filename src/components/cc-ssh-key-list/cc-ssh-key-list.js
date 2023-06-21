@@ -268,9 +268,6 @@ export class CcSshKeyList extends LitElement {
   }
 
   _renderCreateSshKeyForm () {
-    // TMP variables named with specific length for lit-analyzer bug (related to tsconfig.json `globalAttributes`)
-    const __refName = this._createFormNameRef;
-    const __refPKey = this._createFormPublicKeyRef;
 
     return html`
       <div class="create-form">
@@ -282,7 +279,7 @@ export class CcSshKeyList extends LitElement {
           class="create-form__name"
           label=${i18n('cc-ssh-key-list.add.name')}
           required
-          ${ref(__refName)}
+          ${ref(this._createFormNameRef)}
         >
           ${this.createSshKeyForm.name.error === 'required' ? html`
             <p slot="error">${i18n('cc-ssh-key-list.error.required.name')}</p>
@@ -296,7 +293,7 @@ export class CcSshKeyList extends LitElement {
           class="create-form__public-key"
           label=${i18n('cc-ssh-key-list.add.public-key')}
           required
-          ${ref(__refPKey)}
+          ${ref(this._createFormPublicKeyRef)}
         >
           ${this.createSshKeyForm.publicKey.error === 'required' ? html`
             <p slot="error">${i18n('cc-ssh-key-list.error.required.public-key')}</p>
