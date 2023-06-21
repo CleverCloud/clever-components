@@ -1,0 +1,6 @@
+<CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+    <CORSRule>
+        <AllowedMethod>GET</AllowedMethod>
+        <AllowedOrigin>*</AllowedOrigin>
+    </CORSRule>
+</CORSConfiguration>

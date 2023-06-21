@@ -66,7 +66,7 @@ Publishing to Cellar requires two secrets:
 You must get the fresh released code:
 
 ```sh
-VERSION=${version} && git fetch --tags origin "$VERSION" && git checkout "$VERSION" && git reset --hard "$VERSION"
+(export VERSION=${version} && git fetch --tags origin "$VERSION" && git checkout "$VERSION" && git reset --hard "$VERSION")
 ```
 
 Then you must install dependencies:
@@ -78,11 +78,11 @@ npm ci
 Then you must build the CDN with:
 
 ```sh
-GIT_TAG_NAME=${version} && npm run components:build-cdn && npm run components:build-cdn:versions-list
+(export VERSION=${version} && npm run cdn-release:build)
 ```
 
 Publication is done with:
 
 ```sh
-GIT_TAG_NAME=${version} && SMART_CDN_CELLAR_KEY_ID=${***} && SMART_CDN_CELLAR_SECRET_KEY=${***} && npm run components:publish-cdn
+(export VERSION=${version} && export SMART_CDN_CELLAR_KEY_ID=${***} && export SMART_CDN_CELLAR_SECRET_KEY=${***} && npm run cdn-release:publish "${VERSION}")
 ```

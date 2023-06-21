@@ -125,12 +125,10 @@
 
 <script type="module">
 
-import semver from 'https://jspm.dev/es-semver@1';
-
 const CDN_ORIGIN = new URL(import.meta.url).origin;
 
-const FIRST_CDN_VERSION = '5.3.1';
 let manifest_version = 0;
+let dependencies_manifest_version = 0;
 
 function $ (selector) {
   return document.querySelector(selector);
@@ -140,15 +138,29 @@ function $$ (selector) {
   return Array.from(document.querySelectorAll(selector));
 }
 
-fetch(CDN_ORIGIN + '/versions-list.json?t=' + (new Date().getTime()))
+fetch(CDN_ORIGIN + '/manifest.json?t=' + (new Date().getTime()))
   .then((r) => r.json())
-  .then((versionList) => {
-    versionList.reverse();
-    $('#version-choice').innerHTML = versionList
-      .filter((v) => semver.gte(v, FIRST_CDN_VERSION))
-      .map((v) => `<option value="${v}">${v}</option>`)
-      .join('');
-    $('#version-choice').value = versionList[0];
+  .then((manifest) => {
+    manifest_version = manifest.version;
+    if (manifest.version === 1) {
+      const versionList = manifest.entries
+        .reverse()
+        .map((e) => e.name);
+
+      $('#version-choice').innerHTML = versionList
+        .map((v) => `<option value="${v}">${v}</option>`)
+        .join('');
+
+      const version = new URLSearchParams(window.location.search).get('version');
+      if (version != null && versionList.includes(version)) {
+        $('#version-choice').value = version;
+      } else {
+        $('#version-choice').value = versionList[0];
+      }
+    }
+    else {
+      throw new Error(`Unsupported manifest version ${manifest.version}`);
+    }
   })
   .then(updateComponentList)
   .catch(console.error);
@@ -163,7 +175,7 @@ function updateComponentList () {
     .then((manifest) => {
       const components = manifest.files
         .filter((file) => file.id.startsWith('cc-'));
-      manifest_version = manifest.manifestVersion;
+      dependencies_manifest_version = manifest.manifestVersion;
       $('#components-choice').innerHTML = components
         .map((file) => `<label class="choice-label"><input class="choice-input" type="checkbox" name="components" value="${file.id}">${file.id}</label>`)
         .join('');
@@ -184,7 +196,7 @@ function updateStylesSection () {
     stylesheetUrl.searchParams.set('version', version);
   }
 
-  if (manifest_version === '2') {
+  if (dependencies_manifest_version === '2') {
     const stylesheetUrlString = stylesheetUrl.toString().replace(/%2C/g, ',');
     // update texts & values to display the stylesheet URL
     $('#cdn-styles-url').href = stylesheetUrlString;
