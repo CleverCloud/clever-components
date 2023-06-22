@@ -5,7 +5,7 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { dispatchCustomEvent } from '../lib/events.js';
 import { i18n } from '../lib/i18n.js';
 import '@shoelace-style/shoelace/dist/components/select/select.js';
-import '@shoelace-style/shoelace/dist/components/menu-item/menu-item.js';
+import '@shoelace-style/shoelace/dist/components/option/option.js';
 import { sortZones } from '../lib/zone.js';
 import { shoelaceStyles } from '../styles/shoelace.js';
 import { skeletonStyles } from '../styles/skeleton.js';
@@ -115,7 +115,7 @@ export class CcPricingHeader extends LitElement {
           @sl-change=${this._onCurrencyChange}
         >
           ${currencies.map((c) => html`
-            <sl-menu-item value=${c.code}>${this._getCurrencySymbol(c.code)} ${c.code}</sl-menu-item>
+            <sl-option value=${c.code}>${this._getCurrencySymbol(c.code)} ${c.code}</sl-option>
           `)}
         </sl-select>
 
@@ -127,10 +127,10 @@ export class CcPricingHeader extends LitElement {
           @sl-change=${this._onZoneChange}
         >
           ${zones.map((zone) => html`
-            <sl-menu-item class="zone-item" value=${zone.name}>
+            <sl-option class="zone-item" value=${zone.name}>
               ${CcZone.getText(zone)}
               <cc-zone slot="prefix" .zone=${zone}></cc-zone>
-            </sl-menu-item>
+            </sl-option>
           `)}
         </sl-select>
 
@@ -167,15 +167,17 @@ export class CcPricingHeader extends LitElement {
 
         sl-select {
           --focus-ring: 0 0 0 .2em rgba(50, 115, 220, .25);
+          --sl-input-background-color: #fff;
           --sl-input-background-color-disabled: #eee;
+          --sl-input-background-color-hover: #fff;
+          --sl-input-background-color-focus: #fff;
+          --sl-input-border-color: #aaa;
           --sl-input-border-color-disabled: #eee;
           --sl-input-border-color-focus: #777;
-          --sl-input-border-color-hover: #777;
-          --sl-input-border-color: #aaa;
           --sl-input-border-radius-medium: 0.25em;
-          --sl-input-color-focus: #000;
-          --sl-input-color-hover: #000;
           --sl-input-color: #000;
+          --sl-input-color-hover: #000;
+          --sl-input-label-color: #000;
           animation: none;
         }
 
@@ -184,6 +186,20 @@ export class CcPricingHeader extends LitElement {
           color: #000;
           /* same value as out own inputs */
           padding-bottom: 0.35em;
+        }
+
+        sl-option {
+          color: #000;
+        }
+
+        sl-option::part(base) {
+          background-color: transparent;
+        }
+
+        sl-option::part(base):hover,
+        sl-option:focus-within {
+          background-color: var(--sl-color-primary-500);
+          color: #fff;
         }
 
         .currency-select {
