@@ -83,7 +83,7 @@ export const CDN_ENVIRONMENTS = Object.fromEntries([
     name: 'preview',
     bucket: 'preview-components.clever-cloud.com',
     accessKeyId: process.env.SMART_CDN_PREVIEW_CELLAR_KEY_ID,
-    secretAccessKey: process.env.SMART_CDN_PREVIEW_CELLAR_KEY_ID,
+    secretAccessKey: process.env.SMART_CDN_PREVIEW_CELLAR_SECRET_KEY,
     semver: false,
     customDomain: 'preview-components.clever-cloud.com',
   }),
