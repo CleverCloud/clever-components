@@ -2,14 +2,13 @@ import '../cc-input-text/cc-input-text.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
-import '../cc-error/cc-error.js';
+import '../cc-notice/cc-notice.js';
 import { css, html, LitElement } from 'lit';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 
 /**
  * @typedef {import('../common.types.js').Addon} Addon
- * @typedef {import('./cc-addon-admin.types.js').ErrorType} ErrorType
  */
 
 /**
@@ -31,7 +30,7 @@ export class CcAddonAdmin extends LitElement {
   static get properties () {
     return {
       addon: { type: Object },
-      error: { type: String },
+      error: { type: Boolean },
       saving: { type: Boolean },
       _name: { type: String, state: true },
       _skeleton: { type: Boolean, state: true },
@@ -45,10 +44,10 @@ export class CcAddonAdmin extends LitElement {
     /** @type {Addon|null} Sets the add-on details (name and tags). */
     this.addon = null;
 
-    /** @type {ErrorType} Sets the error state on the component. */
+    /** @type {boolean} Sets the error state on the component. */
     this.error = false;
 
-    /** @type {boolean} Enables the saving state (form is disabled and blurred). */
+    /** @type {boolean} Enables the saving state */
     this.saving = false;
 
     /** @type {string} */
@@ -96,8 +95,8 @@ export class CcAddonAdmin extends LitElement {
 
   render () {
 
-    const isFormDisabled = (this.error !== false) || this.saving;
-    const loadingError = (this.error === 'loading');
+    const isFormDisabled = this.error || this.saving;
+    const loadingError = (this.error && !this.saving) || (this.error && this.addon == null);
 
     return html`
       <cc-block>
@@ -147,17 +146,7 @@ export class CcAddonAdmin extends LitElement {
         ` : ''}
 
         ${loadingError ? html`
-          <cc-error>${i18n('cc-addon-admin.error-loading')}</cc-error>
-        ` : ''}
-
-        ${this.saving ? html`
-          <cc-loader slot="overlay"></cc-loader>
-        ` : ''}
-
-        ${this.error === 'saving' ? html`
-          <div slot="overlay">
-            <cc-error mode="confirm" @cc-error:ok=${this._onDismissError}>${i18n('cc-addon-admin.error-saving')}</cc-error>
-          </div>
+          <cc-notice intent="warning" message="${i18n('cc-addon-admin.error-loading')}"></cc-notice>
         ` : ''}
       </cc-block>
     `;

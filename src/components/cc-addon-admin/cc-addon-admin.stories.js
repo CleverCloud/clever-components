@@ -29,21 +29,15 @@ export const saving = makeStory(conf, {
 });
 
 export const errorWithLoading = makeStory(conf, {
-  items: [{ error: 'loading' }],
-});
-
-export const errorWithSaving = makeStory(conf, {
-  items: [{ addon, error: 'saving' }],
+  items: [{ error: true }],
 });
 
 export const simulations = makeStory(conf, {
-  items: [{}, { saving: true }, {}],
+  items: [{}, {}],
   simulations: [
-    storyWait(2000, ([component, componentSaving, componentError]) => {
+    storyWait(2000, ([component, componentError]) => {
       component.addon = addon;
-      componentSaving.saving = false;
-      componentSaving.error = 'saving';
-      componentError.error = 'loading';
+      componentError.error = true;
     }),
   ],
 });
@@ -53,6 +47,5 @@ enhanceStoriesNames({
   skeleton,
   saving,
   errorWithLoading,
-  errorWithSaving,
   simulations,
 });

@@ -51,7 +51,6 @@ export const translations = {
   'cc-addon-admin.delete': `Delete the add-on`,
   'cc-addon-admin.delete-description': () => sanitize`Deleting this add-on will make it immediately unavailable.<br>The virtual machine will be stopped in 24 hours.<br>Backups will be kept according to the retention policy.`,
   'cc-addon-admin.error-loading': `Something went wrong while loading add-on info.`,
-  'cc-addon-admin.error-saving': `An error occurred when saving your modifications.`,
   'cc-addon-admin.heading.name': `Name`,
   'cc-addon-admin.heading.tags': `Tags`,
   'cc-addon-admin.input.name': `Add-on name`,

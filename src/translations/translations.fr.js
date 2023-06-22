@@ -64,7 +64,6 @@ export const translations = {
   'cc-addon-admin.delete': `Supprimer l'add-on`,
   'cc-addon-admin.delete-description': () => sanitize`La machine virtuelle sera arrêtée dans 24 heures.<br>Les backups seront gardés suivant la politique de rétention.<br>Supprimer cet add-on le rendra directement indisponible.`,
   'cc-addon-admin.error-loading': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
-  'cc-addon-admin.error-saving': `Une erreur est survenue pendant la sauvegarde des modifications`,
   'cc-addon-admin.heading.name': `Nom`,
   'cc-addon-admin.heading.tags': `Tags`,
   'cc-addon-admin.input.name': `Nom de l'add-on`,
