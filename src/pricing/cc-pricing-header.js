@@ -92,7 +92,19 @@ export class CcPricingHeader extends LitElement {
   update (changedProperties) {
     if (changedProperties.has('zones')) {
       this._sortedZones = sortZones(this.zones);
+
+      const zoneSelect = this.shadowRoot?.querySelector('.zone-select');
+
+      /*
+        * The `<sl-select>` value must match the value of an `<sl-option>` element.
+        * We need to make sure the value of the `<sl-select>` element in only updated after
+        * `<sl-option>` elements have been rendered.
+        */
+      if (zoneSelect != null) {
+        zoneSelect.value = this.zoneId;
+      }
     }
+
     super.update(changedProperties);
   }
 
