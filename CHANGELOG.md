@@ -8,6 +8,10 @@ title: Changelog
 
 ...
 
+## 7.13.1 (2023-06-23)
+
+* `<cc-pricing-header>`: make sure the initial value of the zones dropdown is set after loading the zones.
+
 ## 7.13.0 (2023-06-23)
 
 * update `Shoelace` dependency from `2.0.0-beta.47` to `2.5.0` to fix an issue with Chrome > 114.
