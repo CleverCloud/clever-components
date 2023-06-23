@@ -8,6 +8,11 @@ title: Changelog
 
 ...
 
+## 7.13.0 (2023-06-23)
+
+* update `Shoelace` dependency from `2.0.0-beta.47` to `2.5.0` to fix an issue with Chrome > 114.
+* `<cc-pricing-table>`: make it possible to add custom features. Stop filtering out features that have no registered translation.
+
 ## 7.12.0 (2022-05-20)
 
 * `cc-link`: remove `defaultThemeStyles` insertion in CSS.
