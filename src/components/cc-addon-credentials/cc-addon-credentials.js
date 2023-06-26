@@ -1,5 +1,4 @@
 import '../cc-input-text/cc-input-text.js';
-import '../cc-flex-gap/cc-flex-gap.js';
 import '../cc-block/cc-block.js';
 import '../cc-error/cc-error.js';
 import { css, html, LitElement } from 'lit';
@@ -98,7 +97,7 @@ export class CcAddonCredentials extends LitElement {
           <div>${this._getDescription(this.type)}</div>
 
           ${this.credentials != null ? html`
-            <cc-flex-gap class="credential-list">
+            <div class="credential-list">
               ${this.credentials.map(({ type, secret, value }) => html`
                 <cc-input-text readonly clipboard
                   ?secret=${secret}
@@ -107,7 +106,7 @@ export class CcAddonCredentials extends LitElement {
                   label=${this._getFieldName(type)}
                 ></cc-input-text>
               `)}
-            </cc-flex-gap>
+            </div>
           ` : ''}
         ` : ''}
 
@@ -128,13 +127,15 @@ export class CcAddonCredentials extends LitElement {
         }
 
         .credential-list {
-          --cc-gap: 1em;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1em;
         }
 
         cc-input-text {
           --cc-input-font-family: var(--cc-ff-monospace, monospace);
 
-          flex: 1 0 18em;
+          flex: 1 1 18em;
         }
 
         /* SKELETON */
