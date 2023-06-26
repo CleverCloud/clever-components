@@ -1,8 +1,7 @@
 import '../../components/cc-error/cc-error.js';
 import { html } from 'lit';
+import { iconRemixShieldKeyholeFill as iconEncryptionAtRest } from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../lib/i18n.js';
-
-const encryptionAtRestSvg = new URL('../../assets/encryption-at-rest.svg', import.meta.url).href;
 
 const PRICE_PERCENT = 0.10;
 
@@ -16,7 +15,7 @@ export const ccAddonEncryptionAtRestOption = ({ enabled, price }) => {
 
   return {
     title: i18n('cc-addon-encryption-at-rest-option.title'),
-    logo: encryptionAtRestSvg,
+    icon: iconEncryptionAtRest,
     description,
     enabled,
     name: 'encryption',

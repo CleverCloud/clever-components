@@ -5,7 +5,7 @@
 import { css, html, LitElement } from 'lit';
 
 // DOCS: Import the icon(s), using an alias being recommended (better meaning, cleaner future update, shorter variable name, etc.).
-import { iconCleverRedirectionOn as iconRedirOn } from '../src/assets/cc-clever.icons.js';
+import { iconCleverRam as iconRam } from '../src/assets/cc-clever.icons.js';
 import { iconRemixCloudFill as iconLogo } from '../src/assets/cc-remix.icons.js';
 
 // DOCS: You may setup/init some stuffs here but this should be rare and most of the setup should happen in the component.
@@ -173,7 +173,7 @@ export class CcExampleComponent extends LitElement {
         
         <!-- icon usage -->
         <cc-icon .icon="${iconLogo}" size="xl"></cc-icon>
-        <cc-icon .icon="${iconRedirOn}" style="--cc-icon-color: #d74d4e;"></cc-icon>
+        <cc-icon .icon="${iconRam}" style="--cc-icon-color: #d74d4e;"></cc-icon>
       </div>
     `;
   }

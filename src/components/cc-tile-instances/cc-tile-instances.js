@@ -1,19 +1,21 @@
 import '../cc-expand/cc-expand.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-error/cc-error.js';
+import '../cc-icon/cc-icon.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import {
+  iconCleverRunning as iconRunning,
+  iconCleverStarting as iconStarting,
+} from '../../assets/cc-clever.icons.js';
 import { animate, QUICK_SHRINK } from '../../lib/animate.js';
 import { i18n } from '../../lib/i18n.js';
 import { instanceDetailsStyles, tileStyles } from '../../styles/info-tiles.js';
 import { waitingStyles } from '../../styles/waiting.js';
 
-const runningSvg = new URL('../../assets/running.svg', import.meta.url).href;
-const startingSvg = new URL('../../assets/starting.svg', import.meta.url).href;
-
-const statusImg = {
-  running: runningSvg,
-  deploying: startingSvg,
+const statusIcon = {
+  running: iconRunning,
+  deploying: iconStarting,
 };
 
 /** @type {InstancesState} */
@@ -120,8 +122,7 @@ export class CcTileInstances extends LitElement {
   _renderInstances (instances, type) {
     return instances.length ? html`
       <div class="instances ${classMap({ 'cc-waiting': type === 'deploying' })}" data-type=${type}>
-        <!-- image has a presentation role => alt="" -->
-        <img class="instances_status-img" src=${statusImg[type]} alt="">
+        <cc-icon class="instances_status-img ${type}" .icon=${statusIcon[type]}></cc-icon>
         <span class="instances_status">${this._getStatusLabel(type)}</span>
         ${instances.map(({ flavorName, count }) => html`
           <span class="size-label">${flavorName}<span class="count-bubble">${count}</span></span>
@@ -148,16 +149,17 @@ export class CcTileInstances extends LitElement {
         }
 
         .instances[data-type='running'] {
+          --cc-icon-color: var(--color-legacy-green);
           --status-color: var(--color-legacy-green);
         }
 
         .instances[data-type='deploying'] {
+          --cc-icon-color: var(--color-legacy-blue-icon);
           --status-color: var(--color-legacy-blue);
         }
 
         .instances_status-img {
-          width: 1.75em;
-          height: 1.75em;
+          --cc-icon-size: 1.75em;
         }
 
         .instances_status {

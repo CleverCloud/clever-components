@@ -1,13 +1,14 @@
+import '../cc-icon/cc-icon.js';
+import '../cc-img/cc-img.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
 import '../cc-error/cc-error.js';
 import { css, html, LitElement } from 'lit';
+import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
-
-const infoSvg = new URL('../../assets/info.svg', import.meta.url).href;
 
 const GRAFANA_LOGO_URL = 'https://assets.clever-cloud.com/logos/grafana.svg';
 const GRAFANA_HOME_SCREEN = 'https://assets.clever-cloud.com/grafana/screens/home.png';
@@ -114,7 +115,8 @@ export class CcGrafanaInfo extends LitElement {
           <div slot="info">${i18n('cc-grafana-info.documentation-description')}</div>
           <div>
             ${ccLink(GRAFANA_DOCUMENTATION, html`
-              <cc-img src="${infoSvg}"></cc-img><span>${i18n('cc-grafana-info.link.doc')}</span>
+              <cc-icon size="lg" .icon=${iconInfo}></cc-icon>
+              <span>${i18n('cc-grafana-info.link.doc')}</span>
             `)}
           </div>
         </cc-block-section>
@@ -225,6 +227,11 @@ export class CcGrafanaInfo extends LitElement {
           flex: 0 0 auto;
           margin-right: 0.5em;
           border-radius: var(--cc-border-radius-default, 0.25em);
+        }
+
+        cc-icon {
+          flex: 0 0 auto;
+          margin-right: 0.5em;
         }
 
         .cc-link {

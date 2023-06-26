@@ -1,9 +1,13 @@
+import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 import '../cc-toggle/cc-toggle.js';
 import { css, html, LitElement } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
+
+/**
+ * @typedef {import('../common.types.js').IconModel} IconModel
+ */
 
 /**
  * A component that allows to enable or disable an add-on option.
@@ -23,6 +27,7 @@ export class CcAddonOption extends LitElement {
   static get properties () {
     return {
       enabled: { type: Boolean, reflect: true },
+      icon: { type: Object },
       logo: { type: String },
       title: { type: String },
     };
@@ -33,6 +38,9 @@ export class CcAddonOption extends LitElement {
 
     /** @type {boolean} Enable the option by default. */
     this.enabled = false;
+
+    /** @type {IconModel|null} The logo icon of the option. Has priority over the logo property. */
+    this.icon = null;
 
     /** @type {string|null} The logo URL of the option. */
     this.logo = null;
@@ -53,7 +61,12 @@ export class CcAddonOption extends LitElement {
     ];
 
     return html`
-      <cc-img class="logo" src=${ifDefined(this.logo ?? undefined)}></cc-img>
+      ${this.icon != null ? html`
+        <cc-icon class="icon" .icon=${this.icon}></cc-icon>
+      ` : ''}
+      ${this.logo != null && this.icon == null ? html`
+        <cc-img class="logo" src=${this.logo}></cc-img>
+      ` : ''}
       <div class="option-main">
         <div class="option-name">${this.title}</div>
         <slot class="option-details"></slot>
@@ -104,6 +117,11 @@ export class CcAddonOption extends LitElement {
           width: 1.6em;
           height: 1.6em;
           border-radius: var(--cc-border-radius-default, 0.25em);
+        }
+        
+        .icon {
+          --cc-icon-color: #012a51;
+          --cc-icon-size: 28px;
         }
 
         cc-toggle {

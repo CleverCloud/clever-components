@@ -2,14 +2,16 @@ import { animate, AnimateController } from '@lit-labs/motion';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import {
+  iconRemixAlertLine as iconWarning,
+  iconRemixCloseLine as iconClose,
+  iconRemixInformationLine as iconInfo,
+  iconRemixSpam_2Line as iconDanger,
+  iconRemixCheckboxCircleLine as iconSuccess,
+} from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
-
-const closeSvg = new URL('../../assets/close-gray.svg', import.meta.url).href;
-const infoSvg = new URL('../../assets/information-line.svg', import.meta.url).href;
-const successSvg = new URL('../../assets/checkbox-circle-line.svg', import.meta.url).href;
-const warningSvg = new URL('../../assets/alert-line.svg', import.meta.url).href;
-const dangerSvg = new URL('../../assets/spam-2-line.svg', import.meta.url).href;
+import '../cc-icon/cc-icon.js';
 
 /**
  * @typedef {import('../common.types.js').NotificationIntent} NotificationIntent
@@ -41,7 +43,8 @@ const dangerSvg = new URL('../../assets/spam-2-line.svg', import.meta.url).href;
  * @cssdisplay block
  *
  * @event {CustomEvent} cc-toast:dismiss - Fires whenever the toast is dismissed.
- */
+ * @cssprop {Color} --cc-toast-icon-color - The color of the icon on the left of the toast (defaults: `e7e7e7`).
+*/
 export class CcToast extends LitElement {
 
   static get properties () {
@@ -94,16 +97,16 @@ export class CcToast extends LitElement {
 
   _getIcon () {
     if (this.intent === 'info') {
-      return infoSvg;
+      return iconInfo;
     }
     if (this.intent === 'success') {
-      return successSvg;
+      return iconSuccess;
     }
     if (this.intent === 'warning') {
-      return warningSvg;
+      return iconWarning;
     }
     if (this.intent === 'danger') {
-      return dangerSvg;
+      return iconDanger;
     }
   }
 
@@ -146,7 +149,7 @@ export class CcToast extends LitElement {
            @blur=${this._resume}
            tabindex="${ifDefined(tabIndex)}">
         <div class="icon-wrapper">
-          <img class="icon" src="${this._getIcon()}" alt="${this._getIconAlt()}">
+          <cc-icon class="icon" .icon="${this._getIcon()}" accessible-name="${this._getIconAlt()}"></cc-icon>
         </div>
         <div class="right">
           <div class="content">
@@ -160,7 +163,7 @@ export class CcToast extends LitElement {
                     @focus=${this._pause}
                     @blur=${this._resume}
                     title="${i18n('cc-toast.close')}">
-              <img src="${closeSvg}" alt="${i18n('cc-toast.close')}">
+              <cc-icon .icon="${iconClose}" accessible-name="${i18n('cc-toast.close')}"></cc-icon>
             </button>
           ` : ''}
 
@@ -231,11 +234,8 @@ export class CcToast extends LitElement {
         }
 
         .icon {
-          --size: 1.8em;
-
-          display: block;
-          width: var(--size);
-          height: var(--size);
+          --cc-icon-color: var(--cc-toast-icon-color, #e7e7e7);
+          --cc-icon-size: 1.8em;
         }
         /* endregion */
         
@@ -269,6 +269,9 @@ export class CcToast extends LitElement {
         /* region CLOSE_BUTTON */
 
         .close-button {
+          --cc-icon-color: var(--cc-color-text-weak);
+          --cc-icon-size: 1.5em;
+        
           width: auto;
           height: auto;
           align-self: start;

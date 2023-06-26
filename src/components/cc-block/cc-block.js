@@ -1,14 +1,17 @@
 import '../cc-button/cc-button.js';
 import '../cc-expand/cc-expand.js';
+import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import {
+  iconRemixArrowDownSFill as iconDown,
+  iconRemixArrowUpSFill as iconUp,
+} from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../lib/i18n.js';
 
-const downSvg = new URL('../../assets/down.svg', import.meta.url).href;
-const upSvg = new URL('../../assets/up.svg', import.meta.url).href;
-
 /**
+ * @typedef {import('../common.types.js').IconModel} IconModel
  * @typedef {import('../common.types.js').ToggleStateType} ToggleStateType
  */
 
@@ -30,7 +33,8 @@ export class CcBlock extends LitElement {
 
   static get properties () {
     return {
-      icon: { type: String },
+      icon: { type: Object },
+      image: { type: String },
       noHead: { type: Boolean, attribute: 'no-head', reflect: true },
       ribbon: { type: String, reflect: true },
       state: { type: String, reflect: true },
@@ -41,8 +45,11 @@ export class CcBlock extends LitElement {
   constructor () {
     super();
 
-    /** @type {string|null} Sets the URL of the image before the title. Icon is hidden if nullish. */
+    /** @type {IconModel|null} Sets the icon before the title using a `<cc-icon>`. Icon is hidden if nullish. */
     this.icon = null;
+
+    /** @type {string|null} Sets the icon before the title using a `<cc-img>`. Icon is hidden if nullish. Property will be ignored if `icon` property is already set. */
+    this.image = null;
 
     /** @type {boolean} Hides the head section. */
     this.noHead = false;
@@ -81,13 +88,17 @@ export class CcBlock extends LitElement {
       
       ${!this.noHead ? html`
         <div class="head" @click=${this._clickToggle}>
+          ${this.image != null && this.icon == null ? html`
+            <cc-img src="${this.image}"></cc-img>
+          ` : ''}
           ${this.icon != null ? html`
-            <cc-img src="${this.icon}"></cc-img>
+            <cc-icon size="lg" .icon=${this.icon}></cc-icon>
           ` : ''}
           <slot name="title"></slot>
           ${isToggleEnabled ? html`
             <cc-button
-              image=${isOpen ? upSvg : downSvg}
+              class="toggle_button"
+              .icon=${isOpen ? iconUp : iconDown}
               hide-text
               outlined
               primary
@@ -138,6 +149,7 @@ export class CcBlock extends LitElement {
           display: flex;
           align-items: center;
           padding: 1em;
+          color: var(--cc-color-text-primary-strongest);
         }
 
         :host([ribbon]) .head {
@@ -158,9 +170,17 @@ export class CcBlock extends LitElement {
           border-radius: var(--cc-border-radius-default, 0.25em);
         }
 
+        cc-icon {
+          align-self: flex-start;
+          margin-right: 1em;
+        }
+        
+        .toggle_button {
+          --cc-icon-size: 1.5em;
+        }
+
         ::slotted([slot='title']) {
           flex: 1 1 0;
-          color: var(--cc-color-text-primary-strongest);
           font-size: 1.2em;
           font-weight: bold;
         }

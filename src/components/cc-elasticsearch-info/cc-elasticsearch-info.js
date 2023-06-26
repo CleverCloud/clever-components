@@ -1,13 +1,13 @@
+import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 import '../cc-block/cc-block.js';
 import '../cc-error/cc-error.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
-
-const infoSvg = new URL('../../assets/info.svg', import.meta.url).href;
 
 const ELASTICSEARCH_LOGO_URL = 'https://assets.clever-cloud.com/logos/elastic.svg';
 const KIBANA_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-kibana.svg';
@@ -63,7 +63,8 @@ export class CcElasticsearchInfo extends LitElement {
 
           <div class="link-list">
             ${ccLink(ELASTICSEARCH_DOCUMENTATION, html`
-              <cc-img src="${infoSvg}"></cc-img><span>${i18n('cc-elasticsearch-info.link.doc')}</span>
+              <cc-icon size="lg" .icon=${iconInfo}></cc-icon>
+              <span>${i18n('cc-elasticsearch-info.link.doc')}</span>
             `)}
             ${elasticsearchLink != null ? html`
               ${ccLink(elasticsearchLink.href, html`
@@ -121,6 +122,11 @@ export class CcElasticsearchInfo extends LitElement {
           flex: 0 0 auto;
           margin-right: 0.5em;
           border-radius: var(--cc-border-radius-default, 0.25em);
+        }
+        
+        cc-icon {
+          flex: 0 0 auto;
+          margin-right: 0.5em;
         }
 
         /* SKELETON */

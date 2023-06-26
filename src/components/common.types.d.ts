@@ -27,6 +27,7 @@ interface AddonProvider {
 interface AddonOption {
   name: string;
   enabled: boolean;
+  icon?: IconModel;
   // Option specific params
   flavor: Flavor; // for "apm" and "kibana" options
   price: number; // for "encryption" option
@@ -54,6 +55,10 @@ interface Flavor {
 interface Variable {
   name: string;
   value: string;
+}
+
+export interface IconModel {
+  content: string;
 }
 
 interface InvoiceAmount {

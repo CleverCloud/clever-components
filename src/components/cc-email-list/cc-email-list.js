@@ -1,6 +1,15 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
+import {
+  iconCleverMailLine as iconMail,
+  iconCleverMailStarLine as iconMailPrimary,
+} from '../../assets/cc-clever.icons.js';
+import {
+  iconRemixCheckboxCircleFill as iconVerified,
+  iconRemixDeleteBinFill as iconDelete,
+  iconRemixSpam_2Fill as iconUnverified,
+} from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { validateEmailAddress } from '../../lib/email.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
@@ -13,13 +22,8 @@ import '../cc-block/cc-block.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-button/cc-button.js';
 import '../cc-error/cc-error.js';
+import '../cc-icon/cc-icon.js';
 import '../cc-input-text/cc-input-text.js';
-
-const mailSvg = new URL('../../assets/mail-line.svg', import.meta.url).href;
-const mailStarSvg = new URL('../../assets/mail-star-line.svg', import.meta.url).href;
-const trashSvg = new URL('../../assets/trash-red.svg', import.meta.url).href;
-const verifiedSvg = new URL('../../assets/checkbox-circle-fill.svg', import.meta.url).href;
-const unverifiedSvg = new URL('../../assets/spam-2-fill.svg', import.meta.url).href;
 
 /** @type {PrimaryAddressState} */
 const SKELETON_PRIMARY_EMAIL = {
@@ -202,7 +206,7 @@ export class CcEmailList extends LitElement {
     const shouldDisplayResendConfirmationEmail = !skeleton && !verified;
 
     const badgeIntent = verified ? 'success' : 'danger';
-    const badgeIcon = verified ? verifiedSvg : unverifiedSvg;
+    const badgeIcon = verified ? iconVerified : iconUnverified;
 
     return html`
       <cc-block-section>
@@ -211,15 +215,14 @@ export class CcEmailList extends LitElement {
 
         <div class="address-line primary">
           <div class="address">
-            <img src="${mailStarSvg}" alt=""/>
+            <cc-icon class="icon--auto" .icon=${iconMailPrimary} size="lg"></cc-icon>
             <span class="${classMap({ skeleton })}">${address}</span>
           </div>
           <cc-badge
-              intent="${badgeIntent}"
-              weight="outlined"
-              ?skeleton="${skeleton}"
-              icon-src="${badgeIcon}"
-              icon-alt=""
+            intent="${badgeIntent}"
+            weight="outlined"
+            ?skeleton="${skeleton}"
+            .icon="${badgeIcon}"
           >${this._getVerifiedTagLabel(primaryAddress.verified)}
           </cc-badge>
         </div>
@@ -253,27 +256,27 @@ export class CcEmailList extends LitElement {
             return html`
               <li class="address-line secondary">
                 <div class="address ${classMap({ loading: isBusy })}">
-                  <img src="${mailSvg}" alt=""/>
+                  <cc-icon class="icon--auto" .icon=${iconMail} size="lg"></cc-icon>
                   <span>${secondaryAddress.address}</span>
                 </div>
                 <div class="buttons">
                   <cc-button
-                      @cc-button:click=${() => this._onMarkAsPrimary(secondaryAddress.address)}
-                      ?waiting="${secondaryAddress.state === 'marking-as-primary'}"
-                      ?disabled="${markingAsPrimary || isBusy}"
-                      accessible-name="${i18n('cc-email-list.secondary.action.mark-as-primary.accessible-name', { address: secondaryAddress.address })}"
+                    @cc-button:click=${() => this._onMarkAsPrimary(secondaryAddress.address)}
+                    ?waiting="${secondaryAddress.state === 'marking-as-primary'}"
+                    ?disabled="${markingAsPrimary || isBusy}"
+                    accessible-name="${i18n('cc-email-list.secondary.action.mark-as-primary.accessible-name', { address: secondaryAddress.address })}"
                   >
                     ${i18n('cc-email-list.secondary.action.mark-as-primary.name')}
                   </cc-button>
                   <cc-button
-                      class="delete-button"
-                      danger
-                      outlined
-                      image=${trashSvg}
-                      @cc-button:click=${() => this._onDelete(secondaryAddress.address)}
-                      ?waiting="${secondaryAddress.state === 'deleting'}"
-                      ?disabled="${isBusy}"
-                      accessible-name="${i18n('cc-email-list.secondary.action.delete.accessible-name', { address: secondaryAddress.address })}"
+                    class="delete-button"
+                    danger
+                    outlined
+                    .icon=${iconDelete}
+                    @cc-button:click=${() => this._onDelete(secondaryAddress.address)}
+                    ?waiting="${secondaryAddress.state === 'deleting'}"
+                    ?disabled="${isBusy}"
+                    accessible-name="${i18n('cc-email-list.secondary.action.delete.accessible-name', { address: secondaryAddress.address })}"
                   >
                     ${i18n('cc-email-list.secondary.action.delete.name')}
                   </cc-button>
@@ -294,13 +297,13 @@ export class CcEmailList extends LitElement {
     return html`
       <form>
         <cc-input-text
-            label="${i18n('cc-email-list.secondary.address-input.label')}"
-            required
-            .value=${this.addEmailForm.address.value}
-            ?disabled=${isAdding}
-            @cc-input-text:requestimplicitsubmit=${this._onAdd}
-            @cc-input-text:input=${this._onAddressInput}
-            ${ref(this._addressInputRef)}
+          label="${i18n('cc-email-list.secondary.address-input.label')}"
+          required
+          .value=${this.addEmailForm.address.value}
+          ?disabled=${isAdding}
+          @cc-input-text:requestimplicitsubmit=${this._onAdd}
+          @cc-input-text:input=${this._onAddressInput}
+          ${ref(this._addressInputRef)}
         >
           ${this._renderAddressError()}
           <p slot="help">
@@ -308,9 +311,9 @@ export class CcEmailList extends LitElement {
           </p>
         </cc-input-text>
         <cc-button
-            primary
-            ?waiting=${isAdding}
-            @cc-button:click=${this._onAdd}
+          primary
+          ?waiting=${isAdding}
+          @cc-button:click=${this._onAdd}
         >
           ${i18n('cc-email-list.secondary.action.add')}
         </cc-button>
@@ -416,6 +419,10 @@ export class CcEmailList extends LitElement {
         .skeleton {
           background-color: #bbb;
           color: transparent !important;
+        }
+
+        .icon--auto {
+          flex: auto 0 0;
         }
       `,
     ];

@@ -66,6 +66,7 @@ export class CcAddonOptionForm extends LitElement {
           return html`
             <cc-addon-option
               title="${option.title}"
+              .icon="${option.icon}"
               logo="${option.logo}"
               ?enabled=${enabled}
               @cc-addon-option:input=${(e) => this._onOptionToggle(e, option.name)}

@@ -1,11 +1,14 @@
 import '../cc-button/cc-button.js';
 import '../cc-loader/cc-loader.js';
+import '../cc-icon/cc-icon.js';
 import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
+import {
+  iconRemixInformationFill as iconInfo,
+  iconRemixAlertFill as iconWarning,
+} from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
-
-const noticeSvg = new URL('../../assets/notice.svg', import.meta.url).href;
-const warningSvg = new URL('../../assets/warning.svg', import.meta.url).href;
 
 /**
  * @typedef {import('./cc-error.types.js').ErrorModeType} ErrorModeType
@@ -53,7 +56,11 @@ export class CcError extends LitElement {
       ${this.mode === 'loading' ? html`
         <cc-loader></cc-loader>
       ` : ''}
-      <div><img src=${this.notice ? noticeSvg : warningSvg} alt="">
+      <div>
+        <cc-icon
+          class="${classMap({ notice: this.notice, warning: !this.notice })}"
+          .icon=${this.notice ? iconInfo : iconWarning}
+        ></cc-icon>
         <slot></slot>
       </div>
       ${this.mode === 'confirm' ? html`
@@ -94,13 +101,18 @@ export class CcError extends LitElement {
             height: 1.5em;
           }
 
-          img {
-            display: inline-block;
-            width: 1em;
-            height: 1em;
-            margin-top: 0.1em;
+          cc-icon {
+            --cc-icon-size: 1.1em;
+            
             margin-right: 0.4em;
-            vertical-align: text-top;
+          }
+          
+          .notice {
+            --cc-icon-color: var(--cc-color-text-primary);
+          }
+
+          .warning {
+            --cc-icon-color: var(--cc-color-text-warning);
           }
 
           cc-button {

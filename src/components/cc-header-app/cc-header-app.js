@@ -1,39 +1,42 @@
 import '../cc-button/cc-button.js';
 import '../cc-error/cc-error.js';
+import '../cc-icon/cc-icon.js';
 import '../cc-zone/cc-zone.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import {
+  iconCleverGit as iconGit,
+  iconCleverRestartFailed as iconRestartFailed,
+  iconCleverRestarting as iconRestarting,
+  iconCleverRunning as iconRunning,
+  iconCleverStartFailed as iconStartFailed,
+  iconCleverStarting as iconStarting,
+  iconCleverUnknown as iconUnknown,
+} from '../../assets/cc-clever.icons.js';
+import {
+  iconRemixStopFill as iconStopped,
+} from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { waitingStyles } from '../../styles/waiting.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 
-const gitSvg = new URL('../../assets/git.svg', import.meta.url).href;
-const restartFailedSvg = new URL('../../assets/restart-failed.svg', import.meta.url).href;
-const restartingWithDowntimeSvg = new URL('../../assets/restarting-with-downtime.svg', import.meta.url).href;
-const restartingSvg = new URL('../../assets/restarting.svg', import.meta.url).href;
-const runningSvg = new URL('../../assets/running.svg', import.meta.url).href;
-const startFailedSvg = new URL('../../assets/start-failed.svg', import.meta.url).href;
-const startingSvg = new URL('../../assets/starting.svg', import.meta.url).href;
-const stoppedSvg = new URL('../../assets/stopped.svg', import.meta.url).href;
-const unknownSvg = new URL('../../assets/unknown.svg', import.meta.url).href;
-
 const commitIcon = {
-  git: gitSvg,
-  running: runningSvg,
-  starting: startingSvg,
+  git: iconGit,
+  running: iconRunning,
+  starting: iconStarting,
 };
 
 const statusIcon = {
-  'restart-failed': restartFailedSvg,
-  restarting: restartingSvg,
-  'restarting-with-downtime': restartingWithDowntimeSvg,
-  running: runningSvg,
-  'start-failed': startFailedSvg,
-  starting: startingSvg,
-  stopped: stoppedSvg,
+  'restart-failed': iconRestartFailed,
+  restarting: iconRestarting,
+  'restarting-with-downtime': iconStarting,
+  running: iconRunning,
+  'start-failed': iconStartFailed,
+  starting: iconStarting,
+  stopped: iconStopped,
 };
 
 const SKELETON_APP = {
@@ -272,8 +275,7 @@ export class CcHeaderApp extends LitElement {
 
       <div class="messages ${classMap({ 'cc-waiting': isDeploying })}">
         ${(shouldDisplayStatusMessage) ? html`
-          <!-- image has a presentation role => alt="" -->
-          <img class="status-icon" src=${statusIcon[status] || unknownSvg} alt="">
+          <cc-icon class="status-icon ${status}" size="lg" .icon=${statusIcon[status] || iconUnknown}></cc-icon>
           <span class=${classMap({ skeleton: skeletonStatus })}>
             ${this._getStatusMsg(status)}
           </span>
@@ -300,8 +302,7 @@ export class CcHeaderApp extends LitElement {
         title=${ifDefined(skeleton ? undefined : this._getCommitTitle(type, commit))}
         data-type=${type}
       >
-        <!-- image has a presentation role => alt="" -->
-        <img class="commit_img" src=${commitIcon[type]} alt="">
+        <cc-icon class="commit_img ${type}" .icon=${commitIcon[type]}></cc-icon>
         ${commit != null ? html`
           <!-- Keep this on one line to ease copy/paste -->
           <span class=${classMap({ skeleton })}>${(commit.slice(0, 8))}<span class="commit_rest">${(commit.slice(8))}</span></span>
@@ -378,14 +379,26 @@ export class CcHeaderApp extends LitElement {
 
         .commit {
           display: flex;
-          align-items: flex-start;
+          align-items: center;
         }
 
         .commit_img {
-          overflow: hidden;
-          width: 1.1em;
-          height: 1.1em;
           margin-right: 0.2em;
+        }
+
+        .commit_img.git {
+          --cc-icon-color: #555;
+          --cc-icon-size: 1.3em;
+        }
+
+        .commit_img.running {
+          --cc-icon-color: var(--color-legacy-green);
+          --cc-icon-size: 1.25em;
+        }
+
+        .commit_img.starting {
+          --cc-icon-color: var(--color-legacy-blue-icon);
+          --cc-icon-size: 1.25em;
         }
 
         /* We hide the right part of the commit this way so this can be part of a copy/paste */
@@ -415,7 +428,7 @@ export class CcHeaderApp extends LitElement {
           box-sizing: border-box;
           flex-wrap: wrap;
           align-items: center;
-          padding: 0.45em 1.1em;
+          padding: 0.5em 1.1em;
           background-color: var(--cc-color-bg-neutral);
           box-shadow: inset 0 6px 6px -6px rgb(0 0 0 / 40%);
           font-size: 0.9em;
@@ -424,8 +437,37 @@ export class CcHeaderApp extends LitElement {
         }
 
         .status-icon {
-          min-width: 1.25em;
-          height: 1.25em;
+          font-size: unset;
+          margin-block: 0;
+          margin-inline-end: 0;
+        }
+
+        .status-icon.restarting-with-downtime {
+          --cc-icon-color: var(--color-legacy-blue-icon);
+          --cc-icon-size: 1.25em;
+        }
+
+        .status-icon.running {
+          --cc-icon-color: var(--color-legacy-green);
+          --cc-icon-size: 1.25em;
+        }
+
+        .status-icon.start-failed {
+          --cc-icon-color: var(--color-legacy-red);
+          --cc-icon-size: 1.25em;
+        }
+
+        .status-icon.starting {
+          --cc-icon-color: var(--color-legacy-blue-icon);
+          --cc-icon-size: 1.25em;
+        }
+
+        .status-icon.stopped {
+          --cc-icon-color: #ddd;
+        }
+
+        .status-icon.unknown {
+          --cc-icon-color: #ddd;
         }
 
         .spacer {

@@ -9,12 +9,12 @@ import { classMap } from 'lit/directives/class-map.js';
 import {
   iconCleverArrowsLeft as iconArrowsLeft,
   iconCleverArrowsRight as iconArrowsRight,
-  iconCleverSum as iconSum,
 } from '../../assets/cc-clever.icons.js';
 import {
   iconRemixArrowDownSLine as iconArrowDown,
   iconRemixAddLine as iconPlus,
   iconRemixDatabase_2Fill as iconDisk,
+  iconRemixFunctions as iconSum,
   iconRemixUser_3Fill as iconUser,
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
@@ -376,7 +376,7 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
   
         <div class="section">
           <div class="section-header">
-            <cc-icon class="section-icon" .icon=${iconSum}></cc-icon>
+            <cc-icon class="section-icon sum-icon" .icon=${iconSum} size="lg"></cc-icon>
             <div class="section-title section-title--total">
               <div class="section-title-text">${this._getTitle('total')}</div>
               <div class="section-title-price">${i18n('cc-pricing-product-consumption.price', this._getCurrencyValue(this._simulator.getTotalPrice()))}</div>
@@ -586,6 +586,10 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
           align-self: center;
           margin-right: 1em;
           grid-column: section-icon / span 1;
+        }
+        
+        .section-icon.sum-icon {
+          --cc-icon-size: 1.25em;
         }
 
         .section-title {

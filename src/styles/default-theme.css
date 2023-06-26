@@ -29,13 +29,14 @@
   --color-grey-20: #d9d9d9;
   --color-grey-15: #e7e7e7;
   --color-grey-10: #f5f5f5;
-  /* do not use except inside cc-tile-instances*/
+  /* do not use except inside cc-header-app & cc-tile-instances*/
   --color-legacy-blue: #1ea2f1;
-  /* do not use except inside cc-tile-instances*/
+  --color-legacy-blue-icon: #2b96fd;
+  /* do not use except inside cc-header-app & cc-tile-instances*/
   --color-legacy-green: #2faa60;
   /* do not use except inside cc-tile-scalability*/
   --color-legacy-grey: #8c8c8c;
-  /* do not use except inside cc-tile-instances*/
+  /* do not use except inside cc-header-app & cc-tile-instances*/
   --color-legacy-red: #ff0032;
   --color-orange-100: #c15807;
   --color-orange-30: #fcf3b5;

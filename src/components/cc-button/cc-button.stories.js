@@ -7,9 +7,9 @@ import { allFormControlsStory } from '../../stories/all-form-controls.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
-const closeSvg = new URL('../../assets/close.svg', import.meta.url);
 const infoSvg = new URL('../../assets/info.svg', import.meta.url);
-const warningSvg = new URL('../../assets/warning.svg', import.meta.url);
+const closeSvg = new URL('../../stories/assets/close.svg', import.meta.url);
+const warningSvg = new URL('../../stories/assets/warning.svg', import.meta.url);
 
 const baseItems = [
   { innerHTML: 'Simple' },

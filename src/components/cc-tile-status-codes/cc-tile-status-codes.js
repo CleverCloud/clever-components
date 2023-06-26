@@ -5,13 +5,12 @@ import { css, html, LitElement } from 'lit';
 import { cache } from 'lit/directives/cache.js';
 import { classMap } from 'lit/directives/class-map.js';
 import status from 'statuses';
+import { iconCleverInfo as iconInfo } from '../../assets/cc-clever.icons.js';
+import { iconRemixCloseLine as iconClose } from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../lib/i18n.js';
 import { tileStyles } from '../../styles/info-tiles.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
-
-const closeSvg = new URL('../../assets/close.svg', import.meta.url).href;
-const infoSvg = new URL('../../assets/info.svg', import.meta.url).href;
 
 Chart.register(ArcElement, DoughnutController, Legend, Tooltip);
 
@@ -202,8 +201,8 @@ export class CcTileStatusCodes extends LitElement {
       <div class="tile_title tile_title--image">
         ${i18n('cc-tile-status-codes.title')}
         <cc-button
-          class="docs-toggle"
-          image=${displayDocs ? closeSvg : infoSvg}
+          class="docs-toggle ${displayDocs ? 'close' : 'info'}"
+          .icon=${displayDocs ? iconClose : iconInfo}
           hide-text
           outlined
           primary
@@ -252,6 +251,14 @@ export class CcTileStatusCodes extends LitElement {
         .docs-toggle {
           margin: 0 0 0 1em;
           font-size: 0.8em;
+        }
+
+        .docs-toggle.close {
+          --cc-icon-size: 1.5em;
+        }
+
+        .docs-toggle.info {
+          --cc-icon-size: 1.25em;
         }
 
         .tile_body {

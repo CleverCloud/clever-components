@@ -3,15 +3,18 @@ import '../cc-button/cc-button.js';
 import '../cc-input-number/cc-input-number.js';
 import '../cc-toggle/cc-toggle.js';
 import '../cc-block/cc-block.js';
+import '../cc-icon/cc-icon.js';
 import { html, render } from 'lit';
+import {
+  iconRemixAlertLine as iconWarning,
+  iconRemixInformationLine as iconInfo,
+  iconRemixSpam_2Line as iconDanger,
+  iconRemixCheckboxCircleLine as iconSuccess,
+} from '../../assets/cc-remix.icons.js';
 import { sanitize } from '../../lib/i18n-sanitize.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
-const infoSvg = new URL('../../assets/information-fill.svg', import.meta.url).href;
-const successSvg = new URL('../../assets/checkbox-circle-fill.svg', import.meta.url).href;
-const warningSvg = new URL('../../assets/alert-fill.svg', import.meta.url).href;
-const dangerSvg = new URL('../../assets/spam-2-fill.svg', import.meta.url).href;
 const consoleImage = new URL('../../stories/assets/console.png', import.meta.url).href;
 
 export default {
@@ -89,16 +92,16 @@ export const defaultStory = makeStory(conf, {
 
     const intentsButtonProp = {
       info: {
-        icon: infoSvg,
+        icon: iconInfo,
       },
       success: {
-        icon: successSvg,
+        icon: iconSuccess,
       },
       warning: {
-        icon: warningSvg,
+        icon: iconWarning,
       },
       danger: {
-        icon: dangerSvg,
+        icon: iconDanger,
       },
     };
 
@@ -172,7 +175,7 @@ export const defaultStory = makeStory(conf, {
 
     function _renderButton (intent) {
       return html`<cc-button
-            image=${intentsButtonProp[intent]?.icon}
+            .icon=${intentsButtonProp[intent]?.icon}
             outlined
             data-intent="${intent}"
             ?success="${intent === 'success'}"

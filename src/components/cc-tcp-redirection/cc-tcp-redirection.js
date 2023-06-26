@@ -1,14 +1,16 @@
 import '../cc-button/cc-button.js';
+import '../cc-icon/cc-icon.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import {
+  iconRemixLoginCircleFill as iconRedirectionOn,
+  iconRemixForbid_2Line as iconRedirectionOff,
+} from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import '../cc-loader/cc-loader.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { waitingStyles } from '../../styles/waiting.js';
-
-const noRedirectionSvg = new URL('../../assets/redirection-off.svg', import.meta.url).href;
-const redirectionSvg = new URL('../../assets/redirection-on.svg', import.meta.url).href;
 
 /**
  * @typedef {import('./cc-tcp-redirection.types.js').TcpRedirectionState} TcpRedirectionState
@@ -64,12 +66,6 @@ export class CcTcpRedirection extends LitElement {
     }
   }
 
-  _getIconUrl (redirection) {
-    return (redirection.sourcePort != null)
-      ? redirectionSvg
-      : noRedirectionSvg;
-  }
-
   _onCreate () {
     const { namespace } = this.redirection;
     dispatchCustomEvent(this, 'create', { namespace });
@@ -102,7 +98,11 @@ export class CcTcpRedirection extends LitElement {
 
         ${state === 'loaded' ? html`
           <div class="icon">
-            <img src=${this._getIconUrl(redirection)} alt="">
+            ${
+              isRedirectionDefined
+                ? html`<cc-icon .icon=${iconRedirectionOn} class="on"></cc-icon>`
+                : html`<cc-icon .icon=${iconRedirectionOff} class="off"></cc-icon>`
+            }
           </div>
         ` : ''}
 
@@ -159,12 +159,19 @@ export class CcTcpRedirection extends LitElement {
           flex: 0 0 auto;
         }
 
-        .icon img {
-          display: block;
+        .icon cc-icon {
           width: 100%;
           height: 100%;
         }
 
+        .icon cc-icon.off {
+          --cc-icon-color: #999;
+        }
+
+        .icon cc-icon.on {
+          --cc-icon-color: var(--cc-color-bg-success);
+        }
+        
         .icon cc-loader {
           --cc-loader-color: #999;
         }

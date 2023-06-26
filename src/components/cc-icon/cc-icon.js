@@ -3,7 +3,7 @@ import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 
 /**
- * @typedef {import('./cc-icon.types.js').IconModel} IconModel
+ * @typedef {import('../common.types.js').IconModel} IconModel
  * @typedef {import('./cc-icon.types.js').IconSize} IconSize
  */
 
