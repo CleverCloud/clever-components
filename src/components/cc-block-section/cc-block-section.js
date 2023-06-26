@@ -63,8 +63,6 @@ export class CcBlockSection extends LitElement {
           color: var(--cc-color-text-danger);
         }
 
-        /* TODO: We may want to adapt cc-flex-gap for this case one day */
-
         .section {
           display: flex;
           flex-wrap: wrap;
