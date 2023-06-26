@@ -1,4 +1,3 @@
-import '../cc-flex-gap/cc-flex-gap.js';
 import '../cc-block/cc-block.js';
 import '../cc-error/cc-error.js';
 import { css, html, LitElement } from 'lit';
@@ -121,7 +120,7 @@ export class CcAddonFeatures extends LitElement {
 
         ${!this.error ? html`
           <div>${i18n('cc-addon-features.details')}</div>
-          <cc-flex-gap class="feature-list">
+          <div class="feature-list">
             ${features.map((feature) => html`
               <div class="feature ${classMap({ skeleton })}">
                 ${feature.icon != null ? html`
@@ -133,7 +132,7 @@ export class CcAddonFeatures extends LitElement {
                 <div class="feature-value">${feature.value}</div>
               </div>
             `)}
-          </cc-flex-gap>
+          </div>
         ` : ''}
 
         ${this.error ? html`
@@ -154,9 +153,12 @@ export class CcAddonFeatures extends LitElement {
 
         .feature-list {
           --bdw: 2px;
-          --cc-gap: 1em;
           --color: var(--cc-color-bg-primary);
           --padding: 0.6em;
+
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1em;
         }
 
         .feature {

@@ -2,7 +2,6 @@ import './cc-toaster.js';
 import '../cc-button/cc-button.js';
 import '../cc-input-number/cc-input-number.js';
 import '../cc-toggle/cc-toggle.js';
-import '../cc-flex-gap/cc-flex-gap.js';
 import '../cc-block/cc-block.js';
 import { html, render } from 'lit';
 import { sanitize } from '../../lib/i18n-sanitize.js';
@@ -37,11 +36,18 @@ export const defaultStory = makeStory(conf, {
     .knob {
       margin-bottom: 1em;
       display: flex;
+      flex-wrap: wrap;
       gap: 1em;
     }
     
     .buttons {
       flex: 1;
+    }
+
+    .intent-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1em;
     }
     
     .console {
@@ -188,7 +194,7 @@ export const defaultStory = makeStory(conf, {
         <div class="knob">
           <cc-block class="buttons">
             <p>Click on buttons to trigger a toast</p>
-            <cc-flex-gap style="--cc-gap: 0.5em;">${intents.map(_renderButton)}</cc-flex-gap>
+            <div class="intent-controls">${intents.map(_renderButton)}</div>
           </cc-block>
           
           <cc-block class="options">

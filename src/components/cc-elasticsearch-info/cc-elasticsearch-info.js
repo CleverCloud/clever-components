@@ -1,5 +1,4 @@
 import '../cc-img/cc-img.js';
-import '../cc-flex-gap/cc-flex-gap.js';
 import '../cc-block/cc-block.js';
 import '../cc-error/cc-error.js';
 import { css, html, LitElement } from 'lit';
@@ -62,7 +61,7 @@ export class CcElasticsearchInfo extends LitElement {
         ${!this.error ? html`
           <div class="info-text">${i18n('cc-elasticsearch-info.text')}</div>
 
-          <cc-flex-gap class="link-list">
+          <div class="link-list">
             ${ccLink(ELASTICSEARCH_DOCUMENTATION, html`
               <cc-img src="${infoSvg}"></cc-img><span>${i18n('cc-elasticsearch-info.link.doc')}</span>
             `)}
@@ -84,7 +83,7 @@ export class CcElasticsearchInfo extends LitElement {
                 <span class="${classMap({ skeleton: (apmLink.href == null) })}">${i18n('cc-elasticsearch-info.link.apm')}</span>
               `)}
             ` : ''}
-          </cc-flex-gap>
+          </div>
         ` : ''}
 
         ${this.error ? html`
@@ -102,9 +101,13 @@ export class CcElasticsearchInfo extends LitElement {
       // language=CSS
       css`
         :host {
-          --cc-gap: 1em;
-
           display: block;
+        }
+
+        .link-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1em;
         }
 
         .cc-link {

@@ -1,5 +1,4 @@
 import { css, html, LitElement } from 'lit';
-import '../cc-flex-gap/cc-flex-gap.js';
 import '../cc-img/cc-img.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { i18n } from '../../lib/i18n.js';
@@ -137,12 +136,12 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
 
   _renderLinks (skeleton, invoice) {
     return html`
-      <cc-flex-gap class="links">
+      <div class="links">
         ${ccLink(invoice.downloadUrl, i18n('cc-invoice-table.open-pdf'), skeleton)}
         ${PENDING_STATUSES.includes(invoice.status) ? html`
           ${ccLink(invoice.paymentUrl, i18n('cc-invoice-table.pay'), skeleton)}
         ` : ''}
-      </cc-flex-gap>
+      </div>
     `;
   }
 
@@ -172,8 +171,10 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
         }
 
         .links {
-          --cc-gap: 1em;
-          --cc-align-items: center;
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 1em;
         }
 
         /* endregion */

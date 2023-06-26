@@ -1,6 +1,5 @@
 import '../cc-img/cc-img.js';
 import '../cc-input-text/cc-input-text.js';
-import '../cc-flex-gap/cc-flex-gap.js';
 import '../cc-error/cc-error.js';
 import '../cc-zone/cc-zone.js';
 import { css, html, LitElement } from 'lit';
@@ -79,19 +78,19 @@ export class CcHeaderAddon extends LitElement {
 
     return html`
       ${!this.error ? html`
-        <cc-flex-gap class="main">
+        <div class="main">
 
           <cc-img class="logo" src="${ifDefined(addon.provider.logoUrl)}"
             ?skeleton=${skeleton} text="${addon.provider.name}" title="${ifDefined(addon.provider.name)}"></cc-img>
           <div class="details">
             <div class="name"><span class="${classMap({ skeleton })}">${addon.name}</span></div>
-            <cc-flex-gap>
+            <div class="addon-id-inputs">
               <cc-input-text label=${i18n('cc-header-addon.id-label')} hidden-label readonly clipboard value="${ifDefined(addon.id)}" ?skeleton=${skeleton}></cc-input-text>
               <cc-input-text label=${i18n('cc-header-addon.id-label-alternative')} hidden-label readonly clipboard value="${ifDefined(addon.realId)}" ?skeleton=${skeleton}></cc-input-text>
-            </cc-flex-gap>
+            </div>
           </div>
 
-          <cc-flex-gap class="description">
+          <div class="description">
             <div class="description-item">
               <div class="description-label">${i18n('cc-header-addon.plan')}</div>
               <div class="${classMap({ skeleton })}">${addon.plan.name}</div>
@@ -106,12 +105,12 @@ export class CcHeaderAddon extends LitElement {
               <div class="description-label">${i18n('cc-header-addon.creation-date')}</div>
               <div class="${classMap({ skeleton })}" title="${ifDefined(creationDateFull)}">${creationDateShort}</div>
             </div>
-          </cc-flex-gap>
-        </cc-flex-gap>
+          </div>
+        </div>
 
-        <cc-flex-gap class="messages">
+        <div class="messages">
           <cc-zone .zone=${this.zone} mode="small-infra"></cc-zone>
-        </cc-flex-gap>
+        </div>
       ` : ''}
 
       ${this.error ? html`
@@ -136,7 +135,10 @@ export class CcHeaderAddon extends LitElement {
         }
 
         .main {
-          padding: var(--cc-gap);
+          display: flex;
+          flex-wrap: wrap;
+          padding: 1em;
+          gap: 1em;
         }
 
         .logo {
@@ -146,7 +148,7 @@ export class CcHeaderAddon extends LitElement {
         }
 
         .details {
-          flex: 1 1 0;
+          flex: 1 1 11em;
         }
 
         .name,
@@ -155,13 +157,21 @@ export class CcHeaderAddon extends LitElement {
         }
 
         .name {
-          min-width: 11em;
           font-size: 1.1em;
           font-weight: bold;
         }
 
+        .addon-id-inputs {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1em;
+        }
+
         .description {
+          display: flex;
+          flex-wrap: wrap;
           align-self: center;
+          gap: 1em;
         }
 
         .description-item {
@@ -178,16 +188,16 @@ export class CcHeaderAddon extends LitElement {
         }
 
         .messages {
-          --cc-gap: 0.57em;
-          --cc-align-items: center;
-
+          display: flex;
           box-sizing: border-box;
+          flex-wrap: wrap;
           align-items: center;
           justify-content: end;
           padding: 0.7em 1.1em;
           background-color: var(--cc-color-bg-neutral);
           box-shadow: inset 0 6px 6px -6px rgb(0 0 0 / 40%);
           font-size: 0.9em;
+          gap: 0.57em;
         }
 
         cc-zone {

@@ -1,5 +1,4 @@
 import '../cc-button/cc-button.js';
-import '../cc-flex-gap/cc-flex-gap.js';
 import '../cc-input-text/cc-input-text.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
@@ -78,13 +77,13 @@ export class CcEnvVarInput extends LitElement {
   render () {
     // the no-whitespace comment trick helps users who triple click on the text to be sure to copy the text without any whitespaces
     return html`
-      <cc-flex-gap>
+      <div class="wrapper">
         
         <span class="name ${classMap({ deleted: this.deleted })}"><!-- no-whitespace
           --><span class=${classMap({ skeleton: this.skeleton })}>${this.name}</span><!-- no-whitespace
         --></span>
 
-        <cc-flex-gap class="input-btn">
+        <div class="input-btn">
 
           <cc-input-text
             label="${i18n('cc-env-var-input.value-label', { variableName: this.name })}"
@@ -113,8 +112,8 @@ export class CcEnvVarInput extends LitElement {
             </cc-button>
           ` : ''}
 
-        </cc-flex-gap>
-      </cc-flex-gap>
+        </div>
+      </div>
     `;
   }
 
@@ -124,9 +123,13 @@ export class CcEnvVarInput extends LitElement {
       // language=CSS
       css`
         :host {
-          --cc-gap: 0.5em;
-
           display: block;
+        }
+
+        .wrapper {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5em;
         }
 
         .name {
@@ -149,7 +152,10 @@ export class CcEnvVarInput extends LitElement {
         }
 
         .input-btn {
+          display: flex;
           flex: 2 1 27em;
+          flex-wrap: wrap;
+          gap: 0.5em;
         }
 
         .value {
