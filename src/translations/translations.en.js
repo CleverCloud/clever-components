@@ -45,14 +45,6 @@ function formatFlavor (f) {
 
 export const translations = {
   LANGUAGE: 'English',
-  //#region cc-action-dispatcher
-  'cc-action-dispatcher.context': `This button allows you to send a ping to all Clever Cloud VMs.`,
-  'cc-action-dispatcher.error-message': `Something went wrong while sending actions to the VMs.`,
-  'cc-action-dispatcher.number-of-pings': `Number of VMs`,
-  'cc-action-dispatcher.number-of-pongs': `Number of responsive VMs`,
-  'cc-action-dispatcher.ping-button-content': ` Ping all VMs`,
-  'cc-action-dispatcher.unresponsive-instances': `Unresponsive VMs`,
-  //#endregion
   //#region cc-addon-admin
   'cc-addon-admin.admin': `Add-on administration`,
   'cc-addon-admin.danger-zone': `Danger zone`,
@@ -795,13 +787,6 @@ export const translations = {
   'cc-tcp-redirection-form.empty': `You do not have access to any namespaces.`,
   'cc-tcp-redirection-form.error': `Something went wrong while loading TCP redirections.`,
   'cc-tcp-redirection-form.title': `TCP Redirections`,
-  //#endregion
-  //#region cc-tile-consumption
-  'cc-tile-consumption.amount': ({ amount }) => formatCurrency(lang, amount),
-  'cc-tile-consumption.error': `Something went wrong while loading consumption info.`,
-  'cc-tile-consumption.last-30-days': `Last 30 days`,
-  'cc-tile-consumption.title': `Credits consumption`,
-  'cc-tile-consumption.yesterday': `Yesterday`,
   //#endregion
   //#region cc-tile-deployments
   'cc-tile-deployments.empty': `No deployments yet.`,

@@ -58,14 +58,6 @@ function formatFlavor (f) {
 
 export const translations = {
   LANGUAGE: 'Français',
-  //#region cc-action-dispatcher
-  'cc-action-dispatcher.context': `Ce bouton permet d'envoyer un ping à toutes les VMs sur Clever Cloud.`,
-  'cc-action-dispatcher.error-message': `Une erreur est survenue pendant l'envoi d'actions aux VMs.`,
-  'cc-action-dispatcher.number-of-pings': `Nombre de VMs`,
-  'cc-action-dispatcher.number-of-pongs': `Nombre de VMs répondantes`,
-  'cc-action-dispatcher.ping-button-content': `Envoyer le ping`,
-  'cc-action-dispatcher.unresponsive-instances': `VMs muettes`,
-  //#endregion
   //#region cc-addon-admin
   'cc-addon-admin.admin': `Administration de l'add-on`,
   'cc-addon-admin.danger-zone': `Zone de danger`,
@@ -808,13 +800,6 @@ export const translations = {
   'cc-tcp-redirection-form.empty': `Vous n'avez accès à aucun espace de nommage.`,
   'cc-tcp-redirection-form.error': `Une erreur est survenue pendant le chargement des redirections TCP.`,
   'cc-tcp-redirection-form.title': `Redirections TCP`,
-  //#endregion
-  //#region cc-tile-consumption
-  'cc-tile-consumption.amount': ({ amount }) => formatCurrency(lang, amount),
-  'cc-tile-consumption.error': `Une erreur est survenue pendant le chargement de la consommation.`,
-  'cc-tile-consumption.last-30-days': `30 derniers jours`,
-  'cc-tile-consumption.title': `Consommation de crédits`,
-  'cc-tile-consumption.yesterday': `Hier`,
   //#endregion
   //#region cc-tile-deployments
   'cc-tile-deployments.empty': `Pas encore de déploiement.`,
