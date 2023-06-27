@@ -16,15 +16,8 @@ title: '💡 Smart (runtime)'
 
 | Name        | Type        | Details                                                                                          | Default |
 |-------------|-------------|--------------------------------------------------------------------------------------------------|---------|
-| `apiConfig` | `ApiConfig` | Object with API configuration (only `API_HOST` is required for this component)                   |         |
 | `productId` | `string`    | Variant slug from [`/v2/products/instances`](https://api.clever-cloud.com/v2/products/instances) |         |
 | `zoneId`    | `string`    | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones)                 | `par`   |
-
-```ts
-interface ApiConfig {
-  API_HOST: string,
-}
-```
 
 ## 🌐 API endpoints
 
@@ -41,9 +34,6 @@ Simple example based on default zone.
 
 ```html
 <cc-smart-container context='{
-    "apiConfig": {
-      API_HOST: "",
-    },
     "productId": "node",
 }'>
   <cc-pricing-product mode="runtime"></cc-pricing-product>
@@ -54,9 +44,6 @@ Simple example based on default zone.
 
 ```html
 <cc-smart-container context='{
-    "apiConfig": {
-      API_HOST: "",
-    },
     "productId": "jenkins-runner",
 }'>
   <cc-pricing-product mode="runtime" action="none" temporalities='[{"type":"minute","digits":5}]'></cc-pricing-product>
@@ -67,9 +54,6 @@ Simple example based on default zone.
 
 ```html
 <cc-smart-container context='{
-    "apiConfig": {
-      API_HOST: "",
-    },
     "productId": "heptapod-runner",
 }'>
   <cc-pricing-product mode="runtime" action="none" temporalities='[{"type":"minute","digits":5}]'></cc-pricing-product>
@@ -84,9 +68,6 @@ NOTE: Prices are the same on all zones right now.
 
 ```html
 <cc-smart-container context='{
-    "apiConfig": {
-      API_HOST: "",
-    },
     "productId": "node",
     "zoneId": "rbx",
 }'>

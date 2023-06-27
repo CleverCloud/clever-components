@@ -10,18 +10,17 @@ import { sendToApi } from '../../lib/send-to-api.js';
 defineSmartComponent({
   selector: 'cc-pricing-product[mode="addon"]',
   params: {
-    apiConfig: { type: Object },
     addonFeatures: { type: Array },
     productId: { type: String },
     zoneId: { type: String },
   },
   onContextUpdate ({ context, updateComponent, signal }) {
-    const { apiConfig, productId, zoneId, addonFeatures } = context;
+    const { productId, zoneId, addonFeatures } = context;
 
     // Reset the component before loading
     updateComponent('state', { state: 'loading' });
 
-    fetchAddonProduct({ apiConfig, zoneId, productId, addonFeatures, signal })
+    fetchAddonProduct({ zoneId, productId, addonFeatures, signal })
       .then((productDetails) => {
         updateComponent('product', {
           state: 'loaded',
@@ -37,16 +36,16 @@ defineSmartComponent({
   },
 });
 
-function fetchAddonProduct ({ apiConfig, productId, zoneId, addonFeatures, signal }) {
+function fetchAddonProduct ({ productId, zoneId, addonFeatures, signal }) {
   return Promise.all([
-    fetchAddonProvider({ apiConfig, productId, signal }),
-    fetchPriceSystem({ apiConfig, zoneId, signal }),
+    fetchAddonProvider({ productId, signal }),
+    fetchPriceSystem({ zoneId, signal }),
   ]).then(([addonProvider, priceSystem]) => formatAddonProduct(addonProvider, priceSystem, addonFeatures));
 }
 
-function fetchAddonProvider ({ apiConfig, signal, productId }) {
+function fetchAddonProvider ({ signal, productId }) {
   return getAllAddonProviders()
-    .then(sendToApi({ apiConfig, cacheDelay: ONE_DAY, signal }))
+    .then(sendToApi({ cacheDelay: ONE_DAY, signal }))
     .then((allAddonProviders) => {
       const addonProvider = allAddonProviders.find((ap) => ap.id === productId);
       if (addonProvider == null) {
