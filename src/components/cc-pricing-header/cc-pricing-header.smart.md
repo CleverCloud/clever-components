@@ -17,14 +17,7 @@ title: '💡 Smart'
 
 | Name        | Type        | Details                                                                          | Default |
 |-------------|-------------|----------------------------------------------------------------------------------|---------|
-| `apiConfig` | `ApiConfig` | Object with API configuration (only `API_HOST` is required for this component)   |         |
 | `zoneId`    | `string`    | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones) | `par`   |
-
-```ts
-interface ApiConfig {
-    API_HOST: string,
-}
-```
 
 ## 🌐 API endpoints
 
@@ -36,9 +29,6 @@ interface ApiConfig {
 
 ```html
 <cc-smart-container context='{
-    "apiConfig": {
-      API_HOST: "",
-    },
     "zoneId": "mtl",
 }'>
   <cc-pricing-header></cc-pricing-header>
