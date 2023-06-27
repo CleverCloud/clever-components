@@ -266,6 +266,18 @@ title: Changelog
 * `<cc-toggle>`: add `inline` prop to place the label on the left of the group of radio input elements. Add new `inline` story to show this behavior.
 * `<cc-invoice-list>`: inline year filters (`<cc-toggle>` for desktop and `<cc-select>` for mobile).
 
+## 7.13.1 (2023-06-23)
+
+**⚠️ Caution:**
+
+The goal of this release is to fix issues with the version 7.12 of the `pricing` components for our Website (see [#791](https://github.com/CleverCloud/clever-components/issues/791) [#787](https://github.com/CleverCloud/clever-components/issues/787) [#781](https://github.com/CleverCloud/clever-components/issues/781)).
+Changes described below are specific to this version.
+They are not part of versions between `8.0.0` and `11.0.0`.
+
+If you need to use the `pricing` components, please update to a version >= `11.0.0` of our components that contains a rework of these components.
+
+* `<cc-pricing-header>`: make sure the initial value of the zones dropdown is set after loading the zones.
+
 ## 7.13.0 (2023-06-23)
 
 **⚠️ Caution:**
