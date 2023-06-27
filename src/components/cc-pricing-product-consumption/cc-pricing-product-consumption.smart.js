@@ -7,17 +7,16 @@ import { formatAddonCellar, formatAddonFsbucket, formatAddonHeptapod, formatAddo
 defineSmartComponent({
   selector: 'cc-pricing-product-consumption',
   params: {
-    apiConfig: { type: Object },
     productId: { type: String },
     zoneId: { type: String },
   },
   onContextUpdate ({ updateComponent, context, signal }) {
-    const { apiConfig, productId, zoneId } = context;
+    const { productId, zoneId } = context;
 
     // Reset the component before loading
     updateComponent('product', { state: 'loading' });
 
-    fetchProduct({ apiConfig, productId, zoneId, signal })
+    fetchProduct({ productId, zoneId, signal })
       .then((product) => {
         updateComponent('product', {
           name: product.name,
@@ -32,8 +31,8 @@ defineSmartComponent({
   },
 });
 
-function fetchProduct ({ apiConfig, productId, zoneId, signal }) {
-  return fetchPriceSystem({ apiConfig, zoneId, signal })
+function fetchProduct ({ productId, zoneId, signal }) {
+  return fetchPriceSystem({ zoneId, signal })
     .then((priceSystem) => {
       if (productId === 'cellar') {
         return {
