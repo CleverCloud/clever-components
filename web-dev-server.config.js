@@ -109,7 +109,11 @@ const injectAuthForSmartComponentsPlugin = {
 
 export default {
   port: 6006,
-  nodeResolve: true,
+  // There is a PR to include this in the default config of Web Dev Server (https://github.com/modernweb-dev/web/pull/2109)
+  // Once it's merged, we may revert this part of the config to `nodeResolve: true`
+  nodeResolve: {
+    exportConditions: ['development'],
+  },
   // watch: true,
   mimeTypes: {
     '**/*.md': 'js',
