@@ -8,12 +8,11 @@ import { sendToApi } from '../../lib/send-to-api.js';
 defineSmartComponent({
   selector: 'cc-pricing-header',
   params: {
-    apiConfig: { type: Object },
     zoneId: { type: String },
   },
   onContextUpdate ({ container, component, context, onEvent, updateComponent, signal }) {
 
-    const { apiConfig, zoneId } = context;
+    const { zoneId } = context;
 
     /**
      * This `cc-smart-container` is placed around the whole `cc-pricing-page` component.
@@ -37,7 +36,7 @@ defineSmartComponent({
      * we update `cc-pricing-header` accordingly.
      */
     if (component.zones.state === 'loading') {
-      fetchAllZones({ apiConfig, signal })
+      fetchAllZones({ signal })
         .then((zones) => {
           updateComponent('zones', {
             state: 'loaded',

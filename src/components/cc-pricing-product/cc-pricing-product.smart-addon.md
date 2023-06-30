@@ -16,17 +16,9 @@ title: '💡 Smart (add-on)'
 
 | Name            | Type        | Details                                                                                          | Default |
 |-----------------|-------------|--------------------------------------------------------------------------------------------------|---------|
-| `apiConfig`     | `ApiConfig` | Object with API configuration (only `API_HOST` is required for this component)                   |         |
 | `productId`     | `string`    | id from [`/v2/products/addonproviders`](https://api.clever-cloud.com/v2/products/addonproviders) |         |
 | `zoneId`        | `string`    | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones)                 | `par`   |
 | `addonFeatures` | `string[]`  | List of feature codes as describe in the component API.                                          |         |
-
-
-```ts
-interface ApiConfig {
-  API_HOST: string,
-}
-```
 
 * When `addonFeatures` is not specified, all product features are listed in the order of the API.
 * Setting `addonFeatures` allows you to filter the features you want to display.
@@ -47,9 +39,6 @@ Simple example based on default zone.
 
 ```html
 <cc-smart-container context='{
-    "apiConfig": {
-      API_HOST: "",
-    },
     "productId": "postgresql-addon",
 }'>
   <cc-pricing-product mode="addon"></cc-pricing-product>
@@ -64,9 +53,6 @@ NOTE: Prices are the same on all zones right now.
 
 ```html
 <cc-smart-container context='{
-    "apiConfig": {
-      API_HOST: "",
-    },
     "productId": "postgresql-addon",
     "zoneId": "rbx",
 }'>
@@ -81,9 +67,6 @@ It's also a good way to filter features.
 
 ```html
 <cc-smart-container context='{
-    "apiConfig": {
-      API_HOST: "",
-    },
     "productId": "postgresql-addon",
     "addonFeatures": ["cpu", "memory", "disk-size"],
 }'>

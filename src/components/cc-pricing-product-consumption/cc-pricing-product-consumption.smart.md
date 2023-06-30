@@ -17,15 +17,8 @@ title: '💡 Smart'
 
 | Name        | Type        | Details                                                                          | Default |
 |-------------|-------------|----------------------------------------------------------------------------------|---------|
-| `apiConfig` | `ApiConfig` | Object with API configuration (only `API_HOST` is required for this component)   |         |
 | `productId` | `string`    | `cellar`, `fsbucket`, `heptapod`, or `pulsar`                                    |         |
 | `zoneId`    | `string`    | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones) | `par`   |
-
-```ts
-interface ApiConfig {
-    API_HOST: string,
-}
-```
 
 ## 🌐 API endpoints
 
@@ -41,9 +34,6 @@ Simple example for Cellar based on default zone.
 
 ```html
 <cc-smart-container context='{
-    "apiConfig": {
-      API_HOST: "",
-    },
     "productId": "cellar" }'>
   <cc-pricing-product-consumption></cc-pricing-product-consumption>
 </cc-smart-container>
@@ -55,9 +45,6 @@ Simple example for FS Bucket based on default zone.
 
 ```html
 <cc-smart-container context='{
-    "apiConfig": {
-      API_HOST: "",
-    },
     "productId": "fsbucket",
 }'>
   <cc-pricing-product-consumption></cc-pricing-product-consumption>
@@ -70,9 +57,6 @@ Simple example for FS Bucket based on default zone.
 
 ```html
 <cc-smart-container context='{
-    "apiConfig": {
-      API_HOST: "",
-    },
     "productId": "pulsar",
 }'>
   <cc-pricing-product-consumption></cc-pricing-product-consumption>
@@ -85,9 +69,6 @@ Simple example for Heptapod based on default zone.
 
 ```html
 <cc-smart-container context='{
-    "apiConfig": {
-      API_HOST: "",
-    },
     "productId": "heptapod",
 }'>
   <cc-pricing-product-consumption></cc-pricing-product-consumption>
@@ -102,9 +83,6 @@ NOTE: Prices are the same on all zones right now.
 
 ```html
 <cc-smart-container context='{
-    "apiConfig": {
-      API_HOST: "",
-    },
     "productId": "cellar",
     "zoneId": "rbx",
 }'>
