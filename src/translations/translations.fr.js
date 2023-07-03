@@ -64,7 +64,6 @@ export const translations = {
   'cc-addon-admin.delete': `Supprimer l'add-on`,
   'cc-addon-admin.delete-description': () => sanitize`La machine virtuelle sera arrêtée dans 24 heures.<br>Les backups seront gardés suivant la politique de rétention.<br>Supprimer cet add-on le rendra directement indisponible.`,
   'cc-addon-admin.error-loading': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
-  'cc-addon-admin.error-saving': `Une erreur est survenue pendant la sauvegarde des modifications`,
   'cc-addon-admin.heading.name': `Nom`,
   'cc-addon-admin.heading.tags': `Tags`,
   'cc-addon-admin.input.name': `Nom de l'add-on`,
@@ -332,9 +331,6 @@ export const translations = {
   'cc-env-var-linked-services.heading.app': ({ name }) => `Application : ${name}`,
   'cc-env-var-linked-services.loading.addon': ({ appName }) => sanitize`Chargement des variables exposées par les add-ons liés à <strong>${appName}</strong>...`,
   'cc-env-var-linked-services.loading.app': ({ appName }) => sanitize`Chargement de la configuration publiée par les applications liées à <strong>${appName}</strong>...`,
-  //#endregion
-  //#region cc-error
-  'cc-error.ok': `OK`,
   //#endregion
   //#region cc-grafana-info
   'cc-grafana-info.disable-description': `Désactiver Grafana supprimera et mettra fin aux accès à l'organisation du Grafana. Vous pourrez toujours recréer une nouvelle organisation Grafana.`,
