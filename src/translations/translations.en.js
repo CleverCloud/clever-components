@@ -319,9 +319,6 @@ export const translations = {
   'cc-env-var-linked-services.loading.addon': ({ appName }) => sanitize`Loading variables exposed by add-ons linked to <strong>${appName}</strong>...`,
   'cc-env-var-linked-services.loading.app': ({ appName }) => sanitize`Loading configuration exposed by applications linked to <strong>${appName}</strong>...`,
   //#endregion
-  //#region cc-error
-  'cc-error.ok': `OK`,
-  //#endregion
   //#region cc-grafana-info
   'cc-grafana-info.disable-description': `Disabling Grafana will delete and end all accesses to this Grafana organisation. You will still be able to create another one.`,
   'cc-grafana-info.disable-title': `Disable Grafana`,
