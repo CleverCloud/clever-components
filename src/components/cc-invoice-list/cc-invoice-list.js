@@ -4,7 +4,7 @@ import '../cc-select/cc-select.js';
 import '../cc-toggle/cc-toggle.js';
 import '../cc-block/cc-block.js';
 import { i18n } from '../../lib/i18n.js';
-import '../cc-error/cc-error.js';
+import '../cc-notice/cc-notice.js';
 import '../cc-block-section/cc-block-section.js';
 import { sortBy, unique } from '../../lib/utils.js';
 import { withResizeObserver } from '../../mixins/with-resize-observer/with-resize-observer.js';
@@ -140,7 +140,7 @@ export class CcInvoiceList extends withResizeObserver(LitElement) {
         ` : ''}
 
         ${this.error ? html`
-          <cc-error>${i18n('cc-invoice-list.error')}</cc-error>
+          <cc-notice intent="warning" message="${i18n('cc-invoice-list.error')}"></cc-notice>
         ` : ''}
       </cc-block>
     `;
