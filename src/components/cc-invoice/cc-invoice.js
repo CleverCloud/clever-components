@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import '../cc-block/cc-block.js';
-import '../cc-error/cc-error.js';
+import '../cc-notice/cc-notice.js';
 import '../cc-html-frame/cc-html-frame.js';
 import '../cc-icon/cc-icon.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -73,7 +73,7 @@ export class CcInvoice extends LitElement {
           </cc-html-frame>
         ` : ''}
         ${this.error ? html`
-          <cc-error>${i18n('cc-invoice.error')}</cc-error>
+          <cc-notice intent="warning" message="${i18n('cc-invoice.error')}"></cc-notice>
         ` : ''}
       </cc-block>
     `;

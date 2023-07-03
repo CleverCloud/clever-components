@@ -1,5 +1,5 @@
 import '../cc-doc-card/cc-doc-card.js';
-import '../cc-error/cc-error.js';
+import '../cc-notice/cc-notice.js';
 import { css, html, LitElement } from 'lit';
 import { i18n } from '../../lib/i18n.js';
 
@@ -40,7 +40,7 @@ export class CcDocList extends LitElement {
     return html`
       <div class="doc-wrapper">
         ${this.error ? html`
-            <cc-error>${i18n('cc-doc-list.error')}</cc-error>
+            <cc-notice intent="warning" message="${i18n('cc-doc-list.error')}"></cc-notice>
         ` : ''}
         ${skeleton && !this.error ? html`
           ${new Array(DOC_SKELETON_NUMBER).fill(html`
@@ -74,15 +74,6 @@ export class CcDocList extends LitElement {
           gap: 1em;
           grid-template-columns: repeat(auto-fit, minmax(20em, 1fr));
         }
-
-        cc-error {
-          padding: 1em;
-          border: 1px solid var(--cc-color-border-neutral, #aaa);
-          background-color: var(--cc-color-bg-default, #fff);
-          border-radius: var(--cc-border-radius-default, 0.25em);
-          text-align: center;
-        }
-
       `,
     ];
   }

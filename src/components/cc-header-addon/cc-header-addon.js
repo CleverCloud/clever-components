@@ -1,6 +1,6 @@
 import '../cc-img/cc-img.js';
 import '../cc-input-text/cc-input-text.js';
-import '../cc-error/cc-error.js';
+import '../cc-notice/cc-notice.js';
 import '../cc-zone/cc-zone.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
@@ -39,7 +39,7 @@ export class CcHeaderAddon extends LitElement {
   static get properties () {
     return {
       addon: { type: Object },
-      error: { type: Boolean },
+      error: { type: Boolean, reflect: true },
       noVersion: { type: Boolean, attribute: 'no-version' },
       version: { type: String },
       zone: { type: Object },
@@ -114,7 +114,7 @@ export class CcHeaderAddon extends LitElement {
       ` : ''}
 
       ${this.error ? html`
-        <cc-error></img>${i18n('cc-header-addon.error')}</cc-error>
+        <cc-notice intent="warning" message="${i18n('cc-header-addon.error')}"></cc-notice>
       ` : ''}
     `;
   }
@@ -132,6 +132,10 @@ export class CcHeaderAddon extends LitElement {
           border: 1px solid var(--cc-color-border-neutral, #aaa);
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-default, 0.25em);
+        }
+        
+        :host([error]) {
+          border: none;
         }
 
         .main {
@@ -180,11 +184,6 @@ export class CcHeaderAddon extends LitElement {
 
         .description-label {
           font-weight: bold;
-        }
-
-        cc-error {
-          padding: var(--cc-gap);
-          text-align: center;
         }
 
         .messages {

@@ -1,6 +1,6 @@
 import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
-import '../cc-error/cc-error.js';
+import '../cc-notice/cc-notice.js';
 import { validateName } from '@clevercloud/client/esm/utils/env-vars.js';
 import { css, html, LitElement } from 'lit';
 import { dispatchCustomEvent } from '../../lib/events.js';
@@ -125,17 +125,33 @@ export class CcEnvVarCreate extends LitElement {
       </div>
       
       ${(isNameInvalidStrict && this.mode === 'strict' && this._variableName !== '') ? html`
-        <cc-error>${i18n(`cc-env-var-create.errors.invalid-name`, { name: this._variableName })}</cc-error>
+        <cc-notice intent="warning">
+          <div slot="message">
+            ${i18n(`cc-env-var-create.errors.invalid-name`, { name: this._variableName })}
+          </div>
+        </cc-notice>
       ` : ''}
       ${(isNameInvalidStrict && isNameInvalidSimple && this.mode !== 'strict' && this._variableName !== '') ? html`
-        <cc-error>${i18n(`cc-env-var-create.errors.invalid-name`, { name: this._variableName })}</cc-error>
+        <cc-notice intent="warning">
+          <div slot="message">
+            ${i18n(`cc-env-var-create.errors.invalid-name`, { name: this._variableName })}
+          </div>
+        </cc-notice>
       ` : ''}
       ${(isNameInvalidStrict && !isNameInvalidSimple && this.mode !== 'strict' && this._variableName !== '') ? html`
-        <cc-error notice>${i18n(`cc-env-var-create.info.java-prop`, { name: this._variableName })}</cc-error>
+        <cc-notice intent="info">
+          <div slot="message">
+            ${i18n(`cc-env-var-create.info.java-prop`, { name: this._variableName })}
+          </div>
+        </cc-notice>
       ` : ''}
 
       ${isNameAlreadyDefined ? html`
-        <cc-error>${i18n(`cc-env-var-create.errors.already-defined-name`, { name: this._variableName })}</cc-error>
+        <cc-notice intent="warning">
+          <div slot="message">
+            ${i18n(`cc-env-var-create.errors.already-defined-name`, { name: this._variableName })}
+          </div>
+        </cc-notice>
       ` : ''}
 
     `;
@@ -184,13 +200,13 @@ export class CcEnvVarCreate extends LitElement {
           white-space: nowrap;
         }
 
-        cc-error {
-          margin: 0.5em 0;
+        cc-notice {
+          margin-top: 1em;
         }
 
         /* i18n error message may contain <code> tags */
 
-        cc-error code {
+        cc-notice code {
           padding: 0.15em 0.3em;
           background-color: var(--cc-color-bg-neutral, #eee);
           border-radius: var(--cc-border-radius-default, 0.25em);

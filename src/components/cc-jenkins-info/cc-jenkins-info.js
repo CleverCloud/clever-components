@@ -2,7 +2,7 @@ import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
-import '../cc-error/cc-error.js';
+import '../cc-notice/cc-notice.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
@@ -53,10 +53,13 @@ export class CcJenkinsInfo extends LitElement {
     const versions = this.versions ?? {};
     const hasNewVersion = versions.current !== versions.available;
 
+    if (this.error) {
+      return html`<cc-notice intent="warning" message="${i18n('cc-jenkins-info.error')}"></cc-notice>`;
+    }
+
     return html`
 
       <cc-block ribbon=${i18n('cc-jenkins-info.info')} no-head>
-        ${!this.error ? html`
           <div class="info-text">${i18n('cc-jenkins-info.text')}</div>
 
           <cc-block-section>
@@ -91,12 +94,6 @@ export class CcJenkinsInfo extends LitElement {
               `)}
             </div>
           </cc-block-section>
-        ` : ''}
-
-        ${this.error ? html`
-          <cc-error>${i18n('cc-jenkins-info.error')}</cc-error>
-        ` : ''}
-
       </cc-block>
     `;
   }
@@ -135,10 +132,6 @@ export class CcJenkinsInfo extends LitElement {
 
         .skeleton {
           background-color: #bbb;
-        }
-
-        cc-error {
-          text-align: center;
         }
       `,
     ];

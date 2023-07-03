@@ -3,7 +3,7 @@ import '../cc-img/cc-img.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
-import '../cc-error/cc-error.js';
+import '../cc-notice/cc-notice.js';
 import { css, html, LitElement } from 'lit';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
@@ -124,10 +124,7 @@ export class CcGrafanaInfo extends LitElement {
         ${this.error === 'loading' ? html`
           <cc-block-section>
             <div slot="title">${i18n('cc-grafana-info.loading-title')}</div>
-            <div slot="info"></div>
-            <div>
-              <cc-error>${i18n('cc-grafana-info.error-loading')}</cc-error>
-            </div>
+            <cc-notice intent="warning" message="${i18n('cc-grafana-info.error-loading')}"></cc-notice>
           </cc-block-section>
         ` : ''}
 
@@ -161,7 +158,7 @@ export class CcGrafanaInfo extends LitElement {
               <p>${i18n('cc-grafana-info.grafana-link-description')}</p>
             </div>
             ${this.error === 'link-grafana' || this.link == null ? html`
-              <cc-error>${i18n('cc-grafana-info.error-link-grafana')}</cc-error>
+              <cc-notice intent="warning" message="${i18n('cc-grafana-info.error-link-grafana')}"></cc-notice>
             ` : html`
               <div>
                 ${ccLink(this.link, html`
@@ -252,10 +249,6 @@ export class CcGrafanaInfo extends LitElement {
         br {
           display: block;
           margin: 0.5em 0;
-        }
-
-        cc-error.warning {
-          margin-top: 1em;
         }
       `,
     ];

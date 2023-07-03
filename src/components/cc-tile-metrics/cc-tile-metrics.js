@@ -10,6 +10,7 @@ import {
 import {
   iconRemixCpuLine as iconCpu,
   iconRemixCloseLine as iconClose,
+  iconRemixAlertFill as iconAlert,
 } from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../lib/i18n.js';
 import { withResizeObserver } from '../../mixins/with-resize-observer/with-resize-observer.js';
@@ -18,7 +19,6 @@ import { tileStyles } from '../../styles/info-tiles.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import '../cc-button/cc-button.js';
-import '../cc-error/cc-error.js';
 import '../cc-icon/cc-icon.js';
 
 Chart.register(BarController, BarElement, Tooltip, CategoryScale, LinearScale, Title);
@@ -304,7 +304,12 @@ export class CcTileMetrics extends withResizeObserver(LitElement) {
 
       <div class="tile_message ${classMap({ 'tile--hidden': panel !== 'empty' })}">${i18n('cc-tile-metrics.empty')}</div>
 
-      <cc-error class="tile_message ${classMap({ 'tile--hidden': panel !== 'error' })}">${i18n('cc-tile-metrics.error')}</cc-error>
+      <div class="tile_message ${classMap({ 'tile--hidden': panel !== 'error' })}">
+        <div class="error-message">
+          <cc-icon .icon="${iconAlert}" accessible-name="${i18n('cc-tile-metrics.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
+          <p>${i18n('cc-tile-metrics.error')}</p>
+        </div>
+      </div>
 
       <div class="tile_docs ${classMap({ 'tile--hidden': panel !== 'docs' })}">
         ${i18n('cc-tile-metrics.docs.msg')}
@@ -546,6 +551,28 @@ export class CcTileMetrics extends withResizeObserver(LitElement) {
           grid-area: icon-mem;
 
           --cc-icon-color: var(--cc-color-text-weak);
+        }
+        
+        /* endregion */
+        
+        /* region error */
+
+        .error-message {
+          display: grid;
+          gap: 0.75em;
+          grid-template-columns: min-content 1fr;
+          text-align: left;
+        }
+
+        .error-message p {
+          margin: 0;
+        }
+
+        .icon-warning {
+          align-self: center;
+          color: var(--cc-color-text-warning);
+
+          --cc-icon-size: 1.25em;
         }
         
         /* endregion */

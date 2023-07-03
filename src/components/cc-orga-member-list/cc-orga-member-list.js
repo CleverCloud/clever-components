@@ -9,11 +9,11 @@ import { i18n } from '../../lib/i18n.js';
 import '../cc-block/cc-block.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-orga-member-card/cc-orga-member-card.js';
+import '../cc-notice/cc-notice.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-button/cc-button.js';
 import '../cc-badge/cc-badge.js';
-import '../cc-error/cc-error.js';
 import '../cc-select/cc-select.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 
@@ -365,9 +365,8 @@ export class CcOrgaMemberList extends LitElement {
   
           ${this.members.state === 'loaded' ? this._renderMemberList(this.members.value, this.members.identityFilter, this.members.mfaDisabledOnlyFilter) : ''}
   
-          <!-- TODO replace <cc-error> by <cc-notice> when ready -->
           ${this.members.state === 'error' ? html`
-            <cc-error>${i18n('cc-orga-member-list.error')}</cc-error>
+            <cc-notice intent="warning" message="${i18n('cc-orga-member-list.error')}"></cc-notice>
           ` : ''}
         </cc-block-section>
         
@@ -499,11 +498,14 @@ export class CcOrgaMemberList extends LitElement {
         </div>
         <!-- a11y: we need the live region to be present within the DOM from the start and insert content dynamically inside it. -->
         <div class="wrapper-leave-error" aria-live="polite" aria-atomic="true">
-          <!-- TODO replace the <p> with a <cc-notice> when it's ready -->
           ${this.members.dangerZoneState === 'error' ? html`
-            <div class="leave-error">
-                <p><strong>${i18n('cc-orga-member-list.leave.error-last-admin.heading')}</strong></p>
-                <p>${i18n('cc-orga-member-list.leave.error-last-admin.text')}</p>
+            <div>
+                <cc-notice
+                  intent="danger"
+                  heading="${i18n('cc-orga-member-list.leave.error-last-admin.heading')}"
+                  message="${i18n('cc-orga-member-list.leave.error-last-admin.text')}"
+                  no-icon
+                ></cc-notice>
             </div>
           ` : ''}
         </div>
@@ -629,20 +631,6 @@ export class CcOrgaMemberList extends LitElement {
         .wrapper-leave-error {
           display: flex;
           justify-content: end;
-        }
-        
-        .leave-error {
-          display: flex;
-          flex-direction: column;
-          padding: 0.5em 1em;
-          border: 1px solid var(--cc-color-border-danger-weak);
-          background-color: var(--cc-color-bg-danger-weaker);
-          border-radius: 0.4em;
-          gap: 0.5em;
-        }
-        
-        .wrapper-leave-error p {
-          margin: 0;
         }
         /* endregion */
       `,

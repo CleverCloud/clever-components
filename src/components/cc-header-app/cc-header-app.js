@@ -1,5 +1,5 @@
 import '../cc-button/cc-button.js';
-import '../cc-error/cc-error.js';
+import '../cc-notice/cc-notice.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-zone/cc-zone.js';
 import { css, html, LitElement } from 'lit';
@@ -197,7 +197,7 @@ export class CcHeaderApp extends LitElement {
 
     // Quick short circuit for errors
     if (this.error) {
-      return html`<cc-error>${i18n('cc-header-app.error')}</cc-error>`;
+      return html`<cc-notice intent="warning" message="${i18n('cc-header-app.error')}"></cc-notice>`;
     }
 
     const skeleton = (this.app == null);
@@ -328,10 +328,9 @@ export class CcHeaderApp extends LitElement {
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-default, 0.25em);
         }
-
-        cc-error {
-          padding: 1em;
-          text-align: center;
+        
+        :host([error]) {
+          border: none;
         }
 
         .main {

@@ -1,6 +1,6 @@
 import '../cc-input-text/cc-input-text.js';
 import '../cc-block/cc-block.js';
-import '../cc-error/cc-error.js';
+import '../cc-notice/cc-notice.js';
 import { css, html, LitElement } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { i18n } from '../../lib/i18n.js';
@@ -111,7 +111,7 @@ export class CcAddonCredentials extends LitElement {
         ` : ''}
 
         ${this.error ? html`
-          <cc-error>${i18n('cc-addon-credentials.loading-error')}</cc-error>
+          <cc-notice intent="warning" message="${i18n('cc-addon-credentials.loading-error')}"></cc-notice>
         ` : ''}
       </cc-block>
     `;

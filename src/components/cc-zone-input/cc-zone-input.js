@@ -1,5 +1,6 @@
 import '../cc-zone/cc-zone.js';
 import '../cc-map/cc-map.js';
+import '../cc-notice/cc-notice.js';
 import '../cc-map-marker-server/cc-map-marker-server.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
@@ -194,7 +195,7 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
       </cc-map>
       <div class="zone-list-wrapper">
         ${this.error ? html`
-          <cc-error>${i18n('cc-zone-input.error')}</cc-error>
+          <cc-notice intent="warning" message="${i18n('cc-zone-input.error')}"></cc-notice>
         ` : ''}
         ${!this.error ? html`
           <div class="zone-list">
@@ -280,13 +281,13 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
           max-width: 24em;
           flex-basis: 24em;
         }
-
-        :host([error]) .zone-list-wrapper {
-          display: flex;
-          padding: 1em;
+        
+        :host([error]) {
+          border: none;
         }
 
-        :host([error]) cc-error {
+        :host([error]) cc-notice {
+          width: 100%;
           margin: auto;
         }
 

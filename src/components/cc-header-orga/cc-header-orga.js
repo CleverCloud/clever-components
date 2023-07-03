@@ -1,6 +1,6 @@
 import '../cc-badge/cc-badge.js';
 import '../cc-img/cc-img.js';
-import '../cc-error/cc-error.js';
+import '../cc-notice/cc-notice.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -62,7 +62,7 @@ export class CcHeaderOrga extends LitElement {
       <div class="wrapper ${classMap({ enterprise: orga.cleverEnterprise })}">
 
         ${this.error ? html`
-          <cc-error>${i18n('cc-header-orga.error')}</cc-error>
+          <cc-notice intent="warning" message="${i18n('cc-header-orga.error')}"></cc-notice>
         ` : ''}
 
         ${!this.error ? html`
@@ -95,6 +95,10 @@ export class CcHeaderOrga extends LitElement {
         :host {
           display: block;
         }
+        
+        cc-notice {
+          width: 100%;
+        }
 
         .wrapper {
           display: flex;
@@ -105,6 +109,11 @@ export class CcHeaderOrga extends LitElement {
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-default, 0.25em);
           gap: 1em;
+        }
+        
+        :host([error]) .wrapper {
+          padding: 0;
+          border: none;
         }
 
         .wrapper.enterprise {

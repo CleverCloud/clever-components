@@ -21,9 +21,9 @@ import '../cc-badge/cc-badge.js';
 import '../cc-block/cc-block.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-button/cc-button.js';
-import '../cc-error/cc-error.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-input-text/cc-input-text.js';
+import '../cc-notice/cc-notice.js';
 
 /** @type {PrimaryAddressState} */
 const SKELETON_PRIMARY_EMAIL = {
@@ -194,7 +194,7 @@ export class CcEmailList extends LitElement {
         ` : ''}
 
         ${state === 'error' ? html`
-          <cc-error>${i18n('cc-email-list.loading.error')}</cc-error>
+          <cc-notice intent="warning" message="${i18n('cc-email-list.loading.error')}"></cc-notice>
         ` : ''}
       </cc-block>
     `;

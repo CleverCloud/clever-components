@@ -2,7 +2,7 @@ import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
-import '../cc-error/cc-error.js';
+import '../cc-notice/cc-notice.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
@@ -53,10 +53,14 @@ export class CcMatomoInfo extends LitElement {
   }
 
   render () {
+
+    if (this.error) {
+      return html`<cc-notice intent="warning" message="${i18n('cc-matomo-info.error')}"></cc-notice>`;
+    }
+
     return html`
 
       <cc-block ribbon=${i18n('cc-matomo-info.info')} no-head>
-        ${!this.error ? html`
           <div class="info-text">${i18n('cc-matomo-info.heading')}</div>
 
           <cc-block-section>
@@ -80,12 +84,6 @@ export class CcMatomoInfo extends LitElement {
               ${this._renderImageLink(REDIS_LOGO_URL, this.redisLink, i18n('cc-matomo-info.link.redis'))}
             </div>
           </cc-block-section>
-        ` : ''}
-
-        ${this.error ? html`
-          <cc-error>${i18n('cc-matomo-info.error')}</cc-error>
-        ` : ''}
-
       </cc-block>
     `;
   }
@@ -153,10 +151,6 @@ export class CcMatomoInfo extends LitElement {
 
         .application-list > * {
           margin-bottom: 0.5em;
-        }
-
-        cc-error {
-          text-align: center;
         }
       `,
     ];

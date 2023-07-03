@@ -3,6 +3,7 @@ import '../cc-badge/cc-badge.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 import '../cc-input-text/cc-input-text.js';
+import '../cc-notice/cc-notice.js';
 import '../cc-block/cc-block.js';
 import '../cc-block-section/cc-block-section.js';
 import { css, html, LitElement } from 'lit';
@@ -223,7 +224,7 @@ export class CcSshKeyList extends LitElement {
           ` : ''}
 
           ${state === 'error' ? html`
-            <p class="info-msg">${i18n('cc-ssh-key-list.error.loading')}</p>
+            <cc-notice intent="warning" message="${i18n('cc-ssh-key-list.error.loading')}"></cc-notice>
           ` : ''}
         </cc-block-section>
 
@@ -253,7 +254,7 @@ export class CcSshKeyList extends LitElement {
           ` : ''}
 
           ${state === 'error' ? html`
-            <p class="info-msg">${i18n('cc-ssh-key-list.error.loading')}</p>
+            <cc-notice intent="warning" message="${i18n('cc-ssh-key-list.error.loading')}"></cc-notice>
           ` : ''}
         </cc-block-section>
 

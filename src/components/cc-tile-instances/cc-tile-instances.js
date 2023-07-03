@@ -1,13 +1,13 @@
 import '../cc-expand/cc-expand.js';
-import '../cc-loader/cc-loader.js';
-import '../cc-error/cc-error.js';
 import '../cc-icon/cc-icon.js';
+import '../cc-loader/cc-loader.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import {
   iconCleverRunning as iconRunning,
   iconCleverStarting as iconStarting,
 } from '../../assets/cc-clever.icons.js';
+import { iconRemixAlertFill as iconAlert } from '../../assets/cc-remix.icons.js';
 import { animate, QUICK_SHRINK } from '../../lib/animate.js';
 import { i18n } from '../../lib/i18n.js';
 import { instanceDetailsStyles, tileStyles } from '../../styles/info-tiles.js';
@@ -114,7 +114,12 @@ export class CcTileInstances extends LitElement {
       ` : ''}
 
       ${this.error ? html`
-        <cc-error class="tile_message">${i18n('cc-tile-instances.error')}</cc-error>
+        <div class="tile_message">
+          <div class="error-message">
+            <cc-icon .icon="${iconAlert}" accessible-name="${i18n('cc-tile-instances.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
+            <p>${i18n('cc-tile-instances.error')}</p>
+          </div>
+        </div>
       ` : ''}
     `;
   }
@@ -179,6 +184,24 @@ export class CcTileInstances extends LitElement {
           right: calc(var(--bubble-d) / -2);
           bottom: calc(var(--bubble-d) / -2);
           background-color: var(--status-color, #000);
+        }
+
+        .error-message {
+          display: grid;
+          gap: 0.75em;
+          grid-template-columns: min-content 1fr;
+          text-align: left;
+        }
+
+        .error-message p {
+          margin: 0;
+        }
+
+        .icon-warning {
+          align-self: center;
+          color: var(--cc-color-text-warning);
+
+          --cc-icon-size: 1.25em;
         }
       `,
     ];

@@ -1,12 +1,14 @@
 import '../cc-button/cc-button.js';
-import '../cc-error/cc-error.js';
 import { ArcElement, Chart, DoughnutController, Legend, Tooltip } from 'chart.js';
 import { css, html, LitElement } from 'lit';
 import { cache } from 'lit/directives/cache.js';
 import { classMap } from 'lit/directives/class-map.js';
 import status from 'statuses';
 import { iconCleverInfo as iconInfo } from '../../assets/cc-clever.icons.js';
-import { iconRemixCloseLine as iconClose } from '../../assets/cc-remix.icons.js';
+import {
+  iconRemixAlertFill as iconAlert,
+  iconRemixCloseLine as iconClose,
+} from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../lib/i18n.js';
 import { tileStyles } from '../../styles/info-tiles.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
@@ -225,7 +227,12 @@ export class CcTileStatusCodes extends LitElement {
       ` : ''}
 
       ${displayError ? html`
-        <cc-error class="tile_message">${i18n('cc-tile-status-codes.error')}</cc-error>
+        <div class="tile_message">
+          <div class="error-message">
+            <cc-icon .icon="${iconAlert}" accessible-name="${i18n('cc-tile-status-codes.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
+            <p>${i18n('cc-tile-status-codes.error')}</p>
+          </div>
+        </div>
       ` : ''}
 
       <div class="tile_docs ${classMap({ 'tile_docs--hidden': !displayDocs })}">
@@ -300,6 +307,24 @@ export class CcTileStatusCodes extends LitElement {
         .tile_docs_link {
           color: var(--cc-color-text-highlight);
           text-decoration: underline;
+        }
+
+        .error-message {
+          display: grid;
+          gap: 0.75em;
+          grid-template-columns: min-content 1fr;
+          text-align: left;
+        }
+
+        .error-message p {
+          margin: 0;
+        }
+
+        .icon-warning {
+          align-self: center;
+          color: var(--cc-color-text-warning);
+
+          --cc-icon-size: 1.25em;
         }
       `,
     ];
