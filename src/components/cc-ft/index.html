@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="/src/styles/default-theme.css">
+  <style>
+    body {
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    }
+  </style>
+  <title>Forms investigations</title>
+</head>
+<body>
+
+<cc-smart-container context='{ "fake": "fake" }'>
+  <cc-ft-controlled></cc-ft-controlled>
+</cc-smart-container>
+
+
+<script type="module">
+  import './cc-ft-controlled.smart.js';
+  import { addTranslations, setLanguage } from '../../lib/i18n.js';
+  import { lang, translations } from '../../translations/translations.en.js';
+  import { updateRootContext } from '../../lib/smart-manager.js';
+
+  addTranslations(lang, translations);
+  setLanguage(lang);
+
+  updateRootContext({});
+  console.log("coucou");
+</script>
+</body>
+</html>
