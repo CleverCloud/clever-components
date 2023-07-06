@@ -250,7 +250,7 @@ export const error = makeStory(conf, {
 
 export const dataLoadedWithDollars = makeStory(conf, {
   dom: (container) => {
-    renderBaseStory({ selectedCurrency: currencies.dollar }, container);
+    renderBaseStory({ selectedCurrency: currencies.usd }, container);
   },
 });
 
