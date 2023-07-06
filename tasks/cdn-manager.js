@@ -1,4 +1,5 @@
 import fs from 'fs';
+import semver from 'semver';
 import superagent from 'superagent';
 import { unique } from '../src/lib/utils.js';
 import { LONG_CACHE, NO_CACHE } from './cellar-client.js';
@@ -18,6 +19,9 @@ import { describeTag, getCurrentAuthor, getCurrentCommit, getGitHubHeaders } fro
 const MANIFEST_FILE_NAME = 'manifest.json';
 const MANIFEST_VERSION = 1;
 const SOURCE_DIR = 'dist-cdn';
+
+const SEMVER_ENTRY_COMPARATOR = (e1, e2) => semver.rcompare(e1.name, e2.name);
+const DEFAULT_ENTRY_COMPARATOR = (e1, e2) => e1.name.localeCompare(e2.name, null, { sensitivity: 'base' });
 
 /**
  * The class manages CDN entries stored in a Clever Cloud Cellar addon.
@@ -89,7 +93,8 @@ export class CdnManager {
         manifest.entries[previewIndex] = manifestEntry;
       }
       else {
-        manifest.entries.push(manifestEntry);
+        const comparator = manifest.semver ? SEMVER_ENTRY_COMPARATOR : DEFAULT_ENTRY_COMPARATOR;
+        manifest.entries = [manifestEntry, ...manifest.entries].sort(comparator);
       }
       return manifest;
     });

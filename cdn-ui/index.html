@@ -144,7 +144,6 @@ fetch(CDN_ORIGIN + '/manifest.json?t=' + (new Date().getTime()))
     manifest_version = manifest.version;
     if (manifest.version === 1) {
       const versionList = manifest.entries
-        .reverse()
         .map((e) => e.name);
 
       $('#version-choice').innerHTML = versionList
