@@ -30,7 +30,6 @@ interface AddonOption {
   icon?: IconModel;
   // Option specific params
   flavor: Flavor; // for "apm" and "kibana" options
-  price: number; // for "encryption" option
   apm?: boolean;
   kibana?: boolean;
   encryption?: boolean;

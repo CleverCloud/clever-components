@@ -12,11 +12,11 @@ const conf = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [{ options: [{ name: 'encryption', enabled: false, price: 10.00 }] }],
+  items: [{ options: [{ name: 'encryption', enabled: false }] }],
 });
 
 export const encryptionEnabled = makeStory(conf, {
-  items: [{ options: [{ name: 'encryption', enabled: true, price: 10.00 }] }],
+  items: [{ options: [{ name: 'encryption', enabled: true }] }],
 });
 
 // This component isn't used when there are no options => no story for this case.

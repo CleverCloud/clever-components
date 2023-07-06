@@ -128,11 +128,7 @@ export const translations = {
   //#endregion
   //#region cc-addon-encryption-at-rest-option
   'cc-addon-encryption-at-rest-option.description': () => sanitize`Encryption at rest encrypts the entire data disk of your add-on. It prevents reading the stored data in case of a physical access to the hard drive. More information in our <a href="https://www.clever-cloud.com/doc/administrate/encryption-at-rest/">documentation</a>.`,
-  'cc-addon-encryption-at-rest-option.error.icon-a11y-name': `Warning`,
   'cc-addon-encryption-at-rest-option.title': `Encryption at rest`,
-  'cc-addon-encryption-at-rest-option.warning': ({ percent, price }) => {
-    return sanitize`This option is currently free. In the future, it will be billed ${formatPercent(lang, percent)} of the plan price, which amounts to <strong>${formatCurrency(lang, price)} per month</strong> here.`;
-  },
   //#endregion
   //#region cc-addon-features
   'cc-addon-features.details': `Here's the list of all the features of your add-on. Features may evolve and your add-on would need a migration to match them all.`,

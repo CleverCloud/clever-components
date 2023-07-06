@@ -28,7 +28,6 @@ export const defaultStory = makeStory(conf, {
         {
           name: 'encryption',
           enabled: false,
-          price: 10.00,
         },
       ],
     },
@@ -50,7 +49,6 @@ export const noFlavorDetailsYet = makeStory(conf, {
         {
           name: 'encryption',
           enabled: false,
-          price: 10.00,
         },
       ],
     },
@@ -74,7 +72,6 @@ export const preselectedKibana = makeStory(conf, {
         {
           name: 'encryption',
           enabled: false,
-          price: 10.00,
         },
       ],
     },
