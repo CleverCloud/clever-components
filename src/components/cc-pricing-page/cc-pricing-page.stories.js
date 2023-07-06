@@ -12,6 +12,7 @@ import {
   dataLoadedWithHeptapod as heptapodStory,
 } from '../cc-pricing-product-consumption/cc-pricing-product-consumption.stories.js';
 import {
+  dataLoadedWithFakeProduct as fakeProductStory,
   dataLoadedWithAddonMongodb as mongoStory,
   dataLoadedWithRuntimeNode as nodeStory,
   dataLoadedWithAddonPostgresql as postgresqlStory,
@@ -216,6 +217,12 @@ function renderBaseStory ({
             ${state === 'loading' ? createStoryItem(heptapodStory, { product: { state: 'loading' } }) : ''}
             ${state === 'error' ? createStoryItem(heptapodStory, { product: { state: 'error' } }) : ''}
             ${state === 'loaded' ? createStoryItem(heptapodStory) : ''}
+          </div>
+          <div class="product">
+            <h3>Fake product</h3>
+            ${state === 'loading' ? createStoryItem(fakeProductStory, { product: { state: 'loading' } }) : ''}
+            ${state === 'error' ? createStoryItem(fakeProductStory, { product: { state: 'error' } }) : ''}
+            ${state === 'loaded' ? createStoryItem(fakeProductStory) : ''}
           </div>
         </div>
       </div>
