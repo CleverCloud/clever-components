@@ -15,7 +15,6 @@ export const ccAddonEncryptionAtRestOption = ({ enabled, price }) => {
         <cc-icon .icon="${iconAlert}" accessible-name="${i18n('cc-addon-encryption-at-rest-option.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
         <p>${i18n('cc-addon-encryption-at-rest-option.warning', { percent: PRICE_PERCENT, price })}</p>
     </div>
-    </cc-notice>
   `;
 
   return {
