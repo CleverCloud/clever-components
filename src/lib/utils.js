@@ -143,3 +143,23 @@ export function range (start, end) {
 export function random (min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
+
+/**
+ * Bind the given number into the given bounds.
+ *
+ * @param {number} number
+ * @param {number|null|undefined} [min]
+ * @param {number|null|undefined} [max]
+ * @return {number}
+ */
+export function bindNumber (number, min, max) {
+  return Math.min(Math.max(number, min ?? -Infinity), max ?? Infinity);
+}
+
+/**
+ * @param {string} string
+ * @return {boolean}
+ */
+export function isStringEmpty (string) {
+  return string == null || string.length === 0;
+}
