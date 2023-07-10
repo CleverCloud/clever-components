@@ -106,3 +106,23 @@ export function getCurrencySymbol (currency) {
   // Safari does not support currencySymbol: 'narrow' in Intl.NumberFormat so we need to do this #sorry
     .replace('$US', '$');
 }
+
+/**
+ * Clamps the given number into the given bounds.
+ *
+ * @param {number} number
+ * @param {number|null|undefined} [min]
+ * @param {number|null|undefined} [max]
+ * @return {number}
+ */
+export function clampNumber (number, min, max) {
+  return Math.min(Math.max(number, min ?? -Infinity), max ?? Infinity);
+}
+
+/**
+ * @param {string} string
+ * @return {boolean}
+ */
+export function isStringEmpty (string) {
+  return string == null || string.length === 0;
+}
