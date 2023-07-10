@@ -56,7 +56,6 @@
     .then((manifest) => {
       if (manifest.version === 1) {
         $entries.innerHTML = manifest.entries
-          .reverse()
           .map((entry) => `
             <tr>
               <td><a href="${entry.url}"><code>${entry.name}</code></a></td>
