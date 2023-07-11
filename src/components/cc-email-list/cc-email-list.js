@@ -150,7 +150,7 @@ export class CcEmailList extends LitElement {
   }
 
   _onAdd () {
-    const address = this.addEmailForm.address.value.trim();
+    const address = this._addressInputRef.value.value.trim();
 
     this.addEmailForm = {
       state: 'idle',
@@ -302,7 +302,6 @@ export class CcEmailList extends LitElement {
           .value=${this.addEmailForm.address.value}
           ?disabled=${isAdding}
           @cc-input-text:requestimplicitsubmit=${this._onAdd}
-          @cc-input-text:input=${this._onAddressInput}
           ${ref(this._addressInputRef)}
         >
           ${this._renderAddressError()}

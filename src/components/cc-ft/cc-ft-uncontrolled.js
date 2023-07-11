@@ -2,6 +2,7 @@ import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
+import { validateEmailAddress } from '../../lib/email.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 
 /**
@@ -44,25 +45,58 @@ export class CcFtUncontrolled extends LitElement {
   }
 
   _onSubmit () {
-    dispatchCustomEvent(this, 'submit', {
-      email: this._formRef.email.value,
-      name: this._formRef.name.value,
-    });
+
+    const emailValue = this._formRef.email.value.value;
+    const nameValue = this._formRef.name.value.value;
+
+    this.formState = {
+      ...this.formState,
+      email: {
+        value: emailValue,
+        error: validateEmailAddress(emailValue),
+      },
+      name: {
+        value: nameValue,
+        error: nameValue?.length === 0 ? 'empty' : null,
+      },
+    };
+
+    if (this.formState.email.error == null && this.formState.name.error == null) {
+      dispatchCustomEvent(this, 'submit', {
+        email: this._formRef.email.value,
+        name: this._formRef.name.value,
+      });
+    }
   }
 
   resetFormState () {
     this.formState = {
-      ...this.formState,
       state: 'idle',
+      name: {
+        value: '',
+      },
+      email: {
+        value: '',
+      },
     };
+  }
 
-    this._formRef.name.value.value = '';
-    this._formRef.email.value.value = '';
+  async updated (_changedProperties) {
+    if (_changedProperties.has('formState')) {
+      if (this.formState.name.error != null) {
+        await this.updateComplete;
+        this._formRef.name.value.focus();
+      }
+      else if (this.formState.email.error != null) {
+        await this.updateComplete;
+        this._formRef.email.value.focus();
+      }
+    }
   }
 
   render () {
     const isSubmitting = this.formState.state === 'submitting';
-    console.log('render', this.formState);
+
     return html`
       <form>
         <cc-input-text
@@ -77,6 +111,7 @@ export class CcFtUncontrolled extends LitElement {
         </cc-input-text>
 
         <cc-input-text
+          id="email"
           label="Email"
           ?disabled=${isSubmitting}
           required
