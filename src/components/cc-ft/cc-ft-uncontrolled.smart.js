@@ -50,7 +50,7 @@ function getApi () {
   return {
     submitForm () {
       // return wait(500);
-      return wait(500);
+      return fail(500);
     },
   };
 }
