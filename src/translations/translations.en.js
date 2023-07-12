@@ -706,12 +706,13 @@ export const translations = {
   'cc-pricing-product-consumption.public-users.label': `public users`,
   'cc-pricing-product-consumption.public-users.title': `Public users:`,
   'cc-pricing-product-consumption.quantity': `Quantity`,
-  'cc-pricing-product-consumption.size': ({ bytes }) => `Size in ${getUnit(bytes)}`,
+  'cc-pricing-product-consumption.size': ({ bytes }) => `Size (in ${getUnit(bytes)})`,
   'cc-pricing-product-consumption.storage.label': `storage`,
   'cc-pricing-product-consumption.storage.title': `Storage:`,
   'cc-pricing-product-consumption.subtotal.title': `Subtotal (30 days):`,
   'cc-pricing-product-consumption.toggle-btn.label': `Show more details`,
   'cc-pricing-product-consumption.total.title': `Estimated total (30 days):`,
+  'cc-pricing-product-consumption.unit': `Unit`,
   //#endregion
   //#region cc-select
   'cc-select.required': `required`,
