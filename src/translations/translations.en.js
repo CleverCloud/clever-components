@@ -588,6 +588,7 @@ export const translations = {
   'cc-pricing-estimation.estimated-price-name.second': `estimated/Second`,
   'cc-pricing-estimation.feature.connection-limit': `Connection limit: `,
   'cc-pricing-estimation.feature.cpu': `vCPUs: `,
+  'cc-pricing-estimation.feature.custom': ({ featureName }) => `${featureName}: `,
   'cc-pricing-estimation.feature.databases': `Databases: `,
   'cc-pricing-estimation.feature.disk-size': `Disk size: `,
   'cc-pricing-estimation.feature.gpu': `GPUs: `,

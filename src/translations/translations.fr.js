@@ -601,6 +601,7 @@ export const translations = {
   'cc-pricing-estimation.estimated-price-name.second': `estimé/seconde`,
   'cc-pricing-estimation.feature.connection-limit': () => sanitize`Limite de connexions&nbsp;: `,
   'cc-pricing-estimation.feature.cpu': () => sanitize`vCPUs&nbsp;: `,
+  'cc-pricing-estimation.feature.custom': ({ featureName }) => sanitize`${featureName}&nbsp;: `,
   'cc-pricing-estimation.feature.databases': () => sanitize`Bases de données&nbsp;: `,
   'cc-pricing-estimation.feature.disk-size': () => sanitize`Taille du disque&nbsp;: `,
   'cc-pricing-estimation.feature.gpu': () => sanitize`GPUs&nbsp;: `,
