@@ -47,6 +47,7 @@ const conf = {
       position: sticky;
       z-index: 10;
       top: 0;
+      overflow: auto;
       height: max-content;
       max-height: 80vh;
       flex: 0 1 25em;
