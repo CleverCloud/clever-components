@@ -600,7 +600,7 @@ export const translations = {
   'cc-pricing-estimation.heading': `My selection`,
   'cc-pricing-estimation.hide': `Hide`,
   'cc-pricing-estimation.label.currency': `Currency: `,
-  'cc-pricing-estimation.label.temporality': `Temporality: `,
+  'cc-pricing-estimation.label.temporality': `Unit of time: `,
   'cc-pricing-estimation.plan.delete': ({ productName, planName }) => `Remove ${productName} - ${planName}`,
   'cc-pricing-estimation.plan.qty.btn.decrease': ({ productName, planName }) => `Decrease quantity - ${productName} (${planName})`,
   'cc-pricing-estimation.plan.qty.btn.increase': ({ productName, planName }) => `Increase quantity - ${productName} (${planName})`,
@@ -633,7 +633,7 @@ export const translations = {
   //#endregion
   //#region cc-pricing-header
   'cc-pricing-header.label.currency': `Currency`,
-  'cc-pricing-header.label.temporality': `Temporality`,
+  'cc-pricing-header.label.temporality': `Unit of time`,
   'cc-pricing-header.label.zone': `Zone`,
   'cc-pricing-header.price-name.1000-minutes': `Price (${formatNumber(lang, 1000)} minutes)`,
   'cc-pricing-header.price-name.30-days': () => sanitize`Price/30&nbsp;days`,
