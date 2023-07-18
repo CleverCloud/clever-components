@@ -130,7 +130,7 @@ export class CcPricingProduct extends withResizeObserver(LitElement) {
       case 'boolean':
         return i18n('cc-pricing-product.type.boolean', { boolean: feature.value === 'true' });
       case 'boolean-shared':
-        return i18n('cc-pricing-product.type.boolean-shared', { boolean: feature.value === 'shared' });
+        return i18n('cc-pricing-product.type.boolean-shared', { shared: feature.value === 'shared' });
       case 'bytes':
         return (feature.code === 'memory' && feature.value === '0')
           ? i18n('cc-pricing-product.type.boolean-shared', { shared: true })
