@@ -4,6 +4,184 @@ title: Changelog
 ---
 # Clever Components changelog
 
+## [11.0.0](https://github.com/CleverCloud/clever-components/compare/10.5.0...11.0.0) (2023-07-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* **cc-pricing-product:** the component now displays features that have no translations registered as long as they have a `name` property. Make sure you filter out unwanted features using the `addonFeatures` (smart component usage) or `productFeatures` prop (directly set on the `cc-pricing-product` component). See the related issue for more info.
+* **cc-addon-encryption-at-rest-option:** The `price` in the `options` property is no more needed on components:
+    - cc-addon-elasticsearch-options
+    - cc-addon-jenkins-options
+    - cc-addon-mongodb-options
+    - cc-addon-mysql-options
+    - cc-addon-postgresql-options
+    - cc-addon-redis-options
+* **cc-error:** remove component
+* **cc-addon-admin:** change `error` property from an enum to a boolean.
+* **cc-addon-credentials:** the `icon` property is now `image`. It still requires a URL.
+* **cc-block:** the `icon` property now requires an icon object instead of a URL. If you want to pass a URL nevertheless, use the new `image` property instead.
+* **cc-badge:** the `icon-alt` property is now `icon-accessible-name`.
+* **cc-badge:** the `icon-src` property is now `icon` and requires an icon object instead of a URL.
+* **cc-icon:** `IconModel` interface should be imported from `src/components/common.types.d.ts` file and not `src/components/cc-icon/cc-icon.types.d.ts` file anymore.
+* **cc-flex-gap:** remove component
+* **cc-tile-consumption:** remove component
+* **cc-action-dispatcher:** remove component
+* **cc-pricing-page:** We needed to be able to style and move the pricing components inside the `cc-pricing-page` component a lot more. For instance, the `cc-pricing-header` can now be positioned wherever one wants within the `cc-pricing-page` because everything is slotted within the `cc-pricing-page`. The smart `cc-pricing-page` smart component was mainly interacting with `cc-pricing-header` data (fetching `zones`). This is why we removed the `cc-pricing-page.smart` part and added a `cc-pricing-header.smart`.
+* **cc-pricing-estimation:** see more details below
+    - add new way of handling the component state and passing data to the component.
+    - use the new smart API.
+* **cc-pricing-header:** see more details below
+    - add new way of handling the component state and passing data to the component.
+    - use the new smart API.
+    - add a temporality selector component.
+* **cc-pricing-product-consumption:** see more details below
+    - add new way of handling the component state and passing data to the component.
+    - the smart component now uses the new smart API.
+    - remove the slots for heading, description and image.
+* **cc-pricing-table:** The `cc-pricing-table` component has been merged into the `cc-pricing-product` component.
+* **cc-pricing-product:** see details below
+    - add new way of handling the component state and passing data to the component.
+    - remove the heading, desc and image/logo slots.
+    - use the new smart API.
+    - directly render a table within the component instead of relying on a
+     `cc-pricing-table` sub-component to do so.
+    - merge the `cc-pricing-table` component and stories into `cc-pricing-product`.
+
+### Features
+
+* add missing notice a11y translations ([9957264](https://github.com/CleverCloud/clever-components/commit/9957264ea00e16bd10103d89867300fa6c07502e))
+* **cc-action-dispatcher:** remove component ([879bc30](https://github.com/CleverCloud/clever-components/commit/879bc30d2ecea40fdba67748f30a901a7dd44ff2))
+* **cc-addon-admin:** make use of the cc-notice instead of cc-error ([c22a4cc](https://github.com/CleverCloud/clever-components/commit/c22a4cc7291ea857c8df6070ce9f4897aea0ee35))
+* **cc-addon-backups:** implement `cc-icon` ([0097bed](https://github.com/CleverCloud/clever-components/commit/0097bedbd37fab6b9ce4d03e8c56d84752f21072))
+* **cc-addon-backups:** make use of the cc-notice instead of cc-error ([422815c](https://github.com/CleverCloud/clever-components/commit/422815cbd6297a76875082ab22e967a067b96cae))
+* **cc-addon-credentials:** make use of the cc-notice instead of cc-error ([7b8e4c3](https://github.com/CleverCloud/clever-components/commit/7b8e4c3a387aa15c5b44fb96dddfaddf6ddef913))
+* **cc-addon-credentials:** rename `icon` property to `image` ([1d0655a](https://github.com/CleverCloud/clever-components/commit/1d0655a6a3b2bee8dce8cc431d9616bedb46f65b))
+* **cc-addon-elasticsearch-options:** replace error message to get rid of cc-error ([884a7ad](https://github.com/CleverCloud/clever-components/commit/884a7ad9a0e40e5ae7f7640fb605215a23756c92))
+* **cc-addon-encryption-at-rest-option:** implement `cc-icon` ([629806c](https://github.com/CleverCloud/clever-components/commit/629806cd472cdba610ee028d3280326b90b6dac5))
+* **cc-addon-encryption-at-rest-option:** Remove pricing notice on addon encryption at rest option ([ff4b89b](https://github.com/CleverCloud/clever-components/commit/ff4b89b043d1f80f6a85b7cc41e8ff12d0c9c911)), closes [#809](https://github.com/CleverCloud/clever-components/issues/809)
+* **cc-addon-encryption-at-rest-option:** replace error message to get rid of cc-error ([137b7e9](https://github.com/CleverCloud/clever-components/commit/137b7e92ad60b7520eef02ad1de4a878a2261876))
+* **cc-addon-features:** implement `cc-icon` ([14e6c28](https://github.com/CleverCloud/clever-components/commit/14e6c28d2418d2869921f4a7f2af9d891702da65))
+* **cc-addon-features:** make use of the cc-notice instead of cc-error ([14a4495](https://github.com/CleverCloud/clever-components/commit/14a4495b7026b8c1c5a76faf4bed1e63a0116cdf))
+* **cc-addon-jenkins-options:** get rid of cc-error ([b0b92c0](https://github.com/CleverCloud/clever-components/commit/b0b92c0c8adf62ad7c367f3c5ba500a8f77d994b))
+* **cc-addon-linked-apps:** make use of the cc-notice instead of cc-error ([34caaf9](https://github.com/CleverCloud/clever-components/commit/34caaf9cef342ec4906ee857e7696390a51d32cf))
+* **cc-addon-mongodb-options:** get rid of cc-error ([e4e1c77](https://github.com/CleverCloud/clever-components/commit/e4e1c7733c385eb80734d7d3afc2f1a7a4e9a76d))
+* **cc-addon-mysql-options:** get rid of cc-error ([b5db7c1](https://github.com/CleverCloud/clever-components/commit/b5db7c1ac742c910df14dcf34d976724d3dfb1cb))
+* **cc-addon-option-form:** add style for the addon components error message ([e88ec63](https://github.com/CleverCloud/clever-components/commit/e88ec633a385d4970b394b2e863c60d6033a6274))
+* **cc-addon-option-form:** properly pass new `cc-addon-option` icon property ([fc76583](https://github.com/CleverCloud/clever-components/commit/fc7658341b36ac38ec60888c06bf724a9fa1da0e))
+* **cc-addon-option:** add `icon` property to receive an IconModel ([b72e0b5](https://github.com/CleverCloud/clever-components/commit/b72e0b572185aadd11e9fcd62f8186bf976280a6))
+* **cc-addon-option:** replace error message to get rid of cc-error ([b928866](https://github.com/CleverCloud/clever-components/commit/b9288664d7aa0d1856bcda480fa71de03ea30652))
+* **cc-addon-postgresql-options:** get rid of cc-error ([144db10](https://github.com/CleverCloud/clever-components/commit/144db108ebadfdaa2b6c9f114474be0aeea4dffe))
+* **cc-addon-redis-options:** get rid of cc-error ([727be87](https://github.com/CleverCloud/clever-components/commit/727be87de0c8e39c30aca67a0a4e8f194921f4a6))
+* **cc-article-list:** make use of the cc-notice instead of cc-error ([4e8f1cd](https://github.com/CleverCloud/clever-components/commit/4e8f1cde97dcc0bab2ef3a6aa48ee5052b0463f7))
+* **cc-badge:** rename `iconAlt` property to `iconAccessibleName` ([eb4494b](https://github.com/CleverCloud/clever-components/commit/eb4494b996d846232a9b63ba0c9d2908b91c7fbf))
+* **cc-badge:** use `cc-icon` instead of `cc-img` ([b48032d](https://github.com/CleverCloud/clever-components/commit/b48032d6f9c2249bd9283cf26d0202bb84bbc92f))
+* **cc-block:** get rid of overlay error story ([9cf782e](https://github.com/CleverCloud/clever-components/commit/9cf782e2d555465096931c8d5affd4b1f7926241))
+* **cc-block:** implement `cc-icon` ([4f06188](https://github.com/CleverCloud/clever-components/commit/4f06188467f644c36013ff2eb64819b706af4ee8))
+* **cc-block:** rename `icon` property to `image` and add `icon` property to receive an IconModel ([51e9bf9](https://github.com/CleverCloud/clever-components/commit/51e9bf95bb54d023dc6c646f37be1e12f6adfff8))
+* **cc-doc-list:** make use of the cc-notice instead of cc-error ([0357ca2](https://github.com/CleverCloud/clever-components/commit/0357ca2d2b8f24962a75875b23a3d6718f6659c2))
+* **cc-elasticsearch-info:** implement `cc-icon` ([12828bb](https://github.com/CleverCloud/clever-components/commit/12828bbe18822ae5996e03f955458f4828a03ffa))
+* **cc-elasticsearch-info:** make use of the cc-notice instead of cc-error ([5ec6767](https://github.com/CleverCloud/clever-components/commit/5ec67679ec0b31946c45c8ac37858e82f42729a2))
+* **cc-email-list:** implement `cc-icon` ([8619af3](https://github.com/CleverCloud/clever-components/commit/8619af3d5d00f6937515d9daa7d4366a90a82292))
+* **cc-email-list:** make use of the cc-notice instead of cc-error ([46624bb](https://github.com/CleverCloud/clever-components/commit/46624bb68d411090229ec1e21266e41c5590f57b))
+* **cc-env-var-create:** make use of the cc-notice instead of cc-error ([524d523](https://github.com/CleverCloud/clever-components/commit/524d523cfb43054456b937757878a858a74ac6cb))
+* **cc-env-var-editor-expert:** make use of the cc-notice instead of cc-error ([37d8721](https://github.com/CleverCloud/clever-components/commit/37d87219a525749df0ea8123a92334a57d286c87))
+* **cc-env-var-editor-json:** make use of the cc-notice instead of cc-error ([3120d93](https://github.com/CleverCloud/clever-components/commit/3120d93f18e0687667af1ea5b702d4b49b99f571))
+* **cc-env-var-form:** make use of the cc-notice instead of cc-error ([c5e2594](https://github.com/CleverCloud/clever-components/commit/c5e25944012311fb4d90485a3b2dc36a3fe880cd))
+* **cc-env-var-linked-services:** make use of the cc-notice instead of cc-error ([3676829](https://github.com/CleverCloud/clever-components/commit/36768292de8dbf74c02d7c9b66d0d92bd1afb015))
+* **cc-error:** implement `cc-icon` ([205265d](https://github.com/CleverCloud/clever-components/commit/205265d0d5fa40c4ff834e13aa7278b44141bf94))
+* **cc-error:** remove component ([b642530](https://github.com/CleverCloud/clever-components/commit/b642530bf93dcb39867e7356539d83b8099fee21))
+* **cc-flex-gap:** remove component ([cb9f24c](https://github.com/CleverCloud/clever-components/commit/cb9f24cae55643e340ed92e254f83f90c753ff13))
+* **cc-grafana-info:** implement `cc-icon` ([285af26](https://github.com/CleverCloud/clever-components/commit/285af26e5724985d4d6948b7cb83744d24987792))
+* **cc-grafana-info:** make use of the cc-notice instead of cc-error ([0f424fd](https://github.com/CleverCloud/clever-components/commit/0f424fd3e73705e7403f39e83e98475bde9e79b1))
+* **cc-header-addon:** make use of the cc-notice instead of cc-error ([f8574f9](https://github.com/CleverCloud/clever-components/commit/f8574f92b28e2df3a2b989ba4a08f5ab5a909316))
+* **cc-header-app:** implement `cc-icon` ([3863243](https://github.com/CleverCloud/clever-components/commit/38632432e74ef4f718e8aff178f1c326727eded6))
+* **cc-header-app:** make use of the cc-notice instead of cc-error ([d6c423a](https://github.com/CleverCloud/clever-components/commit/d6c423adba9325349015e04b4ea721a280bc6079))
+* **cc-header-orga:** implement `cc-icon` ([eb3980a](https://github.com/CleverCloud/clever-components/commit/eb3980a07352403c999d231f905cbd94fcb2d037))
+* **cc-header-orga:** make use of the cc-notice instead of cc-error ([3cd3b72](https://github.com/CleverCloud/clever-components/commit/3cd3b7228b8a42f66337a29859e90b3d76c9bf64))
+* **cc-heptapod-info:** make use of the cc-notice instead of cc-error ([e475cc6](https://github.com/CleverCloud/clever-components/commit/e475cc6291331c3b3b26d66d55fd7942384e6bb9))
+* **cc-icon:** delete unused legacy icons and update documentation ([df98f26](https://github.com/CleverCloud/clever-components/commit/df98f26f30b29438d7627d262ed20aaad7f9b835))
+* **cc-input-number:** implement `cc-icon` ([a26c6c2](https://github.com/CleverCloud/clever-components/commit/a26c6c22ac203312c272827211511aa5aceab807))
+* **cc-input-text:** implement `cc-icon` ([158c19e](https://github.com/CleverCloud/clever-components/commit/158c19e1a3457f62e6d768fa2679d25782db2593))
+* **cc-invoice-list:** make use of the cc-notice instead of cc-error ([aceb9cc](https://github.com/CleverCloud/clever-components/commit/aceb9cc84cc0d52b4cd7ff99bc721b5eab419403))
+* **cc-invoice-table:** implement `cc-icon` ([2296126](https://github.com/CleverCloud/clever-components/commit/22961262b221395a33353157ae8aca951409ebd9))
+* **cc-invoice:** implement `cc-icon` ([e5d4b44](https://github.com/CleverCloud/clever-components/commit/e5d4b448aef2ae0e6febe5cbe75fb666212293d7))
+* **cc-invoice:** make use of the cc-notice instead of cc-error ([59534d8](https://github.com/CleverCloud/clever-components/commit/59534d805781a92055e00e80f226ce516367073c))
+* **cc-jenkins-info:** implement `cc-icon` ([3cebef0](https://github.com/CleverCloud/clever-components/commit/3cebef05759d8a80278d46700f5082afbf9ff45a))
+* **cc-jenkins-info:** make use of the cc-notice instead of cc-error ([88429b0](https://github.com/CleverCloud/clever-components/commit/88429b005881c971d1c91837c2b9adf9bc01694c))
+* **cc-map:** make use of the cc-notice instead of cc-error ([380baf3](https://github.com/CleverCloud/clever-components/commit/380baf3f99d23ae6c48d0a529c110f7e38ba441d))
+* **cc-matomo-info:** implement `cc-icon` ([489e35d](https://github.com/CleverCloud/clever-components/commit/489e35d6ce661c202122eef2fa3cc6909f0d8eb4))
+* **cc-matomo-info:** make use of the cc-notice instead of cc-error ([8e4a0f0](https://github.com/CleverCloud/clever-components/commit/8e4a0f0d00bc559f5b69e0e933b46af041e76993))
+* **cc-notice:** implement `cc-icon` ([fac4c73](https://github.com/CleverCloud/clever-components/commit/fac4c735672e143392c0a7cb05f39aefa8567a64))
+* **cc-orga-member-card:** implement `cc-icon` ([8951bdf](https://github.com/CleverCloud/clever-components/commit/8951bdfb1858dbfb163e6dffc2d1ce952e705957))
+* **cc-orga-member-card:** make use of the cc-notice instead of cc-error ([44af4b1](https://github.com/CleverCloud/clever-components/commit/44af4b153db3de83e528390073d09ef1b5ae15fe))
+* **cc-orga-member-list:** make use of the cc-notice instead of cc-error ([0380c1b](https://github.com/CleverCloud/clever-components/commit/0380c1befe8c9296f28d56f8a54780829499a58d))
+* **cc-overview:** add error story overview stories ([7d3b06e](https://github.com/CleverCloud/clever-components/commit/7d3b06eeb80f5ea868258af929b0b892eb64f3d0))
+* **cc-pricing-estimation:** display non translated features ([b7b1093](https://github.com/CleverCloud/clever-components/commit/b7b10934d7d6549894d513bfa3147030aaa5b13a)), closes [#796](https://github.com/CleverCloud/clever-components/issues/796)
+* **cc-pricing-estimation:** update component styles and behavior ([3d85f83](https://github.com/CleverCloud/clever-components/commit/3d85f8328be7b4542fcec85cdc254669e1a0f5ee))
+* **cc-pricing-header:** update component styles, smart and state ([46022fa](https://github.com/CleverCloud/clever-components/commit/46022fa86c6930977a3aea0006563831e9ba8f17))
+* **cc-pricing-page stories:** add fake product to the stories ([2404aff](https://github.com/CleverCloud/clever-components/commit/2404aff2c8b69494a7bd95733c6e77c919cc4896))
+* **cc-pricing-page:** update styles and behavior, remove smart ([68f4d67](https://github.com/CleverCloud/clever-components/commit/68f4d671002bb0d3c947c07c4e647d939e675c4b))
+* **cc-pricing-product-consumption:** make use of the new cc-notice instead of cc-error ([a474a28](https://github.com/CleverCloud/clever-components/commit/a474a2865a82646077df7e113b1eb1e08ae95d2c))
+* **cc-pricing-product-consumption:** rework assets ([b55f737](https://github.com/CleverCloud/clever-components/commit/b55f73762dfffda20882de2ed35c3731af1f67e2))
+* **cc-pricing-product-consumption:** update styles, smart, and state ([cce27e2](https://github.com/CleverCloud/clever-components/commit/cce27e2e28fc14864d637665a7477ebeb38c19c0))
+* **cc-pricing-product:** display non translated features ([24ec318](https://github.com/CleverCloud/clever-components/commit/24ec3189873ecf4fe0fee9d0bebd5cf0592319fc)), closes [#796](https://github.com/CleverCloud/clever-components/issues/796)
+* **cc-pricing-product:** make use of the cc-notice instead of cc-error ([92b6f24](https://github.com/CleverCloud/clever-components/commit/92b6f24f0166bc25de5de9ec06525146f30345a9))
+* **cc-pricing-product:** update styles, smart, and state ([5b79751](https://github.com/CleverCloud/clever-components/commit/5b79751a85137067074693fbbb6eb09c33c96b9d))
+* **cc-ssh-key-list:** make use of the cc-notice instead of cc-error ([496d77d](https://github.com/CleverCloud/clever-components/commit/496d77df7d7bc254aca74d02e3548476907adbbd))
+* **cc-tcp-redirection-form:** make use of the cc-notice instead of cc-error ([acc2a67](https://github.com/CleverCloud/clever-components/commit/acc2a67c729c893dc0c5b098cbc873e9bf7d997f))
+* **cc-tcp-redirection:** implement `cc-icon` ([ec31ed4](https://github.com/CleverCloud/clever-components/commit/ec31ed465224fe01af1cac646dfff675cd3c5579))
+* **cc-tile-consumption:** remove component ([e7a859f](https://github.com/CleverCloud/clever-components/commit/e7a859fd1c94fb0114392845b7c221a466190f85))
+* **cc-tile-deployments:** replace error message to get rid of cc-error ([dd10c2a](https://github.com/CleverCloud/clever-components/commit/dd10c2a7c336f68f34d692f0a9031736fdcfea5c))
+* **cc-tile-instances:** implement `cc-icon` ([ec67cf3](https://github.com/CleverCloud/clever-components/commit/ec67cf355cfede1cf8a165a6cbf7bb6613a692ea))
+* **cc-tile-instances:** replace error message to get rid of cc-error ([42eacab](https://github.com/CleverCloud/clever-components/commit/42eacab913f00dbe5d1397c06564f68797a76ca9))
+* **cc-tile-metrics:** implement `cc-icon` ([8450410](https://github.com/CleverCloud/clever-components/commit/8450410cbfdcf6bdc2c59c6c5358592f778ae529))
+* **cc-tile-metrics:** replace error message to get rid of cc-error ([4482990](https://github.com/CleverCloud/clever-components/commit/448299075107b0acf19b3a88d20ee17c7fa8de06))
+* **cc-tile-requests:** implement `cc-icon` ([73e98d6](https://github.com/CleverCloud/clever-components/commit/73e98d650471fbbcf35b2b7c9a4490bb8a1f0033))
+* **cc-tile-requests:** replace error message to get rid of cc-error ([c76a297](https://github.com/CleverCloud/clever-components/commit/c76a297b7e901a0168339300aa92ff3340fea3bb))
+* **cc-tile-scalability:** replace error message to get rid of cc-error ([4567dcf](https://github.com/CleverCloud/clever-components/commit/4567dcfe18e86251f5909a309520e8a13b7c8a6a))
+* **cc-tile-status-codes:** implement `cc-icon` ([44a26b7](https://github.com/CleverCloud/clever-components/commit/44a26b77e2b84f986d2eeda9e5489d916f625b6c))
+* **cc-tile-status-codes:** replace error message to get rid of cc-error ([2318d0b](https://github.com/CleverCloud/clever-components/commit/2318d0bb84f8e64afa6f4eeb67a6d4b653c8caef))
+* **cc-toaster:** implement `cc-icon` ([29c03d9](https://github.com/CleverCloud/clever-components/commit/29c03d94f49154c3fd3fa797a44bb1c775860b2a))
+* **cc-toast:** implement `cc-icon` ([3386f32](https://github.com/CleverCloud/clever-components/commit/3386f32ddaae7d0b3772d63da3ad12f8374f1286))
+* **cc-zone-input:** make use of the cc-notice instead of cc-error ([73e44a1](https://github.com/CleverCloud/clever-components/commit/73e44a18f12a23e23c1dc1739733c30ddfe748ad))
+* **cc-zone:** add new styling options for zone tags ([1d091b0](https://github.com/CleverCloud/clever-components/commit/1d091b043a90a144716dbf3df2ac54d555f86a01))
+* **cc-zone:** remove `cc-flex-gap` ([64ab365](https://github.com/CleverCloud/clever-components/commit/64ab36506111825b88561560f93dcc5d71853882))
+* **tokens:** add `--cc-border-radius-default` and use it when relevant ([a9f344a](https://github.com/CleverCloud/clever-components/commit/a9f344a7c4d1872becbb4c657d184fbab5dfcdfc))
+* **tokens:** add `--cc-border-radius-small` and use it when relevant ([c321b79](https://github.com/CleverCloud/clever-components/commit/c321b793df736e85ecfc40fa8f7d11c4a1132129))
+* **tokens:** add `--cc-color-border-neutral-disabled` and use it when relevant ([3034296](https://github.com/CleverCloud/clever-components/commit/3034296cc3916df6602ea69f666dde1523507322))
+* **tokens:** add `--cc-color-border-neutral-focused` and use it when relevant ([593fe51](https://github.com/CleverCloud/clever-components/commit/593fe512359c86fd66ed366cf7a1b67feff3e925))
+* **tokens:** add `--cc-color-border-neutral-hovered` and use it when relevant ([8445e1b](https://github.com/CleverCloud/clever-components/commit/8445e1b1e1f196163ec522b5aa72f87a93e271bd))
+* **tokens:** add `--cc-color-border-neutral-strong` and use it when relevant ([03aed66](https://github.com/CleverCloud/clever-components/commit/03aed66d24b7a9ffb4c9eef6e4f83521613319b3))
+* **tokens:** add `--cc-color-border-neutral-weak` and use it when relevant ([07fa2a6](https://github.com/CleverCloud/clever-components/commit/07fa2a60e8a356e00dcbd17c2f881fa4a6e9a960))
+* **tokens:** add `--cc-color-border-neutral` and use it when relevant ([8021678](https://github.com/CleverCloud/clever-components/commit/802167813deac3d3c9d23c85ef90b0fd77847164))
+
+
+### Bug Fixes
+
+* **cc-block:** fix close button title ([50c8b46](https://github.com/CleverCloud/clever-components/commit/50c8b46fe9983bcaf25dafb74f45ec100da9e1a5)), closes [#721](https://github.com/CleverCloud/clever-components/issues/721)
+* **cc-button:** apply proper opacity value on `cc-icon` in circle mode and loading state ([95d4187](https://github.com/CleverCloud/clever-components/commit/95d418723e7e8db70e1053e9e04ecbdc860017e4))
+* **cc-email-list:** fix sample domain name ([2d6f6e4](https://github.com/CleverCloud/clever-components/commit/2d6f6e432c247c06cc2ce78a92a8167669a05e50)), closes [#642](https://github.com/CleverCloud/clever-components/issues/642)
+* **cc-env-var-form:** fix textarea cropped focus outline ([f405788](https://github.com/CleverCloud/clever-components/commit/f405788e0b5add5d0c4c25409fe4c940b174fe40)), closes [#739](https://github.com/CleverCloud/clever-components/issues/739)
+* **cc-input-*:** use `--cc-color-bg-neutral-readonly` when relevant ([22bbc9c](https://github.com/CleverCloud/clever-components/commit/22bbc9c9dd4d9798747321456e2d5e9465c1b27f)), closes [#511](https://github.com/CleverCloud/clever-components/issues/511)
+* **cc-invoice:** move `&lt;template&gt;` inside `unsafeHTML` expression ([92b20ec](https://github.com/CleverCloud/clever-components/commit/92b20ec64f5fb425f259eb04d4e812515c1dfcef)), closes [#784](https://github.com/CleverCloud/clever-components/issues/784)
+* **cc-pricing-page dollar story:** fix dollar currency not being set properly ([280c410](https://github.com/CleverCloud/clever-components/commit/280c410b841895288a8ac47295a94a9523feb7be))
+* **cc-pricing-product-consumption:** add visible labels and legends ([4824ffb](https://github.com/CleverCloud/clever-components/commit/4824ffb4268fd65e6ccf4b96a4465521aa82057b)), closes [#561](https://github.com/CleverCloud/clever-components/issues/561)
+* **cc-pricing-product:** update boolean i18n argument to match the expected parameter ([c919e70](https://github.com/CleverCloud/clever-components/commit/c919e70fdd44bac04acdef723498ea362329bdac))
+* **default-theme:** add missing line break, reorder tokens and update doc ([816d0db](https://github.com/CleverCloud/clever-components/commit/816d0db358a4dd3a465147f5777e0c279e4207c8))
+* **English translations:** change temporality translation ([b08f568](https://github.com/CleverCloud/clever-components/commit/b08f56895d9f7df0ff885e3e1600dab25583739c))
+* issue in Custom Element Manifest generation when detecting [@typedef](https://github.com/typedef) imports ([2d1ab38](https://github.com/CleverCloud/clever-components/commit/2d1ab38ebbe880dcb4f103151a155e41a54e7c3a)), closes [#737](https://github.com/CleverCloud/clever-components/issues/737)
+
+
+### Miscellaneous Chores
+
+* **cc-pricing-table:** remove component ([157bd7a](https://github.com/CleverCloud/clever-components/commit/157bd7a829c016d638e69dbcc3a9f40bb419fc71))
+
+
+### Code Refactoring
+
+* **cc-icon:** refactor `IconModel` interface to `common.types.d.ts` ([89a6409](https://github.com/CleverCloud/clever-components/commit/89a640982386a6aef1b80c1e2f08539f52687739))
+
 ## [10.5.0](https://github.com/CleverCloud/clever-components/compare/10.4.0...10.5.0) (2023-03-17)
 
 
