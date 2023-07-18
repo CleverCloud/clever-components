@@ -23,7 +23,7 @@ const featureIcons = {
 
 const SORT_FEATURES = ['cpus', 'vcpus', 'memory', 'disk'];
 
-/** @type {Feature[]} */
+/** @type {AddonFeature[]} */
 const SKELETON_FEATURES = [
   { name: '??????', value: '????????' },
   { name: '????', value: '??' },
@@ -32,7 +32,7 @@ const SKELETON_FEATURES = [
 ];
 
 /**
- * @typedef {import('./cc-addon-features.types.js').Feature} Feature
+ * @typedef {import('./cc-addon-features.types.js').AddonFeature} AddonFeature
  */
 
 /**
@@ -61,7 +61,7 @@ export class CcAddonFeatures extends LitElement {
     /** @type {boolean} Displays an error message. */
     this.error = false;
 
-    /** @type {Feature[]} Sets the list features. */
+    /** @type {AddonFeature[]} Sets the list features. */
     this.features = [];
   }
 

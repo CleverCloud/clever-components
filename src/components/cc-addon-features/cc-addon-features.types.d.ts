@@ -1,4 +1,4 @@
-interface Feature {
+interface AddonFeature {
   name: string;
   value: string;
 }
