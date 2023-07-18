@@ -4,15 +4,17 @@ import { getFullProductRuntime } from '../../stories/fixtures/runtime-plans.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
+const addonFeatures = ['connection-limit', 'cpu', 'databases', 'disk-size', 'gpu', 'has-logs', 'has-metrics', 'memory', 'version'];
+
 // Feature order is not the same between plans
-// Some features will be ignored because they cannot be translated
 // Some features will be ignored because they are not listed
 // Some features are missing for some plans
 const fakeProductPlans = [
   {
     name: 'ONE',
     features: [
-      { code: 'connection-limit', type: 'number', value: '20' },
+      { code: 'databases', type: 'number', value: '1' },
+      { code: 'connection-limit', type: 'number', value: '10' },
       { code: 'disk-size', type: 'bytes', value: String(5 * 1024 ** 3) },
       { code: 'version', type: 'string', value: '1.2.3' },
       { code: 'gpu', type: 'number', value: '2' },
@@ -21,13 +23,14 @@ const fakeProductPlans = [
       { code: 'has-metrics', type: 'boolean', value: 'false' },
       { code: 'memory', type: 'bytes', value: String(256 * 1024 ** 2) },
       { code: 'has-logs', type: 'boolean', value: 'true' },
-      { code: 'ignored-because-not-translated', type: 'string', value: 'ignore this' },
+      { code: 'custom-feature', type: 'string', name: 'Custom Feature', value: 'Custom value 1' },
     ],
     price: 0,
   },
   {
     name: 'TWO',
     features: [
+      { code: 'connection-limit', type: 'number', value: '20' },
       { code: 'databases', type: 'number', value: '20' },
       { code: 'ignored-because-not-listed', type: 'string', value: 'ignore this' },
       { code: 'cpu', type: 'number', value: '2' },
@@ -35,7 +38,7 @@ const fakeProductPlans = [
       { code: 'gpu', type: 'number', value: '4' },
       { code: 'memory', type: 'bytes', value: String(512 * 1024 ** 2) },
       { code: 'has-metrics', type: 'boolean', value: 'true' },
-      { code: 'ignored-because-not-translated', type: 'string', value: 'ignore this' },
+      { code: 'custom-feature', type: 'string', name: 'Custom Feature', value: 'Custom value 2' },
       { code: 'version', type: 'string', value: '1.2.3' },
       { code: 'has-logs', type: 'boolean', value: 'true' },
     ],
@@ -50,7 +53,8 @@ const fakeProductPlans = [
       { code: 'connection-limit', type: 'number', value: '100' },
       { code: 'gpu', type: 'number', value: '8' },
       { code: 'has-logs', type: 'boolean', value: 'true' },
-      { code: 'ignored-because-not-translated', type: 'string', value: 'ignore this' },
+      { code: 'has-metrics', type: 'boolean', value: 'true' },
+      { code: 'custom-feature', type: 'string', name: 'Custom Feature', value: 'Custom value 3' },
       { code: 'memory', type: 'bytes', value: String(5 * 1024 ** 2) },
       { code: 'version', type: 'string', value: '1.2.3' },
     ],
@@ -95,14 +99,11 @@ export const dataLoadedWithFakeProduct = makeStory(conf, {
       productFeatures: [
         { code: 'connection-limit', type: 'number' },
         { code: 'cpu', type: 'number' },
-        { code: 'databases', type: 'number' },
         { code: 'disk-size', type: 'bytes' },
         { code: 'gpu', type: 'number' },
         { code: 'has-logs', type: 'boolean' },
-        { code: 'has-metrics', type: 'boolean' },
         { code: 'memory', type: 'bytes' },
-        { code: 'version', type: 'string' },
-        { code: 'ignored-because-not-translated', type: 'number' },
+        { code: 'custom-feature', type: 'string', name: 'Custom Feature' },
       ],
     },
   },
@@ -120,8 +121,7 @@ export const dataLoadedWithFakeProduct = makeStory(conf, {
         { code: 'databases', type: 'number' },
         { code: 'version', type: 'string' },
         { code: 'has-logs', type: 'boolean' },
-        { code: 'has-metrics', type: 'boolean' },
-        { code: 'ignored-because-not-translated', type: 'number' },
+        { code: 'custom-feature', type: 'string', name: 'Custom Feature' },
       ],
     },
   }],
@@ -158,7 +158,7 @@ export const dataLoadedWithAddonElasticsearch = makeStory(conf, {
   items: [{
     product: {
       state: 'loaded',
-      ...getFullProductAddon('es-addon'),
+      ...getFullProductAddon('es-addon', addonFeatures),
     },
   }],
 });
@@ -167,7 +167,7 @@ export const dataLoadedWithAddonMongodb = makeStory(conf, {
   items: [{
     product: {
       state: 'loaded',
-      ...getFullProductAddon('mongodb-addon'),
+      ...getFullProductAddon('mongodb-addon', addonFeatures),
     },
   }],
 });
@@ -176,7 +176,7 @@ export const dataLoadedWithAddonMysql = makeStory(conf, {
   items: [{
     product: {
       state: 'loaded',
-      ...getFullProductAddon('mysql-addon'),
+      ...getFullProductAddon('mysql-addon', addonFeatures),
     },
   }],
 });
@@ -185,7 +185,7 @@ export const dataLoadedWithAddonPostgresql = makeStory(conf, {
   items: [{
     product: {
       state: 'loaded',
-      ...getFullProductAddon('postgresql-addon'),
+      ...getFullProductAddon('postgresql-addon', addonFeatures),
     },
   }],
 });
@@ -194,7 +194,7 @@ export const dataLoadedWithAddonRedis = makeStory(conf, {
   items: [{
     product: {
       state: 'loaded',
-      ...getFullProductAddon('redis-addon'),
+      ...getFullProductAddon('redis-addon', addonFeatures),
     },
   }],
 });
@@ -204,7 +204,7 @@ export const dataLoadedWithNoAction = makeStory(conf, {
     action: 'none',
     product: {
       state: 'loaded',
-      ...getFullProductAddon('postgresql-addon'),
+      ...getFullProductAddon('postgresql-addon', addonFeatures),
     },
   }],
 });
@@ -215,7 +215,7 @@ export const dataLoadedWithDollars = makeStory(conf, {
       currency: { code: 'USD', changeRate: 1.1802 },
       product: {
         state: 'loaded',
-        ...getFullProductAddon('postgresql-addon'),
+        ...getFullProductAddon('postgresql-addon', addonFeatures),
       },
     },
   ],

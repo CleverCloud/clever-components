@@ -119,6 +119,7 @@ interface Feature {
   code: "connection-limit" | "cpu" | "databases" | "disk-size" | "gpu" | "has-logs" | "has-metrics" | "max-db-size" | "memory" | "version";
   type: "boolean" | "shared" | "bytes" | "number" | "runtime" | "string";
   value?: number | string; // Only required for a plan feature
+  name?: string;
 }
 
 interface PricingSection {

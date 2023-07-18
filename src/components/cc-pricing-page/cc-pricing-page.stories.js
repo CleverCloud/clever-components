@@ -12,6 +12,7 @@ import {
   dataLoadedWithHeptapod as heptapodStory,
 } from '../cc-pricing-product-consumption/cc-pricing-product-consumption.stories.js';
 import {
+  dataLoadedWithFakeProduct as fakeProductStory,
   dataLoadedWithAddonMongodb as mongoStory,
   dataLoadedWithRuntimeNode as nodeStory,
   dataLoadedWithAddonPostgresql as postgresqlStory,
@@ -46,6 +47,7 @@ const conf = {
       position: sticky;
       z-index: 10;
       top: 0;
+      overflow: auto;
       height: max-content;
       max-height: 80vh;
       flex: 0 1 25em;
@@ -217,6 +219,12 @@ function renderBaseStory ({
             ${state === 'error' ? createStoryItem(heptapodStory, { product: { state: 'error' } }) : ''}
             ${state === 'loaded' ? createStoryItem(heptapodStory) : ''}
           </div>
+          <div class="product">
+            <h3>Fake product</h3>
+            ${state === 'loading' ? createStoryItem(fakeProductStory, { product: { state: 'loading' } }) : ''}
+            ${state === 'error' ? createStoryItem(fakeProductStory, { product: { state: 'error' } }) : ''}
+            ${state === 'loaded' ? createStoryItem(fakeProductStory) : ''}
+          </div>
         </div>
       </div>
     </cc-pricing-page>
@@ -243,7 +251,7 @@ export const error = makeStory(conf, {
 
 export const dataLoadedWithDollars = makeStory(conf, {
   dom: (container) => {
-    renderBaseStory({ selectedCurrency: currencies.dollar }, container);
+    renderBaseStory({ selectedCurrency: currencies.usd }, container);
   },
 });
 

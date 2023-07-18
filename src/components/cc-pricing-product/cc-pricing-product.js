@@ -111,8 +111,16 @@ export class CcPricingProduct extends withResizeObserver(LitElement) {
    * @return {string|undefined} the translated feature name if a translation exists or nothing if the translation does not exist
    */
   _getFeatureName (feature) {
-    if (feature != null && FEATURES_I18N[feature.code] != null) {
+    if (feature == null) {
+      return '';
+    }
+
+    if (FEATURES_I18N[feature.code] != null) {
       return FEATURES_I18N[feature.code]();
+    }
+
+    if (feature.name != null) {
+      return feature.name;
     }
   }
 
@@ -130,7 +138,7 @@ export class CcPricingProduct extends withResizeObserver(LitElement) {
       case 'boolean':
         return i18n('cc-pricing-product.type.boolean', { boolean: feature.value === 'true' });
       case 'boolean-shared':
-        return i18n('cc-pricing-product.type.boolean-shared', { boolean: feature.value === 'shared' });
+        return i18n('cc-pricing-product.type.boolean-shared', { shared: feature.value === 'shared' });
       case 'bytes':
         return (feature.code === 'memory' && feature.value === '0')
           ? i18n('cc-pricing-product.type.boolean-shared', { shared: true })
@@ -223,10 +231,10 @@ export class CcPricingProduct extends withResizeObserver(LitElement) {
    * Adds the product name to the given plan.
    * Dispatches a `cc-pricing-product:add-plan` event with the plan as its payload.
    *
+   * @param {string} productName - the name of the product to which the plan is attached
    * @param {Plan} plan - the plan to be added to the estimation
    */
-  _onAddPlan (plan) {
-    const productName = this.product.name;
+  _onAddPlan (productName, plan) {
     dispatchCustomEvent(this, 'add-plan', { productName, ...plan });
   }
 
@@ -240,42 +248,44 @@ export class CcPricingProduct extends withResizeObserver(LitElement) {
       ${this.product.state === 'loading' ? html`
         <cc-loader></cc-loader>
       ` : ''}
-      ${this.product.state === 'loaded' ? this._renderProductPlans(this.product) : ''}
+      ${this.product.state === 'loaded'
+        ? this._renderProductPlans(this.product.name, this.product.plans, this.product.productFeatures)
+        : ''}
     `;
   }
 
   /**
-   * @param {PricingProductState} product
+   * @param {string} productName - the name of the product
+   * @param {Plan[]} productPlans - the list of plans attached to this product
+   * @param {Feature[]} productFeatures - the list of features to display
    */
-  _renderProductPlans (product) {
+  _renderProductPlans (productName, productPlans, productFeatures) {
     // this component is not rerendering very often so we consider we can afford to sort plans and filter the features here.
-    const sortedPlans = [...product.plans].sort((a, b) => a.price - b.price);
-    const filteredProductFeatures = product.productFeatures
-      .filter((feature) => AVAILABLE_FEATURES.includes(feature.code));
+    const sortedPlans = [...productPlans].sort((a, b) => a.price - b.price);
+    const filteredProductFeatures = productFeatures.filter((feature) => AVAILABLE_FEATURES.includes(feature.code) || feature.name != null);
 
     // We don't really have a good way to detect when the component should switch between big and small mode.
     // Also, when this component is used several times in the page, it's better if all instances switch at the same breakpoint.
     return (this._size > BREAKPOINT)
-      ? this._renderBigPlans(product, sortedPlans, filteredProductFeatures)
-      : this._renderSmallPlans(product, sortedPlans, filteredProductFeatures);
+      ? this._renderBigPlans(productName, sortedPlans, filteredProductFeatures)
+      : this._renderSmallPlans(productName, sortedPlans, filteredProductFeatures);
   }
 
   /**
-   * @param {PricingProductState} product
+   * @param {string} productName
    * @param {Plan[]} sortedPlans
-   * @param {Feature[]} filteredProductFeatures
+   * @param {Feature[]} productFeatures
    */
-  _renderBigPlans (product, sortedPlans, filteredProductFeatures) {
+  _renderBigPlans (productName, sortedPlans, productFeatures) {
     const temporality = this.temporalities ?? DEFAULT_TEMPORALITY_LIST;
-    const productName = product.name;
 
     return html`
       <table>
-        <caption class="visually-hidden">${product.name}</caption>
+        <caption class="visually-hidden">${productName}</caption>
         <thead>
           <tr>
             <th>${i18n('cc-pricing-product.plan')}</th>
-            ${filteredProductFeatures.map((feature) => html`
+            ${productFeatures.map((feature) => html`
               <th class=${classMap({ 'number-align': NUMBER_FEATURE_TYPES.includes(feature.type) })}>${this._getFeatureName(feature)}</th>
             `)}
             ${temporality.map(({ type }) => html`
@@ -290,13 +300,13 @@ export class CcPricingProduct extends withResizeObserver(LitElement) {
         ${sortedPlans.map((plan) => html`
           <tr>
             <td>${plan.name}</td>
-            ${this._renderBigPlanFeatures(plan.features, filteredProductFeatures)}
+            ${this._renderBigPlanFeatures(plan.features, productFeatures)}
             ${temporality.map(({ type, digits }) => html`
               <td class="number-align">${this._getPriceValue(type, plan.price, digits)}</td>
             `)}
             ${this.action === 'add' ? html`
               <td class="btn-col">
-                <button class="btn" @click="${() => this._onAddPlan(plan)}" title="${i18n('cc-pricing-product.add-button', { productName, size: plan.name })}">
+                <button class="btn" @click="${() => this._onAddPlan(productName, plan)}" title="${i18n('cc-pricing-product.add-button', { productName, size: plan.name })}">
                   <cc-icon
                     .icon=${iconAdd}
                     accessible-name=${i18n('cc-pricing-product.add-button', { productName, size: plan.name })}
@@ -313,10 +323,10 @@ export class CcPricingProduct extends withResizeObserver(LitElement) {
 
   /**
    * @param {Feature[]} planFeatures
-   * @param {Feature[]} filteredProductFeatures
+   * @param {Feature[]} productFeatures
    */
-  _renderBigPlanFeatures (planFeatures, filteredProductFeatures) {
-    return filteredProductFeatures.map((feature) => {
+  _renderBigPlanFeatures (planFeatures, productFeatures) {
+    return productFeatures.map((feature) => {
       const currentPlanFeature = planFeatures.find((f) => feature.code === f.code);
       return html`
         <td class=${classMap({ 'number-align': NUMBER_FEATURE_TYPES.includes(feature.type) })}>${this._getFeatureValue(currentPlanFeature)}</td>
@@ -325,23 +335,23 @@ export class CcPricingProduct extends withResizeObserver(LitElement) {
   }
 
   /**
-   * @param {PricingProductState} product
+   * @param {string} productName
    * @param {Plan[]} sortedPlans
-   * @param {Feature[]} filteredProductFeatures
+   * @param {Feature[]} productFeatures
    */
-  _renderSmallPlans (product, sortedPlans, filteredProductFeatures) {
+  _renderSmallPlans (productName, sortedPlans, productFeatures) {
     const temporality = this.temporalities ?? DEFAULT_TEMPORALITY_LIST;
-    const productName = product.name;
 
     return html`
       <div>
+        <div class="visually-hidden">${productName}</div>
         ${sortedPlans.map((plan) => html`
           <div class="plan">
 
             <div class="plan-name">
               <span>${plan.name}</span>
               ${this.action === 'add' ? html`
-                <button class="btn" @click="${() => this._onAddPlan(plan)}" title="${i18n('cc-pricing-product.add-button', { productName, size: plan.name })}">
+                <button class="btn" @click="${() => this._onAddPlan(productName, plan)}" title="${i18n('cc-pricing-product.add-button', { productName, size: plan.name })}">
                   <cc-icon
                     .icon=${iconAdd}
                     accessible-name=${i18n('cc-pricing-product.add-button', { productName, size: plan.name })}
@@ -351,7 +361,7 @@ export class CcPricingProduct extends withResizeObserver(LitElement) {
             </div>
 
             <dl class="feature-list">
-              ${this._renderSmallPlanFeatures(plan.features, filteredProductFeatures)}
+              ${this._renderSmallPlanFeatures(plan.features, productFeatures)}
               ${temporality.map(({ type, digits }) => html`
                 <div class="price-small">
                   <dt class="feature-name">${this._getPriceLabel(type)}</dt>
@@ -367,10 +377,10 @@ export class CcPricingProduct extends withResizeObserver(LitElement) {
 
   /**
    * @param {Feature[]} planFeatures
-   * @param {Feature[]} filteredProductFeatures
+   * @param {Feature[]} productFeatures
    */
-  _renderSmallPlanFeatures (planFeatures, filteredProductFeatures) {
-    return filteredProductFeatures.map((feature) => {
+  _renderSmallPlanFeatures (planFeatures, productFeatures) {
+    return productFeatures.map((feature) => {
       const currentPlanFeature = planFeatures.find((f) => feature.code === f.code);
       return html`
         <div>

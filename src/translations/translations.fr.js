@@ -601,6 +601,7 @@ export const translations = {
   'cc-pricing-estimation.estimated-price-name.second': `estimé/seconde`,
   'cc-pricing-estimation.feature.connection-limit': () => sanitize`Limite de connexions&nbsp;: `,
   'cc-pricing-estimation.feature.cpu': () => sanitize`vCPUs&nbsp;: `,
+  'cc-pricing-estimation.feature.custom': ({ featureName }) => sanitize`${featureName}&nbsp;: `,
   'cc-pricing-estimation.feature.databases': () => sanitize`Bases de données&nbsp;: `,
   'cc-pricing-estimation.feature.disk-size': () => sanitize`Taille du disque&nbsp;: `,
   'cc-pricing-estimation.feature.gpu': () => sanitize`GPUs&nbsp;: `,
@@ -718,12 +719,13 @@ export const translations = {
   'cc-pricing-product-consumption.public-users.label': `utilisateurs publics`,
   'cc-pricing-product-consumption.public-users.title': `Utilisateurs publics :`,
   'cc-pricing-product-consumption.quantity': `Quantité`,
-  'cc-pricing-product-consumption.size': ({ bytes }) => `Taille en ${getUnit(bytes)}`,
+  'cc-pricing-product-consumption.size': ({ bytes }) => `Taille (en ${getUnit(bytes)})`,
   'cc-pricing-product-consumption.storage.label': `stockage`,
   'cc-pricing-product-consumption.storage.title': `Stockage :`,
   'cc-pricing-product-consumption.subtotal.title': `Sous-total (30 jours) :`,
   'cc-pricing-product-consumption.toggle-btn.label': `Afficher plus de details`,
   'cc-pricing-product-consumption.total.title': `Total estimé (30 jours) :`,
+  'cc-pricing-product-consumption.unit': `Unité`,
   //#endregion
   //#region cc-select
   'cc-select.required': `obligatoire`,

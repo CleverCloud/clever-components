@@ -463,13 +463,13 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
       return html`
         <cc-input-number
           label=${i18n('cc-pricing-product-consumption.size', { bytes: unitValue })}
-          hidden-label
           class="input-quantity"
           value=${quantity}
           min="0"
           @cc-input-number:input=${(e) => this._onInputValue(type, e.detail)}
         ></cc-input-number>
         <cc-toggle
+          legend=${i18n('cc-pricing-product-consumption.unit')}
           class="input-unit"
           value=${unitValue}
           .choices=${this._getUnits()}
@@ -481,7 +481,6 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
       return html`
         <cc-input-number
           label=${i18n('cc-pricing-product-consumption.quantity')}
-          hidden-label
           class="input-quantity"
           value=${quantity}
           min="0"

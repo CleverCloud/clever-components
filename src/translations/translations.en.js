@@ -588,6 +588,7 @@ export const translations = {
   'cc-pricing-estimation.estimated-price-name.second': `estimated/Second`,
   'cc-pricing-estimation.feature.connection-limit': `Connection limit: `,
   'cc-pricing-estimation.feature.cpu': `vCPUs: `,
+  'cc-pricing-estimation.feature.custom': ({ featureName }) => `${featureName}: `,
   'cc-pricing-estimation.feature.databases': `Databases: `,
   'cc-pricing-estimation.feature.disk-size': `Disk size: `,
   'cc-pricing-estimation.feature.gpu': `GPUs: `,
@@ -599,7 +600,7 @@ export const translations = {
   'cc-pricing-estimation.heading': `My selection`,
   'cc-pricing-estimation.hide': `Hide`,
   'cc-pricing-estimation.label.currency': `Currency: `,
-  'cc-pricing-estimation.label.temporality': `Temporality: `,
+  'cc-pricing-estimation.label.temporality': `Unit of time: `,
   'cc-pricing-estimation.plan.delete': ({ productName, planName }) => `Remove ${productName} - ${planName}`,
   'cc-pricing-estimation.plan.qty.btn.decrease': ({ productName, planName }) => `Decrease quantity - ${productName} (${planName})`,
   'cc-pricing-estimation.plan.qty.btn.increase': ({ productName, planName }) => `Increase quantity - ${productName} (${planName})`,
@@ -632,7 +633,7 @@ export const translations = {
   //#endregion
   //#region cc-pricing-header
   'cc-pricing-header.label.currency': `Currency`,
-  'cc-pricing-header.label.temporality': `Temporality`,
+  'cc-pricing-header.label.temporality': `Unit of time`,
   'cc-pricing-header.label.zone': `Zone`,
   'cc-pricing-header.price-name.1000-minutes': `Price (${formatNumber(lang, 1000)} minutes)`,
   'cc-pricing-header.price-name.30-days': () => sanitize`Price/30&nbsp;days`,
@@ -705,12 +706,13 @@ export const translations = {
   'cc-pricing-product-consumption.public-users.label': `public users`,
   'cc-pricing-product-consumption.public-users.title': `Public users:`,
   'cc-pricing-product-consumption.quantity': `Quantity`,
-  'cc-pricing-product-consumption.size': ({ bytes }) => `Size in ${getUnit(bytes)}`,
+  'cc-pricing-product-consumption.size': ({ bytes }) => `Size (in ${getUnit(bytes)})`,
   'cc-pricing-product-consumption.storage.label': `storage`,
   'cc-pricing-product-consumption.storage.title': `Storage:`,
   'cc-pricing-product-consumption.subtotal.title': `Subtotal (30 days):`,
   'cc-pricing-product-consumption.toggle-btn.label': `Show more details`,
   'cc-pricing-product-consumption.total.title': `Estimated total (30 days):`,
+  'cc-pricing-product-consumption.unit': `Unit`,
   //#endregion
   //#region cc-select
   'cc-select.required': `required`,

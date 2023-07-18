@@ -121,6 +121,7 @@ function formatAddonFeatures (providerFeatures, selectedFeatures) {
         type: feature.type.toLowerCase(),
         // Only used when we format plan features
         value: feature.computable_value ?? '',
+        name: feature.name,
       };
     });
 }

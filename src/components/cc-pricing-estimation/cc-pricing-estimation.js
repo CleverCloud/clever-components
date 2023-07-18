@@ -149,8 +149,16 @@ export class CcPricingEstimation extends LitElement {
    * @return {string|void} the translated feature name if a translation exists or nothing if the translation does not exist
    */
   _getFeatureName (feature) {
-    if (feature != null && FEATURES_I18N[feature.code] != null) {
+    if (feature == null) {
+      return '';
+    }
+
+    if (FEATURES_I18N[feature.code] != null) {
       return FEATURES_I18N[feature.code]();
+    }
+
+    if (feature.name != null) {
+      return i18n('cc-pricing-estimation.feature.custom', { featureName: feature.name });
     }
   }
 
@@ -471,16 +479,15 @@ export class CcPricingEstimation extends LitElement {
           </summary>
           ${hasFeatures ? html`
             <dl class="plan__features">
-              ${plan.features?.map((feature) => {
-                if (AVAILABLE_FEATURES.includes(feature.code)) {
+              ${plan.features
+                ?.filter((feature) => AVAILABLE_FEATURES.includes(feature.code) || feature.name != null)
+                ?.map((feature) => {
                   return html`
                     <div class="plan__features__feature">
                       <dt>${this._getFeatureName(feature)}</dt>
                       <dd>${this._getFeatureValue(feature)}</dd>
                     </div>
                   `;
-                }
-                return '';
               })}
             </dl>
           ` : ''}
