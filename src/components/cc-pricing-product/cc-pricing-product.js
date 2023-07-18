@@ -111,8 +111,16 @@ export class CcPricingProduct extends withResizeObserver(LitElement) {
    * @return {string|undefined} the translated feature name if a translation exists or nothing if the translation does not exist
    */
   _getFeatureName (feature) {
-    if (feature != null && FEATURES_I18N[feature.code] != null) {
+    if (feature == null) {
+      return '';
+    }
+
+    if (FEATURES_I18N[feature.code] != null) {
       return FEATURES_I18N[feature.code]();
+    }
+
+    if (feature.name != null) {
+      return feature.name;
     }
   }
 
@@ -254,7 +262,7 @@ export class CcPricingProduct extends withResizeObserver(LitElement) {
   _renderProductPlans (productName, productPlans, productFeatures) {
     // this component is not rerendering very often so we consider we can afford to sort plans and filter the features here.
     const sortedPlans = [...productPlans].sort((a, b) => a.price - b.price);
-    const filteredProductFeatures = [...productFeatures].filter((feature) => AVAILABLE_FEATURES.includes(feature.code) || feature.name != null);
+    const filteredProductFeatures = productFeatures.filter((feature) => AVAILABLE_FEATURES.includes(feature.code) || feature.name != null);
 
     // We don't really have a good way to detect when the component should switch between big and small mode.
     // Also, when this component is used several times in the page, it's better if all instances switch at the same breakpoint.
