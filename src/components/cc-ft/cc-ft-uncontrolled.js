@@ -20,6 +20,9 @@ export class CcFtUncontrolled extends LitElement {
         type: Object,
         attribute: 'form-state',
       },
+
+      _name: { type: String, state: true },
+      _email: { type: String, state: true },
     };
   }
 
@@ -38,6 +41,9 @@ export class CcFtUncontrolled extends LitElement {
       },
     };
 
+    this._name = '';
+    this._email = '';
+
     this._formRef = {
       email: createRef(),
       name: createRef(),
@@ -45,46 +51,67 @@ export class CcFtUncontrolled extends LitElement {
   }
 
   _onNameInput ({ detail: value }) {
-    this.formState = {
-      ...this.formState,
-      name: {
-        ...this.formState.name,
-        value,
-      },
-    };
+    this._name = value;
+    // this.formState = {
+    //   ...this.formState,
+    //   name: {
+    //     ...this.formState.name,
+    //     value,
+    //   },
+    // };
   }
 
   _onEmailInput ({ detail: value }) {
-    this.formState = {
-      ...this.formState,
-      email: {
-        ...this.formState.email,
-        value,
-      },
-    };
+    this._email = value;
+    // this.formState = {
+    //   ...this.formState,
+    //   email: {
+    //     ...this.formState.email,
+    //     value,
+    //   },
+    // };
   }
 
   _onSubmit () {
-    const emailValue = this.formState.email.value;
-    const nameValue = this.formState.name.value;
+    const emailValue = this._email;
+    const nameValue = this._name;
 
     const emailValid = validateEmailAddress(emailValue);
     const nameValid = nameValue?.length === 0 ? 'empty' : null;
 
-    if (emailValid != null || nameValid != null) {
-      this.formState = {
-        ...this.formState,
-        email: {
-          value: emailValue,
-          error: emailValid,
-        },
-        name: {
-          value: nameValue,
-          error: nameValid,
-        },
-      };
-    }
-    else {
+    this.formState = {
+      ...this.formState,
+      email: {
+        value: emailValue,
+        error: emailValid,
+      },
+      name: {
+        value: nameValue,
+        error: nameValid,
+      },
+    };
+
+    // if (emailValid != null || nameValid != null) {
+    //   this.formState = {
+    //     ...this.formState,
+    //     email: {
+    //       value: emailValue,
+    //       error: emailValid,
+    //     },
+    //     name: {
+    //       value: nameValue,
+    //       error: nameValid,
+    //     },
+    //   };
+    // }
+    // else {
+    //   dispatchCustomEvent(this, 'submit', {
+    //     email: emailValue,
+    //     name: nameValue,
+    //   });
+    // }
+
+    if (emailValid == null && nameValid == null) {
       dispatchCustomEvent(this, 'submit', {
         email: emailValue,
         name: nameValue,
@@ -102,6 +129,13 @@ export class CcFtUncontrolled extends LitElement {
         value: '',
       },
     };
+  }
+
+  willUpdate (_changedProperties) {
+    if (_changedProperties.has('formState')) {
+      this.name = this.formState.name.value;
+      this.email = this.formState.email.value;
+    }
   }
 
   async updated (_changedProperties) {
@@ -126,7 +160,7 @@ export class CcFtUncontrolled extends LitElement {
           label="Name"
           ?disabled=${isSubmitting}
           required
-          .value=${this.formState.name.value}
+          .value=${this._name}
           @cc-input-text:input=${this._onNameInput}
           @cc-input-text:requestimplicitsubmit=${this._onSubmit}
           ${ref(this._formRef.name)}
@@ -139,7 +173,7 @@ export class CcFtUncontrolled extends LitElement {
           label="Email"
           ?disabled=${isSubmitting}
           required
-          .value=${this.formState.email.value}
+          .value=${this._email}
           @cc-input-text:input=${this._onEmailInput}
           @cc-input-text:requestimplicitsubmit=${this._onSubmit}
           ${ref(this._formRef.email)}
