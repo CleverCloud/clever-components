@@ -10,18 +10,6 @@ defineSmartComponent({
   onContextUpdate ({ component, context, onEvent, updateComponent, signal }) {
     const api = getApi();
 
-    /* const validators = {
-      name (value) {
-        if (value == null || value.length === 0) {
-          return 'empty';
-        }
-        return null;
-      },
-      email (value) {
-        return validateEmailAddress(value);
-      },
-    }; */
-
     onEvent('cc-ft-uncontrolled:submit', (detail) => {
       updateComponent('formState', (formState) => {
         formState.state = 'submitting';
@@ -32,13 +20,12 @@ defineSmartComponent({
           component.resetFormState();
         })
         .catch((error) => {
-          // todo: error
           if (error.message === 'email-used') {
             updateComponent('formState', (formState) => {
               formState.state = 'idle';
               formState.email.error = 'already-used';
             });
-            // component.focusFormItem('email');
+            component.focusFormItem('email');
           }
         });
     });

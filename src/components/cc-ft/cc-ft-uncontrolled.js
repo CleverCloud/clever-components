@@ -27,94 +27,90 @@ export class CcFtUncontrolled extends LitElement {
     super();
     this.myProp = 'hello';
 
+    this._form = [
+      {
+        name: 'name',
+        type: 'string',
+        initialValue: '',
+      },
+      {
+        name: 'email',
+        type: 'email',
+        initialValue: '',
+      },
+    ];
+
     /** @type {FtFormState} */
     this.formState = {
       state: 'idle',
-      name: {
-        value: '',
-      },
-      email: {
-        value: '',
-      },
-    };
-
-    this._formRef = {
-      email: createRef(),
-      name: createRef(),
+      ...Object.fromEntries(this._form.map((e) => [e.name, {
+        value: e.initialValue,
+      }])),
     };
   }
 
-  _onNameInput ({ detail: value }) {
+  _onInput (event) {
+    const field = event.target.name;
     this.formState = {
       ...this.formState,
-      name: {
-        ...this.formState.name,
-        value,
+      [field]: {
+        ...this.formState[field],
+        value: event.detail,
       },
     };
   }
 
-  _onEmailInput ({ detail: value }) {
-    this.formState = {
-      ...this.formState,
-      email: {
-        ...this.formState.email,
-        value,
-      },
-    };
+  _validateField (value, type) {
+    if (type === 'email') {
+      return validateEmailAddress(value);
+    }
+    if (type === 'string') {
+      return value?.length === 0 ? 'empty' : null;
+    }
   }
 
   _onSubmit () {
-    const emailValue = this.formState.email.value;
-    const nameValue = this.formState.name.value;
-
-    const emailValid = validateEmailAddress(emailValue);
-    const nameValid = nameValue?.length === 0 ? 'empty' : null;
-
-    if (emailValid != null || nameValid != null) {
-      this.formState = {
-        ...this.formState,
-        email: {
-          value: emailValue,
-          error: emailValid,
+    const validation = Object.fromEntries(this._form.map((e) => {
+      return [
+        e.name,
+        {
+          value: this.formState[e.name].value,
+          error: this._validateField(this.formState[e.name].value, e.type),
         },
-        name: {
-          value: nameValue,
-          error: nameValid,
-        },
-      };
+      ];
+    }));
+
+    const isValid = Object.values(validation).every((e) => e.error == null);
+    if (isValid) {
+      dispatchCustomEvent(this, 'submit',
+        Object.fromEntries(this._form.map((e) => [
+          e.name,
+          this.formState[e.name].value,
+        ])),
+      );
     }
     else {
-      dispatchCustomEvent(this, 'submit', {
-        email: emailValue,
-        name: nameValue,
-      });
+      this.formState = {
+        ...this.formState,
+        ...validation,
+      };
+      const firstFailed = Object.entries(validation).find(([_, e]) => e.error != null);
+      this.focusFormItem(firstFailed[0]);
     }
   }
 
   resetFormState () {
     this.formState = {
       state: 'idle',
-      name: {
-        value: '',
-      },
-      email: {
-        value: '',
-      },
+      ...Object.fromEntries(this._form.map((e) => [e.name, {
+        value: e.initialValue,
+      }])),
     };
   }
 
-  async updated (_changedProperties) {
-    if (_changedProperties.has('formState')) {
-      if (this.formState.name.error != null) {
-        await this.updateComplete;
-        this._formRef.name.value.focus();
-      }
-      else if (this.formState.email.error != null) {
-        await this.updateComplete;
-        this._formRef.email.value.focus();
-      }
-    }
+  focusFormItem (formItem) {
+    // We need this so that the focus is done after the render in case of an error coming from the API
+    this.updateComplete.then(() => this.shadowRoot.querySelector(`[name=${formItem}]`)?.focus());
   }
 
   render () {
@@ -123,26 +119,25 @@ export class CcFtUncontrolled extends LitElement {
     return html`
       <form>
         <cc-input-text
+          name="name"
           label="Name"
           ?disabled=${isSubmitting}
           required
           .value=${this.formState.name.value}
-          @cc-input-text:input=${this._onNameInput}
+          @cc-input-text:input=${this._onInput}
           @cc-input-text:requestimplicitsubmit=${this._onSubmit}
-          ${ref(this._formRef.name)}
         >
           ${this.formState.name.error != null ? html`<p slot="error">${this.formState.name.error}</p>` : ''}
         </cc-input-text>
 
         <cc-input-text
-          id="email"
+          name="email"
           label="Email"
           ?disabled=${isSubmitting}
           required
           .value=${this.formState.email.value}
-          @cc-input-text:input=${this._onEmailInput}
+          @cc-input-text:input=${this._onInput}
           @cc-input-text:requestimplicitsubmit=${this._onSubmit}
-          ${ref(this._formRef.email)}
         >
           ${this.formState.email.error != null ? html`<p slot="error">${this.formState.email.error}</p>` : ''}
         </cc-input-text>
