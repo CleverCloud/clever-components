@@ -44,27 +44,50 @@ export class CcFtUncontrolled extends LitElement {
     };
   }
 
-  _onSubmit () {
+  _onNameInput ({ detail: value }) {
+    this.formState = {
+      ...this.formState,
+      name: {
+        ...this.formState.name,
+        value,
+      },
+    };
+  }
 
-    const emailValue = this._formRef.email.value.value;
-    const nameValue = this._formRef.name.value.value;
-
+  _onEmailInput ({ detail: value }) {
     this.formState = {
       ...this.formState,
       email: {
-        value: emailValue,
-        error: validateEmailAddress(emailValue),
-      },
-      name: {
-        value: nameValue,
-        error: nameValue?.length === 0 ? 'empty' : null,
+        ...this.formState.email,
+        value,
       },
     };
+  }
 
-    if (this.formState.email.error == null && this.formState.name.error == null) {
+  _onSubmit () {
+    const emailValue = this.formState.email.value;
+    const nameValue = this.formState.name.value;
+
+    const emailValid = validateEmailAddress(emailValue);
+    const nameValid = nameValue?.length === 0 ? 'empty' : null;
+
+    if (emailValid != null || nameValid != null) {
+      this.formState = {
+        ...this.formState,
+        email: {
+          value: emailValue,
+          error: emailValid,
+        },
+        name: {
+          value: nameValue,
+          error: nameValid,
+        },
+      };
+    }
+    else {
       dispatchCustomEvent(this, 'submit', {
-        email: this._formRef.email.value,
-        name: this._formRef.name.value,
+        email: emailValue,
+        name: nameValue,
       });
     }
   }
@@ -104,6 +127,7 @@ export class CcFtUncontrolled extends LitElement {
           ?disabled=${isSubmitting}
           required
           .value=${this.formState.name.value}
+          @cc-input-text:input=${this._onNameInput}
           @cc-input-text:requestimplicitsubmit=${this._onSubmit}
           ${ref(this._formRef.name)}
         >
@@ -116,6 +140,7 @@ export class CcFtUncontrolled extends LitElement {
           ?disabled=${isSubmitting}
           required
           .value=${this.formState.email.value}
+          @cc-input-text:input=${this._onEmailInput}
           @cc-input-text:requestimplicitsubmit=${this._onSubmit}
           ${ref(this._formRef.email)}
         >

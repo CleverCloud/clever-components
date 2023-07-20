@@ -22,12 +22,12 @@ defineSmartComponent({
       },
     }; */
 
-    onEvent('cc-ft-uncontrolled:submit', () => {
+    onEvent('cc-ft-uncontrolled:submit', (detail) => {
       updateComponent('formState', (formState) => {
         formState.state = 'submitting';
       });
 
-      api.submitForm()
+      api.submitForm(detail)
         .then(() => {
           component.resetFormState();
         })
@@ -48,9 +48,11 @@ defineSmartComponent({
 // -- API calls
 function getApi () {
   return {
-    submitForm () {
-      // return wait(500);
-      return fail(500);
+    submitForm ({ name, email }) {
+      if (email.startsWith('used')) {
+        return fail(500);
+      }
+      return wait(500);
     },
   };
 }
