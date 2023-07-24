@@ -173,10 +173,8 @@ function renderBaseStory ({
     >
       <div class="header">
         <!-- pricingHeader has no error state -->
-        ${state === 'loading' || state === 'error'
-          ? createStoryItem(pricingHeaderStory, { zones: { state: 'loading' } })
-          : ''
-        }
+        ${state === 'loading' ? createStoryItem(pricingHeaderStory, { zones: { state: 'loading' } }) : ''}
+        ${state === 'error' ? createStoryItem(pricingHeaderStory, { zones: { state: 'error' } }) : ''}
         ${state === 'loaded' ? createStoryItem(pricingHeaderStory) : ''}
       </div>
       <div class="main-content">
