@@ -3,7 +3,7 @@ import { MemoryCache } from './memory-cache.js';
 /**
  * @typedef {import('./timestamp-formatter.types.js').TimestampFormattedPart} TimestampFormattedPart
  * @typedef {import('./timestamp-formatter.types.js').TimestampDisplay} TimestampDisplay
- * @typedef {import('.lib/timestamp-formatter.types.js').Timezone} Timezone
+ * @typedef {import('./timestamp-formatter.types.js').Timezone} Timezone
  */
 
 /** @type {Array<TimestampFormattedPart>} */
@@ -129,6 +129,7 @@ export class TimestampFormatter {
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
+      hour12: false,
       fractionalSecondDigits: 3,
       timeZoneName: 'longOffset',
       timeZone: (timezone === 'local') ? undefined : timezone,

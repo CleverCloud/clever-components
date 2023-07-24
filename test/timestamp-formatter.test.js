@@ -11,24 +11,24 @@ describe('timestamp formatter', function () {
     });
     it('should return iso datetime when display is "datetime-iso"', function () {
       expect(new TimestampFormatter('datetime-iso', 'UTC').format(timestamp))
-        .to.equal('2023-03-23T02:27:33.888Z');
+        .to.equal('2023-03-23T16:27:33.888Z');
     });
     it('should return iso time when display is "time-iso"', function () {
       expect(new TimestampFormatter('time-iso', 'UTC').format(timestamp))
-        .to.equal('02:27:33.888Z');
+        .to.equal('16:27:33.888Z');
     });
     it('should return short datetime when display is "datetime-short"', function () {
       expect(new TimestampFormatter('datetime-short', 'UTC').format(timestamp))
-        .to.equal('2023-03-23 02:27:33');
+        .to.equal('2023-03-23 16:27:33');
     });
     it('should return short time when display is "time-short"', function () {
       expect(new TimestampFormatter('time-short', 'UTC').format(timestamp))
-        .to.equal('02:27:33');
+        .to.equal('16:27:33');
     });
     it('should return the right time when timezone is "local"', function () {
       // note that this test passes because we emulate the Europe/Paris timezone when launching test in browser.
       expect(new TimestampFormatter('datetime-iso', 'local').format(timestamp))
-        .to.equal('2023-03-23T03:27:33.888+01:00');
+        .to.equal('2023-03-23T17:27:33.888+01:00');
     });
   });
   describe('formatToParts() method', function () {
@@ -41,7 +41,7 @@ describe('timestamp formatter', function () {
         .to.eql({
           date: '2023-03-23',
           separator: 'T',
-          time: '02:27:33',
+          time: '16:27:33',
           milliseconds: '.888',
           timezone: 'Z',
         });
@@ -49,7 +49,7 @@ describe('timestamp formatter', function () {
     it('should return iso time when display is "time-iso"', function () {
       expect(new TimestampFormatter('time-iso', 'UTC').formatToParts(timestamp))
         .to.eql({
-          time: '02:27:33',
+          time: '16:27:33',
           milliseconds: '.888',
           timezone: 'Z',
         });
@@ -59,13 +59,13 @@ describe('timestamp formatter', function () {
         .to.eql({
           date: '2023-03-23',
           separator: ' ',
-          time: '02:27:33',
+          time: '16:27:33',
         });
     });
     it('should return short time when display is "time-short"', function () {
       expect(new TimestampFormatter('time-short', 'UTC').formatToParts(timestamp))
         .to.eql({
-          time: '02:27:33',
+          time: '16:27:33',
         });
     });
     it('should return the right time when timezone is "local"', function () {
@@ -74,7 +74,7 @@ describe('timestamp formatter', function () {
         .to.eql({
           date: '2023-03-23',
           separator: 'T',
-          time: '03:27:33',
+          time: '17:27:33',
           milliseconds: '.888',
           timezone: '+01:00',
         });
