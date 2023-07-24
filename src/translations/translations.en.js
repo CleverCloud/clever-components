@@ -632,6 +632,7 @@ export const translations = {
   },
   //#endregion
   //#region cc-pricing-header
+  'cc-pricing-header.error': `Something went wrong while loading pricing filters.`,
   'cc-pricing-header.label.currency': `Currency`,
   'cc-pricing-header.label.temporality': `Unit of time`,
   'cc-pricing-header.label.zone': `Zone`,

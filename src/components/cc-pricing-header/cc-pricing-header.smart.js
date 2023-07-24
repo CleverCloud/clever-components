@@ -45,6 +45,9 @@ defineSmartComponent({
           updateComponent('selectedZoneId', zoneId);
         })
         .catch((error) => {
+          updateComponent('zones', {
+            state: 'error',
+          });
           console.error(error);
         });
     }
