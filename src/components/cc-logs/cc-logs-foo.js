@@ -21,8 +21,9 @@ import { i18n } from '../../lib/i18n.js';
 import { notifySuccess } from '../../lib/notifications.js';
 import { elementsFromPoint } from '../../lib/shadow-dom-utils.js';
 import { TimestampFormatter } from '../../lib/timestamp-formatter.js';
-import { groupBy, unique } from '../../lib/utils.js';
+import { unique } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
+import { LogsList } from './logs-list.js';
 
 /** @type {MetadataRendering} The default metadata renderer */
 const DEFAULT_METADATA_RENDERING = {
@@ -156,7 +157,7 @@ class LogsCtrl {
     const range = [];
     let lastId = null;
     let inRange = false;
-    for (const log of this._component._filteredLogs) {
+    for (const log of this._component._logsList.getList()) {
       if (inRange) {
         range.push(log.id);
         if (log.id === lastId) {
@@ -182,7 +183,7 @@ class LogsCtrl {
    * @return {Log}
    */
   findLogByIndex (index) {
-    return this._component._filteredLogs[index];
+    return this._component._logsList.getList()[index];
   }
 
   /**
@@ -190,7 +191,7 @@ class LogsCtrl {
    * @return {number|undefined}
    */
   findIndexById (id) {
-    return this._component._filteredLogs.findIndex((log) => log.id === id);
+    return this._component._logsList.getList().findIndex((log) => log.id === id);
   }
 }
 
@@ -621,7 +622,6 @@ export class CcLogsComponent extends LitElement {
       timestampDisplay: { type: String, attribute: 'timestamp-display' },
       timezone: { type: String },
       wrapLines: { type: Boolean, attribute: 'wrap-lines' },
-      _filteredLogs: { type: Array, state: true },
       _focusedId: { type: String, state: true },
       _selection: { type: Array, state: true },
     };
@@ -657,9 +657,6 @@ export class CcLogsComponent extends LitElement {
     /** @type {boolean} Whether to wrap long lines. */
     this.wrapLines = false;
 
-    /** @type {Array<Log>} The internal logs collection to be displayed. */
-    this._filteredLogs = [];
-
     /** @type {Array<Log>} The internal full collection of logs. */
     this._logs = [];
 
@@ -691,12 +688,6 @@ export class CcLogsComponent extends LitElement {
       this._logsCtrl,
     );
 
-    /**
-     * @type {function(log: Log): boolean|null} The function to use to filter the visible logs.
-     * It is maintained in sync with the `timestampDisplay` and `timezone` properties.
-     */
-    this._filterPredicate = null;
-
     /** @type {string|null} The id of the log for which the select button is focused. */
     this._focusedId = null;
 
@@ -711,6 +702,19 @@ export class CcLogsComponent extends LitElement {
       ctrl: false,
       shift: false,
     };
+
+    this._logsList = new LogsList(() => {
+      this.requestUpdate();
+      // When internal _filteredLogs collection has changed and follow is active, we inhibite the follow binding until the element is really added to the DOM.
+      // With lit-virtualizer, we need to wait for `layoutComplete` to make sure the DOM is updated (hooking on the `updated()` function won't be enough).
+      // We do that because we are sure that after adding element we want to continue follow.
+      if (this._logsRef.value != null && this.follow && !this._followBindingInhibited) {
+        this._followBindingInhibited = true;
+        this._logsRef.value.layoutComplete.then(() => {
+          this._followBindingInhibited = false;
+        });
+      }
+    });
   }
 
   // region Private methods
@@ -770,91 +774,6 @@ export class CcLogsComponent extends LitElement {
     this._dragSelectionCtrl.end();
   }
 
-  _applyLimit () {
-    if (this.limit == null || this.limit === -1) {
-      return false;
-    }
-    const offset = this._logs.length - this.limit;
-    if (offset <= 0) {
-      return false;
-    }
-
-    if (!this._selectionCtrl.isEmpty()) {
-      const removed = this._logs.slice(0, offset);
-      this._selectionCtrl.removeAll(removed.map((l) => l.id));
-    }
-
-    this._logs = this._logs.slice(offset);
-
-    return true;
-  }
-
-  _hasFilter () {
-    return this._filterPredicate != null;
-  }
-
-  _createFilterPredicate (filter) {
-    if (filter == null || filter.length === 0) {
-      return null;
-    }
-
-    /**
-     * @param {Array<function(log: Log): boolean>} predicates
-     * @return {function(log: Log): boolean}
-     */
-    const and = (predicates) => {
-      return (log) => {
-        for (const predicate of predicates) {
-          if (!predicate(log)) {
-            return false;
-          }
-        }
-        return true;
-      };
-    };
-
-    /**
-     * @param {Array<function(log: Log): boolean>} predicates
-     * @return {function(log: Log): boolean}
-     */
-    const or = (predicates) => {
-      return (log) => {
-        for (const predicate of predicates) {
-          if (predicate(log)) {
-            return true;
-          }
-        }
-        return false;
-      };
-    };
-
-    /**
-     *
-     * @param filter
-     * @return {function(log: Log): boolean}
-     */
-    const predicate = (filter) => (log) => {
-      const logMetadata = log.metadata.find((m) => m.name === filter.metadata);
-      return logMetadata?.value === filter.value;
-    };
-
-    const filtersGroups = Object.values(groupBy(filter, 'metadata'));
-
-    return and(filtersGroups.map((filters) => or(filters.map((filter) => predicate(filter)))));
-  }
-
-  _filter (filter, logs) {
-    if (!this._hasFilter()) {
-      return logs;
-    }
-
-    return logs.filter(this._filterPredicate);
-  }
-
-  _applyFilter () {
-    this._filteredLogs = this._filter(this.filter, this._logs);
-  }
-
   // endregion
 
   // region Follow logic
@@ -903,7 +822,7 @@ export class CcLogsComponent extends LitElement {
       return;
     }
 
-    const shouldFollow = e.last >= this._filteredLogs.length - 2;
+    const shouldFollow = e.last >= this._logsList.getList().length - 2;
     this._setFollow(shouldFollow);
   }
 
@@ -1125,7 +1044,7 @@ export class CcLogsComponent extends LitElement {
 
       // instead we want to navigate through the select buttons
       const inLogsRange = (number) => {
-        return inRange(number, 0, this._filteredLogs.length - 1);
+        return inRange(number, 0, this._logsList.getList().length - 1);
       };
 
       const getNextIndex = (idx) => {
@@ -1223,26 +1142,19 @@ export class CcLogsComponent extends LitElement {
    * @param {Log} log
    */
   appendLog (log) {
-    this.appendLogs([log]);
+    this._logsList.append([log]);
   }
 
   /**
    * @param {Array<Log>} logs
    */
   appendLogs (logs) {
-    this._logs = [...this._logs, ...logs];
-    if (this._applyLimit()) {
-      this._applyFilter();
-    }
-    else {
-      this._filteredLogs = [...this._filteredLogs, ...this._filter(this.filter, logs)];
-    }
+    this._logsList.append(logs);
   }
 
   clear () {
     this._resetSelection();
-    this._logs = [];
-    this._filteredLogs = [];
+    this._logsList.clear();
   }
 
   // endregion
@@ -1262,29 +1174,21 @@ export class CcLogsComponent extends LitElement {
 
     // When logs property has changed, we reset the internal selection and focus state.
     if (_changedProperties.has('logs')) {
-      this.clear();
-      this._logs = [...this.logs];
-    }
-
-    // When internal _filteredLogs collection has changed and follow is active, we inhibite the follow binding until the element is really added to the DOM.
-    // With lit-virtualizer, we need to wait for `layoutComplete` to make sure the DOM is updated (hooking on the `updated()` function won't be enough).
-    // We do that because we are sure that after adding element we want to continue follow.
-    if (_changedProperties.has('_filteredLogs')) {
-      if (this._logsRef.value != null && this.follow && !this._followBindingInhibited) {
-        this._followBindingInhibited = true;
-        this._logsRef.value.layoutComplete.then(() => {
-          this._followBindingInhibited = false;
-        });
-      }
+      this._logsList.clear();
+      this._logsList.append([...this.logs]);
     }
 
     if (_changedProperties.has('limit')) {
-      this._applyLimit();
+      this._logsList.setLimit(this.limit);
+      // TODO Cannot be reproduced for now
+      // if (!this._selectionCtrl.isEmpty()) {
+      //   const removed = this._logs.slice(0, offset);
+      //   this._selectionCtrl.removeAll(removed.map((l) => l.id));
+      // }
     }
 
     if (_changedProperties.has('filter')) {
-      this._filterPredicate = this._createFilterPredicate(this.filter);
-      this._applyFilter();
+      this._logsList.setFilter(this.filter);
     }
 
     if (_changedProperties.has('_selection')) {
@@ -1348,15 +1252,15 @@ export class CcLogsComponent extends LitElement {
         id="logs"
         tabindex="0"
         ${ref(__refName)}
-        .items=${this._filteredLogs}
+        .items=${this._logsList.getList()}
         ?scroller=${true}
         .keyFunction=${(it) => it.id}
         .renderItem=${(item, index) => this._renderLog(
-          item,
-          index,
-          this.wrapLines,
-          this._timestampFormatter,
-        )}
+      item,
+      index,
+      this.wrapLines,
+      this._timestampFormatter,
+    )}
         @copy=${this._onCopy}
         @focus=${this._onFocus}
         @keydown=${this._onKeyPress}
@@ -1368,15 +1272,15 @@ export class CcLogsComponent extends LitElement {
         @wheel=${this._onMouseWheel}
       ></lit-virtualizer>
       ${!this._selectionCtrl.isEmpty()
-        ? html`
+      ? html`
           <cc-button
             class="copy_button"
             .icon=${iconCopy}
             @cc-button:click=${this._onCopyButtonClick}
             ?hide-text="${true}">${i18n('cc-logs.copy')}
           </cc-button>`
-        : null
-      }
+      : null
+    }
     `;
   }
 
@@ -1448,13 +1352,13 @@ export class CcLogsComponent extends LitElement {
     return html`
       <span class="metadata--wrapper">
         ${
-          join(
-            log.metadata
-              .map((metadata) => this._renderMetadata(metadata))
-              .filter((t) => t != null),
-            html`&nbsp;`,
-          )
-        }
+      join(
+        log.metadata
+          .map((metadata) => this._renderMetadata(metadata))
+          .filter((t) => t != null),
+        html`&nbsp;`,
+      )
+    }
       </span>
     `;
   }
@@ -1641,4 +1545,4 @@ export class CcLogsComponent extends LitElement {
   }
 }
 
-window.customElements.define('cc-logs', CcLogsComponent);
+window.customElements.define('cc-logs-foo', CcLogsComponent);
