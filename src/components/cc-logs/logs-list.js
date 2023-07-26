@@ -1,129 +1,92 @@
-import { groupBy } from '../../lib/utils.js';
-
 export class LogsList {
 
   constructor (updateCallback) {
     this._updateCallback = updateCallback;
-    this.filter = [];
-    this.limit = null;
-    // TODO rename this
-    this._logs = [];
-    this._filteredLogs = [];
-    this._filterPredicate = null;
-  }
-
-  clear () {
-    this._logs = [];
-    this._filteredLogs = [];
-    this._updateCallback();
-  }
-
-  append (logs) {
-    this._logs = [...this._logs, ...logs];
-    if (this._applyLimit()) {
-      this._applyFilter();
-    }
-    else {
-      this._filteredLogs = [...this._filteredLogs, ...this._filter(this.filter, logs)];
-    }
-    this._updateCallback();
+    this._limit = Infinity;
+    this._filterCallback = () => true;
+    this._logsAfterLimit = [];
+    this._logsAfterLimitAndFilter = [];
   }
 
   getList () {
-    return this._filteredLogs;
+    return this._logsAfterLimitAndFilter;
+  }
+
+  clear () {
+    this._logsAfterLimit = [];
+    this._logsAfterLimitAndFilter = [];
+    this._updateCallback();
+  }
+
+  append (newLogs) {
+    this._updateList({ newLogs });
   }
 
   setLimit (limit) {
-    this.limit = limit;
-    this._applyLimit();
-    this._updateCallback();
+    const isNumber = (typeof limit === 'number') && !Number.isNaN(limit);
+    this._limit = isNumber ? limit : Infinity;
+    this._updateList();
   }
 
   setFilter (filter) {
-    this.filter = filter;
-    this._filterPredicate = this._createFilterPredicate(this.filter);
-    this._applyFilter();
+
+    const filterValuesByMetadataName = {};
+    if (Array.isArray(filter)) {
+      for (const predicate of filter) {
+        if (filterValuesByMetadataName[predicate.metadata] == null) {
+          filterValuesByMetadataName[predicate.metadata] = [];
+        }
+        filterValuesByMetadataName[predicate.metadata].push(predicate.value);
+      }
+    }
+    const filterValuesByMetadataNameEntries = Object.entries(filterValuesByMetadataName);
+
+    this._filterCallback = (log) => {
+      // NOTE: [].every() is always true, whatever the callback
+      return filterValuesByMetadataNameEntries.every(([metadata, values]) => {
+        const logMetadata = log.metadata.find((m) => m.name === metadata);
+        return values.includes(logMetadata?.value);
+      });
+    };
+
+    this._updateList({ forceFilter: true });
+  }
+
+  _updateList (options = {}) {
+
+    const newLogs = options.newLogs ?? [];
+    const forceFilter = options.forceFilter ?? false;
+
+    // Appended logs length may be above limit
+    const logsToAdd = (newLogs.length > this._limit)
+      ? newLogs.slice(newLogs.length - this._limit)
+      : newLogs;
+
+    // If limit is reached, let's try to see what to remove and what to keep
+    const newLength = this._logsAfterLimit.length + logsToAdd.length;
+    const sliceIndex = (newLength >= this._limit)
+      ? newLength - this._limit
+      : 0;
+
+    const logsToRemove = this._logsAfterLimit.slice(0, sliceIndex);
+    const logsToKeep = this._logsAfterLimit.slice(sliceIndex);
+
+    this._logsAfterLimit = [...logsToKeep, ...logsToAdd];
+
+    if (forceFilter) {
+      this._logsAfterLimitAndFilter = this._logsAfterLimit.filter(this._filterCallback);
+    }
+    else {
+      // We filter the logs to remove so we can know how many to remove from the filtered list
+      const logsToRemoveFiltered = logsToRemove.filter(this._filterCallback);
+      // No need to filter the logs we want to keep
+      const logsToKeepFiltered = this._logsAfterLimitAndFilter.slice(logsToRemoveFiltered.length);
+      // Only need to filter the new logs
+      const logsToAddFiltered = logsToAdd.filter(this._filterCallback);
+
+      this._logsAfterLimitAndFilter = [...logsToKeepFiltered, ...logsToAddFiltered];
+    }
+
     this._updateCallback();
   }
-
-  _applyLimit () {
-    if (this.limit == null || this.limit === -1) {
-      return false;
-    }
-    const offset = this._logs.length - this.limit;
-    if (offset <= 0) {
-      return false;
-    }
-
-    this._logs = this._logs.slice(offset);
-
-    return true;
-  }
-
-  _applyFilter () {
-    this._filteredLogs = this._filter(this.filter, this._logs);
-  }
-
-  _filter (filter, logs) {
-    if (!this._hasFilter()) {
-      return logs;
-    }
-
-    return logs.filter(this._filterPredicate);
-  }
-
-  _hasFilter () {
-    return this._filterPredicate != null;
-  }
-
-  _createFilterPredicate (filter) {
-    if (filter == null || filter.length === 0) {
-      return null;
-    }
-
-    /**
-     * @param {Array<function(log: Log): boolean>} predicates
-     * @return {function(log: Log): boolean}
-     */
-    const and = (predicates) => {
-      return (log) => {
-        for (const predicate of predicates) {
-          if (!predicate(log)) {
-            return false;
-          }
-        }
-        return true;
-      };
-    };
-
-    /**
-     * @param {Array<function(log: Log): boolean>} predicates
-     * @return {function(log: Log): boolean}
-     */
-    const or = (predicates) => {
-      return (log) => {
-        for (const predicate of predicates) {
-          if (predicate(log)) {
-            return true;
-          }
-        }
-        return false;
-      };
-    };
-
-    /**
-     *
-     * @param filter
-     * @return {function(log: Log): boolean}
-     */
-    const predicate = (filter) => (log) => {
-      const logMetadata = log.metadata.find((m) => m.name === filter.metadata);
-      return logMetadata?.value === filter.value;
-    };
-
-    const filtersGroups = Object.values(groupBy(filter, 'metadata'));
-
-    return and(filtersGroups.map((filters) => or(filters.map((filter) => predicate(filter)))));
-  }
-
 }
