@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo logs</title>
+  <link rel="stylesheet" href="/src/styles/default-theme.css">
+  <style>
+  html,
+  body {
+    margin: 0;
+    height: 100%;
+  }
+
+  body {
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    background-color: #eee;
+    display: grid;
+    box-sizing: border-box;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    padding: 1em;
+    gap: 1em;
+    width: 100%;
+  }
+
+  cc-logs,
+  cc-logs-foo {
+    background-color: #fff;
+  }
+
+  </style>
+  <script src="index.js" type="module"></script>
+</head>
+<body>
+
+<cc-logs></cc-logs>
+<cc-logs></cc-logs>
+<cc-logs></cc-logs>
+
+<cc-logs-foo></cc-logs-foo>
+<cc-logs-foo></cc-logs-foo>
+<cc-logs-foo></cc-logs-foo>
+
+</body>
+</html>
