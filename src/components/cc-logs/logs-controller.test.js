@@ -158,4 +158,55 @@ describe('', () => {
     expect(logsCtrl.isSelected('00010')).to.equal(false);
     expect(spy.callCount).to.equal(8);
   });
+
+  it('multiple selection (one by one)', () => {
+
+    logsCtrl.limit = 10;
+
+    const logsOne = generateLogs(10, 0);
+
+    logsCtrl.append(logsOne);
+    expect(logsCtrl.isSelected('00002')).to.equal(false);
+    expect(logsCtrl.isSelected('00003')).to.equal(false);
+    expect(logsCtrl.isSelected('00004')).to.equal(false);
+
+    logsCtrl.select('00002');
+    expect(logsCtrl.isSelected('00002')).to.equal(true);
+    expect(logsCtrl.isSelected('00003')).to.equal(false);
+    expect(logsCtrl.isSelected('00004')).to.equal(false);
+
+    logsCtrl.select('00003');
+    expect(logsCtrl.isSelected('00002')).to.equal(true);
+    expect(logsCtrl.isSelected('00003')).to.equal(true);
+    expect(logsCtrl.isSelected('00004')).to.equal(false);
+
+    logsCtrl.select('00004');
+    expect(logsCtrl.isSelected('00002')).to.equal(true);
+    expect(logsCtrl.isSelected('00003')).to.equal(true);
+    expect(logsCtrl.isSelected('00004')).to.equal(true);
+
+    logsCtrl.select('00003');
+    expect(logsCtrl.isSelected('00002')).to.equal(true);
+    expect(logsCtrl.isSelected('00003')).to.equal(false);
+    expect(logsCtrl.isSelected('00004')).to.equal(true);
+
+    logsCtrl.clearSelection();
+    expect(logsCtrl.isSelected('00002')).to.equal(false);
+    expect(logsCtrl.isSelected('00003')).to.equal(false);
+    expect(logsCtrl.isSelected('00004')).to.equal(false);
+
+    logsCtrl.select('00002');
+    logsCtrl.select('00003');
+    logsCtrl.select('00004');
+    expect(logsCtrl.isSelected('00002')).to.equal(true);
+    expect(logsCtrl.isSelected('00003')).to.equal(true);
+    expect(logsCtrl.isSelected('00004')).to.equal(true);
+
+    const logsTwo = generateLogs(4, 10);
+
+    logsCtrl.append(logsTwo);
+    expect(logsCtrl.isSelected('00002')).to.equal(false);
+    expect(logsCtrl.isSelected('00003')).to.equal(false);
+    expect(logsCtrl.isSelected('00004')).to.equal(true);
+  });
 });

@@ -9,6 +9,7 @@ export class InputController {
     const clickDetails = {
       inGutter: false,
       logId: null,
+      ctrlKey: e.ctrlKey,
     };
 
     for (const element of e.composedPath()) {
