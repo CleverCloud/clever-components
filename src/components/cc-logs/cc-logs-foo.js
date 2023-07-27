@@ -13,6 +13,7 @@ import { ansiStyles, ansiToLit, stripAnsi } from '../../lib/ansi/ansi.js';
 import defaultPalette from '../../lib/ansi/palettes/default.js';
 import { TimestampFormatter } from '../../lib/timestamp-formatter.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
+import { LogsController } from './logs-controller.js';
 
 // This style is the default ansi palette plus the ability to be overridden with the css theme.
 const DEFAULT_PALETTE_STYLE = ansiPaletteStyle(
@@ -38,7 +39,6 @@ export class CcLogsComponent extends LitElement {
       timestampDisplay: { type: String, attribute: 'timestamp-display' },
       timezone: { type: String },
       wrapLines: { type: Boolean, attribute: 'wrap-lines' },
-      _logs: { type: Array, state: true },
     };
   }
 
@@ -55,7 +55,8 @@ export class CcLogsComponent extends LitElement {
 
     this.wrapLines = false;
 
-    this._logs = [];
+    /** @type {LogsController} */
+    this._logs = new LogsController(this);
 
     this._timestampFormatter = this._resolveTimestampFormatter();
   }
@@ -68,11 +69,11 @@ export class CcLogsComponent extends LitElement {
    * @param {Array<Log>} logs
    */
   appendLogs (logs) {
-    this._logs = this._logs.concat(logs);
+    this._logs.append(logs);
   }
 
   clear () {
-    this._logs = [];
+    this._logs.clear();
   }
 
   willUpdate (changedProperties) {
@@ -92,7 +93,7 @@ export class CcLogsComponent extends LitElement {
       <lit-virtualizer
         id="logs"
         tabindex="0"
-        .items=${this._logs}
+        .items=${this._logs.getList()}
         ?scroller=${true}
         .keyFunction=${(it) => it.id}
         .renderItem=${(item, index) => this._renderLog(item, index)}
