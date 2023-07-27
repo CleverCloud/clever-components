@@ -77,7 +77,7 @@ export class LogsList {
     // Appended logs length may be above limit
     const logsToAdd = (newLogs.length > this._limit)
       ? newLogs.slice(newLogs.length - this._limit)
-      : newLogs;
+      : newLogs.slice();
 
     // If limit is reached, let's try to see what to remove and what to keep
     const newLength = this._logsAfterLimit.length + logsToAdd.length;
@@ -85,10 +85,9 @@ export class LogsList {
       ? newLength - this._limit
       : 0;
 
-    const logsToRemove = this._logsAfterLimit.slice(0, sliceIndex);
-    const logsToKeep = this._logsAfterLimit.slice(sliceIndex);
+    const logsToRemove = this._logsAfterLimit.splice(0, sliceIndex);
 
-    this._logsAfterLimit = [...logsToKeep, ...logsToAdd];
+    this._logsAfterLimit.push(...logsToAdd);
 
     if (forceFilter) {
       this._logsAfterLimitAndFilter = this._logsAfterLimit.filter(this._filterCallback);
@@ -97,11 +96,11 @@ export class LogsList {
       // We filter the logs to remove so we can know how many to remove from the filtered list
       const logsToRemoveFiltered = logsToRemove.filter(this._filterCallback);
       // No need to filter the logs we want to keep
-      const logsToKeepFiltered = this._logsAfterLimitAndFilter.slice(logsToRemoveFiltered.length);
+      this._logsAfterLimitAndFilter.splice(0, logsToRemoveFiltered.length);
       // Only need to filter the new logs
       const logsToAddFiltered = logsToAdd.filter(this._filterCallback);
 
-      this._logsAfterLimitAndFilter = [...logsToKeepFiltered, ...logsToAddFiltered];
+      this._logsAfterLimitAndFilter.push(...logsToAddFiltered);
     }
 
     this._updateCallback();

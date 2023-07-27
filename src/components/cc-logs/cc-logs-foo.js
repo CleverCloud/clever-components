@@ -1149,7 +1149,7 @@ export class CcLogsComponent extends LitElement {
         id="logs"
         tabindex="0"
         ${ref(__refName)}
-        .items=${this._logsList.getList()}
+        .items=${this._logsList.getList().slice()}
         ?scroller=${true}
         .keyFunction=${(it) => it.id}
         .renderItem=${(item, index) => this._renderLog(
