@@ -12,6 +12,23 @@ export class LogsList {
     return this._logsAfterLimitAndFilter;
   }
 
+  findByIndex (index) {
+    return this._logsAfterLimitAndFilter[index];
+  }
+
+  // Only if IDs are sorted
+  findIndexById (id) {
+    return findByDichotomy(this._logsAfterLimitAndFilter, id);
+  }
+
+  // Only if IDs are sorted
+  getRange (startId, endId) {
+    const indexes = [this.findIndexById(startId), this.findIndexById(endId)].sort();
+    return this._logsAfterLimitAndFilter
+      .slice(...indexes)
+      .map((log) => log.id);
+  }
+
   clear () {
     this._logsAfterLimit = [];
     this._logsAfterLimitAndFilter = [];
@@ -89,4 +106,22 @@ export class LogsList {
 
     this._updateCallback();
   }
+}
+
+function findByDichotomy (list, id) {
+  let minIndex = 0;
+  let maxIndex = list.length;
+  if (maxIndex === 0) {
+    return null;
+  }
+  while (maxIndex > minIndex + 1) {
+    const index = Math.floor((minIndex + maxIndex) / 2);
+    if (list[index].id > id) {
+      maxIndex = index;
+    }
+    else {
+      minIndex = index;
+    }
+  }
+  return minIndex;
 }

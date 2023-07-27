@@ -143,56 +143,6 @@ class LogsCtrl {
   getId (elements) {
     return this.getPosition(elements).log?.id;
   }
-
-  /**
-   * @param {string} startId
-   * @param {string} endId
-   * @return {Array<string>}
-   */
-  range (startId, endId) {
-    if (startId === endId) {
-      return [startId];
-    }
-
-    const range = [];
-    let lastId = null;
-    let inRange = false;
-    for (const log of this._component._logsList.getList()) {
-      if (inRange) {
-        range.push(log.id);
-        if (log.id === lastId) {
-          break;
-        }
-      }
-      else if (log.id === startId) {
-        range.push(log.id);
-        inRange = true;
-        lastId = endId;
-      }
-      else if (log.id === endId) {
-        range.push(log.id);
-        inRange = true;
-        lastId = startId;
-      }
-    }
-    return range;
-  }
-
-  /**
-   * @param {number} index
-   * @return {Log}
-   */
-  findLogByIndex (index) {
-    return this._component._logsList.getList()[index];
-  }
-
-  /**
-   * @param {string} id
-   * @return {number|undefined}
-   */
-  findIndexById (id) {
-    return this._component._logsList.getList().findIndex((log) => log.id === id);
-  }
 }
 
 /**
@@ -276,13 +226,15 @@ class DragSelectionCtrl {
    * @param {() => HTMLElement} targetProvider - A function that provides the target element on which the selection is to be done
    * @param {SelectionCtrl} selectionCtrl - The selection controller
    * @param {LogsCtrl} logsCtrl -
+   * @param {LogsList} logsList -
    */
-  constructor (targetProvider, selectionCtrl, logsCtrl) {
+  constructor (targetProvider, selectionCtrl, logsCtrl, logsList) {
     this._targetProvider = targetProvider;
     this._selectionCtrl = selectionCtrl;
     this._logsCtrl = logsCtrl;
+    this._logsList = logsList;
     this._autoScroller = new DragAutoScroller(targetProvider, (index) => {
-      const log = this._logsCtrl.findLogByIndex(index);
+      const log = this._logsList.findByIndex(index);
       this._select(log.id);
     });
 
@@ -314,7 +266,7 @@ class DragSelectionCtrl {
     const initialSelection = keepCurrentSelection ? [...this._selectionCtrl.selection] : null;
 
     this._select = (id) => {
-      const dragSelection = this._logsCtrl.range(startId, id);
+      const dragSelection = this._logsList.getRange(startId, id);
       this._selectionCtrl.selection = initialSelection == null ? dragSelection : [...initialSelection, ...dragSelection];
     };
 
@@ -631,11 +583,25 @@ export class CcLogsComponent extends LitElement {
     /** @type {SelectionCtrl} Controls the selection. */
     this._selectionCtrl = new SelectionCtrl(this);
 
+    this._logsList = new LogsList(() => {
+      this.requestUpdate();
+      // When internal _filteredLogs collection has changed and follow is active, we inhibite the follow binding until the element is really added to the DOM.
+      // With lit-virtualizer, we need to wait for `layoutComplete` to make sure the DOM is updated (hooking on the `updated()` function won't be enough).
+      // We do that because we are sure that after adding element we want to continue follow.
+      if (this._logsRef.value != null && this.follow && !this._followBindingInhibited) {
+        this._followBindingInhibited = true;
+        this._logsRef.value.layoutComplete.then(() => {
+          this._followBindingInhibited = false;
+        });
+      }
+    });
+
     /** @type {DragSelectionCtrl} Controls the selection done with mouse dragging movement. */
     this._dragSelectionCtrl = new DragSelectionCtrl(
       () => this._logsRef.value,
       this._selectionCtrl,
       this._logsCtrl,
+      this._logsList,
     );
 
     /** @type {string|null} The id of the log for which the select button is focused. */
@@ -652,19 +618,6 @@ export class CcLogsComponent extends LitElement {
       ctrl: false,
       shift: false,
     };
-
-    this._logsList = new LogsList(() => {
-      this.requestUpdate();
-      // When internal _filteredLogs collection has changed and follow is active, we inhibite the follow binding until the element is really added to the DOM.
-      // With lit-virtualizer, we need to wait for `layoutComplete` to make sure the DOM is updated (hooking on the `updated()` function won't be enough).
-      // We do that because we are sure that after adding element we want to continue follow.
-      if (this._logsRef.value != null && this.follow && !this._followBindingInhibited) {
-        this._followBindingInhibited = true;
-        this._logsRef.value.layoutComplete.then(() => {
-          this._followBindingInhibited = false;
-        });
-      }
-    });
   }
 
   // region Private methods
@@ -796,9 +749,9 @@ export class CcLogsComponent extends LitElement {
     }
 
     const lines = this._selectionCtrl.selection
-      .map((id) => this._logsCtrl.findIndexById(id))
+      .map((id) => this._logsList.findIndexById(id))
       .sort((i, j) => i - j)
-      .map((i) => this._logsCtrl.findLogByIndex(i))
+      .map((i) => this._logsList.findByIndex(i))
       .map((log) => {
         const ts = this._timestampFormatter.format(log.timestamp);
         const meta = log.metadata
@@ -893,7 +846,7 @@ export class CcLogsComponent extends LitElement {
         this._selectionCtrl.selection = [id];
       }
       else {
-        this._selectionCtrl.selection = this._logsCtrl.range(this._lastSingleSelection, id);
+        this._selectionCtrl.selection = this._logsList.getRange(this._lastSingleSelection, id);
       }
     }
     else {
@@ -1005,9 +958,9 @@ export class CcLogsComponent extends LitElement {
       if (this._focusLostId != null) {
         // when the focused item was removed from the DOM because user scrolled too far from it,
         // we scroll to make the element at the center of the viewport
-        const focusLostIndex = this._logsCtrl.findIndexById(this._focusLostId);
+        const focusLostIndex = this._logsList.findIndexById(this._focusLostId);
         const nextIndex = getNextIndex(focusLostIndex);
-        this._focusedId = this._logsCtrl.findLogByIndex(nextIndex)?.id;
+        this._focusedId = this._logsList.findByIndex(nextIndex)?.id;
         this._focusLostId = null;
         this._logsRef.value.element(nextIndex).scrollIntoView({ block: 'center' });
 
@@ -1015,9 +968,9 @@ export class CcLogsComponent extends LitElement {
       }
       else if (this._focusedId != null) {
         // when an element is already focused we move the focus to the next element (according to the direction)
-        const focusedIndex = this._logsCtrl.findIndexById(this._focusedId);
+        const focusedIndex = this._logsList.findIndexById(this._focusedId);
         const nextIndex = getNextIndex(focusedIndex);
-        this._focusedId = this._logsCtrl.findLogByIndex(nextIndex)?.id;
+        this._focusedId = this._logsList.findByIndex(nextIndex)?.id;
 
         // when user navigates to an element outside the viewport:
         // the element after the last visible, or the element before the first visible,
@@ -1032,7 +985,7 @@ export class CcLogsComponent extends LitElement {
         // we focus the first visible element if user hits the arrow down key,
         // we focus the last visible element if user hits the arrow up key.
         const focusedIndex = inLogsRange(e.key === 'ArrowDown' ? this._visibleRange.first : this._visibleRange.last);
-        this._focusedId = this._logsCtrl.findLogByIndex(focusedIndex)?.id;
+        this._focusedId = this._logsList.findByIndex(focusedIndex)?.id;
       }
 
       // force stop follow when navigating
@@ -1070,7 +1023,7 @@ export class CcLogsComponent extends LitElement {
     if (this._focusedId == null || this._focusLostId != null) {
       return;
     }
-    const focusedIndex = this._logsCtrl.findIndexById(this._focusedId);
+    const focusedIndex = this._logsList.findIndexById(this._focusedId);
     if (focusedIndex < e.first || focusedIndex > e.last) {
       this._focusLostId = this._focusedId;
       this._logsRef.value.focus();
