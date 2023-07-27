@@ -9,23 +9,19 @@ defineSmartComponent({
   },
   onContextUpdate ({ component, context, onEvent, updateComponent, signal }) {
     const api = getApi();
+    const formController = component.formController;
 
-    onEvent('cc-ft-uncontrolled:submit', (detail) => {
-      updateComponent('formState', (formState) => {
-        formState.state = 'submitting';
-      });
+    onEvent('cc-ft-uncontrolled:submit', ({ data }) => {
+      formController.submitting();
 
-      api.submitForm(detail)
+      api.submitForm(data)
         .then(() => {
-          component.resetFormState();
+          formController.reset();
         })
         .catch((error) => {
           if (error.message === 'email-used') {
-            updateComponent('formState', (formState) => {
-              formState.state = 'idle';
-              formState.email.error = 'already-used';
-            });
-            component.focusFormItem('email');
+            formController.idle();
+            formController.error('email', 'already-used');
           }
         });
     });
