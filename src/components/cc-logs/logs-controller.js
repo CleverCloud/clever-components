@@ -6,6 +6,7 @@ export class LogsController {
     this._logsFiltered = [];
     this._limit = Infinity;
     this._filterCallback = () => true;
+    this._selection = null;
   }
 
   set limit (limit) {
@@ -45,11 +46,26 @@ export class LogsController {
   clear () {
     this._logs = [];
     this._logsFiltered = [];
+    this._selection = null;
     this._updateList();
   }
 
   append (newLogs) {
     this._updateList({ newLogs });
+  }
+
+  select (logId) {
+    this._selection = logId;
+    this._host.requestUpdate();
+  }
+
+  clearSelection () {
+    this._selection = null;
+    this._host.requestUpdate();
+  }
+
+  isSelected (logId) {
+    return this._selection === logId;
   }
 
   _updateList (options = {}) {
@@ -84,6 +100,11 @@ export class LogsController {
       const logsToAddFiltered = logsToAdd.filter(this._filterCallback);
 
       this._logsFiltered.push(...logsToAddFiltered);
+    }
+
+    const logsToRemoveIncludeSelection = logsToRemove.some((log) => log.id === this._selection);
+    if (logsToRemoveIncludeSelection) {
+      this._selection = [];
     }
 
     this._host.requestUpdate();

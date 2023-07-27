@@ -7,10 +7,12 @@ import '@lit-labs/virtualizer';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { join } from 'lit/directives/join.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { iconRemixCheckboxBlankCircleFill as iconSelected } from '../../assets/cc-remix.icons.js';
 import { ansiPaletteStyle } from '../../lib/ansi/ansi-palette-style.js';
 import { ansiStyles, ansiToLit, stripAnsi } from '../../lib/ansi/ansi.js';
 import defaultPalette from '../../lib/ansi/palettes/default.js';
+import { i18n } from '../../lib/i18n.js';
 import { TimestampFormatter } from '../../lib/timestamp-formatter.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { LogsController } from './logs-controller.js';
@@ -65,10 +67,42 @@ export class CcLogsComponent extends LitElement {
     this._logs = new LogsController(this);
 
     this._timestampFormatter = this._resolveTimestampFormatter();
+
+    /** @type {Ref<Virtualizer>} A reference to the logs container. */
+    this._logsRef = createRef();
   }
 
   _resolveTimestampFormatter () {
     return new TimestampFormatter(this.timestampDisplay, this.timezone);
+  }
+
+  _onMouseClick (e) {
+
+    const mouseTarget = {
+      inGutter: false,
+      logId: null,
+    };
+
+    for (const element of e.composedPath()) {
+      if (element === this._logsRef.value) {
+        break;
+      }
+      if (element.classList == null) {
+        continue;
+      }
+      mouseTarget.inGutter ||= element.classList.contains('gutter');
+      if (element.classList.contains('log')) {
+        mouseTarget.logId = element.dataset.id;
+        break;
+      }
+    }
+
+    if (mouseTarget.inGutter) {
+      this._logs.select(mouseTarget.logId);
+    }
+    else {
+      this._logs.clearSelection();
+    }
   }
 
   /**
@@ -105,12 +139,14 @@ export class CcLogsComponent extends LitElement {
   render () {
     return html`
       <lit-virtualizer
+        ${ref(this._logsRef)}
         id="logs"
         tabindex="0"
         .items=${this._logs.getList()}
         ?scroller=${true}
         .keyFunction=${(it) => it.id}
         .renderItem=${(item, index) => this._renderLog(item, index)}
+        @click=${this._onMouseClick}
       ></lit-virtualizer>
     `;
   }
@@ -126,15 +162,23 @@ export class CcLogsComponent extends LitElement {
     const wrap = this.wrapLines;
     const timestampFormatter = this._timestampFormatter;
 
+    const selected = this._logs.isSelected(log.id);
+    const selectButtonLabel = selected
+      ? i18n('cc-logs.unselect-button.label', { index })
+      : i18n('cc-logs.select-button.label', { index });
+
     return html`
       <p
-        class="log"
+        class="log ${classMap({ selected })}"
         data-index="${index}"
         data-id="${log.id}"
       >
         <span class="gutter">
           <button
             class="select_button visually-hidden-focusable"
+            title="${selectButtonLabel}"
+            aria-label="${selectButtonLabel}"
+            aria-pressed=${selected}
             tabindex="-1"
           >
             <cc-icon .icon=${iconSelected} size="xs"></cc-icon>
@@ -241,6 +285,10 @@ export class CcLogsComponent extends LitElement {
 
         .log:hover {
           background-color: var(--ansi-background-hover);
+        }
+
+        .log.selected {
+          background-color: var(--ansi-background-selected);
         }
 
         .log:hover .select_button,

@@ -119,4 +119,43 @@ describe('', () => {
     expect(logsCtrl.getList()).to.deep.equal(logs);
     expect(spy.callCount).to.equal(5);
   });
+
+  it('selection', () => {
+
+    logsCtrl.limit = 10;
+    expect(spy.callCount).to.equal(1);
+
+    const logsOne = generateLogs(10, 0);
+
+    logsCtrl.append(logsOne);
+    expect(logsCtrl.getList()).to.deep.equal(logsOne);
+    expect(logsCtrl.isSelected('00002')).to.equal(false);
+    expect(spy.callCount).to.equal(2);
+
+    logsCtrl.select('00002');
+    expect(logsCtrl.isSelected('00002')).to.equal(true);
+    expect(spy.callCount).to.equal(3);
+
+    logsCtrl.clearSelection();
+    expect(logsCtrl.isSelected('00002')).to.equal(false);
+    expect(spy.callCount).to.equal(4);
+
+    logsCtrl.select('00002');
+    expect(logsCtrl.isSelected('00002')).to.equal(true);
+    expect(spy.callCount).to.equal(5);
+
+    const logsTwo = generateLogs(5, 10);
+
+    logsCtrl.append(logsTwo);
+    expect(logsCtrl.isSelected('00002')).to.equal(false);
+    expect(spy.callCount).to.equal(6);
+
+    logsCtrl.select('00010');
+    expect(logsCtrl.isSelected('00010')).to.equal(true);
+    expect(spy.callCount).to.equal(7);
+
+    logsCtrl.clear();
+    expect(logsCtrl.isSelected('00010')).to.equal(false);
+    expect(spy.callCount).to.equal(8);
+  });
 });
