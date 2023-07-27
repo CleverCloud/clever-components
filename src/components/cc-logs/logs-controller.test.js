@@ -17,6 +17,11 @@ function generateLogs (length, offset = 0, getMetadata = () => []) {
     });
 }
 
+function expectIndexes (list, fullList, indexes) {
+  const expectedList = fullList.filter((_, i) => indexes.includes(i));
+  return expect(list).to.deep.equal(expectedList);
+}
+
 describe('', () => {
 
   let logsCtrl;
@@ -72,6 +77,46 @@ describe('', () => {
 
     logsCtrl.clear();
     expect(logsCtrl.getList()).to.deep.equal([]);
+    expect(spy.callCount).to.equal(5);
+  });
+
+  it('filter', () => {
+
+    const logs = generateLogs(24, 0, (i) => {
+      const aValues = ['a', 'aa', 'aaa', 'aaaa'];
+      const bValues = ['b', 'bb', 'bbb'];
+      return [
+        { name: 'A', value: aValues[i % aValues.length] },
+        { name: 'B', value: bValues[i % bValues.length] },
+      ];
+    });
+
+    logsCtrl.append(logs);
+    expect(logsCtrl.getList()).to.deep.equal(logs);
+    expect(spy.callCount).to.equal(1);
+
+    logsCtrl.filter = [
+      { metadata: 'A', value: 'a' },
+    ];
+    expectIndexes(logsCtrl.getList(), logs, [0, 4, 8, 12, 16, 20]);
+    expect(spy.callCount).to.equal(2);
+
+    logsCtrl.filter = [
+      { metadata: 'A', value: 'a' },
+      { metadata: 'A', value: 'aa' },
+    ];
+    expectIndexes(logsCtrl.getList(), logs, [0, 1, 4, 5, 8, 9, 12, 13, 16, 17, 20, 21]);
+    expect(spy.callCount).to.equal(3);
+
+    logsCtrl.filter = [
+      { metadata: 'A', value: 'a' },
+      { metadata: 'B', value: 'b' },
+    ];
+    expectIndexes(logsCtrl.getList(), logs, [0, 12]);
+    expect(spy.callCount).to.equal(4);
+
+    logsCtrl.filter = null;
+    expect(logsCtrl.getList()).to.deep.equal(logs);
     expect(spy.callCount).to.equal(5);
   });
 });

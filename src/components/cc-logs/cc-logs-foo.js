@@ -34,6 +34,7 @@ const DEFAULT_PALETTE_STYLE = ansiPaletteStyle(
 export class CcLogsComponent extends LitElement {
   static get properties () {
     return {
+      filter: { type: Array },
       limit: { type: Number },
       logs: { type: Array },
       stripAnsi: { type: Boolean, attribute: 'strip-ansi' },
@@ -45,6 +46,8 @@ export class CcLogsComponent extends LitElement {
 
   constructor () {
     super();
+
+    this.filter = [];
 
     this.limit = null;
 
@@ -92,6 +95,10 @@ export class CcLogsComponent extends LitElement {
 
     if (changedProperties.has('limit')) {
       this._logs.limit = this.limit;
+    }
+
+    if (changedProperties.has('filter')) {
+      this._logs.filter = this.filter;
     }
   }
 
