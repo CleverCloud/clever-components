@@ -15,6 +15,7 @@ import defaultPalette from '../../lib/ansi/palettes/default.js';
 import { i18n } from '../../lib/i18n.js';
 import { TimestampFormatter } from '../../lib/timestamp-formatter.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
+import { InputController } from './input-controller.js';
 import { LogsController } from './logs-controller.js';
 
 // This style is the default ansi palette plus the ability to be overridden with the css theme.
@@ -66,6 +67,9 @@ export class CcLogsComponent extends LitElement {
     /** @type {LogsController} */
     this._logs = new LogsController(this);
 
+    /** @type {InputController} */
+    this._inputCtrl = new InputController(this);
+
     this._timestampFormatter = this._resolveTimestampFormatter();
 
     /** @type {Ref<Virtualizer>} A reference to the logs container. */
@@ -76,29 +80,10 @@ export class CcLogsComponent extends LitElement {
     return new TimestampFormatter(this.timestampDisplay, this.timezone);
   }
 
-  _onMouseClick (e) {
-
-    const mouseTarget = {
-      inGutter: false,
-      logId: null,
-    };
-
-    for (const element of e.composedPath()) {
-      if (element === this._logsRef.value) {
-        break;
-      }
-      if (element.classList == null) {
-        continue;
-      }
-      mouseTarget.inGutter ||= element.classList.contains('gutter');
-      if (element.classList.contains('log')) {
-        mouseTarget.logId = element.dataset.id;
-        break;
-      }
-    }
-
-    if (mouseTarget.inGutter) {
-      this._logs.select(mouseTarget.logId);
+  // Wired through this._inputCtrl
+  _onClickLog ({ inGutter, logId }) {
+    if (inGutter) {
+      this._logs.select(logId);
     }
     else {
       this._logs.clearSelection();
@@ -146,7 +131,7 @@ export class CcLogsComponent extends LitElement {
         ?scroller=${true}
         .keyFunction=${(it) => it.id}
         .renderItem=${(item, index) => this._renderLog(item, index)}
-        @click=${this._onMouseClick}
+        @click=${(e) => this._inputCtrl.onClick(e)}
       ></lit-virtualizer>
     `;
   }
