@@ -1,12 +1,14 @@
 import { html } from 'lit';
 import { AsyncDirective, directive } from 'lit/async-directive.js';
 
-class FormErrorDirective extends AsyncDirective {
+const SLOT_ERROR_TAGS = [
+  'cc-input-text',
+  'cc-input-number',
+  'cc-select',
+  'cc-toggle',
+];
 
-  constructor (partInfo) {
-    super(partInfo);
-    console.log(partInfo);
-  }
+class FormErrorDirective extends AsyncDirective {
 
   render ([invalid, error, useSlot]) {
     if (!invalid) {
@@ -24,11 +26,20 @@ class FormErrorDirective extends AsyncDirective {
    * @param {ChildPart} part
    * @param {FormController} formController
    * @param {string} field
+   * @param {Object} errors
    */
-  update (part, [formController, field]) {
-    const useSlot = part.parentNode?.tagName?.toLowerCase() === 'cc-input-text';
+  update (part, [formController, field, errors]) {
+    const useSlot = SLOT_ERROR_TAGS.includes(part.parentNode?.tagName?.toLowerCase());
+    const isValid = formController.isFieldValid(field);
 
-    return this.render([formController.isFieldInvalid(field), formController.getFieldError(field), useSlot]);
+    if (isValid) {
+      return this.render([false, null, null]);
+    }
+
+    const error = formController.getFieldError(field);
+    const errorLabel = errors?.[error]?.();
+
+    return this.render([formController.isFieldInvalid(field), errorLabel ?? error, useSlot]);
   }
 }
 

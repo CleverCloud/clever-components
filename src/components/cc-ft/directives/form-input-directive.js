@@ -1,18 +1,119 @@
-import { html, nothing } from 'lit';
+import { nothing } from 'lit';
 import { AsyncDirective, directive } from 'lit/async-directive.js';
 
-const ELEMENT_HANDLERS = {
-  'cc-input-text': {
-    binding: {
-      event: 'cc-input-text:input',
-      value: (event) => event.detail,
-    },
-    submit: {
-      event: 'cc-input-text:requestimplicitsubmit',
-    },
-    value: (element) => element.value,
+const ELEMENT_EVENTS = {
+  'cc-input-text:value': {
+    bind: 'cc-input-text:input',
+    submit: 'cc-input-text:requestimplicitsubmit',
+    prop: 'value',
+  },
+  'cc-input-text:tags': {
+    bind: 'cc-input-text:tags',
+    submit: 'cc-input-text:requestimplicitsubmit',
+    prop: 'tags',
+  },
+  'cc-toggle:value': {
+    bind: 'cc-toggle:input',
+    prop: 'value',
+  },
+  'cc-toggle:multipleValues': {
+    bind: 'cc-toggle:input-multiple',
+    prop: 'multipleValues',
+  },
+  'cc-input-number:value': {
+    bind: 'cc-input-number:input',
+    submit: 'cc-input-number:requestimplicitsubmit',
+    prop: 'value',
+  },
+  'cc-select:value': {
+    bind: 'cc-select:input',
+    prop: 'value',
+  },
+  'input:checkbox': {
+    bind: 'change',
+    prop: 'checked',
+  },
+  select: {
+    bind: 'change',
+    prop: 'value',
   },
 };
+
+function simpleElementEvent (prop = 'value') {
+  return {
+    bind: 'input',
+    prop,
+  };
+}
+
+function getEvents (element, prop = 'value') {
+  const tagName = element.tagName.toLowerCase();
+
+  if (tagName === 'input') {
+    return ELEMENT_EVENTS[`input:${element.type}`] ?? simpleElementEvent(prop);
+  }
+
+  if (tagName === 'cc-input-text') {
+    return ELEMENT_EVENTS[`cc-input-text:${prop}`];
+  }
+
+  if (tagName === 'cc-toggle') {
+    return ELEMENT_EVENTS[`cc-toggle:${prop}`];
+  }
+
+  return ELEMENT_EVENTS[tagName] ?? simpleElementEvent(prop);
+}
+
+class ElementHandler {
+  constructor (element, bindEvent, submitEvent, prop) {
+    this.element = element;
+    this.bindEvent = bindEvent;
+    this.submitEvent = submitEvent;
+    this.prop = prop;
+  }
+
+  setValue (value) {
+    this.element[this.prop] = value;
+  }
+
+  getValue () {
+    return this.element[this.prop];
+  }
+
+  connect (ctrl, field) {
+    this.eventHandlers = [];
+
+    if (this.bindEvent != null) {
+      this.eventHandlers.push(new EventHandler(
+        this.element,
+        this.bindEvent,
+        () => {
+          ctrl.setFieldValue(field, this.getValue());
+        }));
+    }
+
+    if (this.submitEvent != null) {
+      this.eventHandlers.push(new EventHandler(
+        this.element,
+        this.submitEvent,
+        () => {
+          ctrl.submit();
+        }));
+    }
+
+    this.eventHandlers.forEach((handler) => handler.connect());
+  }
+
+  disconnect () {
+    this.eventHandlers.forEach((handler) => handler.disconnect());
+    this.eventHandlers = [];
+  }
+}
+
+function getElementHandler (element, prop, bindEvent) {
+  const event = getEvents(element, prop);
+  return new ElementHandler(element, bindEvent ?? event.bind, event.submit, event.prop);
+}
 
 class FormInputDirective extends AsyncDirective {
   constructor (partInfo) {
@@ -20,7 +121,7 @@ class FormInputDirective extends AsyncDirective {
     this._element = null;
     this._formController = null;
     this._field = null;
-    this._eventHandlers = [];
+    this._elementHandler = null;
   }
 
   render (...props) {
@@ -32,97 +133,56 @@ class FormInputDirective extends AsyncDirective {
    * @param {ElementPart} part
    * @param {FormController} formController
    * @param {string} field
+   * @param {string} prop
    */
-  update (part, [formController, field]) {
-    console.log(part);
-    // console.log(field);
-
-    if (formController !== this._formController) {
-      this._formController = formController;
-    }
-
-    if (field !== this._field) {
-      this._field = field;
-    }
+  update (part, [formController, field, prop, bindEvent]) {
+    this._formController = formController;
+    this._field = field;
 
     const fieldDefinition = this._formController?.getFieldDefinition(this._field);
 
-    if (part.element !== this._element) {
-      this._setElement(part.element);
+    if (part.element !== this._element || prop !== this._prop || bindEvent !== this._bindEvent) {
+      this._setElement(part.element, prop, bindEvent);
     }
 
     if (this._element != null && fieldDefinition != null) {
-      const tagName = this._element.tagName.toLowerCase();
-
       part.element.setAttribute('name', this._field);
 
-      if (tagName === 'cc-input-text') {
-        this._element.required = fieldDefinition.required;
-        this._element.disabled = this._formController?.formState?.state === 'submitting';
-        this._element.value = this._formController?.getFieldValue(this._field);
-      }
+      this._element.required = fieldDefinition.required;
+      this._element.disabled = this._formController?.formState?.state === 'submitting';
+      this._elementHandler.setValue(this._formController?.getFieldValue(this._field));
     }
 
     return this.render();
   }
 
-  _setElement (element) {
+  _setElement (element, prop, bindEvent) {
     if (this._element != null) {
-      this._removeListenersFromElement();
+      this._removeListeners();
     }
 
+    this._prop = prop;
+    this._bindEvent = bindEvent;
     this._element = element;
-    this._elementHandler = ELEMENT_HANDLERS[this._element.tagName.toLowerCase()];
+    this._elementHandler = getElementHandler(this._element, prop, bindEvent);
 
-    this._addListenersToElement();
+    this._addListeners();
   }
 
-  _removeListenersFromElement () {
-    this._eventHandlers.forEach((handler) => handler.disconnect());
-    this._eventHandlers = [];
+  _removeListeners () {
+    this._elementHandler?.disconnect();
   }
 
-  _addListenersToElement () {
-    this._eventHandlers = this._getEventHandlers();
-    this._eventHandlers.forEach((handler) => handler.connect());
+  _addListeners () {
+    this._elementHandler?.connect(this._formController, this._field);
   }
 
   disconnected () {
-    this._removeListenersFromElement();
+    this._removeListeners();
   }
 
   reconnected () {
-    this._addListenersToElement();
-  }
-
-  _getEventHandlers (tagName) {
-    if (this._elementHandler == null) {
-      return [];
-    }
-
-    const eventHandlers = [];
-
-    const bindingHandlerDef = this._elementHandler.binding;
-    if (bindingHandlerDef != null) {
-      eventHandlers.push(new EventHandler(
-        this._element,
-        bindingHandlerDef.event,
-        (event) => {
-          this._formController.setFieldValue(this._field, bindingHandlerDef.value(event));
-        }));
-    }
-
-    const submitHandlerDef = this._elementHandler.submit;
-    if (submitHandlerDef != null) {
-      eventHandlers.push(new EventHandler(
-        this._element,
-        submitHandlerDef.event,
-        (event) => {
-          this._formController?.submit();
-        }));
-    }
-
-    return eventHandlers;
+    this._addListeners();
   }
 }
 

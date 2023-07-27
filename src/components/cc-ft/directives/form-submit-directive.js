@@ -1,7 +1,7 @@
 import { nothing } from 'lit';
 import { AsyncDirective, directive } from 'lit/async-directive.js';
 
-const ELEMENT_HANDLERS = {
+const ELEMENT_EVENTS = {
   'cc-button': ['cc-button:click'],
   button: ['click'],
 };
@@ -26,8 +26,6 @@ class FormSubmitDirective extends AsyncDirective {
    * @param {string} field
    */
   update (part, [formController]) {
-    console.log(part);
-
     if (formController !== this._formController) {
       this._formController = formController;
     }
@@ -54,31 +52,31 @@ class FormSubmitDirective extends AsyncDirective {
 
   _setElement (element) {
     if (this._element != null) {
-      this._removeListenersFromElement();
+      this._removeListeners();
     }
 
     this._element = element;
-    this._elementHandler = ELEMENT_HANDLERS[this._element.tagName.toLowerCase()];
+    this._elementHandler = ELEMENT_EVENTS[this._element.tagName.toLowerCase()];
 
-    this._addListenersToElement();
+    this._addListeners();
   }
 
-  _removeListenersFromElement () {
+  _removeListeners () {
     this._eventHandlers.forEach((handler) => handler.disconnect());
     this._eventHandlers = [];
   }
 
-  _addListenersToElement () {
+  _addListeners () {
     this._eventHandlers = this._getEventHandlers();
     this._eventHandlers.forEach((handler) => handler.connect());
   }
 
   disconnected () {
-    this._removeListenersFromElement();
+    this._removeListeners();
   }
 
   reconnected () {
-    this._addListenersToElement();
+    this._addListeners();
   }
 
   _getEventHandlers (tagName) {
@@ -90,7 +88,7 @@ class FormSubmitDirective extends AsyncDirective {
       return new EventHandler(
         this._element,
         e,
-        (event) => {
+        () => {
           this._formController?.submit();
         });
     });
