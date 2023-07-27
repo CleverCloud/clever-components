@@ -21,9 +21,9 @@ import { i18n } from '../../lib/i18n.js';
 import { notifySuccess } from '../../lib/notifications.js';
 import { elementsFromPoint } from '../../lib/shadow-dom-utils.js';
 import { TimestampFormatter } from '../../lib/timestamp-formatter.js';
-import { unique } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { LogsList } from './logs-list.js';
+import { SelectionCtrl } from './selection-ctrl.js';
 
 /** @type {MetadataRendering} The default metadata renderer */
 const DEFAULT_METADATA_RENDERING = {
@@ -192,52 +192,6 @@ class LogsCtrl {
    */
   findIndexById (id) {
     return this._component._logsList.getList().findIndex((log) => log.id === id);
-  }
-}
-
-/**
- * This class handles the selection
- */
-class SelectionCtrl {
-  constructor (component) {
-    /** @type {CcLogsComponent} */
-    this.component = component;
-  }
-
-  set selection (selection) {
-    this.component._selection = selection.flatMap(unique);
-  }
-
-  get selection () {
-    return this.component._selection;
-  }
-
-  clear () {
-    this.selection = [];
-  }
-
-  isSelected (item) {
-    return this.selection.includes(item);
-  }
-
-  size () {
-    return this.selection.length;
-  }
-
-  isEmpty () {
-    return this.size() === 0;
-  }
-
-  add (item) {
-    this.selection = [...this.selection, item];
-  }
-
-  remove (item) {
-    this.selection = this.selection.filter((s) => s !== item);
-  }
-
-  removeAll (items) {
-    this.selection = this.selection.filter((s) => !items.includes(s));
   }
 }
 
@@ -623,7 +577,6 @@ export class CcLogsComponent extends LitElement {
       timezone: { type: String },
       wrapLines: { type: Boolean, attribute: 'wrap-lines' },
       _focusedId: { type: String, state: true },
-      _selection: { type: Array, state: true },
     };
   }
 
@@ -662,9 +615,6 @@ export class CcLogsComponent extends LitElement {
 
     /** @type {Ref<Virtualizer>} A reference to the logs container. */
     this._logsRef = createRef();
-
-    /** @type {Array<string>} The internal selection. */
-    this._selection = [];
 
     /** @type {string|null} The id of the first selected log. Useful to implement selection with Shift modifier keys. */
     this._lastSingleSelection = null;
@@ -1190,12 +1140,6 @@ export class CcLogsComponent extends LitElement {
     if (_changedProperties.has('filter')) {
       this._logsList.setFilter(this.filter);
     }
-
-    if (_changedProperties.has('_selection')) {
-      if (!this._selectionCtrl.isEmpty()) {
-        document.getSelection().empty();
-      }
-    }
   }
 
   firstUpdated (_changedProperties) {
@@ -1256,11 +1200,11 @@ export class CcLogsComponent extends LitElement {
         ?scroller=${true}
         .keyFunction=${(it) => it.id}
         .renderItem=${(item, index) => this._renderLog(
-      item,
-      index,
-      this.wrapLines,
-      this._timestampFormatter,
-    )}
+          item,
+          index,
+          this.wrapLines,
+          this._timestampFormatter,
+        )}
         @copy=${this._onCopy}
         @focus=${this._onFocus}
         @keydown=${this._onKeyPress}
@@ -1272,15 +1216,15 @@ export class CcLogsComponent extends LitElement {
         @wheel=${this._onMouseWheel}
       ></lit-virtualizer>
       ${!this._selectionCtrl.isEmpty()
-      ? html`
+        ? html`
           <cc-button
             class="copy_button"
             .icon=${iconCopy}
             @cc-button:click=${this._onCopyButtonClick}
             ?hide-text="${true}">${i18n('cc-logs.copy')}
           </cc-button>`
-      : null
-    }
+        : null
+      }
     `;
   }
 
@@ -1352,13 +1296,13 @@ export class CcLogsComponent extends LitElement {
     return html`
       <span class="metadata--wrapper">
         ${
-      join(
-        log.metadata
-          .map((metadata) => this._renderMetadata(metadata))
-          .filter((t) => t != null),
-        html`&nbsp;`,
-      )
-    }
+          join(
+            log.metadata
+              .map((metadata) => this._renderMetadata(metadata))
+              .filter((t) => t != null),
+            html`&nbsp;`,
+          )
+        }
       </span>
     `;
   }
