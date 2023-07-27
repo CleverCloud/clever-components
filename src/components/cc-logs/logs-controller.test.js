@@ -209,4 +209,62 @@ describe('', () => {
     expect(logsCtrl.isSelected('00003')).to.equal(false);
     expect(logsCtrl.isSelected('00004')).to.equal(true);
   });
+
+  it('multiple selection (by series)', () => {
+
+    logsCtrl.limit = 10;
+
+    const logsOne = generateLogs(10, 0);
+
+    logsCtrl.append(logsOne);
+
+    logsCtrl.select('00002');
+    logsCtrl.select('00004', true);
+
+    expect(logsCtrl.isSelected('00001')).to.equal(false);
+    expect(logsCtrl.isSelected('00002')).to.equal(true);
+    expect(logsCtrl.isSelected('00003')).to.equal(true);
+    expect(logsCtrl.isSelected('00004')).to.equal(true);
+    expect(logsCtrl.isSelected('00005')).to.equal(false);
+
+    logsCtrl.clearSelection();
+    logsCtrl.select('00004');
+    logsCtrl.select('00002', true);
+
+    expect(logsCtrl.isSelected('00001')).to.equal(false);
+    expect(logsCtrl.isSelected('00002')).to.equal(true);
+    expect(logsCtrl.isSelected('00003')).to.equal(true);
+    expect(logsCtrl.isSelected('00004')).to.equal(true);
+    expect(logsCtrl.isSelected('00005')).to.equal(false);
+
+    logsCtrl.clearSelection();
+    logsCtrl.select('00002');
+    logsCtrl.select('00004');
+    logsCtrl.select('00006', true);
+
+    expect(logsCtrl.isSelected('00001')).to.equal(false);
+    expect(logsCtrl.isSelected('00002')).to.equal(false);
+    expect(logsCtrl.isSelected('00003')).to.equal(false);
+    expect(logsCtrl.isSelected('00004')).to.equal(true);
+    expect(logsCtrl.isSelected('00005')).to.equal(true);
+    expect(logsCtrl.isSelected('00006')).to.equal(true);
+    expect(logsCtrl.isSelected('00007')).to.equal(false);
+
+    logsCtrl.clearSelection();
+    logsCtrl.select('00002');
+    logsCtrl.select('00006');
+    logsCtrl.select('00004', true);
+    logsCtrl.select('00008', true);
+
+    expect(logsCtrl.isSelected('00001')).to.equal(false);
+    expect(logsCtrl.isSelected('00002')).to.equal(false);
+    expect(logsCtrl.isSelected('00003')).to.equal(false);
+    expect(logsCtrl.isSelected('00004')).to.equal(false);
+    expect(logsCtrl.isSelected('00005')).to.equal(false);
+    expect(logsCtrl.isSelected('00006')).to.equal(true);
+    expect(logsCtrl.isSelected('00007')).to.equal(true);
+    expect(logsCtrl.isSelected('00008')).to.equal(true);
+    expect(logsCtrl.isSelected('00009')).to.equal(false);
+
+  });
 });

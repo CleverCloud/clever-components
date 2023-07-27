@@ -10,6 +10,7 @@ export class InputController {
       inGutter: false,
       logId: null,
       ctrlKey: e.ctrlKey,
+      shiftKey: e.shiftKey,
     };
 
     for (const element of e.composedPath()) {

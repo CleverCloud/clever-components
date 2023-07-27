@@ -81,12 +81,12 @@ export class CcLogsComponent extends LitElement {
   }
 
   // Wired through this._inputCtrl
-  _onClickLog ({ inGutter, logId, ctrlKey }) {
+  _onClickLog ({ inGutter, logId, ctrlKey, shiftKey }) {
     if (inGutter) {
-      if (!ctrlKey) {
+      if (!ctrlKey && !shiftKey) {
         this._logs.clearSelection();
       }
-      this._logs.select(logId);
+      this._logs.select(logId, shiftKey);
     }
     else {
       this._logs.clearSelection();
