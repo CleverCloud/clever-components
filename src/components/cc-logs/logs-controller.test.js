@@ -43,4 +43,35 @@ describe('', () => {
     expect(logsCtrl.getList()).to.deep.equal([]);
     expect(spy.callCount).to.equal(2);
   });
+
+  it('limit', () => {
+
+    const logsOne = generateLogs(10);
+    logsCtrl.append(logsOne);
+    expect(logsCtrl.getList()).to.deep.equal(logsOne);
+    expect(spy.callCount).to.equal(1);
+
+    logsCtrl.limit = 5;
+    expect(logsCtrl.getList()).to.deep.equal(logsOne.slice(5));
+    expect(spy.callCount).to.equal(2);
+
+    const logsTwo = generateLogs(2, 10);
+    logsCtrl.append(logsTwo);
+    expect(logsCtrl.getList()).to.deep.equal([
+      ...logsOne.slice(7),
+      ...logsTwo,
+    ]);
+    expect(spy.callCount).to.equal(3);
+
+    const logsThree = generateLogs(8, 12);
+    logsCtrl.append(logsThree);
+    expect(logsCtrl.getList()).to.deep.equal([
+      ...logsThree.slice(3),
+    ]);
+    expect(spy.callCount).to.equal(4);
+
+    logsCtrl.clear();
+    expect(logsCtrl.getList()).to.deep.equal([]);
+    expect(spy.callCount).to.equal(5);
+  });
 });
