@@ -22,10 +22,18 @@ export class LogsList {
   }
 
   // Only if IDs are sorted
-  getRange (startId, endId) {
-    const indexes = [this.findIndexById(startId), this.findIndexById(endId)].sort();
+  getRange (idA, idB) {
+    const indexA = this.findIndexById(idA);
+    if (indexA === -1) {
+      return [];
+    }
+    const indexB = this.findIndexById(idB);
+    if (indexB === -1) {
+      return [];
+    }
+    const [minIndex, maxIndex] = [indexA, indexB].sort();
     return this._logsAfterLimitAndFilter
-      .slice(...indexes)
+      .slice(minIndex, maxIndex + 1)
       .map((log) => log.id);
   }
 
@@ -122,5 +130,5 @@ function findByDichotomy (list, id) {
       minIndex = index;
     }
   }
-  return minIndex;
+  return list[minIndex].id === id ? minIndex : -1;
 }

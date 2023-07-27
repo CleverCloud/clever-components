@@ -21,7 +21,11 @@ function generateLogs (count) {
         metadata: [
           {
             name: 'level',
-            value: randomNumber > 0.75 ? 'INFO' : 'WARN',
+            value: (randomNumber > 0.5)
+              ? (randomNumber > 0.75)
+                ? 'INFO'
+                : 'WARN'
+              : 'ERROR',
           },
           {
             name: 'ip',
@@ -32,11 +36,9 @@ function generateLogs (count) {
     });
 }
 
-const $logs = Array.from(document.querySelectorAll('cc-logs'));
-const $logsFoo = Array.from(document.querySelectorAll('cc-logs-foo'));
-
-$logs[1].limit = 5;
-$logsFoo[1].limit = 5;
+function $$ (selector) {
+  return Array.from(document.querySelectorAll(selector));
+}
 
 const filter = [
   {
@@ -44,27 +46,34 @@ const filter = [
     value: 'WARN',
   },
   {
+    metadata: 'level',
+    value: 'ERROR',
+  },
+  {
     metadata: 'ip',
     value: '192.168.12.1',
   },
 ];
 
-$logs[2].filter = filter;
-$logsFoo[2].filter = filter;
+$$('.filter').forEach((item) => item.filter = filter);
 
 // $logs.appendLogs(theLogs) ne marche pas si on le fait trop tôt
 
 let i = 0;
 
-setInterval(() => {
+let id = setInterval(() => {
   i += 1;
   if (i % 20 === 0) {
-    $logs.forEach((item) => item.clear());
-    $logsFoo.forEach((item) => item.clear());
+    // $$('.logs:not(.ignore)').forEach((item) => item.clear());
+    clearInterval(id);
   }
-  else {
-    const theLogs = generateLogs(1);
-    $logs.forEach((item) => item.appendLogs(theLogs));
-    $logsFoo.forEach((item) => item.appendLogs(theLogs));
-  }
-}, 1000);
+  // else {
+  const theLogs = generateLogs(10);
+  $$('.logs:not(.ignore)').forEach((item) => item.appendLogs(theLogs));
+  // }
+}, 200);
+
+// setTimeout(() => {
+//   const theLogs = generateLogs(2000);
+//   $$('.logs:not(.ignore)').forEach((item) => item.appendLogs(theLogs));
+// }, 100);

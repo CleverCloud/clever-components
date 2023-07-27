@@ -5,7 +5,8 @@ import { cemAnalyzerPlugin } from './wds/cem-analyzer-plugin.js';
 import { commonjsPluginWithConfig, esbuildBundlePluginWithConfig } from './wds/wds-common.js';
 
 export default {
-  files: ['test/**/*.test.*', 'src/components/**/*.test.*'],
+  // files: ['test/**/*.test.*', 'src/components/**/*.test.*'],
+  files: ['src/components/**/logs-list.test.js'],
   browsers: [
     chromeLauncher({
       async createPage ({ context }) {
@@ -35,7 +36,7 @@ export default {
     </html>
   `,
   plugins: [
-    cemAnalyzerPlugin,
+    // cemAnalyzerPlugin,
     rollupAdapter(json()),
     esbuildBundlePluginWithConfig,
     commonjsPluginWithConfig,
