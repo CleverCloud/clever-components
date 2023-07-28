@@ -1,3 +1,6 @@
+const MIN_FRAMES = 10;
+const ANIMATION_SPEED = 2;
+
 export class InputController {
 
   constructor (host) {
@@ -39,7 +42,25 @@ export class InputController {
       e.preventDefault();
 
       const direction = (e.key === 'ArrowDown') ? 'down' : 'up';
-      this._host._onArrow(direction);
+      if (this._animation == null) {
+        let i = 0;
+        this._animation = () => {
+          if ((i === 0 || i > MIN_FRAMES) && (i % ANIMATION_SPEED) === 0) {
+            this._host._onArrow(direction);
+          }
+          if (this._animation != null) {
+            requestAnimationFrame(this._animation);
+          }
+          i += 1;
+        };
+        this._animation();
+      }
+    }
+  }
+
+  onKeyUp (e) {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      this._animation = null;
     }
   }
 

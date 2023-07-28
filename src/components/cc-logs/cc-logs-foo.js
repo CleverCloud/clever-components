@@ -183,6 +183,7 @@ export class CcLogsComponent extends LitElement {
         .renderItem=${(item, index) => this._renderLog(item, index)}
         @click=${(e) => this._inputCtrl.onClick(e)}
         @keydown=${(e) => this._inputCtrl.onKeyDown(e)}
+        @keyup=${(e) => this._inputCtrl.onKeyUp(e)}
         @visibilityChanged=${this._onVisibilityChanged}
       ></lit-virtualizer>
     `;
