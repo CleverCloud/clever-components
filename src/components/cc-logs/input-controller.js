@@ -35,7 +35,10 @@ export class InputController {
 
   onKeyDown (e) {
 
-    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    if (e.key === 'Escape') {
+      this._host._onEscape();
+    }
+    else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
 
       // we don't want to use the native behavior: scroll up/down
       // Note that user will still have PageUp and PageDown keys to scroll up and down

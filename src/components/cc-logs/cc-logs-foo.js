@@ -112,6 +112,11 @@ export class CcLogsComponent extends LitElement {
   }
 
   // Wired through this._inputCtrl
+  _onEscape () {
+    this._logs.clearSelection();
+  }
+
+  // Wired through this._inputCtrl
   _onArrow (direction) {
 
     let index;
