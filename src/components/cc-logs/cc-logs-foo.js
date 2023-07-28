@@ -76,6 +76,8 @@ export class CcLogsComponent extends LitElement {
     this._logsRef = createRef();
 
     this._focusedLogIndex = null;
+
+    this._visibleRange = { first: -1, last: -1 };
   }
 
   _resolveTimestampFormatter () {
@@ -84,6 +86,11 @@ export class CcLogsComponent extends LitElement {
 
   _onFocusLog (e, index) {
     this._focusedLogIndex = index;
+    e.target.addEventListener('blur', () => {
+      if (this._focusedLogIndex === index) {
+        this._focusedLogIndex = null;
+      }
+    }, { once: true });
   }
 
   // Wired through this._inputCtrl
@@ -107,9 +114,16 @@ export class CcLogsComponent extends LitElement {
   // Wired through this._inputCtrl
   _onArrow (direction) {
 
-    // TODO improve this
-    let index = 0;
-    if (this._focusedLogIndex != null) {
+    let index;
+    if (this._focusedLogIndex == null) {
+      // when no element was previously focused,
+      // we focus the first visible element if user hits the arrow down key,
+      // we focus the last visible element if user hits the arrow up key.
+      index = (direction === 'down')
+        ? this._visibleRange.first
+        : this._visibleRange.last;
+    }
+    else {
       index = (direction === 'down')
         ? this._focusedLogIndex + 1
         : this._focusedLogIndex - 1;
@@ -120,6 +134,10 @@ export class CcLogsComponent extends LitElement {
     this._logsRef.value
       .querySelector(`.log[data-index="${index}"] .select_button`)
       ?.focus();
+  }
+
+  _onVisibilityChanged (e) {
+    this._visibleRange = { first: e.first, last: e.last };
   }
 
   /**
@@ -165,6 +183,7 @@ export class CcLogsComponent extends LitElement {
         .renderItem=${(item, index) => this._renderLog(item, index)}
         @click=${(e) => this._inputCtrl.onClick(e)}
         @keydown=${(e) => this._inputCtrl.onKeyDown(e)}
+        @visibilityChanged=${this._onVisibilityChanged}
       ></lit-virtualizer>
     `;
   }
