@@ -86,6 +86,10 @@ export class LogsController {
     return this._selection.has(logId);
   }
 
+  isSelectionEmpty () {
+    return this._selection.size === 0;
+  }
+
   _updateList (options = {}) {
 
     const newLogs = options.newLogs ?? [];

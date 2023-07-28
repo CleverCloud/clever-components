@@ -267,4 +267,26 @@ describe('', () => {
     expect(logsCtrl.isSelected('00009')).to.equal(false);
 
   });
+
+  it('isSelectionEmpty()', () => {
+
+    logsCtrl.limit = 10;
+
+    const logsOne = generateLogs(10, 0);
+
+    logsCtrl.append(logsOne);
+    expect(logsCtrl.isSelectionEmpty()).to.equal(true);
+
+    logsCtrl.select('00002');
+    expect(logsCtrl.isSelectionEmpty()).to.equal(false);
+
+    logsCtrl.select('00003');
+    expect(logsCtrl.isSelectionEmpty()).to.equal(false);
+
+    logsCtrl.select('00003');
+    expect(logsCtrl.isSelectionEmpty()).to.equal(false);
+
+    logsCtrl.select('00002');
+    expect(logsCtrl.isSelectionEmpty()).to.equal(true);
+  });
 });

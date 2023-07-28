@@ -91,6 +91,11 @@ export class CcLogsComponent extends LitElement {
     else {
       this._logs.clearSelection();
     }
+
+    // Clear regular text selection if logs selection is active
+    if (!this._logs.isSelectionEmpty()) {
+      document.getSelection().empty();
+    }
   }
 
   /**
