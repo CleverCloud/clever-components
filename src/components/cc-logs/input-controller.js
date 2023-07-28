@@ -30,4 +30,17 @@ export class InputController {
     this._host._onClickLog(clickDetails);
   }
 
+  onKeyDown (e) {
+
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+
+      // we don't want to use the native behavior: scroll up/down
+      // Note that user will still have PageUp and PageDown keys to scroll up and down
+      e.preventDefault();
+
+      const direction = (e.key === 'ArrowDown') ? 'down' : 'up';
+      this._host._onArrow(direction);
+    }
+  }
+
 }

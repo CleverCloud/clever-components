@@ -74,10 +74,16 @@ export class CcLogsComponent extends LitElement {
 
     /** @type {Ref<Virtualizer>} A reference to the logs container. */
     this._logsRef = createRef();
+
+    this._focusedLogIndex = null;
   }
 
   _resolveTimestampFormatter () {
     return new TimestampFormatter(this.timestampDisplay, this.timezone);
+  }
+
+  _onFocusLog (e, index) {
+    this._focusedLogIndex = index;
   }
 
   // Wired through this._inputCtrl
@@ -96,6 +102,24 @@ export class CcLogsComponent extends LitElement {
     if (!this._logs.isSelectionEmpty()) {
       document.getSelection().empty();
     }
+  }
+
+  // Wired through this._inputCtrl
+  _onArrow (direction) {
+
+    // TODO improve this
+    let index = 0;
+    if (this._focusedLogIndex != null) {
+      index = (direction === 'down')
+        ? this._focusedLogIndex + 1
+        : this._focusedLogIndex - 1;
+    }
+
+    // TODO improve this
+    this._logsRef.value.scrollToIndex(index, 'center');
+    this._logsRef.value
+      .querySelector(`.log[data-index="${index}"] .select_button`)
+      ?.focus();
   }
 
   /**
@@ -140,6 +164,7 @@ export class CcLogsComponent extends LitElement {
         .keyFunction=${(it) => it.id}
         .renderItem=${(item, index) => this._renderLog(item, index)}
         @click=${(e) => this._inputCtrl.onClick(e)}
+        @keydown=${(e) => this._inputCtrl.onKeyDown(e)}
       ></lit-virtualizer>
     `;
   }
@@ -173,6 +198,7 @@ export class CcLogsComponent extends LitElement {
             aria-label="${selectButtonLabel}"
             aria-pressed=${selected}
             tabindex="-1"
+            @focus=${(e) => this._onFocusLog(e, index)}
           >
             <cc-icon .icon=${iconSelected} size="xs"></cc-icon>
           </button>
