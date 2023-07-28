@@ -90,6 +90,12 @@ export class LogsController {
     return this._selection.size === 0;
   }
 
+  getSelection () {
+    return Array
+      .from(this._selection)
+      .map((id) => this._logs.find((log) => log.id === id));
+  }
+
   _updateList (options = {}) {
 
     const newLogs = options.newLogs ?? [];

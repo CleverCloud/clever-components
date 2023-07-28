@@ -8,15 +8,48 @@ import { css, html, LitElement, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { join } from 'lit/directives/join.js';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { iconRemixCheckboxBlankCircleFill as iconSelected } from '../../assets/cc-remix.icons.js';
+import {
+  iconRemixCheckboxBlankCircleFill as iconSelected,
+  iconRemixFileCopy_2Line as iconCopy,
+} from '../../assets/cc-remix.icons.js';
 import { ansiPaletteStyle } from '../../lib/ansi/ansi-palette-style.js';
 import { ansiStyles, ansiToLit, stripAnsi } from '../../lib/ansi/ansi.js';
 import defaultPalette from '../../lib/ansi/palettes/default.js';
+import { copyToClipboard } from '../../lib/clipboard.js';
 import { i18n } from '../../lib/i18n.js';
+import { notifySuccess } from '../../lib/notifications.js';
 import { TimestampFormatter } from '../../lib/timestamp-formatter.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { InputController } from './input-controller.js';
 import { LogsController } from './logs-controller.js';
+
+/**
+ * Constructs two versions of the lines of text:
+ *
+ * * A text version which is the lines joined with a carriage return.
+ * * A html version
+ *
+ * @param {Array<string>} lines
+ * @return {{text: string, html: string}}
+ */
+function copyDataFromLines (lines) {
+  const text = lines.join('\n');
+  const html = linesToHtml(lines);
+  return { text, html };
+}
+
+/**
+ * Transforms the given lines into html. Useful when putting a html version of a text inside clipboard.
+ */
+function linesToHtml (lines) {
+  if (lines.length === 0) {
+    return '';
+  }
+  if (lines.length === 1) {
+    return `<code>${lines[0]}</code>`;
+  }
+  return `<pre>${lines.join('<br>')}</pre>`;
+}
 
 // This style is the default ansi palette plus the ability to be overridden with the css theme.
 const DEFAULT_PALETTE_STYLE = ansiPaletteStyle(
@@ -141,6 +174,32 @@ export class CcLogsComponent extends LitElement {
       ?.focus();
   }
 
+  _onCopySelectionToClipboard () {
+
+    if (this._logs.isSelectionEmpty()) {
+      return;
+    }
+
+    const lines = this._logs.getSelection()
+      .map((log) => {
+        const ts = this._timestampFormatter.format(log.timestamp);
+        const meta = log.metadata
+          ?.map((m) => m.value)
+          .filter((t) => t?.length > 0)
+          .join(' ');
+        return [ts, meta, stripAnsi(log.message)].filter((t) => t?.length > 0).join(' ');
+      });
+
+    const data = copyDataFromLines(lines);
+
+    copyToClipboard(data.text, data.html).then(() => {
+      const notification = (lines.length === 1)
+        ? i18n('cc-logs.copied.single')
+        : i18n('cc-logs.copied.multi', { count: lines.length });
+      notifySuccess(notification);
+    });
+  }
+
   _onVisibilityChanged (e) {
     this._visibleRange = { first: e.first, last: e.last };
   }
@@ -186,11 +245,22 @@ export class CcLogsComponent extends LitElement {
         ?scroller=${true}
         .keyFunction=${(it) => it.id}
         .renderItem=${(item, index) => this._renderLog(item, index)}
+        @copy=${this._onCopy}
         @click=${(e) => this._inputCtrl.onClick(e)}
         @keydown=${(e) => this._inputCtrl.onKeyDown(e)}
         @keyup=${(e) => this._inputCtrl.onKeyUp(e)}
         @visibilityChanged=${this._onVisibilityChanged}
       ></lit-virtualizer>
+      ${!this._logs.isSelectionEmpty()
+        ? html`
+          <cc-button
+            class="copy_button"
+            .icon=${iconCopy}
+            @cc-button:click=${this._onCopySelectionToClipboard}
+            hide-text>${i18n('cc-logs.copy')}
+          </cc-button>`
+        : null
+      }
     `;
   }
 
@@ -392,6 +462,12 @@ export class CcLogsComponent extends LitElement {
 
         .select_button[aria-pressed='true'] cc-icon {
           color: var(--cc-color-text-primary, #000);
+        }
+
+        .copy_button {
+          position: absolute;
+          top: 0.5em;
+          right: 1em;
         }
 
         .timestamp {

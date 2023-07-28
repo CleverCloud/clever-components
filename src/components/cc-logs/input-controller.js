@@ -59,6 +59,9 @@ export class InputController {
         this._animation();
       }
     }
+    else if (e.key === 'c' && e.ctrlKey) {
+      this._host._onCopySelectionToClipboard();
+    }
   }
 
   onKeyUp (e) {
