@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="/src/styles/default-theme.css">
+  <style>
+    body {
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+
+    }
+  </style>
+  <script type="module">
+    import { addTranslations, setLanguage } from '../../lib/i18n.js';
+    import { lang, translations } from '../../translations/translations.en.js';
+    import { updateRootContext } from '../../lib/smart-manager.js';
+    import './cc-logs-controller-options.js';
+
+    addTranslations(lang, translations);
+    setLanguage(lang);
+
+    updateRootContext({});
+  </script>
+
+  <style>
+    cc-logs-controller-options {
+      border: 1px solid #aaa;
+      padding: 0.5em;
+      margin-bottom: 0.5em;
+    }
+  </style>
+
+  <title></title>
+</head>
+<body>
+<div>
+  <cc-logs-controller-options version="0"></cc-logs-controller-options>
+  <hr>
+  <cc-logs-controller-options version="1"></cc-logs-controller-options>
+  <hr>
+  <cc-logs-controller-options version="2"></cc-logs-controller-options>
+</div>
+
+<script>
+  let model = {
+    metadataDisplay: {
+      ip: { label: 'Afficher l\'adresse IP', hidden: true },
+      level: { label: 'Afficher le niveau de log', hidden: false }
+    },
+    palette: 'Hyoob',
+    timestampDisplay: 'datetime-iso',
+    timezone: 'UTC',
+    wrapLines: true,
+  }
+
+  document.querySelectorAll('cc-logs-controller-options').forEach((e) => {
+    e.addEventListener('cc-logs-controller-options:optionChanged', ({detail}) => {
+      model = {
+        ...model,
+        [detail.name]: detail.value,
+      }
+      refresh();
+    })
+  });
+
+  function refresh() {
+    document.querySelectorAll('cc-logs-controller-options').forEach((e) => {
+      Object.entries(model).forEach(([k, v]) => {
+        e[k] = v;
+      })
+    });
+  }
+
+  refresh();
+</script>
+</body>
+</html>
