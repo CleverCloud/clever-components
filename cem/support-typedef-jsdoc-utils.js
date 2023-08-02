@@ -44,27 +44,45 @@ export function getTypesFromConstructor (constructorNode, ts, retrievePrivate = 
 
 }
 
+const BUILTIN_TYPES = ['String', 'Boolean', 'Number', 'BigInt', 'Date', 'Map', 'Set', 'WeakMap', 'WeakSet', 'Object', 'Promise', 'Symbol'];
 export function findCustomType (nodeType, ts) {
-
-  // Type[] (not primitive[])
-  const isArrayType = nodeType.kind === ts.SyntaxKind.ArrayType && nodeType?.elementType?.kind === ts.SyntaxKind.TypeReference;
-  if (isArrayType) {
-    return nodeType.elementType.typeName.getText();
+  if (nodeType == null) {
+    return null;
   }
 
-  // Type, Array<any>, Array
-  const isCustomType = nodeType.kind === ts.SyntaxKind.TypeReference;
-  const isCustomTypeArray = nodeType?.typeName?.getText() === 'Array';
-  const hasSpecialArrayArgs = nodeType.typeArguments?.[0]?.typeName != null;
+  const nodeKind = nodeType.kind;
+  const typeName = nodeType.typeName?.getText();
+
+  // any[]
+  if (nodeKind === ts.SyntaxKind.ArrayType) {
+    // recursion to handle nested arrays
+    return findCustomType(nodeType.elementType, ts);
+  }
+
+  // Array or Array<any>
+  if (nodeKind === ts.SyntaxKind.TypeReference && typeName === 'Array') {
+    // recursion to handle nested arrays
+    return findCustomType(nodeType.typeArguments?.[0], ts);
+  }
+  // {{key: string]: any}
+  if (nodeKind === ts.SyntaxKind.TypeLiteral && nodeType.members[0].kind === ts.SyntaxKind.IndexSignature) {
+    return findCustomType(nodeType.members[0].type, ts);
+  }
 
   // Type
-  if (isCustomType && !isCustomTypeArray && !hasSpecialArrayArgs) {
-    return nodeType.getText();
-  }
+  if (nodeKind === ts.SyntaxKind.TypeReference) {
 
-  // Array<Type>
-  if (isCustomType && isCustomTypeArray && hasSpecialArrayArgs) {
-    return nodeType.typeArguments[0].typeName.getText();
+    // we ignore builtin types
+    if (BUILTIN_TYPES.includes(typeName)) {
+      return null;
+    }
+
+    // we don't support custom types with generics
+    if (nodeType.typeArguments != null) {
+      return null;
+    }
+
+    return typeName;
   }
 
   return null;
