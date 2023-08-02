@@ -78,12 +78,24 @@ describe('findCustomType()', function () {
     testCustomType('Foo[]', 'Foo');
   });
 
+  it('should return `Type` for a `Type[][]` type.', function () {
+    testCustomType('Foo[][]', 'Foo');
+  });
+
   it('should return `null` for a `primitive[]` type.', function () {
+    testCustomType('string[]', null);
+  });
+
+  it('should return `null` for a `primitive[][]` type.', function () {
     testCustomType('string[]', null);
   });
 
   it('should return `null` for a `Array<primitive>` type.', function () {
     testCustomType('Array<string>', null);
+  });
+
+  it('should return `null` for a `Array<Array<primitive>>` type.', function () {
+    testCustomType('Array<Array<string>>', null);
   });
 
   it('should return `null` for a base `Array`.', function () {
@@ -98,8 +110,44 @@ describe('findCustomType()', function () {
     testCustomType('Foo', 'Foo');
   });
 
-  it('should ignore custom types in generics.', function () {
+  it('should return `null` for a primitive type.', function () {
+    testCustomType('number', null);
+  });
+
+  it('should return `null` for nested Arrays `Array<Array<Array>>` type.', function () {
+    testCustomType('Array<Array<Array>>', null);
+  });
+
+  it('should return the type deeply nested in Arrays `Array<Array<Array<Foo>>` type.', function () {
+    testCustomType('Array<Array<Array<Foo>>', 'Foo');
+  });
+
+  it('should ignore `Date`', function () {
+    testCustomType('Date', null);
+  });
+
+  it('should ignore `Date` in Array<Date>', function () {
+    testCustomType('Array<Date>', null);
+  });
+
+  it('should ignore `Date` in Date[]', function () {
+    testCustomType('Date[]', null);
+  });
+
+  it('should ignore custom types with generics.', function () {
     testCustomType('Foo<Bar>', null);
+  });
+
+  it('should return the type used in Object value.', function () {
+    testCustomType('{[key: string]: LogsMetadataDisplay}', 'LogsMetadataDisplay');
+  });
+
+  it('should return the type used in Object value inside array.', function () {
+    testCustomType('{[key: string]: LogsMetadataDisplay}[]', 'LogsMetadataDisplay');
+  });
+
+  it('should return the type used in Object value inside Array.', function () {
+    testCustomType('Array<{[key: string]: LogsMetadataDisplay}>', 'LogsMetadataDisplay');
   });
 });
 
