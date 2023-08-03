@@ -49,6 +49,7 @@ const withFade = (spec) => {
  * @typedef {import('./cc-toaster.types.js').ToastPosition} ToastPosition
  * @typedef {import('./cc-toaster.types.js').ToastAnimation} ToastAnimation
  * @typedef {import('./cc-toaster.types.js').ToastOptions} ToastOptions
+ * @typedef {import('./cc-toaster.types.js').ToastDismissEventDetail} ToastDismissEventDetail
  */
 
 /**

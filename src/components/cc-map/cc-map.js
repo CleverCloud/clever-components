@@ -12,6 +12,7 @@ import { leafletStyles } from '../../styles/leaflet.js';
 /**
  * @typedef {import('../common.types.js').HeatmapPoint} HeatmapPoint
  * @typedef {import('../common.types.js').MapModeType} MapModeType
+ * @typedef {import('../common.types.js').Point} Point
  */
 
 /**

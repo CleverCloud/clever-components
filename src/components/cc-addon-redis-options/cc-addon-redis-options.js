@@ -7,6 +7,7 @@ import { ccAddonEncryptionAtRestOption } from '../../templates/cc-addon-encrypti
 
 /**
  * @typedef {import('../common.types.js').AddonOption} AddonOption
+ * @typedef {import('./cc-addon-redis-options.types.js').GenericOptions} GenericOptions
  */
 
 /**

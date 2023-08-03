@@ -13,6 +13,8 @@ const redirectionSvg = new URL('../../assets/redirection-on.svg', import.meta.ur
 
 /**
  * @typedef {import('./cc-tcp-redirection.types.js').TcpRedirectionState} TcpRedirectionState
+ * @typedef {import('./cc-tcp-redirection.types.js').CreateTcpRedirection} CreateTcpRedirection
+ * @typedef {import('./cc-tcp-redirection.types.js').DeleteTcpRedirection} DeleteTcpRedirection
  */
 
 /**

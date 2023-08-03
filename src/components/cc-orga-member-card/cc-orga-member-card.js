@@ -26,6 +26,8 @@ const BREAKPOINT_TINY = 350;
 /**
  * @typedef {import('./cc-orga-member-card.types.js').Authorisations} Authorisations
  * @typedef {import('./cc-orga-member-card.types.js').OrgaMemberCardState} OrgaMemberCardState
+ * @typedef {import('./cc-orga-member-card.types.js').ToggleEditing} ToggleEditing
+ * @typedef {import('./cc-orga-member-card.types.js').UpdateMember} UpdateMember
  */
 
 /**

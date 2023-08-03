@@ -47,6 +47,7 @@ const SKELETON_INTERVALS = [
  * @typedef {import('../common.types.js').ActionType} ActionType
  * @typedef {import('../common.types.js').Currency} Currency
  * @typedef {import('../common.types.js').PricingSection} PricingSection
+ * @typedef {import('../common.types.js').Plan} Plan
  */
 
 /**
