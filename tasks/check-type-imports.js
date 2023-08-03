@@ -3,8 +3,7 @@ import path from 'path';
 import chalk from 'chalk';
 import glob from 'glob';
 import ts from 'typescript';
-
-import { getConstructorNode, getTypesFromConstructor } from '../cem/support-typedef-jsdoc-utils.js';
+import { getTypesFromClass } from '../cem/support-typedef-jsdoc-utils.js';
 
 function checkTypeImports (componentName, filepath, sourceCode) {
   const sourceAst = ts.createSourceFile(componentName, sourceCode, ts.ScriptTarget.ES2015, true);
@@ -20,17 +19,17 @@ function checkTypeImports (componentName, filepath, sourceCode) {
   const imports = { component: componentName, filepath: filepath, unusedImports: [], errors: [], missingImports: [] };
 
   for (const classNode of classNodes) {
-    const constructorNode = getConstructorNode(classNode, ts);
-
-    if (constructorNode == null) {
-      continue;
-    }
-
-    // The plugin takes variables that are initialized in the constructor (both public and private)
+    // The plugin takes variables that are both
+    // - initialized in the constructor (both public and private)
+    // - declared in @event JsDoc tags
     // and takes all the available imports : which are imports found in @typedef, import statements and current file classes.
     // Then it verifies that there's a match between each constructor variables types and the available imports
     // Finally it tells you if you have missing, unused imports or @typedef in the wrong format
-    const typesFromConstructor = getTypesFromConstructor(constructorNode, ts, true);
+    const types = getTypesFromClass(classNode, ts, true);
+    if (types.length === 0) {
+      continue;
+    }
+
     const typesFromTypeDef = [];
     classNode?.jsDoc?.forEach((jsDoc) => {
       if (jsDoc.tags != null) {
@@ -41,7 +40,7 @@ function checkTypeImports (componentName, filepath, sourceCode) {
       }
     });
 
-    typesFromConstructor.forEach((type) => {
+    types.forEach((type) => {
       const fromTypeDef = typesFromTypeDef.find(({ type: typeDefType }) => type === typeDefType);
       const isDomRelated = type === 'Animation' || type === 'Element' || type === 'Node';
       const isDefinedInFile = typesFromFile.includes(type);
@@ -53,7 +52,7 @@ function checkTypeImports (componentName, filepath, sourceCode) {
 
     typesFromTypeDef.forEach(({ type, typedef }) => {
       const isDomRelated = type === 'Animation' || type === 'Element' || type === 'Node';
-      if (type != null && !typesFromConstructor.includes(type) && !isDomRelated) {
+      if (type != null && !types.includes(type) && !isDomRelated) {
         imports.unusedImports.push({ type, typedef });
       }
 
@@ -72,7 +71,7 @@ function run () {
     chalk
       .bgWhite
       .black
-      .bold(`\n ⌛ checking @typedef imports and types present in constructor.\n`),
+      .bold(`\n ⌛ checking @typedef imports and types present in constructor and @event tags.\n`),
   );
 
   const wrongImports = [];

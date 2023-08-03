@@ -11,6 +11,8 @@ import {
   findInterfacesFromExtends,
   getConstructorNode,
   getTypesFromConstructor,
+  getTypesFromEventTags,
+  getTypesFromClass,
 } from '../support-typedef-jsdoc-utils.js';
 
 const filename = 'cem/test/fixtures/cc-test-component.js';
@@ -18,6 +20,11 @@ const sourceCode = fs.readFileSync(filename, { encoding: 'utf-8' });
 
 const sourceAst = ts.createSourceFile(filename, sourceCode, ts.ScriptTarget.ES2015, true);
 const classNode = sourceAst.statements.find((node) => node.kind === ts.SyntaxKind.ClassDeclaration);
+
+function getClassNodeFromSource (source) {
+  const ast = ts.createSourceFile('foo', source, ts.ScriptTarget.ES2015, true);
+  return ast.statements.find((node) => node.kind === ts.SyntaxKind.ClassDeclaration);
+}
 
 const ROOT_DIR = process.cwd();
 const MODULE_DIR = 'cem/test/fixtures';
@@ -37,6 +44,15 @@ describe('getConstructorNode()', function () {
   });
 });
 
+describe('getTypesFromClass()', function () {
+
+  it('should retrieve the types present in the constructor and from event tags', function () {
+    const types = getTypesFromClass(classNode, ts);
+    expect(types).to.have.members(['Foo', 'Bar', 'TheInterface', 'TheType', 'TupleFoo', 'TupleBar', 'CustomEventFoo', 'CustomEventBar', 'CustomEventBaz']);
+  });
+
+});
+
 describe('getTypesFromConstructor()', function () {
 
   it('should retrieve the types present in the constructor.', function () {
@@ -46,9 +62,7 @@ describe('getTypesFromConstructor()', function () {
   });
 
   it('should return an empty array when the constructor is empty.', function () {
-    const source = `export class CcTestComponent extends LitElement { constructor() {} }`;
-    const ast = ts.createSourceFile('foo', source, ts.ScriptTarget.ES2015, true);
-    const classNodeWithEmptyConstr = ast.statements.find((node) => node.kind === ts.SyntaxKind.ClassDeclaration);
+    const classNodeWithEmptyConstr = getClassNodeFromSource(`export class CcTestComponent extends LitElement { constructor() {} }`);
     const constructorNode = getConstructorNode(classNodeWithEmptyConstr, ts);
     const typesFromConstructor = getTypesFromConstructor(constructorNode, ts);
     // eslint-disable-next-line no-unused-expressions
@@ -61,6 +75,27 @@ describe('getTypesFromConstructor()', function () {
     expect(types).to.have.members(['Foo', 'Bar', 'TheInterface', 'TheType', 'TupleFoo', 'TupleBar', 'PrivateInterface']);
   });
 
+});
+
+describe('getTypesFromEventTags()', () => {
+  it('should retrieve the types in event tags', () => {
+    const types = getTypesFromEventTags(classNode, ts);
+    expect(types).to.have.members(['CustomEventFoo', 'CustomEventBar', 'CustomEventBaz']);
+  });
+
+  it('should return an empty array when no jsDoc', () => {
+    const classNode = getClassNodeFromSource(`export class CcTestComponent extends LitElement { constructor() {} }`);
+    const types = getTypesFromEventTags(classNode, ts);
+    // eslint-disable-next-line no-unused-expressions
+    expect(types).to.be.empty;
+  });
+
+  it('should return an empty array when empty jsDoc', () => {
+    const classNode = getClassNodeFromSource(`/***/\nexport class CcTestComponent extends LitElement { constructor() {} }`);
+    const types = getTypesFromEventTags(classNode, ts);
+    // eslint-disable-next-line no-unused-expressions
+    expect(types).to.be.empty;
+  });
 });
 
 describe('findCustomType()', function () {

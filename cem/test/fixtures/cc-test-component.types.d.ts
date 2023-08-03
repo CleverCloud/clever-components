@@ -121,3 +121,15 @@ interface AnotherExtendsInt {
 interface toBeImpExtended extends ImpExtendInterface {
 
 }
+
+interface CustomEventFoo {
+
+}
+
+interface CustomEventBar {
+
+}
+
+interface CustomEventBaz {
+
+}
