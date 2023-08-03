@@ -123,8 +123,6 @@ const withFade = (spec) => {
  * element from the DOM after the animation has finished.
  *
  * @cssdisplay block
- *
- * @event {CustomEvent<ToastDismissEventDetail>} cc-toast:dismiss - Fires whenever a toast is dismissed.
  */
 export class CcToaster extends LitElement {
 

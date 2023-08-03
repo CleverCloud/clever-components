@@ -1,17 +1,17 @@
 //#region creation form
-interface CreateSshKeyFormState {
+export interface CreateSshKeyFormState {
   state: "idle" | "creating";
   name: FormField;
   publicKey: FormField;
 }
-interface NewKey {
+export interface NewKey {
   name: string;
   publicKey: string;
 }
 //#endregion
 
 //#region key lists
-type KeyDataState = KeyDataStateLoading | KeyDataStateLoadedAndUnlinked | KeyDataStateLoadedAndLinked | KeyDataStateError;
+export type KeyDataState = KeyDataStateLoading | KeyDataStateLoadedAndUnlinked | KeyDataStateLoadedAndLinked | KeyDataStateError;
 
 // when exchange with API is occurring = loading SSH keys
 // - is the initial state
@@ -47,7 +47,7 @@ interface FormField {
 }
 
 // SshKey
-interface SshKey {
+export interface SshKey {
   name: string;
   fingerprint: string;
 }

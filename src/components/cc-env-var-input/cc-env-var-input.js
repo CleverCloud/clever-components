@@ -7,6 +7,11 @@ import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 
 /**
+ * @typedef {import('./cc-env-var-input.types.js').VariableName} VariableName
+ * @typedef {import('../common.types.js').Variable} Variable
+ */
+
+/**
  * A small input to manipulate an environement variable.
  *
  * @cssdisplay block
