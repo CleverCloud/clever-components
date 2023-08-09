@@ -12,6 +12,15 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
 * See config in `rollup/rollup-npm.config.js` for more details.
 * TODO: link to detailed build documentation
 
+## `npm run components:graph-usage`
+
+* ⚠️ Don't forget to add `--` between the command and your params. (e.g: `npm run components:graph-usage -- --uses cc-notice`)
+* Params:
+  * --depth (alias -d): Depth of the tree - value: number. (mandatory)
+  * --all (alias -a): The depth of tree will be infinity - value: no value.
+  * --uses (alias -u): Lists the components that use the component given in value param - value: global for all the components|cc-component for a specific component.
+  * --used-by : Lists the components needed by the component given in value param - value: global for all the components|cc-component for a specific component.
+
 ## `npm run components:check-i18n`
 
 * Check translations between components and translation files with [i18n-extract](https://github.com/oliviertassinari/i18n-extract).
