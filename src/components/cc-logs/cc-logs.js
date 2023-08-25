@@ -1264,6 +1264,8 @@ export class CcLogsComponent extends LitElement {
     if (_changedProperties.has('logs')) {
       this.clear();
       this._logs = [...this.logs];
+      // TODO this was missing
+      this._applyFilter();
     }
 
     // When internal _filteredLogs collection has changed and follow is active, we inhibite the follow binding until the element is really added to the DOM.
