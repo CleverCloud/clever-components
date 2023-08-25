@@ -112,7 +112,7 @@ export default {
   // There is a PR to include this in the default config of Web Dev Server (https://github.com/modernweb-dev/web/pull/2109)
   // Once it's merged, we may revert this part of the config to `nodeResolve: true`
   nodeResolve: true,
-  // watch: true,
+  watch: true,
   mimeTypes: {
     '**/*.md': 'js',
     '**/*.json': 'js',
@@ -120,13 +120,13 @@ export default {
   },
   plugins: [
     storybookWdsPlugin(),
-    hmrI18nPlugin,
+    // hmrI18nPlugin,
     injectAuthForSmartComponentsPlugin,
     cemAnalyzerPlugin,
-    hmrPlugin({
-      include: ['src/**/*'],
-      presets: [presets.lit],
-    }),
+    // hmrPlugin({
+    //   include: ['src/**/*'],
+    //   presets: [presets.lit],
+    // }),
     rollupAdapter(json()),
     esbuildBundlePluginWithConfig,
     commonjsPluginWithConfig,
