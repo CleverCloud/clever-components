@@ -12,7 +12,7 @@ export interface Metadata {
 
 export type MetadataRenderer = MetadataRenderingProvider | MetadataRendering;
 
-export type MetadataRenderingProvider = (metadata: Metadata, { index: number, log: Log }?) => MetadataRendering;
+export type MetadataRenderingProvider = (metadata: Metadata) => MetadataRendering;
 
 export interface MetadataRendering {
   hidden?: boolean;

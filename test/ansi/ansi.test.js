@@ -1,7 +1,7 @@
 import { expect } from '@bundled-es-modules/chai';
 import { fixture } from '@open-wc/testing-helpers';
 import { html } from 'lit';
-import { ansiToLit } from '../../src/lib/ansi/ansi.js';
+import { ansiToLit, stripAnsi } from '../../src/lib/ansi/ansi.js';
 
 async function ansiToHtml (template) {
   const element = await fixture(html`<div>${ansiToLit(template)}</div>`);
@@ -186,4 +186,10 @@ describe('ansi', function () {
       ).to.equal(`<span class="ansi-bg-${color.name}">Colorized</span>Not colorized`);
     });
   }));
+});
+
+describe('strip ansi', () => {
+  it('should strip all', () => {
+    expect(stripAnsi('\u001B[1;31mWhite\u001B[0m \u001B[1;31municorn')).to.equal('White unicorn');
+  });
 });

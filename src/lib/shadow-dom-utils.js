@@ -51,11 +51,11 @@ export function isParentOf (parent, child) {
  *
  * @param {number} x
  * @param {number} y
- * @param {Document|ShadowRoot} element
+ * @param {DocumentOrShadowRoot} [root=document]
  * @return {Array<Element>}
  */
-export function elementsFromPoint (x, y, element = document) {
-  let elements = element.elementsFromPoint(x, y);
+export function elementsFromPoint (x, y, root = document) {
+  let elements = root.elementsFromPoint(x, y);
   if (elements.length === 0) {
     return [];
   }

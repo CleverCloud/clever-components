@@ -2,7 +2,7 @@
 module.exports = {
   'rules': {
     'import/no-extraneous-dependencies': ['error', {
-      'devDependencies': false,
+      'devDependencies': ["**/*.test.js"],
       'optionalDependencies': false,
       'peerDependencies': false,
     }],

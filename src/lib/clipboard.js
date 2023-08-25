@@ -27,3 +27,31 @@ export async function copyToClipboard (text, html = null) {
     await navigator.clipboard.writeText(text);
   }
 }
+
+/**
+ * Constructs two versions of the lines of text:
+ *
+ * * A text version which is the lines joined with a carriage return.
+ * * A html version
+ *
+ * @param {Array<string>} lines
+ * @return {{text: string, html: string}}
+ */
+export function prepareLinesOfCodeForClipboard (lines) {
+  const text = lines.join('\n');
+  const html = formatLinesOfCodeToHtml(lines);
+  return { text, html };
+}
+
+/**
+ * Transforms the given lines into html. Useful when putting a html version of a text inside clipboard.
+ */
+export function formatLinesOfCodeToHtml (lines) {
+  if (lines.length === 0) {
+    return '';
+  }
+  if (lines.length === 1) {
+    return `<code>${lines[0]}</code>`;
+  }
+  return `<pre>${lines.join('<br>')}</pre>`;
+}

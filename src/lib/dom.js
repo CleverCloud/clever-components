@@ -31,3 +31,12 @@ function doScrollChildIntoParent (parent, child) {
     parent.scrollBy({ top, behavior: 'smooth' });
   }
 }
+
+/**
+ * @param {HTMLElement} element
+ * @param {string} clazz
+ * @return {boolean}
+ */
+export function hasClass (element, clazz) {
+  return element.classList?.contains(clazz) ?? false;
+}
