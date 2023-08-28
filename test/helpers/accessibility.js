@@ -29,7 +29,8 @@ before(() => {
   window.onerror = function (err) {
     switch (err) {
       case 'ResizeObserver loop limit exceeded':
-        console.warn('Ignored: ResizeObserver loop limit exceeded');
+        return false;
+      case 'ResizeObserver loop completed with undelivered notifications.':
         return false;
       case 'Uncaught IndexSizeError: Failed to execute \'getImageData\' on \'CanvasRenderingContext2D\': The source width is 0.':
         return false;
