@@ -1,4 +1,4 @@
-import { BarController, BarElement, CategoryScale, Chart, LinearScale, Title, Tooltip } from 'chart.js';
+import { BarController, BarElement, CategoryScale, Chart, LinearScale, Title, Tooltip, Filler } from 'chart.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -21,7 +21,7 @@ import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 
-Chart.register(BarController, BarElement, Tooltip, CategoryScale, LinearScale, Title);
+Chart.register(BarController, BarElement, Tooltip, CategoryScale, LinearScale, Title, Filler);
 
 const TOP_COLOR_CHART = 'rgb(190, 52, 97)';
 const MIDDLE_COLOR_CHART = 'rgb(78, 100, 234)';
