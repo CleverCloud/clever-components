@@ -4,9 +4,13 @@ interface PricingZoneStateLoading {
     state: 'loading';
 }
 
+interface PricingZoneStateError {
+    state: 'error';
+}
+
 interface PricingZoneStateLoaded {
     state: 'loaded';
     value: Zone[];
 }
 
-export type PricingZoneState = PricingZoneStateLoading | PricingZoneStateLoaded;
+export type PricingZoneState = PricingZoneStateLoading | PricingZoneStateError | PricingZoneStateLoaded;

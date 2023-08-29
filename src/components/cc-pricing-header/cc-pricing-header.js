@@ -12,6 +12,7 @@ import { shoelaceStyles } from '../../styles/shoelace.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { CcZone } from '../cc-zone/cc-zone.js';
 import '../cc-icon/cc-icon.js';
+import '../cc-notice/cc-notice.js';
 
 /** @type {Zone[]} */
 const SKELETON_ZONES = [];
@@ -155,9 +156,13 @@ export class CcPricingHeader extends LitElement {
   render () {
     const zones = this.zones.state === 'loading' ? SKELETON_ZONES : sortZones(this.zones.value);
 
+    if (this.zones.state === 'error') {
+      return html`<cc-notice intent="warning" message="${i18n('cc-pricing-header.error')}"></cc-notice>`;
+    }
+
     return html`
       <div class="main">
-      
+
         <sl-select
           label="${i18n('cc-pricing-header.label.temporality')}"
           class="temporality-select"

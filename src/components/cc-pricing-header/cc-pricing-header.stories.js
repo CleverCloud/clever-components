@@ -55,6 +55,12 @@ export const skeleton = makeStory(conf, {
   items: [{}],
 });
 
+export const error = makeStory(conf, {
+  items: [{
+    zones: { state: 'error' },
+  }],
+});
+
 export const dataLoadedWithDollars = makeStory(conf, {
   items: [{
     ...defaultItem,
@@ -100,6 +106,7 @@ export const simulations = makeStory(conf, {
 enhanceStoriesNames({
   defaultStory,
   skeleton,
+  error,
   dataLoadedWithDollars,
   dataLoadedWithMinute,
   simulations,

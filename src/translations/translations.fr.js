@@ -645,6 +645,7 @@ export const translations = {
   },
   //#endregion
   //#region cc-pricing-header
+  'cc-pricing-header.error': `Une erreur est survenue pendant le chargement des filtres liés à la tarification.`,
   'cc-pricing-header.label.currency': `Devise`,
   'cc-pricing-header.label.temporality': `Temporalité`,
   'cc-pricing-header.label.zone': `Zone`,
