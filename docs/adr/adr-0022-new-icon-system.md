@@ -242,6 +242,8 @@ This simplifies the API for developers because:
 
 Where Remix Icon is a great library, it seems to be currently on [pause](https://github.com/Remix-Design/RemixIcon/issues/232).
 
+_edit (2023-09-15)_: actually, the Remix Icon project [resumed its activity](https://github.com/Remix-Design/RemixIcon/issues/232#issuecomment-1017140063) since early 2023! 🎉
+
 As we strictly limited the first version of the new icon system to our use cases, there are some options worth considering for future improvements:
 
 - add more component properties to tweak the icon rendering: `flip`, `rotation`, `badge`, etc.
