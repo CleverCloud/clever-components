@@ -4,6 +4,20 @@ title: Changelog
 ---
 # Clever Components changelog
 
+## [11.1.0](https://github.com/CleverCloud/clever-components/compare/11.0.0...11.1.0) (2023-09-19)
+
+
+### Features
+
+* **cc-pricing-product:** add translations for `dedicated` and `is-migratable` features ([ae2a95d](https://github.com/CleverCloud/clever-components/commit/ae2a95d818d7a9281fa9ab23cde1ee847bd5dbd8)), closes [#804](https://github.com/CleverCloud/clever-components/issues/804)
+
+
+### Bug Fixes
+
+* **cc-pricing-header:** add error state ([ee06075](https://github.com/CleverCloud/clever-components/commit/ee06075b1ab9187fd83c2edb4bba8c934a2d32ab)), closes [#470](https://github.com/CleverCloud/clever-components/issues/470)
+* **cc-tile-metrics:** add missing plugin import for chat.js ([0343b4d](https://github.com/CleverCloud/clever-components/commit/0343b4d5aa01b8ad6f3c4a57ede819b318b206d0)), closes [#822](https://github.com/CleverCloud/clever-components/issues/822)
+* **tests:** add another resize loop error message to the ignore list ([b3010a4](https://github.com/CleverCloud/clever-components/commit/b3010a47623f7006603ed8445c9bccf580998e3e)), closes [#821](https://github.com/CleverCloud/clever-components/issues/821)
+
 ## [11.0.0](https://github.com/CleverCloud/clever-components/compare/10.5.0...11.0.0) (2023-07-18)
 
 
