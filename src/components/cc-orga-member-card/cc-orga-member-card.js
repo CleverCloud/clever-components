@@ -1,3 +1,4 @@
+import { ResizeController } from '@lit-labs/observers/resize-controller.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -10,9 +11,9 @@ import {
   iconRemixDeleteBin_5Fill as iconBin,
   iconRemixAccountCircleFill as iconAvatar,
 } from '../../assets/cc-remix.icons.js';
-import { ResizeObserverController } from '../../controllers/resize-observer-controller.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
+import { resizeCallback } from '../../lib/resize-callback.js';
 import '../cc-button/cc-button.js';
 import '../cc-img/cc-img.js';
 import '../cc-icon/cc-icon.js';
@@ -93,7 +94,9 @@ export class CcOrgaMemberCard extends LitElement {
       width: [BREAKPOINT_TINY, BREAKPOINT_SMALL, BREAKPOINT_MEDIUM],
     };
 
-    new ResizeObserverController(this);
+    new ResizeController(this, {
+      callback: resizeCallback,
+    });
 
     /** @type {Ref<CcInputText>} */
     this._deleteButtonRef = createRef();
