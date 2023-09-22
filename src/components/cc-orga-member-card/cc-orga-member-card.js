@@ -10,9 +10,9 @@ import {
   iconRemixDeleteBin_5Fill as iconBin,
   iconRemixAccountCircleFill as iconAvatar,
 } from '../../assets/cc-remix.icons.js';
+import { ResizeObserverController } from '../../controllers/resize-observer-controller.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
-import { withResizeObserver } from '../../mixins/with-resize-observer/with-resize-observer.js';
 import '../cc-button/cc-button.js';
 import '../cc-img/cc-img.js';
 import '../cc-icon/cc-icon.js';
@@ -51,7 +51,7 @@ const BREAKPOINT_TINY = 350;
  * We don't fire a delete event so that it can be processed differently by the smart component (leaving the org means the user has to be redirected).
  * @event {CustomEvent<UpdateMember>} cc-orga-member-card:update - Fires when the user clicks on a validate button after editing member role.
  */
-export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
+export class CcOrgaMemberCard extends LitElement {
 
   static get properties () {
     return {
@@ -92,6 +92,8 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
     this.breakpoints = {
       width: [BREAKPOINT_TINY, BREAKPOINT_SMALL, BREAKPOINT_MEDIUM],
     };
+
+    new ResizeObserverController(this);
 
     /** @type {Ref<CcInputText>} */
     this._deleteButtonRef = createRef();
