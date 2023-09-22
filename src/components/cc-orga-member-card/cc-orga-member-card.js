@@ -12,8 +12,9 @@ import {
   iconRemixAccountCircleFill as iconAvatar,
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
+import { getWidthOnResize } from '../../lib/get-width-on-resize.js';
 import { i18n } from '../../lib/i18n.js';
-import { resizeCallback } from '../../lib/resize-callback.js';
+import { setSizeAttributes } from '../../lib/set-size-attributes.js';
 import '../cc-button/cc-button.js';
 import '../cc-img/cc-img.js';
 import '../cc-icon/cc-icon.js';
@@ -25,6 +26,10 @@ import '../cc-stretch/cc-stretch.js';
 const BREAKPOINT_MEDIUM = 740;
 const BREAKPOINT_SMALL = 580;
 const BREAKPOINT_TINY = 350;
+
+const BREAKPOINTS = {
+  width: [BREAKPOINT_TINY, BREAKPOINT_SMALL, BREAKPOINT_MEDIUM],
+};
 
 /**
  * @typedef {import('./cc-orga-member-card.types.js').Authorisations} Authorisations
@@ -82,22 +87,6 @@ export class CcOrgaMemberCard extends LitElement {
       isCurrentUser: false,
     };
 
-    /**
-     * used to:
-     * - wrap buttons when the component width is below 740.
-     * - switch to a vertical card layout when the width is below 580.
-     * - show buttons and badges below each other when the width is below 350.
-     *
-     * @protected
-     */
-    this.breakpoints = {
-      width: [BREAKPOINT_TINY, BREAKPOINT_SMALL, BREAKPOINT_MEDIUM],
-    };
-
-    new ResizeController(this, {
-      callback: resizeCallback,
-    });
-
     /** @type {Ref<CcInputText>} */
     this._deleteButtonRef = createRef();
 
@@ -106,8 +95,12 @@ export class CcOrgaMemberCard extends LitElement {
     /** @type {Ref<CcSelect>} */
     this._roleRef = createRef();
 
-    /** @type {string} Set by `withResizeObserver` mixin. See the `onResize` method for more info. */
-    this._size = '';
+    /** @type {number|null} set within the `willUpdate` lifecycle hook triggered everytime a resize happens */
+    this._size = null;
+
+    this._componentWidthObserver = new ResizeController(this, {
+      callback: getWidthOnResize,
+    });
   }
 
   /**
@@ -116,11 +109,6 @@ export class CcOrgaMemberCard extends LitElement {
    */
   focusDeleteBtn () {
     this._deleteButtonRef.value.focus();
-  }
-
-  /* Used by the `withResizeObserver` mixin. */
-  onResize ({ width }) {
-    this._size = width;
   }
 
   /*
@@ -232,6 +220,16 @@ export class CcOrgaMemberCard extends LitElement {
       ...this.member,
       newRole: this._newRole,
     });
+  }
+
+  willUpdate (changedProperties) {
+    if (this._componentWidthObserver.value != null) {
+      this._size = this._componentWidthObserver.value;
+    }
+
+    if (changedProperties.has('_size') && this._size != null) {
+      setSizeAttributes(this, this._size, BREAKPOINTS);
+    }
   }
 
   render () {

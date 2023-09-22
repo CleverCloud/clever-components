@@ -11,6 +11,7 @@
  * - adds / removes the `w-lt-${breakpoint}` or `w-gte-${breakpoint}` attributes to the component depending its current `width`.
  *
  * @param {ResizeObserverEntry[]} entries - the resize observer entries
+ * @param {breakpoints} breakpoints - breakpoints
  */
 export function resizeCallback (entries) {
   if (entries.length === 0) {
