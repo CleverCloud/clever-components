@@ -1,70 +1,143 @@
 import { readFileSync } from 'fs';
 import path from 'path';
 
+export function getTypesFromClass (classNode, ts, retrievePrivate = false) {
+  const types = [];
+
+  const constructor = getConstructorNode(classNode, ts);
+  if (constructor != null) {
+    types.push(...getTypesFromConstructor(constructor, ts, retrievePrivate));
+  }
+  types.push(...getTypesFromEventTags(classNode, ts));
+
+  return types;
+}
+
 export function getConstructorNode (classNode, ts) {
   return classNode?.members?.find((member) => member.kind === ts.SyntaxKind.Constructor) ?? null;
+}
+
+export function getTypesFromEventTags (classNode, ts) {
+  const types = new Set();
+
+  const notNull = (o) => o != null;
+
+  // typescript doesn't really support @event tag, so we need to
+  // - parse the @event comment manually and extract the event type (we support only CustomEvent<any>)
+  // - create a minimalist JS source with a single statement and with a `@type` JSDoc
+  // - create an AST from this source
+  // - find the types from the JSDoc (here we can re-use the same code as when extracting types from constructor)
+
+  classNode.jsDoc
+    ?.filter((jsDoc) => jsDoc.tags != null)
+    ?.flatMap((jsDoc) => jsDoc.tags)
+    .filter((tag) => tag.tagName.getText() === 'event')
+    .map((tag) => tag.comment)
+    .filter(notNull)
+    .map((comment) => /\{CustomEvent<(.*)>}/.exec(comment))
+    .filter(notNull)
+    .map((match) => match[1])
+    .map((type) => `/**@type {${type}}*/const foo=null;`)
+    .map((src) => ts.createSourceFile('src', src, ts.ScriptTarget.ES2015, true))
+    .map((ast) => ast.statements[0].jsDoc[0])
+    .flatMap((jsDocNode) => getTypesFromJsDocCommentNode(jsDocNode, ts))
+    .forEach((type) => {
+      types.add(type);
+    });
+
+  return Array.from(types);
 }
 
 export function getTypesFromConstructor (constructorNode, ts, retrievePrivate = false) {
   const constructorTypes = new Set();
 
-  constructorNode.body.statements.forEach((node) => {
-
-    if (!isVarInitWithDoc(node, ts, retrievePrivate)) {
-      return;
-    }
-
-    // Retrieve only the first @type found
-    const rawType = node.jsDoc[0].tags[0].typeExpression.type;
-
-    const isUnionType = rawType.kind === ts.SyntaxKind.UnionType;
-    const isTupleType = rawType.kind === ts.SyntaxKind.TupleType;
-    let types;
-
-    if (isUnionType) {
-      types = rawType.types;
-    }
-    else if (isTupleType) {
-      types = rawType.elements;
-    }
-    else {
-      types = [rawType];
-    }
-
-    types.forEach((type) => {
-      const foundType = findCustomType(type, ts);
-      if (foundType != null) {
-        constructorTypes.add(foundType);
+  constructorNode.body.statements
+    .flatMap((node) => {
+      if (!isVarInitWithDoc(node, ts, retrievePrivate)) {
+        return [];
       }
+      // Retrieve only from the first JSDoc
+      return getTypesFromJsDocCommentNode(node.jsDoc[0], ts);
+    })
+    .forEach((type) => {
+      constructorTypes.add(type);
     });
 
-  });
-
   return Array.from(constructorTypes);
-
 }
 
-export function findCustomType (nodeType, ts) {
-
-  // Type[] (not primitive[])
-  const isArrayType = nodeType.kind === ts.SyntaxKind.ArrayType && nodeType?.elementType?.kind === ts.SyntaxKind.TypeReference;
-  if (isArrayType) {
-    return nodeType.elementType.typeName.getText();
+function getTypesFromJsDocCommentNode (node, ts) {
+  if (node.kind !== ts.SyntaxKind.JSDocComment) {
+    return [];
   }
 
-  // Type, Array<any>, Array
-  const isCustomType = nodeType.kind === ts.SyntaxKind.TypeReference;
-  const isCustomTypeArray = nodeType?.typeName?.getText() === 'Array';
-  const hasSpecialArrayArgs = nodeType.typeArguments?.[0]?.typeName != null;
+  // Retrieve only the first @type found
+  const rawType = node.tags[0].typeExpression.type;
+
+  const isUnionType = rawType.kind === ts.SyntaxKind.UnionType;
+  const isTupleType = rawType.kind === ts.SyntaxKind.TupleType;
+
+  let types;
+  if (isUnionType) {
+    types = rawType.types;
+  }
+  else if (isTupleType) {
+    types = rawType.elements;
+  }
+  else {
+    types = [rawType];
+  }
+
+  const typesSet = new Set();
+  types.forEach((type) => {
+    const foundType = findCustomType(type, ts);
+    if (foundType != null) {
+      typesSet.add(foundType);
+    }
+  });
+
+  return Array.from(typesSet);
+}
+
+const BUILTIN_TYPES = ['String', 'Boolean', 'Number', 'BigInt', 'Date', 'Map', 'Set', 'WeakMap', 'WeakSet', 'Object', 'Promise', 'Symbol'];
+export function findCustomType (nodeType, ts) {
+  if (nodeType == null) {
+    return null;
+  }
+
+  const nodeKind = nodeType.kind;
+  const typeName = nodeType.typeName?.getText();
+
+  // any[]
+  if (nodeKind === ts.SyntaxKind.ArrayType) {
+    // recursion to handle nested arrays
+    return findCustomType(nodeType.elementType, ts);
+  }
+
+  // Array or Array<any>
+  if (nodeKind === ts.SyntaxKind.TypeReference && typeName === 'Array') {
+    // recursion to handle nested arrays
+    return findCustomType(nodeType.typeArguments?.[0], ts);
+  }
+  // {{key: string]: any}
+  if (nodeKind === ts.SyntaxKind.TypeLiteral && nodeType.members[0].kind === ts.SyntaxKind.IndexSignature) {
+    return findCustomType(nodeType.members[0].type, ts);
+  }
 
   // Type
-  if (isCustomType && !isCustomTypeArray && !hasSpecialArrayArgs) {
-    return nodeType.getText();
-  }
+  if (nodeKind === ts.SyntaxKind.TypeReference) {
 
-  // Array<Type>
-  if (isCustomType && isCustomTypeArray && hasSpecialArrayArgs) {
-    return nodeType.typeArguments[0].typeName.getText();
+    // we ignore builtin types
+    if (BUILTIN_TYPES.includes(typeName)) {
+      return null;
+    }
+
+    // we don't support custom types with generics
+    if (nodeType.typeArguments != null) {
+      return null;
+    }
+
+    return typeName;
   }
 
   return null;

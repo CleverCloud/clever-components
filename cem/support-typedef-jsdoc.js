@@ -1,10 +1,12 @@
 import { readFileSync } from 'fs';
 import path from 'path';
 import {
-  convertInterface, findInterfacesFromExtends, findPathAndTypesFromImports,
-  findSubtypes, findTypePath,
-  getConstructorNode,
-  getTypesFromConstructor,
+  convertInterface,
+  findInterfacesFromExtends,
+  findPathAndTypesFromImports,
+  findSubtypes,
+  findTypePath,
+  getTypesFromClass,
 } from './support-typedef-jsdoc-utils.js';
 
 const ROOT_DIR = process.cwd();
@@ -121,16 +123,12 @@ export default function supportTypedefJsdoc () {
       const componentName = node.name.escapedText;
       console.log(`\n⌛ Generating docs for ${componentName}`);
 
-      // Now that we're in ClassDeclaration we find the constructor
-      const constructorNode = getConstructorNode(node, ts);
+      const types = getTypesFromClass(node, ts);
 
-      // Check if we have some component without constructor
-      if (constructorNode == null) {
-        console.warn(`⚠ No constructor found for ${componentName}`);
+      if (types.length === 0) {
+        console.info('✅ Successfully generated documentation.');
         return;
       }
-
-      const types = getTypesFromConstructor(constructorNode, ts);
 
       // This finds the comment where the imports are located
       const typeDefNode = node?.jsDoc?.filter((node) => node.tags?.find((tag) => tag.kind === ts.SyntaxKind.JSDocTypedefTag))?.[0];

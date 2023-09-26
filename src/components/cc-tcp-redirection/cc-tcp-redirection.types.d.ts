@@ -18,11 +18,11 @@ interface TcpRedirectionStateWaiting extends TcpRedirection {
   state: "waiting";
 }
 
-interface CreateTcpRedirection {
+export interface CreateTcpRedirection {
   namespace: string;
 }
 
-interface DeleteTcpRedirection {
+export interface DeleteTcpRedirection {
   namespace: string;
   sourcePort: number;
 }

@@ -33,7 +33,7 @@ interface OrgaMemberListStateError {
   state: 'error';
 }
 
-interface InviteMember {
+export interface InviteMember {
   email: string,
   role: string,
 }

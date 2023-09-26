@@ -11,6 +11,8 @@ import {
   findInterfacesFromExtends,
   getConstructorNode,
   getTypesFromConstructor,
+  getTypesFromEventTags,
+  getTypesFromClass,
 } from '../support-typedef-jsdoc-utils.js';
 
 const filename = 'cem/test/fixtures/cc-test-component.js';
@@ -18,6 +20,11 @@ const sourceCode = fs.readFileSync(filename, { encoding: 'utf-8' });
 
 const sourceAst = ts.createSourceFile(filename, sourceCode, ts.ScriptTarget.ES2015, true);
 const classNode = sourceAst.statements.find((node) => node.kind === ts.SyntaxKind.ClassDeclaration);
+
+function getClassNodeFromSource (source) {
+  const ast = ts.createSourceFile('foo', source, ts.ScriptTarget.ES2015, true);
+  return ast.statements.find((node) => node.kind === ts.SyntaxKind.ClassDeclaration);
+}
 
 const ROOT_DIR = process.cwd();
 const MODULE_DIR = 'cem/test/fixtures';
@@ -37,6 +44,15 @@ describe('getConstructorNode()', function () {
   });
 });
 
+describe('getTypesFromClass()', function () {
+
+  it('should retrieve the types present in the constructor and from event tags', function () {
+    const types = getTypesFromClass(classNode, ts);
+    expect(types).to.have.members(['Foo', 'Bar', 'TheInterface', 'TheType', 'TupleFoo', 'TupleBar', 'CustomEventFoo', 'CustomEventBar', 'CustomEventBaz']);
+  });
+
+});
+
 describe('getTypesFromConstructor()', function () {
 
   it('should retrieve the types present in the constructor.', function () {
@@ -46,9 +62,7 @@ describe('getTypesFromConstructor()', function () {
   });
 
   it('should return an empty array when the constructor is empty.', function () {
-    const source = `export class CcTestComponent extends LitElement { constructor() {} }`;
-    const ast = ts.createSourceFile('foo', source, ts.ScriptTarget.ES2015, true);
-    const classNodeWithEmptyConstr = ast.statements.find((node) => node.kind === ts.SyntaxKind.ClassDeclaration);
+    const classNodeWithEmptyConstr = getClassNodeFromSource(`export class CcTestComponent extends LitElement { constructor() {} }`);
     const constructorNode = getConstructorNode(classNodeWithEmptyConstr, ts);
     const typesFromConstructor = getTypesFromConstructor(constructorNode, ts);
     // eslint-disable-next-line no-unused-expressions
@@ -61,6 +75,27 @@ describe('getTypesFromConstructor()', function () {
     expect(types).to.have.members(['Foo', 'Bar', 'TheInterface', 'TheType', 'TupleFoo', 'TupleBar', 'PrivateInterface']);
   });
 
+});
+
+describe('getTypesFromEventTags()', () => {
+  it('should retrieve the types in event tags', () => {
+    const types = getTypesFromEventTags(classNode, ts);
+    expect(types).to.have.members(['CustomEventFoo', 'CustomEventBar', 'CustomEventBaz']);
+  });
+
+  it('should return an empty array when no jsDoc', () => {
+    const classNode = getClassNodeFromSource(`export class CcTestComponent extends LitElement { constructor() {} }`);
+    const types = getTypesFromEventTags(classNode, ts);
+    // eslint-disable-next-line no-unused-expressions
+    expect(types).to.be.empty;
+  });
+
+  it('should return an empty array when empty jsDoc', () => {
+    const classNode = getClassNodeFromSource(`/***/\nexport class CcTestComponent extends LitElement { constructor() {} }`);
+    const types = getTypesFromEventTags(classNode, ts);
+    // eslint-disable-next-line no-unused-expressions
+    expect(types).to.be.empty;
+  });
 });
 
 describe('findCustomType()', function () {
@@ -78,28 +113,81 @@ describe('findCustomType()', function () {
     testCustomType('Foo[]', 'Foo');
   });
 
-  it('should return `null` for a `primitive[]` type.', function () {
-    testCustomType('string[]', null);
+  it('should return `Type` for a `Type[][]` type.', function () {
+    testCustomType('Foo[][]', 'Foo');
   });
 
-  it('should return `null` for a `Array<primitive>` type.', function () {
-    testCustomType('Array<string>', null);
+  it('should return `null` for a `primitive[][]` type.', function () {
+    testCustomType('string[][]', null);
+  });
+
+  it('should return `null` for a `Array<Array<primitive>>` type.', function () {
+    testCustomType('Array<Array<string>>', null);
   });
 
   it('should return `null` for a base `Array`.', function () {
     testCustomType('Array', null);
   });
 
+  it('should return `null` for nested Arrays `Array<Array<Array>>` type.', function () {
+    testCustomType('Array<Array<Array>>', null);
+  });
+
   it('should return `Type` for a `Array<Type>` type.', function () {
     testCustomType('Array<Foo>', 'Foo');
+  });
+
+  it('should return the type deeply nested in Arrays `Array<Array<Array<Foo>>` type.', function () {
+    testCustomType('Array<Array<Array<Foo>>', 'Foo');
   });
 
   it('should return `Type` for a non primitive type.', function () {
     testCustomType('Foo', 'Foo');
   });
 
-  it('should ignore custom types in generics.', function () {
+  ['string', 'boolean', 'number'].forEach((type) => {
+    it(`should return \`null\` for primitive type ${type}`, () => {
+      testCustomType(type, null);
+    });
+
+    it(`should return \`null\` for array of primitive: Array<${type}>`, () => {
+      testCustomType(`Array<${type}>`, null);
+    });
+
+    it(`should return \`null\` for array of primitive: ${type}[]`, () => {
+      testCustomType(`${type}[]`, null);
+    });
+  });
+
+  ['String', 'Boolean', 'Number', 'BigInt', 'Date', 'Map', 'Set', 'WeakMap', 'WeakSet', 'Object', 'Promise', 'Symbol']
+    .forEach((type) => {
+      it(`should return \`null\` for built-in type ${type}`, () => {
+        testCustomType(type, null);
+      });
+
+      it(`should return \`null\` for array of built-in type: Array<${type}>`, () => {
+        testCustomType(`Array<${type}>`, null);
+      });
+
+      it(`should return \`null\` for array of built-in type: ${type}[]`, () => {
+        testCustomType(`${type}[]`, null);
+      });
+    });
+
+  it('should ignore custom types with generics.', function () {
     testCustomType('Foo<Bar>', null);
+  });
+
+  it('should return the type used in Object value.', function () {
+    testCustomType('{[key: string]: Foo}', 'Foo');
+  });
+
+  it('should return the type used in Object value inside array.', function () {
+    testCustomType('{[key: string]: Foo}[]', 'Foo');
+  });
+
+  it('should return the type used in Object value inside Array.', function () {
+    testCustomType('Array<{[key: string]: Foo}>', 'Foo');
   });
 });
 

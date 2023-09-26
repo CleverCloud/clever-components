@@ -51,7 +51,7 @@ interface Flavor {
   monthlyCost?: number;
 }
 
-interface Variable {
+export interface Variable {
   name: string;
   value: string;
 }

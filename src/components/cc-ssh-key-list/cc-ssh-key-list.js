@@ -31,6 +31,8 @@ const SKELETON_KEYS = [{
 /**
  * @typedef {import('./cc-ssh-key-list.types.js').CreateSshKeyFormState} CreateSshKeyFormState
  * @typedef {import('./cc-ssh-key-list.types.js').KeyDataState} KeyDataState
+ * @typedef {import('./cc-ssh-key-list.types.js').NewKey} NewKey
+ * @typedef {import('./cc-ssh-key-list.types.js').SshKey} SshKey
  */
 
 /**

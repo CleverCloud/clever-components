@@ -42,6 +42,7 @@ const ICONS = {
 /**
  * @typedef {import('../common.types.js').ActionType} ActionType
  * @typedef {import('../common.types.js').Currency} Currency
+ * @typedef {import('../common.types.js').Plan} Plan
  * @typedef {import('./cc-pricing-product-consumption.types.js').PricingProductConsumptionState} PricingProductConsumptionState
  * @typedef {import('./cc-pricing-product-consumption.types.js').SectionStates} SectionStates
  */

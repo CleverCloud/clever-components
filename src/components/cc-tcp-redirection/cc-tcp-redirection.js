@@ -14,6 +14,8 @@ import { waitingStyles } from '../../styles/waiting.js';
 
 /**
  * @typedef {import('./cc-tcp-redirection.types.js').TcpRedirectionState} TcpRedirectionState
+ * @typedef {import('./cc-tcp-redirection.types.js').CreateTcpRedirection} CreateTcpRedirection
+ * @typedef {import('./cc-tcp-redirection.types.js').DeleteTcpRedirection} DeleteTcpRedirection
  */
 
 /**
