@@ -198,7 +198,7 @@ export class CcFtUncontrolled extends LitElement {
           ${formError(this._formController, 'name', nameErrors)}
         </cc-input-text>
 
-        <cc-input-text label="Email" ${formInput(this._formController, 'email')}>
+        <cc-input-text label="Email" type="email" ${formInput(this._formController, 'email')}>
           ${formError(this._formController, 'email', emailErrors)}
         </cc-input-text>
 
@@ -220,7 +220,7 @@ export class CcFtUncontrolled extends LitElement {
           ${formError(this._formController, 'age', ageErrors)}
         </cc-input-number>
 
-        <cc-select label="Color" .options=${colorsSelectOptions} ${formInput(this._formController, 'color')}>
+        <cc-select label="Color" .options=${colorsSelectOptions} value="" ${formInput(this._formController, 'color')}>
           ${formError(this._formController, 'color', colorErrors)}
         </cc-select>
 

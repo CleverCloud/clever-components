@@ -977,4 +977,8 @@ export const translations = {
   'cc-zone-input.error': `Une erreur est survenue pendant le chargement des zones.`,
   'cc-zone-input.private-map-warning': `Les zones privées n'apparaissent pas sur la carte.`,
   //#endregion
+  //#region validation-controller
+  'validation-controller.error.bad-email': () => sanitize`Format d'adresse e-mail invalide.<br>Exemple: john.doe@example.com.`,
+  'validation-controller.error.empty': `Veuillez saisir une valeur.`,
+  //#endregion
 };

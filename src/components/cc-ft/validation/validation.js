@@ -1,4 +1,8 @@
+
 export class Validator {
+  /**
+   * @param {boolean} required - TODO
+   */
   constructor (required) {
     this._required = required;
   }
@@ -110,16 +114,11 @@ export class NumberValidator extends Validator {
 
 export class EmailValidator extends Validator {
 
-  /**
-   * @param {boolean} required
-   */
-  constructor ({ required }) {
-    super(required);
-  }
-
   doValidate (value) {
     if (!value.match(/^\S+@\S+\.\S+$/gm)) {
       return invalid('badEmail');
     }
+
+    return VALID;
   }
 }

@@ -13,6 +13,8 @@ import { arrayEquals } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-icon/cc-icon.js';
+import { ValidationController } from '../cc-ft/validation/validation-controller.js';
+import { Validator, EmailValidator } from '../cc-ft/validation/validation.js';
 
 const TAG_SEPARATOR = ' ';
 
@@ -48,6 +50,7 @@ export class CcInputText extends LitElement {
     return {
       clipboard: { type: Boolean, reflect: true },
       disabled: { type: Boolean, reflect: true },
+      errorMessage: { type: String, attribute: 'error-message' },
       label: { type: String },
       hiddenLabel: { type: Boolean, attribute: 'hidden-label' },
       inline: { type: Boolean, reflect: true },
@@ -58,12 +61,12 @@ export class CcInputText extends LitElement {
       required: { type: Boolean },
       secret: { type: Boolean, reflect: true },
       skeleton: { type: Boolean, reflect: true },
+      type: { type: String, reflect: true },
       tags: { type: Array },
       value: { type: String },
       _copyOk: { type: Boolean, state: true },
       _showSecret: { type: Boolean, state: true },
       _tagsEnabled: { type: Boolean, state: true },
-      _hasError: { type: Boolean, state: true },
     };
   }
 
@@ -111,8 +114,14 @@ export class CcInputText extends LitElement {
     /** @type {string[]} Sets list of tags and enables tags mode (if not null). */
     this.tags = null;
 
+    /** @type {'text'|'email'} The type of the input. */
+    this.type = 'text';
+
     /** @type {string} Sets `value` attribute on inner native input element or textarea's inner content. */
     this.value = '';
+
+    /** @type {string|null} . */
+    this.errorMessage = null;
 
     /** @type {boolean} */
     this._copyOk = false;
@@ -123,7 +132,7 @@ export class CcInputText extends LitElement {
     /** @type {boolean} */
     this._tagsEnabled = false;
 
-    this._hasError = false;
+    this._validationCtrl = new ValidationController(this, 'errorMessage');
   }
 
   // In general, we try to use LitElement's update() lifecycle callback but in this situation,
@@ -211,8 +220,15 @@ export class CcInputText extends LitElement {
     }
   }
 
-  _onErrorSlotChanged (event) {
-    this._hasError = event.target.assignedNodes()?.length > 0;
+  /**
+   * @param {boolean} report - whether to display error messages or not
+   */
+  validate (report) {
+    const validator = this.type === 'text'
+      ? new Validator(this.required)
+      : new EmailValidator(this.required);
+
+    return this._validationCtrl.validate(validator, this.value, report);
   }
 
   render () {
@@ -222,6 +238,7 @@ export class CcInputText extends LitElement {
     // NOTE: For now, we don't support secret when multi is activated
     const secret = (this.secret && !this.multi && !this.disabled && !this.skeleton);
     const isTextarea = (this.multi || this._tagsEnabled);
+    const hasErrorMessage = this.errorMessage != null && this.errorMessage !== '';
 
     const tags = value
       .split(TAG_SEPARATOR)
@@ -256,7 +273,7 @@ export class CcInputText extends LitElement {
             ` : ''}
             <textarea
               id="input-id"
-              class="input ${classMap({ 'input-tags': this._tagsEnabled, error: this._hasError })}"
+              class="input ${classMap({ 'input-tags': this._tagsEnabled, error: hasErrorMessage })}"
               style="--rows: ${rows}"
               rows=${rows}
               ?disabled=${this.disabled || this.skeleton}
@@ -283,7 +300,7 @@ export class CcInputText extends LitElement {
             <input
               id="input-id"
               type=${this.secret && !this._showSecret ? 'password' : 'text'}
-              class="input ${classMap({ error: this._hasError })}"
+              class="input ${classMap({ error: hasErrorMessage })}"
               ?disabled=${this.disabled || this.skeleton}
               ?readonly=${this.readonly}
               .value=${value}
@@ -328,9 +345,10 @@ export class CcInputText extends LitElement {
         <slot name="help"></slot>
       </div>
 
-      <div class="error-container" id="error-id" >
-        <slot name="error" @slotchange="${this._onErrorSlotChanged}"></slot>
-      </div>
+      ${hasErrorMessage ? html`
+        <p class="error-container" id="error-id">
+          ${this.errorMessage}
+        </p>` : ''}
     `;
   }
 
@@ -416,7 +434,7 @@ export class CcInputText extends LitElement {
           font-size: 0.9em;
         }
         
-        slot[name='error']::slotted(*) {
+        .error-container {
           margin: 0.5em 0 0;
           color: var(--cc-color-text-danger);
         }

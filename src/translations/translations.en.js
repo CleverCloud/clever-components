@@ -964,4 +964,8 @@ export const translations = {
   'cc-zone-input.error': `Something went wrong while loading zones.`,
   'cc-zone-input.private-map-warning': `Private zones don't appear on the map.`,
   //#endregion
+  //#region validation-controller
+  'validation-controller.error.bad-email': () => sanitize`Invalid email address format.<br>Example: john.doe@example.com.`,
+  'validation-controller.error.empty': `Please enter a value`,
+  //#endregion
 };

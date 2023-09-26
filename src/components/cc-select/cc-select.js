@@ -3,6 +3,8 @@ import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
+import { ValidationController } from '../cc-ft/validation/validation-controller.js';
+import { Validator } from '../cc-ft/validation/validation.js';
 
 /**
  * @typedef {import('./cc-select.types.js').Option} Option
@@ -31,6 +33,7 @@ export class CcSelect extends LitElement {
   static get properties () {
     return {
       disabled: { type: Boolean, reflect: true },
+      errorMessage: { type: String, attribute: 'error-message' },
       inline: { type: Boolean, reflect: true },
       /** @required */
       label: { type: String },
@@ -39,7 +42,6 @@ export class CcSelect extends LitElement {
       placeholder: { type: String },
       required: { type: Boolean },
       value: { type: String },
-      _hasError: { type: Boolean, state: true },
     };
   }
 
@@ -75,7 +77,7 @@ export class CcSelect extends LitElement {
     /** @type {string|null} Sets the selected value of the element. This prop should always be set. It should always match one of the option values. */
     this.value = null;
 
-    this._hasError = false;
+    this._validationCtrl = new ValidationController(this, 'errorMessage');
   }
 
   updated (changedProperties) {
@@ -96,16 +98,23 @@ export class CcSelect extends LitElement {
     this.shadowRoot.querySelector('select').focus();
   }
 
+  /**
+   * @param {boolean} report - whether to display error messages or not
+   */
+  validate (report) {
+    const validator = new Validator(this.required);
+
+    return this._validationCtrl.validate(validator, this.value, report);
+  }
+
   _onSelectInput (e) {
     this.value = e.target.value;
     dispatchCustomEvent(this, 'input', this.value);
   }
 
-  _onErrorSlotChanged (event) {
-    this._hasError = event.target.assignedNodes()?.length > 0;
-  }
-
   render () {
+    const hasErrorMessage = this.errorMessage != null && this.errorMessage !== '';
+
     return html`
       <label for="input-id">
         <span class="label-text">${this.label}</span>
@@ -116,7 +125,7 @@ export class CcSelect extends LitElement {
       <div class="select-wrapper ${classMap({ disabled: this.disabled })}">
         <select
           id="input-id"
-          class="${classMap({ error: this._hasError })}"
+          class="${classMap({ error: hasErrorMessage })}"
           ?disabled=${this.disabled}
           aria-describedby="help-id error-id"
           @input=${this._onSelectInput}
@@ -136,9 +145,10 @@ export class CcSelect extends LitElement {
         <slot name="help"></slot>
       </div>
 
-      <div class="error-container" id="error-id">
-        <slot name="error" @slotchange="${this._onErrorSlotChanged}"></slot>
-      </div>
+      ${hasErrorMessage ? html`
+        <p class="error-container" id="error-id">
+          ${this.errorMessage}
+        </p>` : ''}
     `;
   }
 
@@ -214,7 +224,7 @@ export class CcSelect extends LitElement {
           font-size: 0.9em;
         }
         
-        slot[name='error']::slotted(*) {
+        .error-container {
           margin: 0.5em 0 0;
           color: var(--cc-color-text-danger);
         }
