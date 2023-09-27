@@ -9,33 +9,12 @@ import {
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
+import { arrayEquals } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-icon/cc-icon.js';
 
 const TAG_SEPARATOR = ' ';
-
-function arrayEquals (a, b) {
-  if (a === b) {
-    return true;
-  }
-
-  if (a == null || b == null) {
-    return false;
-  }
-
-  if (b.length !== a.length) {
-    return false;
-  }
-
-  for (let i = 0; i < a.length; i += 1) {
-    if (a[i] !== b[i]) {
-      return false;
-    }
-  }
-
-  return true;
-}
 
 /**
  * An enhanced text input with support for multiline, copy-to-clipboard, show/hide secret and highlighted tags.
@@ -255,7 +234,7 @@ export class CcInputText extends LitElement {
           ` : ''}
         </label>
       ` : ''}
-
+      
       <div class="meta-input">
         <div class="wrapper ${classMap({ skeleton: this.skeleton })}"
           @input=${this._onInput}
