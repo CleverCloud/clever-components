@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 
@@ -116,6 +117,7 @@ export class CcSelect extends LitElement {
           aria-describedby="help-id error-id"
           @input=${this._onSelectInput}
           .value=${this.value}
+          name=${ifDefined(this.name ?? undefined)}
         >
           ${this.placeholder != null && this.placeholder !== '' ? html`
             <option value="" ?disabled=${this.required}>${this.placeholder}</option>
