@@ -48,6 +48,7 @@ export class RequiredValidator {
   }
 
   validate (value) {
+    console.log(value);
     if (isEmpty(value)) {
       return this._required ? invalid('empty') : VALID;
     }
@@ -136,7 +137,7 @@ export class EmailValidator {
    */
   getErrorMessage (code) {
     if (code === 'badEmail') {
-      return i18n('validation-controller.error.empty');
+      return i18n('validation-controller.error.bad-email');
     }
 
     throw new Error('Unsupported error code');

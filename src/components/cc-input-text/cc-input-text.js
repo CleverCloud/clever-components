@@ -225,9 +225,11 @@ export class CcInputText extends LitElement {
       return this._customValidator;
     }
 
-    return this.type === 'email'
-      ? new EmailValidator()
-      : null;
+    if (this.type === 'email') {
+      return new EmailValidator();
+    }
+
+    return null;
   }
 
   /**

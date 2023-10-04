@@ -18,6 +18,16 @@ import { invalid, VALID } from './validation/validation.js';
  * @typedef {import('./cc-ft.types.js').FtFormState} FtFormState
  */
 
+class CustomValidator {
+  getErrorMessage (code) {
+    return code;
+  }
+
+  validate (value) {
+    return value.toUpperCase() !== value ? invalid('not-maj') : VALID;
+  }
+}
+
 export class CcFtUncontrolled extends LitElement {
   static get properties () {
     return {
@@ -99,9 +109,7 @@ export class CcFtUncontrolled extends LitElement {
           type: 'string',
           required: true,
           reset: null,
-          validate: (value) => {
-            return value.toUpperCase() !== value ? invalid('not-maj') : VALID;
-          },
+          validator: new CustomValidator(),
         },
         {
           name: 'custom',
@@ -196,11 +204,9 @@ export class CcFtUncontrolled extends LitElement {
     return html`
       <form>
         <cc-input-text label="Name" ${formInput(this._formController, 'name')}>
-          ${formError(this._formController, 'name', nameErrors)}
         </cc-input-text>
 
         <cc-input-text label="Email" type="email" ${formInput(this._formController, 'email')}>
-          ${formError(this._formController, 'email', emailErrors)}
         </cc-input-text>
 
         <cc-input-text label="Tags" ${formInput(this._formController, 'tags', 'tags')}>
