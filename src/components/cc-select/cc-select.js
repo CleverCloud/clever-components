@@ -4,7 +4,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { ValidationController } from '../cc-ft/validation/validation-controller.js';
-import { Validator } from '../cc-ft/validation/validation.js';
+import { RequiredValidator } from '../cc-ft/validation/validation.js';
 
 /**
  * @typedef {import('./cc-select.types.js').Option} Option
@@ -102,7 +102,7 @@ export class CcSelect extends LitElement {
    * @param {boolean} report - whether to display error messages or not
    */
   validate (report) {
-    const validator = new Validator(this.required);
+    const validator = new RequiredValidator(this.required);
 
     return this._validationCtrl.validate(validator, this.value, report);
   }

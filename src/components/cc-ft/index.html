@@ -27,6 +27,14 @@
     <h1>Uncontrolled</h1>
     <cc-ft-uncontrolled></cc-ft-uncontrolled>
   </div>
+
+
+  <div>
+    <cc-input-text id="coucou" required></cc-input-text>
+    <button id="submit">Go</button>
+  </div>
+
+
 </cc-smart-container>
 
 
@@ -36,11 +44,37 @@
   import { addTranslations, setLanguage } from '../../lib/i18n.js';
   import { lang, translations } from '../../translations/translations.en.js';
   import { updateRootContext } from '../../lib/smart-manager.js';
+  import { invalid, VALID } from './validation/validation.js';
 
   addTranslations(lang, translations);
   setLanguage(lang);
 
   updateRootContext({});
+
+  class MyValidator {
+    /**
+     * @param {'notUpperCase'} code
+     */
+    getErrorMessage (code) {
+      if (code === 'notUpperCase') {
+        return 'Not upper case !!';
+      }
+
+      throw new Error('Unsupported error code');
+    }
+
+    validate(value) {
+      if (value !== value.toUpperCase()) {
+        return invalid('notUpperCase');
+      }
+      return VALID;
+    }
+  }
+
+  coucou.setCustomValidator(new MyValidator());
+  submit.addEventListener('click', () => {
+    coucou.validate(true);
+  })
 </script>
 </body>
 </html>

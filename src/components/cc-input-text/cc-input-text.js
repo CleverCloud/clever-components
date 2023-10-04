@@ -14,7 +14,7 @@ import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-icon/cc-icon.js';
 import { ValidationController } from '../cc-ft/validation/validation-controller.js';
-import { Validator, EmailValidator } from '../cc-ft/validation/validation.js';
+import { EmailValidator, RequiredValidator } from '../cc-ft/validation/validation.js';
 
 const TAG_SEPARATOR = ' ';
 
@@ -220,15 +220,27 @@ export class CcInputText extends LitElement {
     }
   }
 
+  _getValidator () {
+    if (this._customValidator != null) {
+      return this._customValidator;
+    }
+
+    return this.type === 'email'
+      ? new EmailValidator()
+      : null;
+  }
+
   /**
    * @param {boolean} report - whether to display error messages or not
    */
   validate (report) {
-    const validator = this.type === 'text'
-      ? new Validator(this.required)
-      : new EmailValidator(this.required);
+    const validator = new RequiredValidator(this.required, this._getValidator());
 
     return this._validationCtrl.validate(validator, this.value, report);
+  }
+
+  setCustomValidator (customValidator) {
+    this._customValidator = customValidator;
   }
 
   render () {

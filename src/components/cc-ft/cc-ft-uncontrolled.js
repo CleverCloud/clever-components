@@ -12,6 +12,7 @@ import { formError } from './directives/form-error-directive.js';
 import { formInput } from './directives/form-input-directive.js';
 import { formSubmit } from './directives/form-submit-directive.js';
 import { FormController } from './form-controller.js';
+import { invalid, VALID } from './validation/validation.js';
 
 /**
  * @typedef {import('./cc-ft.types.js').FtFormState} FtFormState
@@ -99,7 +100,7 @@ export class CcFtUncontrolled extends LitElement {
           required: true,
           reset: null,
           validate: (value) => {
-            return value.toUpperCase() !== value ? 'not-maj' : null;
+            return value.toUpperCase() !== value ? invalid('not-maj') : VALID;
           },
         },
         {

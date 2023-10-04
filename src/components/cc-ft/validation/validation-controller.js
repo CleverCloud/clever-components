@@ -1,21 +1,10 @@
 import { dispatchCustomEvent } from '../../../lib/events.js';
-import { i18n } from '../../../lib/i18n.js';
 
 export class ValidationController {
   constructor (host, errorMessageProp) {
     host.addController(this);
     this._host = host;
     this._errorMessageProp = errorMessageProp;
-  }
-
-  _getErrorMessage (errorCode) {
-    if (errorCode === 'empty') {
-      return i18n('validation-controller.error.empty');
-    }
-
-    if (errorCode === 'badEmail') {
-      return i18n('validation-controller.error.bad-email');
-    }
   }
 
   _setErrorMessage (errorMessage) {
@@ -31,7 +20,7 @@ export class ValidationController {
     if (report) {
       const errorMessage = validationResult.valid
         ? null
-        : this._getErrorMessage(validationResult.code);
+        : validator.getErrorMessage(validationResult.code);
 
       this._setErrorMessage(errorMessage);
     }

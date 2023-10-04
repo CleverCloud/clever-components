@@ -1,44 +1,15 @@
-
-export class Validator {
-  /**
-   * @param {boolean} required - TODO
-   */
-  constructor (required) {
-    this._required = required;
-  }
-
-  /**
-   *
-   * @param {any} value
-   * @return {Validation}
-   */
-  validate (value) {
-    if (isEmpty(value)) {
-      return this._required ? invalid('empty') : VALID;
-    }
-
-    return this.doValidate(value);
-  }
-
-  /**
-   * @param {any} value
-   * @return {ValidValidation}
-   */
-  doValidate (value) {
-    return VALID;
-  }
-}
+import { i18n } from '../../../lib/i18n.js';
 
 /**
  * @type {ValidValidation}
  */
-const VALID = { valid: true };
+export const VALID = { valid: true };
 
 /**
- * @param {ValidationErrorCode} code
+ * @param {string} code
  * @return {InvalidValidation}
  */
-const invalid = (code) => {
+export const invalid = (code) => {
   return {
     valid: false,
     code,
@@ -58,14 +29,43 @@ const isEmpty = (value) => {
   return false;
 };
 
-export class NumberValidator extends Validator {
+export class RequiredValidator {
+  constructor (required, nextValidator) {
+    this._required = required;
+    this._nextValidator = nextValidator;
+  }
+
+  getErrorMessage (code) {
+    if (code === 'empty') {
+      return i18n('validation-controller.error.empty');
+    }
+
+    if (this._nextValidator != null) {
+      return this._nextValidator.getErrorMessage(code);
+    }
+
+    throw new Error('Unsupported error code');
+  }
+
+  validate (value) {
+    if (isEmpty(value)) {
+      return this._required ? invalid('empty') : VALID;
+    }
+
+    if (this._nextValidator == null) {
+      return VALID;
+    }
+
+    return this._nextValidator.validate(value);
+  }
+}
+
+export class NumberValidator {
   /**
-   * @param {boolean} required
    * @param {number} [min]
    * @param {number} [max]
    */
-  constructor ({ required, min, max }) {
-    super(required);
+  constructor ({ min, max }) {
     this._min = min;
     this._max = max;
   }
@@ -88,7 +88,24 @@ export class NumberValidator extends Validator {
     return { min: this._min ?? -Infinity, max: this._max ?? Infinity };
   }
 
-  doValidate (value) {
+  /**
+   * @param {'badType'|'rangeUnderflow'|'rangeOverflow'} code
+   */
+  getErrorMessage (code) {
+    if (code === 'badType') {
+      return i18n('validation-controller.error.badType');
+    }
+    if (code === 'rangeUnderflow') {
+      return i18n('validation-controller.error.rangeUnderflow');
+    }
+    if (code === 'rangeOverflow') {
+      return i18n('validation-controller.error.rangeOverflow');
+    }
+
+    throw new Error('Unsupported error code');
+  }
+
+  validate (value) {
     // check is number
     const num = this._parse(value);
     if (num == null) {
@@ -112,13 +129,34 @@ export class NumberValidator extends Validator {
   }
 }
 
-export class EmailValidator extends Validator {
+export class EmailValidator {
 
-  doValidate (value) {
+  /**
+   * @param {'badEmail'} code
+   */
+  getErrorMessage (code) {
+    if (code === 'badEmail') {
+      return i18n('validation-controller.error.empty');
+    }
+
+    throw new Error('Unsupported error code');
+  }
+
+  validate (value) {
     if (!value.match(/^\S+@\S+\.\S+$/gm)) {
       return invalid('badEmail');
     }
 
     return VALID;
+  }
+}
+
+export class FunctionValidator {
+  constructor (fn) {
+    this._fn = fn;
+  }
+
+  validate (value) {
+    return this._fn();
   }
 }
