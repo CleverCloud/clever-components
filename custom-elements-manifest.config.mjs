@@ -2,6 +2,7 @@ import fs from 'fs';
 import sortItems from './cem/sort-items.js';
 import removePrivateMembers from './cem/remove-private-members.js';
 import identifyReadonlyMembers from './cem/identify-readonly-members.js';
+import addDependenciesInDescription from './cem/add-dependencies-in-description.js';
 import addGithubSourceInDescription from './cem/add-github-source-in-description.js';
 import supportCssdisplayJsdoc from './cem/support-cssdisplay-jsdoc.js';
 import supportTypedefJsdoc from './cem/support-typedef-jsdoc.js';
@@ -22,6 +23,7 @@ export default {
     identifyReadonlyMembers(),
     supportCssdisplayJsdoc(),
     supportTypedefJsdoc(),
+    addDependenciesInDescription(),
     addGithubSourceInDescription({ githubProject: 'CleverCloud/clever-components' }),
     listImages(),
   ],

@@ -8,15 +8,15 @@ import {
   defaultStory as pricingHeaderStory,
 } from '../cc-pricing-header/cc-pricing-header.stories.js';
 import {
-  defaultStory as cellarStory,
-  dataLoadedWithHeptapod as heptapodStory,
-} from '../cc-pricing-product-consumption/cc-pricing-product-consumption.stories.js';
-import {
   dataLoadedWithFakeProduct as fakeProductStory,
   dataLoadedWithAddonMongodb as mongoStory,
   dataLoadedWithRuntimeNode as nodeStory,
   dataLoadedWithAddonPostgresql as postgresqlStory,
 } from '../cc-pricing-product/cc-pricing-product.stories.js';
+import {
+  defaultStory as cellarStory,
+  dataLoadedWithHeptapod as heptapodStory,
+} from '../cc-pricing-product-consumption/cc-pricing-product-consumption.stories.js';
 
 export default {
   title: '🛠 pricing/<cc-pricing-page>',
