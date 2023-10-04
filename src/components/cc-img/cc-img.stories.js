@@ -23,7 +23,7 @@ const conf = {
 export const defaultStory = makeStory(conf, {
   items: [
     { text: 'OMG' },
-    { text: 'OMG', skeleton: true },
+    { skeleton: true },
     { text: 'OMG', skeleton: true, src: 'http://placekitten.com/200/200' },
   ],
 });

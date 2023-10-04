@@ -65,14 +65,16 @@ export class CcImg extends LitElement {
   }
 
   render () {
+    const altValue = this.text ?? '';
     const isLoading = (this.src != null && !this._loaded && !this._error);
     const isSkeleton = (this.skeleton || isLoading);
     const displayText = (this.src == null || this._error);
     return html`
       <div class="wrapper ${classMap({ skeleton: isSkeleton, loaded: this._loaded, text: displayText })}">
-        <img src=${ifDefined(this.src ?? undefined)} @load=${this._onLoad} @error=${this._onError} alt="">
+        <img src=${ifDefined(this.src ?? undefined)} @load=${this._onLoad} @error=${this._onError} alt=${altValue}>
         ${displayText ? html`
-          <div class="error-msg">${this.text}</div>
+            <!-- We use aria-hidden because we already have an alt value. -->
+          <div class="error-msg" aria-hidden="true">${this.text}</div>
         ` : ''}
       </div>
     `;
