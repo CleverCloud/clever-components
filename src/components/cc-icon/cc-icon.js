@@ -65,23 +65,25 @@ export class CcIcon extends LitElement {
   }
 
   updated (changedProperties) {
-    if (!this.skeleton && changedProperties.has('accessibleName')) {
-      const svg = this.shadowRoot.querySelector('svg');
+    const shouldPatchSvg = changedProperties.has('accessibleName') || changedProperties.has('icon');
+    const svg = this.shadowRoot.querySelector('svg');
+    if (shouldPatchSvg && svg != null) {
       if (this.accessibleName == null || this.accessibleName === '') {
         svg.setAttribute('aria-hidden', 'true');
         svg.removeAttribute('aria-label');
         svg.removeAttribute('role');
-
         svg.querySelector('title')?.remove();
       }
       else {
         svg.removeAttribute('aria-hidden');
         svg.setAttribute('aria-label', this.accessibleName);
         svg.setAttribute('role', 'img');
-
-        const title = document.createElement('title');
-        title.innerHTML = this.accessibleName;
-        svg.prepend(title);
+        let title = svg.querySelector('title');
+        if (title == null) {
+          title = document.createElement('title');
+          svg.prepend(title);
+        }
+        title.textContent = this.accessibleName;
       }
     }
   }
