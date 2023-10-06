@@ -51,6 +51,7 @@ export class CcToggle extends LitElement {
       inline: { type: Boolean, reflect: true },
       legend: { type: String },
       multipleValues: { type: Array, attribute: 'multiple-values', reflect: true },
+      name: { type: String, reflect: true },
       subtle: { type: Boolean },
       value: { type: String, reflect: true },
     };
@@ -78,6 +79,11 @@ export class CcToggle extends LitElement {
 
     /** @type {string[]} Enables multiple mode and sets the selected values. */
     this.multipleValues = null;
+
+    /** @type {string|null} Sets `name` attribute on native `<input>` element.
+     * If left `null`, the name of the native `<input>` will be 'toggle'. In order to navigate through a group of inputs using the arrow keys, each `<input>` must have the same `name` value.
+     */
+    this.name = null;
 
     /** @type {boolean} Uses a more subtle display mode, less attractive to the user's attention. */
     this.subtle = false;
@@ -128,9 +134,12 @@ export class CcToggle extends LitElement {
         <legend>${this.legend}</legend>
         <div class="toggle-group ${classMap(classes)}">
           ${repeat(this.choices, ({ value }) => value, ({ label, image, value }) => html`
+            <!--
+              If the name=null, the name of the native <input> will be 'toggle'. In order to navigate through a group of inputs using the arrow keys, each <input> must have the same name value.
+            -->    
             <input
               type=${type}
-              name="toggle"
+              name=${this.name ?? 'toggle'}
               .value=${value}
               id=${value}
               ?disabled=${this.disabled}
