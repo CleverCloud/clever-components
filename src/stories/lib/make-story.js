@@ -39,6 +39,7 @@ export function makeStory (...configs) {
         wrapper.innerHTML = '<span>Loading</span>';
         lazyStoryHandler(wrapper,
           () => {
+            wrapper.innerHTML = '';
             onDisconnect = dom(wrapper);
           }, () => {
             runCallback(onDisconnect);
