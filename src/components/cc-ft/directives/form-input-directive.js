@@ -148,9 +148,12 @@ class FormInputDirective extends AsyncDirective {
     if (this._element != null && fieldDefinition != null) {
       part.element.setAttribute('name', this._field);
 
+      // todo: maybe we should use setAttribute for those two below
       this._element.required = fieldDefinition.required;
       this._element.disabled = this._formController?.formState?.state === 'submitting';
+
       this._elementHandler.setValue(this._formController?.getFieldValue(this._field));
+      this._element.setCustomValidator?.(fieldDefinition.validator);
     }
 
     return this.render();

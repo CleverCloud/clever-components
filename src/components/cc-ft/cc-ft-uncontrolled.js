@@ -51,10 +51,24 @@ export class CcFtUncontrolled extends LitElement {
       property: 'formState',
       fields: [
         {
-          name: 'name',
+          name: 'phoneNumber',
           type: 'string',
           required: true,
           reset: '',
+          validator: new (class A {
+            getErrorMessage (code) {
+              if (code === 'notAPhoneNumber') {
+                return 'oulala!';
+              }
+            }
+
+            validate (value) {
+              if (!value.startsWith('06.')) {
+                return invalid('notAPhoneNumber');
+              }
+              return VALID;
+            }
+          })(),
         },
         {
           name: 'email',
@@ -62,6 +76,24 @@ export class CcFtUncontrolled extends LitElement {
           required: true,
           reset: '',
         },
+        {
+          name: 'custom',
+          type: 'string',
+          required: true,
+          reset: null,
+        },
+        {
+          name: 'checkbox',
+          type: 'array',
+          required: true,
+          reset: [],
+        }, {
+          name: 'name',
+          type: 'string',
+          required: true,
+          reset: '',
+        },
+
         {
           name: 'tags',
           type: 'array',
@@ -100,23 +132,17 @@ export class CcFtUncontrolled extends LitElement {
         },
         {
           name: 'food',
-          type: 'string',
+          type: 'array',
           required: false,
           reset: [],
         },
         {
-          name: 'manual',
-          type: 'string',
-          required: true,
-          reset: null,
-          validator: new CustomValidator(),
-        },
-        {
-          name: 'custom',
+          name: 'radio',
           type: 'string',
           required: true,
           reset: null,
         },
+
         {
           name: 'shoelace',
           type: 'string',
@@ -130,6 +156,18 @@ export class CcFtUncontrolled extends LitElement {
 
   get formController () {
     return this._formController;
+  }
+
+  onCheckboxChange (e) {
+    if (e.target.checked) {
+      this._formController.setFieldValue('checkbox', [
+        ...this._formController.getFieldValue('checkbox'),
+        e.target.value,
+      ]);
+    }
+    else {
+      this._formController.setFieldValue('checkbox', this._formController.getFieldValue('checkbox').filter((v) => v !== e.target.value));
+    }
   }
 
   render () {
@@ -212,6 +250,9 @@ export class CcFtUncontrolled extends LitElement {
         <cc-input-text label="Tags" ${formInput(this._formController, 'tags', 'tags')}>
         </cc-input-text>
 
+        <cc-input-text label="PhoneNumber" ${formInput(this._formController, 'phoneNumber')}>
+        </cc-input-text>
+
         <div>
           <input type="checkbox" id="hero" ${formInput(this._formController, 'hero')}>
           <label for="hero">Hero</label>
@@ -238,41 +279,62 @@ export class CcFtUncontrolled extends LitElement {
         <cc-toggle label="Favorite food" .choices=${foodToggleOptions}
                    ${formInput(this._formController, 'food', 'multipleValues')}>
         </cc-toggle>
-
-        <cc-input-text
-          name="manual"
-          label="Manual"
-          ?disabled=${this._formController.formState?.state === 'submitting'}
-          required
-          .value=${this._formController.getFieldValue('manual')}
-          @cc-input-text:input=${(e) => this._formController.setFieldValue('manual', e.target.value)}
-          @cc-input-text:requestimplicitsubmit=${() => this._formController.submit()}
-        >
-          ${this._formController.isFieldInvalid('manual')
-            ? html`<p slot="error">${manualErrors[this._formController.getFieldError('manual')]()}</p>`
-            : ''}
-        </cc-input-text>
+        
+        <div style="display: flex; flex-direction: column; padding: 0.3em; ${this._formController.isFieldInvalid('radio') ? 'border: 1px solid red' : ''}">
+            <input type="radio" name="radio" value="option1" id="radio-option1"
+                   .checked=${this._formController.getFieldValue('radio') === 'option1'}
+                   @change=${() => this._formController.setFieldValue('radio', 'option1')}
+              /><label for="radio-option1">Option1</label>
+            
+            <input type="radio" name="radio" value="option2" id="radio-option2"
+                   .checked=${this._formController.getFieldValue('radio') === 'option2'}
+                   @change=${() => this._formController.setFieldValue('radio', 'option2')}
+            /><label for="radio-option2">Option2</label>
+            
+            <input type="radio" name="radio" value="option3" id="radio-option3"
+                   .checked=${this._formController.getFieldValue('radio') === 'option3'}
+                   @change=${() => this._formController.setFieldValue('radio', 'option3')}
+            /><label for="radio-option3">Option3</label>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; padding: 0.3em; ${this._formController.isFieldInvalid('checkbox') ? 'border: 1px solid red' : ''}">
+            <input type="checkbox" name="checkbox" value="option1" id="checkbox-option1"
+                   .checked=${this._formController.getFieldValue('checkbox').includes('option1')}
+                   @change=${this.onCheckboxChange}
+              /><label for="checkbox-option1">Option1</label>
+            
+            <input type="checkbox" name="checkbox" value="option2" id="checkbox-option2"
+                   .checked=${this._formController.getFieldValue('checkbox').includes('option2')}
+                   @change=${this.onCheckboxChange}
+            /><label for="checkbox-option2">Option2</label>
+            
+            <input type="checkbox" name="checkbox" value="option3" id="checkbox-option3"
+                   .checked=${this._formController.getFieldValue('checkbox').includes('option3')}
+                   @change=${this.onCheckboxChange}
+            /><label for="checkbox-option3">Option3</label>
+        </div>
 
         <div>Custom</div>
-        <div
-          style="display: grid; grid-template-columns: 1fr max-content; padding: 0.3em; ${this._formController.isFieldInvalid('custom') ? 'border: 1px solid red' : ''}">
+        <div 
+          style="display: grid; grid-template-columns: 1fr max-content; padding: 0.3em; ${this._formController.isFieldInvalid('custom') ? 'border: 1px solid red' : ''}"
+        >
           <div
             style="background-color: ${this._formController.getFieldValue('custom') === 'first' ? '#ccc' : 'transparent'}">
             first
           </div>
-          <button type="button" @click=${() => this._formController.setFieldValue('custom', 'first')}>Select</button>
+          <button name="custom" type="button" @click=${() => this._formController.setFieldValue('custom', 'first')}>Select</button>
 
           <div
             style="background-color: ${this._formController.getFieldValue('custom') === 'second' ? '#ccc' : 'transparent'}">
             second
           </div>
-          <button type="button" @click=${() => this._formController.setFieldValue('custom', 'second')}>Select</button>
+          <button name="custom" type="button" @click=${() => this._formController.setFieldValue('custom', 'second')}>Select</button>
 
           <div
             style="background-color: ${this._formController.getFieldValue('custom') === 'third' ? '#ccc' : 'transparent'}">
             third
           </div>
-          <button type="button" @click=${() => this._formController.setFieldValue('custom', 'third')}>Select</button>
+          <button name="custom" type="button" @click=${() => this._formController.setFieldValue('custom', 'third')}>Select</button>
         </div>
         
         
@@ -303,6 +365,10 @@ export class CcFtUncontrolled extends LitElement {
           display: flex;
           flex-direction: column;
           gap: 0.5em;
+        }
+        
+        button:focus, input[type='checkbox']:focus,input[type='radio']:focus {
+          outline: 2px dashed red;
         }
       `,
     ];

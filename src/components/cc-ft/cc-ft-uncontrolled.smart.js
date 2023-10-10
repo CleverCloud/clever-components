@@ -21,7 +21,7 @@ defineSmartComponent({
         .catch((error) => {
           if (error.message === 'email-used') {
             formController.idle();
-            formController.error('email', 'already-used');
+            formController.error('email', 'used');
           }
         });
     });

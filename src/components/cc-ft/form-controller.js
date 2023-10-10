@@ -48,7 +48,7 @@ export class FormController {
   }
 
   setFieldValue (field, value) {
-    this._assertField(field);
+    this._assertFieldDefined(field);
 
     const currentValue = this.getFieldValue(field);
 
@@ -72,13 +72,13 @@ export class FormController {
   }
 
   getFieldValue (field) {
-    this._assertField(field);
+    this._assertFieldDefined(field);
 
     return this.formState[field].value;
   }
 
   getFieldError (field) {
-    this._assertField(field);
+    this._assertFieldDefined(field);
 
     return this.formState[field].error;
   }
@@ -87,18 +87,19 @@ export class FormController {
     const validation = this._getFieldsDefinition().map((fieldSpec) => {
       const field = fieldSpec.name;
       const element = this._getFieldElement(field);
-      console.log(field, element);
-      const validation = this._validateField(fieldSpec, element);
+      const value = this.getFieldValue(fieldSpec.name);
+      const validation = this._validateField(value, fieldSpec, element);
       return {
         field,
         element,
+        value,
         ...validation,
       };
     });
 
     return {
-      valid: validation.every((e) => e.error == null),
-      details: validation,
+      valid: validation.every((e) => e.valid),
+      fields: validation,
     };
   }
 
@@ -117,16 +118,17 @@ export class FormController {
 
   submit () {
     const validation = this.validate();
+    console.log(validation.fields);
 
     // todo: maybe we don't need to track the error into the state.
     this.formState = {
       ...this.formState,
-      ...Object.fromEntries(validation.details.map((v) => [v.field, {
+      ...Object.fromEntries(validation.fields.map((v) => [v.field, {
         value: v.value,
-        error: v.error,
+        error: v.code,
       }])),
     };
-    console.log(JSON.stringify(this.formState, null, 2));
+    // console.log(JSON.stringify(this.formState, null, 2));
 
     if (validation.valid) {
       const data = Object.fromEntries(this._getFieldsDefinition().map((formSpec) => [
@@ -140,12 +142,16 @@ export class FormController {
       });
     }
     else {
-      validation.details.find((v) => !v.valid).element.focus();
+      const firstInvalidField = validation.fields.find((v) => !v.valid);
+      if (firstInvalidField.element == null) {
+        throw new Error(`Could not focus element with name attribute '${firstInvalidField.field}'`);
+      }
+      firstInvalidField.element.focus();
     }
   }
 
   error (field, error) {
-    this._assertField(field);
+    this._assertFieldDefined(field);
 
     this.formState = {
       ...this.formState,
@@ -187,17 +193,24 @@ export class FormController {
     return this._fieldsIndex[field];
   }
 
+  hostUpdated () {
+    const fieldsWithoutElement = this.definition.fields.filter((f) => this._getFieldElement(f.name) == null).map((f) => f.name);
+    if (fieldsWithoutElement.length > 0) {
+      throw new Error(`For the following fields, we could not find elements with the name attribute specified in definition [${fieldsWithoutElement.join(', ')}].`);
+    }
+  }
+
   _getFieldElement (field) {
     return this.host.shadowRoot.querySelector(`[name=${field}]`);
   }
 
-  _assertField (field) {
-    if (!this._fieldExists(field)) {
+  _assertFieldDefined (field) {
+    if (!this._isFieldDefined(field)) {
       throw new Error(`field "${field}" doesn't exist`);
     }
   }
 
-  _fieldExists (field) {
+  _isFieldDefined (field) {
     return this.getFieldDefinition(field) != null;
   }
 
@@ -205,12 +218,10 @@ export class FormController {
     return this.definition.fields;
   }
 
-  _validateField (fieldSpec, element) {
+  _validateField (value, fieldSpec, element) {
     if (element != null && element.validate != null) {
       return element.validate(true);
     }
-
-    const value = this.getFieldValue(fieldSpec.name);
 
     return new RequiredValidator(fieldSpec.required, fieldSpec.validator).validate(value);
   }

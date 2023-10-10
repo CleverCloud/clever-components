@@ -26,6 +26,9 @@ const isEmpty = (value) => {
   if (typeof value === 'number') {
     return Number.isNaN(value);
   }
+  if (Array.isArray(value)) {
+    return value.length === 0;
+  }
   return false;
 };
 
@@ -48,7 +51,6 @@ export class RequiredValidator {
   }
 
   validate (value) {
-    console.log(value);
     if (isEmpty(value)) {
       return this._required ? invalid('empty') : VALID;
     }
