@@ -49,6 +49,8 @@ export class CcButton extends LitElement {
   static get properties () {
     return {
       accessibleName: { type: String, attribute: 'accessible-name' },
+      a11yExpanded: { type: Boolean, attribute: 'a11y-expanded', reflect: true },
+      a11yPressed: { type: Boolean, attribute: 'a11y-pressed', reflect: true },
       circle: { type: Boolean },
       danger: { type: Boolean },
       delay: { type: Number },
@@ -72,6 +74,12 @@ export class CcButton extends LitElement {
 
     /** @type {string|null} Forces the values of the `aria-label` and `title` attributes on the `button` element. CAUTION: The accessible name should always start with the visible text if there is one. For instance "add to estimation - NodeJS XS" */
     this.accessibleName = null;
+
+    /** @type {null|boolean} Sets aria-expanded on the inner `button` element. */
+    this.a11yExpanded = null;
+
+    /** @type {null|boolean} Sets aria-pressed on the inner `button` element. */
+    this.a11yPressed = null;
 
     /** @type {boolean} Sets button UI to a circle form when in `hide-text` and `image` mode. */
     this.circle = false;
@@ -241,6 +249,8 @@ export class CcButton extends LitElement {
         @click=${this._onClick}
         title="${ifDefined(this._getTitle())}"
         aria-label="${ifDefined(this._getAriaLabel())}"
+        aria-expanded="${ifDefined(this.a11yExpanded ?? undefined)}"
+        aria-pressed="${ifDefined(this.a11yPressed ?? undefined)}"
       >
         <!--
           When delay mechanism is set, we need a cancel label.
