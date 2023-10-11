@@ -1,5 +1,5 @@
 import { expect } from '@bundled-es-modules/chai';
-import { fixture } from '@open-wc/testing-helpers';
+import { fixture } from '@open-wc/testing';
 import { html } from 'lit';
 import { ansiToLit, stripAnsi } from '../../src/lib/ansi/ansi.js';
 

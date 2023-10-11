@@ -169,8 +169,8 @@ export function ansiToLit (text) {
 export const ansiStyles = [
   css`
     .ansi-reset {
-      background-color: var(--ansi-background);
-      color: var(--ansi-foreground);
+      background-color: var(--cc-color-ansi-background);
+      color: var(--cc-color-ansi-foreground);
       font-style: normal;
       font-weight: normal;
       opacity: 1;
@@ -178,8 +178,8 @@ export const ansiStyles = [
     }
 
     .ansi-inverse {
-      background-color: var(--ansi-foreground);
-      color: var(--ansi-background);
+      background-color: var(--cc-color-ansi-foreground);
+      color: var(--cc-color-ansi-background);
     }
   `,
   ...[
@@ -193,7 +193,7 @@ export const ansiStyles = [
     ...ANSI_COLORS
       .map((style) => {
         const styleName = style.name;
-        const styleVar = `var(--ansi-${styleName})`;
+        const styleVar = `var(--cc-color-ansi-${styleName})`;
 
         return `
           .ansi-text-${styleName} {

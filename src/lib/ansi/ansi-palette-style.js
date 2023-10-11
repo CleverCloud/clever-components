@@ -8,8 +8,8 @@
  */
 export function ansiPaletteStyle (palette) {
   return [
-    ...Object.entries(palette).map(([colorName, color]) => `--ansi-${colorName}: ${color}`),
-    'color: var(--ansi-foreground)',
-    'background-color: var(--ansi-background);',
+    ...Object.entries(palette).map(([colorName, color]) => `--cc-color-ansi-${colorName}: ${color}`),
+    'color: var(--cc-color-ansi-foreground)',
+    'background-color: var(--cc-color-ansi-background);',
   ].join(';');
 }
