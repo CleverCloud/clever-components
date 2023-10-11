@@ -4,6 +4,21 @@ title: Changelog
 ---
 # Clever Components changelog
 
+## [11.2.0](https://github.com/CleverCloud/clever-components/compare/11.1.0...11.2.0) (2023-10-11)
+
+
+### Features
+
+* add component dependencies/dependants CLI ([903d1b9](https://github.com/CleverCloud/clever-components/commit/903d1b940d650ff504274d2065db07a6733297f1)), closes [#806](https://github.com/CleverCloud/clever-components/issues/806)
+* **cem:** add dependencies/dependants graph to the components description ([ac63307](https://github.com/CleverCloud/clever-components/commit/ac63307c1bb8a14ecf7cdc82b54f4a2ea5b0f816)), closes [#826](https://github.com/CleverCloud/clever-components/issues/826)
+
+
+### Bug Fixes
+
+* **cc-pricing-product:** filter addon plans without zones ([9247f35](https://github.com/CleverCloud/clever-components/commit/9247f35bf5e63da9c19284f4dfca979bd3d887d6)), closes [#858](https://github.com/CleverCloud/clever-components/issues/858)
+* **cc-select:** reflect name attribute on the native `&lt;select&gt;` element ([f244497](https://github.com/CleverCloud/clever-components/commit/f24449704759366da62caf720049358906b2772e)), closes [#581](https://github.com/CleverCloud/clever-components/issues/581)
+* **cc-toggle:** add `name` attribute ([2d971a9](https://github.com/CleverCloud/clever-components/commit/2d971a956031ed5ad7c4033213a2855ba41fb5e3)), closes [#581](https://github.com/CleverCloud/clever-components/issues/581)
+
 ## [11.1.0](https://github.com/CleverCloud/clever-components/compare/11.0.0...11.1.0) (2023-09-19)
 
 
