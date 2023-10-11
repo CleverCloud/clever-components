@@ -1,8 +1,10 @@
 export function formatAddonProduct (addonProvider, priceSystem, selectedFeatures) {
+  // We filter out add-ons that are not attached to any zone. This is sometimes done on dev plans to disable them.
+  const addonPlansWithZones = addonProvider.plans.filter((plan) => plan.zones.length > 0);
   return {
     name: addonProvider.name,
     productFeatures: formatAddonFeatures(addonProvider.features, selectedFeatures),
-    plans: formatAddonPlans(addonProvider.plans, priceSystem, selectedFeatures),
+    plans: formatAddonPlans(addonPlansWithZones, priceSystem, selectedFeatures),
   };
 }
 
