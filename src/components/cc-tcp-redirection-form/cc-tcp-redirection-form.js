@@ -73,7 +73,7 @@ export class CcTcpRedirectionForm extends LitElement {
             <cc-tcp-redirection .redirection=${redirection}></cc-tcp-redirection>
           `)}
           ${this.redirections.value.length === 0 ? html`
-            <div class="cc-block_empty-msg">${i18n('cc-tcp-redirection-form.empty')}</div>
+            <cc-notice class="cc-block_empty-msg" intent="info" message="${i18n('cc-tcp-redirection-form.empty')}"></cc-notice>
           ` : ''}
         ` : ''}
 

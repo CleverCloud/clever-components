@@ -220,7 +220,7 @@ export class CcSshKeyList extends LitElement {
 
           ${state === 'loaded' ? html`
             ${this.keyData.personalKeys.length === 0 ? html`
-              <p class="info-msg" id="personal-keys-empty-msg" tabindex="-1">${i18n('cc-ssh-key-list.personal.empty')}</p>
+              <cc-notice class="info-msg" id="personal-keys-empty-msg" tabindex="-1" intent="info" message="${i18n('cc-ssh-key-list.personal.empty')}"></cc-notice>
             ` : ''}
             ${this._renderKeyList('personal', this.keyData.personalKeys)}
           ` : ''}

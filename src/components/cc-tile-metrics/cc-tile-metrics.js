@@ -301,8 +301,8 @@ export class CcTileMetrics extends withResizeObserver(LitElement) {
           ? this._renderAccessibleTable()
           : ''}
       </div>
-
-      <div class="tile_message ${classMap({ 'tile--hidden': panel !== 'empty' })}">${i18n('cc-tile-metrics.empty')}</div>
+      
+      <cc-notice class="tile_message ${classMap({ 'tile--hidden': panel !== 'empty' })}" intent="info" message="${i18n('cc-tile-metrics.empty')}"></cc-notice>
 
       <div class="tile_message ${classMap({ 'tile--hidden': panel !== 'error' })}">
         <div class="error-message">

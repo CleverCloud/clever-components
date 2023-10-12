@@ -106,7 +106,7 @@ export class CcEnvVarEditorSimple extends LitElement {
       ` : ''}
 
       <div class="message" ?hidden=${variables != null && variables.length !== 0}>
-        ${i18n('cc-env-var-editor-simple.empty-data')}
+        <cc-notice intent="info" message="${i18n('cc-env-var-editor-simple.empty-data')}"></cc-notice>
       </div>
 
       ${repeat(variables, ({ name }) => name, ({ name, value, isNew, isEdited, isDeleted }) => html`

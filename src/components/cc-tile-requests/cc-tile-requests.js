@@ -267,8 +267,8 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
           <canvas id="chart"></canvas>
         </div>
       </div>
-
-      <div class="tile_message ${classMap({ 'tile--hidden': !displayEmpty })}">${i18n('cc-tile-requests.empty')}</div>
+      
+      <cc-notice class="tile_message ${classMap({ 'tile--hidden': !displayEmpty })}" intent="info" message="${i18n('cc-tile-requests.empty')}"></cc-notice>
 
       <div class="tile_message ${classMap({ 'tile--hidden': !displayError })}">
         <div class="error-message">

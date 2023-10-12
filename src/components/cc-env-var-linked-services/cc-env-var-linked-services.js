@@ -129,7 +129,9 @@ export class CcEnvVarLinkedServices extends LitElement {
       ` : ''}
 
       ${this.services != null && !this.error && this.services.length === 0 ? html`
-        <div class="empty-msg">${this._getEmptyMessage()}</div>
+        <div class="empty-msg">
+            <cc-notice intent="info" .message="${this._getEmptyMessage()}"></cc-notice>
+        </div>
       ` : ''}
 
       ${this.error ? html`
