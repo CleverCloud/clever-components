@@ -1,6 +1,7 @@
 ---
-kind: '📌 Docs/Architecture Decision Records'
+kind: '📌 Architecture Decision Records'
 ---
+
 # ADR 0013: Replace GitLab CI + Clever app with simple object storage hosting for previews
 
 🗓️ 2021-04-20 · ✍️ Hubert Sablonnière

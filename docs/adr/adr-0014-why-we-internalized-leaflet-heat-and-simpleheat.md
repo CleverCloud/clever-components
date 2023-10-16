@@ -1,6 +1,7 @@
 ---
-kind: '📌 Docs/Architecture Decision Records'
+kind: '📌 Architecture Decision Records'
 ---
+
 # ADR 0014: Why we internalized leaflet.heat and simpleheat
 
 🗓️ 2021-05-21 · ✍️ Hubert Sablonnière

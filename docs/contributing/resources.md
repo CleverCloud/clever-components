@@ -1,8 +1,9 @@
 ---
-kind: '📌 Docs/References'
+kind: '👋 Contributing'
 title: 'Resources'
 ---
-# Resources reference
+
+# Resources
 
 Here's list of interesting things to read, watch and listen to if you're working on this project:
 

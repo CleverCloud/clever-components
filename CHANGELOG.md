@@ -1,8 +1,9 @@
 ---
-kind: 🏠 Home
-title: Changelog
+kind: '🏡 Getting Started'
+title: 'Changelog'
 ---
-# Clever Components changelog
+
+# Changelog
 
 ## [11.2.0](https://github.com/CleverCloud/clever-components/compare/11.1.0...11.2.0) (2023-10-11)
 

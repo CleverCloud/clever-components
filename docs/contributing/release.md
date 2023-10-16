@@ -1,6 +1,8 @@
 ---
-kind: 📌 Docs
+kind: '👋 Contributing'
+title: 'Release'
 ---
+
 # How to release the components?
 
 ## Release phase

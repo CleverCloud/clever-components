@@ -1,9 +1,11 @@
 ---
-kind: 📌 Docs
+kind: '👋 Contributing'
+title: 'Previews'
 ---
+
 # How to publish previews
 
-When working on this components library, we often need to publish and share a live preview of the components to get some feedbacks.
+When working on this component library, we often need to publish and share a live preview of the components to get some feedbacks.
 In order to do this, we have a series of scripts to quickly publish a preview.
 
 We provide two sorts of outputs:

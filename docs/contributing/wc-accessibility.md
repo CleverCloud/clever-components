@@ -1,9 +1,11 @@
 ---
-kind: '📌 Docs'
+kind: '👋 Contributing'
+title: 'Quick accessibility reminders'
 ---
+
 # Quick accessibility reminders
 
-NOTE: This doc is a work in progress...
+<cc-notice intent="warning" message="This doc is a work in progress..."></cc-notice>
 
 ## Explicit accessible names for links
 
@@ -63,7 +65,8 @@ This means that for a close button, we do this:
   <img src="..." alt="Close this notification">
 </button>
 ```
-Or with an <svg>:
+
+Or with an `<svg>`:
 ```html
 <button title="Close this notification">
   <svg aria-hidden="true">
@@ -71,6 +74,7 @@ Or with an <svg>:
   <span class="visually-hidden">Close this notification</span>
 </button>
 ```
+
 **Note**: This means we provide redundant info for screen reader users (description = accessible name).
 These cases are rare because we try to provide a text next to the icon as much as possible (in which case, a `title` is unnecessary)
 
