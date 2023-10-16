@@ -43,13 +43,21 @@ jobs:
         id: npm_tag
         run: p=${{ needs.pre-publish.outputs.prerelease }} && echo "tag=${p:-latest}" >> $GITHUB_OUTPUT
       - name: '[Prepare] Install dependencies'
-        run: npm ci
+        uses: nick-fields/retry@v2
+        with:
+          command: npm ci
+          timeout_minutes: 10
+          max_attempts: 3
       - name: '[Publish] version ${{ github.ref_name }} with tag ${{ steps.npm_tag.outputs.tag }}'
+        uses: nick-fields/retry@v2
+        with:
+          command: |
+            npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+            npm publish --access public --tag ${{ steps.npm_tag.outputs.tag }}
+          timeout_minutes: 10
+          max_attempts: 3
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
-          npm publish --access public --tag ${{ steps.npm_tag.outputs.tag }}
   publish-cdn:
     name: 'Publish CDN to CleverCloud'
     needs: pre-publish
@@ -64,14 +72,21 @@ jobs:
       - name: '[Prepare] Setup Node.js'
         uses: volta-cli/action@v4
       - name: '[Prepare] Install dependencies'
-        run: npm ci
+        uses: nick-fields/retry@v2
+        with:
+          command: npm ci
+          timeout_minutes: 10
+          max_attempts: 3
       - name: '[Build]'
         env:
           VERSION: ${{ github.ref_name }}
-        run: |
-          npm run cdn-release:build
+        run: npm run cdn-release:build
       - name: '[Publish] version ${{ github.ref_name }}'
+        uses: nick-fields/retry@v2
+        with:
+          command: npm run cdn-release:publish ${{ github.ref_name }}
+          timeout_minutes: 10
+          max_attempts: 3
         env:
           SMART_CDN_CELLAR_KEY_ID: ${{ secrets.SMART_CDN_CELLAR_KEY_ID }}
           SMART_CDN_CELLAR_SECRET_KEY: ${{ secrets.SMART_CDN_CELLAR_SECRET_KEY }}
-        run: npm run cdn-release:publish ${{ github.ref_name }}

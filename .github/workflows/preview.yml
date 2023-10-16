@@ -33,7 +33,11 @@ jobs:
       - name: '[Prepare] Setup Node.js'
         uses: volta-cli/action@v4
       - name: '[Prepare] Install dependencies'
-        run: npm ci
+        uses: nick-fields/retry@v2
+        with:
+          command: npm ci
+          timeout_minutes: 10
+          max_attempts: 3
       - name: '[Prepare] Check if a preview already exists'
         id: check_preview
         run: |
@@ -85,7 +89,11 @@ jobs:
       - name: '[Prepare] Setup Node.js'
         uses: volta-cli/action@v4
       - name: '[Prepare] Install dependencies'
-        run: npm ci
+        uses: nick-fields/retry@v2
+        with:
+          command: npm ci
+          timeout_minutes: 10
+          max_attempts: 3
 
       - name: '[Run] Delete preview'
         run: npm run preview:delete "${BRANCH}"

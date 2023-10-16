@@ -19,7 +19,11 @@ jobs:
       - name: '[Prepare] Setup Node.js'
         uses: volta-cli/action@v4
       - name: '[Prepare] Install dependencies'
-        run: npm ci
+        uses: nick-fields/retry@v2
+        with:
+          command: npm ci
+          timeout_minutes: 10
+          max_attempts: 3
 
       - name: '[Code quality] Check ESLint'
         run: npm run lint
