@@ -154,6 +154,7 @@ class FormInputDirective extends AsyncDirective {
 
       this._elementHandler.setValue(this._formController?.getFieldValue(this._field));
       this._element.setCustomValidator?.(fieldDefinition.validator);
+      this._element.setCustomErrorMessages?.(fieldDefinition.customErrorMessages);
     }
 
     return this.render();

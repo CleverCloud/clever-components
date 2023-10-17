@@ -53,44 +53,59 @@ export class CcFtUncontrolled extends LitElement {
         {
           name: 'phoneNumber',
           type: 'string',
-          required: true,
+          required: false,
           reset: '',
-          validator: new (class A {
-            getErrorMessage (code) {
-              if (code === 'notAPhoneNumber') {
-                return 'oulala!';
-              }
-            }
-
-            validate (value) {
-              if (!value.startsWith('06.')) {
-                return invalid('notAPhoneNumber');
-              }
-              return VALID;
-            }
-          })(),
+          // validator: new (class A {
+          //   getErrorMessage (code) {
+          //     if (code === 'notAPhoneNumber') {
+          //       return 'oulala!';
+          //     }
+          //   }
+          //
+          //   validate (value) {
+          //     if (!value.startsWith('06.')) {
+          //       return invalid('notAPhoneNumber');
+          //     }
+          //     return VALID;
+          //   }
+          // })(),
         },
         {
           name: 'email',
           type: 'email',
           required: true,
           reset: '',
+          customErrorMessages (code) {
+            if (code === 'empty') {
+              return 'Entre un email !';
+            }
+            if (code === 'badEmail') {
+              return 'Entre un email valide !';
+            }
+            if (code === 'used') {
+              return 'Already used';
+            }
+          },
+          // customErrorMessages: {
+          //   empty: 'Entre un email !',
+          //   badEmail: 'Entre un email valide !',
+          // },
         },
         {
           name: 'custom',
           type: 'string',
-          required: true,
+          required: false,
           reset: null,
         },
         {
           name: 'checkbox',
           type: 'array',
-          required: true,
+          required: false,
           reset: [],
         }, {
           name: 'name',
           type: 'string',
-          required: true,
+          required: false,
           reset: '',
         },
 
@@ -109,25 +124,25 @@ export class CcFtUncontrolled extends LitElement {
         {
           name: 'description',
           type: 'string',
-          required: true,
+          required: false,
           reset: '',
         },
         {
           name: 'age',
           type: 'number',
-          required: true,
+          required: false,
           reset: NaN,
         },
         {
           name: 'color',
           type: 'string',
-          required: true,
+          required: false,
           reset: null,
         },
         {
           name: 'gender',
           type: 'string',
-          required: true,
+          required: false,
           reset: null,
         },
         {
@@ -139,7 +154,7 @@ export class CcFtUncontrolled extends LitElement {
         {
           name: 'radio',
           type: 'string',
-          required: true,
+          required: false,
           reset: null,
         },
 

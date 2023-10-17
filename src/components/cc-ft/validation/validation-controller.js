@@ -14,13 +14,17 @@ export class ValidationController {
     }
   }
 
-  validate (validator, value, report) {
+  _getErrorMessage (validator, code, customErrorMessagesFn) {
+    return customErrorMessagesFn?.(code) ?? validator.getErrorMessage(code);
+  }
+
+  validate (validator, value, report, customErrorMessagesFn) {
     const validationResult = validator.validate(value);
 
     if (report) {
       const errorMessage = validationResult.valid
         ? null
-        : validator.getErrorMessage(validationResult.code);
+        : this._getErrorMessage(validator, validationResult.code, customErrorMessagesFn);
 
       this._setErrorMessage(errorMessage);
     }

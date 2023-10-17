@@ -238,11 +238,15 @@ export class CcInputText extends LitElement {
   validate (report) {
     const validator = new RequiredValidator(this.required, this._getValidator());
 
-    return this._validationCtrl.validate(validator, this.value, report);
+    return this._validationCtrl.validate(validator, this.value, report, this._customErrorMessages);
   }
 
   setCustomValidator (customValidator) {
     this._customValidator = customValidator;
+  }
+
+  setCustomErrorMessages (fn) {
+    this._customErrorMessages = fn;
   }
 
   render () {

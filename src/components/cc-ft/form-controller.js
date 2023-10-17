@@ -160,6 +160,7 @@ export class FormController {
         error,
       },
     };
+    this._getFieldElement(field).errorMessage = this.getFieldDefinition(field).customErrorMessages?.(error) ?? error;
     this.focus(field);
   }
 
