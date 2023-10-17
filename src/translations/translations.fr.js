@@ -481,6 +481,9 @@ export const translations = {
   'cc-jenkins-info.update.title': `Mises à jour`,
   'cc-jenkins-info.update.up-to-date': `Votre version de Jenkins est à jour.`,
   //#endregion
+  //#region cc-loader
+  'cc-loader.a11y-name': `Chargement en cours`,
+  //#endregion
   //#region cc-logs
   'cc-logs.copied': ({ count }) => `${plural(count, 'Copiée')} (${count} ${plural(count, 'ligne')})`,
   'cc-logs.copy': `Copier`,
@@ -506,6 +509,29 @@ export const translations = {
   'cc-logs-control.timezone.local': `Heure locale`,
   'cc-logs-control.timezone.utc': `UTC`,
   'cc-logs-control.wrap-lines': `Forcer le retour à la ligne`,
+  //#endregion
+  //#region cc-logs-instances
+  'cc-logs-instances.build.a11y-name': `Instance dédiée au build`,
+  'cc-logs-instances.cold.empty': `Aucune instance`,
+  'cc-logs-instances.cold.header': `Instances`,
+  'cc-logs-instances.deleted.header': `Instances supprimées`,
+  'cc-logs-instances.deploying.header': `Déploiement en cours`,
+  'cc-logs-instances.deployment.deployed': `Déployée`,
+  'cc-logs-instances.deployment.state.cancelled': `Déploiement annulé`,
+  'cc-logs-instances.deployment.state.failed': `Déploiement en échec`,
+  'cc-logs-instances.deployment.state.succeeded': `Déploiement réussi`,
+  'cc-logs-instances.deployment.state.wip': `Déploiement en cours`,
+  'cc-logs-instances.ghost.header': `Instances fantômes`,
+  'cc-logs-instances.ghost.notice': `Des instances indésirables sont toujours en cours d'exécution, mais seront bientôt détruites par notre orchestrateur. Pour en savoir plus, vous pouvez contacter le support.`,
+  'cc-logs-instances.instance.state.deleted': `Instance supprimée`,
+  'cc-logs-instances.instance.state.deploying': `Instance en cours de déploiement`,
+  'cc-logs-instances.instance.state.running': `Instance démarrée`,
+  'cc-logs-instances.instance.state.stopping': `Instance en cours d'arrêt`,
+  'cc-logs-instances.loading.error': `Une erreur est survenue pendant le chargement des instances.`,
+  'cc-logs-instances.loading.loader': `Instances en cours de chargement`,
+  'cc-logs-instances.running.empty': `Aucune instance démarrée`,
+  'cc-logs-instances.running.header': `Instances démarrées`,
+  'cc-logs-instances.stopping.header': `Instances arrêtées`,
   //#endregion
   //#region cc-logsmap
   'cc-logsmap.legend.heatmap': ({ orgaName }) => sanitize`Carte de chaleur des requêtes HTTP reçues par les applications de <strong>${orgaName}</strong> durant les dernières 24 heures.`,

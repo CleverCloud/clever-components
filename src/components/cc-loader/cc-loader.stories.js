@@ -1,4 +1,5 @@
 import './cc-loader.js';
+import { html, render } from 'lit';
 import { makeStory } from '../../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
@@ -46,10 +47,43 @@ export const customColor = makeStory(conf, {
   ],
 });
 
+export const accessibleName = makeStory(conf, {
+  css: `
+    .line {
+      display: flex;
+      gap: 1em;
+      align-items: center;
+    }
+  `,
+  dom: (container) => {
+    const storyOutput = html`
+        <p>The accessible name can be checked by using the accessibility inspector of your browser.</p>
+        
+        <div class="line">
+          <cc-loader style="width: 5em; height: 5em"></cc-loader>
+          <p>With default accessible name</p>
+        </div>
+
+        <div class="line">
+          <cc-loader a11y-name="Custom accessible name" style="width: 5em; height: 5em"></cc-loader>
+          <p>With custom accessible name</p>
+        </div>
+
+        <div class="line">
+          <cc-loader a11y-name="" style="width: 5em; height: 5em"></cc-loader>
+          <p>Force no accessible name</p>
+        </div>
+        
+    `;
+    render(storyOutput, container);
+  },
+});
+
 enhanceStoriesNames({
   defaultStory,
   smallContainer,
   bigContainerWithHorizontallyCentered,
   bigContainerWithVerticallyCentered,
   customColor,
+  accessibleName,
 });

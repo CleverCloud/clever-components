@@ -81,6 +81,37 @@ export function sortBy (propertyName, desc = false) {
 }
 
 /**
+ * @template {Object<string, any>} T
+ * @param {Array<T>} array
+ * @param {string|((value: T) => string)} key
+ * @return {Object<string, Array<T>>}
+ */
+export function groupBy (array, key) {
+  /** @type {Object<string, Array<T>>} */
+  const groups = {};
+
+  /** @type {string|((value: T) => string)} */
+  const keyProvider = typeof key === 'string'
+    ? (value) => value[key]
+    : key;
+
+  for (const value of array) {
+    const prop = keyProvider(value);
+
+    if (prop != null) {
+      let group = groups[prop];
+      if (group == null) {
+        group = [];
+        groups[prop] = group;
+      }
+      group.push(value);
+    }
+  }
+
+  return groups;
+}
+
+/**
  * @template InputType
  * @template OutputType
  * @param {InputType[]} array
@@ -150,13 +181,23 @@ export function randomPick (array) {
   return array[index];
 }
 
-/** Generates a random string of a given length
+/**
+ * Generates a random string using the given alphabet.
  *
- * @param {number} length
- * @returns {string}
+ * @param {number} [length] The size of the string to generated
+ * @param {string} [alphabet] The alphabet
+ * @return {string} A random string
  */
-export function randomString (length) {
-  return Math.random().toString(36).substring(2, length + 2);
+export function randomString (length = 8, alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz') {
+  if (alphabet.length === 0) {
+    throw new Error('Alphabet cannot be an empty string');
+  }
+  const max = alphabet.length - 1;
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += alphabet.charAt(random(0, max));
+  }
+  return result;
 }
 
 /**
