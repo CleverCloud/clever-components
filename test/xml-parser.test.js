@@ -22,10 +22,28 @@ describe('XML parsing', () => {
       expect(parsedXML).to.have.lengthOf(6);
     });
 
-    it('retrieves only 12 (more than default limit)', async () => {
-      const parsedXML = parseRssFeed(fileString, 12);
+    it('returns an empty array if the limit is set to a negative number', async () => {
+      const parsedXML = parseRssFeed(fileString, -1);
       expect(parsedXML).to.be.an('array');
-      expect(parsedXML).to.have.lengthOf(12);
+      expect(parsedXML).to.have.lengthOf(0);
+    });
+
+    it('returns an empty array if the limit is set to zero', async () => {
+      const parsedXML = parseRssFeed(fileString, 0);
+      expect(parsedXML).to.be.an('array');
+      expect(parsedXML).to.have.lengthOf(0);
+    });
+
+    it('retrieves only 10 (more than default limit)', async () => {
+      const parsedXML = parseRssFeed(fileString, 10);
+      expect(parsedXML).to.be.an('array');
+      expect(parsedXML).to.have.lengthOf(10);
+    });
+
+    it('retrieves the number of items of the file if the limit is above', async () => {
+      const parsedXML = parseRssFeed(fileString, 20);
+      expect(parsedXML).to.be.an('array');
+      expect(parsedXML).to.have.lengthOf(10);
     });
   });
 
@@ -44,65 +62,59 @@ describe('XML parsing', () => {
     expect(parsedXML).to.have.lengthOf(3);
 
     // First Item
-    // Title: Clever Cloud Welcomes ViteMaDose!
-    // Description: The year 2021 was marked by the arrival of the covid 19 vaccine.
-    // A hope for many, announcing the end of this pandemic that will have marked the beginning of our century.
-    // Haha. Well, actually, no. On the eve of the year 2022, we discover the fascinating capacity of the variant named Omicron to spread. [&#8230;]
-    // Date: Thu, 06 Jan 2022 18:11:20 +0000
-    // Banner: https://staging-cc-assets.cellar-c2.services.clever-cloud.com/uploads/2022/01/ViteMaDose-318x123.webp
-    // Link: https://clevercloud-staging.cleverapps.io/blog/company/2022/01/06/clever-cloud-welcomes-vitemadose/
+    // Title: Deploy a custom ChatGPT, based on PHP
+    // Description: Since last year, OpenAI has been in the news with its large language models (LLM),
+    // notably GPT-3.5 and GPT-4, available through ChatGPT. But you can also include them within your own
+    // applications thanks to an API. Here's an example of how you can take advantage of it on Clever Cloud.
+    // Date: Wed, 11 Oct 2023 07:30:48 +0000
+    // Banner: https://cdn.clever-cloud.com/uploads/2023/10/2.svg
+    // Link: https://www.clever-cloud.com/blog/features/2023/10/11/deploy-a-custom-chatgpt-based-on-php/
     const firstItem = parsedXML[0];
-    expect(firstItem.title).to.deep.equal('Clever Cloud Welcomes ViteMaDose!');
-    expect(firstItem.description).to.deep.equal('The year 2021 was marked by the arrival of the covid 19 vaccine.'
-      + ' A hope for many, announcing the end of this pandemic that will have marked the beginning of our century.'
-      + ' Haha. Well, actually, no. On the eve of the year 2022, we discover the fascinating capacity of the variant named Omicron to spread. […]');
-    expect(firstItem.date).to.deep.equal(new Date('Thu, 06 Jan 2022 18:11:20 +0000').toISOString());
-    expect(firstItem.banner).to.deep.equal('https://staging-cc-assets.cellar-c2.services.clever-cloud.com/uploads/2022/01/ViteMaDose-318x123.webp');
-    expect(firstItem.link).to.deep.equal('https://clevercloud-staging.cleverapps.io/blog/company/2022/01/06/clever-cloud-welcomes-vitemadose/');
+    expect(firstItem.title).to.deep.equal('Deploy a custom ChatGPT, based on PHP');
+    expect(firstItem.description).to.deep.equal('Since last year, OpenAI has been in the news with its large '
+      + 'language models (LLM), notably GPT-3.5 and GPT-4, available through ChatGPT. '
+      + 'But you can also include them within your own applications thanks to an API. '
+      + 'Here\'s an example of how you can take advantage of it on Clever Cloud.');
+    expect(firstItem.date).to.deep.equal(new Date('Wed, 11 Oct 2023 07:30:48 +0000').toISOString());
+    expect(firstItem.banner).to.deep.equal('https://cdn.clever-cloud.com/uploads/2023/10/2.svg');
+    expect(firstItem.link).to.deep.equal('https://www.clever-cloud.com/blog/features/2023/10/11/deploy-a-custom-chatgpt-based-on-php/');
 
     // Second Item
-    // Title: Powered by Clever Cloud &#8211; Secret Santa by JoliCode
-    // Description: Christmas is next week and you probably heard about the “Secret Santa” tradition.
-    // Loïck Piera, Web Consultant at JoliCode,
-    // developed an app called Secret Santa to help you organise yours with your colleagues, friends or family.
-    // Secret Santa has been hosted by Clever Cloud since 2018.
-    // What is a Secret Santa? It&#8217;s a Christmas tradition [&#8230;]
-    // Date: Tue, 14 Dec 2021 15:50:07 +0000
-    // Banner: https://staging-cc-assets.cellar-c2.services.clever-cloud.com/uploads/2022/01/ViteMaDose-318x123.webp
-    // Link: https://clevercloud-staging.cleverapps.io/blog/company/2021/12/14/powered-by-clever-cloud-secret-santa-by-jolicode/
+    // Title: Back-to-work events for Clever Cloud
+    // Description: After a well-deserved summer break, Clever Cloud is taking part in a number of trade shows
+    // and conferences this autumn 2023. Would you like to talk with us,
+    // or tell us how our product has changed your life? You can do so at the following events:
+    // Date: Tue, 26 Sep 2023 14:43:18 +0000
+    // Banner: https://cdn.clever-cloud.com/uploads/2023/09/rentree-des-evenements-pour-clever-2.svg
+    // Link: https://www.clever-cloud.com/blog/company/2023/09/26/back-to-work-events-for-clever-cloud/
     const secondItem = parsedXML[1];
-    expect(secondItem.title).to.deep.equal('Powered by Clever Cloud – Secret Santa by JoliCode');
-    expect(secondItem.description).to.deep.equal('Christmas is next week and you probably heard about the “Secret Santa” tradition.'
-      + ' Loïck Piera, Web Consultant at JoliCode,'
-      + ' developed an app called Secret Santa to help you organise yours with your colleagues, friends or family.'
-      + ' Secret Santa has been hosted by Clever Cloud since 2018.'
-      + ' What is a Secret Santa? It’s a Christmas tradition […]');
-    expect(secondItem.date).to.deep.equal(new Date('Tue, 14 Dec 2021 15:50:07 +0000').toISOString());
-    expect(secondItem.banner).to.deep.equal('https://staging-cc-assets.cellar-c2.services.clever-cloud.com/uploads/2021/12/Secret-Santa-2-318x123.png');
-    expect(secondItem.link).to.deep.equal('https://clevercloud-staging.cleverapps.io/blog/company/2021/12/14/powered-by-clever-cloud-secret-santa-by-jolicode/');
+    expect(secondItem.title).to.deep.equal('Back-to-work events for Clever Cloud');
+    expect(secondItem.description).to.deep.equal('After a well-deserved summer break, '
+      + 'Clever Cloud is taking part in a number of trade shows and conferences this autumn 2023.'
+      + ' Would you like to talk with us, or tell us how our product has changed your life?'
+      + ' You can do so at the following events:');
+    expect(secondItem.date).to.deep.equal(new Date('Tue, 26 Sep 2023 14:43:18 +0000').toISOString());
+    expect(secondItem.banner).to.deep.equal('https://cdn.clever-cloud.com/uploads/2023/09/rentree-des-evenements-pour-clever-2.svg');
+    expect(secondItem.link).to.deep.equal('https://www.clever-cloud.com/blog/company/2023/09/26/back-to-work-events-for-clever-cloud/');
 
     // Third Item
-    // Title: Security update about Log4Shell
-    // Description: What is Log4Shell?
-    // You probably heard about Log4Shell (or CVE-2021-44228),
-    // the vulnerability which impacted log4j, a famous log library written in Java.
-    // This critical vulnerability allows to remotely execute code on the servers
-    // of a company or to display the environment variables of an application.
-    // What has been implemented at Clever Cloud? At Clever Cloud, [&#8230;]
-    // Date: Mon, 13 Dec 2021 13:10:32 +0000
-    // Banner: https://staging-cc-assets.cellar-c2.services.clever-cloud.com/uploads/2021/12/Security-update-318x159.png
-    // Link: https://clevercloud-staging.cleverapps.io/blog/engineering/2021/12/13/security-update-about-log4shell/
+    // Title: Open sourcing Sōzu connectors
+    // Description: Clever Cloud is today the main developer of Sōzu,
+    // a Reverse Proxy that was developped at Clever Cloud, in Rust,
+    // to meet the needs of our infrastructure for performance and hot reloading.
+    // Sōzu is used throughout Clever Cloud, paired with HAProxy, to route traffic to our customer's applications.
+    // Date: Mon, 25 Sep 2023 15:19:04 +0000
+    // Banner: https://cdn.clever-cloud.com/uploads/2023/09/clever-cloud-devoile-ses-connecteurs-sozu-open-source-3.svg
+    // Link: https://www.clever-cloud.com/blog/engineering/2023/09/25/reverse-proxy-open-sourcing-sozu-connectors/
     const thirdItem = parsedXML[2];
-    expect(thirdItem.title).to.deep.equal('Security update about Log4Shell');
-    expect(thirdItem.description).to.deep.equal('What is Log4Shell?'
-      + ' You probably heard about Log4Shell (or CVE-2021-44228),'
-      + ' the vulnerability which impacted log4j, a famous log library written in Java.'
-      + ' This critical vulnerability allows to remotely execute code on the servers'
-      + ' of a company or to display the environment variables of an application.'
-      + ' What has been implemented at Clever Cloud? At Clever Cloud, […]');
-    expect(thirdItem.date).to.deep.equal(new Date(' Mon, 13 Dec 2021 13:10:32 +0000').toISOString());
-    expect(thirdItem.banner).to.deep.equal('https://staging-cc-assets.cellar-c2.services.clever-cloud.com/uploads/2021/12/Security-update-318x159.png');
-    expect(thirdItem.link).to.deep.equal('https://clevercloud-staging.cleverapps.io/blog/engineering/2021/12/13/security-update-about-log4shell/');
+    expect(thirdItem.title).to.deep.equal('Open sourcing Sōzu connectors');
+    expect(thirdItem.description).to.deep.equal('Clever Cloud is today the main developer of Sōzu, '
+      + 'a Reverse Proxy that was developped at Clever Cloud, in Rust, to meet the needs of our infrastructure '
+      + 'for performance and hot reloading. Sōzu is used throughout Clever Cloud, paired with HAProxy,'
+      + ' to route traffic to our customer\'s applications.');
+    expect(thirdItem.date).to.deep.equal(new Date('Mon, 25 Sep 2023 15:19:04 +0000').toISOString());
+    expect(thirdItem.banner).to.deep.equal('https://cdn.clever-cloud.com/uploads/2023/09/clever-cloud-devoile-ses-connecteurs-sozu-open-source-3.svg');
+    expect(thirdItem.link).to.deep.equal('https://www.clever-cloud.com/blog/engineering/2023/09/25/reverse-proxy-open-sourcing-sozu-connectors/');
   });
 
   describe('XML parsing error check', () => {
