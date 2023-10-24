@@ -17,7 +17,9 @@ jobs:
         with:
           fetch-depth: 0
       - name: '[Prepare] Setup Node.js'
-        uses: volta-cli/action@v4
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: 'package.json'
       - name: '[Prepare] Install dependencies'
         run: npm ci
 

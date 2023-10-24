@@ -38,7 +38,9 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.ref_name }}
       - name: '[Prepare] Setup Node.js'
-        uses: volta-cli/action@v4
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: 'package.json'
       - name: '[Prepare] Extract NPM tag'
         id: npm_tag
         run: p=${{ needs.pre-publish.outputs.prerelease }} && echo "tag=${p:-latest}" >> $GITHUB_OUTPUT
@@ -62,7 +64,9 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.ref_name }}
       - name: '[Prepare] Setup Node.js'
-        uses: volta-cli/action@v4
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: 'package.json'
       - name: '[Prepare] Install dependencies'
         run: npm ci
       - name: '[Build]'
