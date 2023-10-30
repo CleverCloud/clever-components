@@ -81,7 +81,7 @@ export class CcHeaderAddon extends LitElement {
         <div class="main">
 
           <cc-img class="logo" src="${ifDefined(addon.provider.logoUrl)}"
-            ?skeleton=${skeleton} text="${addon.provider.name}" title="${ifDefined(addon.provider.name)}"></cc-img>
+            ?skeleton=${skeleton} accessible-name="${addon.provider.name}" title="${ifDefined(addon.provider.name)}"></cc-img>
           <div class="details">
             <div class="name"><span class="${classMap({ skeleton })}">${addon.name}</span></div>
             <div class="addon-id-inputs">
