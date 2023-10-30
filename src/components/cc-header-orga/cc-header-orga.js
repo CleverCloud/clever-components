@@ -66,7 +66,7 @@ export class CcHeaderOrga extends LitElement {
         ` : ''}
 
         ${!this.error ? html`
-          <cc-img class="logo" ?skeleton=${skeleton} src=${ifDefined(orga.avatar)} text=${initials}></cc-img>
+          <cc-img class="logo" ?skeleton=${skeleton} src=${ifDefined(orga.avatar)} accessible-name=${initials}></cc-img>
           <div class="details">
             <div class="name ${classMap({ skeleton })}">${orga.name}</div>
             ${orga.cleverEnterprise ? html`

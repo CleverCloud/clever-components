@@ -20,7 +20,7 @@ export class CcImg extends LitElement {
     return {
       skeleton: { type: Boolean, reflect: true },
       src: { type: String },
-      text: { type: String },
+      accessibleName: { type: String, attribute: 'accessible-name' },
       _error: { type: Boolean, state: true },
       _loaded: { type: Boolean, state: true },
     };
@@ -36,7 +36,7 @@ export class CcImg extends LitElement {
     this.src = null;
 
     /** @type {string|null} Sets short fallback text to display when the image cannot be loaded or if `src` is not defined and `skeleton` is `false`. */
-    this.text = null;
+    this.accessibleName = null;
 
     /** @type {boolean} */
     this._error = false;
@@ -65,14 +65,16 @@ export class CcImg extends LitElement {
   }
 
   render () {
+    const altValue = this.accessibleName ?? '';
     const isLoading = (this.src != null && !this._loaded && !this._error);
     const isSkeleton = (this.skeleton || isLoading);
-    const displayText = (this.src == null || this._error);
+    const displayAccessibleName = (this.src == null || this._error);
     return html`
-      <div class="wrapper ${classMap({ skeleton: isSkeleton, loaded: this._loaded, text: displayText })}">
-        <img src=${ifDefined(this.src ?? undefined)} @load=${this._onLoad} @error=${this._onError} alt="">
-        ${displayText ? html`
-          <div class="error-msg">${this.text}</div>
+      <div class="wrapper ${classMap({ skeleton: isSkeleton, loaded: this._loaded, 'accessible-name': displayAccessibleName })}">
+        <img src=${ifDefined(this.src ?? undefined)} @load=${this._onLoad} @error=${this._onError} alt=${altValue}>
+        ${displayAccessibleName ? html`
+            <!-- We use aria-hidden because we already have an alt value. -->
+          <div class="error-msg" aria-hidden="true">${this.accessibleName}</div>
         ` : ''}
       </div>
     `;
