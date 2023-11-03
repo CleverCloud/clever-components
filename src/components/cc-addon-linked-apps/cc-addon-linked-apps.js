@@ -77,7 +77,8 @@ export class CcAddonLinkedApps extends LitElement {
         ` : ''}
 
         ${emptyData ? html`
-          <cc-notice intent="info" message="${i18n('cc-addon-linked-apps.no-linked-applications')}"></cc-notice>
+          <div>${i18n('cc-addon-linked-apps.details')}</div>
+          <div class="cc-block_empty-msg">${i18n('cc-addon-linked-apps.no-linked-applications')}</div>
         ` : ''}
 
         ${this.error ? html`

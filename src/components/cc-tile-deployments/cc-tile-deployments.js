@@ -95,7 +95,7 @@ export class CcTileDeployments extends LitElement {
       ` : ''}
 
       ${emptyData ? html`
-        <cc-notice class="tile_message" intent="info" message="${i18n('cc-tile-deployments.empty')}"></cc-notice>
+        <div class="tile_message">${i18n('cc-tile-deployments.empty')}</div>
       ` : ''}
 
       ${this.error ? html`

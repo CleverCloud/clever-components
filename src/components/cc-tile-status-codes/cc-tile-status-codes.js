@@ -223,7 +223,7 @@ export class CcTileStatusCodes extends LitElement {
       ` : '')}
 
       ${displayEmpty ? html`
-        <cc-notice  class="tile_message" intent="info" message="${i18n('cc-tile-status-codes.empty')}"></cc-notice>
+        <div class="tile_message">${i18n('cc-tile-status-codes.empty')}</div>
       ` : ''}
 
       ${displayError ? html`

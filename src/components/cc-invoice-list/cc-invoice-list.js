@@ -100,8 +100,7 @@ export class CcInvoiceList extends withResizeObserver(LitElement) {
               <cc-invoice-table .invoices=${skeleton ? null : pendingInvoices}></cc-invoice-table>
             ` : ''}
             ${!skeleton && pendingInvoices.length === 0 ? html`
-                <em><cc-notice intent="info" message="${i18n('cc-invoice-list.pending.no-invoices')}"></cc-notice></em>
-                
+              <div class="empty-msg">${i18n('cc-invoice-list.pending.no-invoices')}</div>
             ` : ''}
           </cc-block-section>
 
@@ -134,7 +133,7 @@ export class CcInvoiceList extends withResizeObserver(LitElement) {
               <cc-invoice-table .invoices=${skeleton ? null : filteredProcessedInvoices}></cc-invoice-table>
             ` : ''}
             ${!skeleton && filteredProcessedInvoices.length === 0 ? html`
-              <em><cc-notice intent="info" message="${i18n('cc-invoice-list.processed.no-invoices')}"></cc-notice></em>
+              <div class="empty-msg ">${i18n('cc-invoice-list.processed.no-invoices')}</div>
             ` : ''}
           </cc-block-section>
 
@@ -169,6 +168,11 @@ export class CcInvoiceList extends withResizeObserver(LitElement) {
 
         cc-select {
           width: max-content;
+        }
+
+        .empty-msg {
+          color: var(--cc-color-text-weak);
+          font-style: italic;
         }
       `,
     ];

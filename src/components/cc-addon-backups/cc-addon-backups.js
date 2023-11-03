@@ -257,6 +257,7 @@ export class CcAddonBackups extends LitElement {
         ` : ''}
 
         ${emptyData ? html`
+          <div>${this._getDescription(providerId)}</div>
           <div class="cc-block_empty-msg">${i18n('cc-addon-backups.empty')}</div>
         ` : ''}
 
