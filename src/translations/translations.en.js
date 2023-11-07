@@ -744,7 +744,7 @@ export const translations = {
   'cc-ssh-key-list.add.name': `Name`,
   'cc-ssh-key-list.add.public-key': `Public key`,
   'cc-ssh-key-list.add.title': `Add a new key`,
-  'cc-ssh-key-list.doc.info': () => sanitize`If you need any help, head up to our <a href="https://www.clever-cloud.com/doc/admin-console/ssh-keys/">documentation</a>.`,
+  'cc-ssh-key-list.doc.info': () => sanitize`If you need any help, head up to our <a href="https://developers.clever-cloud.com/doc/account/ssh-keys-management/">documentation</a>.`,
   'cc-ssh-key-list.error.add': ({ name }) => `An error occurred while adding your new personal key "${name}".`,
   'cc-ssh-key-list.error.delete': ({ name }) => `An error occurred while deleting your personal key "${name}".`,
   'cc-ssh-key-list.error.import': ({ name }) => `An error occurred while importing your GitHub key "${name}".`,
