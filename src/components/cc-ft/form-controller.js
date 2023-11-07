@@ -6,13 +6,23 @@ export class FormController {
     this.host = host;
     host.addController(this);
     this.definition = definition;
-    this._fieldsIndex = Object.fromEntries(this.definition.fields.map((fieldDefinition) => [fieldDefinition.name, fieldDefinition]));
-    if (formState == null) {
-      this.reset();
-    }
-    else {
-      this.formState = formState;
-    }
+    this._fieldDefinitions = new Map();
+    // if (formState == null) {
+    //   this.reset();
+    // }
+    // else {
+    //   this.formState = formState;
+    // }
+  }
+
+  hostUpdate () {
+    // clear definition
+    this._fieldDefinitions.clear();
+  }
+
+  register (fieldDefinition) {
+    // todo: handle multi field on same name
+    this._fieldDefinitions.set(fieldDefinition.name, fieldDefinition);
   }
 
   get formState () {
@@ -193,11 +203,11 @@ export class FormController {
   }
 
   getFieldDefinition (field) {
-    return this._fieldsIndex[field];
+    return this._fieldDefinitions.get(field);
   }
 
   hostUpdated () {
-    const fieldsWithoutElement = this.definition.fields.filter((f) => this._getFieldElement(f.name) == null).map((f) => f.name);
+    const fieldsWithoutElement = this._getFieldsDefinition().filter((f) => this._getFieldElement(f.name) == null).map((f) => f.name);
     if (fieldsWithoutElement.length > 0) {
       throw new Error(`For the following fields, we could not find elements with the name attribute specified in definition [${fieldsWithoutElement.join(', ')}].`);
     }
@@ -218,7 +228,7 @@ export class FormController {
   }
 
   _getFieldsDefinition () {
-    return this.definition.fields;
+    return Array.from(this._fieldDefinitions.values());
   }
 
   _validateField (value, fieldSpec, element) {

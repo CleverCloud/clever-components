@@ -46,6 +46,11 @@ export class CcFtUncontrolled extends LitElement {
     super();
     this.myProp = 'hello';
 
+    this.formState = {
+      state: 'idle',
+
+    };
+
     const form = {
       name: 'my-form',
       property: 'formState',
@@ -256,101 +261,15 @@ export class CcFtUncontrolled extends LitElement {
 
     return html`
       <form>
-        <cc-input-text label="Name" ${formInput(this._formController, 'name')}>
+        <cc-input-text label="Name" ${formInput(this._formController, {
+          name: 'name',
+          type: 'string',
+          required: false,
+          reset: '',
+        })}>
         </cc-input-text>
 
-        <cc-input-text label="Email" type="email" ${formInput(this._formController, 'email')}>
-        </cc-input-text>
-
-        <cc-input-text label="Tags" ${formInput(this._formController, 'tags', 'tags')}>
-        </cc-input-text>
-
-        <cc-input-text label="PhoneNumber" ${formInput(this._formController, 'phoneNumber')}>
-        </cc-input-text>
-
-        <div>
-          <input type="checkbox" id="hero" ${formInput(this._formController, 'hero')}>
-          <label for="hero">Hero</label>
-        </div>
-
-        <span>Description</span>
-        <input type="text" ${formInput(this._formController, 'description')}>
-        ${this._formController.isFieldInvalid('description')
-          ? html`<span style="color: red">${formError(this._formController, 'description')}</span>`
-          : ''}
-
-        <cc-input-number label="Age" ${formInput(this._formController, 'age')} min="0" max="150">
-          ${formError(this._formController, 'age', ageErrors)}
-        </cc-input-number>
-
-        <cc-select label="Color" .options=${colorsSelectOptions} value="" ${formInput(this._formController, 'color')}>
-          ${formError(this._formController, 'color', colorErrors)}
-        </cc-select>
-
-        <cc-toggle label="Gender" .choices=${genderToggleOptions} ${formInput(this._formController, 'gender')}>
-          ${formError(this._formController, 'gender', colorErrors)}
-        </cc-toggle>
-
-        <cc-toggle label="Favorite food" .choices=${foodToggleOptions}
-                   ${formInput(this._formController, 'food', 'multipleValues')}>
-        </cc-toggle>
         
-        <div style="display: flex; flex-direction: column; padding: 0.3em; ${this._formController.isFieldInvalid('radio') ? 'border: 1px solid red' : ''}">
-            <input type="radio" name="radio" value="option1" id="radio-option1"
-                   .checked=${this._formController.getFieldValue('radio') === 'option1'}
-                   @change=${() => this._formController.setFieldValue('radio', 'option1')}
-              /><label for="radio-option1">Option1</label>
-            
-            <input type="radio" name="radio" value="option2" id="radio-option2"
-                   .checked=${this._formController.getFieldValue('radio') === 'option2'}
-                   @change=${() => this._formController.setFieldValue('radio', 'option2')}
-            /><label for="radio-option2">Option2</label>
-            
-            <input type="radio" name="radio" value="option3" id="radio-option3"
-                   .checked=${this._formController.getFieldValue('radio') === 'option3'}
-                   @change=${() => this._formController.setFieldValue('radio', 'option3')}
-            /><label for="radio-option3">Option3</label>
-        </div>
-        
-        <div style="display: flex; flex-direction: column; padding: 0.3em; ${this._formController.isFieldInvalid('checkbox') ? 'border: 1px solid red' : ''}">
-            <input type="checkbox" name="checkbox" value="option1" id="checkbox-option1"
-                   .checked=${this._formController.getFieldValue('checkbox').includes('option1')}
-                   @change=${this.onCheckboxChange}
-              /><label for="checkbox-option1">Option1</label>
-            
-            <input type="checkbox" name="checkbox" value="option2" id="checkbox-option2"
-                   .checked=${this._formController.getFieldValue('checkbox').includes('option2')}
-                   @change=${this.onCheckboxChange}
-            /><label for="checkbox-option2">Option2</label>
-            
-            <input type="checkbox" name="checkbox" value="option3" id="checkbox-option3"
-                   .checked=${this._formController.getFieldValue('checkbox').includes('option3')}
-                   @change=${this.onCheckboxChange}
-            /><label for="checkbox-option3">Option3</label>
-        </div>
-
-        <div>Custom</div>
-        <div 
-          style="display: grid; grid-template-columns: 1fr max-content; padding: 0.3em; ${this._formController.isFieldInvalid('custom') ? 'border: 1px solid red' : ''}"
-        >
-          <div
-            style="background-color: ${this._formController.getFieldValue('custom') === 'first' ? '#ccc' : 'transparent'}">
-            first
-          </div>
-          <button name="custom" type="button" @click=${() => this._formController.setFieldValue('custom', 'first')}>Select</button>
-
-          <div
-            style="background-color: ${this._formController.getFieldValue('custom') === 'second' ? '#ccc' : 'transparent'}">
-            second
-          </div>
-          <button name="custom" type="button" @click=${() => this._formController.setFieldValue('custom', 'second')}>Select</button>
-
-          <div
-            style="background-color: ${this._formController.getFieldValue('custom') === 'third' ? '#ccc' : 'transparent'}">
-            third
-          </div>
-          <button name="custom" type="button" @click=${() => this._formController.setFieldValue('custom', 'third')}>Select</button>
-        </div>
         
         
         <sl-select label="Shoelace"

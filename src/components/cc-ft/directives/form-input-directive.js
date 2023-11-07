@@ -120,7 +120,7 @@ class FormInputDirective extends AsyncDirective {
     super(partInfo);
     this._element = null;
     this._formController = null;
-    this._field = null;
+    this._fieldDefinition = null;
     this._elementHandler = null;
   }
 
@@ -132,29 +132,28 @@ class FormInputDirective extends AsyncDirective {
    *
    * @param {ElementPart} part
    * @param {FormController} formController
-   * @param {string} field
+   * @param {FieldDefinition} fieldDefinition
    * @param {string} prop
    */
-  update (part, [formController, field, prop, bindEvent]) {
+  update (part, [formController, fieldDefinition, prop, bindEvent]) {
     this._formController = formController;
-    this._field = field;
-
-    const fieldDefinition = this._formController?.getFieldDefinition(this._field);
+    this._fieldDefinition = fieldDefinition;
+    this._formController.register(this._fieldDefinition);
 
     if (part.element !== this._element || prop !== this._prop || bindEvent !== this._bindEvent) {
       this._setElement(part.element, prop, bindEvent);
     }
 
-    if (this._element != null && fieldDefinition != null) {
-      part.element.setAttribute('name', this._field);
+    if (this._element != null && this._fieldDefinition != null) {
+      part.element.setAttribute('name', this._fieldDefinition.name);
 
       // todo: maybe we should use setAttribute for those two below
-      this._element.required = fieldDefinition.required;
+      this._element.required = this._fieldDefinition.required;
       this._element.disabled = this._formController?.formState?.state === 'submitting';
 
-      this._elementHandler.setValue(this._formController?.getFieldValue(this._field));
-      this._element.setCustomValidator?.(fieldDefinition.validator);
-      this._element.setCustomErrorMessages?.(fieldDefinition.customErrorMessages);
+      this._elementHandler.setValue(this._formController?.getFieldValue(this._fieldDefinition.name));
+      this._element.setCustomValidator?.(this._fieldDefinition.validator);
+      this._element.setCustomErrorMessages?.(this._fieldDefinition.customErrorMessages);
     }
 
     return this.render();
@@ -178,7 +177,7 @@ class FormInputDirective extends AsyncDirective {
   }
 
   _addListeners () {
-    this._elementHandler?.connect(this._formController, this._field);
+    this._elementHandler?.connect(this._formController, this._fieldDefinition.name);
   }
 
   disconnected () {
