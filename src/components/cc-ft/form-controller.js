@@ -120,7 +120,6 @@ export class FormController {
     const validation = this.validate();
     console.log(validation.fields);
 
-    // todo: maybe we don't need to track the error into the state.
     this.formState = {
       ...this.formState,
       ...Object.fromEntries(validation.fields.map((v) => [v.field, {
@@ -160,7 +159,10 @@ export class FormController {
         error,
       },
     };
-    this._getFieldElement(field).errorMessage = this.getFieldDefinition(field).customErrorMessages?.(error) ?? error;
+    const element = this._getFieldElement(field);
+    if (element != null) {
+      element.errorMessage = this.getFieldDefinition(field).customErrorMessages?.(error) ?? error;
+    }
     this.focus(field);
   }
 
