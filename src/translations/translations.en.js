@@ -400,6 +400,10 @@ export const translations = {
   'cc-heptapod-info.storage-bytes': ({ storage }) => formatBytes(storage, 1),
   'cc-heptapod-info.storage-description': `Storage size`,
   //#endregion
+  //#region cc-input-date
+  'cc-input-date.keyboard-hint': `You can use up or down arrow keys to modify parts of the date.`,
+  'cc-input-date.required': `required`,
+  //#endregion
   //#region cc-input-number
   'cc-input-number.decrease': `decrease`,
   'cc-input-number.increase': `increase`,
