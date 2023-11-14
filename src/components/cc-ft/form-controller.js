@@ -170,11 +170,11 @@ export class FormController {
       });
     }
     else {
-      const firstInvalidField = validation.fields.find((v) => !v.valid);
-      if (firstInvalidField.element == null) {
-        throw new Error(`Could not focus element with name attribute '${firstInvalidField.field}'`);
-      }
-      firstInvalidField.element.focus();
+      this.host.updateComplete.then(() => {
+        const firstInvalidElement = this.host.shadowRoot.querySelector('[data-cc-error]');
+        firstInvalidElement.focus();
+      });
+
     }
   }
 
@@ -218,7 +218,10 @@ export class FormController {
   }
 
   focus (field) {
-    this.host.updateComplete.then(() => this._getFieldElement(field)?.focus());
+    // we need to wait the render to occur so that the element is not disabled anymore.
+    this.host.updateComplete.then(() => {
+      this._getFieldElement(field)?.focus();
+    });
   }
 
   getFieldDefinition (field) {

@@ -74,7 +74,6 @@ class ElementHandler {
 
   setValue (value) {
     this.element[this.prop] = value;
-    console.log(this.element, 'setting value', value);
   }
 
   getValue () {
@@ -142,8 +141,6 @@ class FormInputDirective extends AsyncDirective {
 
     const fieldDefinition = this._formController?.getFieldDefinition(this._field);
 
-    console.log(field, fieldDefinition);
-
     if (part.element !== this._element || prop !== this._prop || bindEvent !== this._bindEvent) {
       this._setElement(part.element, prop, bindEvent);
     }
@@ -153,11 +150,18 @@ class FormInputDirective extends AsyncDirective {
 
       // todo: maybe we should use setAttribute for those two below
       this._element.required = fieldDefinition.required;
-      this._element.disabled = this._formController?.formState?.state === 'submitting';
+      // this._element.disabled = this._formController?.formState?.state === 'submitting';
 
       this._elementHandler.setValue(this._formController?.getFieldValue(this._field));
       this._element.setCustomValidator?.(fieldDefinition.validator);
       this._element.setCustomErrorMessages?.(fieldDefinition.customErrorMessages);
+      const fieldError = this._formController.getFieldError(this._field);
+      if (fieldError != null) {
+        this._element.setAttribute('data-cc-error', fieldError);
+      }
+      else {
+        this._element.removeAttribute('data-cc-error');
+      }
     }
 
     return this.render();

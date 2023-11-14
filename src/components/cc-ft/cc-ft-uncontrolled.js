@@ -71,22 +71,23 @@ export class CcFtUncontrolled extends LitElement {
         //   //   }
         //   // })(),
         // },
-        // {
-        //   name: 'email',
-        //   type: 'email',
-        //   required: true,
-        //   reset: '',
-        //   customErrorMessages (code) {
-        //     if (code === 'empty') {
-        //       return 'Entre un email !';
-        //     }
-        //     if (code === 'badEmail') {
-        //       return 'Entre un email valide !';
-        //     }
-        //     if (code === 'used') {
-        //       return 'Already used';
-        //     }
-        //   },
+        {
+          name: 'email',
+          type: 'email',
+          required: true,
+          reset: '',
+          customErrorMessages (code) {
+            if (code === 'empty') {
+              return 'Entre un email !';
+            }
+            if (code === 'badEmail') {
+              return 'Entre un email valide !';
+            }
+            if (code === 'used') {
+              return 'Already used';
+            }
+          },
+        },
         // customErrorMessages: {
         //   empty: 'Entre un email !',
         //   badEmail: 'Entre un email valide !',
@@ -338,6 +339,9 @@ export class CcFtUncontrolled extends LitElement {
     return html`
       <form>
         <cc-input-text label="Name" ${formInput(this._formController, 'name')}>
+        </cc-input-text>
+
+        <cc-input-text label="Email" type="email" ${formInput(this._formController, 'email')}>
         </cc-input-text>
 
         <input type="checkbox" @change=${this._onFormExpertChange} .checked=${this._expertMode} />
