@@ -3,7 +3,6 @@ import '../cc-img/cc-img.js';
 import '../cc-notice/cc-notice.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import {
   iconRemixCheckboxCircleFill as iconBadge,
   iconRemixPhoneFill as iconPhone,
@@ -38,6 +37,15 @@ export class CcHeaderOrga extends LitElement {
     };
   }
 
+  _getInitials (name) {
+    return name
+      .trim()
+      .split(' ')
+      .slice(0, 2)
+      .map((a) => a[0].toUpperCase())
+      .join('');
+  }
+
   render () {
 
     if (this.orga.state === 'error') {
@@ -66,17 +74,9 @@ export class CcHeaderOrga extends LitElement {
 
   _renderHeader ({ skeleton, name, avatar = null, cleverEnterprise = false, emergencyNumber = null }) {
 
-    const initials = skeleton ? '' : name
-      .trim()
-      .split(' ')
-      .slice(0, 2)
-      .map((a) => a[0].toUpperCase())
-      .join('');
-
     return html`
       <div class="wrapper ${classMap({ enterprise: cleverEnterprise })}">
-      
-      <cc-img class="logo" ?skeleton=${skeleton} src=${ifDefined(avatar)} accessible-name=${initials}></cc-img>
+      ${this._renderAvatar(skeleton, avatar, name)}
       <div class="details">
         <div class="name ${classMap({ skeleton })}">${name}</div>
         ${cleverEnterprise ? html`
@@ -93,6 +93,26 @@ export class CcHeaderOrga extends LitElement {
         </div>
       ` : ''}
       </div>
+    `;
+  }
+
+  _renderAvatar (skeleton, avatar, name) {
+    if (skeleton) {
+      return html`
+        <cc-img class="logo" skeleton></cc-img>
+      `;
+    }
+
+    if (avatar == null) {
+      return html`
+        <span class="initials" aria-hidden="true">
+          <span>${this._getInitials(name)}</span>
+        </span>
+      `;
+    }
+
+    return html`
+      <cc-img class="logo" src="${avatar}"></cc-img>
     `;
   }
 
@@ -125,10 +145,22 @@ export class CcHeaderOrga extends LitElement {
           border-color: var(--cc-color-bg-primary);
         }
 
-        .logo {
+        .logo,
+        .initials {
           width: 3.25em;
           height: 3.25em;
           border-radius: var(--cc-border-radius-default, 0.25em);
+        }
+
+        .initials {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: var(--cc-color-bg-neutral);
+        }
+
+        .initials span {
+          font-size: 0.85em;
         }
 
         .details,
