@@ -39,6 +39,7 @@ export class CcFtUncontrolled extends LitElement {
         type: Object,
         attribute: 'form-state',
       },
+      _expertMode: { type: Boolean, state: true },
     };
   }
 
@@ -46,136 +47,210 @@ export class CcFtUncontrolled extends LitElement {
     super();
     this.myProp = 'hello';
 
-    this.formState = {
-      state: 'idle',
-
-    };
-
     const form = {
       name: 'my-form',
       property: 'formState',
       fields: [
+        // {
+        //   name: 'phoneNumber',
+        //   type: 'string',
+        //   required: false,
+        //   reset: '',
+        //   // validator: new (class A {
+        //   //   getErrorMessage (code) {
+        //   //     if (code === 'notAPhoneNumber') {
+        //   //       return 'oulala!';
+        //   //     }
+        //   //   }
+        //   //
+        //   //   validate (value) {
+        //   //     if (!value.startsWith('06.')) {
+        //   //       return invalid('notAPhoneNumber');
+        //   //     }
+        //   //     return VALID;
+        //   //   }
+        //   // })(),
+        // },
+        // {
+        //   name: 'email',
+        //   type: 'email',
+        //   required: true,
+        //   reset: '',
+        //   customErrorMessages (code) {
+        //     if (code === 'empty') {
+        //       return 'Entre un email !';
+        //     }
+        //     if (code === 'badEmail') {
+        //       return 'Entre un email valide !';
+        //     }
+        //     if (code === 'used') {
+        //       return 'Already used';
+        //     }
+        //   },
+        // customErrorMessages: {
+        //   empty: 'Entre un email !',
+        //   badEmail: 'Entre un email valide !',
+        // },
+        // },
+        // {
+        //   name: 'custom',
+        //   type: 'string',
+        //   required: false,
+        //   reset: null,
+        // },
+        // {
+        //   name: 'checkbox',
+        //   type: 'array',
+        //   required: false,
+        //   reset: [],
+        // },
         {
-          name: 'phoneNumber',
-          type: 'string',
-          required: false,
-          reset: '',
-          // validator: new (class A {
-          //   getErrorMessage (code) {
-          //     if (code === 'notAPhoneNumber') {
-          //       return 'oulala!';
-          //     }
-          //   }
-          //
-          //   validate (value) {
-          //     if (!value.startsWith('06.')) {
-          //       return invalid('notAPhoneNumber');
-          //     }
-          //     return VALID;
-          //   }
-          // })(),
-        },
-        {
-          name: 'email',
-          type: 'email',
-          required: true,
-          reset: '',
-          customErrorMessages (code) {
-            if (code === 'empty') {
-              return 'Entre un email !';
-            }
-            if (code === 'badEmail') {
-              return 'Entre un email valide !';
-            }
-            if (code === 'used') {
-              return 'Already used';
-            }
-          },
-          // customErrorMessages: {
-          //   empty: 'Entre un email !',
-          //   badEmail: 'Entre un email valide !',
-          // },
-        },
-        {
-          name: 'custom',
-          type: 'string',
-          required: false,
-          reset: null,
-        },
-        {
-          name: 'checkbox',
-          type: 'array',
-          required: false,
-          reset: [],
-        }, {
           name: 'name',
           type: 'string',
-          required: false,
+          required: true,
           reset: '',
         },
-
-        {
-          name: 'tags',
-          type: 'array',
-          required: false,
-          reset: [],
-        },
-        {
-          name: 'hero',
-          type: 'boolean',
-          required: false,
-          reset: false,
-        },
-        {
-          name: 'description',
-          type: 'string',
-          required: false,
-          reset: '',
-        },
-        {
-          name: 'age',
-          type: 'number',
-          required: false,
-          reset: NaN,
-        },
-        {
-          name: 'color',
-          type: 'string',
-          required: false,
-          reset: null,
-        },
-        {
-          name: 'gender',
-          type: 'string',
-          required: false,
-          reset: null,
-        },
-        {
-          name: 'food',
-          type: 'array',
-          required: false,
-          reset: [],
-        },
-        {
-          name: 'radio',
-          type: 'string',
-          required: false,
-          reset: null,
-        },
-
-        {
-          name: 'shoelace',
-          type: 'string',
-          required: false,
-          reset: null,
-        },
+        // {
+        //   name: 'phoneNumber',
+        //   type: 'string',
+        //   required: false,
+        //   reset: '',
+        //   // validator: new (class A {
+        //   //   getErrorMessage (code) {
+        //   //     if (code === 'notAPhoneNumber') {
+        //   //       return 'oulala!';
+        //   //     }
+        //   //   }
+        //   //
+        //   //   validate (value) {
+        //   //     if (!value.startsWith('06.')) {
+        //   //       return invalid('notAPhoneNumber');
+        //   //     }
+        //   //     return VALID;
+        //   //   }
+        //   // })(),
+        // },
+        // {
+        //   name: 'email',
+        //   type: 'email',
+        //   required: true,
+        //   reset: '',
+        //   customErrorMessages (code) {
+        //     if (code === 'empty') {
+        //       return 'Entre un email !';
+        //     }
+        //     if (code === 'badEmail') {
+        //       return 'Entre un email valide !';
+        //     }
+        //     if (code === 'used') {
+        //       return 'Already used';
+        //     }
+        //   },
+        //   // customErrorMessages: {
+        //   //   empty: 'Entre un email !',
+        //   //   badEmail: 'Entre un email valide !',
+        //   // },
+        // },
+        // {
+        //   name: 'custom',
+        //   type: 'string',
+        //   required: false,
+        //   reset: null,
+        // },
+        // {
+        //   name: 'checkbox',
+        //   type: 'array',
+        //   required: false,
+        //   reset: [],
+        // }, {
+        //   name: 'name',
+        //   type: 'string',
+        //   required: false,
+        //   reset: '',
+        // },
+        //
+        // {
+        //   name: 'tags',
+        //   type: 'array',
+        //   required: false,
+        //   reset: [],
+        // },
+        // {
+        //   name: 'hero',
+        //   type: 'boolean',
+        //   required: false,
+        //   reset: false,
+        // },
+        // {
+        //   name: 'description',
+        //   type: 'string',
+        //   required: false,
+        //   reset: '',
+        // },
+        // {
+        //   name: 'age',
+        //   type: 'number',
+        //   required: false,
+        //   reset: NaN,
+        // },
+        // {
+        //   name: 'color',
+        //   type: 'string',
+        //   required: false,
+        //   reset: null,
+        // },
+        // {
+        //   name: 'gender',
+        //   type: 'string',
+        //   required: false,
+        //   reset: null,
+        // },
+        // {
+        //   name: 'food',
+        //   type: 'array',
+        //   required: false,
+        //   reset: [],
+        // },
+        // {
+        //   name: 'radio',
+        //   type: 'string',
+        //   required: false,
+        //   reset: null,
+        // },
+        //
+        // {
+        //   name: 'shoelace',
+        //   type: 'string',
+        //   required: false,
+        //   reset: null,
+        // },
       ],
     };
     this._formController = new FormController(this, form);
+
+    this._expertMode = false;
   }
 
   get formController () {
     return this._formController;
+  }
+
+  _onFormExpertChange (e) {
+    this._expertMode = e.target.checked;
+
+    if (e.target.checked) {
+      // update form definition
+      this._formController.addFieldDefinition({
+        name: 'company',
+        type: 'string',
+        required: true,
+        reset: 'coucou',
+      });
+    }
+    else {
+      this._formController.removeFieldDefinition('company');
+    }
+
   }
 
   onCheckboxChange (e) {
@@ -191,6 +266,7 @@ export class CcFtUncontrolled extends LitElement {
   }
 
   render () {
+    console.log('rendering', this.formState);
     const nameErrors = {
       empty: () => 'Veuillez saisir un nom',
     };
@@ -261,16 +337,14 @@ export class CcFtUncontrolled extends LitElement {
 
     return html`
       <form>
-        <cc-input-text label="Name" ${formInput(this._formController, {
-          name: 'name',
-          type: 'string',
-          required: false,
-          reset: '',
-        })}>
+        <cc-input-text label="Name" ${formInput(this._formController, 'name')}>
         </cc-input-text>
 
+        <input type="checkbox" @change=${this._onFormExpertChange} .checked=${this._expertMode} />
         
-        
+        ${this._expertMode ? html`
+          <cc-input-text label="Company" ${formInput(this._formController, 'company')}></cc-input-text>
+        ` : ''}
         
         <sl-select label="Shoelace"
                    ${formInput(this._formController, 'shoelace', 'value', 'sl-change')}
