@@ -12,20 +12,12 @@ import {
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 
-const SKELETON_ORGA = {
-  name: '??????????????????????????',
-};
-
 /**
- * @typedef {import('../common.types.js').Organisation} Organisation
+ * @typedef {import('./cc-header-orga.types.js').HeaderOrgaState} HeaderOrgaState
  */
 
 /**
  * A component to display various info about an orga (name and enterprise status).
- *
- * ## Details
- *
- * * When `orga` is nullish, a skeleton screen UI pattern is displayed (loading hint)
  *
  * @cssdisplay block
  */
@@ -33,7 +25,6 @@ export class CcHeaderOrga extends LitElement {
 
   static get properties () {
     return {
-      error: { type: Boolean, reflect: true },
       orga: { type: Object },
     };
   }
@@ -41,48 +32,65 @@ export class CcHeaderOrga extends LitElement {
   constructor () {
     super();
 
-    /** @type {boolean} Displays an error message. */
-    this.error = false;
-
-    /** @type {Organisation|null} Sets organisation details and config. */
-    this.orga = null;
+    /** @type {HeaderOrgaState} Sets the component state. */
+    this.orga = {
+      state: 'loading',
+    };
   }
 
   render () {
 
-    const skeleton = (this.orga == null);
-    const orga = skeleton ? SKELETON_ORGA : this.orga;
-    const initials = skeleton ? '' : this.orga.name
+    if (this.orga.state === 'error') {
+      return html`
+        <cc-notice intent="warning" message="${i18n('cc-header-orga.error')}"></cc-notice>
+      `;
+    }
+
+    if (this.orga.state === 'loading') {
+      return this._renderHeader({
+        skeleton: true,
+        name: '??????????????????????????',
+      });
+    }
+
+    if (this.orga.state === 'loaded') {
+      return this._renderHeader({
+        skeleton: false,
+        name: this.orga.name,
+        avatar: this.orga.avatar,
+        cleverEnterprise: this.orga.cleverEnterprise,
+        emergencyNumber: this.orga.emergencyNumber,
+      });
+    }
+  }
+
+  _renderHeader ({ skeleton, name, avatar = null, cleverEnterprise = false, emergencyNumber = null }) {
+
+    const initials = skeleton ? '' : name
       .split(' ')
       .slice(0, 2)
       .map((a) => a[0].toUpperCase())
       .join('');
 
     return html`
-      <div class="wrapper ${classMap({ enterprise: orga.cleverEnterprise })}">
-
-        ${this.error ? html`
-          <cc-notice intent="warning" message="${i18n('cc-header-orga.error')}"></cc-notice>
+      <div class="wrapper ${classMap({ enterprise: cleverEnterprise })}">
+      
+      <cc-img class="logo" ?skeleton=${skeleton} src=${ifDefined(avatar)} accessible-name=${initials}></cc-img>
+      <div class="details">
+        <div class="name ${classMap({ skeleton })}">${name}</div>
+        ${cleverEnterprise ? html`
+          <div class="spacer"></div>
+          <cc-badge weight="strong" intent="info" .icon=${iconBadge}>Clever Cloud Enterprise</cc-badge>
         ` : ''}
-
-        ${!this.error ? html`
-          <cc-img class="logo" ?skeleton=${skeleton} src=${ifDefined(orga.avatar)} accessible-name=${initials}></cc-img>
-          <div class="details">
-            <div class="name ${classMap({ skeleton })}">${orga.name}</div>
-            ${orga.cleverEnterprise ? html`
-              <div class="spacer"></div>
-              <cc-badge weight="strong" intent="info" .icon=${iconBadge}>Clever Cloud Enterprise</cc-badge>
-            ` : ''}
-          </div>
-          ${(orga.emergencyNumber != null) ? html`
-            <div class="hotline">
-              <div class="hotline_label">${i18n('cc-header-orga.hotline')}</div>
-              <a class="hotline_number" href="tel:${orga.emergencyNumber}">
-                <cc-badge weight="outlined" intent="info" .icon=${iconPhone}>${orga.emergencyNumber}</cc-badge>
-              </a>
-            </div>
-          ` : ''}
-        ` : ''}
+      </div>
+      ${(emergencyNumber != null) ? html`
+        <div class="hotline">
+          <div class="hotline_label">${i18n('cc-header-orga.hotline')}</div>
+          <a class="hotline_number" href="tel:${emergencyNumber}">
+            <cc-badge weight="outlined" intent="info" .icon=${iconPhone}>${emergencyNumber}</cc-badge>
+          </a>
+        </div>
+      ` : ''}
       </div>
     `;
   }
@@ -110,12 +118,7 @@ export class CcHeaderOrga extends LitElement {
           border-radius: var(--cc-border-radius-default, 0.25em);
           gap: 1em;
         }
-        
-        :host([error]) .wrapper {
-          padding: 0;
-          border: none;
-        }
-
+      
         .wrapper.enterprise {
           border-width: 2px;
           border-color: var(--cc-color-bg-primary);
