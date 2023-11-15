@@ -1,263 +1,382 @@
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { RequiredValidator } from './validation/validation.js';
 
+/**
+ * @typedef {import('./directives/forms.js').FormValidation} FormValidation
+ */
+
 export class FormController {
-  constructor (host, definition, formState = undefined) {
-    this.host = host;
-    host.addController(this);
-    this.definition = definition;
-    this._fieldsIndex = Object.fromEntries(this.definition.fields.map((fieldDefinition) => [fieldDefinition.name, fieldDefinition]));
-    if (formState == null) {
-      this.reset();
+  /**
+   *
+   * @param host
+   * @param name
+   * @param fieldDefinitions
+   */
+  constructor (host, name, fieldDefinitions) {
+    this._host = host;
+    this._host.addController(this);
+
+    /** @type {string} */
+    this._name = name;
+
+    /** @type {Map<string, FieldDefinition>} */
+    this._fields = new Map();
+    fieldDefinitions.forEach((f) => {
+      this._fields.set(f.name, f);
+    });
+
+    /** @type {FormState} */
+    this._state = 'idle';
+
+    /** @type {Map<any, any>} */
+    this._values = new Map();
+
+    /** @type {Map<any, string>} */
+    this._errors = new Map();
+
+    /** @type {Map<any, HTMLElement>} */
+    this._elements = new Map();
+
+    this.reset();
+  }
+
+  /**
+   * @param {string} fieldName
+   * @return {FieldDefinition}
+   */
+  getFieldDefinition (fieldName) {
+    return this._fields.get(fieldName);
+  }
+
+  /**
+   *
+   * @param {FieldDefinition} fieldDefinition
+   * @param {'none'|'reset'|'resetIfEmpty'} setValuePolicy
+   * @throws {Error} if field is already defined
+   */
+  addFieldDefinition (fieldDefinition, setValuePolicy) {
+    if (this.getFieldDefinition(fieldDefinition.name) != null) {
+      throw new Error(`Field "${fieldDefinition.name}" already defined.`);
     }
-    else {
-      this.formState = formState;
+
+    this._fields.set(fieldDefinition.name, fieldDefinition);
+
+    if (setValuePolicy === 'reset') {
+      this._values.set(fieldDefinition.name, fieldDefinition.reset);
+    }
+    else if (setValuePolicy === 'resetIfEmpty' && this.getFieldValue(fieldDefinition.name) == null) {
+      this._values.set(fieldDefinition.name, fieldDefinition.reset);
     }
   }
 
-  get formState () {
-    return this.host[this.definition.property];
-  }
+  /**
+   *
+   * @param {string} fieldName
+   * @param {boolean} forgetValue
+   * @throws {Error} if field is not defined
+   */
+  removeFieldDefinition (fieldName, forgetValue) {
+    this._assertFieldDefined(fieldName);
 
-  set formState (formState) {
-    this.host[this.definition.property] = formState;
-  }
-
-  // todo: add a parameter that controls if we want to use the reset value or an empty one.
-  addFieldDefinition (fieldDefinition) {
-    this.definition.fields.push(fieldDefinition);
-    this._fieldsIndex[fieldDefinition.name] = fieldDefinition;
-
-    if (this.formState[fieldDefinition.name] == null) {
-      this.formState = {
-        ...this.formState,
-        [fieldDefinition.name]: {
-          value: fieldDefinition.reset,
-        },
-      };
+    if (this._fields.delete(fieldName)) {
+      this._errors.delete(fieldName);
+      if (forgetValue) {
+        this._values.delete(fieldName);
+      }
     }
-  }
-
-  // todo: add a parameter that controls whether the value should be dropped from the state or not
-  removeFieldDefinition (name) {
-    const index = this.definition.fields.findIndex((e) => e.name === name);
-    if (index !== -1) {
-      delete this.definition.fields[index];
-      this.definition.fields.length -= 1;
-      delete this._fieldsIndex[name];
-
-      // this.formState = {
-      //   ...Object.fromEntries(Object.entries(this.formState).filter(([k, _]) => k !== name)),
-      // };
-    }
-  }
-
-  state (state) {
-    this.formState = {
-      ...this.formState,
-      state,
-    };
-  }
-
-  idle () {
-    this.state('idle');
-  }
-
-  submitting () {
-    this.state('submitting');
   }
 
   reset () {
-    this.formState = {
-      state: 'idle',
-      ...Object.fromEntries(this._getFieldsDefinition().map((e) => [e.name, {
-        value: e.reset,
-      }])),
-    };
+    this._state = 'idle';
+    this._errors.clear();
+    this._values.clear();
+
+    this._fields.forEach((fd) => {
+      this._values.set(fd.name, fd.reset);
+    });
+
+    dispatchCustomEvent(this._host, 'change',
+      {
+        form: this._name,
+        date: this.getValues(),
+        changedFields: Array.from(this._fields.keys()),
+      },
+    );
+
+    this._host.requestUpdate();
   }
 
-  setFieldValue (field, value) {
-    this._assertFieldDefined(field);
+  /**
+   * @param {FormState} state
+   */
+  setState (state) {
+    this._state = state;
 
-    const currentValue = this.getFieldValue(field);
+    this._host.requestUpdate();
+  }
+
+  /**
+   * @return {FormState}
+   */
+  getState () {
+    return this._state;
+  }
+
+  /**
+   * @return {{[p: string]: any}}
+   */
+  getValues () {
+    return Object.fromEntries(this._values.entries());
+  }
+
+  /**
+   *
+   * @param {string} fieldName
+   * @return {any}
+   * @throws {Error} if field is not defined
+   */
+  getFieldValue (fieldName) {
+    this._assertFieldDefined(fieldName);
+
+    return this._values.get(fieldName);
+  }
+
+  /**
+   *
+   * @param {string} fieldName
+   * @param {any} value
+   * @throws {Error} if field is not defined
+   */
+  setFieldValue (fieldName, value) {
+    this._assertFieldDefined(fieldName);
+
+    const currentValue = this.getFieldValue(fieldName);
 
     if (currentValue !== value) {
-      this.formState = {
-        ...this.formState,
-        [field]: {
-          ...this.formState[field],
-          value,
-        },
-      };
+      this._values.set(fieldName, value);
 
-      dispatchCustomEvent(this.host, 'change',
+      dispatchCustomEvent(this._host, 'change',
         {
-          form: this.definition.name,
-          field,
-          value,
+          form: this._name,
+          date: this.getValues(),
+          changedFields: [fieldName],
         },
       );
+
+      this._host.requestUpdate();
     }
   }
 
-  getFieldValue (field) {
-    this._assertFieldDefined(field);
-
-    return this.formState[field].value;
+  /**
+   * @return {{[p: string]: string}}
+   */
+  getErrors () {
+    return Object.fromEntries(this._errors.entries());
   }
 
-  getFieldError (field) {
-    this._assertFieldDefined(field);
+  /**
+   * @param {string} fieldName
+   * @return {string}
+   * @throws {Error} if field is not defined
+   */
+  getFieldError (fieldName) {
+    this._assertFieldDefined(fieldName);
 
-    return this.formState[field].error;
+    return this._errors.get(fieldName);
   }
 
-  validate () {
-    const validation = this._getFieldsDefinition().map((fieldSpec) => {
-      const field = fieldSpec.name;
-      const element = this._getFieldElement(field);
-      const value = this.getFieldValue(fieldSpec.name);
-      const validation = this._validateField(value, fieldSpec, element);
+  /**
+   * @param {string} fieldName
+   * @param {string} error
+   * @throws {Error} if field is not defined
+   */
+  setFieldError (fieldName, error) {
+    this._assertFieldDefined(fieldName);
+
+    this._errors.set(fieldName, error);
+    const element = this._getFieldElement(fieldName);
+    if (element != null) {
+      element.errorMessage = this.getFieldDefinition(fieldName).customErrorMessages?.(error) ?? error;
+    }
+    this.focus(fieldName);
+  }
+
+  /**
+   * @param {boolean} report
+   * @return {FormValidation}
+   */
+  validate (report) {
+    /** @type {Array<FormFieldValidation>} */
+    const validation = this._getFieldsDefinition().map((fieldDefinition) => {
+      const fieldName = fieldDefinition.name;
+      const element = this._getFieldElement(fieldName);
+      const value = this.getFieldValue(fieldDefinition.name);
+      const validation = this._validateField(value, fieldDefinition, element, report);
       return {
-        field,
+        fieldName,
         element,
         value,
-        ...validation,
+        valid: validation.valid,
+        error: validation.code,
       };
     });
 
+    const valid = validation.every((e) => e.valid);
+
+    if (!valid) {
+      dispatchCustomEvent(this._host, 'formInvalid', {
+        form: this._name,
+        data: this.getValues(),
+      });
+    }
+
     return {
-      valid: validation.every((e) => e.valid),
+      valid,
       fields: validation,
     };
   }
 
-  isFieldValid (field) {
-    return this.getFieldError(field) == null;
+  /**
+   * @param {string} fieldName
+   * @return {boolean}
+   * @throws {Error} if field is not defined
+   */
+  isFieldValid (fieldName) {
+    return this.getFieldError(fieldName) == null;
   }
 
-  isFieldInvalid (field) {
-    return !this.isFieldValid(field);
+  /**
+   *
+   * @param {string} fieldName
+   * @return {boolean}
+   * @throws {Error} if field is not defined
+   */
+  isFieldInvalid (fieldName) {
+    return !this.isFieldValid(fieldName);
   }
 
   isValid () {
-    return this._getFieldsDefinition()
-      .every((fieldSpec) => this.isFieldValid(fieldSpec.name));
+    return this._getFieldsDefinition().every((fieldDefinition) => this.isFieldValid(fieldDefinition.name));
   }
 
   submit () {
-    const validation = this.validate();
-    console.log(validation.fields);
-
-    this.formState = {
-      ...this.formState,
-      ...Object.fromEntries(validation.fields.map((v) => [v.field, {
-        value: v.value,
-        error: v.code,
-      }])),
-    };
-    // console.log(JSON.stringify(this.formState, null, 2));
+    const validation = this.validate(true);
 
     if (validation.valid) {
-      const data = Object.fromEntries(this._getFieldsDefinition().map((formSpec) => [
-        formSpec.name,
-        this.getFieldValue(formSpec.name),
-      ]));
+      this._errors.clear();
+    }
+    else {
+      validation.fields.forEach((formFieldValidation) => {
+        if (formFieldValidation.valid) {
+          this._errors.delete(formFieldValidation.fieldName);
+        }
+        else {
+          this._errors.set(formFieldValidation.fieldName, formFieldValidation.error);
+        }
+      });
+    }
 
-      dispatchCustomEvent(this.host, 'submit', {
-        form: this.definition.name,
-        data: data,
+    // console.log(JSON.stringify(this.formState, null, 2));
+
+    this._host.requestUpdate();
+
+    if (validation.valid) {
+      dispatchCustomEvent(this._host, 'formSubmit', {
+        form: this._name,
+        data: this.getValues(),
       });
     }
     else {
-      this.host.updateComplete.then(() => {
-        const firstInvalidElement = this.host.shadowRoot.querySelector('[data-cc-error]');
-        firstInvalidElement.focus();
-      });
-
+      this._lazyFocus(() => this._host.shadowRoot.querySelector('[data-cc-error]'))
+        .catch((err) => {
+          console.warn(err);
+        });
     }
   }
 
-  error (field, error) {
-    this._assertFieldDefined(field);
+  /**
+   * @param fieldName
+   * @throws {Error} if field is not defined
+   */
+  focus (fieldName) {
+    this._assertFieldDefined(fieldName);
 
-    this.formState = {
-      ...this.formState,
-      [field]: {
-        ...this.formState[field],
-        error,
-      },
-    };
-    const element = this._getFieldElement(field);
-    if (element != null) {
-      element.errorMessage = this.getFieldDefinition(field).customErrorMessages?.(error) ?? error;
-    }
-    this.focus(field);
-  }
-
-  errors (errors) {
-    const err = Object.fromEntries(errors)
-      .map(([field, error]) => ({
-        field,
-        error,
-      }))
-      .filter((e) => e.error != null);
-
-    if (err.length === 0) {
-      return;
-    }
-
-    this.formState = {
-      ...this.formState,
-      ...Object.fromEntries(err.map((e) => [e.field, {
-        value: this.getFieldValue(e.field),
-        error: e.error,
-      }])),
-    };
-    this.focus(err[0].field);
-  }
-
-  focus (field) {
     // we need to wait the render to occur so that the element is not disabled anymore.
-    this.host.updateComplete.then(() => {
-      this._getFieldElement(field)?.focus();
-    });
-  }
-
-  getFieldDefinition (field) {
-    return this._fieldsIndex[field];
+    this._lazyFocus(() => this._getFieldElement(fieldName))
+      .catch((err) => {
+        console.warn(err);
+      });
   }
 
   hostUpdated () {
-    const fieldsWithoutElement = this.definition.fields.filter((f) => this._getFieldElement(f.name) == null).map((f) => f.name);
-    if (fieldsWithoutElement.length > 0) {
-      console.warn(`For the following fields, we could not find elements with the name attribute specified in definition [${fieldsWithoutElement.join(', ')}].`);
-    }
+    this._elements.clear();
+    this._fields.forEach((fieldDefinition) => {
+      const element = this._host.shadowRoot.querySelector(`[name=${fieldDefinition.name}]`);
+      if (element == null) {
+        console.warn(`We could not find the DOM element associated with the Field definition "${fieldDefinition.name}".`);
+      }
+      else {
+        this._elements.set(fieldDefinition.name, element);
+      }
+    });
   }
 
-  _getFieldElement (field) {
-    return this.host.shadowRoot.querySelector(`[name=${field}]`);
-  }
+  /* region Private methods */
 
-  _assertFieldDefined (field) {
-    if (!this._isFieldDefined(field)) {
-      throw new Error(`field "${field}" doesn't exist`);
-    }
-  }
-
-  _isFieldDefined (field) {
-    return this.getFieldDefinition(field) != null;
-  }
-
+  /**
+   * @return {Array<FieldDefinition>}
+   */
   _getFieldsDefinition () {
-    return this.definition.fields;
+    return Array.from(this._fields.values());
   }
 
-  _validateField (value, fieldSpec, element) {
-    if (element != null && element.validate != null) {
-      return element.validate(true);
+  /**
+   * @param {string} fieldName
+   * @return {HTMLElement}
+   */
+  _getFieldElement (fieldName) {
+    return this._elements.get(fieldName) || null;
+  }
+
+  _assertFieldDefined (fieldName) {
+    if (this.getFieldDefinition(fieldName) == null) {
+      throw new Error(`No definition for field "${fieldName}".`);
+    }
+  }
+
+  /**
+   *
+   * @param {any} value
+   * @param {FieldDefinition} fieldDefinition
+   * @param {HTMLElement|null} element
+   * @param {boolean} report
+   * @return {InvalidValidation|ValidValidation}
+   */
+  _validateField (value, fieldDefinition, element, report) {
+    if (element != null && element.validate != null && typeof element.validate === 'function') {
+      return element.validate(report);
     }
 
-    return new RequiredValidator(fieldSpec.required, fieldSpec.validator).validate(value);
+    return new RequiredValidator(fieldDefinition.required, fieldDefinition.validator).validate(value);
   }
+
+  /**
+   * @param {() => HTMLElement} elementToFocusProvider
+   * @return {Promise<void>}
+   */
+  async _lazyFocus (elementToFocusProvider) {
+    return this._host.updateComplete.then(() => {
+      const element = elementToFocusProvider();
+      if (element == null) {
+        throw new Error('Cannot find element to focus.');
+      }
+      element.focus();
+      // We reject promise when the element we tried to focus is not the active element
+      if (this._host.shadowRoot.activeElement !== element) {
+        throw new Error('Cannot focus element.');
+      }
+    });
+  }
+
+  /* endregion */
 }

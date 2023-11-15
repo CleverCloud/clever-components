@@ -8,7 +8,6 @@ import '../cc-input-number/cc-input-number.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-select/cc-select.js';
 import '../cc-toggle/cc-toggle.js';
-import { formError } from './directives/form-error-directive.js';
 import { formInput } from './directives/form-input-directive.js';
 import { formSubmit } from './directives/form-submit-directive.js';
 import { FormController } from './form-controller.js';
@@ -39,7 +38,10 @@ export class CcFtUncontrolled extends LitElement {
         type: Object,
         attribute: 'form-state',
       },
-      _expertMode: { type: Boolean, state: true },
+      _expertMode: {
+        type: Boolean,
+        state: true,
+      },
     };
   }
 
@@ -47,191 +49,190 @@ export class CcFtUncontrolled extends LitElement {
     super();
     this.myProp = 'hello';
 
-    const form = {
-      name: 'my-form',
-      property: 'formState',
-      fields: [
-        // {
-        //   name: 'phoneNumber',
-        //   type: 'string',
-        //   required: false,
-        //   reset: '',
-        //   // validator: new (class A {
-        //   //   getErrorMessage (code) {
-        //   //     if (code === 'notAPhoneNumber') {
-        //   //       return 'oulala!';
-        //   //     }
-        //   //   }
-        //   //
-        //   //   validate (value) {
-        //   //     if (!value.startsWith('06.')) {
-        //   //       return invalid('notAPhoneNumber');
-        //   //     }
-        //   //     return VALID;
-        //   //   }
-        //   // })(),
-        // },
-        {
-          name: 'email',
-          type: 'email',
-          required: true,
-          reset: '',
-          customErrorMessages (code) {
-            if (code === 'empty') {
-              return 'Entre un email !';
-            }
-            if (code === 'badEmail') {
-              return 'Entre un email valide !';
-            }
-            if (code === 'used') {
-              return 'Already used';
-            }
-          },
+    const fields = [
+      // {
+      //   name: 'phoneNumber',
+      //   type: 'string',
+      //   required: false,
+      //   reset: '',
+      //   // validator: new (class A {
+      //   //   getErrorMessage (code) {
+      //   //     if (code === 'notAPhoneNumber') {
+      //   //       return 'oulala!';
+      //   //     }
+      //   //   }
+      //   //
+      //   //   validate (value) {
+      //   //     if (!value.startsWith('06.')) {
+      //   //       return invalid('notAPhoneNumber');
+      //   //     }
+      //   //     return VALID;
+      //   //   }
+      //   // })(),
+      // },
+      {
+        name: 'email',
+        type: 'email',
+        required: true,
+        reset: '',
+        customErrorMessages (code) {
+          if (code === 'empty') {
+            return 'Entre un email !';
+          }
+          if (code === 'badEmail') {
+            return 'Entre un email valide !';
+          }
+          if (code === 'used') {
+            return 'Already used';
+          }
         },
-        // customErrorMessages: {
-        //   empty: 'Entre un email !',
-        //   badEmail: 'Entre un email valide !',
-        // },
-        // },
-        // {
-        //   name: 'custom',
-        //   type: 'string',
-        //   required: false,
-        //   reset: null,
-        // },
-        // {
-        //   name: 'checkbox',
-        //   type: 'array',
-        //   required: false,
-        //   reset: [],
-        // },
-        {
-          name: 'name',
-          type: 'string',
-          required: true,
-          reset: '',
-        },
-        // {
-        //   name: 'phoneNumber',
-        //   type: 'string',
-        //   required: false,
-        //   reset: '',
-        //   // validator: new (class A {
-        //   //   getErrorMessage (code) {
-        //   //     if (code === 'notAPhoneNumber') {
-        //   //       return 'oulala!';
-        //   //     }
-        //   //   }
-        //   //
-        //   //   validate (value) {
-        //   //     if (!value.startsWith('06.')) {
-        //   //       return invalid('notAPhoneNumber');
-        //   //     }
-        //   //     return VALID;
-        //   //   }
-        //   // })(),
-        // },
-        // {
-        //   name: 'email',
-        //   type: 'email',
-        //   required: true,
-        //   reset: '',
-        //   customErrorMessages (code) {
-        //     if (code === 'empty') {
-        //       return 'Entre un email !';
-        //     }
-        //     if (code === 'badEmail') {
-        //       return 'Entre un email valide !';
-        //     }
-        //     if (code === 'used') {
-        //       return 'Already used';
-        //     }
-        //   },
-        //   // customErrorMessages: {
-        //   //   empty: 'Entre un email !',
-        //   //   badEmail: 'Entre un email valide !',
-        //   // },
-        // },
-        // {
-        //   name: 'custom',
-        //   type: 'string',
-        //   required: false,
-        //   reset: null,
-        // },
-        // {
-        //   name: 'checkbox',
-        //   type: 'array',
-        //   required: false,
-        //   reset: [],
-        // }, {
-        //   name: 'name',
-        //   type: 'string',
-        //   required: false,
-        //   reset: '',
-        // },
-        //
-        // {
-        //   name: 'tags',
-        //   type: 'array',
-        //   required: false,
-        //   reset: [],
-        // },
-        // {
-        //   name: 'hero',
-        //   type: 'boolean',
-        //   required: false,
-        //   reset: false,
-        // },
-        // {
-        //   name: 'description',
-        //   type: 'string',
-        //   required: false,
-        //   reset: '',
-        // },
-        // {
-        //   name: 'age',
-        //   type: 'number',
-        //   required: false,
-        //   reset: NaN,
-        // },
-        // {
-        //   name: 'color',
-        //   type: 'string',
-        //   required: false,
-        //   reset: null,
-        // },
-        // {
-        //   name: 'gender',
-        //   type: 'string',
-        //   required: false,
-        //   reset: null,
-        // },
-        // {
-        //   name: 'food',
-        //   type: 'array',
-        //   required: false,
-        //   reset: [],
-        // },
-        // {
-        //   name: 'radio',
-        //   type: 'string',
-        //   required: false,
-        //   reset: null,
-        // },
-        //
-        // {
-        //   name: 'shoelace',
-        //   type: 'string',
-        //   required: false,
-        //   reset: null,
-        // },
-      ],
-    };
-    this._formController = new FormController(this, form);
+      },
+      // customErrorMessages: {
+      //   empty: 'Entre un email !',
+      //   badEmail: 'Entre un email valide !',
+      // },
+      // },
+      // {
+      //   name: 'custom',
+      //   type: 'string',
+      //   required: false,
+      //   reset: null,
+      // },
+      // {
+      //   name: 'checkbox',
+      //   type: 'array',
+      //   required: false,
+      //   reset: [],
+      // },
+      {
+        name: 'name',
+        type: 'string',
+        required: true,
+        reset: '',
+      },
+      // {
+      //   name: 'phoneNumber',
+      //   type: 'string',
+      //   required: false,
+      //   reset: '',
+      //   // validator: new (class A {
+      //   //   getErrorMessage (code) {
+      //   //     if (code === 'notAPhoneNumber') {
+      //   //       return 'oulala!';
+      //   //     }
+      //   //   }
+      //   //
+      //   //   validate (value) {
+      //   //     if (!value.startsWith('06.')) {
+      //   //       return invalid('notAPhoneNumber');
+      //   //     }
+      //   //     return VALID;
+      //   //   }
+      //   // })(),
+      // },
+      // {
+      //   name: 'email',
+      //   type: 'email',
+      //   required: true,
+      //   reset: '',
+      //   customErrorMessages (code) {
+      //     if (code === 'empty') {
+      //       return 'Entre un email !';
+      //     }
+      //     if (code === 'badEmail') {
+      //       return 'Entre un email valide !';
+      //     }
+      //     if (code === 'used') {
+      //       return 'Already used';
+      //     }
+      //   },
+      //   // customErrorMessages: {
+      //   //   empty: 'Entre un email !',
+      //   //   badEmail: 'Entre un email valide !',
+      //   // },
+      // },
+      // {
+      //   name: 'custom',
+      //   type: 'string',
+      //   required: false,
+      //   reset: null,
+      // },
+      // {
+      //   name: 'checkbox',
+      //   type: 'array',
+      //   required: false,
+      //   reset: [],
+      // }, {
+      //   name: 'name',
+      //   type: 'string',
+      //   required: false,
+      //   reset: '',
+      // },
+      //
+      // {
+      //   name: 'tags',
+      //   type: 'array',
+      //   required: false,
+      //   reset: [],
+      // },
+      // {
+      //   name: 'hero',
+      //   type: 'boolean',
+      //   required: false,
+      //   reset: false,
+      // },
+      // {
+      //   name: 'description',
+      //   type: 'string',
+      //   required: false,
+      //   reset: '',
+      // },
+      // {
+      //   name: 'age',
+      //   type: 'number',
+      //   required: false,
+      //   reset: NaN,
+      // },
+      // {
+      //   name: 'color',
+      //   type: 'string',
+      //   required: false,
+      //   reset: null,
+      // },
+      // {
+      //   name: 'gender',
+      //   type: 'string',
+      //   required: false,
+      //   reset: null,
+      // },
+      // {
+      //   name: 'food',
+      //   type: 'array',
+      //   required: false,
+      //   reset: [],
+      // },
+      // {
+      //   name: 'radio',
+      //   type: 'string',
+      //   required: false,
+      //   reset: null,
+      // },
+      //
+      // {
+      //   name: 'shoelace',
+      //   type: 'string',
+      //   required: false,
+      //   reset: null,
+      // },
+    ];
+    this._formController = new FormController(this, 'my-form', fields);
 
     this._expertMode = false;
   }
 
+  /**
+   * @return {FormController}
+   */
   get formController () {
     return this._formController;
   }
@@ -246,12 +247,13 @@ export class CcFtUncontrolled extends LitElement {
         type: 'string',
         required: true,
         reset: 'coucou',
-      });
+      },
+      'resetIfEmpty',
+      );
     }
     else {
-      this._formController.removeFieldDefinition('company');
+      this._formController.removeFieldDefinition('company', false);
     }
-
   }
 
   onCheckboxChange (e) {
@@ -267,7 +269,7 @@ export class CcFtUncontrolled extends LitElement {
   }
 
   render () {
-    console.log('rendering', this.formState);
+    console.log('rendering', this._formController.getState(), this._formController.getValues());
     const nameErrors = {
       empty: () => 'Veuillez saisir un nom',
     };
@@ -344,12 +346,12 @@ export class CcFtUncontrolled extends LitElement {
         <cc-input-text label="Email" type="email" ${formInput(this._formController, 'email')}>
         </cc-input-text>
 
-        <input type="checkbox" @change=${this._onFormExpertChange} .checked=${this._expertMode} />
-        
+        <input type="checkbox" @change=${this._onFormExpertChange} .checked=${this._expertMode}/>
+
         ${this._expertMode ? html`
           <cc-input-text label="Company" ${formInput(this._formController, 'company')}></cc-input-text>
         ` : ''}
-        
+
         <sl-select label="Shoelace"
                    ${formInput(this._formController, 'shoelace', 'value', 'sl-change')}
         >
@@ -378,8 +380,8 @@ export class CcFtUncontrolled extends LitElement {
           flex-direction: column;
           gap: 0.5em;
         }
-        
-        button:focus, input[type='checkbox']:focus,input[type='radio']:focus {
+
+        button:focus, input[type='checkbox']:focus, input[type='radio']:focus {
           outline: 2px dashed red;
         }
       `,

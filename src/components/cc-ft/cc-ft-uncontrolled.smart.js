@@ -11,8 +11,8 @@ defineSmartComponent({
     const api = getApi();
     const formController = component.formController;
 
-    onEvent('cc-ft-uncontrolled:submit', ({ data }) => {
-      formController.submitting();
+    onEvent('cc-ft-uncontrolled:formSubmit', ({ data }) => {
+      formController.setState('submitting');
 
       api.submitForm(data)
         .then(() => {
@@ -20,8 +20,8 @@ defineSmartComponent({
         })
         .catch((error) => {
           if (error.message === 'email-used') {
-            formController.idle();
-            formController.error('email', 'used');
+            formController.setState('idle');
+            formController.setFieldError('email', 'used');
           }
         });
     });

@@ -10,6 +10,7 @@ class FormSubmitDirective extends AsyncDirective {
   constructor (partInfo) {
     super(partInfo);
     this._element = null;
+    /** @type {FormController} */
     this._formController = null;
     this._field = null;
     this._eventHandlers = [];
@@ -37,7 +38,7 @@ class FormSubmitDirective extends AsyncDirective {
     if (this._element != null) {
       const tagName = this._element.tagName.toLowerCase();
 
-      const submitting = this._formController?.formState?.state === 'submitting';
+      const submitting = this._formController?.getState() === 'submitting';
 
       if (tagName === 'cc-button') {
         this._element.waiting = submitting;

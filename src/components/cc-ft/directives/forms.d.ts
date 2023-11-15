@@ -13,3 +13,18 @@ export interface Validator {
   validate: (value: any) => Validation;
   getErrorMessage: (code: string) => string;
 }
+
+export type FormState = 'idle' | 'submitting';
+
+export interface FormValidation {
+  valid: boolean;
+  fields: Array<FormFieldValidation>;
+}
+
+export interface FormFieldValidation {
+  fieldName: string;
+  element: HTMLElement;
+  value: any;
+  valid: boolean;
+  error: string;
+}

@@ -80,6 +80,11 @@ class ElementHandler {
     return this.element[this.prop];
   }
 
+  /**
+   *
+   * @param {FormController} ctrl
+   * @param field
+   */
   connect (ctrl, field) {
     this.eventHandlers = [];
 
@@ -119,6 +124,7 @@ class FormInputDirective extends AsyncDirective {
   constructor (partInfo) {
     super(partInfo);
     this._element = null;
+    /** @type {FormController} */
     this._formController = null;
     this._field = null;
     this._elementHandler = null;
@@ -150,12 +156,13 @@ class FormInputDirective extends AsyncDirective {
 
       // todo: maybe we should use setAttribute for those two below
       this._element.required = fieldDefinition.required;
-      // this._element.disabled = this._formController?.formState?.state === 'submitting';
+      this._element.disabled = this._formController?.getState() === 'submitting';
 
       this._elementHandler.setValue(this._formController?.getFieldValue(this._field));
       this._element.setCustomValidator?.(fieldDefinition.validator);
       this._element.setCustomErrorMessages?.(fieldDefinition.customErrorMessages);
       const fieldError = this._formController.getFieldError(this._field);
+      console.log('directive', field, 'error=', fieldError);
       if (fieldError != null) {
         this._element.setAttribute('data-cc-error', fieldError);
       }
