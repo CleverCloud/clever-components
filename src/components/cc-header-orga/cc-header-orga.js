@@ -4,12 +4,13 @@ import '../cc-notice/cc-notice.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import {
-  iconRemixCheckboxCircleFill as iconBadge,
+  iconRemixVerifiedBadgeFill as iconBadge,
   iconRemixPhoneFill as iconPhone,
 } from '../../assets/cc-remix.icons.js';
 
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
+import { linkStyles } from '../../templates/cc-link/cc-link.js';
 
 /**
  * @typedef {import('./cc-header-orga.types.js').HeaderOrgaState} HeaderOrgaState
@@ -17,6 +18,8 @@ import { skeletonStyles } from '../../styles/skeleton.js';
 
 /**
  * A component to display various info about an orga (name and enterprise status).
+ *
+ * @slot footer - An area displayed at the bottom of the header. Content should be short. The element you slot gets a default styling (background color, top border and padding).
  *
  * @cssdisplay block
  */
@@ -56,42 +59,50 @@ export class CcHeaderOrga extends LitElement {
 
     if (this.orga.state === 'loading') {
       return this._renderHeader({
-        skeleton: true,
         name: '??????????????????????????',
+        skeleton: true,
       });
     }
 
     if (this.orga.state === 'loaded') {
       return this._renderHeader({
-        skeleton: false,
         name: this.orga.name,
         avatar: this.orga.avatar,
         cleverEnterprise: this.orga.cleverEnterprise,
         emergencyNumber: this.orga.emergencyNumber,
+        skeleton: false,
       });
     }
   }
 
-  _renderHeader ({ skeleton, name, avatar = null, cleverEnterprise = false, emergencyNumber = null }) {
+  _renderHeader ({ name, avatar = null, cleverEnterprise = false, emergencyNumber = null, skeleton = false }) {
 
     return html`
-      <div class="wrapper ${classMap({ enterprise: cleverEnterprise })}">
-      ${this._renderAvatar(skeleton, avatar, name)}
-      <div class="details">
-        <div class="name ${classMap({ skeleton })}">${name}</div>
-        ${cleverEnterprise ? html`
-          <div class="spacer"></div>
-          <cc-badge weight="strong" intent="info" .icon=${iconBadge}>Clever Cloud Enterprise</cc-badge>
-        ` : ''}
-      </div>
-      ${(emergencyNumber != null) ? html`
-        <div class="hotline">
-          <div class="hotline_label">${i18n('cc-header-orga.hotline')}</div>
-          <a class="hotline_number" href="tel:${emergencyNumber}">
-            <cc-badge weight="outlined" intent="info" .icon=${iconPhone}>${emergencyNumber}</cc-badge>
-          </a>
+      <div class="wrapper">
+        <div class="header-body">
+          <p class="identity">
+            ${this._renderAvatar(skeleton, avatar, name)}
+            <span class="name ${classMap({ skeleton })}">${name}</span>
+          </p>
+          <div class="enterprise">
+            <p class="enterprise-row">
+              ${cleverEnterprise ? html`
+                <cc-icon .icon=${iconBadge}></cc-icon>
+                <span lang="en">Clever Cloud Enterprise</span>
+              ` : ''}
+            </p>
+            ${(emergencyNumber != null) ? html`
+              <p class="enterprise-row">
+                <cc-icon .icon=${iconPhone}>${emergencyNumber}</cc-icon>
+                <span>
+                  ${i18n('cc-header-orga.hotline')}
+                  <a class="cc-link" href="tel:${emergencyNumber}">${emergencyNumber}</a>
+                </span>
+              </p>
+              ` : ''}
+          </div>
         </div>
-      ` : ''}
+        <slot name="footer"></slot>
       </div>
     `;
   }
@@ -118,11 +129,16 @@ export class CcHeaderOrga extends LitElement {
 
   static get styles () {
     return [
+      linkStyles,
       skeletonStyles,
       // language=CSS
       css`
         :host {
           display: block;
+        }
+
+        p {
+          margin: 0;
         }
         
         cc-notice {
@@ -130,25 +146,32 @@ export class CcHeaderOrga extends LitElement {
         }
 
         .wrapper {
-          display: flex;
           overflow: hidden;
-          flex-wrap: wrap;
-          padding: 1em;
           border: 1px solid var(--cc-color-border-neutral, #aaa);
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-default, 0.25em);
+        }
+
+        .header-body {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: space-between;
+          padding: 1em;
           gap: 1em;
         }
-      
-        .wrapper.enterprise {
-          border-width: 2px;
-          border-color: var(--cc-color-bg-primary);
+
+        .identity {
+          display: flex;
+          align-items: center;
+          gap: 1em;
         }
 
         .logo,
         .initials {
           width: 3.25em;
           height: 3.25em;
+          flex: 0 0 auto;
           border-radius: var(--cc-border-radius-default, 0.25em);
         }
 
@@ -163,61 +186,32 @@ export class CcHeaderOrga extends LitElement {
           font-size: 0.85em;
         }
 
-        .details,
-        .hotline {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .details {
-          flex: 100 1 max-content;
-          justify-content: center;
-          row-gap: 0.2em;
-        }
-
-        .hotline {
-          flex: 1 1 auto;
-          justify-content: space-between;
-        }
-
         .name {
-          font-size: 1.1em;
+          font-size: 1.3em;
           font-weight: bold;
         }
 
-        .hotline_number {
-          border-radius: 1em;
-        }
-
-        .hotline_number:focus,
-        .hotline_number:active {
-          outline: 0;
-        }
-
-        /* We can do this because we set a visible focus state */
-
-        .hotline_number::-moz-focus-inner {
-          border: 0;
-        }
-
-        .hotline_number:focus {
-          outline: var(--cc-focus-outline, #000 solid 2px);
-          outline-offset: var(--cc-focus-outline-offset, 2px);
-        }
-
-        .hotline_number:hover {
-          box-shadow: 0 1px 3px rgb(0 0 0 / 40%);
-        }
-
-        .hotline_number:active {
-          box-shadow: none;
-        }
-
-        .hotline_number cc-badge {
-          /* Prevent space below badge because of text lines */
+        .enterprise {
           display: flex;
-          text-decoration: underline;
+          flex-direction: column;
+          gap: 0.5em;
+        }
+
+        .enterprise-row {
+          display: flex;
+          gap: 0.5em;
+        }
+
+        .enterprise-row cc-icon {
+          --cc-icon-color: var(--cc-color-text-primary-highlight);
+
+          flex: 0 0 auto;
+        }
+
+        ::slotted([slot='footer']) {
+          padding: 0.5em 1em;
+          border-top: solid 1px var(--cc-color-border-neutral-weak);
+          background-color: var(--cc-color-bg-neutral);
         }
 
         /* SKELETON */
