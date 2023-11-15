@@ -67,6 +67,7 @@ export class CcHeaderOrga extends LitElement {
   _renderHeader ({ skeleton, name, avatar = null, cleverEnterprise = false, emergencyNumber = null }) {
 
     const initials = skeleton ? '' : name
+      .trim()
       .split(' ')
       .slice(0, 2)
       .map((a) => a[0].toUpperCase())
