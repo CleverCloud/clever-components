@@ -28,3 +28,9 @@ export interface FormFieldValidation {
   valid: boolean;
   error: string;
 }
+
+export interface InputIO {
+  valueProperty: string;
+  bindEventName: string;
+  submitEventName?: string;
+}

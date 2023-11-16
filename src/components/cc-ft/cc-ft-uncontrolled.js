@@ -340,21 +340,17 @@ export class CcFtUncontrolled extends LitElement {
 
     return html`
       <form>
-        <cc-input-text label="Name" ${formInput(this._formController, 'name')}>
-        </cc-input-text>
+        <cc-input-text label="Name" ${formInput(this._formController, 'name')}></cc-input-text>
+        
+        <cc-input-text label="Email" type="email" ${formInput(this._formController, 'email')}></cc-input-text>
 
-        <cc-input-text label="Email" type="email" ${formInput(this._formController, 'email')}>
-        </cc-input-text>
-
-        <input type="checkbox" @change=${this._onFormExpertChange} .checked=${this._expertMode}/>
+        <input type="checkbox" @change=${this._onFormExpertChange} .checked=${this._expertMode} />
 
         ${this._expertMode ? html`
           <cc-input-text label="Company" ${formInput(this._formController, 'company')}></cc-input-text>
         ` : ''}
 
-        <sl-select label="Shoelace"
-                   ${formInput(this._formController, 'shoelace', 'value', 'sl-change')}
-        >
+        <sl-select label="Shoelace" ${formInput(this._formController, 'shoelace', 'value', 'sl-change')}>
           <sl-option value="shoelace1">shoelace1</sl-option>
           <sl-option value="shoelace2">shoelace2</sl-option>
           <sl-option value="shoelace3">shoelace3</sl-option>

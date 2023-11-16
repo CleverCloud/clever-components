@@ -95,6 +95,8 @@ export class FormController {
       this._values.set(fd.name, fd.reset);
     });
 
+    console.log(this.getValues());
+
     dispatchCustomEvent(this._host, 'change',
       {
         form: this._name,
@@ -193,10 +195,13 @@ export class FormController {
   setFieldError (fieldName, error) {
     this._assertFieldDefined(fieldName);
 
+    console.log('set field error', error);
+
     this._errors.set(fieldName, error);
     const element = this._getFieldElement(fieldName);
     if (element != null) {
       element.errorMessage = this.getFieldDefinition(fieldName).customErrorMessages?.(error) ?? error;
+      console.log('error message', element.errorMessage);
     }
     this.focus(fieldName);
   }
