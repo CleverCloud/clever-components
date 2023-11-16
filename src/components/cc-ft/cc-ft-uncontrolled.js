@@ -8,9 +8,9 @@ import '../cc-input-number/cc-input-number.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-select/cc-select.js';
 import '../cc-toggle/cc-toggle.js';
-import { formInput } from './directives/form-input-directive.js';
-import { formSubmit } from './directives/form-submit-directive.js';
-import { FormController } from './form-controller.js';
+import { FormController } from './form/form-controller.js';
+import { formInput } from './form/form-input-directive.js';
+import { formSubmit } from './form/form-submit-directive.js';
 import { invalid, VALID } from './validation/validation.js';
 
 /**
@@ -341,10 +341,10 @@ export class CcFtUncontrolled extends LitElement {
     return html`
       <form>
         <cc-input-text label="Name" ${formInput(this._formController, 'name')}></cc-input-text>
-        
+
         <cc-input-text label="Email" type="email" ${formInput(this._formController, 'email')}></cc-input-text>
 
-        <input type="checkbox" @change=${this._onFormExpertChange} .checked=${this._expertMode} />
+        <input type="checkbox" @change=${this._onFormExpertChange} .checked=${this._expertMode}/>
 
         ${this._expertMode ? html`
           <cc-input-text label="Company" ${formInput(this._formController, 'company')}></cc-input-text>

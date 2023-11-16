@@ -4,6 +4,11 @@ import { EventHandler } from '../../../lib/events.js';
 import { objectEquals } from '../../../lib/utils.js';
 
 /**
+ * @typedef {import('./form.types.js').InputIO} InputIO
+ * @typedef {import('./form.types.js').FieldDefinition} FieldDefinition
+ */
+
+/**
  * Lit directive helping in synchronizing an input element with a `FormController`.
  *
  * * two-way bindings (element <-> FormController).
@@ -227,7 +232,7 @@ class InputElementHandler {
    * @param {HTMLElement} element
    * @param {FormController} formController
    * @param {string} fieldName
-   * @param {InputIO} inputIO
+   * @param {Partial<InputIO>} inputIO
    * @return {boolean} Whether this instance is valid for handling the given parameters.
    */
   handles (element, formController, fieldName, inputIO) {

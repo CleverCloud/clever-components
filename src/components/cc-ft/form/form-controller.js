@@ -1,16 +1,20 @@
-import { dispatchCustomEvent } from '../../lib/events.js';
-import { RequiredValidator } from './validation/validation.js';
+import { dispatchCustomEvent } from '../../../lib/events.js';
+import { RequiredValidator } from '../validation/validation.js';
 
 /**
- * @typedef {import('./directives/forms.js').FormValidation} FormValidation
+ * @typedef {import('./form.types.js').FormValidation} FormValidation
+ * @typedef {import('./form.types.js').FieldDefinition} FieldDefinition
+ * @typedef {import('./form.types.js').FormState} FormState
+ * @typedef {import('./form.types.js').FormValidation} FormValidation
+ * @typedef {import('../validation/validation.types.js').Validation} Validation
  */
 
 export class FormController {
   /**
    *
    * @param host
-   * @param name
-   * @param fieldDefinitions
+   * @param {string} name
+   * @param {Array<FieldDefinition>} fieldDefinitions
    */
   constructor (host, name, fieldDefinitions) {
     this._host = host;
@@ -37,7 +41,10 @@ export class FormController {
     /** @type {Map<any, HTMLElement>} */
     this._elements = new Map();
 
-    this.reset();
+    // reset
+    this._fields.forEach((fd) => {
+      this._values.set(fd.name, fd.reset);
+    });
   }
 
   /**
@@ -260,6 +267,9 @@ export class FormController {
     return !this.isFieldValid(fieldName);
   }
 
+  /**
+   * @return {boolean}
+   */
   isValid () {
     return this._getFieldsDefinition().every((fieldDefinition) => this.isFieldValid(fieldDefinition.name));
   }
@@ -355,7 +365,7 @@ export class FormController {
    * @param {FieldDefinition} fieldDefinition
    * @param {HTMLElement|null} element
    * @param {boolean} report
-   * @return {InvalidValidation|ValidValidation}
+   * @return {Validation}
    */
   _validateField (value, fieldDefinition, element, report) {
     if (element != null && element.validate != null && typeof element.validate === 'function') {

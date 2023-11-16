@@ -8,3 +8,8 @@ export interface InvalidValidation {
   valid: false;
   code: string;
 }
+
+export interface Validator {
+  validate: (value: any) => Validation;
+  getErrorMessage: (code: string) => string;
+}

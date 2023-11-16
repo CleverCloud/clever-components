@@ -1,6 +1,12 @@
 import { i18n } from '../../../lib/i18n.js';
 
 /**
+ * @typedef {import('./validation.js').ValidValidation} ValidValidation
+ * @typedef {import('./validation.js').InvalidValidation} InvalidValidation
+ * @typedef {import('./validation.js').Validator} Validator
+ */
+
+/**
  * @type {ValidValidation}
  */
 export const VALID = { valid: true };
@@ -32,6 +38,9 @@ const isEmpty = (value) => {
   return false;
 };
 
+/**
+ * @implements Validator
+ */
 export class RequiredValidator {
   constructor (required, nextValidator) {
     this._required = required;
@@ -63,6 +72,9 @@ export class RequiredValidator {
   }
 }
 
+/**
+ * @implements Validator
+ */
 export class NumberValidator {
   /**
    * @param {number} [min]
@@ -132,6 +144,9 @@ export class NumberValidator {
   }
 }
 
+/**
+ * @implements Validator
+ */
 export class EmailValidator {
 
   /**

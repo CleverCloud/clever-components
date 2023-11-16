@@ -1,4 +1,4 @@
-import {Validation} from "../validation/validation";
+import { Validator } from "../validation/validation.types.js";
 
 export interface FieldDefinition {
   name: string;
@@ -7,11 +7,6 @@ export interface FieldDefinition {
   reset: any;
   validator: Validator;
   customErrorMessages: (code: string) => string;
-}
-
-export interface Validator {
-  validate: (value: any) => Validation;
-  getErrorMessage: (code: string) => string;
 }
 
 export type FormState = 'idle' | 'submitting';
