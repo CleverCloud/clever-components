@@ -2,7 +2,6 @@ import { dispatchCustomEvent } from '../../../lib/events.js';
 import { RequiredValidator } from '../validation/validation.js';
 
 /**
- * @typedef {import('./form.types.js').FormValidation} FormValidation
  * @typedef {import('./form.types.js').FieldDefinition} FieldDefinition
  * @typedef {import('./form.types.js').FormState} FormState
  * @typedef {import('./form.types.js').FormValidation} FormValidation
@@ -204,7 +203,7 @@ export class FormController {
     this._assertFieldDefined(fieldName);
 
     this._errors.set(fieldName, error);
-    const element = this._getFieldElement(fieldName);
+    const element = this.getFieldElement(fieldName);
     if (element != null) {
       element.errorMessage = this.getFieldDefinition(fieldName).customErrorMessages?.(error) ?? error;
     }
@@ -216,34 +215,46 @@ export class FormController {
    * @return {FormValidation}
    */
   validate (report) {
-    /** @type {Array<FormFieldValidation>} */
-    const validation = this._getFieldsDefinition().map((fieldDefinition) => {
+    const validations = this._getFieldDefinitions().map((fieldDefinition) => {
       const fieldName = fieldDefinition.name;
-      const element = this._getFieldElement(fieldName);
+      const element = this.getFieldElement(fieldName);
       const value = this.getFieldValue(fieldDefinition.name);
       const validation = this._validateField(value, fieldDefinition, element, report);
       return {
         fieldName,
-        element,
-        value,
-        valid: validation.valid,
-        error: validation.code,
+        validation,
       };
     });
 
-    const valid = validation.every((e) => e.valid);
+    const valid = validations.every((e) => e.validation.valid);
 
-    if (!valid) {
-      dispatchCustomEvent(this._host, 'formInvalid', {
-        form: this._name,
-        data: this.getValues(),
-      });
+    if (valid) {
+      this._errors.clear();
+      // todo: should we dispatch an event when valid ?
+
+      return { valid: true };
     }
 
-    return {
-      valid,
-      fields: validation,
+    validations.forEach((formFieldValidation) => {
+      if (formFieldValidation.validation.valid) {
+        this._errors.delete(formFieldValidation.fieldName);
+      }
+      else {
+        this._errors.set(formFieldValidation.fieldName, formFieldValidation.validation.code);
+      }
+    });
+
+    const formValidation = {
+      valid: false,
+      validation: Object.fromEntries(validations.map((v) => [v.fieldName, v.validation])),
     };
+
+    dispatchCustomEvent(this._host, 'formInvalid', {
+      form: this._name,
+      validation: formValidation,
+    });
+
+    return formValidation;
   }
 
   /**
@@ -269,28 +280,13 @@ export class FormController {
    * @return {boolean}
    */
   isValid () {
-    return this._getFieldsDefinition().every((fieldDefinition) => this.isFieldValid(fieldDefinition.name));
+    return this._getFieldDefinitions().every((fieldDefinition) => this.isFieldValid(fieldDefinition.name));
   }
 
   submit () {
     const validation = this.validate(true);
 
-    if (validation.valid) {
-      this._errors.clear();
-    }
-    else {
-      validation.fields.forEach((formFieldValidation) => {
-        if (formFieldValidation.valid) {
-          this._errors.delete(formFieldValidation.fieldName);
-        }
-        else {
-          this._errors.set(formFieldValidation.fieldName, formFieldValidation.error);
-        }
-      });
-    }
-
-    // console.log(JSON.stringify(this.formState, null, 2));
-
+    // todo: position of request update ? (maybe after dispatch event but before lazyFocus)
     this._host.requestUpdate();
 
     if (validation.valid) {
@@ -300,10 +296,7 @@ export class FormController {
       });
     }
     else {
-      this._lazyFocus(() => this._formElement.querySelector('[data-cc-error]'))
-        .catch((err) => {
-          console.warn(err);
-        });
+      this._lazyFocus(() => this._formElement?.querySelector('[data-cc-error]')).then();
     }
   }
 
@@ -315,10 +308,7 @@ export class FormController {
     this._assertFieldDefined(fieldName);
 
     // we need to wait the render to occur so that the element is not disabled anymore.
-    this._lazyFocus(() => this._getFieldElement(fieldName))
-      .catch((err) => {
-        console.warn(err);
-      });
+    this._lazyFocus(() => this.getFieldElement(fieldName)).then();
   }
 
   /**
@@ -341,17 +331,17 @@ export class FormController {
     this._elements.set(fieldName, element);
   }
 
+  /**
+   * @param {string} fieldName
+   * @return {HTMLElement}
+   */
+  getFieldElement (fieldName) {
+    return this._elements.get(fieldName) || null;
+  }
+
   hostUpdate () {
     this._elements.clear();
     this._formElement = null;
-  }
-
-  hostUpdated () {
-    this._fields.forEach((fieldDefinition) => {
-      if (!this._elements.has(fieldDefinition.name)) {
-        console.warn(`We could not find the DOM element associated with the Field definition "${fieldDefinition.name}".`);
-      }
-    });
   }
 
   /* region Private methods */
@@ -359,16 +349,8 @@ export class FormController {
   /**
    * @return {Array<FieldDefinition>}
    */
-  _getFieldsDefinition () {
+  _getFieldDefinitions () {
     return Array.from(this._fields.values());
-  }
-
-  /**
-   * @param {string} fieldName
-   * @return {HTMLElement}
-   */
-  _getFieldElement (fieldName) {
-    return this._elements.get(fieldName) || null;
   }
 
   _assertFieldDefined (fieldName) {
@@ -395,19 +377,18 @@ export class FormController {
 
   /**
    * @param {() => HTMLElement} elementToFocusProvider
-   * @return {Promise<void>}
+   * @return {Promise<boolean>}
    */
   async _lazyFocus (elementToFocusProvider) {
     return this._host.updateComplete.then(() => {
       const element = elementToFocusProvider();
       if (element == null) {
-        throw new Error('Cannot find element to focus.');
+        return false;
       }
+
       element.focus();
-      // We reject promise when the element we tried to focus is not the active element
-      if (this._host.shadowRoot.activeElement !== element) {
-        throw new Error('Cannot focus element.');
-      }
+
+      return this._host.shadowRoot.activeElement === element;
     });
   }
 

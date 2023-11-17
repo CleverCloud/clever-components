@@ -1,4 +1,4 @@
-import { Validator } from "../validation/validation.types.js";
+import { Validator, Validation } from "../validation/validation.types.js";
 
 export interface FieldDefinition {
   name: string;
@@ -11,17 +11,15 @@ export interface FieldDefinition {
 
 export type FormState = 'idle' | 'submitting';
 
-export interface FormValidation {
-  valid: boolean;
-  fields: Array<FormFieldValidation>;
+export type FormValidation = FormValidationValid | FormValidationInvalid;
+
+export interface FormValidationValid {
+  valid: true;
 }
 
-export interface FormFieldValidation {
-  fieldName: string;
-  element: HTMLElement;
-  value: any;
-  valid: boolean;
-  error: string;
+export interface FormValidationInvalid {
+  valid: false;
+  validation: {[fieldName: string]: Validation};
 }
 
 export interface InputIO {
