@@ -45,8 +45,6 @@ class FormInputDirective extends AsyncDirective {
    * @param {Partial<InputIO>} [customInputIO]
    */
   update (part, [formController, fieldName, customInputIO]) {
-    console.log('input directive', part.element);
-
     if (
       this._elementHandler == null
       || !this._elementHandler.handles(part.element, formController, fieldName, customInputIO)
@@ -109,6 +107,10 @@ const DEFAULT_INPUT_IOS = {
     bindEventName: 'change',
     valueProperty: 'checked',
   },
+  'input:radio': {
+    bindEventName: 'change',
+    valueProperty: 'checked',
+  },
   select: {
     bindEventName: 'change',
     valueProperty: 'value',
@@ -164,19 +166,13 @@ function createElementHandler (element, formController, fieldName, customInputIO
   }
 
   /** @type {InputIO} */
-  const defaultInputIO = getDefaultInputIO(element, customInputIO?.bindEventName);
+  const defaultInputIO = getDefaultInputIO(element, customInputIO?.valueProperty);
 
   /** @type {InputIO} */
   const mergedInputIO = {
     ...defaultInputIO,
     ...customInputIO,
   };
-
-  console.log(fieldName, {
-    defaultInputIO,
-    inputIO: customInputIO,
-    mergedInputIO,
-  });
 
   return new InputElementHandler(element, formController, fieldName, mergedInputIO);
 }
