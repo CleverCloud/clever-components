@@ -212,6 +212,8 @@ class InputElementHandler {
     this._element.setCustomErrorMessages?.(this._fieldDefinition.customErrorMessages);
 
     this._setElementValue();
+
+    this._formController.registerElement(this._fieldDefinition.name, this._element);
   }
 
   connect () {

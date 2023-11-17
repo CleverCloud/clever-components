@@ -41,6 +41,9 @@ export class FormController {
     /** @type {Map<any, HTMLElement>} */
     this._elements = new Map();
 
+    /** @type {null|HTMLElement} */
+    this._formElement = null;
+
     // reset
     this._fields.forEach((fd) => {
       this._values.set(fd.name, fd.reset);
@@ -297,7 +300,7 @@ export class FormController {
       });
     }
     else {
-      this._lazyFocus(() => this._host.shadowRoot.querySelector('[data-cc-error]'))
+      this._lazyFocus(() => this._formElement.querySelector('[data-cc-error]'))
         .catch((err) => {
           console.warn(err);
         });
@@ -318,15 +321,35 @@ export class FormController {
       });
   }
 
-  hostUpdated () {
+  /**
+   * @param {string} fieldName
+   * @param {HTMLElement} element
+   */
+  registerElement (fieldName, element) {
+    // todo: or maybe just warn
+    this._assertFieldDefined(fieldName);
+
+    const formElement = element.closest('form');
+    if (formElement == null) {
+      throw new Error(`Element for field "${fieldName}" must be inside a <form> element.`);
+    }
+    if (this._formElement != null && this._formElement !== formElement) {
+      throw new Error(`Element for field "${fieldName}" must be inside the same <form> element as the other.`);
+    }
+
+    this._formElement = formElement;
+    this._elements.set(fieldName, element);
+  }
+
+  hostUpdate () {
     this._elements.clear();
+    this._formElement = null;
+  }
+
+  hostUpdated () {
     this._fields.forEach((fieldDefinition) => {
-      const element = this._host.shadowRoot.querySelector(`[name=${fieldDefinition.name}]`);
-      if (element == null) {
+      if (!this._elements.has(fieldDefinition.name)) {
         console.warn(`We could not find the DOM element associated with the Field definition "${fieldDefinition.name}".`);
-      }
-      else {
-        this._elements.set(fieldDefinition.name, element);
       }
     });
   }
