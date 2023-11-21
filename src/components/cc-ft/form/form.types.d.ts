@@ -19,7 +19,7 @@ export interface FormValidationValid {
 
 export interface FormValidationInvalid {
   valid: false;
-  validation: {[fieldName: string]: Validation};
+  fields: {[fieldName: string]: Validation};
 }
 
 export interface InputIO {

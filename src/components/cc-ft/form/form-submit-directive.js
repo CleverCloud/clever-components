@@ -101,7 +101,10 @@ class ButtonElementHandler {
     /** @type {(e: HTMLElement, formController: FormController) => void} */
     this._refreshElementCallback = refreshElementCallback;
 
-    const submit = () => this._formController.submit();
+    const submit = (e) => {
+      e.preventDefault();
+      this._formController.submit();
+    };
     /** @type {Array<EventHandler>} */
     this._eventHandlers = submitEvents.map((e) => {
       return new EventHandler(this._element, e, submit);

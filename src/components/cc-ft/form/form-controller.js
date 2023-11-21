@@ -167,8 +167,7 @@ export class FormController {
       dispatchCustomEvent(this._host, 'change',
         {
           form: this._name,
-          date: this.getValues(),
-          changedFields: [fieldName],
+          data: this.getValues(),
         },
       );
 
@@ -208,6 +207,8 @@ export class FormController {
       element.errorMessage = this.getFieldDefinition(fieldName).customErrorMessages?.(error) ?? error;
     }
     this.focus(fieldName);
+
+    // todo : should we this._host.requestUpdate();?
   }
 
   /**
@@ -226,7 +227,7 @@ export class FormController {
       };
     });
 
-    const valid = validations.every((e) => e.validation.valid);
+    const valid = validations.every((e) => e.validation.valid === true);
 
     if (valid) {
       this._errors.clear();
@@ -246,7 +247,7 @@ export class FormController {
 
     const formValidation = {
       valid: false,
-      validation: Object.fromEntries(validations.map((v) => [v.fieldName, v.validation])),
+      fields: Object.fromEntries(validations.map((v) => [v.fieldName, v.validation])),
     };
 
     dispatchCustomEvent(this._host, 'formInvalid', {
@@ -258,6 +259,7 @@ export class FormController {
   }
 
   /**
+   * // todo: tell that this should be used after a call to validate() or submit()
    * @param {string} fieldName
    * @return {boolean}
    * @throws {Error} if field is not defined
@@ -267,7 +269,7 @@ export class FormController {
   }
 
   /**
-   *
+   * // todo: tell that this should be used after a call to validate() or submit()
    * @param {string} fieldName
    * @return {boolean}
    * @throws {Error} if field is not defined
@@ -277,6 +279,7 @@ export class FormController {
   }
 
   /**
+   * // todo: tell that this should be used after a call to validate() or submit()
    * @return {boolean}
    */
   isValid () {
@@ -316,15 +319,14 @@ export class FormController {
    * @param {HTMLElement} element
    */
   registerElement (fieldName, element) {
-    // todo: or maybe just warn
     this._assertFieldDefined(fieldName);
 
     const formElement = element.closest('form');
     if (formElement == null) {
-      throw new Error(`Element for field "${fieldName}" must be inside a <form> element.`);
+      throw new Error(`Element associated to form field "${fieldName}" must be inside a <form> element.`);
     }
     if (this._formElement != null && this._formElement !== formElement) {
-      throw new Error(`Element for field "${fieldName}" must be inside the same <form> element as the other.`);
+      throw new Error(`Element associated to form field "${fieldName}" cannot be in a different <form> element.`);
     }
 
     this._formElement = formElement;
