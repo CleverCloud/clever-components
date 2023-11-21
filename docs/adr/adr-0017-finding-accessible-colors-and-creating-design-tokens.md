@@ -1,5 +1,5 @@
 ---
-kind: '📌 Docs/Architecture Decision Records'
+kind: '📌 Architecture Decision Records'
 ---
 
 # ADR 0017: Finding accessible colors and creating Design Tokens

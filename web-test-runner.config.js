@@ -1,10 +1,21 @@
 import json from '@rollup/plugin-json';
 import { rollupAdapter } from '@web/dev-server-rollup';
+import { chromeLauncher } from '@web/test-runner-chrome';
 import { cemAnalyzerPlugin } from './wds/cem-analyzer-plugin.js';
 import { commonjsPluginWithConfig, esbuildBundlePluginWithConfig } from './wds/wds-common.js';
 
 export default {
   files: ['test/**/*.test.*', 'src/components/**/*.test.*'],
+  browsers: [
+    chromeLauncher({
+      async createPage ({ context }) {
+        const page = await context.newPage();
+        // We need that for unit tests working with dates and timezones
+        page.emulateTimezone('Europe/Paris');
+        return page;
+      },
+    }),
+  ],
   nodeResolve: true,
   mimeTypes: {
     '**/*.json': 'js',

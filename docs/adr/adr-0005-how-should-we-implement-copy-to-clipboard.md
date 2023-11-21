@@ -1,6 +1,7 @@
 ---
-kind: '📌 Docs/Architecture Decision Records'
+kind: '📌 Architecture Decision Records'
 ---
+
 # ADR 0005: How should we implement copy to clipboard?
 
 🗓️ 2019-10-05 · ✍️ Hubert Sablonnière

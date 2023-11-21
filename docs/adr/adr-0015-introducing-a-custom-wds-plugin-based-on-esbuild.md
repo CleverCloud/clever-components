@@ -1,6 +1,7 @@
 ---
-kind: '📌 Docs/Architecture Decision Records'
+kind: '📌 Architecture Decision Records'
 ---
+
 # ADR 0015: Introducing a custom WDS plugin based on esbuild
 
 🗓️ 2021-05-21 · ✍️ Hubert Sablonnière

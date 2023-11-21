@@ -1,6 +1,7 @@
 ---
-kind: '📌 Docs/Architecture Decision Records'
+kind: '📌 Architecture Decision Records'
 ---
+
 # ADR 0022: Implementing a new icon system
 
 🗓️ 2023-01-20 · ✍️ Robert Tran, Florian Sanders

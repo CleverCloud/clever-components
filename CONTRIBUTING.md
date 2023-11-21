@@ -1,10 +1,9 @@
 ---
-kind: 📌 Docs
+kind: '👋 Contributing'
+title: 'Contribute'
 ---
-# How to contribute?
 
-Here are some details on the different npm tasks we use.
-You'll also want to read the details about Web Components contributions in [`web-components-guidelines.stories.mdx`](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%93%8C-docs-web-components-guidelines-at-clever-cloud--page).
+# How to contribute?
 
 ## We use ESLint
 

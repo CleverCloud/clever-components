@@ -1,8 +1,17 @@
 ---
-kind: 🏠 Home
-title: Changelog
+kind: '🏡 Getting Started'
+title: 'Changelog'
 ---
-# Clever Components changelog
+
+# Changelog
+
+## [11.2.1](https://github.com/CleverCloud/clever-components/compare/11.2.0...11.2.1) (2023-10-19)
+
+
+### Bug Fixes
+
+* **cc-article-list:** fix broken XML with the new website ([0319784](https://github.com/CleverCloud/clever-components/commit/03197842097c25a4226184ae99469a9ab1bd76fe)), closes [#867](https://github.com/CleverCloud/clever-components/issues/867)
+* **cc-icon:** improve SVG aria attributes behavior ([e8645f7](https://github.com/CleverCloud/clever-components/commit/e8645f7734b0c34269ddb5f8f30d8f2c590d204d)), closes [#770](https://github.com/CleverCloud/clever-components/issues/770)
 
 ## [11.2.0](https://github.com/CleverCloud/clever-components/compare/11.1.0...11.2.0) (2023-10-11)
 

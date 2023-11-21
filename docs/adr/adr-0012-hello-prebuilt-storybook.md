@@ -1,6 +1,7 @@
 ---
-kind: '📌 Docs/Architecture Decision Records'
+kind: '📌 Architecture Decision Records'
 ---
+
 # ADR 0012: Hello prebuilt Storybook
 
 🗓️ 2020-12-22 · ✍️ Hubert Sablonnière

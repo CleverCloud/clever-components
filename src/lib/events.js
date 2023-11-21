@@ -13,3 +13,40 @@ export function dispatchCustomEvent (node, eventNameOrSuffix, detail) {
   node.dispatchEvent(event);
   return event;
 }
+
+/**
+ * This a utility handler that will help adding and removing an event listener from a DOM Element.
+ */
+export class EventHandler {
+  /**
+   * @param {Window | Document | HTMLElement} element The element to which the event listener should be attached to.
+   * @param {string} event The name of the event to listen to.
+   * @param {(event: Event) => void} handler The function to execute when event occurs.
+   */
+  constructor (element, event, handler) {
+    this._element = element;
+    this._event = event;
+    this._handler = handler;
+    this._connected = false;
+  }
+
+  /**
+   * Adds the event listener
+   */
+  connect () {
+    if (!this._connected) {
+      this._element.addEventListener(this._event, this._handler);
+      this._connected = true;
+    }
+  }
+
+  /**
+   * Removes the event listener
+   */
+  disconnect () {
+    if (this._connected) {
+      this._element.removeEventListener(this._event, this._handler);
+      this._connected = false;
+    }
+  }
+}

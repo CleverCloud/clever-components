@@ -1,6 +1,7 @@
 ---
-kind: '📌 Docs/Architecture Decision Records'
+kind: '📌 Architecture Decision Records'
 ---
+
 # ADR 0003: Why did we create a datetime relative component?
 
 🗓️ 2019-10-16 · ✍️ Hubert Sablonnière

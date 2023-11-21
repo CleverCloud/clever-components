@@ -1,5 +1,6 @@
 import '../src/stories/lib/i18n-control.js';
 import { setCustomElementsManifest } from '@web/storybook-prebuilt/web-components.js';
+import { storybookMenuSort } from './menu-descriptor.js';
 import customElementsManifest from '../dist/custom-elements.json';
 import { getAvailableLanguages } from '../src/lib/i18n.js';
 
@@ -20,20 +21,9 @@ Array
     };
   });
 
-// Use emojis to sort story categories/kinds
-// Docs, then components, then stuffs for devs (mixins and inner styles)
-const EMOJI_SORT = ['🏠', '📌', '🧬', '🛠', '🔀', '🕹', '♻️'];
-
 export const parameters = {
   options: {
-    storySort: (a, b) => {
-      if (a[1].kind !== b[1].kind) {
-        const aEmojiKind = EMOJI_SORT.indexOf(a[1].kind.slice(0, 2)) + a[1].kind;
-        const bEmojiKind = EMOJI_SORT.indexOf(b[1].kind.slice(0, 2)) + b[1].kind;
-        return aEmojiKind.localeCompare(bEmojiKind, undefined, { numeric: true });
-      }
-      return -1;
-    },
+    storySort: storybookMenuSort
   },
   viewport: { viewports },
 };

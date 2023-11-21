@@ -1,7 +1,9 @@
 ---
-kind: '📌 Docs'
+kind: '👋 Contributing'
+title: 'Web Components guidelines'
 ---
-# Web Components guidelines at Clever Cloud
+
+# Web Components guidelines
 
 Here are different rules we want any contributor to follow regarding how we write Web Components with LitElement.
 
@@ -68,3 +70,11 @@ we're proposing this order for the different pars of a custom element built with
 * Respect the following order: `@prop`, `@event`, `@slot`, `@cssprop`
 * Document methods in place, just above the given method.
 * Use a `/** @required */` if component breaks without a given property. Must be in the `static get properties` section.
+
+## How to choose icons?
+
+By default, try to use icons that are parts of the Remix Icon library which is embedded in the main package.
+
+If there is no suiting icon, you can add a custom icon to the Clever Cloud corporate icons (in the `src/assets/` folder).
+
+<cc-notice intent="info" message="The custom icon must be in SVG format, with no hard-coded color and not relying on `stroke`. Its design should match the other icons as well."></cc-notice>

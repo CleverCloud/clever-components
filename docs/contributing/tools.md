@@ -1,5 +1,5 @@
 ---
-kind: '📌 Docs/References'
+kind: '👋 Contributing'
 title: 'Tools'
 ---
 

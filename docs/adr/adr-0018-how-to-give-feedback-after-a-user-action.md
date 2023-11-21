@@ -1,6 +1,7 @@
 ---
-kind: '📌 Docs/Architecture Decision Records'
+kind: '📌 Architecture Decision Records'
 ---
+
 # ADR 0018: How to give feedback after a user action?
 
 🗓️ 2022-08-26 · ✍️ Pierre de Soyres

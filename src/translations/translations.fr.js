@@ -413,6 +413,10 @@ export const translations = {
   'cc-heptapod-info.storage-bytes': ({ storage }) => formatBytes(storage, 1),
   'cc-heptapod-info.storage-description': `Stockage utilisé`,
   //#endregion
+  //#region cc-input-date
+  'cc-input-date.keyboard-hint': `Vous pouvez utiliser les touches flèche haut et flèche bas pour modifier des parties de la date.`,
+  'cc-input-date.required': `obligatoire`,
+  //#endregion
   //#region cc-input-number
   'cc-input-number.decrease': `décrémenter`,
   'cc-input-number.increase': `incrémenter`,

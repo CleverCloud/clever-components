@@ -1,6 +1,7 @@
 ---
-kind: '📌 Docs/Architecture Decision Records'
+kind: '📌 Architecture Decision Records'
 ---
+
 # ADR 0021: Switching from rem to em units
 
 🗓️ 2022-08-29 · ✍️ Florian Sanders

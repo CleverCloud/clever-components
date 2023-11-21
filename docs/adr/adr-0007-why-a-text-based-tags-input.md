@@ -1,6 +1,7 @@
 ---
-kind: '📌 Docs/Architecture Decision Records'
+kind: '📌 Architecture Decision Records'
 ---
+
 # ADR 0007: Why a text based tags input?
 
 🗓️ 2020-01-06 · ✍️ Hubert Sablonnière

@@ -1,8 +1,9 @@
 ---
-kind: '📌 Docs/References'
+kind: '👋 Contributing'
 title: 'Tasks'
 ---
-# Tasks reference
+
+# Tasks
 
 This project provides a series of tasks you can run as [npm scripts](https://docs.npmjs.com/cli/v7/using-npm/scripts).
 
@@ -75,7 +76,7 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
 ## `npm run preview:publish`
 
 * Publish (create or update) a branch on the preview system.
-* It uses current branch name by default, but you can provide a CLI param to override the name. 
+* It uses current branch name by default, but you can provide a CLI param to override the name.
 
 ## `npm run preview:delete`
 
@@ -103,7 +104,7 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
 
 * Builds a CDN preview.
 * It uses current branch name by default, but you can provide a `PREVIEW` environment variable to override the name.
- 
+
 ## `npm run cdn-preview:get`
 
 * Get details of a CDN preview.

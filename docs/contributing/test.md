@@ -1,6 +1,8 @@
 ---
-kind: '📌 Docs'
+kind: '👋 Contributing'
+title: 'Test'
 ---
+
 # How to test your components?
 
 We use `Web Test Runner` to run tests on some essential parts of our libs and most of our components.
@@ -8,14 +10,13 @@ We use `Web Test Runner` to run tests on some essential parts of our libs and mo
 You can run all tests by using the `npm run test` command.
 This command runs `*.test.js` files from the `test` folder as well as from the `src/components` folder.
 
-**Note:**
-Some components don't have any test files because they are purely made for layout purposes and do not implement any semantics or interactions (`cc-expand` for instance).
+<cc-notice intent="info" message="Some components don't have any test files because they are purely made for layout purposes and do not implement any semantics or interactions (`cc-expand` for instance)."></cc-notice>
 
 ## How to create tests for your component?
 
 If you create a new component, you probably need to test it, at least to avoid accessibility issues that could be caught automatically.
 
-To do so, use the `cc-example-component.test.js` template. 
+To do so, use the `cc-example-component.test.js` template.
 This file already contains the essential code to run accessibility tests on all your component stories.
 
 You may also add your own tests in this file.

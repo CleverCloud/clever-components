@@ -1,6 +1,7 @@
 ---
-kind: '📌 Docs/Architecture Decision Records'
+kind: '📌 Architecture Decision Records'
 ---
+
 # ADR 0009: How we use the new Storybook CSF and docs page?
 
 🗓️ 2020-01-14 · ✍️ Hubert Sablonnière

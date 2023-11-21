@@ -1,6 +1,7 @@
 ---
-kind: '📌 Docs/Architecture Decision Records'
+kind: '📌 Architecture Decision Records'
 ---
+
 # ADR 0008: Why an event called `requestimplicitsubmit`?
 
 🗓️ 2020-01-07 · ✍️ Hubert Sablonnière

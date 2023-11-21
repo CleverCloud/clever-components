@@ -1,6 +1,7 @@
 ---
-kind: '📌 Docs/Architecture Decision Records'
+kind: '📌 Architecture Decision Records'
 ---
+
 # ADR 0011: Sorting CSS declarations
 
 🗓️ 2020-05-02 · ✍️ Hubert Sablonnière

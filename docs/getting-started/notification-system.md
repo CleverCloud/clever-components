@@ -1,14 +1,14 @@
 ---
-kind: '📌 Docs'
+kind: '🏡 Getting Started'
+title: 'Notification system'
 ---
+
 # How to use notification system?
 
 We designed a notification system based on the toast pattern.
 
 First, this document will explain how to use it.
-Then, it will show how we designed a fully decoupled way to integrate it into our _smart components_ (*).
-
-(*) See section [Integration in smart components](#integration-in-smart-components).
+Then, it will show how we designed a fully decoupled way to integrate it into our _smart components_.
 
 ## The toaster
 
@@ -110,12 +110,9 @@ Note that you'll still be able to override those defaults when you want to.
 
 ## Integration in smart components
 
-You must wonder what is a smart component as we never described it before (we planned to provide a complete documentation about it).
-All you need to know right now is that smart components are classic web components, but they have something special: they communicate with the outside.
-They are the glue between pure UI web components and the Clever API.
-And at some point, they need to trigger some notifications when something goes wrong while contacting our API (or when everything went right too).
+At some point, smart components need to trigger some notifications when something goes wrong while contacting our API (or when everything went right too). This chapter will explain how we did that in a fully decoupled manner.
 
-This chapter will explain how we did that in a fully decoupled manner.
+For details on smart components, you can check [this introduction to smart components](/?path=/story/🏡-getting-started-7-smart-components--page).
 
 We based our integration on DOM events:
 The smart components dispatch `cc:notify` [custom events](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) like this:
