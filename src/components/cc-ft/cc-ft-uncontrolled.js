@@ -8,9 +8,7 @@ import '../cc-input-number/cc-input-number.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-select/cc-select.js';
 import '../cc-toggle/cc-toggle.js';
-import { FormController } from './form/form-controller.js';
-import { formInput } from './form/form-input-directive.js';
-import { formSubmit } from './form/form-submit-directive.js';
+import { FormController, formInput, formSubmit } from './form/form.js';
 import { invalid, VALID } from './validation/validation.js';
 
 /**
@@ -225,7 +223,7 @@ export class CcFtUncontrolled extends LitElement {
       //   reset: null,
       // },
     ];
-    this._formController = new FormController(this, 'my-form', fields);
+    this._formController = new FormController(this, fields);
 
     this._expertMode = false;
   }
@@ -339,7 +337,7 @@ export class CcFtUncontrolled extends LitElement {
     ];
 
     return html`
-      <form>
+      <form name="my-form">
         <cc-input-text label="Name" ${formInput(this._formController, 'name')}></cc-input-text>
 
         <cc-input-text label="Email" type="email" ${formInput(this._formController, 'email')}></cc-input-text>

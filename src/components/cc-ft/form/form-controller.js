@@ -1,4 +1,5 @@
 import { dispatchCustomEvent } from '../../../lib/events.js';
+import { arrayEquals, isStringEmpty, objectEquals } from '../../../lib/utils.js';
 import { RequiredValidator } from '../validation/validation.js';
 
 /**
@@ -8,19 +9,18 @@ import { RequiredValidator } from '../validation/validation.js';
  * @typedef {import('../validation/validation.types.js').Validation} Validation
  */
 
+/**
+ * //todo: JSdoc
+ */
 export class FormController {
   /**
    *
    * @param host
-   * @param {string} name
    * @param {Array<FieldDefinition>} fieldDefinitions
    */
-  constructor (host, name, fieldDefinitions) {
+  constructor (host, fieldDefinitions) {
     this._host = host;
     this._host.addController(this);
-
-    /** @type {string} */
-    this._name = name;
 
     /** @type {Map<string, FieldDefinition>} */
     this._fields = new Map();
@@ -40,7 +40,7 @@ export class FormController {
     /** @type {Map<any, HTMLElement>} */
     this._elements = new Map();
 
-    /** @type {null|HTMLElement} */
+    /** @type {null|HTMLFormElement} */
     this._formElement = null;
 
     // reset
@@ -100,17 +100,21 @@ export class FormController {
     this._errors.clear();
     this._values.clear();
 
+    let hasChanged = false;
+
     this._fields.forEach((fd) => {
+      hasChanged = hasChanged || !this._valueEquals(this._values.get(fd.name), fd.reset);
       this._values.set(fd.name, fd.reset);
     });
 
-    dispatchCustomEvent(this._host, 'change',
-      {
-        form: this._name,
-        date: this.getValues(),
-        changedFields: Array.from(this._fields.keys()),
-      },
-    );
+    if (hasChanged) {
+      dispatchCustomEvent(this._host, 'change',
+        {
+          form: this._formElement?.name,
+          data: this.getValues(),
+        },
+      );
+    }
 
     this._host.requestUpdate();
   }
@@ -159,14 +163,12 @@ export class FormController {
   setFieldValue (fieldName, value) {
     this._assertFieldDefined(fieldName);
 
-    const currentValue = this.getFieldValue(fieldName);
-
-    if (currentValue !== value) {
+    if (!this._valueEquals(this.getFieldValue(fieldName), value)) {
       this._values.set(fieldName, value);
 
       dispatchCustomEvent(this._host, 'change',
         {
-          form: this._name,
+          form: this._formElement?.name,
           data: this.getValues(),
         },
       );
@@ -201,14 +203,19 @@ export class FormController {
   setFieldError (fieldName, error) {
     this._assertFieldDefined(fieldName);
 
-    this._errors.set(fieldName, error);
+    if (error == null) {
+      this._errors.delete(fieldName);
+    }
+    else {
+      this._errors.set(fieldName, error);
+    }
     const element = this.getFieldElement(fieldName);
     if (element != null) {
       element.errorMessage = this.getFieldDefinition(fieldName).customErrorMessages?.(error) ?? error;
     }
     this.focus(fieldName);
 
-    // todo : should we this._host.requestUpdate();?
+    this._host.requestUpdate();
   }
 
   /**
@@ -219,7 +226,7 @@ export class FormController {
     const validations = this._getFieldDefinitions().map((fieldDefinition) => {
       const fieldName = fieldDefinition.name;
       const element = this.getFieldElement(fieldName);
-      const value = this.getFieldValue(fieldDefinition.name);
+      const value = this.getFieldValue(fieldName);
       const validation = this._validateField(value, fieldDefinition, element, report);
       return {
         fieldName,
@@ -251,7 +258,7 @@ export class FormController {
     };
 
     dispatchCustomEvent(this._host, 'formInvalid', {
-      form: this._name,
+      form: this._formElement?.name,
       validation: formValidation,
     });
 
@@ -259,7 +266,7 @@ export class FormController {
   }
 
   /**
-   * // todo: tell that this should be used after a call to validate() or submit()
+   * // todo: explain that this should be used after a call to validate() or submit()
    * @param {string} fieldName
    * @return {boolean}
    * @throws {Error} if field is not defined
@@ -269,7 +276,7 @@ export class FormController {
   }
 
   /**
-   * // todo: tell that this should be used after a call to validate() or submit()
+   * // todo: explain that this should be used after a call to validate() or submit()
    * @param {string} fieldName
    * @return {boolean}
    * @throws {Error} if field is not defined
@@ -279,7 +286,7 @@ export class FormController {
   }
 
   /**
-   * // todo: tell that this should be used after a call to validate() or submit()
+   * // todo: explain that this should be used after a call to validate() or submit()
    * @return {boolean}
    */
   isValid () {
@@ -294,12 +301,14 @@ export class FormController {
 
     if (validation.valid) {
       dispatchCustomEvent(this._host, 'formSubmit', {
-        form: this._name,
+        form: this._formElement?.name,
         data: this.getValues(),
       });
     }
     else {
-      this._lazyFocus(() => this._formElement?.querySelector('[data-cc-error]')).then();
+      this._lazyFocus(() => {
+        return Array.from(this._elements.entries()).find(([fieldName, e]) => !validation.fields[fieldName].valid)?.[1];
+      }).then();
     }
   }
 
@@ -321,15 +330,26 @@ export class FormController {
   registerElement (fieldName, element) {
     this._assertFieldDefined(fieldName);
 
+    if (this._elements.has(fieldName)) {
+      throw new Error(`An element is already registered for form field "${fieldName}".`);
+    }
+
     const formElement = element.closest('form');
     if (formElement == null) {
       throw new Error(`Element associated to form field "${fieldName}" must be inside a <form> element.`);
     }
-    if (this._formElement != null && this._formElement !== formElement) {
+
+    if (this._formElement == null) {
+      this._formElement = formElement;
+      if (isStringEmpty(this._formElement.name)) {
+        // todo: is this really legitimate?
+        console.warn('It\'s recommended to set a "name" attribute to the <form> element.');
+      }
+    }
+    else if (this._formElement !== formElement) {
       throw new Error(`Element associated to form field "${fieldName}" cannot be in a different <form> element.`);
     }
 
-    this._formElement = formElement;
     this._elements.set(fieldName, element);
   }
 
@@ -392,6 +412,21 @@ export class FormController {
 
       return this._host.shadowRoot.activeElement === element;
     });
+  }
+
+  /**
+   * @param {any} currentValue
+   * @param {any} oldValue
+   * @return {boolean}
+   */
+  _valueEquals (currentValue, oldValue) {
+    if (currentValue != null && Array.isArray(currentValue)) {
+      return arrayEquals(currentValue, oldValue);
+    }
+    if (currentValue != null && Object.prototype.toString.call(currentValue) === '[object Object]') {
+      return objectEquals(currentValue, oldValue);
+    }
+    return currentValue === oldValue;
   }
 
   /* endregion */

@@ -202,18 +202,17 @@ class InputElementHandler {
   }
 
   refreshElement () {
+    this._formController.registerElement(this._fieldDefinition.name, this._element);
+
     setAttribute(this._element, 'name', this._fieldDefinition.name);
     setAttribute(this._element, 'required', this._fieldDefinition.required);
     setAttribute(this._element, 'disabled', this._formController?.getState() === 'submitting');
-    setAttribute(this._element, 'data-cc-error', this._formController.getFieldError(this._fieldDefinition.name));
 
     // for clever components, we configure the validation directly inside the component.
     this._element.setCustomValidator?.(this._fieldDefinition.validator);
     this._element.setCustomErrorMessages?.(this._fieldDefinition.customErrorMessages);
 
     this._setElementValue();
-
-    this._formController.registerElement(this._fieldDefinition.name, this._element);
   }
 
   connect () {

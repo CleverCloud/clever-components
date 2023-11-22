@@ -5,8 +5,8 @@ export interface FieldDefinition {
   required: boolean;
   type: string;
   reset: any;
-  validator: Validator;
-  customErrorMessages: (code: string) => string;
+  validator?: Validator;
+  customErrorMessages?: (code: string) => string;
 }
 
 export type FormState = 'idle' | 'submitting';
