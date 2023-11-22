@@ -226,6 +226,68 @@ export const tagsWithClipboard = makeStory(conf, {
   items: tagsItems.map((p) => ({ ...p, clipboard: true })),
 });
 
+const customBaseItems = [
+  { label: 'The label', placeholder: 'No value yet...' },
+  { label: 'The label', placeholder: 'No value yet...', required: true },
+  { label: 'The label', placeholder: 'No value yet...', multi: true },
+  { label: 'The label', placeholder: 'No value yet...', multi: true, required: true },
+  { label: 'The label', placeholder: 'No value yet...', multi: true, value: 'Simple value\nOther lines...' },
+  { label: 'The label', placeholder: 'No value yet...', multi: true, required: true, value: 'Simple value\nOther lines...' },
+];
+
+export const customLabelStyle = makeStory(conf, {
+  // language=CSS
+  css: `
+    cc-input-text {
+      --cc-input-label-color: #475569;
+      --cc-input-label-font-size: 1.2em;
+      --cc-input-label-font-weight: bold;
+      font-size: 1.25em;
+    }
+    cc-input-text:nth-of-type(${customBaseItems.length + 'n'}) {
+      margin-block-end: 2em;
+    }
+    cc-input-text[multi] {
+      /* Necessary because the container is a display:flex */
+      width: 100%;
+    }
+  `,
+  items: [
+    ...customBaseItems,
+    ...customBaseItems.map((item) => ({
+      ...item,
+      innerHTML: `<p slot="help">Must be at least 7 characters long</p>`,
+    })),
+    ...customBaseItems.map((item) => ({
+      ...item,
+      innerHTML: `<p slot="error">You must enter a value</p>`,
+    })),
+    ...customBaseItems.map((item) => ({
+      ...item,
+      innerHTML: `<p slot="help">Must be at least 7 characters long</p><p slot="error">You must enter a value</p>`,
+    })),
+    ...customBaseItems.map((item) => ({
+      ...item,
+      inline: true,
+    })),
+    ...customBaseItems.map((item) => ({
+      ...item,
+      inline: true,
+      innerHTML: `<p slot="help">Must be at least 7 characters long</p>`,
+    })),
+    ...customBaseItems.map((item) => ({
+      ...item,
+      inline: true,
+      innerHTML: `<p slot="error">You must enter a value</p>`,
+    })),
+    ...customBaseItems.map((item) => ({
+      ...item,
+      inline: true,
+      innerHTML: `<p slot="help">Must be at least 7 characters long</p><p slot="error">You must enter a value</p>`,
+    })),
+  ],
+});
+
 export const allFormControls = allFormControlsStory;
 
 export const simulation = makeStory(conf, {
