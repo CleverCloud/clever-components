@@ -2,9 +2,9 @@ import { css, html, LitElement } from 'lit';
 import '../cc-icon/cc-icon.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixFileTextLine as iconFile } from '../../assets/cc-remix.icons.js';
+import { ResizeController } from '../../controllers/resize-controller.js';
 import { i18n } from '../../lib/i18n.js';
 import { sortBy } from '../../lib/utils.js';
-import { withResizeObserver } from '../../mixins/with-resize-observer/with-resize-observer.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 
@@ -31,12 +31,11 @@ const SKELETON_INVOICES = [
  *
  * @cssdisplay block
  */
-export class CcInvoiceTable extends withResizeObserver(LitElement) {
+export class CcInvoiceTable extends LitElement {
 
   static get properties () {
     return {
       invoices: { type: Array },
-      _width: { type: Number, state: true },
     };
   }
 
@@ -46,12 +45,8 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
     /** @type {Invoice[]|null} Sets the list of invoices. */
     this.invoices = null;
 
-    /** @type {number|null} */
-    this._width = null;
-  }
-
-  onResize ({ width }) {
-    this._width = width;
+    /** @type {ResizeController} */
+    this._resizeController = new ResizeController(this);
   }
 
   render () {
@@ -59,7 +54,7 @@ export class CcInvoiceTable extends withResizeObserver(LitElement) {
     // NOTE: This value is arbitrary, we don't have a better solution for now
     // It's a bit more than the width of the table in french (which is the largest) and with both links (download and pay)
     // The table width is mostly stable since the with of the amount is fixed and the rest is almost always the same number of characters
-    const bigMode = (this._width > 700);
+    const bigMode = (this._resizeController.width > 700);
 
     const skeleton = (this.invoices == null);
     const invoices = skeleton ? SKELETON_INVOICES : this.invoices;
