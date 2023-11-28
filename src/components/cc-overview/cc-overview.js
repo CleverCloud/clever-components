@@ -1,6 +1,8 @@
 import { css, html, LitElement } from 'lit';
-import { withResizeObserver } from '../../mixins/with-resize-observer/with-resize-observer.js';
+import { ResizeController } from '../../controllers/resize-controller.js';
 
+// ceiled width with 275px tiles and 1em (16px) gap
+const BREAKPOINTS = [570, 860, 1150];
 /**
  * @typedef {import('./cc-overview.types.js').OverviewModeType} OverviewModeType
  */
@@ -14,7 +16,7 @@ import { withResizeObserver } from '../../mixins/with-resize-observer/with-resiz
  * * If you use more than one `head`, you must specify how many with `--cc-overview-head-count`.
  * * The main component must have the `main` CSS class, it will be displayed at the bottom left (depending on the number of columns).
  * * The tile components will be displayed in a 1 to 4 columns grid layout, below the header and around the main.
- * * The number of columns is variable and depends directly on the width of the component (with some help from `withResizeObserver`).
+ * * The number of columns is variable and depends directly on the width of the component (with some help from the `ResizeController`).
  * * `mode="app"` for 6 tiles
  * * `mode="orga"` for 2 tiles
  *
@@ -24,7 +26,7 @@ import { withResizeObserver } from '../../mixins/with-resize-observer/with-resiz
  *
  * @cssprop {Number} --cc-overview-head-count - How many `.head` elements marked are in the slot  (defaults: `1`).
  */
-export class CcOverview extends withResizeObserver(LitElement) {
+export class CcOverview extends LitElement {
 
   static get properties () {
     return {
@@ -39,11 +41,9 @@ export class CcOverview extends withResizeObserver(LitElement) {
     /** @type {OverviewModeType|null} Sets the mode of the layout for the overview */
     this.mode = null;
 
-    /** @protected */
-    this.breakpoints = {
-      // ceiled width with 275px tiles and 1em (16px) gap
-      width: [570, 860, 1150],
-    };
+    new ResizeController(this, {
+      widthBreakpoints: BREAKPOINTS,
+    });
   }
 
   render () {
