@@ -17,10 +17,10 @@ import {
   iconRemixFunctions as iconSum,
   iconRemixUser_3Fill as iconUser,
 } from '../../assets/cc-remix.icons.js';
+import { ResizeController } from '../../controllers/resize-controller.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { PricingConsumptionSimulator } from '../../lib/pricing.js';
-import { withResizeObserver } from '../../mixins/with-resize-observer/with-resize-observer.js';
 
 const BREAKPOINT = 600;
 
@@ -56,7 +56,7 @@ const ICONS = {
  * * Interval ranges are defined in bytes.
  * * To comply with `<cc-pricing-product>`, the price in the event `cc-pricing-product:add-plan` is in "euros / 1 hour".
  *
- * **Note:** This component relies on the `resizeObserver` mixin to change its layout with `600px` as a width breakpoint.
+ * **Note:** This component relies on the `ResizeController` to change its layout with `600px` as a width breakpoint.
  *
  * @cssdisplay block
  *
@@ -64,14 +64,13 @@ const ICONS = {
  *
  * @cssprop {Color} --cc-pricing-hovered-color - Sets the text color used on hover (defaults: `purple`).
  */
-export class CcPricingProductConsumption extends withResizeObserver(LitElement) {
+export class CcPricingProductConsumption extends LitElement {
 
   static get properties () {
     return {
       action: { type: String },
       currency: { type: Object },
       product: { type: Object },
-      _size: { type: String, state: true },
     };
   }
 
@@ -89,16 +88,11 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
 
     this._simulator = new PricingConsumptionSimulator();
 
-    /** @type {number|null} Set by the `withResizeObserver` mixin. The width of the component in `px`. See the `onResize` method for more info. */
-    this._size = null;
-
     /** @type {SectionStates} Sets the state of the section. It is modified everytime the quantity is changed, the section is shown / hidden, or if the unit value changes. */
     this._sectionStates = {};
-  }
 
-  /* Used by the `withResizeObserver` mixin. */
-  onResize ({ width }) {
-    this._size = width;
+    /** @type {ResizeController} */
+    this._resizeController = new ResizeController(this);
   }
 
   /**
@@ -360,9 +354,10 @@ export class CcPricingProductConsumption extends withResizeObserver(LitElement) 
    * @param {PricingSection[]} sections
    */
   _renderLoaded (sections) {
+    const { width } = this._resizeController;
     const bodyClasses = {
-      'body--big': (this._size > BREAKPOINT),
-      'body--small': (this._size <= BREAKPOINT),
+      'body--big': (width > BREAKPOINT),
+      'body--small': (width <= BREAKPOINT),
     };
 
     const someNullishIntervals = sections

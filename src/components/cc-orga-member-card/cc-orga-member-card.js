@@ -10,9 +10,9 @@ import {
   iconRemixDeleteBin_5Fill as iconBin,
   iconRemixAccountCircleFill as iconAvatar,
 } from '../../assets/cc-remix.icons.js';
+import { ResizeController } from '../../controllers/resize-controller.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
-import { withResizeObserver } from '../../mixins/with-resize-observer/with-resize-observer.js';
 import '../cc-button/cc-button.js';
 import '../cc-img/cc-img.js';
 import '../cc-icon/cc-icon.js';
@@ -24,6 +24,8 @@ import '../cc-stretch/cc-stretch.js';
 const BREAKPOINT_MEDIUM = 740;
 const BREAKPOINT_SMALL = 580;
 const BREAKPOINT_TINY = 350;
+
+const BREAKPOINTS = [BREAKPOINT_TINY, BREAKPOINT_SMALL, BREAKPOINT_MEDIUM];
 
 /**
  * @typedef {import('./cc-orga-member-card.types.js').Authorisations} Authorisations
@@ -42,7 +44,7 @@ const BREAKPOINT_TINY = 350;
  * ## Technical Details
  *
  * This component heavily relies on `cc-stretch` to make sure all cards look the same whatever the role and MFA status may be.
- * This component also heavily relies on CSS `grid` and the `withResizeObserver` mixin to switch from a "table" like design to a card design when the card width shrinks.
+ * This component also heavily relies on CSS `grid` and the `ResizeController` to switch from a "table" like design to a card design when the card width shrinks.
  *
  * @cssdisplay block
  *
@@ -53,13 +55,12 @@ const BREAKPOINT_TINY = 350;
  * We don't fire a delete event so that it can be processed differently by the smart component (leaving the org means the user has to be redirected).
  * @event {CustomEvent<UpdateMember>} cc-orga-member-card:update - Fires when the user clicks on a validate button after editing member role.
  */
-export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
+export class CcOrgaMemberCard extends LitElement {
 
   static get properties () {
     return {
       authorisations: { type: Object },
       member: { type: Object },
-      _size: { type: String, state: true },
       _newRole: { type: String, state: true },
     };
   }
@@ -83,18 +84,6 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
       isCurrentUser: false,
     };
 
-    /**
-     * used to:
-     * - wrap buttons when the component width is below 740.
-     * - switch to a vertical card layout when the width is below 580.
-     * - show buttons and badges below each other when the width is below 350.
-     *
-     * @protected
-     */
-    this.breakpoints = {
-      width: [BREAKPOINT_TINY, BREAKPOINT_SMALL, BREAKPOINT_MEDIUM],
-    };
-
     /** @type {Ref<CcInputText>} */
     this._deleteButtonRef = createRef();
 
@@ -103,8 +92,16 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
     /** @type {Ref<CcSelect>} */
     this._roleRef = createRef();
 
-    /** @type {string} Set by `withResizeObserver` mixin. See the `onResize` method for more info. */
-    this._size = '';
+    /**
+     * @type {ResizeController}
+     * used to:
+     * - wrap buttons when the component width is below 740.
+     * - switch to a vertical card layout when the width is below 580.
+     * - show buttons and badges below each other when the width is below 350.
+     */
+    this._resizeController = new ResizeController(this, {
+      widthBreakpoints: BREAKPOINTS,
+    });
   }
 
   /**
@@ -113,11 +110,6 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
    */
   focusDeleteBtn () {
     this._deleteButtonRef.value.focus();
-  }
-
-  /* Used by the `withResizeObserver` mixin. */
-  onResize ({ width }) {
-    this._size = width;
   }
 
   /*
@@ -324,7 +316,7 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
           label="${i18n('cc-orga-member-card.role.label')}"
           .options=${this._getRoleOptions()}
           .value=${this._newRole ?? this.member.role}
-          ?inline=${this._size > BREAKPOINT_TINY}
+          ?inline=${this._resizeController.width > BREAKPOINT_TINY}
           ?disabled=${this.member.state === 'updating'}
           @cc-select:input=${this._onRoleInput}
           ${ref(this._roleRef)}
@@ -340,7 +332,7 @@ export class CcOrgaMemberCard extends withResizeObserver(LitElement) {
    */
   _renderActionBtns () {
 
-    const isBtnImgOnly = (this._size >= BREAKPOINT_MEDIUM);
+    const isBtnImgOnly = (this._resizeController.width >= BREAKPOINT_MEDIUM);
     const waiting = this.member.state === 'updating' || this.member.state === 'deleting';
     const isEditing = this.member.state === 'editing' || this.member.state === 'updating';
     const hasError = this.member.error;

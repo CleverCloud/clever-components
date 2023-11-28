@@ -12,8 +12,8 @@ import {
   iconRemixCloseLine as iconClose,
   iconRemixAlertFill as iconAlert,
 } from '../../assets/cc-remix.icons.js';
+import { ResizeController } from '../../controllers/resize-controller.js';
 import { i18n } from '../../lib/i18n.js';
-import { withResizeObserver } from '../../mixins/with-resize-observer/with-resize-observer.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { tileStyles } from '../../styles/info-tiles.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
@@ -70,7 +70,7 @@ const SKELETON_REQUESTS = Array
  *
  * @cssdisplay grid
  */
-export class CcTileMetrics extends withResizeObserver(LitElement) {
+export class CcTileMetrics extends LitElement {
 
   static get properties () {
     return {
@@ -101,12 +101,14 @@ export class CcTileMetrics extends withResizeObserver(LitElement) {
 
     /** @type {Ref<Canvas>} */
     this._memCtxRef = createRef();
-  }
 
-  /** @protected */
-  onResize () {
-    this._cpuChart.resize();
-    this._memChart.resize();
+    new ResizeController(this, {
+      callback: () => this.updateComplete.then(() => {
+        // everytime the component is resized, we need to trigger the chartJS resize
+        this._cpuChart?.resize();
+        this._memChart?.resize();
+      }),
+    });
   }
 
   _createChart (chartElement) {

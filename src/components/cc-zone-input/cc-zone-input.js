@@ -5,13 +5,14 @@ import '../cc-map-marker-server/cc-map-marker-server.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { ResizeController } from '../../controllers/resize-controller.js';
 import { scrollChildIntoParent } from '../../lib/dom.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { PRIVATE_ZONE, sortZones } from '../../lib/zone.js';
-import { withResizeObserver } from '../../mixins/with-resize-observer/with-resize-observer.js';
 
 const SKELETON_ZONES = new Array(6).fill(null);
+const BREAKPOINTS = [600];
 
 /**
  * @typedef {import('../common.types.js').Point} Point
@@ -30,7 +31,7 @@ const SKELETON_ZONES = new Array(6).fill(null);
  *
  * @event {CustomEvent<string>} cc-zone-input:input - Fires the `name` of the selected zone whenever the selection changes.
  */
-export class CcZoneInput extends withResizeObserver(LitElement) {
+export class CcZoneInput extends LitElement {
 
   static get properties () {
     return {
@@ -56,11 +57,6 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
     /** @type {Zone[]|null} Sets the list of available zones. */
     this.zones = null;
 
-    /** @protected */
-    this.breakpoints = {
-      width: [600],
-    };
-
     /** @type {string|null} */
     this._hovered = null;
 
@@ -72,6 +68,10 @@ export class CcZoneInput extends withResizeObserver(LitElement) {
 
     /** @type {Zone[]|null} */
     this._sortedZones = null;
+
+    new ResizeController(this, {
+      widthBreakpoints: BREAKPOINTS,
+    });
   }
 
   _updatePoints () {

@@ -6,10 +6,10 @@ import {
   iconRemixAlertFill as iconAlert,
 } from '../../assets/cc-remix.icons.js';
 import { WORLD_GEOJSON } from '../../assets/world-110m.geo.js';
+import { ResizeController } from '../../controllers/resize-controller.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import * as leaflet from '../../lib/leaflet-esm.js';
-import { withResizeObserver } from '../../mixins/with-resize-observer/with-resize-observer.js';
 import { leafletStyles } from '../../styles/leaflet.js';
 
 /**
@@ -36,7 +36,7 @@ import { leafletStyles } from '../../styles/leaflet.js';
  *
  * @slot - The legend and/or details for the map (displayed at the bottom).
  */
-export class CcMap extends withResizeObserver(LitElement) {
+export class CcMap extends LitElement {
 
   static get properties () {
     return {
@@ -77,6 +77,10 @@ export class CcMap extends withResizeObserver(LitElement) {
     this.viewZoom = 2;
 
     this._pointsCache = {};
+
+    new ResizeController(this, {
+      callback: () => this.updateComplete.then(() => this._map.invalidateSize()),
+    });
   }
 
   _resetCurrentLayer () {
@@ -237,13 +241,6 @@ export class CcMap extends withResizeObserver(LitElement) {
     this._map.panInside([lat, lon], { padding: [50, 50] });
   }
 
-  /**
-   * @private
-   */
-  onResize () {
-    this._map.invalidateSize();
-  }
-
   // Draw the Leaflet map
   firstUpdated () {
 
@@ -308,12 +305,9 @@ export class CcMap extends withResizeObserver(LitElement) {
     if (changedProperties.has('points')) {
       this._updatePoints(this.points);
     }
-
-    super.updated(changedProperties);
   }
 
   render () {
-
     const noHeatmapPoints = (!this.error && this.mode === 'heatmap' && this.heatmapPoints?.length === 0);
     const errorMode = this.loading ? 'loading' : 'info';
 

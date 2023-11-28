@@ -8,8 +8,8 @@ import {
   iconRemixAlertFill as iconAlert,
   iconRemixCloseLine as iconClose,
 } from '../../assets/cc-remix.icons.js';
+import { ResizeController } from '../../controllers/resize-controller.js';
 import { i18n } from '../../lib/i18n.js';
-import { withResizeObserver } from '../../mixins/with-resize-observer/with-resize-observer.js';
 import { tileStyles } from '../../styles/info-tiles.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 
@@ -38,7 +38,7 @@ const SKELETON_REQUESTS = Array
  *
  * @cssdisplay grid
  */
-export class CcTileRequests extends withResizeObserver(LitElement) {
+export class CcTileRequests extends LitElement {
 
   static get properties () {
     return {
@@ -72,21 +72,9 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
 
     /** @type {boolean} */
     this._skeleton = false;
-  }
 
-  /** @protected */
-  onResize ({ width }) {
-    if (width < 380) {
-      this._barCount = 6;
-    }
-    if (width >= 380 && width < 540) {
-      this._barCount = 8;
-    }
-    if (width >= 540) {
-      this._barCount = 12;
-    }
-    this._refreshChart();
-    this.requestUpdate();
+    /** @type {ResizeController} */
+    this._resizeController = new ResizeController(this);
   }
 
   _onToggleDocs () {
@@ -231,6 +219,22 @@ export class CcTileRequests extends withResizeObserver(LitElement) {
         },
       },
     });
+  }
+
+  willUpdate () {
+    const { width } = this._resizeController;
+
+    if (width < 380) {
+      this._barCount = 6;
+    }
+    if (width >= 380 && width < 540) {
+      this._barCount = 8;
+    }
+    if (width >= 540) {
+      this._barCount = 12;
+    }
+
+    this._refreshChart();
   }
 
   // updated and not udpate because we need this._chart before

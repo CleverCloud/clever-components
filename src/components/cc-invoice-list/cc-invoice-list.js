@@ -3,12 +3,14 @@ import '../cc-button/cc-button.js';
 import '../cc-select/cc-select.js';
 import '../cc-toggle/cc-toggle.js';
 import '../cc-block/cc-block.js';
+import { ResizeController } from '../../controllers/resize-controller.js';
 import { i18n } from '../../lib/i18n.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-block-section/cc-block-section.js';
 import { sortBy, unique } from '../../lib/utils.js';
-import { withResizeObserver } from '../../mixins/with-resize-observer/with-resize-observer.js';
 import { PENDING_STATUSES, PROCESSED_STATUSES, PROCESSING_STATUS } from '../cc-invoice-table/cc-invoice-table.js';
+
+const BREAKPOINTS = [520];
 
 function getYearAsString (dateString) {
   const date = new Date(dateString);
@@ -31,7 +33,7 @@ function maxFromStrings (strings) {
  *
  * @cssdisplay block
  */
-export class CcInvoiceList extends withResizeObserver(LitElement) {
+export class CcInvoiceList extends LitElement {
 
   static get properties () {
     return {
@@ -53,11 +55,9 @@ export class CcInvoiceList extends withResizeObserver(LitElement) {
     /** @type {number|null} */
     this._yearFilter = null;
 
-    /** @protected */
-    this.breakpoints = {
-      // used to switch between cc-toggle (> 520) and cc-select (<= 520)
-      width: [520],
-    };
+    new ResizeController(this, {
+      widthBreakpoints: BREAKPOINTS,
+    });
   }
 
   _onYearFilterValue ({ detail: year }) {
