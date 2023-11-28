@@ -1,9 +1,9 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixAddLine as iconAdd } from '../../assets/cc-remix.icons.js';
+import { ResizeController } from '../../controllers/resize-controller.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
-import { withResizeObserver } from '../../mixins/with-resize-observer/with-resize-observer.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
@@ -69,7 +69,7 @@ const DEFAULT_TEMPORALITY_LIST = [{ type: '30-days', digits: 2 }];
  *
  * @cssprop {Color} --cc-pricing-hovered-color - Sets the text color used on hover (defaults: `purple`).
  */
-export class CcPricingProduct extends withResizeObserver(LitElement) {
+export class CcPricingProduct extends LitElement {
 
   static get properties () {
     return {
@@ -77,7 +77,6 @@ export class CcPricingProduct extends withResizeObserver(LitElement) {
       currency: { type: Object },
       product: { type: Object },
       temporalities: { type: Array },
-      _size: { type: String, state: true },
     };
   }
 
@@ -99,12 +98,8 @@ export class CcPricingProduct extends withResizeObserver(LitElement) {
     */
     this.temporalities = DEFAULT_TEMPORALITY_LIST;
 
-    /** @type {number|null} Set by the `withResizeObserver` mixin. The width of the component in `px`. See the `onResize` method for more info. */
-    this._size = null;
-  }
-
-  onResize ({ width }) {
-    this._size = width;
+    /** @type {ResizeController} */
+    this._resizeController = new ResizeController(this);
   }
 
   /**
@@ -263,13 +258,14 @@ export class CcPricingProduct extends withResizeObserver(LitElement) {
    * @param {Feature[]} productFeatures - the list of features to display
    */
   _renderProductPlans (productName, productPlans, productFeatures) {
+
     // this component is not rerendering very often so we consider we can afford to sort plans and filter the features here.
     const sortedPlans = [...productPlans].sort((a, b) => a.price - b.price);
     const filteredProductFeatures = productFeatures.filter((feature) => AVAILABLE_FEATURES.includes(feature.code) || feature.name != null);
 
     // We don't really have a good way to detect when the component should switch between big and small mode.
     // Also, when this component is used several times in the page, it's better if all instances switch at the same breakpoint.
-    return (this._size > BREAKPOINT)
+    return (this._resizeController.width > BREAKPOINT)
       ? this._renderBigPlans(productName, sortedPlans, filteredProductFeatures)
       : this._renderSmallPlans(productName, sortedPlans, filteredProductFeatures);
   }
