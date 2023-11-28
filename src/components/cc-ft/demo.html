@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="/src/styles/default-theme.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.5.2/cdn/themes/light.css" />
+  <script type="module" src="/node_modules/@vanillawc/wc-monaco-editor/index.js"></script>
+  <style>
+    body {
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+      gap: 5em;
+    }
+    .main {
+      display: flex;
+      gap: 1em;
+    }
+
+    wc-monaco-editor {
+      width:800px;
+      height:800px;
+    }
+  </style>
+  <title>Forms demo</title>
+</head>
+<body>
+
+<div class="main">
+  <cc-ft-demo></cc-ft-demo>
+  <wc-monaco-editor src="./demo/cc-ft-demo.js" language="javascript" style="width:1200px;height:800px;" no-minimap ></wc-monaco-editor>
+</div>
+
+<script type="module">
+  import './demo/cc-ft-demo.js';
+  import { addTranslations, setLanguage } from '../../lib/i18n.js';
+  import { lang, translations } from '../../translations/translations.en.js';
+
+  addTranslations(lang, translations);
+  setLanguage(lang);
+
+  const demo = document.querySelector('cc-ft-demo');
+  const editorElement = document.querySelector('wc-monaco-editor');
+  const editor = editorElement.editor;
+  editor.updateOptions({
+    readOnly: true,
+  })
+  demo.addEventListener('cc-ft-demo:demoChange', (e) => {
+    editorElement.src = `./demo/${e.detail.src}`;
+    editor.setScrollPosition({scrollTop: 16*8});
+  })
+</script>
+</body>
+</html>
