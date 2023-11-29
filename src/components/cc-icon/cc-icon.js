@@ -12,7 +12,7 @@ import { skeletonStyles } from '../../styles/skeleton.js';
  *
  * **Accessibility guidelines:**
  *
- * Use the `accessible-name` prop only if your icon provides information that is not already given in its surrounding text.
+ * Use the `a11y-name` prop only if your icon provides information that is not already given in its surrounding text.
  *
  * If this prop has a value:
  *
@@ -32,6 +32,7 @@ export class CcIcon extends LitElement {
   static get properties () {
     return {
       accessibleName: { type: String, attribute: 'accessible-name' },
+      a11yName: { type: String, attribute: 'a11y-name' },
       icon: { type: Object },
       size: { type: String, reflect: true },
       skeleton: { type: Boolean },
@@ -52,7 +53,7 @@ export class CcIcon extends LitElement {
      *
      * If this prop has no value, sets an `aria-hidden="true"` attribute on the `<svg>` element so that it can be ignored by assistive technologies.
      */
-    this.accessibleName = null;
+    this.a11yName = null;
 
     /** @type {IconModel|null} Icon to be rendered */
     this.icon = null;
@@ -64,11 +65,23 @@ export class CcIcon extends LitElement {
     this.skeleton = false;
   }
 
+  get accessibleName () {
+    return this.a11yName;
+  }
+
+  /**
+   * Deprecated property. Use `a11yName` property or `a11y-name` attribute instead.
+   * @deprecated
+   */
+  set accessibleName (value) {
+    this.a11yName = value;
+  }
+
   updated (changedProperties) {
-    const shouldPatchSvg = changedProperties.has('accessibleName') || changedProperties.has('icon');
+    const shouldPatchSvg = changedProperties.has('a11yName') || changedProperties.has('icon');
     const svg = this.shadowRoot.querySelector('svg');
     if (shouldPatchSvg && svg != null) {
-      if (this.accessibleName == null || this.accessibleName === '') {
+      if (this.a11yName == null || this.a11yName === '') {
         svg.setAttribute('aria-hidden', 'true');
         svg.removeAttribute('aria-label');
         svg.removeAttribute('role');
@@ -76,14 +89,14 @@ export class CcIcon extends LitElement {
       }
       else {
         svg.removeAttribute('aria-hidden');
-        svg.setAttribute('aria-label', this.accessibleName);
+        svg.setAttribute('aria-label', this.a11yName);
         svg.setAttribute('role', 'img');
         let title = svg.querySelector('title');
         if (title == null) {
           title = document.createElement('title');
           svg.prepend(title);
         }
-        title.textContent = this.accessibleName;
+        title.textContent = this.a11yName;
       }
     }
   }
