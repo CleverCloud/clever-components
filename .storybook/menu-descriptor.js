@@ -102,6 +102,9 @@ const MENU_DESCRIPTOR = [
     key: '🛠',
   },
   {
+    key: '🚧',
+  },
+  {
     key: '🔀',
   },
   {

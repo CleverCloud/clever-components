@@ -63,7 +63,7 @@ export function unique (item, index, array) {
     return Array.from(new Set(array));
   }
   return [];
-};
+}
 
 /**
  * @template ItemType
@@ -108,12 +108,55 @@ export function getCurrencySymbol (currency) {
 }
 
 /**
+ * Create an array of integers, starting from `start` and ending at `end`.
+ *
+ * @param {number} start - The number to start with.
+ * @param {number} end - The number to end with.
+ * @return Array<number>
+ */
+export function range (start, end) {
+  const s = Math.min(start, end);
+  const e = Math.max(start, end);
+  const result = [];
+  for (let i = s; i <= e; i++) {
+    result.push(i);
+  }
+  return result;
+}
+
+/**
+ * Randomly pick an integer between the given range.
+ *
+ * @param {number} min The range left bound
+ * @param {number} max The range right bound
+ * @return {number}
+ */
+export function random (min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+/**
+ * Randomly pick an item from the given array.
+ *
+ * @param {Array<T>} array
+ * @return {T|null} a random item or null if array was empty
+ * @template T
+ */
+export function randomPick (array) {
+  if (array.length === 0) {
+    return null;
+  }
+  const index = random(0, array.length - 1);
+  return array[index];
+}
+
+/**
  * Clamps the given number into the given bounds.
  *
- * @param {number} number
- * @param {number|null|undefined} [min]
- * @param {number|null|undefined} [max]
- * @return {number}
+ * @param {number} number The number to clamp
+ * @param {number|null|undefined} [min] The range left bound
+ * @param {number|null|undefined} [max] The range right bound
+ * @return {number} The clamped number
  */
 export function clampNumber (number, min, max) {
   return Math.min(Math.max(number, min ?? -Infinity), max ?? Infinity);
@@ -125,4 +168,15 @@ export function clampNumber (number, min, max) {
  */
 export function isStringEmpty (string) {
   return string == null || string.length === 0;
+}
+
+/**
+ *
+ * @param {number} delay
+ * @return {Promise<unknown>} a Promise that resolves when the given delay is timed out.
+ */
+export function sleep (delay) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, delay);
+  });
 }

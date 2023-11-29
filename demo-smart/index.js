@@ -8,7 +8,7 @@ setLanguage(lang);
 
 updateRootContext({});
 
-document.addEventListener('cc:notify', (event) => {
+window.addEventListener('cc:notify', (event) => {
   document.querySelector('cc-toaster').show(event.detail);
 });
 

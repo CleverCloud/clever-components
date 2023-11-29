@@ -30,7 +30,7 @@
     "test:cem:watch": "mocha --watch cem/test/*.js",
     "lint": "eslint --rulesdir eslint-rules rollup/*.js cem src tasks test wds",
     "lint:fix": "eslint --rulesdir eslint-rules --fix rollup/*.js cem src tasks test wds",
-    "prepack": "npm run test && npm run lint && npm run components:check-lit && npm run typecheck && npm run components:check-i18n && npm run components:build && npm run components:check-type-imports && npm run components:docs && npm run stylelint",
+    "prepack": "npm run lint && npm run stylelint && npm run components:check-lit && npm run typecheck && npm run components:check-i18n && npm run components:check-type-imports && npm run test && npm run components:build && npm run components:docs",
     "prestorybook:build": "npm run components:docs",
     "preview:get": "node tasks/preview.js get",
     "preview:list": "node tasks/preview.js list",
@@ -56,7 +56,9 @@
   "dependencies": {
     "@clevercloud/client": "^7.11.0",
     "@lit-labs/motion": "^1.0.3",
+    "@lit-labs/virtualizer": "^2.0.11",
     "@shoelace-style/shoelace": "^2.5.0",
+    "ansi-regex": "^6.0.1",
     "chart.js": "^3.5.0",
     "chartjs-plugin-datalabels": "^2.0.0",
     "immer": "^9.0.15",

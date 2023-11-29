@@ -187,6 +187,14 @@ export const translations = {
   'cc-addon-redis-options.description': `Sélectionnez les options que vous souhaitez pour votre add-on Redis.`,
   'cc-addon-redis-options.title': `Options pour l'add-on Redis`,
   //#endregion
+  //#region cc-ansi-palette
+  'cc-ansi-palette.compliant': `Couleur qui respecte le RGAA`,
+  'cc-ansi-palette.fg-bg': ({ foreground, background }) => `Texte : ${foreground}, Fond: ${background}`,
+  'cc-ansi-palette.hover': ({ color }) => `Survol : ${color}`,
+  'cc-ansi-palette.not-compliant': `Couleur qui ne respecte pas le RGAA`,
+  'cc-ansi-palette.ratio': ({ ratio }) => formatNumber(lang, ratio, { minimumFractionDigits: 2, maximumFractionDigits: 2 }).padStart(5, '0'),
+  'cc-ansi-palette.selected': ({ color }) => `Sélection: ${color}`,
+  //#endregion
   //#region cc-article-card
   'cc-article-card.date': ({ date }) => formatDateOnly(lang, date),
   //#endregion
@@ -472,6 +480,12 @@ export const translations = {
   'cc-jenkins-info.update.text': `Jenkins et ses plugins reçoivent régulièrement des mises à jour. Vous pouvez mettre à jour automatiquement votre instance ainsi que ses plugins à travers l'interface Jenkins.`,
   'cc-jenkins-info.update.title': `Mises à jour`,
   'cc-jenkins-info.update.up-to-date': `Votre version de Jenkins est à jour.`,
+  //#endregion
+  //#region cc-logs
+  'cc-logs.copied': ({ count }) => `${plural(count, 'Copiée')} (${count} ${plural(count, 'ligne')})`,
+  'cc-logs.copy': `Copier`,
+  'cc-logs.select-button.label': ({ index }) => `Sélectionner la ligne ${index}`,
+  'cc-logs.unselect-button.label': ({ index }) => `Désélectionner la ligne ${index}`,
   //#endregion
   //#region cc-logsmap
   'cc-logsmap.legend.heatmap': ({ orgaName }) => sanitize`Carte de chaleur des requêtes HTTP reçues par les applications de <strong>${orgaName}</strong> durant les dernières 24 heures.`,
