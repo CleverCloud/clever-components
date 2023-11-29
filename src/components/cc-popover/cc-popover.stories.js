@@ -34,28 +34,28 @@ const items = [
     hideText: true,
     icon: iconArrowLeftUp,
     position: 'top-right',
-    accessibleName: 'Click me to toggle popover',
+    a11yName: 'Click me to toggle popover',
   },
   {
     innerHTML: '<div>This is the popover content</div>',
     hideText: true,
     icon: iconArrowRightUp,
     position: 'top-left',
-    accessibleName: 'Click me to toggle popover',
+    a11yName: 'Click me to toggle popover',
   },
   {
     innerHTML: '<div>This is the popover content</div>',
     hideText: true,
     icon: iconArrowLeftDown,
     position: 'bottom-right',
-    accessibleName: 'Click me to toggle popover',
+    a11yName: 'Click me to toggle popover',
   },
   {
     innerHTML: '<div>This is the popover content</div>',
     hideText: true,
     icon: iconArrowRightDown,
     position: 'bottom-left',
-    accessibleName: 'Click me to toggle popover',
+    a11yName: 'Click me to toggle popover',
   },
 ];
 
