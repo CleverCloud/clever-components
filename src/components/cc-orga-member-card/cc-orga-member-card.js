@@ -328,7 +328,7 @@ export class CcOrgaMemberCard extends LitElement {
 
   /**
    * This sub render also relies on `cc-stretch` to make sure buttons have the same size whatever their visible text may be (edit vs readonly mode).
-   * We rely on the `accessible-name` prop on `cc-button` to make sure assistive get the relevant text with some context in addition.
+   * We rely on the `a11y-name` prop on `cc-button` to make sure assistive get the relevant text with some context in addition.
    */
   _renderActionBtns () {
 
@@ -349,7 +349,7 @@ export class CcOrgaMemberCard extends LitElement {
           ?circle=${isBtnImgOnly}
           ?disabled=${waiting}
           ?hide-text=${isBtnImgOnly}
-          accessible-name=${this._getFirstBtnAccessibleName()}
+          a11y-name=${this._getFirstBtnAccessibleName()}
           @cc-button:click=${this._onToggleEdit}
         >
           <cc-stretch visible-element-id=${isEditing ? 'btn-content-cancel' : 'btn-content-edit'}>
@@ -367,7 +367,7 @@ export class CcOrgaMemberCard extends LitElement {
           ?circle=${isBtnImgOnly}
           ?hide-text=${isBtnImgOnly}
           ?waiting=${waiting}
-          accessible-name=${this._getSecondBtnAccessibleName()}
+          a11y-name=${this._getSecondBtnAccessibleName()}
           @cc-button:click=${isEditing ? this._onUpdateMember : this._onDeleteMember}
           ${ref(this._deleteButtonRef)}
         >

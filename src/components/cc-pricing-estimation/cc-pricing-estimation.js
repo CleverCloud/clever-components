@@ -506,7 +506,7 @@ export class CcPricingEstimation extends LitElement {
               >
                 <cc-icon
                   .icon=${iconSubtract}
-                  accessible-name=${i18n('cc-pricing-estimation.plan.qty.btn.decrease', {
+                  a11y-name=${i18n('cc-pricing-estimation.plan.qty.btn.decrease', {
                     productName: plan.productName,
                     planName: plan.name,
                   })}
@@ -525,7 +525,7 @@ export class CcPricingEstimation extends LitElement {
               >
                 <cc-icon
                   .icon=${iconAdd}
-                  accessible-name=${i18n('cc-pricing-estimation.plan.qty.btn.increase', {
+                  a11y-name=${i18n('cc-pricing-estimation.plan.qty.btn.increase', {
                     productName: plan.productName,
                     planName: plan.name,
                   })}
@@ -557,7 +557,7 @@ export class CcPricingEstimation extends LitElement {
         >
           <cc-icon
             .icon=${iconBin}
-            accessible-name="${i18n('cc-pricing-estimation.plan.delete', {
+            a11y-name="${i18n('cc-pricing-estimation.plan.delete', {
               productName: plan.productName,
               planName: plan.name,
             })}"

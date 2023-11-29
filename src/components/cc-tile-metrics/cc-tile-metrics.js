@@ -260,7 +260,7 @@ export class CcTileMetrics extends LitElement {
         <div class="docs-buttons">
           ${state === 'loaded' ? html`
             ${ccLink(this.grafanaLink, html`
-              <cc-icon class="icon--grafana" .icon=${iconGrafana} accessible-name="${i18n('cc-tile-metrics.link-to-grafana')}"></cc-icon>
+              <cc-icon class="icon--grafana" .icon=${iconGrafana} a11y-name="${i18n('cc-tile-metrics.link-to-grafana')}"></cc-icon>
             `, false, i18n('cc-tile-metrics.link-to-grafana'))}
           ` : ''}
           <cc-button
@@ -308,7 +308,7 @@ export class CcTileMetrics extends LitElement {
 
       <div class="tile_message ${classMap({ 'tile--hidden': panel !== 'error' })}">
         <div class="error-message">
-          <cc-icon .icon="${iconAlert}" accessible-name="${i18n('cc-tile-metrics.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
+          <cc-icon .icon="${iconAlert}" a11y-name="${i18n('cc-tile-metrics.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
           <p>${i18n('cc-tile-metrics.error')}</p>
         </div>
       </div>

@@ -264,7 +264,7 @@ export class CcEmailList extends LitElement {
                     @cc-button:click=${() => this._onMarkAsPrimary(secondaryAddress.address)}
                     ?waiting="${secondaryAddress.state === 'marking-as-primary'}"
                     ?disabled="${markingAsPrimary || isBusy}"
-                    accessible-name="${i18n('cc-email-list.secondary.action.mark-as-primary.accessible-name', { address: secondaryAddress.address })}"
+                    a11y-name="${i18n('cc-email-list.secondary.action.mark-as-primary.accessible-name', { address: secondaryAddress.address })}"
                   >
                     ${i18n('cc-email-list.secondary.action.mark-as-primary.name')}
                   </cc-button>
@@ -276,7 +276,7 @@ export class CcEmailList extends LitElement {
                     @cc-button:click=${() => this._onDelete(secondaryAddress.address)}
                     ?waiting="${secondaryAddress.state === 'deleting'}"
                     ?disabled="${isBusy}"
-                    accessible-name="${i18n('cc-email-list.secondary.action.delete.accessible-name', { address: secondaryAddress.address })}"
+                    a11y-name="${i18n('cc-email-list.secondary.action.delete.accessible-name', { address: secondaryAddress.address })}"
                   >
                     ${i18n('cc-email-list.secondary.action.delete.name')}
                   </cc-button>

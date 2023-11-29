@@ -229,7 +229,7 @@ export class CcTileStatusCodes extends LitElement {
       ${displayError ? html`
         <div class="tile_message">
           <div class="error-message">
-            <cc-icon .icon="${iconAlert}" accessible-name="${i18n('cc-tile-status-codes.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
+            <cc-icon .icon="${iconAlert}" a11y-name="${i18n('cc-tile-status-codes.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
             <p>${i18n('cc-tile-status-codes.error')}</p>
           </div>
         </div>

@@ -271,7 +271,7 @@ class CcLogsSandbox extends LitElement {
           ?danger=${this._started}
           ?success=${!this._started}
           .icon=${this._started ? stopIcon : playIcon}
-          .accessibleName=${this._started ? 'Stop' : 'Start'}
+          a11y-name=${this._started ? 'Stop' : 'Start'}
           hide-text
         ></cc-button>
         <cc-button

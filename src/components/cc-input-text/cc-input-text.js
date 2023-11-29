@@ -302,7 +302,7 @@ export class CcInputText extends LitElement {
             <cc-icon
               class="btn-img"
               .icon=${this._showSecret ? iconEyeClosed : iconEyeOpen}
-              accessible-name=${this._showSecret ? i18n('cc-input-text.secret.hide') : i18n('cc-input-text.secret.show')}
+              a11y-name=${this._showSecret ? i18n('cc-input-text.secret.hide') : i18n('cc-input-text.secret.show')}
               size="lg"
             ></cc-icon>
           </button>
@@ -313,7 +313,7 @@ export class CcInputText extends LitElement {
             <cc-icon
               class="btn-img"
               .icon=${this._copyOk ? iconCheck : iconClipboard}
-              accessible-name=${i18n('cc-input-text.clipboard')}
+              a11y-name=${i18n('cc-input-text.clipboard')}
               size="lg"
             ></cc-icon>
           </button>
