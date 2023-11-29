@@ -23,6 +23,7 @@ export class CcBadge extends LitElement {
       circle: { type: Boolean },
       icon: { type: Object },
       iconAccessibleName: { type: String, attribute: 'icon-accessible-name' },
+      iconA11yName: { type: String, attribute: 'icon-a11y-name' },
       intent: { type: String },
       skeleton: { type: Boolean },
       weight: { type: String },
@@ -38,8 +39,8 @@ export class CcBadge extends LitElement {
     /** @type {IconModel|null} If set, enables icon mode and displays the required icon in the <cc-icon> component. */
     this.icon = null;
 
-    /** @type {string|null} Sets the `accessible-name` attribute value on the `<cc-icon>` tag. Only use if the icon conveys additional info compared to surrounding text. Check the `<cc-icon>` documentation for more details. */
-    this.iconAccessibleName = null;
+    /** @type {string|null} Sets the `a11y-name` attribute value on the `<cc-icon>` tag. Only use if the icon conveys additional info compared to surrounding text. Check the `<cc-icon>` documentation for more details. */
+    this.iconA11yName = null;
 
     /** @type {BadgeIntent} Sets the accent color used for the badge. */
     this.intent = 'neutral';
@@ -49,6 +50,18 @@ export class CcBadge extends LitElement {
 
     /** @type {BadgeWeight} Sets the style of the badge depending on how much one wants it to stand out. */
     this.weight = 'dimmed';
+  }
+
+  get iconAccessibleName () {
+    return this.a11yName;
+  }
+
+  /**
+   * Deprecated property. Use `iconA11yName` property or `icon-a11y-name` attribute instead.
+   * @deprecated
+   */
+  set iconAccessibleName (value) {
+    this.a11yName = value;
   }
 
   render () {
@@ -68,7 +81,7 @@ export class CcBadge extends LitElement {
     return html`
       <span class="cc-badge ${classMap(modes)}">
         ${this.icon != null ? html`
-          <cc-icon .icon=${this.icon} accessible-name=${ifDefined(this.iconAccessibleName)}></cc-icon>
+          <cc-icon .icon=${this.icon} a11y-name=${ifDefined(this.iconA11yName)}></cc-icon>
         ` : ''}
         <span>
           <slot></slot>
