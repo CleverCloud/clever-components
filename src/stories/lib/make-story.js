@@ -5,13 +5,22 @@ import { sequence } from './sequence.js';
 export function makeStory (...configs) {
 
   const {
-    name, docs, css, component, dom, items: rawItems = [{}], simulations = [], argTypes, displayMode,
+    name, docs, css, component, dom, items: rawItems = [{}], simulations = [], argTypes, displayMode, beta,
   } = Object.assign({}, ...configs);
 
   // In some rare conditions, we need to instanciate the items on story rendering (and each time it renders)
   const items = (typeof rawItems === 'function')
     ? rawItems()
     : rawItems;
+
+  const betaContainer = (container) => {
+    if (beta) {
+      const ccBeta = document.createElement('cc-beta');
+      ccBeta.appendChild(container);
+      return ccBeta;
+    }
+    return container;
+  };
 
   const storyFn = (storyArgs, { globals }) => {
 
@@ -36,7 +45,7 @@ export function makeStory (...configs) {
       const wrapper = document.createElement('div');
       shadow.appendChild(wrapper);
       dom(wrapper);
-      return container;
+      return betaContainer(container);
     }
 
     // Setup the components and inject args
@@ -81,7 +90,7 @@ export function makeStory (...configs) {
         }
       });
 
-    return container;
+    return betaContainer(container);
   };
 
   // We use the values of the first item for the args
