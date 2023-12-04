@@ -1,0 +1,53 @@
+.summary {
+  --summary-gap: calc(0.5 * var(--main-gap));
+
+  border-radius: 0.25em;
+  overflow: hidden;
+  width: 20%;
+  min-width: 20em;
+  max-width: 28em;
+  background-color: #f5f5f5;
+}
+
+.summary--body,
+.summary--footer {
+  padding: var(--summary-gap);
+}
+
+.summary .ss-block + .ss-block {
+  margin-block-start: 1em;
+}
+.summary .ss-block label {
+  display: none;
+  font-size: 1.25em;
+}
+.summary .ss-block code {
+  font-size: 0.75em;
+}
+
+.summary--header {
+  padding: var(--summary-gap);
+  display: flex;
+  align-items: center;
+  column-gap: var(--summary-gap);
+  color: white;
+  background-color: var(--color-primary);
+}
+
+.summary .ss-logo {
+  display: inline-flex;
+  flex: 0 0 auto;
+  border: 1px solid var(--color-primary-light);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.summary .ss-logo img {
+  height: 3em;
+  width: 3em;
+}
+.summary .ss-name {
+  flex: 1 1 auto;
+  font-size: 2em;
+  font-weight: 500;
+  line-height: 1.125;
+}

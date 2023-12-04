@@ -1,0 +1,23 @@
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: var(--main-gap);
+  padding-inline: var(--main-gap);
+  height: 5em;
+  border-bottom: 2px solid #f5f5f5;
+}
+
+.breadcrumbs .step {
+  flex: 1 1 auto;
+}
+
+.step[selected] .title {
+  font-weight: bold;
+}
+
+.breadcrumbs .step .title {
+  font-size: 1.125em;
+}
+.breadcrumbs .step .baseline {
+  font-size: 0.875em;
+}

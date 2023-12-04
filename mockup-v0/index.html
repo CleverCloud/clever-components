@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Creation tunnel mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@200;300;400;500;600;700;800;900&family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modern-normalize@2.0.0/modern-normalize.min.css">
+  <link rel="stylesheet" href="https://components.clever-cloud.com/styles.css?version=11.2.1">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="https://components.clever-cloud.com/load.js?version=11.2.1&lang=en&components=cc-button,cc-input-text,cc-toggle,cc-zone,cc-zone-input,cc-icon,cc-addon-elasticsearch-options,cc-addon-jenkins-options,cc-addon-mongodb-options,cc-addon-mysql-options,cc-addon-postgresql-options,cc-addon-redis-options"></script>
+  <script type="module">
+    import './main.js';
+  </script>
+</head>
+<body>
+<menu>
+  <div class="menu-orgas"></div>
+  <div class="menu-services"></div>
+</menu>
+<main>
+  <div class="breadcrumbs">
+    <div class="step">
+      <div class="title">Step 1</div>
+      <div class="baseline">Select your service type</div>
+    </div>
+    <div class="step" selected>
+      <div class="title">Step 2</div>
+      <div class="baseline">Configure your service</div>
+    </div>
+  </div>
+  <div class="form-container">
+    <div class="form">
+      <div class="form-element service-name">
+        <label>Service Name</label>
+        <cc-input-text required></cc-input-text>
+      </div>
+      <div class="form-element zone-picker">
+        <label>Select your zone</label>
+        <div class="zone-picker-wrapper"></div>
+      </div>
+      <div class="form-element" data-type="app">
+        <label>Select your source</label>
+        <div class="skeleton">
+          Source selection
+        </div>
+      </div>
+      <div class="form-element" data-type="app">
+        <label>Adjust your scalability</label>
+        <div class="skeleton">
+          Scalability
+        </div>
+      </div>
+      <div class="form-element plan-list" data-type="addon">
+        <label>Choose your plan</label>
+        <div class="form-element--container"><!-- from js --></div>
+      </div>
+      <div class="form-element customization-list" data-type="addon">
+        <label>Customize your plan</label>
+        <div class="form-element--container"><!-- from js --></div>
+      </div>
+      <div class="form-element options display-none-i">
+        <label>Options</label>
+        <div class="toggle-container" data-type="app">
+          <cc-toggle
+            value="on"
+            choices='[{"label":"on","value":"on"},{"label":"off","value":"off"}]'
+          ></cc-toggle>
+          <div class="toggle-legend">Force HTTPS</div>
+          <div class="toggle-help">Any non secured HTTP request to this application will be redirected to HTTPS with a <code>301 Moved Permanently</code> status code.</div>
+        </div>
+        <div class="skeleton" data-type="addon">
+          Add-on options
+        </div>
+        <div class="display-none" data-service-id="es-addon">
+          <cc-addon-elasticsearch-options
+            options='[{"name":"kibana","enabled":false,"flavor":{"name":"L","mem":8192,"cpus":6,"gpus":0,"microservice":false,"monthlyCost":144}},{"name":"apm","enabled":false,"flavor":{"name":"M","mem":4096,"cpus":4,"gpus":0,"microservice":false,"monthlyCost":72}},{"name":"encryption","enabled":false}]'
+          ></cc-addon-elasticsearch-options>
+        </div>
+        <div class="display-none" data-service-id="jenkins">
+          <cc-addon-jenkins-options options='[{"name":"encryption","enabled":false}]'></cc-addon-jenkins-options>
+        </div>
+        <div class="display-none" data-service-id="mongodb-addon">
+          <cc-addon-mongodb-options options='[{"name":"encryption","enabled":false}]'></cc-addon-mongodb-options>
+        </div>
+        <div class="display-none" data-service-id="mysql-addon">
+          <cc-addon-mysql-options options='[{"name":"encryption","enabled":false}]'></cc-addon-mysql-options>
+        </div>
+        <div class="display-none" data-service-id="postgresql-addon">
+          <cc-addon-postgresql-options options='[{"name":"encryption","enabled":false}]'></cc-addon-postgresql-options>
+        </div>
+        <div class="display-none" data-service-id="redis-addon">
+          <cc-addon-redis-options options='[{"name":"encryption","enabled":false}]'></cc-addon-redis-options>
+        </div>
+      </div>
+    </div>
+    <div class="summary">
+      <div class="summary--header">
+        <div class="ss-logo"></div>
+        <div class="ss-name"></div>
+      </div>
+      <div class="summary--body">
+        <div class="ss-block name">
+          <label>Name</label>
+          <div class="block-content"></div>
+        </div>
+        <div class="ss-block zone">
+          <label>Zone</label>
+          <div class="block-content"></div>
+        </div>
+      </div>
+      <div class="summary--footer">
+        <cc-button primary>Create service</cc-button>
+        <cc-button class="cancel">Cancel</cc-button>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>

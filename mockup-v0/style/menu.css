@@ -1,0 +1,17 @@
+menu {
+  cursor: pointer;
+}
+
+.menu-orgas {
+  width: 3.25em;
+  background-color: #283250;
+}
+
+.menu-services {
+  width: 15.625em;
+  background-color: #1d2337;
+}
+
+menu[open] .menu-orgas {
+  width: 18.75em;
+}
