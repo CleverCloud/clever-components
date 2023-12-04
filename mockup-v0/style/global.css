@@ -1,0 +1,50 @@
+html,
+body {
+  --color-primary: #3569AA;
+  --color-primary-light: #cedcff;
+
+  height: 100%;
+  width: 100%;
+  font-family: "Ubuntu", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #0d0d0d;
+}
+
+menu {
+  padding: 0;
+  margin: 0;
+}
+
+main {
+  --main-gap: 2em;
+  --shadow-color: 0deg 0% 71%;
+}
+
+cc-button {
+  --cc-button-text-transform: none;
+  --cc-button-font-weight: normal;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+body[data-type='app'] [data-type='addon'],
+body[data-type='addon'] [data-type='app'] {
+  display: none !important;
+}
+
+.skeleton {
+  padding: 1em;
+  color: #404040;
+  background-color: #eeeeee;
+  font-style: italic;
+}
+
+.display-none {
+  display: none;
+}
+.display-none-i {
+  display: none !important;
+}

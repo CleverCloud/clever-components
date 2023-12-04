@@ -1,0 +1,43 @@
+body {
+  display: flex;
+  align-items: stretch;
+}
+
+menu {
+  display: flex;
+  align-items: stretch;
+  flex: 0 0 auto;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+.breadcrumbs {
+  flex: 0 0 auto;
+}
+
+.form-container {
+  flex: 1 1 auto;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: auto;
+}
+
+.form {
+  flex: 1 1 auto;
+  padding: var(--main-gap);
+  max-width: 72em;
+}
+
+.summary {
+  flex: 0 0 auto;
+  position: sticky;
+  top: var(--main-gap);
+  right: var(--main-gap);
+  margin-inline-start: var(--main-gap);
+}

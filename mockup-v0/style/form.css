@@ -1,0 +1,208 @@
+/* global */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5em 0;
+}
+
+.form .form-element {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em 0;
+}
+
+.form label {
+  font-family: "Source Sans 3", sans-serif;
+  font-size: 1.5em;
+  font-weight: 500;
+  margin-block-end: 0.125em;
+}
+
+.form .form-element.footer {
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 0.5em;
+}
+
+/* elements */
+cc-input-text {
+  font-size: 1.25em;
+  width: 100%;
+}
+
+cc-button {
+  font-size: 1.125em;
+}
+
+/* zones */
+.zone-picker-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
+.zone-item {
+  flex: 0 0 12.5em;
+  display: inline-grid;
+  grid-template-areas:
+    'title icon'
+    'thumbnails icon';
+  column-gap: 1em;
+  row-gap: 0.5em;
+  padding: 0.75em 0.75em 0.75em 1em;
+  border: 2px solid lightgrey;
+  border-radius: 0.5em;
+}
+
+.zone-item[selected] {
+  border-color: var(--color-primary);
+  outline: 1px solid var(--color-primary);
+}
+.zone-item:not([selected]) {
+  cursor: pointer;
+}
+.zone-item:not([selected]) .zone-item--icon-selected {
+  opacity: 0;
+}
+
+.zone-item .zone-item--title {
+  grid-area: title;
+  line-height: 1.125;
+}
+.zone-item .zi-city {
+  display: block;
+  font-size: 1.5em;
+}
+.zone-item .zi-infra {
+  display: block;
+  font-size: 0.875em;
+  color: #979797;
+}
+.zone-item .zi-green {
+  --cc-icon-color: #22C55E;
+  --cc-icon-size: 1.25em;
+}
+
+.zone-item .zone-item--thumbnails {
+  grid-area: thumbnails;
+  display: inline-flex;
+  align-items: center;
+  column-gap: 0.5em;
+}
+.zone-item img.zone-item--thumbnail {
+  width: 1.25em;
+  max-height: 1.125em;
+}
+
+.zone-item .zi-flag {
+  border-radius: 2px;
+  box-shadow: rgba(0, 0, 0, 0.4) 0 0 3px;
+}
+
+.zone-item .zone-item--icon-selected {
+  --cc-icon-color: var(--color-primary);
+
+  grid-area: icon;
+  align-self: center;
+  justify-self: end;
+}
+
+/* plans */
+.plan-list .form-element--container,
+.customization-list .form-element--container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
+.plan-list .plan-item,
+.customization-list .plan-item {
+  flex: 0 0 12.5em;
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5em;
+  padding: 1em 1.5em;
+  border: 2px solid lightgrey;
+  border-radius: 0.5em;
+  cursor: pointer;
+}
+.plan-list .plan-item[selected],
+.customization-list .plan-item[selected] {
+  border-color: var(--color-primary);
+  outline: 1px solid var(--color-primary);
+}
+.plan-list .plan-item:not([selected]) cc-icon,
+.customization-list .plan-item:not([selected]) cc-icon {
+  opacity: 0;
+}
+
+.plan-list .plan-item--icon-selected,
+.customization-list .plan-item--icon-selected {
+  --cc-icon-color: var(--color-primary);
+  --cc-icon-size: 1em;
+}
+
+.plan-list .plan-item--name,
+.customization-list .plan-item--name {
+  display: flex;
+  align-items: center;
+  column-gap: 0.25em;
+  font-size: 1.125em;
+}
+.plan-list .plan-item--infos,
+.customization-list .plan-item--infos {
+  display: flex;
+  flex-direction: column;
+  color: #404040;
+  font-size: 0.875em;
+}
+
+/* options */
+.toggle-container {
+  display: grid;
+  grid-template-columns: min-content auto;
+  grid-template-areas:
+    'toggle legend'
+    'toggle help';
+  gap: 0 1em;
+}
+
+.toggle-container cc-toggle {
+  grid-area: toggle;
+}
+.toggle-container .toggle-legend {
+  grid-area: legend;
+}
+.toggle-container .toggle-help {
+  grid-area: help;
+  font-size: 0.875em;
+  color: #404040;
+}
+.toggle-container .toggle-help code {
+  padding-inline: 0.25em;
+}
+
+main[data-service-id="es-addon"] .form-element.options,
+main[data-service-id="jenkins"] .form-element.options,
+main[data-service-id="mongodb-addon"] .form-element.options,
+main[data-service-id="mysql-addon"] .form-element.options,
+main[data-service-id="postgresql-addon"] .form-element.options,
+main[data-service-id="redis-addon"] .form-element.options {
+  display: block !important;
+}
+main[data-service-id="es-addon"] .form-element.options .skeleton,
+main[data-service-id="jenkins"] .form-element.options .skeleton,
+main[data-service-id="mongodb-addon"] .form-element.options .skeleton,
+main[data-service-id="mysql-addon"] .form-element.options .skeleton,
+main[data-service-id="postgresql-addon"] .form-element.options .skeleton,
+main[data-service-id="redis-addon"] .form-element.options .skeleton {
+  display: none;
+}
+main[data-service-id='es-addon'] .form-element.options [data-service-id="es-addon"],
+main[data-service-id='jenkins'] .form-element.options [data-service-id="jenkins"],
+main[data-service-id='mongodb-addon'] .form-element.options [data-service-id="mongodb-addon"],
+main[data-service-id='mysql-addon'] .form-element.options [data-service-id="mysql-addon"],
+main[data-service-id='postgresql-addon'] .form-element.options [data-service-id="postgresql-addon"],
+main[data-service-id='redis-addon'] .form-element.options [data-service-id="redis-addon"] {
+  display: block;
+}
