@@ -15,7 +15,7 @@ import { dispatchCustomEvent } from '../../lib/events.js';
  *
  * * This component does not replace regular usage of radio/checkbox inputs in forms.
  * * It works well in toolbars or filter panels.
- * * The single mode mode (default) works well to toggle a component between two (or more) modes.
+ * * The single mode (default) works well to toggle a component between two (or more) modes.
  *
  * ## Details
  *
@@ -129,9 +129,11 @@ export class CcToggle extends LitElement {
         : this.value === value;
     };
 
+    const hasLegend = this.legend != null && this.legend.length > 0;
+
     return html`
-      <fieldset>
-        <legend>${this.legend}</legend>
+      <div role="group" aria-labelledby=${ifDefined(hasLegend ? 'legend' : undefined)} class="group">
+        ${hasLegend ? html`<div id="legend">${this.legend}</div>` : ''}
         <div class="toggle-group ${classMap(classes)}">
           ${repeat(this.choices, ({ value }) => value, ({ label, image, value }) => html`
             <!--
@@ -156,7 +158,7 @@ export class CcToggle extends LitElement {
             </label>
           `)}
         </div>
-      </fieldset>
+      </div>
     `;
   }
 
@@ -174,40 +176,21 @@ export class CcToggle extends LitElement {
 
           display: inline-flex;
         }
-
-        /* RESET */
-
-        fieldset {
-          display: inline-block;
-          min-width: 0;
-          padding: 0;
-          border: 0;
-          margin: 0;
+        
+        .group {
+          display: flex;
+          flex-direction: column;
+          gap: 0.35em;
         }
 
-        /* RESET */
-
-        legend {
-          max-width: 100%;
-          padding: 0;
-          color: inherit;
-          line-height: inherit;
-          white-space: normal;
+        :host([inline]) .group {
+          flex-direction: row;
+          align-items: center;
+          gap: 1em;
         }
-
-        legend:not(:empty) {
-          padding-bottom: 0.35em;
+        
+        #legend {
           line-height: 1.25em;
-        }
-
-        :host([inline]) legend {
-          width: max-content;
-          padding: 0;
-          margin-right: 1em;
-          /* cannot use flex to change legend position. Only solution is float. */
-          float: left;
-          /* used to vertically center the floated element. */
-          line-height: var(--height);
         }
 
         .toggle-group {
