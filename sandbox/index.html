@@ -6,28 +6,40 @@
   <title>Demo smart</title>
   <link rel="stylesheet" href="/src/styles/default-theme.css">
   <style>
-    body {
+    html, body {
       font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-      margin: 1em auto;
-      width: 90%;
+      margin: 0;
+      height: 100%;
+    }
+
+    .main {
+      height: 100%;
       display: flex;
-      flex-direction: row;
-      gap: 1em;
+    }
+
+    .left {
+      box-shadow: 0 0 8px 0 #aaa;
+      display: flex;
+      flex-direction: column;
+      width: 15em;
+    }
+
+    .header {
+      padding: 0.25em;
+    }
+
+    .header img {
+      height: 2em;
     }
 
     .sandboxes-list {
-      border: 1px solid #999;
       padding: 0.5em;
-    }
-
-    .sandbox-container {
-      border: 1px solid #555;
-      padding: 0.5em;
+      background-color: #eee;
       flex: 1;
-      min-height: 600px;
+      overflow: auto;
     }
 
-    ul {
+    .sandboxes-list ul {
       padding: 0;
       margin: 0;
       list-style: none;
@@ -36,20 +48,33 @@
       flex-wrap: wrap;
     }
 
-    li {
+    .sandboxes-list li {
       padding: 0;
       margin-top: 0.5em;
     }
 
-    a {
+    .sandboxes-list a {
       display: block;
       background-color: #eee;
       padding: 0.25em 0.5em;
       border-radius: var(--cc-border-radius-default, 0.25em);
     }
 
-    a:hover {
+    .sandboxes-list a:hover {
       background-color: #ddd;
+    }
+
+    .sandboxes-list a.selected, .sandboxes-list a:hover.selected {
+      background-color: #333;
+      color: #eee;
+    }
+
+    .sandbox-container {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      padding: 1em;
+      overflow: auto;
     }
 
     cc-toaster {
@@ -62,12 +87,17 @@
 </head>
 <body>
 
-<div class="sandboxes-list">
-
-</div>
-
-<div class="sandbox-container">
-
+<div class="main">
+  <div class="left">
+    <div class="header">
+      <a title="Clever Cloud components" href="https://www.clever-cloud.com/doc/" target="_blank">
+        <img src="https://www.clever-cloud.com/app/themes/Starter/assets/img/brand-assets/logo_on_white.svg"
+             alt="Clever Cloud components">
+      </a>
+    </div>
+    <div class="sandboxes-list"></div>
+  </div>
+  <div class="sandbox-container"></div>
 </div>
 
 <cc-toaster

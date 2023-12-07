@@ -19,10 +19,8 @@ const sandboxes = [
 const $listContainer = document.querySelector('.sandboxes-list');
 const $sandboxContainer = document.querySelector('.sandbox-container');
 
-console.log(sandboxes);
-
 // list of sandboxes
-const htmlList = sandboxes.map((s) => `<li><a href="?component=${s}">${s}</a></li>`).join('');
+const htmlList = sandboxes.map((s) => `<li><a href="?component=${s}" data-sandbox="${s}">${s}</a></li>`).join('');
 $listContainer.innerHTML = `<ul>${htmlList}</ul>`;
 
 // get component name from URL
@@ -36,6 +34,8 @@ if (!sandboxes.includes(component)) {
   $sandboxContainer.innerHTML = '<cc-notice intent="danger" message="No sandbox found !"></cc-notice>';
 }
 else {
+  document.querySelector(`.sandboxes-list [data-sandbox="${component}"]`)?.classList.add('selected');
+
   import(`./${component}/${component}-sandbox.js`);
 
   const $component = document.createElement(`${component}-sandbox`);
