@@ -49,4 +49,8 @@ describe('dispatchCustomEvent', () => {
   it('should dispatch custom event with full event name', async () => {
     await fireEvent('cc-component', 'full:name', 'full:name', 'detail');
   });
+
+  it('should dispatch custom event with beta component', async () => {
+    await fireEvent('cc-component-beta', 'myEvent', 'cc-component:myEvent', 'detail');
+  });
 });
