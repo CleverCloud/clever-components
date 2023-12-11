@@ -77,7 +77,9 @@ export function sanitize (statics, ...params) {
         // If link has href and external origin => force rel and target
         if (node.tagName === 'A' && node.getAttribute('href') != null) {
           node.classList.add('sanitized-link');
-          if (node.origin !== window.location.origin) {
+          // Chrome > 120 returns an empty string for an anchor element with an absolute url like `href=/foo` when it's in a template DOM element
+          // In such case, we need to test if it's an empty string to make sure absolute or relative urls are not considered external
+          if (node.origin?.length > 0 && node.origin !== window.location.origin) {
             node.setAttribute('rel', 'noopener noreferrer');
             node.setAttribute('target', '_blank');
           }
