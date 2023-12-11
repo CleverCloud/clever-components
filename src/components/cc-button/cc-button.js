@@ -63,14 +63,22 @@ export class CcButton extends LitElement {
       primary: { type: Boolean },
       skeleton: { type: Boolean },
       success: { type: Boolean },
+      type: { type: String },
       waiting: { type: Boolean, reflect: true },
       warning: { type: Boolean },
       _cancelMode: { type: Boolean, state: true },
     };
   }
 
+  static get formAssociated () {
+    return true;
+  }
+
   constructor () {
     super();
+
+    // TODO: should we add a `type` prop and only add this if the type is set to submit? Not sure, we could also have btns that don't submit but still participate in the form...
+    this._internals = this.attachInternals();
 
     /** @type {null|boolean} Sets aria-expanded on the inner `button` element. */
     this.a11yExpanded = null;
@@ -116,6 +124,9 @@ export class CcButton extends LitElement {
 
     /** @type {boolean} Sets button UI _mode_ to success. */
     this.success = false;
+
+    /** @type {'button'|'submit'|'reset'} Sets the type attribute on the native button. */
+    this.type = 'button';
 
     /** @type {boolean} If set, shows a waiting/busy indicator and sets `disabled` attribute on inner native `<button>` element. */
     this.waiting = false;
@@ -186,6 +197,15 @@ export class CcButton extends LitElement {
     // delay=0 is needed in some situations where you want the button to have the same width
     // as buttons with delay > 0 but without any delay
     if (this.delay == null || this.delay === 0 || this.link) {
+      // TODO: what if the button is not the submit button ? this is why we probably need a `type` prop that defaults to `button` and could be set to submit or reset if needed
+      if (this.type === 'submit') {
+        this._internals.form?.requestSubmit();
+      }
+
+      if (this.type === 'reset') {
+        console.log('RESET', this._internals.form);
+        this._internals.form?.reset();
+      }
       return dispatchCustomEvent(this, 'click');
     }
 
@@ -195,6 +215,14 @@ export class CcButton extends LitElement {
     else {
       this._cancelMode = true;
       this._timeoutId = setTimeout(() => {
+        // TODO: what if the button is not the submit button ? this is why we probably need a `type` prop that defaults to `button` and could be set to submit or reset if needed
+        if (this.type === 'submit') {
+          this._internals.form?.requestSubmit();
+        }
+
+        if (this.type === 'reset') {
+          this._internals.form?.reset();
+        }
         dispatchCustomEvent(this, 'click');
         this._cancelMode = false;
       }, this.delay * 1000);
@@ -239,10 +267,9 @@ export class CcButton extends LitElement {
     modes.circle = this.circle && this.hideText && (this.image || this.icon);
 
     const tabIndex = this.skeleton ? -1 : null;
-
     return html`
       <button
-        type="button"
+        type="${this.type}"
         tabindex="${ifDefined(tabIndex)}"
         class=${classMap(modes)}
         aria-disabled="${this.disabled || this.skeleton || this.waiting}"

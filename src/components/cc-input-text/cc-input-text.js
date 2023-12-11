@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import {
   iconRemixClipboardLine as iconClipboard,
   iconRemixEyeOffLine as iconEyeClosed,
@@ -17,6 +18,10 @@ import { ValidationController } from '../cc-ft/validation/validation-controller.
 import { EmailValidator, RequiredValidator } from '../cc-ft/validation/validation.js';
 
 const TAG_SEPARATOR = ' ';
+
+/**
+ * @type {import('lit/directives/ref.js').Ref} Ref
+ */
 
 /**
  * An enhanced text input with support for multiline, copy-to-clipboard, show/hide secret and highlighted tags.
@@ -63,11 +68,16 @@ export class CcInputText extends LitElement {
       skeleton: { type: Boolean, reflect: true },
       type: { type: String, reflect: true },
       tags: { type: Array },
+      resetValue: { type: String },
       value: { type: String },
       _copyOk: { type: Boolean, state: true },
       _showSecret: { type: Boolean, state: true },
       _tagsEnabled: { type: Boolean, state: true },
     };
+  }
+
+  static get formAssociated () {
+    return true;
   }
 
   constructor () {
@@ -78,6 +88,9 @@ export class CcInputText extends LitElement {
 
     /** @type {boolean} Sets `disabled` attribute on inner native `<input>/<textarea>` element. */
     this.disabled = false;
+
+    /** @type {string|null} . */
+    this.errorMessage = null;
 
     /** @type {boolean} Sets the `<label>` on the left of the `<input>` element.
      * Only use this if your form contains 1 or 2 fields and your labels are short.
@@ -105,6 +118,9 @@ export class CcInputText extends LitElement {
     /** @type {boolean} Sets required mention inside the `<label>` element. */
     this.required = false;
 
+    /** @type {string} Sets `value` attribute on inner native input element or textarea's inner content. */
+    this.resetValue = '';
+
     /** @type {boolean} Enables show/hide secret feature with an eye icon. */
     this.secret = false;
 
@@ -120,11 +136,14 @@ export class CcInputText extends LitElement {
     /** @type {string} Sets `value` attribute on inner native input element or textarea's inner content. */
     this.value = '';
 
-    /** @type {string|null} . */
-    this.errorMessage = null;
-
     /** @type {boolean} */
     this._copyOk = false;
+
+    /** @type {ElementInternals} */
+    this._internals = this.attachInternals();
+
+    /** @type {Ref<HTMLInputElement|HTMLTextAreaElement>} */
+    this._inputRef = createRef();
 
     /** @type {boolean} */
     this._showSecret = false;
@@ -162,7 +181,7 @@ export class CcInputText extends LitElement {
    * Triggers focus on the inner `<input>/<textarea>` element.
    */
   focus () {
-    this.shadowRoot.querySelector('.input').focus();
+    this.updateComplete.then(() => this._inputRef?.value?.focus());
   }
 
   _onInput (e) {
@@ -179,6 +198,10 @@ export class CcInputText extends LitElement {
       }
     }
     this.value = e.target.value;
+    // Sync form values with our state
+    this._internals.setFormValue(this._tagsEnabled ? this.tags : this.value);
+    // Sync form & input validity
+    this.validate(false);
     dispatchCustomEvent(this, 'input', this.value);
     if (this._tagsEnabled) {
       dispatchCustomEvent(this, 'tags', this.tags);
@@ -210,11 +233,13 @@ export class CcInputText extends LitElement {
     // Here we prevent keydown on enter key from modifying the value
     if (this._tagsEnabled && e.type === 'keydown' && e.keyCode === 13) {
       e.preventDefault();
+      this._internals.form.requestSubmit();
       dispatchCustomEvent(this, 'requestimplicitsubmit');
     }
     // Request implicit submit with keypress on enter key
     if (!this.readonly && e.type === 'keypress' && e.keyCode === 13) {
       if ((!this.multi) || (this.multi && e.ctrlKey)) {
+        this._internals.form.requestSubmit();
         dispatchCustomEvent(this, 'requestimplicitsubmit');
       }
     }
@@ -237,16 +262,66 @@ export class CcInputText extends LitElement {
    */
   validate (report) {
     const validator = new RequiredValidator(this.required, this._getValidator());
+    const validationResult = this._validationCtrl.validate(validator, this.value, report, this._customErrorMessages);
 
-    return this._validationCtrl.validate(validator, this.value, report, this._customErrorMessages);
+    if (validationResult.valid) {
+      this._internals.setValidity({});
+    }
+    else {
+      // TODO: should the Validator return both a code and a validityState?
+      this._internals.setValidity(
+        {
+          valueMissing: validationResult.code === 'empty',
+          badInput: validationResult.code === 'badEmail',
+        },
+        validator.getErrorMessage(validationResult.code),
+        this._inputRef.value,
+      );
+    }
+
+    return validationResult;
   }
 
-  setCustomValidator (customValidator) {
+  set customValidator (customValidator) {
     this._customValidator = customValidator;
   }
 
-  setCustomErrorMessages (fn) {
+  set customErrorMessages (fn) {
     this._customErrorMessages = fn;
+  }
+
+  /* region native compatibility */
+  checkValidity () {
+    return this._internals.checkValidity();
+  }
+
+  reportValidity () {
+    return this._internals.reportValidity();
+  }
+
+  get validity () {
+    return this._internals.validity;
+  }
+
+  get validationMessage () {
+    return this._internals.validationMessage;
+  }
+
+  setCustomValidity (message) {
+    this._internals.setValidity({ customError: true }, message, this._inputRef.value);
+  }
+
+  /* endregion */
+
+  formResetCallback () {
+    this.value = this.resetValue;
+    this.validate(false);
+    this.errorMessage = null;
+  }
+
+  firstUpdated () {
+    // Sync form & input validity
+    this.validate(false);
   }
 
   render () {
@@ -303,6 +378,7 @@ export class CcInputText extends LitElement {
               wrap="${ifDefined(this._tagsEnabled ? 'soft' : undefined)}"
               aria-describedby="help-id error-id"
               @focus=${this._onFocus}
+              ${ref(this._inputRef)}
             ></textarea>
           ` : ''}
 
@@ -327,6 +403,7 @@ export class CcInputText extends LitElement {
               spellcheck="false"
               aria-describedby="help-id error-id"
               @focus=${this._onFocus}
+              ${ref(this._inputRef)}
             >
           ` : ''}
 
