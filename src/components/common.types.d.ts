@@ -161,13 +161,6 @@ interface Zone {
   tags: string[];        // Array of strings for semantic tags: ["region:eu", "infra:clever-cloud"], ["scope:private"]...
 }
 
-interface Organisation {
-  name: string;
-  avatar: string;
-  cleverEnterprise: boolean;
-  emergencyNumber: string;
-}
-
 type ToggleStateType = 'off' | 'open' | 'close';
 
 interface Application {
