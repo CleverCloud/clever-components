@@ -9,10 +9,11 @@ import {
   iconRemixAddFill as addIcon,
   iconRemixDeleteBin_2Fill as clearIcon,
   iconRemixPlayFill as playIcon,
-  iconRemixStopMiniFill as stopIcon,
   iconRemixSkipDownFill as scrollToBottomIcon,
+  iconRemixStopMiniFill as stopIcon,
 } from '../../src/assets/cc-remix.icons.js';
 import { DATE_DISPLAYS, TIMEZONES } from '../../src/components/cc-logs/date-displayer.js';
+import { createFakeLog, CUSTOM_METADATA_RENDERERS } from '../../src/components/cc-logs/fake-logs.js';
 import { ansiPaletteStyle } from '../../src/lib/ansi/ansi-palette-style.js';
 import defaultPalette from '../../src/lib/ansi/palettes/default.js';
 import everblushPalette from '../../src/lib/ansi/palettes/everblush.js';
@@ -21,7 +22,6 @@ import nightOwlPalette from '../../src/lib/ansi/palettes/night-owl.js';
 import oneLightPalette from '../../src/lib/ansi/palettes/one-light.js';
 import tokyoNightLightPalette from '../../src/lib/ansi/palettes/tokyo-night-light.js';
 import { Buffer } from '../../src/lib/buffer.js';
-import { random, randomPick, range } from '../../src/lib/utils.js';
 
 const IPS = ['192.168.12.1', '192.168.48.157'];
 const LEVELS = ['INFO', 'WARN', 'DEBUG', 'ERROR'];
@@ -43,55 +43,6 @@ const PALETTE_OPTIONS = [
 ];
 const DATE_DISPLAY_OPTIONS = DATE_DISPLAYS.map((d) => ({ label: d, value: d }));
 const ZONE_OPTIONS = TIMEZONES.map((d) => ({ label: d, value: d }));
-
-const LOREM_IPSUM = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
-
-const ANSI_EFFECTS = [1, 3, 4, 9];
-const ANSI_COLORS = [...range(31, 36), ...range(91, 96)];
-
-const CUSTOM_METADATA_RENDERERS = {
-  level: (metadata) => {
-    let intent = 'neutral';
-    if (metadata.value === 'ERROR') {
-      intent = 'danger';
-    }
-    else if (metadata.value === 'WARN') {
-      intent = 'warning';
-    }
-    else if (metadata.value === 'INFO') {
-      intent = 'info';
-    }
-    return {
-      strong: true,
-      intent,
-      size: 5,
-    };
-  },
-  ip: (metadata) => ({
-    text: `💻 ${metadata.value}`,
-    strong: true,
-    size: 17,
-  }),
-};
-
-const convertToLog = (index, message) => {
-  const date = new Date();
-  return {
-    id: `${date.getTime()}-${index}`,
-    date,
-    message,
-    metadata: [
-      {
-        name: 'level',
-        value: randomPick(LEVELS),
-      },
-      {
-        name: 'ip',
-        value: randomPick(IPS),
-      },
-    ],
-  };
-};
 
 class CcLogsSandbox extends LitElement {
   static get properties () {
@@ -140,15 +91,7 @@ class CcLogsSandbox extends LitElement {
   _newLog () {
     this._index++;
 
-    const message = LOREM_IPSUM.split(' ').slice(0, random(1, 100))
-      .map((w) => {
-        const effect = randomPick(ANSI_EFFECTS);
-        const color = randomPick(ANSI_COLORS);
-        return `\u001B[${effect};${color}m${w}`;
-      })
-      .join('\u001B[0m ');
-
-    return convertToLog(this._index, `Message ${this._index}. ${message}`);
+    return createFakeLog(this._index, { longMessage: true, ansi: true });
   }
 
   _addLog () {
@@ -412,7 +355,7 @@ class CcLogsSandbox extends LitElement {
           flex: 1;
         }
 
-        cc-logs {
+        #cc-logs {
           height: 600px;
           border: 1px solid #ddd;
           border-radius: 0.2em;
