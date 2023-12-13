@@ -92,10 +92,10 @@ export function asyncMap (array, asyncCallback) {
 }
 
 /**
-  * Returns the currency symbol corresponding to the given currency.
-  *
-  * @param {string} currency - the currency to get the symbol for
-  */
+ * Returns the currency symbol corresponding to the given currency.
+ *
+ * @param {string} currency - the currency to get the symbol for
+ */
 export function getCurrencySymbol (currency) {
   // The lang does not really matter
   const nf = new Intl.NumberFormat('en', { style: 'currency', currency });
@@ -103,7 +103,7 @@ export function getCurrencySymbol (currency) {
     .formatToParts(0)
     .find((p) => p.type === 'currency')
     .value
-  // Safari does not support currencySymbol: 'narrow' in Intl.NumberFormat so we need to do this #sorry
+    // Safari does not support currencySymbol: 'narrow' in Intl.NumberFormat so we need to do this #sorry
     .replace('$US', '$');
 }
 
@@ -148,6 +148,15 @@ export function randomPick (array) {
   }
   const index = random(0, array.length - 1);
   return array[index];
+}
+
+/** Generates a random string of a given length
+ *
+ * @param {number} length
+ * @returns {string}
+ */
+export function randomString (length) {
+  return Math.random().toString(36).substring(2, length + 2);
 }
 
 /**
