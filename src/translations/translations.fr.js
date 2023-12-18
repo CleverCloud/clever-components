@@ -1139,4 +1139,27 @@ export const translations = {
   'cc-zone-input.error': `Une erreur est survenue pendant le chargement des zones.`,
   'cc-zone-input.private-map-warning': `Les zones privées n'apparaissent pas sur la carte.`,
   //#endregion
+  //#region cc-ticket-center
+  'cc-ticket-center.list.titles.last-message': `Dernier message`,
+  'cc-ticket-center.list.titles.status': `État`,
+  'cc-ticket-center.list.titles.subject': `Titre`,
+  'cc-ticket-center.state.closed': `Fermé`,
+  'cc-ticket-center.state.open': `Ouvert`,
+  'cc-ticket-center.state.unread': `Non lu`,
+  'cc-ticket-center.ticket-id': ({ ticketId }) => `Ticket ${ticketId}`,
+  'cc-ticket-center.ticket.opened-at': ({ date }) => `Ouvert le ${formatDatetime(lang, date)}`,
+  'cc-ticket-center.message.sent-at': ({ date }) => `Envoyé le ${formatDatetime(lang, date)}`,
+  'cc-ticket-center.button.reopen-and-send': `Réouvrir & Envoyer`,
+  'cc-ticket-center.button.send': `Envoyer`,
+  'cc-ticket-center.button.close-ticket': `Clore le ticket`,
+  'cc-ticket-center.author-avatar': `Avatar`,
+  'cc-ticket-center.input.ids': `Identifiants (app_xxx|postgresql_xxx|mysql_xxx|…)`,
+  'cc-ticket-center.input.category': `Categorie`,
+  'cc-ticket-center.category.emergency': `Urgence`,
+  'cc-ticket-center.category.invoicing': `Facturation`,
+  'cc-ticket-center.category.question': `Question`,
+  'cc-ticket-center.category.feedback': `Retour d’expérience`,
+  'cc-ticket-center.category.troubleshooting': `Débogage`,
+  'cc-ticket-center.category.upgrade': `Mise à jour`,
+  //#endregion
 };

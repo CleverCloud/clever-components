@@ -1124,4 +1124,27 @@ export const translations = {
   'cc-zone-input.error': `Something went wrong while loading zones.`,
   'cc-zone-input.private-map-warning': `Private zones don't appear on the map.`,
   //#endregion
+  //#region cc-ticket-center
+  'cc-ticket-center.list.titles.last-message': `Last message`,
+  'cc-ticket-center.list.titles.status': `State`,
+  'cc-ticket-center.list.titles.subject': `Title`,
+  'cc-ticket-center.state.closed': `Closed`,
+  'cc-ticket-center.state.open': `Open`,
+  'cc-ticket-center.state.unread': `Unread`,
+  'cc-ticket-center.ticket-id': ({ ticketId }) => `Ticket ${ticketId}`,
+  'cc-ticket-center.ticket.opened-at': ({ date }) => `Opened at ${formatDatetime(lang, date)}`,
+  'cc-ticket-center.message.sent-at': ({ date }) => `Sent at ${formatDatetime(lang, date)}`,
+  'cc-ticket-center.button.reopen-and-send': `Reopen & Send`,
+  'cc-ticket-center.button.send': `Send`,
+  'cc-ticket-center.button.close-ticket': `Close the ticket`,
+  'cc-ticket-center.author-avatar': `Avatar`,
+  'cc-ticket-center.input.ids': `Identifiers (app_xxx|postgresql_xxx|mysql_xxx|…)`,
+  'cc-ticket-center.input.category': `Ticket category`,
+  'cc-ticket-center.category.emergency': `Emergency`,
+  'cc-ticket-center.category.invoicing': `Invoicing`,
+  'cc-ticket-center.category.question': `Question`,
+  'cc-ticket-center.category.feedback': `Feedback`,
+  'cc-ticket-center.category.troubleshooting': `Troubleshooting`,
+  'cc-ticket-center.category.upgrade': `Upgrade`,
+  //#endregion
 };
