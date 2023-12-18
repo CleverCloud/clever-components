@@ -5,6 +5,44 @@ title: 'Changelog'
 
 # Changelog
 
+## [12.0.0](https://github.com/CleverCloud/clever-components/compare/11.2.1...12.0.0) (2023-12-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* **cc-header-orga:** check the `HeaderOrgaState` type to adapt your code to the new state API.
+* **cc-img:** replace prop text by accessibleName
+
+### 🚀 Features
+
+* **cc-ansi-palette:** init component ([9b01309](https://github.com/CleverCloud/clever-components/commit/9b0130916883ca4d281a18fac50b7ca3bfab3e07)), closes [#883](https://github.com/CleverCloud/clever-components/issues/883)
+* **cc-badge:** deprecate `icon-accessible-name` in favor of `icon-a11y-name` ([8b25182](https://github.com/CleverCloud/clever-components/commit/8b251825c27e28009068d8fcfc4f188a033473f6)), closes [#893](https://github.com/CleverCloud/clever-components/issues/893)
+* **cc-button:** deprecate `accessible-name` in favor of `a11y-name` ([8ceaab5](https://github.com/CleverCloud/clever-components/commit/8ceaab5684be2eab18d0a15d48a1cf46eda9076d)), closes [#893](https://github.com/CleverCloud/clever-components/issues/893)
+* **cc-button:** implement parts of ARIA API ([014c592](https://github.com/CleverCloud/clever-components/commit/014c592f879aa879520cc0ba0e6619c628fc5b82)), closes [#699](https://github.com/CleverCloud/clever-components/issues/699)
+* **cc-header-orga:** add a `footer` slot  and small design tweaks ([dfb4624](https://github.com/CleverCloud/clever-components/commit/dfb462449fb61a72020e3fdd066a664ab29b4ae2)), closes [#869](https://github.com/CleverCloud/clever-components/issues/869)
+* **cc-header-orga:** rework state and types ([727d2f9](https://github.com/CleverCloud/clever-components/commit/727d2f91fad64a6ea46c76e8fb869fbd8f7e52c0)), closes [#884](https://github.com/CleverCloud/clever-components/issues/884)
+* **cc-icon:** deprecate `accessible-name` in favor of `a11y-name` ([12e2e73](https://github.com/CleverCloud/clever-components/commit/12e2e73bc9e4a2c0a922f5a5c8f8e13096b87eff)), closes [#893](https://github.com/CleverCloud/clever-components/issues/893)
+* **cc-img:** deprecate `accessible-name` in favor of `a11y-name` ([fa2e860](https://github.com/CleverCloud/clever-components/commit/fa2e8605c82b942be48680744b6e520d2fe2d5f0)), closes [#893](https://github.com/CleverCloud/clever-components/issues/893)
+* **cc-input-date:** init component ([40c978b](https://github.com/CleverCloud/clever-components/commit/40c978b89d16e275efbe9b1e000235df5c826cd3)), closes [#842](https://github.com/CleverCloud/clever-components/issues/842)
+* **cc-logs:** init ([f83a784](https://github.com/CleverCloud/clever-components/commit/f83a7841e01e5359dfa0324fcb547eaf682897b1)), closes [#697](https://github.com/CleverCloud/clever-components/issues/697)
+* **cc-popover:** deprecate `accessible-name` in favor of `a11y-name` ([a41f5a1](https://github.com/CleverCloud/clever-components/commit/a41f5a1242a54390015350e5e7c7ac905c3d2692)), closes [#893](https://github.com/CleverCloud/clever-components/issues/893)
+* **cc-popover:** init component ([0887067](https://github.com/CleverCloud/clever-components/commit/088706780d467b87d6b4d1790c87392d0bf1b757)), closes [#829](https://github.com/CleverCloud/clever-components/issues/829)
+* **i18n:** add the ability to specify minimum and maximum fraction digits when formating number ([e101776](https://github.com/CleverCloud/clever-components/commit/e101776ecabde9e498a0b2f91a1e61471880e3d6))
+
+
+### 🐛 Bug Fixes
+
+* **cc-header-orga:** hide initials from screen readers ([8196779](https://github.com/CleverCloud/clever-components/commit/8196779c0710c7bb902025325b063bb7a9de6585)), closes [#885](https://github.com/CleverCloud/clever-components/issues/885)
+* **cc-header-orga:** trim orga name in case it starts with spaces ([cdd6b04](https://github.com/CleverCloud/clever-components/commit/cdd6b048391bb4a0ca0b699def73aca80cd65d09)), closes [#886](https://github.com/CleverCloud/clever-components/issues/886)
+* **cc-img:** populate `alt` value ([a5d2d2b](https://github.com/CleverCloud/clever-components/commit/a5d2d2b988666ca8da92c114b1944a2e7bfc7f09)), closes [#726](https://github.com/CleverCloud/clever-components/issues/726)
+* **cc-toggle:** fix extra margin on top of cc-toggle when legend is inlined and when inside a grid ([a59ba34](https://github.com/CleverCloud/clever-components/commit/a59ba346952e855556471ce92f10a8ac6160d95e)), closes [#896](https://github.com/CleverCloud/clever-components/issues/896)
+* **i18n-sanitize:** handle cases where origin equals empty string ([0852482](https://github.com/CleverCloud/clever-components/commit/08524828ee7db03b36297a7713e9e25ed1da07cd)), closes [#906](https://github.com/CleverCloud/clever-components/issues/906)
+
+
+### 🛠 Code Refactoring
+
+* **cc-img:** replace prop text by accessibleName ([c8586f9](https://github.com/CleverCloud/clever-components/commit/c8586f91231758b2325bedae4513cdd25f4ec8cd))
+
 ## [11.2.1](https://github.com/CleverCloud/clever-components/compare/11.2.0...11.2.1) (2023-10-19)
 
 
