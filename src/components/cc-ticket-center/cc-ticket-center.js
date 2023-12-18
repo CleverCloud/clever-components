@@ -4,8 +4,20 @@ import { dispatchCustomEvent } from '../../lib/events.js';
 
 /**
  * @typedef {import('../common.types.js').Addon} Addon
+ * @typedef {import('./cc-addon-admin.types.js').ErrorType} ErrorType
  */
 
+/**
+ * A component handling the ticket-center interface for Crisp
+ *
+ * ## Details
+ *
+ * @cssdisplay block
+ *
+ * @event {CustomEvent} cc-addon-admin:delete-addon - Fires when the delete button is clicked.
+ * @event {CustomEvent<string>} cc-addon-admin:update-name - Fires the new name of the add-on when update name button is clicked.
+ * @event {CustomEvent<string[]>} cc-addon-admin:update-tags - Fires the new list of tags when update tags button is clicked.
+ */
 export class CcTicketCenter extends LitElement {
 
   static get properties () {

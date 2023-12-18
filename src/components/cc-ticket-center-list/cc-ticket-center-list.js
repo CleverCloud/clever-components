@@ -1,8 +1,8 @@
 
 import { css, html, LitElement } from 'lit';
+import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { withResizeObserver } from '../../mixins/with-resize-observer/with-resize-observer.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 
 import '../cc-button/cc-button.js';
 import '../cc-badge/cc-badge.js';
@@ -22,7 +22,7 @@ export class CcTicketCenterList extends withResizeObserver(LitElement) {
     return {
       tickets: { type: Array },
       error: { type: String },
-      filter: { type: String },
+      filter: { type: String },
       _skeleton: { type: Boolean, state: true },
       _width: { type: Number, state: true },
     };
@@ -52,12 +52,6 @@ export class CcTicketCenterList extends withResizeObserver(LitElement) {
 
   _onFilterChange (e) {
     this.filter = e.target.value;
-  }
-
-  willUpdate (changedProperties) {
-    if (changedProperties.has('addon')) {
-      this._skeleton = (this.tickets == null);
-    }
   }
 
   _getState (ticketState) {
@@ -130,9 +124,9 @@ export class CcTicketCenterList extends withResizeObserver(LitElement) {
           <div class="ticket">
             <div class="ticket-part ticket-subject">
               <p class="ticket-title">
-                ${t.title}
+                ${t.meta.subject}
               </p>
-              <p class="ticket-id">${i18n('cc-ticket-center.ticket-id', { ticketId: t.id })}</p>
+              <p class="ticket-id">${i18n('cc-ticket-center.ticket-id', { ticketId: t.meta.id })}</p>
             </div>
 
             <div class="ticket-part ticket-status">
@@ -173,7 +167,6 @@ export class CcTicketCenterList extends withResizeObserver(LitElement) {
           flex-direction: column;
           justify-content: start;
           border: 1px solid rgba(0, 0, 0, 0.12);
-          padding: .5em 1em;
           border-radius: 1px;
           margin-top: .5em;
         }
