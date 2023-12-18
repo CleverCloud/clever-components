@@ -2,7 +2,6 @@
 import { css, html, LitElement } from 'lit';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
-import { withResizeObserver } from '../../mixins/with-resize-observer/with-resize-observer.js';
 
 import '../cc-button/cc-button.js';
 import '../cc-badge/cc-badge.js';
@@ -16,7 +15,7 @@ import '../cc-badge/cc-badge.js';
  *
  * @event {CustomEvent} cc-ticket-center-list:enter-ticket - Fires when the delete button is clicked.
  */
-export class CcTicketCenterList extends withResizeObserver(LitElement) {
+export class CcTicketCenterList extends LitElement {
 
   static get properties () {
     return {
