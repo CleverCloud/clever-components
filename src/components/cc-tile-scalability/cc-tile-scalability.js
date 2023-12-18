@@ -93,7 +93,7 @@ export class CcTileScalability extends LitElement {
       ${this.error ? html`
         <div class="tile_message">
           <div class="error-message">
-            <cc-icon .icon="${iconAlert}" accessible-name="${i18n('cc-tile-scalability.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
+            <cc-icon .icon="${iconAlert}" a11y-name="${i18n('cc-tile-scalability.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
             <p>${i18n('cc-tile-scalability.error')}</p>
           </div>
         </div>

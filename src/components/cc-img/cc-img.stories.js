@@ -22,9 +22,9 @@ const conf = {
 
 export const defaultStory = makeStory(conf, {
   items: [
-    { accessibleName: 'OMG' },
-    { accessibleName: 'OMG', skeleton: true },
-    { accessibleName: 'OMG', skeleton: true, src: 'http://placekitten.com/200/200' },
+    { a11yName: 'OMG' },
+    { a11yName: 'OMG', skeleton: true },
+    { a11yName: 'OMG', skeleton: true, src: 'http://placekitten.com/200/200' },
   ],
 });
 
@@ -38,16 +38,16 @@ export const noAccessibleName = makeStory(conf, {
 
 export const imageFitContain = makeStory(conf, {
   items: [
-    { accessibleName: 'CC', src: 'https://assets.clever-cloud.com/infra/clever-cloud.svg', style: 'border: 1px solid #000; height: 7em; width: 2em;' },
-    { accessibleName: 'CC', src: 'https://assets.clever-cloud.com/infra/clever-cloud.svg', style: 'border: 1px solid #000; height: 2em; width: 7em;' },
-    { accessibleName: 'CC', src: 'https://assets.clever-cloud.com/infra/clever-cloud.svg', style: 'border: 1px solid #000; height: 7em; width: 2em; --cc-img-fit: contain;' },
-    { accessibleName: 'CC', src: 'https://assets.clever-cloud.com/infra/clever-cloud.svg', style: 'border: 1px solid #000; height: 2em; width: 7em; --cc-img-fit: contain;' },
+    { a11yName: 'CC', src: 'https://assets.clever-cloud.com/infra/clever-cloud.svg', style: 'border: 1px solid #000; height: 7em; width: 2em;' },
+    { a11yName: 'CC', src: 'https://assets.clever-cloud.com/infra/clever-cloud.svg', style: 'border: 1px solid #000; height: 2em; width: 7em;' },
+    { a11yName: 'CC', src: 'https://assets.clever-cloud.com/infra/clever-cloud.svg', style: 'border: 1px solid #000; height: 7em; width: 2em; --cc-img-fit: contain;' },
+    { a11yName: 'CC', src: 'https://assets.clever-cloud.com/infra/clever-cloud.svg', style: 'border: 1px solid #000; height: 2em; width: 7em; --cc-img-fit: contain;' },
   ],
 });
 
 export const noImage = makeStory(conf, {
-  docs: 'If `src` and `skeleton` are not defined, the `accessibleName` is displayed. Please make sure it fits the size you defined for the image.',
-  items: [{ accessibleName: 'OMG' }],
+  docs: 'If `src` and `skeleton` are not defined, the `a11yName` is displayed. Please make sure it fits the size you defined for the image.',
+  items: [{ a11yName: 'OMG' }],
 });
 
 export const loading = makeStory(conf, {
@@ -57,7 +57,7 @@ It's up to you to set \`skeleton\` while you're waiting for the URL of the image
 * The skeleton state will stay after the \`src\` is set, while waiting for the image to load.
 * \`skeleton\` will be set back to \`false\` by the component once the image is loaded is loaded (success or error).
 `,
-  items: [{ accessibleName: 'OMG', skeleton: true }],
+  items: [{ a11yName: 'OMG', skeleton: true }],
 });
 
 export const simulationWithSquareThenOther = makeStory(conf, {
@@ -66,7 +66,7 @@ export const simulationWithSquareThenOther = makeStory(conf, {
 1. load a square image
 1. load another image
 `,
-  items: [{ accessibleName: 'OMG', skeleton: true }],
+  items: [{ a11yName: 'OMG', skeleton: true }],
   simulations: [
     storyWait(3000, ([component]) => {
       component.src = 'http://placekitten.com/200/200';
@@ -78,7 +78,7 @@ export const simulationWithSquareThenOther = makeStory(conf, {
 });
 
 export const simulationWithPortraitThenLandscape = makeStory(conf, {
-  items: [{ accessibleName: 'OMG', skeleton: true }],
+  items: [{ a11yName: 'OMG', skeleton: true }],
   simulations: [
     storyWait(3000, ([component]) => {
       component.src = 'http://placekitten.com/200/500';
@@ -91,7 +91,7 @@ export const simulationWithPortraitThenLandscape = makeStory(conf, {
 });
 
 export const simulationWithLoadingThenError = makeStory(conf, {
-  items: [{ accessibleName: 'ERR', skeleton: true }],
+  items: [{ a11yName: 'ERR', skeleton: true }],
   simulations: [
     storyWait(3000, ([component]) => {
       component.src = 'http://placekitten.com/bad/url';

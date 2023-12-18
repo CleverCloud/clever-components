@@ -56,6 +56,7 @@ export class CcPopover extends LitElement {
   static get properties () {
     return {
       accessibleName: { type: String, attribute: 'accessible-name' },
+      a11yName: { type: String, attribute: 'a11y-name' },
       hideText: { type: Boolean, attribute: 'hide-text' },
       icon: { type: Object },
       isOpen: { type: Boolean, attribute: 'is-open', reflect: true },
@@ -66,8 +67,8 @@ export class CcPopover extends LitElement {
   constructor () {
     super();
 
-    /** @type {string|null} Sets the accessibleName property of the underlying `cc-button` element. CAUTION: The accessible name should always start with the visible text if there is one. */
-    this.accessibleName = null;
+    /** @type {string|null} Sets the a11yName property of the underlying `cc-button` element. CAUTION: The accessible name should always start with the visible text if there is one. */
+    this.a11yName = null;
 
     /** @type {boolean} Whether the button text should be hidden. */
     this.hideText = false;
@@ -118,6 +119,18 @@ export class CcPopover extends LitElement {
   }
 
   // region Public methods
+
+  get accessibleName () {
+    return this.a11yName;
+  }
+
+  /**
+   * Deprecated property. Use `a11yName` property or `a11y-name` attribute instead.
+   * @deprecated
+   */
+  set accessibleName (value) {
+    this.a11yName = value;
+  }
 
   /**
    * Opens the popover.
@@ -199,7 +212,7 @@ export class CcPopover extends LitElement {
         <cc-button
           ${ref(this._buttonRef)}
           .a11yExpanded=${this.isOpen}
-          .accessibleName=${this.accessibleName}
+          .a11yName=${this.a11yName}
           ?hide-text=${this.hideText}
           .icon=${this.icon}
           @cc-button:click=${this.toggle}

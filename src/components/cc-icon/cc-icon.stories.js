@@ -7,6 +7,7 @@ import {
   iconRemixErrorWarningFill as iconWarning,
 } from '../../assets/cc-remix.icons.js';
 import './cc-icon.js';
+import '../cc-notice/cc-notice.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
@@ -50,11 +51,20 @@ export const color = makeStory(conf, {
   ],
 });
 export const accessibleName = makeStory(conf, {
+  css: `
+    div {
+      margin-top: 2em;
+      margin-bottom: 0.5em;
+    }
+  `,
   dom: (container) => {
     const storyOutput = html`
+        <cc-notice intent="warning"><span slot="message">The <code>accessible-name</code> attribute is deprecated in favor of <code>a11y-name</code></span></cc-notice>
         <p>The accessible name can be checked by using the accessibility inspector of your browser.</p>
-        <cc-icon .icon="${iconSuccess}" size="xl" accessible-name="Success"></cc-icon>
-        <cc-icon .icon="${iconWarning}" size="xl" accessible-name="Warning"></cc-icon>
+
+        <div>With <code>a11y-name</code> attribute:</div>
+        <cc-icon .icon="${iconSuccess}" size="xl" a11y-name="Success"></cc-icon>
+        <cc-icon .icon="${iconWarning}" size="xl" a11y-name="Warning"></cc-icon>
     `;
     render(storyOutput, container);
   },

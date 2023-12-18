@@ -105,7 +105,7 @@ export class CcNotice extends LitElement {
       <div class="wrapper ${classMap(layout)}">
         ${!this.noIcon ? html`
           <slot name="icon">
-            <cc-icon .icon="${this._getIcon()}" accessible-name="${this._getIconAlt()}" class="notice-icon"></cc-icon>
+            <cc-icon .icon="${this._getIcon()}" a11y-name="${this._getIconAlt()}" class="notice-icon"></cc-icon>
           </slot>
         ` : ''}
         ${this.heading != null ? html`
@@ -122,7 +122,7 @@ export class CcNotice extends LitElement {
             <button class="close-button"
               @click=${this._onCloseButtonClick}
               title="${i18n('cc-toast.close')}">
-              <cc-icon size="lg" .icon="${iconClose}" accessible-name="${i18n('cc-notice.close')}"></cc-icon>
+              <cc-icon size="lg" .icon="${iconClose}" a11y-name="${i18n('cc-notice.close')}"></cc-icon>
             </button>
         ` : ''}
       </div>

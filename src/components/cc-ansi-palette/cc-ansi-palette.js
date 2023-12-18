@@ -107,7 +107,7 @@ export class CcAnsiPaletteComponent extends LitElement {
       <span style="color: var(--cc-color-ansi-${colorName});">AaBbMmYyZz</span>
       <span>${colorHex}</span>
       <div class="ratio ${classMap({ compliant: analysis.compliant, 'not-compliant': !analysis.compliant })}">
-        <cc-icon .icon=${icon} size="lg" accessible-name="${accessibleName}"></cc-icon>
+        <cc-icon .icon=${icon} size="lg" a11y-name="${accessibleName}"></cc-icon>
         ${i18n('cc-ansi-palette.ratio', { ratio: analysis.ratio })}  
       </div>
     `;

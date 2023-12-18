@@ -149,7 +149,7 @@ export class CcToast extends LitElement {
            @blur=${this._resume}
            tabindex="${ifDefined(tabIndex)}">
         <div class="icon-wrapper">
-          <cc-icon class="icon" .icon="${this._getIcon()}" accessible-name="${this._getIconAlt()}"></cc-icon>
+          <cc-icon class="icon" .icon="${this._getIcon()}" a11y-name="${this._getIconAlt()}"></cc-icon>
         </div>
         <div class="right">
           <div class="content">
@@ -163,7 +163,7 @@ export class CcToast extends LitElement {
                     @focus=${this._pause}
                     @blur=${this._resume}
                     title="${i18n('cc-toast.close')}">
-              <cc-icon .icon="${iconClose}" accessible-name="${i18n('cc-toast.close')}"></cc-icon>
+              <cc-icon .icon="${iconClose}" a11y-name="${i18n('cc-toast.close')}"></cc-icon>
             </button>
           ` : ''}
 

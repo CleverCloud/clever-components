@@ -101,7 +101,7 @@ export class CcTileDeployments extends LitElement {
       ${this.error ? html`
         <div class="tile_message">
           <div class="error-message">
-            <cc-icon .icon="${iconAlert}" accessible-name="${i18n('cc-tile-deployments.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
+            <cc-icon .icon="${iconAlert}" a11y-name="${i18n('cc-tile-deployments.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
             <p>${i18n('cc-tile-deployments.error')}</p>
           </div>
         </div>

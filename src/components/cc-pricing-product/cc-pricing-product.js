@@ -308,7 +308,7 @@ export class CcPricingProduct extends LitElement {
                 <button class="btn" @click="${() => this._onAddPlan(productName, plan)}" title="${i18n('cc-pricing-product.add-button', { productName, size: plan.name })}">
                   <cc-icon
                     .icon=${iconAdd}
-                    accessible-name=${i18n('cc-pricing-product.add-button', { productName, size: plan.name })}
+                    a11y-name=${i18n('cc-pricing-product.add-button', { productName, size: plan.name })}
                   ></cc-icon>
                 </button>
               </td>
@@ -353,7 +353,7 @@ export class CcPricingProduct extends LitElement {
                 <button class="btn" @click="${() => this._onAddPlan(productName, plan)}" title="${i18n('cc-pricing-product.add-button', { productName, size: plan.name })}">
                   <cc-icon
                     .icon=${iconAdd}
-                    accessible-name=${i18n('cc-pricing-product.add-button', { productName, size: plan.name })}
+                    a11y-name=${i18n('cc-pricing-product.add-button', { productName, size: plan.name })}
                   ></cc-icon>
                 </button>
               ` : ''}

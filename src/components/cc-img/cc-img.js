@@ -18,9 +18,10 @@ export class CcImg extends LitElement {
 
   static get properties () {
     return {
+      accessibleName: { type: String, attribute: 'accessible-name' },
+      a11yName: { type: String, attribute: 'a11y-name' },
       skeleton: { type: Boolean, reflect: true },
       src: { type: String },
-      accessibleName: { type: String, attribute: 'accessible-name' },
       _error: { type: Boolean, state: true },
       _loaded: { type: Boolean, state: true },
     };
@@ -29,20 +30,32 @@ export class CcImg extends LitElement {
   constructor () {
     super();
 
+    /** @type {string|null} Sets short fallback text to display when the image cannot be loaded or if `src` is not defined and `skeleton` is `false`. */
+    this.a11yName = null;
+
     /** @type {boolean} Enables skeleton screen UI pattern (loading hint). */
     this.skeleton = false;
 
     /** @type {string|null} Sets `src` attribute on inner native `<img>` element. */
     this.src = null;
 
-    /** @type {string|null} Sets short fallback text to display when the image cannot be loaded or if `src` is not defined and `skeleton` is `false`. */
-    this.accessibleName = null;
-
     /** @type {boolean} */
     this._error = false;
 
     /** @type {boolean} */
     this._loaded = false;
+  }
+
+  get accessibleName () {
+    return this.a11yName;
+  }
+
+  /**
+   * Deprecated property. Use `a11yName` property or `a11y-name` attribute instead.
+   * @deprecated
+   */
+  set accessibleName (value) {
+    this.a11yName = value;
   }
 
   _onLoad (e) {
@@ -65,16 +78,16 @@ export class CcImg extends LitElement {
   }
 
   render () {
-    const altValue = this.accessibleName ?? '';
+    const altValue = this.a11yName ?? '';
     const isLoading = (this.src != null && !this._loaded && !this._error);
     const isSkeleton = (this.skeleton || isLoading);
     const displayAccessibleName = (this.src == null || this._error);
     return html`
-      <div class="wrapper ${classMap({ skeleton: isSkeleton, loaded: this._loaded, 'accessible-name': displayAccessibleName })}">
+      <div class="wrapper ${classMap({ skeleton: isSkeleton, loaded: this._loaded })}">
         <img src=${ifDefined(this.src ?? undefined)} @load=${this._onLoad} @error=${this._onError} alt=${altValue}>
         ${displayAccessibleName ? html`
             <!-- We use aria-hidden because we already have an alt value. -->
-          <div class="error-msg" aria-hidden="true">${this.accessibleName}</div>
+          <div class="error-msg" aria-hidden="true">${altValue}</div>
         ` : ''}
       </div>
     `;

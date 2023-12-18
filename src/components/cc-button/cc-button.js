@@ -50,6 +50,7 @@ export class CcButton extends LitElement {
     return {
       accessibleName: { type: String, attribute: 'accessible-name' },
       a11yExpanded: { type: Boolean, attribute: 'a11y-expanded', reflect: true },
+      a11yName: { type: String, attribute: 'a11y-name' },
       a11yPressed: { type: Boolean, attribute: 'a11y-pressed', reflect: true },
       circle: { type: Boolean },
       danger: { type: Boolean },
@@ -72,11 +73,11 @@ export class CcButton extends LitElement {
   constructor () {
     super();
 
-    /** @type {string|null} Forces the values of the `aria-label` and `title` attributes on the `button` element. CAUTION: The accessible name should always start with the visible text if there is one. For instance "add to estimation - NodeJS XS" */
-    this.accessibleName = null;
-
     /** @type {null|boolean} Sets aria-expanded on the inner `button` element. */
     this.a11yExpanded = null;
+
+    /** @type {string|null} Forces the values of the `aria-label` and `title` attributes on the `button` element. CAUTION: The a11y name should always start with the visible text if there is one. For instance "add to estimation - NodeJS XS" */
+    this.a11yName = null;
 
     /** @type {null|boolean} Sets aria-pressed on the inner `button` element. */
     this.a11yPressed = null;
@@ -127,6 +128,18 @@ export class CcButton extends LitElement {
     this._cancelMode = false;
   }
 
+  get accessibleName () {
+    return this.a11yName;
+  }
+
+  /**
+   * Deprecated property. Use `a11yName` property or `a11y-name` attribute instead.
+   * @deprecated
+   */
+  set accessibleName (value) {
+    this.a11yName = value;
+  }
+
   focus () {
     this.shadowRoot.querySelector('button').focus();
   }
@@ -137,13 +150,13 @@ export class CcButton extends LitElement {
   }
 
   /**
-   * The `aria-label` attribute should only be set if the `accessibleName` prop is set or if the button only shows an image with no text.
+   * The `aria-label` attribute should only be set if the `a11yName` prop is set or if the button only shows an image with no text.
    *
    * @returns {string|undefined} the value of the `aria-label` attribute or `undefined` if the attribute should not be set.
    */
   _getAriaLabel () {
-    if (this.accessibleName != null) {
-      return this.accessibleName.trim() ?? '';
+    if (this.a11yName != null) {
+      return this.a11yName.trim() ?? '';
     }
 
     if (this.hideText && (this.image != null || this.icon != null)) {
@@ -154,13 +167,13 @@ export class CcButton extends LitElement {
   }
 
   /**
-   * The `title` attribute should only be set if the `accessibleName` prop is set or if the button only shows an image with no text.
+   * The `title` attribute should only be set if the `a11yName` prop is set or if the button only shows an image with no text.
    *
    * @returns {string|undefined} the value of the `title` attribute or `undefined` if the attribute should not be set.
    */
   _getTitle () {
-    if (this.accessibleName != null) {
-      return this.accessibleName.trim() ?? '';
+    if (this.a11yName != null) {
+      return this.a11yName.trim() ?? '';
     }
 
     if (this.hideText && (this.image != null || this.icon != null)) {

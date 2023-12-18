@@ -276,7 +276,7 @@ export class CcTileRequests extends LitElement {
 
       <div class="tile_message ${classMap({ 'tile--hidden': !displayError })}">
         <div class="error-message">
-          <cc-icon .icon="${iconAlert}" accessible-name="${i18n('cc-tile-requests.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
+          <cc-icon .icon="${iconAlert}" a11y-name="${i18n('cc-tile-requests.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
           <p>${i18n('cc-tile-requests.error')}</p>
         </div>
       </div>

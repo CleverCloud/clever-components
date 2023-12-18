@@ -1,4 +1,5 @@
 import './cc-button.js';
+import '../cc-notice/cc-notice.js';
 import {
   iconRemixCloseLine as iconClose,
   iconRemixErrorWarningFill as iconError,
@@ -157,12 +158,21 @@ As you can see here, \`hide-text\` can only be used if there is an \`image\` or 
 });
 
 export const accessibleName = makeStory(conf, {
+  css: `
+    div {
+      margin-top: 2em;
+      margin-bottom: 0.5em;
+    }
+  `,
   dom: (container) => {
     container.innerHTML = `
+        <cc-notice intent="warning"><span slot="message">The <code>accessible-name</code> attribute is deprecated in favor of <code>a11y-name</code></span></cc-notice>
         <p>The accessible name can be checked by using the accessibility inspector of your browser.</p>
         <p>You may also hover the buttons because we populate the <code>title</code> attribute with the same value.</p>
-        <cc-button accessible-name="Add to estimation - NodeJS XS" primary>Add to estimation</cc-button>
-        <cc-button accessible-name="Remove from estimation - NodeJS XS" danger outlined>Remove from estimation</cc-button>
+        
+        <div>With <code>a11y-name</code> attribute:</div>
+        <cc-button a11y-name="Add to estimation - NodeJS XS" primary>Add to estimation</cc-button>
+        <cc-button a11y-name="Remove from estimation - NodeJS XS" danger outlined>Remove from estimation</cc-button>
     `;
   },
 });

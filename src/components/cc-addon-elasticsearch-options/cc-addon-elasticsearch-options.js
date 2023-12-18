@@ -46,7 +46,7 @@ export class CcAddonElasticsearchOptions extends LitElement {
     const description = html`
       <div class="option-details">${i18n('cc-addon-elasticsearch-options.description.apm')}</div>
       <div class="option-warning">
-        <cc-icon .icon="${iconAlert}" accessible-name="${i18n('cc-addon-elasticsearch-options.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
+        <cc-icon .icon="${iconAlert}" a11y-name="${i18n('cc-addon-elasticsearch-options.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
         <p>
           ${i18n('cc-addon-elasticsearch-options.warning.apm')}
           ${flavor != null ? html`
@@ -69,7 +69,7 @@ export class CcAddonElasticsearchOptions extends LitElement {
     const description = html`
       <div class="option-details">${i18n('cc-addon-elasticsearch-options.description.kibana')}</div>
       <div class="option-warning">
-        <cc-icon .icon="${iconAlert}" accessible-name="${i18n('cc-addon-elasticsearch-options.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
+        <cc-icon .icon="${iconAlert}" a11y-name="${i18n('cc-addon-elasticsearch-options.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
         <p>
           ${i18n('cc-addon-elasticsearch-options.warning.kibana')}
           ${flavor != null ? html`

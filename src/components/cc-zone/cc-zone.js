@@ -92,7 +92,7 @@ export class CcZone extends LitElement {
     const { title, subtitle, infra } = CcZone._getTextParts(zone);
 
     return html`
-      <cc-img class="flag" ?skeleton=${skeleton} src=${ifDefined(getFlagUrl(zone.countryCode))} accessible-name=${ifDefined(zone.countryCode)}></cc-img>
+      <cc-img class="flag" ?skeleton=${skeleton} src=${ifDefined(getFlagUrl(zone.countryCode))} a11y-name=${ifDefined(zone.countryCode)}></cc-img>
       <div class="wrapper-details-logo">
         <div class="wrapper-details">
           <div class="details">
@@ -100,7 +100,7 @@ export class CcZone extends LitElement {
             <span class="subtitle ${classMap({ skeleton })}">${subtitle}</span>
           </div>
           ${infra != null ? html`
-            <cc-img class="infra-logo" src=${getInfraProviderLogoUrl(infra)} accessible-name=${infra}></cc-img>
+            <cc-img class="infra-logo" src=${getInfraProviderLogoUrl(infra)} a11y-name=${infra}></cc-img>
           ` : ''}
         </div>
         <div class="tag-list">
