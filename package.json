@@ -48,9 +48,9 @@
     "start": "static -H '{\"cache-control\": \"no-cache, no-store, must-revalidate\", \"Pragma\": \"no-cache\", \"Expires\": \"0\"}' -a 0.0.0.0 -p 8080 storybook-static",
     "storybook:build": "build-storybook -o storybook-static${STORYBOOK_PATH}",
     "storybook:dev": "wds",
-    "stylelint": "stylelint --config ./stylelint.config.json src/components/*/*.js",
-    "stylelint:ci": "stylelint --config ./stylelint.config.json src/components/*/*.js --formatter github",
-    "stylelint:fix": "stylelint --config ./stylelint.config.json src/components/*/*.js --fix",
+    "stylelint": "stylelint src/components/*/*.js",
+    "stylelint:ci": "stylelint src/components/*/*.js --formatter github",
+    "stylelint:fix": "stylelint src/components/*/*.js --fix",
     "typecheck": "tsc -p tsconfig-typecheck-jsdoc.json"
   },
   "dependencies": {
