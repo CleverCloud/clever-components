@@ -1,0 +1,80 @@
+/**
+ * Layout
+ */
+body {
+  display: flex;
+  align-items: stretch;
+}
+
+menu {
+  display: flex;
+  align-items: stretch;
+  flex: 0 0 auto;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex: 1 1 auto;
+}
+
+main .breadcrumbs {
+  flex: 0 0 auto;
+}
+
+main .form-container {
+  flex: 1 1 auto;
+  align-self: center;
+  width: 100%;
+  max-width: 80em;
+  overflow-y: auto;
+}
+
+/**
+ * Sidebar menu
+ */
+menu {
+  cursor: pointer;
+}
+
+menu .menu-orgas {
+  width: 3.25em;
+  background-color: #283250;
+}
+
+menu .menu-services {
+  width: 15.625em;
+  background-color: #1d2337;
+}
+
+menu[open] .menu-orgas {
+  width: 18.75em;
+}
+
+/**
+ * Breadcrumbs
+ */
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 2em;
+  padding-inline: 2em;
+  height: 5em;
+  border-bottom: 2px solid #f5f5f5;
+}
+
+.breadcrumbs .step {
+  flex: 1 1 auto;
+}
+
+.breadcrumbs .step[selected] .title {
+  font-weight: bold;
+}
+
+.breadcrumbs .step .title {
+  font-size: 1.125em;
+}
+.breadcrumbs .step .baseline {
+  font-size: 0.875em;
+}
