@@ -22,45 +22,33 @@ const ZONE_MTL = {
   tags: ['infra:ovh'],
 };
 
-const applications = [
+const linkedApplications = [
   {
     name: 'My Node JS Prod Application',
     link: '/organisations/uuid_foo/applications/uuid_bar',
-    instance: {
-      variant: {
-        name: 'Node', logo: 'https://assets.clever-cloud.com/logos/nodejs.svg',
-      },
-    },
+    variantName: 'Node',
+    variantLogoUrl: 'https://assets.clever-cloud.com/logos/nodejs.svg',
     zone: ZONE_PAR,
   },
   {
     name: 'My Awesome Java app for my API',
     link: '/organisations/uuid_foo/applications/uuid_bar',
-    instance: {
-      variant: {
-        name: 'Java + Maven', logo: 'https://assets.clever-cloud.com/logos/maven.svg',
-      },
-    },
+    variantName: 'Java + Maven',
+    variantLogoUrl: 'https://assets.clever-cloud.com/logos/maven.svg',
     zone: ZONE_PAR,
   },
   {
     name: 'My Dev PHP frontend',
     link: '/organisations/uuid_foo/applications/uuid_bar',
-    instance: {
-      variant: {
-        name: 'PHP', logo: 'https://assets.clever-cloud.com/logos/php.svg',
-      },
-    },
+    variantName: 'PHP',
+    variantLogoUrl: 'https://assets.clever-cloud.com/logos/php.svg',
     zone: ZONE_MTL,
   },
   {
     name: 'My Awesome Scala API',
     link: '/organisations/uuid_foo/applications/uuid_bar',
-    instance: {
-      variant: {
-        name: 'Scala + SBT', logo: 'https://assets.clever-cloud.com/logos/scala.svg',
-      },
-    },
+    variantName: 'Scala + SBT',
+    variantLogoUrl: 'https://assets.clever-cloud.com/logos/scala.svg',
     zone: ZONE_MTL,
   },
 ];
@@ -75,43 +63,48 @@ const conf = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [{ applications }],
+  items: [{ state: { type: 'loaded', linkedApplications } }],
 });
 
 export const skeleton = makeStory(conf, {
-  items: [{}],
+  items: [{ state: { type: 'loading' } }],
 });
 
 export const error = makeStory(conf, {
-  items: [{ error: true }],
+  items: [{ state: { type: 'error' } }],
 });
 
 export const empty = makeStory(conf, {
-  items: [{ applications: [] }],
+  items: [{ state: { type: 'loaded', linkedApplications: [] } }],
 });
 
 export const dataLoaded = makeStory(conf, {
-  items: [{ applications }],
+  items: [{ state: { type: 'loaded', linkedApplications } }],
 });
 
 export const dataLoadedWithLongName = makeStory(conf, {
-  items: [{
-    applications: applications.map((app) => {
-      return {
-        ...app,
-        name: app.name + ' very very very very very long',
-      };
-    }),
-  }],
+  items: [
+    {
+      state: {
+        type: 'loaded',
+        linkedApplications: linkedApplications.map((app) => {
+          return {
+            ...app,
+            name: app.name + ' very very very very very long',
+          };
+        }),
+      },
+    },
+  ],
 });
 
 export const simulations = makeStory(conf, {
-  items: [{}, {}, {}],
+  items: [{ state: { type: 'loading' } }, { state: { type: 'loading' } }, { state: { type: 'loading' } }],
   simulations: [
     storyWait(2000, ([component, componentNone, componentError]) => {
-      component.applications = applications;
-      componentNone.applications = [];
-      componentError.error = true;
+      component.state = { type: 'loaded', linkedApplications };
+      componentNone.state = { type: 'loaded', linkedApplications: [] };
+      componentError.state = { type: 'error' };
     }),
   ],
 });

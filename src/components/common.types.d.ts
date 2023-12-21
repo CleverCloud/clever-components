@@ -163,13 +163,6 @@ interface Zone {
 
 type ToggleStateType = 'off' | 'open' | 'close';
 
-interface Application {
-  name: string;
-  link: string;
-  instance: Instance;
-  zone: Zone;
-}
-
 interface Instance {
   flavourName: string;
   count: number;
