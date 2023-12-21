@@ -20,47 +20,47 @@ const conf = {
 
 export const defaultStory = makeStory(conf, {
   items: [
-    { instances: { running: [{ flavorName: 'nano', count: 1 }], deploying: [] } },
-    { instances: { running: [], deploying: [{ flavorName: 'nano', count: 1 }] } },
-    { instances: { running: [{ flavorName: 'nano', count: 1 }], deploying: [{ flavorName: 'nano', count: 1 }] } },
+    { state: { type: 'loaded', running: [{ flavorName: 'nano', count: 1 }], deploying: [] } },
+    { state: { type: 'loaded', running: [], deploying: [{ flavorName: 'nano', count: 1 }] } },
+    { state: { type: 'loaded', running: [{ flavorName: 'nano', count: 1 }], deploying: [{ flavorName: 'nano', count: 1 }] } },
   ],
 });
 
 export const loading = makeStory(conf, {
-  items: [{}],
+  items: [{ state: { type: 'loading' } }],
 });
 
 export const error = makeStory(conf, {
-  items: [{ error: true }],
+  items: [{ state: { type: 'error' } }],
 });
 
 export const dataLoadedWithStopped = makeStory(conf, {
   items: [
-    { instances: { running: [], deploying: [] } },
+    { state: { type: 'loaded', running: [], deploying: [] } },
   ],
 });
 
 export const dataLoadedWithRunning = makeStory(conf, {
   items: [
-    { instances: { running: [{ flavorName: 'nano', count: 1 }], deploying: [] } },
-    { instances: { running: [{ flavorName: 'S', count: 2 }], deploying: [] } },
-    { instances: { running: [{ flavorName: '2XL', count: 40 }], deploying: [] } },
+    { state: { type: 'loaded', running: [{ flavorName: 'nano', count: 1 }], deploying: [] } },
+    { state: { type: 'loaded', running: [{ flavorName: 'S', count: 2 }], deploying: [] } },
+    { state: { type: 'loaded', running: [{ flavorName: '2XL', count: 40 }], deploying: [] } },
   ],
 });
 
 export const dataLoadedWithDeploying = makeStory(conf, {
   items: [
-    { instances: { running: [], deploying: [{ flavorName: 'nano', count: 1 }] } },
-    { instances: { running: [], deploying: [{ flavorName: 'S', count: 2 }] } },
-    { instances: { running: [], deploying: [{ flavorName: '2XL', count: 40 }] } },
+    { state: { type: 'loaded', running: [], deploying: [{ flavorName: 'nano', count: 1 }] } },
+    { state: { type: 'loaded', running: [], deploying: [{ flavorName: 'S', count: 2 }] } },
+    { state: { type: 'loaded', running: [], deploying: [{ flavorName: '2XL', count: 40 }] } },
   ],
 });
 
 export const dataLoadedWithRunningAndDeploying = makeStory(conf, {
   items: [
-    { instances: { running: [{ flavorName: 'nano', count: 1 }], deploying: [{ flavorName: 'nano', count: 1 }] } },
-    { instances: { running: [{ flavorName: 'S', count: 2 }], deploying: [{ flavorName: 'S', count: 1 }] } },
-    { instances: { running: [{ flavorName: '2XL', count: 40 }], deploying: [{ flavorName: '2XL', count: 40 }] } },
+    { state: { type: 'loaded', running: [{ flavorName: 'nano', count: 1 }], deploying: [{ flavorName: 'nano', count: 1 }] } },
+    { state: { type: 'loaded', running: [{ flavorName: 'S', count: 2 }], deploying: [{ flavorName: 'S', count: 1 }] } },
+    { state: { type: 'loaded', running: [{ flavorName: '2XL', count: 40 }], deploying: [{ flavorName: '2XL', count: 40 }] } },
   ],
 });
 
@@ -68,26 +68,26 @@ export const simulations = makeStory(conf, {
   items: [{}, {}],
   simulations: [
     storyWait(2000, ([component, componentError]) => {
-      component.instances = { running: [{ flavorName: 'XS', count: 1 }], deploying: [] };
-      componentError.error = true;
+      component.state = { type: 'loaded', running: [{ flavorName: 'XS', count: 1 }], deploying: [] };
+      componentError.state = { type: 'error' };
     }),
     storyWait(1000, ([component]) => {
-      component.instances = { running: [{ flavorName: 'XS', count: 2 }], deploying: [] };
+      component.state = { type: 'loaded', running: [{ flavorName: 'XS', count: 2 }], deploying: [] };
     }),
     storyWait(1000, ([component]) => {
-      component.instances = { running: [{ flavorName: 'XS', count: 3 }], deploying: [] };
+      component.state = { type: 'loaded', running: [{ flavorName: 'XS', count: 3 }], deploying: [] };
     }),
     storyWait(3000, ([component]) => {
-      component.instances = { running: [{ flavorName: 'XS', count: 3 }], deploying: [{ flavorName: 'XS', count: 1 }] };
+      component.state = { type: 'loaded', running: [{ flavorName: 'XS', count: 3 }], deploying: [{ flavorName: 'XS', count: 1 }] };
     }),
     storyWait(1000, ([component]) => {
-      component.instances = { running: [{ flavorName: 'XS', count: 3 }], deploying: [{ flavorName: 'XS', count: 2 }] };
+      component.state = { type: 'loaded', running: [{ flavorName: 'XS', count: 3 }], deploying: [{ flavorName: 'XS', count: 2 }] };
     }),
     storyWait(1000, ([component]) => {
-      component.instances = { running: [{ flavorName: 'XS', count: 3 }], deploying: [{ flavorName: 'XS', count: 3 }] };
+      component.state = { type: 'loaded', running: [{ flavorName: 'XS', count: 3 }], deploying: [{ flavorName: 'XS', count: 3 }] };
     }),
     storyWait(3000, ([component]) => {
-      component.instances = { running: [{ flavorName: 'XS', count: 3 }], deploying: [] };
+      component.state = { type: 'loaded', running: [{ flavorName: 'XS', count: 3 }], deploying: [] };
     }),
   ],
 });

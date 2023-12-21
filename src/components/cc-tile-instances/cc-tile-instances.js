@@ -18,22 +18,12 @@ const statusIcon = {
   deploying: iconStarting,
 };
 
-/** @type {InstancesState} */
-const SKELETON_INSTANCES = {
-  running: [],
-  deploying: [],
-};
-
 /**
- * @typedef {import('../common.types.js').InstancesState} InstancesState
+ * @typedef {import('./cc-tile-instances.types.js').TileInstancesState} TileInstancesState
  */
 
 /**
  * A "tile" component to display current status of running and deploying instances for a given app.
- *
- * ## Details
- *
- * * When `instances` is nullish, a loader is displayed.
  *
  * @cssdisplay grid
  */
@@ -41,19 +31,15 @@ export class CcTileInstances extends LitElement {
 
   static get properties () {
     return {
-      error: { type: Boolean, reflect: true },
-      instances: { type: Object },
+      state: { type: Object },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {boolean} Displays an error message. */
-    this.error = false;
-
-    /** @type {InstancesState|null} Sets the current state of running and deploying instances. */
-    this.instances = null;
+    /** @type {TileInstancesState} Sets the current state of running and deploying instances. */
+    this.state = { type: 'loading' };
   }
 
   _getStatusLabel (type) {
@@ -67,53 +53,10 @@ export class CcTileInstances extends LitElement {
 
   render () {
 
-    const skeleton = (this.instances == null);
-    const isLoading = skeleton && !this.error;
-    const instances = skeleton ? SKELETON_INSTANCES : this.instances;
-
-    const runningInstancesCount = instances.running.map((a) => a.count).reduce((a, b) => a + b, 0);
-    const deployingInstancesCount = instances.deploying.map((a) => a.count).reduce((a, b) => a + b, 0);
-    const emptyData = !skeleton && !this.error && (runningInstancesCount === 0) && (deployingInstancesCount === 0);
-
-    // NOTE: This does not handle the case where someone has different flavors running or deploying
-    if (this._lastRunningCount !== runningInstancesCount) {
-      this.updateComplete.then(() => {
-        // This is not supported in Safari yet but it's purely decorative so let's keep it like that
-        animate(this.shadowRoot, '.instances[data-type=running] .count-bubble', ...QUICK_SHRINK);
-        this._lastRunningCount = runningInstancesCount;
-      });
-    }
-
-    if (this._lastDeployingCount !== deployingInstancesCount) {
-      this.updateComplete.then(() => {
-        // This is not supported in Safari yet but it's purely decorative so let's keep it like that
-        animate(this.shadowRoot, '.instances[data-type=deploying] .count-bubble', ...QUICK_SHRINK);
-        this._lastDeployingCount = deployingInstancesCount;
-      });
-    }
-
     return html`
       <div class="tile_title">${i18n('cc-tile-instances.title')}</div>
 
-      ${!this.error && !emptyData ? html`
-        <div class="tile_body">
-          <cc-expand>
-            ${this._renderInstances(instances.running, 'running')}
-            ${this._renderInstances(instances.deploying, 'deploying')}
-          </cc-expand>
-
-          <!-- in this case, a loader is better than a skeleton screen since we're not so sure about the future state -->
-          ${isLoading ? html`
-            <cc-loader></cc-loader>
-          ` : ''}
-        </div>
-      ` : ''}
-
-      ${emptyData ? html`
-        <div class="tile_message">${i18n('cc-tile-instances.empty')}</div>
-      ` : ''}
-
-      ${this.error ? html`
+      ${this.state.type === 'error' ? html`
         <div class="tile_message">
           <div class="error-message">
             <cc-icon .icon="${iconAlert}" a11y-name="${i18n('cc-tile-instances.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
@@ -121,9 +64,65 @@ export class CcTileInstances extends LitElement {
           </div>
         </div>
       ` : ''}
+
+      ${this.state.type === 'loading' ? html`
+        <div class="tile_body">
+          <cc-loader></cc-loader>
+        </div>
+      ` : ''}
+
+      ${this.state.type === 'loaded' ? this._renderLoaded(this.state.running, this.state.deploying) : ''}
     `;
   }
 
+  /**
+   * @param {Array<InstanceState>} running
+   * @param {Array<InstanceState>} deploying
+   */
+  _renderLoaded (running, deploying) {
+
+    const runningInstancesCount = running.map((a) => a.count).reduce((a, b) => a + b, 0);
+    const deployingInstancesCount = deploying.map((a) => a.count).reduce((a, b) => a + b, 0);
+    const emptyData = (runningInstancesCount === 0) && (deployingInstancesCount === 0);
+
+    if (emptyData) {
+      return html`
+        <div class="tile_message">${i18n('cc-tile-instances.empty')}</div>
+      `;
+    }
+
+    // NOTE: This does not handle the case where someone has different flavors running or deploying
+    if (this._lastRunningCount !== runningInstancesCount) {
+      this.updateComplete.then(() => {
+        // This is not supported in Safari yet, but it's purely decorative so let's keep it like that
+        animate(this.shadowRoot, '.instances[data-type=running] .count-bubble', ...QUICK_SHRINK);
+        this._lastRunningCount = runningInstancesCount;
+      });
+    }
+
+    if (this._lastDeployingCount !== deployingInstancesCount) {
+      this.updateComplete.then(() => {
+        // This is not supported in Safari yet, but it's purely decorative so let's keep it like that
+        animate(this.shadowRoot, '.instances[data-type=deploying] .count-bubble', ...QUICK_SHRINK);
+        this._lastDeployingCount = deployingInstancesCount;
+      });
+    }
+
+    return html`
+      <div class="tile_body">
+        <cc-expand>
+          ${this._renderInstances(running, 'running')}
+          ${this._renderInstances(deploying, 'deploying')}
+        </cc-expand>
+      </div>
+    `;
+  }
+
+  /**
+   *
+   * @param {InstanceType} instances
+   * @param {'running'|'deploying'} type
+   */
   _renderInstances (instances, type) {
     return instances.length ? html`
       <div class="instances ${classMap({ 'cc-waiting': type === 'deploying' })}" data-type=${type}>

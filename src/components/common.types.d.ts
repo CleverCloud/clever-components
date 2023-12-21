@@ -163,16 +163,6 @@ interface Zone {
 
 type ToggleStateType = 'off' | 'open' | 'close';
 
-interface Instance {
-  flavourName: string;
-  count: number;
-}
-
-interface InstancesState {
-  running: Instance[];
-  deploying: Instance[];
-}
-
 type AppStatus = "restart-failed" | "restarting" | "restarting-with-downtime"
   | "running" | "start-failed" | "starting" | "stopped" | "unknown";
 
