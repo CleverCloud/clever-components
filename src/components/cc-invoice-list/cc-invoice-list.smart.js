@@ -1,35 +1,27 @@
 import './cc-invoice-list.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { fetchAllInvoices } from '../../lib/api-helpers.js';
-import { defineSmartComponentWithObservables } from '../../lib/define-smart-component-with-observables.js';
-import { LastPromise, unsubscribeWithSignal } from '../../lib/observables.js';
+import { defineSmartComponent } from '../../lib/define-smart-component.js';
 
-defineSmartComponentWithObservables({
+defineSmartComponent({
   selector: 'cc-invoice-list',
   params: {
     apiConfig: { type: Object },
     ownerId: { type: String },
   },
-  onConnect (container, component, context$, disconnectSignal) {
+  onContextUpdate ({ context, updateComponent, signal }) {
 
-    const invoices_lp = new LastPromise();
+    updateComponent('state', { type: 'loading' });
 
-    unsubscribeWithSignal(disconnectSignal, [
+    const { apiConfig, ownerId } = context;
 
-      invoices_lp.error$.subscribe(console.error),
-      invoices_lp.error$.subscribe(() => (component.error = true)),
-      invoices_lp.value$.subscribe((invoices) => (component.invoices = invoices)),
-
-      context$.subscribe(({ apiConfig, ownerId }) => {
-
-        component.eror = null;
-        component.invoices = null;
-
-        if (apiConfig != null && ownerId != null) {
-          invoices_lp.push((signal) => fetchAllInvoices({ apiConfig, signal, ownerId }));
-        }
-      }),
-
-    ]);
+    fetchAllInvoices({ apiConfig, ownerId, signal })
+      .then((invoices) => {
+        updateComponent('state', { type: 'loaded', invoices });
+      })
+      .catch((error) => {
+        console.error(error);
+        updateComponent('state', { type: 'error' });
+      });
   },
 });

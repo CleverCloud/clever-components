@@ -25,63 +25,73 @@ const conf = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [{ invoices: fullInvoicesExample }],
+  items: [{ state: { type: 'loaded', invoices: fullInvoicesExample } }],
 });
 
-export const skeleton = makeStory(conf, {
+export const loading = makeStory(conf, {
   items: [{}],
 });
 
 export const empty = makeStory(conf, {
-  items: [{ invoices: [] }],
+  items: [{ state: { type: 'loaded', invoices: [] } }],
 });
 
 export const error = makeStory(conf, {
-  items: [{ error: true }],
+  items: [{ state: { type: 'error' } }],
 });
 
 export const dataLoaded = makeStory(conf, {
-  items: [{ invoices: fullInvoicesExample }],
+  items: [{ state: { type: 'loaded', invoices: fullInvoicesExample } }],
 });
 
 export const dataLoadedWithNoProcessing = makeStory(conf, {
-  items: [{ invoices: fullInvoicesExample.filter((i) => i.status !== PROCESSING_STATUS) }],
+  items: [{ state: { type: 'loaded', invoices: fullInvoicesExample.filter((i) => i.status !== PROCESSING_STATUS) } }],
 });
 
 export const dataLoadedWithNoPending = makeStory(conf, {
-  items: [{
-    invoices: [
-      ...processedInvoices('2020'),
-      ...processedInvoices('2020').slice(2, 10),
-      ...processedInvoices('2018').slice(2, 10),
-      ...processedInvoices('2017').slice(3, 11),
-      ...processedInvoices('2016').slice(1, 9),
-      ...processedInvoices('2015').slice(1, 9),
-    ],
-  }],
+  items: [
+    {
+      state:
+        {
+          type: 'loaded',
+          invoices: [
+            ...processedInvoices('2020'),
+            ...processedInvoices('2020').slice(2, 10),
+            ...processedInvoices('2018').slice(2, 10),
+            ...processedInvoices('2017').slice(3, 11),
+            ...processedInvoices('2016').slice(1, 9),
+            ...processedInvoices('2015').slice(1, 9),
+          ],
+        },
+    }],
 });
 
 export const dataLoadedWithNoProcessed = makeStory(conf, {
-  items: [{
-    invoices: [
-      ...pendingInvoices(2020).slice(0, 4),
-    ],
-  }],
+  items: [
+    {
+      state:
+        {
+          type: 'loaded',
+          invoices: [
+            ...pendingInvoices(2020).slice(0, 4),
+          ],
+        },
+    }],
 });
 
 export const simulations = makeStory(conf, {
   items: [{}, {}],
   simulations: [
     storyWait(2000, ([component, componentError]) => {
-      component.invoices = fullInvoicesExample;
-      componentError.error = true;
+      component.state = { type: 'loaded', invoices: fullInvoicesExample };
+      componentError.state = { type: 'error' };
     }),
   ],
 });
 
 enhanceStoriesNames({
   defaultStory,
-  skeleton,
+  loading,
   empty,
   error,
   dataLoaded,
