@@ -25,10 +25,12 @@ main .breadcrumbs {
 
 main .form-container {
   flex: 1 1 auto;
-  align-self: center;
-  width: 100%;
-  max-width: 80em;
   overflow-y: auto;
+}
+
+main .form-container ct-container {
+  margin-inline: auto;
+  max-width: 96em;
 }
 
 /**
