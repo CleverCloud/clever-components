@@ -1,0 +1,16 @@
+{
+  "name": "mockup-v1",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "assets:json": "node ./scripts/generate-products-json.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lit": "^2.3.1"
+  }
+}

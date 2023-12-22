@@ -1,5 +1,7 @@
 html,
 body {
+  --cc-color-text-weaker: var(--color-grey-60);
+
   height: 100%;
   width: 100%;
   font-family: "Ubuntu", sans-serif;

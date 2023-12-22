@@ -1,0 +1,398 @@
+{
+  "docker": {
+    "id": "docker",
+    "type": "app",
+    "name": "Docker",
+    "logoUrl": "https://assets.clever-cloud.com/logos/docker.svg",
+    "details": {}
+  },
+  "dotnet": {
+    "id": "dotnet",
+    "type": "app",
+    "name": ".NET core",
+    "logoUrl": "https://assets.clever-cloud.com/logos/dotnet.svg",
+    "details": {}
+  },
+  "erlang": {
+    "id": "erlang",
+    "type": "app",
+    "name": "Elixir",
+    "logoUrl": "https://assets.clever-cloud.com/logos/elixir.svg",
+    "details": {}
+  },
+  "haskell": {
+    "id": "haskell",
+    "type": "app",
+    "name": "Haskell",
+    "logoUrl": "https://assets.clever-cloud.com/logos/haskell.svg",
+    "details": {}
+  },
+  "ruby": {
+    "id": "ruby",
+    "type": "app",
+    "name": "Ruby",
+    "logoUrl": "https://assets.clever-cloud.com/logos/ruby.svg",
+    "details": {}
+  },
+  "rust": {
+    "id": "rust",
+    "type": "app",
+    "name": "Rust",
+    "logoUrl": "https://assets.clever-cloud.com/logos/rust.svg",
+    "details": {}
+  },
+  "python": {
+    "id": "python",
+    "type": "app",
+    "name": "Python",
+    "logoUrl": "https://assets.clever-cloud.com/logos/python.svg",
+    "details": {}
+  },
+  "node::meteor": {
+    "id": "node::meteor",
+    "type": "app",
+    "name": "Meteor.js",
+    "logoUrl": "https://assets.clever-cloud.com/logos/meteor.svg",
+    "details": {}
+  },
+  "node::node": {
+    "id": "node::node",
+    "type": "app",
+    "name": "Node",
+    "logoUrl": "https://assets.clever-cloud.com/logos/nodejs.svg",
+    "details": {}
+  },
+  "go": {
+    "id": "go",
+    "type": "app",
+    "name": "Go",
+    "logoUrl": "https://assets.clever-cloud.com/logos/go.svg",
+    "details": {}
+  },
+  "php::php": {
+    "id": "php::php",
+    "type": "app",
+    "name": "PHP",
+    "logoUrl": "https://assets.clever-cloud.com/logos/php.svg",
+    "details": {}
+  },
+  "php::static-apache": {
+    "id": "php::static-apache",
+    "type": "app",
+    "name": "Static",
+    "logoUrl": "https://assets.clever-cloud.com/logos/apache.svg",
+    "details": {}
+  },
+  "java::play1": {
+    "id": "java::play1",
+    "type": "app",
+    "name": "Java + Play! 1",
+    "logoUrl": "https://assets.clever-cloud.com/logos/play1.svg",
+    "details": {}
+  },
+  "java::play2": {
+    "id": "java::play2",
+    "type": "app",
+    "name": "Java or Scala + Play! 2",
+    "logoUrl": "https://assets.clever-cloud.com/logos/play2.svg",
+    "details": {}
+  },
+  "java::gradle": {
+    "id": "java::gradle",
+    "type": "app",
+    "name": "Java or Groovy + Gradle",
+    "logoUrl": "https://assets.clever-cloud.com/logos/gradle.svg",
+    "details": {}
+  },
+  "java::jar": {
+    "id": "java::jar",
+    "type": "app",
+    "name": "Java + JAR",
+    "logoUrl": "https://assets.clever-cloud.com/logos/java-jar.svg",
+    "details": {}
+  },
+  "java::maven": {
+    "id": "java::maven",
+    "type": "app",
+    "name": "Java + Maven",
+    "logoUrl": "https://assets.clever-cloud.com/logos/maven.svg",
+    "details": {}
+  },
+  "java::sbt": {
+    "id": "java::sbt",
+    "type": "app",
+    "name": "Scala + SBT",
+    "logoUrl": "https://assets.clever-cloud.com/logos/scala.svg",
+    "details": {}
+  },
+  "java::war": {
+    "id": "java::war",
+    "type": "app",
+    "name": "Java + WAR",
+    "logoUrl": "https://assets.clever-cloud.com/logos/java-war.svg",
+    "details": {}
+  },
+  "addon-matomo": {
+    "id": "addon-matomo",
+    "type": "addon",
+    "name": "Matomo Analytics",
+    "logoUrl": "https://assets.clever-cloud.com/logos/matomo.svg",
+    "details": {
+      "categories": null
+    }
+  },
+  "addon-pulsar": {
+    "id": "addon-pulsar",
+    "type": "addon",
+    "name": "Pulsar",
+    "logoUrl": "https://assets.clever-cloud.com/logos/pulsar.svg",
+    "details": {
+      "categories": null
+    }
+  },
+  "cellar-addon": {
+    "id": "cellar-addon",
+    "type": "addon",
+    "name": "Cellar S3 storage",
+    "logoUrl": "https://assets.clever-cloud.com/logos/cellar.svg",
+    "details": {
+      "categories": null
+    }
+  },
+  "config-provider": {
+    "id": "config-provider",
+    "type": "addon",
+    "name": "Configuration provider",
+    "logoUrl": "https://assets.clever-cloud.com/logos/configprovider.svg",
+    "details": {
+      "categories": null
+    }
+  },
+  "es-addon": {
+    "id": "es-addon",
+    "type": "addon",
+    "name": "Elastic Stack",
+    "logoUrl": "https://assets.clever-cloud.com/logos/elastic.svg",
+    "details": {
+      "categories": null,
+      "displayedFeatures": [
+        "memory",
+        "cpu",
+        "disk-size"
+      ]
+    }
+  },
+  "fs-bucket": {
+    "id": "fs-bucket",
+    "type": "addon",
+    "name": "FS Buckets",
+    "logoUrl": "https://assets.clever-cloud.com/logos/fsbucket.svg",
+    "details": {
+      "categories": null
+    }
+  },
+  "jenkins": {
+    "id": "jenkins",
+    "type": "addon",
+    "name": "Jenkins",
+    "logoUrl": "https://assets.clever-cloud.com/logos/jenkins.svg",
+    "details": {
+      "categories": null,
+      "displayedFeatures": [
+        "memory",
+        "cpu",
+        "disk-size"
+      ]
+    }
+  },
+  "mailpace": {
+    "id": "mailpace",
+    "type": "addon",
+    "name": "MailPace - Transactional Email",
+    "logoUrl": "https://docs.mailpace.com/img/logo.png",
+    "details": {
+      "categories": null,
+      "displayedFeatures": []
+    }
+  },
+  "mongodb-addon": {
+    "id": "mongodb-addon",
+    "type": "addon",
+    "name": "MongoDB",
+    "logoUrl": "https://assets.clever-cloud.com/logos/mongodb.svg",
+    "details": {
+      "categories": [
+        {
+          "name": "DEV",
+          "prefix": "dev"
+        },
+        {
+          "name": "XXS",
+          "prefix": "xxs"
+        },
+        {
+          "name": "XS",
+          "prefix": "xs"
+        },
+        {
+          "name": "S",
+          "prefix": "s"
+        },
+        {
+          "name": "M",
+          "prefix": "m"
+        },
+        {
+          "name": "L",
+          "prefix": "l"
+        },
+        {
+          "name": "XL",
+          "prefix": "xl"
+        },
+        {
+          "name": "XXL",
+          "prefix": "xxl"
+        },
+        {
+          "name": "XXXL",
+          "prefix": "xxxl"
+        }
+      ],
+      "displayedFeatures": {
+        "category": [
+          "memory",
+          "cpu"
+        ],
+        "customization": [
+          "disk-size"
+        ]
+      }
+    }
+  },
+  "mysql-addon": {
+    "id": "mysql-addon",
+    "type": "addon",
+    "name": "MySQL",
+    "logoUrl": "https://assets.clever-cloud.com/logos/mysql.svg",
+    "details": {
+      "categories": [
+        {
+          "name": "DEV",
+          "prefix": "dev"
+        },
+        {
+          "name": "XXS",
+          "prefix": "xxs"
+        },
+        {
+          "name": "XS",
+          "prefix": "xs"
+        },
+        {
+          "name": "S",
+          "prefix": "s"
+        },
+        {
+          "name": "M",
+          "prefix": "m"
+        },
+        {
+          "name": "L",
+          "prefix": "l"
+        },
+        {
+          "name": "XL",
+          "prefix": "xl"
+        },
+        {
+          "name": "XXL",
+          "prefix": "xxl"
+        },
+        {
+          "name": "XXXL",
+          "prefix": "xxxl"
+        }
+      ],
+      "displayedFeatures": {
+        "category": [
+          "memory",
+          "cpu"
+        ],
+        "customization": [
+          "disk-size"
+        ]
+      }
+    }
+  },
+  "postgresql-addon": {
+    "id": "postgresql-addon",
+    "type": "addon",
+    "name": "PostgreSQL",
+    "logoUrl": "https://assets.clever-cloud.com/logos/pgsql.svg",
+    "details": {
+      "categories": [
+        {
+          "name": "DEV",
+          "prefix": "dev"
+        },
+        {
+          "name": "XXS",
+          "prefix": "xxs"
+        },
+        {
+          "name": "XS",
+          "prefix": "xs"
+        },
+        {
+          "name": "S",
+          "prefix": "s"
+        },
+        {
+          "name": "M",
+          "prefix": "m"
+        },
+        {
+          "name": "L",
+          "prefix": "l"
+        },
+        {
+          "name": "XL",
+          "prefix": "xl"
+        },
+        {
+          "name": "XXL",
+          "prefix": "xxl"
+        },
+        {
+          "name": "XXXL",
+          "prefix": "xxxl"
+        }
+      ],
+      "displayedFeatures": {
+        "category": [
+          "memory",
+          "cpu"
+        ],
+        "customization": [
+          "disk-size"
+        ]
+      }
+    }
+  },
+  "redis-addon": {
+    "id": "redis-addon",
+    "type": "addon",
+    "name": "Redis",
+    "logoUrl": "https://assets.clever-cloud.com/logos/redis.svg",
+    "details": {
+      "categories": null,
+      "displayedFeatures": [
+        "cpu",
+        "max-db-size",
+        "databases",
+        "connection-limit"
+      ]
+    }
+  }
+}
