@@ -66,34 +66,40 @@ const conf = {
 export const defaultStory = makeStory(conf, {
   items: [
     {
-      articles: ARTICLES,
+      state: {
+        type: 'loaded',
+        articles: ARTICLES,
+      },
     },
   ],
 });
 
-export const skeleton = makeStory(conf, {
-  items: [{}],
+export const loading = makeStory(conf, {
+  items: [{ state: { type: 'loading' } }],
 });
 
 // No need to invest time on empty story right now.
 
 export const error = makeStory(conf, {
-  items: [{ error: true }],
+  items: [{ state: { type: 'error' } }],
 });
 
 export const dataLoaded = makeStory(conf, {
   items: [
     {
-      articles: ARTICLES,
+      state: {
+        type: 'loaded',
+        articles: ARTICLES,
+      },
     },
   ],
 });
 
-export const simulationsWithSucess = makeStory(conf, {
+export const simulationsWithSuccess = makeStory(conf, {
   items: [{}],
   simulations: [
     storyWait(2000, ([component]) => {
-      component.articles = ARTICLES;
+      component.state = { type: 'loaded', articles: ARTICLES };
     }),
   ],
 });
@@ -102,16 +108,16 @@ export const simulationsWithError = makeStory(conf, {
   items: [{}],
   simulations: [
     storyWait(2000, ([componentError]) => {
-      componentError.error = true;
+      componentError.state = { type: 'error' };
     }),
   ],
 });
 
 enhanceStoriesNames({
   defaultStory,
+  loading,
   error,
-  skeleton,
   dataLoaded,
-  simulationsWithSucess,
+  simulationsWithSuccess,
   simulationsWithError,
 });

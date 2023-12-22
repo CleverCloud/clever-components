@@ -18,7 +18,7 @@ title: '💡 Smart'
 <table>
   <tr><th>Name                   <th>Type                   <th>Details                       <th>Default
   <tr><td><code>lang</code>  <td><code>String</code>    <td>Sets the language the feed should be fetched in<td>
-  <tr><td><code>limit</code>  <td><code>Number</code>    <td>Sets the number of articles from the feed you should get<td>9
+  <tr><td><code>limit</code>  <td><code>Number</code>    <td>Sets the number of articles from the feed you should get<td>
 </table>
 
 ## 🌐 API endpoints
@@ -34,35 +34,23 @@ title: '💡 Smart'
 ### English
 
 ```html
-<cc-smart-container context='{ "lang": "en" }'>
+<cc-smart-container context='{ "lang": "en" , "limit": 3}'>
   <cc-article-list></cc-article-list>
 </cc-smart-container>
 ```
 
-<cc-smart-container context='{ "lang": "en" }'>
+<cc-smart-container context='{ "lang": "en", "limit": 3 }'>
   <cc-article-list></cc-article-list>
 </cc-smart-container>
 
 ### French
 
 ```html
-<cc-smart-container context='{ "lang": "fr" }'>
+<cc-smart-container context='{ "lang": "fr", "limit": 3 }'>
   <cc-article-list></cc-article-list>
 </cc-smart-container>
 ```
 
-<cc-smart-container context='{ "lang": "fr" }'>
-  <cc-article-list></cc-article-list>
-</cc-smart-container>
-
-### Limit (number of articles)
-
-```html
-<cc-smart-container context='{ "lang": "en", "limit": 3 }'>
-  <cc-article-list></cc-article-list>
-</cc-smart-container>
-```
-
-<cc-smart-container context='{ "lang": "en", "limit": 3 }'>
+<cc-smart-container context='{ "lang": "fr", "limit": 3 }'>
   <cc-article-list></cc-article-list>
 </cc-smart-container>
