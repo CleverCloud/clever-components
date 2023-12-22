@@ -6,110 +6,97 @@ import {
   getGrafanaOrganisation,
   resetGrafanaOrganisation,
 } from '../../lib/api-helpers.js';
-import { defineSmartComponentWithObservables } from '../../lib/define-smart-component-with-observables.js';
+import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { i18n } from '../../lib/i18n.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
-import { fromCustomEvent, LastPromise, unsubscribeWithSignal, withLatestFrom } from '../../lib/observables.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 
-// TODO, we need to refactor this one to make it more like the others
-defineSmartComponentWithObservables({
+defineSmartComponent({
   selector: 'cc-grafana-info',
   params: {
     apiConfig: { type: Object },
     ownerId: { type: String },
     grafanaBaseLink: { type: String },
   },
-  onConnect (container, component, context$, disconnectSignal) {
+  onContextUpdate ({ context, updateComponent, onEvent, signal }) {
+    const { apiConfig, ownerId, grafanaBaseLink } = context;
 
-    const grafana_lp = new LastPromise();
+    updateComponent('state', { type: 'loading' });
 
-    const onReset$ = fromCustomEvent(component, 'cc-grafana-info:reset')
-      .pipe(withLatestFrom(context$));
-    const onDisable$ = fromCustomEvent(component, 'cc-grafana-info:disable')
-      .pipe(withLatestFrom(context$));
-    const onEnable$ = fromCustomEvent(component, 'cc-grafana-info:enable')
-      .pipe(withLatestFrom(context$));
+    function fetch () {
+      fetchGrafanaOrganisation({ apiConfig, signal, ownerId, grafanaBaseLink })
+        .then((info) => {
+          updateComponent('state', { type: 'loaded', info });
+        })
+        .catch((error) => {
+          console.error(error);
+          updateComponent('state', { type: 'error' });
+        });
+    }
 
-    unsubscribeWithSignal(disconnectSignal, [
+    onEvent('cc-grafana-info:reset', () => {
+      updateComponent('state', (state) => {
+        state.info.action = 'resetting';
+      });
 
-      grafana_lp.error$.subscribe(console.error),
-      grafana_lp.error$.subscribe(() => {
-        component.error = 'loading';
-        component.waiting = false;
-      }),
-
-      grafana_lp.value$.subscribe((product) => {
-        component.status = product.status;
-        if (component.status === 'enabled' && product.link == null) {
-          component.error = 'link-grafana';
-        }
-        else {
-          component.link = product.link;
-        }
-        component.waiting = false;
-      }),
-
-      onReset$.subscribe(([variables, { apiConfig, ownerId }]) => {
-
-        component.error = false;
-        component.waiting = 'resetting';
-
-        doResetGrafanaOrganisation({ apiConfig, ownerId })
-          .then(() => notifySuccess(i18n('cc-grafana-info.reset.success')))
-          .catch(() => notifyError(i18n('cc-grafana-info.reset.error')))
-          .finally(() => {
-            component.waiting = false;
+      doResetGrafanaOrganisation({ apiConfig, ownerId })
+        .then(() => notifySuccess(i18n('cc-grafana-info.reset.success')))
+        .catch((error) => {
+          console.error(error);
+          notifyError(i18n('cc-grafana-info.reset.error'));
+        })
+        .finally(() => {
+          updateComponent('state', (state) => {
+            state.info.action = null;
           });
-      }),
+        });
+    });
 
-      onDisable$.subscribe(([variables, { apiConfig, ownerId }]) => {
+    onEvent('cc-grafana-info:disable', () => {
+      updateComponent('state', (state) => {
+        state.info.action = 'disabling';
+      });
 
-        component.error = false;
-        component.waiting = 'disabling';
-
-        disableGrafanaOrganisation({ apiConfig, ownerId })
-          .then(() => {
-            component.status = 'disabled';
-            component.link = null;
-            notifySuccess(i18n('cc-grafana-info.disable.success'));
-          })
-          .catch(() => notifyError(i18n('cc-grafana-info.disable.error')))
-          .finally(() => {
-            component.waiting = false;
+      disableGrafanaOrganisation({ apiConfig, ownerId })
+        .then(() => {
+          updateComponent('state', (state) => {
+            state.info = { status: 'disabled' };
           });
-      }),
-
-      onEnable$.subscribe(([_, { apiConfig, ownerId, grafanaBaseLink }]) => {
-
-        component.error = false;
-        component.waiting = 'enabling';
-
-        enableGrafanaOrganisation({ apiConfig, ownerId })
-          .then(() => {
-            grafana_lp.push((signal) => fetchGrafanaOrganisation({ apiConfig, signal, ownerId, grafanaBaseLink }));
-            notifySuccess(i18n('cc-grafana-info.enable.success'));
-          })
-          .catch(() => notifyError(i18n('cc-grafana-info.enable.error')))
-          .finally(() => {
-            component.waiting = false;
+          notifySuccess(i18n('cc-grafana-info.disable.success'));
+        })
+        .catch((error) => {
+          console.error(error);
+          notifyError(i18n('cc-grafana-info.disable.error'));
+        })
+        .finally(() => {
+          updateComponent('state', (state) => {
+            state.info.action = null;
           });
-      }),
+        });
+    });
 
-      context$.subscribe(({ apiConfig, ownerId, grafanaBaseLink }) => {
+    onEvent('cc-grafana-info:enable', () => {
+      updateComponent('state', (state) => {
+        state.info.action = 'enabling';
+      });
 
-        component.error = false;
-        component.link = null;
-        component.status = null;
-        component.waiting = false;
+      enableGrafanaOrganisation({ apiConfig, ownerId })
+        .then(() => {
+          fetch();
+          notifySuccess(i18n('cc-grafana-info.enable.success'));
+        })
+        .catch((error) => {
+          console.error(error);
+          notifyError(i18n('cc-grafana-info.enable.error'));
+        })
+        .finally(() => {
+          updateComponent('state', (state) => {
+            state.info.action = null;
+          });
+        });
+    });
 
-        if (apiConfig != null && ownerId != null && grafanaBaseLink != null) {
-          grafana_lp.push((signal) => fetchGrafanaOrganisation({ apiConfig, signal, ownerId, grafanaBaseLink }));
-        }
-      }),
-
-    ]);
-
+    fetch();
   },
 });
 
@@ -123,7 +110,7 @@ function fetchGrafanaOrganisation ({ apiConfig, signal, ownerId, grafanaBaseLink
     })
     .catch((error) => {
       if (error.response?.status === 404 && error.toString().startsWith('Error: Grafana organization not found')) {
-        return { status: 'disabled', link: null };
+        return { status: 'disabled' };
       }
       else {
         throw error;

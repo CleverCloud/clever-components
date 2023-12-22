@@ -1,5 +1,31 @@
-type GrafanaErrorType = "loading" | "link-grafana" | false;
+export type GrafanaInfoState = GrafanaInfoStateLoading | GrafanaInfoStateLoadingError | GrafanaInfoStateLoaded;
 
-type GrafanaStatusType = "enabled" | "disabled" | null;
+interface GrafanaInfoStateLoading {
+  type: "loading";
+}
 
-type GrafanaWaitingType = "resetting" | "disabling" | "enabling" | false;
+interface GrafanaInfoStateLoadingError {
+  type: "error";
+}
+
+interface GrafanaInfoStateLoaded {
+  type: "loaded";
+  info: GrafanaInfo;
+}
+
+type GrafanaInfo = GrafanaInfoEnabled | GrafanaInfoEnabledWithError | GrafanaInfoDisabled;
+
+interface GrafanaInfoEnabled {
+  status: "enabled";
+  link?: string;
+  action?: "disabling" | "resetting";
+}
+
+interface GrafanaInfoEnabledWithError {
+  status: "enabled";
+}
+
+interface GrafanaInfoDisabled {
+  status: "disabled";
+  action?: "enabling";
+}
