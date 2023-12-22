@@ -17,23 +17,50 @@ const differentVersions = { current: 'v2.1.3', available: 'v2.1.4' };
 const sameVersions = { current: 'v2.1.3', available: 'v2.1.3' };
 
 export const defaultStory = makeStory(conf, {
-  items: [{ jenkinsLink, jenkinsManageLink, versions: sameVersions }],
+  items: [
+    {
+      state: {
+        type: 'loaded',
+        jenkinsLink,
+        jenkinsManageLink,
+        versions: sameVersions,
+      },
+    },
+  ],
 });
 
-export const skeleton = makeStory(conf, {
-  items: [{}],
+export const loading = makeStory(conf, {
+  items: [{ state: { type: 'loading' } }],
 });
 
-export const errorStory = makeStory(conf, {
-  items: [{ error: true }],
+export const error = makeStory(conf, {
+  items: [{ state: { type: 'error' } }],
 });
 
 export const dataLoadedWithSameVersion = makeStory(conf, {
-  items: [{ jenkinsLink, jenkinsManageLink, versions: sameVersions }],
+  items: [
+    {
+      state: {
+        type: 'loaded',
+        jenkinsLink,
+        jenkinsManageLink,
+        versions: sameVersions,
+      },
+    },
+  ],
 });
 
 export const dataLoadedWithDifferentVersions = makeStory(conf, {
-  items: [{ jenkinsLink, jenkinsManageLink, versions: differentVersions }],
+  items: [
+    {
+      state: {
+        type: 'loaded',
+        jenkinsLink,
+        jenkinsManageLink,
+        versions: differentVersions,
+      },
+    },
+  ],
 });
 
 export const simulations = makeStory(conf, {
@@ -44,23 +71,17 @@ export const simulations = makeStory(conf, {
   ],
   simulations: [
     storyWait(2000, ([componentUpToDate, componentWithUpdate, componentError]) => {
-      componentUpToDate.jenkinsLink = jenkinsLink;
-      componentUpToDate.jenkinsManageLink = jenkinsManageLink;
-      componentUpToDate.versions = sameVersions;
-
-      componentWithUpdate.jenkinsLink = jenkinsLink;
-      componentWithUpdate.jenkinsManageLink = jenkinsManageLink;
-      componentWithUpdate.versions = differentVersions;
-
-      componentError.error = true;
+      componentUpToDate.state = { type: 'loaded', jenkinsLink, jenkinsManageLink, versions: sameVersions };
+      componentWithUpdate.state = { type: 'loaded', jenkinsLink, jenkinsManageLink, versions: differentVersions };
+      componentError.state = { type: 'error' };
     }),
   ],
 });
 
 enhanceStoriesNames({
   defaultStory,
-  skeleton,
-  errorStory,
+  loading,
+  error,
   dataLoadedWithSameVersion,
   dataLoadedWithDifferentVersions,
   simulations,

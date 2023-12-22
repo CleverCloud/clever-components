@@ -1,7 +1,7 @@
+import '../cc-block/cc-block.js';
+import '../cc-block-section/cc-block-section.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
-import '../cc-block-section/cc-block-section.js';
-import '../cc-block/cc-block.js';
 import '../cc-notice/cc-notice.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
@@ -14,11 +14,11 @@ const JENKINS_LOGO_URL = 'https://assets.clever-cloud.com/logos/jenkins.svg';
 const JENKINS_DOCUMENTATION = 'https://www.clever-cloud.com/doc/deploy/addon/jenkins/';
 
 /**
- * @typedef {import('./cc-jenkins-info.types.js').Versions} Versions
+ * @typedef {import('./cc-jenkins-info.types.js').JenkinsInfoState} JenkinsInfoState
  */
 
 /**
- * A component to display various informations (Documentation, access, updates, ...) for a Jenkins service.
+ * A component to display various information (Documentation, access, updates, ...) for a Jenkins service.
  *
  * @cssdisplay block
  */
@@ -26,36 +26,28 @@ export class CcJenkinsInfo extends LitElement {
 
   static get properties () {
     return {
-      error: { type: Boolean },
-      jenkinsLink: { type: String, attribute: 'jenkins-link' },
-      jenkinsManageLink: { type: String, attribute: 'jenkins-manage-link' },
-      versions: { type: Object },
+      state: { type: Object },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {boolean} Display an error message. */
-    this.error = false;
-
-    /** @type {string|null} Provides the HTTP link of the Jenkins service. */
-    this.jenkinsLink = null;
-
-    /** @type {string|null} Provides the HTTP link of the Jenkins management interface. */
-    this.jenkinsManageLink = null;
-
-    /** @type {Versions|null} Provides the current and available version of the Jenkins add-on. */
-    this.versions = null;
+    /** @type {JenkinsInfoState} Sets the Jenkins info state. */
+    this.state = { type: 'loading' };
   }
 
   render () {
-    const versions = this.versions ?? {};
-    const hasNewVersion = versions.current !== versions.available;
 
-    if (this.error) {
+    if (this.state.type === 'error') {
       return html`<cc-notice intent="warning" message="${i18n('cc-jenkins-info.error')}"></cc-notice>`;
     }
+
+    const skeleton = (this.state.type === 'loading');
+    const jenkinsLink = this.state.type === 'loaded' ? this.state.jenkinsLink : null;
+    const jenkinsManageLink = this.state.type === 'loaded' ? this.state.jenkinsManageLink : null;
+    const versions = this.state.type === 'loaded' ? this.state.versions : {};
+    const hasNewVersion = versions.current !== versions.available;
 
     return html`
 
@@ -66,8 +58,8 @@ export class CcJenkinsInfo extends LitElement {
             <div slot="title">${i18n('cc-jenkins-info.open-jenkins.title')}</div>
             <div slot="info">${i18n('cc-jenkins-info.open-jenkins.text')}</div>
             <div class="one-line-form">
-              ${ccLink(this.jenkinsLink, html`
-                <cc-img src="${JENKINS_LOGO_URL}"></cc-img><span class="${classMap({ skeleton: (this.jenkinsLink == null) })}">${i18n('cc-jenkins-info.open-jenkins.link')}</span>
+              ${ccLink(jenkinsLink, html`
+                <cc-img src="${JENKINS_LOGO_URL}"></cc-img><span class="${classMap({ skeleton })}">${i18n('cc-jenkins-info.open-jenkins.link')}</span>
               `)}
             </div>
           </cc-block-section>
@@ -86,9 +78,9 @@ export class CcJenkinsInfo extends LitElement {
             <div slot="title">${i18n('cc-jenkins-info.update.title')}</div>
             <div slot="info">${i18n('cc-jenkins-info.update.text')}</div>
             <div class="one-line-form">
-              ${ccLink(this.jenkinsManageLink, html`
+              ${ccLink(jenkinsManageLink, html`
                 <cc-icon size="lg" .icon=${iconInfo}></cc-icon>
-                <span class="${classMap({ skeleton: (this.versions == null) })}">
+                <span class="${classMap({ skeleton })}">
                   ${hasNewVersion ? i18n('cc-jenkins-info.update.new-version', { version: versions.available }) : i18n('cc-jenkins-info.update.up-to-date')}
                 </span>
               `)}
