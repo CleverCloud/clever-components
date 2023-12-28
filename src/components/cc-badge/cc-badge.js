@@ -53,7 +53,7 @@ export class CcBadge extends LitElement {
   }
 
   get iconAccessibleName () {
-    return this.a11yName;
+    return this.iconA11yName;
   }
 
   /**
@@ -61,7 +61,7 @@ export class CcBadge extends LitElement {
    * @deprecated
    */
   set iconAccessibleName (value) {
-    this.a11yName = value;
+    this.iconA11yName = value;
   }
 
   render () {
