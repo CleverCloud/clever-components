@@ -31,7 +31,7 @@ const COLORS = {
 const SKELETON_STATUS_CODES = { 200: 1 };
 
 /**
- * @typedef {import('./cc-tile-status-codes.types.js').StatusCodesData} StatusCodesData
+ * @typedef {import('./cc-tile-status-codes.types.js').TileStatusCodesState} TileStatusCodesState
  */
 
 /**
@@ -39,7 +39,6 @@ const SKELETON_STATUS_CODES = { 200: 1 };
  *
  * ## Details
 
- * * When `data` is nullish, a skeleton screen UI pattern is displayed (loading hint).
  * * A short doc is available when the (i) button is clicked.
  *
  * @cssdisplay grid
@@ -48,8 +47,7 @@ export class CcTileStatusCodes extends LitElement {
 
   static get properties () {
     return {
-      error: { type: Boolean, reflect: true },
-      statusCodes: { type: Object, attribute: 'status-codes' },
+      state: { type: Object },
       _docs: { type: Boolean, state: true },
       _empty: { type: Boolean, state: true },
       _skeleton: { type: Boolean, state: true },
@@ -59,11 +57,8 @@ export class CcTileStatusCodes extends LitElement {
   constructor () {
     super();
 
-    /** @type {boolean|null} Displays an error message. */
-    this.error = null;
-
-    /** @type {StatusCodesData|null} Sets data with the number of requests for each HTTP status code. */
-    this.statusCodes = null;
+    /** @type {TileStatusCodesState} Sets the status codes state. */
+    this.state = { type: 'loading' };
 
     /** @type {boolean} */
     this._docs = false;
@@ -79,9 +74,9 @@ export class CcTileStatusCodes extends LitElement {
     this._docs = !this._docs;
   }
 
-  firstUpdated () {
+  firstUpdated (changedProperties) {
 
-    if (this.error) {
+    if (this.state.type === 'error') {
       return;
     }
 
@@ -150,26 +145,29 @@ export class CcTileStatusCodes extends LitElement {
     });
   }
 
-  // updated and not udpate because we need this._chart before
+  // updated and not update because we need this._chart before
   updated (changedProperties) {
+    if (changedProperties.has('state')) {
 
-    if (changedProperties.has('statusCodes') && !this.error) {
+      if (this.state.type === 'error') {
+        return;
+      }
 
-      this._skeleton = (this.statusCodes == null);
+      this._skeleton = this.state.type === 'loading';
 
-      const value = this._skeleton ? SKELETON_STATUS_CODES : this.statusCodes;
+      const statusCodes = this._skeleton ? SKELETON_STATUS_CODES : this.state.statusCodes;
 
-      this._empty = Object.keys(value).length === 0;
+      this._empty = Object.keys(statusCodes).length === 0;
 
       // Raw status codes
-      this._labels = Object.keys(value);
+      this._labels = Object.keys(statusCodes);
 
       // Status codes as categories (2xx, 3xx...)
       this._chartLabels = this._skeleton
         ? this._labels.map(() => '???')
         : this._labels.map((statusCode) => statusCode[0] + 'xx');
 
-      this._data = Object.values(value);
+      this._data = Object.values(statusCodes);
 
       this._backgroundColor = this._skeleton
         ? this._labels.map(() => '#bbb')
@@ -194,8 +192,9 @@ export class CcTileStatusCodes extends LitElement {
 
   render () {
 
-    const displayChart = (!this.error && !this._empty && !this._docs);
-    const displayError = (this.error && !this._docs);
+    const error = this.state.type === 'error';
+    const displayChart = (!error && !this._empty && !this._docs);
+    const displayError = (error && !this._docs);
     const displayEmpty = (this._empty && !this._docs);
     const displayDocs = (this._docs);
 
