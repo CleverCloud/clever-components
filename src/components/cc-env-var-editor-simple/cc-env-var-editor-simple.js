@@ -5,6 +5,9 @@ import { repeat } from 'lit/directives/repeat.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 
+/**
+ * @type {Array<Variable>}
+ */
 const SKELETON_VARIABLES = [
   { name: 'VARIABLE_ONE', value: '' },
   { name: 'VARIABLE_FOOBAR', value: '' },
@@ -12,6 +15,7 @@ const SKELETON_VARIABLES = [
 ];
 
 /**
+ * @typedef {import('cc-env-var-editor-simple.types.js').EnvVarEditorSimpleState} EnvVarEditorSimpleState
  * @typedef {import('../common.types.js').Variable} Variable
  */
 
@@ -27,9 +31,8 @@ export class CcEnvVarEditorSimple extends LitElement {
   static get properties () {
     return {
       disabled: { type: Boolean },
-      mode: { type: String },
       readonly: { type: Boolean },
-      variables: { type: Array },
+      state: { type: Object },
     };
   }
 
@@ -39,59 +42,68 @@ export class CcEnvVarEditorSimple extends LitElement {
     /** @type {boolean} Sets `disabled` attribute on inputs and buttons. */
     this.disabled = false;
 
-    /** @type {string} Sets the mode of the variables name validation. */
-    this.mode = '';
-
     /** @type {boolean} Sets `readonly` attribute on inputs and hides buttons. */
     this.readonly = false;
 
-    // this.variables is let to undefined by default (this triggers skeleton screen)
-    /** @type {Variable[]|null} Sets the list of variables. */
-    this.variables = null;
+    /** @type {EnvVarEditorSimpleState} Sets the variables state. */
+    this.state = { type: 'loading' };
+  }
+
+  /**
+   * @type {Array<Variable>} variables
+   */
+  _changeVariables (variables) {
+    this.state = {
+      ...this.state,
+      variables,
+    };
+    dispatchCustomEvent(this, 'change', variables);
   }
 
   _onCreate ({ detail: newVar }) {
-    this.variables = [...this.variables, newVar];
-    dispatchCustomEvent(this, 'change', this.variables);
+    this._changeVariables([...this.state.variables, newVar]);
   }
 
   _onInput ({ detail: editedVar }) {
-    this.variables = this.variables.map((v) => {
-      return (v.name === editedVar.name)
-        ? { ...v, value: editedVar.value }
-        : v;
-    });
-    dispatchCustomEvent(this, 'change', this.variables);
+    this._changeVariables(
+      this.state.variables.map((v) => {
+        return (v.name === editedVar.name)
+          ? { ...v, value: editedVar.value }
+          : v;
+      }),
+    );
   }
 
   _onDelete ({ detail: deletedVar }) {
-    this.variables = this.variables
-      .filter((v) => {
-        return (v.name === deletedVar.name)
-          ? (!v.isNew)
-          : true;
-      })
-      .map((v) => {
-        return (v.name === deletedVar.name)
-          ? { ...v, isDeleted: true }
-          : v;
-      });
-    dispatchCustomEvent(this, 'change', this.variables);
+    this._changeVariables(
+      this.state.variables
+        .filter((v) => {
+          return (v.name === deletedVar.name)
+            ? (!v.isNew)
+            : true;
+        })
+        .map((v) => {
+          return (v.name === deletedVar.name)
+            ? { ...v, isDeleted: true }
+            : v;
+        }),
+    );
   }
 
   _onKeep ({ detail: keptVar }) {
-    this.variables = this.variables.map((v) => {
-      return (v.name === keptVar.name)
-        ? { ...v, isDeleted: false }
-        : v;
-    });
-    dispatchCustomEvent(this, 'change', this.variables);
+    this._changeVariables(
+      this.state.variables.map((v) => {
+        return (v.name === keptVar.name)
+          ? { ...v, isDeleted: false }
+          : v;
+      }),
+    );
   }
 
   render () {
 
-    const skeleton = (this.variables == null);
-    const variables = skeleton ? SKELETON_VARIABLES : this.variables;
+    const skeleton = (this.state.type === 'loading');
+    const variables = skeleton ? SKELETON_VARIABLES : this.state.variables;
     const variablesNames = variables.map(({ name }) => name);
 
     return html`
@@ -99,13 +111,13 @@ export class CcEnvVarEditorSimple extends LitElement {
       ${!this.readonly ? html`
         <cc-env-var-create
           ?disabled=${skeleton || this.disabled}
-          .validationMode=${this.mode}
+          .validationMode=${this.state.validationMode}
           .variablesNames=${variablesNames}
           @cc-env-var-create:create=${this._onCreate}
         ></cc-env-var-create>
       ` : ''}
 
-      <div class="message" ?hidden=${variables != null && variables.length !== 0}>
+      <div class="message" ?hidden=${variables.length !== 0}>
         ${i18n('cc-env-var-editor-simple.empty-data')}
       </div>
 
