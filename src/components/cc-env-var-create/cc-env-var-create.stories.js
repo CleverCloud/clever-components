@@ -21,7 +21,7 @@ export const validationWithExistingNames = makeStory(conf, {
 });
 
 export const validationWithStrictMode = makeStory(conf, {
-  items: [{ mode: 'strict' }],
+  items: [{ validationMode: 'strict' }],
 });
 
 export const disabled = makeStory(conf, {

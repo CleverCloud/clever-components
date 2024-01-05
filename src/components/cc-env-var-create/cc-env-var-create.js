@@ -9,6 +9,7 @@ import { linkStyles } from '../../templates/cc-link/cc-link.js';
 
 /**
  * @typedef {import('../common.types.js').Variable} Variable
+ * @typedef {import('../common.types.js').EnvVarValidationMode} EnvVarValidationMode
  */
 
 /**
@@ -28,7 +29,7 @@ export class CcEnvVarCreate extends LitElement {
   static get properties () {
     return {
       disabled: { type: Boolean },
-      mode: { type: String },
+      validationMode: { type: String, attribute: 'validation-mode' },
       variablesNames: { type: Array, attribute: 'variables-names' },
       _variableName: { type: String, state: true },
       _variableValue: { type: String, state: true },
@@ -41,8 +42,8 @@ export class CcEnvVarCreate extends LitElement {
     /** @type {boolean} Sets `disabled` attribute on inputs and button. */
     this.disabled = false;
 
-    /** @type {string} Sets the mode of the variables name validation. */
-    this.mode = '';
+    /** @type {EnvVarValidationMode} Sets the mode of the variables name validation. */
+    this.validationMode = 'simple';
 
     /** @type {string[]} Sets list of existing variables names (so we can display an error if it already exists). */
     this.variablesNames = [];
@@ -74,7 +75,7 @@ export class CcEnvVarCreate extends LitElement {
       value: this._variableValue,
     });
     this.reset();
-    // Put focus back on name input so we can add something else directly
+    // Put focus back on name input, so we can add something else directly
     this.shadowRoot.querySelector('cc-input-text.name').focus();
   }
 
@@ -90,7 +91,7 @@ export class CcEnvVarCreate extends LitElement {
     const isNameInvalidSimple = !validateName(this._variableName, 'simple');
     const isNameInvalidStrict = !validateName(this._variableName, 'strict');
     const isNameAlreadyDefined = this.variablesNames.includes(this._variableName);
-    const hasErrors = (this.mode === 'strict')
+    const hasErrors = (this.validationMode === 'strict')
       ? isNameInvalidStrict || isNameAlreadyDefined
       : isNameInvalidSimple || isNameAlreadyDefined;
 
@@ -128,21 +129,21 @@ export class CcEnvVarCreate extends LitElement {
         </div>
       </div>
       
-      ${(isNameInvalidStrict && this.mode === 'strict' && this._variableName !== '') ? html`
+      ${(isNameInvalidStrict && this.validationMode === 'strict' && this._variableName !== '') ? html`
         <cc-notice intent="warning">
           <div slot="message">
             ${i18n(`cc-env-var-create.errors.invalid-name`, { name: this._variableName })}
           </div>
         </cc-notice>
       ` : ''}
-      ${(isNameInvalidStrict && isNameInvalidSimple && this.mode !== 'strict' && this._variableName !== '') ? html`
+      ${(isNameInvalidStrict && isNameInvalidSimple && this.validationMode !== 'strict' && this._variableName !== '') ? html`
         <cc-notice intent="warning">
           <div slot="message">
             ${i18n(`cc-env-var-create.errors.invalid-name`, { name: this._variableName })}
           </div>
         </cc-notice>
       ` : ''}
-      ${(isNameInvalidStrict && !isNameInvalidSimple && this.mode !== 'strict' && this._variableName !== '') ? html`
+      ${(isNameInvalidStrict && !isNameInvalidSimple && this.validationMode !== 'strict' && this._variableName !== '') ? html`
         <cc-notice intent="info">
           <div slot="message">
             ${i18n(`cc-env-var-create.info.java-prop`, { name: this._variableName })}

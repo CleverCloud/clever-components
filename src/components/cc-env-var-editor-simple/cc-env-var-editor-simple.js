@@ -99,7 +99,7 @@ export class CcEnvVarEditorSimple extends LitElement {
       ${!this.readonly ? html`
         <cc-env-var-create
           ?disabled=${skeleton || this.disabled}
-          mode=${this.mode}
+          .validationMode=${this.mode}
           .variablesNames=${variablesNames}
           @cc-env-var-create:create=${this._onCreate}
         ></cc-env-var-create>

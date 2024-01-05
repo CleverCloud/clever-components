@@ -54,6 +54,9 @@ interface Flavor {
 export interface Variable {
   name: string;
   value: string;
+  isNew?: boolean;
+  isDeleted?: boolean;
+  isEdited?: boolean;
 }
 
 export interface IconModel {
@@ -172,9 +175,7 @@ interface ParseError {
   isWarning: Boolean;
 }
 
-interface ParserOptions {
-  mode: string;
-}
+type EnvVarValidationMode = 'simple' | 'strict';
 
 interface Service {
   name: string;
