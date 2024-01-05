@@ -14,8 +14,8 @@ const SKELETON_VARIABLES = [
 ];
 
 /**
+ * @typedef {import('./cc-env-var-editor-expert.types.js').EnvVarEditorExpertState} EnvVarEditorExpertState
  * @typedef {import('../common.types.js').ParseError} ParseError
- * @typedef {import('../common.types.js').ParserOptions} ParserOptions
  * @typedef {import('../common.types.js').Variable} Variable
  */
 
@@ -31,9 +31,8 @@ export class CcEnvVarEditorExpert extends LitElement {
   static get properties () {
     return {
       disabled: { type: Boolean },
-      parserOptions: { type: Object },
       readonly: { type: Boolean },
-      variables: { type: Array },
+      state: { type: Object },
       _errors: { type: Array, state: true },
       _skeleton: { type: Boolean, state: true },
       _variablesAsText: { type: Array, state: true },
@@ -46,14 +45,11 @@ export class CcEnvVarEditorExpert extends LitElement {
     /** @type {boolean} Sets `disabled` attribute on inputs and buttons. */
     this.disabled = false;
 
-    /** @type {ParserOptions} Sets the options for the variables parser. */
-    this.parserOptions = { mode: null };
-
     /** @type {boolean} Sets `readonly` attribute on main input and hides buttons. */
     this.readonly = false;
 
-    /** @type {Variable[]|null} Sets the list of variables */
-    this.variables = null;
+    /** @type {EnvVarEditorExpertState} Sets the variables editor state.*/
+    this.state = { type: 'loading' };
 
     /** @type {ParseError[]} */
     this._errors = [];
@@ -116,15 +112,15 @@ export class CcEnvVarEditorExpert extends LitElement {
 
   _onInput ({ detail: value }) {
     this._variablesAsText = value;
-    const { variables, errors } = parseRaw(value, this.parserOptions);
+    const { variables, errors } = parseRaw(value, { mode: this.state.validationMode });
     this._setErrors(errors);
     dispatchCustomEvent(this, 'change', variables);
   }
 
   willUpdate (changedProperties) {
-    if (changedProperties.has('variables')) {
-      this._skeleton = (this.variables == null);
-      const vars = this._skeleton ? SKELETON_VARIABLES : this.variables;
+    if (changedProperties.has('state')) {
+      this._skeleton = (this.state.type === 'loading');
+      const vars = this._skeleton ? SKELETON_VARIABLES : this.state.variables;
       const filteredVariables = vars
         .filter(({ isDeleted }) => !isDeleted);
       this._variablesAsText = toNameEqualsValueString(filteredVariables);
