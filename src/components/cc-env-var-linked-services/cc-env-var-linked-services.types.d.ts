@@ -1,4 +1,36 @@
-type EnvType = "addon" | "app";
+import { Variable } from "../common.types";
 
+export type EnvVarLinkedServicesState = EnvVarLinkedServicesStateLoading | EnvVarLinkedServicesStateLoaded | EnvVarLinkedServicesStateError;
 
+interface EnvVarLinkedServicesStateLoading {
+  type: 'loading';
+}
 
+interface EnvVarLinkedServicesStateLoaded {
+  type: 'loaded';
+  servicesStates: Array<LinkedServiceState>;
+}
+
+interface EnvVarLinkedServicesStateError {
+  type: 'error';
+}
+
+type EnvVarLinkedServicesType = "addon" | "app";
+
+export type LinkedServiceState = LinkedServiceStateLoading | LinkedServiceStateLoaded | LinkedServiceStateError;
+
+interface LinkedServiceStateLoading {
+  type: 'loading';
+  name: string;
+}
+
+interface LinkedServiceStateLoaded {
+  type: 'loaded';
+  name: string;
+  variables: Array<Variable>;
+}
+
+interface LinkedServiceStateError {
+  type: 'error';
+  name: string;
+}

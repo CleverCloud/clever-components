@@ -177,10 +177,5 @@ interface ParseError {
 
 type EnvVarValidationMode = 'simple' | 'strict';
 
-interface Service {
-  name: string;
-  variables?: Variable[];
-}
-
 export type NotificationIntent = "info" | "success" | "warning" | "danger";
 
