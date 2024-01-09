@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
-import { FormController, formInput, formSubmit } from '../form/form.js';
+import { FormController, formInput, formSubmit } from '../form-v1/form.js';
 
 export class CcFtDemoNotInForm extends LitElement {
   static get properties () {

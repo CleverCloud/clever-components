@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import '../../cc-button/cc-button.js';
-import { FormController, formSubmit } from '../form/form.js';
+import { FormController, formSubmit } from '../form-v1/form.js';
 
 export class CcFtDemoManualUsage extends LitElement {
   static get properties () {

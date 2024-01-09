@@ -3,7 +3,7 @@ import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
 import { defineSmartComponent } from '../../../lib/define-smart-component.js';
 import { updateRootContext } from '../../../lib/smart-manager.js';
-import { formSubmitHandler } from '../form/form-submit-handler.js';
+import { formSubmitHandler } from '../form/form.js';
 
 export class CcFtDemoWithSmartComponent extends LitElement {
   static get properties () {

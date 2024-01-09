@@ -1,10 +1,7 @@
-import { formSubmit, formReset } from './form-action-directive.js';
-import { FormController } from './form-controller.js';
-import { formInput } from './form-input-directive.js';
+import { formSubmit } from './form-submit-directive.js';
+import { formSubmitHandler } from './form-submit-handler.js';
 
 export {
-  FormController,
-  formInput,
+  formSubmitHandler,
   formSubmit,
-  formReset,
 };

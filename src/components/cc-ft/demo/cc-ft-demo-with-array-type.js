@@ -2,23 +2,13 @@ import { css, html, LitElement } from 'lit';
 import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
 import '../../cc-toggle/cc-toggle.js';
-import { getSubmitHandler } from '../form/form-submit-handler.js';
-import { invalid, VALID } from '../validation/validation.js';
-
-class CustomValidator {
-  getErrorMessage (code) {
-    if (code === 'not-maj') {
-      return 'En majuscule s\'il te plait';
-    }
-  }
-
-  validate (value) {
-    return value.toUpperCase() !== value ? invalid('not-maj') : VALID;
-  }
-}
+import { formSubmit, formSubmitHandler } from '../form/form.js';
 
 const customValidation = (value) => {
-  return value.toUpperCase() !== value ? 'not-maj' : null;
+  if (value == null || value.length === 0) {
+    return 'C\'est vide mon ami !';
+  }
+  return value.toUpperCase() !== value ? 'En majuscule s\'il te plait' : null;
 };
 
 export class CcFtDemoWithArrayType extends LitElement {
@@ -31,26 +21,27 @@ export class CcFtDemoWithArrayType extends LitElement {
   constructor () {
     super();
 
-    this._customValidator = new CustomValidator();
+    this._initialTags = [];
+
     this._testError = null;
   }
 
   _onFormInvalid ({ detail }) {
-    // console.log(detail);
-    // const find = detail.find((d) => d.name === 'test' && d.validationResult.valid === false);
-    // this._testError = find != null
-    //   ? this._customValidator.getErrorMessage(find.validationResult.code) ?? find.validationResult.code
-    //   : null;
+    console.log(detail);
+    const invalidTest = detail.find((d) => d.name === 'test' && d.validationResult.valid === false);
+    this._testError = invalidTest != null
+      ? invalidTest.validationResult.code
+      : null;
   }
 
   render () {
     return html`
       <form name="my-form" 
-        novalidate 
-        @submit=${getSubmitHandler(this, { }, { test: customValidation })}
-        @form:invalid=${this._onFormInvalid}
+            novalidate
+            ${formSubmit(formSubmitHandler(this, { test: customValidation }))}
+            @form:invalid=${this._onFormInvalid}
       >
-        <cc-input-text label="Name" name="name" required></cc-input-text>
+        <cc-input-text label="Name" name="name" required value="toto"></cc-input-text>
         <cc-input-text label="Tags" name="tags" required .tags=${[]}></cc-input-text>
         <label for="test">Test</label>
         

@@ -1,9 +1,9 @@
 import { css, html, LitElement } from 'lit';
 import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
-import { FormController, formInput, formSubmit } from '../form/form.js';
+import { FormController, formInput, formSubmit } from '../form-v1/form.js';
 
-export class CcFtDemoNotInSameForm extends LitElement {
+export class CcFtDemoWithCustomError extends LitElement {
   static get properties () {
     return {
     };
@@ -14,16 +14,24 @@ export class CcFtDemoNotInSameForm extends LitElement {
 
     const fields = [
       {
-        name: 'name',
-        type: 'string',
+        name: 'email',
+        type: 'email',
         required: true,
         reset: '',
       },
       {
-        name: 'surname',
-        type: 'string',
+        name: 'email-custom',
+        type: 'email',
         required: true,
         reset: '',
+        customErrorMessages (code) {
+          if (code === 'empty') {
+            return 'Entre un email !';
+          }
+          if (code === 'badEmail') {
+            return 'Entre un email valide !';
+          }
+        },
       },
     ];
     this._formController = new FormController(this, fields);
@@ -31,12 +39,9 @@ export class CcFtDemoNotInSameForm extends LitElement {
 
   render () {
     return html`
-      <form name="my-form-1">
-        <cc-input-text label="Name" ${formInput(this._formController, 'name')}></cc-input-text>
-      </form>
-      
-      <form name="my-form-2">
-        <cc-input-text label="Name" ${formInput(this._formController, 'surname')}></cc-input-text>
+      <form name="my-form">
+        <cc-input-text type="email" label="Email" ${formInput(this._formController, 'email')}></cc-input-text>
+        <cc-input-text type="email" label="Email custom" ${formInput(this._formController, 'email-custom')}></cc-input-text>
         
         <cc-button primary ${formSubmit(this._formController)}>Submit</cc-button>
       </form>
@@ -55,12 +60,10 @@ export class CcFtDemoNotInSameForm extends LitElement {
           display: flex;
           flex-direction: column;
           gap: 0.5em;
-          border: 1px solid #111;
-          padding: 0.5em;
         }
       `,
     ];
   }
 }
 
-window.customElements.define('cc-ft-demo-not-in-same-form', CcFtDemoNotInSameForm);
+window.customElements.define('cc-ft-demo-with-custom-error', CcFtDemoWithCustomError);

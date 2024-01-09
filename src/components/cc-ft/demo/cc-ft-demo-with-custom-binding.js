@@ -1,9 +1,9 @@
+import '../../cc-button/cc-button.js';
 import '@shoelace-style/shoelace/dist/components/option/option.js';
 import '@shoelace-style/shoelace/dist/components/select/select.js';
 import { css, html, LitElement } from 'lit';
 import { iconRemixArrowDownSLine as iconArrowDown } from '../../../assets/cc-remix.icons.js';
-import '../../cc-button/cc-button.js';
-import { FormController, formInput, formSubmit } from '../form/form.js';
+import { FormController, formInput, formSubmit } from '../form-v1/form.js';
 
 export class CcFtDemoWithCustomBinding extends LitElement {
   static get properties () {

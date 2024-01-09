@@ -3,7 +3,7 @@ import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
 import '../../cc-select/cc-select.js';
 import '../../cc-toggle/cc-toggle.js';
-import { formSubmitHandler } from '../form/form-submit-handler.js';
+import { formSubmitHandler } from '../form/form.js';
 
 export class CcFtDemoDynamicForm extends LitElement {
   static get properties () {

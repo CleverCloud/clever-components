@@ -1,5 +1,5 @@
 import { css, html, LitElement } from 'lit';
-import { FormController, formInput, formSubmit } from '../form/form.js';
+import { FormController, formInput, formSubmit } from '../form-v1/form.js';
 
 export class CcFtDemoWithNativeInputs extends LitElement {
   static get properties () {

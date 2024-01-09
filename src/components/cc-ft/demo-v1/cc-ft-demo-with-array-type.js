@@ -2,7 +2,7 @@ import { css, html, LitElement } from 'lit';
 import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
 import '../../cc-toggle/cc-toggle.js';
-import { FormController, formInput, formSubmit } from '../form/form.js';
+import { FormController, formInput, formSubmit } from '../form-v1/form.js';
 
 const foodToggleOptions = [
   {
