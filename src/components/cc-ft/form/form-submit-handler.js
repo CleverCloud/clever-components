@@ -5,11 +5,12 @@ import { VALID, invalid, RequiredValidator } from '../validation/validation.js';
  *
  * @param host
  * @param propertyMap
- * @param validatorMap : map string => Validator. TODO: maybe not a Validator but a simple function returning null or error-code.
+ * @param { {[name: string]: (value:string|string[]) => string|null} } customValidation
  * @return {(function(*): void)|*}
  */
-export function getSubmitHandler (host, propertyMap = {}, validatorMap = {}) {
+export function getSubmitHandler (host, propertyMap = {}, customValidation = {}) {
   return (event) => {
+    // we don't want native validation
     event.preventDefault();
 
     const formEl = event.target;
@@ -21,13 +22,23 @@ export function getSubmitHandler (host, propertyMap = {}, validatorMap = {}) {
     });
 
     const formValidationResult = Array.from(formEl.elements)
-      .filter((element) => element.validate != null || element.checkValidity != null || validatorMap[element.name] != null)
+      .filter((element) => element.validate != null || element.checkValidity != null || customValidation[element.name] != null)
       .map((element) => {
 
         // --- custom validation
 
-        if (validatorMap[element.name] != null) {
-          const validator = new RequiredValidator(element.required === true, validatorMap[element.name]);
+        const customValidateFunction = customValidation[element.name];
+
+        if (customValidateFunction != null) {
+          const validator = new RequiredValidator(element.required === true, {
+            validate (value) {
+              const validation = customValidateFunction(value);
+              if (validation == null) {
+                return VALID;
+              }
+              return invalid(validation);
+            },
+          });
 
           // --- native inputs validation
 
@@ -40,7 +51,7 @@ export function getSubmitHandler (host, propertyMap = {}, validatorMap = {}) {
           }
 
           // --- not native inputs validation
-          // TODO: if we not have a native input, `setCustomValidity` method won't work
+          // TODO: if we do not have a native input, `setCustomValidity` method won't work
           // TODO: should we warn about that?
 
           return {

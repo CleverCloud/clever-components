@@ -17,6 +17,10 @@ class CustomValidator {
   }
 }
 
+const customValidation = (value) => {
+  return value.toUpperCase() !== value ? 'not-maj' : null;
+};
+
 export class CcFtDemoWithArrayType extends LitElement {
   static get properties () {
     return {
@@ -32,18 +36,18 @@ export class CcFtDemoWithArrayType extends LitElement {
   }
 
   _onFormInvalid ({ detail }) {
-    console.log(detail);
-    const find = detail.find((d) => d.name === 'test' && d.validationResult.valid === false);
-    this._testError = find != null
-      ? this._customValidator.getErrorMessage(find.validationResult.code) ?? find.validationResult.code
-      : null;
+    // console.log(detail);
+    // const find = detail.find((d) => d.name === 'test' && d.validationResult.valid === false);
+    // this._testError = find != null
+    //   ? this._customValidator.getErrorMessage(find.validationResult.code) ?? find.validationResult.code
+    //   : null;
   }
 
   render () {
     return html`
       <form name="my-form" 
         novalidate 
-        @submit=${getSubmitHandler(this, { tags: 'tags' }, { test: this._customValidator })}
+        @submit=${getSubmitHandler(this, { }, { test: customValidation })}
         @form:invalid=${this._onFormInvalid}
       >
         <cc-input-text label="Name" name="name" required></cc-input-text>
