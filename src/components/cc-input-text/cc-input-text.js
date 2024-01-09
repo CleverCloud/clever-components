@@ -199,7 +199,18 @@ export class CcInputText extends LitElement {
     }
     this.value = e.target.value;
     // Sync form values with our state
-    this._internals.setFormValue(this._tagsEnabled ? this.tags : this.value);
+    let data;
+    if (this._tagsEnabled) {
+      data = new FormData();
+      this.tags.forEach((tag, index) => {
+        data.append(this.name, tag);
+      });
+    }
+    else {
+      data = this.value;
+    }
+
+    this._internals.setFormValue(data);
     // Sync form & input validity
     this.validate(false);
     dispatchCustomEvent(this, 'input', this.value);
