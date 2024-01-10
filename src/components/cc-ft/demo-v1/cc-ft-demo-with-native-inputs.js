@@ -1,5 +1,5 @@
 import { css, html, LitElement } from 'lit';
-import { FormController, formInput, formSubmit } from '../form-v1/form.js';
+import { FormController, formInput, formSubmitV1 } from '../form-v1/form.js';
 
 export class CcFtDemoWithNativeInputs extends LitElement {
   static get properties () {
@@ -50,7 +50,7 @@ export class CcFtDemoWithNativeInputs extends LitElement {
           <label for="hero">Super-hero ?</label>
         </div>
 
-        <button type="button" ${formSubmit(this._formController)}>Submit</button>
+        <button type="button" ${formSubmitV1(this._formController)}>Submit</button>
       </form>
     `;
   }

@@ -2,7 +2,7 @@ import { css, html, LitElement } from 'lit';
 import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
 import '../../cc-toggle/cc-toggle.js';
-import { FormController, formInput, formSubmit } from '../form-v1/form.js';
+import { FormController, formInput, formSubmitV1 } from '../form-v1/form.js';
 
 const foodToggleOptions = [
   {
@@ -57,7 +57,7 @@ export class CcFtDemoWithArrayType extends LitElement {
                    ${formInput(this._formController, 'foods', { valueProperty: 'multipleValues' })}>
         </cc-toggle>
         
-        <cc-button primary ${formSubmit(this._formController)}>Submit</cc-button>
+        <cc-button primary ${formSubmitV1(this._formController)}>Submit</cc-button>
       </form>
     `;
   }

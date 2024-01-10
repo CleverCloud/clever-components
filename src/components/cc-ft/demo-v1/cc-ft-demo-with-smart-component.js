@@ -3,7 +3,7 @@ import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
 import { defineSmartComponent } from '../../../lib/define-smart-component.js';
 import { updateRootContext } from '../../../lib/smart-manager.js';
-import { FormController, formInput, formSubmit } from '../form-v1/form.js';
+import { FormController, formInput, formSubmitV1 } from '../form-v1/form.js';
 
 export class CcFtDemoWithSmartComponent extends LitElement {
   static get properties () {
@@ -44,7 +44,7 @@ export class CcFtDemoWithSmartComponent extends LitElement {
         <form name="my-form">
           <cc-input-text type="email" label="Email" ${formInput(this._formController, 'email')}></cc-input-text>
 
-          <cc-button primary ${formSubmit(this._formController)}>Submit</cc-button>
+          <cc-button primary ${formSubmitV1(this._formController)}>Submit</cc-button>
         </form>  
       </cc-smart-container>
     `;

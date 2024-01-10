@@ -3,7 +3,7 @@ import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
 import '../../cc-select/cc-select.js';
 import '../../cc-toggle/cc-toggle.js';
-import { FormController, formInput, formReset, formSubmit } from '../form-v1/form.js';
+import { FormController, formInput, formReset, formSubmitV1 } from '../form-v1/form.js';
 
 const colorsSelectOptions = [
   {
@@ -90,7 +90,7 @@ export class CcFtDemoReset extends LitElement {
         
         <div class="buttons-bar">
           <cc-button ${formReset(this._formController)}>Reset</cc-button>
-          <cc-button primary ${formSubmit(this._formController)}>Submit</cc-button>
+          <cc-button primary ${formSubmitV1(this._formController)}>Submit</cc-button>
         </div>
       </form>
     `;

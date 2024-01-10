@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import '../../cc-button/cc-button.js';
-import { FormController, formSubmit } from '../form-v1/form.js';
+import { FormController, formSubmitV1 } from '../form-v1/form.js';
 
 export class CcFtDemoManualUsage extends LitElement {
   static get properties () {
@@ -100,7 +100,7 @@ export class CcFtDemoManualUsage extends LitElement {
           ` : ''}
         </div>
 
-        <cc-button primary ${formSubmit(this._formController)}>Submit</cc-button>
+        <cc-button primary ${formSubmitV1(this._formController)}>Submit</cc-button>
       </form>
     `;
   }
@@ -122,8 +122,8 @@ export class CcFtDemoManualUsage extends LitElement {
         .group {
           display: flex;
           flex-direction: column;
-          gap: 0.3em;
           padding: 0.3em;
+          gap: 0.3em;
         }
         
         .error {

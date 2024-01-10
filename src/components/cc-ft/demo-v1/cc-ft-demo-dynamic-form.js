@@ -3,7 +3,7 @@ import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
 import '../../cc-select/cc-select.js';
 import '../../cc-toggle/cc-toggle.js';
-import { FormController, formInput, formSubmit } from '../form-v1/form.js';
+import { FormController, formInput, formSubmitV1 } from '../form-v1/form.js';
 
 export class CcFtDemoDynamicForm extends LitElement {
   static get properties () {
@@ -63,7 +63,7 @@ export class CcFtDemoDynamicForm extends LitElement {
           <cc-input-text label="Company" ${formInput(this._formController, 'company')}></cc-input-text>
         ` : ''}
 
-        <cc-button primary ${formSubmit(this._formController)}>Submit</cc-button>
+        <cc-button primary ${formSubmitV1(this._formController)}>Submit</cc-button>
       </form>
     `;
   }

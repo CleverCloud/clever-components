@@ -97,7 +97,7 @@ class FormSubmitDirective extends FormActionDirective {
   }
 }
 
-export const formSubmit = directive(FormSubmitDirective);
+export const formSubmitV1 = directive(FormSubmitDirective);
 
 // - reset directive ---
 

@@ -3,7 +3,7 @@ import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
 import '../../cc-select/cc-select.js';
 import '../../cc-toggle/cc-toggle.js';
-import { FormController, formInput, formSubmit } from '../form-v1/form.js';
+import { FormController, formInput, formSubmitV1 } from '../form-v1/form.js';
 
 export class CcFtDemoMultipleForms extends LitElement {
   static get properties () {
@@ -43,13 +43,13 @@ export class CcFtDemoMultipleForms extends LitElement {
       <form name="my-form-1">
         <cc-input-text label="Name" ${formInput(this._form1Controller, 'name')}></cc-input-text>
 
-        <cc-button primary ${formSubmit(this._form1Controller)}>Submit</cc-button>
+        <cc-button primary ${formSubmitV1(this._form1Controller)}>Submit</cc-button>
       </form>
       
       <form name="my-form-2">
         <cc-input-text label="Name" ${formInput(this._form2Controller, 'name')}></cc-input-text>
 
-        <cc-button primary ${formSubmit(this._form2Controller)}>Submit</cc-button>
+        <cc-button primary ${formSubmitV1(this._form2Controller)}>Submit</cc-button>
       </form>
     `;
   }
@@ -67,9 +67,9 @@ export class CcFtDemoMultipleForms extends LitElement {
         form {
           display: flex;
           flex-direction: column;
-          gap: 0.5em;
-          border: 1px solid #111;
           padding: 0.5em;
+          border: 1px solid #111;
+          gap: 0.5em;
         }
       `,
     ];

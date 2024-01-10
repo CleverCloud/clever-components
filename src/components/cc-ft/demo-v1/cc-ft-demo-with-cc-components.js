@@ -3,7 +3,7 @@ import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
 import '../../cc-select/cc-select.js';
 import '../../cc-toggle/cc-toggle.js';
-import { FormController, formInput, formSubmit } from '../form-v1/form.js';
+import { FormController, formInput, formSubmitV1 } from '../form-v1/form.js';
 
 const colorsSelectOptions = [
   {
@@ -88,7 +88,7 @@ export class CcFtDemoWithCcComponents extends LitElement {
         <cc-select label="Favorite color" .options=${colorsSelectOptions} ${formInput(this._formController, 'color')}></cc-select>
         <cc-toggle legend="Pet" .choices=${petToggleOptions} ${formInput(this._formController, 'pet')}></cc-toggle>
 
-        <cc-button primary ${formSubmit(this._formController)}>Submit</cc-button>
+        <cc-button primary ${formSubmitV1(this._formController)}>Submit</cc-button>
       </form>
     `;
   }
