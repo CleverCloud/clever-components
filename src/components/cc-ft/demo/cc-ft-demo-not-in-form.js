@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
-import { FormController, formInput, formSubmit } from '../form-v1/form.js';
+import { formSubmit, formSubmitHandler } from '../form/form.js';
 
 export class CcFtDemoNotInForm extends LitElement {
   static get properties () {
@@ -9,25 +9,11 @@ export class CcFtDemoNotInForm extends LitElement {
     };
   }
 
-  constructor () {
-    super();
-
-    const fields = [
-      {
-        name: 'name',
-        type: 'string',
-        required: true,
-        reset: '',
-      },
-    ];
-    this._formController = new FormController(this, fields);
-  }
-
   render () {
     return html`
-      <div class="form">
-        <cc-input-text label="Name" ${formInput(this._formController, 'name')}></cc-input-text>
-        <cc-button primary ${formSubmit(this._formController)}>Submit</cc-button>
+      <div class="form" ${formSubmit(formSubmitHandler(this))}>
+        <cc-input-text label="Name" name="name" required></cc-input-text>
+        <cc-button primary type="submit">Submit</cc-button>
       </div>
     `;
   }
