@@ -1,28 +1,23 @@
 import { css, html, LitElement } from 'lit';
 import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
-import { formSubmitHandler } from '../form/form.js';
+import { formSubmit, formSubmitHandler } from '../form/form.js';
 
 export class CcFtDemoMultipleForms extends LitElement {
   static get properties () {
     return {
-      _proMode: { type: Boolean, state: true },
     };
-  }
-
-  constructor () {
-    super();
   }
 
   render () {
     return html`
-      <form name="my-form-1" novalidate @submit=${formSubmitHandler}>
+      <form name="my-form-1" ${formSubmit(formSubmitHandler(this))}>
         <cc-input-text label="Name" name="name" required></cc-input-text>
 
         <cc-button primary type="submit" required>Submit</cc-button>
       </form>
       
-      <form name="my-form-2" novalidate @submit=${formSubmitHandler}>
+      <form name="my-form-2" ${formSubmit(formSubmitHandler(this))}>
         <cc-input-text label="Name" name="name" required></cc-input-text>
 
         <cc-button primary type="submit">Submit</cc-button>
