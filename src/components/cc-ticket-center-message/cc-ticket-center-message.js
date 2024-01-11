@@ -45,10 +45,13 @@ export class CcTicketCenterMessage extends LitElement {
     console.log(this);
     const date = this.messageDate?.toISOString();
     return html`
-      <cc-block>
-        <div slot="title">${this.messageOriginDisplay()}</div>
-        <cc-datetime-relative slot="button" datetime=${date}></cc-datetime-relative>
+      <cc-block no-head>
+        <cc-datetime-relative datetime=${date}></cc-datetime-relative>
         <div class="messageContent">${this.message}</div>
+        <div class="author-info">
+          <cc-img accessible-name="authorAvatar" skeleton src=${this.authorPicture}></cc-img>
+          <div class="author-name">${this.authorName}</div>
+        </div>
       </cc-block>
     `;
   }
