@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
-import { formSubmitHandler } from '../form/form.js';
+import { formSubmit, formSubmitHandler } from '../form/form.js';
 
 export class CcFtDemoFocusOrder extends LitElement {
   static get properties () {
@@ -9,13 +9,9 @@ export class CcFtDemoFocusOrder extends LitElement {
     };
   }
 
-  constructor () {
-    super();
-  }
-
   render () {
     return html`
-      <form name="my-form" novalidate @submit=${formSubmitHandler}>
+      <form name="my-form" ${formSubmit(formSubmitHandler(this))}>
         <cc-input-text type="name" label="Name" name="name" required></cc-input-text>
         <cc-input-text type="surname" label="Surname" name="surname" required></cc-input-text>
         <cc-input-text type="email" label="Email" name="email" required></cc-input-text>
