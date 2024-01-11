@@ -8,7 +8,6 @@ const DEMOS = {
   'with-cc-components': 'With clever components',
   'with-native-inputs': 'With native inputs',
   'with-array-type': 'With array type',
-  'with-custom-binding': 'With custom binding',
   'with-custom-error': 'With custom error',
   'with-custom-validation': 'With custom validation',
   'focus-order': 'Focus in DOM order',
@@ -128,10 +127,10 @@ export class CcFtDemo extends LitElement {
         }
 
         .right {
+          min-width: 300px;
           padding: 0.5em;
           border: 1px solid #ddd;
           border-radius: 0.3em;
-          min-width: 300px;
         }
 
         .debug {
