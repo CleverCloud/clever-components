@@ -68,7 +68,7 @@ export class CcInputText extends LitElement {
       skeleton: { type: Boolean, reflect: true },
       type: { type: String, reflect: true },
       tags: { type: Array },
-      resetValue: { type: String },
+      resetValue: { type: String, attribute: 'reset-value' },
       value: { type: String },
       _copyOk: { type: Boolean, state: true },
       _showSecret: { type: Boolean, state: true },
@@ -198,21 +198,7 @@ export class CcInputText extends LitElement {
       }
     }
     this.value = e.target.value;
-    // Sync form values with our state
-    let data;
-    if (this._tagsEnabled) {
-      data = new FormData();
-      this.tags.forEach((tag, index) => {
-        data.append(this.name, tag);
-      });
-    }
-    else {
-      data = this.value;
-    }
 
-    this._internals.setFormValue(data);
-    // Sync form & input validity
-    this.validate(false);
     dispatchCustomEvent(this, 'input', this.value);
     if (this._tagsEnabled) {
       dispatchCustomEvent(this, 'tags', this.tags);
@@ -330,9 +316,34 @@ export class CcInputText extends LitElement {
     this.errorMessage = null;
   }
 
-  firstUpdated () {
-    // Sync form & input validity
-    this.validate(false);
+  willUpdate (changedProperties) {
+    // TODO: discuss this.
+    // we want the reset value to be used if no value has been provided
+    // but do we want resetValue to erase the value if it is changed? => probably not
+    if (changedProperties.has('resetValue') && this.resetValue != null) {
+      this.value = this.resetValue;
+    }
+  }
+
+  updated (changedProperties) {
+    // Note: usually people do this within their `onInput` handler
+    // but we want to sync both onInput and when a value is provided through prop / attribute
+    if (changedProperties.has('value')) {
+      // Sync form values with our state
+      let data;
+      if (this._tagsEnabled) {
+        data = new FormData();
+        this.tags.forEach((tag, index) => {
+          data.append(this.name, tag);
+        });
+      }
+      else {
+        data = this.value;
+      }
+      this._internals.setFormValue(this.value);
+      // Sync form & input validity
+      this.validate(false);
+    }
   }
 
   render () {
