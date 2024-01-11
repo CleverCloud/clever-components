@@ -15,7 +15,6 @@ const DEMOS = {
   'dynamic-form': 'Dynamic form',
   'multiple-forms': 'Multiple forms',
   'with-smart-component': 'With smart component',
-  'manual-usage': 'Manual usage',
   reset: 'Reset',
   'not-in-form': 'Bad pattern: not in <form>',
   'not-in-same-form': 'Bad pattern: not in same <form>',
