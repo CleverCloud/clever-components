@@ -687,7 +687,7 @@ export class CcInputText extends LitElement {
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
         
-        input.error:focus + .ring {
+        .input.error:focus + .ring {
           outline: var(--cc-focus-outline-error, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
