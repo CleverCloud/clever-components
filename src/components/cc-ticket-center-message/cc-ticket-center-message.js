@@ -1,4 +1,5 @@
 import '../cc-block/cc-block.js';
+import '../cc-img/cc-img.js';
 import '../cc-datetime-relative/cc-datetime-relative.js';
 import { css, html, LitElement } from 'lit';
 
@@ -44,10 +45,13 @@ export class CcTicketCenterMessage extends LitElement {
     console.log(this);
     const date = this.messageDate?.toISOString();
     return html`
-      <cc-block>
-        <div slot="title">${this.messageOriginDisplay()}</div>
-        <cc-datetime-relative slot="button" datetime=${date}></cc-datetime-relative>
+      <cc-block no-head>
+        <cc-datetime-relative datetime=${date}></cc-datetime-relative>
         <div class="messageContent">${this.message}</div>
+        <div class="author-info">
+          <cc-img accessible-name="authorAvatar" skeleton src=${this.authorPicture}></cc-img>
+          <div class="author-name">${this.authorName}</div>
+        </div>
       </cc-block>
     `;
   }
@@ -56,6 +60,21 @@ export class CcTicketCenterMessage extends LitElement {
     return [
       // language=CSS
       css`
+        cc-img {
+          border-radius: 50%;
+          height: 1.7em;
+          width: 1.7em;
+          margin-right: 10px;
+        }
+
+        .author-info {
+          display: flex;
+          align-items: center;
+        }
+
+        .author-name {
+          padding-top: 5px;
+        }
       `,
     ];
   }
