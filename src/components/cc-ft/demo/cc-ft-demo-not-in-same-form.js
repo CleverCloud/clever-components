@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
-import { FormController, formInput, formSubmit } from '../form-v1/form.js';
+import { formSubmit, formSubmitHandler } from '../form/form.js';
 
 export class CcFtDemoNotInSameForm extends LitElement {
   static get properties () {
@@ -9,36 +9,17 @@ export class CcFtDemoNotInSameForm extends LitElement {
     };
   }
 
-  constructor () {
-    super();
-
-    const fields = [
-      {
-        name: 'name',
-        type: 'string',
-        required: true,
-        reset: '',
-      },
-      {
-        name: 'surname',
-        type: 'string',
-        required: true,
-        reset: '',
-      },
-    ];
-    this._formController = new FormController(this, fields);
-  }
-
   render () {
+    // TODO: discuss if this example is still necessary
     return html`
-      <form name="my-form-1">
-        <cc-input-text label="Name" ${formInput(this._formController, 'name')}></cc-input-text>
+      <form name="my-form-1" ${formSubmit(formSubmitHandler(this))}>
+        <cc-input-text label="Name" required></cc-input-text>
       </form>
       
       <form name="my-form-2">
-        <cc-input-text label="Name" ${formInput(this._formController, 'surname')}></cc-input-text>
+        <cc-input-text label="Surname" name="surname"></cc-input-text>
         
-        <cc-button primary ${formSubmit(this._formController)}>Submit</cc-button>
+        <cc-button primary type="submit">Submit</cc-button>
       </form>
     `;
   }
@@ -54,9 +35,9 @@ export class CcFtDemoNotInSameForm extends LitElement {
         form {
           display: flex;
           flex-direction: column;
-          gap: 0.5em;
-          border: 1px solid #111;
           padding: 0.5em;
+          border: 1px solid #111;
+          gap: 0.5em;
         }
       `,
     ];
