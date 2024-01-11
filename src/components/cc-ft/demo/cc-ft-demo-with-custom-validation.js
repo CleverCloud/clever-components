@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
-import { formSubmitHandler } from '../form/form.js';
+import { formSubmit, formSubmitHandler } from '../form/form.js';
 import { invalid, VALID } from '../validation/validation.js';
 
 class CustomValidator {
@@ -30,7 +30,7 @@ export class CcFtDemoWithCustomValidation extends LitElement {
 
   render () {
     return html`
-      <form name="my-form" novalidate @submit=${formSubmitHandler}>
+      <form name="my-form" ${formSubmit(formSubmitHandler(this))}>
         <cc-input-text label="Name" required name="name" .customValidator=${this._customValidator}></cc-input-text>
         
         <cc-button primary type="submit">Submit</cc-button>
