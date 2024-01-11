@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { ValidationController } from '../cc-ft/validation/validation-controller.js';
@@ -42,7 +43,12 @@ export class CcSelect extends LitElement {
       placeholder: { type: String },
       required: { type: Boolean },
       value: { type: String },
+      resetValue: { type: String, attribute: 'reset-value' },
     };
+  }
+
+  static get formAssociated () {
+    return true;
   }
 
   constructor () {
@@ -50,6 +56,9 @@ export class CcSelect extends LitElement {
 
     /** @type {boolean} Sets `disabled` attribute on inner native `<select>` element. */
     this.disabled = false;
+
+    /** @type {string|null} Sets the error message. */
+    this.errorMessage = null;
 
     /** @type {boolean} Sets the `<label>` on the left of the `<select>` element.
      * Only use this if your form contains 1 or 2 fields and your labels are short.
@@ -74,10 +83,28 @@ export class CcSelect extends LitElement {
     /** @type {boolean} Sets the "required" text inside the label. If a placeholder is set, it won't be selectable by the user, it may only be selected as a default value. */
     this.required = false;
 
+    /** @type {string} Sets the reset value */
+    this.resetValue = '';
+
+    /** @type {Ref<HTMLSelectElement>} */
+    this._selectRef = createRef();
+
     /** @type {string|null} Sets the selected value of the element. This prop should always be set. It should always match one of the option values. */
     this.value = null;
 
+    /** @type {ElementInternals} */
+    this._internals = this.attachInternals();
+
     this._validationCtrl = new ValidationController(this, 'errorMessage');
+  }
+
+  willUpdate (changedProperties) {
+    // TODO: discuss this.
+    // we want the reset value to be used if no value has been provided
+    // but do we want resetValue to erase the value if it is changed? => probably not
+    if (changedProperties.has('resetValue') && this.resetValue != null) {
+      this.value = this.resetValue;
+    }
   }
 
   updated (changedProperties) {
@@ -87,29 +114,81 @@ export class CcSelect extends LitElement {
      * `<option>` elements have been rendered.
     */
     if (changedProperties.has('value') || changedProperties.has('options')) {
-      this.shadowRoot.querySelector('select').value = this.value;
+      this._selectRef.value.value = this.value;
+      this._internals.setFormValue(this.value);
     }
+    this.validate(false);
   }
 
   /**
    * Triggers focus on the inner `<select>` element.
    */
   focus () {
-    this.shadowRoot.querySelector('select').focus();
+    this.updateComplete.then(() => this._selectRef?.value?.focus());
   }
 
   /**
    * @param {boolean} report - whether to display error messages or not
    */
   validate (report) {
-    const validator = new RequiredValidator(this.required);
+    const validator = new RequiredValidator(this.required, this.customValidator);
+    const validationResult = this._validationCtrl.validate(validator, this.value, report, this._customErrorMessages);
 
-    return this._validationCtrl.validate(validator, this.value, report);
+    if (validationResult.valid) {
+      this._internals.setValidity({});
+    }
+    else {
+      // TODO: should the Validator return both a code and a validityState?
+      this._internals.setValidity(
+        {
+          valueMissing: validationResult.code === 'empty',
+        },
+        validator.getErrorMessage(validationResult.code),
+        this._selectRef.value,
+      );
+    }
+
+    return validationResult;
+  }
+
+  set customValidator (customValidator) {
+    this._customValidator = customValidator;
+  }
+
+  set customErrorMessages (fn) {
+    this._customErrorMessages = fn;
+  }
+
+  /* region native compatibility */
+  checkValidity () {
+    return this._internals.checkValidity();
+  }
+
+  reportValidity () {
+    return this._internals.reportValidity();
+  }
+
+  get validity () {
+    return this._internals.validity;
+  }
+
+  get validationMessage () {
+    return this._internals.validationMessage;
+  }
+
+  setCustomValidity (message) {
+    this._internals.setValidity({ customError: true }, message, this._inputRef.value);
   }
 
   _onSelectInput (e) {
     this.value = e.target.value;
     dispatchCustomEvent(this, 'input', this.value);
+  }
+
+  formResetCallback () {
+    this.value = this.resetValue;
+    this.validate(false);
+    this.errorMessage = null;
   }
 
   render () {
@@ -131,6 +210,7 @@ export class CcSelect extends LitElement {
           @input=${this._onSelectInput}
           .value=${this.value}
           name=${ifDefined(this.name ?? undefined)}
+          ${ref(this._selectRef)}
         >
           ${this.placeholder != null && this.placeholder !== '' ? html`
             <option value="" ?disabled=${this.required}>${this.placeholder}</option>
