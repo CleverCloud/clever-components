@@ -3,7 +3,7 @@ import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
 import '../../cc-select/cc-select.js';
 import '../../cc-toggle/cc-toggle.js';
-import { formSubmitHandler } from '../form/form.js';
+import { formSubmitHandler, formSubmit } from '../form/form.js';
 
 export class CcFtDemoDynamicForm extends LitElement {
   static get properties () {
@@ -24,7 +24,7 @@ export class CcFtDemoDynamicForm extends LitElement {
 
   render () {
     return html`
-      <form name="my-form" novalidate @submit=${formSubmitHandler}>
+      <form name="my-form" ${formSubmit(formSubmitHandler(this))}>
         <cc-input-text label="Name" required name="name"></cc-input-text>
 
         <label for="pro-mode">
