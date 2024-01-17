@@ -77,7 +77,6 @@ export function minifyStylesheet (stylesheet) {
 export function getMainFiles () {
 
   const mainFilesPatterns = [
-    `${SOURCE_DIR}/assets/*.icons.js`,
     `${SOURCE_DIR}/components/**/*.js`,
     `${SOURCE_DIR}/lib/i18n.js`,
     `${SOURCE_DIR}/lib/smart-manager.js`,
