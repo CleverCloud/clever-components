@@ -3,7 +3,7 @@ import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
 import { defineSmartComponent } from '../../../lib/define-smart-component.js';
 import { updateRootContext } from '../../../lib/smart-manager.js';
-import { formSubmit, formSubmitHandler } from '../form/form.js';
+import { formHelper, formSubmit, formSubmitHandler } from '../form/form.js';
 
 export class CcFtDemoWithSmartComponent extends LitElement {
   static get properties () {
@@ -122,22 +122,28 @@ defineSmartComponent({
 
     onEvent('cc-ft-demo-with-smart-component:formSubmit', ({ form, data }) => {
       console.log('submitting', data);
-      const formElement = component.shadowRoot.querySelector(`form[name=${form}]`);
+
+      const helper = formHelper(component, form);
 
       if (form === 'form1') {
         component.form1State = 'submitting';
         submitForm1(data)
           .then(() => {
             component.form1State = 'idle';
-            formElement.reset();
+            helper.reset();
           })
           .catch((error) => {
             if (error.message === 'email-used') {
               component.form1State = 'idle';
-              // should our component expose some kind of helper for this?
-              formElement.elements.email.errorMessage = 'Email already used';
-              formElement.elements.email.focus();
+              // TODO: think about error code vs error message.
+              //  the reporter really needs the error message (because it sets the errorMessage property on the element)
+              //  does it needs also the error code?
+              //   - maybe its better to dispatch the `invalid` event with error codes instead of error messages (like it is done in submit-handler)
+              //   - maybe its better to set element customValidity with error codes instead of error messages (like it is done in cc-input-text)
+              helper.error('email', 'Email already used');
             }
+
+            helper.reportErrors();
           });
       }
 
@@ -146,15 +152,15 @@ defineSmartComponent({
         submitForm2(data)
           .then(() => {
             component.form2State = 'idle';
-            formElement.reset();
+            helper.reset();
           })
           .catch((error) => {
             if (error.message === 'awful-name') {
               component.form2State = 'idle';
-              // should our component expose some kind of helper for this?
-              formElement.elements.name.errorMessage = 'I do not like your name, please change it!';
-              formElement.elements.name.focus();
+              helper.error('name', 'I do not like your name, please change it!');
             }
+
+            helper.reportErrors();
           });
       }
     });
