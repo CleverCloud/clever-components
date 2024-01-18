@@ -1,10 +1,15 @@
-import products from './products.json';
+import { products } from './api/api-helpers.js';
+
+/**
+ * shortcuts
+ */
+const menu = document.body.querySelector('menu');
+const menuServices = menu.querySelector('.menu-services');
 
 /**
  * menu mouse toggle
  */
-const menu = document.body.querySelector('menu');
-menu.addEventListener('click', () => {
+menu.querySelector('.menu-orgas').addEventListener('click', () => {
   if (menu.hasAttribute('open')) {
     menu.removeAttribute('open');
   }
@@ -23,8 +28,44 @@ let currentProductIndex;
 
 function goToProductIndex (index) {
   currentProductIndex = (index + productsIds.length) % productsIds.length;
-  ctContainer.product = products[productsIds[currentProductIndex]];
+  goToProduct(productsIds[currentProductIndex]);
 }
+function goToProduct (productId) {
+  const productElements = menuServices.querySelectorAll(`.menu-services--item`);
+  productElements.forEach((productElement) => {
+    const isCurrentElement = productElement.getAttribute('data-product-id') === productId;
+    if (isCurrentElement) {
+      productElement.setAttribute('selected', '');
+    }
+    else {
+      productElement.removeAttribute('selected');
+    }
+  });
+  ctContainer.product = products[productId];
+}
+
+function addProductsToMenu () {
+  menuServices.innerHTML = productsIds.map((productId) => {
+    const product = products[productId];
+    const { name, logoUrl } = product;
+    return `
+      <div class="menu-services--item" data-product-id="${productId}">
+        <div class="menu-services--icon"><img src="${logoUrl}" alt=""></div>
+        <div class="menu-services--name">${name}</div>
+      </div>
+    `;
+  }).join(``);
+
+  productsIds.forEach((productId) => {
+    const productElement = menuServices.querySelector(`[data-product-id="${productId}"]`);
+    productElement.addEventListener('click', (e) => {
+      const currentTarget = e.currentTarget;
+      const productId = currentTarget.getAttribute('data-product-id');
+      goToProduct(productId);
+    });
+  });
+}
+addProductsToMenu();
 
 document.addEventListener('keydown', (e) => {
   switch (e.key) {

@@ -32,7 +32,7 @@ export class CtLabelWithIcon extends LitElement {
         }
         
         slot::slotted(*) {
-          margin-inline-start: 2em;
+          margin-inline-start: 2rem;
         }
 
         .label {

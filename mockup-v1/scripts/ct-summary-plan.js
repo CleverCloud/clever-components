@@ -1,12 +1,12 @@
 import { LitElement, html, css } from 'lit';
-import { iconRemixEarthFill as labelIcon } from '../../src/assets/cc-remix.icons.js';
+import { iconRemixServerFill as labelIcon } from '../../src/assets/cc-remix.icons.js';
 
-export class CtSummaryZone extends LitElement {
+export class CtSummaryPlan extends LitElement {
   static get properties () {
     return {
       detailsVisible: { type: Boolean, attribute: 'details-visible' },
-      zone: { type: Object },
-      _sortedTags: { type: Array, state: true },
+      plan: { type: Object },
+      _sortedFeatures: { type: Array, state: true },
     };
   };
 
@@ -17,29 +17,31 @@ export class CtSummaryZone extends LitElement {
   }
 
   willUpdate (_changedProperties) {
-    if (_changedProperties.has('zone')) {
-      this._sortedTags = [...this.zone.tags];
-      this._sortedTags.sort((a, b) => a.localeCompare(b));
+    if (_changedProperties.has('plan')) {
+      this._sortedFeatures = [...this.plan.features];
+      this._sortedFeatures.sort((a, b) => a.name.localeCompare(b.name));
     }
   }
 
   render () {
-    return this.zone
+    return this.plan
       ? html`
         <cc-icon class="icon" .icon='${labelIcon}' size="lg"></cc-icon>
         <div class="infos">
           <div class="name">
-            <span class="city">${this.zone.city}</span>
+            <span class="label">${this.plan.name}</span>
             ${
-              this.detailsVisible ? html`<span class="dc">(${this.zone.name})</span>` : ``
+              this.detailsVisible ? html`<span class="slug">(${this.plan.slug})</span>` : ``
             }
           </div>
           ${
             this.detailsVisible
-            ? html`<div class="tags">
+            ? html`<div class="features">
             ${
-              this._sortedTags.map((tag) => {
-                return html`<span class="tag">${tag}</span>`;
+              this._sortedFeatures.map((feature) => {
+                return html`<span class="feature">
+                  <span class="feature--name">${feature.name}</span>&nbsp;<span class="feature--value">${feature.value}</span>
+                </span>`;
               })
             }
             </div>`
@@ -77,28 +79,35 @@ export class CtSummaryZone extends LitElement {
         .name {
           word-break: break-word;
         }
-        .name .city {
+        .name .label {
           font-size: 1.25em;
         }
-        .name .dc {
+        .name .slug {
           color: var(--cc-color-text-weak);
           font-family: "Source Sans 3", sans-serif;
         }
 
-        .tags {
+        .features {
           display: flex;
           flex-wrap: wrap;
           gap: 0.25em 0.5em;
           padding-inline-end: 1em;
-          color: var(--cc-color-text-weaker);
           font-family: "Source Sans 3", sans-serif;
         }
-        .tags > .tag {
+        .features > .feature {
           font-size: 0.875em;
+        }
+        
+        .feature--name {
+          color: var(--cc-color-text-weak);
+          font-weight: 500;
+        }
+        .feature--value {
+          color: var(--cc-color-text-weaker);
         }
       `,
     ];
   }
 }
 
-customElements.define('ct-summary-zone', CtSummaryZone);
+customElements.define('ct-summary-plan', CtSummaryPlan);

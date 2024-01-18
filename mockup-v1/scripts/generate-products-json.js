@@ -23,9 +23,19 @@ const FLAT_DISPLAYED_FEATURES = {
   'redis-addon': ['cpu', 'max-db-size', 'databases', 'connection-limit'],
 };
 
+const ADDON_OPTIONS = {
+  'mongodb-addon': ['encryption'],
+  'mysql-addon': ['version', 'encryption'],
+  'postgresql-addon': ['version', 'encryption'],
+  'es-addon': ['version', 'encryption', 'kibana', 'apm'],
+  jenkins: ['encryption'],
+  mailpace: [],
+  'redis-addon': ['encryption'],
+};
+
 const PLAN_CATEGORIES = [
   {
-    name: 'DEV',
+    name: 'Free tier',
     prefix: 'dev',
   },
   {
@@ -87,6 +97,7 @@ export async function generateProductsJson () {
       details: {
         categories: hasCategories ? PLAN_CATEGORIES : null,
         displayedFeatures: hasCategories ? CATEGORY_DISPLAYED_FEATURES : FLAT_DISPLAYED_FEATURES[addon.id],
+        options: ADDON_OPTIONS[addon.id],
       },
     };
   });

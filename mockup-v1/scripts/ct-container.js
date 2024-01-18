@@ -17,13 +17,17 @@ export class CtContainer extends LitElement {
 
   connectedCallback () {
     super.connectedCallback();
+    this.addEventListener('ct-plan-configurator:selected', this._onPlanConfiguratorSelected);
     this.addEventListener('ct-product-name:name-updated', this._onProductNameUpdated);
+    this.addEventListener('ct-product-tags:tags-updated', this._onProductTagsUpdated);
     this.addEventListener('ct-zone-picker:zone-updated', this._onZoneUpdated);
   }
 
   disconnectedCallback () {
     super.disconnectedCallback();
+    this.removeEventListener('ct-plan-configurator:selected', this._onPlanConfiguratorSelected);
     this.removeEventListener('ct-product-name:name-updated', this._onProductNameUpdated);
+    this.removeEventListener('ct-product-tags:tags-updated', this._onProductTagsUpdated);
     this.removeEventListener('ct-zone-picker:zone-updated', this._onZoneUpdated);
   }
 
@@ -34,10 +38,24 @@ export class CtContainer extends LitElement {
     };
   }
 
+  _onProductTagsUpdated (e) {
+    this.form = {
+      ...this.form,
+      tags: e.detail,
+    };
+  }
+
   _onZoneUpdated (e) {
     this.form = {
       ...this.form,
       zone: e.detail,
+    };
+  }
+
+  _onPlanConfiguratorSelected (e) {
+    this.form = {
+      ...this.form,
+      plan: e.detail,
     };
   }
 
@@ -65,7 +83,8 @@ export class CtContainer extends LitElement {
 
           display: flex;
           align-items: flex-start;
-          padding-block: var(--gap);
+          padding-block-start: var(--gap-block);
+          padding-block-end: calc(4 * var(--gap-block));
         }
         :host .form {
           flex: 2 1 0;
