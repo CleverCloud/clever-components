@@ -23,6 +23,7 @@ export function formHelper (host, formName) {
       }
 
       // check if input exists in form
+      // TODO: we could use formElement.elements[inputName] directly unless there's a pitfall I don't have in mind
       const element = Array.from(formElement.elements).find((e) => e.name === inputName);
       if (element == null) {
         return;
@@ -42,7 +43,8 @@ export function formHelper (host, formName) {
       const formValidationResult = Array.from(errorsMap.entries())
         .map(([inputName, { element, error }]) => {
           // mark element as invalid
-          element.setCustomValidity?.(error);
+          // TODO: actually, can be handled by the input
+          // element.setCustomValidity?.(error);
           // set errorMessage on element
           element.errorMessage = error;
 

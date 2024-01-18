@@ -304,8 +304,10 @@ export class CcInputText extends LitElement {
     return this._internals.validationMessage;
   }
 
-  setCustomValidity (message) {
-    this._internals.setValidity({ customError: true }, message, this._inputRef.value);
+  // TODO: since _internals does not provide a `setCustomValidity`, we should probably not provide it and only provide a setValidity instead?
+  // This method should almost never be used anyway since setting an errorMessage automatically sets the validity to `customError`
+  setValidity (flags, message) {
+    this._internals.setValidity(flags, message, this._inputRef.value);
   }
 
   /* endregion */
@@ -317,15 +319,25 @@ export class CcInputText extends LitElement {
   }
 
   willUpdate (changedProperties) {
+    // if errorMessage is set to null / empty, we want the field to be revalidated based on its validators
+    // we want it to be revalidated only if it's not already valid
+    // if it's already valid, it means the value has changed and has already been revalidated
+    if (changedProperties.has('errorMessage') && (this.errorMessage == null || this.errorMessage.length === 0) && !this.checkValidity()) {
+      this.validate(false);
+    }
+
+    // if errorMessage is set (not null & not empty), we want to component validity to reflect that
+    if (changedProperties.has('errorMessage') && this.errorMessage != null && this.errorMessage.length > 0) {
+      this._internals.setValidity({ ...this.validity, customError: true }, this.errorMessage, this._inputRef.value);
+    }
+
     // TODO: discuss this.
     // we want the reset value to be used if no value has been provided
     // but do we want resetValue to erase the value if it is changed? => probably not
     if (changedProperties.has('resetValue') && this.resetValue != null) {
       this.value = this.resetValue;
     }
-  }
 
-  updated (changedProperties) {
     // Note: usually people do this within their `onInput` handler
     // but we want to sync both onInput and when a value is provided through prop / attribute
     if (changedProperties.has('value')) {
