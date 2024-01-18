@@ -179,6 +179,12 @@
         "memory",
         "cpu",
         "disk-size"
+      ],
+      "options": [
+        "version",
+        "encryption",
+        "kibana",
+        "apm"
       ]
     }
   },
@@ -202,6 +208,9 @@
         "memory",
         "cpu",
         "disk-size"
+      ],
+      "options": [
+        "encryption"
       ]
     }
   },
@@ -212,7 +221,8 @@
     "logoUrl": "https://docs.mailpace.com/img/logo.png",
     "details": {
       "categories": null,
-      "displayedFeatures": []
+      "displayedFeatures": [],
+      "options": []
     }
   },
   "mongodb-addon": {
@@ -223,7 +233,7 @@
     "details": {
       "categories": [
         {
-          "name": "DEV",
+          "name": "Free tier",
           "prefix": "dev"
         },
         {
@@ -267,7 +277,10 @@
         "customization": [
           "disk-size"
         ]
-      }
+      },
+      "options": [
+        "encryption"
+      ]
     }
   },
   "mysql-addon": {
@@ -278,7 +291,7 @@
     "details": {
       "categories": [
         {
-          "name": "DEV",
+          "name": "Free tier",
           "prefix": "dev"
         },
         {
@@ -322,7 +335,11 @@
         "customization": [
           "disk-size"
         ]
-      }
+      },
+      "options": [
+        "version",
+        "encryption"
+      ]
     }
   },
   "postgresql-addon": {
@@ -333,7 +350,7 @@
     "details": {
       "categories": [
         {
-          "name": "DEV",
+          "name": "Free tier",
           "prefix": "dev"
         },
         {
@@ -377,7 +394,11 @@
         "customization": [
           "disk-size"
         ]
-      }
+      },
+      "options": [
+        "version",
+        "encryption"
+      ]
     }
   },
   "redis-addon": {
@@ -392,6 +413,9 @@
         "max-db-size",
         "databases",
         "connection-limit"
+      ],
+      "options": [
+        "encryption"
       ]
     }
   }

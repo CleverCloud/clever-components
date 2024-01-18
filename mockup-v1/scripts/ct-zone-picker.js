@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
 // TODO TEST iconRemixBuilding_4Line, iconRemixMapPinLine
-import { iconRemixEarthFill as zoneIcon } from '../../src/assets/cc-remix.icons.js';
+import { iconRemixEarthLine as zoneIcon } from '../../src/assets/cc-remix.icons.js';
 import './ct-zone-item.js';
 import { PREFERRED_ZONE } from './preferred-items.js';
 
@@ -20,6 +20,7 @@ export class CtZonePicker extends LitElement {
   static get properties () {
     return {
       currentZone: { type: String, attribute: 'current-zone' },
+      whitelist: { type: Array },
       zones: { type: Array },
       _sortedZones: { type: Array, state: true },
     };
@@ -29,26 +30,39 @@ export class CtZonePicker extends LitElement {
     super();
 
     this.zones = [];
+    this.whitelist = [];
     this.currentZone = null;
     this._sortedZones = [];
   }
 
   willUpdate (_changedProperties) {
-    if (_changedProperties.has('zones')) {
-      this._sortedZones = this.zones?.length > 0
-        ? this.zones.toSorted(sortFn)
-        : []
-      ;
-      this._fixCurrentZone();
+    if (this.zones == null || this.whitelist == null) {
+      return;
     }
 
-    if (_changedProperties.has('currentZone')) {
-      this.dispatchEvent(new CustomEvent('ct-zone-picker:zone-updated', {
-        detail: this._sortedZones.find((zone) => zone.name === this.currentZone),
-        bubbles: true,
-        composed: true,
-      }));
+    this._sortedZones = this.zones?.length > 0
+      ? this.zones.toSorted(sortFn)
+      : []
+    ;
+    if (this.whitelist.length > 0) {
+      this._sortedZones = this._sortedZones.filter((zone) => this.whitelist.includes(zone.name));
     }
+    this._fixCurrentZone();
+
+    if (this.currentZone == null) {
+      return;
+    }
+
+    const selectedZoneObject = this._sortedZones.find((zone) => zone.name === this.currentZone);
+    if (selectedZoneObject == null) {
+      return;
+    }
+
+    this.dispatchEvent(new CustomEvent('ct-zone-picker:zone-updated', {
+      detail: selectedZoneObject,
+      bubbles: true,
+      composed: true,
+    }));
   }
 
   _fixCurrentZone () {

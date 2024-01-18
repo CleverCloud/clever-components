@@ -1,4 +1,9 @@
 import { LitElement, html, css } from 'lit';
+import {
+  iconRemixContractUpDownLine as iconDetailsVisible,
+  iconRemixExpandUpDownLine as iconDetailsHidden,
+} from '../../src/assets/cc-remix.icons.js';
+import './ct-summary-plan.js';
 import './ct-summary-product-name.js';
 import './ct-summary-zone.js';
 
@@ -12,8 +17,19 @@ export class CtSummary extends LitElement {
     return {
       form: { type: Object },
       product: { type: Object },
+      _detailsVisible: { type: Boolean },
     };
   };
+
+  constructor () {
+    super();
+
+    this._detailsVisible = false;
+  }
+
+  _toggleDetails () {
+    this._detailsVisible = !this._detailsVisible;
+  }
 
   render () {
     return html`
@@ -24,10 +40,26 @@ export class CtSummary extends LitElement {
         <div class="header--name">
           ${this.product.name}
         </div>
+        <button class="header--details-toggle-btn" @click="${this._toggleDetails}">
+        ${
+          this._detailsVisible
+          ? html`<cc-icon size="lg" .icon="${iconDetailsVisible}"></cc-icon>`
+          : html`<cc-icon size="lg" .icon="${iconDetailsHidden}"></cc-icon>`
+        }
+        </button>
       </div>
       <div class="body">
-        <ct-summary-product-name name="${this.form.instanceName}"></ct-summary-product-name>
-        <ct-summary-zone .zone="${this.form.zone}"></ct-summary-zone>
+        <ct-summary-product-name
+          name="${this.form.instanceName}"
+          .tags="${this.form.tags}"
+          ?details-visible="${this._detailsVisible}"
+        ></ct-summary-product-name>
+        ${
+          this.product.type === 'addon'
+            ? html`<ct-summary-plan .plan="${this.form.plan}" ?details-visible="${this._detailsVisible}"></ct-summary-plan>`
+            : ``
+        }
+        <ct-summary-zone .zone="${this.form.zone}" ?details-visible="${this._detailsVisible}"></ct-summary-zone>
       </div>
       <div class="footer">
         <cc-button class="btn-submit" primary>${WORDING.CREATE}</cc-button>
@@ -87,6 +119,21 @@ export class CtSummary extends LitElement {
           font-size: 2em;
           font-weight: 500;
           line-height: 1.125;
+        }
+        .header--details-toggle-btn {
+          flex: 0 0 auto;
+          padding: 0.5em;
+          margin: 0;
+          color: unset;
+          background-color: initial;
+          border: none;
+          border-radius: 2px;
+          cursor: pointer;
+        }
+        .header--details-toggle-btn:focus-visible {
+          outline: var(--cc-focus-outline);
+          outline-color: var(--cc-color-border-neutral-weak);
+          outline-offset: 2px;
         }
 
         .header--logo cc-img {
