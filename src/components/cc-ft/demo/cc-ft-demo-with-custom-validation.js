@@ -16,9 +16,24 @@ class CustomValidator {
   }
 }
 
+/**
+ * @param {string|null} value - the input value to be validated
+ * @returns {string|undefined} returns the error message to display or undefined if no error
+ */
+function customValidationForNativeInput (value) {
+  if (value == null || value.length === 0) {
+    return 'Please enter a value';
+  }
+
+  if (value.toUpperCase() !== value) {
+    return 'En majuscules s\'il te plaît';
+  }
+}
+
 export class CcFtDemoWithCustomValidation extends LitElement {
   static get properties () {
     return {
+      _surnameError: { type: String, state: true },
     };
   }
 
@@ -26,13 +41,35 @@ export class CcFtDemoWithCustomValidation extends LitElement {
     super();
 
     this._customValidator = new CustomValidator();
+
+    /** @type {string|null} Sets the error messages displayed below the surname field */
+    this._surnameError = null;
+  }
+
+  _onInvalid ({ detail }) {
+    const invalidSurname = detail.find((d) => d.name === 'surname' && d.validationResult.valid === false);
+    console.log(invalidSurname);
+    this._surnameError = invalidSurname != null
+      ? invalidSurname.validationResult.code
+      : null;
+  }
+
+  // TODO: we only provide an invalid event and no valid event so right now the only way to remove error messages if everything went well is to use the submit event
+  _onSubmit (e) {
+    e.preventDefault();
+    this._surnameError = null;
   }
 
   render () {
     return html`
-      <form name="my-form" ${formSubmit(formSubmitHandler(this))}>
+      <form name="my-form" ${formSubmit(formSubmitHandler(this, { surname: customValidationForNativeInput }))} @form:invalid=${this._onInvalid} @submit=${this._onSubmit}>
         <cc-input-text label="Name" required name="name" .customValidator=${this._customValidator}></cc-input-text>
-        
+        <label for="input">Surname (native input)</label>
+        <input type="text" required name="surname" aria-describedby="error-surname" />
+        ${this._surnameError != null && this._surnameError.length > 0
+          ? html`<p id="error-surname">${this._surnameError}</p>`
+          : ''
+        }
         <cc-button primary type="submit">Submit</cc-button>
       </form>
     `;
@@ -50,6 +87,11 @@ export class CcFtDemoWithCustomValidation extends LitElement {
           display: flex;
           flex-direction: column;
           gap: 0.5em;
+        }
+
+        p {
+          margin: 0;
+          color: red;
         }
       `,
     ];
