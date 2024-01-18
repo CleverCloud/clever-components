@@ -47,4 +47,4 @@ export class CcFtDemoWithCustomError extends LitElement {
   }
 }
 
-window.customElements.define('cc-ft-demo-with-custom-error', CcFtDemoWithCustomError);
+window.customElements.define('cc-ft-demo-with-custom-error-message', CcFtDemoWithCustomError);

@@ -30,9 +30,9 @@ export class CcFtDemoWithCcComponents extends LitElement {
     return html`
       <form ${formSubmit(formSubmitHandler(this))}>
         <cc-input-text label="Name" name="name" required></cc-input-text>
-        <cc-input-text label="Surname" name="surname" required></cc-input-text>
+        <cc-input-text label="Surname" name="surname"></cc-input-text>
         <cc-input-text label="Country" name="country" required></cc-input-text>
-        <cc-select label="Favorite color" .options=${colorsSelectOptions} name="color" reset-value="" required></cc-select>
+        <cc-select label="Favorite color" .options=${colorsSelectOptions} name="color" required></cc-select>
 
         <cc-button primary type="submit">Submit</cc-button>
       </form>

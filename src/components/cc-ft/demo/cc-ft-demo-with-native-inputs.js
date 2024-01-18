@@ -36,7 +36,7 @@ export class CcFtDemoWithNativeInputs extends LitElement {
 
   render () {
     return html`
-      <form ${formSubmit(formSubmitHandler(this, { checkbox: validateCheckboxGroup }))}>
+      <form ${formSubmit(formSubmitHandler(this, { checkbox: validateCheckboxGroup }))} @form:invalid=${this._onInvalid}>
         <label for="name">Name:</label><input id="name" type="text" required name="name" />
         
         <label for="color">Favorite Color:</label> <select required name="color" >
@@ -72,7 +72,6 @@ export class CcFtDemoWithNativeInputs extends LitElement {
           <div>
             <input type="checkbox" name="checkbox" value="option3" id="checkbox-option3"/><label for="checkbox-option3">Option3</label>
           </div>
-          <!-- TODO: error message inline -->
         </fieldset>
 
         <fieldset class="group" tabindex="-1">
@@ -106,6 +105,10 @@ export class CcFtDemoWithNativeInputs extends LitElement {
           display: flex;
           flex-direction: column;
           gap: 0.5em;
+        }
+
+        fieldset:focus {
+          outline: solid 2px red;
         }
       `,
     ];

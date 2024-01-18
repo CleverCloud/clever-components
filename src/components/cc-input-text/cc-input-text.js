@@ -333,14 +333,14 @@ export class CcInputText extends LitElement {
       let data;
       if (this._tagsEnabled) {
         data = new FormData();
-        this.tags.forEach((tag, index) => {
+        this.tags.forEach((tag) => {
           data.append(this.name, tag);
         });
       }
       else {
         data = this.value;
       }
-      this._internals.setFormValue(this.value);
+      this._internals.setFormValue(data);
       // Sync form & input validity
       this.validate(false);
     }

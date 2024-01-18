@@ -26,7 +26,7 @@ function serializeFormData (formData) {
 /**
  *
  * @param host
- * @param { {[name: string]: (value:string|string[]) => string|null} } customValidation
+ * @param { {[name: string]: (value:string|string[]) => string|null|void} } customValidation
  * @return {(function(*): void)|*}
  */
 export function formSubmitHandler (host, customValidation = {}) {
@@ -40,7 +40,7 @@ export function formSubmitHandler (host, customValidation = {}) {
     console.log(data);
 
     const formValidationResult = Array.from(formEl.elements)
-      .filter((element) => element.validate != null || element.checkValidity != null || customValidation[element.name] != null)
+      .filter((element) => element.name?.length > 0 && (element.validate != null || (element.checkValidity != null && element.willValidate) || customValidation[element.name] != null))
       .map((element) => {
 
         // --- custom validation
