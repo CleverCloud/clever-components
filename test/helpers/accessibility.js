@@ -29,7 +29,9 @@ addTranslations(en.lang, en.translations);
 // Ignore irrelevant errors that could make tests fails
 function setupIgnoreIrrelevantErrors (before, after, messagePredicate) {
   let teardown;
-  before(() => (teardown = ignoreWindowOnError(messagePredicate)));
+  before(() => {
+    teardown = ignoreWindowOnError(messagePredicate);
+  });
   after(() => {
     teardown?.();
     teardown = undefined;
