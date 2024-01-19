@@ -1,5 +1,56 @@
 {
+  // this file is only used for typechecking with IDEs
+  // it enables typechecking everywhere expect within directories listed below
+  "exclude": [
+    "node_modules",
+    "storybook-static",
+    "dist",
+  ],
   "compilerOptions": {
+    /* Visit https://www.typescriptlang.org/tsconfig to read more about this file */
+    /* Language and Environment */
+    "target": "ES2021", /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+    "lib": [
+      "DOM"
+    ], /* Specify a set of bundled library declaration files that describe the target runtime environment. */
+    /* Modules */
+    // FIXME: when we upgrade typescript, change this to `NodeNext`
+    "module": "ESNext", /* Specify what module code is generated. */
+    "moduleResolution": "node", /* Specify how TypeScript looks up a file from a given module specifier. */
+    // FIXME: when we upgrade TypeScript, enable this setting. Our current TypeScript version does not support this setting.
+    // "moduleDetection": "force", /* Make TypeScript treat every file as a module even if it does not have any imports or export (see https://www.totaltypescript.com/cannot-redeclare-block-scoped-variable) */
+    /* JavaScript Support */
+    "allowJs": true, /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */
+    "checkJs": true, /* Enable error reporting in type-checked JavaScript files. */
+    /* Emit */
+    "noEmit": true, /* Disable emitting files from a compilation. We only need the typechecking and we are not compiling. */
+    /* Interop Constraints */
+    "esModuleInterop": true, /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
+    "strict": true, /* Enable all strict type-checking options. */
+    // all properties below are true by default if strict is enabled, this means we should only specify the ones we want to disable below if we set the property above to `true`
+    // we want to be able to use `null` & `undefined` as if they were the same
+    "strictNullChecks": false, /* When type checking, take into account 'null' and 'undefined'. */
+    "strictFunctionTypes": true, /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */
+    "strictBindCallApply": true, /* Check that the arguments for 'bind', 'call', and 'apply' methods match the original function. */
+    "noImplicitThis": true, /* Enable error reporting when 'this' is given the type 'any'. */
+    // FIXME: enable when we upgrade TypeScript. Our current version does not support this.
+    // "useUnknownInCatchVariables": true, /* Default catch clause variables as 'unknown' instead of 'any'. */
+    "alwaysStrict": true, /* Ensure 'use strict' is always emitted. */
+    // end of strict related properties
+    "noUnusedLocals": true, /* Enable error reporting when local variables aren't read. */
+    "noUnusedParameters": true, /* Raise an error when a function parameter isn't read. */
+    // FIXME: Enable when we upgrade typescript. This is not supported by our current version.
+    // "exactOptionalPropertyTypes": true, /* Interpret optional property types as written, rather than adding 'undefined'. */
+    "noImplicitReturns": true, /* Enable error reporting for codepaths that do not explicitly return in a function. */
+    "noFallthroughCasesInSwitch": true, /* Enable error reporting for fallthrough cases in switch statements. */
+    // this causes issues with our current i18n implementation
+    "noUncheckedIndexedAccess": false, /* Add 'undefined' to a type when accessed using an index. */
+    // this causes issues with LitElement methods (lifecycle hooks for instance)
+    "noImplicitOverride": false, /* Ensure overriding members in derived classes are marked with an override modifier. */
+    // this causes issues with our current i18n implementation
+    "noPropertyAccessFromIndexSignature": false, /* Enforces using indexed accessors for keys declared using an indexed type. */
+    "allowUnusedLabels": false, /* Disable error reporting for unused labels. */
+    "allowUnreachableCode": false, /* Disable error reporting for unreachable code. */
     "plugins": [
       {
         "name": "ts-lit-plugin",
@@ -41,8 +92,13 @@
           "mouseleave",
           "wheel",
           "copy",
-        ],
+        ]
       }
     ]
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "storybook-static",
+    "dist",
+  ]
 }
