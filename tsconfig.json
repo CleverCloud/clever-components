@@ -1,5 +1,47 @@
 {
   "compilerOptions": {
+    /* Visit https://aka.ms/tsconfig to read more about this file */
+    /* Language and Environment */
+    "target": "ES2021", /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+    "lib": [
+      "DOM"
+    ], /* Specify a set of bundled library declaration files that describe the target runtime environment. */
+    /* Modules */
+    "module": "ESNext", /* Specify what module code is generated. */
+    "moduleResolution": "node", /* Specify how TypeScript looks up a file from a given module specifier. */
+    /* JavaScript Support */
+    "allowJs": true, /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */
+    "checkJs": true, /* Enable error reporting in type-checked JavaScript files. */
+    /* Emit */
+    "noEmit": true, /* Disable emitting files from a compilation. We only need the typechecking and we are not compiling. */
+    /* Interop Constraints */
+    // TODO: I think it's safer this way but I'm not sure we need it actually => https://www.typescriptlang.org/tsconfig#esModuleInterop
+    "esModuleInterop": true, /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
+    "strict": true, /* Enable all strict type-checking options. */
+    // all properties below are true by default if strict is enabled, this means we should only specify the ones we want to disable below if we set the property above to `true`
+    // TODO: setting this to `false` matches our current way of handling `undefined` & `null`, unless we want to be stricter about this? => https://www.typescriptlang.org/tsconfig#strictNullChecks
+    // "strictNullChecks": false,                         /* When type checking, take into account 'null' and 'undefined'. */
+    // "strictFunctionTypes": true,                      /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */
+    // "strictBindCallApply": true,                      /* Check that the arguments for 'bind', 'call', and 'apply' methods match the original function. */
+    // "strictPropertyInitialization": true,             /* Check for class properties that are declared but not set in the constructor. */
+    // "noImplicitThis": true,                           /* Enable error reporting when 'this' is given the type 'any'. */
+    // "useUnknownInCatchVariables": true,               /* Default catch clause variables as 'unknown' instead of 'any'. */
+    // "alwaysStrict": true,                             /* Ensure 'use strict' is always emitted. */
+    // end of strict related properties
+    "noUnusedLocals": true, /* Enable error reporting when local variables aren't read. */
+    "noUnusedParameters": true, /* Raise an error when a function parameter isn't read. */
+    // TODO: not sure about this one => https://www.typescriptlang.org/tsconfig#exactOptionalPropertyTypes
+    "exactOptionalPropertyTypes": true, /* Interpret optional property types as written, rather than adding 'undefined'. */
+    "noImplicitReturns": true, /* Enable error reporting for codepaths that do not explicitly return in a function. */
+    "noFallthroughCasesInSwitch": true, /* Enable error reporting for fallthrough cases in switch statements. */
+    // TODO: not sure I get it but from what I got it looks interesting => https://www.typescriptlang.org/tsconfig/#noUncheckedIndexedAccess
+    "noUncheckedIndexedAccess": true, /* Add 'undefined' to a type when accessed using an index. */
+    // TODO: I think we should disable it, it creates error for lit element static class properties. => could be solved with jsdoc but I don't see the point tbh
+    "noImplicitOverride": false, /* Ensure overriding members in derived classes are marked with an override modifier. */
+    // TODO: why not, not sure => https://www.typescriptlang.org/tsconfig/#noPropertyAccessFromIndexSignature
+    "noPropertyAccessFromIndexSignature": true, /* Enforces using indexed accessors for keys declared using an indexed type. */
+    "allowUnusedLabels": false, /* Disable error reporting for unused labels. */
+    "allowUnreachableCode": false, /* Disable error reporting for unreachable code. */
     "plugins": [
       {
         "name": "ts-lit-plugin",
@@ -41,8 +83,13 @@
           "mouseleave",
           "wheel",
           "copy",
-        ],
+        ]
       }
     ]
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "storybook-static",
+    "dist",
+  ]
 }
