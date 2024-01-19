@@ -16,15 +16,11 @@ const SKELETON_DEPLOYS = [
 ];
 
 /**
- * @typedef {import('./cc-tile-deployments.types.js').Deployment} Deployment
+ * @typedef {import('./cc-tile-deployments.types.js').TileDeploymentsState} TileDeploymentsState
  */
 
 /**
- * A "tile" component to display a list of deployments (status, humanized time ago and logs link).
- *
- * ## Details
- *
- * * When `deployments` is nullish, a skeleton screen UI pattern is displayed (loading hint)
+ * A "tile" component to display a list of deployments info (state, humanized time ago and logs link).
  *
  * @cssdisplay grid
  */
@@ -32,19 +28,15 @@ export class CcTileDeployments extends LitElement {
 
   static get properties () {
     return {
-      deployments: { type: Array },
-      error: { type: Boolean, reflect: true },
+      state: { type: Object },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {Deployment[]|null} Sets the list of the last deployments (it's up to you to only pass 2 or 3) */
-    this.deployments = null;
-
-    /** @type {boolean} Displays an error message */
-    this.error = false;
+    /** @type {TileDeploymentsState} Sets tile deployments state (it's up to you to only pass 2 or 3 deployments info) */
+    this.state = { type: 'loading' };
   }
 
   _getStateLabel (state, action) {
@@ -63,49 +55,54 @@ export class CcTileDeployments extends LitElement {
   }
 
   render () {
-
-    const skeleton = (this.deployments == null);
-    const deployments = skeleton ? SKELETON_DEPLOYS : this.deployments;
-    const hasData = (!this.error && (deployments.length > 0));
-    const emptyData = (!this.error && (deployments.length === 0));
-
     return html`
       <div class="tile_title">${i18n('cc-tile-deployments.title')}</div>
+      ${this._renderTileContent()}
+    `;
+  }
 
-      ${hasData ? html`
-        <div class="tile_body">
-          <!-- We don't really need to repeat and key by -->
-          ${deployments.map((d) => html`
-            <div class="state" data-state=${d.state}>
-              <span class=${classMap({ skeleton })}>${this._getStateLabel(d.state, d.action)}</span>
-            </div>
-            <div class="date">
-              ${skeleton ? html`
-                <span class="skeleton">${d.date}</span>
-              ` : ''}
-              ${!skeleton ? html`
-                <cc-datetime-relative datetime=${d.date}></cc-datetime-relative>
-              ` : ''}
-            </div>
-            <div>
-              ${ccLink(d.logsUrl, 'logs', skeleton)}
-            </div>
-          `)}
-        </div>
-      ` : ''}
-
-      ${emptyData ? html`
-        <div class="tile_message">${i18n('cc-tile-deployments.empty')}</div>
-      ` : ''}
-
-      ${this.error ? html`
+  _renderTileContent () {
+    if (this.state.type === 'error') {
+      return html`
         <div class="tile_message">
           <div class="error-message">
             <cc-icon .icon="${iconAlert}" a11y-name="${i18n('cc-tile-deployments.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
             <p>${i18n('cc-tile-deployments.error')}</p>
           </div>
         </div>
-      ` : ''}
+      `;
+    }
+
+    const skeleton = (this.state.type === 'loading');
+    const deploymentsInfo = skeleton ? SKELETON_DEPLOYS : this.state.deploymentsInfo;
+    const hasData = deploymentsInfo.length > 0;
+
+    if (!hasData) {
+      return html`
+        <div class="tile_message">${i18n('cc-tile-deployments.empty')}</div>
+      `;
+    }
+
+    return html`
+      <div class="tile_body">
+        <!-- We don't really need to repeat and key by -->
+        ${deploymentsInfo.map((deploymentInfo) => html`
+          <div class="state" data-state=${deploymentInfo.state}>
+            <span class=${classMap({ skeleton })}>${this._getStateLabel(deploymentInfo.state, deploymentInfo.action)}</span>
+          </div>
+          <div class="date">
+            ${skeleton ? html`
+                <span class="skeleton">${deploymentInfo.date}</span>
+              ` : ''}
+            ${!skeleton ? html`
+                <cc-datetime-relative datetime=${deploymentInfo.date}></cc-datetime-relative>
+              ` : ''}
+          </div>
+          <div>
+            ${ccLink(deploymentInfo.logsUrl, 'logs', skeleton)}
+          </div>
+        `)}
+      </div>
     `;
   }
 
