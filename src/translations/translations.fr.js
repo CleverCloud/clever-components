@@ -748,6 +748,9 @@ export const translations = {
   'cc-pricing-product-consumption.total.title': `Total estimé (30 jours) :`,
   'cc-pricing-product-consumption.unit': `Unité`,
   //#endregion
+  //#region cc-product-card
+  'cc-product-card.select': (name) => `${name} - sélectionner ce produit`,
+  //#endregion
   //#region cc-select
   'cc-select.required': `obligatoire`,
   //#endregion

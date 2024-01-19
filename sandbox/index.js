@@ -13,6 +13,7 @@ window.addEventListener('cc:notify', (event) => {
 const sandboxes = [
   'cc-ansi-palette',
   'cc-logs',
+  'cc-product-card',
 ];
 
 const $listContainer = document.querySelector('.sandboxes-list');
