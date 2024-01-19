@@ -71,6 +71,194 @@ we're proposing this order for the different pars of a custom element built with
 * Document methods in place, just above the given method.
 * Use a `/** @required */` if component breaks without a given property. Must be in the `static get properties` section.
 
+## How to deal with complex component states / data?
+
+<cc-notice intent="info" heading="This section only applies to components handling data">
+  <div slot="message">
+
+  These components usually have a fairly complex data structure compared to atomic / molecular UI components that only manage props related to their content or their styling.
+
+  For simpler components (buttons, form inputs, cards, etc.), please use a flat and simple API so that the component props may be set using HTML attributes instead of JavaScript properties.
+  </div>
+</cc-notice>
+
+Some components may be put in different state types that are mutually exclusive: `loaded`, `loading`, `submitting`, `error`, etc.
+
+In such cases, we do our best to make impossible states impossible.
+For instance, developers should not be able to set the component into both a `loaded` and `loading` state.
+
+To do so, we rely on a prop that is typed to reflect the fact that:
+
+- state types are mutually exclusive,
+- some state types come with certain expectations about data passed to the component. For instance, the `loading` state type usually means no data has been passed to the component.
+
+### Type definition guidelines
+
+In a `your-component-name.types.d.ts` file, you should define types for your component state following the example below:
+
+```ts 
+// this type should be applied to the component prop conveying the state
+// these 3 states types are the most common but feel free to remove or add state types when relevant
+export type MyComponentState = MyComponentStateLoaded | MyComponentStateLoading | MyComponentStateError 
+
+// `loading` and `error` states usually are fairly simple since they have no data
+interface MyComponentStateLoading {
+  type: 'loading';
+}
+
+interface MyComponentStateError {
+  type: 'error';
+}
+
+// usually we try to make the state prop as flat as possible
+interface MyComponentStateLoaded {
+  type: 'loaded';
+  avatar: string; // this is just an example of data
+  name: string; // this is just an example of data
+  // since we use `type` for the status of data, you may need to use a synonym of `type` to avoid clashes
+  kind: 'premium'|'classic';
+  ...
+}
+
+// alternatively, you may decide to store data in an object to 
+// avoid clashes or just because you think it's better this way
+interface MyComponentStateLoaded {
+  type: 'loaded';
+  orga: { // please use a meaningful name instead of a generic name like "data"
+    avatar: string;
+    name: string;
+    type: 'premium'|'classic';
+  }
+}
+
+// if your components loaded data is only made of a list you should do as follows
+interface MyComponentStateLoaded {
+  type: 'loaded';
+  memberList: Member[]; // this is just an example, the important thing is that you use a meaningful name here
+}
+```
+
+### Component state prop guidelines
+
+The component prop containing the state should be named `state`.
+
+You need to import the type you defined for this state and apply it to the `state` prop within the component constructor.
+
+Example of a component:
+```ts 
+/**
+ * @typedef {import('./my-component-name.types.js'.MyComponentState) MyComponentState}
+ */
+
+export class MyComponent extends LitElement {
+  static get Properties () {
+    return {
+      state: { type: Object },
+    };
+  }
+
+  constructor () {
+    super();
+
+    /* @type {MyComponentState} a short description */
+    // usually the initial state is `loading` but feel free to adapt this example
+    this.state = { type: 'loading' }; 
+  }
+
+  render () {
+    // you should take advantage of the state types to avoid impossible states
+    // this also helps typechecking and you get more help from your IDE if you do it right
+    if (this.state === 'loading') {
+      // this is a simple example, things are trickier when dealing with skeletons
+      return html`<cc-loader></cc-loader>`; 
+    }
+
+    if (this.state === 'error') {
+      return html`<cc-notice intent="warning">${i18n('your-warning-translation')}</cc-notice>`;
+    }
+
+    if (this.state === 'loaded') {
+      // you can pass data to your loaded subRender function
+      return this._renderLoaded(...);
+    }
+  }
+} 
+```
+
+**Note:**
+If your component deals with two different sets of data that do not share the same state (for instance one data set could be `loaded` while the other is still `loading`), you should create separate `state` props and name them with a meaningful prefix followed by `State`, for instance:
+`instancesState`, `applicationState`, `memberListState`, etc.
+
+### Subcomponent states
+
+Parent components should avoid exposing their subcomponent states.
+For instance when dealing with a parent component which manages a list of items, with each item being a subcomponent:
+
+- the parent should expose a standard `state` prop,
+- data to be passed to subcomponents (items data) should be plain data,
+- plain data should be transformed into a `state` by the parent component within its `render` or `subrender` methods before passing it to its subcomponents.
+
+For instance, subcomponents like [cc-article-card](https://github.com/CleverCloud/clever-components/blob/master/src/components/cc-article-card/cc-article-card.js) are only used by [cc-article-list](https://github.com/CleverCloud/clever-components/blob/master/src/components/cc-article-list/cc-article-list.js). 
+These subcomponents can either be `loaded` or `loading` but their state is actually dictated by a single API call that loads all articles at once.
+
+In such cases:
+
+- the subcomponent (`cc-article-card`) should still expose a `state` API,
+- the parent component (`cc-article-list`) should expose a global `state` prop. When `loaded`, the  APIshould be responsible for handling the state of all its subcomponents within its `render` method.
+
+```ts
+// cc-article-card.types.d.ts
+export type ArticleCardState = ArticleCardStateLoaded | ArticleCardStateLoading;
+
+export interface ArticleCardStateLoaded extends ArticleCard {
+    type: 'loaded';
+}
+
+export interface ArticleCardStateLoading {
+    type: 'loading';
+}
+
+export interface ArticleCard {
+    banner: string;
+    date: string;
+    description: string;
+    link: string;
+    title: string;
+}
+
+// cc-article-list.types.d.ts
+import { ArticleCard } from '../cc-article-card/cc-article-card.types.js';
+
+export type ArticleListState = ArticleListStateLoaded | ArticleListStateLoading | ArticleListStateError;
+
+export interface ArticleListStateLoaded {
+  type: 'loaded';
+  articles: ArticleCard[];
+}
+
+export interface ArticleListStateLoading {
+  type: 'loading';
+}
+
+export interface ArticleListStateError {
+  type: 'error';
+}
+
+// cc-article-list.js render method
+...
+${this.state.articles.map((article) => html`
+  <cc-article-card .state=${{ type: 'loaded', ...article }}></cc-article-card>
+`)}
+...
+```
+
+**Note:**
+An exception should be made when subcomponents may be set to states that are not shared with the rest of the list.
+
+For instance, if one of the items within the list may be set to `waiting`, then its state should be exposed by the parent component so it can be manipulated from outside.
+
+A good example of such case is [cc-tcp-redirection-form](https://github.com/CleverCloud/clever-components/blob/master/src/components/cc-tcp-redirection-form/cc-tcp-redirection-form.js) and [cc-tcp-redirection](https://github.com/CleverCloud/clever-components/blob/master/src/components/cc-tcp-redirection/cc-tcp-redirection.js).
+
 ## How to choose icons?
 
 By default, try to use icons that are parts of the Remix Icon library which is embedded in the main package.
