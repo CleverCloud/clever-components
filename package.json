@@ -56,7 +56,7 @@
   "dependencies": {
     "@clevercloud/client": "^7.11.0",
     "@lit-labs/motion": "^1.0.3",
-    "@lit-labs/virtualizer": "^2.0.11",
+    "@lit-labs/virtualizer": "^2.0.12",
     "@shoelace-style/shoelace": "^2.5.0",
     "ansi-regex": "^6.0.1",
     "chart.js": "^3.5.0",
