@@ -42,6 +42,7 @@ export class CcFtDemoWithNativeInputs extends LitElement {
   }
 
   // TODO: we only provide an invalid event and no valid event so right now the only way to remove error messages if everything went well is to use the submit event
+  // TODO: tackle this by dispatching a `valid` event
   _onSubmit (e) {
     e.preventDefault();
     this._checkboxError = null;

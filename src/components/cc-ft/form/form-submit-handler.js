@@ -97,6 +97,7 @@ export function formSubmitHandler (host, customValidation = {}) {
 
     if (isFormValid) {
       dispatchCustomEvent(host, 'formSubmit', { form: formEl.getAttribute('name'), data });
+      dispatchCustomEvent(formEl, 'valid');
     }
     else {
       dispatchCustomEvent(formEl, 'invalid', formValidationResult);

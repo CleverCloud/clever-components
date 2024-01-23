@@ -304,8 +304,8 @@ export class CcInputText extends LitElement {
     return this._internals.validationMessage;
   }
 
-  // TODO: since _internals does not provide a `setCustomValidity`, we should probably not provide it and only provide a setValidity instead?
   // This method should almost never be used anyway since setting an errorMessage automatically sets the validity to `customError`
+  // TODO: could be used internally
   setValidity (flags, message) {
     this._internals.setValidity(flags, message, this._inputRef.value);
   }
@@ -318,6 +318,7 @@ export class CcInputText extends LitElement {
     this.errorMessage = null;
   }
 
+  // TODO! use `updated()` instead because `this._inputRef.value` is null during the first `willUpdate()`.
   willUpdate (changedProperties) {
     // if errorMessage is set to null / empty, we want the field to be revalidated based on its validators
     // we want it to be revalidated only if it's not already valid

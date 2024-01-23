@@ -23,8 +23,7 @@ export function formHelper (host, formName) {
       }
 
       // check if input exists in form
-      // TODO: we could use formElement.elements[inputName] directly unless there's a pitfall I don't have in mind
-      const element = Array.from(formElement.elements).find((e) => e.name === inputName);
+      const element = formElement.elements[inputName];
       if (element == null) {
         return;
       }
@@ -59,7 +58,7 @@ export function formHelper (host, formName) {
       //  But I cannot easily do that here.
       //  Should we, in submit-handler, only report invalid fields?
       //  I mean, does it make sens to report for valid fields in an 'invalid' event?
-      dispatchCustomEvent(formElement, 'invalid', formValidationResult);
+      dispatchCustomEvent(formElement, 'async-invalid', formValidationResult);
 
       // focus first invalid field
       host.updateComplete.then(() => formElement.querySelector(':invalid, [internals-invalid]')?.focus());
