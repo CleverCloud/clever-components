@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="/src/styles/default-theme.css">
+  <style>
+    body {
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+      gap: 5em;
+    }
+    .main {
+      display: flex;
+      flex-direction: column;
+      max-width: 400px;
+      gap: 2em;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+    }
+  </style>
+  <title>Element internals</title>
+</head>
+<body>
+
+<div class="main">
+  <cc-smart-container context='{ "fake": "fake" }'>
+    <cc-my-form></cc-my-form>
+  </cc-smart-container>
+</div>
+
+<script type="module">
+  import './cc-my-form-before.js';
+  // import './cc-my-form-after.js';
+  import '../../cc-smart-container/cc-smart-container.js';
+</script>
+</body>
+</html>

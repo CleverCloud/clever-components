@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="/src/styles/default-theme.css">
+  <style>
+    body {
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+      gap: 5em;
+    }
+    .main {
+      display: flex;
+      flex-direction: column;
+      max-width: 400px;
+      gap: 2em;
+    }
+    .native {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25em;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+    }
+  </style>
+  <title>Use ElementInternals API</title>
+</head>
+<body>
+
+<div class="main">
+  <fieldset>
+    <legend>form</legend>
+
+    <form>
+      <div class="native">
+        <label for="native">native-input</label>
+        <input type="text" id="native" name="native-input">
+      </div>
+
+      <div>
+        <cc-simple-input-text label="simple-input" name="simple-input"></cc-simple-input-text>
+      </div>
+
+      <div>
+        <button type="submit">Submit</button>
+      </div>
+    </form>
+  </fieldset>
+
+
+  <fieldset>
+    <legend>form data</legend>
+    <pre class="data"></pre>
+  </fieldset>
+</div>
+
+<script type="module">
+  // import './cc-simple-input-text.js';
+  import './cc-simple-input-text-element-internals.js';
+
+  const form = document.querySelector('form');
+  const data = document.querySelector('.data');
+  form.onsubmit = (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(form);
+
+    data.innerHTML = JSON.stringify(Object.fromEntries(formData.entries()), null, 4);
+  }
+</script>
+</body>
+</html>

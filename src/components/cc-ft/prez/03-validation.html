@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="/src/styles/default-theme.css">
+  <style>
+    body {
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+      gap: 5em;
+    }
+    .main {
+      display: flex;
+      flex-direction: column;
+      max-width: 400px;
+      gap: 2em;
+    }
+    .native {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25em;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+    }
+  </style>
+  <title>Implement Validation</title>
+</head>
+<body>
+
+<div class="main">
+  <fieldset>
+    <legend>form</legend>
+
+    <form novalidate>
+      <div class="native">
+        <label for="native">native-input</label>
+        <input type="text" id="native" name="native-input" required>
+      </div>
+
+      <div>
+        <cc-simple-input-text label="simple-input" name="simple-input" required></cc-simple-input-text>
+      </div>
+
+      <div>
+        <button type="submit">Submit</button>
+      </div>
+    </form>
+  </fieldset>
+
+  <fieldset>
+    <legend>form data</legend>
+    <pre class="data"></pre>
+  </fieldset>
+</div>
+
+<script type="module">
+  // import './cc-simple-input-text-element-internals.js';
+  // import './cc-simple-input-text-validation-1.js';
+  // import './cc-simple-input-text-validation-2.js';
+  // import './cc-simple-input-text-validation-3.js';
+  import './cc-simple-input-text-validation-4.js';
+
+  const form = document.querySelector('form');
+  const simpleInput = document.querySelector('cc-simple-input-text');
+  const data = document.querySelector('.data');
+
+  form.onsubmit = (event) => {
+    event.preventDefault();
+
+    // piste 4
+    for (let element of form.elements) {
+      if (element.validate) {
+        element.validate(true);
+      }
+      else {
+        element.reportValidity();
+      }
+    }
+
+    if (form.checkValidity()) {
+      console.log('form is valid');
+    } else {
+      console.log('form is invalid');
+
+      // piste 1
+      // if (formData.get('simple-input') === '') {
+      //   simpleInput.innerHTML = '<span slot="error">Please enter value!</span>';
+      // } else {
+      //   simpleInput.innerHTML = '';
+      // }
+
+      // piste 2
+      // simpleInput.checkValidity();
+
+      // piste 3
+      // NA
+
+      // piste 4
+      form.querySelector(':invalid').focus();
+
+      return;
+    }
+
+    const formData = new FormData(form);
+    data.innerHTML = JSON.stringify(Object.fromEntries(formData.entries()), null, 4);
+  }
+</script>
+</body>
+</html>
+
