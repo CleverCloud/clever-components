@@ -70,6 +70,7 @@ export class CcFtDemoWithSmartComponent extends LitElement {
             label="Email"
             name="email"
             reset-value="prepopulated-email@email.fr"
+            value="prepopulated-email@email.fr"
             required
             ?disabled=${isForm2Submitting}
           ></cc-input-text>

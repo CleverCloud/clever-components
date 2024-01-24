@@ -27,7 +27,7 @@ export class CcFtDemoReset extends LitElement {
   render () {
     return html`
       <form name="my-form" ${formSubmit(formSubmitHandler(this))}>
-        <cc-input-text label="Name" required name="name" reset-value="prepopulated name"></cc-input-text>
+        <cc-input-text label="Name" required name="name" value="prepopulated name" reset-value="prepopulated name"></cc-input-text>
         <cc-input-text label="Surname" required name="surname"></cc-input-text>
         <cc-input-text label="Country" required name="country"></cc-input-text>
         <cc-select label="Color" required name="color" .options=${colorsSelectOptions}></cc-select>
