@@ -262,9 +262,11 @@ export class CcInputText extends LitElement {
     const validationResult = this._validationCtrl.validate(validator, this.value, report, this._customErrorMessages);
 
     if (validationResult.valid) {
+      console.log('SETTING VALID', this._inputRef.value);
       this._internals.setValidity({});
     }
     else {
+      console.log('SETTING INVALID', this._inputRef.value);
       // TODO: should the Validator return both a code and a validityState?
       this._internals.setValidity(
         {
@@ -318,17 +320,21 @@ export class CcInputText extends LitElement {
     this.errorMessage = null;
   }
 
-  // TODO! use `updated()` instead because `this._inputRef.value` is null during the first `willUpdate()`.
+  // TODO: use `updated()` instead because `this._inputRef.value` is null during the first `willUpdate()`.
   willUpdate (changedProperties) {
+    console.log('WILL UPDATE ----');
+
     // if errorMessage is set to null / empty, we want the field to be revalidated based on its validators
     // we want it to be revalidated only if it's not already valid
     // if it's already valid, it means the value has changed and has already been revalidated
     if (changedProperties.has('errorMessage') && (this.errorMessage == null || this.errorMessage.length === 0) && !this.checkValidity()) {
+      console.log('resetting since errorMessage === null');
       this.validate(false);
     }
 
     // if errorMessage is set (not null & not empty), we want to component validity to reflect that
     if (changedProperties.has('errorMessage') && this.errorMessage != null && this.errorMessage.length > 0) {
+      console.log('setting custom Error since errorMessage !== null');
       this._internals.setValidity({ ...this.validity, customError: true }, this.errorMessage, this._inputRef.value);
     }
 
@@ -336,12 +342,17 @@ export class CcInputText extends LitElement {
     // we want the reset value to be used if no value has been provided
     // but do we want resetValue to erase the value if it is changed? => probably not
     if (changedProperties.has('resetValue') && this.resetValue != null) {
+      // as expected this is a bad call because it breaks the component initial value
       this.value = this.resetValue;
     }
+  }
 
+  updated (changedProperties) {
+    console.log('UPDATED ----');
     // Note: usually people do this within their `onInput` handler
     // but we want to sync both onInput and when a value is provided through prop / attribute
     if (changedProperties.has('value')) {
+      console.log(this.value);
       // Sync form values with our state
       let data;
       if (this._tagsEnabled) {
@@ -354,9 +365,11 @@ export class CcInputText extends LitElement {
         data = this.value;
       }
       this._internals.setFormValue(data);
+      console.log('value changed so we validate again');
       // Sync form & input validity
       this.validate(false);
     }
+
   }
 
   render () {
