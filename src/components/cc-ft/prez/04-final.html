@@ -61,12 +61,9 @@
 <script type="module">
   import { addTranslations, setLanguage } from '../../../lib/i18n.js';
   import { lang, translations } from '../../../translations/translations.en.js';
-  // import './cc-simple-input-text-element-internals.js';
-  // import './cc-simple-input-text-validation-1.js';
-  // import './cc-simple-input-text-validation-2.js';
-  // import './cc-simple-input-text-validation-3.js';
   import './cc-simple-input-text-validation-6.js';
   import { EmailValidator } from '../validation/validation.js';
+  import { formSubmitHandler } from '../form/form-submit-handler.js';
 
   addTranslations(lang, translations);
   setLanguage(lang);
@@ -75,49 +72,13 @@
   const simpleInput = document.querySelector('cc-simple-input-text');
   const data = document.querySelector('.data');
 
-  // piste 6
   simpleInput.customValidator = new EmailValidator();
 
-  form.onsubmit = (event) => {
-    event.preventDefault();
+  form.onsubmit = formSubmitHandler(form);
 
-    // piste 4
-    for (let element of form.elements) {
-      if (element.validate) {
-        element.validate(true);
-      }
-      else {
-        element.reportValidity();
-      }
-    }
-
-    if (form.checkValidity()) {
-      console.log('form is valid');
-    } else {
-      console.log('form is invalid');
-
-      // piste 1
-      // if (formData.get('simple-input') === '') {
-      //   simpleInput.innerHTML = '<span slot="error">Please enter value!</span>';
-      // } else {
-      //   simpleInput.innerHTML = '';
-      // }
-
-      // piste 2
-      // simpleInput.checkValidity();
-
-      // piste 3
-      // NA
-
-      // piste 4
-      form.querySelector(':invalid').focus();
-
-      return;
-    }
-
-    const formData = new FormData(form);
-    data.innerHTML = JSON.stringify(Object.fromEntries(formData.entries()), null, 4);
-  }
+  form.addEventListener('form:formSubmit', ({ detail }) => {
+    data.innerHTML = JSON.stringify(detail, null, 4);
+  });
 </script>
 </body>
 </html>

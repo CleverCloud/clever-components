@@ -27,7 +27,7 @@ export class CcFtDemo extends LitElement {
         state: true,
       },
       _event: {
-        type: String,
+        type: Object,
         state: true,
       },
     };
@@ -38,7 +38,7 @@ export class CcFtDemo extends LitElement {
 
     /** @type {null|string} */
     this._demo = null;
-    /** @type {null|string} */
+    /** @type {null|Object} */
     this._event = null;
   }
 
@@ -50,17 +50,28 @@ export class CcFtDemo extends LitElement {
     this._loadDemo(e.target.dataset.demo);
   }
 
-  _onFormSubmit ({ detail }) {
-    console.log(`formSubmit: ${JSON.stringify(detail, null, 2)}`);
+  _onFormSubmit (e) {
+    this._event = {
+      type: `🎉 ${e.type}`,
+      detail: e.detail,
+      json: JSON.stringify(e.detail, null, 2),
+    };
+    console.log(`${this._event.type}: ${this._event.json}`);
   }
 
-  _onFormInvalid ({ detail }) {
-    console.log(`formInvalid: ${JSON.stringify(detail, null, 2)}`);
+  _onFormInvalid (e) {
+    this._event = {
+      type: `⚠️ ${e.type}`,
+      detail: e.detail,
+      json: JSON.stringify(e.detail, null, 2),
+    };
+    console.log(`${this._event.type}: ${this._event.json}`);
   }
 
   _loadDemo (demo) {
     import((this._getDemoFilePath(demo))).then(() => {
       this._demo = demo;
+      this._event = null;
       dispatchCustomEvent(this, 'demoChange', {
         demo: this._demo,
         src: this._getDemoFilePath(this._demo),
@@ -86,7 +97,16 @@ export class CcFtDemo extends LitElement {
         }
       </div>
       <div class="right">
-        ${this._renderDemo()}
+        <div class="demo">
+          ${this._renderDemo()}
+        </div>
+        ${this._event != null ? html`
+          <div class="event">
+            <div class="event-title">${this._event.type}</div>
+            <pre>${this._event.json}</pre>
+          </div>
+        ` : ''}
+        
       </div>
     `;
   }
@@ -97,11 +117,10 @@ export class CcFtDemo extends LitElement {
     }
     const tagName = `cc-ft-demo-${this._demo}`;
     const submitEventName = `@${tagName}:formSubmit`;
-    const formInvalidEventName = `@${tagName}:formInvalid`;
 
     return html`
       <cc-smart-container context='{ "fake": "fake" }'>
-        ${staticHtml`<${unsafeStatic(tagName)} ${unsafeStatic(submitEventName)}=${this._onFormSubmit} ${unsafeStatic(formInvalidEventName)}=${this._onFormInvalid}></${unsafeStatic(tagName)}>`}
+        ${staticHtml`<${unsafeStatic(tagName)} ${unsafeStatic(submitEventName)}=${this._onFormSubmit} @form:invalid=${this._onFormInvalid}></${unsafeStatic(tagName)}>`}
       </cc-smart-container>`;
   }
 
@@ -131,13 +150,31 @@ export class CcFtDemo extends LitElement {
           padding: 0.5em;
           border: 1px solid #ddd;
           border-radius: 0.3em;
+          display: flex;
+          flex-direction: column;
+          gap: 2em;
+        }
+        
+        .demo {
+          flex: 1;
         }
 
-        .debug {
-          flex: 0;
-          padding: 0.5em;
+        .event {
           border: 1px solid #ddd;
-          border-radius: 0.3em;
+        }
+        
+        .event-title {
+          padding: 0.5em;
+          font-family: monospace;
+          font-weight: bold;
+        } 
+        
+        pre {
+          background-color: #efefef;
+          padding: 0.5em;
+          margin: 0;
+          overflow: auto;
+          max-height: 500px;
         }
 
         button {

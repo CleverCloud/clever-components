@@ -104,7 +104,7 @@ export class CcSimpleInputText extends LitElement {
           spellcheck="false"
           @input=${this._onInput}
         >
-        ${this._errorMessage != null && this._errorMessage.length > 0 ? html`
+        ${this._errorMessage != null ? html`
           <div class="error">${this._errorMessage}</div>
         ` : ''}
       </div>

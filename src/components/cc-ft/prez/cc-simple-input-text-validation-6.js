@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { dispatchCustomEvent } from '../../../lib/events.js';
+import { RequiredValidator } from '../validation/validation.js';
 
 export class CcSimpleInputText extends LitElement {
   static get properties () {
@@ -33,30 +34,41 @@ export class CcSimpleInputText extends LitElement {
     this._inputRef = createRef();
     /** @type {ElementInternals} */
     this._internals = this.attachInternals();
-
-    this.addEventListener('invalid', (event) => {
-      console.log(this._internals.validity);
-      if (this._internals.validity.valueMissing) {
-        this._errorMessage = 'Please enter a value';
-      }
-    });
   }
 
-  _validate () {
-    if (this.required && (this.value == null || this.value.length === 0)) {
+  /**
+   *
+   * @param {boolean} report
+   * @return {Validation}
+   */
+  validate (report) {
+    const validator = new RequiredValidator(this.required, this._customValidator);
+    const validation = validator.validate(this.value);
+
+    if (!validation.valid) {
       this._internals.setValidity(
         { valueMissing: true },
-        'Please enter a value',
+        validation.code,
         this._inputRef.value,
       );
 
-      return false;
+      if (report) {
+        this._errorMessage = validator.getErrorMessage(validation.code);
+      }
     }
     else {
       this._internals.setValidity({});
 
-      return true;
+      if (report) {
+        this._errorMessage = null;
+      }
     }
+
+    return validation;
+  }
+
+  set customValidator (validator) {
+    this._customValidator = validator;
   }
 
   focus (options) {
@@ -79,7 +91,7 @@ export class CcSimpleInputText extends LitElement {
     }
 
     if (needValidation) {
-      this._validate();
+      this.validate(false);
     }
   }
 

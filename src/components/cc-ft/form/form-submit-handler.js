@@ -25,11 +25,11 @@ function serializeFormData (formData) {
 
 /**
  *
- * @param host
+ * @param {Element|LitElement} rootElement
  * @param { {[name: string]: (value:string|string[]) => string|null|void} } customValidation
  * @return {(function(*): void)|*}
  */
-export function formSubmitHandler (host, customValidation = {}) {
+export function formSubmitHandler (rootElement, customValidation = {}) {
   return (event) => {
 
     event.preventDefault();
@@ -96,32 +96,19 @@ export function formSubmitHandler (host, customValidation = {}) {
     const isFormValid = formValidationResult.every((result) => result.validationResult.valid);
 
     if (isFormValid) {
-      dispatchCustomEvent(host, 'formSubmit', { form: formEl.getAttribute('name'), data });
+      dispatchCustomEvent(rootElement, 'formSubmit', { form: formEl.getAttribute('name'), data });
       dispatchCustomEvent(formEl, 'valid');
     }
     else {
       dispatchCustomEvent(formEl, 'invalid', formValidationResult);
       console.log('form invalid', formValidationResult);
-      host.updateComplete.then(() => formEl.querySelector(':invalid, [internals-invalid]')?.focus());
+      const focus = () => formEl.querySelector(':invalid, [internals-invalid]')?.focus();
+      if (rootElement.updateComplete != null) {
+        rootElement.updateComplete.then(focus());
+      }
+      else {
+        focus();
+      }
     }
   };
 }
-
-// export const formSubmitHandler = (e) => {
-//   e.preventDefault();
-//   const formEl = e.target;
-//   const data = Object.fromEntries(new FormData(formEl));
-//
-//   const isFormValid = Array.from(formEl.elements).filter((element) => element.validate != null)
-//     .map((element) => element.validate(true).valid)
-//     .every((result) => result);
-//
-//   if (isFormValid) {
-//     // TODO: handle form name to dispatch a different event depending on the form?
-//     // We have access to the form name through the formEl so its easy but how should we transmit it?
-//     dispatchCustomEvent(formEl.getRootNode().host, 'formSubmit', { data });
-//   }
-//   else {
-//     formEl.querySelector(':invalid, [internals-invalid]')?.focus();
-//   }
-// };

@@ -168,13 +168,3 @@ export class EmailValidator {
     return VALID;
   }
 }
-
-export class FunctionValidator {
-  constructor (fn) {
-    this._fn = fn;
-  }
-
-  validate (value) {
-    return this._fn();
-  }
-}
