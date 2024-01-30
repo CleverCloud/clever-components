@@ -16,15 +16,15 @@ function checkTypeImports (componentName, filepath, sourceCode) {
     })
     .filter((n) => n != null);
 
-  const imports = { component: componentName, filepath: filepath, unusedImports: [], errors: [], missingImports: [] };
+  const imports = { component: componentName, filepath: filepath, errors: [], missingImports: [] };
 
   for (const classNode of classNodes) {
     // The plugin takes variables that are both
     // - initialized in the constructor (both public and private)
-    // - declared in @event JsDoc tags
+    // - declared in @fires JsDoc tags
     // and takes all the available imports : which are imports found in @typedef, import statements and current file classes.
-    // Then it verifies that there's a match between each constructor variables types and the available imports
-    // Finally it tells you if you have missing, unused imports or @typedef in the wrong format
+    // Then it verifies that every type used within the constructor is imported within a @typedef
+    // Finally it tells you if you have missing imports or @typedef in the wrong format
     const types = getTypesFromClass(classNode, ts, true);
     if (types.length === 0) {
       continue;
@@ -51,11 +51,6 @@ function checkTypeImports (componentName, filepath, sourceCode) {
     });
 
     typesFromTypeDef.forEach(({ type, typedef }) => {
-      const isDomRelated = type === 'Animation' || type === 'Element' || type === 'Node';
-      if (type != null && !types.includes(type) && !isDomRelated) {
-        imports.unusedImports.push({ type, typedef });
-      }
-
       if (type == null) {
         imports.errors.push(typedef);
       }
@@ -71,7 +66,7 @@ function run () {
     chalk
       .bgWhite
       .black
-      .bold(`\n ⌛ checking @typedef imports and types present in constructor and @event tags.\n`),
+      .bold(`\n ⌛ checking @typedef imports and types present in constructor and @fires tags.\n`),
   );
 
   const wrongImports = [];
@@ -88,7 +83,7 @@ function run () {
     const componentFileName = path.parse(filepath).name;
     const contents = fs.readFileSync(filepath, { encoding: 'utf8' });
     const imports = checkTypeImports(componentFileName, filepath, contents);
-    if (imports != null && (imports.unusedImports.length !== 0 || imports.missingImports.length !== 0 || imports.errors.length !== 0)) {
+    if (imports != null && (imports.missingImports.length !== 0 || imports.errors.length !== 0)) {
       wrongImports.push(imports);
     }
   }
@@ -97,12 +92,12 @@ function run () {
     console.log(
       chalk
         .bgGreen
-        .bold(` 🎉 No type imports in the components are unused! `),
+        .bold(` 🎉 No type import issues in the components! `),
     );
     return process.exit(0);
   }
 
-  wrongImports.forEach(({ component, filepath, errors, unusedImports, missingImports }) => {
+  wrongImports.forEach(({ component, filepath, errors, missingImports }) => {
     console.log(
       chalk
         .bgWhite
@@ -116,15 +111,6 @@ function run () {
           .red
           .bold(`❌ Something might be wrong for @typedef: `), error),
       );
-    }
-    if (unusedImports.length !== 0) {
-      console.log(
-        chalk
-          .bgYellow
-          .black
-          .bold(`⚠️  Unused import(s) are: `),
-      );
-      unusedImports.forEach(({ typedef }) => console.warn(`\t - ${typedef}\n`));
     }
     if (missingImports.length !== 0) {
       console.log(

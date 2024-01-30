@@ -53,12 +53,12 @@ export function arrayEquals (a, b) {
  * => myArray.flatMap(unique)
  *
  * @template ItemType
- * @param {ItemType} item
+ * @param {ItemType} _
  * @param {number} index
  * @param {ItemType[]} array
  * @returns {ItemType[]}
  */
-export function unique (item, index, array) {
+export function unique (_, index, array) {
   if (index === array.length - 1) {
     return Array.from(new Set(array));
   }
