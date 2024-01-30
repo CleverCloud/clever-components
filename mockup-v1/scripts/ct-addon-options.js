@@ -75,7 +75,8 @@ export class CtAddonOptions extends LitElement {
         ${
           this.options?.map((option) => {
             if (option === 'version') {
-              return this._renderOptionSelect(WORDING.VERSION_VALUE, WORDING.VERSION_DESC, this.versions.versions, this.versions.default);
+              // return this._renderOptionSelect(WORDING.VERSION_VALUE, WORDING.VERSION_DESC, this.versions.versions, this.versions.default);
+              return this._renderOptionToggle(WORDING.VERSION_VALUE, WORDING.VERSION_DESC, this.versions.versions, this.versions.default);
             }
             else if (option === 'encryption') {
               return this._renderOptionToggle(WORDING.ENCRYPTION_VALUE, WORDING.ENCRYPTION_DESC, TOGGLE_STRUCT.options, TOGGLE_STRUCT.default);

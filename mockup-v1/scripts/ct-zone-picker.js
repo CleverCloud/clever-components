@@ -44,9 +44,6 @@ export class CtZonePicker extends LitElement {
       ? this.zones.toSorted(sortFn)
       : []
     ;
-    if (this.whitelist.length > 0) {
-      this._sortedZones = this._sortedZones.filter((zone) => this.whitelist.includes(zone.name));
-    }
     this._fixCurrentZone();
 
     if (this.currentZone == null) {
@@ -65,25 +62,25 @@ export class CtZonePicker extends LitElement {
     }));
   }
 
-  _fixCurrentZone () {
-    function isZoneAvailable (name, zones) {
-      return zones.find((zone) => zone.name === name) != null;
-    }
+  _getEligibleZone (name) {
+    return this._sortedZones.find((zone) => name == null || (this.whitelist.includes(name) && zone.name === name));
+  }
 
-    const isCurrentZoneAvailable = isZoneAvailable(this.currentZone, this._sortedZones);
+  _fixCurrentZone () {
+    const isCurrentZoneAvailable = this._getEligibleZone(this.currentZone) != null;
     if (isCurrentZoneAvailable) {
       return;
     }
 
     // TODO closest name instead? based on country?
-    const isPreferredZoneAvailable = isZoneAvailable(PREFERRED_ZONE, this._sortedZones);
+    const isPreferredZoneAvailable = this._getEligibleZone(PREFERRED_ZONE) != null;
     if (isPreferredZoneAvailable) {
       this.currentZone = PREFERRED_ZONE;
       return;
     }
 
     // TODO closest name
-    this.currentZone = this._sortedZones[0].name;
+    this.currentZone = this._getEligibleZone().name;
   }
 
   connectedCallback () {
@@ -97,7 +94,10 @@ export class CtZonePicker extends LitElement {
   }
 
   _onZoneSelected (e) {
-    this.currentZone = e.detail;
+    const selectedZone = e.detail;
+    if (this.whitelist == null || this.whitelist.includes(selectedZone)) {
+      this.currentZone = e.detail;
+    }
   }
 
   render () {
@@ -110,8 +110,9 @@ export class CtZonePicker extends LitElement {
         ${
           this._sortedZones.map((zone) => {
             return html`<ct-zone-item
-              role="button"
-              tabindex="0"
+              role="${this.whitelist.includes(zone.name) ? 'button' : ''}"
+              tabindex="${this.whitelist.includes(zone.name) ? '0' : '-1'}"
+              ?disabled=${!this.whitelist.includes(zone.name)}
               ?selected=${this.currentZone === zone.name}
               name="${zone.name}"
               city="${zone.city}"
