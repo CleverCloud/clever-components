@@ -45,8 +45,11 @@ export class CcFtDemoWithNativeInputs extends LitElement {
   // TODO: tackle this by dispatching a `valid` event
   _onSubmit (e) {
     e.preventDefault();
-    this._checkboxError = null;
-    this._radioError = null;
+
+    if (e.target.checkValidity()) {
+      this._checkboxError = null;
+      this._radioError = null;
+    }
   }
 
   render () {
@@ -130,6 +133,7 @@ export class CcFtDemoWithNativeInputs extends LitElement {
         }
 
         /* TODO: this shows why the :invalid pseudo-class is not great for styling error states */
+
         *:invalid:focus {
           outline: solid 2px red;
         }

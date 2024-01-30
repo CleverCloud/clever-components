@@ -48,7 +48,6 @@ export class CcFtDemoWithCustomValidation extends LitElement {
 
   _onInvalid ({ detail }) {
     const invalidSurname = detail.find((d) => d.name === 'surname' && d.validationResult.valid === false);
-    console.log(invalidSurname);
     this._surnameError = invalidSurname != null
       ? invalidSurname.validationResult.code
       : null;
@@ -57,7 +56,14 @@ export class CcFtDemoWithCustomValidation extends LitElement {
   // TODO: we only provide an invalid event and no valid event so right now the only way to remove error messages if everything went well is to use the submit event
   _onSubmit (e) {
     e.preventDefault();
-    this._surnameError = null;
+    const form = e.target;
+    if (form.checkValidity()) {
+      // TODO: this fails in some cases: the submit handler runs after this handler, meaning checkValidity has not been set yet
+      // this highlights two things:
+      // - we need a valid event
+      // - for custom validation, we update the validity on submit instead of onInput which does not match what we do in our components + what is done in native
+      this._surnameError = null;
+    }
   }
 
   render () {
