@@ -101,10 +101,10 @@ export class CtZoneItem extends LitElement {
           flex: 0 0 auto;
         }
 
-        :host(:hover) {
+        :host(:hover:not([disabled])) {
           border-color: var(--cc-color-border-neutral-hovered);
         }
-        :host(:not([selected])) {
+        :host(:not([selected]):not([disabled])) {
           cursor: pointer;
         }
 
@@ -127,6 +127,23 @@ export class CtZoneItem extends LitElement {
         }
         :host([selected]) .thumbnails {
           background-color: var(--cc-color-bg-primary-weak);
+        }
+
+        :host([disabled]) {
+          border-color: var(--cc-color-border-neutral-disabled);
+          opacity: var(--cc-opacity-when-disabled);
+        }
+        :host([disabled]) .title .infra,
+        :host([disabled]) .title .city {
+          opacity: var(--cc-opacity-when-disabled);
+        }
+        :host([disabled]) .thumbnails {
+          background-color: #FAFAFA;
+        }
+        :host([disabled]) .thumbnails cc-icon,
+        :host([disabled]) .thumbnails cc-img {
+          filter: grayscale(1);
+          opacity: var(--cc-opacity-when-disabled);
         }
 
         .title {
