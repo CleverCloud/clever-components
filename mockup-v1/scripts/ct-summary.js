@@ -3,14 +3,18 @@ import {
   iconRemixContractUpDownLine as iconDetailsVisible,
   iconRemixExpandUpDownLine as iconDetailsHidden,
 } from '../../src/assets/cc-remix.icons.js';
+import './ct-summary-encryption.js';
 import './ct-summary-plan.js';
 import './ct-summary-product-name.js';
+import './ct-summary-version.js';
 import './ct-summary-zone.js';
 
 const WORDING = {
   CREATE: 'create instance',
   CANCEL: 'cancel',
 };
+
+const SPECIAL_ADDONS = ['addon-matomo', 'addon-pulsar', 'cellar-addon', 'config-provider', 'fs-bucket'];
 
 export class CtSummary extends LitElement {
   static get properties () {
@@ -39,6 +43,11 @@ export class CtSummary extends LitElement {
         </div>
         <div class="header--name">
           ${this.product.name}
+          ${
+            this.product.beta
+            ? html`<cc-badge intent="warning" weight="strong">beta</cc-badge>`
+            : ``
+          }
         </div>
         <button class="header--details-toggle-btn" @click="${this._toggleDetails}">
         ${
@@ -55,11 +64,21 @@ export class CtSummary extends LitElement {
           ?details-visible="${this._detailsVisible}"
         ></ct-summary-product-name>
         ${
-          this.product.type === 'addon'
+          this.product.type === 'addon' && !SPECIAL_ADDONS.includes(this.product.id)
             ? html`<ct-summary-plan .plan="${this.form.plan}" ?details-visible="${this._detailsVisible}"></ct-summary-plan>`
             : ``
         }
         <ct-summary-zone .zone="${this.form.zone}" ?details-visible="${this._detailsVisible}"></ct-summary-zone>
+        ${
+          this.product.type === 'addon' && this.form.version != null
+          ? html`<ct-summary-version version="${this.form.version}"></ct-summary-version>`
+          : ``
+        }
+        ${
+          this.product.type === 'addon' && this.form.encryption === true
+          ? html`<ct-summary-encryption ?details-visible="${this._detailsVisible}" ?kibana="${this.form.kibana}" ?apm="${this.form.apm}"></ct-summary-encryption>`
+          : ``
+        }
       </div>
       <div class="footer">
         <cc-button class="btn-submit" primary>${WORDING.CREATE}</cc-button>
@@ -115,6 +134,10 @@ export class CtSummary extends LitElement {
           overflow: hidden;
         }
         .header--name {
+          display: inline-flex;
+          align-items: baseline;
+          flex-wrap: wrap;
+          gap: 0.25em;
           flex: 1 1 auto;
           font-size: 2em;
           font-weight: 500;
@@ -139,6 +162,11 @@ export class CtSummary extends LitElement {
         .header--logo cc-img {
           width: 3em;
           height: 3em;
+        }
+
+        .header--name cc-badge {
+          flex: 0 0 auto;
+          font-size: initial;
         }
         
         .body {

@@ -31,18 +31,35 @@ const ADDON_RAW_API = {
   'redis-addon': REDIS_ADDON_RAW,
 };
 
+const SPECIAL_ADDONS = ['addon-matomo', 'addon-pulsar', 'cellar-addon', 'config-provider', 'fs-bucket'];
+
+const DEFAULT_ZONES = API_ZONES_RAW.map((zone) => zone.name);
+
 export class CtForm extends LitElement {
   static get properties () {
     return {
       product: { type: Object },
       _rawProduct: { type: Object, state: true },
       _currentPlanZones: { type: Array, state: true },
+      _pulsarVersion: { type: String, state: true },
     };
   };
 
   willUpdate (_changedProperties) {
     if (_changedProperties.has('product')) {
       this._rawProduct = getRawProductFromProduct(this.product);
+
+      if (SPECIAL_ADDONS.includes(this.product.id) || this.product.type === 'app') {
+        this._currentPlanZones = [...this._rawProduct?.plans[0]?.zones ?? DEFAULT_ZONES];
+      }
+
+      if (this.product.id === 'addon-pulsar') {
+        const rawAddonApi = ADDON_RAW_API[this.product.id];
+        if (rawAddonApi.clusters?.length > 0) {
+          const firstCluster = rawAddonApi.clusters[0];
+          this._pulsarVersion = firstCluster.version;
+        }
+      }
     }
   }
 
@@ -84,7 +101,7 @@ export class CtForm extends LitElement {
       return html`<ct-plan-matomo></ct-plan-matomo>`;
     }
     else if (this.product.id === 'addon-pulsar') {
-      return html`<ct-plan-pulsar></ct-plan-pulsar>`;
+      return html`<ct-plan-pulsar version="${this._pulsarVersion}"></ct-plan-pulsar>`;
     }
     else if (this.product.id === 'cellar-addon') {
       return html`<ct-plan-cellar></ct-plan-cellar>`;

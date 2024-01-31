@@ -4,6 +4,7 @@
     "type": "app",
     "name": "Docker",
     "logoUrl": "https://assets.clever-cloud.com/logos/docker.svg",
+    "beta": false,
     "details": {}
   },
   "dotnet": {
@@ -11,6 +12,7 @@
     "type": "app",
     "name": ".NET core",
     "logoUrl": "https://assets.clever-cloud.com/logos/dotnet.svg",
+    "beta": false,
     "details": {}
   },
   "erlang": {
@@ -18,6 +20,7 @@
     "type": "app",
     "name": "Elixir",
     "logoUrl": "https://assets.clever-cloud.com/logos/elixir.svg",
+    "beta": false,
     "details": {}
   },
   "haskell": {
@@ -25,6 +28,7 @@
     "type": "app",
     "name": "Haskell",
     "logoUrl": "https://assets.clever-cloud.com/logos/haskell.svg",
+    "beta": false,
     "details": {}
   },
   "ruby": {
@@ -32,6 +36,7 @@
     "type": "app",
     "name": "Ruby",
     "logoUrl": "https://assets.clever-cloud.com/logos/ruby.svg",
+    "beta": false,
     "details": {}
   },
   "rust": {
@@ -39,6 +44,7 @@
     "type": "app",
     "name": "Rust",
     "logoUrl": "https://assets.clever-cloud.com/logos/rust.svg",
+    "beta": false,
     "details": {}
   },
   "python": {
@@ -46,6 +52,7 @@
     "type": "app",
     "name": "Python",
     "logoUrl": "https://assets.clever-cloud.com/logos/python.svg",
+    "beta": false,
     "details": {}
   },
   "node::meteor": {
@@ -53,6 +60,7 @@
     "type": "app",
     "name": "Meteor.js",
     "logoUrl": "https://assets.clever-cloud.com/logos/meteor.svg",
+    "beta": false,
     "details": {}
   },
   "node::node": {
@@ -60,6 +68,7 @@
     "type": "app",
     "name": "Node",
     "logoUrl": "https://assets.clever-cloud.com/logos/nodejs.svg",
+    "beta": false,
     "details": {}
   },
   "go": {
@@ -67,6 +76,7 @@
     "type": "app",
     "name": "Go",
     "logoUrl": "https://assets.clever-cloud.com/logos/go.svg",
+    "beta": false,
     "details": {}
   },
   "php::php": {
@@ -74,6 +84,7 @@
     "type": "app",
     "name": "PHP",
     "logoUrl": "https://assets.clever-cloud.com/logos/php.svg",
+    "beta": false,
     "details": {}
   },
   "php::static-apache": {
@@ -81,6 +92,7 @@
     "type": "app",
     "name": "Static",
     "logoUrl": "https://assets.clever-cloud.com/logos/apache.svg",
+    "beta": false,
     "details": {}
   },
   "java::play1": {
@@ -88,6 +100,7 @@
     "type": "app",
     "name": "Java + Play! 1",
     "logoUrl": "https://assets.clever-cloud.com/logos/play1.svg",
+    "beta": false,
     "details": {}
   },
   "java::play2": {
@@ -95,6 +108,7 @@
     "type": "app",
     "name": "Java or Scala + Play! 2",
     "logoUrl": "https://assets.clever-cloud.com/logos/play2.svg",
+    "beta": false,
     "details": {}
   },
   "java::gradle": {
@@ -102,6 +116,7 @@
     "type": "app",
     "name": "Java or Groovy + Gradle",
     "logoUrl": "https://assets.clever-cloud.com/logos/gradle.svg",
+    "beta": false,
     "details": {}
   },
   "java::jar": {
@@ -109,6 +124,7 @@
     "type": "app",
     "name": "Java + JAR",
     "logoUrl": "https://assets.clever-cloud.com/logos/java-jar.svg",
+    "beta": false,
     "details": {}
   },
   "java::maven": {
@@ -116,6 +132,7 @@
     "type": "app",
     "name": "Java + Maven",
     "logoUrl": "https://assets.clever-cloud.com/logos/maven.svg",
+    "beta": false,
     "details": {}
   },
   "java::sbt": {
@@ -123,6 +140,7 @@
     "type": "app",
     "name": "Scala + SBT",
     "logoUrl": "https://assets.clever-cloud.com/logos/scala.svg",
+    "beta": false,
     "details": {}
   },
   "java::war": {
@@ -130,6 +148,7 @@
     "type": "app",
     "name": "Java + WAR",
     "logoUrl": "https://assets.clever-cloud.com/logos/java-war.svg",
+    "beta": false,
     "details": {}
   },
   "addon-matomo": {
@@ -137,6 +156,7 @@
     "type": "addon",
     "name": "Matomo Analytics",
     "logoUrl": "https://assets.clever-cloud.com/logos/matomo.svg",
+    "beta": false,
     "details": {
       "categories": null
     }
@@ -146,6 +166,7 @@
     "type": "addon",
     "name": "Pulsar",
     "logoUrl": "https://assets.clever-cloud.com/logos/pulsar.svg",
+    "beta": true,
     "details": {
       "categories": null
     }
@@ -155,6 +176,7 @@
     "type": "addon",
     "name": "Cellar S3 storage",
     "logoUrl": "https://assets.clever-cloud.com/logos/cellar.svg",
+    "beta": false,
     "details": {
       "categories": null
     }
@@ -164,6 +186,7 @@
     "type": "addon",
     "name": "Configuration provider",
     "logoUrl": "https://assets.clever-cloud.com/logos/configprovider.svg",
+    "beta": false,
     "details": {
       "categories": null
     }
@@ -173,6 +196,7 @@
     "type": "addon",
     "name": "Elastic Stack",
     "logoUrl": "https://assets.clever-cloud.com/logos/elastic.svg",
+    "beta": false,
     "details": {
       "categories": null,
       "displayedFeatures": [
@@ -193,6 +217,7 @@
     "type": "addon",
     "name": "FS Buckets",
     "logoUrl": "https://assets.clever-cloud.com/logos/fsbucket.svg",
+    "beta": false,
     "details": {
       "categories": null
     }
@@ -202,6 +227,7 @@
     "type": "addon",
     "name": "Jenkins",
     "logoUrl": "https://assets.clever-cloud.com/logos/jenkins.svg",
+    "beta": false,
     "details": {
       "categories": null,
       "displayedFeatures": [
@@ -219,6 +245,7 @@
     "type": "addon",
     "name": "MailPace - Transactional Email",
     "logoUrl": "https://docs.mailpace.com/img/logo.png",
+    "beta": false,
     "details": {
       "categories": null,
       "displayedFeatures": [],
@@ -230,6 +257,7 @@
     "type": "addon",
     "name": "MongoDB",
     "logoUrl": "https://assets.clever-cloud.com/logos/mongodb.svg",
+    "beta": false,
     "details": {
       "categories": [
         {
@@ -288,6 +316,7 @@
     "type": "addon",
     "name": "MySQL",
     "logoUrl": "https://assets.clever-cloud.com/logos/mysql.svg",
+    "beta": false,
     "details": {
       "categories": [
         {
@@ -347,6 +376,7 @@
     "type": "addon",
     "name": "PostgreSQL",
     "logoUrl": "https://assets.clever-cloud.com/logos/pgsql.svg",
+    "beta": false,
     "details": {
       "categories": [
         {
@@ -406,6 +436,7 @@
     "type": "addon",
     "name": "Redis",
     "logoUrl": "https://assets.clever-cloud.com/logos/redis.svg",
+    "beta": false,
     "details": {
       "categories": null,
       "displayedFeatures": [

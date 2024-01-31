@@ -31,6 +31,10 @@ function goToProductIndex (index) {
   goToProduct(productsIds[currentProductIndex]);
 }
 function goToProduct (productId) {
+  if (!productsIds.includes(productId)) {
+    productId = productsIds[0];
+  }
+
   const productElements = menuServices.querySelectorAll(`.menu-services--item`);
   productElements.forEach((productElement) => {
     const isCurrentElement = productElement.getAttribute('data-product-id') === productId;

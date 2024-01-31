@@ -72,6 +72,8 @@ const PLAN_CATEGORIES = [
   },
 ];
 
+const IS_BETA = ['addon-pulsar'];
+
 export async function generateProductsJson () {
   const output = {};
   API_APPS_RAW.forEach((app) => {
@@ -83,6 +85,7 @@ export async function generateProductsJson () {
       type: TYPE_ENUM.app,
       name: app.variant?.name ?? app.name,
       logoUrl: app.variant?.logo,
+      beta: IS_BETA.includes(id),
       details: {},
     };
   });
@@ -94,6 +97,7 @@ export async function generateProductsJson () {
       type: TYPE_ENUM.addon,
       name: addon.name,
       logoUrl: addon.logoUrl,
+      beta: IS_BETA.includes(addon.id),
       details: {
         categories: hasCategories ? PLAN_CATEGORIES : null,
         displayedFeatures: hasCategories ? CATEGORY_DISPLAYED_FEATURES : FLAT_DISPLAYED_FEATURES[addon.id],
