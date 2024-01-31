@@ -660,6 +660,16 @@ export const translations = {
   'cc-payment-warning.orga.no-payment-method': `Pour éviter tout risque de suspension de vos services et de suppression de vos données, merci d'ajouter un moyen de paiement valide et de le définir par défaut.`,
   'cc-payment-warning.orga.no-payment-method.title': `Attention ! Vous n'avez aucun moyen de paiement enregistré`,
   //#endregion
+  //#region cc-prepaid-credits
+  'cc-prepaid-credits.desc': () => sanitize`
+    <p>Le montant de ces crédits correspond généralement à votre consommation lors du dernier cycle de facturation.</p>
+    <p>Ces crédits sont consommés après les gratuits gratuits.</p>
+    <p>Contrairement aux coupons, ces crédits n'ont pas de date d'expiration.</p>
+    <br>
+    <p>Pour plus d'informations, consultez vos <a href="">dernières factures</a>.</p>
+  `,
+  'cc-prepaid-credits.title': `Crédits prépayés`,
+  //#endregion
   //#region cc-pricing-estimation
   'cc-pricing-estimation.count.label': ({ productCount }) => plural(productCount, 'produit'),
   'cc-pricing-estimation.estimated-price-name.1000-minutes': `estimé (${formatNumber(lang, 1000)} minutes)`,

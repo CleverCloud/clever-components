@@ -647,6 +647,16 @@ export const translations = {
   'cc-payment-warning.orga.no-payment-method': `To avoid any suspension of your services and deletion of your data, please add a valid payment method and set it as default.`,
   'cc-payment-warning.orga.no-payment-method.title': `Beware! You don't have any registered payment method`,
   //#endregion
+  //#region cc-prepaid-credits
+  'cc-prepaid-credits.desc': () => sanitize`
+    <p>The amount of prepaid credits corresponds to your consumption during the last billing cycle.</p>
+    <p>These credits are consumed after the free credits.</p>
+    <p>Contrary to vouchers, these credits cannot expire.</p>
+    <br>
+    <p>For more information, refer to your <a href="TODO">last invoices</a>.</p>
+  `,
+  'cc-prepaid-credits.title': `Prepaid credits`,
+  //#endregion
   //#region cc-pricing-estimation
   'cc-pricing-estimation.count.label': ({ productCount }) => plural(productCount, 'product'),
   'cc-pricing-estimation.estimated-price-name.1000-minutes': `Price (${formatNumber(lang, 1000)} minutes)`,
