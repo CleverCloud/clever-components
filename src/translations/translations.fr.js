@@ -219,6 +219,65 @@ export const translations = {
   }),
   'cc-credit-chart.remaining': `Crédits restants`,
   //#endregion
+  //#region cc-credit-consumption
+  'cc-credit-consumption.daily.date': ({ date }) => new Date(date).toLocaleString(lang, { month: 'long', year: 'numeric' }),
+  'cc-credit-consumption.disclaimer.content': () => sanitize`
+    <p>Les données ci-dessous sont une <strong>évaluation</strong> de votre consommation.</p>
+    <p>Les montants affichés sont des montants <strong>hors taxes</strong>.</p>
+  `,
+  'cc-credit-consumption.disclaimer.heading': `Il ne s'agit pas d'une facture`,
+  'cc-credit-consumption.error.loading': `Il y a eu une erreur lors du chargement de vos données de consommation.`,
+  'cc-credit-consumption.free.table.caption': `Détails des coupons de crédits offerts`,
+  'cc-credit-consumption.header.discount': (discountNumber) => `Appliquer votre réduction de ${discountNumber}%`,
+  'cc-credit-consumption.legend.consumption': `Consommation`,
+  'cc-credit-consumption.legend.credits': `Crédits`,
+  'cc-credit-consumption.legend.free': `Crédits offerts`,
+  'cc-credit-consumption.legend.prepaid': `Crédits prépayés`,
+  'cc-credit-consumption.legend.remaining': `Crédits restants`,
+  'cc-credit-consumption.long-date': (date) => new Date(date).toLocaleDateString(lang, { year: 'numeric', month: 'long', day: 'numeric' }),
+  'cc-credit-consumption.main-title': `Crédits & consommation`,
+  'cc-credit-consumption.overview.a11y-table-caption': `Montants de consommation et de crédits`,
+  'cc-credit-consumption.overview.consumption.desc': () => sanitize`<p>Évaluation du coût total de fonctionnement de vos applications et addons créées depuis la console. Le coût de ces produits est calculé à la seconde de fonctionnement pour refléter votre usage.</p>
+  <p>Ces données sont actualisées une fois par jour.</p>
+  <p>La consommation n'inclut que les <strong>produits du catalogue officiel</strong> de Clever Cloud. Les coûts liés aux produits souscrits auprès du support ne font pas partie des données ci-dessous.</p>
+  <p>Pour plus d'informations, consultez notre page <a href="https://www.clever-cloud.com/pricing/">Tarification</a>.</p>`,
+  'cc-credit-consumption.overview.consumption.legend': `Consommation estimée jusqu'à hier à minuit (UTC)`,
+  'cc-credit-consumption.overview.consumption.title': `Consommation`,
+  'cc-credit-consumption.overview.credits-with-prepaid.desc': () => sanitize`<p>Les crédits sont constitués à la fois de vos crédits offerts et prépayés.</p>
+  <p>Les crédits offerts sont issus des coupons que vous possédez. Ce sont ces crédits qui sont consommés en priorité.</p>
+  <p>Les crédits prépayés correspondent à des montants que vous avez payé en avance. Le montant de ces crédits correspond généralement à votre consommation lors du dernier cycle de facturation.</p>
+  <p>L'estimation de crédits restants est calculée en retirant votre consommation actuelle du total de crédits disponibles pour la période de facturation en cours.</p>`,
+  'cc-credit-consumption.overview.credits.legend.remaining': `Crédits restants`,
+  'cc-credit-consumption.overview.credits.legend.total': `Total pour la période en cours`,
+  'cc-credit-consumption.overview.credits.title': `Crédits restants`,
+  'cc-credit-consumption.overview.docs': `Combien allez-vous payer ?`,
+  'cc-credit-consumption.overview.free-credits-only.desc': () => sanitize`<p>Puisque vous avez choisi de désactiver les crédits prépayés, le montant ci-dessus est égal à vos crédits offerts</p>
+  <p>Ce montant correspond à la somme de vos coupons actifs pour la période en cours.</p>
+  <p>Pour plus d'informations, consultez la section "Crédits offerts" ci-dessous.`,
+  'cc-credit-consumption.overview.suborg.desc': ({ name, id }) => sanitize`
+    <p>Votre organisation est rattachée à l'organisation <a href="/organisations/${id}">${name}</a>.</p>
+    <p>Votre organisation ne possède donc ni crédits offerts ni crédits prépayés. Ces crédits sont attribués à l'organisation <strong>${name}</strong>.</p>
+    <p>Le montant de consommation de votre organisation est intégré à la consommation de l'organisation <strong>${name}</strong>.</p>
+    <p>Cela signifie que votre organisation ne recevra pas de factures tant qu'elle est rattachée à une autre.</p>
+  `,
+  'cc-credit-consumption.overview.suborg.title': `Votre organisation est rattachée à une autre`,
+  'cc-credit-consumption.period.active': ({ startDate, endDate }) => {
+    const formattedStartDate = new Date(startDate).toLocaleDateString(lang, { year: 'numeric', month: 'long', day: 'numeric' });
+    const formattedEndDate = new Date(endDate).toLocaleDateString(lang, { year: 'numeric', month: 'long', day: 'numeric' });
+    return sanitize`Période affichée&nbsp;: du <strong>${formattedStartDate}</strong> au <strong>${formattedEndDate}</strong>`;
+  },
+  'cc-credit-consumption.period.current': `Afficher les données du mois courant`,
+  'cc-credit-consumption.period.prev': `Afficher les données du mois précédent`,
+  'cc-credit-consumption.price': ({ price, currency, digits }) => formatCurrency(lang, price, {
+    currency,
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  }),
+  'cc-credit-consumption.update-date': (date) => {
+    const formattedDate = new Date(date).toLocaleDateString(lang, { year: 'numeric', month: 'long', day: 'numeric' });
+    return sanitize`Données mises à jour le <strong>${formattedDate}</strong>`;
+  },
+  //#endregion
   //#region cc-daily-consumption
   'cc-daily-consumption.a11y-table-caption': `Montant de consommation par jour`,
   'cc-daily-consumption.a11y-toggle.chart': `Graphique`,

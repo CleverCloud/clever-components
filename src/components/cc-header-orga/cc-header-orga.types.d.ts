@@ -5,7 +5,7 @@ interface HeaderOrgaStateLoaded {
   name: string;
   avatar?: string;
   cleverEnterprise?: boolean;
-  emergencyNumber?: number; 
+  emergencyNumber?: string; 
 }
 
 interface HeaderOrgaStateLoading {

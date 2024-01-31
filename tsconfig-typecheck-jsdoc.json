@@ -1,6 +1,7 @@
 {
   "include": [
-    "src/lib/utils.js"
+    "src/lib/utils.js",
+    "src/lib/consumption-calculator.js"
   ],
   "compilerOptions": {
     "allowJs": true,
