@@ -219,6 +219,29 @@ export const translations = {
   }),
   'cc-credit-chart.remaining': `Crédits restants`,
   //#endregion
+  //#region cc-daily-consumption
+  'cc-daily-consumption.a11y-table-caption': `Montant de consommation par jour`,
+  'cc-daily-consumption.a11y-toggle.chart': `Graphique`,
+  'cc-daily-consumption.a11y-toggle.table': `Tableau`,
+  'cc-daily-consumption.desc': () => sanitize`
+    <p>La consommation quotidienne peut varier en fonction de plusieurs facteurs :</p>
+    <ul>
+      <li>Lorsque vous arrêtez ou supprimez des produits.</li>
+      <li>Lorsqu'au contraire vous créez de nouvelles applications ou addons.</li>
+      <li>Si vous avez activé l'auto-scalabilité, vos instances peuvent grossir ou rétrécir (scalabilité verticale) ou de nouvelles instances peuvent être créées ou supprimées (scalabilité horizontale) pour répondre à la demande.<br>Plus d'informations sur la page <a href="https://www.clever-cloud.com/doc/administrate/scalability/">Scalabilité - Documentation Clever Cloud (en Anglais)</a>.</li>
+    </ul>
+  `,
+  'cc-daily-consumption.display-mode.legend': `Affichage`,
+  'cc-daily-consumption.empty': `Aucune donnée  à afficher`,
+  'cc-daily-consumption.heading': `Consommation quotidienne`,
+  'cc-daily-consumption.legend.x-axis': ({ date }) => new Date(date).toLocaleString(lang, { month: 'long', year: 'numeric' }),
+  'cc-daily-consumption.long-date': (date) => new Date(date).toLocaleDateString(lang, { year: 'numeric', month: 'long', day: 'numeric' }),
+  'cc-daily-consumption.price': ({ price, currency, digits }) => formatCurrency(lang, price, {
+    currency,
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  }),
+  //#endregion
   //#region cc-datetime-relative
   'cc-datetime-relative.distance': ({ date }) => formatDistanceToNow(date),
   'cc-datetime-relative.title': ({ date }) => formatDate(lang, date),

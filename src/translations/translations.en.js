@@ -206,6 +206,29 @@ export const translations = {
   }),
   'cc-credit-chart.remaining': `Remaining credits`,
   //#endregion
+  //#region cc-daily-consumption
+  'cc-daily-consumption.a11y-table-caption': `Consumption amount per day`,
+  'cc-daily-consumption.a11y-toggle.chart': `Chart`,
+  'cc-daily-consumption.a11y-toggle.table': `Table`,
+  'cc-daily-consumption.desc': () => sanitize`
+    <p>Your daily consumption may vary:</p>
+    <ul>
+      <li>If you stop or delete products.</li>
+      <li>If you create new applications or add-ons.</li>
+      <li>If you have enabled the auto-scalability, your instances may grow or shrink (vertical scalability) or new instances may be created or removed (horizontal scalability) to match the needs.<br>More information on the <a href="https://www.clever-cloud.com/doc/administrate/scalability/">Scalability - Clever Cloud Documentation</a> page.</li>
+    </ul>
+  `,
+  'cc-daily-consumption.display-mode.legend': `Display mode`,
+  'cc-daily-consumption.empty': `No data to display`,
+  'cc-daily-consumption.heading': `Daily consumption`,
+  'cc-daily-consumption.legend.x-axis': ({ date }) => new Date(date).toLocaleString(lang, { month: 'long', year: 'numeric' }),
+  'cc-daily-consumption.long-date': (date) => new Date(date).toLocaleDateString(lang, { year: 'numeric', month: 'long', day: 'numeric' }),
+  'cc-daily-consumption.price': ({ price, currency, digits }) => formatCurrency(lang, price, {
+    currency,
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  }),
+  //#endregion
   //#region cc-datetime-relative
   'cc-datetime-relative.distance': ({ date }) => formatDistanceToNow(date),
   'cc-datetime-relative.title': ({ date }) => formatDate(lang, date),

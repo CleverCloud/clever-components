@@ -107,6 +107,8 @@ interface Currency {
   changeRate: number;
 }
 
+export type ConsumptionCurrency = "EUR" | "USD";
+
 interface Plan {
   productName: string;
   name: string;
