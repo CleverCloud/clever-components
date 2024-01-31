@@ -367,6 +367,29 @@ export const translations = {
   'cc-env-var-linked-services.loading.addon': ({ appName }) => sanitize`Chargement des variables exposées par les add-ons liés à <strong>${appName}</strong>...`,
   'cc-env-var-linked-services.loading.app': ({ appName }) => sanitize`Chargement de la configuration publiée par les applications liées à <strong>${appName}</strong>...`,
   //#endregion
+  //#region cc-free-credits
+  'cc-free-credits.add': `Ajouter un coupon`,
+  'cc-free-credits.empty': `Vous n'avez aucun coupon actif pour cette période.`,
+  'cc-free-credits.error.empty': `Veuillez saisir une valeur de coupon`,
+  'cc-free-credits.input.label': `Coupon`,
+  'cc-free-credits.list.activation-date': () => sanitize`Date d'activation&nbsp;: `,
+  'cc-free-credits.list.amount': () => sanitize`Montant&nbsp;: `,
+  'cc-free-credits.list.expiration-date': () => sanitize`Date d'expiration&nbsp;: `,
+  'cc-free-credits.list.origin': () => sanitize`Origine&nbsp;: `,
+  'cc-free-credits.long-date': (date) => new Date(date).toLocaleDateString(lang, { year: 'numeric', month: 'long', day: 'numeric' }),
+  'cc-free-credits.price': ({ price, currency, digits }) => formatCurrency(lang, price, {
+    currency,
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  }),
+  'cc-free-credits.reason.account-creation': `Crédits de bienvenue`,
+  'cc-free-credits.reason.conference': `Conférence`,
+  'cc-free-credits.table.activation-date': `Date d'activation`,
+  'cc-free-credits.table.amount': `Montant`,
+  'cc-free-credits.table.expiration-date': `Date d'expiration`,
+  'cc-free-credits.table.origin': `Origine`,
+  'cc-free-credits.title': `Crédits offerts`,
+  //#endregion
   //#region cc-grafana-info
   'cc-grafana-info.disable-description': `Désactiver Grafana supprimera et mettra fin aux accès à l'organisation du Grafana. Vous pourrez toujours recréer une nouvelle organisation Grafana.`,
   'cc-grafana-info.disable-title': `Désactiver Grafana`,
