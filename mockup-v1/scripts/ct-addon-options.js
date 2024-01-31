@@ -1,12 +1,16 @@
 import { LitElement, html, css } from 'lit';
-import { iconRemixListSettingsLine as labelIcon } from '../../src/assets/cc-remix.icons.js';
+import {
+  iconRemixListSettingsLine as optionsLabelIcon,
+  iconRemixShieldKeyholeLine as encryptionLabelIcon,
+  iconRemixStackLine as versionLabelIcon,
+} from '../../src/assets/cc-remix.icons.js';
 
 const WORDING = {
-  LABEL: 'Options',
-  VERSION_VALUE: 'Version',
+  VERSION_LABEL: 'Version',
   VERSION_DESC: '',
-  ENCRYPTION_VALUE: 'Encryption at rest',
+  ENCRYPTION_LABEL: 'Encryption at rest',
   ENCRYPTION_DESC: 'Encryption at rest encrypts the entire data disk of your add-on. It prevents reading the stored data in case of a physical access to the hard drive.',
+  OPTIONS_LABEL: 'Options',
   KIBANA_VALUE: 'Kibana',
   KIBANA_DESC: 'Kibana is the admin UI for the Elastic Stack. It lets you visualize your Elasticsearch data and navigate the stack so you can do anything from tracking query load to understanding the way requests flow through your apps.',
   APM_VALUE: 'APM',
@@ -15,7 +19,7 @@ const WORDING = {
 
 const TOGGLE_STRUCT = {
   default: 'true',
-  options: [{ label: 'ON', value: 'true' }, { label: 'OFF', value: 'false' }],
+  options: [{ label: 'On', value: 'true' }, { label: 'Off', value: 'false' }],
 };
 
 export class CtAddonOptions extends LitElement {
@@ -26,28 +30,13 @@ export class CtAddonOptions extends LitElement {
     };
   };
 
-  _renderOptionSelect (label, desc, options, value) {
-    return html`
-      <div class="option option--select">
-        <div class="option--label">
-          <div class="option--value">${label}</div>
-          ${
-            desc
-            ? html`<div class="option--desc">${desc}</div>`
-            : ''
-          }
-        </div>
-        <div class="option--input">
-          <cc-select
-            value="${value}"
-            .options="${options}"
-          ></cc-select>
-        </div>
-      </div>
-    `;
+  willUpdate (_changedProperties) {
+    this.options.forEach((option) => {
+      this._onOptionUpdate(option, (option === 'version' ? this.versions : TOGGLE_STRUCT).default);
+    });
   }
 
-  _renderOptionToggle (label, desc, options, value) {
+  _renderOptionToggle (label, desc, options, value, option) {
     return html`
       <div class="option option--toggle">
         <div class="option--label">
@@ -59,39 +48,69 @@ export class CtAddonOptions extends LitElement {
           }
         </div>
         <div class="option--input">
-          <cc-toggle
-            value="${value}"
-            .choices="${options}"
-          ></cc-toggle>
+          <cc-toggle value="${value}" .choices="${options}" @cc-toggle:input="${(e) => this._onOptionUpdate(option, e.detail)}"></cc-toggle>
         </div>
       </div>
     `;
   }
 
+  _onOptionUpdate (option, val) {
+    const value = (val === 'true' || val === 'false') ? val === 'true' : val;
+    this.dispatchEvent(new CustomEvent('ct-addon-options:option-updated', {
+      detail: { option, value },
+      bubbles: true,
+      composed: true,
+    }));
+  }
+
   render () {
+    const hasVersion = this.options?.includes('version');
+    const hasEncryption = this.options?.includes('encryption');
+    const hasKibana = this.options?.includes('kibana');
+    const hasApm = this.options?.includes('apm');
+    const hasOptions = hasKibana || hasApm;
+    // <cc-select value="${this.versions.default}" .options = '${this.versions.versions}'> < /cc-select>
+
     return html`
-      <ct-label-with-icon .icon="${labelIcon}" .label="${WORDING.LABEL}">
-        <div class="options">
-        ${
-          this.options?.map((option) => {
-            if (option === 'version') {
-              // return this._renderOptionSelect(WORDING.VERSION_VALUE, WORDING.VERSION_DESC, this.versions.versions, this.versions.default);
-              return this._renderOptionToggle(WORDING.VERSION_VALUE, WORDING.VERSION_DESC, this.versions.versions, this.versions.default);
-            }
-            else if (option === 'encryption') {
-              return this._renderOptionToggle(WORDING.ENCRYPTION_VALUE, WORDING.ENCRYPTION_DESC, TOGGLE_STRUCT.options, TOGGLE_STRUCT.default);
-            }
-            else if (option === 'kibana') {
-              return this._renderOptionToggle(WORDING.KIBANA_VALUE, WORDING.KIBANA_DESC, TOGGLE_STRUCT.options, TOGGLE_STRUCT.default);
-            }
-            else if (option === 'apm') {
-              return this._renderOptionToggle(WORDING.APM_VALUE, WORDING.APM_DESC, TOGGLE_STRUCT.options, TOGGLE_STRUCT.default);
-            }
-            return ``;
-          })
-        }
-        </div>
-      </ct-label-with-icon>
+      ${
+        hasVersion
+          ? html`
+            <ct-label-with-icon .icon="${versionLabelIcon}" .label="${WORDING.VERSION_LABEL}">
+              <cc-toggle value="${this.versions.default}" .choices="${this.versions.versions}" @cc-toggle:input="${(e) => this._onOptionUpdate('version', e.detail)}"></cc-toggle>
+            </ct-label-with-icon>
+          `
+          : ``
+      }
+      ${
+        hasEncryption
+          ? html`
+            <ct-label-with-icon .icon="${encryptionLabelIcon}" .label="${WORDING.ENCRYPTION_LABEL}">
+              <div class="subtitle">${WORDING.ENCRYPTION_DESC}</div>
+              <cc-toggle value="${TOGGLE_STRUCT.default}" .choices="${TOGGLE_STRUCT.options}" @cc-toggle:input="${(e) => this._onOptionUpdate('encryption', e.detail)}"></cc-toggle>
+            </ct-label-with-icon>
+          `
+          : ``
+      }
+      ${
+        hasOptions
+          ? html`
+            <ct-label-with-icon .icon="${optionsLabelIcon}" .label="${WORDING.OPTIONS_LABEL}">
+              <div class="options">
+              ${
+                hasKibana
+                  ? this._renderOptionToggle(WORDING.KIBANA_VALUE, WORDING.KIBANA_DESC, TOGGLE_STRUCT.options, TOGGLE_STRUCT.default, 'kibana')
+                  : ``
+              }
+              ${
+                hasApm
+                  ? this._renderOptionToggle(WORDING.APM_VALUE, WORDING.APM_DESC, TOGGLE_STRUCT.options, TOGGLE_STRUCT.default, 'apm')
+                  : ``
+              }
+              </div>
+            </ct-label-with-icon>
+          `
+          : ``
+      }
     `;
   }
 
@@ -99,7 +118,12 @@ export class CtAddonOptions extends LitElement {
     return [
       css`
         :host {
-          display: block;
+          display: contents;
+        }
+        
+        .subtitle {
+          position: relative;
+          top: -0.5em;
         }
 
         .options {
@@ -135,6 +159,9 @@ export class CtAddonOptions extends LitElement {
           position: relative;
           top: -0.35em;
           width: 16em;
+        }
+        cc-toggle {
+          font-size: 1.125em;
         }
       `,
     ];

@@ -1,4 +1,9 @@
 import { LitElement, html, css } from 'lit';
+import { iconRemixStickyNoteLine as labelIcon } from '../../src/assets/cc-remix.icons.js';
+
+const WORDING = {
+  VERSION_LABEL: 'More informations',
+};
 
 export class CtPlanConfigProvider extends LitElement {
   static get properties () {
@@ -8,7 +13,11 @@ export class CtPlanConfigProvider extends LitElement {
 
   render () {
     return html`
-      ct-plan-config-provider
+      <ct-label-with-icon .icon="${labelIcon}" .label="${WORDING.VERSION_LABEL}">
+        <p>This add-on is completely free.</p>
+
+        <p>Learn more about Configuration Provider on our <a href="https://developers.clever-cloud.com/doc/addons/config-provider/" target="_blank">documentation page</a>.</p>
+      </ct-label-with-icon>
     `;
   }
 
@@ -17,6 +26,10 @@ export class CtPlanConfigProvider extends LitElement {
       css`
         :host {
           display: block;
+        }
+
+        p {
+          margin-block: 0.5em;
         }
       `,
     ];

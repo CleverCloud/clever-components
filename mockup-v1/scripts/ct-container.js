@@ -21,6 +21,7 @@ export class CtContainer extends LitElement {
     this.addEventListener('ct-product-name:name-updated', this._onProductNameUpdated);
     this.addEventListener('ct-product-tags:tags-updated', this._onProductTagsUpdated);
     this.addEventListener('ct-zone-picker:zone-updated', this._onZoneUpdated);
+    this.addEventListener('ct-addon-options:option-updated', this._onOptionUpdated);
   }
 
   disconnectedCallback () {
@@ -29,6 +30,7 @@ export class CtContainer extends LitElement {
     this.removeEventListener('ct-product-name:name-updated', this._onProductNameUpdated);
     this.removeEventListener('ct-product-tags:tags-updated', this._onProductTagsUpdated);
     this.removeEventListener('ct-zone-picker:zone-updated', this._onZoneUpdated);
+    this.removeEventListener('ct-addon-options:option-updated', this._onOptionUpdated);
   }
 
   _onProductNameUpdated (e) {
@@ -56,6 +58,14 @@ export class CtContainer extends LitElement {
     this.form = {
       ...this.form,
       plan: e.detail,
+    };
+  }
+
+  _onOptionUpdated (e) {
+    const { option, value } = e.detail;
+    this.form = {
+      ...this.form,
+      [option]: value,
     };
   }
 
