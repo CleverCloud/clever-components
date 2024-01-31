@@ -49,6 +49,7 @@ const sandboxes = [
   'cc-ansi-palette',
   'cc-logs',
   'cc-product-card',
+  'cc-logs-application-view',
 ];
 
 const $listContainer = document.querySelector('.sandboxes-list');
