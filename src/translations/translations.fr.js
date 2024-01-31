@@ -211,6 +211,14 @@ export const translations = {
   //#region cc-button
   'cc-button.cancel': `Cliquez pour annuler`,
   //#endregion
+  //#region cc-credit-chart
+  'cc-credit-chart.price': ({ price, currency, digits }) => formatCurrency(lang, price, {
+    currency,
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  }),
+  'cc-credit-chart.remaining': `Crédits restants`,
+  //#endregion
   //#region cc-datetime-relative
   'cc-datetime-relative.distance': ({ date }) => formatDistanceToNow(date),
   'cc-datetime-relative.title': ({ date }) => formatDate(lang, date),
