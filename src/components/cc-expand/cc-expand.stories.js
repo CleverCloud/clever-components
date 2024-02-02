@@ -2,7 +2,6 @@ import './cc-expand.js';
 import '../cc-toggle/cc-toggle.js';
 import { html, render } from 'lit';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
   title: '🧬 Atoms/<cc-expand>',
@@ -59,5 +58,3 @@ export const defaultStory = makeStory(conf, {
     render(template({ size: 'medium' }), container);
   },
 });
-
-enhanceStoriesNames({ notAStory, defaultStory });

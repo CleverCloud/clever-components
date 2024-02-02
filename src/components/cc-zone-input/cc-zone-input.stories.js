@@ -1,6 +1,5 @@
 import './cc-zone-input.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
   title: '🛠 Zones/<cc-zone-input>',
@@ -133,12 +132,4 @@ export const simulations = makeStory(conf, {
       componentError.error = true;
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  skeleton,
-  dataLoadedWithNoPrivateZones,
-  error,
-  simulations,
 });

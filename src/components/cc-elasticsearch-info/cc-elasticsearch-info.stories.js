@@ -1,6 +1,5 @@
 import './cc-elasticsearch-info.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
   title: '🛠 Addon/<cc-elasticsearch-info>',
@@ -70,19 +69,4 @@ export const simulations = makeStory(conf, {
       componentError.error = true;
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  elasticOnly,
-  elasticAndKibana,
-  elasticAndApm,
-  elasticKibanaAndApm,
-  noLinks,
-  onlyKibana,
-  onlyApm,
-  kibanaAndApm,
-  skeleton,
-  errorStory,
-  simulations,
 });

@@ -1,6 +1,5 @@
 import './cc-header-orga.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
   title: '🛠 Overview/<cc-header-orga>',
@@ -156,18 +155,4 @@ export const simulations = makeStory(conf, {
       componentError.orga = { state: 'error' };
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  skeleton,
-  error,
-  dataLoadedWithClassicClient,
-  dataLoadedWithClassicClientAndSlottedContent,
-  dataLoadedWithClassicClientNoAvatar,
-  dataLoadedWithEnterpriseClient,
-  dataLoadedWithEnterpriseClientEmergencyNumber,
-  dataLoadedWithEnterpriseClientEmergencyNumberAndSlottedContent,
-  dataLoadedWithSlottedContentCustomStyling,
-  simulations,
 });

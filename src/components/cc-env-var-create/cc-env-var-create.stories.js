@@ -1,6 +1,5 @@
 import './cc-env-var-create.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
   title: '🛠 Environment variables/<cc-env-var-create>',
@@ -27,5 +26,3 @@ export const validationWithStrictMode = makeStory(conf, {
 export const disabled = makeStory(conf, {
   items: [{ disabled: true }],
 });
-
-enhanceStoriesNames({ defaultStory, validationWithExistingNames, validationWithStrictMode, disabled });

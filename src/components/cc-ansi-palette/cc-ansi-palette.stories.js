@@ -8,7 +8,6 @@ import nightOwlPalette from '../../lib/ansi/palettes/night-owl.js';
 import oneLightPalette from '../../lib/ansi/palettes/one-light.js';
 import tokyoNightLightPalette from '../../lib/ansi/palettes/tokyo-night-light.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
   title: '🛠 Logs/<cc-ansi-palette>',
@@ -68,13 +67,4 @@ export const withTokyoNightLightPalette = makeStory(conf, {
       palette: tokyoNightLightPalette,
     },
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  withEverblushPalette,
-  withHyoobPalette,
-  withNightOwlPalette,
-  withOneLightPalette,
-  withTokyoNightLightPalette,
 });

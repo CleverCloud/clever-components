@@ -1,7 +1,6 @@
 import './cc-input-date.js';
 import { allFormControlsStory } from '../../stories/all-form-controls.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const baseItems = [
   { label: 'The Label' },
@@ -156,20 +155,4 @@ export const simulation = makeStory(conf, {
       component.focus();
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  required,
-  helpMessage,
-  errorMessage,
-  errorMessageWithHelpMessage,
-  inline,
-  inlineWithRequired,
-  inlineWithErrorAndHelpMessages,
-  minMax,
-  timezone,
-  customWidth,
-  allFormControls,
-  simulation,
 });

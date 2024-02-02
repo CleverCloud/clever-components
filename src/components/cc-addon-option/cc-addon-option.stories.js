@@ -1,6 +1,5 @@
 import { iconRemixShieldKeyholeFill as iconEncryptionAtRest } from '../../assets/cc-remix.icons.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
   title: '🛠 Addon/<cc-addon-option>',
@@ -54,10 +53,4 @@ export const defaultEnabled = makeStory(conf, {
       innerHTML: htmlExample,
     },
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  defaultWithIcon,
-  defaultEnabled,
 });

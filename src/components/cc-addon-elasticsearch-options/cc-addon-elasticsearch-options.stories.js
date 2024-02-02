@@ -1,6 +1,5 @@
 import './cc-addon-elasticsearch-options.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
   title: '🛠 Addon/<cc-addon-elasticsearch-options>',
@@ -76,10 +75,4 @@ export const preselectedKibana = makeStory(conf, {
       ],
     },
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  noFlavorDetailsYet,
-  preselectedKibana,
 });

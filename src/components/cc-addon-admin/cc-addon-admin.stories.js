@@ -1,6 +1,5 @@
 import './cc-addon-admin.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
   title: '🛠 Addon/<cc-addon-admin>',
@@ -40,12 +39,4 @@ export const simulations = makeStory(conf, {
       componentError.error = true;
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  skeleton,
-  saving,
-  errorWithLoading,
-  simulations,
 });

@@ -1,7 +1,6 @@
 import './cc-loader.js';
 import { html, render } from 'lit';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
   title: '🧬 Atoms/<cc-loader>',
@@ -77,13 +76,4 @@ export const accessibleName = makeStory(conf, {
     `;
     render(storyOutput, container);
   },
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  smallContainer,
-  bigContainerWithHorizontallyCentered,
-  bigContainerWithVerticallyCentered,
-  customColor,
-  accessibleName,
 });

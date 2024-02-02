@@ -1,6 +1,5 @@
 import './cc-env-var-linked-services.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const VARIABLES_FULL = [
   { name: 'EMPTY', value: '' },
@@ -227,22 +226,4 @@ export const simulationsWithLinkedApps = makeStory(conf, {
       };
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  loadingWithLinkedAddons,
-  loadingWithLinkedApps,
-  loadedWithSomeLoadingLinkedAddons,
-  loadedWithSomeLoadingLinkedApps,
-  loadedWithEmptyLinkedAddons,
-  loadedWithEmptyLinkedApps,
-  loadedWithLinkedAddons,
-  loadedWithLinkedApps,
-  errorWithLinkedAddons,
-  errorWithOneLinkedAddon,
-  errorWithLinkedApps,
-  errorWithOneLinkedApp,
-  simulationsWithAddons,
-  simulationsWithLinkedApps,
 });

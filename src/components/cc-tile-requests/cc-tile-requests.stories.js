@@ -1,6 +1,5 @@
 import './cc-tile-requests.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const REQUESTS_COUNTS_BIG = [
   596600,
@@ -123,16 +122,4 @@ export const simulationsWithError = makeStory(conf, {
       componentBig.error = true;
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  skeleton,
-  error,
-  empty,
-  dataLoadedWithBigRequests,
-  dataLoadedWithSmallRequests,
-  dataLoadedWithSimilarRequests,
-  simulationsWithData,
-  simulationsWithError,
 });

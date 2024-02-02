@@ -1,6 +1,6 @@
 import './cc-pricing-header.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
+
 import { ZONES } from '../cc-zone-input/cc-zone-input.stories.js';
 
 export default {
@@ -102,12 +102,3 @@ export const simulations = makeStory(conf, {
 // Right now, because of how we're using this component, we don't need:
 // * empty state
 // * error state
-
-enhanceStoriesNames({
-  defaultStory,
-  skeleton,
-  error,
-  dataLoadedWithDollars,
-  dataLoadedWithMinute,
-  simulations,
-});

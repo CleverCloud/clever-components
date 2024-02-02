@@ -1,6 +1,5 @@
 import './cc-header-addon.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const zoneParis = {
   name: 'par',
@@ -91,12 +90,4 @@ export const simulations = makeStory(conf, {
       componentLazy.version = version;
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  skeleton,
-  error,
-  noVersion,
-  simulations,
 });

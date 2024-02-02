@@ -1,6 +1,5 @@
 import './cc-env-var-editor-simple.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const VARIABLES_FULL = [
   { name: 'EMPTY', value: '' },
@@ -60,16 +59,4 @@ export const dataLoadedWithReadonly = makeStory(conf, {
 
 export const dataLoadedWithStrictValidationMode = makeStory(conf, {
   items: [{ state: { type: 'loaded', variables: VARIABLES_FULL, validationMode: 'strict' } }],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  loading,
-  loadingWithReadonly,
-  empty,
-  emptyWithReadonly,
-  dataLoaded,
-  dataLoadedWithDisabled,
-  dataLoadedWithReadonly,
-  dataLoadedWithStrictValidationMode,
 });

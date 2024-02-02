@@ -4,7 +4,7 @@ import '../cc-button/cc-button.js';
 import '../cc-input-number/cc-input-number.js';
 import '../cc-toggle/cc-toggle.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
+
 import { CUSTOM_METADATA_RENDERERS, createFakeLogs } from './fake-logs.js';
 
 export default {
@@ -137,20 +137,4 @@ export const dataLoadedWithAnsiMessageAndStripAnsiActivated = makeStory(conf, {
       stripAnsi: true,
     },
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  dataLoadedWithWrapLines,
-  dataLoadedWithCustomMetadataRenderer,
-  dataLoadedWithHiddenMetadata,
-  dataLoadedWithManyMetadata,
-  dataLoadedWithManyMetadataWithWrapLines,
-  dataLoadedWithNoTimestamp,
-  dataLoadedWithTimestampIsoTimeOnly,
-  dataLoadedWithTimestampShortDateTime,
-  dataLoadedWithTimestampShortTimeOnly,
-  dataLoadedWithTimezoneLocal,
-  dataLoadedWithAnsiMessage,
-  dataLoadedWithAnsiMessageAndStripAnsiActivated,
 });

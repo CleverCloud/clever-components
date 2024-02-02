@@ -1,6 +1,5 @@
 import './cc-invoice.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const defaultNumber = '20210501-1234';
 
@@ -77,13 +76,4 @@ export const simulations = makeStory(conf, {
       componentError.state = { type: 'error', number: '20210501-????' };
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  loading,
-  loadingWithoutInvoiceNumber,
-  error,
-  dataLoaded,
-  simulations,
 });

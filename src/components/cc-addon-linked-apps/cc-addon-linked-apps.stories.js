@@ -1,6 +1,5 @@
 import './cc-addon-linked-apps.smart.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const ZONE_PAR = {
   name: 'par',
@@ -107,14 +106,4 @@ export const simulations = makeStory(conf, {
       componentError.state = { type: 'error' };
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  skeleton,
-  error,
-  empty,
-  dataLoaded,
-  dataLoadedWithLongName,
-  simulations,
 });

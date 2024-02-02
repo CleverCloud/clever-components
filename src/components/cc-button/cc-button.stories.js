@@ -6,7 +6,6 @@ import {
 } from '../../assets/cc-remix.icons.js';
 import { allFormControlsStory } from '../../stories/all-form-controls.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const infoSvg = new URL('../../assets/info.svg', import.meta.url);
 const closeSvg = new URL('../../stories/assets/close.svg', import.meta.url);
@@ -212,24 +211,3 @@ export const waitingAndCircle = makeStory(conf, {
 });
 
 export const allFormControls = allFormControlsStory;
-
-enhanceStoriesNames({
-  modes,
-  outlined,
-  disabled,
-  outlinedAndDisabled,
-  waiting,
-  waitingAndOutlined,
-  delay,
-  delayZero,
-  delayAndOutlined,
-  delayAndDisabled,
-  image,
-  icon,
-  hideText,
-  accessibleName,
-  skeleton,
-  circle,
-  waitingAndCircle,
-  allFormControls,
-});

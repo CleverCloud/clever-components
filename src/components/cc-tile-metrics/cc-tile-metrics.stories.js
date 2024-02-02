@@ -1,7 +1,6 @@
 import './cc-tile-metrics.js';
 import './cc-tile-metrics.smart.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
   title: '🛠 Overview/<cc-tile-metrics>',
@@ -294,23 +293,4 @@ export const simulationsWithError = makeStory(conf, {
       componentBig.metrics = { state: 'error' };
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  skeleton,
-  empty,
-  error,
-  dataLoadedWithHighValues,
-  peaks,
-  linearIncrease,
-  scaleUp,
-  scaleDown,
-  multipleScaleUp,
-  multipleScaleDown,
-  bigScaleUp,
-  bigScaleDown,
-  appDown,
-  simulationsWithData,
-  simulationsWithError,
 });

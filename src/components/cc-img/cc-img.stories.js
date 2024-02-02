@@ -1,6 +1,5 @@
 import './cc-img.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
   title: '🧬 Atoms/<cc-img>',
@@ -97,15 +96,4 @@ export const simulationWithLoadingThenError = makeStory(conf, {
       component.src = 'http://placekitten.com/bad/url';
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  noAccessibleName,
-  imageFitContain,
-  noImage,
-  loading,
-  simulationWithSquareThenOther,
-  simulationWithPortraitThenLandscape,
-  simulationWithLoadingThenError,
 });

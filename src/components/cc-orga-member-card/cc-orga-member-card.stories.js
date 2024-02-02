@@ -1,6 +1,5 @@
 import './cc-orga-member-card.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const baseMember = {
   state: 'loaded',
@@ -222,21 +221,4 @@ export const simulations = makeStory(conf, {
       };
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  dataLoadedWithEditAndDelete,
-  dataLoadedWithNoName,
-  dataLoadedWithNoAvatar,
-  dataLoadedWithLongEmail,
-  dataLoadedWith2faEnabled,
-  dataLoadedWithIsCurrentUser,
-  dataLoadedWithNoNameAndIsCurrentUser,
-  editing,
-  errorWithStateLoaded,
-  errorWithStateEditing,
-  updatingMemberRole,
-  deletingMember,
-  simulations,
 });

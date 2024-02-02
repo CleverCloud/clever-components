@@ -4,7 +4,6 @@ import './cc-env-var-form.smart-config-provider.js';
 import './cc-env-var-form.smart-env-var-addon.js';
 import './cc-env-var-form.smart-exposed-config.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const VARIABLES_FULL = [
   { name: 'EMPTY', value: '' },
@@ -108,25 +107,4 @@ export const simulations = makeStory(conf, {
       componentError.state = { type: 'error' };
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  loading,
-  loadingWithReadonly,
-  empty,
-  emptyWithReadonly,
-  dataLoadedWithNoContext,
-  dataLoadedWithContextEnvVarSimple,
-  dataLoadedWithContextEnvVarAddon,
-  dataLoadedWithContextEnvVar,
-  dataLoadedWithContextExposedConfig,
-  dataLoadedWithContextConfigProvider,
-  dataLoadedWithCustomHeadingAndReadonly,
-  dataLoadedWithRestartButton,
-  dataLoadedWithCustomHeadingAndDescription,
-  dataLoadedWithStrictMode,
-  saving,
-  errorWithLoading,
-  simulations,
 });

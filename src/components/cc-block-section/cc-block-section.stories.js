@@ -3,7 +3,6 @@ import '../cc-input-text/cc-input-text.js';
 import './cc-block-section.js';
 import '../cc-block/cc-block.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
   title: '🧬 Molecules/<cc-block-section>',
@@ -92,10 +91,4 @@ export const infoWithNoInfoColumn = makeStory(conf, {
       </cc-block-section>
     `,
   }],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  infoWithEmptyColumn,
-  infoWithNoInfoColumn,
 });

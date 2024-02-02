@@ -4,7 +4,6 @@ import '../cc-map-marker-dot/cc-map-marker-dot.js';
 import '../cc-zone/cc-zone.js';
 import fakeHeatmapData from '../../stories/fixtures/24-hours-points.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const points = [
   { lat: 48.8, lon: 2.3, city: 'Paris', country: 'France', countryCode: 'fr', state: 'default' },
@@ -198,22 +197,4 @@ export const simulationWithHeatmap = makeStory(conf, {
     heatmapPoints: fakeHeatmapData,
     innerHTML: `Heatmap simulation`,
   }],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  emptyWithLegendInSlot,
-  emptyWithDifferentSizes,
-  emptyWithDifferentCentersAndZooms,
-  emptyWithHeatmap,
-  loading,
-  error,
-  errorWithLoadingIndicator,
-  pointsWithDots,
-  pointsWithServers,
-  pointsWithDotsNoTooltips,
-  simulationWithUpdatesOnSameDot,
-  simulationWithDifferentDots,
-  simulationWithUpdatesOnSameServer,
-  simulationWithHeatmap,
 });

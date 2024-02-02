@@ -2,7 +2,6 @@ import './cc-pricing-estimation.js';
 import { getProductAddon } from '../../stories/fixtures/addon-plans.js';
 import { getProductRuntime } from '../../stories/fixtures/runtime-plans.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
   title: '🛠 pricing/<cc-pricing-estimation>',
@@ -174,17 +173,3 @@ export const dataLoadedWithTemporality30Days1Digit = makeStory(conf, {
 
 // Right now, because of how we're using this component, we don't need:
 // * error state
-
-enhanceStoriesNames({
-  defaultStory,
-  empty,
-  dataLoaded,
-  dataLoadedWithToggle,
-  dataLoadedWithCustomFooter,
-  dataLoadedWithDollars,
-  dataLoadedWithTemporalitySecond7Digits,
-  dataLoadedWithTemporalityMinute5Digits,
-  dataLoadedWithTemporalityHour3Digits,
-  dataLoadedWithTemporalityDay2Digits,
-  dataLoadedWithTemporality30Days1Digit,
-});

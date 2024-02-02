@@ -1,7 +1,7 @@
 import './cc-product-card.js';
 import { html, render } from 'lit';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
+
 import { generateRandomKeywords } from './generate-random-keywords.js';
 
 const ICON_URL = 'https://placekitten.com/202/202';
@@ -228,21 +228,4 @@ export const fakeProductList = makeStory(conf, {
     }
   `,
   dom: (container) => render(renderProducts(PRODUCTS_LIST), container),
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  noKeywords,
-  manyKeywords,
-  keywordsWithAllHidden,
-  longName,
-  longNameWithoutKeywords,
-  longNameWithManyKeywords,
-  longDescription,
-  longDescriptionWithManyKeywords,
-  longDescriptionWithoutKeywords,
-  longDescriptionAndLongName,
-  longDescriptionAndLongNameWithoutKeywords,
-  longDescriptionAndLongNameWithManyKeywords,
-  fakeProductList,
 });

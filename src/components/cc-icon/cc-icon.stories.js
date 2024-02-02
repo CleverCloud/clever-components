@@ -9,7 +9,6 @@ import {
 import './cc-icon.js';
 import '../cc-notice/cc-notice.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 // story
 export default {
@@ -129,14 +128,4 @@ export const cleverIcons = makeStory(conf, {
   dom: (container) => {
     ICONS_LAYOUT_BUILDER(container, cleverIconsModule);
   },
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  size,
-  color,
-  accessibleName,
-  skeleton,
-  remixIcons,
-  cleverIcons,
 });

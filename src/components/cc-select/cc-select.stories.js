@@ -1,7 +1,6 @@
 import './cc-select.js';
 import { allFormControlsStory } from '../../stories/all-form-controls.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const baseOptions = [
   {
@@ -239,18 +238,3 @@ export const simulation = makeStory(conf, {
 });
 
 export const allFormControls = allFormControlsStory;
-
-enhanceStoriesNames({
-  defaultStory,
-  required,
-  disabled,
-  helpMessage,
-  errorMessage,
-  errorMessageWithHelpMessage,
-  inline,
-  inlineWithRequired,
-  inlineWithErrorAndHelpMessages,
-  longContentWihFixedWidth,
-  simulation,
-  allFormControls,
-});

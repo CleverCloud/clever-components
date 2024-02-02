@@ -13,7 +13,6 @@ import {
 } from '../../assets/cc-remix.icons.js';
 import { sanitize } from '../../lib/i18n-sanitize.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const consoleImage = new URL('../../stories/assets/console.png', import.meta.url).href;
 
@@ -262,9 +261,4 @@ export const defaultStory = makeStory(conf, {
 
     refresh();
   },
-});
-
-enhanceStoriesNames({
-  notAStory,
-  defaultStory,
 });

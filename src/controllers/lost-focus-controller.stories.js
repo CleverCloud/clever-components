@@ -1,6 +1,5 @@
 import { css, html, LitElement, render } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
-import { enhanceStoriesNames } from '../stories/lib/story-names.js';
 import { LostFocusController } from './lost-focus-controller.js';
 import docsPage from './lost-focus-controller.md';
 import '../components/cc-button/cc-button.js';
@@ -96,5 +95,3 @@ export const defaultStory = () => {
 
   return storyDom;
 };
-
-enhanceStoriesNames({ defaultStory });

@@ -1,6 +1,6 @@
 import './cc-beta.js';
 import { createStoryItem, makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
+
 import { defaultStory as logsmap } from '../cc-logsmap/cc-logsmap.stories.js';
 import { defaultStory as requests } from '../cc-tile-requests/cc-tile-requests.stories.js';
 import { defaultStory as statusCodes } from '../cc-tile-status-codes/cc-tile-status-codes.stories.js';
@@ -62,5 +62,3 @@ export const withMap = makeStory(conf, {
     { position: 'top-right', fill: true, children: () => [createStoryItem(logsmap)] },
   ],
 });
-
-enhanceStoriesNames({ defaultStory, withTiles, withMap });

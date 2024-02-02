@@ -1,6 +1,5 @@
 import './cc-map-marker-dot.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
   title: '🛠 Maps/<cc-map-marker-dot>',
@@ -53,9 +52,4 @@ export const size = makeStory(conf, {
     { count: 10, style: '--cc-map-marker-dot-size: 18px' },
     { count: 10, style: '--cc-map-marker-dot-size: 20px' },
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  size,
 });

@@ -4,7 +4,6 @@ import {
   iconRemixAlertFill as iconAlert,
 } from '../../assets/cc-remix.icons.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const htmlExample = html`
   <div class="option-details">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed libero risus,
@@ -62,9 +61,4 @@ export const oneOption = makeStory(conf, {
       options: [optionsExamples[0]],
     },
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  oneOption,
 });

@@ -1,6 +1,5 @@
 import './cc-tile-instances.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
   title: '🛠 Overview/<cc-tile-instances>',
@@ -90,15 +89,4 @@ export const simulations = makeStory(conf, {
       component.state = { type: 'loaded', running: [{ flavorName: 'XS', count: 3 }], deploying: [] };
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  loading,
-  error,
-  dataLoadedWithStopped,
-  dataLoadedWithRunning,
-  dataLoadedWithDeploying,
-  dataLoadedWithRunningAndDeploying,
-  simulations,
 });

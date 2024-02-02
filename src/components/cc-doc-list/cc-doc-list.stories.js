@@ -1,6 +1,5 @@
 import './cc-doc-list.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const DOCS_ITEMS = [
   {
@@ -90,13 +89,4 @@ export const simulationsWithFailure = makeStory(conf, {
       component.error = true;
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  skeleton,
-  error,
-  dataLoaded,
-  simulationsWithSuccess,
-  simulationsWithFailure,
 });

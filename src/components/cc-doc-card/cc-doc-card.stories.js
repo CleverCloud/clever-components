@@ -1,6 +1,5 @@
 import './cc-doc-card.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const DEFAULT_CARD = {
   heading: 'ruby',
@@ -56,11 +55,4 @@ export const simulations = makeStory(conf, {
       component.link = DEFAULT_CARD.link;
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  skeleton,
-  dataLoaded,
-  simulations,
 });

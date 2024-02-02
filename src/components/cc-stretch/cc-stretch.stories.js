@@ -2,7 +2,6 @@ import './cc-stretch.js';
 import '../cc-toggle/cc-toggle.js';
 import { html, render } from 'lit';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
   title: '🧬 Atoms/<cc-stretch>',
@@ -224,10 +223,4 @@ export const simulation = makeStory(conf, {
       component.visibleElementId = 'item-3';
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  differentLayouts,
-  simulation,
 });

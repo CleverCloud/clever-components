@@ -39,20 +39,14 @@ Examples:
 * `dataLoadedWithDisabled` => 👍 Data loaded (disabled)
 * `simulationWithFoobarAttribute` => 📈 Simulation (foobar attribute)
 
-To enable this behaviour, you need to call `enhanceStoriesNames({ /* stories */ });` from `stories/lib/story-names.js` at the end of your story file.
-
 Example:
 
 ```js
-import { enhanceStoriesNames } from '../lib/story-names.js';
-
 export const skeleton = () => { /* story code */ };
 export const error = () => { /* story code */ };
 export const empty = () => { /* story code */ };
 export const dataLoaded = () => { /* story code */ };
 export const simulations = () => { /* story code */ };
-
-enhanceStoriesNames({ skeleton, error, empty, dataLoaded, simulations });
 ```
 
 You'll end up with those stories (sorted in alpha order):
@@ -62,6 +56,8 @@ You'll end up with those stories (sorted in alpha order):
 * 🔥 Error
 * 📈 Simulations
 * ⌛ Skeleton (no data yet)
+
+This is done automatically thanks to the `enhanceStoriesName` function within the `.storybook/manager.js` file.
 
 ## Using `makeStory`
 
@@ -193,7 +189,7 @@ export const storyWithItemsAsFunction = makeStory({
 
 ### Override story name
 
-Most of the time, you won't need to specify a custom story name because you will use the `enhanceStoriesNames()` helper function.
+Most of the time, you won't need to specify a custom story name because Storybook will use the `enhanceStoryName()` helper function.
 If you really need to override the story's name, you can do it with the `name` property.
 
 ```js

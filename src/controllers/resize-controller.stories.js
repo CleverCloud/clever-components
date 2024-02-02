@@ -1,6 +1,5 @@
 import '../components/cc-expand/cc-expand.js';
 import { html, css, LitElement } from 'lit';
-import { enhanceStoriesNames } from '../stories/lib/story-names.js';
 import { ResizeController } from './resize-controller.js';
 import docsPage from './resize-controller.md';
 
@@ -322,5 +321,3 @@ export const defaultStory = () => {
 
   return storyDom;
 };
-
-enhanceStoriesNames({ defaultStory });

@@ -1,7 +1,6 @@
 import './cc-tcp-redirection-form.js';
 import './cc-tcp-redirection-form.smart.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
   title: '🛠 TCP Redirections/<cc-tcp-redirection-form>',
@@ -191,18 +190,4 @@ export const simulation = makeStory(conf, {
       };
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  empty,
-  loading,
-  errorWithLoading,
-  dataLoaded,
-  dataLoadedWithContextAdmin,
-  dataLoadedWithContextAdminAndNoRedirections,
-  dataLoadedWithCreatingRedirection,
-  dataLoadedWithDeletingRedirection,
-  dataLoadedWithManyNamespaces,
-  simulation,
 });

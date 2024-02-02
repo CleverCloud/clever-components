@@ -1,6 +1,5 @@
 import './cc-tile-scalability.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const ALL_FLAVORS = {
   pico: { name: 'pico', mem: 256, cpus: 1, gpus: 0, microservice: true },
@@ -97,15 +96,4 @@ export const simulations = makeStory(conf, {
       componentError.error = true;
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  skeleton,
-  error,
-  dataLoadedWithNoAutoScalability,
-  dataLoadedWithHorizontalScalability,
-  dataLoadedWithVerticalScalability,
-  dataLoadedWithHorizontalAndVerticalScalability,
-  simulations,
 });

@@ -1,6 +1,5 @@
 import './cc-matomo-info.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
   title: '🛠 Addon/<cc-matomo-info>',
@@ -39,11 +38,4 @@ export const simulations = makeStory(conf, {
       componentError.error = true;
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  skeleton,
-  errorStory,
-  simulations,
 });
