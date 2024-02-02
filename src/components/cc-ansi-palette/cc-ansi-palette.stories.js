@@ -10,6 +10,7 @@ import tokyoNightLightPalette from '../../lib/ansi/palettes/tokyo-night-light.js
 import { makeStory } from '../../stories/lib/make-story.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Logs/<cc-ansi-palette>',
   component: 'cc-ansi-palette',
 };

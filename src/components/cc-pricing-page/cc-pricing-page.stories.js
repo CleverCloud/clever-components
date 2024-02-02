@@ -19,6 +19,7 @@ import {
 } from '../cc-pricing-product-consumption/cc-pricing-product-consumption.stories.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 pricing/<cc-pricing-page>',
   component: 'cc-pricing-page',
 };

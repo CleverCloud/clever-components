@@ -13,6 +13,7 @@ const VARIABLES_FULL = [
 ];
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Environment variables/<cc-env-var-form>',
   component: 'cc-env-var-form',
 };

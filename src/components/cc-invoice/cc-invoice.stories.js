@@ -26,6 +26,7 @@ const defaultInvoice = {
 };
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Invoices/<cc-invoice>',
   component: 'cc-invoice',
 };

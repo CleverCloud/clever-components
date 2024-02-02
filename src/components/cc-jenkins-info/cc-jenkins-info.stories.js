@@ -2,6 +2,7 @@ import './cc-jenkins-info.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Addon/<cc-jenkins-info>',
   component: 'cc-jenkins-info',
 };

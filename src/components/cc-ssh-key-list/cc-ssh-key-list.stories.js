@@ -34,6 +34,7 @@ const DUMMY_KEY_3 = {
 };
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Profile/<cc-ssh-key-list>',
   component: 'cc-ssh-key-list',
 };

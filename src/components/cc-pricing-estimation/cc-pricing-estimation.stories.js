@@ -4,6 +4,7 @@ import { getProductRuntime } from '../../stories/fixtures/runtime-plans.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 pricing/<cc-pricing-estimation>',
   component: 'cc-pricing-estimation',
 };

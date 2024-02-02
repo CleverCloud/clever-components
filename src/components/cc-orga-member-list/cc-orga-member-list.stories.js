@@ -47,6 +47,7 @@ const authorisationsAdmin = {
 };
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Organisation/<cc-orga-member-list>',
   component: 'cc-orga-member-list',
 };

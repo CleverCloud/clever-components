@@ -8,6 +8,7 @@ import { makeStory } from '../../stories/lib/make-story.js';
 import { CUSTOM_METADATA_RENDERERS, createFakeLogs } from './fake-logs.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🚧 Beta/🛠 Logs/<cc-logs-beta>',
   component: 'cc-logs-beta',
 };

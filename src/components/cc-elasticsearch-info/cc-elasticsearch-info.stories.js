@@ -2,6 +2,7 @@ import './cc-elasticsearch-info.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Addon/<cc-elasticsearch-info>',
   component: 'cc-elasticsearch-info',
 };

@@ -13,6 +13,7 @@ import { defaultStory as scalability } from '../cc-tile-scalability/cc-tile-scal
 import { defaultStory as statusCodes } from '../cc-tile-status-codes/cc-tile-status-codes.stories.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Overview/<cc-overview>',
   component: 'cc-overview',
 };

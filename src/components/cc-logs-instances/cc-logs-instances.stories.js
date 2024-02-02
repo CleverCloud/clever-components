@@ -21,6 +21,7 @@ function getDeploymentDate (sinceDay) {
 }
 
 export default {
+  tags: ['autodocs'],
   title: '🚧 Beta/🛠 Logs/<cc-logs-instances-beta>',
   component: 'cc-logs-instances-beta',
 };

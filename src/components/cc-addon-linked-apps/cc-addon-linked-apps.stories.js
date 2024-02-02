@@ -53,6 +53,7 @@ const linkedApplications = [
 ];
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Addon/<cc-addon-linked-apps>',
   component: 'cc-addon-linked-apps',
 };

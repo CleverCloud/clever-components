@@ -2,6 +2,7 @@ import './cc-zone-input.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Zones/<cc-zone-input>',
   component: 'cc-zone-input',
   excludeStories: ['ZONES'],

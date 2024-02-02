@@ -48,6 +48,7 @@ const ARTICLES = [
 ];
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 homepage/<cc-article-list>',
   component: 'cc-article-list',
 };

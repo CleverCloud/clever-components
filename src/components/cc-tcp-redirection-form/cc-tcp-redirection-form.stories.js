@@ -3,6 +3,7 @@ import './cc-tcp-redirection-form.smart.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 TCP Redirections/<cc-tcp-redirection-form>',
   component: 'cc-tcp-redirection-form',
 };

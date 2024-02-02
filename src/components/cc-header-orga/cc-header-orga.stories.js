@@ -2,6 +2,7 @@ import './cc-header-orga.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Overview/<cc-header-orga>',
   component: 'cc-header-orga',
 };

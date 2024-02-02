@@ -292,6 +292,7 @@ const backupsJenkins = {
 };
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Addon/<cc-addon-backups>',
   component: 'cc-addon-backups',
 };

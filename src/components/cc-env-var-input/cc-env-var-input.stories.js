@@ -2,6 +2,7 @@ import './cc-env-var-input.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Environment variables/<cc-env-var-input>',
   component: 'cc-env-var-input',
 };

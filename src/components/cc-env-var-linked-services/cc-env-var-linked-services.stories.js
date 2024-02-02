@@ -9,6 +9,7 @@ const VARIABLES_FULL = [
 ];
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Environment variables/<cc-env-var-linked-services>',
   component: 'cc-env-var-linked-services',
 };

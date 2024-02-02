@@ -40,6 +40,7 @@ const addonConfig = {
 const version = '11.2';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Addon/<cc-header-addon>',
   component: 'cc-header-addon',
 };

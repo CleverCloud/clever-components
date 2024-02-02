@@ -92,6 +92,7 @@ function renderProducts (products) {
 }
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Creation Tunnel/<cc-product-card>',
   component: 'cc-product-card',
 };

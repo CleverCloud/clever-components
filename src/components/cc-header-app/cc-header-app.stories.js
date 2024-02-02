@@ -23,6 +23,7 @@ const zoneParis = {
 };
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Overview/<cc-header-app>',
   component: 'cc-header-app',
 };

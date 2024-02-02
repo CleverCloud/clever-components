@@ -15,6 +15,7 @@ const secondaryAddresses = [
 ];
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Profile/<cc-email-list>',
   component: 'cc-email-list',
 };

@@ -2,6 +2,7 @@ import './cc-pricing-product-consumption.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 pricing/<cc-pricing-product-consumption>',
   component: 'cc-pricing-product-consumption',
 };

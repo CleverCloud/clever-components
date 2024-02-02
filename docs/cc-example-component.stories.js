@@ -3,6 +3,8 @@ import './cc-example-component.js';
 import { makeStory, storyWait } from '../stories/lib/make-story.js';
 
 export default {
+  // this makes storybook generate a doc from the custom elements manifest
+  tags: ['autodocs'],
   title: '🛠 Example section/<cc-example-component>',
   // This component name is used by Storybook's docs page for the API table.
   // It will use `custom-elements.json` documentation file.

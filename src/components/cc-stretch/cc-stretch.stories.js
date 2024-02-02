@@ -4,6 +4,7 @@ import { html, render } from 'lit';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🧬 Atoms/<cc-stretch>',
   component: 'cc-stretch',
 };

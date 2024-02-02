@@ -6,6 +6,7 @@ import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import { setIntervalDom, setTimeoutDom } from '../../stories/lib/timers.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Maps/<cc-logsmap>',
   component: 'cc-logsmap',
 };

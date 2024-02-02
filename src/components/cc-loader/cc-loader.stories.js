@@ -3,6 +3,7 @@ import { html, render } from 'lit';
 import { makeStory } from '../../stories/lib/make-story.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🧬 Atoms/<cc-loader>',
   component: 'cc-loader',
 };

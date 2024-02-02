@@ -2,6 +2,7 @@ import './cc-heptapod-info.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 SaaS/<cc-heptapod-info>',
   component: 'cc-heptapod-info',
 };

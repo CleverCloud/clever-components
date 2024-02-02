@@ -18,6 +18,7 @@ const longEmail = 'very-very-very-very-very-very-very-very-very-very-very-very-v
 const longName = 'Veryveryveryveryveryveryveryveryvery long name';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Organisation/<cc-orga-member-card>',
   component: 'cc-orga-member-card',
 };

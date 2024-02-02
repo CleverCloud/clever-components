@@ -2,6 +2,7 @@ import './cc-html-frame.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🧬 Atoms/<cc-html-frame>',
   component: 'cc-html-frame',
 };

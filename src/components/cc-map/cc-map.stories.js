@@ -34,6 +34,7 @@ const servers = points.map((p) => {
 });
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Maps/<cc-map>',
   component: 'cc-map',
 };

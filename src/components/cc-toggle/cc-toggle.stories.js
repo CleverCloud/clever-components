@@ -11,6 +11,7 @@ const rightSvg = new URL('../../stories/assets/right.svg', import.meta.url);
 const underlineSvg = new URL('../../stories/assets/underline.svg', import.meta.url);
 
 export default {
+  tags: ['autodocs'],
   title: '🧬 Atoms/<cc-toggle>',
   component: 'cc-toggle',
 };

@@ -55,6 +55,7 @@ const baseItems = [
 ];
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Overview/<cc-tile-requests>',
   component: 'cc-tile-requests',
 };

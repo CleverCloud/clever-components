@@ -25,6 +25,7 @@ function scalability (minFlavor, maxFlavor, minInstances, maxInstances) {
 }
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Overview/<cc-tile-scalability>',
   component: 'cc-tile-scalability',
 };

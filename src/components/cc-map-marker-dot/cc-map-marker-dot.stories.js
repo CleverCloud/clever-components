@@ -2,6 +2,7 @@ import './cc-map-marker-dot.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Maps/<cc-map-marker-dot>',
   component: 'cc-map-marker-dot',
 };

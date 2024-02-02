@@ -6,6 +6,7 @@ import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icon
 import { makeStory } from '../../stories/lib/make-story.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🧬 Molecules/<cc-block>',
   component: 'cc-block',
 };

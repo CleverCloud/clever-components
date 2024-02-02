@@ -9,6 +9,7 @@ const DATA = [
 ];
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Overview/<cc-tile-status-codes>',
   component: 'cc-tile-status-codes',
 };

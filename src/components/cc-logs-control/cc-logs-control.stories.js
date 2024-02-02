@@ -4,6 +4,7 @@ import { makeStory } from '../../stories/lib/make-story.js';
 import { createFakeLogs, CUSTOM_METADATA_RENDERERS } from '../cc-logs/fake-logs.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🚧 Beta/🛠 Logs/<cc-logs-control-beta>',
   component: 'cc-logs-control-beta',
 };

@@ -16,6 +16,7 @@ const MULTIPLE_ICONS_CARD = {
 };
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 homepage/<cc-doc-card>',
   component: 'cc-doc-card',
 };

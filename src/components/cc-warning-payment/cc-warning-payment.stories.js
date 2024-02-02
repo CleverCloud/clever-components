@@ -2,6 +2,7 @@ import './cc-warning-payment.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Notices/<cc-warning-payment>',
   component: 'cc-warning-payment',
 };

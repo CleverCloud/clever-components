@@ -2,6 +2,7 @@ import './cc-notice.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🧬 Atoms/<cc-notice>',
   component: 'cc-notice',
 };

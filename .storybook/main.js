@@ -25,6 +25,12 @@ const config = {
     name: "@storybook/web-components-vite",
     options: {},
   },
+  docs: {
+    // This makes Storybook auto-generate docs for every story with the `autodocs` tag
+    // We could have set this to `true` to auto-generate docs for every story without adding any tag 
+    // but this allows us to create stories with no auto-generated docs if we want to.
+    autodocs: "tag",
+  },
   viteFinal (config, { configType }) {
 
     if (configType === 'DEVELOPMENT') {

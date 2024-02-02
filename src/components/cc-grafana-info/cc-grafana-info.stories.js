@@ -3,6 +3,7 @@ import './cc-grafana-info.smart.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 SaaS/<cc-grafana-info>',
   component: 'cc-grafana-info',
 };

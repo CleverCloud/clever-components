@@ -16,6 +16,7 @@ const fullInvoicesExample = [
 ];
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Invoices/<cc-invoice-list>',
   component: 'cc-invoice-list',
 };

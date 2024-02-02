@@ -17,6 +17,7 @@ const OTHER_ARTICLE = {
 };
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 homepage/<cc-article-card>',
   component: 'cc-article-card',
 };

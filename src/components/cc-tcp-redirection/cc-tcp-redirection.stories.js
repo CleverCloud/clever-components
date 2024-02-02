@@ -13,6 +13,7 @@ const baseItemsWithRedirection = baseItems.map((item, i) => {
 });
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 TCP Redirections/<cc-tcp-redirection>',
   component: 'cc-tcp-redirection',
 };

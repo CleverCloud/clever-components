@@ -10,6 +10,7 @@ const defaultFeatures = [
 ];
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Addon/<cc-addon-features>',
   component: 'cc-addon-features',
 };

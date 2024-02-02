@@ -71,6 +71,7 @@ const tagsItems = [
 ];
 
 export default {
+  tags: ['autodocs'],
   title: '🧬 Atoms/<cc-input-text>',
   component: 'cc-input-text',
 };

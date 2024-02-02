@@ -45,6 +45,7 @@ export const processedInvoices = (year) => [
 ];
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Invoices/<cc-invoice-table>',
   component: 'cc-invoice-table',
   excludeStories: ['pendingInvoices', 'processingInvoices', 'processedInvoices'],

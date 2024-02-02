@@ -2,6 +2,7 @@ import './cc-addon-admin.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Addon/<cc-addon-admin>',
   component: 'cc-addon-admin',
 };

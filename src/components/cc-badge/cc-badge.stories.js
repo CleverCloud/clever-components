@@ -107,6 +107,7 @@ const circleItems = [
 ];
 
 export default {
+  tags: ['autodocs'],
   title: '🧬 Atoms/<cc-badge>',
   component: 'cc-badge',
 };

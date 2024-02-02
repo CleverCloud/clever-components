@@ -17,6 +17,7 @@ import { makeStory } from '../../stories/lib/make-story.js';
 const consoleImage = new URL('../../stories/assets/console.png', import.meta.url).href;
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Toast/<cc-toaster>',
   component: 'cc-toaster',
 };

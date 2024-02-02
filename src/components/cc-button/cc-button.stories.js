@@ -21,6 +21,7 @@ const baseItems = [
 ];
 
 export default {
+  tags: ['autodocs'],
   title: '🧬 Atoms/<cc-button>',
   component: 'cc-button',
 };

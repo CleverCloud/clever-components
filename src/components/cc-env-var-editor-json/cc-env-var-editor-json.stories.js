@@ -17,6 +17,7 @@ const VARIABLES_SIMPLE = [
 ];
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Environment variables/<cc-env-var-editor-json>',
   component: 'cc-env-var-editor-json',
 };

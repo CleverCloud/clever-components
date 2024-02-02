@@ -24,6 +24,7 @@ const baseOptions = [
 const longContent = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eget tempor leo, eu vulputate lectus. Sed rhoncus rhoncus mi nec tempor. Pellentesque id elit aliquet, laoreet mi nec, cursus metus. Integer iaculis nibh non massa dignissim dictum.';
 
 export default {
+  tags: ['autodocs'],
   title: '🧬 Atoms/<cc-select>',
   component: 'cc-select',
 };

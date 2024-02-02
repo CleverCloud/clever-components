@@ -6,6 +6,7 @@ import { defaultStory as requests } from '../cc-tile-requests/cc-tile-requests.s
 import { defaultStory as statusCodes } from '../cc-tile-status-codes/cc-tile-status-codes.stories.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🧬 Atoms/<cc-beta>',
   component: 'cc-beta',
 };

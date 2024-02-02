@@ -68,6 +68,7 @@ const fakeProductPlans = [
 ];
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 pricing/<cc-pricing-product>',
   component: 'cc-pricing-product',
 };

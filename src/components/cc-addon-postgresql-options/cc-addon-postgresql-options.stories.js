@@ -2,6 +2,7 @@ import './cc-addon-postgresql-options.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Addon/<cc-addon-postgresql-options>',
   component: 'cc-addon-postgresql-options',
 };

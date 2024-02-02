@@ -8,6 +8,7 @@ import {
 import { makeStory } from '../../stories/lib/make-story.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🧬 Atoms/<cc-popover>',
   component: 'cc-popover',
 };

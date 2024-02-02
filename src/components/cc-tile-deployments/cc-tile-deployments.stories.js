@@ -13,6 +13,7 @@ function deploymentInfo (state, action, dateAgoParams, uuid) {
 }
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Overview/<cc-tile-deployments>',
   component: 'cc-tile-deployments',
 };

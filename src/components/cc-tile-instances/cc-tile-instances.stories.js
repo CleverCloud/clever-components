@@ -2,6 +2,7 @@ import './cc-tile-instances.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Overview/<cc-tile-instances>',
   component: 'cc-tile-instances',
 };

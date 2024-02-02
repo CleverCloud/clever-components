@@ -41,6 +41,7 @@ const DOCS_ITEMS = [
 ];
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 homepage/<cc-doc-list>',
   component: 'cc-doc-list',
 };

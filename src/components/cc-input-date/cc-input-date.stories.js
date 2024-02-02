@@ -23,6 +23,7 @@ const minMaxItems = [
 ];
 
 export default {
+  tags: ['autodocs'],
   title: '🧬 Atoms/<cc-input-date>',
   component: 'cc-input-date',
 };

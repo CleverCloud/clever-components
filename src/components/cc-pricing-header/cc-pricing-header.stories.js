@@ -4,6 +4,7 @@ import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import { ZONES } from '../cc-zone-input/cc-zone-input.stories.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 pricing/<cc-pricing-header>',
   component: 'cc-pricing-header',
 };

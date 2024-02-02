@@ -12,6 +12,7 @@ import { makeStory } from '../../stories/lib/make-story.js';
 
 // story
 export default {
+  tags: ['autodocs'],
   title: '🧬 Atoms/<cc-icon>',
   component: 'cc-icon',
 };

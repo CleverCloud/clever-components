@@ -18,6 +18,7 @@ const htmlExample = html`
 `;
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Addon/<cc-addon-option-form>',
   component: 'cc-addon-option-form',
 };

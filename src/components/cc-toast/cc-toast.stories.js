@@ -3,6 +3,7 @@ import { sanitize } from '../../lib/i18n-sanitize.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Toast/<cc-toast>',
   component: 'cc-toast',
 };
