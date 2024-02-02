@@ -1,8 +1,8 @@
 import { css, html, LitElement, render } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { LostFocusController } from './lost-focus-controller.js';
-import docsPage from './lost-focus-controller.md';
 import '../components/cc-button/cc-button.js';
+import docsPage from './lost-focus-controller.md';
 
 class MyList extends LitElement {
   static get properties () {
@@ -62,7 +62,12 @@ window.customElements.define('my-list', MyList);
 
 export default {
   title: '🕹️ Controllers/LostFocusController',
-  parameters: { docs: { page: docsPage.parameters.docs.page } },
+  tags: ['autodocs'],
+  parameters: {
+    docs: {
+      page: docsPage.parameters.docs.page,
+    },
+  },
 };
 
 export const defaultStory = () => {

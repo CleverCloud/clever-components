@@ -6,7 +6,12 @@ import docsPage from './cc-link.md';
 
 export default {
   title: '♻️ Templates/ccLink()',
-  parameters: { docs: { page: docsPage.parameters.docs.page } },
+  tags: ['autodocs'],
+  parameters: {
+    docs: {
+      page: docsPage.parameters.docs.page,
+    },
+  },
 };
 
 const conf = {

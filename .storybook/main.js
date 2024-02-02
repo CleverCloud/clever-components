@@ -9,8 +9,8 @@ const config = {
     '../README.md',
     // The Markdown documents inside docs (excluding "example" components)
     '../docs/**/!(*example*).md',
-    // The regular component CSF stories
-    '../src/components/**/*.stories.js',
+    // The regular CSF stories
+    '../src/**/*.stories.js',
     // The smart component Markdown docs
     '../src/**/*smart*.md',
   ],

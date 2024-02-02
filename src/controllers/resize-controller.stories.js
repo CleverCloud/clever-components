@@ -215,7 +215,12 @@ window.customElements.define('demo-container', DemoContainer);
 
 export default {
   title: '🕹️ Controllers/ResizeController',
-  parameters: { docs: { page: docsPage.parameters.docs.page } },
+  tags: ['autodocs'],
+  parameters: {
+    docs: {
+      page: docsPage.parameters.docs.page,
+    },
+  },
 };
 
 export const defaultStory = () => {
