@@ -1,38 +1,35 @@
 import './cc-invoice.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { fetchInvoice, fetchInvoiceHtml } from '../../lib/api-helpers.js';
-import { defineSmartComponentWithObservables } from '../../lib/define-smart-component-with-observables.js';
-import { LastPromise, unsubscribeWithSignal } from '../../lib/observables.js';
+import { defineSmartComponent } from '../../lib/define-smart-component.js';
 
-defineSmartComponentWithObservables({
+defineSmartComponent({
   selector: 'cc-invoice',
   params: {
     apiConfig: { type: Object },
     ownerId: { type: String },
     invoiceNumber: { type: String },
   },
-  onConnect (container, component, context$, disconnectSignal) {
+  onContextUpdate ({ component, context, onEvent, updateComponent, signal }) {
+    const { apiConfig, ownerId, invoiceNumber } = context;
 
-    const invoice_lp = new LastPromise();
+    updateComponent('state', { type: 'loading', number: invoiceNumber });
 
-    unsubscribeWithSignal(disconnectSignal, [
-
-      invoice_lp.error$.subscribe(console.error),
-      invoice_lp.error$.subscribe(() => (component.error = true)),
-      invoice_lp.value$.subscribe((invoice) => (component.invoice = invoice)),
-
-      context$.subscribe(({ apiConfig, ownerId, invoiceNumber }) => {
-
-        component.error = false;
-        component.number = invoiceNumber;
-        component.invoice = null;
-
-        if (apiConfig != null && ownerId != null && invoiceNumber != null) {
-          invoice_lp.push((signal) => fetchFullInvoice({ apiConfig, signal, ownerId, invoiceNumber }));
-        }
-      }),
-
-    ]);
+    fetchFullInvoice({ apiConfig, signal, ownerId, invoiceNumber })
+      .then((invoice) => {
+        updateComponent('state', {
+          type: 'loaded',
+          number: invoiceNumber,
+          downloadUrl: invoice.downloadUrl,
+          emissionDate: invoice.emissionDate,
+          amount: invoice.total.amount,
+          invoiceHtml: invoice.invoiceHtml,
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        updateComponent('state', { type: 'error', number: invoiceNumber });
+      });
   },
 });
 
