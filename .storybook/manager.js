@@ -18,6 +18,12 @@ const cleverTheme = create({
 addons.setConfig({
   theme: cleverTheme,
   sidebar: {
+    collapsedRoots: [
+      '📖-guidelines',
+      '🖋-copywriting',
+      '👋-contributing',
+      '📌-architecture-decision-records',
+    ],
     renderLabel: ({ name, type }) => type === 'story' ? enhanceStoryName(name) : name,
   },
 });

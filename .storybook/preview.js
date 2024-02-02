@@ -27,6 +27,53 @@ const availableLanguages = Object
 /** @type { import('@storybook/web-components').Preview } */
 const preview = {
   parameters: {
+    options: {
+      storySort: {
+        method: 'alphabetical',
+        order: [
+          'Readme',
+          '🏡 Getting Started',
+          [
+            'Breaking down',
+            'Use via CDN',
+            'Install via NPM',
+            'Manual installation',
+            'Accessibility',
+            'Design tokens',
+            'Smart components',
+            'Notification system',
+            'Breaking change policy',
+            'Browser support',
+            'Changelog',
+          ],
+          '📖 Guidelines',
+          '🖋 Copywriting',
+          '👋 Contributing',
+          [
+            'Contribute',
+            'Web Components guidelines',
+            'Smart Component guidelines',
+            'Quick accessibility reminders',
+            'Tasks',
+            'Translate and localize',
+            'Writing stories',
+            'Test',
+            'Previews',
+            'Release',
+            'Browser support',
+            'Tools',
+            'Resources',
+          ],
+          '📌 Architecture Decision Records',
+          '🧬 Atoms',
+          '🧬 Molecules',
+          '*',
+          '🚧 Beta',
+          '🕹️ Controllers',
+          '♻️ Templates',
+        ]
+      },
+    },
     viewport: { viewports },
   },
   globalTypes: {
