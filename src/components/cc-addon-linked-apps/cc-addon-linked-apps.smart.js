@@ -3,39 +3,29 @@ import '../cc-smart-container/cc-smart-container.js';
 import { getLinkedApplications } from '@clevercloud/client/esm/api/v2/addon.js';
 import { getAllZones } from '@clevercloud/client/esm/api/v4/product.js';
 import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
-import { defineSmartComponentWithObservables } from '../../lib/define-smart-component-with-observables.js';
-import { LastPromise, unsubscribeWithSignal } from '../../lib/observables.js';
+import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 
-defineSmartComponentWithObservables({
+defineSmartComponent({
   selector: 'cc-addon-linked-apps',
   params: {
     apiConfig: { type: Object },
     ownerId: { type: String },
     addonId: { type: String },
   },
-  onConnect (container, component, context$, disconnectSignal) {
+  onContextUpdate ({ context, updateComponent, signal }) {
+    updateComponent('state', { type: 'loading' });
 
-    const applications_lp = new LastPromise();
+    const { apiConfig, ownerId, addonId } = context;
 
-    unsubscribeWithSignal(disconnectSignal, [
-
-      applications_lp.error$.subscribe(console.error),
-      applications_lp.error$.subscribe(() => (component.error = true)),
-      applications_lp.value$.subscribe((applications) => (component.applications = applications)),
-
-      context$.subscribe(({ apiConfig, ownerId, addonId }) => {
-
-        component.error = false;
-        component.applications = null;
-
-        if (apiConfig != null && ownerId != null && addonId != null) {
-          applications_lp.push((signal) => fetchApplications({ apiConfig, signal, ownerId, addonId }));
-        }
-
-      }),
-
-    ]);
+    fetchApplications({ apiConfig, ownerId, addonId, signal })
+      .then((linkedApplications) => {
+        updateComponent('state', { type: 'loaded', linkedApplications });
+      })
+      .catch((error) => {
+        console.error(error);
+        updateComponent('state', { type: 'error' });
+      });
   },
 });
 
@@ -48,9 +38,11 @@ function fetchApplications ({ apiConfig, signal, ownerId, addonId }) {
     .then(([zones, applications]) => {
       return applications.map((app) => {
         const { name, instance } = app;
+        const variantName = instance.variant?.name;
+        const variantLogoUrl = instance.variant?.logo;
         const link = getApplicationLink(ownerId, app.id);
         const zone = zones.find((z) => z.name === app.zone);
-        return { name, link, instance, zone };
+        return { name, link, variantName, variantLogoUrl, zone };
       });
     });
 }
