@@ -1,10 +1,18 @@
 import generateCem from '../cem/generate-cem-vite-plugin.js';
+import { rollupMdToCsfPlugin } from '../src/stories/lib/markdown-to-csf.js';
+import { markdownIndexer } from '../src/stories/lib/markdown-indexer.js';
 
 /** @type {import('@storybook/web-components-vite').StorybookConfig} */
 const config = {
   stories: [
+    // The Top level Markdown documents
+    '../README.md',
+    // The Markdown documents inside docs (excluding "example" components)
+    '../docs/**/!(*example*).md',
     // The regular component CSF stories
     '../src/components/**/*.stories.js',
+    // The smart component Markdown docs
+    '../src/**/*smart*.md',
   ],
   staticDirs: [
     {
@@ -31,7 +39,13 @@ const config = {
     // but this allows us to create stories with no auto-generated docs if we want to.
     autodocs: "tag",
   },
+  // index markdown stories so they can be part of the generated menu and lazy loaded
+  experimental_indexers: async (existingIndexers) => {
+    return [markdownIndexer, ...existingIndexers]
+  },
   viteFinal (config, { configType }) {
+    // transform markdown files to CSF so they can be loaded by storybook
+    config.plugins?.unshift(rollupMdToCsfPlugin());
 
     if (configType === 'DEVELOPMENT') {
       // generate CEM on demand and serve it
