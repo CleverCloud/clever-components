@@ -39,17 +39,17 @@ interface OrgaMemberCardStateDeleting extends OrgaMember {
 /*endregion*/
 
 /*region Event payloads*/
-interface ToggleEditing {
+export interface ToggleEditing {
   memberId: string;
   newState: 'editing' | 'loaded';
 }
 
-interface Authorisations {
+export interface Authorisations {
   edit: boolean;
   delete: boolean;
 }
 
-interface UpdateMember extends OrgaMemberCardStateEditing {
+export interface UpdateMember extends OrgaMemberCardStateEditing {
   newRole: OrgaMemberRole;
 }
 /*endregion*/

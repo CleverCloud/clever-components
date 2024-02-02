@@ -1,4 +1,4 @@
-interface Deployment {
+export interface Deployment {
   state: string;
   action: string;
   date: string;

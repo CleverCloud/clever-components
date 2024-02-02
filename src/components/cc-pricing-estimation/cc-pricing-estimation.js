@@ -45,6 +45,7 @@ const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
  * @typedef {import('../common.types.js').Currency} Currency
  * @typedef {import('../common.types.js').Plan} Plan
  * @typedef {import('../common.types.js').Temporality} Temporality
+ * @typedef {import('../common.types.js').Feature} Feature
  */
 
 /**
@@ -165,7 +166,7 @@ export class CcPricingEstimation extends LitElement {
   /**
    * Returns the formatted value corresponding to a feature
    *
-   * @param {feature} feature - the feature to get the formatted value from
+   * @param {Feature} feature - the feature to get the formatted value from
    * @return {string} the formatted value for the given feature or the feature value itself if it does not require any formatting
    */
   _getFeatureValue (feature) {

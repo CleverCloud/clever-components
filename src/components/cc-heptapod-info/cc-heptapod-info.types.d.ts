@@ -1,4 +1,4 @@
-interface Statistics {
+export interface Statistics {
   privateActiveUsers: number;
   publicActiveUsers: number;
   storage: number;

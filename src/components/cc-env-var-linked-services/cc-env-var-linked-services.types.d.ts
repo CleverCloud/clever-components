@@ -1,4 +1,4 @@
-type EnvType = "addon" | "app";
+export type EnvType = "addon" | "app";
 
 
 

@@ -28,6 +28,7 @@ const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
 /**
  * @typedef {import('../common.types.js').Currency} Currency
  * @typedef {import('../common.types.js').Temporality} Temporality
+ * @typedef {import('../common.types.js').Zone} Zone
  * @typedef {import('./cc-pricing-header.types.js').PricingZoneState} PricingZoneState
  */
 

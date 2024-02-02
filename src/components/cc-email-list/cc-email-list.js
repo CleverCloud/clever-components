@@ -38,6 +38,8 @@ const SKELETON_SECONDARY_EMAILS = [];
 /**
  * @typedef {import('./cc-email-list.types.js').EmailListState} EmailListState
  * @typedef {import('./cc-email-list.types.js').AddEmailFormState} AddEmailFormState
+ * @typedef {import('./cc-email-list.types.js').SecondaryAddressState} SecondaryAddressState
+ * @typedef {import('./cc-email-list.types.js').PrimaryAddressState} PrimaryAddressState
  */
 
 /**

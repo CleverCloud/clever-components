@@ -38,7 +38,7 @@ export interface InviteMember {
   role: string,
 }
 
-interface Authorisations {
+export interface Authorisations {
   invite: boolean;
   edit: boolean;
   delete: boolean;

@@ -9,6 +9,7 @@ import { i18n } from '../../lib/i18n.js';
  * @typedef {import('../common.types.js').HeatmapPoint} HeatmapPoint
  * @typedef {import('../common.types.js').MapModeType} MapModeType
  * @typedef {import('../common.types.js').Point} Point
+ * @typedef {import('./cc-logsmap.types.js').PointsOptions} PointsOptions
  */
 
 /**

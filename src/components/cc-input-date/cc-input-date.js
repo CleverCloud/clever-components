@@ -82,6 +82,9 @@ function invalid (code) {
 /**
  * @typedef {import('../../lib/date/date.types.js').Timezone} Timezone
  * @typedef {import('./cc-input-date.types.js').InputDateValueState} InputDateValueState
+ * @typedef {import('./cc-input-date.types.js').InputDateValueStateValid} InputDateValueStateValid
+ * @typedef {import('./cc-input-date.types.js').InputDateValueStateNaD} InputDateValueStateNaD
+ * @typedef {import('./cc-input-date.types.js').InputDateValueStateEmpty} InputDateValueStateEmpty
  */
 
 /**

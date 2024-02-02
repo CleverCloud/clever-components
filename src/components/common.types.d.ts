@@ -6,7 +6,7 @@ export interface App {
   lastDeploymentLogsUrl?: string; // URL to the logs for the last deployment if app is not brand new
 }
 
-interface Addon {
+export interface Addon {
   id: string;
   realId: string;
   name: string;
@@ -24,7 +24,7 @@ interface AddonProvider {
   logoUrl: string;
 }
 
-interface AddonOption {
+export interface AddonOption {
   name: string;
   enabled: boolean;
   icon?: IconModel;
@@ -35,7 +35,7 @@ interface AddonOption {
   encryption?: boolean;
 }
 
-interface Scalability {
+export interface Scalability {
   minFlavor: Flavor;
   maxFlavor: Flavor;
   minInstances: number;
@@ -65,7 +65,7 @@ interface InvoiceAmount {
   currency: string;
 }
 
-interface Invoice {
+export interface Invoice {
   downloadUrl: string;
   emissionDate: string;
   invoiceHtml: string;
@@ -80,15 +80,15 @@ type InvoiceStatusType = "PENDING" | "PROCESSING" | "PAID" | "PAYMENTHELD" | "CA
 
 type InvoiceType = "INVOICE" | "CREDITNOTE";
 
-interface HeatmapPoint {
+export interface HeatmapPoint {
   lat: number;   // Latitude
   lon: number;   // Longitude
   count: number; // Number of occurences for this location
 }
 
-type MapModeType = "points" | "heatmap";
+export type MapModeType = "points" | "heatmap";
 
-interface Point {
+export interface Point {
   lat: number;             // Latitude
   lon: number;             // Longitude
   count?: number;          // Number of occurences for this location (default: 1)
@@ -102,12 +102,12 @@ interface Marker {
   // Additional specific properties for the marker custom element.
 }
 
-interface Currency {
+export interface Currency {
   code: string;
   changeRate: number;
 }
 
-interface Plan {
+export interface Plan {
   productName: string;
   name: string;
   price: number; // price in euros for 1 hour
@@ -115,7 +115,7 @@ interface Plan {
   quantity: number;
 }
 
-interface Feature {
+export interface Feature {
   code: "connection-limit" | "cpu" | "databases" | "disk-size" | "gpu" | "has-logs" | "has-metrics" | "max-db-size" | "memory" | "version";
   type: "boolean" | "shared" | "bytes" | "number" | "runtime" | "string";
   value?: number | string; // Only required for a plan feature
@@ -137,9 +137,9 @@ interface PricingInterval {
 
 type SectionType = "inbound-traffic" | "outbound-traffic" | "storage" | "private-users" | "public-users";
 
-type ActionType = "add" | "none";
+export type ActionType = "add" | "none";
 
-interface Temporality {
+export interface Temporality {
   type: "second" | "minute" | "hour" | "day" | "30-days";
   digits: number; // how many fraction digits to display the price
 }
@@ -153,7 +153,7 @@ interface Redirection {
   sourcePort: number;
 }
 
-interface Zone {
+export interface Zone {
   countryCode: string;   // ISO 3166-1 alpha-2 code of the country (2 letters): "FR", "CA", "US"...
   city: string;          // Name of the city in english: "Paris", "Montreal", "New York City"...
   country: string;       // Name of the country in english: "France", "Canada", "United States"...
@@ -161,9 +161,9 @@ interface Zone {
   tags: string[];        // Array of strings for semantic tags: ["region:eu", "infra:clever-cloud"], ["scope:private"]...
 }
 
-type ToggleStateType = 'off' | 'open' | 'close';
+export type ToggleStateType = 'off' | 'open' | 'close';
 
-interface Application {
+export interface Application {
   name: string;
   link: string;
   instance: Instance;
@@ -175,25 +175,25 @@ interface Instance {
   count: number;
 }
 
-interface InstancesState {
+export interface InstancesState {
   running: Instance[];
   deploying: Instance[];
 }
 
-type AppStatus = "restart-failed" | "restarting" | "restarting-with-downtime"
+export type AppStatus = "restart-failed" | "restarting" | "restarting-with-downtime"
   | "running" | "start-failed" | "starting" | "stopped" | "unknown";
 
-interface ParseError {
+export interface ParseError {
   line?: number;
   msg: string;
   isWarning: Boolean;
 }
 
-interface ParserOptions {
+export interface ParserOptions {
   mode: string;
 }
 
-interface Service {
+export interface Service {
   name: string;
   variables?: Variable[];
 }

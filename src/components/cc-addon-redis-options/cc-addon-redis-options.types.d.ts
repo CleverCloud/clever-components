@@ -1,3 +1,4 @@
+// TODO: Option & Flavor are not used, also, GenericOptions is used by another component so we could move it to common types
 interface Option {
   name: string;
   enabled: boolean;
@@ -15,6 +16,6 @@ interface Flavor {
   monthlyCost: number;
 }
 
-interface GenericOptions {
+export interface GenericOptions {
   encryption: boolean;
 }

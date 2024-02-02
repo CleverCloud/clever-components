@@ -1,10 +1,10 @@
-interface BackupDetails {
+export interface BackupDetails {
   providerId: string;
   passwordForCommand: string;
   list: Backup[];
 }
 
-interface Backup {
+export interface Backup {
   createdAt: Date;
   expiresAt: Date
   url: string;
@@ -12,4 +12,4 @@ interface Backup {
   deleteCommand?: string;
 }
 
-type OverlayType = "restore" | "delete";
+export type OverlayType = "restore" | "delete";

@@ -106,7 +106,7 @@ export class CcOrgaMemberList extends LitElement {
   /**
    * Check if the given member is the last admin of the organisation.
    *
-   * @param {OrgaMemberState} member - the member to check
+   * @param {OrgaMemberCardState} member - the member to check
    * @return {boolean} - true if the given member is an admin and there is only one admin left in the organisation
    */
   isLastAdmin (member) {

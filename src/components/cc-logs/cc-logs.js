@@ -69,6 +69,7 @@ class TemporaryFunctionDisabler {
  * @typedef {import('./cc-logs.types.js').Log} Log
  * @typedef {import('./cc-logs.types.js').MetadataFilter} MetadataFilter
  * @typedef {import('./cc-logs.types.js').MetadataRenderer} MetadataRenderer
+ * @typedef {import('./cc-logs.types.js').MetadataRendering} MetadataRendering
  * @typedef {import('./date-display.types.js').DateDisplay} DateDisplay
  * @typedef {import('../../lib/date/date.types.js').Timezone} Timezone
  */

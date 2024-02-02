@@ -1,5 +1,5 @@
-type GrafanaErrorType = "loading" | "link-grafana" | false;
+export type GrafanaErrorType = "loading" | "link-grafana" | false;
 
-type GrafanaStatusType = "enabled" | "disabled" | null;
+export type GrafanaStatusType = "enabled" | "disabled" | null;
 
-type GrafanaWaitingType = "resetting" | "disabling" | "enabling" | false;
+export type GrafanaWaitingType = "resetting" | "disabling" | "enabling" | false;

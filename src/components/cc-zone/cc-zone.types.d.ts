@@ -1,1 +1,1 @@
-type ZoneModeType = "default" | "small" | "small-infra";
+export type ZoneModeType = "default" | "small" | "small-infra";

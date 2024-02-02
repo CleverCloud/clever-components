@@ -21,11 +21,11 @@ interface EmailList {
   secondaryAddresses: SecondaryAddressState[];
 }
 
-interface PrimaryAddressState extends EmailAddress {
+export interface PrimaryAddressState extends EmailAddress {
   state: "idle" | "sending-confirmation-email";
 }
 
-interface SecondaryAddressState extends EmailAddress {
+export interface SecondaryAddressState extends EmailAddress {
   state: "idle" | "marking-as-primary" | "deleting";
 }
 

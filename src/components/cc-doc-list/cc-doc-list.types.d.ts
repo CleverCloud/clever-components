@@ -1,4 +1,4 @@
-interface Documentation {
+export interface Documentation {
   desc: string;
   icons: string[];
   link: string;

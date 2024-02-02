@@ -1,4 +1,4 @@
-interface AddonFeature {
+export interface AddonFeature {
   name: string;
   value: string;
 }

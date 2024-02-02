@@ -45,6 +45,8 @@ const ICONS = {
  * @typedef {import('../common.types.js').Plan} Plan
  * @typedef {import('./cc-pricing-product-consumption.types.js').PricingProductConsumptionState} PricingProductConsumptionState
  * @typedef {import('./cc-pricing-product-consumption.types.js').SectionStates} SectionStates
+ * @typedef {import('../common.types.js').SectionType} SectionType
+ * @typedef {import('../common.types.js').PricingSection} PricingSection
  */
 
 /**
@@ -189,7 +191,7 @@ export class CcPricingProductConsumption extends LitElement {
   /**
    * Returns the localized interval price depending on the given section type.
    *
-   * @param {SectionPrice} type - the section type related to the interval price to process
+   * @param {SectionType} type - the section type related to the interval price to process
    * @param {number} intervalPrice - the interval price to localize
    */
   _getIntervalPrice (type, intervalPrice) {
