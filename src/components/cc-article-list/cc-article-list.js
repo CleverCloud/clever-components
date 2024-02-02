@@ -1,12 +1,12 @@
-import { css, html, LitElement } from 'lit';
-import { i18n } from '../../lib/i18n.js';
 import '../cc-article-card/cc-article-card.js';
 import '../cc-notice/cc-notice.js';
+import { css, html, LitElement } from 'lit';
+import { i18n } from '../../lib/i18n.js';
 
 const ARTICLE_SKELETON_NUMBER = 9;
 
 /**
- * @typedef {import('./cc-article-list.types.js').Article} Article
+ * @typedef {import('./cc-article-list.types.js').ArticleListState} ArticleListState
  */
 
 /**
@@ -18,37 +18,33 @@ export class CcArticleList extends LitElement {
 
   static get properties () {
     return {
-      articles: { type: Array },
-      error: { type: Boolean },
+      state: { type: Object },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {Article[]} Sets an array that contains for each element an object with the content of a card article. */
-    this.articles = null;
-
-    /** @type {boolean} Displays an error message. */
-    this.error = false;
+    /** @type {ArticleListState} Sets the articles list state. */
+    this.state = { type: 'loading' };
   }
 
   render () {
 
-    const skeleton = (this.articles == null);
-
     return html`
       <div class="article-container">
-        ${this.error ? html`
+        ${this.state.type === 'error' ? html`
           <cc-notice intent="warning" message="${i18n('cc-article-list.error')}"></cc-notice>
         ` : ''}
-        ${skeleton && !this.error ? html`
+        
+        ${this.state.type === 'loading' ? html`
           ${new Array(ARTICLE_SKELETON_NUMBER).fill(html`
             <cc-article-card></cc-article-card>
           `)}
         ` : ''}
-        ${!skeleton && !this.error ? html`
-          ${this.articles.map((article) => html`
+        
+        ${this.state.type === 'loaded' ? html`
+          ${this.state.articles.map((article) => html`
             <cc-article-card
               banner=${article.banner}
               title=${article.title ?? ''}
