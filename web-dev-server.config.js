@@ -63,6 +63,7 @@ const injectAuthForSmartComponentsPlugin = {
   async transform (context) {
 
     const {
+      WARP_10_HOST,
       API_HOST,
       API_OAUTH_TOKEN,
       API_OAUTH_TOKEN_SECRET,
@@ -79,6 +80,7 @@ const injectAuthForSmartComponentsPlugin = {
 
         updateRootContext({
           apiConfig: {
+            WARP_10_HOST: '${WARP_10_HOST}',
             API_HOST: '${API_HOST}',
             API_OAUTH_TOKEN: '${API_OAUTH_TOKEN}',
             API_OAUTH_TOKEN_SECRET: '${API_OAUTH_TOKEN_SECRET}',
@@ -95,6 +97,7 @@ const injectAuthForSmartComponentsPlugin = {
       context.body += `
         updateRootContext({
           apiConfig: {
+            WARP_10_HOST: '${WARP_10_HOST}',
             API_HOST: '${API_HOST}',
             API_OAUTH_TOKEN: '${API_OAUTH_TOKEN}',
             API_OAUTH_TOKEN_SECRET: '${API_OAUTH_TOKEN_SECRET}',

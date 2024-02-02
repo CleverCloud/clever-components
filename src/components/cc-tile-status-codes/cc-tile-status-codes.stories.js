@@ -26,26 +26,26 @@ const conf = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [{ statusCodes: DATA[0] }],
+  items: [{ state: { type: 'loaded', statusCodes: DATA[0] } }],
 });
 
-export const skeleton = makeStory(conf, {
-  items: [{}],
+export const loading = makeStory(conf, {
+  items: [{ state: { type: 'loading' } }],
 });
 
 export const error = makeStory(conf, {
-  items: [{ error: true }],
+  items: [{ state: { type: 'error' } }],
 });
 
 export const empty = makeStory(conf, {
-  items: [{ statusCodes: [] }],
+  items: [{ state: { type: 'loaded', statusCodes: [] } }],
 });
 
 export const dataLoaded = makeStory(conf, {
   items: [
-    { statusCodes: DATA[0] },
-    { statusCodes: DATA[1] },
-    { statusCodes: DATA[2] },
+    { state: { type: 'loaded', statusCodes: DATA[0] } },
+    { state: { type: 'loaded', statusCodes: DATA[1] } },
+    { state: { type: 'loaded', statusCodes: DATA[2] } },
   ],
 });
 
@@ -53,10 +53,10 @@ export const simulations = makeStory(conf, {
   items: [{}, {}],
   simulations: [
     storyWait(2000, ([component, componentError]) => {
-      component.statusCodes = DATA[0];
-      componentError.error = true;
+      component.state = { type: 'loaded', statusCodes: DATA[0] };
+      componentError.state = { type: 'error' };
     }),
   ],
 });
 
-enhanceStoriesNames({ defaultStory, skeleton, error, empty, dataLoaded, simulations });
+enhanceStoriesNames({ defaultStory, loading, error, empty, dataLoaded, simulations });
