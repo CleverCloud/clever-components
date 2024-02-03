@@ -1,6 +1,7 @@
 import generateCem from '../cem/generate-cem-vite-plugin.js';
 import { rollupMdToCsfPlugin } from '../src/stories/lib/markdown-to-csf.js';
 import { markdownIndexer } from '../src/stories/lib/markdown-indexer.js';
+import { injectAuthForSmartComponentsPlugin } from '../src/stories/lib/smart-auth-plugin.js';
 
 /** @type {import('@storybook/web-components-vite').StorybookConfig} */
 const config = {
@@ -53,6 +54,9 @@ const config = {
 
       // generate CEM on demand and serve it
       config.plugins?.push(generateCem());
+
+      // add apiConfig to the smart container roots within markdown smart stories
+      config.plugins?.push(injectAuthForSmartComponentsPlugin);
     }
 
     return config;
