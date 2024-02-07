@@ -20,7 +20,7 @@ window.addEventListener('cc:notify', (event) => {
 addTranslations(lang, translations);
 setLanguage(lang);
 
-setTimeout(() => {
+document.onload = () => {
   const form = document.querySelector('form');
   if (form != null) {
     form.addEventListener('submit', () => {
@@ -40,4 +40,4 @@ setTimeout(() => {
       dataElement.innerHTML = `<pre slot="message">${formDataStr}</pre>`;
     });
   }
-}, 0);
+};
