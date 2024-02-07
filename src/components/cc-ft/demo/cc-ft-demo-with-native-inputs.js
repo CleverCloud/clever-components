@@ -41,20 +41,14 @@ export class CcFtDemoWithNativeInputs extends LitElement {
       : null;
   }
 
-  // TODO: we only provide an invalid event and no valid event so right now the only way to remove error messages if everything went well is to use the submit event
-  // TODO: tackle this by dispatching a `valid` event
-  _onSubmit (e) {
-    e.preventDefault();
-
-    if (e.target.checkValidity()) {
-      this._checkboxError = null;
-      this._radioError = null;
-    }
+  _onValid () {
+    this._checkboxError = null;
+    this._radioError = null;
   }
 
   render () {
     return html`
-      <form ${formSubmit(formSubmitHandler(this, { checkbox: validateCheckboxGroup }))} @form:invalid=${this._onInvalid} @submit=${this._onSubmit}>
+      <form ${formSubmit(formSubmitHandler(this, { checkbox: validateCheckboxGroup }))} @form:invalid=${this._onInvalid} @form:valid=${this._onValid}>
         <label for="name">Name:</label><input id="name" type="text" required name="name" />
         
         <label for="color">Favorite Color:</label> <select required name="color" >
