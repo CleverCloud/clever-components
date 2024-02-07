@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="/src/styles/default-theme.css">
+  <link rel="stylesheet" href="../common/styles.css">
+  <title>Validation</title>
+</head>
+<body>
+
+<div class="main">
+  <form novalidate>
+    <div class="native">
+      <label for="native">native-input</label>
+      <input type="text" id="native" name="native-input" required>
+    </div>
+
+    <div>
+      <cc-simple-input-text label="simple-input" name="simple-input" required></cc-simple-input-text>
+    </div>
+
+    <div>
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+</div>
+
+<script type="module">
+  import '../common/common.js';
+  import './cc-simple-input-text-element-internals.js';
+  import { notifyError, notifySuccess } from '../../../../lib/notifications.js';
+
+  const form = document.querySelector('form');
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(form);
+
+    if (form.checkValidity()) {
+      notifySuccess('Form is valid');
+    }
+    else {
+      notifyError('Form is not valid');
+
+      if (formData.get('simple-input') === '') {
+        simpleInput.innerHTML = '<span slot="error">Please enter value!</span>';
+      } else {
+        simpleInput.innerHTML = '';
+      }
+    }
+  });
+</script>
+</body>
+</html>

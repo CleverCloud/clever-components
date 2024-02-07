@@ -1,0 +1,51 @@
+html, body {
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  gap: 5em;
+  margin: 0;
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  width: 35%;
+  gap: 2em;
+  padding: 2em;
+  border: 1px solid #012a51;
+  border-radius: 1em;
+}
+
+.native {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+cc-toaster {
+  position: fixed;
+  top: 1em;
+  right: 1em;
+}
+
+pre {
+  color: #404040;
+  margin: 0;
+  padding: 0;
+}
+
+pre:empty {
+  display: none;
+}

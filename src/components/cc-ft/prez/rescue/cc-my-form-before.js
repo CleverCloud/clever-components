@@ -4,21 +4,9 @@ import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { defineSmartComponent } from '../../../lib/define-smart-component.js';
 import { dispatchCustomEvent } from '../../../lib/events.js';
+import { notifySuccess } from '../../../lib/notifications.js';
 
-function validateName (string) {
-  return string == null || string.length === 0 ? 'empty' : null;
-}
-
-function validateEmailAddress (address) {
-  if (address == null || address === '') {
-    return 'empty';
-  }
-  if (!address.match(/^\S+@\S+\.\S+$/gm)) {
-    return 'invalid-email';
-  }
-
-  return null;
-}
+// -- COMPONENT ---
 
 export class CcMyForm extends LitElement {
   static get properties () {
@@ -132,6 +120,23 @@ export class CcMyForm extends LitElement {
 
 window.customElements.define('cc-my-form', CcMyForm);
 
+// -- VALIDATION ---
+
+function validateName (string) {
+  return string == null || string.length === 0 ? 'empty' : null;
+}
+
+function validateEmailAddress (address) {
+  if (address == null || address === '') {
+    return 'empty';
+  }
+  if (!address.match(/^\S+@\S+\.\S+$/gm)) {
+    return 'invalid-email';
+  }
+
+  return null;
+}
+
 // -- SMART COMPONENT ---
 
 defineSmartComponent({
@@ -156,6 +161,7 @@ defineSmartComponent({
             name: { value: '' },
             email: { value: '' },
           });
+          notifySuccess('Record added');
         })
         .catch((error) => {
           if (error.message === 'email-used') {

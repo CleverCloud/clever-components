@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { dispatchCustomEvent } from '../../../lib/events.js';
+import { dispatchCustomEvent } from '../../../../lib/events.js';
 
 export class CcSimpleInputText extends LitElement {
   static get properties () {
@@ -10,10 +10,6 @@ export class CcSimpleInputText extends LitElement {
       name: { type: String },
       value: { type: String },
     };
-  }
-
-  static get formAssociated () {
-    return true;
   }
 
   constructor () {
@@ -26,8 +22,6 @@ export class CcSimpleInputText extends LitElement {
 
     /** @type {Ref<HTMLInputElement>} */
     this._inputRef = createRef();
-    /** @type {ElementInternals} */
-    this._internals = this.attachInternals();
   }
 
   focus (options) {
@@ -37,16 +31,6 @@ export class CcSimpleInputText extends LitElement {
   _onInput (e) {
     this.value = e.target.value;
     dispatchCustomEvent(this, 'input', this.value);
-  }
-
-  willUpdate (changedProperties) {
-    if (changedProperties.has('value')) {
-      this._internals.setFormValue(this.value);
-    }
-  }
-
-  formAssociatedCallback (form) {
-    console.log(form);
   }
 
   render () {
@@ -78,7 +62,7 @@ export class CcSimpleInputText extends LitElement {
       slot[name='error']::slotted(*) {
         color: var(--cc-color-text-danger);
       }
-
+      
       .wrapper {
         display: flex;
         flex-direction: column;
