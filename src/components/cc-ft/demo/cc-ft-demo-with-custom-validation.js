@@ -53,22 +53,13 @@ export class CcFtDemoWithCustomValidation extends LitElement {
       : null;
   }
 
-  // TODO: we only provide an invalid event and no valid event so right now the only way to remove error messages if everything went well is to use the submit event
-  _onSubmit (e) {
-    e.preventDefault();
-    const form = e.target;
-    if (form.checkValidity()) {
-      // TODO: this fails in some cases: the submit handler runs after this handler, meaning checkValidity has not been set yet
-      // this highlights two things:
-      // - we need a valid event
-      // - for custom validation, we update the validity on submit instead of onInput which does not match what we do in our components + what is done in native
-      this._surnameError = null;
-    }
+  _onValid () {
+    this._surnameError = null;
   }
 
   render () {
     return html`
-      <form name="my-form" ${formSubmit(formSubmitHandler(this, { surname: customValidationForNativeInput }))} @form:invalid=${this._onInvalid} @submit=${this._onSubmit}>
+      <form name="my-form" ${formSubmit(formSubmitHandler(this, { surname: customValidationForNativeInput }))} @form:invalid=${this._onInvalid} @form:valid=${this._onValid}>
         <cc-input-text label="Name" required name="name" .customValidator=${this._customValidator}></cc-input-text>
         <label for="input">Surname (native input)</label>
         <input type="text" required name="surname" aria-describedby="error-surname" />
