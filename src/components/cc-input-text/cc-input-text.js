@@ -271,6 +271,8 @@ export class CcInputText extends LitElement {
           valueMissing: validationResult.code === 'empty',
           badInput: validationResult.code === 'badEmail',
         },
+        // todo: this won't work when the i18n returns a DocumentFragment!
+        //       does this mean that we have no choice but to put the error code instead?
         validator.getErrorMessage(validationResult.code),
         this._inputRef.value,
       );
@@ -280,19 +282,24 @@ export class CcInputText extends LitElement {
   }
 
   set customValidator (customValidator) {
+    // todo: the validation process should be done when the customValidator changes.
+    //       should this be a reactive property?
     this._customValidator = customValidator;
   }
 
   set customErrorMessages (fn) {
+    // todo: we should modify the validity to reflect this new error message function
     this._customErrorMessages = fn;
   }
 
   /* region native compatibility */
   checkValidity () {
+    // todo: should we call this.validate(false) instead ?
     return this._internals.checkValidity();
   }
 
   reportValidity () {
+    // todo: should we call this.validate(true) instead ?
     return this._internals.reportValidity();
   }
 
@@ -301,6 +308,8 @@ export class CcInputText extends LitElement {
   }
 
   get validationMessage () {
+    // todo: should this return the this._errorMessage ?
+    //       and how should we handle the fact that this._errorMessage can be DocumentFragment?
     return this._internals.validationMessage;
   }
 
