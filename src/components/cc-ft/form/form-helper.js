@@ -2,10 +2,10 @@ import { dispatchCustomEvent } from '../../../lib/events.js';
 import { invalid } from '../validation/validation.js';
 
 export function formHelper (host, formName) {
-  const formElement = host.shadowRoot.querySelector(`form[name=${formName}]`);
+  const formElement = host.shadowRoot.querySelector(formName != null ? `form[name=${formName}]` : 'form');
 
   if (formElement == null) {
-    throw new Error(`Could not find form element with name ${formName}`);
+    throw new Error(formName != null ? `Could not find <form> element with name ${formName}` : `Could not find <form> element`);
   }
 
   const errorsMap = new Map();
@@ -34,6 +34,7 @@ export function formHelper (host, formName) {
       });
     },
     reportErrors () {
+      console.log('report', errorsMap);
       // nothing to do if no errors
       if (errorsMap.size === 0) {
         return;
