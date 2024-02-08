@@ -17,27 +17,126 @@ const addon = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [{ addon }],
+  items: [{
+    state: {
+      type: 'loaded',
+      name: addon.name,
+      tags: addon.tags,
+    },
+  }],
 });
 
 export const skeleton = makeStory(conf, {
-  items: [{}],
+  items: [{
+    state: {
+      type: 'loading',
+    },
+  }],
 });
 
-export const saving = makeStory(conf, {
-  items: [{ addon, saving: true }],
+export const waitingWithUpdatingName = makeStory(conf, {
+  items: [{
+    state: {
+      type: 'updatingName',
+      name: addon.name,
+      tags: addon.tags,
+    },
+  }],
 });
 
+export const waitingWithUpdatingTags = makeStory(conf, {
+  items: [{
+    state: {
+      type: 'updatingTags',
+      name: addon.name,
+      tags: addon.tags,
+    },
+  }],
+});
+
+export const waitingWithDeleting = makeStory(conf, {
+  items: [{
+    state: {
+      type: 'deleting',
+      name: addon.name,
+      tags: addon.tags,
+    },
+  }],
+});
 export const errorWithLoading = makeStory(conf, {
-  items: [{ error: true }],
+  items: [{
+    state: {
+      type: 'error',
+    },
+  }],
 });
 
 export const simulations = makeStory(conf, {
   items: [{}, {}],
   simulations: [
     storyWait(2000, ([component, componentError]) => {
-      component.addon = addon;
-      componentError.error = true;
+      component.state = {
+        type: 'loaded',
+        name: addon.name,
+        tags: addon.tags,
+      };
+      componentError.state = { type: 'error' };
+    }),
+    storyWait(1000, ([component, componentError]) => {
+      component.state = {
+        type: 'loaded',
+        name: 'My new Addon Name',
+        tags: addon.tags,
+      };
+      componentError.state = { type: 'error' };
+    }),
+    storyWait(1000, ([component, componentError]) => {
+      component.state = {
+        type: 'updatingName',
+        name: 'My new Addon Name',
+        tags: addon.tags,
+      };
+      componentError.state = { type: 'error' };
+    }),
+    storyWait(1000, ([component, componentError]) => {
+      component.state = {
+        type: 'loaded',
+        name: 'My new Addon Name',
+        tags: addon.tags,
+      };
+      componentError.state = { type: 'error' };
+    }),
+    storyWait(1000, ([component, componentError]) => {
+      component.state = {
+        type: 'loaded',
+        name: 'My new Addon Name',
+        tags: [...addon.tags, 'new-tag'],
+      };
+      componentError.state = { type: 'error' };
+    }),
+    storyWait(1000, ([component, componentError]) => {
+      component.state = {
+        type: 'updatingTags',
+        name: 'My new Addon Name',
+        tags: [...addon.tags, 'new-tag'],
+      };
+      componentError.state = { type: 'error' };
+    }),
+    storyWait(1000, ([component, componentError]) => {
+      component.state = {
+        type: 'loaded',
+        name: 'My new Addon Name',
+        tags: [...addon.tags, 'new-tag'],
+      };
+      componentError.state = { type: 'error' };
+    }),
+    storyWait(1000, ([component, componentError]) => {
+      component.state = {
+        type: 'deleting',
+        name: 'My new Addon Name',
+        tags: [...addon.tags, 'new-tag'],
+      };
+      componentError.state = { type: 'error' };
     }),
   ],
 });

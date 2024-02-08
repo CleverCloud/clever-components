@@ -8,16 +8,15 @@ import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 
 /**
- * @typedef {import('../common.types.js').Addon} Addon
+ * @typedef {import('./cc-addon-admin.types.js').AddonAdminState} AddonAdminState
+ * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateLoaded} AddonAdminStateLoaded
+ * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateLoading} AddonAdminStateLoading
+ * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateSaving} AddonAdminStateSaving
+ * @typedef {import('lit').PropertyValues<CcAddonAdmin>} CcAddonAdminPropertyValues
  */
 
 /**
  * A component displaying the admin interface of an add-on to edit its name or delete the add-on.
- *
- * ## Details
- *
- * * When addon is nullish, a skeleton screen UI pattern is displayed (loading hint).
- *
  *
  * @cssdisplay block
  *
@@ -29,37 +28,30 @@ export class CcAddonAdmin extends LitElement {
 
   static get properties () {
     return {
-      addon: { type: Object },
-      error: { type: Boolean },
-      saving: { type: Boolean },
+      state: { type: Object },
       _name: { type: String, state: true },
-      _skeleton: { type: Boolean, state: true },
-      _tags: { type: Array, state: true },
+      _tags: { type: String, state: true },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {Addon|null} Sets the add-on details (name and tags). */
-    this.addon = null;
+    /** @type {AddonAdminState} Sets the state of the component */
+    this.state = {
+      type: 'loading',
+    };
 
-    /** @type {boolean} Sets the error state on the component. */
-    this.error = false;
+    /** @type {string|null} Sets the value of the `name` input field */
+    this._name = null;
 
-    /** @type {boolean} Enables the saving state */
-    this.saving = false;
-
-    /** @type {string} */
-    this._name = '';
-
-    /** @type {boolean} */
-    this._skeleton = false;
-
-    /** @type {string[]} */
-    this._tags = [];
+    /** @type {string[]|null} Sets the value of the `tags` input field */
+    this._tags = null;
   }
 
+  /**
+   * @param {{ detail: string }} custom event payload
+   */
   _onNameInput ({ detail: name }) {
     this._name = name;
   }
@@ -68,6 +60,9 @@ export class CcAddonAdmin extends LitElement {
     dispatchCustomEvent(this, 'update-name', { name: this._name });
   }
 
+  /**
+   * @param {{ detail: string[] }} custom event payload
+   */
   _onTagsInput ({ detail: tags }) {
     this._tags = tags;
   }
@@ -84,38 +79,64 @@ export class CcAddonAdmin extends LitElement {
     this.error = false;
   }
 
+  /**
+   * @param {CcAddonAdminPropertyValues} changedProperties
+   */
   willUpdate (changedProperties) {
-
-    if (changedProperties.has('addon')) {
-      this._skeleton = (this.addon == null);
-      this._name = this._skeleton ? '' : this.addon.name;
-      this._tags = this._skeleton ? [] : this.addon.tags;
+    if (changedProperties.has('state') && (this.state.type === 'loaded' || this.state.type === 'updatingName' || this.state.type === 'updatingTags' || this.state.type === 'deleting')) {
+      this._name = this.state.name;
+      this._tags = this.state.tags;
     }
   }
 
   render () {
-
-    const isFormDisabled = this.error || this.saving;
-    const loadingError = (this.error && !this.saving) || (this.error && this.addon == null);
-
     return html`
       <cc-block>
         <div slot="title">${i18n('cc-addon-admin.admin')}</div>
 
-        ${!loadingError ? html`
+        ${this.state.type === 'error' ? html`
+          <cc-notice intent="warning" message="${i18n('cc-addon-admin.error-loading')}"></cc-notice>
+        ` : ''}
+
+        ${this.state.type === 'loading' ? this._renderContent(this.state) : ''}
+
+        ${this.state.type === 'loaded' || this.state.type === 'deleting' || this.state.type === 'updatingName' || this.state.type === 'updatingTags'
+          ? this._renderContent(this.state)
+          : ''
+        }
+
+      </cc-block>
+    `;
+  }
+
+  /**
+   * @param {AddonAdminStateLoading|AddonAdminStateLoaded|AddonAdminStateSaving} state
+   */
+  _renderContent (state) {
+    const isSkeleton = state.type === 'loading';
+    const isSaving = state.type === 'updatingTags' || state.type === 'updatingName' || state.type === 'deleting';
+    const isFormDisabled = state.type === 'loading' || isSaving;
+
+    return html`
           <cc-block-section>
             <div slot="title">${i18n('cc-addon-admin.heading.name')}</div>
             <div slot="info"></div>
             <div class="one-line-form">
               <cc-input-text
                 label="${i18n('cc-addon-admin.input.name')}"
-                ?skeleton=${this._skeleton}
+                ?skeleton=${isSkeleton}
                 ?disabled=${isFormDisabled}
                 .value=${this._name}
                 @cc-input-text:input=${this._onNameInput}
                 @cc-input-text:requestimplicitsubmit=${this._onNameSubmit}
               ></cc-input-text>
-              <cc-button primary ?skeleton=${this._skeleton} ?disabled=${isFormDisabled} @cc-button:click=${this._onNameSubmit}>${i18n('cc-addon-admin.update')}</cc-button>
+              <cc-button 
+                primary 
+                ?skeleton=${isSkeleton} 
+                ?disabled=${isFormDisabled} 
+                ?waiting=${state.type === 'updatingName'}
+                @cc-button:click=${this._onNameSubmit}
+              >${i18n('cc-addon-admin.update')}</cc-button>
             </div>
           </cc-block-section>
 
@@ -125,14 +146,20 @@ export class CcAddonAdmin extends LitElement {
             <div class="one-line-form">
               <cc-input-text
                 label="${i18n('cc-addon-admin.input.tags')}"
-                ?skeleton=${this._skeleton}
+                ?skeleton=${isSkeleton}
                 ?disabled=${isFormDisabled}
                 .tags=${this._tags}
                 placeholder="${i18n('cc-addon-admin.tags-empty')}"
                 @cc-input-text:tags=${this._onTagsInput}
                 @cc-input-text:requestimplicitsubmit=${this._onTagsSubmit}
               ></cc-input-text>
-              <cc-button primary ?skeleton=${this._skeleton} ?disabled=${isFormDisabled} @cc-button:click=${this._onTagsSubmit}>${i18n('cc-addon-admin.tags-update')}</cc-button>
+              <cc-button 
+                primary
+                ?skeleton=${isSkeleton}
+                ?disabled=${isFormDisabled}
+                ?waiting=${state.type === 'updatingTags'}
+                @cc-button:click=${this._onTagsSubmit}
+              >${i18n('cc-addon-admin.tags-update')}</cc-button>
             </div>
           </cc-block-section>
 
@@ -140,15 +167,15 @@ export class CcAddonAdmin extends LitElement {
             <div slot="title" class="danger">${i18n('cc-addon-admin.danger-zone')}</div>
             <div slot="info">${i18n('cc-addon-admin.delete-description')}</div>
             <div>
-              <cc-button danger ?skeleton=${this._skeleton} ?disabled=${isFormDisabled} @cc-button:click=${this._onDeleteSubmit}>${i18n('cc-addon-admin.delete')}</cc-button>
+              <cc-button
+                danger 
+                ?skeleton=${isSkeleton} 
+                ?disabled=${isFormDisabled} 
+                ?waiting=${state.type === 'deleting'}
+                @cc-button:click=${this._onDeleteSubmit}
+              >${i18n('cc-addon-admin.delete')}</cc-button>
             </div>
           </cc-block-section>
-        ` : ''}
-
-        ${loadingError ? html`
-          <cc-notice intent="warning" message="${i18n('cc-addon-admin.error-loading')}"></cc-notice>
-        ` : ''}
-      </cc-block>
     `;
   }
 
