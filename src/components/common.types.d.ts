@@ -6,7 +6,7 @@ export interface App {
   lastDeploymentLogsUrl?: string; // URL to the logs for the last deployment if app is not brand new
 }
 
-interface Addon {
+export interface Addon {
   id: string;
   realId: string;
   name: string;
