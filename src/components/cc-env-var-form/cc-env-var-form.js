@@ -205,8 +205,27 @@ export class CcEnvVarForm extends LitElement {
   }
 
   willUpdate (changedProperties) {
-    if (changedProperties.has('context') && this.context === 'env-var-addon') {
-      this.readonly = true;
+
+    if (changedProperties.has('context') || changedProperties.has('addonName') || changedProperties.has('appName')) {
+      if (this.context === 'env-var') {
+        this.heading = i18n('cc-env-var-form.heading.env-var');
+        this._description = i18n('cc-env-var-form.description.env-var', { appName: this.appName });
+      }
+      if (this.context === 'env-var-simple') {
+        this.heading = i18n('cc-env-var-form.heading.env-var');
+      }
+      if (this.context === 'env-var-addon') {
+        this.heading = i18n('cc-env-var-form.heading.env-var');
+        this.readonly = true;
+      }
+      if (this.context === 'exposed-config') {
+        this.heading = i18n('cc-env-var-form.heading.exposed-config');
+        this._description = i18n('cc-env-var-form.description.exposed-config', { appName: this.appName });
+      }
+      if (this.context === 'config-provider') {
+        this.heading = i18n('cc-env-var-form.heading.config-provider');
+        this._description = i18n('cc-env-var-form.description.config-provider', { addonName: this.addonName });
+      }
     }
 
     if (changedProperties.has('state') && this.state.type === 'loaded') {
@@ -244,20 +263,22 @@ export class CcEnvVarForm extends LitElement {
     return html`
       <div class="header">
 
-        ${heading != null ? html`
-          <div class="heading">${heading}</div>
+        ${this.heading != null ? html`
+          <div class="heading">${this.heading}</div>
         ` : ''}
 
-        <cc-toggle
-          class="mode-switcher ${classMap({ 'has-overlay': hasOverlay })}"
-          value=${this._mode}
-          .choices=${this._getModes()}
-          ?disabled=${isEditorDisabled}
-          @cc-toggle:input=${this._onToggleMode}
-        ></cc-toggle>
+        ${!this.error ? html`
+          <cc-toggle
+            class="mode-switcher ${classMap({ 'has-overlay': hasOverlay })}"
+            value=${this._mode}
+            .choices=${this._getModes()}
+            ?disabled=${isEditorDisabled}
+            @cc-toggle:input=${this._onToggleMode}
+          ></cc-toggle>
+        ` : ''}
       </div>
 
-      <slot class="description">${defaultDescription}</slot>
+      <slot class="description">${this._description}</slot>
 
       <div class="overlay-container">
 
