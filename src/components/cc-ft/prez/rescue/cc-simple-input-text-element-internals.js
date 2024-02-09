@@ -39,6 +39,12 @@ export class CcSimpleInputText extends LitElement {
     dispatchCustomEvent(this, 'input', this.value);
   }
 
+  _onKeydown (e) {
+    if (e.key === 'Enter') {
+      this._internals.form.requestSubmit();
+    }
+  }
+
   willUpdate (changedProperties) {
     if (changedProperties.has('value')) {
       this._internals.setFormValue(this.value);
@@ -62,6 +68,7 @@ export class CcSimpleInputText extends LitElement {
           ?disabled=${this.disabled}
           spellcheck="false"
           @input=${this._onInput}
+          @keydown=${this._onKeydown}
         >
         <slot name="error"></slot>
       </div>
