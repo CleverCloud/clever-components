@@ -11,7 +11,7 @@ export class CcSimpleInputText extends LitElement {
       name: { type: String },
       value: { type: String },
       required: { type: Boolean },
-      _errorMessage: { type: String, state: true },
+      errorMessage: { type: String, state: true },
     };
   }
 
@@ -28,7 +28,7 @@ export class CcSimpleInputText extends LitElement {
     this.value = '';
     this.required = false;
 
-    this._errorMessage = null;
+    this.errorMessage = null;
 
     /** @type {Ref<HTMLInputElement>} */
     this._inputRef = createRef();
@@ -50,7 +50,7 @@ export class CcSimpleInputText extends LitElement {
    * @return {Validation}
    */
   validate (report) {
-    const validator = new RequiredValidator(this.required);
+    const validator = new RequiredValidator(this.required, this._customValidator);
     const validation = validator.validate(this.value);
 
     if (!validation.valid) {
@@ -61,18 +61,28 @@ export class CcSimpleInputText extends LitElement {
       );
 
       if (report) {
-        this._errorMessage = validator.getErrorMessage(validation.code);
+        this.errorMessage = validator.getErrorMessage(validation.code);
       }
     }
     else {
       this._internals.setValidity({});
 
       if (report) {
-        this._errorMessage = null;
+        this.errorMessage = null;
       }
     }
 
     return validation;
+  }
+
+  set customValidator (validator) {
+    this._customValidator = validator;
+  }
+
+  formResetCallback () {
+    this.value = '';
+    this.validate(false);
+    this.errorMessage = null;
   }
 
   focus (options) {
@@ -92,6 +102,10 @@ export class CcSimpleInputText extends LitElement {
     }
     if (changedProperties.has('required')) {
       needValidation = true;
+    }
+    if (changedProperties.has('errorMessage') && this.errorMessage != null) {
+      this._internals.setValidity({ ...this.validity, valid: false, customError: true }, this.errorMessage, this._inputRef.value);
+      needValidation = false;
     }
 
     if (needValidation) {
@@ -114,8 +128,8 @@ export class CcSimpleInputText extends LitElement {
           spellcheck="false"
           @input=${this._onInput}
         >
-        ${this._errorMessage != null ? html`
-          <div class="error">${this._errorMessage}</div>
+        ${this.errorMessage != null ? html`
+          <div class="error">${this.errorMessage}</div>
         ` : ''}
       </div>
     `;

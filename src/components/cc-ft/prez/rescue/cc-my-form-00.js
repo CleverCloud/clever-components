@@ -1,10 +1,10 @@
 import './cc-simple-input-text.js';
-import '../../cc-button/cc-button.js';
+import '../../../cc-button/cc-button.js';
 import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { defineSmartComponent } from '../../../lib/define-smart-component.js';
-import { dispatchCustomEvent } from '../../../lib/events.js';
-import { notifySuccess } from '../../../lib/notifications.js';
+import { defineSmartComponent } from '../../../../lib/define-smart-component.js';
+import { dispatchCustomEvent } from '../../../../lib/events.js';
+import { notifySuccess } from '../../../../lib/notifications.js';
 
 // -- COMPONENT ---
 
@@ -42,9 +42,29 @@ export class CcMyForm extends LitElement {
     }
   }
 
+  _onNameInput ({ detail: name }) {
+    this.state = {
+      ...this.state,
+      name: {
+        ...this.state.name,
+        value: name,
+      },
+    };
+  }
+
+  _onEmailInput ({ detail: email }) {
+    this.state = {
+      ...this.state,
+      email: {
+        ...this.state.email,
+        value: email,
+      },
+    };
+  }
+
   _onSubmit () {
-    const name = this._refs.name.value.value.trim();
-    const email = this._refs.email.value.value.trim();
+    const name = this.state.name.value;
+    const email = this.state.email.value;
 
     this.state = {
       type: 'idle',
@@ -83,6 +103,7 @@ export class CcMyForm extends LitElement {
         value=${this.state.name.value}
         required
         ?disabled=${isSubmitting}
+        @cc-simple-input-text:input=${this._onNameInput}
       >
         ${this.state.name.error != null ? html`
           <span slot="error">${this._getErrorLabel(this.state.name.error)}</span>
@@ -95,6 +116,7 @@ export class CcMyForm extends LitElement {
         value=${this.state.email.value}
         required
         ?disabled=${isSubmitting}
+        @cc-simple-input-text:input=${this._onEmailInput}
       >
         ${this.state.email.error != null ? html`
           <span slot="error">${this._getErrorLabel(this.state.email.error)}</span>
@@ -161,7 +183,7 @@ defineSmartComponent({
             name: { value: '' },
             email: { value: '' },
           });
-          notifySuccess('Record added');
+          notifySuccess('Email address has added successfully.');
         })
         .catch((error) => {
           if (error.message === 'email-used') {

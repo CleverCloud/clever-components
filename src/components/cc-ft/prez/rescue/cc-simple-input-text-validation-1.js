@@ -33,6 +33,14 @@ export class CcSimpleInputText extends LitElement {
     this._internals = this.attachInternals();
   }
 
+  get validity () {
+    return this._internals.validity;
+  }
+
+  get validationMessage () {
+    return this._internals.validationMessage;
+  }
+
   _validate () {
     if (this.required && isStringEmpty(this.value)) {
       this._internals.setValidity(

@@ -31,7 +31,7 @@
 <script type="module">
   import '../common/common.js';
   import './cc-simple-input-text.js';
-  // import './cc-simple-input-text-validation-1.js';
+  // import './cc-simple-input-text-validation-5.js';
   import { notifyError, notifySuccess } from '../../../../lib/notifications.js';
 
   const form = document.querySelector('form');
@@ -41,24 +41,22 @@
 
     const formData = new FormData(form);
 
+    for (let element of form.elements) {
+      if (element.validate) {
+        element.validate(true);
+      }
+      else {
+        element.reportValidity();
+      }
+    }
+
     if (form.checkValidity()) {
       notifySuccess('Form is valid');
     }
     else {
       notifyError('Form is not valid');
 
-      for (let element of form.elements) {
-        console.log(`<${element.tagName.toLowerCase()} name='${element.name}'>`);
-        console.log(element.validity);
-        console.log(element.validationMessage);
-      }
-
-      const simpleInput = document.querySelector('cc-simple-input-text');
-      if (simpleInput.validity.valid) {
-        simpleInput.innerHTML = '';
-      } else {
-        simpleInput.innerHTML = `<span slot="error">${simpleInput.validationMessage}</span>`;
-      }
+      form.querySelector(':invalid').focus();
     }
   });
 </script>

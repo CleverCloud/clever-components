@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { dispatchCustomEvent } from '../../../lib/events.js';
+import { dispatchCustomEvent } from '../../../../lib/events.js';
+import { isStringEmpty } from '../common/is-string-empty.js';
 
 export class CcSimpleInputText extends LitElement {
   static get properties () {
@@ -35,13 +36,21 @@ export class CcSimpleInputText extends LitElement {
     this._internals = this.attachInternals();
   }
 
+  get validity () {
+    return this._internals.validity;
+  }
+
+  get validationMessage () {
+    return this._internals.validationMessage;
+  }
+
   /**
    *
    * @param {boolean} report
    * @return {boolean}
    */
   validate (report) {
-    if (this.required && (this.value == null || this.value.length === 0)) {
+    if (this.required && isStringEmpty(this.value)) {
       this._internals.setValidity(
         { valueMissing: true },
         'Please enter a value',
@@ -49,7 +58,7 @@ export class CcSimpleInputText extends LitElement {
       );
 
       if (report) {
-        this._errorMessage = 'Please enter a value';
+        this._errorMessage = this._internals.validationMessage;
       }
 
       return false;

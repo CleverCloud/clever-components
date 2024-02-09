@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { dispatchCustomEvent } from '../../../lib/events.js';
+import { dispatchCustomEvent } from '../../../../lib/events.js';
 
 export class CcSimpleInputText extends LitElement {
   static get properties () {

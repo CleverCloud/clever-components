@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { dispatchCustomEvent } from '../../../lib/events.js';
-import { RequiredValidator } from '../validation/validation.js';
+import { dispatchCustomEvent } from '../../../../lib/events.js';
+import { RequiredValidator } from '../../validation/validation.js';
 
 export class CcSimpleInputText extends LitElement {
   static get properties () {
@@ -34,6 +34,14 @@ export class CcSimpleInputText extends LitElement {
     this._inputRef = createRef();
     /** @type {ElementInternals} */
     this._internals = this.attachInternals();
+  }
+
+  get validity () {
+    return this._internals.validity;
+  }
+
+  get validationMessage () {
+    return this._internals.validationMessage;
   }
 
   /**

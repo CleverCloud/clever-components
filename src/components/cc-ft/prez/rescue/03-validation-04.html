@@ -6,8 +6,8 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="/src/styles/default-theme.css">
-  <link rel="stylesheet" href="./common/styles.css">
-  <title>Implement Validation</title>
+  <link rel="stylesheet" href="../common/styles.css">
+  <title>Validation</title>
 </head>
 <body>
 
@@ -26,28 +26,39 @@
       <button type="submit">Submit</button>
     </div>
   </form>
-
-  <pre class="data"></pre>
 </div>
 
 <script type="module">
-  import './common/common.js';
-  import './cc-simple-input-text-validation-6.js';
-  import { EmailValidator } from '../validation/validation.js';
-  import { formSubmitHandler } from '../form/form-submit-handler.js';
+  import '../common/common.js';
+  import './cc-simple-input-text.js';
+  // import './cc-simple-input-text-validation-4.js';
+  import { notifyError, notifySuccess } from '../../../../lib/notifications.js';
 
   const form = document.querySelector('form');
-  const simpleInput = document.querySelector('cc-simple-input-text');
-  const data = document.querySelector('.data');
 
-  simpleInput.customValidator = new EmailValidator();
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
 
-  form.onsubmit = formSubmitHandler(form);
+    const formData = new FormData(form);
 
-  form.addEventListener('form:formSubmit', ({ detail }) => {
-    data.innerHTML = JSON.stringify(detail, null, 4);
+    for (let element of form.elements) {
+      if (element.validate) {
+        element.validate(true);
+      }
+      else {
+        element.reportValidity();
+      }
+    }
+
+    if (form.checkValidity()) {
+      notifySuccess('Form is valid');
+    }
+    else {
+      notifyError('Form is not valid');
+
+      form.querySelector(':invalid').focus();
+    }
   });
 </script>
 </body>
 </html>
-
