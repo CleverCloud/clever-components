@@ -5,31 +5,37 @@ const META = Symbol('META');
 
 /**
  * @typedef {Element} SmartContainer
- * @param {object} context
+ * @property {Object} context
  */
 
 /**
- * @typedef {object|((property: object) => void)} CallbackOrObject
+ * @typedef {Object|((property: Object) => void)} CallbackOrObject
  */
 
 /**
- * @param {object} definition
+ * @typedef {Object} SmartDefinitionParam
+ * @property {TypeHint} type
+ * @property {boolean} [optional=false]
+ * @template TypeHint
+ */
+
+/**
+ * @param {Object} definition
  * @param {string} definition.selector
- * @param {object} definition.params
+ * @param {{[name: string]: SmartDefinitionParam}} definition.params
  * @param {({
  *   container?: SmartContainer,
  *   component?: Element,
- *   context?: object,
- *   onEvent?: (type: string, listener: (detail: object) => void) => void,
+ *   context?: Object,
+ *   onEvent?: (type: string, listener: (detail: Object) => void) => void,
  *   updateComponent?: (
  *     type: string,
  *     callbackOrObject: CallbackOrObject,
  *   ) => void,
  *   signal?: AbortSignal,
  * }) => void} definition.onContextUpdate
- * @param {AbortSignal} [signal]
  */
-export function defineSmartComponent (definition, signal) {
+export function defineSmartComponent (definition) {
 
   defineSmartComponentCore({
     selector: definition.selector,
@@ -43,9 +49,11 @@ export function defineSmartComponent (definition, signal) {
     },
     onContextUpdate (container, component, context) {
 
-      // Don't trigger the high level onContextUpdate if one of the params is null
+      // Don't trigger the high level onContextUpdate if one of the params is null (unless it is optional)
       const someContextParamsAreNull = Object
-        .keys(definition.params)
+        .entries(definition.params)
+        .filter(([, param]) => param.optional !== true)
+        .map(([name]) => name)
         .some((name) => context[name] == null);
       if (someContextParamsAreNull) {
         return;
