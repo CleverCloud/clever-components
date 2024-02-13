@@ -468,6 +468,9 @@ export const translations = {
   'cc-jenkins-info.update.title': `Updates`,
   'cc-jenkins-info.update.up-to-date': `Your Jenkins version is up-to-date.`,
   //#endregion
+  //#region cc-loader
+  'cc-loader.a11y-name': `Loading`,
+  //#endregion
   //#region cc-logs
   'cc-logs.copied': ({ count }) => `Copied (${count} ${plural(count, 'line')})`,
   'cc-logs.copy': `Copy`,
@@ -493,6 +496,29 @@ export const translations = {
   'cc-logs-control.timezone.local': `Local`,
   'cc-logs-control.timezone.utc': `UTC`,
   'cc-logs-control.wrap-lines': `Force lines wrap`,
+  //#endregion
+  //#region cc-logs-instances
+  'cc-logs-instances.build.a11y-name': `Instance dedicated to build`,
+  'cc-logs-instances.cold.empty': `No instance`,
+  'cc-logs-instances.cold.header': `Instances`,
+  'cc-logs-instances.deleted.header': `Deleted instances`,
+  'cc-logs-instances.deploying.header': `Deployment in progress`,
+  'cc-logs-instances.deployment.deployed': `Deployed`,
+  'cc-logs-instances.deployment.state.cancelled': `Deployment cancelled`,
+  'cc-logs-instances.deployment.state.failed': `Deployment failed`,
+  'cc-logs-instances.deployment.state.succeeded': `Deployment succeeded`,
+  'cc-logs-instances.deployment.state.wip': `Deployment in progress`,
+  'cc-logs-instances.ghost.header': `Ghost instances`,
+  'cc-logs-instances.ghost.notice': `Some unwanted instances are still running, but will soon be destroyed by our scheduler. You can contact support to get more information.`,
+  'cc-logs-instances.instance.state.deleted': `Deleted instance`,
+  'cc-logs-instances.instance.state.deploying': `Deploying instance`,
+  'cc-logs-instances.instance.state.running': `Running instance`,
+  'cc-logs-instances.instance.state.stopping': `Stopping instance`,
+  'cc-logs-instances.loading.error': `Something went wrong while loading instances.`,
+  'cc-logs-instances.loading.loader': `Instances are loading`,
+  'cc-logs-instances.running.empty': `No instance running`,
+  'cc-logs-instances.running.header': `Running instances`,
+  'cc-logs-instances.stopping.header': `Stopping instances`,
   //#endregion
   //#region cc-logsmap
   'cc-logsmap.legend.heatmap': ({ orgaName }) => sanitize`Heatmap of HTTP requests received by all apps from <strong>${orgaName}</strong> during the last 24 hours.`,

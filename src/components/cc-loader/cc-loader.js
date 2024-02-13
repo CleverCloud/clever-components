@@ -1,4 +1,6 @@
 import { css, html, LitElement } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { i18n } from '../../lib/i18n.js';
 
 /**
  * A loading indicator, auto centered and with flexible size.
@@ -6,6 +8,7 @@ import { css, html, LitElement } from 'lit';
  * ## Details
  *
  * * Size this component like you want, the loading circle will be centered automatically.
+ * * One can change the default accessible name with the `a11yName` property or `a11y-name` attribute.
  *
  * @cssdisplay flex
  *
@@ -13,10 +16,44 @@ import { css, html, LitElement } from 'lit';
  */
 export class CcLoader extends LitElement {
 
+  static get properties () {
+    return {
+      a11yName: { type: String, attribute: 'a11y-name' },
+    };
+  }
+
+  constructor () {
+    super();
+
+    /** @type {string|null} The accessible name to set on the svg.
+     *
+     * If this prop has a value:
+     *
+     *  * sets a `role="img"` and `aria-label="the value of this prop"` attributes on the `<svg>` element.
+     *  * creates a `<title>` element inside the `<svg>`.
+     *
+     * This allows assistive technologies to recognize the element as an image and convey its information.
+     *
+     * If this prop has no value, sets an `aria-hidden="true"` attribute on the `<svg>` element so that it can be ignored by assistive technologies.
+     */
+    this.a11yName = i18n('cc-loader.a11y-name');
+  }
+
   render () {
+    const a11yName = this.a11yName == null || this.a11yName.length === 0 ? undefined : this.a11yName;
+    const aria = a11yName == null
+      ? { hidden: true }
+      : { label: a11yName, role: 'img', labelledby: 'title' };
+
     // language=HTML
     return html`
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 40 40">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 40 40"
+           aria-hidden=${ifDefined(aria.hidden)}
+           aria-label=${ifDefined(aria.label)}
+           aria-labelledby=${ifDefined(aria.labelledby)}
+           role=${ifDefined(aria.role)}
+      >
+        ${a11yName != null ? html`<title id="title">${a11yName}</title>` : ''}
         <circle cx="40px" cy="40px" r="16px"></circle>
       </svg>
     `;

@@ -1,5 +1,5 @@
 import { expect } from '@bundled-es-modules/chai';
-import { clampNumber, isStringEmpty, range } from '../src/lib/utils.js';
+import { clampNumber, isStringEmpty, range, groupBy, randomString } from '../src/lib/utils.js';
 
 describe('range function', function () {
   it('should return array', function () {
@@ -50,6 +50,20 @@ describe('clampNumber function', () => {
   });
 });
 
+describe('randomString function', () => {
+  it('should be empty if length is 0', () => {
+    expect(randomString(0)).to.equal('');
+  });
+
+  it('should have a size equal to the given length', () => {
+    expect(randomString(10).length).to.equal(10);
+  });
+
+  it('should use the given alphabet', () => {
+    expect(randomString(3, 'a')).to.equal('aaa');
+  });
+});
+
 describe('isStringEmpty', () => {
   it('should return true with null', () => {
     expect(isStringEmpty(null))
@@ -67,4 +81,97 @@ describe('isStringEmpty', () => {
     expect(isStringEmpty('non-empty-string'))
       .to.eql(false);
   });
+});
+
+describe('groupBy function', () => {
+  describe('when using string property', () => {
+    it('should group by property', () => {
+      const grouped = groupBy([
+        { prop: 'group1', value: '1' },
+        { prop: 'group2', value: '2' },
+        { prop: 'group2', value: '3' },
+        { prop: 'group1', value: '4' },
+        { prop: 'group3', value: '5' },
+      ], 'prop');
+
+      expect(grouped).to.eql({
+        group1: [
+          { prop: 'group1', value: '1' },
+          { prop: 'group1', value: '4' },
+        ],
+        group2: [
+          { prop: 'group2', value: '2' },
+          { prop: 'group2', value: '3' },
+        ],
+        group3: [
+          { prop: 'group3', value: '5' },
+        ],
+      });
+    });
+
+    it('should drop element for which property is not present', () => {
+      const grouped = groupBy([
+        { prop: 'group1', value: '1' },
+        { value: '2' },
+      ], 'prop');
+
+      expect(grouped).to.eql({
+        group1: [
+          { prop: 'group1', value: '1' },
+        ],
+      });
+    });
+
+    it('should return empty object when giving an empty array', () => {
+      const grouped = groupBy([], 'prop');
+
+      expect(grouped).to.eql({});
+    });
+  });
+
+  describe('when using function as grouping category', () => {
+    it('should group by result of the grouping function', () => {
+      const grouped = groupBy([
+        { prop: 'group1', value: '1' },
+        { prop: 'group2', value: '2' },
+        { prop: 'group2', value: '3' },
+        { prop: 'group1', value: '4' },
+        { prop: 'group3', value: '5' },
+      ], (o) => o.prop?.toUpperCase());
+
+      expect(grouped).to.eql({
+        GROUP1: [
+          { prop: 'group1', value: '1' },
+          { prop: 'group1', value: '4' },
+        ],
+        GROUP2: [
+          { prop: 'group2', value: '2' },
+          { prop: 'group2', value: '3' },
+        ],
+        GROUP3: [
+          { prop: 'group3', value: '5' },
+        ],
+      });
+    });
+  });
+
+  it('should drop element for which property is not present', () => {
+    const grouped = groupBy([
+      { prop: 'group1', value: '1' },
+      { value: '2' },
+    ], (o) => o.prop?.toUpperCase());
+
+    expect(grouped).to.eql({
+      GROUP1: [
+        { prop: 'group1', value: '1' },
+      ],
+    });
+  });
+
+  it('should return empty object when giving an empty array', () => {
+    const grouped = groupBy([], (o) => o.prop?.toUpperCase());
+
+    expect(grouped).to.eql({});
+  });
+
 });
