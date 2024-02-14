@@ -310,9 +310,9 @@ export class CcLogsInstances extends LitElement {
           <cc-notice intent="info" message="${i18n('cc-logs-instances.ghost.notice')}"></cc-notice>
           <div class="instances instances--ghost">
             ${instances.sort(GHOST_INSTANCE_SORT_ORDER).map((instance) => html`
-            <label class="instance" for="instance-${instance.id}">
+            <label class="instance" for="${instance.id}">
               <input type="checkbox"
-                     id="instance-${instance.id}"
+                     id="${instance.id}"
                      .checked=${this._isSelected(instance.id)}
                      @change=${this._onInstanceClick}>
               <span class="instance-id">${instance.id}</span>
@@ -381,9 +381,9 @@ export class CcLogsInstances extends LitElement {
    */
   _renderInstance (instance, renderState) {
     return html`
-      <label class="instance" for="instance-${instance.id}">
+      <label class="instance" for="${instance.id}">
         <input type="checkbox"
-               id="instance-${instance.id}"
+               id="${instance.id}"
                .checked=${this._isSelected(instance.id)}
                @change=${this._onInstanceClick}>
         <span class="instance-name">${instance.name}</span>
