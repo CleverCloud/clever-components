@@ -27,49 +27,49 @@ const conf = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [{ variables: VARIABLES_FULL }],
+  items: [{ state: { type: 'loaded', variables: VARIABLES_FULL, validationMode: 'simple' } }],
 });
 
-export const skeleton = makeStory(conf, {
-  items: [{}],
+export const loading = makeStory(conf, {
+  items: [{ state: { type: 'loading' } }],
 });
 
-export const skeletonWithReadonly = makeStory(conf, {
-  items: [{ readonly: true }],
+export const loadingWithReadonly = makeStory(conf, {
+  items: [{ state: { type: 'loading' }, readonly: true }],
 });
 
 export const empty = makeStory(conf, {
-  items: [{ variables: [] }],
+  items: [{ state: { type: 'loaded', variables: [], validationMode: 'simple' } }],
 });
 
 export const emptyWithReadonly = makeStory(conf, {
-  items: [{ variables: [], readonly: true }],
+  items: [{ state: { type: 'loaded', variables: [], validationMode: 'simple' }, readonly: true }],
 });
 
 export const dataLoaded = makeStory(conf, {
-  items: [{ variables: VARIABLES_FULL }],
+  items: [{ state: { type: 'loaded', variables: VARIABLES_FULL, validationMode: 'simple' } }],
 });
 
 export const dataLoadedWithDisabled = makeStory(conf, {
-  items: [{ variables: VARIABLES_FULL, disabled: true }],
+  items: [{ state: { type: 'loaded', variables: VARIABLES_FULL, validationMode: 'simple' }, disabled: true }],
 });
 
 export const dataLoadedWithReadonly = makeStory(conf, {
-  items: [{ variables: VARIABLES_SIMPLE, readonly: true }],
+  items: [{ state: { type: 'loaded', variables: VARIABLES_SIMPLE, validationMode: 'simple' }, readonly: true }],
 });
 
-export const dataLoadedWithStrictMode = makeStory(conf, {
-  items: [{ variables: VARIABLES_FULL, parserOptions: { mode: 'strict' } }],
+export const dataLoadedWithStrictValidationMode = makeStory(conf, {
+  items: [{ state: { type: 'loaded', variables: VARIABLES_FULL, validationMode: 'strict' } }],
 });
 
 enhanceStoriesNames({
   defaultStory,
-  skeleton,
-  skeletonWithReadonly,
+  loading,
+  loadingWithReadonly,
   empty,
   emptyWithReadonly,
   dataLoaded,
   dataLoadedWithDisabled,
   dataLoadedWithReadonly,
-  dataLoadedWithStrictMode,
+  dataLoadedWithStrictValidationMode,
 });

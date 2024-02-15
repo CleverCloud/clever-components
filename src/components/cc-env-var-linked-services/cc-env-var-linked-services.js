@@ -5,17 +5,14 @@ import { css, html, LitElement } from 'lit';
 import { i18n } from '../../lib/i18n.js';
 
 /**
- * @typedef {import('./cc-env-var-linked-services.types.js').EnvType} EnvType
- * @typedef {import('../common.types.js').Service} Service
+ * @typedef {import('./cc-env-var-linked-services.types.js').EnvVarLinkedServicesState} EnvVarLinkedServicesState
+ * @typedef {import('./cc-env-var-linked-services.types.js').EnvVarLinkedServicesType} EnvVarLinkedServicesType
  */
 
 /**
  * A component to display groups of readonly `<cc-env-var-form>` for linked apps of add-ons.
  *
  * ## Details
- *
- * * When `services` is nullish, a loading indicator is displayed with a message (corresponding to `type`).
- * * If `variables` on a service is nullish, the `<cc-env-var-form>` will be in skeleton mode.
  *
  * @cssdisplay block
  */
@@ -24,8 +21,7 @@ export class CcEnvVarLinkedServices extends LitElement {
   static get properties () {
     return {
       appName: { type: String, attribute: 'app-name' },
-      error: { type: Boolean },
-      services: { type: Array },
+      state: { type: Object },
       type: { type: String },
     };
   }
@@ -36,13 +32,10 @@ export class CcEnvVarLinkedServices extends LitElement {
     /** @type {string|null} Sets name of the main app to which services are linked. */
     this.appName = null;
 
-    /** @type {boolean} Sets error status if list of services could not be fetched. */
-    this.error = false;
+    /** @type {EnvVarLinkedServicesState} Linked services state. */
+    this.state = { type: 'loading' };
 
-    /** @type {Service[]|null} List of add-ons or apps with their name and variables. */
-    this.services = null;
-
-    /** @type {EnvType} Type of env vars to display linked add-ons or linked apps. */
+    /** @type {EnvVarLinkedServicesType} Type of env vars to display linked add-ons or linked apps. */
     this.type = null;
   }
 
@@ -105,38 +98,55 @@ export class CcEnvVarLinkedServices extends LitElement {
     }
   }
 
+  /**
+   * @param {LinkedServiceState} linkedServiceState
+   * @return {EnvVarFormState}
+   */
+  _getEnvVarFormState (linkedServiceState) {
+    if (linkedServiceState.type === 'loading') {
+      return { type: 'loading' };
+    }
+    if (linkedServiceState.type === 'error') {
+      return { type: 'error' };
+    }
+    return { type: 'loaded', variables: linkedServiceState.variables, validationMode: 'simple' };
+  }
+
   render () {
-
-    return html`
-
-      ${this.services == null && !this.error ? html`
-        <div class="loading">
-          <cc-loader></cc-loader><span>${this._getLoadingMessage()}</span>
-        </div>
-      ` : ''}
-
-      ${!this.error && this.services?.length > 0 ? html`
-        <div class="service-list">
-          ${this.services.map((s) => html`
-            <cc-env-var-form readonly 
-                             .variables=${s.variables} 
-                             heading=${this._getServiceHeading(s.name)} 
-                             ?error="${s.error}">
-              ${this._getServiceDescription(s.name)}
-            </cc-env-var-form>
-          `)}
-        </div>
-      ` : ''}
-
-      ${this.services != null && !this.error && this.services.length === 0 ? html`
-        <div class="empty-msg">${this._getEmptyMessage()}</div>
-      ` : ''}
-
-      ${this.error ? html`
+    if (this.state.type === 'error') {
+      return html`
         <div class="error">
           <cc-notice intent="warning" .message="${this._getErrorMessage()}"></cc-notice>
         </div>
-      ` : ''}
+      `;
+    }
+
+    if (this.state.type === 'loading') {
+      return html`
+        <div class="loading">
+          <cc-loader></cc-loader><span>${this._getLoadingMessage()}</span>
+        </div>
+      `;
+    }
+
+    const servicesStates = this.state.servicesStates;
+
+    if (servicesStates.length === 0) {
+      return html`
+        <div class="empty-msg">${this._getEmptyMessage()}</div>
+      `;
+    }
+
+    return html`
+      <div class="service-list">
+        ${servicesStates.map((serviceState) => html`
+            <cc-env-var-form readonly 
+                             .state=${this._getEnvVarFormState(serviceState)} 
+                             heading=${this._getServiceHeading(serviceState.name)}>
+              ${this._getServiceDescription(serviceState.name)}
+            </cc-env-var-form>
+          `)}
+      </div>
     `;
   }
 

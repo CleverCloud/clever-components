@@ -1,110 +1,70 @@
 import './cc-env-var-form.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { get as getAddon } from '@clevercloud/client/esm/api/v2/addon.js';
-import { defineSmartComponentWithObservables } from '../../lib/define-smart-component-with-observables.js';
+import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { i18n } from '../../lib/i18n.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
-import {
-  fromCustomEvent,
-  LastPromise,
-  map,
-  merge,
-  unsubscribeWithSignal,
-  withLatestFrom,
-} from '../../lib/observables.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 
-defineSmartComponentWithObservables({
+defineSmartComponent({
   selector: 'cc-env-var-form[context="config-provider"]',
   params: {
     apiConfig: { type: Object },
     ownerId: { type: String },
     addonId: { type: String },
   },
-  onConnect (container, component, context$, disconnectSignal) {
+  onContextUpdate ({ context, onEvent, updateComponent, signal }) {
 
-    const addon_lp = new LastPromise();
-    const variables_lp = new LastPromise();
+    updateComponent('state', { type: 'loading' });
 
-    const error$ = merge(addon_lp.error$, variables_lp.error$);
+    const { apiConfig, ownerId, addonId } = context;
 
-    const contextWithRealAddonId$ = addon_lp.value$
-      .pipe(
-        withLatestFrom(context$),
-        map(([addon, context]) => ({ apiConfig: context.apiConfig, realAddonId: addon.realId })),
-      );
+    let realAddonId = null;
 
-    const onSubmit$ = fromCustomEvent(component, 'cc-env-var-form:submit')
-      .pipe(withLatestFrom(contextWithRealAddonId$));
+    fetchAddon({ apiConfig, ownerId, addonId, signal })
+      .then((addon) => {
+        updateComponent('addonName', addon.name);
+        realAddonId = addon.realId;
+        return fetchVariables({ apiConfig, realAddonId, signal });
+      })
+      .then((variables) => {
+        updateComponent('state', { type: 'loaded', validationMode: 'simple', variables });
+      })
+      .catch((error) => {
+        console.error(error);
+        updateComponent('state', { type: 'error' });
+      });
 
-    unsubscribeWithSignal(disconnectSignal, [
-
-      error$.subscribe(console.error),
-      error$.subscribe(() => {
-        component.error = true;
-        component.saving = false;
-      }),
-      addon_lp.value$.subscribe((addon) => {
-        component.addonName = addon.name;
-        component.saving = false;
-      }),
-      variables_lp.value$.subscribe((variables) => {
-        component.variables = variables;
-        component.saving = false;
-      }),
-
-      onSubmit$.subscribe(([variables, { apiConfig, realAddonId }]) => {
-
-        component.error = false;
-        component.saving = true;
-
-        updateConfiguration({ apiConfig, realAddonId, variables })
-          .then(() => {
-            component.variables = variables;
-            notifySuccess(i18n('cc-env-var-form.update.success'));
-          })
-          .catch(() => notifyError(i18n('cc-env-var-form.update.error')))
-          .finally(() => {
-            component.saving = false;
+    onEvent('cc-env-var-form:submit', (variables) => {
+      updateComponent('state', (state) => {
+        state.type = 'saving';
+      });
+      updateVariables({ apiConfig, realAddonId, variables })
+        .then(() => {
+          updateComponent('state', (state) => {
+            state.variables = variables;
           });
-      }),
-
-      context$.subscribe(({ apiConfig, ownerId, addonId }) => {
-
-        component.error = false;
-        component.saving = false;
-        component.variables = null;
-
-        if (apiConfig != null && ownerId != null && addonId != null) {
-
-          addon_lp.push((signal) => {
-            return fetchAddon({ apiConfig, signal, ownerId, addonId });
+          notifySuccess(i18n('cc-env-var-form.update.success'));
+        })
+        .catch(() => notifyError(i18n('cc-env-var-form.update.error')))
+        .finally(() => {
+          updateComponent('state', (state) => {
+            state.type = 'loaded';
           });
-        }
-      }),
-
-      contextWithRealAddonId$.subscribe(({ apiConfig, realAddonId }) => {
-        if (apiConfig != null && realAddonId != null) {
-          variables_lp.push((signal) => {
-            return fetchConfiguration({ apiConfig, signal, realAddonId });
-          });
-        }
-      }),
-
-    ]);
+        });
+    });
   },
 });
 
 function fetchAddon ({ apiConfig, signal, ownerId, addonId }) {
-
   return getAddon({ id: ownerId, addonId }).then(sendToApi({ apiConfig, signal }));
 }
 
-async function fetchConfiguration ({ apiConfig, signal, realAddonId }) {
+async function fetchVariables ({ apiConfig, signal, realAddonId }) {
   return getConfigProviderEnv({ realAddonId }).then(sendToApi({ apiConfig, signal }));
 }
 
-async function updateConfiguration ({ apiConfig, signal, realAddonId, variables }) {
+async function updateVariables ({ apiConfig, signal, realAddonId, variables }) {
   return updateConfigProviderEnv({ realAddonId }, variables)
     .then(sendToApi({ apiConfig, signal }));
 }

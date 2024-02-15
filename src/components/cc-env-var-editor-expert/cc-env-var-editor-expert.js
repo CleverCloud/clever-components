@@ -6,7 +6,7 @@ import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 
-/** @type {Variable[]} */
+/** @type {EnvVar[]} */
 const SKELETON_VARIABLES = [
   { name: 'VARIABLE_ONE', value: '' },
   { name: 'VARIABLE_FOOBAR', value: '' },
@@ -14,9 +14,9 @@ const SKELETON_VARIABLES = [
 ];
 
 /**
- * @typedef {import('../common.types.js').ParseError} ParseError
- * @typedef {import('../common.types.js').ParserOptions} ParserOptions
- * @typedef {import('../common.types.js').Variable} Variable
+ * @typedef {import('../common.types.js').EnvVarEditorState} EnvVarEditorState
+ * @typedef {import('../common.types.js').EnvVarParseError} EnvVarParseError
+ * @typedef {import('../common.types.js').EnvVar} EnvVar
  */
 
 /**
@@ -24,16 +24,15 @@ const SKELETON_VARIABLES = [
  *
  * @cssdisplay block / none (with `[hidden]`)
  *
- * @event {CustomEvent<Variable[]>} cc-env-var-editor-expert:change - Fires the new list of variables whenever something changes in the list.
+ * @event {CustomEvent<EnvVar[]>} cc-env-var-editor-expert:change - Fires the new list of variables whenever something changes in the list.
  */
 export class CcEnvVarEditorExpert extends LitElement {
 
   static get properties () {
     return {
       disabled: { type: Boolean },
-      parserOptions: { type: Object },
       readonly: { type: Boolean },
-      variables: { type: Array },
+      state: { type: Object },
       _errors: { type: Array, state: true },
       _skeleton: { type: Boolean, state: true },
       _variablesAsText: { type: Array, state: true },
@@ -46,16 +45,13 @@ export class CcEnvVarEditorExpert extends LitElement {
     /** @type {boolean} Sets `disabled` attribute on inputs and buttons. */
     this.disabled = false;
 
-    /** @type {ParserOptions} Sets the options for the variables parser. */
-    this.parserOptions = { mode: null };
-
     /** @type {boolean} Sets `readonly` attribute on main input and hides buttons. */
     this.readonly = false;
 
-    /** @type {Variable[]|null} Sets the list of variables */
-    this.variables = null;
+    /** @type {EnvVarEditorState} Sets the variables editor state.*/
+    this.state = { type: 'loading' };
 
-    /** @type {ParseError[]} */
+    /** @type {EnvVarParseError[]} */
     this._errors = [];
 
     /** @type {boolean} */
@@ -116,15 +112,15 @@ export class CcEnvVarEditorExpert extends LitElement {
 
   _onInput ({ detail: value }) {
     this._variablesAsText = value;
-    const { variables, errors } = parseRaw(value, this.parserOptions);
+    const { variables, errors } = parseRaw(value, { mode: this.state.validationMode });
     this._setErrors(errors);
     dispatchCustomEvent(this, 'change', variables);
   }
 
   willUpdate (changedProperties) {
-    if (changedProperties.has('variables')) {
-      this._skeleton = (this.variables == null);
-      const vars = this._skeleton ? SKELETON_VARIABLES : this.variables;
+    if (changedProperties.has('state')) {
+      this._skeleton = (this.state.type === 'loading');
+      const vars = this._skeleton ? SKELETON_VARIABLES : this.state.variables;
       const filteredVariables = vars
         .filter(({ isDeleted }) => !isDeleted);
       this._variablesAsText = toNameEqualsValueString(filteredVariables);

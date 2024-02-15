@@ -23,60 +23,60 @@ const conf = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [{ appName: 'Foobar backend python', context: 'env-var', variables: VARIABLES_FULL }],
+  items: [{ appName: 'Foobar backend python', context: 'env-var', state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL } }],
 });
 
-export const skeleton = makeStory(conf, {
-  items: [{ context: 'env-var', appName: 'Foobar backend python' }],
+export const loading = makeStory(conf, {
+  items: [{ appName: 'Foobar backend python', context: 'env-var', state: { type: 'loading' } }],
 });
 
-export const skeletonWithReadonly = makeStory(conf, {
-  items: [{ appName: 'Foobar backend python', context: 'env-var', readonly: true }],
+export const loadingWithReadonly = makeStory(conf, {
+  items: [{ appName: 'Foobar backend python', context: 'env-var', readonly: true, state: { type: 'loading' } }],
 });
 
 export const empty = makeStory(conf, {
-  items: [{ appName: 'Foobar backend python', context: 'env-var', variables: [] }],
+  items: [{ appName: 'Foobar backend python', context: 'env-var', state: { type: 'loaded', validationMode: 'simple', variables: [] } }],
 });
 
 export const emptyWithReadonly = makeStory(conf, {
-  items: [{ appName: 'Foobar backend python', context: 'env-var', variables: [], readonly: true }],
+  items: [{ appName: 'Foobar backend python', context: 'env-var', readonly: true, state: { type: 'loaded', validationMode: 'simple', variables: [] } }],
 });
 
 export const dataLoadedWithNoContext = makeStory(conf, {
-  items: [{ variables: VARIABLES_FULL }],
+  items: [{ state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL } }],
 });
 
 export const dataLoadedWithContextEnvVarSimple = makeStory(conf, {
-  items: [{ context: 'env-var-simple', variables: VARIABLES_FULL }],
+  items: [{ context: 'env-var-simple', state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL } }],
 });
 
 export const dataLoadedWithContextEnvVarAddon = makeStory(conf, {
-  items: [{ context: 'env-var-addon', variables: VARIABLES_FULL }],
+  items: [{ context: 'env-var-addon', state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL } }],
 });
 
 export const dataLoadedWithContextEnvVar = makeStory(conf, {
-  items: [{ appName: 'Foobar backend python', context: 'env-var', variables: VARIABLES_FULL }],
+  items: [{ appName: 'Foobar backend python', context: 'env-var', state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL } }],
 });
 
 export const dataLoadedWithContextExposedConfig = makeStory(conf, {
-  items: [{ appName: 'Foobar backend python', context: 'exposed-config', variables: VARIABLES_FULL }],
+  items: [{ appName: 'Foobar backend python', context: 'exposed-config', state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL } }],
 });
 
 export const dataLoadedWithContextConfigProvider = makeStory(conf, {
-  items: [{ addonName: 'My shared config', context: 'config-provider', variables: VARIABLES_FULL }],
+  items: [{ addonName: 'My shared config', context: 'config-provider', state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL } }],
 });
 
 export const dataLoadedWithRestartButton = makeStory(conf, {
-  items: [{ appName: 'Foobar backend python', context: 'env-var', variables: VARIABLES_FULL, restartApp: true }],
+  items: [{ appName: 'Foobar backend python', context: 'env-var', state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL }, restartApp: true }],
 });
 
 export const dataLoadedWithCustomHeadingAndReadonly = makeStory(conf, {
-  items: [{ heading: 'Add-on: Awesome PG database', variables: VARIABLES_FULL, readonly: true }],
+  items: [{ heading: 'Add-on: Awesome PG database', state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL }, readonly: true }],
 });
 
 export const dataLoadedWithCustomHeadingAndDescription = makeStory(conf, {
   items: [{
-    variables: VARIABLES_FULL,
+    state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL },
     heading: 'Custom heading title',
     innerHTML: `
       Custom <strong>HTML</strong> description!!
@@ -85,30 +85,35 @@ export const dataLoadedWithCustomHeadingAndDescription = makeStory(conf, {
 });
 
 export const dataLoadedWithStrictMode = makeStory(conf, {
-  items: [{ appName: 'Foobar backend python (strict mode)', context: 'env-var', variables: VARIABLES_FULL, parserOptions: { mode: 'strict' } }],
+  items: [{ appName: 'Foobar backend python (strict validation mode)', context: 'env-var', state: { type: 'loaded', validationMode: 'strict', variables: VARIABLES_FULL } }],
 });
 
 export const saving = makeStory(conf, {
-  items: [{ appName: 'Foobar backend python', context: 'env-var', variables: VARIABLES_FULL, saving: true }],
+  items: [{ appName: 'Foobar backend python', context: 'env-var', state: { type: 'saving', validationMode: 'simple', variables: VARIABLES_FULL } }],
 });
 
 export const errorWithLoading = makeStory(conf, {
-  items: [{ appName: 'Foobar backend python', context: 'env-var', error: true }],
+  items: [{ appName: 'Foobar backend python', context: 'env-var', state: { type: 'error' } }],
 });
 
 export const simulations = makeStory(conf, {
-  items: [{ appName: 'Foobar backend python', context: 'env-var' }],
+  items: [{ context: 'env-var' }, { context: 'env-var' }],
   simulations: [
-    storyWait(2000, ([component]) => {
-      component.error = 'loading';
+    storyWait(2000, ([component, componentError]) => {
+      component.appName = 'Foobar backend python';
+      componentError.appName = 'Foobar backend python';
+    }),
+    storyWait(2000, ([component, componentError]) => {
+      component.state = { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL };
+      componentError.state = { type: 'error' };
     }),
   ],
 });
 
 enhanceStoriesNames({
   defaultStory,
-  skeleton,
-  skeletonWithReadonly,
+  loading,
+  loadingWithReadonly,
   empty,
   emptyWithReadonly,
   dataLoadedWithNoContext,

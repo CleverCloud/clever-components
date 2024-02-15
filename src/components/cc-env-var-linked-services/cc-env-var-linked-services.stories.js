@@ -23,113 +23,153 @@ export const defaultStory = makeStory(conf, {
     {
       type: 'addon',
       appName: 'Foobar backend python',
-      services: [
-        { name: 'My Awesome PG database', variables: VARIABLES_FULL },
-        { name: 'Redis cache (PROD)', variables: VARIABLES_FULL },
-      ],
+      state: {
+        type: 'loaded',
+        servicesStates: [
+          { name: 'My Awesome PG database', type: 'loaded', variables: VARIABLES_FULL },
+          { name: 'Redis cache (PROD)', type: 'loaded', variables: VARIABLES_FULL },
+        ],
+      },
     },
     {
       type: 'app',
       appName: 'Foobar backend python',
-      services: [
+      state: {
+        type: 'loaded',
+        servicesStates: [
+          { name: 'The mighty maven Java app', type: 'loaded', variables: VARIABLES_FULL },
+          { name: 'Node.js frontend preprod', type: 'loaded', variables: VARIABLES_FULL },
+          { name: 'Auth gateway for backend', type: 'loaded', variables: VARIABLES_FULL },
+        ],
+      },
+    },
+  ],
+});
+
+export const loadingWithLinkedAddons = makeStory(conf, {
+  items: [{
+    type: 'addon',
+    appName: 'Foobar backend python',
+    state: { type: 'loading' },
+  }],
+});
+
+export const loadingWithLinkedApps = makeStory(conf, {
+  items: [{
+    type: 'app',
+    appName: 'Foobar backend python',
+    state: { type: 'loading' },
+  }],
+});
+
+export const loadedWithSomeLoadingLinkedAddons = makeStory(conf, {
+  items: [{
+    type: 'addon',
+    appName: 'Foobar backend python',
+    state: {
+      type: 'loaded',
+      servicesStates: [
+        { name: 'My Awesome PG database', type: 'loading' },
+        { name: 'Redis cache (PROD)', type: 'loaded', variables: VARIABLES_FULL },
+      ],
+    },
+  }],
+});
+
+export const loadedWithSomeLoadingLinkedApps = makeStory(conf, {
+  items: [{
+    type: 'app',
+    appName: 'Foobar backend python',
+    state: {
+      type: 'loaded',
+      servicesStates: [
+        { name: 'The mighty maven Java app', type: 'loading' },
+        { name: 'Node.js frontend preprod', type: 'loaded', variables: VARIABLES_FULL },
+        { name: 'Auth gateway for backend', type: 'loading' },
+      ],
+    },
+  }],
+});
+
+export const loadedWithEmptyLinkedAddons = makeStory(conf, {
+  items: [{
+    type: 'addon',
+    appName: 'Foobar backend python',
+    state: { type: 'loaded', servicesStates: [] },
+  }],
+});
+
+export const loadedWithEmptyLinkedApps = makeStory(conf, {
+  items: [{
+    type: 'app',
+    appName: 'Foobar backend python',
+    state: { type: 'loaded', servicesStates: [] },
+  }],
+});
+
+export const loadedWithLinkedAddons = makeStory(conf, {
+  items: [{
+    type: 'addon',
+    appName: 'Foobar backend python',
+    state: {
+      type: 'loaded',
+      servicesStates: [
+        { name: 'My Awesome PG database', variables: VARIABLES_FULL },
+        { name: 'Redis cache (PROD)', variables: VARIABLES_FULL },
+      ],
+    },
+  }],
+});
+
+export const loadedWithLinkedApps = makeStory(conf, {
+  items: [{
+    type: 'app',
+    appName: 'Foobar backend python',
+    state: {
+      type: 'loaded',
+      servicesStates: [
         { name: 'The mighty maven Java app', variables: VARIABLES_FULL },
         { name: 'Node.js frontend preprod', variables: VARIABLES_FULL },
         { name: 'Auth gateway for backend', variables: VARIABLES_FULL },
       ],
     },
-  ],
+  }],
 });
 
-export const loadingWithAddons = makeStory(conf, {
-  items: [{ type: 'addon', appName: 'Foobar backend python' }],
+export const errorWithLinkedAddons = makeStory(conf, {
+  items: [{ type: 'addon', appName: 'Foobar backend python', state: { type: 'error' } }],
 });
 
-export const loadingWithLinkedApps = makeStory(conf, {
-  items: [{ type: 'app', appName: 'Foobar backend python' }],
-});
-
-export const skeletonWithAddons = makeStory(conf, {
+export const errorWithOneLinkedAddon = makeStory(conf, {
   items: [{
     type: 'addon',
     appName: 'Foobar backend python',
-    services: [
-      { name: 'My Awesome PG database' },
-      { name: 'Redis cache (PROD)' },
-    ],
+    state: {
+      type: 'loaded',
+      servicesStates: [
+        { name: 'My Awesome PG database', type: 'error' },
+        { name: 'Redis cache (PROD)', type: 'loaded', variables: VARIABLES_FULL },
+      ],
+    },
   }],
 });
 
-export const skeletonWithLinkedApps = makeStory(conf, {
+export const errorWithLinkedApps = makeStory(conf, {
+  items: [{ type: 'app', appName: 'Foobar backend python', state: { type: 'error' } }],
+});
+
+export const errorWithOneLinkedApp = makeStory(conf, {
   items: [{
     type: 'app',
     appName: 'Foobar backend python',
-    services: [
-      { name: 'The mighty maven Java app' },
-      { name: 'Node.js frontend preprod' },
-      { name: 'Auth gateway for backend' },
-    ],
-  }],
-});
-
-export const emptyWithAddons = makeStory(conf, {
-  items: [{ type: 'addon', appName: 'Foobar backend python', services: [] }],
-});
-
-export const emptyWithLinkedApps = makeStory(conf, {
-  items: [{ type: 'app', appName: 'Foobar backend python', services: [] }],
-});
-
-export const dataLoadedWithAddons = makeStory(conf, {
-  items: [{
-    type: 'addon',
-    appName: 'Foobar backend python',
-    services: [
-      { name: 'My Awesome PG database', variables: VARIABLES_FULL },
-      { name: 'Redis cache (PROD)', variables: VARIABLES_FULL },
-    ],
-  }],
-});
-
-export const dataLoadedWithLinkedApps = makeStory(conf, {
-  items: [{
-    type: 'app',
-    appName: 'Foobar backend python',
-    services: [
-      { name: 'The mighty maven Java app', variables: VARIABLES_FULL },
-      { name: 'Node.js frontend preprod', variables: VARIABLES_FULL },
-      { name: 'Auth gateway for backend', variables: VARIABLES_FULL },
-    ],
-  }],
-});
-
-export const errorWithAddonsList = makeStory(conf, {
-  items: [{ type: 'addon', appName: 'Foobar backend python', error: true }],
-});
-
-export const errorWithAddon = makeStory(conf, {
-  items: [{
-    type: 'addon',
-    appName: 'Foobar backend python',
-    services: [
-      { name: 'My Awesome PG database', error: 'loading' },
-      { name: 'Redis cache (PROD)', variables: VARIABLES_FULL },
-    ],
-  }],
-});
-
-export const errorWithLinkedAppsList = makeStory(conf, {
-  items: [{ type: 'app', appName: 'Foobar backend python', error: true }],
-});
-
-export const errorWithLinkedApp = makeStory(conf, {
-  items: [{
-    type: 'app',
-    appName: 'Foobar backend python',
-    services: [
-      { name: 'The mighty maven Java app', variables: VARIABLES_FULL },
-      { name: 'Node.js frontend preprod', error: 'loading' },
-      { name: 'Auth gateway for backend', variables: VARIABLES_FULL },
-    ],
+    state: {
+      type: 'loaded',
+      servicesStates: [
+        { name: 'The mighty maven Java app', type: 'loaded', variables: VARIABLES_FULL },
+        { name: 'Node.js frontend preprod', type: 'error' },
+        { name: 'Auth gateway for backend', type: 'loaded', variables: VARIABLES_FULL },
+      ],
+    },
   }],
 });
 
@@ -140,16 +180,22 @@ export const simulationsWithAddons = makeStory(conf, {
   }],
   simulations: [
     storyWait(2000, ([component]) => {
-      component.services = [
-        { name: 'My Awesome PG database' },
-        { name: 'Redis cache (PROD)' },
-      ];
+      component.state = {
+        type: 'loaded',
+        servicesStates: [
+          { name: 'My Awesome PG database', type: 'loading' },
+          { name: 'Redis cache (PROD)', type: 'loading' },
+        ],
+      };
     }),
     storyWait(2000, ([component]) => {
-      component.services = [
-        { name: 'My Awesome PG database', variables: VARIABLES_FULL },
-        { name: 'Redis cache (PROD)', variables: VARIABLES_FULL },
-      ];
+      component.state = {
+        type: 'loaded',
+        servicesStates: [
+          { name: 'My Awesome PG database', type: 'loaded', variables: VARIABLES_FULL },
+          { name: 'Redis cache (PROD)', type: 'error' },
+        ],
+      };
     }),
   ],
 });
@@ -161,36 +207,42 @@ export const simulationsWithLinkedApps = makeStory(conf, {
   }],
   simulations: [
     storyWait(2000, ([component]) => {
-      component.services = [
-        { name: 'The mighty maven Java app' },
-        { name: 'Node.js frontend preprod' },
-        { name: 'Auth gateway for backend' },
-      ];
+      component.state = {
+        type: 'loaded',
+        servicesStates: [
+          { name: 'The mighty maven Java app', type: 'loading' },
+          { name: 'Node.js frontend preprod', type: 'loading' },
+          { name: 'Auth gateway for backend', type: 'loading' },
+        ],
+      };
     }),
     storyWait(2000, ([component]) => {
-      component.services = [
-        { name: 'The mighty maven Java app', variables: VARIABLES_FULL },
-        { name: 'Node.js frontend preprod', variables: VARIABLES_FULL },
-        { name: 'Auth gateway for backend', variables: VARIABLES_FULL },
-      ];
+      component.state = {
+        type: 'loaded',
+        servicesStates: [
+          { name: 'The mighty maven Java app', type: 'loaded', variables: VARIABLES_FULL },
+          { name: 'Node.js frontend preprod', type: 'loaded', variables: VARIABLES_FULL },
+          { name: 'Auth gateway for backend', type: 'error' },
+        ],
+      };
     }),
   ],
 });
 
 enhanceStoriesNames({
   defaultStory,
-  loadingWithAddons,
+  loadingWithLinkedAddons,
   loadingWithLinkedApps,
-  emptyWithAddons,
-  emptyWithLinkedApps,
-  skeletonWithAddons,
-  skeletonWithLinkedApps,
-  dataLoadedWithAddons,
-  dataLoadedWithLinkedApps,
-  errorWithAddonsList,
-  errorWithAddon,
-  errorWithLinkedAppsList,
-  errorWithLinkedApp,
+  loadedWithSomeLoadingLinkedAddons,
+  loadedWithSomeLoadingLinkedApps,
+  loadedWithEmptyLinkedAddons,
+  loadedWithEmptyLinkedApps,
+  loadedWithLinkedAddons,
+  loadedWithLinkedApps,
+  errorWithLinkedAddons,
+  errorWithOneLinkedAddon,
+  errorWithLinkedApps,
+  errorWithOneLinkedApp,
   simulationsWithAddons,
   simulationsWithLinkedApps,
 });

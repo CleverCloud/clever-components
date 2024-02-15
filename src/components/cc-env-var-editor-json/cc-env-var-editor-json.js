@@ -6,6 +6,9 @@ import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 
+/**
+ * @type {Array<EnvVar>}
+ */
 const SKELETON_VARIABLES = [
   { name: 'VARIABLE_ONE', value: '' },
   { name: 'VARIABLE_FOOBAR', value: '' },
@@ -13,9 +16,9 @@ const SKELETON_VARIABLES = [
 ];
 
 /**
- * @typedef {import('../common.types.js').ParseError} ParseError
- * @typedef {import('../common.types.js').ParserOptions} ParserOptions
- * @typedef {import('../common.types.js').Variable} Variable
+ * @typedef {import('../common.types.js').EnvVarEditorState} EnvVarEditorState
+ * @typedef {import('../common.types.js').EnvVarParseError} EnvVarParseError
+ * @typedef {import('../common.types.js').EnvVar} EnvVar
  */
 
 /**
@@ -23,16 +26,15 @@ const SKELETON_VARIABLES = [
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<Variable[]>} cc-env-var-editor-json:change - Fires the new list of variables whenever something changes in the list.
+ * @event {CustomEvent<EnvVar[]>} cc-env-var-editor-json:change - Fires the new list of variables whenever something changes in the list.
  */
 export class CcEnvVarEditorJson extends LitElement {
 
   static get properties () {
     return {
       disabled: { type: Boolean },
-      parserOptions: { type: Object },
       readonly: { type: Boolean },
-      variables: { type: Array },
+      state: { type: Object },
       _errors: { type: Array, state: true },
       _formattedErrors: { type: Array, state: true },
       _skeleton: { type: Boolean, state: true },
@@ -46,16 +48,13 @@ export class CcEnvVarEditorJson extends LitElement {
     /** @type {boolean} Sets `disabled` attribute on inputs and buttons. */
     this.disabled = false;
 
-    /** @type {ParserOptions} Sets the options for the variables parser. */
-    this.parserOptions = { mode: null };
-
     /** @type {boolean} Sets `readonly` attribute on main input and hides buttons. */
     this.readonly = false;
 
-    /** @type {Variable[]|null} Sets the list of variables. */
-    this.variables = null;
+    /** @type {EnvVarEditorState} Sets the variables state. */
+    this.state = { type: 'loading' };
 
-    /** @type {ParseError[]} */
+    /** @type {EnvVarParseError[]} */
     this._errors = [];
 
     /** @type {boolean} */
@@ -112,7 +111,7 @@ export class CcEnvVarEditorJson extends LitElement {
 
   _onInput ({ detail: value }) {
     this._variablesAsJson = value;
-    const { variables, errors } = parseRawJson(value, this.parserOptions);
+    const { variables, errors } = parseRawJson(value, { mode: this.state.validationMode });
     this._setErrors(errors);
 
     // for INVALID_JSON and INVALID_JSON_FORMAT errors, the parsed 'variables' is an empty array: we don't want to dispatch this case
@@ -123,9 +122,9 @@ export class CcEnvVarEditorJson extends LitElement {
   }
 
   willUpdate (changedProperties) {
-    if (changedProperties.has('variables')) {
-      this._skeleton = (this.variables == null);
-      const vars = this._skeleton ? SKELETON_VARIABLES : this.variables;
+    if (changedProperties.has('state')) {
+      this._skeleton = (this.state.type === 'loading');
+      const vars = this._skeleton ? SKELETON_VARIABLES : this.state.variables;
       const filteredVariables = vars
         .filter(({ isDeleted }) => !isDeleted);
       this._variablesAsJson = toJson(filteredVariables);
@@ -162,7 +161,6 @@ export class CcEnvVarEditorJson extends LitElement {
                 ${msg}
               </div>
             </cc-notice>
-
           `)}
         </div>
       ` : ''}
