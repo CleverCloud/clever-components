@@ -1,7 +1,7 @@
 import esbuild from 'esbuild';
 
-// /!\ This is an experimentatl plugin for now
-// We created this because some of our deps have way to many separated ES module files (RxJS, Leaflet...)
+// /!\ This is an experimental plugin for now
+// We created this because some of our deps have way to many separated ES module files (Leaflet, chart.js...)
 export function esbuildBundlePlugin ({ pathsToBundle }) {
   return {
 
