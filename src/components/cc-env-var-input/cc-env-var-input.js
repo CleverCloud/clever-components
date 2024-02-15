@@ -7,18 +7,18 @@ import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 
 /**
- * @typedef {import('./cc-env-var-input.types.js').VariableName} VariableName
- * @typedef {import('../common.types.js').Variable} Variable
+ * @typedef {import('./cc-env-var-input.types.js').EnvVarName} EnvVarName
+ * @typedef {import('../common.types.js').EnvVar} EnvVar
  */
 
 /**
- * A small input to manipulate an environement variable.
+ * A small input to manipulate an environment variable.
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<VariableName>} cc-env-var-input:delete - Fires a variable name whenever the delete button is clicked.
- * @event {CustomEvent<Variable>} cc-env-var-input:input - Fires a variable whenever its value changes.
- * @event {CustomEvent<VariableName>} cc-env-var-input:keep - Fires a variable name whenever the keep button is clicked.
+ * @event {CustomEvent<EnvVarName>} cc-env-var-input:delete - Fires a variable name whenever the delete button is clicked.
+ * @event {CustomEvent<EnvVar>} cc-env-var-input:input - Fires a variable whenever its value changes.
+ * @event {CustomEvent<EnvVarName>} cc-env-var-input:keep - Fires a variable name whenever the keep button is clicked.
  */
 export class CcEnvVarInput extends LitElement {
 

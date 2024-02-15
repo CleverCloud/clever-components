@@ -7,7 +7,7 @@ import '../cc-notice/cc-notice.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 
 /**
- * @type {Array<Variable>}
+ * @type {Array<EnvVar>}
  */
 const SKELETON_VARIABLES = [
   { name: 'VARIABLE_ONE', value: '' },
@@ -16,9 +16,9 @@ const SKELETON_VARIABLES = [
 ];
 
 /**
- * @typedef {import('./cc-env-var-editor-json.types.js').EnvVarEditorJsonState} EnvVarEditorJsonState
- * @typedef {import('../common.types.js').ParseError} ParseError
- * @typedef {import('../common.types.js').Variable} Variable
+ * @typedef {import('../common.types.js').EnvVarEditorState} EnvVarEditorState
+ * @typedef {import('../common.types.js').EnvVarParseError} EnvVarParseError
+ * @typedef {import('../common.types.js').EnvVar} EnvVar
  */
 
 /**
@@ -26,7 +26,7 @@ const SKELETON_VARIABLES = [
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<Variable[]>} cc-env-var-editor-json:change - Fires the new list of variables whenever something changes in the list.
+ * @event {CustomEvent<EnvVar[]>} cc-env-var-editor-json:change - Fires the new list of variables whenever something changes in the list.
  */
 export class CcEnvVarEditorJson extends LitElement {
 
@@ -51,10 +51,10 @@ export class CcEnvVarEditorJson extends LitElement {
     /** @type {boolean} Sets `readonly` attribute on main input and hides buttons. */
     this.readonly = false;
 
-    /** @type {EnvVarEditorJsonState} Sets the variables state. */
+    /** @type {EnvVarEditorState} Sets the variables state. */
     this.state = { type: 'loading' };
 
-    /** @type {ParseError[]} */
+    /** @type {EnvVarParseError[]} */
     this._errors = [];
 
     /** @type {boolean} */

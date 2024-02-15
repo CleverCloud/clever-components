@@ -1,3 +1,3 @@
-export interface VariableName {
+export interface EnvVarName {
   name: string;
 }

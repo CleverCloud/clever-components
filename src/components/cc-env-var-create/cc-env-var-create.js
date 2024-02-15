@@ -8,7 +8,7 @@ import { i18n } from '../../lib/i18n.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 
 /**
- * @typedef {import('../common.types.js').Variable} Variable
+ * @typedef {import('../common.types.js').EnvVar} EnvVar
  * @typedef {import('../common.types.js').EnvVarValidationMode} EnvVarValidationMode
  */
 
@@ -22,7 +22,7 @@ import { linkStyles } from '../../templates/cc-link/cc-link.js';
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<Variable>} cc-env-var-create:create - Fires the variable whenever the add button is clicked.
+ * @event {CustomEvent<EnvVar>} cc-env-var-create:create - Fires the variable whenever the add button is clicked.
  */
 export class CcEnvVarCreate extends LitElement {
 

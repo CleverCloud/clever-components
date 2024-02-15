@@ -1,4 +1,4 @@
-import { EnvVarValidationMode, Variable } from "../common.types";
+import { EnvVarValidationMode, EnvVar } from "../common.types";
 
 export type EnvVarFormState = EnvVarFormStateLoading | EnvVarFormStateLoaded | EnvVarFormStateSaving | EnvVarFormStateError;
 
@@ -8,13 +8,13 @@ interface EnvVarFormStateLoading {
 
 interface EnvVarFormStateLoaded {
   type: 'loaded';
-  variables: Array<Variable>;
+  variables: Array<EnvVar>;
   validationMode: EnvVarValidationMode;
 }
 
 interface EnvVarFormStateSaving {
   type: 'saving';
-  variables: Array<Variable>;
+  variables: Array<EnvVar>;
   validationMode: EnvVarValidationMode;
 }
 

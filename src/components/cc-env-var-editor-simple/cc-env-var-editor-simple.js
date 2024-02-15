@@ -6,7 +6,7 @@ import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 
 /**
- * @type {Array<Variable>}
+ * @type {Array<EnvVar>}
  */
 const SKELETON_VARIABLES = [
   { name: 'VARIABLE_ONE', value: '' },
@@ -15,8 +15,8 @@ const SKELETON_VARIABLES = [
 ];
 
 /**
- * @typedef {import('cc-env-var-editor-simple.types.js').EnvVarEditorSimpleState} EnvVarEditorSimpleState
- * @typedef {import('../common.types.js').Variable} Variable
+ * @typedef {import('../common.types.js').EnvVarEditorState} EnvVarEditorState
+ * @typedef {import('../common.types.js').EnvVar} EnvVar
  */
 
 /**
@@ -24,7 +24,7 @@ const SKELETON_VARIABLES = [
  *
  * @cssdisplay grid / none (with `[hidden]`)
  *
- * @event {CustomEvent<Variable[]>} cc-env-var-editor-simple:change - Fires the new list of variables whenever something changes in the list.
+ * @event {CustomEvent<EnvVar[]>} cc-env-var-editor-simple:change - Fires the new list of variables whenever something changes in the list.
  */
 export class CcEnvVarEditorSimple extends LitElement {
 
@@ -45,12 +45,12 @@ export class CcEnvVarEditorSimple extends LitElement {
     /** @type {boolean} Sets `readonly` attribute on inputs and hides buttons. */
     this.readonly = false;
 
-    /** @type {EnvVarEditorSimpleState} Sets the variables state. */
+    /** @type {EnvVarEditorState} Sets the variables state. */
     this.state = { type: 'loading' };
   }
 
   /**
-   * @type {Array<Variable>} variables
+   * @type {Array<EnvVar>} variables
    */
   _changeVariables (variables) {
     this.state = {

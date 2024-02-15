@@ -1,4 +1,4 @@
-import { Variable } from "../common.types";
+import { EnvVar } from "../common.types";
 
 export type EnvVarLinkedServicesState = EnvVarLinkedServicesStateLoading | EnvVarLinkedServicesStateLoaded | EnvVarLinkedServicesStateError;
 
@@ -27,7 +27,7 @@ interface LinkedServiceStateLoading {
 interface LinkedServiceStateLoaded {
   type: 'loaded';
   name: string;
-  variables: Array<Variable>;
+  variables: Array<EnvVar>;
 }
 
 interface LinkedServiceStateError {

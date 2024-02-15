@@ -15,7 +15,7 @@ import { linkStyles } from '../../templates/cc-link/cc-link.js';
 /**
  * @typedef {import('./cc-env-var-form.types.js').EnvVarFormContextType} EnvVarFormContextType
  * @typedef {import('./cc-env-var-form.types.js').EnvVarFormState} EnvVarFormState
- * @typedef {import('../common.types.js').Variable} Variable
+ * @typedef {import('../common.types.js').EnvVar} EnvVar
  */
 
 /**
@@ -29,7 +29,7 @@ import { linkStyles } from '../../templates/cc-link/cc-link.js';
  * @cssdisplay block
  *
  * @event {CustomEvent} cc-env-var-form:restart-app - Fires whenever the restart app button is clicked.
- * @event {CustomEvent<Variable[]>} cc-env-var-form:submit - Fires the new list of variables whenever the submit button is clicked.
+ * @event {CustomEvent<EnvVar[]>} cc-env-var-form:submit - Fires the new list of variables whenever the submit button is clicked.
  *
  * @slot - Sets custom HTML description.
  */
@@ -76,7 +76,7 @@ export class CcEnvVarForm extends LitElement {
 
     this._editorsState = { type: 'loading' };
 
-    /** @type {Variable[]|null} */
+    /** @type {EnvVar[]|null} */
     this._currentVariables = null;
 
     /** @type {'SIMPLE'|'EXPERT'|'JSON'} */
@@ -174,7 +174,7 @@ export class CcEnvVarForm extends LitElement {
   }
 
   /**
-   * @type {Array<Variable>} variables
+   * @type {Array<EnvVar>} variables
    */
   _resetForm (variables) {
     this._initVariables = variables;

@@ -6,7 +6,7 @@ import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 
-/** @type {Variable[]} */
+/** @type {EnvVar[]} */
 const SKELETON_VARIABLES = [
   { name: 'VARIABLE_ONE', value: '' },
   { name: 'VARIABLE_FOOBAR', value: '' },
@@ -14,9 +14,9 @@ const SKELETON_VARIABLES = [
 ];
 
 /**
- * @typedef {import('./cc-env-var-editor-expert.types.js').EnvVarEditorExpertState} EnvVarEditorExpertState
- * @typedef {import('../common.types.js').ParseError} ParseError
- * @typedef {import('../common.types.js').Variable} Variable
+ * @typedef {import('../common.types.js').EnvVarEditorState} EnvVarEditorState
+ * @typedef {import('../common.types.js').EnvVarParseError} EnvVarParseError
+ * @typedef {import('../common.types.js').EnvVar} EnvVar
  */
 
 /**
@@ -24,7 +24,7 @@ const SKELETON_VARIABLES = [
  *
  * @cssdisplay block / none (with `[hidden]`)
  *
- * @event {CustomEvent<Variable[]>} cc-env-var-editor-expert:change - Fires the new list of variables whenever something changes in the list.
+ * @event {CustomEvent<EnvVar[]>} cc-env-var-editor-expert:change - Fires the new list of variables whenever something changes in the list.
  */
 export class CcEnvVarEditorExpert extends LitElement {
 
@@ -48,10 +48,10 @@ export class CcEnvVarEditorExpert extends LitElement {
     /** @type {boolean} Sets `readonly` attribute on main input and hides buttons. */
     this.readonly = false;
 
-    /** @type {EnvVarEditorExpertState} Sets the variables editor state.*/
+    /** @type {EnvVarEditorState} Sets the variables editor state.*/
     this.state = { type: 'loading' };
 
-    /** @type {ParseError[]} */
+    /** @type {EnvVarParseError[]} */
     this._errors = [];
 
     /** @type {boolean} */

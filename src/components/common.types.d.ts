@@ -51,14 +51,6 @@ interface Flavor {
   monthlyCost?: number;
 }
 
-export interface Variable {
-  name: string;
-  value: string;
-  isNew?: boolean;
-  isDeleted?: boolean;
-  isEdited?: boolean;
-}
-
 export interface IconModel {
   content: string;
 }
@@ -169,13 +161,37 @@ type ToggleStateType = 'off' | 'open' | 'close';
 type AppStatus = "restart-failed" | "restarting" | "restarting-with-downtime"
   | "running" | "start-failed" | "starting" | "stopped" | "unknown";
 
-interface ParseError {
+/* region env-var */
+
+export interface EnvVar {
+  name: string;
+  value: string;
+  isNew?: boolean;
+  isDeleted?: boolean;
+  isEdited?: boolean;
+}
+
+interface EnvVarParseError {
   line?: number;
   msg: string;
   isWarning: Boolean;
 }
 
 type EnvVarValidationMode = 'simple' | 'strict';
+
+type EnvVarEditorState = EnvVarEditorStateLoading | EnvVarEditorStateLoaded;
+
+interface EnvVarEditorStateLoading {
+  type: 'loading';
+}
+
+interface EnvVarEditorStateLoaded {
+  type: 'loaded';
+  validationMode: EnvVarValidationMode;
+  variables: Array<EnvVar>;
+}
+
+/* endregion */
 
 export type NotificationIntent = "info" | "success" | "warning" | "danger";
 
