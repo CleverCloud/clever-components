@@ -349,7 +349,7 @@ export class CcLogsInstances extends LitElement {
           // deployment date is the date of the deployment of the first instance in the group
           .map((instances) => ({ deploymentDate: instances[0].deployment.creationDate, instances }))
           // sort by deployment date
-          .sort((o1, o2) => o1.deploymentDate - o2.deploymentDate)
+          .sort((o1, o2) => o2.deploymentDate - o1.deploymentDate)
           // render group of instances
           .map(({ instances }) => html`
             <fieldset class="deployment">
