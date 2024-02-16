@@ -401,8 +401,7 @@ export class CcLogsInstances extends LitElement {
       <legend class="deployment-detail">
         <div>${this._renderDeploymentState(deployment.state)}</div>
         <div>
-          ${i18n('cc-logs-instances.deployment.deployed')}
-          <cc-datetime-relative datetime=${deployment.creationDate.toISOString()}></cc-datetime-relative>
+          ${i18n('cc-logs-instances.deployment.deployed')}&nbsp;<cc-datetime-relative datetime=${deployment.creationDate.toISOString()}></cc-datetime-relative>
         </div>
         ${this._renderCommit(deployment.commitId)}
       </legend>
