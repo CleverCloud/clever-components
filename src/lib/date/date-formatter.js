@@ -30,7 +30,7 @@ function getDateTimeFormat (timezone) {
       minute: '2-digit',
       second: '2-digit',
       fractionalSecondDigits: 3,
-      hour12: false,
+      hourCycle: 'h23',
       timeZoneName: 'longOffset',
       timeZone: (timezone === 'local') ? undefined : timezone,
     });
