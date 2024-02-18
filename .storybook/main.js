@@ -48,6 +48,9 @@ const config = {
     config.plugins?.unshift(rollupMdToCsfPlugin());
 
     if (configType === 'DEVELOPMENT') {
+      // serve and process all files instead of storybook related files only
+      config.appType = 'mpa';
+
       // generate CEM on demand and serve it
       config.plugins?.push(generateCem());
     }

@@ -15,7 +15,7 @@ window.addEventListener('cc:notify', (event) => {
 const { definition, ...componentProperties } = Object.fromEntries(new URL(document.location).searchParams.entries());
 const componentName = definition.split('.').shift();
 
-import(`/src/components/${componentName}/${definition}.js`);
+import(`../src/components/${componentName}/${definition}.js`);
 
 const $container = document.querySelector('cc-smart-container');
 
