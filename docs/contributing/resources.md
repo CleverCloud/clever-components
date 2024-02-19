@@ -15,7 +15,6 @@ Here's list of interesting things to read, watch and listen to if you're working
 * [Effective Skeleton Screens](https://timkadlec.com/remembers/2020-11-02-skeleton-screens/)
 * [Lit docs](https://lit.dev/)
 * [Naming Tokens in Design Systems](https://medium.com/eightshapes-llc/naming-tokens-in-design-systems-9e86c7444676)
-* [RxJS docs](https://rxjs.dev/)
 * [Storybook docs](https://storybook.js.org/)
 * [The performance benefits of rel=noopener](https://jakearchibald.com/2016/performance-benefits-of-rel-noopener/)
 * [Un petit pas pour l’em, un grand pas pour le Web - Nicolas Hoizey](https://vimeo.com/79204119)

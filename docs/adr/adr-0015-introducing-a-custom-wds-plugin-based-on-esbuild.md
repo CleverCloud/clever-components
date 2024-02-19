@@ -25,6 +25,8 @@ We recently introduced several dependencies as ES modules in our components:
 * The maps are now using an ESM version of [Leaflet](https://leafletjs.com/)
 * The charts are now using an ESM version of [chart.js](chartjs.org/)
 
+_edit (2024-02-15)_: actually, we do not use RxJS library anymore.
+
 ## The problem
 
 Because of those changes, the number of files loaded by the prebuilt Storybook in dev mode increased a lot.

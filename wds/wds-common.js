@@ -12,7 +12,6 @@ function commonJsIdentifiers (ids) {
 export const esbuildBundlePluginWithConfig = esbuildBundlePlugin({
   pathsToBundle: [
     '/src/lib/leaflet-esm.js',
-    '/node_modules/rxjs/dist/esm5/index.js',
     '/node_modules/chart.js/dist/chart.esm.js',
   ],
 });
