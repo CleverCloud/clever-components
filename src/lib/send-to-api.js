@@ -1,4 +1,4 @@
-import { addOauthHeader } from '@clevercloud/client/esm/oauth.browser.js';
+import { addOauthHeader } from '@clevercloud/client/esm/oauth.js';
 import { prefixUrl } from '@clevercloud/client/esm/prefix-url.js';
 import { execWarpscript } from '@clevercloud/client/esm/request-warp10.fetch.js';
 import { request } from '@clevercloud/client/esm/request.fetch.js';
