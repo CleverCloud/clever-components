@@ -82,4 +82,4 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-goToProductIndex(0);
+goToProduct('node::node');

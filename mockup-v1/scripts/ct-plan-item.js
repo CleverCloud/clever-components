@@ -3,6 +3,8 @@ import {
   iconRemixCheckboxCircleFill as selectedIcon,
 } from '../../src/assets/cc-remix.icons.js';
 
+// TODO https://component.gallery/components/slider/
+
 export class CtPlanItem extends LitElement {
   static get properties () {
     return {

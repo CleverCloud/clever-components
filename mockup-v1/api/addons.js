@@ -2169,7 +2169,7 @@ export const API_ADDONS_RAW = [
       {
         id: 'plan_8da4539d-198b-48da-9d4e-df4e832085fe',
         name: 'XXL Medium Space',
-        slug: 'xxx_med',
+        slug: 'xxl_med',
         price: 1075.00,
         price_id: 'mongodb.xxx_med',
         features: [
