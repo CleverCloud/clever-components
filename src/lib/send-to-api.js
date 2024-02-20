@@ -4,6 +4,7 @@ import { execWarpscript } from '@clevercloud/client/esm/request-warp10.fetch.js'
 import { request } from '@clevercloud/client/esm/request.fetch.js';
 import { withCache } from '@clevercloud/client/esm/with-cache.js';
 import { withOptions } from '@clevercloud/client/esm/with-options.js';
+import { dispatchCustomEvent } from './events.js';
 
 /**
  *
@@ -29,7 +30,11 @@ export function sendToApi ({ apiConfig = {}, signal, cacheDelay, timeout }) {
         .then(prefixUrl(API_HOST))
         .then(addOauthHeader(tokens))
         .then(withOptions({ signal, timeout }))
-        .then(request);
+        .then(request)
+        .catch((error) => {
+          dispatchCustomEvent(window, 'cc-api:error', error);
+          throw error;
+        });
     });
   };
 }
