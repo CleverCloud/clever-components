@@ -203,6 +203,63 @@ export const longContentWihFixedWidth = makeStory(
   },
 );
 
+const customBaseItems = [
+  { label: 'Favourite artist', value: 'LENNON', options: baseOptions },
+  { label: 'Favourite artist', value: 'LENNON', options: baseOptions, required: true },
+];
+
+export const customLabelStyle = makeStory({ ...conf, displayMode: 'block' }, {
+  // language=CSS
+  css: `
+    cc-select {
+      --cc-select-label-color: #475569;
+      --cc-select-label-font-size: 1.2em;
+      --cc-select-label-font-weight: bold;
+      font-size: 1.25em;
+      max-width: 32em;
+    }
+    cc-select:nth-of-type(${customBaseItems.length + 'n'}) {
+      margin-block-end: 2em;
+    }
+  `,
+  items: [
+    ...customBaseItems,
+    ...customBaseItems.map((item) => ({
+      ...item,
+      innerHTML: `<p slot="help">There can be only one.</p>`,
+    })),
+    ...customBaseItems.map((item) => ({
+      ...item,
+      innerHTML: `<p slot="error">A value must be selected.</p>`,
+    })),
+    ...customBaseItems.map((item) => ({
+      ...item,
+      innerHTML: `<p slot="help">There can be only one.</p><p slot="error">A value must be selected.</p>`,
+    })),
+    ...customBaseItems.map((item) => ({
+      ...item,
+      inline: true,
+    })),
+    ...customBaseItems.map((item) => ({
+      ...item,
+      inline: true,
+      innerHTML: `<p slot="help">There can be only one.</p>`,
+    })),
+    ...customBaseItems.map((item) => ({
+      ...item,
+      inline: true,
+      innerHTML: `<p slot="error">A value must be selected.</p>`,
+    })),
+    ...customBaseItems.map((item) => ({
+      ...item,
+      inline: true,
+      innerHTML: `<p slot="help">There can be only one.</p><p slot="error">A value must be selected.</p>`,
+    })),
+  ],
+});
+
+export const allFormControls = allFormControlsStory;
+
 export const simulation = makeStory(conf, {
   items: [{
     label: 'Favourite artist',
@@ -237,5 +294,3 @@ export const simulation = makeStory(conf, {
     }),
   ],
 });
-
-export const allFormControls = allFormControlsStory;
