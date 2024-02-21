@@ -479,7 +479,7 @@ export const translations = {
   'cc-logs.select-button.label': ({ index }) => `Select the line ${index}`,
   'cc-logs.unselect-button.label': ({ index }) => `Unselect the line ${index}`,
   //#endregion
-  //#region cc-logs-controller
+  //#region cc-logs-control
   'cc-logs-control.date-display': `Date format`,
   'cc-logs-control.date-display.datetime-iso': `Date and hour ISO`,
   'cc-logs-control.date-display.datetime-short': `Date and hour`,
@@ -785,6 +785,12 @@ export const translations = {
   //#endregion
   //#region cc-product-card
   'cc-product-card.select': (name) => `${name} - select this product`,
+  //#endregion
+  //#region cc-product-list
+  'cc-product-list.all-label': `All`,
+  'cc-product-list.filter-category-legend': `Filter by category`,
+  'cc-product-list.search-empty': `No products matching your search criteria were found.`,
+  'cc-product-list.search-label': `Search for a product`,
   //#endregion
   //#region cc-select
   'cc-select.required': `required`,

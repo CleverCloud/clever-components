@@ -492,7 +492,7 @@ export const translations = {
   'cc-logs.select-button.label': ({ index }) => `Sélectionner la ligne ${index}`,
   'cc-logs.unselect-button.label': ({ index }) => `Désélectionner la ligne ${index}`,
   //#endregion
-  //#region cc-logs-controller
+  //#region cc-logs-control
   'cc-logs-control.date-display': `Format de date`,
   'cc-logs-control.date-display.datetime-iso': `Date et heure ISO`,
   'cc-logs-control.date-display.datetime-short': `Date et heure`,
@@ -798,6 +798,12 @@ export const translations = {
   //#endregion
   //#region cc-product-card
   'cc-product-card.select': (name) => `${name} - sélectionner ce produit`,
+  //#endregion
+  //#region cc-product-list
+  'cc-product-list.all-label': `Tout`,
+  'cc-product-list.filter-category-legend': `Filtrer par catégorie`,
+  'cc-product-list.search-empty': `Aucun produit ne correspond à vos critères de recherche.`,
+  'cc-product-list.search-label': `Chercher un produit`,
   //#endregion
   //#region cc-select
   'cc-select.required': `obligatoire`,
