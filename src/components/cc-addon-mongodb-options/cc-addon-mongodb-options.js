@@ -12,7 +12,7 @@ import { ccAddonEncryptionAtRestOption } from '../../templates/cc-addon-encrypti
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<AddonOption>} cc-addon-mongodb-options:submit - Fires when the form is submitted.
+ * @fires {CustomEvent<AddonOption>} cc-addon-mongodb-options:submit - Fires when the form is submitted.
  */
 export class CcAddonMongodbOptions extends LitElement {
 

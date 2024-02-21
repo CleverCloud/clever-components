@@ -70,7 +70,7 @@ const DEPLOYMENT_WIP_STATES = ['QUEUED', 'WORK_IN_PROGRESS'];
  *
  * @cssdisplay flex
  *
- * @event {CustomEvent<Array<string>>} cc-logs-instances:selection-change - Fires whenever the instances selection changes
+ * @fires {CustomEvent<Array<string>>} cc-logs-instances:selection-change - Fires whenever the instances selection changes
  */
 export class CcLogsInstances extends LitElement {
 

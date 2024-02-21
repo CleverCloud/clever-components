@@ -43,8 +43,8 @@ import { dispatchCustomEvent, EventHandler } from '../../lib/events.js';
  *
  * @cssdisplay block
  *
- * @event {CustomEvent} cc-popover:open - Fires whenever the popover is opened.
- * @event {CustomEvent} cc-popover:close - Fires whenever the popover is closed.
+ * @fires {CustomEvent} cc-popover:open - Fires whenever the popover is opened.
+ * @fires {CustomEvent} cc-popover:close - Fires whenever the popover is closed.
  *
  * @slot - The area containing the content of the popover.
  * @slot button-content - The area containing the button content.

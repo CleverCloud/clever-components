@@ -25,9 +25,9 @@ const GRAFANA_DOCUMENTATION = 'https://www.clever-cloud.com/doc/administrate/met
  *
  * @cssdisplay block
  *
- * @event {CustomEvent} cc-grafana-info:enable - Fires when the enable button is clicked.
- * @event {CustomEvent} cc-grafana-info:disable - Fires when the disable button is clicked.
- * @event {CustomEvent} cc-grafana-info:reset - Fires when the reset button is clicked.
+ * @fires {CustomEvent} cc-grafana-info:enable - Fires when the enable button is clicked.
+ * @fires {CustomEvent} cc-grafana-info:disable - Fires when the disable button is clicked.
+ * @fires {CustomEvent} cc-grafana-info:reset - Fires when the reset button is clicked.
  */
 export class CcGrafanaInfo extends LitElement {
 

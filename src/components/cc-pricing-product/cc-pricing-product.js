@@ -65,7 +65,7 @@ const DEFAULT_TEMPORALITY_LIST = [{ type: '30-days', digits: 2 }];
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<Plan>} cc-pricing-product:add-plan - Fires the plan whenever a "plus" button is clicked.
+ * @fires {CustomEvent<Plan>} cc-pricing-product:add-plan - Fires the plan whenever a "plus" button is clicked.
  *
  * @cssprop {Color} --cc-pricing-hovered-color - Sets the text color used on hover (defaults: `purple`).
  */

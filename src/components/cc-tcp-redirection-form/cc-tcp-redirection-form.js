@@ -23,8 +23,8 @@ const SKELETON_REDIRECTIONS = [
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<CreateTcpRedirection>} cc-tcp-redirection:create - Fires a redirection namespace whenever the create button is clicked.
- * @event {CustomEvent<DeleteTcpRedirection>} cc-tcp-redirection:delete - Fires a redirection whenever the delete button is clicked.
+ * @fires {CustomEvent<CreateTcpRedirection>} cc-tcp-redirection:create - Fires a redirection namespace whenever the create button is clicked.
+ * @fires {CustomEvent<DeleteTcpRedirection>} cc-tcp-redirection:delete - Fires a redirection whenever the delete button is clicked.
  */
 export class CcTcpRedirectionForm extends LitElement {
 

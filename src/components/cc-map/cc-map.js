@@ -30,9 +30,9 @@ import { leafletStyles } from '../../styles/leaflet.js';
  *
  * @cssdisplay flex
  *
- * @event {CustomEvent<Point>} cc-map:marker-click - Fires the corresponding point whenever a marker is clicked.
- * @event {CustomEvent<Point>} cc-map:marker-enter - Fires the corresponding point whenever a marker is entered by the mouse.
- * @event {CustomEvent<Point>} cc-map:marker-leave - Fires the corresponding point whenever a marker is left by the mouse.
+ * @fires {CustomEvent<Point>} cc-map:marker-click - Fires the corresponding point whenever a marker is clicked.
+ * @fires {CustomEvent<Point>} cc-map:marker-enter - Fires the corresponding point whenever a marker is entered by the mouse.
+ * @fires {CustomEvent<Point>} cc-map:marker-leave - Fires the corresponding point whenever a marker is left by the mouse.
  *
  * @slot - The legend and/or details for the map (displayed at the bottom).
  */

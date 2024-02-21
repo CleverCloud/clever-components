@@ -13,7 +13,7 @@ import { ccAddonEncryptionAtRestOption } from '../../templates/cc-addon-encrypti
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<AddonOption>} cc-addon-jenkins-options:submit - Fires when the form is submitted.
+ * @fires {CustomEvent<AddonOption>} cc-addon-jenkins-options:submit - Fires when the form is submitted.
  */
 export class CcAddonJenkinsOptions extends LitElement {
 

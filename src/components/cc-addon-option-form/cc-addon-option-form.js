@@ -15,7 +15,7 @@ import { linkStyles } from '../../templates/cc-link/cc-link.js';
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<object>} cc-addon-option-form:submit - Fires when the form is submitted.
+ * @fires {CustomEvent<object>} cc-addon-option-form:submit - Fires when the form is submitted.
  *
  * @slot description - The description of the add-on and available options.
  */

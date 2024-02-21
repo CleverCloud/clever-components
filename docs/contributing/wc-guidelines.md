@@ -67,7 +67,7 @@ we're proposing this order for the different pars of a custom element built with
 * Don't forget to set default values for booleans in the constructor.
 * Use `@prop` instead of `@attr`.
 * Please sort your props and events alphabetically.
-* Respect the following order: `@prop`, `@event`, `@slot`, `@cssprop`
+* Respect the following order: `@prop`, `@fires`, `@slot`, `@cssprop`
 * Document methods in place, just above the given method.
 * Use a `/** @required */` if component breaks without a given property. Must be in the `static get properties` section.
 

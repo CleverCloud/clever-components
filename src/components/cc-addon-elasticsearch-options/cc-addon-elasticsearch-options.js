@@ -21,7 +21,7 @@ const APM_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-apm.sv
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<AddonOption>} cc-addon-elasticsearch-options:submit - Fires when the form is submitted.
+ * @fires {CustomEvent<AddonOption>} cc-addon-elasticsearch-options:submit - Fires when the form is submitted.
  */
 export class CcAddonElasticsearchOptions extends LitElement {
 

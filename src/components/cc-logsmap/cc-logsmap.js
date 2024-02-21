@@ -23,7 +23,7 @@ import { i18n } from '../../lib/i18n.js';
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<MapModeType>} cc-logsmap:mode - Fires the selected mode whenever the toggle changes.
+ * @fires {CustomEvent<MapModeType>} cc-logsmap:mode - Fires the selected mode whenever the toggle changes.
  */
 export class CcLogsMap extends LitElement {
 

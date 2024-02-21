@@ -25,7 +25,7 @@ import '../cc-icon/cc-icon.js';
  * @slot icon - Icon slot to override the default one provided.
  * @slot message - Message slot to override the message if you want more than just a short text.
  *
- * @event {CustomEvent} cc-notice:dismiss - Fires to inform that the notice should be dismissed.
+ * @fires {CustomEvent} cc-notice:dismiss - Fires to inform that the notice should be dismissed.
  */
 export class CcNotice extends LitElement {
 

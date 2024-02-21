@@ -22,7 +22,7 @@ import { linkStyles } from '../../templates/cc-link/cc-link.js';
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<EnvVar>} cc-env-var-create:create - Fires the variable whenever the add button is clicked.
+ * @fires {CustomEvent<EnvVar>} cc-env-var-create:create - Fires the variable whenever the add button is clicked.
  */
 export class CcEnvVarCreate extends LitElement {
 

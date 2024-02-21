@@ -62,10 +62,10 @@ const SKELETON_STATUS = 'unknown';
  *
  * @cssdisplay block
  *
- * @event {CustomEvent} cc-header-app:cancel - Fires whenever the cancel button is clicked.
- * @event {CustomEvent} cc-header-app:restart - Fires whenever one of the 3 restart buttons is clicked.
- * @event {CustomEvent} cc-header-app:start - Fires whenever one of the 3 start buttons is clicked.
- * @event {CustomEvent} cc-header-app:stop - Fires whenever the stop button is clicked (after the delay).
+ * @fires {CustomEvent} cc-header-app:cancel - Fires whenever the cancel button is clicked.
+ * @fires {CustomEvent} cc-header-app:restart - Fires whenever one of the 3 restart buttons is clicked.
+ * @fires {CustomEvent} cc-header-app:start - Fires whenever one of the 3 start buttons is clicked.
+ * @fires {CustomEvent} cc-header-app:stop - Fires whenever the stop button is clicked (after the delay).
  */
 export class CcHeaderApp extends LitElement {
 

@@ -16,9 +16,9 @@ import { skeletonStyles } from '../../styles/skeleton.js';
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<EnvVarName>} cc-env-var-input:delete - Fires a variable name whenever the delete button is clicked.
- * @event {CustomEvent<EnvVar>} cc-env-var-input:input - Fires a variable whenever its value changes.
- * @event {CustomEvent<EnvVarName>} cc-env-var-input:keep - Fires a variable name whenever the keep button is clicked.
+ * @fires {CustomEvent<EnvVarName>} cc-env-var-input:delete - Fires a variable name whenever the delete button is clicked.
+ * @fires {CustomEvent<EnvVar>} cc-env-var-input:input - Fires a variable whenever its value changes.
+ * @fires {CustomEvent<EnvVarName>} cc-env-var-input:keep - Fires a variable name whenever the keep button is clicked.
  */
 export class CcEnvVarInput extends LitElement {
 

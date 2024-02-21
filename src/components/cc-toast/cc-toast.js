@@ -42,7 +42,7 @@ import '../cc-icon/cc-icon.js';
  *
  * @cssdisplay block
  *
- * @event {CustomEvent} cc-toast:dismiss - Fires whenever the toast is dismissed.
+ * @fires {CustomEvent} cc-toast:dismiss - Fires whenever the toast is dismissed.
  * @cssprop {Color} --cc-toast-icon-color - The color of the icon on the left of the toast (defaults: `e7e7e7`).
 */
 export class CcToast extends LitElement {

@@ -37,7 +37,7 @@ import { linkStyles } from '../../templates/cc-link/cc-link.js';
  *
  * @cssdisplay inline-block
  *
- * @event {CustomEvent} cc-button:click - Fires whenever the button is clicked.<br>If `delay` is set, fires after the specified `delay` (in seconds).
+ * @fires {CustomEvent} cc-button:click - Fires whenever the button is clicked.<br>If `delay` is set, fires after the specified `delay` (in seconds).
  *
  * @slot - The content of the button (text or HTML). If you want an image, please look at the `image` attribute.
  * @cssprop {BorderRadius} --cc-button-border-radius - Sets the value of the border radius CSS property (defaults: `0.15em`).

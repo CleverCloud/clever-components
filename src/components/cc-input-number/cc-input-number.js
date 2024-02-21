@@ -21,8 +21,8 @@ import '../cc-icon/cc-icon.js';
  *
  * @cssdisplay inline-block
  *
- * @event {CustomEvent<string>} cc-input-number:input - Fires the `value` whenever the `value` changes.
- * @event {CustomEvent} cc-input-number:requestimplicitsubmit - Fires when enter key is pressed.
+ * @fires {CustomEvent<string>} cc-input-number:input - Fires the `value` whenever the `value` changes.
+ * @fires {CustomEvent} cc-input-number:requestimplicitsubmit - Fires when enter key is pressed.
  *
  * @cssprop {Align} --cc-input-number-align - Change the alignment of the number present in the input (defaults: `right`).
  * @cssprop {Color} --cc-input-btn-icon-color - The color for the icon within the +/- buttons (defaults: `#595959`).

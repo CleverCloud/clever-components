@@ -52,10 +52,10 @@ const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<Plan>} cc-pricing-estimation:change-quantity - Fires the plan with a modified quantity whenever the quantity on the input changes.
- * @event {CustomEvent<Currency>} cc-pricing-estimation:change-currency - Fires the `currency` whenever the currency selection changes.
- * @event {CustomEvent<Temporality>} cc-pricing-estimation:change-temporality - Fires the `temporality` whenever the temporality selection changes.
- * @event {CustomEvent<Plan>} cc-pricing-estimation:delete-plan - Fires the plan whenever a delete button is clicked or when the quantity reaches 0.
+ * @fires {CustomEvent<Plan>} cc-pricing-estimation:change-quantity - Fires the plan with a modified quantity whenever the quantity on the input changes.
+ * @fires {CustomEvent<Currency>} cc-pricing-estimation:change-currency - Fires the `currency` whenever the currency selection changes.
+ * @fires {CustomEvent<Temporality>} cc-pricing-estimation:change-temporality - Fires the `temporality` whenever the temporality selection changes.
+ * @fires {CustomEvent<Plan>} cc-pricing-estimation:delete-plan - Fires the plan whenever a delete button is clicked or when the quantity reaches 0.
  *
  * @slot footer - Content at the bottom of the component. Typically used to insert links and call to action elements.
  * @cssprop {Background} --cc-pricing-estimation-counter-bg - Sets the background (color or gradient) of the product counter (defaults: `var(--cc-color-bg-strong)`).

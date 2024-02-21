@@ -94,8 +94,8 @@ function invalid (code) {
  *
  * @cssdisplay inline-block
  *
- * @event {CustomEvent<string>} cc-input-date:input - Fires the `value` whenever the `value` changes.
- * @event {CustomEvent} cc-input-date:requestimplicitsubmit - Fires when enter key is pressed.
+ * @fires {CustomEvent<string>} cc-input-date:input - Fires the `value` whenever the `value` changes.
+ * @fires {CustomEvent} cc-input-date:requestimplicitsubmit - Fires when enter key is pressed.
  *
  * @cssprop {FontFamily} --cc-input-font-family - The font-family for the input content (defaults: `inherit`).
  *
