@@ -784,6 +784,9 @@ export const translations = {
   //#region cc-product-card
   'cc-product-card.select': (name) => `${name} - select this product`,
   //#endregion
+  // #region cc-product-list
+  'cc-product-list.search-label': `Search a product`,
+  //#endregion
   //#region cc-select
   'cc-select.required': `required`,
   //#endregion
