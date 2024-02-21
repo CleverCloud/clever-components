@@ -172,6 +172,63 @@ export const customWidth = makeStory(conf, {
     }),
 });
 
+const customBaseItems = [
+  { label: 'The label', value: 100 },
+  { label: 'The label', value: 100, required: true },
+  { label: 'The label', value: 100, controls: true },
+  { label: 'The label', value: 100, required: true, controls: true },
+];
+
+export const customLabelStyle = makeStory({ ...conf, displayMode: 'block' }, {
+  // language=CSS
+  css: `
+    cc-input-number {
+      --cc-input-label-color: #475569;
+      --cc-input-label-font-size: 1.2em;
+      --cc-input-label-font-weight: bold;
+      font-size: 1.25em;
+      max-width: 32em;
+    }
+    cc-input-number:nth-of-type(${customBaseItems.length + 'n'}) {
+      margin-block-end: 2em;
+    }
+  `,
+  items: [
+    ...customBaseItems,
+    ...customBaseItems.map((item) => ({
+      ...item,
+      innerHTML: `<p slot="help">Must be an integer</p>`,
+    })),
+    ...customBaseItems.map((item) => ({
+      ...item,
+      innerHTML: `<p slot="error">You must enter a value</p>`,
+    })),
+    ...customBaseItems.map((item) => ({
+      ...item,
+      innerHTML: `<p slot="help">Must be an integer</p><p slot="error">You must enter a value</p>`,
+    })),
+    ...customBaseItems.map((item) => ({
+      ...item,
+      inline: true,
+    })),
+    ...customBaseItems.map((item) => ({
+      ...item,
+      inline: true,
+      innerHTML: `<p slot="help">Must be an integer</p>`,
+    })),
+    ...customBaseItems.map((item) => ({
+      ...item,
+      inline: true,
+      innerHTML: `<p slot="error">You must enter a value</p>`,
+    })),
+    ...customBaseItems.map((item) => ({
+      ...item,
+      inline: true,
+      innerHTML: `<p slot="help">Must be an integer</p><p slot="error">You must enter a value</p>`,
+    })),
+  ],
+});
+
 export const allFormControls = allFormControlsStory;
 
 export const simulation = makeStory(conf, {
