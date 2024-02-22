@@ -6,4 +6,11 @@
     "src/lib/utils.js"
   ],
   "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // FIXME:
+    // This means our `d.ts` files are not checked in CI context
+    // This needs to be set to `true` at least until we can upgrade TypeScript
+    // see https://github.com/CleverCloud/clever-components/issues/972
+    "skipLibCheck": true,
+  }
 }
