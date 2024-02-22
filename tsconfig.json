@@ -93,10 +93,5 @@
         ]
       }
     ]
-  },
-  "exclude": [
-    "node_modules",
-    "storybook-static",
-    "dist",
-  ]
+  }
 }
