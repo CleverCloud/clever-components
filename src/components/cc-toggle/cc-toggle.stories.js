@@ -243,4 +243,23 @@ Here you can see a series of toolbar examples using CSS custom propreties of the
   ],
 });
 
+export const customLegendStyle = makeStory({ ...conf, displayMode: 'block' }, {
+  // language=CSS
+  css: `
+    cc-toggle {
+      --cc-toggle-legend-color: #475569;
+      --cc-toggle-legend-font-size: 1.2em;
+      --cc-toggle-legend-font-weight: bold;
+      font-size: 1.25em;
+    }
+    cc-toggle:nth-of-type(${normalAndSubtleItems.length + 'n'}) {
+      margin-block-end: 2em;
+    }
+  `,
+  items: [
+    ...normalAndSubtleItems.map((p) => ({ ...p, legend: 'The legend' })),
+    ...normalAndSubtleItems.map((p) => ({ ...p, legend: 'The legend', inline: true })),
+  ],
+});
+
 export const allFormControls = allFormControlsStory;
