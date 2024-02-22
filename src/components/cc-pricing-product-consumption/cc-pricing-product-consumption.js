@@ -60,7 +60,7 @@ const ICONS = {
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<Plan>} cc-pricing-product:add-plan - Fires the plan whenever the "add" button is clicked.
+ * @fires {CustomEvent<Plan>} cc-pricing-product:add-plan - Fires the plan whenever the "add" button is clicked.
  *
  * @cssprop {Color} --cc-pricing-hovered-color - Sets the text color used on hover (defaults: `purple`).
  */

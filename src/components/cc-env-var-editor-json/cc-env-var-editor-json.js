@@ -26,7 +26,7 @@ const SKELETON_VARIABLES = [
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<EnvVar[]>} cc-env-var-editor-json:change - Fires the new list of variables whenever something changes in the list.
+ * @fires {CustomEvent<EnvVar[]>} cc-env-var-editor-json:change - Fires the new list of variables whenever something changes in the list.
  */
 export class CcEnvVarEditorJson extends LitElement {
 

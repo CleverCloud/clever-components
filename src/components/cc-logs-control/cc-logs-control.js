@@ -68,7 +68,7 @@ const PALETTES = {
  *
  * @cssdisplay grid
  *
- * @event {CustomEvent<LogsControlOption>} cc-logs-control:option-change - Fires a `LogsControlOption` whenever an `option` changes.
+ * @fires {CustomEvent<LogsControlOption>} cc-logs-control:option-change - Fires a `LogsControlOption` whenever an `option` changes.
  */
 export class CcLogsControl extends LitElement {
 

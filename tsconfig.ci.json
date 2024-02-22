@@ -1,0 +1,9 @@
+{
+  // this file is used for typechecking in the CI context
+  // as opposed to the `tsconfig.json` file used for typechecking within IDEs
+  // Every file passing typechecking should be added in the `include` array below
+  "include": [
+    "src/lib/utils.js"
+  ],
+  "extends": "./tsconfig.json",
+}

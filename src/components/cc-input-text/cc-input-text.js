@@ -29,9 +29,9 @@ const TAG_SEPARATOR = ' ';
  *
  * @cssdisplay inline-block / block (with `[multi]`)
  *
- * @event {CustomEvent<string>} cc-input-text:input - Fires the `value` whenever the `value` changes.
- * @event {CustomEvent} cc-input-text:requestimplicitsubmit - Fires when enter key is pressed in simple mode, in tags mode or when ctrl+enter is pressed in multi mode.
- * @event {CustomEvent<string[]>} cc-input-text:tags - Fires an array of tags whenever the `value` changes (separated by spaces).
+ * @fires {CustomEvent<string>} cc-input-text:input - Fires the `value` whenever the `value` changes.
+ * @fires {CustomEvent} cc-input-text:requestimplicitsubmit - Fires when enter key is pressed in simple mode, in tags mode or when ctrl+enter is pressed in multi mode.
+ * @fires {CustomEvent<string[]>} cc-input-text:tags - Fires an array of tags whenever the `value` changes (separated by spaces).
  *
  * @cssprop {Color} --cc-input-btn-icon-color - The color for the icon within the clipboard/secret button (defaults: `#595959`).
  * @cssprop {FontFamily} --cc-input-font-family - The font-family for the input content (defaults: `inherit` or `--cc-ff-monospace` when using the tags mode).

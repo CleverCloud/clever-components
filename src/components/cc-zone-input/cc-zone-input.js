@@ -29,7 +29,7 @@ const BREAKPOINTS = [600];
  *
  * @cssdisplay grid
  *
- * @event {CustomEvent<string>} cc-zone-input:input - Fires the `name` of the selected zone whenever the selection changes.
+ * @fires {CustomEvent<string>} cc-zone-input:input - Fires the `name` of the selected zone whenever the selection changes.
  */
 export class CcZoneInput extends LitElement {
 

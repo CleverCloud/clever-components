@@ -18,7 +18,7 @@ import { i18n } from '../../lib/i18n.js';
  *
  * @cssdisplay grid
  *
- * @event {CustomEvent<boolean>} cc-addon-option:input - Fires when the option is enabled or disabled.
+ * @fires {CustomEvent<boolean>} cc-addon-option:input - Fires when the option is enabled or disabled.
  *
  * @slot - The content of the option's description (text or HTML).
  */

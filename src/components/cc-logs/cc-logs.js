@@ -190,7 +190,7 @@ class TemporaryFunctionDisabler {
  *
  * @cssdisplay block
  *
- * @event {CustomEvent} cc-logs:followChange - Fires whenever the follow changed because of a user interaction
+ * @fires {CustomEvent} cc-logs:followChange - Fires whenever the follow changed because of a user interaction
  *
  * @cssprop {Color} --cc-color-ansi-foreground - The foreground color
  * @cssprop {Color} --cc-color-ansi-background - The background color

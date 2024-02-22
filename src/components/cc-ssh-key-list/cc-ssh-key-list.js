@@ -46,9 +46,9 @@ const SKELETON_KEYS = [{
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<NewKey>} cc-ssh-key-list:create - Fires when clicking the creation form submit button.
- * @event {CustomEvent<SshKey>} cc-ssh-key-list:delete - Fires when clicking a personal key deletion button.
- * @event {CustomEvent<SshKey>} cc-ssh-key-list:import - Fires when clicking a GitHub key import button.
+ * @fires {CustomEvent<NewKey>} cc-ssh-key-list:create - Fires when clicking the creation form submit button.
+ * @fires {CustomEvent<SshKey>} cc-ssh-key-list:delete - Fires when clicking a personal key deletion button.
+ * @fires {CustomEvent<SshKey>} cc-ssh-key-list:import - Fires when clicking a GitHub key import button.
  */
 export class CcSshKeyList extends LitElement {
 

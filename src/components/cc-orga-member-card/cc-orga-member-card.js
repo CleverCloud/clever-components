@@ -48,12 +48,12 @@ const BREAKPOINTS = [BREAKPOINT_TINY, BREAKPOINT_SMALL, BREAKPOINT_MEDIUM];
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<ToggleEditing>} cc-orga-member-card:toggle-editing - Fires the `id` of the member related to the card and the new state (`editing` or `loaded`) to specify when card is in edit mode or not.
+ * @fires {CustomEvent<ToggleEditing>} cc-orga-member-card:toggle-editing - Fires the `id` of the member related to the card and the new state (`editing` or `loaded`) to specify when card is in edit mode or not.
  * This allows the list component to close all other cards in edit mode to leave only one in edit mode at once.
- * @event {CustomEvent<OrgaMemberCardState>} cc-orga-member-card:delete - Fires when the user clicks on a remove member button.
- * @event {CustomEvent<OrgaMemberCardState>} cc-orga-member-card:leave - Fires when the user clicks on a leave button (only possible if `isCurrentUser = true`).
+ * @fires {CustomEvent<OrgaMemberCardState>} cc-orga-member-card:delete - Fires when the user clicks on a remove member button.
+ * @fires {CustomEvent<OrgaMemberCardState>} cc-orga-member-card:leave - Fires when the user clicks on a leave button (only possible if `isCurrentUser = true`).
  * We don't fire a delete event so that it can be processed differently by the smart component (leaving the org means the user has to be redirected).
- * @event {CustomEvent<UpdateMember>} cc-orga-member-card:update - Fires when the user clicks on a validate button after editing member role.
+ * @fires {CustomEvent<UpdateMember>} cc-orga-member-card:update - Fires when the user clicks on a validate button after editing member role.
  */
 export class CcOrgaMemberCard extends LitElement {
 

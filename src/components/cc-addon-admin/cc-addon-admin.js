@@ -21,9 +21,9 @@ import { i18n } from '../../lib/i18n.js';
  *
  * @cssdisplay block
  *
- * @event {CustomEvent} cc-addon-admin:delete-addon - Fires when the delete button is clicked.
- * @event {CustomEvent<string>} cc-addon-admin:update-name - Fires the new name of the add-on when update name button is clicked.
- * @event {CustomEvent<string[]>} cc-addon-admin:update-tags - Fires the new list of tags when update tags button is clicked.
+ * @fires {CustomEvent} cc-addon-admin:delete-addon - Fires when the delete button is clicked.
+ * @fires {CustomEvent<string>} cc-addon-admin:update-name - Fires the new name of the add-on when update name button is clicked.
+ * @fires {CustomEvent<string[]>} cc-addon-admin:update-tags - Fires the new list of tags when update tags button is clicked.
  */
 export class CcAddonAdmin extends LitElement {
 

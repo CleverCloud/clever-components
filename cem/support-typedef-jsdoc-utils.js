@@ -22,8 +22,8 @@ export function getTypesFromEventTags (classNode, ts) {
 
   const notNull = (o) => o != null;
 
-  // typescript doesn't really support @event tag, so we need to
-  // - parse the @event comment manually and extract the event type (we support only CustomEvent<any>)
+  // typescript doesn't really support @fires tag, so we need to
+  // - parse the @fires comment manually and extract the event type (we support only CustomEvent<any>)
   // - create a minimalist JS source with a single statement and with a `@type` JSDoc
   // - create an AST from this source
   // - find the types from the JSDoc (here we can re-use the same code as when extracting types from constructor)
@@ -31,7 +31,7 @@ export function getTypesFromEventTags (classNode, ts) {
   classNode.jsDoc
     ?.filter((jsDoc) => jsDoc.tags != null)
     ?.flatMap((jsDoc) => jsDoc.tags)
-    .filter((tag) => tag.tagName.getText() === 'event')
+    .filter((tag) => tag.tagName.getText() === 'fires')
     .map((tag) => tag.comment)
     .filter(notNull)
     .map((comment) => /\{CustomEvent<(.*)>}/.exec(comment))

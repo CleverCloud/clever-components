@@ -43,7 +43,7 @@ const SKELETON_FOOBAR = [
  * @prop {Boolean} two - Description for two.
  * @prop {ExampleInterface[]} three - Description for three.
  *
- * @event {CustomEvent<ExampleInterface>} example-component:event-name - Fires XXX whenever YYY.
+ * @fires {CustomEvent<ExampleInterface>} example-component:event-name - Fires XXX whenever YYY.
  *
  * @slot - The content of the button (text or HTML). If you want an image, please look at the `image` attribute.
  *

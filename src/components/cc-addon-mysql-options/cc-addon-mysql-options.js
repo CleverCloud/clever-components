@@ -14,7 +14,7 @@ import { ccAddonEncryptionAtRestOption } from '../../templates/cc-addon-encrypti
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<GenericOptions>} cc-addon-mysql-options:submit - Fires when the form is submitted.
+ * @fires {CustomEvent<GenericOptions>} cc-addon-mysql-options:submit - Fires when the form is submitted.
  */
 export class CcAddonMysqlOptions extends LitElement {
 

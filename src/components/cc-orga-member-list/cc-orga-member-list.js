@@ -38,9 +38,9 @@ import { linkStyles } from '../../templates/cc-link/cc-link.js';
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<InviteMember>} cc-orga-member-list:invite - Fires the `email` and `role` information inside an object whenever the invite button is clicked.
- * @event {CustomEvent<OrgaMemberCardState>} cc-orga-member-list:leave - Fires when the user clicks on the leave button inside the Danger Zone or inside their own member card.
- * @event {CustomEvent<OrgaMemberCardState>} cc-orga-member-list:update - Fires when the user validates the editing of a member within a member card, only if the update is not related to the last admin of the org.
+ * @fires {CustomEvent<InviteMember>} cc-orga-member-list:invite - Fires the `email` and `role` information inside an object whenever the invite button is clicked.
+ * @fires {CustomEvent<OrgaMemberCardState>} cc-orga-member-list:leave - Fires when the user clicks on the leave button inside the Danger Zone or inside their own member card.
+ * @fires {CustomEvent<OrgaMemberCardState>} cc-orga-member-list:update - Fires when the user validates the editing of a member within a member card, only if the update is not related to the last admin of the org.
  */
 
 export class CcOrgaMemberList extends LitElement {

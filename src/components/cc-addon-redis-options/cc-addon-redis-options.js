@@ -14,7 +14,7 @@ import { ccAddonEncryptionAtRestOption } from '../../templates/cc-addon-encrypti
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<GenericOptions>} cc-addon-redis-options:submit - Fires when the form is submitted.
+ * @fires {CustomEvent<GenericOptions>} cc-addon-redis-options:submit - Fires when the form is submitted.
  */
 export class CcAddonRedisOptions extends LitElement {
 

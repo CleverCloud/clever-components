@@ -28,8 +28,8 @@ import { linkStyles } from '../../templates/cc-link/cc-link.js';
  *
  * @cssdisplay block
  *
- * @event {CustomEvent} cc-env-var-form:restart-app - Fires whenever the restart app button is clicked.
- * @event {CustomEvent<EnvVar[]>} cc-env-var-form:submit - Fires the new list of variables whenever the submit button is clicked.
+ * @fires {CustomEvent} cc-env-var-form:restart-app - Fires whenever the restart app button is clicked.
+ * @fires {CustomEvent<EnvVar[]>} cc-env-var-form:submit - Fires the new list of variables whenever the submit button is clicked.
  *
  * @slot - Sets custom HTML description.
  */

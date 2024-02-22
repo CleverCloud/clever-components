@@ -68,10 +68,10 @@ const SKELETON_SECONDARY_EMAILS = [];
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<string>} cc-email-list:add - Fires whenever the add button is clicked. If the validation doesn't succeed, the event is not fired.
- * @event {CustomEvent<string>} cc-email-list:send-confirmation-email - Fires whenever the send confirmation email link is clicked.
- * @event {CustomEvent<string>} cc-email-list:delete - Fires whenever the delete button is clicked.
- * @event {CustomEvent<string>} cc-email-list:mark-as-primary - Fires whenever the 'mark as primary' button is clicked.
+ * @fires {CustomEvent<string>} cc-email-list:add - Fires whenever the add button is clicked. If the validation doesn't succeed, the event is not fired.
+ * @fires {CustomEvent<string>} cc-email-list:send-confirmation-email - Fires whenever the send confirmation email link is clicked.
+ * @fires {CustomEvent<string>} cc-email-list:delete - Fires whenever the delete button is clicked.
+ * @fires {CustomEvent<string>} cc-email-list:mark-as-primary - Fires whenever the 'mark as primary' button is clicked.
  */
 export class CcEmailList extends LitElement {
 

@@ -18,7 +18,7 @@ import { i18n } from '../../lib/i18n.js';
  *
  * @cssdisplay inline-block
  *
- * @event {CustomEvent<string>} cc-select:input - Fires the `value` whenever the `value` changes.
+ * @fires {CustomEvent<string>} cc-select:input - Fires the `value` whenever the `value` changes.
  *
  * @slot error - The error message to be displayed below the `<select>` element or below the help text. Please use a `<p>` tag.
  * @slot help - The help message to be displayed right below the `<select>` element. Please use a `<p>` tag.

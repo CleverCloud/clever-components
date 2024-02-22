@@ -36,9 +36,9 @@ const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
  *
  * @cssdisplay block
  *
- * @event {CustomEvent<Currency>} cc-pricing-header:change-currency - Fires the `currency` whenever the currency selection changes.
- * @event {CustomEvent<Temporality>} cc-pricing-header:change-temporality - Fires the `temporality` whenever the temporality selection changes.
- * @event {CustomEvent<string>} cc-pricing-header:change-zone - Fires the `zoneId` (zone name) whenever the zone selection changes.
+ * @fires {CustomEvent<Currency>} cc-pricing-header:change-currency - Fires the `currency` whenever the currency selection changes.
+ * @fires {CustomEvent<Temporality>} cc-pricing-header:change-temporality - Fires the `temporality` whenever the temporality selection changes.
+ * @fires {CustomEvent<string>} cc-pricing-header:change-zone - Fires the `zoneId` (zone name) whenever the zone selection changes.
  *
  * @cssprop {Color} --cc-pricing-hovered-color - Sets the text color used on hover (defaults: `purple`).
  */
