@@ -3,24 +3,34 @@ import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import {
-  iconRemixClipboardLine as iconClipboard,
-  iconRemixEyeOffLine as iconEyeClosed,
-  iconRemixEyeLine as iconEyeOpen,
   iconRemixCheckLine as iconCheck,
+  iconRemixClipboardLine as iconClipboard,
+  iconRemixEyeLine as iconEyeOpen,
+  iconRemixEyeOffLine as iconEyeClosed,
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { arrayEquals } from '../../lib/utils.js';
+import { EmailValidator, RequiredValidator, validatorsBuilder } from '../../lib/validation/validation.js';
+import { WithElementInternals } from '../../mixins/with-element-internals.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-icon/cc-icon.js';
-import { ValidationController } from '../cc-ft/validation/validation-controller.js';
-import { EmailValidator, RequiredValidator } from '../cc-ft/validation/validation.js';
 
 const TAG_SEPARATOR = ' ';
 
+const DEFAULT_ERROR_MESSAGES = {
+  get empty () {
+    return i18n('cc-input-text.error.empty');
+  },
+  get badEmail () {
+    return i18n('cc-input-text.error.bad-email');
+  },
+};
+
 /**
  * @type {import('lit/directives/ref.js').Ref} Ref
+ * @type {import('../../').Ref} Ref
  */
 
 /**
@@ -49,13 +59,12 @@ const TAG_SEPARATOR = ' ';
  * @slot error - The error message to be displayed below the `<input>` element or below the help text. Please use a `<p>` tag.
  * @slot help - The help message to be displayed right below the `<input>` element. Please use a `<p>` tag.
  */
-export class CcInputText extends LitElement {
+export class CcInputText extends WithElementInternals(LitElement) {
 
   static get properties () {
     return {
       clipboard: { type: Boolean, reflect: true },
       disabled: { type: Boolean, reflect: true },
-      errorMessage: { type: String, attribute: 'error-message' },
       label: { type: String },
       hiddenLabel: { type: Boolean, attribute: 'hidden-label' },
       inline: { type: Boolean, reflect: true },
@@ -76,10 +85,6 @@ export class CcInputText extends LitElement {
     };
   }
 
-  static get formAssociated () {
-    return true;
-  }
-
   constructor () {
     super();
 
@@ -88,9 +93,6 @@ export class CcInputText extends LitElement {
 
     /** @type {boolean} Sets `disabled` attribute on inner native `<input>/<textarea>` element. */
     this.disabled = false;
-
-    /** @type {string|null} . */
-    this.errorMessage = null;
 
     /** @type {boolean} Sets the `<label>` on the left of the `<input>` element.
      * Only use this if your form contains 1 or 2 fields and your labels are short.
@@ -139,9 +141,6 @@ export class CcInputText extends LitElement {
     /** @type {boolean} */
     this._copyOk = false;
 
-    /** @type {ElementInternals} */
-    this._internals = this.attachInternals();
-
     /** @type {Ref<HTMLInputElement|HTMLTextAreaElement>} */
     this._inputRef = createRef();
 
@@ -150,8 +149,6 @@ export class CcInputText extends LitElement {
 
     /** @type {boolean} */
     this._tagsEnabled = false;
-
-    this._validationCtrl = new ValidationController(this, 'errorMessage');
   }
 
   // In general, we try to use LitElement's update() lifecycle callback but in this situation,
@@ -242,6 +239,9 @@ export class CcInputText extends LitElement {
     }
   }
 
+  /**
+   * @return {Validator}
+   */
   _getValidator () {
     if (this._customValidator != null) {
       return this._customValidator;
@@ -254,122 +254,48 @@ export class CcInputText extends LitElement {
     return null;
   }
 
-  /**
-   * @param {boolean} report - whether to display error messages or not
-   */
-  validate (report) {
-    const validator = new RequiredValidator(this.required, this._getValidator());
-    const validationResult = this._validationCtrl.validate(validator, this.value, report, this._customErrorMessages);
-
-    if (validationResult.valid) {
-      this._internals.setValidity({});
-    }
-    else {
-      // TODO: should the Validator return both a code and a validityState?
-      this._internals.setValidity(
-        {
-          valueMissing: validationResult.code === 'empty',
-          badInput: validationResult.code === 'badEmail',
-        },
-        // todo: this won't work when the i18n returns a DocumentFragment!
-        //       does this mean that we have no choice but to put the error code instead?
-        validator.getErrorMessage(validationResult.code),
-        this._inputRef.value,
-      );
-    }
-
-    return validationResult;
-  }
-
-  set customValidator (customValidator) {
-    // todo: the validation process should be done when the customValidator changes.
-    //       should this be a reactive property?
-    this._customValidator = customValidator;
-  }
-
-  set customErrorMessages (fn) {
-    // todo: we should modify the validity to reflect this new error message function
-    this._customErrorMessages = fn;
-  }
-
-  /* region native compatibility */
-  checkValidity () {
-    // todo: should we call this.validate(false) instead ?
-    return this._internals.checkValidity();
-  }
-
-  reportValidity () {
-    // todo: should we call this.validate(true) instead ?
-    return this._internals.reportValidity();
-  }
-
-  get validity () {
-    return this._internals.validity;
-  }
-
-  get validationMessage () {
-    // todo: should this return the this._errorMessage ?
-    //       and how should we handle the fact that this._errorMessage can be DocumentFragment?
-    return this._internals.validationMessage;
+  getElementInternalsSettings () {
+    return {
+      valuePropertyName: 'value',
+      resetValuePropertyName: 'resetValue',
+      inputSelector: '#input-id',
+      errorSelector: '#error-id',
+      validationSettingsProvider: () => this._getValidationSettings(),
+      reactiveValidationProperties: ['required', 'type'],
+      formDataProvider: () => this._getFormData(),
+    };
   }
 
   /**
-   * @param {ValidityState} flags
-   * @param {string} message
+   *
+   * @return {ValidationSettings}
    */
-  setValidity (flags, message) {
-    this._internals.setValidity(flags, message, this._inputRef.value);
+  _getValidationSettings () {
+    return {
+      errorMessages: DEFAULT_ERROR_MESSAGES,
+      validator: validatorsBuilder()
+        .add(this.required ? new RequiredValidator() : null)
+        .add(this._getValidator())
+        .combine(),
+    };
+  }
+
+  /**
+   * @return {FormData|string}
+   */
+  _getFormData () {
+    if (this._tagsEnabled) {
+      const data = new FormData();
+      this.tags.forEach((tag) => {
+        data.append(this.name, tag);
+      });
+      return data;
+    }
+
+    return this.value;
   }
 
   /* endregion */
-
-  formResetCallback () {
-    this.value = this.resetValue;
-    this.validate(false);
-    this.errorMessage = null;
-  }
-
-  updated (changedProperties) {
-    let shouldValidate = false;
-    const hasErrorMessage = changedProperties.has('errorMessage');
-    const isErrorMessageEmpty = this.errorMessage == null || this.errorMessage.length === 0;
-
-    // Note: usually people do this within their `onInput` handler
-    // but we want to sync both onInput and when a value is provided through prop / attribute
-    if (changedProperties.has('value')) {
-      // Sync form values with our state
-      let data;
-      if (this._tagsEnabled) {
-        data = new FormData();
-        this.tags.forEach((tag) => {
-          data.append(this.name, tag);
-        });
-      }
-      else {
-        data = this.value;
-      }
-      this._internals.setFormValue(data);
-      shouldValidate = true;
-    }
-
-    // if errorMessage is set to null / empty, we want the field to be revalidated based on its validators
-    // we want it to be revalidated only if it's not already valid
-    // if it's already valid, it means the value has changed and has already been revalidated
-    if (hasErrorMessage && isErrorMessageEmpty) {
-      shouldValidate = true;
-    }
-
-    // if errorMessage is set (not null & not empty), we want to component validity to reflect that
-    if (hasErrorMessage && !isErrorMessageEmpty) {
-      this.setValidity({ ...this.validity, customError: true }, this.errorMessage);
-      shouldValidate = false;
-    }
-
-    if (shouldValidate) {
-      this.validate(false);
-    }
-
-  }
 
   render () {
     const value = this.value ?? '';
@@ -394,12 +320,12 @@ export class CcInputText extends LitElement {
           ` : ''}
         </label>
       ` : ''}
-      
+
       <div class="meta-input">
         <div class="wrapper ${classMap({ skeleton: this.skeleton })}"
-          @input=${this._onInput}
-          @keydown=${this._onKeyEvent}
-          @keypress=${this._onKeyEvent}>
+             @input=${this._onInput}
+             @keydown=${this._onKeyEvent}
+             @keypress=${this._onKeyEvent}>
 
           ${isTextarea ? html`
             ${this._tagsEnabled && !this.skeleton ? html`
@@ -408,7 +334,8 @@ export class CcInputText extends LitElement {
                 This needs to be on the same line and the 2 level parent is important to keep scroll behaviour.
               -->
               <div class="input input-underlayer" style="--rows: ${rows}"><!--
-                --><div class="all-tags">${tags}</div><!--
+                -->
+                <div class="all-tags">${tags}</div><!--
               --></div>
             ` : ''}
             <textarea
@@ -459,7 +386,7 @@ export class CcInputText extends LitElement {
 
         ${secret ? html`
           <button class="btn" @click=${this._onClickSecret}
-            title=${this._showSecret ? i18n('cc-input-text.secret.hide') : i18n('cc-input-text.secret.show')}
+                  title=${this._showSecret ? i18n('cc-input-text.secret.hide') : i18n('cc-input-text.secret.show')}
           >
             <cc-icon
               class="btn-img"
@@ -482,7 +409,7 @@ export class CcInputText extends LitElement {
         ` : ''}
       </div>
 
-      
+
       <div class="help-container" id="help-id">
         <slot name="help"></slot>
       </div>
@@ -575,11 +502,12 @@ export class CcInputText extends LitElement {
           color: var(--cc-color-text-weak);
           font-size: 0.9em;
         }
-        
+
         .error-container {
           margin: 0.5em 0 0;
           color: var(--cc-color-text-danger);
         }
+
         /* endregion */
 
         .meta-input {
@@ -712,7 +640,7 @@ export class CcInputText extends LitElement {
           border-radius: var(--cc-border-radius-default, 0.25em);
           box-shadow: 0 0 0 0 rgb(255 255 255 / 0%);
         }
-        
+
         .input.error + .ring {
           border-color: var(--cc-color-border-danger) !important;
         }
@@ -722,7 +650,7 @@ export class CcInputText extends LitElement {
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
-        
+
         .input.error:focus + .ring {
           outline: var(--cc-focus-outline-error, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
@@ -805,7 +733,7 @@ export class CcInputText extends LitElement {
 
         .btn-img {
           --cc-icon-color: var(--cc-input-btn-icons-color, #595959);
-          
+
           box-sizing: border-box;
           padding: 15%;
         }

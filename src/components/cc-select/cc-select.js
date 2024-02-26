@@ -4,8 +4,14 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
-import { ValidationController } from '../cc-ft/validation/validation-controller.js';
-import { RequiredValidator } from '../cc-ft/validation/validation.js';
+import { RequiredValidator, validatorsBuilder } from '../../lib/validation/validation.js';
+import { WithElementInternals } from '../../mixins/with-element-internals.js';
+
+const DEFAULT_ERROR_MESSAGES = {
+  get empty () {
+    return i18n('cc-select.error.empty');
+  },
+};
 
 /**
  * @typedef {import('./cc-select.types.js').Option} Option
@@ -30,11 +36,10 @@ import { RequiredValidator } from '../cc-ft/validation/validation.js';
  * @slot error - The error message to be displayed below the `<select>` element or below the help text. Please use a `<p>` tag.
  * @slot help - The help message to be displayed right below the `<select>` element. Please use a `<p>` tag.
  */
-export class CcSelect extends LitElement {
+export class CcSelect extends WithElementInternals(LitElement) {
   static get properties () {
     return {
       disabled: { type: Boolean, reflect: true },
-      errorMessage: { type: String, attribute: 'error-message' },
       inline: { type: Boolean, reflect: true },
       /** @required */
       label: { type: String },
@@ -47,18 +52,11 @@ export class CcSelect extends LitElement {
     };
   }
 
-  static get formAssociated () {
-    return true;
-  }
-
   constructor () {
     super();
 
     /** @type {boolean} Sets `disabled` attribute on inner native `<select>` element. */
     this.disabled = false;
-
-    /** @type {string|null} Sets the error message. */
-    this.errorMessage = null;
 
     /** @type {boolean} Sets the `<label>` on the left of the `<select>` element.
      * Only use this if your form contains 1 or 2 fields and your labels are short.
@@ -91,33 +89,6 @@ export class CcSelect extends LitElement {
 
     /** @type {string|null} Sets the selected value of the element. This prop should always be set. It should always match one of the option values. */
     this.value = null;
-
-    /** @type {ElementInternals} */
-    this._internals = this.attachInternals();
-
-    this._validationCtrl = new ValidationController(this, 'errorMessage');
-  }
-
-  willUpdate (changedProperties) {
-    // TODO: discuss this.
-    // we want the reset value to be used if no value has been provided
-    // but do we want resetValue to erase the value if it is changed? => probably not
-    if (changedProperties.has('resetValue') && this.resetValue != null) {
-      this.value = this.resetValue;
-    }
-  }
-
-  updated (changedProperties) {
-    /*
-     * The `<select>` value must match the value of an `<option>` element.
-     * We need to make sure the value of the `<select>` element in only updated after
-     * `<option>` elements have been rendered.
-    */
-    if (changedProperties.has('value') || changedProperties.has('options')) {
-      this._selectRef.value.value = this.value;
-      this._internals.setFormValue(this.value);
-    }
-    this.validate(false);
   }
 
   /**
@@ -127,68 +98,42 @@ export class CcSelect extends LitElement {
     this.updateComplete.then(() => this._selectRef?.value?.focus());
   }
 
-  /**
-   * @param {boolean} report - whether to display error messages or not
-   */
-  validate (report) {
-    const validator = new RequiredValidator(this.required, this.customValidator);
-    const validationResult = this._validationCtrl.validate(validator, this.value, report, this._customErrorMessages);
-
-    if (validationResult.valid) {
-      this._internals.setValidity({});
-    }
-    else {
-      // TODO: should the Validator return both a code and a validityState?
-      this._internals.setValidity(
-        {
-          valueMissing: validationResult.code === 'empty',
-        },
-        validator.getErrorMessage(validationResult.code),
-        this._selectRef.value,
-      );
-    }
-
-    return validationResult;
-  }
-
-  set customValidator (customValidator) {
-    this._customValidator = customValidator;
-  }
-
-  set customErrorMessages (fn) {
-    this._customErrorMessages = fn;
-  }
-
-  /* region native compatibility */
-  checkValidity () {
-    return this._internals.checkValidity();
-  }
-
-  reportValidity () {
-    return this._internals.reportValidity();
-  }
-
-  get validity () {
-    return this._internals.validity;
-  }
-
-  get validationMessage () {
-    return this._internals.validationMessage;
-  }
-
-  setCustomValidity (message) {
-    this._internals.setValidity({ customError: true }, message, this._inputRef.value);
-  }
-
   _onSelectInput (e) {
     this.value = e.target.value;
     dispatchCustomEvent(this, 'input', this.value);
   }
 
-  formResetCallback () {
-    this.value = this.resetValue;
-    this.validate(false);
-    this.errorMessage = null;
+  getElementInternalsSettings () {
+    return {
+      valuePropertyName: 'value',
+      resetValuePropertyName: 'resetValue',
+      inputSelector: '#input-id',
+      errorSelector: '#error-id',
+      validationSettingsProvider: () => this._getValidationSettings(),
+      reactiveValidationProperties: ['required', 'options'],
+    };
+  }
+
+  _getValidationSettings () {
+    return {
+      errorMessages: DEFAULT_ERROR_MESSAGES,
+      validator: validatorsBuilder()
+        .add(this.required ? new RequiredValidator() : null)
+        .combine(),
+    };
+  }
+
+  updated (changedProperties) {
+    /*
+     * The `<select>` value must match the value of an `<option>` element.
+     * We need to make sure the value of the `<select>` element in only updated after
+     * `<option>` elements have been rendered.
+    */
+    if (changedProperties.has('value') || changedProperties.has('options')) {
+      this.shadowRoot.querySelector('select').value = this.value;
+    }
+
+    super.updated(changedProperties);
   }
 
   render () {

@@ -1,5 +1,5 @@
 import { dispatchCustomEvent } from '../../../lib/events.js';
-import { VALID, invalid } from '../validation/validation.js';
+import { VALID, invalid } from '../../../lib/validation/validation.js';
 
 /**
  *

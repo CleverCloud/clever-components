@@ -1,9 +1,9 @@
-import { i18n } from '../../../lib/i18n.js';
+import { i18n } from '../i18n.js';
 
 /**
- * @typedef {import('./validation.js').ValidValidation} ValidValidation
- * @typedef {import('./validation.js').InvalidValidation} InvalidValidation
- * @typedef {import('./validation.js').Validator} Validator
+ * @typedef {import('./validation.types.js').ValidValidation} ValidValidation
+ * @typedef {import('./validation.types.js').InvalidValidation} InvalidValidation
+ * @typedef {import('./validation.types.js').Validator} Validator
  */
 
 /**
@@ -42,33 +42,35 @@ const isEmpty = (value) => {
  * @implements Validator
  */
 export class RequiredValidator {
-  constructor (required, nextValidator) {
-    this._required = required;
-    this._nextValidator = nextValidator;
+  validate (value) {
+    return isEmpty(value) ? invalid('empty') : VALID;
+  }
+}
+
+export class CompositeValidator {
+  constructor (validators) {
+    this._validators = validators;
   }
 
   getErrorMessage (code) {
-    if (code === 'empty') {
-      return i18n('validation-controller.error.empty');
+    for (const validator of this._validators) {
+      try {
+        return validator.getErrorMessage(code);
+      }
+      catch (e) {
+      }
     }
-
-    if (this._nextValidator != null) {
-      return this._nextValidator.getErrorMessage(code);
-    }
-
-    throw new Error('Unsupported error code');
+    throw new Error(`Unsupported error code ${code}`);
   }
 
   validate (value) {
-    if (isEmpty(value)) {
-      return this._required ? invalid('empty') : VALID;
+    for (const validator of this._validators) {
+      const v = validator.validate(value);
+      if (v.valid === false) {
+        return v;
+      }
     }
-
-    if (this._nextValidator == null) {
-      return VALID;
-    }
-
-    return this._nextValidator.validate(value);
+    return VALID;
   }
 }
 
@@ -103,23 +105,6 @@ export class NumberValidator {
     return { min: this._min ?? -Infinity, max: this._max ?? Infinity };
   }
 
-  /**
-   * @param {'badType'|'rangeUnderflow'|'rangeOverflow'} code
-   */
-  getErrorMessage (code) {
-    if (code === 'badType') {
-      return i18n('validation-controller.error.badType');
-    }
-    if (code === 'rangeUnderflow') {
-      return i18n('validation-controller.error.rangeUnderflow');
-    }
-    if (code === 'rangeOverflow') {
-      return i18n('validation-controller.error.rangeOverflow');
-    }
-
-    throw new Error('Unsupported error code');
-  }
-
   validate (value) {
     // check is number
     const num = this._parse(value);
@@ -148,18 +133,6 @@ export class NumberValidator {
  * @implements Validator
  */
 export class EmailValidator {
-
-  /**
-   * @param {'badEmail'} code
-   */
-  getErrorMessage (code) {
-    if (code === 'badEmail') {
-      return i18n('validation-controller.error.bad-email');
-    }
-
-    throw new Error('Unsupported error code');
-  }
-
   validate (value) {
     if (!value.match(/^\S+@\S+\.\S+$/gm)) {
       return invalid('badEmail');
@@ -167,4 +140,42 @@ export class EmailValidator {
 
     return VALID;
   }
+}
+
+export class ValidValidator {
+  getErrorMessage (code) {
+    throw new Error('Unsupported error code');
+  }
+
+  validate (value) {
+    return VALID;
+  }
+}
+
+export function validatorsBuilder () {
+  const validators = [];
+  const combiner = {
+    add (validator) {
+      if (validator != null) {
+        validators.push(validator);
+      }
+      return combiner;
+    },
+    combine () {
+      return combineValidators(validators);
+    },
+  };
+  return combiner;
+}
+
+export function combineValidators (validators) {
+  if (validators.length === 0) {
+    return new ValidValidator();
+  }
+
+  if (validators.length === 1) {
+    return validators[0];
+  }
+
+  return new CompositeValidator(validators);
 }

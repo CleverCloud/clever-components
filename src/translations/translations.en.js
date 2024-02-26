@@ -401,16 +401,26 @@ export const translations = {
   'cc-heptapod-info.storage-description': `Storage size`,
   //#endregion
   //#region cc-input-date
+  'cc-input-date.error.bad-input': `You must enter a date.`,
+  'cc-input-date.error.empty': `You must enter a value.`,
+  'cc-input-date.error.range-overflow': ({ max }) => `You must enter a date lower that ${max}.`,
+  'cc-input-date.error.range-underflow': ({ min }) => `You must enter a date higher that ${min}.`,
   'cc-input-date.keyboard-hint': `You can use up or down arrow keys to modify parts of the date.`,
   'cc-input-date.required': `required`,
   //#endregion
   //#region cc-input-number
   'cc-input-number.decrease': `decrease`,
+  'cc-input-number.error.bad-type': `You must enter a number.`,
+  'cc-input-number.error.empty': `You must enter a value.`,
+  'cc-input-number.error.range-overflow': ({ max }) => `You must enter a number lower that ${max}.`,
+  'cc-input-number.error.range-underflow': ({ min }) => `You must enter a number higher that ${min}.`,
   'cc-input-number.increase': `increase`,
   'cc-input-number.required': `required`,
   //#endregion
   //#region cc-input-text
   'cc-input-text.clipboard': `Copy to clipboard`,
+  'cc-input-text.error.bad-email': () => sanitize`Invalid email address format.<br>Example: john.doe@example.com.`,
+  'cc-input-text.error.empty': `You must enter a value.`,
   'cc-input-text.required': `required`,
   'cc-input-text.secret.hide': `Hide secret`,
   'cc-input-text.secret.show': `Show secret`,
@@ -469,7 +479,7 @@ export const translations = {
   'cc-logs.select-button.label': ({ index }) => `Select the line ${index}`,
   'cc-logs.unselect-button.label': ({ index }) => `Unselect the line ${index}`,
   //#endregion
-  //#region cc-logs-controller
+  //#region cc-logs-control
   'cc-logs-control.date-display': `Date format`,
   'cc-logs-control.date-display.datetime-iso': `Date and hour ISO`,
   'cc-logs-control.date-display.datetime-short': `Date and hour`,
@@ -740,7 +750,7 @@ export const translations = {
   'cc-pricing-product-consumption.add': `Add`,
   'cc-pricing-product-consumption.bytes': ({ bytes }) => formatBytesSi(bytes),
   'cc-pricing-product-consumption.bytes-unit': ({ bytes }) => getUnit(bytes),
-  'cc-pricing-product-consumption.error': `An error occured while retrieving pricing details.`,
+  'cc-pricing-product-consumption.error': `An error occurred while retrieving pricing details.`,
   'cc-pricing-product-consumption.inbound-traffic.label': `traffic in`,
   'cc-pricing-product-consumption.inbound-traffic.title': `Inbound traffic:`,
   'cc-pricing-product-consumption.number': ({ number }) => formatNumber(lang, number),
@@ -777,6 +787,7 @@ export const translations = {
   'cc-product-card.select': (name) => `${name} - select this product`,
   //#endregion
   //#region cc-select
+  'cc-select.error.empty': `You must select a value.`,
   'cc-select.required': `required`,
   //#endregion
   //#region cc-ssh-key-list
@@ -955,9 +966,5 @@ export const translations = {
   //#region cc-zone-input
   'cc-zone-input.error': `Something went wrong while loading zones.`,
   'cc-zone-input.private-map-warning': `Private zones don't appear on the map.`,
-  //#endregion
-  //#region validation-controller
-  'validation-controller.error.bad-email': () => sanitize`Invalid email address format.<br>Example: john.doe@example.com.`,
-  'validation-controller.error.empty': `Please enter a value`,
   //#endregion
 };

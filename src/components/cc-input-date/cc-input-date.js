@@ -13,6 +13,13 @@ import {
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { isStringEmpty } from '../../lib/utils.js';
+import {
+  invalid,
+  RequiredValidator,
+  VALID,
+  validatorsBuilder,
+} from '../../lib/validation/validation.js';
+import { WithElementInternals } from '../../mixins/with-element-internals.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 
@@ -65,20 +72,6 @@ function dateStateValid (date) {
   };
 }
 
-const VALID = { valid: true };
-
-/**
- * @param {T} code
- * @return {{valid: false, code: T}}
- * @template T
- */
-function invalid (code) {
-  return {
-    valid: false,
-    code,
-  };
-}
-
 /**
  * @typedef {import('../../lib/date/date.types.js').Timezone} Timezone
  * @typedef {import('./cc-input-date.types.js').InputDateValueState} InputDateValueState
@@ -105,7 +98,7 @@ function invalid (code) {
  * @slot error - The error message to be displayed below the `<input>` element or below the help text. Please use a `<p>` tag.
  * @slot help - The help message to be displayed right below the `<input>` element. Please use a `<p>` tag.
  */
-export class CcInputDate extends LitElement {
+export class CcInputDate extends WithElementInternals(LitElement) {
 
   static get properties () {
     return {
@@ -167,6 +160,9 @@ export class CcInputDate extends LitElement {
     /** @type {string|Date|null} Sets `value` attribute on inner native input element. */
     this.value = null;
 
+    /** @type {string|Date|null} Sets `value` to set when input is reset. */
+    this.resetValue = null;
+
     /** @type {Ref<HTMLInputElement>} */
     this._inputRef = createRef();
 
@@ -175,9 +171,6 @@ export class CcInputDate extends LitElement {
      * It is maintained in sync with the `timezone` properties.
      */
     this._dateFormatter = this._resolveDateFormatter();
-
-    /** @type {boolean} Whether or not the error slot is empty. */
-    this._hasError = false;
 
     /** @type {Date|null} The resolved maximum date or null if no maximum is specified. */
     this._maxDate = null;
@@ -189,6 +182,62 @@ export class CcInputDate extends LitElement {
     this._valueState = dateStateEmpty();
   }
 
+  getElementInternalsSettings () {
+    return {
+      valuePropertyName: 'value',
+      resetValuePropertyName: 'resetValue',
+      inputSelector: '#input-id',
+      errorSelector: '#error-id',
+      validationSettingsProvider: () => this._getValidationSettings(),
+      reactiveValidationProperties: ['required', 'options'],
+      formDataProvider: () => this._inputRef.value.value,
+    };
+  }
+
+  /**
+   * @return {Validator}
+   */
+  _getValidator () {
+    if (this._customValidator != null) {
+      return this._customValidator;
+    }
+
+    return {
+      validate: (value) => {
+        if (this._valueState.state === 'NaD') {
+          return invalid('badInput');
+        }
+
+        const date = this._valueState.date;
+
+        if (this._minDate != null && date.getTime() < this._minDate.getTime()) {
+          return invalid('rangeUnderflow');
+        }
+
+        if (this._maxDate != null && date.getTime() > this._maxDate.getTime()) {
+          return invalid('rangeOverflow');
+        }
+
+        return VALID;
+      },
+    };
+  }
+
+  _getValidationSettings () {
+    return {
+      errorMessages: {
+        empty: () => i18n('cc-input-date.error.empty'),
+        badInput: () => i18n('cc-input-date.error.bad-input'),
+        rangeUnderflow: () => i18n('cc-input-date.error.range-underflow', { min: this.min }),
+        rangeOverflow: () => i18n('cc-input-date.error.range-overflow', { max: this.max }),
+      },
+      validator: validatorsBuilder()
+        .add(this.required ? new RequiredValidator() : null)
+        .add(this._getValidator())
+        .combine(),
+    };
+  }
+
   /* region Public methods */
 
   /**
@@ -196,31 +245,6 @@ export class CcInputDate extends LitElement {
    */
   focus (options) {
     this._inputRef.value.focus(options);
-  }
-
-  /**
-   * @return {{valid: false, code: 'empty' | 'badInput' | 'rangeUnderflow' | 'rangeOverflow'}|{valid: true}}
-   */
-  validate () {
-    if (this._valueState.state === 'empty') {
-      return this.required ? invalid('empty') : VALID;
-    }
-
-    if (this._valueState.state === 'NaD') {
-      return invalid('badInput');
-    }
-
-    const date = this._valueState.date;
-
-    if (this._minDate != null && date.getTime() < this._minDate.getTime()) {
-      return invalid('rangeUnderflow');
-    }
-
-    if (this._maxDate != null && date.getTime() > this._maxDate.getTime()) {
-      return invalid('rangeOverflow');
-    }
-
-    return VALID;
   }
 
   /**
@@ -367,10 +391,6 @@ export class CcInputDate extends LitElement {
     }
   }
 
-  _onErrorSlotChanged (e) {
-    this._hasError = e.target.assignedNodes()?.length > 0;
-  }
-
   /* endregion */
 
   willUpdate (changedProperties) {
@@ -402,6 +422,8 @@ export class CcInputDate extends LitElement {
   }
 
   render () {
+    const hasErrorMessage = this.errorMessage != null && this.errorMessage !== '';
+
     // We use the live directive for binding the value of the native input.
     // We need that for the case tested by 'should have the formatted value when setting the same value with iso string'
 
@@ -422,7 +444,7 @@ export class CcInputDate extends LitElement {
             id="input-id"
             ${ref(this._inputRef)}
             type="text"
-            class="input ${classMap({ error: this._hasError })}"
+            class="input ${classMap({ error: hasErrorMessage })}"
             ?disabled=${this.disabled || this.skeleton}
             ?readonly=${this.readonly}
             .value=${live(this._formatValue())}
@@ -442,9 +464,10 @@ export class CcInputDate extends LitElement {
         <slot name="help"></slot>
       </div>
 
-      <div class="error-container" id="error">
-        <slot name="error" @slotchange="${this._onErrorSlotChanged}"></slot>
-      </div>
+      ${hasErrorMessage ? html`
+        <p class="error-container" id="error-id">
+          ${this.errorMessage}
+        </p>` : ''}
 
       ${this._valueState.date != null ? html`
         <p id="keyboard-hint" class="visually-hidden">${i18n('cc-input-date.keyboard-hint')}</p>
@@ -541,8 +564,7 @@ export class CcInputDate extends LitElement {
           font-size: 0.9em;
         }
 
-        slot[name='error'],
-        slot[name='error']::slotted(*) {
+        .error-container {
           margin: 0.5em 0 0;
           color: var(--cc-color-text-danger);
         }

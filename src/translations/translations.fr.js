@@ -419,11 +419,14 @@ export const translations = {
   //#endregion
   //#region cc-input-number
   'cc-input-number.decrease': `décrémenter`,
+  'cc-input-number.error.empty': `Veuillez saisir une valeur.`,
   'cc-input-number.increase': `incrémenter`,
   'cc-input-number.required': `obligatoire`,
   //#endregion
   //#region cc-input-text
   'cc-input-text.clipboard': `Copier dans le presse-papier`,
+  'cc-input-text.error.bad-email': () => sanitize`Format d'adresse e-mail invalide.<br>Exemple: john.doe@example.com.`,
+  'cc-input-text.error.empty': `Veuillez saisir une valeur.`,
   'cc-input-text.required': `obligatoire`,
   'cc-input-text.secret.hide': `Cacher le secret`,
   'cc-input-text.secret.show': `Afficher le secret`,
@@ -482,7 +485,7 @@ export const translations = {
   'cc-logs.select-button.label': ({ index }) => `Sélectionner la ligne ${index}`,
   'cc-logs.unselect-button.label': ({ index }) => `Désélectionner la ligne ${index}`,
   //#endregion
-  //#region cc-logs-controller
+  //#region cc-logs-control
   'cc-logs-control.date-display': `Format de date`,
   'cc-logs-control.date-display.datetime-iso': `Date et heure ISO`,
   'cc-logs-control.date-display.datetime-short': `Date et heure`,
@@ -790,6 +793,7 @@ export const translations = {
   'cc-product-card.select': (name) => `${name} - sélectionner ce produit`,
   //#endregion
   //#region cc-select
+  'cc-select.error.empty': `Veuillez sélectionner une valeur.`,
   'cc-select.required': `obligatoire`,
   //#endregion
   //#region cc-ssh-key-list
@@ -968,9 +972,5 @@ export const translations = {
   //#region cc-zone-input
   'cc-zone-input.error': `Une erreur est survenue pendant le chargement des zones.`,
   'cc-zone-input.private-map-warning': `Les zones privées n'apparaissent pas sur la carte.`,
-  //#endregion
-  //#region validation-controller
-  'validation-controller.error.bad-email': () => sanitize`Format d'adresse e-mail invalide.<br>Exemple: john.doe@example.com.`,
-  'validation-controller.error.empty': `Veuillez saisir une valeur.`,
   //#endregion
 };

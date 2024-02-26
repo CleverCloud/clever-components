@@ -11,5 +11,9 @@ export interface InvalidValidation {
 
 export interface Validator {
   validate: (value: any) => Validation;
-  getErrorMessage: (code: string) => string;
+  getErrorMessage?: (code: string) => ErrorMessage;
 }
+
+export type ErrorMessage = null | string | Node;
+
+export type ErrorMessageMap = {[code: string]: ErrorMessage | (() => ErrorMessage)};
