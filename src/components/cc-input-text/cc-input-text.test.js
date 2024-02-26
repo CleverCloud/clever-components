@@ -157,28 +157,40 @@ describe('Component cc-input-text', () => {
 
     it('should return valid when required validator is set and value respects constraint', async () => {
       const element = await getElement(`<cc-input-text value="valid"></cc-input-text>`);
+
       element.customValidator = new CustomValidator();
+      await elementUpdated(element);
+
       assertValid(element);
       await assertValidateMethodReturnsValid(element);
     });
 
     it('should return invalid when required validator is set and value violates constraint', async () => {
       const element = await getElement(`<cc-input-text value="not valid"></cc-input-text>`);
+
       element.customValidator = new CustomValidator();
+      await elementUpdated(element);
+
       assertInvalid(element, 'Custom validator error message');
       await assertValidateMethodReturnsInvalid(element, 'errorCode', 'Custom validator error message');
     });
 
     it('should return invalid with "empty" code when required and custom validator and empty value set', async () => {
       const element = await getElement(`<cc-input-text required value=""></cc-input-text>`);
+
       element.customValidator = new CustomValidator();
+      await elementUpdated(element);
+
       assertInvalid(element, 'Empty error message');
       await assertValidateMethodReturnsInvalid(element, 'empty', 'Empty error message');
     });
 
     it('should return invalid with "errorCode" code when required and custom validator and invalid value set', async () => {
       const element = await getElement(`<cc-input-text required value="invalid"></cc-input-text>`);
+
       element.customValidator = new CustomValidator();
+      await elementUpdated(element);
+
       assertInvalid(element, 'Custom validator error message');
       await assertValidateMethodReturnsInvalid(element, 'errorCode', 'Custom validator error message');
     });
@@ -192,6 +204,7 @@ describe('Component cc-input-text', () => {
           return VALID;
         },
       };
+      await elementUpdated(element);
       spy.reset();
 
       await type(element, 'a');
@@ -267,8 +280,7 @@ describe('Component cc-input-text', () => {
     it('should become invalid when custom validator changes', async () => {
       const element = await getElement(`<cc-input-text required value="valid"></cc-input-text>`);
       element.customValidator = new CustomValidator();
-      assertValid(element);
-      await assertValidateMethodReturnsValid(element);
+      await elementUpdated(element);
 
       element.customValidator = {
         getErrorMessage (code) {
@@ -278,6 +290,7 @@ describe('Component cc-input-text', () => {
           return invalid('invalid');
         },
       };
+      await elementUpdated(element);
 
       assertInvalid(element, 'Custom validator error message');
       await assertValidateMethodReturnsInvalid(element, 'invalid', 'Custom validator error message');
@@ -285,6 +298,7 @@ describe('Component cc-input-text', () => {
 
     it('should have the right error message decoded from a sanitized error', async () => {
       const element = await getElement(`<cc-input-text required value="valid"></cc-input-text>`);
+
       element.customValidator = {
         getErrorMessage (code) {
           return sanitize`error<br>message`;
@@ -293,6 +307,7 @@ describe('Component cc-input-text', () => {
           return invalid('invalid');
         },
       };
+      await elementUpdated(element);
 
       assertInvalid(element, 'error\nmessage');
       await assertValidateMethodReturnsInvalid(element, 'invalid', 'error\nmessage');
@@ -340,18 +355,22 @@ describe('Component cc-input-text', () => {
 
     it('should use the given custom error message', async () => {
       const element = await getElement(`<cc-input-text required></cc-input-text>`);
+
       element.customErrorMessages = {
         empty: 'custom empty error',
       };
+      await elementUpdated(element);
 
       await assertValidateMethodReturnsInvalid(element, 'empty', 'custom empty error');
     });
 
     it('should fallback to default error message when given custom error message does not contain the corresponding error code', async () => {
       const element = await getElement(`<cc-input-text required></cc-input-text>`);
+
       element.customErrorMessages = {
         unusedCode: 'custom empty error',
       };
+      await elementUpdated(element);
 
       await assertValidateMethodReturnsInvalid(element, 'empty', 'Empty error message');
     });

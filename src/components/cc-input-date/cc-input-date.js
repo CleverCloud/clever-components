@@ -75,6 +75,7 @@ function dateStateValid (date) {
 /**
  * @typedef {import('../../lib/date/date.types.js').Timezone} Timezone
  * @typedef {import('./cc-input-date.types.js').InputDateValueState} InputDateValueState
+ * @typedef {import('../../lib/validation/validation.types.js').Validator} Validator
  */
 
 /**
@@ -189,7 +190,7 @@ export class CcInputDate extends WithElementInternals(LitElement) {
       inputSelector: '#input-id',
       errorSelector: '#error-id',
       validationSettingsProvider: () => this._getValidationSettings(),
-      reactiveValidationProperties: ['required', 'options'],
+      reactiveValidationProperties: ['required', 'min', 'max', 'timezone'],
       formDataProvider: () => this._inputRef.value.value,
     };
   }
@@ -198,12 +199,16 @@ export class CcInputDate extends WithElementInternals(LitElement) {
    * @return {Validator}
    */
   _getValidator () {
-    if (this._customValidator != null) {
-      return this._customValidator;
+    if (this.customValidator != null) {
+      return this.customValidator;
     }
 
     return {
       validate: (value) => {
+        if (this._valueState.state === 'empty') {
+          return VALID;
+        }
+
         if (this._valueState.state === 'NaD') {
           return invalid('badInput');
         }

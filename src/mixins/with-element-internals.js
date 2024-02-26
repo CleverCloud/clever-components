@@ -26,7 +26,9 @@ export const WithElementInternals = (superClass) =>
 
     static get properties () {
       return {
-        errorMessage: { type: Object, attribute: false },
+        errorMessage: { type: Object, attribute: 'error-message' },
+        customValidator: { type: Object, attribute: false },
+        customErrorMessages: { type: Object, attribute: false },
       };
     }
 
@@ -39,10 +41,10 @@ export const WithElementInternals = (superClass) =>
       this.errorMessage = null;
 
       /** @type {Validator} Sets the custom validator. */
-      this._customValidator = null;
+      this.customValidator = null;
 
       /** @type {ErrorMessageMap} */
-      this._customErrorMessages = null;
+      this.customErrorMessages = null;
     }
 
     /**
@@ -51,24 +53,6 @@ export const WithElementInternals = (superClass) =>
      */
     getElementInternalsSettings () {
       throw new Error('You must implement getElementInternalsSettings() method!');
-    }
-
-    // todo: make that a reactive property
-    /**
-     * @param {Validator} customValidator
-     */
-    set customValidator (customValidator) {
-      this._customValidator = customValidator;
-      this.validate(false);
-    }
-
-    // todo: make that a reactive property
-    /**
-     * @param {ErrorMessageMap} customErrorMessages
-     */
-    set customErrorMessages (customErrorMessages) {
-      this._customErrorMessages = customErrorMessages;
-      this.validate(false);
     }
 
     /**
@@ -99,7 +83,7 @@ export const WithElementInternals = (superClass) =>
       /** @type {ErrorMessageMap} */
       const errorMessages = {
         ...validationSettings.errorMessages,
-        ...(this._customErrorMessages || {}),
+        ...(this.customErrorMessages || {}),
       };
 
       const validator = validationSettings.validator;
@@ -176,7 +160,7 @@ export const WithElementInternals = (superClass) =>
      */
     updated (changedProperties) {
       let shouldValidate = false;
-      const hasErrorMessage = changedProperties.has('errorMessage');
+      const errorMessageChanged = changedProperties.has('errorMessage');
       const isErrorMessageEmpty = this.errorMessage == null || (typeof this.errorMessage === 'string' && this.errorMessage.length === 0);
 
       // Sync form values with our state
@@ -185,6 +169,7 @@ export const WithElementInternals = (superClass) =>
         shouldValidate = true;
       }
 
+      // if one of the properties that should trigger a new validation have changed
       if ((this._helper.settings.reactiveValidationProperties ?? []).some((prop) => changedProperties.has(prop))) {
         shouldValidate = true;
       }
@@ -192,12 +177,17 @@ export const WithElementInternals = (superClass) =>
       // if errorMessage is set to null / empty, we want the field to be revalidated based on its validators
       // we want it to be revalidated only if it's not already valid
       // if it's already valid, it means the value has changed and has already been revalidated
-      if (hasErrorMessage && isErrorMessageEmpty) {
+      if (errorMessageChanged && isErrorMessageEmpty) {
         shouldValidate = true;
       }
 
-      // if errorMessage is set (not null & not empty), we want the component validity to reflect that
-      if (hasErrorMessage && !isErrorMessageEmpty) {
+      if (changedProperties.has('customValidator') || changedProperties.has('customErrorMessages')) {
+        shouldValidate = true;
+      }
+
+      // if errorMessage has changed and errorMessage is set (not null & not empty), we want the component validity to reflect that,
+      // and we don't want the execute the classic validation
+      if (errorMessageChanged && !isErrorMessageEmpty) {
         let message;
         if (typeof this.errorMessage === 'string') {
           message = this.errorMessage;
@@ -274,7 +264,7 @@ class Helper {
 
     const valueProperty = this.getValueProperty();
 
-    if (valueProperty == null || typeof valueProperty === 'string') {
+    if (valueProperty == null || typeof valueProperty === 'string' || valueProperty instanceof File || valueProperty instanceof FormData) {
       return valueProperty;
     }
 

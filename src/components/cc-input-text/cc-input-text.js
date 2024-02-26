@@ -29,11 +29,6 @@ const DEFAULT_ERROR_MESSAGES = {
 };
 
 /**
- * @type {import('lit/directives/ref.js').Ref} Ref
- * @type {import('../../').Ref} Ref
- */
-
-/**
  * An enhanced text input with support for multiline, copy-to-clipboard, show/hide secret and highlighted tags.
  *
  * ## Technical details
@@ -243,8 +238,8 @@ export class CcInputText extends WithElementInternals(LitElement) {
    * @return {Validator}
    */
   _getValidator () {
-    if (this._customValidator != null) {
-      return this._customValidator;
+    if (this.customValidator != null) {
+      return this.customValidator;
     }
 
     if (this.type === 'email') {

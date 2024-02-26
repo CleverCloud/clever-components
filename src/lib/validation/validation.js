@@ -1,5 +1,3 @@
-import { i18n } from '../i18n.js';
-
 /**
  * @typedef {import('./validation.types.js').ValidValidation} ValidValidation
  * @typedef {import('./validation.types.js').InvalidValidation} InvalidValidation
@@ -168,7 +166,7 @@ export function validatorsBuilder () {
   return combiner;
 }
 
-export function combineValidators (validators) {
+function combineValidators (validators) {
   if (validators.length === 0) {
     return new ValidValidator();
   }

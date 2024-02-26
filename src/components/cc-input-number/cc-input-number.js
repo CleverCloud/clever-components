@@ -131,8 +131,8 @@ export class CcInputNumber extends WithElementInternals(LitElement) {
    * @return {Validator}
    */
   _getValidator () {
-    if (this._customValidator != null) {
-      return this._customValidator;
+    if (this.customValidator != null) {
+      return this.customValidator;
     }
 
     return new NumberValidator({ min: this.min, max: this.max });
