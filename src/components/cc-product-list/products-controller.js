@@ -92,6 +92,9 @@ export class ProductsController {
 
     const filteredProductsList = [];
     const regex = RegExp(input, 'i');
+    const inputKeywordsLowerCase = input
+      .toLowerCase()
+      .split(' ');
 
     for (const productSection of plByCategory) {
 
@@ -105,13 +108,19 @@ export class ProductsController {
       for (const product of productSection.products) {
         const keywords = product?.keywords?.map(({ value }) => value) ?? [];
 
-        const searchFilters = [
+        const someText = [
           product.name,
           product.description,
           ...keywords,
-        ].join(' ');
+        ];
 
-        if (regex.test(searchFilters)) {
+        const itMatches = someText.some((text) => {
+          return inputKeywordsLowerCase.some((input) => {
+            return text.toLowerCase().includes(input);
+          });
+        });
+
+        if (itMatches) {
           filteredProductSection.products.push(product);
         }
       }

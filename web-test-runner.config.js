@@ -3,6 +3,7 @@ import { rollupAdapter } from '@web/dev-server-rollup';
 import { chromeLauncher } from '@web/test-runner-chrome';
 import { cemAnalyzerPlugin } from './wds/cem-analyzer-plugin.js';
 import { commonjsPluginWithConfig, esbuildBundlePluginWithConfig } from './wds/wds-common.js';
+import { summaryReporter } from '@web/test-runner';
 
 export default {
   files: ['test/**/*.test.*', 'src/components/**/*.test.*'],
@@ -17,6 +18,7 @@ export default {
     }),
   ],
   nodeResolve: true,
+  reporters: [summaryReporter()],
   mimeTypes: {
     '**/*.json': 'js',
   },
