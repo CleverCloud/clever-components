@@ -16,6 +16,7 @@ Here's list of interesting things to read, watch and listen to if you're working
 * [Lit docs](https://lit.dev/)
 * [Naming Tokens in Design Systems](https://medium.com/eightshapes-llc/naming-tokens-in-design-systems-9e86c7444676)
 * [Storybook docs](https://storybook.js.org/)
+* [The benefits of Web Component Libraries - Thomas Broyer](https://dev.to/tbroyer/the-benefits-of-web-component-libraries-527h)
 * [The performance benefits of rel=noopener](https://jakearchibald.com/2016/performance-benefits-of-rel-noopener/)
 * [Un petit pas pour l’em, un grand pas pour le Web - Nicolas Hoizey](https://vimeo.com/79204119)
 * [Virtual DOM is pure overhead](https://svelte.dev/blog/virtual-dom-is-pure-overhead)
