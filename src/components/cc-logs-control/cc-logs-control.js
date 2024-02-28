@@ -69,6 +69,8 @@ const PALETTES = {
  * @cssdisplay grid
  *
  * @fires {CustomEvent<LogsControlOption>} cc-logs-control:option-change - Fires a `LogsControlOption` whenever an `option` changes.
+ *
+ * @slot header - The content of the space on top of the logs block.
  */
 export class CcLogsControl extends LitElement {
 
@@ -278,7 +280,7 @@ export class CcLogsControl extends LitElement {
 
   render () {
     return html`
-      <div class="header"></div>
+      <div class="header"><slot name="header"></slot></div>
 
       <cc-button
         class="header-scroll-button"

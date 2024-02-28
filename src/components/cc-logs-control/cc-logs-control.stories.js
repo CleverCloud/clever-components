@@ -1,4 +1,5 @@
 import './cc-logs-control.js';
+import '../cc-input-text/cc-input-text.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 
 import { createFakeLogs, CUSTOM_METADATA_RENDERERS } from '../cc-logs/fake-logs.js';
@@ -37,6 +38,18 @@ export const defaultStory = makeStory(conf, {
       metadataDisplay: metadataDisplay,
       metadataRenderers: CUSTOM_METADATA_RENDERERS,
       logs: createFakeLogs(100, { longMessage: true, ansi: true }),
+    },
+  ],
+});
+
+export const withHeaderSlot = makeStory(conf, {
+  items: [
+    {
+      follow: true,
+      metadataDisplay: metadataDisplay,
+      metadataRenderers: CUSTOM_METADATA_RENDERERS,
+      logs: createFakeLogs(100, { longMessage: true, ansi: true }),
+      innerHTML: `<cc-input-text inline label="Filter" slot="header" style="width: 100%"></cc-input-text>`,
     },
   ],
 });
