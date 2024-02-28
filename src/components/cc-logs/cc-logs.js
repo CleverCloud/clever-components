@@ -792,10 +792,7 @@ export class CcLogs extends LitElement {
           </button>
         </span>
         ${this._renderLogTimestamp(log, dateDisplayer)}
-        <span class="log--right ${classMap({ wrap })}">
-          ${this._renderLogMetadata(log)}
-          ${this._renderLogMessage(log)}
-        </span>
+        <span class="log--right ${classMap({ wrap })}">${this._renderLogMetadata(log)}${this._renderLogMessage(log)}</span>
       </p>
     `;
   }
@@ -826,11 +823,8 @@ export class CcLogs extends LitElement {
       .map((metadata) => this._renderMetadata(metadata))
       .filter((t) => t != null);
 
-    return html`
-      <span class="metadata--wrapper">
-        ${join(metadata, html`&nbsp;`)}
-      </span>
-    `;
+    // keep this on one line to make sure we do not break the white-space css rule
+    return html`<span class="metadata--wrapper">${join(metadata, html`&nbsp;`)}</span>`;
   }
 
   /**
@@ -858,11 +852,8 @@ export class CcLogs extends LitElement {
    * @param {Log} log
    */
   _renderLogMessage (log) {
-    return html`
-      <span class="message">
-        ${this.stripAnsi ? stripAnsi(log.message) : ansiToLit(log.message)}
-      </span>
-    `;
+    // keep this on one line to make sure we do not break the white-space css rule
+    return html`<span class="message">${this.stripAnsi ? stripAnsi(log.message) : ansiToLit(log.message)}</span>`;
   }
 
   static get styles () {
@@ -928,11 +919,11 @@ export class CcLogs extends LitElement {
         }
 
         .log--right {
-          white-space: nowrap;
+          white-space: pre;
         }
 
         .log--right.wrap {
-          white-space: normal;
+          white-space: pre-wrap;
         }
 
         .gutter {
