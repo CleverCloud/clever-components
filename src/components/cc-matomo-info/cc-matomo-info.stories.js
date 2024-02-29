@@ -11,32 +11,53 @@ const conf = {
   component: 'cc-matomo-info',
 };
 
-const matomoLink = 'https://my-matomo.example.com';
-const phpLink = '/php';
-const mysqlLink = '/mysql';
-const redisLink = '/redis';
+const matomoUrl = 'https://my-matomo.example.com';
+const phpUrl = '/php';
+const mysqlUrl = '/mysql';
+const redisUrl = '/redis';
 
 export const defaultStory = makeStory(conf, {
-  items: [{ matomoLink, phpLink, mysqlLink, redisLink }],
+  items: [{
+    state: {
+      type: 'loaded',
+      matomoUrl,
+      phpUrl,
+      mysqlUrl,
+      redisUrl,
+    },
+  }],
 });
 
 export const skeleton = makeStory(conf, {
-  items: [{}],
+  items: [{
+    state: {
+      type: 'loading',
+    },
+  }],
 });
 
 export const errorStory = makeStory(conf, {
-  items: [{ error: true }],
+  items: [{
+    state: {
+      type: 'error',
+    },
+  }],
 });
 
 export const simulations = makeStory(conf, {
   items: [{}, {}],
   simulations: [
     storyWait(2000, ([component, componentError]) => {
-      component.matomoLink = matomoLink;
-      component.phpLink = phpLink;
-      component.mysqlLink = mysqlLink;
-      component.redisLink = redisLink;
-      componentError.error = true;
+      component.state = {
+        type: 'loaded',
+        matomoUrl,
+        phpUrl,
+        mysqlUrl,
+        redisUrl,
+      };
+      componentError.state = {
+        type: 'error',
+      };
     }),
   ],
 });
