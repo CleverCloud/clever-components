@@ -13,6 +13,3 @@ block.image = 'https://assets.clever-cloud.com/logos/nodejs.svg';
 block.ribbon = 'info';
 block.state = 'open';
 // block._overlay = true;
-
-const envVarForm = document.querySelector('cc-env-var-form');
-envVarForm.innerHTML = ``;
