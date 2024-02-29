@@ -83,13 +83,17 @@ export class CcAddonAdmin extends LitElement {
    * @param {CcAddonAdminPropertyValues} changedProperties
    */
   willUpdate (changedProperties) {
-    if (changedProperties.has('state') && (this.state.type === 'loaded' || this.state.type === 'updatingName' || this.state.type === 'updatingTags' || this.state.type === 'deleting')) {
+    if (changedProperties.has('state') && 'name' in this.state) {
       this._name = this.state.name;
+    }
+
+    if (changedProperties.has('state') && 'tags' in this.state) {
       this._tags = this.state.tags;
     }
   }
 
   render () {
+
     return html`
       <cc-block>
         <div slot="title">${i18n('cc-addon-admin.admin')}</div>
@@ -100,7 +104,9 @@ export class CcAddonAdmin extends LitElement {
 
         ${this.state.type === 'loading' ? this._renderContent(this.state) : ''}
 
-        ${this.state.type === 'loaded' || this.state.type === 'deleting' || this.state.type === 'updatingName' || this.state.type === 'updatingTags'
+        ${this.state.type === 'loaded' ? this._renderContent(this.state) : ''}
+
+        ${this.state.type === 'deleting' || this.state.type === 'updatingName' || this.state.type === 'updatingTags'
           ? this._renderContent(this.state)
           : ''
         }
