@@ -1,3 +1,4 @@
+import { LitElement } from 'lit';
 import { dispatchCustomEvent } from '../lib/events.js';
 
 /**
@@ -15,206 +16,202 @@ import { dispatchCustomEvent } from '../lib/events.js';
  * @template {!Constructor} T
  * @param {T} superClass - The LitElement class to extend
  */
-export const WithElementInternals = (superClass) =>
+export class WithElementInternals extends LitElement {
+  static get formAssociated () {
+    return true;
+  }
+
+  static get properties () {
+    return {
+      errorMessage: { type: Object, attribute: false },
+    };
+  }
+
+  constructor () {
+    super();
+
+    this._helper = new Helper(this, this.getElementInternalsSettings());
+
+    /** @type {ErrorMessage} Sets the error message. */
+    this.errorMessage = null;
+
+    /** @type {Validator} Sets the custom validator. */
+    this._customValidator = null;
+
+    /** @type {ErrorMessageMap} */
+    this._customErrorMessages = null;
+  }
+
   /**
-   * @extends HTMLElement
-   */
-  class Mixin extends superClass {
-    static get formAssociated () {
-      return true;
-    }
-
-    static get properties () {
-      return {
-        errorMessage: { type: Object, attribute: false },
-      };
-    }
-
-    constructor () {
-      super();
-
-      this._helper = new Helper(this, this.getElementInternalsSettings());
-
-      /** @type {ErrorMessage} Sets the error message. */
-      this.errorMessage = null;
-
-      /** @type {Validator} Sets the custom validator. */
-      this._customValidator = null;
-
-      /** @type {ErrorMessageMap} */
-      this._customErrorMessages = null;
-    }
-
-    /**
      * @return {WithElementInternalsSettings}
      * @protected
      */
-    getElementInternalsSettings () {
-      throw new Error('You must implement getElementInternalsSettings() method!');
-    }
+  getElementInternalsSettings () {
+    throw new Error('You must implement getElementInternalsSettings() method!');
+  }
 
-    // todo: make that a reactive property
-    /**
+  // todo: make that a reactive property
+  /**
      * @param {Validator} customValidator
      */
-    set customValidator (customValidator) {
-      this._customValidator = customValidator;
-      this.validate(false);
-    }
+  set customValidator (customValidator) {
+    this._customValidator = customValidator;
+    this.validate(false);
+  }
 
-    // todo: make that a reactive property
-    /**
+  // todo: make that a reactive property
+  /**
      * @param {ErrorMessageMap} customErrorMessages
      */
-    set customErrorMessages (customErrorMessages) {
-      this._customErrorMessages = customErrorMessages;
-      this.validate(false);
-    }
+  set customErrorMessages (customErrorMessages) {
+    this._customErrorMessages = customErrorMessages;
+    this.validate(false);
+  }
 
-    /**
+  /**
      * This callback will be called when the form associated to the element is reset.
      */
-    formResetCallback () {
-      this._helper.resetValue();
-      this.validate(false);
-      if (this.errorMessage != null) {
-        this.errorMessage = null;
-        dispatchCustomEvent(this, 'error-message-change', null);
-      }
+  formResetCallback () {
+    this._helper.resetValue();
+    this.validate(false);
+    if (this.errorMessage != null) {
+      this.errorMessage = null;
+      dispatchCustomEvent(this, 'error-message-change', null);
     }
+  }
 
-    /**
+  /**
      * @param {boolean} report - whether to display error message or not
      */
-    validate (report) {
-      const validationSettings = this._helper.getValidationSettings();
+  validate (report) {
+    const validationSettings = this._helper.getValidationSettings();
 
-      // todo: is this a good idea?
-      //         should we do nothing instead?
-      if (validationSettings == null) {
-        this._helper.setValidValidity();
-        return;
-      }
-
-      /** @type {ErrorMessageMap} */
-      const errorMessages = {
-        ...validationSettings.errorMessages,
-        ...(this._customErrorMessages || {}),
-      };
-
-      const validator = validationSettings.validator;
-
-      const validationResult = validator.validate(this._helper.getValueProperty());
-
-      const errorMessage = validationResult.valid
-        ? null
-        : this._helper.resolveErrorMessage(validationResult.code, errorMessages, validator);
-
-      if (validationResult.valid) {
-        this._helper.setValidValidity();
-      }
-      else {
-        this._helper.setInvalidValidity(this._helper.convertErrorMessageToString(errorMessage));
-      }
-
-      if (report) {
-        if (errorMessage !== this.errorMessage) {
-          this.errorMessage = errorMessage;
-          dispatchCustomEvent(this, 'error-message-change', errorMessage);
-        }
-      }
-
-      return validationResult;
+    // todo: is this a good idea?
+    //         should we do nothing instead?
+    if (validationSettings == null) {
+      this._helper.setValidValidity();
+      return;
     }
 
-    /* region mimic the native validation API */
+    /** @type {ErrorMessageMap} */
+    const errorMessages = {
+      ...validationSettings.errorMessages,
+      ...(this._customErrorMessages || {}),
+    };
 
-    /**
+    const validator = validationSettings.validator;
+
+    const validationResult = validator.validate(this._helper.getValueProperty());
+
+    const errorMessage = validationResult.valid
+      ? null
+      : this._helper.resolveErrorMessage(validationResult.code, errorMessages, validator);
+
+    if (validationResult.valid) {
+      this._helper.setValidValidity();
+    }
+    else {
+      this._helper.setInvalidValidity(this._helper.convertErrorMessageToString(errorMessage));
+    }
+
+    if (report) {
+      if (errorMessage !== this.errorMessage) {
+        this.errorMessage = errorMessage;
+        dispatchCustomEvent(this, 'error-message-change', errorMessage);
+      }
+    }
+
+    return validationResult;
+  }
+
+  /* region mimic the native validation API */
+
+  /**
      * @return {boolean}
      */
-    checkValidity () {
-      return this._helper.internals.checkValidity();
-    }
+  checkValidity () {
+    return this._helper.internals.checkValidity();
+  }
 
-    /**
+  /**
      * @return {boolean}
      */
-    reportValidity () {
-      return this._helper.internals.reportValidity();
-    }
+  reportValidity () {
+    return this._helper.internals.reportValidity();
+  }
 
-    /**
+  /**
      * @return {ValidityState}
      */
-    get validity () {
-      return this._helper.internals.validity;
-    }
+  get validity () {
+    return this._helper.internals.validity;
+  }
 
-    /**
+  /**
      * @return {string}
      */
-    get validationMessage () {
-      return this._helper.internals.validationMessage;
-    }
+  get validationMessage () {
+    return this._helper.internals.validationMessage;
+  }
 
-    /**
+  /**
      * @param {string} message
      */
-    setCustomValidity (message) {
-      if (message == null || message.length === 0) {
-        this._helper.setValidValidity();
-      }
-      else {
-        this._helper.setInvalidValidity(message);
-      }
+  setCustomValidity (message) {
+    if (message == null || message.length === 0) {
+      this._helper.setValidValidity();
     }
+    else {
+      this._helper.setInvalidValidity(message);
+    }
+  }
 
-    /* endregion */
+  /* endregion */
 
-    /**
+  /**
       * @param {import('lit').PropertyValues<T>} changedProperties
      */
-    updated (changedProperties) {
-      let shouldValidate = false;
-      const hasErrorMessage = changedProperties.has('errorMessage');
-      const isErrorMessageEmpty = this.errorMessage == null || (typeof this.errorMessage === 'string' && this.errorMessage.length === 0);
+  updated (changedProperties) {
+    let shouldValidate = false;
+    const hasErrorMessage = changedProperties.has('errorMessage');
+    const isErrorMessageEmpty = this.errorMessage == null || (typeof this.errorMessage === 'string' && this.errorMessage.length === 0);
 
-      // Sync form values with our state
-      if (changedProperties.has(this._helper.settings.valuePropertyName)) {
-        this._helper.internals.setFormValue(this._helper.getFormData());
-        shouldValidate = true;
-      }
-
-      if ((this._helper.settings.reactiveValidationProperties ?? []).some((prop) => changedProperties.has(prop))) {
-        shouldValidate = true;
-      }
-
-      // if errorMessage is set to null / empty, we want the field to be revalidated based on its validators
-      // we want it to be revalidated only if it's not already valid
-      // if it's already valid, it means the value has changed and has already been revalidated
-      if (hasErrorMessage && isErrorMessageEmpty) {
-        shouldValidate = true;
-      }
-
-      // if errorMessage is set (not null & not empty), we want the component validity to reflect that
-      if (hasErrorMessage && !isErrorMessageEmpty) {
-        let message;
-        if (typeof this.errorMessage === 'string') {
-          message = this.errorMessage;
-        }
-        else {
-          message = this._helper.getErrorElement().innerText;
-        }
-
-        this._helper.setInvalidValidity(message);
-        shouldValidate = false;
-      }
-
-      if (shouldValidate) {
-        this.validate(false);
-      }
+    // Sync form values with our state
+    if (changedProperties.has(this._helper.settings.valuePropertyName)) {
+      this._helper.internals.setFormValue(this._helper.getFormData());
+      shouldValidate = true;
     }
-  };
+
+    if ((this._helper.settings.reactiveValidationProperties ?? []).some((prop) => changedProperties.has(prop))) {
+      shouldValidate = true;
+    }
+
+    // if errorMessage is set to null / empty, we want the field to be revalidated based on its validators
+    // we want it to be revalidated only if it's not already valid
+    // if it's already valid, it means the value has changed and has already been revalidated
+    if (hasErrorMessage && isErrorMessageEmpty) {
+      shouldValidate = true;
+    }
+
+    // if errorMessage is set (not null & not empty), we want the component validity to reflect that
+    if (hasErrorMessage && !isErrorMessageEmpty) {
+      let message;
+      if (typeof this.errorMessage === 'string') {
+        message = this.errorMessage;
+      }
+      else {
+        message = this._helper.getErrorElement().innerText;
+      }
+
+      this._helper.setInvalidValidity(message);
+      shouldValidate = false;
+    }
+
+    if (shouldValidate) {
+      this.validate(false);
+    }
+  }
+};
 
 /**
  * Every private methods are moved to a helper so that we don't pollute the child class (not thank you, JS, for not having proper private scope)
