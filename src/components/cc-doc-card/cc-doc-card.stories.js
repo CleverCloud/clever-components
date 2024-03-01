@@ -2,17 +2,23 @@ import './cc-doc-card.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
 const DEFAULT_CARD = {
-  heading: 'ruby',
-  icons: ['https://assets.clever-cloud.com/logos/ruby.svg'],
-  description: 'Run your Ruby and Ruby on Rails applications. Compatible with Rake, Sidekiq and Active Storage for Cellar.',
-  link: '#',
+  state: {
+    type: 'loaded',
+    heading: 'ruby',
+    icons: ['https://assets.clever-cloud.com/logos/ruby.svg'],
+    description: 'Run your Ruby and Ruby on Rails applications. Compatible with Rake, Sidekiq and Active Storage for Cellar.',
+    link: '#',
+  },
 };
 
 const MULTIPLE_ICONS_CARD = {
-  icons: ['https://assets.clever-cloud.com/logos/java-jar.svg', 'https://assets.clever-cloud.com/logos/maven.svg', 'https://assets.clever-cloud.com/logos/play2.svg'],
-  heading: 'Java',
-  description: 'Deploy Java runtimes with your specific process (Jar or War) or build tools (Maven, SBT…).',
-  link: '#',
+  state: {
+    type: 'loaded',
+    icons: ['https://assets.clever-cloud.com/logos/java-jar.svg', 'https://assets.clever-cloud.com/logos/maven.svg', 'https://assets.clever-cloud.com/logos/play2.svg'],
+    heading: 'Java',
+    description: 'Deploy Java runtimes with your specific process (Jar or War) or build tools (Maven, SBT…).',
+    link: '#',
+  },
 };
 
 export default {
@@ -35,7 +41,11 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const skeleton = makeStory(conf, {
-  items: [{}],
+  items: [{
+    state: {
+      type: 'loading',
+    },
+  }],
 });
 
 // No need to invest time on empty story right now.
@@ -50,10 +60,7 @@ export const simulations = makeStory(conf, {
   items: [{}],
   simulations: [
     storyWait(2000, ([component]) => {
-      component.heading = DEFAULT_CARD.heading;
-      component.icons = DEFAULT_CARD.icons;
-      component.description = DEFAULT_CARD.description;
-      component.link = DEFAULT_CARD.link;
+      component.state = DEFAULT_CARD.state;
     }),
   ],
 });

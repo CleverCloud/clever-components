@@ -12,6 +12,10 @@ const SKELETON_INFO = {
 };
 
 /**
+ * @typedef {import('./cc-doc-card.types.js').DocCardState} DocCardState
+ */
+
+/**
  * A component displaying basic information of a product with a link to redirect to its documentation in a card.
  *
  * @cssdisplay grid
@@ -20,43 +24,32 @@ export class CcDocCard extends LitElement {
 
   static get properties () {
     return {
-      description: { type: String },
-      heading: { type: String },
-      icons: { type: Array },
-      link: { type: String },
+      state: {
+        type: Object,
+      },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {string|null} Sets the description of the documentation card. */
-    this.description = null;
-
-    /** @type {string[]} Sets the icon of the documentation card. */
-    this.icons = null;
-
-    /** @type {string|null} Sets the link of the documentation card. */
-    this.link = null;
-
-    /** @type {string|null} Sets the title heading of the documentation card.  */
-    this.heading = null;
+    /** @type {DocCardState} Sets the state of the documentation card. */
+    this.state = { type: 'loading' };
   }
 
   render () {
-
-    const skeleton = (this.icons == null || this.heading == null || this.description == null || this.link == null);
-    const heading = this.heading ?? SKELETON_INFO.heading;
-    const description = this.description ?? SKELETON_INFO.description;
+    const skeleton = (this.state.type === 'loading');
+    const heading = this.state.type === 'loaded' ? this.state.heading : SKELETON_INFO.heading;
+    const description = this.state.type === 'loaded' ? this.state.description : SKELETON_INFO.description;
 
     return html`
         <div class="images">
           ${skeleton ? html`
-            <cc-img></cc-img>
+            <cc-img skeleton></cc-img>
           ` : ''}
-          ${!skeleton ? html`
-            ${this.icons.map((icon) => html`
-              <cc-img src=${icon}></cc-img>
+          ${this.state.type === 'loaded' ? html`
+            ${this.state.icons.map((iconUrl) => html`
+              <cc-img src=${iconUrl}></cc-img>
             `)}
           ` : ''}
         </div>
@@ -67,8 +60,8 @@ export class CcDocCard extends LitElement {
           <span class="${classMap({ skeleton })}">${description}</span>
         </div>
         <div class="link ${classMap({ skeleton })}">
-          ${!skeleton
-            ? i18n('cc-doc-card.link', { link: this.link, product: this.heading })
+          ${this.state.type === 'loaded'
+            ? i18n('cc-doc-card.link', { link: this.state.link, product: this.state.heading })
             : i18n('cc-doc-card.skeleton-link-title')}
         </div>
     `;
