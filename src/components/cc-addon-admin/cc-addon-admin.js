@@ -12,7 +12,9 @@ import { i18n } from '../../lib/i18n.js';
  * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateLoaded} AddonAdminStateLoaded
  * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateLoading} AddonAdminStateLoading
  * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateSaving} AddonAdminStateSaving
+ * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateNotError} AddonAdminStateNotError
  * @typedef {import('lit').PropertyValues<CcAddonAdmin>} CcAddonAdminPropertyValues
+ * @typedef {import('lit').TemplateResult<1>} TemplateResult
  */
 
 /**
@@ -92,8 +94,16 @@ export class CcAddonAdmin extends LitElement {
     }
   }
 
-  render () {
+  /**
+   * @param {AddonAdminState} state
+   * @returns {state is (AddonAdminStateLoaded|AddonAdminStateLoading|AddonAdminStateSaving)}
+   */
+  _shouldRenderContent (state) {
+    const possibleStateTypes = ['loaded', 'loading', 'deleting', 'updatingName', 'updatingTags'];
+    return possibleStateTypes.includes(state.type);
+  }
 
+  render () {
     return html`
       <cc-block>
         <div slot="title">${i18n('cc-addon-admin.admin')}</div>
@@ -102,21 +112,17 @@ export class CcAddonAdmin extends LitElement {
           <cc-notice intent="warning" message="${i18n('cc-addon-admin.error-loading')}"></cc-notice>
         ` : ''}
 
-        ${this.state.type === 'loading' ? this._renderContent(this.state) : ''}
-
-        ${this.state.type === 'loaded' ? this._renderContent(this.state) : ''}
-
-        ${this.state.type === 'deleting' || this.state.type === 'updatingName' || this.state.type === 'updatingTags'
+        ${this._shouldRenderContent(this.state)
           ? this._renderContent(this.state)
           : ''
         }
-
       </cc-block>
     `;
   }
 
   /**
-   * @param {AddonAdminStateLoading|AddonAdminStateLoaded|AddonAdminStateSaving} state
+   * @param {AddonAdminStateLoaded|AddonAdminStateLoading|AddonAdminStateSaving} state
+   * @returns {TemplateResult}
    */
   _renderContent (state) {
     const isSkeleton = state.type === 'loading';

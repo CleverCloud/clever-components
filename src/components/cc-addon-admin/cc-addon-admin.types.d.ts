@@ -1,9 +1,11 @@
 export type AddonAdminState = AddonAdminStateLoaded | AddonAdminStateLoading | AddonAdminStateError | AddonAdminStateSaving;
 
+export type AddonAdminStateNotError = AddonAdminStateLoading | AddonAdminStateSaving | AddonAdminStateLoaded;
+
 interface AddonAdminStateLoaded {
   type: 'loaded';
   name: string;
-  tags: string[];
+  tags: [];
 }
 
 interface AddonAdminStateDeleting {
@@ -19,7 +21,7 @@ interface AddonAdminStateUpdatingName {
 }
 
 interface AddonAdminStateUpdatingTags {
-  type: 'updatingTags';
+  type: 'updatingTagssss';
   name: string;
   tags: string[];
 }
