@@ -6,10 +6,18 @@ import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 
+/** @type {DocCard} */
 const SKELETON_INFO = {
   heading: fakeString(6),
   description: fakeString(110),
+  link: null,
+  icons: [],
 };
+
+/**
+ * @typedef {import('./cc-doc-card.types.js').DocCardState} DocCardState
+ * @typedef {import('./cc-doc-card.types.js').DocCard} DocCard
+ */
 
 /**
  * A component displaying basic information of a product with a link to redirect to its documentation in a card.
@@ -20,57 +28,43 @@ export class CcDocCard extends LitElement {
 
   static get properties () {
     return {
-      description: { type: String },
-      heading: { type: String },
-      icons: { type: Array },
-      link: { type: String },
+      state: { type: Object },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {string|null} Sets the description of the documentation card. */
-    this.description = null;
-
-    /** @type {string[]} Sets the icon of the documentation card. */
-    this.icons = null;
-
-    /** @type {string|null} Sets the link of the documentation card. */
-    this.link = null;
-
-    /** @type {string|null} Sets the title heading of the documentation card.  */
-    this.heading = null;
+    /** @type {DocCardState} Sets the state of the component */
+    this.state = { type: 'loading' };
   }
 
   render () {
-
-    const skeleton = (this.icons == null || this.heading == null || this.description == null || this.link == null);
-    const heading = this.heading ?? SKELETON_INFO.heading;
-    const description = this.description ?? SKELETON_INFO.description;
+    const skeleton = (this.state.type === 'loading');
+    const { heading, description, link } = this.state.type === 'loaded' ? this.state : SKELETON_INFO;
 
     return html`
-        <div class="images">
-          ${skeleton ? html`
-            <cc-img></cc-img>
-          ` : ''}
-          ${!skeleton ? html`
-            ${this.icons.map((icon) => html`
-              <cc-img src=${icon}></cc-img>
-            `)}
-          ` : ''}
-        </div>
-        <div class="title">
-          <span class="${classMap({ skeleton })}">${heading}</span>
-        </div>
-        <div class="desc">
-          <span class="${classMap({ skeleton })}">${description}</span>
-        </div>
-        <div class="link ${classMap({ skeleton })}">
-          ${!skeleton
-            ? i18n('cc-doc-card.link', { link: this.link, product: this.heading })
-            : i18n('cc-doc-card.skeleton-link-title')}
-        </div>
+      <div class="images">
+        ${skeleton ? html`
+          <cc-img skeleton></cc-img>
+        ` : ''}
+        ${this.state.type === 'loaded' ? html`
+          ${this.state.icons.map((iconUrl) => html`
+            <cc-img src=${iconUrl}></cc-img>
+          `)}
+        ` : ''}
+      </div>
+      <div class="title">
+        <span class="${classMap({ skeleton })}">${heading}</span>
+      </div>
+      <div class="desc">
+        <span class="${classMap({ skeleton })}">${description}</span>
+      </div>
+      <div class="link ${classMap({ skeleton })}">
+        ${this.state.type === 'loaded'
+          ? i18n('cc-doc-card.link', { link, product: heading })
+          : i18n('cc-doc-card.skeleton-link-title')}
+      </div>
     `;
   }
 
