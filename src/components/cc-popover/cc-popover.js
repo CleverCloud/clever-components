@@ -51,6 +51,7 @@ import { dispatchCustomEvent, EventHandler } from '../../lib/events.js';
  *
  * @cssprop {Size} --cc-popover-gap - Sets the gap between the button and the floating area (default 0.4em).
  * @cssprop {Number} --cc-popover-z-index - Sets the z-index of the floating content (defaults: `999`).
+ * @cssprop {Width} --cc-popover-trigger-button-width - Sets the width of the trigger button (defaults: `inherit`).
  */
 export class CcPopover extends LitElement {
   static get properties () {
@@ -228,6 +229,10 @@ export class CcPopover extends LitElement {
         
         .wrapper {
           position: relative;
+        }
+        
+        cc-button {
+          width: var(--cc-popover-trigger-button-width, inherit);
         }
         
         .content {
