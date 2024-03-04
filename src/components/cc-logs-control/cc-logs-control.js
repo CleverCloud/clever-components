@@ -194,7 +194,8 @@ export class CcLogsControl extends LitElement {
         hidden: isHidden,
       },
     };
-    dispatchCustomEvent(this, 'option-change', { name: 'metadata-display', value: this.metadataDisplay });
+    const eventDetail = Object.fromEntries(Object.entries(this.metadataDisplay).map(([k, v]) => [k, !v.hidden]));
+    dispatchCustomEvent(this, 'option-change', { name: 'metadata-display', value: eventDetail });
   }
 
   /* endregion */
