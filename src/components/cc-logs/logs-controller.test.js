@@ -133,9 +133,11 @@ describe('', () => {
       logsCtrl.focus(4);
       spies.focusedLogChange.reset();
 
-      logsCtrl.filter = [
-        { metadata: 'even', value: 'yes' },
-      ];
+      logsCtrl.filter = {
+        metadata: [
+          { metadata: 'even', value: 'yes' },
+        ],
+      };
 
       expect(spies.focusedLogChange.callCount).to.equal(1);
       expect(spies.focusedLogChange.lastCall.args).to.deep.equal([null]);
@@ -207,31 +209,57 @@ describe('', () => {
   });
 
   describe('filter', () => {
-    it('should be applied when setting new filter', () => {
+    it('should be applied when setting new filter on metadata', () => {
       const logs = appendLogsWithMetadata();
 
-      logsCtrl.filter = [
-        { metadata: 'A', value: 'a' },
-      ];
+      logsCtrl.filter = {
+        metadata: [
+          { metadata: 'A', value: 'a' },
+        ],
+      };
 
       assertListByIndex(logs, [0, 4, 8, 12, 16, 20]);
+    });
+
+    it('should be applied when setting new filter on message', () => {
+      const logs = appendLogsWithMetadata();
+
+      logsCtrl.filter = {
+        message: '00004',
+      };
+
+      assertListByIndex(logs, [4]);
+    });
+
+    it('should be applied when setting new filter on message with multiple keywords', () => {
+      const logs = appendLogsWithMetadata();
+
+      logsCtrl.filter = {
+        message: '00004 Message',
+      };
+
+      assertListByIndex(logs, [4]);
     });
 
     it('should request host update when setting new filter', () => {
       appendLogsWithMetadata();
       spies.requestUpdate.reset();
 
-      logsCtrl.filter = [
-        { metadata: 'A', value: 'a' },
-      ];
+      logsCtrl.filter = {
+        metadata: [
+          { metadata: 'A', value: 'a' },
+        ],
+      };
 
       expect(spies.requestUpdate.callCount).to.equal(1);
     });
 
     it('should be applied when appending new logs', () => {
-      logsCtrl.filter = [
-        { metadata: 'A', value: 'a' },
-      ];
+      logsCtrl.filter = {
+        metadata: [
+          { metadata: 'A', value: 'a' },
+        ],
+      };
 
       const logs = appendLogsWithMetadata();
 
@@ -239,9 +267,11 @@ describe('', () => {
     });
 
     it('should request host update when appending new logs', () => {
-      logsCtrl.filter = [
-        { metadata: 'A', value: 'a' },
-      ];
+      logsCtrl.filter = {
+        metadata: [
+          { metadata: 'A', value: 'a' },
+        ],
+      };
       spies.requestUpdate.reset();
 
       appendLogsWithMetadata();
@@ -250,9 +280,11 @@ describe('', () => {
     });
 
     it('should be dropped when setting null filter', () => {
-      logsCtrl.filter = [
-        { metadata: 'A', value: 'a' },
-      ];
+      logsCtrl.filter = {
+        metadata: [
+          { metadata: 'A', value: 'a' },
+        ],
+      };
       const logs = appendLogsWithMetadata();
 
       logsCtrl.filter = null;
@@ -263,10 +295,12 @@ describe('', () => {
     it('should use OR boolean operator when filtering on same metadata', () => {
       const logs = appendLogsWithMetadata();
 
-      logsCtrl.filter = [
-        { metadata: 'A', value: 'a' },
-        { metadata: 'A', value: 'aa' },
-      ];
+      logsCtrl.filter = {
+        metadata: [
+          { metadata: 'A', value: 'a' },
+          { metadata: 'A', value: 'aa' },
+        ],
+      };
 
       assertListByIndex(logs, [0, 1, 4, 5, 8, 9, 12, 13, 16, 17, 20, 21]);
     });
@@ -274,12 +308,57 @@ describe('', () => {
     it('should use AND boolean operator when filtering on different metadata', () => {
       const logs = appendLogsWithMetadata();
 
-      logsCtrl.filter = [
-        { metadata: 'A', value: 'a' },
-        { metadata: 'B', value: 'b' },
-      ];
+      logsCtrl.filter = {
+        metadata: [
+          { metadata: 'A', value: 'a' },
+          { metadata: 'B', value: 'b' },
+        ],
+      };
 
       assertListByIndex(logs, [0, 12]);
+    });
+
+    it('should use AND boolean operator when filtering on metadata and message', () => {
+      const logs = appendLogsWithMetadata();
+
+      logsCtrl.filter = {
+        message: '0000',
+        metadata: [
+          { metadata: 'A', value: 'a' },
+        ],
+      };
+
+      assertListByIndex(logs, [0, 4, 8]);
+    });
+
+    it('should use AND boolean operator when filtering on message with multiple keywords', () => {
+      const logs = appendLogsWithMetadata();
+
+      logsCtrl.filter = {
+        message: '00004 00001',
+      };
+
+      assertListByIndex(logs, []);
+    });
+
+    it('should use be case insensitive when filtering on message with multiple keywords', () => {
+      const logs = appendLogsWithMetadata();
+
+      logsCtrl.filter = {
+        message: '00004 meSsAgE',
+      };
+
+      assertListByIndex(logs, [4]);
+    });
+
+    it('should ignore empty spaces when filtering on message with multiple keywords', () => {
+      const logs = appendLogsWithMetadata();
+
+      logsCtrl.filter = {
+        message: '   00004    Message   ',
+      };
+
+      assertListByIndex(logs, [4]);
     });
   });
 
@@ -502,10 +581,12 @@ describe('', () => {
         logsCtrl.toggleSelection(1);
         logsCtrl.toggleSelection(4);
 
-        logsCtrl.filter = [
-          { metadata: 'A', value: 'a' },
-          { metadata: 'A', value: 'aa' },
-        ];
+        logsCtrl.filter = {
+          metadata: [
+            { metadata: 'A', value: 'a' },
+            { metadata: 'A', value: 'aa' },
+          ],
+        };
 
         assertSelection([1, 2]);
       });
@@ -517,20 +598,24 @@ describe('', () => {
 
         assertSelection([2, 4]);
 
-        logsCtrl.filter = [
-          { metadata: 'A', value: 'a' },
-          { metadata: 'A', value: 'aa' },
-        ];
+        logsCtrl.filter = {
+          metadata: [
+            { metadata: 'A', value: 'a' },
+            { metadata: 'A', value: 'aa' },
+          ],
+        };
 
         assertSelection([2]);
       });
 
       it('should remove from selection the element dropped by the filter when appending logs', () => {
         logsCtrl.limit = 24;
-        logsCtrl.filter = [
-          { metadata: 'A', value: 'a' },
-          { metadata: 'A', value: 'aa' },
-        ];
+        logsCtrl.filter = {
+          metadata: [
+            { metadata: 'A', value: 'a' },
+            { metadata: 'A', value: 'aa' },
+          ],
+        };
         appendLogsWithMetadata();
         logsCtrl.toggleSelection(1);
         logsCtrl.toggleSelection(2);
