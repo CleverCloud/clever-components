@@ -77,11 +77,12 @@ export class CcLogsControl extends LitElement {
   static get properties () {
     return {
       dateDisplay: { type: String, attribute: 'date-display' },
-      filter: { type: Array },
       follow: { type: Boolean },
       limit: { type: Number },
       logs: { type: Array },
       metadataDisplay: { type: Object },
+      messageFilter: { type: String, attribute: 'message-filter' },
+      metadataFilter: { type: Array, attribute: 'metadata-filter' },
       metadataRenderers: { type: Object },
       palette: { type: String },
       stripAnsi: { type: Boolean, attribute: 'strip-ansi' },
@@ -96,9 +97,6 @@ export class CcLogsControl extends LitElement {
     /** @type {DateDisplay} The date display. */
     this.dateDisplay = 'datetime-iso';
 
-    /** @type {Array<MetadataFilter>} The filter to apply onto the logs. */
-    this.filter = [];
-
     /** @type {boolean} Whether the `cc-logs` should scroll to the bottom everytime a new log line is added. */
     this.follow = false;
 
@@ -108,8 +106,14 @@ export class CcLogsControl extends LitElement {
     /** @type {Array<Log>} The initial logs. */
     this.logs = [];
 
+    /** @type {string|null} The filter to apply onto the logs' message. */
+    this.messageFilter = null;
+
     /** @type {{[key: string]: LogsMetadataDisplay}} An object where key is the metadata name and value controls whether the corresponding metadata should be displayed. */
     this.metadataDisplay = {};
+
+    /** @type {Array<MetadataFilter>} The filter to apply onto the logs' metadata. */
+    this.metadataFilter = [];
 
     /** @type {{[key: string]: MetadataRenderer}} The custom renderers to use for displaying metadata. */
     this.metadataRenderers = {};
@@ -309,10 +313,11 @@ export class CcLogsControl extends LitElement {
         class="logs"
         ${ref(this._logsRef)}
         .dateDisplay=${this.dateDisplay}
-        .filter=${this.filter}
         ?follow=${this.follow}
         .limit=${this.limit}
         .logs=${this.logs}
+        .messageFilter=${this.messageFilter}
+        .metadataFilter=${this.metadataFilter}
         .metadataRenderers=${this._resolvedMetadataRenderers}
         ?strip-ansi=${this.stripAnsi}
         style=${PALETTES[this.palette]}

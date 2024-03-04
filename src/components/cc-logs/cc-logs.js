@@ -216,10 +216,11 @@ class TemporaryFunctionDisabler {
 export class CcLogs extends LitElement {
   static get properties () {
     return {
-      filter: { type: Array },
       follow: { type: Boolean },
       limit: { type: Number },
       logs: { type: Array },
+      messageFilter: { type: String, attribute: 'message-filter' },
+      metadataFilter: { type: Array, attribute: 'metadata-filter' },
       metadataRenderers: { type: Object },
       stripAnsi: { type: Boolean, attribute: 'strip-ansi' },
       dateDisplay: { type: String, attribute: 'date-display' },
@@ -232,9 +233,6 @@ export class CcLogs extends LitElement {
   constructor () {
     super();
 
-    /** @type {Array<MetadataFilter>} The filter to apply onto the logs. */
-    this.filter = [];
-
     /** @type {boolean} Whereas the component should scroll to the bottom everytime a new log line is added. */
     this.follow = false;
 
@@ -243,6 +241,12 @@ export class CcLogs extends LitElement {
 
     /** @type {Array<Log>} The initial logs. */
     this.logs = [];
+
+    /** @type {string|null} The filter to apply onto the logs' message. */
+    this.messageFilter = null;
+
+    /** @type {Array<MetadataFilter>} The filter to apply onto the logs' metadata. */
+    this.metadataFilter = [];
 
     /** @type {{[key: string]: MetadataRenderer}|null} The custom renderers to use for displaying metadata. */
     this.metadataRenderers = null;
@@ -701,8 +705,11 @@ export class CcLogs extends LitElement {
       this._logsCtrl.limit = this.limit;
     }
 
-    if (changedProperties.has('filter')) {
-      this._logsCtrl.filter = this.filter;
+    if (changedProperties.has('messageFilter') || changedProperties.has('metadataFilter')) {
+      this._logsCtrl.filter = {
+        message: this.messageFilter,
+        metadata: this.metadataFilter,
+      };
     }
   }
 

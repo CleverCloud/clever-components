@@ -1,7 +1,10 @@
 /**
  * @typedef {import('./cc-logs.types.js').Log} Log
- * @typedef {import('./cc-logs').CcLogs} CcLog
+ * @typedef {import('./cc-logs.types.js').MetadataFilter} MetadataFilter
+ * @typedef {import('./cc-logs.js').CcLogs} CcLogs
  */
+
+const truePredicate = () => true;
 
 /**
  * Controls the logic of the cc-logs component.
@@ -21,7 +24,7 @@ export class LogsController {
     /** @type {number} The maximum number of logs that will be handled in memory. When limit is reached, the FIFO pattern will be used. */
     this._limit = Infinity;
     /** @type {(log: Log) => boolean} The filter function. */
-    this._filterCallback = (log) => true;
+    this._filterCallback = truePredicate;
     /** @type {Set<Log>} The selected logs. */
     this._selection = new Set();
     /** @type {Log|null} The last selected log or null if none. */
@@ -41,24 +44,14 @@ export class LogsController {
   }
 
   set filter (filter) {
-    const filterValuesByMetadataName = {};
-    if (Array.isArray(filter)) {
-      for (const predicate of filter) {
-        if (filterValuesByMetadataName[predicate.metadata] == null) {
-          filterValuesByMetadataName[predicate.metadata] = [];
-        }
-        filterValuesByMetadataName[predicate.metadata].push(predicate.value);
-      }
+    if (filter == null) {
+      this._filterCallback = truePredicate;
     }
-    const filterValuesByMetadataNameEntries = Object.entries(filterValuesByMetadataName);
-
-    this._filterCallback = (log) => {
-      // NOTE: [].every() is always true, whatever the callback
-      return filterValuesByMetadataNameEntries.every(([metadata, values]) => {
-        const logMetadata = log.metadata.find((m) => m.name === metadata);
-        return values.includes(logMetadata?.value);
-      });
-    };
+    else {
+      const matchesMessage = this._getMessageFilterCallback(filter.message);
+      const matchesMetadata = this._getMetadataFilterCallback(filter.metadata);
+      this._filterCallback = (log) => matchesMessage(log) && matchesMetadata(log);
+    }
 
     this._updateList({ forceFilter: true });
   }
@@ -344,5 +337,54 @@ export class LogsController {
     if (selectionHasChanged) {
       this._host._onSelectionChanged();
     }
+  }
+
+  /**
+   *
+   * @param {Array<MetadataFilter>} metadataFilter
+   * @return {((log: Log) => boolean)}
+   */
+  _getMetadataFilterCallback (metadataFilter) {
+    if (metadataFilter == null || metadataFilter.length === 0) {
+      return truePredicate;
+    }
+
+    /** @type {{[key: string]: Array<string>}} */
+    const filterValuesByMetadataName = {};
+    if (Array.isArray(metadataFilter)) {
+      for (const predicate of metadataFilter) {
+        if (filterValuesByMetadataName[predicate.metadata] == null) {
+          filterValuesByMetadataName[predicate.metadata] = [];
+        }
+        filterValuesByMetadataName[predicate.metadata].push(predicate.value);
+      }
+    }
+    const filterValuesByMetadataNameEntries = Object.entries(filterValuesByMetadataName);
+
+    return (log) => {
+      // NOTE: [].every() is always true, whatever the callback
+      return filterValuesByMetadataNameEntries.every(([metadata, values]) => {
+        const logMetadata = log.metadata.find((m) => m.name === metadata);
+        return values.includes(logMetadata?.value);
+      });
+    };
+  }
+
+  /**
+   *
+   * @param {string} messageFilter
+   * @return {((log: Log) => boolean)}
+   */
+  _getMessageFilterCallback (messageFilter) {
+    if (messageFilter == null || messageFilter.length === 0) {
+      return truePredicate;
+    }
+
+    const tokens = messageFilter.trim().toLowerCase().split(' ').filter((t) => t.length > 0);
+
+    return (log) => {
+      const message = log.message.toLowerCase();
+      return tokens.every((token) => message.includes(token));
+    };
   }
 }
