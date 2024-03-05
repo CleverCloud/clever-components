@@ -21,7 +21,7 @@ They centralize our design decisions and allow us (among other things) to tackle
 - Consistency & Maintainability
 - Theming & Customisation
 
-More on that in our [ADR "Finding accessible colors and creating Design Tokens"](https://www.clever-cloud.com/doc/clever-components/?path=/story/📌-architecture-decision-records-adr-0017-finding-accessible-colors-and-creating-design-tokens--page).
+More on that in our [ADR "Finding accessible colors and creating Design Tokens"](https://www.clever-cloud.com/doc/clever-components/?path=/docs/📌-architecture-decision-records-adr-0017-finding-accessible-colors-and-creating-design-tokens--docs).
 
 ## All design tokens list
 

@@ -146,4 +146,4 @@ A good example is the `cc-toaster` & `cc-toast` components. Even though they are
 
 We did our best to provide a good user experience (the timeout is paused on `hover` / on `focus`) and we want to add a way to view past notifications and interact with them.
 
-We have documented all of this in the [ADR 19 - How to make toaster accessible?](https://www.clever-cloud.com/doc/clever-components/?path=/story/%F0%9F%93%8C-docs-architecture-decision-records-adr-0019-how-to-make-toaster-accessible--page).
+We have documented all of this in the [ADR 19 - How to make toaster accessible?](https://www.clever-cloud.com/doc/clever-components/?path=/docs/📌-architecture-decision-records-adr-0019-how-to-make-toaster-accessible--docs).
