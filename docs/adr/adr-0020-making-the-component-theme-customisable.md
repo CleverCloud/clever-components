@@ -110,7 +110,7 @@ Rollup npm config:
 
 To use the components inside a project, one needs to import this CSS file from `node_modules`.
 The procedure to do so depends on the project stack.
-We tried to give a few examples in [how to use the components theme](/?path=/story/🏡-getting-started-install-via-npm--page).
+We tried to give a few examples in [how to use the components theme](https://www.clever-cloud.com/doc/clever-components/?path=/docs/🏡-getting-started-install-via-npm--docs).
 
 ##### CDN
 
