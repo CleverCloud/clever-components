@@ -46,7 +46,7 @@
     "cdn-preview:delete": "node tasks/cdn-cli.js delete preview",
     "cdn-preview:ui": "node tasks/cdn-cli.js ui preview",
     "start": "static -H '{\"cache-control\": \"no-cache, no-store, must-revalidate\", \"Pragma\": \"no-cache\", \"Expires\": \"0\"}' -a 0.0.0.0 -p 8080 storybook-static",
-    "storybook:build": "storybook build -o storybook-static",
+    "storybook:build": "storybook build -o storybook-static${STORYBOOK_PATH}",
     "storybook:dev": "storybook dev -p 6006 --no-open",
     "stylelint": "stylelint src/components/*/*.js",
     "stylelint:ci": "stylelint src/components/*/*.js --formatter github",
