@@ -55,7 +55,6 @@ import { dispatchCustomEvent, EventHandler } from '../../lib/events.js';
 export class CcPopover extends LitElement {
   static get properties () {
     return {
-      accessibleName: { type: String, attribute: 'accessible-name' },
       a11yName: { type: String, attribute: 'a11y-name' },
       hideText: { type: Boolean, attribute: 'hide-text' },
       icon: { type: Object },
@@ -119,18 +118,6 @@ export class CcPopover extends LitElement {
   }
 
   // region Public methods
-
-  get accessibleName () {
-    return this.a11yName;
-  }
-
-  /**
-   * Deprecated property. Use `a11yName` property or `a11y-name` attribute instead.
-   * @deprecated
-   */
-  set accessibleName (value) {
-    this.a11yName = value;
-  }
 
   /**
    * Opens the popover.
