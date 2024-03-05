@@ -1,6 +1,5 @@
 import './cc-orga-member-card.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const baseMember = {
   state: 'loaded',
@@ -19,6 +18,7 @@ const longEmail = 'very-very-very-very-very-very-very-very-very-very-very-very-v
 const longName = 'Veryveryveryveryveryveryveryveryvery long name';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Organisation/<cc-orga-member-card>',
   component: 'cc-orga-member-card',
 };
@@ -222,21 +222,4 @@ export const simulations = makeStory(conf, {
       };
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  dataLoadedWithEditAndDelete,
-  dataLoadedWithNoName,
-  dataLoadedWithNoAvatar,
-  dataLoadedWithLongEmail,
-  dataLoadedWith2faEnabled,
-  dataLoadedWithIsCurrentUser,
-  dataLoadedWithNoNameAndIsCurrentUser,
-  editing,
-  errorWithStateLoaded,
-  errorWithStateEditing,
-  updatingMemberRole,
-  deletingMember,
-  simulations,
 });

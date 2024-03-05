@@ -1,9 +1,10 @@
 // Don't forget to import the component you're presenting!
 import './cc-example-component.js';
 import { makeStory, storyWait } from '../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../stories/lib/story-names.js';
 
 export default {
+  // this makes storybook generate a doc from the custom elements manifest
+  tags: ['autodocs'],
   title: '🛠 Example section/<cc-example-component>',
   // This component name is used by Storybook's docs page for the API table.
   // It will use `custom-elements.json` documentation file.
@@ -84,16 +85,4 @@ export const simulations = makeStory(conf, {
       component.three = [{ foo: 42 }, { foo: 43 }];
     }),
   ],
-});
-
-// This seems a bit cumbersome but to benefit from the automatic naming of stories (with emojis, casing...),
-// you need to call `enhanceStoriesNames()` with all your stories.
-enhanceStoriesNames({
-  defaultStory,
-  skeleton,
-  empty,
-  error,
-  dataLoadedWithFoo,
-  waiting,
-  simulations,
 });

@@ -1,6 +1,5 @@
 import './cc-addon-credentials.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const credentials = [
   { type: 'host', value: 'my-host.services.clever-cloud.com', secret: false },
@@ -11,6 +10,7 @@ const credentials = [
 const credentialsSkeleton = credentials.map((p) => ({ ...p, value: null }));
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Addon/<cc-addon-credentials>',
   component: 'cc-addon-credentials',
 };
@@ -112,14 +112,4 @@ export const simulations = makeStory(conf, {
       componentError.error = true;
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  skeleton,
-  error,
-  dataLoadedWithKibana,
-  dataLoadedWithApm,
-  dataLoadedWithPulsar,
-  simulations,
 });

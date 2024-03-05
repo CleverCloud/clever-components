@@ -1,7 +1,6 @@
 import './cc-email-list.js';
 import './cc-email-list.smart.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const PRIMARY_ADDRESS = 'john.doe@example.com';
 const SECONDARY_ADDRESS_1 = 'john.doe.home@example.com';
@@ -16,6 +15,7 @@ const secondaryAddresses = [
 ];
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Profile/<cc-email-list>',
   component: 'cc-email-list',
 };
@@ -264,21 +264,4 @@ export const markingSecondaryAsPrimary = makeStory(conf, {
       },
     },
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  skeleton,
-  errorWithLoading,
-  errorWithEmptyEmail,
-  errorWithUsedEmail,
-  errorWithAlreadyDefinedEmail,
-  errorWithInvalidEmail,
-  sendingConfirmationEmail,
-  addingSecondary,
-  deletingSecondary,
-  markingSecondaryAsPrimary,
-  dataLoadedWithUnverifiedPrimaryEmailAddress,
-  dataLoadedWithHugeEmail,
-  dataLoadedWithNoSecondaryEmails,
 });

@@ -1,8 +1,8 @@
 import './cc-html-frame.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🧬 Atoms/<cc-html-frame>',
   component: 'cc-html-frame',
 };
@@ -149,16 +149,4 @@ export const simulations = makeStory(conf, {
       `;
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  heightAndWidth,
-  defaultCss,
-  loading,
-  script,
-  sameOrigin,
-  sandbox,
-  sandboxWithAllowScripts,
-  simulations,
 });

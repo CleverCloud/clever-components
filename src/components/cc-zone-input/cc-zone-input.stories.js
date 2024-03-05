@@ -1,8 +1,8 @@
 import './cc-zone-input.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Zones/<cc-zone-input>',
   component: 'cc-zone-input',
   excludeStories: ['ZONES'],
@@ -133,12 +133,4 @@ export const simulations = makeStory(conf, {
       componentError.error = true;
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  skeleton,
-  dataLoadedWithNoPrivateZones,
-  error,
-  simulations,
 });

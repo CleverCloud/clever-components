@@ -1,6 +1,5 @@
 import './cc-datetime-relative.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export function createDateAgo ({ seconds = 0, minutes = 0, hours = 0, days = 0, weeks = 0, months = 0, years = 0 }) {
   const nowTs = new Date().getTime();
@@ -19,6 +18,7 @@ export function createDateAgo ({ seconds = 0, minutes = 0, hours = 0, days = 0, 
 const STEPS = [1, 5, 10, 20, 30, 45];
 
 export default {
+  tags: ['autodocs'],
   title: '🧬 Atoms/<cc-datetime-relative>',
   component: 'cc-datetime-relative',
   excludeStories: ['createDateAgo'],
@@ -59,15 +59,4 @@ export const monthsAgo = makeStory(conf, {
 
 export const yearsAgo = makeStory(conf, {
   items: () => STEPS.map((years) => ({ datetime: createDateAgo({ years }) })),
-});
-
-enhanceStoriesNames({
-  now,
-  secondsAgo,
-  minutesAgo,
-  hoursAgo,
-  daysAgo,
-  weeksAgo,
-  monthsAgo,
-  yearsAgo,
 });

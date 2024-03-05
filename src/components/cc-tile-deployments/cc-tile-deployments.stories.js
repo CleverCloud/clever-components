@@ -1,6 +1,6 @@
 import './cc-tile-deployments.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
+
 import { createDateAgo } from '../cc-datetime-relative/cc-datetime-relative.stories.js';
 
 function deploymentInfo (state, action, dateAgoParams, uuid) {
@@ -13,6 +13,7 @@ function deploymentInfo (state, action, dateAgoParams, uuid) {
 }
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Overview/<cc-tile-deployments>',
   component: 'cc-tile-deployments',
 };
@@ -209,16 +210,4 @@ export const simulations = makeStory(conf, {
       };
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  skeleton,
-  error,
-  empty,
-  dataLoadedWithStarted,
-  dataLoadedWithStopped,
-  dataLoadedWithFailed,
-  dataLoadedWithCancelled,
-  simulations,
 });

@@ -7,7 +7,6 @@ import {
   iconRemixFlagFill as iconNeutral,
 } from '../../assets/cc-remix.icons.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const baseItems = [
   {
@@ -108,6 +107,7 @@ const circleItems = [
 ];
 
 export default {
+  tags: ['autodocs'],
   title: '🧬 Atoms/<cc-badge>',
   component: 'cc-badge',
 };
@@ -155,17 +155,4 @@ export const circleWithNumber = makeStory(conf, {
 
 export const circleWithNumberWithSkeleton = makeStory(conf, {
   items: circleItems.map((badge) => ({ ...badge, skeleton: true })),
-});
-
-enhanceStoriesNames({
-  dimmed,
-  dimmedWithSkeleton,
-  outlined,
-  outlinedWithSkeleton,
-  strong,
-  strongWithSkeleton,
-  icons,
-  iconsWithSkeleton,
-  circleWithNumber,
-  circleWithNumberWithSkeleton,
 });

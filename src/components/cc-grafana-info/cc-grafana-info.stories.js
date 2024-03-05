@@ -1,9 +1,9 @@
 import './cc-grafana-info.js';
 import './cc-grafana-info.smart.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 SaaS/<cc-grafana-info>',
   component: 'cc-grafana-info',
 };
@@ -285,23 +285,4 @@ export const simulationsWithErrorEnablingLink = makeStory(conf, {
       };
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  loading,
-  errorWithLoading,
-  errorWithEnabledAndNoGrafanaLink,
-  dataLoadedWithDisabled,
-  dataLoadedWithEnabled,
-  waitingWithEnabledAndDisabling,
-  waitingWithDisabledAndEnabling,
-  waitingWithEnabledAndResetting,
-  simulationsWithLoadingEnable,
-  simulationsWithLoadingDisable,
-  simulationsWithLoadingError,
-  simulationsWithWaitingToEnable,
-  simulationsWithWaitingToDisable,
-  simulationsWithWaitingToReset,
-  simulationsWithErrorEnablingLink,
 });

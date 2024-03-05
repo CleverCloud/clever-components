@@ -1,6 +1,5 @@
 import '../src/stories/lib/i18n-control.js';
-import { setCustomElementsManifest } from '@web/storybook-prebuilt/web-components.js';
-import { storybookMenuSort } from './menu-descriptor.js';
+import { setCustomElementsManifest } from '@storybook/web-components';
 import customElementsManifest from '../dist/custom-elements.json';
 import { getAvailableLanguages } from '../src/lib/i18n.js';
 
@@ -21,25 +20,73 @@ Array
     };
   });
 
-export const parameters = {
-  options: {
-    storySort: storybookMenuSort
-  },
-  viewport: { viewports },
-};
-
 const availableLanguages = Object
   .entries(getAvailableLanguages())
   .map(([title, value]) => ({ value, title }));
 
-export const globalTypes = {
-  locale: {
-    name: 'Language',
-    description: 'i18n language',
-    defaultValue: 'en',
-    toolbar: {
-      icon: 'globe',
-      items: availableLanguages,
+/** @type { import('@storybook/web-components').Preview } */
+const preview = {
+  parameters: {
+    options: {
+      storySort: {
+        method: 'alphabetical',
+        order: [
+          'Readme',
+          '🏡 Getting Started',
+          [
+            'Breaking down',
+            'Use via CDN',
+            'Install via NPM',
+            'Manual installation',
+            'Accessibility',
+            'Design tokens',
+            'Smart components',
+            'Notification system',
+            'Breaking change policy',
+            'Browser support',
+            'Changelog',
+          ],
+          '📖 Guidelines',
+          '🖋 Copywriting',
+          '👋 Contributing',
+          [
+            'Contribute',
+            'Web Components guidelines',
+            'Smart Component guidelines',
+            'Quick accessibility reminders',
+            'Tasks',
+            'Translate and localize',
+            'Writing stories',
+            'Test',
+            'Previews',
+            'Release',
+            'Browser support',
+            'Tools',
+            'Resources',
+          ],
+          '📌 Architecture Decision Records',
+          '🧬 Atoms',
+          '🧬 Molecules',
+          '*',
+          '🚧 Beta',
+          '🕹️ Controllers',
+          '♻️ Templates',
+        ]
+      },
+    },
+    viewport: { viewports },
+  },
+  globalTypes: {
+    locale: {
+      name: 'Language',
+      description: 'i18n language',
+      defaultValue: 'en',
+      toolbar: {
+        icon: 'globe',
+        items: availableLanguages,
+      },
     },
   },
 };
+
+export default preview;

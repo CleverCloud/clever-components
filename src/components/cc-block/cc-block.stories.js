@@ -4,9 +4,9 @@ import '../cc-loader/cc-loader.js';
 import './cc-block.js';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🧬 Molecules/<cc-block>',
   component: 'cc-block',
 };
@@ -158,22 +158,4 @@ export const iconAndOpen = makeStory(conf, {
     innerHTML: htmlExample,
     state: 'open',
   }],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  overlayWithLoader,
-  image,
-  icon,
-  imageAndIcon,
-  button,
-  noHead,
-  ribbon,
-  ribbonWithState,
-  ribbonWithNoHead,
-  stateWithOpen,
-  stateWithClose,
-  stateWithOverflow,
-  imageAndOpen,
-  iconAndOpen,
 });

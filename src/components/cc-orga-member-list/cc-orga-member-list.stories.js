@@ -1,7 +1,6 @@
 import './cc-orga-member-list.js';
 import longMemberList from '../../stories/fixtures/long-member-list.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const baseMemberList = [
   {
@@ -48,6 +47,7 @@ const authorisationsAdmin = {
 };
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Organisation/<cc-orga-member-list>',
   component: 'cc-orga-member-list',
 };
@@ -741,35 +741,4 @@ export const simulationWithLeavingAsAdmin = makeStory(conf, {
       };
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  loading,
-  errorWithInviteEmptyEmail,
-  errorWithInviteInvalidEmailFormat,
-  errorWithInviteMemberAlreadyInsideOrganisation,
-  waitingWithLeavingAsSimpleUser,
-  waitingWithInvitingMember,
-  waitingWithLeavingAsAdmin,
-  errorWithLoadingMemberList,
-  dataLoaded,
-  dataLoadedWithInviteFormWithLongEmail,
-  dataLoadedWithCurrentUserAdmin,
-  dataLoadedWithLongMemberList,
-  dataLoadedWithLongMemberListAndCurrentUserAdmin,
-  dataLoadedWithNameFilter,
-  dataLoadedWithOnlyOneMember,
-  dataLoadedWithTwoFactorAuthDisabledFilter,
-  dataLoadedWithNoResultFilters,
-  errorWithLeavingFromCardAsLastAdmin,
-  errorWithLeavingFromDangerZoneAsLastAdmin,
-  errorWithEditingYourselfAsLastAdmin,
-  simulationWithLoadingAsSimpleUser,
-  simulationWithLoadingAsAdmin,
-  simulationWithInviteMember,
-  simulationWithEditMember,
-  simulationWithRemovingMember,
-  simulationWithLeavingAsSimpleUser,
-  simulationWithLeavingAsAdmin,
 });

@@ -1,6 +1,6 @@
 import './cc-invoice-list.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
+
 import { PROCESSING_STATUS } from '../cc-invoice-table/cc-invoice-table.js';
 import { pendingInvoices, processedInvoices, processingInvoices } from '../cc-invoice-table/cc-invoice-table.stories.js';
 
@@ -16,6 +16,7 @@ const fullInvoicesExample = [
 ];
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Invoices/<cc-invoice-list>',
   component: 'cc-invoice-list',
 };
@@ -87,16 +88,4 @@ export const simulations = makeStory(conf, {
       componentError.state = { type: 'error' };
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  loading,
-  empty,
-  error,
-  dataLoaded,
-  dataLoadedWithNoProcessing,
-  dataLoadedWithNoPending,
-  dataLoadedWithNoProcessed,
-  simulations,
 });

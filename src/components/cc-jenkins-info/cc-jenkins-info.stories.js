@@ -1,8 +1,8 @@
 import './cc-jenkins-info.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Addon/<cc-jenkins-info>',
   component: 'cc-jenkins-info',
 };
@@ -76,13 +76,4 @@ export const simulations = makeStory(conf, {
       componentError.state = { type: 'error' };
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  loading,
-  error,
-  dataLoadedWithSameVersion,
-  dataLoadedWithDifferentVersions,
-  simulations,
 });

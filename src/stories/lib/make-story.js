@@ -15,6 +15,7 @@ export function makeStory (...configs) {
 
   const betaContainer = (container) => {
     if (beta) {
+      import('../../components/cc-beta/cc-beta.js');
       const ccBeta = document.createElement('cc-beta');
       ccBeta.appendChild(container);
       return ccBeta;

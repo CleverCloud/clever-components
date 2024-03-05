@@ -1,7 +1,6 @@
 import './cc-logs-instances.js';
 import { randomString } from '../../lib/utils.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 /**
  * @typedef {import('./cc-logs-instances.types.js').Instance} Instance
@@ -22,6 +21,7 @@ function getDeploymentDate (sinceDay) {
 }
 
 export default {
+  tags: ['autodocs'],
   title: '🚧 Beta/🛠 Logs/<cc-logs-instances-beta>',
   component: 'cc-logs-instances-beta',
 };
@@ -335,23 +335,4 @@ export const simulations = makeStory(conf, {
       component.state = { state: 'loaded', instances: instances };
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  loading,
-  error,
-  noInstances,
-  firstDeployment,
-  runningInstances,
-  scalingUp,
-  scalingDown,
-  applicationStopped,
-  failedDeployment,
-  cancelledDeployment,
-  withGhostInstances,
-  coldMode,
-  coldModeWithGhostInstances,
-  coldModeWithoutInstance,
-  simulations,
 });

@@ -1,8 +1,8 @@
 import './cc-warning-payment.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Notices/<cc-warning-payment>',
   component: 'cc-warning-payment',
 };
@@ -47,11 +47,4 @@ export const modeBilling = makeStory(conf, {
     { mode: 'billing', errors: [{ type: 2 }] },
     { mode: 'billing', errors: [{ type: 3 }] },
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  modeHome,
-  modeOverview,
-  modeBilling,
 });

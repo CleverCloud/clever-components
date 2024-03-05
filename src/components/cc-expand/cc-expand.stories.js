@@ -2,9 +2,9 @@ import './cc-expand.js';
 import '../cc-toggle/cc-toggle.js';
 import { html, render } from 'lit';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🧬 Atoms/<cc-expand>',
   component: 'cc-expand',
 };
@@ -59,5 +59,3 @@ export const defaultStory = makeStory(conf, {
     render(template({ size: 'medium' }), container);
   },
 });
-
-enhanceStoriesNames({ notAStory, defaultStory });

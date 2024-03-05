@@ -1,7 +1,6 @@
 import './cc-input-text.js';
 import { allFormControlsStory } from '../../stories/all-form-controls.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 function widthContent (chars) {
   const rawContents = `_chars`;
@@ -72,6 +71,7 @@ const tagsItems = [
 ];
 
 export default {
+  tags: ['autodocs'],
   title: '🧬 Atoms/<cc-input-text>',
   component: 'cc-input-text',
 };
@@ -256,25 +256,4 @@ export const simulation = makeStory(conf, {
       component.focus();
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  required,
-  helpMessage,
-  errorMessage,
-  errorMessageWithHelpMessage,
-  inline,
-  inlineWithRequired,
-  inlineWithErrorAndHelpMessages,
-  clipboard,
-  clipboardWithAutoAdjust,
-  clipboardWithAutoAdjustAndCssOverride,
-  secret,
-  clipboardAndSecret,
-  longValue,
-  tags,
-  tagsWithClipboard,
-  allFormControls,
-  simulation,
 });

@@ -1,6 +1,5 @@
 import './cc-addon-features.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const defaultFeatures = [
   { name: 'DISK', value: '40 GB' },
@@ -11,6 +10,7 @@ const defaultFeatures = [
 ];
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Addon/<cc-addon-features>',
   component: 'cc-addon-features',
 };
@@ -106,16 +106,4 @@ export const simulations = makeStory(conf, {
       componentError.error = true;
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  skeleton,
-  error,
-  dataLoadedWithElasticSearch,
-  dataLoadedWithRedis,
-  dataLoadedWithPostgresql,
-  dataLoadedWithCellar,
-  dataLoadedWithMysql,
-  simulations,
 });

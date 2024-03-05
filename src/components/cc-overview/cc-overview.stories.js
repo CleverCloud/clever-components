@@ -1,6 +1,6 @@
 import './cc-overview.js';
 import { createStoryItem, makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
+
 import { withMap as betaWithMap, withTiles as betaWithTiles } from '../cc-beta/cc-beta.stories.js';
 import { defaultStory as headerApp } from '../cc-header-app/cc-header-app.stories.js';
 import { defaultStory as headerOrga } from '../cc-header-orga/cc-header-orga.stories.js';
@@ -13,6 +13,7 @@ import { defaultStory as scalability } from '../cc-tile-scalability/cc-tile-scal
 import { defaultStory as statusCodes } from '../cc-tile-status-codes/cc-tile-status-codes.stories.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Overview/<cc-overview>',
   component: 'cc-overview',
 };
@@ -178,15 +179,4 @@ export const appModeWithTwoHeads = makeStory(conf, {
       `,
     },
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  orgaMode,
-  orgaModeWithError,
-  orgaModeWithTwoHeads,
-  appMode,
-  appModeWithError,
-  appModeWithBeta,
-  appModeWithTwoHeads,
 });

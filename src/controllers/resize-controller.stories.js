@@ -1,6 +1,5 @@
 import '../components/cc-expand/cc-expand.js';
 import { html, css, LitElement } from 'lit';
-import { enhanceStoriesNames } from '../stories/lib/story-names.js';
 import { ResizeController } from './resize-controller.js';
 import docsPage from './resize-controller.md';
 
@@ -216,7 +215,12 @@ window.customElements.define('demo-container', DemoContainer);
 
 export default {
   title: '🕹️ Controllers/ResizeController',
-  parameters: { docs: { page: docsPage.parameters.docs.page } },
+  tags: ['autodocs'],
+  parameters: {
+    docs: {
+      page: docsPage.parameters.docs.page,
+    },
+  },
 };
 
 export const defaultStory = () => {
@@ -322,5 +326,3 @@ export const defaultStory = () => {
 
   return storyDom;
 };
-
-enhanceStoriesNames({ defaultStory });

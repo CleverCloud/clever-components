@@ -1,3 +1,0 @@
-{
-  "--comment": "We need this file so we can use storybook config files in CJS mode while the main package.json has type:module / ESM"
-}

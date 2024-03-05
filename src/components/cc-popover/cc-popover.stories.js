@@ -6,9 +6,9 @@ import {
   iconRemixArrowRightUpLine as iconArrowRightUp,
 } from '../../assets/cc-remix.icons.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🧬 Atoms/<cc-popover>',
   component: 'cc-popover',
 };
@@ -85,11 +85,4 @@ export const withFocusableContent = makeStory(conf, {
     ...item,
     innerHTML: '<div>This is the popover content with <cc-button>Button</cc-button></div>',
   })),
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  withButtonText,
-  withButtonTextAndIcon,
-  withFocusableContent,
 });

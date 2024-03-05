@@ -1,7 +1,6 @@
 import './cc-toggle.js';
 import { allFormControlsStory } from '../../stories/all-form-controls.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const boldSvg = new URL('../../stories/assets/bold.svg', import.meta.url);
 const centerSvg = new URL('../../stories/assets/center.svg', import.meta.url);
@@ -12,6 +11,7 @@ const rightSvg = new URL('../../stories/assets/right.svg', import.meta.url);
 const underlineSvg = new URL('../../stories/assets/underline.svg', import.meta.url);
 
 export default {
+  tags: ['autodocs'],
   title: '🧬 Atoms/<cc-toggle>',
   component: 'cc-toggle',
 };
@@ -244,16 +244,3 @@ Here you can see a series of toolbar examples using CSS custom propreties of the
 });
 
 export const allFormControls = allFormControlsStory;
-
-enhanceStoriesNames({
-  defaultStory,
-  disabled,
-  legend,
-  legendWithInline,
-  multiple,
-  color,
-  textTransform,
-  hideText,
-  toolbar,
-  allFormControls,
-});

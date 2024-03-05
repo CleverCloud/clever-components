@@ -1,6 +1,5 @@
 import './cc-article-card.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const DEFAULT_ARTICLE = {
   title: 'Announcing the New Middle East Zone in Jeddah',
@@ -18,6 +17,7 @@ const OTHER_ARTICLE = {
 };
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 homepage/<cc-article-card>',
   component: 'cc-article-card',
 };
@@ -63,11 +63,4 @@ export const simulations = makeStory(conf, {
       component.link = DEFAULT_ARTICLE.link;
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  skeleton,
-  dataLoaded,
-  simulations,
 });

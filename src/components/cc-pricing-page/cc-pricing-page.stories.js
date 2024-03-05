@@ -3,7 +3,7 @@ import { ref } from 'lit/directives/ref.js';
 import './cc-pricing-page.js';
 import '../cc-pricing-estimation/cc-pricing-estimation.js';
 import { createStoryItem, makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
+
 import {
   defaultStory as pricingHeaderStory,
 } from '../cc-pricing-header/cc-pricing-header.stories.js';
@@ -19,6 +19,7 @@ import {
 } from '../cc-pricing-product-consumption/cc-pricing-product-consumption.stories.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 pricing/<cc-pricing-page>',
   component: 'cc-pricing-page',
 };
@@ -294,18 +295,4 @@ export const dataLoadedWithWebsiteTheme = makeStory(conf, {
   dom: (container) => {
     renderBaseStory({}, container);
   },
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  loading,
-  error,
-  dataLoadedWithDollars,
-  dataLoadedWithPounds,
-  dataLoadedWithTemporalitySecond7Digits,
-  dataLoadedWithTemporalityMinute5Digits,
-  dataLoadedWithTemporalityHour3Digits,
-  dataLoadedWithTemporalityDay2Digits,
-  dataLoadedWithTemporality30Days1Digit,
-  dataLoadedWithWebsiteTheme,
 });

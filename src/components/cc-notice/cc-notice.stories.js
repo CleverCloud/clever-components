@@ -1,8 +1,8 @@
 import './cc-notice.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🧬 Atoms/<cc-notice>',
   component: 'cc-notice',
 };
@@ -103,18 +103,4 @@ export const withLongTextAndNoHeading = makeStory(conf, {
       message: LONG_TEXT,
     }
   )),
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  customMessage,
-  withOtherIcons,
-  withNoIcons,
-  withNoIconsAndNoHeading,
-  withNoHeading,
-  withCloseableNotice,
-  withCloseableAndNoIcons,
-  withLongTextAndCloseable,
-  withLongText,
-  withLongTextAndNoHeading,
 });

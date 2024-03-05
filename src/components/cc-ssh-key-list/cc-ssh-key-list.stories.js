@@ -2,7 +2,6 @@ import './cc-ssh-key-list.js';
 import './cc-ssh-key-list.smart.js';
 import { produce } from '../../lib/immer.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const NEW_KEY = {
   name: 'Work laptop',
@@ -35,6 +34,7 @@ const DUMMY_KEY_3 = {
 };
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Profile/<cc-ssh-key-list>',
   component: 'cc-ssh-key-list',
 };
@@ -406,24 +406,4 @@ export const simulationWithImportingGithubKey = makeStory(conf, {
       });
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  emptyStory,
-  dataLoadedWithMultipleItems,
-  dataLoadedWithLongNames,
-  dataLoadedWithGithubUnlinked,
-  skeleton,
-  waitingWithAddingPersonalKey,
-  waitingWithDeletingPersonalKey,
-  waitingWithImportingGithubKey,
-  errorWithWhenListingKeys,
-  errorWithWhenNameIsEmpty,
-  errorWithWhenPublicKeyIsEmpty,
-  errorWithWhenAllInputsAreEmpty,
-  errorWithWhenPublicKeyIsPrivate,
-  simulationWithAddingKey,
-  simulationWithDeletingKey,
-  simulationWithImportingGithubKey,
 });

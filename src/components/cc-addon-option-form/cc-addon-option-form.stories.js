@@ -4,7 +4,6 @@ import {
   iconRemixAlertFill as iconAlert,
 } from '../../assets/cc-remix.icons.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const htmlExample = html`
   <div class="option-details">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed libero risus,
@@ -19,6 +18,7 @@ const htmlExample = html`
 `;
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Addon/<cc-addon-option-form>',
   component: 'cc-addon-option-form',
 };
@@ -62,9 +62,4 @@ export const oneOption = makeStory(conf, {
       options: [optionsExamples[0]],
     },
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  oneOption,
 });

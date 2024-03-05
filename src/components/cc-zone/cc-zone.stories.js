@@ -1,8 +1,8 @@
 import './cc-zone.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Zones/<cc-zone>',
   component: 'cc-zone',
 };
@@ -102,14 +102,4 @@ export const simulations = makeStory(conf, {
       componentWithInfra.zone = zoneWithInfra;
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  skeleton,
-  dataLoadedWithInfra,
-  dataLoadedWithPrivate,
-  dataLoadedWithNoTags,
-  dataLoadedWithManyTags,
-  simulations,
 });

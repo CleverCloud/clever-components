@@ -1,47 +1,66 @@
-const commonjs = require('@rollup/plugin-commonjs');
-const json = require('@rollup/plugin-json');
-const { importMetaAssets } = require('@web/rollup-plugin-import-meta-assets');
-const { storybookRollupPlugin } = require('../src/stories/lib/markdown.cjs');
+import generateCem from '../cem/generate-cem-vite-plugin.js';
+import { rollupMdToCsfPlugin } from '../src/stories/lib/markdown-to-csf.js';
+import { markdownIndexer } from '../src/stories/lib/markdown-indexer.js';
+import { injectAuthForSmartComponentsPlugin } from '../src/stories/lib/smart-auth-plugin.js';
 
-module.exports = {
+/** @type {import('@storybook/web-components-vite').StorybookConfig} */
+const config = {
   stories: [
-    // Top level Markdown documents
-    '../*.md',
-    // Then Markdown documents inside docs
-    '../docs/**/*.md',
-    // Prevent smart component Markdown example
-    '!(../docs/**/*example*.md)',
-    // Then regular CSF stories
+    // The Top level Markdown documents
+    '../README.md',
+    // The Markdown documents inside docs (excluding "example" components)
+    '../docs/**/!(*example*).md',
+    // The regular CSF stories
     '../src/**/*.stories.js',
-    // Then smart component Markdown docs
+    // The smart component Markdown docs
     '../src/**/*smart*.md',
   ],
-  rollupConfig (config) {
+  staticDirs: [
+    {
+      from: '../src/styles/default-theme.css',
+      to: 'styles/default-theme.css',
+    },
+    {
+      from: '../node_modules/highlight.js/styles/vs.css',
+      to: 'styles/vs.css',
+    },
+    {
+      from: '../node_modules/github-markdown-css/github-markdown.css',
+      to: 'styles/github-markdown.css',
+    },
+  ],
+  addons: ["@storybook/addon-links", "@storybook/addon-essentials"],
+  framework: {
+    name: "@storybook/web-components-vite",
+    options: {},
+  },
+  docs: {
+    // This makes Storybook auto-generate docs for every story with the `autodocs` tag
+    // We could have set this to `true` to auto-generate docs for every story without adding any tag 
+    // but this allows us to create stories with no auto-generated docs if we want to.
+    autodocs: "tag",
+  },
+  // index markdown stories so they can be part of the generated menu and lazy loaded
+  experimental_indexers: async (existingIndexers) => {
+    return [markdownIndexer, ...existingIndexers]
+  },
+  viteFinal (config, { configType }) {
+    // transform markdown files to CSF so they can be loaded by storybook
+    config.plugins?.unshift(rollupMdToCsfPlugin());
 
-    // Detect and copy assets
-    config.output.assetFileNames = 'assets/[name].[ext]';
-    config.plugins.unshift(importMetaAssets({
-      // Let's assume we don't have import.meta.url assets in our deps to speed up things
-      exclude: 'node_modules/**',
-    }));
+    if (configType === 'DEVELOPMENT') {
+      // serve and process all files instead of storybook related files only
+      config.appType = 'mpa';
 
-    // Replace Modern Web plugin MD support with plain markdown support
-    config.plugins = config.plugins.filter((plugin) => plugin.name !== 'md');
-    config.plugins.unshift(storybookRollupPlugin());
+      // generate CEM on demand and serve it
+      config.plugins?.push(generateCem());
 
-    // This babel config contains HTML/CSS minification
-    // it also contains a config to replace old JS (before 3 latest browser version) and it breaks some stuffs with import.meta.url
-    config.plugins = config.plugins.filter((plugin) => plugin.name !== 'babel');
-
-    // We don't want any polyfill
-    config.plugins = config.plugins.filter((plugin) => plugin.name !== '@web/rollup-plugin-polyfills-loader');
-
-    // We just want ESM
-    config.output.format = 'es';
-
-    config.plugins.unshift(json());
-    config.plugins.unshift(commonjs());
+      // add apiConfig to the smart container roots within markdown smart stories
+      config.plugins?.push(injectAuthForSmartComponentsPlugin);
+    }
 
     return config;
-  },
+  }
 };
+
+export default config;

@@ -1,8 +1,8 @@
 import './cc-addon-jenkins-options.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Addon/<cc-addon-jenkins-options>',
   component: 'cc-addon-jenkins-options',
 };
@@ -20,8 +20,3 @@ export const encryptionEnabled = makeStory(conf, {
 });
 
 // This component isn't used when there are no options => no story for this case.
-
-enhanceStoriesNames({
-  defaultStory,
-  encryptionEnabled,
-});

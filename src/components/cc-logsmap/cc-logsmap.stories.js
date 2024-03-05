@@ -2,10 +2,11 @@ import './cc-logsmap.js';
 import fakeHeatmapData from '../../stories/fixtures/24-hours-points.js';
 import { getFakePointsData } from '../../stories/fixtures/fake-map-data.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
+
 import { setIntervalDom, setTimeoutDom } from '../../stories/lib/timers.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Maps/<cc-logsmap>',
   component: 'cc-logsmap',
 };
@@ -131,18 +132,4 @@ export const simulationWithHeatmap = makeStory(conf, {
     mode: 'heatmap',
     heatmapPoints: fakeHeatmapData,
   }],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  emptyWithDifferentSizes,
-  emptyWithDifferentCentersAndZooms,
-  emptyWithOrga,
-  emptyWithAppOnly,
-  loading,
-  error,
-  errorWithLoadingIndicator,
-  simulationWithDotmap,
-  simulationWithVeryBusyDotmap,
-  simulationWithHeatmap,
 });

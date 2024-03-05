@@ -1,8 +1,8 @@
 import './cc-env-var-input.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Environment variables/<cc-env-var-input>',
   component: 'cc-env-var-input',
 };
@@ -68,21 +68,4 @@ export const disabled = makeStory(conf, {
 
 export const readonly = makeStory(conf, {
   items: [{ name: 'READONLY', value: 'readonly value', readonly: true }],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  empty,
-  pristine,
-  multiline,
-  newValue,
-  newAndEdited,
-  edited,
-  deleted,
-  editedAndDeleted,
-  longName,
-  longValue,
-  skeleton,
-  disabled,
-  readonly,
 });

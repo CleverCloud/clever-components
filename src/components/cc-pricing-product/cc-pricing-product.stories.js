@@ -2,7 +2,6 @@ import './cc-pricing-product.js';
 import { getFullProductAddon } from '../../stories/fixtures/addon-plans.js';
 import { getFullProductRuntime } from '../../stories/fixtures/runtime-plans.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const addonFeatures = ['connection-limit', 'cpu', 'databases', 'disk-size', 'gpu', 'has-logs', 'has-metrics', 'memory', 'version'];
 
@@ -69,6 +68,7 @@ const fakeProductPlans = [
 ];
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 pricing/<cc-pricing-product>',
   component: 'cc-pricing-product',
 };
@@ -343,30 +343,4 @@ export const simulationWithError = makeStory(conf, {
       };
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  loading,
-  error,
-  dataLoadedWithFakeProduct,
-  dataLoadedWithRuntimePhp,
-  dataLoadedWithRuntimePythonAndMl,
-  dataLoadedWithRuntimeNode,
-  dataLoadedWithAddonElasticsearch,
-  dataLoadedWithAddonMongodb,
-  dataLoadedWithAddonMysql,
-  dataLoadedWithAddonPostgresql,
-  dataLoadedWithAddonRedis,
-  dataLoadedWithNoAction,
-  dataLoadedWithDollars,
-  dataLoadedWithTemporalitySecond7Digits,
-  dataLoadedWithTemporalityMinute5Digits,
-  dataLoadedWithTemporalityHour3Digits,
-  dataLoadedWithTemporality1000Minutes2Digits,
-  dataLoadedWithTemporalityDay2Digits,
-  dataLoadedWithTemporality30Days1Digit,
-  dataLoadedWithTemporalityAll,
-  simulationWithLoaded,
-  simulationWithError,
 });

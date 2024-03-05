@@ -1,9 +1,10 @@
 import './cc-logs-control.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
+
 import { createFakeLogs, CUSTOM_METADATA_RENDERERS } from '../cc-logs/fake-logs.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🚧 Beta/🛠 Logs/<cc-logs-control-beta>',
   component: 'cc-logs-control-beta',
 };
@@ -108,14 +109,4 @@ export const withNonDefaultDateDisplay = makeStory(conf, {
       dateDisplay: 'datetime-short',
     },
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  withoutMetadataDisplay,
-  withNonDefaultPalette,
-  withNonDefaultStripAnsi,
-  withNonDefaultWrapLines,
-  withNonDefaultTimezone,
-  withNonDefaultDateDisplay,
 });

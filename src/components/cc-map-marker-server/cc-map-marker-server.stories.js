@@ -1,8 +1,8 @@
 import './cc-map-marker-server.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Maps/<cc-map-marker-server>',
   component: 'cc-map-marker-server',
 };
@@ -30,11 +30,4 @@ export const stateWithHovered = makeStory(conf, {
 
 export const stateWithSelected = makeStory(conf, {
   items: [{ state: 'selected' }],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  stateWithDefault,
-  stateWithHovered,
-  stateWithSelected,
 });

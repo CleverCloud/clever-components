@@ -1,6 +1,5 @@
 import './cc-addon-backups.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const backupsNewElasticsearch = {
   providerId: 'es-addon',
@@ -293,6 +292,7 @@ const backupsJenkins = {
 };
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Addon/<cc-addon-backups>',
   component: 'cc-addon-backups',
 };
@@ -447,26 +447,4 @@ export const simulations = makeStory(conf, {
       componentError.error = true;
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  skeleton,
-  error,
-  empty,
-  dataLoadedWithNewElasticsearch,
-  dataLoadedWithNewElasticsearchAndSmallList,
-  dataLoadedWithOldElasticsearch,
-  dataLoadedWithOldElasticsearchAndBigList,
-  dataLoadedWithPostgresql,
-  dataLoadedWithPostgresqlAndBigList,
-  dataLoadedWithMysql,
-  dataLoadedWithMysqlAndBigList,
-  dataLoadedWithMongodb,
-  dataLoadedWithMongodbAndBigList,
-  dataLoadedWithRedis,
-  dataLoadedWithRedisAndBigList,
-  dataLoadedWithJenkins,
-  dataLoadedWithJenkinsAndBigList,
-  simulations,
 });

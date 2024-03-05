@@ -1,8 +1,6 @@
-export function formatStoryName (rawName) {
+function formatStoryName (rawName) {
   return rawName[0].toUpperCase() + rawName
     .slice(1)
-    // Camel case to "Sentence case"
-    .replace(/([A-Z])/g, ' $1')
     // Camel case to with numbers
     .replace(/([0-9]+)/g, ' $1')
     .toLowerCase()
@@ -12,42 +10,36 @@ export function formatStoryName (rawName) {
     .replace(/ with (.*)/, ' ($1)');
 }
 
-function enhanceStoryName (defaultName) {
-  if (defaultName === 'defaultStory') {
+export function enhanceStoryName (defaultName) {
+  if (defaultName === 'Default Story') {
     return 'Default';
   }
-  if (defaultName === 'skeleton') {
+  if (defaultName === 'Skeleton') {
     return '⌛ Skeleton (no data yet)';
   }
-  if (defaultName === 'empty') {
+  if (defaultName === 'Empty') {
     return '🕳 Empty (no data)';
   }
-  if (defaultName.startsWith('loading') || defaultName.startsWith('waiting') || defaultName === 'saving' || defaultName.startsWith('updating') || defaultName.startsWith('skeleton')) {
+  if (defaultName.startsWith('Loading') || defaultName.startsWith('Waiting') || defaultName === 'Saving' || defaultName.startsWith('Updating') || defaultName.startsWith('Skeleton')) {
     return '⌛ ' + formatStoryName(defaultName);
   }
-  if (defaultName.startsWith('editing')) {
+  if (defaultName.startsWith('Editing')) {
     return '📝 ' + formatStoryName(defaultName);
   }
-  if (defaultName.startsWith('deleting')) {
+  if (defaultName.startsWith('Deleting')) {
     return '🗑️ ' + formatStoryName(defaultName);
   }
-  if (defaultName.startsWith('empty')) {
+  if (defaultName.startsWith('Empty')) {
     return '🕳 ' + formatStoryName(defaultName);
   }
-  if (defaultName.startsWith('dataLoaded')) {
+  if (defaultName.startsWith('Data Loaded')) {
     return '👍 ' + formatStoryName(defaultName);
   }
   if (defaultName.match(/simulation/i) != null) {
     return '📈 ' + formatStoryName(defaultName);
   }
-  if (defaultName.startsWith('error')) {
+  if (defaultName.startsWith('Error')) {
     return '🔥 ' + formatStoryName(defaultName);
   }
   return formatStoryName(defaultName);
 };
-
-export function enhanceStoriesNames (stories) {
-  Object.entries(stories).forEach(([name, storyFn]) => {
-    storyFn.storyName = enhanceStoryName(name);
-  });
-}

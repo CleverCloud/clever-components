@@ -1,6 +1,5 @@
 import './cc-header-addon.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const zoneParis = {
   name: 'par',
@@ -41,6 +40,7 @@ const addonConfig = {
 const version = '11.2';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Addon/<cc-header-addon>',
   component: 'cc-header-addon',
 };
@@ -91,12 +91,4 @@ export const simulations = makeStory(conf, {
       componentLazy.version = version;
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  skeleton,
-  error,
-  noVersion,
-  simulations,
 });

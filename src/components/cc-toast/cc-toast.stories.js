@@ -1,9 +1,9 @@
 import './cc-toast.js';
 import { sanitize } from '../../lib/i18n-sanitize.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Toast/<cc-toast>',
   component: 'cc-toast',
 };
@@ -70,17 +70,4 @@ export const withSanitizedHtmlMessage = makeStory(conf, {
     heading: 'Notification message can be topped by a heading',
     message: (intent) => sanitize`This is an <strong>HTML</strong> notification message with intent <code>${intent}</code>.`,
   }),
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  withHeading,
-  withHeadingOnly,
-  closeable,
-  noTimeout,
-  withProgressBar,
-  closeableAndWithProgressBar,
-  withLongHeadingAndMessage,
-  withLongHeadingAndMessageAndWithCloseable,
-  withSanitizedHtmlMessage,
 });

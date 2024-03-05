@@ -1,7 +1,6 @@
 import './cc-article-list.js';
 import './cc-article-list.smart.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const ARTICLES = [
   {
@@ -49,6 +48,7 @@ const ARTICLES = [
 ];
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 homepage/<cc-article-list>',
   component: 'cc-article-list',
 };
@@ -111,13 +111,4 @@ export const simulationsWithError = makeStory(conf, {
       componentError.state = { type: 'error' };
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  loading,
-  error,
-  dataLoaded,
-  simulationsWithSuccess,
-  simulationsWithError,
 });

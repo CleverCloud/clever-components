@@ -1,6 +1,5 @@
 import './cc-header-app.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const COMMIT_ONE = '99b8617a5e102b318593eed3cd0c0a67e77b7e9a';
 const COMMIT_TWO = 'bf4c76b3c563050d32e411b2f06d11515c7d8304';
@@ -24,6 +23,7 @@ const zoneParis = {
 };
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Overview/<cc-header-app>',
   component: 'cc-header-app',
 };
@@ -149,25 +149,4 @@ export const simulations = makeStory(conf, {
       component.runningCommit = null;
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  skeleton,
-  skeletonWithAppLoaded,
-  error,
-  unknownState,
-  stoppedState,
-  stoppedStateWithBrandNewApp,
-  startFailedState,
-  runningStateWithRunningCommitUnknown,
-  runningState,
-  restartFailedState,
-  startingStateWithDeployingCommitUnknown,
-  startingState,
-  restartingStateWithDeployingCommitUnknown,
-  restartingState,
-  restartingWithDowntimeState,
-  dataLoadedWithDisableButtons,
-  simulations,
 });

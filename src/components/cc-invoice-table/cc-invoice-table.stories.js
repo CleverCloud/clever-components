@@ -1,6 +1,5 @@
 import './cc-invoice-table.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 function createInvoice (year, month, amount, status, type = 'INVOICE') {
   const emissionDate = `${year}-${month}-01`;
@@ -46,6 +45,7 @@ export const processedInvoices = (year) => [
 ];
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Invoices/<cc-invoice-table>',
   component: 'cc-invoice-table',
   excludeStories: ['pendingInvoices', 'processingInvoices', 'processedInvoices'],
@@ -87,13 +87,4 @@ export const dataLoadedWithCreditNotes = makeStory(conf, {
       createInvoice('2019', '04', 121.22, 'PAID', 'CREDITNOTE'),
     ],
   }],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  skeleton,
-  dataLoadedWithPending,
-  dataLoadedWithProcessing,
-  dataLoadedWithProcessed,
-  dataLoadedWithCreditNotes,
 });

@@ -1,6 +1,5 @@
 import './cc-tcp-redirection.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 const baseItems = [
   { redirection: { state: 'loaded', namespace: 'customer-name', isPrivate: true } },
@@ -14,6 +13,7 @@ const baseItemsWithRedirection = baseItems.map((item, i) => {
 });
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 TCP Redirections/<cc-tcp-redirection>',
   component: 'cc-tcp-redirection',
 };
@@ -55,13 +55,4 @@ export const waitingWithNoRedirection = makeStory(conf, {
   items: baseItems.map((item) => {
     return { redirection: { ...item.redirection, state: 'waiting' } };
   }),
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  loading,
-  dataLoadedWithRedirection,
-  dataLoadedWithNoRedirection,
-  waitingWithRedirection,
-  waitingWithNoRedirection,
 });

@@ -1,8 +1,8 @@
 import './cc-pricing-product-consumption.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 pricing/<cc-pricing-product-consumption>',
   component: 'cc-pricing-product-consumption',
 };
@@ -342,19 +342,4 @@ export const simulationsWithError = makeStory(conf, {
       };
     }),
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  loading,
-  error,
-  dataLoadedWithFsBucket,
-  dataLoadedWithPulsar,
-  dataLoadedWithHeptapod,
-  dataLoadedWithNoAction,
-  dataLoadedWithDollars,
-  simulationsWithCellar,
-  simulationsWithFsBucket,
-  simulationsWithPulsar,
-  simulationsWithError,
 });
