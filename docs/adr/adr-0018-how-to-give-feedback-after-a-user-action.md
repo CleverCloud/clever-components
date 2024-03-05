@@ -211,7 +211,7 @@ export function notify(node, message, intent) {
 ## Accessibility
 
 We understood that the `toast` pattern comes, by design, with a lot of accessibility challenges.
-If you want to read more about that, you can refer to the dedicated ADR: [ADR 0019: How to make toaster accessible?](/?path=/story/📌-docs-architecture-decision-records-adr-0019-how-to-make-toaster-accessible)
+If you want to read more about that, you can refer to the dedicated ADR: [ADR 0019: How to make toaster accessible?](https://www.clever-cloud.com/doc/clever-components/?path=/docs/📌-architecture-decision-records-adr-0019-how-to-make-toaster-accessible--docs)
 
 ## Sum up
 
