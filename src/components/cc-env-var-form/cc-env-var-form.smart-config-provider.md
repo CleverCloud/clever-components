@@ -7,7 +7,7 @@ title: '💡 Smart (config-provider)'
 ## ℹ️ Details
 
 <table>
-  <tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/doc/clever-components/?path=/story/%F0%9F%9B%A0-environment-variables-cc-env-var-form--default-story"><code>&lt;cc-env-var-form&gt;</code></a>
+  <tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/doc/clever-components/?path=/story/🛠-environment-variables-cc-env-var-form--data-loaded-with-context-config-provider"><code>&lt;cc-env-var-form&gt;</code></a>
   <tr><td><strong>Selector     </strong> <td><code>cc-env-var-form[context="config-provider"]</code>
   <tr><td><strong>Requires auth</strong> <td>Yes
 </table>

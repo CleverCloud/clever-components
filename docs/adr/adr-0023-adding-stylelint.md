@@ -9,7 +9,7 @@ kind: '📌 Architecture Decision Records'
 ## The context
 
 Since the beginning of this component library, we've never had a dedicated tool to format our CSS and enforce some rules. 
-We only had a custom ESLint plugin to sort our CSS declarations but that was pretty much it as referenced in [ADR 11](https://www.clever-cloud.com/doc/clever-components/?path=%2Fstory%2F%F0%9F%93%8C-docs-architecture-decision-records-adr-0011-sorting-css-declarations--page). 
+We only had a custom ESLint plugin to sort our CSS declarations but that was pretty much it as referenced in [ADR 11](https://www.clever-cloud.com/doc/clever-components/?path=/docs/📌-architecture-decision-records-adr-0011-sorting-css-declarations--docs). 
 
 However, in 2020 we found out that Stylelint was able to handle CSS in template literals. 
 

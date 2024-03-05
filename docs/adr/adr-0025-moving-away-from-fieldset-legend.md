@@ -7,7 +7,7 @@ kind: '📌 Architecture Decision Records'
 
 ## The context
 
-Our [`cc-toggle` component](https://www.clever-cloud.com/doc/clever-components/?path=/story/%F0%9F%A7%AC-atoms-cc-toggle--default-story) is a group of radio buttons or checkboxes.
+Our [`cc-toggle` component](https://www.clever-cloud.com/doc/clever-components/?path=/docs/🧬-atoms-cc-toggle--docs) is a group of radio buttons or checkboxes.
 
 The group is wrapped inside a `<fieldset>` element and the subject of the group is provided through a `<legend>` element.
 
