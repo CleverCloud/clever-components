@@ -48,7 +48,6 @@ export class CcButton extends LitElement {
 
   static get properties () {
     return {
-      accessibleName: { type: String, attribute: 'accessible-name' },
       a11yExpanded: { type: Boolean, attribute: 'a11y-expanded', reflect: true },
       a11yName: { type: String, attribute: 'a11y-name' },
       a11yPressed: { type: Boolean, attribute: 'a11y-pressed', reflect: true },
@@ -126,18 +125,6 @@ export class CcButton extends LitElement {
 
     /** @type {boolean} */
     this._cancelMode = false;
-  }
-
-  get accessibleName () {
-    return this.a11yName;
-  }
-
-  /**
-   * Deprecated property. Use `a11yName` property or `a11y-name` attribute instead.
-   * @deprecated
-   */
-  set accessibleName (value) {
-    this.a11yName = value;
   }
 
   focus () {
