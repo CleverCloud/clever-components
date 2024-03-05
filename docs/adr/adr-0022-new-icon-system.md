@@ -189,18 +189,18 @@ Using `role="img"` and `aria-label` attributes on a custom element does not seem
 
 Since we could not rely on the custom element itself, we had to rely on the `<svg>` element and manipulate it depending on its context.
 
-If the developer does not provide any `accessible-name` prop, the component adds an `aria-hidden="true"` attribute to the inner `<svg>` element.
-If the developer does provide an `accessible-name` prop, the component adds to the inner `<svg>` element:
+If the developer does not provide any `a11y-name` prop, the component adds an `aria-hidden="true"` attribute to the inner `<svg>` element.
+If the developer does provide an `a11y-name` prop, the component adds to the inner `<svg>` element:
 
 * A `role="img"` attribute,
-* An `aria-label` which value matches the value of the `accessible-name` prop,
-* A `<title>` element which value matches the value of the `accessible-name` prop.
+* An `aria-label` which value matches the value of the `a11y-name` prop,
+* A `<title>` element which value matches the value of the `a11y-name` prop.
 
 The addition of the `<title>` element is not necessary but this is the native HTML way for informative `<svg>` elements so we decided to keep it.
 
 Example of an informative `<cc-icon>`:
 ```html
-<cc-icon accessible-name="Caution">
+<cc-icon a11y-name="Caution">
   <svg role="img" aria-label="Caution">
     <title>Caution</title>
     ...
@@ -229,15 +229,15 @@ We considered using an `alt` prop and attribute to mimic the `<img>` API.
 
 We did not choose to go this way because we want to avoid using existing native attributes like `title` for instance.
 
-##### Using a custom accessible-name attribute
+##### Using a custom a11y-name attribute
 
-We chose to use a `accessible-name` attribute that should only be used if the icon conveys information.
+We chose to use a `a11y-name` attribute that should only be used if the icon conveys information.
 
 This simplifies the API for developers because:
 
 * In most cases, icons are decorative so there is nothing to do.
 * When the icon is informative, they only have one attribute to add.
-* We already use an `accessible-name` attribute on the `<cc-button>`. This means this attribute should be familiar for developers using our components. It is also a well-known concept for many people who have worked on accessibility before.
+* We already use an `a11y-name` attribute on the `<cc-button>`. This means this attribute should be familiar for developers using our components. It is also a well-known concept for many people who have worked on accessibility before.
 
 ## Limits and prospects
 
