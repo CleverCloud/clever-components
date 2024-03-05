@@ -112,7 +112,7 @@ Note that you'll still be able to override those defaults when you want to.
 
 At some point, smart components need to trigger some notifications when something goes wrong while contacting our API (or when everything went right too). This chapter will explain how we did that in a fully decoupled manner.
 
-For details on smart components, you can check [this introduction to smart components](/?path=/story/🏡-getting-started-7-smart-components--page).
+For details on smart components, you can check [this introduction to smart components](https://www.clever-cloud.com/doc/clever-components/?path=/docs/🏡-getting-started-smart-components--docs).
 
 We based our integration on DOM events:
 The smart components dispatch `cc:notify` [custom events](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) like this:
