@@ -108,6 +108,7 @@ export const timezone = makeStory(conf, {
 
 const date = new Date();
 export const customWidth = makeStory(conf, {
+  // language=CSS
   css: `
     cc-input-date {
       display: block;
@@ -124,6 +125,61 @@ export const customWidth = makeStory(conf, {
         value: new Date(date.getTime() + i * 60_000),
       };
     }),
+});
+
+const customBaseItems = [
+  { label: 'The label' },
+  { label: 'The label', required: true },
+];
+
+export const customLabelStyle = makeStory({ ...conf, displayMode: 'block' }, {
+  // language=CSS
+  css: `
+    cc-input-date {
+      --cc-input-label-color: #475569;
+      --cc-input-label-font-size: 1.2em;
+      --cc-input-label-font-weight: bold;
+      font-size: 1.25em;
+      max-width: 32em;
+    }
+    cc-input-date:nth-of-type(${customBaseItems.length + 'n'}) {
+      margin-block-end: 2em;
+    }
+  `,
+  items: [
+    ...customBaseItems,
+    ...customBaseItems.map((item) => ({
+      ...item,
+      innerHTML: `<p slot="help">Must be a date</p>`,
+    })),
+    ...customBaseItems.map((item) => ({
+      ...item,
+      innerHTML: `<p slot="error">You must enter a value</p>`,
+    })),
+    ...customBaseItems.map((item) => ({
+      ...item,
+      innerHTML: `<p slot="help">Must be a date</p><p slot="error">You must enter a value</p>`,
+    })),
+    ...customBaseItems.map((item) => ({
+      ...item,
+      inline: true,
+    })),
+    ...customBaseItems.map((item) => ({
+      ...item,
+      inline: true,
+      innerHTML: `<p slot="help">Must be a date</p>`,
+    })),
+    ...customBaseItems.map((item) => ({
+      ...item,
+      inline: true,
+      innerHTML: `<p slot="error">You must enter a value</p>`,
+    })),
+    ...customBaseItems.map((item) => ({
+      ...item,
+      inline: true,
+      innerHTML: `<p slot="help">Must be a date</p><p slot="error">You must enter a value</p>`,
+    })),
+  ],
 });
 
 export const allFormControls = allFormControlsStory;

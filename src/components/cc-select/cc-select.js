@@ -20,6 +20,10 @@ import { i18n } from '../../lib/i18n.js';
  *
  * @fires {CustomEvent<string>} cc-select:input - Fires the `value` whenever the `value` changes.
  *
+ * @cssprop {Color} --cc-select-label-color - The color for the select's label (defaults: `inherit`).
+ * @cssprop {FontSize} --cc-select-label-font-size - The font-size for the select's label (defaults: `inherit`).
+ * @cssprop {FontWeight} --cc-select-label-font-weight - The font-weight for the select's label (defaults: `normal`).
+ *
  * @slot error - The error message to be displayed below the `<select>` element or below the help text. Please use a `<p>` tag.
  * @slot help - The help message to be displayed right below the `<select>` element. Please use a `<p>` tag.
  */
@@ -104,7 +108,7 @@ export class CcSelect extends LitElement {
   render () {
     return html`
       <label for="input-id">
-        <span>${this.label}</span>
+        <span class="label-text">${this.label}</span>
         ${this.required ? html`
           <span class="required">${i18n('cc-select.required')}</span>
         ` : ''}
@@ -152,11 +156,13 @@ export class CcSelect extends LitElement {
 
         :host([inline]) {
           display: inline-grid;
+          align-items: baseline;
           gap: 0 1em;
-          grid-template-areas: 
+          grid-auto-rows: min-content;
+          grid-template-areas:
             'label input'
-            '. help'
-            '. error';
+            'label help'
+            'label error';
           grid-template-columns: auto 1fr;
         }
 
@@ -178,9 +184,14 @@ export class CcSelect extends LitElement {
           line-height: 1.25em;
         }
 
+        label .label-text {
+          color: var(--cc-select-label-color, inherit);
+          font-size: var(--cc-select-label-font-size, inherit);
+          font-weight: var(--cc-select-label-font-weight, normal);
+        }
+
         :host([inline]) label {
           flex-direction: column;
-          justify-content: center;
           padding: 0;
           gap: 0;
           grid-area: label;
@@ -273,6 +284,7 @@ export class CcSelect extends LitElement {
           background-color: var(--cc-color-bg-primary, #000);
           clip-path: polygon(100% 0%, 0 0%, 50% 100%);
           content: '';
+          pointer-events: none;
           transform: translateY(-50%);
         }
 

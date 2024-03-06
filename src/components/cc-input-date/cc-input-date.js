@@ -98,6 +98,9 @@ function invalid (code) {
  * @fires {CustomEvent} cc-input-date:requestimplicitsubmit - Fires when enter key is pressed.
  *
  * @cssprop {FontFamily} --cc-input-font-family - The font-family for the input content (defaults: `inherit`).
+ * @cssprop {Color} --cc-input-label-color - The color for the input's label (defaults: `inherit`).
+ * @cssprop {FontSize} --cc-input-label-font-size - The font-size for the input's label (defaults: `inherit`).
+ * @cssprop {FontWeight} --cc-input-label-font-weight - The font-weight for the input's label (defaults: `normal`).
  *
  * @slot error - The error message to be displayed below the `<input>` element or below the help text. Please use a `<p>` tag.
  * @slot help - The help message to be displayed right below the `<input>` element. Please use a `<p>` tag.
@@ -405,7 +408,7 @@ export class CcInputDate extends LitElement {
     return html`
       ${this.label != null ? html`
         <label class=${classMap({ 'visually-hidden': this.hiddenLabel })} for="input-id">
-          <span>${this.label}</span>
+          <span class="label-text">${this.label}</span>
           ${this.required ? html`
             <span class="required">${i18n('cc-input-date.required')}</span>
           ` : ''}
@@ -480,11 +483,13 @@ export class CcInputDate extends LitElement {
 
         :host([inline]) {
           display: inline-grid;
+          align-items: baseline;
           gap: 0 1em;
-          grid-template-areas: 
+          grid-auto-rows: min-content;
+          grid-template-areas:
             'label input'
-            '. help'
-            '. error';
+            'label help'
+            'label error';
           grid-template-columns: auto 1fr;
         }
 
@@ -506,9 +511,14 @@ export class CcInputDate extends LitElement {
           line-height: 1.25em;
         }
 
+        label .label-text {
+          color: var(--cc-input-label-color, inherit);
+          font-size: var(--cc-input-label-font-size, inherit);
+          font-weight: var(--cc-input-label-font-weight, normal);
+        }
+
         :host([inline]) label {
           flex-direction: column;
-          justify-content: center;
           padding: 0;
           gap: 0;
           grid-area: label;

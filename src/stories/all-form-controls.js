@@ -1,4 +1,5 @@
 import '../components/cc-button/cc-button.js';
+import '../components/cc-input-date/cc-input-date.js';
 import '../components/cc-input-number/cc-input-number.js';
 import '../components/cc-input-text/cc-input-text.js';
 import '../components/cc-select/cc-select.js';

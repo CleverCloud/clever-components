@@ -38,6 +38,9 @@ import { dispatchCustomEvent } from '../../lib/events.js';
  * @cssprop {FontWeight} --cc-toggle-font-weight - Sets the value of the font weight CSS property (defaults: `bold`).
  * @cssprop {Filter} --cc-toggle-img-filter - A CSS filter to apply on images of all choices (defaults: `none`). It must be defined directly on the element.
  * @cssprop {Filter} --cc-toggle-img-filter-selected - A CSS filter to apply on images of selected choices (defaults: `none`). It must be defined directly on the element.
+ * @cssprop {Color} --cc-toggle-legend-color - The color for the group's legend (defaults: `inherit`).
+ * @cssprop {FontSize} --cc-toggle-legend-font-size - The font-size for the group's legend (defaults: `inherit`).
+ * @cssprop {FontWeight} --cc-toggle-legend-font-weight - The font-weight for the group's legend (defaults: `normal`).
  * @cssprop {TextTransform} --cc-toggle-text-transform - Sets the value of the text transform CSS property (defaults: `uppercase`).
  */
 export class CcToggle extends LitElement {
@@ -69,7 +72,7 @@ export class CcToggle extends LitElement {
     /** @type {boolean} Hides the text and only displays the image specified with `choices[i].image`. The text will be added as `title` on the inner `<label>` and an `aria-label` on the inner `<input>`. */
     this.hideText = false;
 
-    /** @type {boolean} Sets the `<label>` on the left of the `<select>` element.
+    /** @type {boolean} Sets the legend on the left of the `<select>` element.
      * Only use this if your form contains 1 or 2 fields and your labels are short.
      */
     this.inline = false;
@@ -190,6 +193,9 @@ export class CcToggle extends LitElement {
         }
         
         #legend {
+          color: var(--cc-toggle-legend-color, inherit);
+          font-size: var(--cc-toggle-legend-font-size, inherit);
+          font-weight: var(--cc-toggle-legend-font-weight, normal);
           line-height: 1.25em;
         }
 
