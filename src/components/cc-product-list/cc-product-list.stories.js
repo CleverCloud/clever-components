@@ -7,18 +7,17 @@ import {
   iconRemixArchiveDrawerLine as saasIcon,
   iconRemixMessage_2Line as messagingIcon,
 } from '../../assets/cc-remix.icons.js';
+
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
+  tags: ['autodocs'],
   title: '🛠 Creation Tunnel/<cc-product-list>',
   component: 'cc-product-list',
 };
 
 const conf = {
   component: 'cc-product-list',
-  css: `cc-product-list {
-  }`,
 };
 
 const PRODUCTS = [
@@ -448,15 +447,4 @@ export const unrelevantFilterCategoryAndUnrelevantInput = makeStory(conf, {
       filterInput: 'unrelevant',
     },
   ],
-});
-
-enhanceStoriesNames({
-  defaultStory,
-  filterInput,
-  unrelevantFilterInput,
-  filterCategory,
-  unrelevantFilterCategory,
-  unrelevantFilterCategoryButRelevantInput,
-  filterCategoryAndInput,
-  unrelevantFilterCategoryAndUnrelevantInput,
 });
