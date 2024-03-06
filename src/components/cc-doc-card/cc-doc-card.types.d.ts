@@ -1,6 +1,6 @@
 export type DocCardState = DocCardStateLoaded | DocCardStateLoading;
 
-interface DocCardStateLoaded {
+export interface DocCardStateLoaded {
     type: 'loaded';
     description: string;
     heading: string;
@@ -8,6 +8,6 @@ interface DocCardStateLoaded {
     link: string;
 }
 
-interface DocCardStateLoading {
+export interface DocCardStateLoading {
     type: 'loading';
 }
