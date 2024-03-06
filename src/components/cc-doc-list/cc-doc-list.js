@@ -6,7 +6,7 @@ import { i18n } from '../../lib/i18n.js';
 const DOC_SKELETON_NUMBER = 9;
 
 /**
- * @typedef {import('./cc-doc-list.types.js').Documentation} Documentation
+ * @typedef {import('./cc-doc-list.types.js').DocListState} DocListState
  */
 
 /**
@@ -18,43 +18,36 @@ export class CcDocList extends LitElement {
 
   static get properties () {
     return {
-      docs: { type: Array },
-      error: { type: Boolean },
+      state: { type: Object },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {Documentation[]} Sets the content that will be put into the cards. */
-    this.docs = null;
-
-    /** @type {boolean} Displays an error message. */
-    this.error = false;
+    /** @type {DocListState} Sets the state of the component */
+    this.state = { type: 'loading' };
   }
 
   render () {
 
-    const skeleton = (this.docs == null);
+    if (this.state.type === 'error') {
+      return html`
+        <cc-notice intent="warning" message="${i18n('cc-doc-list.error')}"></cc-notice>
+      `;
+    }
 
     return html`
       <div class="doc-wrapper">
-        ${this.error ? html`
-            <cc-notice intent="warning" message="${i18n('cc-doc-list.error')}"></cc-notice>
-        ` : ''}
-        ${skeleton && !this.error ? html`
+        ${this.state.type === 'loading' ? html`
           ${new Array(DOC_SKELETON_NUMBER).fill(html`
             <cc-doc-card></cc-doc-card>
           `)}
         ` : ''}
-        ${!skeleton && !this.error ? html`
-          ${this.docs.map((article) => html`
-            <cc-doc-card
-              description=${article.description ?? ''}
-              heading=${article.heading ?? ''}
-              .icons=${article.icons ?? []}
-              link=${article.link ?? ''}
-            ></cc-doc-card>
+
+        ${this.state.type === 'loaded' ? html`
+          ${this.state.docs.map((docCard) => html`
+            <cc-doc-card .state=${{ type: 'loaded', ...docCard }}></cc-doc-card>
           `)}
         ` : ''}
       </div>
