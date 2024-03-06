@@ -1,6 +1,5 @@
-interface Documentation {
-  desc: string;
-  icons: string[];
-  link: string;
-  title: string;
+import{DocCardStateLoaded}
+interface DocListStateLoaded {
+  type: 'loaded',
+  docs:
 }
