@@ -22,8 +22,8 @@ export class CcProductList extends LitElement {
   static get properties () {
     return {
       categoryDataList: { type: Array },
-      filterCategory: { type: String },
-      filterInput: { type: String },
+      filterCategory: { type: String, attribute: 'filter-category' },
+      filterInput: { type: String, attribute: 'filter-input' },
     };
   }
 
@@ -44,10 +44,11 @@ export class CcProductList extends LitElement {
   }
 
   /**
-   * @param {string} categoryName
+   * @param {Event & { target: HTMLElement }} e
    */
-  _onBadgeClick (categoryName) {
-    this._productsCrtl.filterCategory(categoryName);
+  _onBadgeClick ({ target }) {
+    const categoryName = target.dataset?.category;
+    this._productsCrtl.toggleCategory(categoryName);
   }
 
   /**
@@ -68,7 +69,7 @@ export class CcProductList extends LitElement {
     }
 
     if (changedProperties.has('filterInput') || changedProperties.has('filterCategory')) {
-      this._productsCrtl.filterCategory(this.filterCategory);
+      this._productsCrtl.toggleCategory(this.filterCategory);
       this._productsCrtl.search(this.filterInput);
     }
 
@@ -99,7 +100,9 @@ export class CcProductList extends LitElement {
       <cc-badge
         weight="${(c.toggled ? 'dimmed' : 'outlined')}"
         intent="info"
-        @click=${() => this._onBadgeClick(c.categoryName)}>
+        data-category="${c.categoryName}"
+        @click=${this._onBadgeClick}
+      >
         ${c.categoryName}
       </cc-badge>
     `);
@@ -112,7 +115,7 @@ export class CcProductList extends LitElement {
     return categoryDataList.map((categoryData) => html`
       <div class="category">
         <div class="category-title">
-          ${categoryData?.icon != null ? html`
+          ${categoryData.icon != null ? html`
             <cc-icon .icon="${categoryData.icon}" class="category-icon"></cc-icon>
           ` : ''}
           <div class="category-name">${categoryData.categoryName}</div>
@@ -124,7 +127,7 @@ export class CcProductList extends LitElement {
               description="${p.description}"
               .keywords="${p.keywords ?? []}"
               icon-url="${p.iconUrl}"
-              url="${p?.url}"
+              url="${p.url}"
             ></cc-product-card>
           `)}
         </div>

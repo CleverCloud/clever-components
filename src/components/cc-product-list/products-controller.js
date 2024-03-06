@@ -47,9 +47,39 @@ export class ProductsController {
   }
 
   /**
+   * Note: if you want to search from a specific category, please call `toggleCategory` before.
+   *
+   * @param {string|null} searchInput
+   */
+  search (searchInput) {
+
+    // @type {ProductSection[]}
+    const currentCategoryProductsList = this._getProductsByCurrentCategory();
+
+    if (searchInput == null || searchInput === '') {
+      this._currentCategoryDataList = currentCategoryProductsList;
+      this._host.requestUpdate();
+      return;
+    }
+
+    const searchTerms = searchInput
+      .toLowerCase()
+      .trim()
+      .split(' ')
+      .filter((i) => i !== '');
+
+    this._currentCategoryDataList = currentCategoryProductsList
+      .map((pl) => ({ ...pl, products: this._filterProducts(pl.products, searchTerms) }))
+      .filter((pl) => pl.products.length > 0);
+
+    this._host.requestUpdate();
+
+  }
+
+  /**
    * @param {string} categoryName
    */
-  filterCategory (categoryName) {
+  toggleCategory (categoryName) {
 
     const categoryExists = this._categoriesFilters.find((cat) => cat.categoryName === categoryName) != null;
 
@@ -99,34 +129,6 @@ export class ProductsController {
     return (this._currentCategoryNameFilter !== 'all')
       ? this._categoryDataList.filter(({ categoryName }) => categoryName === this._currentCategoryNameFilter)
       : this._categoryDataList;
-  }
-
-  /**
-   * @param {string|null} searchInput
-   */
-  search (searchInput) {
-
-    // @type {ProductSection[]}
-    const currentCategoryProductsList = this._getProductsByCurrentCategory();
-
-    if (searchInput == null || searchInput === '') {
-      this._currentCategoryDataList = currentCategoryProductsList;
-      this._host.requestUpdate();
-      return;
-    }
-
-    const searchTerms = searchInput
-      .toLowerCase()
-      .trim()
-      .split(' ')
-      .filter((i) => i !== '');
-
-    this._currentCategoryDataList = currentCategoryProductsList
-      .map((pl) => ({ ...pl, products: this._filterProducts(pl.products, searchTerms) }))
-      .filter((pl) => pl.products.length > 0);
-
-    this._host.requestUpdate();
-
   }
 
 }
