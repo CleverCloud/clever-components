@@ -25,33 +25,29 @@ export class CcArticleList extends LitElement {
   constructor () {
     super();
 
-    /** @type {ArticleListState} Sets the articles list state. */
+    /** @type {ArticleListState} Sets the state of the component */
     this.state = { type: 'loading' };
   }
 
   render () {
 
+    if (this.state.type === 'error') {
+      return html`
+        <cc-notice intent="warning" message="${i18n('cc-article-list.error')}"></cc-notice>
+      `;
+    }
+
     return html`
       <div class="article-container">
-        ${this.state.type === 'error' ? html`
-          <cc-notice intent="warning" message="${i18n('cc-article-list.error')}"></cc-notice>
-        ` : ''}
-        
         ${this.state.type === 'loading' ? html`
           ${new Array(ARTICLE_SKELETON_NUMBER).fill(html`
             <cc-article-card></cc-article-card>
           `)}
         ` : ''}
-        
+
         ${this.state.type === 'loaded' ? html`
-          ${this.state.articles.map((article) => html`
-            <cc-article-card
-              banner=${article.banner}
-              title=${article.title ?? ''}
-              link=${article.link ?? ''}
-              description=${article.description ?? ''}
-              date=${article.date ?? new Date().toDateString()}
-            ></cc-article-card>
+          ${this.state.articles.map((articleState) => html`
+            <cc-article-card .state=${articleState}></cc-article-card>
           `)}
         ` : ''}
       </div>

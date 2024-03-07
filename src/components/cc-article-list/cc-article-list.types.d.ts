@@ -1,22 +1,17 @@
-export type ArticleListState = ArticleListStateLoading | ArticleListStateError | ArticleListStateLoaded;
+import { ArticleCardStateLoaded } from '../cc-article-card/cc-article-card.types.js';
 
-interface ArticleListStateLoading {
+export type ArticleListState = ArticleListStateLoaded | ArticleListStateLoading | ArticleListStateError;
+
+export interface ArticleListStateLoaded {
+  type: 'loaded';
+  articles: ArticleCardStateLoaded[];
+}
+
+export interface ArticleListStateLoading {
   type: 'loading';
 }
 
-interface ArticleListStateError {
+export interface ArticleListStateError {
   type: 'error';
 }
 
-interface ArticleListStateLoaded {
-  type: 'loaded';
-  articles: Array<Article>;
-}
-
-interface Article {
-  banner: string;
-  title: string;
-  link: string;
-  description: string;
-  date: string;
-}
