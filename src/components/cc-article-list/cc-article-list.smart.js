@@ -47,5 +47,9 @@ async function fetchArticleList ({ signal, lang, limit = 9 }) {
     FOUR_HOURS,
     () => request(requestParams));
 
-  return parseRssFeed(rssFeed, limit);
+  const rawArticleListData = parseRssFeed(rssFeed, limit);
+  return rawArticleListData.map((rawArticle) => ({
+    type: 'loaded',
+    ...rawArticle,
+  }));
 }

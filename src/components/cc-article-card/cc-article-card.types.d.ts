@@ -1,6 +1,6 @@
 export type ArticleCardState = ArticleCardStateLoaded | ArticleCardStateLoading;
 
-interface ArticleCardStateLoaded {
+export interface ArticleCardStateLoaded {
     type: 'loaded';
     banner: string;
     date: string;

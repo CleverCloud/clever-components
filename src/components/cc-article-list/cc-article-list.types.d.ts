@@ -1,3 +1,4 @@
+import {ArticleCardStateLoaded} from '../cc-article-card/cc-article-card.types.js';
 export type ArticleListState = ArticleListStateLoading | ArticleListStateError | ArticleListStateLoaded;
 
 interface ArticleListStateLoading {
@@ -10,13 +11,5 @@ interface ArticleListStateError {
 
 interface ArticleListStateLoaded {
   type: 'loaded';
-  articles: Array<Article>;
-}
-
-interface Article {
-  banner: string;
-  title: string;
-  link: string;
-  description: string;
-  date: string;
+  articles: ArticleCardStateLoaded[] ;
 }

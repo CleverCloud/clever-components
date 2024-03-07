@@ -31,11 +31,14 @@ export class CcArticleList extends LitElement {
 
   render () {
 
+    if (this.state.type === 'error') {
+      return html`
+        <cc-notice intent="warning" message="${i18n('cc-article-list.error')}"></cc-notice>
+      `;
+    }
+
     return html`
       <div class="article-container">
-        ${this.state.type === 'error' ? html`
-          <cc-notice intent="warning" message="${i18n('cc-article-list.error')}"></cc-notice>
-        ` : ''}
         
         ${this.state.type === 'loading' ? html`
           ${new Array(ARTICLE_SKELETON_NUMBER).fill(html`
@@ -46,11 +49,7 @@ export class CcArticleList extends LitElement {
         ${this.state.type === 'loaded' ? html`
           ${this.state.articles.map((article) => html`
             <cc-article-card
-              banner=${article.banner}
-              title=${article.title ?? ''}
-              link=${article.link ?? ''}
-              description=${article.description ?? ''}
-              date=${article.date ?? new Date().toDateString()}
+              .state=${article}
             ></cc-article-card>
           `)}
         ` : ''}
