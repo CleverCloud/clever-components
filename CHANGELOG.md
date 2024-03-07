@@ -5,6 +5,114 @@ title: 'Changelog'
 
 # Changelog
 
+## [13.0.0](https://github.com/CleverCloud/clever-components/compare/12.0.0...13.0.0) (2024-03-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* **cc-popover:** remove the `accessibleName` prop & associated attribute
+* **cc-icon:** remove the `accessibleName` prop & associated attribute
+* **cc-button:** remove the `accessibleName` prop & associated attribute
+* **cc-badge:** remove the `iconAccessibleName` prop & associated attribute
+* **cc-img:** remove the `accessibleName` prop & associated attribute
+* **cc-env-var-linked-services:** the properties have changed
+    - `state`: new property containing the whole state
+    - `services`: property has been deleted as it is now part of the state
+    - `error`: property has been deleted as it is now part of the state
+* **cc-env-var-form:** the properties have changed
+    - `state`: new property containing the whole state
+    - `variables`: property has been deleted as it is now part of the state
+    - `error`: property has been deleted as it is now part of the state
+    - `parserOptions`: property has been deleted as it is now part of the state
+    - `saving`: property has been deleted as it is now part of the state
+* **cc-env-var-editor-json:** the properties have changed
+    - `state`: new property containing the whole state
+    - `variables`: property has been deleted as it is now part of the state
+    - `parserOptions`: property has been deleted as it is now part of the state
+* **cc-env-var-editor-expert:** the properties have changed
+    - `state`: new property containing the whole state
+    - `variables`: property has been deleted as it is now part of the state
+    - `parserOptions`: property has been deleted as it is now part of the state
+* **cc-env-var-editor-simple:** the properties have changed
+    - `state`: new property containing the whole state
+    - `variables`: property has been deleted as it is now part of the state
+    - `mode`: property has been deleted as it is now part of the state
+* **cc-env-var-create:** change property `mode` to `validationMode`
+* **cc-article-list:** the properties have changed
+    - `state`: new property containing the whole state
+    - `articles`: property has been deleted as it is now part of the state
+    - `error`: property has been deleted as it is now part of the state
+* **cc-invoice-list:** the properties have changed
+    - `state`: new property containing the whole state
+    - `invoices`: property has been deleted as it is now part of the state
+    - `error`: property has been deleted as it is now part of the state
+* **cc-tile-instances:** the properties have changed
+    - `state`: new property containing the whole state
+    - `instances`: property has been deleted as it is now part of the state
+    - `error`: property has been deleted as it is now part of the state
+* **cc-invoice:** the properties have changed
+    - `state`: new property containing the whole state
+    - `invoice`: property has been deleted as it is now part of the state
+    - `error`: property has been deleted as it is now part of the state
+    - `number`: property has been deleted as it is now part of the state
+* **cc-addon-linked-apps:** the properties have changed
+    - `state`: new property containing the whole state
+    - `applications`: property has been deleted as it is now part of the state
+    - `error`: property has been deleted as it is now part of the state
+* **cc-tile-deployments:** the properties have changed
+    - `state`: new property containing the whole state
+    - `deployments`: property has been deleted as it is now part of the state
+    - `error`: property has been deleted as it is now part of the state
+* **cc-grafana-info:** all properties have been merged into a new `state` property.
+* **cc-jenkins-info:** all properties have been merged into a new `state` property.
+* **cc-tile-status-codes:** the properties have changed
+    - `state`: new property containing the whole state
+    - `statusCodes`: property has been deleted as it is now part of the state
+    - `error`: property has been deleted as it is now part of the state
+
+### 🚀 Features
+
+* add error event from `sendToApi` calls ([4ac5415](https://github.com/CleverCloud/clever-components/commit/4ac541519ff2c47fb70f1b84d8ade5832c24ccae)), closes [#956](https://github.com/CleverCloud/clever-components/issues/956)
+* **cc-badge:** remove the `iconAccessibleName` prop & associated attribute ([6c322c3](https://github.com/CleverCloud/clever-components/commit/6c322c3d0b8b40655322afcaf34ffd65a31f760c))
+* **cc-button:** remove the `accessibleName` prop & associated attribute ([8a7a0f0](https://github.com/CleverCloud/clever-components/commit/8a7a0f0cbe39bed7262df770eb09975556585f41))
+* **cc-icon:** remove the `accessibleName` prop & associated attribute ([5e311d0](https://github.com/CleverCloud/clever-components/commit/5e311d0e76521cc4f4fe1f4ff1c922b67daf339f))
+* **cc-img:** remove the `accessibleName` prop & associated attribute ([9019da7](https://github.com/CleverCloud/clever-components/commit/9019da713bcbb6bfcbdf9c8cd0dbbe05b34e5779))
+* **cc-input-date:** adds label style customization ([f6433c3](https://github.com/CleverCloud/clever-components/commit/f6433c30ffbd4b7af9533c75ec0717b92afad55b)), closes [#888](https://github.com/CleverCloud/clever-components/issues/888)
+* **cc-input-number:** adds label style customization ([e0702d8](https://github.com/CleverCloud/clever-components/commit/e0702d80c9828c2872879863429fbc86103f5e0d)), closes [#888](https://github.com/CleverCloud/clever-components/issues/888)
+* **cc-input-text:** adds label style customization ([51fa2f4](https://github.com/CleverCloud/clever-components/commit/51fa2f411f48f56bc4b1aa21bab228b632402a20)), closes [#888](https://github.com/CleverCloud/clever-components/issues/888)
+* **cc-loader:** add accessibleName property ([d69a36a](https://github.com/CleverCloud/clever-components/commit/d69a36a3e5fbe589cef9e31f871095f9ed3102ba)), closes [#870](https://github.com/CleverCloud/clever-components/issues/870)
+* **cc-logs-control:** init component ([24e6768](https://github.com/CleverCloud/clever-components/commit/24e6768b4a42f66189657d56680e048155af26e9)), closes [#908](https://github.com/CleverCloud/clever-components/issues/908)
+* **cc-logs-instance:** init component ([d87e87a](https://github.com/CleverCloud/clever-components/commit/d87e87a1621d2b9543943af407f2ee66e1c74cbe)), closes [#877](https://github.com/CleverCloud/clever-components/issues/877)
+* **cc-popover:** remove the `accessibleName` prop & associated attribute ([4b47ebb](https://github.com/CleverCloud/clever-components/commit/4b47ebb64e37163b5b3f3487a319e8252e421ac4))
+* **cc-product-card:** init component ([9b63536](https://github.com/CleverCloud/clever-components/commit/9b63536dd704ed8de5d2dc9ccf52ba9ad9205be4)), closes [#891](https://github.com/CleverCloud/clever-components/issues/891)
+* **cc-select:** adds label style customization ([e0edcc0](https://github.com/CleverCloud/clever-components/commit/e0edcc0f76f5495b5c1878f2c20b90a7f629e55b)), closes [#888](https://github.com/CleverCloud/clever-components/issues/888)
+* **cc-toggle:** adds label style customization ([1556ecc](https://github.com/CleverCloud/clever-components/commit/1556ecc49bb620280376767aba9b616e69b50705)), closes [#888](https://github.com/CleverCloud/clever-components/issues/888)
+
+
+### 🐛 Bug Fixes
+
+* **cc-badge:** use `iconA11yName` in `iconAccessibleName` getter/setter ([92af579](https://github.com/CleverCloud/clever-components/commit/92af579377aa7bf659ffae39412549ce6df85ecc)), closes [#934](https://github.com/CleverCloud/clever-components/issues/934)
+* **smart-component:** protect from abortController nullity when smart component is disconnected ([c714dcd](https://github.com/CleverCloud/clever-components/commit/c714dcd095e3376de1b254b7338e77dbb9487cd3)), closes [#968](https://github.com/CleverCloud/clever-components/issues/968)
+
+
+### 🛠 Code Refactoring
+
+* **cc-addon-linked-apps:** migrate to the new smart component design ([69a999b](https://github.com/CleverCloud/clever-components/commit/69a999b9d38d4c43c5fed8f9984aed3dd563788c))
+* **cc-article-list:** migrate to the new smart component design ([4711406](https://github.com/CleverCloud/clever-components/commit/4711406f02450cbcf629627592fd89d2a334cd02)), closes [#921](https://github.com/CleverCloud/clever-components/issues/921)
+* **cc-env-var-create:** change property `mode` to `validationMode` ([264208b](https://github.com/CleverCloud/clever-components/commit/264208b8b8c8bff8f5180f7192040992f7eecda9))
+* **cc-env-var-editor-expert:** rework properties to make impossible state impossible ([b3c26de](https://github.com/CleverCloud/clever-components/commit/b3c26de64be3247d47f87b32f9d1bf28936b34df)), closes [#926](https://github.com/CleverCloud/clever-components/issues/926)
+* **cc-env-var-editor-json:** rework properties to make impossible state impossible ([901cfac](https://github.com/CleverCloud/clever-components/commit/901cfac772bfb58e47e1ea319fead5fdf32e7c62)), closes [#926](https://github.com/CleverCloud/clever-components/issues/926)
+* **cc-env-var-editor-simple:** rework properties to make impossible state impossible ([201b8af](https://github.com/CleverCloud/clever-components/commit/201b8afafa460f493dec3ad66c04b7c5ae8118e6)), closes [#926](https://github.com/CleverCloud/clever-components/issues/926)
+* **cc-env-var-form:** migrate to the new smart component design ([0425b6c](https://github.com/CleverCloud/clever-components/commit/0425b6c741e9b3bf5ae4d3c578763a9ad64e7042)), closes [#926](https://github.com/CleverCloud/clever-components/issues/926)
+* **cc-env-var-linked-services:** rework properties to make impossible state impossible ([069f8cd](https://github.com/CleverCloud/clever-components/commit/069f8cda0358657c4c3399281f45c922be60670c)), closes [#926](https://github.com/CleverCloud/clever-components/issues/926)
+* **cc-grafana-info:** migrate to the new smart component design ([9e404f6](https://github.com/CleverCloud/clever-components/commit/9e404f691e956a5b22328f5b4d7be29276b11462)), closes [#923](https://github.com/CleverCloud/clever-components/issues/923)
+* **cc-invoice-list:** migrate to the new smart component design ([488d928](https://github.com/CleverCloud/clever-components/commit/488d928fe97be801f5eb17337339a4dd653e952d)), closes [#922](https://github.com/CleverCloud/clever-components/issues/922)
+* **cc-invoice:** migrate to the new smart component design ([2e9764e](https://github.com/CleverCloud/clever-components/commit/2e9764eb43719e936382494daba573e63998e93d)), closes [#920](https://github.com/CleverCloud/clever-components/issues/920)
+* **cc-jenkins-info:** migrate to the new smart component design ([6228419](https://github.com/CleverCloud/clever-components/commit/622841957e7b775c3747b7542159031fc7f05be8)), closes [#925](https://github.com/CleverCloud/clever-components/issues/925)
+* **cc-tile-deployments:** rework properties to make impossible state impossible ([45e9a96](https://github.com/CleverCloud/clever-components/commit/45e9a96080cb152a356002b4abdaec6519788373)), closes [#942](https://github.com/CleverCloud/clever-components/issues/942)
+* **cc-tile-instances:** rework properties to make impossible state impossible ([e469f81](https://github.com/CleverCloud/clever-components/commit/e469f811f082352995c48f51f596b00ad40aa75f))
+* **cc-tile-status-codes:** migrate to the new smart component design ([fc5dc71](https://github.com/CleverCloud/clever-components/commit/fc5dc7142c119ea9abd5d6693465f9192ff81024)), closes [#924](https://github.com/CleverCloud/clever-components/issues/924)
+
 ## [12.0.0](https://github.com/CleverCloud/clever-components/compare/11.2.1...12.0.0) (2023-12-18)
 
 
