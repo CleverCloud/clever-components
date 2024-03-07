@@ -97,7 +97,7 @@ export function defineSmartComponent (definition, signal) {
       definition.onContextUpdate({ container, component, context, onEvent, updateComponent, signal });
     },
     onDisconnect (container, component) {
-      component[META].get(definition).abortController.abort();
+      component[META].get(definition).abortController?.abort();
       component[META].delete(definition);
     },
   });
