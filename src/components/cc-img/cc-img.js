@@ -18,7 +18,6 @@ export class CcImg extends LitElement {
 
   static get properties () {
     return {
-      accessibleName: { type: String, attribute: 'accessible-name' },
       a11yName: { type: String, attribute: 'a11y-name' },
       skeleton: { type: Boolean, reflect: true },
       src: { type: String },
@@ -44,18 +43,6 @@ export class CcImg extends LitElement {
 
     /** @type {boolean} */
     this._loaded = false;
-  }
-
-  get accessibleName () {
-    return this.a11yName;
-  }
-
-  /**
-   * Deprecated property. Use `a11yName` property or `a11y-name` attribute instead.
-   * @deprecated
-   */
-  set accessibleName (value) {
-    this.a11yName = value;
   }
 
   _onLoad (e) {

@@ -166,7 +166,6 @@ export const accessibleName = makeStory(conf, {
   `,
   dom: (container) => {
     container.innerHTML = `
-        <cc-notice intent="warning"><span slot="message">The <code>accessible-name</code> attribute is deprecated in favor of <code>a11y-name</code></span></cc-notice>
         <p>The accessible name can be checked by using the accessibility inspector of your browser.</p>
         <p>You may also hover the buttons because we populate the <code>title</code> attribute with the same value.</p>
         

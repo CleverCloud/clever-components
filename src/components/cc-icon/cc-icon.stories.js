@@ -59,7 +59,6 @@ export const accessibleName = makeStory(conf, {
   `,
   dom: (container) => {
     const storyOutput = html`
-        <cc-notice intent="warning"><span slot="message">The <code>accessible-name</code> attribute is deprecated in favor of <code>a11y-name</code></span></cc-notice>
         <p>The accessible name can be checked by using the accessibility inspector of your browser.</p>
 
         <div>With <code>a11y-name</code> attribute:</div>

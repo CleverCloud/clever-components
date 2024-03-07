@@ -22,7 +22,6 @@ export class CcBadge extends LitElement {
     return {
       circle: { type: Boolean },
       icon: { type: Object },
-      iconAccessibleName: { type: String, attribute: 'icon-accessible-name' },
       iconA11yName: { type: String, attribute: 'icon-a11y-name' },
       intent: { type: String },
       skeleton: { type: Boolean },
@@ -50,18 +49,6 @@ export class CcBadge extends LitElement {
 
     /** @type {BadgeWeight} Sets the style of the badge depending on how much one wants it to stand out. */
     this.weight = 'dimmed';
-  }
-
-  get iconAccessibleName () {
-    return this.iconA11yName;
-  }
-
-  /**
-   * Deprecated property. Use `iconA11yName` property or `icon-a11y-name` attribute instead.
-   * @deprecated
-   */
-  set iconAccessibleName (value) {
-    this.iconA11yName = value;
   }
 
   render () {

@@ -31,7 +31,6 @@ import { skeletonStyles } from '../../styles/skeleton.js';
 export class CcIcon extends LitElement {
   static get properties () {
     return {
-      accessibleName: { type: String, attribute: 'accessible-name' },
       a11yName: { type: String, attribute: 'a11y-name' },
       icon: { type: Object },
       size: { type: String, reflect: true },
@@ -63,18 +62,6 @@ export class CcIcon extends LitElement {
 
     /** @type {boolean} Whether the icon should be displayed as skeleton. */
     this.skeleton = false;
-  }
-
-  get accessibleName () {
-    return this.a11yName;
-  }
-
-  /**
-   * Deprecated property. Use `a11yName` property or `a11y-name` attribute instead.
-   * @deprecated
-   */
-  set accessibleName (value) {
-    this.a11yName = value;
   }
 
   updated (changedProperties) {
