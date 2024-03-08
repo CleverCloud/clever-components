@@ -1,14 +1,13 @@
-import './cc-ticket-center-edit.js';
+import './cc-ticket-center-reply-form.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
-  title: '🛠 Console/<cc-ticket-center-edit>',
-  component: 'cc-ticket-center-edit',
+  title: '🛠 Console/<cc-ticket-center-reply-form>',
+  component: 'cc-ticket-center-reply-form',
 };
 
 const conf = {
-  component: 'cc-ticket-center-edit',
+  component: 'cc-ticket-center-reply-form',
 };
 
 const orga = {
@@ -101,8 +100,4 @@ export const defaultStory = makeStory(conf, {
     ticket,
     messages,
   }],
-});
-
-enhanceStoriesNames({
-  defaultStory,
 });
