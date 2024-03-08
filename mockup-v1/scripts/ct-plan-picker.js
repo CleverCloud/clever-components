@@ -6,7 +6,6 @@ import {
   iconRemixRam_2Fill as iconRam,
   iconRemixUserForbidFill as iconConnectionLimit,
 } from '../../src/assets/cc-remix.icons.js';
-import '../../src/components/cc-badge/cc-badge.js';
 import './ct-plan-item.js';
 
 const WORDING = {
