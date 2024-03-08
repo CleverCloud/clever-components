@@ -1,14 +1,14 @@
-import './cc-ticket-center-create.js';
+import './cc-ticket-center-create-form.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
-  title: '🛠 Console/<cc-ticket-center-create>',
-  component: 'cc-ticket-center-create',
+  title: '🛠 Console/<cc-ticket-center-create-form>',
+  component: 'cc-ticket-center-create-form',
 };
 
 const conf = {
-  component: 'cc-ticket-center-create',
+  component: 'cc-ticket-center-create-form',
 };
 
 const orga = {
