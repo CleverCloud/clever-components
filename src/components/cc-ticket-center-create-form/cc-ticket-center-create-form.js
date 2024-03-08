@@ -7,6 +7,7 @@ import '../cc-badge/cc-badge.js';
 import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-select/cc-select.js';
+import '../cc-ticket-center-file-upload/cc-ticket-center-file-upload.js';
 
 /**
  * A component handling the ticket-center interface for Crisp
@@ -19,14 +20,13 @@ import '../cc-select/cc-select.js';
  * @event {CustomEvent<string>} cc-addon-admin:update-name - Fires the new name of the add-on when update name button is clicked.
  * @event {CustomEvent<string[]>} cc-addon-admin:update-tags - Fires the new list of tags when update tags button is clicked.
  */
-export class CcTicketCenterCreate extends LitElement {
+export class CcTicketCenterCreateForm extends LitElement {
 
   static get properties () {
     return {
       orga: { type: Object },
       user: { type: Object },
       error: { type: String },
-      files: { type: Array, state: true },
       _name: { type: String, state: true },
       _skeleton: { type: Boolean, state: true },
       _tags: { type: Array, state: true },
@@ -40,8 +40,6 @@ export class CcTicketCenterCreate extends LitElement {
     this.orga = null;
 
     this.user = null;
-
-    this.files = [];
 
     /** @type {ErrorType} Sets the error state on the component. */
     this.error = false;
@@ -69,42 +67,9 @@ export class CcTicketCenterCreate extends LitElement {
     }
   }
 
-  _addFile (e) {
-    e.target.files.forEach((f) => {
-      // TODO: send file, but how do we put the file back?
-    });
-  }
-
-  _removeFile (id) {
-    this.files = this.files.filter((f) => f.id !== id);
-  }
-
   _renderButtons () {
     return html`
       <cc-button primary class="open-ticket">${i18n('cc-ticket-center.button.open-ticket')}</cc-button>
-    `;
-  }
-
-  _renderUploadForm () {
-    return html`
-      <div class="files">
-        ${this.files.map((f) => html`
-        <div class="selected_file" id=${f.id}>
-          ${f.file_name}
-          <cc-button icon='{"content":"<svg viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 10.586l4.95-4.95 1.415 1.415-4.95 4.95 4.95 4.95-1.415 1.414-4.95-4.95-4.95 4.95-1.413-1.415 4.95-4.95-4.95-4.95L7.05 5.638l4.95 4.95z\"/></svg>"}'
-                     hide-text
-                     circle
-                     @click=${this._removeFile(f.id)}
-          >${i18n('cc-ticket-center.button.remove')}</cc-button>
-        </div>
-        `)}
-        <div class="file_upload">
-          <label for="fileinput">
-            <cc-button outlined .icon=${iconRemixAddLine}>${i18n('cc-ticket-center.button.attach-file')}</cc-button>
-          </label>
-          <input type="file" id="fileinput" class="fileupload" multiple @change=${this._addFile}>
-        </div>
-      </div>
     `;
   }
 
@@ -138,7 +103,7 @@ export class CcTicketCenterCreate extends LitElement {
             <div class="ring"></div>
           </div>
         </div>
-        ${this._renderUploadForm()}
+        <cc-ticket-center-file-upload></cc-ticket-center-file-upload>
         <div class="form-buttons">
           ${this._renderButtons()}
         </div>
@@ -337,23 +302,9 @@ export class CcTicketCenterCreate extends LitElement {
           line-height: 1.25em;
         }
 
-        input[type="file"] {
-          display: none;
-        }
-
-        .file_upload {
-          width: 100%;
-          border: 1px solid var(--cc-color-border-neutral-strong, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
-          display: flex;
-          justify-content: center;
-          padding: 2em 1em 1.5em 1em;
-          align-items: center;
-          box-sizing: border-box;
-        }
       `,
     ];
   }
 }
 
-window.customElements.define('cc-ticket-center-create', CcTicketCenterCreate);
+window.customElements.define('cc-ticket-center-create-form', CcTicketCenterCreateForm);

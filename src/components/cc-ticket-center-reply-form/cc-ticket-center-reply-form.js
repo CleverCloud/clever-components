@@ -18,33 +18,19 @@ import '../cc-select/cc-select.js';
  * @event {CustomEvent<string>} cc-addon-admin:update-name - Fires the new name of the add-on when update name button is clicked.
  * @event {CustomEvent<string[]>} cc-addon-admin:update-tags - Fires the new list of tags when update tags button is clicked.
  */
-export class CcTicketCenterEdit extends LitElement {
+export class CcTicketCenterReplyForm extends LitElement {
 
   static get properties () {
     return {
-      orga: { type: Object },
-      user: { type: Object },
-      ticket: { type: Object },
-      messages: { type: Array },
+      ticketState: { type: String },
       error: { type: String },
       saving: { type: Boolean },
-      _name: { type: String, state: true },
       _skeleton: { type: Boolean, state: true },
-      _tags: { type: Array, state: true },
     };
   }
 
   constructor () {
     super();
-
-    /** @type {Organisation|null} Sets the orga details. */
-    this.orga = null;
-
-    this.user = null;
-
-    this.ticket = null;
-
-    this.messages = null;
 
     /** @type {ErrorType} Sets the error state on the component. */
     this.error = false;
@@ -52,62 +38,19 @@ export class CcTicketCenterEdit extends LitElement {
     /** @type {boolean} Enables the saving state (form is disabled and blurred). */
     this.saving = false;
 
-    /** @type {string} */
-    this._name = '';
+    /** @type {String} Set the state of the surrounding ticket. */
+    this.ticketState = null;
 
     /** @type {boolean} */
     this._skeleton = false;
-
-    /** @type {string[]} */
-    this._tags = [];
   }
 
   _onDismissError () {
     this.error = false;
   }
 
-  willUpdate (changedProperties) {
-
-    if (changedProperties.has('addon')) {
-      this._skeleton = (this.addon == null);
-      this._name = this._skeleton ? '' : this.addon.name;
-      this._tags = this._skeleton ? [] : this.addon.tags;
-    }
-  }
-
-  _getState (ticketState) {
-    switch (ticketState) {
-      case 'pending':
-        return i18n('cc-ticket-center.state.unread');
-      case 'unresolved':
-        return i18n('cc-ticket-center.state.open');
-      case 'resolved':
-        return i18n('cc-ticket-center.state.closed');
-      default:
-        return i18n('cc-ticket-center.state.closed');
-    }
-  }
-
-  _getStateIntent (ticketState) {
-    switch (ticketState) {
-      case 'pending':
-        return 'danger';
-      case 'unresolved':
-        return 'info';
-      case 'resolved':
-        return 'neutral';
-      default:
-        return 'danger';
-    }
-  }
-
   _renderButtons () {
-    if (!this.ticket) {
-      return html`
-        <cc-button primary class="open-ticket">${i18n('cc-ticket-center.button.open-ticket')}</cc-button>
-      `;
-    }
-    else if (this.ticket.state === 'resolved') {
+    if (this.ticketState === 'resolved') {
       return html`
         <cc-button primary>${i18n('cc-ticket-center.button.reopen-and-send')}</cc-button>
       `;
@@ -120,127 +63,20 @@ export class CcTicketCenterEdit extends LitElement {
     }
   }
 
-  _renderUploadForm () {
-    return html`
-    `;
-  }
-
-  _renderMessageAuthor (msg) {
-    // FIXME: ensure "user" is the current user email or fix below to get the email
-    // Also: we need to add the avatar and stuff in here.
-    if (msg.author?.email === this.user?.email) {
-      return html`
-        <img class="author-avatar" src="${msg.author?.avatarUrl}" alt="${i18n('cc-ticket-center.author-avatar', { authorName: msg.author.name })}" />
-        <span class="author-name">
-          ${i18n('cc-ticket-center.author.you')}
-        </span>
-      `;
-    }
-    else {
-      return html`
-        <img class="author-avatar" src="${msg.author?.avatarUrl}" alt="${i18n('cc-ticket-center.author-avatar', { authorName: msg.author.name })}" />
-        <span class="author-name">
-          ${msg.author.name ?? msg.author.email}
-        </span>
-      `;
-    }
-  }
-
-  _renderTicket () {
+  render() {
     return html`
     <div class="wrapper">
-      ${this._renderBackButton()}
-      <h1 class="subject">
-        ${this.ticket.meta.subject}
-      </h1>
-      <div class="context">
-        <cc-badge intent="${this._getStateIntent(this.ticket.state)}" weight="dimmed">${this._getState(this.ticket.state)}</cc-badge>
-        <span class="ticket-id">${i18n('cc-ticket-center.ticket-id', { ticketId: this.ticket.meta.id })}</span>
-        <span class="ticket-creation">
-          ${i18n('cc-ticket-center.ticket.opened-at', { date: this.ticket.createdAt })}
-        </span>
-      </div>
-      <div>
-        <form class="ticket-form">
-          <div class="ta-wrapper">
-            <textarea class="input" rows="10" name="message" id="message" required></textarea>
-            <div class="ring"></div>
-          </div>
-          <div class="form-buttons">
-            ${this._renderButtons()}
-          </div>
-        </form>
-        ${this._renderUploadForm()}
-        <div class="messages">
-          ${this.messages.sort((a, b) => a.sentAt < b.sentAt).map((msg) => html`
-          <div class="message ${classMap({ 'msg-in': msg.direction === 'in', 'msg-out': msg.direction === 'out' })}">
-            <div class="message-header">
-              <span class="message-date">${i18n('cc-ticket-center.message.sent-at', { date: msg.sentAt })}</span>
-            </div>
-            <div class="message-content"><p>${msg.message}</p></div>
-            <div class="message-footer">
-              <div class="message-author cap-font-sans-semibold">
-                ${this._renderMessageAuthor(msg)}
-              </div>
-            </div>
-          </div>
-          `)}
+      <form class="ticket-form">
+        <div class="ta-wrapper">
+          <textarea class="input" rows="10" name="message" id="message" required></textarea>
+          <div class="ring"></div>
         </div>
-      </div>
+        <div class="form-buttons">
+          ${this._renderButtons()}
+        </div>
+      </form>
     </div>
     `;
-  }
-
-  _renderBackButton () {
-    return html`
-      <cc-button>
-        <svg height="10" width="14" viewBox="0 0 10 14" xmlns="http://www.w3.org/2000/svg">
-          <path d="m13.092139 17.4557862 6.2308071-6.2304865c.3003996-.3003996.7877074-.3003996 1.088107 0l.7267939.7267939c.300079.300079.3003996.7861044.0012824 1.0868246l-4.9381591 4.9609215 4.9378385 4.9612421c.2994378.3007202.2987966.7867456-.0012824 1.0868246l-.7267939.7267939c-.3003996.3003996-.7877074.3003996-1.088107 0l-6.2304865-6.2308071c-.3003996-.3003996-.3003996-.7877074 0-1.088107z" transform="translate(-12 -11)"/>
-        </svg>
-      </cc-button>
-    `;
-  }
-
-  _categoryOptions () {
-    return [
-      'emergency',
-      'question',
-      'invoicing',
-      'feedback',
-      'troubleshooting',
-      'upgrade',
-    ].map((value) => ({ value, label: i18n(`cc-ticket-center.category.${value}`) }));
-  }
-
-  _renderNewTicketForm () {
-    return html`
-    <div class="wrapper">
-      ${this._renderBackButton()}
-      <div>
-        <form class="new-ticket-form">
-          <cc-select class="input-category" label=${i18n('cc-ticket-center.input.category')}></cc-select>
-          <cc-input-text class="input-ids" label=${i18n('cc-ticket-center.input.ids')}></cc-input-text>
-          <!-- TODO: how do I implement the ring and stuff? -->
-          <div class="ta-wrapper">
-            <textarea class="input" rows="10" name="message" id="message" required></textarea>
-            <div class="ring"></div>
-          </div>
-          <div class="form-buttons">
-            ${this._renderButtons()}
-          </div>
-        </form>
-        ${this._renderUploadForm()}
-      </div>
-</div>
-    `;
-  }
-
-  render () {
-    if (this.ticket) {
-      return this._renderTicket();
-    } else {
-      return this._renderNewTicketForm();
-    }
   }
 
   static get styles () {
@@ -431,4 +267,4 @@ export class CcTicketCenterEdit extends LitElement {
   }
 }
 
-window.customElements.define('cc-ticket-center-edit', CcTicketCenterEdit);
+window.customElements.define('cc-ticket-center-reply-form', CcTicketCenterReplyForm);

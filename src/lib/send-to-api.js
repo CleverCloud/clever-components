@@ -62,29 +62,6 @@ export function sendToGenericApi ({ apiConfig = {}, signal, cacheDelay, timeout 
 
 /**
  * @param {Object} apiConfig
- * @param {String} apiConfig.API_HOST
- * @param {AbortSignal} signal
- * @param {Number} [cacheDelay]
- * @return {function(*=): (any | undefined)}
- */
-export function sendToGenericApi ({ apiConfig = {}, signal, cacheDelay, timeout }) {
-
-  return (requestParams) => {
-
-    const cacheParams = { ...apiConfig, ...requestParams };
-    return withCache(cacheParams, cacheDelay, () => {
-
-      const { API_HOST } = apiConfig;
-      return Promise.resolve(requestParams)
-        .then(prefixUrl(API_HOST))
-        .then(withOptions({ signal, timeout }))
-        .then(request);
-    });
-  };
-}
-
-/**
- * @param {Object} apiConfig
  * @param {String} apiConfig.WARP_10_HOST
  * @param {AbortSignal} signal
  * @param {Number} [cacheDelay]
