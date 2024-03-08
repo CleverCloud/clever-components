@@ -5,6 +5,7 @@ import { i18n } from '../../lib/i18n.js';
 
 import '../cc-button/cc-button.js';
 import '../cc-badge/cc-badge.js';
+import '../cc-toggle/cc-toggle.js';
 
 /**
  * A component handling the ticket-center interface for Crisp

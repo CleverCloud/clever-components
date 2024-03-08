@@ -1,6 +1,5 @@
 import './cc-ticket-center-list.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
   title: '🛠 Console/<cc-ticket-center-list>',
@@ -62,8 +61,4 @@ export const defaultStory = makeStory(conf, {
     orga,
     tickets,
   }],
-});
-
-enhanceStoriesNames({
-  defaultStory,
 });

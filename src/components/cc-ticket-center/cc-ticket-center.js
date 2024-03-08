@@ -84,18 +84,7 @@ export class CcTicketCenter extends LitElement {
   }
 
   render () {
-    if (this.currentTicket != null) {
-      return html`<cc-ticket-center-edit
-        orga=${this.orga}
-        user=${this.user}
-        ticket=${this.currentTicket}
-        messages=${this.messages}
-      >
-      </cc-ticket-center-edit>`;
-    }
-    else {
-      return this.renderTicketsList();
-    }
+    return this.renderTicketsList();
   }
 
   static get styles () {
