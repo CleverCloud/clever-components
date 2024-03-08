@@ -1,6 +1,5 @@
 import './cc-ticket-center-create-form.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import { enhanceStoriesNames } from '../../stories/lib/story-names.js';
 
 export default {
   title: '🛠 Console/<cc-ticket-center-create-form>',
@@ -24,8 +23,4 @@ export const defaultStory = makeStory(conf, {
     orga,
     user,
   }],
-});
-
-enhanceStoriesNames({
-  defaultStory,
 });
