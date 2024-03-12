@@ -3,6 +3,3 @@ export interface DataListOption {
   value: string;
 }
 
-export interface CcInputTextInputEvent extends CustomEvent {
-  detail: string;
-}
