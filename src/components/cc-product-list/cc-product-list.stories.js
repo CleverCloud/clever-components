@@ -393,11 +393,11 @@ export const filterInput = makeStory(conf, {
   ],
 });
 
-export const unrelevantFilterInput = makeStory(conf, {
+export const irrelevantFilterInput = makeStory(conf, {
   items: [
     {
       categoryDataList: PRODUCTS,
-      filterInput: 'unrelevant',
+      filterInput: 'irrelevant',
     },
   ],
 });
@@ -411,19 +411,19 @@ export const filterCategory = makeStory(conf, {
   ],
 });
 
-export const unrelevantFilterCategory = makeStory(conf, {
+export const irrelevantFilterCategory = makeStory(conf, {
   items: [
     {
       categoryDataList: PRODUCTS,
-      filterCategory: 'unrelevant',
+      filterCategory: 'irrelevant',
     },
   ],
 });
-export const unrelevantFilterCategoryButRelevantInput = makeStory(conf, {
+export const irrelevantFilterCategoryButRelevantInput = makeStory(conf, {
   items: [
     {
       categoryDataList: PRODUCTS,
-      filterCategory: 'unrelevant',
+      filterCategory: 'irrelevant',
       filterInput: 'sql',
     },
   ],
@@ -439,12 +439,12 @@ export const filterCategoryAndInput = makeStory(conf, {
   ],
 });
 
-export const unrelevantFilterCategoryAndUnrelevantInput = makeStory(conf, {
+export const irrelevantFilterCategoryAndUnrelevantInput = makeStory(conf, {
   items: [
     {
       categoryDataList: PRODUCTS,
-      filterCategory: 'unrelevant',
-      filterInput: 'unrelevant',
+      filterCategory: 'irrelevant',
+      filterInput: 'irrelevant',
     },
   ],
 });

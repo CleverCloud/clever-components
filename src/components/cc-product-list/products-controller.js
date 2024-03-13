@@ -46,6 +46,10 @@ export class ProductsController {
     return this._categoriesFilters;
   }
 
+  getCurrentCategory () {
+    return this._currentCategoryNameFilter;
+  }
+
   /**
    * Note: if you want to search from a specific category, please call `toggleCategory` before.
    *
