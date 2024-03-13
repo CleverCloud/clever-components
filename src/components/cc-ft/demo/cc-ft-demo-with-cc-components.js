@@ -5,7 +5,7 @@ import '../../cc-input-number/cc-input-number.js';
 import '../../cc-input-date/cc-input-date.js';
 import '../../cc-select/cc-select.js';
 import '../../cc-toggle/cc-toggle.js';
-import { formSubmit, formSubmitHandler } from '../form/form.js';
+import { formSubmit } from '../../../lib/form/form.js';
 
 const colorsSelectOptions = [
   {
@@ -30,7 +30,7 @@ export class CcFtDemoWithCcComponents extends LitElement {
 
   render () {
     return html`
-      <form ${formSubmit(formSubmitHandler(this))}>
+      <form ${formSubmit(this)}>
         <cc-input-text label="Name" name="name" required></cc-input-text>
         <cc-input-text label="Surname" name="surname"></cc-input-text>
         <cc-input-number label="Age" name="age" required min="10" max="15"></cc-input-number>

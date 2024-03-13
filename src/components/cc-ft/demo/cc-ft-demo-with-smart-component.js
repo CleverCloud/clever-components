@@ -2,8 +2,8 @@ import { css, html, LitElement } from 'lit';
 import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
 import { defineSmartComponent } from '../../../lib/define-smart-component.js';
+import { formHelper, formSubmit } from '../../../lib/form/form.js';
 import { updateRootContext } from '../../../lib/smart-manager.js';
-import { formHelper, formSubmit, formSubmitHandler } from '../form/form.js';
 
 export class CcFtDemoWithSmartComponent extends LitElement {
   static get properties () {
@@ -36,7 +36,7 @@ export class CcFtDemoWithSmartComponent extends LitElement {
 
     return html`
       <cc-smart-container context="${{ fake: 'toto' }}">
-        <form name="form1" ${formSubmit(formSubmitHandler(this))}>
+        <form name="form1" ${formSubmit(this)}>
           <cc-input-text
             label="Name"
             name="name"
@@ -55,7 +55,7 @@ export class CcFtDemoWithSmartComponent extends LitElement {
 
           <cc-button primary type="submit" ?waiting=${isForm1Submitting}>Submit</cc-button>
         </form>  
-        <form name="form2" ${formSubmit(formSubmitHandler(this))}>
+        <form name="form2" ${formSubmit(this)}>
           <cc-input-text
             label="Name"
             name="name"

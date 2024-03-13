@@ -1,8 +1,8 @@
 import { css, html, LitElement } from 'lit';
 import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
+import { formSubmit } from '../../../lib/form/form.js';
 import { invalid, VALID } from '../../../lib/validation/validation.js';
-import { formSubmit, formSubmitHandler } from '../form/form.js';
 
 class CustomValidator {
   getErrorMessage (code) {
@@ -59,7 +59,11 @@ export class CcFtDemoWithCustomValidation extends LitElement {
 
   render () {
     return html`
-      <form name="my-form" ${formSubmit(formSubmitHandler(this, { surname: customValidationForNativeInput }))} @form:invalid=${this._onInvalid} @form:valid=${this._onValid}>
+      <form name="my-form" 
+            ${formSubmit(this, { surname: customValidationForNativeInput })}
+            @form:invalid=${this._onInvalid} 
+            @form:valid=${this._onValid}
+      >
         <cc-input-text label="Name" required name="name" .customValidator=${this._customValidator}></cc-input-text>
         <label for="input">Surname (native input)</label>
         <input type="text" required name="surname" aria-describedby="error-surname" />

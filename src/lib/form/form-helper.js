@@ -1,5 +1,5 @@
-import { dispatchCustomEvent } from '../../../lib/events.js';
-import { invalid } from '../../../lib/validation/validation.js';
+import { dispatchCustomEvent } from '../events.js';
+import { invalid } from '../validation/validation.js';
 
 export function formHelper (host, formName) {
   const formElement = host.shadowRoot.querySelector(formName != null ? `form[name=${formName}]` : 'form');

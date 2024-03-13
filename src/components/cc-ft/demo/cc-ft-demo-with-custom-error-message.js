@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
-import { formSubmit, formSubmitHandler } from '../form/form.js';
+import { formSubmit } from '../../../lib/form/form.js';
 
 function CUSTOM_ERROR_MESSAGES (code) {
   if (code === 'empty') {
@@ -20,7 +20,7 @@ export class CcFtDemoWithCustomError extends LitElement {
 
   render () {
     return html`
-      <form name="my-form" ${formSubmit(formSubmitHandler(this))}>
+      <form name="my-form" ${formSubmit(this)}>
         <cc-input-text type="email" label="Email" required name="email"></cc-input-text>
         <cc-input-text type="email" label="Email custom" required name="email-custom" .customErrorMessages=${CUSTOM_ERROR_MESSAGES}></cc-input-text>
         

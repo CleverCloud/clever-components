@@ -10,6 +10,7 @@ const DEMOS = {
   'with-array-type': 'With array type',
   'with-custom-error-message': 'With custom error message',
   'with-custom-validation': 'With custom validation',
+  'with-coupled-inputs': 'With coupled inputs',
   'focus-order': 'Focus in DOM order',
   'dynamic-form': 'Dynamic form',
   'multiple-forms': 'Multiple forms',
@@ -146,12 +147,12 @@ export class CcFtDemo extends LitElement {
         }
 
         .right {
+          display: flex;
           min-width: 300px;
+          flex-direction: column;
           padding: 0.5em;
           border: 1px solid #ddd;
           border-radius: 0.3em;
-          display: flex;
-          flex-direction: column;
           gap: 2em;
         }
         
@@ -167,14 +168,14 @@ export class CcFtDemo extends LitElement {
           padding: 0.5em;
           font-family: monospace;
           font-weight: bold;
-        } 
+        }
         
         pre {
-          background-color: #efefef;
-          padding: 0.5em;
-          margin: 0;
           overflow: auto;
           max-height: 500px;
+          padding: 0.5em;
+          margin: 0;
+          background-color: #efefef;
         }
 
         button {

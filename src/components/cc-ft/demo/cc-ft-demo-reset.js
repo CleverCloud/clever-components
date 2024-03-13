@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
-import { formSubmitHandler, formSubmit } from '../form/form.js';
+import { formSubmit } from '../../../lib/form/form.js';
 
 const colorsSelectOptions = [
   {
@@ -26,7 +26,7 @@ export class CcFtDemoReset extends LitElement {
 
   render () {
     return html`
-      <form name="my-form" ${formSubmit(formSubmitHandler(this))}>
+      <form name="my-form" ${formSubmit(this)}>
         <cc-input-text label="Name" required name="name" value="prepopulated name" reset-value="prepopulated name"></cc-input-text>
         <cc-input-text label="Surname" required name="surname"></cc-input-text>
         <cc-input-text label="Country" required name="country"></cc-input-text>

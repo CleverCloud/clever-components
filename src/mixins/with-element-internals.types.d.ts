@@ -1,9 +1,10 @@
 import { ErrorMessage, Validator } from "../lib/validation/validation.types";
+import { InputData } from "../lib/form/form.types";
 
 export interface WithElementInternalsSettings {
   valuePropertyName: string;
   resetValuePropertyName?: string;
-  formDataProvider?: Provider<File | string | FormData | null>;
+  inputDataProvider?: Provider<InputData>;
   inputSelector: string;
   errorSelector?: string;
   validationSettingsProvider?: Provider<ValidationSettings>;

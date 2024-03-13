@@ -1,6 +1,7 @@
 import { nothing } from 'lit';
 import { AsyncDirective, directive, PartType } from 'lit/async-directive.js';
-import { EventHandler } from '../../../lib/events.js';
+import { EventHandler } from '../events.js';
+import { formSubmitHandler } from './form-submit-handler.js';
 
 /**
  * @typedef {import('lit/async-directive.js').ElementPart} ElementPart
@@ -17,7 +18,8 @@ class FormSubmitDirective extends AsyncDirective {
       throw new Error('The `formSubmit` directive must be used on a `form` element');
     }
 
-    this._submitHandler = null;
+    this._host = null;
+    this._customValidation = null;
 
     /** @type {EventHandler} */
     this._elementHandler = null;
@@ -29,14 +31,21 @@ class FormSubmitDirective extends AsyncDirective {
 
   /**
    * @param {ElementPart} part
-   * @param {(event:Event) => void} submitHandler
+   * @param {[host: HTMLElement, ]} args
    */
-  update (part, [submitHandler]) {
+  update (part, args) {
     part.element.setAttribute('novalidate', '');
 
-    if (this._submitHandler !== submitHandler) {
+    const host = args[0];
+    const customValidation = args[1];
+
+    if (this._host !== host || this._customValidation !== customValidation) {
       this._elementHandler?.disconnect();
-      this._elementHandler = new EventHandler(part.element, 'submit', submitHandler);
+
+      this._host = host;
+      this._customValidation = customValidation;
+
+      this._elementHandler = new EventHandler(part.element, 'submit', formSubmitHandler(this._host, this._customValidation));
       this._elementHandler?.connect();
     }
 

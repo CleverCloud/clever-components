@@ -1,4 +1,5 @@
 import { dispatchCustomEvent } from '../lib/events.js';
+import { getFormData } from '../lib/form/form-data.js';
 
 /**
  * @typedef {new (...args: any[]) => HTMLElement} Constructor
@@ -67,15 +68,19 @@ export const WithElementInternals = (superClass) =>
       }
     }
 
+    formAssociatedCallback (form) {
+      this._formElement = form;
+    }
+
     /**
      * @param {boolean} report - whether to display error message or not
      */
     validate (report) {
       const validationSettings = this._helper.getValidationSettings();
 
-      // todo: is this a good idea?
-      //         should we do nothing instead?
       if (validationSettings == null) {
+        // todo: is this a good idea?
+        //       should we do nothing instead?
         this._helper.setValidValidity();
         return;
       }
@@ -88,7 +93,10 @@ export const WithElementInternals = (superClass) =>
 
       const validator = validationSettings.validator;
 
-      const validationResult = validator.validate(this._helper.getValueProperty());
+      const validationResult = validator.validate(
+        this._helper.getValueProperty(),
+        this._formElement ? getFormData(this._formElement) : {},
+      );
 
       const errorMessage = validationResult.valid
         ? null
@@ -165,7 +173,7 @@ export const WithElementInternals = (superClass) =>
 
       // Sync form values with our state
       if (changedProperties.has(this._helper.settings.valuePropertyName)) {
-        this._helper.internals.setFormValue(this._helper.getFormData());
+        this._helper.internals.setFormValue(this._helper.getInputData());
         shouldValidate = true;
       }
 
@@ -255,11 +263,11 @@ class Helper {
 
   /**
    *
-   * @return {null|File|string|FormData}
+   * @return {InputData}
    */
-  getFormData () {
-    if (this.settings.formDataProvider != null) {
-      return this.settings.formDataProvider();
+  getInputData () {
+    if (this.settings.inputDataProvider != null) {
+      return this.settings.inputDataProvider();
     }
 
     const valueProperty = this.getValueProperty();

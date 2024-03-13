@@ -10,7 +10,7 @@ export interface InvalidValidation {
 }
 
 export interface Validator {
-  validate: (value: any) => Validation;
+  validate: (value: any, formData: Object) => Validation;
   getErrorMessage?: (code: string) => ErrorMessage;
 }
 

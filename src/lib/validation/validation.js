@@ -45,6 +45,9 @@ export class RequiredValidator {
   }
 }
 
+/**
+ * @implements Validator
+ */
 export class CompositeValidator {
   constructor (validators) {
     this._validators = validators;
@@ -61,9 +64,9 @@ export class CompositeValidator {
     throw new Error(`Unsupported error code ${code}`);
   }
 
-  validate (value) {
+  validate (value, formData) {
     for (const validator of this._validators) {
-      const v = validator.validate(value);
+      const v = validator.validate(value, formData);
       if (v.valid === false) {
         return v;
       }
@@ -103,7 +106,7 @@ export class NumberValidator {
     return { min: this._min ?? -Infinity, max: this._max ?? Infinity };
   }
 
-  validate (value) {
+  validate (value, formData) {
     // check is number
     const num = this._parse(value);
     if (num == null) {
@@ -147,6 +150,21 @@ export class ValidValidator {
 
   validate (value) {
     return VALID;
+  }
+}
+
+/**
+ * @implements Validator
+ */
+export class FunctionValidator {
+
+  constructor (validationFunction) {
+    this._validationFunction = validationFunction;
+  }
+
+  validate (value, formData) {
+    const result = this._validationFunction(value, formData);
+    return result == null ? VALID : invalid(result);
   }
 }
 

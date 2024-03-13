@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
-import { formSubmit, formSubmitHandler } from '../form/form.js';
+import { formSubmit } from '../../../lib/form/form.js';
 
 export class CcFtDemoNotInForm extends LitElement {
   static get properties () {
@@ -11,7 +11,7 @@ export class CcFtDemoNotInForm extends LitElement {
 
   render () {
     return html`
-      <div class="form" ${formSubmit(formSubmitHandler(this))}>
+      <div class="form" ${formSubmit(this)}>
         <cc-input-text label="Name" name="name" required></cc-input-text>
         <cc-button primary type="submit">Submit</cc-button>
       </div>

@@ -1,5 +1,5 @@
 import { css, html, LitElement } from 'lit';
-import { formSubmit, formSubmitHandler } from '../form/form.js';
+import { formSubmit } from '../../../lib/form/form.js';
 
 /**
  * @param {string[]} selectedCheckboxes - names of the selected checkboxes
@@ -48,7 +48,10 @@ export class CcFtDemoWithNativeInputs extends LitElement {
 
   render () {
     return html`
-      <form ${formSubmit(formSubmitHandler(this, { checkbox: validateCheckboxGroup }))} @form:invalid=${this._onInvalid} @form:valid=${this._onValid}>
+      <form ${formSubmit(this, { checkbox: validateCheckboxGroup })} 
+            @form:invalid=${this._onInvalid} 
+            @form:valid=${this._onValid}
+      >
         <label for="name">Name:</label><input id="name" type="text" required name="name" />
         
         <label for="color">Favorite Color:</label> <select required name="color" >

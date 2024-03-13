@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
-import { formSubmit, formSubmitHandler } from '../form/form.js';
+import { formSubmit } from '../../../lib/form/form.js';
 
 export class CcFtDemoMultipleForms extends LitElement {
   static get properties () {
@@ -11,13 +11,13 @@ export class CcFtDemoMultipleForms extends LitElement {
 
   render () {
     return html`
-      <form name="my-form-1" ${formSubmit(formSubmitHandler(this))}>
+      <form name="my-form-1" ${formSubmit(this)}>
         <cc-input-text label="Name" name="name" required></cc-input-text>
 
         <cc-button primary type="submit" required>Submit</cc-button>
       </form>
       
-      <form name="my-form-2" ${formSubmit(formSubmitHandler(this))}>
+      <form name="my-form-2" ${formSubmit(this)}>
         <cc-input-text label="Name" name="name" required></cc-input-text>
 
         <cc-button primary type="submit">Submit</cc-button>
