@@ -68,7 +68,7 @@ export class CcBadge extends LitElement {
     return html`
       <span class="cc-badge ${classMap(modes)}">
         ${this.icon != null ? html`
-          <cc-icon .icon=${this.icon} a11y-name=${ifDefined(this.iconA11yName)}></cc-icon>
+        <cc-icon .icon=${this.icon} a11y-name=${ifDefined(this.iconA11yName)}></cc-icon>
         ` : ''}
         <span>
           <slot></slot>
