@@ -29,16 +29,6 @@ const processor = unified()
 
 export function markdownToCsfWithDocsPage (markdownText) {
 
-  const markdownAst = processor.parse(markdownText);
-
-  const frontmatterNode = markdownAst.children.find((node) => node.type === 'yaml');
-  const kind = getKind(frontmatterNode);
-
-  const headingNode = markdownAst.children.find((node) => node.type === 'heading' && node.depth === 1);
-  const subtitle = getSubTitle(frontmatterNode, headingNode);
-
-  const title = [kind, subtitle].filter((a) => a != null).join('/');
-
   const htmlContent = processor().processSync(markdownText).contents;
   const parsedHTML = JSON.stringify(htmlContent);
 
@@ -46,22 +36,13 @@ export function markdownToCsfWithDocsPage (markdownText) {
     import { MarkdownDocs } from '/src/stories/lib/markdown-docs.jsx';
     import React from 'react';
 
-    export default {
-      title: '${title}',
-      parameters: {
-        docs: {
-          /**
-          * An autodocs is supposed to be generated because the tag "autodocs" has been added
-          * from the indexer function (see "src/stories/lib/markdown-indexer.js").
-          * We override the content to show our own documentation instead.
-          * Note/Fixme: 
-          * with Storybook 8, it seems the export default should be directly the page function as follows:
-          *   export default () => React.createElement(MarkdownDocs, { html: ... });
-          */
-          page: () => React.createElement(MarkdownDocs, { html: ${parsedHTML} }),
-        }
-      },
-    }
+
+    /**
+     * An autodoc is supposed to be generated because the tag "autodocs" has been added
+     * from the indexer function (see "src/stories/lib/markdown-indexer.js").
+     * We override the content to show our own documentation instead.
+     */
+    export default () => React.createElement(MarkdownDocs, { html: ${parsedHTML} });
 
     /**
      * We export an empty story as "docs" so that it can be considered a "docs only" story

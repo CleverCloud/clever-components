@@ -65,7 +65,7 @@ export default {
   tags: ['autodocs'],
   parameters: {
     docs: {
-      page: docsPage.parameters.docs.page,
+      page: docsPage,
     },
   },
 };
