@@ -86,6 +86,7 @@ export function getMainFiles () {
   const ignorePatterns = [
     `${SOURCE_DIR}/components/**/*.stories.js`,
     `${SOURCE_DIR}/components/**/*.test.js`,
+    `${SOURCE_DIR}/components/cc-ft/**/*`,
   ];
 
   return multiGlob(mainFilesPatterns, { ignore: ignorePatterns });
@@ -99,6 +100,7 @@ export function getAllSourceFiles () {
     `${SOURCE_DIR}/**/*.test.js`,
     `${SOURCE_DIR}/**/*.stories.js`,
     `${SOURCE_DIR}/stories/**/*`,
+    `${SOURCE_DIR}/components/cc-ft/**/*`,
   ];
 
   return glob.sync(allSourceFilesPatterns, { ignore: ignorePatterns });

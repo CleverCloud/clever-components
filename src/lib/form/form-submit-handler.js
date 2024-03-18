@@ -1,7 +1,7 @@
 import { dispatchCustomEvent } from '../events.js';
 import { isStringEmpty } from '../utils.js';
 import { invalid, VALID } from '../validation/validation.js';
-import { getFormData } from './form-data.js';
+import { focusInputAfterError, isCcInputElement, isNativeInputElement, getFormData } from './form-utils.js';
 
 /*
 Notes:
@@ -27,12 +27,9 @@ what about the result of the validation?
 */
 
 /**
- *
- * @param {Element|LitElement} rootElement
- * @param { {[name: string]: (value:InputData|Array<InputData>, formData:Object) => string|null|void} } customValidation
  * @return {(function(*): void)|*}
  */
-export function formSubmitHandler (rootElement, customValidation = {}) {
+export function formSubmitHandler () {
   return (event) => {
 
     event.preventDefault();
@@ -43,31 +40,9 @@ export function formSubmitHandler (rootElement, customValidation = {}) {
     console.log(data);
 
     const formValidationResult = Array.from(formElement.elements)
-      .filter((element) => shouldValidate(element, customValidation))
+      .filter((element) => shouldValidate(element))
       .map((element) => {
         const name = element.name;
-
-        // --- custom validation
-
-        // custom validation overrides the classic validation
-
-        const customValidateFunction = customValidation[name];
-        if (customValidateFunction != null) {
-
-          const validation = customValidateFunction(data[name], data);
-          const validationResult = validation == null ? VALID : invalid(validation);
-
-          // todo: for cc inputs, should we have a way to combine the input's validator and this custom validation.
-          //       or should we consider this custom validation to overriding the validator set on cc input element?
-          //       if override: <cc-input required> => we need to re-implement the required validation
-
-          setCustomValidityOnElement(element, validationResult);
-
-          return {
-            name,
-            validationResult,
-          };
-        }
 
         // for cc-input elements we use the validate() method with report
         if (isCcInputElement(element)) {
@@ -89,60 +64,23 @@ export function formSubmitHandler (rootElement, customValidation = {}) {
     const isFormValid = formValidationResult.every((result) => result.validationResult.valid);
 
     if (isFormValid) {
-      // TODO
-      dispatchCustomEvent(rootElement, 'formSubmit', { form: formElement.getAttribute('name'), data });
       dispatchCustomEvent(formElement, 'submit', { form: formElement.getAttribute('name'), data });
       dispatchCustomEvent(formElement, 'valid');
     }
     else {
       dispatchCustomEvent(formElement, 'invalid', formValidationResult);
-      console.log('form invalid', formValidationResult);
-      const focus = () => formElement.querySelector(':invalid, [internals-invalid]')?.focus();
-      if (rootElement.updateComplete != null) {
-        rootElement.updateComplete.then(focus());
-      }
-      else {
-        focus();
-      }
+      focusInputAfterError(formElement);
     }
   };
 
 }
 
-function shouldValidate (element, customValidation) {
+function shouldValidate (element) {
   // name is mandatory
   if (isStringEmpty(element.name)) {
     return false;
   }
 
   return isCcInputElement(element)
-    || isNativeInputElement(element)
-    || customValidation[element.name] != null;
-}
-
-function isCcInputElement (element) {
-  return element.validate != null && typeof element.validate === 'function';
-}
-
-function isNativeInputElement (element) {
-  return element.checkValidity != null && typeof element.checkValidity === 'function' && element.willValidate;
-}
-
-function setCustomValidityOnElement (element, validationResult) {
-  // cc input
-  if (isCcInputElement(element)) {
-    element.errorMessage = validationResult.valid ? null : validationResult.code;
-  }
-  // native input
-  else {
-    element.setCustomValidity?.(validationResult.valid ? '' : validationResult.code);
-  }
-}
-
-function nearestParent (element, predicate) {
-  let current = element;
-  while (current != null && !predicate(current)) {
-    current = current.parentNode;
-  }
-  return current;
+    || isNativeInputElement(element);
 }

@@ -1,76 +1,113 @@
-import { dispatchCustomEvent } from '../events.js';
+import { isStringEmpty } from '../utils.js';
 import { invalid } from '../validation/validation.js';
+import { setCustomValidityOnElement } from './form-utils.js';
 
-export function formHelper (host, formName) {
-  const formElement = host.shadowRoot.querySelector(formName != null ? `form[name=${formName}]` : 'form');
+/**
+ * @implements IFormHelper<I, E, S>
+ * @template I
+ * @template E
+ * @template S
+ */
+export class FormHelper {
+  /**
+   *
+   * @param formElement
+   * @param {ErrorMessageMap} errorsMaps
+   * @param onErrorReported
+   * @param onStateChange
+   */
+  constructor (formElement, errorsMaps, onErrorReported, onStateChange) {
+    this._formElement = formElement;
+    this._errorsMaps = errorsMaps;
+    this._onErrorReported = onErrorReported;
+    this._onStateChange = onStateChange;
 
-  if (formElement == null) {
-    throw new Error(formName != null ? `Could not find <form> element with name ${formName}` : `Could not find <form> element`);
+    this._state = null;
   }
 
-  const errorsMap = new Map();
+  reset () {
+    this._formElement.reset();
+    return this;
+  }
 
-  return {
-    reset () {
-      formElement.reset();
-    },
-    error (inputName, error) {
-      if (isStringEmpty(inputName)) {
-        return;
-      }
-      if (isStringEmpty(error)) {
-        return;
-      }
+  /**
+   * @return {S}
+   */
+  get state () {
+    return this._state;
+  }
 
-      // check if input exists in form
-      const element = formElement.elements[inputName];
-      if (element == null) {
-        return;
-      }
+  /**
+   * @param {S} state
+   * @return {Promise<void>}
+   */
+  async setState (state) {
+    await this.beginTransaction().setState(state).commit();
+  }
 
-      errorsMap.set(inputName, {
-        element,
-        error,
-      });
-    },
-    reportErrors () {
-      console.log('report', errorsMap);
-      // nothing to do if no errors
-      if (errorsMap.size === 0) {
-        return;
-      }
+  beginTransaction () {
+    const errorsMap = new Map();
+    let newState = this._state;
 
+    const transaction = {
+      setState: (state) => {
+        newState = state;
+        return transaction;
+      },
+      addError: (inputName, error) => {
+        this._addError(errorsMap, inputName, error);
+        return transaction;
+      },
+      commit: async () => {
+        await this._commit(newState, errorsMap);
+      },
+    };
+    return transaction;
+  }
+
+  _addError (errorsMap, inputName, error) {
+    if (isStringEmpty(inputName)) {
+      return;
+    }
+    if (isStringEmpty(error)) {
+      return;
+    }
+    // check if input exists in form
+    const element = this._formElement.elements[inputName];
+    if (element == null) {
+      return;
+    }
+
+    errorsMap.set(inputName, { element, error });
+  }
+
+  async _commit (newState, errorsMap) {
+    if (this._state !== newState) {
+      const oldState = this._state;
+      this._state = newState;
+      await this._onStateChange(this._state, oldState);
+    }
+
+    if (errorsMap.size > 0) {
       const formValidationResult = Array.from(errorsMap.entries())
         .map(([inputName, { element, error }]) => {
-          // mark element as invalid
-          // TODO: actually, can be handled by the input
-          // element.setCustomValidity?.(error);
-          // set errorMessage on element
-          element.errorMessage = error;
+          let errorMessage = this._errorsMaps[error] ?? error;
+          if (typeof errorMessage === 'function') {
+            errorMessage = errorMessage();
+          }
+          const validationResult = invalid(errorMessage);
+
+          setCustomValidityOnElement(element, validationResult);
 
           return {
             name: inputName,
-            validationResult: invalid(error),
+            validationResult,
           };
         });
 
-      // dispatch invalid event
-      // TODO: Here we report only errors (in the submit-handler we report all fields even those who are valid)
-      //  But I cannot easily do that here.
-      //  Should we, in submit-handler, only report invalid fields?
-      //  I mean, does it make sens to report for valid fields in an 'invalid' event?
-      dispatchCustomEvent(formElement, 'async-invalid', formValidationResult);
+      errorsMap.clear();
 
-      // focus first invalid field
-      host.updateComplete.then(() => formElement.querySelector(':invalid, [internals-invalid]')?.focus());
-    },
-  };
-}
-
-/**
- * @param {string} str
- * @return {boolean}
- */
-function isStringEmpty (str) {
-  return str == null || str.length === 0;
+      await this._onErrorReported(formValidationResult);
+    }
+  }
 }

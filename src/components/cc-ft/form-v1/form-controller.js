@@ -1,6 +1,6 @@
 import { dispatchCustomEvent } from '../../../lib/events.js';
 import { arrayEquals, isStringEmpty, objectEquals } from '../../../lib/utils.js';
-import { RequiredValidator } from '../validation/validation.js';
+import { RequiredValidator } from '../../../lib/validation/validation.js';
 
 /**
  * @typedef {import('./form.types.js').FieldDefinition} FieldDefinition

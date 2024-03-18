@@ -22,18 +22,6 @@ export class CcFtDemoWithCoupledInputs extends LitElement {
   }
 
   render () {
-    const customValidation = {
-      val: (value, formData) => {
-        console.log('validating', value, formData);
-        if (formData.case === 'uppercase') {
-          return value.toUpperCase() === value ? null : 'should be uppercase';
-        }
-        if (formData.case === 'lowercase') {
-          return value.toLowerCase() === value ? null : 'should be lowercase';
-        }
-      },
-    };
-
     const customValidator = {
       getErrorMessage (code) {
         if (code === 'not-uppercase') {
@@ -44,9 +32,6 @@ export class CcFtDemoWithCoupledInputs extends LitElement {
         }
       },
       validate (value, formData) {
-        console.log(formData.case);
-        console.log(value);
-        console.log(value.toUpperCase());
         if (formData.case === 'uppercase') {
           return value.toUpperCase() === value ? VALID : invalid('not-uppercase');
         }
@@ -58,13 +43,7 @@ export class CcFtDemoWithCoupledInputs extends LitElement {
     };
 
     return html`
-      <form name="with-custom-validation" ${formSubmit(this, customValidation)}>
-        <cc-select label="Case" .options=${caseSelectOptions} name="case" required></cc-select>
-        <cc-input-text label="Value" name="val" required></cc-input-text>
-
-        <cc-button primary type="submit" required>Submit</cc-button>
-      </form>
-      <form name="with-custom-validator" ${formSubmit(this)}>
+      <form ${formSubmit(this)}>
         <cc-select label="Case" .options=${caseSelectOptions} name="case" required></cc-select>
         <cc-input-text label="Value" name="val" required .customValidator=${customValidator}></cc-input-text>
 

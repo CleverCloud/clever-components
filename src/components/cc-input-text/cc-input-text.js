@@ -222,13 +222,15 @@ export class CcInputText extends WithElementInternals(LitElement) {
     // Here we prevent keydown on enter key from modifying the value
     if (this._tagsEnabled && e.type === 'keydown' && e.keyCode === 13) {
       e.preventDefault();
-      this._internals.form.requestSubmit();
+      // todo: not very nice to use a private field.
+      this._helper.internals.form.requestSubmit();
+      // todo: do we still need to send this event?
       dispatchCustomEvent(this, 'requestimplicitsubmit');
     }
     // Request implicit submit with keypress on enter key
     if (!this.readonly && e.type === 'keypress' && e.keyCode === 13) {
       if ((!this.multi) || (this.multi && e.ctrlKey)) {
-        this._internals.form.requestSubmit();
+        this._helper.internals.form.requestSubmit();
         dispatchCustomEvent(this, 'requestimplicitsubmit');
       }
     }
@@ -257,7 +259,7 @@ export class CcInputText extends WithElementInternals(LitElement) {
       errorSelector: '#error-id',
       validationSettingsProvider: () => this._getValidationSettings(),
       reactiveValidationProperties: ['required', 'type'],
-      formDataProvider: () => this._getFormData(),
+      inputDataProvider: () => this._getFormData(),
     };
   }
 

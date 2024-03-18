@@ -11,9 +11,11 @@ import {
   iconRemixSpam_2Fill as iconUnverified,
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
-import { validateEmailAddress } from '../../lib/email.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { fakeString } from '../../lib/fake-strings.js';
+import { FormController } from '../../lib/form/form-controller.js';
+import { formSubmit } from '../../lib/form/form-submit-directive.js';
+import { formHelper } from '../../lib/form/form.js';
 import { i18n } from '../../lib/i18n.js';
 import { sortBy } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
@@ -77,29 +79,12 @@ export class CcEmailList extends LitElement {
 
   static get properties () {
     return {
-      addEmailForm: { type: Object },
       emails: { type: Object },
-    };
-  }
-
-  /**
-   * @return {AddEmailFormState}
-   * @static
-   */
-  static get ADD_FORM_INIT_STATE () {
-    return {
-      state: 'idle',
-      address: {
-        value: '',
-      },
     };
   }
 
   constructor () {
     super();
-
-    /** @type {AddEmailFormState} The form state. */
-    this.addEmailForm = CcEmailList.ADD_FORM_INIT_STATE;
 
     /** @type {EmailListState} State of the component. */
     this.emails = { state: 'loading' };
@@ -115,6 +100,22 @@ export class CcEmailList extends LitElement {
         this._focusAddressInput();
       }
     });
+
+    this._addEmailFormCtrl = new FormController(this, {
+      onSubmit: this._onAddFormSubmit.bind(this),
+      errorsMap: {
+        invalid: () => i18n('cc-input-text.error.bad-email'),
+        'already-defined': () => i18n('cc-email-list.secondary.address-input.error.already-defined'),
+        used: () => i18n('cc-email-list.secondary.address-input.error.used'),
+      },
+    });
+  }
+
+  /**
+   * @return {IFormHelper<'address', 'invalid'|'already-defined'|'used', null|'adding'>}
+   */
+  getAddEmailForm () {
+    return this._addEmailFormCtrl.formHelper;
   }
 
   _getVerifiedTagLabel (verified) {
@@ -139,42 +140,8 @@ export class CcEmailList extends LitElement {
     dispatchCustomEvent(this, 'mark-as-primary', address);
   }
 
-  _onAddressInput ({ detail: value }) {
-    this.addEmailForm = {
-      state: 'idle',
-      address: {
-        value: value,
-        error: this.addEmailForm.address.error,
-      },
-    };
-  }
-
-  _onAdd () {
-    const address = this._addressInputRef.value.value.trim();
-
-    this.addEmailForm = {
-      state: 'idle',
-      address: {
-        value: address,
-        error: validateEmailAddress(address),
-      },
-    };
-
-    if (this.addEmailForm.address.error == null) {
-      dispatchCustomEvent(this, 'add', address);
-    }
-
-    // If there's an error, a focus will be triggered on the input field through the updated callback
-  }
-
-  updated (changedProperties) {
-    // Focus input when error is set (from local validation or remote validation)
-    if (changedProperties.has('addEmailForm')) {
-      if (this.addEmailForm?.address?.error != null) {
-        // We need this for the story
-        setTimeout(() => this._focusAddressInput(), 0);
-      }
-    }
+  _onAddFormSubmit ({ detail }) {
+    dispatchCustomEvent(this, 'add', detail.address);
   }
 
   render () {
@@ -292,19 +259,18 @@ export class CcEmailList extends LitElement {
   }
 
   _renderAddEmailForm () {
-    const isAdding = this.addEmailForm.state === 'adding';
+    const isAdding = this._addEmailFormCtrl.formHelper?.state === 'adding';
 
     return html`
-      <form>
+      <form name="add-email-form" ${this._addEmailFormCtrl.handleSubmit()} @form:submit=${this._onAddFormSubmit}>
         <cc-input-text
           label="${i18n('cc-email-list.secondary.address-input.label')}"
+          name="address"
+          type="email"
           required
-          .value=${this.addEmailForm.address.value}
           ?disabled=${isAdding}
-          @cc-input-text:requestimplicitsubmit=${this._onAdd}
           ${ref(this._addressInputRef)}
         >
-          ${this._renderAddressError()}
           <p slot="help">
             ${i18n('cc-email-list.secondary.address-input.format')}
           </p>
@@ -312,29 +278,12 @@ export class CcEmailList extends LitElement {
         <cc-button
           primary
           ?waiting=${isAdding}
-          @cc-button:click=${this._onAdd}
+          type="submit"
         >
           ${i18n('cc-email-list.secondary.action.add')}
         </cc-button>
       </form>
     `;
-  }
-
-  _renderAddressError () {
-    if (this.addEmailForm.address.error === 'empty') {
-      return html`<p slot="error">${i18n('cc-email-list.secondary.address-input.error.empty')}</p>`;
-    }
-    if (this.addEmailForm.address.error === 'used') {
-      return html`<p slot="error">${i18n('cc-email-list.secondary.address-input.error.used')}</p>`;
-    }
-    if (this.addEmailForm.address.error === 'invalid') {
-      return html`<p slot="error">${i18n('cc-email-list.secondary.address-input.error.invalid')}</p>`;
-    }
-    if (this.addEmailForm.address.error === 'already-defined') {
-      return html`<p slot="error">${i18n('cc-email-list.secondary.address-input.error.already-defined')}</p>`;
-    }
-
-    return html``;
   }
 
   static get styles () {

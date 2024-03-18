@@ -20,7 +20,7 @@ const META = Symbol('META');
  *   container?: SmartContainer,
  *   component?: Element,
  *   context?: object,
- *   onEvent?: (type: string, listener: (detail: object) => void) => void,
+ *   onEvent?: (type: string, listener: (detail: any) => void) => void,
  *   updateComponent?: (
  *     type: string,
  *     callbackOrObject: CallbackOrObject,

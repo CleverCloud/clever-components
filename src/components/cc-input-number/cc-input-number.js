@@ -123,7 +123,7 @@ export class CcInputNumber extends WithElementInternals(LitElement) {
       errorSelector: '#error-id',
       validationSettingsProvider: () => this._getValidationSettings(),
       reactiveValidationProperties: ['required', 'options'],
-      formDataProvider: () => this._inputRef.value.value,
+      inputDataProvider: () => this._inputRef.value.value,
     };
   }
 

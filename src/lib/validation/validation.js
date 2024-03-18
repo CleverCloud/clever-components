@@ -61,7 +61,7 @@ export class CompositeValidator {
       catch (e) {
       }
     }
-    throw new Error(`Unsupported error code ${code}`);
+    return code;
   }
 
   validate (value, formData) {
@@ -144,10 +144,6 @@ export class EmailValidator {
 }
 
 export class ValidValidator {
-  getErrorMessage (code) {
-    throw new Error('Unsupported error code');
-  }
-
   validate (value) {
     return VALID;
   }

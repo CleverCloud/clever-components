@@ -1,5 +1,6 @@
 import { dispatchCustomEvent } from '../lib/events.js';
-import { getFormData } from '../lib/form/form-data.js';
+import { getFormData } from '../lib/form/form-utils.js';
+import { isStringEmpty } from '../lib/utils.js';
 
 /**
  * @typedef {new (...args: any[]) => HTMLElement} Constructor
@@ -68,10 +69,6 @@ export const WithElementInternals = (superClass) =>
       }
     }
 
-    formAssociatedCallback (form) {
-      this._formElement = form;
-    }
-
     /**
      * @param {boolean} report - whether to display error message or not
      */
@@ -95,7 +92,7 @@ export const WithElementInternals = (superClass) =>
 
       const validationResult = validator.validate(
         this._helper.getValueProperty(),
-        this._formElement ? getFormData(this._formElement) : {},
+        this._helper.internals.form != null ? getFormData(this._helper.internals.form) : {},
       );
 
       const errorMessage = validationResult.valid
@@ -153,7 +150,7 @@ export const WithElementInternals = (superClass) =>
      * @param {string} message
      */
     setCustomValidity (message) {
-      if (message == null || message.length === 0) {
+      if (isStringEmpty(message)) {
         this._helper.setValidValidity();
       }
       else {

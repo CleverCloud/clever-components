@@ -8,7 +8,6 @@ import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { i18n } from '../../lib/i18n.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
-import { CcEmailList } from './cc-email-list.js';
 import '../cc-smart-container/cc-smart-container.js';
 
 defineSmartComponent({
@@ -16,9 +15,19 @@ defineSmartComponent({
   params: {
     apiConfig: { type: Object },
   },
+  /**
+   *
+   * @param {CcEmailList} component
+   * @param context
+   * @param onEvent
+   * @param updateComponent
+   * @param signal
+   */
   onContextUpdate ({ component, context, onEvent, updateComponent, signal }) {
+    const addEmailForm = component.getAddEmailForm();
+
     updateComponent('emails', { state: 'loading' });
-    updateComponent('addEmailForm', CcEmailList.ADD_FORM_INIT_STATE);
+    addEmailForm.reset();
 
     const api = getApi(context.apiConfig, signal);
 
@@ -83,14 +92,9 @@ defineSmartComponent({
         });
     });
 
-    onEvent('cc-email-list:add', (address) => {
+    onEvent('cc-email-list:add', async (address) => {
 
-      updateComponent('addEmailForm', {
-        state: 'adding',
-        address: {
-          value: address,
-        },
-      });
+      await addEmailForm.setState('adding');
 
       api.addSecondaryEmailAddress(address)
         .then(() => {
@@ -104,9 +108,11 @@ defineSmartComponent({
             },
           });
 
-          updateComponent('addEmailForm', CcEmailList.ADD_FORM_INIT_STATE);
+          addEmailForm.reset();
         })
         .catch((error) => {
+          const transaction = addEmailForm.beginTransaction();
+
           let inputError;
           if (error.id === 550) {
             inputError = 'invalid';
@@ -119,18 +125,14 @@ defineSmartComponent({
           }
 
           if (inputError != null) {
-            updateComponent('addEmailForm', (addEmailForm) => {
-              addEmailForm.state = 'idle';
-              addEmailForm.address.error = inputError;
-            });
+            transaction.addError('address', inputError);
           }
           else {
             console.error(error);
             notifyError(i18n('cc-email-list.secondary.action.add.error', { address }));
-            updateComponent('addEmailForm', (addEmailForm) => {
-              addEmailForm.state = 'idle';
-            });
           }
+
+          transaction.setState(null).commit();
         });
 
     });

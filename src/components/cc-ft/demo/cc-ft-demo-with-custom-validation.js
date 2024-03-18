@@ -2,6 +2,7 @@ import { css, html, LitElement } from 'lit';
 import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
 import { formSubmit } from '../../../lib/form/form.js';
+import { isStringEmpty } from '../../../lib/utils.js';
 import { invalid, VALID } from '../../../lib/validation/validation.js';
 
 class CustomValidator {
@@ -21,8 +22,8 @@ class CustomValidator {
  * @returns {string|undefined} returns the error message to display or undefined if no error
  */
 function customValidationForNativeInput (value) {
-  if (value == null || value.length === 0) {
-    return 'Please enter a value';
+  if (isStringEmpty(value)) {
+    return 'Une valeur stp';
   }
 
   if (value.toUpperCase() !== value) {
@@ -57,16 +58,23 @@ export class CcFtDemoWithCustomValidation extends LitElement {
     this._surnameError = null;
   }
 
+  _onSurnameInput (e) {
+    const value = e.target.value;
+
+    const validation = customValidationForNativeInput(value);
+    e.target.setCustomValidity?.(validation == null ? '' : validation);
+  }
+
   render () {
     return html`
       <form name="my-form" 
-            ${formSubmit(this, { surname: customValidationForNativeInput })}
+            ${formSubmit(this)}
             @form:invalid=${this._onInvalid} 
             @form:valid=${this._onValid}
       >
         <cc-input-text label="Name" required name="name" .customValidator=${this._customValidator}></cc-input-text>
         <label for="input">Surname (native input)</label>
-        <input type="text" required name="surname" aria-describedby="error-surname" />
+        <input type="text" required name="surname" aria-describedby="error-surname" @input=${this._onSurnameInput} />
         ${this._surnameError != null && this._surnameError.length > 0
           ? html`<p id="error-surname">${this._surnameError}</p>`
           : ''

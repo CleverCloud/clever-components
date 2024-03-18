@@ -11,6 +11,7 @@ const DEMOS = {
   'with-custom-error-message': 'With custom error message',
   'with-custom-validation': 'With custom validation',
   'with-coupled-inputs': 'With coupled inputs',
+  'with-fieldset': 'With fieldset',
   'focus-order': 'Focus in DOM order',
   'dynamic-form': 'Dynamic form',
   'multiple-forms': 'Multiple forms',

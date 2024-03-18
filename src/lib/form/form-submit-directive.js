@@ -15,11 +15,8 @@ class FormSubmitDirective extends AsyncDirective {
     super(partInfo);
 
     if (partInfo.type !== PartType.ELEMENT || partInfo.element.tagName !== 'FORM') {
-      throw new Error('The `formSubmit` directive must be used on a `form` element');
+      throw new Error('This directive must be used on a `<form>` element');
     }
-
-    this._host = null;
-    this._customValidation = null;
 
     /** @type {EventHandler} */
     this._elementHandler = null;
@@ -31,23 +28,16 @@ class FormSubmitDirective extends AsyncDirective {
 
   /**
    * @param {ElementPart} part
-   * @param {[host: HTMLElement, ]} args
+   * @param {[formController]} args
    */
   update (part, args) {
-    part.element.setAttribute('novalidate', '');
+    /** @type {HTMLFormElement} */
+    const formElement = part.element;
 
-    const host = args[0];
-    const customValidation = args[1];
-
-    if (this._host !== host || this._customValidation !== customValidation) {
-      this._elementHandler?.disconnect();
-
-      this._host = host;
-      this._customValidation = customValidation;
-
-      this._elementHandler = new EventHandler(part.element, 'submit', formSubmitHandler(this._host, this._customValidation));
-      this._elementHandler?.connect();
-    }
+    formElement.setAttribute('novalidate', '');
+    this._elementHandler?.disconnect();
+    this._elementHandler = new EventHandler(formElement, 'submit', formSubmitHandler());
+    this._elementHandler.connect();
 
     return this.render();
   }
@@ -62,3 +52,31 @@ class FormSubmitDirective extends AsyncDirective {
 }
 
 export const formSubmit = directive(FormSubmitDirective);
+
+class ControlledFormSubmitDirective extends FormSubmitDirective {
+  constructor (partInfo) {
+    super(partInfo);
+
+    /** @type {FormController} */
+    this._formController = null;
+  };
+
+  /**
+   * @param {ElementPart} part
+   * @param {[formController: FormController]} args
+   */
+  update (part, args) {
+    const formController = args[0];
+
+    if (this._formController !== formController) {
+      this._formController = formController;
+      this._formController.register(part.element);
+
+      super.update(part, []);
+    }
+
+    return this.render();
+  }
+}
+
+export const controlledFormSubmit = directive(ControlledFormSubmitDirective);
