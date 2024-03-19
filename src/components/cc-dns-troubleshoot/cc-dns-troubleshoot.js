@@ -1,4 +1,9 @@
 import { html, LitElement, css } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
+import {
+  iconRemixCheckLine as iconValid,
+  iconRemixErrorWarningLine as iconError,
+} from '../../assets/cc-remix.icons.js';
 import '../cc-block/cc-block.js';
 import '../cc-block-section/cc-block-section.js';
 
@@ -6,6 +11,11 @@ import '../cc-block-section/cc-block-section.js';
  * @typedef {import('./cc-dns-troubleshoot.types.js').DnsInfo} DnsInfo
  */
 
+/**
+ * toto
+ *
+ * @cssdisplay block
+ */
 export class CcDnsTroubleShoot extends LitElement {
 
   static get properties () {
@@ -48,20 +58,39 @@ export class CcDnsTroubleShoot extends LitElement {
       `;
     }
     else {
-      return html`The CNAME record is set configured properly`;
+      return html`The CNAME record is set properly`;
     }
   }
 
-  /**
-   * est ce qu'on a un cname ?
-   *   - Si oui, est-ce qu'il est ok?
-   *     - Si non => Diag
-   *   - Si non => A records
-   * est ce qu'on a des A Records ?
-   *   - Si non ?
-   */
+  _getARecordDiag () {
+    const missingARecords = this.expectedDnsInfo.aRecords.filter((expectedARecord) => {
+      const correspondingActualARecord = this.actualDnsInfo.aRecords.find((actualARecord) => expectedARecord === actualARecord);
+      return correspondingActualARecord == null;
+    });
+    const wrongARecords = this.actualDnsInfo.aRecords.filter((actualARecord) => {
+      const correspondingExpectedARecord = this.expectedDnsInfo.aRecords.find((expectedARecord) => actualARecord === expectedARecord);
+      return correspondingExpectedARecord == null;
+    });
+
+    if (missingARecords.length === 0 && wrongARecords.length === 0) {
+      return html`All <code>A Records</code> are set properly.`;
+    }
+    else {
+      return html`
+        ${missingARecords.length > 0 ? this._renderMissingARecordsDiag(missingARecords) : ''}
+        ${wrongARecords.length > 0 ? this._renderWrongARecordsDiag(wrongARecords) : ''}
+      `;
+    }
+  }
+
+  _getCorrespondingRecord (expectedARecord) {
+    return this.actualDnsInfo.aRecords.find((actualARecord) => actualARecord === expectedARecord);
+  }
+
   render () {
     const hasCname = this.actualDnsInfo.cname != null;
+    const isCnameIncorrect = this.expectedDnsInfo.cname !== this.actualDnsInfo.cname;
+
     return html`
       <cc-block>
         <div slot="title">DNS Configuration Troubleshooting</div>
@@ -69,55 +98,136 @@ export class CcDnsTroubleShoot extends LitElement {
           <div slot="title">Diagnostic Summary</div>
           <div>
             ${hasCname ? this._getCnameDiag() : ''}
+            ${!hasCname ? this._getARecordDiag() : ''}
           </div>
         </cc-block-section>
         <cc-block-section>
           <div slot="title">Diagnostic Details</div>
-          <div>
-            <p>Expected CNAME: ${this.expectedDnsInfo.cname}</p>
-            <p>Expected A RECORDS:</p>
-            <ul>
-              ${this.expectedDnsInfo.aRecords.map((aRecord) => html`
-              <li>${aRecord}</li>
-              `)}
-            </ul>
-          </div>
-          <div>
-            <p>Actual CNAME: ${this.actualDnsInfo.cname}</p>
-            <p>Actual A RECORDS:</p>
-            <ul>
-              ${this.actualDnsInfo.aRecords.map((aRecord) => html`
-              <li>${aRecord}</li>
-              `)}
-            </ul>
-          </div>
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Record Type</th>
+                <th scope="col">Expected Record values</th>
+                <th scope="col">Actual Record values</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${hasCname ? html`
+                <tr>
+                  <th>CNAME</th>
+                  <td>${this.expectedDnsInfo.cname}</td>
+                  <td class="${classMap({ error: isCnameIncorrect, valid: !isCnameIncorrect })}">
+                    ${this.actualDnsInfo.cname}
+                    <cc-icon .icon=${isCnameIncorrect ? iconError : iconValid}></cc-icon>
+                  </td>
+                </tr>
+              ` : ''}
+              ${this.expectedDnsInfo.aRecords.map((aRecord, index) => this._renderARecordRow(
+                aRecord,
+                index,
+                this._getCorrespondingRecord(aRecord) ?? this.actualDnsInfo.aRecords[index],
+              ))}
+            </tbody>
+          </table>
         </cc-block-section>
       </cc-block>
+    `;
+  }
+
+  _renderARecordRow (aRecord, index, actualARecord) {
+    const isARecordIncorrect = aRecord !== actualARecord;
+    return html`
+      <tr>
+        <th scope="row">A RECORD #${index + 1}</th>
+        <td>${aRecord}</td>
+        <td class="${classMap({ error: isARecordIncorrect, valid: !isARecordIncorrect })}">
+          ${actualARecord ?? 'no value'}
+          <cc-icon .icon=${isARecordIncorrect ? iconError : iconValid}></cc-icon>
+        </td>
+      </tr>
+    `;
+  }
+
+  _renderMissingARecordsDiag (missingARecords) {
+    return html`
+      <p>There are ${missingARecords.length} A Records missing.</p>
+      <p>Please add <code>A Records</code> for the following values:</p>
+      <ul>
+        ${missingARecords.map((missingARecord) => html`
+          <li>${missingARecord}</li>
+        `)}
+      </ul>
+    `;
+  }
+
+  _renderWrongARecordsDiag (wrongARecords) {
+    return html`
+      <p>There are ${wrongARecords.length} <code>A Records</code> that should be removed:</p>
+      <ul>
+        ${wrongARecords.map((wrongARecord) => html`
+        <li>${wrongARecord}</li>
+        `)}
+      </ul>
     `;
   }
 
   static get styles () {
     return [
       css`
-:host {
-  display: block;
-}
+        :host {
+          display: block;
+        }
 
-p {
-  margin: 0.5em;
-}
+        p {
+          margin: 0.5em;
+        }
 
-code {
-  display: inline-block;
-  padding: 0.25em;
-  border: 1px solid var(--cc-color-border-neutral-weak, #eee);
-  background-color: var(--cc-color-bg-neutral);
-  border-radius: var(--cc-border-radius-default, 0.25em);
-  font-family: var(--cc-ff-monospace);
-  font-size: 0.9em;
-  white-space: pre-wrap;
-  word-break: break-all;
-}
+        code {
+          display: inline-block;
+          padding: 0.25em;
+          border: 1px solid var(--cc-color-border-neutral-weak, #eee);
+          background-color: var(--cc-color-bg-neutral);
+          border-radius: var(--cc-border-radius-default, 0.25em);
+          font-family: var(--cc-ff-monospace);
+          font-size: 0.9em;
+          white-space: pre-wrap;
+          word-break: break-all;
+        }
+
+        table {
+          overflow: hidden;
+          border-collapse: collapse;
+          border-radius: 5px;
+        }
+
+        th,
+        td {
+          padding: 1em;
+          text-align: left;
+        }
+
+        th {
+          background-color: var(--cc-color-bg-neutral-alt, #eee);
+          color: var(--cc-color-text-strongest);
+        }
+
+        td {
+          background-color: var(--cc-color-bg-neutral);
+          color: var(--cc-color-text-normal);
+        }
+
+        tr:not(:last-child) td {
+          border-bottom: 1px solid var(--cc-color-border-neutral-weak, #eee);
+        }
+
+        .error {
+          color: var(--cc-color-text-danger);
+          font-weight: bold;
+        }
+
+        .valid {
+          color: var(--cc-color-text-success);
+        }
       `,
     ];
   }

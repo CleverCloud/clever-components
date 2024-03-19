@@ -98,6 +98,28 @@ export class CcDomainManagement extends LitElement {
     }
   }
 
+  _onPathInput ({ target, detail: value }) {
+    if (!value.startsWith('/')) {
+      target.value = '/' + value;
+    }
+  }
+
+  _onDomainPaste (event) {
+    console.log(event);
+    const paste = (event.clipboardData || window.clipboardData).getData('text');
+    console.log(paste);
+    const pasteValueAsURL = new URL('https://' + paste);
+    console.log(pasteValueAsURL);
+    const path = pasteValueAsURL.pathname;
+    if (path != null && path.length > 0) {
+      console.log(path);
+      console.log(event.target);
+      console.log(pasteValueAsURL.hostname);
+
+      event.target.value = pasteValueAsURL.hostname;
+    }
+  }
+
   /**
    * @param {CcDomainManagementPropertyValues} changedProperties
    */
@@ -136,7 +158,7 @@ export class CcDomainManagement extends LitElement {
           <div slot="title">Add a domain</div>
           <div>
             <form>
-              <cc-input-text class="add-domain" label="Domain" @cc-input-text:input=${this._onDomainInput}>
+              <cc-input-text class="add-domain" label="Domain" @paste=${this._onDomainPaste} @cc-input-text:input=${this._onDomainInput}>
                 ${this._domainSuggestions.length > 0 ? html`
                   <ul slot="help" class="suggestion-list">
                     <li>--- suggestions ---</li>
@@ -150,7 +172,7 @@ export class CcDomainManagement extends LitElement {
                   </ul>
                 ` : ''}
               </cc-input-text>
-              <cc-input-text label="Path"></cc-input-text>
+              <cc-input-text label="Path" @cc-input-text:input=${this._onPathInput}></cc-input-text>
               <cc-button>Add domain</cc-button>
             </form>
             <p>Amet deleniti ipsum incidunt similique pariatur Sunt temporibus dolores iure nulla corrupti Adipisci explicabo architecto nesciunt dolorum consequuntur assumenda. Nulla asperiores eius odio vitae dolorem Necessitatibus vitae praesentium alias minima</p>
@@ -170,39 +192,39 @@ export class CcDomainManagement extends LitElement {
             ${this._renderDomainList(this._paginatedDomains[this._currentPage])}
           ` : ''}
         </cc-block>
-
-        <cc-block>
-          <div slot="title">Configure your DNS</div>
-          <cc-block-section>
-            <div slot="title">CNAME</div>
-            <div slot="info">
-              <p>Dolor eligendi ipsum asperiores sit est? At vel impedit doloremque dolore eum? Quidem alias porro libero atque distinctio, quasi Nobis sunt atque sapiente animi molestias! Dolor maxime amet error enim.</p>
-            </div>
-            <div>
-              <cc-input-text readonly clipboard value="domain.par.clever-cloud.com."></cc-input-text>
-            </div>
-          </cc-block-section>
-          <cc-block-section>
-            <div slot="title">A RECORDS</div>
-            <div slot="info">
-              <p>Dolor eligendi ipsum asperiores sit est? At vel impedit doloremque dolore eum? Quidem alias porro libero atque distinctio, quasi Nobis sunt atque sapiente animi molestias! Dolor maxime amet error enim.</p>
-              <p>Dolor eligendi ipsum asperiores sit est? At vel impedit doloremque dolore eum? Quidem alias porro libero atque distinctio, quasi Nobis sunt atque sapiente animi molestias! Dolor maxime amet error enim.</p>
-            </div>
-            <div class="a-records">
-              <cc-input-text readonly clipboard value="46.252.181.103"></cc-input-text>
-              <cc-input-text readonly clipboard value="46.252.181.104"></cc-input-text>
-              <cc-input-text readonly clipboard value="46.252.181.104"></cc-input-text>
-              <cc-input-text readonly clipboard value="46.252.181.104"></cc-input-text>
-              <cc-input-text readonly clipboard value="46.252.181.104"></cc-input-text>
-              <cc-input-text readonly clipboard value="46.252.181.104"></cc-input-text>
-              <cc-input-text readonly clipboard value="46.252.181.104"></cc-input-text>
-              <cc-input-text readonly clipboard value="46.252.181.104"></cc-input-text>
-              <cc-input-text readonly clipboard value="46.252.181.104"></cc-input-text>
-              <cc-input-text readonly clipboard value="46.252.181.104"></cc-input-text>
-              <cc-input-text readonly clipboard value="46.252.181.104"></cc-input-text>
-            </div>
-          </cc-block-section>
-        </cc-block>
+        <!---->
+        <!-- <cc-block> -->
+        <!--   <div slot="title">Configure your DNS</div> -->
+        <!--   <cc-block-section> -->
+        <!--     <div slot="title">CNAME</div> -->
+        <!--     <div slot="info"> -->
+        <!--       <p>Dolor eligendi ipsum asperiores sit est? At vel impedit doloremque dolore eum? Quidem alias porro libero atque distinctio, quasi Nobis sunt atque sapiente animi molestias! Dolor maxime amet error enim.</p> -->
+        <!--     </div> -->
+        <!--     <div> -->
+        <!--       <cc-input-text readonly clipboard value="domain.par.clever-cloud.com."></cc-input-text> -->
+        <!--     </div> -->
+        <!--   </cc-block-section> -->
+        <!--   <cc-block-section> -->
+        <!--     <div slot="title">A RECORDS</div> -->
+        <!--     <div slot="info"> -->
+        <!--       <p>Dolor eligendi ipsum asperiores sit est? At vel impedit doloremque dolore eum? Quidem alias porro libero atque distinctio, quasi Nobis sunt atque sapiente animi molestias! Dolor maxime amet error enim.</p> -->
+        <!--       <p>Dolor eligendi ipsum asperiores sit est? At vel impedit doloremque dolore eum? Quidem alias porro libero atque distinctio, quasi Nobis sunt atque sapiente animi molestias! Dolor maxime amet error enim.</p> -->
+        <!--     </div> -->
+        <!--     <div class="a-records"> -->
+        <!--       <cc-input-text readonly clipboard value="46.252.181.103"></cc-input-text> -->
+        <!--       <cc-input-text readonly clipboard value="46.252.181.104"></cc-input-text> -->
+        <!--       <cc-input-text readonly clipboard value="46.252.181.104"></cc-input-text> -->
+        <!--       <cc-input-text readonly clipboard value="46.252.181.104"></cc-input-text> -->
+        <!--       <cc-input-text readonly clipboard value="46.252.181.104"></cc-input-text> -->
+        <!--       <cc-input-text readonly clipboard value="46.252.181.104"></cc-input-text> -->
+        <!--       <cc-input-text readonly clipboard value="46.252.181.104"></cc-input-text> -->
+        <!--       <cc-input-text readonly clipboard value="46.252.181.104"></cc-input-text> -->
+        <!--       <cc-input-text readonly clipboard value="46.252.181.104"></cc-input-text> -->
+        <!--       <cc-input-text readonly clipboard value="46.252.181.104"></cc-input-text> -->
+        <!--       <cc-input-text readonly clipboard value="46.252.181.104"></cc-input-text> -->
+        <!--     </div> -->
+        <!--   </cc-block-section> -->
+        <!-- </cc-block> -->
       </div>
     `;
   }
@@ -217,7 +239,7 @@ export class CcDomainManagement extends LitElement {
               ${domain.primary ? html`<cc-badge>primary</cc-badge>` : ''}
             </span>
             <a class="cc-link" href="https://${domain.name}" title="Open https://${domain.name}">
-              <span>Open</span>
+              <span>https://${domain.name}</span>
               <cc-icon .icon=${iconLink}></cc-icon>
               <span class="visually-hidden">https://${domain.name}</span>
             </a>
@@ -228,12 +250,6 @@ export class CcDomainManagement extends LitElement {
             >
               DNS config
             </cc-badge>
-            ${!domain.tlsKO ? html`
-              <span class="success">
-                <cc-icon .icon=${iconSecure}></cc-icon>
-                TLS/SSL
-              </span>
-            ` : html`<span></span>`}
             <cc-popover a11y-name="Options" position="bottom-right" class="buttons">
               <cc-icon slot="button-content" .icon=${iconOptions}></cc-icon>
               <div class="options">
@@ -351,10 +367,10 @@ export class CcDomainManagement extends LitElement {
           display: grid;
           align-content: center;
           align-items: center;
-          justify-content: space-between;
-          gap: 1em;
+          /** justify-content: space-between; */
+          gap: 1em 3em;
           grid-auto-flow: row;
-          grid-template-columns: max-content max-content max-content max-content auto;
+          grid-template-columns: 1fr max-content max-content auto;
         }
 
         .domain {
@@ -383,6 +399,7 @@ export class CcDomainManagement extends LitElement {
 
         nav ul {
           display: flex;
+          align-items: center;
           justify-content: center;
           gap: 0.5em;
           list-style: none;

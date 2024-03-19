@@ -21,7 +21,7 @@
     "components:check-i18n": "node tasks/check-i18n.js",
     "components:check-type-imports": "node tasks/check-type-imports.js",
     "components:check-lit": "lit-analyzer src",
-    "components:docs": "cem analyze --outdir dist",
+    "components:docs": "cem analyze --outdir distt",
     "components:generate-icons-assets": "node tasks/generate-icons-assets.js",
     "components:graph-usage": "node tasks/component-usage-cli.js",
     "test": "wtr",
