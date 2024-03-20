@@ -209,6 +209,20 @@ export const translations = {
   //#region cc-doc-list
   'cc-doc-list.error': `An error occurred while loading documentation`,
   //#endregion
+  //#region cc-domain-management
+  'cc-domain-management.form.domain.error.empty': `Please enter a domain.`,
+  'cc-domain-management.form.domain.label': `Domain name`,
+  'cc-domain-management.form.heading': `Add a domain name`,
+  'cc-domain-management.form.path.label': `Path`,
+  'cc-domain-management.form.submit': `Add a domain`,
+  'cc-domain-management.list.badge.primary': `Primary`,
+  'cc-domain-management.list.badge.testing-only': `Testing`,
+  'cc-domain-management.list.btn.delete': `Delete`,
+  'cc-domain-management.list.btn.primary': `Mark as primary domain`,
+  'cc-domain-management.list.heading': `Domains`,
+  'cc-domain-management.main-heading': `Manage domain names`,
+  'cc-domain-management.new-window': `New Window`,
+  //#endregion
   //#region cc-elasticsearch-info
   'cc-elasticsearch-info.error': `Something went wrong while loading add-ons linked to this application.`,
   'cc-elasticsearch-info.info': `Info`,
@@ -477,7 +491,7 @@ export const translations = {
   'cc-logs.select-button.label': ({ index }) => `Select the line ${index}`,
   'cc-logs.unselect-button.label': ({ index }) => `Unselect the line ${index}`,
   //#endregion
-  //#region cc-logs-controller
+  //#region cc-logs-control
   'cc-logs-control.date-display': `Date format`,
   'cc-logs-control.date-display.datetime-iso': `Date and hour ISO`,
   'cc-logs-control.date-display.datetime-short': `Date and hour`,

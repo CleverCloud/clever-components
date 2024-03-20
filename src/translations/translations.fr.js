@@ -222,6 +222,19 @@ export const translations = {
   //#region cc-doc-list
   'cc-doc-list.error': `Une erreur est survenue pendant le chargement de la documentation`,
   //#endregion
+  //#region cc-domain-management
+  'cc-domain-management.form.domain.error.empty': `Veuillez saisir un domaine.`,
+  'cc-domain-management.form.domain.label': `Nom de domaine`,
+  'cc-domain-management.form.heading': `Ajouter un nom de domaine`,
+  'cc-domain-management.form.submit': `Ajouter le domaine`,
+  'cc-domain-management.list.badge.primary': `Principal`,
+  'cc-domain-management.list.badge.testing-only': `Test`,
+  'cc-domain-management.list.btn.delete': `Supprimer`,
+  'cc-domain-management.list.btn.primary': `Définir comme domaine principal`,
+  'cc-domain-management.list.heading': `Domaines`,
+  'cc-domain-management.main-heading': `Gérer les noms de domaine`,
+  'cc-domain-management.new-window': `Nouvelle fenêtre`,
+  //#endregion
   //#region cc-elasticsearch-info
   'cc-elasticsearch-info.error': `Une erreur est survenue pendant le chargement des liens des add-on liés à cette application.`,
   'cc-elasticsearch-info.info': `Info`,
@@ -490,7 +503,7 @@ export const translations = {
   'cc-logs.select-button.label': ({ index }) => `Sélectionner la ligne ${index}`,
   'cc-logs.unselect-button.label': ({ index }) => `Désélectionner la ligne ${index}`,
   //#endregion
-  //#region cc-logs-controller
+  //#region cc-logs-control
   'cc-logs-control.date-display': `Format de date`,
   'cc-logs-control.date-display.datetime-iso': `Date et heure ISO`,
   'cc-logs-control.date-display.datetime-short': `Date et heure`,
