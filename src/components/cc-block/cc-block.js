@@ -135,7 +135,6 @@ export class CcBlock extends LitElement {
           ${ccLink(html`
               `)}
       </div>
-        
 
       <slot name="footer"></slot>
     `;
@@ -248,17 +247,7 @@ export class CcBlock extends LitElement {
           grid-area: 2 / 1 / auto / auto;
         }
 
-        .footer {
-            display: flex;
-            box-sizing: border-box;
-            justify-content: flex-end;
-            padding: 0.5em 1.1em;
-            background-color: var(--cc-color-bg-neutral);
-            box-shadow: inset 0 6px 6px -6px rgb(0 0 0 / 40%);
-            font-size: 0.9em;
-            font-style: italic;
-            gap: 0.57em;
-        }
+
 
         :host([ribbon]) .main-wrapper {
           padding-left: 2.5em;
