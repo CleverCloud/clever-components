@@ -30,6 +30,7 @@ import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
  * @slot button - A zone dedicated for a button/toggle in the to right corner.
  * @slot overlay - The content to display on top of the main content.
  * @slot title - The title of the block. Try to only use text. Use the `icon` property/attribute.
+ * @slot footer - test footer
  */
 export class CcBlock extends LitElement {
 
@@ -42,7 +43,7 @@ export class CcBlock extends LitElement {
       state: { type: String, reflect: true },
       _overlay: { type: Boolean, state: true },
       links: { type: String },
-      footer: { type: Object },
+      // footer: { type: Object },
     };
   }
 
@@ -71,7 +72,7 @@ export class CcBlock extends LitElement {
     this.links = null;
 
     /** @type {Footer|null} Add a footer with links at the bottom of the block. */
-    this.footer = null;
+    // this.footer = null;
   }
 
   _clickToggle () {
@@ -135,18 +136,8 @@ export class CcBlock extends LitElement {
               `)}
       </div>
         
-      ${this.footer != null ? html`
-          <div class="footer">
-              ${ccLink('#', 'Documentation', false)}
-              ${ccLink('#', 'CCAPI', false)}
-              ${ccLink('#', 'CLI', false)}
-          </div>
-      ` : ''}
-      <div class="footer">
-          ${ccLink('#', 'Documentation', false)}
-          ${ccLink('#', 'CCAPI', false)}
-          ${ccLink('#', 'CLI', false)}
-      </div>
+
+      <slot name="footer"></slot>
     `;
   }
 
@@ -284,6 +275,18 @@ export class CcBlock extends LitElement {
         ::slotted(.cc-block_empty-msg) {
           color: var(--cc-color-text-weak);
           font-style: italic;
+        }
+        
+        ::slotted([slot='footer']) {
+            display: flex;
+            box-sizing: border-box;
+            justify-content: flex-end;
+            padding: 0.5em 1.1em;
+            background-color: var(--cc-color-bg-neutral);
+            box-shadow: inset 0 6px 6px -6px rgb(0 0 0 / 40%);
+            font-size: 0.9em;
+            font-style: italic;
+            gap: 0.57em;
         }
       `,
     ];
