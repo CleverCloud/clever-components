@@ -9,10 +9,12 @@ import {
   iconRemixArrowUpSFill as iconUp,
 } from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../lib/i18n.js';
+import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 
 /**
  * @typedef {import('../common.types.js').IconModel} IconModel
  * @typedef {import('../common.types.js').ToggleStateType} ToggleStateType
+ * @typedef {import('../common.types.js').Footer} Footer
  */
 
 /**
@@ -39,6 +41,8 @@ export class CcBlock extends LitElement {
       ribbon: { type: String, reflect: true },
       state: { type: String, reflect: true },
       _overlay: { type: Boolean, state: true },
+      links: { type: String },
+      footer: { type: Object },
     };
   }
 
@@ -62,6 +66,12 @@ export class CcBlock extends LitElement {
 
     /** @type {boolean} */
     this._overlay = false;
+
+    /** @type {string|null} Sets links. */
+    this.links = null;
+
+    /** @type {Footer|null} Add a footer with links at the bottom of the block. */
+    this.footer = null;
   }
 
   _clickToggle () {
@@ -119,6 +129,24 @@ export class CcBlock extends LitElement {
       </cc-expand>
 
       <slot name="overlay"></slot>
+      
+      <div class="one-line-form">
+          ${ccLink(html`
+              `)}
+      </div>
+        
+      ${this.footer != null ? html`
+          <div class="footer">
+              ${ccLink('#', 'Documentation', false)}
+              ${ccLink('#', 'CCAPI', false)}
+              ${ccLink('#', 'CLI', false)}
+          </div>
+      ` : ''}
+      <div class="footer">
+          ${ccLink('#', 'Documentation', false)}
+          ${ccLink('#', 'CCAPI', false)}
+          ${ccLink('#', 'CLI', false)}
+      </div>
     `;
   }
 
@@ -134,6 +162,7 @@ export class CcBlock extends LitElement {
   static get styles () {
     return [
       // language=CSS
+      linkStyles,
       css`
         :host {
           position: relative;
@@ -174,7 +203,7 @@ export class CcBlock extends LitElement {
           align-self: flex-start;
           margin-right: 1em;
         }
-        
+
         .toggle_button {
           --cc-icon-size: 1.5em;
         }
@@ -226,6 +255,18 @@ export class CcBlock extends LitElement {
         .main-wrapper,
         ::slotted([slot='overlay']) {
           grid-area: 2 / 1 / auto / auto;
+        }
+
+        .footer {
+            display: flex;
+            box-sizing: border-box;
+            justify-content: flex-end;
+            padding: 0.5em 1.1em;
+            background-color: var(--cc-color-bg-neutral);
+            box-shadow: inset 0 6px 6px -6px rgb(0 0 0 / 40%);
+            font-size: 0.9em;
+            font-style: italic;
+            gap: 0.57em;
         }
 
         :host([ribbon]) .main-wrapper {

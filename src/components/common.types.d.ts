@@ -51,6 +51,10 @@ export interface Flavor {
   monthlyCost?: number|null;
 }
 
+interface Footer {
+  content: string[];
+}
+
 export interface IconModel {
   content: string;
 }
