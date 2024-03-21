@@ -6,18 +6,21 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 
+const SKELETON_DATA = {
+  apm: { user: '', password: '', authenticationToken: '' },
+  kibana: { domainName: '', user: '', password: '' },
+  pulsar: { url: '', authenticationToken: '' }
+};
+
 /**
  * @typedef {import('./cc-addon-credentials.types.js').Credential} Credential
  * @typedef {import('../common.types.js').ToggleStateType} ToggleStateType
  * @typedef {import('./cc-addon-credentials.types.js').AddonType} AddonType
+ * @typedef {import('./cc-addon-credentials.types.js').AddonCredentialsState} AddonCredentialsState
  */
 
 /**
  * A component to display an add-on credentials.
- *
- * ## Details
- *
- * * When the `value` of a credential is nullish, a skeleton UI pattern is displayed (loading hint).
  *
  * @cssdisplay block
  */
@@ -25,23 +28,19 @@ export class CcAddonCredentials extends LitElement {
 
   static get properties () {
     return {
-      credentials: { type: Array },
-      error: { type: Boolean },
+      addonType: { type: String },
       image: { type: String },
       name: { type: String },
+      state: { type: Object },
       toggleState: { type: Boolean, attribute: 'toggle-state' },
-      type: { type: String },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {Credential[]|null} Sets the list of add-on credentials. */
-    this.credentials = null;
-
-    /** @type {boolean} Displays an error message. */
-    this.error = false;
+    /** @type {AddonType|null} Sets the type of the add-on. */
+    this.addonType = null;
 
     /** @type {string|null} Sets the URL of the image to use. An icon image is expected. */
     this.image = null;
@@ -52,8 +51,9 @@ export class CcAddonCredentials extends LitElement {
     /** @type {ToggleStateType} Sets the toggle state of the inner block. */
     this.toggleState = 'off';
 
-    /** @type {AddonType}  Sets the type of the add-on. */
-    this.type = null;
+    /** @type {AddonCredentialsState} Sets the toggle state of the inner block. */
+    this.state = { type: 'loading' };
+
   }
 
   _getDescription (addonType) {
@@ -93,12 +93,20 @@ export class CcAddonCredentials extends LitElement {
       <cc-block image=${ifDefined(this.image ?? undefined)} state=${this.toggleState}>
         <div slot="title">${i18n('cc-addon-credentials.title', { name: this.name })}</div>
 
-        ${!this.error ? html`
-          <div>${this._getDescription(this.type)}</div>
+        ${this.state.type === 'error' ? html`
+            <cc-notice intent="warning" message="${i18n('cc-addon-credentials.loading-error')}"></cc-notice>
+        ` : ''}
 
-          ${this.credentials != null ? html`
+        ${this.state.type === 'loading' ? html `
+            <div>${this._getDescription(this.addonType)}</div>
+        `}
+          
+          
+        ${(this.state.type === 'loaded' || this.state.type === 'loading') ? html`
+          <div>${this._getDescription(this.addonType)}</div>
+          ${this.state.credentials != null ? html`
             <div class="credential-list">
-              ${this.credentials.map(({ type, secret, value }) => html`
+              ${this.state.credentials.map(({ type, secret, value }) => html`
                 <cc-input-text readonly clipboard
                   ?secret=${secret}
                   ?skeleton=${value == null}
@@ -110,9 +118,7 @@ export class CcAddonCredentials extends LitElement {
           ` : ''}
         ` : ''}
 
-        ${this.error ? html`
-          <cc-notice intent="warning" message="${i18n('cc-addon-credentials.loading-error')}"></cc-notice>
-        ` : ''}
+        
       </cc-block>
     `;
   }

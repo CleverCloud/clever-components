@@ -39,10 +39,11 @@ export const skeleton = makeStory(conf, {
 
 export const error = makeStory(conf, {
   items: [{
-    type: 'elasticsearch',
     name: 'Elasticsearch',
     image: 'https://assets.clever-cloud.com/logos/elastic.svg',
-    error: true,
+    state: {
+      type: 'error',
+    },
   }],
 });
 
