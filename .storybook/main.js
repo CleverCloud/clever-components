@@ -42,24 +42,40 @@ const config = {
   },
   // index markdown stories so they can be part of the generated menu and lazy loaded
   experimental_indexers: async (existingIndexers) => {
-    return [markdownIndexer, ...existingIndexers]
+    return [markdownIndexer, ...existingIndexers ?? []]
   },
-  viteFinal (config, { configType }) {
-    // transform markdown files to CSF so they can be loaded by storybook
-    config.plugins?.unshift(rollupMdToCsfPlugin());
+  async viteFinal (config, { configType }) {
+    // This dynamic import is the recommended Storybook way to
+    // import `vite`. With a static import you get a warning about CJS.
+    // see: https://storybook.js.org/docs/builders/vite#configuration
+    const { mergeConfig } = await import('vite');
+    /** @type {import('vite').InlineConfig} **/
+    let customConfig = {};
+
+    const commonPlugins = [rollupMdToCsfPlugin()];
+
+    const devModePlugins = [
+      // generate CEM on demand and serve it
+      generateCem(),
+      // add apiConfig to the smart container roots within markdown smart stories
+      injectAuthForSmartComponentsPlugin,
+    ];
 
     if (configType === 'DEVELOPMENT') {
-      // serve and process all files instead of storybook related files only
-      config.appType = 'mpa';
-
-      // generate CEM on demand and serve it
-      config.plugins?.push(generateCem());
-
-      // add apiConfig to the smart container roots within markdown smart stories
-      config.plugins?.push(injectAuthForSmartComponentsPlugin);
+      customConfig = {
+        // serve and process all files instead of storybook related files only
+        appType: 'mpa',
+        plugins: [...commonPlugins, ...devModePlugins],
+      }
     }
 
-    return config;
+    if (configType === 'PRODUCTION') {
+      customConfig = {
+        plugins: commonPlugins,
+      }
+    }
+
+    return mergeConfig(config, customConfig);
   }
 };
 
