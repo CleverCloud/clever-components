@@ -9,6 +9,11 @@ import { i18n } from '../../lib/i18n.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import '../cc-smart-container/cc-smart-container.js';
+import './cc-email-list.js';
+
+/**
+ * @typedef {import('./cc-email-list.js').CcEmailList} CcEmailList
+ */
 
 defineSmartComponent({
   selector: 'cc-email-list',
@@ -17,17 +22,16 @@ defineSmartComponent({
   },
   /**
    *
-   * @param {CcEmailList} component
-   * @param context
-   * @param onEvent
-   * @param updateComponent
-   * @param signal
+   * @param {Object} settings
+   * @param {CcEmailList} settings.component
+   * @param {{apiConfig: Object}} settings.context
+   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
+   * @param {function} settings.updateComponent
+   * @param {AbortSignal} settings.signal
    */
   onContextUpdate ({ component, context, onEvent, updateComponent, signal }) {
-    const addEmailForm = component.getAddEmailForm();
 
     updateComponent('emails', { state: 'loading' });
-    addEmailForm.reset();
 
     const api = getApi(context.apiConfig, signal);
 
@@ -93,6 +97,7 @@ defineSmartComponent({
     });
 
     onEvent('cc-email-list:add', async (address) => {
+      const addEmailForm = component.getAddEmailForm();
 
       await addEmailForm.setState('adding');
 
@@ -109,23 +114,19 @@ defineSmartComponent({
           });
 
           addEmailForm.reset();
+          addEmailForm.setState(null);
         })
         .catch((error) => {
           const transaction = addEmailForm.beginTransaction();
 
-          let inputError;
           if (error.id === 550) {
-            inputError = 'invalid';
+            transaction.addError('address', 'invalid');
           }
           else if (error.id === 101) {
-            inputError = 'already-defined';
+            transaction.addError('address', 'already-defined');
           }
           else if (error.id === 1004) {
-            inputError = 'used';
-          }
-
-          if (inputError != null) {
-            transaction.addError('address', inputError);
+            transaction.addError('address', 'used');
           }
           else {
             console.error(error);

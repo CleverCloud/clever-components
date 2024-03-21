@@ -10,10 +10,15 @@ export interface InvalidValidation {
 }
 
 export interface Validator {
-  validate: (value: any, formData: Object) => Validation;
-  getErrorMessage?: (code: string) => ErrorMessage;
+  validate(value: any, formData?: Object): Validation;
+  getErrorMessage?(code: string): ErrorMessage;
 }
 
 export type ErrorMessage = null | string | Node;
 
 export type ErrorMessageMap = {[code: string]: ErrorMessage | (() => ErrorMessage)};
+
+export interface ValidatorsCombiner {
+  add(validator: Validator): ValidatorsCombiner;
+  combine(): Validator;
+}

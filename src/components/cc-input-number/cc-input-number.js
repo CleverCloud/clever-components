@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit';
+import { css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import {
@@ -8,10 +8,16 @@ import {
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { NumberValidator, RequiredValidator, validatorsBuilder } from '../../lib/validation/validation.js';
-import { WithElementInternals } from '../../mixins/with-element-internals.js';
+import { AbstractInputElement } from '../../mixins/abstract-input-element.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-icon/cc-icon.js';
+
+/**
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLInputElement>} HTMLInputElementRef
+ * @typedef {import('../../lib/validation/validation.types.js').Validator} Validator
+ * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement>} HTMLInputElementEvent
+ */
 
 /**
  * A custom number input with controls mode.
@@ -37,10 +43,11 @@ import '../cc-icon/cc-icon.js';
  * @slot error - The error message to be displayed below the `<input>` element or below the help text. Please use a `<p>` tag.
  * @slot help - The help message to be displayed right below the `<input>` element. Please use a `<p>` tag.
  */
-export class CcInputNumber extends WithElementInternals(LitElement) {
+export class CcInputNumber extends AbstractInputElement {
 
   static get properties () {
     return {
+      ...super.properties,
       controls: { type: Boolean },
       disabled: { type: Boolean, reflect: true },
       inline: { type: Boolean, reflect: true },
@@ -104,7 +111,7 @@ export class CcInputNumber extends WithElementInternals(LitElement) {
     /** @type {number|null} Sets `value` to set when input is reset. */
     this.resetValue = null;
 
-    /** @type {Ref<HTMLInputElement>} */
+    /** @type {HTMLInputElementRef} */
     this._inputRef = createRef();
   }
 
@@ -121,7 +128,20 @@ export class CcInputNumber extends WithElementInternals(LitElement) {
       resetValuePropertyName: 'resetValue',
       inputSelector: '#input-id',
       errorSelector: '#error-id',
-      validationSettingsProvider: () => this._getValidationSettings(),
+      validationSettingsProvider: () => (
+        {
+          errorMessages: {
+            empty: () => i18n('cc-input-number.error.empty'),
+            badType: () => i18n('cc-input-number.error.bad-type'),
+            rangeUnderflow: () => i18n('cc-input-number.error.range-underflow', { min: this.min }),
+            rangeOverflow: () => i18n('cc-input-number.error.range-overflow', { max: this.max }),
+          },
+          validator: validatorsBuilder()
+            .add(this.required ? new RequiredValidator() : null)
+            .add(this._getValidator())
+            .combine(),
+        }
+      ),
       reactiveValidationProperties: ['required', 'options'],
       inputDataProvider: () => this._inputRef.value.value,
     };
@@ -138,37 +158,28 @@ export class CcInputNumber extends WithElementInternals(LitElement) {
     return new NumberValidator({ min: this.min, max: this.max });
   }
 
-  _getValidationSettings () {
-    return {
-      errorMessages: {
-        get empty () {
-          return i18n('cc-input-number.error.empty');
-        },
-        get badType () {
-          return i18n('cc-input-number.error.bad-type');
-        },
-        rangeUnderflow: () => i18n('cc-input-number.error.range-underflow', { min: this.min }),
-        rangeOverflow: () => i18n('cc-input-number.error.range-overflow', { max: this.max }),
-      },
-      validator: validatorsBuilder()
-        .add(this.required ? new RequiredValidator() : null)
-        .add(this._getValidator())
-        .combine(),
-    };
-  }
-
+  /**
+   * @param {HTMLInputElementEvent} e
+   */
   _onInput (e) {
     this.value = e.target.valueAsNumber;
     dispatchCustomEvent(this, 'input', this.value);
   }
 
+  /**
+   * @param {HTMLInputElementEvent} e
+   */
   _onFocus (e) {
     if (this.readonly) {
       e.target.select();
     }
   }
 
-  // Stop propagation of keydown and keypress events (to prevent conflicts with shortcuts)
+  /**
+   * Stop propagation of keydown and keypress events (to prevent conflicts with shortcuts)
+   *
+   * @param {HTMLInputElementEvent & { keyCode: number}} e
+   */
   _onKeyEvent (e) {
     if (e.type === 'keydown' || e.type === 'keypress') {
       e.stopPropagation();

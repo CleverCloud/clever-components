@@ -1,4 +1,4 @@
-import { ErrorMessage, Validator } from "../lib/validation/validation.types";
+import { ErrorMessageMap, Validator } from "../lib/validation/validation.types";
 import { InputData } from "../lib/form/form.types";
 
 export interface WithElementInternalsSettings {
@@ -12,7 +12,7 @@ export interface WithElementInternalsSettings {
 }
 
 export interface ValidationSettings {
-  errorMessages: {[code: string]: ErrorMessage};
+  errorMessages: ErrorMessageMap;
   validator: Validator;
 }
 

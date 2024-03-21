@@ -1,11 +1,11 @@
-import { css, html, LitElement } from 'lit';
+import { css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { RequiredValidator, validatorsBuilder } from '../../lib/validation/validation.js';
-import { WithElementInternals } from '../../mixins/with-element-internals.js';
+import { AbstractInputElement } from '../../mixins/abstract-input-element.js';
 
 const DEFAULT_ERROR_MESSAGES = {
   get empty () {
@@ -15,6 +15,9 @@ const DEFAULT_ERROR_MESSAGES = {
 
 /**
  * @typedef {import('./cc-select.types.js').Option} Option
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLSelectElement>} HTMLSelectElementRef
+ * @typedef {import('lit').PropertyValues<CcSelect>} CcSelectPropertyValues
+ * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLSelectElement>} HTMLSelectElementEvent
  */
 
 /**
@@ -36,9 +39,10 @@ const DEFAULT_ERROR_MESSAGES = {
  * @slot error - The error message to be displayed below the `<select>` element or below the help text. Please use a `<p>` tag.
  * @slot help - The help message to be displayed right below the `<select>` element. Please use a `<p>` tag.
  */
-export class CcSelect extends WithElementInternals(LitElement) {
+export class CcSelect extends AbstractInputElement {
   static get properties () {
     return {
+      ...super.properties,
       disabled: { type: Boolean, reflect: true },
       inline: { type: Boolean, reflect: true },
       /** @required */
@@ -84,11 +88,29 @@ export class CcSelect extends WithElementInternals(LitElement) {
     /** @type {string} Sets the reset value */
     this.resetValue = '';
 
-    /** @type {Ref<HTMLSelectElement>} */
+    /** @type {HTMLSelectElementRef} */
     this._selectRef = createRef();
 
     /** @type {string|null} Sets the selected value of the element. This prop should always be set. It should always match one of the option values. */
     this.value = null;
+  }
+
+  getElementInternalsSettings () {
+    return {
+      valuePropertyName: 'value',
+      resetValuePropertyName: 'resetValue',
+      inputSelector: '#input-id',
+      errorSelector: '#error-id',
+      validationSettingsProvider: () => (
+        {
+          errorMessages: DEFAULT_ERROR_MESSAGES,
+          validator: validatorsBuilder()
+            .add(this.required ? new RequiredValidator() : null)
+            .combine(),
+        }
+      ),
+      reactiveValidationProperties: ['required', 'options'],
+    };
   }
 
   /**
@@ -98,31 +120,17 @@ export class CcSelect extends WithElementInternals(LitElement) {
     this.updateComplete.then(() => this._selectRef?.value?.focus());
   }
 
+  /**
+   * @param {HTMLSelectElementEvent} e
+   */
   _onSelectInput (e) {
     this.value = e.target.value;
     dispatchCustomEvent(this, 'input', this.value);
   }
 
-  getElementInternalsSettings () {
-    return {
-      valuePropertyName: 'value',
-      resetValuePropertyName: 'resetValue',
-      inputSelector: '#input-id',
-      errorSelector: '#error-id',
-      validationSettingsProvider: () => this._getValidationSettings(),
-      reactiveValidationProperties: ['required', 'options'],
-    };
-  }
-
-  _getValidationSettings () {
-    return {
-      errorMessages: DEFAULT_ERROR_MESSAGES,
-      validator: validatorsBuilder()
-        .add(this.required ? new RequiredValidator() : null)
-        .combine(),
-    };
-  }
-
+  /**
+   * @param {CcSelectPropertyValues} changedProperties
+   */
   updated (changedProperties) {
     /*
      * The `<select>` value must match the value of an `<option>` element.

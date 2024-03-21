@@ -230,3 +230,23 @@ export function sleep (delay) {
     setTimeout(resolve, delay);
   });
 }
+
+/**
+ *
+ * @param {() => T} fn The function to call when the timer elapses.
+ * @param {number} [delay=1] The number of milliseconds to wait before calling the `fn`.
+ * @return {Promise<T>}
+ * @template T
+ */
+export function setTimeoutAsPromise (fn, delay) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      try {
+        resolve(fn());
+      }
+      catch (e) {
+        reject(e);
+      }
+    }, delay);
+  });
+}

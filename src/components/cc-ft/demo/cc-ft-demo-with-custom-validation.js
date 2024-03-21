@@ -48,9 +48,9 @@ export class CcFtDemoWithCustomValidation extends LitElement {
   }
 
   _onInvalid ({ detail }) {
-    const invalidSurname = detail.find((d) => d.name === 'surname' && d.validationResult.valid === false);
+    const invalidSurname = detail.find((d) => d.name === 'surname' && d.validation.valid === false);
     this._surnameError = invalidSurname != null
-      ? invalidSurname.validationResult.code
+      ? invalidSurname.validation.code
       : null;
   }
 

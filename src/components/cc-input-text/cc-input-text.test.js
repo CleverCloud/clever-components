@@ -80,8 +80,8 @@ async function assertValidateMethodReturnsValid (element) {
   {
     const errorMessageBefore = await getErrorMessageInnerText(element);
 
-    const validationResult = element.validate(false);
-    expect(validationResult.valid).to.eql(true);
+    const validation = element.validate(false);
+    expect(validation.valid).to.eql(true);
 
     // asserts the displayed error message didn't change
     const errorMessageAfter = await getErrorMessageInnerText(element);
@@ -90,9 +90,9 @@ async function assertValidateMethodReturnsValid (element) {
 
   // call validate method with report
   {
-    const validationResult = element.validate(true);
+    const validation = element.validate(true);
     await elementUpdated(element);
-    expect(validationResult.valid).to.eql(true);
+    expect(validation.valid).to.eql(true);
 
     await assertNoErrorMessageDisplayed(element);
   }
@@ -103,9 +103,9 @@ async function assertValidateMethodReturnsInvalid (element, code, errorMessageAs
   {
     const errorMessageBefore = await getErrorMessageInnerText(element);
 
-    const validationResult = element.validate(false);
-    expect(validationResult.valid).to.eql(false);
-    expect(validationResult.code).to.eql(code);
+    const validation = element.validate(false);
+    expect(validation.valid).to.eql(false);
+    expect(validation.code).to.eql(code);
 
     // asserts the displayed error message didn't change
     const errorMessageAfter = await getErrorMessageInnerText(element);
@@ -114,9 +114,9 @@ async function assertValidateMethodReturnsInvalid (element, code, errorMessageAs
 
   // call validate method with report
   {
-    const validationResult = element.validate(true);
-    expect(validationResult.valid).to.eql(false);
-    expect(validationResult.code).to.eql(code);
+    const validation = element.validate(true);
+    expect(validation.valid).to.eql(false);
+    expect(validation.code).to.eql(code);
     await assertErrorMessageInnerText(element, errorMessageAsText);
   }
 }

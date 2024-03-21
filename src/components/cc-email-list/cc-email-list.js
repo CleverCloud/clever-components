@@ -14,8 +14,6 @@ import { LostFocusController } from '../../controllers/lost-focus-controller.js'
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { FormController } from '../../lib/form/form-controller.js';
-import { formSubmit } from '../../lib/form/form-submit-directive.js';
-import { formHelper } from '../../lib/form/form.js';
 import { i18n } from '../../lib/i18n.js';
 import { sortBy } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
@@ -40,6 +38,8 @@ const SKELETON_SECONDARY_EMAILS = [];
 /**
  * @typedef {import('./cc-email-list.types.js').EmailListState} EmailListState
  * @typedef {import('./cc-email-list.types.js').AddEmailFormState} AddEmailFormState
+ * @typedef {import('../../lib/form/form-controller.js').FormController<'address', 'invalid'|'already-defined'|'used', null|'adding'>} AddEmailFormController
+ * @typedef {import('../../lib/form/form-helper.js').FormHelper<'address', 'invalid'|'already-defined'|'used', null|'adding'>} AddEmailFormHelper
  */
 
 /**
@@ -101,6 +101,7 @@ export class CcEmailList extends LitElement {
       }
     });
 
+    /** @type {AddEmailFormController} */
     this._addEmailFormCtrl = new FormController(this, {
       onSubmit: this._onAddFormSubmit.bind(this),
       errorsMap: {
@@ -112,7 +113,7 @@ export class CcEmailList extends LitElement {
   }
 
   /**
-   * @return {IFormHelper<'address', 'invalid'|'already-defined'|'used', null|'adding'>}
+   * @return {AddEmailFormHelper}
    */
   getAddEmailForm () {
     return this._addEmailFormCtrl.formHelper;
@@ -260,9 +261,10 @@ export class CcEmailList extends LitElement {
 
   _renderAddEmailForm () {
     const isAdding = this._addEmailFormCtrl.formHelper?.state === 'adding';
+    console.log('isAdding', isAdding);
 
     return html`
-      <form name="add-email-form" ${this._addEmailFormCtrl.handleSubmit()} @form:submit=${this._onAddFormSubmit}>
+      <form name="add-email-form" ${this._addEmailFormCtrl.handleSubmit()}>
         <cc-input-text
           label="${i18n('cc-email-list.secondary.address-input.label')}"
           name="address"

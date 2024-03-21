@@ -4,35 +4,43 @@ import { EventHandler } from '../events.js';
 import { formSubmitHandler } from './form-submit-handler.js';
 
 /**
+ * @typedef {import('lit/async-directive.js').PartInfo} PartInfo
+ * @typedef {import('lit/async-directive.js').ElementPartInfo} ElementPartInfo
+ * @typedef {import('lit/async-directive.js').Part} Part
  * @typedef {import('lit/async-directive.js').ElementPart} ElementPart
+ * @typedef {import('lit/async-directive.js').DirectiveResult} DirectiveResult
+ * @typedef {import('./form.types.js').HTMLFormElementEvent} HTMLFormElementEvent
  */
 
 /**
  * Lit directive helping in handling form
  */
 class FormSubmitDirective extends AsyncDirective {
+  /**
+   * @param {PartInfo} partInfo
+   */
   constructor (partInfo) {
     super(partInfo);
 
-    if (partInfo.type !== PartType.ELEMENT || partInfo.element.tagName !== 'FORM') {
-      throw new Error('This directive must be used on a `<form>` element');
-    }
-
-    /** @type {EventHandler} */
+    /** @type {EventHandler<HTMLFormElementEvent>} */
     this._elementHandler = null;
   }
 
-  render (...props) {
+  /**
+   *
+   * @param {Array<unknown>} _props
+   * @return {unknown}
+   */
+  render (..._props) {
     return nothing;
   }
 
   /**
-   * @param {ElementPart} part
-   * @param {[formController]} args
+   * @param {Part} part
+   * @param {Array<unknown>} _args
    */
-  update (part, args) {
-    /** @type {HTMLFormElement} */
-    const formElement = part.element;
+  update (part, _args) {
+    const formElement = this.getFormElement(part);
 
     formElement.setAttribute('novalidate', '');
     this._elementHandler?.disconnect();
@@ -49,30 +57,66 @@ class FormSubmitDirective extends AsyncDirective {
   reconnected () {
     this._elementHandler?.connect();
   }
+
+  /**
+   * @param {Part} part
+   * @return {HTMLFormElement}
+   */
+  getFormElement (part) {
+    if (!isElementPart(part) || !isFormElement(part.element)) {
+      throw new Error('This directive must be used on an <form> element');
+    }
+
+    return part.element;
+  }
+
+  /**
+   * @param {HTMLFormElement} formElement
+   */
+  install (formElement) {
+    formElement.setAttribute('novalidate', '');
+    this._elementHandler?.disconnect();
+    this._elementHandler = new EventHandler(formElement, 'submit', formSubmitHandler());
+    this._elementHandler.connect();
+  }
 }
 
 export const formSubmit = directive(FormSubmitDirective);
 
+/**
+ * @template {string} I
+ * @template {string} E
+ * @template {any} S
+ */
 class ControlledFormSubmitDirective extends FormSubmitDirective {
+  /**
+   * @typedef {import('./form-controller.js').FormController<I, E, S>} SpecificFormController
+   */
+
+  /**
+   * @param {PartInfo} partInfo
+   */
   constructor (partInfo) {
     super(partInfo);
 
-    /** @type {FormController} */
+    /** @type {SpecificFormController} */
     this._formController = null;
   };
 
   /**
-   * @param {ElementPart} part
-   * @param {[formController: FormController]} args
+   * @param {Part} part
+   * @param {[formController: SpecificFormController]} args
    */
   update (part, args) {
+    const formElement = this.getFormElement(part);
+
     const formController = args[0];
 
     if (this._formController !== formController) {
       this._formController = formController;
-      this._formController.register(part.element);
+      this._formController.register(formElement);
 
-      super.update(part, []);
+      this.install(formElement);
     }
 
     return this.render();
@@ -80,3 +124,21 @@ class ControlledFormSubmitDirective extends FormSubmitDirective {
 }
 
 export const controlledFormSubmit = directive(ControlledFormSubmitDirective);
+
+/**
+ *
+ * @param {Element} element
+ * @return {element is HTMLFormElement}
+ */
+function isFormElement (element) {
+  return (element.nodeName === 'FORM');
+}
+
+/**
+ *
+ * @param {Part} part
+ * @return {part is ElementPart}
+ */
+function isElementPart (part) {
+  return (part.type === PartType.ELEMENT);
+}

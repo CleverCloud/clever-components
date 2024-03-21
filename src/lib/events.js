@@ -36,12 +36,13 @@ function getEventName (node, eventNameOrSuffix) {
 
 /**
  * This is a utility handler that will help adding and removing an event listener from a DOM Element.
+ * @template {Event} E
  */
 export class EventHandler {
   /**
    * @param {Window | Document | HTMLElement} element The element to which the event listener should be attached to.
    * @param {string} event The name of the event to listen to.
-   * @param {(event: Event) => void} handler The function to execute when event occurs.
+   * @param {(event: E) => void} handler The function to execute when event occurs.
    */
   constructor (element, event, handler) {
     this._element = element;
@@ -54,7 +55,7 @@ export class EventHandler {
    * Adds the event listener
    */
   connect () {
-    if (!this._connected) {
+    if (!this._connected && castHandler(this._handler)) {
       this._element.addEventListener(this._event, this._handler);
       this._connected = true;
     }
@@ -64,9 +65,17 @@ export class EventHandler {
    * Removes the event listener
    */
   disconnect () {
-    if (this._connected) {
+    if (this._connected && castHandler(this._handler)) {
       this._element.removeEventListener(this._event, this._handler);
       this._connected = false;
     }
   }
+}
+
+/**
+ * @param {any} _handler
+ * @return {_handler is (e: Event) => void}
+ */
+function castHandler (_handler) {
+  return true;
 }

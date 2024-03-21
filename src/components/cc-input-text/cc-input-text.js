@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit';
+import { css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -12,7 +12,7 @@ import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { arrayEquals } from '../../lib/utils.js';
 import { EmailValidator, RequiredValidator, validatorsBuilder } from '../../lib/validation/validation.js';
-import { WithElementInternals } from '../../mixins/with-element-internals.js';
+import { AbstractInputElement } from '../../mixins/abstract-input-element.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-icon/cc-icon.js';
@@ -27,6 +27,13 @@ const DEFAULT_ERROR_MESSAGES = {
     return i18n('cc-input-text.error.bad-email');
   },
 };
+
+/**
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLInputElement|HTMLTextAreaElement>} HTMLInputOrTextareaElementRef
+ * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement|HTMLTextAreaElement>} HTMLInputOrTextareaEvent
+ * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<KeyboardEvent,HTMLInputElement|HTMLTextAreaElement>} HTMLInputOrTextareaKeyboardEvent
+ * @typedef {import('../../lib/validation/validation.types.js').Validator} Validator
+ */
 
 /**
  * An enhanced text input with support for multiline, copy-to-clipboard, show/hide secret and highlighted tags.
@@ -54,10 +61,11 @@ const DEFAULT_ERROR_MESSAGES = {
  * @slot error - The error message to be displayed below the `<input>` element or below the help text. Please use a `<p>` tag.
  * @slot help - The help message to be displayed right below the `<input>` element. Please use a `<p>` tag.
  */
-export class CcInputText extends WithElementInternals(LitElement) {
+export class CcInputText extends AbstractInputElement {
 
   static get properties () {
     return {
+      ...super.properties,
       clipboard: { type: Boolean, reflect: true },
       disabled: { type: Boolean, reflect: true },
       label: { type: String },
@@ -136,7 +144,7 @@ export class CcInputText extends WithElementInternals(LitElement) {
     /** @type {boolean} */
     this._copyOk = false;
 
-    /** @type {Ref<HTMLInputElement|HTMLTextAreaElement>} */
+    /** @type {HTMLInputOrTextareaElementRef} */
     this._inputRef = createRef();
 
     /** @type {boolean} */
@@ -144,6 +152,26 @@ export class CcInputText extends WithElementInternals(LitElement) {
 
     /** @type {boolean} */
     this._tagsEnabled = false;
+  }
+
+  getElementInternalsSettings () {
+    return {
+      valuePropertyName: 'value',
+      resetValuePropertyName: 'resetValue',
+      inputSelector: '#input-id',
+      errorSelector: '#error-id',
+      validationSettingsProvider: () => (
+        {
+          errorMessages: DEFAULT_ERROR_MESSAGES,
+          validator: validatorsBuilder()
+            .add(this.required ? new RequiredValidator() : null)
+            .add(this._getValidator())
+            .combine(),
+        }
+      ),
+      reactiveValidationProperties: ['required', 'type'],
+      inputDataProvider: () => this._getFormData(),
+    };
   }
 
   // In general, we try to use LitElement's update() lifecycle callback but in this situation,
@@ -176,6 +204,9 @@ export class CcInputText extends WithElementInternals(LitElement) {
     this.updateComplete.then(() => this._inputRef?.value?.focus());
   }
 
+  /**
+   * @param {HTMLInputOrTextareaEvent} e
+   */
   _onInput (e) {
     // If tags mode is enabled, we want to prevent/remove line breaks
     // and preserve caret position in case of a line break entry (keypress, DnD, copy/paste...)
@@ -197,6 +228,9 @@ export class CcInputText extends WithElementInternals(LitElement) {
     }
   }
 
+  /**
+   * @param {HTMLInputOrTextareaEvent} e
+   */
   _onFocus (e) {
     if (this.readonly) {
       e.target.select();
@@ -214,7 +248,11 @@ export class CcInputText extends WithElementInternals(LitElement) {
     this._showSecret = !this._showSecret;
   }
 
-  // Stop propagation of keydown and keypress events (to prevent conflicts with shortcuts)
+  /**
+   * Stop propagation of keydown and keypress events (to prevent conflicts with shortcuts)
+   *
+   * @param {HTMLInputOrTextareaKeyboardEvent} e
+   */
   _onKeyEvent (e) {
     if (e.type === 'keydown' || e.type === 'keypress') {
       e.stopPropagation();
@@ -249,32 +287,6 @@ export class CcInputText extends WithElementInternals(LitElement) {
     }
 
     return null;
-  }
-
-  getElementInternalsSettings () {
-    return {
-      valuePropertyName: 'value',
-      resetValuePropertyName: 'resetValue',
-      inputSelector: '#input-id',
-      errorSelector: '#error-id',
-      validationSettingsProvider: () => this._getValidationSettings(),
-      reactiveValidationProperties: ['required', 'type'],
-      inputDataProvider: () => this._getFormData(),
-    };
-  }
-
-  /**
-   *
-   * @return {ValidationSettings}
-   */
-  _getValidationSettings () {
-    return {
-      errorMessages: DEFAULT_ERROR_MESSAGES,
-      validator: validatorsBuilder()
-        .add(this.required ? new RequiredValidator() : null)
-        .add(this._getValidator())
-        .combine(),
-    };
   }
 
   /**

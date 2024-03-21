@@ -3,6 +3,12 @@ import { isStringEmpty } from '../utils.js';
 import { invalid, VALID } from '../validation/validation.js';
 import { focusInputAfterError, isCcInputElement, isNativeInputElement, getFormData } from './form-utils.js';
 
+/**
+ * @typedef {import('../../mixins/abstract-input-element.js').AbstractInputElement} AbstractInputElement
+ * @typedef {import('../validation/validation.types.js').Validation} Validation
+ * @typedef {import('./form.types.js').HTMLFormElementEvent} HTMLFormElementEvent
+ */
+
 /*
 Notes:
 
@@ -27,60 +33,83 @@ what about the result of the validation?
 */
 
 /**
- * @return {(function(*): void)|*}
+ * @return {((e: HTMLFormElementEvent) => void)}
  */
 export function formSubmitHandler () {
+  /**
+   * @param {Event & {target: HTMLFormElement}} event
+   */
   return (event) => {
 
+    // we don't want the native form submit
     event.preventDefault();
 
     const formElement = event.target;
 
-    const data = getFormData(formElement);
-    console.log(data);
+    // we find the elements that should be validated
+    const formValidation = getFormElementsToValidate(formElement)
+      .map((e) => ({
+        name: e.name,
+        validation: e.validate(),
+      }));
 
-    const formValidationResult = Array.from(formElement.elements)
-      .filter((element) => shouldValidate(element))
-      .map((element) => {
-        const name = element.name;
-
-        // for cc-input elements we use the validate() method with report
-        if (isCcInputElement(element)) {
-          return {
-            name,
-            validationResult: element.validate(true),
-          };
-        }
-
-        // for native element validation, we don't like the reportValidity native behavior
-        const isElementValid = element.checkValidity();
-
-        return {
-          name,
-          validationResult: isElementValid ? VALID : invalid(element.validationMessage),
-        };
-      });
-
-    const isFormValid = formValidationResult.every((result) => result.validationResult.valid);
+    // now we perform validation on all elements
+    const isFormValid = formValidation.every((result) => result.validation.valid);
 
     if (isFormValid) {
-      dispatchCustomEvent(formElement, 'submit', { form: formElement.getAttribute('name'), data });
+      const data = getFormData(formElement);
+
+      dispatchCustomEvent(formElement, 'submit', data);
       dispatchCustomEvent(formElement, 'valid');
     }
     else {
-      dispatchCustomEvent(formElement, 'invalid', formValidationResult);
+      dispatchCustomEvent(formElement, 'invalid', formValidation);
       focusInputAfterError(formElement);
     }
   };
-
 }
 
-function shouldValidate (element) {
-  // name is mandatory
-  if (isStringEmpty(element.name)) {
-    return false;
-  }
+/**
+ *
+ * @param {HTMLFormElement} formElement
+ * @return {Array<{name: string, validate: () => Validation}>}
+ */
+function getFormElementsToValidate (formElement) {
+  const elements = Array.from(formElement.elements);
 
-  return isCcInputElement(element)
-    || isNativeInputElement(element);
+  /** @type {Array<{name: string, validate: () => Validation}>} */
+  const result = [];
+
+  elements.forEach((element) => {
+    if (hasName(element)) {
+      const name = element.name;
+
+      // for cc-input elements we use the validate() method with report
+      if (isCcInputElement(element) && element.willValidate) {
+        result.push({
+          name,
+          validate: () => element.validate(true),
+        });
+      }
+
+      // for native element validation, we don't like the reportValidity native behavior
+      if (isNativeInputElement(element) && element.willValidate) {
+        result.push({
+          name,
+          validate: () => element.checkValidity() ? VALID : invalid(element.validationMessage),
+        });
+      }
+    }
+  });
+
+  return result;
+}
+
+/**
+ *
+ * @param {Element & {name?: string}} element
+ * @return {element is Element & {name: string}}
+ */
+function hasName (element) {
+  return !isStringEmpty(element.name);
 }

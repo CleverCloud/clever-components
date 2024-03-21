@@ -7,28 +7,50 @@ import { dispatchCustomEvent } from '../../../lib/events.js';
 import { FormController } from '../../../lib/form/form-controller.js';
 import { updateRootContext } from '../../../lib/smart-manager.js';
 
+/**
+ * @typedef {{type: 'idle', values?: {name: string, email: string}}|{type: 'submitting'}} State3
+ *
+ * @typedef {import('../../../lib/form/form-controller.js').FormController<'email', 'email-used', null|'submitting'>} FormController1
+ * @typedef {import('../../../lib/form/form-helper.js').FormHelper<'email', 'email-used', null|'submitting'>} FormHelper1
+ * @typedef {import('../../../lib/form/form-controller.js').FormController<'name', 'awful-name', null|'submitting'>} FormController2
+ * @typedef {import('../../../lib/form/form-helper.js').FormHelper<'name', 'awful-name', null|'submitting'>} FormHelper2
+ * @typedef {import('../../../lib/form/form-controller.js').FormController<'email', 'email-used', State3>} FormController3
+ * @typedef {import('../../../lib/form/form-helper.js').FormHelper<'email', 'email-used', State3>} FormHelper3
+ * @typedef {import('../../../lib/form/form-controller.js').FormController<'email', 'email-used', null|'submitting'>} FormController4
+ * @typedef {import('../../../lib/form/form-helper.js').FormHelper<'email', 'email-used', null|'submitting'>} FormHelper4
+ *
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
+ */
+
 export class CcFtDemoWithSmartComponent extends LitElement {
   static get properties () {
     return {
+      form4Values: { type: Object },
     };
   }
 
   constructor () {
     super();
 
+    /** @type {FormController1} */
     this._form1Ctrl = new FormController(this, {
       onSubmit: this._onForm1Submit.bind(this),
       errorsMap: {
         'email-used': 'Email already used',
       },
     });
+
+    /** @type {FormController2} */
     this._form2Ctrl = new FormController(this, {
       onSubmit: this._onForm2Submit.bind(this),
       errorsMap: {
         'awful-name': () => 'I do not like your name, please change it!',
       },
     });
+
+    /** @type {HTMLFormElementRef} */
     this._form3Ref = createRef();
+    /** @type {FormController3} */
     this._form3Ctrl = new FormController(this, {
       onSubmit: this._onForm3Submit.bind(this),
       errorsMap: {
@@ -36,50 +58,63 @@ export class CcFtDemoWithSmartComponent extends LitElement {
       },
       onStateChange: async (state) => {
         console.log(state);
-        if (state.values != null) {
-          const form3 = this._form3Ref.value;
-          form3.elements.name.value = state.values.name;
-          form3.elements.email.value = state.values.email;
+        if (state.type === 'idle' && state.values != null) {
+          const form = this._form3Ref.value;
+          form.elements.name.value = state.values.name;
+          form.elements.email.value = state.values.email;
         }
       },
     });
 
+    /** @type {HTMLFormElementRef} */
+    this._form4Ref = createRef();
+    /** @type {FormController4} */
     this._form4Ctrl = new FormController(this, {
       onSubmit: this._onForm4Submit.bind(this),
       errorsMap: {
         'email-used': 'Email already used',
       },
-      onStateChange: async (state) => {
-        console.log(state);
-        if (state.values != null) {
-
-          const form3 = this._form3Ref.value;
-          form3.elements.name.value = state.values.name;
-          form3.elements.email.value = state.values.email;
-        }
-      },
     });
   }
 
   /**
-   * @return {IFormHelper<'email', 'email-used', null|'submitting'>}
+   * @return {FormHelper1}
    */
   getForm1 () {
     return this._form1Ctrl.formHelper;
   }
 
   /**
-   * @return {IFormHelper<'name', 'awful-name', null|'submitting'>}
+   * @return {FormHelper2}
    */
   getForm2 () {
     return this._form2Ctrl.formHelper;
   }
 
   /**
-   * @return {Promise<IFormHelper<'email', 'email-used', null|'submitting'>>}
+   * @return {Promise<FormHelper3>}
    */
   getForm3 () {
     return this._form3Ctrl.getFormHelper();
+  }
+
+  /**
+   * @return {FormHelper4}
+   */
+  getForm4 () {
+    return this._form4Ctrl.formHelper;
+  }
+
+  /**
+   *
+   * @param {{name: string, email: string}} values
+   */
+  async setForm4Values (values) {
+    const formHelper = await this._form4Ctrl.getFormHelper();
+    formHelper.
+    const form = this._form4Ref.value;
+    form.elements.name.value = values.name;
+    form.elements.email.value = values.email;
   }
 
   _onForm1Submit ({ detail }) {
@@ -107,7 +142,7 @@ export class CcFtDemoWithSmartComponent extends LitElement {
     const isForm1Submitting = this._form1Ctrl.formHelper?.state === 'submitting';
     const isForm2Submitting = this._form2Ctrl.formHelper?.state === 'submitting';
     const isForm3Submitting = this._form3Ctrl.formHelper?.state?.type === 'submitting';
-    console.log('isForm3Submitting', isForm3Submitting);
+    const isForm4Submitting = this._form4Ctrl.formHelper?.state === 'submitting';
 
     return html`
       <cc-smart-container context="${{ fake: 'toto' }}">
@@ -173,6 +208,28 @@ export class CcFtDemoWithSmartComponent extends LitElement {
 
           <cc-button primary type="submit" ?waiting=${isForm3Submitting}>Submit</cc-button>
         </form>
+        <form name="form4" ${this._form3Ctrl.handleSubmit()} ${ref(this._form4Ref)}>
+          <cc-input-text
+            label="Name"
+            name="name"
+            reset-value=""
+            required
+            ?disabled=${isForm4Submitting}
+          >
+          </cc-input-text>
+          <cc-input-text
+            type="email"
+            label="Email"
+            name="email"
+            reset-value=""
+            value=""
+            required
+            ?disabled=${isForm4Submitting}
+          ></cc-input-text>
+
+          <cc-button primary type="submit" ?waiting=${isForm4Submitting}>Submit</cc-button>
+        </form>
+        
       </cc-smart-container>
     `;
   }
@@ -209,13 +266,11 @@ defineSmartComponent({
   },
   /**
    *
-   * @param {CcFtDemoWithSmartComponent} component
-   * @param context
-   * @param onEvent
-   * @param updateComponent
-   * @param signal
+   * @param {Object} args
+   * @param {CcFtDemoWithSmartComponent} args.component
+   * @param {any} args.onEvent
    */
-  async onContextUpdate ({ component, context, onEvent, updateComponent, signal }) {
+  async onContextUpdate ({ component, onEvent }) {
 
     onEvent('cc-ft-demo-with-smart-component:submit-form-1', ({ data }) => {
       console.log('submitting form 1', data);
@@ -259,7 +314,7 @@ defineSmartComponent({
         });
     });
 
-    // initial state
+    // setting form value from smart
     const form3 = await component.getForm3();
     form3.setState({
       type: 'idle',
@@ -288,11 +343,38 @@ defineSmartComponent({
           transaction.setState({ type: 'idle' }).commit();
         });
     });
+
+    // setting form value from smart
+    component.setForm4Values({
+      name: 'initial name',
+      email: 'initial-email@example.com',
+    });
+
+    onEvent('cc-ft-demo-with-smart-component:submit-form-4', ({ data }) => {
+      console.log('submitting form 4', data);
+      const form = component.getForm4();
+
+      form.setState('submitting');
+
+      submitForm1(data)
+        .then(() => {
+          form.reset().setState(null);
+        })
+        .catch((error) => {
+          const transaction = form.beginTransaction();
+
+          if (error.message === 'email-used') {
+            transaction.addError('email', 'email-used');
+          }
+
+          transaction.setState(null).commit();
+        });
+    });
   },
 });
 
 // -- API calls
-function submitForm1 ({ name, email }) {
+function submitForm1 ({ _name, email }) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (email.startsWith('used')) {
@@ -305,7 +387,7 @@ function submitForm1 ({ name, email }) {
   });
 }
 
-function submitForm2 ({ name, email }) {
+function submitForm2 ({ name, _email }) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (name === 'toto') {

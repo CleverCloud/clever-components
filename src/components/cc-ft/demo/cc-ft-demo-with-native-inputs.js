@@ -30,15 +30,20 @@ export class CcFtDemoWithNativeInputs extends LitElement {
   }
 
   _onInvalid ({ detail }) {
-    const invalidCheckboxes = detail.find((d) => d.name === 'checkbox' && d.validationResult.valid === false);
-    const invalidRadios = detail.find((d) => d.name === 'radio' && d.validationResult.valid === false);
+    const invalidCheckboxes = detail.find((d) => d.name === 'checkbox' && d.validation.valid === false);
+    const invalidRadios = detail.find((d) => d.name === 'radio' && d.validation.valid === false);
     this._checkboxError = invalidCheckboxes != null
-      ? invalidCheckboxes.validationResult.code
+      ? invalidCheckboxes.validation.code
       : null;
 
     this._radioError = invalidRadios != null
       ? 'Please select one of the available options'
       : null;
+
+    const radios = this.shadowRoot.querySelector('form').elements.namedItem('radio');
+    const checkboxes = this.shadowRoot.querySelector('form').elements.namedItem('checkbox');
+    console.log(radios);
+    console.log(checkboxes);
   }
 
   _onValid () {
@@ -75,7 +80,7 @@ export class CcFtDemoWithNativeInputs extends LitElement {
           <!-- 
             we cannot rely on HTML only for checkboxes because it cannot handle this case: the group is required but not each one of the options.
             setting required on each checkbox makes the form invalid until all three checkboxes have been checked...
-            This is the native behavior (can be checkbed by using checkValidity() on the form without our directive).
+            This is the native behavior (can be checked by using checkValidity() on the form without our directive).
             Thankfully, our directive provides a way to pass a custom function to validate a group of fields so this is easily solved.
           -->
           <div>

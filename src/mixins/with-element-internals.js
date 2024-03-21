@@ -7,8 +7,8 @@ import { isStringEmpty } from '../lib/utils.js';
  * @typedef {import('../lib/validation/validation.types.js').ErrorMessage} ErrorMessage
  * @typedef {import('../lib/validation/validation.types.js').ErrorMessageMap} ErrorMessageMap
  * @typedef {import('../lib/validation/validation.types.js').Validator} Validator
- * @typedef {import('./with-element-internals.types.js').WithElementInternalsSettings} WithElementInternalsSettings
- * @typedef {import('./with-element-internals.types.js').ValidationSettings} ValidationSettings
+ * @typedef {import('./input-element.types.js').WithElementInternalsSettings} WithElementInternalsSettings
+ * @typedef {import('./input-element.types.js').ValidationSettings} ValidationSettings
  * @typedef {import('lit').LitElement} LitElement
  *
  */
@@ -90,16 +90,16 @@ export const WithElementInternals = (superClass) =>
 
       const validator = validationSettings.validator;
 
-      const validationResult = validator.validate(
+      const validation = validator.validate(
         this._helper.getValueProperty(),
         this._helper.internals.form != null ? getFormData(this._helper.internals.form) : {},
       );
 
-      const errorMessage = validationResult.valid
+      const errorMessage = validation.valid
         ? null
-        : this._helper.resolveErrorMessage(validationResult.code, errorMessages, validator);
+        : this._helper.resolveErrorMessage(validation.code, errorMessages, validator);
 
-      if (validationResult.valid) {
+      if (validation.valid) {
         this._helper.setValidValidity();
       }
       else {
@@ -113,7 +113,7 @@ export const WithElementInternals = (superClass) =>
         }
       }
 
-      return validationResult;
+      return validation;
     }
 
     /* region mimic the native validation API */
