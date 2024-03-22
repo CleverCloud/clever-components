@@ -130,8 +130,8 @@ export class CcProductList extends LitElement {
 
     if (categoryDataList.length === 0) {
       return html`
-      <p class="search-empty">${i18n('cc-product-list.search-empty')}</p>
-    `;
+        <p class="search-empty">${i18n('cc-product-list.search-empty')}</p>
+      `;
     }
 
     return categoryDataList.map((categoryData) => html`
@@ -200,7 +200,11 @@ export class CcProductList extends LitElement {
         }
 
         input[type='radio']:focus-visible + label {
-          /* TODO: change this if we add a custom prop to the cc-badge */
+          /**
+          * FIXME:
+          * remove this once the "border-radius" of the "cc-badge" component is set on its host instead of its wrapper
+          * see https://github.com/CleverCloud/clever-components/issues/990.
+          */
           border-radius: 1em;
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
