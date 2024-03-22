@@ -65,6 +65,17 @@ const config = {
       customConfig = {
         // serve and process all files instead of storybook related files only
         appType: 'mpa',
+        resolve: {
+          alias: [
+            { 
+              // Without this, vite resolves our imports to the actual `custom-elements.json` file 
+              // inside the `dist` folder.
+              // We need to rely on a virtual file in dev mode, see the `generateCem` plugin for more info.
+              find: /.*\/dist\/custom-elements\.json$/, 
+              replacement: 'virtual:custom-elements.json'
+            },
+          ],
+        },
         plugins: [...commonPlugins, ...devModePlugins],
       }
     }
