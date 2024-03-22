@@ -69,14 +69,10 @@ export class CcProductList extends LitElement {
       this._productsCrtl.categoryDataList = this.categoryDataList;
     }
 
-    if (changedProperties.has('filterInput') && changedProperties.has('filterCategory')) {
-      this._productsCrtl.toggleCategory(this.filterCategory);
-      this._productsCrtl.search(this.filterInput);
-    }
-    else if (changedProperties.has('filterCategory')) {
+    if (changedProperties.has('filterCategory')) {
       this._productsCrtl.toggleCategory(this.filterCategory);
     }
-    else if (changedProperties.has('filterInput')) {
+    if (changedProperties.has('filterInput')) {
       this._productsCrtl.search(this.filterInput);
     }
   }
@@ -92,6 +88,7 @@ export class CcProductList extends LitElement {
           value="${this.filterInput ?? ''}"
           @cc-input-text:input="${this._onSearchInput}"></cc-input-text>
         <fieldset class="category-filter">
+          <legend class="visually-hidden">${i18n('cc-product-list.filter-category-legend')}</legend>
           ${this._renderCategory(i18n('cc-product-list.all-label'), 'all', this._productsCrtl.getCurrentCategory() === 'all')}
           ${categories.map((c) => this._renderCategory(c.categoryName, c.categoryName, c.toggled))}
         </fieldset>

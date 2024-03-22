@@ -799,6 +799,7 @@ export const translations = {
   //#endregion
   //#region cc-product-list
   'cc-product-list.all-label': `Tout`,
+  'cc-product-list.filter-category-legend': `Filtrer par catégorie`,
   'cc-product-list.search-empty': `Aucun produit n'a été trouvé selon vos critères de recherche.`,
   'cc-product-list.search-label': `Chercher un produit`,
   //#endregion
