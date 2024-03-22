@@ -18,9 +18,9 @@ export class CcBlockSection extends LitElement {
   render () {
     return html`
       <slot name="title"></slot>
-      <div class="section">
-        <slot name="info"></slot>
-        <slot class="main"></slot>
+      <!-- slot par défaut ? --> <div class="section">
+      <!-- rename slot --><slot name="info"></slot>
+      <!-- rename slot -->  <slot class="main"></slot>
       </div>
     `;
   }

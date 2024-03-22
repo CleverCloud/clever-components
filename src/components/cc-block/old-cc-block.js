@@ -9,12 +9,10 @@ import {
   iconRemixArrowUpSFill as iconUp,
 } from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../lib/i18n.js';
-import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 
 /**
  * @typedef {import('../common.types.js').IconModel} IconModel
  * @typedef {import('../common.types.js').ToggleStateType} ToggleStateType
- * @typedef {import('../common.types.js').Footer} Footer
  */
 
 /**
@@ -30,7 +28,6 @@ import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
  * @slot button - A zone dedicated for a button/toggle in the to right corner.
  * @slot overlay - The content to display on top of the main content.
  * @slot title - The title of the block. Try to only use text. Use the `icon` property/attribute.
- * @slot footer - test footer
  */
 export class CcBlock extends LitElement {
 
@@ -42,8 +39,6 @@ export class CcBlock extends LitElement {
       ribbon: { type: String, reflect: true },
       state: { type: String, reflect: true },
       _overlay: { type: Boolean, state: true },
-      links: { type: String },
-      // footer: { type: Object },
     };
   }
 
@@ -67,12 +62,6 @@ export class CcBlock extends LitElement {
 
     /** @type {boolean} */
     this._overlay = false;
-
-    /** @type {string|null} Sets links. */
-    this.links = null;
-
-    /** @type {Footer|null} Add a footer with links at the bottom of the block. */
-    // this.footer = null;
   }
 
   _clickToggle () {
@@ -91,13 +80,12 @@ export class CcBlock extends LitElement {
 
     /* TODO when reworking the component, check this a11y issue https://github.com/CleverCloud/clever-components/issues/225#issuecomment-1239462826 */
     /* eslint-disable lit-a11y/click-events-have-key-events */
-    /*
     return html`
 
       ${this.ribbon != null && this.ribbon !== '' ? html`
         <div class="info-ribbon">${this.ribbon}</div>
       ` : ''}
-
+      
       ${!this.noHead ? html`
         <div class="head" @click=${this._clickToggle}>
           ${this.image != null && this.icon == null ? html`
@@ -131,44 +119,6 @@ export class CcBlock extends LitElement {
       </cc-expand>
 
       <slot name="overlay"></slot>
-
-      <div class="one-line-form">
-          ${ccLink(html`
-              `)}
-      </div>
-
-      <slot name="footer"></slot>
-    `;
-  */
-
-    return html`
-        <slot>
-          <slot name="header">
-            <slot name="icon">
-              ${this.image != null && this.icon == null ? html`
-                <cc-img src="${this.image}"></cc-img>
-              ` : ''}
-              ${this.icon != null ? html`
-                <cc-icon size="lg" .icon=${this.icon}></cc-icon>
-              ` : ''}
-            </slot>
-            <slot name="title"></slot>
-            <slot name="ribbon"></slot>
-<!-- Rename --> <slot name="other-element"></slot>
-          </slot>
-          <div>
-            <cc-expand>
-                <slot name="content">
-                    <slot name="content-header"></slot>
-                    <!-- expand autour du body -->  <slot name="content-body"></slot>
-                    <slot name="content-footer"></slot>
-                </slot>
-                <slot name="footer">
-                    <!-- Ajouter slot pour content à gauche, content à droite -->
-                </slot>
-            </cc-expand>
-          </div>
-        </slot>
     `;
   }
 
@@ -184,7 +134,6 @@ export class CcBlock extends LitElement {
   static get styles () {
     return [
       // language=CSS
-      linkStyles,
       css`
         :host {
           position: relative;
@@ -225,12 +174,12 @@ export class CcBlock extends LitElement {
           align-self: flex-start;
           margin-right: 1em;
         }
-
+        
         .toggle_button {
           --cc-icon-size: 1.5em;
         }
 
-        ::slotted([slot='header']) ::slotted([slot='title']) {
+        ::slotted([slot='title']) {
           flex: 1 1 0;
           font-size: 1.2em;
           font-weight: bold;
@@ -279,8 +228,6 @@ export class CcBlock extends LitElement {
           grid-area: 2 / 1 / auto / auto;
         }
 
-
-
         :host([ribbon]) .main-wrapper {
           padding-left: 2.5em;
         }
@@ -296,18 +243,6 @@ export class CcBlock extends LitElement {
         ::slotted(.cc-block_empty-msg) {
           color: var(--cc-color-text-weak);
           font-style: italic;
-        }
-        
-        ::slotted([slot='footer']) {
-            display: flex;
-            box-sizing: border-box;
-            justify-content: flex-end;
-            padding: 0.5em 1.1em;
-            background-color: var(--cc-color-bg-neutral);
-            box-shadow: inset 0 6px 6px -6px rgb(0 0 0 / 40%);
-            font-size: 0.9em;
-            font-style: italic;
-            gap: 0.57em;
         }
       `,
     ];
