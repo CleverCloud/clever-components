@@ -865,6 +865,7 @@ export const translations = {
   'cc-product-list.search-label': `Chercher un produit`,
   //#endregion
   //#region cc-select
+  'cc-select.error.empty': `Veuillez sélectionner une valeur.`,
   'cc-select.required': `obligatoire`,
   //#endregion
   //#region cc-ssh-key-list
