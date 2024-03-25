@@ -761,7 +761,7 @@ export const translations = {
   'cc-pricing-product-consumption.add': `Add`,
   'cc-pricing-product-consumption.bytes': ({ bytes }) => formatBytesSi(bytes),
   'cc-pricing-product-consumption.bytes-unit': ({ bytes }) => getUnit(bytes),
-  'cc-pricing-product-consumption.error': `An error occured while retrieving pricing details.`,
+  'cc-pricing-product-consumption.error': `An error occurred while retrieving pricing details.`,
   'cc-pricing-product-consumption.inbound-traffic.label': `traffic in`,
   'cc-pricing-product-consumption.inbound-traffic.title': `Inbound traffic:`,
   'cc-pricing-product-consumption.number': ({ number }) => formatNumber(lang, number),
@@ -804,6 +804,7 @@ export const translations = {
   'cc-product-list.search-label': `Search for a product`,
   //#endregion
   //#region cc-select
+  'cc-select.error.empty': `You must select a value.`,
   'cc-select.required': `required`,
   //#endregion
   //#region cc-ssh-key-list
