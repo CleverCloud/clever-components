@@ -1,14 +1,22 @@
-import { css, html, LitElement } from 'lit';
+import { css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import {
   iconRemixAddLine as iconIncrement,
   iconRemixSubtractLine as iconDecrement,
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
+import { CcInputElement } from '../../lib/form/cc-input-element.js';
+import { CompositeValidator, NumberValidator, RequiredValidator } from '../../lib/form/validation.js';
 import { i18n } from '../../lib/i18n.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-icon/cc-icon.js';
+
+/**
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLInputElement>} HTMLInputElementRef
+ * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement>} HTMLInputElementEvent
+ */
 
 /**
  * A custom number input with controls mode.
@@ -17,7 +25,7 @@ import '../cc-icon/cc-icon.js';
  *
  * * Uses a native `<input>` with a type `number` without native arrows mode
  * * The `controls` feature enables the "arrow" mode but with an increment/decrement button on the side of the input
- * * When an error slot is used, the input is decorated with a red border and a redish focus ring. You have to be aware that it uses the [`slotchange`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLSlotElement/slotchange_event) event which doesn't fire if the children of a slotted node change.
+ * * When an `errorMessage` is set, the input is decorated with a red border and a redish focus ring.
  *
  * @cssdisplay inline-block
  *
@@ -31,13 +39,13 @@ import '../cc-icon/cc-icon.js';
  * @cssprop {FontSize} --cc-input-label-font-size - The font-size for the input's label (defaults: `inherit`).
  * @cssprop {FontWeight} --cc-input-label-font-weight - The font-weight for the input's label (defaults: `normal`).
  *
- * @slot error - The error message to be displayed below the `<input>` element or below the help text. Please use a `<p>` tag.
  * @slot help - The help message to be displayed right below the `<input>` element. Please use a `<p>` tag.
  */
-export class CcInputNumber extends LitElement {
+export class CcInputNumber extends CcInputElement {
 
   static get properties () {
     return {
+      ...super.properties,
       controls: { type: Boolean },
       disabled: { type: Boolean, reflect: true },
       inline: { type: Boolean, reflect: true },
@@ -45,14 +53,12 @@ export class CcInputNumber extends LitElement {
       hiddenLabel: { type: Boolean, attribute: 'hidden-label' },
       max: { type: Number },
       min: { type: Number },
-      name: { type: String, reflect: true },
       readonly: { type: Boolean, reflect: true },
       required: { type: Boolean },
+      resetValue: { type: Number, attribute: 'reset-value' },
       skeleton: { type: Boolean, reflect: true },
       step: { type: Number },
       value: { type: Number },
-      _invalid: { type: Boolean, state: true },
-      _hasError: { type: Boolean, state: true },
     };
   }
 
@@ -82,14 +88,14 @@ export class CcInputNumber extends LitElement {
     /** @type {number|null} Sets the min range of the `<input>` element. */
     this.min = null;
 
-    /** @type {string|null} Sets `name` attribute on inner native `<input>` element. */
-    this.name = null;
-
     /** @type {boolean} Sets `readonly` attribute on inner native `<input>` element. */
     this.readonly = false;
 
     /** @type {boolean} Sets the "required" text inside the label */
     this.required = false;
+
+    /** @type {number|null} Sets the `value` to set when englobing `<form>` element is reset. */
+    this.resetValue = null;
 
     /** @type {boolean} Enables skeleton screen UI pattern (loading hint). */
     this.skeleton = false;
@@ -100,32 +106,64 @@ export class CcInputNumber extends LitElement {
     /** @type {number|null} Sets `value` attribute on inner native input number element. */
     this.value = null;
 
-    /** @type {boolean} */
-    this._invalid = false;
-
-    /** @type {boolean} */
-    this._hasError = false;
+    /** @type {HTMLInputElementRef} */
+    this._inputRef = createRef();
   }
 
   /**
    * Triggers focus on the inner `<input>/<textarea>` element.
    */
   focus () {
-    this._input.focus();
+    this._inputRef.value.focus();
   }
 
+  getInputSettings () {
+    return {
+      valuePropertyName: 'value',
+      resetValuePropertyName: 'resetValue',
+      inputSelector: '#input-id',
+      errorSelector: '#error-id',
+      validationSettingsProvider: () => (
+        {
+          errorMessages: {
+            empty: () => i18n('cc-input-number.error.empty'),
+            badType: () => i18n('cc-input-number.error.bad-type'),
+            rangeUnderflow: () => i18n('cc-input-number.error.range-underflow', { min: this.min }),
+            rangeOverflow: () => i18n('cc-input-number.error.range-overflow', { max: this.max }),
+          },
+          validator: CompositeValidator.builder()
+            .add(this.required ? new RequiredValidator() : null)
+            .add(new NumberValidator({ min: this.min, max: this.max }))
+            .build(),
+        }
+      ),
+      reactiveValidationProperties: ['required', 'options'],
+      inputDataProvider: () => this._inputRef.value.value,
+    };
+  }
+
+  /**
+   * @param {HTMLInputElementEvent} e
+   */
   _onInput (e) {
     this.value = e.target.valueAsNumber;
     dispatchCustomEvent(this, 'input', this.value);
   }
 
+  /**
+   * @param {HTMLInputElementEvent} e
+   */
   _onFocus (e) {
     if (this.readonly) {
       e.target.select();
     }
   }
 
-  // Stop propagation of keydown and keypress events (to prevent conflicts with shortcuts)
+  /**
+   * Stop propagation of keydown and keypress events (to prevent conflicts with shortcuts)
+   *
+   * @param {HTMLInputElementEvent & { keyCode: number}} e
+   */
   _onKeyEvent (e) {
     if (e.type === 'keydown' || e.type === 'keypress') {
       e.stopPropagation();
@@ -133,41 +171,26 @@ export class CcInputNumber extends LitElement {
     // Here we prevent keydown on enter key from modifying the value
     if (e.type === 'keydown' && e.keyCode === 13) {
       e.preventDefault();
+      this._formHelper.internals.form.requestSubmit();
       dispatchCustomEvent(this, 'requestimplicitsubmit');
     }
     // Request implicit submit with keypress on enter key
     if (!this.readonly && e.type === 'keypress' && e.keyCode === 13) {
+      this._formHelper.internals.form.requestSubmit();
       dispatchCustomEvent(this, 'requestimplicitsubmit');
     }
   }
 
   _onDecrement () {
-    this._input.stepDown();
-    this.value = this._input.valueAsNumber;
+    this._inputRef.value.stepDown();
+    this.value = this._inputRef.value.valueAsNumber;
     dispatchCustomEvent(this, 'input', this.value);
   }
 
   _onIncrement () {
-    this._input.stepUp();
-    this.value = this._input.valueAsNumber;
+    this._inputRef.value.stepUp();
+    this.value = this._inputRef.value.valueAsNumber;
     dispatchCustomEvent(this, 'input', this.value);
-  }
-
-  _onErrorSlotChanged (event) {
-    this._hasError = event.target.assignedNodes()?.length > 0;
-  }
-
-  firstUpdated () {
-    /** @type {HTMLInputElement} */
-    this._input = this.shadowRoot.querySelector('.input');
-    this._invalid = !this._input.checkValidity();
-  }
-
-  // updated and not udpate because we need this._input before
-  updated (changedProperties) {
-    if (changedProperties.has('value')) {
-      this._invalid = !this._input.checkValidity();
-    }
   }
 
   render () {
@@ -176,6 +199,7 @@ export class CcInputNumber extends LitElement {
     const controls = (this.controls && !this.skeleton);
     const minDisabled = (this.value <= this.min) && (this.min != null);
     const maxDisabled = (this.value >= this.max) && (this.max != null);
+    const hasErrorMessage = this.errorMessage != null && this.errorMessage !== '';
 
     return html`
 
@@ -199,20 +223,20 @@ export class CcInputNumber extends LitElement {
           <input
             id="input-id"
             type="number"
-            class="input ${classMap({ error: this._invalid || this._hasError })}"
+            class="input ${classMap({ error: hasErrorMessage })}"
             ?disabled=${this.disabled || this.skeleton}
             ?readonly=${this.readonly}
             min=${this.min ?? ''}
             max=${this.max ?? ''}
             step=${this.step ?? ''}
             .value=${value}
-            name=${this.name ?? ''}
             spellcheck="false"
             aria-describedby="help-id error-id"
             @focus=${this._onFocus}
             @input=${this._onInput}
             @keydown=${this._onKeyEvent}
             @keypress=${this._onKeyEvent}
+            ${ref(this._inputRef)}
           >
           <div class="ring"></div>
         </div>
@@ -227,9 +251,10 @@ export class CcInputNumber extends LitElement {
         <slot name="help"></slot>
       </div>
 
-      <div class="error-container" id="error-id">
-        <slot name="error" @slotchange="${this._onErrorSlotChanged}"></slot>
-      </div>
+      ${hasErrorMessage ? html`
+        <p class="error-container" id="error-id">
+          ${this.errorMessage}
+        </p>` : ''}
     `;
   }
 
@@ -306,8 +331,8 @@ export class CcInputNumber extends LitElement {
           color: var(--cc-color-text-weak);
           font-size: 0.9em;
         }
-        
-        slot[name='error']::slotted(*) {
+
+        .error-container {
           margin: 0.5em 0 0;
           color: var(--cc-color-text-danger);
         }
