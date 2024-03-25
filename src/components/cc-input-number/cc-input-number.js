@@ -6,16 +6,16 @@ import {
   iconRemixSubtractLine as iconDecrement,
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
+import { InputElement } from '../../lib/form/input-element.js';
+import { NumberValidator, RequiredValidator, validatorsBuilder } from '../../lib/form/validation.js';
 import { i18n } from '../../lib/i18n.js';
-import { NumberValidator, RequiredValidator, validatorsBuilder } from '../../lib/validation/validation.js';
-import { AbstractInputElement } from '../../mixins/abstract-input-element.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-icon/cc-icon.js';
 
 /**
  * @typedef {import('lit/directives/ref.js').Ref<HTMLInputElement>} HTMLInputElementRef
- * @typedef {import('../../lib/validation/validation.types.js').Validator} Validator
+ * @typedef {import('../../lib/form/validation.types.js').Validator} Validator
  * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement>} HTMLInputElementEvent
  */
 
@@ -43,7 +43,7 @@ import '../cc-icon/cc-icon.js';
  * @slot error - The error message to be displayed below the `<input>` element or below the help text. Please use a `<p>` tag.
  * @slot help - The help message to be displayed right below the `<input>` element. Please use a `<p>` tag.
  */
-export class CcInputNumber extends AbstractInputElement {
+export class CcInputNumber extends InputElement {
 
   static get properties () {
     return {
@@ -55,7 +55,6 @@ export class CcInputNumber extends AbstractInputElement {
       hiddenLabel: { type: Boolean, attribute: 'hidden-label' },
       max: { type: Number },
       min: { type: Number },
-      name: { type: String, reflect: true },
       readonly: { type: Boolean, reflect: true },
       required: { type: Boolean },
       skeleton: { type: Boolean, reflect: true },
@@ -90,9 +89,6 @@ export class CcInputNumber extends AbstractInputElement {
     /** @type {number|null} Sets the min range of the `<input>` element. */
     this.min = null;
 
-    /** @type {string|null} Sets `name` attribute on inner native `<input>` element. */
-    this.name = null;
-
     /** @type {boolean} Sets `readonly` attribute on inner native `<input>` element. */
     this.readonly = false;
 
@@ -122,7 +118,7 @@ export class CcInputNumber extends AbstractInputElement {
     this._inputRef.value.focus();
   }
 
-  getElementInternalsSettings () {
+  getInputSettings () {
     return {
       valuePropertyName: 'value',
       resetValuePropertyName: 'resetValue',
@@ -244,7 +240,6 @@ export class CcInputNumber extends AbstractInputElement {
             max=${this.max ?? ''}
             step=${this.step ?? ''}
             .value=${value}
-            name=${this.name ?? ''}
             spellcheck="false"
             aria-describedby="help-id error-id"
             @focus=${this._onFocus}

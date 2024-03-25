@@ -3,9 +3,9 @@ import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
+import { InputElement } from '../../lib/form/input-element.js';
+import { RequiredValidator, validatorsBuilder } from '../../lib/form/validation.js';
 import { i18n } from '../../lib/i18n.js';
-import { RequiredValidator, validatorsBuilder } from '../../lib/validation/validation.js';
-import { AbstractInputElement } from '../../mixins/abstract-input-element.js';
 
 const DEFAULT_ERROR_MESSAGES = {
   get empty () {
@@ -39,7 +39,7 @@ const DEFAULT_ERROR_MESSAGES = {
  * @slot error - The error message to be displayed below the `<select>` element or below the help text. Please use a `<p>` tag.
  * @slot help - The help message to be displayed right below the `<select>` element. Please use a `<p>` tag.
  */
-export class CcSelect extends AbstractInputElement {
+export class CcSelect extends InputElement {
   static get properties () {
     return {
       ...super.properties,
@@ -47,7 +47,6 @@ export class CcSelect extends AbstractInputElement {
       inline: { type: Boolean, reflect: true },
       /** @required */
       label: { type: String },
-      name: { type: String, reflect: true },
       options: { type: Array },
       placeholder: { type: String },
       required: { type: Boolean },
@@ -66,9 +65,6 @@ export class CcSelect extends AbstractInputElement {
      * Only use this if your form contains 1 or 2 fields and your labels are short.
      */
     this.inline = false;
-
-    /** @type {string|null} Sets `name` attribute on inner native `<select>` element. */
-    this.name = null;
 
     /** @type {string|null} Sets label for the input. Mandatory but can be hidden if necessary. */
     this.label = null;
@@ -95,7 +91,7 @@ export class CcSelect extends AbstractInputElement {
     this.value = null;
   }
 
-  getElementInternalsSettings () {
+  getInputSettings () {
     return {
       valuePropertyName: 'value',
       resetValuePropertyName: 'resetValue',
@@ -162,7 +158,6 @@ export class CcSelect extends AbstractInputElement {
           aria-describedby="help-id error-id"
           @input=${this._onSelectInput}
           .value=${this.value}
-          name=${ifDefined(this.name ?? undefined)}
           ${ref(this._selectRef)}
         >
           ${this.placeholder != null && this.placeholder !== '' ? html`

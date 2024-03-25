@@ -1,20 +1,21 @@
-import { AbstractInputElement } from '../../mixins/abstract-input-element.js';
-import { setTimeoutAsPromise } from '../utils.js';
+import { InputElement } from './input-element.js';
 
 /**
+ * @typedef {import('./form.types.js').AggregatedFormData} AggregatedFormData
  * @typedef {import('./form.types.js').InputData} InputData
  * @typedef {import('./form.types.js').NativeInputElement} NativeInputElement
- * @typedef {import('../validation/validation.types.js').Validation} Validation
- * @typedef {import('../validation/validation.types.js').ErrorMessage} ErrorMessage
+ * @typedef {import('./validation.types.js').ErrorMessage} ErrorMessage
  * @typedef {import('lit').LitElement} LitElement
  */
 
 /**
+ * Gets `<form>` element data. It aggregates the data of elements having the same name into an array.
+ *
  * @param {HTMLFormElement} formElement
- * @return {{[key: string]: InputData|Array<InputData>}}
+ * @return {AggregatedFormData}
  */
 export function getFormData (formElement) {
-  /** @type {{[key: string]: InputData|Array<InputData>}} */
+  /** @type {AggregatedFormData} */
   const result = {};
 
   const formData = new FormData(formElement);
@@ -37,98 +38,90 @@ export function getFormData (formElement) {
 }
 
 /**
- * Find all elements in the given form, associated with the given inputName
+ * Find all input elements in the given `<form>` element, associated with the given `inputName`.
+ *
+ * An element is considered an input element if it is one of:
+ * * cc input element: see {@link isCcInputElement}
+ * * native input element: see {@link isNativeInputElement}
+ *
  * @param {HTMLFormElement} formElement
  * @param {string} inputName The name of the input
- * @return Array<Element>
+ * @return Array<DescribedInputElement>
  */
-export function getFormElements (formElement, inputName) {
+export function getFormInputElements (formElement, inputName) {
   const elementOrNodeList = formElement.elements.namedItem(inputName);
 
   if (elementOrNodeList == null) {
     return [];
   }
 
-  if (elementOrNodeList instanceof Element) {
-    return [elementOrNodeList];
-  }
-  /** @type {Array<Element>} */
+  /** @type {Array<{native: true, element: NativeInputElement} | {native: false, element: InputElement}>} */
   const result = [];
-  elementOrNodeList.forEach((e) => {
-    if (e instanceof Element) {
-      result.push(e);
+
+  /**
+   * @param {Node} node
+   */
+  function addInputElement (node) {
+    if (node instanceof Element) {
+      if (isCcInputElement(node)) {
+        result.push({ native: false, element: node });
+      }
+      if (isNativeInputElement(node)) {
+        result.push({ native: true, element: node });
+      }
     }
-  });
+  }
+
+  if (elementOrNodeList instanceof Element) {
+    addInputElement(elementOrNodeList);
+  }
+  else {
+    elementOrNodeList.forEach(addInputElement);
+  }
 
   return result;
 }
 
 /**
- * @param {Element & {validate?: function}} element
- * @return {element is AbstractInputElement}
+ * Check whether the given element is a cc input.
+ * A cc input is an element that extends {@link InputElement}.
+ *
+ * @param {Element} element
+ * @return {element is InputElement}
  */
 export function isCcInputElement (element) {
-  return element instanceof AbstractInputElement;
+  return element instanceof InputElement;
 }
 
-/**
- * @param {Element & {updateComplete?: Promise<any>}} element
- * @return {element is LitElement}
- */
-export function isLitElement (element) {
-  return element.updateComplete != null;
-}
+const INPUT_TYPES = ['checkbox', 'color', 'date', 'datetime-local', 'email', 'file', 'hidden', 'month', 'number', 'password', 'radio', 'range', 'search', 'tel', 'text', 'time', 'url', 'week'];
 
 /**
- * @param {Element & {checkValidity?: function, willValidate?: boolean}} element
+ * Check whether the given element is a native input element.
+ * A native input is:
+ * * an `HTMLInputElement` (but not with `button`, `reset` nor `submit` type)
+ * * an `HTMLTextAreaElement`
+ * * an `HTMLSelectElement`
+ *
+ * @param {Element} element
  * @return {element is NativeInputElement }
  */
 export function isNativeInputElement (element) {
-  return element.checkValidity != null && typeof element.checkValidity === 'function'
-    && element.willValidate != null && element.willValidate === true;
+  return (element instanceof HTMLInputElement && INPUT_TYPES.includes(element.type))
+    || element instanceof HTMLTextAreaElement
+    || element instanceof HTMLSelectElement
+  ;
 }
 
 /**
+ * Converts an error message into string.
  *
- * @param {HTMLElement} element
- * @return {Promise<void>}
- */
-export async function focusInputAfterError (element) {
-  /** @type {HTMLElement} */
-  const firstElementInError = element.querySelector(':invalid, [internals-invalid]');
-  if (firstElementInError == null) {
-    return Promise.resolve();
-  }
-
-  function focus () {
-    firstElementInError.focus();
-  }
-
-  const documentOrShadowRoot = nearestDocumentOrShadowRoot(element);
-
-  // we try to focus directly
-  focus();
-
-  if (documentOrShadowRoot == null) {
-    return Promise.resolve();
-  }
-
-  // if focus could not be made, we wait a little bit and trigger another attempt
-  if (documentOrShadowRoot.activeElement !== firstElementInError) {
-    // if we found a shadowRoot with a LitElement host, we wait for the next update cycle to retry a focus
-    if (documentOrShadowRoot instanceof ShadowRoot && isLitElement(documentOrShadowRoot.host)) {
-      documentOrShadowRoot.host.updateComplete.then(focus);
-    }
-    // otherwise, we just postpone the focus with a very short setTimeout
-    else {
-      return setTimeoutAsPromise(focus);
-    }
-  }
-}
-
-/**
- * @param {ErrorMessage} message
- * @return {string}
+ * * if the given message is null, returns an empty string,
+ * * if the given message is a string, return this string,
+ * * if the given message is a Node,
+ *
+ *
+ * @param {ErrorMessage} message The error message to convert
+ * @return {string} The converted error message
  */
 export function convertErrorMessageToString (message) {
   if (message == null) {
@@ -150,24 +143,21 @@ export function convertErrorMessageToString (message) {
     div.remove();
     return result;
 
-    // below is the simplest way, but we don't get the <br> replaced by \n
+    // below is the simplest and cheapest way, but we don't get the <br> replaced by \n
     // return message.textContent;
   }
 
-  return '' + message;
+  return message;
 }
 
 /**
- * @param {Node} element
- * @return {DocumentOrShadowRoot | null}
+ * Moves the focus on the first input element in error.
+ *
+ * @param {HTMLElement} element
  */
-function nearestDocumentOrShadowRoot (element) {
-  let current = element;
-  while (current != null) {
-    if (current instanceof ShadowRoot || current instanceof Document) {
-      return current;
-    }
-    current = current.parentNode;
-  }
-  return null;
+export function focusInputAfterError (element) {
+  // the query selector below includes the `[internals-invalid]` alternative for compatibility with element internals polyfill
+  /** @type {HTMLElement} */
+  const firstElementInError = element.querySelector(':invalid, [internals-invalid]');
+  firstElementInError?.focus();
 }

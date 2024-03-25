@@ -1,43 +1,35 @@
 import { dispatchCustomEvent } from '../events.js';
 import { isStringEmpty } from '../utils.js';
-import { invalid, VALID } from '../validation/validation.js';
 import { focusInputAfterError, isCcInputElement, isNativeInputElement, getFormData } from './form-utils.js';
+import { invalid, VALID } from './validation.js';
 
 /**
- * @typedef {import('../../mixins/abstract-input-element.js').AbstractInputElement} AbstractInputElement
- * @typedef {import('../validation/validation.types.js').Validation} Validation
+ * @typedef {import('./validation.types.js').Validation} Validation
  * @typedef {import('./form.types.js').HTMLFormElementEvent} HTMLFormElementEvent
+ * @typedef {import('./form.types.js').FormValidation} FormValidation
+ * @typedef {import('./form.types.js').AggregatedFormData} FormSubmittedData
  */
 
-/*
-Notes:
-
-I tried to validate by groups of inputs but it doesn't work.
-let say, I group, I will have something like:
-```
-const groups = { 'checkboxes': [elt1, elt2, elt3]);
-```
-for custom validaton, I can use the validate function once, and set the validity on every elements. ok
-
-for not custom validation:
-I still need to perform the validation on every elements of the group.
-
-What do I gain here? It make the code strange, but I don't fill I gain much.
-
-Also,
-what about the result of the validation?
-- should I group ?
-- i can't really group, because let say we have a group of 2 inputs with different validation (one is required, the other isn't)
-- what should the result of the validation for this group ?
-
-*/
-
 /**
+ * Creates a function that is to be set as a `<form>` element 'submit' event listener.
+ *
+ * This function performs a programmatic validation according to the constraints set on input elements.
+ *
+ * The validation is made according to the constraints set on input elements.
+ *
+ * When form is invalid, the first invalid input is automatically focused and a `form:invalid` event is dispatched with the validation result.
+ * Error reporting is made on cc input elements: error message will be displayed.
+ * But no error reporting will be made on native input elements because we think that the native behavior has bad UX and has bad accessibility design.
+ *
+ * When form is valid, a `form:submit` event is dispatched with the form data.
+ *
  * @return {((e: HTMLFormElementEvent) => void)}
+ * @fires {CustomEvent<FormValidation>} form:invalid - Whenever the form is submitted but some inputs are invalid
+ * @fires {CustomEvent<AggregatedFormData>} form:submit - Whenever the form is submitted and all inputs are valid
  */
 export function formSubmitHandler () {
   /**
-   * @param {Event & {target: HTMLFormElement}} event
+   * @param {HTMLFormElementEvent} event
    */
   return (event) => {
 
@@ -47,6 +39,7 @@ export function formSubmitHandler () {
     const formElement = event.target;
 
     // we find the elements that should be validated
+    /** @type {FormValidation} */
     const formValidation = getFormElementsToValidate(formElement)
       .map((e) => ({
         name: e.name,
@@ -60,7 +53,6 @@ export function formSubmitHandler () {
       const data = getFormData(formElement);
 
       dispatchCustomEvent(formElement, 'submit', data);
-      dispatchCustomEvent(formElement, 'valid');
     }
     else {
       dispatchCustomEvent(formElement, 'invalid', formValidation);
@@ -70,6 +62,17 @@ export function formSubmitHandler () {
 }
 
 /**
+ * Find all elements within a `<form>` element that are to be validated.
+ * For each, returns its name and a way to validate it.
+ *
+ * Elements to be validated are:
+ * * element must have a `name` property
+ * * element must have a `true` `willValidate` property
+ * * element is a cc input element (see {@link isCcInputElement})
+ * * or element is a native input element (see {@link isNativeInputElement})
+ *
+ * For cc inputs, validation will be a call to the validate function with report param set to true. (error messages will be displayed)
+ * For native inputs, validation will be a call to the checkValidity function. (error messages won't be displayed because we don't like the native UX)
  *
  * @param {HTMLFormElement} formElement
  * @return {Array<{name: string, validate: () => Validation}>}
@@ -106,6 +109,7 @@ function getFormElementsToValidate (formElement) {
 }
 
 /**
+ * Checks whether an Element has a `name` property.
  *
  * @param {Element & {name?: string}} element
  * @return {element is Element & {name: string}}

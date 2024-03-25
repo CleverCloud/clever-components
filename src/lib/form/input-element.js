@@ -1,52 +1,56 @@
 import { LitElement } from 'lit';
-import { dispatchCustomEvent } from '../lib/events.js';
-import { convertErrorMessageToString, getFormData } from '../lib/form/form-utils.js';
-import { isStringEmpty } from '../lib/utils.js';
+import { dispatchCustomEvent } from '../events.js';
+import { isStringEmpty } from '../utils.js';
+import { convertErrorMessageToString, getFormData } from './form-utils.js';
 
 /**
- * @typedef {import('../lib/validation/validation.types.js').ErrorMessage} ErrorMessage
- * @typedef {import('../lib/validation/validation.types.js').ErrorMessageMap} ErrorMessageMap
- * @typedef {import('../lib/validation/validation.types.js').Validator} Validator
- * @typedef {import('../lib/form/form.types.js').InputData} InputData
- * @typedef {import('./input-element.types.js').WithElementInternalsSettings} WithElementInternalsSettings
+ * @typedef {import('./validation.types.js').ErrorMessage} ErrorMessage
+ * @typedef {import('./validation.types.js').ErrorMessageMap} ErrorMessageMap
+ * @typedef {import('./validation.types.js').Validator} Validator
+ * @typedef {import('../form/form.types.js').InputData} InputData
+ * @typedef {import('./input-element.types.js').InputElementSettings} InputElementSettings
  * @typedef {import('./input-element.types.js').ValidationSettings} ValidationSettings
- * @typedef {import('lit').PropertyValues<AbstractInputElement>} AbstractInputElementPropertyValues
+ * @typedef {import('lit').PropertyValues<InputElement>} InputElementPropertyValues
  */
 
-export class AbstractInputElement extends LitElement {
+export class InputElement extends LitElement {
   static get formAssociated () {
     return true;
   }
 
   static get properties () {
     return {
-      errorMessage: { type: Object, attribute: 'error-message' },
-      customValidator: { type: Object, attribute: false },
       customErrorMessages: { type: Object, attribute: false },
+      customValidator: { type: Object, attribute: false },
+      errorMessage: { type: Object, attribute: 'error-message' },
+      name: { type: String, reflect: true },
     };
   }
 
   constructor () {
     super();
 
-    this._helper = new Helper(this, this.getElementInternalsSettings());
+    this._helper = new Helper(this, this.getInputSettings());
 
-    /** @type {ErrorMessage} Sets the error message. */
-    this.errorMessage = null;
+    /** @type {ErrorMessageMap} */
+    this.customErrorMessages = null;
 
     /** @type {Validator} Sets the custom validator. */
     this.customValidator = null;
 
-    /** @type {ErrorMessageMap} */
-    this.customErrorMessages = null;
+    /** @type {ErrorMessage} Sets the error message. */
+    this.errorMessage = null;
+
+    /** @type {string|null} The name of the input. */
+    this.name = null;
   }
 
   /**
-   * @return {WithElementInternalsSettings}
+   * @return {InputElementSettings}
    * @protected
    */
-  getElementInternalsSettings () {
-    throw new Error('You must implement getElementInternalsSettings() method!');
+  getInputSettings () {
+    throw new Error('You must implement getInputSettings() method!');
   }
 
   /**
@@ -103,7 +107,7 @@ export class AbstractInputElement extends LitElement {
 
   /* region mimic the native validation API */
 
-  willValidate () {
+  get willValidate () {
     return this._helper.internals.willValidate;
   }
 
@@ -150,7 +154,7 @@ export class AbstractInputElement extends LitElement {
   /* endregion */
 
   /**
-   * @param {AbstractInputElementPropertyValues} changedProperties
+   * @param {InputElementPropertyValues} changedProperties
    */
   updated (changedProperties) {
     let shouldValidate = false;
@@ -180,7 +184,7 @@ export class AbstractInputElement extends LitElement {
     }
 
     // if errorMessage has changed and errorMessage is set (not null & not empty), we want the component validity to reflect that,
-    // and we don't want the execute the classic validation
+    // and we don't want to execute the classic validation
     if (errorMessageChanged && !isErrorMessageEmpty) {
       let message;
       if (typeof this.errorMessage === 'string') {
@@ -206,8 +210,8 @@ export class AbstractInputElement extends LitElement {
 class Helper {
   /**
    *
-   * @param {AbstractInputElement} host
-   * @param {WithElementInternalsSettings} settings
+   * @param {InputElement} host
+   * @param {InputElementSettings} settings
    */
   constructor (host, settings) {
     this._host = host;
@@ -288,18 +292,33 @@ class Helper {
    * @return {ErrorMessage}
    */
   resolveErrorMessage (code, errorMessages, validator) {
-    if (errorMessages != null && Object.prototype.hasOwnProperty.call(errorMessages, code)) {
-      const errorMessage = errorMessages[code];
+    /** @type {Array<() => ErrorMessage>} */
+    const messageResolvers = [
+      () => {
+        if (errorMessages != null && Object.prototype.hasOwnProperty.call(errorMessages, code)) {
+          const errorMessage = errorMessages[code];
 
-      if (typeof errorMessage === 'function') {
-        return errorMessage();
+          if (typeof errorMessage === 'function') {
+            return errorMessage();
+          }
+
+          return errorMessage;
+        }
+        return null;
+      },
+      () => {
+        if (validator.getErrorMessage != null && typeof validator.getErrorMessage === 'function') {
+          return validator.getErrorMessage(code);
+        }
+        return null;
+      },
+    ];
+
+    for (const resolve of messageResolvers) {
+      const result = resolve();
+      if (result != null) {
+        return result;
       }
-
-      return errorMessage;
-    }
-
-    if (validator.getErrorMessage != null && typeof validator.getErrorMessage === 'function') {
-      return validator.getErrorMessage(code);
     }
 
     return code;

@@ -1,5 +1,5 @@
 import { css, html, LitElement } from 'lit';
-import { formSubmit } from '../../../lib/form/form.js';
+import { formSubmit } from '../../../lib/form/form-submit-directive.js';
 
 /**
  * @param {string[]} selectedCheckboxes - names of the selected checkboxes
@@ -44,6 +44,10 @@ export class CcFtDemoWithNativeInputs extends LitElement {
     const checkboxes = this.shadowRoot.querySelector('form').elements.namedItem('checkbox');
     console.log(radios);
     console.log(checkboxes);
+  }
+
+  getButtonElement () {
+
   }
 
   _onValid () {

@@ -24,6 +24,14 @@ export const invalid = (code) => {
 };
 
 /**
+ * A validator that checks whether a value is empty or not.
+ *
+ * It considers an empty value as invalid with `empty` error code.
+ *
+ * It supports emptiness for string, number and array data types.
+ *
+ * Returns
+ *
  * @implements {Validator}
  */
 export class RequiredValidator {
@@ -58,15 +66,23 @@ export class RequiredValidator {
 }
 
 /**
+ * A validator that checks whether a value is a valid number and optionally if it is inside some given bounds.
+ *
+ * It considers an invalid number as invalid with `badFormat` error code.
+ * It considers a number lower than the lower bound as invalid with `rangeUnderflow` error code.
+ * It considers a number higher than the upper bound as invalid with `rangeOverflow` error code.
+ *
+ * It supports number and string data form.
+ *
  * @implements {Validator}
  */
 export class NumberValidator {
   /**
-   * @param {Object} options
+   * @param {Object} [options]
    * @param {number} [options.min]
    * @param {number} [options.max]
    */
-  constructor ({ min, max }) {
+  constructor ({ min, max } = {}) {
     this._min = min;
     this._max = max;
   }
@@ -80,7 +96,7 @@ export class NumberValidator {
   validate (value, _formData) {
     // check is number
     const num = this._parse(value);
-    if (num == null) {
+    if (num == null || isNaN(num)) {
       return invalid('badType');
     }
 
@@ -124,6 +140,10 @@ export class NumberValidator {
 }
 
 /**
+ * A validator that checks whether a value is a valid email address.
+ *
+ * It considers an invalid email as invalid with `badEmail` error code.
+ *
  * @implements {Validator}
  */
 export class EmailValidator {
@@ -142,6 +162,8 @@ export class EmailValidator {
 }
 
 /**
+ * An always valid validator that always return valid regardless of the given value.
+ *
  * @implements {Validator}
  */
 export class ValidValidator {
@@ -156,6 +178,10 @@ export class ValidValidator {
 }
 
 /**
+ * This validator is a composition of multiple validators.
+ *
+ * All inner validators must be valid to make this validator valid.
+ *
  * @implements {Validator}
  */
 export class CompositeValidator {
@@ -173,7 +199,10 @@ export class CompositeValidator {
   getErrorMessage (code) {
     for (const validator of this._validators) {
       try {
-        return validator.getErrorMessage(code);
+        const message = validator.getErrorMessage(code);
+        if (message != null) {
+          return message;
+        }
       }
       catch (e) {
       }
@@ -203,6 +232,8 @@ export class CompositeValidator {
 const ALWAYS_VALID_VALIDATOR = new ValidValidator();
 
 /**
+ * Helps you to combine multiple validators in a CompositeValidator.
+ *
  * @return {ValidatorsCombiner}
  */
 export function validatorsBuilder () {

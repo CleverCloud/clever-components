@@ -5,7 +5,7 @@ import '../../cc-input-number/cc-input-number.js';
 import '../../cc-input-date/cc-input-date.js';
 import '../../cc-select/cc-select.js';
 import '../../cc-toggle/cc-toggle.js';
-import { formSubmit } from '../../../lib/form/form.js';
+import { formSubmit } from '../../../lib/form/form-submit-directive.js';
 
 const colorsSelectOptions = [
   {

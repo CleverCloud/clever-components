@@ -5,10 +5,10 @@ import { elementUpdated, expect, fixture } from '@open-wc/testing';
 import * as hanbi from 'hanbi';
 import { testAccessibility } from '../../../test/helpers/accessibility.js';
 import { getStories } from '../../../test/helpers/get-stories.js';
+import { invalid, VALID } from '../../lib/form/validation.js';
 import { sanitize } from '../../lib/i18n-sanitize.js';
 import { addTranslations, setLanguage } from '../../lib/i18n.js';
 import { clear, type } from '../../lib/test-utils.js';
-import { invalid, VALID } from '../../lib/validation/validation.js';
 import * as storiesModule from './cc-input-text.stories.js';
 
 /**
@@ -275,104 +275,6 @@ describe('Component cc-input-text', () => {
 
       assertValid(element);
       await assertValidateMethodReturnsValid(element);
-    });
-
-    it('should become invalid when custom validator changes', async () => {
-      const element = await getElement(`<cc-input-text required value="valid"></cc-input-text>`);
-      element.customValidator = new CustomValidator();
-      await elementUpdated(element);
-
-      element.customValidator = {
-        getErrorMessage (code) {
-          return 'Custom validator error message';
-        },
-        validate (value) {
-          return invalid('invalid');
-        },
-      };
-      await elementUpdated(element);
-
-      assertInvalid(element, 'Custom validator error message');
-      await assertValidateMethodReturnsInvalid(element, 'invalid', 'Custom validator error message');
-    });
-
-    it('should have the right error message decoded from a sanitized error', async () => {
-      const element = await getElement(`<cc-input-text required value="valid"></cc-input-text>`);
-
-      element.customValidator = {
-        getErrorMessage (code) {
-          return sanitize`error<br>message`;
-        },
-        validate (value) {
-          return invalid('invalid');
-        },
-      };
-      await elementUpdated(element);
-
-      assertInvalid(element, 'error\nmessage');
-      await assertValidateMethodReturnsInvalid(element, 'invalid', 'error\nmessage');
-    });
-
-    it('should become invalid when errorMessage is set', async () => {
-      const element = await getElement(`<cc-input-text value="value"></cc-input-text>`);
-
-      element.errorMessage = 'error message';
-      await elementUpdated(element);
-
-      assertInvalid(element, 'error message');
-    });
-
-    it('should become invalid when errorMessage is set with DocumentFragment', async () => {
-      const element = await getElement(`<cc-input-text value="value"></cc-input-text>`);
-
-      element.errorMessage = sanitize`error<br>message`;
-      await elementUpdated(element);
-
-      assertInvalid(element, 'error\nmessage');
-    });
-
-    it('should become valid when we use the validate() method, even after setting the errorMessage property', async () => {
-      const element = await getElement(`<cc-input-text value="value"></cc-input-text>`);
-
-      element.errorMessage = 'error message';
-      await elementUpdated(element);
-
-      // when we use the validate method we come back to a normal validation
-      await assertValidateMethodReturnsValid(element);
-    });
-
-    it('should become invalid when errorMessage is set with DocumentFragment', async () => {
-      const element = await getElement(`<cc-input-text value="value"></cc-input-text>`);
-
-      element.errorMessage = sanitize`error<br>message`;
-      await elementUpdated(element);
-
-      assertInvalid(element, 'error\nmessage');
-
-      // when we use the validate method we come back to a normal validation
-      await assertValidateMethodReturnsValid(element);
-    });
-
-    it('should use the given custom error message', async () => {
-      const element = await getElement(`<cc-input-text required></cc-input-text>`);
-
-      element.customErrorMessages = {
-        empty: 'custom empty error',
-      };
-      await elementUpdated(element);
-
-      await assertValidateMethodReturnsInvalid(element, 'empty', 'custom empty error');
-    });
-
-    it('should fallback to default error message when given custom error message does not contain the corresponding error code', async () => {
-      const element = await getElement(`<cc-input-text required></cc-input-text>`);
-
-      element.customErrorMessages = {
-        unusedCode: 'custom empty error',
-      };
-      await elementUpdated(element);
-
-      await assertValidateMethodReturnsInvalid(element, 'empty', 'Empty error message');
     });
   });
 });

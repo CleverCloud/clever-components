@@ -9,10 +9,10 @@ import {
   iconRemixEyeOffLine as iconEyeClosed,
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
+import { InputElement } from '../../lib/form/input-element.js';
+import { EmailValidator, RequiredValidator, validatorsBuilder } from '../../lib/form/validation.js';
 import { i18n } from '../../lib/i18n.js';
 import { arrayEquals } from '../../lib/utils.js';
-import { EmailValidator, RequiredValidator, validatorsBuilder } from '../../lib/validation/validation.js';
-import { AbstractInputElement } from '../../mixins/abstract-input-element.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-icon/cc-icon.js';
@@ -61,7 +61,7 @@ const DEFAULT_ERROR_MESSAGES = {
  * @slot error - The error message to be displayed below the `<input>` element or below the help text. Please use a `<p>` tag.
  * @slot help - The help message to be displayed right below the `<input>` element. Please use a `<p>` tag.
  */
-export class CcInputText extends AbstractInputElement {
+export class CcInputText extends InputElement {
 
   static get properties () {
     return {
@@ -72,7 +72,6 @@ export class CcInputText extends AbstractInputElement {
       hiddenLabel: { type: Boolean, attribute: 'hidden-label' },
       inline: { type: Boolean, reflect: true },
       multi: { type: Boolean, reflect: true },
-      name: { type: String, reflect: true },
       placeholder: { type: String },
       readonly: { type: Boolean, reflect: true },
       required: { type: Boolean },
@@ -110,9 +109,6 @@ export class CcInputText extends AbstractInputElement {
 
     /** @type {boolean} Enables multiline support (with a `<textarea>` instead of an `<input>`). */
     this.multi = false;
-
-    /** @type {string|null} Sets `name` attribute on inner native `<input>/<textarea>` element. */
-    this.name = null;
 
     /** @type {string} Sets `placeholder` attribute on inner native `<input>/<textarea>` element. */
     this.placeholder = '';
@@ -154,7 +150,7 @@ export class CcInputText extends AbstractInputElement {
     this._tagsEnabled = false;
   }
 
-  getElementInternalsSettings () {
+  getInputSettings () {
     return {
       valuePropertyName: 'value',
       resetValuePropertyName: 'resetValue',
@@ -201,7 +197,7 @@ export class CcInputText extends AbstractInputElement {
    * Triggers focus on the inner `<input>/<textarea>` element.
    */
   focus () {
-    this.updateComplete.then(() => this._inputRef?.value?.focus());
+    this._inputRef?.value?.focus();
   }
 
   /**
@@ -355,7 +351,6 @@ export class CcInputText extends AbstractInputElement {
               ?disabled=${this.disabled || this.skeleton}
               ?readonly=${this.readonly}
               .value=${value}
-              name=${ifDefined(this.name ?? undefined)}
               placeholder=${this.placeholder}
               spellcheck="false"
               wrap="${ifDefined(this._tagsEnabled ? 'soft' : undefined)}"
@@ -381,7 +376,6 @@ export class CcInputText extends AbstractInputElement {
               ?disabled=${this.disabled || this.skeleton}
               ?readonly=${this.readonly}
               .value=${value}
-              name=${ifDefined(this.name ?? undefined)}
               placeholder=${this.placeholder}
               spellcheck="false"
               aria-describedby="help-id error-id"

@@ -2,7 +2,7 @@ import { css, html, LitElement } from 'lit';
 import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
 import '../../cc-toggle/cc-toggle.js';
-import { formSubmit } from '../../../lib/form/form.js';
+import { formSubmit } from '../../../lib/form/form-submit-directive.js';
 
 export class CcFtDemoWithArrayType extends LitElement {
   static get properties () {
@@ -22,7 +22,6 @@ export class CcFtDemoWithArrayType extends LitElement {
   render () {
     return html`
       <form name="my-form" 
-            novalidate
             ${formSubmit(this)}
       >
         <cc-input-text label="Name" name="name" required></cc-input-text>

@@ -1,7 +1,7 @@
-import { ErrorMessageMap, Validator } from "../lib/validation/validation.types";
-import { InputData } from "../lib/form/form.types";
+import { ErrorMessageMap, Validator } from "./validation.types";
+import { InputData } from "./form.types";
 
-export interface WithElementInternalsSettings {
+export interface InputElementSettings {
   valuePropertyName: string;
   resetValuePropertyName?: string;
   inputDataProvider?: Provider<InputData>;

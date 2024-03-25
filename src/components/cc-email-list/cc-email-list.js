@@ -38,8 +38,11 @@ const SKELETON_SECONDARY_EMAILS = [];
 /**
  * @typedef {import('./cc-email-list.types.js').EmailListState} EmailListState
  * @typedef {import('./cc-email-list.types.js').AddEmailFormState} AddEmailFormState
- * @typedef {import('../../lib/form/form-controller.js').FormController<'address', 'invalid'|'already-defined'|'used', null|'adding'>} AddEmailFormController
- * @typedef {import('../../lib/form/form-helper.js').FormHelper<'address', 'invalid'|'already-defined'|'used', null|'adding'>} AddEmailFormHelper
+ * @typedef {import('./cc-email-list.types.js').PrimaryAddressState} PrimaryAddressState
+ * @typedef {import('./cc-email-list.types.js').SecondaryAddressState} SecondaryAddressState
+ * @typedef {import('../cc-input-text/cc-input-text.js').CcInputText} CcInputText
+ * @typedef {import('../../lib/form/form-controller.js').FormController} FormController
+ * @typedef {import('lit/directives/ref.js').Ref<CcInputText>} CcInputTextRef
  */
 
 /**
@@ -89,7 +92,7 @@ export class CcEmailList extends LitElement {
     /** @type {EmailListState} State of the component. */
     this.emails = { state: 'loading' };
 
-    /** @type {Ref<CcInputText>} */
+    /** @type {CcInputTextRef} */
     this._addressInputRef = createRef();
 
     new LostFocusController(this, '.secondary', ({ suggestedElement }) => {
@@ -101,10 +104,11 @@ export class CcEmailList extends LitElement {
       }
     });
 
-    /** @type {AddEmailFormController} */
+    /** @type {FormController} */
     this._addEmailFormCtrl = new FormController(this, {
+      initialState: 'idle',
       onSubmit: this._onAddFormSubmit.bind(this),
-      errorsMap: {
+      errorMessageMap: {
         invalid: () => i18n('cc-input-text.error.bad-email'),
         'already-defined': () => i18n('cc-email-list.secondary.address-input.error.already-defined'),
         used: () => i18n('cc-email-list.secondary.address-input.error.used'),
@@ -112,11 +116,30 @@ export class CcEmailList extends LitElement {
     });
   }
 
-  /**
-   * @return {AddEmailFormHelper}
-   */
-  getAddEmailForm () {
-    return this._addEmailFormCtrl.formHelper;
+  getAddEmailFormManager () {
+    return {
+      /**
+       * @param {'idle' | 'adding'} state
+       */
+      setState: (state) => {
+        this._addEmailFormCtrl.state = state;
+      },
+      /**
+       * @param {'invalid'|'already-defined'|'used'} [emailErrorCode]
+       */
+      onSubmitFailure: async (emailErrorCode) => {
+        this._addEmailFormCtrl.state = 'idle';
+        if (emailErrorCode != null) {
+          await this._addEmailFormCtrl.errorReporter()
+            .add('email', emailErrorCode)
+            .report();
+        }
+      },
+      onSubmitSuccess: async () => {
+        this._addEmailFormCtrl.state = 'idle';
+        this._addEmailFormCtrl.reset();
+      },
+    };
   }
 
   _getVerifiedTagLabel (verified) {
@@ -260,8 +283,7 @@ export class CcEmailList extends LitElement {
   }
 
   _renderAddEmailForm () {
-    const isAdding = this._addEmailFormCtrl.formHelper?.state === 'adding';
-    console.log('isAdding', isAdding);
+    const isAdding = this._addEmailFormCtrl.state === 'adding';
 
     return html`
       <form name="add-email-form" ${this._addEmailFormCtrl.handleSubmit()}>

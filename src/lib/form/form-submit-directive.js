@@ -10,11 +10,9 @@ import { formSubmitHandler } from './form-submit-handler.js';
  * @typedef {import('lit/async-directive.js').ElementPart} ElementPart
  * @typedef {import('lit/async-directive.js').DirectiveResult} DirectiveResult
  * @typedef {import('./form.types.js').HTMLFormElementEvent} HTMLFormElementEvent
+ * @typedef {import('./form-controller.js').FormController} FormController
  */
 
-/**
- * Lit directive helping in handling form
- */
 class FormSubmitDirective extends AsyncDirective {
   /**
    * @param {PartInfo} partInfo
@@ -22,6 +20,8 @@ class FormSubmitDirective extends AsyncDirective {
   constructor (partInfo) {
     super(partInfo);
 
+    /** @type {HTMLFormElement} */
+    this._formElement = null;
     /** @type {EventHandler<HTMLFormElementEvent>} */
     this._elementHandler = null;
   }
@@ -42,10 +42,9 @@ class FormSubmitDirective extends AsyncDirective {
   update (part, _args) {
     const formElement = this.getFormElement(part);
 
-    formElement.setAttribute('novalidate', '');
-    this._elementHandler?.disconnect();
-    this._elementHandler = new EventHandler(formElement, 'submit', formSubmitHandler());
-    this._elementHandler.connect();
+    if (formElement.hasChanged) {
+      this.install(formElement.element);
+    }
 
     return this.render();
   }
@@ -60,69 +59,79 @@ class FormSubmitDirective extends AsyncDirective {
 
   /**
    * @param {Part} part
-   * @return {HTMLFormElement}
+   * @return {{element: HTMLFormElement, hasChanged: boolean}}
    */
   getFormElement (part) {
     if (!isElementPart(part) || !isFormElement(part.element)) {
-      throw new Error('This directive must be used on an <form> element');
+      throw new Error('This directive must be used on an `<form>` element');
     }
 
-    return part.element;
+    /** @type {HTMLFormElement} */
+    const element = part.element;
+    const hasChanged = this._formElement !== element;
+
+    return { element, hasChanged };
   }
 
   /**
    * @param {HTMLFormElement} formElement
    */
   install (formElement) {
-    formElement.setAttribute('novalidate', '');
     this._elementHandler?.disconnect();
+
+    this._formElement = formElement;
+    this._formElement.setAttribute('novalidate', '');
+
     this._elementHandler = new EventHandler(formElement, 'submit', formSubmitHandler());
     this._elementHandler.connect();
   }
 }
 
+/**
+ * Lit directive helping in handling form submission with validation and error reporting.
+ *
+ * This directive is to be put on a `<form>` element.
+ */
 export const formSubmit = directive(FormSubmitDirective);
 
 /**
- * @template {string} I
- * @template {string} E
- * @template {any} S
+ * This is a subclass of {@link FormSubmitDirective}. It also registers the `<form>` element on a {@link FormController} instance.
  */
 class ControlledFormSubmitDirective extends FormSubmitDirective {
-  /**
-   * @typedef {import('./form-controller.js').FormController<I, E, S>} SpecificFormController
-   */
-
   /**
    * @param {PartInfo} partInfo
    */
   constructor (partInfo) {
     super(partInfo);
 
-    /** @type {SpecificFormController} */
+    /** @type {FormController} */
     this._formController = null;
   };
 
   /**
    * @param {Part} part
-   * @param {[formController: SpecificFormController]} args
+   * @param {[formController: FormController]} args
    */
   update (part, args) {
     const formElement = this.getFormElement(part);
 
     const formController = args[0];
 
-    if (this._formController !== formController) {
+    if (this._formController !== formController || formElement.hasChanged) {
       this._formController = formController;
-      this._formController.register(formElement);
+      this.install(formElement.element);
 
-      this.install(formElement);
+      this._formController.register(formElement.element);
     }
 
     return this.render();
   }
 }
 
+/**
+ * This Lit directive is not intended to be used directly, but through {@link FormController#handleSubmit()}.
+ * It automatically registers the `<form>` element on the `FormController`.
+ */
 export const controlledFormSubmit = directive(ControlledFormSubmitDirective);
 
 /**
@@ -131,7 +140,7 @@ export const controlledFormSubmit = directive(ControlledFormSubmitDirective);
  * @return {element is HTMLFormElement}
  */
 function isFormElement (element) {
-  return (element.nodeName === 'FORM');
+  return element instanceof HTMLFormElement;
 }
 
 /**

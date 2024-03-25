@@ -1,8 +1,8 @@
 import { css, html, LitElement } from 'lit';
 import '../../cc-button/cc-button.js';
 import '../../cc-input-text/cc-input-text.js';
-import { formSubmit } from '../../../lib/form/form.js';
-import { invalid, VALID } from '../../../lib/validation/validation.js';
+import { formSubmit } from '../../../lib/form/form-submit-directive.js';
+import { invalid, VALID } from '../../../lib/form/validation.js';
 
 const caseSelectOptions = [
   {

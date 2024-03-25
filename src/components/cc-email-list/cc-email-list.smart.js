@@ -96,10 +96,10 @@ defineSmartComponent({
         });
     });
 
+    const addEmailFormManager = component.getAddEmailFormManager();
     onEvent('cc-email-list:add', async (address) => {
-      const addEmailForm = component.getAddEmailForm();
 
-      await addEmailForm.setState('adding');
+      addEmailFormManager.setState('adding');
 
       api.addSecondaryEmailAddress(address)
         .then(() => {
@@ -113,27 +113,23 @@ defineSmartComponent({
             },
           });
 
-          addEmailForm.reset();
-          addEmailForm.setState(null);
+          addEmailFormManager.onSubmitSuccess();
         })
         .catch((error) => {
-          const transaction = addEmailForm.beginTransaction();
-
           if (error.id === 550) {
-            transaction.addError('address', 'invalid');
+            addEmailFormManager.onSubmitFailure('invalid');
           }
           else if (error.id === 101) {
-            transaction.addError('address', 'already-defined');
+            addEmailFormManager.onSubmitFailure('already-defined');
           }
           else if (error.id === 1004) {
-            transaction.addError('address', 'used');
+            addEmailFormManager.onSubmitFailure('used');
           }
           else {
             console.error(error);
             notifyError(i18n('cc-email-list.secondary.action.add.error', { address }));
+            addEmailFormManager.onSubmitFailure();
           }
-
-          transaction.setState(null).commit();
         });
 
     });

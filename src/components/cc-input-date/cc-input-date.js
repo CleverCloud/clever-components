@@ -11,15 +11,15 @@ import {
   shiftDateField,
 } from '../../lib/date/date-utils.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
-import { i18n } from '../../lib/i18n.js';
-import { isStringEmpty } from '../../lib/utils.js';
+import { InputElement } from '../../lib/form/input-element.js';
 import {
   invalid,
   RequiredValidator,
   VALID,
   validatorsBuilder,
-} from '../../lib/validation/validation.js';
-import { AbstractInputElement } from '../../mixins/abstract-input-element.js';
+} from '../../lib/form/validation.js';
+import { i18n } from '../../lib/i18n.js';
+import { isStringEmpty } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 
@@ -86,8 +86,8 @@ function dateStateValid (date) {
  * @typedef {import('./cc-input-date.types.js').InputDateValueStateEmpty} InputDateValueStateEmpty
  * @typedef {import('./cc-input-date.types.js').InputDateValueStateNaD} InputDateValueStateNaD
  * @typedef {import('./cc-input-date.types.js').InputDateValueStateValid} InputDateValueStateValid
- * @typedef {import('../../lib/validation/validation.types.js').Validation} Validation
- * @typedef {import('../../lib/validation/validation.types.js').Validator} Validator
+ * @typedef {import('../../lib/form/validation.types.js').Validation} Validation
+ * @typedef {import('../../lib/form/validation.types.js').Validator} Validator
  * @typedef {import('lit/directives/ref.js').Ref<HTMLInputElement>} HTMLInputElementRef
  * @typedef {import('lit').PropertyValues<CcInputDate>} CcInputDatePropertyValues
  * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement>} HTMLInputElementEvent
@@ -115,7 +115,7 @@ function dateStateValid (date) {
  * @slot error - The error message to be displayed below the `<input>` element or below the help text. Please use a `<p>` tag.
  * @slot help - The help message to be displayed right below the `<input>` element. Please use a `<p>` tag.
  */
-export class CcInputDate extends AbstractInputElement {
+export class CcInputDate extends InputElement {
 
   static get properties () {
     return {
@@ -126,7 +126,6 @@ export class CcInputDate extends AbstractInputElement {
       label: { type: String },
       max: { type: String },
       min: { type: String },
-      name: { type: String, reflect: true },
       readonly: { type: Boolean, reflect: true },
       required: { type: Boolean },
       skeleton: { type: Boolean, reflect: true },
@@ -159,9 +158,6 @@ export class CcInputDate extends AbstractInputElement {
 
     /** @type {string|null} Sets the min date with ISO date format. */
     this.min = null;
-
-    /** @type {string|null} Sets `name` attribute on inner native `<input>` element. */
-    this.name = null;
 
     /** @type {boolean} Sets `readonly` attribute on inner native `<input>` element. */
     this.readonly = false;
@@ -200,7 +196,7 @@ export class CcInputDate extends AbstractInputElement {
     this._valueState = dateStateEmpty();
   }
 
-  getElementInternalsSettings () {
+  getInputSettings () {
     return {
       valuePropertyName: 'value',
       resetValuePropertyName: 'resetValue',
@@ -221,7 +217,12 @@ export class CcInputDate extends AbstractInputElement {
         }
       ),
       reactiveValidationProperties: ['required', 'min', 'max', 'timezone'],
-      inputDataProvider: () => this._inputRef.value.value,
+      inputDataProvider: () => {
+        if (this._valueState.state === 'empty') {
+          return '';
+        }
+        return this._valueState.value;
+      },
     };
   }
 
@@ -491,7 +492,6 @@ export class CcInputDate extends AbstractInputElement {
             ?disabled=${this.disabled || this.skeleton}
             ?readonly=${this.readonly}
             .value=${live(this._formatValue())}
-            name=${this.name ?? ''}
             spellcheck="false"
             aria-describedby="help error keyboard-hint"
             @focus=${this._onFocus}
