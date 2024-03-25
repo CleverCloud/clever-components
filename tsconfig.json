@@ -5,6 +5,7 @@
     "node_modules",
     "storybook-static",
     "dist",
+    "**/*.test.js"
   ],
   "compilerOptions": {
     /* Visit https://www.typescriptlang.org/tsconfig to read more about this file */
