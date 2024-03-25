@@ -422,6 +422,10 @@ export const translations = {
   //#endregion
   //#region cc-input-number
   'cc-input-number.decrease': `decrease`,
+  'cc-input-number.error.bad-type': `You must enter a number.`,
+  'cc-input-number.error.empty': `You must enter a value.`,
+  'cc-input-number.error.range-overflow': ({ max }) => `You must enter a number lower that ${max}.`,
+  'cc-input-number.error.range-underflow': ({ min }) => `You must enter a number higher that ${min}.`,
   'cc-input-number.increase': `increase`,
   'cc-input-number.required': `required`,
   //#endregion
