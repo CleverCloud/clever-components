@@ -6,6 +6,8 @@ import { sendKeys } from '@web/test-runner-commands';
 import { html } from 'lit';
 import { testAccessibility } from '../../../test/helpers/accessibility.js';
 import { getStories } from '../../../test/helpers/get-stories.js';
+import { addTranslations, setLanguage } from '../../lib/i18n.js';
+import { translations } from '../../translations/translations.en.js';
 import * as storiesModule from './cc-input-date.stories.js';
 
 /**
@@ -71,6 +73,11 @@ async function moveInputCaretToPosition (element, position) {
 function getInternalInput (element) {
   return element.shadowRoot.querySelector('#input-id');
 }
+
+before(() => {
+  addTranslations('en', translations);
+  setLanguage('en');
+});
 
 describe('Component cc-input-date', () => {
   describe('valueAsDate method', () => {
@@ -262,23 +269,29 @@ describe('Component cc-input-date', () => {
   });
 
   describe('error class', () => {
-    it('should be placed on internal input when error slot is set', async () => {
-      const element = await fixture('<cc-input-date value="2023-07-31T19:11:12.259Z"><p slot="error">Error</p></cc-input-date>');
+    it('should be placed on internal input when errorMessage is set', async () => {
+      const element = await fixture('<cc-input-date value="2023-07-31T19:11:12.259Z"></cc-input-date>');
+
+      element.errorMessage = 'Error';
       await elementUpdated(element);
+
       const input = getInternalInput(element);
       expect(input).to.have.class('error');
     });
 
-    it('should be removed from internal input when error slot is removed', async () => {
-      const element = await fixture('<cc-input-date value="2023-07-31T19:11:12.259Z"><p slot="error">Error</p></cc-input-date>');
+    it('should be removed from internal input when error message is removed', async () => {
+      const element = await fixture('<cc-input-date value="2023-07-31T19:11:12.259Z"></cc-input-date>');
+      element.errorMessage = 'Error';
       await elementUpdated(element);
-      element.innerHTML = '';
+
+      element.errorMessage = '';
       await elementUpdated(element);
+
       const input = getInternalInput(element);
       expect(input).to.not.have.class('error');
     });
 
-    it('should be not set on internal input when no error slot defined', async () => {
+    it('should be not set on internal input when no error message defined', async () => {
       const element = await fixture('<cc-input-date value="2023-07-31T19:11:12.259Z"></cc-input-date>');
       await elementUpdated(element);
 
