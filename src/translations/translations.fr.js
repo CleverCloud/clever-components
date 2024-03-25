@@ -426,6 +426,10 @@ export const translations = {
   'cc-heptapod-info.storage-description': `Stockage utilisé`,
   //#endregion
   //#region cc-input-date
+  'cc-input-date.error.bad-input': `Veuillez saisir une date.`,
+  'cc-input-date.error.empty': `Veuillez saisir une valeur.`,
+  'cc-input-date.error.range-overflow': ({ max }) => `Veuillez saisir une date inférieure à ${max}.`,
+  'cc-input-date.error.range-underflow': ({ min }) => `Veuillez saisir une date supérieure à ${min}.`,
   'cc-input-date.keyboard-hint': `Vous pouvez utiliser les touches flèche haut et flèche bas pour modifier des parties de la date.`,
   'cc-input-date.required': `obligatoire`,
   //#endregion

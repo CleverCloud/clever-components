@@ -413,6 +413,10 @@ export const translations = {
   'cc-heptapod-info.storage-description': `Storage size`,
   //#endregion
   //#region cc-input-date
+  'cc-input-date.error.bad-input': `You must enter a date.`,
+  'cc-input-date.error.empty': `You must enter a value.`,
+  'cc-input-date.error.range-overflow': ({ max }) => `You must enter a date lower that ${max}.`,
+  'cc-input-date.error.range-underflow': ({ min }) => `You must enter a date higher that ${min}.`,
   'cc-input-date.keyboard-hint': `You can use up or down arrow keys to modify parts of the date.`,
   'cc-input-date.required': `required`,
   //#endregion

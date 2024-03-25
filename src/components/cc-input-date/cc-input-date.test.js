@@ -1,76 +1,24 @@
 /* eslint-env node, mocha */
 
 import './cc-input-date.js';
-import { elementUpdated, expect, fixture, triggerFocusFor } from '@open-wc/testing';
+import { elementUpdated, expect, fixture } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 import { html } from 'lit';
 import { testAccessibility } from '../../../test/helpers/accessibility.js';
+import { getElement, moveInputCaretToPosition, replaceText, typeText } from '../../../test/helpers/element-helper.js';
 import { getStories } from '../../../test/helpers/get-stories.js';
+import { addTranslations, setLanguage } from '../../lib/i18n.js';
+import { translations } from '../../translations/translations.en.js';
 import * as storiesModule from './cc-input-date.stories.js';
 
-/**
- *
- * @param template
- * @return {Promise<CcInputDate>}
- */
-async function getElement (template) {
-  const element = await fixture(template);
-  await elementUpdated(element);
-  return element;
-}
-
-/**
- *
- * @param {CcInputDate} element
- * @param {string} value
- * @return {Promise<void>}
- */
-async function type (element, value) {
-  await triggerFocusFor(element);
-  await sendKeys({ type: value });
-  await elementUpdated(element);
-}
-
-/**
- *
- * @param {CcInputDate} element
- * @param {string} value
- * @return {Promise<void>}
- */
-async function replace (element, value) {
-  await clear(element);
-  await sendKeys({ type: value });
-  await elementUpdated(element);
-}
-
-/**
- *
- * @param {CcInputDate} element
- * @return {Promise<void>}
- */
-async function clear (element) {
-  await triggerFocusFor(element);
-  await sendKeys({ down: 'Control' });
-  await sendKeys({ press: 'KeyA' });
-  await sendKeys({ up: 'Control' });
-  await sendKeys({ press: 'Backspace' });
-  await elementUpdated(element);
-}
-
-async function moveInputCaretToPosition (element, position) {
-  await triggerFocusFor(element);
-  await sendKeys({ down: 'Control' });
-  await sendKeys({ press: 'KeyA' });
-  await sendKeys({ up: 'Control' });
-  await sendKeys({ press: 'ArrowLeft' });
-  for (let i = 0; i < position; i++) {
-    await sendKeys({ press: 'ArrowRight' });
-  }
-}
-
 function getInternalInput (element) {
-  return element.shadowRoot.querySelector('#input-id');
+  return element.shadowRoot.querySelector('#input');
 }
+
+before(() => {
+  addTranslations('en', translations);
+  setLanguage('en');
+});
 
 describe('Component cc-input-date', () => {
   describe('valueAsDate method', () => {
@@ -97,38 +45,38 @@ describe('Component cc-input-date', () => {
 
     it('should return null after user types a invalid value', async () => {
       const element = await getElement(`<cc-input-date></cc-input-date>`);
-      await type(element, 'invalid value');
+      await typeText(element, 'invalid value');
       expect(element.valueAsDate).to.eql(null);
     });
 
     it('should return the right date after user types a valid value with ISO format', async () => {
       const element = await getElement(`<cc-input-date></cc-input-date>`);
-      await type(element, '2023-07-31T20:11:12.259Z');
+      await typeText(element, '2023-07-31T20:11:12.259Z');
       expect(element.valueAsDate?.toISOString()).to.eql('2023-07-31T20:11:12.259Z');
     });
 
     it('should return the right date after user types a valid value with simple format', async () => {
       const element = await getElement(`<cc-input-date></cc-input-date>`);
-      await type(element, '2023-07-31 20:11:12');
+      await typeText(element, '2023-07-31 20:11:12');
       expect(element.valueAsDate?.toISOString()).to.eql('2023-07-31T20:11:12.000Z');
     });
 
     it('should return null after user modifies the valid value to an invalid value', async () => {
       const element = await getElement(`<cc-input-date value="2023-07-31T20:11:12.259Z"></cc-input-date>`);
-      await type(element, 'will-become-invalid-date');
+      await typeText(element, 'will-become-invalid-date');
       expect(element.valueAsDate).to.eql(null);
     });
 
     describe('with local timezone', () => {
       it('should return the right date after user types a valid value with ISO format', async () => {
         const element = await getElement(`<cc-input-date timezone="local"></cc-input-date>`);
-        await type(element, '2023-07-31T20:11:12.259Z');
+        await typeText(element, '2023-07-31T20:11:12.259Z');
         expect(element.valueAsDate?.toISOString()).to.eql('2023-07-31T20:11:12.259Z');
       });
 
       it('should return the right date after user types a valid value with simple format', async () => {
         const element = await getElement(`<cc-input-date timezone="local"></cc-input-date>`);
-        await type(element, '2023-07-31 20:11:12');
+        await typeText(element, '2023-07-31 20:11:12');
         expect(element.valueAsDate?.toISOString()).to.eql('2023-07-31T18:11:12.000Z');
       });
     });
@@ -202,19 +150,19 @@ describe('Component cc-input-date', () => {
 
     it('should become valid when user types a valid date with ISO format', async () => {
       const element = await getElement(`<cc-input-date></cc-input-date>`);
-      await type(element, '2023-07-31T20:11:12.259Z');
+      await typeText(element, '2023-07-31T20:11:12.259Z');
       assertValid(element);
     });
 
     it('should become valid when user types a valid date with simple format', async () => {
       const element = await getElement(`<cc-input-date></cc-input-date>`);
-      await type(element, '2023-07-31 20:11:12');
+      await typeText(element, '2023-07-31 20:11:12');
       assertValid(element);
     });
 
     it('should become invalid with badInput code when user types a invalid date', async () => {
       const element = await getElement(`<cc-input-date></cc-input-date>`);
-      await type(element, 'invalid date');
+      await typeText(element, 'invalid date');
       assertInvalid(element, 'badInput');
     });
 
@@ -232,7 +180,7 @@ describe('Component cc-input-date', () => {
 
     it('should become invalid with rangeUnderflow code when user types a too low value', async () => {
       const element = await getElement(`<cc-input-date min="2023-07-31T21:00:00.000Z" value="2023-07-31T21:11:12.259Z"></cc-input-date>`);
-      await replace(element, '2023-07-31 20:11:12');
+      await replaceText(element, '2023-07-31 20:11:12');
       assertInvalid(element, 'rangeUnderflow');
     });
 
@@ -250,35 +198,41 @@ describe('Component cc-input-date', () => {
 
     it('should become invalid with rangeOverflow code when user types a too high value', async () => {
       const element = await getElement(`<cc-input-date max="2023-07-31T21:00:00.000Z" value="2023-07-31T20:11:12.259Z"></cc-input-date>`);
-      await replace(element, '2023-07-31 21:11:12');
+      await replaceText(element, '2023-07-31 21:11:12');
       assertInvalid(element, 'rangeOverflow');
     });
 
     it('should become valid when user types a date in min-max bounds', async () => {
       const element = await getElement(`<cc-input-date min="2023-07-31T20:00:00.000Z" max="2023-07-31T21:00:00.000Z" value="2023-07-31T19:11:12.259Z"></cc-input-date>`);
-      await replace(element, '2023-07-31 20:11:12');
+      await replaceText(element, '2023-07-31 20:11:12');
       assertValid(element);
     });
   });
 
   describe('error class', () => {
-    it('should be placed on internal input when error slot is set', async () => {
-      const element = await fixture('<cc-input-date value="2023-07-31T19:11:12.259Z"><p slot="error">Error</p></cc-input-date>');
+    it('should be placed on internal input when errorMessage is set', async () => {
+      const element = await fixture('<cc-input-date value="2023-07-31T19:11:12.259Z"></cc-input-date>');
+
+      element.errorMessage = 'Error';
       await elementUpdated(element);
+
       const input = getInternalInput(element);
       expect(input).to.have.class('error');
     });
 
-    it('should be removed from internal input when error slot is removed', async () => {
-      const element = await fixture('<cc-input-date value="2023-07-31T19:11:12.259Z"><p slot="error">Error</p></cc-input-date>');
+    it('should be removed from internal input when error message is removed', async () => {
+      const element = await fixture('<cc-input-date value="2023-07-31T19:11:12.259Z"></cc-input-date>');
+      element.errorMessage = 'Error';
       await elementUpdated(element);
-      element.innerHTML = '';
+
+      element.errorMessage = '';
       await elementUpdated(element);
+
       const input = getInternalInput(element);
       expect(input).to.not.have.class('error');
     });
 
-    it('should be not set on internal input when no error slot defined', async () => {
+    it('should be not set on internal input when no error message defined', async () => {
       const element = await fixture('<cc-input-date value="2023-07-31T19:11:12.259Z"></cc-input-date>');
       await elementUpdated(element);
 
@@ -370,7 +324,7 @@ describe('Component cc-input-date', () => {
         const element = await getElement('<cc-input-date value=""></cc-input-date>');
         const input = getInternalInput(element);
 
-        await type(element, '2023-07-31T20:11:12.259Z');
+        await typeText(element, '2023-07-31T20:11:12.259Z');
         expect(input.value).to.equal('2023-07-31 20:11:12');
       });
     });
@@ -394,7 +348,7 @@ describe('Component cc-input-date', () => {
         const element = await getElement('<cc-input-date value="" timezone="local"></cc-input-date>');
         const input = getInternalInput(element);
 
-        await type(element, '2023-07-31T20:11:12.259Z');
+        await typeText(element, '2023-07-31T20:11:12.259Z');
         expect(input.value).to.equal('2023-07-31 22:11:12');
         await elementUpdated(element);
         expect(input.value).to.equal('2023-07-31 22:11:12');
@@ -419,12 +373,12 @@ describe('Component cc-input-date', () => {
       const element = await getElement('<cc-input-date value=""></cc-input-date>');
       const input = getInternalInput(element);
 
-      await type(element, 'invalid');
+      await typeText(element, 'invalid');
       expect(input.value).to.equal('invalid');
       await elementUpdated(element);
       expect(input.value).to.equal('invalid');
 
-      await type(element, ' value');
+      await typeText(element, ' value');
       expect(input.value).to.equal('invalid value');
       await elementUpdated(element);
       expect(input.value).to.equal('invalid value');
@@ -467,7 +421,7 @@ describe('Component cc-input-date', () => {
       // this doesn't trigger input event on internal input
       element.value = '2023-07-31T19:11:12.000';
       // this triggers input event on internal input.
-      await type(input, 'Z');
+      await typeText(input, 'Z');
 
       expect(input.value).to.equal('2023-07-31 19:11:12');
     });

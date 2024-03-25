@@ -23,10 +23,10 @@ export function cloneDate (date) {
  * Checks whether the given object is a valid Date.
  *
  * @param {any} object
- * @return {boolean}
+ * @return {object is Date}
  */
 export function isDateValid (object) {
-  return object instanceof Date && !isNaN(object);
+  return object instanceof Date && !isNaN(object.getTime());
 }
 
 /**
