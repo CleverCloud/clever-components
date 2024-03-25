@@ -2,6 +2,11 @@ import './cc-input-date.js';
 import { allFormControlsStory } from '../../stories/all-form-controls.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
+/**
+ *
+ * @typedef {import('./cc-input-date.js').CcInputDate} CcInputDate
+ */
+
 const baseItems = [
   { label: 'The Label' },
   { label: 'The Label', value: '2023-07-21T14:23:51.254Z' },
@@ -53,7 +58,7 @@ export const errorMessage = makeStory(conf, {
   items: baseItems.map((p) => ({
     ...p,
     required: true,
-    innerHTML: '<p slot="error">You must enter a value</p>',
+    errorMessage: 'You must enter a value',
   })),
 });
 
@@ -61,9 +66,9 @@ export const errorMessageWithHelpMessage = makeStory(conf, {
   items: baseItems.map((p) => ({
     ...p,
     required: true,
+    errorMessage: 'You must enter a value',
     innerHTML: `
       <p slot="help">Must be a date</p>
-      <p slot="error">You must enter a value</p>
     `,
   })),
 });
@@ -88,9 +93,9 @@ export const inlineWithErrorAndHelpMessages = makeStory(conf, {
     ...p,
     inline: true,
     required: true,
+    errorMessage: 'You must enter a value',
     innerHTML: `
       <p slot="help">Must be a date</p>
-      <p slot="error">You must enter a value</p>
     `,
   })),
 });
@@ -116,7 +121,7 @@ export const customWidth = makeStory(conf, {
     }
   `,
   items: new Array(6).fill(0)
-    .map(($, i) => {
+    .map((_, i) => {
       const width = 20 + i * 50;
       return {
         controls: true,
@@ -154,11 +159,12 @@ export const customLabelStyle = makeStory({ ...conf, displayMode: 'block' }, {
     })),
     ...customBaseItems.map((item) => ({
       ...item,
-      innerHTML: `<p slot="error">You must enter a value</p>`,
+      errorMessage: 'You must enter a value',
     })),
     ...customBaseItems.map((item) => ({
       ...item,
-      innerHTML: `<p slot="help">Must be a date</p><p slot="error">You must enter a value</p>`,
+      errorMessage: 'You must enter a value',
+      innerHTML: `<p slot="help">Must be a date</p>`,
     })),
     ...customBaseItems.map((item) => ({
       ...item,
@@ -172,12 +178,13 @@ export const customLabelStyle = makeStory({ ...conf, displayMode: 'block' }, {
     ...customBaseItems.map((item) => ({
       ...item,
       inline: true,
-      innerHTML: `<p slot="error">You must enter a value</p>`,
+      errorMessage: 'You must enter a value',
     })),
     ...customBaseItems.map((item) => ({
       ...item,
       inline: true,
-      innerHTML: `<p slot="help">Must be a date</p><p slot="error">You must enter a value</p>`,
+      errorMessage: 'You must enter a value',
+      innerHTML: `<p slot="help">Must be a date</p>`,
     })),
   ],
 });
@@ -187,29 +194,47 @@ export const allFormControls = allFormControlsStory;
 export const simulation = makeStory(conf, {
   items: [{}],
   simulations: [
-    storyWait(0, ([component]) => {
-      component.innerHTML = `
-        <p slot="help">No error slot, no focus</p>
+
+    storyWait(0,
+      /**
+       * @param {Array<CcInputDate>} args
+       */
+      ([component]) => {
+        component.innerHTML = `
+        <p slot="help">No error, no focus</p>
       `;
-    }),
-    storyWait(2000, ([component]) => {
-      component.innerHTML = `
+      }),
+    storyWait(2000,
+      /**
+       * @param {Array<CcInputDate>} args
+       */
+      ([component]) => {
+        component.errorMessage = 'This is an error message';
+        component.innerHTML = `
         <p slot="help">With error, no focus</p>
-        <p slot="error">This is an error message</p>
       `;
-    }),
-    storyWait(2000, ([component]) => {
-      component.innerHTML = `
+      }),
+    storyWait(2000,
+      /**
+       * @param {Array<CcInputDate>} args
+       */
+      ([component]) => {
+        component.errorMessage = 'This is an error message';
+        component.innerHTML = `
         <p slot="help">With error, with focus</p>
-        <p slot="error">This is an error message</p>
       `;
-      component.focus();
-    }),
-    storyWait(2000, ([component]) => {
-      component.innerHTML = `
-        <p slot="help">No error slot, with focus</p>
+        component.focus();
+      }),
+    storyWait(2000,
+      /**
+       * @param {Array<CcInputDate>} args
+       */
+      ([component]) => {
+        component.errorMessage = null;
+        component.innerHTML = `
+        <p slot="help">No error, with focus</p>
       `;
-      component.focus();
-    }),
+        component.focus();
+      }),
   ],
 });
