@@ -431,6 +431,9 @@ export const translations = {
   //#endregion
   //#region cc-input-text
   'cc-input-text.clipboard': `Copy to clipboard`,
+  'cc-input-text.error.bad-email': () => sanitize`Invalid email address format.<br>Example: john.doe@example.com.`,
+  'cc-input-text.error.empty': `You must enter a value.`,
+  'cc-input-text.error.empty.email': `Please enter an email address.`,
   'cc-input-text.required': `required`,
   'cc-input-text.secret.hide': `Hide secret`,
   'cc-input-text.secret.show': `Show secret`,

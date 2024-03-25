@@ -444,6 +444,9 @@ export const translations = {
   //#endregion
   //#region cc-input-text
   'cc-input-text.clipboard': `Copier dans le presse-papier`,
+  'cc-input-text.error.bad-email': () => sanitize`Format d'adresse e-mail invalide.<br>Exemple: john.doe@example.com.`,
+  'cc-input-text.error.empty': `Veuillez saisir une valeur.`,
+  'cc-input-text.error.empty.email': `Veuillez saisir une adresse e-mail.`,
   'cc-input-text.required': `obligatoire`,
   'cc-input-text.secret.hide': `Cacher le secret`,
   'cc-input-text.secret.show': `Afficher le secret`,
