@@ -1,11 +1,25 @@
-import { css, html, LitElement } from 'lit';
+import { css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
+import { CcFormControlElement } from '../../lib/form/cc-form-control-element.abstract.js';
+import { RequiredValidator } from '../../lib/form/validation.js';
 import { i18n } from '../../lib/i18n.js';
+
+const DEFAULT_ERROR_MESSAGES = {
+  get empty () {
+    return i18n('cc-select.error.empty');
+  },
+};
 
 /**
  * @typedef {import('./cc-select.types.js').Option} Option
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLSelectElement>} HTMLSelectElementRef
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLElement>} HTMLElementRef
+ * @typedef {import('lit').PropertyValues<CcSelect>} CcSelectPropertyValues
+ * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLSelectElement>} HTMLSelectElementEvent
+ * @typedef {import('../../lib/form/validation.types.js').Validator} Validator
+ * @typedef {import('../../lib/form/validation.types.js').ErrorMessageMap} ErrorMessageMap
  */
 
 /**
@@ -24,24 +38,25 @@ import { i18n } from '../../lib/i18n.js';
  * @cssprop {FontSize} --cc-select-label-font-size - The font-size for the select's label (defaults: `inherit`).
  * @cssprop {FontWeight} --cc-select-label-font-weight - The font-weight for the select's label (defaults: `normal`).
  *
- * @slot error - The error message to be displayed below the `<select>` element or below the help text. Please use a `<p>` tag.
  * @slot help - The help message to be displayed right below the `<select>` element. Please use a `<p>` tag.
  */
-export class CcSelect extends LitElement {
+export class CcSelect extends CcFormControlElement {
   static get properties () {
     return {
+      ...super.properties,
       disabled: { type: Boolean, reflect: true },
       inline: { type: Boolean, reflect: true },
       /** @required */
       label: { type: String },
-      name: { type: String, reflect: true },
       options: { type: Array },
       placeholder: { type: String },
       required: { type: Boolean },
+      resetValue: { type: String, attribute: 'reset-value' },
       value: { type: String },
-      _hasError: { type: Boolean, state: true },
     };
   }
+
+  static reactiveValidationProperties = ['required', 'options'];
 
   constructor () {
     super();
@@ -53,9 +68,6 @@ export class CcSelect extends LitElement {
      * Only use this if your form contains 1 or 2 fields and your labels are short.
      */
     this.inline = false;
-
-    /** @type {string|null} Sets `name` attribute on inner native `<select>` element. */
-    this.name = null;
 
     /** @type {string|null} Sets label for the input. Mandatory but can be hidden if necessary. */
     this.label = null;
@@ -72,12 +84,81 @@ export class CcSelect extends LitElement {
     /** @type {boolean} Sets the "required" text inside the label. If a placeholder is set, it won't be selectable by the user, it may only be selected as a default value. */
     this.required = false;
 
+    /** @type {string|null} Sets the `value` to set when parent `<form>` element is reset. */
+    this.resetValue = '';
+
     /** @type {string|null} Sets the selected value of the element. This prop should always be set. It should always match one of the option values. */
     this.value = null;
 
-    this._hasError = false;
+    /** @type {HTMLElementRef} */
+    this._errorRef = createRef();
+
+    /** @type {HTMLSelectElementRef} */
+    this._selectRef = createRef();
   }
 
+  /* region CcFormControlElement implementation */
+
+  /**
+   * @return {HTMLElement}
+   * @protected
+   */
+  _getFormControlElement () {
+    return this._selectRef.value;
+  }
+
+  /**
+   * @return {HTMLElement}
+   * @protected
+   */
+  _getErrorElement () {
+    return this._errorRef.value;
+  }
+
+  /**
+   * @return {ErrorMessageMap}
+   * @protected
+   */
+  _getErrorMessages () {
+    return DEFAULT_ERROR_MESSAGES;
+  }
+
+  /**
+   * @return {Validator}
+   * @protected
+   */
+  _getValidator () {
+    return this.required ? new RequiredValidator() : null;
+  }
+
+  /**
+   * @return {Array<string>}
+   * @protected
+   */
+  _getReactiveValidationProperties () {
+    return CcSelect.reactiveValidationProperties;
+  }
+
+  /* endregion */
+
+  /**
+   * Triggers focus on the inner `<select>` element.
+   */
+  focus () {
+    this._selectRef.value?.focus();
+  }
+
+  /**
+   * @param {HTMLSelectElementEvent} e
+   */
+  _onSelectInput (e) {
+    this.value = e.target.value;
+    dispatchCustomEvent(this, 'input', this.value);
+  }
+
+  /**
+   * @param {CcSelectPropertyValues} changedProperties
+   */
   updated (changedProperties) {
     /*
      * The `<select>` value must match the value of an `<option>` element.
@@ -87,25 +168,13 @@ export class CcSelect extends LitElement {
     if (changedProperties.has('value') || changedProperties.has('options')) {
       this.shadowRoot.querySelector('select').value = this.value;
     }
-  }
 
-  /**
-   * Triggers focus on the inner `<select>` element.
-   */
-  focus () {
-    this.shadowRoot.querySelector('select').focus();
-  }
-
-  _onSelectInput (e) {
-    this.value = e.target.value;
-    dispatchCustomEvent(this, 'input', this.value);
-  }
-
-  _onErrorSlotChanged (event) {
-    this._hasError = event.target.assignedNodes()?.length > 0;
+    super.updated(changedProperties);
   }
 
   render () {
+    const hasErrorMessage = this.errorMessage != null && this.errorMessage !== '';
+
     return html`
       <label for="input-id">
         <span class="label-text">${this.label}</span>
@@ -116,12 +185,12 @@ export class CcSelect extends LitElement {
       <div class="select-wrapper ${classMap({ disabled: this.disabled })}">
         <select
           id="input-id"
-          class="${classMap({ error: this._hasError })}"
+          class="${classMap({ error: hasErrorMessage })}"
           ?disabled=${this.disabled}
           aria-describedby="help-id error-id"
           @input=${this._onSelectInput}
           .value=${this.value}
-          name=${ifDefined(this.name ?? undefined)}
+          ${ref(this._selectRef)}
         >
           ${this.placeholder != null && this.placeholder !== '' ? html`
             <option value="" ?disabled=${this.required}>${this.placeholder}</option>
@@ -136,9 +205,10 @@ export class CcSelect extends LitElement {
         <slot name="help"></slot>
       </div>
 
-      <div class="error-container" id="error-id">
-        <slot name="error" @slotchange="${this._onErrorSlotChanged}"></slot>
-      </div>
+      ${hasErrorMessage ? html`
+        <p class="error-container" id="error-id" ${ref(this._errorRef)}>
+          ${this.errorMessage}
+        </p>` : ''}
     `;
   }
 
@@ -214,7 +284,7 @@ export class CcSelect extends LitElement {
           font-size: 0.9em;
         }
         
-        slot[name='error']::slotted(*) {
+        .error-container {
           margin: 0.5em 0 0;
           color: var(--cc-color-text-danger);
         }

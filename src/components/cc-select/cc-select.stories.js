@@ -2,6 +2,10 @@ import './cc-select.js';
 import { allFormControlsStory } from '../../stories/all-form-controls.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
+/**
+ * @typedef {import('./cc-select.js').CcSelect} CcSelect
+ */
+
 const baseOptions = [
   {
     value: 'LENNON',
@@ -83,7 +87,7 @@ export const errorMessage = makeStory(conf, {
       required: true,
       value: '',
       options: baseOptions,
-      innerHTML: '<p slot="error">A value must be selected.</p>',
+      errorMessage: 'A value must be selected.',
     },
   ],
 });
@@ -96,9 +100,9 @@ export const errorMessageWithHelpMessage = makeStory(conf, {
       required: true,
       value: '',
       options: baseOptions,
+      errorMessage: 'A value must be selected.',
       innerHTML: `
         <p slot="help">There can be only one.</p>
-        <p slot="error">A value must be selected.</p>
       `,
     },
   ],
@@ -150,9 +154,9 @@ export const inlineWithErrorAndHelpMessages = makeStory(conf, {
       required: true,
       options: baseOptions,
       value: 'LENNON',
+      errorMessage: 'A value must be selected.',
       innerHTML: `
         <p slot="help">There can be only one.</p>
-        <p slot="error">A value must be selected.</p>
       `,
     },
     {
@@ -162,9 +166,9 @@ export const inlineWithErrorAndHelpMessages = makeStory(conf, {
       required: true,
       value: '',
       options: baseOptions,
+      errorMessage: 'A value must be selected.',
       innerHTML: `
         <p slot="help">There can be only one.</p>
-        <p slot="error">A value must be selected.</p>
       `,
     },
   ],
@@ -230,11 +234,12 @@ export const customLabelStyle = makeStory({ ...conf, displayMode: 'block' }, {
     })),
     ...customBaseItems.map((item) => ({
       ...item,
-      innerHTML: `<p slot="error">A value must be selected.</p>`,
+      errorMessage: 'A value must be selected.',
     })),
     ...customBaseItems.map((item) => ({
       ...item,
-      innerHTML: `<p slot="help">There can be only one.</p><p slot="error">A value must be selected.</p>`,
+      errorMessage: 'A value must be selected.',
+      innerHTML: `<p slot="help">There can be only one.</p>`,
     })),
     ...customBaseItems.map((item) => ({
       ...item,
@@ -248,12 +253,13 @@ export const customLabelStyle = makeStory({ ...conf, displayMode: 'block' }, {
     ...customBaseItems.map((item) => ({
       ...item,
       inline: true,
-      innerHTML: `<p slot="error">A value must be selected.</p>`,
+      errorMessage: 'A value must be selected.',
     })),
     ...customBaseItems.map((item) => ({
       ...item,
       inline: true,
-      innerHTML: `<p slot="help">There can be only one.</p><p slot="error">A value must be selected.</p>`,
+      errorMessage: 'A value must be selected.',
+      innerHTML: `<p slot="help">There can be only one.</p>`,
     })),
   ],
 });
@@ -268,29 +274,46 @@ export const simulation = makeStory(conf, {
     options: baseOptions,
   }],
   simulations: [
-    storyWait(0, ([component]) => {
-      component.innerHTML = `
-        <p slot="help">No error slot, no focus</p>
+    storyWait(0,
+      /**
+       * @param {Array<CcSelect>} args
+       */
+      ([component]) => {
+        component.innerHTML = `
+        <p slot="help">No error, no focus</p>
       `;
-    }),
-    storyWait(2000, ([component]) => {
-      component.innerHTML = `
+      }),
+    storyWait(2000,
+      /**
+       * @param {Array<CcSelect>} args
+       */
+      ([component]) => {
+        component.errorMessage = 'This is an error message';
+        component.innerHTML = `
         <p slot="help">With error, no focus</p>
-        <p slot="error">This is an error message</p>
       `;
-    }),
-    storyWait(2000, ([component]) => {
-      component.innerHTML = `
+      }),
+    storyWait(2000,
+      /**
+       * @param {Array<CcSelect>} args
+       */
+      ([component]) => {
+        component.errorMessage = 'This is an error message';
+        component.innerHTML = `
         <p slot="help">With error, with focus</p>
-        <p slot="error">This is an error message</p>
       `;
-      component.focus();
-    }),
-    storyWait(2000, ([component]) => {
-      component.innerHTML = `
-        <p slot="help">No error slot, with focus</p>
+        component.focus();
+      }),
+    storyWait(2000,
+      /**
+       * @param {Array<CcSelect>} args
+       */
+      ([component]) => {
+        component.errorMessage = null;
+        component.innerHTML = `
+        <p slot="help">No error, with focus</p>
       `;
-      component.focus();
-    }),
+        component.focus();
+      }),
   ],
 });
