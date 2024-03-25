@@ -1,13 +1,16 @@
-import { css, html, LitElement } from 'lit';
+import { css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import {
-  iconRemixClipboardLine as iconClipboard,
-  iconRemixEyeOffLine as iconEyeClosed,
-  iconRemixEyeLine as iconEyeOpen,
   iconRemixCheckLine as iconCheck,
+  iconRemixClipboardLine as iconClipboard,
+  iconRemixEyeLine as iconEyeOpen,
+  iconRemixEyeOffLine as iconEyeClosed,
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
+import { CcFormControlElement } from '../../lib/form/cc-form-control-element.abstract.js';
+import { combineValidators, EmailValidator, RequiredValidator } from '../../lib/form/validation.js';
 import { i18n } from '../../lib/i18n.js';
 import { arrayEquals } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
@@ -15,6 +18,16 @@ import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-icon/cc-icon.js';
 
 const TAG_SEPARATOR = ' ';
+
+/**
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLInputElement|HTMLTextAreaElement>} HTMLInputOrTextareaElementRef
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLElement>} HTMLElementRef
+ * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement|HTMLTextAreaElement>} HTMLInputOrTextareaEvent
+ * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<KeyboardEvent,HTMLInputElement|HTMLTextAreaElement>} HTMLInputOrTextareaKeyboardEvent
+ * @typedef {import('../../lib/form/validation.types.js').Validator} Validator
+ * @typedef {import('../../lib/form/validation.types.js').ErrorMessageMap} ErrorMessageMap
+ * @typedef {import('../../lib/form/form.types.js').FormControlData} FormControlData
+ */
 
 /**
  * An enhanced text input with support for multiline, copy-to-clipboard, show/hide secret and highlighted tags.
@@ -25,7 +38,7 @@ const TAG_SEPARATOR = ' ';
  * * When you use it with `readonly` \+ `clipboard` \+ NOT `multi`, the width of the input auto adapts to the length of the content.
  * * The `secret` feature only works for simple line mode (when `multi` is false).
  * * The `tags` feature enables a space-separated-value input wrapped on several lines where line breaks are not allowed. Don't use it with `multi` or `secret`.
- * * When an error slot is used, the input is decorated with a red border and a redish focus ring. You have to be aware that it uses the [`slotchange`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLSlotElement/slotchange_event) event which doesn't fire if the children of a slotted node change.
+ * * When an `errorMessage` is set, the input is decorated with a red border and a redish focus ring.
  *
  * @cssdisplay inline-block / block (with `[multi]`)
  *
@@ -39,33 +52,35 @@ const TAG_SEPARATOR = ' ';
  * @cssprop {FontSize} --cc-input-label-font-size - The font-size for the input's label (defaults: `inherit`).
  * @cssprop {FontWeight} --cc-input-label-font-weight - The font-weight for the input's label (defaults: `normal`).
  *
- * @slot error - The error message to be displayed below the `<input>` element or below the help text. Please use a `<p>` tag.
  * @slot help - The help message to be displayed right below the `<input>` element. Please use a `<p>` tag.
  */
-export class CcInputText extends LitElement {
+export class CcInputText extends CcFormControlElement {
 
   static get properties () {
     return {
+      ...super.properties,
       clipboard: { type: Boolean, reflect: true },
       disabled: { type: Boolean, reflect: true },
       label: { type: String },
       hiddenLabel: { type: Boolean, attribute: 'hidden-label' },
       inline: { type: Boolean, reflect: true },
       multi: { type: Boolean, reflect: true },
-      name: { type: String, reflect: true },
       placeholder: { type: String },
       readonly: { type: Boolean, reflect: true },
       required: { type: Boolean },
+      resetValue: { type: String, attribute: 'reset-value' },
       secret: { type: Boolean, reflect: true },
       skeleton: { type: Boolean, reflect: true },
       tags: { type: Array },
+      type: { type: String, reflect: true },
       value: { type: String },
       _copyOk: { type: Boolean, state: true },
       _showSecret: { type: Boolean, state: true },
       _tagsEnabled: { type: Boolean, state: true },
-      _hasError: { type: Boolean, state: true },
     };
   }
+
+  static reactiveValidationProperties = ['required', 'type'];
 
   constructor () {
     super();
@@ -90,9 +105,6 @@ export class CcInputText extends LitElement {
     /** @type {boolean} Enables multiline support (with a `<textarea>` instead of an `<input>`). */
     this.multi = false;
 
-    /** @type {string|null} Sets `name` attribute on inner native `<input>/<textarea>` element. */
-    this.name = null;
-
     /** @type {string} Sets `placeholder` attribute on inner native `<input>/<textarea>` element. */
     this.placeholder = '';
 
@@ -101,6 +113,9 @@ export class CcInputText extends LitElement {
 
     /** @type {boolean} Sets required mention inside the `<label>` element. */
     this.required = false;
+
+    /** @type {string} Sets the `value` to set when parent `<form>` element is reset. */
+    this.resetValue = '';
 
     /** @type {boolean} Enables show/hide secret feature with an eye icon. */
     this.secret = false;
@@ -111,11 +126,20 @@ export class CcInputText extends LitElement {
     /** @type {string[]} Sets list of tags and enables tags mode (if not null). */
     this.tags = null;
 
+    /** @type {'text'|'email'} The type of the input. Setting this to `email` will add a validity constraint on this input. */
+    this.type = 'text';
+
     /** @type {string} Sets `value` attribute on inner native input element or textarea's inner content. */
     this.value = '';
 
     /** @type {boolean} */
     this._copyOk = false;
+
+    /** @type {HTMLElementRef} */
+    this._errorRef = createRef();
+
+    /** @type {HTMLInputOrTextareaElementRef} */
+    this._inputRef = createRef();
 
     /** @type {boolean} */
     this._showSecret = false;
@@ -123,8 +147,82 @@ export class CcInputText extends LitElement {
     /** @type {boolean} */
     this._tagsEnabled = false;
 
-    this._hasError = false;
+    /** @type {ErrorMessageMap} */
+    this._errorMessages = {
+      empty: () => {
+        if (this.type === 'email') {
+          return i18n('cc-input-text.error.empty.email');
+        }
+        else {
+          return i18n('cc-input-text.error.empty');
+        }
+      },
+      badEmail: () => i18n('cc-input-text.error.bad-email'),
+    };
   }
+
+  /* region CcFormControlElement implementation */
+
+  /**
+   * @return {HTMLElement}
+   * @protected
+   */
+  _getFormControlElement () {
+    return this._inputRef.value;
+  }
+
+  /**
+   * @return {HTMLElement}
+   * @protected
+   */
+  _getErrorElement () {
+    return this._errorRef.value;
+  }
+
+  /**
+   * @return {ErrorMessageMap}
+   * @protected
+   */
+  _getErrorMessages () {
+    return this._errorMessages;
+  }
+
+  /**
+   * @return {Validator}
+   * @protected
+   */
+  _getValidator () {
+    return combineValidators([
+      this.required ? new RequiredValidator() : null,
+      this.type === 'email' ? new EmailValidator() : null,
+    ]);
+  }
+
+  /**
+   * @return {FormControlData}
+   * @protected
+   */
+  _getFormControlData () {
+    if (this._tagsEnabled) {
+      const data = new FormData();
+      this.tags.forEach((tag) => {
+        data.append(this.name, tag);
+      });
+      return data;
+    }
+
+    return this.value;
+  }
+
+  /**
+   * @return {Array<string>}
+   * @protected
+   */
+  _getReactiveValidationProperties () {
+    return CcInputText.reactiveValidationProperties;
+  }
+
+  /* endregion */
 
   // In general, we try to use LitElement's update() lifecycle callback but in this situation,
   // overriding get/set makes more sense
@@ -153,9 +251,12 @@ export class CcInputText extends LitElement {
    * Triggers focus on the inner `<input>/<textarea>` element.
    */
   focus () {
-    this.shadowRoot.querySelector('.input').focus();
+    this._inputRef.value?.focus();
   }
 
+  /**
+   * @param {HTMLInputOrTextareaEvent} e
+   */
   _onInput (e) {
     // If tags mode is enabled, we want to prevent/remove line breaks
     // and preserve caret position in case of a line break entry (keypress, DnD, copy/paste...)
@@ -170,12 +271,16 @@ export class CcInputText extends LitElement {
       }
     }
     this.value = e.target.value;
+
     dispatchCustomEvent(this, 'input', this.value);
     if (this._tagsEnabled) {
       dispatchCustomEvent(this, 'tags', this.tags);
     }
   }
 
+  /**
+   * @param {HTMLInputOrTextareaEvent} e
+   */
   _onFocus (e) {
     if (this.readonly) {
       e.target.select();
@@ -193,7 +298,11 @@ export class CcInputText extends LitElement {
     this._showSecret = !this._showSecret;
   }
 
-  // Stop propagation of keydown and keypress events (to prevent conflicts with shortcuts)
+  /**
+   * Stop propagation of keydown and keypress events (to prevent conflicts with shortcuts)
+   *
+   * @param {HTMLInputOrTextareaKeyboardEvent} e
+   */
   _onKeyEvent (e) {
     if (e.type === 'keydown' || e.type === 'keypress') {
       e.stopPropagation();
@@ -201,19 +310,19 @@ export class CcInputText extends LitElement {
     // Here we prevent keydown on enter key from modifying the value
     if (this._tagsEnabled && e.type === 'keydown' && e.keyCode === 13) {
       e.preventDefault();
+      this._internals.form.requestSubmit();
       dispatchCustomEvent(this, 'requestimplicitsubmit');
     }
     // Request implicit submit with keypress on enter key
     if (!this.readonly && e.type === 'keypress' && e.keyCode === 13) {
       if ((!this.multi) || (this.multi && e.ctrlKey)) {
+        this._internals.form.requestSubmit();
         dispatchCustomEvent(this, 'requestimplicitsubmit');
       }
     }
   }
 
-  _onErrorSlotChanged (event) {
-    this._hasError = event.target.assignedNodes()?.length > 0;
-  }
+  /* endregion */
 
   render () {
     const value = this.value ?? '';
@@ -222,6 +331,7 @@ export class CcInputText extends LitElement {
     // NOTE: For now, we don't support secret when multi is activated
     const secret = (this.secret && !this.multi && !this.disabled && !this.skeleton);
     const isTextarea = (this.multi || this._tagsEnabled);
+    const hasErrorMessage = this.errorMessage != null && this.errorMessage !== '';
 
     const tags = value
       .split(TAG_SEPARATOR)
@@ -237,12 +347,12 @@ export class CcInputText extends LitElement {
           ` : ''}
         </label>
       ` : ''}
-      
+
       <div class="meta-input">
         <div class="wrapper ${classMap({ skeleton: this.skeleton })}"
-          @input=${this._onInput}
-          @keydown=${this._onKeyEvent}
-          @keypress=${this._onKeyEvent}>
+             @input=${this._onInput}
+             @keydown=${this._onKeyEvent}
+             @keypress=${this._onKeyEvent}>
 
           ${isTextarea ? html`
             ${this._tagsEnabled && !this.skeleton ? html`
@@ -250,24 +360,22 @@ export class CcInputText extends LitElement {
                 We use this to display colored background rectangles behind space separated values. 
                 This needs to be on the same line and the 2 level parent is important to keep scroll behaviour.
               -->
-              <div class="input input-underlayer" style="--rows: ${rows}"><!--
-                --><div class="all-tags">${tags}</div><!--
-              --></div>
+              <div class="input input-underlayer" style="--rows: ${rows}"><div class="all-tags">${tags}</div></div>
             ` : ''}
             <textarea
               id="input-id"
-              class="input ${classMap({ 'input-tags': this._tagsEnabled, error: this._hasError })}"
+              class="input ${classMap({ 'input-tags': this._tagsEnabled, error: hasErrorMessage })}"
               style="--rows: ${rows}"
               rows=${rows}
               ?disabled=${this.disabled || this.skeleton}
               ?readonly=${this.readonly}
               .value=${value}
-              name=${ifDefined(this.name ?? undefined)}
               placeholder=${this.placeholder}
               spellcheck="false"
               wrap="${ifDefined(this._tagsEnabled ? 'soft' : undefined)}"
               aria-describedby="help-id error-id"
               @focus=${this._onFocus}
+              ${ref(this._inputRef)}
             ></textarea>
           ` : ''}
 
@@ -283,15 +391,15 @@ export class CcInputText extends LitElement {
             <input
               id="input-id"
               type=${this.secret && !this._showSecret ? 'password' : 'text'}
-              class="input ${classMap({ error: this._hasError })}"
+              class="input ${classMap({ error: hasErrorMessage })}"
               ?disabled=${this.disabled || this.skeleton}
               ?readonly=${this.readonly}
               .value=${value}
-              name=${ifDefined(this.name ?? undefined)}
               placeholder=${this.placeholder}
               spellcheck="false"
               aria-describedby="help-id error-id"
               @focus=${this._onFocus}
+              ${ref(this._inputRef)}
             >
           ` : ''}
 
@@ -300,7 +408,7 @@ export class CcInputText extends LitElement {
 
         ${secret ? html`
           <button class="btn" @click=${this._onClickSecret}
-            title=${this._showSecret ? i18n('cc-input-text.secret.hide') : i18n('cc-input-text.secret.show')}
+                  title=${this._showSecret ? i18n('cc-input-text.secret.hide') : i18n('cc-input-text.secret.show')}
           >
             <cc-icon
               class="btn-img"
@@ -323,14 +431,15 @@ export class CcInputText extends LitElement {
         ` : ''}
       </div>
 
-      
+
       <div class="help-container" id="help-id">
         <slot name="help"></slot>
       </div>
 
-      <div class="error-container" id="error-id" >
-        <slot name="error" @slotchange="${this._onErrorSlotChanged}"></slot>
-      </div>
+      ${hasErrorMessage ? html`
+        <p class="error-container" id="error-id" ${ref(this._errorRef)}>
+          ${this.errorMessage}
+        </p>` : ''}
     `;
   }
 
@@ -415,11 +524,12 @@ export class CcInputText extends LitElement {
           color: var(--cc-color-text-weak);
           font-size: 0.9em;
         }
-        
-        slot[name='error']::slotted(*) {
+
+        .error-container {
           margin: 0.5em 0 0;
           color: var(--cc-color-text-danger);
         }
+
         /* endregion */
 
         .meta-input {
@@ -552,7 +662,7 @@ export class CcInputText extends LitElement {
           border-radius: var(--cc-border-radius-default, 0.25em);
           box-shadow: 0 0 0 0 rgb(255 255 255 / 0%);
         }
-        
+
         .input.error + .ring {
           border-color: var(--cc-color-border-danger) !important;
         }
@@ -562,8 +672,8 @@ export class CcInputText extends LitElement {
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
-        
-        input.error:focus + .ring {
+
+        .input.error:focus + .ring {
           outline: var(--cc-focus-outline-error, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
@@ -645,7 +755,7 @@ export class CcInputText extends LitElement {
 
         .btn-img {
           --cc-icon-color: var(--cc-input-btn-icons-color, #595959);
-          
+
           box-sizing: border-box;
           padding: 15%;
         }
