@@ -12,7 +12,8 @@
     /* Language and Environment */
     "target": "ES2021", /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
     "lib": [
-      "DOM"
+      "DOM",
+      "DOM.Iterable"
     ], /* Specify a set of bundled library declaration files that describe the target runtime environment. */
     /* Modules */
     "module": "nodenext", /* Specify what module code is generated. */
@@ -87,7 +88,11 @@
           // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/animationend_event
           // https://developer.mozilla.org/en-US/docs/Web/API/Element/mouseenter_event
           "wheel",
-          "copy"
+          "copy",
+          // HACK: Right now, we don't have a clean way to recognize events fired from something else than a component.
+          // those events are fired by the `form-submit-directive` through `form-submit-handler`
+          "form:valid",
+          "form:invalid",
         ]
       }
     ]
