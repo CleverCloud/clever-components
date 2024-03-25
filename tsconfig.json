@@ -4,7 +4,8 @@
   "exclude": [
     "node_modules",
     "storybook-static",
-    "dist"
+    "dist",
+    "**/*.test.js"
   ],
   "compilerOptions": {
     /* Visit https://www.typescriptlang.org/tsconfig to read more about this file */
