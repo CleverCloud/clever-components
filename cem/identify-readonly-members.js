@@ -42,6 +42,9 @@ export default function identifyReadonlyMembers () {
               const classMember = classDeclaration?.members?.find((m) => m.kind === 'field' && m.name === readonlyGetter.name.getText());
               if (classMember != null) {
                 classMember.readonly = true;
+                if (classMember.return?.type?.text != null && classMember.type?.text == null) {
+                  classMember.type = classMember.return.type;
+                }
               }
             });
 
