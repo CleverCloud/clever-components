@@ -245,8 +245,6 @@ export const translations = {
   'cc-email-list.secondary.action.mark-as-primary.name': `Mark as primary`,
   'cc-email-list.secondary.action.mark-as-primary.success': ({ address }) => sanitize`Secondary email address <strong>${address}</strong> has been successfully marked as primary.`,
   'cc-email-list.secondary.address-input.error.already-defined': `This email address already belongs to you`,
-  'cc-email-list.secondary.address-input.error.empty': `You must enter an email address`,
-  'cc-email-list.secondary.address-input.error.invalid': () => sanitize`Invalid email address format.<br>Example: john.doe@example.com.`,
   'cc-email-list.secondary.address-input.error.used': `This email address does not belong to you`,
   'cc-email-list.secondary.address-input.format': `name@example.com`,
   'cc-email-list.secondary.address-input.label': `Email address`,

@@ -8,27 +8,54 @@ import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { i18n } from '../../lib/i18n.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
-import { CcEmailList } from './cc-email-list.js';
 import '../cc-smart-container/cc-smart-container.js';
+import './cc-email-list.js';
+
+/**
+ * @typedef {import('./cc-email-list.js').CcEmailList} CcEmailList
+ * @typedef {import('./cc-email-list.types.js').EmailListStateLoaded} EmailListStateLoaded
+ * @typedef {import('./cc-email-list.types.js').SecondaryAddressState} SecondaryAddressState
+ * @typedef {import('./cc-email-list.types.js').AddEmailFormState} AddEmailFormState
+ * @typedef {import('./cc-email-list.types.js').AddEmailError} AddEmailError
+ * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
+ */
 
 defineSmartComponent({
   selector: 'cc-email-list',
   params: {
     apiConfig: { type: Object },
   },
+  /**
+   *
+   * @param {Object} settings
+   * @param {CcEmailList} settings.component
+   * @param {{apiConfig: ApiConfig}} settings.context
+   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
+   * @param {function} settings.updateComponent
+   * @param {AbortSignal} settings.signal
+   */
   onContextUpdate ({ component, context, onEvent, updateComponent, signal }) {
     updateComponent('emails', { state: 'loading' });
-    updateComponent('addEmailForm', CcEmailList.ADD_FORM_INIT_STATE);
+    updateComponent('addEmailFormState', { state: 'idle' });
+    component.resetAddEmailForm();
 
     const api = getApi(context.apiConfig, signal);
 
+    /**
+     *
+     * @param {string} address
+     * @param {(state: SecondaryAddressState) => void}callback
+     */
     function updateSecondary (address, callback) {
-      updateComponent('emails', (emails) => {
-        const secondaryState = emails.value.secondaryAddresses.find((a) => a.address === address);
-        if (secondaryState != null) {
-          callback(secondaryState);
-        }
-      });
+
+      updateComponent('emails',
+        /** @param {EmailListStateLoaded} emails */
+        (emails) => {
+          const secondaryState = emails.value.secondaryAddresses.find((a) => a.address === address);
+          if (secondaryState != null) {
+            callback(secondaryState);
+          }
+        });
     }
 
     api.fetchEmailAddresses()
@@ -41,9 +68,9 @@ defineSmartComponent({
               address: self.email,
               verified: self.emailValidated,
             },
-            secondaryAddresses: secondary.map((a) => ({
+            secondaryAddresses: secondary.map((secondaryAddress) => ({
               state: 'idle',
-              address: a,
+              address: secondaryAddress,
               verified: true,
             })),
           },
@@ -56,11 +83,13 @@ defineSmartComponent({
 
     onEvent('cc-email-list:send-confirmation-email', (address) => {
 
-      updateComponent('emails', (emails) => {
-        emails.value.primaryAddress.state = 'sending-confirmation-email';
-      });
+      updateComponent('emails',
+        /** @param {EmailListStateLoaded} emails */
+        (emails) => {
+          emails.value.primaryAddress.state = 'sending-confirmation-email';
+        });
 
-      api.sendConfirmationEmail(address)
+      api.sendConfirmationEmail()
         .then(() => {
           notify({
             intent: 'info',
@@ -72,25 +101,27 @@ defineSmartComponent({
             },
           });
         })
-        .catch((error) => {
-          console.error(error);
-          notifyError(i18n('cc-email-list.primary.action.resend-confirmation-email.error', { address }));
-        })
+        .catch(
+          /** @param {Error} error */
+          (error) => {
+            console.error(error);
+            notifyError(i18n('cc-email-list.primary.action.resend-confirmation-email.error', { address }));
+          })
         .finally(() => {
-          updateComponent('emails', (emails) => {
-            emails.value.primaryAddress.state = 'idle';
-          });
+          updateComponent('emails',
+            /** @param {EmailListStateLoaded} emails */
+            (emails) => {
+              emails.value.primaryAddress.state = 'idle';
+            });
         });
     });
 
     onEvent('cc-email-list:add', (address) => {
-
-      updateComponent('addEmailForm', {
-        state: 'adding',
-        address: {
-          value: address,
-        },
-      });
+      updateComponent('addEmailFormState',
+        /** @param {AddEmailFormState} state */
+        (state) => {
+          state.type = 'adding';
+        });
 
       api.addSecondaryEmailAddress(address)
         .then(() => {
@@ -104,33 +135,35 @@ defineSmartComponent({
             },
           });
 
-          updateComponent('addEmailForm', CcEmailList.ADD_FORM_INIT_STATE);
+          component.resetAddEmailForm();
         })
-        .catch((error) => {
-          let inputError;
-          if (error.id === 550) {
-            inputError = 'invalid';
-          }
-          else if (error.id === 101) {
-            inputError = 'already-defined';
-          }
-          else if (error.id === 1004) {
-            inputError = 'used';
-          }
+        .catch(
+          /** @param {Error & {id?: number}} error */
+          (error) => {
+            const errorCode = convertApiError(error.id);
 
-          if (inputError != null) {
-            updateComponent('addEmailForm', (addEmailForm) => {
-              addEmailForm.state = 'idle';
-              addEmailForm.address.error = inputError;
-            });
-          }
-          else {
-            console.error(error);
-            notifyError(i18n('cc-email-list.secondary.action.add.error', { address }));
-            updateComponent('addEmailForm', (addEmailForm) => {
-              addEmailForm.state = 'idle';
-            });
-          }
+            if (errorCode == null) {
+              console.error(error);
+              notifyError(i18n('cc-email-list.secondary.action.add.error', { address }));
+            }
+            else {
+              updateComponent('addEmailFormState',
+                /** @param {AddEmailFormState} state */
+                (state) => {
+                  state.errors = {
+                    email: errorCode,
+                  };
+                },
+              );
+            }
+          })
+        .finally(() => {
+          updateComponent('addEmailFormState',
+            /** @param {AddEmailFormState} state */
+            (state) => {
+              state.type = 'idle';
+            },
+          );
         });
 
     });
@@ -145,17 +178,21 @@ defineSmartComponent({
         .then(() => {
           notifySuccess(i18n('cc-email-list.secondary.action.delete.success', { address }));
 
-          updateComponent('emails', (emails) => {
-            emails.value.secondaryAddresses = emails.value.secondaryAddresses.filter((a) => a.address !== address);
-          });
+          updateComponent('emails',
+            /** @param {EmailListStateLoaded} emails */
+            (emails) => {
+              emails.value.secondaryAddresses = emails.value.secondaryAddresses.filter((a) => a.address !== address);
+            });
         })
-        .catch((error) => {
-          console.error(error);
-          notifyError(i18n('cc-email-list.secondary.action.delete.error', { address }));
-          updateSecondary(address, (secondaryAddressState) => {
-            secondaryAddressState.state = 'idle';
+        .catch(
+          /** @param {Error} error */
+          (error) => {
+            console.error(error);
+            notifyError(i18n('cc-email-list.secondary.action.delete.error', { address }));
+            updateSecondary(address, (secondaryAddressState) => {
+              secondaryAddressState.state = 'idle';
+            });
           });
-        });
     });
 
     onEvent('cc-email-list:mark-as-primary', (address) => {
@@ -168,30 +205,61 @@ defineSmartComponent({
         .then(() => {
           notifySuccess(i18n('cc-email-list.secondary.action.mark-as-primary.success', { address }));
 
-          const primaryAddress = component.emails.value.primaryAddress.address;
+          if (component.emails.state === 'loaded') {
+            const primaryAddress = component.emails.value.primaryAddress.address;
 
-          updateComponent('emails', (emails) => {
-            emails.value.primaryAddress.address = address;
-          });
-          updateSecondary(address, (secondaryAddressState) => {
-            secondaryAddressState.state = 'idle';
-            secondaryAddressState.address = primaryAddress;
-          });
+            updateComponent('emails',
+              /** @param {EmailListStateLoaded} emails */
+              (emails) => {
+                emails.value.primaryAddress.address = address;
+              });
+            updateSecondary(address, (secondaryAddressState) => {
+              secondaryAddressState.state = 'idle';
+              secondaryAddressState.address = primaryAddress;
+            });
+          }
         })
-        .catch((error) => {
-          console.error(error);
-          notifyError(i18n('cc-email-list.secondary.action.mark-as-primary.error', { address }));
-          updateSecondary(address, (secondaryAddressState) => {
-            secondaryAddressState.state = 'idle';
+        .catch(
+          /** @param {Error} error */
+          (error) => {
+            console.error(error);
+            notifyError(i18n('cc-email-list.secondary.action.mark-as-primary.error', { address }));
+            updateSecondary(address, (secondaryAddressState) => {
+              secondaryAddressState.state = 'idle';
+            });
           });
-        });
     });
   },
 });
 
+/**
+ * @param {number} apiErrorId
+ * @return {null|AddEmailError}
+ */
+function convertApiError (apiErrorId) {
+  if (apiErrorId === 550) {
+    return 'invalid';
+  }
+  if (apiErrorId === 101) {
+    return 'already-defined';
+  }
+  if (apiErrorId === 1004) {
+    return 'used';
+  }
+  return null;
+}
+
 // -- API calls
+/**
+ *
+ * @param {ApiConfig} apiConfig
+ * @param {AbortSignal} signal
+ */
 function getApi (apiConfig, signal) {
   return {
+    /**
+     * @return {Promise<{self: {email: string, emailValidated: boolean}, secondary: Array<string>}>}
+     */
     fetchEmailAddresses () {
       return Promise.all([
         this.fetchPrimaryEmailAddress(),
@@ -201,6 +269,9 @@ function getApi (apiConfig, signal) {
       });
     },
 
+    /**
+     * @return {Promise<{email: string, emailValidated: boolean}>}
+     */
     fetchPrimaryEmailAddress () {
       return Promise.resolve({
         method: 'get',
@@ -210,6 +281,9 @@ function getApi (apiConfig, signal) {
         .then(sendToApi({ apiConfig, signal }));
     },
 
+    /**
+     * @return {Promise<Array<string>>}
+     */
     fetchSecondaryEmailAddresses () {
       return getEmailAddresses()
         .then(sendToApi({ apiConfig, signal }));
@@ -220,16 +294,25 @@ function getApi (apiConfig, signal) {
         .then(sendToApi({ apiConfig }));
     },
 
+    /**
+     * @param {string} address
+     */
     addSecondaryEmailAddress (address) {
       return addEmailAddress({ email: address }, {})
         .then(sendToApi({ apiConfig }));
     },
 
+    /**
+     * @param {string} address
+     */
     deleteSecondaryEmailAddress (address) {
       return removeEmailAddress({ email: address })
         .then(sendToApi({ apiConfig }));
     },
 
+    /**
+     * @param {string} address
+     */
     markSecondaryEmailAddressAsPrimary (address) {
       return addEmailAddress({ email: address }, {
         // eslint-disable-next-line camelcase

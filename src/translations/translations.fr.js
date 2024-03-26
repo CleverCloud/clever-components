@@ -258,8 +258,6 @@ export const translations = {
   'cc-email-list.secondary.action.mark-as-primary.name': `Définir comme primaire`,
   'cc-email-list.secondary.action.mark-as-primary.success': ({ address }) => sanitize`L'adresse e-mail <strong>${address}</strong> a bien été définie comme primaire.`,
   'cc-email-list.secondary.address-input.error.already-defined': `Cette adresse e-mail vous appartient déjà`,
-  'cc-email-list.secondary.address-input.error.empty': `Veuillez saisir une adresse e-mail`,
-  'cc-email-list.secondary.address-input.error.invalid': () => sanitize`Format d'adresse e-mail invalide.<br>Exemple: john.doe@example.com.`,
   'cc-email-list.secondary.address-input.error.used': `Cette adresse e-mail ne vous appartient pas`,
   'cc-email-list.secondary.address-input.format': `nom@example.com`,
   'cc-email-list.secondary.address-input.label': `Adresse e-mail`,

@@ -21,11 +21,11 @@ interface EmailList {
   secondaryAddresses: SecondaryAddressState[];
 }
 
-interface PrimaryAddressState extends EmailAddress {
+export interface PrimaryAddressState extends EmailAddress {
   state: "idle" | "sending-confirmation-email";
 }
 
-interface SecondaryAddressState extends EmailAddress {
+export interface SecondaryAddressState extends EmailAddress {
   state: "idle" | "marking-as-primary" | "deleting";
 }
 
@@ -35,16 +35,11 @@ interface EmailAddress {
 }
 //#endregion
 
-//#region add form
 export interface AddEmailFormState {
-  state: "idle" | "adding";
-  address: AddressFormField;
+  type: "idle" | "adding";
+  errors?: {
+    email: AddEmailError
+  };
 }
 
-interface AddressFormField {
-  value: string;
-  error?: AddressFormFieldError;
-}
-
-type AddressFormFieldError = "empty" | "invalid" | "already-defined" | "used";
-//#endregion
+export type AddEmailError = "invalid" | "already-defined" | "used";
