@@ -7,12 +7,31 @@ const SECONDARY_ADDRESS_1 = 'john.doe.home@example.com';
 const SECONDARY_ADDRESS_2 = 'john.doe.holidays@example.com';
 const HUGE_ADDRESS = `john${'.doe'.repeat(30)}@example.com`;
 
+/** @type {PrimaryAddressState} */
 const primaryAddress = { state: 'idle', address: PRIMARY_ADDRESS, verified: true };
+/** @type {PrimaryAddressState} */
 const primaryUnverified = { state: 'idle', address: PRIMARY_ADDRESS, verified: false };
+/** @type {Array<SecondaryAddressState>} */
 const secondaryAddresses = [
   { state: 'idle', address: SECONDARY_ADDRESS_1, verified: true },
   { state: 'idle', address: SECONDARY_ADDRESS_2, verified: true },
 ];
+
+const baseItem = {
+  emails: {
+    state: 'loaded',
+    value: {
+      primaryAddress,
+      secondaryAddresses,
+    },
+  },
+};
+
+/**
+ * @typedef {import('./cc-email-list.js').CcEmailList} CcEmailList
+ * @typedef {import('./cc-email-list.types.js').PrimaryAddressState} PrimaryAddressState
+ * @typedef {import('./cc-email-list.types.js').SecondaryAddressState} SecondaryAddressState
+ */
 
 export default {
   tags: ['autodocs'],
@@ -24,17 +43,7 @@ const conf = {
   component: 'cc-email-list',
 };
 export const defaultStory = makeStory(conf, {
-  items: [
-    {
-      emails: {
-        state: 'loaded',
-        value: {
-          primaryAddress,
-          secondaryAddresses,
-        },
-      },
-    },
-  ],
+  items: [baseItem],
 });
 
 export const skeleton = makeStory(conf, {
@@ -52,90 +61,6 @@ export const errorWithLoading = makeStory(conf, {
     {
       emails: {
         state: 'error',
-      },
-    },
-  ],
-});
-
-export const errorWithEmptyEmail = makeStory(conf, {
-  items: [
-    {
-      emails: {
-        state: 'loaded',
-        value: {
-          primaryAddress,
-          secondaryAddresses,
-        },
-      },
-      addEmailForm: {
-        state: 'idle',
-        address: {
-          value: '',
-          error: 'empty',
-        },
-      },
-    },
-  ],
-});
-
-export const errorWithInvalidEmail = makeStory(conf, {
-  items: [
-    {
-      emails: {
-        state: 'loaded',
-        value: {
-          primaryAddress,
-          secondaryAddresses,
-        },
-      },
-      addEmailForm: {
-        state: 'idle',
-        address: {
-          value: 'this is an invalid email address!',
-          error: 'invalid',
-        },
-      },
-    },
-  ],
-});
-
-export const errorWithAlreadyDefinedEmail = makeStory(conf, {
-  items: [
-    {
-      emails: {
-        state: 'loaded',
-        value: {
-          primaryAddress,
-          secondaryAddresses,
-        },
-      },
-      addEmailForm: {
-        state: 'idle',
-        address: {
-          value: SECONDARY_ADDRESS_1,
-          error: 'already-defined',
-        },
-      },
-    },
-  ],
-});
-
-export const errorWithUsedEmail = makeStory(conf, {
-  items: [
-    {
-      emails: {
-        state: 'loaded',
-        value: {
-          primaryAddress,
-          secondaryAddresses,
-        },
-      },
-      addEmailForm: {
-        state: 'idle',
-        address: {
-          value: 'already.used.email.address@example.com',
-          error: 'used',
-        },
       },
     },
   ],
@@ -186,7 +111,7 @@ export const dataLoadedWithNoSecondaryEmails = makeStory(conf, {
   ],
 });
 
-export const sendingConfirmationEmail = makeStory(conf, {
+export const loadingWithSendingConfirmationEmail = makeStory(conf, {
   items: [
     {
       emails: {
@@ -200,27 +125,7 @@ export const sendingConfirmationEmail = makeStory(conf, {
   ],
 });
 
-export const addingSecondary = makeStory(conf, {
-  items: [
-    {
-      emails: {
-        state: 'loaded',
-        value: {
-          primaryAddress,
-          secondaryAddresses,
-        },
-      },
-      addEmailForm: {
-        state: 'adding',
-        address: {
-          value: 'secondary@domain.com',
-        },
-      },
-    },
-  ],
-});
-
-export const deletingSecondary = makeStory(conf, {
+export const loadingWithDeletingSecondary = makeStory(conf, {
   items: [
     {
       emails: {
@@ -249,7 +154,7 @@ export const deletingSecondary = makeStory(conf, {
   ],
 });
 
-export const markingSecondaryAsPrimary = makeStory(conf, {
+export const loadingWithMarkingSecondaryAsPrimary = makeStory(conf, {
   items: [
     {
       emails: {
@@ -264,4 +169,43 @@ export const markingSecondaryAsPrimary = makeStory(conf, {
       },
     },
   ],
+});
+
+export const loadingWithSecondaryEmailIsBeingAdded = makeStory(conf, {
+  items: [baseItem],
+  onUpdateComplete: (component) => {
+    component.addEmailForm.setState('adding');
+  },
+});
+
+export const errorWithWhenSecondaryEmailIsEmpty = makeStory(conf, {
+  items: [baseItem],
+  onUpdateComplete: (component) => {
+    component._addressInputRef.value.value = '';
+    component._addressInputRef.value.validate(true);
+  },
+});
+
+export const errorWithWhenSecondaryEmailIsInvalid = makeStory(conf, {
+  items: [baseItem],
+  onUpdateComplete: (component) => {
+    component._addressInputRef.value.value = 'invalid address email';
+    component._addressInputRef.value.validate(true);
+  },
+});
+
+export const errorWithWhenSecondaryEmailIsAlreadyDefined = makeStory(conf, {
+  items: [baseItem],
+  onUpdateComplete: (component) => {
+    component._addressInputRef.value.value = SECONDARY_ADDRESS_1;
+    component.addEmailForm.onSubmitFailure('already-defined');
+  },
+});
+
+export const errorWithWhenSecondaryEmailIsUsed = makeStory(conf, {
+  items: [baseItem],
+  onUpdateComplete: (component) => {
+    component._addressInputRef.value.value = 'used-by-another-user@example.com';
+    component.addEmailForm.onSubmitFailure('used');
+  },
 });
