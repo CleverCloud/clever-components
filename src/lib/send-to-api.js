@@ -7,21 +7,21 @@ import { withOptions } from '@clevercloud/client/esm/with-options.js';
 import { dispatchCustomEvent } from './events.js';
 
 /**
- *
- * @param {Object} apiConfig
- * @param {String} apiConfig.API_HOST
- * @param {String} apiConfig.API_OAUTH_TOKEN
- * @param {String} apiConfig.API_OAUTH_TOKEN_SECRET
- * @param {String} apiConfig.OAUTH_CONSUMER_KEY
- * @param {String} apiConfig.OAUTH_CONSUMER_SECRET
- * @param {AbortSignal} signal
- * @param {Number} [cacheDelay]
- * @return {function(*=): (any | undefined)}
+ * @typedef {import('./send-to-api.types.js').ApiConfig} ApiConfig
+ * @typedef {import('./send-to-api.types.js').Warp10ApiConfig} Warp10ApiConfig
  */
-export function sendToApi ({ apiConfig = {}, signal, cacheDelay, timeout }) {
+
+/**
+ * @param {Object} settings
+ * @param {ApiConfig} settings.apiConfig
+ * @param {AbortSignal} [settings.signal]
+ * @param {Number} [settings.cacheDelay]
+ * @param {Number} [settings.timeout]
+ * @return {(requestParams: Object) => Promise<any>}
+ */
+export function sendToApi ({ apiConfig, signal, cacheDelay, timeout }) {
 
   return (requestParams) => {
-
     const cacheParams = { ...apiConfig, ...requestParams };
     return withCache(cacheParams, cacheDelay, () => {
 
@@ -40,13 +40,14 @@ export function sendToApi ({ apiConfig = {}, signal, cacheDelay, timeout }) {
 }
 
 /**
- * @param {Object} apiConfig
- * @param {String} apiConfig.WARP_10_HOST
- * @param {AbortSignal} signal
- * @param {Number} [cacheDelay]
- * @return {function(*=): (any | undefined)}
+ * @param {Object} settings
+ * @param {Warp10ApiConfig} settings.apiConfig
+ * @param {AbortSignal} [settings.signal]
+ * @param {Number} [settings.cacheDelay]
+ * @param {Number} [settings.timeout]
+ * @return {(requestParams: Object) => Promise<any>}
  */
-export function sendToWarp ({ apiConfig = {}, signal, cacheDelay, timeout }) {
+export function sendToWarp ({ apiConfig, signal, cacheDelay, timeout }) {
 
   return (requestParams) => {
 
