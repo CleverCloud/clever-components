@@ -12,7 +12,10 @@ import listImages from './cem/list-images.js';
 fs.mkdirSync('dist', { recursive: true });
 
 export default {
-  globs: ['src/components/**/cc-*.js'],
+  globs: [
+    'src/components/**/cc-*.js',
+    'src/lib/form/cc-form-control-element.abstract.js'
+  ],
   exclude: ['src/**/*.stories.js'],
   litelement: true,
   // dev: true,
