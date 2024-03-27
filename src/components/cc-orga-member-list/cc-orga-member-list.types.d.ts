@@ -1,19 +1,4 @@
-import { OrgaMemberCardState, OrgaMemberRole } from '../cc-orga-member-card/cc-orga-member-card.types';
-
-export interface OrgaMemberInviteFormState {
-  state: 'idle' | 'inviting';
-  email: EmailFormField;
-  role: RoleFormField;
-}
-
-interface EmailFormField {
-  value: string;
-  error?: 'empty' | 'invalid' | 'duplicate' | null;
-}
-
-interface RoleFormField {
-  value: OrgaMemberRole;
-}
+import { OrgaMemberCardState } from '../cc-orga-member-card/cc-orga-member-card.types';
 
 export type OrgaMemberListState = OrgaMemberListStateLoading | OrgaMemberListStateLoaded | OrgaMemberListStateError;
 
@@ -42,4 +27,8 @@ interface Authorisations {
   invite: boolean;
   edit: boolean;
   delete: boolean;
+}
+
+export interface InviteMemberFormState {
+  type: "idle" | "inviting";
 }

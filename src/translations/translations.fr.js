@@ -667,8 +667,6 @@ export const translations = {
   'cc-orga-member-list.filter.mfa': `Comptes non sécurisés par 2FA`,
   'cc-orga-member-list.filter.name': `Filtrer par nom ou adresse e-mail`,
   'cc-orga-member-list.invite.email.error-duplicate': `Cet utilisateur fait déjà partie des membres de votre organisation.`,
-  'cc-orga-member-list.invite.email.error-empty': `Veuillez saisir une adresse e-mail.`,
-  'cc-orga-member-list.invite.email.error-format': () => sanitize`Format d'adresse e-mail invalide.<br>Exemple: john.doe@example.com.`,
   'cc-orga-member-list.invite.email.format': `nom@example.com`,
   'cc-orga-member-list.invite.email.label': `Adresse e-mail`,
   'cc-orga-member-list.invite.heading': `Inviter un membre`,
