@@ -110,6 +110,7 @@ export const translations = {
   'cc-addon-credentials.field.auth-token': `Token`,
   'cc-addon-credentials.field.host': `Host`,
   'cc-addon-credentials.field.password': `Password`,
+  'cc-addon-credentials.field.port': `Port`,
   'cc-addon-credentials.field.url': `URL`,
   'cc-addon-credentials.field.user': `User`,
   'cc-addon-credentials.loading-error': `Something went wrong while loading the credentials.`,
