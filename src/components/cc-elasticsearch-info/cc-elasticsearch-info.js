@@ -13,9 +13,16 @@ const ELASTICSEARCH_LOGO_URL = 'https://assets.clever-cloud.com/logos/elastic.sv
 const KIBANA_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-kibana.svg';
 const APM_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-apm.svg';
 const ELASTICSEARCH_DOCUMENTATION = 'https://www.clever-cloud.com/doc/addons/elastic/';
+const linksSortOrder = ['elasticsearch', 'kibana', 'apm'];
 
 /**
- * @typedef {import('./cc-elasticsearch-info.types.js').Link} Link
+ * @typedef {import('./cc-elasticsearch-info.types.js').ElasticSearchInfoState} ElasticSearchInfoState
+ * @typedef {import('./cc-elasticsearch-info.types.js').ElasticSearchInfoStateLoaded} ElasticSearchInfoStateLoaded
+ * @typedef {import('./cc-elasticsearch-info.types.js').ElasticSearchInfoStateLoading} ElasticSearchInfoStateLoading
+ * @typedef {import('./cc-elasticsearch-info.types.js').LinkType} LinkType
+ * @typedef {import('./cc-elasticsearch-info.types.js').LinkLoading} LinkLoading
+ * @typedef {import('./cc-elasticsearch-info.types.js').LinkLoaded} LinkLoaded
+ * @typedef {import('lit').TemplateResult<1>} TemplateResult
  */
 
 /**
@@ -24,7 +31,6 @@ const ELASTICSEARCH_DOCUMENTATION = 'https://www.clever-cloud.com/doc/addons/ela
  * ## Details
  *
  * * You need to list the links you want to display in `links`.
- * * You can omit the `href` property while you wait for the real link, a skeleton UI (loading hint) will be displayed.
  *
  * @cssdisplay block
  */
@@ -32,63 +38,106 @@ export class CcElasticsearchInfo extends LitElement {
 
   static get properties () {
     return {
-      error: { type: Boolean },
-      links: { type: Array },
+      state: { type: Object },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {boolean} Display an error message. */
-    this.error = false;
+    /** @type {ElasticSearchInfoState} Sets the state of the component */
+    this.state = {
+      type: 'loading',
+      links: [
+        { type: 'elasticsearch' },
+        { type: 'kibana' },
+        { type: 'apm' },
+      ],
+    };
+  }
 
-    /** @type {Link[]|null} Sets the different links. */
-    this.links = null;
+  /**
+   * @param {LinkType} linkType
+   * @returns {string} the corresponding translation
+   * @private
+   */
+  _getLinkText (linkType) {
+    switch (linkType) {
+      case 'elasticsearch':
+        return i18n('cc-elasticsearch-info.link.elasticsearch');
+      case 'kibana':
+        return i18n('cc-elasticsearch-info.link.kibana');
+      case 'apm':
+        return i18n('cc-elasticsearch-info.link.apm');
+    }
+  }
+
+  /**
+   * @param {LinkType} linkType
+   * @returns {string} the corresponding logo URL
+   * @private
+   */
+  _getLogo (linkType) {
+    switch (linkType) {
+      case 'elasticsearch':
+        return ELASTICSEARCH_LOGO_URL;
+      case 'kibana':
+        return KIBANA_LOGO_URL;
+      case 'apm':
+        return APM_LOGO_URL;
+    }
+  }
+
+  /**
+   * @param {Array<LinkLoaded|LinkLoading>} links
+   * @returns {Array<LinkLoaded|LinkLoading>} sorted Links
+   */
+  _getSortedLinks (links) {
+    return links.sort((a, b) => {
+      return linksSortOrder.indexOf(a.type) - linksSortOrder.indexOf(b.type);
+    });
+
   }
 
   render () {
+    const skeleton = this.state.type === 'loading';
 
-    const links = this.links ?? [];
-    const elasticsearchLink = links.find(({ type }) => type === 'elasticsearch');
-    const kibanaLink = links.find(({ type }) => type === 'kibana');
-    const apmLink = links.find(({ type }) => type === 'apm');
-
-    if (this.error) {
+    if (this.state.type === 'error') {
       return html`<cc-notice intent="warning" message="${i18n('cc-elasticsearch-info.error')}"></cc-notice>`;
     }
 
     return html`
-
       <cc-block ribbon=${i18n('cc-elasticsearch-info.info')} no-head>
-         <div class="info-text">${i18n('cc-elasticsearch-info.text')}</div>
+        <div class="info-text">${i18n('cc-elasticsearch-info.text')}</div>
 
-          <div class="link-list">
-            ${ccLink(ELASTICSEARCH_DOCUMENTATION, html`
-              <cc-icon size="lg" .icon=${iconInfo}></cc-icon>
-              <span>${i18n('cc-elasticsearch-info.link.doc')}</span>
-            `)}
-            ${elasticsearchLink != null ? html`
-              ${ccLink(elasticsearchLink.href, html`
-                <cc-img src="${ELASTICSEARCH_LOGO_URL}"></cc-img>
-                <span class="${classMap({ skeleton: (elasticsearchLink.href == null) })}">${i18n('cc-elasticsearch-info.link.elasticsearch')}</span>
-              `)}
-            ` : ''}
-            ${kibanaLink != null ? html`
-              ${ccLink(kibanaLink.href, html`
-                <cc-img src="${KIBANA_LOGO_URL}"></cc-img>
-                <span class="${classMap({ skeleton: (kibanaLink.href == null) })}">${i18n('cc-elasticsearch-info.link.kibana')}</span>
-              `)}
-            ` : ''}
-            ${apmLink != null ? html`
-              ${ccLink(apmLink.href, html`
-                <cc-img src="${APM_LOGO_URL}"></cc-img>
-                <span class="${classMap({ skeleton: (apmLink.href == null) })}">${i18n('cc-elasticsearch-info.link.apm')}</span>
-              `)}
-            ` : ''}
-          </div>
+        <div class="link-list">
+          ${ccLink(ELASTICSEARCH_DOCUMENTATION, html`
+            <cc-icon size="lg" .icon=${iconInfo}></cc-icon>
+            <span>${i18n('cc-elasticsearch-info.link.doc')}</span>
+          `)}
+
+          ${this._renderLinks(this.state.links, skeleton)}
+        </div>
       </cc-block>
     `;
+  }
+
+  /**
+   * @param {LinkLoaded[]|LinkLoading[]} links
+   * @param {Boolean} skeleton
+   * @returns {TemplateResult[]}
+   * @private
+   */
+  _renderLinks (links, skeleton) {
+    const sortedLinks = this._getSortedLinks(links);
+
+    return sortedLinks.map(({ href, type }) => ccLink(
+      href,
+      html`
+        <cc-img src="${this._getLogo(type)}"></cc-img>
+        <span class="${classMap({ skeleton })}">${this._getLinkText(type)}</span>
+      `,
+    ));
   }
 
   static get styles () {
