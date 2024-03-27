@@ -18,21 +18,46 @@ import {
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { fakeString } from '../../lib/fake-strings.js';
+import { FormController } from '../../lib/form/form-controller.js';
+import { invalid, VALID } from '../../lib/form/validation.js';
 import { i18n } from '../../lib/i18n.js';
 import { sortBy } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 
+/**
+ * @type {SshKeyState[]}
+ */
 const SKELETON_KEYS = [{
   state: 'idle',
   name: fakeString(15),
   fingerprint: fakeString(32),
 }];
 
+class SshPublicKeyValidator {
+  /**
+   * @param {string} value
+   * @param {Object} _formData
+   * @return {Validation}
+   */
+  validate (value, _formData) {
+    if (value.toLowerCase().match(' private ')) {
+      return invalid('private-key');
+    }
+    return VALID;
+  }
+}
+
 /**
- * @typedef {import('./cc-ssh-key-list.types.js').CreateSshKeyFormState} CreateSshKeyFormState
  * @typedef {import('./cc-ssh-key-list.types.js').KeyDataState} KeyDataState
+ * @typedef {import('./cc-ssh-key-list.types.js').SshKeyState} SshKeyState
  * @typedef {import('./cc-ssh-key-list.types.js').NewKey} NewKey
  * @typedef {import('./cc-ssh-key-list.types.js').SshKey} SshKey
+ * @typedef {import('./cc-ssh-key-list.types.js').CreateKeyForm} CreateKeyForm
+ * @typedef {import('../cc-input-text/cc-input-text.js').CcInputText} CcInputText
+ * @typedef {import('lit').TemplateResult<1>} TemplateResult
+ * @typedef {import('lit/directives/ref.js').Ref<CcInputText>} CcInputTextRef
+ * @typedef {import('../../lib/form/form.types.js').AggregatedFormData} AggregatedFormData
+ * @typedef {import('../../lib/form/validation.types.js').Validation} Validation
  */
 
 /**
@@ -54,103 +79,78 @@ export class CcSshKeyList extends LitElement {
 
   static get properties () {
     return {
-      createSshKeyForm: { type: Object, attribute: 'create-ssh-key-form' },
       keyData: { type: Object, attribute: 'key-data' },
-    };
-  }
-
-  static get CREATE_FORM_INIT_STATE () {
-    return {
-      state: 'idle',
-      name: {
-        value: '',
-      },
-      publicKey: {
-        value: '',
-      },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {CreateSshKeyFormState} creation form state */
-    this.createSshKeyForm = CcSshKeyList.CREATE_FORM_INIT_STATE;
-
     /** @type {KeyDataState} personal and GitHub lists of registered SSH keys. */
     this.keyData = { state: 'loading' };
 
-    /** @type {Ref<CcInputText>} */
+    /** @type CcInputTextRef */
     this._createFormNameRef = createRef();
 
-    /** @type {Ref<CcInputText>} */
+    /** @type CcInputTextRef */
     this._createFormPublicKeyRef = createRef();
 
     new LostFocusController(this, '.key--personal', ({ suggestedElement }) => {
-      if (suggestedElement == null) {
-        this.shadowRoot.querySelector('#personal-keys-empty-msg')?.focus();
-      }
-      else {
-        suggestedElement?.querySelector('cc-button').focus();
-      }
+      this._focusBySelector(suggestedElement == null ? '#personal-keys-empty-msg' : 'cc-button');
     });
-    new LostFocusController(this, '.key--github', ({ removedElement, suggestedElement }) => {
-      if (suggestedElement == null) {
-        this.shadowRoot.querySelector('#github-keys-empty-msg')?.focus();
-      }
-      else {
-        suggestedElement?.querySelector('cc-button').focus();
-      }
+    new LostFocusController(this, '.key--github', ({ suggestedElement }) => {
+      this._focusBySelector(suggestedElement == null ? '#github-keys-empty-msg' : 'cc-button');
     });
-  }
 
-  _onCreateKey () {
-    const rawName = this._createFormNameRef.value.value;
-    const rawPublicKey = this._createFormPublicKeyRef.value.value;
+    this._createKeyFormCtrl = new FormController(this, {
+      initialState: 'idle',
+      onSubmit: this._onCreateKey.bind(this),
+    });
 
-    // removing trailing whitespaces
-    const name = rawName.trim();
-    const publicKey = rawPublicKey.trim();
-
-    // looking for potential form errors
-    const isNameFilled = name?.length > 0;
-    const isPublicKeyFilled = publicKey?.length > 0;
-
-    const mailError = isNameFilled ? null : 'required';
-    let publicKeyError = isPublicKeyFilled ? null : 'required';
-
-    const isPublicKeyPrivate = isPublicKeyFilled && rawPublicKey.toLowerCase().match(' private ');
-    if (isPublicKeyPrivate) {
-      publicKeyError = 'private-key';
-    }
-
-    // updating the model
-    this.createSshKeyForm = {
-      state: 'idle',
-      name: {
-        value: name,
-        error: mailError,
-      },
-      publicKey: {
-        value: publicKey,
-        error: publicKeyError,
-      },
+    this._nameErrorMessages = {
+      empty: () => i18n('cc-ssh-key-list.error.required.name'),
     };
 
-    const hasFormErrors = !isNameFilled || !isPublicKeyFilled || isPublicKeyPrivate;
-    if (hasFormErrors) {
-      // auto focus input on error
-      if (this.createSshKeyForm.name.error != null) {
-        this._createFormNameRef.value.focus();
-      }
-      else if (this.createSshKeyForm.publicKey.error != null) {
-        this._createFormPublicKeyRef.value.focus();
-      }
-    }
-    else {
-      // trigger key creation if client form validation is successful
-      /** @type {NewKey} */
-      const newKey = { name, publicKey };
+    this._keyValidator = new SshPublicKeyValidator();
+    this._keyErrorMessages = {
+      empty: () => i18n('cc-ssh-key-list.error.required.public-key'),
+      'private-key': () => i18n('cc-ssh-key-list.error.private-key'),
+    };
+
+    /** @type {CreateKeyForm} */
+    this._createKeyFormManager = {
+      setState: (state) => {
+        this._createKeyFormCtrl.state = state;
+      },
+      reset: () => {
+        this._createKeyFormCtrl.state = 'idle';
+        this._createKeyFormCtrl.reset();
+      },
+    };
+  }
+
+  /**
+   * @return {CreateKeyForm}
+   */
+  get createKeyForm () {
+    return this._createKeyFormManager;
+  }
+
+  _onCreateFormBeforeSubmit () {
+    this._createFormNameRef.value.value = this._createFormNameRef.value.value?.trim();
+    this._createFormPublicKeyRef.value.value = this._createFormPublicKeyRef.value.value.trim();
+  }
+
+  /**
+   * @param {AggregatedFormData} formData
+   */
+  _onCreateKey (formData) {
+    // trigger key creation if client form validation is successful
+    if (typeof formData.name === 'string' && typeof formData.publicKey === 'string') {
+      const newKey = {
+        name: formData.name.trim(),
+        publicKey: formData.publicKey.trim(),
+      };
       dispatchCustomEvent(this, 'create', newKey);
     }
   }
@@ -169,29 +169,16 @@ export class CcSshKeyList extends LitElement {
     dispatchCustomEvent(this, 'import', sshKey);
   }
 
-  _onNameInput ({ detail: name }) {
-    this.createSshKeyForm = {
-      ...this.createSshKeyForm,
-      name: {
-        ...this.createSshKeyForm.name,
-        value: name,
-      },
-    };
-  }
-
-  _onPublicKeyInput ({ detail: publicKey }) {
-    this.createSshKeyForm = {
-      ...this.createSshKeyForm,
-      publicKey: {
-        ...this.createSshKeyForm.publicKey,
-        value: publicKey,
-      },
-    };
+  /**
+   * @param {string} selector
+   */
+  _focusBySelector (selector) {
+    /** @type {HTMLElement} */
+    const e = this.shadowRoot.querySelector(selector);
+    e?.focus();
   }
 
   render () {
-    const state = this.keyData.state;
-
     return html`
       <cc-block>
         <div slot="title">${i18n('cc-ssh-key-list.title')}</div>
@@ -208,24 +195,24 @@ export class CcSshKeyList extends LitElement {
         <cc-block-section>
           <div slot="title">
             <span>${i18n('cc-ssh-key-list.personal.title')}</span>
-            ${state === 'loaded' && this.keyData.personalKeys.length > 2 ? html`
+            ${this.keyData.state === 'loaded' && this.keyData.personalKeys.length > 2 ? html`
               <cc-badge circle>${this.keyData.personalKeys.length}</cc-badge>
             ` : ''}
           </div>
           <div slot="info">${i18n('cc-ssh-key-list.personal.info')}</div>
 
-          ${state === 'loading' ? html`
+          ${this.keyData.state === 'loading' ? html`
             ${this._renderKeyList('skeleton', SKELETON_KEYS)}
           ` : ''}
 
-          ${state === 'loaded' ? html`
+          ${this.keyData.state === 'loaded' ? html`
             ${this.keyData.personalKeys.length === 0 ? html`
               <p class="info-msg" id="personal-keys-empty-msg" tabindex="-1">${i18n('cc-ssh-key-list.personal.empty')}</p>
             ` : ''}
             ${this._renderKeyList('personal', this.keyData.personalKeys)}
           ` : ''}
 
-          ${state === 'error' ? html`
+          ${this.keyData.state === 'error' ? html`
             <cc-notice intent="warning" message="${i18n('cc-ssh-key-list.error.loading')}"></cc-notice>
           ` : ''}
         </cc-block-section>
@@ -234,28 +221,28 @@ export class CcSshKeyList extends LitElement {
         <cc-block-section>
           <div slot="title">
             <span>${i18n('cc-ssh-key-list.github.title')}</span>
-            ${state === 'loaded' && this.keyData.isGithubLinked && this.keyData.githubKeys.length > 2 ? html`
+            ${this.keyData.state === 'loaded' && this.keyData.isGithubLinked && this.keyData.githubKeys.length > 2 ? html`
               <cc-badge circle>${this.keyData.githubKeys.length}</cc-badge>
             ` : ''}
           </div>
           <div slot="info">${i18n('cc-ssh-key-list.github.info')}</div>
 
-          ${state === 'loading' ? html`
+          ${this.keyData.state === 'loading' ? html`
             ${this._renderKeyList('skeleton', SKELETON_KEYS)}
           ` : ''}
 
-          ${state === 'loaded' && !this.keyData.isGithubLinked ? html`
+          ${this.keyData.state === 'loaded' && !this.keyData.isGithubLinked ? html`
             <p class="info-msg">${i18n('cc-ssh-key-list.github.unlinked')}</p>
           ` : ''}
 
-          ${state === 'loaded' && this.keyData.isGithubLinked ? html`
+          ${this.keyData.state === 'loaded' && this.keyData.isGithubLinked ? html`
             ${this.keyData.githubKeys.length === 0 ? html`
               <p class="info-msg" id="github-keys-empty-msg" tabindex="-1">${i18n('cc-ssh-key-list.github.empty')}</p>
             ` : ''}
             ${this._renderKeyList('github', this.keyData.githubKeys)}
           ` : ''}
 
-          ${state === 'error' ? html`
+          ${this.keyData.state === 'error' ? html`
             <cc-notice intent="warning" message="${i18n('cc-ssh-key-list.error.loading')}"></cc-notice>
           ` : ''}
         </cc-block-section>
@@ -270,58 +257,53 @@ export class CcSshKeyList extends LitElement {
     `;
   }
 
+  /**
+   * @return {TemplateResult}
+   */
   _renderCreateSshKeyForm () {
+    const isCreating = this._createKeyFormCtrl.state === 'creating';
 
     return html`
-      <div class="create-form">
+      <form class="create-form" @submit=${this._onCreateFormBeforeSubmit} ${this._createKeyFormCtrl.handleSubmit()}>
         <cc-input-text
-          ?disabled=${this.createSshKeyForm.state === 'creating'}
-          @cc-input-text:input=${this._onNameInput}
-          @cc-input-text:requestimplicitsubmit=${this._onCreateKey}
-          .value="${this.createSshKeyForm.name?.value}"
+          name="name"
+          ?disabled=${isCreating}
           class="create-form__name"
           label=${i18n('cc-ssh-key-list.add.name')}
           required
+          .customErrorMessages=${this._nameErrorMessages}
           ${ref(this._createFormNameRef)}
         >
-          ${this.createSshKeyForm.name.error === 'required' ? html`
-            <p slot="error">${i18n('cc-ssh-key-list.error.required.name')}</p>
-          ` : ''}
         </cc-input-text>
         <cc-input-text
-          ?disabled=${this.createSshKeyForm.state === 'creating'}
-          @cc-input-text:input=${this._onPublicKeyInput}
-          @cc-input-text:requestimplicitsubmit=${this._onCreateKey}
-          .value="${this.createSshKeyForm.publicKey?.value}"
+          name="publicKey"
+          ?disabled=${isCreating}
           class="create-form__public-key"
           label=${i18n('cc-ssh-key-list.add.public-key')}
           required
+          .customErrorMessages=${this._keyErrorMessages}
+          .customValidator=${this._keyValidator}
           ${ref(this._createFormPublicKeyRef)}
         >
-          ${this.createSshKeyForm.publicKey.error === 'required' ? html`
-            <p slot="error">${i18n('cc-ssh-key-list.error.required.public-key')}</p>
-          ` : ''}
-          ${this.createSshKeyForm.publicKey.error === 'private-key' ? html`
-            <p slot="error">${i18n('cc-ssh-key-list.error.private-key')}</p>
-          ` : ''}
         </cc-input-text>
         <div class="create-form__footer">
           <cc-button
-            @cc-button:click=${this._onCreateKey}
             class="create-form__add-btn"
             primary
-            ?waiting=${this.createSshKeyForm.state === 'creating'}
+            type="submit"
+            ?waiting=${isCreating}
           >
             ${i18n('cc-ssh-key-list.add.btn')}
           </cc-button>
         </div>
-      </div>
+      </form>
     `;
   }
 
   /**
    * @param {"personal"|"github"|"skeleton"} type
    * @param {SshKeyState[]} keys
+   * @return {TemplateResult}
    */
   _renderKeyList (type, keys) {
     const sortedKeys = [...keys].sort(sortBy('name'));
