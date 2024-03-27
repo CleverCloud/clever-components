@@ -45,12 +45,26 @@ const authorisationsAdmin = {
   edit: true,
   delete: true,
 };
+const baseItem = {
+  authorisations: authorisationsAdmin,
+  members: {
+    state: 'loaded',
+    value: baseMemberList,
+    identityFilter: '',
+    mfaDisabledOnlyFilter: false,
+    dangerZoneState: 'idle',
+  },
+};
 
 export default {
   tags: ['autodocs'],
   title: '🛠 Organisation/<cc-orga-member-list>',
   component: 'cc-orga-member-list',
 };
+
+/**
+ * @typedef {import('./cc-orga-member-list.js').CcOrgaMemberList} CcOrgaMemberList
+ */
 
 const conf = {
   component: 'cc-orga-member-list',
@@ -137,15 +151,6 @@ export const waitingWithLeavingAsAdmin = makeStory(conf, {
 export const waitingWithInvitingMember = makeStory(conf, {
   items: [{
     authorisations: authorisationsAdmin,
-    inviteMemberForm: {
-      state: 'inviting',
-      email: {
-        value: 'jane.doe@example.com',
-      },
-      role: {
-        value: 'ADMIN',
-      },
-    },
     members: {
       state: 'loaded',
       value: [baseMemberList[0]],
@@ -153,7 +158,11 @@ export const waitingWithInvitingMember = makeStory(conf, {
       mfaDisabledOnlyFilter: false,
       dangerZoneState: 'idle',
     },
+    inviteMemberFormState: { type: 'inviting' },
   }],
+  onUpdateComplete: (component) => {
+    component._inviteMemberFormRef.value.email.value = 'june.doe@example.com';
+  },
 });
 
 export const errorWithLoadingMemberList = makeStory(conf, {
@@ -220,73 +229,30 @@ export const errorWithEditingYourselfAsLastAdmin = makeStory(conf, {
 });
 
 export const errorWithInviteEmptyEmail = makeStory(conf, {
-  items: [{
-    authorisations: authorisationsAdmin,
-    inviteMemberForm: {
-      state: 'idle',
-      email: {
-        value: '',
-        error: 'empty',
-      },
-      role: {
-        value: 'ADMIN',
-      },
-    },
-    members: {
-      state: 'loaded',
-      value: baseMemberList,
-      identityFilter: '',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'idle',
-    },
-  }],
+  items: [baseItem],
+  onUpdateComplete: (component) => {
+    component._inviteMemberFormRef.value.email.value = '';
+    component._inviteMemberFormRef.value.email.validate();
+    component._inviteMemberFormRef.value.email.reportInlineValidity();
+  },
 });
 
 export const errorWithInviteInvalidEmailFormat = makeStory(conf, {
-  items: [{
-    authorisations: authorisationsAdmin,
-    inviteMemberForm: {
-      state: 'idle',
-      email: {
-        value: 'jane.doe',
-        error: 'invalid',
-      },
-      role: {
-        value: 'ADMIN',
-      },
-    },
-    members: {
-      state: 'loaded',
-      value: baseMemberList,
-      identityFilter: '',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'idle',
-    },
-  }],
+  items: [baseItem],
+  onUpdateComplete: (component) => {
+    component._inviteMemberFormRef.value.email.value = 'jane.doe';
+    component._inviteMemberFormRef.value.email.validate();
+    component._inviteMemberFormRef.value.email.reportInlineValidity();
+  },
 });
 
 export const errorWithInviteMemberAlreadyInsideOrganisation = makeStory(conf, {
-  items: [{
-    authorisations: authorisationsAdmin,
-    inviteMemberForm: {
-      state: 'idle',
-      email: {
-        value: 'june.doe@example.com',
-        error: 'duplicate',
-      },
-      role: {
-        value: 'ACCOUNTING',
-      },
-    },
-    members: {
-      state: 'loaded',
-      value: baseMemberList,
-      identityFilter: '',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'idle',
-    },
+  items: [baseItem],
+  onUpdateComplete: (component) => {
+    component._inviteMemberFormRef.value.email.value = 'june.doe@example.com';
+    component._inviteMemberFormRef.value.email.validate();
+    component._inviteMemberFormRef.value.email.reportInlineValidity();
   },
-  ],
 });
 
 export const dataLoaded = makeStory(conf, {
@@ -331,25 +297,10 @@ export const dataLoadedWithCurrentUserAdmin = makeStory(conf, {
 });
 
 export const dataLoadedWithInviteFormWithLongEmail = makeStory(conf, {
-  items: [{
-    authorisations: authorisationsAdmin,
-    inviteMemberForm: {
-      state: 'idle',
-      email: {
-        value: 'very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-long-email-address@very-very-very-very-very-very-very-long.example.com',
-      },
-      role: {
-        value: 'ADMIN',
-      },
-    },
-    members: {
-      state: 'loaded',
-      value: baseMemberList,
-      identityFilter: '',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'idle',
-    },
-  }],
+  items: [baseItem],
+  onUpdateComplete: (component) => {
+    component._inviteMemberFormRef.value.email.value = 'very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-long-email-address@very-very-very-very-very-very-very-long.example.com';
+  },
 });
 
 export const dataLoadedWithOnlyOneMember = makeStory(conf, {
@@ -497,42 +448,17 @@ export const simulationWithInviteMember = makeStory(conf, {
   }],
   simulations: [
     storyWait(1000, ([component]) => {
-      component.inviteMemberForm = {
-        ...component.inviteMemberForm,
-        email: {
-          ...component.inviteMemberForm.email,
-          value: 'john.doe@example.com',
-        },
-      };
+      component._inviteMemberFormRef.value.email.value = 'john.doe@example.com';
     }),
     storyWait(1000, ([component]) => {
-      component.inviteMemberForm = {
-        ...component.inviteMemberForm,
-        role: {
-          ...component.inviteMemberForm.role,
-          value: 'ADMIN',
-        },
-      };
+      component._inviteMemberFormRef.value.role.value = 'ADMIN';
     }),
     storyWait(500, ([component]) => {
-      component.inviteMemberForm = {
-        ...component.inviteMemberForm,
-        state: 'inviting',
-      };
+      component.inviteMemberFormState = { type: 'inviting' };
     }),
     storyWait(2000, ([component]) => {
-      component.inviteMemberForm = {
-        ...component.inviteMemberForm,
-        state: 'idle',
-        email: {
-          ...component.inviteMemberForm.email,
-          value: '',
-        },
-        role: {
-          ...component.inviteMemberForm.role,
-          value: 'DEVELOPER',
-        },
-      };
+      component.resetInviteMemberForm();
+      component.inviteMemberFormState = { type: 'idle' };
     }),
   ],
 });
