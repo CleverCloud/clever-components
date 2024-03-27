@@ -13,6 +13,7 @@ import {
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 
+/** @type {{ [key: string]: IconModel }} */
 const featureIcons = {
   cpus: iconCpu,
   vcpus: iconCpu,
@@ -33,6 +34,11 @@ const SKELETON_FEATURES = [
 
 /**
  * @typedef {import('./cc-addon-features.types.js').AddonFeature} AddonFeature
+ * @typedef {import('./cc-addon-features.types.js').AddonFeaturesState} AddonFeaturesState
+ * @typedef {import('./cc-addon-features.types.js').AddonFeaturesStateLoading} AddonFeaturesStateLoading
+ * @typedef {import('./cc-addon-features.types.js').AddonFeaturesStateLoaded} AddonFeaturesStateLoaded
+ * @typedef {import('./cc-addon-features.types.js').AddonFeatureWithIcon} AddonFeatureWithIcon
+ * @typedef {import('../common.types.js').IconModel} IconModel
  */
 
 /**
@@ -40,7 +46,6 @@ const SKELETON_FEATURES = [
  *
  * ## Details
  *
- * * When `features` is nullish, a skeleton screen UI pattern is displayed (loading hint).
  * * We don't have a proper i18n and icon system for feature names. For the time being, the (lower cased) name is used as some kind of code to match an icon and maybe translate the name of the feature.
  * * We don't have a proper i18n system for feature values. For the time being, the (lower cased) value is used as some kind of code to maybe translate the value of the feature.
  *
@@ -50,21 +55,23 @@ export class CcAddonFeatures extends LitElement {
 
   static get properties () {
     return {
-      error: { type: Boolean },
-      features: { type: Array },
+      state: { type: Object },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {boolean} Displays an error message. */
-    this.error = false;
-
-    /** @type {AddonFeature[]} Sets the list features. */
-    this.features = [];
+    /** @type {AddonFeaturesState} Set the state of the component */
+    this.state = { type: 'loading' };
   }
 
+  /**
+   * @param {'disk' | 'nodes' | 'memory' | string} code
+   * @param {string} rawName
+   * @returns {string}
+   * @private
+   */
   _getFeatureName (code, rawName) {
     if (code === 'disk') {
       return i18n('cc-addon-features.feature-name.disk');
@@ -78,6 +85,12 @@ export class CcAddonFeatures extends LitElement {
     return rawName;
   };
 
+  /**
+   * @param {'dedicated' | 'no' | 'yes' | string} code
+   * @param {string} rawValue
+   * @returns {string}
+   * @private
+   */
   _getFeatureValue (code, rawValue) {
     if (code === 'dedicated') {
       return i18n('cc-addon-features.feature-value.dedicated');
@@ -91,7 +104,13 @@ export class CcAddonFeatures extends LitElement {
     return rawValue;
   };
 
-  // Here we sort feature by name (lower case) but first we force a specific order with SORT_FEATURES
+  /**
+   * Here we sort feature by name (lower case) but first we force a specific order with SORT_FEATURES
+   *
+   * @param {AddonFeature[]} features
+   * @returns {AddonFeatureWithIcon[]}
+   * @private
+   */
   _sortFeatures (features) {
     const sortedArray = features.slice(0);
     sortedArray.sort((a, b) => {
@@ -103,9 +122,8 @@ export class CcAddonFeatures extends LitElement {
   }
 
   render () {
-
-    const skeleton = (this.features == null);
-    const rawFeatures = skeleton ? SKELETON_FEATURES : this.features;
+    const skeleton = this.state.type === 'loading';
+    const rawFeatures = this.state.type === 'loaded' ? this.state.features : SKELETON_FEATURES;
     const unsortedFeatures = rawFeatures.map((feature) => {
       const nameCode = feature.name.toLowerCase();
       const valueCode = feature.value.toLowerCase();
@@ -117,14 +135,19 @@ export class CcAddonFeatures extends LitElement {
       };
     });
     const features = this._sortFeatures(unsortedFeatures);
+    const isLoadedOrLoading = this.state.type === 'loaded' || skeleton;
 
     return html`
       <cc-block>
         <div slot="title">${i18n('cc-addon-features.title')}</div>
-
+          
         <div>${i18n('cc-addon-features.details')}</div>
         
-        ${!this.error ? html`
+        ${this.state.type === 'error' ? html`
+          <cc-notice intent="warning" message="${i18n('cc-addon-features.loading-error')}"></cc-notice>
+        ` : ''}
+        
+        ${isLoadedOrLoading ? html`
           <div class="feature-list">
             ${features.map((feature) => html`
               <div class="feature ${classMap({ skeleton })}">
@@ -138,10 +161,6 @@ export class CcAddonFeatures extends LitElement {
               </div>
             `)}
           </div>
-        ` : ''}
-
-        ${this.error ? html`
-          <cc-notice intent="warning" message="${i18n('cc-addon-features.loading-error')}"></cc-notice>
         ` : ''}
       </cc-block>
     `;
