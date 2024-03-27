@@ -123,6 +123,7 @@ export const translations = {
   'cc-addon-credentials.field.auth-token': `Token`,
   'cc-addon-credentials.field.host': `Hôte`,
   'cc-addon-credentials.field.password': `Mot de passe`,
+  'cc-addon-credentials.field.port': `Port`,
   'cc-addon-credentials.field.url': `URL`,
   'cc-addon-credentials.field.user': `Utilisateur`,
   'cc-addon-credentials.loading-error': `Une erreur est survenue pendant le chargement des informations de connexion.`,

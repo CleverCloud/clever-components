@@ -1,5 +1,5 @@
 interface Credential {
-  type: "auth-token" | "host" | "password" | "url" | "user";
+  type: "auth-token" | "host" | "password" | "url" | "user" | "port";
   value: string;
   secret: boolean;
 }
