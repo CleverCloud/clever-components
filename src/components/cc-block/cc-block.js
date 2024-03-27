@@ -91,56 +91,6 @@ export class CcBlock extends LitElement {
 
     /* TODO when reworking the component, check this a11y issue https://github.com/CleverCloud/clever-components/issues/225#issuecomment-1239462826 */
     /* eslint-disable lit-a11y/click-events-have-key-events */
-    /*
-    return html`
-
-      ${this.ribbon != null && this.ribbon !== '' ? html`
-        <div class="info-ribbon">${this.ribbon}</div>
-      ` : ''}
-
-      ${!this.noHead ? html`
-        <div class="head" @click=${this._clickToggle}>
-          ${this.image != null && this.icon == null ? html`
-            <cc-img src="${this.image}"></cc-img>
-          ` : ''}
-          ${this.icon != null ? html`
-            <cc-icon size="lg" .icon=${this.icon}></cc-icon>
-          ` : ''}
-          <slot name="title"></slot>
-          ${isToggleEnabled ? html`
-            <cc-button
-              class="toggle_button"
-              .icon=${isOpen ? iconUp : iconDown}
-              hide-text
-              outlined
-              primary
-              @cc-button:click=${this._clickToggle}
-            >${isOpen ? i18n('cc-block.toggle.close') : i18n('cc-block.toggle.open')}
-            </cc-button>
-          ` : ''}
-          <slot name="button"></slot>
-        </div>
-      ` : ''}
-
-      <cc-expand class="main-wrapper ${classMap({ 'main-wrapper--overlay': this._overlay })}">
-        ${!isToggleEnabled || isOpen ? html`
-          <div class="main">
-            <slot></slot>
-          </div>
-        ` : ''}
-      </cc-expand>
-
-      <slot name="overlay"></slot>
-
-      <div class="one-line-form">
-          ${ccLink(html`
-              `)}
-      </div>
-
-      <slot name="footer"></slot>
-    `;
-  */
-
     return html`
         <slot>
           <slot name="header">
@@ -153,21 +103,41 @@ export class CcBlock extends LitElement {
               ` : ''}
             </slot>
             <slot name="title"></slot>
-            <slot name="ribbon"></slot>
-<!-- Rename --> <slot name="other-element"></slot>
+            <slot name="ribbon">
+                ${this.ribbon != null && this.ribbon !== '' ? html`
+                    <div class="info-ribbon">${this.ribbon}</div>
+                ` : ''}
+            </slot>
+            ${isToggleEnabled ? html`
+              <cc-button
+                class="toggle_button"
+                .icon=${isOpen ? iconUp : iconDown}
+                hide-text
+                outlined
+                primary
+                @cc-button:click=${this._clickToggle}
+              >${isOpen ? i18n('cc-block.toggle.close') : i18n('cc-block.toggle.open')}
+              </cc-button>
+            ` : ''}
+            <slot name="button"></slot>
+            <slot name="other-element"></slot>
           </slot>
-          <div>
-            <cc-expand>
-                <slot name="content">
-                    <slot name="content-header"></slot>
-                    <!-- expand autour du body -->  <slot name="content-body"></slot>
-                    <slot name="content-footer"></slot>
-                </slot>
-                <slot name="footer">
-                    <!-- Ajouter slot pour content à gauche, content à droite -->
-                </slot>
+            <cc-expand class="main-wrapper ${classMap({ 'main-wrapper--overlay': this._overlay })}">
+                ${!isToggleEnabled || isOpen ? html`
+                    <div>
+                      <slot name="content">
+                          <slot name="content-header"></slot>
+                          <slot name="content-body"></slot>
+                          <slot name="content-footer"></slot>
+                      </slot>
+                    </div>
+                ` : ''}
             </cc-expand>
-          </div>
+          <slot name="footer">
+              <slot name="left-content"></slot>
+              <slot name="center-content"></slot>
+              <slot name="right-content"></slot>
+          </slot>
         </slot>
     `;
   }
@@ -196,7 +166,7 @@ export class CcBlock extends LitElement {
           border-radius: var(--cc-border-radius-default, 0.25em);
         }
 
-        .head {
+        ::slotted([slot='header']) {
           display: flex;
           align-items: center;
           padding: 1em;
@@ -230,7 +200,7 @@ export class CcBlock extends LitElement {
           --cc-icon-size: 1.5em;
         }
 
-        ::slotted([slot='header']) ::slotted([slot='title']) {
+        ::slotted([slot='title']) {
           flex: 1 1 0;
           font-size: 1.2em;
           font-weight: bold;
@@ -278,9 +248,7 @@ export class CcBlock extends LitElement {
         ::slotted([slot='overlay']) {
           grid-area: 2 / 1 / auto / auto;
         }
-
-
-
+        
         :host([ribbon]) .main-wrapper {
           padding-left: 2.5em;
         }
