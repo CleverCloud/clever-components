@@ -1,5 +1,5 @@
 /**
- * @typedef {import('./cc-product-list.types.js').CategoryData} CategoryData
+ * @typedef {import('./cc-product-list.types.js').ProductsCategory} ProductsByCategory
  * @typedef {import('./cc-product-list').CcProductList} CcProductList
  * @typedef {import('./cc-product-list.types.js').Product} Product
  * @typedef {import('./cc-product-list.types.js').CategoryFilter} CategoryFilter
@@ -14,31 +14,31 @@ export class ProductsController {
     /** @type {CcProductList} The host. */
     this._host = host;
 
-    /** @type {CategoryData[]} The initial category data list. */
-    this._categoryDataList = [];
+    /** @type {ProductsByCategory[]} The initial products category list. */
+    this._productsByCategories = [];
 
-    /** @type {CategoryData[]} category data list filtered by the category selected nor with the input */
-    this._currentCategoryDataList = [];
+    /** @type {ProductsByCategory[]} products list filtered by the category selected nor with the input */
+    this._productsByCategoriesFiltered = [];
 
     /** @type {CategoryFilter[]}  */
     this._categoriesFilters = [];
 
-    /** @type {'all'|string}  */
-    this._currentCategoryNameFilter = 'all';
+    /** @type {string|null}  */
+    this._currentCategoryNameFilter = null;
   }
 
-  getCategoryDataList () {
-    return this._currentCategoryDataList;
+  getProductsByCategories () {
+    return this._productsByCategoriesFiltered;
   }
 
   /**
-   * @param {CategoryData[]} categoryDataList
+   * @param {ProductsByCategory[]} productsByCategories
    */
-  set categoryDataList (categoryDataList) {
+  set productsByCategories (productsByCategories) {
 
-    this._categoryDataList = categoryDataList;
-    this._currentCategoryDataList = this._categoryDataList;
-    this._categoriesFilters = this._categoryDataList.map(({ categoryName }) => ({ categoryName, toggled: false }));
+    this._productsByCategories = productsByCategories;
+    this._productsByCategoriesFiltered = this._productsByCategories;
+    this._categoriesFilters = this._productsByCategories.map(({ categoryName }) => ({ categoryName, toggled: false }));
     this._currentCategoryNameFilter = 'all';
   }
 
@@ -57,22 +57,22 @@ export class ProductsController {
    */
   search (searchInput) {
 
+    const searchInputFormatted = searchInput?.toLowerCase().trim();
+
     // @type {ProductSection[]}
     const currentCategoryProductsList = this._getProductsByCurrentCategory();
 
-    if (searchInput == null || searchInput === '') {
-      this._currentCategoryDataList = currentCategoryProductsList;
+    if (searchInputFormatted == null || searchInputFormatted === '') {
+      this._productsByCategoriesFiltered = currentCategoryProductsList;
       this._host.requestUpdate();
       return;
     }
 
-    const searchTerms = searchInput
-      .toLowerCase()
-      .trim()
+    const searchTerms = searchInputFormatted
       .split(' ')
       .filter((i) => i !== '');
 
-    this._currentCategoryDataList = currentCategoryProductsList
+    this._productsByCategoriesFiltered = currentCategoryProductsList
       .map((pl) => ({ ...pl, products: this._filterProducts(pl.products, searchTerms) }))
       .filter((pl) => pl.products.length > 0);
 
@@ -100,7 +100,7 @@ export class ProductsController {
       };
     });
 
-    this._currentCategoryDataList = this._getProductsByCurrentCategory();
+    this._productsByCategoriesFiltered = this._getProductsByCurrentCategory();
 
     this._host.requestUpdate();
   }
@@ -131,8 +131,8 @@ export class ProductsController {
 
   _getProductsByCurrentCategory () {
     return (this._currentCategoryNameFilter !== 'all')
-      ? this._categoryDataList.filter(({ categoryName }) => categoryName === this._currentCategoryNameFilter)
-      : this._categoryDataList;
+      ? this._productsByCategories.filter(({ categoryName }) => categoryName === this._currentCategoryNameFilter)
+      : this._productsByCategories;
   }
 
 }

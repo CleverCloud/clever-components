@@ -46,7 +46,7 @@ describe('ProductsController()', function () {
   describe('search() method', function () {
     it('should request host update', function () {
 
-      productsCtrl.categoryDataList = [
+      productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
           products: [
@@ -64,7 +64,7 @@ describe('ProductsController()', function () {
 
     it('should return all products matching with name', function () {
 
-      productsCtrl.categoryDataList = [
+      productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
           products: [
@@ -93,7 +93,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.search('two');
 
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal(
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal(
         [
           {
             categoryName: 'aaa',
@@ -113,7 +113,7 @@ describe('ProductsController()', function () {
 
     it('should return all products matching with name (and case insensitive)', function () {
 
-      productsCtrl.categoryDataList = [
+      productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
           products: [
@@ -128,7 +128,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.search('AwEsOmE');
 
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal(
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal(
         [
           {
             categoryName: 'aaa',
@@ -144,7 +144,7 @@ describe('ProductsController()', function () {
 
     it('should return all products matching with name (match keyword)', function () {
 
-      productsCtrl.categoryDataList = [
+      productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
           products: [
@@ -157,7 +157,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.search('one three');
 
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal(
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal(
         [
           {
             categoryName: 'aaa',
@@ -170,9 +170,37 @@ describe('ProductsController()', function () {
       );
     });
 
+    it('should return all products if nothing but one or multiple whitespaces are provided', function () {
+      productsCtrl.productsByCategories = [
+        {
+          categoryName: 'aaa',
+          products: [
+            generateProduct({ name: 'one' }),
+            generateProduct({ name: 'two' }),
+            generateProduct({ name: 'three' }),
+          ],
+        },
+      ];
+
+      productsCtrl.search('   ');
+
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal(
+        [
+          {
+            categoryName: 'aaa',
+            products: [
+              generateProduct({ name: 'one' }),
+              generateProduct({ name: 'two' }),
+              generateProduct({ name: 'three' }),
+            ],
+          },
+        ],
+      );
+    });
+
     it('should return all products matching with name (match keyword and multiple spaces)', function () {
 
-      productsCtrl.categoryDataList = [
+      productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
           products: [
@@ -185,7 +213,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.search(' one  three ');
 
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal(
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal(
         [
           {
             categoryName: 'aaa',
@@ -200,7 +228,7 @@ describe('ProductsController()', function () {
 
     it('should return all products matching with description', function () {
 
-      productsCtrl.categoryDataList = [
+      productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
           products: [
@@ -229,7 +257,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.search('two');
 
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal(
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal(
         [
           {
             categoryName: 'aaa',
@@ -249,7 +277,7 @@ describe('ProductsController()', function () {
 
     it('should return all products matching with description (match keyword)', function () {
 
-      productsCtrl.categoryDataList = [
+      productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
           products: [
@@ -278,7 +306,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.search('two three');
 
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal(
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal(
         [
           {
             categoryName: 'aaa',
@@ -300,7 +328,7 @@ describe('ProductsController()', function () {
 
     it('should not throw an error if a description is null', function () {
 
-      productsCtrl.categoryDataList = [
+      productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
           products: [
@@ -313,7 +341,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.search('aaa');
 
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal([
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal([
         {
           categoryName: 'aaa',
           products: [
@@ -327,7 +355,7 @@ describe('ProductsController()', function () {
 
     it('should return all products matching with keywords', function () {
 
-      productsCtrl.categoryDataList = [
+      productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
           products: [
@@ -392,7 +420,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.search('two');
 
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal(
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal(
         [
           {
             categoryName: 'aaa',
@@ -430,7 +458,7 @@ describe('ProductsController()', function () {
 
     it('should return all products matching with keywords (match keyword)', function () {
 
-      productsCtrl.categoryDataList = [
+      productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
           products: [
@@ -495,7 +523,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.search('two three');
 
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal(
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal(
         [
           {
             categoryName: 'aaa',
@@ -551,7 +579,7 @@ describe('ProductsController()', function () {
 
     it('should return all products matching with keywords (hidden)', function () {
 
-      productsCtrl.categoryDataList = [
+      productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
           products: [
@@ -617,7 +645,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.search('hidden');
 
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal(
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal(
         [
           {
             categoryName: 'aaa',
@@ -645,7 +673,7 @@ describe('ProductsController()', function () {
     });
 
     it('should return all the products if null is provided', function () {
-      productsCtrl.categoryDataList = [
+      productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
           products: [
@@ -666,7 +694,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.search(null);
 
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal([
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal([
         {
           categoryName: 'aaa',
           products: [
@@ -687,7 +715,7 @@ describe('ProductsController()', function () {
     });
 
     it('should return all the products if an empty string is provided', function () {
-      productsCtrl.categoryDataList = [
+      productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
           products: [
@@ -708,7 +736,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.search('');
 
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal([
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal([
         {
           categoryName: 'aaa',
           products: [
@@ -733,7 +761,7 @@ describe('ProductsController()', function () {
 
     it('should return the corresponding products if the category exists', function () {
 
-      productsCtrl.categoryDataList = [
+      productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
           products: [
@@ -750,7 +778,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.toggleCategory('aaa');
 
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal([
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal([
         {
           categoryName: 'aaa',
           products: [
@@ -762,7 +790,7 @@ describe('ProductsController()', function () {
     });
 
     it('should return all the products is the category doesn\'t exist', function () {
-      productsCtrl.categoryDataList = [
+      productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
           products: [
@@ -779,7 +807,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.toggleCategory('foobar');
 
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal([
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal([
         {
           categoryName: 'aaa',
           products: [
@@ -798,7 +826,7 @@ describe('ProductsController()', function () {
 
     it('should return the default product list for an empty category', function () {
 
-      productsCtrl.categoryDataList = [
+      productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
           products: [
@@ -815,7 +843,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.toggleCategory('');
 
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal([
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal([
         {
           categoryName: 'aaa',
           products: [
@@ -833,7 +861,7 @@ describe('ProductsController()', function () {
 
     it('should return the default product list for a null category', function () {
 
-      productsCtrl.categoryDataList = [
+      productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
           products: [
@@ -850,7 +878,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.toggleCategory(null);
 
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal([
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal([
         {
           categoryName: 'aaa',
           products: [
@@ -872,7 +900,7 @@ describe('ProductsController()', function () {
 
     it('should return the correct filter and search if everything is correct', function () {
 
-      productsCtrl.categoryDataList = [
+      productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
           products: [
@@ -918,7 +946,7 @@ describe('ProductsController()', function () {
       productsCtrl.toggleCategory('aaa');
       productsCtrl.search('two');
 
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal(
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal(
         [
           {
             categoryName: 'aaa',
@@ -935,7 +963,7 @@ describe('ProductsController()', function () {
     });
 
     it('should return a search with the initial product list (all) if the category is incorrect', function () {
-      productsCtrl.categoryDataList = [
+      productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
           products: [
@@ -981,7 +1009,7 @@ describe('ProductsController()', function () {
       productsCtrl.toggleCategory(null);
       productsCtrl.search('two');
 
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal(
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal(
         [
           {
             categoryName: 'aaa',
@@ -1009,7 +1037,7 @@ describe('ProductsController()', function () {
     });
 
     it('should return all the products from a filtered category even if the search is empty', function () {
-      productsCtrl.categoryDataList = [
+      productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
           products: [
@@ -1055,7 +1083,7 @@ describe('ProductsController()', function () {
       productsCtrl.toggleCategory('aaa');
       productsCtrl.search('');
 
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal(
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal(
         [
           {
             categoryName: 'aaa',
@@ -1083,7 +1111,7 @@ describe('ProductsController()', function () {
 
     it(`should return an empty product list if the category is okay and the search doesn't provide anything relevant`, function () {
 
-      productsCtrl.categoryDataList = [
+      productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
           products: [
@@ -1129,12 +1157,12 @@ describe('ProductsController()', function () {
       productsCtrl.toggleCategory('aaa');
       productsCtrl.search('not relevant search');
 
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal([]);
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal([]);
     });
 
     it(`should return an a product list with the search if the category is not okay and the search is relevant`, function () {
 
-      productsCtrl.categoryDataList = [
+      productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
           products: [
@@ -1180,7 +1208,7 @@ describe('ProductsController()', function () {
       productsCtrl.toggleCategory('not relevant');
       productsCtrl.search('two');
 
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal(
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal(
         [
           {
             categoryName: 'aaa',
@@ -1209,7 +1237,7 @@ describe('ProductsController()', function () {
 
     it(`should return the initial product list if the category is incorrect and if the search is empty`, function () {
 
-      productsCtrl.categoryDataList = [
+      productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
           products: [
@@ -1255,7 +1283,7 @@ describe('ProductsController()', function () {
       productsCtrl.toggleCategory(null);
       productsCtrl.search('');
 
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal(
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal(
         [
           {
             categoryName: 'aaa',
@@ -1303,7 +1331,7 @@ describe('ProductsController()', function () {
 
     it('simulation with multiple filters and search', function () {
 
-      productsCtrl.categoryDataList = [
+      productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
           products: [
@@ -1347,7 +1375,7 @@ describe('ProductsController()', function () {
       ];
 
       productsCtrl.toggleCategory('aaa');
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal(
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal(
         [{
           categoryName: 'aaa',
           products: [
@@ -1370,7 +1398,7 @@ describe('ProductsController()', function () {
         }],
       );
       productsCtrl.search('two');
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal(
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal(
         [{
           categoryName: 'aaa',
           products: [
@@ -1384,7 +1412,7 @@ describe('ProductsController()', function () {
       );
 
       productsCtrl.search('');
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal(
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal(
         [{
           categoryName: 'aaa',
           products: [
@@ -1408,7 +1436,7 @@ describe('ProductsController()', function () {
       );
 
       productsCtrl.toggleCategory('all');
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal(
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal(
         [{
           categoryName: 'aaa',
           products: [
@@ -1453,7 +1481,7 @@ describe('ProductsController()', function () {
       );
 
       productsCtrl.search('two');
-      expect(productsCtrl.getCategoryDataList()).to.deep.equal(
+      expect(productsCtrl.getProductsByCategories()).to.deep.equal(
         [{
           categoryName: 'aaa',
           products: [

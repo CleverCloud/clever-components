@@ -8,7 +8,7 @@ export interface Product {
   url: string;
 }
 
-export interface CategoryData {
+export interface ProductsCategory {
   categoryName: string;
   icon?: string;
   products: Product[];

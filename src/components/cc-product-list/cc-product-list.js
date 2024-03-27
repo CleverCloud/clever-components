@@ -9,7 +9,7 @@ import '../cc-input-text/cc-input-text.js';
 import { ProductsController } from './products-controller.js';
 
 /**
- * @typedef {import('./cc-product-list.types.js').CategoryData} CategoryData
+ * @typedef {import('./cc-product-list.types.js').ProductsCategory} ProductsCategory
  * @typedef {import('lit').PropertyValues<CcProductList>} CcProductListPropertyValues
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
  */
@@ -23,20 +23,20 @@ export class CcProductList extends LitElement {
 
   static get properties () {
     return {
-      categoryDataList: { type: Array },
       filterCategory: { type: String, attribute: 'filter-category' },
-      filterInput: { type: String, attribute: 'filter-input' },
+      productsByCategories: { type: Array, attribute: 'products-by-categories' },
+      searchInput: { type: String, attribute: 'search-input' },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {CategoryData[]} the list of products in their respective categories.  */
-    this.categoryDataList = [];
+    /** @type {ProductsCategory[]} the list of products in their respective categories.  */
+    this.productsByCategories = [];
 
     /** @type {string} a string to presearch through the list */
-    this.filterInput = '';
+    this.searchInput = '';
 
     /** @type {string|null} a string to prefilter by a given category */
     this.filterCategory = null;
@@ -57,7 +57,7 @@ export class CcProductList extends LitElement {
    * @param {string} event.detail
   */
   _onSearchInput ({ detail: value }) {
-    this.filterInput = value;
+    this.searchInput = value;
   }
 
   /**
@@ -65,15 +65,16 @@ export class CcProductList extends LitElement {
   */
   willUpdate (changedProperties) {
 
-    if (changedProperties.has('categoryDataList')) {
-      this._productsCrtl.categoryDataList = this.categoryDataList;
+    if (changedProperties.has('productsByCategories')) {
+      this._productsCrtl.productsByCategories = this.productsByCategories;
     }
 
     if (changedProperties.has('filterCategory')) {
       this._productsCrtl.toggleCategory(this.filterCategory);
+      this._productsCrtl.search(this.searchInput);
     }
-    if (changedProperties.has('filterInput')) {
-      this._productsCrtl.search(this.filterInput);
+    if (changedProperties.has('searchInput')) {
+      this._productsCrtl.search(this.searchInput);
     }
   }
 
@@ -85,7 +86,7 @@ export class CcProductList extends LitElement {
       <div class="search-form">
         <cc-input-text
           label="${i18n('cc-product-list.search-label')}"
-          value="${this.filterInput ?? ''}"
+          value="${this.searchInput ?? ''}"
           @cc-input-text:input="${this._onSearchInput}"></cc-input-text>
         <fieldset class="category-filter">
           <legend class="visually-hidden">${i18n('cc-product-list.filter-category-legend')}</legend>
@@ -121,29 +122,30 @@ export class CcProductList extends LitElement {
           intent="info"
         >${label}
         </cc-badge>
-      </label>`;
+      </label>
+    `;
   }
 
   _renderProductsList () {
 
-    const categoryDataList = this._productsCrtl.getCategoryDataList();
+    const productsByCategories = this._productsCrtl.getProductsByCategories();
 
-    if (categoryDataList.length === 0) {
+    if (productsByCategories.length === 0) {
       return html`
         <p class="search-empty">${i18n('cc-product-list.search-empty')}</p>
       `;
     }
 
-    return categoryDataList.map((categoryData) => html`
+    return productsByCategories.map((productsCategory) => html`
       <div class="category">
         <div class="category-title">
-          ${categoryData.icon != null ? html`
-            <cc-icon .icon="${categoryData.icon}" class="category-icon"></cc-icon>
+          ${productsCategory.icon != null ? html`
+            <cc-icon .icon="${productsCategory.icon}" class="category-icon"></cc-icon>
           ` : ''}
-          <div class="category-name">${categoryData.categoryName}</div>
+          <div class="category-name">${productsCategory.categoryName}</div>
         </div>
         <div class="category-products">
-          ${categoryData.products.map((p) => html`
+          ${productsCategory.products.map((p) => html`
             <cc-product-card
               name="${p.name}"
               description="${p.description}"

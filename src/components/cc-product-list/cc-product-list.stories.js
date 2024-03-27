@@ -427,6 +427,44 @@ const PRODUCTS = [
     },
   },
   {
+    categoryName: 'Storage & Messaging',
+    products: [
+      {
+        name: 'Cellar Object storage',
+        description: 'Create one or several Cellar buckets, a distributed object storage service, compatible with the AWS S3 protocol (signature V4) to store and persist files.',
+        keywords: [
+          {
+            value: 'S3',
+            hidden: false,
+          },
+          {
+            value: 'Distributed',
+            hidden: false,
+          },
+        ],
+        iconUrl: 'https://assets.clever-cloud.com/logos/cellar.svg',
+        url: '',
+        apiId: 'cellar-addon',
+      },
+      {
+        name: 'FS Buckets',
+        description: 'Mount a FS Bucket to persist files within an application folder. It is compatible with SFTP and comes with a GUI for manipulating files.',
+        keywords: [
+          {
+            value: 'FTP',
+            hidden: false,
+          },
+        ],
+        iconUrl: 'https://assets.clever-cloud.com/logos/fsbucket.svg',
+        url: '',
+        apiId: 'fs-bucket',
+      },
+    ],
+    icon: {
+      content: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M5 10.9381C8.61872 10.4869 11.4869 7.61872 11.9381 4H5V10.9381ZM5 12.9506V20H19V4H13.9506C13.4816 8.72442 9.72442 12.4816 5 12.9506ZM4 2H20C20.5523 2 21 2.44772 21 3V21C21 21.5523 20.5523 22 20 22H4C3.44772 22 3 21.5523 3 21V3C3 2.44772 3.44772 2 4 2ZM15 16H17V18H15V16Z"></path></svg>',
+    },
+  },
+  {
     categoryName: 'Services',
     products: [
       {
@@ -543,25 +581,25 @@ const PRODUCTS = [
 export const defaultStory = makeStory(conf, {
   items: [
     {
-      categoryDataList: PRODUCTS,
+      productsByCategories: PRODUCTS,
     },
   ],
 });
 
-export const filterInput = makeStory(conf, {
+export const searchInput = makeStory(conf, {
   items: [
     {
-      categoryDataList: PRODUCTS,
-      filterInput: 'cellar',
+      productsByCategories: PRODUCTS,
+      searchInput: 'cellar',
     },
   ],
 });
 
-export const irrelevantFilterInput = makeStory(conf, {
+export const irrelevantSearchInput = makeStory(conf, {
   items: [
     {
-      categoryDataList: PRODUCTS,
-      filterInput: 'irrelevant',
+      productsByCategories: PRODUCTS,
+      searchInput: 'irrelevant',
     },
   ],
 });
@@ -569,8 +607,8 @@ export const irrelevantFilterInput = makeStory(conf, {
 export const filterCategory = makeStory(conf, {
   items: [
     {
-      categoryDataList: PRODUCTS,
-      filterCategory: 'Storage',
+      productsByCategories: PRODUCTS,
+      filterCategory: 'Storage & Messaging',
     },
   ],
 });
@@ -578,7 +616,7 @@ export const filterCategory = makeStory(conf, {
 export const irrelevantFilterCategory = makeStory(conf, {
   items: [
     {
-      categoryDataList: PRODUCTS,
+      productsByCategories: PRODUCTS,
       filterCategory: 'irrelevant',
     },
   ],
@@ -586,9 +624,9 @@ export const irrelevantFilterCategory = makeStory(conf, {
 export const irrelevantFilterCategoryButRelevantInput = makeStory(conf, {
   items: [
     {
-      categoryDataList: PRODUCTS,
+      productsByCategories: PRODUCTS,
       filterCategory: 'irrelevant',
-      filterInput: 'sql',
+      searchInput: 'sql',
     },
   ],
 });
@@ -596,9 +634,9 @@ export const irrelevantFilterCategoryButRelevantInput = makeStory(conf, {
 export const filterCategoryAndInput = makeStory(conf, {
   items: [
     {
-      categoryDataList: PRODUCTS,
-      filterCategory: 'Storage',
-      filterInput: 'cellar',
+      productsByCategories: PRODUCTS,
+      filterCategory: 'Storage & Messaging',
+      searchInput: 'cellar',
     },
   ],
 });
@@ -606,9 +644,9 @@ export const filterCategoryAndInput = makeStory(conf, {
 export const irrelevantFilterCategoryAndIrrelevantInput = makeStory(conf, {
   items: [
     {
-      categoryDataList: PRODUCTS,
+      productsByCategories: PRODUCTS,
       filterCategory: 'irrelevant',
-      filterInput: 'irrelevant',
+      searchInput: 'irrelevant',
     },
   ],
 });
