@@ -71,7 +71,7 @@ export class CcProductList extends LitElement {
 
     if (changedProperties.has('filterCategory')) {
       this._productsCrtl.toggleCategory(this.filterCategory);
-      this._productsCrtl.search(this.searchInput);
+      // this._productsCrtl.search(this.searchInput);
     }
     if (changedProperties.has('searchInput')) {
       this._productsCrtl.search(this.searchInput);

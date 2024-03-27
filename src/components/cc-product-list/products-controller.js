@@ -25,6 +25,9 @@ export class ProductsController {
 
     /** @type {string|null}  */
     this._currentCategoryNameFilter = null;
+
+    /** @type {string} previous given search in case you toggle */
+    this._previousSearch = '';
   }
 
   getProductsByCategories () {
@@ -63,10 +66,13 @@ export class ProductsController {
     const currentCategoryProductsList = this._getProductsByCurrentCategory();
 
     if (searchInputFormatted == null || searchInputFormatted === '') {
+      this._previousSearch = '';
       this._productsByCategoriesFiltered = currentCategoryProductsList;
       this._host.requestUpdate();
       return;
     }
+
+    this._previousSearch = searchInput;
 
     const searchTerms = searchInputFormatted
       .split(' ')
@@ -101,6 +107,7 @@ export class ProductsController {
     });
 
     this._productsByCategoriesFiltered = this._getProductsByCurrentCategory();
+    this.search(this._previousSearch);
 
     this._host.requestUpdate();
   }
