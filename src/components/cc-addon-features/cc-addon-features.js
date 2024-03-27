@@ -33,6 +33,7 @@ const SKELETON_FEATURES = [
 
 /**
  * @typedef {import('./cc-addon-features.types.js').AddonFeature} AddonFeature
+ * @typedef {import('./cc-addon-features.types.js').AddonFeaturesState} AddonFeaturesState
  */
 
 /**
@@ -50,21 +51,27 @@ export class CcAddonFeatures extends LitElement {
 
   static get properties () {
     return {
-      error: { type: Boolean },
-      features: { type: Array },
+      state: {
+        type: Object,
+      },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {boolean} Displays an error message. */
-    this.error = false;
-
-    /** @type {AddonFeature[]} Sets the list features. */
-    this.features = [];
+    /** @type {AddonFeaturesState} Set the state of the component. */
+    this.state = {
+      type: 'loading',
+    };
   }
 
+  /**
+   * @param {string} code
+   * @param {string} rawName
+   * @returns {string}
+   * @private
+   */
   _getFeatureName (code, rawName) {
     if (code === 'disk') {
       return i18n('cc-addon-features.feature-name.disk');
@@ -78,6 +85,12 @@ export class CcAddonFeatures extends LitElement {
     return rawName;
   };
 
+  /**
+   * @param {string} code
+   * @param {string} rawValue
+   * @returns {string}
+   * @private
+   */
   _getFeatureValue (code, rawValue) {
     if (code === 'dedicated') {
       return i18n('cc-addon-features.feature-value.dedicated');
@@ -91,6 +104,11 @@ export class CcAddonFeatures extends LitElement {
     return rawValue;
   };
 
+  /**
+   * @param {AddonFeature[]} features
+   * @returns {AddonFeature[]}
+   * @private
+   */
   // Here we sort feature by name (lower case) but first we force a specific order with SORT_FEATURES
   _sortFeatures (features) {
     const sortedArray = features.slice(0);
@@ -104,8 +122,8 @@ export class CcAddonFeatures extends LitElement {
 
   render () {
 
-    const skeleton = (this.features == null);
-    const rawFeatures = skeleton ? SKELETON_FEATURES : this.features;
+    const skeleton = this.state.type === 'loading';
+    const rawFeatures = this.state.type === 'loaded' ? this.state.features : SKELETON_FEATURES;
     const unsortedFeatures = rawFeatures.map((feature) => {
       const nameCode = feature.name.toLowerCase();
       const valueCode = feature.value.toLowerCase();
@@ -121,10 +139,14 @@ export class CcAddonFeatures extends LitElement {
     return html`
       <cc-block>
         <div slot="title">${i18n('cc-addon-features.title')}</div>
-
+          
         <div>${i18n('cc-addon-features.details')}</div>
         
-        ${!this.error ? html`
+        ${this.state.type === 'error' ? html`
+          <cc-notice intent="warning" message="${i18n('cc-addon-features.loading-error')}"></cc-notice>
+      ` : ''}
+        
+        ${!(this.state.type === 'error') ? html`
           <div class="feature-list">
             ${features.map((feature) => html`
               <div class="feature ${classMap({ skeleton })}">
@@ -140,9 +162,7 @@ export class CcAddonFeatures extends LitElement {
           </div>
         ` : ''}
 
-        ${this.error ? html`
-          <cc-notice intent="warning" message="${i18n('cc-addon-features.loading-error')}"></cc-notice>
-        ` : ''}
+
       </cc-block>
     `;
   }
