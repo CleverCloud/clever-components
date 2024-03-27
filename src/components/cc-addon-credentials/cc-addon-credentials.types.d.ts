@@ -4,4 +4,4 @@ interface Credential {
   secret: boolean;
 }
 
-type AddonType = "apm" | "elasticsearch" | "kibana" | "pulsar";
+type AddonType = "apm" | "elasticsearch" | "kibana" | "pulsar" | "materiadb-kv";
