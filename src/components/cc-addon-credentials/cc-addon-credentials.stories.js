@@ -87,6 +87,20 @@ export const dataLoadedWithPulsar = makeStory(conf, {
   }],
 });
 
+export const dataLoadedWithMateriaDbKv = makeStory(conf, {
+  items: [{
+    type: 'materiadb-kv',
+    name: 'MateriaDB KV',
+    toggleState: 'off',
+    image: 'https://assets.clever-cloud.com/logos/materia-db-kv.png',
+    credentials: [
+      { type: 'host', value: 'example.com', secret: false },
+      { type: 'port', value: '6379', secret: false },
+      { type: 'auth-token', value: 'fake-SbKm9sHFaP2uCuQSLZbsQXhwelHxahs4tLV9IOwCc1RBBAtLNF1aM444DJxCtySpEst5zFlaIMbNM3s3koEYTT9PVkGHSwvb36wbSf9QRq8owFMnyx0mEseU1cHkMpzfo2KIFrjfx8laTYYNXh3ji8T8BI5v5dHHbOwpF0tegIYOXpwY8vc0EYTL43jq7DhRPWTyipW4me8W0dfaOjXf6ODLOFK8', secret: true },
+    ],
+  }],
+});
+
 export const simulations = makeStory(conf, {
   items: [
     {

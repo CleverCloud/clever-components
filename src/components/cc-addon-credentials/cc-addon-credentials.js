@@ -66,6 +66,8 @@ export class CcAddonCredentials extends LitElement {
         return i18n('cc-addon-credentials.description.kibana');
       case 'pulsar':
         return i18n('cc-addon-credentials.description.pulsar');
+      case 'materiadb-kv':
+        return i18n('cc-addon-credentials.description.materiadb-kv');
       default:
         return '';
     }
@@ -83,6 +85,8 @@ export class CcAddonCredentials extends LitElement {
         return i18n('cc-addon-credentials.field.url');
       case 'user':
         return i18n('cc-addon-credentials.field.user');
+      case 'port':
+        return i18n('cc-addon-credentials.field.port');
       default:
         return '';
     }
