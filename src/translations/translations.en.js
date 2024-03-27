@@ -106,6 +106,7 @@ export const translations = {
   'cc-addon-credentials.description.apm': `Use those credentials to connect an APM Server instance to your Elasticsearch cluster.`,
   'cc-addon-credentials.description.elasticsearch': `Use those credentials to connect to your Elasticsearch cluster.`,
   'cc-addon-credentials.description.kibana': `Use those credentials to connect a Kibana instance to your Elasticsearch cluster.`,
+  'cc-addon-credentials.description.materiadb-kv': `Use this information to connect your MateriaDB KV add-on.`,
   'cc-addon-credentials.description.pulsar': `Use this information to connect your Pulsar add-on.`,
   'cc-addon-credentials.field.auth-token': `Token`,
   'cc-addon-credentials.field.host': `Host`,
