@@ -33,27 +33,31 @@ const DUMMY_KEY_3 = {
   fingerprint: '00:03:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:7f:62',
 };
 
+const baseItem = {
+  keyData: {
+    state: 'loaded',
+    isGithubLinked: true,
+    personalKeys: [DUMMY_KEY_1],
+    githubKeys: [DUMMY_KEY_2],
+  },
+};
+
 export default {
   tags: ['autodocs'],
   title: '🛠 Profile/<cc-ssh-key-list>',
   component: 'cc-ssh-key-list',
 };
 
+/**
+ * @typedef {import('./cc-ssh-key-list.js').CcSshKeyList} CcSshKeyList
+ */
+
 const conf = {
   component: 'cc-ssh-key-list',
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [
-    {
-      keyData: {
-        state: 'loaded',
-        isGithubLinked: true,
-        personalKeys: [DUMMY_KEY_1],
-        githubKeys: [DUMMY_KEY_2],
-      },
-    },
-  ],
+  items: [baseItem],
 });
 
 export const emptyStory = makeStory(conf, {
@@ -144,25 +148,14 @@ export const skeleton = makeStory(conf, {
 });
 
 export const waitingWithAddingPersonalKey = makeStory(conf, {
-  items: [
-    {
-      createSshKeyForm: {
-        state: 'creating',
-        name: {
-          value: NEW_KEY.name,
-        },
-        publicKey: {
-          value: NEW_KEY.key,
-        },
-      },
-      keyData: {
-        state: 'loaded',
-        isGithubLinked: true,
-        personalKeys: [DUMMY_KEY_2],
-        githubKeys: [DUMMY_KEY_3],
-      },
-    },
-  ],
+  items: [{
+    ...baseItem,
+    createKeyFormState: { type: 'creating' },
+  }],
+  onUpdateComplete: (component) => {
+    component._createFormRef.value.name.value = NEW_KEY.name;
+    component._createFormRef.value.publicKey.value = NEW_KEY.key;
+  },
 });
 
 export const waitingWithDeletingPersonalKey = makeStory(conf, {
@@ -217,96 +210,47 @@ export const errorWithWhenListingKeys = makeStory(conf, {
 });
 
 export const errorWithWhenNameIsEmpty = makeStory(conf, {
-  items: [
-    {
-      createSshKeyForm: {
-        state: 'idle',
-        name: {
-          value: '',
-          error: 'required',
-        },
-        publicKey: {
-          value: NEW_KEY.key,
-        },
-      },
-      keyData: {
-        state: 'loaded',
-        isGithubLinked: true,
-        personalKeys: [DUMMY_KEY_2],
-        githubKeys: [DUMMY_KEY_3],
-      },
-    },
-  ],
+  items: [baseItem],
+  onUpdateComplete: (component) => {
+    component._createFormRef.value.name.value = '';
+    component._createFormRef.value.publicKey.value = NEW_KEY.key;
+    component._createFormRef.value.name.validate();
+    component._createFormRef.value.name.reportInlineValidity();
+  },
 });
 
 export const errorWithWhenPublicKeyIsEmpty = makeStory(conf, {
-  items: [
-    {
-      createSshKeyForm: {
-        state: 'idle',
-        name: {
-          value: NEW_KEY.name,
-        },
-        publicKey: {
-          value: '',
-          error: 'required',
-        },
-      },
-      keyData: {
-        state: 'loaded',
-        isGithubLinked: true,
-        personalKeys: [DUMMY_KEY_2],
-        githubKeys: [DUMMY_KEY_3],
-      },
-    },
-  ],
+  items: [baseItem],
+  onUpdateComplete: (component) => {
+    component._createFormRef.value.name.value = NEW_KEY.name;
+    component._createFormRef.value.publicKey.value = '';
+    component._createFormRef.value.publicKey.validate();
+    component._createFormRef.value.publicKey.reportInlineValidity();
+  },
 });
 
 export const errorWithWhenAllInputsAreEmpty = makeStory(conf, {
-  items: [
-    {
-      createSshKeyForm: {
-        state: 'idle',
-        name: {
-          value: '',
-          error: 'required',
-        },
-        publicKey: {
-          value: '',
-          error: 'required',
-        },
-      },
-      keyData: {
-        state: 'loaded',
-        isGithubLinked: true,
-        personalKeys: [DUMMY_KEY_2],
-        githubKeys: [DUMMY_KEY_3],
-      },
-    },
-  ],
+  items: [baseItem],
+  onUpdateComplete: (component) => {
+    component._createFormRef.value.name.value = '';
+    component._createFormRef.value.publicKey.value = '';
+    component._createFormRef.value.name.validate();
+    component._createFormRef.value.name.reportInlineValidity();
+    component._createFormRef.value.publicKey.validate();
+    component._createFormRef.value.publicKey.reportInlineValidity();
+  },
 });
 
 export const errorWithWhenPublicKeyIsPrivate = makeStory(conf, {
-  items: [
-    {
-      createSshKeyForm: {
-        state: 'idle',
-        name: {
-          value: NEW_KEY.name,
-        },
-        publicKey: {
-          value: PRIVATE_KEY,
-          error: 'private-key',
-        },
-      },
-      keyData: {
-        state: 'loaded',
-        isGithubLinked: true,
-        personalKeys: [DUMMY_KEY_2],
-        githubKeys: [DUMMY_KEY_3],
-      },
-    },
-  ],
+  items: [baseItem],
+  onUpdateComplete: (component) => {
+    component._createFormRef.value.name.value = NEW_KEY.name;
+    component._createFormRef.value.publicKey.value = PRIVATE_KEY;
+    component._createFormRef.value.name.validate();
+    component._createFormRef.value.name.reportInlineValidity();
+    component._createFormRef.value.publicKey.validate();
+    component._createFormRef.value.publicKey.reportInlineValidity();
+  },
 });
 
 export const simulationWithAddingKey = makeStory(conf, {
@@ -322,34 +266,17 @@ export const simulationWithAddingKey = makeStory(conf, {
   ],
   simulations: [
     storyWait(1000, ([component]) => {
-      component.createSshKeyForm = produce(component.createSshKeyForm, (createSshKeyForm) => {
-        createSshKeyForm.name = {
-          value: NEW_KEY.name,
-        };
-      });
+      component._createFormRef.value.name.value = NEW_KEY.name;
     }),
     storyWait(500, ([component]) => {
-      component.createSshKeyForm = produce(component.createSshKeyForm, (createSshKeyForm) => {
-        createSshKeyForm.publicKey = {
-          value: NEW_KEY.key,
-        };
-      });
+      component._createFormRef.value.publicKey.value = NEW_KEY.key;
     }),
     storyWait(1500, ([component]) => {
-      component.createSshKeyForm = produce(component.createSshKeyForm, (createSshKeyForm) => {
-        createSshKeyForm.state = 'creating';
-      });
+      component.createKeyFormState = { type: 'creating' };
     }),
     storyWait(2000, ([component]) => {
-      component.createSshKeyForm = produce(component.createSshKeyForm, (createSshKeyForm) => {
-        createSshKeyForm.state = 'idle';
-        createSshKeyForm.name = {
-          value: '',
-        };
-        createSshKeyForm.publicKey = {
-          value: '',
-        };
-      });
+      component.resetCreateKeyForm();
+      component.createKeyFormState = { type: 'idle' };
       component.keyData = produce(component.keyData, (keyData) => {
         keyData.personalKeys.push(DUMMY_KEY_1);
       });

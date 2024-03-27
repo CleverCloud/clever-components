@@ -1,13 +1,13 @@
 //#region creation form
-export interface CreateSshKeyFormState {
-  state: "idle" | "creating";
-  name: FormField;
-  publicKey: FormField;
-}
 export interface NewKey {
   name: string;
   publicKey: string;
 }
+
+export interface CreateSshKeyFormState {
+  type: "idle" | "creating";
+}
+
 //#endregion
 
 //#region key lists
@@ -41,10 +41,6 @@ interface KeyDataStateError {
 //#endregion
 
 //#region common
-interface FormField {
-  value: string;
-  error?: "required" | "private-key";
-}
 
 // SshKey
 export interface SshKey {
