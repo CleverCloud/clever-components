@@ -15,7 +15,7 @@ function isDifferentOrigin (rawUrl) {
 
 // NOTE: we could just create raw DOM but here we benefit from lit-html safe/escaping system on "content"
 export const ccLink = (url, content, skeleton = false, title) => {
-  const href = (url != null) ? url : undefined;
+  const href = (url != null && !skeleton) ? url : undefined;
   const target = isDifferentOrigin(href) ? '_blank' : undefined;
   const rel = isDifferentOrigin(href) ? 'noopener noreferrer' : undefined;
   return html`<a class="cc-link ${classMap({ skeleton })}" href=${ifDefined(href)} target=${ifDefined(target)} rel=${ifDefined(rel)} title="${ifDefined(title)}">${content}</a>`;
@@ -29,7 +29,7 @@ export const linkStyles = css`
   .cc-link,
   .cc-link:visited,
   .cc-link:active {
-      color: var(--cc-color-text-primary-highlight, blue);
+    color: var(--cc-color-text-primary-highlight, blue);
   }
 
   .sanitized-link:enabled:hover,
@@ -41,7 +41,7 @@ export const linkStyles = css`
   .cc-link:focus {
     background-color: var(--cc-color-bg-default, #fff);
     border-radius: 0.1em;
-    outline: var(--cc-focus-outline, #000000 solid 2px);
+    outline: var(--cc-focus-outline, #000 solid 2px);
     outline-offset: var(--cc-focus-outline-offset, 2px);
   }
 
@@ -54,7 +54,7 @@ export const linkStyles = css`
   .sanitized-link.skeleton,
   .cc-link .skeleton,
   .sanitized-link .skeleton {
-    background-color: var(--cc-color-text-primary-weak, hsl(209, 98%, 73%));
+    background-color: var(--cc-color-text-primary-weak, hsl(209deg 98% 73%));
     color: transparent;
   }
 `;
