@@ -57,34 +57,37 @@ const conf = {
 
 export const defaultStory = makeStory(conf, {
   items: [
-    { invoices: pendingInvoices(2020).slice(0, 4) },
-    { invoices: processingInvoices(2020).slice(0, 4) },
-    { invoices: processedInvoices(2019).slice(0, 4) },
+    { state: { type: 'loaded', invoices: pendingInvoices(2020).slice(0, 4) } },
+    { state: { type: 'loaded', invoices: processingInvoices(2020).slice(0, 4) } },
+    { state: { type: 'loaded', invoices: processedInvoices(2019).slice(0, 4) } },
   ],
 });
 
 export const skeleton = makeStory(conf, {
-  items: [{}],
+  items: [{ type: 'loading' }],
 });
 
 export const dataLoadedWithPending = makeStory(conf, {
-  items: [{ invoices: pendingInvoices(2020) }],
+  items: [{ state: { type: 'loaded', invoices: pendingInvoices(2020) } }],
 });
 
 export const dataLoadedWithProcessing = makeStory(conf, {
-  items: [{ invoices: processingInvoices(2020) }],
+  items: [{ state: { type: 'loaded', invoices: processingInvoices(2020) } }],
 });
 
 export const dataLoadedWithProcessed = makeStory(conf, {
-  items: [{ invoices: processedInvoices(2019) }],
+  items: [{ state: { type: 'loaded', invoices: processedInvoices(2019) } }],
 });
 
 export const dataLoadedWithCreditNotes = makeStory(conf, {
   items: [{
-    invoices: [
-      ...processedInvoices(2019),
-      createInvoice('2019', '09', 88.27, 'PAID', 'CREDITNOTE'),
-      createInvoice('2019', '04', 121.22, 'PAID', 'CREDITNOTE'),
-    ],
+    state: {
+      type: 'loaded',
+      invoices: [
+        ...processedInvoices(2019),
+        createInvoice('2019', '09', 88.27, 'PAID', 'CREDITNOTE'),
+        createInvoice('2019', '04', 121.22, 'PAID', 'CREDITNOTE'),
+      ],
+    },
   }],
 });

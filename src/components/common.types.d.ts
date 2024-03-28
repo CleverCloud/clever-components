@@ -56,8 +56,8 @@ export interface IconModel {
 }
 
 interface InvoiceAmount {
-  amount: Number;
-  currency: string;
+  amount: number;
+  currency: 'EUR'|'USD';
 }
 
 interface Invoice {
