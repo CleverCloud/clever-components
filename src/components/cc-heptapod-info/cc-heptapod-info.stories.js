@@ -26,28 +26,36 @@ const statistics = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [{ statistics }],
+  items: [{
+    state: {
+      type: 'loaded',
+      statistics: statistics,
+    },
+  }],
 });
 
 export const skeleton = makeStory(conf, {
-  items: [{}],
+  items: [{ state: { type: 'loading' } }],
 });
 
 export const notUsed = makeStory(conf, {
-  items: [{ statistics: 'not-used' }],
+  items: [{ state: { type: 'not-used' } }],
 });
 
 export const error = makeStory(conf, {
-  items: [{ error: true }],
+  items: [{ state: { type: 'error' } }],
 });
 
 export const simulations = makeStory(conf, {
   items: [{}, {}, {}],
   simulations: [
     storyWait(2000, ([component, componentNotUsed, componentError]) => {
-      component.statistics = statistics;
-      componentNotUsed.statistics = 'not-used';
-      componentError.error = true;
+      component.state = {
+        type: 'loaded',
+        statistics: statistics,
+      };
+      componentNotUsed.state = { type: 'not-used' };
+      componentError.state = { type: 'error' };
     }),
   ],
 });
