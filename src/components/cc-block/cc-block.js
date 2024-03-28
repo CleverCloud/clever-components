@@ -142,14 +142,14 @@ export class CcBlock extends LitElement {
     `;
   }
 
-  firstUpdated () {
+  /* firstUpdated () {
     const $overlay = this.shadowRoot.querySelector('slot[name="overlay"]');
     $overlay.addEventListener('slotchange', (e) => {
       const oldVal = this._overlay;
       this._overlay = ($overlay.assignedNodes().length > 0);
       this.requestUpdate('_overlay', oldVal);
     });
-  }
+  }*/
 
   static get styles () {
     return [
