@@ -18,14 +18,13 @@ const HEPTAPOD_LOGO_URL = 'https://assets.clever-cloud.com/logos/heptapod.svg';
 
 /**
  * @typedef {import('./cc-heptapod-info.types.js').Statistics} Statistics
+ * @typedef {import('./cc-heptapod-info.types.js').HeptapodInfoState} HeptapodInfoState
+ * @typedef {import('./cc-heptapod-info.types.js').HeptapodInfoStateLoaded} HeptapodInfoStateLoaded
+ * @typedef {import('./cc-heptapod-info.types.js').HeptapodInfoStateLoading} HeptapodInfoStateLoading
  */
 
 /**
  * A component that shows a summary of our Heptapod SaaS offer.
- *
- * ## Details
- *
- * * When `statistics` is nullish, a skeleton screen UI pattern is displayed (loading hint).
  *
  * @cssdisplay block
  */
@@ -33,25 +32,18 @@ export class CcHeptapodInfo extends LitElement {
 
   static get properties () {
     return {
-      error: { type: Boolean, reflect: true },
-      statistics: { type: Object },
+      state: { type: Object },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {boolean} Displays an error message. */
-    this.error = false;
-
-    /** @type {Statistics|null} Sets the usage statistics of this heptapod SaaS or `"not-used"` to display a message explaining the service is not used. */
-    this.statistics = null;
+    /** @type {HeptapodInfoState} Set the state of the component. */
+    this.state = { type: 'loading' };
   }
 
   render () {
-    const skeleton = (this.statistics == null);
-    const statistics = skeleton ? SKELETON_STATISTICS : this.statistics;
-    const isNotUsed = (this.statistics === 'not-used');
 
     return html`
       <cc-block>
@@ -67,36 +59,46 @@ export class CcHeptapodInfo extends LitElement {
           ${i18n('cc-heptapod-info.description')}
         </div>
 
-        ${!this.error && !isNotUsed ? html`
-          <div class="pricing">
-            <div class="pricing-item">
-              <div class="pricing-item-value ${classMap({ skeleton })}">${statistics.privateActiveUsers}</div>
-              <div>${i18n('cc-heptapod-info.private-active-users-description')}</div>
-            </div>
-            <div class="pricing-item">
-              <div class="pricing-item-value ${classMap({ skeleton })}">${statistics.publicActiveUsers}</div>
-              <div>${i18n('cc-heptapod-info.public-active-users-description')}</div>
-            </div>
-            <div class="pricing-item">
-              <div class="pricing-item-value ${classMap({ skeleton })}">${i18n('cc-heptapod-info.storage-bytes', statistics)}</div>
-              <div>${i18n('cc-heptapod-info.storage-description')}</div>
-            </div>
-            <div class="pricing-item">
-              <div class="pricing-item-value ${classMap({ skeleton })}">${i18n('cc-heptapod-info.price-value', statistics)}</div>
-              <div>${i18n('cc-heptapod-info.price-description')}</div>
-            </div>
-          </div>
-        ` : ''}
-
-        ${!this.error && isNotUsed ? html`
-          <div class="no-statistics">${i18n('cc-heptapod-info.not-in-use')}</div>
-        ` : ''}
-
-        ${this.error ? html`
+        ${this.state.type === 'error' ? html`
           <cc-notice intent="warning" message="${i18n('cc-heptapod-info.error-loading')}"></cc-notice>
         ` : ''}
 
+        ${this.state.type === 'not-used' ? html`
+          <div class="no-statistics">${i18n('cc-heptapod-info.not-in-use')}</div>
+        ` : ''}
+
+        ${this.state.type === 'loading' ? this._renderStatistics(SKELETON_STATISTICS, true) : ''}
+
+        ${this.state.type === 'loaded' ? this._renderStatistics(this.state.statistics, false) : ''}
       </cc-block>
+    `;
+  }
+
+  /**
+   * @param {Statistics} statistics
+   * @param {boolean} skeleton
+   * @private
+   */
+  _renderStatistics (statistics, skeleton) {
+    return html`
+      <div class="pricing">
+        <div class="pricing-item">
+          <div class="pricing-item-value ${classMap({ skeleton })}">${statistics.privateActiveUsers}</div>
+          <div>${i18n('cc-heptapod-info.private-active-users-description')}</div>
+        </div>
+        <div class="pricing-item">
+          <div class="pricing-item-value ${classMap({ skeleton })}">${statistics.publicActiveUsers}</div>
+          <div>${i18n('cc-heptapod-info.public-active-users-description')}</div>
+        </div>
+        <div class="pricing-item">
+          <div class="pricing-item-value ${classMap({ skeleton })}">${i18n('cc-heptapod-info.storage-bytes', statistics)}</div>
+          <div>${i18n('cc-heptapod-info.storage-description')}</div>
+        </div>
+        <div class="pricing-item">
+          <div class="pricing-item-value ${classMap({ skeleton })}">${i18n('cc-heptapod-info.price-value', statistics)}</div>
+          <div>${i18n('cc-heptapod-info.price-description')}</div>
+        </div>
+      </div>
     `;
   }
 
