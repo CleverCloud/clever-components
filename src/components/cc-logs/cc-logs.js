@@ -216,10 +216,11 @@ class TemporaryFunctionDisabler {
 export class CcLogs extends LitElement {
   static get properties () {
     return {
-      filter: { type: Array },
       follow: { type: Boolean },
       limit: { type: Number },
       logs: { type: Array },
+      messageFilter: { type: String, attribute: 'message-filter' },
+      metadataFilter: { type: Array },
       metadataRenderers: { type: Object },
       stripAnsi: { type: Boolean, attribute: 'strip-ansi' },
       dateDisplay: { type: String, attribute: 'date-display' },
@@ -232,9 +233,6 @@ export class CcLogs extends LitElement {
   constructor () {
     super();
 
-    /** @type {Array<MetadataFilter>} The filter to apply onto the logs. */
-    this.filter = [];
-
     /** @type {boolean} Whereas the component should scroll to the bottom everytime a new log line is added. */
     this.follow = false;
 
@@ -243,6 +241,12 @@ export class CcLogs extends LitElement {
 
     /** @type {Array<Log>} The initial logs. */
     this.logs = [];
+
+    /** @type {string|null} The filter to apply onto the logs' message. */
+    this.messageFilter = null;
+
+    /** @type {Array<MetadataFilter>} The filter to apply onto the logs' metadata. */
+    this.metadataFilter = [];
 
     /** @type {{[key: string]: MetadataRenderer}|null} The custom renderers to use for displaying metadata. */
     this.metadataRenderers = null;
@@ -698,8 +702,11 @@ export class CcLogs extends LitElement {
       this._logsCtrl.limit = this.limit;
     }
 
-    if (changedProperties.has('filter')) {
-      this._logsCtrl.filter = this.filter;
+    if (changedProperties.has('messageFilter') || changedProperties.has('metadataFilter')) {
+      this._logsCtrl.filter = {
+        message: this.messageFilter,
+        metadata: this.metadataFilter,
+      };
     }
   }
 
@@ -792,10 +799,7 @@ export class CcLogs extends LitElement {
           </button>
         </span>
         ${this._renderLogTimestamp(log, dateDisplayer)}
-        <span class="log--right ${classMap({ wrap })}">
-          ${this._renderLogMetadata(log)}
-          ${this._renderLogMessage(log)}
-        </span>
+        <span class="log--right ${classMap({ wrap })}">${this._renderLogMetadata(log)}${this._renderLogMessage(log)}</span>
       </p>
     `;
   }
@@ -826,11 +830,8 @@ export class CcLogs extends LitElement {
       .map((metadata) => this._renderMetadata(metadata))
       .filter((t) => t != null);
 
-    return html`
-      <span class="metadata--wrapper">
-        ${join(metadata, html`&nbsp;`)}
-      </span>
-    `;
+    // keep this on one line to make sure we do not break the white-space css rule
+    return html`<span class="metadata--wrapper">${join(metadata, html`&nbsp;`)}</span>`;
   }
 
   /**
@@ -858,11 +859,8 @@ export class CcLogs extends LitElement {
    * @param {Log} log
    */
   _renderLogMessage (log) {
-    return html`
-      <span class="message">
-        ${this.stripAnsi ? stripAnsi(log.message) : ansiToLit(log.message)}
-      </span>
-    `;
+    // keep this on one line to make sure we do not break the white-space css rule
+    return html`<span class="message">${this.stripAnsi ? stripAnsi(log.message) : ansiToLit(log.message)}</span>`;
   }
 
   static get styles () {
@@ -928,11 +926,11 @@ export class CcLogs extends LitElement {
         }
 
         .log--right {
-          white-space: nowrap;
+          white-space: pre;
         }
 
         .log--right.wrap {
-          white-space: normal;
+          white-space: pre-wrap;
         }
 
         .gutter {

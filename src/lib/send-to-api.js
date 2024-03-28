@@ -7,18 +7,29 @@ import { withOptions } from '@clevercloud/client/esm/with-options.js';
 import { dispatchCustomEvent } from './events.js';
 
 /**
- *
- * @param {Object} apiConfig
- * @param {String} apiConfig.API_HOST
- * @param {String} apiConfig.API_OAUTH_TOKEN
- * @param {String} apiConfig.API_OAUTH_TOKEN_SECRET
- * @param {String} apiConfig.OAUTH_CONSUMER_KEY
- * @param {String} apiConfig.OAUTH_CONSUMER_SECRET
- * @param {AbortSignal} signal
- * @param {Number} [cacheDelay]
- * @return {function(*=): (any | undefined)}
+ * @typedef {Object} ApiConfig
+ * @property {String} API_HOST
+ * @property {String} API_OAUTH_TOKEN
+ * @property {String} API_OAUTH_TOKEN_SECRET
+ * @property {String} OAUTH_CONSUMER_KEY
+ * @property {String} OAUTH_CONSUMER_SECRET
  */
-export function sendToApi ({ apiConfig = {}, signal, cacheDelay, timeout }) {
+
+/**
+ * @typedef {Object} WarpConfig
+ * @property {String} WARP_10_HOST
+ */
+
+/**
+ *
+ * @param {Object} params
+ * @param {ApiConfig} params.apiConfig
+ * @param {AbortSignal} [params.signal]
+ * @param {Number} [params.cacheDelay]
+ * @param {Number} [params.timeout]
+ * @return {(requestParams: Object) => (any | undefined)}
+ */
+export function sendToApi ({ apiConfig, signal, cacheDelay, timeout }) {
 
   return (requestParams) => {
 
@@ -40,20 +51,21 @@ export function sendToApi ({ apiConfig = {}, signal, cacheDelay, timeout }) {
 }
 
 /**
- * @param {Object} apiConfig
- * @param {String} apiConfig.WARP_10_HOST
- * @param {AbortSignal} signal
- * @param {Number} [cacheDelay]
- * @return {function(*=): (any | undefined)}
+ * @param {Object} params
+ * @param {WarpConfig} params.warpConfig
+ * @param {AbortSignal} [params.signal]
+ * @param {Number} [params.cacheDelay]
+ * @param {Number} [params.timeout]
+ * @return {(requestParams: Object) => (any | undefined)}
  */
-export function sendToWarp ({ apiConfig = {}, signal, cacheDelay, timeout }) {
+export function sendToWarp ({ warpConfig, signal, cacheDelay, timeout }) {
 
   return (requestParams) => {
 
-    const cacheParams = { ...apiConfig, ...requestParams };
+    const cacheParams = { ...warpConfig, ...requestParams };
     return withCache(cacheParams, cacheDelay, () => {
 
-      const { WARP_10_HOST } = apiConfig;
+      const { WARP_10_HOST } = warpConfig;
       return Promise.resolve(requestParams)
         .then(prefixUrl(WARP_10_HOST))
         .then(withOptions({ signal, timeout }))

@@ -22,6 +22,7 @@ import nightOwlPalette from '../../src/lib/ansi/palettes/night-owl.js';
 import oneLightPalette from '../../src/lib/ansi/palettes/one-light.js';
 import tokyoNightLightPalette from '../../src/lib/ansi/palettes/tokyo-night-light.js';
 import { Buffer } from '../../src/lib/buffer.js';
+import { sandboxStyles } from '../sandbox-styles.js';
 
 const IPS = ['192.168.12.1', '192.168.48.157'];
 const LEVELS = ['INFO', 'WARN', 'DEBUG', 'ERROR'];
@@ -207,7 +208,7 @@ class CcLogsSandbox extends LitElement {
 
   render () {
     return html`
-      <div class="ctrl">
+      <div class="ctrl-top">
         <cc-toggle .value=${`${this._rate}`} @cc-toggle:input=${this._onRateToggle} .choices=${RATE_OPTIONS}></cc-toggle>
         <cc-button
           @cc-button:click=${this._onStartStopClick}
@@ -233,22 +234,24 @@ class CcLogsSandbox extends LitElement {
         </cc-button>
       </div>
 
-      <cc-logs-beta
-        id="cc-logs"
-        ?follow=${this._follow}
-        ?wrap-lines=${this._wrapLines}
-        ?strip-ansi=${this._stripAnsi}
-        .dateDisplay=${this._dateDisplay}
-        .timezone=${this._timezone}
-        .limit=${this._limit}
-        .filter=${this._filter}
-        .metadataRenderers=${this._useCustomMetadataRenderers ? CUSTOM_METADATA_RENDERERS : null}
-        style="${this._palette}"
-        ${ref(this._logsRef)}
-        @cc-logs:followChange=${this._onFollowChange}
-      ></cc-logs-beta>
+      <div class="main">
+        <cc-logs-beta
+          id="cc-logs"
+          ?follow=${this._follow}
+          ?wrap-lines=${this._wrapLines}
+          ?strip-ansi=${this._stripAnsi}
+          .dateDisplay=${this._dateDisplay}
+          .timezone=${this._timezone}
+          .limit=${this._limit}
+          .filter=${this._filter}
+          .metadataRenderers=${this._useCustomMetadataRenderers ? CUSTOM_METADATA_RENDERERS : null}
+          style="${this._palette}"
+          ${ref(this._logsRef)}
+          @cc-logs-beta:followChange=${this._onFollowChange}
+        ></cc-logs-beta>  
+      </div>
 
-      <div class="right">
+      <div class="ctrl-right">
         <label for="useCustomMetadataRenderer">
           <input id="useCustomMetadataRenderer" type="checkbox" @change=${this._onUseCustomMetadataRenderersSwitched}
                  .checked=${this._useCustomMetadataRenderers}> Use custom metadata rendering
@@ -331,26 +334,8 @@ class CcLogsSandbox extends LitElement {
 
   static get styles () {
     return [
+      sandboxStyles,
       css`
-        :host {
-          display: grid;
-          flex-direction: column;
-          gap: 1em;
-          grid-template-areas: 
-            'ctrl .'
-            'logs right';
-          grid-template-columns: 1fr auto;
-          grid-template-rows: auto 1fr;
-        }
-
-        .ctrl {
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          gap: 0.5em;
-          grid-area: ctrl;
-        }
-
         .spacer {
           flex: 1;
         }
@@ -359,14 +344,6 @@ class CcLogsSandbox extends LitElement {
           height: 600px;
           border: 1px solid #ddd;
           border-radius: 0.2em;
-          grid-area: logs;
-        }
-
-        .right {
-          display: flex;
-          flex-direction: column;
-          gap: 0.5em;
-          grid-area: right;
         }
       `,
     ];

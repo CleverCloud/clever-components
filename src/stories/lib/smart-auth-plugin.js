@@ -4,8 +4,9 @@ export const injectAuthForSmartComponentsPlugin = {
     const SMART_COMPONENT_STORY_REGEX = /\/src\/components\/.*\/cc-.*\.smart.*\.md$/;
     const isSmartStory = SMART_COMPONENT_STORY_REGEX.test(id);
     const isDemoSmartIndex = id.includes('/demo-smart/index.js');
+    const isSandboxIndex = id.includes('/sandbox/index.js');
 
-    if (isSmartStory || isDemoSmartIndex) {
+    if (isSmartStory || isDemoSmartIndex || isSandboxIndex) {
       const {
         WARP_10_HOST,
         API_HOST,
