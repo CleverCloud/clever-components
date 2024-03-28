@@ -179,7 +179,7 @@ export class CcButton extends LitElement {
     e.stopPropagation();
 
     // we need to check that because we use aria-disabled which doesn't prevent the onclick event to be fired.
-    if (this.disabled) {
+    if (this.disabled || this.skeleton || this.waiting) {
       return;
     }
 
@@ -631,6 +631,10 @@ export class CcButton extends LitElement {
 
         .cc-link .text-normal {
           font-size: 1em;
+        }
+
+        .cc-link.skeleton:hover {
+          color: transparent;
         }
       `,
     ];
