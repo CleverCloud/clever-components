@@ -1,3 +1,5 @@
+import {IconModel} from "../common.types";
+
 export type AddonFeaturesState = AddonFeaturesStateLoaded | AddonFeaturesStateLoading | AddonFeaturesStateError;
 
 interface AddonFeature {
@@ -16,4 +18,8 @@ interface AddonFeaturesStateLoading {
 
 interface AddonFeaturesStateError {
   type: 'error';
+}
+
+export interface AddonFeatureWithIcon extends AddonFeature {
+  icon?: IconModel;
 }

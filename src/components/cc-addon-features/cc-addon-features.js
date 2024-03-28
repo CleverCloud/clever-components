@@ -13,6 +13,7 @@ import {
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 
+/** @type {{ [key: string]: IconModel }} */
 const featureIcons = {
   cpus: iconCpu,
   vcpus: iconCpu,
@@ -34,6 +35,10 @@ const SKELETON_FEATURES = [
 /**
  * @typedef {import('./cc-addon-features.types.js').AddonFeature} AddonFeature
  * @typedef {import('./cc-addon-features.types.js').AddonFeaturesState} AddonFeaturesState
+ * @typedef {import('./cc-addon-features.types.js').AddonFeaturesStateLoading} AddonFeaturesStateLoading
+ * @typedef {import('./cc-addon-features.types.js').AddonFeaturesStateLoaded} AddonFeaturesStateLoaded
+ * @typedef {import('./cc-addon-features.types.js').AddonFeatureWithIcon} AddonFeatureWithIcon
+ * @typedef {import('../common.types.js').IconModel} IconModel
  */
 
 /**
@@ -51,9 +56,7 @@ export class CcAddonFeatures extends LitElement {
 
   static get properties () {
     return {
-      state: {
-        type: Object,
-      },
+      state: { type: Object },
     };
   }
 
@@ -61,13 +64,11 @@ export class CcAddonFeatures extends LitElement {
     super();
 
     /** @type {AddonFeaturesState} Set the state of the component. */
-    this.state = {
-      type: 'loading',
-    };
+    this.state = { type: 'loading' };
   }
 
   /**
-   * @param {string} code
+   * @param {'disk' | 'nodes' | 'memory' | string} code
    * @param {string} rawName
    * @returns {string}
    * @private
@@ -86,7 +87,7 @@ export class CcAddonFeatures extends LitElement {
   };
 
   /**
-   * @param {string} code
+   * @param {'dedicated' | 'no' | 'yes' | string} code
    * @param {string} rawValue
    * @returns {string}
    * @private
@@ -106,11 +107,11 @@ export class CcAddonFeatures extends LitElement {
 
   /**
    * @param {AddonFeature[]} features
-   * @returns {AddonFeature[]}
+   * @returns {AddonFeatureWithIcon[]}
    * @private
    */
-  // Here we sort feature by name (lower case) but first we force a specific order with SORT_FEATURES
   _sortFeatures (features) {
+    // Here we sort feature by name (lower case) but first we force a specific order with SORT_FEATURES
     const sortedArray = features.slice(0);
     sortedArray.sort((a, b) => {
       const aIndex = (SORT_FEATURES.indexOf(a.name.toLowerCase()) + 1) || SORT_FEATURES.length + 1;
@@ -120,11 +121,21 @@ export class CcAddonFeatures extends LitElement {
     return sortedArray;
   }
 
+  /**
+   * @param {AddonFeaturesState} state
+   * @returns {state is (AddonFeaturesStateLoading|AddonFeaturesStateLoaded)}
+   * @private
+   */
+  _isLoadedOrLoading (state) {
+    return state.type === 'loaded' || state.type === 'loading';
+  }
+
   render () {
 
     const skeleton = this.state.type === 'loading';
     const rawFeatures = this.state.type === 'loaded' ? this.state.features : SKELETON_FEATURES;
     const unsortedFeatures = rawFeatures.map((feature) => {
+      /** @type {SupportedFeatureCodes|string} */
       const nameCode = feature.name.toLowerCase();
       const valueCode = feature.value.toLowerCase();
       return {
@@ -146,7 +157,7 @@ export class CcAddonFeatures extends LitElement {
           <cc-notice intent="warning" message="${i18n('cc-addon-features.loading-error')}"></cc-notice>
       ` : ''}
         
-        ${!(this.state.type === 'error') ? html`
+        ${this._isLoadedOrLoading(this.state) ? html`
           <div class="feature-list">
             ${features.map((feature) => html`
               <div class="feature ${classMap({ skeleton })}">
