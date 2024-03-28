@@ -15,15 +15,15 @@ export const PROCESSED_STATUSES = ['PAID', 'CANCELED', 'REFUNDED'];
 
 /** @type {Invoice[]} */
 const SKELETON_INVOICES = [
-  // @formatter:off
-  { emissionDate: '2020-01-01', number: '????????????', type: 'INVOICE', status: 'PENDING', total: { currency: 'EUR', amount: 10.00 } },
-  { emissionDate: '2020-02-01', number: '????????????', type: 'INVOICE', status: 'PENDING', total: { currency: 'EUR', amount: 200.00 } },
-  { emissionDate: '2020-03-01', number: '????????????', type: 'INVOICE', status: 'PENDING', total: { currency: 'EUR', amount: 3000.00 } },
-  // @formatter:on
+  { emissionDate: '2020-01-01', number: '????????????', type: 'INVOICE', status: 'PENDING', total: { currency: 'EUR', amount: 10.00 }, downloadUrl: '', paymentUrl: '', invoiceHtml: '' },
+  { emissionDate: '2020-02-01', number: '????????????', type: 'INVOICE', status: 'PENDING', total: { currency: 'EUR', amount: 200.00 }, downloadUrl: '', paymentUrl: '', invoiceHtml: '' },
+  { emissionDate: '2020-03-01', number: '????????????', type: 'INVOICE', status: 'PENDING', total: { currency: 'EUR', amount: 3000.00 }, downloadUrl: '', paymentUrl: '', invoiceHtml: '' },
 ];
 
 /**
+ * @typedef {import('./cc-invoice-table.types.js').InvoiceTableState} InvoiceTableState
  * @typedef {import('../common.types.js').Invoice} Invoice
+ * @typedef {import('lit').TemplateResult<1>} TemplateResult
  */
 
 /**
@@ -35,30 +35,27 @@ export class CcInvoiceTable extends LitElement {
 
   static get properties () {
     return {
-      invoices: { type: Array },
+      state: { type: Object },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {Invoice[]|null} Sets the list of invoices. */
-    this.invoices = null;
+    /** @type {InvoiceTableState} Sets the state of the component */
+    this.state = { type: 'loading' };
 
     /** @type {ResizeController} */
     this._resizeController = new ResizeController(this);
   }
 
-  render () {
-
-    // NOTE: This value is arbitrary, we don't have a better solution for now
-    // It's a bit more than the width of the table in french (which is the largest) and with both links (download and pay)
-    // The table width is mostly stable since the with of the amount is fixed and the rest is almost always the same number of characters
-    const bigMode = (this._resizeController.width > 700);
-
-    const skeleton = (this.invoices == null);
-    const invoices = skeleton ? SKELETON_INVOICES : this.invoices;
-    const formattedInvoices = invoices
+  /**
+   * @param {Invoice[]} invoices
+   * @returns {Invoice[]} formatted invoices
+   * @private
+   */
+  _formatInvoices (invoices) {
+    return invoices
       .map((invoice) => {
         const sign = (invoice.type === 'CREDITNOTE') ? -1 : 1;
         return {
@@ -70,13 +67,29 @@ export class CcInvoiceTable extends LitElement {
         };
       })
       .sort(sortBy('emissionDate', true));
-
-    return bigMode
-      ? this._renderBig(skeleton, formattedInvoices)
-      : this._renderSmall(skeleton, formattedInvoices);
   }
 
-  _renderBig (skeleton, invoiceList) {
+  render () {
+
+    // NOTE: This value is arbitrary, we don't have a better solution for now
+    // It's a bit more than the width of the table in french (which is the largest) and with both links (download and pay)
+    // The table width is mostly stable since the width of the amount is fixed and the rest is almost always the same number of characters
+    const isBig = (this._resizeController.width > 700);
+    const skeleton = this.state.type === 'loading';
+    const invoices = this.state.type === 'loaded' ? this._formatInvoices(this.state.invoices) : this._formatInvoices(SKELETON_INVOICES);
+
+    return isBig
+      ? this._renderTable(skeleton, invoices)
+      : this._renderList(skeleton, invoices);
+  }
+
+  /**
+   * @param {boolean} skeleton
+   * @param {Invoice[]} invoiceList
+   * @returns {TemplateResult}
+   * @private
+   */
+  _renderTable (skeleton, invoiceList) {
     return html`
       <table>
         <tr>
@@ -107,7 +120,13 @@ export class CcInvoiceTable extends LitElement {
     `;
   }
 
-  _renderSmall (skeleton, invoiceList) {
+  /**
+   * @param {boolean} skeleton
+   * @param {Invoice[]} invoiceList
+   * @returns {TemplateResult}
+   * @private
+   */
+  _renderList (skeleton, invoiceList) {
     return html`
       <div class="invoice-list">
         ${invoiceList.map((invoice) => html`
@@ -128,6 +147,12 @@ export class CcInvoiceTable extends LitElement {
     `;
   }
 
+  /**
+   * @param {boolean} skeleton
+   * @param {Invoice} invoice
+   * @returns {TemplateResult}
+   * @private
+   */
   _renderLinks (skeleton, invoice) {
     return html`
       <div class="links">

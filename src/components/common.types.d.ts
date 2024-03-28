@@ -56,11 +56,11 @@ export interface IconModel {
 }
 
 interface InvoiceAmount {
-  amount: Number;
-  currency: string;
+  amount: number;
+  currency: 'EUR'|'USD';
 }
 
-interface Invoice {
+export interface Invoice {
   downloadUrl: string;
   emissionDate: string;
   invoiceHtml: string;
@@ -71,9 +71,9 @@ interface Invoice {
   type: InvoiceType;
 }
 
-type InvoiceStatusType = "PENDING" | "PROCESSING" | "PAID" | "PAYMENTHELD" | "CANCELED" | "REFUNDED" | "WONTPAY";
+export type InvoiceStatusType = "PENDING" | "PROCESSING" | "PAID" | "PAYMENTHELD" | "CANCELED" | "REFUNDED" | "WONTPAY";
 
-type InvoiceType = "INVOICE" | "CREDITNOTE";
+export type InvoiceType = "INVOICE" | "CREDITNOTE";
 
 interface HeatmapPoint {
   lat: number;   // Latitude
