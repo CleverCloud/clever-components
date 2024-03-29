@@ -5,7 +5,7 @@ import { sequence } from './sequence.js';
 export function makeStory (...configs) {
 
   const {
-    name, docs, css, component, dom, items: rawItems = [{}], simulations = [], argTypes, displayMode, beta,
+    name, docs, css, component, dom, items: rawItems = [{}], simulations = [], argTypes, displayMode, beta, onUpdateComplete,
   } = Object.assign({}, ...configs);
 
   // In some rare conditions, we need to instanciate the items on story rendering (and each time it renders)
@@ -60,7 +60,15 @@ export function makeStory (...configs) {
       }
       return element;
     });
-    components.forEach((c) => shadow.appendChild(c));
+    components.forEach((c, index) => {
+
+      shadow.appendChild(c);
+      if (onUpdateComplete != null) {
+        c.updateComplete.then(() => {
+          onUpdateComplete(c, index);
+        });
+      }
+    });
 
     // Run the sequence if we have simulations
     sequence(async (wait) => {
