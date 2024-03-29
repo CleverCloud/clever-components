@@ -51,6 +51,7 @@
     "noPropertyAccessFromIndexSignature": false, /* Enforces using indexed accessors for keys declared using an indexed type. */
     "allowUnusedLabels": false, /* Disable error reporting for unused labels. */
     "allowUnreachableCode": false, /* Disable error reporting for unreachable code. */
+    "jsx": "react", /* useful when dealing with storybook specific components */
     "plugins": [
       {
         "name": "ts-lit-plugin",
