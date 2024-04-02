@@ -585,7 +585,10 @@ export class CcLogs extends LitElement {
     const lines = this._logsCtrl.getSelectedLogs()
       .map((log) => {
         const ts = this._dateDisplayer.format(log.date);
-        const meta = log.metadata?.map((m) => this._getMetadataText(m, this._getMetadataRendering(m))) ?? [];
+        const meta = log.metadata
+          ?.map((metadata) => ({ metadata, metadataRendering: this._getMetadataRendering(metadata) }))
+          .filter(({ metadataRendering }) => !metadataRendering.hidden)
+          .map(({ metadata, metadataRendering }) => this._getMetadataText(metadata, metadataRendering)) ?? [];
         const msg = stripAnsi(log.message);
         return [ts, ...meta, msg]
           .filter((t) => t?.length > 0)
