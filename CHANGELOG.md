@@ -5,6 +5,23 @@ title: 'Changelog'
 
 # Changelog
 
+## [13.1.0](https://github.com/CleverCloud/clever-components/compare/13.0.0...13.1.0) (2024-04-03)
+
+
+### 🚀 Features
+
+* **cc-addon-credentials:** add support for materiadb-kv ([5fce8de](https://github.com/CleverCloud/clever-components/commit/5fce8def6fa136924408e145309911908ca1d978)), closes [#992](https://github.com/CleverCloud/clever-components/issues/992)
+* **cc-addon-credentials:** add support for port ([d474dbc](https://github.com/CleverCloud/clever-components/commit/d474dbc115802829487f3e0b6e2229c5a88061df)), closes [#992](https://github.com/CleverCloud/clever-components/issues/992)
+* **cc-addon-credentials:** adjust translations for host and token ([21f13f8](https://github.com/CleverCloud/clever-components/commit/21f13f8c616bfbe1d6407ce8d06c1691a09706c1)), closes [#992](https://github.com/CleverCloud/clever-components/issues/992)
+* **cc-addon-credentials:** adjust translations for Pulsar ([53e6370](https://github.com/CleverCloud/clever-components/commit/53e6370bc01af4aa3584666262c61bb32ffd43dd))
+* **cc-product-list:** init component ([a6454bf](https://github.com/CleverCloud/clever-components/commit/a6454bfa5f292fb11f290956ff77b91019cd21ed)), closes [#892](https://github.com/CleverCloud/clever-components/issues/892)
+
+
+### 🐛 Bug Fixes
+
+* **cc-button:** prevent click events in skeleton / waiting ([1239779](https://github.com/CleverCloud/clever-components/commit/123977936308c0659754cb78ef598dd2ab6f1fc8)), closes [#994](https://github.com/CleverCloud/clever-components/issues/994)
+* **cc-link:** remove href in skeleton ([ae4719d](https://github.com/CleverCloud/clever-components/commit/ae4719dc769cfe07347c0e2b5e266a3eb3fb2ee8)), closes [#994](https://github.com/CleverCloud/clever-components/issues/994)
+
 ## [13.0.0](https://github.com/CleverCloud/clever-components/compare/12.0.0...13.0.0) (2024-03-07)
 
 
