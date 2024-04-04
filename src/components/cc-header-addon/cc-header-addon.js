@@ -5,32 +5,35 @@ import '../cc-zone/cc-zone.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { fakeString } from '../../lib/fake-strings.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 
 /** @type {Addon} */
 const SKELETON_ADDON = {
-  name: '??????????????????????????',
-  provider: {},
-  plan: {
-    name: '?????????',
+  id: null,
+  realId: null,
+  name: fakeString(20),
+  provider: {
+    name: null,
+    logoUrl: null,
   },
-  creationDate: 0,
+  plan: {
+    name: fakeString(10),
+  },
+  creationDate: new Date(),
 };
 
-const SKELETON_VERSION = '????????';
+const SKELETON_VERSION = fakeString(5);
 
 /**
+ * @typedef {import('./cc-header-addon.types.js').HeaderAddonState} HeaderAddonState
+ * @typedef {import('../cc-zone/cc-zone.types.js').ZoneState} ZoneState
  * @typedef {import('../common.types.js').Addon} Addon
- * @typedef {import('../common.types.js').Zone} Zone
  */
 
 /**
  * A component to display various info about an add-on (name, plan, version...).
- *
- * ## Details
- *
- * * When `addon` or `version` are null, a skeleton screen UI pattern is displayed (loading hint) on the corresponding zone.
  *
  * @cssdisplay block
  */
@@ -38,67 +41,73 @@ export class CcHeaderAddon extends LitElement {
 
   static get properties () {
     return {
-      addon: { type: Object },
-      error: { type: Boolean, reflect: true },
-      noVersion: { type: Boolean, attribute: 'no-version' },
-      version: { type: String },
-      zone: { type: Object },
+      state: { type: Object },
     };
   };
 
   constructor () {
     super();
 
-    /** @type {Addon} Sets add-on details and config. */
-    this.addon = null;
-
-    /** @type {boolean} Displays an error message. */
-    this.error = false;
-
-    /** @type {string|null} Sets version of add-on. */
-    this.version = null;
-
-    /** @type {boolean} Hides the version. */
-    this.noVersion = false;
-
-    /** @type {Zone|null} Sets add-on zone. */
-    this.zone = null;
+    /** @type {HeaderAddonState} Sets the state of addon information and the component in general */
+    this.state = { type: 'loading', hasVersion: true };
   }
 
   render () {
 
-    const skeleton = (this.addon == null);
-    const addon = skeleton ? SKELETON_ADDON : this.addon;
+    const addonInfo = this.state.type === 'loaded' ? this.state : SKELETON_ADDON;
+    const skeleton = this.state.type === 'loading';
+    const creationDateShort = i18n('cc-header-addon.creation-date.short', { date: addonInfo.creationDate });
+    const creationDateFull = this.state.type === 'loaded' ? i18n('cc-header-addon.creation-date.full', { date: addonInfo.creationDate }) : null;
+    const version = (this.state.type === 'loaded' && this.state.hasVersion) ? this.state.version : SKELETON_VERSION;
+    const zoneState = this.state.type === 'loaded' ? { type: 'loaded', ...this.state.zone } : { type: 'loading' };
 
-    const skeletonVersion = (this.version == null);
-    const version = skeletonVersion ? SKELETON_VERSION : this.version;
-
-    const creationDateShort = i18n('cc-header-addon.creation-date.short', { date: addon.creationDate });
-    const creationDateFull = skeleton ? undefined : i18n('cc-header-addon.creation-date.full', { date: addon.creationDate });
+    if (this.state.type === 'error') {
+      return html`
+        <cc-notice intent="warning" message="${i18n('cc-header-addon.error')}"></cc-notice>
+      `;
+    }
 
     return html`
-      ${!this.error ? html`
+      <div class="wrapper">
         <div class="main">
-
-          <cc-img class="logo" src="${ifDefined(addon.provider.logoUrl)}"
-            ?skeleton=${skeleton} a11y-name="${addon.provider.name}" title="${ifDefined(addon.provider.name)}"></cc-img>
+          <cc-img 
+            class="logo" 
+            src="${ifDefined(addonInfo.provider.logoUrl)}"
+            a11y-name="${addonInfo.provider.name}"
+            title="${ifDefined(addonInfo.provider.name)}"
+            skeleton
+          ></cc-img>
           <div class="details">
-            <div class="name"><span class="${classMap({ skeleton })}">${addon.name}</span></div>
+            <div class="name"><span class="${classMap({ skeleton })}">${addonInfo.name}</span></div>
             <div class="addon-id-inputs">
-              <cc-input-text label=${i18n('cc-header-addon.id-label')} hidden-label readonly clipboard value="${ifDefined(addon.id)}" ?skeleton=${skeleton}></cc-input-text>
-              <cc-input-text label=${i18n('cc-header-addon.id-label-alternative')} hidden-label readonly clipboard value="${ifDefined(addon.realId)}" ?skeleton=${skeleton}></cc-input-text>
+              <cc-input-text 
+                label=${i18n('cc-header-addon.id-label')} 
+                hidden-label 
+                readonly 
+                clipboard 
+                value="${ifDefined(addonInfo.id)}" 
+                ?skeleton=${skeleton}
+              ></cc-input-text>
+              <cc-input-text 
+                label=${i18n('cc-header-addon.id-label-alternative')} 
+                hidden-label 
+                readonly 
+                clipboard 
+                value="${ifDefined(addonInfo.realId)}" 
+                ?skeleton=${skeleton}
+              ></cc-input-text>
             </div>
           </div>
 
           <div class="description">
             <div class="description-item">
               <div class="description-label">${i18n('cc-header-addon.plan')}</div>
-              <div class="${classMap({ skeleton })}">${addon.plan.name}</div>
+              <div class="${classMap({ skeleton })}">${addonInfo.plan.name}</div>
             </div>
-            ${!this.noVersion ? html`
+            ${this.state.hasVersion ? html`
               <div class="description-item">
                 <div class="description-label">${i18n('cc-header-addon.version')}</div>
-                <div class="${classMap({ skeleton: skeletonVersion })}">${version}</div>
+                <div class="${classMap({ skeleton })}">${version}</div>
               </div>
             ` : ''}
             <div class="description-item">
@@ -109,13 +118,9 @@ export class CcHeaderAddon extends LitElement {
         </div>
 
         <div class="messages">
-          <cc-zone .zone=${this.zone} mode="small-infra"></cc-zone>
+          <cc-zone .state=${zoneState} mode="small-infra"></cc-zone>
         </div>
-      ` : ''}
-
-      ${this.error ? html`
-        <cc-notice intent="warning" message="${i18n('cc-header-addon.error')}"></cc-notice>
-      ` : ''}
+      </div>
     `;
   }
 
@@ -128,14 +133,13 @@ export class CcHeaderAddon extends LitElement {
           --cc-gap: 1em;
 
           display: block;
+        }
+
+        .wrapper {
           overflow: hidden;
           border: 1px solid var(--cc-color-border-neutral, #aaa);
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-default, 0.25em);
-        }
-        
-        :host([error]) {
-          border: none;
         }
 
         .main {
