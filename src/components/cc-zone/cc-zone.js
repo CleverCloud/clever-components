@@ -10,6 +10,9 @@ import { skeletonStyles } from '../../styles/skeleton.js';
 const SKELETON_ZONE = {
   name: 'name',
   country: '????????????',
+  countryCode: null,
+  lon: 0,
+  lat: 0,
   city: '??????????',
   tags: ['????????', '????????????'],
 };
@@ -17,6 +20,8 @@ const SKELETON_ZONE = {
 const PRIVATE_ZONE = 'scope:private';
 
 /**
+ * @typedef {import('./cc-zone.types.js').ZoneState} ZoneState
+ * @typedef {import('./cc-zone.types.js').ZoneStateLoaded} ZoneStateLoaded
  * @typedef {import('./cc-zone.types.js').ZoneModeType} ZoneModeType
  * @typedef {import('../common.types.js').Zone} Zone
  */
@@ -26,7 +31,6 @@ const PRIVATE_ZONE = 'scope:private';
  *
  * ## Details
  *
- * * When `zone` is nullish, a skeleton screen UI pattern is displayed (loading hint).
  * * When a tag prefixed with `infra:` is used, the corresponding logo is displayed.
  * * When the `scope:private` tag is used, the optional `displayName` of the zone will be used instead of the City + Country.
  * * If the browser supports it, the `countryCode` will be used to display a translated version of the country's name.
@@ -47,7 +51,7 @@ export class CcZone extends LitElement {
   static get properties () {
     return {
       mode: { type: String, reflect: true },
-      zone: { type: Object },
+      state: { type: Object },
     };
   }
 
@@ -57,12 +61,16 @@ export class CcZone extends LitElement {
     /** @type {ZoneModeType} Sets the mode of the component. */
     this.mode = 'default';
 
-    /** @type {Zone|null} Sets the different details of the zone. */
-    this.zone = null;
+    /** @type {ZoneState} Sets the state of the component. */
+    this.state = { type: 'loading' };
   }
 
   // This is a bit irregular to do this but we need to reuse this text logic in a <select>.
   // Moving this to a separated module feels overkill right now.
+  /**
+   * @param {Zone} zone
+   * @returns {string}
+   */
   static getText (zone) {
     const { title, subtitle, infra } = CcZone._getTextParts(zone);
     const titleAndSubtitle = [title, subtitle].filter((a) => a != null).join(', ');
@@ -71,6 +79,11 @@ export class CcZone extends LitElement {
       : titleAndSubtitle;
   }
 
+  /**
+   * @param {Zone} zone
+   * @returns {{ title: string, subtitle?: string, infra?: string }}
+   * @private
+   */
   static _getTextParts (zone) {
     if (zone.tags.includes(PRIVATE_ZONE) && zone.displayName != null) {
       return { title: zone.displayName };
@@ -87,12 +100,17 @@ export class CcZone extends LitElement {
 
   render () {
 
-    const skeleton = (this.zone == null);
-    const zone = skeleton ? SKELETON_ZONE : this.zone;
+    const skeleton = this.state.type === 'loading';
+    const zone = this.state.type === 'loaded' ? this.state : SKELETON_ZONE;
     const { title, subtitle, infra } = CcZone._getTextParts(zone);
 
     return html`
-      <cc-img class="flag" ?skeleton=${skeleton} src=${ifDefined(getFlagUrl(zone.countryCode))} a11y-name=${ifDefined(zone.countryCode)}></cc-img>
+      <cc-img
+        class="flag"
+        ?skeleton=${skeleton}
+        src=${ifDefined(getFlagUrl(zone.countryCode))}
+        a11y-name=${ifDefined(zone.countryCode)}
+      ></cc-img>
       <div class="wrapper-details-logo">
         <div class="wrapper-details">
           <div class="details">
@@ -100,7 +118,7 @@ export class CcZone extends LitElement {
             <span class="subtitle ${classMap({ skeleton })}">${subtitle}</span>
           </div>
           ${infra != null ? html`
-            <cc-img class="infra-logo" src=${getInfraProviderLogoUrl(infra)} a11y-name=${infra}></cc-img>
+            <cc-img class="infra-logo ${classMap({ skeleton })}" src=${getInfraProviderLogoUrl(infra)} a11y-name=${infra}></cc-img>
           ` : ''}
         </div>
         <div class="tag-list">
@@ -113,6 +131,7 @@ export class CcZone extends LitElement {
   /**
    * @param {string} tag - the tag to render
    * @param {boolean} skeleton - display as skeleton or not
+   * @private
    */
   _renderTag (tag, skeleton) {
 
