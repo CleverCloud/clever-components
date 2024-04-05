@@ -14,6 +14,7 @@ const sandboxes = [
   'cc-ansi-palette',
   'cc-logs',
   'cc-product-card',
+  'forms',
 ];
 
 const $listContainer = document.querySelector('.sandboxes-list');
