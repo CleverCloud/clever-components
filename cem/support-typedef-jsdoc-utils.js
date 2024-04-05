@@ -99,7 +99,7 @@ function getTypesFromJsDocCommentNode (node, ts) {
   return Array.from(typesSet);
 }
 
-const BUILTIN_TYPES = ['String', 'Boolean', 'Number', 'BigInt', 'Date', 'Map', 'Set', 'WeakMap', 'WeakSet', 'Object', 'Promise', 'Symbol'];
+const BUILTIN_TYPES = ['String', 'Boolean', 'Number', 'BigInt', 'Date', 'Map', 'Set', 'WeakMap', 'WeakSet', 'Object', 'Promise', 'Symbol', 'ElementInternals'];
 export function findCustomType (nodeType, ts) {
   if (nodeType == null) {
     return null;
