@@ -92,22 +92,24 @@ export class CcBlock extends LitElement {
     /* TODO when reworking the component, check this a11y issue https://github.com/CleverCloud/clever-components/issues/225#issuecomment-1239462826 */
     /* eslint-disable lit-a11y/click-events-have-key-events */
     return html`
-        <slot>
-          <slot name="header">
-            <slot name="icon">
+        <div class="container">
+          <div name="header" class="header">
+            <div name="icon">
+                ICON
               ${this.image != null && this.icon == null ? html`
                 <cc-img src="${this.image}"></cc-img>
               ` : ''}
               ${this.icon != null ? html`
                 <cc-icon size="lg" .icon=${this.icon}></cc-icon>
               ` : ''}
-            </slot>
-            <slot name="title"></slot>
-            <slot name="ribbon">
-                ${this.ribbon != null && this.ribbon !== '' ? html`
-                    <div class="info-ribbon">${this.ribbon}</div>
-                ` : ''}
-            </slot>
+            </div>
+              <div name="title" class="title"><slot name="title"></slot></div>
+            <div name="ribbon">
+                RIBBON
+              ${this.ribbon != null && this.ribbon !== '' ? html`
+                <div class="info-ribbon">${this.ribbon}</div>
+              ` : ''}
+            </div>
             ${isToggleEnabled ? html`
               <cc-button
                 class="toggle_button"
@@ -119,26 +121,26 @@ export class CcBlock extends LitElement {
               >${isOpen ? i18n('cc-block.toggle.close') : i18n('cc-block.toggle.open')}
               </cc-button>
             ` : ''}
-            <slot name="button"></slot>
-            <slot name="other-element"></slot>
-          </slot>
-            <cc-expand class="main-wrapper ${classMap({ 'main-wrapper--overlay': this._overlay })}">
-                ${!isToggleEnabled || isOpen ? html`
-                    <div>
-                      <slot name="content">
-                          <slot name="content-header"></slot>
-                          <slot name="content-body"></slot>
-                          <slot name="content-footer"></slot>
-                      </slot>
-                    </div>
-                ` : ''}
-            </cc-expand>
-          <slot name="footer">
-              <slot name="left-content"></slot>
-              <slot name="center-content"></slot>
-              <slot name="right-content"></slot>
-          </slot>
-        </slot>
+            <!--<div name="button"></div>-->
+            <div name="other-element">OTHER ELEMENT</div>
+          </div>
+          <cc-expand class="main-wrapper ${classMap({ 'main-wrapper--overlay': this._overlay })}">
+            ${!isToggleEnabled || isOpen ? html`
+              <div>
+                <div name="content">
+                  <div name="content-header">CONTENT HEADER</div>
+                  <div name="content-body">CONTENT BODY</div>
+                  <div name="content-footer">CONTENT FOOTER</div>
+                </div>
+              </div>
+            ` : ''}
+          </cc-expand>
+          <div name="footer" class="footer">
+            <div class="left-content" name="left-content">LEFT CONTENT</div>
+            <div class="center-content" name="center-content">CENTER CONTENT</div>
+            <div class="right-content" name="right-content"><slot name="right-content"></slot></div>
+          </div>
+        </div>
     `;
   }
 
@@ -157,16 +159,47 @@ export class CcBlock extends LitElement {
       linkStyles,
       css`
         :host {
-          position: relative;
+       /*   position: relative;
           display: grid;
           overflow: hidden;
-          box-sizing: border-box;
+          box-sizing: border-box;*/
           border: 1px solid var(--cc-color-border-neutral, #aaa);
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-default, 0.25em);
+          display: block;
+          
+        }
+        
+        .container {
+          display: block;
+          padding: 1em;
+        }
+        
+        .header {
+            background-color: deeppink;
+            display: flex;
+            gap: 1em;
+            
         }
 
-        ::slotted([slot='header']) {
+        .title {
+            flex: 1 1 0;
+        }
+        
+        .footer {
+            background-color: yellow;
+            display: flex;
+            gap: 1em;
+           /* justify-content: space-between;*/
+            
+        }
+        
+        .center-content {
+            flex: 1 1 0;
+        }
+        
+        
+/*        ::slotted([slot='header']) {
           display: flex;
           align-items: center;
           padding: 1em;
@@ -242,7 +275,7 @@ export class CcBlock extends LitElement {
           opacity: 0.35;
         }
 
-        /* superpose main and overlay */
+        !* superpose main and overlay *!
 
         .main-wrapper,
         ::slotted([slot='overlay']) {
@@ -254,7 +287,7 @@ export class CcBlock extends LitElement {
         }
 
         ::slotted([slot='overlay']) {
-          /* we have a few z-index:2 on atoms */
+          !* we have a few z-index:2 on atoms *!
           z-index: 10;
           display: grid;
           align-content: center;
@@ -276,7 +309,7 @@ export class CcBlock extends LitElement {
             font-size: 0.9em;
             font-style: italic;
             gap: 0.57em;
-        }
+        }*/
       `,
     ];
   }
