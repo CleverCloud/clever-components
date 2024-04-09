@@ -513,9 +513,9 @@ export const translations = {
   'cc-logs-control.wrap-lines': `Forcer le retour à la ligne`,
   //#endregion
   //#region cc-logs-instances
-  'cc-logs-instances.build.a11y-name': `Instance dédiée au build`,
   'cc-logs-instances.cold.empty': `Aucune instance`,
   'cc-logs-instances.cold.header': `Instances`,
+  'cc-logs-instances.commit.title': ({ commit }) => `Commit déployé: ${commit}`,
   'cc-logs-instances.deleted.header': `Instances supprimées`,
   'cc-logs-instances.deploying.header': `Déploiement en cours`,
   'cc-logs-instances.deployment.deployed': `Déployée`,
@@ -525,6 +525,8 @@ export const translations = {
   'cc-logs-instances.deployment.state.wip': `Déploiement en cours`,
   'cc-logs-instances.ghost.header': `Instances fantômes`,
   'cc-logs-instances.ghost.notice': `Des instances indésirables sont toujours en cours d'exécution, mais seront bientôt détruites par notre orchestrateur. Pour en savoir plus, vous pouvez contacter le support.`,
+  'cc-logs-instances.instance.build': `Instance de build`,
+  'cc-logs-instances.instance.index': ({ index }) => `Instance #${index}`,
   'cc-logs-instances.instance.state.deleted': `Instance supprimée`,
   'cc-logs-instances.instance.state.deploying': `Instance en cours de déploiement`,
   'cc-logs-instances.instance.state.running': `Instance démarrée`,

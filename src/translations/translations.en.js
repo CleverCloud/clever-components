@@ -500,9 +500,9 @@ export const translations = {
   'cc-logs-control.wrap-lines': `Force lines wrap`,
   //#endregion
   //#region cc-logs-instances
-  'cc-logs-instances.build.a11y-name': `Instance dedicated to build`,
   'cc-logs-instances.cold.empty': `No instance`,
   'cc-logs-instances.cold.header': `Instances`,
+  'cc-logs-instances.commit.title': ({ commit }) => `Deployed commit: ${commit}`,
   'cc-logs-instances.deleted.header': `Deleted instances`,
   'cc-logs-instances.deploying.header': `Deployment in progress`,
   'cc-logs-instances.deployment.deployed': `Deployed`,
@@ -512,6 +512,8 @@ export const translations = {
   'cc-logs-instances.deployment.state.wip': `Deployment in progress`,
   'cc-logs-instances.ghost.header': `Ghost instances`,
   'cc-logs-instances.ghost.notice': `Some unwanted instances are still running, but will soon be destroyed by our scheduler. You can contact support to get more information.`,
+  'cc-logs-instances.instance.build': `Build instance`,
+  'cc-logs-instances.instance.index': ({ index }) => `Instance #${index}`,
   'cc-logs-instances.instance.state.deleted': `Deleted instance`,
   'cc-logs-instances.instance.state.deploying': `Deploying instance`,
   'cc-logs-instances.instance.state.running': `Running instance`,

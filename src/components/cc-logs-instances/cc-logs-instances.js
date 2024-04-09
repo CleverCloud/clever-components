@@ -512,18 +512,21 @@ export class CcLogsInstances extends LitElement {
 
   _renderCommit (commit) {
     return html`
-      <span class="commit">
+      <span class="commit" title=${i18n('cc-logs-instances.commit.title', { commit })}>
         ${commit.substring(0, 7)}
       </span>`
     ;
   }
 
   _renderInstanceIndex (instance) {
+    const title = instance.kind === 'BUILD'
+      ? i18n('cc-logs-instances.instance.build')
+      : i18n('cc-logs-instances.instance.index', { index: instance.index });
+
     return html`
-      <span class="instance-index">
+      <span class="instance-index" title=${title}>
         ${instance.kind === 'BUILD' ? html`
-            <cc-icon .icon=${iconBuildInstance}
-                     a11y-name="${i18n('cc-logs-instances.build.a11y-name')}"></cc-icon>
+            <cc-icon .icon=${iconBuildInstance}></cc-icon>
           ` : ''}
         ${instance.kind !== 'BUILD' ? html`
           ${instance.index}
