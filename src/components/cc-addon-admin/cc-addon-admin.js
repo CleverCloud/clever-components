@@ -31,6 +31,8 @@ export class CcAddonAdmin extends LitElement {
     return {
       addon: { type: Object },
       error: { type: Boolean },
+      noDangerZoneBackupText: { type: Boolean, attribute: 'no-danger-zone-backup-text' },
+      noDangerZoneVmText: { type: Boolean, attribute: 'no-danger-zone-vm-text' },
       saving: { type: Boolean },
       _name: { type: String, state: true },
       _skeleton: { type: Boolean, state: true },
@@ -46,6 +48,12 @@ export class CcAddonAdmin extends LitElement {
 
     /** @type {boolean} Sets the error state on the component. */
     this.error = false;
+
+    /** @type {boolean} Hides the text about backups within the danger zone when set to `true` */
+    this.noDangerZoneBackupText = false;
+
+    /** @type {boolean} Hides the text about VM delay within the danger zone when set to `true` */
+    this.noDangerZoneVmText = false;
 
     /** @type {boolean} Enables the saving state */
     this.saving = false;
@@ -97,6 +105,8 @@ export class CcAddonAdmin extends LitElement {
 
     const isFormDisabled = this.error || this.saving;
     const loadingError = (this.error && !this.saving) || (this.error && this.addon == null);
+    const shouldShowBackupsText = !this.noDangerZoneBackupText;
+    const shouldShowVmText = !this.noDangerZoneVmText;
 
     return html`
       <cc-block>
@@ -138,7 +148,11 @@ export class CcAddonAdmin extends LitElement {
 
           <cc-block-section>
             <div slot="title" class="danger">${i18n('cc-addon-admin.danger-zone')}</div>
-            <div slot="info">${i18n('cc-addon-admin.delete-description')}</div>
+            <div slot="info" class="danger-desc">
+              <p>${i18n('cc-addon-admin.delete-disclaimer')}</p>
+              ${shouldShowVmText ? html`<p>${i18n('cc-addon-admin.delete-vm')}</p>` : ''}
+              ${shouldShowBackupsText ? html`<p>${i18n('cc-addon-admin.delete-backups')}</p>` : ''}
+            </div>
             <div>
               <cc-button danger ?skeleton=${this._skeleton} ?disabled=${isFormDisabled} @cc-button:click=${this._onDeleteSubmit}>${i18n('cc-addon-admin.delete')}</cc-button>
             </div>
@@ -171,6 +185,15 @@ export class CcAddonAdmin extends LitElement {
         
         .one-line-form cc-button {
           margin-top: var(--cc-margin-top-btn-horizontal-form);
+        }
+
+        .danger-desc {
+          display: grid;
+          gap: 0.5em;
+        }
+
+        .danger-desc p {
+          margin: 0;
         }
       `,
     ];
