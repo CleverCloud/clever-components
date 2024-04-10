@@ -9,7 +9,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import {
   iconRemixCalendarScheduleLine as dateIcon,
-  iconRemixScrollToBottomLine as scrollToBottomIcon,
+  iconRemixSkipDownLine as scrollToBottomIcon,
   iconRemixPaletteLine as displayIcon,
   iconRemixPantoneLine as metadataIcon,
   iconRemixSettings_5Line as optionsIcon,
