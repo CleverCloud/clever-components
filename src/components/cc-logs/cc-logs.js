@@ -826,6 +826,10 @@ export class CcLogs extends LitElement {
       .map((metadata) => this._renderMetadata(metadata))
       .filter((t) => t != null);
 
+    if (metadata.length === 0) {
+      return null;
+    }
+
     // keep this on one line to make sure we do not break the white-space css rule
     return html`<span class="metadata--wrapper">${join(metadata, html`&nbsp;`)}</span>`;
   }
@@ -871,6 +875,8 @@ export class CcLogs extends LitElement {
           border: 1px solid var(--cc-color-border-neutral, #aaa);
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-default, 0.25em);
+          
+          --font-size: 0.875em;
         }
 
         :focus {
@@ -888,7 +894,7 @@ export class CcLogs extends LitElement {
         .logs_container {
           flex: 1;
           font-family: var(--cc-ff-monospace, monospace);
-          font-size: 0.875em;
+          font-size: var(--font-size);
         }
 
         .log {
@@ -974,6 +980,10 @@ export class CcLogs extends LitElement {
 
         .metadata {
           display: inline-block;
+        }
+        
+        .metadata--wrapper {
+          margin-right: var(--font-size);
         }
 
         .strong {
