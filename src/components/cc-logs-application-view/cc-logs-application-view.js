@@ -832,9 +832,8 @@ export class CcLogsApplicationView extends LitElement {
       </cc-logs-control-beta>
 
       ${this._loadingProgressCtrl.state === 'completed' && this._loadingProgressCtrl.value === 0 ? html`
-        <div class="center-logs-wrapper overlay">
-          <cc-notice slot="header"
-                     intent="info"
+        <div class="overlay-logs-wrapper">
+          <cc-notice intent="info"
                      heading=${i18n('cc-logs-application-view.logs.warning.no-logs.title')}
                      message=${i18n('cc-logs-application-view.logs.warning.no-logs.message')}
           ></cc-notice>
@@ -842,16 +841,19 @@ export class CcLogsApplicationView extends LitElement {
       ` : ''}
 
       ${this._loadingProgressCtrl.state === 'init' || this._loadingProgressCtrl.state === 'started' ? html`
-        <div class="center-logs-wrapper overlay">
-          <cc-loader></cc-loader>
-          <span>${i18n('cc-logs-application-view.logs.loading')}</span>
+        <div class="overlay-logs-wrapper">
+          <cc-notice intent="info" no-icon>
+            <div class="overlay-logs-wrapper--loader" slot="message">
+              <cc-loader></cc-loader>
+              <span>${i18n('cc-logs-application-view.logs.loading')}</span>
+            </div>
+          </cc-notice>
         </div>
       ` : ''}
 
       ${this._loadingProgressCtrl.state === 'waiting' ? html`
-        <div class="center-logs-wrapper overlay">
-          <cc-notice slot="header"
-                     intent="info"
+        <div class="overlay-logs-wrapper">
+          <cc-notice intent="info"
                      heading=${i18n('cc-logs-application-view.logs.warning.waiting.title')}
                      message=${i18n('cc-logs-application-view.logs.warning.waiting.message')}
           ></cc-notice>
@@ -1065,19 +1067,24 @@ export class CcLogsApplicationView extends LitElement {
           flex-direction: row;
           align-items: center;
           justify-content: center;
+        }
+
+        .overlay-logs-wrapper {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+
+        .overlay-logs-wrapper--loader {
+          display: flex;
+          align-items: center;
           gap: 0.5em;
         }
 
-        .center-logs-wrapper cc-loader {
+        .overlay-logs-wrapper--loader cc-loader {
           width: 1.5em;
           height: 1.5em;
-        }
-
-        .overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
         }
         
         .spacer {
