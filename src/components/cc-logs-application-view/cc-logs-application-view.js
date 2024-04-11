@@ -8,6 +8,7 @@ import '../cc-notice/cc-notice.js';
 import '../cc-popover/cc-popover.js';
 import '../cc-toggle/cc-toggle.js';
 import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import {
   iconRemixArrowDownSLine,
@@ -19,6 +20,8 @@ import {
   iconRemixPauseLine,
   iconRemixPlayLine,
   iconRemixTimeLine,
+  iconRemixFullscreenLine as fullscreenIcon,
+  iconRemixFullscreenExitLine as fullscreenExitIcon,
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
@@ -106,6 +109,7 @@ export class CcLogsApplicationView extends LitElement {
       _customDateRange: { type: Object, state: true },
       _overflowDecision: { type: String, state: true },
       _textFilter: { type: String, state: true },
+      _fullscreen: { type: Boolean, state: true },
     };
   }
 
@@ -180,6 +184,8 @@ export class CcLogsApplicationView extends LitElement {
     this._overflowDecision = 'none';
 
     this._textFilter = '';
+
+    this._fullscreen = false;
   }
 
   /* region Public methods */
@@ -466,6 +472,10 @@ export class CcLogsApplicationView extends LitElement {
     dispatchCustomEvent(this, 'options-change', this.options);
   }
 
+  _onFullscreenToggle () {
+    this._fullscreen = !this._fullscreen;
+  }
+
   _onPause () {
     dispatchCustomEvent(this, 'pause');
   }
@@ -554,17 +564,27 @@ export class CcLogsApplicationView extends LitElement {
   }
 
   render () {
+    const overlay = {
+      overlay: true,
+      fullscreen: this._fullscreen,
+    };
+    const wrapper = {
+      wrapper: true,
+      fullscreen: this._fullscreen,
+    };
     return html`
-      <div class="wrapper">
-        <div class="left">
-          ${this._renderDateRangeSelection()}
-          ${this._renderCustomDateRange()}
-          ${this._renderInstances()}
-          ${this._renderLoadingProgress()}
-        </div>
-
-        <div class="logs-wrapper">
-          ${this._renderLogs()}
+      <div class=${classMap(overlay)}>
+        <div class=${classMap(wrapper)}>
+          <div class="left">
+            ${this._renderDateRangeSelection()}
+            ${this._renderCustomDateRange()}
+            ${this._renderInstances()}
+            ${this._renderLoadingProgress()}
+          </div>
+  
+          <div class="logs-wrapper">
+            ${this._renderLogs()}
+          </div>
         </div>
       </div>
     `;
@@ -821,13 +841,22 @@ export class CcLogsApplicationView extends LitElement {
         @cc-logs-control:option-change=${this._onLogsOptionChange}
       >
         <div slot="header">
-          <cc-input-text
-            class="logs-filter-input"
-            label=${i18n('cc-logs-application-view.filter')}
-            .value=${this._textFilter}
-            inline
-            @cc-input-text:input=${this._onTextFilterInput}
-          ></cc-input-text>
+          <div class="logs-header">
+            <cc-input-text
+              class="logs-filter-input"
+              label=${i18n('cc-logs-application-view.filter')}
+              .value=${this._textFilter}
+              inline
+              @cc-input-text:input=${this._onTextFilterInput}
+            ></cc-input-text>
+            <cc-button
+              class="header-fullscreen-button"
+              .icon=${this._fullscreen ? fullscreenExitIcon : fullscreenIcon}
+              a11y-name=${this._fullscreen ? i18n('cc-logs-application-view.fullscreen.exit') : i18n('cc-logs-application-view.fullscreen')}
+              hide-text
+              @cc-button:click=${this._onFullscreenToggle}
+            ></cc-button>
+          </div>
         </div>
       </cc-logs-control-beta>
 
@@ -869,11 +898,34 @@ export class CcLogsApplicationView extends LitElement {
         :host {
           display: block;
         }
+        
+        .overlay {
+          display: flex;
+          height: 100%;
+        }
+
+        .overlay.fullscreen {
+          position: fixed;
+          z-index: 999;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          backdrop-filter: blur(5px);
+        }
 
         .wrapper {
           display: flex;
-          height: 100%;
+          flex: 1;
           gap: 0.5em;
+        }
+        
+        .wrapper.fullscreen {
+          padding: 1em;
+          border: 1px solid var(--cc-color-border-neutral);
+          margin: 1em;
+          background-color: var(--cc-color-bg-default);
+          border-radius: var(--cc-border-radius-default);
         }
         
         .left {
@@ -1057,8 +1109,15 @@ export class CcLogsApplicationView extends LitElement {
           height: 100%;
         }
         
-        .logs-filter-input {
+        .logs-header {
+          display: flex;
           width: 100%;
+          align-items: center;
+          gap: 1em;
+        }
+        
+        .logs-filter-input {
+          flex: 1;
         }
         
         .center-logs-wrapper {

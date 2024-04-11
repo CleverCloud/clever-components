@@ -512,6 +512,8 @@ export const translations = {
   'cc-logs-application-view.date-selection.today': `Aujourd'hui`,
   'cc-logs-application-view.date-selection.yesterday': `Hier`,
   'cc-logs-application-view.filter': `Filtrer`,
+  'cc-logs-application-view.fullscreen': `Mode plein écran`,
+  'cc-logs-application-view.fullscreen.exit': `Sortir du mode plein écran`,
   'cc-logs-application-view.logs.error': `Une erreur est survenue pendant le chargement des logs`,
   'cc-logs-application-view.logs.loading': `Recherche de logs...`,
   'cc-logs-application-view.logs.warning.no-logs.message': `Il n'y a aucun log qui correspond aux critères sélectionnés`,

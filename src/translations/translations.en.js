@@ -499,6 +499,8 @@ export const translations = {
   'cc-logs-application-view.date-selection.today': `Today`,
   'cc-logs-application-view.date-selection.yesterday': `Yesterday`,
   'cc-logs-application-view.filter': `Filter`,
+  'cc-logs-application-view.fullscreen': `Fullscreen`,
+  'cc-logs-application-view.fullscreen.exit': `Exit fullscreen`,
   'cc-logs-application-view.logs.error': `Something went wrong while loading logs`,
   'cc-logs-application-view.logs.loading': `Looking for log entries...`,
   'cc-logs-application-view.logs.warning.no-logs.message': `There are no logs matching the selected criteria`,
