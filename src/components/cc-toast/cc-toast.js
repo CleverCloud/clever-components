@@ -35,7 +35,7 @@ import '../cc-icon/cc-icon.js';
  *
  * ## Technical details
  *
- * The timer is implemented using [AnimateController from @lit-labs/motion](https://github.com/lit/lit/tree/main/packages/labs/motion).
+ * The timer is implemented using [AnimateController from \@lit-labs/motion](https://github.com/lit/lit/tree/main/packages/labs/motion).
  * This Lit reactive controller is not only used to animate the progress bar, but also to control the pause/resume of the timer.
  * This means that, even if the progress bar is not displayed (`showProgress = false`), the controller is still used to handle the timeout.
  * As a consequence, even when the progress bar should not be displayed, the DOM node to animate is still there, and we just make sure it is invisible to the user.
