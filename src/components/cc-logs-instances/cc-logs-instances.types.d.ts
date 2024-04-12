@@ -25,6 +25,7 @@ export interface Deployment {
   state: DeploymentState;
   creationDate: Date;
   commitId: string;
+  endDate?: Date;
 }
 
 
@@ -38,6 +39,7 @@ export interface Instance {
   deployment: Deployment;
   state: InstanceState;
   creationDate: Date;
+  deletionDate?: Date;
   kind: InstanceKind;
 }
 

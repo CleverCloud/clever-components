@@ -7,6 +7,7 @@ import '../../src/components/cc-product-card/cc-product-card.js';
 import '../../src/components/cc-toggle/cc-toggle.js';
 import '../../src/components/cc-select/cc-select.js';
 import { generateRandomKeywords } from '../../src/components/cc-product-card/generate-random-keywords.js';
+import { sandboxStyles } from '../sandbox-styles.js';
 
 const DEFAULT_PRODUCT = {
   iconUrl: 'https://placekitten.com/202/202',
@@ -41,9 +42,7 @@ export class CcProductCardSandbox extends LitElement {
     super();
 
     this._currentProduct = DEFAULT_PRODUCT;
-
     this._componentWidth = 20;
-
   }
 
   _onSelect ({ detail: productName }) {
@@ -73,37 +72,48 @@ export class CcProductCardSandbox extends LitElement {
 
   render () {
 
-    const product = this._currentProduct;
-
     return html`
-      <cc-select
-        label="API products"
-        value="default"
-        .options="${API_PRODUCTS_SELECT}"
-        @cc-select:input="${this._onSelect}"
-      ></cc-select>
-      <cc-input-number value=${this._componentWidth} label="component width (em)" @cc-input-number:input="${this._onWidthInput}"></cc-input-number>
-      <cc-block state="open">
-        <div slot="title">Change product details</div>
-        <cc-input-text value=${JSON.stringify(this._currentProduct, null, '\t')} @cc-input-text:input="${this._onProductInput}" multi></cc-input-text>
-      </cc-block>
-      <cc-product-card 
-        style="width:${this._componentWidth}em;"
-        name="${product.name}"
-        description="${product.description}"
-        icon-url="${product.iconUrl}" 
-        .keywords="${product?.keywords ?? []}"
-      ></cc-product-card>
+      <div class="ctrl-top">
+        <cc-select
+          label="API products"
+          value="default"
+          .options="${API_PRODUCTS_SELECT}"
+          @cc-select:input="${this._onSelect}"
+        ></cc-select>
+        <cc-input-number
+          label="component width (em)"
+          value=${this._componentWidth}
+          @cc-input-number:input="${this._onWidthInput}"
+        ></cc-input-number>
+      </div>
+      <div class="main">
+        <cc-product-card
+          style="width:${this._componentWidth}em;"
+          name="${this._currentProduct.name}"
+          description="${this._currentProduct.description}"
+          icon-url="${this._currentProduct.iconUrl}"
+          .keywords="${this._currentProduct?.keywords ?? []}"
+        ></cc-product-card>
+      </div>
+      <div class="ctrl-right">
+        <cc-input-text
+          label="Product details"
+          value=${JSON.stringify(this._currentProduct, null, '\t')}
+          @cc-input-text:input="${this._onProductInput}"
+          multi
+        ></cc-input-text>
+      </div>
     `;
   }
 
   static get styles () {
     return [
+      sandboxStyles,
       css`
-        :host {
-          display: flex;
-          gap: 1em;
-          flex-direction: column;
+        cc-input-text {
+          --cc-input-font-family: var(--cc-ff-monospace, monospace);
+          
+          width: 40em;
         }
       `,
     ];

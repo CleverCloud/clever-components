@@ -139,3 +139,17 @@ export const dataLoadedWithAnsiMessageAndStripAnsiActivated = makeStory(conf, {
     },
   ],
 });
+
+export const dataLoadedWithAsciiArt = makeStory(conf, {
+  items: [
+    {
+      logs: [
+        { id: `1`, date: new Date(), message: ` _  _  ____  __    __     __  ` },
+        { id: `2`, date: new Date(), message: `/ )( \\(  __)(  )  (  )   /  \\` },
+        { id: `3`, date: new Date(), message: `) __ ( ) _) / (_/\\/ (_/\\(  O )` },
+        { id: `4`, date: new Date(), message: `\\_)(_/(____)\\____/\\____/ \\__/` },
+      ],
+      stripAnsi: true,
+    },
+  ],
+});

@@ -1,7 +1,8 @@
-import { css, html, LitElement } from 'lit';
+import { html, LitElement } from 'lit';
 import { analyzePalette } from '../../src/lib/ansi/ansi-palette-analyser.js';
 import { hexToRgb, isDark } from '../../src/lib/color.js';
 import { i18n } from '../../src/lib/i18n.js';
+import { sandboxStyles } from '../sandbox-styles.js';
 import { getGoghPalettes } from './gogh-palettes.js';
 import '../../src/components/cc-toggle/cc-toggle.js';
 import '../../src/components/cc-select/cc-select.js';
@@ -87,7 +88,7 @@ export class CcAnsiPaletteSandbox extends LitElement {
 
   render () {
     return html`
-      <div class="ctrl">
+      <div class="ctrl-top">
         <cc-toggle
           legend="Type"
           inline
@@ -104,6 +105,7 @@ export class CcAnsiPaletteSandbox extends LitElement {
         ></cc-select>
       </div>
       <cc-ansi-palette
+        class="main"
         .name=${this._selectedPaletteName}
         .palette=${this._getSelectedPalette()?.palette}
       ></cc-ansi-palette>
@@ -112,31 +114,7 @@ export class CcAnsiPaletteSandbox extends LitElement {
 
   static get styles () {
     return [
-      css`
-        :host {
-          display: block;
-        }
-
-        .ctrl {
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          padding-bottom: 1em;
-          border-bottom: 1px solid #ddd;
-          margin-bottom: 1em;
-          gap: 0.5em;
-        }
-
-        .spacer {
-          flex: 1;
-        }
-
-        cc-ansi-palette {
-          border: 1px solid #ddd;
-          border-radius: 0.2em;
-          padding: 0.5em;
-        }
-      `,
+      sandboxStyles,
     ];
   }
 }

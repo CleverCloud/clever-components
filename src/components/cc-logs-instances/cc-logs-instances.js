@@ -310,9 +310,9 @@ export class CcLogsInstances extends LitElement {
           <cc-notice intent="info" message="${i18n('cc-logs-instances.ghost.notice')}"></cc-notice>
           <div class="instances instances--ghost">
             ${instances.sort(GHOST_INSTANCE_SORT_ORDER).map((instance) => html`
-            <label class="instance" for="instance-${instance.id}">
+            <label class="instance" for="${instance.id}">
               <input type="checkbox"
-                     id="instance-${instance.id}"
+                     id="${instance.id}"
                      .checked=${this._isSelected(instance.id)}
                      @change=${this._onInstanceClick}>
               <span class="instance-id">${instance.id}</span>
@@ -349,7 +349,7 @@ export class CcLogsInstances extends LitElement {
           // deployment date is the date of the deployment of the first instance in the group
           .map((instances) => ({ deploymentDate: instances[0].deployment.creationDate, instances }))
           // sort by deployment date
-          .sort((o1, o2) => o1.deploymentDate - o2.deploymentDate)
+          .sort((o1, o2) => o2.deploymentDate - o1.deploymentDate)
           // render group of instances
           .map(({ instances }) => html`
             <fieldset class="deployment">
@@ -381,9 +381,9 @@ export class CcLogsInstances extends LitElement {
    */
   _renderInstance (instance, renderState) {
     return html`
-      <label class="instance" for="instance-${instance.id}">
+      <label class="instance" for="${instance.id}">
         <input type="checkbox"
-               id="instance-${instance.id}"
+               id="${instance.id}"
                .checked=${this._isSelected(instance.id)}
                @change=${this._onInstanceClick}>
         <span class="instance-name">${instance.name}</span>
@@ -401,8 +401,7 @@ export class CcLogsInstances extends LitElement {
       <legend class="deployment-detail">
         <div>${this._renderDeploymentState(deployment.state)}</div>
         <div>
-          ${i18n('cc-logs-instances.deployment.deployed')}
-          <cc-datetime-relative datetime=${deployment.creationDate.toISOString()}></cc-datetime-relative>
+          ${i18n('cc-logs-instances.deployment.deployed')}&nbsp;<cc-datetime-relative datetime=${deployment.creationDate.toISOString()}></cc-datetime-relative>
         </div>
         ${this._renderCommit(deployment.commitId)}
       </legend>
@@ -513,18 +512,21 @@ export class CcLogsInstances extends LitElement {
 
   _renderCommit (commit) {
     return html`
-      <span class="commit">
+      <span class="commit" title=${i18n('cc-logs-instances.commit.title', { commit })}>
         ${commit.substring(0, 7)}
       </span>`
     ;
   }
 
   _renderInstanceIndex (instance) {
+    const title = instance.kind === 'BUILD'
+      ? i18n('cc-logs-instances.instance.build')
+      : i18n('cc-logs-instances.instance.index', { index: instance.index });
+
     return html`
-      <span class="instance-index">
+      <span class="instance-index" title=${title}>
         ${instance.kind === 'BUILD' ? html`
-            <cc-icon .icon=${iconBuildInstance}
-                     a11y-name="${i18n('cc-logs-instances.build.a11y-name')}"></cc-icon>
+            <cc-icon .icon=${iconBuildInstance}></cc-icon>
           ` : ''}
         ${instance.kind !== 'BUILD' ? html`
           ${instance.index}

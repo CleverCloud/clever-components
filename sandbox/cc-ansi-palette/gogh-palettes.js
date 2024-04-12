@@ -31,8 +31,7 @@ const GOGH_PALETTES_URL = 'https://raw.githubusercontent.com/Gogh-Co/Gogh/master
  */
 export async function getGoghPalettes () {
   const response = await fetch(new URL(GOGH_PALETTES_URL));
-  const json = await response.json();
-  const palettes = json.themes;
+  const palettes = await response.json();
   return Object.fromEntries(palettes.map((p) => [p.name, convert(p)]));
 }
 
