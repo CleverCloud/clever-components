@@ -14,6 +14,7 @@ import { linkStyles } from '../../templates/cc-link/cc-link.js';
 
 /**
  * @typedef {import('./cc-header-orga.types.js').HeaderOrgaState} HeaderOrgaState
+ * @typedef {import('lit').TemplateResult<1>} TemplateResult
  */
 
 /**
@@ -27,7 +28,7 @@ export class CcHeaderOrga extends LitElement {
 
   static get properties () {
     return {
-      orga: { type: Object },
+      state: { type: Object },
     };
   }
 
@@ -35,11 +36,16 @@ export class CcHeaderOrga extends LitElement {
     super();
 
     /** @type {HeaderOrgaState} Sets the component state. */
-    this.orga = {
-      state: 'loading',
+    this.state = {
+      type: 'loading',
     };
   }
 
+  /**
+   * @param {string} name
+   * @returns {string}
+   * @private
+   */
   _getInitials (name) {
     return name
       .trim()
@@ -51,30 +57,42 @@ export class CcHeaderOrga extends LitElement {
 
   render () {
 
-    if (this.orga.state === 'error') {
+    if (this.state.type === 'error') {
       return html`
         <cc-notice intent="warning" message="${i18n('cc-header-orga.error')}"></cc-notice>
       `;
     }
 
-    if (this.orga.state === 'loading') {
+    if (this.state.type === 'loading') {
       return this._renderHeader({
         name: '??????????????????????????',
         skeleton: true,
       });
     }
 
-    if (this.orga.state === 'loaded') {
+    if (this.state.type === 'loaded') {
       return this._renderHeader({
-        name: this.orga.name,
-        avatar: this.orga.avatar,
-        cleverEnterprise: this.orga.cleverEnterprise,
-        emergencyNumber: this.orga.emergencyNumber,
+        name: this.state.name,
+        avatar: this.state.avatar,
+        cleverEnterprise: this.state.cleverEnterprise,
+        emergencyNumber: this.state.emergencyNumber,
         skeleton: false,
       });
     }
+
+    return '';
   }
 
+  /**
+   * @param {Object} param
+   * @param {string} param.name
+   * @param {string} [param.avatar]
+   * @param {boolean} [param.cleverEnterprise]
+   * @param {string} [param.emergencyNumber]
+   * @param {boolean} [param.skeleton]
+   * @returns {TemplateResult}
+   * @private
+   */
   _renderHeader ({ name, avatar = null, cleverEnterprise = false, emergencyNumber = null, skeleton = false }) {
 
     return html`
@@ -107,6 +125,13 @@ export class CcHeaderOrga extends LitElement {
     `;
   }
 
+  /**
+   * @param {boolean} skeleton
+   * @param {string} avatar
+   * @param {string} name
+   * @returns {TemplateResult}
+   * @private
+   */
   _renderAvatar (skeleton, avatar, name) {
     if (skeleton) {
       return html`
