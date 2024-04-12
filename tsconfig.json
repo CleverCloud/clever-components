@@ -4,7 +4,7 @@
   "exclude": [
     "node_modules",
     "storybook-static",
-    "dist",
+    "dist"
   ],
   "compilerOptions": {
     /* Visit https://www.typescriptlang.org/tsconfig to read more about this file */
@@ -14,11 +14,8 @@
       "DOM"
     ], /* Specify a set of bundled library declaration files that describe the target runtime environment. */
     /* Modules */
-    // FIXME: when we upgrade typescript, change this to `NodeNext`
-    "module": "ESNext", /* Specify what module code is generated. */
-    "moduleResolution": "node", /* Specify how TypeScript looks up a file from a given module specifier. */
-    // FIXME: when we upgrade TypeScript, enable this setting. Our current TypeScript version does not support this setting.
-    // "moduleDetection": "force", /* Make TypeScript treat every file as a module even if it does not have any imports or export (see https://www.totaltypescript.com/cannot-redeclare-block-scoped-variable) */
+    "module": "nodenext", /* Specify what module code is generated. */
+    "moduleDetection": "force", /* Make TypeScript treat every file as a module even if it does not have any imports or export (see https://www.totaltypescript.com/cannot-redeclare-block-scoped-variable) */
     /* JavaScript Support */
     "allowJs": true, /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */
     "checkJs": true, /* Enable error reporting in type-checked JavaScript files. */
@@ -33,14 +30,13 @@
     "strictFunctionTypes": true, /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */
     "strictBindCallApply": true, /* Check that the arguments for 'bind', 'call', and 'apply' methods match the original function. */
     "noImplicitThis": true, /* Enable error reporting when 'this' is given the type 'any'. */
-    // FIXME: enable when we upgrade TypeScript. Our current version does not support this.
-    // "useUnknownInCatchVariables": true, /* Default catch clause variables as 'unknown' instead of 'any'. */
+    "useUnknownInCatchVariables": true, /* Default catch clause variables as 'unknown' instead of 'any'. */
     "alwaysStrict": true, /* Ensure 'use strict' is always emitted. */
     // end of strict related properties
     "noUnusedLocals": true, /* Enable error reporting when local variables aren't read. */
     "noUnusedParameters": true, /* Raise an error when a function parameter isn't read. */
-    // FIXME: Enable when we upgrade typescript. This is not supported by our current version.
-    // "exactOptionalPropertyTypes": true, /* Interpret optional property types as written, rather than adding 'undefined'. */
+    // This option can only be enabled if we also enable `strictNullChecks`
+    "exactOptionalPropertyTypes": false, /* Interpret optional property types as written, rather than adding 'undefined'. */
     "noImplicitReturns": true, /* Enable error reporting for codepaths that do not explicitly return in a function. */
     "noFallthroughCasesInSwitch": true, /* Enable error reporting for fallthrough cases in switch statements. */
     // this causes issues with our current i18n implementation
@@ -90,7 +86,7 @@
           // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/animationend_event
           // https://developer.mozilla.org/en-US/docs/Web/API/Element/mouseenter_event
           "wheel",
-          "copy",
+          "copy"
         ]
       }
     ]
