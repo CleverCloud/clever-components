@@ -5,6 +5,32 @@ title: 'Changelog'
 
 # Changelog
 
+## [13.2.0](https://github.com/CleverCloud/clever-components/compare/13.1.0...13.2.0) (2024-04-12)
+
+
+### 🚀 Features
+
+* **cc-logs-application-view:** add a fullscreen button mode ([d6c7e36](https://github.com/CleverCloud/clever-components/commit/d6c7e3687200db12caa615baa1a0b25cb84bcaa5)), closes [#983](https://github.com/CleverCloud/clever-components/issues/983)
+* **cc-logs-application-view:** init component ([732b48e](https://github.com/CleverCloud/clever-components/commit/732b48ec9ed51bd2b96f283a842a894663f0aef9)), closes [#967](https://github.com/CleverCloud/clever-components/issues/967)
+* **cc-logs-control:** add header slot ([9fcbff6](https://github.com/CleverCloud/clever-components/commit/9fcbff681475fdbf576472cbd4635e6cc2e233aa)), closes [#964](https://github.com/CleverCloud/clever-components/issues/964)
+* **cc-logs-instances:** add tooltips to commit label and instance index ([438751c](https://github.com/CleverCloud/clever-components/commit/438751cd3cfc671c78d361335aecfd2a759f5b65))
+* **cc-logs,cc-logs-control:** add the ability to filter on logs' message ([362c9ba](https://github.com/CleverCloud/clever-components/commit/362c9ba432671a3f1193350ce96216f796571b86))
+* **cc-popover:** add `--cc-popover-trigger-button-width` css property ([3e1dc1c](https://github.com/CleverCloud/clever-components/commit/3e1dc1ccaea83c4ad8f15b3b58b1ea72d79c4739))
+* **cc-smart-container:** allow optional property in smart context ([c62f172](https://github.com/CleverCloud/clever-components/commit/c62f1725200b3bf8689139f797e7c34b224f3f9c))
+
+
+### 🐛 Bug Fixes
+
+* **cc-input-date:** fix date formatting at midnight ([bc67946](https://github.com/CleverCloud/clever-components/commit/bc679461abee8dbff17b6aafe6d92308aa2f8adb))
+* **cc-logs-application-view:** fix loading message visibility hover black theme ([ba1e0b4](https://github.com/CleverCloud/clever-components/commit/ba1e0b44a37bfdb29b6990066e76f77a8ae45e09)), closes [#1019](https://github.com/CleverCloud/clever-components/issues/1019)
+* **cc-logs-control:** fix the event detail when metadata-display option changes ([222e110](https://github.com/CleverCloud/clever-components/commit/222e1103adac02726883fd4640074c21cd5d8f9e))
+* **cc-logs-instances:** fix instance selection ([3ff0206](https://github.com/CleverCloud/clever-components/commit/3ff0206e1505d72027e55a146b184bc1b8854361))
+* **cc-logs-instances:** fix sort order of the instances when grouped by deployments ([0bb4d18](https://github.com/CleverCloud/clever-components/commit/0bb4d1837060f85686a8f5438306be017c663455))
+* **cc-logs-instances:** fix spacing around deployment relative date ([7a95572](https://github.com/CleverCloud/clever-components/commit/7a95572f5240827fb5465903cd97c722dc4f8f39)), closes [#965](https://github.com/CleverCloud/clever-components/issues/965)
+* **cc-logs:** do not collapse spaces in log messages ([90f3d9f](https://github.com/CleverCloud/clever-components/commit/90f3d9f0c0f8557308c53de313d1aa7cd91d8ec8)), closes [#965](https://github.com/CleverCloud/clever-components/issues/965)
+* **cc-logs:** do not include hidden metadata into clipboard ([ca7cacb](https://github.com/CleverCloud/clever-components/commit/ca7cacb3caf9838e0cd42cffe017d7a5ab4d2a2a))
+* **cc-logs:** fix spacing between metadata and message ([a7534ef](https://github.com/CleverCloud/clever-components/commit/a7534ef5b3e4673283facdd8bc71ad33b42b6ab2))
+
 ## [13.1.0](https://github.com/CleverCloud/clever-components/compare/13.0.0...13.1.0) (2024-04-03)
 
 
