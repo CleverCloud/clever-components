@@ -1,21 +1,21 @@
-interface TcpRedirection {
+export interface TcpRedirection {
   namespace: string;
   isPrivate: boolean;
-  sourcePort?: number;
+  sourcePort?: number | null;
 }
 
 export type TcpRedirectionState = TcpRedirectionStateLoading | TcpRedirectionStateLoaded | TcpRedirectionStateWaiting;
 
-interface TcpRedirectionStateLoading {
-  state: "loading";
+export interface TcpRedirectionStateLoading {
+  type: "loading";
 }
 
-interface TcpRedirectionStateLoaded extends TcpRedirection {
-  state: "loaded";
+export interface TcpRedirectionStateLoaded extends TcpRedirection {
+  type: "loaded";
 }
 
-interface TcpRedirectionStateWaiting extends TcpRedirection {
-  state: "waiting";
+export interface TcpRedirectionStateWaiting extends TcpRedirection {
+  type: "waiting";
 }
 
 export interface CreateTcpRedirection {
