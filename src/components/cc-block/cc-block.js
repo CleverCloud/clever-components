@@ -43,7 +43,6 @@ export class CcBlock extends LitElement {
       state: { type: String, reflect: true },
       _overlay: { type: Boolean, state: true },
       links: { type: String },
-      // footer: { type: Object },
     };
   }
 
@@ -70,9 +69,6 @@ export class CcBlock extends LitElement {
 
     /** @type {string|null} Sets links. */
     this.links = null;
-
-    /** @type {Footer|null} Add a footer with links at the bottom of the block. */
-    // this.footer = null;
   }
 
   _clickToggle () {
@@ -134,16 +130,16 @@ export class CcBlock extends LitElement {
               </slot>
             ` : ''}
           </cc-expand>
-          <slot name="footer">
+          <slot name="footer" @slotchange="${onSlotChange}">
             <div class="footer">
               <div class="left-content">
-                <slot name="left-content"></slot>
+                <slot name="left-content" @slotchange="${onSlotChange}"></slot>
               </div>
-              <div class="center">
-                <slot name="center-content"></slot>
+              <div class="center-content">
+                <slot name="center-content" @slotchange="${onSlotChange}"></slot>
               </div>
-              <div class="right">
-                <slot name="right-content"></slot>
+              <div class="right-content">
+                <slot name="right-content" @slotchange="${onSlotChange}"></slot>
               </div>
             </div>
           </slot>
@@ -185,24 +181,10 @@ export class CcBlock extends LitElement {
           font-size: 1.2em;
           font-weight: bold;
         }
-        
-        .footer {
-          display: flex;
-          box-sizing: border-box;
-          padding: 0.5em 1.1em;
-          background-color: var(--cc-color-bg-neutral);
-          box-shadow: inset 0 6px 6px -6px rgb(0 0 0 / 40%);
-          font-size: 0.9em;
-          font-style: italic;
-          gap: 0.57em;
-        }
-        
-        .footer .center {
-            flex: 1 1 0;
-        }
 
         .container {
-          display: block;
+          display: grid;
+          gap: 1em;
           padding: 1em;
         }
         
@@ -218,17 +200,39 @@ export class CcBlock extends LitElement {
         .title {
             flex: 1 1 0;
         }
-        
+
         .footer {
-          /*  background-color: yellow; */
-            display: flex;
-            gap: 1em;
-           /* justify-content: space-between;*/
+            display: none;
+            padding: 0.5em 1em;
+            background-color: var(--cc-color-bg-neutral);
+            box-shadow: inset 0 6px 6px -6px rgb(0 0 0 / 40%);
+            font-style: italic;
+            gap: 0.57em;
+            margin: 0 -1em -1em -1em;
         }
         
-        .center-content {
+        .left-content, 
+        .center-content, 
+        .right-content {
+          font-size: 0.9em;
+        }
+        
+        slot[name=footer][is-slotted] .footer,
+        .footer:has(slot[is-slotted]) {
+            display: flex;
+        }
+
+        .footer .center-content {
             flex: 1 1 0;
         }
+
+/*        .footer:has(.left-content),
+        .footer:has(.center-content),
+        .footer:has(.right-content) {
+            display: flex;
+        }*/
+
+
         
 
         /*        ::slotted([slot='header']) {
@@ -348,3 +352,16 @@ export class CcBlock extends LitElement {
 }
 
 window.customElements.define('cc-block', CcBlock);
+
+function onSlotChange (e) {
+  if (e.target === e.currentTarget) {
+    const slot = e.target;
+    const nodes = slot.assignedNodes();
+    if (nodes.length === 0) {
+      slot.removeAttribute('is-slotted');
+    }
+    else {
+      slot.setAttribute('is-slotted', '');
+    }
+  }
+}

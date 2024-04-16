@@ -5,6 +5,14 @@
     <title>Demo new cc-block</title>
     <link rel="stylesheet" href="/src/styles/default-theme.css">
     <script type="module" src="index.js"></script>
+    <style>
+        cc-block {
+            margin-bottom: 1em;
+        }
+        p {
+        margin: 0;
+        }
+    </style>
 </head>
 <body>
 <cc-block>
@@ -21,9 +29,37 @@
         ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent hendrerit
         venenatis erat, eu malesuada nulla viverra eu. Curabitur porta risus augue,
         non rutrum lectus hendrerit a.</p>
-    <!--<button slot="button">CLICK</button>-->
-<!--    <div slot="left-content">LEFT CONTENT</div>
-    <div slot="center-content">CENTER CONTENT</div>-->
+
+    <div slot="right-content">
+        <a href="https://developers.clever-cloud.com/">Documentation</a>
+        <a href="#">CCAPI</a>
+        <a href="#">CLI</a>
+    </div>
+</cc-block>
+
+<cc-block>
+    <div slot="title">My new cc-block</div>
+    <div slot="icon"><img src="${iconInfo}"/></div>
+    <div slot="ribbon">RIBBON</div>
+
+    <p slot="content-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo
+        porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa. Mauris
+        dignissim accumsan ex, at vestibulum lectus fermentum id. Quisque nec magna arcu.
+        Quisque in metus sed erat sodales euismod eget id purus. Sed sagittis rhoncus mauris.
+        Ut sit amet urna ac nunc semper porta. Nam ut felis eu velit luctus rutrum. Nam leo nisl,
+        molestie a varius non, ullamcorper sit amet tortor. Donec in convallis ex. Vestibulum ante
+        ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent hendrerit
+        venenatis erat, eu malesuada nulla viverra eu. Curabitur porta risus augue,
+        non rutrum lectus hendrerit a.</p>
+
+    <div slot="left-content">
+        <p>toto</p>
+    </div>
+
+    <div slot="center-content">
+        <p style="text-align: center">titi</p>
+    </div>
+
     <div slot="right-content">
         <a href="https://developers.clever-cloud.com/">Documentation</a>
         <a href="#">CCAPI</a>
@@ -43,9 +79,7 @@
         ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent hendrerit
         venenatis erat, eu malesuada nulla viverra eu. Curabitur porta risus augue,
         non rutrum lectus hendrerit a.</p>
-    <!--<button slot="button">CLICK</button>-->
-
-    <div slot="footer">
+    <div slot="footer" style="background-color:limegreen;">
     FOOTER
     </div>
 </cc-block>
@@ -62,9 +96,7 @@
         ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent hendrerit
         venenatis erat, eu malesuada nulla viverra eu. Curabitur porta risus augue,
         non rutrum lectus hendrerit a.</p>
-    <!--<button slot="button">CLICK</button>-->
 </cc-block>
 
-<!--<cc-addon-admin></cc-addon-admin-->
 </body>
 </html>
