@@ -39,8 +39,16 @@ export default function generateCem () {
     /** @param {import('vite').HmrContext} context */
     handleHotUpdate ({ server, file }) {
       const isComponentFileRegex = /cc-[^/]+\.js$/;
+
       if (file.match(isComponentFileRegex)) {
         const cemModule = server.moduleGraph.getModuleById(resolvedVirtualModuleId);
+
+        // When serving a component file outside of Storybook (`demo-smart` / `sandbox`),
+        // the cemModule is `undefined` because CEM is not imported by any file (no docs to display, no Storybook UI, etc.)
+        if (cemModule == null) {
+          return;
+        }
+
         server.moduleGraph.invalidateModule(cemModule);
       }
     },
