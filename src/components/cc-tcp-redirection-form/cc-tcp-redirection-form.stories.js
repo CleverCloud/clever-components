@@ -12,13 +12,21 @@ const conf = {
   component: 'cc-tcp-redirection-form',
 };
 
+/**
+ * @typedef {import('./cc-tcp-redirection-form.js').CcTcpRedirectionForm} CcTcpRedirectionForm
+ * @typedef {import('./cc-tcp-redirection-form.types.js').TcpRedirectionFormStateLoaded} TcpRedirectionFormStateLoaded
+ * @typedef {import('./cc-tcp-redirection-form.types.js').TcpRedirectionFormStateLoading} TcpRedirectionFormStateLoading
+ * @typedef {import('./cc-tcp-redirection-form.types.js').TcpRedirectionFormStateError} TcpRedirectionFormStateError
+ * @typedef {import('./cc-tcp-redirection-form.types.js').TcpRedirectionFormContextType} TcpRedirectionFormContextType
+ */
 export const defaultStory = makeStory(conf, {
   items: [{
-    redirections: {
-      state: 'loaded',
-      value: [
-        { state: 'loaded', namespace: 'default', sourcePort: 5220 },
-        { state: 'loaded', namespace: 'cleverapps' },
+    /** @type {TcpRedirectionFormStateLoaded} */
+    state: {
+      type: 'loaded',
+      redirections: [
+        { type: 'loaded', namespace: 'default', isPrivate: false, sourcePort: 5220 },
+        { type: 'loaded', namespace: 'cleverapps', isPrivate: false },
       ],
     },
   }],
@@ -26,37 +34,41 @@ export const defaultStory = makeStory(conf, {
 
 export const empty = makeStory(conf, {
   items: [{
-    redirections: {
-      state: 'loaded',
-      value: [],
+    /** @type {TcpRedirectionFormStateLoaded} **/
+    state: {
+      type: 'loaded',
+      redirections: [],
     },
   }],
 });
 
 export const loading = makeStory(conf, {
   items: [{
-    redirections: {
-      state: 'loading',
+    /** @type {TcpRedirectionFormStateLoading} **/
+    state: {
+      type: 'loading',
     },
   }],
 });
 
 export const errorWithLoading = makeStory(conf, {
   items: [{
-    redirections: {
-      state: 'error',
+    /** @type {TcpRedirectionFormStateError} **/
+    state: {
+      type: 'error',
     },
   }],
 });
 
 export const dataLoaded = makeStory(conf, {
   items: [{
-    redirections: {
-      state: 'loaded',
-      value: [
-        { state: 'loaded', namespace: 'default', sourcePort: 5220 },
-        { state: 'loaded', namespace: 'cleverapps' },
-        { state: 'loaded', namespace: 'customer-name', sourcePort: 6440, private: true },
+    /** @type {TcpRedirectionFormStateLoaded} **/
+    state: {
+      type: 'loaded',
+      redirections: [
+        { type: 'loaded', namespace: 'default', isPrivate: false, sourcePort: 5220 },
+        { type: 'loaded', namespace: 'cleverapps', isPrivate: false },
+        { type: 'loaded', namespace: 'customer-name', sourcePort: 6440, isPrivate: true },
       ],
     },
   }],
@@ -65,12 +77,13 @@ export const dataLoaded = makeStory(conf, {
 export const dataLoadedWithContextAdmin = makeStory(conf, {
   docs: 'When `context="admin"` is used, the component description is hidden, the block is collapsed and a redirection counter bubble is be displayed.',
   items: [{
-    redirections: {
-      state: 'loaded',
-      value: [
-        { state: 'loaded', namespace: 'default', sourcePort: 5220 },
-        { state: 'loaded', namespace: 'cleverapps' },
-        { state: 'loaded', namespace: 'customer-name', sourcePort: 6440, private: true },
+    /** @type {TcpRedirectionFormStateLoaded} **/
+    state: {
+      type: 'loaded',
+      redirections: [
+        { type: 'loaded', namespace: 'default', isPrivate: false, sourcePort: 5220 },
+        { type: 'loaded', namespace: 'cleverapps', isPrivate: false },
+        { type: 'loaded', namespace: 'customer-name', sourcePort: 6440, isPrivate: true },
       ],
     },
     context: 'admin',
@@ -80,26 +93,29 @@ export const dataLoadedWithContextAdmin = makeStory(conf, {
 export const dataLoadedWithContextAdminAndNoRedirections = makeStory(conf, {
   docs: 'When `context="admin"` is used, the counter bubble is not displayed if there is no redirection.',
   items: [{
-    redirections: {
-      state: 'loaded',
-      value: [
-        { state: 'loaded', namespace: 'default' },
-        { state: 'loaded', namespace: 'cleverapps' },
-        { state: 'loaded', namespace: 'customer-name', private: true },
+    /** @type {TcpRedirectionFormStateLoaded} **/
+    state: {
+      type: 'loaded',
+      redirections: [
+        { type: 'loaded', namespace: 'default', isPrivate: false },
+        { type: 'loaded', namespace: 'cleverapps', isPrivate: false },
+        { type: 'loaded', namespace: 'customer-name', isPrivate: true },
       ],
     },
+    /** @type {TcpRedirectionFormContextType} **/
     context: 'admin',
   }],
 });
 
 export const dataLoadedWithCreatingRedirection = makeStory(conf, {
   items: [{
-    redirections: {
-      state: 'loaded',
-      value: [
-        { state: 'loaded', namespace: 'default', sourcePort: 5220 },
-        { state: 'waiting', namespace: 'cleverapps' },
-        { state: 'loaded', namespace: 'customer-name', sourcePort: 6440, private: true },
+    /** @type {TcpRedirectionFormStateLoaded} **/
+    state: {
+      type: 'loaded',
+      redirections: [
+        { type: 'loaded', namespace: 'default', isPrivate: false, sourcePort: 5220 },
+        { type: 'waiting', namespace: 'cleverapps', isPrivate: false },
+        { type: 'loaded', namespace: 'customer-name', sourcePort: 6440, isPrivate: true },
       ],
     },
   }],
@@ -107,12 +123,13 @@ export const dataLoadedWithCreatingRedirection = makeStory(conf, {
 
 export const dataLoadedWithDeletingRedirection = makeStory(conf, {
   items: [{
-    redirections: {
-      state: 'loaded',
-      value: [
-        { state: 'loaded', namespace: 'default', sourcePort: 5220 },
-        { state: 'loaded', namespace: 'cleverapps', sourcePort: 3821 },
-        { state: 'waiting', namespace: 'customer-name', sourcePort: 6440, private: true },
+    /** @type {TcpRedirectionFormStateLoaded} **/
+    state: {
+      type: 'loaded',
+      redirections: [
+        { type: 'loaded', namespace: 'default', isPrivate: false, sourcePort: 5220 },
+        { type: 'loaded', namespace: 'cleverapps', isPrivate: false, sourcePort: 3821 },
+        { type: 'waiting', namespace: 'customer-name', sourcePort: 6440, isPrivate: true },
       ],
     },
   }],
@@ -120,19 +137,20 @@ export const dataLoadedWithDeletingRedirection = makeStory(conf, {
 
 export const dataLoadedWithManyNamespaces = makeStory(conf, {
   items: [{
-    redirections: {
-      state: 'loaded',
-      value: [
-        { state: 'loaded', namespace: 'default', sourcePort: 874 },
-        { state: 'loaded', namespace: 'cleverapps', sourcePort: 12345 },
-        { state: 'loaded', namespace: 'secondary', sourcePort: 99 },
-        { state: 'loaded', namespace: 'customer-name-one', sourcePort: 1234 },
-        { state: 'loaded', namespace: 'customer-name-two', sourcePort: 4321 },
-        { state: 'loaded', namespace: 'customer-name-three' },
-        { state: 'loaded', namespace: 'customer-name-four', sourcePort: 7531 },
-        { state: 'loaded', namespace: 'customer-name-five' },
-        { state: 'loaded', namespace: 'customer-name-six' },
-        { state: 'loaded', namespace: 'customer-name-seven', sourcePort: 3456 },
+    /** @type {TcpRedirectionFormStateLoaded} **/
+    state: {
+      type: 'loaded',
+      redirections: [
+        { type: 'loaded', namespace: 'default', isPrivate: false, sourcePort: 874 },
+        { type: 'loaded', namespace: 'cleverapps', isPrivate: false, sourcePort: 12345 },
+        { type: 'loaded', namespace: 'secondary', isPrivate: false, sourcePort: 99 },
+        { type: 'loaded', namespace: 'customer-name-one', isPrivate: false, sourcePort: 1234 },
+        { type: 'loaded', namespace: 'customer-name-two', isPrivate: false, sourcePort: 4321 },
+        { type: 'loaded', namespace: 'customer-name-three', isPrivate: false },
+        { type: 'loaded', namespace: 'customer-name-four', isPrivate: false, sourcePort: 7531 },
+        { type: 'loaded', namespace: 'customer-name-five', isPrivate: false },
+        { type: 'loaded', namespace: 'customer-name-six', isPrivate: false },
+        { type: 'loaded', namespace: 'customer-name-seven', isPrivate: false, sourcePort: 3456 },
       ],
     },
   }],
@@ -140,55 +158,65 @@ export const dataLoadedWithManyNamespaces = makeStory(conf, {
 
 export const simulation = makeStory(conf, {
   items: [
-    { redirections: { state: 'loading' } },
-    { redirections: { state: 'loading' } },
+    { state: { type: 'loading' } },
+    { state: { type: 'loading' } },
   ],
   simulations: [
-    storyWait(2000, ([component, componentError]) => {
-      component.redirections = {
-        state: 'loaded',
-        value: [
-          { state: 'loaded', namespace: 'default', sourcePort: 5220 },
-          { state: 'loaded', namespace: 'cleverapps' },
-        ],
-      };
-      componentError.redirections = { state: 'error' };
-    }),
-    storyWait(1000, ([component, componentError]) => {
-      component.redirections = {
-        state: 'loaded',
-        value: [
-          { state: 'loaded', namespace: 'default', sourcePort: 5220 },
-          { state: 'waiting', namespace: 'cleverapps' },
-        ],
-      };
-    }),
-    storyWait(1500, ([component, componentError]) => {
-      component.redirections = {
-        state: 'loaded',
-        value: [
-          { state: 'waiting', namespace: 'default', sourcePort: 5220 },
-          { state: 'waiting', namespace: 'cleverapps' },
-        ],
-      };
-    }),
-    storyWait(1500, ([component, componentError]) => {
-      component.redirections = {
-        state: 'loaded',
-        value: [
-          { state: 'waiting', namespace: 'default', sourcePort: 5220 },
-          { state: 'loaded', namespace: 'cleverapps', sourcePort: 4242 },
-        ],
-      };
-    }),
-    storyWait(1500, ([component, componentError]) => {
-      component.redirections = {
-        state: 'loaded',
-        value: [
-          { state: 'loaded', namespace: 'default' },
-          { state: 'loaded', namespace: 'cleverapps', sourcePort: 4242 },
-        ],
-      };
-    }),
+    storyWait(2000,
+      /** @param {[CcTcpRedirectionForm, CcTcpRedirectionForm]} components */
+      ([component, componentError]) => {
+        component.state = {
+          type: 'loaded',
+          redirections: [
+            { type: 'loaded', namespace: 'default', isPrivate: false, sourcePort: 5220 },
+            { type: 'loaded', namespace: 'cleverapps', isPrivate: false },
+          ],
+        };
+        componentError.state = { type: 'error' };
+      }),
+    storyWait(1000,
+      /** @param {[CcTcpRedirectionForm]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          redirections: [
+            { type: 'loaded', namespace: 'default', isPrivate: false, sourcePort: 5220 },
+            { type: 'waiting', namespace: 'cleverapps', isPrivate: false },
+          ],
+        };
+      }),
+    storyWait(1500,
+      /** @param {[CcTcpRedirectionForm]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          redirections: [
+            { type: 'waiting', namespace: 'default', isPrivate: false, sourcePort: 5220 },
+            { type: 'waiting', namespace: 'cleverapps', isPrivate: false },
+          ],
+        };
+      }),
+    storyWait(1500,
+      /** @param {[CcTcpRedirectionForm]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          redirections: [
+            { type: 'waiting', namespace: 'default', isPrivate: false, sourcePort: 5220 },
+            { type: 'loaded', namespace: 'cleverapps', isPrivate: false, sourcePort: 4242 },
+          ],
+        };
+      }),
+    storyWait(1500,
+      /** @param {[CcTcpRedirectionForm]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          redirections: [
+            { type: 'loaded', namespace: 'default', isPrivate: false },
+            { type: 'loaded', namespace: 'cleverapps', isPrivate: false, sourcePort: 4242 },
+          ],
+        };
+      }),
   ],
 });
