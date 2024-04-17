@@ -6,14 +6,17 @@ import { css, html, LitElement } from 'lit';
 import { i18n } from '../../lib/i18n.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 
+/** @type {TcpRedirectionStateLoading[]} */
 const SKELETON_REDIRECTIONS = [
-  { state: 'loading' },
-  { state: 'loading' },
+  { type: 'loading' },
+  { type: 'loading' },
 ];
 
 /**
  * @typedef {import('./cc-tcp-redirection-form.types.js').TcpRedirectionFormContextType} TcpRedirectionFormContextType
  * @typedef {import('./cc-tcp-redirection-form.types.js').TcpRedirectionFormState} TcpRedirectionFormState
+ * @typedef {import('../cc-tcp-redirection/cc-tcp-redirection.types.js').TcpRedirectionState} TcpRedirectionState
+ * @typedef {import('../cc-tcp-redirection/cc-tcp-redirection.types.js').TcpRedirectionStateLoading} TcpRedirectionStateLoading
  * @typedef {import('../cc-tcp-redirection/cc-tcp-redirection.types.js').CreateTcpRedirection} CreateTcpRedirection
  * @typedef {import('../cc-tcp-redirection/cc-tcp-redirection.types.js').DeleteTcpRedirection} DeleteTcpRedirection
  */
@@ -31,7 +34,7 @@ export class CcTcpRedirectionForm extends LitElement {
   static get properties () {
     return {
       context: { type: String },
-      redirections: { type: Object },
+      state: { type: Object },
     };
   }
 
@@ -41,14 +44,15 @@ export class CcTcpRedirectionForm extends LitElement {
     /** @type {TcpRedirectionFormContextType} Defines in which context the form is used so it can show the appropriate description or lack thereof (defaults to user). */
     this.context = 'user';
 
-    /** @type {TcpRedirectionFormState} Sets the list of redirections. */
-    this.redirections = { state: 'loading' };
+    /** @type {TcpRedirectionFormState} Sets the state of the component. */
+    this.state = { type: 'loading' };
   }
 
   render () {
 
-    const state = this.redirections.state;
     const blockState = (this.context === 'admin') ? 'close' : 'off';
+    const redirections = this.state.type === 'loaded' ? this.state.redirections : SKELETON_REDIRECTIONS;
+    const isLoadingOrLoaded = this.state.type === 'loading' || this.state.type === 'loaded';
 
     return html`
       <cc-block state="${blockState}">
@@ -62,32 +66,36 @@ export class CcTcpRedirectionForm extends LitElement {
           <div class="description">${i18n('cc-tcp-redirection-form.description')}</div>
         ` : ''}
 
-        ${state === 'loading' ? html`
-          ${SKELETON_REDIRECTIONS.map((redirection) => html`
-            <cc-tcp-redirection .redirection=${redirection}></cc-tcp-redirection>
-          `)}
+        ${this.state.type === 'error' ? html`
+            <cc-notice intent="warning" message="${i18n('cc-tcp-redirection-form.error')}"></cc-notice>
         ` : ''}
 
-        ${state === 'loaded' ? html`
-          ${this.redirections.value.map((redirection) => html`
-            <cc-tcp-redirection .redirection=${redirection}></cc-tcp-redirection>
-          `)}
-          ${this.redirections.value.length === 0 ? html`
-            <div class="cc-block_empty-msg">${i18n('cc-tcp-redirection-form.empty')}</div>
-          ` : ''}
-        ` : ''}
-
-        ${state === 'error' ? html`
-          <cc-notice intent="warning" message="${i18n('cc-tcp-redirection-form.error')}"></cc-notice>
-        ` : ''}
-
+        ${isLoadingOrLoaded ? this._renderRedirections(redirections) : ''}
+        
       </cc-block>
     `;
   }
 
+  /**
+   * @param {TcpRedirectionState[]} redirections
+   * @private
+   */
+  _renderRedirections (redirections) {
+    if (redirections.length === 0) {
+      return html`
+        <div class="cc-block_empty-msg">${i18n('cc-tcp-redirection-form.empty')}</div>
+      `;
+    }
+
+    return redirections.map((redirectionState) => html`
+        <cc-tcp-redirection .state="${redirectionState}"></cc-tcp-redirection>
+    `);
+  }
+
+  /** @private */
   _renderRedirectionCountBadge () {
-    if (this.context === 'admin' && this.redirections.state === 'loaded') {
-      const redirectionCount = this.redirections.value.filter(({ sourcePort }) => sourcePort != null).length;
+    if (this.context === 'admin' && this.state.type === 'loaded') {
+      const redirectionCount = this.state.redirections.filter(({ sourcePort }) => sourcePort != null).length;
       if (redirectionCount >= 1) {
         return html`
           <cc-badge circle weight="strong">${redirectionCount}</cc-badge>
