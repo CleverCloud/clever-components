@@ -11,22 +11,22 @@ import { skeletonStyles } from '../../styles/skeleton.js';
 
 /** @type {Scalability} */
 const SKELETON_SCALABILITY = {
-  minFlavor: { name: '??' },
-  maxFlavor: { name: '?' },
+  minFlavor: { name: '??', cpus: 0, gpus: 0, mem: 0, microservice: false, monthlyCost: 0 },
+  maxFlavor: { name: '?', cpus: 0, gpus: 0, mem: 0, microservice: false, monthlyCost: 0 },
   minInstances: 0,
   maxInstances: 0,
 };
 
 /**
+ * @typedef {import('./cc-tile-scalability.types.js').TileScalabilityState} TileScalabilityState
+ * @typedef {import('./cc-tile-scalability.types.js').TileScalabilityStateLoading} TileScalabilityStateLoading
+ * @typedef {import('./cc-tile-scalability.types.js').TileScalabilityStateLoaded} TileScalabilityStateLoaded
  * @typedef {import('../common.types.js').Scalability} Scalability
+ * @typedef {import('../common.types.js').Flavor} Flavor
  */
 
 /**
  * A "tile" component to display the current config of scalability for a given app.
- *
- * ## Details
- *
- * * When `scalability` is nullish, a skeleton screen UI pattern is displayed (loading hint).
  *
  * @cssdisplay grid
  */
@@ -34,67 +34,80 @@ export class CcTileScalability extends LitElement {
 
   static get properties () {
     return {
-      error: { type: Boolean, reflect: true },
-      scalability: { type: Object },
+      state: { type: Object },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {boolean} Displays an error message. */
-    this.error = false;
-
-    /** @type {Scalability|null} Sets the scalability config of an app with details about flavors and number of instances. */
-    this.scalability = null;
+    /** @type {TileScalabilityState} Sets the state of the component. */
+    this.state = { type: 'loading' };
   }
 
+  /**
+   * @param {string} name
+   * @returns {string}
+   * @private
+   */
+  _formatFlavorName (name) {
+    // For now, we strip the ML_ prefix from ML VMs, this may change in the future
+    return name.replace(/^ML_/, '');
+  }
+
+  /**
+   * @param {Flavor} flavor
+   * @returns {string|null}
+   * @private
+   */
   _getFlavorDetails (flavor) {
     if (flavor.cpus == null) {
-      return;
+      return null;
     }
     return i18n('cc-tile-scalability.flavor-info', { ...flavor });
   }
 
-  // For now, we strip the ML_ prefix from ML VMs, this may change in the future
-  _formatFlavorName (name) {
-    return name.replace(/^ML_/, '');
-  }
-
   render () {
 
-    const skeleton = (this.scalability == null);
-    const { minFlavor, maxFlavor, minInstances, maxInstances } = skeleton ? SKELETON_SCALABILITY : this.scalability;
+    const skeleton = (this.state.type === 'loading');
+    const { minFlavor, maxFlavor, minInstances, maxInstances } = this.state.type === 'loaded' ? this.state : SKELETON_SCALABILITY;
+    const isLoadedOrLoading = this.state.type === 'loaded' || this.state.type === 'loading';
 
     return html`
       <div class="tile_title">${i18n('cc-tile-scalability.title')}</div>
 
-      ${!this.error ? html`
+      ${this.state.type === 'error' ? html`
+        <div class="tile_message">
+          <div class="error-message">
+            <cc-icon .icon="${iconAlert}" a11y-name="${i18n('cc-tile-scalability.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
+            <p>${i18n('cc-tile-scalability.error')}</p>
+          </div>
+        </div>
+      ` : ''}
+
+      ${isLoadedOrLoading ? html`
         <div class="tile_body">
           <div class="label">${i18n('cc-tile-scalability.size')}</div>
           <div class="info">
-            <div class="size-label ${classMap({ skeleton })}"
+            <div 
+              class="size-label ${classMap({ skeleton })}"
               title=${ifDefined(this._getFlavorDetails(minFlavor))}
-            >${this._formatFlavorName(minFlavor.name)}</div>
+            >
+              ${this._formatFlavorName(minFlavor.name)}
+            </div>
             <div class="separator"></div>
-            <div class="size-label ${classMap({ skeleton })}"
+            <div 
+              class="size-label ${classMap({ skeleton })}"
               title=${ifDefined(this._getFlavorDetails(maxFlavor))}
-            >${this._formatFlavorName(maxFlavor.name)}</div>
+            >
+              ${this._formatFlavorName(maxFlavor.name)}
+            </div>
           </div>
           <div class="label">${i18n('cc-tile-scalability.number')}</div>
           <div class="info">
             <div class="count-bubble ${classMap({ skeleton })}">${minInstances}</div>
             <div class="separator"></div>
             <div class="count-bubble ${classMap({ skeleton })}">${maxInstances}</div>
-          </div>
-        </div>
-      ` : ''}
-
-      ${this.error ? html`
-        <div class="tile_message">
-          <div class="error-message">
-            <cc-icon .icon="${iconAlert}" a11y-name="${i18n('cc-tile-scalability.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
-            <p>${i18n('cc-tile-scalability.error')}</p>
           </div>
         </div>
       ` : ''}
