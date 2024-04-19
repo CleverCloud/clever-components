@@ -8,6 +8,7 @@ import {
   iconRemixArrowDownSFill as iconDown,
   iconRemixArrowUpSFill as iconUp,
 } from '../../assets/cc-remix.icons.js';
+import { hasSlottedChildren } from '../../directives/hasSlottedChildren.js';
 import { i18n } from '../../lib/i18n.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 
@@ -43,6 +44,7 @@ export class CcBlock extends LitElement {
       state: { type: String, reflect: true },
       _overlay: { type: Boolean, state: true },
       links: { type: String },
+      counter: { type: Number },
     };
   }
 
@@ -69,6 +71,8 @@ export class CcBlock extends LitElement {
 
     /** @type {string|null} Sets links. */
     this.links = null;
+
+    this.counter = 0;
   }
 
   _clickToggle () {
@@ -89,6 +93,9 @@ export class CcBlock extends LitElement {
     /* eslint-disable lit-a11y/click-events-have-key-events */
     return html`
         <div class="container">
+            <button @click="${() => {
+this.counter++;
+}}">${this.counter}</button>
           <slot name="header">
               <div class="header">
                 <slot name="icon" class="icon">
@@ -130,16 +137,16 @@ export class CcBlock extends LitElement {
               </slot>
             ` : ''}
           </cc-expand>
-          <slot name="footer" @slotchange="${onSlotChange}">
+          <slot name="footer" ${hasSlottedChildren()}>
             <div class="footer">
               <div class="left-content">
-                <slot name="left-content" @slotchange="${onSlotChange}"></slot>
+                <slot name="left-content" ${hasSlottedChildren()}></slot>
               </div>
               <div class="center-content">
-                <slot name="center-content" @slotchange="${onSlotChange}"></slot>
+                <slot name="center-content" ${hasSlottedChildren()}></slot>
               </div>
               <div class="right-content">
-                <slot name="right-content" @slotchange="${onSlotChange}"></slot>
+                <slot name="right-content" ${hasSlottedChildren()}></slot>
               </div>
             </div>
           </slot>
@@ -351,16 +358,3 @@ export class CcBlock extends LitElement {
 }
 
 window.customElements.define('cc-block', CcBlock);
-
-function onSlotChange (e) {
-  if (e.target === e.currentTarget) {
-    const slot = e.target;
-    const nodes = slot.assignedNodes();
-    if (nodes.length === 0) {
-      slot.removeAttribute('is-slotted');
-    }
-    else {
-      slot.setAttribute('is-slotted', '');
-    }
-  }
-}
