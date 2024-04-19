@@ -89,7 +89,7 @@ export class CcBlock extends LitElement {
     /* eslint-disable lit-a11y/click-events-have-key-events */
     return html`
         <div class="container">
-          <slot name="header" >
+          <slot name="header">
               <div class="header">
                 <slot name="icon" class="icon">
                     ${this.image != null && this.icon == null ? html`
@@ -172,8 +172,10 @@ export class CcBlock extends LitElement {
         }
 
         .header {
-          display: flex;
-          align-items: center;
+            display: flex;
+            align-items: center;
+            padding: 1em;
+            color: var(--cc-color-text-primary-strongest);
         }
         
         ::slotted([slot='title']) {
@@ -186,9 +188,6 @@ export class CcBlock extends LitElement {
           display: grid;
           gap: 1em;
           padding: 1em;
-        }
-        
-        .content {
         }
 
         .header {
