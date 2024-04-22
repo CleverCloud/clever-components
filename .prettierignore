@@ -1,0 +1,14 @@
+# Ignore assets
+src/assets
+src/stories/assets
+
+# Ignore fixtures
+src/stories/fixtures
+cem/test/fixtures
+
+# Ignore ESLint config file
+**/.eslintrc.cjs
+
+# Ignore MD files
+**/*.md
+
