@@ -1,0 +1,9 @@
+{
+  "arrowParens": "always",
+  "plugins": [
+    "prettier-plugin-organize-imports"
+  ],
+  "printWidth": 120,
+  "tabWidth": 2,
+  "singleQuote": true
+}

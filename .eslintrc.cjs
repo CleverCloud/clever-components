@@ -2,6 +2,7 @@ module.exports = {
   'extends': [
     'standard',
     'plugin:lit-a11y/recommended',
+    'prettier',
   ],
   'env': {
     'browser': true,
@@ -26,17 +27,13 @@ module.exports = {
     'i18n-valid-value': ['error'],
     // other rules
     'accessor-pairs': 'off',
-    'arrow-parens': ['error', 'always'],
-    'brace-style': ['error', 'stroustrup'],
     'camelcase': ['error', { allow: ['_lp$'] }],
-    'comma-dangle': ['error', 'always-multiline'],
     'curly': ['error', 'all'],
     'eqeqeq': ['error', 'always', { 'null': 'never' }],
     'import/extensions': ['error', 'always'],
     'import/first': ['error'],
     'import/newline-after-import': ['error', { 'count': 1 }],
     'import/no-useless-path-segments': ['error', { 'noUselessIndex': true }],
-    'import/order': ['error', { 'alphabetize': { 'order': 'asc', 'caseInsensitive': true } }],
     'line-comment-position': ['error', { 'position': 'above' }],
     // redundant role may be necessary sometimes
     'lit-a11y/no-redundant-role': 'warn',
@@ -52,10 +49,7 @@ module.exports = {
     'lit/no-value-attribute': 'error',
     'multiline-ternary': 'off',
     'no-new': 'off',
-    'operator-linebreak': ['error', 'before'],
     'padded-blocks': 'off',
-    'quotes': ['error', 'single', { 'allowTemplateLiterals': true }],
-    'semi': ['error', 'always'],
     'spaced-comment': ['error', 'always', { 'markers': ['#region', '#endregion'] }],
   },
 };
