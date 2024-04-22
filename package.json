@@ -122,6 +122,7 @@
     "mocha": "^10.0.0",
     "node-static": "^0.7.11",
     "postcss-styled": "^0.34.0",
+    "prettier": "^3.2.5",
     "remark-frontmatter": "^3.0.0",
     "remark-gfm": "^1.0.0",
     "remark-highlight.js": "^6.0.0",
@@ -143,8 +144,8 @@
     "text-table": "^0.2.0",
     "ts-lit-plugin": "^2.0.2",
     "typescript": "~5.4.2",
-    "vite": "^5.2.0",
-    "unified": "^9.2.1"
+    "unified": "^9.2.1",
+    "vite": "^5.2.0"
   },
   "customElements": "dist/custom-elements.json",
   "volta": {
