@@ -1,6 +1,6 @@
 /* eslint-disable quote-props */
 module.exports = {
-  'env': {
-    'mocha': true,
+  env: {
+    mocha: true,
   },
 };

@@ -16,7 +16,7 @@ const ZONE_MTL = {
   country: 'Canada',
   countryCode: 'CA',
   city: 'Montreal',
-  lat: 45.50,
+  lat: 45.5,
   lon: -73.61,
   tags: ['infra:ovh'],
 };

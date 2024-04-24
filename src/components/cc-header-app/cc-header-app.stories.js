@@ -4,7 +4,7 @@ import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 const COMMIT_ONE = '99b8617a5e102b318593eed3cd0c0a67e77b7e9a';
 const COMMIT_TWO = 'bf4c76b3c563050d32e411b2f06d11515c7d8304';
 
-function app (variantName, variantLogoName, commit = COMMIT_ONE) {
+function app(variantName, variantLogoName, commit = COMMIT_ONE) {
   return {
     name: `Awesome ${variantName} app (PROD)`,
     commit,
@@ -73,9 +73,14 @@ export const runningState = makeStory(conf, {
 });
 
 export const restartFailedState = makeStory(conf, {
-  items: [{
-    app: app('Java or Scala + Play! 2', 'play2'), status: 'restart-failed', runningCommit: COMMIT_ONE, zone: zoneParis,
-  }],
+  items: [
+    {
+      app: app('Java or Scala + Play! 2', 'play2'),
+      status: 'restart-failed',
+      runningCommit: COMMIT_ONE,
+      zone: zoneParis,
+    },
+  ],
 });
 
 export const startingStateWithDeployingCommitUnknown = makeStory(conf, {
@@ -91,23 +96,27 @@ export const restartingStateWithDeployingCommitUnknown = makeStory(conf, {
 });
 
 export const restartingState = makeStory(conf, {
-  items: [{
-    app: app('Haskell', 'haskell'),
-    status: 'restarting',
-    runningCommit: COMMIT_ONE,
-    startingCommit: COMMIT_TWO,
-    zone: zoneParis,
-  }],
+  items: [
+    {
+      app: app('Haskell', 'haskell'),
+      status: 'restarting',
+      runningCommit: COMMIT_ONE,
+      startingCommit: COMMIT_TWO,
+      zone: zoneParis,
+    },
+  ],
 });
 
 export const restartingWithDowntimeState = makeStory(conf, {
-  items: [{
-    app: app('Static', 'apache'),
-    status: 'restarting-with-downtime',
-    runningCommit: COMMIT_ONE,
-    startingCommit: COMMIT_ONE,
-    zone: zoneParis,
-  }],
+  items: [
+    {
+      app: app('Static', 'apache'),
+      status: 'restarting-with-downtime',
+      runningCommit: COMMIT_ONE,
+      startingCommit: COMMIT_ONE,
+      zone: zoneParis,
+    },
+  ],
 });
 
 export const dataLoadedWithDisableButtons = makeStory(conf, {

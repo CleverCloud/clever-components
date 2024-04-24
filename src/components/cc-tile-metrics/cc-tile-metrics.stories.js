@@ -36,19 +36,17 @@ const baseItems = [
 const ONE_HOUR = 60 * 60 * 1000;
 const ONE_DAY = ONE_HOUR * 24;
 
-function fakeMetricData (numberOfPoints, usedValue, linearIncrease = false, shift = true) {
-  return Array
-    .from({ length: numberOfPoints })
-    .map((_, index) => {
-      const randomShift = (usedValue !== 0 && shift) ? (Math.random() * 4) - 2 : 0;
-      const increase = (linearIncrease) ? index * 1.5 : 0;
-      return {
-        value: Math.min(usedValue + randomShift + increase, 100),
-      };
-    });
+function fakeMetricData(numberOfPoints, usedValue, linearIncrease = false, shift = true) {
+  return Array.from({ length: numberOfPoints }).map((_, index) => {
+    const randomShift = usedValue !== 0 && shift ? Math.random() * 4 - 2 : 0;
+    const increase = linearIncrease ? index * 1.5 : 0;
+    return {
+      value: Math.min(usedValue + randomShift + increase, 100),
+    };
+  });
 }
 
-function addTimestamp (array) {
+function addTimestamp(array) {
   const startTs = Date.now() - ONE_DAY;
   return array.map((item, index) => {
     return {
@@ -89,14 +87,8 @@ export const dataLoadedWithHighValues = makeStory(conf, {
     metrics: {
       state: 'loaded',
       value: {
-        cpuData: addTimestamp([
-          ...fakeMetricData(12, 60),
-          ...fakeMetricData(12, 80),
-        ]),
-        memData: addTimestamp([
-          ...fakeMetricData(12, 50),
-          ...fakeMetricData(12, 82),
-        ]),
+        cpuData: addTimestamp([...fakeMetricData(12, 60), ...fakeMetricData(12, 80)]),
+        memData: addTimestamp([...fakeMetricData(12, 50), ...fakeMetricData(12, 82)]),
       },
     },
   })),
@@ -141,10 +133,7 @@ export const scaleUp = makeStory(conf, {
       state: 'loaded',
       value: {
         cpuData: addTimestamp(fakeMetricData(24, 40)),
-        memData: addTimestamp([
-          ...fakeMetricData(12, 50),
-          ...fakeMetricData(12, 50 / 4),
-        ]),
+        memData: addTimestamp([...fakeMetricData(12, 50), ...fakeMetricData(12, 50 / 4)]),
       },
     },
   })),
@@ -157,10 +146,7 @@ export const scaleDown = makeStory(conf, {
       state: 'loaded',
       value: {
         cpuData: addTimestamp(fakeMetricData(24, 30)),
-        memData: addTimestamp([
-          ...fakeMetricData(12, 16),
-          ...fakeMetricData(12, 16 * 2),
-        ]),
+        memData: addTimestamp([...fakeMetricData(12, 16), ...fakeMetricData(12, 16 * 2)]),
       },
     },
   })),
@@ -173,11 +159,7 @@ export const multipleScaleUp = makeStory(conf, {
       state: 'loaded',
       value: {
         cpuData: addTimestamp(fakeMetricData(24, 60)),
-        memData: addTimestamp([
-          ...fakeMetricData(8, 80),
-          ...fakeMetricData(8, 80 / 2),
-          ...fakeMetricData(8, 80 / 4),
-        ]),
+        memData: addTimestamp([...fakeMetricData(8, 80), ...fakeMetricData(8, 80 / 2), ...fakeMetricData(8, 80 / 4)]),
       },
     },
   })),
@@ -211,10 +193,7 @@ export const bigScaleUp = makeStory(conf, {
       state: 'loaded',
       value: {
         cpuData: addTimestamp(fakeMetricData(24, 25)),
-        memData: addTimestamp([
-          ...fakeMetricData(12, 80),
-          ...fakeMetricData(12, 80 / 8),
-        ]),
+        memData: addTimestamp([...fakeMetricData(12, 80), ...fakeMetricData(12, 80 / 8)]),
       },
     },
   })),
@@ -227,10 +206,7 @@ export const bigScaleDown = makeStory(conf, {
       state: 'loaded',
       value: {
         cpuData: addTimestamp(fakeMetricData(24, 22.3)),
-        memData: addTimestamp([
-          ...fakeMetricData(12, 10),
-          ...fakeMetricData(12, 10 * 8),
-        ]),
+        memData: addTimestamp([...fakeMetricData(12, 10), ...fakeMetricData(12, 10 * 8)]),
       },
     },
   })),
@@ -242,16 +218,8 @@ export const appDown = makeStory(conf, {
     metrics: {
       state: 'loaded',
       value: {
-        cpuData: addTimestamp([
-          ...fakeMetricData(6, 22.3),
-          ...fakeMetricData(6, 0),
-          ...fakeMetricData(12, 22.3),
-        ]),
-        memData: addTimestamp([
-          ...fakeMetricData(6, 10),
-          ...fakeMetricData(6, 0),
-          ...fakeMetricData(12, 10 * 8),
-        ]),
+        cpuData: addTimestamp([...fakeMetricData(6, 22.3), ...fakeMetricData(6, 0), ...fakeMetricData(12, 22.3)]),
+        memData: addTimestamp([...fakeMetricData(6, 10), ...fakeMetricData(6, 0), ...fakeMetricData(12, 10 * 8)]),
       },
     },
   })),
@@ -280,7 +248,6 @@ export const simulationsWithData = makeStory(conf, {
         state: 'loaded',
         value,
       };
-
     }),
   ],
 });

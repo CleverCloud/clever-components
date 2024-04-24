@@ -22,7 +22,7 @@ const statistics = {
   publicActiveUsers: 120,
   // 666.6 MB
   storage: 698980762,
-  price: 17.50,
+  price: 17.5,
 };
 
 export const defaultStory = makeStory(conf, {

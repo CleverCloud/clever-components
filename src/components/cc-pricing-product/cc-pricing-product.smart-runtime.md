@@ -2,6 +2,7 @@
 kind: '🛠 pricing/<cc-pricing-product>'
 title: '💡 Smart (runtime)'
 ---
+
 # 💡 Smart `<cc-pricing-product>` for runtimes
 
 ## ℹ️ Details
@@ -14,15 +15,15 @@ title: '💡 Smart (runtime)'
 
 ## ⚙️ Params
 
-| Name        | Type        | Details                                                                                          | Default |
-|-------------|-------------|--------------------------------------------------------------------------------------------------|---------|
-| `productId` | `string`    | Variant slug from [`/v2/products/instances`](https://api.clever-cloud.com/v2/products/instances) |         |
-| `zoneId`    | `string`    | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones)                 | `par`   |
+| Name        | Type     | Details                                                                                          | Default |
+| ----------- | -------- | ------------------------------------------------------------------------------------------------ | ------- |
+| `productId` | `string` | Variant slug from [`/v2/products/instances`](https://api.clever-cloud.com/v2/products/instances) |         |
+| `zoneId`    | `string` | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones)                 | `par`   |
 
 ## 🌐 API endpoints
 
 | Method | Type                               | Cache? |
-|--------|:-----------------------------------|--------|
+| ------ | :--------------------------------- | ------ |
 | `GET`  | `/v2/products/instances`           | 1 day  |
 | `GET`  | `/v4/billing/price-system?zone_id` | 1 day  |
 
@@ -33,9 +34,11 @@ title: '💡 Smart (runtime)'
 Simple example based on default zone.
 
 ```html
-<cc-smart-container context='{
+<cc-smart-container
+  context='{
     "productId": "node",
-}'>
+}'
+>
   <cc-pricing-product mode="runtime"></cc-pricing-product>
 </cc-smart-container>
 ```
@@ -43,9 +46,11 @@ Simple example based on default zone.
 ### Special case for Jenkins runner
 
 ```html
-<cc-smart-container context='{
+<cc-smart-container
+  context='{
     "productId": "jenkins-runner",
-}'>
+}'
+>
   <cc-pricing-product mode="runtime" action="none" temporalities='[{"type":"minute","digits":5}]'></cc-pricing-product>
 </cc-smart-container>
 ```
@@ -53,9 +58,11 @@ Simple example based on default zone.
 ### Special case for Heptapod runner
 
 ```html
-<cc-smart-container context='{
+<cc-smart-container
+  context='{
     "productId": "heptapod-runner",
-}'>
+}'
+>
   <cc-pricing-product mode="runtime" action="none" temporalities='[{"type":"minute","digits":5}]'></cc-pricing-product>
 </cc-smart-container>
 ```
@@ -67,10 +74,12 @@ Simple example with custom zone.
 NOTE: Prices are the same on all zones right now.
 
 ```html
-<cc-smart-container context='{
+<cc-smart-container
+  context='{
     "productId": "node",
     "zoneId": "rbx",
-}'>
+}'
+>
   <cc-pricing-product mode="runtime"></cc-pricing-product>
 </cc-smart-container>
 ```

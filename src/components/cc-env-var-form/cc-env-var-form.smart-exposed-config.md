@@ -2,6 +2,7 @@
 kind: '🛠 Environment variables/<cc-env-var-form>'
 title: '💡 Smart (exposed-config)'
 ---
+
 # 💡 Smart `<cc-env-var-form>` for exposed configuration
 
 ## ℹ️ Details
@@ -45,7 +46,8 @@ interface ApiConfig {
 ## ⬇️️ Examples
 
 ```html
-<cc-smart-container context='{
+<cc-smart-container
+  context='{
   "apiConfig": {
     API_HOST: "",
     API_OAUTH_TOKEN: "",
@@ -55,7 +57,8 @@ interface ApiConfig {
   },
   "ownerId": "",
   "appId": ""
-}'>
+}'
+>
   <cc-env-var-form context="exposed-config"></cc-env-var-form>
 </cc-smart-container>
 ```

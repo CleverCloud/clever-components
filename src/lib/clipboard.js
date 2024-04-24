@@ -5,7 +5,7 @@
  * @param {string} html The content to be copied with the 'text/html' MIME type.
  * @return {Promise<void>}
  */
-export async function copyToClipboard (text, html = null) {
+export async function copyToClipboard(text, html = null) {
   if (navigator.clipboard?.write != null) {
     const items = {
       'text/plain': new Blob([text], { type: 'text/plain' }),
@@ -15,8 +15,7 @@ export async function copyToClipboard (text, html = null) {
     }
     // eslint-disable-next-line no-undef
     await navigator.clipboard.write([new ClipboardItem(items)]);
-  }
-  else if (document.execCommand != null) {
+  } else if (document.execCommand != null) {
     const listener = (e) => {
       e.clipboardData.setData('text/plain', text);
       if (html != null) {
@@ -28,8 +27,7 @@ export async function copyToClipboard (text, html = null) {
     document.addEventListener('copy', listener);
     document.execCommand('copy');
     document.removeEventListener('copy', listener);
-  }
-  else {
+  } else {
     await navigator.clipboard?.writeText(text);
   }
 }
@@ -43,7 +41,7 @@ export async function copyToClipboard (text, html = null) {
  * @param {Array<string>} lines
  * @return {{text: string, html: string}}
  */
-export function prepareLinesOfCodeForClipboard (lines) {
+export function prepareLinesOfCodeForClipboard(lines) {
   const text = lines.join('\n');
   const html = formatLinesOfCodeToHtml(lines);
   return { text, html };
@@ -55,7 +53,7 @@ export function prepareLinesOfCodeForClipboard (lines) {
  * @param {Array<string>} lines Array of string to format into HTML.
  * @return {string} the formatted HTML version of the lines.
  */
-export function formatLinesOfCodeToHtml (lines) {
+export function formatLinesOfCodeToHtml(lines) {
   if (lines.length === 0) {
     return '';
   }

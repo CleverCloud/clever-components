@@ -9,8 +9,7 @@ defineSmartComponent({
     apiConfig: { type: Object },
     ownerId: { type: String },
   },
-  onContextUpdate ({ context, updateComponent, signal }) {
-
+  onContextUpdate({ context, updateComponent, signal }) {
     updateComponent('state', { type: 'loading' });
 
     const { apiConfig, ownerId } = context;

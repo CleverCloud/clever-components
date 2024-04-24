@@ -4,7 +4,7 @@ export const PRIVATE_ZONE = 'scope:private';
 // 1. Clever Cloud zones "infra:clever-cloud"
 // 2. Private zones "scope:private"
 // 3. Alphanum sort on city
-export function sortZones (rawZones) {
+export function sortZones(rawZones) {
   if (rawZones == null) {
     return null;
   }
@@ -24,7 +24,7 @@ export function sortZones (rawZones) {
         return aIsPrivate ? 1 : -1;
       }
       if (aIsPrivate && bIsPrivate) {
-        return (a.displayName ?? '').localeCompare((b.displayName ?? ''));
+        return (a.displayName ?? '').localeCompare(b.displayName ?? '');
       }
     }
     if (aIsPrivate !== bIsPrivate) {

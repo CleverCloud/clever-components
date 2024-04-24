@@ -48,10 +48,12 @@ export const editedAndDeleted = makeStory(conf, {
 });
 
 export const longName = makeStory(conf, {
-  items: [{
-    name: 'VERY_LONG_NAME_THAT_IS_ACTUALLY_TOO_LONG_TOO_DISPLAY_OMG_WHAT_IS_HAPPENING',
-    value: 'value for long name',
-  }],
+  items: [
+    {
+      name: 'VERY_LONG_NAME_THAT_IS_ACTUALLY_TOO_LONG_TOO_DISPLAY_OMG_WHAT_IS_HAPPENING',
+      value: 'value for long name',
+    },
+  ],
 });
 
 export const longValue = makeStory(conf, {

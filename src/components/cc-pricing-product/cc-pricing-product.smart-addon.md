@@ -2,6 +2,7 @@
 kind: '🛠 pricing/<cc-pricing-product>'
 title: '💡 Smart (add-on)'
 ---
+
 # 💡 Smart `<cc-pricing-product>` for add-ons
 
 ## ℹ️ Details
@@ -14,20 +15,20 @@ title: '💡 Smart (add-on)'
 
 ## ⚙️ Params
 
-| Name            | Type        | Details                                                                                          | Default |
-|-----------------|-------------|--------------------------------------------------------------------------------------------------|---------|
-| `productId`     | `string`    | id from [`/v2/products/addonproviders`](https://api.clever-cloud.com/v2/products/addonproviders) |         |
-| `zoneId`        | `string`    | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones)                 | `par`   |
-| `addonFeatures` | `string[]`  | List of feature codes as describe in the component API.                                          |         |
+| Name            | Type       | Details                                                                                          | Default |
+| --------------- | ---------- | ------------------------------------------------------------------------------------------------ | ------- |
+| `productId`     | `string`   | id from [`/v2/products/addonproviders`](https://api.clever-cloud.com/v2/products/addonproviders) |         |
+| `zoneId`        | `string`   | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones)                 | `par`   |
+| `addonFeatures` | `string[]` | List of feature codes as describe in the component API.                                          |         |
 
-* When `addonFeatures` is not specified, all product features are listed in the order of the API.
-* Setting `addonFeatures` allows you to filter the features you want to display.
-* Setting `addonFeatures` allows you to control the display order of the features.
+- When `addonFeatures` is not specified, all product features are listed in the order of the API.
+- Setting `addonFeatures` allows you to filter the features you want to display.
+- Setting `addonFeatures` allows you to control the display order of the features.
 
 ## 🌐 API endpoints
 
 | Method | Type                               | Cache? |
-|--------|:-----------------------------------|--------|
+| ------ | :--------------------------------- | ------ |
 | `GET`  | `/v2/products/addonproviders`      | 1 day  |
 | `GET`  | `/v4/billing/price-system?zone_id` | 1 day  |
 
@@ -38,9 +39,11 @@ title: '💡 Smart (add-on)'
 Simple example based on default zone.
 
 ```html
-<cc-smart-container context='{
+<cc-smart-container
+  context='{
     "productId": "postgresql-addon",
-}'>
+}'
+>
   <cc-pricing-product mode="addon"></cc-pricing-product>
 </cc-smart-container>
 ```
@@ -52,10 +55,12 @@ Simple example with custom zone.
 NOTE: Prices are the same on all zones right now.
 
 ```html
-<cc-smart-container context='{
+<cc-smart-container
+  context='{
     "productId": "postgresql-addon",
     "zoneId": "rbx",
-}'>
+}'
+>
   <cc-pricing-product mode="addon"></cc-pricing-product>
 </cc-smart-container>
 ```
@@ -66,11 +71,12 @@ Setting `addonFeatures` is the only way to enforce a sort order on the feature l
 It's also a good way to filter features.
 
 ```html
-<cc-smart-container context='{
+<cc-smart-container
+  context='{
     "productId": "postgresql-addon",
     "addonFeatures": ["cpu", "memory", "disk-size"],
-}'>
+}'
+>
   <cc-pricing-product mode="addon"></cc-pricing-product>
 </cc-smart-container>
 ```
-

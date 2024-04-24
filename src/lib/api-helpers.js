@@ -8,22 +8,21 @@ import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
 import { sendToApi } from './send-to-api.js';
 import { asyncMap } from './utils.js';
 
-export function fetchApp ({ apiConfig, signal, ownerId, appId }) {
+export function fetchApp({ apiConfig, signal, ownerId, appId }) {
   return getApp({ id: ownerId, appId }).then(sendToApi({ apiConfig, signal }));
 }
 
-export async function fetchInvoice ({ apiConfig, signal, ownerId, invoiceNumber }) {
+export async function fetchInvoice({ apiConfig, signal, ownerId, invoiceNumber }) {
   return getInvoice({ id: ownerId, invoiceNumber, type: '' })
     .then(sendToApi({ apiConfig, signal }))
     .then((invoice) => formatInvoice(apiConfig, ownerId, invoice));
 }
 
-export async function fetchInvoiceHtml ({ apiConfig, signal, ownerId, invoiceNumber }) {
-  return getInvoice({ id: ownerId, invoiceNumber, type: '.html' })
-    .then(sendToApi({ apiConfig, signal }));
+export async function fetchInvoiceHtml({ apiConfig, signal, ownerId, invoiceNumber }) {
+  return getInvoice({ id: ownerId, invoiceNumber, type: '.html' }).then(sendToApi({ apiConfig, signal }));
 }
 
-export async function fetchAllInvoices ({ apiConfig, signal, ownerId }) {
+export async function fetchAllInvoices({ apiConfig, signal, ownerId }) {
   // We ask for all invoices by default for now
   return getAllInvoices({ id: ownerId, since: '2010-08-01T00:00:00.000Z' })
     .then(sendToApi({ apiConfig, signal }))
@@ -32,7 +31,7 @@ export async function fetchAllInvoices ({ apiConfig, signal, ownerId }) {
     });
 }
 
-async function formatInvoice (apiConfig, ownerId, rawInvoice) {
+async function formatInvoice(apiConfig, ownerId, rawInvoice) {
   return {
     number: rawInvoice.invoice_number,
     emissionDate: rawInvoice.emission_date,
@@ -47,7 +46,7 @@ async function formatInvoice (apiConfig, ownerId, rawInvoice) {
   };
 }
 
-function getDownloadUrl (apiConfig, ownerId, invoiceNumber) {
+function getDownloadUrl(apiConfig, ownerId, invoiceNumber) {
   return getInvoice({ id: ownerId, invoiceNumber, type: '.pdf' })
     .then(prefixUrl(apiConfig.API_HOST))
     .then(addOauthHeader(apiConfig))
@@ -58,8 +57,8 @@ function getDownloadUrl (apiConfig, ownerId, invoiceNumber) {
     });
 }
 
-function getPaymentUrl (ownerId, invoiceNumber) {
-  return (ownerId == null || ownerId.startsWith('user_'))
+function getPaymentUrl(ownerId, invoiceNumber) {
+  return ownerId == null || ownerId.startsWith('user_')
     ? `/users/me/invoices/${invoiceNumber}`
     : `/organisations/${ownerId}/invoices/${invoiceNumber}`;
 }
@@ -70,7 +69,7 @@ function getPaymentUrl (ownerId, invoiceNumber) {
  * @param {Object} params
  * @param {String} params.zone_id
  */
-export function getPriceSystem (params) {
+export function getPriceSystem(params) {
   // no multipath for /self or /organisations/{id}
   return Promise.resolve({
     method: 'get',
@@ -81,10 +80,9 @@ export function getPriceSystem (params) {
   });
 }
 
-export function fetchPriceSystem ({ signal, zoneId }) {
+export function fetchPriceSystem({ signal, zoneId }) {
   // eslint-disable-next-line camelcase
-  return getPriceSystem({ zone_id: zoneId })
-    .then(sendToApi({ signal, cacheDelay: ONE_DAY }));
+  return getPriceSystem({ zone_id: zoneId }).then(sendToApi({ signal, cacheDelay: ONE_DAY }));
 }
 
 // TODO: move to clever-client
@@ -94,7 +92,7 @@ export function fetchPriceSystem ({ signal, zoneId }) {
  * @param {Object} params
  * @param {String} params.id
  */
-export function getGrafanaOrganisation (params) {
+export function getGrafanaOrganisation(params) {
   return Promise.resolve({
     method: 'get',
     url: `/v4/saas/grafana/${params.id}`,
@@ -107,7 +105,7 @@ export function getGrafanaOrganisation (params) {
  * @param {Object} params
  * @param {String} params.id
  */
-export function createGrafanaOrganisation (params) {
+export function createGrafanaOrganisation(params) {
   return Promise.resolve({
     method: 'post',
     url: `/v4/saas/grafana/${params.id}`,
@@ -120,7 +118,7 @@ export function createGrafanaOrganisation (params) {
  * @param {Object} params
  * @param {String} params.id
  */
-export function deleteGrafanaOrganisation (params) {
+export function deleteGrafanaOrganisation(params) {
   return Promise.resolve({
     method: 'delete',
     url: `/v4/saas/grafana/${params.id}`,
@@ -133,7 +131,7 @@ export function deleteGrafanaOrganisation (params) {
  * @param {Object} params
  * @param {String} params.id
  */
-export function resetGrafanaOrganisation (params) {
+export function resetGrafanaOrganisation(params) {
   return Promise.resolve({
     method: 'post',
     url: `/v4/saas/grafana/${params.id}/reset`,
@@ -141,13 +139,12 @@ export function resetGrafanaOrganisation (params) {
   });
 }
 
-export async function fetchAllZones ({ signal }) {
-  return getAllZones()
-    .then(sendToApi({ signal, cacheDelay: ONE_DAY }));
+export async function fetchAllZones({ signal }) {
+  return getAllZones().then(sendToApi({ signal, cacheDelay: ONE_DAY }));
 }
 
 // TODO: move this to clever client
-export function getAppMetrics (params) {
+export function getAppMetrics(params) {
   return Promise.resolve({
     method: 'get',
     // TODO: Handle query params properly. (https://github.com/CleverCloud/clever-client.js/issues/76)

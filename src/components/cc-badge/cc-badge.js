@@ -18,7 +18,7 @@ import '../cc-icon/cc-icon.js';
  * @cssprop {JustifyContent} --cc-badge-justify-content - Specify how the content should be distributed / positioned horizontally within the grid (Default: `center`. Possible values: https://developer.mozilla.org/en-US/docs/Web/CSS/justify-items).
  */
 export class CcBadge extends LitElement {
-  static get properties () {
+  static get properties() {
     return {
       circle: { type: Boolean },
       icon: { type: Object },
@@ -29,7 +29,7 @@ export class CcBadge extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {boolean} Sets the badge to a bubble style. Should only be used to display 1 or 2 digits figures. */
@@ -51,7 +51,7 @@ export class CcBadge extends LitElement {
     this.weight = 'dimmed';
   }
 
-  render () {
+  render() {
     const modes = {
       dimmed: this.weight == null || this.weight === 'dimmed',
       strong: this.weight === 'strong',
@@ -67,9 +67,9 @@ export class CcBadge extends LitElement {
 
     return html`
       <span class="cc-badge ${classMap(modes)}">
-        ${this.icon != null ? html`
-          <cc-icon .icon=${this.icon} a11y-name=${ifDefined(this.iconA11yName)}></cc-icon>
-        ` : ''}
+        ${this.icon != null
+          ? html` <cc-icon .icon=${this.icon} a11y-name=${ifDefined(this.iconA11yName)}></cc-icon> `
+          : ''}
         <span>
           <slot></slot>
         </span>
@@ -77,7 +77,7 @@ export class CcBadge extends LitElement {
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       skeletonStyles,
       // language=CSS

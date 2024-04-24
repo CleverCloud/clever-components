@@ -17,8 +17,7 @@ const SKELETON_INFO = {
  * @cssdisplay grid
  */
 export class CcDocCard extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       description: { type: String },
       heading: { type: String },
@@ -27,7 +26,7 @@ export class CcDocCard extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {string|null} Sets the description of the documentation card. */
@@ -43,38 +42,31 @@ export class CcDocCard extends LitElement {
     this.heading = null;
   }
 
-  render () {
-
-    const skeleton = (this.icons == null || this.heading == null || this.description == null || this.link == null);
+  render() {
+    const skeleton = this.icons == null || this.heading == null || this.description == null || this.link == null;
     const heading = this.heading ?? SKELETON_INFO.heading;
     const description = this.description ?? SKELETON_INFO.description;
 
     return html`
-        <div class="images">
-          ${skeleton ? html`
-            <cc-img></cc-img>
-          ` : ''}
-          ${!skeleton ? html`
-            ${this.icons.map((icon) => html`
-              <cc-img src=${icon}></cc-img>
-            `)}
-          ` : ''}
-        </div>
-        <div class="title">
-          <span class="${classMap({ skeleton })}">${heading}</span>
-        </div>
-        <div class="desc">
-          <span class="${classMap({ skeleton })}">${description}</span>
-        </div>
-        <div class="link ${classMap({ skeleton })}">
-          ${!skeleton
-            ? i18n('cc-doc-card.link', { link: this.link, product: this.heading })
-            : i18n('cc-doc-card.skeleton-link-title')}
-        </div>
+      <div class="images">
+        ${skeleton ? html` <cc-img></cc-img> ` : ''}
+        ${!skeleton ? html` ${this.icons.map((icon) => html` <cc-img src=${icon}></cc-img> `)} ` : ''}
+      </div>
+      <div class="title">
+        <span class="${classMap({ skeleton })}">${heading}</span>
+      </div>
+      <div class="desc">
+        <span class="${classMap({ skeleton })}">${description}</span>
+      </div>
+      <div class="link ${classMap({ skeleton })}">
+        ${!skeleton
+          ? i18n('cc-doc-card.link', { link: this.link, product: this.heading })
+          : i18n('cc-doc-card.skeleton-link-title')}
+      </div>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       linkStyles,
       skeletonStyles,
@@ -88,14 +80,14 @@ export class CcDocCard extends LitElement {
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-default, 0.25em);
           gap: 1em;
-          grid-template-areas: 
+          grid-template-areas:
             'img title'
             'desc desc'
             'link link';
           grid-template-columns: min-content 1fr;
           grid-template-rows: min-content 1fr min-content;
         }
-        
+
         .images {
           display: flex;
           gap: 0.5em;
@@ -125,11 +117,10 @@ export class CcDocCard extends LitElement {
           grid-area: link;
           justify-self: end;
         }
-        
+
         .skeleton {
           background-color: #bbb;
         }
-        
       `,
     ];
   }

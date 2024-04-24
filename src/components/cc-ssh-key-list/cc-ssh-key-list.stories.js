@@ -75,16 +75,8 @@ export const dataLoadedWithMultipleItems = makeStory(conf, {
       keyData: {
         state: 'loaded',
         isGithubLinked: true,
-        personalKeys: [
-          DUMMY_KEY_1,
-          DUMMY_KEY_2,
-          DUMMY_KEY_3,
-        ],
-        githubKeys: [
-          DUMMY_KEY_1,
-          DUMMY_KEY_2,
-          DUMMY_KEY_3,
-        ],
+        personalKeys: [DUMMY_KEY_1, DUMMY_KEY_2, DUMMY_KEY_3],
+        githubKeys: [DUMMY_KEY_1, DUMMY_KEY_2, DUMMY_KEY_3],
       },
     },
   ],
@@ -191,10 +183,7 @@ export const waitingWithImportingGithubKey = makeStory(conf, {
       keyData: {
         state: 'loaded',
         isGithubLinked: true,
-        personalKeys: [
-          DUMMY_KEY_1,
-          DUMMY_KEY_3,
-        ],
+        personalKeys: [DUMMY_KEY_1, DUMMY_KEY_3],
         githubKeys: [
           {
             ...DUMMY_KEY_2,

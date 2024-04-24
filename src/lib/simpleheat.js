@@ -36,10 +36,8 @@ const DEFAULT_GRADIENT = {
 };
 
 export class Simpleheat {
-
-  constructor (canvas) {
-
-    this._canvas = canvas = (typeof canvas === 'string') ? document.getElementById(canvas) : canvas;
+  constructor(canvas) {
+    this._canvas = canvas = typeof canvas === 'string' ? document.getElementById(canvas) : canvas;
 
     this._ctx = canvas.getContext('2d');
     this._width = canvas.width;
@@ -49,32 +47,31 @@ export class Simpleheat {
     this._data = [];
   }
 
-  data (data) {
+  data(data) {
     this._data = data;
     return this;
   }
 
-  max (max) {
+  max(max) {
     this._max = max;
     return this;
   }
 
-  add (point) {
+  add(point) {
     this._data.push(point);
     return this;
   }
 
-  clear () {
+  clear() {
     this._data = [];
     return this;
   }
 
-  radius (r, blur = 15) {
-
+  radius(r, blur = 15) {
     // create a grayscale blurred circle image that we'll use for drawing points
-    const circle = this._circle = this._createCanvas();
+    const circle = (this._circle = this._createCanvas());
     const ctx = circle.getContext('2d');
-    const r2 = this._r = r + blur;
+    const r2 = (this._r = r + blur);
 
     circle.width = circle.height = r2 * 2;
 
@@ -90,12 +87,12 @@ export class Simpleheat {
     return this;
   }
 
-  resize () {
+  resize() {
     this._width = this._canvas.width;
     this._height = this._canvas.height;
   }
 
-  gradient (grad) {
+  gradient(grad) {
     // create a 256x1 gradient that we'll use to turn a grayscale heatmap into a colored one
     const canvas = this._createCanvas();
     const ctx = canvas.getContext('2d');
@@ -116,7 +113,7 @@ export class Simpleheat {
     return this;
   }
 
-  draw (minOpacity) {
+  draw(minOpacity) {
     if (!this._circle) {
       this.radius(DEFAULT_RADIUS);
     }
@@ -143,7 +140,7 @@ export class Simpleheat {
     return this;
   }
 
-  _colorize (pixels, gradient) {
+  _colorize(pixels, gradient) {
     let j;
     for (let i = 0; i < pixels.length; i += 4) {
       // get gradient color from opacity value
@@ -157,11 +154,10 @@ export class Simpleheat {
     }
   }
 
-  _createCanvas () {
+  _createCanvas() {
     if (typeof document !== 'undefined') {
       return document.createElement('canvas');
-    }
-    else {
+    } else {
       // create a new canvas instance in node.js
       // the canvas class needs to have a default constructor without any parameter
       return new this._canvas.constructor();

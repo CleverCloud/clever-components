@@ -2,6 +2,7 @@
 kind: '🛠 Environment variables/<cc-env-var-form>'
 title: '💡 Smart (env-var-addon)'
 ---
+
 # 💡 Smart `<cc-env-var-form>` for add-on environment variables
 
 ## ℹ️ Details
@@ -43,7 +44,8 @@ interface ApiConfig {
 ## ⬇️️ Examples
 
 ```html
-<cc-smart-container context='{
+<cc-smart-container
+  context='{
   "apiConfig": {
     API_HOST: "",
     API_OAUTH_TOKEN: "",
@@ -53,7 +55,8 @@ interface ApiConfig {
   },
   "ownerId": "",
   "addonId": "",
-}'>
+}'
+>
   <cc-env-var-form context="env-var-addon"></cc-env-var-form>
 </cc-smart-container>
 ```

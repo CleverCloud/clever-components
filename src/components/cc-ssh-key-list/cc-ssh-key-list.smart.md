@@ -16,7 +16,7 @@ title: '💡 Smart'
 ## ⚙️ Params
 
 | Name        | Type        | Details                                                | Default |
-|-------------|-------------|--------------------------------------------------------|---------|
+| ----------- | ----------- | ------------------------------------------------------ | ------- |
 | `apiConfig` | `ApiConfig` | Object with API configuration (target host, tokens...) |         |
 
 ```js
@@ -32,7 +32,7 @@ interface ApiConfig {
 ## 🌐 API endpoints
 
 | Method   | URL                          | Cache?  |
-|----------|------------------------------|---------|
+| -------- | ---------------------------- | ------- |
 | `GET`    | `/v2/self`                   | 1 day   |
 | `GET`    | `/v2/self/keys`              | Default |
 | `GET`    | `/v2/github/keys`            | Default |
@@ -42,7 +42,8 @@ interface ApiConfig {
 ## ⬇️️ Examples
 
 ```html
-<cc-smart-container context='{
+<cc-smart-container
+  context='{
   "apiConfig": {
     API_HOST: "",
     API_OAUTH_TOKEN: "",
@@ -50,7 +51,8 @@ interface ApiConfig {
     OAUTH_CONSUMER_KEY: "",
     OAUTH_CONSUMER_SECRET: "",
   },
-}'>
+}'
+>
   <cc-ssh-key-list></cc-ssh-key-list>
 </cc-smart-container>
 ```

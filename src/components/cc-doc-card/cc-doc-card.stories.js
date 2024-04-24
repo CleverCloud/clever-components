@@ -4,12 +4,17 @@ import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 const DEFAULT_CARD = {
   heading: 'ruby',
   icons: ['https://assets.clever-cloud.com/logos/ruby.svg'],
-  description: 'Run your Ruby and Ruby on Rails applications. Compatible with Rake, Sidekiq and Active Storage for Cellar.',
+  description:
+    'Run your Ruby and Ruby on Rails applications. Compatible with Rake, Sidekiq and Active Storage for Cellar.',
   link: '#',
 };
 
 const MULTIPLE_ICONS_CARD = {
-  icons: ['https://assets.clever-cloud.com/logos/java-jar.svg', 'https://assets.clever-cloud.com/logos/maven.svg', 'https://assets.clever-cloud.com/logos/play2.svg'],
+  icons: [
+    'https://assets.clever-cloud.com/logos/java-jar.svg',
+    'https://assets.clever-cloud.com/logos/maven.svg',
+    'https://assets.clever-cloud.com/logos/play2.svg',
+  ],
   heading: 'Java',
   description: 'Deploy Java runtimes with your specific process (Jar or War) or build tools (Maven, SBT…).',
   link: '#',

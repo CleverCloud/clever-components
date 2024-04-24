@@ -11,8 +11,7 @@ defineSmartComponent({
     ownerId: { type: String },
     addonId: { type: String },
   },
-  onContextUpdate ({ context, updateComponent, signal }) {
-
+  onContextUpdate({ context, updateComponent, signal }) {
     updateComponent('state', { type: 'loading' });
 
     const { apiConfig, ownerId, addonId } = context;
@@ -28,6 +27,6 @@ defineSmartComponent({
   },
 });
 
-function fetchEnvVars ({ apiConfig, signal, ownerId, addonId }) {
+function fetchEnvVars({ apiConfig, signal, ownerId, addonId }) {
   return getAllEnvVars({ id: ownerId, addonId }).then(sendToApi({ apiConfig, signal }));
 }

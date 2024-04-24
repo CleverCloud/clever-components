@@ -15,50 +15,48 @@ const ARTICLE_SKELETON_NUMBER = 9;
  * @cssdisplay block
  */
 export class CcArticleList extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       state: { type: Object },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {ArticleListState} Sets the articles list state. */
     this.state = { type: 'loading' };
   }
 
-  render () {
-
+  render() {
     return html`
       <div class="article-container">
-        ${this.state.type === 'error' ? html`
-          <cc-notice intent="warning" message="${i18n('cc-article-list.error')}"></cc-notice>
-        ` : ''}
-        
-        ${this.state.type === 'loading' ? html`
-          ${new Array(ARTICLE_SKELETON_NUMBER).fill(html`
-            <cc-article-card></cc-article-card>
-          `)}
-        ` : ''}
-        
-        ${this.state.type === 'loaded' ? html`
-          ${this.state.articles.map((article) => html`
-            <cc-article-card
-              banner=${article.banner}
-              title=${article.title ?? ''}
-              link=${article.link ?? ''}
-              description=${article.description ?? ''}
-              date=${article.date ?? new Date().toDateString()}
-            ></cc-article-card>
-          `)}
-        ` : ''}
+        ${this.state.type === 'error'
+          ? html` <cc-notice intent="warning" message="${i18n('cc-article-list.error')}"></cc-notice> `
+          : ''}
+        ${this.state.type === 'loading'
+          ? html` ${new Array(ARTICLE_SKELETON_NUMBER).fill(html` <cc-article-card></cc-article-card> `)} `
+          : ''}
+        ${this.state.type === 'loaded'
+          ? html`
+              ${this.state.articles.map(
+                (article) => html`
+                  <cc-article-card
+                    banner=${article.banner}
+                    title=${article.title ?? ''}
+                    link=${article.link ?? ''}
+                    description=${article.description ?? ''}
+                    date=${article.date ?? new Date().toDateString()}
+                  ></cc-article-card>
+                `,
+              )}
+            `
+          : ''}
       </div>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`

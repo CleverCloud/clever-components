@@ -15,23 +15,24 @@ title: '💡 Smart'
 
 ## ⚙️ Params
 
-| Name        | Type        | Details                                                                          | Default |
-|-------------|-------------|----------------------------------------------------------------------------------|---------|
-| `zoneId`    | `string`    | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones) | `par`   |
+| Name     | Type     | Details                                                                          | Default |
+| -------- | -------- | -------------------------------------------------------------------------------- | ------- |
+| `zoneId` | `string` | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones) | `par`   |
 
 ## 🌐 API endpoints
 
 | Method | Type                 | Cache? |
-|--------|:---------------------|--------|
+| ------ | :------------------- | ------ |
 | `GET`  | `/v4/products/zones` | 1 day  |
 
 ## ⬇️️ Examples
 
 ```html
-<cc-smart-container context='{
+<cc-smart-container
+  context='{
     "zoneId": "mtl",
-}'>
+}'
+>
   <cc-pricing-header></cc-pricing-header>
 </cc-smart-container>
 ```
-

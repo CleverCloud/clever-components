@@ -1,9 +1,9 @@
 import './cc-invoice-table.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 
-function createInvoice (year, month, amount, status, type = 'INVOICE') {
+function createInvoice(year, month, amount, status, type = 'INVOICE') {
   const emissionDate = `${year}-${month}-01`;
-  const number = `${year + month}01-${String((Math.ceil(amount * 100)) % 1000).padStart(4, '0')}`;
+  const number = `${year + month}01-${String(Math.ceil(amount * 100) % 1000).padStart(4, '0')}`;
   const downloadUrl = '/download/' + number;
   const paymentUrl = '/pay/' + number;
   return { emissionDate, number, type, status, total: { currency: 'EUR', amount }, downloadUrl, paymentUrl };
@@ -80,11 +80,13 @@ export const dataLoadedWithProcessed = makeStory(conf, {
 });
 
 export const dataLoadedWithCreditNotes = makeStory(conf, {
-  items: [{
-    invoices: [
-      ...processedInvoices(2019),
-      createInvoice('2019', '09', 88.27, 'PAID', 'CREDITNOTE'),
-      createInvoice('2019', '04', 121.22, 'PAID', 'CREDITNOTE'),
-    ],
-  }],
+  items: [
+    {
+      invoices: [
+        ...processedInvoices(2019),
+        createInvoice('2019', '09', 88.27, 'PAID', 'CREDITNOTE'),
+        createInvoice('2019', '04', 121.22, 'PAID', 'CREDITNOTE'),
+      ],
+    },
+  ],
 });

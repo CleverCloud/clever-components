@@ -3,13 +3,8 @@ import '../cc-notice/cc-notice.js';
 import '../cc-icon/cc-icon.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import {
-  iconCleverRam as iconRam,
-} from '../../assets/cc-clever.icons.js';
-import {
-  iconRemixCpuLine as iconCpu,
-  iconRemixDatabase_2Fill as iconDisk,
-} from '../../assets/cc-remix.icons.js';
+import { iconCleverRam as iconRam } from '../../assets/cc-clever.icons.js';
+import { iconRemixCpuLine as iconCpu, iconRemixDatabase_2Fill as iconDisk } from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 
@@ -47,15 +42,14 @@ const SKELETON_FEATURES = [
  * @cssdisplay block
  */
 export class CcAddonFeatures extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       error: { type: Boolean },
       features: { type: Array },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {boolean} Displays an error message. */
@@ -65,7 +59,7 @@ export class CcAddonFeatures extends LitElement {
     this.features = [];
   }
 
-  _getFeatureName (code, rawName) {
+  _getFeatureName(code, rawName) {
     if (code === 'disk') {
       return i18n('cc-addon-features.feature-name.disk');
     }
@@ -76,9 +70,9 @@ export class CcAddonFeatures extends LitElement {
       return i18n('cc-addon-features.feature-name.memory');
     }
     return rawName;
-  };
+  }
 
-  _getFeatureValue (code, rawValue) {
+  _getFeatureValue(code, rawValue) {
     if (code === 'dedicated') {
       return i18n('cc-addon-features.feature-value.dedicated');
     }
@@ -89,22 +83,21 @@ export class CcAddonFeatures extends LitElement {
       return i18n('cc-addon-features.feature-value.yes');
     }
     return rawValue;
-  };
+  }
 
   // Here we sort feature by name (lower case) but first we force a specific order with SORT_FEATURES
-  _sortFeatures (features) {
+  _sortFeatures(features) {
     const sortedArray = features.slice(0);
     sortedArray.sort((a, b) => {
-      const aIndex = (SORT_FEATURES.indexOf(a.name.toLowerCase()) + 1) || SORT_FEATURES.length + 1;
-      const bIndex = (SORT_FEATURES.indexOf(b.name.toLowerCase()) + 1) || SORT_FEATURES.length + 1;
+      const aIndex = SORT_FEATURES.indexOf(a.name.toLowerCase()) + 1 || SORT_FEATURES.length + 1;
+      const bIndex = SORT_FEATURES.indexOf(b.name.toLowerCase()) + 1 || SORT_FEATURES.length + 1;
       return String(aIndex).localeCompare(String(bIndex), undefined, { numeric: true });
     });
     return sortedArray;
   }
 
-  render () {
-
-    const skeleton = (this.features == null);
+  render() {
+    const skeleton = this.features == null;
     const rawFeatures = skeleton ? SKELETON_FEATURES : this.features;
     const unsortedFeatures = rawFeatures.map((feature) => {
       const nameCode = feature.name.toLowerCase();
@@ -123,31 +116,36 @@ export class CcAddonFeatures extends LitElement {
         <div slot="title">${i18n('cc-addon-features.title')}</div>
 
         <div>${i18n('cc-addon-features.details')}</div>
-        
-        ${!this.error ? html`
-          <div class="feature-list">
-            ${features.map((feature) => html`
-              <div class="feature ${classMap({ skeleton })}">
-                ${feature.icon != null ? html`
-                  <div class="feature-icon">
-                    <cc-icon size="lg" class="feature-icon_img" .icon="${feature.icon}"></cc-icon>
-                  </div>
-                ` : ''}
-                <div class="feature-name">${feature.name}</div>
-                <div class="feature-value">${feature.value}</div>
-              </div>
-            `)}
-          </div>
-        ` : ''}
 
-        ${this.error ? html`
-          <cc-notice intent="warning" message="${i18n('cc-addon-features.loading-error')}"></cc-notice>
-        ` : ''}
+        ${!this.error
+          ? html`
+              <div class="feature-list">
+                ${features.map(
+                  (feature) => html`
+                    <div class="feature ${classMap({ skeleton })}">
+                      ${feature.icon != null
+                        ? html`
+                            <div class="feature-icon">
+                              <cc-icon size="lg" class="feature-icon_img" .icon="${feature.icon}"></cc-icon>
+                            </div>
+                          `
+                        : ''}
+                      <div class="feature-name">${feature.name}</div>
+                      <div class="feature-value">${feature.value}</div>
+                    </div>
+                  `,
+                )}
+              </div>
+            `
+          : ''}
+        ${this.error
+          ? html` <cc-notice intent="warning" message="${i18n('cc-addon-features.loading-error')}"></cc-notice> `
+          : ''}
       </cc-block>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       skeletonStyles,
       // language=CSS

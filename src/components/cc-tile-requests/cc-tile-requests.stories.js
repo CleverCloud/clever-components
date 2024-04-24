@@ -2,39 +2,17 @@ import './cc-tile-requests.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
 const REQUESTS_COUNTS_BIG = [
-  596600,
-  219080,
-  165930,
-  124350,
-  98820,
-  89510,
-  108320,
-  310880,
-  97549,
-  63093,
-  112781,
-  120270,
+  596600, 219080, 165930, 124350, 98820, 89510, 108320, 310880, 97549, 63093, 112781, 120270,
 ];
 const REQUESTS_COUNTS_SMALL = [895, 2, 78, 95, 630, 3966, 2190, 1659, 988, 1127, 1202, 1243];
 const REQUESTS_COUNTS_SIMILAR = [
-  220024,
-  220132,
-  220088,
-  220248,
-  220242,
-  220101,
-  220092,
-  220011,
-  220736,
-  220521,
-  220098,
-  220881,
+  220024, 220132, 220088, 220248, 220242, 220101, 220092, 220011, 220736, 220521, 220098, 220881,
 ];
 
 const ONE_HOUR = 1000 * 60 * 60;
 const HOURS_IN_A_DAY = 24;
 
-function generateData (dataSample) {
+function generateData(dataSample) {
   const now = new Date();
   const nowTs = now.getTime();
   const nowRoundedTs = nowTs - (nowTs % ONE_HOUR);
@@ -48,11 +26,7 @@ function generateData (dataSample) {
   });
 }
 
-const baseItems = [
-  { style: 'width: 275px' },
-  { style: 'width: 380px' },
-  { style: 'width: 540px' },
-];
+const baseItems = [{ style: 'width: 275px' }, { style: 'width: 380px' }, { style: 'width: 540px' }];
 
 export default {
   tags: ['autodocs'],
@@ -84,7 +58,6 @@ export const skeleton = makeStory(conf, {
 
 export const error = makeStory(conf, {
   items: [{ style: 'width: 275px', error: true }],
-
 });
 
 export const empty = makeStory(conf, {

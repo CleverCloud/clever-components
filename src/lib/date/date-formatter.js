@@ -19,7 +19,7 @@
  */
 const DATE_TIME_FORMATS_BY_TIMEZONE = new Map();
 
-function getDateTimeFormat (timezone) {
+function getDateTimeFormat(timezone) {
   let format = DATE_TIME_FORMATS_BY_TIMEZONE.get(timezone);
   if (format == null) {
     format = new Intl.DateTimeFormat('en', {
@@ -32,7 +32,7 @@ function getDateTimeFormat (timezone) {
       fractionalSecondDigits: 3,
       hourCycle: 'h23',
       timeZoneName: 'longOffset',
-      timeZone: (timezone === 'local') ? undefined : timezone,
+      timeZone: timezone === 'local' ? undefined : timezone,
     });
     DATE_TIME_FORMATS_BY_TIMEZONE.set(timezone, format);
   }
@@ -54,7 +54,7 @@ export class DateFormatter {
    * @param {DateFormat} format The date format.
    * @param {Timezone} timezone The timezone.
    */
-  constructor (format, timezone) {
+  constructor(format, timezone) {
     /** @type {DateFormat} */
     this._format = format;
     /** @type {Timezone} */
@@ -69,7 +69,7 @@ export class DateFormatter {
    * @param {Date} date - The date to format
    * @return {string} - The date formatted according to the format and timezone specified in constructor.
    */
-  format (date) {
+  format(date) {
     const parts = this.formatToParts(date);
 
     return Object.values(parts)
@@ -81,7 +81,7 @@ export class DateFormatter {
    * @param {Date} date
    * @return {DateFormattedParts}
    */
-  formatToParts (date) {
+  formatToParts(date) {
     const parts = this.toParts(date);
 
     const result = {
@@ -107,7 +107,7 @@ export class DateFormatter {
    * @param {(part: {value: string|number, type: 'part'|'separator'}) => *} mapper
    * @return {Array<*>}
    */
-  mapParts (date, mapper) {
+  mapParts(date, mapper) {
     const parts = this.toParts(date);
 
     const dateSeparator = { value: '-', type: 'separator' };
@@ -118,9 +118,17 @@ export class DateFormatter {
     };
 
     const items = [
-      part(parts.year), dateSeparator, part(parts.month), dateSeparator, part(parts.day),
+      part(parts.year),
+      dateSeparator,
+      part(parts.month),
+      dateSeparator,
+      part(parts.day),
       separator,
-      part(parts.hour), timeSeparator, part(parts.minute), timeSeparator, part(parts.second),
+      part(parts.hour),
+      timeSeparator,
+      part(parts.minute),
+      timeSeparator,
+      part(parts.second),
     ];
 
     if (this._isMillisIncluded) {
@@ -139,7 +147,7 @@ export class DateFormatter {
    * @param {Date} date
    * @return {DateParts}
    */
-  toParts (date) {
+  toParts(date) {
     const dtf = getDateTimeFormat(this._timezone);
 
     const datePartsArray = dtf.formatToParts(date);
@@ -159,7 +167,7 @@ export class DateFormatter {
     }
 
     if (this._isZoneOffsetIncluded) {
-      result.timezone = (dateParts.timeZoneName === 'GMT') ? 'Z' : dateParts.timeZoneName.slice(3);
+      result.timezone = dateParts.timeZoneName === 'GMT' ? 'Z' : dateParts.timeZoneName.slice(3);
     }
 
     return result;

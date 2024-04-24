@@ -4,7 +4,7 @@
  * @param {string} address
  * @return {'empty'|'invalid'|null} Returns null when validation passes.
  */
-export function validateEmailAddress (address) {
+export function validateEmailAddress(address) {
   if (address == null || address === '') {
     return 'empty';
   }

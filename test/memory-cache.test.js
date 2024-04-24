@@ -84,5 +84,4 @@ describe('memory cache', function () {
     expect(memoryCache.has('key1')).to.equal(false);
     expect(memoryCache.has('key2')).to.equal(false);
   });
-
 });

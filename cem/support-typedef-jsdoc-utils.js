@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import path from 'path';
 
-export function getTypesFromClass (classNode, ts, retrievePrivate = false) {
+export function getTypesFromClass(classNode, ts, retrievePrivate = false) {
   const types = [];
 
   const constructor = getConstructorNode(classNode, ts);
@@ -13,11 +13,11 @@ export function getTypesFromClass (classNode, ts, retrievePrivate = false) {
   return types;
 }
 
-export function getConstructorNode (classNode, ts) {
+export function getConstructorNode(classNode, ts) {
   return classNode?.members?.find((member) => member.kind === ts.SyntaxKind.Constructor) ?? null;
 }
 
-export function getTypesFromEventTags (classNode, ts) {
+export function getTypesFromEventTags(classNode, ts) {
   const types = new Set();
 
   const notNull = (o) => o != null;
@@ -48,7 +48,7 @@ export function getTypesFromEventTags (classNode, ts) {
   return Array.from(types);
 }
 
-export function getTypesFromConstructor (constructorNode, ts, retrievePrivate = false) {
+export function getTypesFromConstructor(constructorNode, ts, retrievePrivate = false) {
   const constructorTypes = new Set();
 
   constructorNode.body.statements
@@ -66,7 +66,7 @@ export function getTypesFromConstructor (constructorNode, ts, retrievePrivate = 
   return Array.from(constructorTypes);
 }
 
-function getTypesFromJsDocCommentNode (node, ts) {
+function getTypesFromJsDocCommentNode(node, ts) {
   if (node.kind !== ts.SyntaxKind.JSDocComment) {
     return [];
   }
@@ -80,11 +80,9 @@ function getTypesFromJsDocCommentNode (node, ts) {
   let types;
   if (isUnionType) {
     types = rawType.types;
-  }
-  else if (isTupleType) {
+  } else if (isTupleType) {
     types = rawType.elements;
-  }
-  else {
+  } else {
     types = [rawType];
   }
 
@@ -99,8 +97,21 @@ function getTypesFromJsDocCommentNode (node, ts) {
   return Array.from(typesSet);
 }
 
-const BUILTIN_TYPES = ['String', 'Boolean', 'Number', 'BigInt', 'Date', 'Map', 'Set', 'WeakMap', 'WeakSet', 'Object', 'Promise', 'Symbol'];
-export function findCustomType (nodeType, ts) {
+const BUILTIN_TYPES = [
+  'String',
+  'Boolean',
+  'Number',
+  'BigInt',
+  'Date',
+  'Map',
+  'Set',
+  'WeakMap',
+  'WeakSet',
+  'Object',
+  'Promise',
+  'Symbol',
+];
+export function findCustomType(nodeType, ts) {
   if (nodeType == null) {
     return null;
   }
@@ -126,7 +137,6 @@ export function findCustomType (nodeType, ts) {
 
   // Type
   if (nodeKind === ts.SyntaxKind.TypeReference) {
-
     // we ignore builtin types
     if (BUILTIN_TYPES.includes(typeName)) {
       return null;
@@ -143,11 +153,12 @@ export function findCustomType (nodeType, ts) {
   return null;
 }
 
-function isVarInitWithDoc (node, ts, gatherPrivate = false) {
+function isVarInitWithDoc(node, ts, gatherPrivate = false) {
   // We don't want a node that doesn't contain jsDoc and the super() keyword
   // We also want to make sure that the field that we're going through is a var init (this.X = Y)
   // and that the field is not private (no this._X = Y)
-  const isBinaryExpression = node.kind === ts.SyntaxKind.ExpressionStatement && node.expression.kind === ts.SyntaxKind.BinaryExpression;
+  const isBinaryExpression =
+    node.kind === ts.SyntaxKind.ExpressionStatement && node.expression.kind === ts.SyntaxKind.BinaryExpression;
   const isVarInit = isBinaryExpression && node.expression?.left?.expression.kind === ts.SyntaxKind.ThisKeyword;
   const hasJsDoc = node?.jsDoc != null && node.jsDoc.length > 0;
   const hasTypeIdentifier = hasJsDoc && node.jsDoc[0].tags[0].kind === ts.SyntaxKind.JSDocTypeTag;
@@ -156,8 +167,7 @@ function isVarInitWithDoc (node, ts, gatherPrivate = false) {
   return isVarInit && hasJsDoc && hasTypeIdentifier && (!isFieldPrivate || gatherPrivate);
 }
 
-export function findTypePath (importTag, rootDir, moduleDir) {
-
+export function findTypePath(importTag, rootDir, moduleDir) {
   // Remove leading and ending quotes
   const typeRelativePath = importTag.typeExpression?.type?.argument?.literal.getText().slice(1, -1);
 
@@ -171,8 +181,7 @@ export function findTypePath (importTag, rootDir, moduleDir) {
   return path.resolve(rootDir, moduleDir, typeDir, typeToTs);
 }
 
-export function findSubtypes (ts, node, types, parents) {
-
+export function findSubtypes(ts, node, types, parents) {
   const subtypes = [];
 
   if (ts == null || node == null) {
@@ -182,7 +191,7 @@ export function findSubtypes (ts, node, types, parents) {
   node.statements
     .filter((typeDeclaration) => types.includes(typeDeclaration.name?.getText()))
     .forEach((td) => {
-      const currentParent = (parents == null) ? [td.name.getText()] : parents;
+      const currentParent = parents == null ? [td.name.getText()] : parents;
       switch (td.kind) {
         case ts.SyntaxKind.TypeAliasDeclaration: {
           subtypes.push(...handleTypeDeclaration(td, node, ts, Array.from(new Set(currentParent))));
@@ -195,11 +204,10 @@ export function findSubtypes (ts, node, types, parents) {
     });
 
   return Array.from(new Set(subtypes));
-
 }
 
 // interface {...}
-function handleInterface (typeInterface, node, ts, parents) {
+function handleInterface(typeInterface, node, ts, parents) {
   const types = [];
 
   typeInterface.members.forEach((t) => {
@@ -207,11 +215,9 @@ function handleInterface (typeInterface, node, ts, parents) {
     if (type != null && !parents.includes(type)) {
       types.push(type);
       types.push(...findSubtypes(ts, node, [type], [...parents, type]));
-    }
-    else if (t.type.kind === ts.SyntaxKind.TupleType) {
+    } else if (t.type.kind === ts.SyntaxKind.TupleType) {
       types.push(...handleTuple(t.type, node, ts, parents));
-    }
-    else if (t.type.kind === ts.SyntaxKind.UnionType) {
+    } else if (t.type.kind === ts.SyntaxKind.UnionType) {
       types.push(...handleUnion(t.type, node, ts, parents));
     }
   });
@@ -220,7 +226,7 @@ function handleInterface (typeInterface, node, ts, parents) {
 
 // type foo = ...;
 // Need to check what we're supposed to do if we have type = smth;
-function handleTypeDeclaration (typeDeclaration, node, ts, parents) {
+function handleTypeDeclaration(typeDeclaration, node, ts, parents) {
   const types = [];
 
   // Is this useful?
@@ -243,7 +249,7 @@ function handleTypeDeclaration (typeDeclaration, node, ts, parents) {
   return types;
 }
 
-function handleUnion (unionType, node, ts, parents) {
+function handleUnion(unionType, node, ts, parents) {
   const types = [];
 
   unionType?.types?.forEach((t) => {
@@ -257,7 +263,7 @@ function handleUnion (unionType, node, ts, parents) {
 }
 
 // [number, Baz,...]
-function handleTuple (tuple, node, ts, parents) {
+function handleTuple(tuple, node, ts, parents) {
   const types = [];
 
   tuple.elements.forEach((element) => {
@@ -270,7 +276,7 @@ function handleTuple (tuple, node, ts, parents) {
   return types;
 }
 
-export function convertInterface (ts, node, code, interfaceName, filename) {
+export function convertInterface(ts, node, code, interfaceName, filename) {
   const st = node?.statements.find((st) => st?.name?.getText() === interfaceName);
   if (st == null) {
     return '';
@@ -278,42 +284,37 @@ export function convertInterface (ts, node, code, interfaceName, filename) {
 
   const start = st?.modifiers?.find((modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword)?.end ?? st?.pos;
   const typeDeclaration = code.substring(start, st?.end).trim();
-  const typeDisplay = '```ts\n\n'
-    + typeDeclaration
-    + '\n\n```';
+  const typeDisplay = '```ts\n\n' + typeDeclaration + '\n\n```';
 
   return typeDisplay;
 }
 
-export function convertToTSExt (filename) {
+export function convertToTSExt(filename) {
   const { name: parsedName, ext: extension } = path.parse(filename);
-  const typeToTs = (extension !== '.ts')
-    ? path.format(
-      {
-        name: parsedName,
-        ext: (extension === '.types') ? '.types.d.ts' : '.d.ts',
-      })
-    : filename;
+  const typeToTs =
+    extension !== '.ts'
+      ? path.format({
+          name: parsedName,
+          ext: extension === '.types' ? '.types.d.ts' : '.d.ts',
+        })
+      : filename;
 
   return path.parse(typeToTs).base;
 }
 
-export function findPathAndTypesFromImports (ts, filePath, ancestors = null) {
+export function findPathAndTypesFromImports(ts, filePath, ancestors = null) {
   const imports = [];
   let sourceCode = '';
 
   const parsedPath = path.parse(filePath);
-  const formattedFilePath = path.resolve(
-    parsedPath.dir,
-    convertToTSExt(filePath));
+  const formattedFilePath = path.resolve(parsedPath.dir, convertToTSExt(filePath));
 
-  const currentAncestors = (ancestors == null) ? [formattedFilePath] : ancestors;
+  const currentAncestors = ancestors == null ? [formattedFilePath] : ancestors;
 
   // Open file
   try {
     sourceCode = readFileSync(formattedFilePath).toString();
-  }
-  catch (e) {
+  } catch (e) {
     console.error(e);
     return [];
   }
@@ -332,31 +333,25 @@ export function findPathAndTypesFromImports (ts, filePath, ancestors = null) {
     const importFile = importNode.moduleSpecifier.text;
     const parsedImportPath = path.parse(importFile);
 
-    const formattedImportPath = path.join(
-      parsedPath.dir,
-      parsedImportPath.dir,
-      convertToTSExt(parsedImportPath.base),
-    );
+    const formattedImportPath = path.join(parsedPath.dir, parsedImportPath.dir, convertToTSExt(parsedImportPath.base));
 
     if (!currentAncestors.includes(formattedImportPath)) {
       importNode.importClause.namedBindings.elements.forEach((nodeType) => types.push(nodeType.getText()));
       imports.push({ types, path: formattedImportPath });
       imports.push(...findPathAndTypesFromImports(ts, formattedImportPath, [...currentAncestors, formattedImportPath]));
     }
-
   });
   return imports;
 }
 
-export function findInterfacesFromExtends (ts, parentNode) {
+export function findInterfacesFromExtends(ts, parentNode) {
   const interfaces = [];
 
   if (ts == null || parentNode == null || typeof parentNode !== 'object') {
     return null;
   }
 
-  parentNode
-    .statements
+  parentNode.statements
     .filter((node) => node?.heritageClauses != null)
     .forEach((node) => {
       const interfaceName = node.name.getText();
@@ -371,7 +366,7 @@ export function findInterfacesFromExtends (ts, parentNode) {
   return withRelatives;
 }
 
-function findRelatives (interfaces) {
+function findRelatives(interfaces) {
   let currentExtend;
   const withRelatives = [];
   interfaces.forEach((anInterface) => {

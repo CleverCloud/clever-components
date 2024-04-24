@@ -163,7 +163,6 @@ export const leafletStyles = css`
     position: absolute;
   }
 
-
   /* control positioning */
 
   .leaflet-control {
@@ -221,7 +220,6 @@ export const leafletStyles = css`
     margin-right: 10px;
   }
 
-
   /* zoom and fade animations */
 
   .leaflet-fade-anim .leaflet-tile {
@@ -265,7 +263,6 @@ export const leafletStyles = css`
   .leaflet-zoom-anim .leaflet-zoom-hide {
     visibility: hidden;
   }
-
 
   /* cursors */
 
@@ -323,7 +320,7 @@ export const leafletStyles = css`
   }
 
   .leaflet-container a {
-    color: #0078A8;
+    color: #0078a8;
   }
 
   .leaflet-container a.leaflet-active {
@@ -335,12 +332,14 @@ export const leafletStyles = css`
     background: rgba(255, 255, 255, 0.5);
   }
 
-
   /* general typography */
   .leaflet-container {
-    font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+    font:
+      12px/1.5 'Helvetica Neue',
+      Arial,
+      Helvetica,
+      sans-serif;
   }
-
 
   /* general toolbar styles */
 
@@ -410,14 +409,17 @@ export const leafletStyles = css`
 
   .leaflet-control-zoom-in,
   .leaflet-control-zoom-out {
-    font: bold 18px 'Lucida Console', Monaco, monospace;
+    font:
+      bold 18px 'Lucida Console',
+      Monaco,
+      monospace;
     text-indent: 1px;
   }
 
-  .leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out {
+  .leaflet-touch .leaflet-control-zoom-in,
+  .leaflet-touch .leaflet-control-zoom-out {
     font-size: 22px;
   }
-
 
   /* layers control */
 
@@ -485,7 +487,6 @@ export const leafletStyles = css`
   .leaflet-default-icon-path {
     background-image: url(images/marker-icon.png);
   }
-
 
   /* attribution and scale controls */
 
@@ -559,7 +560,6 @@ export const leafletStyles = css`
     background-clip: padding-box;
   }
 
-
   /* popup */
 
   .leaflet-popup {
@@ -622,7 +622,10 @@ export const leafletStyles = css`
     text-align: center;
     width: 18px;
     height: 14px;
-    font: 16px/14px Tahoma, Verdana, sans-serif;
+    font:
+      16px/14px Tahoma,
+      Verdana,
+      sans-serif;
     color: #c3c3c3;
     text-decoration: none;
     font-weight: bold;
@@ -647,7 +650,7 @@ export const leafletStyles = css`
     width: 24px;
     margin: 0 auto;
 
-    -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)";
+    -ms-filter: 'progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)';
     filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);
   }
 
@@ -662,14 +665,12 @@ export const leafletStyles = css`
     border: 1px solid #999;
   }
 
-
   /* div icon */
 
   .leaflet-div-icon {
     background: #fff;
     border: 1px solid #666;
   }
-
 
   /* Tooltip */
   /* Base styles for the element that has a tooltip */
@@ -702,7 +703,7 @@ export const leafletStyles = css`
     pointer-events: none;
     border: 6px solid transparent;
     background: transparent;
-    content: "";
+    content: '';
   }
 
   /* Directions */

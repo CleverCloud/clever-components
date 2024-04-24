@@ -4,7 +4,7 @@ import { Title, Subtitle, Description, Controls } from '@storybook/blocks';
 // eslint-disable-next-line import/no-extraneous-dependencies, no-unused-vars
 import React from 'react';
 
-export function AutodocsTemplate () {
+export function AutodocsTemplate() {
   return (
     <>
       <Title />

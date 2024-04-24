@@ -25,41 +25,38 @@ const SKELETON_APPLICATIONS = [
  * @cssdisplay block
  */
 export class CcAddonLinkedApps extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       state: { type: Object },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {AddonLinkedAppsState} Sets the linked applications state. */
     this.state = { type: 'loading' };
   }
 
-  _getErrorContent () {
-    return html`
-      <cc-notice intent="warning" message="${i18n('cc-addon-linked-apps.loading-error')}"></cc-notice>
-    `;
+  _getErrorContent() {
+    return html` <cc-notice intent="warning" message="${i18n('cc-addon-linked-apps.loading-error')}"></cc-notice> `;
   }
 
-  _getEmptyContent () {
+  _getEmptyContent() {
     return html`
       <div>${i18n('cc-addon-linked-apps.details')}</div>
       <div class="cc-block_empty-msg">${i18n('cc-addon-linked-apps.no-linked-applications')}</div>
     `;
   }
 
-  render () {
+  render() {
     if (this.state.type === 'error') {
       return this._renderView(this._getErrorContent());
     }
 
-    const skeleton = (this.state.type === 'loading');
+    const skeleton = this.state.type === 'loading';
     const linkedApps = skeleton ? SKELETON_APPLICATIONS : this.state.linkedApplications;
-    const hasData = (linkedApps.length > 0);
+    const hasData = linkedApps.length > 0;
 
     if (!hasData) {
       return this._renderView(this._getEmptyContent());
@@ -68,25 +65,28 @@ export class CcAddonLinkedApps extends LitElement {
     const content = html`
       <div>${i18n('cc-addon-linked-apps.details')}</div>
 
-      ${linkedApps.map((linkedApp) => html`
-        <div class="application">
-          <cc-img class="logo"
-            ?skeleton=${skeleton}
-            src=${ifDefined(linkedApp.variantLogoUrl)}
-            title="${ifDefined(linkedApp.variantName)}"
-          ></cc-img>
-          <div class="details">
-            <span class="name">${ccLink(linkedApp.link, linkedApp.name, skeleton)}</span>
-            <cc-zone mode="small" .zone="${linkedApp.zone}"></cc-zone>
+      ${linkedApps.map(
+        (linkedApp) => html`
+          <div class="application">
+            <cc-img
+              class="logo"
+              ?skeleton=${skeleton}
+              src=${ifDefined(linkedApp.variantLogoUrl)}
+              title="${ifDefined(linkedApp.variantName)}"
+            ></cc-img>
+            <div class="details">
+              <span class="name">${ccLink(linkedApp.link, linkedApp.name, skeleton)}</span>
+              <cc-zone mode="small" .zone="${linkedApp.zone}"></cc-zone>
+            </div>
           </div>
-        </div>
-      `)}
+        `,
+      )}
     `;
 
     return this._renderView(content);
   }
 
-  _renderView (content) {
+  _renderView(content) {
     return html`
       <cc-block>
         <div slot="title">${i18n('cc-addon-linked-apps.title')}</div>
@@ -95,7 +95,7 @@ export class CcAddonLinkedApps extends LitElement {
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       linkStyles,
       skeletonStyles,

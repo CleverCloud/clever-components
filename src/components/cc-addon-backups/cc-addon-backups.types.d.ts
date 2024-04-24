@@ -6,10 +6,10 @@ interface BackupDetails {
 
 interface Backup {
   createdAt: Date;
-  expiresAt: Date
+  expiresAt: Date;
   url: string;
   restoreCommand?: string;
   deleteCommand?: string;
 }
 
-type OverlayType = "restore" | "delete";
+type OverlayType = 'restore' | 'delete';

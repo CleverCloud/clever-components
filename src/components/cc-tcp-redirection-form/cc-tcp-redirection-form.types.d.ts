@@ -1,22 +1,21 @@
-import { TcpRedirectionState } from "../cc-tcp-redirection/cc-tcp-redirection.types";
+import { TcpRedirectionState } from '../cc-tcp-redirection/cc-tcp-redirection.types';
 
-export type TcpRedirectionFormContextType = "user" | "admin";
+export type TcpRedirectionFormContextType = 'user' | 'admin';
 
 export type TcpRedirectionFormState =
-  TcpRedirectionFormStateLoading
+  | TcpRedirectionFormStateLoading
   | TcpRedirectionFormStateLoaded
   | TcpRedirectionFormStateError;
 
 interface TcpRedirectionFormStateLoading {
-  state: "loading";
+  state: 'loading';
 }
 
 interface TcpRedirectionFormStateLoaded {
-  state: "loaded";
-  value: TcpRedirectionState[]
+  state: 'loaded';
+  value: TcpRedirectionState[];
 }
 
 interface TcpRedirectionFormStateError {
-  state: "error";
+  state: 'error';
 }
-

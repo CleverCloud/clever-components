@@ -2,6 +2,7 @@
 kind: '🛠 Addon/<cc-addon-linked-apps>'
 title: '💡 Smart'
 ---
+
 # 💡 Smart `<cc-addon-linked-apps>`
 
 ## ℹ️ Details
@@ -44,7 +45,8 @@ interface ApiConfig {
 ## ⬇️️ Examples
 
 ```html
-<cc-smart-container context='{
+<cc-smart-container
+  context='{
   "apiConfig": {
     API_HOST: "",
     API_OAUTH_TOKEN: "",
@@ -54,7 +56,8 @@ interface ApiConfig {
   },
   "ownerId": "",
   "addonId": "",
-}'>
+}'
+>
   <cc-addon-linked-apps></cc-addon-linked-apps>
 </cc-smart-container>
 ```

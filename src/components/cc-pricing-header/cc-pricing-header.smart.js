@@ -10,8 +10,7 @@ defineSmartComponent({
   params: {
     zoneId: { type: String },
   },
-  onContextUpdate ({ container, component, context, onEvent, updateComponent, signal }) {
-
+  onContextUpdate({ container, component, context, onEvent, updateComponent, signal }) {
     const { zoneId } = context;
 
     /**
@@ -50,20 +49,17 @@ defineSmartComponent({
           });
           console.error(error);
         });
-    }
-    else {
+    } else {
       updateComponent('selectedZoneId', zoneId);
     }
   },
 });
 
-function fetchAllZones ({ signal }) {
+function fetchAllZones({ signal }) {
   return getAllZones()
     .then(sendToApi({ signal, cacheDelay: ONE_DAY }))
     .then((zones) => {
-      return zones
-        .filter((zone) => zone.tags.includes('for:applications'))
-        .map((zone) => cleanZoneTags(zone));
+      return zones.filter((zone) => zone.tags.includes('for:applications')).map((zone) => cleanZoneTags(zone));
     });
 }
 
@@ -73,7 +69,7 @@ function fetchAllZones ({ signal }) {
  * @param {Zone} zone - the zone to clean
  * @return {Zone} the zone without "for:" tags
  */
-function cleanZoneTags (zone) {
+function cleanZoneTags(zone) {
   const tags = zone.tags.filter((t) => !t.startsWith('for:'));
   return { ...zone, tags };
 }

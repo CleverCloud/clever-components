@@ -1,27 +1,27 @@
 /* This is a work in progress */
 
 cc-block:not(:defined) {
-  border-radius: .25em;
+  border-radius: 0.25em;
   border: 1px solid #bcc2d1;
   display: grid;
   grid-gap: 1em;
   padding: 1em;
 }
 
-cc-block:not(:defined) > [slot=title] {
+cc-block:not(:defined) > [slot='title'] {
   color: #3a3871;
   font-size: 1.2em;
   font-weight: 700;
-  margin-bottom: .5em;
+  margin-bottom: 0.5em;
 }
 
-cc-block[icon]:not(:defined) > [slot=title] {
+cc-block[icon]:not(:defined) > [slot='title'] {
   padding-left: 2.5em;
 }
 
 cc-input-text:not(:defined) {
   background: #eee;
-  border-radius: .25em;
+  border-radius: 0.25em;
   display: inline-block;
   height: 2em;
   min-width: 18em;
@@ -30,14 +30,14 @@ cc-input-text:not(:defined) {
 
 cc-tcp-redirection-form:not(:defined) {
   background: #eee;
-  border-radius: .25em;
+  border-radius: 0.25em;
   display: block;
   height: calc(3.8em - 2px);
 }
 
 cc-toggle:not(:defined) {
   background: #eee;
-  border-radius: .15em;
+  border-radius: 0.15em;
   display: inline-block;
   height: 2em;
   min-width: 10em;
@@ -45,5 +45,5 @@ cc-toggle:not(:defined) {
 }
 
 cc-toggle:not(:defined)::after {
-  content: '\00a0'
+  content: '\00a0';
 }

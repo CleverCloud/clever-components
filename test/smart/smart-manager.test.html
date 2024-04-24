@@ -1,14 +1,12 @@
 <html>
-<head>
-  <script type="module">
-  import { runTests } from '@web/test-runner-mocha';
+  <head>
+    <script type="module">
+      import { runTests } from '@web/test-runner-mocha';
 
-  runTests(() => import('./smart-manager.suite.js'));
-  </script>
-</head>
-<body>
-
-<div id="main"></div>
-
-</body>
+      runTests(() => import('./smart-manager.suite.js'));
+    </script>
+  </head>
+  <body>
+    <div id="main"></div>
+  </body>
 </html>

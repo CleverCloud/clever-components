@@ -73,8 +73,7 @@ const PALETTES = {
  * @slot header - The content of the space on top of the logs block.
  */
 export class CcLogsControl extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       dateDisplay: { type: String, attribute: 'date-display' },
       follow: { type: Boolean },
@@ -91,7 +90,7 @@ export class CcLogsControl extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {DateDisplay} The date display. */
@@ -144,14 +143,14 @@ export class CcLogsControl extends LitElement {
    *
    * @param {Array<Log>} logs The logs to append
    */
-  appendLogs (logs) {
+  appendLogs(logs) {
     this._logsRef.value?.appendLogs(logs);
   }
 
   /**
    * Clears the logs
    */
-  clear () {
+  clear() {
     this._logsRef.value?.clear();
   }
 
@@ -159,36 +158,36 @@ export class CcLogsControl extends LitElement {
 
   /* region Event handlers */
 
-  _onScrollToBottomButtonClick () {
+  _onScrollToBottomButtonClick() {
     this._logsRef.value?.scrollToBottom();
   }
 
-  _onPaletteChange ({ detail }) {
+  _onPaletteChange({ detail }) {
     this.palette = detail;
     dispatchCustomEvent(this, 'option-change', { name: 'palette', value: this.palette });
   }
 
-  _onStripAnsiChange (e) {
+  _onStripAnsiChange(e) {
     this.stripAnsi = e.target.checked;
     dispatchCustomEvent(this, 'option-change', { name: 'strip-ansi', value: this.stripAnsi });
   }
 
-  _onWrapLinesChange (e) {
+  _onWrapLinesChange(e) {
     this.wrapLines = e.target.checked;
     dispatchCustomEvent(this, 'option-change', { name: 'wrap-lines', value: this.wrapLines });
   }
 
-  _onDateDisplayChange ({ detail }) {
+  _onDateDisplayChange({ detail }) {
     this.dateDisplay = detail;
     dispatchCustomEvent(this, 'option-change', { name: 'date-display', value: this.dateDisplay });
   }
 
-  _onTimezoneChange ({ detail }) {
+  _onTimezoneChange({ detail }) {
     this.timezone = detail;
     dispatchCustomEvent(this, 'option-change', { name: 'timezone', value: this.timezone });
   }
 
-  _onMetadataChange (e) {
+  _onMetadataChange(e) {
     const name = e.target.dataset.name;
     const isHidden = !e.target.checked;
     this.metadataDisplay = {
@@ -213,15 +212,12 @@ export class CcLogsControl extends LitElement {
    * @param {{[key: string]: LogsMetadataDisplay}} metadataDisplay
    * @return {{[key: string]: MetadataRenderer}}
    */
-  _resolveMetadataRenderers (metadataRenderers, metadataDisplay) {
+  _resolveMetadataRenderers(metadataRenderers, metadataDisplay) {
     return Object.fromEntries(
       Object.entries(metadataRenderers).map(([name, renderer]) => {
         const display = metadataDisplay[name];
 
-        return [
-          name,
-          display == null || !display.hidden ? renderer : { hidden: true },
-        ];
+        return [name, display == null || !display.hidden ? renderer : { hidden: true }];
       }),
     );
   }
@@ -231,7 +227,7 @@ export class CcLogsControl extends LitElement {
    * @param {DateDisplay} dateDisplay
    * @return {string}
    */
-  _getDateDisplayLabel (dateDisplay) {
+  _getDateDisplayLabel(dateDisplay) {
     if (dateDisplay === 'none') {
       return i18n('cc-logs-control.date-display.none');
     }
@@ -254,7 +250,7 @@ export class CcLogsControl extends LitElement {
    * @param {Timezone} timezone
    * @return {string}
    */
-  _getTimezoneLabel (timezone) {
+  _getTimezoneLabel(timezone) {
     if (timezone === 'UTC') {
       return i18n('cc-logs-control.timezone.utc');
     }
@@ -268,7 +264,7 @@ export class CcLogsControl extends LitElement {
    * @param {string} palette
    * @return {string}
    */
-  _getPaletteLabel (palette) {
+  _getPaletteLabel(palette) {
     if (palette === 'default') {
       return i18n('cc-logs-control.palette.default');
     }
@@ -277,13 +273,13 @@ export class CcLogsControl extends LitElement {
 
   /* endregion */
 
-  willUpdate (changedProperties) {
+  willUpdate(changedProperties) {
     if (changedProperties.has('metadataRenderers') || changedProperties.has('metadataDisplay')) {
       this._resolvedMetadataRenderers = this._resolveMetadataRenderers(this.metadataRenderers, this.metadataDisplay);
     }
   }
 
-  render () {
+  render() {
     return html`
       <div class="header"><slot name="header"></slot></div>
 
@@ -303,9 +299,7 @@ export class CcLogsControl extends LitElement {
         position="bottom-right"
       >
         <div class="options">
-          ${this._renderDisplayOptions()}
-          ${this._renderDateOptions()}
-          ${this._renderMetadataOptions()}
+          ${this._renderDisplayOptions()} ${this._renderDateOptions()} ${this._renderMetadataOptions()}
         </div>
       </cc-popover>
 
@@ -327,12 +321,10 @@ export class CcLogsControl extends LitElement {
     `;
   }
 
-  _renderDisplayOptions () {
-    const PALETTE_CHOICES = Object.entries(PALETTES)
-      .map(([p]) => ({ label: this._getPaletteLabel(p), value: p }));
+  _renderDisplayOptions() {
+    const PALETTE_CHOICES = Object.entries(PALETTES).map(([p]) => ({ label: this._getPaletteLabel(p), value: p }));
 
-    return html`
-      <div class="options-header">
+    return html` <div class="options-header">
         <cc-icon .icon=${displayIcon} size="lg"></cc-icon>
         <span>${i18n('cc-logs-control.option-header.display')}</span>
       </div>
@@ -345,26 +337,20 @@ export class CcLogsControl extends LitElement {
         ></cc-select>
 
         <label for="strip-ansi">
-          <input id="strip-ansi"
-                 type="checkbox"
-                 @change=${this._onStripAnsiChange}
-                 .checked=${this.stripAnsi}> ${i18n('cc-logs-control.strip-ansi')}
+          <input id="strip-ansi" type="checkbox" @change=${this._onStripAnsiChange} .checked=${this.stripAnsi} />
+          ${i18n('cc-logs-control.strip-ansi')}
         </label>
 
         <label for="wrap-lines">
-          <input id="wrap-lines"
-                 type="checkbox"
-                 @change=${this._onWrapLinesChange}
-                 .checked=${this.wrapLines}> ${i18n('cc-logs-control.wrap-lines')}
+          <input id="wrap-lines" type="checkbox" @change=${this._onWrapLinesChange} .checked=${this.wrapLines} />
+          ${i18n('cc-logs-control.wrap-lines')}
         </label>
       </div>`;
   }
 
-  _renderDateOptions () {
-    const DATE_DISPLAY_CHOICES = DATE_DISPLAYS
-      .map((d) => ({ label: this._getDateDisplayLabel(d), value: d }));
-    const TIMEZONE_CHOICES = TIMEZONES
-      .map((z) => ({ label: this._getTimezoneLabel(z), value: z }));
+  _renderDateOptions() {
+    const DATE_DISPLAY_CHOICES = DATE_DISPLAYS.map((d) => ({ label: this._getDateDisplayLabel(d), value: d }));
+    const TIMEZONE_CHOICES = TIMEZONES.map((z) => ({ label: this._getTimezoneLabel(z), value: z }));
 
     return html`
       <div class="options-header">
@@ -389,7 +375,7 @@ export class CcLogsControl extends LitElement {
     `;
   }
 
-  _renderMetadataOptions () {
+  _renderMetadataOptions() {
     const metadataDisplayEntries = Object.entries(this.metadataDisplay ?? {});
     if (metadataDisplayEntries.length === 0) {
       return null;
@@ -403,15 +389,15 @@ export class CcLogsControl extends LitElement {
       <div class="options-group">
         ${metadataDisplayEntries.map(([name, display]) => {
           return html`
-            <label
-              for="metadata-${name}"
-              class=${classMap({ span: display.icon == null })}
-            >
-              <input id="metadata-${name}"
-                     type="checkbox"
-                     data-name="${name}"
-                     @change=${this._onMetadataChange}
-                     .checked=${!display.hidden}> ${display.label}
+            <label for="metadata-${name}" class=${classMap({ span: display.icon == null })}>
+              <input
+                id="metadata-${name}"
+                type="checkbox"
+                data-name="${name}"
+                @change=${this._onMetadataChange}
+                .checked=${!display.hidden}
+              />
+              ${display.label}
             </label>
           `;
         })}
@@ -419,7 +405,7 @@ export class CcLogsControl extends LitElement {
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
@@ -427,7 +413,7 @@ export class CcLogsControl extends LitElement {
           display: grid;
           align-items: center;
           column-gap: 0.35em;
-          grid-template-areas: 
+          grid-template-areas:
             'header scroll-button options-popover'
             'logs   logs          logs';
           grid-template-columns: 1fr auto auto;

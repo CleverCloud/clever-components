@@ -1,6 +1,9 @@
-import { EnvVar } from "../common.types";
+import { EnvVar } from '../common.types';
 
-export type EnvVarLinkedServicesState = EnvVarLinkedServicesStateLoading | EnvVarLinkedServicesStateLoaded | EnvVarLinkedServicesStateError;
+export type EnvVarLinkedServicesState =
+  | EnvVarLinkedServicesStateLoading
+  | EnvVarLinkedServicesStateLoaded
+  | EnvVarLinkedServicesStateError;
 
 interface EnvVarLinkedServicesStateLoading {
   type: 'loading';
@@ -15,7 +18,7 @@ interface EnvVarLinkedServicesStateError {
   type: 'error';
 }
 
-type EnvVarLinkedServicesType = "addon" | "app";
+type EnvVarLinkedServicesType = 'addon' | 'app';
 
 export type LinkedServiceState = LinkedServiceStateLoading | LinkedServiceStateLoaded | LinkedServiceStateError;
 

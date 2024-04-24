@@ -14,9 +14,7 @@ import {
   iconCleverStarting as iconStarting,
   iconCleverUnknown as iconUnknown,
 } from '../../assets/cc-clever.icons.js';
-import {
-  iconRemixStopFill as iconStopped,
-} from '../../assets/cc-remix.icons.js';
+import { iconRemixStopFill as iconStopped } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
@@ -68,8 +66,7 @@ const SKELETON_STATUS = 'unknown';
  * @fires {CustomEvent} cc-header-app:stop - Fires whenever the stop button is clicked (after the delay).
  */
 export class CcHeaderApp extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       app: { type: Object },
       disableButtons: { type: Boolean, attribute: 'disable-buttons', reflect: true },
@@ -82,7 +79,7 @@ export class CcHeaderApp extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {App|null} Sets application details and config. */
@@ -110,7 +107,7 @@ export class CcHeaderApp extends LitElement {
     this._lastUserAction = null;
   }
 
-  _getCommitTitle (type, commit) {
+  _getCommitTitle(type, commit) {
     if (commit == null) {
       return;
     }
@@ -123,9 +120,9 @@ export class CcHeaderApp extends LitElement {
     if (type === 'starting') {
       return i18n('cc-header-app.commits.starting', { commit });
     }
-  };
+  }
 
-  _getStatusMsg (status) {
+  _getStatusMsg(status) {
     if (status === 'restart-failed') {
       return i18n('cc-header-app.state-msg.app-is-running') + ' ' + i18n('cc-header-app.state-msg.last-deploy-failed');
     }
@@ -148,9 +145,9 @@ export class CcHeaderApp extends LitElement {
       return i18n('cc-header-app.state-msg.app-is-stopped');
     }
     return i18n('cc-header-app.state-msg.unknown-state');
-  };
+  }
 
-  _getLastUserActionMsg () {
+  _getLastUserActionMsg() {
     if (this._lastUserAction === 'start') {
       return i18n('cc-header-app.user-action-msg.app-will-start');
     }
@@ -163,63 +160,66 @@ export class CcHeaderApp extends LitElement {
     if (this._lastUserAction === 'stop') {
       return i18n('cc-header-app.user-action-msg.app-will-stop');
     }
-  };
+  }
 
-  _onStart (type) {
+  _onStart(type) {
     this._lastUserAction = 'start';
     dispatchCustomEvent(this, 'start', type);
   }
 
-  _onRestart (type) {
+  _onRestart(type) {
     this._lastUserAction = 'restart';
     dispatchCustomEvent(this, 'restart', type);
   }
 
-  _onCancel () {
+  _onCancel() {
     this._lastUserAction = 'cancel';
     dispatchCustomEvent(this, 'cancel');
   }
 
-  _onStop () {
+  _onStop() {
     this._lastUserAction = 'stop';
     dispatchCustomEvent(this, 'stop');
   }
 
-  willUpdate (changeProperties) {
+  willUpdate(changeProperties) {
     if (changeProperties.has('status')) {
-      this._lastUserAction = (changeProperties.get('status') !== this.status)
-        ? null
-        : this._lastUserAction;
+      this._lastUserAction = changeProperties.get('status') !== this.status ? null : this._lastUserAction;
     }
   }
 
-  render () {
-
+  render() {
     // Quick short circuit for errors
     if (this.error) {
       return html`<cc-notice intent="warning" message="${i18n('cc-header-app.error')}"></cc-notice>`;
     }
 
-    const skeleton = (this.app == null);
+    const skeleton = this.app == null;
     const { name, commit, variantName, variantLogo, lastDeploymentLogsUrl } = skeleton ? SKELETON_APP : this.app;
-    const skeletonStatus = (this.status == null);
+    const skeletonStatus = this.status == null;
     const status = skeletonStatus ? SKELETON_STATUS : this.status;
 
     const isDeploying = ['restarting', 'restarting-with-downtime', 'starting'].includes(status);
     const isRunning = ['restart-failed', 'restarting', 'running'].includes(status);
-    const shouldDisableAllButtons = (this._lastUserAction != null || this.disableButtons);
+    const shouldDisableAllButtons = this._lastUserAction != null || this.disableButtons;
     const shouldDisableStopButton = ['start-failed', 'stopped', 'unknown'].includes(status);
     const canStart = ['start-failed', 'stopped'].includes(status);
     const canRestart = skeletonStatus || ['restart-failed', 'running', 'unknown'].includes(status);
-    const shouldDisplayStatusMessage = (this._lastUserAction !== 'start' && this._lastUserAction !== 'stop');
-    const shouldDisplayLogsLink = ['restart-failed', 'restarting', 'restarting-with-downtime', 'starting', 'start-failed'].includes(status);
+    const shouldDisplayStatusMessage = this._lastUserAction !== 'start' && this._lastUserAction !== 'stop';
+    const shouldDisplayLogsLink = [
+      'restart-failed',
+      'restarting',
+      'restarting-with-downtime',
+      'starting',
+      'start-failed',
+    ].includes(status);
     const disableButtonsTitle = this.disableButtons ? i18n('cc-header-app.disable-buttons') : undefined;
 
     return html`
       <div class="main">
         <div class="flavor-logo ${classMap({ skeleton })}" title=${ifDefined(variantName)}>
           <!-- image has a presentation role => alt="" -->
-          <img class="flavor-logo_img" src=${ifDefined(variantLogo)} alt="">
+          <img class="flavor-logo_img" src=${ifDefined(variantLogo)} alt="" />
         </div>
 
         <div class="details">
@@ -232,89 +232,130 @@ export class CcHeaderApp extends LitElement {
         </div>
 
         <div class="buttons">
+          ${canStart
+            ? html`
+                <cc-button
+                  title=${ifDefined(disableButtonsTitle)}
+                  ?disabled=${shouldDisableAllButtons}
+                  @cc-button:click=${() => this._onStart('normal')}
+                >
+                  ${i18n('cc-header-app.action.start')}
+                </cc-button>
+                <cc-button
+                  title=${ifDefined(disableButtonsTitle)}
+                  ?disabled=${shouldDisableAllButtons}
+                  @cc-button:click=${() => this._onStart('rebuild')}
+                >
+                  ${i18n('cc-header-app.action.start-rebuild')}
+                </cc-button>
+                <cc-button
+                  title=${ifDefined(disableButtonsTitle)}
+                  ?disabled=${shouldDisableAllButtons}
+                  @cc-button:click=${() => this._onStart('last-commit')}
+                >
+                  ${i18n('cc-header-app.action.start-last-commit')}
+                </cc-button>
+              `
+            : ''}
+          ${canRestart
+            ? html`
+                <cc-button
+                  title=${ifDefined(disableButtonsTitle)}
+                  ?skeleton=${skeletonStatus}
+                  ?disabled=${shouldDisableAllButtons}
+                  @cc-button:click=${() => this._onRestart('normal')}
+                >
+                  ${i18n('cc-header-app.action.restart')}
+                </cc-button>
+                <cc-button
+                  title=${ifDefined(disableButtonsTitle)}
+                  ?skeleton=${skeletonStatus}
+                  ?disabled=${shouldDisableAllButtons}
+                  @cc-button:click=${() => this._onRestart('rebuild')}
+                >
+                  ${i18n('cc-header-app.action.restart-rebuild')}
+                </cc-button>
+                <cc-button
+                  title=${ifDefined(disableButtonsTitle)}
+                  ?skeleton=${skeletonStatus}
+                  ?disabled=${shouldDisableAllButtons}
+                  @cc-button:click=${() => this._onRestart('last-commit')}
+                >
+                  ${i18n('cc-header-app.action.restart-last-commit')}
+                </cc-button>
+              `
+            : ''}
+          ${isDeploying
+            ? html`
+                <cc-button
+                  warning
+                  outlined
+                  title=${ifDefined(disableButtonsTitle)}
+                  ?disabled=${shouldDisableAllButtons}
+                  @cc-button:click=${this._onCancel}
+                >
+                  ${i18n('cc-header-app.action.cancel-deployment')}
+                </cc-button>
+              `
+            : ''}
 
-          ${canStart ? html`
-            <cc-button title=${ifDefined(disableButtonsTitle)} ?disabled=${shouldDisableAllButtons} @cc-button:click=${() => this._onStart('normal')}>
-              ${i18n('cc-header-app.action.start')}
-            </cc-button>
-            <cc-button title=${ifDefined(disableButtonsTitle)} ?disabled=${shouldDisableAllButtons} @cc-button:click=${() => this._onStart('rebuild')}>
-              ${i18n('cc-header-app.action.start-rebuild')}
-            </cc-button>
-            <cc-button title=${ifDefined(disableButtonsTitle)} ?disabled=${shouldDisableAllButtons} @cc-button:click=${() => this._onStart('last-commit')}>
-              ${i18n('cc-header-app.action.start-last-commit')}
-            </cc-button>
-          ` : ''}
-
-          ${canRestart ? html`
-            <cc-button title=${ifDefined(disableButtonsTitle)} ?skeleton=${skeletonStatus} ?disabled=${shouldDisableAllButtons} @cc-button:click=${() => this._onRestart('normal')}>
-              ${i18n('cc-header-app.action.restart')}
-            </cc-button>
-            <cc-button title=${ifDefined(disableButtonsTitle)} ?skeleton=${skeletonStatus} ?disabled=${shouldDisableAllButtons} @cc-button:click=${() => this._onRestart('rebuild')}>
-              ${i18n('cc-header-app.action.restart-rebuild')}
-            </cc-button>
-            <cc-button title=${ifDefined(disableButtonsTitle)} ?skeleton=${skeletonStatus} ?disabled=${shouldDisableAllButtons} @cc-button:click=${() => this._onRestart('last-commit')}>
-              ${i18n('cc-header-app.action.restart-last-commit')}
-            </cc-button>
-          ` : ''}
-
-          ${isDeploying ? html`
-            <cc-button warning outlined title=${ifDefined(disableButtonsTitle)} ?disabled=${shouldDisableAllButtons} @cc-button:click=${this._onCancel}>
-              ${i18n('cc-header-app.action.cancel-deployment')}
-            </cc-button>
-          ` : ''}
-
-          <cc-button danger outlined delay="3"
+          <cc-button
+            danger
+            outlined
+            delay="3"
             title=${ifDefined(disableButtonsTitle)}
             ?skeleton=${skeletonStatus}
             ?disabled=${shouldDisableAllButtons || shouldDisableStopButton}
             @cc-button:click=${this._onStop}
-          >${i18n('cc-header-app.action.stop')}</cc-button>
-
+            >${i18n('cc-header-app.action.stop')}</cc-button
+          >
         </div>
       </div>
 
       <div class="messages ${classMap({ 'cc-waiting': isDeploying })}">
-        ${(shouldDisplayStatusMessage) ? html`
-          <cc-icon class="status-icon ${status}" size="lg" .icon=${statusIcon[status] || iconUnknown}></cc-icon>
-          <span class=${classMap({ skeleton: skeletonStatus })}>
-            ${this._getStatusMsg(status)}
-          </span>
-          ${shouldDisplayLogsLink ? ccLink(lastDeploymentLogsUrl, i18n('cc-header-app.read-logs')) : ''}
-        ` : ''}
-        ${this._lastUserAction != null ? html`
-          ${this._getLastUserActionMsg()}
-        ` : ''}
-        ${this.zone != null ? html`
-          <span class="spacer"></span>
-          <cc-zone .zone=${this.zone} mode="small-infra"></cc-zone>
-        ` : ''}
+        ${shouldDisplayStatusMessage
+          ? html`
+              <cc-icon class="status-icon ${status}" size="lg" .icon=${statusIcon[status] || iconUnknown}></cc-icon>
+              <span class=${classMap({ skeleton: skeletonStatus })}> ${this._getStatusMsg(status)} </span>
+              ${shouldDisplayLogsLink ? ccLink(lastDeploymentLogsUrl, i18n('cc-header-app.read-logs')) : ''}
+            `
+          : ''}
+        ${this._lastUserAction != null ? html` ${this._getLastUserActionMsg()} ` : ''}
+        ${this.zone != null
+          ? html`
+              <span class="spacer"></span>
+              <cc-zone .zone=${this.zone} mode="small-infra"></cc-zone>
+            `
+          : ''}
       </div>
     `;
   }
 
-  _renderCommit (commit, type, skeleton) {
+  _renderCommit(commit, type, skeleton) {
     if (commit == null && type !== 'git') {
       return '';
     }
     return html`
       <span
-        class="commit ${classMap({ 'cc-waiting': (type === 'starting') })}"
+        class="commit ${classMap({ 'cc-waiting': type === 'starting' })}"
         title=${ifDefined(skeleton ? undefined : this._getCommitTitle(type, commit))}
         data-type=${type}
       >
         <cc-icon class="commit_img ${type}" .icon=${commitIcon[type]}></cc-icon>
-        ${commit != null ? html`
-          <!-- Keep this on one line to ease copy/paste -->
-          <span class=${classMap({ skeleton })}>${(commit.slice(0, 8))}<span class="commit_rest">${(commit.slice(8))}</span></span>
-        ` : ''}
-        ${commit == null ? html`
-          <span>${i18n('cc-header-app.commits.no-commits')}</span>
-        ` : ''}
+        ${commit != null
+          ? html`
+              <!-- Keep this on one line to ease copy/paste -->
+              <span class=${classMap({ skeleton })}
+                >${commit.slice(0, 8)}<span class="commit_rest">${commit.slice(8)}</span></span
+              >
+            `
+          : ''}
+        ${commit == null ? html` <span>${i18n('cc-header-app.commits.no-commits')}</span> ` : ''}
       </span>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       skeletonStyles,
       linkStyles,
@@ -328,7 +369,7 @@ export class CcHeaderApp extends LitElement {
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-default, 0.25em);
         }
-        
+
         :host([error]) {
           border: none;
         }

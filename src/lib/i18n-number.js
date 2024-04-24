@@ -7,7 +7,7 @@
  * @param {Number} options.maximumFractionDigits
  * @returns {String}
  */
-export function formatNumber (lang, value, options = {}) {
+export function formatNumber(lang, value, options = {}) {
   const { minimumFractionDigits, maximumFractionDigits } = options;
   const nf = new Intl.NumberFormat(lang, {
     minimumFractionDigits,
@@ -26,7 +26,7 @@ export function formatNumber (lang, value, options = {}) {
  * @param {String} options.maximumFractionDigits
  * @returns {String}
  */
-export function formatCurrency (lang, value, options = {}) {
+export function formatCurrency(lang, value, options = {}) {
   const { currency = 'EUR' } = options;
   const { minimumFractionDigits = 2, maximumFractionDigits = 2 } = options;
   const nf = new Intl.NumberFormat(lang, {
@@ -35,10 +35,12 @@ export function formatCurrency (lang, value, options = {}) {
     minimumFractionDigits,
     maximumFractionDigits,
   });
-  return nf
-    .format(value)
-    // Safari does not support currencySymbol: 'narrow' in Intl.NumberFormat so we need to do this #sorry
-    .replace('$US', '$');
+  return (
+    nf
+      .format(value)
+      // Safari does not support currencySymbol: 'narrow' in Intl.NumberFormat so we need to do this #sorry
+      .replace('$US', '$')
+  );
 }
 
 /**
@@ -47,7 +49,7 @@ export function formatCurrency (lang, value, options = {}) {
  * @param {Number} value
  * @returns {String}
  */
-export function formatPercent (lang, value) {
+export function formatPercent(lang, value) {
   const nf = new Intl.NumberFormat(lang, {
     style: 'percent',
     minimumFractionDigits: 1,
@@ -82,13 +84,11 @@ export function formatPercent (lang, value) {
 // https://en.wikipedia.org/wiki/Metric_prefix
 const SI_PREFIXES = ['', 'k', 'M', 'G', 'T', 'P'];
 
-export function prepareNumberUnitFormatter (lang, symbol = '', separator = '') {
+export function prepareNumberUnitFormatter(lang, symbol = '', separator = '') {
   const nf = new Intl.NumberFormat(lang, { minimumFractionDigits: 0, maximumFractionDigits: 1 });
   return (rawValue) => {
     // Figure out the "magnitude" of the rawValue: 1000 => 1 / 1000000 => 2 / 1000000000 => 3 ...
-    const prefixIndex = (rawValue > 1)
-      ? Math.floor(Math.log10(rawValue) / 3)
-      : 0;
+    const prefixIndex = rawValue > 1 ? Math.floor(Math.log10(rawValue) / 3) : 0;
     // Use the prefixIndex to "rebase" the rawValue into the new base, 1250 => 1.25 / 1444000 => 1.444...
     const rebasedValue = rawValue / 1000 ** prefixIndex;
     // Use Intl/i18n aware number formatter
@@ -111,9 +111,8 @@ const IEC_PREFIXES = ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi'];
 
 // We tried an implementation with Math.log2() similar to what we do with prepareNumberUnitFormatter
 // but it gets weird around 1125899906842621 :-|
-export function prepareNumberBytesFormatter (lang, byteSymbol, separator) {
+export function prepareNumberBytesFormatter(lang, byteSymbol, separator) {
   return (rawValue, fractionDigits = 0, maxPrefixIndex = IEC_PREFIXES.length - 1) => {
-
     // Nothing fancy to do when rawValues is under 1 kibibyte
     if (rawValue < 1024) {
       return new Intl.NumberFormat(lang).format(rawValue) + separator + byteSymbol;
@@ -135,7 +134,7 @@ export function prepareNumberBytesFormatter (lang, byteSymbol, separator) {
 
     // Truncate so the rounding applied by nf.format() does not mess with the prefix we selected
     // Ex: it prevents from returning 1,024.0 KiB if we're just under 1024^2 bytes and returns 1,023.9 KiB instead
-    const truncatedValue = Math.trunc(rebasedValue * (10 ** fractionDigits)) / (10 ** fractionDigits);
+    const truncatedValue = Math.trunc(rebasedValue * 10 ** fractionDigits) / 10 ** fractionDigits;
 
     // Use Intl/i18n aware number formatter
     const formattedValue = nf.format(truncatedValue);

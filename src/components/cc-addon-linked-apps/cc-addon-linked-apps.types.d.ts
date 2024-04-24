@@ -1,4 +1,4 @@
-import { Zone } from "../common.types";
+import { Zone } from '../common.types';
 
 export type AddonLinkedAppsState = AddonLinkedAppsStateLoading | AddonLinkedAppsStateLoaded | AddonLinkedAppsStateError;
 

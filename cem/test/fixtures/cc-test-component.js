@@ -32,8 +32,7 @@ import { LitElement } from 'lit-element';
  * @evet {CustomEvent<CustomEventType>} event - Should be ignored (wrong tag name)
  */
 export class CcTestComponent extends LitElement {
-
-  constructor () {
+  constructor() {
     super();
 
     /** @type {Foo|Bar} - lorem ipsum.  */
@@ -62,7 +61,5 @@ export class CcTestComponent extends LitElement {
 
     /** @type {PrivateInterface} - lorem ipsum.  */
     this._private = null;
-
   }
-
 }

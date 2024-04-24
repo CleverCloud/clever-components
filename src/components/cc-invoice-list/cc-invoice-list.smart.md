@@ -2,6 +2,7 @@
 kind: '🛠 Invoices/<cc-invoice-list>'
 title: '💡 Smart'
 ---
+
 # 💡 Smart `<cc-invoice-list>`
 
 ## ℹ️ Details
@@ -40,7 +41,8 @@ interface ApiConfig {
 ## ⬇️️ Examples
 
 ```html
-<cc-smart-container context='{
+<cc-smart-container
+  context='{
   "apiConfig": {
     API_HOST: "",
     API_OAUTH_TOKEN: "",
@@ -49,7 +51,8 @@ interface ApiConfig {
     OAUTH_CONSUMER_SECRET: "",
   },
   "ownerId": ""
-}'>
+}'
+>
   <cc-invoice-list></cc-invoice-list>
 </cc-smart-container>
 ```

@@ -15,8 +15,7 @@ defineSmartComponent({
     ownerId: { type: String },
     appId: { type: String },
   },
-  onContextUpdate ({ context, onEvent, updateComponent, signal }) {
-
+  onContextUpdate({ context, onEvent, updateComponent, signal }) {
     updateComponent('state', { type: 'loading' });
 
     const { apiConfig, ownerId, appId } = context;
@@ -55,16 +54,15 @@ defineSmartComponent({
   },
 });
 
-function fetchExposedConfig ({ apiConfig, signal, ownerId, appId }) {
-  return getAllExposedEnvVars({ id: ownerId, appId }).then(sendToApi({ apiConfig, signal }))
+function fetchExposedConfig({ apiConfig, signal, ownerId, appId }) {
+  return getAllExposedEnvVars({ id: ownerId, appId })
+    .then(sendToApi({ apiConfig, signal }))
     .then((exposedVarsObject) => {
-      return Object.entries(exposedVarsObject)
-        .map(([name, value]) => ({ name, value }));
+      return Object.entries(exposedVarsObject).map(([name, value]) => ({ name, value }));
     });
 }
 
-function updateExposedConfig ({ apiConfig, signal, ownerId, appId, variables }) {
+function updateExposedConfig({ apiConfig, signal, ownerId, appId, variables }) {
   const variablesObject = toNameValueObject(variables);
-  return updateAllExposedEnvVars({ id: ownerId, appId }, variablesObject)
-    .then(sendToApi({ apiConfig, signal }));
+  return updateAllExposedEnvVars({ id: ownerId, appId }, variablesObject).then(sendToApi({ apiConfig, signal }));
 }

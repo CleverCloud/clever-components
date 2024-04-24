@@ -4,49 +4,46 @@ import { defineSmartComponentCore, observeContainer, updateContext } from '../..
 // Special case to propagate/merge contexts trough containers
 defineSmartComponentCore({
   selector: 'cc-smart-container',
-  onContextUpdate (container, component, context) {
+  onContextUpdate(container, component, context) {
     component.parentContext = context;
   },
 });
 
 export class CcSmartContainer extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       context: { type: Object, reflect: true },
       parentContext: { type: Object, attribute: false },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
     this.context = {};
     this.parentContext = {};
   }
 
-  connectedCallback () {
+  connectedCallback() {
     super.connectedCallback();
     this._abortController = new AbortController();
     observeContainer(this, this._abortController.signal);
   }
 
-  disconnectedCallback () {
+  disconnectedCallback() {
     super.disconnectedCallback();
     this._abortController.abort();
     delete this._abortController;
   }
 
-  willUpdate (changedProperties) {
+  willUpdate(changedProperties) {
     updateContext(this, { ...this.parentContext, ...this.context });
   }
 
-  render () {
-    return html`
-      <slot></slot>
-    `;
+  render() {
+    return html` <slot></slot> `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       css`
         :host {

@@ -13,7 +13,7 @@ defineSmartComponent({
     productId: { type: String },
     zoneId: { type: String },
   },
-  onContextUpdate ({ context, updateComponent, signal }) {
+  onContextUpdate({ context, updateComponent, signal }) {
     const { productId, zoneId } = context;
 
     // Reset the component before loading
@@ -35,14 +35,13 @@ defineSmartComponent({
   },
 });
 
-function fetchRuntimeProduct ({ productId, zoneId, signal }) {
-  return Promise.all([
-    fetchRuntime({ productId, signal }),
-    fetchPriceSystem({ zoneId, signal }),
-  ]).then(([runtime, priceSystem]) => formatRuntimeProduct(runtime, priceSystem));
+function fetchRuntimeProduct({ productId, zoneId, signal }) {
+  return Promise.all([fetchRuntime({ productId, signal }), fetchPriceSystem({ zoneId, signal })]).then(
+    ([runtime, priceSystem]) => formatRuntimeProduct(runtime, priceSystem),
+  );
 }
 
-function fetchRuntime ({ productId, signal }) {
+function fetchRuntime({ productId, signal }) {
   return getAvailableInstances()
     .then(sendToApi({ cacheDelay: ONE_DAY, signal }))
     .then((allRuntimes) => {

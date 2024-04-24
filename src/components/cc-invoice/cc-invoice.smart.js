@@ -10,7 +10,7 @@ defineSmartComponent({
     ownerId: { type: String },
     invoiceNumber: { type: String },
   },
-  onContextUpdate ({ component, context, onEvent, updateComponent, signal }) {
+  onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId, invoiceNumber } = context;
 
     updateComponent('state', { type: 'loading', number: invoiceNumber });
@@ -33,13 +33,11 @@ defineSmartComponent({
   },
 });
 
-function fetchFullInvoice ({ apiConfig, signal, ownerId, invoiceNumber }) {
-  return Promise
-    .all([
-      fetchInvoice({ apiConfig, signal, ownerId, invoiceNumber }),
-      fetchInvoiceHtml({ apiConfig, signal, ownerId, invoiceNumber }),
-    ])
-    .then(([invoice, invoiceHtml]) => {
-      return { ...invoice, invoiceHtml };
-    });
+function fetchFullInvoice({ apiConfig, signal, ownerId, invoiceNumber }) {
+  return Promise.all([
+    fetchInvoice({ apiConfig, signal, ownerId, invoiceNumber }),
+    fetchInvoiceHtml({ apiConfig, signal, ownerId, invoiceNumber }),
+  ]).then(([invoice, invoiceHtml]) => {
+    return { ...invoice, invoiceHtml };
+  });
 }

@@ -30,92 +30,112 @@ const DEFAULT_SLOTTED_CONTENT = `<div slot="footer">
 </div>`;
 
 export const defaultStory = makeStory(conf, {
-  items: [{
-    orga: DEFAULT_ORGA,
-  }],
+  items: [
+    {
+      orga: DEFAULT_ORGA,
+    },
+  ],
 });
 
 export const skeleton = makeStory(conf, {
-  items: [{
-    orga: {
-      state: 'loading',
+  items: [
+    {
+      orga: {
+        state: 'loading',
+      },
     },
-  }],
+  ],
 });
 
 export const error = makeStory(conf, {
-  items: [{
-    orga: {
-      state: 'error',
+  items: [
+    {
+      orga: {
+        state: 'error',
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithClassicClient = makeStory(conf, {
-  items: [{
-    orga: {
-      ...DEFAULT_ORGA,
-      name: 'ACME Startup',
-      cleverEnterprise: false,
-      emergencyNumber: null,
+  items: [
+    {
+      orga: {
+        ...DEFAULT_ORGA,
+        name: 'ACME Startup',
+        cleverEnterprise: false,
+        emergencyNumber: null,
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithClassicClientAndSlottedContent = makeStory(conf, {
-  items: [{
-    orga: {
-      ...DEFAULT_ORGA,
-      name: 'ACME Startup',
-      cleverEnterprise: false,
-      emergencyNumber: null,
+  items: [
+    {
+      orga: {
+        ...DEFAULT_ORGA,
+        name: 'ACME Startup',
+        cleverEnterprise: false,
+        emergencyNumber: null,
+      },
+      innerHTML: DEFAULT_SLOTTED_CONTENT,
     },
-    innerHTML: DEFAULT_SLOTTED_CONTENT,
-  }],
+  ],
 });
 
 export const dataLoadedWithClassicClientNoAvatar = makeStory(conf, {
-  items: [{
-    orga: {
-      ...DEFAULT_ORGA,
-      name: 'ACME Startup',
-      avatar: null,
-      cleverEnterprise: false,
-      emergencyNumber: null,
+  items: [
+    {
+      orga: {
+        ...DEFAULT_ORGA,
+        name: 'ACME Startup',
+        avatar: null,
+        cleverEnterprise: false,
+        emergencyNumber: null,
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithEnterpriseClient = makeStory(conf, {
-  items: [{
-    orga: {
-      ...DEFAULT_ORGA,
-      emergencyNumber: null,
+  items: [
+    {
+      orga: {
+        ...DEFAULT_ORGA,
+        emergencyNumber: null,
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithEnterpriseClientAndSlottedContent = makeStory(conf, {
-  items: [{
-    orga: {
-      ...DEFAULT_ORGA,
-      emergencyNumber: null,
+  items: [
+    {
+      orga: {
+        ...DEFAULT_ORGA,
+        emergencyNumber: null,
+      },
+      innerHTML: DEFAULT_SLOTTED_CONTENT,
     },
-    innerHTML: DEFAULT_SLOTTED_CONTENT,
-  }],
+  ],
 });
 
 export const dataLoadedWithEnterpriseClientEmergencyNumber = makeStory(conf, {
-  items: [{
-    orga: DEFAULT_ORGA,
-  }],
+  items: [
+    {
+      orga: DEFAULT_ORGA,
+    },
+  ],
 });
 
 export const dataLoadedWithEnterpriseClientEmergencyNumberAndSlottedContent = makeStory(conf, {
-  items: [{
-    orga: DEFAULT_ORGA,
-    innerHTML: DEFAULT_SLOTTED_CONTENT,
-  }],
+  items: [
+    {
+      orga: DEFAULT_ORGA,
+      innerHTML: DEFAULT_SLOTTED_CONTENT,
+    },
+  ],
 });
 
 export const dataLoadedWithSlottedContentCustomStyling = makeStory(conf, {
@@ -128,16 +148,18 @@ export const dataLoadedWithSlottedContentCustomStyling = makeStory(conf, {
       border-top: solid 2px #000;
     }
   `,
-  items: [{
-    orga: DEFAULT_ORGA,
-    innerHTML: `
+  items: [
+    {
+      orga: DEFAULT_ORGA,
+      innerHTML: `
       <div slot="footer">
         <p>The slotted content container has a default styling: <code>background-color</code>, <code>padding</code> and <code>border-top</code>.</p>
         <p>You may change any of these by styling the tag on which you have added the <code>slot="footer"</code> attribute.</p>
         <p><strong>Caution:</strong> the default styling was designed to remain consistent with the header body and avoid drawing too much attention to it. You should stick to the default styling as much as possible and stay as close as possible to it. This example is only here to demo that anything can be customized.
       </div>
     `,
-  }],
+    },
+  ],
 });
 
 export const simulations = makeStory(conf, {

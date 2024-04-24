@@ -3,7 +3,7 @@
  * @param {object} [data] - The translation data
  * @returns {string} - The translated
  */
-export function i18n (key, data) {
+export function i18n(key, data) {
   const translation = getTranslation(key);
   if (translation == null) {
     console.warn(`Unknown translation [${i18n._lang}] "${key}"`);
@@ -22,11 +22,10 @@ i18n.MISSING_TEXT = '🤬🤬🤬🤬🤬';
  * @param {string} key - The translation key
  * @returns {null|string|function} - The translation string or function
  */
-function getTranslation (key) {
+function getTranslation(key) {
   try {
     return i18n._translations[i18n._lang][key];
-  }
-  catch (e) {
+  } catch (e) {
     return null;
   }
 }
@@ -37,14 +36,14 @@ i18n._translations = {};
 /**
  * @param {string} lang - Translation language code
  */
-export function setLanguage (lang) {
+export function setLanguage(lang) {
   i18n._lang = lang;
 }
 
 /**
  * @returns {string} - Translation language code
  */
-export function getLanguage () {
+export function getLanguage() {
   return i18n._lang;
 }
 
@@ -52,7 +51,7 @@ export function getLanguage () {
  * @param {string} lang - Translation language code
  * @param {object} translations - Translation values by key
  */
-export function addTranslations (lang, translations) {
+export function addTranslations(lang, translations) {
   if (i18n._translations[lang] == null) {
     i18n._translations[lang] = {};
   }
@@ -64,11 +63,11 @@ export function addTranslations (lang, translations) {
 /**
  * @returns {object} - All defined languages (key: human name and value: code)
  */
-export function getAvailableLanguages () {
+export function getAvailableLanguages() {
   const availableLanguages = {};
   for (const lang in i18n._translations) {
     const { LANGUAGE } = i18n._translations[lang];
     availableLanguages[LANGUAGE] = lang;
   }
   return availableLanguages;
-};
+}

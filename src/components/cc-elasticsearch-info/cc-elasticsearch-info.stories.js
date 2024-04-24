@@ -60,10 +60,7 @@ export const errorStory = makeStory(conf, {
 });
 
 export const simulations = makeStory(conf, {
-  items: [
-    { links: [{ type: 'elasticsearch' }] },
-    {},
-  ],
+  items: [{ links: [{ type: 'elasticsearch' }] }, {}],
   simulations: [
     storyWait(2000, ([component, componentError]) => {
       component.links = [elasticsearchLink, kibanaLink];

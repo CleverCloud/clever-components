@@ -1,1 +1,1 @@
-type MarkerStateType = "default" | "hovered" | "selected";
+type MarkerStateType = 'default' | 'hovered' | 'selected';

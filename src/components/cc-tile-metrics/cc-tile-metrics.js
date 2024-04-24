@@ -40,16 +40,14 @@ const NUMBER_OF_POINTS = 24;
 
 const ONE_DAY = 60 * 60 * 1000 * 24;
 
-const SKELETON_REQUESTS = Array
-  .from(new Array(NUMBER_OF_POINTS))
-  .map((_, index) => {
-    const startTs = Date.now() - ONE_DAY;
-    return {
-      skeleton: true,
-      value: 0,
-      timestamp: startTs + index * 3600,
-    };
-  });
+const SKELETON_REQUESTS = Array.from(new Array(NUMBER_OF_POINTS)).map((_, index) => {
+  const startTs = Date.now() - ONE_DAY;
+  return {
+    skeleton: true,
+    value: 0,
+    timestamp: startTs + index * 3600,
+  };
+});
 
 /**
  * @typedef {import('./cc-tile-metrics.types.js').MetricsState} MetricsState
@@ -71,8 +69,7 @@ const SKELETON_REQUESTS = Array
  * @cssdisplay grid
  */
 export class CcTileMetrics extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       grafanaLink: { type: String },
       metrics: { type: Object },
@@ -81,7 +78,7 @@ export class CcTileMetrics extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {string} - Sets the link to the grafana app. */
@@ -103,15 +100,16 @@ export class CcTileMetrics extends LitElement {
     this._memCtxRef = createRef();
 
     new ResizeController(this, {
-      callback: () => this.updateComplete.then(() => {
-        // everytime the component is resized, we need to trigger the chartJS resize
-        this._cpuChart?.resize();
-        this._memChart?.resize();
-      }),
+      callback: () =>
+        this.updateComplete.then(() => {
+          // everytime the component is resized, we need to trigger the chartJS resize
+          this._cpuChart?.resize();
+          this._memChart?.resize();
+        }),
     });
   }
 
-  _createChart (chartElement) {
+  _createChart(chartElement) {
     return new Chart(chartElement, {
       type: 'bar',
       options: {
@@ -143,21 +141,16 @@ export class CcTileMetrics extends LitElement {
     });
   }
 
-  _getChartData (inputData) {
-
+  _getChartData(inputData) {
     const labels = inputData.map((item) => item.timestamp);
     const values = inputData.map((item) => item.value);
 
     // We use this series as a trick to scale the chart with the values given (0 to 100).
     // It also serves as a background for the other bar with the data.
-    const maxValues = Array
-      .from(new Array(NUMBER_OF_POINTS))
-      .map((_) => 100);
+    const maxValues = Array.from(new Array(NUMBER_OF_POINTS)).map((_) => 100);
 
     const colors = inputData.map(({ value, skeleton }) => {
-      return skeleton
-        ? SKELETON_COLOR
-        : this._getColorChart(value);
+      return skeleton ? SKELETON_COLOR : this._getColorChart(value);
     });
 
     return {
@@ -176,27 +169,25 @@ export class CcTileMetrics extends LitElement {
     };
   }
 
-  _getColorChart (percent) {
+  _getColorChart(percent) {
     if (percent > TOP_THRESHOLD) {
       return TOP_COLOR_CHART;
-    }
-    else if (percent > BOTTOM_THRESHOLD) {
+    } else if (percent > BOTTOM_THRESHOLD) {
       return MIDDLE_COLOR_CHART;
     }
     return BOTTOM_COLOR_CHART;
   }
 
-  _getColorLegend (percent) {
+  _getColorLegend(percent) {
     if (percent > TOP_THRESHOLD) {
       return TOP_COLOR_PERCENT;
-    }
-    else if (percent > BOTTOM_THRESHOLD) {
+    } else if (percent > BOTTOM_THRESHOLD) {
       return MIDDLE_COLOR_PERCENT;
     }
     return BOTTOM_COLOR_PERCENT;
   }
 
-  _getCurrentPanel () {
+  _getCurrentPanel() {
     if (this._docsPanelVisible) {
       return 'docs';
     }
@@ -211,46 +202,46 @@ export class CcTileMetrics extends LitElement {
     }
   }
 
-  _onToggleDocs () {
+  _onToggleDocs() {
     this._docsPanelVisible = !this._docsPanelVisible;
   }
 
-  firstUpdated () {
+  firstUpdated() {
     this._cpuChart = this._createChart(this._cpuCtxRef.value);
     this._memChart = this._createChart(this._memCtxRef.value);
   }
 
   // updated and not willUpdate because we need this._cpuChart and this._memChart before
-  updated (changedProperties) {
-
+  updated(changedProperties) {
     if (changedProperties.has('metrics')) {
-
-      this._cpuChart.data = (this.metrics.state === 'loaded')
-        ? this._getChartData(this.metrics.value.cpuData)
-        : this._getChartData(SKELETON_REQUESTS);
+      this._cpuChart.data =
+        this.metrics.state === 'loaded'
+          ? this._getChartData(this.metrics.value.cpuData)
+          : this._getChartData(SKELETON_REQUESTS);
 
       this._cpuChart.update();
       this._cpuChart.resize();
 
-      this._memChart.data = (this.metrics.state === 'loaded')
-        ? this._getChartData(this.metrics.value.memData)
-        : this._getChartData(SKELETON_REQUESTS);
+      this._memChart.data =
+        this.metrics.state === 'loaded'
+          ? this._getChartData(this.metrics.value.memData)
+          : this._getChartData(SKELETON_REQUESTS);
 
       this._memChart.update();
       this._memChart.resize();
     }
-
   }
 
-  render () {
-
+  render() {
     const state = this.metrics.state;
 
-    const lastCpuValue = (state === 'loaded') ? this.metrics.value.cpuData[this.metrics.value.cpuData.length - 1].value : 0;
-    const lastMemValue = (state === 'loaded') ? this.metrics.value.memData[this.metrics.value.memData.length - 1].value : 0;
+    const lastCpuValue =
+      state === 'loaded' ? this.metrics.value.cpuData[this.metrics.value.cpuData.length - 1].value : 0;
+    const lastMemValue =
+      state === 'loaded' ? this.metrics.value.memData[this.metrics.value.memData.length - 1].value : 0;
 
-    const cpuColorType = (state === 'loaded') ? this._getColorLegend(lastCpuValue) : SKELETON_COLOR;
-    const memColorType = (state === 'loaded') ? this._getColorLegend(lastMemValue) : SKELETON_COLOR;
+    const cpuColorType = state === 'loaded' ? this._getColorLegend(lastCpuValue) : SKELETON_COLOR;
+    const memColorType = state === 'loaded' ? this._getColorLegend(lastMemValue) : SKELETON_COLOR;
 
     const panel = this._getCurrentPanel();
 
@@ -258,17 +249,32 @@ export class CcTileMetrics extends LitElement {
       <div class="tile_title">
         ${i18n('cc-tile-metrics.title')}
         <div class="docs-buttons">
-          ${state === 'loaded' ? html`
-            ${ccLink(this.grafanaLink, html`
-              <cc-icon class="icon--grafana" .icon=${iconGrafana} a11y-name="${i18n('cc-tile-metrics.link-to-grafana')}"></cc-icon>
-            `, false, i18n('cc-tile-metrics.link-to-grafana'))}
-          ` : ''}
+          ${state === 'loaded'
+            ? html`
+                ${ccLink(
+                  this.grafanaLink,
+                  html`
+                    <cc-icon
+                      class="icon--grafana"
+                      .icon=${iconGrafana}
+                      a11y-name="${i18n('cc-tile-metrics.link-to-grafana')}"
+                    ></cc-icon>
+                  `,
+                  false,
+                  i18n('cc-tile-metrics.link-to-grafana'),
+                )}
+              `
+            : ''}
           <cc-button
-            class="docs-toggle ${classMap({ 'icon--close': this._docsPanelVisible, 'icon--info': !this._docsPanelVisible })}"
+            class="docs-toggle ${classMap({
+              'icon--close': this._docsPanelVisible,
+              'icon--info': !this._docsPanelVisible,
+            })}"
             .icon=${this._docsPanelVisible ? iconClose : iconInfo}
             hide-text
             @cc-button:click=${this._onToggleDocs}
-          > ${this._docsPanelVisible ? i18n('cc-tile-metrics.close-btn') : i18n('cc-tile-metrics.about-btn')}
+          >
+            ${this._docsPanelVisible ? i18n('cc-tile-metrics.close-btn') : i18n('cc-tile-metrics.about-btn')}
           </cc-button>
         </div>
       </div>
@@ -280,9 +286,14 @@ export class CcTileMetrics extends LitElement {
               <canvas id="cpu_chart" ${ref(this._cpuCtxRef)}></canvas>
             </div>
           </div>
-          <div class="current-percentage percent-cpu ${classMap({
-            skeleton: state === 'loading', 'skeleton-data-value': state === 'loading',
-          })}" style="color: ${cpuColorType}">${i18n('cc-tile-metrics.percent', { percent: lastCpuValue / 100 })}
+          <div
+            class="current-percentage percent-cpu ${classMap({
+              skeleton: state === 'loading',
+              'skeleton-data-value': state === 'loading',
+            })}"
+            style="color: ${cpuColorType}"
+          >
+            ${i18n('cc-tile-metrics.percent', { percent: lastCpuValue / 100 })}
           </div>
           <div class="legend-cpu">${i18n('cc-tile-metrics.legend.cpu')}</div>
         </div>
@@ -293,22 +304,31 @@ export class CcTileMetrics extends LitElement {
               <canvas id="mem_chart" ${ref(this._memCtxRef)}></canvas>
             </div>
           </div>
-          <div class="current-percentage percent-mem ${classMap({
-            skeleton: state === 'loading', 'skeleton-data-value': state === 'loading',
-          })}" style="color: ${memColorType}">${i18n('cc-tile-metrics.percent', { percent: lastMemValue / 100 })}
+          <div
+            class="current-percentage percent-mem ${classMap({
+              skeleton: state === 'loading',
+              'skeleton-data-value': state === 'loading',
+            })}"
+            style="color: ${memColorType}"
+          >
+            ${i18n('cc-tile-metrics.percent', { percent: lastMemValue / 100 })}
           </div>
           <div class="legend-mem">${i18n('cc-tile-metrics.legend.mem')}</div>
         </div>
-        ${state === 'loaded'
-          ? this._renderAccessibleTable()
-          : ''}
+        ${state === 'loaded' ? this._renderAccessibleTable() : ''}
       </div>
 
-      <div class="tile_message ${classMap({ 'tile--hidden': panel !== 'empty' })}">${i18n('cc-tile-metrics.empty')}</div>
+      <div class="tile_message ${classMap({ 'tile--hidden': panel !== 'empty' })}">
+        ${i18n('cc-tile-metrics.empty')}
+      </div>
 
       <div class="tile_message ${classMap({ 'tile--hidden': panel !== 'error' })}">
         <div class="error-message">
-          <cc-icon .icon="${iconAlert}" a11y-name="${i18n('cc-tile-metrics.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
+          <cc-icon
+            .icon="${iconAlert}"
+            a11y-name="${i18n('cc-tile-metrics.error.icon-a11y-name')}"
+            class="icon-warning"
+          ></cc-icon>
           <p>${i18n('cc-tile-metrics.error')}</p>
         </div>
       </div>
@@ -319,10 +339,20 @@ export class CcTileMetrics extends LitElement {
           <p>${i18n('cc-tile-metrics.docs.more-metrics')}</p>
           <ul>
             <li>
-              ${ccLink(this.grafanaLink, i18n('cc-tile-metrics.grafana'), state === 'loading', i18n('cc-tile-metrics.link-to-grafana'))}
+              ${ccLink(
+                this.grafanaLink,
+                i18n('cc-tile-metrics.grafana'),
+                state === 'loading',
+                i18n('cc-tile-metrics.link-to-grafana'),
+              )}
             </li>
             <li>
-              ${ccLink(this.metricsLink, i18n('cc-tile-metrics.metrics-link'), state === 'loading', i18n('cc-tile-metrics.link-to-metrics'))}
+              ${ccLink(
+                this.metricsLink,
+                i18n('cc-tile-metrics.metrics-link'),
+                state === 'loading',
+                i18n('cc-tile-metrics.link-to-metrics'),
+              )}
             </li>
           </ul>
         </div>
@@ -330,35 +360,37 @@ export class CcTileMetrics extends LitElement {
     `;
   }
 
-  _renderAccessibleTable () {
+  _renderAccessibleTable() {
     return html`
       <table class="visually-hidden">
-        <caption>${i18n('cc-tile-metrics.title')}</caption>
+        <caption>
+          ${i18n('cc-tile-metrics.title')}
+        </caption>
         <thead>
-        <tr>
-          <th lang="en">${i18n('cc-tile-metrics.a11y.table-header.timestamp')}</th>
-          <th>${i18n('cc-tile-metrics.a11y.table-header.cpu')}</th>
-          <th>${i18n('cc-tile-metrics.a11y.table-header.mem')}</th>
-        </tr>
+          <tr>
+            <th lang="en">${i18n('cc-tile-metrics.a11y.table-header.timestamp')}</th>
+            <th>${i18n('cc-tile-metrics.a11y.table-header.cpu')}</th>
+            <th>${i18n('cc-tile-metrics.a11y.table-header.mem')}</th>
+          </tr>
         </thead>
         <tbody>
-        ${this.metrics.value.cpuData.map((cpuData, index) => {
-          const memData = this.metrics.value.memData[index];
+          ${this.metrics.value.cpuData.map((cpuData, index) => {
+            const memData = this.metrics.value.memData[index];
 
-          return html`
-            <tr>
-              <th>${i18n('cc-tile-metrics.timestamp-format', { timestamp: cpuData.timestamp })}</th>
-              <td>${i18n('cc-tile-metrics.percent', { percent: cpuData.value / 100 })}</td>
-              <td>${i18n('cc-tile-metrics.percent', { percent: memData.value / 100 })}</td>
-            </tr>
-          `;
-        })}
+            return html`
+              <tr>
+                <th>${i18n('cc-tile-metrics.timestamp-format', { timestamp: cpuData.timestamp })}</th>
+                <td>${i18n('cc-tile-metrics.percent', { percent: cpuData.value / 100 })}</td>
+                <td>${i18n('cc-tile-metrics.percent', { percent: memData.value / 100 })}</td>
+              </tr>
+            `;
+          })}
         </tbody>
       </table>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       accessibilityStyles,
       linkStyles,
@@ -436,7 +468,7 @@ export class CcTileMetrics extends LitElement {
           min-height: 8.75em;
           align-items: center;
           gap: 0 1em;
-          grid-template-areas: 
+          grid-template-areas:
             'icon-cpu chart-cpu percent-cpu'
             '. legend-cpu .'
             'icon-mem chart-mem percent-mem'
@@ -554,9 +586,9 @@ export class CcTileMetrics extends LitElement {
 
           --cc-icon-color: var(--cc-color-text-weak);
         }
-        
+
         /* endregion */
-        
+
         /* region error */
 
         .error-message {
@@ -576,12 +608,11 @@ export class CcTileMetrics extends LitElement {
 
           --cc-icon-size: 1.25em;
         }
-        
+
         /* endregion */
       `,
     ];
   }
-
 }
 
 window.customElements.define('cc-tile-metrics', CcTileMetrics);

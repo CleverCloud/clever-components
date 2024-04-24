@@ -2,7 +2,6 @@ import { css } from 'lit';
 
 // language=CSS
 export const waitingStyles = css`
-
   @keyframes waiting {
     from {
       opacity: 0.85;

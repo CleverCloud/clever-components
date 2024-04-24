@@ -1,8 +1,8 @@
 interface Metric {
   // Timestamp in ms
-  timestamp: number,
+  timestamp: number;
   // Value is a percentage (e.g: 14.02)
-  value: number,
+  value: number;
 }
 
 interface MetricsData {

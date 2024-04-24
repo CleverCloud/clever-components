@@ -15,15 +15,14 @@ const DOC_SKELETON_NUMBER = 9;
  * @cssdisplay block
  */
 export class CcDocList extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       docs: { type: Array },
       error: { type: Boolean },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {Documentation[]} Sets the content that will be put into the cards. */
@@ -33,35 +32,34 @@ export class CcDocList extends LitElement {
     this.error = false;
   }
 
-  render () {
-
-    const skeleton = (this.docs == null);
+  render() {
+    const skeleton = this.docs == null;
 
     return html`
       <div class="doc-wrapper">
-        ${this.error ? html`
-            <cc-notice intent="warning" message="${i18n('cc-doc-list.error')}"></cc-notice>
-        ` : ''}
-        ${skeleton && !this.error ? html`
-          ${new Array(DOC_SKELETON_NUMBER).fill(html`
-            <cc-doc-card></cc-doc-card>
-          `)}
-        ` : ''}
-        ${!skeleton && !this.error ? html`
-          ${this.docs.map((article) => html`
-            <cc-doc-card
-              description=${article.description ?? ''}
-              heading=${article.heading ?? ''}
-              .icons=${article.icons ?? []}
-              link=${article.link ?? ''}
-            ></cc-doc-card>
-          `)}
-        ` : ''}
+        ${this.error ? html` <cc-notice intent="warning" message="${i18n('cc-doc-list.error')}"></cc-notice> ` : ''}
+        ${skeleton && !this.error
+          ? html` ${new Array(DOC_SKELETON_NUMBER).fill(html` <cc-doc-card></cc-doc-card> `)} `
+          : ''}
+        ${!skeleton && !this.error
+          ? html`
+              ${this.docs.map(
+                (article) => html`
+                  <cc-doc-card
+                    description=${article.description ?? ''}
+                    heading=${article.heading ?? ''}
+                    .icons=${article.icons ?? []}
+                    link=${article.link ?? ''}
+                  ></cc-doc-card>
+                `,
+              )}
+            `
+          : ''}
       </div>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`

@@ -26,8 +26,9 @@ const conf = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [{
-    innerHTML: `
+  items: [
+    {
+      innerHTML: `
       <div slot="title">This is my block</div>
       <cc-block-section>
         <div slot="title">Subtitle Foo</div>
@@ -49,12 +50,14 @@ export const defaultStory = makeStory(conf, {
         <cc-button primary>THIRD!</cc-button>
       </cc-block-section>
     `,
-  }],
+    },
+  ],
 });
 
 export const infoWithEmptyColumn = makeStory(conf, {
-  items: [{
-    innerHTML: `
+  items: [
+    {
+      innerHTML: `
       <div slot="title">This is my block</div>
       <cc-block-section>
         <div slot="title">Subtitle Foo</div>
@@ -71,12 +74,14 @@ export const infoWithEmptyColumn = makeStory(conf, {
         <cc-button primary>ACTION!</cc-button>
       </cc-block-section>
     `,
-  }],
+    },
+  ],
 });
 
 export const infoWithNoInfoColumn = makeStory(conf, {
-  items: [{
-    innerHTML: `
+  items: [
+    {
+      innerHTML: `
       <div slot="title">This is my block</div>
       <cc-block-section>
         <div slot="title">Subtitle Foo</div>
@@ -91,5 +96,6 @@ export const infoWithNoInfoColumn = makeStory(conf, {
         <cc-button primary>ACTION!</cc-button>
       </cc-block-section>
     `,
-  }],
+    },
+  ],
 });

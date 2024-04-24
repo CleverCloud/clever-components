@@ -35,8 +35,7 @@ const SKELETON_VERSION = '????????';
  * @cssdisplay block
  */
 export class CcHeaderAddon extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       addon: { type: Object },
       error: { type: Boolean, reflect: true },
@@ -44,9 +43,9 @@ export class CcHeaderAddon extends LitElement {
       version: { type: String },
       zone: { type: Object },
     };
-  };
+  }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {Addon} Sets add-on details and config. */
@@ -65,61 +64,83 @@ export class CcHeaderAddon extends LitElement {
     this.zone = null;
   }
 
-  render () {
-
-    const skeleton = (this.addon == null);
+  render() {
+    const skeleton = this.addon == null;
     const addon = skeleton ? SKELETON_ADDON : this.addon;
 
-    const skeletonVersion = (this.version == null);
+    const skeletonVersion = this.version == null;
     const version = skeletonVersion ? SKELETON_VERSION : this.version;
 
     const creationDateShort = i18n('cc-header-addon.creation-date.short', { date: addon.creationDate });
-    const creationDateFull = skeleton ? undefined : i18n('cc-header-addon.creation-date.full', { date: addon.creationDate });
+    const creationDateFull = skeleton
+      ? undefined
+      : i18n('cc-header-addon.creation-date.full', { date: addon.creationDate });
 
     return html`
-      ${!this.error ? html`
-        <div class="main">
-
-          <cc-img class="logo" src="${ifDefined(addon.provider.logoUrl)}"
-            ?skeleton=${skeleton} a11y-name="${addon.provider.name}" title="${ifDefined(addon.provider.name)}"></cc-img>
-          <div class="details">
-            <div class="name"><span class="${classMap({ skeleton })}">${addon.name}</span></div>
-            <div class="addon-id-inputs">
-              <cc-input-text label=${i18n('cc-header-addon.id-label')} hidden-label readonly clipboard value="${ifDefined(addon.id)}" ?skeleton=${skeleton}></cc-input-text>
-              <cc-input-text label=${i18n('cc-header-addon.id-label-alternative')} hidden-label readonly clipboard value="${ifDefined(addon.realId)}" ?skeleton=${skeleton}></cc-input-text>
-            </div>
-          </div>
-
-          <div class="description">
-            <div class="description-item">
-              <div class="description-label">${i18n('cc-header-addon.plan')}</div>
-              <div class="${classMap({ skeleton })}">${addon.plan.name}</div>
-            </div>
-            ${!this.noVersion ? html`
-              <div class="description-item">
-                <div class="description-label">${i18n('cc-header-addon.version')}</div>
-                <div class="${classMap({ skeleton: skeletonVersion })}">${version}</div>
+      ${!this.error
+        ? html`
+            <div class="main">
+              <cc-img
+                class="logo"
+                src="${ifDefined(addon.provider.logoUrl)}"
+                ?skeleton=${skeleton}
+                a11y-name="${addon.provider.name}"
+                title="${ifDefined(addon.provider.name)}"
+              ></cc-img>
+              <div class="details">
+                <div class="name"><span class="${classMap({ skeleton })}">${addon.name}</span></div>
+                <div class="addon-id-inputs">
+                  <cc-input-text
+                    label=${i18n('cc-header-addon.id-label')}
+                    hidden-label
+                    readonly
+                    clipboard
+                    value="${ifDefined(addon.id)}"
+                    ?skeleton=${skeleton}
+                  ></cc-input-text>
+                  <cc-input-text
+                    label=${i18n('cc-header-addon.id-label-alternative')}
+                    hidden-label
+                    readonly
+                    clipboard
+                    value="${ifDefined(addon.realId)}"
+                    ?skeleton=${skeleton}
+                  ></cc-input-text>
+                </div>
               </div>
-            ` : ''}
-            <div class="description-item">
-              <div class="description-label">${i18n('cc-header-addon.creation-date')}</div>
-              <div class="${classMap({ skeleton })}" title="${ifDefined(creationDateFull)}">${creationDateShort}</div>
+
+              <div class="description">
+                <div class="description-item">
+                  <div class="description-label">${i18n('cc-header-addon.plan')}</div>
+                  <div class="${classMap({ skeleton })}">${addon.plan.name}</div>
+                </div>
+                ${!this.noVersion
+                  ? html`
+                      <div class="description-item">
+                        <div class="description-label">${i18n('cc-header-addon.version')}</div>
+                        <div class="${classMap({ skeleton: skeletonVersion })}">${version}</div>
+                      </div>
+                    `
+                  : ''}
+                <div class="description-item">
+                  <div class="description-label">${i18n('cc-header-addon.creation-date')}</div>
+                  <div class="${classMap({ skeleton })}" title="${ifDefined(creationDateFull)}">
+                    ${creationDateShort}
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div class="messages">
-          <cc-zone .zone=${this.zone} mode="small-infra"></cc-zone>
-        </div>
-      ` : ''}
-
-      ${this.error ? html`
-        <cc-notice intent="warning" message="${i18n('cc-header-addon.error')}"></cc-notice>
-      ` : ''}
+            <div class="messages">
+              <cc-zone .zone=${this.zone} mode="small-infra"></cc-zone>
+            </div>
+          `
+        : ''}
+      ${this.error ? html` <cc-notice intent="warning" message="${i18n('cc-header-addon.error')}"></cc-notice> ` : ''}
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       skeletonStyles,
       // language=CSS
@@ -133,7 +154,7 @@ export class CcHeaderAddon extends LitElement {
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-default, 0.25em);
         }
-        
+
         :host([error]) {
           border: none;
         }

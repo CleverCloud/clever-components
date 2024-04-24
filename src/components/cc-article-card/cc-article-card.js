@@ -18,8 +18,7 @@ const SKELETON_INFO = {
  * @cssdisplay grid
  */
 export class CcArticleCard extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       banner: { type: String },
       date: { type: String },
@@ -29,7 +28,7 @@ export class CcArticleCard extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {string|null} Sets the article banner image. */
@@ -48,9 +47,8 @@ export class CcArticleCard extends LitElement {
     this.title = null;
   }
 
-  render () {
-
-    const skeleton = (this.title == null || this.banner == null || this.link == null || this.date == null);
+  render() {
+    const skeleton = this.title == null || this.banner == null || this.link == null || this.date == null;
 
     const banner = skeleton ? null : this.banner;
     const title = this.title ?? SKELETON_INFO.title;
@@ -59,16 +57,14 @@ export class CcArticleCard extends LitElement {
 
     return html`
       <cc-img class="image" src=${banner}></cc-img>
-      ${skeleton ? html`
-        <div class="title">
-          <span class="skeleton">${title}</span>
-        </div>
-      ` : ''}
-      ${!skeleton ? html`
-        <div class="title">
-          ${ccLink(this.link, title, skeleton)}
-        </div>
-      ` : ''}
+      ${skeleton
+        ? html`
+            <div class="title">
+              <span class="skeleton">${title}</span>
+            </div>
+          `
+        : ''}
+      ${!skeleton ? html` <div class="title">${ccLink(this.link, title, skeleton)}</div> ` : ''}
       <div>
         <span class=${classMap({ skeleton })}>${description}</span>
       </div>
@@ -78,7 +74,7 @@ export class CcArticleCard extends LitElement {
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       linkStyles,
       skeletonStyles,

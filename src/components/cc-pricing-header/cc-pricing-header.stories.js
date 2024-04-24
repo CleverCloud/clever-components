@@ -57,32 +57,40 @@ export const skeleton = makeStory(conf, {
 });
 
 export const error = makeStory(conf, {
-  items: [{
-    zones: { state: 'error' },
-  }],
+  items: [
+    {
+      zones: { state: 'error' },
+    },
+  ],
 });
 
 export const dataLoadedWithDollars = makeStory(conf, {
-  items: [{
-    ...defaultItem,
-    selectedCurrency: { code: 'USD', changeRate: 1.1717 },
-    selectedZoneId: 'nyc',
-  }],
+  items: [
+    {
+      ...defaultItem,
+      selectedCurrency: { code: 'USD', changeRate: 1.1717 },
+      selectedZoneId: 'nyc',
+    },
+  ],
 });
 
 export const dataLoadedWithMinute = makeStory(conf, {
-  items: [{
-    ...defaultItem,
-    selectedTemporality: { type: 'minute', digits: 2 },
-    selectedZoneId: 'nyc',
-  }],
+  items: [
+    {
+      ...defaultItem,
+      selectedTemporality: { type: 'minute', digits: 2 },
+      selectedZoneId: 'nyc',
+    },
+  ],
 });
 
 export const simulations = makeStory(conf, {
-  items: [{
-    currencies: defaultItem.currencies,
-    temporalities: defaultItem.temporalities,
-  }],
+  items: [
+    {
+      currencies: defaultItem.currencies,
+      temporalities: defaultItem.temporalities,
+    },
+  ],
   simulations: [
     storyWait(2000, ([component]) => {
       component.zones = {

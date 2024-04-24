@@ -10,8 +10,7 @@ defineSmartComponent({
     apiConfig: { type: Object },
     addonId: { type: String },
   },
-  onContextUpdate ({ component, context, updateComponent, signal }) {
-
+  onContextUpdate({ component, context, updateComponent, signal }) {
     const { apiConfig, addonId } = context;
 
     updateComponent('state', { type: 'loading' });
@@ -32,17 +31,15 @@ defineSmartComponent({
   },
 });
 
-function fetchJenkinsAddon ({ apiConfig, signal, addonId }) {
-  return Promise
-    .all([
-      getAddon({ providerId: 'jenkins', addonId }).then(sendToApi({ apiConfig, signal })),
-      getJenkinsUpdates({ addonId }).then(sendToApi({ apiConfig, signal })),
-    ])
-    .then(([addon, jenkinsUpdates]) => {
-      return {
-        jenkinsLink: `https://${addon.host}`,
-        jenkinsManageLink: jenkinsUpdates.manageLink,
-        versions: jenkinsUpdates.versions,
-      };
-    });
+function fetchJenkinsAddon({ apiConfig, signal, addonId }) {
+  return Promise.all([
+    getAddon({ providerId: 'jenkins', addonId }).then(sendToApi({ apiConfig, signal })),
+    getJenkinsUpdates({ addonId }).then(sendToApi({ apiConfig, signal })),
+  ]).then(([addon, jenkinsUpdates]) => {
+    return {
+      jenkinsLink: `https://${addon.host}`,
+      jenkinsManageLink: jenkinsUpdates.manageLink,
+      versions: jenkinsUpdates.versions,
+    };
+  });
 }

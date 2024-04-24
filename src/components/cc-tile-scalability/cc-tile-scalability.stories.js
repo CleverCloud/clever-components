@@ -20,7 +20,7 @@ const ALL_FLAVORS = {
   ML_3XL: { name: 'ML_3XL', mem: 53248, cpus: 32, gpus: 4, microservice: false },
 };
 
-function scalability (minFlavor, maxFlavor, minInstances, maxInstances) {
+function scalability(minFlavor, maxFlavor, minInstances, maxInstances) {
   return { minFlavor, maxFlavor, minInstances, maxInstances };
 }
 
