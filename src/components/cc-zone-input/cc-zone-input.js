@@ -32,8 +32,7 @@ const BREAKPOINTS = [600];
  * @fires {CustomEvent<string>} cc-zone-input:input - Fires the `name` of the selected zone whenever the selection changes.
  */
 export class CcZoneInput extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       error: { type: Boolean, reflect: true },
       selected: { type: String },
@@ -45,7 +44,7 @@ export class CcZoneInput extends LitElement {
     };
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     /** @type {boolean} Displays an error message. */
@@ -74,8 +73,7 @@ export class CcZoneInput extends LitElement {
     });
   }
 
-  _updatePoints () {
-
+  _updatePoints() {
     if (!Array.isArray(this._sortedZones)) {
       return;
     }
@@ -97,7 +95,7 @@ export class CcZoneInput extends LitElement {
       : '';
   }
 
-  _getState (zoneName) {
+  _getState(zoneName) {
     if (this.selected === zoneName) {
       return 'selected';
     }
@@ -107,7 +105,7 @@ export class CcZoneInput extends LitElement {
     return 'default';
   }
 
-  _getZIndexOffset (zoneName) {
+  _getZIndexOffset(zoneName) {
     if (this.selected === zoneName) {
       return 200;
     }
@@ -117,50 +115,48 @@ export class CcZoneInput extends LitElement {
     return 0;
   }
 
-  _onSelect (name) {
+  _onSelect(name) {
     this.selected = name;
     dispatchCustomEvent(this, 'input', this.selected);
   }
 
-  _onListHover (name) {
+  _onListHover(name) {
     this._hovered = name;
     this._updatePoints();
     this._panMap();
   }
 
-  _onMarkerHover (name) {
+  _onMarkerHover(name) {
     this._hovered = name;
     this._updatePoints();
     this._scrollChildIntoParent(this._hovered || this.selected);
   }
 
-  _panMap () {
+  _panMap() {
     clearTimeout(this._panMapTimeout);
     this._panMapTimeout = setTimeout(() => {
       if (this._hovered != null) {
         const zone = this._sortedZones.find((z) => z.name === this._hovered);
         this._map.panInside(zone.lat, zone.lon);
-      }
-      else if (this.selected != null) {
+      } else if (this.selected != null) {
         const zone = this._sortedZones.find((z) => z.name === this.selected);
         this._map.panInside(zone.lat, zone.lon);
       }
     }, 200);
   }
 
-  _scrollChildIntoParent (name) {
+  _scrollChildIntoParent(name) {
     const parent = this.shadowRoot.querySelector(`.zone-list-wrapper`);
     const child = this.shadowRoot.querySelector(`input[id=${name}]`);
     scrollChildIntoParent(parent, child);
   }
 
-  firstUpdated () {
+  firstUpdated() {
     this._map = this.shadowRoot.querySelector('cc-map');
   }
 
   // updated and not udpate because we need this._map before
-  updated (changedProperties) {
-
+  updated(changedProperties) {
     if (changedProperties.has('selected')) {
       this._updatePoints();
       this._scrollChildIntoParent(this.selected);
@@ -176,9 +172,8 @@ export class CcZoneInput extends LitElement {
     super.updated(changedProperties);
   }
 
-  render () {
-
-    const skeleton = (this._sortedZones == null);
+  render() {
+    const skeleton = this._sortedZones == null;
     const zones = skeleton ? SKELETON_ZONES : this._sortedZones;
 
     // Try to zoom out and center the map
@@ -191,23 +186,26 @@ export class CcZoneInput extends LitElement {
         @cc-map:marker-click=${(e) => this._onSelect(e.detail.name)}
         @cc-map:marker-enter=${(e) => this._onMarkerHover(e.detail.name)}
         @cc-map:marker-leave=${(e) => this._onMarkerHover()}
-      >${this._legend}
+        >${this._legend}
       </cc-map>
       <div class="zone-list-wrapper">
-        ${this.error ? html`
-          <cc-notice intent="warning" message="${i18n('cc-zone-input.error')}"></cc-notice>
-        ` : ''}
-        ${!this.error ? html`
-          <div class="zone-list">
-            ${repeat(zones, (z) => z?.name ?? '', (z) => this._renderZoneInput(z))}
-          </div>
-        ` : ''}
+        ${this.error ? html` <cc-notice intent="warning" message="${i18n('cc-zone-input.error')}"></cc-notice> ` : ''}
+        ${!this.error
+          ? html`
+              <div class="zone-list">
+                ${repeat(
+                  zones,
+                  (z) => z?.name ?? '',
+                  (z) => this._renderZoneInput(z),
+                )}
+              </div>
+            `
+          : ''}
       </div>
     `;
   }
 
-  _renderZoneInput (zone) {
-
+  _renderZoneInput(zone) {
     // Simplified template without label/input when skeleton is enabled
     if (zone == null) {
       return html`
@@ -228,7 +226,7 @@ export class CcZoneInput extends LitElement {
           id=${zone.name}
           .checked=${zone.name === this.selected}
           @change=${(e) => this._onSelect(zone.name)}
-        >
+        />
         <label
           for=${zone.name}
           class="label ${classMap({ hovered: zone.name === this._hovered })}"
@@ -241,7 +239,7 @@ export class CcZoneInput extends LitElement {
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
@@ -281,7 +279,7 @@ export class CcZoneInput extends LitElement {
           max-width: 24em;
           flex-basis: 24em;
         }
-        
+
         :host([error]) {
           border: none;
         }

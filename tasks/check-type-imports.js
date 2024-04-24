@@ -5,7 +5,7 @@ import glob from 'glob';
 import ts from 'typescript';
 import { getTypesFromClass } from '../cem/support-typedef-jsdoc-utils.js';
 
-function checkTypeImports (componentName, filepath, sourceCode) {
+function checkTypeImports(componentName, filepath, sourceCode) {
   const sourceAst = ts.createSourceFile(componentName, sourceCode, ts.ScriptTarget.ES2015, true);
   const classNodes = sourceAst.statements.filter((node) => node.kind === ts.SyntaxKind.ClassDeclaration);
   const typesFromFile = classNodes.map((node) => node.name.escapedText);
@@ -58,25 +58,17 @@ function checkTypeImports (componentName, filepath, sourceCode) {
   }
 
   return imports;
-
 }
 
-function run () {
+function run() {
   console.log(
-    chalk
-      .bgWhite
-      .black
-      .bold(`\n ⌛ checking @typedef imports and types present in constructor and @fires tags.\n`),
+    chalk.bgWhite.black.bold(`\n ⌛ checking @typedef imports and types present in constructor and @fires tags.\n`),
   );
 
   const wrongImports = [];
   const componentsList = glob.sync('src/components/**/cc-*.js', {
     absolute: true,
-    ignore: [
-      'src/components/**/cc-*.stories.js',
-      'src/components/**/cc-*.smart*',
-      'src/components/**/cc-*.test.js',
-    ],
+    ignore: ['src/components/**/cc-*.stories.js', 'src/components/**/cc-*.smart*', 'src/components/**/cc-*.test.js'],
   });
 
   for (const filepath of componentsList) {
@@ -89,36 +81,18 @@ function run () {
   }
 
   if (wrongImports.length === 0) {
-    console.log(
-      chalk
-        .bgGreen
-        .bold(` 🎉 No type import issues in the components! `),
-    );
+    console.log(chalk.bgGreen.bold(` 🎉 No type import issues in the components! `));
     return process.exit(0);
   }
 
   wrongImports.forEach(({ component, filepath, errors, missingImports }) => {
-    console.log(
-      chalk
-        .bgWhite
-        .black
-        .bold(`🔍 ${component} - ${filepath} \n`),
-    );
+    console.log(chalk.bgWhite.black.bold(`🔍 ${component} - ${filepath} \n`));
 
     if (errors.length !== 0) {
-      errors.forEach((error) => console.error(
-        chalk
-          .red
-          .bold(`❌ Something might be wrong for @typedef: `), error),
-      );
+      errors.forEach((error) => console.error(chalk.red.bold(`❌ Something might be wrong for @typedef: `), error));
     }
     if (missingImports.length !== 0) {
-      console.log(
-        chalk
-          .bgYellow
-          .black
-          .bold(`⚠️  Missing import(s) are: `),
-      );
+      console.log(chalk.bgYellow.black.bold(`⚠️  Missing import(s) are: `));
       missingImports.forEach((type) => console.warn(`\t - ${type}\n`));
     }
   });

@@ -12,13 +12,13 @@ import { PENDING_STATUSES, PROCESSED_STATUSES, PROCESSING_STATUS } from '../cc-i
 
 const BREAKPOINTS = [520];
 
-function getYearAsString (dateString) {
+function getYearAsString(dateString) {
   const date = new Date(dateString);
   const year = date.getUTCFullYear();
   return String(year);
 }
 
-function maxFromStrings (strings) {
+function maxFromStrings(strings) {
   const numbers = strings.map((s) => Number(s));
   const max = Math.max(...numbers);
   return String(max);
@@ -34,15 +34,14 @@ function maxFromStrings (strings) {
  * @cssdisplay block
  */
 export class CcInvoiceList extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       state: { type: Object },
       _yearFilter: { type: Number, state: true },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {InvoiceListState} Sets the invoices state. */
@@ -56,11 +55,11 @@ export class CcInvoiceList extends LitElement {
     });
   }
 
-  _onYearFilterValue ({ detail: year }) {
+  _onYearFilterValue({ detail: year }) {
     this._yearFilter = year;
   }
 
-  render () {
+  render() {
     if (this.state.type === 'error') {
       return this._renderView(html`
         <cc-notice intent="warning" message="${i18n('cc-invoice-list.error')}"></cc-notice>
@@ -89,13 +88,9 @@ export class CcInvoiceList extends LitElement {
       .map((invoice) => getYearAsString(invoice.emissionDate))
       .flatMap(unique);
 
-    const yearChoices = processedInvoicesYears
-      .map((year) => ({ label: year, value: year }))
-      .sort(sortBy('label'));
+    const yearChoices = processedInvoicesYears.map((year) => ({ label: year, value: year })).sort(sortBy('label'));
 
-    const yearFilter = (this._yearFilter == null)
-      ? maxFromStrings(processedInvoicesYears)
-      : this._yearFilter;
+    const yearFilter = this._yearFilter == null ? maxFromStrings(processedInvoicesYears) : this._yearFilter;
 
     const filteredProcessedInvoices = processedInvoices.filter((i) => getYearAsString(i.emissionDate) === yearFilter);
 
@@ -104,50 +99,52 @@ export class CcInvoiceList extends LitElement {
     return this._renderView(html`
       <cc-block-section>
         <div slot="title">${i18n('cc-invoice-list.pending')}</div>
-        ${pendingInvoices.length > 0 ? html`
-          <cc-invoice-table .invoices=${pendingInvoices}></cc-invoice-table>
-        ` : ''}
-        ${pendingInvoices.length === 0 ? html`
-          <div class="empty-msg">${i18n('cc-invoice-list.pending.no-invoices')}</div>
-        ` : ''}
+        ${pendingInvoices.length > 0 ? html` <cc-invoice-table .invoices=${pendingInvoices}></cc-invoice-table> ` : ''}
+        ${pendingInvoices.length === 0
+          ? html` <div class="empty-msg">${i18n('cc-invoice-list.pending.no-invoices')}</div> `
+          : ''}
       </cc-block-section>
 
-      ${processingInvoices.length > 0 ? html`
-        <cc-block-section>
-          <div slot="title">${i18n('cc-invoice-list.processing')}</div>
-          <cc-invoice-table .invoices=${processingInvoices}></cc-invoice-table>
-        </cc-block-section>
-      ` : ''}
+      ${processingInvoices.length > 0
+        ? html`
+            <cc-block-section>
+              <div slot="title">${i18n('cc-invoice-list.processing')}</div>
+              <cc-invoice-table .invoices=${processingInvoices}></cc-invoice-table>
+            </cc-block-section>
+          `
+        : ''}
 
       <cc-block-section>
         <div slot="title">${i18n('cc-invoice-list.processed')}</div>
-        ${hasYearSelector ? html`
-          <cc-toggle
-            legend=${i18n('cc-invoice-list.year')}
-            .choices=${yearChoices}
-            value=${yearFilter}
-            inline
-            @cc-toggle:input=${this._onYearFilterValue}
-          ></cc-toggle>
-          <cc-select
-            label=${i18n('cc-invoice-list.year')}
-            .options=${yearChoices}
-            value=${yearFilter}
-            inline
-            @cc-select:input=${this._onYearFilterValue}
-          ></cc-select>
-        ` : ''}
-        ${filteredProcessedInvoices.length > 0 ? html`
-          <cc-invoice-table .invoices=${filteredProcessedInvoices}></cc-invoice-table>
-        ` : ''}
-        ${filteredProcessedInvoices.length === 0 ? html`
-          <div class="empty-msg ">${i18n('cc-invoice-list.processed.no-invoices')}</div>
-        ` : ''}
+        ${hasYearSelector
+          ? html`
+              <cc-toggle
+                legend=${i18n('cc-invoice-list.year')}
+                .choices=${yearChoices}
+                value=${yearFilter}
+                inline
+                @cc-toggle:input=${this._onYearFilterValue}
+              ></cc-toggle>
+              <cc-select
+                label=${i18n('cc-invoice-list.year')}
+                .options=${yearChoices}
+                value=${yearFilter}
+                inline
+                @cc-select:input=${this._onYearFilterValue}
+              ></cc-select>
+            `
+          : ''}
+        ${filteredProcessedInvoices.length > 0
+          ? html` <cc-invoice-table .invoices=${filteredProcessedInvoices}></cc-invoice-table> `
+          : ''}
+        ${filteredProcessedInvoices.length === 0
+          ? html` <div class="empty-msg ">${i18n('cc-invoice-list.processed.no-invoices')}</div> `
+          : ''}
       </cc-block-section>
     `);
   }
 
-  _renderView (content) {
+  _renderView(content) {
     return html`
       <cc-block>
         <div slot="title">${i18n('cc-invoice-list.title')}</div>
@@ -156,7 +153,7 @@ export class CcInvoiceList extends LitElement {
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`

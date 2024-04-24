@@ -13,7 +13,7 @@ defineSmartComponent({
     ownerId: { type: String },
     addonId: { type: String },
   },
-  onContextUpdate ({ context, updateComponent, signal }) {
+  onContextUpdate({ context, updateComponent, signal }) {
     updateComponent('state', { type: 'loading' });
 
     const { apiConfig, ownerId, addonId } = context;
@@ -29,33 +29,31 @@ defineSmartComponent({
   },
 });
 
-function fetchApplications ({ apiConfig, signal, ownerId, addonId }) {
-  return Promise
-    .all([
-      fetchZones({ apiConfig, signal }),
-      fetchLinkedApplications({ apiConfig, signal, ownerId, addonId }),
-    ])
-    .then(([zones, applications]) => {
-      return applications.map((app) => {
-        const { name, instance } = app;
-        const variantName = instance.variant?.name;
-        const variantLogoUrl = instance.variant?.logo;
-        const link = getApplicationLink(ownerId, app.id);
-        const zone = zones.find((z) => z.name === app.zone);
-        return { name, link, variantName, variantLogoUrl, zone };
-      });
+function fetchApplications({ apiConfig, signal, ownerId, addonId }) {
+  return Promise.all([
+    fetchZones({ apiConfig, signal }),
+    fetchLinkedApplications({ apiConfig, signal, ownerId, addonId }),
+  ]).then(([zones, applications]) => {
+    return applications.map((app) => {
+      const { name, instance } = app;
+      const variantName = instance.variant?.name;
+      const variantLogoUrl = instance.variant?.logo;
+      const link = getApplicationLink(ownerId, app.id);
+      const zone = zones.find((z) => z.name === app.zone);
+      return { name, link, variantName, variantLogoUrl, zone };
     });
+  });
 }
 
-function fetchZones ({ apiConfig, signal }) {
+function fetchZones({ apiConfig, signal }) {
   return getAllZones().then(sendToApi({ apiConfig, signal, cacheDelay: ONE_DAY }));
 }
 
-function fetchLinkedApplications ({ apiConfig, signal, ownerId, addonId }) {
+function fetchLinkedApplications({ apiConfig, signal, ownerId, addonId }) {
   return getLinkedApplications({ id: ownerId, addonId }).then(sendToApi({ apiConfig, signal }));
 }
 
-function getApplicationLink (ownerId, appId) {
+function getApplicationLink(ownerId, appId) {
   return ownerId.startsWith('orga_')
     ? `/organisations/${ownerId}/applications/${appId}`
     : `/users/me/applications/${appId}`;

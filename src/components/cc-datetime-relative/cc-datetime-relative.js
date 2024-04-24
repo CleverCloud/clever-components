@@ -3,7 +3,7 @@ import { i18n } from '../../lib/i18n.js';
 const trackedElements = [];
 let updateIntervalId;
 
-function updateTrackedElements () {
+function updateTrackedElements() {
   trackedElements.forEach(($element) => $element._triggerUpdate());
 }
 
@@ -25,37 +25,36 @@ function updateTrackedElements () {
  * @cssdisplay not defined, should default to `inline` in most browsers
  */
 export class CcDatetimeRelative extends HTMLElement {
-
-  static get observedAttributes () {
+  static get observedAttributes() {
     return ['datetime'];
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {string|number|null} datetime - Date as ISO string or timestamp. */
     this.datetime = null;
   }
 
-  get datetime () {
+  get datetime() {
     return this.getAttribute('datetime');
   }
 
   /** @required */
-  set datetime (value) {
+  set datetime(value) {
     if (value != null) {
       this.setAttribute('datetime', value);
     }
   }
 
-  attributeChangedCallback (attrName, old, date) {
+  attributeChangedCallback(attrName, old, date) {
     if (attrName === 'datetime') {
       this.title = i18n('cc-datetime-relative.title', { date });
       this._triggerUpdate();
     }
   }
 
-  connectedCallback () {
+  connectedCallback() {
     trackedElements.push(this);
     if (updateIntervalId == null) {
       updateTrackedElements();
@@ -64,7 +63,7 @@ export class CcDatetimeRelative extends HTMLElement {
     }
   }
 
-  disconnectedCallback () {
+  disconnectedCallback() {
     const idx = trackedElements.indexOf(this);
     if (idx !== -1) {
       trackedElements.splice(idx, 1);
@@ -75,7 +74,7 @@ export class CcDatetimeRelative extends HTMLElement {
     }
   }
 
-  _triggerUpdate () {
+  _triggerUpdate() {
     const date = this.getAttribute('datetime');
     const newContent = i18n('cc-datetime-relative.distance', { date });
     if (this.textContent !== newContent) {

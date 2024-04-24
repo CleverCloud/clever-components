@@ -14,7 +14,7 @@ defineSmartComponent({
     ownerId: { type: String },
     appId: { type: String, required: false },
   },
-  onContextUpdate ({ context, updateComponent, signal }) {
+  onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, appId } = context;
 
     updateComponent('state', { type: 'loading' });
@@ -30,9 +30,11 @@ defineSmartComponent({
   },
 });
 
-async function fetchStatusCodes ({ apiConfig, signal, ownerId, appId }) {
-  const warpToken = await getWarp10AccessLogsToken({ orgaId: ownerId })
-    .then(sendToApi({ apiConfig, signal, cacheDelay: ONE_DAY }));
-  return getStatusCodesFromWarp10({ warpToken, ownerId, appId })
-    .then(sendToWarp({ apiConfig, signal, timeout: THIRTY_SECONDS }));
+async function fetchStatusCodes({ apiConfig, signal, ownerId, appId }) {
+  const warpToken = await getWarp10AccessLogsToken({ orgaId: ownerId }).then(
+    sendToApi({ apiConfig, signal, cacheDelay: ONE_DAY }),
+  );
+  return getStatusCodesFromWarp10({ warpToken, ownerId, appId }).then(
+    sendToWarp({ apiConfig, signal, timeout: THIRTY_SECONDS }),
+  );
 }

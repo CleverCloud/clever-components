@@ -43,8 +43,7 @@ const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
  * @cssprop {Color} --cc-pricing-hovered-color - Sets the text color used on hover (defaults: `purple`).
  */
 export class CcPricingHeader extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       currencies: { type: Array },
       selectedCurrency: { type: Object, attribute: 'selected-currency' },
@@ -55,7 +54,7 @@ export class CcPricingHeader extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {Currency[]} Sets the list of currencies available for selection. */
@@ -82,15 +81,16 @@ export class CcPricingHeader extends LitElement {
    *
    * @param {Currency} currency - the currency to get the symbol for
    */
-  _getCurrencySymbol (currency) {
+  _getCurrencySymbol(currency) {
     // The lang does not really matter
     const nf = new Intl.NumberFormat('en', { style: 'currency', currency });
-    return nf
-      .formatToParts(0)
-      .find((p) => p.type === 'currency')
-      .value
-      // Safari does not support currencySymbol: 'narrow' in Intl.NumberFormat so we need to do this #sorry
-      .replace('$US', '$');
+    return (
+      nf
+        .formatToParts(0)
+        .find((p) => p.type === 'currency')
+        .value// Safari does not support currencySymbol: 'narrow' in Intl.NumberFormat so we need to do this #sorry
+        .replace('$US', '$')
+    );
   }
 
   /**
@@ -99,7 +99,7 @@ export class CcPricingHeader extends LitElement {
    * @param {Temporality['type']} type - the temporality type
    * @return {string} the localized string corresponding to the given temporality type
    */
-  _getPriceLabel (type) {
+  _getPriceLabel(type) {
     if (type === 'second') {
       return i18n('cc-pricing-header.price-name.second');
     }
@@ -126,7 +126,7 @@ export class CcPricingHeader extends LitElement {
    *
    * @param {Event} e - the event that called this method
    */
-  _onCurrencyChange (e) {
+  _onCurrencyChange(e) {
     const currency = this.currencies.find((c) => c.code === e.target.value);
     dispatchCustomEvent(this, 'change-currency', currency);
   }
@@ -137,7 +137,7 @@ export class CcPricingHeader extends LitElement {
    *
    * @param {Event} e - the event that called this method
    */
-  _onTemporalityChange (e) {
+  _onTemporalityChange(e) {
     const temporality = this.temporalities.find((t) => t.type === e.target.value);
     dispatchCustomEvent(this, 'change-temporality', temporality);
   }
@@ -148,12 +148,12 @@ export class CcPricingHeader extends LitElement {
    *
    * @param {Event} e - the event that called this method
    */
-  _onZoneChange (e) {
+  _onZoneChange(e) {
     const zoneId = e.target.value;
     dispatchCustomEvent(this, 'change-zone', zoneId);
   }
 
-  render () {
+  render() {
     const zones = this.zones.state === 'loading' ? SKELETON_ZONES : sortZones(this.zones.value);
 
     if (this.zones.state === 'error') {
@@ -162,28 +162,27 @@ export class CcPricingHeader extends LitElement {
 
     return html`
       <div class="main">
-
         <sl-select
           label="${i18n('cc-pricing-header.label.temporality')}"
           class="temporality-select"
           value=${this.selectedTemporality.type}
           @sl-change=${this._onTemporalityChange}
         >
-          ${this.temporalities.map((t) => html`
-            <sl-option value=${t.type}>${this._getPriceLabel(t.type)}</sl-option>
-          `)}
+          ${this.temporalities.map(
+            (t) => html` <sl-option value=${t.type}>${this._getPriceLabel(t.type)}</sl-option> `,
+          )}
           <cc-icon slot="expand-icon" .icon=${iconArrowDown}></cc-icon>
         </sl-select>
-        
+
         <sl-select
           label="${i18n('cc-pricing-header.label.currency')}"
           class="currency-select"
           value=${this.selectedCurrency?.code}
           @sl-change=${this._onCurrencyChange}
         >
-          ${this.currencies.map((c) => html`
-            <sl-option value=${c.code}>${getCurrencySymbol(c.code)} ${c.code}</sl-option>
-          `)}
+          ${this.currencies.map(
+            (c) => html` <sl-option value=${c.code}>${getCurrencySymbol(c.code)} ${c.code}</sl-option> `,
+          )}
           <cc-icon slot="expand-icon" .icon=${iconArrowDown}></cc-icon>
         </sl-select>
 
@@ -195,19 +194,21 @@ export class CcPricingHeader extends LitElement {
           ?disabled=${this.zones.state === 'loading'}
           @sl-change=${this._onZoneChange}
         >
-          ${zones.map((zone) => html`
-            <sl-option class="zone-item" value=${zone.name}>
-              ${CcZone.getText(zone)}
-              <cc-zone slot="prefix" .zone=${zone}></cc-zone>
-            </sl-option>
-          `)}
+          ${zones.map(
+            (zone) => html`
+              <sl-option class="zone-item" value=${zone.name}>
+                ${CcZone.getText(zone)}
+                <cc-zone slot="prefix" .zone=${zone}></cc-zone>
+              </sl-option>
+            `,
+          )}
           <cc-icon slot="expand-icon" .icon=${iconArrowDown}></cc-icon>
         </sl-select>
       </div>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       shoelaceStyles,
       skeletonStyles,
@@ -257,7 +258,7 @@ export class CcPricingHeader extends LitElement {
           font-family: inherit;
           font-weight: bold;
         }
-        
+
         sl-select::part(combobox) {
           padding: 0.75rem 0.875rem;
         }
@@ -277,7 +278,7 @@ export class CcPricingHeader extends LitElement {
         sl-option:focus-within {
           background-color: var(--cc-color-bg-neutral-hovered, #eee);
         }
-        
+
         sl-option::part(checked-icon) {
           width: 0.7em;
           height: 0.7em;
@@ -289,11 +290,11 @@ export class CcPricingHeader extends LitElement {
         sl-select.skeleton::part(base) {
           --sl-input-background-color-disabled: var(--cc-color-bg-neutral-disabled, #bbb);
         }
-        
+
         .zone-select {
           flex: 2 1 auto;
         }
-        
+
         /* The label is not used in the list display
         It's only used for the current selected value */
 
@@ -317,7 +318,7 @@ export class CcPricingHeader extends LitElement {
           padding: 1em 0.5em;
           border-bottom: solid 1px var(--cc-color-border-neutral-weak, transparent);
         }
-        
+
         sl-option.zone-item::part(checked-icon) {
           align-self: flex-start;
           margin-top: 0.3em;

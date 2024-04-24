@@ -14,7 +14,7 @@ defineSmartComponent({
     productId: { type: String },
     zoneId: { type: String },
   },
-  onContextUpdate ({ context, updateComponent, signal }) {
+  onContextUpdate({ context, updateComponent, signal }) {
     const { productId, zoneId, addonFeatures } = context;
 
     // Reset the component before loading
@@ -36,14 +36,13 @@ defineSmartComponent({
   },
 });
 
-function fetchAddonProduct ({ productId, zoneId, addonFeatures, signal }) {
-  return Promise.all([
-    fetchAddonProvider({ productId, signal }),
-    fetchPriceSystem({ zoneId, signal }),
-  ]).then(([addonProvider, priceSystem]) => formatAddonProduct(addonProvider, priceSystem, addonFeatures));
+function fetchAddonProduct({ productId, zoneId, addonFeatures, signal }) {
+  return Promise.all([fetchAddonProvider({ productId, signal }), fetchPriceSystem({ zoneId, signal })]).then(
+    ([addonProvider, priceSystem]) => formatAddonProduct(addonProvider, priceSystem, addonFeatures),
+  );
 }
 
-function fetchAddonProvider ({ signal, productId }) {
+function fetchAddonProvider({ signal, productId }) {
   return getAllAddonProviders()
     .then(sendToApi({ cacheDelay: ONE_DAY, signal }))
     .then((allAddonProviders) => {

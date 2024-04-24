@@ -59,7 +59,5 @@ export const withMap = makeStory(conf, {
       width: 400px;
     }
   `,
-  items: [
-    { position: 'top-right', fill: true, children: () => [createStoryItem(logsmap)] },
-  ],
+  items: [{ position: 'top-right', fill: true, children: () => [createStoryItem(logsmap)] }],
 });

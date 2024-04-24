@@ -13,7 +13,7 @@ defineSmartComponent({
     lang: { type: String },
     limit: { type: Number },
   },
-  onContextUpdate ({ context, updateComponent, signal }) {
+  onContextUpdate({ context, updateComponent, signal }) {
     updateComponent('state', { type: 'loading' });
 
     const { lang, limit } = context;
@@ -29,11 +29,11 @@ defineSmartComponent({
   },
 });
 
-async function fetchArticleList ({ signal, lang, limit = 9 }) {
-
-  const url = (lang === 'fr')
-    ? 'https://www.clever-cloud.com/fr/feed/?format=excerpt'
-    : 'https://www.clever-cloud.com/feed/?format=excerpt';
+async function fetchArticleList({ signal, lang, limit = 9 }) {
+  const url =
+    lang === 'fr'
+      ? 'https://www.clever-cloud.com/fr/feed/?format=excerpt'
+      : 'https://www.clever-cloud.com/feed/?format=excerpt';
 
   const requestParams = {
     method: 'get',
@@ -42,10 +42,7 @@ async function fetchArticleList ({ signal, lang, limit = 9 }) {
     signal,
   };
 
-  const rssFeed = await withCache(
-    requestParams,
-    FOUR_HOURS,
-    () => request(requestParams));
+  const rssFeed = await withCache(requestParams, FOUR_HOURS, () => request(requestParams));
 
   return parseRssFeed(rssFeed, limit);
 }

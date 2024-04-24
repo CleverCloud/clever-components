@@ -10,11 +10,10 @@ const truePredicate = () => true;
  * Controls the logic of the cc-logs component.
  */
 export class LogsController {
-
   /**
    * @param {CcLogs} host
    */
-  constructor (host) {
+  constructor(host) {
     /** @type {CcLogs} The host. */
     this._host = host;
     /** @type {Array<Log>} The full logs list. This is where the limit is applied. */
@@ -33,8 +32,8 @@ export class LogsController {
     this._focusedIndex = null;
   }
 
-  set limit (limit) {
-    const isNumber = (typeof limit === 'number') && !Number.isNaN(limit);
+  set limit(limit) {
+    const isNumber = typeof limit === 'number' && !Number.isNaN(limit);
     const newLimit = isNumber ? limit : Infinity;
 
     if (newLimit !== this._limit) {
@@ -43,11 +42,10 @@ export class LogsController {
     }
   }
 
-  set filter (filter) {
+  set filter(filter) {
     if (filter == null) {
       this._filterCallback = truePredicate;
-    }
-    else {
+    } else {
       const matchesMessage = this._getMessageFilterCallback(filter.message);
       const matchesMetadata = this._getMetadataFilterCallback(filter.metadata);
       this._filterCallback = (log) => matchesMessage(log) && matchesMetadata(log);
@@ -59,25 +57,25 @@ export class LogsController {
   /**
    * @return {Array<Log>} The limited and filtered array of logs.
    */
-  getList () {
+  getList() {
     return this._logsFiltered;
   }
 
   /**
    * @return {number} The length of the limited and filtered array of logs.
    */
-  get listLength () {
+  get listLength() {
     return this._logsFiltered.length;
   }
 
   /**
    * @param {Array<Log>} newLogs The array of logs to append.
    */
-  append (newLogs) {
+  append(newLogs) {
     this._updateList({ newLogs });
   }
 
-  clear () {
+  clear() {
     this._logs = [];
     this._logsFiltered = [];
     this._selection.clear();
@@ -90,12 +88,11 @@ export class LogsController {
   /**
    * @param {number} filteredIndex index of the log to select.
    */
-  select (filteredIndex) {
+  select(filteredIndex) {
     const log = this._getLogByFilteredIndex(filteredIndex);
     if (log != null) {
       this._selection = new Set([log]);
-    }
-    else {
+    } else {
       this._selection = new Set();
     }
     this._selectionLast = log;
@@ -112,7 +109,7 @@ export class LogsController {
    *
    * @param {number} filteredIndex
    */
-  toggleSelection (filteredIndex) {
+  toggleSelection(filteredIndex) {
     const log = this._getLogByFilteredIndex(filteredIndex);
     if (log == null) {
       return;
@@ -120,8 +117,7 @@ export class LogsController {
     if (this._selection.has(log)) {
       this._selection.delete(log);
       this._selectionLast = Array.from(this._selection).pop();
-    }
-    else {
+    } else {
       this._selection.add(log);
       this._selectionLast = this._logsFiltered[filteredIndex];
     }
@@ -133,7 +129,7 @@ export class LogsController {
    * @param {number} filteredIndex
    * @param {'replace'|'append'} mode
    */
-  extendSelection (filteredIndex, mode) {
+  extendSelection(filteredIndex, mode) {
     if (this._selection.size === 0) {
       this.select(filteredIndex);
       return;
@@ -156,7 +152,7 @@ export class LogsController {
     this._host._onSelectionChanged();
   }
 
-  clearSelection () {
+  clearSelection() {
     this._selection.clear();
     this._selectionLast = null;
     this._host.requestUpdate();
@@ -166,7 +162,7 @@ export class LogsController {
   /**
    * @return {number} The length of the selection
    */
-  get selectionLength () {
+  get selectionLength() {
     return this._selection.size;
   }
 
@@ -174,7 +170,7 @@ export class LogsController {
    * @param {number} filteredIndex
    * @return {boolean} Whereas the given index points on a log that is in selection.
    */
-  isSelected (filteredIndex) {
+  isSelected(filteredIndex) {
     const log = this._getLogByFilteredIndex(filteredIndex);
     return this._selection.has(log);
   }
@@ -182,14 +178,14 @@ export class LogsController {
   /**
    * @return {boolean} Whereas the selection is empty.
    */
-  isSelectionEmpty () {
+  isSelectionEmpty() {
     return this._selection.size === 0;
   }
 
   /**
    * @return {Array<Log>} The selected logs in the right order: in the log order and not in the selection order.
    */
-  getSelectedLogs () {
+  getSelectedLogs() {
     return this._logs.filter((log) => this._selection.has(log));
   }
 
@@ -204,7 +200,7 @@ export class LogsController {
    * @param {number|null} filteredIndex the index of the log to focus
    * @param {boolean} [notifyHost = true] Whether to notify the host when the focused index has changed
    */
-  focus (filteredIndex, notifyHost = true) {
+  focus(filteredIndex, notifyHost = true) {
     if (this._focusedIndex !== filteredIndex) {
       this._focusedIndex = filteredIndex;
       if (notifyHost) {
@@ -217,7 +213,7 @@ export class LogsController {
    * @param {'up'|'down'} direction
    * @param {{first: number, last: number}} [visibleRange]
    */
-  moveFocus (direction, visibleRange) {
+  moveFocus(direction, visibleRange) {
     if (this._focusedIndex != null) {
       if (direction === 'up' && this._focusedIndex > 0) {
         this.focus(this._focusedIndex - 1);
@@ -225,8 +221,7 @@ export class LogsController {
       if (direction === 'down' && this._focusedIndex < this._logsFiltered.length - 1) {
         this.focus(this._focusedIndex + 1);
       }
-    }
-    else if (visibleRange != null) {
+    } else if (visibleRange != null) {
       if (direction === 'up') {
         this.focus(visibleRange.last);
       }
@@ -242,14 +237,14 @@ export class LogsController {
    *
    * @param {boolean} [notifyHost = true] Whether to notify the host when the focused index has changed
    */
-  clearFocus (notifyHost = true) {
+  clearFocus(notifyHost = true) {
     this.focus(null, notifyHost);
   }
 
   /**
    * @param {{first: number, last: number}} range
    */
-  isFocusedIndexInRange ({ first, last }) {
+  isFocusedIndexInRange({ first, last }) {
     return this._focusedIndex != null && this._focusedIndex >= first && this._focusedIndex <= last;
   }
 
@@ -259,15 +254,14 @@ export class LogsController {
    * @param {number} filteredIndex
    * @return {Log}
    */
-  _getLogByFilteredIndex (filteredIndex) {
+  _getLogByFilteredIndex(filteredIndex) {
     return this._logsFiltered[filteredIndex];
   }
 
   /**
    * @param {{[newLogs]: Array<Log>, [forceFilter]: boolean}} [options={}]
    */
-  _updateList (options = {}) {
-
+  _updateList(options = {}) {
     const newLogs = options.newLogs ?? [];
     const forceFilter = options.forceFilter ?? false;
 
@@ -277,15 +271,11 @@ export class LogsController {
     };
 
     // Appended logs length may be above limit
-    const logsToAdd = (newLogs.length > this._limit)
-      ? newLogs.slice(newLogs.length - this._limit)
-      : newLogs.slice();
+    const logsToAdd = newLogs.length > this._limit ? newLogs.slice(newLogs.length - this._limit) : newLogs.slice();
 
     // If limit is reached, let's try to see what to remove and what to keep
     const newLength = this._logs.length + logsToAdd.length;
-    const sliceIndex = (newLength >= this._limit)
-      ? newLength - this._limit
-      : 0;
+    const sliceIndex = newLength >= this._limit ? newLength - this._limit : 0;
 
     const logsToRemove = this._logs.splice(0, sliceIndex);
 
@@ -297,8 +287,7 @@ export class LogsController {
       this._logs.forEach((log) => {
         if (this._filterCallback(log)) {
           this._logsFiltered.push(log);
-        }
-        else {
+        } else {
           removeFromSelection(log);
         }
       });
@@ -306,8 +295,7 @@ export class LogsController {
       // Applying a new filter requires a user interaction and will (almost always) imply a focus change
       // That's why we don't want to try an "expensive" indexOf call in this critical function
       this.clearFocus();
-    }
-    else {
+    } else {
       // We filter the logs to remove, so we can know how many to remove from the filtered list
       const logsToRemoveFiltered = logsToRemove.filter(this._filterCallback);
       // No need to filter the logs we want to keep
@@ -321,8 +309,7 @@ export class LogsController {
       if (this._focusedIndex != null && logsToRemoveFiltered.length > 0) {
         if (this._focusedIndex > logsToRemoveFiltered.length) {
           this.focus(this._focusedIndex - logsToRemoveFiltered.length);
-        }
-        else {
+        } else {
           this.clearFocus();
         }
       }
@@ -344,7 +331,7 @@ export class LogsController {
    * @param {Array<MetadataFilter>} metadataFilter
    * @return {((log: Log) => boolean)}
    */
-  _getMetadataFilterCallback (metadataFilter) {
+  _getMetadataFilterCallback(metadataFilter) {
     if (metadataFilter == null || metadataFilter.length === 0) {
       return truePredicate;
     }
@@ -375,12 +362,16 @@ export class LogsController {
    * @param {string} messageFilter
    * @return {((log: Log) => boolean)}
    */
-  _getMessageFilterCallback (messageFilter) {
+  _getMessageFilterCallback(messageFilter) {
     if (messageFilter == null || messageFilter.length === 0) {
       return truePredicate;
     }
 
-    const tokens = messageFilter.trim().toLowerCase().split(' ').filter((t) => t.length > 0);
+    const tokens = messageFilter
+      .trim()
+      .toLowerCase()
+      .split(' ')
+      .filter((t) => t.length > 0);
 
     return (log) => {
       const message = log.message.toLowerCase();

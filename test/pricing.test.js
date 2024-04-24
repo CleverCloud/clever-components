@@ -35,15 +35,10 @@ const INTERVALS_PROGRESSIVE_SECABILITY = [
   { type: 'bar', intervals: INTERVALS_BAR, progressive: true, secability: 100 },
 ];
 
-const NULLISH_INTERVALS = [
-  { type: 'foo' },
-  { type: 'bar' },
-];
+const NULLISH_INTERVALS = [{ type: 'foo' }, { type: 'bar' }];
 
 describe('PricingConsumptionSimulator', () => {
-
   describe('getQuantity()', () => {
-
     it('default', () => {
       const ps = new PricingConsumptionSimulator(INTERVALS);
       expect(ps.getQuantity('foo')).to.equal(0);
@@ -60,7 +55,6 @@ describe('PricingConsumptionSimulator', () => {
   });
 
   describe('getMaxInterval()', () => {
-
     it('default', () => {
       const ps = new PricingConsumptionSimulator(INTERVALS);
       expect(ps.getMaxInterval('foo')).to.equal(INTERVALS_FOO[0]);
@@ -99,9 +93,7 @@ describe('PricingConsumptionSimulator', () => {
   });
 
   describe('getIntervalPrice()', () => {
-
     describe('progressive: false (default) & secability: 1 (default)', () => {
-
       it('small value', () => {
         const ps = new PricingConsumptionSimulator(INTERVALS);
         ps.setQuantity('foo', 50);
@@ -140,7 +132,6 @@ describe('PricingConsumptionSimulator', () => {
     });
 
     describe('progressive: true', () => {
-
       it('small value', () => {
         const ps = new PricingConsumptionSimulator(INTERVALS_PROGRESSIVE);
         ps.setQuantity('foo', 50);
@@ -171,7 +162,6 @@ describe('PricingConsumptionSimulator', () => {
     });
 
     describe('secability: 10 & 100', () => {
-
       it('small value', () => {
         const ps = new PricingConsumptionSimulator(INTERVALS_SECABILITY);
         ps.setQuantity('foo', 50);
@@ -202,7 +192,6 @@ describe('PricingConsumptionSimulator', () => {
     });
 
     describe('progressive: true AND secability: 10 & 100', () => {
-
       it('small value', () => {
         const ps = new PricingConsumptionSimulator(INTERVALS_PROGRESSIVE_SECABILITY);
         ps.setQuantity('foo', 50);
@@ -234,9 +223,7 @@ describe('PricingConsumptionSimulator', () => {
   });
 
   describe('getSectionPrice()', () => {
-
     describe('progressive: false (default)', () => {
-
       it('small value', () => {
         const ps = new PricingConsumptionSimulator(INTERVALS);
         ps.setQuantity('foo', 50);
@@ -261,7 +248,6 @@ describe('PricingConsumptionSimulator', () => {
     });
 
     describe('progressive: true', () => {
-
       it('small value', () => {
         const ps = new PricingConsumptionSimulator(INTERVALS_PROGRESSIVE);
         ps.setQuantity('foo', 50);
@@ -280,7 +266,6 @@ describe('PricingConsumptionSimulator', () => {
     });
 
     describe('secability: 10 & 100', () => {
-
       it('small value', () => {
         const ps = new PricingConsumptionSimulator(INTERVALS_SECABILITY);
         ps.setQuantity('foo', 50);
@@ -299,7 +284,6 @@ describe('PricingConsumptionSimulator', () => {
     });
 
     describe('progressive: true AND secability: 10 & 100', () => {
-
       it('small value', () => {
         const ps = new PricingConsumptionSimulator(INTERVALS_PROGRESSIVE_SECABILITY);
         ps.setQuantity('foo', 50);
@@ -312,38 +296,26 @@ describe('PricingConsumptionSimulator', () => {
         const ps = new PricingConsumptionSimulator(INTERVALS_PROGRESSIVE_SECABILITY);
         ps.setQuantity('foo', 255);
         ps.setQuantity('bar', 5050);
-        expect(ps.getSectionPrice('foo')).to.equal(
-          99 * 0
-          + 100 * 1
-          + 61 * 2
-          + 0 * 3,
-        );
-        expect(ps.getSectionPrice('bar')).to.equal(
-          999 * 0
-          + 1000 * 10
-          + 1000 * 20
-          + 2101 * 30,
-        );
+        expect(ps.getSectionPrice('foo')).to.equal(99 * 0 + 100 * 1 + 61 * 2 + 0 * 3);
+        expect(ps.getSectionPrice('bar')).to.equal(999 * 0 + 1000 * 10 + 1000 * 20 + 2101 * 30);
       });
     });
   });
 
   describe('getTotalPrice()', () => {
-
     describe('progressive: false (default)', () => {
-
       it('small value', () => {
         const ps = new PricingConsumptionSimulator(INTERVALS);
         ps.setQuantity('foo', 50);
         ps.setQuantity('bar', 500);
-        expect(ps.getTotalPrice()).to.equal((50 * 0) + (500 * 0));
+        expect(ps.getTotalPrice()).to.equal(50 * 0 + 500 * 0);
       });
 
       it('big value', () => {
         const ps = new PricingConsumptionSimulator(INTERVALS);
         ps.setQuantity('foo', 250);
         ps.setQuantity('bar', 5000);
-        expect(ps.getTotalPrice()).to.equal((250 * 2) + (5000 * 30));
+        expect(ps.getTotalPrice()).to.equal(250 * 2 + 5000 * 30);
       });
 
       it('nullish intervals', () => {
@@ -353,7 +325,6 @@ describe('PricingConsumptionSimulator', () => {
     });
 
     describe('progressive: true', () => {
-
       it('small value', () => {
         const ps = new PricingConsumptionSimulator(INTERVALS_PROGRESSIVE);
         ps.setQuantity('foo', 50);
@@ -365,15 +336,11 @@ describe('PricingConsumptionSimulator', () => {
         const ps = new PricingConsumptionSimulator(INTERVALS_PROGRESSIVE);
         ps.setQuantity('foo', 250);
         ps.setQuantity('bar', 5000);
-        expect(ps.getTotalPrice()).to.equal(
-          (99 * 0 + 100 * 1 + 51 * 2)
-          + (999 * 0 + 1000 * 10 + 1000 * 20 + 2001 * 30),
-        );
+        expect(ps.getTotalPrice()).to.equal(99 * 0 + 100 * 1 + 51 * 2 + (999 * 0 + 1000 * 10 + 1000 * 20 + 2001 * 30));
       });
     });
 
     describe('secability: 10 & 100', () => {
-
       it('small value', () => {
         const ps = new PricingConsumptionSimulator(INTERVALS_SECABILITY);
         ps.setQuantity('foo', 50);
@@ -385,15 +352,11 @@ describe('PricingConsumptionSimulator', () => {
         const ps = new PricingConsumptionSimulator(INTERVALS_SECABILITY);
         ps.setQuantity('foo', 255);
         ps.setQuantity('bar', 5050);
-        expect(ps.getTotalPrice()).to.equal(
-          260 * 2
-          + 5100 * 30,
-        );
+        expect(ps.getTotalPrice()).to.equal(260 * 2 + 5100 * 30);
       });
     });
 
     describe('progressive: true AND secability: 10 & 100', () => {
-
       it('small value', () => {
         const ps = new PricingConsumptionSimulator(INTERVALS_PROGRESSIVE_SECABILITY);
         ps.setQuantity('foo', 50);
@@ -406,14 +369,7 @@ describe('PricingConsumptionSimulator', () => {
         ps.setQuantity('foo', 255);
         ps.setQuantity('bar', 5050);
         expect(ps.getTotalPrice()).to.equal(
-          999 * 0
-          + 100 * 1
-          + 61 * 2
-          + 0
-          + 999 * 0
-          + 1000 * 10
-          + 1000 * 20
-          + 2101 * 30,
+          999 * 0 + 100 * 1 + 61 * 2 + 0 + 999 * 0 + 1000 * 10 + 1000 * 20 + 2101 * 30,
         );
       });
 
@@ -451,7 +407,6 @@ describe('PricingConsumptionSimulator', () => {
 });
 
 describe('getIntervalQuantity', () => {
-
   it('0 <= value < 100 (below)', () => {
     expect(getIntervalQuantity(0, -5, 100)).to.equal(0);
   });

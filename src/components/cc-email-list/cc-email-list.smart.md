@@ -2,6 +2,7 @@
 kind: '🛠 Profile/<cc-email-list>'
 title: '💡 Smart'
 ---
+
 # 💡 Smart `<cc-email-list>`
 
 ## ℹ️ Details
@@ -15,35 +16,34 @@ title: '💡 Smart'
 ## ⚙️ Params
 
 | Name        | Type        | Details                                                | Default |
-|-------------|-------------|--------------------------------------------------------|---------|
+| ----------- | ----------- | ------------------------------------------------------ | ------- |
 | `apiConfig` | `ApiConfig` | Object with API configuration (target host, tokens...) |         |
-
 
 ```typescript
 interface ApiConfig {
-  API_HOST: String,
-  API_OAUTH_TOKEN: String,
-  API_OAUTH_TOKEN_SECRET: String,
-  OAUTH_CONSUMER_KEY: String,
-  OAUTH_CONSUMER_SECRET: String,
+  API_HOST: String;
+  API_OAUTH_TOKEN: String;
+  API_OAUTH_TOKEN_SECRET: String;
+  OAUTH_CONSUMER_KEY: String;
+  OAUTH_CONSUMER_SECRET: String;
 }
 ```
 
 ## 🌐 API endpoints
 
 | Method   | URL                              | Cache?  |
-|----------|----------------------------------|---------|
+| -------- | -------------------------------- | ------- |
 | `GET`    | `/v2/self`                       | Default |
 | `GET`    | `/v2/self/confirmation_email`    | Default |
 | `GET`    | `/v2/self/emails`                | Default |
 | `PUT`    | `/v2/self/emails/{emailAddress}` | Default |
 | `DELETE` | `/v2/self/emails/{emailAddress}` | Default |
 
-
 ## ⬇️️ Examples
 
 ```html
-<cc-smart-container context='{
+<cc-smart-container
+  context='{
   "apiConfig": {
     API_HOST: "",
     API_OAUTH_TOKEN: "",
@@ -51,7 +51,8 @@ interface ApiConfig {
     OAUTH_CONSUMER_KEY: "",
     OAUTH_CONSUMER_SECRET: "",
   }
-}'>
+}'
+>
   <cc-email-list></cc-email-list>
 </cc-smart-container>
 ```

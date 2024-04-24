@@ -2,6 +2,7 @@
 kind: '🛠 Saas/<cc-grafana-info>'
 title: '💡 Smart'
 ---
+
 # 💡 Smart `<cc-grafana-info>`
 
 ## ℹ️ Details
@@ -44,7 +45,8 @@ interface ApiConfig {
 ## ⬇️️ Examples
 
 ```html
-<cc-smart-container context='{
+<cc-smart-container
+  context='{
   "apiConfig": {
     API_HOST: "",
     API_OAUTH_TOKEN: "",
@@ -54,7 +56,8 @@ interface ApiConfig {
   },
   "ownerId": "",
   "grafanaBaseLink": ""
-}'>
+}'
+>
   <cc-grafana-info></cc-grafana-info>
 </cc-smart-container>
 ```

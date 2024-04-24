@@ -1,11 +1,11 @@
-import {ToImport, ImpExtendInterface} from "./test-imports.types";
+import { ToImport, ImpExtendInterface } from './test-imports.types';
 
 interface Foo {
   one: string;
   two: boolean;
 }
 
-type Bar = "One" | "Two" | false | null;
+type Bar = 'One' | 'Two' | false | null;
 
 interface TheInterface {
   one: number;
@@ -15,12 +15,12 @@ interface TheInterface {
   subArray: OtherInterfaceTwo[];
   subType: SubType;
   subUnion: UnionFoo | UnionBar;
-  onlyType : TheOnlyType;
+  onlyType: TheOnlyType;
 }
 
 interface TupleInterface {
   subTuple: [TupleFoo];
-  multipleTuple: [TupleFooBar, TupleBar, TupleBaz ];
+  multipleTuple: [TupleFooBar, TupleBar, TupleBaz];
 }
 
 interface UnionInterface {
@@ -31,14 +31,11 @@ type TheOnlyType = SubOnlyType;
 
 interface SubOnlyType {}
 
-type TheType = "One" | "Two" | SubInterface | Array<OtherInterface> | OtherInterfaceTwo[];
+type TheType = 'One' | 'Two' | SubInterface | Array<OtherInterface> | OtherInterfaceTwo[];
 
-interface SubInterface {
+interface SubInterface {}
 
-}
-
-interface OtherInterface {
-}
+interface OtherInterface {}
 
 interface NoChild {
   foo: string;
@@ -46,44 +43,30 @@ interface NoChild {
   bool: boolean;
 }
 
-interface OtherInterfaceTwo {
+interface OtherInterfaceTwo {}
 
-}
-
-type SubType = "fooFromSub";
+type SubType = 'fooFromSub';
 
 interface UnionFoo {
   sub: SubUnionFoo;
 }
 
-interface SubUnionFoo {
-}
+interface SubUnionFoo {}
 
 interface UnionBar {
   sub: SubUnionBar;
 }
 
-interface SubUnionBar {
+interface SubUnionBar {}
 
-}
+interface TupleFoo {}
+interface TupleBar {}
 
-interface TupleFoo {
+interface TupleBaz {}
 
-}
-interface TupleBar {
+interface TupleFooBar {}
 
-}
-
-interface TupleBaz {
-
-}
-
-interface TupleFooBar {
-}
-
-interface ShouldBeIgnored {
-
-}
+interface ShouldBeIgnored {}
 
 interface CycleTest {
   sub: SubCycleTest;
@@ -102,34 +85,18 @@ interface MoreCycleTest {
   itself: MoreCycleTest;
 }
 
-interface PrivateInterface {
+interface PrivateInterface {}
 
-}
+interface ToBeExtended extends ExtendedInterface {}
 
-interface ToBeExtended  extends ExtendedInterface {
+interface ExtendedInterface extends AnotherExtendsInt {}
 
-}
+interface AnotherExtendsInt {}
 
-interface ExtendedInterface extends AnotherExtendsInt {
+interface toBeImpExtended extends ImpExtendInterface {}
 
-}
+interface CustomEventFoo {}
 
-interface AnotherExtendsInt {
+interface CustomEventBar {}
 
-}
-
-interface toBeImpExtended extends ImpExtendInterface {
-
-}
-
-interface CustomEventFoo {
-
-}
-
-interface CustomEventBar {
-
-}
-
-interface CustomEventBaz {
-
-}
+interface CustomEventBaz {}

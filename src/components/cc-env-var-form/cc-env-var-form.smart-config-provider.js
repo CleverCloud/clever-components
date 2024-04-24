@@ -13,8 +13,7 @@ defineSmartComponent({
     ownerId: { type: String },
     addonId: { type: String },
   },
-  onContextUpdate ({ context, onEvent, updateComponent, signal }) {
-
+  onContextUpdate({ context, onEvent, updateComponent, signal }) {
     updateComponent('state', { type: 'loading' });
 
     const { apiConfig, ownerId, addonId } = context;
@@ -56,21 +55,20 @@ defineSmartComponent({
   },
 });
 
-function fetchAddon ({ apiConfig, signal, ownerId, addonId }) {
+function fetchAddon({ apiConfig, signal, ownerId, addonId }) {
   return getAddon({ id: ownerId, addonId }).then(sendToApi({ apiConfig, signal }));
 }
 
-async function fetchVariables ({ apiConfig, signal, realAddonId }) {
+async function fetchVariables({ apiConfig, signal, realAddonId }) {
   return getConfigProviderEnv({ realAddonId }).then(sendToApi({ apiConfig, signal }));
 }
 
-async function updateVariables ({ apiConfig, signal, realAddonId, variables }) {
-  return updateConfigProviderEnv({ realAddonId }, variables)
-    .then(sendToApi({ apiConfig, signal }));
+async function updateVariables({ apiConfig, signal, realAddonId, variables }) {
+  return updateConfigProviderEnv({ realAddonId }, variables).then(sendToApi({ apiConfig, signal }));
 }
 
 // TODO clever-client
-export function getConfigProviderEnv (params) {
+export function getConfigProviderEnv(params) {
   return Promise.resolve({
     method: 'get',
     url: `/v4/addon-providers/config-provider/addons/${params.realAddonId}/env`,
@@ -81,7 +79,7 @@ export function getConfigProviderEnv (params) {
 }
 
 // TODO clever-client
-export function updateConfigProviderEnv (params, body) {
+export function updateConfigProviderEnv(params, body) {
   return Promise.resolve({
     method: 'put',
     url: `/v4/addon-providers/config-provider/addons/${params.realAddonId}/env`,

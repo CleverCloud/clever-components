@@ -2,6 +2,7 @@
 kind: '🛠 Environment variables/<cc-env-var-form>'
 title: '💡 Smart (config-provider)'
 ---
+
 # 💡 Smart `<cc-env-var-form>` for the add-on configuration provider
 
 ## ℹ️ Details
@@ -45,7 +46,8 @@ The first call is used to display the add-on name and to retrieve the real add-o
 ## ⬇️️ Examples
 
 ```html
-<cc-smart-container context='{
+<cc-smart-container
+  context='{
   "apiConfig": {
     API_HOST: "",
     API_OAUTH_TOKEN: "",
@@ -55,7 +57,8 @@ The first call is used to display the add-on name and to retrieve the real add-o
   },
   "ownerId": "",
   "addonId": ""
-}'>
+}'
+>
   <cc-env-var-form context="config-provider"></cc-env-var-form>
 </cc-smart-container>
 ```

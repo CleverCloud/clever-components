@@ -29,15 +29,14 @@ const ELASTICSEARCH_DOCUMENTATION = 'https://www.clever-cloud.com/doc/addons/ela
  * @cssdisplay block
  */
 export class CcElasticsearchInfo extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       error: { type: Boolean },
       links: { type: Array },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {boolean} Display an error message. */
@@ -47,8 +46,7 @@ export class CcElasticsearchInfo extends LitElement {
     this.links = null;
   }
 
-  render () {
-
+  render() {
     const links = this.links ?? [];
     const elasticsearchLink = links.find(({ type }) => type === 'elasticsearch');
     const kibanaLink = links.find(({ type }) => type === 'kibana');
@@ -59,39 +57,62 @@ export class CcElasticsearchInfo extends LitElement {
     }
 
     return html`
-
       <cc-block ribbon=${i18n('cc-elasticsearch-info.info')} no-head>
-         <div class="info-text">${i18n('cc-elasticsearch-info.text')}</div>
+        <div class="info-text">${i18n('cc-elasticsearch-info.text')}</div>
 
-          <div class="link-list">
-            ${ccLink(ELASTICSEARCH_DOCUMENTATION, html`
+        <div class="link-list">
+          ${ccLink(
+            ELASTICSEARCH_DOCUMENTATION,
+            html`
               <cc-icon size="lg" .icon=${iconInfo}></cc-icon>
               <span>${i18n('cc-elasticsearch-info.link.doc')}</span>
-            `)}
-            ${elasticsearchLink != null ? html`
-              ${ccLink(elasticsearchLink.href, html`
-                <cc-img src="${ELASTICSEARCH_LOGO_URL}"></cc-img>
-                <span class="${classMap({ skeleton: (elasticsearchLink.href == null) })}">${i18n('cc-elasticsearch-info.link.elasticsearch')}</span>
-              `)}
-            ` : ''}
-            ${kibanaLink != null ? html`
-              ${ccLink(kibanaLink.href, html`
-                <cc-img src="${KIBANA_LOGO_URL}"></cc-img>
-                <span class="${classMap({ skeleton: (kibanaLink.href == null) })}">${i18n('cc-elasticsearch-info.link.kibana')}</span>
-              `)}
-            ` : ''}
-            ${apmLink != null ? html`
-              ${ccLink(apmLink.href, html`
-                <cc-img src="${APM_LOGO_URL}"></cc-img>
-                <span class="${classMap({ skeleton: (apmLink.href == null) })}">${i18n('cc-elasticsearch-info.link.apm')}</span>
-              `)}
-            ` : ''}
-          </div>
+            `,
+          )}
+          ${elasticsearchLink != null
+            ? html`
+                ${ccLink(
+                  elasticsearchLink.href,
+                  html`
+                    <cc-img src="${ELASTICSEARCH_LOGO_URL}"></cc-img>
+                    <span class="${classMap({ skeleton: elasticsearchLink.href == null })}"
+                      >${i18n('cc-elasticsearch-info.link.elasticsearch')}</span
+                    >
+                  `,
+                )}
+              `
+            : ''}
+          ${kibanaLink != null
+            ? html`
+                ${ccLink(
+                  kibanaLink.href,
+                  html`
+                    <cc-img src="${KIBANA_LOGO_URL}"></cc-img>
+                    <span class="${classMap({ skeleton: kibanaLink.href == null })}"
+                      >${i18n('cc-elasticsearch-info.link.kibana')}</span
+                    >
+                  `,
+                )}
+              `
+            : ''}
+          ${apmLink != null
+            ? html`
+                ${ccLink(
+                  apmLink.href,
+                  html`
+                    <cc-img src="${APM_LOGO_URL}"></cc-img>
+                    <span class="${classMap({ skeleton: apmLink.href == null })}"
+                      >${i18n('cc-elasticsearch-info.link.apm')}</span
+                    >
+                  `,
+                )}
+              `
+            : ''}
+        </div>
       </cc-block>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       skeletonStyles,
       linkStyles,
@@ -119,7 +140,7 @@ export class CcElasticsearchInfo extends LitElement {
           margin-right: 0.5em;
           border-radius: var(--cc-border-radius-default, 0.25em);
         }
-        
+
         cc-icon {
           flex: 0 0 auto;
           margin-right: 0.5em;

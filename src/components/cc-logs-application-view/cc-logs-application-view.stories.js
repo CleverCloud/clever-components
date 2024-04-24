@@ -38,7 +38,9 @@ const log = (index, fakeTime = true) => {
 };
 
 const logs = (count, logFactory = log) => {
-  return Array(count).fill(0).map((_, i) => logFactory(i));
+  return Array(count)
+    .fill(0)
+    .map((_, i) => logFactory(i));
 };
 
 export const defaultStory = makeStory(conf, {

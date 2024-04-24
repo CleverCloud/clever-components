@@ -15,8 +15,7 @@ defineSmartComponent({
     consoleGrafanaLink: { type: String },
     grafanaBaseLink: { type: String },
   },
-  onContextUpdate ({ component, context, onEvent, updateComponent, signal }) {
-
+  onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId, appId, grafanaBaseLink, consoleGrafanaLink } = context;
 
     updateComponent('metrics', { state: 'loading' });
@@ -25,8 +24,7 @@ defineSmartComponent({
       .then(({ cpuData, memData }) => {
         if (cpuData.length === 0 || memData.length === 0 || isAppStopped(cpuData)) {
           updateComponent('metrics', { state: 'empty' });
-        }
-        else {
+        } else {
           updateComponent('metrics', { state: 'loaded', value: { cpuData, memData } });
         }
       })
@@ -46,7 +44,7 @@ defineSmartComponent({
   },
 });
 
-function fetchMetrics ({ apiConfig, ownerId, appId, signal }) {
+function fetchMetrics({ apiConfig, ownerId, appId, signal }) {
   return getAppMetrics({ id: ownerId, appId, interval: 'P1D', span: 'PT1H' })
     .then(sendToApi({ apiConfig, signal }))
     .then((metrics) => {
@@ -56,7 +54,7 @@ function fetchMetrics ({ apiConfig, ownerId, appId, signal }) {
     });
 }
 
-function extractMetric (metrics, name) {
+function extractMetric(metrics, name) {
   const metric = metrics?.find((m) => m.name === name)?.data ?? [];
   return metric.map(({ timestamp, value }) => {
     return {
@@ -67,7 +65,7 @@ function extractMetric (metrics, name) {
   });
 }
 
-function fetchGrafanaAppLink ({ apiConfig, ownerId, appId, grafanaBaseLink, signal }) {
+function fetchGrafanaAppLink({ apiConfig, ownerId, appId, grafanaBaseLink, signal }) {
   return getGrafanaOrganisation({ id: ownerId })
     .then(sendToApi({ apiConfig, signal }))
     .then((grafanaOrg) => {
@@ -78,6 +76,6 @@ function fetchGrafanaAppLink ({ apiConfig, ownerId, appId, grafanaBaseLink, sign
     });
 }
 
-function isAppStopped (data) {
+function isAppStopped(data) {
   return data.filter((data) => parseFloat(data.value) === 0).length === NUMBER_OF_POINTS;
 }

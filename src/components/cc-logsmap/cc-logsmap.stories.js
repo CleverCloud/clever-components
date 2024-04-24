@@ -26,7 +26,6 @@ export const defaultStory = makeStory(conf, {
   ],
   simulations: [
     storyWait(0, ([component]) => {
-
       const fetchData = () => {
         getFakePointsData(0).then((rawPoints) => {
           const points = rawPoints.map((p) => ({ ...p, tooltip: p.city, delay }));
@@ -57,18 +56,12 @@ export const emptyWithDifferentCentersAndZooms = makeStory(conf, {
 
 export const emptyWithOrga = makeStory(conf, {
   docs: 'Data for all apps of an orga (name in legend).',
-  items: [
-    { orgaName: 'ACME Corp' },
-    { orgaName: 'ACME Corp' },
-  ],
+  items: [{ orgaName: 'ACME Corp' }, { orgaName: 'ACME Corp' }],
 });
 
 export const emptyWithAppOnly = makeStory(conf, {
   docs: 'Data for only one app (name in legend).',
-  items: [
-    { appName: 'My Awesome Java App (PROD)' },
-    { appName: 'My Awesome Java App (PROD)' },
-  ],
+  items: [{ appName: 'My Awesome Java App (PROD)' }, { appName: 'My Awesome Java App (PROD)' }],
 });
 
 export const loading = makeStory(conf, {
@@ -84,13 +77,14 @@ export const errorWithLoadingIndicator = makeStory(conf, {
 });
 
 export const simulationWithDotmap = makeStory(conf, {
-  items: [{
-    viewZoom: '2',
-    orgaName: 'ACME Corp',
-  }],
+  items: [
+    {
+      viewZoom: '2',
+      orgaName: 'ACME Corp',
+    },
+  ],
   simulations: [
     storyWait(0, ([component]) => {
-
       const fetchData = () => {
         getFakePointsData(0).then((rawPoints) => {
           const points = rawPoints.map((p) => ({ ...p, tooltip: p.city, delay }));
@@ -105,13 +99,14 @@ export const simulationWithDotmap = makeStory(conf, {
 });
 
 export const simulationWithVeryBusyDotmap = makeStory(conf, {
-  items: [{
-    viewZoom: '2',
-    orgaName: 'ACME Corp',
-  }],
+  items: [
+    {
+      viewZoom: '2',
+      orgaName: 'ACME Corp',
+    },
+  ],
   simulations: [
     storyWait(0, ([component]) => {
-
       const fetchData = () => {
         getFakePointsData(2).then((rawPoints) => {
           const points = rawPoints.map((p) => ({ ...p, tooltip: p.city, delay }));
@@ -126,10 +121,12 @@ export const simulationWithVeryBusyDotmap = makeStory(conf, {
 });
 
 export const simulationWithHeatmap = makeStory(conf, {
-  items: [{
-    viewZoom: '2',
-    orgaName: 'ACME Corp',
-    mode: 'heatmap',
-    heatmapPoints: fakeHeatmapData,
-  }],
+  items: [
+    {
+      viewZoom: '2',
+      orgaName: 'ACME Corp',
+      mode: 'heatmap',
+      heatmapPoints: fakeHeatmapData,
+    },
+  ],
 });

@@ -26,8 +26,7 @@ import { i18n } from '../../lib/i18n.js';
  * @fires {CustomEvent<string[]>} cc-addon-admin:update-tags - Fires the new list of tags when update tags button is clicked.
  */
 export class CcAddonAdmin extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       addon: { type: Object },
       error: { type: Boolean },
@@ -38,7 +37,7 @@ export class CcAddonAdmin extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {Addon|null} Sets the add-on details (name and tags). */
@@ -60,41 +59,39 @@ export class CcAddonAdmin extends LitElement {
     this._tags = [];
   }
 
-  _onNameInput ({ detail: name }) {
+  _onNameInput({ detail: name }) {
     this._name = name;
   }
 
-  _onNameSubmit () {
+  _onNameSubmit() {
     dispatchCustomEvent(this, 'update-name', { name: this._name });
   }
 
-  _onTagsInput ({ detail: tags }) {
+  _onTagsInput({ detail: tags }) {
     this._tags = tags;
   }
 
-  _onTagsSubmit () {
+  _onTagsSubmit() {
     dispatchCustomEvent(this, 'update-tags', { tags: this._tags });
   }
 
-  _onDeleteSubmit () {
+  _onDeleteSubmit() {
     dispatchCustomEvent(this, 'delete-addon');
   }
 
-  _onDismissError () {
+  _onDismissError() {
     this.error = false;
   }
 
-  willUpdate (changedProperties) {
-
+  willUpdate(changedProperties) {
     if (changedProperties.has('addon')) {
-      this._skeleton = (this.addon == null);
+      this._skeleton = this.addon == null;
       this._name = this._skeleton ? '' : this.addon.name;
       this._tags = this._skeleton ? [] : this.addon.tags;
     }
   }
 
-  render () {
-
+  render() {
     const isFormDisabled = this.error || this.saving;
     const loadingError = (this.error && !this.saving) || (this.error && this.addon == null);
 
@@ -102,57 +99,76 @@ export class CcAddonAdmin extends LitElement {
       <cc-block>
         <div slot="title">${i18n('cc-addon-admin.admin')}</div>
 
-        ${!loadingError ? html`
-          <cc-block-section>
-            <div slot="title">${i18n('cc-addon-admin.heading.name')}</div>
-            <div slot="info"></div>
-            <div class="one-line-form">
-              <cc-input-text
-                label="${i18n('cc-addon-admin.input.name')}"
-                ?skeleton=${this._skeleton}
-                ?disabled=${isFormDisabled}
-                .value=${this._name}
-                @cc-input-text:input=${this._onNameInput}
-                @cc-input-text:requestimplicitsubmit=${this._onNameSubmit}
-              ></cc-input-text>
-              <cc-button primary ?skeleton=${this._skeleton} ?disabled=${isFormDisabled} @cc-button:click=${this._onNameSubmit}>${i18n('cc-addon-admin.update')}</cc-button>
-            </div>
-          </cc-block-section>
+        ${!loadingError
+          ? html`
+              <cc-block-section>
+                <div slot="title">${i18n('cc-addon-admin.heading.name')}</div>
+                <div slot="info"></div>
+                <div class="one-line-form">
+                  <cc-input-text
+                    label="${i18n('cc-addon-admin.input.name')}"
+                    ?skeleton=${this._skeleton}
+                    ?disabled=${isFormDisabled}
+                    .value=${this._name}
+                    @cc-input-text:input=${this._onNameInput}
+                    @cc-input-text:requestimplicitsubmit=${this._onNameSubmit}
+                  ></cc-input-text>
+                  <cc-button
+                    primary
+                    ?skeleton=${this._skeleton}
+                    ?disabled=${isFormDisabled}
+                    @cc-button:click=${this._onNameSubmit}
+                    >${i18n('cc-addon-admin.update')}</cc-button
+                  >
+                </div>
+              </cc-block-section>
 
-          <cc-block-section>
-            <div slot="title">${i18n('cc-addon-admin.heading.tags')}</div>
-            <div slot="info">${i18n('cc-addon-admin.tags-description')}</div>
-            <div class="one-line-form">
-              <cc-input-text
-                label="${i18n('cc-addon-admin.input.tags')}"
-                ?skeleton=${this._skeleton}
-                ?disabled=${isFormDisabled}
-                .tags=${this._tags}
-                placeholder="${i18n('cc-addon-admin.tags-empty')}"
-                @cc-input-text:tags=${this._onTagsInput}
-                @cc-input-text:requestimplicitsubmit=${this._onTagsSubmit}
-              ></cc-input-text>
-              <cc-button primary ?skeleton=${this._skeleton} ?disabled=${isFormDisabled} @cc-button:click=${this._onTagsSubmit}>${i18n('cc-addon-admin.tags-update')}</cc-button>
-            </div>
-          </cc-block-section>
+              <cc-block-section>
+                <div slot="title">${i18n('cc-addon-admin.heading.tags')}</div>
+                <div slot="info">${i18n('cc-addon-admin.tags-description')}</div>
+                <div class="one-line-form">
+                  <cc-input-text
+                    label="${i18n('cc-addon-admin.input.tags')}"
+                    ?skeleton=${this._skeleton}
+                    ?disabled=${isFormDisabled}
+                    .tags=${this._tags}
+                    placeholder="${i18n('cc-addon-admin.tags-empty')}"
+                    @cc-input-text:tags=${this._onTagsInput}
+                    @cc-input-text:requestimplicitsubmit=${this._onTagsSubmit}
+                  ></cc-input-text>
+                  <cc-button
+                    primary
+                    ?skeleton=${this._skeleton}
+                    ?disabled=${isFormDisabled}
+                    @cc-button:click=${this._onTagsSubmit}
+                    >${i18n('cc-addon-admin.tags-update')}</cc-button
+                  >
+                </div>
+              </cc-block-section>
 
-          <cc-block-section>
-            <div slot="title" class="danger">${i18n('cc-addon-admin.danger-zone')}</div>
-            <div slot="info">${i18n('cc-addon-admin.delete-description')}</div>
-            <div>
-              <cc-button danger ?skeleton=${this._skeleton} ?disabled=${isFormDisabled} @cc-button:click=${this._onDeleteSubmit}>${i18n('cc-addon-admin.delete')}</cc-button>
-            </div>
-          </cc-block-section>
-        ` : ''}
-
-        ${loadingError ? html`
-          <cc-notice intent="warning" message="${i18n('cc-addon-admin.error-loading')}"></cc-notice>
-        ` : ''}
+              <cc-block-section>
+                <div slot="title" class="danger">${i18n('cc-addon-admin.danger-zone')}</div>
+                <div slot="info">${i18n('cc-addon-admin.delete-description')}</div>
+                <div>
+                  <cc-button
+                    danger
+                    ?skeleton=${this._skeleton}
+                    ?disabled=${isFormDisabled}
+                    @cc-button:click=${this._onDeleteSubmit}
+                    >${i18n('cc-addon-admin.delete')}</cc-button
+                  >
+                </div>
+              </cc-block-section>
+            `
+          : ''}
+        ${loadingError
+          ? html` <cc-notice intent="warning" message="${i18n('cc-addon-admin.error-loading')}"></cc-notice> `
+          : ''}
       </cc-block>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
@@ -168,7 +184,7 @@ export class CcAddonAdmin extends LitElement {
           flex: 1 1 10em;
           margin-right: 0.5em;
         }
-        
+
         .one-line-form cc-button {
           margin-top: var(--cc-margin-top-btn-horizontal-form);
         }

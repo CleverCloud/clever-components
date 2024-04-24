@@ -59,7 +59,16 @@ const zoneWithManyTags = {
   city: 'Warsaw',
   lat: 52.23,
   lon: 21.01,
-  tags: ['region:eu', 'infra:ovh', 'foobar:one', 'foobar:two', 'foobar:three', 'foobar:four', 'foobar:five', 'foobar:six'],
+  tags: [
+    'region:eu',
+    'infra:ovh',
+    'foobar:one',
+    'foobar:two',
+    'foobar:three',
+    'foobar:four',
+    'foobar:five',
+    'foobar:six',
+  ],
 };
 
 export const defaultStory = makeStory(conf, {
@@ -73,9 +82,14 @@ export const skeleton = makeStory(conf, {
 // NOTE: We don't need an error state for now
 
 export const dataLoadedWithInfra = makeStory(conf, {
-  items: [{ zone: zoneWithInfra }, { zone: zoneWithInfra, mode: 'small' }, {
-    zone: zoneWithInfra, mode: 'small-infra',
-  }],
+  items: [
+    { zone: zoneWithInfra },
+    { zone: zoneWithInfra, mode: 'small' },
+    {
+      zone: zoneWithInfra,
+      mode: 'small-infra',
+    },
+  ],
 });
 
 export const dataLoadedWithPrivate = makeStory(conf, {
@@ -83,15 +97,25 @@ export const dataLoadedWithPrivate = makeStory(conf, {
 });
 
 export const dataLoadedWithNoTags = makeStory(conf, {
-  items: [{ zone: zoneWithoutTags }, { zone: zoneWithoutTags, mode: 'small' }, {
-    zone: zoneWithoutTags, mode: 'small-infra',
-  }],
+  items: [
+    { zone: zoneWithoutTags },
+    { zone: zoneWithoutTags, mode: 'small' },
+    {
+      zone: zoneWithoutTags,
+      mode: 'small-infra',
+    },
+  ],
 });
 
 export const dataLoadedWithManyTags = makeStory(conf, {
-  items: [{ zone: zoneWithManyTags }, { zone: zoneWithManyTags, mode: 'small' }, {
-    zone: zoneWithManyTags, mode: 'small-infra',
-  }],
+  items: [
+    { zone: zoneWithManyTags },
+    { zone: zoneWithManyTags, mode: 'small' },
+    {
+      zone: zoneWithManyTags,
+      mode: 'small-infra',
+    },
+  ],
 });
 
 export const simulations = makeStory(conf, {

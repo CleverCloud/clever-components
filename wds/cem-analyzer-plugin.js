@@ -6,14 +6,14 @@ const path = '/dist/custom-elements.json';
 export const cemAnalyzerPlugin = {
   name: 'cem-analyzer-plugin',
   // we disable transform cache to enforce generation for every call
-  transform (context) {
+  transform(context) {
     if (context.path === path) {
       return {
         transformCache: false,
       };
     }
   },
-  async serve (context) {
+  async serve(context) {
     if (context.path === path) {
       const cemJson = await cli({
         argv: ['analyze'],

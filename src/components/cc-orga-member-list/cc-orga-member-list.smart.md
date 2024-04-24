@@ -16,38 +16,38 @@ title: '💡 Smart'
 ## 👋️ Events fired
 
 | Name                        | Payload | Details                                                                                                       |
-|-----------------------------|---------|---------------------------------------------------------------------------------------------------------------|
+| --------------------------- | ------- | ------------------------------------------------------------------------------------------------------------- |
 | `orga-member-leave-success` |         | Fired when the current user leaves the organisation.<br/>Should be used to redirect the user to another page. |
-
 
 ## ⚙️ Params
 
-| Name        | Type        | Details                                                 | Default |
-|-------------|-------------|---------------------------------------------------------|---------|
-| `apiConfig` | `ApiConfig` | Object with API configuration (target host, tokens...)  |         |
-| `ownerId`   | `string`    | UUID prefixed with orga_                                |         |
+| Name        | Type        | Details                                                | Default |
+| ----------- | ----------- | ------------------------------------------------------ | ------- |
+| `apiConfig` | `ApiConfig` | Object with API configuration (target host, tokens...) |         |
+| `ownerId`   | `string`    | UUID prefixed with orga\_                              |         |
 
 ```ts
 interface ApiConfig {
-  API_HOST: string,
-  API_OAUTH_TOKEN: string,
-  API_OAUTH_TOKEN_SECRET: string,
-  OAUTH_CONSUMER_KEY: string,
-  OAUTH_CONSUMER_SECRET: string,
+  API_HOST: string;
+  API_OAUTH_TOKEN: string;
+  API_OAUTH_TOKEN_SECRET: string;
+  OAUTH_CONSUMER_KEY: string;
+  OAUTH_CONSUMER_SECRET: string;
 }
 ```
 
 ## 🌐 API endpoints
 
 | Method   | Type                             | Cache?  |
-|----------|:---------------------------------|---------|
+| -------- | :------------------------------- | ------- |
 | `GET`    | `/v2/self/id`                    | Default |
 | `GET`    | `/v2/organisations/{id}/members` | Default |
 | `PUT`    | `/v2/organisations/{id}/members` | Default |
 | `DELETE` | `/v2/organisations/{id}/members` | Default |
 
 ```html
-<cc-smart-container context='{
+<cc-smart-container
+  context='{
     "apiConfig": {
       API_HOST: "",
       API_OAUTH_TOKEN: "",
@@ -56,7 +56,9 @@ interface ApiConfig {
       OAUTH_CONSUMER_SECRET: "",
     },
     "ownerId": "",
-}'>
-    <cc-orga-member-list></cc-orga-member-list>
-<cc-smart-container>
+}'
+>
+  <cc-orga-member-list></cc-orga-member-list>
+  <cc-smart-container></cc-smart-container
+></cc-smart-container>
 ```

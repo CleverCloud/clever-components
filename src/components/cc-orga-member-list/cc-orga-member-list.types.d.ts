@@ -34,8 +34,8 @@ interface OrgaMemberListStateError {
 }
 
 export interface InviteMember {
-  email: string,
-  role: string,
+  email: string;
+  role: string;
 }
 
 interface Authorisations {

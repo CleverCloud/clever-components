@@ -10,7 +10,7 @@ import { cli } from '@custom-elements-manifest/analyzer/cli.js';
  *
  * To sum it up: in dev mode we import a virtual module/file, in prod we import an actual file.
  */
-export default function generateCem () {
+export default function generateCem() {
   // The naming `virtual` and `\0` are important,
   // see: https://vitejs.dev/guide/api-plugin#virtual-modules-convention for more info
   const virtualModuleId = 'virtual:custom-elements.json';
@@ -20,13 +20,13 @@ export default function generateCem () {
     // the name is required, it will show up in warnings and errors
     name: 'generate-cem',
     /** @type {import('vite').Rollup.ResolveIdHook} */
-    resolveId (id) {
+    resolveId(id) {
       if (id.includes(virtualModuleId)) {
         return resolvedVirtualModuleId;
       }
     },
     /** @type {import('vite').Rollup.LoadHook} */
-    async load (id) {
+    async load(id) {
       if (id === resolvedVirtualModuleId) {
         const cemJson = await cli({
           argv: ['analyze'],
@@ -37,7 +37,7 @@ export default function generateCem () {
       }
     },
     /** @param {import('vite').HmrContext} context */
-    handleHotUpdate ({ server, file }) {
+    handleHotUpdate({ server, file }) {
       const isComponentFileRegex = /cc-[^/]+\.js$/;
 
       if (file.match(isComponentFileRegex)) {

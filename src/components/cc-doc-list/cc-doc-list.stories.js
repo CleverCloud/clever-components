@@ -5,12 +5,17 @@ const DOCS_ITEMS = [
   {
     heading: 'ruby',
     icons: ['https://assets.clever-cloud.com/logos/ruby.svg'],
-    description: 'Run your Ruby and Ruby on Rails applications. Compatible with Rake, Sidekiq and Active Storage for Cellar.',
+    description:
+      'Run your Ruby and Ruby on Rails applications. Compatible with Rake, Sidekiq and Active Storage for Cellar.',
     link: '#',
   },
   {
     heading: 'Java',
-    icons: ['https://assets.clever-cloud.com/logos/java-jar.svg', 'https://assets.clever-cloud.com/logos/maven.svg', 'https://assets.clever-cloud.com/logos/play2.svg'],
+    icons: [
+      'https://assets.clever-cloud.com/logos/java-jar.svg',
+      'https://assets.clever-cloud.com/logos/maven.svg',
+      'https://assets.clever-cloud.com/logos/play2.svg',
+    ],
     description: 'Deploy Java runtimes with your specific process (Jar or War) or build tools (Maven, SBT…).',
     link: '#',
   },
@@ -23,7 +28,8 @@ const DOCS_ITEMS = [
   {
     heading: 'php',
     icons: ['https://assets.clever-cloud.com/logos/php.svg'],
-    description: 'PHP is deployable with both Git and SFTP in version 7.x and 8.x. Need extensions? Check our already installed extensions or ask the support for it.',
+    description:
+      'PHP is deployable with both Git and SFTP in version 7.x and 8.x. Need extensions? Check our already installed extensions or ask the support for it.',
     link: '#',
   },
   {
@@ -35,7 +41,8 @@ const DOCS_ITEMS = [
   {
     heading: 'JavaScript Runtimes',
     icons: ['https://assets.clever-cloud.com/logos/nodejs.svg', 'https://assets.clever-cloud.com/logos/meteor.svg'],
-    description: 'Clever Cloud supports Node.js, Meteor and Deno runtimes in a elegant and performant way. Compatible with statsd for advanced statistics, like counters and timers. ',
+    description:
+      'Clever Cloud supports Node.js, Meteor and Deno runtimes in a elegant and performant way. Compatible with statsd for advanced statistics, like counters and timers. ',
     link: '#',
   },
 ];

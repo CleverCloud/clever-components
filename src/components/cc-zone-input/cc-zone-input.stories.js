@@ -89,7 +89,7 @@ export const ZONES = [
     country: 'Canada',
     countryCode: 'CA',
     city: 'Montreal',
-    lat: 45.50,
+    lat: 45.5,
     lon: -73.61,
     tags: ['infra:ovh'],
   },
@@ -114,10 +114,12 @@ export const skeleton = makeStory(conf, {
 });
 
 export const dataLoadedWithNoPrivateZones = makeStory(conf, {
-  items: [{
-    zones: ZONES.filter((z) => !z.tags.includes('scope:private')),
-    selected: 'rbx',
-  }],
+  items: [
+    {
+      zones: ZONES.filter((z) => !z.tags.includes('scope:private')),
+      selected: 'rbx',
+    },
+  ],
 });
 
 export const error = makeStory(conf, {

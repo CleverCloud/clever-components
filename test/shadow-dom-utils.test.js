@@ -4,14 +4,13 @@ import { html, LitElement } from 'lit';
 import { findActiveElement, isParentOf } from '../src/lib/shadow-dom-utils.js';
 
 describe('shadow-dom-utils', () => {
-
   const ce = defineCE(
     class extends LitElement {
-      getButtonElement () {
+      getButtonElement() {
         return this.shadowRoot.querySelector('button');
       }
 
-      render () {
+      render() {
         return html`<button>button</button><slot></slot>`;
       }
     },

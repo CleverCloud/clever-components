@@ -2,6 +2,7 @@
 kind: '🛠 Overview/<cc-tile-status-codes>'
 title: '💡 Smart'
 ---
+
 # 💡 Smart `<cc-tile-status-codes>`
 
 ## ℹ️ Details
@@ -53,7 +54,8 @@ interface ApiConfig {
 If you only specify a `ownerId` and no `appId`, the data represent the whole organization.
 
 ```html
-<cc-smart-container context='{
+<cc-smart-container
+  context='{
   "apiConfig": {
     "API_HOST": "",
     "WARP_10_HOST": ""
@@ -63,7 +65,8 @@ If you only specify a `ownerId` and no `appId`, the data represent the whole org
     "OAUTH_CONSUMER_SECRET": "",
   },
   "ownerId": ""
-}'>
+}'
+>
   <cc-tile-status-codes></cc-tile-status-codes>
 </cc-smart-container>
 ```
@@ -71,7 +74,8 @@ If you only specify a `ownerId` and no `appId`, the data represent the whole org
 ### Application only
 
 ```html
-<cc-smart-container context='{
+<cc-smart-container
+  context='{
   "apiConfig": {
     "API_HOST": "",
     "WARP_10_HOST": ""
@@ -82,7 +86,8 @@ If you only specify a `ownerId` and no `appId`, the data represent the whole org
   },
   "ownerId": "",
   "appId": ""
-}'>
+}'
+>
   <cc-tile-status-codes></cc-tile-status-codes>
 </cc-smart-container>
 ```

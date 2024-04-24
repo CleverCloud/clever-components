@@ -1,8 +1,8 @@
-import {NotificationIntent} from '../common.types.js';
+import { NotificationIntent } from '../common.types.js';
 
-type ToastPosition = "top" | "top-left" | "top-right" | "bottom" | "bottom-left" | "bottom-right";
+type ToastPosition = 'top' | 'top-left' | 'top-right' | 'bottom' | 'bottom-left' | 'bottom-right';
 
-type ToastAnimation = "fade" | "slide" | "fade-and-slide";
+type ToastAnimation = 'fade' | 'slide' | 'fade-and-slide';
 
 interface Notification {
   message: string;

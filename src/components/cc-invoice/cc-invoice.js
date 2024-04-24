@@ -15,7 +15,7 @@ const SKELETON_INVOICE = {
   emissionDate: '2020-01-01',
   number: '????????????',
   status: 'PENDING',
-  amount: 10.00,
+  amount: 10.0,
 };
 
 /**
@@ -28,59 +28,54 @@ const SKELETON_INVOICE = {
  * @cssdisplay block
  */
 export class CcInvoice extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       state: { type: Object },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {InvoiceState} Sets the invoice state. */
     this.state = { type: 'loading' };
   }
 
-  render () {
-
+  render() {
     const invoiceNumber = this.state.number;
     const skeletonNumber = invoiceNumber == null;
     const number = skeletonNumber ? SKELETON_INVOICE.number : invoiceNumber;
-    const skeleton = skeletonNumber || (this.state.type === 'loading');
+    const skeleton = skeletonNumber || this.state.type === 'loading';
     const invoice = skeleton ? SKELETON_INVOICE : this.state;
     const title = `${i18n('cc-invoice.title')} ${number}`;
 
     return html`
       <cc-block .icon=${iconFile} class=${classMap({ 'has-errors': this.state.type === 'error' })}>
         <div slot="title">
-          ${skeletonNumber ? html`
-            ${i18n('cc-invoice.title')} <span class="skeleton">${number}</span>
-          ` : title}
+          ${skeletonNumber ? html` ${i18n('cc-invoice.title')} <span class="skeleton">${number}</span> ` : title}
         </div>
-        
-        ${this.state.type === 'error' ? html`
-          <cc-notice intent="warning" message="${i18n('cc-invoice.error')}"></cc-notice>
-        ` : ''}
 
-        ${this.state.type !== 'error' ? html`
-          <div slot="button">
-            ${ccLink(invoice.downloadUrl, i18n('cc-invoice.download-pdf'), skeleton)}
-          </div>
-          <div class="info">
-            <em class=${classMap({ skeleton })}>
-              ${i18n('cc-invoice.info', { date: invoice.emissionDate, amount: invoice.amount })}
-            </em>
-          </div>
-          <cc-html-frame class="frame" ?loading="${skeleton}" iframe-title="${title}">
-            ${invoice.invoiceHtml != null ? unsafeHTML(`<template>${invoice.invoiceHtml}</template>`) : ''}
-          </cc-html-frame>
-        ` : ''}
+        ${this.state.type === 'error'
+          ? html` <cc-notice intent="warning" message="${i18n('cc-invoice.error')}"></cc-notice> `
+          : ''}
+        ${this.state.type !== 'error'
+          ? html`
+              <div slot="button">${ccLink(invoice.downloadUrl, i18n('cc-invoice.download-pdf'), skeleton)}</div>
+              <div class="info">
+                <em class=${classMap({ skeleton })}>
+                  ${i18n('cc-invoice.info', { date: invoice.emissionDate, amount: invoice.amount })}
+                </em>
+              </div>
+              <cc-html-frame class="frame" ?loading="${skeleton}" iframe-title="${title}">
+                ${invoice.invoiceHtml != null ? unsafeHTML(`<template>${invoice.invoiceHtml}</template>`) : ''}
+              </cc-html-frame>
+            `
+          : ''}
       </cc-block>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       linkStyles,
       skeletonStyles,

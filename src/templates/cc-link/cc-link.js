@@ -2,12 +2,11 @@ import { css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
-function isDifferentOrigin (rawUrl) {
+function isDifferentOrigin(rawUrl) {
   try {
     const url = new URL(rawUrl, location.href);
-    return (url.origin !== location.origin);
-  }
-  catch (e) {
+    return url.origin !== location.origin;
+  } catch (e) {
     // Consider bad URLs as different origin
     return true;
   }
@@ -15,10 +14,17 @@ function isDifferentOrigin (rawUrl) {
 
 // NOTE: we could just create raw DOM but here we benefit from lit-html safe/escaping system on "content"
 export const ccLink = (url, content, skeleton = false, title) => {
-  const href = (url != null && !skeleton) ? url : undefined;
+  const href = url != null && !skeleton ? url : undefined;
   const target = isDifferentOrigin(href) ? '_blank' : undefined;
   const rel = isDifferentOrigin(href) ? 'noopener noreferrer' : undefined;
-  return html`<a class="cc-link ${classMap({ skeleton })}" href=${ifDefined(href)} target=${ifDefined(target)} rel=${ifDefined(rel)} title="${ifDefined(title)}">${content}</a>`;
+  return html`<a
+    class="cc-link ${classMap({ skeleton })}"
+    href=${ifDefined(href)}
+    target=${ifDefined(target)}
+    rel=${ifDefined(rel)}
+    title="${ifDefined(title)}"
+    >${content}</a
+  >`;
 };
 
 // language=CSS

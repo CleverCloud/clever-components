@@ -15,7 +15,7 @@ export const DAY = 86_400_000;
  * @param {Date} date
  * @return {Date}
  */
-export function cloneDate (date) {
+export function cloneDate(date) {
   return new Date(date.getTime());
 }
 
@@ -25,7 +25,7 @@ export function cloneDate (date) {
  * @param {any} object
  * @return {boolean}
  */
-export function isDateValid (object) {
+export function isDateValid(object) {
   return object instanceof Date && !isNaN(object);
 }
 
@@ -36,7 +36,7 @@ export function isDateValid (object) {
  * @param {Date|null|undefined} [max]
  * @return {Date}
  */
-export function clampDate (date, min, max) {
+export function clampDate(date, min, max) {
   return new Date(clampNumber(date.getTime(), min?.getTime(), max?.getTime()));
 }
 
@@ -45,7 +45,7 @@ export function clampDate (date, min, max) {
  * @param {number} month
  * @return {number}
  */
-export function getNumberOfDaysInMonth (year, month) {
+export function getNumberOfDaysInMonth(year, month) {
   return new Date(year, month + 1, 0).getDate();
 }
 
@@ -69,7 +69,7 @@ const DATE_SHIFTER = {
     const d = cloneDate(date);
 
     const yearsOffset = Math.floor(offset / 12);
-    const monthsOffset = offset - (yearsOffset * 12);
+    const monthsOffset = offset - yearsOffset * 12;
 
     const nextYear = date.getUTCFullYear() + yearsOffset;
     const nextMonth = date.getUTCMonth() + monthsOffset;
@@ -116,7 +116,7 @@ const DATE_SHIFTER = {
  * @param {number} offset the shifting offset
  * @return {Date}
  */
-export function shiftDateField (date, field, offset) {
+export function shiftDateField(date, field, offset) {
   const shift = DATE_SHIFTER[field];
   if (shift == null) {
     throw new Error(`Cannot shift field "${field}".`);
@@ -137,7 +137,7 @@ const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}(Z|[+-]\d{2}:
  * @return {Date} - The date.
  * @throws {Error} Whenever the given string is not a valid ISO date.
  */
-export function parseIsoDateString (string) {
+export function parseIsoDateString(string) {
   return parseDate(string, ISO_DATE_REGEX, () => new Date(string));
 }
 
@@ -151,7 +151,7 @@ const SIMPLE_DATE_REGEX = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
  * @return {Date} - The date.
  * @throws {Error} Whenever the given string is not a valid simple date.
  */
-export function parseSimpleDateString (string, timezone) {
+export function parseSimpleDateString(string, timezone) {
   return parseDate(string, SIMPLE_DATE_REGEX, () => new Date(`${string}${timezone === 'UTC' ? 'Z' : ''}`));
 }
 
@@ -164,7 +164,7 @@ export function parseSimpleDateString (string, timezone) {
  * @return {Date} - The date.
  * @throws {Error} Whenever the given string is not a valid date according to the given Regex.
  */
-function parseDate (string, regex, fn) {
+function parseDate(string, regex, fn) {
   if (string.match(regex)) {
     const date = fn();
     if (isDateValid(date)) {

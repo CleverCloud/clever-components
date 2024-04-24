@@ -2,7 +2,11 @@ import './cc-invoice-list.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
 import { PROCESSING_STATUS } from '../cc-invoice-table/cc-invoice-table.js';
-import { pendingInvoices, processedInvoices, processingInvoices } from '../cc-invoice-table/cc-invoice-table.stories.js';
+import {
+  pendingInvoices,
+  processedInvoices,
+  processingInvoices,
+} from '../cc-invoice-table/cc-invoice-table.stories.js';
 
 const fullInvoicesExample = [
   ...pendingInvoices('2020').slice(0, 4),
@@ -52,32 +56,30 @@ export const dataLoadedWithNoProcessing = makeStory(conf, {
 export const dataLoadedWithNoPending = makeStory(conf, {
   items: [
     {
-      state:
-        {
-          type: 'loaded',
-          invoices: [
-            ...processedInvoices('2020'),
-            ...processedInvoices('2020').slice(2, 10),
-            ...processedInvoices('2018').slice(2, 10),
-            ...processedInvoices('2017').slice(3, 11),
-            ...processedInvoices('2016').slice(1, 9),
-            ...processedInvoices('2015').slice(1, 9),
-          ],
-        },
-    }],
+      state: {
+        type: 'loaded',
+        invoices: [
+          ...processedInvoices('2020'),
+          ...processedInvoices('2020').slice(2, 10),
+          ...processedInvoices('2018').slice(2, 10),
+          ...processedInvoices('2017').slice(3, 11),
+          ...processedInvoices('2016').slice(1, 9),
+          ...processedInvoices('2015').slice(1, 9),
+        ],
+      },
+    },
+  ],
 });
 
 export const dataLoadedWithNoProcessed = makeStory(conf, {
   items: [
     {
-      state:
-        {
-          type: 'loaded',
-          invoices: [
-            ...pendingInvoices(2020).slice(0, 4),
-          ],
-        },
-    }],
+      state: {
+        type: 'loaded',
+        invoices: [...pendingInvoices(2020).slice(0, 4)],
+      },
+    },
+  ],
 });
 
 export const simulations = makeStory(conf, {

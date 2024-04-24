@@ -35,7 +35,6 @@ export const defaultStory = makeStory(conf, {
     .box[data-size="big"] { height: 180px }
   `,
   dom: (container) => {
-
     const choices = [
       { label: 'small', value: 'small' },
       { label: 'medium', value: 'medium' },
@@ -44,7 +43,7 @@ export const defaultStory = makeStory(conf, {
 
     const onSize = ({ detail: size }) => render(template({ size }), container);
 
-    function template ({ size }) {
+    function template({ size }) {
       return html`
         <div class="knob">
           <cc-toggle value="${size}" .choices=${choices} @cc-toggle:input=${onSize}></cc-toggle>

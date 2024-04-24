@@ -44,8 +44,7 @@ import { dispatchCustomEvent } from '../../lib/events.js';
  * @cssprop {TextTransform} --cc-toggle-text-transform - Sets the value of the text transform CSS property (defaults: `uppercase`).
  */
 export class CcToggle extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       /** @required */
       choices: { type: Array },
@@ -60,7 +59,7 @@ export class CcToggle extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {Choice[]|null} Sets the list of choices. */
@@ -95,18 +94,15 @@ export class CcToggle extends LitElement {
     this.value = null;
   }
 
-  _onChange (e) {
+  _onChange(e) {
     if (this.multipleValues == null) {
       this.value = e.target.value;
       dispatchCustomEvent(this, 'input', this.value);
-    }
-    else {
+    } else {
       // Same order as the choices
       const multipleValues = this.choices
         .filter(({ value }) => {
-          return value === e.target.value
-            ? e.target.checked
-            : this.multipleValues.includes(value);
+          return value === e.target.value ? e.target.checked : this.multipleValues.includes(value);
         })
         .map(({ value }) => value);
       this.multipleValues = multipleValues;
@@ -114,8 +110,7 @@ export class CcToggle extends LitElement {
     }
   }
 
-  render () {
-
+  render() {
     const classes = {
       disabled: this.disabled,
       enabled: !this.disabled,
@@ -124,12 +119,10 @@ export class CcToggle extends LitElement {
       'mode-single': this.multipleValues == null,
       'mode-multiple': this.multipleValues != null,
     };
-    const type = (this.multipleValues == null) ? 'radio' : 'checkbox';
+    const type = this.multipleValues == null ? 'radio' : 'checkbox';
 
     const isChecked = (value) => {
-      return (this.multipleValues != null)
-        ? this.multipleValues.includes(value)
-        : this.value === value;
+      return this.multipleValues != null ? this.multipleValues.includes(value) : this.value === value;
     };
 
     const hasLegend = this.legend != null && this.legend.length > 0;
@@ -138,34 +131,35 @@ export class CcToggle extends LitElement {
       <div role="group" aria-labelledby=${ifDefined(hasLegend ? 'legend' : undefined)} class="group">
         ${hasLegend ? html`<div id="legend">${this.legend}</div>` : ''}
         <div class="toggle-group ${classMap(classes)}">
-          ${repeat(this.choices, ({ value }) => value, ({ label, image, value }) => html`
-            <!--
+          ${repeat(
+            this.choices,
+            ({ value }) => value,
+            ({ label, image, value }) => html`
+              <!--
               If the name=null, the name of the native <input> will be 'toggle'. In order to navigate through a group of inputs using the arrow keys, each <input> must have the same name value.
-            -->    
-            <input
-              type=${type}
-              name=${this.name ?? 'toggle'}
-              .value=${value}
-              id=${value}
-              ?disabled=${this.disabled}
-              .checked=${isChecked(value)}
-              @change=${this._onChange}
-              aria-label=${ifDefined((image != null && this.hideText) ? label : undefined)}>
-            <label for=${value} title=${ifDefined((image != null && this.hideText) ? label : undefined)}>
-              ${image != null ? html`
-                <img src=${image} alt="">
-              ` : ''}
-              ${(image == null) || !this.hideText ? html`
-                <span>${label}</span>
-              ` : ''}
-            </label>
-          `)}
+            -->
+              <input
+                type=${type}
+                name=${this.name ?? 'toggle'}
+                .value=${value}
+                id=${value}
+                ?disabled=${this.disabled}
+                .checked=${isChecked(value)}
+                @change=${this._onChange}
+                aria-label=${ifDefined(image != null && this.hideText ? label : undefined)}
+              />
+              <label for=${value} title=${ifDefined(image != null && this.hideText ? label : undefined)}>
+                ${image != null ? html` <img src=${image} alt="" /> ` : ''}
+                ${image == null || !this.hideText ? html` <span>${label}</span> ` : ''}
+              </label>
+            `,
+          )}
         </div>
       </div>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
@@ -179,7 +173,7 @@ export class CcToggle extends LitElement {
 
           display: inline-flex;
         }
-        
+
         .group {
           display: flex;
           flex-direction: column;
@@ -191,7 +185,7 @@ export class CcToggle extends LitElement {
           align-items: center;
           gap: 1em;
         }
-        
+
         #legend {
           color: var(--cc-toggle-legend-color, inherit);
           font-size: var(--cc-toggle-legend-font-size, inherit);

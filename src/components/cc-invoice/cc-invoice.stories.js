@@ -36,12 +36,14 @@ const conf = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [{
-    state: {
-      type: 'loaded',
-      ...defaultInvoice,
+  items: [
+    {
+      state: {
+        type: 'loaded',
+        ...defaultInvoice,
+      },
     },
-  }],
+  ],
 });
 
 export const loading = makeStory(conf, {
@@ -57,16 +59,18 @@ export const error = makeStory(conf, {
 });
 
 export const dataLoaded = makeStory(conf, {
-  items: [{
-    state: {
-      type: 'loaded',
-      ...defaultInvoice,
+  items: [
+    {
+      state: {
+        type: 'loaded',
+        ...defaultInvoice,
+      },
     },
-  }],
+  ],
 });
 
 export const simulations = makeStory(conf, {
-  items: [{ }, { }],
+  items: [{}, {}],
   simulations: [
     storyWait(2000, ([component, componentError]) => {
       component.state = { type: 'loading', number: defaultNumber };

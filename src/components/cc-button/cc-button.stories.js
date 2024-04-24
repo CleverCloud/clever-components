@@ -89,10 +89,7 @@ export const delayAndOutlined = makeStory(conf, {
 
 export const delayAndDisabled = makeStory(conf, {
   docs: `If the \`disabled\` mode is set during the delay, the \`cc-button:click\` event is not fired.`,
-  items: [
-    { delay: 3, innerHTML: 'With delay' },
-    { innerHTML: 'Toggle disabled on other button' },
-  ],
+  items: [{ delay: 3, innerHTML: 'With delay' }, { innerHTML: 'Toggle disabled on other button' }],
   simulations: [
     storyWait(0, ([withDelay, toggle]) => {
       toggle.addEventListener('cc-button:click', () => {

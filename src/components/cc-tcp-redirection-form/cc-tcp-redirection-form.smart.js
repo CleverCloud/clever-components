@@ -14,11 +14,10 @@ defineSmartComponent({
     ownerId: { type: String },
     appId: { type: String },
   },
-  onContextUpdate ({ container, component, context, onEvent, updateComponent, signal }) {
-
+  onContextUpdate({ container, component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId, appId } = context;
 
-    function updateRedirection (namespace, callback) {
+    function updateRedirection(namespace, callback) {
       updateComponent('redirections', (redirections) => {
         const redirection = redirections.value.find((r) => r.namespace === namespace);
         if (redirection != null) {
@@ -85,26 +84,22 @@ defineSmartComponent({
   },
 });
 
-async function fetchTcpRedirectionsAndNamespaces ({ apiConfig, signal, ownerId, appId }) {
-  return Promise
-    .all([
-      getNamespaces({ id: ownerId }).then(sendToApi({ apiConfig, signal })),
-      getTcpRedirs({ id: ownerId, appId }).then(sendToApi({ apiConfig, signal })),
-    ])
-    .then(([namespaces, redirections]) => {
-      return namespaces.map((n) => {
-        const sourcePort = redirections.find((r) => r.namespace === n.namespace)?.port;
-        return { namespace: n.namespace, sourcePort };
-      });
+async function fetchTcpRedirectionsAndNamespaces({ apiConfig, signal, ownerId, appId }) {
+  return Promise.all([
+    getNamespaces({ id: ownerId }).then(sendToApi({ apiConfig, signal })),
+    getTcpRedirs({ id: ownerId, appId }).then(sendToApi({ apiConfig, signal })),
+  ]).then(([namespaces, redirections]) => {
+    return namespaces.map((n) => {
+      const sourcePort = redirections.find((r) => r.namespace === n.namespace)?.port;
+      return { namespace: n.namespace, sourcePort };
     });
+  });
 }
 
-async function createTcpRedirection ({ apiConfig, ownerId, appId, namespace }) {
-  return addTcpRedir({ id: ownerId, appId, payment: 'accepted' }, { namespace })
-    .then(sendToApi({ apiConfig }));
+async function createTcpRedirection({ apiConfig, ownerId, appId, namespace }) {
+  return addTcpRedir({ id: ownerId, appId, payment: 'accepted' }, { namespace }).then(sendToApi({ apiConfig }));
 }
 
-async function deleteTcpRedirection ({ apiConfig, ownerId, appId, sourcePort, namespace }) {
-  return removeTcpRedir({ id: ownerId, appId, sourcePort, namespace })
-    .then(sendToApi({ apiConfig }));
+async function deleteTcpRedirection({ apiConfig, ownerId, appId, sourcePort, namespace }) {
+  return removeTcpRedir({ id: ownerId, appId, sourcePort, namespace }).then(sendToApi({ apiConfig }));
 }

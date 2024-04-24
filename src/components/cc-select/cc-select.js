@@ -28,7 +28,7 @@ import { i18n } from '../../lib/i18n.js';
  * @slot help - The help message to be displayed right below the `<select>` element. Please use a `<p>` tag.
  */
 export class CcSelect extends LitElement {
-  static get properties () {
+  static get properties() {
     return {
       disabled: { type: Boolean, reflect: true },
       inline: { type: Boolean, reflect: true },
@@ -43,7 +43,7 @@ export class CcSelect extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {boolean} Sets `disabled` attribute on inner native `<select>` element. */
@@ -78,12 +78,12 @@ export class CcSelect extends LitElement {
     this._hasError = false;
   }
 
-  updated (changedProperties) {
+  updated(changedProperties) {
     /*
      * The `<select>` value must match the value of an `<option>` element.
      * We need to make sure the value of the `<select>` element in only updated after
      * `<option>` elements have been rendered.
-    */
+     */
     if (changedProperties.has('value') || changedProperties.has('options')) {
       this.shadowRoot.querySelector('select').value = this.value;
     }
@@ -92,26 +92,24 @@ export class CcSelect extends LitElement {
   /**
    * Triggers focus on the inner `<select>` element.
    */
-  focus () {
+  focus() {
     this.shadowRoot.querySelector('select').focus();
   }
 
-  _onSelectInput (e) {
+  _onSelectInput(e) {
     this.value = e.target.value;
     dispatchCustomEvent(this, 'input', this.value);
   }
 
-  _onErrorSlotChanged (event) {
+  _onErrorSlotChanged(event) {
     this._hasError = event.target.assignedNodes()?.length > 0;
   }
 
-  render () {
+  render() {
     return html`
       <label for="input-id">
         <span class="label-text">${this.label}</span>
-        ${this.required ? html`
-          <span class="required">${i18n('cc-select.required')}</span>
-        ` : ''}
+        ${this.required ? html` <span class="required">${i18n('cc-select.required')}</span> ` : ''}
       </label>
       <div class="select-wrapper ${classMap({ disabled: this.disabled })}">
         <select
@@ -123,12 +121,10 @@ export class CcSelect extends LitElement {
           .value=${this.value}
           name=${ifDefined(this.name ?? undefined)}
         >
-          ${this.placeholder != null && this.placeholder !== '' ? html`
-            <option value="" ?disabled=${this.required}>${this.placeholder}</option>
-          ` : ''}
-          ${this.options.map((option) => html`
-            <option value=${option.value}>${option.label}</option>
-          `)}
+          ${this.placeholder != null && this.placeholder !== ''
+            ? html` <option value="" ?disabled=${this.required}>${this.placeholder}</option> `
+            : ''}
+          ${this.options.map((option) => html` <option value=${option.value}>${option.label}</option> `)}
         </select>
       </div>
 
@@ -142,7 +138,7 @@ export class CcSelect extends LitElement {
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
@@ -213,7 +209,7 @@ export class CcSelect extends LitElement {
           color: var(--cc-color-text-weak);
           font-size: 0.9em;
         }
-        
+
         slot[name='error']::slotted(*) {
           margin: 0.5em 0 0;
           color: var(--cc-color-text-danger);
@@ -258,11 +254,11 @@ export class CcSelect extends LitElement {
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
-        
+
         select.error {
           border-color: var(--cc-color-border-danger) !important;
         }
-        
+
         select.error:focus {
           outline: var(--cc-focus-outline-error, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);

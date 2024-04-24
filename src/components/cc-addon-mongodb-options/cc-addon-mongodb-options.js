@@ -15,26 +15,24 @@ import { ccAddonEncryptionAtRestOption } from '../../templates/cc-addon-encrypti
  * @fires {CustomEvent<AddonOption>} cc-addon-mongodb-options:submit - Fires when the form is submitted.
  */
 export class CcAddonMongodbOptions extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       options: { type: Array },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {AddonOption[]} List of options for this add-on. */
     this.options = [];
-
   }
 
-  _onFormOptionsSubmit ({ detail }) {
+  _onFormOptionsSubmit({ detail }) {
     dispatchCustomEvent(this, 'submit', detail);
   }
 
-  _getFormOptions () {
+  _getFormOptions() {
     return this.options
       .map((option) => {
         switch (option.name) {
@@ -47,18 +45,22 @@ export class CcAddonMongodbOptions extends LitElement {
       .filter((option) => option != null);
   }
 
-  render () {
+  render() {
     const options = this._getFormOptions();
     const title = i18n('cc-addon-mongodb-options.title');
 
     return html`
-      <cc-addon-option-form title="${title}" .options=${options} @cc-addon-option-form:submit="${this._onFormOptionsSubmit}">
+      <cc-addon-option-form
+        title="${title}"
+        .options=${options}
+        @cc-addon-option-form:submit="${this._onFormOptionsSubmit}"
+      >
         <div slot="description">${i18n('cc-addon-mongodb-options.description')}</div>
       </cc-addon-option-form>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`

@@ -1,4 +1,4 @@
-import { Invoice } from "../common.types";
+import { Invoice } from '../common.types';
 
 export type InvoiceListState = InvoiceListStateLoading | InvoiceListStateError | InvoiceListStateLoaded;
 

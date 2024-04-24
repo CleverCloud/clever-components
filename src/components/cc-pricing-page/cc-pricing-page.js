@@ -32,8 +32,7 @@ const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
  * @slot - Use this slot to insert your pricing components and their related content (headings, descriptions, etc.)
  */
 export class CcPricingPage extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       selectedCurrency: { type: Object, attribute: 'selected-currency' },
       selectedPlans: { type: Object, attribute: 'selected-plans' },
@@ -45,7 +44,7 @@ export class CcPricingPage extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {Currency} Sets the current selected currency. */
@@ -70,20 +69,20 @@ export class CcPricingPage extends LitElement {
     this._estimationElement = null;
   }
 
-  _getPlanId (plan) {
+  _getPlanId(plan) {
     return plan.id ?? `${plan.productName}/${plan.name}`;
   }
 
   /**
    * Query pricing components from light DOM and store in their corresponding state props.
    */
-  _updateElementReferences () {
+  _updateElementReferences() {
     this._headerElement = this.querySelector('cc-pricing-header');
     this._productElements = Array.from(this.querySelectorAll('cc-pricing-product, cc-pricing-product-consumption'));
     this._estimationElement = this.querySelector('cc-pricing-estimation');
   }
 
-  _onAddPlan ({ detail: plan }) {
+  _onAddPlan({ detail: plan }) {
     const planId = this._getPlanId(plan);
     if (this.selectedPlans[planId] == null) {
       this.selectedPlans[planId] = { ...plan, quantity: 0 };
@@ -92,33 +91,33 @@ export class CcPricingPage extends LitElement {
     this.requestUpdate();
   }
 
-  _onChangeCurrency ({ detail: currency }) {
+  _onChangeCurrency({ detail: currency }) {
     this.selectedCurrency = currency;
   }
 
-  _onChangeTemporality ({ detail: temporality }) {
+  _onChangeTemporality({ detail: temporality }) {
     this.selectedTemporality = temporality;
   }
 
-  _onChangeQuantity ({ detail: plan }) {
+  _onChangeQuantity({ detail: plan }) {
     const planId = this._getPlanId(plan);
     this.selectedPlans[planId].quantity = plan.quantity;
     this.requestUpdate();
   }
 
-  _onDeletePlan ({ detail: plan }) {
+  _onDeletePlan({ detail: plan }) {
     const planId = this._getPlanId(plan);
     delete this.selectedPlans[planId];
     this.requestUpdate();
   }
 
   /**
-  * When the component is connected to the DOM:
-  *
-  * - we update the list of slotted pricing components,
-  * - we set up a MutationObserver that will keep the list of slotted pricing components updated.
-  */
-  connectedCallback () {
+   * When the component is connected to the DOM:
+   *
+   * - we update the list of slotted pricing components,
+   * - we set up a MutationObserver that will keep the list of slotted pricing components updated.
+   */
+  connectedCallback() {
     super.connectedCallback();
     this._updateElementReferences();
     this._observer = new MutationObserver(() => this._updateElementReferences());
@@ -128,7 +127,7 @@ export class CcPricingPage extends LitElement {
     });
   }
 
-  disconnectedCallback () {
+  disconnectedCallback() {
     super.disconnectedCallback();
     this._observer.disconnect();
   }
@@ -141,7 +140,7 @@ export class CcPricingPage extends LitElement {
    * This triggers the willUpdate lifecycle hook right below.
    * It updates the pricing estimation `selectedPlans` prop as a result.
    */
-  willUpdate () {
+  willUpdate() {
     this._productElements?.forEach((productElement) => {
       productElement.currency = this.selectedCurrency;
       productElement.temporalities = [this.selectedTemporality];
@@ -159,7 +158,7 @@ export class CcPricingPage extends LitElement {
     }
   }
 
-  render () {
+  render() {
     return html`
       <slot
         @cc-pricing-header:change-currency=${this._onChangeCurrency}
@@ -173,7 +172,7 @@ export class CcPricingPage extends LitElement {
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`

@@ -22,8 +22,7 @@ const MATOMO_DOCUMENTATION = 'https://www.clever-cloud.com/doc/deploy/addon/mato
  * @cssdisplay block
  */
 export class CcMatomoInfo extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       error: { type: Boolean },
       matomoLink: { type: String, attribute: 'matomo-link' },
@@ -33,7 +32,7 @@ export class CcMatomoInfo extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {boolean} Display an error message. */
@@ -52,66 +51,70 @@ export class CcMatomoInfo extends LitElement {
     this.redisLink = null;
   }
 
-  render () {
-
+  render() {
     if (this.error) {
       return html`<cc-notice intent="warning" message="${i18n('cc-matomo-info.error')}"></cc-notice>`;
     }
 
     return html`
-
       <cc-block ribbon=${i18n('cc-matomo-info.info')} no-head>
-          <div class="info-text">${i18n('cc-matomo-info.heading')}</div>
+        <div class="info-text">${i18n('cc-matomo-info.heading')}</div>
 
-          <cc-block-section>
-            <div slot="title">${i18n('cc-matomo-info.open-matomo.title')}</div>
-            <div slot="info">${i18n('cc-matomo-info.open-matomo.text')}</div>
-            <div>${this._renderImageLink(MATOMO_LOGO_URL, this.matomoLink, i18n('cc-matomo-info.open-matomo.link'))}</div>
-          </cc-block-section>
+        <cc-block-section>
+          <div slot="title">${i18n('cc-matomo-info.open-matomo.title')}</div>
+          <div slot="info">${i18n('cc-matomo-info.open-matomo.text')}</div>
+          <div>${this._renderImageLink(MATOMO_LOGO_URL, this.matomoLink, i18n('cc-matomo-info.open-matomo.link'))}</div>
+        </cc-block-section>
 
-          <cc-block-section>
-            <div slot="title">${i18n('cc-matomo-info.documentation.title')}</div>
-            <div slot="info">${i18n('cc-matomo-info.documentation.text')}</div>
-            <div>${this._renderIconLink(iconInfo, MATOMO_DOCUMENTATION, i18n('cc-matomo-info.documentation.link'))}</div>
-          </cc-block-section>
+        <cc-block-section>
+          <div slot="title">${i18n('cc-matomo-info.documentation.title')}</div>
+          <div slot="info">${i18n('cc-matomo-info.documentation.text')}</div>
+          <div>${this._renderIconLink(iconInfo, MATOMO_DOCUMENTATION, i18n('cc-matomo-info.documentation.link'))}</div>
+        </cc-block-section>
 
-          <cc-block-section>
-            <div slot="title">${i18n('cc-matomo-info.about.title')}</div>
-            <div slot="info">${i18n('cc-matomo-info.about.text')}</div>
-            <div class="application-list">
-              ${this._renderImageLink(PHP_LOGO_URL, this.phpLink, i18n('cc-matomo-info.link.php'))}
-              ${this._renderImageLink(MYSQL_LOGO_URL, this.mysqlLink, i18n('cc-matomo-info.link.mysql'))}
-              ${this._renderImageLink(REDIS_LOGO_URL, this.redisLink, i18n('cc-matomo-info.link.redis'))}
-            </div>
-          </cc-block-section>
+        <cc-block-section>
+          <div slot="title">${i18n('cc-matomo-info.about.title')}</div>
+          <div slot="info">${i18n('cc-matomo-info.about.text')}</div>
+          <div class="application-list">
+            ${this._renderImageLink(PHP_LOGO_URL, this.phpLink, i18n('cc-matomo-info.link.php'))}
+            ${this._renderImageLink(MYSQL_LOGO_URL, this.mysqlLink, i18n('cc-matomo-info.link.mysql'))}
+            ${this._renderImageLink(REDIS_LOGO_URL, this.redisLink, i18n('cc-matomo-info.link.redis'))}
+          </div>
+        </cc-block-section>
       </cc-block>
     `;
   }
 
   // TODO: replace this with future cc-link component
-  _renderImageLink (url, linkUrl, linkText) {
+  _renderImageLink(url, linkUrl, linkText) {
     return html`
       <div>
-        ${ccLink(linkUrl, html`
-          <cc-img src=${url}></cc-img>
-          <span class="${classMap({ skeleton: (linkUrl == null) })}">${linkText}</span>
-        `)}
+        ${ccLink(
+          linkUrl,
+          html`
+            <cc-img src=${url}></cc-img>
+            <span class="${classMap({ skeleton: linkUrl == null })}">${linkText}</span>
+          `,
+        )}
       </div>
     `;
   }
 
-  _renderIconLink (icon, linkUrl, linkText) {
+  _renderIconLink(icon, linkUrl, linkText) {
     return html`
       <div>
-        ${ccLink(linkUrl, html`
-          <cc-icon size="lg" .icon=${icon}></cc-icon>
-          <span class="${classMap({ skeleton: (linkUrl == null) })}">${linkText}</span>
-        `)}
+        ${ccLink(
+          linkUrl,
+          html`
+            <cc-icon size="lg" .icon=${icon}></cc-icon>
+            <span class="${classMap({ skeleton: linkUrl == null })}">${linkText}</span>
+          `,
+        )}
       </div>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       skeletonStyles,
       linkStyles,

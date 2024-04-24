@@ -24,11 +24,11 @@ title: '💡 Smart'
 
 ```ts
 interface ApiConfig {
-  API_HOST: String,
-  API_OAUTH_TOKEN: String,
-  API_OAUTH_TOKEN_SECRET: String,
-  OAUTH_CONSUMER_KEY: String,
-  OAUTH_CONSUMER_SECRET: String,
+  API_HOST: String;
+  API_OAUTH_TOKEN: String;
+  API_OAUTH_TOKEN_SECRET: String;
+  OAUTH_CONSUMER_KEY: String;
+  OAUTH_CONSUMER_SECRET: String;
 }
 ```
 
@@ -45,8 +45,8 @@ interface ApiConfig {
 ## ⬇️️ Examples
 
 ```html
-
-<cc-smart-container context='{
+<cc-smart-container
+  context='{
   "apiConfig": {
     API_HOST: "",
     API_OAUTH_TOKEN: "",
@@ -56,7 +56,8 @@ interface ApiConfig {
   },
   "ownerId": "",
   "appId": ""
-}'>
+}'
+>
   <cc-tcp-redirection-form></cc-tcp-redirection-form>
 </cc-smart-container>
 ```

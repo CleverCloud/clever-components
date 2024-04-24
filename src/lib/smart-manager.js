@@ -36,8 +36,7 @@ const smartComponentDefinitions = new Set();
  * @param {CcSmartContainer} container
  * @param {AbortSignal} signal
  */
-export function observeContainer (container, signal) {
-
+export function observeContainer(container, signal) {
   container[COMPONENTS] = new Map();
   smartContainers.add(container);
 
@@ -45,57 +44,59 @@ export function observeContainer (container, signal) {
   const mutationObserver = new MutationObserver(() => updateEverything());
   mutationObserver.observe(container, { childList: true, subtree: true, attributes: true, attributeOldValue: true });
 
-  signal.addEventListener('abort', () => {
+  signal.addEventListener(
+    'abort',
+    () => {
+      mutationObserver.disconnect();
+      smartContainers.delete(container);
 
-    mutationObserver.disconnect();
-    smartContainers.delete(container);
-
-    // Properly disconnect components
-    container[COMPONENTS].forEach((allComponents, definition) => {
-      allComponents.forEach((component) => disconnectComponent(container, definition, component));
-    });
-    delete container[COMPONENTS];
-    delete container[CURRENT_CONTEXT];
-
-  }, { once: true });
+      // Properly disconnect components
+      container[COMPONENTS].forEach((allComponents, definition) => {
+        allComponents.forEach((component) => disconnectComponent(container, definition, component));
+      });
+      delete container[COMPONENTS];
+      delete container[CURRENT_CONTEXT];
+    },
+    { once: true },
+  );
 }
 
 /**
  * @param {SmartComponentDefinition} definition
  * @param {AbortSignal} [signal]
  */
-export function defineSmartComponentCore (definition, signal) {
-
+export function defineSmartComponentCore(definition, signal) {
   smartComponentDefinitions.add(definition);
   updateEverything();
 
   if (signal != null) {
-    signal.addEventListener('abort', () => {
+    signal.addEventListener(
+      'abort',
+      () => {
+        smartComponentDefinitions.delete(definition);
 
-      smartComponentDefinitions.delete(definition);
-
-      // Properly disconnect components
-      smartContainers.forEach((container) => {
-        const allComponents = container[COMPONENTS].get(definition) ?? [];
-        allComponents.forEach((component) => disconnectComponent(container, definition, component));
-        container[COMPONENTS].delete(definition);
-      });
-
-    }, { once: true });
+        // Properly disconnect components
+        smartContainers.forEach((container) => {
+          const allComponents = container[COMPONENTS].get(definition) ?? [];
+          allComponents.forEach((component) => disconnectComponent(container, definition, component));
+          container[COMPONENTS].delete(definition);
+        });
+      },
+      { once: true },
+    );
   }
 }
 
-function updateEverything () {
-
+function updateEverything() {
   const allDisconnectedComponents = [];
   const allConnectedComponents = [];
   const allIdleComponents = [];
 
   smartContainers.forEach((container) => {
     smartComponentDefinitions.forEach((definition) => {
-
-      const allDefinitionComponents = Array.from(container.querySelectorAll(definition.selector))
-        .filter((c) => closestParent(c, 'cc-smart-container') === container);
+      const allDefinitionComponents = Array.from(container.querySelectorAll(definition.selector)).filter(
+        (c) => closestParent(c, 'cc-smart-container') === container,
+      );
 
       const previousComponents = container[COMPONENTS].get(definition) ?? [];
       container[COMPONENTS].set(definition, allDefinitionComponents);
@@ -117,18 +118,24 @@ function updateEverything () {
     });
   });
 
-  allDisconnectedComponents.forEach(([container, definition, component]) => disconnectComponent(container, definition, component));
+  allDisconnectedComponents.forEach(([container, definition, component]) =>
+    disconnectComponent(container, definition, component),
+  );
 
-  allConnectedComponents.forEach(([container, definition, component]) => connectComponent(container, definition, component));
+  allConnectedComponents.forEach(([container, definition, component]) =>
+    connectComponent(container, definition, component),
+  );
 
-  [...allConnectedComponents, ...allIdleComponents].forEach(([container, definition, component]) => updateComponentContext(container, definition, component));
+  [...allConnectedComponents, ...allIdleComponents].forEach(([container, definition, component]) =>
+    updateComponentContext(container, definition, component),
+  );
 }
 
 /**
  * @param {CcSmartContainer} container
  * @param {Object} context
  */
-export function updateContext (container, context) {
+export function updateContext(container, context) {
   container[CURRENT_CONTEXT] = context;
   updateEverything();
 }
@@ -136,7 +143,7 @@ export function updateContext (container, context) {
 /**
  * @param {Object} context
  */
-export function updateRootContext (context) {
+export function updateRootContext(context) {
   rootContext = context;
   updateEverything();
 }
@@ -146,7 +153,7 @@ export function updateRootContext (context) {
  * @param {SmartComponentDefinition} definition
  * @param {Element} component
  */
-function connectComponent (container, definition, component) {
+function connectComponent(container, definition, component) {
   component[LAST_CONTEXT] = {};
   definition.onConnect?.(container, component);
 }
@@ -156,7 +163,7 @@ function connectComponent (container, definition, component) {
  * @param {SmartComponentDefinition} definition
  * @param {Element} component
  */
-function updateComponentContext (container, definition, component) {
+function updateComponentContext(container, definition, component) {
   const currentContext = { ...rootContext, ...container[CURRENT_CONTEXT] };
   const filteredContext = filterContext(currentContext, definition.params);
   if (objectEquals(component[LAST_CONTEXT], filteredContext)) {
@@ -171,7 +178,7 @@ function updateComponentContext (container, definition, component) {
  * @param {SmartComponentDefinition} definition
  * @param {Element} component
  */
-function disconnectComponent (container, definition, component) {
+function disconnectComponent(container, definition, component) {
   delete component[LAST_CONTEXT];
   definition.onDisconnect?.(container, component);
 }
@@ -184,7 +191,7 @@ function disconnectComponent (container, definition, component) {
  * @param {String} selector
  * @return {Element}
  */
-function closestParent (element, selector) {
+function closestParent(element, selector) {
   return element.parentElement.closest(selector);
 }
 
@@ -194,7 +201,7 @@ function closestParent (element, selector) {
  * @param {Object|null} keyObject
  * @return {Object}
  */
-function filterContext (source, keyObject) {
+function filterContext(source, keyObject) {
   if (source == null) {
     return {};
   }

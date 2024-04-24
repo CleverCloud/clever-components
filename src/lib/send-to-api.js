@@ -29,13 +29,10 @@ import { dispatchCustomEvent } from './events.js';
  * @param {Number} [params.timeout]
  * @return {(requestParams: Object) => (any | undefined)}
  */
-export function sendToApi ({ apiConfig, signal, cacheDelay, timeout }) {
-
+export function sendToApi({ apiConfig, signal, cacheDelay, timeout }) {
   return (requestParams) => {
-
     const cacheParams = { ...apiConfig, ...requestParams };
     return withCache(cacheParams, cacheDelay, () => {
-
       const { API_HOST = 'https://api.clever-cloud.com', ...tokens } = apiConfig;
       return Promise.resolve(requestParams)
         .then(prefixUrl(API_HOST))
@@ -58,13 +55,10 @@ export function sendToApi ({ apiConfig, signal, cacheDelay, timeout }) {
  * @param {Number} [params.timeout]
  * @return {(requestParams: Object) => (any | undefined)}
  */
-export function sendToWarp ({ warpConfig, signal, cacheDelay, timeout }) {
-
+export function sendToWarp({ warpConfig, signal, cacheDelay, timeout }) {
   return (requestParams) => {
-
     const cacheParams = { ...warpConfig, ...requestParams };
     return withCache(cacheParams, cacheDelay, () => {
-
       const { WARP_10_HOST } = warpConfig;
       return Promise.resolve(requestParams)
         .then(prefixUrl(WARP_10_HOST))

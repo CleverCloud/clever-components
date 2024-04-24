@@ -27,34 +27,33 @@ import { waitingStyles } from '../../styles/waiting.js';
  * @fires {CustomEvent<DeleteTcpRedirection>} cc-tcp-redirection:delete - Fires a redirection whenever the delete button is clicked.
  */
 export class CcTcpRedirection extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       redirection: { type: Object },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {TcpRedirectionState} Sets the name of the namespace. */
     this.redirection = { state: 'loading' };
   }
 
-  _getButtonText (redirection) {
-    return (redirection.sourcePort != null)
+  _getButtonText(redirection) {
+    return redirection.sourcePort != null
       ? i18n('cc-tcp-redirection.delete-button')
       : i18n('cc-tcp-redirection.create-button');
   }
 
-  _getHelpText (redirection) {
+  _getHelpText(redirection) {
     const { namespace, sourcePort } = redirection;
-    return (sourcePort != null)
+    return sourcePort != null
       ? i18n('cc-tcp-redirection.redirection-defined', { namespace, sourcePort })
       : i18n('cc-tcp-redirection.redirection-not-defined', { namespace });
   }
 
-  _getHelpTextAddendum (redirection) {
+  _getHelpTextAddendum(redirection) {
     if (redirection.isPrivate) {
       return i18n('cc-tcp-redirection.namespace-private');
     }
@@ -68,59 +67,55 @@ export class CcTcpRedirection extends LitElement {
     }
   }
 
-  _onCreate () {
+  _onCreate() {
     const { namespace } = this.redirection;
     dispatchCustomEvent(this, 'create', { namespace });
   }
 
-  _onDelete () {
+  _onDelete() {
     const { namespace, sourcePort } = this.redirection;
     dispatchCustomEvent(this, 'delete', { namespace, sourcePort });
   }
 
-  render () {
-
+  render() {
     const state = this.redirection.state;
     const skeleton = state === 'loading';
 
     // Use a fake redirection for skeleton mode
-    const redirection = skeleton
-      ? { namespace: 'default', isPrivate: false }
-      : this.redirection;
+    const redirection = skeleton ? { namespace: 'default', isPrivate: false } : this.redirection;
 
-    const isRedirectionDefined = (redirection.sourcePort != null);
+    const isRedirectionDefined = redirection.sourcePort != null;
     const helpTextAddendum = this._getHelpTextAddendum(redirection);
 
     return html`
       <div class="wrapper">
-
-        ${skeleton ? html`
-          <div class="icon skeleton"></div>
-        ` : ''}
-
-        ${state === 'loaded' ? html`
-          <div class="icon">
-            ${
-              isRedirectionDefined
-                ? html`<cc-icon .icon=${iconRedirectionOn} class="on"></cc-icon>`
-                : html`<cc-icon .icon=${iconRedirectionOff} class="off"></cc-icon>`
-            }
-          </div>
-        ` : ''}
-
-        ${state === 'waiting' ? html`
-          <div class="icon">
-            <cc-loader></cc-loader>
-          </div>
-        ` : ''}
+        ${skeleton ? html` <div class="icon skeleton"></div> ` : ''}
+        ${state === 'loaded'
+          ? html`
+              <div class="icon">
+                ${isRedirectionDefined
+                  ? html`<cc-icon .icon=${iconRedirectionOn} class="on"></cc-icon>`
+                  : html`<cc-icon .icon=${iconRedirectionOff} class="off"></cc-icon>`}
+              </div>
+            `
+          : ''}
+        ${state === 'waiting'
+          ? html`
+              <div class="icon">
+                <cc-loader></cc-loader>
+              </div>
+            `
+          : ''}
 
         <div class="text-button ${classMap({ 'cc-waiting': skeleton })}">
           <div class="text-wrapper">
-            <span class="text ${classMap({ skeleton })}">${(this._getHelpText(redirection))}</span>
-            ${helpTextAddendum != null ? html`
-              <br>
-              <span class="text-addendum ${classMap({ skeleton })}">${helpTextAddendum}</span>
-            ` : ''}
+            <span class="text ${classMap({ skeleton })}">${this._getHelpText(redirection)}</span>
+            ${helpTextAddendum != null
+              ? html`
+                  <br />
+                  <span class="text-addendum ${classMap({ skeleton })}">${helpTextAddendum}</span>
+                `
+              : ''}
           </div>
 
           <cc-button
@@ -139,7 +134,7 @@ export class CcTcpRedirection extends LitElement {
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       skeletonStyles,
       waitingStyles,
@@ -173,7 +168,7 @@ export class CcTcpRedirection extends LitElement {
         .icon cc-icon.on {
           --cc-icon-color: var(--cc-color-bg-success);
         }
-        
+
         .icon cc-loader {
           --cc-loader-color: #999;
         }

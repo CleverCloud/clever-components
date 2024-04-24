@@ -60,10 +60,7 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const skeleton = makeStory(conf, {
-  items: [
-    {},
-    { addon },
-  ],
+  items: [{}, { addon }],
 });
 
 export const error = makeStory(conf, {

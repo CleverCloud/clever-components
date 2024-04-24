@@ -1,16 +1,19 @@
-function formatStoryName (rawName) {
-  return rawName[0].toUpperCase() + rawName
-    .slice(1)
-    // Camel case to with numbers
-    .replace(/([0-9]+)/g, ' $1')
-    .toLowerCase()
-    // Special keyworks in uppercase
-    .replace(/css/g, 'CSS')
-    // "Foobar with details" => "Foobar (details)"
-    .replace(/ with (.*)/, ' ($1)');
+function formatStoryName(rawName) {
+  return (
+    rawName[0].toUpperCase() +
+    rawName
+      .slice(1)
+      // Camel case to with numbers
+      .replace(/([0-9]+)/g, ' $1')
+      .toLowerCase()
+      // Special keyworks in uppercase
+      .replace(/css/g, 'CSS')
+      // "Foobar with details" => "Foobar (details)"
+      .replace(/ with (.*)/, ' ($1)')
+  );
 }
 
-export function enhanceStoryName (defaultName) {
+export function enhanceStoryName(defaultName) {
   if (defaultName === 'Default Story') {
     return 'Default';
   }
@@ -20,7 +23,13 @@ export function enhanceStoryName (defaultName) {
   if (defaultName === 'Empty') {
     return '🕳 Empty (no data)';
   }
-  if (defaultName.startsWith('Loading') || defaultName.startsWith('Waiting') || defaultName === 'Saving' || defaultName.startsWith('Updating') || defaultName.startsWith('Skeleton')) {
+  if (
+    defaultName.startsWith('Loading') ||
+    defaultName.startsWith('Waiting') ||
+    defaultName === 'Saving' ||
+    defaultName.startsWith('Updating') ||
+    defaultName.startsWith('Skeleton')
+  ) {
     return '⌛ ' + formatStoryName(defaultName);
   }
   if (defaultName.startsWith('Editing')) {
@@ -42,4 +51,4 @@ export function enhanceStoryName (defaultName) {
     return '🔥 ' + formatStoryName(defaultName);
   }
   return formatStoryName(defaultName);
-};
+}

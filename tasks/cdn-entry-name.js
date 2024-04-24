@@ -6,7 +6,7 @@ import semver from 'semver';
  * @param {string} name
  * @return {string}
  */
-export function toCdnEntryName (cdnEnvironment, name) {
+export function toCdnEntryName(cdnEnvironment, name) {
   if (name == null) {
     throw new Error('Invalid CDN entry name: It cannot be null.');
   }
@@ -25,7 +25,5 @@ export function toCdnEntryName (cdnEnvironment, name) {
     return result;
   }
 
-  return result
-    .replaceAll('/', '-')
-    .replaceAll(' ', '-');
+  return result.replaceAll('/', '-').replaceAll(' ', '-');
 }

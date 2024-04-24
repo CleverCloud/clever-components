@@ -15,7 +15,6 @@ interface JenkinsInfoStateLoaded {
   versions: JenkinsInfoVersions;
 }
 
-
 interface JenkinsInfoVersions {
   current: string;
   available: string;

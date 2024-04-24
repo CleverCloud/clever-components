@@ -43,15 +43,14 @@ const PRIVATE_ZONE = 'scope:private';
  * @cssprop {Color} --cc-zone-tag-padding - Padding of the tag (defaults to `0.1em 0.3em`)
  */
 export class CcZone extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       mode: { type: String, reflect: true },
       zone: { type: Object },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {ZoneModeType} Sets the mode of the component. */
@@ -63,15 +62,13 @@ export class CcZone extends LitElement {
 
   // This is a bit irregular to do this but we need to reuse this text logic in a <select>.
   // Moving this to a separated module feels overkill right now.
-  static getText (zone) {
+  static getText(zone) {
     const { title, subtitle, infra } = CcZone._getTextParts(zone);
     const titleAndSubtitle = [title, subtitle].filter((a) => a != null).join(', ');
-    return (infra != null)
-      ? `${titleAndSubtitle} (${infra})`
-      : titleAndSubtitle;
+    return infra != null ? `${titleAndSubtitle} (${infra})` : titleAndSubtitle;
   }
 
-  static _getTextParts (zone) {
+  static _getTextParts(zone) {
     if (zone.tags.includes(PRIVATE_ZONE) && zone.displayName != null) {
       return { title: zone.displayName };
     }
@@ -85,27 +82,29 @@ export class CcZone extends LitElement {
     };
   }
 
-  render () {
-
-    const skeleton = (this.zone == null);
+  render() {
+    const skeleton = this.zone == null;
     const zone = skeleton ? SKELETON_ZONE : this.zone;
     const { title, subtitle, infra } = CcZone._getTextParts(zone);
 
     return html`
-      <cc-img class="flag" ?skeleton=${skeleton} src=${ifDefined(getFlagUrl(zone.countryCode))} a11y-name=${ifDefined(zone.countryCode)}></cc-img>
+      <cc-img
+        class="flag"
+        ?skeleton=${skeleton}
+        src=${ifDefined(getFlagUrl(zone.countryCode))}
+        a11y-name=${ifDefined(zone.countryCode)}
+      ></cc-img>
       <div class="wrapper-details-logo">
         <div class="wrapper-details">
           <div class="details">
             <span class="title ${classMap({ skeleton })}">${title}</span>
             <span class="subtitle ${classMap({ skeleton })}">${subtitle}</span>
           </div>
-          ${infra != null ? html`
-            <cc-img class="infra-logo" src=${getInfraProviderLogoUrl(infra)} a11y-name=${infra}></cc-img>
-          ` : ''}
+          ${infra != null
+            ? html` <cc-img class="infra-logo" src=${getInfraProviderLogoUrl(infra)} a11y-name=${infra}></cc-img> `
+            : ''}
         </div>
-        <div class="tag-list">
-          ${zone.tags.map((tag) => this._renderTag(tag, skeleton))}
-        </div>
+        <div class="tag-list">${zone.tags.map((tag) => this._renderTag(tag, skeleton))}</div>
       </div>
     `;
   }
@@ -114,8 +113,7 @@ export class CcZone extends LitElement {
    * @param {string} tag - the tag to render
    * @param {boolean} skeleton - display as skeleton or not
    */
-  _renderTag (tag, skeleton) {
-
+  _renderTag(tag, skeleton) {
     if (tag.includes(':')) {
       // Most of tags are strings separated by ":" but we need to split them in case
       // implementers want to emphasize the category (what is before ":") using `--cc-zone-tag-category-font-weight`
@@ -130,12 +128,10 @@ export class CcZone extends LitElement {
     }
 
     // When the tag is not made of two parts, we don't want any specific styling
-    return html`
-      <span class="tag ${classMap({ skeleton })}">${tag}</span>
-    `;
+    return html` <span class="tag ${classMap({ skeleton })}">${tag}</span> `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       skeletonStyles,
       // language=CSS

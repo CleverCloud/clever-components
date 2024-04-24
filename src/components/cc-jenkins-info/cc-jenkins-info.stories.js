@@ -64,11 +64,7 @@ export const dataLoadedWithDifferentVersions = makeStory(conf, {
 });
 
 export const simulations = makeStory(conf, {
-  items: [
-    {},
-    {},
-    {},
-  ],
+  items: [{}, {}, {}],
   simulations: [
     storyWait(2000, ([componentUpToDate, componentWithUpdate, componentError]) => {
       componentUpToDate.state = { type: 'loaded', jenkinsLink, jenkinsManageLink, versions: sameVersions };

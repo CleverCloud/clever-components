@@ -11,7 +11,7 @@ const DIGIT_SEPARATOR = '_';
  * @param {String} input
  * @returns {String}
  */
-export function pascalCase (input) {
+export function pascalCase(input) {
   return stringToWordArray(input)
     .map((s, index) => pascalCaseTransform(s, index > 0))
     .join('');
@@ -25,7 +25,7 @@ export function pascalCase (input) {
  * @param {String} input
  * @returns {string[]}
  */
-function stringToWordArray (input) {
+function stringToWordArray(input) {
   const processedInput = [input.charAt(0)];
   for (let i = 1; i < input.length; i++) {
     const isPreviousCharLowercase = input.charAt(i - 1).match(/[a-z]/g)?.length > 0;
@@ -51,7 +51,7 @@ function stringToWordArray (input) {
  * @param {Boolean} enableDigitPrefix
  * @returns {string}
  */
-function pascalCaseTransform (input, enableDigitPrefix = true) {
+function pascalCaseTransform(input, enableDigitPrefix = true) {
   if (input == null || input === '') {
     return '';
   }
