@@ -24,6 +24,8 @@
     "components:docs": "cem analyze --outdir dist",
     "components:generate-icons-assets": "node tasks/generate-icons-assets.js",
     "components:graph-usage": "node tasks/component-usage-cli.js",
+    "format": "prettier cem src tasks test wds --write",
+    "format:ci": "prettier cem src tasks test wds --check",
     "test": "wtr",
     "test:watch": "wtr --watch",
     "test:cem": "mocha cem/test/*.js",
