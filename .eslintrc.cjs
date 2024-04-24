@@ -1,6 +1,7 @@
 module.exports = {
   'extends': [
     'standard',
+    'prettier',
     'plugin:lit-a11y/recommended',
   ],
   'env': {
