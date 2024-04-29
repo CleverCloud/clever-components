@@ -28,6 +28,22 @@ export const saving = makeStory(conf, {
   items: [{ addon, saving: true }],
 });
 
+export const dataLoadedWithDangerZoneVmAndBackups = makeStory(conf, {
+  items: [{ addon }],
+});
+
+export const dataLoadedWithDangerZoneVmButNoBackups = makeStory(conf, {
+  items: [{ addon, noDangerZoneBackupText: true }],
+});
+
+export const dataLoadedWithDangerZoneNoVmButBackups = makeStory(conf, {
+  items: [{ addon, noDangerZoneVmText: true }],
+});
+
+export const dataLoadedWithDangerZoneNoVmNoBackups = makeStory(conf, {
+  items: [{ addon, noDangerZoneBackupText: true, noDangerZoneVmText: true }],
+});
+
 export const errorWithLoading = makeStory(conf, {
   items: [{ error: true }],
 });
