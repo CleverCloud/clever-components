@@ -1,9 +1,20 @@
+/**
+ * @typedef {import('../components/common.types.js').Zone} Zone
+ */
+
 const CLEVER_CLOUD_ZONE = 'infra:clever-cloud';
 export const PRIVATE_ZONE = 'scope:private';
 
-// 1. Clever Cloud zones "infra:clever-cloud"
-// 2. Private zones "scope:private"
-// 3. Alphanum sort on city
+/**
+ * Sort zones as follows:
+ * 1. Clever Cloud zones "infra:clever-cloud"
+ * 2. Private zones "scope:private"
+ * 3. Alphanum sort on city
+ *
+ * @template {Zone} T
+ * @param {T[]} rawZones
+ * @returns {T[]}
+ */
 export function sortZones (rawZones) {
   if (rawZones == null) {
     return null;

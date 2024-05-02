@@ -1,11 +1,11 @@
 import './cc-zone-input.js';
+import { ZONES } from '../../stories/fixtures/zones.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
 export default {
   tags: ['autodocs'],
   title: '🛠 Zones/<cc-zone-input>',
   component: 'cc-zone-input',
-  excludeStories: ['ZONES'],
 };
 
 const conf = {
@@ -18,119 +18,58 @@ const conf = {
   `,
 };
 
-export const ZONES = [
-  {
-    name: 'par',
-    country: 'France',
-    countryCode: 'FR',
-    city: 'Paris',
-    lat: 48.87,
-    lon: 2.33,
-    tags: ['infra:clever-cloud', 'region:eu'],
-  },
-  {
-    name: 'priv1',
-    country: 'France',
-    countryCode: 'FR',
-    displayName: 'Foobar Corp',
-    city: 'Paris',
-    lat: 48.87,
-    lon: 2.33,
-    tags: ['infra:clever-cloud', 'region:eu', 'scope:private'],
-  },
-  {
-    name: 'priv2',
-    country: 'France',
-    countryCode: 'FR',
-    displayName: 'Barfoo Ltd.',
-    city: 'Paris',
-    lat: 48.87,
-    lon: 2.33,
-    tags: ['infra:clever-cloud', 'region:eu', 'scope:private'],
-  },
-  {
-    name: 'war',
-    country: 'Poland',
-    countryCode: 'PL',
-    city: 'Warsaw',
-    lat: 52.23,
-    lon: 21.01,
-    tags: ['region:eu', 'infra:ovh'],
-  },
-  {
-    name: 'rbx',
-    country: 'France',
-    countryCode: 'FR',
-    city: 'Roubaix',
-    lat: 50.69,
-    lon: 3.17,
-    tags: ['region:eu', 'infra:ovh'],
-  },
-  {
-    name: 'sgp',
-    country: 'Singapore',
-    countryCode: 'SG',
-    city: 'Singapore',
-    lat: 1.34,
-    lon: 103.83,
-    tags: ['infra:ovh'],
-  },
-  {
-    name: 'syd',
-    country: 'Australia',
-    countryCode: 'AU',
-    city: 'Sydney',
-    lat: -33.85,
-    lon: 151.22,
-    tags: ['infra:ovh'],
-  },
-  {
-    name: 'mtl',
-    country: 'Canada',
-    countryCode: 'CA',
-    city: 'Montreal',
-    lat: 45.50,
-    lon: -73.61,
-    tags: ['infra:ovh'],
-  },
-  {
-    name: 'acme-corp',
-    displayName: 'ACME Corp',
-    country: 'Germany',
-    countryCode: 'DE',
-    city: 'Berlin',
-    lat: 52.52,
-    lon: 13.39,
-    tags: ['region:eu', 'scope:private'],
-  },
-];
+/**
+ * @typedef {import('./cc-zone-input.js').CcZoneInput} CcZoneInput
+ * @typedef {import('./cc-zone-input.types.js').ZoneInputStateLoaded} ZoneInputStateLoaded
+ * @typedef {import('./cc-zone-input.types.js').ZoneInputStateLoading} ZoneInputStateLoading
+ * @typedef {import('./cc-zone-input.types.js').ZoneInputStateError} ZoneInputStateError
+ */
 
 export const defaultStory = makeStory(conf, {
-  items: [{ zones: ZONES, selected: 'rbx' }],
+  items: [{
+    /** @type {ZoneInputStateLoaded} */
+    state: {
+      type: 'loaded',
+      zones: ZONES,
+    },
+    selected: 'rbx',
+  }],
 });
 
-export const skeleton = makeStory(conf, {
-  items: [{}],
+export const loading = makeStory(conf, {
+  items: [{
+    /** @type {ZoneInputStateLoading} */
+    state: { type: 'loading' },
+  }],
 });
 
 export const dataLoadedWithNoPrivateZones = makeStory(conf, {
   items: [{
-    zones: ZONES.filter((z) => !z.tags.includes('scope:private')),
+    /** @type {ZoneInputStateLoaded} */
+    state: {
+      type: 'loaded',
+      zones: ZONES.filter((z) => !z.tags.includes('scope:private')),
+    },
     selected: 'rbx',
   }],
 });
 
 export const error = makeStory(conf, {
-  items: [{ error: true }],
+  items: [{
+    /** @type {ZoneInputStateError} */
+    state: { type: 'error' },
+  }],
 });
 
 export const simulations = makeStory(conf, {
   items: [{}, {}],
   simulations: [
-    storyWait(2000, ([component, componentError]) => {
-      component.zones = ZONES;
-      component.selected = 'syd';
-      componentError.error = true;
-    }),
+    storyWait(2000,
+      /** @param {CcZoneInput[]} components */
+      ([component, componentError]) => {
+        component.state = { type: 'loaded', zones: ZONES };
+        component.selected = 'syd';
+        componentError.state = { type: 'error' };
+      }),
   ],
 });
