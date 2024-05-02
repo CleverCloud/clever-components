@@ -30,6 +30,7 @@ export class CcLogsMap extends LitElement {
   static get properties () {
     return {
       appName: { type: String, attribute: 'app-name' },
+      availableModes: { type: Array, attribute: 'available-modes' },
       centerLat: { type: Number, attribute: 'center-lat' },
       centerLon: { type: Number, attribute: 'center-lon' },
       error: { type: Boolean, reflect: true },
@@ -48,6 +49,9 @@ export class CcLogsMap extends LitElement {
 
     /** @type {string} Sets the name of the app for which we display the logs (don't use it with `orgaName`). */
     this.appName = null;
+
+    /** @type {MapModeType[]} Sets available map modes in order: `"points"` for blinking temporary dots and `"heatmap"` for a heatmap. */
+    this.availableModes = ['points', 'heatmap'];
 
     // Centered on Paris by default
     /** @type {number} Sets the latitude center of the map. */
@@ -157,10 +161,15 @@ export class CcLogsMap extends LitElement {
   }
 
   _getModes () {
-    return [
+    const modes = [
       { label: i18n('cc-logsmap.mode.points'), value: 'points' },
       { label: i18n('cc-logsmap.mode.heatmap'), value: 'heatmap' },
     ];
+    return this.availableModes
+      .map((m) => {
+        return modes.find(({ value }) => value === m);
+      })
+      .filter((mode) => mode != null);
   }
 
   _getLegend () {
@@ -175,12 +184,15 @@ export class CcLogsMap extends LitElement {
   }
 
   render () {
+    const modes = this._getModes();
     return html`
-      <cc-toggle
-        .choices=${this._getModes()}
-        value=${this.mode}
-        @cc-toggle:input=${this._onModeChange}
-      ></cc-toggle>
+      ${modes.length > 1 ? html`
+        <cc-toggle
+          .choices=${modes}
+          value=${this.mode}
+          @cc-toggle:input=${this._onModeChange}
+        ></cc-toggle>
+      ` : ''}
       <cc-map
         center-lat=${this.centerLat}
         center-lon=${this.centerLon}
@@ -190,7 +202,8 @@ export class CcLogsMap extends LitElement {
         ?error=${this.error}
         .heatmapPoints=${this.heatmapPoints}
         .points=${this._points}
-      >${this._getLegend()}</cc-map>
+      >${this._getLegend()}
+      </cc-map>
     `;
   }
 
