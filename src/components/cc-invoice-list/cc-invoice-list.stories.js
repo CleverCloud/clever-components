@@ -1,19 +1,7 @@
 import './cc-invoice-list.js';
+import { fullInvoicesExample, pendingInvoices, processedInvoices } from '../../stories/fixtures/invoices.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-
 import { PROCESSING_STATUS } from '../cc-invoice-table/cc-invoice-table.js';
-import { pendingInvoices, processedInvoices, processingInvoices } from '../cc-invoice-table/cc-invoice-table.stories.js';
-
-const fullInvoicesExample = [
-  ...pendingInvoices('2020').slice(0, 4),
-  ...processingInvoices('2020'),
-  ...processedInvoices('2019'),
-  ...processedInvoices('2020').slice(2, 10),
-  ...processedInvoices('2018').slice(2, 10),
-  ...processedInvoices('2017').slice(3, 10),
-  ...processedInvoices('2016').slice(1, 9),
-  ...processedInvoices('2015').slice(1, 9),
-];
 
 export default {
   tags: ['autodocs'],
@@ -25,67 +13,92 @@ const conf = {
   component: 'cc-invoice-list',
 };
 
+/**
+ * @typedef {import('./cc-invoice-list.js').CcInvoiceList} CcInvoiceList
+ * @typedef {import('./cc-invoice-list.types.js').InvoiceListStateLoaded} InvoiceListStateLoaded
+ * @typedef {import('./cc-invoice-list.types.js').InvoiceListStateLoading} InvoiceListStateLoading
+ * @typedef {import('./cc-invoice-list.types.js').InvoiceListStateError} InvoiceListStateError
+ */
+
 export const defaultStory = makeStory(conf, {
-  items: [{ state: { type: 'loaded', invoices: fullInvoicesExample } }],
+  items: [{
+    /** @type {InvoiceListStateLoaded} */
+    state: { type: 'loaded', invoices: fullInvoicesExample },
+  }],
 });
 
 export const loading = makeStory(conf, {
-  items: [{}],
+  items: [{
+    /** @type {InvoiceListStateLoading} */
+    state: { type: 'loading' },
+  }],
 });
 
 export const empty = makeStory(conf, {
-  items: [{ state: { type: 'loaded', invoices: [] } }],
+  items: [{
+    /** @type {InvoiceListStateLoaded} */
+    state: { type: 'loaded', invoices: [] },
+  }],
 });
 
 export const error = makeStory(conf, {
-  items: [{ state: { type: 'error' } }],
+  items: [{
+    /** @type {InvoiceListStateError} */
+    state: { type: 'error' },
+  }],
 });
 
 export const dataLoaded = makeStory(conf, {
-  items: [{ state: { type: 'loaded', invoices: fullInvoicesExample } }],
+  items: [{
+    /** @type {InvoiceListStateLoaded} */
+    state: { type: 'loaded', invoices: fullInvoicesExample },
+  }],
 });
 
 export const dataLoadedWithNoProcessing = makeStory(conf, {
-  items: [{ state: { type: 'loaded', invoices: fullInvoicesExample.filter((i) => i.status !== PROCESSING_STATUS) } }],
+  items: [{
+    /** @type {InvoiceListStateLoaded} */
+    state: { type: 'loaded', invoices: fullInvoicesExample.filter((i) => i.status !== PROCESSING_STATUS) },
+  }],
 });
 
 export const dataLoadedWithNoPending = makeStory(conf, {
-  items: [
-    {
-      state:
-        {
-          type: 'loaded',
-          invoices: [
-            ...processedInvoices('2020'),
-            ...processedInvoices('2020').slice(2, 10),
-            ...processedInvoices('2018').slice(2, 10),
-            ...processedInvoices('2017').slice(3, 11),
-            ...processedInvoices('2016').slice(1, 9),
-            ...processedInvoices('2015').slice(1, 9),
-          ],
-        },
-    }],
+  items: [{
+    /** @type {InvoiceListStateLoaded} */
+    state: {
+      type: 'loaded',
+      invoices: [
+        ...processedInvoices('2020'),
+        ...processedInvoices('2020').slice(2, 10),
+        ...processedInvoices('2018').slice(2, 10),
+        ...processedInvoices('2017').slice(3, 11),
+        ...processedInvoices('2016').slice(1, 9),
+        ...processedInvoices('2015').slice(1, 9),
+      ],
+    },
+  }],
 });
 
 export const dataLoadedWithNoProcessed = makeStory(conf, {
-  items: [
-    {
-      state:
-        {
-          type: 'loaded',
-          invoices: [
-            ...pendingInvoices(2020).slice(0, 4),
-          ],
-        },
-    }],
+  items: [{
+    /** @type {InvoiceListStateLoaded} */
+    state: {
+      type: 'loaded',
+      invoices: [
+        ...pendingInvoices('2020').slice(0, 4),
+      ],
+    },
+  }],
 });
 
 export const simulations = makeStory(conf, {
   items: [{}, {}],
   simulations: [
-    storyWait(2000, ([component, componentError]) => {
-      component.state = { type: 'loaded', invoices: fullInvoicesExample };
-      componentError.state = { type: 'error' };
-    }),
+    storyWait(2000,
+      /** @param {CcInvoiceList[]} components */
+      ([component, componentError]) => {
+        component.state = { type: 'loaded', invoices: fullInvoicesExample };
+        componentError.state = { type: 'error' };
+      }),
   ],
 });

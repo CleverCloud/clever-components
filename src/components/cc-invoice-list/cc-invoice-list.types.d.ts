@@ -1,16 +1,16 @@
-import { Invoice } from "../common.types";
+import { Invoice } from '../common.types.js';
 
 export type InvoiceListState = InvoiceListStateLoading | InvoiceListStateError | InvoiceListStateLoaded;
 
-interface InvoiceListStateLoading {
+export interface InvoiceListStateLoading {
   type: 'loading';
 }
 
-interface InvoiceListStateError {
+export interface InvoiceListStateError {
   type: 'error';
 }
 
-interface InvoiceListStateLoaded {
+export interface InvoiceListStateLoaded {
   type: 'loaded';
   invoices: Array<Invoice>;
 }

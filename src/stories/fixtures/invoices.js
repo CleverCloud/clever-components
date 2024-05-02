@@ -67,3 +67,15 @@ export const processedInvoices = (year) => [
   createInvoice(year, '11', 618.31, 'PAID'),
   createInvoice(year, '12', 1487.02, 'PAID'),
 ];
+
+/** @type {Invoice[]} */
+export const fullInvoicesExample = [
+  ...pendingInvoices('2020').slice(0, 4),
+  ...processingInvoices('2020'),
+  ...processedInvoices('2019'),
+  ...processedInvoices('2020').slice(2, 10),
+  ...processedInvoices('2018').slice(2, 10),
+  ...processedInvoices('2017').slice(3, 10),
+  ...processedInvoices('2016').slice(1, 9),
+  ...processedInvoices('2015').slice(1, 9),
+];
