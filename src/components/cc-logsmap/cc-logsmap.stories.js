@@ -59,14 +59,12 @@ export const emptyWithOrga = makeStory(conf, {
   docs: 'Data for all apps of an orga (name in legend).',
   items: [
     { orgaName: 'ACME Corp' },
-    { orgaName: 'ACME Corp' },
   ],
 });
 
 export const emptyWithAppOnly = makeStory(conf, {
   docs: 'Data for only one app (name in legend).',
   items: [
-    { appName: 'My Awesome Java App (PROD)' },
     { appName: 'My Awesome Java App (PROD)' },
   ],
 });
