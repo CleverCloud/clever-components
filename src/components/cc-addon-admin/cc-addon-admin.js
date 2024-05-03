@@ -187,11 +187,6 @@ export class CcAddonAdmin extends LitElement {
           margin-top: var(--cc-margin-top-btn-horizontal-form);
         }
 
-        .danger-desc {
-          display: grid;
-          gap: 0.5em;
-        }
-
         .danger-desc p {
           margin: 0;
         }
