@@ -59,7 +59,6 @@ export const emptyWithOrga = makeStory(conf, {
   docs: 'Data for all apps of an orga (name in legend).',
   items: [
     { orgaName: 'ACME Corp' },
-    { orgaName: 'ACME Corp' },
   ],
 });
 
@@ -67,8 +66,47 @@ export const emptyWithAppOnly = makeStory(conf, {
   docs: 'Data for only one app (name in legend).',
   items: [
     { appName: 'My Awesome Java App (PROD)' },
-    { appName: 'My Awesome Java App (PROD)' },
   ],
+});
+
+export const dataLoadedWithHeatmapOnly = makeStory(conf, {
+  items: [{
+    appName: 'My Awesome Java App (PROD)',
+    availableModes: ['heatmap'],
+    mode: 'heatmap',
+    heatmapPoints: fakeHeatmapData,
+  }],
+});
+
+export const dataLoadedWithPointsOnly = makeStory(conf, {
+  items: [{
+    appName: 'My Awesome Java App (PROD)',
+    availableModes: ['points'],
+    mode: 'points',
+  }],
+  simulations: [
+    storyWait(0, ([component]) => {
+
+      const fetchData = () => {
+        getFakePointsData(0).then((rawPoints) => {
+          const points = rawPoints.map((p) => ({ ...p, tooltip: p.city, delay }));
+          component.addPoints(points, { spreadDuration });
+        });
+      };
+
+      setTimeoutDom(fetchData, 0, component);
+      setIntervalDom(fetchData, spreadDuration, component);
+    }),
+  ],
+});
+
+export const dataLoadedWithHeatmapAndPoints = makeStory(conf, {
+  items: [{
+    appName: 'My Awesome Java App (PROD)',
+    availableModes: ['heatmap', 'points'],
+    mode: 'heatmap',
+    heatmapPoints: fakeHeatmapData,
+  }],
 });
 
 export const loading = makeStory(conf, {
