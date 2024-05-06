@@ -5,6 +5,19 @@ title: 'Changelog'
 
 # Changelog
 
+## [13.3.0](https://github.com/CleverCloud/clever-components/compare/13.2.0...13.3.0) (2024-05-06)
+
+
+### 🚀 Features
+
+* **cc-addon-admin:** adapt the danger zone text to match different situations ([8dfea44](https://github.com/CleverCloud/clever-components/commit/8dfea4443705e07cea3353543ffcc9a229bfb0d6)), closes [#1018](https://github.com/CleverCloud/clever-components/issues/1018)
+* **cc-logsmap:** allow the configuration of modes (availability and order) ([71cc825](https://github.com/CleverCloud/clever-components/commit/71cc825946b2f105b42714a66b53e39ed8b6aae7)), closes [#1040](https://github.com/CleverCloud/clever-components/issues/1040)
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-admin:** remove improper spacing within the danger zone ([219a612](https://github.com/CleverCloud/clever-components/commit/219a6127b73a38aa6b7dc7fd3b324f044e604352)), closes [#1042](https://github.com/CleverCloud/clever-components/issues/1042)
+
 ## [13.2.0](https://github.com/CleverCloud/clever-components/compare/13.1.0...13.2.0) (2024-04-12)
 
 
