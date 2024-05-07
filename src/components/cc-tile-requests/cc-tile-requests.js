@@ -3,6 +3,7 @@ import { BarController, BarElement, CategoryScale, Chart, LinearScale, Title, To
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { iconCleverInfo as iconInfo } from '../../assets/cc-clever.icons.js';
 import {
   iconRemixAlertFill as iconAlert,
@@ -22,6 +23,12 @@ const SKELETON_REQUESTS = Array
 
 /**
  * @typedef {import('./cc-tile-requests.types.js').RequestsData} RequestsData
+ * @typedef {import('./cc-tile-requests.types.js').TileRequestsState} TileRequestsState
+ * @typedef {import('./cc-tile-requests.types.js').TileRequestsStateLoaded} TileRequestsStateLoaded
+ * @typedef {import('./cc-tile-requests.types.js').TileRequestsStateLoading} TileRequestsStateLoading
+ * @typedef {import('./cc-tile-requests.types.js').TileRequestsStateError} TileRequestsStateError
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLCanvasElement>} RefCanvas
+ * @typedef {import('lit').PropertyValues<CcTileRequests>} CcTileRequestsPropertyValues
  */
 
 /**
@@ -42,50 +49,46 @@ export class CcTileRequests extends LitElement {
 
   static get properties () {
     return {
-      data: { type: Array },
-      error: { type: Boolean, reflect: true },
+      state: { type: Object },
       _barCount: { type: Number, state: true },
       _docs: { type: Boolean, state: true },
       _empty: { type: Boolean, state: true },
-      _skeleton: { type: Boolean, state: true },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {RequestsData[]|null} Sets the list of 24 time windows of one hour with timestamps and number of requests. */
-    this.data = null;
-
-    /** @type {boolean} Displays an error message. */
-    this.error = false;
+    /** @type {TileRequestsState} Sets the state of the component. */
+    this.state = { type: 'loading' };
 
     // Default to lower resolution
     /** @type {number} */
     this._barCount = 6;
 
-    /** @type {boolean} */
-    this._empty = false;
+    /** @type {RefCanvas} */
+    this._ctxRef = createRef();
 
     /** @type {boolean} */
     this._docs = false;
 
     /** @type {boolean} */
-    this._skeleton = false;
+    this._empty = false;
 
     /** @type {ResizeController} */
     this._resizeController = new ResizeController(this);
   }
 
+  /** @private */
   _onToggleDocs () {
     this._docs = !this._docs;
   }
 
+  /** @private */
   async _refreshChart () {
+    const skeleton = this.state.type === 'loading';
 
-    this._skeleton = (this.data == null);
-
-    const data = this._skeleton ? SKELETON_REQUESTS : this.data;
+    const data = this.state.type === 'loaded' ? this.state.data : SKELETON_REQUESTS;
 
     this._empty = (data.length === 0);
 
@@ -109,13 +112,13 @@ export class CcTileRequests extends LitElement {
         return [fromTs, toTs, requestCount];
       });
 
-    this._groupedValues = this._groupedData.map(([a, b, requestCount]) => requestCount);
+    this._groupedValues = this._groupedData.map(([_, __, requestCount]) => requestCount);
 
-    this._xLabels = this._skeleton
+    this._xLabels = skeleton
       ? this._groupedData.map(() => '??')
-      : this._groupedData.map(([from], i) => i18n('cc-tile-requests.date-hours', { date: from }));
+      : this._groupedData.map(([from]) => i18n('cc-tile-requests.date-hours', { date: from }));
 
-    const backgroundColor = this._skeleton
+    const backgroundColor = skeleton
       ? '#bbb'
       : '#30ab61';
 
@@ -124,12 +127,13 @@ export class CcTileRequests extends LitElement {
     // * 1.2 helps to let some white space on top of the bar for the label
     // (I didn't found a better yet)
     const maxRequestCount = Math.ceil(Math.max(...this._groupedValues) * 1.2);
+    // @ts-expect-error TODO : remove when we updrade ChartJS (see https://github.com/CleverCloud/clever-components/issues/1056)
     this._chart.options.scales.y.suggestedMax = maxRequestCount;
 
-    this._chart.options.plugins.tooltip.enabled = !this._skeleton;
+    this._chart.options.plugins.tooltip.enabled = !skeleton;
 
     const totalRequests = this._groupedValues.reduce((a, b) => a + b, 0);
-    this._chart.options.plugins.title.text = this._skeleton
+    this._chart.options.plugins.title.text = skeleton
       ? '...'
       : i18n('cc-tile-requests.requests-nb.total', { totalRequests });
 
@@ -142,15 +146,16 @@ export class CcTileRequests extends LitElement {
     };
 
     // Disable animations when skeleton
-    this._chart.options.animation.duration = this._skeleton ? 0 : 300;
+    // @ts-expect-error TODO : remove when we updrade ChartJS (see https://github.com/CleverCloud/clever-components/issues/1056)
+    this._chart.options.animation.duration = skeleton ? 0 : 300;
 
     this._chart.update();
     this._chart.resize();
   }
 
   firstUpdated () {
-    this._ctx = this.renderRoot.getElementById('chart');
-    this._chart = new Chart(this._ctx, {
+    this._chart = new Chart(this._ctxRef.value, {
+      // @ts-expect-error TODO : remove when we updrade ChartJS (see https://github.com/CleverCloud/clever-components/issues/1056)
       plugins: [ChartDataLabels],
       type: 'bar',
       options: {
@@ -191,8 +196,8 @@ export class CcTileRequests extends LitElement {
             anchor: 'end',
             offset: 0,
             align: 'end',
-            formatter: (value, context) => {
-              return this._skeleton
+            formatter: (value) => {
+              return this.state.type === 'loading'
                 ? '?'
                 : i18n('cc-tile-requests.requests-count', { requestCount: value });
             },
@@ -238,8 +243,9 @@ export class CcTileRequests extends LitElement {
   }
 
   // updated and not udpate because we need this._chart before
+  /** @param {CcTileRequestsPropertyValues} changedProperties */
   updated (changedProperties) {
-    if (changedProperties.has('data')) {
+    if (changedProperties.has('state') && (this.state.type === 'loaded' || this.state.type === 'loading')) {
       this._refreshChart();
     }
     super.updated(changedProperties);
@@ -247,9 +253,9 @@ export class CcTileRequests extends LitElement {
 
   render () {
 
-    const displayChart = (!this.error && !this._empty && !this._docs);
-    const displayError = (this.error && !this._docs);
-    const displayEmpty = (this._empty && !this._docs);
+    const displayChart = ((this.state.type === 'loaded' || this.state.type === 'loading') && !this._empty && !this._docs);
+    const displayError = (this.state.type === 'error' && !this._docs);
+    const displayEmpty = (this.state.type === 'loaded' && this._empty && !this._docs);
     const displayDocs = (this._docs);
 
     return html`
@@ -267,8 +273,8 @@ export class CcTileRequests extends LitElement {
       </div>
 
       <div class="tile_body ${classMap({ 'tile--hidden': !displayChart })}">
-        <div class="chart-container ${classMap({ skeleton: this._skeleton })}">
-          <canvas id="chart"></canvas>
+        <div class="chart-container ${classMap({ skeleton: this.state.type === 'loading' })}">
+          <canvas ${ref(this._ctxRef)}></canvas>
         </div>
       </div>
 
