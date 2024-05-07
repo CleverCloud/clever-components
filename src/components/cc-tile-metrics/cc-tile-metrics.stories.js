@@ -16,26 +16,52 @@ const conf = {
   }`,
 };
 
-const baseItems = [
-  {
-    grafanaLink: 'https://grafana.example.com/small',
-    metricsLink: 'https://metrics.example.com/small',
-    style: 'max-width: 23.75em',
+/**
+ * @typedef {import('./cc-tile-metrics.js').CcTileMetrics} CcTileMetrics
+ * @typedef {import('./cc-tile-metrics.types.js').TileMetricsMetricsStateLoaded} TileMetricsStateLoaded
+ * @typedef {import('./cc-tile-metrics.types.js').TileMetricsMetricsStateEmpty} TileMetricsStateEmpty
+ * @typedef {import('./cc-tile-metrics.types.js').TileMetricsMetricsStateLoading} TileMetricsStateLoading
+ * @typedef {import('./cc-tile-metrics.types.js').TileMetricsMetricsStateError} TileMetricsStateError
+ * @typedef {import('./cc-tile-metrics.types.js').TileMetricsGrafanaLinkStateLoaded} TileMetricsGrafanaLinkStateLoaded
+ * @typedef {import('./cc-tile-metrics.types.js').TileMetricsGrafanaLinkStateLoading} TileMetricsGrafanaLinkStateLoading
+ * @typedef {import('./cc-tile-metrics.types.js').Metric} Metric
+ */
+
+/** @type {{ grafanaLinkState: TileMetricsGrafanaLinkStateLoaded, metricsLink: string, style?: string }[]} */
+const baseItems = [{
+  grafanaLinkState: {
+    type: 'loaded',
+    link: 'https://grafana.example.com/small',
   },
-  {
-    grafanaLink: 'https://grafana.example.com/medium',
-    metricsLink: 'https://metrics.example.com/medium',
-    style: 'max-width: 33.75em',
+  metricsLink: 'https://metrics.example.com/small',
+  style: 'max-width: 23.75em',
+},
+{
+  grafanaLinkState: {
+    type: 'loaded',
+    link: 'https://grafana.example.com/medium',
   },
-  {
-    grafanaLink: 'https://grafana.example.com/large',
-    metricsLink: 'https://metrics.example.com/large',
+  metricsLink: 'https://metrics.example.com/medium',
+  style: 'max-width: 33.75em',
+},
+{
+  grafanaLinkState: {
+    type: 'loaded',
+    link: 'https://grafana.example.com/large',
   },
-];
+  metricsLink: 'https://metrics.example.com/large',
+}];
 
 const ONE_HOUR = 60 * 60 * 1000;
 const ONE_DAY = ONE_HOUR * 24;
 
+/**
+ * @param {number} numberOfPoints
+ * @param {number} usedValue
+ * @param {boolean} [linearIncrease]
+ * @param {boolean} [shift]
+ * @returns {{ value: number }[]}
+ */
 function fakeMetricData (numberOfPoints, usedValue, linearIncrease = false, shift = true) {
   return Array
     .from({ length: numberOfPoints })
@@ -48,6 +74,10 @@ function fakeMetricData (numberOfPoints, usedValue, linearIncrease = false, shif
     });
 }
 
+/**
+ * @param {{ value: number }[]} array
+ * @returns {Metric[]}
+ */
 function addTimestamp (array) {
   const startTs = Date.now() - ONE_DAY;
   return array.map((item, index) => {
@@ -61,39 +91,48 @@ function addTimestamp (array) {
 export const defaultStory = makeStory(conf, {
   items: baseItems.map((item) => ({
     ...item,
-    metrics: {
-      state: 'loaded',
-      value: {
-        cpuData: addTimestamp(fakeMetricData(24, 25)),
-        memData: addTimestamp(fakeMetricData(24, 16)),
+    /** @type {TileMetricsStateLoaded} */
+    metricsState: {
+      type: 'loaded',
+      metricsData: {
+        cpuMetrics: addTimestamp(fakeMetricData(24, 25)),
+        memMetrics: addTimestamp(fakeMetricData(24, 16)),
       },
     },
   })),
 });
 
-export const skeleton = makeStory(conf, {
-  items: baseItems.map((item) => ({ ...item, metrics: { state: 'loading' } })),
+export const loading = makeStory(conf, {
+  /** @type {{ metricsState: TileMetricsStateLoading, grafanaLinkState: TileMetricsGrafanaLinkStateLoading, style?: string }[]} */
+  items: baseItems.map((item) => ({
+    ...item,
+    metricsState: { type: 'loading' },
+    grafanaLinkState: { type: 'loading' },
+  })),
 });
 
 export const empty = makeStory(conf, {
-  items: baseItems.map((item) => ({ ...item, metrics: { state: 'empty' } })),
+  /** @type {{ metricsState: TileMetricsStateEmpty, style?: string }[]} */
+  items: baseItems.map((item) => ({ ...item, metricsState: { type: 'empty' } })),
 });
 
 export const error = makeStory(conf, {
-  items: baseItems.map((item) => ({ ...item, metrics: { state: 'error' } })),
+  /** @type {{ metricsState: TileMetricsStateError, style?: string }[]} */
+  items: baseItems.map((item) => ({ ...item, metricsState: { type: 'error' } })),
 });
 
 export const dataLoadedWithHighValues = makeStory(conf, {
   items: baseItems.map((item) => ({
     ...item,
-    metrics: {
-      state: 'loaded',
-      value: {
-        cpuData: addTimestamp([
+    /** @type {TileMetricsStateLoaded} */
+    metricsState: {
+      type: 'loaded',
+      metricsData: {
+        cpuMetrics: addTimestamp([
           ...fakeMetricData(12, 60),
           ...fakeMetricData(12, 80),
         ]),
-        memData: addTimestamp([
+        memMetrics: addTimestamp([
           ...fakeMetricData(12, 50),
           ...fakeMetricData(12, 82),
         ]),
@@ -105,11 +144,12 @@ export const dataLoadedWithHighValues = makeStory(conf, {
 export const peaks = makeStory(conf, {
   items: baseItems.map((item) => ({
     ...item,
-    metrics: {
-      state: 'loaded',
-      value: {
-        cpuData: addTimestamp(fakeMetricData(24, 25)),
-        memData: addTimestamp([
+    /** @type {TileMetricsStateLoaded} */
+    metricsState: {
+      type: 'loaded',
+      metricsData: {
+        cpuMetrics: addTimestamp(fakeMetricData(24, 25)),
+        memMetrics: addTimestamp([
           ...fakeMetricData(10, 25),
           ...fakeMetricData(1, 25 / 4),
           ...fakeMetricData(2, 80),
@@ -124,11 +164,12 @@ export const peaks = makeStory(conf, {
 export const linearIncrease = makeStory(conf, {
   items: baseItems.map((item) => ({
     ...item,
-    metrics: {
-      state: 'loaded',
-      value: {
-        cpuData: addTimestamp(fakeMetricData(24, 25, true)),
-        memData: addTimestamp(fakeMetricData(24, 10, true)),
+    /** @type {TileMetricsStateLoaded} */
+    metricsState: {
+      type: 'loaded',
+      metricsData: {
+        cpuMetrics: addTimestamp(fakeMetricData(24, 25, true)),
+        memMetrics: addTimestamp(fakeMetricData(24, 10, true)),
       },
     },
   })),
@@ -137,11 +178,12 @@ export const linearIncrease = makeStory(conf, {
 export const scaleUp = makeStory(conf, {
   items: baseItems.map((item) => ({
     ...item,
-    metrics: {
-      state: 'loaded',
-      value: {
-        cpuData: addTimestamp(fakeMetricData(24, 40)),
-        memData: addTimestamp([
+    /** @type {TileMetricsStateLoaded} */
+    metricsState: {
+      type: 'loaded',
+      metricsData: {
+        cpuMetrics: addTimestamp(fakeMetricData(24, 40)),
+        memMetrics: addTimestamp([
           ...fakeMetricData(12, 50),
           ...fakeMetricData(12, 50 / 4),
         ]),
@@ -153,11 +195,12 @@ export const scaleUp = makeStory(conf, {
 export const scaleDown = makeStory(conf, {
   items: baseItems.map((item) => ({
     ...item,
-    metrics: {
-      state: 'loaded',
-      value: {
-        cpuData: addTimestamp(fakeMetricData(24, 30)),
-        memData: addTimestamp([
+    /** @type {TileMetricsStateLoaded} */
+    metricsState: {
+      type: 'loaded',
+      metricsData: {
+        cpuMetrics: addTimestamp(fakeMetricData(24, 30)),
+        memMetrics: addTimestamp([
           ...fakeMetricData(12, 16),
           ...fakeMetricData(12, 16 * 2),
         ]),
@@ -169,11 +212,12 @@ export const scaleDown = makeStory(conf, {
 export const multipleScaleUp = makeStory(conf, {
   items: baseItems.map((item) => ({
     ...item,
-    metrics: {
-      state: 'loaded',
-      value: {
-        cpuData: addTimestamp(fakeMetricData(24, 60)),
-        memData: addTimestamp([
+    /** @type {TileMetricsStateLoaded} */
+    metricsState: {
+      type: 'loaded',
+      metricsData: {
+        cpuMetrics: addTimestamp(fakeMetricData(24, 60)),
+        memMetrics: addTimestamp([
           ...fakeMetricData(8, 80),
           ...fakeMetricData(8, 80 / 2),
           ...fakeMetricData(8, 80 / 4),
@@ -186,15 +230,16 @@ export const multipleScaleUp = makeStory(conf, {
 export const multipleScaleDown = makeStory(conf, {
   items: baseItems.map((item) => ({
     ...item,
-    metrics: {
-      state: 'loaded',
-      value: {
-        cpuData: addTimestamp([
+    /** @type {TileMetricsStateLoaded} */
+    metricsState: {
+      type: 'loaded',
+      metricsData: {
+        cpuMetrics: addTimestamp([
           ...fakeMetricData(8, 8, false, false),
           ...fakeMetricData(8, 50, false, false),
           ...fakeMetricData(8, 85, false, false),
         ]),
-        memData: addTimestamp([
+        memMetrics: addTimestamp([
           ...fakeMetricData(8, 80 / 4, false, false),
           ...fakeMetricData(8, 80 / 2, false, false),
           ...fakeMetricData(8, 81, false, false),
@@ -207,11 +252,12 @@ export const multipleScaleDown = makeStory(conf, {
 export const bigScaleUp = makeStory(conf, {
   items: baseItems.map((item) => ({
     ...item,
-    metrics: {
-      state: 'loaded',
-      value: {
-        cpuData: addTimestamp(fakeMetricData(24, 25)),
-        memData: addTimestamp([
+    /** @type {TileMetricsStateLoaded} */
+    metricsState: {
+      type: 'loaded',
+      metricsData: {
+        cpuMetrics: addTimestamp(fakeMetricData(24, 25)),
+        memMetrics: addTimestamp([
           ...fakeMetricData(12, 80),
           ...fakeMetricData(12, 80 / 8),
         ]),
@@ -223,11 +269,12 @@ export const bigScaleUp = makeStory(conf, {
 export const bigScaleDown = makeStory(conf, {
   items: baseItems.map((item) => ({
     ...item,
-    metrics: {
-      state: 'loaded',
-      value: {
-        cpuData: addTimestamp(fakeMetricData(24, 22.3)),
-        memData: addTimestamp([
+    /** @type {TileMetricsStateLoaded} */
+    metricsState: {
+      type: 'loaded',
+      metricsData: {
+        cpuMetrics: addTimestamp(fakeMetricData(24, 22.3)),
+        memMetrics: addTimestamp([
           ...fakeMetricData(12, 10),
           ...fakeMetricData(12, 10 * 8),
         ]),
@@ -239,15 +286,16 @@ export const bigScaleDown = makeStory(conf, {
 export const appDown = makeStory(conf, {
   items: baseItems.map((item) => ({
     ...item,
-    metrics: {
-      state: 'loaded',
-      value: {
-        cpuData: addTimestamp([
+    /** @type {TileMetricsStateLoaded} */
+    metricsState: {
+      type: 'loaded',
+      metricsData: {
+        cpuMetrics: addTimestamp([
           ...fakeMetricData(6, 22.3),
           ...fakeMetricData(6, 0),
           ...fakeMetricData(12, 22.3),
         ]),
-        memData: addTimestamp([
+        memMetrics: addTimestamp([
           ...fakeMetricData(6, 10),
           ...fakeMetricData(6, 0),
           ...fakeMetricData(12, 10 * 8),
@@ -258,40 +306,48 @@ export const appDown = makeStory(conf, {
 });
 
 export const simulationsWithData = makeStory(conf, {
-  items: baseItems,
+  items: baseItems.map((baseItem) => ({
+    ...baseItem,
+    metricsState: { type: 'loading' },
+    grafanaLinkState: { type: 'loading' },
+  })),
   simulations: [
-    storyWait(2000, ([componentSmall, componentMedium, componentBig]) => {
-      const value = {
-        cpuData: addTimestamp(fakeMetricData(24, 25)),
-        memData: addTimestamp(fakeMetricData(24, 16)),
-      };
+    storyWait(2000,
+      /** @param {CcTileMetrics[]} components */
+      ([componentSmall, componentMedium, componentBig]) => {
+        /** @type {TileMetricsStateLoaded} */
+        const metricsState = {
+          type: 'loaded',
+          metricsData: {
+            cpuMetrics: addTimestamp(fakeMetricData(24, 25)),
+            memMetrics: addTimestamp(fakeMetricData(24, 16)),
+          },
+        };
 
-      componentSmall.metrics = {
-        state: 'loaded',
-        value,
-      };
+        componentSmall.metricsState = metricsState;
+        componentSmall.grafanaLinkState = baseItems[0].grafanaLinkState;
 
-      componentMedium.metrics = {
-        state: 'loaded',
-        value,
-      };
+        componentMedium.metricsState = metricsState;
+        componentMedium.grafanaLinkState = baseItems[1].grafanaLinkState;
 
-      componentBig.metrics = {
-        state: 'loaded',
-        value,
-      };
-
-    }),
+        componentBig.metricsState = metricsState;
+        componentBig.grafanaLinkState = baseItems[2].grafanaLinkState;
+      }),
   ],
 });
 
 export const simulationsWithError = makeStory(conf, {
-  items: baseItems,
+  items: baseItems.map((baseItem) => ({
+    ...baseItem,
+    metricsState: { type: 'loading' },
+  })),
   simulations: [
-    storyWait(2000, ([componentSmall, componentMedium, componentBig]) => {
-      componentSmall.metrics = { state: 'error' };
-      componentMedium.metrics = { state: 'error' };
-      componentBig.metrics = { state: 'error' };
-    }),
+    storyWait(2000,
+      /** @param {CcTileMetrics[]} components */
+      ([componentSmall, componentMedium, componentBig]) => {
+        componentSmall.metricsState = { type: 'error' };
+        componentMedium.metricsState = { type: 'error' };
+        componentBig.metricsState = { type: 'error' };
+      }),
   ],
 });

@@ -1,30 +1,49 @@
-interface Metric {
+export type TileMetricsMetricsState = TileMetricsMetricsStateLoading | TileMetricsMetricsStateError | TileMetricsMetricsStateLoaded | TileMetricsMetricsStateEmpty;
+
+export interface TileMetricsMetricsStateLoaded {
+  type: 'loaded';
+  metricsData: MetricsData;
+}
+
+export interface TileMetricsMetricsStateLoading {
+  type: 'loading';
+}
+
+export interface TileMetricsMetricsStateError {
+  type: 'error';
+}
+
+export interface TileMetricsMetricsStateEmpty {
+  type: 'empty';
+}
+
+export interface Metric {
   // Timestamp in ms
-  timestamp: number,
+  timestamp: number;
   // Value is a percentage (e.g: 14.02)
-  value: number,
+  value: number;
 }
 
-interface MetricsData {
-  cpuData: Metric[];
-  memData: Metric[];
+export interface MetricsData {
+  cpuMetrics: Metric[];
+  memMetrics: Metric[];
 }
 
-interface MetricsStateLoading {
-  state: 'loading';
+export type TileMetricsGrafanaLinkState = TileMetricsGrafanaLinkStateLoaded | TileMetricsGrafanaLinkStateLoading;
+
+export interface TileMetricsGrafanaLinkStateLoaded {
+  type: 'loaded';
+  link: string;
 }
 
-interface MetricsStateError {
-  state: 'error';
+export interface TileMetricsGrafanaLinkStateLoading {
+  type: 'loading';
 }
 
-interface MetricsStateEmpty {
-  state: 'empty';
+// this is what we retrieve directly from the API
+export interface RawMetric {
+  data: { timestamp: number, value: string }[],
+  name: 'mem' | 'cpu', 
+  resource: string, 
+  unit: string,
 }
-
-interface MetricsStateLoaded {
-  state: 'loaded';
-  value: MetricsData;
-}
-
-export type MetricsState = MetricsStateLoading | MetricsStateError | MetricsStateLoaded | MetricsStateEmpty;

@@ -4,6 +4,12 @@ import { sendToApi } from '../../lib/send-to-api.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-tile-metrics.js';
 
+/**
+ * @typedef {import('./cc-tile-metrics.types.js').RawMetric} RawMetric
+ * @typedef {import('./cc-tile-metrics.types.js').MetricsData} MetricsData
+ * @typedef {import('./cc-tile-metrics.types.js').Metric} Metric
+ */
+
 const NUMBER_OF_POINTS = 24;
 
 defineSmartComponent({
@@ -19,43 +25,59 @@ defineSmartComponent({
 
     const { apiConfig, ownerId, appId, grafanaBaseLink, consoleGrafanaLink } = context;
 
-    updateComponent('metrics', { state: 'loading' });
+    updateComponent('state', { type: 'loading' });
 
     fetchMetrics({ apiConfig, ownerId, appId, signal })
-      .then(({ cpuData, memData }) => {
-        if (cpuData.length === 0 || memData.length === 0 || isAppStopped(cpuData)) {
-          updateComponent('metrics', { state: 'empty' });
+      .then(({ cpuMetrics, memMetrics }) => {
+        if (cpuMetrics.length === 0 || memMetrics.length === 0 || isAppStopped(cpuMetrics)) {
+          updateComponent('metricsState', { type: 'empty' });
         }
         else {
-          updateComponent('metrics', { state: 'loaded', value: { cpuData, memData } });
+          updateComponent('metricsState', {
+            type: 'loaded',
+            metricsData: { cpuMetrics, memMetrics },
+          });
         }
       })
       .catch((error) => {
         console.error(error);
-        updateComponent('metrics', { state: 'error' });
+        updateComponent('metricsState', { type: 'error' });
       });
 
     fetchGrafanaAppLink({ apiConfig, ownerId, appId, grafanaBaseLink, signal })
       .then((grafanaAppLink) => {
-        updateComponent('grafanaLink', grafanaAppLink);
+        updateComponent('grafanaLinkState', { type: 'loaded', link: grafanaAppLink });
       })
       .catch(() => {
         // If Grafana is not enabled we fallback to the Console Grafana page
-        updateComponent('grafanaLink', consoleGrafanaLink);
+        updateComponent('grafanaLinkState', { type: 'loaded', link: consoleGrafanaLink });
       });
   },
 });
 
+/**
+ * @param {Object} parameters
+ * @param {ApiConfig} parameters.apiConfig
+ * @param {string} parameters.ownerId
+ * @param {string} parameters.appId
+ * @param {AbortSignal} parameters.signal
+ * @returns {Promise<MetricsData>}
+ */
 function fetchMetrics ({ apiConfig, ownerId, appId, signal }) {
   return getAppMetrics({ id: ownerId, appId, interval: 'P1D', span: 'PT1H' })
     .then(sendToApi({ apiConfig, signal }))
     .then((metrics) => {
-      const cpuData = extractMetric(metrics, 'cpu');
-      const memData = extractMetric(metrics, 'mem');
-      return { cpuData, memData };
+      const cpuMetrics = extractMetric(metrics, 'cpu');
+      const memMetrics = extractMetric(metrics, 'mem');
+      return { cpuMetrics, memMetrics };
     });
 }
 
+/**
+ * @param {RawMetric[]} metrics
+ * @param {string} name
+ * @returns {Metric[]}
+ */
 function extractMetric (metrics, name) {
   const metric = metrics?.find((m) => m.name === name)?.data ?? [];
   return metric.map(({ timestamp, value }) => {
@@ -67,6 +89,15 @@ function extractMetric (metrics, name) {
   });
 }
 
+/**
+ * @param {Object} parameters
+ * @param {ApiConfig} parameters.apiConfig
+ * @param {string} parameters.ownerId
+ * @param {string} parameters.appId
+ * @param {string} parameters.grafanaBaseLink
+ * @param {AbortSignal} parameters.signal
+ * @returns {Promise<string>}
+ */
 function fetchGrafanaAppLink ({ apiConfig, ownerId, appId, grafanaBaseLink, signal }) {
   return getGrafanaOrganisation({ id: ownerId })
     .then(sendToApi({ apiConfig, signal }))
@@ -78,6 +109,10 @@ function fetchGrafanaAppLink ({ apiConfig, ownerId, appId, grafanaBaseLink, sign
     });
 }
 
+/**
+ * @param {Metric[]} data
+ * @returns {boolean}
+ */
 function isAppStopped (data) {
-  return data.filter((data) => parseFloat(data.value) === 0).length === NUMBER_OF_POINTS;
+  return data.filter((data) => data.value === 0).length === NUMBER_OF_POINTS;
 }
