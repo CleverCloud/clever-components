@@ -40,7 +40,8 @@ export class CcInputElement extends LitElement {
   constructor () {
     super();
 
-    this._formHelper = new FormHelper(this, this.getInputSettings());
+    this._settings = this.getInputSettings();
+    this._internals = this.attachInternals();
 
     /** @type {ErrorMessageMap} Sets the mapping between error codes and error messages. */
     this.customErrorMessages = null;
@@ -60,6 +61,7 @@ export class CcInputElement extends LitElement {
    * @protected
    */
   getInputSettings () {
+    // TODO find another way
     throw new Error('You must implement getInputSettings() method!');
   }
 
@@ -67,7 +69,7 @@ export class CcInputElement extends LitElement {
    * This callback will be called when the form associated to the element is reset.
    */
   formResetCallback () {
-    this._formHelper.resetValue();
+    this.#resetValue();
     // we really need to reset the error message because, even if input becomes invalid after reset,
     // the form reset must also reset the error message.
     this.validate(false);
@@ -77,11 +79,117 @@ export class CcInputElement extends LitElement {
     }
   }
 
+  #resetValue () {
+    if (this.#getResetValueProperty() != null) {
+      this.#setValueProperty(this.#getResetValueProperty());
+    }
+  }
+
+  /**
+   * @return {any}
+   */
+  #getValueProperty () {
+    return this[this._settings.valuePropertyName];
+  }
+
+  /**
+   * @param {any} value
+   */
+  #setValueProperty (value) {
+    this[this._settings.valuePropertyName] = value;
+  }
+
+  /**
+   * @return {any}
+   */
+  #getResetValueProperty () {
+    return this[this._settings.resetValuePropertyName];
+  }
+
+  /**
+   * @return {ValidationSettings | undefined}
+   */
+  #getValidationSettings () {
+    return this._settings.validationSettingsProvider?.();
+  }
+
+  /**
+   * @param {string} code
+   * @param {ErrorMessageMap} errorMessages
+   * @return {ErrorMessage}
+   */
+  #resolveErrorMessage (code, errorMessages) {
+    function resolve () {
+      if (errorMessages != null && Object.prototype.hasOwnProperty.call(errorMessages, code)) {
+        const errorMessage = errorMessages[code];
+
+        if (typeof errorMessage === 'function') {
+          return errorMessage();
+        }
+
+        return errorMessage;
+      }
+      return null;
+    }
+
+    const resolvedMessage = resolve();
+    if (resolvedMessage != null) {
+      return resolvedMessage;
+    }
+
+    return code;
+  }
+
+  #setValidValidity () {
+    this._internals.setValidity({});
+  }
+
+  /**
+   *
+   * @return {InputData}
+   */
+  #getInputData () {
+    if (this._settings.inputDataProvider != null) {
+      return this._settings.inputDataProvider();
+    }
+
+    const valueProperty = this.#getValueProperty();
+
+    if (valueProperty == null || typeof valueProperty === 'string' || valueProperty instanceof File || valueProperty instanceof FormData) {
+      return valueProperty;
+    }
+
+    console.warn('The value to set to form data should be of type `null|File|string|FormData`. You\'ve got ', valueProperty);
+
+    return valueProperty.toString();
+  }
+
+  /**
+   * @return {HTMLElement}
+   */
+  #getInputElement () {
+    return this.shadowRoot.querySelector(this._settings.inputSelector);
+  }
+
+  /**
+   * @return {HTMLElement}
+   */
+  #getErrorElement () {
+    return this.shadowRoot.querySelector(this._settings.errorSelector);
+  }
+
+  /**
+   * @param {string} message
+   */
+  #setInvalidValidity (message) {
+    this._internals.setValidity({ customError: true }, message, this.#getInputElement());
+  }
+
   /**
    * @param {boolean} report - whether to display error message or not
    */
   validate (report) {
-    const validationSettings = this._formHelper.getValidationSettings();
+    const validationSettings = this.#getValidationSettings();
 
     /** @type {ErrorMessageMap} */
     const errorMessages = {
@@ -95,19 +203,19 @@ export class CcInputElement extends LitElement {
       .build();
 
     const validation = validator.validate(
-      this._formHelper.getValueProperty(),
-      this._formHelper.internals.form != null ? getFormData(this._formHelper.internals.form) : {},
+      this.#getValueProperty(),
+      this._internals.form != null ? getFormData(this._internals.form) : {},
     );
 
     const errorMessage = validation.valid === true
       ? null
-      : this._formHelper.resolveErrorMessage(validation.code, errorMessages);
+      : this.#resolveErrorMessage(validation.code, errorMessages);
 
     if (validation.valid) {
-      this._formHelper.setValidValidity();
+      this.#setValidValidity();
     }
     else {
-      this._formHelper.setInvalidValidity(convertErrorMessageToString(errorMessage));
+      this.#setInvalidValidity(convertErrorMessageToString(errorMessage));
     }
 
     if (report) {
@@ -129,7 +237,7 @@ export class CcInputElement extends LitElement {
    * @return {boolean}
    */
   get willValidate () {
-    return this._formHelper.internals.willValidate;
+    return this._internals.willValidate;
   }
 
   /**
@@ -139,7 +247,7 @@ export class CcInputElement extends LitElement {
    * @return {boolean}
    */
   checkValidity () {
-    return this._formHelper.internals.checkValidity();
+    return this._internals.checkValidity();
   }
 
   /**
@@ -149,7 +257,7 @@ export class CcInputElement extends LitElement {
    * @return {HTMLInputElement}
    */
   reportValidity () {
-    return this._formHelper.internals.reportValidity();
+    return this._internals.reportValidity();
   }
 
   /**
@@ -159,7 +267,7 @@ export class CcInputElement extends LitElement {
    * @return {ValidityState}
    */
   get validity () {
-    return this._formHelper.internals.validity;
+    return this._internals.validity;
   }
 
   /**
@@ -169,7 +277,7 @@ export class CcInputElement extends LitElement {
    * @return {string}
    */
   get validationMessage () {
-    return this._formHelper.internals.validationMessage;
+    return this._internals.validationMessage;
   }
 
   /**
@@ -180,10 +288,10 @@ export class CcInputElement extends LitElement {
    */
   setCustomValidity (message) {
     if (isStringEmpty(message)) {
-      this._formHelper.setValidValidity();
+      this.#setValidValidity();
     }
     else {
-      this._formHelper.setInvalidValidity(message);
+      this.#setInvalidValidity(message);
     }
   }
 
@@ -198,13 +306,13 @@ export class CcInputElement extends LitElement {
     const isErrorMessageEmpty = this.errorMessage == null || (typeof this.errorMessage === 'string' && this.errorMessage.length === 0);
 
     // Sync form values with our state
-    if (changedProperties.has(this._formHelper.settings.valuePropertyName)) {
-      this._formHelper.internals.setFormValue(this._formHelper.getInputData());
+    if (changedProperties.has(this._settings.valuePropertyName)) {
+      this._internals.setFormValue(this.#getInputData());
       shouldValidate = true;
     }
 
     // if one of the properties that should trigger a new validation have changed
-    if ((this._formHelper.settings.reactiveValidationProperties ?? []).some((prop) => changedProperties.has(prop))) {
+    if ((this._settings.reactiveValidationProperties ?? []).some((prop) => changedProperties.has(prop))) {
       shouldValidate = true;
     }
 
@@ -227,137 +335,15 @@ export class CcInputElement extends LitElement {
         message = this.errorMessage;
       }
       else {
-        message = this._formHelper.getErrorElement().innerText;
+        message = this.#getErrorElement().innerText;
       }
 
-      this._formHelper.setInvalidValidity(message);
+      this.#setInvalidValidity(message);
       shouldValidate = false;
     }
 
     if (shouldValidate) {
       this.validate(false);
     }
-  }
-}
-
-/**
- * Every private methods are moved to a helper so that we don't pollute the child class (not thank you, JS, for not having proper private scope)
- */
-class FormHelper {
-  /**
-   *
-   * @param {CcInputElement} host
-   * @param {InputElementSettings} settings
-   */
-  constructor (host, settings) {
-    this._host = host;
-    this.settings = settings;
-    this.internals = host.attachInternals();
-  }
-
-  resetValue () {
-    if (this.getResetValueProperty() != null) {
-      this.setValueProperty(this.getResetValueProperty());
-    }
-  }
-
-  /**
-   * @return {any}
-   */
-  getValueProperty () {
-    return this._host[this.settings.valuePropertyName];
-  }
-
-  /**
-   * @param {any} value
-   */
-  setValueProperty (value) {
-    this._host[this.settings.valuePropertyName] = value;
-  }
-
-  /**
-   * @return {any}
-   */
-  getResetValueProperty () {
-    return this._host[this.settings.resetValuePropertyName];
-  }
-
-  /**
-   * @return {ValidationSettings | undefined}
-   */
-  getValidationSettings () {
-    return this.settings.validationSettingsProvider?.();
-  }
-
-  /**
-   *
-   * @return {InputData}
-   */
-  getInputData () {
-    if (this.settings.inputDataProvider != null) {
-      return this.settings.inputDataProvider();
-    }
-
-    const valueProperty = this.getValueProperty();
-
-    if (valueProperty == null || typeof valueProperty === 'string' || valueProperty instanceof File || valueProperty instanceof FormData) {
-      return valueProperty;
-    }
-
-    console.warn('The value to set to form data should be of type `null|File|string|FormData`. You\'ve got ', valueProperty);
-
-    return valueProperty.toString();
-  }
-
-  /**
-   * @return {HTMLElement}
-   */
-  getInputElement () {
-    return this._host.shadowRoot.querySelector(this.settings.inputSelector);
-  }
-
-  /**
-   * @return {HTMLElement}
-   */
-  getErrorElement () {
-    return this._host.shadowRoot.querySelector(this.settings.errorSelector);
-  }
-
-  /**
-   * @param {string} code
-   * @param {ErrorMessageMap} errorMessages
-   * @return {ErrorMessage}
-   */
-  resolveErrorMessage (code, errorMessages) {
-    function resolve () {
-      if (errorMessages != null && Object.prototype.hasOwnProperty.call(errorMessages, code)) {
-        const errorMessage = errorMessages[code];
-
-        if (typeof errorMessage === 'function') {
-          return errorMessage();
-        }
-
-        return errorMessage;
-      }
-      return null;
-    }
-
-    const resolvedMessage = resolve();
-    if (resolvedMessage != null) {
-      return resolvedMessage;
-    }
-
-    return code;
-  }
-
-  setValidValidity () {
-    this.internals.setValidity({});
-  }
-
-  /**
-   * @param {string} message
-   */
-  setInvalidValidity (message) {
-    this.internals.setValidity({ customError: true }, message, this.getInputElement());
   }
 }
