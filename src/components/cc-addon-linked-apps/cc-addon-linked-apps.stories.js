@@ -1,7 +1,28 @@
 import './cc-addon-linked-apps.smart.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
+/**
+ * @typedef {import('./cc-addon-linked-apps.js').CcAddonLinkedApps} CcAddonLinkedApps
+ * @typedef {import('./cc-addon-linked-apps.types.js').AddonLinkedAppsStateLoaded} AddonLinkedAppsStateLoaded
+ * @typedef {import('./cc-addon-linked-apps.types.js').AddonLinkedAppsStateLoading} AddonLinkedAppsStateLoading
+ * @typedef {import('./cc-addon-linked-apps.types.js').AddonLinkedAppsStateError} AddonLinkedAppsStateError
+ * @typedef {import('./cc-addon-linked-apps.types.js').LinkedApplication} LinkedApplication
+ * @typedef {import('../cc-zone/cc-zone.types.js').ZoneStateLoaded} ZoneStateLoaded
+ */
+
+export default {
+  tags: ['autodocs'],
+  title: '🛠 Addon/<cc-addon-linked-apps>',
+  component: 'cc-addon-linked-apps',
+};
+
+const conf = {
+  component: 'cc-addon-linked-apps',
+};
+
+/** @type {ZoneStateLoaded} */
 const ZONE_PAR = {
+  type: 'loaded',
   name: 'par',
   country: 'France',
   countryCode: 'FR',
@@ -11,7 +32,9 @@ const ZONE_PAR = {
   tags: ['region:eu', 'infra:clever-cloud'],
 };
 
+/** @type {ZoneStateLoaded} */
 const ZONE_MTL = {
+  type: 'loaded',
   name: 'mtl',
   country: 'Canada',
   countryCode: 'CA',
@@ -21,6 +44,7 @@ const ZONE_MTL = {
   tags: ['infra:ovh'],
 };
 
+/** @type {LinkedApplication[]} */
 const linkedApplications = [
   {
     name: 'My Node JS Prod Application',
@@ -52,39 +76,45 @@ const linkedApplications = [
   },
 ];
 
-export default {
-  tags: ['autodocs'],
-  title: '🛠 Addon/<cc-addon-linked-apps>',
-  component: 'cc-addon-linked-apps',
-};
-
-const conf = {
-  component: 'cc-addon-linked-apps',
-};
-
 export const defaultStory = makeStory(conf, {
-  items: [{ state: { type: 'loaded', linkedApplications } }],
+  items: [{
+    /** @type {AddonLinkedAppsStateLoaded} */
+    state: { type: 'loaded', linkedApplications },
+  }],
 });
 
-export const skeleton = makeStory(conf, {
-  items: [{ state: { type: 'loading' } }],
+export const loading = makeStory(conf, {
+  items: [{
+    /** @type {AddonLinkedAppsStateLoading} */
+    state: { type: 'loading' },
+  }],
 });
 
 export const error = makeStory(conf, {
-  items: [{ state: { type: 'error' } }],
+  items: [{
+    /** @type {AddonLinkedAppsStateError} */
+    state: { type: 'error' },
+  }],
 });
 
 export const empty = makeStory(conf, {
-  items: [{ state: { type: 'loaded', linkedApplications: [] } }],
+  items: [{
+    /** @type {AddonLinkedAppsStateLoaded} */
+    state: { type: 'loaded', linkedApplications: [] },
+  }],
 });
 
 export const dataLoaded = makeStory(conf, {
-  items: [{ state: { type: 'loaded', linkedApplications } }],
+  items: [{
+    /** @type {AddonLinkedAppsStateLoaded} */
+    state: { type: 'loaded', linkedApplications },
+  }],
 });
 
 export const dataLoadedWithLongName = makeStory(conf, {
   items: [
     {
+      /** @type {AddonLinkedAppsStateLoaded} */
       state: {
         type: 'loaded',
         linkedApplications: linkedApplications.map((app) => {
@@ -101,10 +131,12 @@ export const dataLoadedWithLongName = makeStory(conf, {
 export const simulations = makeStory(conf, {
   items: [{ state: { type: 'loading' } }, { state: { type: 'loading' } }, { state: { type: 'loading' } }],
   simulations: [
-    storyWait(2000, ([component, componentNone, componentError]) => {
-      component.state = { type: 'loaded', linkedApplications };
-      componentNone.state = { type: 'loaded', linkedApplications: [] };
-      componentError.state = { type: 'error' };
-    }),
+    storyWait(2000,
+      /** @param {CcAddonLinkedApps[]} components */
+      ([component, componentNone, componentError]) => {
+        component.state = { type: 'loaded', linkedApplications };
+        componentNone.state = { type: 'loaded', linkedApplications: [] };
+        componentError.state = { type: 'error' };
+      }),
   ],
 });

@@ -10,13 +10,18 @@ import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 
 /** @type {LinkedApplication[]} */
 const SKELETON_APPLICATIONS = [
-  { name: '??????????????????', link: '' },
-  { name: '???????????????????????', link: '' },
-  { name: '????????????????????', link: '' },
+  { name: '??????????????????', link: null, variantName: null, variantLogoUrl: null, zone: null },
+  { name: '???????????????????????', link: null, variantName: null, variantLogoUrl: null, zone: null },
+  { name: '????????????????????', link: null, variantName: null, variantLogoUrl: null, zone: null },
 ];
 
 /**
  * @typedef {import('./cc-addon-linked-apps.types.js').AddonLinkedAppsState} AddonLinkedAppsState
+ * @typedef {import('./cc-addon-linked-apps.types.js').LinkedApplication} LinkedApplication
+ * @typedef {import('../cc-zone/cc-zone.types.js').ZoneStateLoaded} ZoneStateLoaded
+ * @typedef {import('../cc-zone/cc-zone.types.js').ZoneStateLoading} ZoneStateLoading
+ * @typedef {import('../common.types.js').Zone} Zone
+ * @typedef {import('lit').TemplateResult<1>} TemplateResult
  */
 
 /**
@@ -39,17 +44,38 @@ export class CcAddonLinkedApps extends LitElement {
     this.state = { type: 'loading' };
   }
 
+  /**
+   * @returns {TemplateResult}
+   * @private
+   */
+  _getEmptyContent () {
+    return html`
+      <div>${i18n('cc-addon-linked-apps.details')}</div>
+      <div class="cc-block_empty-msg">${i18n('cc-addon-linked-apps.no-linked-applications')}</div>
+    `;
+  }
+
+  /**
+   * @returns {TemplateResult}
+   * @private
+   */
   _getErrorContent () {
     return html`
       <cc-notice intent="warning" message="${i18n('cc-addon-linked-apps.loading-error')}"></cc-notice>
     `;
   }
 
-  _getEmptyContent () {
-    return html`
-      <div>${i18n('cc-addon-linked-apps.details')}</div>
-      <div class="cc-block_empty-msg">${i18n('cc-addon-linked-apps.no-linked-applications')}</div>
-    `;
+  /**
+   * @param {Boolean} skeleton
+   * @param {Zone} [zone]
+   * @returns {ZoneStateLoaded|ZoneStateLoading}
+   */
+  _getZoneState (skeleton, zone) {
+    if (skeleton) {
+      return { type: 'loading' };
+    }
+
+    return { type: 'loaded', ...zone };
   }
 
   render () {
@@ -58,7 +84,7 @@ export class CcAddonLinkedApps extends LitElement {
     }
 
     const skeleton = (this.state.type === 'loading');
-    const linkedApps = skeleton ? SKELETON_APPLICATIONS : this.state.linkedApplications;
+    const linkedApps = this.state.type === 'loaded' ? this.state.linkedApplications : SKELETON_APPLICATIONS;
     const hasData = (linkedApps.length > 0);
 
     if (!hasData) {
@@ -77,7 +103,7 @@ export class CcAddonLinkedApps extends LitElement {
           ></cc-img>
           <div class="details">
             <span class="name">${ccLink(linkedApp.link, linkedApp.name, skeleton)}</span>
-            <cc-zone mode="small" .zone="${linkedApp.zone}"></cc-zone>
+            <cc-zone mode="small" .state="${this._getZoneState(skeleton, linkedApp.zone)}"></cc-zone>
           </div>
         </div>
       `)}
@@ -86,6 +112,10 @@ export class CcAddonLinkedApps extends LitElement {
     return this._renderView(content);
   }
 
+  /**
+   * @param {TemplateResult} content
+   * @private
+   */
   _renderView (content) {
     return html`
       <cc-block>
