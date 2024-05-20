@@ -1,9 +1,29 @@
 import './cc-invoice.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
+export default {
+  tags: ['autodocs'],
+  title: '🛠 Invoices/<cc-invoice>',
+  component: 'cc-invoice',
+};
+
+const conf = {
+  component: 'cc-invoice',
+};
+
+/**
+ * @typedef {import('./cc-invoice.types.js').InvoiceStateLoaded} InvoiceStateLoaded
+ * @typedef {import('./cc-invoice.types.js').InvoiceStateLoading} InvoiceStateLoading
+ * @typedef {import('./cc-invoice.types.js').InvoiceStateError} InvoiceStateError
+ * @typedef {import('./cc-invoice.js').CcInvoice} CcInvoice
+ *
+ */
+
 const defaultNumber = '20210501-1234';
 
-const defaultInvoice = {
+/** @type {InvoiceStateLoaded} */
+const defaultInvoiceState = {
+  type: 'loaded',
   number: defaultNumber,
   downloadUrl: '/download/20210501-1234',
   emissionDate: '2021-05-01',
@@ -25,56 +45,49 @@ const defaultInvoice = {
   `,
 };
 
-export default {
-  tags: ['autodocs'],
-  title: '🛠 Invoices/<cc-invoice>',
-  component: 'cc-invoice',
-};
-
-const conf = {
-  component: 'cc-invoice',
-};
-
 export const defaultStory = makeStory(conf, {
-  items: [{
-    state: {
-      type: 'loaded',
-      ...defaultInvoice,
-    },
-  }],
+  items: [{ state: defaultInvoiceState }],
 });
 
 export const loading = makeStory(conf, {
-  items: [{ state: { type: 'loading', number: defaultNumber } }],
-});
-
-export const loadingWithoutInvoiceNumber = makeStory(conf, {
-  items: [{ state: { type: 'loading' } }],
-});
-
-export const error = makeStory(conf, {
-  items: [{ state: { type: 'error', number: defaultNumber } }],
-});
-
-export const dataLoaded = makeStory(conf, {
   items: [{
-    state: {
-      type: 'loaded',
-      ...defaultInvoice,
-    },
+    /** @type {InvoiceStateLoading} */
+    state: { type: 'loading', number: defaultNumber },
   }],
 });
 
+export const loadingWithoutInvoiceNumber = makeStory(conf, {
+  items: [{
+    /** @type {InvoiceStateLoading} */
+    state: { type: 'loading' },
+  }],
+});
+
+export const error = makeStory(conf, {
+  items: [{
+    /** @type {InvoiceStateError} */
+    state: { type: 'error', number: defaultNumber },
+  }],
+});
+
+export const dataLoaded = makeStory(conf, {
+  items: [{ state: defaultInvoiceState }],
+});
+
 export const simulations = makeStory(conf, {
-  items: [{ }, { }],
+  items: [{}, {}],
   simulations: [
-    storyWait(2000, ([component, componentError]) => {
-      component.state = { type: 'loading', number: defaultNumber };
-      componentError.state = { type: 'loading', number: '20210501-????' };
-    }),
-    storyWait(2000, ([component, componentError]) => {
-      component.state = { type: 'loaded', ...defaultInvoice };
-      componentError.state = { type: 'error', number: '20210501-????' };
-    }),
+    storyWait(2000,
+      /** @param {CcInvoice[]} components */
+      ([component, componentError]) => {
+        component.state = { type: 'loading', number: defaultNumber };
+        componentError.state = { type: 'loading', number: '20210501-????' };
+      }),
+    storyWait(2000,
+      /** @param {CcInvoice[]} components */
+      ([component, componentError]) => {
+        component.state = defaultInvoiceState;
+        componentError.state = { type: 'error', number: '20210501-????' };
+      }),
   ],
 });
