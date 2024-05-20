@@ -135,7 +135,7 @@ type SectionType = "inbound-traffic" | "outbound-traffic" | "storage" | "private
 type ActionType = "add" | "none";
 
 interface Temporality {
-  type: "second" | "minute" | "hour" | "day" | "30-days";
+  type: "second" | "minute" | "hour" | "day" | "30-days" | "1000-minutes";
   digits: number; // how many fraction digits to display the price
 }
 
