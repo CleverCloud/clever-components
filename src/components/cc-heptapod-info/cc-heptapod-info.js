@@ -43,19 +43,7 @@ export class CcHeptapodInfo extends LitElement {
     this.state = { type: 'loading' };
   }
 
-  /**
-   * @param {HeptapodInfoState} state
-   * @return {state is (HeptapodInfoStateLoaded|HeptapodInfoStateLoading)}
-   * @private
-   */
-  _isLoadedOrLoading (state) {
-    return state.type === 'loaded' || state.type === 'loading';
-  }
-
   render () {
-    const skeleton = this.state.type === 'loading';
-    const statistics = this.state.type === 'loaded' ? this.state.statistics : SKELETON_STATISTICS;
-
     return html`
       <cc-block>
         <div slot="title">Heptapod</div>
@@ -78,7 +66,9 @@ export class CcHeptapodInfo extends LitElement {
           <div class="no-statistics">${i18n('cc-heptapod-info.not-in-use')}</div>
         ` : ''}
 
-        ${this._isLoadedOrLoading(this.state) ? this._renderStatistics(statistics, skeleton) : ''}
+        ${this.state.type === 'loading' ? this._renderStatistics(SKELETON_STATISTICS, true) : ''}
+
+        ${this.state.type === 'loaded' ? this._renderStatistics(this.state.statistics, false) : ''}
 
       </cc-block>
     `;
