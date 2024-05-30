@@ -121,7 +121,7 @@ export const translations = {
   'cc-addon-credentials.description.apm': `Utilisez ces identifiants pour connecter une instance d'APM Server à votre cluster Elasticsearch.`,
   'cc-addon-credentials.description.elasticsearch': `Utilisez ces identifiants pour vous connecter à votre cluster Elasticsearch.`,
   'cc-addon-credentials.description.kibana': `Utilisez ces identifiants pour connecter une instance de Kibana à votre cluster Elasticsearch.`,
-  'cc-addon-credentials.description.materiadb-kv': `Utilisez ces informations pour vous connecter à votre add-on MateriaDB KV.`,
+  'cc-addon-credentials.description.materiadb-kv': `Utilisez ces informations pour vous connecter à votre add-on Materia KV.`,
   'cc-addon-credentials.description.pulsar': `Utilisez ces informations pour vous connecter à votre add-on Pulsar.`,
   'cc-addon-credentials.field.auth-token': `Token`,
   'cc-addon-credentials.field.host': `Hôte`,
@@ -947,7 +947,7 @@ export const translations = {
   'cc-tile-metrics.close-btn': `Afficher le graphique`,
   'cc-tile-metrics.docs.more-metrics': `Plus de métriques : `,
   'cc-tile-metrics.docs.msg': () => sanitize`<p>Métriques reçues durant les dernières 24 heures.</p>
-    <p>Chaque barre représente une fenêtre de temps de <strong>1 heure</strong>.</p> 
+    <p>Chaque barre représente une fenêtre de temps de <strong>1 heure</strong>.</p>
     <p>Le pourcentage affiché représente une moyenne sur la dernière heure.</p>`,
   'cc-tile-metrics.empty': `Pas de métriques. L'application est arrêtée.`,
   'cc-tile-metrics.error': `Une erreur est survenue pendant le chargement des métriques.`,
