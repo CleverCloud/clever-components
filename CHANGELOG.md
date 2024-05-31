@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [13.3.1](https://github.com/CleverCloud/clever-components/compare/13.3.0...13.3.1) (2024-05-31)
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-credentials:** update Materia branding ([bf9c68f](https://github.com/CleverCloud/clever-components/commit/bf9c68ff370e62fe9d2658f36509015ed1dc475e))
+
 ## [13.3.0](https://github.com/CleverCloud/clever-components/compare/13.2.0...13.3.0) (2024-05-06)
 
 
