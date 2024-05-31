@@ -108,7 +108,7 @@ export const translations = {
   'cc-addon-credentials.description.apm': `Use those credentials to connect an APM Server instance to your Elasticsearch cluster.`,
   'cc-addon-credentials.description.elasticsearch': `Use those credentials to connect to your Elasticsearch cluster.`,
   'cc-addon-credentials.description.kibana': `Use those credentials to connect a Kibana instance to your Elasticsearch cluster.`,
-  'cc-addon-credentials.description.materiadb-kv': `Use this information to connect your MateriaDB KV add-on.`,
+  'cc-addon-credentials.description.materiadb-kv': `Use this information to connect your Materia KV add-on.`,
   'cc-addon-credentials.description.pulsar': `Use this information to connect your Pulsar add-on.`,
   'cc-addon-credentials.field.auth-token': `Token`,
   'cc-addon-credentials.field.host': `Host`,
@@ -933,7 +933,7 @@ export const translations = {
   'cc-tile-metrics.about-btn': `Show details about this chart`,
   'cc-tile-metrics.close-btn': `Display chart`,
   'cc-tile-metrics.docs.more-metrics': `More metrics: `,
-  'cc-tile-metrics.docs.msg': () => sanitize`<p>Server metrics received in the last 24 hours.</p> 
+  'cc-tile-metrics.docs.msg': () => sanitize`<p>Server metrics received in the last 24 hours.</p>
     <p>Each bar represents a time window of <strong>1 hour</strong>.</p>
     <p>The percentage shown is the average over the last hour.</p>`,
   'cc-tile-metrics.empty': `No metrics. Application is stopped.`,
