@@ -7,7 +7,7 @@ import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 
-/** @type {SkeletonArticle} */
+/** @type {Article} */
 const SKELETON_INFO = {
   date: 'Tue, 22 Mar 2022 08:39:00 +0000',
   description: fakeString(128),
@@ -18,7 +18,7 @@ const SKELETON_INFO = {
 
 /**
  * @typedef {import('./cc-article-card.types.js').ArticleCardState} ArticleCardState
- * @typedef {import('./cc-article-card.types.js').SkeletonArticle} SkeletonArticle
+ * @typedef {import('./cc-article-card.types.js').Article} Article
  */
 
 /**
@@ -55,7 +55,7 @@ export class CcArticleCard extends LitElement {
       ` : ''}
       ${this.state.type === 'loaded' ? html`
         <div class="title">
-          ${ccLink(this.state.link, data.title)}
+          ${ccLink(data.link, data.title)}
         </div>
       ` : ''}
       <div>

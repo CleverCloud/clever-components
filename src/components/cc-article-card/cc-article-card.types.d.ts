@@ -1,6 +1,6 @@
 export type ArticleCardState = ArticleCardStateLoaded | ArticleCardStateLoading;
 
-export interface ArticleCardStateLoaded {
+export interface ArticleCardStateLoaded extends Article {
     type: 'loaded';
 }
 

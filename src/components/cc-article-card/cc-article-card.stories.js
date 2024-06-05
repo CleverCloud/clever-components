@@ -52,7 +52,7 @@ export const defaultStory = makeStory(conf, {
   items: [DEFAULT_ARTICLE, OTHER_ARTICLE],
 });
 
-export const skeleton = makeStory(conf, {
+export const loading = makeStory(conf, {
   items: [{
     /** @type {ArticleCardStateLoading} */
     state: { type: 'loading' },
