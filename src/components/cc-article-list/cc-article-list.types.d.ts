@@ -1,10 +1,10 @@
-import { ArticleCardStateLoaded } from '../cc-article-card/cc-article-card.types.js';
+import { Article } from '../cc-article-card/cc-article-card.types.js';
 
 export type ArticleListState = ArticleListStateLoaded | ArticleListStateLoading | ArticleListStateError;
 
 export interface ArticleListStateLoaded {
   type: 'loaded';
-  articles: ArticleCardStateLoaded[];
+  articles: Article[];
 }
 
 export interface ArticleListStateLoading {

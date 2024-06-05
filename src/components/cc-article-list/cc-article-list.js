@@ -46,8 +46,8 @@ export class CcArticleList extends LitElement {
         ` : ''}
 
         ${this.state.type === 'loaded' ? html`
-          ${this.state.articles.map((articleState) => html`
-            <cc-article-card .state=${articleState}></cc-article-card>
+          ${this.state.articles.map((article) => html`
+            <cc-article-card .state=${{ type: 'loaded', ...article }}></cc-article-card>
           `)}
         ` : ''}
       </div>

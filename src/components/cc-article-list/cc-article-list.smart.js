@@ -6,7 +6,7 @@ import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { parseRssFeed } from '../../lib/xml-parser.js';
 
 /**
- * @typedef {import('../cc-article-card/cc-article-card.types.js').ArticleCardStateLoaded} ArticleCardStateLoaded
+ * @typedef {import('../cc-article-card/cc-article-card.types.js').Article} Article
  */
 
 const FOUR_HOURS = 1000 * 60 * 60 * 4;
@@ -38,7 +38,7 @@ defineSmartComponent({
   * @param {AbortSignal} params.signal
   * @param {'fr'|'en'} params.lang
   * @param {number} [params.limit]
-  * @return {Promise<ArticleCardStateLoaded[]>}
+  * @return {Promise<Article[]>}
   */
 async function fetchArticleList ({ signal, lang, limit = 9 }) {
 
@@ -58,10 +58,5 @@ async function fetchArticleList ({ signal, lang, limit = 9 }) {
     FOUR_HOURS,
     () => request(requestParams));
 
-  const rawArticleListData = parseRssFeed(rssFeed, limit);
-
-  return rawArticleListData.map((rawArticle) => ({
-    type: 'loaded',
-    ...rawArticle,
-  }));
+  return parseRssFeed(rssFeed, limit);
 }
