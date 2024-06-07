@@ -48,16 +48,16 @@ setupIgnoreIrrelevantErrors(before, after, (message) => {
 /**
  * Loop through stories to run accessibility tests on their content both on desktop and mobile
  *
- * @param {Array} stories the story functions to execute and run a11y test
- * @param {Array} ignoredRules names of the rules to ignore
+ * @param {Array<{ storyName: string, storyFunction: Function }>} stories the story names & functions to execute and run a11y test
+ * @param {Array<string>} ignoredRules names of the rules to ignore
  */
 export const testAccessibility = (stories, ignoredRules) => {
-  stories.forEach((story) => {
-    describe(`Story: ${story.storyName}`, function () {
+  stories.forEach(({ storyName, storyFunction }) => {
+    describe(`Story: ${storyName}`, function () {
       describe(`Accessibility`, function () {
         it(`Desktop: width = ${viewports.desktop.width} height = ${viewports.desktop.height}`, async function () {
           await setViewport(viewports.desktop);
-          const element = await fixture(story({}, storyConf));
+          const element = await fixture(storyFunction({}, storyConf));
 
           await elementUpdated(element);
 
@@ -66,7 +66,7 @@ export const testAccessibility = (stories, ignoredRules) => {
 
         it(`Mobile: width = ${viewports.mobile.width} height = ${viewports.mobile.height}`, async function () {
           await setViewport(viewports.mobile);
-          const element = await fixture(story({}, storyConf));
+          const element = await fixture(storyFunction({}, storyConf));
 
           await elementUpdated(element);
 
