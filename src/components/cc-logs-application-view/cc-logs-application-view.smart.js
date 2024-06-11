@@ -5,10 +5,11 @@ import { HttpError } from '@clevercloud/client/esm/streams/clever-cloud-sse.js';
 import { Buffer } from '../../lib/buffer.js';
 import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import { unique } from '../../lib/utils.js';
+import { dateRangeSelectionToDateRange } from './date-range-selection.js';
+import { isLive, lastXDays } from './date-range.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-logs-application-view.js';
-import { unique } from '../../lib/utils.js';
-import { getRangeToNow, isLive, lastXDays } from './date-range.js';
 
 /**
  * @typedef {import('../cc-logs-instances/cc-logs-instances.types.js').Instance} Instance
@@ -17,6 +18,7 @@ import { getRangeToNow, isLive, lastXDays } from './date-range.js';
  * @typedef {import('./cc-logs-application-view.types.js').LogsApplicationViewState} LogsApplicationViewState
  * @typedef {import('./cc-logs-application-view.types.js').LogsApplicationViewStateLogs} LogsApplicationViewStateLogs
  * @typedef {import('./cc-logs-application-view.types.js').DateRange} DateRange
+ * @typedef {import('./cc-logs-application-view.types.js').DateRangeSelection} DateRangeSelection
  * @typedef {import('./cc-logs-application-view.js').CcLogsApplicationView} CcLogsApplicationView
  */
 
@@ -68,6 +70,7 @@ defineSmartComponent({
     ownerId: { type: String },
     appId: { type: String },
     deploymentId: { type: String, optional: true },
+    dateRangeSelection: { type: Object, optional: true },
   },
   /**
    * @param {Object} args
@@ -86,7 +89,7 @@ defineSmartComponent({
 
     component.overflowWatermarkOffset = LOGS_THROTTLE_PER_IN_MILLIS;
 
-    const { apiConfig, ownerId, appId, deploymentId } = context;
+    const { apiConfig, ownerId, appId, deploymentId, dateRangeSelection } = context;
 
     controller = new LogsApplicationViewSmartController(
       apiConfig,
@@ -98,9 +101,9 @@ defineSmartComponent({
       });
 
     onEvent('cc-logs-application-view:date-range-change',
-      /** @param {DateRange} range */
-      (range) => {
-        controller.setNewDateRange(range);
+      /** @param {DateRange} dateRange */
+      (dateRange) => {
+        controller.setNewDateRange(dateRange);
       });
 
     onEvent('cc-logs-application-view:instance-selection-change',
@@ -121,6 +124,9 @@ defineSmartComponent({
 
     if (deploymentId != null) {
       controller.initByDeploymentId(deploymentId);
+    }
+    else if (dateRangeSelection != null) {
+      controller.initByDateRangeSelection(dateRangeSelection);
     }
     else {
       controller.initByLastDeployment();
@@ -308,9 +314,7 @@ class LogsApplicationViewSmartController {
             type: 'live',
           };
 
-          const liveRange = {
-            since: getRangeToNow(1000 * 60 * 10).since,
-          };
+          const liveRange = dateRangeSelectionToDateRange(this._view.component.dateRangeSelection);
 
           this.init(liveRange, []);
           return;
@@ -334,6 +338,18 @@ class LogsApplicationViewSmartController {
         this._view.updateState({ type: 'errorInstances' });
       });
 
+  }
+
+  /**
+   * @param {DateRangeSelection} dateRangeSelection
+   */
+  initByDateRangeSelection (dateRangeSelection) {
+    // clear and close everything
+    this.stopAndClear();
+
+    this._view.component.dateRangeSelection = dateRangeSelection;
+    const dateRange = dateRangeSelectionToDateRange(this._view.component.dateRangeSelection);
+    this.init(dateRange, []);
   }
 
   /**
