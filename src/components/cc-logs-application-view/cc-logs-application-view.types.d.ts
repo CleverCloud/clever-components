@@ -1,7 +1,7 @@
-import { GhostInstance, Instance } from "../cc-logs-instances/cc-logs-instances.types";
-import { DateDisplay } from "../cc-logs/date-display.types";
-import { LogsControlPalette } from "../cc-logs-control/cc-logs-control.types";
-import { Timezone } from "../../lib/date/date.types";
+import { GhostInstance, Instance } from "../cc-logs-instances/cc-logs-instances.types.js";
+import { DateDisplay } from "../cc-logs/date-display.types.js";
+import { LogsControlPalette } from "../cc-logs-control/cc-logs-control.types.js";
+import { Timezone } from "../../lib/date/date.types.js";
 
 export interface LogsApplicationViewStateLoadingInstances {
   type: 'loadingInstances';
