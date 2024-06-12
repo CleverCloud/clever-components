@@ -121,7 +121,7 @@ export const translations = {
   'cc-addon-credentials.description.apm': `Utilisez ces identifiants pour connecter une instance d'APM Server à votre cluster Elasticsearch.`,
   'cc-addon-credentials.description.elasticsearch': `Utilisez ces identifiants pour vous connecter à votre cluster Elasticsearch.`,
   'cc-addon-credentials.description.kibana': `Utilisez ces identifiants pour connecter une instance de Kibana à votre cluster Elasticsearch.`,
-  'cc-addon-credentials.description.materiadb-kv': `Utilisez ces informations pour vous connecter à votre add-on Materia KV.`,
+  'cc-addon-credentials.description.materia-kv': `Utilisez ces informations pour vous connecter à votre add-on Materia KV.`,
   'cc-addon-credentials.description.pulsar': `Utilisez ces informations pour vous connecter à votre add-on Pulsar.`,
   'cc-addon-credentials.field.auth-token': `Token`,
   'cc-addon-credentials.field.host': `Hôte`,

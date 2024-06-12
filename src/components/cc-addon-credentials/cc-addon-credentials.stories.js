@@ -89,7 +89,7 @@ export const dataLoadedWithPulsar = makeStory(conf, {
 
 export const dataLoadedWithMateriaKv = makeStory(conf, {
   items: [{
-    type: 'materiadb-kv',
+    type: 'materia-kv',
     name: 'Materia KV',
     toggleState: 'off',
     image: 'https://assets.clever-cloud.com/logos/materia-db-kv.png',
