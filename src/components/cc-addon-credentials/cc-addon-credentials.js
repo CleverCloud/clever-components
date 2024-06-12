@@ -66,8 +66,8 @@ export class CcAddonCredentials extends LitElement {
         return i18n('cc-addon-credentials.description.kibana');
       case 'pulsar':
         return i18n('cc-addon-credentials.description.pulsar');
-      case 'materiadb-kv':
-        return i18n('cc-addon-credentials.description.materiadb-kv');
+      case 'materia-kv':
+        return i18n('cc-addon-credentials.description.materia-kv');
       default:
         return '';
     }
