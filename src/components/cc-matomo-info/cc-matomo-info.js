@@ -10,6 +10,9 @@ import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 
+/** @type {{ [key: string]: null }} */
+const SKELETON_INFO = { matomoUrl: null, phpUrl: null, mysqlUrl: null, redisUrl: null };
+
 const MATOMO_LOGO_URL = 'https://assets.clever-cloud.com/logos/matomo.svg';
 const PHP_LOGO_URL = 'https://assets.clever-cloud.com/logos/php.svg';
 const MYSQL_LOGO_URL = 'https://assets.clever-cloud.com/logos/mysql.svg';
@@ -17,7 +20,13 @@ const REDIS_LOGO_URL = 'https://assets.clever-cloud.com/logos/redis.svg';
 const MATOMO_DOCUMENTATION = 'https://www.clever-cloud.com/doc/deploy/addon/matomo/';
 
 /**
- * A component to display various informations (Documentation, access, links, ...) for a Matomo service.
+ * @typedef {import('./cc-matomo-info.types.js').MatomoInfoState} MatomoInfoState
+ * @typedef {import('../common.types.js').IconModel} IconModel
+ * @typedef {import('lit').TemplateResult<1>} TemplateResult
+ */
+
+/**
+ * A component to display information (Documentation, access, links, ...) for a Matomo service.
  *
  * @cssdisplay block
  */
@@ -25,48 +34,33 @@ export class CcMatomoInfo extends LitElement {
 
   static get properties () {
     return {
-      error: { type: Boolean },
-      matomoLink: { type: String, attribute: 'matomo-link' },
-      mysqlLink: { type: String, attribute: 'mysql-link' },
-      phpLink: { type: String, attribute: 'php-link' },
-      redisLink: { type: String, attribute: 'redis-link' },
+      state: { type: Object },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {boolean} Display an error message. */
-    this.error = false;
-
-    /** @type {string|null} Provides the HTTP link of the Matomo service. */
-    this.matomoLink = null;
-
-    /** @type {string|null} Provides the HTTP link of the MySQL add-on. */
-    this.mysqlLink = null;
-
-    /** @type {string|null} Provides the HTTP link of the PHP app. */
-    this.phpLink = null;
-
-    /** @type {string|null} Provides the HTTP link of the Redis add-on. */
-    this.redisLink = null;
+    /** @type {MatomoInfoState} Sets the state of the component */
+    this.state = { type: 'loading' };
   }
 
   render () {
+    const skeleton = this.state.type === 'loading';
+    const { matomoUrl, phpUrl, mysqlUrl, redisUrl } = this.state.type === 'loaded' ? this.state : SKELETON_INFO;
 
-    if (this.error) {
+    if (this.state.type === 'error') {
       return html`<cc-notice intent="warning" message="${i18n('cc-matomo-info.error')}"></cc-notice>`;
     }
 
     return html`
-
       <cc-block ribbon=${i18n('cc-matomo-info.info')} no-head>
           <div class="info-text">${i18n('cc-matomo-info.heading')}</div>
 
           <cc-block-section>
             <div slot="title">${i18n('cc-matomo-info.open-matomo.title')}</div>
             <div slot="info">${i18n('cc-matomo-info.open-matomo.text')}</div>
-            <div>${this._renderImageLink(MATOMO_LOGO_URL, this.matomoLink, i18n('cc-matomo-info.open-matomo.link'))}</div>
+            <div>${this._renderImageLink(MATOMO_LOGO_URL, matomoUrl, i18n('cc-matomo-info.open-matomo.link'), skeleton)}</div>
           </cc-block-section>
 
           <cc-block-section>
@@ -79,9 +73,9 @@ export class CcMatomoInfo extends LitElement {
             <div slot="title">${i18n('cc-matomo-info.about.title')}</div>
             <div slot="info">${i18n('cc-matomo-info.about.text')}</div>
             <div class="application-list">
-              ${this._renderImageLink(PHP_LOGO_URL, this.phpLink, i18n('cc-matomo-info.link.php'))}
-              ${this._renderImageLink(MYSQL_LOGO_URL, this.mysqlLink, i18n('cc-matomo-info.link.mysql'))}
-              ${this._renderImageLink(REDIS_LOGO_URL, this.redisLink, i18n('cc-matomo-info.link.redis'))}
+              ${this._renderImageLink(PHP_LOGO_URL, phpUrl, i18n('cc-matomo-info.link.php'), skeleton)}
+              ${this._renderImageLink(MYSQL_LOGO_URL, mysqlUrl, i18n('cc-matomo-info.link.mysql'), skeleton)}
+              ${this._renderImageLink(REDIS_LOGO_URL, redisUrl, i18n('cc-matomo-info.link.redis'), skeleton)}
             </div>
           </cc-block-section>
       </cc-block>
@@ -89,23 +83,39 @@ export class CcMatomoInfo extends LitElement {
   }
 
   // TODO: replace this with future cc-link component
-  _renderImageLink (url, linkUrl, linkText) {
+  /**
+   * @param {string} imageUrl
+   * @param {string|null} linkUrl
+   * @param {string} linkText
+   * @param {boolean} skeleton
+   * @returns {TemplateResult}
+   * @private
+   */
+  _renderImageLink (imageUrl, linkUrl, linkText, skeleton) {
     return html`
       <div>
         ${ccLink(linkUrl, html`
-          <cc-img src=${url}></cc-img>
-          <span class="${classMap({ skeleton: (linkUrl == null) })}">${linkText}</span>
+          <cc-img src=${imageUrl}></cc-img>
+          <span class="${classMap({ skeleton })}">${linkText}</span>
         `)}
       </div>
     `;
   }
 
+  /**
+   * @param {IconModel} icon
+   * @param {string} linkUrl
+   * @param {string} linkText
+   * @parma {boolean} skeleton
+   * @returns {TemplateResult}
+   * @private
+   */
   _renderIconLink (icon, linkUrl, linkText) {
     return html`
       <div>
         ${ccLink(linkUrl, html`
           <cc-icon size="lg" .icon=${icon}></cc-icon>
-          <span class="${classMap({ skeleton: (linkUrl == null) })}">${linkText}</span>
+          <span>${linkText}</span>
         `)}
       </div>
     `;
