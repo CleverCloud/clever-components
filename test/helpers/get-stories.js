@@ -21,7 +21,7 @@ export const getStories = (importedModule, excludedStories = []) => {
       const isFunction = typeof exportItem === 'function';
       return isNotExcludedStory && isNotSimulation && isFunction;
     })
-    .map(([name, value]) => value);
+    .map(([storyName, storyFunction]) => ({ storyName, storyFunction }));
 
   return filteredStories;
 };
