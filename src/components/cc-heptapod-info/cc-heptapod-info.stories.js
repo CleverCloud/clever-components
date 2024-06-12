@@ -17,6 +17,16 @@ const conf = {
   `,
 };
 
+/**
+ * @typedef {import('./cc-heptapod-info.js').CcHeptapodInfo} CcHeptapodInfo
+ * @typedef {import('./cc-heptapod-info.types.js').HeptapodInfoStateLoaded} HeptapodInfoStateLoaded
+ * @typedef {import('./cc-heptapod-info.types.js').HeptapodInfoStateLoading} HeptapodInfoStateLoading
+ * @typedef {import('./cc-heptapod-info.types.js').HeptapodInfoStateError} HeptapodInfoStateError
+ * @typedef {import('./cc-heptapod-info.types.js').HeptapodInfoStateNotUsed} HeptapodInfoStateNotUsed
+ * @typedef {import('./cc-heptapod-info.types.js').Statistics} Statistics
+ */
+
+/** @type {Statistics} */
 const statistics = {
   privateActiveUsers: 12,
   publicActiveUsers: 120,
@@ -26,28 +36,48 @@ const statistics = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [{ statistics }],
+  items: [{
+    /** @type {HeptapodInfoStateLoaded} */
+    state: {
+      type: 'loaded',
+      statistics: statistics,
+    },
+  }],
 });
 
-export const skeleton = makeStory(conf, {
-  items: [{}],
+export const loading = makeStory(conf, {
+  items: [{
+    /** @type {HeptapodInfoStateLoading} */
+    state: { type: 'loading' },
+  }],
 });
 
 export const notUsed = makeStory(conf, {
-  items: [{ statistics: 'not-used' }],
+  items: [{
+    /** @type {HeptapodInfoStateNotUsed} */
+    state: { type: 'not-used' },
+  }],
 });
 
 export const error = makeStory(conf, {
-  items: [{ error: true }],
+  items: [{
+    /** @type {HeptapodInfoStateError} */
+    state: { type: 'error' },
+  }],
 });
 
 export const simulations = makeStory(conf, {
   items: [{}, {}, {}],
   simulations: [
-    storyWait(2000, ([component, componentNotUsed, componentError]) => {
-      component.statistics = statistics;
-      componentNotUsed.statistics = 'not-used';
-      componentError.error = true;
-    }),
+    storyWait(2000,
+      /** @param {CcHeptapodInfo[]} components */
+      ([component, componentNotUsed, componentError]) => {
+        component.state = {
+          type: 'loaded',
+          statistics: statistics,
+        };
+        componentNotUsed.state = { type: 'not-used' };
+        componentError.state = { type: 'error' };
+      }),
   ],
 });
