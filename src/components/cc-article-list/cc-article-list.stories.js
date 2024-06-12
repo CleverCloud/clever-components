@@ -2,6 +2,31 @@ import './cc-article-list.js';
 import './cc-article-list.smart.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
+export default {
+  tags: ['autodocs'],
+  title: '🛠 homepage/<cc-article-list>',
+  component: 'cc-article-list',
+};
+
+const conf = {
+  component: 'cc-article-list',
+  // language=CSS
+  css: `
+    :host {
+      max-width: 92em !important;
+    }
+  `,
+};
+
+/**
+ * @typedef {import('./cc-article-list.js').CcArticleList} CcArticleList
+ * @typedef {import('./cc-article-list.types.js').ArticleListStateLoaded} ArticleListStateLoaded
+ * @typedef {import('./cc-article-list.types.js').ArticleListStateLoading} ArticleListStateLoading
+ * @typedef {import('./cc-article-list.types.js').ArticleListStateError} ArticleListStateError
+ * @typedef {import('../cc-article-card/cc-article-card.types.js').Article} Article
+ */
+
+/** @type {Article[]} */
 const ARTICLES = [
   {
     title: 'Announcing the New Middle East Zone in Jeddah',
@@ -47,25 +72,10 @@ const ARTICLES = [
   },
 ];
 
-export default {
-  tags: ['autodocs'],
-  title: '🛠 homepage/<cc-article-list>',
-  component: 'cc-article-list',
-};
-
-const conf = {
-  component: 'cc-article-list',
-  // language=CSS
-  css: `
-    :host {
-      max-width: 92em !important;
-    }
-  `,
-};
-
 export const defaultStory = makeStory(conf, {
   items: [
     {
+      /** @type {ArticleListStateLoaded} */
       state: {
         type: 'loaded',
         articles: ARTICLES,
@@ -75,18 +85,25 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const loading = makeStory(conf, {
-  items: [{ state: { type: 'loading' } }],
+  items: [{
+    /** @type {ArticleListStateLoading} */
+    state: { type: 'loading' },
+  }],
 });
 
 // No need to invest time on empty story right now.
 
 export const error = makeStory(conf, {
-  items: [{ state: { type: 'error' } }],
+  items: [{
+    /** @type {ArticleListStateError} */
+    state: { type: 'error' },
+  }],
 });
 
 export const dataLoaded = makeStory(conf, {
   items: [
     {
+      /** @type {ArticleListStateLoaded} */
       state: {
         type: 'loaded',
         articles: ARTICLES,
@@ -98,17 +115,21 @@ export const dataLoaded = makeStory(conf, {
 export const simulationsWithSuccess = makeStory(conf, {
   items: [{}],
   simulations: [
-    storyWait(2000, ([component]) => {
-      component.state = { type: 'loaded', articles: ARTICLES };
-    }),
+    storyWait(2000,
+      /** @param {[CcArticleList]} components */
+      ([component]) => {
+        component.state = { type: 'loaded', articles: ARTICLES };
+      }),
   ],
 });
 
 export const simulationsWithError = makeStory(conf, {
   items: [{}],
   simulations: [
-    storyWait(2000, ([componentError]) => {
-      componentError.state = { type: 'error' };
-    }),
+    storyWait(2000,
+      /** @param {[CcArticleList]} components */
+      ([componentError]) => {
+        componentError.state = { type: 'error' };
+      }),
   ],
 });
