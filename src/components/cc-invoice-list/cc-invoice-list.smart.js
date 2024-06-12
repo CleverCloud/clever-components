@@ -3,6 +3,10 @@ import '../cc-smart-container/cc-smart-container.js';
 import { fetchAllInvoices } from '../../lib/api-helpers.js';
 import { defineSmartComponent } from '../../lib/define-smart-component.js';
 
+/**
+  * @typedef {import('../common.types.js').Invoice} Invoice
+  */
+
 defineSmartComponent({
   selector: 'cc-invoice-list',
   params: {
@@ -16,9 +20,11 @@ defineSmartComponent({
     const { apiConfig, ownerId } = context;
 
     fetchAllInvoices({ apiConfig, ownerId, signal })
-      .then((invoices) => {
-        updateComponent('state', { type: 'loaded', invoices });
-      })
+      .then(
+        /** @param {Invoice[]} invoices */
+        (invoices) => {
+          updateComponent('state', { type: 'loaded', invoices });
+        })
       .catch((error) => {
         console.error(error);
         updateComponent('state', { type: 'error' });
