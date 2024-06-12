@@ -1,6 +1,34 @@
 import './cc-tile-requests.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
+export default {
+  tags: ['autodocs'],
+  title: '🛠 Overview/<cc-tile-requests>',
+  component: 'cc-tile-requests',
+};
+
+const conf = {
+  component: 'cc-tile-requests',
+  displayMode: 'flex-wrap',
+  // language=CSS
+  css: `
+    :host {
+      max-width: 100% !important;
+    }
+    cc-tile-requests {
+      width: 275px;
+    }
+  `,
+};
+
+/**
+ * @typedef {import('./cc-tile-requests.js').CcTileRequests} CcTileRequests
+ * @typedef {import('./cc-tile-requests.types.js').RequestsData} RequestsData
+ * @typedef {import('./cc-tile-requests.types.js').TileRequestsStateLoaded} TileRequestsStateLoaded
+ * @typedef {import('./cc-tile-requests.types.js').TileRequestsStateError} TileRequestsStateError
+ * @typedef {import('./cc-tile-requests.types.js').TileRequestsStateLoading} TileRequestsStateLoading
+ */
+
 const REQUESTS_COUNTS_BIG = [
   596600,
   219080,
@@ -34,13 +62,17 @@ const REQUESTS_COUNTS_SIMILAR = [
 const ONE_HOUR = 1000 * 60 * 60;
 const HOURS_IN_A_DAY = 24;
 
+/**
+ * @param {Number[]} dataSample
+ * @return {RequestsData[]}
+ */
 function generateData (dataSample) {
   const now = new Date();
   const nowTs = now.getTime();
   const nowRoundedTs = nowTs - (nowTs % ONE_HOUR);
   const startTs = nowRoundedTs - ONE_HOUR * HOURS_IN_A_DAY;
 
-  return Array.from(new Array(HOURS_IN_A_DAY)).map((a, i) => {
+  return Array.from(new Array(HOURS_IN_A_DAY)).map((_, i) => {
     const sampleStartTs = startTs + i * ONE_HOUR;
     const sampleEndTs = startTs + (i + 1) * ONE_HOUR;
     const requestsCount = dataSample[i % dataSample.length];
@@ -54,73 +86,92 @@ const baseItems = [
   { style: 'width: 540px' },
 ];
 
-export default {
-  tags: ['autodocs'],
-  title: '🛠 Overview/<cc-tile-requests>',
-  component: 'cc-tile-requests',
-};
-
-const conf = {
-  component: 'cc-tile-requests',
-  displayMode: 'flex-wrap',
-  // language=CSS
-  css: `
-    :host {
-      max-width: 100% !important;
-    }
-    cc-tile-requests {
-      width: 275px;
-    }
-  `,
-};
-
 export const defaultStory = makeStory(conf, {
-  items: [{ style: 'width: 275px', data: generateData(REQUESTS_COUNTS_SMALL) }],
+  /** @type {{style: string, state: TileRequestsStateLoaded }[]} */
+  items: [{
+    style: 'width: 275px',
+    state: {
+      type: 'loaded',
+      data: generateData(REQUESTS_COUNTS_SMALL),
+    },
+  }],
 });
 
-export const skeleton = makeStory(conf, {
+export const loading = makeStory(conf, {
   items: baseItems,
 });
 
 export const error = makeStory(conf, {
-  items: [{ style: 'width: 275px', error: true }],
-
+  /** @type {{style: string, state: TileRequestsStateError }[]} */
+  items: [{
+    style: 'width: 275px',
+    state: { type: 'error' },
+  }],
 });
 
 export const empty = makeStory(conf, {
-  items: [{ style: 'width: 275px', data: [] }],
+  /** @type {{style: string, state: TileRequestsStateLoaded }[]} */
+  items: [{
+    style: 'width: 275px',
+    state: { type: 'loaded', data: [] },
+  }],
 });
 
 export const dataLoadedWithBigRequests = makeStory(conf, {
-  items: baseItems.map((p) => ({ ...p, data: generateData(REQUESTS_COUNTS_BIG) })),
+  /** @type {{style: string, state: TileRequestsStateLoaded }[]} */
+  items: baseItems.map((p) => ({
+    ...p,
+    state: {
+      type: 'loaded',
+      data: generateData(REQUESTS_COUNTS_BIG),
+    },
+  })),
 });
 
 export const dataLoadedWithSmallRequests = makeStory(conf, {
-  items: baseItems.map((p) => ({ ...p, data: generateData(REQUESTS_COUNTS_SMALL) })),
+  /** @type {{style: string, state: TileRequestsStateLoaded }[]} */
+  items: baseItems.map((p) => ({
+    ...p,
+    state: {
+      type: 'loaded',
+      data: generateData(REQUESTS_COUNTS_SMALL),
+    },
+  })),
 });
 
 export const dataLoadedWithSimilarRequests = makeStory(conf, {
-  items: baseItems.map((p) => ({ ...p, data: generateData(REQUESTS_COUNTS_SIMILAR) })),
+  /** @type {{style: string, state: TileRequestsStateLoaded }[]} */
+  items: baseItems.map((p) => ({
+    ...p,
+    state: {
+      type: 'loaded',
+      data: generateData(REQUESTS_COUNTS_SIMILAR),
+    },
+  })),
 });
 
 export const simulationsWithData = makeStory(conf, {
   items: baseItems,
   simulations: [
-    storyWait(2000, ([componentSmall, componentMedium, componentBig]) => {
-      componentSmall.data = generateData(REQUESTS_COUNTS_BIG);
-      componentMedium.data = generateData(REQUESTS_COUNTS_BIG);
-      componentBig.data = generateData(REQUESTS_COUNTS_BIG);
-    }),
+    storyWait(2000,
+      /** @param {CcTileRequests[]} components */
+      ([componentSmall, componentMedium, componentBig]) => {
+        componentSmall.state = { type: 'loaded', data: generateData(REQUESTS_COUNTS_BIG) };
+        componentMedium.state = { type: 'loaded', data: generateData(REQUESTS_COUNTS_BIG) };
+        componentBig.state = { type: 'loaded', data: generateData(REQUESTS_COUNTS_BIG) };
+      }),
   ],
 });
 
 export const simulationsWithError = makeStory(conf, {
   items: baseItems,
   simulations: [
-    storyWait(2000, ([componentSmall, componentMedium, componentBig]) => {
-      componentSmall.error = true;
-      componentMedium.error = true;
-      componentBig.error = true;
-    }),
+    storyWait(2000,
+      /** @param {CcTileRequests[]} components */
+      ([componentSmall, componentMedium, componentBig]) => {
+        componentSmall.state = { type: 'error' };
+        componentMedium.state = { type: 'error' };
+        componentBig.state = { type: 'error' };
+      }),
   ],
 });
