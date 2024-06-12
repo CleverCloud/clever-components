@@ -1,4 +1,7 @@
-import { TcpRedirectionState } from "../cc-tcp-redirection/cc-tcp-redirection.types";
+import {
+  TcpRedirectionStateLoaded,
+  TcpRedirectionStateWaiting
+} from "../cc-tcp-redirection/cc-tcp-redirection.types.js";
 
 export type TcpRedirectionFormContextType = "user" | "admin";
 
@@ -7,16 +10,16 @@ export type TcpRedirectionFormState =
   | TcpRedirectionFormStateLoaded
   | TcpRedirectionFormStateError;
 
-interface TcpRedirectionFormStateLoading {
-  state: "loading";
+export interface TcpRedirectionFormStateLoading {
+  type: "loading";
 }
 
-interface TcpRedirectionFormStateLoaded {
-  state: "loaded";
-  value: TcpRedirectionState[]
+export interface TcpRedirectionFormStateLoaded {
+  type: "loaded";
+  redirections: Array<TcpRedirectionStateLoaded | TcpRedirectionStateWaiting>;
 }
 
-interface TcpRedirectionFormStateError {
-  state: "error";
+export interface TcpRedirectionFormStateError {
+  type: "error";
 }
 
