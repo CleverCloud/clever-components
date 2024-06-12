@@ -14,6 +14,7 @@ import {
 } from '../../assets/cc-remix.icons.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
 import { i18n } from '../../lib/i18n.js';
+import { isStringEmpty } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { tileStyles } from '../../styles/info-tiles.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
@@ -52,7 +53,13 @@ const SKELETON_REQUESTS = Array
   });
 
 /**
- * @typedef {import('./cc-tile-metrics.types.js').MetricsState} MetricsState
+ * @typedef {import('./cc-tile-metrics.types.js').TileMetricsMetricsState} TileMetricsMetricsState
+ * @typedef {import('./cc-tile-metrics.types.js').TileMetricsGrafanaLinkState} TileMetricsGrafanaLinkState
+ * @typedef {import('./cc-tile-metrics.types.js').MetricsData} MetricsData
+ * @typedef {import('./cc-tile-metrics.types.js').Metric} Metric
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLCanvasElement>} RefCanvas
+ * @typedef {import('lit').PropertyValues<CcTileMetrics>} CcTileMetricsPropertyValues
+ * @typedef {import('chart.js').ChartData} ChartData
  */
 
 /**
@@ -74,32 +81,32 @@ export class CcTileMetrics extends LitElement {
 
   static get properties () {
     return {
-      grafanaLink: { type: String },
-      metrics: { type: Object },
       metricsLink: { type: String },
-      _docsPanelVisible: { type: Boolean, attribute: false },
+      metricsState: { type: Object },
+      grafanaLinkState: { type: Object },
+      _docsPanelVisible: { type: Boolean, state: true },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {string} - Sets the link to the grafana app. */
-    this.grafanaLink = '';
+    /** @type {string|null} Sets the link leading to metrics within the console */
+    this.metricsLink = null;
 
-    /** @type {MetricsState} - State of the component. */
-    this.metrics = { state: 'loading' };
+    /** @type {TileMetricsMetricsState} Sets the state of the component data */
+    this.metricsState = { type: 'loading' };
 
-    /** @type {string} - Sets the link to the metrics section. */
-    this.metricsLink = '';
+    /** @type {TileMetricsGrafanaLinkState} Sets the state of the grafana link */
+    this.grafanaLinkState = { type: 'loading' };
 
     /** @type {boolean} */
     this._docsPanelVisible = false;
 
-    /** @type {Ref<Canvas>} */
+    /** @type {RefCanvas} */
     this._cpuCtxRef = createRef();
 
-    /** @type {Ref<Canvas>} */
+    /** @type {RefCanvas} */
     this._memCtxRef = createRef();
 
     new ResizeController(this, {
@@ -111,12 +118,19 @@ export class CcTileMetrics extends LitElement {
     });
   }
 
+  /**
+   * @param {HTMLCanvasElement} chartElement
+   * @returns {Chart}
+   * @private
+   */
   _createChart (chartElement) {
     return new Chart(chartElement, {
       type: 'bar',
       options: {
         responsive: false,
         maintainAspectRatio: false,
+        // FIXME: remove this when we upgrade chartjs (see https://github.com/CleverCloud/clever-components/issues/1056)
+        // @ts-expect-error
         radius: 0,
         interaction: {
           intersect: false,
@@ -143,7 +157,13 @@ export class CcTileMetrics extends LitElement {
     });
   }
 
-  _getChartData (inputData) {
+  /**
+   * @param {Metric[]} inputData
+   * @param {boolean} skeleton
+   * @returns {ChartData}
+   * @private
+   */
+  _getChartData (inputData, skeleton) {
 
     const labels = inputData.map((item) => item.timestamp);
     const values = inputData.map((item) => item.value);
@@ -154,7 +174,7 @@ export class CcTileMetrics extends LitElement {
       .from(new Array(NUMBER_OF_POINTS))
       .map((_) => 100);
 
-    const colors = inputData.map(({ value, skeleton }) => {
+    const colors = inputData.map(({ value }) => {
       return skeleton
         ? SKELETON_COLOR
         : this._getColorChart(value);
@@ -176,6 +196,11 @@ export class CcTileMetrics extends LitElement {
     };
   }
 
+  /**
+   * @param {number} percent
+   * @returns {string} color (rgb)
+   * @private
+   */
   _getColorChart (percent) {
     if (percent > TOP_THRESHOLD) {
       return TOP_COLOR_CHART;
@@ -186,6 +211,11 @@ export class CcTileMetrics extends LitElement {
     return BOTTOM_COLOR_CHART;
   }
 
+  /**
+   * @param {number} percent
+   * @returns {string} color (rgb)
+   * @private
+   */
   _getColorLegend (percent) {
     if (percent > TOP_THRESHOLD) {
       return TOP_COLOR_PERCENT;
@@ -196,21 +226,26 @@ export class CcTileMetrics extends LitElement {
     return BOTTOM_COLOR_PERCENT;
   }
 
+  /**
+   * @returns {'docs'|'error'|'empty'|'chart'|void}
+   * @private
+   */
   _getCurrentPanel () {
     if (this._docsPanelVisible) {
       return 'docs';
     }
-    if (this.metrics.state === 'error') {
+    if (this.metricsState.type === 'error') {
       return 'error';
     }
-    if (this.metrics.state === 'empty') {
+    if (this.metricsState.type === 'empty') {
       return 'empty';
     }
-    if (this.metrics.state === 'loading' || this.metrics.state === 'loaded') {
+    if (this.metricsState.type === 'loading' || this.metricsState.type === 'loaded') {
       return 'chart';
     }
   }
 
+  /** @private */
   _onToggleDocs () {
     this._docsPanelVisible = !this._docsPanelVisible;
   }
@@ -220,21 +255,24 @@ export class CcTileMetrics extends LitElement {
     this._memChart = this._createChart(this._memCtxRef.value);
   }
 
-  // updated and not willUpdate because we need this._cpuChart and this._memChart before
+  /**
+   * We rely on updated instead of willUpdate because we need this._cpuChart and this._memChart before
+   * @param {CcTileMetricsPropertyValues} changedProperties
+   */
   updated (changedProperties) {
 
-    if (changedProperties.has('metrics')) {
+    if (changedProperties.has('metricsState')) {
 
-      this._cpuChart.data = (this.metrics.state === 'loaded')
-        ? this._getChartData(this.metrics.value.cpuData)
-        : this._getChartData(SKELETON_REQUESTS);
+      this._cpuChart.data = (this.metricsState.type === 'loaded')
+        ? this._getChartData(this.metricsState.metricsData.cpuMetrics, false)
+        : this._getChartData(SKELETON_REQUESTS, true);
 
       this._cpuChart.update();
       this._cpuChart.resize();
 
-      this._memChart.data = (this.metrics.state === 'loaded')
-        ? this._getChartData(this.metrics.value.memData)
-        : this._getChartData(SKELETON_REQUESTS);
+      this._memChart.data = (this.metricsState.type === 'loaded')
+        ? this._getChartData(this.metricsState.metricsData.memMetrics, false)
+        : this._getChartData(SKELETON_REQUESTS, true);
 
       this._memChart.update();
       this._memChart.resize();
@@ -244,13 +282,15 @@ export class CcTileMetrics extends LitElement {
 
   render () {
 
-    const state = this.metrics.state;
+    const skeleton = (this.metricsState.type === 'loading');
 
-    const lastCpuValue = (state === 'loaded') ? this.metrics.value.cpuData[this.metrics.value.cpuData.length - 1].value : 0;
-    const lastMemValue = (state === 'loaded') ? this.metrics.value.memData[this.metrics.value.memData.length - 1].value : 0;
+    const lastCpuValue = (this.metricsState.type === 'loaded') ? this.metricsState.metricsData.cpuMetrics.slice(-1)[0]?.value : 0;
+    const lastMemValue = (this.metricsState.type === 'loaded') ? this.metricsState.metricsData.cpuMetrics.slice(-1)[0]?.value : 0;
 
-    const cpuColorType = (state === 'loaded') ? this._getColorLegend(lastCpuValue) : SKELETON_COLOR;
-    const memColorType = (state === 'loaded') ? this._getColorLegend(lastMemValue) : SKELETON_COLOR;
+    const cpuColorType = (this.metricsState.type === 'loaded') ? this._getColorLegend(lastCpuValue) : SKELETON_COLOR;
+    const memColorType = (this.metricsState.type === 'loaded') ? this._getColorLegend(lastMemValue) : SKELETON_COLOR;
+
+    const grafanaLink = (this.grafanaLinkState.type === 'loaded') ? this.grafanaLinkState.link : null;
 
     const panel = this._getCurrentPanel();
 
@@ -258,8 +298,8 @@ export class CcTileMetrics extends LitElement {
       <div class="tile_title">
         ${i18n('cc-tile-metrics.title')}
         <div class="docs-buttons">
-          ${state === 'loaded' ? html`
-            ${ccLink(this.grafanaLink, html`
+          ${this.grafanaLinkState.type === 'loaded' ? html`
+            ${ccLink(this.grafanaLinkState.link, html`
               <cc-icon class="icon--grafana" .icon=${iconGrafana} a11y-name="${i18n('cc-tile-metrics.link-to-grafana')}"></cc-icon>
             `, false, i18n('cc-tile-metrics.link-to-grafana'))}
           ` : ''}
@@ -276,12 +316,12 @@ export class CcTileMetrics extends LitElement {
         <div class="category" aria-hidden="true">
           <cc-icon size="lg" class="icon--cpu" .icon=${iconCpu}></cc-icon>
           <div class="chart-container-wrapper chart-cpu">
-            <div class="chart-container ${classMap({ skeleton: state === 'loading' })}">
+            <div class="chart-container ${classMap({ skeleton: skeleton })}">
               <canvas id="cpu_chart" ${ref(this._cpuCtxRef)}></canvas>
             </div>
           </div>
           <div class="current-percentage percent-cpu ${classMap({
-            skeleton: state === 'loading', 'skeleton-data-value': state === 'loading',
+            skeleton, 'skeleton-data-value': skeleton,
           })}" style="color: ${cpuColorType}">${i18n('cc-tile-metrics.percent', { percent: lastCpuValue / 100 })}
           </div>
           <div class="legend-cpu">${i18n('cc-tile-metrics.legend.cpu')}</div>
@@ -289,18 +329,18 @@ export class CcTileMetrics extends LitElement {
         <div class="category" aria-hidden="true">
           <cc-icon size="lg" class="icon--mem" .icon=${iconMem}></cc-icon>
           <div class="chart-container-wrapper chart-mem">
-            <div class="chart-container ${classMap({ skeleton: state === 'loading' })}">
+            <div class="chart-container ${classMap({ skeleton })}">
               <canvas id="mem_chart" ${ref(this._memCtxRef)}></canvas>
             </div>
           </div>
           <div class="current-percentage percent-mem ${classMap({
-            skeleton: state === 'loading', 'skeleton-data-value': state === 'loading',
+            skeleton, 'skeleton-data-value': skeleton,
           })}" style="color: ${memColorType}">${i18n('cc-tile-metrics.percent', { percent: lastMemValue / 100 })}
           </div>
           <div class="legend-mem">${i18n('cc-tile-metrics.legend.mem')}</div>
         </div>
-        ${state === 'loaded'
-          ? this._renderAccessibleTable()
+        ${this.metricsState.type === 'loaded'
+          ? this._renderAccessibleTable(this.metricsState.metricsData)
           : ''}
       </div>
 
@@ -319,18 +359,24 @@ export class CcTileMetrics extends LitElement {
           <p>${i18n('cc-tile-metrics.docs.more-metrics')}</p>
           <ul>
             <li>
-              ${ccLink(this.grafanaLink, i18n('cc-tile-metrics.grafana'), state === 'loading', i18n('cc-tile-metrics.link-to-grafana'))}
+              ${ccLink(grafanaLink, i18n('cc-tile-metrics.grafana'), skeleton, i18n('cc-tile-metrics.link-to-grafana'))}
             </li>
-            <li>
-              ${ccLink(this.metricsLink, i18n('cc-tile-metrics.metrics-link'), state === 'loading', i18n('cc-tile-metrics.link-to-metrics'))}
-            </li>
+            ${!isStringEmpty(this.metricsLink) ? html`
+              <li>
+                ${ccLink(this.metricsLink, i18n('cc-tile-metrics.metrics-link'), false, i18n('cc-tile-metrics.link-to-metrics'))}
+              </li>
+            ` : ''}
           </ul>
         </div>
       </div>
     `;
   }
 
-  _renderAccessibleTable () {
+  /**
+   * @param {MetricsData} metrics
+   * @private
+   */
+  _renderAccessibleTable ({ cpuMetrics, memMetrics }) {
     return html`
       <table class="visually-hidden">
         <caption>${i18n('cc-tile-metrics.title')}</caption>
@@ -342,14 +388,14 @@ export class CcTileMetrics extends LitElement {
         </tr>
         </thead>
         <tbody>
-        ${this.metrics.value.cpuData.map((cpuData, index) => {
-          const memData = this.metrics.value.memData[index];
+        ${cpuMetrics.map((cpuMetric, index) => {
+          const memMetric = memMetrics[index];
 
           return html`
             <tr>
-              <th>${i18n('cc-tile-metrics.timestamp-format', { timestamp: cpuData.timestamp })}</th>
-              <td>${i18n('cc-tile-metrics.percent', { percent: cpuData.value / 100 })}</td>
-              <td>${i18n('cc-tile-metrics.percent', { percent: memData.value / 100 })}</td>
+              <th>${i18n('cc-tile-metrics.timestamp-format', { timestamp: cpuMetric.timestamp })}</th>
+              <td>${i18n('cc-tile-metrics.percent', { percent: cpuMetric.value / 100 })}</td>
+              <td>${i18n('cc-tile-metrics.percent', { percent: memMetric.value / 100 })}</td>
             </tr>
           `;
         })}
