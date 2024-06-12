@@ -1,6 +1,32 @@
 import './cc-doc-list.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
+export default {
+  tags: ['autodocs'],
+  title: '🛠 homepage/<cc-doc-list>',
+  component: 'cc-doc-list',
+};
+
+const conf = {
+  component: 'cc-doc-list',
+  // language=CSS
+  css: `
+    :host {
+      max-width: 92em !important;
+    }
+  `,
+};
+
+/**
+ * @typedef {import('./cc-doc-list.js').CcDocList} CcDocList
+ * @typedef {import('./cc-doc-list.types.js').DocListStateLoaded} DocListStateLoaded
+ * @typedef {import('./cc-doc-list.types.js').DocListStateLoading} DocListStateLoading
+ * @typedef {import('./cc-doc-list.types.js').DocListStateError} DocListStateError
+ * @typedef {import('../cc-doc-card/cc-doc-card.types.js').DocCardStateLoaded} DocCardStateLoaded
+ * @typedef {import('../cc-doc-card/cc-doc-card.types.js').DocCard} DocCard
+ */
+
+/** @type {DocCard[]} */
 const DOCS_ITEMS = [
   {
     heading: 'ruby',
@@ -40,54 +66,63 @@ const DOCS_ITEMS = [
   },
 ];
 
-export default {
-  tags: ['autodocs'],
-  title: '🛠 homepage/<cc-doc-list>',
-  component: 'cc-doc-list',
-};
-
-const conf = {
-  component: 'cc-doc-list',
-  // language=CSS
-  css: `
-    :host {
-      max-width: 92em !important;
-    }
-  `,
-};
-
 export const defaultStory = makeStory(conf, {
-  items: [{ docs: DOCS_ITEMS }],
+  items: [{
+    /** @type {DocListStateLoaded} */
+    state: {
+      type: 'loaded',
+      docs: DOCS_ITEMS,
+    },
+  }],
 });
 
-export const skeleton = makeStory(conf, {
-  items: [{}],
+export const loading = makeStory(conf, {
+  items: [{
+    /** @type {DocListStateLoading} */
+    state: { type: 'loading' },
+  }],
 });
 
 // No need to invest time on empty story right now.
 
 export const error = makeStory(conf, {
-  items: [{ error: true }],
+  items: [{
+    /** @type {DocListStateError} */
+    state: { type: 'error' },
+  }],
 });
 
 export const dataLoaded = makeStory(conf, {
-  items: [{ docs: DOCS_ITEMS }],
+  items: [{
+    /** @type {DocListStateLoaded} */
+    state: {
+      type: 'loaded',
+      docs: DOCS_ITEMS,
+    },
+  }],
 });
 
 export const simulationsWithSuccess = makeStory(conf, {
   items: [{}],
   simulations: [
-    storyWait(2000, ([component]) => {
-      component.docs = DOCS_ITEMS;
-    }),
+    storyWait(2000,
+      /** @param {[CcDocList]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          docs: DOCS_ITEMS,
+        };
+      }),
   ],
 });
 
 export const simulationsWithFailure = makeStory(conf, {
   items: [{}],
   simulations: [
-    storyWait(2000, ([component]) => {
-      component.error = true;
-    }),
+    storyWait(2000,
+      /** @param {[CcDocList]} components */
+      ([component]) => {
+        component.state = { type: 'error' };
+      }),
   ],
 });
