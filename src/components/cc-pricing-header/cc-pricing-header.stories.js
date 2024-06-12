@@ -1,7 +1,6 @@
 import './cc-pricing-header.js';
+import { ZONES } from '../../stories/fixtures/zones.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-
-import { ZONES } from '../cc-zone-input/cc-zone-input.stories.js';
 
 export default {
   tags: ['autodocs'],
@@ -13,6 +12,16 @@ const conf = {
   component: 'cc-pricing-header',
 };
 
+/**
+ * @typedef {import('./cc-pricing-header.js').CcPricingHeader} CcPricingHeader
+ * @typedef {import('./cc-pricing-header.types.js').PricingHeaderStateLoaded} PricingHeaderStateLoaded
+ * @typedef {import('./cc-pricing-header.types.js').PricingHeaderStateLoading} PricingHeaderStateLoading
+ * @typedef {import('./cc-pricing-header.types.js').PricingHeaderStateError} PricingHeaderStateError
+ * @typedef {import('../common.types.js').Currency} Currency
+ * @typedef {import('../common.types.js').Temporality} Temporality
+ */
+
+/** @type {{ currencies: Currency[], temporalities: Temporality[], state: PricingHeaderStateLoaded, selectedZoneId: 'par' }} */
 const defaultItem = {
   currencies: [
     { code: 'EUR', changeRate: 1 },
@@ -41,9 +50,9 @@ const defaultItem = {
       digits: 2,
     },
   ],
-  zones: {
-    state: 'loaded',
-    value: ZONES,
+  state: {
+    type: 'loaded',
+    zones: ZONES,
   },
   selectedZoneId: 'par',
 };
@@ -52,29 +61,35 @@ export const defaultStory = makeStory(conf, {
   items: [defaultItem],
 });
 
-export const skeleton = makeStory(conf, {
-  items: [{}],
+export const loading = makeStory(conf, {
+  items: [{
+    /** @type {PricingHeaderStateLoading} */
+    state: { type: 'loading' },
+  }],
 });
 
 export const error = makeStory(conf, {
   items: [{
-    zones: { state: 'error' },
+    /** @type {PricingHeaderStateError} */
+    state: { type: 'error' },
   }],
 });
 
 export const dataLoadedWithDollars = makeStory(conf, {
+  /** @type {{ state: PricingHeaderStateLoaded, selectedCurrency: Currency, selectedZoneId: 'mtl' }[]} */
   items: [{
     ...defaultItem,
     selectedCurrency: { code: 'USD', changeRate: 1.1717 },
-    selectedZoneId: 'nyc',
+    selectedZoneId: 'mtl',
   }],
 });
 
 export const dataLoadedWithMinute = makeStory(conf, {
+  /** @type {{ state: PricingHeaderStateLoaded, selectedTemporality: Temporality, selectedZoneId: 'war' }[]} */
   items: [{
     ...defaultItem,
     selectedTemporality: { type: 'minute', digits: 2 },
-    selectedZoneId: 'nyc',
+    selectedZoneId: 'war',
   }],
 });
 
@@ -84,22 +99,27 @@ export const simulations = makeStory(conf, {
     temporalities: defaultItem.temporalities,
   }],
   simulations: [
-    storyWait(2000, ([component]) => {
-      component.zones = {
-        state: 'loaded',
-        value: ZONES,
-      };
-      component.selectedZoneId = 'par';
-    }),
-    storyWait(2000, ([component]) => {
-      component.selectedTemporality = defaultItem.temporalities[3];
-    }),
-    storyWait(2000, ([component]) => {
-      component.selectedCurrency = defaultItem.currencies[1];
-    }),
+    storyWait(2000,
+      /** @param {CcPricingHeader[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          zones: ZONES,
+        };
+        component.selectedZoneId = 'par';
+      }),
+    storyWait(2000,
+      /** @param {CcPricingHeader[]} components */
+      ([component]) => {
+        component.selectedTemporality = defaultItem.temporalities[3];
+      }),
+    storyWait(2000,
+      /** @param {CcPricingHeader[]} components */
+      ([component]) => {
+        component.selectedCurrency = defaultItem.currencies[1];
+      }),
   ],
 });
 
 // Right now, because of how we're using this component, we don't need:
 // * empty state
-// * error state

@@ -1,16 +1,16 @@
 import { Zone } from '../common.types.js';
 
-interface PricingZoneStateLoading {
-    state: 'loading';
+export interface PricingHeaderStateLoading {
+    type: 'loading';
 }
 
-interface PricingZoneStateError {
-    state: 'error';
+export interface PricingHeaderStateError {
+    type: 'error';
 }
 
-interface PricingZoneStateLoaded {
-    state: 'loaded';
-    value: Zone[];
+export interface PricingHeaderStateLoaded {
+    type: 'loaded';
+    zones: Zone[];
 }
 
-export type PricingZoneState = PricingZoneStateLoading | PricingZoneStateError | PricingZoneStateLoaded;
+export type PricingHeaderState = PricingHeaderStateLoading | PricingHeaderStateError | PricingHeaderStateLoaded;

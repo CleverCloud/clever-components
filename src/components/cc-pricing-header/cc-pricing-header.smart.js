@@ -5,6 +5,11 @@ import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
 import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 
+/**
+ * @typedef {import('./cc-pricing-header.types.js').PricingHeaderStateLoaded} PricingHeaderStateLoaded
+ * @typedef {import('../common.types.js').Zone} Zone
+ */
+
 defineSmartComponent({
   selector: 'cc-pricing-header',
   params: {
@@ -23,9 +28,11 @@ defineSmartComponent({
      * To do so, this smart component modifies its own context.
      * Since all pricing product smart share this context and watch for `zoneId` changes, it triggers new fetches.
      */
-    onEvent('cc-pricing-header:change-zone', (zoneId) => {
-      container.context = { ...container.context, zoneId };
-    });
+    onEvent('cc-pricing-header:change-zone',
+      /** @param {string} zoneId */
+      (zoneId) => {
+        container.context = { ...container.context, zoneId };
+      });
 
     /**
      * Zones data is not dynamic and not context dependant.
@@ -38,16 +45,11 @@ defineSmartComponent({
     if (component.zones.state === 'loading') {
       fetchAllZones({ signal })
         .then((zones) => {
-          updateComponent('zones', {
-            state: 'loaded',
-            value: zones,
-          });
+          updateComponent('state', { type: 'loaded', zones });
           updateComponent('selectedZoneId', zoneId);
         })
         .catch((error) => {
-          updateComponent('zones', {
-            state: 'error',
-          });
+          updateComponent('state', { type: 'error' });
           console.error(error);
         });
     }
@@ -57,14 +59,22 @@ defineSmartComponent({
   },
 });
 
+/**
+ * @param {Object} parameters
+ * @param {AbortSignal} parameters.signal
+ * @returns {Promise<Zone[]>}
+ */
 function fetchAllZones ({ signal }) {
   return getAllZones()
     .then(sendToApi({ signal, cacheDelay: ONE_DAY }))
-    .then((zones) => {
-      return zones
+    .then(
+      /**
+       * @param {Zone[]} zones
+       * @returns {Zone[]}
+       **/
+      (zones) => zones
         .filter((zone) => zone.tags.includes('for:applications'))
-        .map((zone) => cleanZoneTags(zone));
-    });
+        .map((zone) => cleanZoneTags(zone)));
 }
 
 /**

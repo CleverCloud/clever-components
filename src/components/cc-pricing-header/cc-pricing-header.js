@@ -14,9 +14,6 @@ import { CcZone } from '../cc-zone/cc-zone.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-notice/cc-notice.js';
 
-/** @type {Zone[]} */
-const SKELETON_ZONES = [];
-
 /** @type {Currency} */
 // FIXME: this code is duplicated across all pricing components (see issue #732 for more details)
 const DEFAULT_CURRENCY = { code: 'EUR', changeRate: 1 };
@@ -28,7 +25,7 @@ const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
 /**
  * @typedef {import('../common.types.js').Currency} Currency
  * @typedef {import('../common.types.js').Temporality} Temporality
- * @typedef {import('./cc-pricing-header.types.js').PricingZoneState} PricingZoneState
+ * @typedef {import('./cc-pricing-header.types.js').PricingHeaderState} PricingHeaderState
  */
 
 /**
@@ -50,8 +47,8 @@ export class CcPricingHeader extends LitElement {
       selectedCurrency: { type: Object, attribute: 'selected-currency' },
       selectedTemporality: { type: Object, attribute: 'selected-temporality' },
       selectedZoneId: { type: String, attribute: 'selected-zone-id' },
+      state: { type: Object },
       temporalities: { type: Array },
-      zones: { type: Object },
     };
   }
 
@@ -73,24 +70,8 @@ export class CcPricingHeader extends LitElement {
     /** @type {Temporality[]} Sets the list available temporalities. */
     this.temporalities = [DEFAULT_TEMPORALITY];
 
-    /** @type {PricingZoneState} Sets the list of zones available for selection. */
-    this.zones = { state: 'loading' };
-  }
-
-  /**
-   * Returns the currency symbol corresponding to the given currency.
-   *
-   * @param {Currency} currency - the currency to get the symbol for
-   */
-  _getCurrencySymbol (currency) {
-    // The lang does not really matter
-    const nf = new Intl.NumberFormat('en', { style: 'currency', currency });
-    return nf
-      .formatToParts(0)
-      .find((p) => p.type === 'currency')
-      .value
-      // Safari does not support currencySymbol: 'narrow' in Intl.NumberFormat so we need to do this #sorry
-      .replace('$US', '$');
+    /** @type {PricingHeaderState} Sets the list of zones available for selection. */
+    this.state = { type: 'loading' };
   }
 
   /**
@@ -100,23 +81,19 @@ export class CcPricingHeader extends LitElement {
    * @return {string} the localized string corresponding to the given temporality type
    */
   _getPriceLabel (type) {
-    if (type === 'second') {
-      return i18n('cc-pricing-header.price-name.second');
-    }
-    if (type === 'minute') {
-      return i18n('cc-pricing-header.price-name.minute');
-    }
-    if (type === 'hour') {
-      return i18n('cc-pricing-header.price-name.hour');
-    }
-    if (type === '1000-minutes') {
-      return i18n('cc-pricing-header.price-name.1000-minutes');
-    }
-    if (type === 'day') {
-      return i18n('cc-pricing-header.price-name.day');
-    }
-    if (type === '30-days') {
-      return i18n('cc-pricing-header.price-name.30-days');
+    switch (type) {
+      case 'second':
+        return i18n('cc-pricing-header.price-name.second');
+      case 'minute':
+        return i18n('cc-pricing-header.price-name.minute');
+      case 'hour':
+        return i18n('cc-pricing-header.price-name.hour');
+      case '1000-minutes':
+        return i18n('cc-pricing-header.price-name.1000-minutes');
+      case 'day':
+        return i18n('cc-pricing-header.price-name.day');
+      case '30-days':
+        return i18n('cc-pricing-header.price-name.30-days');
     }
   }
 
@@ -124,7 +101,7 @@ export class CcPricingHeader extends LitElement {
    * Retrieves the currency corresponding to the selected currency code.
    * Dispatches a `cc-pricing-header:change-currency` event with the currency as its payload.
    *
-   * @param {Event} e - the event that called this method
+   * @param {Event & { target: { value: string }}} e - the event that called this method
    */
   _onCurrencyChange (e) {
     const currency = this.currencies.find((c) => c.code === e.target.value);
@@ -135,7 +112,7 @@ export class CcPricingHeader extends LitElement {
    * Retrieves the temporality corresponding to the selected temporality type.
    * Dispatches a `cc-pricing-header:change-temporality` event with the temporality as its payload.
    *
-   * @param {Event} e - the event that called this method
+   * @param {Event & { target: { value: string }}} e - the event that called this method
    */
   _onTemporalityChange (e) {
     const temporality = this.temporalities.find((t) => t.type === e.target.value);
@@ -146,7 +123,7 @@ export class CcPricingHeader extends LitElement {
    * Retrieves the zone id from the event payload.
    * Dispatches a `cc-pricing-header:change-zone` event with the zone id as its payload.
    *
-   * @param {Event} e - the event that called this method
+   * @param {Event & { target: { value: string }}} e - the event that called this method
    */
   _onZoneChange (e) {
     const zoneId = e.target.value;
@@ -154,9 +131,10 @@ export class CcPricingHeader extends LitElement {
   }
 
   render () {
-    const zones = this.zones.state === 'loading' ? SKELETON_ZONES : sortZones(this.zones.value);
+    const zones = this.state.type === 'loaded' ? sortZones(this.state.zones) : [];
+    const skeleton = this.state.type === 'loading';
 
-    if (this.zones.state === 'error') {
+    if (this.state.type === 'error') {
       return html`<cc-notice intent="warning" message="${i18n('cc-pricing-header.error')}"></cc-notice>`;
     }
 
@@ -174,7 +152,7 @@ export class CcPricingHeader extends LitElement {
           `)}
           <cc-icon slot="expand-icon" .icon=${iconArrowDown}></cc-icon>
         </sl-select>
-        
+
         <sl-select
           label="${i18n('cc-pricing-header.label.currency')}"
           class="currency-select"
@@ -189,16 +167,16 @@ export class CcPricingHeader extends LitElement {
 
         <sl-select
           label="${i18n('cc-pricing-header.label.zone')}"
-          class="zone-select ${classMap({ skeleton: this.zones.state === 'loading' })}"
+          class="zone-select ${classMap({ skeleton })}"
           hoist
           value=${ifDefined(this.selectedZoneId ?? undefined)}
-          ?disabled=${this.zones.state === 'loading'}
+          ?disabled=${skeleton}
           @sl-change=${this._onZoneChange}
         >
           ${zones.map((zone) => html`
             <sl-option class="zone-item" value=${zone.name}>
               ${CcZone.getText(zone)}
-              <cc-zone slot="prefix" .zone=${zone}></cc-zone>
+              <cc-zone slot="prefix" .state=${{ type: 'loaded', ...zone }}></cc-zone>
             </sl-option>
           `)}
           <cc-icon slot="expand-icon" .icon=${iconArrowDown}></cc-icon>

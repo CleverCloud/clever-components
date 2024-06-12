@@ -135,7 +135,7 @@ type SectionType = "inbound-traffic" | "outbound-traffic" | "storage" | "private
 type ActionType = "add" | "none";
 
 interface Temporality {
-  type: "second" | "minute" | "hour" | "day" | "30-days";
+  type: "second" | "minute" | "hour" | "day" | "30-days" | "1000-minutes";
   digits: number; // how many fraction digits to display the price
 }
 
@@ -149,11 +149,14 @@ interface Redirection {
 }
 
 interface Zone {
+  name: string;
   countryCode: string;   // ISO 3166-1 alpha-2 code of the country (2 letters): "FR", "CA", "US"...
   city: string;          // Name of the city in english: "Paris", "Montreal", "New York City"...
   country: string;       // Name of the country in english: "France", "Canada", "United States"...
   displayName?: string;  // Optional display name for private zones (instead of displaying city + country): "ACME (dedicated)"...
   tags: string[];        // Array of strings for semantic tags: ["region:eu", "infra:clever-cloud"], ["scope:private"]...
+  lat: number;           // Latitude
+  lon: number;           // Longitude
 }
 
 type ToggleStateType = 'off' | 'open' | 'close';
