@@ -1,6 +1,33 @@
 import './cc-tile-scalability.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
+export default {
+  tags: ['autodocs'],
+  title: '🛠 Overview/<cc-tile-scalability>',
+  component: 'cc-tile-scalability',
+};
+
+const conf = {
+  component: 'cc-tile-scalability',
+  displayMode: 'flex-wrap',
+  // language=CSS
+  css: `
+    cc-tile-scalability {
+      width: 275px;
+    }
+  `,
+};
+
+/**
+ * @typedef {import('./cc-tile-scalability.js').CcTileScalability} CcTileScalability
+ * @typedef {import('./cc-tile-scalability.type.js').TileScalabilityStateLoaded} TileScalabilityStateLoaded
+ * @typedef {import('./cc-tile-scalability.type.js').TileScalabilityStateLoading} TileScalabilityStateLoading
+ * @typedef {import('./cc-tile-scalability.type.js').TileScalabilityStateError} TileScalabilityStateError
+ * @typedef {import('../common.types.js').Flavor} Flavor
+ * @typedef {import('../common.types.js').Scalability} Scalability
+ */
+
+/** @type {{ [key: string]: Flavor}} Flavor */
 const ALL_FLAVORS = {
   pico: { name: 'pico', mem: 256, cpus: 1, gpus: 0, microservice: true },
   nano: { name: 'nano', mem: 512, cpus: 1, gpus: 0, microservice: true },
@@ -20,81 +47,124 @@ const ALL_FLAVORS = {
   ML_3XL: { name: 'ML_3XL', mem: 53248, cpus: 32, gpus: 4, microservice: false },
 };
 
-function scalability (minFlavor, maxFlavor, minInstances, maxInstances) {
-  return { minFlavor, maxFlavor, minInstances, maxInstances };
+/**
+  * @param {Flavor} minFlavor
+  * @param {Flavor} maxFlavor
+  * @param {number} minInstances
+  * @param {number} maxInstances
+  * @return {TileScalabilityStateLoaded}
+  */
+function scalabilityLoaded (minFlavor, maxFlavor, minInstances, maxInstances) {
+  return { type: 'loaded', minFlavor, maxFlavor, minInstances, maxInstances };
 }
-
-export default {
-  tags: ['autodocs'],
-  title: '🛠 Overview/<cc-tile-scalability>',
-  component: 'cc-tile-scalability',
-};
-
-const conf = {
-  component: 'cc-tile-scalability',
-  displayMode: 'flex-wrap',
-  // language=CSS
-  css: `
-    cc-tile-scalability {
-      width: 275px;
-    }
-  `,
-};
 
 export const defaultStory = makeStory(conf, {
   items: [
-    { scalability: scalability(ALL_FLAVORS.pico, ALL_FLAVORS.pico, 1, 1) },
-    { scalability: scalability(ALL_FLAVORS.L, ALL_FLAVORS.L, 2, 4) },
-    { scalability: scalability(ALL_FLAVORS.ML_XL, ALL_FLAVORS.ML_3XL, 40, 40) },
+    {
+      /** @type {TileScalabilityStateLoaded} */
+      state: scalabilityLoaded(ALL_FLAVORS.pico, ALL_FLAVORS.pico, 1, 1),
+    },
+    {
+      /** @type {TileScalabilityStateLoaded} */
+      state: scalabilityLoaded(ALL_FLAVORS.L, ALL_FLAVORS.L, 2, 4),
+    },
+    {
+      /** @type {TileScalabilityStateLoaded} */
+      state: scalabilityLoaded(ALL_FLAVORS.ML_XL, ALL_FLAVORS.ML_3XL, 40, 40),
+    },
   ],
 });
 
-export const skeleton = makeStory(conf, {
-  items: [{}],
+export const loading = makeStory(conf, {
+  items: [{
+    /** @type {TileScalabilityStateLoading} */
+    state: { type: 'loading' },
+  }],
 });
 
 export const error = makeStory(conf, {
-  items: [{ error: true }],
+  items: [{
+    /** @type {TileScalabilityStateError} */
+    state: { type: 'error' },
+  }],
 });
 
 export const dataLoadedWithNoAutoScalability = makeStory(conf, {
   items: [
-    { scalability: scalability(ALL_FLAVORS.pico, ALL_FLAVORS.pico, 1, 1) },
-    { scalability: scalability(ALL_FLAVORS.S, ALL_FLAVORS.S, 2, 2) },
-    { scalability: scalability(ALL_FLAVORS.ML_XL, ALL_FLAVORS.ML_XL, 20, 20) },
+    {
+      /** @type {TileScalabilityStateLoaded} */
+      state: scalabilityLoaded(ALL_FLAVORS.pico, ALL_FLAVORS.pico, 1, 1),
+    },
+    {
+      /** @type {TileScalabilityStateLoaded} */
+      state: scalabilityLoaded(ALL_FLAVORS.S, ALL_FLAVORS.S, 2, 2),
+    },
+    {
+      /** @type {TileScalabilityStateLoaded} */
+      state: scalabilityLoaded(ALL_FLAVORS.ML_XL, ALL_FLAVORS.ML_XL, 20, 20),
+    },
   ],
 });
 
 export const dataLoadedWithHorizontalScalability = makeStory(conf, {
   items: [
-    { scalability: scalability(ALL_FLAVORS.nano, ALL_FLAVORS.nano, 1, 2) },
-    { scalability: scalability(ALL_FLAVORS.L, ALL_FLAVORS.L, 2, 4) },
-    { scalability: scalability(ALL_FLAVORS.ML_3XL, ALL_FLAVORS.ML_3XL, 20, 40) },
+    {
+      /** @type {TileScalabilityStateLoaded} */
+      state: scalabilityLoaded(ALL_FLAVORS.nano, ALL_FLAVORS.nano, 1, 2),
+    },
+    {
+      /** @type {TileScalabilityStateLoaded} */
+      state: scalabilityLoaded(ALL_FLAVORS.L, ALL_FLAVORS.L, 2, 4),
+    },
+    {
+      /** @type {TileScalabilityStateLoaded} */
+      state: scalabilityLoaded(ALL_FLAVORS.ML_3XL, ALL_FLAVORS.ML_3XL, 20, 40),
+    },
   ],
 });
 
 export const dataLoadedWithVerticalScalability = makeStory(conf, {
   items: [
-    { scalability: scalability(ALL_FLAVORS.pico, ALL_FLAVORS.nano, 1, 1) },
-    { scalability: scalability(ALL_FLAVORS.S, ALL_FLAVORS.L, 2, 2) },
-    { scalability: scalability(ALL_FLAVORS.ML_XL, ALL_FLAVORS.ML_3XL, 40, 40) },
+    {
+      /** @type {TileScalabilityStateLoaded} */
+      state: scalabilityLoaded(ALL_FLAVORS.pico, ALL_FLAVORS.nano, 1, 1),
+    },
+    {
+      /** @type {TileScalabilityStateLoaded} */
+      state: scalabilityLoaded(ALL_FLAVORS.S, ALL_FLAVORS.L, 2, 2),
+    },
+    {
+      /** @type {TileScalabilityStateLoaded} */
+      state: scalabilityLoaded(ALL_FLAVORS.ML_XL, ALL_FLAVORS.ML_3XL, 40, 40),
+    },
   ],
 });
 
 export const dataLoadedWithHorizontalAndVerticalScalability = makeStory(conf, {
   items: [
-    { scalability: scalability(ALL_FLAVORS.pico, ALL_FLAVORS.nano, 1, 2) },
-    { scalability: scalability(ALL_FLAVORS.S, ALL_FLAVORS.L, 2, 4) },
-    { scalability: scalability(ALL_FLAVORS.ML_XL, ALL_FLAVORS.ML_3XL, 20, 40) },
+    {
+      /** @type {TileScalabilityStateLoaded} */
+      state: scalabilityLoaded(ALL_FLAVORS.pico, ALL_FLAVORS.nano, 1, 2),
+    },
+    {
+      /** @type {TileScalabilityStateLoaded} */
+      state: scalabilityLoaded(ALL_FLAVORS.S, ALL_FLAVORS.L, 2, 4),
+    },
+    {
+      /** @type {TileScalabilityStateLoaded} */
+      state: scalabilityLoaded(ALL_FLAVORS.ML_XL, ALL_FLAVORS.ML_3XL, 20, 40),
+    },
   ],
 });
 
 export const simulations = makeStory(conf, {
   items: [{}, {}],
   simulations: [
-    storyWait(2000, ([component, componentError]) => {
-      component.scalability = scalability(ALL_FLAVORS.pico, ALL_FLAVORS.XL, 2, 3);
-      componentError.error = true;
-    }),
+    storyWait(2000,
+      /** @param {CcTileScalability[]} components */
+      ([component, componentError]) => {
+        component.state = scalabilityLoaded(ALL_FLAVORS.pico, ALL_FLAVORS.XL, 2, 3);
+        componentError.state = { type: 'error' };
+      }),
   ],
 });

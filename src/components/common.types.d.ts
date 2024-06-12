@@ -35,20 +35,20 @@ interface AddonOption {
   encryption?: boolean;
 }
 
-interface Scalability {
+export interface Scalability {
   minFlavor: Flavor;
   maxFlavor: Flavor;
   minInstances: number;
   maxInstances: number;
 }
 
-interface Flavor {
+export interface Flavor {
   name: string;
   cpus: number;
   gpus: number;
   mem: number;
   microservice: boolean;
-  monthlyCost?: number;
+  monthlyCost?: number|null;
 }
 
 export interface IconModel {
