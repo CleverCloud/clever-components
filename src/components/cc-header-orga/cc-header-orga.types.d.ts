@@ -1,17 +1,17 @@
 export type HeaderOrgaState = HeaderOrgaStateLoaded | HeaderOrgaStateLoading | HeaderOrgaStateError;
 
-interface HeaderOrgaStateLoaded {
-  state: 'loaded';
+export interface HeaderOrgaStateLoaded {
+  type: 'loaded';
   name: string;
   avatar?: string;
   cleverEnterprise?: boolean;
-  emergencyNumber?: number; 
+  emergencyNumber?: string;
 }
 
-interface HeaderOrgaStateLoading {
-  state: 'loading';
+export interface HeaderOrgaStateLoading {
+  type: 'loading';
 }
 
-interface HeaderOrgaStateError {
-  state: 'error';
+export interface HeaderOrgaStateError {
+  type: 'error';
 }
