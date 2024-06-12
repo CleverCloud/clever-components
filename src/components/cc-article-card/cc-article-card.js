@@ -1,16 +1,25 @@
 import '../cc-img/cc-img.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 
+/** @type {ArticleCard} */
 const SKELETON_INFO = {
   date: 'Tue, 22 Mar 2022 08:39:00 +0000',
   description: fakeString(128),
   title: fakeString(45),
+  link: null,
+  banner: null,
 };
+
+/**
+ * @typedef {import('./cc-article-card.types.js').ArticleCardState} ArticleCardState
+ * @typedef {import('./cc-article-card.types.js').ArticleCard} ArticleCard
+ */
 
 /**
  * A component displaying information of an external article in a card.
@@ -21,59 +30,39 @@ export class CcArticleCard extends LitElement {
 
   static get properties () {
     return {
-      banner: { type: String },
-      date: { type: String },
-      description: { type: String },
-      link: { type: String },
-      title: { type: String },
+      state: { type: Object },
     };
   }
 
   constructor () {
     super();
 
-    /** @type {string|null} Sets the article banner image. */
-    this.banner = null;
-
-    /** @type {string|null} Sets the article date. */
-    this.date = null;
-
-    /** @type {string|null} Sets a short description of the article. */
-    this.description = null;
-
-    /** @type {string|null} Sets the link to the article. */
-    this.link = null;
-
-    /** @type {string|null} Sets the title of the article. */
-    this.title = null;
+    /** @type {ArticleCardState} Sets the state of the component */
+    this.state = { type: 'loading' };
   }
 
   render () {
 
-    const skeleton = (this.title == null || this.banner == null || this.link == null || this.date == null);
-
-    const banner = skeleton ? null : this.banner;
-    const title = this.title ?? SKELETON_INFO.title;
-    const description = this.description ?? SKELETON_INFO.description;
-    const date = this.date ?? SKELETON_INFO.date;
+    const skeleton = this.state.type === 'loading';
+    const data = this.state.type === 'loaded' ? this.state : SKELETON_INFO;
 
     return html`
-      <cc-img class="image" src=${banner}></cc-img>
+      <cc-img class="image" src=${ifDefined(data.banner)}></cc-img>
       ${skeleton ? html`
         <div class="title">
-          <span class="skeleton">${title}</span>
+          <span class="skeleton">${data.title}</span>
         </div>
       ` : ''}
-      ${!skeleton ? html`
+      ${this.state.type === 'loaded' ? html`
         <div class="title">
-          ${ccLink(this.link, title, skeleton)}
+          ${ccLink(data.link, data.title)}
         </div>
       ` : ''}
       <div>
-        <span class=${classMap({ skeleton })}>${description}</span>
+        <span class=${classMap({ skeleton })}>${data.description}</span>
       </div>
       <div class="date">
-        <span class=${classMap({ skeleton })}>${i18n('cc-article-card.date', { date })}</span>
+        <span class=${classMap({ skeleton })}>${i18n('cc-article-card.date', { date: data.date })}</span>
       </div>
     `;
   }

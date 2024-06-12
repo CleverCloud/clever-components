@@ -5,6 +5,10 @@ import { withCache } from '@clevercloud/client/esm/with-cache.js';
 import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { parseRssFeed } from '../../lib/xml-parser.js';
 
+/**
+ * @typedef {import('../cc-article-card/cc-article-card.types.js').ArticleCard} ArticleCard
+ */
+
 const FOUR_HOURS = 1000 * 60 * 60 * 4;
 
 defineSmartComponent({
@@ -29,6 +33,13 @@ defineSmartComponent({
   },
 });
 
+/**
+  * @param {Object} params
+  * @param {AbortSignal} params.signal
+  * @param {'fr'|'en'} params.lang
+  * @param {number} [params.limit]
+  * @return {Promise<ArticleCard[]>}
+  */
 async function fetchArticleList ({ signal, lang, limit = 9 }) {
 
   const url = (lang === 'fr')
