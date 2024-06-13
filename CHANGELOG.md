@@ -5,6 +5,136 @@ title: 'Changelog'
 
 # Changelog
 
+## [14.0.0](https://github.com/CleverCloud/clever-components/compare/13.3.1...14.0.0) (2024-06-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* **cc-addon-credentials:** The `addonType` value for Materia KV is now `materia-kv` instead of `materiadb-kv`
+* **cc-pricing-header:** the properties have changed
+    - `zones`: property has been renamed to `state`
+    - `zones.state`: property has been renamed to `type`
+* **cc-header-addon:** the properties have changed
+    - `state`: new property containing the whole state
+    - `addon`: property has been deleted as it is now part of the state
+    - `version`: property has been deleted as it is now part of the state
+    - `zone`: property has been deleted as it is now part of the state
+    - `error`: property has been deleted as it is now part of the state
+* **cc-header-app:** the properties have changed
+    - `state`: new property containing the whole state of the component
+      - `app`: property has been deleted as it is now part of the `state` property
+      - `status`: property has been deleted as it is now part of the `state` property
+      - `running-commit`: property has been deleted as it is now part of the
+        `state` property
+      - `starting-commit`: property has been deleted as it is now part of the
+        `state` property
+      - `zone`: property has been deleted as it is now part of the
+        `state` property
+      - `error`: property has been deleted as it is now part of the `state` property
+* **cc-zone-input:** the properties have changed   - `state`: new property containing the whole state   - `zones`: property has been deleted as it is now part of the state   - `error`: property has been deleted as it is now part of the state
+* **cc-zone:** the properties have changed
+    - `state`: new property containing the whole state
+    - `zone`: property has been deleted as it is now part of the state
+* **cc-invoice-table:** the properties have changed
+    - `state`: new property containing the whole state
+    - `invoices`: property has been deleted as it is now part of the state
+* **cc-addon-admin:** the properties have changed
+    - `state`: new property containing the whole state
+    - `addon`: property has been deleted as it is now part of the state
+    - `error`: property has been deleted as it is now part of the state
+    - `saving`: property has been deleted as it is now part of the state
+* **cc-doc-list:** the properties have changed
+    - `state`: new property containing the whole state
+    - `docs`: property has been deleted as it is now part of the state
+    - `error`: property has been deleted as it is now part of the state
+* **cc-doc-card:** the properties have changed
+    - `state`: new property containing the whole state
+    - `description`: property has been deleted as it is now part of the state
+    - `heading`: property has been deleted as it is now part of the state
+    - `icons`: property has been deleted as it is now part of the state
+    - `link`: property has been deleted as it is now part of the state
+* **cc-tile-scalability:** the properties have changed
+    - `state`: new property containing the whole state
+    - `scalability`: property has been deleted as it is now part of the state
+    - `error`: property has been deleted as it is now part of the state
+* **cc-header-orga:** the properties have changed
+    - The `orga` component property has been renamed to `state`
+      - The `orga.state` state property has been renamed to `state.type`
+* **cc-addon-features:** the properties have changed
+    - `state`: new property containing the whole state
+    - `features`: property has been deleted as it is now part of the state
+    - `error`: property has been deleted as it is now part of the state
+* **cc-addon-backups:** the properties have changed
+    - `state`: new property containing the whole state
+    - `backups`: property has been deleted as it is now part of the state
+    - `error`: property has been deleted as it is now part of the state
+* **cc-heptapod-info:** the properties have changed
+    - `state`: new property containing the whole state
+    - `statistics`: property has been deleted as it is now part of the state
+    - `error`: property has been deleted as it is now part of the state
+* **cc-elasticsearch-info:** the properties have changed
+    - `state`: new property containing the whole state
+    - `error`: property has been deleted as it is now part of the state
+    - `links`: property has been deleted as it is now part of the state
+* **cc-matomo-info:** the properties have changed
+    - `state`: new property containing the whole state
+    - `matomoLink`: property has been deleted as it is now part of the state as `matomoUrl`
+    - `mysqlLink`: property has been deleted as it is now part of the state as `mysqlUrl`
+    - `phpLink`: property has been deleted as it is now part of the state as `phpUrl`
+    - `redisLink`: property has been deleted as it is now part of the state as `redisUrl`
+    - `error`: property has been deleted as it is now part of the state
+* **cc-tcp-redirection-form:** the properties have changed
+    - The `redirections` component property has been renamed to `state`
+      - The `redirections.state` state property has been renamed to `state.type`
+      - The `redirections.value` state property has been renamed to `state.redirections`
+* **cc-tcp-redirection:** the properties have changed
+    - The `redirection` component property has been renamed to `state`
+      - The `redirection.state` state property has been renamed to `state.type`
+* **cc-article-card:** the properties have changed
+    - `state`: new property containing the whole state
+    - `title`: property has been deleted as it is now part of the state
+    - `description`: property has been deleted as it is now part of the state
+    - `banner`: property has been deleted as it is now part of the state
+    - `date`: property has been deleted as it is now part of the state
+    - `link`: property has been deleted as it is now part of the state
+* **cc-tile-requests:** the properties have changed
+    - `state`: new property containing the whole state
+    - `error`: property has been deleted as it is now part of the state
+    - `data`: property has been deleted as it is now part of the state
+* **cc-tile-metrics:** the properties have changed
+    - `metrics`: property has been renamed to `state`
+    - `metrics.state`: property has been renamed to `type`
+    - `grafanaLink`: property has been replaced by an object property named `grafanaLinkState`
+
+### 🐛 Bug Fixes
+
+* **cc-addon-credentials:** change `addonType` value for Materia KV ([3ab0d56](https://github.com/CleverCloud/clever-components/commit/3ab0d565ca4963cfd79b7cdc334507483949c22c)), closes [#1068](https://github.com/CleverCloud/clever-components/issues/1068)
+
+
+### 🛠 Code Refactoring
+
+* **cc-addon-admin:** rework properties to avoid impossible states ([954ebd2](https://github.com/CleverCloud/clever-components/commit/954ebd26fff6fe4146ce9448e36859c40f71a549))
+* **cc-addon-backups:** rework properties to avoid impossible st… ([ea9c40f](https://github.com/CleverCloud/clever-components/commit/ea9c40fe5ffd4a0327d321e2e17d672dc6639e42))
+* **cc-addon-features:** rework properties to avoid impossible states ([89f1a4f](https://github.com/CleverCloud/clever-components/commit/89f1a4fd4867d248434a4743282b9dd5f43ac2a1))
+* **cc-article-card:** rework properties to avoid impossible states ([675d1ca](https://github.com/CleverCloud/clever-components/commit/675d1cadc0d1ae1628ae5431b77b3db4263312a3))
+* **cc-doc-card:** rework properties to avoid impossible states ([b4d4f87](https://github.com/CleverCloud/clever-components/commit/b4d4f878fe841e4781f56a7108f4b47646041816))
+* **cc-doc-list:** rework properties to avoid impossible states ([1ef23ee](https://github.com/CleverCloud/clever-components/commit/1ef23ee704103e72f31f782fd14fe0d518312515))
+* **cc-elasticsearch-info:** rework properties to avoid impossible states ([26fde7d](https://github.com/CleverCloud/clever-components/commit/26fde7d0da8758b67fb424c6a9bd549b73333d2c))
+* **cc-header-addon:** rework properties to avoid impossible states ([ceea4ab](https://github.com/CleverCloud/clever-components/commit/ceea4ab2069889db06d16dc5b4d9418b9313966f))
+* **cc-header-app:** rework properties to avoid impossible states ([721bf45](https://github.com/CleverCloud/clever-components/commit/721bf4517fb10dd4c73aca3b2cb40bc586d8ba01))
+* **cc-header-orga:** rework properties to avoid impossible states ([fd2b737](https://github.com/CleverCloud/clever-components/commit/fd2b737949bc66bbece8a3efc44814757a3f0016))
+* **cc-heptapod-info:** rework properties to avoid impossible states ([654dbba](https://github.com/CleverCloud/clever-components/commit/654dbba667e9132b77c67adb448204037c49cd8c))
+* **cc-invoice-table:** rework properties to avoid impossible states ([1f7ee73](https://github.com/CleverCloud/clever-components/commit/1f7ee73af79583166e8864b1137008242242e775))
+* **cc-matomo-info:** rework properties to avoid impossible states ([cbfc1f7](https://github.com/CleverCloud/clever-components/commit/cbfc1f7da313d5079911f533c5ef17730d08ac51))
+* **cc-pricing-header:** rework properties to avoid impossible states ([7a8bad2](https://github.com/CleverCloud/clever-components/commit/7a8bad20bceb4177ae4531366382b38ff1e27be0))
+* **cc-tcp-redirection-form:** rework properties to avoid impossible states ([267ea82](https://github.com/CleverCloud/clever-components/commit/267ea827e1898b5c8409a72602d1aee57cad24e7))
+* **cc-tcp-redirection:** rework properties to avoid impossible states ([08b2fcd](https://github.com/CleverCloud/clever-components/commit/08b2fcd8aa4cf855bf25d674e88b1f7f4fa0a7d8))
+* **cc-tile-metrics:** rework properties to avoid impossible states ([26da5af](https://github.com/CleverCloud/clever-components/commit/26da5afd1eb407d913860201013bd78f1106cc47))
+* **cc-tile-requests:** rework properties to avoid impossible states ([b6d3477](https://github.com/CleverCloud/clever-components/commit/b6d34778e82bf9ffcac8e0e6139214486d6bd550))
+* **cc-tile-scalability:** rework properties to avoid impossible states ([aeabe7b](https://github.com/CleverCloud/clever-components/commit/aeabe7bea2c336ba8d524abf6b625b11e1ab2461))
+* **cc-zone-input:** rework properties to avoid impossible states ([3475635](https://github.com/CleverCloud/clever-components/commit/3475635aeac2b75d79c60e87e44be638adeeab56))
+* **cc-zone:** rework properties to avoid impossible states ([9e9dceb](https://github.com/CleverCloud/clever-components/commit/9e9dcebb9a583c886253ca25b45d5aaf59373d26))
+
 ## [13.3.1](https://github.com/CleverCloud/clever-components/compare/13.3.0...13.3.1) (2024-05-31)
 
 
