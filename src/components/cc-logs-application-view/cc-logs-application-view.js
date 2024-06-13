@@ -25,6 +25,8 @@ import {
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
+import { parseRegex } from '../../lib/regex-parse.js';
+import { isStringEmpty } from '../../lib/utils.js';
 import {
   getRangeToNow,
   isLive,
@@ -78,9 +80,10 @@ const MENU_ENTRIES = ['live', 'lastHour', 'last4Hours', 'today', 'yesterday', 'l
  * @typedef {import('./cc-logs-application-view.types.js').Validity} Validity
  * @typedef {import('../cc-logs/cc-logs.types.js').Log} Log
  * @typedef {import('../cc-logs/cc-logs.types.js').MetadataRenderer} MetadataRenderer
- * @typedef {import('lit/directives/ref').Ref<CcInputDate>} RefCcInputDate
- * @typedef {import('lit/directives/ref').Ref<CcLogsControl>} RefCcLogsControl
- * @typedef {import('lit/directives/ref').Ref<CcPopover>} RefCcPopover
+ * @typedef {import('../cc-logs/cc-logs.types.js').LogMessageFilterMode} LogMessageFilterMode
+ * @typedef {import('lit/directives/ref.js').Ref<CcInputDate>} RefCcInputDate
+ * @typedef {import('lit/directives/ref.js').Ref<CcLogsControl>} RefCcLogsControl
+ * @typedef {import('lit/directives/ref.js').Ref<CcPopover>} RefCcPopover
  * @typedef {import('lit').PropertyValues<CcLogsApplicationView>} CcLogsApplicationViewPropertyValues
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
  * @typedef {'none'|'init'|'started'|'waiting'|'running'|'paused'|'completed'} ProgressState
@@ -108,7 +111,8 @@ export class CcLogsApplicationView extends LitElement {
       _dateRangeValidation: { type: Object, state: true },
       _customDateRange: { type: Object, state: true },
       _overflowDecision: { type: String, state: true },
-      _textFilter: { type: String, state: true },
+      _messageFilter: { type: String, state: true },
+      _messageFilterMode: { type: String, state: true },
       _fullscreen: { type: Boolean, state: true },
     };
   }
@@ -183,7 +187,14 @@ export class CcLogsApplicationView extends LitElement {
     /** @type {'none'|'accepted'|'discarded'} */
     this._overflowDecision = 'none';
 
-    this._textFilter = '';
+    /** @type {string} */
+    this._messageFilter = '';
+
+    /** @type {LogMessageFilterMode} */
+    this._messageFilterMode = 'loose';
+
+    /** @type {boolean} */
+    this._messageFilterValid = true;
 
     this._fullscreen = false;
   }
@@ -363,6 +374,24 @@ export class CcLogsApplicationView extends LitElement {
     dispatchCustomEvent(this, 'date-range-change', this._currentDateRange);
   }
 
+  _validateMessageFilter () {
+    if (isStringEmpty(this._messageFilter)) {
+      this._messageFilterValid = true;
+    }
+    else if (this._messageFilterMode === 'regex') {
+      try {
+        parseRegex(this._messageFilter);
+        this._messageFilterValid = true;
+      }
+      catch (e) {
+        this._messageFilterValid = false;
+      }
+    }
+    else {
+      this._messageFilterValid = true;
+    }
+  }
+
   /* endregion */
 
   /* region Event handlers */
@@ -504,8 +533,32 @@ export class CcLogsApplicationView extends LitElement {
     };
   }
 
+  /**
+   * @param {Object} event
+   * @param {string} event.detail
+   */
   _onTextFilterInput ({ detail }) {
-    this._textFilter = detail;
+    this._messageFilter = detail;
+
+    this._validateMessageFilter();
+  }
+
+  /**
+   *
+   * @param {Event & {target: HTMLElement & {dataset: {mode: LogMessageFilterMode}}}} e
+   * @private
+   */
+  _onTextFilterModeClick (e) {
+    const mode = e.target.dataset.mode;
+
+    if (this._messageFilterMode === mode) {
+      this._messageFilterMode = 'loose';
+    }
+    else {
+      this._messageFilterMode = mode;
+    }
+
+    this._validateMessageFilter();
   }
 
   /* endregion */
@@ -524,6 +577,8 @@ export class CcLogsApplicationView extends LitElement {
    * @param {CcLogsApplicationViewPropertyValues} changedProperties
    */
   willUpdate (changedProperties) {
+    const stateTypeHasChanged = changedProperties.has('state') && (changedProperties.get('state')?.type !== this.state.type);
+
     if (changedProperties.has('dateRangeSelection')) {
       this._selectedDateRangeMenuEntry = this._getDateRangeSelectionMenuEntry(this.dateRangeSelection);
       this._customDateRange = this.dateRangeSelection.type === 'custom' ? {
@@ -532,25 +587,21 @@ export class CcLogsApplicationView extends LitElement {
       } : null;
       this._currentDateRange = this._toDateRange(this.dateRangeSelection);
     }
-    if (changedProperties.has('state')) {
-      const oldStateType = changedProperties.get('state')?.type;
-      if (oldStateType !== this.state.type) {
-
-        if (this.state.type === 'errorLogs') {
-          this._loadingProgressCtrl.reset();
-        }
-        else if (this.state.type === 'connectingLogs') {
-          this._loadingProgressCtrl.init(this._currentDateRange);
-        }
-        else if (this.state.type === 'receivingLogs') {
-          this._loadingProgressCtrl.start();
-        }
-        else if (this.state.type === 'logStreamPaused') {
-          this._loadingProgressCtrl.pause();
-        }
-        else if (this.state.type === 'logStreamEnded') {
-          this._loadingProgressCtrl.complete();
-        }
+    if (stateTypeHasChanged) {
+      if (this.state.type === 'errorLogs') {
+        this._loadingProgressCtrl.reset();
+      }
+      else if (this.state.type === 'connectingLogs') {
+        this._loadingProgressCtrl.init(this._currentDateRange);
+      }
+      else if (this.state.type === 'receivingLogs') {
+        this._loadingProgressCtrl.start();
+      }
+      else if (this.state.type === 'logStreamPaused') {
+        this._loadingProgressCtrl.pause();
+      }
+      else if (this.state.type === 'logStreamEnded') {
+        this._loadingProgressCtrl.complete();
       }
     }
     if (changedProperties.has('options')) {
@@ -823,6 +874,9 @@ export class CcLogsApplicationView extends LitElement {
         };
       }) : [];
 
+    const strictToggleButtonLabel = i18n('cc-logs-application-view.filter.mode.strict');
+    const regexToggleButtonLabel = i18n('cc-logs-application-view.filter.mode.regex');
+
     return html`
       <cc-logs-control-beta
         ${ref(this._refs.logs)}
@@ -831,7 +885,8 @@ export class CcLogsApplicationView extends LitElement {
         limit="${this.limit}"
         .dateDisplay=${this.options['date-display']}
         .metadataDisplay=${this._metadataDisplay}
-        .messageFilter=${this._textFilter}
+        .messageFilter=${this._messageFilter}
+        .messageFilterMode=${this._messageFilterMode}
         .metadataFilter=${metadataFilter}
         .metadataRenderers=${CUSTOM_METADATA_RENDERERS}
         .palette=${this.options.palette}
@@ -842,13 +897,38 @@ export class CcLogsApplicationView extends LitElement {
       >
         <div slot="header">
           <div class="logs-header">
-            <cc-input-text
-              class="logs-filter-input"
-              label=${i18n('cc-logs-application-view.filter')}
-              .value=${this._textFilter}
-              inline
-              @cc-input-text:input=${this._onTextFilterInput}
-            ></cc-input-text>
+            <div class="input-wrapper">
+              <cc-input-text
+                class="logs-filter-input"
+                label=${i18n('cc-logs-application-view.filter')}
+                .value=${this._messageFilter}
+                inline
+                @cc-input-text:input=${this._onTextFilterInput}
+              >
+              </cc-input-text>
+              
+              <div class="inner-buttons-wrapper">
+                ${!this._messageFilterValid ? html`
+                  <div class="logs-filter-input-error" id="logs-filter-input-error">${i18n('cc-logs-application-view.filter.bad-format')}</div>
+                ` : ''} 
+                <button
+                  data-mode="strict"
+                  title="${strictToggleButtonLabel}"
+                  aria-label="${strictToggleButtonLabel}"
+                  aria-pressed=${this._messageFilterMode === 'strict'}
+                  @click=${this._onTextFilterModeClick}
+                >“”</button>
+                <button
+                  data-mode="regex"
+                  title="${regexToggleButtonLabel}"
+                  aria-label="${regexToggleButtonLabel}"
+                  aria-pressed=${this._messageFilterMode === 'regex'}
+                  @click=${this._onTextFilterModeClick}
+                  aria-describedby="${this._messageFilterValid ? '' : 'logs-filter-input-error'}"
+                >.*</button>
+              </div>
+            </div>
+            
             <cc-button
               class="header-fullscreen-button"
               .icon=${this._fullscreen ? fullscreenExitIcon : fullscreenIcon}
@@ -895,10 +975,12 @@ export class CcLogsApplicationView extends LitElement {
     return [
       // language=CSS
       css`
+        /* stylelint-disable no-duplicate-selectors */
+        
         :host {
           display: block;
         }
-        
+
         .overlay {
           display: flex;
           height: 100%;
@@ -919,7 +1001,7 @@ export class CcLogsApplicationView extends LitElement {
           flex: 1;
           gap: 0.5em;
         }
-        
+
         .wrapper.fullscreen {
           padding: 1em;
           border: 1px solid var(--cc-color-border-neutral);
@@ -927,7 +1009,7 @@ export class CcLogsApplicationView extends LitElement {
           background-color: var(--cc-color-bg-default);
           border-radius: var(--cc-border-radius-default);
         }
-        
+
         .left {
           display: flex;
           width: 18em;
@@ -935,7 +1017,7 @@ export class CcLogsApplicationView extends LitElement {
           flex-direction: column;
           gap: 0.5em;
         }
-        
+
         .cc-logs-instances {
           flex: 1;
           border: 1px solid var(--cc-color-border-neutral, #aaa);
@@ -958,7 +1040,7 @@ export class CcLogsApplicationView extends LitElement {
           gap: 0.75em;
           grid-area: date-range;
         }
-        
+
         .date-range-buttons {
           display: grid;
           align-items: center;
@@ -970,13 +1052,13 @@ export class CcLogsApplicationView extends LitElement {
         .date-range-apply-button {
           grid-area: apply;
         }
-        
+
         .date-range-selection {
           --cc-button-font-weight: normal;
           --cc-button-text-transform: none;
           --cc-popover-trigger-button-width: 100%;
         }
-        
+
         .date-range-selection-button-content {
           display: flex;
           align-items: center;
@@ -993,7 +1075,7 @@ export class CcLogsApplicationView extends LitElement {
         .date-range-selection-button-content cc-icon {
           transition: transform 0.2s;
         }
-        
+
         .date-range-selection[is-open] .date-range-selection-button-content cc-icon {
           transform: rotate(180deg);
         }
@@ -1001,7 +1083,7 @@ export class CcLogsApplicationView extends LitElement {
         .date-range-selection-list {
           display: flex;
         }
-        
+
         button {
           display: block;
           padding: 0;
@@ -1047,7 +1129,7 @@ export class CcLogsApplicationView extends LitElement {
           border-top-right-radius: var(--cc-border-radius-default, 0.25em);
           gap: 0.3em;
         }
-        
+
         .loading-state-title {
           flex: 1;
           color: var(--cc-color-text-default, #000);
@@ -1061,7 +1143,7 @@ export class CcLogsApplicationView extends LitElement {
           color: var(--cc-color-text-weak);
           gap: 1em;
         }
-        
+
         .progress-bar {
           overflow: hidden;
           width: 100%;
@@ -1079,7 +1161,7 @@ export class CcLogsApplicationView extends LitElement {
           animation: indeterminate-animation 1s infinite linear;
           transform-origin: 0 50%;
         }
-        
+
         .overflow-control {
           display: flex;
           gap: 1.5em;
@@ -1108,18 +1190,20 @@ export class CcLogsApplicationView extends LitElement {
         .logs {
           height: 100%;
         }
-        
+
         .logs-header {
           display: flex;
           width: 100%;
           align-items: center;
           gap: 1em;
         }
-        
+
         .logs-filter-input {
+          --cc-input-font-family: var(--cc-ff-monospace, monospace);
+          
           flex: 1;
         }
-        
+
         .center-logs-wrapper {
           display: flex;
           height: 100%;
@@ -1145,9 +1229,77 @@ export class CcLogsApplicationView extends LitElement {
           width: 1.5em;
           height: 1.5em;
         }
-        
+
         .spacer {
           flex: 1;
+        }
+
+        .input-wrapper {
+          position: relative;
+          display: flex;
+          flex: 1;
+        }
+
+        .input-wrapper .inner-buttons-wrapper {
+          position: absolute;
+          z-index: 2;
+          right: 5px;
+          display: flex;
+          height: 100%;
+          align-items: center;
+        }
+
+        .inner-buttons-wrapper button {
+          width: 1.6em;
+          height: 1.6em;
+          flex-shrink: 0;
+          background: var(--cc-color-bg-default, #fff);
+          border-radius: var(--cc-border-radius-default, 0.15em);
+          color: var(--cc-input-btn-icons-color, #595959);
+          cursor: pointer;
+          font-family: var(--cc-ff-monospace, monospace);
+        }
+
+        .inner-buttons-wrapper button:focus {
+          z-index: 1;
+          outline: var(--cc-focus-outline, #000 solid 2px);
+          outline-offset: var(--cc-focus-outline-offset, 2px);
+        }
+
+        .inner-buttons-wrapper button:active,
+        .inner-buttons-wrapper button:hover {
+          box-shadow: none;
+          outline: 0;
+        }
+
+        .inner-buttons-wrapper button:hover {
+          background-color: var(--cc-color-bg-neutral-hovered);
+        }
+
+        .inner-buttons-wrapper button:active,
+        .inner-buttons-wrapper button[aria-pressed='true'] {
+          background-color: var(--cc-color-bg-neutral-active);
+          color: var(--cc-color-text-primary);
+        }
+
+        .inner-buttons-wrapper button::-moz-focus-inner {
+          border: 0;
+        }
+
+        .inner-buttons-wrapper button:first-of-type {
+          border-bottom-right-radius: 0;
+          border-top-right-radius: 0;
+        }
+        
+        .inner-buttons-wrapper button:last-of-type {
+          border-bottom-left-radius: 0;
+          border-top-left-radius: 0;
+        }
+
+        .logs-filter-input-error {
+          margin-right: 0.5em;
+          background: var(--cc-color-bg-default, #fff);
+          color: var(--cc-color-text-danger);
         }
       `,
     ];

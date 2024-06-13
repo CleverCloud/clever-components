@@ -1,10 +1,17 @@
 /**
  * @typedef {import('./cc-logs.types.js').Log} Log
+ * @typedef {import('./cc-logs.types.js').LogFilter} LogFilter
  * @typedef {import('./cc-logs.types.js').MetadataFilter} MetadataFilter
+ * @typedef {import('./cc-logs.types.js').LogMessageFilter} LogMessageFilter
+ * @typedef {import('./cc-logs.types.js').LogMessageFilterMode} LogMessageFilterMode
  * @typedef {import('./cc-logs.js').CcLogs} CcLogs
  */
 
+import { parseRegex } from '../../lib/regex-parse.js';
+import { isStringEmpty } from '../../lib/utils.js';
+
 const truePredicate = () => true;
+const falsePredicate = () => false;
 
 /**
  * Controls the logic of the cc-logs component.
@@ -43,6 +50,9 @@ export class LogsController {
     }
   }
 
+  /**
+   * @param {LogFilter} filter
+   */
   set filter (filter) {
     if (filter == null) {
       this._filterCallback = truePredicate;
@@ -371,16 +381,29 @@ export class LogsController {
   }
 
   /**
-   *
-   * @param {string} messageFilter
+   * @param {LogMessageFilter} messageFilter
    * @return {((log: Log) => boolean)}
    */
   _getMessageFilterCallback (messageFilter) {
-    if (messageFilter == null || messageFilter.length === 0) {
+    if (messageFilter == null || isStringEmpty(messageFilter.value)) {
       return truePredicate;
     }
 
-    const tokens = messageFilter.trim().toLowerCase().split(' ').filter((t) => t.length > 0);
+    if (messageFilter.type === 'strict') {
+      return (log) => log.message.includes(messageFilter.value);
+    }
+
+    if (messageFilter.type === 'regex') {
+      try {
+        const regex = parseRegex(messageFilter.value);
+        return (log) => log.message.match(regex) != null;
+      }
+      catch (e) {
+        return falsePredicate;
+      }
+    }
+
+    const tokens = messageFilter.value.trim().toLowerCase().split(' ').filter((t) => t.length > 0);
 
     return (log) => {
       const message = log.message.toLowerCase();
