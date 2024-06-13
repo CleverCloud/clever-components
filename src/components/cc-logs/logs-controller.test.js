@@ -209,36 +209,18 @@ describe('', () => {
   });
 
   describe('filter', () => {
-    it('should be applied when setting new filter on metadata', () => {
-      const logs = appendLogsWithMetadata();
+    describe('with metadata filter', () => {
+      it('should be applied when setting new filter on metadata', () => {
+        const logs = appendLogsWithMetadata();
 
-      logsCtrl.filter = {
-        metadata: [
-          { metadata: 'A', value: 'a' },
-        ],
-      };
+        logsCtrl.filter = {
+          metadata: [
+            { metadata: 'A', value: 'a' },
+          ],
+        };
 
-      assertListByIndex(logs, [0, 4, 8, 12, 16, 20]);
-    });
-
-    it('should be applied when setting new filter on message', () => {
-      const logs = appendLogsWithMetadata();
-
-      logsCtrl.filter = {
-        message: '00004',
-      };
-
-      assertListByIndex(logs, [4]);
-    });
-
-    it('should be applied when setting new filter on message with multiple keywords', () => {
-      const logs = appendLogsWithMetadata();
-
-      logsCtrl.filter = {
-        message: '00004 Message',
-      };
-
-      assertListByIndex(logs, [4]);
+        assertListByIndex(logs, [0, 4, 8, 12, 16, 20]);
+      });
     });
 
     it('should request host update when setting new filter', () => {
@@ -322,7 +304,10 @@ describe('', () => {
       const logs = appendLogsWithMetadata();
 
       logsCtrl.filter = {
-        message: '0000',
+        message: {
+          type: 'loose',
+          value: '0000',
+        },
         metadata: [
           { metadata: 'A', value: 'a' },
         ],
@@ -331,35 +316,181 @@ describe('', () => {
       assertListByIndex(logs, [0, 4, 8]);
     });
 
-    it('should use AND boolean operator when filtering on message with multiple keywords', () => {
-      const logs = appendLogsWithMetadata();
+    describe('with loose message filter', () => {
+      it('should be applied', () => {
+        const logs = appendLogsWithMetadata();
 
-      logsCtrl.filter = {
-        message: '00004 00001',
-      };
+        logsCtrl.filter = {
+          message: {
+            type: 'loose',
+            value: '00004',
+          },
+        };
 
-      assertListByIndex(logs, []);
+        assertListByIndex(logs, [4]);
+      });
+
+      it('should be applied with multiple keywords', () => {
+        const logs = appendLogsWithMetadata();
+
+        logsCtrl.filter = {
+          message: {
+            type: 'loose',
+            value: '00004 Message',
+          },
+        };
+
+        assertListByIndex(logs, [4]);
+      });
+
+      it('should use AND boolean operator with multiple keywords', () => {
+        const logs = appendLogsWithMetadata();
+
+        logsCtrl.filter = {
+          message: {
+            type: 'loose',
+            value: '00004 00001',
+          },
+        };
+
+        assertListByIndex(logs, []);
+      });
+
+      it('should use be case insensitive', () => {
+        const logs = appendLogsWithMetadata();
+
+        logsCtrl.filter = {
+          message: {
+            type: 'loose',
+            value: '00004 meSsAgE',
+          },
+        };
+
+        assertListByIndex(logs, [4]);
+      });
+
+      it('should ignore empty spaces', () => {
+        const logs = appendLogsWithMetadata();
+
+        logsCtrl.filter = {
+          message: {
+            type: 'loose',
+            value: '   00004    Message   ',
+          },
+        };
+
+        assertListByIndex(logs, [4]);
+      });
     });
 
-    it('should use be case insensitive when filtering on message with multiple keywords', () => {
-      const logs = appendLogsWithMetadata();
+    describe('with strict filter', () => {
+      it('should match with exact string', () => {
+        const logs = appendLogsWithMetadata();
 
-      logsCtrl.filter = {
-        message: '00004 meSsAgE',
-      };
+        logsCtrl.filter = {
+          message: {
+            type: 'strict',
+            value: 'Message 00004',
+          },
+        };
 
-      assertListByIndex(logs, [4]);
+        assertListByIndex(logs, [4]);
+      });
+
+      it('should not match with string without the same case', () => {
+        const logs = appendLogsWithMetadata();
+
+        logsCtrl.filter = {
+          message: {
+            type: 'strict',
+            value: 'MeSSaGe 00004',
+          },
+        };
+
+        assertListByIndex(logs, []);
+      });
+
+      it('should not match with tokens upside down', () => {
+        const logs = appendLogsWithMetadata();
+
+        logsCtrl.filter = {
+          message: {
+            type: 'strict',
+            value: '00004 Message',
+          },
+        };
+
+        assertListByIndex(logs, []);
+      });
+
+      it('should not match with extra spaces', () => {
+        const logs = appendLogsWithMetadata();
+
+        logsCtrl.filter = {
+          message: {
+            type: 'strict',
+            value: 'Message  00004',
+          },
+        };
+
+        assertListByIndex(logs, []);
+      });
     });
 
-    it('should ignore empty spaces when filtering on message with multiple keywords', () => {
-      const logs = appendLogsWithMetadata();
+    describe('with regex filter', () => {
+      it('should match with exact string', () => {
+        const logs = appendLogsWithMetadata();
 
-      logsCtrl.filter = {
-        message: '   00004    Message   ',
-      };
+        logsCtrl.filter = {
+          message: {
+            type: 'regex',
+            value: 'Message 00004',
+          },
+        };
 
-      assertListByIndex(logs, [4]);
+        assertListByIndex(logs, [4]);
+      });
+
+      it('should not match with invalid regex', () => {
+        const logs = appendLogsWithMetadata();
+
+        logsCtrl.filter = {
+          message: {
+            type: 'regex',
+            value: 'Message 00004(',
+          },
+        };
+
+        assertListByIndex(logs, []);
+      });
+
+      it('should match with regex', () => {
+        const logs = appendLogsWithMetadata();
+
+        logsCtrl.filter = {
+          message: {
+            type: 'regex',
+            value: 'Message 0{4}[1234]',
+          },
+        };
+
+        assertListByIndex(logs, [1, 2, 3, 4]);
+      });
+
+      it('should match with regex and flags', () => {
+        const logs = appendLogsWithMetadata();
+
+        logsCtrl.filter = {
+          message: {
+            type: 'regex',
+            value: '/message 00004/i',
+          },
+        };
+
+        assertListByIndex(logs, [4]);
+      });
     });
+
   });
 
   describe('selection', () => {

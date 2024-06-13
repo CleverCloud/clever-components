@@ -20,6 +20,7 @@ import { hasClass } from '../../lib/dom.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { notifySuccess } from '../../lib/notifications.js';
+import { isStringEmpty } from '../../lib/utils.js';
 import { DateDisplayer } from './date-displayer.js';
 import { LogsController } from './logs-controller.js';
 import { LogsInputController } from './logs-input-controller.js';
@@ -69,6 +70,7 @@ class TemporaryFunctionDisabler {
  * @typedef {import('./cc-logs.types.js').Log} Log
  * @typedef {import('./cc-logs.types.js').MetadataFilter} MetadataFilter
  * @typedef {import('./cc-logs.types.js').MetadataRenderer} MetadataRenderer
+ * @typedef {import('./cc-logs.types.js').LogMessageFilterMode} LogMessageFilterMode
  * @typedef {import('./date-display.types.js').DateDisplay} DateDisplay
  * @typedef {import('../../lib/date/date.types.js').Timezone} Timezone
  */
@@ -220,6 +222,7 @@ export class CcLogs extends LitElement {
       limit: { type: Number },
       logs: { type: Array },
       messageFilter: { type: String, attribute: 'message-filter' },
+      messageFilterMode: { type: String, attribute: 'message-filter-mode' },
       metadataFilter: { type: Array, attribute: 'metadata-filter' },
       metadataRenderers: { type: Object },
       stripAnsi: { type: Boolean, attribute: 'strip-ansi' },
@@ -244,6 +247,9 @@ export class CcLogs extends LitElement {
 
     /** @type {string|null} The filter to apply onto the logs' message. */
     this.messageFilter = null;
+
+    /** @type {LogMessageFilterMode} The mode used to filter by message. */
+    this.messageFilterMode = 'loose';
 
     /** @type {Array<MetadataFilter>} The filter to apply onto the logs' metadata. */
     this.metadataFilter = [];
@@ -705,9 +711,9 @@ export class CcLogs extends LitElement {
       this._logsCtrl.limit = this.limit;
     }
 
-    if (changedProperties.has('messageFilter') || changedProperties.has('metadataFilter')) {
+    if (changedProperties.has('messageFilter') || changedProperties.has('messageFilterMode') || changedProperties.has('metadataFilter')) {
       this._logsCtrl.filter = {
-        message: this.messageFilter,
+        message: isStringEmpty(this.messageFilter) ? null : { value: this.messageFilter, type: this.messageFilterMode },
         metadata: this.metadataFilter,
       };
     }

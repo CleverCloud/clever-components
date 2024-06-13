@@ -29,3 +29,15 @@ export interface MetadataFilter {
   metadata: string;
   value: string;
 }
+
+export type LogMessageFilterMode = 'loose' | 'strict' | 'regex';
+
+export interface LogFilter {
+  message: LogMessageFilter;
+  metadata: Array<MetadataFilter>;
+}
+
+export interface LogMessageFilter {
+  type: string;
+  value: string;
+}

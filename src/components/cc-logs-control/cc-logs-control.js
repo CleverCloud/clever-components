@@ -42,6 +42,7 @@ const PALETTES = {
  * @typedef {import('../cc-logs/cc-logs.types.js').Log} Log
  * @typedef {import('../cc-logs/cc-logs.types.js').MetadataFilter} MetadataFilter
  * @typedef {import('../cc-logs/cc-logs.types.js').MetadataRenderer} MetadataRenderer
+ * @typedef {import('../cc-logs/cc-logs.types.js').LogMessageFilterMode} LogMessageFilterMode
  * @typedef {import('./cc-logs-control.types.js').LogsMetadataDisplay} LogsMetadataDisplay
  * @typedef {import('./cc-logs-control.types.js').LogsControlPalette} LogsControlPalette
  * @typedef {import('./cc-logs-control.types.js').LogsControlOption} LogsControlOption
@@ -82,6 +83,7 @@ export class CcLogsControl extends LitElement {
       logs: { type: Array },
       metadataDisplay: { type: Object },
       messageFilter: { type: String, attribute: 'message-filter' },
+      messageFilterMode: { type: String, attribute: 'message-filter-mode' },
       metadataFilter: { type: Array, attribute: 'metadata-filter' },
       metadataRenderers: { type: Object },
       palette: { type: String },
@@ -108,6 +110,9 @@ export class CcLogsControl extends LitElement {
 
     /** @type {string|null} The filter to apply onto the logs' message. */
     this.messageFilter = null;
+
+    /** @type {LogMessageFilterMode} The mode used to filter by message. */
+    this.messageFilterMode = 'loose';
 
     /** @type {{[key: string]: LogsMetadataDisplay}} An object where key is the metadata name and value controls whether the corresponding metadata should be displayed. */
     this.metadataDisplay = {};
@@ -317,6 +322,7 @@ export class CcLogsControl extends LitElement {
         .limit=${this.limit}
         .logs=${this.logs}
         .messageFilter=${this.messageFilter}
+        .messageFilterMode=${this.messageFilterMode}
         .metadataFilter=${this.metadataFilter}
         .metadataRenderers=${this._resolvedMetadataRenderers}
         ?strip-ansi=${this.stripAnsi}
