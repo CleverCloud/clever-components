@@ -224,6 +224,7 @@ export class CcHeaderOrga extends LitElement {
 
         .enterprise-row {
           display: flex;
+          align-items: center;
           gap: 0.5em;
         }
 
