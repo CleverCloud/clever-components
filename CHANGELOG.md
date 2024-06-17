@@ -5,6 +5,14 @@ title: 'Changelog'
 
 # Changelog
 
+## [14.0.1](https://github.com/CleverCloud/clever-components/compare/14.0.0...14.0.1) (2024-06-17)
+
+
+### 🐛 Bug Fixes
+
+* **cc-header-orga:** center enterprise icons vertically ([0fc4a8a](https://github.com/CleverCloud/clever-components/commit/0fc4a8a3284a19ee173f645853fa9ff727239fbb)), closes [#1084](https://github.com/CleverCloud/clever-components/issues/1084)
+* **cc-tile-status-codes.smart:** pass `warpConfig` instead of `apiConfig` ([bdd02cd](https://github.com/CleverCloud/clever-components/commit/bdd02cda92e186b569955f9904f3e13f95f10fb9)), closes [#1085](https://github.com/CleverCloud/clever-components/issues/1085)
+
 ## [14.0.0](https://github.com/CleverCloud/clever-components/compare/13.3.1...14.0.0) (2024-06-12)
 
 
