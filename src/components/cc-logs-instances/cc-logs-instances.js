@@ -491,6 +491,7 @@ export class CcLogsInstances extends LitElement {
         class: 'instance-state--deleted',
       };
     }
+    return null;
   }
 
   /**
@@ -500,7 +501,7 @@ export class CcLogsInstances extends LitElement {
   _renderInstanceState (instance) {
     const icon = this._getInstanceStateIcon(instance);
     if (icon == null) {
-      return null;
+      return html`<span></span>`;
     }
 
     return html`
