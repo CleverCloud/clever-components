@@ -27,14 +27,11 @@ import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { parseRegex } from '../../lib/regex-parse.js';
 import { isStringEmpty } from '../../lib/utils.js';
+import { dateRangeSelectionToDateRange } from './date-range-selection.js';
 import {
-  getRangeToNow,
   isLive,
   isRightDateRangeAfterNow,
-  lastXDays,
   shiftDateRange,
-  today,
-  yesterday,
 } from './date-range.js';
 
 /** @type {{instanceId: MetadataRenderer, instance: MetadataRenderer}} */
@@ -92,6 +89,7 @@ const MENU_ENTRIES = ['live', 'lastHour', 'last4Hours', 'today', 'yesterday', 'l
 /**
  *
  * @fires {CustomEvent<DateRange>} cc-logs-application-view:date-range-change - Fires the `range` whenever the `range` changes.
+ * @fires {CustomEvent<DateRangeSelection>} cc-logs-application-view:date-range-selection-change - Fires the `range selection` whenever the `range selection` changes.
  * @fires {CustomEvent<void>} cc-logs-application-view:pause - Fires when the pause button is clicked.
  * @fires {CustomEvent<void>} cc-logs-application-view:resume - Fires when the resume button is clicked.
  *
@@ -158,7 +156,7 @@ export class CcLogsApplicationView extends LitElement {
     this._customDateRange = null;
 
     /** @type {DateRange} */
-    this._currentDateRange = this._toDateRange(this.dateRangeSelection);
+    this._currentDateRange = dateRangeSelectionToDateRange(this.dateRangeSelection);
 
     /** @type {{until: Validity, since: Validity}} */
     this._dateRangeValidation = {
@@ -331,47 +329,20 @@ export class CcLogsApplicationView extends LitElement {
     if (code === 'rangeUnderflow') {
       return i18n('cc-logs-application-view.custom-date-range.date.range-underflow', minMax);
     }
+
+    return null;
   }
 
   /**
    * @param {DateRangeSelection} dateRangeSelection
-   * @return {DateRange}
    */
-  _toDateRange (dateRangeSelection) {
-    switch (dateRangeSelection.type) {
-      case 'custom':
-        return {
-          since: dateRangeSelection.since,
-          until: dateRangeSelection.until,
-        };
-      case 'live':
-        return {
-          since: getRangeToNow(1000 * 60 * 10).since,
-        };
-      case 'predefined':
-        switch (dateRangeSelection.def) {
-          case 'lastHour':
-            return getRangeToNow(1000 * 60 * 60);
-          case 'last4Hours':
-            return getRangeToNow(1000 * 60 * 60 * 4);
-          case 'last7Days':
-            return lastXDays(7);
-          case 'today':
-            return today();
-          case 'yesterday':
-            return yesterday();
-        }
-    }
-  }
-
-  /**
-   * @param {DateRange} dateRange
-   */
-  _applyDateRange (dateRange) {
+  _applyDateRange (dateRangeSelection) {
     this._loadingProgressCtrl.cancel();
-    this._currentDateRange = dateRange;
+    this.dateRangeSelection = dateRangeSelection;
+    this._currentDateRange = dateRangeSelectionToDateRange(this.dateRangeSelection);
     this._overflowDecision = 'none';
     dispatchCustomEvent(this, 'date-range-change', this._currentDateRange);
+    dispatchCustomEvent(this, 'date-range-selection-change', this.dateRangeSelection);
   }
 
   _validateMessageFilter () {
@@ -410,27 +381,22 @@ export class CcLogsApplicationView extends LitElement {
     }
 
     if (this._selectedDateRangeMenuEntry === 'custom') {
-      this._customDateRange = {
+      this.dateRangeSelection = {
+        type: 'custom',
         since: this._currentDateRange.since,
         until: isLive(this._currentDateRange) ? new Date().toISOString() : this._currentDateRange.until,
       };
     }
     else if (this._selectedDateRangeMenuEntry === 'live') {
-      this.dateRangeSelection = {
+      this._applyDateRange({
         type: 'live',
-      };
-
-      this._customDateRange = null;
-      this._applyDateRange(this._toDateRange(this.dateRangeSelection));
+      });
     }
     else {
-      this.dateRangeSelection = {
+      this._applyDateRange({
         type: 'predefined',
         def: this._selectedDateRangeMenuEntry,
-      };
-
-      this._customDateRange = null;
-      this._applyDateRange(this._toDateRange(this.dateRangeSelection));
+      });
     }
   }
 
@@ -472,7 +438,13 @@ export class CcLogsApplicationView extends LitElement {
   }
 
   _onApplyCustomDateRange () {
-    this._applyDateRange(this._customDateRange);
+    this._applyDateRange(
+      {
+        type: 'custom',
+        since: this._customDateRange.since,
+        until: this._customDateRange.until,
+      },
+    );
   }
 
   _onInstanceSelectionChange ({ detail: instances }) {
@@ -585,7 +557,7 @@ export class CcLogsApplicationView extends LitElement {
         since: this.dateRangeSelection.since,
         until: this.dateRangeSelection.until,
       } : null;
-      this._currentDateRange = this._toDateRange(this.dateRangeSelection);
+      this._currentDateRange = dateRangeSelectionToDateRange(this.dateRangeSelection);
     }
     if (stateTypeHasChanged) {
       if (this.state.type === 'errorLogs') {
