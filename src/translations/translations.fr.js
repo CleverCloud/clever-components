@@ -249,6 +249,87 @@ export const translations = {
   //#region cc-doc-list
   'cc-doc-list.error': `Une erreur est survenue pendant le chargement de la documentation`,
   //#endregion
+  //#region cc-domain-management
+  'cc-domain-management.certif.automated': () =>
+    sanitize`Que vous utilisiez <code>cleverapps.io</code> ou vos propres noms de domaine avec les applications hébergées par Clever Cloud, un certificat Let's Encrypt est automatiquement généré et renouvelé pour l'accès HTTPS/TLS. Vous n'avez rien à faire. Pour les cas spécifiques, reportez-vous à notre <a href="https://developers.clever-cloud.com/doc/administrate/ssl/" lang="en">documentation</a>.`,
+  'cc-domain-management.certif.custom': () =>
+    sanitize`Vous pouvez fournir votre propre certificat grâce au <a href="https://api.clever-cloud.com/v2/certificates/new">gestionnaire de certificats Clever Cloud</a>.`,
+  'cc-domain-management.certif.heading': `Sécurisez votre application`,
+  'cc-domain-management.dns.a.desc':
+    () => sanitize`<p>Si vous choisissez d'utiliser des enregistrements de type <code>A</code>, vous devrez vous-même assurer leur mise à jour.</p>
+  <p>Pensez à suivre notre <a href="https://developers.clever-cloud.com/changelog/" lang="en">changelog</a> ou à utiliser notre <a href="https://developers.clever-cloud.com/api/v4/#load-balancers" lang="en">API v4</a> pour cela.</p>`,
+  'cc-domain-management.dns.a.heading': `Enregistrements A`,
+  'cc-domain-management.dns.a.label': ({ index }) => `Valeur d'enregistrement A numéro ${index}`,
+  'cc-domain-management.dns.cname.desc': () =>
+    sanitize`<p>Utiliser un enregistrement <code>CNAME</code> est fortement recommandé. Ainsi, votre configuration est automatiquement maintenue à jour.`,
+  'cc-domain-management.dns.cname.heading': `Enregistrement CNAME`,
+  'cc-domain-management.dns.cname.label': `Valeur d'enregistrement CNAME`,
+  'cc-domain-management.dns.desc': () =>
+    sanitize`<p>Afin de lier un domaine géré par un fournisseur tiers à votre application Clever Cloud, vous devez configurer votre zone DNS. Pour cela, vous pouvez utiliser un enregistrement <code>CNAME</code> ou <code>A</code>. L'enregistrement <code>CNAME</code> est à privilégier puisque vous n'aurez pas à le reconfigurer si nous modifions nos IP d'accès.</p>`,
+  'cc-domain-management.dns.heading': `Configurez vos DNS`,
+  'cc-domain-management.dns.info.apex': () =>
+    sanitize`Pour un domaine APEX ou un sous-domaine disposant déjà d'une zone DNS, référez-vous à notre <a href="https://developers.clever-cloud.com/doc/administrate/domain-names/">documentation</a>.`,
+  'cc-domain-management.dns.info.heading': `Load balancers dédiés et cas spécifiques`,
+  'cc-domain-management.dns.info.load-balancer': () =>
+    sanitize`Si vous bénéficiez d'un <span lang="en">load balancer</span> dédié, référez-vous à sa configuration ou contactez le support. Notre équipe pourra également vous aider pour commander un tel service.`,
+  'cc-domain-management.dns.loading-error': `Une erreur est survenue pendant le chargement des informations DNS`,
+  'cc-domain-management.form.domain.error.contains-path': ({ path }) =>
+    `Saisissez la partie "${path}" dans le champ "Route"`,
+  'cc-domain-management.form.domain.error.empty': `Saisissez un nom de domaine`,
+  'cc-domain-management.form.domain.error.format': `Saisissez un domaine valide, par exemple "example.com"`,
+  'cc-domain-management.form.domain.error.wildcard': () =>
+    sanitize`Saisissez un domaine valide.<br>Les <span lang="en">wildcard</span> "*" ne peuvent être utilisés qu'en sous-domaine, par exemple&nbsp;: "*.example.com"`,
+  'cc-domain-management.form.domain.help': () =>
+    sanitize`Par exemple: <code>example.com</code>, <code>*.example.com</code> ou <code>example.cleverapps.io</code>`,
+  'cc-domain-management.form.domain.label': `Nom de domaine`,
+  'cc-domain-management.form.info.cleverapps': () =>
+    sanitize`Par défaut, une application se voit attribuer un nom de domaine en <code>app_id.cleverapps.io</code>. Vous pouvez le supprimer ou changer le sous-domaine librement, mais <code>xxx.cleverapps.io</code> doit uniquement être utilisé à des fins de test (voir notre <a href="https://developers.clever-cloud.com/doc/administrate/domain-names/#using-a-cleverappsio-free-domain-with-built-in-ssl">documentation</a>).`,
+  'cc-domain-management.form.info.docs': `Vous pouvez associer un ou plusieurs noms de domaines à votre application. Le domaine principal est celui qui sera utilisé dans les liens de la Console et dans les e-mails qui vous serons envoyés. Plusieurs applications peuvent partager un même domaine, chacune avec un sous-domaine et/ou une route spécifique.`,
+  'cc-domain-management.form.path.help': () => sanitize`Par exemple: <code>/api</code> ou <code>/blog</code>`,
+  'cc-domain-management.form.path.label': `Route`,
+  'cc-domain-management.form.submit': `Ajouter le domaine`,
+  'cc-domain-management.form.submit.error': ({ domain }) =>
+    `Une erreur est survenue lors de l'ajout du nom de domaine "${domain}"`,
+  'cc-domain-management.form.submit.error-duplicate.heading': `Nom de domaine indisponible`,
+  'cc-domain-management.form.submit.error-duplicate.text': ({
+    domain,
+  }) => sanitize`<p>"${domain}" est déjà associé à une application au sein de Clever Cloud.</p>
+  <p>Contactez notre équipe support pour plus d'informations.</p>`,
+  'cc-domain-management.form.submit.success': ({ domain }) => `"${domain}" a bien été associé à votre application`,
+  'cc-domain-management.form.submit.success-config': ({
+    domain,
+  }) => sanitize`<p>"${domain}" a bien été associé à votre application.</p>
+  <p>Une configuration manuelle est nécessaire pour faire pointer votre domaine vers Clever Cloud. Consultez la section <strong>Configurez vos DNS</strong> pour plus d'informations.</p>`,
+  'cc-domain-management.list.badge.http-only.alt': `Avertissement`,
+  'cc-domain-management.list.badge.http-only.text': `HTTP uniquement`,
+  'cc-domain-management.list.badge.primary': `Principal`,
+  'cc-domain-management.list.badge.testing-only': `Tests uniquement`,
+  'cc-domain-management.list.btn.delete.a11y-name': ({ domain }) => `Supprimer le nom de domaine - ${domain}`,
+  'cc-domain-management.list.btn.delete.text': `Supprimer`,
+  'cc-domain-management.list.btn.primary.a11y-name': ({ domain }) =>
+    `Définir comme nom de domaine principal - ${domain}`,
+  'cc-domain-management.list.btn.primary.text': `Définir comme principal`,
+  'cc-domain-management.list.delete.error': ({ domain }) =>
+    `Une erreur est survenue lors de la suppression du nom de domaine "${domain}"`,
+  'cc-domain-management.list.delete.success': ({ domain }) => `"${domain}" a bien été supprimé`,
+  'cc-domain-management.list.empty': `Aucun domaine associé à cette application`,
+  'cc-domain-management.list.error-not-found.heading': `Nom de domaine introuvable`,
+  'cc-domain-management.list.error-not-found.text': ({
+    domain,
+  }) => sanitize`<p>"${domain}" a peut-être été supprimé après le chargement de la liste des domaines.</p>
+  <p><strong>Rechargez votre page</strong> pour récupérer la liste des domaines à jour.</p>`,
+  'cc-domain-management.list.heading': `Noms de domaines liés à cette application`,
+  'cc-domain-management.list.http-only.notice': () =>
+    sanitize`Les sous-domaines ne sont pas couverts par le certificat SSL de <code>*.cleverapps.io</code>. Ils ne bénéficient donc pas de HTTPS.`,
+  'cc-domain-management.list.link.title': ({ domainUrl }) => `Ouvrir - ${domainUrl} - nouvelle fenêtre`,
+  'cc-domain-management.list.loading-error': `Une erreur est survenue pendant le chargement des domaines associés à cette application`,
+  'cc-domain-management.list.primary.error': ({ domain }) =>
+    `Une erreur est survenue lors du passage du nom de domaine "${domain}" en domaine principal`,
+  'cc-domain-management.list.primary.success': ({ domain }) =>
+    `"${domain}" a bien été défini comme nom de domaine principal`,
+  'cc-domain-management.main-heading': `Gérez vos noms de domaine`,
+  'cc-domain-management.new-window': `Nouvelle fenêtre`,
+  //#endregion
   //#region cc-elasticsearch-info
   'cc-elasticsearch-info.error': `Une erreur est survenue pendant le chargement des liens des add-on liés à cette application.`,
   'cc-elasticsearch-info.info': `Info`,

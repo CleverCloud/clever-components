@@ -238,6 +238,86 @@ export const translations = {
   //#region cc-doc-list
   'cc-doc-list.error': `An error occurred while loading documentation`,
   //#endregion
+  //#region cc-domain-management
+  'cc-domain-management.certif.automated': () =>
+    sanitize`Whether you use <code>cleverapps.io</code> or your own domain names with applications hosted by Clever Cloud, a Let's Encrypt certificate is automatically issued and renewed for HTTPS/TLS access. No action is required from you, this is all automated. For specific cases, refer to <a href="https://developers.clever-cloud.com/doc/administrate/ssl/">Installing TLS Certificates</a>.`,
+  'cc-domain-management.certif.custom': () =>
+    sanitize`You can provide your own certificate by using the <a href="https://api.clever-cloud.com/v2/certificates/new">Clever Cloud Certificate Manager</a>.`,
+  'cc-domain-management.certif.heading': `Secure your application`,
+  'cc-domain-management.dns.a.desc':
+    () => sanitize`<p>If you choose to use <code>A</code> records, you'll need to update them yourself.</p>
+  <p>Follow our <a href="https://developers.clever-cloud.com/changelog/">changelog</a> or check our <a href="https://developers.clever-cloud.com/api/v4/#load-balancers">v4 API documentation</a> for this.</p>`,
+  'cc-domain-management.dns.a.heading': `A records`,
+  'cc-domain-management.dns.a.label': ({ index }) => `A Record value number ${index}`,
+  'cc-domain-management.dns.cname.desc': () =>
+    sanitize`<p>Using a <code>CNAME</code> record is recommended. This automatically keeps your configuration up to date.</p>`,
+  'cc-domain-management.dns.cname.heading': `CNAME record`,
+  'cc-domain-management.dns.cname.label': `CNAME record value`,
+  'cc-domain-management.dns.desc':
+    () => sanitize`<p>To associate a domain managed by a third-party provider to your Clever Cloud application, you need to configure its DNS zone.</p>
+  <p>This may be achieved using a <code>CNAME</code> or <code>A</code> records. We recommend using a <code>CNAME</code> record, as you won't have to reconfigure it if we change our IPs.</p>`,
+  'cc-domain-management.dns.heading': `Configure your DNS`,
+  'cc-domain-management.dns.info.apex': () =>
+    sanitize`For APEX domains or subdomains with an existing DNS zone, refer to our <a href="https://developers.clever-cloud.com/doc/administrate/domain-names/">DNS & Domains documentation</a>.`,
+  'cc-domain-management.dns.info.heading': `Dedicated load balancers & specific cases`,
+  'cc-domain-management.dns.info.load-balancer': `If you are using a dedicated load balancer, refer to its configuration or contact support. Our team can also help you to order such a service.`,
+  'cc-domain-management.dns.loading-error': `Something went wrong while loading DNS information`,
+  'cc-domain-management.form.domain.error.contains-path': ({ path }) =>
+    `Enter the "${path}" part within the "Path" input field`,
+  'cc-domain-management.form.domain.error.empty': `Enter a domain`,
+  'cc-domain-management.form.domain.error.format': `Enter a valid domain, for instance "example.com"`,
+  'cc-domain-management.form.domain.error.wildcard': () =>
+    sanitize`Enter a valid domain.<br>Wildcards "*" may only be used as subdomains like: "*.example.com"`,
+  'cc-domain-management.form.domain.help': () =>
+    sanitize`For instance: <code>example.com</code>, <code>*.example.com</code> or <code>example.cleverapps.io</code>`,
+  'cc-domain-management.form.domain.label': `Domain name`,
+  'cc-domain-management.form.info.cleverapps': () =>
+    sanitize`By default, an application is automatically associated to <code>app_id.cleverapps.io</code> as default domain. You can remove it or change the sub-domain freely, but <code>xxx.cleverapps.io</code> should only be used for testing purposes (see our <a href="https://developers.clever-cloud.com/doc/administrate/domain-names/#using-a-cleverappsio-free-domain-with-built-in-ssl">documentation</a>).`,
+  'cc-domain-management.form.info.docs': `You can associate one or more domain names with your application. The primary domain is the one that will be used in Console links and in e-mails sent to you. Several applications can share the same domain, each with a specific sub-domain and/or route.`,
+  'cc-domain-management.form.path.help': () => sanitize`For example: <code>/api</code> or <code>/blog</code>`,
+  'cc-domain-management.form.path.label': `Path`,
+  'cc-domain-management.form.submit': `Add a domain`,
+  'cc-domain-management.form.submit.error': ({ domain }) => `An error occurred while trying to add "${domain}"`,
+  'cc-domain-management.form.submit.error-duplicate.heading': `Domain name not available`,
+  'cc-domain-management.form.submit.error-duplicate.text': ({
+    domain,
+  }) => sanitize`<p>"${domain}" is already associated to another application within Clever Cloud.</p>
+  <p>For more information, contact our support team.</p>`,
+  'cc-domain-management.form.submit.success': ({ domain }) =>
+    `"${domain}" has been successfully associated to your application`,
+  'cc-domain-management.form.submit.success-config': ({
+    domain,
+  }) => sanitize`<p>"${domain}" has been successfully associated to your application.</p>
+  <p>A manual configuration is required to make the domain point to Clever Cloud. Refer to the <strong>Configure your DNS</strong> section for more information</p>`,
+  'cc-domain-management.list.badge.http-only.alt': `Warning`,
+  'cc-domain-management.list.badge.http-only.text': `HTTP only`,
+  'cc-domain-management.list.badge.primary': `Primary`,
+  'cc-domain-management.list.badge.testing-only': `Testing purposes only`,
+  'cc-domain-management.list.btn.delete.a11y-name': ({ domain }) => `Delete domain - ${domain}`,
+  'cc-domain-management.list.btn.delete.text': `Delete`,
+  'cc-domain-management.list.btn.primary.a11y-name': ({ domain }) => `Mark as primary domain - ${domain}`,
+  'cc-domain-management.list.btn.primary.text': `Mark as primary`,
+  'cc-domain-management.list.delete.error': ({ domain }) =>
+    `Something went wrong while trying to delete the "${domain}" domain`,
+  'cc-domain-management.list.delete.success': ({ domain }) => `"${domain}" has been deleted successfully`,
+  'cc-domain-management.list.empty': `No domain associated to this application`,
+  'cc-domain-management.list.error-not-found.heading': `Domain not found`,
+  'cc-domain-management.list.error-not-found.text': ({
+    domain,
+  }) => sanitize`<p>"${domain}" may have been removed by someone else after loading the list of domains.<p>
+  <p>Please <strong>refresh your page</strong> to get the updated list of domains.</p>`,
+  'cc-domain-management.list.heading': `Domain names linked to this application`,
+  'cc-domain-management.list.http-only.notice': () =>
+    sanitize`Subdomains are not covered by the SSL certificate of <code>*.cleverapps.io</code>. They do not support HTTPS.`,
+  'cc-domain-management.list.link.title': ({ domainUrl }) => `Open - ${domainUrl} - new window`,
+  'cc-domain-management.list.loading-error': `Something went wrong while loading domains associated to this application`,
+  'cc-domain-management.list.primary.error': ({ domain }) =>
+    `Something went wrong while trying to mark "${domain}" as primary domain`,
+  'cc-domain-management.list.primary.success': ({ domain }) =>
+    `"${domain}" has been successfully marked as primary domain`,
+  'cc-domain-management.main-heading': `Manage your domain names`,
+  'cc-domain-management.new-window': `New Window`,
+  //#endregion
   //#region cc-elasticsearch-info
   'cc-elasticsearch-info.error': `Something went wrong while loading add-ons linked to this application.`,
   'cc-elasticsearch-info.info': `Info`,
