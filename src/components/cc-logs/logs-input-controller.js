@@ -103,6 +103,11 @@ export class LogsInputController {
       const logIndex = Number(e.target.closest(`.log`).dataset.index);
       this._host._onClickLog(logIndex, this._keyModifiers);
     }
+    else if (e.key === 'a' && this._keyModifiers.ctrl) {
+      // we prevent default because we don't want the native keyboard "ctrl + a" to be fired
+      e.preventDefault();
+      this._host._onSelectAll();
+    }
   }
 
   onKeyUp (e) {
