@@ -122,7 +122,7 @@ export class LogsInputController {
     // Firefox doesn't! And we think that a drag movement ending should not be a click.
     // Therefore, if a drag stop just happened (_dragState = stopping) we should not trigger the onClick on the host.
     if (this._dragState !== 'stopping') {
-      this._host._onClick();
+      this._host._onClick(e);
     }
   }
 
