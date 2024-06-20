@@ -173,6 +173,15 @@ export class LogsController {
     this._host._onSelectionChanged();
   }
 
+  selectAll () {
+    if (this._logsFiltered.length > 0) {
+      this._selection = new Set(this._logsFiltered);
+      this._selectionLast = this._logsFiltered[this._logsFiltered.length - 1];
+      this._host.requestUpdate();
+      this._host._onSelectionChanged();
+    }
+  }
+
   /**
    * @return {number} The length of the selection
    */

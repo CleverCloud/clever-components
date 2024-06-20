@@ -596,6 +596,10 @@ export class CcLogs extends LitElement {
     this._setFollow(false);
   }
 
+  _onSelectAll () {
+    this._logsCtrl.selectAll();
+  }
+
   // endregion
 
   // region Copy logic
