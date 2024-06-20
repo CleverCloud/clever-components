@@ -89,6 +89,7 @@
           // https://developer.mozilla.org/en-US/docs/Web/API/Element/mouseenter_event
           "wheel",
           "copy",
+          "paste",
           // HACK: Right now, we don't have a clean way to recognize events fired from something else than a component.
           // those events are fired by the `form-submit-directive` through `form-submit-handler`
           "form:valid",
