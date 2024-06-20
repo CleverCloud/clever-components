@@ -419,6 +419,42 @@ export class CcLogs extends LitElement {
   }
 
   /**
+   * This function is wired through `this._inputCtrl`.
+   *
+   * It is called when `Home` key is pressed
+   * It asks the logs controller to move the focus on the first log.
+   * If `withCtrlShift` is enabled, it asks the logs controller to expand the selection to the first log.
+   *
+   * @param {boolean} withCtrlShift
+   */
+  _onHome (withCtrlShift) {
+    if (withCtrlShift) {
+      this._logsCtrl.extendSelection(0, 'replace');
+    }
+    else {
+      this._logsCtrl.focus(0);
+    }
+  }
+
+  /**
+   * This function is wired through `this._inputCtrl`.
+   *
+   * It is called when `End` key is pressed
+   * It asks the logs controller to move the focus on the last log.
+   * If `withCtrlShift` is enabled, it asks the logs controller to expand the selection to the last log.
+   *
+   * @param {boolean} withCtrlShift
+   */
+  _onEnd (withCtrlShift) {
+    if (withCtrlShift) {
+      this._logsCtrl.extendSelection(this._logsCtrl.listLength - 1, 'replace');
+    }
+    else {
+      this._logsCtrl.focus(this._logsCtrl.listLength - 1);
+    }
+  }
+
+  /**
    * This event handler is called whenever the virtualizer adds child elements to the DOM, or removes child elements from the DOM.
    *
    * It helps in detecting when the focused button is removed from the DOM, which is when user scrolls far from the focused button.
