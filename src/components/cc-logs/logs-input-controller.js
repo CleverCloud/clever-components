@@ -108,6 +108,12 @@ export class LogsInputController {
       e.preventDefault();
       this._host._onSelectAll();
     }
+    else if (e.key === 'Home') {
+      this._host._onHome(this._keyModifiers.ctrl && this._keyModifiers.shift);
+    }
+    else if (e.key === 'End') {
+      this._host._onEnd(this._keyModifiers.ctrl && this._keyModifiers.shift);
+    }
   }
 
   onKeyUp (e) {
