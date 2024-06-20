@@ -812,7 +812,8 @@ export class CcLogs extends LitElement {
               class="copy_button"
               .icon=${iconCopy}
               @cc-button:click=${this._onCopySelectionToClipboard}
-              hide-text>${i18n('cc-logs.copy')}
+            >
+              ${i18n('cc-logs.copy')}
             </cc-button>`
           : null
         }
