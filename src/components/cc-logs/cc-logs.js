@@ -567,9 +567,23 @@ export class CcLogs extends LitElement {
    * This function is wired through `this._inputCtrl`.
    *
    * It clears the selection when users click on the logs container but not in the gutter area.
+   * It also handles triple click: selects the whole log line (including timestamp and metadata)
+   *
+   * @param {MouseEvent & {target : HTMLElement}} e
    */
-  _onClick () {
-    this._logsCtrl.clearSelection();
+  _onClick (e) {
+    if (e.detail === 3) {
+      const logElement = e.target.closest(`.log`);
+      if (logElement != null) {
+        window.getSelection().empty();
+        const range = document.createRange();
+        range.selectNode(logElement);
+        window.getSelection().addRange(range);
+      }
+    }
+    else {
+      this._logsCtrl.clearSelection();
+    }
   }
 
   /**
