@@ -47,6 +47,10 @@ const DEFAULT_PALETTE_STYLE = ansiPaletteStyle(
  * A function that can be disabled during an amount of time.
  */
 class TemporaryFunctionDisabler {
+  /**
+   * @param {() => any} callback
+   * @param {number} timeout
+   */
   constructor (callback, timeout) {
     this._callback = callback;
     this._timeout = timeout;
@@ -68,11 +72,19 @@ class TemporaryFunctionDisabler {
 
 /**
  * @typedef {import('./cc-logs.types.js').Log} Log
+ * @typedef {import('./cc-logs.types.js').Metadata} Metadata
  * @typedef {import('./cc-logs.types.js').MetadataFilter} MetadataFilter
  * @typedef {import('./cc-logs.types.js').MetadataRenderer} MetadataRenderer
+ * @typedef {import('./cc-logs.types.js').MetadataRendering} MetadataRendering
  * @typedef {import('./cc-logs.types.js').LogMessageFilterMode} LogMessageFilterMode
  * @typedef {import('./date-display.types.js').DateDisplay} DateDisplay
  * @typedef {import('../../lib/date/date.types.js').Timezone} Timezone
+ * @typedef {import('@lit-labs/virtualizer/events.js').RangeChangedEvent} RangeChangedEvent
+ * @typedef {import('@lit-labs/virtualizer/events.js').VisibilityChangedEvent} VisibilityChangedEvent
+ * @typedef {import('@lit-labs/virtualizer/LitVirtualizer.js').LitVirtualizer} Virtualizer
+ * @typedef {import('lit').PropertyValues<CcLogs>} CcLogsPropertyValues
+ * @typedef {import('lit').TemplateResult<1>} TemplateResult
+ * @typedef {import('lit/directives/ref.js').Ref<Virtualizer>} VirtualizerRef
  */
 
 /**
@@ -285,7 +297,7 @@ export class CcLogs extends LitElement {
     /** @type {LogsController} */
     this._logsCtrl = new LogsController(this);
 
-    /** @type {Ref<Virtualizer>} A reference to the logs' container. */
+    /** @type {VirtualizerRef} A reference to the logs' container. */
     this._logsRef = createRef();
 
     /** @type {DateDisplayer} */
@@ -355,7 +367,7 @@ export class CcLogs extends LitElement {
    * In cases handled programmatically (when moving focus with arrow keys), the focus is already set.
    * But, this is needed when users click on the select button.
    *
-   * @param e
+   * @param {FocusEvent & {target: HTMLButtonElement}} e
    */
   _onFocusLog (e) {
     const button = e.target;
@@ -412,6 +424,7 @@ export class CcLogs extends LitElement {
    * It helps in detecting when the focused button is removed from the DOM, which is when user scrolls far from the focused button.
    * When the focused button is removed from the DOM, the focus is lost which is something we want to avoid.
    * Instead, we move to focus on the logs container, and we store the index of the lost button (so that we know where we were when user plays with arrow keys).
+   * @param {RangeChangedEvent} e
    */
   _onRangeChanged (e) {
     this._focusedIndexIsInDom = this._logsCtrl.isFocusedIndexInRange({ first: e.first, last: e.last });
@@ -429,7 +442,7 @@ export class CcLogs extends LitElement {
    *
    * It initiates the drag movement.
    *
-   * @param e
+   * @param {MouseEvent} e
    */
   _onMouseDownGutter (e) {
 
@@ -514,6 +527,10 @@ export class CcLogs extends LitElement {
    * This function is wired through `this._inputCtrl`.
    *
    * Handles the logic selection with support of Ctrl and Shift modifiers key
+   * @param {number} logIndex
+   * @param {Object} modifiers
+   * @param {boolean} modifiers.ctrl
+   * @param {boolean} modifiers.shift
    */
   _onClickLog (logIndex, { ctrl, shift }) {
     if (ctrl && !shift) {
@@ -573,6 +590,8 @@ export class CcLogs extends LitElement {
    * This event handler captures the Ctrl+C native shortcut for copy to clipboard.
    * It takes the browser text selection as input.
    * Both plain text and html version of this text selection are put in the clipboard.
+   *
+   * @param {ClipboardEvent} e
    */
   _onCopy (e) {
     const lines = document.getSelection().toString().split(/[\r\n]+/gm);
@@ -619,6 +638,8 @@ export class CcLogs extends LitElement {
   /**
    * When logs are appended very fast, the visibilityChanged event is fired very often.
    * We need to listen to the wheel event to force unfollowing.
+   *
+   * @param {WheelEvent} e
    */
   _onWheel (e) {
     if (e.deltaY < 0) {
@@ -634,6 +655,8 @@ export class CcLogs extends LitElement {
    *
    * It synchronizes the `follow` property according to the scroll position.
    * It also keeps track of the first and last visible elements needed for keyboard navigation.
+   *
+   * @param {VisibilityChangedEvent} e
    */
   _onVisibilityChanged (e) {
     this._visibleRange = { first: e.first, last: e.last };
@@ -651,6 +674,9 @@ export class CcLogs extends LitElement {
     this._setFollow(this._visibleRange.last === Math.max(0, this._logsCtrl.listLength - 1));
   }
 
+  /**
+   * @param {boolean} follow
+   */
   _setFollow (follow) {
     const oldFollow = this.follow;
     this.follow = follow;
@@ -696,6 +722,9 @@ export class CcLogs extends LitElement {
 
   // endregion
 
+  /**
+   * @param {CcLogsPropertyValues} changedProperties
+   */
   willUpdate (changedProperties) {
 
     if (changedProperties.has('dateDisplay') || changedProperties.has('timezone')) {
@@ -711,7 +740,9 @@ export class CcLogs extends LitElement {
       this._logsCtrl.limit = this.limit;
     }
 
-    if (changedProperties.has('messageFilter') || changedProperties.has('messageFilterMode') || changedProperties.has('metadataFilter')) {
+    if (changedProperties.has('messageFilter')
+      || changedProperties.has('messageFilterMode')
+      || changedProperties.has('metadataFilter')) {
       this._logsCtrl.filter = {
         message: isStringEmpty(this.messageFilter) ? null : { value: this.messageFilter, type: this.messageFilterMode },
         metadata: this.metadataFilter,
@@ -719,7 +750,10 @@ export class CcLogs extends LitElement {
     }
   }
 
-  updated (changedProperties) {
+  /**
+   * @param {CcLogsPropertyValues} _changedProperties
+   */
+  updated (_changedProperties) {
     this._horizontalScrollbarHeight = this.wrapLines
       ? 0
       : this._logsRef.value.offsetHeight - this._logsRef.value.clientHeight;
@@ -735,6 +769,23 @@ export class CcLogs extends LitElement {
         }
       : null;
 
+    /**
+     * @param {Log} it
+     * @return {string}
+     */
+    function keyFunction (it) {
+      return it.id;
+    }
+
+    /**
+     * @param {Log} item
+     * @param {number} index
+     * @return {TemplateResult}
+     */
+    const renderItem = (item, index) => {
+      return this._renderLog(item, index);
+    };
+
     return html`
       <div class="wrapper" style="--last-log-margin: ${this._horizontalScrollbarHeight}px">
         <lit-virtualizer
@@ -743,8 +794,8 @@ export class CcLogs extends LitElement {
           tabindex="0"
           .items=${this._logsCtrl.getList().slice()}
           ?scroller=${true}
-          .keyFunction=${(it) => it.id}
-          .renderItem=${(item, index) => this._renderLog(item, index)}
+          .keyFunction=${keyFunction}
+          .renderItem=${renderItem}
           .layout=${layout}
           @click=${this._inputCtrl.onClick}
           @keydown=${this._inputCtrl.onKeyDown}
