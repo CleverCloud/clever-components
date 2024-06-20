@@ -5,6 +5,20 @@ title: 'Changelog'
 
 # Changelog
 
+## [14.1.0](https://github.com/CleverCloud/clever-components/compare/14.0.1...14.1.0) (2024-06-19)
+
+
+### 🚀 Features
+
+* **cc-logs-application-view:** dispatch event when date range selection changes ([04c376c](https://github.com/CleverCloud/clever-components/commit/04c376cf30b5df8f1cc2585a72b69c8bb7244110))
+* **cc-logs-application-view:** enhance filtering ([eaa96cf](https://github.com/CleverCloud/clever-components/commit/eaa96cf8bb2c5e4012778f5d865a2d8c4cf0692d)), closes [#1073](https://github.com/CleverCloud/clever-components/issues/1073) [#1014](https://github.com/CleverCloud/clever-components/issues/1014)
+* **cc-logs-application-view:** init from a date range selection passed into the smart context ([9cdeb1f](https://github.com/CleverCloud/clever-components/commit/9cdeb1f428e028bccf14eb35a627bacb7e47dd36)), closes [#1075](https://github.com/CleverCloud/clever-components/issues/1075)
+
+
+### 🐛 Bug Fixes
+
+* **cc-logs-instances:** make sure deploying instances grid layout is never broken ([eddeac7](https://github.com/CleverCloud/clever-components/commit/eddeac7c55ed603133ce5b6d703f4f3e382ac319)), closes [#1070](https://github.com/CleverCloud/clever-components/issues/1070)
+
 ## [14.0.1](https://github.com/CleverCloud/clever-components/compare/14.0.0...14.0.1) (2024-06-17)
 
 
