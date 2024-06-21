@@ -285,7 +285,7 @@ export class CcTileMetrics extends LitElement {
     const skeleton = (this.metricsState.type === 'loading');
 
     const lastCpuValue = (this.metricsState.type === 'loaded') ? this.metricsState.metricsData.cpuMetrics.slice(-1)[0]?.value : 0;
-    const lastMemValue = (this.metricsState.type === 'loaded') ? this.metricsState.metricsData.cpuMetrics.slice(-1)[0]?.value : 0;
+    const lastMemValue = (this.metricsState.type === 'loaded') ? this.metricsState.metricsData.memMetrics.slice(-1)[0]?.value : 0;
 
     const cpuColorType = (this.metricsState.type === 'loaded') ? this._getColorLegend(lastCpuValue) : SKELETON_COLOR;
     const memColorType = (this.metricsState.type === 'loaded') ? this._getColorLegend(lastMemValue) : SKELETON_COLOR;
