@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [14.1.1](https://github.com/CleverCloud/clever-components/compare/14.1.0...14.1.1) (2024-06-21)
+
+
+### 🐛 Bug Fixes
+
+* **cc-tile-metrics:** use memtrics to populate `lastMemValue` ([f18cd50](https://github.com/CleverCloud/clever-components/commit/f18cd508bad67cabef864816203c9e36c75612d4)), closes [#1092](https://github.com/CleverCloud/clever-components/issues/1092)
+
 ## [14.1.0](https://github.com/CleverCloud/clever-components/compare/14.0.1...14.1.0) (2024-06-19)
 
 
