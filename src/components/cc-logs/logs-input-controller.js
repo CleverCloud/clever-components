@@ -103,6 +103,17 @@ export class LogsInputController {
       const logIndex = Number(e.target.closest(`.log`).dataset.index);
       this._host._onClickLog(logIndex, this._keyModifiers);
     }
+    else if (e.key === 'a' && this._keyModifiers.ctrl) {
+      // we prevent default because we don't want the native keyboard "ctrl + a" to be fired
+      e.preventDefault();
+      this._host._onSelectAll();
+    }
+    else if (e.key === 'Home') {
+      this._host._onHome(this._keyModifiers.ctrl && this._keyModifiers.shift);
+    }
+    else if (e.key === 'End') {
+      this._host._onEnd(this._keyModifiers.ctrl && this._keyModifiers.shift);
+    }
   }
 
   onKeyUp (e) {
@@ -122,7 +133,7 @@ export class LogsInputController {
     // Firefox doesn't! And we think that a drag movement ending should not be a click.
     // Therefore, if a drag stop just happened (_dragState = stopping) we should not trigger the onClick on the host.
     if (this._dragState !== 'stopping') {
-      this._host._onClick();
+      this._host._onClick(e);
     }
   }
 

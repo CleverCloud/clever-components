@@ -173,6 +173,15 @@ export class LogsController {
     this._host._onSelectionChanged();
   }
 
+  selectAll () {
+    if (this._logsFiltered.length > 0) {
+      this._selection = new Set(this._logsFiltered);
+      this._selectionLast = this._logsFiltered[this._logsFiltered.length - 1];
+      this._host.requestUpdate();
+      this._host._onSelectionChanged();
+    }
+  }
+
   /**
    * @return {number} The length of the selection
    */
@@ -215,6 +224,9 @@ export class LogsController {
    * @param {boolean} [notifyHost = true] Whether to notify the host when the focused index has changed
    */
   focus (filteredIndex, notifyHost = true) {
+    if (filteredIndex != null && (filteredIndex < 0 || filteredIndex > this._logsFiltered.length - 1)) {
+      return;
+    }
     if (this._focusedIndex !== filteredIndex) {
       this._focusedIndex = filteredIndex;
       if (notifyHost) {
