@@ -118,7 +118,7 @@ export const errorMessage = makeStory(conf, {
   items: baseItems.map((p) => ({
     ...p,
     required: true,
-    innerHTML: '<p slot="error">You must enter a value</p>',
+    errorMessage: 'You must enter a value',
   })),
 });
 
@@ -126,9 +126,9 @@ export const errorMessageWithHelpMessage = makeStory(conf, {
   items: baseItems.map((p) => ({
     ...p,
     required: true,
+    errorMessage: 'You must enter a value',
     innerHTML: `
       <p slot="help">Must be at least 7 characters long</p>
-      <p slot="error">You must enter a value</p>
     `,
   })),
 });
@@ -153,9 +153,9 @@ export const inlineWithErrorAndHelpMessages = makeStory(conf, {
     ...p,
     inline: true,
     required: true,
+    errorMessage: 'You must enter a value',
     innerHTML: `
       <p slot="help">Must be at least 7 characters long</p>
-      <p slot="error">You must enter a value</p>
     `,
   })),
 });
@@ -260,11 +260,12 @@ export const customLabelStyle = makeStory(conf, {
     })),
     ...customBaseItems.map((item) => ({
       ...item,
-      innerHTML: `<p slot="error">You must enter a value</p>`,
+      errorMessage: 'You must enter a value',
     })),
     ...customBaseItems.map((item) => ({
       ...item,
-      innerHTML: `<p slot="help">Must be at least 7 characters long</p><p slot="error">You must enter a value</p>`,
+      errorMessage: 'You must enter a value',
+      innerHTML: `<p slot="help">Must be at least 7 characters long</p>`,
     })),
     ...customBaseItems.map((item) => ({
       ...item,
@@ -278,12 +279,13 @@ export const customLabelStyle = makeStory(conf, {
     ...customBaseItems.map((item) => ({
       ...item,
       inline: true,
-      innerHTML: `<p slot="error">You must enter a value</p>`,
+      errorMessage: 'You must enter a value',
     })),
     ...customBaseItems.map((item) => ({
       ...item,
       inline: true,
-      innerHTML: `<p slot="help">Must be at least 7 characters long</p><p slot="error">You must enter a value</p>`,
+      errorMessage: 'You must enter a value',
+      innerHTML: `<p slot="help">Must be at least 7 characters long</p>`,
     })),
   ],
 });
@@ -295,25 +297,26 @@ export const simulation = makeStory(conf, {
   simulations: [
     storyWait(0, ([component]) => {
       component.innerHTML = `
-        <p slot="help">No error slot, no focus</p>
+        <p slot="help">No error, no focus</p>
       `;
     }),
     storyWait(2000, ([component]) => {
+      component.errorMessage = 'This is an error message';
       component.innerHTML = `
         <p slot="help">With error, no focus</p>
-        <p slot="error">This is an error message</p>
       `;
     }),
     storyWait(2000, ([component]) => {
+      component.errorMessage = 'This is an error message';
       component.innerHTML = `
         <p slot="help">With error, with focus</p>
-        <p slot="error">This is an error message</p>
       `;
       component.focus();
     }),
     storyWait(2000, ([component]) => {
+      component.errorMessage = null;
       component.innerHTML = `
-        <p slot="help">No error slot, with focus</p>
+        <p slot="help">No error, with focus</p>
       `;
       component.focus();
     }),

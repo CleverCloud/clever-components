@@ -245,8 +245,6 @@ export const translations = {
   'cc-email-list.secondary.action.mark-as-primary.name': `Mark as primary`,
   'cc-email-list.secondary.action.mark-as-primary.success': ({ address }) => sanitize`Secondary email address <strong>${address}</strong> has been successfully marked as primary.`,
   'cc-email-list.secondary.address-input.error.already-defined': `This email address already belongs to you`,
-  'cc-email-list.secondary.address-input.error.empty': `You must enter an email address`,
-  'cc-email-list.secondary.address-input.error.invalid': () => sanitize`Invalid email address format.<br>Example: john.doe@example.com.`,
   'cc-email-list.secondary.address-input.error.used': `This email address does not belong to you`,
   'cc-email-list.secondary.address-input.format': `name@example.com`,
   'cc-email-list.secondary.address-input.label': `Email address`,
@@ -413,16 +411,27 @@ export const translations = {
   'cc-heptapod-info.storage-description': `Storage size`,
   //#endregion
   //#region cc-input-date
+  'cc-input-date.error.bad-input': `You must enter a date.`,
+  'cc-input-date.error.empty': `You must enter a value.`,
+  'cc-input-date.error.range-overflow': ({ max }) => `You must enter a date lower that ${max}.`,
+  'cc-input-date.error.range-underflow': ({ min }) => `You must enter a date higher that ${min}.`,
   'cc-input-date.keyboard-hint': `You can use up or down arrow keys to modify parts of the date.`,
   'cc-input-date.required': `required`,
   //#endregion
   //#region cc-input-number
   'cc-input-number.decrease': `decrease`,
+  'cc-input-number.error.bad-type': `You must enter a number.`,
+  'cc-input-number.error.empty': `You must enter a value.`,
+  'cc-input-number.error.range-overflow': ({ max }) => `You must enter a number lower that ${max}.`,
+  'cc-input-number.error.range-underflow': ({ min }) => `You must enter a number higher that ${min}.`,
   'cc-input-number.increase': `increase`,
   'cc-input-number.required': `required`,
   //#endregion
   //#region cc-input-text
   'cc-input-text.clipboard': `Copy to clipboard`,
+  'cc-input-text.error.bad-email': () => sanitize`Invalid email address format.<br>Example: john.doe@example.com.`,
+  'cc-input-text.error.empty': `You must enter a value.`,
+  'cc-input-text.error.empty.email': `Please enter an email address.`,
   'cc-input-text.required': `required`,
   'cc-input-text.secret.hide': `Hide secret`,
   'cc-input-text.secret.show': `Show secret`,
@@ -645,8 +654,6 @@ export const translations = {
   'cc-orga-member-list.filter.mfa': `Accounts not secured with 2FA`,
   'cc-orga-member-list.filter.name': `Filter by name or email address`,
   'cc-orga-member-list.invite.email.error-duplicate': `This user is already a member of this organisation.`,
-  'cc-orga-member-list.invite.email.error-empty': `Please enter an email address.`,
-  'cc-orga-member-list.invite.email.error-format': () => sanitize`Invalid email address format.<br>Example: john.doe@example.com.`,
   'cc-orga-member-list.invite.email.format': `name@example.com`,
   'cc-orga-member-list.invite.email.label': `Email address`,
   'cc-orga-member-list.invite.heading': `Invite a member`,
@@ -798,7 +805,7 @@ export const translations = {
   'cc-pricing-product-consumption.add': `Add`,
   'cc-pricing-product-consumption.bytes': ({ bytes }) => formatBytesSi(bytes),
   'cc-pricing-product-consumption.bytes-unit': ({ bytes }) => getUnit(bytes),
-  'cc-pricing-product-consumption.error': `An error occured while retrieving pricing details.`,
+  'cc-pricing-product-consumption.error': `An error occurred while retrieving pricing details.`,
   'cc-pricing-product-consumption.inbound-traffic.label': `traffic in`,
   'cc-pricing-product-consumption.inbound-traffic.title': `Inbound traffic:`,
   'cc-pricing-product-consumption.number': ({ number }) => formatNumber(lang, number),
@@ -841,6 +848,7 @@ export const translations = {
   'cc-product-list.search-label': `Search for a product`,
   //#endregion
   //#region cc-select
+  'cc-select.error.empty': `You must select a value.`,
   'cc-select.required': `required`,
   //#endregion
   //#region cc-ssh-key-list

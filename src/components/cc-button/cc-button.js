@@ -9,6 +9,9 @@ import { linkStyles } from '../../templates/cc-link/cc-link.js';
 
 /**
  * @typedef {import('../common.types.js').IconModel} IconModel
+ * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<MouseEvent, HTMLButtonElement>} ButtonClickEvent
+ * @typedef {import('lit').PropertyValues<CcButton>} CcButtonPropertyValues
+ * @typedef {import('lit/directives/class-map.js').ClassInfo} ClassInfo
  */
 
 /**
@@ -63,10 +66,15 @@ export class CcButton extends LitElement {
       primary: { type: Boolean },
       skeleton: { type: Boolean },
       success: { type: Boolean },
+      type: { type: String },
       waiting: { type: Boolean, reflect: true },
       warning: { type: Boolean },
       _cancelMode: { type: Boolean, state: true },
     };
+  }
+
+  static get formAssociated () {
+    return true;
   }
 
   constructor () {
@@ -117,6 +125,9 @@ export class CcButton extends LitElement {
     /** @type {boolean} Sets button UI _mode_ to success. */
     this.success = false;
 
+    /** @type {'button'|'submit'|'reset'} Sets the type of button. */
+    this.type = 'button';
+
     /** @type {boolean} If set, shows a waiting/busy indicator and sets `disabled` attribute on inner native `<button>` element. */
     this.waiting = false;
 
@@ -125,6 +136,9 @@ export class CcButton extends LitElement {
 
     /** @type {boolean} */
     this._cancelMode = false;
+
+    /** @type {ElementInternals} */
+    this._internals = this.attachInternals();
   }
 
   focus () {
@@ -170,10 +184,14 @@ export class CcButton extends LitElement {
     return undefined;
   }
 
-  // We tried to reuse native clicks from the inner <button>
-  // but it's not that simple since adding @click on <cc-button> with lit-html also catches clicks on the custom element itself
-  // That's why we emit custom "cc-button:click"
-  // It's also easier to handle for the delay mechanism
+  /**
+   * We tried to reuse native clicks from the inner <button>
+   * but it's not that simple since adding @click on <cc-button> with lit-html also catches clicks on the custom element itself
+   * That's why we emit custom "cc-button:click"
+   * It's also easier to handle for the delay mechanism
+   *
+   * @param {ButtonClickEvent} e
+   */
   _onClick (e) {
 
     e.stopPropagation();
@@ -186,7 +204,15 @@ export class CcButton extends LitElement {
     // delay=0 is needed in some situations where you want the button to have the same width
     // as buttons with delay > 0 but without any delay
     if (this.delay == null || this.delay === 0 || this.link) {
-      return dispatchCustomEvent(this, 'click');
+      if (this.type === 'submit') {
+        this._internals.form?.requestSubmit();
+      }
+
+      if (this.type === 'reset') {
+        this._internals.form?.reset();
+      }
+      dispatchCustomEvent(this, 'click');
+      return;
     }
 
     if (this._cancelMode) {
@@ -195,12 +221,22 @@ export class CcButton extends LitElement {
     else {
       this._cancelMode = true;
       this._timeoutId = setTimeout(() => {
+        if (this.type === 'submit') {
+          this._internals.form?.requestSubmit();
+        }
+
+        if (this.type === 'reset') {
+          this._internals.form?.reset();
+        }
         dispatchCustomEvent(this, 'click');
         this._cancelMode = false;
       }, this.delay * 1000);
     }
   }
 
+  /**
+   * @param {CcButtonPropertyValues} changedProperties
+   */
   willUpdate (changedProperties) {
     if (changedProperties.has('disabled')) {
       if (this.disabled === true) {
@@ -210,39 +246,40 @@ export class CcButton extends LitElement {
   }
 
   render () {
+    const delay = (this.delay != null && !this.link) ? this.delay : null;
+    const waiting = (this.waiting);
+    const primary = this.primary && !this.success && !this.warning && !this.danger && !this.link;
+    const success = !this.primary && this.success && !this.warning && !this.danger && !this.link;
+    const warning = !this.primary && !this.success && this.warning && !this.danger && !this.link;
+    const danger = !this.primary && !this.success && !this.warning && this.danger && !this.link;
+    // simple mode is default when no value or when there are multiple conflicting values
+    const simple = !primary && !success && !warning && !danger && !this.link;
+    const hasIcon = (this.image != null || this.icon != null);
 
     // those are exclusive, only one can be set at a time
     // we chose this over one attribute named "mode" so it would be easier to write/use
+    /** @type {ClassInfo} */
     const modes = {
-      primary: this.primary && !this.success && !this.warning && !this.danger && !this.link,
-      success: !this.primary && this.success && !this.warning && !this.danger && !this.link,
-      warning: !this.primary && !this.success && this.warning && !this.danger && !this.link,
-      danger: !this.primary && !this.success && !this.warning && this.danger && !this.link,
+      primary,
+      success,
+      warning,
+      danger,
+      simple,
+      // outlined is not default except in simple mode
+      outlined: (this.outlined || simple) && !this.link,
       skeleton: this.skeleton,
-      'img-only': (this.image != null || this.icon != null) && this.hideText,
-      'txt-only': this.image == null && this.icon == null,
+      'img-only': hasIcon && this.hideText,
+      'txt-only': !hasIcon,
       btn: !this.link,
       'cc-link': this.link,
+      // circle mode should only appear in hide-text mode if we have an image
+      circle: this.circle && this.hideText && hasIcon,
     };
 
-    const delay = (this.delay != null && !this.link) ? this.delay : null;
-
-    const waiting = (this.waiting);
-
-    // simple mode is default when no value or when there are multiple conflicting values
-    modes.simple = !modes.primary && !modes.success && !modes.warning && !modes.danger && !this.link;
-
-    // outlined is not default except in simple mode
-    modes.outlined = (this.outlined || modes.simple) && !this.link;
-
-    // circle mode should only appear in hide-text mode if we have an image
-    modes.circle = this.circle && this.hideText && (this.image || this.icon);
-
     const tabIndex = this.skeleton ? -1 : null;
-
     return html`
       <button
-        type="button"
+        type="${this.type}"
         tabindex="${ifDefined(tabIndex)}"
         class=${classMap(modes)}
         aria-disabled="${this.disabled || this.skeleton || this.waiting}"
@@ -401,7 +438,7 @@ export class CcButton extends LitElement {
           box-shadow: none;
           outline: 0;
         }
-        
+
         button[aria-disabled='true'] {
           cursor: inherit;
           opacity: 0.5;

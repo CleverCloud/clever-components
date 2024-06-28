@@ -7,12 +7,18 @@ import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
 import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { sendToApi, sendToWarp } from '../../lib/send-to-api.js';
 
+/**
+ * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
+ * @typedef {import('../../lib/send-to-api.types.js').Warp10ApiConfig} Warp10ApiConfig
+ * @typedef {import('./cc-tile-status-codes.types.js').StatusCodesData} StatusCodesData
+ */
+
 defineSmartComponent({
   selector: 'cc-tile-status-codes',
   params: {
     apiConfig: { type: Object },
     ownerId: { type: String },
-    appId: { type: String, required: false },
+    appId: { type: String, optional: true },
   },
   onContextUpdate ({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, appId } = context;
@@ -30,9 +36,17 @@ defineSmartComponent({
   },
 });
 
+/**
+ * @param {Object} settings
+ * @param {ApiConfig & Warp10ApiConfig} settings.apiConfig
+ * @param {AbortSignal} settings.signal
+ * @param {string} settings.ownerId
+ * @param {string} settings.appId
+ * @return {Promise<StatusCodesData>}
+ */
 async function fetchStatusCodes ({ apiConfig, signal, ownerId, appId }) {
   const warpToken = await getWarp10AccessLogsToken({ orgaId: ownerId })
     .then(sendToApi({ apiConfig, signal, cacheDelay: ONE_DAY }));
   return getStatusCodesFromWarp10({ warpToken, ownerId, appId })
-    .then(sendToWarp({ warpConfig: apiConfig, signal, timeout: THIRTY_SECONDS }));
+    .then(sendToWarp({ apiConfig, signal, timeout: THIRTY_SECONDS }));
 }

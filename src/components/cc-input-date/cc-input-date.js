@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit';
+import { css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { live } from 'lit/directives/live.js';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -11,6 +11,8 @@ import {
   shiftDateField,
 } from '../../lib/date/date-utils.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
+import { CcFormControlElement } from '../../lib/form/cc-form-control-element.abstract.js';
+import { combineValidators, createValidator, RequiredValidator, Validation } from '../../lib/form/validation.js';
 import { i18n } from '../../lib/i18n.js';
 import { isStringEmpty } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
@@ -18,8 +20,16 @@ import { skeletonStyles } from '../../styles/skeleton.js';
 
 // This is the date format chosen to format the date displayed to the user.
 const DATE_FORMAT = 'datetime-short';
-// This string is hard coded and corresponds directly to the date format defined above.
-const FIELDS_POSITION = 'YYYYYMMMDDDHHHmmmsss';
+// This array is hard coded and corresponds directly to the date format defined above.
+/** @type {Array<'Y'|'M'|'D'|'H'|'m'|'s'>} */
+const FIELDS_POSITION = [
+  'Y', 'Y', 'Y', 'Y', 'Y',
+  'M', 'M', 'M',
+  'D', 'D', 'D',
+  'H', 'H', 'H',
+  'm', 'm', 'm',
+  's', 's', 's',
+];
 
 /**
  * @param {Date|string} dateOrString
@@ -38,7 +48,7 @@ function getDateOrParseIso (dateOrString) {
  */
 function dateStateEmpty () {
   return {
-    state: 'empty',
+    type: 'empty',
   };
 }
 
@@ -48,7 +58,7 @@ function dateStateEmpty () {
  */
 function dateStateNaD (value) {
   return {
-    state: 'NaD',
+    type: 'NaD',
     value,
   };
 }
@@ -59,29 +69,26 @@ function dateStateNaD (value) {
  */
 function dateStateValid (date) {
   return {
-    state: 'valid',
+    type: 'valid',
     value: date.toISOString(),
     date,
-  };
-}
-
-const VALID = { valid: true };
-
-/**
- * @param {T} code
- * @return {{valid: false, code: T}}
- * @template T
- */
-function invalid (code) {
-  return {
-    valid: false,
-    code,
   };
 }
 
 /**
  * @typedef {import('../../lib/date/date.types.js').Timezone} Timezone
  * @typedef {import('./cc-input-date.types.js').InputDateValueState} InputDateValueState
+ * @typedef {import('./cc-input-date.types.js').InputDateValueStateEmpty} InputDateValueStateEmpty
+ * @typedef {import('./cc-input-date.types.js').InputDateValueStateNaD} InputDateValueStateNaD
+ * @typedef {import('./cc-input-date.types.js').InputDateValueStateValid} InputDateValueStateValid
+ * @typedef {import('../../lib/form/validation.types.js').Validity} Validity
+ * @typedef {import('../../lib/form/validation.types.js').Validator} Validator
+ * @typedef {import('../../lib/form/validation.types.js').ErrorMessageMap} ErrorMessageMap
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLInputElement>} HTMLInputElementRef
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLElement>} HTMLElementRef
+ * @typedef {import('lit').PropertyValues<CcInputDate>} CcInputDatePropertyValues
+ * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement>} HTMLInputElementEvent
+ * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<KeyboardEvent, HTMLInputElement>} HTMLInputElementKeyboardEvent
  */
 
 /**
@@ -90,7 +97,7 @@ function invalid (code) {
  * ## Technical details
  *
  * * Uses a native `<input>` with a type `text`
- * * When an error slot is used, the input is decorated with a red border and a redish focus ring. You have to be aware that it uses the [`slotchange`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLSlotElement/slotchange_event) event which doesn't fire if the children of a slotted node change.
+ * * When an `errorMessage` is Set, the input is decorated with a red border and a redish focus ring.
  *
  * @cssdisplay inline-block
  *
@@ -102,29 +109,30 @@ function invalid (code) {
  * @cssprop {FontSize} --cc-input-label-font-size - The font-size for the input's label (defaults: `inherit`).
  * @cssprop {FontWeight} --cc-input-label-font-weight - The font-weight for the input's label (defaults: `normal`).
  *
- * @slot error - The error message to be displayed below the `<input>` element or below the help text. Please use a `<p>` tag.
  * @slot help - The help message to be displayed right below the `<input>` element. Please use a `<p>` tag.
  */
-export class CcInputDate extends LitElement {
+export class CcInputDate extends CcFormControlElement {
 
   static get properties () {
     return {
+      ...super.properties,
       disabled: { type: Boolean, reflect: true },
       hiddenLabel: { type: Boolean, attribute: 'hidden-label' },
       inline: { type: Boolean, reflect: true },
       label: { type: String },
       max: { type: String },
       min: { type: String },
-      name: { type: String, reflect: true },
       readonly: { type: Boolean, reflect: true },
       required: { type: Boolean },
+      resetValue: { type: String, attribute: 'reset-value' },
       skeleton: { type: Boolean, reflect: true },
       timezone: { type: String },
       value: { type: String },
       _valueState: { type: Object, state: true },
-      _hasError: { type: Boolean, state: true },
     };
   }
+
+  static reactiveValidationProperties = ['required', 'min', 'max', 'timezone'];
 
   constructor () {
     super();
@@ -149,14 +157,14 @@ export class CcInputDate extends LitElement {
     /** @type {string|null} Sets the min date with ISO date format. */
     this.min = null;
 
-    /** @type {string|null} Sets `name` attribute on inner native `<input>` element. */
-    this.name = null;
-
     /** @type {boolean} Sets `readonly` attribute on inner native `<input>` element. */
     this.readonly = false;
 
     /** @type {boolean} Sets whether the "required" text inside the label should be displayed. */
     this.required = false;
+
+    /** @type {string|Date|null} Sets the `value` to set when parent `<form>` element is reset. */
+    this.resetValue = '';
 
     /** @type {boolean} Enables skeleton screen UI pattern (loading hint). */
     this.skeleton = false;
@@ -167,7 +175,10 @@ export class CcInputDate extends LitElement {
     /** @type {string|Date|null} Sets `value` attribute on inner native input element. */
     this.value = null;
 
-    /** @type {Ref<HTMLInputElement>} */
+    /** @type {HTMLElementRef} */
+    this._errorRef = createRef();
+
+    /** @type {HTMLInputElementRef} */
     this._inputRef = createRef();
 
     /**
@@ -175,9 +186,6 @@ export class CcInputDate extends LitElement {
      * It is maintained in sync with the `timezone` properties.
      */
     this._dateFormatter = this._resolveDateFormatter();
-
-    /** @type {boolean} Whether or not the error slot is empty. */
-    this._hasError = false;
 
     /** @type {Date|null} The resolved maximum date or null if no maximum is specified. */
     this._maxDate = null;
@@ -187,47 +195,109 @@ export class CcInputDate extends LitElement {
 
     /** @type {InputDateValueState} */
     this._valueState = dateStateEmpty();
+
+    /** @type {ErrorMessageMap} */
+    this._errorMessages = {
+      empty: () => i18n('cc-input-date.error.empty'),
+      badInput: () => i18n('cc-input-date.error.bad-input'),
+      rangeUnderflow: () => i18n('cc-input-date.error.range-underflow', { min: this.min }),
+      rangeOverflow: () => i18n('cc-input-date.error.range-overflow', { max: this.max }),
+    };
   }
+
+  /* region CcFormControlElement implementation */
+
+  /**
+   * @return {HTMLElement}
+   * @protected
+   */
+  _getFormControlElement () {
+    return this._inputRef.value;
+  }
+
+  /**
+   * @return {HTMLElement}
+   * @protected
+   */
+  _getErrorElement () {
+    return this._errorRef.value;
+  }
+
+  /**
+   * @return {ErrorMessageMap}
+   * @protected
+   */
+  _getErrorMessages () {
+    return this._errorMessages;
+  }
+
+  /**
+   * @return {Validator}
+   * @protected
+   */
+  _getValidator () {
+    return combineValidators([
+      this.required ? new RequiredValidator() : null,
+      createValidator(() => {
+        if (this._valueState.type === 'empty') {
+          return Validation.VALID;
+        }
+
+        if (this._valueState.type === 'NaD') {
+          return Validation.invalid('badInput');
+        }
+
+        const date = this._valueState.date;
+
+        if (this._minDate != null && date.getTime() < this._minDate.getTime()) {
+          return Validation.invalid('rangeUnderflow');
+        }
+
+        if (this._maxDate != null && date.getTime() > this._maxDate.getTime()) {
+          return Validation.invalid('rangeOverflow');
+        }
+
+        return Validation.VALID;
+      }),
+    ]);
+  }
+
+  /**
+   * @return {string}
+   * @protected
+   */
+  _getFormControlData () {
+    if (this._valueState.type === 'empty') {
+      return '';
+    }
+    return this._valueState.value;
+  }
+
+  /**
+   * @return {Array<string>}
+   * @protected
+   */
+  _getReactiveValidationProperties () {
+    return CcInputDate.reactiveValidationProperties;
+  }
+
+  /* endregion */
 
   /* region Public methods */
 
   /**
    * Triggers focus on the inner `<input>` element.
+   * @param {FocusOptions} [options]
    */
   focus (options) {
     this._inputRef.value.focus(options);
   }
 
   /**
-   * @return {{valid: false, code: 'empty' | 'badInput' | 'rangeUnderflow' | 'rangeOverflow'}|{valid: true}}
-   */
-  validate () {
-    if (this._valueState.state === 'empty') {
-      return this.required ? invalid('empty') : VALID;
-    }
-
-    if (this._valueState.state === 'NaD') {
-      return invalid('badInput');
-    }
-
-    const date = this._valueState.date;
-
-    if (this._minDate != null && date.getTime() < this._minDate.getTime()) {
-      return invalid('rangeUnderflow');
-    }
-
-    if (this._maxDate != null && date.getTime() > this._maxDate.getTime()) {
-      return invalid('rangeOverflow');
-    }
-
-    return VALID;
-  }
-
-  /**
    * @return {Date|null} The current value as Date or null if the value is not a valid date.
    */
   get valueAsDate () {
-    return this._valueState.date || null;
+    return this._valueState.type === 'valid' ? this._valueState.date ?? null : null;
   }
 
   /* endregion */
@@ -262,9 +332,14 @@ export class CcInputDate extends LitElement {
    * @return {string}
    */
   _formatValue () {
-    return this._valueState.date != null
-      ? this._dateFormatter.format(this._valueState.date)
-      : this._valueState.value ?? '';
+    switch (this._valueState.type) {
+      case 'empty':
+        return '';
+      case 'NaD':
+        return this._valueState.value ?? '';
+      case 'valid':
+        return this._dateFormatter.format(this._valueState.date);
+    }
   }
 
   /**
@@ -272,7 +347,7 @@ export class CcInputDate extends LitElement {
    * @param {boolean} [dispatchEvent=true]
    */
   _setNewValueState (newValueState, dispatchEvent = true) {
-    const oldValue = this._valueState.value;
+    const oldValue = this._valueState.type === 'empty' ? '' : this._valueState.value;
 
     // You may wonder why we always change the reactive property `_valueState`!
     // It's because in some case we need to enforce the render method to be called to reformat the value that will be displayed in the native input.
@@ -280,10 +355,10 @@ export class CcInputDate extends LitElement {
     this._valueState = newValueState;
 
     // We also want to make sure that the value property is maintained in sync.
-    this.value = this._valueState.value;
+    this.value = this._valueState.type === 'empty' ? '' : this._valueState.value;
 
-    if (dispatchEvent && oldValue !== this._valueState.value) {
-      dispatchCustomEvent(this, 'input', this._valueState.value);
+    if (dispatchEvent && oldValue !== this.value) {
+      dispatchCustomEvent(this, 'input', this.value);
     }
   }
 
@@ -318,17 +393,26 @@ export class CcInputDate extends LitElement {
 
   /* region Event handling */
 
+  /**
+   * @param {HTMLInputElementEvent} e
+   */
   _onInput (e) {
     const inputValue = e.target.value;
     this._setNewValueState(this._toValueState(inputValue));
   }
 
+  /**
+   * @param {HTMLInputElementEvent} e
+   */
   _onFocus (e) {
     if (this.readonly) {
       e.target.select();
     }
   }
 
+  /**
+   * @param {HTMLInputElementKeyboardEvent} e
+   */
   _onKeyEvent (e) {
     // Stop propagation of keydown and keypress events (to prevent conflicts with shortcuts)
     if (e.type === 'keydown' || e.type === 'keypress') {
@@ -337,15 +421,17 @@ export class CcInputDate extends LitElement {
     // Here we prevent keydown on enter key from modifying the value
     if (e.type === 'keydown' && e.key === 'Enter') {
       e.preventDefault();
+      this._internals.form.requestSubmit();
       dispatchCustomEvent(this, 'requestimplicitsubmit');
     }
     // Request implicit submit with keypress on enter key
     if (!this.readonly && e.type === 'keypress' && e.key === 'Enter') {
+      this._internals.form.requestSubmit();
       dispatchCustomEvent(this, 'requestimplicitsubmit');
     }
 
     if (!this.readonly
-      && this._valueState.date != null
+      && this._valueState.type === 'valid'
       && e.type === 'keydown'
       && ['ArrowDown', 'ArrowUp'].includes(e.key)
     ) {
@@ -367,12 +453,11 @@ export class CcInputDate extends LitElement {
     }
   }
 
-  _onErrorSlotChanged (e) {
-    this._hasError = e.target.assignedNodes()?.length > 0;
-  }
-
   /* endregion */
 
+  /**
+   * @param {CcInputDatePropertyValues} changedProperties
+   */
   willUpdate (changedProperties) {
     if (changedProperties.has('timezone')) {
       this._dateFormatter = this._resolveDateFormatter();
@@ -402,12 +487,14 @@ export class CcInputDate extends LitElement {
   }
 
   render () {
+    const hasErrorMessage = this.errorMessage != null && this.errorMessage !== '';
+
     // We use the live directive for binding the value of the native input.
     // We need that for the case tested by 'should have the formatted value when setting the same value with iso string'
 
     return html`
       ${this.label != null ? html`
-        <label class=${classMap({ 'visually-hidden': this.hiddenLabel })} for="input-id">
+        <label class=${classMap({ 'visually-hidden': this.hiddenLabel })} for="input">
           <span class="label-text">${this.label}</span>
           ${this.required ? html`
             <span class="required">${i18n('cc-input-date.required')}</span>
@@ -419,14 +506,13 @@ export class CcInputDate extends LitElement {
         <div class="wrapper ${classMap({ skeleton: this.skeleton })}">
           ${this._renderUnderlay()}
           <input
-            id="input-id"
+            id="input"
             ${ref(this._inputRef)}
             type="text"
-            class="input ${classMap({ error: this._hasError })}"
+            class="input ${classMap({ error: hasErrorMessage })}"
             ?disabled=${this.disabled || this.skeleton}
             ?readonly=${this.readonly}
             .value=${live(this._formatValue())}
-            name=${this.name ?? ''}
             spellcheck="false"
             aria-describedby="help error keyboard-hint"
             @focus=${this._onFocus}
@@ -442,28 +528,25 @@ export class CcInputDate extends LitElement {
         <slot name="help"></slot>
       </div>
 
-      <div class="error-container" id="error">
-        <slot name="error" @slotchange="${this._onErrorSlotChanged}"></slot>
-      </div>
+      ${hasErrorMessage ? html`
+        <p class="error-container" id="error" ${ref(this._errorRef)}>
+          ${this.errorMessage}
+        </p>` : ''}
 
-      ${this._valueState.date != null ? html`
+      ${this._valueState.type === 'valid' ? html`
         <p id="keyboard-hint" class="visually-hidden">${i18n('cc-input-date.keyboard-hint')}</p>
       ` : ''}
     `;
   }
 
   _renderUnderlay () {
-    if (this.skeleton || this._valueState.date == null) {
+    if (this.skeleton || this._valueState.type !== 'valid') {
       return null;
     }
 
     return html`
       <div class="input underlay" aria-hidden="true">
-        ${
-          this._dateFormatter.mapParts(this._valueState.date, ({ type, value }) => {
-            return type === 'separator' ? value : html`<span>${value}</span>`;
-          })
-        }
+        ${this._dateFormatter.mapParts(this._valueState.date, ({ type, value }) => type === 'separator' ? value : html`<span>${value}</span>`)}
       </div>`;
   }
 
@@ -541,8 +624,7 @@ export class CcInputDate extends LitElement {
           font-size: 0.9em;
         }
 
-        slot[name='error'],
-        slot[name='error']::slotted(*) {
+        .error-container {
           margin: 0.5em 0 0;
           color: var(--cc-color-text-danger);
         }

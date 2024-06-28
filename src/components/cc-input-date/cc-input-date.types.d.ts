@@ -1,16 +1,16 @@
 export type InputDateValueState = InputDateValueStateEmpty | InputDateValueStateNaD | InputDateValueStateValid;
 
 export interface InputDateValueStateEmpty {
-  state: 'empty';
+  type: 'empty';
 }
 
 export interface InputDateValueStateNaD {
-  state: 'NaD',
+  type: 'NaD',
   value: string;
 }
 
 export interface InputDateValueStateValid {
-  state: 'valid',
+  type: 'valid',
   value: string;
   date: Date;
 }

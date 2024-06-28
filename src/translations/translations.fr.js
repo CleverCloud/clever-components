@@ -258,8 +258,6 @@ export const translations = {
   'cc-email-list.secondary.action.mark-as-primary.name': `Définir comme primaire`,
   'cc-email-list.secondary.action.mark-as-primary.success': ({ address }) => sanitize`L'adresse e-mail <strong>${address}</strong> a bien été définie comme primaire.`,
   'cc-email-list.secondary.address-input.error.already-defined': `Cette adresse e-mail vous appartient déjà`,
-  'cc-email-list.secondary.address-input.error.empty': `Veuillez saisir une adresse e-mail`,
-  'cc-email-list.secondary.address-input.error.invalid': () => sanitize`Format d'adresse e-mail invalide.<br>Exemple: john.doe@example.com.`,
   'cc-email-list.secondary.address-input.error.used': `Cette adresse e-mail ne vous appartient pas`,
   'cc-email-list.secondary.address-input.format': `nom@example.com`,
   'cc-email-list.secondary.address-input.label': `Adresse e-mail`,
@@ -426,16 +424,27 @@ export const translations = {
   'cc-heptapod-info.storage-description': `Stockage utilisé`,
   //#endregion
   //#region cc-input-date
+  'cc-input-date.error.bad-input': `Veuillez saisir une date.`,
+  'cc-input-date.error.empty': `Veuillez saisir une valeur.`,
+  'cc-input-date.error.range-overflow': ({ max }) => `Veuillez saisir une date inférieure à ${max}.`,
+  'cc-input-date.error.range-underflow': ({ min }) => `Veuillez saisir une date supérieure à ${min}.`,
   'cc-input-date.keyboard-hint': `Vous pouvez utiliser les touches flèche haut et flèche bas pour modifier des parties de la date.`,
   'cc-input-date.required': `obligatoire`,
   //#endregion
   //#region cc-input-number
   'cc-input-number.decrease': `décrémenter`,
+  'cc-input-number.error.bad-type': `Veuillez saisir un nombre.`,
+  'cc-input-number.error.empty': `Veuillez saisir une valeur.`,
+  'cc-input-number.error.range-overflow': ({ max }) => `Veuillez saisir un nombre supérieur à ${max}.`,
+  'cc-input-number.error.range-underflow': ({ min }) => `Veuillez saisir un nombre inférieur à ${min}.`,
   'cc-input-number.increase': `incrémenter`,
   'cc-input-number.required': `obligatoire`,
   //#endregion
   //#region cc-input-text
   'cc-input-text.clipboard': `Copier dans le presse-papier`,
+  'cc-input-text.error.bad-email': () => sanitize`Format d'adresse e-mail invalide.<br>Exemple: john.doe@example.com.`,
+  'cc-input-text.error.empty': `Veuillez saisir une valeur.`,
+  'cc-input-text.error.empty.email': `Veuillez saisir une adresse e-mail.`,
   'cc-input-text.required': `obligatoire`,
   'cc-input-text.secret.hide': `Cacher le secret`,
   'cc-input-text.secret.show': `Afficher le secret`,
@@ -658,8 +667,6 @@ export const translations = {
   'cc-orga-member-list.filter.mfa': `Comptes non sécurisés par 2FA`,
   'cc-orga-member-list.filter.name': `Filtrer par nom ou adresse e-mail`,
   'cc-orga-member-list.invite.email.error-duplicate': `Cet utilisateur fait déjà partie des membres de votre organisation.`,
-  'cc-orga-member-list.invite.email.error-empty': `Veuillez saisir une adresse e-mail.`,
-  'cc-orga-member-list.invite.email.error-format': () => sanitize`Format d'adresse e-mail invalide.<br>Exemple: john.doe@example.com.`,
   'cc-orga-member-list.invite.email.format': `nom@example.com`,
   'cc-orga-member-list.invite.email.label': `Adresse e-mail`,
   'cc-orga-member-list.invite.heading': `Inviter un membre`,
@@ -854,6 +861,7 @@ export const translations = {
   'cc-product-list.search-label': `Chercher un produit`,
   //#endregion
   //#region cc-select
+  'cc-select.error.empty': `Veuillez sélectionner une valeur.`,
   'cc-select.required': `obligatoire`,
   //#endregion
   //#region cc-ssh-key-list

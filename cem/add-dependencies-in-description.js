@@ -16,10 +16,12 @@ export default function addDependenciesInDescription () {
     name: 'add-dependencies-in-description',
     moduleLinkPhase ({ moduleDoc }) {
 
-      const isNotSmartComponentFile = !moduleDoc.path.includes('.smart');
+      const isComponent = moduleDoc.path.includes('src/components/');
+      const isSmartComponent = moduleDoc.path.includes('.smart');
 
-      const dependencies = isNotSmartComponentFile ? getComponentsTree([moduleDoc.path], graph, 'dependencies') : '';
-      const dependants = isNotSmartComponentFile ? getComponentsTree([moduleDoc.path], graph, 'dependants', 1) : '';
+      const shouldProcess = isComponent && !isSmartComponent;
+      const dependencies = shouldProcess ? getComponentsTree([moduleDoc.path], graph, 'dependencies') : '';
+      const dependants = shouldProcess ? getComponentsTree([moduleDoc.path], graph, 'dependants', 1) : '';
 
       let sourceLine = '';
       if (dependencies !== '') {
