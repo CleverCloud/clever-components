@@ -218,12 +218,12 @@ export class CcInputNumber extends CcFormControlElement {
     // Here we prevent keydown on enter key from modifying the value
     if (e.type === 'keydown' && e.keyCode === 13) {
       e.preventDefault();
-      this._internals.form.requestSubmit();
+      this._internals.form?.requestSubmit();
       dispatchCustomEvent(this, 'requestimplicitsubmit');
     }
     // Request implicit submit with keypress on enter key
     if (!this.readonly && e.type === 'keypress' && e.keyCode === 13) {
-      this._internals.form.requestSubmit();
+      this._internals.form?.requestSubmit();
       dispatchCustomEvent(this, 'requestimplicitsubmit');
     }
   }

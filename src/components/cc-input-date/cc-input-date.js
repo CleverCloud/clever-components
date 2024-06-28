@@ -421,12 +421,12 @@ export class CcInputDate extends CcFormControlElement {
     // Here we prevent keydown on enter key from modifying the value
     if (e.type === 'keydown' && e.key === 'Enter') {
       e.preventDefault();
-      this._internals.form.requestSubmit();
+      this._internals.form?.requestSubmit();
       dispatchCustomEvent(this, 'requestimplicitsubmit');
     }
     // Request implicit submit with keypress on enter key
     if (!this.readonly && e.type === 'keypress' && e.key === 'Enter') {
-      this._internals.form.requestSubmit();
+      this._internals.form?.requestSubmit();
       dispatchCustomEvent(this, 'requestimplicitsubmit');
     }
 
