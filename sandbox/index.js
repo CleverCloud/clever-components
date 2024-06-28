@@ -51,6 +51,7 @@ const sandboxes = [
   'cc-product-card',
   'cc-logs-application-view',
   'forms',
+  'cc-redis',
 ];
 
 const $listContainer = document.querySelector('.sandboxes-list');
