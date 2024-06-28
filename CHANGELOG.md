@@ -5,6 +5,15 @@ title: 'Changelog'
 
 # Changelog
 
+## [15.0.1](https://github.com/CleverCloud/clever-components/compare/15.0.0...15.0.1) (2024-06-28)
+
+
+### 🐛 Bug Fixes
+
+* **cc-input-date:** fix Enter keystroke when not into a form element ([31bcb3c](https://github.com/CleverCloud/clever-components/commit/31bcb3cb22f7c0061bc5d589c1a5f7001491f1a6))
+* **cc-input-number:** fix Enter keystroke when not into a form element ([aa9fa07](https://github.com/CleverCloud/clever-components/commit/aa9fa0730bb10715a505130f3739163a7d7c3240))
+* **cc-input-text:** fix Enter keystroke when not into a form element ([c23f31a](https://github.com/CleverCloud/clever-components/commit/c23f31a7949563cc1b4f6554672b17cfe5d30fa7))
+
 ## [15.0.0](https://github.com/CleverCloud/clever-components/compare/14.1.1...15.0.0) (2024-06-28)
 
 
