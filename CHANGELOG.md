@@ -5,6 +5,40 @@ title: 'Changelog'
 
 # Changelog
 
+## [15.0.0](https://github.com/CleverCloud/clever-components/compare/14.1.1...15.0.0) (2024-06-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* **cc-orga-member-list:** an `ElementInternals` polyfill is required to support Safari before version 16.4
+* **cc-ssh-key-list:** an `ElementInternals` polyfill is required to support Safari before version 16.4
+* **cc-email-list:** an `ElementInternals` polyfill is required to support Safari before version 16.4
+* **cc-button:** an `ElementInternals` polyfill is required to support Safari before version 16.4
+* **cc-select:** an `ElementInternals` polyfill is required to support Safari before version 16.4
+* **cc-input-text:** an `ElementInternals` polyfill is required to support Safari before version 16.4
+* **cc-input-number:** an `ElementInternals` polyfill is required to support Safari before version 16.4
+* **cc-input-date:** an `ElementInternals` polyfill is required to support Safari before version 16.4
+
+### 🚀 Features
+
+* **cc-button:** implement element internals ([9040c22](https://github.com/CleverCloud/clever-components/commit/9040c22b46f03b87c1626195d6e0376ca063edba))
+* **cc-input-date:** implement element internals ([3928fcc](https://github.com/CleverCloud/clever-components/commit/3928fcca34380e69990a3cf8066dca4f3bd52f06))
+* **cc-input-number:** implement element internals ([695c934](https://github.com/CleverCloud/clever-components/commit/695c934963f83cdd819cb455a90292e585b39fea))
+* **cc-input-text:** implement element internals ([5bbf548](https://github.com/CleverCloud/clever-components/commit/5bbf54821bccc956616810baece3f9c23cf58f5d))
+* **cc-logs:** add `Home` and `End` keystrokes ([8dc21b7](https://github.com/CleverCloud/clever-components/commit/8dc21b78c938899b3f87b2e2f822e9897ee72306)), closes [#1009](https://github.com/CleverCloud/clever-components/issues/1009)
+* **cc-logs:** add ctrl+A keystroke for selecting all log lines ([1610cb2](https://github.com/CleverCloud/clever-components/commit/1610cb28ba59e736d444d0f8a870f60105aba1ec)), closes [#1008](https://github.com/CleverCloud/clever-components/issues/1008)
+* **cc-logs:** make copy button more visible ([08ffc0d](https://github.com/CleverCloud/clever-components/commit/08ffc0db14f1fbd8cc864155ef8f4644a2473af5)), closes [#1012](https://github.com/CleverCloud/clever-components/issues/1012)
+* **cc-logs:** select whole log line with triple click ([7c46e49](https://github.com/CleverCloud/clever-components/commit/7c46e498d5f7589db9f99eb2ee0a8c4d62596fcd)), closes [#1006](https://github.com/CleverCloud/clever-components/issues/1006)
+* **cc-select:** implement element internals ([4a5a13d](https://github.com/CleverCloud/clever-components/commit/4a5a13d8d651521a9cca1681df362de68b088e28))
+* **forms:** add framework for element internals support ([1d52fbb](https://github.com/CleverCloud/clever-components/commit/1d52fbb66b59bca6bffd319fa5a18996240b4718))
+
+
+### 🛠 Code Refactoring
+
+* **cc-email-list:** implement the add-secondary-email form with the new form mechanism ([be5b6c2](https://github.com/CleverCloud/clever-components/commit/be5b6c257e3e131c897a19335139442fa4f4e832))
+* **cc-orga-member-list:** implement the create-key form with the new form mechanism ([9929b0a](https://github.com/CleverCloud/clever-components/commit/9929b0aeaaf07c0ef01efffa5c94fec92a29b19c))
+* **cc-ssh-key-list:** implement the create-key form with the new form mechanism ([c4e49f4](https://github.com/CleverCloud/clever-components/commit/c4e49f40f5e59b41103ce97cb8cae60592012375))
+
 ## [14.1.1](https://github.com/CleverCloud/clever-components/compare/14.1.0...14.1.1) (2024-06-21)
 
 
