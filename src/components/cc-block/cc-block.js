@@ -38,7 +38,7 @@ export class CcBlock extends LitElement {
   static get properties () {
     return {
       icon: { type: Object },
-      image: { type: String },
+      image: { type: String, reflect: true },
       noHead: { type: Boolean, attribute: 'no-head', reflect: true },
       ribbon: { type: String, reflect: true },
       state: { type: String, reflect: true },
@@ -88,55 +88,70 @@ export class CcBlock extends LitElement {
 
     const isToggleEnabled = (this.state === 'open' || this.state === 'close');
     const isOpen = (this.state !== 'close');
-
+    const hasImageOrIcon = this.image != null || this.icon != null;
     /* TODO when reworking the component, check this a11y issue https://github.com/CleverCloud/clever-components/issues/225#issuecomment-1239462826 */
     /* eslint-disable lit-a11y/click-events-have-key-events */
     return html`
         <div class="container">
-            <button @click="${() => {
-this.counter++;
-}}">${this.counter}</button>
-          <slot name="header">
-              <div class="header">
-                <slot name="icon" class="icon">
-                    ${this.image != null && this.icon == null ? html`
-                <cc-img src="${this.image}"></cc-img>
-              ` : ''}
-                      ${this.icon != null ? html`
-                <cc-icon size="lg" .icon=${this.icon}></cc-icon>
-              ` : ''}
-                  </slot>
-                  <slot name="title" class="title"></slot>
-                  <slot name="ribbon">
-                    RIBBON
-                    ${this.ribbon != null && this.ribbon !== '' ? html`
+          <slot name="header" ${hasSlottedChildren()}>
+            <div class="header">
+              <div class="icon ${classMap({ 'has-image-or-icon': hasImageOrIcon })}">
+                ${this.image == null && this.icon == null ? html`
+                  <slot name="icon" ${hasSlottedChildren()}></slot>
+                ` : ''}
+                ${this.image != null && this.icon == null ? html`
+                  <cc-img src="${this.image}"></cc-img>
+                ` : ''}
+                ${this.icon != null && this.image == null ? html`
+                  <cc-icon size="lg" .icon=${this.icon}></cc-icon>
+                ` : ''}
+              </div>
+              <div class="title">
+                <slot name="title" ${hasSlottedChildren()}></slot>
+              </div>
+              <div class="ribbon">
+                <slot name="ribbon" ${hasSlottedChildren()}>
+                  ${this.ribbon != null && this.ribbon !== '' ? html`
                     <div class="info-ribbon">${this.ribbon}</div>
-                    ` : ''}
-                  </slot>
+                  ` : ''}
+                </slot>
+              </div>
+              <div class="button">
+                <slot name="button">
                   ${isToggleEnabled ? html`
-                <cc-button
-                class="toggle_button"
-                .icon=${isOpen ? iconUp : iconDown}
-                hide-text
-                outlined
-                primary
-                @cc-button:click=${this._clickToggle}
-              >${isOpen ? i18n('cc-block.toggle.close') : i18n('cc-block.toggle.open')}
-              </cc-button>
-            ` : ''}
-                  <!--<div name="button"></div>-->
+                    <cc-button
+                      class="toggle_button"
+                      .icon=${isOpen ? iconUp : iconDown}
+                      hide-text
+                      outlined
+                      primary
+                      @cc-button:click=${this._clickToggle}
+                    >${isOpen ? i18n('cc-block.toggle.close') : i18n('cc-block.toggle.open')}
+                    </cc-button>
+                  ` : ''}    
+                </slot>
+              </div>
+              <div class="other-element">
                   <slot name="other-element"></slot>
+              </div>
+
             </div>
           </slot>
-          <cc-expand class="main-wrapper ${classMap({ 'main-wrapper--overlay': this._overlay })}">
-            ${!isToggleEnabled || isOpen ? html`
-              <slot name="content" class="content">
+            
+          <slot name="content">
+            <div class="content">
+              <cc-expand class="main-wrapper ${classMap({ 'main-wrapper--overlay': this._overlay })}">
+                  ${!isToggleEnabled || isOpen ? html`
+              <slot name="main" class="main">
                 <slot name="content-header"></slot>
                 <slot name="content-body"></slot>
                 <slot name="content-footer"></slot>
               </slot>
             ` : ''}
-          </cc-expand>
+              </cc-expand>
+            </div>
+          </slot>
+            
           <slot name="footer" ${hasSlottedChildren()}>
             <div class="footer">
               <div class="left-content">
@@ -176,13 +191,74 @@ this.counter++;
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-default, 0.25em);
           display: block;
+          margin-bottom: 1em;
+        }
+
+        .container {
+            display: grid;
+            gap: 1em;
+            --left-space: 1em;
+            padding: 1em;
+            padding-left: var(--left-space);
+        }
+        
+        .container:has(slot[name=ribbon][is-slotted]) {
+            --left-space: 3.5em;
         }
 
         .header {
-            display: flex;
+            display: none;
             align-items: center;
-            padding: 1em;
             color: var(--cc-color-text-primary-strongest);
+        }
+
+        slot[name=header][is-slotted] .header,
+        .header:has(slot[is-slotted]) {
+            display: flex;
+            gap: 1em;
+        }
+        
+        /* Fixer CSS taille img */
+        .header cc-img {
+            width: 1.5em;
+            height: 1.5em;
+            align-self: flex-start;
+            border-radius: var(--cc-border-radius-default, 0.25em);
+        }
+        
+        .header .title {
+            flex: 1 1 0;
+        }
+
+        .header .icon:not(:has([is-slotted])):not(.has-image-or-icon) {
+            display: none;
+        }
+        
+        .header .ribbon:not(:has([is-slotted])) {
+            display: none;
+        }
+        
+        
+        
+        .header .ribbon {
+            --height: 1.5em;
+            --width: 8em;
+            --r: -45deg;
+            --translate: 1.6em;
+            
+            position: absolute;
+            z-index: 2;
+            top: calc(var(--height) / -2);
+            left: calc(var(--width) / -2);
+            width: var(--width);
+            height: var(--height);
+            background: var(--cc-color-bg-strong);
+            color: white;
+            font-size: 0.9em;
+            font-weight: bold;
+            line-height: var(--height);
+            text-align: center;
+            transform: rotate(var(--r)) translateY(var(--translate));
         }
         
         ::slotted([slot='title']) {
@@ -191,20 +267,16 @@ this.counter++;
           font-weight: bold;
         }
 
-        .container {
-          display: grid;
-          gap: 1em;
-          padding: 1em;
+        .main {
         }
 
-        .header {
-           /* background-color: deeppink; */
-            display: flex;
-            gap: 1em;
+        :host([no-head]) .main {
+            padding: 1em;
         }
 
-        .title {
-            flex: 1 1 0;
+        .main-wrapper--overlay {
+            filter: blur(0.3em);
+            opacity: 0.35;
         }
 
         .footer {
@@ -215,6 +287,10 @@ this.counter++;
             font-style: italic;
             gap: 0.57em;
             margin: 0 -1em -1em -1em;
+        }
+        
+        .footer {
+            margin-left: calc(var(--left-space)*-1);
         }
         
         .left-content, 
@@ -230,24 +306,10 @@ this.counter++;
 
         .footer .center-content {
             flex: 1 1 0;
+            text-align: center;
         }
 
-/*        .footer:has(.left-content),
-        .footer:has(.center-content),
-        .footer:has(.right-content) {
-            display: flex;
-        }*/
-
-
-        
-
-        /*        ::slotted([slot='header']) {
-                  display: flex;
-                  align-items: center;
-                  padding: 1em;
-                  color: var(--cc-color-text-primary-strongest);
-                }
-        
+        /*     
                 :host([ribbon]) .head {
                   padding-left: 3.5em;
                 }
@@ -256,19 +318,6 @@ this.counter++;
                 :host([state='close']) .head:hover {
                   background-color: var(--cc-color-bg-neutral-hovered);
                   cursor: pointer;
-                }
-        
-                cc-img {
-                  width: 1.5em;
-                  height: 1.5em;
-                  align-self: flex-start;
-                  margin-right: 1em;
-                  border-radius: var(--cc-border-radius-default, 0.25em);
-                }
-        
-                cc-icon {
-                  align-self: flex-start;
-                  margin-right: 1em;
                 }
         
                 .toggle_button {
@@ -280,28 +329,7 @@ this.counter++;
                   font-size: 1.2em;
                   font-weight: bold;
                 }
-        
-                .info-ribbon {
-                  --height: 1.5em;
-                  --width: 8em;
-                  --r: -45deg;
-                  --translate: 1.6em;
-        
-                  position: absolute;
-                  z-index: 2;
-                  top: calc(var(--height) / -2);
-                  left: calc(var(--width) / -2);
-                  width: var(--width);
-                  height: var(--height);
-                  background: var(--cc-color-bg-strong);
-                  color: white;
-                  font-size: 0.9em;
-                  font-weight: bold;
-                  line-height: var(--height);
-                  text-align: center;
-                  transform: rotate(var(--r)) translateY(var(--translate));
-                }
-        
+       
                 .main {
                   display: grid;
                   padding: 0.5em 1em 1em;
@@ -341,16 +369,6 @@ this.counter++;
                   font-style: italic;
                 }
                 
-                ::slotted([slot='footer']) {
-                    display: flex;
-                    box-sizing: border-box;
-                    justify-content: flex-end;
-                    padding: 0.5em 1.1em;
-                    background-color: var(--cc-color-bg-neutral);
-                    box-shadow: inset 0 6px 6px -6px rgb(0 0 0 / 40%);
-                    font-size: 0.9em;
-                    font-style: italic;
-                    gap: 0.57em;
                 }*/
       `,
     ];

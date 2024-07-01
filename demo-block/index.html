@@ -6,8 +6,8 @@
     <link rel="stylesheet" href="/src/styles/default-theme.css">
     <script type="module" src="index.js"></script>
     <style>
-        cc-block {
-            margin-bottom: 1em;
+        body {
+            font-family: sans-serif;
         }
         p {
         margin: 0;
@@ -15,10 +15,8 @@
     </style>
 </head>
 <body>
-<!--<cc-block>
+<cc-block>
     <div slot="title">My new cc-block</div>
-    <div slot="icon"><img src="${iconInfo}"/></div>
-    <div slot="ribbon">RIBBON</div>
 
     <p slot="content-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo
         porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa. Mauris
@@ -35,12 +33,15 @@
         <a href="#">CCAPI</a>
         <a href="#">CLI</a>
     </div>
-</cc-block>-->
+</cc-block>
 
-<cc-block>
-    <div slot="title">My new cc-block</div>
-    <div slot="icon"><img src="${iconInfo}"/></div>
-    <div slot="ribbon">RIBBON</div>
+<cc-block image="https://assets.clever-cloud.com/logos/nodejs.svg">
+    <div slot="icon"><img src=""/></div>
+    <div slot="title">New cc-block</div>
+    <div slot="ribbon">info</div>
+    <div slot="button">
+        <cc-button slot="button">A button</cc-button>
+    </div>
 
     <p slot="content-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo
         porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa. Mauris
@@ -55,11 +56,9 @@
     <div slot="left-content">
         <p>toto</p>
     </div>
-
     <div slot="center-content">
-        <p style="text-align: center">titi</p>
+        <p>titi</p>
     </div>
-
     <div slot="right-content">
         <a href="https://developers.clever-cloud.com/">Documentation</a>
         <a href="#">CCAPI</a>
