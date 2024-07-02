@@ -1,101 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Demo new cc-block</title>
-    <link rel="stylesheet" href="/src/styles/default-theme.css">
-    <script type="module" src="index.js"></script>
-    <style>
-        body {
-            font-family: sans-serif;
-        }
-        p {
-        margin: 0;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Demo new cc-block</title>
+  <link rel="stylesheet" href="/src/styles/default-theme.css">
+  <script type="module" src="index.js"></script>
+  <style>
+  body {
+    font-family: sans-serif;
+  }
+
+  p {
+    margin: 0;
+  }
+  </style>
 </head>
 <body>
-<cc-block>
-    <div slot="title">My new cc-block</div>
 
-    <p slot="content-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo
-        porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa. Mauris
-        dignissim accumsan ex, at vestibulum lectus fermentum id. Quisque nec magna arcu.
-        Quisque in metus sed erat sodales euismod eget id purus. Sed sagittis rhoncus mauris.
-        Ut sit amet urna ac nunc semper porta. Nam ut felis eu velit luctus rutrum. Nam leo nisl,
-        molestie a varius non, ullamcorper sit amet tortor. Donec in convallis ex. Vestibulum ante
-        ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent hendrerit
-        venenatis erat, eu malesuada nulla viverra eu. Curabitur porta risus augue,
-        non rutrum lectus hendrerit a.</p>
+<cc-block-new>
+  <div slot="title">The Title</div>
+  <div slot="main">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa.</div>
+</cc-block-new>
 
-    <div slot="right-content">
-        <a href="https://developers.clever-cloud.com/">Documentation</a>
-        <a href="#">CCAPI</a>
-        <a href="#">CLI</a>
-    </div>
-</cc-block>
+<cc-block-new>
+  <div slot="title">The Title</div>
+  <div slot="main">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa.</div>
+  <div slot="footer">
+    <div style="background-color:tomato;">full footer</div>
+  </div>
+</cc-block-new>
 
-<cc-block image="https://assets.clever-cloud.com/logos/nodejs.svg">
-    <div slot="icon"><img src=""/></div>
-    <div slot="title">New cc-block</div>
-    <div slot="ribbon">info</div>
-    <div slot="button">
-        <cc-button slot="button">A button</cc-button>
-    </div>
+<cc-block-new>
+  <div slot="title">The Title</div>
+  <div slot="main">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa.</div>
+  <div slot="footer-left" style="white-space: nowrap">very long footer left</div>
+  <div slot="footer-right">
+    <a href="https://developers.clever-cloud.com/">Documentation</a>
+    <a href="#">CCAPI</a>
+    <a href="#">CLI</a>
+  </div>
+</cc-block-new>
 
-    <p slot="content-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo
-        porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa. Mauris
-        dignissim accumsan ex, at vestibulum lectus fermentum id. Quisque nec magna arcu.
-        Quisque in metus sed erat sodales euismod eget id purus. Sed sagittis rhoncus mauris.
-        Ut sit amet urna ac nunc semper porta. Nam ut felis eu velit luctus rutrum. Nam leo nisl,
-        molestie a varius non, ullamcorper sit amet tortor. Donec in convallis ex. Vestibulum ante
-        ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent hendrerit
-        venenatis erat, eu malesuada nulla viverra eu. Curabitur porta risus augue,
-        non rutrum lectus hendrerit a.</p>
+<cc-block-new>
+  <div slot="title">The Title</div>
+  <div slot="main">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa.</div>
+  <div slot="footer-left">
+    <div>This command:</div>
+    <pre style="background-color:#000;color:#fff;font-size: 1em;padding: 1em;margin: 0;border-radius: 0.25em;">clever tcp-redirs add</pre>
+  </div>
+</cc-block-new>
 
-    <div slot="left-content">
-        <p>toto</p>
-    </div>
-    <div slot="center-content">
-        <p>titi</p>
-    </div>
-    <div slot="right-content">
-        <a href="https://developers.clever-cloud.com/">Documentation</a>
-        <a href="#">CCAPI</a>
-        <a href="#">CLI</a>
-    </div>
-</cc-block>
+<cc-block-new>
+  <div slot="title">The Title</div>
+  <div slot="main">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa.</div>
+  <div slot="footer-right">
+    <a href="https://developers.clever-cloud.com/">Documentation</a>
+    <a href="#">CCAPI</a>
+    <a href="#">CLI</a>
+  </div>
+</cc-block-new>
 
-<cc-block image="https://assets.clever-cloud.com/logos/nodejs.svg">
-    <div slot="icon"><img src=""/></div>
-    <div slot="title">New cc-block</div>
-    <div slot="ribbon">info</div>
-    <div slot="button">
-        <cc-button slot="button"></cc-button>
-    </div>
+<!--<cc-block-new>-->
+<!--    <div slot="content-body">Simple block</div>-->
+<!--</cc-block-new>-->
 
-    <p slot="content-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo
-        porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa. Mauris
-        dignissim accumsan ex, at vestibulum lectus fermentum id. Quisque nec magna arcu.
-        Quisque in metus sed erat sodales euismod eget id purus. Sed sagittis rhoncus mauris.
-        Ut sit amet urna ac nunc semper porta. Nam ut felis eu velit luctus rutrum. Nam leo nisl,
-        molestie a varius non, ullamcorper sit amet tortor. Donec in convallis ex. Vestibulum ante
-        ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent hendrerit
-        venenatis erat, eu malesuada nulla viverra eu. Curabitur porta risus augue,
-        non rutrum lectus hendrerit a.</p>
+<!--<cc-block-new>-->
+<!--    <div slot="title">My cc-block-new</div>-->
 
-    <div slot="left-content">
-        <p>toto</p>
-    </div>
-    <div slot="center-content">
-        <p>titi</p>
-    </div>
-    <div slot="right-content">
-        <a href="https://developers.clever-cloud.com/">Documentation</a>
-        <a href="#">CCAPI</a>
-        <a href="#">CLI</a>
-    </div>
-</cc-block>
+<!--    <p slot="content-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo-->
+<!--        porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa. Mauris-->
+<!--        dignissim accumsan ex, at vestibulum lectus fermentum id. Quisque nec magna arcu.-->
+<!--        Quisque in metus sed erat sodales euismod eget id purus. Sed sagittis rhoncus mauris.-->
+<!--        Ut sit amet urna ac nunc semper porta. Nam ut felis eu velit luctus rutrum. Nam leo nisl,-->
+<!--        molestie a varius non, ullamcorper sit amet tortor. Donec in convallis ex. Vestibulum ante-->
+<!--        ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent hendrerit-->
+<!--        venenatis erat, eu malesuada nulla viverra eu. Curabitur porta risus augue,-->
+<!--        non rutrum lectus hendrerit a.</p>-->
+
+<!--    <div slot="right-content">-->
+<!--        <a href="https://developers.clever-cloud.com/">Documentation</a>-->
+<!--        <a href="#">CCAPI</a>-->
+<!--        <a href="#">CLI</a>-->
+<!--    </div>-->
+<!--</cc-block-new>-->
+
+<!--<cc-block-new>-->
+<!--    <div slot="title">My cc-block-new</div>-->
+
+<!--    <p slot="content-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo-->
+<!--        porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa. Mauris-->
+<!--        dignissim accumsan ex, at vestibulum lectus fermentum id. Quisque nec magna arcu.-->
+<!--        Quisque in metus sed erat sodales euismod eget id purus. Sed sagittis rhoncus mauris.-->
+<!--        Ut sit amet urna ac nunc semper porta. Nam ut felis eu velit luctus rutrum. Nam leo nisl,-->
+<!--        molestie a varius non, ullamcorper sit amet tortor. Donec in convallis ex. Vestibulum ante-->
+<!--        ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent hendrerit-->
+<!--        venenatis erat, eu malesuada nulla viverra eu. Curabitur porta risus augue,-->
+<!--        non rutrum lectus hendrerit a.</p>-->
+
+<!--    <div slot="left-content">-->
+<!--        <div>This command:</div>-->
+<!--        <pre style="background-color:#000;color:#fff;font-size: 1em;padding: 1em;margin: 0;border-radius: 0.25em;">clever tcp-redirs add</pre>-->
+<!--    </div>-->
+<!--</cc-block-new>-->
+
+<!--<cc-button id="expand">expand</cc-button>-->
+
+<!--<cc-block-new image="https://assets.clever-cloud.com/logos/nodejs.svg">-->
+<!--    <div slot="title">cc-block-new</div>-->
+<!--    <div slot="ribbon">info</div>-->
+<!--    <div slot="button">-->
+<!--        <cc-button>A button</cc-button>-->
+<!--    </div>-->
+<!--    <div slot="other-element">-->
+<!--        <div>other element</div>-->
+<!--    </div>-->
+
+<!--    <div slot="content-header">content-header</div>-->
+<!--    <p slot="content-body" id="expand-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo-->
+<!--        porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa. Mauris-->
+<!--        dignissim accumsan ex, at vestibulum lectus fermentum id. Quisque nec magna arcu.-->
+<!--        Quisque in metus sed erat sodales euismod eget id purus. Sed sagittis rhoncus mauris.-->
+<!--        Ut sit amet urna ac nunc semper porta. Nam ut felis eu velit luctus rutrum. Nam leo nisl,-->
+<!--        molestie a varius non, ullamcorper sit amet tortor. Donec in convallis ex. Vestibulum ante-->
+<!--        ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent hendrerit-->
+<!--        venenatis erat, eu malesuada nulla viverra eu. Curabitur porta risus augue,-->
+<!--        non rutrum lectus hendrerit a.-->
+<!--        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo-->
+<!--        porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa. Mauris-->
+<!--        dignissim accumsan ex, at vestibulum lectus fermentum id. Quisque nec magna arcu.-->
+<!--        Quisque in metus sed erat sodales euismod eget id purus. Sed sagittis rhoncus mauris.-->
+<!--        Ut sit amet urna ac nunc semper porta. Nam ut felis eu velit luctus rutrum. Nam leo nisl,-->
+<!--        molestie a varius non, ullamcorper sit amet tortor. Donec in convallis ex. Vestibulum ante-->
+<!--        ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent hendrerit-->
+<!--        venenatis erat, eu malesuada nulla viverra eu. Curabitur porta risus augue,-->
+<!--        non rutrum lectus hendrerit a.</p>-->
+<!--    <div slot="content-footer">content-footer</div>-->
+
+
+<!--    <div slot="left-content">-->
+<!--        <p>toto</p>-->
+<!--    </div>-->
+<!--    <div slot="center-content">-->
+<!--        <p>titi</p>-->
+<!--    </div>-->
+<!--    <div slot="right-content">-->
+<!--        <a href="https://developers.clever-cloud.com/">Documentation</a>-->
+<!--        <a href="#">CCAPI</a>-->
+<!--        <a href="#">CLI</a>-->
+<!--    </div>-->
+<!--</cc-block-new>-->
+
+<!--<cc-block-new image="https://assets.clever-cloud.com/logos/nodejs.svg">-->
+<!--    <div slot="icon"><img src=""/></div>-->
+<!--    <div slot="title">New cc-block-new</div>-->
+<!--    <div slot="ribbon">info</div>-->
+<!--    <div slot="button">-->
+<!--        <cc-button slot="button"></cc-button>-->
+<!--    </div>-->
+
+<!--    <p slot="content-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo-->
+<!--        porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa. Mauris-->
+<!--        dignissim accumsan ex, at vestibulum lectus fermentum id. Quisque nec magna arcu.-->
+<!--        Quisque in metus sed erat sodales euismod eget id purus. Sed sagittis rhoncus mauris.-->
+<!--        Ut sit amet urna ac nunc semper porta. Nam ut felis eu velit luctus rutrum. Nam leo nisl,-->
+<!--        molestie a varius non, ullamcorper sit amet tortor. Donec in convallis ex. Vestibulum ante-->
+<!--        ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent hendrerit-->
+<!--        venenatis erat, eu malesuada nulla viverra eu. Curabitur porta risus augue,-->
+<!--        non rutrum lectus hendrerit a.</p>-->
+
+<!--    <div slot="left-content">-->
+<!--        <p>toto</p>-->
+<!--    </div>-->
+<!--    <div slot="center-content">-->
+<!--        <p>titi</p>-->
+<!--    </div>-->
+<!--    <div slot="right-content">-->
+<!--        <a href="https://developers.clever-cloud.com/">Documentation</a>-->
+<!--        <a href="#">CCAPI</a>-->
+<!--        <a href="#">CLI</a>-->
+<!--    </div>-->
+<!--</cc-block-new>-->
 
 </body>
 </html>
