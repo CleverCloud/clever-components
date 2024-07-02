@@ -11,7 +11,7 @@ import { findActiveElement, isParentOf } from '../lib/shadow-dom-utils.js';
  * @property {Element} removedElement the element that has been removed from DOM
  * @property {Element} focusedElement the element that had focus just before removal (can be the removedElement itself or one of its children)
  * @property {number} index the index of the removedElement (before removal)
- * @property {Element|null} suggestedElement the element that we suggest to gain focus
+ * @property {HTMLElement|null} suggestedElement the element that we suggest to gain focus
  */
 
 /**

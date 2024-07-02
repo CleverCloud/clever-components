@@ -230,3 +230,57 @@ export function sleep (delay) {
     setTimeout(resolve, delay);
   });
 }
+
+/**
+ * Checks if the domain is a `cleverapps.io` domain and if it contains a subdomain.
+ * For instance `subdomain.main.cleverapps.io` is HTTP only.
+ *
+ * @param {string} domain
+ * @return {boolean} whether the domain is a `cleverapps.io` is HTTP only or not
+ */
+export function isCleverappsDomainHttpOnly (domain) {
+  return domain.endsWith('cleverapps.io') && domain.split('.').length > 3;
+}
+
+/**
+ * Extracts `hostname` and `pathname` from a given `domain`
+ *
+ * @param {string} domain
+ * @return {{ hostname: string, pathname: string }}
+ */
+export function extractDomainParts (domain) {
+  const domainWithHttp = domain.match(/^http(s)?:\/\//) != null ? domain : 'https://' + domain;
+  // With firefox, 'https://*.toto.com' is considered invalid so we strip it off for the test
+  // because we know this part is valid and we want the rest to be sanitized by the URL parser
+  const hasWildcard = domain.startsWith('*.');
+  const { hostname, pathname } = new URL(domainWithHttp.replace('*.', ''));
+
+  return {
+    // then we add '*.' back to the hostname before sending the value back.
+    hostname: hasWildcard ? '*.' + hostname : hostname,
+    pathname,
+  };
+}
+
+/**
+ * @typedef {import('../components/cc-domain-management/cc-domain-management.types.js').FormattedDomainInfo} FormattedDomainInfo
+ * @typedef {Pick<FormattedDomainInfo, 'domainName' | 'pathPrefix' | 'isPrimary'>} Domain
+ *
+ * @param {Domain} domainA
+ * @param {Domain} domainB
+ * @returns {number}
+ */
+export function sortDomains (domainA, domainB) {
+  const reversedDomainA = domainA.domainName.split('.').reverse().join('.') + domainA.pathPrefix;
+  const reversedDomainB = domainB.domainName.split('.').reverse().join('.') + domainB.pathPrefix;
+
+  if (domainA.isPrimary) {
+    return -1;
+  }
+
+  if (domainB.isPrimary) {
+    return 1;
+  }
+
+  return reversedDomainA.localeCompare(reversedDomainB);
+}
