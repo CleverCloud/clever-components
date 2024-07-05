@@ -126,6 +126,7 @@
     "postcss-lit": "^1.1.1",
     "postcss-styled": "^0.34.0",
     "prettier": "^3.2.5",
+    "prettier-plugin-organize-imports": "^4.0.0",
     "remark-frontmatter": "^3.0.0",
     "remark-gfm": "^1.0.0",
     "remark-highlight.js": "^6.0.0",
