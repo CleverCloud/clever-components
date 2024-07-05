@@ -1,9 +1,9 @@
 kind: '📌 Architecture Decision Records'
 ---
+
 # ADR 0026: Introducing Prettier as a formatter
 
 🗓️ 2024-06-13 · ✍️ Mathieu Degand
-
 
 This ADR explains why we decided to introduce Prettier while migrating our linting tools (ESLint/Stylelint) to their latest version.
 
@@ -41,8 +41,9 @@ Biome is a toolchain written in Rust that can both format and lint but also more
 - While being multipurpose is a pro, it's also a con. If you want to use only one feature, you'll still need to get the whole package and deactivate the features you don't need.
 
 While we could have chosen to go for Biome as a formatter, and maybe go even further and choose it as a linter too, there are a few reasons why we decided not to go for this solution.
+
 - As a linter, there's not a lot of options and it can't check our CSS, so that's a clear no go.
-  - Note: Biome can't check our CSS because it only check for whole CSS files and is unable to check CSS in JS files. 
+  - Note: Biome can't check our CSS because it only check for whole CSS files and is unable to check CSS in JS files.
 - If we wanted to only go for the formatter, we still had to get everything and deactivate features we didn't need/want. (formatter, analyzer..)
 - Biome has the same philosophy as Prettier for the formatting but Prettier is more known and used for now.
 
@@ -118,7 +119,7 @@ However, we couldn't do that because:
 So we tried to force Prettier to use the `css` parser instead for Stylelint but that resulted in some errors.
 
 Knowing that we couldn't use this plugin and thus not having a formatter for our Stylelint/CSS part we decided not to use Stylistic.
-Moreover, if we wanted to use both ESLint with Stylystic and prettier for the CSS it would have caused some conflicts.
+Moreover, if we wanted to use both ESLint with Stylistic and prettier for the CSS it would have caused some conflicts.
 
 ### Update of Stylelint
 
@@ -150,7 +151,7 @@ Considering all of this, we decided to pause the migration to the version 9 for 
 ### What's next?
 
 - We need to check Prettier plugins system to see if we could adapt some rules to our liking.
-- We need to keep an eye out on ESLint to migrate it to the latest version, which means: 
+- We need to keep an eye out on ESLint to migrate it to the latest version, which means:
   - Migrating to the new flat config.
   - Updating the plugins nor find an alternative if the plugins aren't maintained anymore.
   - Getting rid of the Prettier plugin and remove all the deprecated formatting rules.  
