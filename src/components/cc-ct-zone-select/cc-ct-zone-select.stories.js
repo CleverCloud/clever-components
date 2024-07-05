@@ -1,13 +1,5 @@
-
-// Don't forget to import the component you're presenting!
 import './cc-ct-zone-select.js';
-import {
-  iconCleverOracle as iconOracle,
-  iconCleverCleverCloud as iconCleverCloud,
-  iconCleverOvh as iconOvh,
-  iconCleverOvhHds as iconOvhHds,
-  iconCleverScaleway as iconScaleway,
-} from '../../assets/cc-clever.icons.js';
+import { getFlagUrl, getInfraProviderLogoUrl } from '../../lib/remote-assets.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
 export default {
@@ -28,11 +20,79 @@ const conf = {
 };
 
 const DEFAULT_ITEMS = [
-  { name: 'par', infra: iconCleverCloud, city: 'Paris', countryCode: 'FR' },
-  { name: 'scw', infra: iconScaleway, city: 'Paris', countryCode: 'FR', tags: ['green'] },
-  { name: 'mtl', infra: iconOvh, city: 'Montreal', countryCode: 'CA' },
-  { name: 'jed', infra: iconOracle, city: 'Jeddah', countryCode: 'SA' },
-  { name: 'fr-north-hds', infra: iconOvhHds, city: 'North', countryCode: 'FR', tags: ['hds'] },
+  {
+    name: 'scw',
+    city: 'Paris',
+    flagUrl: getFlagUrl('FR'),
+    images: [getInfraProviderLogoUrl('scaleway')],
+    disabled: true,
+    tags: [
+      'green',
+    ],
+  },
+  {
+    name: 'sgp',
+    city: 'Singapore',
+    images: [getInfraProviderLogoUrl('ovh')],
+    flagUrl: getFlagUrl('SG'),
+    tags: [],
+  },
+  {
+    name: 'par',
+    city: 'Paris',
+    images: [getInfraProviderLogoUrl('clever-cloud')],
+    flagUrl: getFlagUrl('FR'),
+    tags: ['foo'],
+  },
+  {
+    name: 'grahds',
+    city: 'Gravelines',
+    images: [getInfraProviderLogoUrl('ovh')],
+    flagUrl: getFlagUrl('FR'),
+    tags: [],
+  },
+  {
+    name: 'mtl',
+    city: 'Montreal',
+    images: [getInfraProviderLogoUrl('ovh')],
+    flagUrl: getFlagUrl('CA'),
+    tags: [],
+  },
+  {
+    name: 'syd',
+    city: 'Sydney',
+    images: [getInfraProviderLogoUrl('ovh')],
+    flagUrl: getFlagUrl('AU'),
+    tags: [],
+  },
+  {
+    name: 'rbx',
+    city: 'Roubaix',
+    images: [getInfraProviderLogoUrl('ovh')],
+    flagUrl: getFlagUrl('FR'),
+    tags: [],
+  },
+  {
+    name: 'wsw',
+    city: 'Warsaw',
+    images: [getInfraProviderLogoUrl('ovh')],
+    flagUrl: getFlagUrl('PL'),
+    tags: [],
+  },
+  {
+    name: 'rbxhds',
+    city: 'Roubaix',
+    images: [getInfraProviderLogoUrl('ovh')],
+    flagUrl: getFlagUrl('FR'),
+    tags: [],
+  },
+  {
+    name: 'fr-north-hds',
+    city: 'North',
+    images: [getInfraProviderLogoUrl('ovh')],
+    flagUrl: getFlagUrl('FR'),
+    tags: [],
+  },
 ];
 
 // The first story in the file will appear before the API table in Storybook's docs page.

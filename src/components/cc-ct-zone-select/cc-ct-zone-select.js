@@ -15,6 +15,7 @@ import {
 import { getFlagUrl, getInfraProviderLogoUrl } from '../../lib/remote-assets.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-badge/cc-badge.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 // DOCS: You may setup/init some stuffs here but this should be rare and most of the setup should happen in the component.
 const MY_AWESOME_CONST = 'foobar';
@@ -76,7 +77,8 @@ export class CcCtZoneSelect extends LitElement {
   static get properties () {
     return {
       state: { type: Object },
-      _isGreen: { type: Boolean },
+      disabled: { type: Boolean, state: true, reflect: true, attribute: true },
+      selected: { type: Boolean, state: true, reflect: true, attribute: true },
     };
   }
 
@@ -88,10 +90,9 @@ export class CcCtZoneSelect extends LitElement {
     /** @type {ZoneItemState} - state of the zone item */
     this.state = { type: 'loading' };
 
-    this._isGreen = false;
+    this.disabled = false;
+    this.selected = false;
   }
-
-  // DOCS: 3. Public methods
 
   // DOCS: 4. Private methods
 
@@ -104,10 +105,12 @@ export class CcCtZoneSelect extends LitElement {
    * @param {CcCtZoneSelectPropertyValues} changedProperties
    */
   willUpdate (changedProperties) {
-    if (changedProperties.has('state') && 'tags' in this.state) {
-      this._isGreen = this.state.tags.includes('green');
-      this.state.tags = this.state.tags.filter((tag) => tag !== 'green');
-    }
+    console.log(changedProperties);
+    // if (changedProperties.has('state') && 'disabled' in this.state) {
+    //   console.log('hello');
+    //   this._disabled = true;
+    // }
+
   }
 
   render () {
@@ -126,10 +129,6 @@ export class CcCtZoneSelect extends LitElement {
       <div class="thumbnails">
         <cc-img skeleton></cc-img>
         <cc-icon .icon="${data.infra}" skeleton></cc-icon>
-        ${this._isGreen
-          ? html`<cc-icon class="green" .icon=${greenIcon}></cc-icon>`
-          : ``
-        }
         <div class="tags">
           <cc-badge skeleton>fii</cc-badge>
         </div>  
@@ -138,18 +137,17 @@ export class CcCtZoneSelect extends LitElement {
       ` : ''}
 
       ${this.state.type === 'loaded' ? html` 
+      <div class="wrapper"></div>
       <div class="title">
         <div class="infra">${data.name}</div>
         <div class="city">${data.city}</div>
       </div>
       <cc-icon class="icon-selected" .icon="${selectedIcon}" size="lg"></cc-icon>
       <div class="thumbnails">
-       <cc-img src=${ifDefined(getFlagUrl(data.countryCode))}></cc-img>
-        <cc-icon .icon="${data.infra}"></cc-icon>
-        ${this._isGreen
-          ? html`<cc-icon class="green" .icon=${greenIcon}></cc-icon>`
-          : ``
-        }
+       <cc-img class="flag" src=${data.flagUrl}></cc-img>
+        ${data.images.map((image) => html`
+        <cc-img src="${image}"></cc-img>
+        `)}
         <div class="tags">
           ${tags.map((tag) => html`<cc-badge>${tag}</cc-badge>`)}
         </div>  
@@ -165,131 +163,134 @@ export class CcCtZoneSelect extends LitElement {
       skeletonStyles,
       // language=CSS
       css`
-      :host {
-        position: relative;
-        display: flex;
-        overflow: hidden;
-        flex-direction: column;
-        border: 2px solid var(--cc-color-border-neutral);
-        border-radius: var(--cc-border-radius-default);
-      }
+        :host {
+          position: relative;
+          display: flex;
+          overflow: hidden;
+          flex-direction: column;
+          border: 2px solid var(--cc-color-border-neutral);
+          border-radius: var(--cc-border-radius-default);
+        }
 
-      :host .title {
-        flex: 1 1 auto;
-      }
+        :host .title {
+          flex: 1 1 auto;
+        }
 
-      :host .thumbnails {
-        flex: 0 0 auto;
-      }
+        :host .thumbnails {
+          flex: 0 0 auto;
+        }
 
-      :host(:hover:not([disabled])) {
-        border-color: var(--cc-color-border-neutral-hovered);
-      }
+        :host(:hover:not([disabled])) {
+          border-color: var(--cc-color-border-neutral-hovered);
+        }
 
-      :host(:not([selected], [disabled])) {
-        cursor: pointer;
-      }
+        :host(:not([selected], [disabled])) {
+          cursor: pointer;
+        }
 
-      :host(:focus-visible) {
-        outline: var(--cc-focus-outline);
-        outline-offset: 2px;
-      }
+        :host(:focus-visible) {
+          outline: var(--cc-focus-outline);
+          outline-offset: 2px;
+        }
 
-      :host([selected]) {
-        border-color: var(--cc-color-bg-primary);
-      }
+        :host([selected]) {
+          border-color: var(--cc-color-bg-primary);
+        }
 
-      :host([selected]) .title .infra {
-        color: var(--cc-color-text-primary-strong);
-      }
+        :host([selected]) .title .infra {
+          color: var(--cc-color-text-primary-strong);
+        }
 
-      :host([selected]) .title .city {
-        color: var(--cc-color-text-primary-strongest);
-      }
+        :host([selected]) .title .city {
+          color: var(--cc-color-text-primary-strongest);
+        }
 
-      :host([selected]) .icon-selected {
-        opacity: 1;
-      }
+        :host([selected]) .icon-selected {
+          opacity: 1;
+        }
 
-      :host([selected]) .thumbnails {
-        background-color: var(--cc-color-bg-primary-weak);
-      }
+        :host([selected]) .thumbnails {
+          background-color: var(--cc-color-bg-primary-weak);
+        }
 
-      :host([disabled]) {
-        border-color: var(--cc-color-border-neutral-disabled);
-        opacity: var(--cc-opacity-when-disabled);
-      }
+        :host([disabled]) {
+          border-color: var(--cc-color-border-neutral-disabled);
+          opacity: var(--cc-opacity-when-disabled);
+        }
 
-      :host([disabled]) .title .infra,
-      :host([disabled]) .title .city {
-        opacity: var(--cc-opacity-when-disabled);
-      }
+        :host([disabled]) .title .infra,
+        :host([disabled]) .title .city {
+          opacity: var(--cc-opacity-when-disabled);
+        }
 
-      :host([disabled]) .thumbnails {
-        background-color: #fafafa;
-      }
+        :host([disabled]) .thumbnails {
+          background-color: #fafafa;
+        }
 
-      :host([disabled]) .thumbnails cc-icon,
-      :host([disabled]) .thumbnails cc-img {
-        filter: grayscale(1);
-        opacity: var(--cc-opacity-when-disabled);
-      }
+        :host([disabled]) .thumbnails cc-icon,
+        :host([disabled]) .thumbnails cc-img {
+          filter: grayscale(1);
+          opacity: var(--cc-opacity-when-disabled);
+        }
 
-      .title {
-        width: max-content;
-        padding: 1em 1em 0.75em;
-      }
+        .title {
+          width: max-content;
+          padding: 1em 1em 0.75em;
+        }
 
-      .infra {
-        color: var(--cc-color-text-weaker);
-        font-size: 0.875em;
-        line-height: 1.125;
-        padding-inline-start: 0.125em;
-      }
+        .infra {
+          color: var(--cc-color-text-weaker);
+          font-size: 0.875em;
+          line-height: 1.125;
+          padding-inline-start: 0.125em;
+        }
 
-      .city {
-        margin-top: 0.2em;
-        font-size: 1.5em;
-        line-height: 1.125;
-      }
-        
-      .icon-selected {
-        --cc-icon-color: var(--cc-color-bg-primary);
+        .city {
+          margin-top: 0.2em;
+          font-size: 1.5em;
+          line-height: 1.125;
+        }
+                        
+        .icon-selected {
+          --cc-icon-color: var(--cc-color-bg-primary);
 
-        position: absolute;
-        top: 0.5em;
-        right: 0.5em;
-        opacity: 0;
-      }
+          position: absolute;
+          top: 0.5em;
+          right: 0.5em;
+          opacity: 0;
+        }
 
-      .thumbnails {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.75em 1.125em;
-        background-color: var(--cc-color-bg-neutral);
-        gap: 0.5em;
-      }
+        .thumbnails {
+          display: inline-flex;
+          align-items: center;
+          padding: 0.75em 1.125em;
+          background-color: var(--cc-color-bg-neutral);
+          gap: 0.5em;
+        }
 
-      .thumbnails > cc-img {
-        --cc-img-fit: contain;
+        .thumbnails > cc-img {
+          --cc-img-fit: contain;
 
-        width: 1.25em;
-        height: 1.125em;
-      }
-        
-      .green {
-        --cc-icon-color: var(--color-green-100);
-        --cc-icon-size: 1.25em;
-      }
+          width: 1.25em;
+          height: 1.125em;
+        }
+                        
+        .green {
+          --cc-icon-color: var(--color-green-100);
+          --cc-icon-size: 1.25em;
+        }
 
-      .infra.skeleton {
-        color: transparent;
-      }
+        .infra.skeleton {
+          color: transparent;
+        }
 
-      .skeleton {
-        background-color: #bbb;
-      }
+        .skeleton {
+          background-color: #bbb;
+        }
 
+        .flag {
+          box-shadow: rgb(17 17 26 / 10%) 0 4px 16px, rgb(17 17 26 / 10%) 0 8px 24px, rgb(17 17 26 / 10%) 0 16px 56px;
+        }
      `,
     ];
   }

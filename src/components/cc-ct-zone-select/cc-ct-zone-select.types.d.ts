@@ -11,8 +11,9 @@ export interface ZoneItemStateLoading {
 interface ZoneItem {
   name: string;
   city: string;
-  countryCode: string;
   infra: string;
-  tags: Array<String>;
+  flagUrl: string;
+  images: Array<string>;
+  tags: Array<string>;
 }
 
