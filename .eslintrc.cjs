@@ -1,8 +1,8 @@
 module.exports = {
   'extends': [
     'standard',
-    'prettier',
     'plugin:lit-a11y/recommended',
+    'prettier',
   ],
   'env': {
     'browser': true,
@@ -27,10 +27,7 @@ module.exports = {
     'i18n-valid-value': ['error'],
     // other rules
     'accessor-pairs': 'off',
-    'arrow-parens': ['error', 'always'],
-    'brace-style': ['error', 'stroustrup'],
     'camelcase': ['error', { allow: ['_lp$'] }],
-    'comma-dangle': ['error', 'always-multiline'],
     'curly': ['error', 'all'],
     'eqeqeq': ['error', 'always', { 'null': 'never' }],
     'import/extensions': ['error', 'always'],
@@ -53,10 +50,8 @@ module.exports = {
     'lit/no-value-attribute': 'error',
     'multiline-ternary': 'off',
     'no-new': 'off',
-    'operator-linebreak': ['error', 'before'],
     'padded-blocks': 'off',
     'quotes': ['error', 'single', { 'allowTemplateLiterals': true }],
-    'semi': ['error', 'always'],
     'spaced-comment': ['error', 'always', { 'markers': ['#region', '#endregion'] }],
   },
 };
