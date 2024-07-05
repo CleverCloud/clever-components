@@ -1,7 +1,6 @@
 const timeoutCache = new WeakMap();
 
-export function scrollChildIntoParent (parent, child) {
-
+export function scrollChildIntoParent(parent, child) {
   const oldTimeoutId = timeoutCache.get(parent);
   clearTimeout(oldTimeoutId);
 
@@ -15,19 +14,16 @@ export function scrollChildIntoParent (parent, child) {
   timeoutCache.set(parent, newTimeoutId);
 }
 
-function doScrollChildIntoParent (parent, child) {
-
+function doScrollChildIntoParent(parent, child) {
   // In our situation, we don't need to handle borders and paddings
   const parentRect = parent.getBoundingClientRect();
   const childRect = child.getBoundingClientRect();
 
   if (childRect.top < parentRect.top) {
-    const top = (childRect.top - parentRect.top);
+    const top = childRect.top - parentRect.top;
     parent.scrollBy({ top, behavior: 'smooth' });
-  }
-
-  else if (childRect.bottom > parentRect.bottom && childRect.top > parentRect.top) {
-    const top = (childRect.bottom - parentRect.bottom);
+  } else if (childRect.bottom > parentRect.bottom && childRect.top > parentRect.top) {
+    const top = childRect.bottom - parentRect.bottom;
     parent.scrollBy({ top, behavior: 'smooth' });
   }
 }
@@ -37,6 +33,6 @@ function doScrollChildIntoParent (parent, child) {
  * @param {string} clazz
  * @return {boolean}
  */
-export function hasClass (element, clazz) {
+export function hasClass(element, clazz) {
   return element.classList?.contains(clazz) ?? false;
 }

@@ -1,6 +1,10 @@
-import { EnvVarValidationMode, EnvVar } from "../common.types";
+import { EnvVar, EnvVarValidationMode } from '../common.types';
 
-export type EnvVarFormState = EnvVarFormStateLoading | EnvVarFormStateLoaded | EnvVarFormStateSaving | EnvVarFormStateError;
+export type EnvVarFormState =
+  | EnvVarFormStateLoading
+  | EnvVarFormStateLoaded
+  | EnvVarFormStateSaving
+  | EnvVarFormStateError;
 
 interface EnvVarFormStateLoading {
   type: 'loading';
@@ -22,4 +26,4 @@ interface EnvVarFormStateError {
   type: 'error';
 }
 
-type EnvVarFormContextType = "env-var" | "env-var-simple" | "env-var-addon" | "exposed-config" | "config-provider";
+type EnvVarFormContextType = 'env-var' | 'env-var-simple' | 'env-var-addon' | 'exposed-config' | 'config-provider';

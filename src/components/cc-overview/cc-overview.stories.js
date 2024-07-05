@@ -1,5 +1,5 @@
-import './cc-overview.js';
 import { createStoryItem, makeStory } from '../../stories/lib/make-story.js';
+import './cc-overview.js';
 
 import { withMap as betaWithMap, withTiles as betaWithTiles } from '../cc-beta/cc-beta.stories.js';
 import { defaultStory as headerApp } from '../cc-header-app/cc-header-app.stories.js';
@@ -70,31 +70,35 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const orgaMode = makeStory(conf, {
-  items: [{
-    mode: 'orga',
-    children: () => [
-      createStoryItem(headerOrga, { class: 'head' }),
-      createStoryItem(statusCodes),
-      createStoryItem(requests, { style: '' }),
-      createStoryItem(logsmap, { class: 'main' }),
-    ],
-  }],
+  items: [
+    {
+      mode: 'orga',
+      children: () => [
+        createStoryItem(headerOrga, { class: 'head' }),
+        createStoryItem(statusCodes),
+        createStoryItem(requests, { style: '' }),
+        createStoryItem(logsmap, { class: 'main' }),
+      ],
+    },
+  ],
 });
 
 export const orgaModeWithError = makeStory(conf, {
-  items: [{
-    mode: 'orga',
-    children: () => [
-      createStoryItem(headerOrga, { class: 'head', error: true }),
-      createStoryItem(statusCodes, { error: true }),
-      createStoryItem(requests, { style: '', error: true }),
-      createStoryItem(logsmap, { class: 'main', error: true }),
-    ],
-  }],
+  items: [
+    {
+      mode: 'orga',
+      children: () => [
+        createStoryItem(headerOrga, { class: 'head', error: true }),
+        createStoryItem(statusCodes, { error: true }),
+        createStoryItem(requests, { style: '', error: true }),
+        createStoryItem(logsmap, { class: 'main', error: true }),
+      ],
+    },
+  ],
 });
 
 export const orgaModeWithTwoHeads = makeStory(conf, {
-  docs: 'If you place two or more heads in your overview, you\'ll need to specify how many with the CSS custom property: `--cc-overview-head-count: 2`.',
+  docs: "If you place two or more heads in your overview, you'll need to specify how many with the CSS custom property: `--cc-overview-head-count: 2`.",
   css: placeholderCss,
   items: [
     {
@@ -112,55 +116,61 @@ export const orgaModeWithTwoHeads = makeStory(conf, {
 });
 
 export const appMode = makeStory(conf, {
-  items: [{
-    mode: 'app',
-    children: () => [
-      createStoryItem(headerApp, { class: 'head' }),
-      createStoryItem(instances),
-      createStoryItem(scalability),
-      createStoryItem(deployments),
-      createStoryItem(metrics),
-      createStoryItem(statusCodes),
-      createStoryItem(requests, { style: '' }),
-      createStoryItem(logsmap, { class: 'main' }),
-    ],
-  }],
+  items: [
+    {
+      mode: 'app',
+      children: () => [
+        createStoryItem(headerApp, { class: 'head' }),
+        createStoryItem(instances),
+        createStoryItem(scalability),
+        createStoryItem(deployments),
+        createStoryItem(metrics),
+        createStoryItem(statusCodes),
+        createStoryItem(requests, { style: '' }),
+        createStoryItem(logsmap, { class: 'main' }),
+      ],
+    },
+  ],
 });
 
 export const appModeWithError = makeStory(conf, {
-  items: [{
-    mode: 'app',
-    children: () => [
-      createStoryItem(headerApp, { class: 'head', error: true }),
-      createStoryItem(instances, { error: true }),
-      createStoryItem(scalability, { error: true }),
-      createStoryItem(deployments, { error: true }),
-      createStoryItem(metrics, { metrics: { state: 'error' } }),
-      createStoryItem(statusCodes, { error: true }),
-      createStoryItem(requests, { style: '', error: true }),
-      createStoryItem(logsmap, { class: 'main', error: true }),
-    ],
-  }],
+  items: [
+    {
+      mode: 'app',
+      children: () => [
+        createStoryItem(headerApp, { class: 'head', error: true }),
+        createStoryItem(instances, { error: true }),
+        createStoryItem(scalability, { error: true }),
+        createStoryItem(deployments, { error: true }),
+        createStoryItem(metrics, { metrics: { state: 'error' } }),
+        createStoryItem(statusCodes, { error: true }),
+        createStoryItem(requests, { style: '', error: true }),
+        createStoryItem(logsmap, { class: 'main', error: true }),
+      ],
+    },
+  ],
 });
 
 export const appModeWithBeta = makeStory(conf, {
-  items: [{
-    mode: 'app',
-    children: () => [
-      createStoryItem(headerApp, { class: 'head' }),
-      createStoryItem(instances),
-      createStoryItem(scalability),
-      createStoryItem(deployments),
-      createStoryItem(metrics),
-      createStoryItem(betaWithTiles, {}, 1),
-      createStoryItem(betaWithTiles, {}, 0),
-      createStoryItem(betaWithMap, { class: 'main' }),
-    ],
-  }],
+  items: [
+    {
+      mode: 'app',
+      children: () => [
+        createStoryItem(headerApp, { class: 'head' }),
+        createStoryItem(instances),
+        createStoryItem(scalability),
+        createStoryItem(deployments),
+        createStoryItem(metrics),
+        createStoryItem(betaWithTiles, {}, 1),
+        createStoryItem(betaWithTiles, {}, 0),
+        createStoryItem(betaWithMap, { class: 'main' }),
+      ],
+    },
+  ],
 });
 
 export const appModeWithTwoHeads = makeStory(conf, {
-  docs: 'If you place two or more heads in your overview, you\'ll need to specify how many with the CSS custom property: `--cc-overview-head-count: 2`.',
+  docs: "If you place two or more heads in your overview, you'll need to specify how many with the CSS custom property: `--cc-overview-head-count: 2`.",
   css: placeholderCss,
   items: [
     {

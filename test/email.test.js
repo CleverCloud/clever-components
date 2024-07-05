@@ -2,7 +2,6 @@ import { expect } from '@bundled-es-modules/chai';
 import { validateEmailAddress } from '../src/lib/email.js';
 
 describe('validateEmailAddress', () => {
-
   it('returns null when address is valid', () => {
     expect(validateEmailAddress('valid-email.address@clever-cloud.com')).to.equal(null);
   });

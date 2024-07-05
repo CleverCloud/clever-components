@@ -3,7 +3,7 @@
  * @param {Record<string, any>} b
  * @return {boolean}
  */
-export function objectEquals (a, b) {
+export function objectEquals(a, b) {
   if (a === b) {
     return true;
   }
@@ -13,11 +13,9 @@ export function objectEquals (a, b) {
   if (Object.keys(a).length !== Object.keys(b).length) {
     return false;
   }
-  return Object
-    .entries(a)
-    .every(([k, v]) => {
-      return b[k] === v;
-    });
+  return Object.entries(a).every(([k, v]) => {
+    return b[k] === v;
+  });
 }
 
 /**
@@ -26,7 +24,7 @@ export function objectEquals (a, b) {
  * @param {ItemType[]} b
  * @returns {boolean}
  */
-export function arrayEquals (a, b) {
+export function arrayEquals(a, b) {
   if (a === b) {
     return true;
   }
@@ -58,7 +56,7 @@ export function arrayEquals (a, b) {
  * @param {ItemType[]} array
  * @returns {ItemType[]}
  */
-export function unique (_, index, array) {
+export function unique(_, index, array) {
   if (index === array.length - 1) {
     return Array.from(new Set(array));
   }
@@ -72,9 +70,9 @@ export function unique (_, index, array) {
  * @param {boolean} desc
  * @returns {(a: Record<PropertyType, string>, b: Record<PropertyType, string>) => number}
  */
-export function sortBy (propertyName, desc = false) {
+export function sortBy(propertyName, desc = false) {
   return (a, b) => {
-    return (desc === false)
+    return desc === false
       ? a[propertyName].localeCompare(b[propertyName])
       : b[propertyName].localeCompare(a[propertyName]);
   };
@@ -86,14 +84,12 @@ export function sortBy (propertyName, desc = false) {
  * @param {string|((value: T) => string)} key
  * @return {Object<string, Array<T>>}
  */
-export function groupBy (array, key) {
+export function groupBy(array, key) {
   /** @type {Object<string, Array<T>>} */
   const groups = {};
 
   /** @type {string|((value: T) => string)} */
-  const keyProvider = typeof key === 'string'
-    ? (value) => value[key]
-    : key;
+  const keyProvider = typeof key === 'string' ? (value) => value[key] : key;
 
   for (const value of array) {
     const prop = keyProvider(value);
@@ -118,7 +114,7 @@ export function groupBy (array, key) {
  * @param {(value: InputType, index: number, array: InputType[]) => Promise<OutputType>} asyncCallback
  * @return {Promise<OutputType[]>}
  */
-export function asyncMap (array, asyncCallback) {
+export function asyncMap(array, asyncCallback) {
   return Promise.all(array.map(asyncCallback));
 }
 
@@ -127,15 +123,16 @@ export function asyncMap (array, asyncCallback) {
  *
  * @param {string} currency - the currency to get the symbol for
  */
-export function getCurrencySymbol (currency) {
+export function getCurrencySymbol(currency) {
   // The lang does not really matter
   const nf = new Intl.NumberFormat('en', { style: 'currency', currency });
-  return nf
-    .formatToParts(0)
-    .find((p) => p.type === 'currency')
-    .value
-    // Safari does not support currencySymbol: 'narrow' in Intl.NumberFormat so we need to do this #sorry
-    .replace('$US', '$');
+  return (
+    nf
+      .formatToParts(0)
+      .find((p) => p.type === 'currency')
+      // Safari does not support currencySymbol: 'narrow' in Intl.NumberFormat so we need to do this #sorry
+      .value.replace('$US', '$')
+  );
 }
 
 /**
@@ -145,7 +142,7 @@ export function getCurrencySymbol (currency) {
  * @param {number} end - The number to end with.
  * @return Array<number>
  */
-export function range (start, end) {
+export function range(start, end) {
   const s = Math.min(start, end);
   const e = Math.max(start, end);
   const result = [];
@@ -162,7 +159,7 @@ export function range (start, end) {
  * @param {number} max The range right bound
  * @return {number}
  */
-export function random (min, max) {
+export function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
@@ -173,7 +170,7 @@ export function random (min, max) {
  * @return {T|null} a random item or null if array was empty
  * @template T
  */
-export function randomPick (array) {
+export function randomPick(array) {
   if (array.length === 0) {
     return null;
   }
@@ -188,7 +185,7 @@ export function randomPick (array) {
  * @param {string} [alphabet] The alphabet
  * @return {string} A random string
  */
-export function randomString (length = 8, alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz') {
+export function randomString(length = 8, alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz') {
   if (alphabet.length === 0) {
     throw new Error('Alphabet cannot be an empty string');
   }
@@ -208,7 +205,7 @@ export function randomString (length = 8, alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ
  * @param {number|null|undefined} [max] The range right bound
  * @return {number} The clamped number
  */
-export function clampNumber (number, min, max) {
+export function clampNumber(number, min, max) {
   return Math.min(Math.max(number, min ?? -Infinity), max ?? Infinity);
 }
 
@@ -216,7 +213,7 @@ export function clampNumber (number, min, max) {
  * @param {string} string
  * @return {boolean}
  */
-export function isStringEmpty (string) {
+export function isStringEmpty(string) {
   return string == null || string.length === 0;
 }
 
@@ -225,7 +222,7 @@ export function isStringEmpty (string) {
  * @param {number} delay
  * @return {Promise<unknown>} a Promise that resolves when the given delay is timed out.
  */
-export function sleep (delay) {
+export function sleep(delay) {
   return new Promise((resolve) => {
     setTimeout(resolve, delay);
   });

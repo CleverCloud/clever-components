@@ -26,8 +26,7 @@ import '../cc-loader/cc-loader.js';
  * @slot - The HTML contents (wrapped in a `<template>`).
  */
 export class CcHtmlFrame extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       loading: { type: Boolean, reflect: true },
       sandbox: { type: String },
@@ -35,7 +34,7 @@ export class CcHtmlFrame extends LitElement {
     };
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     /** @type {boolean} Enables the loader indicator. */
@@ -53,7 +52,7 @@ export class CcHtmlFrame extends LitElement {
   // There is a technique to do this with a blob URL and opaque origin but to this date, it only works in Chrome (see links).
   // https://shhnjk.blogspot.com/2021/03/a-hack-to-render-untrusted-content-in.html
   // https://shhnjk.github.io/PoCs/process_isolated_content.html
-  _updateHtmlSource () {
+  _updateHtmlSource() {
     if (this.children.length === 1 && this.children[0].tagName === 'TEMPLATE') {
       const template = this.children[0];
       const blob = new Blob([template.innerHTML], { type: 'text/html' });
@@ -68,13 +67,13 @@ export class CcHtmlFrame extends LitElement {
     }
   }
 
-  connectedCallback () {
+  connectedCallback() {
     super.connectedCallback();
     this._mo = new MutationObserver(() => this._updateHtmlSource());
     this._mo.observe(this, { childList: true });
   }
 
-  disconnectedCallback () {
+  disconnectedCallback() {
     super.disconnectedCallback();
     this._mo.disconnect();
     if (this._blobUrl) {
@@ -82,20 +81,18 @@ export class CcHtmlFrame extends LitElement {
     }
   }
 
-  firstUpdated () {
+  firstUpdated() {
     this._updateHtmlSource();
   }
 
-  render () {
+  render() {
     return html`
       <iframe title=${this.iframeTitle} src="about:blank" sandbox=${ifDefined(this.sandbox ?? undefined)}></iframe>
-      ${this.loading ? html`
-        <cc-loader></cc-loader>
-      ` : ''}
+      ${this.loading ? html` <cc-loader></cc-loader> ` : ''}
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`

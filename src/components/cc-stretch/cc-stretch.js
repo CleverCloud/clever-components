@@ -21,15 +21,14 @@ import { css, html, LitElement } from 'lit';
  */
 
 export class CcStretch extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       disableStretching: { type: Boolean, attribute: 'disable-stretching', reflect: true },
       visibleElementId: { type: String, attribute: 'visible-element-id', reflect: true },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {boolean} Disables stretching by setting hidden elements to `display: none`.
@@ -44,11 +43,11 @@ export class CcStretch extends LitElement {
   }
 
   /*
-  * Triggered when the `visibleElementId` value changes or the slot content changes.
-  * Hides the currently visible element if there is one.
-  * Makes the element matching `visibleElementId` visible.
-  */
-  _makeElementVisible () {
+   * Triggered when the `visibleElementId` value changes or the slot content changes.
+   * Hides the currently visible element if there is one.
+   * Makes the element matching `visibleElementId` visible.
+   */
+  _makeElementVisible() {
     // Since several `cc-stretch` may be nested, and we are working with light DOM, it is very important to only target the direct children with the `:scope >` selector
     const elementToHide = this.querySelector(':scope > .cc-stretch--visible');
     const elementToMakeVisible = this.querySelector(`:scope > #${this.visibleElementId}`);
@@ -57,19 +56,17 @@ export class CcStretch extends LitElement {
     elementToMakeVisible?.classList.add('cc-stretch--visible');
   }
 
-  updated (changedProperties) {
+  updated(changedProperties) {
     if (changedProperties.has('visibleElementId')) {
       this._makeElementVisible();
     }
   }
 
-  render () {
-    return html`
-      <slot @slotchange=${this._makeElementVisible}></slot>
-    `;
+  render() {
+    return html` <slot @slotchange=${this._makeElementVisible}></slot> `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`

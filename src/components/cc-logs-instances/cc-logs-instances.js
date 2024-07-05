@@ -1,29 +1,29 @@
+import { css, html, LitElement } from 'lit';
+import {
+  iconRemixToolsLine as iconBuildInstance,
+  iconRemixCloseCircleFill as iconDeploymentCancelled,
+  iconRemixErrorWarningFill as iconDeploymentFailed,
+  iconRemixCheckboxCircleFill as iconDeploymentSucceeded,
+  iconRemixCompassDiscoverLine as iconDeploymentWip,
+  iconRemixCloseCircleLine as iconHeaderDeleted,
+  iconRemixCompassDiscoverLine as iconHeaderDeploying,
+  iconRemixGhostLine as iconHeaderGhost,
+  iconRemixPlayCircleLine as iconHeaderRunning,
+  iconRemixStopCircleLine as iconHeaderStopping,
+  iconRemixCloseCircleLine as iconInstanceDeleted,
+  iconRemixCompassDiscoverLine as iconInstanceDeploying,
+  iconRemixPlayCircleLine as iconInstanceRunning,
+  iconRemixStopCircleLine as iconInstanceStopping,
+} from '../../assets/cc-remix.icons.js';
+import { dispatchCustomEvent } from '../../lib/events.js';
+import { i18n } from '../../lib/i18n.js';
+import { groupBy } from '../../lib/utils.js';
 import '../cc-datetime-relative/cc-datetime-relative.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-toggle/cc-toggle.js';
-import { css, html, LitElement } from 'lit';
-import {
-  iconRemixCompassDiscoverLine as iconHeaderDeploying,
-  iconRemixPlayCircleLine as iconHeaderRunning,
-  iconRemixStopCircleLine as iconHeaderStopping,
-  iconRemixCloseCircleLine as iconHeaderDeleted,
-  iconRemixGhostLine as iconHeaderGhost,
-  iconRemixCompassDiscoverLine as iconDeploymentWip,
-  iconRemixCheckboxCircleFill as iconDeploymentSucceeded,
-  iconRemixCloseCircleFill as iconDeploymentCancelled,
-  iconRemixErrorWarningFill as iconDeploymentFailed,
-  iconRemixCompassDiscoverLine as iconInstanceDeploying,
-  iconRemixPlayCircleLine as iconInstanceRunning,
-  iconRemixStopCircleLine as iconInstanceStopping,
-  iconRemixCloseCircleLine as iconInstanceDeleted,
-  iconRemixToolsLine as iconBuildInstance,
-} from '../../assets/cc-remix.icons.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
-import { i18n } from '../../lib/i18n.js';
-import { groupBy } from '../../lib/utils.js';
 
 /**
  * @param {Instance} i1
@@ -73,14 +73,13 @@ const DEPLOYMENT_WIP_STATES = ['QUEUED', 'WORK_IN_PROGRESS'];
  * @fires {CustomEvent<Array<string>>} cc-logs-instances:selection-change - Fires whenever the instances selection changes
  */
 export class CcLogsInstances extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       state: { type: Object },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {LogsInstancesState} State of the component. */
@@ -89,19 +88,18 @@ export class CcLogsInstances extends LitElement {
     };
   }
 
-  _isSelected (instanceId) {
+  _isSelected(instanceId) {
     return this.state.state === 'loaded' && this.state.selection != null && this.state.selection.includes(instanceId);
   }
 
-  _onInstanceClick (e) {
+  _onInstanceClick(e) {
     const instanceId = e.target.id;
     if (this._isSelected(instanceId)) {
       this.state = {
         ...this.state,
         selection: this.state.selection.filter((i) => i !== instanceId),
       };
-    }
-    else {
+    } else {
       this.state = {
         ...this.state,
         selection: [...(this.state.selection ?? []), instanceId],
@@ -111,7 +109,7 @@ export class CcLogsInstances extends LitElement {
     dispatchCustomEvent(this, 'selection-change', this.state.selection);
   }
 
-  render () {
+  render() {
     if (this.state.state === 'error') {
       return html`
         <div class="wrapper wrapper--center">
@@ -138,8 +136,10 @@ export class CcLogsInstances extends LitElement {
   /**
    * @param {Array<Instance|GhostInstance>} instances
    */
-  _renderColdMode (instances) {
-    const { ghost: ghostInstances, real: realInstances } = groupBy(instances, (instance) => instance.ghost ? 'ghost' : 'real');
+  _renderColdMode(instances) {
+    const { ghost: ghostInstances, real: realInstances } = groupBy(instances, (instance) =>
+      instance.ghost ? 'ghost' : 'real',
+    );
 
     return html`
       <fieldset class="section section--cold">
@@ -148,8 +148,7 @@ export class CcLogsInstances extends LitElement {
         })}
         ${realInstances?.length > 0
           ? this._renderInstancesGroupedByDeployment(instances, false)
-          : html`<div class="empty">${i18n('cc-logs-instances.cold.empty')}</div>`
-        }
+          : html`<div class="empty">${i18n('cc-logs-instances.cold.empty')}</div>`}
       </fieldset>
       ${this._renderGhostInstances(ghostInstances)}
     `;
@@ -158,7 +157,7 @@ export class CcLogsInstances extends LitElement {
   /**
    * @param {Array<Instance|GhostInstance>} instances
    */
-  _renderLiveMode (instances) {
+  _renderLiveMode(instances) {
     /** @type {Array<Instance>} */
     const deployingInstances = [];
     /** @type {Array<Instance>} */
@@ -168,30 +167,25 @@ export class CcLogsInstances extends LitElement {
     /** @type {Array<Instance>} */
     const deletedInstances = [];
 
-    const { ghost: ghostInstances, real: realInstances } = groupBy(instances, (instance) => instance.ghost ? 'ghost' : 'real');
+    const { ghost: ghostInstances, real: realInstances } = groupBy(instances, (instance) =>
+      instance.ghost ? 'ghost' : 'real',
+    );
 
-    (realInstances || [])
-      .sort(INSTANCE_SORT_ORDER)
-      .forEach((instance) => {
-        if (DEPLOYMENT_WIP_STATES.includes(instance.deployment.state)) {
-          deployingInstances.push(instance);
-        }
-        else if (instance.state === 'DELETED') {
-          deletedInstances.push(instance);
-        }
-        else if (instance.state === 'STOPPING') {
-          stoppingInstances.push(instance);
-        }
-        else {
-          runningInstances.push(instance);
-        }
-      });
+    (realInstances || []).sort(INSTANCE_SORT_ORDER).forEach((instance) => {
+      if (DEPLOYMENT_WIP_STATES.includes(instance.deployment.state)) {
+        deployingInstances.push(instance);
+      } else if (instance.state === 'DELETED') {
+        deletedInstances.push(instance);
+      } else if (instance.state === 'STOPPING') {
+        stoppingInstances.push(instance);
+      } else {
+        runningInstances.push(instance);
+      }
+    });
 
     return html`
-      ${this._renderDeployingInstances(deployingInstances)}
-      ${this._renderRunningInstances(runningInstances)}
-      ${this._renderStoppingInstances(stoppingInstances)}
-      ${this._renderDeletedInstances(deletedInstances)}
+      ${this._renderDeployingInstances(deployingInstances)} ${this._renderRunningInstances(runningInstances)}
+      ${this._renderStoppingInstances(stoppingInstances)} ${this._renderDeletedInstances(deletedInstances)}
       ${this._renderGhostInstances(ghostInstances)}
     `;
   }
@@ -199,7 +193,7 @@ export class CcLogsInstances extends LitElement {
   /**
    * @param {Array<Instance>} instances
    */
-  _renderDeployingInstances (instances) {
+  _renderDeployingInstances(instances) {
     if (instances.length === 0) {
       return '';
     }
@@ -211,9 +205,7 @@ export class CcLogsInstances extends LitElement {
           icon: iconHeaderDeploying,
           commit: instances[0].deployment.commitId,
         })}
-        <div class="section-content instances instances--with-state">
-          ${this._renderInstances(instances, true)}
-        </div>
+        <div class="section-content instances instances--with-state">${this._renderInstances(instances, true)}</div>
       </fieldset>
     `;
   }
@@ -221,7 +213,7 @@ export class CcLogsInstances extends LitElement {
   /**
    * @param {Array<Instance>} instances
    */
-  _renderRunningInstances (instances) {
+  _renderRunningInstances(instances) {
     if (instances.length === 0) {
       return html`
         <fieldset class="section section--running">
@@ -229,9 +221,7 @@ export class CcLogsInstances extends LitElement {
             title: i18n('cc-logs-instances.running.header'),
             icon: iconHeaderRunning,
           })}
-          <div class="empty">
-            ${i18n('cc-logs-instances.running.empty')}
-          </div>
+          <div class="empty">${i18n('cc-logs-instances.running.empty')}</div>
         </fieldset>
       `;
     }
@@ -243,9 +233,7 @@ export class CcLogsInstances extends LitElement {
           icon: iconHeaderRunning,
           commit: instances[0].deployment.commitId,
         })}
-        <div class="section-content instances">
-          ${this._renderInstances(instances, false)}
-        </div>
+        <div class="section-content instances">${this._renderInstances(instances, false)}</div>
       </fieldset>
     `;
   }
@@ -253,7 +241,7 @@ export class CcLogsInstances extends LitElement {
   /**
    * @param {Array<Instance>} instances
    */
-  _renderStoppingInstances (instances) {
+  _renderStoppingInstances(instances) {
     if (instances.length === 0) {
       return '';
     }
@@ -265,9 +253,7 @@ export class CcLogsInstances extends LitElement {
           icon: iconHeaderStopping,
           commit: instances[0].deployment.commitId,
         })}
-        <div class="section-content instances">
-          ${this._renderInstances(instances, false)}
-        </div>
+        <div class="section-content instances">${this._renderInstances(instances, false)}</div>
       </fieldset>
     `;
   }
@@ -275,7 +261,7 @@ export class CcLogsInstances extends LitElement {
   /**
    * @param {Array<Instance>} instances
    */
-  _renderDeletedInstances (instances) {
+  _renderDeletedInstances(instances) {
     if (instances.length === 0) {
       return '';
     }
@@ -294,7 +280,7 @@ export class CcLogsInstances extends LitElement {
   /**
    * @param {Array<GhostInstance>|null} instances
    */
-  _renderGhostInstances (instances) {
+  _renderGhostInstances(instances) {
     if (instances == null || instances.length === 0) {
       return '';
     }
@@ -309,27 +295,29 @@ export class CcLogsInstances extends LitElement {
         <div class="section-content">
           <cc-notice intent="info" message="${i18n('cc-logs-instances.ghost.notice')}"></cc-notice>
           <div class="instances instances--ghost">
-            ${instances.sort(GHOST_INSTANCE_SORT_ORDER).map((instance) => html`
-            <label class="instance" for="${instance.id}">
-              <input type="checkbox"
-                     id="${instance.id}"
-                     .checked=${this._isSelected(instance.id)}
-                     @change=${this._onInstanceClick}>
-              <span class="instance-id">${instance.id}</span>
-            </label>
-          `)}
+            ${instances.sort(GHOST_INSTANCE_SORT_ORDER).map(
+              (instance) => html`
+                <label class="instance" for="${instance.id}">
+                  <input
+                    type="checkbox"
+                    id="${instance.id}"
+                    .checked=${this._isSelected(instance.id)}
+                    @change=${this._onInstanceClick}
+                  />
+                  <span class="instance-id">${instance.id}</span>
+                </label>
+              `,
+            )}
           </div>
         </div>
       </fieldset>
     `;
   }
 
-  _renderHeader ({ title, icon, commit }) {
+  _renderHeader({ title, icon, commit }) {
     return html`
       <legend class="section-header">
-        ${icon != null ? html`
-          <cc-icon class="section-header-icon" .icon=${icon}></cc-icon>
-        ` : ''}
+        ${icon != null ? html` <cc-icon class="section-header-icon" .icon=${icon}></cc-icon> ` : ''}
         <span class="section-header-title">${title}</span>
         ${commit != null ? this._renderCommit(commit) : ''}
       </legend>
@@ -340,7 +328,7 @@ export class CcLogsInstances extends LitElement {
    * @param {Array<Instance>} instances
    * @param {boolean} renderState
    */
-  _renderInstancesGroupedByDeployment (instances, renderState) {
+  _renderInstancesGroupedByDeployment(instances, renderState) {
     const groups = groupBy(instances, (instance) => instance.deployment?.id);
 
     return html`
@@ -351,14 +339,14 @@ export class CcLogsInstances extends LitElement {
           // sort by deployment date
           .sort((o1, o2) => o2.deploymentDate - o1.deploymentDate)
           // render group of instances
-          .map(({ instances }) => html`
-            <fieldset class="deployment">
-              ${this._renderDeploymentDetails(instances[0].deployment)}
-              <div class="instances">
-                ${this._renderInstances(instances, renderState)}
-              </div>
-            </fieldset>
-          `)}
+          .map(
+            ({ instances }) => html`
+              <fieldset class="deployment">
+                ${this._renderDeploymentDetails(instances[0].deployment)}
+                <div class="instances">${this._renderInstances(instances, renderState)}</div>
+              </fieldset>
+            `,
+          )}
       </div>
     `;
   }
@@ -367,11 +355,8 @@ export class CcLogsInstances extends LitElement {
    * @param {Array<Instance>} instances
    * @param {boolean} renderState
    */
-  _renderInstances (instances, renderState) {
-    return instances
-      .sort(INSTANCE_SORT_ORDER)
-      .map((instance) => this._renderInstance(instance, renderState))
-    ;
+  _renderInstances(instances, renderState) {
+    return instances.sort(INSTANCE_SORT_ORDER).map((instance) => this._renderInstance(instance, renderState));
   }
 
   /**
@@ -379,29 +364,32 @@ export class CcLogsInstances extends LitElement {
    * @param {Instance} instance
    * @param {boolean} renderState
    */
-  _renderInstance (instance, renderState) {
+  _renderInstance(instance, renderState) {
     return html`
       <label class="instance" for="${instance.id}">
-        <input type="checkbox"
-               id="${instance.id}"
-               .checked=${this._isSelected(instance.id)}
-               @change=${this._onInstanceClick}>
+        <input
+          type="checkbox"
+          id="${instance.id}"
+          .checked=${this._isSelected(instance.id)}
+          @change=${this._onInstanceClick}
+        />
         <span class="instance-name">${instance.name}</span>
       </label>
-      ${renderState ? this._renderInstanceState(instance) : ''}
-      ${this._renderInstanceIndex(instance)}
+      ${renderState ? this._renderInstanceState(instance) : ''} ${this._renderInstanceIndex(instance)}
     `;
   }
 
   /**
    * @param {Deployment} deployment
    */
-  _renderDeploymentDetails (deployment) {
+  _renderDeploymentDetails(deployment) {
     return html`
       <legend class="deployment-detail">
         <div>${this._renderDeploymentState(deployment.state)}</div>
         <div>
-          ${i18n('cc-logs-instances.deployment.deployed')}&nbsp;<cc-datetime-relative datetime=${deployment.creationDate.toISOString()}></cc-datetime-relative>
+          ${i18n('cc-logs-instances.deployment.deployed')}&nbsp;<cc-datetime-relative
+            datetime=${deployment.creationDate.toISOString()}
+          ></cc-datetime-relative>
         </div>
         ${this._renderCommit(deployment.commitId)}
       </legend>
@@ -413,7 +401,7 @@ export class CcLogsInstances extends LitElement {
    * @param {DeploymentState} state
    * @return {{icon: IconModel, a11yName: string, class: string}}
    */
-  _getDeploymentStateIcon (state) {
+  _getDeploymentStateIcon(state) {
     if (DEPLOYMENT_WIP_STATES.includes(state)) {
       return {
         a11yName: i18n('cc-logs-instances.deployment.state.wip'),
@@ -450,19 +438,17 @@ export class CcLogsInstances extends LitElement {
   /**
    * @param {DeploymentState} state
    */
-  _renderDeploymentState (state) {
+  _renderDeploymentState(state) {
     const icon = this._getDeploymentStateIcon(state);
     return html`
-      <cc-icon .icon=${icon.icon}
-               a11y-name="${icon.a11yName}"
-               class="deployment-state ${icon.class}"></cc-icon>
+      <cc-icon .icon=${icon.icon} a11y-name="${icon.a11yName}" class="deployment-state ${icon.class}"></cc-icon>
     `;
   }
 
   /**
    * @param {Instance} instance
    */
-  _getInstanceStateIcon (instance) {
+  _getInstanceStateIcon(instance) {
     if (INSTANCE_DEPLOYING_STATES.includes(instance.state)) {
       return {
         a11yName: i18n('cc-logs-instances.instance.state.deploying'),
@@ -498,45 +484,36 @@ export class CcLogsInstances extends LitElement {
    *
    * @param {Instance} instance
    */
-  _renderInstanceState (instance) {
+  _renderInstanceState(instance) {
     const icon = this._getInstanceStateIcon(instance);
     if (icon == null) {
       return html`<span></span>`;
     }
 
     return html`
-      <cc-icon .icon=${icon.icon}
-               a11y-name="${icon.a11yName}"
-               class="instance-state ${icon.class}"></cc-icon>
+      <cc-icon .icon=${icon.icon} a11y-name="${icon.a11yName}" class="instance-state ${icon.class}"></cc-icon>
     `;
   }
 
-  _renderCommit (commit) {
-    return html`
-      <span class="commit" title=${i18n('cc-logs-instances.commit.title', { commit })}>
-        ${commit.substring(0, 7)}
-      </span>`
-    ;
+  _renderCommit(commit) {
+    return html` <span class="commit" title=${i18n('cc-logs-instances.commit.title', { commit })}>
+      ${commit.substring(0, 7)}
+    </span>`;
   }
 
-  _renderInstanceIndex (instance) {
-    const title = instance.kind === 'BUILD'
-      ? i18n('cc-logs-instances.instance.build')
-      : i18n('cc-logs-instances.instance.index', { index: instance.index });
+  _renderInstanceIndex(instance) {
+    const title =
+      instance.kind === 'BUILD'
+        ? i18n('cc-logs-instances.instance.build')
+        : i18n('cc-logs-instances.instance.index', { index: instance.index });
 
-    return html`
-      <span class="instance-index" title=${title}>
-        ${instance.kind === 'BUILD' ? html`
-            <cc-icon .icon=${iconBuildInstance}></cc-icon>
-          ` : ''}
-        ${instance.kind !== 'BUILD' ? html`
-          ${instance.index}
-          ` : ''}
-      </span>`
-    ;
+    return html` <span class="instance-index" title=${title}>
+      ${instance.kind === 'BUILD' ? html` <cc-icon .icon=${iconBuildInstance}></cc-icon> ` : ''}
+      ${instance.kind !== 'BUILD' ? html` ${instance.index} ` : ''}
+    </span>`;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
@@ -545,7 +522,7 @@ export class CcLogsInstances extends LitElement {
           overflow: auto;
           flex-direction: column;
         }
-        
+
         /* RESET */
 
         fieldset {
@@ -653,7 +630,7 @@ export class CcLogsInstances extends LitElement {
         .instances.instances--with-state {
           grid-template-columns: max-content max-content max-content;
         }
-        
+
         .instances.instances--ghost {
           display: flex;
           flex-direction: column;
@@ -665,7 +642,7 @@ export class CcLogsInstances extends LitElement {
           align-items: center;
           gap: 0.5em;
         }
-        
+
         .instance-id {
           line-height: 1em;
           overflow-wrap: break-word;
@@ -685,7 +662,7 @@ export class CcLogsInstances extends LitElement {
           font-family: var(--cc-ff-monospace, monospace);
           font-size: 0.7em;
         }
-        
+
         .instance-state {
           --cc-icon-size: 1.2em;
         }

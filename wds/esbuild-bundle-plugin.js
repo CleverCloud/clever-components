@@ -2,13 +2,10 @@ import esbuild from 'esbuild';
 
 // /!\ This is an experimental plugin for now
 // We created this because some of our deps have way to many separated ES module files (Leaflet, chart.js...)
-export function esbuildBundlePlugin ({ pathsToBundle }) {
+export function esbuildBundlePlugin({ pathsToBundle }) {
   return {
-
-    async transform (context) {
-
+    async transform(context) {
       if (pathsToBundle.includes(context.request.url)) {
-
         const bundle = esbuild.buildSync({
           entryPoints: [context.request.url.slice(1)],
           bundle: true,

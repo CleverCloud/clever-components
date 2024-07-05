@@ -6,9 +6,9 @@ import {
   iconCleverMailStarLine as iconMailPrimary,
 } from '../../assets/cc-clever.icons.js';
 import {
-  iconRemixCheckboxCircleFill as iconVerified,
   iconRemixDeleteBinFill as iconDelete,
   iconRemixSpam_2Fill as iconUnverified,
+  iconRemixCheckboxCircleFill as iconVerified,
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { validateEmailAddress } from '../../lib/email.js';
@@ -18,8 +18,8 @@ import { i18n } from '../../lib/i18n.js';
 import { sortBy } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-badge/cc-badge.js';
-import '../cc-block/cc-block.js';
 import '../cc-block-section/cc-block-section.js';
+import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-input-text/cc-input-text.js';
@@ -74,8 +74,7 @@ const SKELETON_SECONDARY_EMAILS = [];
  * @fires {CustomEvent<string>} cc-email-list:mark-as-primary - Fires whenever the 'mark as primary' button is clicked.
  */
 export class CcEmailList extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       addEmailForm: { type: Object },
       emails: { type: Object },
@@ -86,7 +85,7 @@ export class CcEmailList extends LitElement {
    * @return {AddEmailFormState}
    * @static
    */
-  static get ADD_FORM_INIT_STATE () {
+  static get ADD_FORM_INIT_STATE() {
     return {
       state: 'idle',
       address: {
@@ -95,7 +94,7 @@ export class CcEmailList extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {AddEmailFormState} The form state. */
@@ -110,36 +109,37 @@ export class CcEmailList extends LitElement {
     new LostFocusController(this, '.secondary', ({ suggestedElement }) => {
       if (suggestedElement != null) {
         suggestedElement.querySelector('.delete-button').focus();
-      }
-      else {
+      } else {
         this._focusAddressInput();
       }
     });
   }
 
-  _getVerifiedTagLabel (verified) {
-    const label = verified ? i18n('cc-email-list.primary.email.verified') : i18n('cc-email-list.primary.email.unverified');
+  _getVerifiedTagLabel(verified) {
+    const label = verified
+      ? i18n('cc-email-list.primary.email.verified')
+      : i18n('cc-email-list.primary.email.unverified');
     // Label wrapping into a <span> is because of a Safari Bug: https://github.com/CleverCloud/clever-components/pull/473#issuecomment-1323895088
     return html`<span>${label}</span>`;
   }
 
-  _focusAddressInput () {
+  _focusAddressInput() {
     this._addressInputRef.value.focus();
   }
 
-  _onSendConfirmationEmail () {
+  _onSendConfirmationEmail() {
     dispatchCustomEvent(this, 'send-confirmation-email', this.emails.value.primaryAddress.address);
   }
 
-  _onDelete (address) {
+  _onDelete(address) {
     dispatchCustomEvent(this, 'delete', address);
   }
 
-  _onMarkAsPrimary (address) {
+  _onMarkAsPrimary(address) {
     dispatchCustomEvent(this, 'mark-as-primary', address);
   }
 
-  _onAddressInput ({ detail: value }) {
+  _onAddressInput({ detail: value }) {
     this.addEmailForm = {
       state: 'idle',
       address: {
@@ -149,7 +149,7 @@ export class CcEmailList extends LitElement {
     };
   }
 
-  _onAdd () {
+  _onAdd() {
     const address = this.addEmailForm.address.value.trim();
 
     this.addEmailForm = {
@@ -167,7 +167,7 @@ export class CcEmailList extends LitElement {
     // If there's an error, a focus will be triggered on the input field through the updated callback
   }
 
-  updated (changedProperties) {
+  updated(changedProperties) {
     // Focus input when error is set (from local validation or remote validation)
     if (changedProperties.has('addEmailForm')) {
       if (this.addEmailForm?.address?.error != null) {
@@ -177,30 +177,32 @@ export class CcEmailList extends LitElement {
     }
   }
 
-  render () {
+  render() {
     const state = this.emails.state;
     return html`
       <cc-block>
         <div slot="title">${i18n('cc-email-list.title')}</div>
 
-        ${state === 'loading' ? html`
-          ${this._renderPrimarySection(SKELETON_PRIMARY_EMAIL, true)}
-          ${this._renderSecondarySection(SKELETON_SECONDARY_EMAILS)}
-        ` : ''}
-
-        ${state === 'loaded' ? html`
-          ${this._renderPrimarySection(this.emails.value.primaryAddress)}
-          ${this._renderSecondarySection(this.emails.value.secondaryAddresses)}
-        ` : ''}
-
-        ${state === 'error' ? html`
-          <cc-notice intent="warning" message="${i18n('cc-email-list.loading.error')}"></cc-notice>
-        ` : ''}
+        ${state === 'loading'
+          ? html`
+              ${this._renderPrimarySection(SKELETON_PRIMARY_EMAIL, true)}
+              ${this._renderSecondarySection(SKELETON_SECONDARY_EMAILS)}
+            `
+          : ''}
+        ${state === 'loaded'
+          ? html`
+              ${this._renderPrimarySection(this.emails.value.primaryAddress)}
+              ${this._renderSecondarySection(this.emails.value.secondaryAddresses)}
+            `
+          : ''}
+        ${state === 'error'
+          ? html` <cc-notice intent="warning" message="${i18n('cc-email-list.loading.error')}"></cc-notice> `
+          : ''}
       </cc-block>
     `;
   }
 
-  _renderPrimarySection (primaryAddress, skeleton = false) {
+  _renderPrimarySection(primaryAddress, skeleton = false) {
     const address = primaryAddress.address;
     const verified = primaryAddress.verified;
     const shouldDisplayResendConfirmationEmail = !skeleton && !verified;
@@ -218,29 +220,26 @@ export class CcEmailList extends LitElement {
             <cc-icon class="icon--auto" .icon=${iconMailPrimary} size="lg"></cc-icon>
             <span class="${classMap({ skeleton })}">${address}</span>
           </div>
-          <cc-badge
-            intent="${badgeIntent}"
-            weight="outlined"
-            ?skeleton="${skeleton}"
-            .icon="${badgeIcon}"
-          >${this._getVerifiedTagLabel(primaryAddress.verified)}
+          <cc-badge intent="${badgeIntent}" weight="outlined" ?skeleton="${skeleton}" .icon="${badgeIcon}"
+            >${this._getVerifiedTagLabel(primaryAddress.verified)}
           </cc-badge>
         </div>
-        ${shouldDisplayResendConfirmationEmail ? html`
-          <cc-button
-            @cc-button:click=${this._onSendConfirmationEmail}
-            ?waiting=${primaryAddress.state === 'sending-confirmation-email'}
-            link
-          >
-            ${i18n('cc-email-list.primary.action.resend-confirmation-email')}
-          </cc-button>
-        ` : ''}
+        ${shouldDisplayResendConfirmationEmail
+          ? html`
+              <cc-button
+                @cc-button:click=${this._onSendConfirmationEmail}
+                ?waiting=${primaryAddress.state === 'sending-confirmation-email'}
+                link
+              >
+                ${i18n('cc-email-list.primary.action.resend-confirmation-email')}
+              </cc-button>
+            `
+          : ''}
       </cc-block-section>
     `;
   }
 
-  _renderSecondarySection (rawAddresses) {
-
+  _renderSecondarySection(rawAddresses) {
     const addresses = [...rawAddresses].sort(sortBy('address'));
     const markingAsPrimary = addresses.some((item) => item.state === 'marking-as-primary');
 
@@ -264,7 +263,9 @@ export class CcEmailList extends LitElement {
                     @cc-button:click=${() => this._onMarkAsPrimary(secondaryAddress.address)}
                     ?waiting="${secondaryAddress.state === 'marking-as-primary'}"
                     ?disabled="${markingAsPrimary || isBusy}"
-                    a11y-name="${i18n('cc-email-list.secondary.action.mark-as-primary.accessible-name', { address: secondaryAddress.address })}"
+                    a11y-name="${i18n('cc-email-list.secondary.action.mark-as-primary.accessible-name', {
+                      address: secondaryAddress.address,
+                    })}"
                   >
                     ${i18n('cc-email-list.secondary.action.mark-as-primary.name')}
                   </cc-button>
@@ -276,7 +277,9 @@ export class CcEmailList extends LitElement {
                     @cc-button:click=${() => this._onDelete(secondaryAddress.address)}
                     ?waiting="${secondaryAddress.state === 'deleting'}"
                     ?disabled="${isBusy}"
-                    a11y-name="${i18n('cc-email-list.secondary.action.delete.accessible-name', { address: secondaryAddress.address })}"
+                    a11y-name="${i18n('cc-email-list.secondary.action.delete.accessible-name', {
+                      address: secondaryAddress.address,
+                    })}"
                   >
                     ${i18n('cc-email-list.secondary.action.delete.name')}
                   </cc-button>
@@ -291,7 +294,7 @@ export class CcEmailList extends LitElement {
     `;
   }
 
-  _renderAddEmailForm () {
+  _renderAddEmailForm() {
     const isAdding = this.addEmailForm.state === 'adding';
 
     return html`
@@ -306,22 +309,16 @@ export class CcEmailList extends LitElement {
           ${ref(this._addressInputRef)}
         >
           ${this._renderAddressError()}
-          <p slot="help">
-            ${i18n('cc-email-list.secondary.address-input.format')}
-          </p>
+          <p slot="help">${i18n('cc-email-list.secondary.address-input.format')}</p>
         </cc-input-text>
-        <cc-button
-          primary
-          ?waiting=${isAdding}
-          @cc-button:click=${this._onAdd}
-        >
+        <cc-button primary ?waiting=${isAdding} @cc-button:click=${this._onAdd}>
           ${i18n('cc-email-list.secondary.action.add')}
         </cc-button>
       </form>
     `;
   }
 
-  _renderAddressError () {
+  _renderAddressError() {
     if (this.addEmailForm.address.error === 'empty') {
       return html`<p slot="error">${i18n('cc-email-list.secondary.address-input.error.empty')}</p>`;
     }
@@ -338,7 +335,7 @@ export class CcEmailList extends LitElement {
     return html``;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       skeletonStyles,
       // language=CSS

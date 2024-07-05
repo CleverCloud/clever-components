@@ -1,16 +1,14 @@
-import '../cc-loader/cc-loader.js';
-import '../cc-icon/cc-icon.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import {
-  iconRemixAlertFill as iconAlert,
-} from '../../assets/cc-remix.icons.js';
+import { iconRemixAlertFill as iconAlert } from '../../assets/cc-remix.icons.js';
 import { WORLD_GEOJSON } from '../../assets/world-110m.geo.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import * as leaflet from '../../lib/leaflet-esm.js';
 import { leafletStyles } from '../../styles/leaflet.js';
+import '../cc-icon/cc-icon.js';
+import '../cc-loader/cc-loader.js';
 
 /**
  * @typedef {import('../common.types.js').HeatmapPoint} HeatmapPoint
@@ -37,8 +35,7 @@ import { leafletStyles } from '../../styles/leaflet.js';
  * @slot - The legend and/or details for the map (displayed at the bottom).
  */
 export class CcMap extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       centerLat: { type: Number, attribute: 'center-lat' },
       centerLon: { type: Number, attribute: 'center-lon' },
@@ -51,7 +48,7 @@ export class CcMap extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     // Centered on Paris by default
@@ -83,27 +80,22 @@ export class CcMap extends LitElement {
     });
   }
 
-  _resetCurrentLayer () {
-    const [layerToAdd, layerToRemove] = (this.mode === 'heatmap')
-      ? [this._heatLayer, this._pointsLayer]
-      : [this._pointsLayer, this._heatLayer];
+  _resetCurrentLayer() {
+    const [layerToAdd, layerToRemove] =
+      this.mode === 'heatmap' ? [this._heatLayer, this._pointsLayer] : [this._pointsLayer, this._heatLayer];
     this._map.removeLayer(layerToRemove);
     this._map.addLayer(layerToAdd);
   }
 
-  _updateHeatmap (newPoints) {
-
+  _updateHeatmap(newPoints) {
     if (!Array.isArray(newPoints)) {
       return;
     }
 
     const counts = newPoints.map(({ count }) => count);
-    const maxCount = (newPoints.length > 0)
-      ? Math.max(...counts)
-      : 1;
+    const maxCount = newPoints.length > 0 ? Math.max(...counts) : 1;
 
-    const heatPoints = newPoints
-      .map(({ lat, lon, count }) => [lat, lon, count]);
+    const heatPoints = newPoints.map(({ lat, lon, count }) => [lat, lon, count]);
 
     const heatOptions = {
       blur: 7,
@@ -112,13 +104,10 @@ export class CcMap extends LitElement {
       radius: 8,
     };
 
-    this._heatLayer
-      .clearLayers()
-      .addLayer(new leaflet.HeatLayer(heatPoints, heatOptions));
+    this._heatLayer.clearLayers().addLayer(new leaflet.HeatLayer(heatPoints, heatOptions));
   }
 
-  _updatePoints (newPoints) {
-
+  _updatePoints(newPoints) {
     if (!Array.isArray(newPoints)) {
       return;
     }
@@ -143,8 +132,7 @@ export class CcMap extends LitElement {
     }
   }
 
-  _createMarker (id, point) {
-
+  _createMarker(id, point) {
     // Prepare icon with custom element
     const iconElement = document.createElement(point.marker.tag);
     const icon = leaflet.divIcon({
@@ -169,8 +157,7 @@ export class CcMap extends LitElement {
     this._pointsCache[id] = { point, marker, iconElement };
   }
 
-  _updateMarker (id, newPoint) {
-
+  _updateMarker(id, newPoint) {
     this._pointsCache[id].point = newPoint;
     const { point, marker, iconElement } = this._pointsCache[id];
 
@@ -187,8 +174,7 @@ export class CcMap extends LitElement {
     // Create, update or delete tooltip
     if (point.tooltip == null) {
       marker.unbindTooltip();
-    }
-    else {
+    } else {
       if (marker.getTooltip() == null) {
         // Create empty tooltip
         marker.bindTooltip('', { direction: 'top', opacity: 1 });
@@ -196,14 +182,12 @@ export class CcMap extends LitElement {
       if (point.tooltip.tag == null) {
         // Simple tooltip with text
         marker.setTooltipContent(point.tooltip);
-      }
-      else {
+      } else {
         // Complex tooltip with custom element
         const oldElement = marker.getTooltip().getContent();
         const oldTagName = oldElement?.tagName?.toLowerCase();
-        const tooltipElement = (oldTagName !== point.tooltip.tag)
-          ? document.createElement(point.tooltip.tag)
-          : oldElement;
+        const tooltipElement =
+          oldTagName !== point.tooltip.tag ? document.createElement(point.tooltip.tag) : oldElement;
 
         // Update tooltip custom element properties
         for (const k in point.tooltip) {
@@ -226,7 +210,7 @@ export class CcMap extends LitElement {
     }
   }
 
-  _deleteMarker (id) {
+  _deleteMarker(id) {
     const { marker } = this._pointsCache[id];
     this._pointsLayer.removeLayer(marker);
     delete this._pointsCache[id];
@@ -237,20 +221,22 @@ export class CcMap extends LitElement {
    * @prop {number} lat - Sets the latitude of the point.
    * @prop {number} lon - Sets the longitude of the point.
    */
-  panInside (lat, lon) {
+  panInside(lat, lon) {
     this._map.panInside([lat, lon], { padding: [50, 50] });
   }
 
   // Draw the Leaflet map
-  firstUpdated () {
-
+  firstUpdated() {
     const leafletOptions = {
       // Block view on the world
       attributionControl: false,
       doubleClickZoom: true,
       dragging: true,
       keyboard: true,
-      maxBounds: [[-84, -180], [90, 180]],
+      maxBounds: [
+        [-84, -180],
+        [90, 180],
+      ],
       maxBoundsViscosity: 1,
       maxZoom: 6,
       minZoom: 1,
@@ -284,8 +270,7 @@ export class CcMap extends LitElement {
   }
 
   // updated and not udpate because we need this._map before
-  updated (changedProperties) {
-
+  updated(changedProperties) {
     if (changedProperties.has('centerLat') || changedProperties.has('centerLon')) {
       this._map.setView([this.centerLat, this.centerLon]);
     }
@@ -307,34 +292,38 @@ export class CcMap extends LitElement {
     }
   }
 
-  render () {
-    const noHeatmapPoints = (!this.error && this.mode === 'heatmap' && this.heatmapPoints?.length === 0);
+  render() {
+    const noHeatmapPoints = !this.error && this.mode === 'heatmap' && this.heatmapPoints?.length === 0;
     const errorMode = this.loading ? 'loading' : 'info';
 
     return html`
       <div id="cc-map-container" class=${classMap({ 'no-data': noHeatmapPoints })}></div>
       <div class="legend ${classMap({ 'no-data': noHeatmapPoints })}"><slot></slot></div>
-      ${this.loading && !this.error ? html`
-        <cc-loader class="loader"></cc-loader>
-      ` : ''}
-      ${this.error || noHeatmapPoints ? html`
-        <div class="msg-container">
-          ${this.error ? html`
-              <div class="error-message ${classMap({ 'error-loading': errorMode === 'loading' })}">
-                ${errorMode === 'loading' ? html`<cc-loader class="loader-error"></cc-loader>` : ''}
-                <cc-icon .icon="${iconAlert}" a11y-name="${i18n('cc-map.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
-                <p>${i18n('cc-map.error')}</p>
-              </div>
-          ` : ''}
-          ${noHeatmapPoints ? html`
-            <div class="msg">${i18n('cc-map.no-points')}</div>
-          ` : ''}
-        </div>
-      ` : ''}
+      ${this.loading && !this.error ? html` <cc-loader class="loader"></cc-loader> ` : ''}
+      ${this.error || noHeatmapPoints
+        ? html`
+            <div class="msg-container">
+              ${this.error
+                ? html`
+                    <div class="error-message ${classMap({ 'error-loading': errorMode === 'loading' })}">
+                      ${errorMode === 'loading' ? html`<cc-loader class="loader-error"></cc-loader>` : ''}
+                      <cc-icon
+                        .icon="${iconAlert}"
+                        a11y-name="${i18n('cc-map.error.icon-a11y-name')}"
+                        class="icon-warning"
+                      ></cc-icon>
+                      <p>${i18n('cc-map.error')}</p>
+                    </div>
+                  `
+                : ''}
+              ${noHeatmapPoints ? html` <div class="msg">${i18n('cc-map.no-points')}</div> ` : ''}
+            </div>
+          `
+        : ''}
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       leafletStyles,
       // language=CSS
@@ -397,7 +386,7 @@ export class CcMap extends LitElement {
           width: 100%;
           height: 100%;
         }
-        
+
         .loader-error {
           height: 1.5em;
         }
@@ -444,7 +433,7 @@ export class CcMap extends LitElement {
           grid-template-columns: min-content 1fr;
           text-align: center;
         }
-        
+
         .error-message.error-loading {
           grid-template-columns: auto 1fr;
         }

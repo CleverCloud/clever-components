@@ -2,10 +2,10 @@ import { css, html, LitElement } from 'lit';
 import { i18n } from '../../lib/i18n.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
-import '../cc-product-card/cc-product-card.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-input-text/cc-input-text.js';
+import '../cc-product-card/cc-product-card.js';
 import { ProductsController } from './products-controller.js';
 
 /**
@@ -20,8 +20,7 @@ import { ProductsController } from './products-controller.js';
  * @cssdisplay block
  */
 export class CcProductList extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       categoryFilter: { type: String, attribute: 'category-filter' },
       productsByCategories: { type: Array, attribute: 'products-by-categories' },
@@ -29,7 +28,7 @@ export class CcProductList extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {string|null} a string to prefilter by a given category */
@@ -48,23 +47,22 @@ export class CcProductList extends LitElement {
   /**
    * @param {Event & { target: HTMLInputElement }} e
    */
-  _onCategoryChange (e) {
+  _onCategoryChange(e) {
     this.categoryFilter = e.target.value;
   }
 
   /**
    * @param {Object} event
    * @param {string} event.detail
-  */
-  _onSearchInput ({ detail: value }) {
+   */
+  _onSearchInput({ detail: value }) {
     this.textFilter = value;
   }
 
   /**
    * @param {CcProductListPropertyValues} changedProperties
-  */
-  willUpdate (changedProperties) {
-
+   */
+  willUpdate(changedProperties) {
     if (changedProperties.has('productsByCategories')) {
       this._productsCrtl.productsByCategories = this.productsByCategories;
     }
@@ -77,8 +75,7 @@ export class CcProductList extends LitElement {
     }
   }
 
-  render () {
-
+  render() {
     const categories = this._productsCrtl.getCategories();
 
     return html`
@@ -86,16 +83,19 @@ export class CcProductList extends LitElement {
         <cc-input-text
           label="${i18n('cc-product-list.search-label')}"
           value="${this.textFilter ?? ''}"
-          @cc-input-text:input="${this._onSearchInput}"></cc-input-text>
+          @cc-input-text:input="${this._onSearchInput}"
+        ></cc-input-text>
         <fieldset class="category-filter">
           <legend class="visually-hidden">${i18n('cc-product-list.filter-category-legend')}</legend>
-          ${this._renderCategory(i18n('cc-product-list.all-label'), 'all', this._productsCrtl.getCurrentCategory() === 'all')}
+          ${this._renderCategory(
+            i18n('cc-product-list.all-label'),
+            'all',
+            this._productsCrtl.getCurrentCategory() === 'all',
+          )}
           ${categories.map((c) => this._renderCategory(c.categoryName, c.categoryName, c.toggled))}
         </fieldset>
       </div>
-      <div class="products">
-        ${this._renderProductsByCategories()}
-      </div>
+      <div class="products">${this._renderProductsByCategories()}</div>
     `;
   }
 
@@ -105,60 +105,58 @@ export class CcProductList extends LitElement {
    * @param {boolean} isToggled
    * @returns {TemplateResult}
    */
-  _renderCategory (label, value, isToggled) {
+  _renderCategory(label, value, isToggled) {
     const id = label.replace(' ', '-');
     return html`
-      <input 
+      <input
         type="radio"
         id="${id}"
         .value=${value}
         name="category-filter"
-        class="visually-hidden" 
-        @change=${this._onCategoryChange}>
+        class="visually-hidden"
+        @change=${this._onCategoryChange}
+      />
       <label for="${id}">
-        <cc-badge
-          weight="${(isToggled ? 'dimmed' : 'outlined')}"
-          intent="info"
-        >${label}
-        </cc-badge>
+        <cc-badge weight="${isToggled ? 'dimmed' : 'outlined'}" intent="info">${label} </cc-badge>
       </label>
     `;
   }
 
-  _renderProductsByCategories () {
-
+  _renderProductsByCategories() {
     const productsByCategories = this._productsCrtl.getFilteredProductsByCategories();
 
     if (productsByCategories.length === 0) {
-      return html`
-        <p class="search-empty">${i18n('cc-product-list.search-empty')}</p>
-      `;
+      return html` <p class="search-empty">${i18n('cc-product-list.search-empty')}</p> `;
     }
 
-    return productsByCategories.map((productsCategory) => html`
-      <div class="category">
-        <div class="category-title">
-          ${productsCategory.icon != null ? html`
-            <cc-icon .icon="${productsCategory.icon}" class="category-icon"></cc-icon>
-          ` : ''}
-          <div class="category-name">${productsCategory.categoryName}</div>
+    return productsByCategories.map(
+      (productsCategory) => html`
+        <div class="category">
+          <div class="category-title">
+            ${productsCategory.icon != null
+              ? html` <cc-icon .icon="${productsCategory.icon}" class="category-icon"></cc-icon> `
+              : ''}
+            <div class="category-name">${productsCategory.categoryName}</div>
+          </div>
+          <div class="category-products">
+            ${productsCategory.products.map(
+              (p) => html`
+                <cc-product-card
+                  name="${p.name}"
+                  description="${p.description}"
+                  .keywords="${p.keywords ?? []}"
+                  icon-url="${p.iconUrl}"
+                  url="${p.url}"
+                ></cc-product-card>
+              `,
+            )}
+          </div>
         </div>
-        <div class="category-products">
-          ${productsCategory.products.map((p) => html`
-            <cc-product-card
-              name="${p.name}"
-              description="${p.description}"
-              .keywords="${p.keywords ?? []}"
-              icon-url="${p.iconUrl}"
-              url="${p.url}"
-            ></cc-product-card>
-          `)}
-        </div>
-      </div>
-    `);
+      `,
+    );
   }
 
-  static get styles () {
+  static get styles() {
     return [
       accessibilityStyles,
       linkStyles,

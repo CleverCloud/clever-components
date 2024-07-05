@@ -1,5 +1,5 @@
-import fs from 'fs/promises';
 import chalk from 'chalk';
+import fs from 'fs/promises';
 import textTable from 'text-table';
 import { CellarClient } from './cellar-client.js';
 import { getCurrentAuthor, getCurrentBranch, getCurrentCommit } from './git-utils.js';
@@ -13,8 +13,7 @@ const cellar = new CellarClient({
   secretAccessKey: process.env.PREVIEWS_CELLAR_SECRET_KEY,
 });
 
-async function run () {
-
+async function run() {
   const [command, branch] = process.argv.slice(2);
   const currentBranch = getCurrentBranch();
 
@@ -32,32 +31,29 @@ async function run () {
   throw new Error('Unknown command!');
 }
 
-async function getPreview (branch) {
+async function getPreview(branch) {
   const manifest = await getManifest();
   const preview = manifest.previews.find((p) => p.branch === branch);
 
   if (preview == null) {
     console.log(`No preview for branch ${branch} could be found.`);
     process.exit(1);
-  }
-  else {
+  } else {
     console.log(textTable([previewToPrintableDetails(preview)]));
   }
 }
 
-async function listPreviews () {
+async function listPreviews() {
   const manifest = await getManifest();
   if (manifest.previews.length === 0) {
     console.log('No previews right now.');
-  }
-  else {
+  } else {
     const table = manifest.previews.map((p) => previewToPrintableDetails(p));
     console.log(textTable(table));
   }
 }
 
-async function publishPreviewBranch (branch) {
-
+async function publishPreviewBranch(branch) {
   const localDir = 'storybook-static';
   const remoteDir = branch;
 
@@ -74,8 +70,7 @@ async function publishPreviewBranch (branch) {
   const previewIndex = manifest.previews.findIndex((p) => p.branch === branch);
   if (previewIndex !== -1) {
     manifest.previews[previewIndex] = newPreview;
-  }
-  else {
+  } else {
     manifest.previews.push(newPreview);
   }
 
@@ -85,8 +80,7 @@ async function publishPreviewBranch (branch) {
   console.log('\nPreview available at: ' + newPreview.url);
 }
 
-async function deletePreviewBranch (branch) {
-
+async function deletePreviewBranch(branch) {
   await cellar.deleteManyObjects({ prefix: branch + '/' });
   const manifest = await getManifest();
   const previewIndex = manifest.previews.findIndex((p) => p.branch === branch);
@@ -98,18 +92,16 @@ async function deletePreviewBranch (branch) {
   await updateListIndex(manifest);
 }
 
-async function getManifest () {
-  return cellar
-    .getObject({ key: 'preview-manifest.json' })
-    .catch((e) => {
-      return {
-        version: 1,
-        previews: [],
-      };
-    });
+async function getManifest() {
+  return cellar.getObject({ key: 'preview-manifest.json' }).catch((e) => {
+    return {
+      version: 1,
+      previews: [],
+    };
+  });
 }
 
-async function updateManifest (manifest) {
+async function updateManifest(manifest) {
   const manifestJson = JSON.stringify(manifest, null, '  ');
   await fs.writeFile('.preview-manifest.json', manifestJson);
   return cellar.putObject({
@@ -118,7 +110,7 @@ async function updateManifest (manifest) {
   });
 }
 
-async function updateListIndex (manifest) {
+async function updateListIndex(manifest) {
   const indexHtml = `
     <!doctype html>
     <html lang="en">
@@ -152,9 +144,12 @@ async function updateListIndex (manifest) {
     </head>
     <body>
     <h1>Clever Components - Previews</h1>
-    ${manifest.previews.length === 0 ? `
+    ${
+      manifest.previews.length === 0
+        ? `
       <p><em>No previews right now</em></p>
-    ` : `
+    `
+        : `
       <table>
         <tr>
           <th>Branch</th>
@@ -162,16 +157,21 @@ async function updateListIndex (manifest) {
           <th>Commit ID</th>
           <th>Author</th>
         </tr>
-        ${manifest.previews.map((p) => `
+        ${manifest.previews
+          .map(
+            (p) => `
           <tr>
             <td><a href="${p.url}"><code>${p.branch}</code></a></td>
             <td><cc-datetime-relative datetime="${p.updatedAt}">${p.updatedAt}</cc-datetime-relative></td>
             <td><span title="${p.commitId}">${p.commitId.substr(0, 8)}</span></td>
             <td>${p.author}</td>
           </tr>
-        `).join('\n')}
+        `,
+          )
+          .join('\n')}
       </table>
-    `}
+    `
+    }
     </body>
     </html>
   `;
@@ -182,7 +182,7 @@ async function updateListIndex (manifest) {
   });
 }
 
-function previewToPrintableDetails (p) {
+function previewToPrintableDetails(p) {
   return [
     ...p.updatedAt.substr(0, 19).split('T'),
     chalk.red(p.commitId.substr(0, 8)),

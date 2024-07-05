@@ -1,10 +1,10 @@
-import './cc-env-var-form.js';
-import '../cc-smart-container/cc-smart-container.js';
 import { get as getAddon } from '@clevercloud/client/esm/api/v2/addon.js';
 import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { i18n } from '../../lib/i18n.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import '../cc-smart-container/cc-smart-container.js';
+import './cc-env-var-form.js';
 
 defineSmartComponent({
   selector: 'cc-env-var-form[context="config-provider"]',
@@ -13,8 +13,7 @@ defineSmartComponent({
     ownerId: { type: String },
     addonId: { type: String },
   },
-  onContextUpdate ({ context, onEvent, updateComponent, signal }) {
-
+  onContextUpdate({ context, onEvent, updateComponent, signal }) {
     updateComponent('state', { type: 'loading' });
 
     const { apiConfig, ownerId, addonId } = context;
@@ -56,21 +55,20 @@ defineSmartComponent({
   },
 });
 
-function fetchAddon ({ apiConfig, signal, ownerId, addonId }) {
+function fetchAddon({ apiConfig, signal, ownerId, addonId }) {
   return getAddon({ id: ownerId, addonId }).then(sendToApi({ apiConfig, signal }));
 }
 
-async function fetchVariables ({ apiConfig, signal, realAddonId }) {
+async function fetchVariables({ apiConfig, signal, realAddonId }) {
   return getConfigProviderEnv({ realAddonId }).then(sendToApi({ apiConfig, signal }));
 }
 
-async function updateVariables ({ apiConfig, signal, realAddonId, variables }) {
-  return updateConfigProviderEnv({ realAddonId }, variables)
-    .then(sendToApi({ apiConfig, signal }));
+async function updateVariables({ apiConfig, signal, realAddonId, variables }) {
+  return updateConfigProviderEnv({ realAddonId }, variables).then(sendToApi({ apiConfig, signal }));
 }
 
 // TODO clever-client
-export function getConfigProviderEnv (params) {
+export function getConfigProviderEnv(params) {
   return Promise.resolve({
     method: 'get',
     url: `/v4/addon-providers/config-provider/addons/${params.realAddonId}/env`,
@@ -81,7 +79,7 @@ export function getConfigProviderEnv (params) {
 }
 
 // TODO clever-client
-export function updateConfigProviderEnv (params, body) {
+export function updateConfigProviderEnv(params, body) {
   return Promise.resolve({
     method: 'put',
     url: `/v4/addon-providers/config-provider/addons/${params.realAddonId}/env`,

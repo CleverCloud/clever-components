@@ -1,16 +1,13 @@
+import { css, html, LitElement } from 'lit';
+import { i18n } from '../../lib/i18n.js';
+import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-block/cc-block.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-tcp-redirection/cc-tcp-redirection.js';
-import { css, html, LitElement } from 'lit';
-import { i18n } from '../../lib/i18n.js';
-import { linkStyles } from '../../templates/cc-link/cc-link.js';
 
 /** @type {TcpRedirectionStateLoading[]} */
-const SKELETON_REDIRECTIONS = [
-  { type: 'loading' },
-  { type: 'loading' },
-];
+const SKELETON_REDIRECTIONS = [{ type: 'loading' }, { type: 'loading' }];
 
 /**
  * @typedef {import('./cc-tcp-redirection-form.types.js').TcpRedirectionFormContextType} TcpRedirectionFormContextType
@@ -29,15 +26,14 @@ const SKELETON_REDIRECTIONS = [
  * @fires {CustomEvent<DeleteTcpRedirection>} cc-tcp-redirection:delete - Fires a redirection whenever the delete button is clicked.
  */
 export class CcTcpRedirectionForm extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       context: { type: String },
       state: { type: Object },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {TcpRedirectionFormContextType} Defines in which context the form is used so it can show the appropriate description or lack thereof (defaults to user). */
@@ -47,59 +43,54 @@ export class CcTcpRedirectionForm extends LitElement {
     this.state = { type: 'loading' };
   }
 
-  render () {
-
-    const blockState = (this.context === 'admin') ? 'close' : 'off';
+  render() {
+    const blockState = this.context === 'admin' ? 'close' : 'off';
 
     return html`
       <cc-block state="${blockState}">
+        <div slot="title">${i18n('cc-tcp-redirection-form.title')} ${this._renderRedirectionCountBadge()}</div>
 
-        <div slot="title">
-          ${i18n('cc-tcp-redirection-form.title')}
-          ${this._renderRedirectionCountBadge()}
-        </div>
-
-        ${this.context === 'user' ? html`
-          <div class="description">${i18n('cc-tcp-redirection-form.description')}</div>
-        ` : ''}
-
-        ${this.state.type === 'error' ? html`
-            <cc-notice intent="warning" message="${i18n('cc-tcp-redirection-form.error')}"></cc-notice>
-        ` : ''}
-
-        ${this.state.type === 'loading' ? html`
-          ${SKELETON_REDIRECTIONS.map((skeletonRedirectionState) => html`
-            <cc-tcp-redirection .state=${skeletonRedirectionState}></cc-tcp-redirection>
-          `)}
-        ` : ''}
-
-        ${this.state.type === 'loaded' ? html`
-          ${this.state.redirections.map((redirectionState) => html`
-            <cc-tcp-redirection .state=${redirectionState}></cc-tcp-redirection>
-          `)}
-          ${this.state.redirections.length === 0 ? html`
-            <div class="cc-block_empty-msg">${i18n('cc-tcp-redirection-form.empty')}</div>
-          ` : ''}
-        ` : ''}
-
+        ${this.context === 'user'
+          ? html` <div class="description">${i18n('cc-tcp-redirection-form.description')}</div> `
+          : ''}
+        ${this.state.type === 'error'
+          ? html` <cc-notice intent="warning" message="${i18n('cc-tcp-redirection-form.error')}"></cc-notice> `
+          : ''}
+        ${this.state.type === 'loading'
+          ? html`
+              ${SKELETON_REDIRECTIONS.map(
+                (skeletonRedirectionState) => html`
+                  <cc-tcp-redirection .state=${skeletonRedirectionState}></cc-tcp-redirection>
+                `,
+              )}
+            `
+          : ''}
+        ${this.state.type === 'loaded'
+          ? html`
+              ${this.state.redirections.map(
+                (redirectionState) => html` <cc-tcp-redirection .state=${redirectionState}></cc-tcp-redirection> `,
+              )}
+              ${this.state.redirections.length === 0
+                ? html` <div class="cc-block_empty-msg">${i18n('cc-tcp-redirection-form.empty')}</div> `
+                : ''}
+            `
+          : ''}
       </cc-block>
     `;
   }
 
   /** @private */
-  _renderRedirectionCountBadge () {
+  _renderRedirectionCountBadge() {
     if (this.context === 'admin' && this.state.type === 'loaded') {
       const redirectionCount = this.state.redirections.filter(({ sourcePort }) => sourcePort != null).length;
       if (redirectionCount >= 1) {
-        return html`
-          <cc-badge circle weight="strong">${redirectionCount}</cc-badge>
-        `;
+        return html` <cc-badge circle weight="strong">${redirectionCount}</cc-badge> `;
       }
     }
     return '';
   }
 
-  static get styles () {
+  static get styles() {
     return [
       linkStyles,
       // language=CSS

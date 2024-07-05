@@ -1,5 +1,5 @@
-import './cc-html-frame.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-html-frame.js';
 
 export default {
   tags: ['autodocs'],

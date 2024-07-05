@@ -1,9 +1,9 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { i18n } from '../../lib/i18n.js';
-import '../cc-img/cc-img.js';
-import '../cc-button/cc-button.js';
 import '../cc-badge/cc-badge.js';
+import '../cc-button/cc-button.js';
+import '../cc-img/cc-img.js';
 
 /**
  * @typedef {import('./cc-product-card.types.js').Keyword} Keyword
@@ -16,8 +16,7 @@ import '../cc-badge/cc-badge.js';
  *
  */
 export class CcProductCard extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       description: { type: String },
       iconUrl: { type: String, attribute: 'icon-url' },
@@ -27,7 +26,7 @@ export class CcProductCard extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {string|null} The description of the product */
@@ -46,12 +45,11 @@ export class CcProductCard extends LitElement {
     this.url = null;
   }
 
-  _areKeywordsAllHidden () {
+  _areKeywordsAllHidden() {
     return this.keywords.every((k) => k.hidden);
   }
 
-  render () {
-
+  render() {
     const hasKeywords = this.keywords.length > 0 && !this._areKeywordsAllHidden();
 
     // language=HTML
@@ -59,23 +57,27 @@ export class CcProductCard extends LitElement {
       <div class="wrapper ${classMap({ 'wrapper--no-keywords': !hasKeywords })}">
         <cc-img src="${this.iconUrl}"></cc-img>
         <a class="name" href="${this.url}" title="${i18n('cc-product-card.select', this.name)}">${this.name}</a>
-        ${hasKeywords ? html`
-          <ul class="keywords">
-            ${this.keywords.map((keyword) => {
-              return (!keyword.hidden) ? html`
-                <li>
-                  <cc-badge class="keyword-badge">${keyword.value}</cc-badge>
-                </li>
-              ` : '';
-            })}
-          </ul>
-        ` : ''}
+        ${hasKeywords
+          ? html`
+              <ul class="keywords">
+                ${this.keywords.map((keyword) => {
+                  return !keyword.hidden
+                    ? html`
+                        <li>
+                          <cc-badge class="keyword-badge">${keyword.value}</cc-badge>
+                        </li>
+                      `
+                    : '';
+                })}
+              </ul>
+            `
+          : ''}
         <p class="description">${this.description}</p>
       </div>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
@@ -109,7 +111,7 @@ export class CcProductCard extends LitElement {
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-default, 0.25em);
           gap: 0.75em;
-          grid-template-areas: 
+          grid-template-areas:
             'icon name'
             'keywords keywords'
             'description description';
@@ -150,7 +152,7 @@ export class CcProductCard extends LitElement {
           font-size: 1.75em;
           text-decoration: none;
         }
-        
+
         .name::after {
           position: absolute;
           top: 0;
@@ -159,7 +161,7 @@ export class CcProductCard extends LitElement {
           height: 100%;
           content: '';
         }
-        
+
         .name:focus {
           outline: none;
         }
@@ -183,7 +185,6 @@ export class CcProductCard extends LitElement {
         }
 
         /*  endregion */
-
       `,
     ];
   }

@@ -1,11 +1,11 @@
 /* eslint-env node, mocha */
 
-import './cc-input-date.js';
 import { elementUpdated, expect, fixture, triggerFocusFor } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 import { html } from 'lit';
 import { testAccessibility } from '../../../test/helpers/accessibility.js';
 import { getStories } from '../../../test/helpers/get-stories.js';
+import './cc-input-date.js';
 import * as storiesModule from './cc-input-date.stories.js';
 
 /**
@@ -13,7 +13,7 @@ import * as storiesModule from './cc-input-date.stories.js';
  * @param template
  * @return {Promise<CcInputDate>}
  */
-async function getElement (template) {
+async function getElement(template) {
   const element = await fixture(template);
   await elementUpdated(element);
   return element;
@@ -25,7 +25,7 @@ async function getElement (template) {
  * @param {string} value
  * @return {Promise<void>}
  */
-async function type (element, value) {
+async function type(element, value) {
   await triggerFocusFor(element);
   await sendKeys({ type: value });
   await elementUpdated(element);
@@ -37,7 +37,7 @@ async function type (element, value) {
  * @param {string} value
  * @return {Promise<void>}
  */
-async function replace (element, value) {
+async function replace(element, value) {
   await clear(element);
   await sendKeys({ type: value });
   await elementUpdated(element);
@@ -48,7 +48,7 @@ async function replace (element, value) {
  * @param {CcInputDate} element
  * @return {Promise<void>}
  */
-async function clear (element) {
+async function clear(element) {
   await triggerFocusFor(element);
   await sendKeys({ down: 'Control' });
   await sendKeys({ press: 'KeyA' });
@@ -57,7 +57,7 @@ async function clear (element) {
   await elementUpdated(element);
 }
 
-async function moveInputCaretToPosition (element, position) {
+async function moveInputCaretToPosition(element, position) {
   await triggerFocusFor(element);
   await sendKeys({ down: 'Control' });
   await sendKeys({ press: 'KeyA' });
@@ -68,7 +68,7 @@ async function moveInputCaretToPosition (element, position) {
   }
 }
 
-function getInternalInput (element) {
+function getInternalInput(element) {
   return element.shadowRoot.querySelector('#input-id');
 }
 
@@ -135,11 +135,11 @@ describe('Component cc-input-date', () => {
   });
 
   describe('validate() method', () => {
-    function assertValid (element) {
+    function assertValid(element) {
       expect(element.validate()).to.eql({ valid: true });
     }
 
-    function assertInvalid (element, code) {
+    function assertInvalid(element, code) {
       expect(element.validate()).to.eql({ valid: false, code });
     }
 
@@ -219,43 +219,57 @@ describe('Component cc-input-date', () => {
     });
 
     it('should be invalid with rangeUnderflow code when value is lower that min', async () => {
-      const element = await getElement(`<cc-input-date min="2023-07-31T21:00:00.000Z" value="2023-07-31T20:11:12.259Z"></cc-input-date>`);
+      const element = await getElement(
+        `<cc-input-date min="2023-07-31T21:00:00.000Z" value="2023-07-31T20:11:12.259Z"></cc-input-date>`,
+      );
       assertInvalid(element, 'rangeUnderflow');
     });
 
     it('should become invalid with rangeUnderflow code when min changes', async () => {
-      const element = await getElement(`<cc-input-date min="2023-07-31T20:00:00.000Z" value="2023-07-31T20:11:12.259Z"></cc-input-date>`);
+      const element = await getElement(
+        `<cc-input-date min="2023-07-31T20:00:00.000Z" value="2023-07-31T20:11:12.259Z"></cc-input-date>`,
+      );
       element.min = '2023-07-31T21:00:00.000Z';
       await elementUpdated(element);
       assertInvalid(element, 'rangeUnderflow');
     });
 
     it('should become invalid with rangeUnderflow code when user types a too low value', async () => {
-      const element = await getElement(`<cc-input-date min="2023-07-31T21:00:00.000Z" value="2023-07-31T21:11:12.259Z"></cc-input-date>`);
+      const element = await getElement(
+        `<cc-input-date min="2023-07-31T21:00:00.000Z" value="2023-07-31T21:11:12.259Z"></cc-input-date>`,
+      );
       await replace(element, '2023-07-31 20:11:12');
       assertInvalid(element, 'rangeUnderflow');
     });
 
     it('should be invalid with rangeOverflow code when value is higher that max', async () => {
-      const element = await getElement(`<cc-input-date max="2023-07-31T20:00:00.000Z" value="2023-07-31T20:11:12.259Z"></cc-input-date>`);
+      const element = await getElement(
+        `<cc-input-date max="2023-07-31T20:00:00.000Z" value="2023-07-31T20:11:12.259Z"></cc-input-date>`,
+      );
       assertInvalid(element, 'rangeOverflow');
     });
 
     it('should become invalid with rangeOverflow code when max changes', async () => {
-      const element = await getElement(`<cc-input-date max="2023-07-31T21:00:00.000Z" value="2023-07-31T20:11:12.259Z"></cc-input-date>`);
+      const element = await getElement(
+        `<cc-input-date max="2023-07-31T21:00:00.000Z" value="2023-07-31T20:11:12.259Z"></cc-input-date>`,
+      );
       element.max = '2023-07-31T20:00:00.000Z';
       await elementUpdated(element);
       assertInvalid(element, 'rangeOverflow');
     });
 
     it('should become invalid with rangeOverflow code when user types a too high value', async () => {
-      const element = await getElement(`<cc-input-date max="2023-07-31T21:00:00.000Z" value="2023-07-31T20:11:12.259Z"></cc-input-date>`);
+      const element = await getElement(
+        `<cc-input-date max="2023-07-31T21:00:00.000Z" value="2023-07-31T20:11:12.259Z"></cc-input-date>`,
+      );
       await replace(element, '2023-07-31 21:11:12');
       assertInvalid(element, 'rangeOverflow');
     });
 
     it('should become valid when user types a date in min-max bounds', async () => {
-      const element = await getElement(`<cc-input-date min="2023-07-31T20:00:00.000Z" max="2023-07-31T21:00:00.000Z" value="2023-07-31T19:11:12.259Z"></cc-input-date>`);
+      const element = await getElement(
+        `<cc-input-date min="2023-07-31T20:00:00.000Z" max="2023-07-31T21:00:00.000Z" value="2023-07-31T19:11:12.259Z"></cc-input-date>`,
+      );
       await replace(element, '2023-07-31 20:11:12');
       assertValid(element);
     });
@@ -263,14 +277,18 @@ describe('Component cc-input-date', () => {
 
   describe('error class', () => {
     it('should be placed on internal input when error slot is set', async () => {
-      const element = await fixture('<cc-input-date value="2023-07-31T19:11:12.259Z"><p slot="error">Error</p></cc-input-date>');
+      const element = await fixture(
+        '<cc-input-date value="2023-07-31T19:11:12.259Z"><p slot="error">Error</p></cc-input-date>',
+      );
       await elementUpdated(element);
       const input = getInternalInput(element);
       expect(input).to.have.class('error');
     });
 
     it('should be removed from internal input when error slot is removed', async () => {
-      const element = await fixture('<cc-input-date value="2023-07-31T19:11:12.259Z"><p slot="error">Error</p></cc-input-date>');
+      const element = await fixture(
+        '<cc-input-date value="2023-07-31T19:11:12.259Z"><p slot="error">Error</p></cc-input-date>',
+      );
       await elementUpdated(element);
       element.innerHTML = '';
       await elementUpdated(element);
@@ -329,7 +347,9 @@ describe('Component cc-input-date', () => {
     });
 
     it('should return the right value when modifying value with simple format string and with local timezone', async () => {
-      const element = await getElement('<cc-input-date value="2023-07-31T19:11:12.259Z" timezone="local"></cc-input-date>');
+      const element = await getElement(
+        '<cc-input-date value="2023-07-31T19:11:12.259Z" timezone="local"></cc-input-date>',
+      );
       element.value = '2023-07-31 20:11:12';
       await elementUpdated(element);
       expect(element.value).to.equal('2023-07-31T18:11:12.000Z');
@@ -377,13 +397,17 @@ describe('Component cc-input-date', () => {
 
     describe('with local timezone', () => {
       it('should have the right value after init', async () => {
-        const element = await getElement('<cc-input-date value="2023-07-31T19:11:12.259Z" timezone="local"></cc-input-date>');
+        const element = await getElement(
+          '<cc-input-date value="2023-07-31T19:11:12.259Z" timezone="local"></cc-input-date>',
+        );
         const input = getInternalInput(element);
         expect(input.value).to.equal('2023-07-31 21:11:12');
       });
 
       it('should have the right value after modifying value', async () => {
-        const element = await getElement('<cc-input-date value="2023-07-31T19:11:12.259Z" timezone="local"></cc-input-date>');
+        const element = await getElement(
+          '<cc-input-date value="2023-07-31T19:11:12.259Z" timezone="local"></cc-input-date>',
+        );
         element.value = '2023-07-31T20:11:12.259Z';
         await elementUpdated(element);
         const input = getInternalInput(element);
@@ -408,7 +432,9 @@ describe('Component cc-input-date', () => {
     });
 
     it('should have empty value after setting an invalid value', async () => {
-      const element = await getElement('<cc-input-date value="2023-07-31T19:11:12.259Z" timezone="local"></cc-input-date>');
+      const element = await getElement(
+        '<cc-input-date value="2023-07-31T19:11:12.259Z" timezone="local"></cc-input-date>',
+      );
       element.value = 'invalid value';
       await elementUpdated(element);
       const input = getInternalInput(element);
@@ -431,7 +457,9 @@ describe('Component cc-input-date', () => {
     });
 
     it('should have the right value after changing the timezone from local to UTC', async () => {
-      const element = await getElement('<cc-input-date value="2023-07-31T19:11:12.259Z" timezone="local"></cc-input-date>');
+      const element = await getElement(
+        '<cc-input-date value="2023-07-31T19:11:12.259Z" timezone="local"></cc-input-date>',
+      );
 
       element.timezone = 'UTC';
       await elementUpdated(element);
@@ -474,9 +502,8 @@ describe('Component cc-input-date', () => {
   });
 
   describe('when user presses key', () => {
-    async function checkAfterShift (initialDate, position, key, expectedDate) {
-      const element = await getElement(html`
-        <cc-input-date .value="${initialDate}"></cc-input-date>`);
+    async function checkAfterShift(initialDate, position, key, expectedDate) {
+      const element = await getElement(html` <cc-input-date .value="${initialDate}"></cc-input-date>`);
       await moveInputCaretToPosition(element, position);
       await sendKeys({ press: key });
       await elementUpdated(element);

@@ -1,9 +1,9 @@
-import '../cc-toggle/cc-toggle.js';
-import '../cc-map-marker-dot/cc-map-marker-dot.js';
-import '../cc-map/cc-map.js';
 import { css, html, LitElement } from 'lit';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
+import '../cc-map-marker-dot/cc-map-marker-dot.js';
+import '../cc-map/cc-map.js';
+import '../cc-toggle/cc-toggle.js';
 
 /**
  * @typedef {import('../common.types.js').HeatmapPoint} HeatmapPoint
@@ -26,8 +26,7 @@ import { i18n } from '../../lib/i18n.js';
  * @fires {CustomEvent<MapModeType>} cc-logsmap:mode - Fires the selected mode whenever the toggle changes.
  */
 export class CcLogsMap extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       appName: { type: String, attribute: 'app-name' },
       availableModes: { type: Array, attribute: 'available-modes' },
@@ -44,7 +43,7 @@ export class CcLogsMap extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {string} Sets the name of the app for which we display the logs (don't use it with `orgaName`). */
@@ -89,21 +88,17 @@ export class CcLogsMap extends LitElement {
    * @param {Point[]} points - List of points.
    * @param {PointsOptions} options - Options to spread the display of the different points over time.
    */
-  addPoints (points, options = {}) {
-
+  addPoints(points, options = {}) {
     const { spreadDuration = false } = options;
 
-    const timeStep = (spreadDuration !== false)
-      ? Math.floor(spreadDuration / points.length)
-      : 0;
+    const timeStep = spreadDuration !== false ? Math.floor(spreadDuration / points.length) : 0;
 
     points.forEach((p, i) => {
       setTimeout(() => this._addPoint(p), timeStep * i);
     });
   }
 
-  _addPoint ({ lat, lon, count = 1, delay = 1000, tooltip }) {
-
+  _addPoint({ lat, lon, count = 1, delay = 1000, tooltip }) {
     const coords = [lat, lon].join(',');
     const newPoint = { lat, lon, count, tooltip };
 
@@ -125,42 +120,32 @@ export class CcLogsMap extends LitElement {
     }, delay);
   }
 
-  _updatePoints () {
-
+  _updatePoints() {
     // Merge points at the same coordinates:
     // * sum "count"
     // * concatenante "tooltip" (3 max)
-    this._points = Object
-      .entries(this._pointsByCoords)
-      .map(([coords, points]) => {
+    this._points = Object.entries(this._pointsByCoords).map(([coords, points]) => {
+      const { lat, lon } = points[0];
 
-        const { lat, lon } = points[0];
+      const count = points.map((p) => p.count).reduce((a, b) => a + b, 0);
 
-        const count = points
-          .map((p) => p.count)
-          .reduce((a, b) => a + b, 0);
+      const allTooltips = points.filter((p) => p.tooltip != null && p.tooltip !== '').map((p) => p.tooltip);
 
-        const allTooltips = points
-          .filter((p) => p.tooltip != null && p.tooltip !== '')
-          .map((p) => p.tooltip);
+      const uniqueTooltips = Array.from(new Set(allTooltips));
 
-        const uniqueTooltips = Array.from(new Set(allTooltips));
+      if (uniqueTooltips.length >= 3) {
+        // Only keep first 3 values
+        uniqueTooltips.length = 3;
+        uniqueTooltips[2] = uniqueTooltips[2] + '...';
+      }
 
-        if (uniqueTooltips.length >= 3) {
-          // Only keep first 3 values
-          uniqueTooltips.length = 3;
-          uniqueTooltips[2] = uniqueTooltips[2] + '...';
-        }
+      const tooltip = uniqueTooltips.length > 0 ? uniqueTooltips.join('<br>') : null;
 
-        const tooltip = (uniqueTooltips.length > 0)
-          ? uniqueTooltips.join('<br>')
-          : null;
-
-        return { lat, lon, marker: { tag: 'cc-map-marker-dot', count }, tooltip };
-      });
+      return { lat, lon, marker: { tag: 'cc-map-marker-dot', count }, tooltip };
+    });
   }
 
-  _getModes () {
+  _getModes() {
     const modes = [
       { label: i18n('cc-logsmap.mode.points'), value: 'points' },
       { label: i18n('cc-logsmap.mode.heatmap'), value: 'heatmap' },
@@ -172,27 +157,23 @@ export class CcLogsMap extends LitElement {
       .filter((mode) => mode != null);
   }
 
-  _getLegend () {
+  _getLegend() {
     if (this.mode === 'points') {
-      return (this.appName == null)
+      return this.appName == null
         ? i18n('cc-logsmap.legend.points', { orgaName: this.orgaName })
         : i18n('cc-logsmap.legend.points.app', { appName: this.appName });
     }
-    return (this.appName == null)
+    return this.appName == null
       ? i18n('cc-logsmap.legend.heatmap', { orgaName: this.orgaName })
       : i18n('cc-logsmap.legend.heatmap.app', { appName: this.appName });
   }
 
-  render () {
+  render() {
     const modes = this._getModes();
     return html`
-      ${modes.length > 1 ? html`
-        <cc-toggle
-          .choices=${modes}
-          value=${this.mode}
-          @cc-toggle:input=${this._onModeChange}
-        ></cc-toggle>
-      ` : ''}
+      ${modes.length > 1
+        ? html` <cc-toggle .choices=${modes} value=${this.mode} @cc-toggle:input=${this._onModeChange}></cc-toggle> `
+        : ''}
       <cc-map
         center-lat=${this.centerLat}
         center-lon=${this.centerLon}
@@ -202,17 +183,17 @@ export class CcLogsMap extends LitElement {
         ?error=${this.error}
         .heatmapPoints=${this.heatmapPoints}
         .points=${this._points}
-      >${this._getLegend()}
+        >${this._getLegend()}
       </cc-map>
     `;
   }
 
-  _onModeChange ({ detail: mode }) {
+  _onModeChange({ detail: mode }) {
     this.mode = mode;
     dispatchCustomEvent(this, 'mode', this.mode);
   }
 
-  static get styles () {
+  static get styles() {
     // language=CSS
     return css`
       :host {

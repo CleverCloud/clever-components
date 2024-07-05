@@ -1,4 +1,4 @@
-export function formatAddonProduct (addonProvider, priceSystem, selectedFeatures) {
+export function formatAddonProduct(addonProvider, priceSystem, selectedFeatures) {
   // We filter out add-ons that are not attached to any zone. This is sometimes done on dev plans to disable them.
   const addonPlansWithZones = addonProvider.plans.filter((plan) => plan.zones.length > 0);
   return {
@@ -14,7 +14,7 @@ export function formatAddonProduct (addonProvider, priceSystem, selectedFeatures
 // Therefore, we need to apply a price factor for on interval prices.
 const THIRTY_DAYS_IN_HOURS = 24 * 30;
 
-export function formatAddonCellar (priceSystem) {
+export function formatAddonCellar(priceSystem) {
   return {
     sections: [
       {
@@ -29,7 +29,7 @@ export function formatAddonCellar (priceSystem) {
   };
 }
 
-export function formatAddonFsbucket (priceSystem) {
+export function formatAddonFsbucket(priceSystem) {
   return {
     sections: [
       {
@@ -40,7 +40,7 @@ export function formatAddonFsbucket (priceSystem) {
   };
 }
 
-export function formatAddonPulsar (priceSystem) {
+export function formatAddonPulsar(priceSystem) {
   return {
     sections: [
       {
@@ -59,7 +59,7 @@ export function formatAddonPulsar (priceSystem) {
   };
 }
 
-export function formatAddonHeptapod (priceSystem) {
+export function formatAddonHeptapod(priceSystem) {
   return {
     sections: [
       {
@@ -80,21 +80,19 @@ export function formatAddonHeptapod (priceSystem) {
   };
 }
 
-function formatProductConsumptionIntervals (priceSystem, serviceName) {
-
+function formatProductConsumptionIntervals(priceSystem, serviceName) {
   const service = priceSystem.countable.find((c) => c.service === serviceName);
 
-  const secability = (service?.data_quantity_for_price?.secability === 'insecable')
-    ? service.data_quantity_for_price.quantity
-    : 1;
+  const secability =
+    service?.data_quantity_for_price?.secability === 'insecable' ? service.data_quantity_for_price.quantity : 1;
 
-  const timeFactor = (service?.time_interval_for_price?.interval === 'PT1H') ? THIRTY_DAYS_IN_HOURS : 1;
+  const timeFactor = service?.time_interval_for_price?.interval === 'PT1H' ? THIRTY_DAYS_IN_HOURS : 1;
   const quantityFactor = service?.data_quantity_for_price?.quantity ?? 1;
 
   const priceFactor = timeFactor / quantityFactor;
 
   const intervals = service.price_plans.map((interval, idx, allIntervals) => {
-    const minRange = (idx === 0) ? 0 : allIntervals[idx - 1].max_quantity;
+    const minRange = idx === 0 ? 0 : allIntervals[idx - 1].max_quantity;
     return {
       minRange,
       maxRange: interval.max_quantity,
@@ -105,12 +103,12 @@ function formatProductConsumptionIntervals (priceSystem, serviceName) {
   return { secability, intervals };
 }
 
-function formatAddonFeatures (providerFeatures, selectedFeatures) {
-
+function formatAddonFeatures(providerFeatures, selectedFeatures) {
   // If selectedFeatures is not specified, we just use the features as is
-  const featureCodes = (selectedFeatures == null)
-    ? providerFeatures.map((f) => f.name_code).filter((code) => code != null)
-    : selectedFeatures;
+  const featureCodes =
+    selectedFeatures == null
+      ? providerFeatures.map((f) => f.name_code).filter((code) => code != null)
+      : selectedFeatures;
 
   return featureCodes
     .map((code) => {
@@ -128,9 +126,11 @@ function formatAddonFeatures (providerFeatures, selectedFeatures) {
     });
 }
 
-function formatAddonPlans (allPlans, priceSystem, selectedFeatures) {
+function formatAddonPlans(allPlans, priceSystem, selectedFeatures) {
   return allPlans.map((plan) => {
-    const priceItem = priceSystem.runtime.find((runtime) => runtime.slug_id.toLowerCase() === plan.price_id.toLowerCase());
+    const priceItem = priceSystem.runtime.find(
+      (runtime) => runtime.slug_id.toLowerCase() === plan.price_id.toLowerCase(),
+    );
     return {
       name: plan.name,
       price: priceItem?.price ?? 0,
@@ -139,7 +139,7 @@ function formatAddonPlans (allPlans, priceSystem, selectedFeatures) {
   });
 }
 
-export function formatRuntimeProduct (runtime, priceSystem) {
+export function formatRuntimeProduct(runtime, priceSystem) {
   const features = formatRuntimeFeatures(runtime);
   return {
     name: runtime.variant.name,
@@ -148,7 +148,7 @@ export function formatRuntimeProduct (runtime, priceSystem) {
   };
 }
 
-function formatRuntimeFeatures (runtime) {
+function formatRuntimeFeatures(runtime) {
   const features = [
     { code: 'cpu', type: 'number-cpu-runtime' },
     { code: 'memory', type: 'bytes' },
@@ -159,9 +159,11 @@ function formatRuntimeFeatures (runtime) {
   return features;
 }
 
-function formatRuntimePlans (allFlavors, priceSystem, features) {
+function formatRuntimePlans(allFlavors, priceSystem, features) {
   return allFlavors.map((flavor) => {
-    const priceItem = priceSystem.runtime.find((runtime) => runtime.slug_id.toLowerCase() === flavor.price_id.toLowerCase());
+    const priceItem = priceSystem.runtime.find(
+      (runtime) => runtime.slug_id.toLowerCase() === flavor.price_id.toLowerCase(),
+    );
     return {
       name: flavor.name,
       price: priceItem?.price ?? 0,
@@ -170,7 +172,7 @@ function formatRuntimePlans (allFlavors, priceSystem, features) {
   });
 }
 
-function formatRuntimeFeatureValues (allFeatures, flavor) {
+function formatRuntimeFeatureValues(allFeatures, flavor) {
   return allFeatures.map((feature) => {
     return {
       ...feature,
@@ -179,7 +181,7 @@ function formatRuntimeFeatureValues (allFeatures, flavor) {
   });
 }
 
-function getRuntimeFeatureValue (featureCode, flavor) {
+function getRuntimeFeatureValue(featureCode, flavor) {
   switch (featureCode) {
     case 'cpu':
       return {
@@ -194,8 +196,7 @@ function getRuntimeFeatureValue (featureCode, flavor) {
   }
 }
 
-export function getRunnerProduct (productId) {
-
+export function getRunnerProduct(productId) {
   const baseProduct = {
     type: 'docker',
     // Fake date
@@ -209,9 +210,7 @@ export function getRunnerProduct (productId) {
     comingSoon: false,
     maxInstances: 40,
     tags: [],
-    deployments: [
-      'git',
-    ],
+    deployments: ['git'],
   };
 
   if (productId === 'jenkins-runner') {
@@ -262,7 +261,7 @@ export function getRunnerProduct (productId) {
   }
 }
 
-function getRunnerFlavor (prefix, name, cpus, memory, microservice = false, nice = 0) {
+function getRunnerFlavor(prefix, name, cpus, memory, microservice = false, nice = 0) {
   return {
     name,
     // not used

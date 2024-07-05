@@ -1,4 +1,3 @@
-import '../cc-icon/cc-icon.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -6,6 +5,7 @@ import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
+import '../cc-icon/cc-icon.js';
 
 /**
  * @typedef {import('../common.types.js').IconModel} IconModel
@@ -45,8 +45,7 @@ import { linkStyles } from '../../templates/cc-link/cc-link.js';
  * @cssprop {TextTransform} --cc-button-text-transform - Sets the value of the text transform CSS property (defaults: `uppercase`).
  */
 export class CcButton extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       a11yExpanded: { type: Boolean, attribute: 'a11y-expanded', reflect: true },
       a11yName: { type: String, attribute: 'a11y-name' },
@@ -69,7 +68,7 @@ export class CcButton extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {null|boolean} Sets aria-expanded on the inner `button` element. */
@@ -127,11 +126,11 @@ export class CcButton extends LitElement {
     this._cancelMode = false;
   }
 
-  focus () {
+  focus() {
     this.shadowRoot.querySelector('button').focus();
   }
 
-  _cancelClick () {
+  _cancelClick() {
     clearTimeout(this._timeoutId);
     this._cancelMode = false;
   }
@@ -141,7 +140,7 @@ export class CcButton extends LitElement {
    *
    * @returns {string|undefined} the value of the `aria-label` attribute or `undefined` if the attribute should not be set.
    */
-  _getAriaLabel () {
+  _getAriaLabel() {
     if (this.a11yName != null) {
       return this.a11yName.trim() ?? '';
     }
@@ -158,7 +157,7 @@ export class CcButton extends LitElement {
    *
    * @returns {string|undefined} the value of the `title` attribute or `undefined` if the attribute should not be set.
    */
-  _getTitle () {
+  _getTitle() {
     if (this.a11yName != null) {
       return this.a11yName.trim() ?? '';
     }
@@ -174,8 +173,7 @@ export class CcButton extends LitElement {
   // but it's not that simple since adding @click on <cc-button> with lit-html also catches clicks on the custom element itself
   // That's why we emit custom "cc-button:click"
   // It's also easier to handle for the delay mechanism
-  _onClick (e) {
-
+  _onClick(e) {
     e.stopPropagation();
 
     // we need to check that because we use aria-disabled which doesn't prevent the onclick event to be fired.
@@ -191,8 +189,7 @@ export class CcButton extends LitElement {
 
     if (this._cancelMode) {
       this._cancelClick();
-    }
-    else {
+    } else {
       this._cancelMode = true;
       this._timeoutId = setTimeout(() => {
         dispatchCustomEvent(this, 'click');
@@ -201,7 +198,7 @@ export class CcButton extends LitElement {
     }
   }
 
-  willUpdate (changedProperties) {
+  willUpdate(changedProperties) {
     if (changedProperties.has('disabled')) {
       if (this.disabled === true) {
         this._cancelClick();
@@ -209,8 +206,7 @@ export class CcButton extends LitElement {
     }
   }
 
-  render () {
-
+  render() {
     // those are exclusive, only one can be set at a time
     // we chose this over one attribute named "mode" so it would be easier to write/use
     const modes = {
@@ -225,9 +221,9 @@ export class CcButton extends LitElement {
       'cc-link': this.link,
     };
 
-    const delay = (this.delay != null && !this.link) ? this.delay : null;
+    const delay = this.delay != null && !this.link ? this.delay : null;
 
-    const waiting = (this.waiting);
+    const waiting = this.waiting;
 
     // simple mode is default when no value or when there are multiple conflicting values
     modes.simple = !modes.primary && !modes.success && !modes.warning && !modes.danger && !this.link;
@@ -259,35 +255,31 @@ export class CcButton extends LitElement {
           This way, when delay is set, the button has a min width of the largest label (normal or cancel).
         -->
         <div class="text-wrapper ${classMap({ 'cancel-mode': this._cancelMode })}">
-          ${this.image != null ? html`
-            <img src=${this.image} alt="">
-          ` : ''}
-          ${this.icon != null ? html`
-            <cc-icon .icon="${this.icon}"></cc-icon>
-          ` : ''}
+          ${this.image != null ? html` <img src=${this.image} alt="" /> ` : ''}
+          ${this.icon != null ? html` <cc-icon .icon="${this.icon}"></cc-icon> ` : ''}
           <div class="text-normal">
             <slot></slot>
           </div>
-          ${delay != null ? html`
-            <div class="text-cancel">${i18n('cc-button.cancel')}</div>
-          ` : ''}
+          ${delay != null ? html` <div class="text-cancel">${i18n('cc-button.cancel')}</div> ` : ''}
         </div>
-        ${delay != null ? html`
-          <progress class="delay ${classMap({ active: this._cancelMode })}" style="--delay: ${delay}s"></progress>
-        ` : ''}
-        ${waiting && !modes.circle ? html`
-          <progress class="waiting"></progress>
-        ` : ''}
-        ${waiting && modes.circle ? html`
-          <svg class="circle-loader" viewBox="25 25 50 50" stroke-width="4" aria-hidden="true">
-            <circle fill="none" cx="50" cy="50" r="15" />
-          </svg>
-        ` : ''}
+        ${delay != null
+          ? html`
+              <progress class="delay ${classMap({ active: this._cancelMode })}" style="--delay: ${delay}s"></progress>
+            `
+          : ''}
+        ${waiting && !modes.circle ? html` <progress class="waiting"></progress> ` : ''}
+        ${waiting && modes.circle
+          ? html`
+              <svg class="circle-loader" viewBox="25 25 50 50" stroke-width="4" aria-hidden="true">
+                <circle fill="none" cx="50" cy="50" r="15" />
+              </svg>
+            `
+          : ''}
       </button>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       skeletonStyles,
       linkStyles,
@@ -401,7 +393,7 @@ export class CcButton extends LitElement {
           box-shadow: none;
           outline: 0;
         }
-        
+
         button[aria-disabled='true'] {
           cursor: inherit;
           opacity: 0.5;
@@ -530,7 +522,6 @@ export class CcButton extends LitElement {
         }
 
         @keyframes waiting {
-
           from {
             left: -52%;
           }
@@ -557,14 +548,12 @@ export class CcButton extends LitElement {
 
         /* circle waiting mode - keyframes */
         @keyframes rotate {
-
           100% {
             transform: rotate(360deg);
           }
         }
 
         @keyframes stretch {
-
           0% {
             stroke-dasharray: 1, 200;
             stroke-dashoffset: 0;

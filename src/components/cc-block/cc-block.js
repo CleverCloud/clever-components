@@ -1,14 +1,11 @@
+import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
+import { iconRemixArrowDownSFill as iconDown, iconRemixArrowUpSFill as iconUp } from '../../assets/cc-remix.icons.js';
+import { i18n } from '../../lib/i18n.js';
 import '../cc-button/cc-button.js';
 import '../cc-expand/cc-expand.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
-import { css, html, LitElement } from 'lit';
-import { classMap } from 'lit/directives/class-map.js';
-import {
-  iconRemixArrowDownSFill as iconDown,
-  iconRemixArrowUpSFill as iconUp,
-} from '../../assets/cc-remix.icons.js';
-import { i18n } from '../../lib/i18n.js';
 
 /**
  * @typedef {import('../common.types.js').IconModel} IconModel
@@ -30,8 +27,7 @@ import { i18n } from '../../lib/i18n.js';
  * @slot title - The title of the block. Try to only use text. Use the `icon` property/attribute.
  */
 export class CcBlock extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       icon: { type: Object },
       image: { type: String },
@@ -42,7 +38,7 @@ export class CcBlock extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {IconModel|null} Sets the icon before the title using a `<cc-icon>`. Icon is hidden if nullish. */
@@ -64,74 +60,70 @@ export class CcBlock extends LitElement {
     this._overlay = false;
   }
 
-  _clickToggle () {
+  _clickToggle() {
     if (this.state === 'close') {
       this.state = 'open';
-    }
-    else if (this.state === 'open') {
+    } else if (this.state === 'open') {
       this.state = 'close';
     }
   }
 
-  render () {
-
-    const isToggleEnabled = (this.state === 'open' || this.state === 'close');
-    const isOpen = (this.state !== 'close');
+  render() {
+    const isToggleEnabled = this.state === 'open' || this.state === 'close';
+    const isOpen = this.state !== 'close';
 
     /* TODO when reworking the component, check this a11y issue https://github.com/CleverCloud/clever-components/issues/225#issuecomment-1239462826 */
     /* eslint-disable lit-a11y/click-events-have-key-events */
     return html`
-
-      ${this.ribbon != null && this.ribbon !== '' ? html`
-        <div class="info-ribbon">${this.ribbon}</div>
-      ` : ''}
-      
-      ${!this.noHead ? html`
-        <div class="head" @click=${this._clickToggle}>
-          ${this.image != null && this.icon == null ? html`
-            <cc-img src="${this.image}"></cc-img>
-          ` : ''}
-          ${this.icon != null ? html`
-            <cc-icon size="lg" .icon=${this.icon}></cc-icon>
-          ` : ''}
-          <slot name="title"></slot>
-          ${isToggleEnabled ? html`
-            <cc-button
-              class="toggle_button"
-              .icon=${isOpen ? iconUp : iconDown}
-              hide-text
-              outlined
-              primary
-              @cc-button:click=${this._clickToggle}
-            >${isOpen ? i18n('cc-block.toggle.close') : i18n('cc-block.toggle.open')}
-            </cc-button>
-          ` : ''}
-          <slot name="button"></slot>
-        </div>
-      ` : ''}
+      ${this.ribbon != null && this.ribbon !== '' ? html` <div class="info-ribbon">${this.ribbon}</div> ` : ''}
+      ${!this.noHead
+        ? html`
+            <div class="head" @click=${this._clickToggle}>
+              ${this.image != null && this.icon == null ? html` <cc-img src="${this.image}"></cc-img> ` : ''}
+              ${this.icon != null ? html` <cc-icon size="lg" .icon=${this.icon}></cc-icon> ` : ''}
+              <slot name="title"></slot>
+              ${isToggleEnabled
+                ? html`
+                    <cc-button
+                      class="toggle_button"
+                      .icon=${isOpen ? iconUp : iconDown}
+                      hide-text
+                      outlined
+                      primary
+                      @cc-button:click=${this._clickToggle}
+                      >${isOpen ? i18n('cc-block.toggle.close') : i18n('cc-block.toggle.open')}
+                    </cc-button>
+                  `
+                : ''}
+              <slot name="button"></slot>
+            </div>
+          `
+        : ''}
 
       <cc-expand class="main-wrapper ${classMap({ 'main-wrapper--overlay': this._overlay })}">
-        ${!isToggleEnabled || isOpen ? html`
-          <div class="main">
-            <slot></slot>
-          </div>
-        ` : ''}
+        ${!isToggleEnabled || isOpen
+          ? html`
+              <div class="main">
+                <slot></slot>
+              </div>
+            `
+          : ''}
       </cc-expand>
 
       <slot name="overlay"></slot>
     `;
   }
 
-  firstUpdated () {
+  firstUpdated() {
     const $overlay = this.shadowRoot.querySelector('slot[name="overlay"]');
     $overlay.addEventListener('slotchange', (e) => {
       const oldVal = this._overlay;
-      this._overlay = ($overlay.assignedNodes().length > 0);
+      this._overlay = $overlay.assignedNodes().length > 0;
       this.requestUpdate('_overlay', oldVal);
     });
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
@@ -174,7 +166,7 @@ export class CcBlock extends LitElement {
           align-self: flex-start;
           margin-right: 1em;
         }
-        
+
         .toggle_button {
           --cc-icon-size: 1.5em;
         }

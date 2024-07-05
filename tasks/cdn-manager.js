@@ -30,7 +30,7 @@ export class CdnManager {
   /**
    * @param {CdnEnvironment} cdnEnvironment
    */
-  constructor (cdnEnvironment) {
+  constructor(cdnEnvironment) {
     /** @type {CdnEnvironment} */
     this._env = cdnEnvironment;
     /** @type {CellarClient} */
@@ -41,10 +41,10 @@ export class CdnManager {
    * @param {string} name
    * @return {Promise<ManifestEntry>}
    */
-  async createManifestEntry (name) {
+  async createManifestEntry(name) {
     return {
       updatedAt: new Date().toISOString(),
-      ...await this._fetchDescription(name),
+      ...(await this._fetchDescription(name)),
       name,
       url: this._env.getCdnEntryUrl(name),
     };
@@ -54,7 +54,7 @@ export class CdnManager {
    * @param {string} name - The name of the CDN entry to get
    * @return {Promise<ManifestEntry>} - The CDN entry
    */
-  async get (name) {
+  async get(name) {
     const manifest = await this._getManifest();
     return manifest.entries.find((e) => e.name === name);
   }
@@ -63,12 +63,14 @@ export class CdnManager {
    * Asserts that all the necessary files are present and that the CDN is ready to be published.
    * @param name - The CDN entry name
    */
-  assertReadyToPublish (name) {
+  assertReadyToPublish(name) {
     if (!fs.existsSync(`${SOURCE_DIR}`)) {
       throw new Error(`Source directory '${SOURCE_DIR}' doesn't exist. You forgot the build phase!`);
     }
     if (!fs.existsSync(`${SOURCE_DIR}/${this._getDepsManifestFileName(name)}`)) {
-      throw new Error(`Dependency manifest file '${SOURCE_DIR}/${this._getDepsManifestFileName(name)}' doesn't exist. Maybe you forgot the build phase or you built with a different CDN entry name!`);
+      throw new Error(
+        `Dependency manifest file '${SOURCE_DIR}/${this._getDepsManifestFileName(name)}' doesn't exist. Maybe you forgot the build phase or you built with a different CDN entry name!`,
+      );
     }
   }
 
@@ -78,7 +80,7 @@ export class CdnManager {
    * @param {string} name - The name of the CDN entry to publish
    * @return {Promise<ManifestEntry>} - The created entry
    */
-  async publish (name) {
+  async publish(name) {
     this.assertReadyToPublish(name);
 
     const manifestEntry = await this.createManifestEntry(name);
@@ -91,8 +93,7 @@ export class CdnManager {
       const previewIndex = manifest.entries.findIndex((p) => p.name === manifestEntry.name);
       if (previewIndex !== -1) {
         manifest.entries[previewIndex] = manifestEntry;
-      }
-      else {
+      } else {
         const comparator = manifest.semver ? SEMVER_ENTRY_COMPARATOR : DEFAULT_ENTRY_COMPARATOR;
         manifest.entries = [manifestEntry, ...manifest.entries].sort(comparator);
       }
@@ -107,7 +108,7 @@ export class CdnManager {
    * @param name - The name of the CDN entry to delete
    * @return {Promise<ManifestEntry>} - The deleted entry
    */
-  async remove (name) {
+  async remove(name) {
     const manifest = await this._getManifest();
 
     const entryIndex = manifest.entries.findIndex((p) => p.name === name);
@@ -145,18 +146,18 @@ export class CdnManager {
    * @param name - The CDN entry name
    * @return {Promise<boolean>} - Whether a CDN entry already exists for the given entry name.
    */
-  async exists (name) {
-    return (await this.get(name) != null);
+  async exists(name) {
+    return (await this.get(name)) != null;
   }
 
   /**
    * @return {Promise<Array<ManifestEntry>>} - The list of CDN entries
    */
-  async list () {
+  async list() {
     return (await this._getManifest()).entries;
   }
 
-  async _updateManifest (updateFunction) {
+  async _updateManifest(updateFunction) {
     const manifest = await this._getManifest();
     const newManifest = updateFunction(manifest);
     await this._cellarClient.putObject({
@@ -166,33 +167,31 @@ export class CdnManager {
     });
   }
 
-  async _getManifest () {
-    return this._cellarClient
-      .getObject({ key: MANIFEST_FILE_NAME })
-      .catch(() => {
-        return {
-          version: MANIFEST_VERSION,
-          semver: this._env.semver,
-          entries: [],
-        };
-      });
+  async _getManifest() {
+    return this._cellarClient.getObject({ key: MANIFEST_FILE_NAME }).catch(() => {
+      return {
+        version: MANIFEST_VERSION,
+        semver: this._env.semver,
+        entries: [],
+      };
+    });
   }
 
   /**
    * @param {string} name
    * @return {Promise<Array<string>>}
    */
-  async _getDependencies (name) {
-    return (await this._cellarClient.getObject({ key: this._getDepsManifestFileName(name) }))
-      .files
-      .map((file) => file.path);
+  async _getDependencies(name) {
+    return (await this._cellarClient.getObject({ key: this._getDepsManifestFileName(name) })).files.map(
+      (file) => file.path,
+    );
   }
 
-  _getDepsManifestFileName (name) {
+  _getDepsManifestFileName(name) {
     return `deps-manifest-${name}.json`;
   }
 
-  async _fetchDescription (cdnEntryName) {
+  async _fetchDescription(cdnEntryName) {
     if (this._env.semver) {
       try {
         const response = await superagent
@@ -200,8 +199,7 @@ export class CdnManager {
           .set(getGitHubHeaders());
 
         return describeTag(response.body);
-      }
-      catch (e) {
+      } catch (e) {
         if (e.status === 404) {
           throw new Error(`Git tag '${cdnEntryName}' could not be found on GitHub`);
         }

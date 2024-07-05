@@ -1,6 +1,11 @@
-import { parseArgs } from 'node:util';
 import chalk from 'chalk';
-import { getDependantsLsStyle, getComponentFiles, getComponentsTree, getComponentsGraph } from './component-usage-graph.js';
+import { parseArgs } from 'node:util';
+import {
+  getComponentFiles,
+  getComponentsGraph,
+  getComponentsTree,
+  getDependantsLsStyle,
+} from './component-usage-graph.js';
 
 // CLI args options
 
@@ -29,17 +34,13 @@ const options = {
 
 const { values } = parseArgs({ args, options });
 
-const depth = (values?.depth) ? Number(values.depth) : null;
-const all = (values?.all) ? Infinity : null;
+const depth = values?.depth ? Number(values.depth) : null;
+const all = values?.all ? Infinity : null;
 const uses = values?.uses ? String(values?.uses) : null;
 const usedBy = values?.['used-by'] ? String(values?.['used-by']) : null;
 
-function reportError (msg) {
-  console.log(
-    chalk
-      .red
-      .bold(`❌ ${msg}`),
-  );
+function reportError(msg) {
+  console.log(chalk.red.bold(`❌ ${msg}`));
   return process.exit(0);
 }
 
@@ -72,8 +73,7 @@ if (all != null && depth != null) {
 
 if (uses != null && usedBy != null) {
   reportError(`❌ Can't have --uses and --used-by together.`);
-}
-else if (uses == null && usedBy == null) {
+} else if (uses == null && usedBy == null) {
   reportError(`❌ --uses or --used-by param is missing. Use --help for more information.`);
 }
 
@@ -81,7 +81,7 @@ if ((uses != null && !isComponent(uses)) || (usedBy != null && !isComponent(used
   reportError(`❌ The argument you provided doesn't seem to be a component.`);
 }
 
-function isComponent (input) {
+function isComponent(input) {
   return input.startsWith('cc-') || input === 'global';
 }
 
@@ -95,25 +95,21 @@ if (uses === 'global') {
   mode = 'uses-g';
   maxLevel = Infinity;
   component = 'global';
-}
-else if (uses != null) {
+} else if (uses != null) {
   mode = 'uses';
   component = uses;
-}
-else if (usedBy === 'global') {
+} else if (usedBy === 'global') {
   mode = 'used-by';
   component = 'global';
   maxLevel = Infinity;
-}
-else if (usedBy != null) {
+} else if (usedBy != null) {
   mode = 'used-by';
   component = usedBy;
 }
 
 if (depth != null) {
   maxLevel = depth;
-}
-else if (all != null) {
+} else if (all != null) {
   maxLevel = all;
 }
 
@@ -121,8 +117,7 @@ let componentsInput;
 
 if (component === 'global') {
   componentsInput = getComponentFiles();
-}
-else if (component !== 'global' && (mode === 'uses' || mode === 'used-by')) {
+} else if (component !== 'global' && (mode === 'uses' || mode === 'used-by')) {
   componentsInput = [`src/components/${component}/${component}.js`];
 }
 
@@ -141,14 +136,8 @@ switch (mode) {
 }
 
 if (result === '') {
-  console.log(
-    chalk
-      .bgYellow
-      .black
-      .bold(`⚠️  No dependencies or dependants were found.`),
-  );
-}
-else {
+  console.log(chalk.bgYellow.black.bold(`⚠️  No dependencies or dependants were found.`));
+} else {
   console.log(result);
 }
 

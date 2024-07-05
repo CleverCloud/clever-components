@@ -11,23 +11,20 @@ import { LogsController } from './logs-controller.js';
  * @param {(i: number) => Array} getMetadata
  * @return {Array<Log>}
  */
-function generateLogs (length, offset = 0, getMetadata = () => []) {
-  return Array
-    .from({ length })
-    .map((_, index) => {
-      const offsetIndex = index + offset;
-      const id = String(offsetIndex).padStart(5, '0');
-      return {
-        id,
-        date: new Date(1600000000000 + (offsetIndex * 1000)),
-        message: `Message ${id}`,
-        metadata: getMetadata(offsetIndex),
-      };
-    });
+function generateLogs(length, offset = 0, getMetadata = () => []) {
+  return Array.from({ length }).map((_, index) => {
+    const offsetIndex = index + offset;
+    const id = String(offsetIndex).padStart(5, '0');
+    return {
+      id,
+      date: new Date(1600000000000 + offsetIndex * 1000),
+      message: `Message ${id}`,
+      metadata: getMetadata(offsetIndex),
+    };
+  });
 }
 
 describe('', () => {
-
   let logsCtrl;
   let spies = {};
   let offset = 0;
@@ -45,14 +42,14 @@ describe('', () => {
     offset = 0;
   });
 
-  function appendLogs (length, getMetadata) {
+  function appendLogs(length, getMetadata) {
     const logs = generateLogs(length, offset, getMetadata);
     logsCtrl.append(logs);
     offset += length;
     return logs;
   }
 
-  function appendLogsWithMetadata () {
+  function appendLogsWithMetadata() {
     return appendLogs(24, (i) => {
       const aValues = ['a', 'aa', 'aaa', 'aaaa'];
       const bValues = ['b', 'bb', 'bbb'];
@@ -63,12 +60,12 @@ describe('', () => {
     });
   }
 
-  function assertListByIndex (fullList, indexes) {
+  function assertListByIndex(fullList, indexes) {
     const expectedList = fullList.filter((_, i) => indexes.includes(i));
     return expect(logsCtrl.getList()).to.deep.equal(expectedList);
   }
 
-  function assertSelection (expectedSelection) {
+  function assertSelection(expectedSelection) {
     expect(logsCtrl.selectionLength, 'selection length').to.equal(expectedSelection.length);
     expect(logsCtrl.isSelectionEmpty(), 'selection is empty').to.equal(expectedSelection.length === 0);
     expectedSelection.forEach((selection) => {
@@ -110,7 +107,6 @@ describe('', () => {
     });
 
     it('should keep focused log and updated its index when limit does not put it out of the list', () => {
-
       logsCtrl.limit = 10;
       logsCtrl.append(generateLogs(10, 0));
       logsCtrl.focus(8);
@@ -123,20 +119,17 @@ describe('', () => {
     });
 
     it('should drop focused log if it was removed because of a new filter', () => {
-
       logsCtrl.limit = 10;
-      logsCtrl.append(generateLogs(10, 0, (i) => {
-        return [
-          { name: 'even', value: i % 2 === 0 ? 'yes' : 'no' },
-        ];
-      }));
+      logsCtrl.append(
+        generateLogs(10, 0, (i) => {
+          return [{ name: 'even', value: i % 2 === 0 ? 'yes' : 'no' }];
+        }),
+      );
       logsCtrl.focus(4);
       spies.focusedLogChange.reset();
 
       logsCtrl.filter = {
-        metadata: [
-          { metadata: 'even', value: 'yes' },
-        ],
+        metadata: [{ metadata: 'even', value: 'yes' }],
       };
 
       expect(spies.focusedLogChange.callCount).to.equal(1);
@@ -200,10 +193,7 @@ describe('', () => {
 
       const logsTwo = appendLogs(4);
 
-      expect(logsCtrl.getList()).to.deep.equal([
-        ...logsOne.slice(2),
-        ...logsTwo,
-      ]);
+      expect(logsCtrl.getList()).to.deep.equal([...logsOne.slice(2), ...logsTwo]);
       expect(logsCtrl.listLength).to.equal(6);
     });
   });
@@ -214,9 +204,7 @@ describe('', () => {
         const logs = appendLogsWithMetadata();
 
         logsCtrl.filter = {
-          metadata: [
-            { metadata: 'A', value: 'a' },
-          ],
+          metadata: [{ metadata: 'A', value: 'a' }],
         };
 
         assertListByIndex(logs, [0, 4, 8, 12, 16, 20]);
@@ -228,9 +216,7 @@ describe('', () => {
       spies.requestUpdate.reset();
 
       logsCtrl.filter = {
-        metadata: [
-          { metadata: 'A', value: 'a' },
-        ],
+        metadata: [{ metadata: 'A', value: 'a' }],
       };
 
       expect(spies.requestUpdate.callCount).to.equal(1);
@@ -238,9 +224,7 @@ describe('', () => {
 
     it('should be applied when appending new logs', () => {
       logsCtrl.filter = {
-        metadata: [
-          { metadata: 'A', value: 'a' },
-        ],
+        metadata: [{ metadata: 'A', value: 'a' }],
       };
 
       const logs = appendLogsWithMetadata();
@@ -250,9 +234,7 @@ describe('', () => {
 
     it('should request host update when appending new logs', () => {
       logsCtrl.filter = {
-        metadata: [
-          { metadata: 'A', value: 'a' },
-        ],
+        metadata: [{ metadata: 'A', value: 'a' }],
       };
       spies.requestUpdate.reset();
 
@@ -263,9 +245,7 @@ describe('', () => {
 
     it('should be dropped when setting null filter', () => {
       logsCtrl.filter = {
-        metadata: [
-          { metadata: 'A', value: 'a' },
-        ],
+        metadata: [{ metadata: 'A', value: 'a' }],
       };
       const logs = appendLogsWithMetadata();
 
@@ -308,9 +288,7 @@ describe('', () => {
           type: 'loose',
           value: '0000',
         },
-        metadata: [
-          { metadata: 'A', value: 'a' },
-        ],
+        metadata: [{ metadata: 'A', value: 'a' }],
       };
 
       assertListByIndex(logs, [0, 4, 8]);
@@ -490,7 +468,6 @@ describe('', () => {
         assertListByIndex(logs, [4]);
       });
     });
-
   });
 
   describe('selection', () => {
@@ -657,7 +634,6 @@ describe('', () => {
           assertSelection([2, 3, 4, 5, 8]);
         });
       });
-
     });
 
     describe('with limit', () => {
@@ -845,7 +821,6 @@ describe('', () => {
   });
 
   describe('moveFocus() method', () => {
-
     beforeEach(() => {
       logsCtrl.limit = 10;
       appendLogs(10);

@@ -25,7 +25,7 @@ export class DateDisplayer {
    * @param {DateDisplay} display
    * @param {Timezone} timezone
    */
-  constructor (display, timezone) {
+  constructor(display, timezone) {
     /** @type {DateDisplay} */
     this._display = display;
 
@@ -40,20 +40,24 @@ export class DateDisplayer {
     this._dateFormatter = new DateFormatter(dateFormat, this.timezone);
 
     /** @type {MemoryCache<Date, DateFormattedParts>} */
-    this._cache = new MemoryCache((date) => this._getFormatToParts(date), 1000, (date) => date.getTime());
+    this._cache = new MemoryCache(
+      (date) => this._getFormatToParts(date),
+      1000,
+      (date) => date.getTime(),
+    );
   }
 
   /**
    * @return {DateDisplay}
    */
-  get display () {
+  get display() {
     return this._display;
   }
 
   /**
    * @return {Timezone}
    */
-  get timezone () {
+  get timezone() {
     return this._timezone;
   }
 
@@ -61,15 +65,14 @@ export class DateDisplayer {
    * @param {Date} date - The date to format
    * @return {string} - The date formatted according to the format specified in constructor.
    */
-  format (date) {
+  format(date) {
     if (this.display === 'none') {
       return '';
     }
 
     const parts = this.formatToParts(date);
 
-    return DATE_FORMATTED_PARTS
-      .map((part) => parts[part])
+    return DATE_FORMATTED_PARTS.map((part) => parts[part])
       .filter((partValue) => partValue != null)
       .join('');
   }
@@ -79,15 +82,14 @@ export class DateDisplayer {
    * @param {(part: DateFormattedPart, partValue: string) => *} mapper - The function to apply to each part
    * @return {Array} - The array resulting of the transformation of the given `mapper` on each part
    */
-  formatAndMapParts (date, mapper) {
+  formatAndMapParts(date, mapper) {
     if (this.display === 'none') {
       return [];
     }
 
     const parts = this.formatToParts(date);
 
-    return DATE_FORMATTED_PARTS
-      .map((part) => [part, parts[part]])
+    return DATE_FORMATTED_PARTS.map((part) => [part, parts[part]])
       .filter(([_, partValue]) => partValue != null)
       .map(([part, partValue]) => mapper(part, partValue));
   }
@@ -96,7 +98,7 @@ export class DateDisplayer {
    * @param {Date} date - The date to format
    * @return {DateFormattedParts|{}}
    */
-  formatToParts (date) {
+  formatToParts(date) {
     if (this._display === 'none') {
       return {};
     }
@@ -108,7 +110,7 @@ export class DateDisplayer {
    * @param {Date} date - The date to format
    * @return {DateFormattedParts}
    */
-  _getFormatToParts (date) {
+  _getFormatToParts(date) {
     const dateFormattedParts = this._dateFormatter.formatToParts(date);
 
     if (!this._isDateIncluded) {

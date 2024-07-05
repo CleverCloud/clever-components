@@ -1,6 +1,6 @@
-import './cc-pricing-header.js';
 import { ZONES } from '../../stories/fixtures/zones.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-pricing-header.js';
 
 export default {
   tags: ['autodocs'],
@@ -62,44 +62,55 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const loading = makeStory(conf, {
-  items: [{
-    /** @type {PricingHeaderStateLoading} */
-    state: { type: 'loading' },
-  }],
+  items: [
+    {
+      /** @type {PricingHeaderStateLoading} */
+      state: { type: 'loading' },
+    },
+  ],
 });
 
 export const error = makeStory(conf, {
-  items: [{
-    /** @type {PricingHeaderStateError} */
-    state: { type: 'error' },
-  }],
+  items: [
+    {
+      /** @type {PricingHeaderStateError} */
+      state: { type: 'error' },
+    },
+  ],
 });
 
 export const dataLoadedWithDollars = makeStory(conf, {
   /** @type {{ state: PricingHeaderStateLoaded, selectedCurrency: Currency, selectedZoneId: 'mtl' }[]} */
-  items: [{
-    ...defaultItem,
-    selectedCurrency: { code: 'USD', changeRate: 1.1717 },
-    selectedZoneId: 'mtl',
-  }],
+  items: [
+    {
+      ...defaultItem,
+      selectedCurrency: { code: 'USD', changeRate: 1.1717 },
+      selectedZoneId: 'mtl',
+    },
+  ],
 });
 
 export const dataLoadedWithMinute = makeStory(conf, {
   /** @type {{ state: PricingHeaderStateLoaded, selectedTemporality: Temporality, selectedZoneId: 'war' }[]} */
-  items: [{
-    ...defaultItem,
-    selectedTemporality: { type: 'minute', digits: 2 },
-    selectedZoneId: 'war',
-  }],
+  items: [
+    {
+      ...defaultItem,
+      selectedTemporality: { type: 'minute', digits: 2 },
+      selectedZoneId: 'war',
+    },
+  ],
 });
 
 export const simulations = makeStory(conf, {
-  items: [{
-    currencies: defaultItem.currencies,
-    temporalities: defaultItem.temporalities,
-  }],
+  items: [
+    {
+      currencies: defaultItem.currencies,
+      temporalities: defaultItem.temporalities,
+    },
+  ],
   simulations: [
-    storyWait(2000,
+    storyWait(
+      2000,
       /** @param {CcPricingHeader[]} components */
       ([component]) => {
         component.state = {
@@ -107,17 +118,22 @@ export const simulations = makeStory(conf, {
           zones: ZONES,
         };
         component.selectedZoneId = 'par';
-      }),
-    storyWait(2000,
+      },
+    ),
+    storyWait(
+      2000,
       /** @param {CcPricingHeader[]} components */
       ([component]) => {
         component.selectedTemporality = defaultItem.temporalities[3];
-      }),
-    storyWait(2000,
+      },
+    ),
+    storyWait(
+      2000,
       /** @param {CcPricingHeader[]} components */
       ([component]) => {
         component.selectedCurrency = defaultItem.currencies[1];
-      }),
+      },
+    ),
   ],
 });
 

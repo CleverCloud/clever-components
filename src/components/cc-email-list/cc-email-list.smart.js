@@ -1,28 +1,28 @@
 import {
   todo_addEmailAddress as addEmailAddress,
-  todo_getConfirmationEmail as sendConfirmationEmail,
   todo_getEmailAddresses as getEmailAddresses,
   todo_removeEmailAddress as removeEmailAddress,
+  todo_getConfirmationEmail as sendConfirmationEmail,
 } from '@clevercloud/client/esm/api/v2/user.js';
 import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { i18n } from '../../lib/i18n.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
-import { CcEmailList } from './cc-email-list.js';
 import '../cc-smart-container/cc-smart-container.js';
+import { CcEmailList } from './cc-email-list.js';
 
 defineSmartComponent({
   selector: 'cc-email-list',
   params: {
     apiConfig: { type: Object },
   },
-  onContextUpdate ({ component, context, onEvent, updateComponent, signal }) {
+  onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     updateComponent('emails', { state: 'loading' });
     updateComponent('addEmailForm', CcEmailList.ADD_FORM_INIT_STATE);
 
     const api = getApi(context.apiConfig, signal);
 
-    function updateSecondary (address, callback) {
+    function updateSecondary(address, callback) {
       updateComponent('emails', (emails) => {
         const secondaryState = emails.value.secondaryAddresses.find((a) => a.address === address);
         if (secondaryState != null) {
@@ -31,7 +31,8 @@ defineSmartComponent({
       });
     }
 
-    api.fetchEmailAddresses()
+    api
+      .fetchEmailAddresses()
       .then(({ self, secondary }) => {
         updateComponent('emails', {
           state: 'loaded',
@@ -55,12 +56,12 @@ defineSmartComponent({
       });
 
     onEvent('cc-email-list:send-confirmation-email', (address) => {
-
       updateComponent('emails', (emails) => {
         emails.value.primaryAddress.state = 'sending-confirmation-email';
       });
 
-      api.sendConfirmationEmail(address)
+      api
+        .sendConfirmationEmail(address)
         .then(() => {
           notify({
             intent: 'info',
@@ -84,7 +85,6 @@ defineSmartComponent({
     });
 
     onEvent('cc-email-list:add', (address) => {
-
       updateComponent('addEmailForm', {
         state: 'adding',
         address: {
@@ -92,7 +92,8 @@ defineSmartComponent({
         },
       });
 
-      api.addSecondaryEmailAddress(address)
+      api
+        .addSecondaryEmailAddress(address)
         .then(() => {
           notify({
             intent: 'info',
@@ -110,11 +111,9 @@ defineSmartComponent({
           let inputError;
           if (error.id === 550) {
             inputError = 'invalid';
-          }
-          else if (error.id === 101) {
+          } else if (error.id === 101) {
             inputError = 'already-defined';
-          }
-          else if (error.id === 1004) {
+          } else if (error.id === 1004) {
             inputError = 'used';
           }
 
@@ -123,8 +122,7 @@ defineSmartComponent({
               addEmailForm.state = 'idle';
               addEmailForm.address.error = inputError;
             });
-          }
-          else {
+          } else {
             console.error(error);
             notifyError(i18n('cc-email-list.secondary.action.add.error', { address }));
             updateComponent('addEmailForm', (addEmailForm) => {
@@ -132,16 +130,15 @@ defineSmartComponent({
             });
           }
         });
-
     });
 
     onEvent('cc-email-list:delete', (address) => {
-
       updateSecondary(address, (secondaryAddressState) => {
         secondaryAddressState.state = 'deleting';
       });
 
-      api.deleteSecondaryEmailAddress(address)
+      api
+        .deleteSecondaryEmailAddress(address)
         .then(() => {
           notifySuccess(i18n('cc-email-list.secondary.action.delete.success', { address }));
 
@@ -159,12 +156,12 @@ defineSmartComponent({
     });
 
     onEvent('cc-email-list:mark-as-primary', (address) => {
-
       updateSecondary(address, (secondaryAddressState) => {
         secondaryAddressState.state = 'marking-as-primary';
       });
 
-      api.markSecondaryEmailAddressAsPrimary(address)
+      api
+        .markSecondaryEmailAddressAsPrimary(address)
         .then(() => {
           notifySuccess(i18n('cc-email-list.secondary.action.mark-as-primary.success', { address }));
 
@@ -190,52 +187,48 @@ defineSmartComponent({
 });
 
 // -- API calls
-function getApi (apiConfig, signal) {
+function getApi(apiConfig, signal) {
   return {
-    fetchEmailAddresses () {
-      return Promise.all([
-        this.fetchPrimaryEmailAddress(),
-        this.fetchSecondaryEmailAddresses(),
-      ]).then(([self, secondary]) => {
-        return { self, secondary };
-      });
+    fetchEmailAddresses() {
+      return Promise.all([this.fetchPrimaryEmailAddress(), this.fetchSecondaryEmailAddresses()]).then(
+        ([self, secondary]) => {
+          return { self, secondary };
+        },
+      );
     },
 
-    fetchPrimaryEmailAddress () {
+    fetchPrimaryEmailAddress() {
       return Promise.resolve({
         method: 'get',
         url: `/v2/self`,
         headers: { Accept: 'application/json' },
-      })
-        .then(sendToApi({ apiConfig, signal }));
+      }).then(sendToApi({ apiConfig, signal }));
     },
 
-    fetchSecondaryEmailAddresses () {
-      return getEmailAddresses()
-        .then(sendToApi({ apiConfig, signal }));
+    fetchSecondaryEmailAddresses() {
+      return getEmailAddresses().then(sendToApi({ apiConfig, signal }));
     },
 
-    sendConfirmationEmail () {
-      return sendConfirmationEmail()
-        .then(sendToApi({ apiConfig }));
+    sendConfirmationEmail() {
+      return sendConfirmationEmail().then(sendToApi({ apiConfig }));
     },
 
-    addSecondaryEmailAddress (address) {
-      return addEmailAddress({ email: address }, {})
-        .then(sendToApi({ apiConfig }));
+    addSecondaryEmailAddress(address) {
+      return addEmailAddress({ email: address }, {}).then(sendToApi({ apiConfig }));
     },
 
-    deleteSecondaryEmailAddress (address) {
-      return removeEmailAddress({ email: address })
-        .then(sendToApi({ apiConfig }));
+    deleteSecondaryEmailAddress(address) {
+      return removeEmailAddress({ email: address }).then(sendToApi({ apiConfig }));
     },
 
-    markSecondaryEmailAddressAsPrimary (address) {
-      return addEmailAddress({ email: address }, {
-        // eslint-disable-next-line camelcase
-        make_primary: true,
-      })
-        .then(sendToApi({ apiConfig }));
+    markSecondaryEmailAddressAsPrimary(address) {
+      return addEmailAddress(
+        { email: address },
+        {
+          // eslint-disable-next-line camelcase
+          make_primary: true,
+        },
+      ).then(sendToApi({ apiConfig }));
     },
   };
 }

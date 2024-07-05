@@ -1,23 +1,23 @@
+import '@shoelace-style/shoelace/dist/components/option/option.js';
+import '@shoelace-style/shoelace/dist/components/select/select.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import {
-  iconRemixDeleteBin_4Line as iconBin,
-  iconRemixArrowDownSLine as iconArrowDown,
   iconRemixAddLine as iconAdd,
+  iconRemixArrowDownSLine as iconArrowDown,
+  iconRemixDeleteBin_4Line as iconBin,
   iconRemixSubtractLine as iconSubtract,
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
-import '@shoelace-style/shoelace/dist/components/select/select.js';
-import '@shoelace-style/shoelace/dist/components/option/option.js';
 import { getCurrencySymbol } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { shoelaceStyles } from '../../styles/shoelace.js';
+import '../cc-badge/cc-badge.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
-import '../cc-badge/cc-badge.js';
 
 const FEATURES_I18N = {
   'connection-limit': () => i18n('cc-pricing-estimation.feature.connection-limit'),
@@ -63,8 +63,7 @@ const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
  * @cssprop {Color} --cc-pricing-estimation-counter-color - Sets the text color of the product counter (defaults: `var(--cc-color-text-inverted)`).
  */
 export class CcPricingEstimation extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       currencies: { type: Array },
       isToggleEnabled: { type: Boolean, attribute: 'is-toggle-enabled' },
@@ -76,7 +75,7 @@ export class CcPricingEstimation extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {Currency[]} Sets the list of currencies. */
@@ -109,8 +108,7 @@ export class CcPricingEstimation extends LitElement {
     new LostFocusController(this, '.plan', ({ suggestedElement }) => {
       if (suggestedElement != null) {
         suggestedElement.querySelector('.plan__toggle__header').focus();
-      }
-      else {
+      } else {
         this._totalRef.value?.focus();
       }
     });
@@ -121,7 +119,7 @@ export class CcPricingEstimation extends LitElement {
    *
    * @param {Temporality['type']} type - the temporality type
    */
-  _getEstimatedPriceLabel (type) {
+  _getEstimatedPriceLabel(type) {
     if (type === 'second') {
       return i18n('cc-pricing-estimation.estimated-price-name.second');
     }
@@ -148,7 +146,7 @@ export class CcPricingEstimation extends LitElement {
    * @param {Feature} feature - the feature to translate
    * @return {string|void} the translated feature name if a translation exists or nothing if the translation does not exist
    */
-  _getFeatureName (feature) {
+  _getFeatureName(feature) {
     if (feature == null) {
       return '';
     }
@@ -168,7 +166,7 @@ export class CcPricingEstimation extends LitElement {
    * @param {feature} feature - the feature to get the formatted value from
    * @return {string} the formatted value for the given feature or the feature value itself if it does not require any formatting
    */
-  _getFeatureValue (feature) {
+  _getFeatureValue(feature) {
     if (feature == null) {
       return '';
     }
@@ -178,11 +176,11 @@ export class CcPricingEstimation extends LitElement {
       case 'boolean-shared':
         return i18n('cc-pricing-estimation.type.boolean-shared', { boolean: feature.value === 'shared' });
       case 'bytes':
-        return (feature.code === 'memory' && feature.value === '0')
+        return feature.code === 'memory' && feature.value === '0'
           ? i18n('cc-pricing-estimation.type.boolean-shared', { shared: true })
           : i18n('cc-pricing-estimation.type.bytes', { bytes: Number(feature.value) });
       case 'number':
-        return (feature.code === 'cpu' && feature.value === '0')
+        return feature.code === 'cpu' && feature.value === '0'
           ? i18n('cc-pricing-estimation.type.boolean-shared', { shared: true })
           : i18n('cc-pricing-estimation.type.number', { number: Number(feature.value) });
       case 'number-cpu-runtime':
@@ -200,11 +198,10 @@ export class CcPricingEstimation extends LitElement {
    *
    * @return {number} total number of products
    */
-  _getProductCount () {
-    return this.selectedPlans
-      .reduce((itemCount, plan) => {
-        return itemCount + plan.quantity;
-      }, 0);
+  _getProductCount() {
+    return this.selectedPlans.reduce((itemCount, plan) => {
+      return itemCount + plan.quantity;
+    }, 0);
   }
 
   /**
@@ -214,18 +211,18 @@ export class CcPricingEstimation extends LitElement {
    * @param {number} hourlyPrice - the hourly price to compute
    * @return {number} the computed price based on the given temporality
    */
-  _getPrice (type, hourlyPrice) {
+  _getPrice(type, hourlyPrice) {
     if (type === 'second') {
-      return hourlyPrice / 60 / 60 * this.selectedCurrency.changeRate;
+      return (hourlyPrice / 60 / 60) * this.selectedCurrency.changeRate;
     }
     if (type === 'minute') {
-      return hourlyPrice / 60 * this.selectedCurrency.changeRate;
+      return (hourlyPrice / 60) * this.selectedCurrency.changeRate;
     }
     if (type === 'hour') {
       return hourlyPrice * this.selectedCurrency.changeRate;
     }
     if (type === '1000-minutes') {
-      return hourlyPrice / 60 * 1000 * this.selectedCurrency.changeRate;
+      return (hourlyPrice / 60) * 1000 * this.selectedCurrency.changeRate;
     }
     if (type === 'day') {
       return hourlyPrice * 24 * this.selectedCurrency.changeRate;
@@ -241,7 +238,7 @@ export class CcPricingEstimation extends LitElement {
    * @param {Temporality['type']} type - the temporality type
    * @return {string} the translated label corresponding to the given temporality
    */
-  _getPriceLabel (type) {
+  _getPriceLabel(type) {
     if (type === 'second') {
       return i18n('cc-pricing-estimation.price-name.second');
     }
@@ -270,7 +267,7 @@ export class CcPricingEstimation extends LitElement {
    * @param {number} hourlyPrice - the price to base the calculations on
    * @param {number} digits - the number of digits to be used for price rounding
    */
-  _getPriceValue (type, hourlyPrice, digits) {
+  _getPriceValue(type, hourlyPrice, digits) {
     const price = this._getPrice(type, hourlyPrice);
     if (price != null) {
       return i18n('cc-pricing-estimation.price', { price, code: this.selectedCurrency.code, digits });
@@ -283,7 +280,7 @@ export class CcPricingEstimation extends LitElement {
    * @param {Plan} plan - the plan to compute the total for
    * @return {number} the total price for the given plan
    */
-  _getTotalPlanPrice (plan) {
+  _getTotalPlanPrice(plan) {
     const price = this._getPrice(this.selectedTemporality.type, plan.price);
     return price * plan.quantity;
   }
@@ -293,10 +290,8 @@ export class CcPricingEstimation extends LitElement {
    *
    * @return {number} the total price (counting all plans)
    */
-  _getTotalPrice () {
-    return this.selectedPlans
-      ?.map((plan) => this._getTotalPlanPrice(plan))
-      .reduce((a, b) => a + b, 0);
+  _getTotalPrice() {
+    return this.selectedPlans?.map((plan) => this._getTotalPlanPrice(plan)).reduce((a, b) => a + b, 0);
   }
 
   /**
@@ -304,7 +299,7 @@ export class CcPricingEstimation extends LitElement {
    *
    * @param {Event} e - the event that called this method
    */
-  _onCurrencyChange (e) {
+  _onCurrencyChange(e) {
     const currency = this.currencies.find((c) => c.code === e.target.value);
     dispatchCustomEvent(this, 'change-currency', currency);
   }
@@ -315,13 +310,12 @@ export class CcPricingEstimation extends LitElement {
    *
    * @param {Plan} plan - the plan to modify
    */
-  _onDecreaseQuantity (plan) {
+  _onDecreaseQuantity(plan) {
     const quantity = plan.quantity - 1;
 
     if (quantity > 0) {
       dispatchCustomEvent(this, 'change-quantity', { ...plan, quantity });
-    }
-    else {
+    } else {
       dispatchCustomEvent(this, 'delete-plan', plan);
     }
   }
@@ -331,7 +325,7 @@ export class CcPricingEstimation extends LitElement {
    *
    * @param {Plan} plan - the plan to delete
    */
-  _onDeletePlan (plan) {
+  _onDeletePlan(plan) {
     dispatchCustomEvent(this, 'delete-plan', plan);
   }
 
@@ -340,7 +334,7 @@ export class CcPricingEstimation extends LitElement {
    *
    * @param {Plan} plan - the plan to modify
    */
-  _onIncreaseQuantity (plan) {
+  _onIncreaseQuantity(plan) {
     const quantity = plan.quantity + 1;
     dispatchCustomEvent(this, 'change-quantity', { ...plan, quantity });
   }
@@ -350,7 +344,7 @@ export class CcPricingEstimation extends LitElement {
    *
    * @param {Event} e - the event that called this method
    */
-  _onTemporalityChange (e) {
+  _onTemporalityChange(e) {
     const temporality = this.temporalities.find((t) => t.type === e.target.value);
     dispatchCustomEvent(this, 'change-temporality', temporality);
   }
@@ -358,11 +352,11 @@ export class CcPricingEstimation extends LitElement {
   /**
    * Toggles the `_isCollapsed` property to show / hide the component content (when `this.isToggleEnabled === true`)
    */
-  _onToggle () {
+  _onToggle() {
     this._isCollapsed = !this._isCollapsed;
   }
 
-  willUpdate (changedProperties) {
+  willUpdate(changedProperties) {
     // This is not done within the `render` function because we only want to reset this value in specific cases.
     // If `isToggleEnabled` is set to true, we need to make sure the content is hidden by default
     if (changedProperties.has('isToggleEnabled') && this.isToggleEnabled === true) {
@@ -370,24 +364,18 @@ export class CcPricingEstimation extends LitElement {
     }
   }
 
-  render () {
+  render() {
     const totalPrice = this._getTotalPrice();
 
     return html`
-      ${this.isToggleEnabled
-        ? this._renderHeaderWithToggle(totalPrice)
-        : this._renderHeaderWithoutToggle()
-      }
-      
+      ${this.isToggleEnabled ? this._renderHeaderWithToggle(totalPrice) : this._renderHeaderWithoutToggle()}
+
       <div class="content ${classMap({ 'content--hidden': this.isToggleEnabled && this._isCollapsed })}">
-        
         ${this.selectedPlans.map((plan) => this._renderSelectedPlan(plan))}
-        
+
         <p class="content__total" tabindex="-1" ${ref(this._totalRef)}>
           <strong>
-            <span class="visually-hidden">
-              ${i18n('cc-pricing-estimation.total.label')}
-            </span>
+            <span class="visually-hidden"> ${i18n('cc-pricing-estimation.total.label')} </span>
             ${i18n('cc-pricing-estimation.price', {
               price: totalPrice,
               code: this.selectedCurrency.code,
@@ -408,7 +396,7 @@ export class CcPricingEstimation extends LitElement {
   /**
    * @param {number} totalPrice
    */
-  _renderHeaderWithToggle (totalPrice) {
+  _renderHeaderWithToggle(totalPrice) {
     const productCount = this._getProductCount();
 
     return html`
@@ -425,7 +413,7 @@ export class CcPricingEstimation extends LitElement {
               code: this.selectedCurrency.code,
               digits: this.selectedTemporality.digits,
             })}
-          </strong> 
+          </strong>
           <span>${i18n('cc-pricing-estimation.tax-excluded')}</span>
         </p>
         <button class="header__toggle-btn" @click="${this._onToggle}">
@@ -435,7 +423,7 @@ export class CcPricingEstimation extends LitElement {
     `;
   }
 
-  _renderHeaderWithoutToggle () {
+  _renderHeaderWithoutToggle() {
     const productCount = this._getProductCount();
 
     return html`
@@ -452,7 +440,7 @@ export class CcPricingEstimation extends LitElement {
   /**
    * @param {Plan} plan - the plan to render
    */
-  _renderSelectedPlan (plan) {
+  _renderSelectedPlan(plan) {
     const totalPlanPrice = this._getTotalPlanPrice(plan);
     const hasFeatures = Array.isArray(plan.features);
 
@@ -465,7 +453,7 @@ export class CcPricingEstimation extends LitElement {
               <span class="plan__toggle__header__name__plan"> &ndash; ${plan.name}</span>
             </span>
 
-            <span class="plan__toggle__header__total"> 
+            <span class="plan__toggle__header__total">
               ${i18n('cc-pricing-estimation.price', {
                 price: totalPlanPrice,
                 code: this.selectedCurrency.code,
@@ -477,20 +465,22 @@ export class CcPricingEstimation extends LitElement {
               <cc-icon .icon=${iconArrowDown}></cc-icon>
             </span>
           </summary>
-          ${hasFeatures ? html`
-            <dl class="plan__features">
-              ${plan.features
-                ?.filter((feature) => AVAILABLE_FEATURES.includes(feature.code) || feature.name != null)
-                ?.map((feature) => {
-                  return html`
-                    <div class="plan__features__feature">
-                      <dt>${this._getFeatureName(feature)}</dt>
-                      <dd>${this._getFeatureValue(feature)}</dd>
-                    </div>
-                  `;
-              })}
-            </dl>
-          ` : ''}
+          ${hasFeatures
+            ? html`
+                <dl class="plan__features">
+                  ${plan.features
+                    ?.filter((feature) => AVAILABLE_FEATURES.includes(feature.code) || feature.name != null)
+                    ?.map((feature) => {
+                      return html`
+                        <div class="plan__features__feature">
+                          <dt>${this._getFeatureName(feature)}</dt>
+                          <dd>${this._getFeatureValue(feature)}</dd>
+                        </div>
+                      `;
+                    })}
+                </dl>
+              `
+            : ''}
           <div class="plan__price">
             <span>
               <span class="visually-hidden">${i18n('cc-pricing-estimation.price.unit.label')}</span>
@@ -567,8 +557,7 @@ export class CcPricingEstimation extends LitElement {
     `;
   }
 
-  _renderSelectForm () {
-
+  _renderSelectForm() {
     return html`
       <div class="form">
         <sl-select
@@ -579,9 +568,11 @@ export class CcPricingEstimation extends LitElement {
           value=${this.selectedTemporality?.type}
           @sl-change=${this._onTemporalityChange}
         >
-          ${this.temporalities.map((temporality) => html`
-            <sl-option value=${temporality.type}>${this._getPriceLabel(temporality.type)}</sl-option>
-          `)}
+          ${this.temporalities.map(
+            (temporality) => html`
+              <sl-option value=${temporality.type}>${this._getPriceLabel(temporality.type)}</sl-option>
+            `,
+          )}
           <cc-icon slot="expand-icon" .icon=${iconArrowDown} size="xl"></cc-icon>
         </sl-select>
 
@@ -593,16 +584,18 @@ export class CcPricingEstimation extends LitElement {
           value=${this.selectedCurrency?.code}
           @sl-change=${this._onCurrencyChange}
         >
-          ${this.currencies.map((currency) => html`
-            <sl-option value=${currency.code}>${getCurrencySymbol(currency.code)}  ${currency.code}</sl-option>
-          `)}
+          ${this.currencies.map(
+            (currency) => html`
+              <sl-option value=${currency.code}>${getCurrencySymbol(currency.code)} ${currency.code}</sl-option>
+            `,
+          )}
           <cc-icon slot="expand-icon" .icon=${iconArrowDown} size="xl"></cc-icon>
         </sl-select>
       </div>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       accessibilityStyles,
       shoelaceStyles,
@@ -634,24 +627,24 @@ export class CcPricingEstimation extends LitElement {
           justify-content: space-between;
           color: var(--cc-color-text-default, #000);
         }
-              
+
         .header--toggle {
           display: grid;
           align-items: center;
           gap: 0 0.5em;
-          grid-template-areas: 
+          grid-template-areas:
             'heading counter btn'
             'total total total';
           grid-template-columns: auto 1fr auto;
           line-height: 1.5;
         }
-              
+
         .header__heading {
           font-size: 1.3em;
           font-weight: bold;
           grid-area: heading;
         }
-              
+
         .header__badge {
           display: inline-flex;
           width: max-content;
@@ -698,7 +691,7 @@ export class CcPricingEstimation extends LitElement {
         /* endregion */
 
         /* region content */
-              
+
         .content {
           margin-top: 1em;
         }
@@ -714,7 +707,7 @@ export class CcPricingEstimation extends LitElement {
           align-items: center;
           border-bottom: solid 1px var(--cc-color-border-neutral-weak, #eee);
           column-gap: 0.5em;
-          grid-template-areas: 
+          grid-template-areas:
             'plan-header plan-delete'
             'plan-features plan-features'
             'plan-price plan-price';
@@ -824,7 +817,7 @@ export class CcPricingEstimation extends LitElement {
         .plan__features__feature dt {
           font-weight: 600;
         }
-            
+
         .plan__features__feature:not(:last-child) dd::after {
           content: ',';
         }
@@ -876,26 +869,26 @@ export class CcPricingEstimation extends LitElement {
         }
 
         /* endregion */
-              
+
         /* region content total */
 
         .content__total {
           text-align: right;
         }
-              
+
         .content__total strong {
           color: var(--cc-color-text-default, #000);
           font-size: 1.3em;
           font-weight: 600;
         }
-              
+
         .content__total__estimated {
           display: block;
           color: var(--cc-color-text-weak, #333);
         }
 
         /* endregion */
-            
+
         /* endregion */
 
         /* region select form */
@@ -923,7 +916,7 @@ export class CcPricingEstimation extends LitElement {
           --sl-input-font-family: initial;
           --sl-input-height-medium: 2.865em;
           --sl-input-label-color: var(--cc-color-text-default, #000);
-              
+
           flex: 1 1 10.5em;
           animation: none;
         }

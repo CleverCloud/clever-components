@@ -1,6 +1,3 @@
-import './cc-ansi-palette.js';
-import '../cc-toggle/cc-toggle.js';
-import '../cc-select/cc-select.js';
 import defaultPalette from '../../lib/ansi/palettes/default.js';
 import everblushPalette from '../../lib/ansi/palettes/everblush.js';
 import hyoobPalette from '../../lib/ansi/palettes/hyoob.js';
@@ -8,6 +5,9 @@ import nightOwlPalette from '../../lib/ansi/palettes/night-owl.js';
 import oneLightPalette from '../../lib/ansi/palettes/one-light.js';
 import tokyoNightLightPalette from '../../lib/ansi/palettes/tokyo-night-light.js';
 import { makeStory } from '../../stories/lib/make-story.js';
+import '../cc-select/cc-select.js';
+import '../cc-toggle/cc-toggle.js';
+import './cc-ansi-palette.js';
 
 export default {
   tags: ['autodocs'],

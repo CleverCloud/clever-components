@@ -30,7 +30,7 @@ export class LostFocusController {
    * @param {string} selector the query selector that will select the elements we want to listen to
    * @param {LostFocusCallback} callback
    */
-  constructor (host, selector, callback) {
+  constructor(host, selector, callback) {
     host.addController(this);
     this.host = host;
     this.selector = selector;
@@ -38,12 +38,12 @@ export class LostFocusController {
     this.callback = callback;
   }
 
-  hostUpdate () {
+  hostUpdate() {
     // memorize the active element so that we are able to check if a deleted element was a parent of the focused element.
     this.activeElement = findActiveElement();
   }
 
-  hostUpdated () {
+  hostUpdated() {
     // keep the previous elements because we will want to compare with the new ones
     const previousElements = this.elements;
     // get the elements we are interested in
@@ -54,7 +54,9 @@ export class LostFocusController {
     if (removedElements.length > 0) {
       // among these removed elements, find the one containing the focused element
       // elementWithFocus may not be the focused element itself, it can be the element matching the query selector containing the focused element.
-      const elementWithFocus = removedElements.find((e) => e === this.activeElement || isParentOf(e, this.activeElement));
+      const elementWithFocus = removedElements.find(
+        (e) => e === this.activeElement || isParentOf(e, this.activeElement),
+      );
       if (elementWithFocus != null) {
         // we find the index of the removed element in the previous list
         const index = previousElements.indexOf(elementWithFocus);
@@ -63,7 +65,12 @@ export class LostFocusController {
         const suggestedElementIndex = Math.min(this.elements.length - 1, index);
         const suggestedElement = suggestedElementIndex > -1 ? this.elements[suggestedElementIndex] : null;
 
-        this.callback({ removedElement: elementWithFocus, focusedElement: this.activeElement, index: index, suggestedElement });
+        this.callback({
+          removedElement: elementWithFocus,
+          focusedElement: this.activeElement,
+          index: index,
+          suggestedElement,
+        });
       }
     }
   }

@@ -14,4 +14,3 @@ export interface ArticleListStateLoading {
 export interface ArticleListStateError {
   type: 'error';
 }
-

@@ -1,15 +1,12 @@
-import fs from 'fs';
-import path from 'path';
 import chalk from 'chalk';
 import { DepGraph } from 'dependency-graph';
 import { init, parse } from 'es-module-lexer';
-import { multiGlob, SOURCE_DIR } from '../rollup/rollup-common.js';
+import fs from 'fs';
+import path from 'path';
+import { SOURCE_DIR, multiGlob } from '../rollup/rollup-common.js';
 
-export function getComponentFiles () {
-
-  const mainFilesPatterns = [
-    `${SOURCE_DIR}/components/**/*.js`,
-  ];
+export function getComponentFiles() {
+  const mainFilesPatterns = [`${SOURCE_DIR}/components/**/*.js`];
 
   const ignorePatterns = [
     `${SOURCE_DIR}/components/**/*.smart*.js`,
@@ -26,7 +23,7 @@ export function getComponentFiles () {
  *
  * @returns {Promise<DepGraph>} - returns a component `DepGraph`.
  */
-export async function getComponentsGraph () {
+export async function getComponentsGraph() {
   const componentsGraph = new DepGraph();
   const componentsFileList = getComponentFiles();
   await init;
@@ -40,7 +37,6 @@ export async function getComponentsGraph () {
     const [imports] = parse(importerFile);
 
     for (const imported of imports) {
-
       const importerRelative = path.relative(process.cwd(), importerFilePath);
       const importerRelativeDir = path.dirname(importerRelative);
       const sourceRelative = path.join(importerRelativeDir, imported.n);
@@ -62,9 +58,7 @@ export async function getComponentsGraph () {
       if (areInListAndLocal) {
         componentsGraph.addDependency(importerRelative, sourceRelative);
       }
-
     }
-
   }
 
   return componentsGraph;
@@ -76,7 +70,7 @@ export async function getComponentsGraph () {
  * @returns {string} Returns a string with the correct number of spaces and `│` dividers.
  *
  */
-function getDividers (level) {
+function getDividers(level) {
   let dividers = '│';
 
   for (let i = 1; i < level; i++) {
@@ -96,12 +90,10 @@ function getDividers (level) {
  * @param {number} [maxLevel=Infinity]
  * @returns {string}
  */
-export function getDependantsLsStyle (componentPath, graph, maxLevel = Infinity) {
-
+export function getDependantsLsStyle(componentPath, graph, maxLevel = Infinity) {
   let output = '';
 
-  function handleTreeNode (componentPath, componentName = '', level = 0) {
-
+  function handleTreeNode(componentPath, componentName = '', level = 0) {
     if (level > maxLevel) {
       return;
     }
@@ -111,8 +103,7 @@ export function getDependantsLsStyle (componentPath, graph, maxLevel = Infinity)
 
     if (level === 0) {
       output += `├─ ${componentName !== '' && name === componentName ? chalk.yellow(name) : name}\n`;
-    }
-    else {
+    } else {
       output += `${getDividers(level)}  ├─ ${componentName !== '' && name === componentName ? chalk.yellow(name) : name}\n`;
     }
 
@@ -127,7 +118,6 @@ export function getDependantsLsStyle (componentPath, graph, maxLevel = Infinity)
   }
 
   return output;
-
 }
 
 /**
@@ -140,8 +130,7 @@ export function getDependantsLsStyle (componentPath, graph, maxLevel = Infinity)
  * @param {number} [maxLevel=Infinity]
  * @returns {string|null}
  */
-export function getComponentsTree (componentsPath, graph, mode = 'dependencies', maxLevel = Infinity) {
-
+export function getComponentsTree(componentsPath, graph, mode = 'dependencies', maxLevel = Infinity) {
   // if mode isn't set properly we don't go further
   if (!['dependencies', 'dependants'].includes(mode)) {
     return null;
@@ -149,8 +138,7 @@ export function getComponentsTree (componentsPath, graph, mode = 'dependencies',
 
   let output = '';
 
-  function handleTreeNode (componentPath, level = 0) {
-
+  function handleTreeNode(componentPath, level = 0) {
     if (level > maxLevel) {
       return;
     }
@@ -161,8 +149,7 @@ export function getComponentsTree (componentsPath, graph, mode = 'dependencies',
 
     if (mode === 'dependencies') {
       deps = graph.directDependenciesOf(componentPath);
-    }
-    else if (mode === 'dependants') {
+    } else if (mode === 'dependants') {
       deps = graph.directDependantsOf(componentPath);
     }
 
@@ -172,8 +159,7 @@ export function getComponentsTree (componentsPath, graph, mode = 'dependencies',
 
     if (deps.length >= 0 && level === 0) {
       output += `├─ ${componentName}\n`;
-    }
-    else {
+    } else {
       output += `${getDividers(level)}  ├─ ${componentName}\n`;
     }
 

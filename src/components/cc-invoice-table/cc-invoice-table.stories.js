@@ -1,6 +1,11 @@
-import './cc-invoice-table.js';
-import { createInvoice, pendingInvoices, processedInvoices, processingInvoices } from '../../stories/fixtures/invoices.js';
+import {
+  createInvoice,
+  pendingInvoices,
+  processedInvoices,
+  processingInvoices,
+} from '../../stories/fixtures/invoices.js';
 import { makeStory } from '../../stories/lib/make-story.js';
+import './cc-invoice-table.js';
 
 export default {
   tags: ['autodocs'],
@@ -28,10 +33,12 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const loading = makeStory(conf, {
-  items: [{
-    /** @type {InvoiceTableStateLoading} */
-    state: { type: 'loading' },
-  }],
+  items: [
+    {
+      /** @type {InvoiceTableStateLoading} */
+      state: { type: 'loading' },
+    },
+  ],
 });
 
 export const dataLoadedWithPending = makeStory(conf, {
@@ -51,14 +58,16 @@ export const dataLoadedWithProcessed = makeStory(conf, {
 
 export const dataLoadedWithCreditNotes = makeStory(conf, {
   /** @type {{ state: InvoiceTableStateLoaded }[] } */
-  items: [{
-    state: {
-      type: 'loaded',
-      invoices: [
-        ...processedInvoices('2019'),
-        createInvoice('2019', '09', 88.27, 'PAID', 'CREDITNOTE'),
-        createInvoice('2019', '04', 121.22, 'PAID', 'CREDITNOTE'),
-      ],
+  items: [
+    {
+      state: {
+        type: 'loaded',
+        invoices: [
+          ...processedInvoices('2019'),
+          createInvoice('2019', '09', 88.27, 'PAID', 'CREDITNOTE'),
+          createInvoice('2019', '04', 121.22, 'PAID', 'CREDITNOTE'),
+        ],
+      },
     },
-  }],
+  ],
 });

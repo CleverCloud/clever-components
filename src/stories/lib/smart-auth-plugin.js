@@ -1,6 +1,6 @@
 export const injectAuthForSmartComponentsPlugin = {
   name: 'inject-auth-for-smart-components',
-  async transform (code, id) {
+  async transform(code, id) {
     const SMART_COMPONENT_STORY_REGEX = /\/src\/components\/.*\/cc-.*\.smart.*\.md$/;
     const isSmartStory = SMART_COMPONENT_STORY_REGEX.test(id);
     const isDemoSmartIndex = id.includes('/demo-smart/index.js');

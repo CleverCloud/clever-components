@@ -2,13 +2,13 @@ import { html, render } from 'lit';
 import * as cleverIconsModule from '../../assets/cc-clever.icons.js';
 import * as remixIconsModule from '../../assets/cc-remix.icons.js';
 import {
-  iconRemixCheckLine as iconSuccess,
   iconRemixCloudFill as iconDummy,
+  iconRemixCheckLine as iconSuccess,
   iconRemixErrorWarningFill as iconWarning,
 } from '../../assets/cc-remix.icons.js';
-import './cc-icon.js';
-import '../cc-notice/cc-notice.js';
 import { makeStory } from '../../stories/lib/make-story.js';
+import '../cc-notice/cc-notice.js';
+import './cc-icon.js';
 
 // story
 export default {
@@ -23,9 +23,7 @@ const conf = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [
-    { icon: iconDummy },
-  ],
+  items: [{ icon: iconDummy }],
 });
 
 export const size = makeStory(conf, {
@@ -59,11 +57,11 @@ export const accessibleName = makeStory(conf, {
   `,
   dom: (container) => {
     const storyOutput = html`
-        <p>The accessible name can be checked by using the accessibility inspector of your browser.</p>
+      <p>The accessible name can be checked by using the accessibility inspector of your browser.</p>
 
-        <div>With <code>a11y-name</code> attribute:</div>
-        <cc-icon .icon="${iconSuccess}" size="xl" a11y-name="Success"></cc-icon>
-        <cc-icon .icon="${iconWarning}" size="xl" a11y-name="Warning"></cc-icon>
+      <div>With <code>a11y-name</code> attribute:</div>
+      <cc-icon .icon="${iconSuccess}" size="xl" a11y-name="Success"></cc-icon>
+      <cc-icon .icon="${iconWarning}" size="xl" a11y-name="Warning"></cc-icon>
     `;
     render(storyOutput, container);
   },
@@ -107,12 +105,14 @@ const ICONS_LAYOUT_CSS = `
 
 const ICONS_LAYOUT_BUILDER = (container, iconsModule) => {
   container.classList.add('icon-list');
-  const storyOutput = Object.keys(iconsModule).map((iconKey) => html`
+  const storyOutput = Object.keys(iconsModule).map(
+    (iconKey) => html`
       <div class="icon-item">
         <cc-icon .icon="${iconsModule[iconKey]}" size="xl"></cc-icon>
         <div class="icon-id">${iconKey}</div>
       </div>
-    `);
+    `,
+  );
   render(storyOutput, container);
 };
 

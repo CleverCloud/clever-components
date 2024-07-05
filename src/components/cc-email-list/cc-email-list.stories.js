@@ -1,6 +1,6 @@
+import { makeStory } from '../../stories/lib/make-story.js';
 import './cc-email-list.js';
 import './cc-email-list.smart.js';
-import { makeStory } from '../../stories/lib/make-story.js';
 
 const PRIMARY_ADDRESS = 'john.doe@example.com';
 const SECONDARY_ADDRESS_1 = 'john.doe.home@example.com';

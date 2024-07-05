@@ -1,8 +1,8 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import {
-  iconRemixAddLine as iconIncrement,
   iconRemixSubtractLine as iconDecrement,
+  iconRemixAddLine as iconIncrement,
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
@@ -35,8 +35,7 @@ import '../cc-icon/cc-icon.js';
  * @slot help - The help message to be displayed right below the `<input>` element. Please use a `<p>` tag.
  */
 export class CcInputNumber extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       controls: { type: Boolean },
       disabled: { type: Boolean, reflect: true },
@@ -56,7 +55,7 @@ export class CcInputNumber extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {boolean} Sets the control mode with a decrement and increment buttons. */
@@ -110,23 +109,23 @@ export class CcInputNumber extends LitElement {
   /**
    * Triggers focus on the inner `<input>/<textarea>` element.
    */
-  focus () {
+  focus() {
     this._input.focus();
   }
 
-  _onInput (e) {
+  _onInput(e) {
     this.value = e.target.valueAsNumber;
     dispatchCustomEvent(this, 'input', this.value);
   }
 
-  _onFocus (e) {
+  _onFocus(e) {
     if (this.readonly) {
       e.target.select();
     }
   }
 
   // Stop propagation of keydown and keypress events (to prevent conflicts with shortcuts)
-  _onKeyEvent (e) {
+  _onKeyEvent(e) {
     if (e.type === 'keydown' || e.type === 'keypress') {
       e.stopPropagation();
     }
@@ -141,61 +140,69 @@ export class CcInputNumber extends LitElement {
     }
   }
 
-  _onDecrement () {
+  _onDecrement() {
     this._input.stepDown();
     this.value = this._input.valueAsNumber;
     dispatchCustomEvent(this, 'input', this.value);
   }
 
-  _onIncrement () {
+  _onIncrement() {
     this._input.stepUp();
     this.value = this._input.valueAsNumber;
     dispatchCustomEvent(this, 'input', this.value);
   }
 
-  _onErrorSlotChanged (event) {
+  _onErrorSlotChanged(event) {
     this._hasError = event.target.assignedNodes()?.length > 0;
   }
 
-  firstUpdated () {
+  firstUpdated() {
     /** @type {HTMLInputElement} */
     this._input = this.shadowRoot.querySelector('.input');
     this._invalid = !this._input.checkValidity();
   }
 
   // updated and not udpate because we need this._input before
-  updated (changedProperties) {
+  updated(changedProperties) {
     if (changedProperties.has('value')) {
       this._invalid = !this._input.checkValidity();
     }
   }
 
-  render () {
-
-    const value = (this.value != null) ? this.value : 0;
-    const controls = (this.controls && !this.skeleton);
-    const minDisabled = (this.value <= this.min) && (this.min != null);
-    const maxDisabled = (this.value >= this.max) && (this.max != null);
+  render() {
+    const value = this.value != null ? this.value : 0;
+    const controls = this.controls && !this.skeleton;
+    const minDisabled = this.value <= this.min && this.min != null;
+    const maxDisabled = this.value >= this.max && this.max != null;
 
     return html`
-
-      ${this.label != null ? html`
-        <label class=${classMap({ 'visually-hidden': this.hiddenLabel })} for="input-id">
-          <span class="label-text">${this.label}</span>
-          ${this.required ? html`
-            <span class="required">${i18n('cc-input-number.required')}</span>
-          ` : ''}
-        </label>
-      ` : ''}
+      ${this.label != null
+        ? html`
+            <label class=${classMap({ 'visually-hidden': this.hiddenLabel })} for="input-id">
+              <span class="label-text">${this.label}</span>
+              ${this.required ? html` <span class="required">${i18n('cc-input-number.required')}</span> ` : ''}
+            </label>
+          `
+        : ''}
 
       <div class="meta-input">
-        ${controls ? html`
-          <button class="btn" @click=${this._onDecrement} ?disabled=${this.disabled || this.readonly || minDisabled}>
-            <cc-icon class="btn-img" .icon=${iconDecrement} a11y-name="${i18n('cc-input-number.decrease')}" size="lg"></cc-icon>
-          </button>
-        ` : ''}
+        ${controls
+          ? html`
+              <button
+                class="btn"
+                @click=${this._onDecrement}
+                ?disabled=${this.disabled || this.readonly || minDisabled}
+              >
+                <cc-icon
+                  class="btn-img"
+                  .icon=${iconDecrement}
+                  a11y-name="${i18n('cc-input-number.decrease')}"
+                  size="lg"
+                ></cc-icon>
+              </button>
+            `
+          : ''}
         <div class="wrapper ${classMap({ skeleton: this.skeleton })}">
-
           <input
             id="input-id"
             type="number"
@@ -213,14 +220,25 @@ export class CcInputNumber extends LitElement {
             @input=${this._onInput}
             @keydown=${this._onKeyEvent}
             @keypress=${this._onKeyEvent}
-          >
+          />
           <div class="ring"></div>
         </div>
-        ${controls ? html`
-          <button class="btn" @click=${this._onIncrement} ?disabled=${this.disabled || this.readonly || maxDisabled}>
-            <cc-icon class="btn-img" .icon=${iconIncrement} a11y-name="${i18n('cc-input-number.increase')}" size="lg"></cc-icon>
-          </button>
-        ` : ''}
+        ${controls
+          ? html`
+              <button
+                class="btn"
+                @click=${this._onIncrement}
+                ?disabled=${this.disabled || this.readonly || maxDisabled}
+              >
+                <cc-icon
+                  class="btn-img"
+                  .icon=${iconIncrement}
+                  a11y-name="${i18n('cc-input-number.increase')}"
+                  size="lg"
+                ></cc-icon>
+              </button>
+            `
+          : ''}
       </div>
 
       <div class="help-container" id="help-id">
@@ -233,7 +251,7 @@ export class CcInputNumber extends LitElement {
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       accessibilityStyles,
       skeletonStyles,
@@ -306,7 +324,7 @@ export class CcInputNumber extends LitElement {
           color: var(--cc-color-text-weak);
           font-size: 0.9em;
         }
-        
+
         slot[name='error']::slotted(*) {
           margin: 0.5em 0 0;
           color: var(--cc-color-text-danger);
@@ -507,7 +525,7 @@ export class CcInputNumber extends LitElement {
 
         .btn-img {
           --cc-icon-color: var(--cc-input-btn-icons-color, #595959);
-          
+
           box-sizing: border-box;
           padding: 15%;
         }

@@ -1,5 +1,5 @@
-import './cc-map-marker-server.js';
 import { makeStory } from '../../stories/lib/make-story.js';
+import './cc-map-marker-server.js';
 
 export default {
   tags: ['autodocs'],
@@ -13,11 +13,7 @@ const conf = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [
-    { state: 'default' },
-    { state: 'hovered' },
-    { state: 'selected' },
-  ],
+  items: [{ state: 'default' }, { state: 'hovered' }, { state: 'selected' }],
 });
 
 export const stateWithDefault = makeStory(conf, {

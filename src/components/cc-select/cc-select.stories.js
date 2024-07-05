@@ -1,6 +1,6 @@
-import './cc-select.js';
 import { allFormControlsStory } from '../../stories/all-form-controls.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-select.js';
 
 const baseOptions = [
   {
@@ -21,7 +21,8 @@ const baseOptions = [
   },
 ];
 
-const longContent = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eget tempor leo, eu vulputate lectus. Sed rhoncus rhoncus mi nec tempor. Pellentesque id elit aliquet, laoreet mi nec, cursus metus. Integer iaculis nibh non massa dignissim dictum.';
+const longContent =
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eget tempor leo, eu vulputate lectus. Sed rhoncus rhoncus mi nec tempor. Pellentesque id elit aliquet, laoreet mi nec, cursus metus. Integer iaculis nibh non massa dignissim dictum.';
 
 export default {
   tags: ['autodocs'],
@@ -208,9 +209,11 @@ const customBaseItems = [
   { label: 'Favourite artist', value: 'LENNON', options: baseOptions, required: true },
 ];
 
-export const customLabelStyle = makeStory({ ...conf, displayMode: 'block' }, {
-  // language=CSS
-  css: `
+export const customLabelStyle = makeStory(
+  { ...conf, displayMode: 'block' },
+  {
+    // language=CSS
+    css: `
     cc-select {
       --cc-select-label-color: #475569;
       --cc-select-label-font-size: 1.2em;
@@ -222,51 +225,54 @@ export const customLabelStyle = makeStory({ ...conf, displayMode: 'block' }, {
       margin-block-end: 2em;
     }
   `,
-  items: [
-    ...customBaseItems,
-    ...customBaseItems.map((item) => ({
-      ...item,
-      innerHTML: `<p slot="help">There can be only one.</p>`,
-    })),
-    ...customBaseItems.map((item) => ({
-      ...item,
-      innerHTML: `<p slot="error">A value must be selected.</p>`,
-    })),
-    ...customBaseItems.map((item) => ({
-      ...item,
-      innerHTML: `<p slot="help">There can be only one.</p><p slot="error">A value must be selected.</p>`,
-    })),
-    ...customBaseItems.map((item) => ({
-      ...item,
-      inline: true,
-    })),
-    ...customBaseItems.map((item) => ({
-      ...item,
-      inline: true,
-      innerHTML: `<p slot="help">There can be only one.</p>`,
-    })),
-    ...customBaseItems.map((item) => ({
-      ...item,
-      inline: true,
-      innerHTML: `<p slot="error">A value must be selected.</p>`,
-    })),
-    ...customBaseItems.map((item) => ({
-      ...item,
-      inline: true,
-      innerHTML: `<p slot="help">There can be only one.</p><p slot="error">A value must be selected.</p>`,
-    })),
-  ],
-});
+    items: [
+      ...customBaseItems,
+      ...customBaseItems.map((item) => ({
+        ...item,
+        innerHTML: `<p slot="help">There can be only one.</p>`,
+      })),
+      ...customBaseItems.map((item) => ({
+        ...item,
+        innerHTML: `<p slot="error">A value must be selected.</p>`,
+      })),
+      ...customBaseItems.map((item) => ({
+        ...item,
+        innerHTML: `<p slot="help">There can be only one.</p><p slot="error">A value must be selected.</p>`,
+      })),
+      ...customBaseItems.map((item) => ({
+        ...item,
+        inline: true,
+      })),
+      ...customBaseItems.map((item) => ({
+        ...item,
+        inline: true,
+        innerHTML: `<p slot="help">There can be only one.</p>`,
+      })),
+      ...customBaseItems.map((item) => ({
+        ...item,
+        inline: true,
+        innerHTML: `<p slot="error">A value must be selected.</p>`,
+      })),
+      ...customBaseItems.map((item) => ({
+        ...item,
+        inline: true,
+        innerHTML: `<p slot="help">There can be only one.</p><p slot="error">A value must be selected.</p>`,
+      })),
+    ],
+  },
+);
 
 export const allFormControls = allFormControlsStory;
 
 export const simulation = makeStory(conf, {
-  items: [{
-    label: 'Favourite artist',
-    placeholder: '-- Select an artist --',
-    value: '',
-    options: baseOptions,
-  }],
+  items: [
+    {
+      label: 'Favourite artist',
+      placeholder: '-- Select an artist --',
+      value: '',
+      options: baseOptions,
+    },
+  ],
   simulations: [
     storyWait(0, ([component]) => {
       component.innerHTML = `

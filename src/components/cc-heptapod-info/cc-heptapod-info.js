@@ -1,17 +1,17 @@
-import '../cc-block/cc-block.js';
-import '../cc-notice/cc-notice.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
+import '../cc-block/cc-block.js';
+import '../cc-notice/cc-notice.js';
 
 /** @type {Statistics} */
 const SKELETON_STATISTICS = {
   privateActiveUsers: 15,
   publicActiveUsers: 120,
   storage: 698980762,
-  price: 17.50,
+  price: 17.5,
 };
 
 const HEPTAPOD_LOGO_URL = 'https://assets.clever-cloud.com/logos/heptapod.svg';
@@ -29,46 +29,39 @@ const HEPTAPOD_LOGO_URL = 'https://assets.clever-cloud.com/logos/heptapod.svg';
  * @cssdisplay block
  */
 export class CcHeptapodInfo extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       state: { type: Object },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {HeptapodInfoState} Set the state of the component. */
     this.state = { type: 'loading' };
   }
 
-  render () {
-
+  render() {
     return html`
       <cc-block>
         <div slot="title">Heptapod</div>
         <div class="header">
-          <img class="header-logo" src=${HEPTAPOD_LOGO_URL} alt="heptapod logo" title="heptapod logo">
+          <img class="header-logo" src=${HEPTAPOD_LOGO_URL} alt="heptapod logo" title="heptapod logo" />
           <div class="header-content">
             <div>Heptapod</div>
             <div>${ccLink('https://heptapod.host', 'https://heptapod.host')}</div>
           </div>
         </div>
-        <div class="description">
-          ${i18n('cc-heptapod-info.description')}
-        </div>
+        <div class="description">${i18n('cc-heptapod-info.description')}</div>
 
-        ${this.state.type === 'error' ? html`
-          <cc-notice intent="warning" message="${i18n('cc-heptapod-info.error-loading')}"></cc-notice>
-        ` : ''}
-
-        ${this.state.type === 'not-used' ? html`
-          <div class="no-statistics">${i18n('cc-heptapod-info.not-in-use')}</div>
-        ` : ''}
-
+        ${this.state.type === 'error'
+          ? html` <cc-notice intent="warning" message="${i18n('cc-heptapod-info.error-loading')}"></cc-notice> `
+          : ''}
+        ${this.state.type === 'not-used'
+          ? html` <div class="no-statistics">${i18n('cc-heptapod-info.not-in-use')}</div> `
+          : ''}
         ${this.state.type === 'loading' ? this._renderStatistics(SKELETON_STATISTICS, true) : ''}
-
         ${this.state.type === 'loaded' ? this._renderStatistics(this.state.statistics, false) : ''}
       </cc-block>
     `;
@@ -79,7 +72,7 @@ export class CcHeptapodInfo extends LitElement {
    * @param {boolean} skeleton
    * @private
    */
-  _renderStatistics (statistics, skeleton) {
+  _renderStatistics(statistics, skeleton) {
     return html`
       <div class="pricing">
         <div class="pricing-item">
@@ -91,18 +84,22 @@ export class CcHeptapodInfo extends LitElement {
           <div>${i18n('cc-heptapod-info.public-active-users-description')}</div>
         </div>
         <div class="pricing-item">
-          <div class="pricing-item-value ${classMap({ skeleton })}">${i18n('cc-heptapod-info.storage-bytes', statistics)}</div>
+          <div class="pricing-item-value ${classMap({ skeleton })}">
+            ${i18n('cc-heptapod-info.storage-bytes', statistics)}
+          </div>
           <div>${i18n('cc-heptapod-info.storage-description')}</div>
         </div>
         <div class="pricing-item">
-          <div class="pricing-item-value ${classMap({ skeleton })}">${i18n('cc-heptapod-info.price-value', statistics)}</div>
+          <div class="pricing-item-value ${classMap({ skeleton })}">
+            ${i18n('cc-heptapod-info.price-value', statistics)}
+          </div>
           <div>${i18n('cc-heptapod-info.price-description')}</div>
         </div>
       </div>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       skeletonStyles,
       linkStyles,

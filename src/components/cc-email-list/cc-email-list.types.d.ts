@@ -1,14 +1,14 @@
 //# region state
 interface EmailListStateLoading {
-  state: "loading";
+  state: 'loading';
 }
 
 interface EmailListStateError {
-  state: "error";
+  state: 'error';
 }
 
 interface EmailListStateLoaded {
-  state: "loaded";
+  state: 'loaded';
   value: EmailList;
 }
 
@@ -22,11 +22,11 @@ interface EmailList {
 }
 
 interface PrimaryAddressState extends EmailAddress {
-  state: "idle" | "sending-confirmation-email";
+  state: 'idle' | 'sending-confirmation-email';
 }
 
 interface SecondaryAddressState extends EmailAddress {
-  state: "idle" | "marking-as-primary" | "deleting";
+  state: 'idle' | 'marking-as-primary' | 'deleting';
 }
 
 interface EmailAddress {
@@ -37,7 +37,7 @@ interface EmailAddress {
 
 //#region add form
 export interface AddEmailFormState {
-  state: "idle" | "adding";
+  state: 'idle' | 'adding';
   address: AddressFormField;
 }
 
@@ -46,5 +46,5 @@ interface AddressFormField {
   error?: AddressFormFieldError;
 }
 
-type AddressFormFieldError = "empty" | "invalid" | "already-defined" | "used";
+type AddressFormFieldError = 'empty' | 'invalid' | 'already-defined' | 'used';
 //#endregion

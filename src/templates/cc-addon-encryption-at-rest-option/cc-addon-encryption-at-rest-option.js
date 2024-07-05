@@ -1,8 +1,6 @@
-import '../../components/cc-icon/cc-icon.js';
 import { html } from 'lit';
-import {
-  iconRemixShieldKeyholeFill as iconEncryptionAtRest,
-} from '../../assets/cc-remix.icons.js';
+import { iconRemixShieldKeyholeFill as iconEncryptionAtRest } from '../../assets/cc-remix.icons.js';
+import '../../components/cc-icon/cc-icon.js';
 import { i18n } from '../../lib/i18n.js';
 
 export const ccAddonEncryptionAtRestOption = ({ enabled }) => {

@@ -1,5 +1,3 @@
-import './cc-grafana-info.js';
-import '../cc-smart-container/cc-smart-container.js';
 import {
   createGrafanaOrganisation,
   deleteGrafanaOrganisation,
@@ -10,6 +8,8 @@ import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { i18n } from '../../lib/i18n.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import '../cc-smart-container/cc-smart-container.js';
+import './cc-grafana-info.js';
 
 defineSmartComponent({
   selector: 'cc-grafana-info',
@@ -18,12 +18,12 @@ defineSmartComponent({
     ownerId: { type: String },
     grafanaBaseLink: { type: String },
   },
-  onContextUpdate ({ context, updateComponent, onEvent, signal }) {
+  onContextUpdate({ context, updateComponent, onEvent, signal }) {
     const { apiConfig, ownerId, grafanaBaseLink } = context;
 
     updateComponent('state', { type: 'loading' });
 
-    function fetch () {
+    function fetch() {
       fetchGrafanaOrganisation({ apiConfig, signal, ownerId, grafanaBaseLink })
         .then((info) => {
           updateComponent('state', { type: 'loaded', info });
@@ -100,7 +100,7 @@ defineSmartComponent({
   },
 });
 
-function fetchGrafanaOrganisation ({ apiConfig, signal, ownerId, grafanaBaseLink }) {
+function fetchGrafanaOrganisation({ apiConfig, signal, ownerId, grafanaBaseLink }) {
   return getGrafanaOrganisation({ id: ownerId })
     .then(sendToApi({ apiConfig, signal }))
     .then((exposedVarsObject) => {
@@ -111,24 +111,20 @@ function fetchGrafanaOrganisation ({ apiConfig, signal, ownerId, grafanaBaseLink
     .catch((error) => {
       if (error.response?.status === 404 && error.toString().startsWith('Error: Grafana organization not found')) {
         return { status: 'disabled' };
-      }
-      else {
+      } else {
         throw error;
       }
     });
 }
 
-function doResetGrafanaOrganisation ({ apiConfig, ownerId }) {
-  return resetGrafanaOrganisation({ id: ownerId })
-    .then(sendToApi({ apiConfig }));
+function doResetGrafanaOrganisation({ apiConfig, ownerId }) {
+  return resetGrafanaOrganisation({ id: ownerId }).then(sendToApi({ apiConfig }));
 }
 
-function disableGrafanaOrganisation ({ apiConfig, ownerId }) {
-  return deleteGrafanaOrganisation({ id: ownerId })
-    .then(sendToApi({ apiConfig }));
+function disableGrafanaOrganisation({ apiConfig, ownerId }) {
+  return deleteGrafanaOrganisation({ id: ownerId }).then(sendToApi({ apiConfig }));
 }
 
-function enableGrafanaOrganisation ({ apiConfig, ownerId }) {
-  return createGrafanaOrganisation({ id: ownerId })
-    .then(sendToApi({ apiConfig }));
+function enableGrafanaOrganisation({ apiConfig, ownerId }) {
+  return createGrafanaOrganisation({ id: ownerId }).then(sendToApi({ apiConfig }));
 }

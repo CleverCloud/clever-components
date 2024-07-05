@@ -1,6 +1,6 @@
-import './cc-logs-control.js';
-import '../cc-input-text/cc-input-text.js';
 import { makeStory } from '../../stories/lib/make-story.js';
+import '../cc-input-text/cc-input-text.js';
+import './cc-logs-control.js';
 
 import { createFakeLogs, CUSTOM_METADATA_RENDERERS } from '../cc-logs/fake-logs.js';
 

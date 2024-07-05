@@ -1,10 +1,10 @@
-import '../cc-img/cc-img.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { i18n } from '../../lib/i18n.js';
 import { getFlagUrl, getInfraProviderLogoUrl } from '../../lib/remote-assets.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
+import '../cc-img/cc-img.js';
 
 /** @type {Zone} */
 const SKELETON_ZONE = {
@@ -47,15 +47,14 @@ const PRIVATE_ZONE = 'scope:private';
  * @cssprop {Color} --cc-zone-tag-padding - Padding of the tag (defaults to `0.1em 0.3em`)
  */
 export class CcZone extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       mode: { type: String, reflect: true },
       state: { type: Object },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {ZoneModeType} Sets the mode of the component. */
@@ -71,12 +70,10 @@ export class CcZone extends LitElement {
    * @param {Zone} zone
    * @returns {string}
    */
-  static getText (zone) {
+  static getText(zone) {
     const { title, subtitle, infra } = CcZone._getTextParts(zone);
     const titleAndSubtitle = [title, subtitle].filter((a) => a != null).join(', ');
-    return (infra != null)
-      ? `${titleAndSubtitle} (${infra})`
-      : titleAndSubtitle;
+    return infra != null ? `${titleAndSubtitle} (${infra})` : titleAndSubtitle;
   }
 
   /**
@@ -84,7 +81,7 @@ export class CcZone extends LitElement {
    * @returns {{ title: string, subtitle?: string, infra?: string }}
    * @private
    */
-  static _getTextParts (zone) {
+  static _getTextParts(zone) {
     if (zone.tags.includes(PRIVATE_ZONE) && zone.displayName != null) {
       return { title: zone.displayName };
     }
@@ -98,8 +95,7 @@ export class CcZone extends LitElement {
     };
   }
 
-  render () {
-
+  render() {
     const skeleton = this.state.type === 'loading';
     const zone = this.state.type === 'loaded' ? this.state : SKELETON_ZONE;
     const { title, subtitle, infra } = CcZone._getTextParts(zone);
@@ -117,13 +113,17 @@ export class CcZone extends LitElement {
             <span class="title ${classMap({ skeleton })}">${title}</span>
             <span class="subtitle ${classMap({ skeleton })}">${subtitle}</span>
           </div>
-          ${infra != null ? html`
-            <cc-img class="infra-logo ${classMap({ skeleton })}" src=${getInfraProviderLogoUrl(infra)} a11y-name=${infra}></cc-img>
-          ` : ''}
+          ${infra != null
+            ? html`
+                <cc-img
+                  class="infra-logo ${classMap({ skeleton })}"
+                  src=${getInfraProviderLogoUrl(infra)}
+                  a11y-name=${infra}
+                ></cc-img>
+              `
+            : ''}
         </div>
-        <div class="tag-list">
-          ${zone.tags.map((tag) => this._renderTag(tag, skeleton))}
-        </div>
+        <div class="tag-list">${zone.tags.map((tag) => this._renderTag(tag, skeleton))}</div>
       </div>
     `;
   }
@@ -133,8 +133,7 @@ export class CcZone extends LitElement {
    * @param {boolean} skeleton - display as skeleton or not
    * @private
    */
-  _renderTag (tag, skeleton) {
-
+  _renderTag(tag, skeleton) {
     if (tag.includes(':')) {
       // Most of tags are strings separated by ":" but we need to split them in case
       // implementers want to emphasize the category (what is before ":") using `--cc-zone-tag-category-font-weight`
@@ -149,12 +148,10 @@ export class CcZone extends LitElement {
     }
 
     // When the tag is not made of two parts, we don't want any specific styling
-    return html`
-      <span class="tag ${classMap({ skeleton })}">${tag}</span>
-    `;
+    return html` <span class="tag ${classMap({ skeleton })}">${tag}</span> `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       skeletonStyles,
       // language=CSS

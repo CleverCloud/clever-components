@@ -13,15 +13,14 @@ import { i18n } from '../../lib/i18n.js';
  * @slot - The content around which the beta label will be positionned. You ONLY one element.
  */
 export class CcBeta extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       fill: { type: Boolean, reflect: true },
       position: { type: String, reflect: true },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {boolean} Forces the slotted element to fill the beta container size (same heigh and width). By default, the beta container adapts to the slotted element size. */
@@ -31,14 +30,14 @@ export class CcBeta extends LitElement {
     this.position = 'top-left';
   }
 
-  render () {
+  render() {
     return html`
       <slot></slot>
       <div class="beta">${i18n('cc-beta.label')}</div>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`

@@ -14,8 +14,7 @@ import { css, html, LitElement } from 'lit';
  * @slot title - The title of the section. You can use a `.danger` CSS class on your `<div slot="title">` if it's a danger zone.
  */
 export class CcBlockSection extends LitElement {
-
-  render () {
+  render() {
     return html`
       <slot name="title"></slot>
       <div class="section">
@@ -25,7 +24,7 @@ export class CcBlockSection extends LitElement {
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`

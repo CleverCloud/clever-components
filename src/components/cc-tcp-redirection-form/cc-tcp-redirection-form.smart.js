@@ -1,11 +1,11 @@
-import './cc-tcp-redirection-form.js';
-import '../cc-smart-container/cc-smart-container.js';
 import { addTcpRedir, getTcpRedirs, removeTcpRedir } from '@clevercloud/client/esm/api/v2/application.js';
 import { getNamespaces } from '@clevercloud/client/esm/api/v2/organisation.js';
 import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { i18n } from '../../lib/i18n.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import '../cc-smart-container/cc-smart-container.js';
+import './cc-tcp-redirection-form.js';
 
 /**
  * @typedef {import('./cc-tcp-redirection-form.js').CcTcpRedirectionForm} CcTcpRedirectionForm
@@ -29,26 +29,30 @@ defineSmartComponent({
     ownerId: { type: String },
     appId: { type: String },
   },
-  onContextUpdate ({ container, component, context, onEvent, updateComponent, signal }) {
-
+  onContextUpdate({ container, component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId, appId } = context;
 
     /**
      * @param {string} namespace
      * @param {(redirectionState: TcpRedirectionState) => void} callback
      */
-    function updateRedirection (namespace, callback) {
-      updateComponent('state',
+    function updateRedirection(namespace, callback) {
+      updateComponent(
+        'state',
         /** @param {TcpRedirectionFormStateLoaded} redirectionFormState */
         (redirectionFormState) => {
-          const redirectionState = redirectionFormState.redirections.find((redirectionState) => redirectionState.namespace === namespace);
+          const redirectionState = redirectionFormState.redirections.find(
+            (redirectionState) => redirectionState.namespace === namespace,
+          );
           if (redirectionState != null) {
             callback(redirectionState);
           }
-        });
+        },
+      );
     }
 
-    onEvent('cc-tcp-redirection:create',
+    onEvent(
+      'cc-tcp-redirection:create',
       /** @param {Event & { namespace: string }} event */
       ({ namespace }) => {
         updateRedirection(namespace, (redirectionState) => {
@@ -70,9 +74,11 @@ defineSmartComponent({
               redirectionState.type = 'loaded';
             });
           });
-      });
+      },
+    );
 
-    onEvent('cc-tcp-redirection:delete',
+    onEvent(
+      'cc-tcp-redirection:delete',
       /** @param {Event & { namespace: string, sourcePort: number }} event */
       ({ namespace, sourcePort }) => {
         updateRedirection(namespace, (redirectionState) => {
@@ -94,7 +100,8 @@ defineSmartComponent({
               redirectionState.type = 'loaded';
             });
           });
-      });
+      },
+    );
 
     updateComponent('state', { type: 'loading' });
 
@@ -120,21 +127,20 @@ defineSmartComponent({
  * @param {string} settings.appId
  * @returns {Promise<FormattedRedirectionData[]>}
  */
-async function fetchTcpRedirectionsAndNamespaces ({ apiConfig, signal, ownerId, appId }) {
-  return Promise
-    .all([
-      getNamespaces({ id: ownerId }).then(sendToApi({ apiConfig, signal })),
-      getTcpRedirs({ id: ownerId, appId }).then(sendToApi({ apiConfig, signal })),
-    ])
-    .then(
-      /** @param {[NamespacesApiPayload, RedirectionsApiPayload]} apiResponse */
-      ([namespaces, redirections]) => {
-        return namespaces.map(({ namespace }) => {
-          const sourcePort = redirections.find((redirection) => redirection.namespace === namespace)?.port;
-          const isPrivate = !PUBLIC_NAMESPACES.includes(namespace);
-          return { namespace, sourcePort, isPrivate };
-        });
+async function fetchTcpRedirectionsAndNamespaces({ apiConfig, signal, ownerId, appId }) {
+  return Promise.all([
+    getNamespaces({ id: ownerId }).then(sendToApi({ apiConfig, signal })),
+    getTcpRedirs({ id: ownerId, appId }).then(sendToApi({ apiConfig, signal })),
+  ]).then(
+    /** @param {[NamespacesApiPayload, RedirectionsApiPayload]} apiResponse */
+    ([namespaces, redirections]) => {
+      return namespaces.map(({ namespace }) => {
+        const sourcePort = redirections.find((redirection) => redirection.namespace === namespace)?.port;
+        const isPrivate = !PUBLIC_NAMESPACES.includes(namespace);
+        return { namespace, sourcePort, isPrivate };
       });
+    },
+  );
 }
 
 /**
@@ -145,9 +151,8 @@ async function fetchTcpRedirectionsAndNamespaces ({ apiConfig, signal, ownerId, 
  * @param {string} settings.namespace
  * @returns {Promise<{ port: number }>}
  */
-async function createTcpRedirection ({ apiConfig, ownerId, appId, namespace }) {
-  return addTcpRedir({ id: ownerId, appId, payment: 'accepted' }, { namespace })
-    .then(sendToApi({ apiConfig }));
+async function createTcpRedirection({ apiConfig, ownerId, appId, namespace }) {
+  return addTcpRedir({ id: ownerId, appId, payment: 'accepted' }, { namespace }).then(sendToApi({ apiConfig }));
 }
 
 /**
@@ -159,7 +164,6 @@ async function createTcpRedirection ({ apiConfig, ownerId, appId, namespace }) {
  * @param {string} settings.namespace
  * @returns {Promise<void>}
  */
-async function deleteTcpRedirection ({ apiConfig, ownerId, appId, sourcePort, namespace }) {
-  return removeTcpRedir({ id: ownerId, appId, sourcePort, namespace })
-    .then(sendToApi({ apiConfig }));
+async function deleteTcpRedirection({ apiConfig, ownerId, appId, sourcePort, namespace }) {
+  return removeTcpRedir({ id: ownerId, appId, sourcePort, namespace }).then(sendToApi({ apiConfig }));
 }

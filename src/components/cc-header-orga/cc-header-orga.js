@@ -1,12 +1,12 @@
-import '../cc-badge/cc-badge.js';
-import '../cc-img/cc-img.js';
-import '../cc-notice/cc-notice.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import {
   iconRemixVerifiedBadgeFill as iconBadge,
   iconRemixPhoneFill as iconPhone,
 } from '../../assets/cc-remix.icons.js';
+import '../cc-badge/cc-badge.js';
+import '../cc-img/cc-img.js';
+import '../cc-notice/cc-notice.js';
 
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
@@ -25,14 +25,13 @@ import { linkStyles } from '../../templates/cc-link/cc-link.js';
  * @cssdisplay block
  */
 export class CcHeaderOrga extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       state: { type: Object },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {HeaderOrgaState} Sets the component state. */
@@ -46,7 +45,7 @@ export class CcHeaderOrga extends LitElement {
    * @returns {string}
    * @private
    */
-  _getInitials (name) {
+  _getInitials(name) {
     return name
       .trim()
       .split(' ')
@@ -55,12 +54,9 @@ export class CcHeaderOrga extends LitElement {
       .join('');
   }
 
-  render () {
-
+  render() {
     if (this.state.type === 'error') {
-      return html`
-        <cc-notice intent="warning" message="${i18n('cc-header-orga.error')}"></cc-notice>
-      `;
+      return html` <cc-notice intent="warning" message="${i18n('cc-header-orga.error')}"></cc-notice> `;
     }
 
     if (this.state.type === 'loading') {
@@ -93,8 +89,7 @@ export class CcHeaderOrga extends LitElement {
    * @returns {TemplateResult}
    * @private
    */
-  _renderHeader ({ name, avatar = null, cleverEnterprise = false, emergencyNumber = null, skeleton = false }) {
-
+  _renderHeader({ name, avatar = null, cleverEnterprise = false, emergencyNumber = null, skeleton = false }) {
     return html`
       <div class="wrapper">
         <div class="header-body">
@@ -104,20 +99,24 @@ export class CcHeaderOrga extends LitElement {
           </p>
           <div class="enterprise">
             <p class="enterprise-row">
-              ${cleverEnterprise ? html`
-                <cc-icon .icon=${iconBadge}></cc-icon>
-                <span lang="en">Clever Cloud Enterprise</span>
-              ` : ''}
+              ${cleverEnterprise
+                ? html`
+                    <cc-icon .icon=${iconBadge}></cc-icon>
+                    <span lang="en">Clever Cloud Enterprise</span>
+                  `
+                : ''}
             </p>
-            ${(emergencyNumber != null) ? html`
-              <p class="enterprise-row">
-                <cc-icon .icon=${iconPhone}>${emergencyNumber}</cc-icon>
-                <span>
-                  ${i18n('cc-header-orga.hotline')}
-                  <a class="cc-link" href="tel:${emergencyNumber}">${emergencyNumber}</a>
-                </span>
-              </p>
-              ` : ''}
+            ${emergencyNumber != null
+              ? html`
+                  <p class="enterprise-row">
+                    <cc-icon .icon=${iconPhone}>${emergencyNumber}</cc-icon>
+                    <span>
+                      ${i18n('cc-header-orga.hotline')}
+                      <a class="cc-link" href="tel:${emergencyNumber}">${emergencyNumber}</a>
+                    </span>
+                  </p>
+                `
+              : ''}
           </div>
         </div>
         <slot name="footer"></slot>
@@ -132,11 +131,9 @@ export class CcHeaderOrga extends LitElement {
    * @returns {TemplateResult}
    * @private
    */
-  _renderAvatar (skeleton, avatar, name) {
+  _renderAvatar(skeleton, avatar, name) {
     if (skeleton) {
-      return html`
-        <cc-img class="logo" skeleton></cc-img>
-      `;
+      return html` <cc-img class="logo" skeleton></cc-img> `;
     }
 
     if (avatar == null) {
@@ -147,12 +144,10 @@ export class CcHeaderOrga extends LitElement {
       `;
     }
 
-    return html`
-      <cc-img class="logo" src="${avatar}"></cc-img>
-    `;
+    return html` <cc-img class="logo" src="${avatar}"></cc-img> `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       linkStyles,
       skeletonStyles,
@@ -165,7 +160,7 @@ export class CcHeaderOrga extends LitElement {
         p {
           margin: 0;
         }
-        
+
         cc-notice {
           width: 100%;
         }

@@ -8,10 +8,10 @@ import remark2Html from 'remark-html';
 import remarkParse from 'remark-parse';
 import unified from 'unified';
 
-export function rollupMdToCsfPlugin () {
+export function rollupMdToCsfPlugin() {
   return {
     name: 'markdown-to-csf',
-    transform (code, id) {
+    transform(code, id) {
       if (id.endsWith('.md')) {
         return markdownToCsfWithDocsPage(code);
       }
@@ -27,8 +27,7 @@ const processor = unified()
   .use(highlight)
   .use(remark2Html, { sanitize: false });
 
-export function markdownToCsfWithDocsPage (markdownText) {
-
+export function markdownToCsfWithDocsPage(markdownText) {
   const htmlContent = processor().processSync(markdownText).contents;
   const parsedHTML = JSON.stringify(htmlContent);
 
@@ -59,8 +58,7 @@ export function markdownToCsfWithDocsPage (markdownText) {
   return csfScript;
 }
 
-export function getMetaDataFromMd (markdownContent) {
-
+export function getMetaDataFromMd(markdownContent) {
   const markdownAst = processor.parse(markdownContent);
 
   const frontmatterNode = markdownAst.children.find((node) => node.type === 'yaml');
@@ -73,8 +71,7 @@ export function getMetaDataFromMd (markdownContent) {
   return { title, subtitle };
 }
 
-function getSubTitle (frontmatterNode, headingNode) {
-
+function getSubTitle(frontmatterNode, headingNode) {
   if (frontmatterNode != null) {
     const fmObject = yaml.load(frontmatterNode.value);
     if (fmObject.title != null) {
@@ -89,8 +86,7 @@ function getSubTitle (frontmatterNode, headingNode) {
   return 'Untitled';
 }
 
-function getKind (frontmatterNode) {
-
+function getKind(frontmatterNode) {
   if (frontmatterNode != null) {
     const fmObject = yaml.load(frontmatterNode.value);
     if (fmObject.kind != null) {

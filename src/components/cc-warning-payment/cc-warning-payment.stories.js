@@ -1,5 +1,5 @@
-import './cc-warning-payment.js';
 import { makeStory } from '../../stories/lib/make-story.js';
+import './cc-warning-payment.js';
 
 export default {
   tags: ['autodocs'],
@@ -13,7 +13,10 @@ const conf = {
 
 export const defaultStory = makeStory(conf, {
   items: [
-    { mode: 'overview', errors: [{ type: 3, orgaName: 'Secret startup', orgaBillingLink: '/the-page/secret-startup' }] },
+    {
+      mode: 'overview',
+      errors: [{ type: 3, orgaName: 'Secret startup', orgaBillingLink: '/the-page/secret-startup' }],
+    },
   ],
 });
 
@@ -35,9 +38,18 @@ export const modeHome = makeStory(conf, {
 
 export const modeOverview = makeStory(conf, {
   items: [
-    { mode: 'overview', errors: [{ type: 1, orgaName: 'ACME coporation', orgaBillingLink: '/the-page/acme-coporation' }] },
-    { mode: 'overview', errors: [{ type: 2, orgaName: 'My side project', orgaBillingLink: '/the-page/my-side-project' }] },
-    { mode: 'overview', errors: [{ type: 3, orgaName: 'Secret startup', orgaBillingLink: '/the-page/secret-startup' }] },
+    {
+      mode: 'overview',
+      errors: [{ type: 1, orgaName: 'ACME coporation', orgaBillingLink: '/the-page/acme-coporation' }],
+    },
+    {
+      mode: 'overview',
+      errors: [{ type: 2, orgaName: 'My side project', orgaBillingLink: '/the-page/my-side-project' }],
+    },
+    {
+      mode: 'overview',
+      errors: [{ type: 3, orgaName: 'Secret startup', orgaBillingLink: '/the-page/secret-startup' }],
+    },
   ],
 });
 

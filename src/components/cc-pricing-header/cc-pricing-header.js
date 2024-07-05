@@ -1,18 +1,18 @@
+import '@shoelace-style/shoelace/dist/components/option/option.js';
+import '@shoelace-style/shoelace/dist/components/select/select.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { iconRemixArrowDownSLine as iconArrowDown } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
-import '@shoelace-style/shoelace/dist/components/select/select.js';
-import '@shoelace-style/shoelace/dist/components/option/option.js';
 import { getCurrencySymbol } from '../../lib/utils.js';
 import { sortZones } from '../../lib/zone.js';
 import { shoelaceStyles } from '../../styles/shoelace.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
-import { CcZone } from '../cc-zone/cc-zone.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-notice/cc-notice.js';
+import { CcZone } from '../cc-zone/cc-zone.js';
 
 /** @type {Currency} */
 // FIXME: this code is duplicated across all pricing components (see issue #732 for more details)
@@ -40,8 +40,7 @@ const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
  * @cssprop {Color} --cc-pricing-hovered-color - Sets the text color used on hover (defaults: `purple`).
  */
 export class CcPricingHeader extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       currencies: { type: Array },
       selectedCurrency: { type: Object, attribute: 'selected-currency' },
@@ -52,7 +51,7 @@ export class CcPricingHeader extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {Currency[]} Sets the list of currencies available for selection. */
@@ -80,7 +79,7 @@ export class CcPricingHeader extends LitElement {
    * @param {Temporality['type']} type - the temporality type
    * @return {string} the localized string corresponding to the given temporality type
    */
-  _getPriceLabel (type) {
+  _getPriceLabel(type) {
     switch (type) {
       case 'second':
         return i18n('cc-pricing-header.price-name.second');
@@ -103,7 +102,7 @@ export class CcPricingHeader extends LitElement {
    *
    * @param {Event & { target: { value: string }}} e - the event that called this method
    */
-  _onCurrencyChange (e) {
+  _onCurrencyChange(e) {
     const currency = this.currencies.find((c) => c.code === e.target.value);
     dispatchCustomEvent(this, 'change-currency', currency);
   }
@@ -114,7 +113,7 @@ export class CcPricingHeader extends LitElement {
    *
    * @param {Event & { target: { value: string }}} e - the event that called this method
    */
-  _onTemporalityChange (e) {
+  _onTemporalityChange(e) {
     const temporality = this.temporalities.find((t) => t.type === e.target.value);
     dispatchCustomEvent(this, 'change-temporality', temporality);
   }
@@ -125,12 +124,12 @@ export class CcPricingHeader extends LitElement {
    *
    * @param {Event & { target: { value: string }}} e - the event that called this method
    */
-  _onZoneChange (e) {
+  _onZoneChange(e) {
     const zoneId = e.target.value;
     dispatchCustomEvent(this, 'change-zone', zoneId);
   }
 
-  render () {
+  render() {
     const zones = this.state.type === 'loaded' ? sortZones(this.state.zones) : [];
     const skeleton = this.state.type === 'loading';
 
@@ -140,16 +139,15 @@ export class CcPricingHeader extends LitElement {
 
     return html`
       <div class="main">
-
         <sl-select
           label="${i18n('cc-pricing-header.label.temporality')}"
           class="temporality-select"
           value=${this.selectedTemporality.type}
           @sl-change=${this._onTemporalityChange}
         >
-          ${this.temporalities.map((t) => html`
-            <sl-option value=${t.type}>${this._getPriceLabel(t.type)}</sl-option>
-          `)}
+          ${this.temporalities.map(
+            (t) => html` <sl-option value=${t.type}>${this._getPriceLabel(t.type)}</sl-option> `,
+          )}
           <cc-icon slot="expand-icon" .icon=${iconArrowDown}></cc-icon>
         </sl-select>
 
@@ -159,9 +157,9 @@ export class CcPricingHeader extends LitElement {
           value=${this.selectedCurrency?.code}
           @sl-change=${this._onCurrencyChange}
         >
-          ${this.currencies.map((c) => html`
-            <sl-option value=${c.code}>${getCurrencySymbol(c.code)} ${c.code}</sl-option>
-          `)}
+          ${this.currencies.map(
+            (c) => html` <sl-option value=${c.code}>${getCurrencySymbol(c.code)} ${c.code}</sl-option> `,
+          )}
           <cc-icon slot="expand-icon" .icon=${iconArrowDown}></cc-icon>
         </sl-select>
 
@@ -173,19 +171,21 @@ export class CcPricingHeader extends LitElement {
           ?disabled=${skeleton}
           @sl-change=${this._onZoneChange}
         >
-          ${zones.map((zone) => html`
-            <sl-option class="zone-item" value=${zone.name}>
-              ${CcZone.getText(zone)}
-              <cc-zone slot="prefix" .state=${{ type: 'loaded', ...zone }}></cc-zone>
-            </sl-option>
-          `)}
+          ${zones.map(
+            (zone) => html`
+              <sl-option class="zone-item" value=${zone.name}>
+                ${CcZone.getText(zone)}
+                <cc-zone slot="prefix" .state=${{ type: 'loaded', ...zone }}></cc-zone>
+              </sl-option>
+            `,
+          )}
           <cc-icon slot="expand-icon" .icon=${iconArrowDown}></cc-icon>
         </sl-select>
       </div>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       shoelaceStyles,
       skeletonStyles,
@@ -235,7 +235,7 @@ export class CcPricingHeader extends LitElement {
           font-family: inherit;
           font-weight: bold;
         }
-        
+
         sl-select::part(combobox) {
           padding: 0.75rem 0.875rem;
         }
@@ -255,7 +255,7 @@ export class CcPricingHeader extends LitElement {
         sl-option:focus-within {
           background-color: var(--cc-color-bg-neutral-hovered, #eee);
         }
-        
+
         sl-option::part(checked-icon) {
           width: 0.7em;
           height: 0.7em;
@@ -267,11 +267,11 @@ export class CcPricingHeader extends LitElement {
         sl-select.skeleton::part(base) {
           --sl-input-background-color-disabled: var(--cc-color-bg-neutral-disabled, #bbb);
         }
-        
+
         .zone-select {
           flex: 2 1 auto;
         }
-        
+
         /* The label is not used in the list display
         It's only used for the current selected value */
 
@@ -295,7 +295,7 @@ export class CcPricingHeader extends LitElement {
           padding: 1em 0.5em;
           border-bottom: solid 1px var(--cc-color-border-neutral-weak, transparent);
         }
-        
+
         sl-option.zone-item::part(checked-icon) {
           align-self: flex-start;
           margin-top: 0.3em;

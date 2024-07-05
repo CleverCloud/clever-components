@@ -1,8 +1,8 @@
-import '../cc-loader/cc-loader.js';
-import '../cc-notice/cc-notice.js';
-import '../cc-env-var-form/cc-env-var-form.js';
 import { css, html, LitElement } from 'lit';
 import { i18n } from '../../lib/i18n.js';
+import '../cc-env-var-form/cc-env-var-form.js';
+import '../cc-loader/cc-loader.js';
+import '../cc-notice/cc-notice.js';
 
 /**
  * @typedef {import('./cc-env-var-linked-services.types.js').EnvVarLinkedServicesState} EnvVarLinkedServicesState
@@ -17,8 +17,7 @@ import { i18n } from '../../lib/i18n.js';
  * @cssdisplay block
  */
 export class CcEnvVarLinkedServices extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       appName: { type: String, attribute: 'app-name' },
       state: { type: Object },
@@ -26,7 +25,7 @@ export class CcEnvVarLinkedServices extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {string|null} Sets name of the main app to which services are linked. */
@@ -39,7 +38,7 @@ export class CcEnvVarLinkedServices extends LitElement {
     this.type = null;
   }
 
-  _getLoadingMessage () {
+  _getLoadingMessage() {
     const i18nParams = { appName: this.appName };
     switch (this.type) {
       case 'addon':
@@ -51,7 +50,7 @@ export class CcEnvVarLinkedServices extends LitElement {
     }
   }
 
-  _getServiceHeading (name) {
+  _getServiceHeading(name) {
     switch (this.type) {
       case 'addon':
         return i18n('cc-env-var-linked-services.heading.addon', { name });
@@ -62,7 +61,7 @@ export class CcEnvVarLinkedServices extends LitElement {
     }
   }
 
-  _getServiceDescription (serviceName) {
+  _getServiceDescription(serviceName) {
     const i18nParams = { serviceName, appName: this.appName };
     switch (this.type) {
       case 'addon':
@@ -74,7 +73,7 @@ export class CcEnvVarLinkedServices extends LitElement {
     }
   }
 
-  _getEmptyMessage () {
+  _getEmptyMessage() {
     const i18nParams = { appName: this.appName };
     switch (this.type) {
       case 'addon':
@@ -86,7 +85,7 @@ export class CcEnvVarLinkedServices extends LitElement {
     }
   }
 
-  _getErrorMessage () {
+  _getErrorMessage() {
     const i18nParams = { appName: this.appName };
     switch (this.type) {
       case 'addon':
@@ -102,7 +101,7 @@ export class CcEnvVarLinkedServices extends LitElement {
    * @param {LinkedServiceState} linkedServiceState
    * @return {EnvVarFormState}
    */
-  _getEnvVarFormState (linkedServiceState) {
+  _getEnvVarFormState(linkedServiceState) {
     if (linkedServiceState.type === 'loading') {
       return { type: 'loading' };
     }
@@ -112,7 +111,7 @@ export class CcEnvVarLinkedServices extends LitElement {
     return { type: 'loaded', variables: linkedServiceState.variables, validationMode: 'simple' };
   }
 
-  render () {
+  render() {
     if (this.state.type === 'error') {
       return html`
         <div class="error">
@@ -122,35 +121,33 @@ export class CcEnvVarLinkedServices extends LitElement {
     }
 
     if (this.state.type === 'loading') {
-      return html`
-        <div class="loading">
-          <cc-loader></cc-loader><span>${this._getLoadingMessage()}</span>
-        </div>
-      `;
+      return html` <div class="loading"><cc-loader></cc-loader><span>${this._getLoadingMessage()}</span></div> `;
     }
 
     const servicesStates = this.state.servicesStates;
 
     if (servicesStates.length === 0) {
-      return html`
-        <div class="empty-msg">${this._getEmptyMessage()}</div>
-      `;
+      return html` <div class="empty-msg">${this._getEmptyMessage()}</div> `;
     }
 
     return html`
       <div class="service-list">
-        ${servicesStates.map((serviceState) => html`
-            <cc-env-var-form readonly 
-                             .state=${this._getEnvVarFormState(serviceState)} 
-                             heading=${this._getServiceHeading(serviceState.name)}>
+        ${servicesStates.map(
+          (serviceState) => html`
+            <cc-env-var-form
+              readonly
+              .state=${this._getEnvVarFormState(serviceState)}
+              heading=${this._getServiceHeading(serviceState.name)}
+            >
               ${this._getServiceDescription(serviceState.name)}
             </cc-env-var-form>
-          `)}
+          `,
+        )}
       </div>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
@@ -166,7 +163,7 @@ export class CcEnvVarLinkedServices extends LitElement {
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-default, 0.25em);
         }
-        
+
         .loading {
           display: flex;
         }

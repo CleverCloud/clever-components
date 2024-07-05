@@ -15,7 +15,7 @@ export const PRIVATE_ZONE = 'scope:private';
  * @param {T[]} rawZones
  * @returns {T[]}
  */
-export function sortZones (rawZones) {
+export function sortZones(rawZones) {
   if (rawZones == null) {
     return null;
   }
@@ -35,7 +35,7 @@ export function sortZones (rawZones) {
         return aIsPrivate ? 1 : -1;
       }
       if (aIsPrivate && bIsPrivate) {
-        return (a.displayName ?? '').localeCompare((b.displayName ?? ''));
+        return (a.displayName ?? '').localeCompare(b.displayName ?? '');
       }
     }
     if (aIsPrivate !== bIsPrivate) {

@@ -6,16 +6,16 @@ import { LostFocusController } from '../../controllers/lost-focus-controller.js'
 import { validateEmailAddress } from '../../lib/email.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
-import '../cc-block/cc-block.js';
+import { linkStyles } from '../../templates/cc-link/cc-link.js';
+import '../cc-badge/cc-badge.js';
 import '../cc-block-section/cc-block-section.js';
-import '../cc-orga-member-card/cc-orga-member-card.js';
-import '../cc-notice/cc-notice.js';
+import '../cc-block/cc-block.js';
+import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-loader/cc-loader.js';
-import '../cc-button/cc-button.js';
-import '../cc-badge/cc-badge.js';
+import '../cc-notice/cc-notice.js';
+import '../cc-orga-member-card/cc-orga-member-card.js';
 import '../cc-select/cc-select.js';
-import { linkStyles } from '../../templates/cc-link/cc-link.js';
 
 /**
  * @typedef {import('./cc-orga-member-list.types.js').OrgaMemberInviteFormState} OrgaMemberInviteFormState
@@ -44,8 +44,7 @@ import { linkStyles } from '../../templates/cc-link/cc-link.js';
  */
 
 export class CcOrgaMemberList extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       authorisations: { type: Object },
       inviteMemberForm: { type: Object },
@@ -53,7 +52,7 @@ export class CcOrgaMemberList extends LitElement {
     };
   }
 
-  static get INIT_INVITE_FORM_STATE () {
+  static get INIT_INVITE_FORM_STATE() {
     return {
       state: 'idle',
       email: {
@@ -63,17 +62,17 @@ export class CcOrgaMemberList extends LitElement {
         value: 'DEVELOPER',
       },
     };
-  };
+  }
 
-  static get INIT_AUTHORISATIONS () {
+  static get INIT_AUTHORISATIONS() {
     return {
       invite: false,
       edit: false,
       delete: false,
     };
-  };
+  }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {Authorisations} Sets the authorisations that control the display of the invite form and the edit / delete buttons. */
@@ -93,11 +92,9 @@ export class CcOrgaMemberList extends LitElement {
     new LostFocusController(this, 'cc-orga-member-card', ({ suggestedElement }) => {
       if (suggestedElement == null && this._noResultMessageRef.value != null) {
         this._noResultMessageRef.value.focus();
-      }
-      else if (suggestedElement == null) {
+      } else if (suggestedElement == null) {
         this._memberListHeadingRef.value.focus();
-      }
-      else {
+      } else {
         suggestedElement.focusDeleteBtn();
       }
     });
@@ -109,7 +106,7 @@ export class CcOrgaMemberList extends LitElement {
    * @param {OrgaMemberState} member - the member to check
    * @return {boolean} - true if the given member is an admin and there is only one admin left in the organisation
    */
-  isLastAdmin (member) {
+  isLastAdmin(member) {
     const isMemberAdmin = member.role === 'ADMIN';
     const adminList = this._getAdminList();
     const orgContainsOnlyOneAdmin = adminList.length === 1;
@@ -120,11 +117,11 @@ export class CcOrgaMemberList extends LitElement {
   /**
    * @return {OrgaMemberCardState[]} AdminMembers - the list of admins in the organisation. Used to ensure we don't allow deletion of the last admin.
    */
-  _getAdminList () {
+  _getAdminList() {
     return this.members.value.filter((member) => member.role === 'ADMIN');
   }
 
-  _getRoleOptions () {
+  _getRoleOptions() {
     return [
       { value: 'ADMIN', label: i18n('cc-orga-member-list.invite.role.admin') },
       { value: 'DEVELOPER', label: i18n('cc-orga-member-list.invite.role.developer') },
@@ -144,13 +141,14 @@ export class CcOrgaMemberList extends LitElement {
    * @return {OrgaMemberCardState[]}
    * @private
    */
-  _getSortedFilteredMemberList (members, identityFilter, mfaDisabledOnlyFilter) {
+  _getSortedFilteredMemberList(members, identityFilter, mfaDisabledOnlyFilter) {
     const cleanedIdentityFilter = identityFilter?.trim().toLowerCase();
 
     const filteredMemberList = members.filter((member) => {
-      const matchIdentity = cleanedIdentityFilter === ''
-        || member.name?.toLowerCase().includes(cleanedIdentityFilter)
-        || member.email.toLowerCase().includes(cleanedIdentityFilter);
+      const matchIdentity =
+        cleanedIdentityFilter === '' ||
+        member.name?.toLowerCase().includes(cleanedIdentityFilter) ||
+        member.email.toLowerCase().includes(cleanedIdentityFilter);
 
       const matchMfaDisabled = !mfaDisabledOnlyFilter || !member.isMfaEnabled;
 
@@ -171,7 +169,7 @@ export class CcOrgaMemberList extends LitElement {
     return sortedFilteredMemberList;
   }
 
-  _onEmailInput ({ detail: value }) {
+  _onEmailInput({ detail: value }) {
     this.inviteMemberForm = {
       ...this.inviteMemberForm,
       email: {
@@ -188,7 +186,7 @@ export class CcOrgaMemberList extends LitElement {
    * @param {Event}
    * @private
    */
-  _onFilterIdentity ({ detail: value }) {
+  _onFilterIdentity({ detail: value }) {
     this.members = {
       ...this.members,
       identityFilter: value,
@@ -201,14 +199,14 @@ export class CcOrgaMemberList extends LitElement {
    *
    * @private
    */
-  _onFilterMfaDisabledOnly () {
+  _onFilterMfaDisabledOnly() {
     this.members = {
       ...this.members,
       mfaDisabledOnlyFilter: !this.members.mfaDisabledOnlyFilter,
     };
   }
 
-  _onInviteMember () {
+  _onInviteMember() {
     const existingEmails = this.members.value.map((member) => member.email);
     const email = this.inviteMemberForm.email.value.trim();
     const role = this._inviteMemberRoleRef.value.value;
@@ -230,31 +228,27 @@ export class CcOrgaMemberList extends LitElement {
 
     if (emailError == null) {
       dispatchCustomEvent(this, 'invite', { email, role });
-    }
-    else {
+    } else {
       this._inviteMemberEmailRef.value.focus();
     }
   }
 
-  _onLeaveFromCard ({ detail: currentUser }) {
+  _onLeaveFromCard({ detail: currentUser }) {
     const isLastAdminLeaving = this.isLastAdmin(currentUser);
 
     if (isLastAdminLeaving) {
       this.members = {
         ...this.members,
         value: this.members.value.map((member) => {
-          return (member.id === currentUser.id)
-            ? { ...member, error: true }
-            : { ...member };
+          return member.id === currentUser.id ? { ...member, error: true } : { ...member };
         }),
       };
-    }
-    else {
+    } else {
       dispatchCustomEvent(this, 'leave', currentUser);
     }
   }
 
-  _onLeaveFromDangerZone () {
+  _onLeaveFromDangerZone() {
     const currentUser = this.members.value.find((member) => member.isCurrentUser);
     const isLastAdminLeaving = this.isLastAdmin(currentUser);
 
@@ -263,13 +257,12 @@ export class CcOrgaMemberList extends LitElement {
         ...this.members,
         dangerZoneState: 'error',
       };
-    }
-    else {
+    } else {
       dispatchCustomEvent(this, 'leave', currentUser);
     }
   }
 
-  _onRoleInput ({ detail: value }) {
+  _onRoleInput({ detail: value }) {
     this.inviteMemberForm = {
       ...this.inviteMemberForm,
       role: {
@@ -279,20 +272,17 @@ export class CcOrgaMemberList extends LitElement {
     };
   }
 
-  _onUpdateFromCard ({ detail: memberToUpdate }) {
+  _onUpdateFromCard({ detail: memberToUpdate }) {
     const isLastAdmin = memberToUpdate.isCurrentUser && this.isLastAdmin(memberToUpdate);
 
     if (isLastAdmin) {
       this.members = {
         ...this.members,
         value: this.members.value.map((member) => {
-          return (member.id === memberToUpdate.id)
-            ? { ...member, error: true }
-            : { ...member };
+          return member.id === memberToUpdate.id ? { ...member, error: true } : { ...member };
         }),
       };
-    }
-    else {
+    } else {
       dispatchCustomEvent(this, 'update', memberToUpdate);
     }
   }
@@ -303,19 +293,17 @@ export class CcOrgaMemberList extends LitElement {
    * @param {Event}
    * @private
    */
-  _onToggleCardEditing ({ detail: { memberId, newState } }) {
+  _onToggleCardEditing({ detail: { memberId, newState } }) {
     this.members = {
       ...this.members,
       value: this.members.value.map((member) => {
-        return (member.id === memberId)
-          ? { ...member, state: newState }
-          : { ...member, state: 'loaded' };
+        return member.id === memberId ? { ...member, state: newState } : { ...member, state: 'loaded' };
       }),
     };
   }
 
   /* Everytime we render a new list, remove the "last-admin" error if the list contains more than 1 admin. */
-  willUpdate (changedProperties) {
+  willUpdate(changedProperties) {
     const memberListNotLoaded = this.members.state !== 'loaded';
     const updateNotRelatedToMembers = !changedProperties.has('members');
 
@@ -344,48 +332,51 @@ export class CcOrgaMemberList extends LitElement {
     }
   }
 
-  render () {
-
+  render() {
     return html`
-
       <cc-block>
         <div slot="title">${i18n('cc-orga-member-list.main-heading')}</div>
-        
+
         ${this.authorisations.invite ? this._renderInviteForm() : ''}
-        
+
         <cc-block-section>
           <div slot="title" ${ref(this._memberListHeadingRef)} tabindex="-1">
             ${i18n('cc-orga-member-list.list.heading')}
-            ${this.members.state === 'loaded' ? html`
-              <cc-badge class="member-count" weight="dimmed" intent="neutral" circle>${this.members.value.length}</cc-badge>
-            ` : ''}
+            ${this.members.state === 'loaded'
+              ? html`
+                  <cc-badge class="member-count" weight="dimmed" intent="neutral" circle
+                    >${this.members.value.length}</cc-badge
+                  >
+                `
+              : ''}
           </div>
-  
-          ${this.members.state === 'loading' ? html`
-            <cc-loader></cc-loader>
-          ` : ''}
-  
-          ${this.members.state === 'loaded' ? this._renderMemberList(this.members.value, this.members.identityFilter, this.members.mfaDisabledOnlyFilter) : ''}
-  
-          ${this.members.state === 'error' ? html`
-            <cc-notice intent="warning" message="${i18n('cc-orga-member-list.error')}"></cc-notice>
-          ` : ''}
+
+          ${this.members.state === 'loading' ? html` <cc-loader></cc-loader> ` : ''}
+          ${this.members.state === 'loaded'
+            ? this._renderMemberList(
+                this.members.value,
+                this.members.identityFilter,
+                this.members.mfaDisabledOnlyFilter,
+              )
+            : ''}
+          ${this.members.state === 'error'
+            ? html` <cc-notice intent="warning" message="${i18n('cc-orga-member-list.error')}"></cc-notice> `
+            : ''}
         </cc-block-section>
-        
+
         ${this.members.state === 'loaded' ? this._renderDangerZone() : ''}
       </cc-block>
     `;
   }
 
-  _renderInviteForm () {
-
+  _renderInviteForm() {
     const isFormDisabled = this.inviteMemberForm.state === 'inviting';
 
     return html`
       <cc-block-section>
         <div slot="title">${i18n('cc-orga-member-list.invite.heading')}</div>
         <p class="info">${i18n('cc-orga-member-list.invite.info')}</p>
-        
+
         <form class="invite-form">
           <cc-input-text
             label=${i18n('cc-orga-member-list.invite.email.label')}
@@ -421,7 +412,7 @@ export class CcOrgaMemberList extends LitElement {
     `;
   }
 
-  _renderFormEmailError () {
+  _renderFormEmailError() {
     switch (this.inviteMemberForm.email.error) {
       case 'empty':
         return html`<p slot="error">${i18n('cc-orga-member-list.invite.email.error-empty')}</p>`;
@@ -440,8 +431,7 @@ export class CcOrgaMemberList extends LitElement {
    * @return {TemplateResult<1>}
    * @private
    */
-  _renderMemberList (memberList, identityFilter, mfaDisabledOnlyFilter) {
-
+  _renderMemberList(memberList, identityFilter, mfaDisabledOnlyFilter) {
     const filteredMemberList = this._getSortedFilteredMemberList(memberList, identityFilter, mfaDisabledOnlyFilter);
     const isFilteredMemberListEmpty = filteredMemberList.length === 0;
 
@@ -453,69 +443,80 @@ export class CcOrgaMemberList extends LitElement {
           @cc-input-text:input=${this._onFilterIdentity}
         ></cc-input-text>
         <label class="filters__mfa" for="filter-mfa">
-          <input id="filter-mfa" type="checkbox" @change=${this._onFilterMfaDisabledOnly} .checked=${mfaDisabledOnlyFilter}>
+          <input
+            id="filter-mfa"
+            type="checkbox"
+            @change=${this._onFilterMfaDisabledOnly}
+            .checked=${mfaDisabledOnlyFilter}
+          />
           ${i18n('cc-orga-member-list.filter.mfa')}
         </label>
       </div>
 
       <div class="member-list">
-        ${repeat(filteredMemberList, (member) => member.id, (member) => html`
-          <cc-orga-member-card
-            class=${classMap({ editing: member.state === 'editing' })}
-            .authorisations=${{
-              edit: this.authorisations.edit,
-              delete: this.authorisations.delete,
-            }}
-            .member=${member}
-            @cc-orga-member-card:leave=${this._onLeaveFromCard}
-            @cc-orga-member-card:toggle-editing=${this._onToggleCardEditing}
-            @cc-orga-member-card:update=${this._onUpdateFromCard}
-          ></cc-orga-member-card>
-        `)}
-
-        ${isFilteredMemberListEmpty ? html`
-          <p class="no-result-error" ${ref(this._noResultMessageRef)} tabindex="-1">
-            ${i18n('cc-orga-member-list.no-result')}
-          </p>
-        ` : ''}
+        ${repeat(
+          filteredMemberList,
+          (member) => member.id,
+          (member) => html`
+            <cc-orga-member-card
+              class=${classMap({ editing: member.state === 'editing' })}
+              .authorisations=${{
+                edit: this.authorisations.edit,
+                delete: this.authorisations.delete,
+              }}
+              .member=${member}
+              @cc-orga-member-card:leave=${this._onLeaveFromCard}
+              @cc-orga-member-card:toggle-editing=${this._onToggleCardEditing}
+              @cc-orga-member-card:update=${this._onUpdateFromCard}
+            ></cc-orga-member-card>
+          `,
+        )}
+        ${isFilteredMemberListEmpty
+          ? html`
+              <p class="no-result-error" ${ref(this._noResultMessageRef)} tabindex="-1">
+                ${i18n('cc-orga-member-list.no-result')}
+              </p>
+            `
+          : ''}
       </div>
     `;
   }
 
-  _renderDangerZone () {
+  _renderDangerZone() {
     return html`
       <cc-block-section>
         <div slot="title" class="danger">${i18n('cc-orga-member-list.leave.heading')}</div>
         <div class="leave">
-          <p class="leave__text">
-            ${i18n('cc-orga-member-list.leave.text')}
-          </p>
+          <p class="leave__text">${i18n('cc-orga-member-list.leave.text')}</p>
           <cc-button
-              danger
-              outlined
-              @cc-button:click=${this._onLeaveFromDangerZone}
-              ?disabled="${this.members.dangerZoneState === 'error'}"
-              ?waiting="${this.members.dangerZoneState === 'leaving'}"
-          >${i18n('cc-orga-member-list.leave.btn')}</cc-button>
+            danger
+            outlined
+            @cc-button:click=${this._onLeaveFromDangerZone}
+            ?disabled="${this.members.dangerZoneState === 'error'}"
+            ?waiting="${this.members.dangerZoneState === 'leaving'}"
+            >${i18n('cc-orga-member-list.leave.btn')}</cc-button
+          >
         </div>
         <!-- a11y: we need the live region to be present within the DOM from the start and insert content dynamically inside it. -->
         <div class="wrapper-leave-error" aria-live="polite" aria-atomic="true">
-          ${this.members.dangerZoneState === 'error' ? html`
-            <div>
-                <cc-notice
-                  intent="danger"
-                  heading="${i18n('cc-orga-member-list.leave.error-last-admin.heading')}"
-                  message="${i18n('cc-orga-member-list.leave.error-last-admin.text')}"
-                  no-icon
-                ></cc-notice>
-            </div>
-          ` : ''}
+          ${this.members.dangerZoneState === 'error'
+            ? html`
+                <div>
+                  <cc-notice
+                    intent="danger"
+                    heading="${i18n('cc-orga-member-list.leave.error-last-admin.heading')}"
+                    message="${i18n('cc-orga-member-list.leave.error-last-admin.text')}"
+                    no-icon
+                  ></cc-notice>
+                </div>
+              `
+            : ''}
         </div>
       </cc-block-section>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       linkStyles,
       // language=CSS
@@ -581,7 +582,7 @@ export class CcOrgaMemberList extends LitElement {
         .filters cc-input-text {
           flex: 0 1 25em;
         }
-        
+
         .filters__mfa {
           display: flex;
           align-items: center;
@@ -593,7 +594,7 @@ export class CcOrgaMemberList extends LitElement {
           height: 1.1em;
           margin: 0;
         }
-        
+
         .no-result-error {
           font-style: italic;
         }
@@ -604,7 +605,7 @@ export class CcOrgaMemberList extends LitElement {
           box-shadow: 0 0 0 1em var(--cc-color-bg-neutral);
         }
         /* endregion */
-        
+
         /* region leave section */
 
         .leave {
@@ -618,14 +619,14 @@ export class CcOrgaMemberList extends LitElement {
         .leave p {
           margin: 0;
         }
-        
+
         .leave__text {
           display: flex;
           flex: 1 1 21em;
           flex-direction: column;
           gap: 0.5em;
         }
-        
+
         .leave cc-button {
           margin-left: auto;
         }

@@ -1,7 +1,7 @@
-import './cc-ssh-key-list.js';
-import './cc-ssh-key-list.smart.js';
 import { produce } from '../../lib/immer.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-ssh-key-list.js';
+import './cc-ssh-key-list.smart.js';
 
 const NEW_KEY = {
   name: 'Work laptop',
@@ -75,16 +75,8 @@ export const dataLoadedWithMultipleItems = makeStory(conf, {
       keyData: {
         state: 'loaded',
         isGithubLinked: true,
-        personalKeys: [
-          DUMMY_KEY_1,
-          DUMMY_KEY_2,
-          DUMMY_KEY_3,
-        ],
-        githubKeys: [
-          DUMMY_KEY_1,
-          DUMMY_KEY_2,
-          DUMMY_KEY_3,
-        ],
+        personalKeys: [DUMMY_KEY_1, DUMMY_KEY_2, DUMMY_KEY_3],
+        githubKeys: [DUMMY_KEY_1, DUMMY_KEY_2, DUMMY_KEY_3],
       },
     },
   ],
@@ -191,10 +183,7 @@ export const waitingWithImportingGithubKey = makeStory(conf, {
       keyData: {
         state: 'loaded',
         isGithubLinked: true,
-        personalKeys: [
-          DUMMY_KEY_1,
-          DUMMY_KEY_3,
-        ],
+        personalKeys: [DUMMY_KEY_1, DUMMY_KEY_3],
         githubKeys: [
           {
             ...DUMMY_KEY_2,

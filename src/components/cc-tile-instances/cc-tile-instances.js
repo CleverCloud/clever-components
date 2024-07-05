@@ -1,17 +1,14 @@
-import '../cc-expand/cc-expand.js';
-import '../cc-icon/cc-icon.js';
-import '../cc-loader/cc-loader.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import {
-  iconCleverRunning as iconRunning,
-  iconCleverStarting as iconStarting,
-} from '../../assets/cc-clever.icons.js';
+import { iconCleverRunning as iconRunning, iconCleverStarting as iconStarting } from '../../assets/cc-clever.icons.js';
 import { iconRemixAlertFill as iconAlert } from '../../assets/cc-remix.icons.js';
 import { animate, QUICK_SHRINK } from '../../lib/animate.js';
 import { i18n } from '../../lib/i18n.js';
 import { instanceDetailsStyles, tileStyles } from '../../styles/info-tiles.js';
 import { waitingStyles } from '../../styles/waiting.js';
+import '../cc-expand/cc-expand.js';
+import '../cc-icon/cc-icon.js';
+import '../cc-loader/cc-loader.js';
 
 const statusIcon = {
   running: iconRunning,
@@ -28,21 +25,20 @@ const statusIcon = {
  * @cssdisplay grid
  */
 export class CcTileInstances extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       state: { type: Object },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {TileInstancesState} Sets the current state of running and deploying instances. */
     this.state = { type: 'loading' };
   }
 
-  _getStatusLabel (type) {
+  _getStatusLabel(type) {
     if (type === 'running') {
       return i18n('cc-tile-instances.status.running');
     }
@@ -51,26 +47,31 @@ export class CcTileInstances extends LitElement {
     }
   }
 
-  render () {
-
+  render() {
     return html`
       <div class="tile_title">${i18n('cc-tile-instances.title')}</div>
 
-      ${this.state.type === 'error' ? html`
-        <div class="tile_message">
-          <div class="error-message">
-            <cc-icon .icon="${iconAlert}" a11y-name="${i18n('cc-tile-instances.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
-            <p>${i18n('cc-tile-instances.error')}</p>
-          </div>
-        </div>
-      ` : ''}
-
-      ${this.state.type === 'loading' ? html`
-        <div class="tile_body">
-          <cc-loader></cc-loader>
-        </div>
-      ` : ''}
-
+      ${this.state.type === 'error'
+        ? html`
+            <div class="tile_message">
+              <div class="error-message">
+                <cc-icon
+                  .icon="${iconAlert}"
+                  a11y-name="${i18n('cc-tile-instances.error.icon-a11y-name')}"
+                  class="icon-warning"
+                ></cc-icon>
+                <p>${i18n('cc-tile-instances.error')}</p>
+              </div>
+            </div>
+          `
+        : ''}
+      ${this.state.type === 'loading'
+        ? html`
+            <div class="tile_body">
+              <cc-loader></cc-loader>
+            </div>
+          `
+        : ''}
       ${this.state.type === 'loaded' ? this._renderLoaded(this.state.running, this.state.deploying) : ''}
     `;
   }
@@ -79,16 +80,13 @@ export class CcTileInstances extends LitElement {
    * @param {Array<InstanceState>} running
    * @param {Array<InstanceState>} deploying
    */
-  _renderLoaded (running, deploying) {
-
+  _renderLoaded(running, deploying) {
     const runningInstancesCount = running.map((a) => a.count).reduce((a, b) => a + b, 0);
     const deployingInstancesCount = deploying.map((a) => a.count).reduce((a, b) => a + b, 0);
-    const emptyData = (runningInstancesCount === 0) && (deployingInstancesCount === 0);
+    const emptyData = runningInstancesCount === 0 && deployingInstancesCount === 0;
 
     if (emptyData) {
-      return html`
-        <div class="tile_message">${i18n('cc-tile-instances.empty')}</div>
-      `;
+      return html` <div class="tile_message">${i18n('cc-tile-instances.empty')}</div> `;
     }
 
     // NOTE: This does not handle the case where someone has different flavors running or deploying
@@ -111,8 +109,7 @@ export class CcTileInstances extends LitElement {
     return html`
       <div class="tile_body">
         <cc-expand>
-          ${this._renderInstances(running, 'running')}
-          ${this._renderInstances(deploying, 'deploying')}
+          ${this._renderInstances(running, 'running')} ${this._renderInstances(deploying, 'deploying')}
         </cc-expand>
       </div>
     `;
@@ -123,19 +120,23 @@ export class CcTileInstances extends LitElement {
    * @param {InstanceType} instances
    * @param {'running'|'deploying'} type
    */
-  _renderInstances (instances, type) {
-    return instances.length ? html`
-      <div class="instances ${classMap({ 'cc-waiting': type === 'deploying' })}" data-type=${type}>
-        <cc-icon class="instances_status-img ${type}" .icon=${statusIcon[type]}></cc-icon>
-        <span class="instances_status">${this._getStatusLabel(type)}</span>
-        ${instances.map(({ flavorName, count }) => html`
-          <span class="size-label">${flavorName}<span class="count-bubble">${count}</span></span>
-        `)}
-      </div>
-    ` : '';
+  _renderInstances(instances, type) {
+    return instances.length
+      ? html`
+          <div class="instances ${classMap({ 'cc-waiting': type === 'deploying' })}" data-type=${type}>
+            <cc-icon class="instances_status-img ${type}" .icon=${statusIcon[type]}></cc-icon>
+            <span class="instances_status">${this._getStatusLabel(type)}</span>
+            ${instances.map(
+              ({ flavorName, count }) => html`
+                <span class="size-label">${flavorName}<span class="count-bubble">${count}</span></span>
+              `,
+            )}
+          </div>
+        `
+      : '';
   }
 
-  static get styles () {
+  static get styles() {
     return [
       tileStyles,
       instanceDetailsStyles,

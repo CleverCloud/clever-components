@@ -1,4 +1,3 @@
-import '../cc-smart-container/cc-smart-container.js';
 import {
   addMember,
   getAllMembers,
@@ -10,6 +9,7 @@ import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { i18n } from '../../lib/i18n.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import '../cc-smart-container/cc-smart-container.js';
 import { CcOrgaMemberList } from './cc-orga-member-list.js';
 
 const MEMBER_NOT_FOUND = 6501;
@@ -23,8 +23,7 @@ defineSmartComponent({
     apiConfig: { type: Object },
     ownerId: { type: String },
   },
-  onContextUpdate ({ component, context, onEvent, updateComponent, signal }) {
-
+  onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId } = context;
 
     /**
@@ -33,7 +32,7 @@ defineSmartComponent({
      * @param {OrgaMemberRole} role - the current role of the member to update
      * @return {boolean} - `true` if a manager is trying to edit and admin / `false` otherwise.
      */
-    function isManagerEditingAdmin (role) {
+    function isManagerEditingAdmin(role) {
       if (role !== 'ADMIN') {
         return false;
       }
@@ -41,7 +40,7 @@ defineSmartComponent({
       return currentUser.role === 'MANAGER';
     }
 
-    function updateAuthorisations (role) {
+    function updateAuthorisations(role) {
       const hasAdminRights = role === 'ADMIN' || role === 'MANAGER';
 
       updateComponent('authorisations', {
@@ -51,7 +50,7 @@ defineSmartComponent({
       });
     }
 
-    function updateMember (memberId, callback) {
+    function updateMember(memberId, callback) {
       updateComponent('members', (members) => {
         const member = members.value.find((member) => member.id === memberId);
         if (member != null) {
@@ -61,7 +60,6 @@ defineSmartComponent({
     }
 
     onEvent('cc-orga-member-list:invite', ({ email, role }) => {
-
       updateComponent('inviteMemberForm', (inviteMemberForm) => {
         // Note: the UI component already resets the errors and sets the field values
         inviteMemberForm.state = 'inviting';
@@ -75,12 +73,16 @@ defineSmartComponent({
         .catch((error) => {
           console.error(error);
           if (error.id === UNAUTHORISED_ADMIN_ADDITION) {
-            notifyError(i18n('cc-orga-member-list.error.unauthorised.text'), i18n('cc-orga-member-list.error.unauthorised.heading'));
-          }
-          else if (error.message === RATE_LIMIT_EXCEEDED) {
-            notifyError(i18n('cc-orga-member-list.invite.submit.error-rate-limit.message'), i18n('cc-orga-member-list.invite.submit.error-rate-limit.title'));
-          }
-          else {
+            notifyError(
+              i18n('cc-orga-member-list.error.unauthorised.text'),
+              i18n('cc-orga-member-list.error.unauthorised.heading'),
+            );
+          } else if (error.message === RATE_LIMIT_EXCEEDED) {
+            notifyError(
+              i18n('cc-orga-member-list.invite.submit.error-rate-limit.message'),
+              i18n('cc-orga-member-list.invite.submit.error-rate-limit.title'),
+            );
+          } else {
             notifyError(i18n('cc-orga-member-list.invite.submit.error', { userEmail: email }));
           }
 
@@ -91,13 +93,15 @@ defineSmartComponent({
     });
 
     onEvent('cc-orga-member-list:update', ({ id, role, newRole, name, email, isCurrentUser }) => {
-
       /**
        * The API does not prevent Managers from editing Admins yet.
        * We need to check if a Manager tries to edit an Admin and throw an error if that's the case.
        */
       if (isManagerEditingAdmin(role)) {
-        notifyError(i18n('cc-orga-member-list.error.unauthorised.text'), i18n('cc-orga-member-list.error.unauthorised.heading'));
+        notifyError(
+          i18n('cc-orga-member-list.error.unauthorised.text'),
+          i18n('cc-orga-member-list.error.unauthorised.heading'),
+        );
         return;
       }
 
@@ -120,12 +124,16 @@ defineSmartComponent({
         .catch((error) => {
           console.error(error);
           if (error.id === UNAUTHORISED_ADMIN_ADDITION || error.id === UNAUTHORISED_ADMIN_DELETION) {
-            notifyError(i18n('cc-orga-member-list.error.unauthorised.text'), i18n('cc-orga-member-list.error.unauthorised.heading'));
-          }
-          else if (error.id === MEMBER_NOT_FOUND) {
-            notifyError(i18n('cc-orga-member-list.error-member-not-found.text'), i18n('cc-orga-member-list.error-member-not-found.heading'));
-          }
-          else {
+            notifyError(
+              i18n('cc-orga-member-list.error.unauthorised.text'),
+              i18n('cc-orga-member-list.error.unauthorised.heading'),
+            );
+          } else if (error.id === MEMBER_NOT_FOUND) {
+            notifyError(
+              i18n('cc-orga-member-list.error-member-not-found.text'),
+              i18n('cc-orga-member-list.error-member-not-found.heading'),
+            );
+          } else {
             notifyError(i18n('cc-orga-member-list.edit.error', { memberIdentity: name ?? email }));
           }
 
@@ -150,12 +158,16 @@ defineSmartComponent({
         .catch((error) => {
           console.error(error);
           if (error.id === UNAUTHORISED_ADMIN_DELETION) {
-            notifyError(i18n('cc-orga-member-list.error.unauthorised.text'), i18n('cc-orga-member-list.error.unauthorised.heading'));
-          }
-          else if (error.id === MEMBER_NOT_FOUND) {
-            notifyError(i18n('cc-orga-member-list.error-member-not-found.text'), i18n('cc-orga-member-list.error-member-not-found.heading'));
-          }
-          else {
+            notifyError(
+              i18n('cc-orga-member-list.error.unauthorised.text'),
+              i18n('cc-orga-member-list.error.unauthorised.heading'),
+            );
+          } else if (error.id === MEMBER_NOT_FOUND) {
+            notifyError(
+              i18n('cc-orga-member-list.error-member-not-found.text'),
+              i18n('cc-orga-member-list.error-member-not-found.heading'),
+            );
+          } else {
             notifyError(i18n('cc-orga-member-list.delete.error', { memberIdentity: name ?? email }));
           }
 
@@ -217,39 +229,33 @@ defineSmartComponent({
   },
 });
 
-function getMemberList ({ apiConfig, ownerId, signal }) {
-  return Promise
-    .all([
-      getId().then(sendToApi({ apiConfig, signal })),
-      getAllMembers({ id: ownerId }).then(sendToApi({ apiConfig, signal })),
-    ])
-    .then(([{ ownerId }, memberList]) => {
-      return memberList
-        .map(({ member, role, job }) => ({
-          id: member.id,
-          avatar: member.avatar,
-          name: member.name,
-          jobTitle: job,
-          role: role,
-          newRole: role,
-          email: member.email,
-          isMfaEnabled: member.preferredMFA === 'TOTP',
-          isCurrentUser: member.id === ownerId,
-        }));
-    });
+function getMemberList({ apiConfig, ownerId, signal }) {
+  return Promise.all([
+    getId().then(sendToApi({ apiConfig, signal })),
+    getAllMembers({ id: ownerId }).then(sendToApi({ apiConfig, signal })),
+  ]).then(([{ ownerId }, memberList]) => {
+    return memberList.map(({ member, role, job }) => ({
+      id: member.id,
+      avatar: member.avatar,
+      name: member.name,
+      jobTitle: job,
+      role: role,
+      newRole: role,
+      email: member.email,
+      isMfaEnabled: member.preferredMFA === 'TOTP',
+      isCurrentUser: member.id === ownerId,
+    }));
+  });
 }
 
-function postNewMember ({ apiConfig, ownerId, email, role }) {
-  return addMember({ id: ownerId }, { email, role, job: null })
-    .then(sendToApi({ apiConfig }));
+function postNewMember({ apiConfig, ownerId, email, role }) {
+  return addMember({ id: ownerId }, { email, role, job: null }).then(sendToApi({ apiConfig }));
 }
 
-function deleteMember ({ apiConfig, ownerId, id }) {
-  return removeMember({ id: ownerId, userId: id })
-    .then(sendToApi({ apiConfig }));
+function deleteMember({ apiConfig, ownerId, id }) {
+  return removeMember({ id: ownerId, userId: id }).then(sendToApi({ apiConfig }));
 }
 
-function editMember ({ apiConfig, ownerId, id, newRole }) {
-  return updateMember({ id: ownerId, userId: id }, { role: newRole })
-    .then(sendToApi({ apiConfig }));
+function editMember({ apiConfig, ownerId, id, newRole }) {
+  return updateMember({ id: ownerId, userId: id }, { role: newRole }).then(sendToApi({ apiConfig }));
 }

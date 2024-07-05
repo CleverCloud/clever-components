@@ -6,7 +6,7 @@ import { randomString } from '../../lib/utils.js';
  * @param {number} number
  * @returns {Array<{value: string, hidden: boolean}>}
  */
-export function generateRandomKeywords (number) {
+export function generateRandomKeywords(number) {
   const keywords = [{ value: 'hidden', hidden: true }];
 
   for (let i = 0; i < number; i++) {

@@ -26,7 +26,7 @@ const FIELDS_POSITION = 'YYYYYMMMDDDHHHmmmsss';
  * @return {Date}
  * @throws {Error} Whenever the given argument is not a string with valid ISO date format.
  */
-function getDateOrParseIso (dateOrString) {
+function getDateOrParseIso(dateOrString) {
   if (isDateValid(dateOrString)) {
     return dateOrString;
   }
@@ -36,7 +36,7 @@ function getDateOrParseIso (dateOrString) {
 /**
  * @return {InputDateValueStateEmpty}
  */
-function dateStateEmpty () {
+function dateStateEmpty() {
   return {
     state: 'empty',
   };
@@ -46,7 +46,7 @@ function dateStateEmpty () {
  * @param {string} value
  * @return {InputDateValueStateNaD}
  */
-function dateStateNaD (value) {
+function dateStateNaD(value) {
   return {
     state: 'NaD',
     value,
@@ -57,7 +57,7 @@ function dateStateNaD (value) {
  * @param {Date} date
  * @return {InputDateValueStateValid}
  */
-function dateStateValid (date) {
+function dateStateValid(date) {
   return {
     state: 'valid',
     value: date.toISOString(),
@@ -72,7 +72,7 @@ const VALID = { valid: true };
  * @return {{valid: false, code: T}}
  * @template T
  */
-function invalid (code) {
+function invalid(code) {
   return {
     valid: false,
     code,
@@ -106,8 +106,7 @@ function invalid (code) {
  * @slot help - The help message to be displayed right below the `<input>` element. Please use a `<p>` tag.
  */
 export class CcInputDate extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       disabled: { type: Boolean, reflect: true },
       hiddenLabel: { type: Boolean, attribute: 'hidden-label' },
@@ -126,7 +125,7 @@ export class CcInputDate extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {boolean} Sets `disabled` attribute on inner native `<input>` element. */
@@ -194,14 +193,14 @@ export class CcInputDate extends LitElement {
   /**
    * Triggers focus on the inner `<input>` element.
    */
-  focus (options) {
+  focus(options) {
     this._inputRef.value.focus(options);
   }
 
   /**
    * @return {{valid: false, code: 'empty' | 'badInput' | 'rangeUnderflow' | 'rangeOverflow'}|{valid: true}}
    */
-  validate () {
+  validate() {
     if (this._valueState.state === 'empty') {
       return this.required ? invalid('empty') : VALID;
     }
@@ -226,7 +225,7 @@ export class CcInputDate extends LitElement {
   /**
    * @return {Date|null} The current value as Date or null if the value is not a valid date.
    */
-  get valueAsDate () {
+  get valueAsDate() {
     return this._valueState.date || null;
   }
 
@@ -234,7 +233,7 @@ export class CcInputDate extends LitElement {
 
   /* region Private methods */
 
-  _resolveDateFormatter () {
+  _resolveDateFormatter() {
     return new DateFormatter(DATE_FORMAT, this.timezone);
   }
 
@@ -245,14 +244,13 @@ export class CcInputDate extends LitElement {
    * @return {Date|null} null if given string is empty. Otherwise, the parsed Date.
    * @throws {Error} whenever the given string is not a parseable date.
    */
-  _parseAsDate (string) {
+  _parseAsDate(string) {
     if (isStringEmpty(string)) {
       return null;
     }
     try {
       return parseSimpleDateString(string, this.timezone);
-    }
-    catch (e) {
+    } catch (e) {
       return parseIsoDateString(string);
     }
   }
@@ -261,7 +259,7 @@ export class CcInputDate extends LitElement {
    * Formats the current value using the current date formatter.
    * @return {string}
    */
-  _formatValue () {
+  _formatValue() {
     return this._valueState.date != null
       ? this._dateFormatter.format(this._valueState.date)
       : this._valueState.value ?? '';
@@ -271,7 +269,7 @@ export class CcInputDate extends LitElement {
    * @param {InputDateValueState} newValueState
    * @param {boolean} [dispatchEvent=true]
    */
-  _setNewValueState (newValueState, dispatchEvent = true) {
+  _setNewValueState(newValueState, dispatchEvent = true) {
     const oldValue = this._valueState.value;
 
     // You may wonder why we always change the reactive property `_valueState`!
@@ -291,7 +289,7 @@ export class CcInputDate extends LitElement {
    * @param {null|Date|string} value
    * @return {InputDateValueState}
    */
-  _toValueState (value) {
+  _toValueState(value) {
     if (value instanceof Date) {
       if (isDateValid(value)) {
         return dateStateValid(value);
@@ -308,8 +306,7 @@ export class CcInputDate extends LitElement {
       }
 
       return dateStateValid(date);
-    }
-    catch (e) {
+    } catch (e) {
       return dateStateNaD(value);
     }
   }
@@ -318,18 +315,18 @@ export class CcInputDate extends LitElement {
 
   /* region Event handling */
 
-  _onInput (e) {
+  _onInput(e) {
     const inputValue = e.target.value;
     this._setNewValueState(this._toValueState(inputValue));
   }
 
-  _onFocus (e) {
+  _onFocus(e) {
     if (this.readonly) {
       e.target.select();
     }
   }
 
-  _onKeyEvent (e) {
+  _onKeyEvent(e) {
     // Stop propagation of keydown and keypress events (to prevent conflicts with shortcuts)
     if (e.type === 'keydown' || e.type === 'keypress') {
       e.stopPropagation();
@@ -344,10 +341,11 @@ export class CcInputDate extends LitElement {
       dispatchCustomEvent(this, 'requestimplicitsubmit');
     }
 
-    if (!this.readonly
-      && this._valueState.date != null
-      && e.type === 'keydown'
-      && ['ArrowDown', 'ArrowUp'].includes(e.key)
+    if (
+      !this.readonly &&
+      this._valueState.date != null &&
+      e.type === 'keydown' &&
+      ['ArrowDown', 'ArrowUp'].includes(e.key)
     ) {
       e.preventDefault();
 
@@ -367,13 +365,13 @@ export class CcInputDate extends LitElement {
     }
   }
 
-  _onErrorSlotChanged (e) {
+  _onErrorSlotChanged(e) {
     this._hasError = e.target.assignedNodes()?.length > 0;
   }
 
   /* endregion */
 
-  willUpdate (changedProperties) {
+  willUpdate(changedProperties) {
     if (changedProperties.has('timezone')) {
       this._dateFormatter = this._resolveDateFormatter();
     }
@@ -381,8 +379,7 @@ export class CcInputDate extends LitElement {
     if (changedProperties.has('min')) {
       try {
         this._minDate = getDateOrParseIso(this.min);
-      }
-      catch (e) {
+      } catch (e) {
         this._minDate = null;
       }
     }
@@ -390,8 +387,7 @@ export class CcInputDate extends LitElement {
     if (changedProperties.has('max')) {
       try {
         this._maxDate = getDateOrParseIso(this.max);
-      }
-      catch (e) {
+      } catch (e) {
         this._maxDate = null;
       }
     }
@@ -401,19 +397,19 @@ export class CcInputDate extends LitElement {
     }
   }
 
-  render () {
+  render() {
     // We use the live directive for binding the value of the native input.
     // We need that for the case tested by 'should have the formatted value when setting the same value with iso string'
 
     return html`
-      ${this.label != null ? html`
-        <label class=${classMap({ 'visually-hidden': this.hiddenLabel })} for="input-id">
-          <span class="label-text">${this.label}</span>
-          ${this.required ? html`
-            <span class="required">${i18n('cc-input-date.required')}</span>
-          ` : ''}
-        </label>
-      ` : ''}
+      ${this.label != null
+        ? html`
+            <label class=${classMap({ 'visually-hidden': this.hiddenLabel })} for="input-id">
+              <span class="label-text">${this.label}</span>
+              ${this.required ? html` <span class="required">${i18n('cc-input-date.required')}</span> ` : ''}
+            </label>
+          `
+        : ''}
 
       <div class="meta-input">
         <div class="wrapper ${classMap({ skeleton: this.skeleton })}">
@@ -433,7 +429,7 @@ export class CcInputDate extends LitElement {
             @input=${this._onInput}
             @keydown=${this._onKeyEvent}
             @keypress=${this._onKeyEvent}
-          >
+          />
           <div class="ring"></div>
         </div>
       </div>
@@ -446,28 +442,25 @@ export class CcInputDate extends LitElement {
         <slot name="error" @slotchange="${this._onErrorSlotChanged}"></slot>
       </div>
 
-      ${this._valueState.date != null ? html`
-        <p id="keyboard-hint" class="visually-hidden">${i18n('cc-input-date.keyboard-hint')}</p>
-      ` : ''}
+      ${this._valueState.date != null
+        ? html` <p id="keyboard-hint" class="visually-hidden">${i18n('cc-input-date.keyboard-hint')}</p> `
+        : ''}
     `;
   }
 
-  _renderUnderlay () {
+  _renderUnderlay() {
     if (this.skeleton || this._valueState.date == null) {
       return null;
     }
 
-    return html`
-      <div class="input underlay" aria-hidden="true">
-        ${
-          this._dateFormatter.mapParts(this._valueState.date, ({ type, value }) => {
-            return type === 'separator' ? value : html`<span>${value}</span>`;
-          })
-        }
-      </div>`;
+    return html` <div class="input underlay" aria-hidden="true">
+      ${this._dateFormatter.mapParts(this._valueState.date, ({ type, value }) => {
+        return type === 'separator' ? value : html`<span>${value}</span>`;
+      })}
+    </div>`;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       accessibilityStyles,
       skeletonStyles,

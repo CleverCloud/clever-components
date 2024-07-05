@@ -9,7 +9,7 @@ import { dispatchCustomEvent } from './events.js';
  * @param {Window|Node} target
  * @return {CustomEvent} the <code>cc:notify</code> event that has been dispatched.
  */
-export function notify (notification, target = window) {
+export function notify(notification, target = window) {
   return dispatchCustomEvent(target, 'cc:notify', notification);
 }
 
@@ -18,7 +18,7 @@ export function notify (notification, target = window) {
  * @param {string} [title]
  * @return {CustomEvent} the <code>cc:notify</code> event that has been dispatched.
  */
-export function notifyError (message, title) {
+export function notifyError(message, title) {
   return notify({
     message,
     title,
@@ -31,7 +31,7 @@ export function notifyError (message, title) {
  * @param {string} [title]
  * @return {CustomEvent} the <code>cc:notify</code> event that has been dispatched.
  */
-export function notifySuccess (message, title) {
+export function notifySuccess(message, title) {
   return notify({
     message,
     title,

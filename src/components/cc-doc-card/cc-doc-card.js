@@ -1,10 +1,10 @@
-import '../cc-img/cc-img.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
+import '../cc-img/cc-img.js';
 
 /** @type {DocCard} */
 const SKELETON_INFO = {
@@ -25,34 +25,29 @@ const SKELETON_INFO = {
  * @cssdisplay grid
  */
 export class CcDocCard extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       state: { type: Object },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {DocCardState} Sets the state of the component */
     this.state = { type: 'loading' };
   }
 
-  render () {
-    const skeleton = (this.state.type === 'loading');
+  render() {
+    const skeleton = this.state.type === 'loading';
     const { heading, description, link } = this.state.type === 'loaded' ? this.state : SKELETON_INFO;
 
     return html`
       <div class="images">
-        ${skeleton ? html`
-          <cc-img skeleton></cc-img>
-        ` : ''}
-        ${this.state.type === 'loaded' ? html`
-          ${this.state.icons.map((iconUrl) => html`
-            <cc-img src=${iconUrl}></cc-img>
-          `)}
-        ` : ''}
+        ${skeleton ? html` <cc-img skeleton></cc-img> ` : ''}
+        ${this.state.type === 'loaded'
+          ? html` ${this.state.icons.map((iconUrl) => html` <cc-img src=${iconUrl}></cc-img> `)} `
+          : ''}
       </div>
       <div class="title">
         <span class="${classMap({ skeleton })}">${heading}</span>
@@ -68,7 +63,7 @@ export class CcDocCard extends LitElement {
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       linkStyles,
       skeletonStyles,
@@ -82,14 +77,14 @@ export class CcDocCard extends LitElement {
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-default, 0.25em);
           gap: 1em;
-          grid-template-areas: 
+          grid-template-areas:
             'img title'
             'desc desc'
             'link link';
           grid-template-columns: min-content 1fr;
           grid-template-rows: min-content 1fr min-content;
         }
-        
+
         .images {
           display: flex;
           gap: 0.5em;
@@ -119,11 +114,10 @@ export class CcDocCard extends LitElement {
           grid-area: link;
           justify-self: end;
         }
-        
+
         .skeleton {
           background-color: #bbb;
         }
-        
       `,
     ];
   }

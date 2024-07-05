@@ -30,25 +30,27 @@ const UNITS_FR = {
   second: 'seconde',
 };
 
-const formatDistanceToNow = prepareFormatDistanceToNow(lang, (value, unit) => {
-  const frUnit = UNITS_FR[unit];
-  const pluralUnit = frUnit.endsWith('s')
-    ? plural(value, frUnit, frUnit)
-    : plural(value, frUnit);
-  return `il y a ${value} ${pluralUnit}`;
-}, 'à l\'instant');
+const formatDistanceToNow = prepareFormatDistanceToNow(
+  lang,
+  (value, unit) => {
+    const frUnit = UNITS_FR[unit];
+    const pluralUnit = frUnit.endsWith('s') ? plural(value, frUnit, frUnit) : plural(value, frUnit);
+    return `il y a ${value} ${pluralUnit}`;
+  },
+  "à l'instant",
+);
 
 const formatNumberUnit = prepareNumberUnitFormatter(lang);
 const formatBytes = prepareNumberBytesFormatter(lang, 'o', '\u202f');
 const BYTES_SI_SEPARATOR = '\u202f';
 const formatBytesSi = prepareNumberUnitFormatter(lang, 'o', BYTES_SI_SEPARATOR);
 
-function getUnit (value) {
+function getUnit(value) {
   return formatBytesSi(value).split(BYTES_SI_SEPARATOR)[1];
 }
 
 // Shared logic between translations, is it a good idea?
-function formatFlavor (f) {
+function formatFlavor(f) {
   const cpu = `CPUs : ${f.cpus}`;
   const shared = f.microservice ? ` (partagé)` : '';
   const gpu = f.gpus > 0 ? `GPUs : ${f.gpus}` : '';
@@ -78,18 +80,24 @@ export const translations = {
   //#region cc-addon-backups
   'cc-addon-backups.close-btn': `Fermer ce panneau`,
   'cc-addon-backups.command-password': `Cette commande vous demandera votre mot de passe, le voici :`,
-  'cc-addon-backups.delete': ({ createdAt }) => sanitize`Supprimer la sauvegarde du <strong title="${formatDate(lang, createdAt)}">${formatDatetime(lang, createdAt)}</strong>`,
+  'cc-addon-backups.delete': ({ createdAt }) =>
+    sanitize`Supprimer la sauvegarde du <strong title="${formatDate(lang, createdAt)}">${formatDatetime(lang, createdAt)}</strong>`,
   'cc-addon-backups.delete.btn': `supprimer...`,
-  'cc-addon-backups.delete.manual.description.es-addon': ({ href }) => sanitize`Vous pouvez supprimer cette sauvegarde manuellement grâce à l'outil <a href="${href}">cURL</a> en exécutant cette commande :`,
+  'cc-addon-backups.delete.manual.description.es-addon': ({ href }) =>
+    sanitize`Vous pouvez supprimer cette sauvegarde manuellement grâce à l'outil <a href="${href}">cURL</a> en exécutant cette commande :`,
   'cc-addon-backups.delete.manual.title': `Suppression manuelle`,
-  'cc-addon-backups.delete.with-service.description.es-addon': ({ href }) => sanitize`Vous pouvez supprimer cette sauvegarde avec Kibana en vous rendant sur le <a href="${href}">dépôt de sauvegardes</a>.`,
+  'cc-addon-backups.delete.with-service.description.es-addon': ({ href }) =>
+    sanitize`Vous pouvez supprimer cette sauvegarde avec Kibana en vous rendant sur le <a href="${href}">dépôt de sauvegardes</a>.`,
   'cc-addon-backups.delete.with-service.title.es-addon': `Suppression avec Kibana`,
   'cc-addon-backups.description.es-addon': `Les sauvegardes sont gérées par Elasticsearch lui-même. Vous pouvez définir la rétention ainsi que la périodicité des sauvegardes dans l'interface de Kibana.`,
   'cc-addon-backups.description.es-addon-old': `Les sauvegardes sont gérées par Elasticsearch lui-même. La version de votre Elasticsearch ne permet pas de définir de politique de rétention. La suppression d'une sauvegarde se fait manuellement avec l'API d'Elasticsearch.`,
   'cc-addon-backups.description.jenkins': `Les sauvegardes sont réalisées en archivant les données contenues dans Jenkins.`,
-  'cc-addon-backups.description.mongodb-addon': () => sanitize`Les sauvegardes sont réalisées en utilisant l'outil <a href="https://docs.mongodb.com/v4.0/reference/program/mongodump/">mongodump</a>.`,
-  'cc-addon-backups.description.mysql-addon': () => sanitize`Les sauvegardes sont réalisées en utilisant l'outil <a href="https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html">mysqldump</a>.`,
-  'cc-addon-backups.description.postgresql-addon': () => sanitize`Les sauvegardes sont réalisées en utilisant l'outil <a href="https://www.postgresql.org/docs/current/app-pgdump.html">pg_dump</a>.`,
+  'cc-addon-backups.description.mongodb-addon': () =>
+    sanitize`Les sauvegardes sont réalisées en utilisant l'outil <a href="https://docs.mongodb.com/v4.0/reference/program/mongodump/">mongodump</a>.`,
+  'cc-addon-backups.description.mysql-addon': () =>
+    sanitize`Les sauvegardes sont réalisées en utilisant l'outil <a href="https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html">mysqldump</a>.`,
+  'cc-addon-backups.description.postgresql-addon': () =>
+    sanitize`Les sauvegardes sont réalisées en utilisant l'outil <a href="https://www.postgresql.org/docs/current/app-pgdump.html">pg_dump</a>.`,
   'cc-addon-backups.description.redis-addon': `Les sauvegardes sont réalisées en archivant les données contenues dans Redis.`,
   'cc-addon-backups.empty': `Il n'y a aucune sauvegarde pour l'instant.`,
   'cc-addon-backups.link.es-addon': `ouvrir dans Kibana`,
@@ -100,21 +108,28 @@ export const translations = {
   'cc-addon-backups.link.postgresql-addon': `télécharger`,
   'cc-addon-backups.link.redis-addon': `télécharger`,
   'cc-addon-backups.loading-error': `Une erreur est survenue pendant le chargement des sauvegardes.`,
-  'cc-addon-backups.restore': ({ createdAt }) => sanitize`Restaurer la sauvegarde du <strong title="${formatDate(lang, createdAt)}">${formatDatetime(lang, createdAt)}</strong>`,
+  'cc-addon-backups.restore': ({ createdAt }) =>
+    sanitize`Restaurer la sauvegarde du <strong title="${formatDate(lang, createdAt)}">${formatDatetime(lang, createdAt)}</strong>`,
   'cc-addon-backups.restore.btn': `restaurer...`,
-  'cc-addon-backups.restore.manual.description.es-addon': () => sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <a href="https://curl.se/docs/">cURL</a> en exécutant cette commande :`,
+  'cc-addon-backups.restore.manual.description.es-addon': () =>
+    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <a href="https://curl.se/docs/">cURL</a> en exécutant cette commande :`,
   'cc-addon-backups.restore.manual.description.jenkins': `La restauration de backups Jenkins doit passer par notre support. Veuillez créer un ticket en indiquant l'ID de votre add-on ainsi que la date du backup à restaurer et nous le ferons pour vous.`,
-  'cc-addon-backups.restore.manual.description.mongodb-addon': () => sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <a href="https://docs.mongodb.com/v4.0/reference/program/mongorestore/">mongorestore</a> en exécutant cette commande :`,
-  'cc-addon-backups.restore.manual.description.mysql-addon': () => sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à la CLI <a href="https://dev.mysql.com/doc/refman/8.0/en/mysql.html">mysql</a> en exécutant cette commande :`,
-  'cc-addon-backups.restore.manual.description.postgresql-addon': () => sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <a href="https://www.postgresql.org/docs/current/app-pgrestore.html">pg_restore</a> en exécutant cette commande :`,
+  'cc-addon-backups.restore.manual.description.mongodb-addon': () =>
+    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <a href="https://docs.mongodb.com/v4.0/reference/program/mongorestore/">mongorestore</a> en exécutant cette commande :`,
+  'cc-addon-backups.restore.manual.description.mysql-addon': () =>
+    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à la CLI <a href="https://dev.mysql.com/doc/refman/8.0/en/mysql.html">mysql</a> en exécutant cette commande :`,
+  'cc-addon-backups.restore.manual.description.postgresql-addon': () =>
+    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <a href="https://www.postgresql.org/docs/current/app-pgrestore.html">pg_restore</a> en exécutant cette commande :`,
   'cc-addon-backups.restore.manual.description.redis-addon': `La restauration de backups Redis doit passer par notre support. Veuillez créer un ticket en indiquant l'ID de votre add-on ainsi que la date du backup à restaurer et nous le ferons pour vous.`,
   'cc-addon-backups.restore.manual.title': `Restauration manuelle`,
-  'cc-addon-backups.restore.with-service.description.es-addon': ({ href }) => sanitize`Vous pouvez restaurer cette sauvegarde avec Kibana en vous rendant sur le <a href="${href}">dépôt de sauvegardes</a>.`,
+  'cc-addon-backups.restore.with-service.description.es-addon': ({ href }) =>
+    sanitize`Vous pouvez restaurer cette sauvegarde avec Kibana en vous rendant sur le <a href="${href}">dépôt de sauvegardes</a>.`,
   'cc-addon-backups.restore.with-service.title.es-addon': `Restauration avec Kibana`,
   'cc-addon-backups.text': ({ createdAt, expiresAt }) => {
     return sanitize`Sauvegarde du <strong title="${formatDate(lang, createdAt)}">${formatDatetime(lang, createdAt)}</strong> (expire le <strong>${formatDateOnly(lang, expiresAt)}</strong>)`;
   },
-  'cc-addon-backups.text.user-defined-retention': ({ createdAt }) => sanitize`Sauvegarde du <strong title="${formatDate(lang, createdAt)}">${formatDatetime(lang, createdAt)}</strong> (expire après la durée de rétention définie)`,
+  'cc-addon-backups.text.user-defined-retention': ({ createdAt }) =>
+    sanitize`Sauvegarde du <strong title="${formatDate(lang, createdAt)}">${formatDatetime(lang, createdAt)}</strong> (expire après la durée de rétention définie)`,
   'cc-addon-backups.title': `Sauvegardes`,
   //#endregion
   //#region cc-addon-credentials
@@ -133,18 +148,24 @@ export const translations = {
   'cc-addon-credentials.title': ({ name }) => `Identifiants ${name}`,
   //#endregion
   //#region cc-addon-elasticsearch-options
-  'cc-addon-elasticsearch-options.description': () => sanitize`Cet add-on fait partie de l'offre Suite Elastic qui inclue deux options. Ces options sont déployées comme des applications et seront gérées et mises à jour par Clever Cloud. Elles apparaîtront donc comme des applications habituelles que vous pouvez arrêter, supprimer, scaler comme n'importe quelle autre application. <strong>Activer ces options augmentera votre consommation de crédits.</strong>`,
-  'cc-addon-elasticsearch-options.description.apm': () => sanitize`Elastic APM est un serveur de monitoring de performance applicative pour la Suite Elastic. Déployer cette option permet d'envoyer automatiquement les métriques de toute application liée à cette instance d'add-on Elasticsearch, en supposant que vous utilisez bien l'agent Elastic APM dans les dépendances de vos applications. Retrouvez plus de détails dans <a href="https://www.elastic.co/guide/en/apm/get-started/current/overview.html">la documentation officielle de APM server</a>.`,
-  'cc-addon-elasticsearch-options.description.kibana': () => sanitize`Kibana est l'interface d'administration de la Suite Elastic. Kibana vous permet de visualiser vos données Elasticsearch et de naviguer dans la Suite Elastic. Vous voulez effectuer le suivi de la charge de travail liée à la recherche ou comprendre le flux des requêtes dans vos applications ? Kibana est là pour ça. Retrouvez plus de détails dans <a href="https://www.elastic.co/guide/en/kibana/master/index.html">la documentation officielle de Kibana</a>.`,
+  'cc-addon-elasticsearch-options.description': () =>
+    sanitize`Cet add-on fait partie de l'offre Suite Elastic qui inclue deux options. Ces options sont déployées comme des applications et seront gérées et mises à jour par Clever Cloud. Elles apparaîtront donc comme des applications habituelles que vous pouvez arrêter, supprimer, scaler comme n'importe quelle autre application. <strong>Activer ces options augmentera votre consommation de crédits.</strong>`,
+  'cc-addon-elasticsearch-options.description.apm': () =>
+    sanitize`Elastic APM est un serveur de monitoring de performance applicative pour la Suite Elastic. Déployer cette option permet d'envoyer automatiquement les métriques de toute application liée à cette instance d'add-on Elasticsearch, en supposant que vous utilisez bien l'agent Elastic APM dans les dépendances de vos applications. Retrouvez plus de détails dans <a href="https://www.elastic.co/guide/en/apm/get-started/current/overview.html">la documentation officielle de APM server</a>.`,
+  'cc-addon-elasticsearch-options.description.kibana': () =>
+    sanitize`Kibana est l'interface d'administration de la Suite Elastic. Kibana vous permet de visualiser vos données Elasticsearch et de naviguer dans la Suite Elastic. Vous voulez effectuer le suivi de la charge de travail liée à la recherche ou comprendre le flux des requêtes dans vos applications ? Kibana est là pour ça. Retrouvez plus de détails dans <a href="https://www.elastic.co/guide/en/kibana/master/index.html">la documentation officielle de Kibana</a>.`,
   'cc-addon-elasticsearch-options.error.icon-a11y-name': `Avertissement`,
   'cc-addon-elasticsearch-options.title': `Options pour la Suite Elastic`,
   'cc-addon-elasticsearch-options.warning.apm': `Si vous activez cette option, nous allons déployer et gérer pour vous un APM server, ce qui entraînera des coûts supplémentaires.`,
-  'cc-addon-elasticsearch-options.warning.apm.details': (flavor) => sanitize`Par défaut, l'app sera démarrée sur une <strong title="${formatFlavor(flavor)}">instance ${flavor.name}</strong> qui coûte environ <strong>${formatCurrency(lang, flavor.monthlyCost)} par mois</strong>. `,
+  'cc-addon-elasticsearch-options.warning.apm.details': (flavor) =>
+    sanitize`Par défaut, l'app sera démarrée sur une <strong title="${formatFlavor(flavor)}">instance ${flavor.name}</strong> qui coûte environ <strong>${formatCurrency(lang, flavor.monthlyCost)} par mois</strong>. `,
   'cc-addon-elasticsearch-options.warning.kibana': `Si vous activez cette option, nous allons déployer et gérer pour vous un Kibana, ce qui entraînera des coûts supplémentaires.`,
-  'cc-addon-elasticsearch-options.warning.kibana.details': (flavor) => sanitize`Par défaut, l'app sera démarrée sur une <strong title="${formatFlavor(flavor)}">instance ${flavor.name}</strong> qui coûte environ <strong>${formatCurrency(lang, flavor.monthlyCost)} par mois</strong>.`,
+  'cc-addon-elasticsearch-options.warning.kibana.details': (flavor) =>
+    sanitize`Par défaut, l'app sera démarrée sur une <strong title="${formatFlavor(flavor)}">instance ${flavor.name}</strong> qui coûte environ <strong>${formatCurrency(lang, flavor.monthlyCost)} par mois</strong>.`,
   //#endregion
   //#region cc-addon-encryption-at-rest-option
-  'cc-addon-encryption-at-rest-option.description': () => sanitize`Le chiffrement au repos chiffre l'intégralité du disque de données afin de ne pas y stocker d'informations en clair. Grâce à cette sécurité, l'accès physique au disque empêchera toute lecture des données stockées. Plus d'information dans notre <a href="https://www.clever-cloud.com/doc/administrate/encryption-at-rest/">documentation</a>.`,
+  'cc-addon-encryption-at-rest-option.description': () =>
+    sanitize`Le chiffrement au repos chiffre l'intégralité du disque de données afin de ne pas y stocker d'informations en clair. Grâce à cette sécurité, l'accès physique au disque empêchera toute lecture des données stockées. Plus d'information dans notre <a href="https://www.clever-cloud.com/doc/administrate/encryption-at-rest/">documentation</a>.`,
   'cc-addon-encryption-at-rest-option.title': `Chiffrement au repos`,
   //#endregion
   //#region cc-addon-features
@@ -196,7 +217,8 @@ export const translations = {
   'cc-ansi-palette.fg-bg': ({ foreground, background }) => `Texte : ${foreground}, Fond: ${background}`,
   'cc-ansi-palette.hover': ({ color }) => `Survol : ${color}`,
   'cc-ansi-palette.not-compliant': `Couleur qui ne respecte pas le RGAA`,
-  'cc-ansi-palette.ratio': ({ ratio }) => formatNumber(lang, ratio, { minimumFractionDigits: 2, maximumFractionDigits: 2 }).padStart(5, '0'),
+  'cc-ansi-palette.ratio': ({ ratio }) =>
+    formatNumber(lang, ratio, { minimumFractionDigits: 2, maximumFractionDigits: 2 }).padStart(5, '0'),
   'cc-ansi-palette.selected': ({ color }) => `Sélection: ${color}`,
   //#endregion
   //#region cc-article-card
@@ -220,7 +242,8 @@ export const translations = {
   'cc-datetime-relative.title': ({ date }) => formatDate(lang, date),
   //#endregion
   //#region cc-doc-card
-  'cc-doc-card.link': ({ link, product }) => sanitize`<a href=${link} aria-label="Lire la documentation - ${product}">Lire la documentation</a>`,
+  'cc-doc-card.link': ({ link, product }) =>
+    sanitize`<a href=${link} aria-label="Lire la documentation - ${product}">Lire la documentation</a>`,
   'cc-doc-card.skeleton-link-title': `Lire la documentation`,
   //#endregion
   //#region cc-doc-list
@@ -238,28 +261,38 @@ export const translations = {
   //#region cc-email-list
   'cc-email-list.loading.error': `Une erreur est survenue pendant le chargement des adresses e-mail.`,
   'cc-email-list.primary.action.resend-confirmation-email': `Envoyer un nouvel e-mail de confirmation`,
-  'cc-email-list.primary.action.resend-confirmation-email.error': ({ address }) => sanitize`Une erreur est survenue pendant l'envoi de l'e-mail de confirmation à l'adresse <strong>${address}</strong>.`,
-  'cc-email-list.primary.action.resend-confirmation-email.success.message': ({ address }) => sanitize`Pour terminer le processus vous devez confirmer votre inscription en cliquant sur le lien qui vous a été envoyé par e-mail à l'adresse <strong>${address}</strong>.`,
+  'cc-email-list.primary.action.resend-confirmation-email.error': ({ address }) =>
+    sanitize`Une erreur est survenue pendant l'envoi de l'e-mail de confirmation à l'adresse <strong>${address}</strong>.`,
+  'cc-email-list.primary.action.resend-confirmation-email.success.message': ({ address }) =>
+    sanitize`Pour terminer le processus vous devez confirmer votre inscription en cliquant sur le lien qui vous a été envoyé par e-mail à l'adresse <strong>${address}</strong>.`,
   'cc-email-list.primary.action.resend-confirmation-email.success.title': `Un e-mail de confirmation a été envoyé.`,
   'cc-email-list.primary.description': `Cette adresse est celle utilisée pour la création de votre compte. Toutes les notifications sont envoyées à cette adresse.`,
   'cc-email-list.primary.email.unverified': `Non vérifiée`,
   'cc-email-list.primary.email.verified': `Vérifiée`,
   'cc-email-list.primary.title': `Adresse e-mail principale`,
   'cc-email-list.secondary.action.add': `Ajouter l'adresse`,
-  'cc-email-list.secondary.action.add.error': ({ address }) => sanitize`Une erreur est survenue lors de l'ajout de l'adresse e-mail secondaire <strong>${address}</strong>.`,
-  'cc-email-list.secondary.action.add.success.message': ({ address }) => sanitize`Pour terminer le processus vous devez confirmer votre inscription en cliquant sur le lien qui vous a été envoyé par e-mail à l'adresse <strong>${address}</strong>.`,
+  'cc-email-list.secondary.action.add.error': ({ address }) =>
+    sanitize`Une erreur est survenue lors de l'ajout de l'adresse e-mail secondaire <strong>${address}</strong>.`,
+  'cc-email-list.secondary.action.add.success.message': ({ address }) =>
+    sanitize`Pour terminer le processus vous devez confirmer votre inscription en cliquant sur le lien qui vous a été envoyé par e-mail à l'adresse <strong>${address}</strong>.`,
   'cc-email-list.secondary.action.add.success.title': `L'ajout d'adresse e-mail secondaire a été pris en compte`,
   'cc-email-list.secondary.action.delete.accessible-name': ({ address }) => `Supprimer - ${address}`,
-  'cc-email-list.secondary.action.delete.error': ({ address }) => sanitize`Une erreur est survenue lors de la suppression de l'adresse e-mail secondaire <strong>${address}</strong>.`,
+  'cc-email-list.secondary.action.delete.error': ({ address }) =>
+    sanitize`Une erreur est survenue lors de la suppression de l'adresse e-mail secondaire <strong>${address}</strong>.`,
   'cc-email-list.secondary.action.delete.name': `Supprimer`,
-  'cc-email-list.secondary.action.delete.success': ({ address }) => sanitize`L'adresse e-mail secondaire <strong>${address}</strong> a été supprimée avec succès.`,
-  'cc-email-list.secondary.action.mark-as-primary.accessible-name': ({ address }) => `Définir comme primaire - ${address}`,
-  'cc-email-list.secondary.action.mark-as-primary.error': ({ address }) => sanitize`Une erreur est survenue pendant le marquage en tant qu'adresse e-mail primaire <strong>${address}</strong>.`,
+  'cc-email-list.secondary.action.delete.success': ({ address }) =>
+    sanitize`L'adresse e-mail secondaire <strong>${address}</strong> a été supprimée avec succès.`,
+  'cc-email-list.secondary.action.mark-as-primary.accessible-name': ({ address }) =>
+    `Définir comme primaire - ${address}`,
+  'cc-email-list.secondary.action.mark-as-primary.error': ({ address }) =>
+    sanitize`Une erreur est survenue pendant le marquage en tant qu'adresse e-mail primaire <strong>${address}</strong>.`,
   'cc-email-list.secondary.action.mark-as-primary.name': `Définir comme primaire`,
-  'cc-email-list.secondary.action.mark-as-primary.success': ({ address }) => sanitize`L'adresse e-mail <strong>${address}</strong> a bien été définie comme primaire.`,
+  'cc-email-list.secondary.action.mark-as-primary.success': ({ address }) =>
+    sanitize`L'adresse e-mail <strong>${address}</strong> a bien été définie comme primaire.`,
   'cc-email-list.secondary.address-input.error.already-defined': `Cette adresse e-mail vous appartient déjà`,
   'cc-email-list.secondary.address-input.error.empty': `Veuillez saisir une adresse e-mail`,
-  'cc-email-list.secondary.address-input.error.invalid': () => sanitize`Format d'adresse e-mail invalide.<br>Exemple: john.doe@example.com.`,
+  'cc-email-list.secondary.address-input.error.invalid': () =>
+    sanitize`Format d'adresse e-mail invalide.<br>Exemple: john.doe@example.com.`,
   'cc-email-list.secondary.address-input.error.used': `Cette adresse e-mail ne vous appartient pas`,
   'cc-email-list.secondary.address-input.format': `nom@example.com`,
   'cc-email-list.secondary.address-input.label': `Adresse e-mail`,
@@ -271,41 +304,55 @@ export const translations = {
   'cc-env-var-create.create-button': `Ajouter`,
   'cc-env-var-create.errors.already-defined-name': ({ name }) => sanitize`Le nom <code>${name}</code> est déjà défini`,
   'cc-env-var-create.errors.invalid-name': ({ name }) => sanitize`Le nom <code>${name}</code> n'est pas valide`,
-  'cc-env-var-create.info.java-prop': ({ name }) => sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-formats">plus de détails</a>`,
+  'cc-env-var-create.info.java-prop': ({ name }) =>
+    sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-formats">plus de détails</a>`,
   'cc-env-var-create.name.label': `Nom de la variable`,
   'cc-env-var-create.value.label': `Valeur de la variable`,
   //#endregion
   //#region cc-env-var-editor-expert
-  'cc-env-var-editor-expert.errors.duplicated-name': ({ name }) => sanitize`attention, le nom <code>${name}</code> est déjà défini`,
-  'cc-env-var-editor-expert.errors.invalid-line': () => sanitize`cette ligne est invalide, le format correct est : <code>NOM="VALEUR"</code>`,
+  'cc-env-var-editor-expert.errors.duplicated-name': ({ name }) =>
+    sanitize`attention, le nom <code>${name}</code> est déjà défini`,
+  'cc-env-var-editor-expert.errors.invalid-line': () =>
+    sanitize`cette ligne est invalide, le format correct est : <code>NOM="VALEUR"</code>`,
   'cc-env-var-editor-expert.errors.invalid-name': ({ name }) => sanitize`Le nom <code>${name}</code> n'est pas valide`,
-  'cc-env-var-editor-expert.errors.invalid-name-strict': ({ name }) => sanitize`Le nom <code>${name}</code> n'est pas valide en mode strict`,
-  'cc-env-var-editor-expert.errors.invalid-value': () => sanitize`la valeur est invalide, si vous utilisez des guillements, vous devez les échapper comme ceci : <code>\\"</code> ou alors mettre toute la valeur entre guillemets.`,
+  'cc-env-var-editor-expert.errors.invalid-name-strict': ({ name }) =>
+    sanitize`Le nom <code>${name}</code> n'est pas valide en mode strict`,
+  'cc-env-var-editor-expert.errors.invalid-value': () =>
+    sanitize`la valeur est invalide, si vous utilisez des guillements, vous devez les échapper comme ceci : <code>\\"</code> ou alors mettre toute la valeur entre guillemets.`,
   'cc-env-var-editor-expert.errors.line': `ligne`,
   'cc-env-var-editor-expert.errors.unknown': `Erreur inconnue`,
-  'cc-env-var-editor-expert.example': () => sanitize`Format : <code>NOM_DE_LA_VARIABLE="valeur de la variable"</code> <br> Chaque variable doit être séparée par des sauts de ligne, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#format">en savoir plus</a>.`,
-  'cc-env-var-editor-expert.info.java-prop': ({ name }) => sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-formats">plus de détails</a>`,
+  'cc-env-var-editor-expert.example': () =>
+    sanitize`Format : <code>NOM_DE_LA_VARIABLE="valeur de la variable"</code> <br> Chaque variable doit être séparée par des sauts de ligne, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#format">en savoir plus</a>.`,
+  'cc-env-var-editor-expert.info.java-prop': ({ name }) =>
+    sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-formats">plus de détails</a>`,
   'cc-env-var-editor-expert.label': `Edition des variables. Format : NOM_DE_LA_VARIABLE="valeur de la variable". Chaque variable doit être séparée par des sauts de ligne.`,
   //#endregion
   //#region cc-env-var-editor-json
-  'cc-env-var-editor-json.errors.duplicated-name': ({ name }) => sanitize`attention, le nom <code>${name}</code> est déjà défini`,
+  'cc-env-var-editor-json.errors.duplicated-name': ({ name }) =>
+    sanitize`attention, le nom <code>${name}</code> est déjà défini`,
   'cc-env-var-editor-json.errors.invalid-json': `Le JSON entré est invalide.`,
   'cc-env-var-editor-json.errors.invalid-json-entry': `Le JSON entré est un tableau d'objets JSON valide mais toutes les valeurs des propriétés doivent être de type string. Ex : '[{ "name": "THE_NAME", "value": "the value" }]'`,
   'cc-env-var-editor-json.errors.invalid-json-format': `Le JSON entré est valide mais n'est pas au bon format. Le JSON doit être un tableau d'objets`,
   'cc-env-var-editor-json.errors.invalid-name': ({ name }) => sanitize`Le nom <code>${name}</code> n'est pas valide`,
-  'cc-env-var-editor-json.errors.invalid-name-strict': ({ name }) => sanitize`Le nom <code>${name}</code> n'est pas valide en mode strict`,
+  'cc-env-var-editor-json.errors.invalid-name-strict': ({ name }) =>
+    sanitize`Le nom <code>${name}</code> n'est pas valide en mode strict`,
   'cc-env-var-editor-json.errors.unknown': `Erreur inconnue`,
-  'cc-env-var-editor-json.example': () => sanitize`Format : <code>{ "name": "NOM_DE_LA_VARIABLE", "value": "valeur de la variable" }</code> <br> Tableau d'objets respectant le format ci-dessus, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#format">en savoir plus</a>.`,
-  'cc-env-var-editor-json.info.java-prop': ({ name }) => sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-formats">plus de détails</a>`,
+  'cc-env-var-editor-json.example': () =>
+    sanitize`Format : <code>{ "name": "NOM_DE_LA_VARIABLE", "value": "valeur de la variable" }</code> <br> Tableau d'objets respectant le format ci-dessus, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#format">en savoir plus</a>.`,
+  'cc-env-var-editor-json.info.java-prop': ({ name }) =>
+    sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-formats">plus de détails</a>`,
   'cc-env-var-editor-json.label': `Edition des variables. Tableau d'objets respectant le format : { "name": "NOM_DE_LA_VARIABLE", "value": "valeur de la variable" }.`,
   //#endregion
   //#region cc-env-var-editor-simple
   'cc-env-var-editor-simple.empty-data': `Il n'y a pas de variable.`,
   //#endregion
   //#region cc-env-var-form
-  'cc-env-var-form.description.config-provider': ({ addonName }) => sanitize`Configuration publiée pour les applications dépendantes. <a href="https://www.clever-cloud.com/doc/deploy/addon/config-provider/">En savoir plus</a><br>Ces seront injectées en tant que variables d'environnement dans les applications qui ont l'add-on <strong>${addonName}</strong> dans leurs services liés.<br>À chaque fois que vous mettez à jour les changements, toutes les applications dépendantes seront redémarrées automatiquement.`,
-  'cc-env-var-form.description.env-var': ({ appName }) => sanitize`Ces variables seront injectées en tant que variables d'environnement dans l'application <strong>${appName}</strong>. <a href="https://doc.clever-cloud.com/admin-console/environment-variables/">En savoir plus</a>`,
-  'cc-env-var-form.description.exposed-config': ({ appName }) => sanitize`Configuration publiée pour les applications dépendantes. <a href="https://www.clever-cloud.com/doc/admin-console/service-dependencies/">En savoir plus</a><br>Ces variables ne seront pas injectées dans l'application <strong>${appName}</strong>, elles seront injectées en tant que variables d'environnement dans les applications qui ont <strong>${appName}</strong> dans leurs services liés.`,
+  'cc-env-var-form.description.config-provider': ({ addonName }) =>
+    sanitize`Configuration publiée pour les applications dépendantes. <a href="https://www.clever-cloud.com/doc/deploy/addon/config-provider/">En savoir plus</a><br>Ces seront injectées en tant que variables d'environnement dans les applications qui ont l'add-on <strong>${addonName}</strong> dans leurs services liés.<br>À chaque fois que vous mettez à jour les changements, toutes les applications dépendantes seront redémarrées automatiquement.`,
+  'cc-env-var-form.description.env-var': ({ appName }) =>
+    sanitize`Ces variables seront injectées en tant que variables d'environnement dans l'application <strong>${appName}</strong>. <a href="https://doc.clever-cloud.com/admin-console/environment-variables/">En savoir plus</a>`,
+  'cc-env-var-form.description.exposed-config': ({ appName }) =>
+    sanitize`Configuration publiée pour les applications dépendantes. <a href="https://www.clever-cloud.com/doc/admin-console/service-dependencies/">En savoir plus</a><br>Ces variables ne seront pas injectées dans l'application <strong>${appName}</strong>, elles seront injectées en tant que variables d'environnement dans les applications qui ont <strong>${appName}</strong> dans leurs services liés.`,
   'cc-env-var-form.error.loading': `Une erreur est survenue pendant le chargement des variables.`,
   'cc-env-var-form.heading.config-provider': `Variables`,
   'cc-env-var-form.heading.env-var': `Variables d'environnement`,
@@ -332,13 +379,18 @@ export const translations = {
     return sanitize`Configuration publiée par l'application <strong>${serviceName}</strong>.<br>Ces variables seront injectées en tant que variables d'environnement dans l'application <strong>${appName}</strong>.`;
   },
   'cc-env-var-linked-services.empty.addon': ({ appName }) => sanitize`Aucun add-on lié à <strong>${appName}</strong>.`,
-  'cc-env-var-linked-services.empty.app': ({ appName }) => sanitize`Aucune application liée à <strong>${appName}</strong>.`,
-  'cc-env-var-linked-services.error.addon': ({ appName }) => sanitize`Une erreur est survenue pendant le chargement des add-ons liés à <strong>${appName}</strong>.`,
-  'cc-env-var-linked-services.error.app': ({ appName }) => sanitize`Une erreur est survenue pendant le chargement des applications liées à <strong>${appName}</strong>.`,
+  'cc-env-var-linked-services.empty.app': ({ appName }) =>
+    sanitize`Aucune application liée à <strong>${appName}</strong>.`,
+  'cc-env-var-linked-services.error.addon': ({ appName }) =>
+    sanitize`Une erreur est survenue pendant le chargement des add-ons liés à <strong>${appName}</strong>.`,
+  'cc-env-var-linked-services.error.app': ({ appName }) =>
+    sanitize`Une erreur est survenue pendant le chargement des applications liées à <strong>${appName}</strong>.`,
   'cc-env-var-linked-services.heading.addon': ({ name }) => `Add-on : ${name}`,
   'cc-env-var-linked-services.heading.app': ({ name }) => `Application : ${name}`,
-  'cc-env-var-linked-services.loading.addon': ({ appName }) => sanitize`Chargement des variables exposées par les add-ons liés à <strong>${appName}</strong>...`,
-  'cc-env-var-linked-services.loading.app': ({ appName }) => sanitize`Chargement de la configuration publiée par les applications liées à <strong>${appName}</strong>...`,
+  'cc-env-var-linked-services.loading.addon': ({ appName }) =>
+    sanitize`Chargement des variables exposées par les add-ons liés à <strong>${appName}</strong>...`,
+  'cc-env-var-linked-services.loading.app': ({ appName }) =>
+    sanitize`Chargement de la configuration publiée par les applications liées à <strong>${appName}</strong>...`,
   //#endregion
   //#region cc-grafana-info
   'cc-grafana-info.disable-description': `Désactiver Grafana supprimera et mettra fin aux accès à l'organisation du Grafana. Vous pourrez toujours recréer une nouvelle organisation Grafana.`,
@@ -364,13 +416,16 @@ export const translations = {
   'cc-grafana-info.reset.error': `Une erreur s'est produite lors de la réinitialisation des tableaux de bord du Grafana.`,
   'cc-grafana-info.reset.success': `Les tableaux de bords du grafana ont été réinitialisés avec succès.`,
   'cc-grafana-info.screenshot.addon.alt': `Capture d'écran d'un tableau de bord d'add-on dans Grafana`,
-  'cc-grafana-info.screenshot.addon.description': () => sanitize`Ce tableau de bord comprend plusieurs graphiques à propos d'un add-on. <br> Il fournit d'abord un panneau de présentation contenant les métriques système telles que <strong> le processeur, la mémoire, les disques et le réseau</strong>. <br> Pour les add-ons <strong>MySQL, PostgreSQL, MongoDB et Redis</strong>, un second panneau présente la base de données et des informations comme <strong>le nombre de connexions, de requêtes ou de transactions, d'erreurs ou de blocages ou encore d'opérations "tuples"<strong>.`,
+  'cc-grafana-info.screenshot.addon.description': () =>
+    sanitize`Ce tableau de bord comprend plusieurs graphiques à propos d'un add-on. <br> Il fournit d'abord un panneau de présentation contenant les métriques système telles que <strong> le processeur, la mémoire, les disques et le réseau</strong>. <br> Pour les add-ons <strong>MySQL, PostgreSQL, MongoDB et Redis</strong>, un second panneau présente la base de données et des informations comme <strong>le nombre de connexions, de requêtes ou de transactions, d'erreurs ou de blocages ou encore d'opérations "tuples"<strong>.`,
   'cc-grafana-info.screenshot.addon.title': `Aperçu du tableau de bord d'add-on`,
   'cc-grafana-info.screenshot.organisation.alt': `Capture d'écran d'un tableau de bord d'organisation dans Grafana`,
-  'cc-grafana-info.screenshot.organisation.description': () => sanitize`Ce tableau de bord comprend plusieurs graphiques pour une organisation Clever Cloud. <br> Il fournit un graphique résumant le nombre d'<strong>applications (runtimes) et d'add-ons déployés</strong>. Il contient également le nombre de services <strong>par type</strong> ou <strong>par plan (flavor)</strong>. <br> Le <strong>graphique d'état</strong> affiche un état pour tous les déploiements effectués durant la plage de temps de Grafana. <br> Et enfin, il est possible de récupérerer des <strong>liens globaux et spécifiques</strong> (triés par nombre de requêtes) pour accéder au tableau de bord d'une application (runtime) ou d'un add-on.`,
+  'cc-grafana-info.screenshot.organisation.description': () =>
+    sanitize`Ce tableau de bord comprend plusieurs graphiques pour une organisation Clever Cloud. <br> Il fournit un graphique résumant le nombre d'<strong>applications (runtimes) et d'add-ons déployés</strong>. Il contient également le nombre de services <strong>par type</strong> ou <strong>par plan (flavor)</strong>. <br> Le <strong>graphique d'état</strong> affiche un état pour tous les déploiements effectués durant la plage de temps de Grafana. <br> Et enfin, il est possible de récupérerer des <strong>liens globaux et spécifiques</strong> (triés par nombre de requêtes) pour accéder au tableau de bord d'une application (runtime) ou d'un add-on.`,
   'cc-grafana-info.screenshot.organisation.title': `Aperçu du tableau de bord d'organisation`,
   'cc-grafana-info.screenshot.runtime.alt': `Capture d'écran d'un tableau de bord d'application (runtime) dans Grafana`,
-  'cc-grafana-info.screenshot.runtime.description': () => sanitize`Ce tableau de bord comprend un <strong>panneau de présentation</strong> pour obtenir des informations rapides sur une application, ainsi que plusieurs panneaux présentant leurs métriques système. <br> Il fournit un graphique reprenant l'état <strong>du processeur, de la mémoire, des disques et du réseau</strong>. <br> Pour chaque groupe de métriques, le panneau contient des graphes d'utilisation, des jauges ou encore un indicateur de remplissage (basé sur le résultat d'une prédiction linéaire effectuée sur les données de l'intervalle de temps fixé dans Grafana). Cet indicateur donne la durée attendue avant que les métriques ne dépassent 90%.`,
+  'cc-grafana-info.screenshot.runtime.description': () =>
+    sanitize`Ce tableau de bord comprend un <strong>panneau de présentation</strong> pour obtenir des informations rapides sur une application, ainsi que plusieurs panneaux présentant leurs métriques système. <br> Il fournit un graphique reprenant l'état <strong>du processeur, de la mémoire, des disques et du réseau</strong>. <br> Pour chaque groupe de métriques, le panneau contient des graphes d'utilisation, des jauges ou encore un indicateur de remplissage (basé sur le résultat d'une prédiction linéaire effectuée sur les données de l'intervalle de temps fixé dans Grafana). Cet indicateur donne la durée attendue avant que les métriques ne dépassent 90%.`,
   'cc-grafana-info.screenshot.runtime.title': `Aperçu du tableau de bord d'application (runtime)`,
   //#endregion
   //#region cc-header-addon
@@ -379,7 +434,8 @@ export const translations = {
   'cc-header-addon.creation-date.short': ({ date }) => formatDateOnly(lang, date),
   'cc-header-addon.error': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
   'cc-header-addon.id-label': `Identifiant de l'add-on`,
-  'cc-header-addon.id-label-alternative': () => sanitize`Identifiant alternatif de l'add-on (<span lang="en">real id</span>)`,
+  'cc-header-addon.id-label-alternative': () =>
+    sanitize`Identifiant alternatif de l'add-on (<span lang="en">real id</span>)`,
   'cc-header-addon.plan': `Plan`,
   'cc-header-addon.version': `Version`,
   //#endregion
@@ -415,7 +471,8 @@ export const translations = {
   'cc-header-orga.hotline': `Numéro d'urgence :`,
   //#endregion
   //#region cc-heptapod-info
-  'cc-heptapod-info.description': () => sanitize`Cette instance Heptapod héberge des dépôts Mercurial. Plus d'informations sur <a href="https://about.heptapod.host">https://about.heptapod.host</a>.`,
+  'cc-heptapod-info.description': () =>
+    sanitize`Cette instance Heptapod héberge des dépôts Mercurial. Plus d'informations sur <a href="https://about.heptapod.host">https://about.heptapod.host</a>.`,
   'cc-heptapod-info.error-loading': `Une erreur est survenue pendant le chargement des informations d'utilisation.`,
   'cc-heptapod-info.not-in-use': `Vous n'utilisez pas ce service Heptapod.`,
   'cc-heptapod-info.price-description': `Prix estimé`,
@@ -464,9 +521,8 @@ export const translations = {
   'cc-invoice-table.number': `Numéro`,
   'cc-invoice-table.open-pdf': `Télécharger le PDF`,
   'cc-invoice-table.pay': `Régler`,
-  'cc-invoice-table.text': ({
-    number, date, amount,
-  }) => sanitize`Facture <strong>${number}</strong> émise le <strong>${formatDateOnly(lang, date)}</strong> pour un total de <code>${formatCurrency(lang, amount)}</code>`,
+  'cc-invoice-table.text': ({ number, date, amount }) =>
+    sanitize`Facture <strong>${number}</strong> émise le <strong>${formatDateOnly(lang, date)}</strong> pour un total de <code>${formatCurrency(lang, amount)}</code>`,
   'cc-invoice-table.total.label': `Total`,
   'cc-invoice-table.total.value': ({ amount }) => `${formatCurrency(lang, amount)}`,
   //#endregion
@@ -498,8 +554,10 @@ export const translations = {
   'cc-logs-application-view.custom-date-range.apply': `Appliquer`,
   'cc-logs-application-view.custom-date-range.date.bad-input': `Format de date invalide (YYYY-MM-DD HH:mm:ss)`,
   'cc-logs-application-view.custom-date-range.date.empty': `Veuillez saisir une valeur`,
-  'cc-logs-application-view.custom-date-range.date.range-overflow': ({ max }) => `La date doit être inférieure à ${max}`,
-  'cc-logs-application-view.custom-date-range.date.range-underflow': ({ min }) => `La date doit être supérieure à ${min}`,
+  'cc-logs-application-view.custom-date-range.date.range-overflow': ({ max }) =>
+    `La date doit être inférieure à ${max}`,
+  'cc-logs-application-view.custom-date-range.date.range-underflow': ({ min }) =>
+    `La date doit être supérieure à ${min}`,
   'cc-logs-application-view.custom-date-range.next': `Décaler à l'interval suivant`,
   'cc-logs-application-view.custom-date-range.previous': `Décaler à l'interval précédent`,
   'cc-logs-application-view.custom-date-range.since.local': `Début (heure locale)`,
@@ -531,8 +589,10 @@ export const translations = {
   'cc-logs-application-view.progress.loading.live': `Chargement en temps réel...`,
   'cc-logs-application-view.progress.message': ({ count }) => `${formatNumber(lang, count)} logs chargés`,
   'cc-logs-application-view.progress.overflow.continue': `Continuer`,
-  'cc-logs-application-view.progress.overflow.message': ({ limit }) => `Pour assurer de bonnes performances, seuls les ${formatNumber(lang, limit)} derniers logs sont visible.`,
-  'cc-logs-application-view.progress.overflow.message.almost': ({ limit }) => `Vous allez atteindre ${formatNumber(lang, limit)} logs chargés. Que voulez-vous faire ?`,
+  'cc-logs-application-view.progress.overflow.message': ({ limit }) =>
+    `Pour assurer de bonnes performances, seuls les ${formatNumber(lang, limit)} derniers logs sont visible.`,
+  'cc-logs-application-view.progress.overflow.message.almost': ({ limit }) =>
+    `Vous allez atteindre ${formatNumber(lang, limit)} logs chargés. Que voulez-vous faire ?`,
   'cc-logs-application-view.progress.overflow.stop': `Arrêter`,
   'cc-logs-application-view.progress.overflow.title': `Volume important`,
   'cc-logs-application-view.progress.pause': `Mettre en pause`,
@@ -584,10 +644,14 @@ export const translations = {
   'cc-logs-instances.stopping.header': `Instances arrêtées`,
   //#endregion
   //#region cc-logsmap
-  'cc-logsmap.legend.heatmap': ({ orgaName }) => sanitize`Carte de chaleur des requêtes HTTP reçues par les applications de <strong>${orgaName}</strong> durant les dernières 24 heures.`,
-  'cc-logsmap.legend.heatmap.app': ({ appName }) => sanitize`Carte de chaleur des requêtes HTTP reçues par l'application <strong>${appName}</strong> durant les dernières 24 heures.`,
-  'cc-logsmap.legend.points': ({ orgaName }) => sanitize`Carte temps réel des requêtes HTTP reçues par toutes les applications de <strong>${orgaName}</strong>.`,
-  'cc-logsmap.legend.points.app': ({ appName }) => sanitize`Carte temps réel des requêtes HTTP reçues par l'application <strong>${appName}</strong>.`,
+  'cc-logsmap.legend.heatmap': ({ orgaName }) =>
+    sanitize`Carte de chaleur des requêtes HTTP reçues par les applications de <strong>${orgaName}</strong> durant les dernières 24 heures.`,
+  'cc-logsmap.legend.heatmap.app': ({ appName }) =>
+    sanitize`Carte de chaleur des requêtes HTTP reçues par l'application <strong>${appName}</strong> durant les dernières 24 heures.`,
+  'cc-logsmap.legend.points': ({ orgaName }) =>
+    sanitize`Carte temps réel des requêtes HTTP reçues par toutes les applications de <strong>${orgaName}</strong>.`,
+  'cc-logsmap.legend.points.app': ({ appName }) =>
+    sanitize`Carte temps réel des requêtes HTTP reçues par l'application <strong>${appName}</strong>.`,
   'cc-logsmap.mode.heatmap': `Dernières 24h`,
   'cc-logsmap.mode.points': `En direct`,
   //#endregion
@@ -624,7 +688,8 @@ export const translations = {
   'cc-notice.icon-alt.warning': `Avertissement`,
   //#endregion
   //#region cc-orga-member-card
-  'cc-orga-member-card.btn.cancel.accessible-name': ({ memberIdentity }) => `Annuler la modification du membre - ${memberIdentity}`,
+  'cc-orga-member-card.btn.cancel.accessible-name': ({ memberIdentity }) =>
+    `Annuler la modification du membre - ${memberIdentity}`,
   'cc-orga-member-card.btn.cancel.visible-text': `Annuler`,
   'cc-orga-member-card.btn.delete.accessible-name': ({ memberIdentity }) => `Supprimer le membre - ${memberIdentity}`,
   'cc-orga-member-card.btn.delete.visible-text': `Supprimer`,
@@ -632,7 +697,8 @@ export const translations = {
   'cc-orga-member-card.btn.edit.visible-text': `Modifier`,
   'cc-orga-member-card.btn.leave.accessible-name': `Quitter l'organisation`,
   'cc-orga-member-card.btn.leave.visible-text': `Quitter`,
-  'cc-orga-member-card.btn.validate.accessible-name': ({ memberIdentity }) => `Valider la modification du membre - ${memberIdentity}`,
+  'cc-orga-member-card.btn.validate.accessible-name': ({ memberIdentity }) =>
+    `Valider la modification du membre - ${memberIdentity}`,
   'cc-orga-member-card.btn.validate.visible-text': `Valider`,
   'cc-orga-member-card.current-user': `Votre compte`,
   'cc-orga-member-card.error.last-admin.heading': `Vous êtes le dernier admin de l'organisation`,
@@ -646,34 +712,43 @@ export const translations = {
   'cc-orga-member-card.role.manager': `Manager`,
   //#endregion
   //#region cc-orga-member-list
-  'cc-orga-member-list.delete.error': ({ memberIdentity }) => sanitize`Une erreur est survenue lors la suppression de <strong>${memberIdentity}</strong>.`,
-  'cc-orga-member-list.delete.success': ({ memberIdentity }) => sanitize`<strong>${memberIdentity}</strong> a été supprimé de l'organisation.`,
-  'cc-orga-member-list.edit.error': ({ memberIdentity }) => sanitize`Une erreur est survenue lors de la modification de <strong>${memberIdentity}</strong>.`,
-  'cc-orga-member-list.edit.success': ({ memberIdentity }) => sanitize`Le rôle de <strong>${memberIdentity}</strong> a bien été modifié.`,
+  'cc-orga-member-list.delete.error': ({ memberIdentity }) =>
+    sanitize`Une erreur est survenue lors la suppression de <strong>${memberIdentity}</strong>.`,
+  'cc-orga-member-list.delete.success': ({ memberIdentity }) =>
+    sanitize`<strong>${memberIdentity}</strong> a été supprimé de l'organisation.`,
+  'cc-orga-member-list.edit.error': ({ memberIdentity }) =>
+    sanitize`Une erreur est survenue lors de la modification de <strong>${memberIdentity}</strong>.`,
+  'cc-orga-member-list.edit.success': ({ memberIdentity }) =>
+    sanitize`Le rôle de <strong>${memberIdentity}</strong> a bien été modifié.`,
   'cc-orga-member-list.error': `Une erreur est survenue pendant le chargement de la liste des membres.`,
   'cc-orga-member-list.error-member-not-found.heading': `Membre introuvable`,
-  'cc-orga-member-list.error-member-not-found.text': () => sanitize`<p>Le membre a probablement quitté l'organisation ou a été supprimé par quelqu'un d'autre pendant que vous consultiez la liste.<p><p>Veuillez <strong>rafraîchir votre page</strong> pour récupérer la liste des membres à jour.</p>`,
+  'cc-orga-member-list.error-member-not-found.text': () =>
+    sanitize`<p>Le membre a probablement quitté l'organisation ou a été supprimé par quelqu'un d'autre pendant que vous consultiez la liste.<p><p>Veuillez <strong>rafraîchir votre page</strong> pour récupérer la liste des membres à jour.</p>`,
   'cc-orga-member-list.error.unauthorised.heading': `Vous n'avez pas les droits nécessaires`,
   'cc-orga-member-list.error.unauthorised.text': `Seul un admin peut inviter, éditer ou supprimer un autre admin.`,
   'cc-orga-member-list.filter.mfa': `Comptes non sécurisés par 2FA`,
   'cc-orga-member-list.filter.name': `Filtrer par nom ou adresse e-mail`,
   'cc-orga-member-list.invite.email.error-duplicate': `Cet utilisateur fait déjà partie des membres de votre organisation.`,
   'cc-orga-member-list.invite.email.error-empty': `Veuillez saisir une adresse e-mail.`,
-  'cc-orga-member-list.invite.email.error-format': () => sanitize`Format d'adresse e-mail invalide.<br>Exemple: john.doe@example.com.`,
+  'cc-orga-member-list.invite.email.error-format': () =>
+    sanitize`Format d'adresse e-mail invalide.<br>Exemple: john.doe@example.com.`,
   'cc-orga-member-list.invite.email.format': `nom@example.com`,
   'cc-orga-member-list.invite.email.label': `Adresse e-mail`,
   'cc-orga-member-list.invite.heading': `Inviter un membre`,
-  'cc-orga-member-list.invite.info': () => sanitize`Plus d'informations à propos des rôles sur la page <a href="https://www.clever-cloud.com/doc/account/organizations/#roles-and-privileges">Rôles et organisations (en anglais)</a>`,
+  'cc-orga-member-list.invite.info': () =>
+    sanitize`Plus d'informations à propos des rôles sur la page <a href="https://www.clever-cloud.com/doc/account/organizations/#roles-and-privileges">Rôles et organisations (en anglais)</a>`,
   'cc-orga-member-list.invite.role.accounting': `Comptable`,
   'cc-orga-member-list.invite.role.admin': `Admin`,
   'cc-orga-member-list.invite.role.developer': `Développeur`,
   'cc-orga-member-list.invite.role.label': `Rôle`,
   'cc-orga-member-list.invite.role.manager': `Manager`,
   'cc-orga-member-list.invite.submit': `Inviter`,
-  'cc-orga-member-list.invite.submit.error': ({ userEmail }) => sanitize`Une erreur est survenue lors de l'invitation de <strong>${userEmail}</strong> dans l'organisation.`,
+  'cc-orga-member-list.invite.submit.error': ({ userEmail }) =>
+    sanitize`Une erreur est survenue lors de l'invitation de <strong>${userEmail}</strong> dans l'organisation.`,
   'cc-orga-member-list.invite.submit.error-rate-limit.message': `Attendez quelques minutes avant d'essayer à nouveau.`,
   'cc-orga-member-list.invite.submit.error-rate-limit.title': `Vous avez tenté d'inviter des membres trop de fois`,
-  'cc-orga-member-list.invite.submit.success': ({ userEmail }) => sanitize`Un e-mail a été envoyé à <strong>${userEmail}</strong> pour l'inviter dans l'organisation.`,
+  'cc-orga-member-list.invite.submit.success': ({ userEmail }) =>
+    sanitize`Un e-mail a été envoyé à <strong>${userEmail}</strong> pour l'inviter dans l'organisation.`,
   'cc-orga-member-list.leave.btn': `Quitter l'organisation`,
   'cc-orga-member-list.leave.error': `Une erreur est survenue lorsque vous avez tenté de quitter l'organisation.`,
   'cc-orga-member-list.leave.error-last-admin.heading': `Vous êtes le dernier admin de l'organisation`,
@@ -689,12 +764,16 @@ export const translations = {
   'cc-orga-member-list.no-result': `Aucun résultat ne correspond à vos critères de recherche.`,
   //#endregion
   //#region cc-payment-warning
-  'cc-payment-warning.billing-page-link': ({ orgaName, orgaBillingLink }) => sanitize`<a href="${orgaBillingLink}" aria-label="Se rendre sur la page de facturation - ${orgaName}">Se rendre sur la page de facturation</a>`,
-  'cc-payment-warning.generic.default-payment-method-is-expired': ({ orgaName }) => sanitize`<strong>${orgaName}</strong> a un moyen de paiement enregistré mais il est expiré.`,
-  'cc-payment-warning.generic.no-default-payment-method': ({ orgaName }) => sanitize`<strong>${orgaName}</strong> a des moyens de payments enregistrés mais aucun d'entre eux n'est défini par défaut.`,
-  'cc-payment-warning.generic.no-payment-method': ({ orgaName }) => sanitize`<strong>${orgaName}</strong> n'a aucun moyen de paiement enregistré.`,
+  'cc-payment-warning.billing-page-link': ({ orgaName, orgaBillingLink }) =>
+    sanitize`<a href="${orgaBillingLink}" aria-label="Se rendre sur la page de facturation - ${orgaName}">Se rendre sur la page de facturation</a>`,
+  'cc-payment-warning.generic.default-payment-method-is-expired': ({ orgaName }) =>
+    sanitize`<strong>${orgaName}</strong> a un moyen de paiement enregistré mais il est expiré.`,
+  'cc-payment-warning.generic.no-default-payment-method': ({ orgaName }) =>
+    sanitize`<strong>${orgaName}</strong> a des moyens de payments enregistrés mais aucun d'entre eux n'est défini par défaut.`,
+  'cc-payment-warning.generic.no-payment-method': ({ orgaName }) =>
+    sanitize`<strong>${orgaName}</strong> n'a aucun moyen de paiement enregistré.`,
   'cc-payment-warning.home': ({ orgaCount }) => {
-    const organisation = plural(orgaCount, 'à l\'organisation suivante', 'aux organisations suivantes');
+    const organisation = plural(orgaCount, "à l'organisation suivante", 'aux organisations suivantes');
     return `Pour éviter tout risque de suspension de vos services et de suppression de vos données, merci de vérifier les informations de facturation liées ${organisation} :`;
   },
   'cc-payment-warning.home.title': `Attention ! Quelque chose pose problème avec vos moyens de paiement.`,
@@ -729,15 +808,18 @@ export const translations = {
   'cc-pricing-estimation.label.currency': `Devise`,
   'cc-pricing-estimation.label.temporality': `Temporalité`,
   'cc-pricing-estimation.plan.delete': ({ productName, planName }) => `Remove ${productName} - ${planName}`,
-  'cc-pricing-estimation.plan.qty.btn.decrease': ({ productName, planName }) => `Réduire la quantité - ${productName} (${planName})`,
-  'cc-pricing-estimation.plan.qty.btn.increase': ({ productName, planName }) => `Augmenter la quantité - ${productName} (${planName})`,
+  'cc-pricing-estimation.plan.qty.btn.decrease': ({ productName, planName }) =>
+    `Réduire la quantité - ${productName} (${planName})`,
+  'cc-pricing-estimation.plan.qty.btn.increase': ({ productName, planName }) =>
+    `Augmenter la quantité - ${productName} (${planName})`,
   'cc-pricing-estimation.plan.qty.label': `Quantité: `,
   'cc-pricing-estimation.plan.total.label': ({ productName, planName }) => `Total pour ${productName} ${planName}`,
-  'cc-pricing-estimation.price': ({ price, code, digits }) => formatCurrency(lang, price, {
-    currency: code,
-    minimumFractionDigits: digits,
-    maximumFractionDigits: digits,
-  }),
+  'cc-pricing-estimation.price': ({ price, code, digits }) =>
+    formatCurrency(lang, price, {
+      currency: code,
+      minimumFractionDigits: digits,
+      maximumFractionDigits: digits,
+    }),
   'cc-pricing-estimation.price-name.1000-minutes': `Prix (${formatNumber(lang, 1000)} minutes)`,
   'cc-pricing-estimation.price-name.30-days': () => sanitize`Prix/30&nbsp;jours`,
   'cc-pricing-estimation.price-name.day': `Prix/jour`,
@@ -786,11 +868,12 @@ export const translations = {
   'cc-pricing-product.feature.memory': `RAM`,
   'cc-pricing-product.feature.version': `Version`,
   'cc-pricing-product.plan': `Plan`,
-  'cc-pricing-product.price': ({ price, code, digits }) => formatCurrency(lang, price, {
-    currency: code,
-    minimumFractionDigits: digits,
-    maximumFractionDigits: digits,
-  }),
+  'cc-pricing-product.price': ({ price, code, digits }) =>
+    formatCurrency(lang, price, {
+      currency: code,
+      minimumFractionDigits: digits,
+      maximumFractionDigits: digits,
+    }),
   'cc-pricing-product.price-name.1000-minutes': `Prix (${formatNumber(lang, 1000)} minutes)`,
   'cc-pricing-product.price-name.30-days': () => sanitize`Prix/30&nbsp;jours`,
   'cc-pricing-product.price-name.day': `Prix/jour`,
@@ -820,7 +903,9 @@ export const translations = {
   'cc-pricing-product-consumption.price': ({ price, code }) => `${formatCurrency(lang, price, { currency: code })}`,
   'cc-pricing-product-consumption.price-interval.bytes': ({ price, code }) => {
     const priceInterval = formatCurrency(lang, price, {
-      minimumFractionDigits: 3, maximumFractionDigits: 3, currency: code,
+      minimumFractionDigits: 3,
+      maximumFractionDigits: 3,
+      currency: code,
     });
     const priceOneGigabyte = getUnit(1e9);
     return `${priceInterval} / ${priceOneGigabyte} (30 jours)`;
@@ -858,44 +943,58 @@ export const translations = {
   //#endregion
   //#region cc-ssh-key-list
   'cc-ssh-key-list.add.btn': `Ajouter la clé`,
-  'cc-ssh-key-list.add.info': () => sanitize`<p>Vous devez associer une clé SSH à votre compte si vous désirez déployer via Git. Utilisez ce formulaire à cet effet.</p><p>Vous pouvez créer une clé SSH avec la commande suivante&nbsp;:</p><code>ssh-keygen -t ed25519 -C "my-email@example.com"</code><p>La clé publique générée est sauvegardée dans le fichier "*.pub".</p>`,
+  'cc-ssh-key-list.add.info': () =>
+    sanitize`<p>Vous devez associer une clé SSH à votre compte si vous désirez déployer via Git. Utilisez ce formulaire à cet effet.</p><p>Vous pouvez créer une clé SSH avec la commande suivante&nbsp;:</p><code>ssh-keygen -t ed25519 -C "my-email@example.com"</code><p>La clé publique générée est sauvegardée dans le fichier "*.pub".</p>`,
   'cc-ssh-key-list.add.name': `Nom`,
   'cc-ssh-key-list.add.public-key': `Clé publique`,
   'cc-ssh-key-list.add.title': `Ajouter une nouvelle clé`,
-  'cc-ssh-key-list.doc.info': () => sanitize`Pour plus d'aide, vous pouvez consulter notre <a href="https://www.clever-cloud.com/doc/admin-console/ssh-keys/">documentation (en anglais)</a>.`,
-  'cc-ssh-key-list.error.add': ({ name }) => `Une erreur est survenue pendant l'ajout de votre nouvelle clé personnelle "${name}".`,
-  'cc-ssh-key-list.error.delete': ({ name }) => `Une erreur est survenue pendant la suppression de votre clé personnelle "${name}".`,
-  'cc-ssh-key-list.error.import': ({ name }) => `Une erreur est survenue pendant l'import de votre clé personnelle "${name}".`,
+  'cc-ssh-key-list.doc.info': () =>
+    sanitize`Pour plus d'aide, vous pouvez consulter notre <a href="https://www.clever-cloud.com/doc/admin-console/ssh-keys/">documentation (en anglais)</a>.`,
+  'cc-ssh-key-list.error.add': ({ name }) =>
+    `Une erreur est survenue pendant l'ajout de votre nouvelle clé personnelle "${name}".`,
+  'cc-ssh-key-list.error.delete': ({ name }) =>
+    `Une erreur est survenue pendant la suppression de votre clé personnelle "${name}".`,
+  'cc-ssh-key-list.error.import': ({ name }) =>
+    `Une erreur est survenue pendant l'import de votre clé personnelle "${name}".`,
   'cc-ssh-key-list.error.loading': `Une erreur est survenue pendant le chargement de vos clés.`,
-  'cc-ssh-key-list.error.private-key': () => sanitize`Format incorrect&nbsp;: avez-vous saisi votre clé privée au lieu de votre clé publique&nbsp;?`,
+  'cc-ssh-key-list.error.private-key': () =>
+    sanitize`Format incorrect&nbsp;: avez-vous saisi votre clé privée au lieu de votre clé publique&nbsp;?`,
   'cc-ssh-key-list.error.required.name': `Veuillez saisir un nom pour votre clé SSH`,
   'cc-ssh-key-list.error.required.public-key': `Veuillez saisir la valeur de votre clé publique`,
   'cc-ssh-key-list.github.empty': `Il n'y a aucune clé SSH disponible à l'import depuis votre compte GitHub.`,
   'cc-ssh-key-list.github.import': `Importer`,
   'cc-ssh-key-list.github.import.a11y': ({ name }) => `Importer la clé SSH GitHub - ${name}`,
-  'cc-ssh-key-list.github.info': () => sanitize`<p>Voici les clés provenant de votre compte GitHub. Vous pouvez les importer pour les associer à votre compte Clever Cloud.</p>`,
+  'cc-ssh-key-list.github.info': () =>
+    sanitize`<p>Voici les clés provenant de votre compte GitHub. Vous pouvez les importer pour les associer à votre compte Clever Cloud.</p>`,
   'cc-ssh-key-list.github.title': `Clés GitHub`,
-  'cc-ssh-key-list.github.unlinked': () => sanitize`Il n'y a pas de compte GitHub lié à votre compte Clever Cloud. Vous pouvez lier vos comptes depuis votre <a href="./information">profil</a>`,
+  'cc-ssh-key-list.github.unlinked': () =>
+    sanitize`Il n'y a pas de compte GitHub lié à votre compte Clever Cloud. Vous pouvez lier vos comptes depuis votre <a href="./information">profil</a>`,
   'cc-ssh-key-list.personal.delete': `Supprimer`,
   'cc-ssh-key-list.personal.delete.a11y': ({ name }) => `Supprimer votre clé SSH personnelle - ${name}`,
   'cc-ssh-key-list.personal.empty': `Il n'y a aucune clé SSH associée à votre compte.`,
-  'cc-ssh-key-list.personal.info': () => sanitize`<p>Voici la liste des clés SSH associées à votre compte.</p><p>Si vous souhaitez vérifier qu'une clé est déjà associée, vous pouvez lister les empreintes de vos clés locales avec la commande suivante&nbsp;:</p><code>ssh-add -l -E sha256</code>`,
+  'cc-ssh-key-list.personal.info': () =>
+    sanitize`<p>Voici la liste des clés SSH associées à votre compte.</p><p>Si vous souhaitez vérifier qu'une clé est déjà associée, vous pouvez lister les empreintes de vos clés locales avec la commande suivante&nbsp;:</p><code>ssh-add -l -E sha256</code>`,
   'cc-ssh-key-list.personal.title': `Vos clés`,
   'cc-ssh-key-list.success.add': ({ name }) => sanitize`Votre clé <strong>${name}</strong> a été ajoutée avec succès.`,
-  'cc-ssh-key-list.success.delete': ({ name }) => sanitize`Votre clé <strong>${name}</strong> a été supprimée avec succès.`,
-  'cc-ssh-key-list.success.import': ({ name }) => sanitize`Votre clé <strong>${name}</strong> a été importée avec succès.`,
+  'cc-ssh-key-list.success.delete': ({ name }) =>
+    sanitize`Votre clé <strong>${name}</strong> a été supprimée avec succès.`,
+  'cc-ssh-key-list.success.import': ({ name }) =>
+    sanitize`Votre clé <strong>${name}</strong> a été importée avec succès.`,
   'cc-ssh-key-list.title': `Clés SSH`,
   //#endregion
   //#region cc-tcp-redirection
   'cc-tcp-redirection.create-button': `Créer`,
   'cc-tcp-redirection.delete-button': `Supprimer`,
-  'cc-tcp-redirection.namespace-additionaldescription-cleverapps': () => sanitize`Cet espace de nommage est utilisé par tous les noms de domaine <em>cleverapps.io</em> (p. ex. <em>mon-application.cleverapps.io</em>).`,
-  'cc-tcp-redirection.namespace-additionaldescription-default': () => sanitize`Cet espace de nommage est utilisé par tous les noms de domaine personnalisés (p. ex. <em>mon-application.fr</em>).`,
+  'cc-tcp-redirection.namespace-additionaldescription-cleverapps': () =>
+    sanitize`Cet espace de nommage est utilisé par tous les noms de domaine <em>cleverapps.io</em> (p. ex. <em>mon-application.cleverapps.io</em>).`,
+  'cc-tcp-redirection.namespace-additionaldescription-default': () =>
+    sanitize`Cet espace de nommage est utilisé par tous les noms de domaine personnalisés (p. ex. <em>mon-application.fr</em>).`,
   'cc-tcp-redirection.namespace-private': `Cet espace de nommage vous est dédié.`,
   'cc-tcp-redirection.redirection-defined': ({ namespace, sourcePort }) => {
     return sanitize`Cette application a une redirection du port <code>${sourcePort}</code> vers le port <code>4040</code> dans l'espace de nommage <strong>${namespace}</strong>.`;
   },
-  'cc-tcp-redirection.redirection-not-defined': ({ namespace }) => sanitize`Vous pouvez créer une redirection dans l'espace de nommage <strong>${namespace}</strong>.`,
+  'cc-tcp-redirection.redirection-not-defined': ({ namespace }) =>
+    sanitize`Vous pouvez créer une redirection dans l'espace de nommage <strong>${namespace}</strong>.`,
   //#endregion
   //#region cc-tcp-redirection-form
   'cc-tcp-redirection-form.create.error': ({ namespace }) => {
@@ -1007,7 +1106,8 @@ export const translations = {
   //#region cc-tile-status-codes
   'cc-tile-status-codes.about-btn': `À propos de ce graphe...`,
   'cc-tile-status-codes.close-btn': `Afficher le graphe`,
-  'cc-tile-status-codes.docs.link': () => sanitize`<a href="https://developer.mozilla.org/fr/docs/Web/HTTP/Status">Codes de réponses HTTP (MDN)</a>`,
+  'cc-tile-status-codes.docs.link': () =>
+    sanitize`<a href="https://developer.mozilla.org/fr/docs/Web/HTTP/Status">Codes de réponses HTTP (MDN)</a>`,
   'cc-tile-status-codes.docs.msg': `Répartition des codes de réponses HTTP envoyés durant les dernières 24 heures. Cliquez sur les éléments de légende pour cacher/montrer certaines catégories de codes.`,
   'cc-tile-status-codes.empty': `Il n'y a pas de données à afficher pour l'instant.`,
   'cc-tile-status-codes.error': `Une erreur est survenue pendant le chargement des codes de réponses HTTP.`,

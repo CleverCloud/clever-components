@@ -1,22 +1,19 @@
-import '../cc-button/cc-button.js';
 import { ArcElement, Chart, DoughnutController, Legend, Tooltip } from 'chart.js';
-import { css, html, LitElement } from 'lit';
+import { LitElement, css, html } from 'lit';
 import { cache } from 'lit/directives/cache.js';
 import { classMap } from 'lit/directives/class-map.js';
 import status from 'statuses';
 import { iconCleverInfo as iconInfo } from '../../assets/cc-clever.icons.js';
-import {
-  iconRemixAlertFill as iconAlert,
-  iconRemixCloseLine as iconClose,
-} from '../../assets/cc-remix.icons.js';
+import { iconRemixAlertFill as iconAlert, iconRemixCloseLine as iconClose } from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../lib/i18n.js';
 import { tileStyles } from '../../styles/info-tiles.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
+import '../cc-button/cc-button.js';
 
 Chart.register(ArcElement, DoughnutController, Legend, Tooltip);
 
-function xor (a, b) {
+function xor(a, b) {
   return Number(a) ^ Number(b);
 }
 
@@ -44,8 +41,7 @@ const SKELETON_STATUS_CODES = { 200: 1 };
  * @cssdisplay grid
  */
 export class CcTileStatusCodes extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       state: { type: Object },
       _docs: { type: Boolean, state: true },
@@ -54,7 +50,7 @@ export class CcTileStatusCodes extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {TileStatusCodesState} Sets the status codes state. */
@@ -70,12 +66,11 @@ export class CcTileStatusCodes extends LitElement {
     this._skeleton = false;
   }
 
-  _onToggleDocs () {
+  _onToggleDocs() {
     this._docs = !this._docs;
   }
 
-  firstUpdated (changedProperties) {
-
+  firstUpdated(changedProperties) {
     if (this.state.type === 'error') {
       return;
     }
@@ -93,7 +88,7 @@ export class CcTileStatusCodes extends LitElement {
           legend: {
             onClick: function (e, legendItem) {
               this.chart.data.labels.forEach((label, i) => {
-                const sameLabel = (label === legendItem.text);
+                const sameLabel = label === legendItem.text;
                 if (xor(e.native.shiftKey, sameLabel)) {
                   this.chart.toggleDataVisibility(i);
                 }
@@ -146,9 +141,8 @@ export class CcTileStatusCodes extends LitElement {
   }
 
   // updated and not update because we need this._chart before
-  updated (changedProperties) {
+  updated(changedProperties) {
     if (changedProperties.has('state')) {
-
       if (this.state.type === 'error') {
         return;
       }
@@ -178,25 +172,25 @@ export class CcTileStatusCodes extends LitElement {
         this._chart.options.plugins.tooltip.enabled = !this._skeleton;
         this._chart.data = {
           labels: this._chartLabels,
-          datasets: [{
-            data: this._data,
-            backgroundColor: this._backgroundColor,
-          }],
+          datasets: [
+            {
+              data: this._data,
+              backgroundColor: this._backgroundColor,
+            },
+          ],
         };
         this._chart.update();
       });
-
     }
     super.updated(changedProperties);
   }
 
-  render () {
-
+  render() {
     const error = this.state.type === 'error';
-    const displayChart = (!error && !this._empty && !this._docs);
-    const displayError = (error && !this._docs);
-    const displayEmpty = (this._empty && !this._docs);
-    const displayDocs = (this._docs);
+    const displayChart = !error && !this._empty && !this._docs;
+    const displayError = error && !this._docs;
+    const displayEmpty = this._empty && !this._docs;
+    const displayDocs = this._docs;
 
     return html`
       <div class="tile_title tile_title--image">
@@ -208,31 +202,37 @@ export class CcTileStatusCodes extends LitElement {
           outlined
           primary
           @cc-button:click=${this._onToggleDocs}
-        >${this._docs ? i18n('cc-tile-status-codes.close-btn') : i18n('cc-tile-status-codes.about-btn')}
+          >${this._docs ? i18n('cc-tile-status-codes.close-btn') : i18n('cc-tile-status-codes.about-btn')}
         </cc-button>
       </div>
 
-      ${cache(displayChart ? html`
-        <div class="tile_body">
-          <!-- https://www.chartjs.org/docs/latest/general/responsive.html -->
-          <div class="chart-container ${classMap({ skeleton: this._skeleton })}">
-            <canvas id="chart"></canvas>
-          </div>
-        </div>
-      ` : '')}
-
-      ${displayEmpty ? html`
-        <div class="tile_message">${i18n('cc-tile-status-codes.empty')}</div>
-      ` : ''}
-
-      ${displayError ? html`
-        <div class="tile_message">
-          <div class="error-message">
-            <cc-icon .icon="${iconAlert}" a11y-name="${i18n('cc-tile-status-codes.error.icon-a11y-name')}" class="icon-warning"></cc-icon>
-            <p>${i18n('cc-tile-status-codes.error')}</p>
-          </div>
-        </div>
-      ` : ''}
+      ${cache(
+        displayChart
+          ? html`
+              <div class="tile_body">
+                <!-- https://www.chartjs.org/docs/latest/general/responsive.html -->
+                <div class="chart-container ${classMap({ skeleton: this._skeleton })}">
+                  <canvas id="chart"></canvas>
+                </div>
+              </div>
+            `
+          : '',
+      )}
+      ${displayEmpty ? html` <div class="tile_message">${i18n('cc-tile-status-codes.empty')}</div> ` : ''}
+      ${displayError
+        ? html`
+            <div class="tile_message">
+              <div class="error-message">
+                <cc-icon
+                  .icon="${iconAlert}"
+                  a11y-name="${i18n('cc-tile-status-codes.error.icon-a11y-name')}"
+                  class="icon-warning"
+                ></cc-icon>
+                <p>${i18n('cc-tile-status-codes.error')}</p>
+              </div>
+            </div>
+          `
+        : ''}
 
       <div class="tile_docs ${classMap({ 'tile_docs--hidden': !displayDocs })}">
         <p>${i18n('cc-tile-status-codes.docs.msg')}</p>
@@ -241,7 +241,7 @@ export class CcTileStatusCodes extends LitElement {
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       tileStyles,
       skeletonStyles,

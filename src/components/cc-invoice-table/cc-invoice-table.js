@@ -1,5 +1,4 @@
 import { css, html, LitElement } from 'lit';
-import '../cc-icon/cc-icon.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixFileTextLine as iconFile } from '../../assets/cc-remix.icons.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
@@ -7,6 +6,7 @@ import { i18n } from '../../lib/i18n.js';
 import { sortBy } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
+import '../cc-icon/cc-icon.js';
 
 // TODO: Move to clever-client
 export const PENDING_STATUSES = ['PENDING', 'PAYMENTHELD', 'WONTPAY'];
@@ -15,9 +15,36 @@ export const PROCESSED_STATUSES = ['PAID', 'CANCELED', 'REFUNDED'];
 
 /** @type {Invoice[]} */
 const SKELETON_INVOICES = [
-  { emissionDate: '2020-01-01', number: '????????????', type: 'INVOICE', status: 'PENDING', total: { currency: 'EUR', amount: 10.00 }, downloadUrl: '', paymentUrl: '', invoiceHtml: '' },
-  { emissionDate: '2020-02-01', number: '????????????', type: 'INVOICE', status: 'PENDING', total: { currency: 'EUR', amount: 200.00 }, downloadUrl: '', paymentUrl: '', invoiceHtml: '' },
-  { emissionDate: '2020-03-01', number: '????????????', type: 'INVOICE', status: 'PENDING', total: { currency: 'EUR', amount: 3000.00 }, downloadUrl: '', paymentUrl: '', invoiceHtml: '' },
+  {
+    emissionDate: '2020-01-01',
+    number: '????????????',
+    type: 'INVOICE',
+    status: 'PENDING',
+    total: { currency: 'EUR', amount: 10.0 },
+    downloadUrl: '',
+    paymentUrl: '',
+    invoiceHtml: '',
+  },
+  {
+    emissionDate: '2020-02-01',
+    number: '????????????',
+    type: 'INVOICE',
+    status: 'PENDING',
+    total: { currency: 'EUR', amount: 200.0 },
+    downloadUrl: '',
+    paymentUrl: '',
+    invoiceHtml: '',
+  },
+  {
+    emissionDate: '2020-03-01',
+    number: '????????????',
+    type: 'INVOICE',
+    status: 'PENDING',
+    total: { currency: 'EUR', amount: 3000.0 },
+    downloadUrl: '',
+    paymentUrl: '',
+    invoiceHtml: '',
+  },
 ];
 
 /**
@@ -32,14 +59,13 @@ const SKELETON_INVOICES = [
  * @cssdisplay block
  */
 export class CcInvoiceTable extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       state: { type: Object },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {InvoiceTableState} Sets the state of the component */
@@ -54,10 +80,10 @@ export class CcInvoiceTable extends LitElement {
    * @returns {Invoice[]} formatted invoices
    * @private
    */
-  _formatInvoices (invoices) {
+  _formatInvoices(invoices) {
     return invoices
       .map((invoice) => {
-        const sign = (invoice.type === 'CREDITNOTE') ? -1 : 1;
+        const sign = invoice.type === 'CREDITNOTE' ? -1 : 1;
         return {
           ...invoice,
           total: {
@@ -69,18 +95,18 @@ export class CcInvoiceTable extends LitElement {
       .sort(sortBy('emissionDate', true));
   }
 
-  render () {
-
+  render() {
     // NOTE: This value is arbitrary, we don't have a better solution for now
     // It's a bit more than the width of the table in french (which is the largest) and with both links (download and pay)
     // The table width is mostly stable since the width of the amount is fixed and the rest is almost always the same number of characters
-    const isBig = (this._resizeController.width > 700);
+    const isBig = this._resizeController.width > 700;
     const skeleton = this.state.type === 'loading';
-    const invoices = this.state.type === 'loaded' ? this._formatInvoices(this.state.invoices) : this._formatInvoices(SKELETON_INVOICES);
+    const invoices =
+      this.state.type === 'loaded'
+        ? this._formatInvoices(this.state.invoices)
+        : this._formatInvoices(SKELETON_INVOICES);
 
-    return isBig
-      ? this._renderTable(skeleton, invoices)
-      : this._renderList(skeleton, invoices);
+    return isBig ? this._renderTable(skeleton, invoices) : this._renderList(skeleton, invoices);
   }
 
   /**
@@ -89,7 +115,7 @@ export class CcInvoiceTable extends LitElement {
    * @returns {TemplateResult}
    * @private
    */
-  _renderTable (skeleton, invoiceList) {
+  _renderTable(skeleton, invoiceList) {
     return html`
       <table>
         <tr>
@@ -98,24 +124,26 @@ export class CcInvoiceTable extends LitElement {
           <th class="number">${i18n('cc-invoice-table.total.label')}</th>
           <th></th>
         </tr>
-        ${invoiceList.map((invoice) => html`
-          <tr>
-            <td>
-              <span class="${classMap({ skeleton })}">${i18n('cc-invoice-table.date.value', { date: invoice.emissionDate })}</span>
-            </td>
-            <td>
-              <span class="${classMap({ skeleton })}">${invoice.number}</span>
-            </td>
-            <td class="number">
-              <code class="${classMap({ skeleton, 'credit-note': (invoice.type === 'CREDITNOTE') })}">
-                ${i18n('cc-invoice-table.total.value', { amount: invoice.total.amount })}
-              </code>
-            </td>
-            <td>
-              ${this._renderLinks(skeleton, invoice)}
-            </td>
-          </tr>
-        `)}
+        ${invoiceList.map(
+          (invoice) => html`
+            <tr>
+              <td>
+                <span class="${classMap({ skeleton })}"
+                  >${i18n('cc-invoice-table.date.value', { date: invoice.emissionDate })}</span
+                >
+              </td>
+              <td>
+                <span class="${classMap({ skeleton })}">${invoice.number}</span>
+              </td>
+              <td class="number">
+                <code class="${classMap({ skeleton, 'credit-note': invoice.type === 'CREDITNOTE' })}">
+                  ${i18n('cc-invoice-table.total.value', { amount: invoice.total.amount })}
+                </code>
+              </td>
+              <td>${this._renderLinks(skeleton, invoice)}</td>
+            </tr>
+          `,
+        )}
       </table>
     `;
   }
@@ -126,23 +154,25 @@ export class CcInvoiceTable extends LitElement {
    * @returns {TemplateResult}
    * @private
    */
-  _renderList (skeleton, invoiceList) {
+  _renderList(skeleton, invoiceList) {
     return html`
       <div class="invoice-list">
-        ${invoiceList.map((invoice) => html`
-          <div class="invoice">
-            <cc-icon class="invoice-icon" size="lg" .icon=${iconFile}></cc-icon>
-            <div class="invoice-text ${classMap({ skeleton })}">
-              ${i18n('cc-invoice-table.text', {
-                number: invoice.number,
-                date: invoice.emissionDate,
-                amount: invoice.total.amount,
-              })}
-              <br>
-              ${this._renderLinks(skeleton, invoice)}
+        ${invoiceList.map(
+          (invoice) => html`
+            <div class="invoice">
+              <cc-icon class="invoice-icon" size="lg" .icon=${iconFile}></cc-icon>
+              <div class="invoice-text ${classMap({ skeleton })}">
+                ${i18n('cc-invoice-table.text', {
+                  number: invoice.number,
+                  date: invoice.emissionDate,
+                  amount: invoice.total.amount,
+                })}
+                <br />
+                ${this._renderLinks(skeleton, invoice)}
+              </div>
             </div>
-          </div>
-        `)}
+          `,
+        )}
       </div>
     `;
   }
@@ -153,18 +183,18 @@ export class CcInvoiceTable extends LitElement {
    * @returns {TemplateResult}
    * @private
    */
-  _renderLinks (skeleton, invoice) {
+  _renderLinks(skeleton, invoice) {
     return html`
       <div class="links">
         ${ccLink(invoice.downloadUrl, i18n('cc-invoice-table.open-pdf'), skeleton)}
-        ${PENDING_STATUSES.includes(invoice.status) ? html`
-          ${ccLink(invoice.paymentUrl, i18n('cc-invoice-table.pay'), skeleton)}
-        ` : ''}
+        ${PENDING_STATUSES.includes(invoice.status)
+          ? html` ${ccLink(invoice.paymentUrl, i18n('cc-invoice-table.pay'), skeleton)} `
+          : ''}
       </div>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       skeletonStyles,
       linkStyles,

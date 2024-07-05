@@ -2,10 +2,9 @@ import { expect } from '@bundled-es-modules/chai';
 import { scrollChildIntoParent } from '../../src/lib/dom.js';
 
 describe('dom', () => {
-
   // NOTE: scrollChildIntoParent implementation is debounced and has a smooth transition
   // We need to wait for the changes to be applied so to ease the test writing, we use a wrapper
-  async function scrollChildIntoParentAsync (...params) {
+  async function scrollChildIntoParentAsync(...params) {
     return new Promise((resolve) => {
       scrollChildIntoParent(...params);
       setTimeout(resolve, 750);
@@ -13,7 +12,6 @@ describe('dom', () => {
   }
 
   it('scrollChildIntoParent()', async function () {
-
     // This test will be a bit long because of debounce delay + smooth transition
     // => 6 calls to scrollChildIntoParentAsync
     this.timeout(6 * 1000);

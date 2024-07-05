@@ -1,6 +1,6 @@
-import './cc-orga-member-list.js';
 import longMemberList from '../../stories/fixtures/long-member-list.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-orga-member-list.js';
 
 const baseMemberList = [
   {
@@ -57,390 +57,432 @@ const conf = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [{
-    members: {
-      state: 'loaded',
-      value: baseMemberList.map((member) => {
-        return member.isCurrentUser
-          ? { ...member, role: 'DEVELOPER' }
-          : member;
-      }),
-      identityFilter: '',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'idle',
+  items: [
+    {
+      members: {
+        state: 'loaded',
+        value: baseMemberList.map((member) => {
+          return member.isCurrentUser ? { ...member, role: 'DEVELOPER' } : member;
+        }),
+        identityFilter: '',
+        mfaDisabledOnlyFilter: false,
+        dangerZoneState: 'idle',
+      },
     },
-  }],
+  ],
 });
 
 export const loading = makeStory(conf, {
-  items: [{
-    members: { state: 'loading' },
-  }],
+  items: [
+    {
+      members: { state: 'loading' },
+    },
+  ],
 });
 
 export const waitingWithLeavingAsSimpleUser = makeStory(conf, {
-  items: [{
-    members: {
-      state: 'loaded',
-      value: baseMemberList.map((baseMember) => {
-        if (baseMember.isCurrentUser) {
-          return {
-            ...baseMember,
-            state: 'deleting',
-            role: 'ACCOUNTING',
-          };
-        }
+  items: [
+    {
+      members: {
+        state: 'loaded',
+        value: baseMemberList.map((baseMember) => {
+          if (baseMember.isCurrentUser) {
+            return {
+              ...baseMember,
+              state: 'deleting',
+              role: 'ACCOUNTING',
+            };
+          }
 
-        if (baseMember.id === 'member2') {
-          return {
-            ...baseMember,
-            role: 'ADMIN',
-          };
-        }
-        return baseMember;
-      }),
-      identityFilter: '',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'leaving',
+          if (baseMember.id === 'member2') {
+            return {
+              ...baseMember,
+              role: 'ADMIN',
+            };
+          }
+          return baseMember;
+        }),
+        identityFilter: '',
+        mfaDisabledOnlyFilter: false,
+        dangerZoneState: 'leaving',
+      },
     },
-  }],
+  ],
 });
 
 export const waitingWithLeavingAsAdmin = makeStory(conf, {
-  items: [{
-    authorisations: authorisationsAdmin,
-    members: {
-      state: 'loaded',
-      value: baseMemberList.map((baseMember) => {
-        if (baseMember.isCurrentUser) {
-          return {
-            ...baseMember,
-            state: 'deleting',
-          };
-        }
+  items: [
+    {
+      authorisations: authorisationsAdmin,
+      members: {
+        state: 'loaded',
+        value: baseMemberList.map((baseMember) => {
+          if (baseMember.isCurrentUser) {
+            return {
+              ...baseMember,
+              state: 'deleting',
+            };
+          }
 
-        if (baseMember.id === 'member2') {
-          return {
-            ...baseMember,
-            role: 'ADMIN',
-          };
-        }
-        return baseMember;
-      }),
-      identityFilter: '',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'leaving',
+          if (baseMember.id === 'member2') {
+            return {
+              ...baseMember,
+              role: 'ADMIN',
+            };
+          }
+          return baseMember;
+        }),
+        identityFilter: '',
+        mfaDisabledOnlyFilter: false,
+        dangerZoneState: 'leaving',
+      },
     },
-  }],
+  ],
 });
 
 export const waitingWithInvitingMember = makeStory(conf, {
-  items: [{
-    authorisations: authorisationsAdmin,
-    inviteMemberForm: {
-      state: 'inviting',
-      email: {
-        value: 'jane.doe@example.com',
+  items: [
+    {
+      authorisations: authorisationsAdmin,
+      inviteMemberForm: {
+        state: 'inviting',
+        email: {
+          value: 'jane.doe@example.com',
+        },
+        role: {
+          value: 'ADMIN',
+        },
       },
-      role: {
-        value: 'ADMIN',
+      members: {
+        state: 'loaded',
+        value: [baseMemberList[0]],
+        identityFilter: '',
+        mfaDisabledOnlyFilter: false,
+        dangerZoneState: 'idle',
       },
     },
-    members: {
-      state: 'loaded',
-      value: [baseMemberList[0]],
-      identityFilter: '',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'idle',
-    },
-  }],
+  ],
 });
 
 export const errorWithLoadingMemberList = makeStory(conf, {
-  items: [{
-    members: { state: 'error' },
-  }],
+  items: [
+    {
+      members: { state: 'error' },
+    },
+  ],
 });
 
 export const errorWithLeavingFromDangerZoneAsLastAdmin = makeStory(conf, {
-  items: [{
-    authorisations: authorisationsAdmin,
-    members: {
-      state: 'loaded',
-      value: baseMemberList,
-      identityFilter: '',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'error',
+  items: [
+    {
+      authorisations: authorisationsAdmin,
+      members: {
+        state: 'loaded',
+        value: baseMemberList,
+        identityFilter: '',
+        mfaDisabledOnlyFilter: false,
+        dangerZoneState: 'error',
+      },
     },
-  }],
+  ],
 });
 
 export const errorWithLeavingFromCardAsLastAdmin = makeStory(conf, {
-  items: [{
-    authorisations: authorisationsAdmin,
-    members: {
-      state: 'loaded',
-      value: baseMemberList.map((baseMember) => {
-        if (baseMember.role === 'ADMIN') {
-          return {
-            ...baseMember,
-            error: true,
-          };
-        }
-        return baseMember;
-      }),
-      identityFilter: '',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'idle',
+  items: [
+    {
+      authorisations: authorisationsAdmin,
+      members: {
+        state: 'loaded',
+        value: baseMemberList.map((baseMember) => {
+          if (baseMember.role === 'ADMIN') {
+            return {
+              ...baseMember,
+              error: true,
+            };
+          }
+          return baseMember;
+        }),
+        identityFilter: '',
+        mfaDisabledOnlyFilter: false,
+        dangerZoneState: 'idle',
+      },
     },
-  }],
+  ],
 });
 
 export const errorWithEditingYourselfAsLastAdmin = makeStory(conf, {
-  items: [{
-    authorisations: authorisationsAdmin,
-    members: {
-      state: 'loaded',
-      value: baseMemberList.map((baseMember) => {
-        if (baseMember.isCurrentUser) {
-          return {
-            ...baseMember,
-            state: 'editing',
-            role: 'DEVELOPER',
-            error: true,
-          };
-        }
-        return baseMember;
-      }),
-      identityFilter: '',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'idle',
+  items: [
+    {
+      authorisations: authorisationsAdmin,
+      members: {
+        state: 'loaded',
+        value: baseMemberList.map((baseMember) => {
+          if (baseMember.isCurrentUser) {
+            return {
+              ...baseMember,
+              state: 'editing',
+              role: 'DEVELOPER',
+              error: true,
+            };
+          }
+          return baseMember;
+        }),
+        identityFilter: '',
+        mfaDisabledOnlyFilter: false,
+        dangerZoneState: 'idle',
+      },
     },
-  }],
+  ],
 });
 
 export const errorWithInviteEmptyEmail = makeStory(conf, {
-  items: [{
-    authorisations: authorisationsAdmin,
-    inviteMemberForm: {
-      state: 'idle',
-      email: {
-        value: '',
-        error: 'empty',
+  items: [
+    {
+      authorisations: authorisationsAdmin,
+      inviteMemberForm: {
+        state: 'idle',
+        email: {
+          value: '',
+          error: 'empty',
+        },
+        role: {
+          value: 'ADMIN',
+        },
       },
-      role: {
-        value: 'ADMIN',
+      members: {
+        state: 'loaded',
+        value: baseMemberList,
+        identityFilter: '',
+        mfaDisabledOnlyFilter: false,
+        dangerZoneState: 'idle',
       },
     },
-    members: {
-      state: 'loaded',
-      value: baseMemberList,
-      identityFilter: '',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'idle',
-    },
-  }],
+  ],
 });
 
 export const errorWithInviteInvalidEmailFormat = makeStory(conf, {
-  items: [{
-    authorisations: authorisationsAdmin,
-    inviteMemberForm: {
-      state: 'idle',
-      email: {
-        value: 'jane.doe',
-        error: 'invalid',
+  items: [
+    {
+      authorisations: authorisationsAdmin,
+      inviteMemberForm: {
+        state: 'idle',
+        email: {
+          value: 'jane.doe',
+          error: 'invalid',
+        },
+        role: {
+          value: 'ADMIN',
+        },
       },
-      role: {
-        value: 'ADMIN',
+      members: {
+        state: 'loaded',
+        value: baseMemberList,
+        identityFilter: '',
+        mfaDisabledOnlyFilter: false,
+        dangerZoneState: 'idle',
       },
     },
-    members: {
-      state: 'loaded',
-      value: baseMemberList,
-      identityFilter: '',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'idle',
-    },
-  }],
+  ],
 });
 
 export const errorWithInviteMemberAlreadyInsideOrganisation = makeStory(conf, {
-  items: [{
-    authorisations: authorisationsAdmin,
-    inviteMemberForm: {
-      state: 'idle',
-      email: {
-        value: 'june.doe@example.com',
-        error: 'duplicate',
+  items: [
+    {
+      authorisations: authorisationsAdmin,
+      inviteMemberForm: {
+        state: 'idle',
+        email: {
+          value: 'june.doe@example.com',
+          error: 'duplicate',
+        },
+        role: {
+          value: 'ACCOUNTING',
+        },
       },
-      role: {
-        value: 'ACCOUNTING',
+      members: {
+        state: 'loaded',
+        value: baseMemberList,
+        identityFilter: '',
+        mfaDisabledOnlyFilter: false,
+        dangerZoneState: 'idle',
       },
     },
-    members: {
-      state: 'loaded',
-      value: baseMemberList,
-      identityFilter: '',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'idle',
-    },
-  },
   ],
 });
 
 export const dataLoaded = makeStory(conf, {
-  items: [{
-    members: {
-      state: 'loaded',
-      value: baseMemberList.map((member) => {
-        if (member.isCurrentUser) {
-          return {
-            ...member,
-            role: 'ACCOUNTING',
-          };
-        }
+  items: [
+    {
+      members: {
+        state: 'loaded',
+        value: baseMemberList.map((member) => {
+          if (member.isCurrentUser) {
+            return {
+              ...member,
+              role: 'ACCOUNTING',
+            };
+          }
 
-        if (member.id === 'member2') {
-          return {
-            ...member,
-            role: 'ADMIN',
-          };
-        }
+          if (member.id === 'member2') {
+            return {
+              ...member,
+              role: 'ADMIN',
+            };
+          }
 
-        return member;
-      }),
-      identityFilter: '',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'idle',
+          return member;
+        }),
+        identityFilter: '',
+        mfaDisabledOnlyFilter: false,
+        dangerZoneState: 'idle',
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithCurrentUserAdmin = makeStory(conf, {
-  items: [{
-    authorisations: authorisationsAdmin,
-    members: {
-      state: 'loaded',
-      value: baseMemberList,
-      identityFilter: '',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'idle',
+  items: [
+    {
+      authorisations: authorisationsAdmin,
+      members: {
+        state: 'loaded',
+        value: baseMemberList,
+        identityFilter: '',
+        mfaDisabledOnlyFilter: false,
+        dangerZoneState: 'idle',
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithInviteFormWithLongEmail = makeStory(conf, {
-  items: [{
-    authorisations: authorisationsAdmin,
-    inviteMemberForm: {
-      state: 'idle',
-      email: {
-        value: 'very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-long-email-address@very-very-very-very-very-very-very-long.example.com',
+  items: [
+    {
+      authorisations: authorisationsAdmin,
+      inviteMemberForm: {
+        state: 'idle',
+        email: {
+          value:
+            'very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-long-email-address@very-very-very-very-very-very-very-long.example.com',
+        },
+        role: {
+          value: 'ADMIN',
+        },
       },
-      role: {
-        value: 'ADMIN',
+      members: {
+        state: 'loaded',
+        value: baseMemberList,
+        identityFilter: '',
+        mfaDisabledOnlyFilter: false,
+        dangerZoneState: 'idle',
       },
     },
-    members: {
-      state: 'loaded',
-      value: baseMemberList,
-      identityFilter: '',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'idle',
-    },
-  }],
+  ],
 });
 
 export const dataLoadedWithOnlyOneMember = makeStory(conf, {
-  items: [{
-    authorisations: authorisationsAdmin,
-    members: {
-      state: 'loaded',
-      value: [baseMemberList[0]],
-      identityFilter: '',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'idle',
+  items: [
+    {
+      authorisations: authorisationsAdmin,
+      members: {
+        state: 'loaded',
+        value: [baseMemberList[0]],
+        identityFilter: '',
+        mfaDisabledOnlyFilter: false,
+        dangerZoneState: 'idle',
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithLongMemberList = makeStory(conf, {
-  items: [{
-    members: {
-      state: 'loaded',
-      value: longMemberList,
-      identityFilter: '',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'idle',
+  items: [
+    {
+      members: {
+        state: 'loaded',
+        value: longMemberList,
+        identityFilter: '',
+        mfaDisabledOnlyFilter: false,
+        dangerZoneState: 'idle',
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithLongMemberListAndCurrentUserAdmin = makeStory(conf, {
-  items: [{
-    authorisations: authorisationsAdmin,
-    members: {
-      state: 'loaded',
-      value: longMemberList.map((member) => {
-        if (member.id === 'member1') {
-          return {
-            ...member,
-            role: 'ADMIN',
-          };
-        }
-        return member;
-      }),
-      identityFilter: '',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'idle',
+  items: [
+    {
+      authorisations: authorisationsAdmin,
+      members: {
+        state: 'loaded',
+        value: longMemberList.map((member) => {
+          if (member.id === 'member1') {
+            return {
+              ...member,
+              role: 'ADMIN',
+            };
+          }
+          return member;
+        }),
+        identityFilter: '',
+        mfaDisabledOnlyFilter: false,
+        dangerZoneState: 'idle',
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithNameFilter = makeStory(conf, {
-  items: [{
-    authorisations: authorisationsAdmin,
-    members: {
-      state: 'loaded',
-      value: baseMemberList,
-      identityFilter: 'very',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'idle',
+  items: [
+    {
+      authorisations: authorisationsAdmin,
+      members: {
+        state: 'loaded',
+        value: baseMemberList,
+        identityFilter: 'very',
+        mfaDisabledOnlyFilter: false,
+        dangerZoneState: 'idle',
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithTwoFactorAuthDisabledFilter = makeStory(conf, {
-  items: [{
-    authorisations: authorisationsAdmin,
-    members: {
-      state: 'loaded',
-      value: baseMemberList,
-      identityFilter: '',
-      mfaDisabledOnlyFilter: true,
+  items: [
+    {
+      authorisations: authorisationsAdmin,
+      members: {
+        state: 'loaded',
+        value: baseMemberList,
+        identityFilter: '',
+        mfaDisabledOnlyFilter: true,
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithNoResultFilters = makeStory(conf, {
-  items: [{
-    authorisations: authorisationsAdmin,
-    members: {
-      state: 'loaded',
-      value: baseMemberList,
-      identityFilter: 'no results',
-      mfaDisabledOnlyFilter: true,
+  items: [
+    {
+      authorisations: authorisationsAdmin,
+      members: {
+        state: 'loaded',
+        value: baseMemberList,
+        identityFilter: 'no results',
+        mfaDisabledOnlyFilter: true,
+      },
     },
-  }],
+  ],
 });
 
 export const simulationWithLoadingAsSimpleUser = makeStory(conf, {
-  items: [{
-    members: {
-      state: 'loading',
+  items: [
+    {
+      members: {
+        state: 'loading',
+      },
     },
-  }],
+  ],
   simulations: [
     storyWait(1000, ([component]) => {
       component.members = {
@@ -464,11 +506,13 @@ export const simulationWithLoadingAsSimpleUser = makeStory(conf, {
 });
 
 export const simulationWithLoadingAsAdmin = makeStory(conf, {
-  items: [{
-    members: {
-      state: 'loading',
+  items: [
+    {
+      members: {
+        state: 'loading',
+      },
     },
-  }],
+  ],
   simulations: [
     storyWait(1000, ([component]) => {
       component.authorisations = authorisationsAdmin;
@@ -485,16 +529,18 @@ export const simulationWithLoadingAsAdmin = makeStory(conf, {
 });
 
 export const simulationWithInviteMember = makeStory(conf, {
-  items: [{
-    authorisations: authorisationsAdmin,
-    members: {
-      state: 'loaded',
-      value: baseMemberList,
-      identityFilter: '',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'idle',
+  items: [
+    {
+      authorisations: authorisationsAdmin,
+      members: {
+        state: 'loaded',
+        value: baseMemberList,
+        identityFilter: '',
+        mfaDisabledOnlyFilter: false,
+        dangerZoneState: 'idle',
+      },
     },
-  }],
+  ],
   simulations: [
     storyWait(1000, ([component]) => {
       component.inviteMemberForm = {
@@ -538,16 +584,18 @@ export const simulationWithInviteMember = makeStory(conf, {
 });
 
 export const simulationWithEditMember = makeStory(conf, {
-  items: [{
-    authorisations: authorisationsAdmin,
-    members: {
-      state: 'loaded',
-      value: baseMemberList,
-      identityFilter: '',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'idle',
+  items: [
+    {
+      authorisations: authorisationsAdmin,
+      members: {
+        state: 'loaded',
+        value: baseMemberList,
+        identityFilter: '',
+        mfaDisabledOnlyFilter: false,
+        dangerZoneState: 'idle',
+      },
     },
-  }],
+  ],
   simulations: [
     storyWait(2000, ([component]) => {
       component.members = {
@@ -612,16 +660,18 @@ export const simulationWithEditMember = makeStory(conf, {
 });
 
 export const simulationWithRemovingMember = makeStory(conf, {
-  items: [{
-    authorisations: authorisationsAdmin,
-    members: {
-      state: 'loaded',
-      value: baseMemberList,
-      identityFilter: '',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'idle',
+  items: [
+    {
+      authorisations: authorisationsAdmin,
+      members: {
+        state: 'loaded',
+        value: baseMemberList,
+        identityFilter: '',
+        mfaDisabledOnlyFilter: false,
+        dangerZoneState: 'idle',
+      },
     },
-  }],
+  ],
   simulations: [
     storyWait(2000, ([component]) => {
       component.members = {
@@ -647,30 +697,32 @@ export const simulationWithRemovingMember = makeStory(conf, {
 });
 
 export const simulationWithLeavingAsSimpleUser = makeStory(conf, {
-  items: [{
-    members: {
-      state: 'loaded',
-      value: baseMemberList.map((baseMember) => {
-        if (baseMember.id === 'member1') {
-          return {
-            ...baseMember,
-            role: 'ACCOUNTING',
-          };
-        }
+  items: [
+    {
+      members: {
+        state: 'loaded',
+        value: baseMemberList.map((baseMember) => {
+          if (baseMember.id === 'member1') {
+            return {
+              ...baseMember,
+              role: 'ACCOUNTING',
+            };
+          }
 
-        if (baseMember.id === 'member2') {
-          return {
-            ...baseMember,
-            role: 'ADMIN',
-          };
-        }
-        return baseMember;
-      }),
-      identityFilter: '',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'idle',
+          if (baseMember.id === 'member2') {
+            return {
+              ...baseMember,
+              role: 'ADMIN',
+            };
+          }
+          return baseMember;
+        }),
+        identityFilter: '',
+        mfaDisabledOnlyFilter: false,
+        dangerZoneState: 'idle',
+      },
     },
-  }],
+  ],
   simulations: [
     storyWait(2000, ([component]) => {
       component.members = {
@@ -699,24 +751,26 @@ export const simulationWithLeavingAsSimpleUser = makeStory(conf, {
 });
 
 export const simulationWithLeavingAsAdmin = makeStory(conf, {
-  items: [{
-    authorisations: authorisationsAdmin,
-    members: {
-      state: 'loaded',
-      value: baseMemberList.map((baseMember) => {
-        if (baseMember.id === 'member2') {
-          return {
-            ...baseMember,
-            role: 'ADMIN',
-          };
-        }
-        return baseMember;
-      }),
-      identityFilter: '',
-      mfaDisabledOnlyFilter: false,
-      dangerZoneState: 'idle',
+  items: [
+    {
+      authorisations: authorisationsAdmin,
+      members: {
+        state: 'loaded',
+        value: baseMemberList.map((baseMember) => {
+          if (baseMember.id === 'member2') {
+            return {
+              ...baseMember,
+              role: 'ADMIN',
+            };
+          }
+          return baseMember;
+        }),
+        identityFilter: '',
+        mfaDisabledOnlyFilter: false,
+        dangerZoneState: 'idle',
+      },
     },
-  }],
+  ],
   simulations: [
     storyWait(2000, ([component]) => {
       component.members = {

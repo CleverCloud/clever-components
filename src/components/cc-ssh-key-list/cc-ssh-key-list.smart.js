@@ -1,4 +1,3 @@
-import '../cc-smart-container/cc-smart-container.js';
 import { getKeys } from '@clevercloud/client/esm/api/v2/github.js';
 import { get as getUser } from '@clevercloud/client/esm/api/v2/organisation.js';
 import {
@@ -11,6 +10,7 @@ import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { i18n } from '../../lib/i18n.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import '../cc-smart-container/cc-smart-container.js';
 import { CcSshKeyList } from './cc-ssh-key-list.js';
 
 defineSmartComponent({
@@ -18,15 +18,14 @@ defineSmartComponent({
   params: {
     apiConfig: { type: Object },
   },
-  onContextUpdate ({ component, context, onEvent, updateComponent, signal }) {
-
+  onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig } = context;
 
     // Retrieving SSH keys is done in two steps, hidden in the `fetchAllKeys()` implementation:
     // - first, we retrieve the current user information to check if their GitHub account is linked to their main account;
     // - then, we fetch the personal SSH keys and the GitHub keys if needed.
     // Note: we intentionally show `loading` state only on initial load and not on further actions, to keep a responsive UI.
-    function refreshList () {
+    function refreshList() {
       return fetchAllKeys({ apiConfig, signal, cacheDelay: 0 })
         .then(({ isGithubLinked, personalKeys, githubKeys }) => {
           updateComponent('keyData', {
@@ -118,7 +117,7 @@ defineSmartComponent({
   },
 });
 
-async function fetchAllKeys ({ apiConfig, signal, cacheDelay }) {
+async function fetchAllKeys({ apiConfig, signal, cacheDelay }) {
   const [user, personalKeys] = await Promise.all([
     getUser({}).then(sendToApi({ apiConfig, signal, cacheDelay: ONE_DAY })),
     getSshKeys().then(sendToApi({ apiConfig, signal, cacheDelay })),
@@ -133,17 +132,15 @@ async function fetchAllKeys ({ apiConfig, signal, cacheDelay }) {
   return { isGithubLinked, personalKeys, githubKeys };
 }
 
-async function addKey ({ apiConfig, key }) {
+async function addKey({ apiConfig, key }) {
   const name = encodeURIComponent(key.name);
   const publicKey = key.key;
-  return addSshKey({ key: name }, JSON.stringify(publicKey))
-    .then(sendToApi({ apiConfig }));
+  return addSshKey({ key: name }, JSON.stringify(publicKey)).then(sendToApi({ apiConfig }));
 }
 
 const importKey = addKey;
 
-async function deleteKey ({ apiConfig, key }) {
+async function deleteKey({ apiConfig, key }) {
   const name = encodeURIComponent(key.name);
-  return removeSshKey({ key: name })
-    .then(sendToApi({ apiConfig }));
+  return removeSshKey({ key: name }).then(sendToApi({ apiConfig }));
 }

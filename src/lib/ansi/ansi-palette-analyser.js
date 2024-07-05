@@ -6,7 +6,7 @@ const colors = ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan'];
  *
  * @param {AnsiPalette} palette
  */
-export function analyzePalette (palette) {
+export function analyzePalette(palette) {
   const background = hexToRgb(palette.background);
   const colorsToTest = getColorsToTest(isDark(background));
 
@@ -34,14 +34,8 @@ export function analyzePalette (palette) {
   };
 }
 
-function getColorsToTest (isDarkPalette) {
-  const result = [
-    ...colors,
-    isDarkPalette ? 'white' : 'black',
-  ];
+function getColorsToTest(isDarkPalette) {
+  const result = [...colors, isDarkPalette ? 'white' : 'black'];
 
-  return [
-    ...result,
-    ...result.map((c) => `bright-${c}`),
-  ];
+  return [...result, ...result.map((c) => `bright-${c}`)];
 }

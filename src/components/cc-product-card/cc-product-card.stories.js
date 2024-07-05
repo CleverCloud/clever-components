@@ -1,37 +1,41 @@
-import './cc-product-card.js';
 import { html, render } from 'lit';
 import { makeStory } from '../../stories/lib/make-story.js';
+import './cc-product-card.js';
 
 import { generateRandomKeywords } from './generate-random-keywords.js';
 
 const ICON_URL = 'https://placekitten.com/202/202';
 
-function productInMultipleWidth (product) {
-  return [{
-    ...product,
-    style: 'max-width: 20em;',
-  },
-  {
-    ...product,
-    style: 'max-width: 50em;',
-  },
-  {
-    ...product,
-    style: 'max-width: 100em;',
-  }];
+function productInMultipleWidth(product) {
+  return [
+    {
+      ...product,
+      style: 'max-width: 20em;',
+    },
+    {
+      ...product,
+      style: 'max-width: 50em;',
+    },
+    {
+      ...product,
+      style: 'max-width: 100em;',
+    },
+  ];
 }
 
 const PRODUCTS_LIST = [
   {
     iconUrl: 'https://cdn.clever-cloud.com/uploads/2023/08/elastic.svg',
     name: 'Elasticsearch',
-    description: 'An Elastic database, with Kibana and APM (both in option) with Platinum features provided in partnership from Elastic™.',
+    description:
+      'An Elastic database, with Kibana and APM (both in option) with Platinum features provided in partnership from Elastic™.',
     keywords: generateRandomKeywords(3),
   },
   {
     iconUrl: 'https://cdn.clever-cloud.com/uploads/2023/08/redis-clever-cloud-pricing.svg',
     name: 'Redis',
-    description: 'Our pricing depends on the size and the number of databases. Compare it with your current pricing on our calculator.',
+    description:
+      'Our pricing depends on the size and the number of databases. Compare it with your current pricing on our calculator.',
     keywords: generateRandomKeywords(5),
   },
   {
@@ -43,36 +47,40 @@ const PRODUCTS_LIST = [
   {
     iconUrl: 'https://cdn.clever-cloud.com/uploads/2023/08/pgsql.svg',
     name: 'PostgreSQL',
-    description: 'Get your PostgreSQL database fully managed, with PGPool II and PG Studio. One click setup, backuped every day, with high availability (leader-follower replicas) in option. Custom backup policies are available too. ',
+    description:
+      'Get your PostgreSQL database fully managed, with PGPool II and PG Studio. One click setup, backuped every day, with high availability (leader-follower replicas) in option. Custom backup policies are available too. ',
     keywords: generateRandomKeywords(10),
   },
   {
     iconUrl: 'https://cdn.clever-cloud.com/uploads/2023/03/mysql-5.svg',
     name: 'MySQL',
-    description: 'Our pricing depends on the size and the number of databases you need. Each instance is billed on a per-second basis.',
+    description:
+      'Our pricing depends on the size and the number of databases you need. Each instance is billed on a per-second basis.',
     keywords: generateRandomKeywords(3),
   },
   {
     iconUrl: 'https://cdn.clever-cloud.com/uploads/2023/08/python.svg',
     name: 'Python',
-    description: 'Deploy your Python and Django applications on Nginx + WSGI with automatic dependency management (via pip) and Celery tasks support.',
+    description:
+      'Deploy your Python and Django applications on Nginx + WSGI with automatic dependency management (via pip) and Celery tasks support.',
     keywords: generateRandomKeywords(3),
   },
   {
     iconUrl: 'https://assets.clever-cloud.com/logos/php.svg',
     name: 'PHP',
-    description: 'Deploy your PHP applications and static sites on Apache2 + PHP-FPM with automatic dependency management (via composer).',
+    description:
+      'Deploy your PHP applications and static sites on Apache2 + PHP-FPM with automatic dependency management (via composer).',
     keywords: generateRandomKeywords(3),
   },
   {
     iconUrl: 'https://assets.clever-cloud.com/logos/ruby.svg',
     name: 'Ruby',
-    description: 'Deploy your Ruby applications on Nginx + Puma with automatic dependency management (via Rake, gem...) and Sidekiq tasks support.',
+    description:
+      'Deploy your Ruby applications on Nginx + Puma with automatic dependency management (via Rake, gem...) and Sidekiq tasks support.',
   },
-
 ];
 
-function renderProducts (products) {
+function renderProducts(products) {
   const productsHTML = products.map((product) => {
     return html`
       <cc-product-card
@@ -84,11 +92,7 @@ function renderProducts (products) {
     `;
   });
 
-  return html`
-    <div class="wrapper">
-      ${productsHTML}
-    </div>
-  `;
+  return html` <div class="wrapper">${productsHTML}</div> `;
 }
 
 export default {

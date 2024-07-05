@@ -1,5 +1,5 @@
-import './cc-doc-card.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-doc-card.js';
 
 export default {
   tags: ['autodocs'],
@@ -28,7 +28,8 @@ const DEFAULT_CARD = {
     type: 'loaded',
     heading: 'ruby',
     icons: ['https://assets.clever-cloud.com/logos/ruby.svg'],
-    description: 'Run your Ruby and Ruby on Rails applications. Compatible with Rake, Sidekiq and Active Storage for Cellar.',
+    description:
+      'Run your Ruby and Ruby on Rails applications. Compatible with Rake, Sidekiq and Active Storage for Cellar.',
     link: '#',
   },
 };
@@ -37,7 +38,11 @@ const MULTIPLE_ICONS_CARD = {
   /** @type {DocCardStateLoaded} */
   state: {
     type: 'loaded',
-    icons: ['https://assets.clever-cloud.com/logos/java-jar.svg', 'https://assets.clever-cloud.com/logos/maven.svg', 'https://assets.clever-cloud.com/logos/play2.svg'],
+    icons: [
+      'https://assets.clever-cloud.com/logos/java-jar.svg',
+      'https://assets.clever-cloud.com/logos/maven.svg',
+      'https://assets.clever-cloud.com/logos/play2.svg',
+    ],
     heading: 'Java',
     description: 'Deploy Java runtimes with your specific process (Jar or War) or build tools (Maven, SBT…).',
     link: '#',
@@ -49,10 +54,12 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const loading = makeStory(conf, {
-  items: [{
-    /** @type {DocCardStateLoading} */
-    state: { type: 'loading' },
-  }],
+  items: [
+    {
+      /** @type {DocCardStateLoading} */
+      state: { type: 'loading' },
+    },
+  ],
 });
 
 // No need to invest time on empty story right now.
@@ -66,10 +73,12 @@ export const dataLoaded = makeStory(conf, {
 export const simulations = makeStory(conf, {
   items: [{}],
   simulations: [
-    storyWait(2000,
+    storyWait(
+      2000,
       /** @param {[CcDocCard]} components */
       ([component]) => {
         component.state = DEFAULT_CARD.state;
-      }),
+      },
+    ),
   ],
 });

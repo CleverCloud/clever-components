@@ -1,5 +1,5 @@
-import './cc-addon-admin.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-addon-admin.js';
 
 export default {
   tags: ['autodocs'],
@@ -28,111 +28,132 @@ const addon = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [{
-    /** @type {AddonAdminStateLoaded} */
-    state: {
-      type: 'loaded',
-      ...addon,
+  items: [
+    {
+      /** @type {AddonAdminStateLoaded} */
+      state: {
+        type: 'loaded',
+        ...addon,
+      },
     },
-  }],
+  ],
 });
 
 export const loading = makeStory(conf, {
-  items: [{
-    /** @type {AddonAdminStateLoading} */
-    state: {
-      type: 'loading',
+  items: [
+    {
+      /** @type {AddonAdminStateLoading} */
+      state: {
+        type: 'loading',
+      },
     },
-  }],
+  ],
 });
 
 export const waitingWithUpdatingName = makeStory(conf, {
-  items: [{
-    /** @type {AddonAdminStateUpdatingName}*/
-    state: {
-      type: 'updatingName',
-      ...addon,
+  items: [
+    {
+      /** @type {AddonAdminStateUpdatingName}*/
+      state: {
+        type: 'updatingName',
+        ...addon,
+      },
     },
-  }],
+  ],
 });
 
 export const waitingWithUpdatingTags = makeStory(conf, {
-  items: [{
-    /** @type {AddonAdminStateUpdatingTags}*/
-    state: {
-      type: 'updatingTags',
-      ...addon,
+  items: [
+    {
+      /** @type {AddonAdminStateUpdatingTags}*/
+      state: {
+        type: 'updatingTags',
+        ...addon,
+      },
     },
-  }],
+  ],
 });
 
 export const waitingWithDeleting = makeStory(conf, {
-  items: [{
-    /** @type {AddonAdminStateDeleting}*/
-    state: {
-      type: 'deleting',
-      ...addon,
+  items: [
+    {
+      /** @type {AddonAdminStateDeleting}*/
+      state: {
+        type: 'deleting',
+        ...addon,
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithDangerZoneVmAndBackups = makeStory(conf, {
-  items: [{
-    /** @type {AddonAdminStateLoaded} */
-    state: {
-      type: 'loaded',
-      ...addon,
+  items: [
+    {
+      /** @type {AddonAdminStateLoaded} */
+      state: {
+        type: 'loaded',
+        ...addon,
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithDangerZoneVmButNoBackups = makeStory(conf, {
-  items: [{
-    /** @type {AddonAdminStateLoaded} */
-    state: {
-      type: 'loaded',
-      ...addon,
+  items: [
+    {
+      /** @type {AddonAdminStateLoaded} */
+      state: {
+        type: 'loaded',
+        ...addon,
+      },
+      noDangerZoneBackupText: true,
     },
-    noDangerZoneBackupText: true,
-  }],
+  ],
 });
 
 export const dataLoadedWithDangerZoneNoVmButBackups = makeStory(conf, {
-  items: [{
-    /** @type {AddonAdminStateLoaded} */
-    state: {
-      type: 'loaded',
-      ...addon,
+  items: [
+    {
+      /** @type {AddonAdminStateLoaded} */
+      state: {
+        type: 'loaded',
+        ...addon,
+      },
+      noDangerZoneVmText: true,
     },
-    noDangerZoneVmText: true,
-  }],
+  ],
 });
 
 export const dataLoadedWithDangerZoneNoVmNoBackups = makeStory(conf, {
-  items: [{
-    /** @type {AddonAdminStateLoaded} */
-    state: {
-      type: 'loaded',
-      ...addon,
+  items: [
+    {
+      /** @type {AddonAdminStateLoaded} */
+      state: {
+        type: 'loaded',
+        ...addon,
+      },
+      noDangerZoneBackupText: true,
+      noDangerZoneVmText: true,
     },
-    noDangerZoneBackupText: true,
-    noDangerZoneVmText: true,
-  }],
+  ],
 });
 
 export const errorWithLoading = makeStory(conf, {
-  items: [{
-    /** @type {AddonAdminStateError} */
-    state: {
-      type: 'error',
+  items: [
+    {
+      /** @type {AddonAdminStateError} */
+      state: {
+        type: 'error',
+      },
     },
-  }],
+  ],
 });
 
 export const simulations = makeStory(conf, {
   items: [{}, {}],
   simulations: [
-    storyWait(2000,
+    storyWait(
+      2000,
       /** @param {CcAddonAdmin[]} components */
       ([component, componentError]) => {
         component.state = {
@@ -141,8 +162,10 @@ export const simulations = makeStory(conf, {
           tags: addon.tags,
         };
         componentError.state = { type: 'error' };
-      }),
-    storyWait(1000,
+      },
+    ),
+    storyWait(
+      1000,
       /** @param {CcAddonAdmin[]} components */
       ([component]) => {
         component.state = {
@@ -150,8 +173,10 @@ export const simulations = makeStory(conf, {
           name: 'My new Addon Name',
           tags: addon.tags,
         };
-      }),
-    storyWait(1000,
+      },
+    ),
+    storyWait(
+      1000,
       /** @param {CcAddonAdmin[]} components */
       ([component]) => {
         component.state = {
@@ -159,8 +184,10 @@ export const simulations = makeStory(conf, {
           name: 'My new Addon Name',
           tags: addon.tags,
         };
-      }),
-    storyWait(1000,
+      },
+    ),
+    storyWait(
+      1000,
       /** @param {CcAddonAdmin[]} components */
       ([component]) => {
         component.state = {
@@ -168,8 +195,10 @@ export const simulations = makeStory(conf, {
           name: 'My new Addon Name',
           tags: addon.tags,
         };
-      }),
-    storyWait(1000,
+      },
+    ),
+    storyWait(
+      1000,
       /** @param {CcAddonAdmin[]} components */
       ([component]) => {
         component.state = {
@@ -177,8 +206,10 @@ export const simulations = makeStory(conf, {
           name: 'My new Addon Name',
           tags: [...addon.tags, 'new-tag'],
         };
-      }),
-    storyWait(1000,
+      },
+    ),
+    storyWait(
+      1000,
       /** @param {CcAddonAdmin[]} components */
       ([component]) => {
         component.state = {
@@ -186,8 +217,10 @@ export const simulations = makeStory(conf, {
           name: 'My new Addon Name',
           tags: [...addon.tags, 'new-tag'],
         };
-      }),
-    storyWait(1000,
+      },
+    ),
+    storyWait(
+      1000,
       /** @param {CcAddonAdmin[]} components */
       ([component]) => {
         component.state = {
@@ -195,8 +228,10 @@ export const simulations = makeStory(conf, {
           name: 'My new Addon Name',
           tags: [...addon.tags, 'new-tag'],
         };
-      }),
-    storyWait(1000,
+      },
+    ),
+    storyWait(
+      1000,
       /** @param {CcAddonAdmin[]} components */
       ([component]) => {
         component.state = {
@@ -204,6 +239,7 @@ export const simulations = makeStory(conf, {
           name: 'My new Addon Name',
           tags: [...addon.tags, 'new-tag'],
         };
-      }),
+      },
+    ),
   ],
 });

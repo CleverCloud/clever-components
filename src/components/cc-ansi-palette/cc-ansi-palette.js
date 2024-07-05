@@ -1,5 +1,3 @@
-import '../cc-input-text/cc-input-text.js';
-import '../cc-icon/cc-icon.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import {
@@ -9,6 +7,8 @@ import {
 import { analyzePalette } from '../../lib/ansi/ansi-palette-analyser.js';
 import { ansiPaletteStyle } from '../../lib/ansi/ansi-palette-style.js';
 import { i18n } from '../../lib/i18n.js';
+import '../cc-icon/cc-icon.js';
+import '../cc-input-text/cc-input-text.js';
 
 const COLORS = ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan'];
 
@@ -22,15 +22,14 @@ const COLORS = ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan'];
  * @cssdisplay block
  */
 export class CcAnsiPaletteComponent extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       name: { type: String },
       palette: { type: Object },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
     /** @type {string} The palette name.*/
     this.name = '';
@@ -41,14 +40,14 @@ export class CcAnsiPaletteComponent extends LitElement {
     this._analysis = null;
   }
 
-  willUpdate (_changedProperties) {
+  willUpdate(_changedProperties) {
     if (_changedProperties.has('palette')) {
       this._style = ansiPaletteStyle(this.palette).replaceAll(';', ';\n').slice(0, -1);
       this._analysis = analyzePalette(this.palette);
     }
   }
 
-  render () {
+  render() {
     if (this.palette == null) {
       return '';
     }
@@ -57,44 +56,37 @@ export class CcAnsiPaletteComponent extends LitElement {
       <div class="main" style="${this._style}">
         <div class="top">
           <div class="title">${this.name}</div>
-          <div class="title--right">${i18n('cc-ansi-palette.fg-bg', { foreground: this.palette.foreground, background: this.palette.background })}</div>
+          <div class="title--right">
+            ${i18n('cc-ansi-palette.fg-bg', {
+              foreground: this.palette.foreground,
+              background: this.palette.background,
+            })}
+          </div>
         </div>
         <div class="hover">${i18n('cc-ansi-palette.hover', { color: this.palette['background-hover'] })}</div>
         <div class="selected">${i18n('cc-ansi-palette.selected', { color: this.palette['background-selected'] })}</div>
 
-        <div class="colors-grid">
-          ${COLORS.map((colorName) => this.renderColorGridLine(colorName))}
-        </div>
+        <div class="colors-grid">${COLORS.map((colorName) => this.renderColorGridLine(colorName))}</div>
       </div>
 
-      <cc-input-text 
-        readonly 
-        multi
-        clipboard
-        .value=${this._style}
-      ></cc-input-text>
+      <cc-input-text readonly multi clipboard .value=${this._style}></cc-input-text>
     `;
   }
 
-  renderColorGridLine (colorName) {
+  renderColorGridLine(colorName) {
     const brightColorName = `bright-${colorName}`;
     return html`
-      <div class="color color--left">
-        ${this.renderColor(colorName)}
-      </div>
-      ${this.renderSquare(colorName)}
-      ${this.renderSquare(brightColorName)}
-      <div class="color color--right">
-        ${this.renderColor(brightColorName)}
-      </div>
+      <div class="color color--left">${this.renderColor(colorName)}</div>
+      ${this.renderSquare(colorName)} ${this.renderSquare(brightColorName)}
+      <div class="color color--right">${this.renderColor(brightColorName)}</div>
     `;
   }
 
-  renderSquare (colorName) {
+  renderSquare(colorName) {
     return html`<div class="square" style="background-color: var(--cc-color-ansi-${colorName});"></div>`;
   }
 
-  renderColor (colorName) {
+  renderColor(colorName) {
     const colorHex = this.palette[colorName];
     const analysis = this._analysis.contrasts[colorName];
 
@@ -108,12 +100,12 @@ export class CcAnsiPaletteComponent extends LitElement {
       <span>${colorHex}</span>
       <div class="ratio ${classMap({ compliant: analysis.compliant, 'not-compliant': !analysis.compliant })}">
         <cc-icon .icon=${icon} size="lg" a11y-name="${accessibleName}"></cc-icon>
-        ${i18n('cc-ansi-palette.ratio', { ratio: analysis.ratio })}  
+        ${i18n('cc-ansi-palette.ratio', { ratio: analysis.ratio })}
       </div>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
@@ -121,7 +113,7 @@ export class CcAnsiPaletteComponent extends LitElement {
           display: block;
           font-family: var(--cc-ff-monospace, monospace);
         }
-        
+
         .top {
           display: flex;
         }
@@ -148,7 +140,7 @@ export class CcAnsiPaletteComponent extends LitElement {
         .selected {
           background-color: var(--cc-color-ansi-background-selected);
         }
-        
+
         .colors-grid {
           display: grid;
           align-items: center;
@@ -157,7 +149,7 @@ export class CcAnsiPaletteComponent extends LitElement {
           grid-column-gap: 0.5em;
           grid-template-columns: 1fr min-content min-content 1fr;
         }
-        
+
         .color-line {
           display: flex;
           align-items: center;
@@ -187,11 +179,11 @@ export class CcAnsiPaletteComponent extends LitElement {
         .color--left {
           justify-self: end;
         }
-        
+
         .color--right {
           justify-self: start;
         }
-        
+
         .ratio {
           display: inline-flex;
           align-items: center;

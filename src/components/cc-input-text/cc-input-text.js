@@ -2,10 +2,10 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import {
+  iconRemixCheckLine as iconCheck,
   iconRemixClipboardLine as iconClipboard,
   iconRemixEyeOffLine as iconEyeClosed,
   iconRemixEyeLine as iconEyeOpen,
-  iconRemixCheckLine as iconCheck,
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
@@ -43,8 +43,7 @@ const TAG_SEPARATOR = ' ';
  * @slot help - The help message to be displayed right below the `<input>` element. Please use a `<p>` tag.
  */
 export class CcInputText extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       clipboard: { type: Boolean, reflect: true },
       disabled: { type: Boolean, reflect: true },
@@ -67,7 +66,7 @@ export class CcInputText extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {boolean} Adds a copy-to-clipboard button (when not disabled and not skeleton). */
@@ -128,13 +127,11 @@ export class CcInputText extends LitElement {
 
   // In general, we try to use LitElement's update() lifecycle callback but in this situation,
   // overriding get/set makes more sense
-  get tags () {
-    return this._tagsEnabled
-      ? this.value.split(TAG_SEPARATOR).filter((tag) => tag !== '')
-      : null;
+  get tags() {
+    return this._tagsEnabled ? this.value.split(TAG_SEPARATOR).filter((tag) => tag !== '') : null;
   }
 
-  set tags (newVal) {
+  set tags(newVal) {
     this._tagsEnabled = newVal != null;
     if (this._tagsEnabled) {
       const oldVal = this.tags;
@@ -152,11 +149,11 @@ export class CcInputText extends LitElement {
   /**
    * Triggers focus on the inner `<input>/<textarea>` element.
    */
-  focus () {
+  focus() {
     this.shadowRoot.querySelector('.input').focus();
   }
 
-  _onInput (e) {
+  _onInput(e) {
     // If tags mode is enabled, we want to prevent/remove line breaks
     // and preserve caret position in case of a line break entry (keypress, DnD, copy/paste...)
     if (this._tagsEnabled) {
@@ -176,25 +173,25 @@ export class CcInputText extends LitElement {
     }
   }
 
-  _onFocus (e) {
+  _onFocus(e) {
     if (this.readonly) {
       e.target.select();
     }
   }
 
-  _onClickCopy () {
+  _onClickCopy() {
     navigator.clipboard.writeText(this.value).then(() => {
       this._copyOk = true;
       setTimeout(() => (this._copyOk = false), 1000);
     });
   }
 
-  _onClickSecret () {
+  _onClickSecret() {
     this._showSecret = !this._showSecret;
   }
 
   // Stop propagation of keydown and keypress events (to prevent conflicts with shortcuts)
-  _onKeyEvent (e) {
+  _onKeyEvent(e) {
     if (e.type === 'keydown' || e.type === 'keypress') {
       e.stopPropagation();
     }
@@ -205,136 +202,151 @@ export class CcInputText extends LitElement {
     }
     // Request implicit submit with keypress on enter key
     if (!this.readonly && e.type === 'keypress' && e.keyCode === 13) {
-      if ((!this.multi) || (this.multi && e.ctrlKey)) {
+      if (!this.multi || (this.multi && e.ctrlKey)) {
         dispatchCustomEvent(this, 'requestimplicitsubmit');
       }
     }
   }
 
-  _onErrorSlotChanged (event) {
+  _onErrorSlotChanged(event) {
     this._hasError = event.target.assignedNodes()?.length > 0;
   }
 
-  render () {
+  render() {
     const value = this.value ?? '';
     const rows = value.split('\n').length;
-    const clipboard = (this.clipboard && !this.disabled && !this.skeleton);
+    const clipboard = this.clipboard && !this.disabled && !this.skeleton;
     // NOTE: For now, we don't support secret when multi is activated
-    const secret = (this.secret && !this.multi && !this.disabled && !this.skeleton);
-    const isTextarea = (this.multi || this._tagsEnabled);
+    const secret = this.secret && !this.multi && !this.disabled && !this.skeleton;
+    const isTextarea = this.multi || this._tagsEnabled;
 
     const tags = value
       .split(TAG_SEPARATOR)
-      .map((tag, i, all) => html`<span class="tag">${tag}</span>${i !== (all.length - 1) ? TAG_SEPARATOR : ''}`);
+      .map((tag, i, all) => html`<span class="tag">${tag}</span>${i !== all.length - 1 ? TAG_SEPARATOR : ''}`);
 
     return html`
+      ${this.label != null
+        ? html`
+            <label class=${classMap({ 'visually-hidden': this.hiddenLabel })} for="input-id">
+              <span class="label-text">${this.label}</span>
+              ${this.required ? html` <span class="required">${i18n('cc-input-text.required')}</span> ` : ''}
+            </label>
+          `
+        : ''}
 
-      ${this.label != null ? html`
-        <label class=${classMap({ 'visually-hidden': this.hiddenLabel })} for="input-id">
-          <span class="label-text">${this.label}</span>
-          ${this.required ? html`
-            <span class="required">${i18n('cc-input-text.required')}</span>
-          ` : ''}
-        </label>
-      ` : ''}
-      
       <div class="meta-input">
-        <div class="wrapper ${classMap({ skeleton: this.skeleton })}"
+        <div
+          class="wrapper ${classMap({ skeleton: this.skeleton })}"
           @input=${this._onInput}
           @keydown=${this._onKeyEvent}
-          @keypress=${this._onKeyEvent}>
-
-          ${isTextarea ? html`
-            ${this._tagsEnabled && !this.skeleton ? html`
-              <!--
+          @keypress=${this._onKeyEvent}
+        >
+          ${isTextarea
+            ? html`
+                ${this._tagsEnabled && !this.skeleton
+                  ? html`
+                      <!--
                 We use this to display colored background rectangles behind space separated values. 
                 This needs to be on the same line and the 2 level parent is important to keep scroll behaviour.
               -->
-              <div class="input input-underlayer" style="--rows: ${rows}"><!--
-                --><div class="all-tags">${tags}</div><!--
-              --></div>
-            ` : ''}
-            <textarea
-              id="input-id"
-              class="input ${classMap({ 'input-tags': this._tagsEnabled, error: this._hasError })}"
-              style="--rows: ${rows}"
-              rows=${rows}
-              ?disabled=${this.disabled || this.skeleton}
-              ?readonly=${this.readonly}
-              .value=${value}
-              name=${ifDefined(this.name ?? undefined)}
-              placeholder=${this.placeholder}
-              spellcheck="false"
-              wrap="${ifDefined(this._tagsEnabled ? 'soft' : undefined)}"
-              aria-describedby="help-id error-id"
-              @focus=${this._onFocus}
-            ></textarea>
-          ` : ''}
-
-          ${!isTextarea ? html`
-            ${clipboard && this.readonly ? html`
-              <!--
+                      <div class="input input-underlayer" style="--rows: ${rows}">
+                        <!--
+                -->
+                        <div class="all-tags">${tags}</div>
+                        <!--
+              -->
+                      </div>
+                    `
+                  : ''}
+                <textarea
+                  id="input-id"
+                  class="input ${classMap({ 'input-tags': this._tagsEnabled, error: this._hasError })}"
+                  style="--rows: ${rows}"
+                  rows=${rows}
+                  ?disabled=${this.disabled || this.skeleton}
+                  ?readonly=${this.readonly}
+                  .value=${value}
+                  name=${ifDefined(this.name ?? undefined)}
+                  placeholder=${this.placeholder}
+                  spellcheck="false"
+                  wrap="${ifDefined(this._tagsEnabled ? 'soft' : undefined)}"
+                  aria-describedby="help-id error-id"
+                  @focus=${this._onFocus}
+                ></textarea>
+              `
+            : ''}
+          ${!isTextarea
+            ? html`
+                ${clipboard && this.readonly
+                  ? html`
+                      <!--
                 This div has the same styles as the input (but it's hidden with height:0)
                 this way we can use it to know what width the content is
                 and "auto size" the container.
               -->
-              <div class="input input-mirror">${value}</div>
-            ` : ''}
-            <input
-              id="input-id"
-              type=${this.secret && !this._showSecret ? 'password' : 'text'}
-              class="input ${classMap({ error: this._hasError })}"
-              ?disabled=${this.disabled || this.skeleton}
-              ?readonly=${this.readonly}
-              .value=${value}
-              name=${ifDefined(this.name ?? undefined)}
-              placeholder=${this.placeholder}
-              spellcheck="false"
-              aria-describedby="help-id error-id"
-              @focus=${this._onFocus}
-            >
-          ` : ''}
+                      <div class="input input-mirror">${value}</div>
+                    `
+                  : ''}
+                <input
+                  id="input-id"
+                  type=${this.secret && !this._showSecret ? 'password' : 'text'}
+                  class="input ${classMap({ error: this._hasError })}"
+                  ?disabled=${this.disabled || this.skeleton}
+                  ?readonly=${this.readonly}
+                  .value=${value}
+                  name=${ifDefined(this.name ?? undefined)}
+                  placeholder=${this.placeholder}
+                  spellcheck="false"
+                  aria-describedby="help-id error-id"
+                  @focus=${this._onFocus}
+                />
+              `
+            : ''}
 
           <div class="ring"></div>
         </div>
 
-        ${secret ? html`
-          <button class="btn" @click=${this._onClickSecret}
-            title=${this._showSecret ? i18n('cc-input-text.secret.hide') : i18n('cc-input-text.secret.show')}
-          >
-            <cc-icon
-              class="btn-img"
-              .icon=${this._showSecret ? iconEyeClosed : iconEyeOpen}
-              a11y-name=${this._showSecret ? i18n('cc-input-text.secret.hide') : i18n('cc-input-text.secret.show')}
-              size="lg"
-            ></cc-icon>
-          </button>
-        ` : ''}
-
-        ${clipboard ? html`
-          <button class="btn" @click=${this._onClickCopy} title=${i18n('cc-input-text.clipboard')}>
-            <cc-icon
-              class="btn-img"
-              .icon=${this._copyOk ? iconCheck : iconClipboard}
-              a11y-name=${i18n('cc-input-text.clipboard')}
-              size="lg"
-            ></cc-icon>
-          </button>
-        ` : ''}
+        ${secret
+          ? html`
+              <button
+                class="btn"
+                @click=${this._onClickSecret}
+                title=${this._showSecret ? i18n('cc-input-text.secret.hide') : i18n('cc-input-text.secret.show')}
+              >
+                <cc-icon
+                  class="btn-img"
+                  .icon=${this._showSecret ? iconEyeClosed : iconEyeOpen}
+                  a11y-name=${this._showSecret ? i18n('cc-input-text.secret.hide') : i18n('cc-input-text.secret.show')}
+                  size="lg"
+                ></cc-icon>
+              </button>
+            `
+          : ''}
+        ${clipboard
+          ? html`
+              <button class="btn" @click=${this._onClickCopy} title=${i18n('cc-input-text.clipboard')}>
+                <cc-icon
+                  class="btn-img"
+                  .icon=${this._copyOk ? iconCheck : iconClipboard}
+                  a11y-name=${i18n('cc-input-text.clipboard')}
+                  size="lg"
+                ></cc-icon>
+              </button>
+            `
+          : ''}
       </div>
 
-      
       <div class="help-container" id="help-id">
         <slot name="help"></slot>
       </div>
 
-      <div class="error-container" id="error-id" >
+      <div class="error-container" id="error-id">
         <slot name="error" @slotchange="${this._onErrorSlotChanged}"></slot>
       </div>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       accessibilityStyles,
       skeletonStyles,
@@ -415,7 +427,7 @@ export class CcInputText extends LitElement {
           color: var(--cc-color-text-weak);
           font-size: 0.9em;
         }
-        
+
         slot[name='error']::slotted(*) {
           margin: 0.5em 0 0;
           color: var(--cc-color-text-danger);
@@ -552,7 +564,7 @@ export class CcInputText extends LitElement {
           border-radius: var(--cc-border-radius-default, 0.25em);
           box-shadow: 0 0 0 0 rgb(255 255 255 / 0%);
         }
-        
+
         .input.error + .ring {
           border-color: var(--cc-color-border-danger) !important;
         }
@@ -562,7 +574,7 @@ export class CcInputText extends LitElement {
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
-        
+
         input.error:focus + .ring {
           outline: var(--cc-focus-outline-error, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
@@ -645,7 +657,7 @@ export class CcInputText extends LitElement {
 
         .btn-img {
           --cc-icon-color: var(--cc-input-btn-icons-color, #595959);
-          
+
           box-sizing: border-box;
           padding: 15%;
         }

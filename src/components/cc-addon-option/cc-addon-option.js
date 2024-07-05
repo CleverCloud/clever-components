@@ -1,9 +1,9 @@
-import '../cc-icon/cc-icon.js';
-import '../cc-img/cc-img.js';
-import '../cc-toggle/cc-toggle.js';
 import { css, html, LitElement } from 'lit';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
+import '../cc-icon/cc-icon.js';
+import '../cc-img/cc-img.js';
+import '../cc-toggle/cc-toggle.js';
 
 /**
  * @typedef {import('../common.types.js').IconModel} IconModel
@@ -23,8 +23,7 @@ import { i18n } from '../../lib/i18n.js';
  * @slot - The content of the option's description (text or HTML).
  */
 export class CcAddonOption extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       enabled: { type: Boolean, reflect: true },
       icon: { type: Object },
@@ -33,7 +32,7 @@ export class CcAddonOption extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {boolean} Enable the option by default. */
@@ -49,33 +48,33 @@ export class CcAddonOption extends LitElement {
     this.title = null;
   }
 
-  _onToggleOption ({ detail: enabled }) {
-    this.enabled = (enabled === 'ENABLED');
+  _onToggleOption({ detail: enabled }) {
+    this.enabled = enabled === 'ENABLED';
     dispatchCustomEvent(this, 'input', this.enabled);
   }
 
-  render () {
+  render() {
     const choices = [
       { label: i18n('cc-addon-option.disabled'), value: 'DISABLED' },
       { label: i18n('cc-addon-option.enabled'), value: 'ENABLED' },
     ];
 
     return html`
-      ${this.icon != null ? html`
-        <cc-icon class="icon" .icon=${this.icon}></cc-icon>
-      ` : ''}
-      ${this.logo != null && this.icon == null ? html`
-        <cc-img class="logo" src=${this.logo}></cc-img>
-      ` : ''}
+      ${this.icon != null ? html` <cc-icon class="icon" .icon=${this.icon}></cc-icon> ` : ''}
+      ${this.logo != null && this.icon == null ? html` <cc-img class="logo" src=${this.logo}></cc-img> ` : ''}
       <div class="option-main">
         <div class="option-name">${this.title}</div>
         <slot class="option-details"></slot>
-        <cc-toggle .choices=${choices} value=${this.enabled ? 'ENABLED' : 'DISABLED'} @cc-toggle:input=${this._onToggleOption}></cc-toggle>
+        <cc-toggle
+          .choices=${choices}
+          value=${this.enabled ? 'ENABLED' : 'DISABLED'}
+          @cc-toggle:input=${this._onToggleOption}
+        ></cc-toggle>
       </div>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
@@ -118,7 +117,7 @@ export class CcAddonOption extends LitElement {
           height: 1.6em;
           border-radius: var(--cc-border-radius-default, 0.25em);
         }
-        
+
         .icon {
           --cc-icon-color: #012a51;
           --cc-icon-size: 28px;

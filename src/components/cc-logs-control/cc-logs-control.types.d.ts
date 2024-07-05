@@ -1,40 +1,40 @@
-import { DateDisplay } from "../cc-logs/date-display.types";
-import { Timezone } from "../../lib/date/date.types";
+import { Timezone } from '../../lib/date/date.types';
+import { DateDisplay } from '../cc-logs/date-display.types';
 
-export type LogsControlPalette = "default" | "One Light" | "Tokyo Night Light" | "Night Owl" | "Everblush" | "Hyoob";
+export type LogsControlPalette = 'default' | 'One Light' | 'Tokyo Night Light' | 'Night Owl' | 'Everblush' | 'Hyoob';
 
 export interface LogsControlWrapLinesOption {
-  name: "wrap-lines";
+  name: 'wrap-lines';
   value: boolean;
 }
 
 export interface LogsControlDateDisplayOption {
-  name: "date-display";
+  name: 'date-display';
   value: DateDisplay;
 }
 
 export interface LogsControlTimezoneOption {
-  name: "timezone";
+  name: 'timezone';
   value: Timezone;
 }
 
 export interface LogsControlPaletteOption {
-  name: "palette";
+  name: 'palette';
   value: LogsControlPalette;
 }
 
 export interface LogsControlStripAnsiOption {
-  name: "strip-ansi";
+  name: 'strip-ansi';
   value: boolean;
 }
 
 export interface LogsControlDisplayedMetadataOption {
-  name: "metadata-display";
+  name: 'metadata-display';
   value: { [key: string]: boolean };
 }
 
 export type LogsControlOption =
-  LogsControlWrapLinesOption
+  | LogsControlWrapLinesOption
   | LogsControlDateDisplayOption
   | LogsControlTimezoneOption
   | LogsControlPaletteOption

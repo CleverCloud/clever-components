@@ -1,9 +1,9 @@
-import '../cc-env-var-create/cc-env-var-create.js';
-import '../cc-env-var-input/cc-env-var-input.js';
 import { css, html, LitElement } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
+import '../cc-env-var-create/cc-env-var-create.js';
+import '../cc-env-var-input/cc-env-var-input.js';
 
 /**
  * @type {Array<EnvVar>}
@@ -27,8 +27,7 @@ const SKELETON_VARIABLES = [
  * @fires {CustomEvent<EnvVar[]>} cc-env-var-editor-simple:change - Fires the new list of variables whenever something changes in the list.
  */
 export class CcEnvVarEditorSimple extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       disabled: { type: Boolean },
       readonly: { type: Boolean },
@@ -36,7 +35,7 @@ export class CcEnvVarEditorSimple extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {boolean} Sets `disabled` attribute on inputs and buttons. */
@@ -52,7 +51,7 @@ export class CcEnvVarEditorSimple extends LitElement {
   /**
    * @type {Array<EnvVar>} variables
    */
-  _changeVariables (variables) {
+  _changeVariables(variables) {
     this.state = {
       ...this.state,
       variables,
@@ -60,86 +59,80 @@ export class CcEnvVarEditorSimple extends LitElement {
     dispatchCustomEvent(this, 'change', variables);
   }
 
-  _onCreate ({ detail: newVar }) {
+  _onCreate({ detail: newVar }) {
     this._changeVariables([...this.state.variables, newVar]);
   }
 
-  _onInput ({ detail: editedVar }) {
+  _onInput({ detail: editedVar }) {
     this._changeVariables(
       this.state.variables.map((v) => {
-        return (v.name === editedVar.name)
-          ? { ...v, value: editedVar.value }
-          : v;
+        return v.name === editedVar.name ? { ...v, value: editedVar.value } : v;
       }),
     );
   }
 
-  _onDelete ({ detail: deletedVar }) {
+  _onDelete({ detail: deletedVar }) {
     this._changeVariables(
       this.state.variables
         .filter((v) => {
-          return (v.name === deletedVar.name)
-            ? (!v.isNew)
-            : true;
+          return v.name === deletedVar.name ? !v.isNew : true;
         })
         .map((v) => {
-          return (v.name === deletedVar.name)
-            ? { ...v, isDeleted: true }
-            : v;
+          return v.name === deletedVar.name ? { ...v, isDeleted: true } : v;
         }),
     );
   }
 
-  _onKeep ({ detail: keptVar }) {
+  _onKeep({ detail: keptVar }) {
     this._changeVariables(
       this.state.variables.map((v) => {
-        return (v.name === keptVar.name)
-          ? { ...v, isDeleted: false }
-          : v;
+        return v.name === keptVar.name ? { ...v, isDeleted: false } : v;
       }),
     );
   }
 
-  render () {
-
-    const skeleton = (this.state.type === 'loading');
+  render() {
+    const skeleton = this.state.type === 'loading';
     const variables = skeleton ? SKELETON_VARIABLES : this.state.variables;
     const variablesNames = variables.map(({ name }) => name);
 
     return html`
+      ${!this.readonly
+        ? html`
+            <cc-env-var-create
+              ?disabled=${skeleton || this.disabled}
+              .validationMode=${this.state.validationMode}
+              .variablesNames=${variablesNames}
+              @cc-env-var-create:create=${this._onCreate}
+            ></cc-env-var-create>
+          `
+        : ''}
 
-      ${!this.readonly ? html`
-        <cc-env-var-create
-          ?disabled=${skeleton || this.disabled}
-          .validationMode=${this.state.validationMode}
-          .variablesNames=${variablesNames}
-          @cc-env-var-create:create=${this._onCreate}
-        ></cc-env-var-create>
-      ` : ''}
+      <div class="message" ?hidden=${variables.length !== 0}>${i18n('cc-env-var-editor-simple.empty-data')}</div>
 
-      <div class="message" ?hidden=${variables.length !== 0}>
-        ${i18n('cc-env-var-editor-simple.empty-data')}
-      </div>
-
-      ${repeat(variables, ({ name }) => name, ({ name, value, isNew, isEdited, isDeleted }) => html`
-        <cc-env-var-input
-          name=${name}
-          value=${value}
-          ?new=${isNew}
-          ?edited=${isEdited}
-          ?deleted=${isDeleted}
-          ?skeleton=${skeleton}
-          ?disabled=${this.disabled}
-          ?readonly=${this.readonly}
-          @cc-env-var-input:input=${this._onInput}
-          @cc-env-var-input:delete=${this._onDelete}
-          @cc-env-var-input:keep=${this._onKeep}
-        ></cc-env-var-input>
-      `)}
+      ${repeat(
+        variables,
+        ({ name }) => name,
+        ({ name, value, isNew, isEdited, isDeleted }) => html`
+          <cc-env-var-input
+            name=${name}
+            value=${value}
+            ?new=${isNew}
+            ?edited=${isEdited}
+            ?deleted=${isDeleted}
+            ?skeleton=${skeleton}
+            ?disabled=${this.disabled}
+            ?readonly=${this.readonly}
+            @cc-env-var-input:input=${this._onInput}
+            @cc-env-var-input:delete=${this._onDelete}
+            @cc-env-var-input:keep=${this._onKeep}
+          ></cc-env-var-input>
+        `,
+      )}
     `;
   }
 
-  static get styles () {
+  static get styles() {
     // language=CSS
     return css`
       :host {
