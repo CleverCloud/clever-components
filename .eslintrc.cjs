@@ -34,7 +34,6 @@ module.exports = {
     'import/first': ['error'],
     'import/newline-after-import': ['error', { 'count': 1 }],
     'import/no-useless-path-segments': ['error', { 'noUselessIndex': true }],
-    'import/order': ['error', { 'alphabetize': { 'order': 'asc', 'caseInsensitive': true } }],
     'line-comment-position': ['error', { 'position': 'above' }],
     // redundant role may be necessary sometimes
     'lit-a11y/no-redundant-role': 'warn',
@@ -51,7 +50,6 @@ module.exports = {
     'multiline-ternary': 'off',
     'no-new': 'off',
     'padded-blocks': 'off',
-    'quotes': ['error', 'single', { 'allowTemplateLiterals': true }],
     'spaced-comment': ['error', 'always', { 'markers': ['#region', '#endregion'] }],
   },
 };
