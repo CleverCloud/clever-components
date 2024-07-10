@@ -1,0 +1,15 @@
+import{s as e,x as t,i as s}from"./lit-element-98ed46d4.js";const i={code:"EUR",changeRate:1},n={type:"30-days",digits:2};class c extends e{static get properties(){return{selectedCurrency:{type:Object,attribute:"selected-currency"},selectedPlans:{type:Object,attribute:"selected-plans"},selectedTemporality:{type:Object,attribute:"selected-temporality"},selectedZoneId:{type:String,attribute:"selected-zone-id"},_headerElement:{type:Object,state:!0},_productElements:{type:Array,state:!0},_estimationElement:{type:Object,state:!0}}}constructor(){super(),this.selectedCurrency=i,this.selectedPlans={},this.selectedTemporality=n,this.selectedZoneId="par",this._headerElement=null,this._productElements=null,this._estimationElement=null}_getPlanId(e){return e.id??`${e.productName}/${e.name}`}_updateElementReferences(){this._headerElement=this.querySelector("cc-pricing-header"),this._productElements=Array.from(this.querySelectorAll("cc-pricing-product, cc-pricing-product-consumption")),this._estimationElement=this.querySelector("cc-pricing-estimation")}_onAddPlan({detail:e}){const t=this._getPlanId(e);null==this.selectedPlans[t]&&(this.selectedPlans[t]={...e,quantity:0}),this.selectedPlans[t].quantity+=1,this.requestUpdate()}_onChangeCurrency({detail:e}){this.selectedCurrency=e}_onChangeTemporality({detail:e}){this.selectedTemporality=e}_onChangeQuantity({detail:e}){const t=this._getPlanId(e);this.selectedPlans[t].quantity=e.quantity,this.requestUpdate()}_onDeletePlan({detail:e}){const t=this._getPlanId(e);delete this.selectedPlans[t],this.requestUpdate()}connectedCallback(){super.connectedCallback(),this._updateElementReferences(),this._observer=new MutationObserver((()=>this._updateElementReferences())),this._observer.observe(this,{childList:!0,subtree:!0})}disconnectedCallback(){super.disconnectedCallback(),this._observer.disconnect()}willUpdate(){this._productElements?.forEach((e=>{e.currency=this.selectedCurrency,e.temporalities=[this.selectedTemporality]})),null!=this._headerElement&&(this._headerElement.selectedCurrency=this.selectedCurrency??i,this._headerElement.selectedTemporality=this.selectedTemporality??n),null!=this._estimationElement&&(this._estimationElement.selectedCurrency=this.selectedCurrency??i,this._estimationElement.selectedTemporality=this.selectedTemporality??n,this._estimationElement.selectedPlans=Object.values(this.selectedPlans))}render(){return t`
+      <slot
+        @cc-pricing-header:change-currency=${this._onChangeCurrency}
+        @cc-pricing-header:change-temporality=${this._onChangeTemporality}
+        @cc-pricing-product:add-plan=${this._onAddPlan}
+        @cc-pricing-estimation:change-quantity=${this._onChangeQuantity}
+        @cc-pricing-estimation:delete-plan=${this._onDeletePlan}
+        @cc-pricing-estimation:change-temporality=${this._onChangeTemporality}
+        @cc-pricing-estimation:change-currency=${this._onChangeCurrency}
+      ></slot>
+    `}static get styles(){return[s`
+        :host {
+          display: block;
+        }
+      `]}}window.customElements.define("cc-pricing-page",c);export{c as CcPricingPage};

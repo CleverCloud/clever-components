@@ -1,0 +1,1 @@
+import{p as e}from"./request.fetch-17efde15.js";function r(r){return Promise.resolve({method:"get",url:"/v2/products/addonproviders",headers:{Accept:"application/json"},queryParams:e(r,["orgaId"])})}function o(r){return Promise.resolve({method:"get",url:"/v2/products/instances",headers:{Accept:"application/json"},queryParams:e(r,["for"])})}export{o as a,r as g};

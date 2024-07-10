@@ -1,0 +1,1 @@
+import{h as o}from"./utils-aa566623.js";function t(t){const n=[{value:"hidden",hidden:!0}];for(let a=0;a<t;a++){const t=Math.floor(7*Math.random()+3);n.push({value:o(t),hidden:!1})}return n}export{t as generateRandomKeywords};

@@ -37,6 +37,7 @@
     "preview:publish": "node tasks/preview.js publish",
     "preview:delete": "node tasks/preview.js delete",
     "cdn-release:build": "rollup -c rollup/rollup-cdn.config.js",
+    "cdn-i18n-release:build": "rollup -c rollup/rollup-cdn-i18n.config.js",
     "cdn-release:publish": "node tasks/cdn-cli.js publish release",
     "cdn-release:ui": "node tasks/cdn-cli.js ui release",
     "cdn-preview:build": "rollup -c rollup/rollup-cdn-preview.config.js",
@@ -111,6 +112,7 @@
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-standard": "^5.0.0",
+    "estree-walker": "^2.0.2",
     "github-markdown-css": "^4.0.0",
     "glob": "^7.1.7",
     "hanbi": "^1.0.1",
@@ -118,6 +120,7 @@
     "i18n-extract": "^0.6.7",
     "js-yaml": "^4.1.0",
     "lit-analyzer": "2.0.0-pre.3",
+    "magic-string": "^0.30.10",
     "mime-types": "^2.1.30",
     "mocha": "^10.0.0",
     "node-static": "^0.7.11",
@@ -143,8 +146,8 @@
     "text-table": "^0.2.0",
     "ts-lit-plugin": "^2.0.2",
     "typescript": "~5.4.2",
-    "vite": "^5.2.0",
-    "unified": "^9.2.1"
+    "unified": "^9.2.1",
+    "vite": "^5.2.0"
   },
   "customElements": "dist/custom-elements.json",
   "volta": {

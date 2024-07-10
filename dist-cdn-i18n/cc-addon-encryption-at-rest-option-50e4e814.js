@@ -1,0 +1,3 @@
+import{s as e}from"./i18n-sanitize-4edc4a2d.js";import"./cc-icon-f84255c7.js";import{m as t}from"./cc-remix.icons-d7d44eac.js";import{x as i}from"./lit-element-98ed46d4.js";const n=({enabled:n})=>{const s=i`
+    <div class="option-details">${e`Le chiffrement au repos chiffre l'intégralité du disque de données afin de ne pas y stocker d'informations en clair. Grâce à cette sécurité, l'accès physique au disque empêchera toute lecture des données stockées. Plus d'information dans notre <a href="https://www.clever-cloud.com/doc/administrate/encryption-at-rest/">documentation</a>.`}</div>
+  `;return{title:"Chiffrement au repos",icon:t,description:s,enabled:n,name:"encryption"}};export{n as c};

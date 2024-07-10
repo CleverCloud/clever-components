@@ -1,0 +1,1 @@
+import{d as n}from"./events-4c8e3503.js";function t(t,e=window){return n(e,"cc:notify",t)}function e(n,e){return t({message:n,title:e,intent:"danger"})}function s(n,e){return t({message:n,title:e,intent:"success"})}export{e as a,s as b,t as n};
