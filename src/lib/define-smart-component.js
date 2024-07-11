@@ -4,6 +4,11 @@ import { defineSmartComponentCore } from './smart-manager.js';
 const META = Symbol('META');
 
 /**
+ * @typedef {import('./events.js').CcEvent} CcEvent
+ * @typedef {import('./define-smart-component.types.js').SuperEventFunction} SuperEventFunction
+ */
+
+/**
  * @typedef {Element} SmartContainer
  * @property {Object} context
  */
@@ -28,6 +33,7 @@ const META = Symbol('META');
  *   component?: Element,
  *   context?: Object,
  *   onEvent?: (type: string, listener: (detail: Object) => void) => void,
+ *   onSuperEvent?: SuperEventFunction,
  *   updateComponent?: (
  *     type: string,
  *     callbackOrObject: CallbackOrObject,
@@ -78,6 +84,19 @@ export function defineSmartComponent(definition) {
         );
       }
 
+      /** @type SuperEventFunction */
+      function onSuperEvent(eventClass, listener) {
+        component.addEventListener(
+          // @ts-ignore
+          eventClass.TYPE,
+          // @ts-ignore
+          (e) => {
+            listener(e);
+          },
+          { signal },
+        );
+      }
+
       // Prepare a helper function to update a component (via immer if necessary)
       // We use an even target as an indirection so we can
       // * ask for updates via un event
@@ -106,7 +125,7 @@ export function defineSmartComponent(definition) {
         target.dispatchEvent(event);
       }
 
-      definition.onContextUpdate({ container, component, context, onEvent, updateComponent, signal });
+      definition.onContextUpdate({ container, component, context, onEvent, onSuperEvent, updateComponent, signal });
     },
     onDisconnect(container, component) {
       component[META].get(definition).abortController?.abort();

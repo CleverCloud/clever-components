@@ -11,6 +11,7 @@ import { i18n } from '../../lib/i18n.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import '../cc-smart-container/cc-smart-container.js';
+import { CcSshKeyListCreateEvent, CcSshKeyListDeleteEvent } from './cc-ssh-key-list.events.js';
 import './cc-ssh-key-list.js';
 
 /**
@@ -20,6 +21,7 @@ import './cc-ssh-key-list.js';
  * @typedef {import('./cc-ssh-key-list.types.js').KeyDataStateLoadedAndUnlinked} KeyDataStateLoadedAndUnlinked
  * @typedef {import('./cc-ssh-key-list.types.js').KeyDataStateLoadedAndLinked} KeyDataStateLoadedAndLinked
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
+ * @typedef {import('../../lib/define-smart-component.types.js').SuperEventFunction} SuperEventFunction
  */
 
 defineSmartComponent({
@@ -29,15 +31,15 @@ defineSmartComponent({
   },
 
   /**
-   *
    * @param {Object} settings
    * @param {CcSshKeyList} settings.component
    * @param {{apiConfig: ApiConfig}} settings.context
    * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
+   * @param {SuperEventFunction} settings.onSuperEvent
    * @param {function} settings.updateComponent
    * @param {AbortSignal} settings.signal
    */
-  onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
+  onContextUpdate({ component, context, onEvent, onSuperEvent, updateComponent, signal }) {
     const { apiConfig } = context;
 
     // Retrieving SSH keys is done in two steps, hidden in the `fetchAllKeys()` implementation:
@@ -62,49 +64,51 @@ defineSmartComponent({
         });
     }
 
-    onEvent('cc-ssh-key-list:create', ({ name, publicKey }) => {
+    onSuperEvent(CcSshKeyListCreateEvent, (e) => {
+      const { keyName, publicKey } = e;
+
       component.createKeyFormState = { type: 'creating' };
 
-      addKey({ apiConfig, key: { name: name.trim(), key: publicKey.trim() } })
+      addKey({ apiConfig, key: { name: keyName.trim(), key: publicKey.trim() } })
         .then(() => {
           // re-fetching keys because we need fingerprint info sent from API to properly display newly created keys
           refreshList().then(() => {
-            notifySuccess(i18n('cc-ssh-key-list.success.add', { name }));
+            notifySuccess(i18n('cc-ssh-key-list.success.add', { name: keyName }));
             component.resetCreateKeyForm();
           });
         })
         .catch((error) => {
           console.error(error);
-          notifyError(error, i18n('cc-ssh-key-list.error.add', { name }));
+          notifyError(error, i18n('cc-ssh-key-list.error.add', { name: keyName }));
         })
         .finally(() => {
           component.createKeyFormState = { type: 'idle' };
         });
     });
 
-    onEvent('cc-ssh-key-list:delete', ({ name }) => {
+    onSuperEvent(CcSshKeyListDeleteEvent, ({ keyName }) => {
       updateComponent(
         'keyData',
         /** @param {KeyDataStateLoadedAndUnlinked|KeyDataStateLoadedAndLinked} keyData */
         (keyData) => {
-          const key = keyData.personalKeys.find((key) => key.name === name);
+          const key = keyData.personalKeys.find((key) => key.name === keyName);
           key.state = 'deleting';
         },
       );
 
-      deleteKey({ apiConfig, key: { name } })
+      deleteKey({ apiConfig, key: { name: keyName } })
         .then(() => {
           // refreshing both personal and GitHub keys because we don't know if we should add the deleting key back to the GitHub list
-          refreshList().then(() => notifySuccess(i18n('cc-ssh-key-list.success.delete', { name })));
+          refreshList().then(() => notifySuccess(i18n('cc-ssh-key-list.success.delete', { name: keyName })));
         })
         .catch((error) => {
           console.error(error);
-          notifyError(error, i18n('cc-ssh-key-list.error.delete', { name }));
+          notifyError(error, i18n('cc-ssh-key-list.error.delete', { name: keyName }));
           updateComponent(
             'keyData',
             /** @param {KeyDataStateLoadedAndUnlinked|KeyDataStateLoadedAndLinked} keyData */
             (keyData) => {
-              const key = keyData.personalKeys.find((key) => key.name === name);
+              const key = keyData.personalKeys.find((key) => key.name === keyName);
               key.state = 'idle';
             },
           );

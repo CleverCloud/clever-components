@@ -24,6 +24,7 @@ import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
+import { CcSshKeyListCreateEvent, CcSshKeyListDeleteEvent } from './cc-ssh-key-list.events.js';
 
 /**
  * @type {SshKeyState[]}
@@ -126,19 +127,18 @@ export class CcSshKeyList extends LitElement {
   _onCreateKey(formData) {
     // trigger key creation if client form validation is successful
     if (typeof formData.name === 'string' && typeof formData.publicKey === 'string') {
-      const newKey = {
-        name: formData.name,
-        publicKey: formData.publicKey,
-      };
-      dispatchCustomEvent(this, 'create', newKey);
+      this.dispatchEvent(
+        new CcSshKeyListCreateEvent({
+          keyName: formData.name,
+          publicKey: formData.publicKey,
+        }),
+      );
     }
   }
 
   /** @param {SshKeyState} sshKeyState */
   _onDeleteKey(sshKeyState) {
-    // removing state property that belongs to internal component implementation
-    const { state, ...sshKey } = sshKeyState;
-    dispatchCustomEvent(this, 'delete', sshKey);
+    this.dispatchEvent(new CcSshKeyListDeleteEvent(sshKeyState.name));
   }
 
   /** @param {SshKeyState} sshKeyState */

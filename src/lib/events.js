@@ -84,3 +84,15 @@ export class EventHandler {
     return true;
   }
 }
+
+export class CcEvent extends Event {
+  /** @type {string} */
+  static TYPE;
+
+  /**
+   * @param {string} type
+   */
+  constructor(type) {
+    super(type, { bubbles: true, composed: true });
+  }
+}
