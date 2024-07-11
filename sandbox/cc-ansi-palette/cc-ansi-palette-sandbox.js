@@ -1,7 +1,7 @@
 import { html, LitElement } from 'lit';
 import { analyzePalette } from '../../src/lib/ansi/ansi-palette-analyser.js';
 import { hexToRgb, isDark } from '../../src/lib/color.js';
-import { i18n } from '../../src/lib/i18n.js';
+import { i18n } from '../../src/lib/i18n/i18n.js';
 import { sandboxStyles } from '../sandbox-styles.js';
 import { getGoghPalettes } from './gogh-palettes.js';
 import '../../src/components/cc-toggle/cc-toggle.js';

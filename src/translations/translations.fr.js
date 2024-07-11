@@ -1,20 +1,24 @@
 import {
-  formatDate,
-  formatDateOnly,
-  formatDatetime,
-  formatHours,
+  prepareFormatDate,
+  prepareFormatDateOnly,
+  prepareFormatDatetime,
   prepareFormatDistanceToNow,
-} from '../lib/i18n-date.js';
-import { getCountryName } from '../lib/i18n-display.js';
+  prepareFormatHours,
+} from '../lib/i18n/i18n-date.js';
+import { getCountryName } from '../lib/i18n/i18n-display.js';
 import {
   formatCurrency,
   formatNumber,
   formatPercent,
   prepareNumberBytesFormatter,
   prepareNumberUnitFormatter,
-} from '../lib/i18n-number.js';
-import { sanitize } from '../lib/i18n-sanitize.js';
-import { preparePlural } from '../lib/i18n-string.js';
+} from '../lib/i18n/i18n-number.js';
+import { sanitize } from '../lib/i18n/i18n-sanitize.js';
+import { preparePlural } from '../lib/i18n/i18n-string.js';
+
+/**
+ * @typedef {import('../lib/i18n/i18n.types.d.ts').Translations} Translations
+ */
 
 export const lang = 'fr';
 
@@ -30,6 +34,10 @@ const UNITS_FR = {
   second: 'seconde',
 };
 
+const formatDate = prepareFormatDate(lang);
+const formatDateOnly = prepareFormatDateOnly(lang);
+const formatDatetime = prepareFormatDatetime(lang);
+const formatHours = prepareFormatHours(lang);
 const formatDistanceToNow = prepareFormatDistanceToNow(
   lang,
   (value, unit) => {
@@ -45,16 +53,24 @@ const formatBytes = prepareNumberBytesFormatter(lang, 'o', '\u202f');
 const BYTES_SI_SEPARATOR = '\u202f';
 const formatBytesSi = prepareNumberUnitFormatter(lang, 'o', BYTES_SI_SEPARATOR);
 
+/**
+ * @param {number} value
+ * @return {string}
+ */
 function getUnit(value) {
   return formatBytesSi(value).split(BYTES_SI_SEPARATOR)[1];
 }
 
 // Shared logic between translations, is it a good idea?
-function formatFlavor(f) {
-  const cpu = `CPUs : ${f.cpus}`;
-  const shared = f.microservice ? ` (partagé)` : '';
-  const gpu = f.gpus > 0 ? `GPUs : ${f.gpus}` : '';
-  const mem = `RAM : ${formatBytes(f.mem * 1024 * 1024)}`;
+/**
+ * @param {{ [key: string]: any }} flavor
+ * @return {string}
+ */
+function formatFlavor(flavor) {
+  const cpu = `CPUs : ${flavor.cpus}`;
+  const shared = flavor.microservice ? ` (partagé)` : '';
+  const gpu = flavor.gpus > 0 ? `GPUs : ${flavor.gpus}` : '';
+  const mem = `RAM : ${formatBytes(flavor.mem * 1024 * 1024)}`;
   return [cpu + shared, gpu, mem].filter((a) => a).join('\n');
 }
 
@@ -80,13 +96,14 @@ export const translations = {
   //#region cc-addon-backups
   'cc-addon-backups.close-btn': `Fermer ce panneau`,
   'cc-addon-backups.command-password': `Cette commande vous demandera votre mot de passe, le voici :`,
+  /** @param {{createdAt: number|string}} _*/
   'cc-addon-backups.delete': ({ createdAt }) =>
-    sanitize`Supprimer la sauvegarde du <strong title="${formatDate(lang, createdAt)}">${formatDatetime(lang, createdAt)}</strong>`,
+    sanitize`Supprimer la sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
   'cc-addon-backups.delete.btn': `supprimer...`,
-  'cc-addon-backups.delete.manual.description.es-addon': ({ href }) =>
+  'cc-addon-backups.delete.manual.description.es-addon': /** @param {{href: string}} _ */ ({ href }) =>
     sanitize`Vous pouvez supprimer cette sauvegarde manuellement grâce à l'outil <a href="${href}">cURL</a> en exécutant cette commande :`,
   'cc-addon-backups.delete.manual.title': `Suppression manuelle`,
-  'cc-addon-backups.delete.with-service.description.es-addon': ({ href }) =>
+  'cc-addon-backups.delete.with-service.description.es-addon': (/** @type {{href: string}} */ { href }) =>
     sanitize`Vous pouvez supprimer cette sauvegarde avec Kibana en vous rendant sur le <a href="${href}">dépôt de sauvegardes</a>.`,
   'cc-addon-backups.delete.with-service.title.es-addon': `Suppression avec Kibana`,
   'cc-addon-backups.description.es-addon': `Les sauvegardes sont gérées par Elasticsearch lui-même. Vous pouvez définir la rétention ainsi que la périodicité des sauvegardes dans l'interface de Kibana.`,
@@ -109,7 +126,7 @@ export const translations = {
   'cc-addon-backups.link.redis-addon': `télécharger`,
   'cc-addon-backups.loading-error': `Une erreur est survenue pendant le chargement des sauvegardes.`,
   'cc-addon-backups.restore': ({ createdAt }) =>
-    sanitize`Restaurer la sauvegarde du <strong title="${formatDate(lang, createdAt)}">${formatDatetime(lang, createdAt)}</strong>`,
+    sanitize`Restaurer la sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
   'cc-addon-backups.restore.btn': `restaurer...`,
   'cc-addon-backups.restore.manual.description.es-addon': () =>
     sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <a href="https://curl.se/docs/">cURL</a> en exécutant cette commande :`,
@@ -126,10 +143,10 @@ export const translations = {
     sanitize`Vous pouvez restaurer cette sauvegarde avec Kibana en vous rendant sur le <a href="${href}">dépôt de sauvegardes</a>.`,
   'cc-addon-backups.restore.with-service.title.es-addon': `Restauration avec Kibana`,
   'cc-addon-backups.text': ({ createdAt, expiresAt }) => {
-    return sanitize`Sauvegarde du <strong title="${formatDate(lang, createdAt)}">${formatDatetime(lang, createdAt)}</strong> (expire le <strong>${formatDateOnly(lang, expiresAt)}</strong>)`;
+    return sanitize`Sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong> (expire le <strong>${formatDateOnly(expiresAt)}</strong>)`;
   },
   'cc-addon-backups.text.user-defined-retention': ({ createdAt }) =>
-    sanitize`Sauvegarde du <strong title="${formatDate(lang, createdAt)}">${formatDatetime(lang, createdAt)}</strong> (expire après la durée de rétention définie)`,
+    sanitize`Sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong> (expire après la durée de rétention définie)`,
   'cc-addon-backups.title': `Sauvegardes`,
   //#endregion
   //#region cc-addon-credentials
@@ -222,7 +239,7 @@ export const translations = {
   'cc-ansi-palette.selected': ({ color }) => `Sélection: ${color}`,
   //#endregion
   //#region cc-article-card
-  'cc-article-card.date': ({ date }) => formatDateOnly(lang, date),
+  'cc-article-card.date': ({ date }) => formatDateOnly(date),
   //#endregion
   //#region cc-article-list
   'cc-article-list.error': `Une erreur est survenue pendant le chargement des articles.`,
@@ -239,7 +256,7 @@ export const translations = {
   //#endregion
   //#region cc-datetime-relative
   'cc-datetime-relative.distance': ({ date }) => formatDistanceToNow(date),
-  'cc-datetime-relative.title': ({ date }) => formatDate(lang, date),
+  'cc-datetime-relative.title': ({ date }) => formatDate(date),
   //#endregion
   //#region cc-doc-card
   'cc-doc-card.link': ({ link, product }) =>
@@ -259,7 +276,8 @@ export const translations = {
     () => sanitize`<p>Si vous choisissez d'utiliser des enregistrements de type <code>A</code>, vous devrez vous-même assurer leur mise à jour.</p>
   <p>Pensez à suivre notre <a href="https://developers.clever-cloud.com/changelog/" lang="en">changelog</a> ou à utiliser notre <a href="https://developers.clever-cloud.com/api/v4/#load-balancers" lang="en">API v4</a> pour cela.</p>`,
   'cc-domain-management.dns.a.heading': `Enregistrements A`,
-  'cc-domain-management.dns.a.label': ({ index }) => `Valeur d'enregistrement A numéro ${index}`,
+  'cc-domain-management.dns.a.label': /** @param {{index: number}} _ */ ({ index }) =>
+    `Valeur d'enregistrement A numéro ${index}`,
   'cc-domain-management.dns.cname.desc': () =>
     sanitize`<p>Utiliser un enregistrement <code>CNAME</code> est fortement recommandé. Ainsi, votre configuration est automatiquement maintenue à jour.`,
   'cc-domain-management.dns.cname.heading': `Enregistrement CNAME`,
@@ -273,7 +291,7 @@ export const translations = {
   'cc-domain-management.dns.info.load-balancer': () =>
     sanitize`Si vous bénéficiez d'un <span lang="en">load balancer</span> dédié, référez-vous à sa configuration ou contactez le support. Notre équipe pourra également vous aider pour commander un tel service.`,
   'cc-domain-management.dns.loading-error': `Une erreur est survenue pendant le chargement des informations DNS`,
-  'cc-domain-management.form.domain.error.contains-path': ({ path }) =>
+  'cc-domain-management.form.domain.error.contains-path': /** @param {{path: string}} _ */ ({ path }) =>
     `Saisissez la partie "${path}" dans le champ "Route"`,
   'cc-domain-management.form.domain.error.empty': `Saisissez un nom de domaine`,
   'cc-domain-management.form.domain.error.format': `Saisissez un domaine valide, par exemple "example.com"`,
@@ -288,44 +306,42 @@ export const translations = {
   'cc-domain-management.form.path.help': () => sanitize`Par exemple: <code>/api</code> ou <code>/blog</code>`,
   'cc-domain-management.form.path.label': `Route`,
   'cc-domain-management.form.submit': `Ajouter le domaine`,
-  'cc-domain-management.form.submit.error': ({ domain }) =>
+  'cc-domain-management.form.submit.error': /** @param {{domain: string}} _ */ ({ domain }) =>
     `Une erreur est survenue lors de l'ajout du nom de domaine "${domain}"`,
   'cc-domain-management.form.submit.error-duplicate.heading': `Nom de domaine indisponible`,
-  'cc-domain-management.form.submit.error-duplicate.text': ({
-    domain,
-  }) => sanitize`<p>"${domain}" est déjà associé à une application au sein de Clever Cloud.</p>
-  <p>Contactez notre équipe support pour plus d'informations.</p>`,
-  'cc-domain-management.form.submit.success': ({ domain }) => `"${domain}" a bien été associé à votre application`,
-  'cc-domain-management.form.submit.success-config': ({
-    domain,
-  }) => sanitize`<p>"${domain}" a bien été associé à votre application.</p>
-  <p>Une configuration manuelle est nécessaire pour faire pointer votre domaine vers Clever Cloud. Consultez la section <strong>Configurez vos DNS</strong> pour plus d'informations.</p>`,
+  'cc-domain-management.form.submit.error-duplicate.text': /** @param {{domain: string}} _ */ ({ domain }) =>
+    sanitize`<p>"${domain}" est déjà associé à une application au sein de Clever Cloud.</p><p>Contactez notre équipe support pour plus d'informations.</p>`,
+  'cc-domain-management.form.submit.success': /** @param {{domain: string}} _ */ ({ domain }) =>
+    `"${domain}" a bien été associé à votre application`,
+  'cc-domain-management.form.submit.success-config': /** @param {{domain: string}} _ */ ({ domain }) =>
+    sanitize`<p>"${domain}" a bien été associé à votre application.</p><p>Une configuration manuelle est nécessaire pour faire pointer votre domaine vers Clever Cloud. Consultez la section <strong>Configurez vos DNS</strong> pour plus d'informations.</p>`,
   'cc-domain-management.list.badge.http-only.alt': `Avertissement`,
   'cc-domain-management.list.badge.http-only.text': `HTTP uniquement`,
   'cc-domain-management.list.badge.primary': `Principal`,
   'cc-domain-management.list.badge.testing-only': `Tests uniquement`,
-  'cc-domain-management.list.btn.delete.a11y-name': ({ domain }) => `Supprimer le nom de domaine - ${domain}`,
+  'cc-domain-management.list.btn.delete.a11y-name': /** @param {{domain: string}} _ */ ({ domain }) =>
+    `Supprimer le nom de domaine - ${domain}`,
   'cc-domain-management.list.btn.delete.text': `Supprimer`,
-  'cc-domain-management.list.btn.primary.a11y-name': ({ domain }) =>
+  'cc-domain-management.list.btn.primary.a11y-name': /** @param {{domain: string}} _ */ ({ domain }) =>
     `Définir comme nom de domaine principal - ${domain}`,
   'cc-domain-management.list.btn.primary.text': `Définir comme principal`,
-  'cc-domain-management.list.delete.error': ({ domain }) =>
+  'cc-domain-management.list.delete.error': /** @param {{domain: string}} _ */ ({ domain }) =>
     `Une erreur est survenue lors de la suppression du nom de domaine "${domain}"`,
-  'cc-domain-management.list.delete.success': ({ domain }) => `"${domain}" a bien été supprimé`,
+  'cc-domain-management.list.delete.success': /** @param {{domain: string}} _ */ ({ domain }) =>
+    `"${domain}" a bien été supprimé`,
   'cc-domain-management.list.empty': `Aucun domaine associé à cette application`,
   'cc-domain-management.list.error-not-found.heading': `Nom de domaine introuvable`,
-  'cc-domain-management.list.error-not-found.text': ({
-    domain,
-  }) => sanitize`<p>"${domain}" a peut-être été supprimé après le chargement de la liste des domaines.</p>
-  <p><strong>Rechargez votre page</strong> pour récupérer la liste des domaines à jour.</p>`,
+  'cc-domain-management.list.error-not-found.text': /** @param {{domain: string}} _ */ ({ domain }) =>
+    sanitize`<p>"${domain}" a peut-être été supprimé après le chargement de la liste des domaines.</p><p><strong>Rechargez votre page</strong> pour récupérer la liste des domaines à jour.</p>`,
   'cc-domain-management.list.heading': `Noms de domaines liés à cette application`,
   'cc-domain-management.list.http-only.notice': () =>
     sanitize`Les sous-domaines ne sont pas couverts par le certificat SSL de <code>*.cleverapps.io</code>. Ils ne bénéficient donc pas de HTTPS.`,
-  'cc-domain-management.list.link.title': ({ domainUrl }) => `Ouvrir - ${domainUrl} - nouvelle fenêtre`,
+  'cc-domain-management.list.link.title': /** @param {{domainUrl: string}} _ */ ({ domainUrl }) =>
+    `Ouvrir - ${domainUrl} - nouvelle fenêtre`,
   'cc-domain-management.list.loading-error': `Une erreur est survenue pendant le chargement des domaines associés à cette application`,
-  'cc-domain-management.list.primary.error': ({ domain }) =>
+  'cc-domain-management.list.primary.error': /** @param {{domain: string}} _ */ ({ domain }) =>
     `Une erreur est survenue lors du passage du nom de domaine "${domain}" en domaine principal`,
-  'cc-domain-management.list.primary.success': ({ domain }) =>
+  'cc-domain-management.list.primary.success': /** @param {{domain: string}} _ */ ({ domain }) =>
     `"${domain}" a bien été défini comme nom de domaine principal`,
   'cc-domain-management.main-heading': `Gérez vos noms de domaine`,
   'cc-domain-management.new-window': `Nouvelle fenêtre`,
@@ -508,8 +524,8 @@ export const translations = {
   //#endregion
   //#region cc-header-addon
   'cc-header-addon.creation-date': `Date de création`,
-  'cc-header-addon.creation-date.full': ({ date }) => formatDate(lang, date),
-  'cc-header-addon.creation-date.short': ({ date }) => formatDateOnly(lang, date),
+  'cc-header-addon.creation-date.full': ({ date }) => formatDate(date),
+  'cc-header-addon.creation-date.short': ({ date }) => formatDateOnly(date),
   'cc-header-addon.error': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
   'cc-header-addon.id-label': `Identifiant de l'add-on`,
   'cc-header-addon.id-label-alternative': () =>
@@ -590,7 +606,7 @@ export const translations = {
   'cc-invoice.download-pdf': `Télécharger le PDF`,
   'cc-invoice.error': `Une erreur est survenue pendant le chargement de la facture.`,
   'cc-invoice.info': ({ date, amount }) => {
-    return sanitize`Cette facture a été émise le <strong>${formatDateOnly(lang, date)}</strong> pour un total de <strong>${formatCurrency(lang, amount)}</strong>.`;
+    return sanitize`Cette facture a été émise le <strong>${formatDateOnly(date)}</strong> pour un total de <strong>${formatCurrency(lang, amount)}</strong>.`;
   },
   'cc-invoice.title': `Facture`,
   //#endregion
@@ -606,12 +622,12 @@ export const translations = {
   //#endregion
   //#region cc-invoice-table
   'cc-invoice-table.date.emission': `Date d'émission`,
-  'cc-invoice-table.date.value': ({ date }) => `${formatDateOnly(lang, date)}`,
+  'cc-invoice-table.date.value': ({ date }) => `${formatDateOnly(date)}`,
   'cc-invoice-table.number': `Numéro`,
   'cc-invoice-table.open-pdf': `Télécharger le PDF`,
   'cc-invoice-table.pay': `Régler`,
   'cc-invoice-table.text': ({ number, date, amount }) =>
-    sanitize`Facture <strong>${number}</strong> émise le <strong>${formatDateOnly(lang, date)}</strong> pour un total de <code>${formatCurrency(lang, amount)}</code>`,
+    sanitize`Facture <strong>${number}</strong> émise le <strong>${formatDateOnly(date)}</strong> pour un total de <code>${formatCurrency(lang, amount)}</code>`,
   'cc-invoice-table.total.label': `Total`,
   'cc-invoice-table.total.value': ({ amount }) => `${formatCurrency(lang, amount)}`,
   //#endregion
@@ -1148,17 +1164,17 @@ export const translations = {
   'cc-tile-metrics.link-to-metrics': `Ouvrir Métriques`,
   'cc-tile-metrics.metrics-link': `Métriques`,
   'cc-tile-metrics.percent': ({ percent }) => formatPercent(lang, percent),
-  'cc-tile-metrics.timestamp-format': ({ timestamp }) => formatDate(lang, timestamp),
+  'cc-tile-metrics.timestamp-format': ({ timestamp }) => formatDate(timestamp),
   'cc-tile-metrics.title': `Métriques serveur`,
   //#endregion
   //#region cc-tile-requests
   'cc-tile-requests.about-btn': `À propos de ce graphe...`,
   'cc-tile-requests.close-btn': `Afficher le graphe`,
-  'cc-tile-requests.date-hours': ({ date }) => formatHours(lang, date),
+  'cc-tile-requests.date-hours': ({ date }) => formatHours(date),
   'cc-tile-requests.date-tooltip': ({ from, to }) => {
-    const date = formatDateOnly(lang, from);
-    const fromH = formatHours(lang, from);
-    const toH = formatHours(lang, to);
+    const date = formatDateOnly(from);
+    const fromH = formatHours(from);
+    const toH = formatHours(to);
     return `${date} : de ${fromH} à ${toH}`;
   },
   'cc-tile-requests.docs.msg': ({ windowHours }) => {
