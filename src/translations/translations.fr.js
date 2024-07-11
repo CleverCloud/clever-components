@@ -1,20 +1,24 @@
 import {
-  formatDate,
-  formatDateOnly,
-  formatDatetime,
-  formatHours,
+  prepareFormatDate,
+  prepareFormatDateOnly,
+  prepareFormatDatetime,
   prepareFormatDistanceToNow,
-} from '../lib/i18n-date.js';
-import { getCountryName } from '../lib/i18n-display.js';
+  prepareFormatHours,
+} from '../lib/i18n/i18n-date.js';
+import { getCountryName } from '../lib/i18n/i18n-display.js';
 import {
   formatCurrency,
   formatNumber,
   formatPercent,
   prepareNumberBytesFormatter,
   prepareNumberUnitFormatter,
-} from '../lib/i18n-number.js';
-import { sanitize } from '../lib/i18n-sanitize.js';
-import { preparePlural } from '../lib/i18n-string.js';
+} from '../lib/i18n/i18n-number.js';
+import { sanitize } from '../lib/i18n/i18n-sanitize.js';
+import { preparePlural } from '../lib/i18n/i18n-string.js';
+
+/**
+ * @typedef {import('../lib/i18n/i18n.types.d.ts').Translations} Translations
+ */
 
 export const lang = 'fr';
 
@@ -30,6 +34,10 @@ const UNITS_FR = {
   second: 'seconde',
 };
 
+const formatDate = prepareFormatDate(lang);
+const formatDateOnly = prepareFormatDateOnly(lang);
+const formatDatetime = prepareFormatDatetime(lang);
+const formatHours = prepareFormatHours(lang);
 const formatDistanceToNow = prepareFormatDistanceToNow(
   lang,
   (value, unit) => {
@@ -45,19 +53,28 @@ const formatBytes = prepareNumberBytesFormatter(lang, 'o', '\u202f');
 const BYTES_SI_SEPARATOR = '\u202f';
 const formatBytesSi = prepareNumberUnitFormatter(lang, 'o', BYTES_SI_SEPARATOR);
 
+/**
+ * @param {number} value
+ * @return {string}
+ */
 function getUnit(value) {
   return formatBytesSi(value).split(BYTES_SI_SEPARATOR)[1];
 }
 
 // Shared logic between translations, is it a good idea?
-function formatFlavor(f) {
-  const cpu = `CPUs : ${f.cpus}`;
-  const shared = f.microservice ? ` (partagé)` : '';
-  const gpu = f.gpus > 0 ? `GPUs : ${f.gpus}` : '';
-  const mem = `RAM : ${formatBytes(f.mem * 1024 * 1024)}`;
+/**
+ * @param {{ [key: string]: any }} flavor
+ * @return {string}
+ */
+function formatFlavor(flavor) {
+  const cpu = `CPUs : ${flavor.cpus}`;
+  const shared = flavor.microservice ? ` (partagé)` : '';
+  const gpu = flavor.gpus > 0 ? `GPUs : ${flavor.gpus}` : '';
+  const mem = `RAM : ${formatBytes(flavor.mem * 1024 * 1024)}`;
   return [cpu + shared, gpu, mem].filter((a) => a).join('\n');
 }
 
+/** @type {Translations} */
 export const translations = {
   LANGUAGE: 'Français',
   //#region cc-addon-admin
@@ -81,7 +98,7 @@ export const translations = {
   'cc-addon-backups.close-btn': `Fermer ce panneau`,
   'cc-addon-backups.command-password': `Cette commande vous demandera votre mot de passe, le voici :`,
   'cc-addon-backups.delete': ({ createdAt }) =>
-    sanitize`Supprimer la sauvegarde du <strong title="${formatDate(lang, createdAt)}">${formatDatetime(lang, createdAt)}</strong>`,
+    sanitize`Supprimer la sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
   'cc-addon-backups.delete.btn': `supprimer...`,
   'cc-addon-backups.delete.manual.description.es-addon': ({ href }) =>
     sanitize`Vous pouvez supprimer cette sauvegarde manuellement grâce à l'outil <a href="${href}">cURL</a> en exécutant cette commande :`,
@@ -109,7 +126,7 @@ export const translations = {
   'cc-addon-backups.link.redis-addon': `télécharger`,
   'cc-addon-backups.loading-error': `Une erreur est survenue pendant le chargement des sauvegardes.`,
   'cc-addon-backups.restore': ({ createdAt }) =>
-    sanitize`Restaurer la sauvegarde du <strong title="${formatDate(lang, createdAt)}">${formatDatetime(lang, createdAt)}</strong>`,
+    sanitize`Restaurer la sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
   'cc-addon-backups.restore.btn': `restaurer...`,
   'cc-addon-backups.restore.manual.description.es-addon': () =>
     sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <a href="https://curl.se/docs/">cURL</a> en exécutant cette commande :`,
@@ -126,10 +143,10 @@ export const translations = {
     sanitize`Vous pouvez restaurer cette sauvegarde avec Kibana en vous rendant sur le <a href="${href}">dépôt de sauvegardes</a>.`,
   'cc-addon-backups.restore.with-service.title.es-addon': `Restauration avec Kibana`,
   'cc-addon-backups.text': ({ createdAt, expiresAt }) => {
-    return sanitize`Sauvegarde du <strong title="${formatDate(lang, createdAt)}">${formatDatetime(lang, createdAt)}</strong> (expire le <strong>${formatDateOnly(lang, expiresAt)}</strong>)`;
+    return sanitize`Sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong> (expire le <strong>${formatDateOnly(expiresAt)}</strong>)`;
   },
   'cc-addon-backups.text.user-defined-retention': ({ createdAt }) =>
-    sanitize`Sauvegarde du <strong title="${formatDate(lang, createdAt)}">${formatDatetime(lang, createdAt)}</strong> (expire après la durée de rétention définie)`,
+    sanitize`Sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong> (expire après la durée de rétention définie)`,
   'cc-addon-backups.title': `Sauvegardes`,
   //#endregion
   //#region cc-addon-credentials
@@ -222,7 +239,7 @@ export const translations = {
   'cc-ansi-palette.selected': ({ color }) => `Sélection: ${color}`,
   //#endregion
   //#region cc-article-card
-  'cc-article-card.date': ({ date }) => formatDateOnly(lang, date),
+  'cc-article-card.date': ({ date }) => formatDateOnly(date),
   //#endregion
   //#region cc-article-list
   'cc-article-list.error': `Une erreur est survenue pendant le chargement des articles.`,
@@ -239,7 +256,7 @@ export const translations = {
   //#endregion
   //#region cc-datetime-relative
   'cc-datetime-relative.distance': ({ date }) => formatDistanceToNow(date),
-  'cc-datetime-relative.title': ({ date }) => formatDate(lang, date),
+  'cc-datetime-relative.title': ({ date }) => formatDate(date),
   //#endregion
   //#region cc-doc-card
   'cc-doc-card.link': ({ link, product }) =>
@@ -427,8 +444,8 @@ export const translations = {
   //#endregion
   //#region cc-header-addon
   'cc-header-addon.creation-date': `Date de création`,
-  'cc-header-addon.creation-date.full': ({ date }) => formatDate(lang, date),
-  'cc-header-addon.creation-date.short': ({ date }) => formatDateOnly(lang, date),
+  'cc-header-addon.creation-date.full': ({ date }) => formatDate(date),
+  'cc-header-addon.creation-date.short': ({ date }) => formatDateOnly(date),
   'cc-header-addon.error': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
   'cc-header-addon.id-label': `Identifiant de l'add-on`,
   'cc-header-addon.id-label-alternative': () =>
@@ -509,7 +526,7 @@ export const translations = {
   'cc-invoice.download-pdf': `Télécharger le PDF`,
   'cc-invoice.error': `Une erreur est survenue pendant le chargement de la facture.`,
   'cc-invoice.info': ({ date, amount }) => {
-    return sanitize`Cette facture a été émise le <strong>${formatDateOnly(lang, date)}</strong> pour un total de <strong>${formatCurrency(lang, amount)}</strong>.`;
+    return sanitize`Cette facture a été émise le <strong>${formatDateOnly(date)}</strong> pour un total de <strong>${formatCurrency(lang, amount)}</strong>.`;
   },
   'cc-invoice.title': `Facture`,
   //#endregion
@@ -525,12 +542,12 @@ export const translations = {
   //#endregion
   //#region cc-invoice-table
   'cc-invoice-table.date.emission': `Date d'émission`,
-  'cc-invoice-table.date.value': ({ date }) => `${formatDateOnly(lang, date)}`,
+  'cc-invoice-table.date.value': ({ date }) => `${formatDateOnly(date)}`,
   'cc-invoice-table.number': `Numéro`,
   'cc-invoice-table.open-pdf': `Télécharger le PDF`,
   'cc-invoice-table.pay': `Régler`,
   'cc-invoice-table.text': ({ number, date, amount }) =>
-    sanitize`Facture <strong>${number}</strong> émise le <strong>${formatDateOnly(lang, date)}</strong> pour un total de <code>${formatCurrency(lang, amount)}</code>`,
+    sanitize`Facture <strong>${number}</strong> émise le <strong>${formatDateOnly(date)}</strong> pour un total de <code>${formatCurrency(lang, amount)}</code>`,
   'cc-invoice-table.total.label': `Total`,
   'cc-invoice-table.total.value': ({ amount }) => `${formatCurrency(lang, amount)}`,
   //#endregion
@@ -1067,17 +1084,17 @@ export const translations = {
   'cc-tile-metrics.link-to-metrics': `Ouvrir Métriques`,
   'cc-tile-metrics.metrics-link': `Métriques`,
   'cc-tile-metrics.percent': ({ percent }) => formatPercent(lang, percent),
-  'cc-tile-metrics.timestamp-format': ({ timestamp }) => formatDate(lang, timestamp),
+  'cc-tile-metrics.timestamp-format': ({ timestamp }) => formatDate(timestamp),
   'cc-tile-metrics.title': `Métriques serveur`,
   //#endregion
   //#region cc-tile-requests
   'cc-tile-requests.about-btn': `À propos de ce graphe...`,
   'cc-tile-requests.close-btn': `Afficher le graphe`,
-  'cc-tile-requests.date-hours': ({ date }) => formatHours(lang, date),
+  'cc-tile-requests.date-hours': ({ date }) => formatHours(date),
   'cc-tile-requests.date-tooltip': ({ from, to }) => {
-    const date = formatDateOnly(lang, from);
-    const fromH = formatHours(lang, from);
-    const toH = formatHours(lang, to);
+    const date = formatDateOnly(from);
+    const fromH = formatHours(from);
+    const toH = formatHours(to);
     return `${date} : de ${fromH} à ${toH}`;
   },
   'cc-tile-requests.docs.msg': ({ windowHours }) => {

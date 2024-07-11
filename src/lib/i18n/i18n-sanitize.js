@@ -1,13 +1,22 @@
 /* global globalThis */
 const AUTHORIZED_TAGS = ['STRONG', 'EM', 'CODE', 'A', 'BR', 'P'];
 
+/**
+ * Checks whether the given attribute on the given tag is authorized in translation.
+ *
+ * @param {string} attributeName - The attribute name
+ * @param {string} tagName - The tag name
+ * @return {boolean}
+ */
 function isAuthorizedAttribute(attributeName, tagName) {
   return attributeName === 'title' || attributeName === 'aria-label' || (attributeName === 'href' && tagName === 'A');
 }
 
-// Reuse one text node to escape HTML
+/**
+ * @type {(dirtyHtml: string) => string} - Function to escape HTML (Always reuse the same text node)
+ */
 const escapeHtml = (() => {
-  // When used in node and document is not accessible, just return early
+  // When used in Node.js, document is not accessible, just return early
   if (globalThis.document == null) {
     return () => '';
   }
@@ -24,15 +33,25 @@ const escapeHtml = (() => {
   };
 })();
 
-// If sibling is text, get text content and remove if from the DOM
-function absorbTextSibling(sibling) {
-  if (sibling?.nodeType === document.TEXT_NODE) {
-    sibling.parentNode.removeChild(sibling);
-    return sibling.data;
+/**
+ * If the sibling node is a text node, get text content and remove if from the DOM.
+ *
+ * @param {Node|null} siblingNode
+ * @return {string}
+ */
+function absorbTextSibling(siblingNode) {
+  if (siblingNode != null && isTextNode(siblingNode)) {
+    siblingNode.parentNode.removeChild(siblingNode);
+    return siblingNode.data;
   }
   return '';
 }
 
+/**
+ * @param {TemplateStringsArray} statics
+ * @param {Array<string>} params
+ * @return {Node}
+ */
 export function sanitize(statics, ...params) {
   let html = '';
   for (let i = 0; i < statics.length; i++) {
@@ -64,7 +83,7 @@ export function sanitize(statics, ...params) {
         });
 
       // If link has href and external origin => force rel and target
-      if (node.tagName === 'A' && node.getAttribute('href') != null) {
+      if (isLinkNodeWithHref(node)) {
         node.classList.add('sanitized-link');
         // Chrome > 120 returns an empty string for an anchor element with an absolute url like `href=/foo` when it's in a template DOM element
         // In such case, we need to test if it's an empty string to make sure absolute or relative urls are not considered external
@@ -77,4 +96,24 @@ export function sanitize(statics, ...params) {
   });
 
   return template.content.cloneNode(true);
+}
+
+/**
+ * Checks whether the given element is an `<a>` element with `href` attribute
+ *
+ * @param {Node} node
+ * @return {node is Text}
+ */
+function isTextNode(node) {
+  return node.nodeType === document.TEXT_NODE;
+}
+
+/**
+ * Checks whether the given element is an `<a>` element with `href` attribute
+ *
+ * @param {Element} element
+ * @return {element is Element & {origin: string}}
+ */
+function isLinkNodeWithHref(element) {
+  return element.tagName === 'A' && element.getAttribute('href') != null;
 }
