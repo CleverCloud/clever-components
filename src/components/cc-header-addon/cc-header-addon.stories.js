@@ -1,6 +1,6 @@
-import './cc-header-addon.js';
 import { ZONE } from '../../stories/fixtures/zones.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-header-addon.js';
 
 export default {
   tags: ['autodocs'],
@@ -64,38 +64,48 @@ const addonConfigStateLoaded = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [{
-    /** @type {HeaderAddonStateLoadedWithVersion} */
-    state: addonStateLoaded,
-  }],
+  items: [
+    {
+      /** @type {HeaderAddonStateLoadedWithVersion} */
+      state: addonStateLoaded,
+    },
+  ],
 });
 
 export const loadingWithVersion = makeStory(conf, {
-  items: [{
-    /** @type {HeaderAddonStateLoading} */
-    state: { type: 'loading', hasVersion: true },
-  }],
+  items: [
+    {
+      /** @type {HeaderAddonStateLoading} */
+      state: { type: 'loading', hasVersion: true },
+    },
+  ],
 });
 
 export const loadingWithNoVersion = makeStory(conf, {
-  items: [{
-    /** @type {HeaderAddonStateLoading} */
-    state: { type: 'loading', hasVersion: false },
-  }],
+  items: [
+    {
+      /** @type {HeaderAddonStateLoading} */
+      state: { type: 'loading', hasVersion: false },
+    },
+  ],
 });
 
 export const error = makeStory(conf, {
-  items: [{
-    /** @type {HeaderAddonStateError} */
-    state: { type: 'error', hasVersion: true },
-  }],
+  items: [
+    {
+      /** @type {HeaderAddonStateError} */
+      state: { type: 'error', hasVersion: true },
+    },
+  ],
 });
 
 export const dataLoadedWithNoVersion = makeStory(conf, {
-  items: [{
-    /** @type {HeaderAddonStateLoaded} */
-    state: addonConfigStateLoaded,
-  }],
+  items: [
+    {
+      /** @type {HeaderAddonStateLoaded} */
+      state: addonConfigStateLoaded,
+    },
+  ],
 });
 
 export const simulations = makeStory(conf, {
@@ -105,12 +115,14 @@ export const simulations = makeStory(conf, {
     { type: 'loading', hasVersion: true },
   ],
   simulations: [
-    storyWait(2000,
+    storyWait(
+      2000,
       /** @param {CcHeaderAddon[]} components */
       ([componentWithoutVersion, componentWithVersion, componentError]) => {
         componentWithoutVersion.state = addonConfigStateLoaded;
         componentWithVersion.state = addonStateLoaded;
         componentError.state = { type: 'error', hasVersion: true };
-      }),
+      },
+    ),
   ],
 });

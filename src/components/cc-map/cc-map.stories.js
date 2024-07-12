@@ -1,9 +1,9 @@
-import './cc-map.js';
-import '../cc-map-marker-server/cc-map-marker-server.js';
-import '../cc-map-marker-dot/cc-map-marker-dot.js';
-import '../cc-zone/cc-zone.js';
 import fakeHeatmapData from '../../stories/fixtures/24-hours-points.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import '../cc-map-marker-dot/cc-map-marker-dot.js';
+import '../cc-map-marker-server/cc-map-marker-server.js';
+import '../cc-zone/cc-zone.js';
+import './cc-map.js';
 
 const points = [
   { lat: 48.8, lon: 2.3, city: 'Paris', country: 'France', countryCode: 'fr', state: 'default' },
@@ -27,7 +27,7 @@ const servers = points.map((p) => {
   return {
     lat,
     lon,
-    zIndexOffset: (state === 'selected') ? 250 : 0,
+    zIndexOffset: state === 'selected' ? 250 : 0,
     marker: { tag: 'cc-map-marker-server', state },
     tooltip: { tag: 'cc-zone', zone: { city, country, countryCode, tags: [] }, mode: 'small' },
   };
@@ -56,10 +56,7 @@ export const emptyWithLegendInSlot = makeStory(conf, {
 });
 
 export const emptyWithDifferentSizes = makeStory(conf, {
-  items: [
-    { style: 'height:10em; width:30em' },
-    { style: 'height:20em; width:15em' },
-  ],
+  items: [{ style: 'height:10em; width:30em' }, { style: 'height:20em; width:15em' }],
 });
 
 export const emptyWithDifferentCentersAndZooms = makeStory(conf, {
@@ -71,28 +68,24 @@ export const emptyWithDifferentCentersAndZooms = makeStory(conf, {
 });
 
 export const emptyWithHeatmap = makeStory(conf, {
-  items: [{
-    viewZoom: '2',
-    mode: 'heatmap',
-    heatmapPoints: [],
-    innerHTML: `Heatmap simulation with no data points`,
-  }],
+  items: [
+    {
+      viewZoom: '2',
+      mode: 'heatmap',
+      heatmapPoints: [],
+      innerHTML: `Heatmap simulation with no data points`,
+    },
+  ],
 });
 
 export const loading = makeStory(conf, {
   docs: 'Without and with legend.',
-  items: [
-    { loading: true },
-    { loading: true, innerHTML: 'Map with legend' },
-  ],
+  items: [{ loading: true }, { loading: true, innerHTML: 'Map with legend' }],
 });
 
 export const error = makeStory(conf, {
   docs: 'Without and with legend.',
-  items: [
-    { error: true },
-    { error: true, innerHTML: 'Map with legend' },
-  ],
+  items: [{ error: true }, { error: true, innerHTML: 'Map with legend' }],
 });
 
 export const errorWithLoadingIndicator = makeStory(conf, {
@@ -119,11 +112,13 @@ export const pointsWithDotsNoTooltips = makeStory(conf, {
 });
 
 export const simulationWithUpdatesOnSameDot = makeStory(conf, {
-  items: [{
-    viewZoom: '2',
-    mode: 'points',
-    points: [blinkingDots[0]],
-  }],
+  items: [
+    {
+      viewZoom: '2',
+      mode: 'points',
+      points: [blinkingDots[0]],
+    },
+  ],
   simulations: [
     storyWait(2000, ([component]) => {
       component.points[0].marker.count = 5;
@@ -148,11 +143,13 @@ export const simulationWithUpdatesOnSameDot = makeStory(conf, {
 });
 
 export const simulationWithDifferentDots = makeStory(conf, {
-  items: [{
-    viewZoom: '2',
-    mode: 'points',
-    points: [blinkingDots[0]],
-  }],
+  items: [
+    {
+      viewZoom: '2',
+      mode: 'points',
+      points: [blinkingDots[0]],
+    },
+  ],
   simulations: [
     storyWait(1000, ([component]) => {
       component.points = [blinkingDots[1]];
@@ -170,11 +167,13 @@ export const simulationWithDifferentDots = makeStory(conf, {
 });
 
 export const simulationWithUpdatesOnSameServer = makeStory(conf, {
-  items: [{
-    viewZoom: '2',
-    mode: 'points',
-    points: [servers[0]],
-  }],
+  items: [
+    {
+      viewZoom: '2',
+      mode: 'points',
+      points: [servers[0]],
+    },
+  ],
   simulations: [
     storyWait(2000, ([component]) => {
       component.points[0].marker.state = 'hovered';
@@ -192,10 +191,12 @@ export const simulationWithUpdatesOnSameServer = makeStory(conf, {
 });
 
 export const simulationWithHeatmap = makeStory(conf, {
-  items: [{
-    viewZoom: '2',
-    mode: 'heatmap',
-    heatmapPoints: fakeHeatmapData,
-    innerHTML: `Heatmap simulation`,
-  }],
+  items: [
+    {
+      viewZoom: '2',
+      mode: 'heatmap',
+      heatmapPoints: fakeHeatmapData,
+      innerHTML: `Heatmap simulation`,
+    },
+  ],
 });

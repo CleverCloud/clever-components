@@ -1,22 +1,22 @@
-import './cc-logs-instances.js';
 import { randomString } from '../../lib/utils.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-logs-instances.js';
 
 /**
  * @typedef {import('./cc-logs-instances.types.js').Instance} Instance
  * @typedef {import('./cc-logs-instances.types.js').Deployment} Deployment
  */
 
-function randomCommit () {
+function randomCommit() {
   return randomString(40, 'abcdef0123456789');
 }
 
-function randomUUID () {
+function randomUUID() {
   const alphabet = '0123456789abcdef';
   return `${randomString(8, alphabet)}-${randomString(4, alphabet)}-4${randomString(3, alphabet)}-${randomString(4, alphabet)}-${randomString(12, alphabet)}`;
 }
 
-function getDeploymentDate (sinceDay) {
+function getDeploymentDate(sinceDay) {
   return new Date(new Date().getTime() - sinceDay * 24 * 60 * 60 * 1000);
 }
 
@@ -44,7 +44,7 @@ const conf = {
 /**
  * @type {Instance}
  */
-function createInstance (deployment, index, kind, state, name) {
+function createInstance(deployment, index, kind, state, name) {
   return {
     id: randomUUID(),
     deployment,
@@ -59,7 +59,7 @@ function createInstance (deployment, index, kind, state, name) {
 /**
  * @type {Deployment}
  */
-function createDeployment (state, sinceDay) {
+function createDeployment(state, sinceDay) {
   return {
     id: `deployment_${randomUUID()}`,
     state,
@@ -151,9 +151,7 @@ const ALL_INSTANCES_WITH_GHOSTS = [
 ];
 
 export const defaultStory = makeStory(conf, {
-  items: [
-    { state: { state: 'loaded', instances: ALL_INSTANCES } },
-  ],
+  items: [{ state: { state: 'loaded', instances: ALL_INSTANCES } }],
 });
 
 export const loading = makeStory(conf, {
@@ -165,75 +163,51 @@ export const error = makeStory(conf, {
 });
 
 export const noInstances = makeStory(conf, {
-  items: [
-    { state: { state: 'loaded', instances: [] } },
-  ],
+  items: [{ state: { state: 'loaded', instances: [] } }],
 });
 
 export const firstDeployment = makeStory(conf, {
-  items: [
-    { state: { state: 'loaded', instances: DEPLOYING } },
-  ],
+  items: [{ state: { state: 'loaded', instances: DEPLOYING } }],
 });
 
 export const runningInstances = makeStory(conf, {
-  items: [
-    { state: { state: 'loaded', instances: RUNNING } },
-  ],
+  items: [{ state: { state: 'loaded', instances: RUNNING } }],
 });
 
 export const scalingDown = makeStory(conf, {
-  items: [
-    { state: { state: 'loaded', instances: SCALE_DOWN } },
-  ],
+  items: [{ state: { state: 'loaded', instances: SCALE_DOWN } }],
 });
 
 export const scalingUp = makeStory(conf, {
-  items: [
-    { state: { state: 'loaded', instances: SCALE_UP } },
-  ],
+  items: [{ state: { state: 'loaded', instances: SCALE_UP } }],
 });
 
 export const applicationStopped = makeStory(conf, {
-  items: [
-    { state: { state: 'loaded', instances: APPLICATION_STOPPED } },
-  ],
+  items: [{ state: { state: 'loaded', instances: APPLICATION_STOPPED } }],
 });
 
 export const failedDeployment = makeStory(conf, {
-  items: [
-    { state: { state: 'loaded', instances: FAILED_DEPLOYMENT } },
-  ],
+  items: [{ state: { state: 'loaded', instances: FAILED_DEPLOYMENT } }],
 });
 
 export const cancelledDeployment = makeStory(conf, {
-  items: [
-    { state: { state: 'loaded', instances: CANCELLED_DEPLOYMENT } },
-  ],
+  items: [{ state: { state: 'loaded', instances: CANCELLED_DEPLOYMENT } }],
 });
 
 export const withGhostInstances = makeStory(conf, {
-  items: [
-    { state: { state: 'loaded', instances: ALL_INSTANCES_WITH_GHOSTS } },
-  ],
+  items: [{ state: { state: 'loaded', instances: ALL_INSTANCES_WITH_GHOSTS } }],
 });
 
 export const coldMode = makeStory(conf, {
-  items: [
-    { state: { state: 'loaded', instances: ALL_INSTANCES, mode: 'cold' } },
-  ],
+  items: [{ state: { state: 'loaded', instances: ALL_INSTANCES, mode: 'cold' } }],
 });
 
 export const coldModeWithGhostInstances = makeStory(conf, {
-  items: [
-    { state: { state: 'loaded', instances: ALL_INSTANCES_WITH_GHOSTS, mode: 'cold' } },
-  ],
+  items: [{ state: { state: 'loaded', instances: ALL_INSTANCES_WITH_GHOSTS, mode: 'cold' } }],
 });
 
 export const coldModeWithoutInstance = makeStory(conf, {
-  items: [
-    { state: { state: 'loaded', instances: [], mode: 'cold' } },
-  ],
+  items: [{ state: { state: 'loaded', instances: [], mode: 'cold' } }],
 });
 
 const SIMULATION_DEPLOYMENT_WIP = createDeployment('WORK_IN_PROGRESS', 0);
@@ -245,17 +219,12 @@ export const simulations = makeStory(conf, {
   items: [{ state: { state: 'loading' } }],
   simulations: [
     storyWait(2000, ([component]) => {
-
-      const instances = [
-        createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'BUILD', 'BOOTING', 'Gentle totodile'),
-      ];
+      const instances = [createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'BUILD', 'BOOTING', 'Gentle totodile')];
 
       component.state = { state: 'loaded', instances };
     }),
     storyWait(2000, ([component]) => {
-      const instances = [
-        createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'BUILD', 'UP', 'Gentle totodile'),
-      ];
+      const instances = [createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'BUILD', 'UP', 'Gentle totodile')];
 
       component.state = { state: 'loaded', instances };
     }),

@@ -1,20 +1,24 @@
-export type HeptapodInfoState = HeptapodInfoStateLoaded | HeptapodInfoStateLoading | HeptapodInfoStateError | HeptapodInfoStateNotUsed;
+export type HeptapodInfoState =
+  | HeptapodInfoStateLoaded
+  | HeptapodInfoStateLoading
+  | HeptapodInfoStateError
+  | HeptapodInfoStateNotUsed;
 
 export interface HeptapodInfoStateLoaded {
-  type : 'loaded';
+  type: 'loaded';
   statistics: Statistics;
 }
 
 export interface HeptapodInfoStateLoading {
-  type : 'loading';
+  type: 'loading';
 }
 
 export interface HeptapodInfoStateError {
-  type : 'error';
+  type: 'error';
 }
 
 export interface HeptapodInfoStateNotUsed {
-  type : 'not-used';
+  type: 'not-used';
 }
 
 export interface Statistics {
@@ -23,4 +27,3 @@ export interface Statistics {
   storage: number;
   price: number;
 }
-

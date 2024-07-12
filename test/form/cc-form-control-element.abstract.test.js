@@ -3,22 +3,18 @@ import * as hanbi from 'hanbi';
 import { html } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { CcFormControlElement } from '../../src/lib/form/cc-form-control-element.abstract.js';
-import {
-  createValidator,
-  Validation,
-  ValidValidator,
-} from '../../src/lib/form/validation.js';
+import { ValidValidator, Validation, createValidator } from '../../src/lib/form/validation.js';
 import { isStringEmpty } from '../../src/lib/utils.js';
 import { getElement } from '../helpers/element-helper.js';
 
-function getCustomElement (inputSettings = {}) {
+function getCustomElement(inputSettings = {}) {
   const defaultSettings = {
     valuePropertyName: 'value',
     resetValuePropertyName: 'resetValue',
     errorSelector: '#error',
     inputSelector: '#value',
     validator: createValidator((value) => {
-      return (isStringEmpty(value) || value === 'valid') ? Validation.VALID : Validation.invalid(value);
+      return isStringEmpty(value) || value === 'valid' ? Validation.VALID : Validation.invalid(value);
     }),
     errorMessages: {},
   };
@@ -30,7 +26,7 @@ function getCustomElement (inputSettings = {}) {
 
   return defineCE(
     class extends CcFormControlElement {
-      static get properties () {
+      static get properties() {
         return {
           ...super.properties,
           value: { type: String },
@@ -38,7 +34,7 @@ function getCustomElement (inputSettings = {}) {
         };
       }
 
-      constructor () {
+      constructor() {
         super();
 
         this.value = '';
@@ -55,7 +51,7 @@ function getCustomElement (inputSettings = {}) {
        * @return {HTMLElement}
        * @protected
        */
-      _getFormControlElement () {
+      _getFormControlElement() {
         return this._inputRef.value;
       }
 
@@ -63,7 +59,7 @@ function getCustomElement (inputSettings = {}) {
        * @return {HTMLElement}
        * @protected
        */
-      _getErrorElement () {
+      _getErrorElement() {
         return this._errorRef.value;
       }
 
@@ -71,7 +67,7 @@ function getCustomElement (inputSettings = {}) {
        * @return {ErrorMessageMap}
        * @protected
        */
-      _getErrorMessages () {
+      _getErrorMessages() {
         if (settings.errorMessages == null) {
           return super._getErrorMessages();
         }
@@ -82,22 +78,23 @@ function getCustomElement (inputSettings = {}) {
        * @return {Validator}
        * @protected
        */
-      _getValidator () {
+      _getValidator() {
         if (settings.validator == null) {
           return super._getValidator();
         }
         return settings.validator;
       }
 
-      _getFormControlData () {
+      _getFormControlData() {
         if (settings.formControlData == null) {
           return super._getFormControlData();
         }
         return settings.formControlData();
       }
 
-      render () {
-        return html`<input id="value" .value=${this.value} ${ref(this._inputRef)}><div id="error" ${ref(this._errorRef)}>${this.errorMessage}</div>`;
+      render() {
+        return html`<input id="value" .value=${this.value} ${ref(this._inputRef)} />
+          <div id="error" ${ref(this._errorRef)}>${this.errorMessage}</div>`;
       }
     },
   );
@@ -106,14 +103,14 @@ function getCustomElement (inputSettings = {}) {
 /**
  * @param {any} [inputSettings]
  */
-async function getFormControlElement (inputSettings = {}) {
+async function getFormControlElement(inputSettings = {}) {
   const customElement = getCustomElement(inputSettings);
 
   /** @type {CcFormControlElement} */
   const element = await getElement(`<${customElement}></${customElement}>`);
   return {
     element,
-    async setValue (value) {
+    async setValue(value) {
       element.value = value;
       await elementUpdated(element);
     },
@@ -249,7 +246,9 @@ describe('InputElement', () => {
       });
 
       /** @type {HTMLFormElement} */
-      const element = await getElement(`<form><${customElement} name="input"></${customElement}><input name="another-input" value="another input value"></form>`);
+      const element = await getElement(
+        `<form><${customElement} name="input"></${customElement}><input name="another-input" value="another input value"></form>`,
+      );
       spy.reset();
 
       element.querySelector(customElement).value = 'current value';
@@ -391,7 +390,7 @@ describe('InputElement', () => {
     const formControl = await getFormControlElement({
       errorMessages: {},
       validator: {
-        validate: (value) => (isStringEmpty(value) || value === 'valid') ? Validation.VALID : Validation.invalid(value),
+        validate: (value) => (isStringEmpty(value) || value === 'valid' ? Validation.VALID : Validation.invalid(value)),
       },
     });
     await formControl.setValue('not-valid');
@@ -408,7 +407,7 @@ describe('InputElement', () => {
         'not-valid': () => null,
       },
       validator: {
-        validate: (value) => (isStringEmpty(value) || value === 'valid') ? Validation.VALID : Validation.invalid(value),
+        validate: (value) => (isStringEmpty(value) || value === 'valid' ? Validation.VALID : Validation.invalid(value)),
       },
     });
     await formControl.setValue('not-valid');
@@ -514,7 +513,7 @@ describe('InputElement', () => {
 
     const validateStub = hanbi.stubMethod(formControl.element, 'validate');
     formControl.element.customValidator = {
-      validate (_value, _formData) {
+      validate(_value, _formData) {
         return Validation.VALID;
       },
     };
@@ -599,7 +598,9 @@ describe('InputElement', () => {
     const customElement = getCustomElement();
 
     /** @type {HTMLFormElement} */
-    const formElement = await getElement(`<form><${customElement} name="input" value="current value"></${customElement}></form>`);
+    const formElement = await getElement(
+      `<form><${customElement} name="input" value="current value"></${customElement}></form>`,
+    );
     const formControlElement = formElement.querySelector(customElement);
 
     formControlElement.resetValue = 'reset value';
@@ -609,5 +610,4 @@ describe('InputElement', () => {
 
     expect(formControlElement.value).to.eql('reset value');
   });
-
 });

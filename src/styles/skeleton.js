@@ -2,7 +2,6 @@ import { css } from 'lit';
 
 // language=CSS
 export const skeletonStyles = css`
-
   @keyframes skeleton-pulse {
     from {
       opacity: 0.85;

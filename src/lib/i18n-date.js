@@ -1,5 +1,5 @@
 const UNITS = [
-  { unit: 'year', duration: 1000 * 60 * 60 * 24 * (365.25) },
+  { unit: 'year', duration: 1000 * 60 * 60 * 24 * 365.25 },
   { unit: 'month', duration: 1000 * 60 * 60 * 24 * (365.25 / 12) },
   { unit: 'week', duration: 1000 * 60 * 60 * 24 * 7 },
   { unit: 'day', duration: 1000 * 60 * 60 * 24 },
@@ -15,20 +15,18 @@ const UNITS = [
  * @param {String} nowString - Fallback function (value, unit) => "x minutes ago"
  * @returns {Function}
  */
-export function prepareFormatDistanceToNow (lang, fallback, nowString) {
-
-  const format = ('RelativeTimeFormat' in Intl)
-    ? (value, unit) => new Intl.RelativeTimeFormat(lang, { numeric: 'auto' }).format(-value, unit)
-    : fallback;
+export function prepareFormatDistanceToNow(lang, fallback, nowString) {
+  const format =
+    'RelativeTimeFormat' in Intl
+      ? (value, unit) => new Intl.RelativeTimeFormat(lang, { numeric: 'auto' }).format(-value, unit)
+      : fallback;
 
   return function (dateInput) {
-
     const date = new Date(dateInput).getTime();
     const now = new Date().getTime();
     const diff = now - date;
 
     for (const { unit, duration } of UNITS) {
-
       const value = diff / duration;
       const roundedValue = Math.round(value);
 
@@ -46,7 +44,7 @@ export function prepareFormatDistanceToNow (lang, fallback, nowString) {
  * @param {String|Number} dateInput - Date as ISO string or millisec timestamp number
  * @returns {String}
  */
-export function formatDate (lang, dateInput) {
+export function formatDate(lang, dateInput) {
   const dtf = new Intl.DateTimeFormat(lang, {
     year: 'numeric',
     month: 'short',
@@ -65,7 +63,7 @@ export function formatDate (lang, dateInput) {
  * @param {String|Number} dateInput - Date as ISO string or millisec timestamp number
  * @returns {String}
  */
-export function formatDatetime (lang, dateInput) {
+export function formatDatetime(lang, dateInput) {
   const dtf = new Intl.DateTimeFormat(lang, {
     year: 'numeric',
     month: 'short',
@@ -83,7 +81,7 @@ export function formatDatetime (lang, dateInput) {
  * @param {String|Number} dateInput - Date as ISO string or millisec timestamp number
  * @returns {String}
  */
-export function formatDateOnly (lang, dateInput) {
+export function formatDateOnly(lang, dateInput) {
   const dtf = new Intl.DateTimeFormat(lang, {
     year: 'numeric',
     month: 'short',
@@ -99,7 +97,7 @@ export function formatDateOnly (lang, dateInput) {
  * @param {String|Number} dateInput - Date as ISO string or millisec timestamp number
  * @returns {String}
  */
-export function formatHours (lang, dateInput) {
+export function formatHours(lang, dateInput) {
   const dtf = new Intl.DateTimeFormat(lang, {
     hour: 'numeric',
   });

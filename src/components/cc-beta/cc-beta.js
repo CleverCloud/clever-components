@@ -13,15 +13,14 @@ import { i18n } from '../../lib/i18n.js';
  * @slot - The content around which the beta label will be positionned. You ONLY one element.
  */
 export class CcBeta extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       fill: { type: Boolean, reflect: true },
       position: { type: String, reflect: true },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {boolean} Forces the slotted element to fill the beta container size (same heigh and width). By default, the beta container adapts to the slotted element size. */
@@ -31,44 +30,44 @@ export class CcBeta extends LitElement {
     this.position = 'top-left';
   }
 
-  render () {
+  render() {
     return html`
       <slot></slot>
       <div class="beta">${i18n('cc-beta.label')}</div>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
         :host {
-          position: relative;
           display: grid;
           overflow: hidden;
+          position: relative;
         }
 
         :host([fill]) ::slotted(*) {
-          width: 100%;
-          height: 100%;
           box-sizing: border-box;
+          height: 100%;
+          width: 100%;
         }
 
         .beta {
           --height: 1.75em;
           --width: 8em;
 
-          position: absolute;
-          z-index: 2;
-          width: var(--width);
-          height: var(--height);
           background: var(--cc-color-bg-strong, #000);
           color: var(--cc-color-text-inverted, #fff);
           font-size: 0.85em;
           font-weight: bold;
+          height: var(--height);
           line-height: var(--height);
+          position: absolute;
           text-align: center;
           transform: rotate(var(--r)) translateY(var(--translate));
+          width: var(--width);
+          z-index: 2;
         }
 
         :host([position^='top-']) .beta {

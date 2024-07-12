@@ -1,4 +1,4 @@
-import{ DocCard } from '../cc-doc-card/cc-doc-card.types.js';
+import { DocCard } from '../cc-doc-card/cc-doc-card.types.js';
 
 export type DocListState = DocListStateLoaded | DocListStateLoading | DocListStateError;
 

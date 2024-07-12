@@ -1,16 +1,16 @@
-import '../cc-button/cc-button.js';
-import '../cc-icon/cc-icon.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import {
-  iconRemixLoginCircleFill as iconRedirectionOn,
   iconRemixForbid_2Line as iconRedirectionOff,
+  iconRemixLoginCircleFill as iconRedirectionOn,
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
-import '../cc-loader/cc-loader.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { waitingStyles } from '../../styles/waiting.js';
+import '../cc-button/cc-button.js';
+import '../cc-icon/cc-icon.js';
+import '../cc-loader/cc-loader.js';
 
 /** @type {TcpRedirection} */
 const SKELETON_REDIRECTION = { namespace: 'default', isPrivate: false };
@@ -33,14 +33,13 @@ const SKELETON_REDIRECTION = { namespace: 'default', isPrivate: false };
  * @fires {CustomEvent<DeleteTcpRedirection>} cc-tcp-redirection:delete - Fires a redirection whenever the delete button is clicked.
  */
 export class CcTcpRedirection extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       state: { type: Object },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {TcpRedirectionState} Sets the state of the component. */
@@ -52,10 +51,8 @@ export class CcTcpRedirection extends LitElement {
    * @returns {string}
    * @private
    */
-  _getButtonText (sourcePort) {
-    return (sourcePort != null)
-      ? i18n('cc-tcp-redirection.delete-button')
-      : i18n('cc-tcp-redirection.create-button');
+  _getButtonText(sourcePort) {
+    return sourcePort != null ? i18n('cc-tcp-redirection.delete-button') : i18n('cc-tcp-redirection.create-button');
   }
 
   /**
@@ -64,8 +61,8 @@ export class CcTcpRedirection extends LitElement {
    * @returns {string}
    * @private
    */
-  _getHelpText (namespace, sourcePort) {
-    return (sourcePort != null)
+  _getHelpText(namespace, sourcePort) {
+    return sourcePort != null
       ? i18n('cc-tcp-redirection.redirection-defined', { namespace, sourcePort })
       : i18n('cc-tcp-redirection.redirection-not-defined', { namespace });
   }
@@ -76,7 +73,7 @@ export class CcTcpRedirection extends LitElement {
    * @returns {string}
    * @private
    */
-  _getHelpTextAddendum (namespace, isPrivate) {
+  _getHelpTextAddendum(namespace, isPrivate) {
     if (isPrivate) {
       return i18n('cc-tcp-redirection.namespace-private');
     }
@@ -95,12 +92,12 @@ export class CcTcpRedirection extends LitElement {
    * @returns {state is (TcpRedirectionStateLoaded | TcpRedirectionStateWaiting)}
    * @private
    */
-  _isStateLoadedOrWaiting (state) {
+  _isStateLoadedOrWaiting(state) {
     return state.type === 'loaded' || state.type === 'waiting';
   }
 
   /** @private */
-  _onCreate () {
+  _onCreate() {
     if (this._isStateLoadedOrWaiting(this.state)) {
       const { namespace } = this.state;
       dispatchCustomEvent(this, 'create', { namespace });
@@ -108,54 +105,51 @@ export class CcTcpRedirection extends LitElement {
   }
 
   /** @private */
-  _onDelete () {
+  _onDelete() {
     if (this._isStateLoadedOrWaiting(this.state)) {
       const { namespace, sourcePort } = this.state;
       dispatchCustomEvent(this, 'delete', { namespace, sourcePort });
     }
   }
 
-  render () {
-
+  render() {
     const skeleton = this.state.type === 'loading';
 
     // Use a fake redirection for skeleton mode
-    const { namespace, sourcePort, isPrivate } = (this.state.type === 'loading')
-      ? SKELETON_REDIRECTION
-      : this.state;
+    const { namespace, sourcePort, isPrivate } = this.state.type === 'loading' ? SKELETON_REDIRECTION : this.state;
 
-    const isRedirectionDefined = (sourcePort != null);
+    const isRedirectionDefined = sourcePort != null;
     const helpTextAddendum = this._getHelpTextAddendum(namespace, isPrivate);
 
     return html`
       <div class="wrapper">
-
-        ${skeleton ? html`
-          <div class="icon skeleton"></div>
-        ` : ''}
-
-        ${this.state.type === 'loaded' ? html`
-          <div class="icon">
-            ${isRedirectionDefined
-              ? html`<cc-icon .icon=${iconRedirectionOn} class="on"></cc-icon>`
-              : html`<cc-icon .icon=${iconRedirectionOff} class="off"></cc-icon>`
-            }
-          </div>
-        ` : ''}
-
-        ${this.state.type === 'waiting' ? html`
-          <div class="icon">
-            <cc-loader></cc-loader>
-          </div>
-        ` : ''}
+        ${skeleton ? html` <div class="icon skeleton"></div> ` : ''}
+        ${this.state.type === 'loaded'
+          ? html`
+              <div class="icon">
+                ${isRedirectionDefined
+                  ? html`<cc-icon .icon=${iconRedirectionOn} class="on"></cc-icon>`
+                  : html`<cc-icon .icon=${iconRedirectionOff} class="off"></cc-icon>`}
+              </div>
+            `
+          : ''}
+        ${this.state.type === 'waiting'
+          ? html`
+              <div class="icon">
+                <cc-loader></cc-loader>
+              </div>
+            `
+          : ''}
 
         <div class="text-button ${classMap({ 'cc-waiting': skeleton })}">
           <div class="text-wrapper">
-            <span class="text ${classMap({ skeleton })}">${(this._getHelpText(namespace, sourcePort))}</span>
-            ${helpTextAddendum != null ? html`
-              <br>
-              <span class="text-addendum ${classMap({ skeleton })}">${helpTextAddendum}</span>
-            ` : ''}
+            <span class="text ${classMap({ skeleton })}">${this._getHelpText(namespace, sourcePort)}</span>
+            ${helpTextAddendum != null
+              ? html`
+                  <br />
+                  <span class="text-addendum ${classMap({ skeleton })}">${helpTextAddendum}</span>
+                `
+              : ''}
           </div>
 
           <cc-button
@@ -174,7 +168,7 @@ export class CcTcpRedirection extends LitElement {
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       skeletonStyles,
       waitingStyles,
@@ -191,14 +185,14 @@ export class CcTcpRedirection extends LitElement {
         }
 
         .icon {
-          width: 1.5em;
-          height: 1.5em;
           flex: 0 0 auto;
+          height: 1.5em;
+          width: 1.5em;
         }
 
         .icon cc-icon {
-          width: 100%;
           height: 100%;
+          width: 100%;
         }
 
         .icon cc-icon.off {
@@ -208,7 +202,7 @@ export class CcTcpRedirection extends LitElement {
         .icon cc-icon.on {
           --cc-icon-color: var(--cc-color-bg-success);
         }
-        
+
         .icon cc-loader {
           --cc-loader-color: #999;
         }
@@ -230,10 +224,10 @@ export class CcTcpRedirection extends LitElement {
         }
 
         .text:not(.skeleton) code {
-          padding: 0.15em 0.3em;
           background-color: var(--cc-color-bg-neutral);
           border-radius: var(--cc-border-radius-default, 0.25em);
           font-family: var(--cc-ff-monospace);
+          padding: 0.15em 0.3em;
         }
 
         .text-addendum:not(.skeleton) {

@@ -1,5 +1,5 @@
-import './cc-heptapod-info.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-heptapod-info.js';
 
 export default {
   tags: ['autodocs'],
@@ -32,44 +32,53 @@ const statistics = {
   publicActiveUsers: 120,
   // 666.6 MB
   storage: 698980762,
-  price: 17.50,
+  price: 17.5,
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [{
-    /** @type {HeptapodInfoStateLoaded} */
-    state: {
-      type: 'loaded',
-      statistics: statistics,
+  items: [
+    {
+      /** @type {HeptapodInfoStateLoaded} */
+      state: {
+        type: 'loaded',
+        statistics: statistics,
+      },
     },
-  }],
+  ],
 });
 
 export const loading = makeStory(conf, {
-  items: [{
-    /** @type {HeptapodInfoStateLoading} */
-    state: { type: 'loading' },
-  }],
+  items: [
+    {
+      /** @type {HeptapodInfoStateLoading} */
+      state: { type: 'loading' },
+    },
+  ],
 });
 
 export const notUsed = makeStory(conf, {
-  items: [{
-    /** @type {HeptapodInfoStateNotUsed} */
-    state: { type: 'not-used' },
-  }],
+  items: [
+    {
+      /** @type {HeptapodInfoStateNotUsed} */
+      state: { type: 'not-used' },
+    },
+  ],
 });
 
 export const error = makeStory(conf, {
-  items: [{
-    /** @type {HeptapodInfoStateError} */
-    state: { type: 'error' },
-  }],
+  items: [
+    {
+      /** @type {HeptapodInfoStateError} */
+      state: { type: 'error' },
+    },
+  ],
 });
 
 export const simulations = makeStory(conf, {
   items: [{}, {}, {}],
   simulations: [
-    storyWait(2000,
+    storyWait(
+      2000,
       /** @param {CcHeptapodInfo[]} components */
       ([component, componentNotUsed, componentError]) => {
         component.state = {
@@ -78,6 +87,7 @@ export const simulations = makeStory(conf, {
         };
         componentNotUsed.state = { type: 'not-used' };
         componentError.state = { type: 'error' };
-      }),
+      },
+    ),
   ],
 });

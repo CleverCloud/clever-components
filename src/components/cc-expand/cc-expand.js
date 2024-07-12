@@ -15,8 +15,7 @@ const appendChild = (parent, child) => parent.appendChild(child);
  * @slot - The content that may expand/shrink.
  */
 export class CcExpand extends HTMLElement {
-
-  constructor () {
+  constructor() {
     super();
 
     const shadow = this.attachShadow({ mode: 'open' });
@@ -34,12 +33,11 @@ export class CcExpand extends HTMLElement {
     appendChild(this._wrapper, slot);
   }
 
-  connectedCallback () {
+  connectedCallback() {
     if (window.ResizeObserver == null) {
       return;
     }
     this._ro = new ResizeObserver(() => {
-
       // The animation API is not supported in some versions of Safari but it's purely decorative so it's OK if it does not work
       if (this.animate == null) {
         return;
@@ -62,16 +60,10 @@ export class CcExpand extends HTMLElement {
         return;
       }
       if (fromHeight != null) {
-        this._animation = this.animate(
-          [
-            { height: fromHeight },
-            { height: toHeight },
-          ],
-          {
-            duration: 300,
-            easing: 'ease-in-out',
-          },
-        );
+        this._animation = this.animate([{ height: fromHeight }, { height: toHeight }], {
+          duration: 300,
+          easing: 'ease-in-out',
+        });
       }
 
       this._oldHeight = toHeight;
@@ -80,7 +72,7 @@ export class CcExpand extends HTMLElement {
     this._ro.observe(this._wrapper);
   }
 
-  disconnectedCallback () {
+  disconnectedCallback() {
     if (window.ResizeObserver == null) {
       return;
     }

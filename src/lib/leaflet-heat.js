@@ -29,23 +29,22 @@ import { Bounds, Browser, DomUtil, Layer, point, setOptions, Util } from './leaf
 import { Simpleheat } from './simpleheat.js';
 
 export const HeatLayer = Layer.extend({
-
-  initialize (latlngs, options) {
+  initialize(latlngs, options) {
     this._latlngs = latlngs;
     setOptions(this, options);
   },
 
-  setLatLngs (latlngs) {
+  setLatLngs(latlngs) {
     this._latlngs = latlngs;
     return this.redraw();
   },
 
-  addLatLng (latlng) {
+  addLatLng(latlng) {
     this._latlngs.push(latlng);
     return this.redraw();
   },
 
-  setOptions (options) {
+  setOptions(options) {
     setOptions(this, options);
     if (this._heat) {
       this._updateOptions();
@@ -53,14 +52,14 @@ export const HeatLayer = Layer.extend({
     return this.redraw();
   },
 
-  redraw () {
+  redraw() {
     if (this._heat && !this._frame && this._map && !this._map._animating) {
       this._frame = Util.requestAnimFrame(this._redraw, this);
     }
     return this;
   },
 
-  onAdd (map) {
+  onAdd(map) {
     this._map = map;
 
     if (!this._canvas) {
@@ -69,8 +68,7 @@ export const HeatLayer = Layer.extend({
 
     if (this.options.pane) {
       this.getPane().appendChild(this._canvas);
-    }
-    else {
+    } else {
       map._panes.overlayPane.appendChild(this._canvas);
     }
 
@@ -83,11 +81,10 @@ export const HeatLayer = Layer.extend({
     this._reset();
   },
 
-  onRemove (map) {
+  onRemove(map) {
     if (this.options.pane) {
       this.getPane().removeChild(this._canvas);
-    }
-    else {
+    } else {
       map.getPanes().overlayPane.removeChild(this._canvas);
     }
 
@@ -98,13 +95,13 @@ export const HeatLayer = Layer.extend({
     }
   },
 
-  addTo (map) {
+  addTo(map) {
     map.addLayer(this);
     return this;
   },
 
-  _initCanvas () {
-    const canvas = this._canvas = DomUtil.create('canvas', 'leaflet-heatmap-layer leaflet-layer');
+  _initCanvas() {
+    const canvas = (this._canvas = DomUtil.create('canvas', 'leaflet-heatmap-layer leaflet-layer'));
 
     const originProp = DomUtil.testProp(['transformOrigin', 'WebkitTransformOrigin', 'msTransformOrigin']);
     canvas.style[originProp] = '50% 50%';
@@ -120,7 +117,7 @@ export const HeatLayer = Layer.extend({
     this._updateOptions();
   },
 
-  _updateOptions () {
+  _updateOptions() {
     this._heat.radius(this.options.radius ?? this._heat.defaultRadius, this.options.blur);
 
     if (this.options.gradient) {
@@ -131,7 +128,7 @@ export const HeatLayer = Layer.extend({
     }
   },
 
-  _reset () {
+  _reset() {
     const topLeft = this._map.containerPointToLayerPoint([0, 0]);
     DomUtil.setPosition(this._canvas, topLeft);
 
@@ -147,7 +144,7 @@ export const HeatLayer = Layer.extend({
     this._redraw();
   },
 
-  _redraw () {
+  _redraw() {
     if (!this._map) {
       return;
     }
@@ -156,8 +153,8 @@ export const HeatLayer = Layer.extend({
     const r = this._heat._r;
     const size = this._map.getSize();
     const bounds = new Bounds(point([-r, -r]), size.add([r, r]));
-    const max = (this.options.max == null) ? 1 : this.options.max;
-    const maxZoom = (this.options.maxZoom == null) ? this._map.getMaxZoom() : this.options.maxZoom;
+    const max = this.options.max == null ? 1 : this.options.max;
+    const maxZoom = this.options.maxZoom == null ? this._map.getMaxZoom() : this.options.maxZoom;
     const v = 1 / Math.pow(2, Math.max(0, Math.min(maxZoom - this._map.getZoom(), 12)));
     const cellSize = r / 2;
     const grid = [];
@@ -189,8 +186,7 @@ export const HeatLayer = Layer.extend({
 
         if (!cell) {
           grid[y][x] = [p.x, p.y, k];
-        }
-        else {
+        } else {
           // x
           cell[0] = (cell[0] * cell[2] + p.x * k) / (cell[2] + k);
           // y
@@ -206,11 +202,7 @@ export const HeatLayer = Layer.extend({
         for (j = 0, len2 = grid[i].length; j < len2; j++) {
           cell = grid[i][j];
           if (cell) {
-            data.push([
-              Math.round(cell[0]),
-              Math.round(cell[1]),
-              Math.min(cell[2], max),
-            ]);
+            data.push([Math.round(cell[0]), Math.round(cell[1]), Math.min(cell[2], max)]);
           }
         }
       }
@@ -221,7 +213,7 @@ export const HeatLayer = Layer.extend({
     this._frame = null;
   },
 
-  _getAlt (i) {
+  _getAlt(i) {
     if (this._latlngs[i].alt != null) {
       return this._latlngs[i].alt;
     }
@@ -231,7 +223,7 @@ export const HeatLayer = Layer.extend({
     return 1;
   },
 
-  _animateZoom (e) {
+  _animateZoom(e) {
     const scale = this._map.getZoomScale(e.zoom);
     const offset = this._map._getCenterOffset(e.center)._multiplyBy(-scale).subtract(this._map._getMapPanePos());
     DomUtil.setTransform(this._canvas, offset, scale);

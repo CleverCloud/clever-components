@@ -14,8 +14,7 @@ import { css, LitElement, svg } from 'lit';
  * @cssdisplay inline-block
  */
 export class CcMapMarkerServer extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       anchor: { type: Array },
       size: { type: Array },
@@ -24,7 +23,7 @@ export class CcMapMarkerServer extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {Array} Exposes the coordinates of the "tip" of the marker, relative to its top left corner: `[x, y]` (used by `<cc-map>`) */
@@ -40,7 +39,7 @@ export class CcMapMarkerServer extends LitElement {
     this.tooltip = [0, -32];
   }
 
-  render () {
+  render() {
     return svg`
       <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 100 100">
         <!-- You got to love this "simple" SVG gradient syntax ;-) -->
@@ -66,7 +65,7 @@ export class CcMapMarkerServer extends LitElement {
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
@@ -77,14 +76,14 @@ export class CcMapMarkerServer extends LitElement {
 
         svg {
           display: block;
-          width: 32px;
-          /* 
-            Exception to the "rem everywhere rule" because of the way leaflet positions markers and tooltips, 
-            same as this.size
-          */
-          height: 32px;
           /* A filter:drop-shadow will match the shape, a box-shadow would just be a rectangle */
           filter: drop-shadow(0 0 2px #555);
+          /* 
+Exception to the "rem everywhere rule" because of the way leaflet positions markers and tooltips, 
+same as this.size
+    */
+          height: 32px;
+          width: 32px;
         }
 
         :host(:not([state='default'])) svg {
@@ -166,7 +165,6 @@ export class CcMapMarkerServer extends LitElement {
         }
 
         @keyframes led-half {
-
           0% {
             visibility: hidden;
           }

@@ -5,7 +5,7 @@ import { sendKeys } from '@web/test-runner-commands';
  * @param {any} template
  * @return {Promise<Element>}
  */
-export async function getElement (template) {
+export async function getElement(template) {
   const element = await fixture(template);
   await elementUpdated(element);
   return element;
@@ -17,7 +17,7 @@ export async function getElement (template) {
  * @param {string} value
  * @return {Promise<void>}
  */
-export async function typeText (element, value) {
+export async function typeText(element, value) {
   await triggerFocusFor(element);
   await sendKeys({ type: value });
   await elementUpdated(element);
@@ -29,7 +29,7 @@ export async function typeText (element, value) {
  * @param {string} value
  * @return {Promise<void>}
  */
-export async function replaceText (element, value) {
+export async function replaceText(element, value) {
   await clearText(element);
   await sendKeys({ type: value });
   await elementUpdated(element);
@@ -40,7 +40,7 @@ export async function replaceText (element, value) {
  * @param {HTMLElement} element
  * @return {Promise<void>}
  */
-export async function clearText (element) {
+export async function clearText(element) {
   await triggerFocusFor(element);
   await sendKeys({ down: 'Control' });
   await sendKeys({ press: 'KeyA' });
@@ -55,7 +55,7 @@ export async function clearText (element) {
  * @param {number} position
  * @return {Promise<void>}
  */
-export async function moveInputCaretToPosition (element, position) {
+export async function moveInputCaretToPosition(element, position) {
   await triggerFocusFor(element);
   await sendKeys({ down: 'Control' });
   await sendKeys({ press: 'KeyA' });

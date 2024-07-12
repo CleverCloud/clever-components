@@ -1,5 +1,5 @@
-import './cc-jenkins-info.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-jenkins-info.js';
 
 export default {
   tags: ['autodocs'],
@@ -64,11 +64,7 @@ export const dataLoadedWithDifferentVersions = makeStory(conf, {
 });
 
 export const simulations = makeStory(conf, {
-  items: [
-    {},
-    {},
-    {},
-  ],
+  items: [{}, {}, {}],
   simulations: [
     storyWait(2000, ([componentUpToDate, componentWithUpdate, componentError]) => {
       componentUpToDate.state = { type: 'loaded', jenkinsLink, jenkinsManageLink, versions: sameVersions };

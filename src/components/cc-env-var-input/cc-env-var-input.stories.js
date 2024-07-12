@@ -1,5 +1,5 @@
-import './cc-env-var-input.js';
 import { makeStory } from '../../stories/lib/make-story.js';
+import './cc-env-var-input.js';
 
 export default {
   tags: ['autodocs'],
@@ -48,10 +48,12 @@ export const editedAndDeleted = makeStory(conf, {
 });
 
 export const longName = makeStory(conf, {
-  items: [{
-    name: 'VERY_LONG_NAME_THAT_IS_ACTUALLY_TOO_LONG_TOO_DISPLAY_OMG_WHAT_IS_HAPPENING',
-    value: 'value for long name',
-  }],
+  items: [
+    {
+      name: 'VERY_LONG_NAME_THAT_IS_ACTUALLY_TOO_LONG_TOO_DISPLAY_OMG_WHAT_IS_HAPPENING',
+      value: 'value for long name',
+    },
+  ],
 });
 
 export const longValue = makeStory(conf, {

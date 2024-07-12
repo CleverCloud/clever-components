@@ -21,12 +21,9 @@ export class ResizeController {
    * @param {number[]} [options.widthBreakpoints] - the breakpoints used to add or remove the `w-gte-${breakpoint}` / `w-lt-${breakpoint}` attributes
    * @param {(width: number) => {}} [options.callback] - a function to execute everytime a resize happens. The `width` of the host is passed as an argument of this callback.
    */
-  constructor (host, options) {
-
+  constructor(host, options) {
     if (!window.ResizeObserver) {
-      console.warn(
-        `ResizeController error: browser does not support ResizeObserver.`,
-      );
+      console.warn(`ResizeController error: browser does not support ResizeObserver.`);
       return;
     }
 
@@ -47,26 +44,21 @@ export class ResizeController {
   /**
    * @readonly
    */
-  get width () {
+  get width() {
     return this._width;
   }
 
-  _onResize () {
+  _onResize() {
     // NOTE: We could use entries[0].borderBoxSize.inlineSize but not supported in Chrome, Safari or polyfill
     this._width = this._host.getBoundingClientRect().width;
 
     if (this._widthBreakpoints != null) {
       this._widthBreakpoints.forEach((breakpoint) => {
-
         const gteAttr = 'w-gte-' + breakpoint;
-        (breakpoint <= this._width)
-          ? this._host.setAttribute(gteAttr, '')
-          : this._host.removeAttribute(gteAttr);
+        breakpoint <= this._width ? this._host.setAttribute(gteAttr, '') : this._host.removeAttribute(gteAttr);
 
         const ltAttr = 'w-lt-' + breakpoint;
-        (this._width < breakpoint)
-          ? this._host.setAttribute(ltAttr, '')
-          : this._host.removeAttribute(ltAttr);
+        this._width < breakpoint ? this._host.setAttribute(ltAttr, '') : this._host.removeAttribute(ltAttr);
       });
     }
 
@@ -75,11 +67,11 @@ export class ResizeController {
     this._callback?.(this._width);
   }
 
-  hostConnected () {
+  hostConnected() {
     this._observer.observe(this._host);
   }
 
-  hostDisconnected () {
+  hostDisconnected() {
     this._observer.disconnect();
   }
 }

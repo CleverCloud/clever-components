@@ -1,5 +1,5 @@
 :root {
-  --cc-ff-monospace: "SourceCodePro", "monaco", monospace;
+  --cc-ff-monospace: 'SourceCodePro', 'monaco', monospace;
 
   /* All custom properties are sorted alphabetically within each region. */
 

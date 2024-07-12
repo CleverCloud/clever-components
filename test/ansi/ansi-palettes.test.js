@@ -21,14 +21,7 @@ const lightPalettes = {
   'One Light': oneLightPalette,
   'Tokyo Night Light': tokyoNightLightPalette,
 };
-const fgStyles = [
-  'red',
-  'green',
-  'yellow',
-  'blue',
-  'magenta',
-  'cyan',
-];
+const fgStyles = ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan'];
 
 const testsSuite = [
   ...Object.entries(darkPalettes).map(([name, palette]) => ({

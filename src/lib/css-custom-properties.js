@@ -3,10 +3,9 @@
  * @param {HTMLElement} element
  * @returns {any}
  */
-export function getCssCustomProperties (element) {
+export function getCssCustomProperties(element) {
   const styles = getComputedStyle(element);
-  const entries = Object
-    .values(styles)
+  const entries = Object.values(styles)
     .filter((name) => name.startsWith('--'))
     .map((name) => [name, styles.getPropertyValue(name)]);
   return Object.fromEntries(entries);

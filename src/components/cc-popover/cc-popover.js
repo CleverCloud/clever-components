@@ -1,7 +1,7 @@
-import '../cc-button/cc-button.js';
 import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { dispatchCustomEvent, EventHandler } from '../../lib/events.js';
+import '../cc-button/cc-button.js';
 
 /**
  * @typedef {import('../common.types.js').IconModel} IconModel
@@ -54,7 +54,7 @@ import { dispatchCustomEvent, EventHandler } from '../../lib/events.js';
  * @cssprop {Width} --cc-popover-trigger-button-width - Sets the width of the trigger button (defaults: `inherit`).
  */
 export class CcPopover extends LitElement {
-  static get properties () {
+  static get properties() {
     return {
       a11yName: { type: String, attribute: 'a11y-name' },
       hideText: { type: Boolean, attribute: 'hide-text' },
@@ -64,7 +64,7 @@ export class CcPopover extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {string|null} Sets the a11yName property of the underlying `cc-button` element. CAUTION: The accessible name should always start with the visible text if there is one. */
@@ -110,8 +110,7 @@ export class CcPopover extends LitElement {
 
       if (popover !== this) {
         lastOpenedPopover = popover;
-      }
-      else {
+      } else {
         lastOpenedPopover?.close(false);
         lastOpenedPopover = null;
       }
@@ -123,7 +122,7 @@ export class CcPopover extends LitElement {
   /**
    * Opens the popover.
    */
-  open () {
+  open() {
     if (!this.isOpen) {
       this.isOpen = true;
       dispatchCustomEvent(this, 'open');
@@ -134,7 +133,7 @@ export class CcPopover extends LitElement {
    * Closes the popover.
    * @param {boolean} [shouldFocus = true] Whereas the button should be focused. This applies only if the popover was opened.
    */
-  close (shouldFocus = true) {
+  close(shouldFocus = true) {
     if (this.isOpen) {
       this.isOpen = false;
       if (shouldFocus) {
@@ -147,11 +146,10 @@ export class CcPopover extends LitElement {
   /**
    * Toggle the popover display.
    */
-  toggle () {
+  toggle() {
     if (this.isOpen) {
       this.close();
-    }
-    else {
+    } else {
       this.open();
     }
   }
@@ -159,7 +157,7 @@ export class CcPopover extends LitElement {
   /**
    * Moves the focus on the button.
    */
-  focus () {
+  focus() {
     this._buttonRef.value?.focus();
   }
 
@@ -167,25 +165,24 @@ export class CcPopover extends LitElement {
 
   // region Lit lifecycle
 
-  updated (changedProperties) {
+  updated(changedProperties) {
     if (changedProperties.has('isOpen')) {
       if (this.isOpen) {
         this._onOutsideClickHandler.connect();
         this._onEscapeKeyHandler.connect();
-      }
-      else {
+      } else {
         this._onOutsideClickHandler.disconnect();
         this._onEscapeKeyHandler.disconnect();
       }
     }
   }
 
-  connectedCallback () {
+  connectedCallback() {
     super.connectedCallback();
     this._onCcPopoverOpenHandler.connect();
   }
 
-  disconnectedCallback () {
+  disconnectedCallback() {
     super.disconnectedCallback();
     this._onOutsideClickHandler.disconnect();
     this._onEscapeKeyHandler.disconnect();
@@ -194,7 +191,7 @@ export class CcPopover extends LitElement {
 
   // endregion
 
-  render () {
+  render() {
     return html`
       <div class="wrapper">
         <cc-button
@@ -207,17 +204,19 @@ export class CcPopover extends LitElement {
         >
           <slot name="button-content"></slot>
         </cc-button>
-  
-        ${this.isOpen ? html`
-          <div class="content ${this.position.replace('-', ' ')}" ${ref(this._contentRef)}>
-            <slot></slot>
-          </div>
-        ` : null}
+
+        ${this.isOpen
+          ? html`
+              <div class="content ${this.position.replace('-', ' ')}" ${ref(this._contentRef)}>
+                <slot></slot>
+              </div>
+            `
+          : null}
       </div>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
@@ -226,30 +225,31 @@ export class CcPopover extends LitElement {
 
           --cc-popover-gap: 0.4em;
         }
-        
+
         .wrapper {
           position: relative;
         }
-        
+
         cc-button {
           width: var(--cc-popover-trigger-button-width, inherit);
         }
-        
+
         .content {
+          background-color: var(--cc-color-bg-default, #fff);
+          border: 1px solid var(--cc-color-border-neutral, #aaa);
+          border-radius: var(--cc-border-radius-default, 0.25em);
+          box-shadow:
+            0 2px 4px rgb(38 38 38 / 25%),
+            0 5px 15px rgb(38 38 38 / 25%);
+          padding: 0.5em;
           position: absolute;
           z-index: var(--cc-popover-z-index, 999);
-          padding: 0.5em;
-          border: 1px solid var(--cc-color-border-neutral, #aaa);
-          background-color: var(--cc-color-bg-default, #fff);
-          border-radius: var(--cc-border-radius-default, 0.25em);
-          box-shadow: 0 2px 4px rgb(38 38 38 / 25%),
-            0 5px 15px rgb(38 38 38 / 25%);
         }
 
         .content.bottom {
           top: calc(100% + var(--cc-popover-gap));
         }
-        
+
         .content.top {
           bottom: calc(100% + var(--cc-popover-gap));
         }

@@ -18,7 +18,7 @@ import '../cc-icon/cc-icon.js';
  * @cssprop {JustifyContent} --cc-badge-justify-content - Specify how the content should be distributed / positioned horizontally within the grid (Default: `center`. Possible values: https://developer.mozilla.org/en-US/docs/Web/CSS/justify-items).
  */
 export class CcBadge extends LitElement {
-  static get properties () {
+  static get properties() {
     return {
       circle: { type: Boolean },
       icon: { type: Object },
@@ -29,7 +29,7 @@ export class CcBadge extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {boolean} Sets the badge to a bubble style. Should only be used to display 1 or 2 digits figures. */
@@ -51,7 +51,7 @@ export class CcBadge extends LitElement {
     this.weight = 'dimmed';
   }
 
-  render () {
+  render() {
     const modes = {
       dimmed: this.weight == null || this.weight === 'dimmed',
       strong: this.weight === 'strong',
@@ -67,9 +67,9 @@ export class CcBadge extends LitElement {
 
     return html`
       <span class="cc-badge ${classMap(modes)}">
-        ${this.icon != null ? html`
-          <cc-icon .icon=${this.icon} a11y-name=${ifDefined(this.iconA11yName)}></cc-icon>
-        ` : ''}
+        ${this.icon != null
+          ? html` <cc-icon .icon=${this.icon} a11y-name=${ifDefined(this.iconA11yName)}></cc-icon> `
+          : ''}
         <span>
           <slot></slot>
         </span>
@@ -77,7 +77,7 @@ export class CcBadge extends LitElement {
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       skeletonStyles,
       // language=CSS
@@ -87,20 +87,20 @@ export class CcBadge extends LitElement {
         }
 
         .cc-badge {
-          display: flex;
           align-items: center;
-          justify-content: var(--cc-badge-justify-content, center);
-          padding: 0.2em 0.8em;
           border-radius: 1em;
+          display: flex;
           font-size: 0.8em;
           gap: 0.3em;
+          justify-content: var(--cc-badge-justify-content, center);
+          padding: 0.2em 0.8em;
         }
 
         /* skeleton is more important */
 
         .skeleton {
-          border: 0.06em solid #bbb !important;
           background-color: #bbb !important;
+          border: 0.06em solid #bbb !important;
           color: transparent !important;
         }
 
@@ -113,31 +113,31 @@ export class CcBadge extends LitElement {
         }
 
         .circle {
-          width: 1.5em;
-          height: 1.5em;
-          min-height: unset;
-          justify-content: center;
-          padding: 0;
           border-radius: 50%;
           font-size: 1em;
+          height: 1.5em;
+          justify-content: center;
+          min-height: unset;
+          padding: 0;
+          width: 1.5em;
         }
 
         .dimmed {
-          border: 0.06em solid var(--accent-color, #ccc);
           background-color: var(--accent-color, #ccc);
+          border: 0.06em solid var(--accent-color, #ccc);
         }
 
         .strong {
-          border: 0.06em solid var(--accent-color, #777);
           background-color: var(--accent-color, #777);
+          border: 0.06em solid var(--accent-color, #777);
           color: var(--cc-color-text-inverted, #fff);
         }
 
         .outlined {
-          /* roughly 1px. We want the border to scale with the font size so that outlined
-          badges still stand out as they should when font-size is increased. */
-          border: 0.06em solid var(--accent-color, #777);
           background-color: transparent;
+          /* roughly 1px. We want the border to scale with the font size so that outlined
+    badges still stand out as they should when font-size is increased. */
+          border: 0.06em solid var(--accent-color, #777);
           color: var(--accent-color, #777);
         }
 
@@ -182,8 +182,8 @@ export class CcBadge extends LitElement {
         }
 
         img {
-          width: 1em;
           height: 1em;
+          width: 1em;
         }
       `,
     ];

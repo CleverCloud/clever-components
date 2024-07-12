@@ -1,24 +1,23 @@
-
 export type LogsInstancesState = LogsInstancesStateLoading | LogsInstancesStateError | LogsInstancesStateLoaded;
 
 export interface LogsInstancesStateLoading {
-  state: "loading";
+  state: 'loading';
 }
 
 export interface LogsInstancesStateError {
-  state: "error";
+  state: 'error';
 }
 
 export interface LogsInstancesStateLoaded {
-  state: "loaded";
+  state: 'loaded';
   mode: LogsMode;
   instances: Array<Instance | GhostInstance>;
   selection: Array<string>;
 }
 
-export type LogsMode = "live" | "cold";
+export type LogsMode = 'live' | 'cold';
 
-export type DeploymentState = "QUEUED" | "WORK_IN_PROGRESS" | "SUCCEEDED" | "CANCELLED" | "FAILED";
+export type DeploymentState = 'QUEUED' | 'WORK_IN_PROGRESS' | 'SUCCEEDED' | 'CANCELLED' | 'FAILED';
 
 export interface Deployment {
   id: string;
@@ -28,9 +27,18 @@ export interface Deployment {
   endDate?: Date;
 }
 
-
-export type InstanceState = "BOOTING" | "STARTING" | "DEPLOYING" | "BUILDING" | "READY" | "UP" | "STOPPING" | "DELETED" | "MIGRATION_IN_PROGRESS" | "TASK_IN_PROGRESS";
-export type InstanceKind = "BUILD" | "RUN";
+export type InstanceState =
+  | 'BOOTING'
+  | 'STARTING'
+  | 'DEPLOYING'
+  | 'BUILDING'
+  | 'READY'
+  | 'UP'
+  | 'STOPPING'
+  | 'DELETED'
+  | 'MIGRATION_IN_PROGRESS'
+  | 'TASK_IN_PROGRESS';
+export type InstanceKind = 'BUILD' | 'RUN';
 
 export interface Instance {
   id: string;
@@ -44,6 +52,6 @@ export interface Instance {
 }
 
 export interface GhostInstance {
-  ghost: true,
+  ghost: true;
   id: string;
 }

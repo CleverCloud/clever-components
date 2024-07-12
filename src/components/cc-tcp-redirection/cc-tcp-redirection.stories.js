@@ -1,5 +1,5 @@
-import './cc-tcp-redirection.js';
 import { makeStory } from '../../stories/lib/make-story.js';
+import './cc-tcp-redirection.js';
 
 /** @type {{state: TcpRedirectionStateLoaded}[]} */
 const baseItems = [
@@ -39,11 +39,7 @@ export const defaultStory = makeStory(conf, {
 
 export const loading = makeStory(conf, {
   /** @type {{state: TcpRedirectionStateLoading}[]} */
-  items: [
-    { state: { type: 'loading' } },
-    { state: { type: 'loading' } },
-    { state: { type: 'loading' } },
-  ],
+  items: [{ state: { type: 'loading' } }, { state: { type: 'loading' } }, { state: { type: 'loading' } }],
 });
 
 export const dataLoadedWithRedirection = makeStory(conf, {

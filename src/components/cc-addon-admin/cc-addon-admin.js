@@ -1,11 +1,11 @@
-import '../cc-input-text/cc-input-text.js';
-import '../cc-loader/cc-loader.js';
-import '../cc-block-section/cc-block-section.js';
-import '../cc-block/cc-block.js';
-import '../cc-notice/cc-notice.js';
 import { css, html, LitElement } from 'lit';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
+import '../cc-block-section/cc-block-section.js';
+import '../cc-block/cc-block.js';
+import '../cc-input-text/cc-input-text.js';
+import '../cc-loader/cc-loader.js';
+import '../cc-notice/cc-notice.js';
 
 /**
  * @typedef {import('./cc-addon-admin.types.js').AddonAdminState} AddonAdminState
@@ -26,8 +26,7 @@ import { i18n } from '../../lib/i18n.js';
  * @fires {CustomEvent<string[]>} cc-addon-admin:update-tags - Fires the new list of tags when update tags button is clicked.
  */
 export class CcAddonAdmin extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       noDangerZoneBackupText: { type: Boolean, attribute: 'no-danger-zone-backup-text' },
       noDangerZoneVmText: { type: Boolean, attribute: 'no-danger-zone-vm-text' },
@@ -37,7 +36,7 @@ export class CcAddonAdmin extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {boolean} Hides the text about backups within the danger zone when set to `true` */
@@ -57,7 +56,7 @@ export class CcAddonAdmin extends LitElement {
   }
 
   /** @private */
-  _onDeleteSubmit () {
+  _onDeleteSubmit() {
     dispatchCustomEvent(this, 'delete-addon');
   }
 
@@ -65,12 +64,12 @@ export class CcAddonAdmin extends LitElement {
    * @param {{ detail: string }} event
    * @private
    */
-  _onNameInput ({ detail: name }) {
+  _onNameInput({ detail: name }) {
     this._name = name;
   }
 
   /** @private */
-  _onNameSubmit () {
+  _onNameSubmit() {
     dispatchCustomEvent(this, 'update-name', { name: this._name });
   }
 
@@ -78,19 +77,19 @@ export class CcAddonAdmin extends LitElement {
    * @param {{ detail: string[] }} event
    * @private
    */
-  _onTagsInput ({ detail: tags }) {
+  _onTagsInput({ detail: tags }) {
     this._tags = tags;
   }
 
   /** @private */
-  _onTagsSubmit () {
+  _onTagsSubmit() {
     dispatchCustomEvent(this, 'update-tags', { tags: this._tags });
   }
 
   /**
    * @param {CcAddonAdminPropertyValues} changedProperties
    */
-  willUpdate (changedProperties) {
+  willUpdate(changedProperties) {
     if (changedProperties.has('state') && 'name' in this.state) {
       this._name = this.state.name;
     }
@@ -100,16 +99,14 @@ export class CcAddonAdmin extends LitElement {
     }
   }
 
-  render () {
-
+  render() {
     return html`
       <cc-block>
         <div slot="title">${i18n('cc-addon-admin.admin')}</div>
 
-        ${this.state.type === 'error' ? html`
-          <cc-notice intent="warning" message="${i18n('cc-addon-admin.error-loading')}"></cc-notice>
-        ` : ''}
-
+        ${this.state.type === 'error'
+          ? html` <cc-notice intent="warning" message="${i18n('cc-addon-admin.error-loading')}"></cc-notice> `
+          : ''}
         ${this.state.type !== 'error' ? this._renderContent(this.state) : ''}
       </cc-block>
     `;
@@ -120,7 +117,7 @@ export class CcAddonAdmin extends LitElement {
    * @returns {TemplateResult}
    * @private
    */
-  _renderContent (state) {
+  _renderContent(state) {
     const isSkeleton = state.type === 'loading';
     const isSaving = state.type === 'updatingTags' || state.type === 'updatingName' || state.type === 'deleting';
     const isFormDisabled = state.type === 'loading' || isSaving;
@@ -140,13 +137,14 @@ export class CcAddonAdmin extends LitElement {
             @cc-input-text:input=${this._onNameInput}
             @cc-input-text:requestimplicitsubmit=${this._onNameSubmit}
           ></cc-input-text>
-          <cc-button 
-            primary 
-            ?skeleton=${isSkeleton} 
-            ?disabled=${isFormDisabled} 
+          <cc-button
+            primary
+            ?skeleton=${isSkeleton}
+            ?disabled=${isFormDisabled}
             ?waiting=${state.type === 'updatingName'}
             @cc-button:click=${this._onNameSubmit}
-          >${i18n('cc-addon-admin.update')}</cc-button>
+            >${i18n('cc-addon-admin.update')}</cc-button
+          >
         </div>
       </cc-block-section>
 
@@ -163,13 +161,14 @@ export class CcAddonAdmin extends LitElement {
             @cc-input-text:tags=${this._onTagsInput}
             @cc-input-text:requestimplicitsubmit=${this._onTagsSubmit}
           ></cc-input-text>
-          <cc-button 
+          <cc-button
             primary
             ?skeleton=${isSkeleton}
             ?disabled=${isFormDisabled}
             ?waiting=${state.type === 'updatingTags'}
             @cc-button:click=${this._onTagsSubmit}
-          >${i18n('cc-addon-admin.tags-update')}</cc-button>
+            >${i18n('cc-addon-admin.tags-update')}</cc-button
+          >
         </div>
       </cc-block-section>
 
@@ -182,18 +181,19 @@ export class CcAddonAdmin extends LitElement {
         </div>
         <div>
           <cc-button
-            danger 
-            ?skeleton=${isSkeleton} 
-            ?disabled=${isFormDisabled} 
+            danger
+            ?skeleton=${isSkeleton}
+            ?disabled=${isFormDisabled}
             ?waiting=${state.type === 'deleting'}
             @cc-button:click=${this._onDeleteSubmit}
-          >${i18n('cc-addon-admin.delete')}</cc-button>
+            >${i18n('cc-addon-admin.delete')}</cc-button
+          >
         </div>
       </cc-block-section>
-      `;
+    `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`

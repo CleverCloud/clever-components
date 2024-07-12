@@ -14,7 +14,7 @@ import { shiftDateField } from '../../lib/date/date-utils.js';
  * @param {number} duration
  * @return {DateRange}
  */
-export function getRangeToNow (duration) {
+export function getRangeToNow(duration) {
   const now = new Date();
   return toDateRange({
     since: new Date(now.getTime() - duration),
@@ -26,14 +26,14 @@ export function getRangeToNow (duration) {
  *
  * @param {DateRange|RawDateRange} dateRange
  */
-export function isLive (dateRange) {
+export function isLive(dateRange) {
   return dateRange.until == null;
 }
 
 /**
  * @return {DateRange}
  */
-export function today () {
+export function today() {
   const start = new Date();
   start.setUTCHours(0);
   start.setUTCMinutes(0);
@@ -48,7 +48,7 @@ export function today () {
 /**
  * @return {DateRange}
  */
-export function yesterday () {
+export function yesterday() {
   const todayStart = new Date();
   todayStart.setUTCHours(0);
   todayStart.setUTCMinutes(0);
@@ -67,7 +67,7 @@ export function yesterday () {
  * @param {number} numberOfDays
  * @return {DateRange}
  */
-export function lastXDays (numberOfDays) {
+export function lastXDays(numberOfDays) {
   const start = shiftDateField(new Date(), 'D', -numberOfDays);
   start.setUTCHours(0);
   start.setUTCMinutes(0);
@@ -85,7 +85,7 @@ export function lastXDays (numberOfDays) {
  * @param {'left'|'right'} direction
  * @return {DateRange}
  */
-export function shiftDateRange (dateRange, direction) {
+export function shiftDateRange(dateRange, direction) {
   if (isLive(dateRange)) {
     throw new Error('Cannot shift an unbounded date range');
   }
@@ -98,7 +98,7 @@ export function shiftDateRange (dateRange, direction) {
  * @param {DateRange} dateRange
  * @return {boolean}
  */
-export function isRightDateRangeAfterNow (dateRange) {
+export function isRightDateRangeAfterNow(dateRange) {
   const rightDateRange = shiftRawDateRange(toRawDateRange(dateRange), 'right');
   return rightDateRange.until.getTime() > new Date().getTime();
 }
@@ -109,7 +109,7 @@ export function isRightDateRangeAfterNow (dateRange) {
  * @param {'left'|'right'} direction
  * @return {RawDateRange}
  */
-function shiftRawDateRange (dateRange, direction) {
+function shiftRawDateRange(dateRange, direction) {
   if (isLive(dateRange)) {
     throw new Error('Cannot shift an unbounded date range');
   }
@@ -136,7 +136,7 @@ function shiftRawDateRange (dateRange, direction) {
  * @param {DateRange} dateRange
  * @return {RawDateRange}
  */
-function toRawDateRange (dateRange) {
+function toRawDateRange(dateRange) {
   return {
     since: new Date(dateRange.since),
     until: dateRange.until == null ? null : new Date(dateRange.until),
@@ -147,7 +147,7 @@ function toRawDateRange (dateRange) {
  * @param {RawDateRange} dateRange
  * @return {DateRange}
  */
-function toDateRange (dateRange) {
+function toDateRange(dateRange) {
   return {
     since: dateRange.since.toISOString(),
     until: dateRange.until == null ? null : dateRange.until.toISOString(),

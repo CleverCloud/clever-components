@@ -1,5 +1,5 @@
-import './cc-env-var-editor-simple.js';
 import { makeStory } from '../../stories/lib/make-story.js';
+import './cc-env-var-editor-simple.js';
 
 const VARIABLES_FULL = [
   { name: 'EMPTY', value: '' },

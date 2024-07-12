@@ -1,5 +1,5 @@
-import './cc-logs-application-view.js';
 import { makeStory } from '../../stories/lib/make-story.js';
+import './cc-logs-application-view.js';
 
 export default {
   title: '🚧 Beta/🛠 Logs/<cc-logs-application-view-beta>',
@@ -38,7 +38,9 @@ const log = (index, fakeTime = true) => {
 };
 
 const logs = (count, logFactory = log) => {
-  return Array(count).fill(0).map((_, i) => logFactory(i));
+  return Array(count)
+    .fill(0)
+    .map((_, i) => logFactory(i));
 };
 
 export const defaultStory = makeStory(conf, {

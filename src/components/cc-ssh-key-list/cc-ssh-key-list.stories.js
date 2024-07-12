@@ -1,7 +1,7 @@
-import './cc-ssh-key-list.js';
-import './cc-ssh-key-list.smart.js';
 import { produce } from '../../lib/immer.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-ssh-key-list.js';
+import './cc-ssh-key-list.smart.js';
 
 const NEW_KEY = {
   name: 'Work laptop',
@@ -79,16 +79,8 @@ export const dataLoadedWithMultipleItems = makeStory(conf, {
       keyData: {
         state: 'loaded',
         isGithubLinked: true,
-        personalKeys: [
-          DUMMY_KEY_1,
-          DUMMY_KEY_2,
-          DUMMY_KEY_3,
-        ],
-        githubKeys: [
-          DUMMY_KEY_1,
-          DUMMY_KEY_2,
-          DUMMY_KEY_3,
-        ],
+        personalKeys: [DUMMY_KEY_1, DUMMY_KEY_2, DUMMY_KEY_3],
+        githubKeys: [DUMMY_KEY_1, DUMMY_KEY_2, DUMMY_KEY_3],
       },
     },
   ],
@@ -148,10 +140,12 @@ export const skeleton = makeStory(conf, {
 });
 
 export const waitingWithAddingPersonalKey = makeStory(conf, {
-  items: [{
-    ...baseItem,
-    createKeyFormState: { type: 'creating' },
-  }],
+  items: [
+    {
+      ...baseItem,
+      createKeyFormState: { type: 'creating' },
+    },
+  ],
   onUpdateComplete: (component) => {
     component._createFormRef.value.name.value = NEW_KEY.name;
     component._createFormRef.value.publicKey.value = NEW_KEY.key;
@@ -184,10 +178,7 @@ export const waitingWithImportingGithubKey = makeStory(conf, {
       keyData: {
         state: 'loaded',
         isGithubLinked: true,
-        personalKeys: [
-          DUMMY_KEY_1,
-          DUMMY_KEY_3,
-        ],
+        personalKeys: [DUMMY_KEY_1, DUMMY_KEY_3],
         githubKeys: [
           {
             ...DUMMY_KEY_2,

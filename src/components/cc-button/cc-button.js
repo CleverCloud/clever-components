@@ -1,4 +1,3 @@
-import '../cc-icon/cc-icon.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -6,6 +5,7 @@ import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
+import '../cc-icon/cc-icon.js';
 
 /**
  * @typedef {import('../common.types.js').IconModel} IconModel
@@ -48,8 +48,7 @@ import { linkStyles } from '../../templates/cc-link/cc-link.js';
  * @cssprop {TextTransform} --cc-button-text-transform - Sets the value of the text transform CSS property (defaults: `uppercase`).
  */
 export class CcButton extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       a11yExpanded: { type: Boolean, attribute: 'a11y-expanded', reflect: true },
       a11yName: { type: String, attribute: 'a11y-name' },
@@ -73,11 +72,11 @@ export class CcButton extends LitElement {
     };
   }
 
-  static get formAssociated () {
+  static get formAssociated() {
     return true;
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {null|boolean} Sets aria-expanded on the inner `button` element. */
@@ -141,11 +140,11 @@ export class CcButton extends LitElement {
     this._internals = this.attachInternals();
   }
 
-  focus () {
+  focus() {
     this.shadowRoot.querySelector('button').focus();
   }
 
-  _cancelClick () {
+  _cancelClick() {
     clearTimeout(this._timeoutId);
     this._cancelMode = false;
   }
@@ -155,7 +154,7 @@ export class CcButton extends LitElement {
    *
    * @returns {string|undefined} the value of the `aria-label` attribute or `undefined` if the attribute should not be set.
    */
-  _getAriaLabel () {
+  _getAriaLabel() {
     if (this.a11yName != null) {
       return this.a11yName.trim() ?? '';
     }
@@ -172,7 +171,7 @@ export class CcButton extends LitElement {
    *
    * @returns {string|undefined} the value of the `title` attribute or `undefined` if the attribute should not be set.
    */
-  _getTitle () {
+  _getTitle() {
     if (this.a11yName != null) {
       return this.a11yName.trim() ?? '';
     }
@@ -192,8 +191,7 @@ export class CcButton extends LitElement {
    *
    * @param {ButtonClickEvent} e
    */
-  _onClick (e) {
-
+  _onClick(e) {
     e.stopPropagation();
 
     // we need to check that because we use aria-disabled which doesn't prevent the onclick event to be fired.
@@ -217,8 +215,7 @@ export class CcButton extends LitElement {
 
     if (this._cancelMode) {
       this._cancelClick();
-    }
-    else {
+    } else {
       this._cancelMode = true;
       this._timeoutId = setTimeout(() => {
         if (this.type === 'submit') {
@@ -237,7 +234,7 @@ export class CcButton extends LitElement {
   /**
    * @param {CcButtonPropertyValues} changedProperties
    */
-  willUpdate (changedProperties) {
+  willUpdate(changedProperties) {
     if (changedProperties.has('disabled')) {
       if (this.disabled === true) {
         this._cancelClick();
@@ -245,16 +242,16 @@ export class CcButton extends LitElement {
     }
   }
 
-  render () {
-    const delay = (this.delay != null && !this.link) ? this.delay : null;
-    const waiting = (this.waiting);
+  render() {
+    const delay = this.delay != null && !this.link ? this.delay : null;
+    const waiting = this.waiting;
     const primary = this.primary && !this.success && !this.warning && !this.danger && !this.link;
     const success = !this.primary && this.success && !this.warning && !this.danger && !this.link;
     const warning = !this.primary && !this.success && this.warning && !this.danger && !this.link;
     const danger = !this.primary && !this.success && !this.warning && this.danger && !this.link;
     // simple mode is default when no value or when there are multiple conflicting values
     const simple = !primary && !success && !warning && !danger && !this.link;
-    const hasIcon = (this.image != null || this.icon != null);
+    const hasIcon = this.image != null || this.icon != null;
 
     // those are exclusive, only one can be set at a time
     // we chose this over one attribute named "mode" so it would be easier to write/use
@@ -296,79 +293,74 @@ export class CcButton extends LitElement {
           This way, when delay is set, the button has a min width of the largest label (normal or cancel).
         -->
         <div class="text-wrapper ${classMap({ 'cancel-mode': this._cancelMode })}">
-          ${this.image != null ? html`
-            <img src=${this.image} alt="">
-          ` : ''}
-          ${this.icon != null ? html`
-            <cc-icon .icon="${this.icon}"></cc-icon>
-          ` : ''}
+          ${this.image != null ? html` <img src=${this.image} alt="" /> ` : ''}
+          ${this.icon != null ? html` <cc-icon .icon="${this.icon}"></cc-icon> ` : ''}
           <div class="text-normal">
             <slot></slot>
           </div>
-          ${delay != null ? html`
-            <div class="text-cancel">${i18n('cc-button.cancel')}</div>
-          ` : ''}
+          ${delay != null ? html` <div class="text-cancel">${i18n('cc-button.cancel')}</div> ` : ''}
         </div>
-        ${delay != null ? html`
-          <progress class="delay ${classMap({ active: this._cancelMode })}" style="--delay: ${delay}s"></progress>
-        ` : ''}
-        ${waiting && !modes.circle ? html`
-          <progress class="waiting"></progress>
-        ` : ''}
-        ${waiting && modes.circle ? html`
-          <svg class="circle-loader" viewBox="25 25 50 50" stroke-width="4" aria-hidden="true">
-            <circle fill="none" cx="50" cy="50" r="15" />
-          </svg>
-        ` : ''}
+        ${delay != null
+          ? html`
+              <progress class="delay ${classMap({ active: this._cancelMode })}" style="--delay: ${delay}s"></progress>
+            `
+          : ''}
+        ${waiting && !modes.circle ? html` <progress class="waiting"></progress> ` : ''}
+        ${waiting && modes.circle
+          ? html`
+              <svg class="circle-loader" viewBox="25 25 50 50" stroke-width="4" aria-hidden="true">
+                <circle fill="none" cx="50" cy="50" r="15" />
+              </svg>
+            `
+          : ''}
       </button>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       skeletonStyles,
       linkStyles,
       // language=CSS
       css`
         /* stylelint-disable no-duplicate-selectors */
-
         :host {
-          display: inline-block;
           box-sizing: border-box;
+          display: inline-block;
           vertical-align: middle;
         }
 
         /* RESET */
 
         button {
-          display: block;
-          padding: 0;
-          border: none;
-          margin: 0;
           background: unset;
+          border: none;
+          display: block;
           font-family: inherit;
           font-size: unset;
+          margin: 0;
+          padding: 0;
         }
 
         /* BASE */
 
         .btn {
-          /* used to absolutely position the <progress> */
-          position: relative;
-          overflow: hidden;
-          width: 100%;
-          min-height: 2em;
-          padding: 0 0.5em;
-          border: 1px solid #000;
           background-color: var(--cc-color-bg-default, #fff);
+          border: 1px solid #000;
           border-radius: var(--cc-button-border-radius, 0.15em);
           cursor: pointer;
           font-weight: var(--cc-button-font-weight, bold);
+          min-height: 2em;
+          overflow: hidden;
+          padding: 0 0.5em;
+          /* used to absolutely position the <progress> */
+          position: relative;
           text-transform: var(--cc-button-text-transform, uppercase);
           -moz-user-select: none;
           -webkit-user-select: none;
           -ms-user-select: none;
           user-select: none;
+          width: 100%;
         }
 
         /* COLORS */
@@ -396,8 +388,8 @@ export class CcButton extends LitElement {
         /* MODES */
 
         .btn {
-          border-color: var(--btn-color);
           background-color: var(--btn-color);
+          border-color: var(--btn-color);
           color: var(--cc-color-text-inverted);
         }
 
@@ -417,10 +409,10 @@ export class CcButton extends LitElement {
         }
 
         .img-only {
-          width: 1.75em;
           height: 1.75em;
           min-height: 0;
           padding: 0;
+          width: 1.75em;
         }
 
         /* STATES */
@@ -445,8 +437,8 @@ export class CcButton extends LitElement {
         }
 
         .skeleton {
-          border-color: #777;
           background-color: #bbb;
+          border-color: #777;
           color: transparent;
         }
 
@@ -465,13 +457,13 @@ export class CcButton extends LitElement {
         /* Grid to place image + text and superpose "cancel mode text" */
 
         .text-wrapper {
-          display: grid;
-          width: 100%;
-          height: 100%;
           align-items: center;
-          justify-content: center;
+          display: grid;
           gap: 0.5em;
           grid-template-columns: min-content 1fr;
+          height: 100%;
+          justify-content: center;
+          width: 100%;
         }
 
         .txt-only .text-wrapper {
@@ -486,8 +478,8 @@ export class CcButton extends LitElement {
 
         img {
           display: block;
-          width: 1.25em;
           height: 1.25em;
+          width: 1.25em;
         }
 
         .img-only .text-normal {
@@ -550,24 +542,23 @@ export class CcButton extends LitElement {
         }
 
         progress.delay {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 0;
-          height: 0.2em;
-          border: none;
           -webkit-appearance: none;
           -moz-appearance: none;
           appearance: none;
+          border: none;
+          bottom: 0;
+          height: 0.2em;
+          left: 0;
+          position: absolute;
+          width: 0;
         }
 
         progress.delay.active {
-          width: 100%;
           transition: width var(--delay) linear;
+          width: 100%;
         }
 
         @keyframes waiting {
-
           from {
             left: -52%;
           }
@@ -580,28 +571,26 @@ export class CcButton extends LitElement {
         progress.waiting {
           --width: 25%;
 
-          position: absolute;
-          bottom: 0;
-          width: var(--width);
-          height: 0.2em;
-          border: none;
-          margin-left: calc(50% - calc(var(--width) / 2));
           animation: 1s ease-in-out 0s infinite alternate waiting;
           -webkit-appearance: none;
           -moz-appearance: none;
           appearance: none;
+          border: none;
+          bottom: 0;
+          height: 0.2em;
+          margin-left: calc(50% - calc(var(--width) / 2));
+          position: absolute;
+          width: var(--width);
         }
 
         /* circle waiting mode - keyframes */
         @keyframes rotate {
-
           100% {
             transform: rotate(360deg);
           }
         }
 
         @keyframes stretch {
-
           0% {
             stroke-dasharray: 1, 200;
             stroke-dashoffset: 0;
@@ -633,9 +622,9 @@ export class CcButton extends LitElement {
         .circle-loader {
           --bcw-speed: 2s;
 
-          position: absolute;
           animation: rotate var(--bcw-speed) linear infinite;
           inset: 0;
+          position: absolute;
           transform-origin: center;
           vertical-align: middle;
         }
@@ -659,10 +648,10 @@ export class CcButton extends LitElement {
         .cc-link {
           --btn-color: var(--color-text-strong);
 
-          position: relative;
-          overflow: hidden;
-          min-height: 2em;
           cursor: pointer;
+          min-height: 2em;
+          overflow: hidden;
+          position: relative;
           text-decoration: underline;
         }
 

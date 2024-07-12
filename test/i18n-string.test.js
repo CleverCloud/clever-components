@@ -2,9 +2,7 @@ import { expect } from '@bundled-es-modules/chai';
 import { preparePlural } from '../src/lib/i18n-string.js';
 
 describe('preparePlural', () => {
-
   describe('english', () => {
-
     const plural = preparePlural('en');
 
     it('select correct rule', () => {
@@ -23,7 +21,6 @@ describe('preparePlural', () => {
   });
 
   describe('french', () => {
-
     const plural = preparePlural('fr');
 
     it('select correct rule', () => {

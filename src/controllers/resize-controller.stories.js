@@ -1,13 +1,12 @@
+import { LitElement, css, html } from 'lit';
 import '../components/cc-expand/cc-expand.js';
-import { html, css, LitElement } from 'lit';
 import { ResizeController } from './resize-controller.js';
 import docsPage from './resize-controller.md';
 
 const BREAKPOINTS = [200, 300, 400];
 
 class DemoContainer extends LitElement {
-
-  constructor () {
+  constructor() {
     super();
 
     this._teams = [
@@ -43,7 +42,7 @@ class DemoContainer extends LitElement {
     });
   }
 
-  render () {
+  render() {
     const { width: componentWidth } = this._resizeObserver;
 
     return html`
@@ -51,54 +50,46 @@ class DemoContainer extends LitElement {
         <p>I can track my own <code>width</code> and adapt my content to it:</p>
         <p>My current width is <code>${componentWidth}</code>.</p>
 
-        ${componentWidth >= 458
-          ? this._fullWidthTable()
-          : ''
-        }
-        ${componentWidth < 458 && componentWidth >= 300
-          ? this._narrowTable()
-          : ''
-        }
-        ${componentWidth < 300 && componentWidth >= 200
-          ? this._list()
-          : ''
-        }
+        ${componentWidth >= 458 ? this._fullWidthTable() : ''}
+        ${componentWidth < 458 && componentWidth >= 300 ? this._narrowTable() : ''}
+        ${componentWidth < 300 && componentWidth >= 200 ? this._list() : ''}
         ${componentWidth < 200
-          ? html`<p>I am way too small to display anything interesting, <strong>please don't leave me like this</strong>.</p>`
-          : ''
-        }
+          ? html`<p>
+              I am way too small to display anything interesting, <strong>please don't leave me like this</strong>.
+            </p>`
+          : ''}
       </div>
     `;
   }
 
-  _fullWidthTable () {
+  _fullWidthTable() {
     return html`
       <p>I am able to display a <strong>table with many columns</strong>.</p>
       <table>
-        <caption>Team cat versus team dog within the frontend team</caption>
+        <caption>
+          Team cat versus team dog within the frontend team
+        </caption>
         <thead>
           <tr>
-            ${this._teams.map(({ name }) => html`
-              <th scope="col">${name}</th>
-            `)}
+            ${this._teams.map(({ name }) => html` <th scope="col">${name}</th> `)}
           </tr>
         </thead>
         <tbody>
           <tr>
-            ${this._teams.map(({ team }) => html`
-              <td>${team}</td>
-            `)}
+            ${this._teams.map(({ team }) => html` <td>${team}</td> `)}
           </tr>
         </tbody>
       </table>
     `;
   }
 
-  _narrowTable () {
+  _narrowTable() {
     return html`
       <p>I can adapt to display a <strong>table a few columns and many rows</strong>.</p>
       <table>
-        <caption>Team cat versus team dog within the frontend team</caption>
+        <caption>
+          Team cat versus team dog within the frontend team
+        </caption>
         <thead>
           <tr>
             <th scope="col">Name</th>
@@ -106,33 +97,37 @@ class DemoContainer extends LitElement {
           </tr>
         </thead>
         <tbody>
-          ${this._teams.map(({ name, team }) => html`
-            <tr>
-              <th scope="row">${name}</th>
-              <td>${team}</td>
-            </tr>
-          `)}
+          ${this._teams.map(
+            ({ name, team }) => html`
+              <tr>
+                <th scope="row">${name}</th>
+                <td>${team}</td>
+              </tr>
+            `,
+          )}
         </tbody>
       </table>
     `;
   }
 
-  _list () {
+  _list() {
     return html`
       <p>I can adapt to display a <strong>list</strong>.</p>
       <strong>Team cat versus team dog within the frontend team</strong>
       <dl>
-        ${this._teams.map(({ name, team }) => html`
-          <div>
-            <dt>${name}:</dt>
-            <dd>${team}</dd>
-          </div>
-        `)}
+        ${this._teams.map(
+          ({ name, team }) => html`
+            <div>
+              <dt>${name}:</dt>
+              <dd>${team}</dd>
+            </div>
+          `,
+        )}
       </dl>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // Language CSS
       css`
@@ -149,11 +144,11 @@ class DemoContainer extends LitElement {
         :host([w-gte-200][w-lt-300]) {
           background: orange;
         }
-        
+
         :host([w-gte-300][w-lt-400]) {
           background: deepskyblue;
         }
-        
+
         :host([w-gte-400]) {
           background: lime;
         }
@@ -205,7 +200,6 @@ class DemoContainer extends LitElement {
         dt {
           font-weight: bold;
         }
-
       `,
     ];
   }
@@ -315,9 +309,7 @@ export const defaultStory = () => {
   });
 
   const mo = new window.MutationObserver(() => {
-    storyDom.querySelector('.attributes').textContent = Array.from(
-      storyDom.querySelector('demo-container').attributes,
-    )
+    storyDom.querySelector('.attributes').textContent = Array.from(storyDom.querySelector('demo-container').attributes)
       .filter((attr) => attr.name.startsWith('w-'))
       .map((attr) => attr.name + '=""')
       .join(' ');

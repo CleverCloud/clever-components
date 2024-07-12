@@ -1,6 +1,6 @@
+import { makeStory } from '../../stories/lib/make-story.js';
 import './cc-email-list.js';
 import './cc-email-list.smart.js';
-import { makeStory } from '../../stories/lib/make-story.js';
 
 const PRIMARY_ADDRESS = 'john.doe@example.com';
 const SECONDARY_ADDRESS_1 = 'john.doe.home@example.com';
@@ -172,10 +172,12 @@ export const loadingWithMarkingSecondaryAsPrimary = makeStory(conf, {
 });
 
 export const loadingWithSecondaryEmailIsBeingAdded = makeStory(conf, {
-  items: [{
-    ...baseItem,
-    addEmailFormState: { type: 'adding' },
-  }],
+  items: [
+    {
+      ...baseItem,
+      addEmailFormState: { type: 'adding' },
+    },
+  ],
   onUpdateComplete: (component) => {
     component._formRef.value.address.value = 'john.doe.extra@example.com';
   },
@@ -200,30 +202,34 @@ export const errorWithWhenSecondaryEmailIsInvalid = makeStory(conf, {
 });
 
 export const errorWithWhenSecondaryEmailIsAlreadyDefined = makeStory(conf, {
-  items: [{
-    ...baseItem,
-    addEmailFormState: {
-      type: 'idle',
-      errors: {
-        email: 'already-defined',
+  items: [
+    {
+      ...baseItem,
+      addEmailFormState: {
+        type: 'idle',
+        errors: {
+          email: 'already-defined',
+        },
       },
     },
-  }],
+  ],
   onUpdateComplete: (component) => {
     component._formRef.value.address.value = SECONDARY_ADDRESS_1;
   },
 });
 
 export const errorWithWhenSecondaryEmailIsUsed = makeStory(conf, {
-  items: [{
-    ...baseItem,
-    addEmailFormState: {
-      type: 'idle',
-      errors: {
-        email: 'used',
+  items: [
+    {
+      ...baseItem,
+      addEmailFormState: {
+        type: 'idle',
+        errors: {
+          email: 'used',
+        },
       },
     },
-  }],
+  ],
   onUpdateComplete: (component) => {
     component._formRef.value.address.value = 'used-by-another-user@example.com';
   },

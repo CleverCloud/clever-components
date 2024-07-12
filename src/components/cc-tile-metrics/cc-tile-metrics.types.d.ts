@@ -1,4 +1,8 @@
-export type TileMetricsMetricsState = TileMetricsMetricsStateLoading | TileMetricsMetricsStateError | TileMetricsMetricsStateLoaded | TileMetricsMetricsStateEmpty;
+export type TileMetricsMetricsState =
+  | TileMetricsMetricsStateLoading
+  | TileMetricsMetricsStateError
+  | TileMetricsMetricsStateLoaded
+  | TileMetricsMetricsStateEmpty;
 
 export interface TileMetricsMetricsStateLoaded {
   type: 'loaded';
@@ -42,8 +46,8 @@ export interface TileMetricsGrafanaLinkStateLoading {
 
 // this is what we retrieve directly from the API
 export interface RawMetric {
-  data: { timestamp: number, value: string }[],
-  name: 'mem' | 'cpu', 
-  resource: string, 
-  unit: string,
+  data: { timestamp: number; value: string }[];
+  name: 'mem' | 'cpu';
+  resource: string;
+  unit: string;
 }

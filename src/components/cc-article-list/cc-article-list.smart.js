@@ -1,9 +1,9 @@
-import './cc-article-list.js';
-import '../cc-smart-container/cc-smart-container.js';
 import { request } from '@clevercloud/client/esm/request.fetch.js';
 import { withCache } from '@clevercloud/client/esm/with-cache.js';
 import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { parseRssFeed } from '../../lib/xml-parser.js';
+import '../cc-smart-container/cc-smart-container.js';
+import './cc-article-list.js';
 
 /**
  * @typedef {import('../cc-article-card/cc-article-card.types.js').ArticleCard} ArticleCard
@@ -17,7 +17,7 @@ defineSmartComponent({
     lang: { type: String },
     limit: { type: Number },
   },
-  onContextUpdate ({ context, updateComponent, signal }) {
+  onContextUpdate({ context, updateComponent, signal }) {
     updateComponent('state', { type: 'loading' });
 
     const { lang, limit } = context;
@@ -34,17 +34,17 @@ defineSmartComponent({
 });
 
 /**
-  * @param {Object} params
-  * @param {AbortSignal} params.signal
-  * @param {'fr'|'en'} params.lang
-  * @param {number} [params.limit]
-  * @return {Promise<ArticleCard[]>}
-  */
-async function fetchArticleList ({ signal, lang, limit = 9 }) {
-
-  const url = (lang === 'fr')
-    ? 'https://www.clever-cloud.com/fr/feed/?format=excerpt'
-    : 'https://www.clever-cloud.com/feed/?format=excerpt';
+ * @param {Object} params
+ * @param {AbortSignal} params.signal
+ * @param {'fr'|'en'} params.lang
+ * @param {number} [params.limit]
+ * @return {Promise<ArticleCard[]>}
+ */
+async function fetchArticleList({ signal, lang, limit = 9 }) {
+  const url =
+    lang === 'fr'
+      ? 'https://www.clever-cloud.com/fr/feed/?format=excerpt'
+      : 'https://www.clever-cloud.com/feed/?format=excerpt';
 
   const requestParams = {
     method: 'get',
@@ -53,10 +53,7 @@ async function fetchArticleList ({ signal, lang, limit = 9 }) {
     signal,
   };
 
-  const rssFeed = await withCache(
-    requestParams,
-    FOUR_HOURS,
-    () => request(requestParams));
+  const rssFeed = await withCache(requestParams, FOUR_HOURS, () => request(requestParams));
 
   return parseRssFeed(rssFeed, limit);
 }

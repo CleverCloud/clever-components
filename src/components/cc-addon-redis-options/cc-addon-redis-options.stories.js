@@ -1,5 +1,5 @@
-import './cc-addon-redis-options.js';
 import { makeStory } from '../../stories/lib/make-story.js';
+import './cc-addon-redis-options.js';
 
 export default {
   tags: ['autodocs'],
