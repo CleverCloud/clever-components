@@ -1,9 +1,9 @@
-import './cc-pricing-header.js';
-import '../cc-smart-container/cc-smart-container.js';
 import { getAllZones } from '@clevercloud/client/esm/api/v4/product.js';
 import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
 import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import '../cc-smart-container/cc-smart-container.js';
+import './cc-pricing-header.js';
 
 /**
  * @typedef {import('./cc-pricing-header.types.js').PricingHeaderStateLoaded} PricingHeaderStateLoaded
@@ -15,8 +15,7 @@ defineSmartComponent({
   params: {
     zoneId: { type: String },
   },
-  onContextUpdate ({ container, component, context, onEvent, updateComponent, signal }) {
-
+  onContextUpdate({ container, component, context, onEvent, updateComponent, signal }) {
     const { zoneId } = context;
 
     /**
@@ -28,11 +27,13 @@ defineSmartComponent({
      * To do so, this smart component modifies its own context.
      * Since all pricing product smart share this context and watch for `zoneId` changes, it triggers new fetches.
      */
-    onEvent('cc-pricing-header:change-zone',
+    onEvent(
+      'cc-pricing-header:change-zone',
       /** @param {string} zoneId */
       (zoneId) => {
         container.context = { ...container.context, zoneId };
-      });
+      },
+    );
 
     /**
      * Zones data is not dynamic and not context dependant.
@@ -52,8 +53,7 @@ defineSmartComponent({
           updateComponent('state', { type: 'error' });
           console.error(error);
         });
-    }
-    else {
+    } else {
       updateComponent('selectedZoneId', zoneId);
     }
   },
@@ -64,7 +64,7 @@ defineSmartComponent({
  * @param {AbortSignal} parameters.signal
  * @returns {Promise<Zone[]>}
  */
-function fetchAllZones ({ signal }) {
+function fetchAllZones({ signal }) {
   return getAllZones()
     .then(sendToApi({ signal, cacheDelay: ONE_DAY }))
     .then(
@@ -72,9 +72,8 @@ function fetchAllZones ({ signal }) {
        * @param {Zone[]} zones
        * @returns {Zone[]}
        **/
-      (zones) => zones
-        .filter((zone) => zone.tags.includes('for:applications'))
-        .map((zone) => cleanZoneTags(zone)));
+      (zones) => zones.filter((zone) => zone.tags.includes('for:applications')).map((zone) => cleanZoneTags(zone)),
+    );
 }
 
 /**
@@ -83,7 +82,7 @@ function fetchAllZones ({ signal }) {
  * @param {Zone} zone - the zone to clean
  * @return {Zone} the zone without "for:" tags
  */
-function cleanZoneTags (zone) {
+function cleanZoneTags(zone) {
   const tags = zone.tags.filter((t) => !t.startsWith('for:'));
   return { ...zone, tags };
 }

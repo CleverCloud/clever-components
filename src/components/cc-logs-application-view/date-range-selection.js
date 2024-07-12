@@ -9,7 +9,7 @@ import { getRangeToNow, lastXDays, today, yesterday } from './date-range.js';
  * @param {DateRangeSelection} dateRangeSelection
  * @return {DateRange}
  */
-export function dateRangeSelectionToDateRange (dateRangeSelection) {
+export function dateRangeSelectionToDateRange(dateRangeSelection) {
   switch (dateRangeSelection.type) {
     case 'custom':
       return {

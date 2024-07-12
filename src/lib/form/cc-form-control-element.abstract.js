@@ -25,11 +25,11 @@ export class CcFormControlElement extends LitElement {
    * @return {boolean}
    * @protected
    */
-  static get formAssociated () {
+  static get formAssociated() {
     return true;
   }
 
-  static get properties () {
+  static get properties() {
     return {
       customErrorMessages: { type: Object, attribute: false },
       customValidator: { type: Object, attribute: false },
@@ -38,7 +38,7 @@ export class CcFormControlElement extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {ErrorMessageMap} Sets the mapping between error codes and error messages. */
@@ -70,7 +70,7 @@ export class CcFormControlElement extends LitElement {
    * @return {string}
    * @protected
    */
-  _getValuePropertyName () {
+  _getValuePropertyName() {
     return 'value';
   }
 
@@ -80,7 +80,7 @@ export class CcFormControlElement extends LitElement {
    * @return {string}
    * @protected
    */
-  _getResetPropertyName () {
+  _getResetPropertyName() {
     return 'resetValue';
   }
 
@@ -91,7 +91,7 @@ export class CcFormControlElement extends LitElement {
    * @return {HTMLElement}
    * @protected
    */
-  _getFormControlElement () {
+  _getFormControlElement() {
     throw new Error('You must implement _getFormControlElement() abstract method');
   }
 
@@ -102,7 +102,7 @@ export class CcFormControlElement extends LitElement {
    * @return {HTMLElement}
    * @protected
    */
-  _getErrorElement () {
+  _getErrorElement() {
     throw new Error('You must implement _getErrorElement() abstract method');
   }
 
@@ -112,7 +112,7 @@ export class CcFormControlElement extends LitElement {
    * @return {ErrorMessageMap}
    * @protected
    */
-  _getErrorMessages () {
+  _getErrorMessages() {
     return null;
   }
 
@@ -122,7 +122,7 @@ export class CcFormControlElement extends LitElement {
    * @return {Validator}
    * @protected
    */
-  _getValidator () {
+  _getValidator() {
     return null;
   }
 
@@ -132,14 +132,14 @@ export class CcFormControlElement extends LitElement {
    * @return {FormControlData}
    * @protected
    */
-  _getFormControlData () {
+  _getFormControlData() {
     const value = this.$getValue();
 
     if (value == null || typeof value === 'string' || value instanceof File || value instanceof FormData) {
       return value;
     }
 
-    console.warn('The value to set to form data should be of type `null|File|string|FormData`. You\'ve got ', value);
+    console.warn("The value to set to form data should be of type `null|File|string|FormData`. You've got ", value);
 
     return value.toString();
   }
@@ -150,7 +150,7 @@ export class CcFormControlElement extends LitElement {
    * @return {Array<string>}
    * @protected
    */
-  _getReactiveValidationProperties () {
+  _getReactiveValidationProperties() {
     return [];
   }
 
@@ -163,7 +163,7 @@ export class CcFormControlElement extends LitElement {
    *
    * @return {Validity}
    */
-  validate () {
+  validate() {
     /** @type {ErrorMessageMap} */
     const errorMessages = {
       ...this._getErrorMessages(),
@@ -177,9 +177,7 @@ export class CcFormControlElement extends LitElement {
       this._internals.form != null ? getFormDataMap(this._internals.form) : {},
     );
 
-    const errorMessage = validity.valid === true
-      ? null
-      : this.$resolveErrorMessage(validity.code, errorMessages);
+    const errorMessage = validity.valid === true ? null : this.$resolveErrorMessage(validity.code, errorMessages);
 
     this._errorState = {
       message: errorMessage,
@@ -188,8 +186,7 @@ export class CcFormControlElement extends LitElement {
 
     if (validity.valid) {
       this.$setValidValidity();
-    }
-    else {
+    } else {
       this.$setInvalidValidity(convertErrorMessageToString(errorMessage));
     }
 
@@ -201,7 +198,7 @@ export class CcFormControlElement extends LitElement {
    * Validation problems are reported to the user by displaying an inline error message.
    * @return {boolean}
    */
-  reportInlineValidity () {
+  reportInlineValidity() {
     if (this.errorMessage !== this._errorState.message) {
       this.errorMessage = this._errorState.message;
       dispatchCustomEvent(this, 'error-message-change', this.errorMessage);
@@ -213,14 +210,14 @@ export class CcFormControlElement extends LitElement {
    * Returns a `Validity` instance that represents the validity state of this element.
    * @return {Validity}
    */
-  get inlineValidity () {
+  get inlineValidity() {
     return this._errorState.validity;
   }
 
   /**
    * This callback will be called when the `<form>` associated to this element is reset.
    */
-  formResetCallback () {
+  formResetCallback() {
     this.$resetValue();
     // we really need to reset the error message because, even if the form control becomes invalid after reset,
     // the form reset must also reset the error message (the inline error message should not be displayed anymore).
@@ -241,7 +238,7 @@ export class CcFormControlElement extends LitElement {
    *
    * @return {boolean}
    */
-  get willValidate () {
+  get willValidate() {
     return this._internals.willValidate;
   }
 
@@ -251,7 +248,7 @@ export class CcFormControlElement extends LitElement {
    *
    * @return {boolean}
    */
-  checkValidity () {
+  checkValidity() {
     return this._internals.checkValidity();
   }
 
@@ -264,7 +261,7 @@ export class CcFormControlElement extends LitElement {
    *
    * @return {boolean}
    */
-  reportValidity () {
+  reportValidity() {
     return this._internals.reportValidity();
   }
 
@@ -274,7 +271,7 @@ export class CcFormControlElement extends LitElement {
    *
    * @return {ValidityState}
    */
-  get validity () {
+  get validity() {
     return this._internals.validity;
   }
 
@@ -285,7 +282,7 @@ export class CcFormControlElement extends LitElement {
    *
    * @return {string}
    */
-  get validationMessage () {
+  get validationMessage() {
     return this._internals.validationMessage;
   }
 
@@ -297,11 +294,10 @@ export class CcFormControlElement extends LitElement {
    *
    * @param {string|null} message
    */
-  setCustomValidity (message) {
+  setCustomValidity(message) {
     if (isStringEmpty(message)) {
       this.$setValidValidity();
-    }
-    else {
+    } else {
       this.$setInvalidValidity(message);
     }
   }
@@ -311,10 +307,11 @@ export class CcFormControlElement extends LitElement {
   /**
    * @param {FormControlElementPropertyValues} changedProperties
    */
-  updated (changedProperties) {
+  updated(changedProperties) {
     let shouldValidate = false;
     const errorMessageChanged = changedProperties.has('errorMessage');
-    const isErrorMessageEmpty = this.errorMessage == null || (typeof this.errorMessage === 'string' && this.errorMessage.length === 0);
+    const isErrorMessageEmpty =
+      this.errorMessage == null || (typeof this.errorMessage === 'string' && this.errorMessage.length === 0);
 
     // Sync form values with our state
     // @ts-ignore
@@ -349,8 +346,7 @@ export class CcFormControlElement extends LitElement {
       let message;
       if (typeof this.errorMessage === 'string') {
         message = this.errorMessage;
-      }
-      else {
+      } else {
         message = this._getErrorElement().innerText.replace('\n', ' ');
       }
 
@@ -369,12 +365,12 @@ export class CcFormControlElement extends LitElement {
    * @return {any}
    * @private
    */
-  $getValue () {
+  $getValue() {
     // @ts-ignore
     return this[this._getValuePropertyName()];
   }
 
-  $resetValue () {
+  $resetValue() {
     // @ts-ignore
     const resetValue = this[this._getResetPropertyName()];
     if (resetValue != null) {
@@ -388,22 +384,20 @@ export class CcFormControlElement extends LitElement {
    * @param {ErrorMessageMap} errorMessages
    * @return {ErrorMessage}
    */
-  $resolveErrorMessage (code, errorMessages) {
+  $resolveErrorMessage(code, errorMessages) {
     const errorMessage = errorMessages?.[code];
-    const resolvedMessage = (typeof errorMessage === 'function')
-      ? errorMessage()
-      : errorMessage;
+    const resolvedMessage = typeof errorMessage === 'function' ? errorMessage() : errorMessage;
     return resolvedMessage ?? code;
   }
 
-  $setValidValidity () {
+  $setValidValidity() {
     this._internals.setValidity({});
   }
 
   /**
    * @param {string} message
    */
-  $setInvalidValidity (message) {
+  $setInvalidValidity(message) {
     this._internals.setValidity({ customError: true }, message, this._getFormControlElement());
   }
 

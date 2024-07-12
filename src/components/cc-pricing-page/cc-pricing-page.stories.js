@@ -1,22 +1,20 @@
 import { html, render } from 'lit';
 import { ref } from 'lit/directives/ref.js';
-import './cc-pricing-page.js';
-import '../cc-pricing-estimation/cc-pricing-estimation.js';
 import { createStoryItem, makeStory } from '../../stories/lib/make-story.js';
+import '../cc-pricing-estimation/cc-pricing-estimation.js';
+import './cc-pricing-page.js';
 
+import { defaultStory as pricingHeaderStory } from '../cc-pricing-header/cc-pricing-header.stories.js';
 import {
-  defaultStory as pricingHeaderStory,
-} from '../cc-pricing-header/cc-pricing-header.stories.js';
+  defaultStory as cellarStory,
+  dataLoadedWithHeptapod as heptapodStory,
+} from '../cc-pricing-product-consumption/cc-pricing-product-consumption.stories.js';
 import {
   dataLoadedWithFakeProduct as fakeProductStory,
   dataLoadedWithAddonMongodb as mongoStory,
   dataLoadedWithRuntimeNode as nodeStory,
   dataLoadedWithAddonPostgresql as postgresqlStory,
 } from '../cc-pricing-product/cc-pricing-product.stories.js';
-import {
-  defaultStory as cellarStory,
-  dataLoadedWithHeptapod as heptapodStory,
-} from '../cc-pricing-product-consumption/cc-pricing-product-consumption.stories.js';
 
 export default {
   tags: ['autodocs'],
@@ -147,87 +145,86 @@ const temporalities = {
   },
 };
 
-function renderBaseStory ({
-  selectedTemporality = temporalities.thirtyDays,
-  selectedCurrency = currencies.eur,
-  state = 'loaded',
-}, container) {
+function renderBaseStory(
+  { selectedTemporality = temporalities.thirtyDays, selectedCurrency = currencies.eur, state = 'loaded' },
+  container,
+) {
   let pricingEstimationRef = null;
 
   const mediaQueryList = window.matchMedia('(max-width: 71.875rem)');
 
-  function _setPricingEstimationRef (pricingEstimationEl) {
+  function _setPricingEstimationRef(pricingEstimationEl) {
     pricingEstimationRef = pricingEstimationEl;
     pricingEstimationRef.isToggleEnabled = window.matchMedia('(max-width: 71.875rem)').matches;
   }
 
-  function switchCartLayout (e) {
+  function switchCartLayout(e) {
     pricingEstimationRef.isToggleEnabled = e.matches;
   }
 
   mediaQueryList.addEventListener('change', switchCartLayout);
 
-  render(html`
-    <cc-pricing-page
-      .selectedCurrency=${selectedCurrency}
-      .selectedTemporality=${selectedTemporality}
-    >
-      <div class="header">
-        <!-- pricingHeader has no error state -->
-        ${state === 'loading' ? createStoryItem(pricingHeaderStory, { zones: { state: 'loading' } }) : ''}
-        ${state === 'error' ? createStoryItem(pricingHeaderStory, { zones: { state: 'error' } }) : ''}
-        ${state === 'loaded' ? createStoryItem(pricingHeaderStory) : ''}
-      </div>
-      <div class="main-content">
-        <cc-pricing-estimation
-          ${ref(_setPricingEstimationRef)}
-          .currencies=${Object.values(currencies)}
-          .temporalities=${Object.values(temporalities)}
-        ></cc-pricing-estimation>
-        <div class="product-list">
-          <h2>Compute & Runtime</h2>
-          <div class="product">
-            <h3>Node</h3>
-            ${state === 'loading' ? createStoryItem(nodeStory, { product: { state: 'loading' } }) : ''}
-            ${state === 'error' ? createStoryItem(nodeStory, { product: { state: 'error' } }) : ''}
-            ${state === 'loaded' ? createStoryItem(nodeStory) : ''}
-          </div>
-          <h2>Add-ons</h2>
-          <div class="product">
-            <h3>Redis</h3>
-            ${state === 'loading' ? createStoryItem(postgresqlStory, { product: { state: 'loading' } }) : ''}
-            ${state === 'error' ? createStoryItem(postgresqlStory, { product: { state: 'error' } }) : ''}
-            ${state === 'loaded' ? createStoryItem(postgresqlStory) : ''}
-          </div>
-          <div class="product">
-            <h3>Mongodb</h3>
-            ${state === 'loading' ? createStoryItem(mongoStory, { product: { state: 'loading' } }) : ''}
-            ${state === 'error' ? createStoryItem(mongoStory, { product: { state: 'error' } }) : ''}
-            ${state === 'loaded' ? createStoryItem(mongoStory) : ''}
-          </div>
-          <h2>Object Storage</h2>
-          <div class="product">
-            <h3>Cellar</h3>
-            ${state === 'loading' ? createStoryItem(cellarStory, { product: { state: 'loading' } }) : ''}
-            ${state === 'error' ? createStoryItem(cellarStory, { product: { state: 'error' } }) : ''}
-            ${state === 'loaded' ? createStoryItem(cellarStory) : ''}
-          </div>
-          <div class="product">
-            <h3>Heptapod</h3>
-            ${state === 'loading' ? createStoryItem(heptapodStory, { product: { state: 'loading' } }) : ''}
-            ${state === 'error' ? createStoryItem(heptapodStory, { product: { state: 'error' } }) : ''}
-            ${state === 'loaded' ? createStoryItem(heptapodStory) : ''}
-          </div>
-          <div class="product">
-            <h3>Fake product</h3>
-            ${state === 'loading' ? createStoryItem(fakeProductStory, { product: { state: 'loading' } }) : ''}
-            ${state === 'error' ? createStoryItem(fakeProductStory, { product: { state: 'error' } }) : ''}
-            ${state === 'loaded' ? createStoryItem(fakeProductStory) : ''}
+  render(
+    html`
+      <cc-pricing-page .selectedCurrency=${selectedCurrency} .selectedTemporality=${selectedTemporality}>
+        <div class="header">
+          <!-- pricingHeader has no error state -->
+          ${state === 'loading' ? createStoryItem(pricingHeaderStory, { zones: { state: 'loading' } }) : ''}
+          ${state === 'error' ? createStoryItem(pricingHeaderStory, { zones: { state: 'error' } }) : ''}
+          ${state === 'loaded' ? createStoryItem(pricingHeaderStory) : ''}
+        </div>
+        <div class="main-content">
+          <cc-pricing-estimation
+            ${ref(_setPricingEstimationRef)}
+            .currencies=${Object.values(currencies)}
+            .temporalities=${Object.values(temporalities)}
+          ></cc-pricing-estimation>
+          <div class="product-list">
+            <h2>Compute & Runtime</h2>
+            <div class="product">
+              <h3>Node</h3>
+              ${state === 'loading' ? createStoryItem(nodeStory, { product: { state: 'loading' } }) : ''}
+              ${state === 'error' ? createStoryItem(nodeStory, { product: { state: 'error' } }) : ''}
+              ${state === 'loaded' ? createStoryItem(nodeStory) : ''}
+            </div>
+            <h2>Add-ons</h2>
+            <div class="product">
+              <h3>Redis</h3>
+              ${state === 'loading' ? createStoryItem(postgresqlStory, { product: { state: 'loading' } }) : ''}
+              ${state === 'error' ? createStoryItem(postgresqlStory, { product: { state: 'error' } }) : ''}
+              ${state === 'loaded' ? createStoryItem(postgresqlStory) : ''}
+            </div>
+            <div class="product">
+              <h3>Mongodb</h3>
+              ${state === 'loading' ? createStoryItem(mongoStory, { product: { state: 'loading' } }) : ''}
+              ${state === 'error' ? createStoryItem(mongoStory, { product: { state: 'error' } }) : ''}
+              ${state === 'loaded' ? createStoryItem(mongoStory) : ''}
+            </div>
+            <h2>Object Storage</h2>
+            <div class="product">
+              <h3>Cellar</h3>
+              ${state === 'loading' ? createStoryItem(cellarStory, { product: { state: 'loading' } }) : ''}
+              ${state === 'error' ? createStoryItem(cellarStory, { product: { state: 'error' } }) : ''}
+              ${state === 'loaded' ? createStoryItem(cellarStory) : ''}
+            </div>
+            <div class="product">
+              <h3>Heptapod</h3>
+              ${state === 'loading' ? createStoryItem(heptapodStory, { product: { state: 'loading' } }) : ''}
+              ${state === 'error' ? createStoryItem(heptapodStory, { product: { state: 'error' } }) : ''}
+              ${state === 'loaded' ? createStoryItem(heptapodStory) : ''}
+            </div>
+            <div class="product">
+              <h3>Fake product</h3>
+              ${state === 'loading' ? createStoryItem(fakeProductStory, { product: { state: 'loading' } }) : ''}
+              ${state === 'error' ? createStoryItem(fakeProductStory, { product: { state: 'error' } }) : ''}
+              ${state === 'loaded' ? createStoryItem(fakeProductStory) : ''}
+            </div>
           </div>
         </div>
-      </div>
-    </cc-pricing-page>
-  `, container);
+      </cc-pricing-page>
+    `,
+    container,
+  );
 }
 
 export const defaultStory = makeStory(conf, {

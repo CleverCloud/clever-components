@@ -1,7 +1,7 @@
-import './cc-stretch.js';
-import '../cc-toggle/cc-toggle.js';
 import { html, render } from 'lit';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import '../cc-toggle/cc-toggle.js';
+import './cc-stretch.js';
 
 export default {
   tags: ['autodocs'],
@@ -84,12 +84,16 @@ export const defaultStory = makeStory(conf, {
     let visibleElementId = 'item-1';
     let stretching = 'enabled';
 
-    const refreshUi = () => render(template({
-      visibleElementId,
-      justifyCustomProp,
-      alignCustomProp,
-      stretching,
-    }), container);
+    const refreshUi = () =>
+      render(
+        template({
+          visibleElementId,
+          justifyCustomProp,
+          alignCustomProp,
+          stretching,
+        }),
+        container,
+      );
 
     const onVisibleElementIdChange = ({ detail: newVisibleElementId }) => {
       visibleElementId = newVisibleElementId;
@@ -111,12 +115,12 @@ export const defaultStory = makeStory(conf, {
       refreshUi();
     };
 
-    function template ({ visibleElementId, justifyCustomProp, alignCustomProp, stretching }) {
+    function template({ visibleElementId, justifyCustomProp, alignCustomProp, stretching }) {
       return html`
         <div class="showcase-controls">
           <div>
             <h1>Component Props</h1>
-            <cc-toggle 
+            <cc-toggle
               legend="Visible element ID"
               .choices=${choicesItemIds}
               value=${visibleElementId}
@@ -129,32 +133,38 @@ export const defaultStory = makeStory(conf, {
               @cc-toggle:input=${onStretchingChange}
             ></cc-toggle>
           </div>
-        <div>
-          <h1>CSS Custom Properties</h1>
-          <cc-toggle
-            legend="--cc-stretch-justify-items"
-            value="${justifyCustomProp}"
-            .choices=${choices}
-            @cc-toggle:input=${onJustifyCustomPropChange}
-          ></cc-toggle>
-          <cc-toggle
+          <div>
+            <h1>CSS Custom Properties</h1>
+            <cc-toggle
+              legend="--cc-stretch-justify-items"
+              value="${justifyCustomProp}"
+              .choices=${choices}
+              @cc-toggle:input=${onJustifyCustomPropChange}
+            ></cc-toggle>
+            <cc-toggle
               legend="--cc-stretch-align-items"
               value="${alignCustomProp}"
               .choices=${choices}
               @cc-toggle:input=${onAlignCustomPropChange}
-          ></cc-toggle>
+            ></cc-toggle>
           </div>
-          <p>The red border is not part of the component. It is only added in the story to show the actual size of the component.</p>
+          <p>
+            The red border is not part of the component. It is only added in the story to show the actual size of the
+            component.
+          </p>
         </div>
         <div class="showcase-container">
           <cc-stretch
-              ?disable-stretching=${stretching === 'disabled'}
-              visible-element-id=${visibleElementId}
-              style="--cc-stretch-justify-items: ${justifyCustomProp}; --cc-stretch-align-items: ${alignCustomProp};"
+            ?disable-stretching=${stretching === 'disabled'}
+            visible-element-id=${visibleElementId}
+            style="--cc-stretch-justify-items: ${justifyCustomProp}; --cc-stretch-align-items: ${alignCustomProp};"
           >
-            <p id="item-1"><code>id="item-1"</code><br>A short content</p>
-            <p id="item-2"><code>id="item-2"</code><br>A longer content ?</p>
-            <p id="item-3"><code>id="item-3"</code><br>The very long content the component bases it's <code>width</code> on.<br>It also bases its <code>height</code> on this content.</p>
+            <p id="item-1"><code>id="item-1"</code><br />A short content</p>
+            <p id="item-2"><code>id="item-2"</code><br />A longer content ?</p>
+            <p id="item-3">
+              <code>id="item-3"</code><br />The very long content the component bases it's
+              <code>width</code> on.<br />It also bases its <code>height</code> on this content.
+            </p>
           </cc-stretch>
         </div>
       `;
@@ -184,22 +194,29 @@ export const differentLayouts = makeStory(conf, {
         styles: 'display: grid;',
       },
     ];
-    render(html`
+    render(
+      html`
         <h1>Showing the component in different <code>CSS Display</code> contexts</h1>
-        <p>All <code>&lt;cc-stretch&gt;</code> (thick red border) should have the size of their content and not their container (thin blue border).</p>
+        <p>
+          All <code>&lt;cc-stretch&gt;</code> (thick red border) should have the size of their content and not their
+          container (thin blue border).
+        </p>
         ${displayTypes.map(({ heading, styles }) => template({ heading, styles }))}
-    `, container);
+      `,
+      container,
+    );
 
-    function template ({ heading, styles }) {
+    function template({ heading, styles }) {
       return html`
         <h2>Container set to: ${heading}</h2>
         <div class="test-container" style=${styles}>
-          <cc-stretch
-            visible-element-id="item-3"
-          >
-            <p id="item-1"><code>id="item-1"</code><br>A short content</p>
-            <p id="item-2"><code>id="item-2"</code><br>A longer content ?</p>
-            <p id="item-3"><code>id="item-3"</code><br>The very long content the component bases it's <code>width</code> on.<br>It also bases its <code>height</code> on this content.</p>
+          <cc-stretch visible-element-id="item-3">
+            <p id="item-1"><code>id="item-1"</code><br />A short content</p>
+            <p id="item-2"><code>id="item-2"</code><br />A longer content ?</p>
+            <p id="item-3">
+              <code>id="item-3"</code><br />The very long content the component bases it's
+              <code>width</code> on.<br />It also bases its <code>height</code> on this content.
+            </p>
           </cc-stretch>
         </div>
       `;
@@ -208,14 +225,16 @@ export const differentLayouts = makeStory(conf, {
 });
 
 export const simulation = makeStory(conf, {
-  items: [{
-    visibleElementId: 'item-1',
-    innerHTML: `
+  items: [
+    {
+      visibleElementId: 'item-1',
+      innerHTML: `
       <p id="item-1"><code>id="item-1"</code><br>A short content</p>
       <p id="item-2"><code>id="item-2"</code><br>A longer content ?</p>
       <p id="item-3"><code>id="item-3"</code><br>The very long content the component bases it's <code>width</code> on.<br>It also bases its <code>height</code> on this content.</p>
     `,
-  }],
+    },
+  ],
   simulations: [
     storyWait(1000, ([component]) => {
       component.visibleElementId = 'item-2';

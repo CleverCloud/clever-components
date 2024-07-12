@@ -1,17 +1,16 @@
 import { expect } from '@bundled-es-modules/chai';
-import { fixture, defineCE } from '@open-wc/testing-helpers';
-import { html, LitElement } from 'lit';
+import { defineCE, fixture } from '@open-wc/testing-helpers';
+import { LitElement, html } from 'lit';
 import { findActiveElement, isParentOf } from '../src/lib/shadow-dom-utils.js';
 
 describe('shadow-dom-utils', () => {
-
   const ce = defineCE(
     class extends LitElement {
-      getButtonElement () {
+      getButtonElement() {
         return this.shadowRoot.querySelector('button');
       }
 
-      render () {
+      render() {
         return html`<button>button</button><slot></slot>`;
       }
     },

@@ -1,5 +1,5 @@
-import './cc-orga-member-card.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-orga-member-card.js';
 
 const baseMember = {
   state: 'loaded',
@@ -14,7 +14,8 @@ const baseMember = {
   isCurrentUser: false,
 };
 
-const longEmail = 'very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-long-email-address@very-very-very-very-very-very-very-long.example.com';
+const longEmail =
+  'very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-long-email-address@very-very-very-very-very-very-very-long.example.com';
 const longName = 'Veryveryveryveryveryveryveryveryvery long name';
 
 export default {
@@ -28,176 +29,204 @@ const conf = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [{
-    member: baseMember,
-  },
-  {
-    member: {
-      ...baseMember,
-      role: 'ADMIN',
+  items: [
+    {
+      member: baseMember,
     },
-  },
-  {
-    member: {
-      ...baseMember,
-      role: 'MANAGER',
+    {
+      member: {
+        ...baseMember,
+        role: 'ADMIN',
+      },
     },
-  },
-  {
-    member: {
-      ...baseMember,
-      role: 'ACCOUNTING',
+    {
+      member: {
+        ...baseMember,
+        role: 'MANAGER',
+      },
     },
-  }],
+    {
+      member: {
+        ...baseMember,
+        role: 'ACCOUNTING',
+      },
+    },
+  ],
 });
 
 export const dataLoadedWithEditAndDelete = makeStory(conf, {
-  items: [{
-    member: { ...baseMember },
-    authorisations: {
-      edit: true,
-      delete: true,
+  items: [
+    {
+      member: { ...baseMember },
+      authorisations: {
+        edit: true,
+        delete: true,
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithIsCurrentUser = makeStory(conf, {
-  items: [{
-    member: {
-      ...baseMember,
-      isCurrentUser: true,
+  items: [
+    {
+      member: {
+        ...baseMember,
+        isCurrentUser: true,
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithNoName = makeStory(conf, {
-  items: [{
-    member: {
-      ...baseMember,
-      name: '',
+  items: [
+    {
+      member: {
+        ...baseMember,
+        name: '',
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithNoAvatar = makeStory(conf, {
-  items: [{
-    member: {
-      ...baseMember,
-      avatar: null,
+  items: [
+    {
+      member: {
+        ...baseMember,
+        avatar: null,
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithLongEmail = makeStory(conf, {
-  items: [{
-    member: {
-      ...baseMember,
-      email: longEmail,
-      name: longName,
+  items: [
+    {
+      member: {
+        ...baseMember,
+        email: longEmail,
+        name: longName,
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWith2faEnabled = makeStory(conf, {
-  items: [{
-    member: {
-      ...baseMember,
-      isMfaEnabled: true,
+  items: [
+    {
+      member: {
+        ...baseMember,
+        isMfaEnabled: true,
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithNoNameAndIsCurrentUser = makeStory(conf, {
-  items: [{
-    member: {
-      ...baseMember,
-      name: null,
-      isCurrentUser: true,
+  items: [
+    {
+      member: {
+        ...baseMember,
+        name: null,
+        isCurrentUser: true,
+      },
     },
-  }],
+  ],
 });
 
 export const editing = makeStory(conf, {
-  items: [{
-    member: {
-      ...baseMember,
-      state: 'editing',
+  items: [
+    {
+      member: {
+        ...baseMember,
+        state: 'editing',
+      },
+      authorisations: {
+        edit: true,
+        delete: true,
+      },
     },
-    authorisations: {
-      edit: true,
-      delete: true,
-    },
-  }],
+  ],
 });
 
 export const errorWithStateLoaded = makeStory(conf, {
   docs: 'When the user tries to leave while they are the last admin, we display a message.',
-  items: [{
-    member: {
-      ...baseMember,
-      state: 'loaded',
-      role: 'ADMIN',
-      error: true,
-      isCurrentUser: true,
+  items: [
+    {
+      member: {
+        ...baseMember,
+        state: 'loaded',
+        role: 'ADMIN',
+        error: true,
+        isCurrentUser: true,
+      },
+      authorisations: {
+        edit: true,
+        delete: true,
+      },
     },
-    authorisations: {
-      edit: true,
-      delete: true,
-    },
-  }],
+  ],
 });
 
 export const errorWithStateEditing = makeStory(conf, {
   docs: 'When the user tries to edit themselves while they are the last admin, we display a message.',
-  items: [{
-    member: {
-      ...baseMember,
-      state: 'editing',
-      role: 'ADMIN',
-      error: true,
-      isCurrentUser: true,
+  items: [
+    {
+      member: {
+        ...baseMember,
+        state: 'editing',
+        role: 'ADMIN',
+        error: true,
+        isCurrentUser: true,
+      },
+      authorisations: {
+        edit: true,
+        delete: true,
+      },
     },
-    authorisations: {
-      edit: true,
-      delete: true,
-    },
-  }],
+  ],
 });
 
 export const updatingMemberRole = makeStory(conf, {
-  items: [{
-    member: {
-      ...baseMember,
-      state: 'updating',
+  items: [
+    {
+      member: {
+        ...baseMember,
+        state: 'updating',
+      },
+      authorisations: {
+        edit: true,
+        delete: true,
+      },
     },
-    authorisations: {
-      edit: true,
-      delete: true,
-    },
-  }],
+  ],
 });
 
 export const deletingMember = makeStory(conf, {
-  items: [{
-    member: {
-      ...baseMember,
-      state: 'deleting',
+  items: [
+    {
+      member: {
+        ...baseMember,
+        state: 'deleting',
+      },
+      authorisations: {
+        edit: true,
+        delete: true,
+      },
     },
-    authorisations: {
-      edit: true,
-      delete: true,
-    },
-  }],
+  ],
 });
 
 export const simulations = makeStory(conf, {
-  items: [{
-    member: baseMember,
-    authorisations: {
-      edit: true,
-      delete: true,
+  items: [
+    {
+      member: baseMember,
+      authorisations: {
+        edit: true,
+        delete: true,
+      },
     },
-  }],
+  ],
   simulations: [
     storyWait(2000, ([component]) => {
       component.member = {

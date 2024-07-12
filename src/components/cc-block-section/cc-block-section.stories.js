@@ -1,8 +1,8 @@
+import { makeStory } from '../../stories/lib/make-story.js';
+import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
 import './cc-block-section.js';
-import '../cc-block/cc-block.js';
-import { makeStory } from '../../stories/lib/make-story.js';
 
 export default {
   tags: ['autodocs'],
@@ -26,8 +26,9 @@ const conf = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [{
-    innerHTML: `
+  items: [
+    {
+      innerHTML: `
       <div slot="title">This is my block</div>
       <cc-block-section>
         <div slot="title">Subtitle Foo</div>
@@ -49,12 +50,14 @@ export const defaultStory = makeStory(conf, {
         <cc-button primary>THIRD!</cc-button>
       </cc-block-section>
     `,
-  }],
+    },
+  ],
 });
 
 export const infoWithEmptyColumn = makeStory(conf, {
-  items: [{
-    innerHTML: `
+  items: [
+    {
+      innerHTML: `
       <div slot="title">This is my block</div>
       <cc-block-section>
         <div slot="title">Subtitle Foo</div>
@@ -71,12 +74,14 @@ export const infoWithEmptyColumn = makeStory(conf, {
         <cc-button primary>ACTION!</cc-button>
       </cc-block-section>
     `,
-  }],
+    },
+  ],
 });
 
 export const infoWithNoInfoColumn = makeStory(conf, {
-  items: [{
-    innerHTML: `
+  items: [
+    {
+      innerHTML: `
       <div slot="title">This is my block</div>
       <cc-block-section>
         <div slot="title">Subtitle Foo</div>
@@ -91,5 +96,6 @@ export const infoWithNoInfoColumn = makeStory(conf, {
         <cc-button primary>ACTION!</cc-button>
       </cc-block-section>
     `,
-  }],
+    },
+  ],
 });

@@ -1,4 +1,3 @@
-
 const VALID_FLAGS = 'dgimsuy';
 const REGEX_WITH_TRAILING_SLASH = /\/(?<expression>.+)\/(?<flags>[a-z]*)/i;
 
@@ -6,7 +5,7 @@ const REGEX_WITH_TRAILING_SLASH = /\/(?<expression>.+)\/(?<flags>[a-z]*)/i;
  * @param {string} input
  * @return {RegExp}
  */
-export function parseRegex (input) {
+export function parseRegex(input) {
   if (input.startsWith('/')) {
     const m = input.match(REGEX_WITH_TRAILING_SLASH);
 
@@ -21,8 +20,7 @@ export function parseRegex (input) {
       .join('');
 
     return new RegExp(expression, validFlags);
-  }
-  else {
+  } else {
     return new RegExp(input);
   }
 }

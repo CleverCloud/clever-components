@@ -43,11 +43,10 @@
  * ```
  */
 export class PricingConsumptionSimulator {
-
   /**
    * @param {Section[]} sections
    */
-  constructor (sections = []) {
+  constructor(sections = []) {
     this._state = {};
     sections.forEach(({ type, intervals, progressive = false, secability = 1 }) => {
       this._state[type] = {
@@ -64,7 +63,7 @@ export class PricingConsumptionSimulator {
    * @param {SectionType} type
    * @returns {Number} - How many [unit]
    */
-  getQuantity (type) {
+  getQuantity(type) {
     return this._state[type].quantity;
   }
 
@@ -73,7 +72,7 @@ export class PricingConsumptionSimulator {
    * @param {SectionType} type - The section type
    * @param {Number} quantity - How many [unit]
    */
-  setQuantity (type, quantity) {
+  setQuantity(type, quantity) {
     if (!isNaN(quantity)) {
       this._state[type].quantity = quantity;
     }
@@ -84,11 +83,13 @@ export class PricingConsumptionSimulator {
    * @param {SectionType} type - The section type
    * @returns {Interval} - Interval matching the quantity or null
    */
-  getMaxInterval (type) {
+  getMaxInterval(type) {
     const { intervals, quantity } = this._state[type];
-    return intervals?.find(({ minRange, maxRange }) => {
-      return quantity >= minRange && quantity < (maxRange ?? Infinity);
-    }) ?? null;
+    return (
+      intervals?.find(({ minRange, maxRange }) => {
+        return quantity >= minRange && quantity < (maxRange ?? Infinity);
+      }) ?? null
+    );
   }
 
   /**
@@ -97,8 +98,7 @@ export class PricingConsumptionSimulator {
    * @param {Number} intervalIndex - The index of the interval
    * @returns {number} - Estimated price for a given interval.
    */
-  getIntervalPrice (type, intervalIndex) {
-
+  getIntervalPrice(type, intervalIndex) {
     const interval = this._state[type].intervals?.[intervalIndex] ?? null;
 
     if (interval == null) {
@@ -115,12 +115,9 @@ export class PricingConsumptionSimulator {
       const { minRange, maxRange } = interval;
       const intervalQuantity = getIntervalQuantity(minRange, totalQuantity, maxRange ?? Infinity);
       return unitPrice * intervalQuantity;
-    }
-    else {
+    } else {
       const maxInterval = this.getMaxInterval(type);
-      return (interval === maxInterval)
-        ? unitPrice * totalQuantity
-        : 0;
+      return interval === maxInterval ? unitPrice * totalQuantity : 0;
     }
   }
 
@@ -129,7 +126,7 @@ export class PricingConsumptionSimulator {
    * @param {SectionType} type - The section type
    * @returns {number} - Estimated price for all intervals of a given section.
    */
-  getSectionPrice (type) {
+  getSectionPrice(type) {
     const intervals = this._state[type].intervals ?? [];
     return intervals
       .map((interval, intervalIndex) => this.getIntervalPrice(type, intervalIndex))
@@ -140,7 +137,7 @@ export class PricingConsumptionSimulator {
    * Get the estimated price for all sections.
    * @returns {Number} - Estimated price for all intervals of a given section.
    */
-  getTotalPrice () {
+  getTotalPrice() {
     return Object.keys(this._state)
       .map((type) => this.getSectionPrice(type))
       .reduce((a, b) => a + b, 0);
@@ -154,9 +151,9 @@ export class PricingConsumptionSimulator {
  * @param {number} max
  * @returns {number}
  */
-export function getIntervalQuantity (min, value, max) {
+export function getIntervalQuantity(min, value, max) {
   // Intervals starting at 0 are a special case
-  const beforeMin = (min === 0) ? 0 : (min - 1);
-  const intervalSize = (min === 0) ? max - 1 : (max - min);
+  const beforeMin = min === 0 ? 0 : min - 1;
+  const intervalSize = min === 0 ? max - 1 : max - min;
   return Math.max(0, Math.min(value - beforeMin, intervalSize));
 }

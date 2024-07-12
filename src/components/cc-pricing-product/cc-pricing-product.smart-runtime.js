@@ -1,10 +1,10 @@
-import '../cc-smart-container/cc-smart-container.js';
 import { getAvailableInstances } from '@clevercloud/client/esm/api/v2/product.js';
 import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
 import { fetchPriceSystem } from '../../lib/api-helpers.js';
 import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { formatRuntimeProduct, getRunnerProduct } from '../../lib/product.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import '../cc-smart-container/cc-smart-container.js';
 import './cc-pricing-product.js';
 
 defineSmartComponent({
@@ -13,7 +13,7 @@ defineSmartComponent({
     productId: { type: String },
     zoneId: { type: String },
   },
-  onContextUpdate ({ context, updateComponent, signal }) {
+  onContextUpdate({ context, updateComponent, signal }) {
     const { productId, zoneId } = context;
 
     // Reset the component before loading
@@ -35,14 +35,13 @@ defineSmartComponent({
   },
 });
 
-function fetchRuntimeProduct ({ productId, zoneId, signal }) {
-  return Promise.all([
-    fetchRuntime({ productId, signal }),
-    fetchPriceSystem({ zoneId, signal }),
-  ]).then(([runtime, priceSystem]) => formatRuntimeProduct(runtime, priceSystem));
+function fetchRuntimeProduct({ productId, zoneId, signal }) {
+  return Promise.all([fetchRuntime({ productId, signal }), fetchPriceSystem({ zoneId, signal })]).then(
+    ([runtime, priceSystem]) => formatRuntimeProduct(runtime, priceSystem),
+  );
 }
 
-function fetchRuntime ({ productId, signal }) {
+function fetchRuntime({ productId, signal }) {
   return getAvailableInstances()
     .then(sendToApi({ cacheDelay: ONE_DAY, signal }))
     .then((allRuntimes) => {

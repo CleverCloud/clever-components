@@ -1,9 +1,19 @@
-import './cc-pricing-product.js';
 import { getFullProductAddon } from '../../stories/fixtures/addon-plans.js';
 import { getFullProductRuntime } from '../../stories/fixtures/runtime-plans.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-pricing-product.js';
 
-const addonFeatures = ['connection-limit', 'cpu', 'databases', 'disk-size', 'gpu', 'has-logs', 'has-metrics', 'memory', 'version'];
+const addonFeatures = [
+  'connection-limit',
+  'cpu',
+  'databases',
+  'disk-size',
+  'gpu',
+  'has-logs',
+  'has-metrics',
+  'memory',
+  'version',
+];
 
 // Feature order is not the same between plans
 // Some features will be ignored because they are not listed
@@ -78,12 +88,14 @@ const conf = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [{
-    product: {
-      state: 'loaded',
-      ...getFullProductRuntime('ruby'),
+  items: [
+    {
+      product: {
+        state: 'loaded',
+        ...getFullProductRuntime('ruby'),
+      },
     },
-  }],
+  ],
 });
 
 export const loading = makeStory(conf, {
@@ -91,130 +103,152 @@ export const loading = makeStory(conf, {
 });
 
 export const error = makeStory(conf, {
-  items: [{
-    product: { state: 'error' },
-  }],
+  items: [
+    {
+      product: { state: 'error' },
+    },
+  ],
 });
 
 export const dataLoadedWithFakeProduct = makeStory(conf, {
-  items: [{
-    product: {
-      state: 'loaded',
-      name: 'fake database',
-      plans: fakeProductPlans,
-      productFeatures: [
-        { code: 'connection-limit', type: 'number' },
-        { code: 'cpu', type: 'number' },
-        { code: 'dedicated', type: 'boolean' },
-        { code: 'is-migratable', type: 'boolean' },
-        { code: 'disk-size', type: 'bytes' },
-        { code: 'gpu', type: 'number' },
-        { code: 'has-logs', type: 'boolean' },
-        { code: 'memory', type: 'bytes' },
-        { code: 'custom-feature', type: 'string', name: 'Custom Feature' },
-      ],
+  items: [
+    {
+      product: {
+        state: 'loaded',
+        name: 'fake database',
+        plans: fakeProductPlans,
+        productFeatures: [
+          { code: 'connection-limit', type: 'number' },
+          { code: 'cpu', type: 'number' },
+          { code: 'dedicated', type: 'boolean' },
+          { code: 'is-migratable', type: 'boolean' },
+          { code: 'disk-size', type: 'bytes' },
+          { code: 'gpu', type: 'number' },
+          { code: 'has-logs', type: 'boolean' },
+          { code: 'memory', type: 'bytes' },
+          { code: 'custom-feature', type: 'string', name: 'Custom Feature' },
+        ],
+      },
     },
-  },
-  {
-    product: {
-      state: 'loaded',
-      name: 'fake runtime',
-      plans: fakeProductPlans,
-      productFeatures: [
-        { code: 'cpu', type: 'number' },
-        { code: 'gpu', type: 'number' },
-        { code: 'memory', type: 'bytes' },
-        { code: 'disk-size', type: 'bytes' },
-        { code: 'connection-limit', type: 'number' },
-        { code: 'databases', type: 'number' },
-        { code: 'version', type: 'string' },
-        { code: 'has-logs', type: 'boolean' },
-        { code: 'custom-feature', type: 'string', name: 'Custom Feature' },
-      ],
+    {
+      product: {
+        state: 'loaded',
+        name: 'fake runtime',
+        plans: fakeProductPlans,
+        productFeatures: [
+          { code: 'cpu', type: 'number' },
+          { code: 'gpu', type: 'number' },
+          { code: 'memory', type: 'bytes' },
+          { code: 'disk-size', type: 'bytes' },
+          { code: 'connection-limit', type: 'number' },
+          { code: 'databases', type: 'number' },
+          { code: 'version', type: 'string' },
+          { code: 'has-logs', type: 'boolean' },
+          { code: 'custom-feature', type: 'string', name: 'Custom Feature' },
+        ],
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithRuntimePhp = makeStory(conf, {
-  items: [{
-    product: {
-      state: 'loaded',
-      ...getFullProductRuntime('php'),
+  items: [
+    {
+      product: {
+        state: 'loaded',
+        ...getFullProductRuntime('php'),
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithRuntimePythonAndMl = makeStory(conf, {
-  items: [{
-    product: {
-      state: 'loaded',
-      ...getFullProductRuntime('ml_python'),
+  items: [
+    {
+      product: {
+        state: 'loaded',
+        ...getFullProductRuntime('ml_python'),
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithRuntimeNode = makeStory(conf, {
-  items: [{
-    product: {
-      state: 'loaded',
-      ...getFullProductRuntime('node'),
+  items: [
+    {
+      product: {
+        state: 'loaded',
+        ...getFullProductRuntime('node'),
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithAddonElasticsearch = makeStory(conf, {
-  items: [{
-    product: {
-      state: 'loaded',
-      ...getFullProductAddon('es-addon', addonFeatures),
+  items: [
+    {
+      product: {
+        state: 'loaded',
+        ...getFullProductAddon('es-addon', addonFeatures),
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithAddonMongodb = makeStory(conf, {
-  items: [{
-    product: {
-      state: 'loaded',
-      ...getFullProductAddon('mongodb-addon', addonFeatures),
+  items: [
+    {
+      product: {
+        state: 'loaded',
+        ...getFullProductAddon('mongodb-addon', addonFeatures),
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithAddonMysql = makeStory(conf, {
-  items: [{
-    product: {
-      state: 'loaded',
-      ...getFullProductAddon('mysql-addon', addonFeatures),
+  items: [
+    {
+      product: {
+        state: 'loaded',
+        ...getFullProductAddon('mysql-addon', addonFeatures),
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithAddonPostgresql = makeStory(conf, {
-  items: [{
-    product: {
-      state: 'loaded',
-      ...getFullProductAddon('postgresql-addon', addonFeatures),
+  items: [
+    {
+      product: {
+        state: 'loaded',
+        ...getFullProductAddon('postgresql-addon', addonFeatures),
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithAddonRedis = makeStory(conf, {
-  items: [{
-    product: {
-      state: 'loaded',
-      ...getFullProductAddon('redis-addon', addonFeatures),
+  items: [
+    {
+      product: {
+        state: 'loaded',
+        ...getFullProductAddon('redis-addon', addonFeatures),
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithNoAction = makeStory(conf, {
-  items: [{
-    action: 'none',
-    product: {
-      state: 'loaded',
-      ...getFullProductAddon('postgresql-addon', addonFeatures),
+  items: [
+    {
+      action: 'none',
+      product: {
+        state: 'loaded',
+        ...getFullProductAddon('postgresql-addon', addonFeatures),
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithDollars = makeStory(conf, {
@@ -230,98 +264,102 @@ export const dataLoadedWithDollars = makeStory(conf, {
 });
 
 export const dataLoadedWithTemporalitySecond7Digits = makeStory(conf, {
-  items: [{
-    product: {
-      state: 'loaded',
-      ...getFullProductRuntime('node'),
+  items: [
+    {
+      product: {
+        state: 'loaded',
+        ...getFullProductRuntime('node'),
+      },
+      temporalities: [{ type: 'second', digits: 7 }],
     },
-    temporalities: [
-      { type: 'second', digits: 7 },
-    ],
-  }],
+  ],
 });
 
 export const dataLoadedWithTemporalityMinute5Digits = makeStory(conf, {
-  items: [{
-    product: {
-      state: 'loaded',
-      ...getFullProductRuntime('node'),
+  items: [
+    {
+      product: {
+        state: 'loaded',
+        ...getFullProductRuntime('node'),
+      },
+      temporalities: [{ type: 'minute', digits: 5 }],
     },
-    temporalities: [
-      { type: 'minute', digits: 5 },
-    ],
-  }],
+  ],
 });
 
 export const dataLoadedWithTemporalityHour3Digits = makeStory(conf, {
-  items: [{
-    product: {
-      state: 'loaded',
-      ...getFullProductRuntime('node'),
+  items: [
+    {
+      product: {
+        state: 'loaded',
+        ...getFullProductRuntime('node'),
+      },
+      temporalities: [{ type: 'hour', digits: 3 }],
     },
-    temporalities: [
-      { type: 'hour', digits: 3 },
-    ],
-  }],
+  ],
 });
 
 export const dataLoadedWithTemporality1000Minutes2Digits = makeStory(conf, {
-  items: [{
-    product: {
-      state: 'loaded',
-      ...getFullProductRuntime('node'),
+  items: [
+    {
+      product: {
+        state: 'loaded',
+        ...getFullProductRuntime('node'),
+      },
+      temporalities: [{ type: '1000-minutes' }],
     },
-    temporalities: [
-      { type: '1000-minutes' },
-    ],
-  }],
+  ],
 });
 
 export const dataLoadedWithTemporalityDay2Digits = makeStory(conf, {
-  items: [{
-    product: {
-      state: 'loaded',
-      ...getFullProductRuntime('node'),
+  items: [
+    {
+      product: {
+        state: 'loaded',
+        ...getFullProductRuntime('node'),
+      },
+      temporalities: [{ type: 'day', digits: 2 }],
     },
-    temporalities: [
-      { type: 'day', digits: 2 },
-    ],
-  }],
+  ],
 });
 
 export const dataLoadedWithTemporality30Days1Digit = makeStory(conf, {
-  items: [{
-    product: {
-      state: 'loaded',
-      ...getFullProductRuntime('node'),
+  items: [
+    {
+      product: {
+        state: 'loaded',
+        ...getFullProductRuntime('node'),
+      },
+      temporalities: [{ type: '30-days', digits: 1 }],
     },
-    temporalities: [
-      { type: '30-days', digits: 1 },
-    ],
-  }],
+  ],
 });
 
 export const dataLoadedWithTemporalityAll = makeStory(conf, {
-  items: [{
-    product: {
-      state: 'loaded',
-      ...getFullProductRuntime('node'),
+  items: [
+    {
+      product: {
+        state: 'loaded',
+        ...getFullProductRuntime('node'),
+      },
+      temporalities: [
+        { type: 'second', digits: 7 },
+        { type: 'minute', digits: 5 },
+        { type: 'hour', digits: 3 },
+        { type: '1000-minutes' },
+        { type: 'day' },
+        { type: '30-days' },
+      ],
     },
-    temporalities: [
-      { type: 'second', digits: 7 },
-      { type: 'minute', digits: 5 },
-      { type: 'hour', digits: 3 },
-      { type: '1000-minutes' },
-      { type: 'day' },
-      { type: '30-days' },
-    ],
-  }],
+  ],
 });
 
 export const simulationWithLoaded = makeStory(conf, {
-  items: [{
-    product: { state: 'loading' },
-  }],
+  items: [
+    {
+      product: { state: 'loading' },
+    },
+  ],
   simulations: [
     storyWait(2000, ([component]) => {
       component.product = {
@@ -333,9 +371,11 @@ export const simulationWithLoaded = makeStory(conf, {
 });
 
 export const simulationWithError = makeStory(conf, {
-  items: [{
-    product: { state: 'loading' },
-  }],
+  items: [
+    {
+      product: { state: 'loading' },
+    },
+  ],
   simulations: [
     storyWait(2000, ([component]) => {
       component.product = {

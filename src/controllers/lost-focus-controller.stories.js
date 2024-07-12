@@ -1,17 +1,17 @@
 import { css, html, LitElement, render } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
-import { LostFocusController } from './lost-focus-controller.js';
 import '../components/cc-button/cc-button.js';
+import { LostFocusController } from './lost-focus-controller.js';
 import docsPage from './lost-focus-controller.md';
 
 class MyList extends LitElement {
-  static get properties () {
+  static get properties() {
     return {
       items: { type: Array },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
     this.items = [];
 
@@ -20,7 +20,7 @@ class MyList extends LitElement {
     });
   }
 
-  _onRemove (event) {
+  _onRemove(event) {
     const item = event.currentTarget.dataset.name;
     event.currentTarget.waiting = true;
     setTimeout(() => {
@@ -28,26 +28,30 @@ class MyList extends LitElement {
     }, 2000);
   }
 
-  focus () {
+  focus() {
     this.shadowRoot.querySelector('cc-button').focus();
   }
 
-  firstUpdated (_changedProperties) {
+  firstUpdated(_changedProperties) {
     setTimeout(() => this.focus());
   }
 
-  render () {
-    return repeat(this.items, (item) => item, (item) => {
-      return html`
-        <div class="item">
-          <cc-button @cc-button:click=${this._onRemove} data-name="${item}">Remove</cc-button>
-          <span>${item}</span>  
-        </div>
-      `;
-    });
+  render() {
+    return repeat(
+      this.items,
+      (item) => item,
+      (item) => {
+        return html`
+          <div class="item">
+            <cc-button @cc-button:click=${this._onRemove} data-name="${item}">Remove</cc-button>
+            <span>${item}</span>
+          </div>
+        `;
+      },
+    );
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`

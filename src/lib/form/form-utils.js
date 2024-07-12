@@ -15,7 +15,7 @@ import { CcFormControlElement } from './cc-form-control-element.abstract.js';
  * @param {HTMLFormElement} formElement
  * @return {FormDataMap}
  */
-export function getFormDataMap (formElement) {
+export function getFormDataMap(formElement) {
   const formData = new FormData(formElement);
 
   return Object.fromEntries(
@@ -42,7 +42,7 @@ export function getFormDataMap (formElement) {
  * @param {Element} element
  * @return {element is CcFormControlElement}
  */
-export function isCcFormControlElement (element) {
+export function isCcFormControlElement(element) {
   return element instanceof CcFormControlElement;
 }
 
@@ -58,12 +58,13 @@ export function isCcFormControlElement (element) {
  * @param {any} element
  * @return {element is FormControlElementLike }
  */
-export function isFormControlElementLike (element) {
-  return !isButtonElement(element)
-    && typeof element.checkValidity === 'function'
-    && (element.willValidate !== undefined)
-    && (element.validationMessage !== undefined)
-  ;
+export function isFormControlElementLike(element) {
+  return (
+    !isButtonElement(element) &&
+    typeof element.checkValidity === 'function' &&
+    element.willValidate !== undefined &&
+    element.validationMessage !== undefined
+  );
 }
 
 const BUTTON_INPUT_TYPES = ['button', 'reset', 'submit'];
@@ -72,8 +73,11 @@ const BUTTON_INPUT_TYPES = ['button', 'reset', 'submit'];
  * @param {HTMLElement} element
  * @return {boolean}
  */
-function isButtonElement (element) {
-  return element instanceof HTMLButtonElement || (element instanceof HTMLInputElement && BUTTON_INPUT_TYPES.includes(element.type));
+function isButtonElement(element) {
+  return (
+    element instanceof HTMLButtonElement ||
+    (element instanceof HTMLInputElement && BUTTON_INPUT_TYPES.includes(element.type))
+  );
 }
 
 /**
@@ -87,7 +91,7 @@ function isButtonElement (element) {
  * @param {ErrorMessage} message The error message to convert
  * @return {string} The converted error message
  */
-export function convertErrorMessageToString (message) {
+export function convertErrorMessageToString(message) {
   if (message == null) {
     return '';
   }
@@ -112,7 +116,7 @@ export function convertErrorMessageToString (message) {
  *
  * @param {HTMLElement|ShadowRoot} element
  */
-export function focusFirstFormControlWithError (element) {
+export function focusFirstFormControlWithError(element) {
   // the query selector below includes the `[internals-invalid]` alternative for compatibility with element internals polyfill
   focusBySelector(element, ':invalid, [internals-invalid]');
 }

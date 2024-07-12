@@ -1,15 +1,15 @@
-import { Scalability } from "../common.types.js";
+import { Scalability } from '../common.types.js';
 
 export type TileScalabilityState = TileScalabilityStateLoaded | TileScalabilityStateLoading | TileScalabilityStateError;
 
 export interface TileScalabilityStateLoaded extends Scalability {
-    type: 'loaded';
+  type: 'loaded';
 }
 
-export interface TileScalabilityStateLoading  {
-    type: 'loading';
+export interface TileScalabilityStateLoading {
+  type: 'loading';
 }
 
 export interface TileScalabilityStateError {
-    type: 'error';
+  type: 'error';
 }

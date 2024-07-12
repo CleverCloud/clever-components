@@ -1,11 +1,11 @@
-import './cc-button.js';
-import '../cc-notice/cc-notice.js';
 import {
   iconRemixCloseLine as iconClose,
   iconRemixErrorWarningFill as iconError,
 } from '../../assets/cc-remix.icons.js';
 import { allFormControlsStory } from '../../stories/all-form-controls.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import '../cc-notice/cc-notice.js';
+import './cc-button.js';
 
 const infoSvg = new URL('../../assets/info.svg', import.meta.url);
 const closeSvg = new URL('../../stories/assets/close.svg', import.meta.url);
@@ -89,10 +89,7 @@ export const delayAndOutlined = makeStory(conf, {
 
 export const delayAndDisabled = makeStory(conf, {
   docs: `If the \`disabled\` mode is set during the delay, the \`cc-button:click\` event is not fired.`,
-  items: [
-    { delay: 3, innerHTML: 'With delay' },
-    { innerHTML: 'Toggle disabled on other button' },
-  ],
+  items: [{ delay: 3, innerHTML: 'With delay' }, { innerHTML: 'Toggle disabled on other button' }],
   simulations: [
     storyWait(0, ([withDelay, toggle]) => {
       toggle.addEventListener('cc-button:click', () => {

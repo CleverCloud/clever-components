@@ -1,22 +1,21 @@
 import { expect } from '@bundled-es-modules/chai';
-import { fixture, defineCE, nextFrame } from '@open-wc/testing';
+import { defineCE, fixture, nextFrame } from '@open-wc/testing';
 import * as hanbi from 'hanbi';
-import { html, LitElement } from 'lit';
+import { LitElement, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { LostFocusController } from '../../src/controllers/lost-focus-controller.js';
 import { dispatchCustomEvent } from '../../src/lib/events.js';
 
 describe('lost-focus-controller', () => {
-
   const ce = defineCE(
     class extends LitElement {
-      static get properties () {
+      static get properties() {
         return {
           items: { type: Array },
         };
       }
 
-      constructor () {
+      constructor() {
         super();
         this.items = ['1', '2', '3'];
 
@@ -25,38 +24,40 @@ describe('lost-focus-controller', () => {
         });
       }
 
-      removeItem (it) {
+      removeItem(it) {
         this.items = this.items.filter((item) => item !== it);
       }
 
-      clear () {
+      clear() {
         this.items = [];
       }
 
-      focusHeader () {
+      focusHeader() {
         this.shadowRoot.querySelector('.header').focus();
       }
 
-      focusItem (it) {
+      focusItem(it) {
         this.getItemElement(it)?.focus();
       }
 
-      focusItemButton (it) {
+      focusItemButton(it) {
         this.getItemElement(it)?.querySelector('button').focus();
       }
 
-      getItemElement (it) {
+      getItemElement(it) {
         return this.shadowRoot.querySelector(`[data-item="${it}"]`);
       }
 
-      render () {
+      render() {
         return html`
           <div class="header"></div>
-          ${repeat(this.items, (item) => item, (item) => {
-            return html`
-              <div tabindex="0" class="item" data-item="${item}"><button>${item}</button></div>
-            `;
-          })}
+          ${repeat(
+            this.items,
+            (item) => item,
+            (item) => {
+              return html` <div tabindex="0" class="item" data-item="${item}"><button>${item}</button></div> `;
+            },
+          )}
         `;
       }
     },
@@ -185,5 +186,4 @@ describe('lost-focus-controller', () => {
     const event = spy.lastCall.args[0];
     expect(event.suggestedElement).to.equal(null);
   });
-
 });

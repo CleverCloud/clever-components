@@ -1,5 +1,5 @@
 import { animate, fadeIn, fadeOut, none } from '@lit-labs/motion';
-import { css, html, LitElement } from 'lit';
+import { LitElement, css, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import '../cc-toast/cc-toast.js';
 
@@ -125,8 +125,7 @@ const withFade = (spec) => {
  * @cssdisplay block
  */
 export class CcToaster extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       animation: { type: String },
       maxToasts: { type: Number, attribute: 'max-toasts' },
@@ -136,7 +135,7 @@ export class CcToaster extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {ToastAnimation} Animation to be played when a toast appears.*/
@@ -166,7 +165,7 @@ export class CcToaster extends LitElement {
    * @param {Notification} notification the notification to show
    * @returns {function()|undefined} the function that can be used to dismiss the toast or `undefined` if no toast was shown.
    */
-  show (notification) {
+  show(notification) {
     if (this.maxToasts === 0) {
       return;
     }
@@ -198,7 +197,7 @@ export class CcToaster extends LitElement {
    * @returns {Toast}
    * @private
    */
-  _createToast (notification) {
+  _createToast(notification) {
     return {
       ...notification,
       key: Math.random().toString(36).slice(2),
@@ -213,23 +212,27 @@ export class CcToaster extends LitElement {
     };
   }
 
-  _dismiss (toastToDismiss) {
-    this._toasts = this._toasts.filter((toast) => (toast !== toastToDismiss));
+  _dismiss(toastToDismiss) {
+    this._toasts = this._toasts.filter((toast) => toast !== toastToDismiss);
   }
 
   /* endregion */
 
-  render () {
+  render() {
     const positionsClasses = this.position.split('-').join(' ');
 
     return html`
       <div class="toaster ${positionsClasses}" aria-live="polite" aria-atomic="true">
-        ${repeat(this._toasts, (toast) => toast.key, (toast) => this._renderToast(toast))}
+        ${repeat(
+          this._toasts,
+          (toast) => toast.key,
+          (toast) => this._renderToast(toast),
+        )}
       </div>
     `;
   }
 
-  _getInOutAnimations () {
+  _getInOutAnimations() {
     if (this.animation === 'fade') {
       return fadeAnimation;
     }
@@ -241,7 +244,7 @@ export class CcToaster extends LitElement {
     }
   }
 
-  _getAnimationDirective () {
+  _getAnimationDirective() {
     const keyframeOptions = {
       duration: 400,
       easing: 'ease',
@@ -249,8 +252,7 @@ export class CcToaster extends LitElement {
 
     if (this._mediaQuery != null && this._mediaQuery.matches) {
       return null;
-    }
-    else {
+    } else {
       return animate({
         keyframeOptions,
         ...this._getInOutAnimations(),
@@ -261,7 +263,7 @@ export class CcToaster extends LitElement {
   /**
    * @param {Toast} toast
    */
-  _renderToast (toast) {
+  _renderToast(toast) {
     return html`
       <cc-toast
         intent="${toast.intent}"
@@ -276,7 +278,7 @@ export class CcToaster extends LitElement {
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
@@ -285,9 +287,9 @@ export class CcToaster extends LitElement {
         }
 
         .toaster {
+          align-items: center;
           display: flex;
           flex-direction: column;
-          align-items: center;
           gap: 1em;
           pointer-events: none;
         }

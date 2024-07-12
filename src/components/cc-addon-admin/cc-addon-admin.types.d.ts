@@ -1,4 +1,8 @@
-export type AddonAdminState = AddonAdminStateLoaded | AddonAdminStateLoading | AddonAdminStateError | AddonAdminStateSaving;
+export type AddonAdminState =
+  | AddonAdminStateLoaded
+  | AddonAdminStateLoading
+  | AddonAdminStateError
+  | AddonAdminStateSaving;
 
 export interface AddonAdminStateLoaded {
   type: 'loaded';
@@ -33,4 +37,3 @@ export interface AddonAdminStateUpdatingTags {
   name: string;
   tags: string[];
 }
-

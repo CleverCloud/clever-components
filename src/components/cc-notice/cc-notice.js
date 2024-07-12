@@ -1,11 +1,11 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import {
-  iconRemixAlertFill as iconWarning,
-  iconRemixCheckboxCircleFill as iconSuccess,
   iconRemixCloseLine as iconClose,
-  iconRemixInformationFill as iconInfo,
   iconRemixSpam_2Fill as iconDanger,
+  iconRemixInformationFill as iconInfo,
+  iconRemixCheckboxCircleFill as iconSuccess,
+  iconRemixAlertFill as iconWarning,
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
@@ -28,8 +28,7 @@ import '../cc-icon/cc-icon.js';
  * @fires {CustomEvent} cc-notice:dismiss - Fires to inform that the notice should be dismissed.
  */
 export class CcNotice extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       closeable: { type: Boolean },
       heading: { type: String },
@@ -39,7 +38,7 @@ export class CcNotice extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {boolean} Makes the notice closeable. */
@@ -58,7 +57,7 @@ export class CcNotice extends LitElement {
     this.noIcon = false;
   }
 
-  _getIcon () {
+  _getIcon() {
     if (this.intent === 'danger') {
       return iconDanger;
     }
@@ -73,7 +72,7 @@ export class CcNotice extends LitElement {
     }
   }
 
-  _getIconAlt () {
+  _getIconAlt() {
     if (this.intent === 'danger') {
       return i18n('cc-notice.icon-alt.danger');
     }
@@ -88,12 +87,11 @@ export class CcNotice extends LitElement {
     }
   }
 
-  _onCloseButtonClick () {
+  _onCloseButtonClick() {
     dispatchCustomEvent(this, 'dismiss');
   }
 
-  render () {
-
+  render() {
     const layout = {
       'no-icon': this.heading != null && this.noIcon,
       'no-heading': this.heading == null && !this.noIcon,
@@ -103,33 +101,31 @@ export class CcNotice extends LitElement {
 
     return html`
       <div class="wrapper ${classMap(layout)}">
-        ${!this.noIcon ? html`
-          <slot name="icon">
-            <cc-icon .icon="${this._getIcon()}" a11y-name="${this._getIconAlt()}" class="notice-icon"></cc-icon>
-          </slot>
-        ` : ''}
-        ${this.heading != null ? html`
-          <div class="heading">
-            ${this.heading}
-          </div>
-        ` : ''}
+        ${!this.noIcon
+          ? html`
+              <slot name="icon">
+                <cc-icon .icon="${this._getIcon()}" a11y-name="${this._getIconAlt()}" class="notice-icon"></cc-icon>
+              </slot>
+            `
+          : ''}
+        ${this.heading != null ? html` <div class="heading">${this.heading}</div> ` : ''}
         <div class="message-container">
           <slot name="message">
             <p>${this.message}</p>
           </slot>
         </div>
-        ${this.closeable ? html`
-            <button class="close-button"
-              @click=${this._onCloseButtonClick}
-              title="${i18n('cc-toast.close')}">
-              <cc-icon size="lg" .icon="${iconClose}" a11y-name="${i18n('cc-notice.close')}"></cc-icon>
-            </button>
-        ` : ''}
+        ${this.closeable
+          ? html`
+              <button class="close-button" @click=${this._onCloseButtonClick} title="${i18n('cc-toast.close')}">
+                <cc-icon size="lg" .icon="${iconClose}" a11y-name="${i18n('cc-notice.close')}"></cc-icon>
+              </button>
+            `
+          : ''}
       </div>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
@@ -138,64 +134,64 @@ export class CcNotice extends LitElement {
         }
 
         .wrapper {
-          position: relative;
-          display: grid;
           align-items: center;
-          padding: 0.75em;
           border-radius: var(--cc-border-radius-default, 0.25em);
+          display: grid;
           gap: 0.5em;
-          grid-template-areas: 
+          grid-template-areas:
             'icon heading'
             '.    message';
           grid-template-columns: auto 1fr;
           grid-template-rows: auto auto;
           line-height: 1.4;
+          padding: 0.75em;
+          position: relative;
         }
 
         :host([intent='success']) .wrapper {
           --cc-icon-color: var(--cc-color-text-success);
-          
-          border: 1px solid var(--cc-color-border-success-weak);
+
           background-color: var(--cc-color-bg-success-weaker);
+          border: 1px solid var(--cc-color-border-success-weak);
         }
 
         :host([intent='warning']) .wrapper {
           --cc-icon-color: var(--cc-color-text-warning);
 
-          border: 1px solid var(--cc-color-border-warning-weak);
           background-color: var(--cc-color-bg-warning-weaker);
+          border: 1px solid var(--cc-color-border-warning-weak);
         }
 
         :host([intent='info']) .wrapper {
           --cc-icon-color: var(--cc-color-text-primary);
 
-          border: 1px solid var(--cc-color-border-primary-weak);
           background-color: var(--cc-color-bg-primary-weaker);
+          border: 1px solid var(--cc-color-border-primary-weak);
         }
 
         :host([intent='danger']) .wrapper {
           --cc-icon-color: var(--cc-color-text-danger);
 
-          border: 1px solid var(--cc-color-border-danger-weak);
           background-color: var(--cc-color-bg-danger-weaker);
+          border: 1px solid var(--cc-color-border-danger-weak);
         }
 
         .wrapper.closeable {
           padding-right: 2em;
         }
-        
+
         .wrapper.no-icon {
           grid-template-areas:
             'heading'
             'message';
         }
-        
+
         .wrapper.no-heading {
           grid-template-areas: 'icon message';
           grid-template-columns: auto 1fr;
           grid-template-rows: auto;
         }
-        
+
         .wrapper.message-only {
           grid-template-areas: 'message';
           grid-template-columns: auto;
@@ -206,52 +202,52 @@ export class CcNotice extends LitElement {
           font-weight: bold;
           grid-area: heading;
         }
-        
+
         .message-container {
           grid-area: message;
         }
-        
+
         .message-container p {
           margin: 0;
         }
 
         .notice-icon {
-          width: 1.5em;
-          height: 1.5em;
           grid-area: icon;
+          height: 1.5em;
+          width: 1.5em;
         }
 
         .close-button {
           --cc-icon-color: var(--cc-color-text-weak);
-        
-          position: absolute;
-          top: 0.5em;
-          right: 0.5em;
-          width: auto;
-          height: auto;
-          padding: 0;
-          border: none;
+
           background-color: transparent;
+          border: none;
           border-radius: var(--cc-border-radius-small, 0.15em);
           cursor: pointer;
+          height: auto;
+          padding: 0;
+          position: absolute;
+          right: 0.5em;
+          top: 0.5em;
+          width: auto;
         }
-        
+
         :host([intent='success']) .close-button:hover {
           background-color: var(--cc-color-bg-success-hovered);
         }
-        
+
         :host([intent='warning']) .close-button:hover {
           background-color: var(--cc-color-bg-warning-hovered);
         }
-        
+
         :host([intent='info']) .close-button:hover {
           background-color: var(--cc-color-bg-primary-hovered);
         }
-        
+
         :host([intent='danger']) .close-button:hover {
           background-color: var(--cc-color-bg-danger-hovered);
         }
-        
+
         .close-button:focus {
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
@@ -259,8 +255,8 @@ export class CcNotice extends LitElement {
 
         .close-button img {
           display: block;
-          width: 1em;
           height: 1em;
+          width: 1em;
         }
       `,
     ];

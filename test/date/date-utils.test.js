@@ -3,7 +3,8 @@ import {
   clampDate,
   cloneDate,
   isDateValid,
-  parseIsoDateString, parseSimpleDateString,
+  parseIsoDateString,
+  parseSimpleDateString,
   shiftDateField,
 } from '../../src/lib/date/date-utils.js';
 
@@ -20,110 +21,100 @@ describe('cloneDate function', () => {
 
 describe('isDateValid function', () => {
   it('should return true with now Date', () => {
-    expect(isDateValid(new Date()))
-      .to.eql(true);
+    expect(isDateValid(new Date())).to.eql(true);
   });
   it('should return true with a Date created with a valid string', () => {
-    expect(isDateValid(new Date('2023-07-28T09:50:02.175Z')))
-      .to.eql(true);
+    expect(isDateValid(new Date('2023-07-28T09:50:02.175Z'))).to.eql(true);
   });
   it('should return false with a Date created with an invalid string', () => {
-    expect(isDateValid(new Date('invalid-date')))
-      .to.eql(false);
+    expect(isDateValid(new Date('invalid-date'))).to.eql(false);
   });
   it('should return false with a Date created with an invalid month', () => {
-    expect(isDateValid(new Date('2023-99-28T09:50:02.175Z')))
-      .to.eql(false);
+    expect(isDateValid(new Date('2023-99-28T09:50:02.175Z'))).to.eql(false);
   });
   it('should return false with a Date created with an invalid day', () => {
-    expect(isDateValid(new Date('2023-07-99T09:50:02.175Z')))
-      .to.eql(false);
+    expect(isDateValid(new Date('2023-07-99T09:50:02.175Z'))).to.eql(false);
   });
   it('should return false with a Date created with an invalid hour', () => {
-    expect(isDateValid(new Date('2023-07-28T99:50:02.175Z')))
-      .to.eql(false);
+    expect(isDateValid(new Date('2023-07-28T99:50:02.175Z'))).to.eql(false);
   });
   it('should return false with a Date created with an invalid minute', () => {
-    expect(isDateValid(new Date('2023-07-28T09:99:02.175Z')))
-      .to.eql(false);
+    expect(isDateValid(new Date('2023-07-28T09:99:02.175Z'))).to.eql(false);
   });
   it('should return false with a Date created with an invalid seconds', () => {
-    expect(isDateValid(new Date('2023-07-28T09:50:99.175Z')))
-      .to.eql(false);
+    expect(isDateValid(new Date('2023-07-28T09:50:99.175Z'))).to.eql(false);
   });
   it('should return false with a number', () => {
-    expect(isDateValid(10))
-      .to.eql(false);
+    expect(isDateValid(10)).to.eql(false);
   });
   it('should return false with a string', () => {
-    expect(isDateValid('string'))
-      .to.eql(false);
+    expect(isDateValid('string')).to.eql(false);
   });
   it('should return false with a null', () => {
-    expect(isDateValid(null))
-      .to.eql(false);
+    expect(isDateValid(null)).to.eql(false);
   });
   it('should return false with a undefined', () => {
-    expect(isDateValid(undefined))
-      .to.eql(false);
+    expect(isDateValid(undefined)).to.eql(false);
   });
   it('should return false with an object', () => {
-    expect(isDateValid({}))
-      .to.eql(false);
+    expect(isDateValid({})).to.eql(false);
   });
 });
 
 describe('clampDate function', () => {
   it('should bind on lower bound', () => {
-    expect(clampDate(new Date('2022-08-10T00:00:00.000Z'),
-      new Date('2022-08-12T00:00:00.000Z'),
-      new Date('2022-08-15T00:00:00.000Z')))
-      .to.eql(new Date('2022-08-12T00:00:00.000Z'));
+    expect(
+      clampDate(
+        new Date('2022-08-10T00:00:00.000Z'),
+        new Date('2022-08-12T00:00:00.000Z'),
+        new Date('2022-08-15T00:00:00.000Z'),
+      ),
+    ).to.eql(new Date('2022-08-12T00:00:00.000Z'));
   });
   it('should bind on upper bound', () => {
-    expect(clampDate(new Date('2022-08-18T00:00:00.000Z'),
-      new Date('2022-08-12T00:00:00.000Z'),
-      new Date('2022-08-15T00:00:00.000Z')))
-      .to.eql(new Date('2022-08-15T00:00:00.000Z'));
+    expect(
+      clampDate(
+        new Date('2022-08-18T00:00:00.000Z'),
+        new Date('2022-08-12T00:00:00.000Z'),
+        new Date('2022-08-15T00:00:00.000Z'),
+      ),
+    ).to.eql(new Date('2022-08-15T00:00:00.000Z'));
   });
   it('should return number when inside bounds', () => {
-    expect(clampDate(new Date('2022-08-14T00:00:00.000Z'),
-      new Date('2022-08-12T00:00:00.000Z'),
-      new Date('2022-08-15T00:00:00.000Z')))
-      .to.eql(new Date('2022-08-14T00:00:00.000Z'));
+    expect(
+      clampDate(
+        new Date('2022-08-14T00:00:00.000Z'),
+        new Date('2022-08-12T00:00:00.000Z'),
+        new Date('2022-08-15T00:00:00.000Z'),
+      ),
+    ).to.eql(new Date('2022-08-14T00:00:00.000Z'));
   });
   it('should work when lower bound is undefined', () => {
-    expect(clampDate(new Date('2022-08-14T00:00:00.000Z'),
-      undefined,
-      new Date('2022-08-15T00:00:00.000Z')))
-      .to.eql(new Date('2022-08-14T00:00:00.000Z'));
-    expect(clampDate(new Date('2022-08-16T00:00:00.000Z'),
-      undefined,
-      new Date('2022-08-15T00:00:00.000Z')))
-      .to.eql(new Date('2022-08-15T00:00:00.000Z'));
+    expect(clampDate(new Date('2022-08-14T00:00:00.000Z'), undefined, new Date('2022-08-15T00:00:00.000Z'))).to.eql(
+      new Date('2022-08-14T00:00:00.000Z'),
+    );
+    expect(clampDate(new Date('2022-08-16T00:00:00.000Z'), undefined, new Date('2022-08-15T00:00:00.000Z'))).to.eql(
+      new Date('2022-08-15T00:00:00.000Z'),
+    );
   });
   it('should work when upper bound is undefined', () => {
-    expect(clampDate(new Date('2022-08-14T00:00:00.000Z'),
+    expect(clampDate(new Date('2022-08-14T00:00:00.000Z'), new Date('2022-08-12T00:00:00.000Z'), undefined)).to.eql(
+      new Date('2022-08-14T00:00:00.000Z'),
+    );
+    expect(clampDate(new Date('2022-08-10T00:00:00.000Z'), new Date('2022-08-12T00:00:00.000Z'), undefined)).to.eql(
       new Date('2022-08-12T00:00:00.000Z'),
-      undefined))
-      .to.eql(new Date('2022-08-14T00:00:00.000Z'));
-    expect(clampDate(new Date('2022-08-10T00:00:00.000Z'),
-      new Date('2022-08-12T00:00:00.000Z'),
-      undefined))
-      .to.eql(new Date('2022-08-12T00:00:00.000Z'));
+    );
   });
   it('should return number when bounds is undefined', () => {
-    expect(clampDate(new Date('2022-08-14T00:00:00.000Z'),
-      undefined,
-      undefined))
-      .to.eql(new Date('2022-08-14T00:00:00.000Z'));
+    expect(clampDate(new Date('2022-08-14T00:00:00.000Z'), undefined, undefined)).to.eql(
+      new Date('2022-08-14T00:00:00.000Z'),
+    );
   });
 });
 
 describe('shiftDateField', () => {
   const assertShift = (isoDate, field, offset, isoExpected) => {
-    expect(shiftDateField(new Date(isoDate), field, offset).toISOString())
-      .to.eql(isoExpected);
+    expect(shiftDateField(new Date(isoDate), field, offset).toISOString()).to.eql(isoExpected);
   };
 
   it('should fail when invalid field', () => {
@@ -131,8 +122,7 @@ describe('shiftDateField', () => {
   });
   it('should not mutate given date', () => {
     const date = new Date();
-    expect(shiftDateField(date, 'Y', 0))
-      .to.not.equal(date);
+    expect(shiftDateField(date, 'Y', 0)).to.not.equal(date);
   });
   it('should shift year up', () => {
     assertShift('2023-07-28T09:50:02.175Z', 'Y', 1, '2024-07-28T09:50:02.175Z');
@@ -197,20 +187,16 @@ describe('shiftDateField', () => {
 
 describe('parseIsoDateString', () => {
   it('should parse local date', () => {
-    expect(parseIsoDateString('2023-07-31T13:04:25.028+02:00').toISOString())
-      .to.equal('2023-07-31T11:04:25.028Z');
+    expect(parseIsoDateString('2023-07-31T13:04:25.028+02:00').toISOString()).to.equal('2023-07-31T11:04:25.028Z');
   });
   it('should parse UTC date', () => {
-    expect(parseIsoDateString('2023-07-31T13:04:25.028Z').toISOString())
-      .to.equal('2023-07-31T13:04:25.028Z');
+    expect(parseIsoDateString('2023-07-31T13:04:25.028Z').toISOString()).to.equal('2023-07-31T13:04:25.028Z');
   });
   it('should fail with non ISO', () => {
-    expect(() => parseIsoDateString('2023-07-31 13:04:25.028Z'))
-      .to.throw();
+    expect(() => parseIsoDateString('2023-07-31 13:04:25.028Z')).to.throw();
   });
   it('should fail with ISO date surrounded with some other chars', () => {
-    expect(() => parseIsoDateString('   2023-07-31T13:04:25.028Z   '))
-      .to.throw();
+    expect(() => parseIsoDateString('   2023-07-31T13:04:25.028Z   ')).to.throw();
   });
 });
 
@@ -218,34 +204,27 @@ describe('parseSimpleDate', () => {
   // note that those unit tests pass because we emulate the Europe/Paris timezone when launching test in browser.
   describe('with local timezone', () => {
     it('should parse well formed date (summer time)', () => {
-      expect(parseSimpleDateString('2023-07-31 13:04:25', 'local').toISOString())
-        .to.equal('2023-07-31T11:04:25.000Z');
+      expect(parseSimpleDateString('2023-07-31 13:04:25', 'local').toISOString()).to.equal('2023-07-31T11:04:25.000Z');
     });
     it('should parse well formed date (standard time)', () => {
-      expect(parseSimpleDateString('2023-11-30 13:04:25', 'local').toISOString())
-        .to.equal('2023-11-30T12:04:25.000Z');
+      expect(parseSimpleDateString('2023-11-30 13:04:25', 'local').toISOString()).to.equal('2023-11-30T12:04:25.000Z');
     });
     it('should fail with malformed date', () => {
-      expect(() => parseSimpleDateString('malformed', 'local'))
-        .to.throw();
+      expect(() => parseSimpleDateString('malformed', 'local')).to.throw();
     });
     it('should fail with simple date surrounded with other chars', () => {
-      expect(() => parseSimpleDateString('  2023-11-30 13:04:25  ', 'local'))
-        .to.throw();
+      expect(() => parseSimpleDateString('  2023-11-30 13:04:25  ', 'local')).to.throw();
     });
   });
   describe('with UTC timezone', () => {
     it('should parse well formed date', () => {
-      expect(parseSimpleDateString('2023-07-31 13:04:25', 'UTC').toISOString())
-        .to.equal('2023-07-31T13:04:25.000Z');
+      expect(parseSimpleDateString('2023-07-31 13:04:25', 'UTC').toISOString()).to.equal('2023-07-31T13:04:25.000Z');
     });
     it('should fail with malformed date', () => {
-      expect(() => parseSimpleDateString('malformed', 'UTC'))
-        .to.throw();
+      expect(() => parseSimpleDateString('malformed', 'UTC')).to.throw();
     });
     it('should fail with simple date surrounded with other chars', () => {
-      expect(() => parseSimpleDateString('  2023-11-30 13:04:25  ', 'UTC'))
-        .to.throw();
+      expect(() => parseSimpleDateString('  2023-11-30 13:04:25  ', 'UTC')).to.throw();
     });
   });
 });

@@ -1,7 +1,8 @@
 import { expect } from '@bundled-es-modules/chai';
 import * as hanbi from 'hanbi';
 import {
-  combineValidators, createValidator,
+  combineValidators,
+  createValidator,
   EmailValidator,
   NumberValidator,
   RequiredValidator,
@@ -156,20 +157,15 @@ describe('validation', () => {
     });
 
     describe('should return invalid when value is an invalid email address', () => {
-      [
-        'invalid address',
-        '@address.com',
-        'address.com',
-        'invalid@address',
-        'invalid@address.',
-        '  @   .   ',
-      ].map((address) =>
-        it(`with "${address}"`, () => {
-          const validity = new EmailValidator().validate(address, {});
+      ['invalid address', '@address.com', 'address.com', 'invalid@address', 'invalid@address.', '  @   .   '].map(
+        (address) =>
+          it(`with "${address}"`, () => {
+            const validity = new EmailValidator().validate(address, {});
 
-          expect(validity.valid).to.eql(false);
-          expect(validity.code).to.eql('badEmail');
-        }));
+            expect(validity.valid).to.eql(false);
+            expect(validity.code).to.eql('badEmail');
+          }),
+      );
     });
   });
 
@@ -182,7 +178,7 @@ describe('validation', () => {
        * @param {boolean} valid
        * @param {string} [code]
        */
-      constructor (valid, code) {
+      constructor(valid, code) {
         this._valid = valid;
         this._code = code;
         this.spy = hanbi.spy();
@@ -193,7 +189,7 @@ describe('validation', () => {
        * @param {Object} _formData
        * @return {Validity}
        */
-      validate (value, _formData) {
+      validate(value, _formData) {
         this.spy.handler(value, _formData);
         return this._valid ? Validation.VALID : Validation.invalid(this._code);
       }

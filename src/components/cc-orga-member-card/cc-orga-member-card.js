@@ -3,20 +3,20 @@ import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import {
-  iconRemixErrorWarningFill as iconError,
+  iconRemixAccountCircleFill as iconAvatar,
+  iconRemixDeleteBin_5Fill as iconBin,
   iconRemixCheckFill as iconCheck,
   iconRemixCloseFill as iconCross,
+  iconRemixErrorWarningFill as iconError,
   iconRemixEditFill as iconPen,
-  iconRemixDeleteBin_5Fill as iconBin,
-  iconRemixAccountCircleFill as iconAvatar,
 } from '../../assets/cc-remix.icons.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
-import '../cc-button/cc-button.js';
-import '../cc-img/cc-img.js';
-import '../cc-icon/cc-icon.js';
 import '../cc-badge/cc-badge.js';
+import '../cc-button/cc-button.js';
+import '../cc-icon/cc-icon.js';
+import '../cc-img/cc-img.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-select/cc-select.js';
 import '../cc-stretch/cc-stretch.js';
@@ -56,8 +56,7 @@ const BREAKPOINTS = [BREAKPOINT_TINY, BREAKPOINT_SMALL, BREAKPOINT_MEDIUM];
  * @fires {CustomEvent<UpdateMember>} cc-orga-member-card:update - Fires when the user clicks on a validate button after editing member role.
  */
 export class CcOrgaMemberCard extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       authorisations: { type: Object },
       member: { type: Object },
@@ -65,7 +64,7 @@ export class CcOrgaMemberCard extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {Authorisations} Sets the authorisations that control the display of the edit / delete buttons. */
@@ -108,7 +107,7 @@ export class CcOrgaMemberCard extends LitElement {
    * Focus the delete button within the card.
    * To be used when a card is removed, and you want to focus another card (LostFocusController used in `cc-orga-member-list`).
    */
-  focusDeleteBtn () {
+  focusDeleteBtn() {
     this._deleteButtonRef.value.focus();
   }
 
@@ -116,12 +115,11 @@ export class CcOrgaMemberCard extends LitElement {
    * Get the accessible name for the button that could be `edit` / `cancel editing`.
    * The accessible name provides more info than the visible text. It mentions the member being edited / to be edited.
    */
-  _getFirstBtnAccessibleName () {
+  _getFirstBtnAccessibleName() {
     const memberIdentity = this.member.name ?? this.member.email;
     if (this.member.state === 'editing' || this.member.state === 'updating') {
       return i18n('cc-orga-member-card.btn.cancel.accessible-name', { memberIdentity });
-    }
-    else {
+    } else {
       return i18n('cc-orga-member-card.btn.edit.accessible-name', { memberIdentity });
     }
   }
@@ -130,7 +128,7 @@ export class CcOrgaMemberCard extends LitElement {
    * Get the accessible name for the button that could be `leave` / `delete` / `confirm editing`.
    * The accessible name provides more info than the visible text. It mentions the member to delete if relevant (no need to specify it for the "leave" button).
    */
-  _getSecondBtnAccessibleName () {
+  _getSecondBtnAccessibleName() {
     const memberIdentity = this.member.name ?? this.member.email;
     if (this.member.state === 'editing' || this.member.state === 'updating') {
       return i18n('cc-orga-member-card.btn.validate.accessible-name', { memberIdentity });
@@ -143,7 +141,7 @@ export class CcOrgaMemberCard extends LitElement {
     return i18n('cc-orga-member-card.btn.delete.accessible-name', { memberIdentity });
   }
 
-  _getRoleOptions () {
+  _getRoleOptions() {
     return [
       { value: 'ADMIN', label: i18n('cc-orga-member-card.role.admin') },
       { value: 'DEVELOPER', label: i18n('cc-orga-member-card.role.developer') },
@@ -157,7 +155,7 @@ export class CcOrgaMemberCard extends LitElement {
    * @returns {string}
    * @private
    */
-  _getSecondBtnVisibleElementId (isEditing) {
+  _getSecondBtnVisibleElementId(isEditing) {
     if (isEditing) {
       return 'btn-content-validate';
     }
@@ -169,7 +167,7 @@ export class CcOrgaMemberCard extends LitElement {
     return 'btn-content-delete';
   }
 
-  _onDeleteMember () {
+  _onDeleteMember() {
     const eventName = this.member.isCurrentUser ? 'leave' : 'delete';
     // since not every member has set a name, we send either the name or the email to provide context in the toast message
     dispatchCustomEvent(this, eventName, this.member);
@@ -179,7 +177,7 @@ export class CcOrgaMemberCard extends LitElement {
    * Update the newRole value when the select changes value.
    * We need to do this because we want to be able to reset the newRole when the user toggles the edit mode. (cancel editing)
    */
-  _onRoleInput ({ detail: value }) {
+  _onRoleInput({ detail: value }) {
     this._newRole = value;
   }
 
@@ -188,7 +186,7 @@ export class CcOrgaMemberCard extends LitElement {
    * Dispatch a `toggle-editing` event so that `cc-orga-member-list` may close all other cards in edit mode.
    * Focus the role `select` element after entering edit mode.
    */
-  async _onToggleEdit () {
+  async _onToggleEdit() {
     const newState = this.member.state === 'loaded' ? 'editing' : 'loaded';
 
     // switch the component state
@@ -211,7 +209,7 @@ export class CcOrgaMemberCard extends LitElement {
     }
   }
 
-  _onUpdateMember () {
+  _onUpdateMember() {
     if (this._newRole === this.member.role) {
       this._onToggleEdit();
       return;
@@ -223,8 +221,7 @@ export class CcOrgaMemberCard extends LitElement {
     });
   }
 
-  render () {
-
+  render() {
     const waiting = this.member.state === 'updating' || this.member.state === 'deleting';
     const hasName = this.member.name != null;
     const hasError = this.member.error;
@@ -232,43 +229,41 @@ export class CcOrgaMemberCard extends LitElement {
 
     return html`
       <div class="wrapper ${classMap({ 'has-actions': hasAdminRights, 'has-error': hasError })}">
-        ${this.member.avatar == null ? html`
-          <cc-icon class="avatar ${classMap({ waiting })}" .icon=${iconAvatar}></cc-icon>
-        ` : html`
-          <cc-img class="avatar ${classMap({ waiting })}" src=${this.member.avatar}></cc-img>
-        `}
-        <div
-            class="identity ${classMap({ waiting })}"
-            title="${ifDefined(this.member.jobTitle ?? undefined)}"
-        >
-          ${hasName || this.member.isCurrentUser ? html`
-            <p class="name">
-              ${hasName ? html`<strong>${this.member.name}</strong>` : ''}
-              ${this.member.isCurrentUser ? html`
-                <cc-badge>${i18n('cc-orga-member-card.current-user')}</cc-badge>
-              ` : ''}
-            </p>
-          ` : ''}
+        ${this.member.avatar == null
+          ? html` <cc-icon class="avatar ${classMap({ waiting })}" .icon=${iconAvatar}></cc-icon> `
+          : html` <cc-img class="avatar ${classMap({ waiting })}" src=${this.member.avatar}></cc-img> `}
+        <div class="identity ${classMap({ waiting })}" title="${ifDefined(this.member.jobTitle ?? undefined)}">
+          ${hasName || this.member.isCurrentUser
+            ? html`
+                <p class="name">
+                  ${hasName ? html`<strong>${this.member.name}</strong>` : ''}
+                  ${this.member.isCurrentUser
+                    ? html` <cc-badge>${i18n('cc-orga-member-card.current-user')}</cc-badge> `
+                    : ''}
+                </p>
+              `
+            : ''}
           <p class="email">${this.member.email}</p>
         </div>
 
-        ${this._renderStatusArea()}
-
-        ${hasAdminRights ? this._renderActionBtns() : ''}
+        ${this._renderStatusArea()} ${hasAdminRights ? this._renderActionBtns() : ''}
 
         <!-- 
           a11y: we need the live region to be present within the DOM from the start and insert content dynamically inside it.
           We have to add a conditional class to the wrapper when it does not contain any message to cancel the gap applied automatically within the grid. 
          -->
         <div class="error-wrapper ${classMap({ 'out-of-flow': !hasError })}" aria-live="polite" aria-atomic="true">
-          ${hasError ? html`
-              <cc-notice 
-                intent="danger" 
-                heading="${i18n('cc-orga-member-card.error.last-admin.heading')}"
-                message="${i18n('cc-orga-member-card.error.last-admin.text')}"
-                no-icon>
+          ${hasError
+            ? html`
+                <cc-notice
+                  intent="danger"
+                  heading="${i18n('cc-orga-member-card.error.last-admin.heading')}"
+                  message="${i18n('cc-orga-member-card.error.last-admin.text')}"
+                  no-icon
+                >
                 </cc-notice>
-          ` : ''}
+              `
+            : ''}
         </div>
       </div>
     `;
@@ -280,8 +275,7 @@ export class CcOrgaMemberCard extends LitElement {
    * - to make sure all badges are centered in desktop within a column which size is based on the longest text present inside.
    * - to make sure there is no layout shifts when switching between edit and readonly modes.
    */
-  _renderStatusArea () {
-
+  _renderStatusArea() {
     const isEditing = this.member.state === 'editing' || this.member.state === 'updating';
     const waiting = this.member.state === 'updating' || this.member.state === 'deleting';
 
@@ -291,17 +285,13 @@ export class CcOrgaMemberCard extends LitElement {
         visible-element-id=${isEditing ? 'status-editing' : 'status-readonly'}
       >
         <div id="status-readonly" class="status__role-mfa">
-          <cc-stretch
-            visible-element-id=${this.member.role}
-          >
-            ${this._getRoleOptions().map((role) => html`
-              <cc-badge id="${role.value}" intent="info" weight="dimmed">${role.label}</cc-badge>
-            `)}
+          <cc-stretch visible-element-id=${this.member.role}>
+            ${this._getRoleOptions().map(
+              (role) => html` <cc-badge id="${role.value}" intent="info" weight="dimmed">${role.label}</cc-badge> `,
+            )}
           </cc-stretch>
 
-          <cc-stretch
-            visible-element-id=${this.member.isMfaEnabled ? 'badge-mfa-enabled' : 'badge-mfa-disabled'}
-          >
+          <cc-stretch visible-element-id=${this.member.isMfaEnabled ? 'badge-mfa-enabled' : 'badge-mfa-disabled'}>
             <cc-badge id="badge-mfa-enabled" intent="success" weight="outlined" .icon="${iconCheck}">
               ${i18n('cc-orga-member-card.mfa-enabled')}
             </cc-badge>
@@ -330,9 +320,8 @@ export class CcOrgaMemberCard extends LitElement {
    * This sub render also relies on `cc-stretch` to make sure buttons have the same size whatever their visible text may be (edit vs readonly mode).
    * We rely on the `a11y-name` prop on `cc-button` to make sure assistive get the relevant text with some context in addition.
    */
-  _renderActionBtns () {
-
-    const isBtnImgOnly = (this._resizeController.width >= BREAKPOINT_MEDIUM);
+  _renderActionBtns() {
+    const isBtnImgOnly = this._resizeController.width >= BREAKPOINT_MEDIUM;
     const waiting = this.member.state === 'updating' || this.member.state === 'deleting';
     const isEditing = this.member.state === 'editing' || this.member.state === 'updating';
     const hasError = this.member.error;
@@ -340,7 +329,6 @@ export class CcOrgaMemberCard extends LitElement {
     const secondBtnIcon = isEditing ? iconCheck : iconBin;
 
     return html`
-      
       <div class="actions">
         <cc-button
           ?primary=${!isEditing}
@@ -357,7 +345,7 @@ export class CcOrgaMemberCard extends LitElement {
             <span id="btn-content-cancel">${i18n('cc-orga-member-card.btn.cancel.visible-text')}</span>
           </cc-stretch>
         </cc-button>
-        
+
         <cc-button
           ?danger=${!isEditing}
           ?primary=${isEditing}
@@ -381,19 +369,18 @@ export class CcOrgaMemberCard extends LitElement {
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
         /* region big (>= 740) & global */
-
         :host {
           display: block;
         }
 
         .wrapper {
-          display: grid;
           align-items: center;
+          display: grid;
           gap: 0.8em 1em;
         }
 
@@ -408,7 +395,7 @@ export class CcOrgaMemberCard extends LitElement {
         }
 
         :host([w-gte-740]) .wrapper.has-actions.has-error {
-          grid-template-areas: 
+          grid-template-areas:
             'avatar identity status actions'
             '. error error error';
         }
@@ -424,10 +411,10 @@ export class CcOrgaMemberCard extends LitElement {
         .avatar {
           --cc-icon-color: #595959;
 
-          width: 3em;
-          height: 3em;
           clip-path: circle(50% at 50% 50%);
           grid-area: avatar;
+          height: 3em;
+          width: 3em;
         }
 
         .identity {
@@ -438,7 +425,7 @@ export class CcOrgaMemberCard extends LitElement {
           /* makes the email address wrap if needed */
           word-break: break-all;
         }
-        
+
         .name {
           display: flex;
           flex-wrap: wrap;
@@ -448,31 +435,31 @@ export class CcOrgaMemberCard extends LitElement {
         .status {
           grid-area: status;
         }
-        
+
         .status cc-badge {
-          width: 100%;
           white-space: nowrap;
+          width: 100%;
         }
 
         .actions {
           display: flex;
-          min-width: 4em;
-          justify-content: space-evenly;
           gap: 0.5em;
           grid-area: actions;
+          justify-content: space-evenly;
+          min-width: 4em;
         }
 
         .status__role-mfa {
-          display: flex;
           align-items: center;
+          display: flex;
           gap: 0.5em 1em;
         }
 
         .error-wrapper {
           display: flex;
-          justify-content: end;
           /* always leave the first column containing only the avatar. */
           grid-area: error;
+          justify-content: end;
         }
 
         /* This is to cancel the grid gap when there is no error message. */
@@ -494,7 +481,7 @@ export class CcOrgaMemberCard extends LitElement {
         }
 
         :host([w-lt-740]) .wrapper.has-actions {
-          grid-template-areas: 
+          grid-template-areas:
             'avatar identity status'
             '. . actions';
         }
@@ -539,7 +526,7 @@ export class CcOrgaMemberCard extends LitElement {
             '. actions'
             '. error';
         }
-        
+
         :host([w-lt-580]) .status {
           justify-self: start;
         }
@@ -562,9 +549,9 @@ export class CcOrgaMemberCard extends LitElement {
         }
 
         :host([w-lt-350]) .status__role-mfa {
-          width: 100%;
-          flex-direction: column;
           align-items: flex-start;
+          flex-direction: column;
+          width: 100%;
         }
         /* endregion */
       `,

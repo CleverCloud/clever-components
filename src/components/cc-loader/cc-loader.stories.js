@@ -1,6 +1,6 @@
-import './cc-loader.js';
 import { html, render } from 'lit';
 import { makeStory } from '../../stories/lib/make-story.js';
+import './cc-loader.js';
 
 export default {
   tags: ['autodocs'],
@@ -57,23 +57,22 @@ export const accessibleName = makeStory(conf, {
   `,
   dom: (container) => {
     const storyOutput = html`
-        <p>The accessible name can be checked by using the accessibility inspector of your browser.</p>
-        
-        <div class="line">
-          <cc-loader style="width: 5em; height: 5em"></cc-loader>
-          <p>With default accessible name</p>
-        </div>
+      <p>The accessible name can be checked by using the accessibility inspector of your browser.</p>
 
-        <div class="line">
-          <cc-loader a11y-name="Custom accessible name" style="width: 5em; height: 5em"></cc-loader>
-          <p>With custom accessible name</p>
-        </div>
+      <div class="line">
+        <cc-loader style="width: 5em; height: 5em"></cc-loader>
+        <p>With default accessible name</p>
+      </div>
 
-        <div class="line">
-          <cc-loader a11y-name="" style="width: 5em; height: 5em"></cc-loader>
-          <p>Force no accessible name</p>
-        </div>
-        
+      <div class="line">
+        <cc-loader a11y-name="Custom accessible name" style="width: 5em; height: 5em"></cc-loader>
+        <p>With custom accessible name</p>
+      </div>
+
+      <div class="line">
+        <cc-loader a11y-name="" style="width: 5em; height: 5em"></cc-loader>
+        <p>Force no accessible name</p>
+      </div>
     `;
     render(storyOutput, container);
   },

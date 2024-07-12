@@ -2,9 +2,9 @@ import { dispatchCustomEvent } from '../events.js';
 import { isStringEmpty } from '../utils.js';
 import {
   focusFirstFormControlWithError,
+  getFormDataMap,
   isCcFormControlElement,
   isFormControlElementLike,
-  getFormDataMap,
 } from './form-utils.js';
 import { Validation } from './validation.js';
 
@@ -34,12 +34,11 @@ import { Validation } from './validation.js';
  * @fires {CustomEvent<FormValidity>} form:invalid - Whenever the form is submitted but some form controls are invalid
  * @fires {CustomEvent<FormDataMap>} form:valid - Whenever the form is submitted and all form controls are valid
  */
-export function formSubmitHandler (callbacks) {
+export function formSubmitHandler(callbacks) {
   /**
    * @param {Event & {target: HTMLFormElement}} event
    */
   return (event) => {
-
     // we don't want the native form submit
     event.preventDefault();
 
@@ -51,11 +50,10 @@ export function formSubmitHandler (callbacks) {
 
     // we perform validation on all these elements
     /** @type {FormValidity} */
-    const formValidity = formControlElementsToReport
-      .map((e) => ({
-        name: e.name,
-        validity: e.validate(),
-      }));
+    const formValidity = formControlElementsToReport.map((e) => ({
+      name: e.name,
+      validity: e.validate(),
+    }));
 
     // we also "report" which means that:
     // * we display inline error message on form controls having invalid validity
@@ -68,8 +66,7 @@ export function formSubmitHandler (callbacks) {
       const data = getFormDataMap(formElement);
       callbacks.onValid?.(data, formElement);
       dispatchCustomEvent(formElement, 'valid', data);
-    }
-    else {
+    } else {
       callbacks.onInvalid?.(formValidity, formElement);
       focusFirstFormControlWithError(formElement);
       dispatchCustomEvent(formElement, 'invalid', formValidity);
@@ -94,7 +91,7 @@ export function formSubmitHandler (callbacks) {
  * @param {HTMLFormElement} formElement
  * @return {Array<{name: string, validate: () => Validity, report: () => void}>}
  */
-function getFormControlElementsToReport (formElement) {
+function getFormControlElementsToReport(formElement) {
   const elements = Array.from(formElement.elements);
 
   /** @type {Array<{name: string, validate: () => Validity, report: () => void}>} */
@@ -124,7 +121,7 @@ function getFormControlElementsToReport (formElement) {
       else if (isFormControlElementLike(element) && element.willValidate) {
         result.push({
           name,
-          validate: () => element.checkValidity() ? Validation.VALID : Validation.invalid(element.validationMessage),
+          validate: () => (element.checkValidity() ? Validation.VALID : Validation.invalid(element.validationMessage)),
           report: () => {},
         });
       }
@@ -140,6 +137,6 @@ function getFormControlElementsToReport (formElement) {
  * @param {Element & {name?: string}} element
  * @return {element is Element & {name: string}}
  */
-function hasName (element) {
+function hasName(element) {
   return !isStringEmpty(element.name);
 }

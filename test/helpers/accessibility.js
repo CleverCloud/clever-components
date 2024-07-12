@@ -1,7 +1,8 @@
 import {
-  ignoreWindowOnError, isResizeObserverLoopErrorMessage,
+  ignoreWindowOnError,
+  isResizeObserverLoopErrorMessage,
 } from '@lit-labs/virtualizer/support/resize-observer-errors.js';
-import { expect, fixture, elementUpdated } from '@open-wc/testing';
+import { elementUpdated, expect, fixture } from '@open-wc/testing';
 import { setViewport } from '@web/test-runner-commands';
 import { addTranslations } from '../../src/lib/i18n.js';
 import * as en from '../../src/translations/translations.en.js';
@@ -27,7 +28,7 @@ const storyConf = {
 addTranslations(en.lang, en.translations);
 
 // Ignore irrelevant errors that could make tests fails
-function setupIgnoreIrrelevantErrors (before, after, messagePredicate) {
+function setupIgnoreIrrelevantErrors(before, after, messagePredicate) {
   let teardown;
   before(() => {
     teardown = ignoreWindowOnError(messagePredicate);
@@ -40,8 +41,10 @@ function setupIgnoreIrrelevantErrors (before, after, messagePredicate) {
 
 setupIgnoreIrrelevantErrors(before, after, (message) => {
   return (
-    isResizeObserverLoopErrorMessage(message)
-    || message.includes('Uncaught IndexSizeError: Failed to execute \'getImageData\' on \'CanvasRenderingContext2D\': The source width is 0')
+    isResizeObserverLoopErrorMessage(message) ||
+    message.includes(
+      "Uncaught IndexSizeError: Failed to execute 'getImageData' on 'CanvasRenderingContext2D': The source width is 0",
+    )
   );
 });
 

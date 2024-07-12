@@ -1,4 +1,4 @@
-function isPrivate (item) {
+function isPrivate(item) {
   return item.name.startsWith('_');
 }
 
@@ -8,17 +8,15 @@ function isPrivate (item) {
  * This plugin removes private fields from CEM.
  * It relies on the "_" prefix convention to identify private members of a class.
  */
-export default function removePrivateMembers () {
+export default function removePrivateMembers() {
   return {
     name: 'remove-private-members',
-    packageLinkPhase ({ customElementsManifest }) {
-
+    packageLinkPhase({ customElementsManifest }) {
       customElementsManifest?.modules?.forEach((module) => {
         module?.declarations?.forEach((declaration) => {
-
           if (declaration.members != null) {
             declaration.members = declaration.members.filter((member) => {
-              const propertyOrMethod = (member.kind === 'field' || member.kind === 'method');
+              const propertyOrMethod = member.kind === 'field' || member.kind === 'method';
               return !(propertyOrMethod && isPrivate(member));
             });
           }
@@ -28,10 +26,8 @@ export default function removePrivateMembers () {
               return !isPrivate(attribute);
             });
           }
-
         });
       });
-
     },
   };
 }

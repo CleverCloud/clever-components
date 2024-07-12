@@ -2,7 +2,6 @@
  * Synchronizes an animation with `requestAnimationFrame`.
  */
 export class AnimationRunner {
-
   /**
    * Starts the animation.
    *
@@ -11,7 +10,7 @@ export class AnimationRunner {
    *
    * @param {(nowTimestamp: number, startTimestamp: number, lastTickTimestamp: number) => boolean} animationCallback
    */
-  start (animationCallback) {
+  start(animationCallback) {
     this._animation = (nowTimestamp) => {
       const hasTicked = animationCallback(nowTimestamp, this._startTimestamp, this._lastTimestamp);
       if (hasTicked) {
@@ -31,14 +30,14 @@ export class AnimationRunner {
   /**
    * @return {boolean} Whether the animation is stopped
    */
-  isStopped () {
+  isStopped() {
     return this._animation == null;
   }
 
   /**
    * Stops the animation.
    */
-  stop () {
+  stop() {
     this._animation = null;
   }
 }

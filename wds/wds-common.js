@@ -4,16 +4,13 @@ import { esbuildBundlePlugin } from './esbuild-bundle-plugin.js';
 
 const commonjs = fromRollup(rollupCommonjs);
 
-function commonJsIdentifiers (ids) {
+function commonJsIdentifiers(ids) {
   return ids.map((id) => `**/node_modules/${id}/**/*`);
 }
 
 // regroup ES module files into one bundle
 export const esbuildBundlePluginWithConfig = esbuildBundlePlugin({
-  pathsToBundle: [
-    '/src/lib/leaflet-esm.js',
-    '/node_modules/chart.js/dist/chart.esm.js',
-  ],
+  pathsToBundle: ['/src/lib/leaflet-esm.js', '/node_modules/chart.js/dist/chart.esm.js'],
 });
 
 // convert CommonJS modules to ES6 to be included in the rollup bundle

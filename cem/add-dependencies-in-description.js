@@ -3,19 +3,14 @@
  *
  * This plugin adds the dependencies and the dependants at the description of each component if they have some.
  */
-import {
-  getComponentsGraph,
-  getComponentsTree,
-} from '../tasks/component-usage-graph.js';
+import { getComponentsGraph, getComponentsTree } from '../tasks/component-usage-graph.js';
 
 const graph = await getComponentsGraph();
 
-export default function addDependenciesInDescription () {
-
+export default function addDependenciesInDescription() {
   return {
     name: 'add-dependencies-in-description',
-    moduleLinkPhase ({ moduleDoc }) {
-
+    moduleLinkPhase({ moduleDoc }) {
       const isComponent = moduleDoc.path.includes('src/components/');
       const isSmartComponent = moduleDoc.path.includes('.smart');
 

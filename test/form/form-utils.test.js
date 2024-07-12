@@ -1,4 +1,8 @@
 import { expect } from '@open-wc/testing';
+import '../../src/components/cc-input-date/cc-input-date.js';
+import '../../src/components/cc-input-number/cc-input-number.js';
+import '../../src/components/cc-input-text/cc-input-text.js';
+import '../../src/components/cc-select/cc-select.js';
 import {
   convertErrorMessageToString,
   focusFirstFormControlWithError,
@@ -9,10 +13,6 @@ import {
 import { addTranslations, setLanguage } from '../../src/lib/i18n.js';
 import { translations } from '../../src/translations/translations.en.js';
 import { getElement } from '../helpers/element-helper.js';
-import '../../src/components/cc-input-text/cc-input-text.js';
-import '../../src/components/cc-input-date/cc-input-date.js';
-import '../../src/components/cc-input-number/cc-input-number.js';
-import '../../src/components/cc-select/cc-select.js';
 
 before(() => {
   addTranslations('en', translations);
@@ -203,7 +203,9 @@ describe('focusFirstFormControlWithError', () => {
   });
 
   it('should focus second form control', async () => {
-    const element = await getElement('<form><input type="text" value="value" required><input type="text" required></form>');
+    const element = await getElement(
+      '<form><input type="text" value="value" required><input type="text" required></form>',
+    );
     const invalidInput = element.querySelectorAll('input')[1];
 
     await focusFirstFormControlWithError(element);

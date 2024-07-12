@@ -4,16 +4,7 @@ import { css, html, LitElement } from 'lit';
 // Canvas at #F5F5F5 (map country color)
 // From #40B970 to #003814 with 8 steps
 // /!\ Moving this to CSS with getCssCustomProperties() is really tricky, don't do this at home ;-)
-const COLOR_PALETTE = [
-  '#40b970',
-  '#36a562',
-  '#2c9254',
-  '#237f46',
-  '#1a6c39',
-  '#115a2c',
-  '#084920',
-  '#003814',
-];
+const COLOR_PALETTE = ['#40b970', '#36a562', '#2c9254', '#237f46', '#1a6c39', '#115a2c', '#084920', '#003814'];
 
 /**
  * A map marker displayed as a blinking dot with color grading depending on the value of `count`.
@@ -27,8 +18,7 @@ const COLOR_PALETTE = [
  * @cssprop {Number} --cc-map-marker-dot-size - The size of the dot (defaults to 6px).
  */
 export class CcMapMarkerDot extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       anchor: { type: Array },
       count: { type: Number, reflect: true },
@@ -38,7 +28,7 @@ export class CcMapMarkerDot extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {Array} Exposes the coordinates of the "tip" of the marker, relative to its top left corner: `[x, y]` (used by `<cc-map>`). */
@@ -57,8 +47,7 @@ export class CcMapMarkerDot extends LitElement {
     this._color = null;
   }
 
-  _getColorFromCount (count) {
-
+  _getColorFromCount(count) {
     // This blinking dot is mainly used to display the number of HTTP requests received at a given location on a map
     // Let's take the total number of requests for a given set of coordinates
     // We want to have visible differences of colors between 1 request and 10 requests but also between 20, 50 or 400...
@@ -83,22 +72,24 @@ export class CcMapMarkerDot extends LitElement {
     return COLOR_PALETTE[colorIndex];
   }
 
-  willUpdate (changedProperties) {
+  willUpdate(changedProperties) {
     if (changedProperties.has('count')) {
       this._color = this._getColorFromCount(this.count);
     }
   }
 
-  render () {
+  render() {
     // When we do this:
     // <div style="--dot-color: ${this._color}ff; --dot-color-half: ${this._color}66; --dot-color-zero: ${this._color}00"></div>
     // The template minifier removes the double quotes and the template is broken
     return html`
-      <div style=${`--dot-color:${this._color}ff;--dot-color-half:${this._color}66;--dot-color-zero:${this._color}00`}></div>
+      <div
+        style=${`--dot-color:${this._color}ff;--dot-color-half:${this._color}66;--dot-color-zero:${this._color}00`}
+      ></div>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
@@ -110,16 +101,15 @@ export class CcMapMarkerDot extends LitElement {
         div {
           --dot-size: var(--cc-map-marker-dot-size, 6px);
 
-          width: var(--dot-size);
-          height: var(--dot-size);
           animation: pulse 2s infinite;
           background: var(--dot-color);
           border-radius: 50%;
           cursor: pointer;
+          height: var(--dot-size);
+          width: var(--dot-size);
         }
 
         @keyframes pulse {
-
           0% {
             box-shadow: 0 0 0 0 var(--dot-color-half);
           }

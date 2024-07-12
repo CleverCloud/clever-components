@@ -1,7 +1,3 @@
-import '../cc-zone/cc-zone.js';
-import '../cc-map/cc-map.js';
-import '../cc-notice/cc-notice.js';
-import '../cc-map-marker-server/cc-map-marker-server.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -11,6 +7,10 @@ import { scrollChildIntoParent } from '../../lib/dom.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { PRIVATE_ZONE, sortZones } from '../../lib/zone.js';
+import '../cc-map-marker-server/cc-map-marker-server.js';
+import '../cc-map/cc-map.js';
+import '../cc-notice/cc-notice.js';
+import '../cc-zone/cc-zone.js';
 
 const SKELETON_ZONES = new Array(6).fill();
 const BREAKPOINTS = [600];
@@ -37,8 +37,7 @@ const BREAKPOINTS = [600];
  * @fires {CustomEvent<string>} cc-zone-input:input - Fires the `name` of the selected zone whenever the selection changes.
  */
 export class CcZoneInput extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       selected: { type: String },
       state: { type: Object },
@@ -49,7 +48,7 @@ export class CcZoneInput extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {string|null} Sets the `name` of the selected zone. */
@@ -83,7 +82,7 @@ export class CcZoneInput extends LitElement {
    * @returns {ZonePointMarkerState}
    * @private
    */
-  _getState (zoneName) {
+  _getState(zoneName) {
     if (this.selected === zoneName) {
       return 'selected';
     }
@@ -98,7 +97,7 @@ export class CcZoneInput extends LitElement {
    * @returns {number}
    * @private
    */
-  _getZIndexOffset (zoneName) {
+  _getZIndexOffset(zoneName) {
     if (this.selected === zoneName) {
       return 200;
     }
@@ -112,7 +111,7 @@ export class CcZoneInput extends LitElement {
    * @param {string} [name]
    * @private
    */
-  _onListHover (name) {
+  _onListHover(name) {
     this._hovered = name;
     this._updatePoints();
     this._panMap();
@@ -122,7 +121,7 @@ export class CcZoneInput extends LitElement {
    * @param {Event & { detail: { name: string } }} [event]
    * @private
    */
-  _onMarkerHover (event) {
+  _onMarkerHover(event) {
     const name = event?.detail?.name;
     this._hovered = name;
     this._updatePoints();
@@ -133,20 +132,19 @@ export class CcZoneInput extends LitElement {
    * @param {string} name
    * @private
    */
-  _onSelect (name) {
+  _onSelect(name) {
     this.selected = name;
     dispatchCustomEvent(this, 'input', this.selected);
   }
 
   /** @private */
-  _panMap () {
+  _panMap() {
     clearTimeout(this._panMapTimeout);
     this._panMapTimeout = setTimeout(() => {
       if (this._hovered != null) {
         const zone = this._sortedZones.find((z) => z.name === this._hovered);
         this._ccMapRef.value?.panInside(zone.lat, zone.lon);
-      }
-      else if (this.selected != null) {
+      } else if (this.selected != null) {
         const zone = this._sortedZones.find((z) => z.name === this.selected);
         this._ccMapRef.value?.panInside(zone.lat, zone.lon);
       }
@@ -157,15 +155,14 @@ export class CcZoneInput extends LitElement {
    * @param {string} name
    * @private
    */
-  _scrollChildIntoParent (name) {
+  _scrollChildIntoParent(name) {
     const parent = this.shadowRoot.querySelector(`.zone-list-wrapper`);
     const child = this.shadowRoot.querySelector(`input[id=${name}]`);
     scrollChildIntoParent(parent, child);
   }
 
   /** @private */
-  _updatePoints () {
-
+  _updatePoints() {
     if (!Array.isArray(this._sortedZones)) {
       return;
     }
@@ -185,7 +182,8 @@ export class CcZoneInput extends LitElement {
           marker: { tag: 'cc-map-marker-server', state: this._getState(zone.name), keyboard: false },
           tooltip: { tag: 'cc-zone', state: { type: 'loaded', ...zone }, mode: 'small' },
           zIndexOffset: this._getZIndexOffset(zone.name),
-        }));
+        }),
+      );
 
     this._legend = this._sortedZones.some((zone) => zone.tags.includes(PRIVATE_ZONE))
       ? i18n('cc-zone-input.private-map-warning')
@@ -196,8 +194,7 @@ export class CcZoneInput extends LitElement {
    * updated and not willUdpate because we need this._ccMapRef before
    * @param {CcZoneInputPropertyValues} changedProperties
    */
-  updated (changedProperties) {
-
+  updated(changedProperties) {
     if (changedProperties.has('selected') && this.state.type !== 'error') {
       this._updatePoints();
       this._scrollChildIntoParent(this.selected);
@@ -213,21 +210,18 @@ export class CcZoneInput extends LitElement {
   }
 
   /** @param {CcZoneInputPropertyValues} changedProperties */
-  willUpdate (changedProperties) {
+  willUpdate(changedProperties) {
     if (changedProperties.has('state') && this.state.type === 'loaded') {
       this._sortedZones = sortZones(this.state.zones);
     }
   }
 
-  render () {
-
+  render() {
     const skeleton = this.state.type === 'loading';
     const zones = this.state.type === 'loaded' ? this._sortedZones : SKELETON_ZONES;
 
     if (this.state.type === 'error') {
-      return html`
-        <cc-notice intent="warning" message="${i18n('cc-zone-input.error')}"></cc-notice>
-      `;
+      return html` <cc-notice intent="warning" message="${i18n('cc-zone-input.error')}"></cc-notice> `;
     }
 
     // Try to zoom out and center the map
@@ -245,11 +239,15 @@ export class CcZoneInput extends LitElement {
           @cc-map:marker-enter=${this._onMarkerHover}
           @cc-map:marker-leave=${() => this._onMarkerHover()}
           ${ref(this._ccMapRef)}
-        >${this._legend}
+          >${this._legend}
         </cc-map>
         <div class="zone-list-wrapper">
           <div class="zone-list">
-            ${repeat(zones, (z) => z?.name ?? '', (z) => this._renderZoneInput(z, skeleton))}
+            ${repeat(
+              zones,
+              (z) => z?.name ?? '',
+              (z) => this._renderZoneInput(z, skeleton),
+            )}
           </div>
         </div>
       </div>
@@ -261,8 +259,7 @@ export class CcZoneInput extends LitElement {
    * @param {boolean} skeleton
    * @private
    */
-  _renderZoneInput (zone, skeleton) {
-
+  _renderZoneInput(zone, skeleton) {
     // Simplified template without label/input when skeleton is enabled
     if (skeleton) {
       return html`
@@ -283,7 +280,7 @@ export class CcZoneInput extends LitElement {
           id=${zone.name}
           .checked=${zone.name === this.selected}
           @change=${() => this._onSelect(zone.name)}
-        >
+        />
         <label
           for=${zone.name}
           class="label ${classMap({ hovered: zone.name === this._hovered })}"
@@ -296,7 +293,7 @@ export class CcZoneInput extends LitElement {
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
@@ -305,13 +302,13 @@ export class CcZoneInput extends LitElement {
         }
 
         .wrapper {
-          display: flex;
-          overflow: hidden;
-          height: 100%;
-          box-sizing: border-box;
-          border: 1px solid var(--cc-color-border-neutral, #aaa);
           background-color: var(--cc-color-bg-default, #fff);
+          border: 1px solid var(--cc-color-border-neutral, #aaa);
           border-radius: var(--cc-border-radius-default, 0.25em);
+          box-sizing: border-box;
+          display: flex;
+          height: 100%;
+          overflow: hidden;
         }
 
         cc-map,
@@ -320,10 +317,10 @@ export class CcZoneInput extends LitElement {
         }
 
         cc-map {
-          width: 100%;
-          height: 100%;
-          flex-basis: 0;
           border-right: 1px solid var(--cc-color-border-neutral, #aaa);
+          flex-basis: 0;
+          height: 100%;
+          width: 100%;
         }
 
         :host([w-lt-600]) cc-map {
@@ -331,14 +328,14 @@ export class CcZoneInput extends LitElement {
         }
 
         .zone-list-wrapper {
-          overflow: auto;
-          height: 100%;
           box-sizing: border-box;
+          height: 100%;
+          overflow: auto;
         }
 
         :host([w-gte-600]) .zone-list-wrapper {
-          max-width: 24em;
           flex-basis: 24em;
+          max-width: 24em;
         }
 
         .zone-list {
@@ -362,22 +359,22 @@ export class CcZoneInput extends LitElement {
         }
 
         input {
-          display: block;
-          box-sizing: border-box;
-          border: 0;
-          margin: -0.5em;
           -moz-appearance: none;
           -webkit-appearance: none;
           appearance: none;
+          border: 0;
+          box-sizing: border-box;
+          display: block;
+          margin: -0.5em;
           outline: none;
         }
 
         .label {
-          display: block;
-          box-sizing: border-box;
-          padding: 0.5em;
           border: 2px solid var(--bd-color, transparent);
           border-radius: var(--cc-border-radius-default, 0.25em);
+          box-sizing: border-box;
+          display: block;
+          padding: 0.5em;
         }
 
         label {

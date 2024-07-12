@@ -1,7 +1,7 @@
-import './cc-logsmap.js';
 import fakeHeatmapData from '../../stories/fixtures/24-hours-points.js';
 import { getFakePointsData } from '../../stories/fixtures/fake-map-data.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-logsmap.js';
 
 import { setIntervalDom, setTimeoutDom } from '../../stories/lib/timers.js';
 
@@ -26,7 +26,6 @@ export const defaultStory = makeStory(conf, {
   ],
   simulations: [
     storyWait(0, ([component]) => {
-
       const fetchData = () => {
         getFakePointsData(0).then((rawPoints) => {
           const points = rawPoints.map((p) => ({ ...p, tooltip: p.city, delay }));
@@ -57,36 +56,35 @@ export const emptyWithDifferentCentersAndZooms = makeStory(conf, {
 
 export const emptyWithOrga = makeStory(conf, {
   docs: 'Data for all apps of an orga (name in legend).',
-  items: [
-    { orgaName: 'ACME Corp' },
-  ],
+  items: [{ orgaName: 'ACME Corp' }],
 });
 
 export const emptyWithAppOnly = makeStory(conf, {
   docs: 'Data for only one app (name in legend).',
-  items: [
-    { appName: 'My Awesome Java App (PROD)' },
-  ],
+  items: [{ appName: 'My Awesome Java App (PROD)' }],
 });
 
 export const dataLoadedWithHeatmapOnly = makeStory(conf, {
-  items: [{
-    appName: 'My Awesome Java App (PROD)',
-    availableModes: ['heatmap'],
-    mode: 'heatmap',
-    heatmapPoints: fakeHeatmapData,
-  }],
+  items: [
+    {
+      appName: 'My Awesome Java App (PROD)',
+      availableModes: ['heatmap'],
+      mode: 'heatmap',
+      heatmapPoints: fakeHeatmapData,
+    },
+  ],
 });
 
 export const dataLoadedWithPointsOnly = makeStory(conf, {
-  items: [{
-    appName: 'My Awesome Java App (PROD)',
-    availableModes: ['points'],
-    mode: 'points',
-  }],
+  items: [
+    {
+      appName: 'My Awesome Java App (PROD)',
+      availableModes: ['points'],
+      mode: 'points',
+    },
+  ],
   simulations: [
     storyWait(0, ([component]) => {
-
       const fetchData = () => {
         getFakePointsData(0).then((rawPoints) => {
           const points = rawPoints.map((p) => ({ ...p, tooltip: p.city, delay }));
@@ -101,12 +99,14 @@ export const dataLoadedWithPointsOnly = makeStory(conf, {
 });
 
 export const dataLoadedWithHeatmapAndPoints = makeStory(conf, {
-  items: [{
-    appName: 'My Awesome Java App (PROD)',
-    availableModes: ['heatmap', 'points'],
-    mode: 'heatmap',
-    heatmapPoints: fakeHeatmapData,
-  }],
+  items: [
+    {
+      appName: 'My Awesome Java App (PROD)',
+      availableModes: ['heatmap', 'points'],
+      mode: 'heatmap',
+      heatmapPoints: fakeHeatmapData,
+    },
+  ],
 });
 
 export const loading = makeStory(conf, {
@@ -122,13 +122,14 @@ export const errorWithLoadingIndicator = makeStory(conf, {
 });
 
 export const simulationWithDotmap = makeStory(conf, {
-  items: [{
-    viewZoom: '2',
-    orgaName: 'ACME Corp',
-  }],
+  items: [
+    {
+      viewZoom: '2',
+      orgaName: 'ACME Corp',
+    },
+  ],
   simulations: [
     storyWait(0, ([component]) => {
-
       const fetchData = () => {
         getFakePointsData(0).then((rawPoints) => {
           const points = rawPoints.map((p) => ({ ...p, tooltip: p.city, delay }));
@@ -143,13 +144,14 @@ export const simulationWithDotmap = makeStory(conf, {
 });
 
 export const simulationWithVeryBusyDotmap = makeStory(conf, {
-  items: [{
-    viewZoom: '2',
-    orgaName: 'ACME Corp',
-  }],
+  items: [
+    {
+      viewZoom: '2',
+      orgaName: 'ACME Corp',
+    },
+  ],
   simulations: [
     storyWait(0, ([component]) => {
-
       const fetchData = () => {
         getFakePointsData(2).then((rawPoints) => {
           const points = rawPoints.map((p) => ({ ...p, tooltip: p.city, delay }));
@@ -164,10 +166,12 @@ export const simulationWithVeryBusyDotmap = makeStory(conf, {
 });
 
 export const simulationWithHeatmap = makeStory(conf, {
-  items: [{
-    viewZoom: '2',
-    orgaName: 'ACME Corp',
-    mode: 'heatmap',
-    heatmapPoints: fakeHeatmapData,
-  }],
+  items: [
+    {
+      viewZoom: '2',
+      orgaName: 'ACME Corp',
+      mode: 'heatmap',
+      heatmapPoints: fakeHeatmapData,
+    },
+  ],
 });

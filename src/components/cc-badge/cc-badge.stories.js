@@ -1,12 +1,12 @@
-import './cc-badge.js';
 import {
   iconRemixErrorWarningFill as iconError,
   iconRemixInformationFill as iconInfo,
+  iconRemixFlagFill as iconNeutral,
   iconRemixCheckFill as iconSuccess,
   iconRemixAlertFill as iconWarning,
-  iconRemixFlagFill as iconNeutral,
 } from '../../assets/cc-remix.icons.js';
 import { makeStory } from '../../stories/lib/make-story.js';
+import './cc-badge.js';
 
 const baseItems = [
   {

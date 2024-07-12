@@ -35,23 +35,20 @@ const META = Symbol('META');
  *   signal?: AbortSignal,
  * }) => void} definition.onContextUpdate
  */
-export function defineSmartComponent (definition) {
-
+export function defineSmartComponent(definition) {
   defineSmartComponentCore({
     selector: definition.selector,
     params: definition.params,
-    onConnect (container, component) {
+    onConnect(container, component) {
       if (component[META] == null) {
         component[META] = new Map();
       }
       // Prepare a metadata object specific to this component and this definition
       component[META].set(definition, {});
     },
-    onContextUpdate (container, component, context) {
-
+    onContextUpdate(container, component, context) {
       // Don't trigger the high level onContextUpdate if one of the params is null (unless it is optional)
-      const someContextParamsAreNull = Object
-        .entries(definition.params)
+      const someContextParamsAreNull = Object.entries(definition.params)
         .filter(([, param]) => param.optional !== true)
         .map(([name]) => name)
         .some((name) => context[name] == null);
@@ -71,10 +68,14 @@ export function defineSmartComponent (definition) {
 
       // Prepare a helper function to attach event listeners on the component
       // and make sure they're removed if the signal is aborted
-      function onEvent (type, listener) {
-        component.addEventListener(type, (e) => {
-          listener(e.detail);
-        }, { signal });
+      function onEvent(type, listener) {
+        component.addEventListener(
+          type,
+          (e) => {
+            listener(e.detail);
+          },
+          { signal },
+        );
       }
 
       // Prepare a helper function to update a component (via immer if necessary)
@@ -84,19 +85,22 @@ export function defineSmartComponent (definition) {
       // * remove the listener and don't apply the update if the signal is aborted
       const target = new EventTarget();
 
-      target.addEventListener('update-component', (event) => {
-        const { property, callbackOrObject } = event.data;
-        if (typeof callbackOrObject === 'function') {
-          if (component[property] != null) {
-            component[property] = produce(component[property], callbackOrObject);
+      target.addEventListener(
+        'update-component',
+        (event) => {
+          const { property, callbackOrObject } = event.data;
+          if (typeof callbackOrObject === 'function') {
+            if (component[property] != null) {
+              component[property] = produce(component[property], callbackOrObject);
+            }
+          } else {
+            component[property] = callbackOrObject;
           }
-        }
-        else {
-          component[property] = callbackOrObject;
-        }
-      }, { signal });
+        },
+        { signal },
+      );
 
-      function updateComponent (property, callbackOrObject) {
+      function updateComponent(property, callbackOrObject) {
         const event = new Event('update-component');
         event.data = { property, callbackOrObject };
         target.dispatchEvent(event);
@@ -104,7 +108,7 @@ export function defineSmartComponent (definition) {
 
       definition.onContextUpdate({ container, component, context, onEvent, updateComponent, signal });
     },
-    onDisconnect (container, component) {
+    onDisconnect(container, component) {
       component[META].get(definition).abortController?.abort();
       component[META].delete(definition);
     },

@@ -17,12 +17,19 @@ export interface AddonBackupsStateError {
 
 export interface Backup {
   createdAt: Date;
-  expiresAt?: Date
+  expiresAt?: Date;
   url: string;
   restoreCommand?: string;
   deleteCommand?: string;
 }
 
-export type OverlayType = "restore" | "delete";
+export type OverlayType = 'restore' | 'delete';
 
-export type ProviderId = 'es-addon' | 'es-addon-old' | 'postgresql-addon' | 'mysql-addon' | 'mongodb-addon' | 'redis-addon' | 'jenkins';
+export type ProviderId =
+  | 'es-addon'
+  | 'es-addon-old'
+  | 'postgresql-addon'
+  | 'mysql-addon'
+  | 'mongodb-addon'
+  | 'redis-addon'
+  | 'jenkins';

@@ -1,7 +1,7 @@
-import './cc-pricing-estimation.js';
 import { getProductAddon } from '../../stories/fixtures/addon-plans.js';
 import { getProductRuntime } from '../../stories/fixtures/runtime-plans.js';
 import { makeStory } from '../../stories/lib/make-story.js';
+import './cc-pricing-estimation.js';
 
 export default {
   tags: ['autodocs'],
@@ -70,35 +70,37 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const empty = makeStory(conf, {
-  items: [{
-    currencies: [
-      { code: 'EUR', changeRate: 1 },
-      { code: 'GBP', changeRate: 0.88603 },
-      { code: 'USD', changeRate: 1.1717 },
-    ],
-    temporalities: [
-      {
-        type: 'second',
-        digits: 7,
-      },
-      {
-        type: 'minute',
-        digits: 5,
-      },
-      {
-        type: 'hour',
-        digits: 3,
-      },
-      {
-        type: 'day',
-        digits: 2,
-      },
-      {
-        type: '30-days',
-        digits: 2,
-      },
-    ],
-  }],
+  items: [
+    {
+      currencies: [
+        { code: 'EUR', changeRate: 1 },
+        { code: 'GBP', changeRate: 0.88603 },
+        { code: 'USD', changeRate: 1.1717 },
+      ],
+      temporalities: [
+        {
+          type: 'second',
+          digits: 7,
+        },
+        {
+          type: 'minute',
+          digits: 5,
+        },
+        {
+          type: 'hour',
+          digits: 3,
+        },
+        {
+          type: 'day',
+          digits: 2,
+        },
+        {
+          type: '30-days',
+          digits: 2,
+        },
+      ],
+    },
+  ],
 });
 
 export const dataLoaded = makeStory(conf, {
@@ -106,10 +108,12 @@ export const dataLoaded = makeStory(conf, {
 });
 
 export const dataLoadedWithToggle = makeStory(conf, {
-  items: [{
-    ...defaultItem,
-    isToggleEnabled: true,
-  }],
+  items: [
+    {
+      ...defaultItem,
+      isToggleEnabled: true,
+    },
+  ],
 });
 
 export const dataLoadedWithCustomFooter = makeStory(conf, {
@@ -124,52 +128,67 @@ export const dataLoadedWithCustomFooter = makeStory(conf, {
       color: var(--cc-color-text-primary-highlight);
     }
   `,
-  items: [{
-    ...defaultItem,
-    innerHTML: '<p slot="footer">Here is my custom footer with a great link leading to <a href="https://www.clever-cloud.com/">Clever Cloud</a>.</p>',
-  }],
+  items: [
+    {
+      ...defaultItem,
+      innerHTML:
+        '<p slot="footer">Here is my custom footer with a great link leading to <a href="https://www.clever-cloud.com/">Clever Cloud</a>.</p>',
+    },
+  ],
 });
 
 export const dataLoadedWithDollars = makeStory(conf, {
-  items: [{
-    ...defaultItem,
-    selectedCurrency: { code: 'USD', changeRate: 1.1717 },
-  }],
+  items: [
+    {
+      ...defaultItem,
+      selectedCurrency: { code: 'USD', changeRate: 1.1717 },
+    },
+  ],
 });
 
 export const dataLoadedWithTemporalitySecond7Digits = makeStory(conf, {
-  items: [{
-    ...defaultItem,
-    selectedTemporality: { type: 'second', digits: 7 },
-  }],
+  items: [
+    {
+      ...defaultItem,
+      selectedTemporality: { type: 'second', digits: 7 },
+    },
+  ],
 });
 
 export const dataLoadedWithTemporalityMinute5Digits = makeStory(conf, {
-  items: [{
-    ...defaultItem,
-    selectedTemporality: { type: 'minute', digits: 5 },
-  }],
+  items: [
+    {
+      ...defaultItem,
+      selectedTemporality: { type: 'minute', digits: 5 },
+    },
+  ],
 });
 
 export const dataLoadedWithTemporalityHour3Digits = makeStory(conf, {
-  items: [{
-    ...defaultItem,
-    selectedTemporality: { type: 'hour', digits: 3 },
-  }],
+  items: [
+    {
+      ...defaultItem,
+      selectedTemporality: { type: 'hour', digits: 3 },
+    },
+  ],
 });
 
 export const dataLoadedWithTemporalityDay2Digits = makeStory(conf, {
-  items: [{
-    ...defaultItem,
-    selectedTemporality: { type: 'day', digits: 2 },
-  }],
+  items: [
+    {
+      ...defaultItem,
+      selectedTemporality: { type: 'day', digits: 2 },
+    },
+  ],
 });
 
 export const dataLoadedWithTemporality30Days1Digit = makeStory(conf, {
-  items: [{
-    ...defaultItem,
-    selectedTemporality: { type: '30-days', digits: 1 },
-  }],
+  items: [
+    {
+      ...defaultItem,
+      selectedTemporality: { type: '30-days', digits: 1 },
+    },
+  ],
 });
 
 // Right now, because of how we're using this component, we don't need:

@@ -1,29 +1,28 @@
-import '../../src/components/cc-smart-container/cc-smart-container.js';
 import { expect } from '@bundled-es-modules/chai';
 import { stub as rawStub } from 'hanbi';
+import '../../src/components/cc-smart-container/cc-smart-container.js';
 import { defineSmartComponentCore, updateRootContext } from '../../src/lib/smart-manager.js';
 
 // hanbi should have a chained API IMO
-function stub (fn) {
+function stub(fn) {
   const theStub = rawStub(fn);
   theStub.passThrough();
   return theStub;
 }
 
-function sleep (delay) {
+function sleep(delay) {
   return new Promise((resolve) => {
     setTimeout(resolve, delay);
   });
 }
 
-function $ (root, selector) {
+function $(root, selector) {
   return Array.from(root.querySelectorAll(selector));
 }
 
 // Those are not unit tests for the smart-manager.
 // They're more like e2e tests of how the smart-manager works with <cc-smart-container> in example situations.
 describe('smart components', () => {
-
   const $main = document.querySelector('#main');
   let history;
   const onConnectStub = stub(() => history.push('onConnectStub'));
@@ -50,15 +49,16 @@ describe('smart components', () => {
   });
 
   describe('append element => onConnect then onContextUpdate', () => {
-
     it('defineComponent, append container (no context), append component ==> onConnect (no onContextUpdate) (1 level)', async () => {
-
-      defineSmartComponentCore({
-        selector: 'my-component',
-        onConnect: onConnectStub.handler,
-        onContextUpdate: onContextUpdateStub.handler,
-        onDisconnect: onDisconnectStub.handler,
-      }, defineComponentSignal);
+      defineSmartComponentCore(
+        {
+          selector: 'my-component',
+          onConnect: onConnectStub.handler,
+          onContextUpdate: onContextUpdateStub.handler,
+          onDisconnect: onDisconnectStub.handler,
+        },
+        defineComponentSignal,
+      );
 
       $main.innerHTML = `<cc-smart-container></cc-smart-container>`;
       const [$container] = $($main, 'cc-smart-container');
@@ -72,16 +72,18 @@ describe('smart components', () => {
     });
 
     it('defineComponent, append container, append component ==> onConnect + onContextUpdate (1 level)', async () => {
-
-      defineSmartComponentCore({
-        selector: 'my-component',
-        params: {
-          one: { type: String },
+      defineSmartComponentCore(
+        {
+          selector: 'my-component',
+          params: {
+            one: { type: String },
+          },
+          onConnect: onConnectStub.handler,
+          onContextUpdate: onContextUpdateStub.handler,
+          onDisconnect: onDisconnectStub.handler,
         },
-        onConnect: onConnectStub.handler,
-        onContextUpdate: onContextUpdateStub.handler,
-        onDisconnect: onDisconnectStub.handler,
-      }, defineComponentSignal);
+        defineComponentSignal,
+      );
 
       $main.innerHTML = `<cc-smart-container></cc-smart-container>`;
       const [$container] = $($main, 'cc-smart-container');
@@ -96,18 +98,20 @@ describe('smart components', () => {
     });
 
     it('defineComponent, append container * 3 (ancestors), append component, update context * 3 ==> onConnect + multiple onContextUpdate (3 levels)', async () => {
-
-      defineSmartComponentCore({
-        selector: 'my-component',
-        params: {
-          one: { type: String },
-          two: { type: String },
-          three: { type: String },
+      defineSmartComponentCore(
+        {
+          selector: 'my-component',
+          params: {
+            one: { type: String },
+            two: { type: String },
+            three: { type: String },
+          },
+          onConnect: onConnectStub.handler,
+          onContextUpdate: onContextUpdateStub.handler,
+          onDisconnect: onDisconnectStub.handler,
         },
-        onConnect: onConnectStub.handler,
-        onContextUpdate: onContextUpdateStub.handler,
-        onDisconnect: onDisconnectStub.handler,
-      }, defineComponentSignal);
+        defineComponentSignal,
+      );
 
       $main.innerHTML = `<cc-smart-container><cc-smart-container><cc-smart-container></cc-smart-container></cc-smart-container></cc-smart-container>`;
       const [$containerOne, $containerTwo, $containerThree] = $($main, 'cc-smart-container');
@@ -119,65 +123,87 @@ describe('smart components', () => {
       const [$component] = $($main, 'my-component');
 
       await sleep(25);
-      expect(onContextUpdateStub.getCall(0).args).to.deep.equal([$containerThree, $component, {
-        one: 'the-one',
-        two: 'the-two',
-        three: 'the-three',
-      }]);
+      expect(onContextUpdateStub.getCall(0).args).to.deep.equal([
+        $containerThree,
+        $component,
+        {
+          one: 'the-one',
+          two: 'the-two',
+          three: 'the-three',
+        },
+      ]);
 
       $containerOne.context = { one: 'the-one-one' };
 
       await sleep(25);
-      expect(onContextUpdateStub.getCall(1).args).to.deep.equal([$containerThree, $component, {
-        one: 'the-one-one',
-        two: 'the-two',
-        three: 'the-three',
-      }]);
+      expect(onContextUpdateStub.getCall(1).args).to.deep.equal([
+        $containerThree,
+        $component,
+        {
+          one: 'the-one-one',
+          two: 'the-two',
+          three: 'the-three',
+        },
+      ]);
 
       $containerTwo.context = { two: 'the-two-two' };
 
       await sleep(25);
-      expect(onContextUpdateStub.getCall(2).args).to.deep.equal([$containerThree, $component, {
-        one: 'the-one-one',
-        two: 'the-two-two',
-        three: 'the-three',
-      }]);
+      expect(onContextUpdateStub.getCall(2).args).to.deep.equal([
+        $containerThree,
+        $component,
+        {
+          one: 'the-one-one',
+          two: 'the-two-two',
+          three: 'the-three',
+        },
+      ]);
 
       $containerThree.context = { three: 'the-three-three' };
 
       await sleep(25);
-      expect(onContextUpdateStub.getCall(3).args).to.deep.equal([$containerThree, $component, {
-        one: 'the-one-one',
-        two: 'the-two-two',
-        three: 'the-three-three',
-      }]);
+      expect(onContextUpdateStub.getCall(3).args).to.deep.equal([
+        $containerThree,
+        $component,
+        {
+          one: 'the-one-one',
+          two: 'the-two-two',
+          three: 'the-three-three',
+        },
+      ]);
 
       $containerThree.context = { three: 'the-three-three', one: 'override' };
 
       await sleep(25);
-      expect(onContextUpdateStub.getCall(4).args).to.deep.equal([$containerThree, $component, {
-        one: 'override',
-        two: 'the-two-two',
-        three: 'the-three-three',
-      }]);
+      expect(onContextUpdateStub.getCall(4).args).to.deep.equal([
+        $containerThree,
+        $component,
+        {
+          one: 'override',
+          two: 'the-two-two',
+          three: 'the-three-three',
+        },
+      ]);
 
       // Make sure onConnect happened only once
       expect(onConnectStub.callCount).to.equal(1);
     });
 
     it('defineComponent, append container, append component, update root context ==> onConnect + onContextUpdate (root context)', async () => {
-
-      defineSmartComponentCore({
-        selector: 'my-component',
-        params: {
-          tokenA: { type: String },
-          tokenB: { type: String },
-          one: { type: String },
+      defineSmartComponentCore(
+        {
+          selector: 'my-component',
+          params: {
+            tokenA: { type: String },
+            tokenB: { type: String },
+            one: { type: String },
+          },
+          onConnect: onConnectStub.handler,
+          onContextUpdate: onContextUpdateStub.handler,
+          onDisconnect: onDisconnectStub.handler,
         },
-        onConnect: onConnectStub.handler,
-        onContextUpdate: onContextUpdateStub.handler,
-        onDisconnect: onDisconnectStub.handler,
-      }, defineComponentSignal);
+        defineComponentSignal,
+      );
 
       $main.innerHTML = `<cc-smart-container></cc-smart-container>`;
       const [$container] = $($main, 'cc-smart-container');
@@ -187,34 +213,50 @@ describe('smart components', () => {
       const [$component] = $($main, 'my-component');
 
       await sleep(25);
-      expect(onContextUpdateStub.getCall(0).args).to.deep.equal([$container, $component, {
-        one: 'the-one',
-      }]);
+      expect(onContextUpdateStub.getCall(0).args).to.deep.equal([
+        $container,
+        $component,
+        {
+          one: 'the-one',
+        },
+      ]);
 
       updateRootContext({ tokenA: 'aaa' });
 
       await sleep(25);
-      expect(onContextUpdateStub.getCall(1).args).to.deep.equal([$container, $component, {
-        tokenA: 'aaa',
-        one: 'the-one',
-      }]);
+      expect(onContextUpdateStub.getCall(1).args).to.deep.equal([
+        $container,
+        $component,
+        {
+          tokenA: 'aaa',
+          one: 'the-one',
+        },
+      ]);
 
       updateRootContext({ tokenB: 'bbb' });
 
       await sleep(25);
-      expect(onContextUpdateStub.getCall(2).args).to.deep.equal([$container, $component, {
-        tokenB: 'bbb',
-        one: 'the-one',
-      }]);
+      expect(onContextUpdateStub.getCall(2).args).to.deep.equal([
+        $container,
+        $component,
+        {
+          tokenB: 'bbb',
+          one: 'the-one',
+        },
+      ]);
 
       updateRootContext({ tokenA: 'aaa', tokenB: 'bbb' });
 
       await sleep(25);
-      expect(onContextUpdateStub.getCall(3).args).to.deep.equal([$container, $component, {
-        tokenA: 'aaa',
-        tokenB: 'bbb',
-        one: 'the-one',
-      }]);
+      expect(onContextUpdateStub.getCall(3).args).to.deep.equal([
+        $container,
+        $component,
+        {
+          tokenA: 'aaa',
+          tokenB: 'bbb',
+          one: 'the-one',
+        },
+      ]);
 
       // Make sure onConnect happened only once
       expect(onConnectStub.callCount).to.equal(1);
@@ -223,7 +265,6 @@ describe('smart components', () => {
     // SPECIAL CASES vv
 
     it('append container, append component, defineComponent ==> onConnect + onContextUpdate (1 level)', async () => {
-
       $main.innerHTML = `<cc-smart-container></cc-smart-container>`;
       const [$container] = $($main, 'cc-smart-container');
       $container.context = { one: 'the-one' };
@@ -231,15 +272,18 @@ describe('smart components', () => {
       $container.innerHTML = `<my-component></my-component>`;
       const [$component] = $($container, 'my-component');
 
-      defineSmartComponentCore({
-        selector: 'my-component',
-        params: {
-          one: { type: String },
+      defineSmartComponentCore(
+        {
+          selector: 'my-component',
+          params: {
+            one: { type: String },
+          },
+          onConnect: onConnectStub.handler,
+          onContextUpdate: onContextUpdateStub.handler,
+          onDisconnect: onDisconnectStub.handler,
         },
-        onConnect: onConnectStub.handler,
-        onContextUpdate: onContextUpdateStub.handler,
-        onDisconnect: onDisconnectStub.handler,
-      }, defineComponentSignal);
+        defineComponentSignal,
+      );
 
       await sleep(25);
       expect(onConnectStub.getCall(0).args).to.deep.equal([$container, $component]);
@@ -247,16 +291,18 @@ describe('smart components', () => {
     });
 
     it('defineComponent, append container, append component, remove component, append component ==> (onConnect + onContextUpdate) * 2', async () => {
-
-      defineSmartComponentCore({
-        selector: 'my-component',
-        params: {
-          one: { type: String },
+      defineSmartComponentCore(
+        {
+          selector: 'my-component',
+          params: {
+            one: { type: String },
+          },
+          onConnect: onConnectStub.handler,
+          onContextUpdate: onContextUpdateStub.handler,
+          onDisconnect: onDisconnectStub.handler,
         },
-        onConnect: onConnectStub.handler,
-        onContextUpdate: onContextUpdateStub.handler,
-        onDisconnect: onDisconnectStub.handler,
-      }, defineComponentSignal);
+        defineComponentSignal,
+      );
 
       $main.innerHTML = `<cc-smart-container></cc-smart-container>`;
       const [$container] = $($main, 'cc-smart-container');
@@ -279,22 +325,24 @@ describe('smart components', () => {
     });
 
     it('append container, append component, defineComponent ==> onConnect + onContextUpdate * 3 (ignore duplicated contexts)', async () => {
-
       $main.innerHTML = `<cc-smart-container></cc-smart-container>`;
       const [$container] = $($main, 'cc-smart-container');
       $container.context = { one: 'the-one' };
 
       $container.innerHTML = `<my-component></my-component>`;
 
-      defineSmartComponentCore({
-        selector: 'my-component',
-        params: {
-          one: { type: String },
+      defineSmartComponentCore(
+        {
+          selector: 'my-component',
+          params: {
+            one: { type: String },
+          },
+          onConnect: onConnectStub.handler,
+          onContextUpdate: onContextUpdateStub.handler,
+          onDisconnect: onDisconnectStub.handler,
         },
-        onConnect: onConnectStub.handler,
-        onContextUpdate: onContextUpdateStub.handler,
-        onDisconnect: onDisconnectStub.handler,
-      }, defineComponentSignal);
+        defineComponentSignal,
+      );
 
       await sleep(25);
       $container.context = { one: 'the-one' };
@@ -308,7 +356,6 @@ describe('smart components', () => {
     });
 
     it('append container, append component, defineComponent ==> onConnect + onContextUpdate * 3 (ignore unlisted params)', async () => {
-
       $main.innerHTML = `<cc-smart-container></cc-smart-container>`;
       const [$container] = $($main, 'cc-smart-container');
       $container.context = { one: 'the-one', foo: 'foo', bar: 'bar' };
@@ -316,15 +363,18 @@ describe('smart components', () => {
       $container.innerHTML = `<my-component></my-component>`;
       const [$component] = $($main, 'my-component');
 
-      defineSmartComponentCore({
-        selector: 'my-component',
-        params: {
-          one: { type: String },
+      defineSmartComponentCore(
+        {
+          selector: 'my-component',
+          params: {
+            one: { type: String },
+          },
+          onConnect: onConnectStub.handler,
+          onContextUpdate: onContextUpdateStub.handler,
+          onDisconnect: onDisconnectStub.handler,
         },
-        onConnect: onConnectStub.handler,
-        onContextUpdate: onContextUpdateStub.handler,
-        onDisconnect: onDisconnectStub.handler,
-      }, defineComponentSignal);
+        defineComponentSignal,
+      );
 
       await sleep(25);
       $container.context = { one: 'the-one', foobar: 'foobar' };
@@ -338,15 +388,16 @@ describe('smart components', () => {
   });
 
   describe('remove element => onDisconnect', () => {
-
     it('defineComponent, append container, append component, remove component ==> onDisconnect', async () => {
-
-      defineSmartComponentCore({
-        selector: 'my-component',
-        onConnect: onConnectStub.handler,
-        onContextUpdate: onContextUpdateStub.handler,
-        onDisconnect: onDisconnectStub.handler,
-      }, defineComponentSignal);
+      defineSmartComponentCore(
+        {
+          selector: 'my-component',
+          onConnect: onConnectStub.handler,
+          onContextUpdate: onContextUpdateStub.handler,
+          onDisconnect: onDisconnectStub.handler,
+        },
+        defineComponentSignal,
+      );
 
       $main.innerHTML = `<cc-smart-container></cc-smart-container>`;
       const [$container] = $($main, 'cc-smart-container');
@@ -362,13 +413,15 @@ describe('smart components', () => {
     });
 
     it('defineComponent, append container, append component, remove container ==> onDisconnect', async () => {
-
-      defineSmartComponentCore({
-        selector: 'my-component',
-        onConnect: onConnectStub.handler,
-        onContextUpdate: onContextUpdateStub.handler,
-        onDisconnect: onDisconnectStub.handler,
-      }, defineComponentSignal);
+      defineSmartComponentCore(
+        {
+          selector: 'my-component',
+          onConnect: onConnectStub.handler,
+          onContextUpdate: onContextUpdateStub.handler,
+          onDisconnect: onDisconnectStub.handler,
+        },
+        defineComponentSignal,
+      );
 
       $main.innerHTML = `<cc-smart-container></cc-smart-container>`;
       const [$container] = $($main, 'cc-smart-container');
@@ -384,20 +437,21 @@ describe('smart components', () => {
   });
 
   describe('switch component from container to container => onDisconnect, then onConnect then onContextUpdate', () => {
-
     it('defineComponent, append container * 3 (ancestors), append/adopt component * 3 ==> (onConnect + onContextUpdate + disconnect) * 3', async () => {
-
-      defineSmartComponentCore({
-        selector: 'my-component',
-        params: {
-          one: { type: String },
-          two: { type: String },
-          three: { type: String },
+      defineSmartComponentCore(
+        {
+          selector: 'my-component',
+          params: {
+            one: { type: String },
+            two: { type: String },
+            three: { type: String },
+          },
+          onConnect: onConnectStub.handler,
+          onContextUpdate: onContextUpdateStub.handler,
+          onDisconnect: onDisconnectStub.handler,
         },
-        onConnect: onConnectStub.handler,
-        onContextUpdate: onContextUpdateStub.handler,
-        onDisconnect: onDisconnectStub.handler,
-      }, defineComponentSignal);
+        defineComponentSignal,
+      );
 
       $main.innerHTML = `<cc-smart-container><cc-smart-container><cc-smart-container></cc-smart-container></cc-smart-container></cc-smart-container>`;
       const [$containerOne, $containerTwo, $containerThree] = $($main, 'cc-smart-container');
@@ -414,21 +468,29 @@ describe('smart components', () => {
 
       await sleep(25);
       expect(onConnectStub.getCall(0).args).to.deep.equal([$containerThree, $component]);
-      expect(onContextUpdateStub.getCall(0).args).to.deep.equal([$containerThree, $component, {
-        one: 'the-one',
-        two: 'the-two',
-        three: 'the-three',
-      }]);
+      expect(onContextUpdateStub.getCall(0).args).to.deep.equal([
+        $containerThree,
+        $component,
+        {
+          one: 'the-one',
+          two: 'the-two',
+          three: 'the-three',
+        },
+      ]);
 
       $containerTwo.appendChild($component);
 
       await sleep(25);
       expect(onDisconnectStub.callCount).to.equal(1);
       expect(onConnectStub.getCall(1).args).to.deep.equal([$containerTwo, $component]);
-      expect(onContextUpdateStub.getCall(1).args).to.deep.equal([$containerTwo, $component, {
-        one: 'the-one',
-        two: 'the-two',
-      }]);
+      expect(onContextUpdateStub.getCall(1).args).to.deep.equal([
+        $containerTwo,
+        $component,
+        {
+          one: 'the-one',
+          two: 'the-two',
+        },
+      ]);
 
       $containerOne.appendChild($component);
 
@@ -450,18 +512,20 @@ describe('smart components', () => {
     });
 
     it('defineComponent, append container * 3 (siblings), append/adopt component * 3, remove component ==> (onConnect + onContextUpdate + disconnect) * 3', async () => {
-
-      defineSmartComponentCore({
-        selector: 'my-component',
-        params: {
-          one: { type: String },
-          two: { type: String },
-          three: { type: String },
+      defineSmartComponentCore(
+        {
+          selector: 'my-component',
+          params: {
+            one: { type: String },
+            two: { type: String },
+            three: { type: String },
+          },
+          onConnect: onConnectStub.handler,
+          onContextUpdate: onContextUpdateStub.handler,
+          onDisconnect: onDisconnectStub.handler,
         },
-        onConnect: onConnectStub.handler,
-        onContextUpdate: onContextUpdateStub.handler,
-        onDisconnect: onDisconnectStub.handler,
-      }, defineComponentSignal);
+        defineComponentSignal,
+      );
 
       $main.innerHTML = `<cc-smart-container></cc-smart-container><cc-smart-container></cc-smart-container><cc-smart-container></cc-smart-container>`;
       const [$containerOne, $containerTwo, $containerThree] = $($main, 'cc-smart-container');
@@ -504,15 +568,16 @@ describe('smart components', () => {
   });
 
   describe('update selector', () => {
-
     it('defineComponent, append container, append component, match selector ==> onConnect + onContextUpdate', async () => {
-
-      defineSmartComponentCore({
-        selector: 'my-component.foo',
-        onConnect: onConnectStub.handler,
-        onContextUpdate: onContextUpdateStub.handler,
-        onDisconnect: onDisconnectStub.handler,
-      }, defineComponentSignal);
+      defineSmartComponentCore(
+        {
+          selector: 'my-component.foo',
+          onConnect: onConnectStub.handler,
+          onContextUpdate: onContextUpdateStub.handler,
+          onDisconnect: onDisconnectStub.handler,
+        },
+        defineComponentSignal,
+      );
 
       $main.innerHTML = `<cc-smart-container></cc-smart-container>`;
       const [$container] = $($main, 'cc-smart-container');
@@ -533,13 +598,15 @@ describe('smart components', () => {
     });
 
     it('defineComponent, append container, append component, unmatch selector ==> onDisconnect', async () => {
-
-      defineSmartComponentCore({
-        selector: 'my-component.foo',
-        onConnect: onConnectStub.handler,
-        onContextUpdate: onContextUpdateStub.handler,
-        onDisconnect: onDisconnectStub.handler,
-      }, defineComponentSignal);
+      defineSmartComponentCore(
+        {
+          selector: 'my-component.foo',
+          onConnect: onConnectStub.handler,
+          onContextUpdate: onContextUpdateStub.handler,
+          onDisconnect: onDisconnectStub.handler,
+        },
+        defineComponentSignal,
+      );
 
       $main.innerHTML = `<cc-smart-container></cc-smart-container>`;
       const [$container] = $($main, 'cc-smart-container');
@@ -559,24 +626,29 @@ describe('smart components', () => {
     });
 
     it('defineComponent * 2, append container, append component, change selector, remove component ==> (onConnect + onContextUpdate + disconnect) * 2', async () => {
-
       const onConnectStubBar = stub(() => history.push('onConnectStubBar'));
       const onContextUpdateStubBar = stub(() => history.push('onContextUpdateStubBar'));
       const onDisconnectStubBar = stub(() => history.push('onDisconnectStubBar'));
 
-      defineSmartComponentCore({
-        selector: 'my-component.foo',
-        onConnect: onConnectStub.handler,
-        onContextUpdate: onContextUpdateStub.handler,
-        onDisconnect: onDisconnectStub.handler,
-      }, defineComponentSignal);
+      defineSmartComponentCore(
+        {
+          selector: 'my-component.foo',
+          onConnect: onConnectStub.handler,
+          onContextUpdate: onContextUpdateStub.handler,
+          onDisconnect: onDisconnectStub.handler,
+        },
+        defineComponentSignal,
+      );
 
-      defineSmartComponentCore({
-        selector: 'my-component.bar',
-        onConnect: onConnectStubBar.handler,
-        onContextUpdate: onContextUpdateStubBar.handler,
-        onDisconnect: onDisconnectStubBar.handler,
-      }, defineComponentSignal);
+      defineSmartComponentCore(
+        {
+          selector: 'my-component.bar',
+          onConnect: onConnectStubBar.handler,
+          onContextUpdate: onContextUpdateStubBar.handler,
+          onDisconnect: onDisconnectStubBar.handler,
+        },
+        defineComponentSignal,
+      );
 
       $main.innerHTML = `<cc-smart-container></cc-smart-container>`;
       const [$container] = $($main, 'cc-smart-container');
@@ -628,15 +700,16 @@ describe('smart components', () => {
   });
 
   describe('abort defineComponent => onDisconnect', () => {
-
     it('defineComponent, append container, append component, abort defineComponent ==> onDisconnect', async () => {
-
-      defineSmartComponentCore({
-        selector: 'my-component',
-        onConnect: onConnectStub.handler,
-        onContextUpdate: onContextUpdateStub.handler,
-        onDisconnect: onDisconnectStub.handler,
-      }, defineComponentSignal);
+      defineSmartComponentCore(
+        {
+          selector: 'my-component',
+          onConnect: onConnectStub.handler,
+          onContextUpdate: onContextUpdateStub.handler,
+          onDisconnect: onDisconnectStub.handler,
+        },
+        defineComponentSignal,
+      );
 
       $main.innerHTML = `<cc-smart-container></cc-smart-container>`;
       const [$container] = $($main, 'cc-smart-container');
@@ -651,13 +724,15 @@ describe('smart components', () => {
     });
 
     it('defineComponent, append container, abort defineComponent, append component ==> nothing', async () => {
-
-      defineSmartComponentCore({
-        selector: 'my-component',
-        onConnect: onConnectStub.handler,
-        onContextUpdate: onContextUpdateStub.handler,
-        onDisconnect: onDisconnectStub.handler,
-      }, defineComponentSignal);
+      defineSmartComponentCore(
+        {
+          selector: 'my-component',
+          onConnect: onConnectStub.handler,
+          onContextUpdate: onContextUpdateStub.handler,
+          onDisconnect: onDisconnectStub.handler,
+        },
+        defineComponentSignal,
+      );
 
       $main.innerHTML = `<cc-smart-container></cc-smart-container>`;
       const [$container] = $($main, 'cc-smart-container');

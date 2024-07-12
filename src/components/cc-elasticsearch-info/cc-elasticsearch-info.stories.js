@@ -1,5 +1,5 @@
-import './cc-elasticsearch-info.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-elasticsearch-info.js';
 
 export default {
   tags: ['autodocs'],
@@ -27,116 +27,139 @@ const kibanaLink = { type: 'kibana', href: 'https://my-kibana.com' };
 const apmLink = { type: 'apm', href: 'https://my-apm-link.com' };
 
 export const defaultStory = makeStory(conf, {
-  items: [{
-    /** @type {ElasticSearchInfoStateLoaded} */
-    state: {
-      type: 'loaded',
-      links: [elasticsearchLink, kibanaLink, apmLink],
+  items: [
+    {
+      /** @type {ElasticSearchInfoStateLoaded} */
+      state: {
+        type: 'loaded',
+        links: [elasticsearchLink, kibanaLink, apmLink],
+      },
     },
-  }],
+  ],
 });
 
 export const elasticOnly = makeStory(conf, {
-  items: [{
-    /** @type {ElasticSearchInfoStateLoaded} */
-    state: {
-      type: 'loaded',
-      links: [elasticsearchLink],
+  items: [
+    {
+      /** @type {ElasticSearchInfoStateLoaded} */
+      state: {
+        type: 'loaded',
+        links: [elasticsearchLink],
+      },
     },
-  }],
+  ],
 });
 
 export const elasticAndKibana = makeStory(conf, {
-  items: [{
-    /** @type {ElasticSearchInfoStateLoaded} */
-    state: {
-      type: 'loaded',
-      links: [elasticsearchLink, kibanaLink],
+  items: [
+    {
+      /** @type {ElasticSearchInfoStateLoaded} */
+      state: {
+        type: 'loaded',
+        links: [elasticsearchLink, kibanaLink],
+      },
     },
-  }],
+  ],
 });
 
 export const elasticAndApm = makeStory(conf, {
-  items: [{
-    /** @type {ElasticSearchInfoStateLoaded} */
-    state: {
-      type: 'loaded',
-      links: [elasticsearchLink, apmLink],
+  items: [
+    {
+      /** @type {ElasticSearchInfoStateLoaded} */
+      state: {
+        type: 'loaded',
+        links: [elasticsearchLink, apmLink],
+      },
     },
-  }],
+  ],
 });
 
 export const elasticKibanaAndApm = makeStory(conf, {
-  items: [{
-    /** @type {ElasticSearchInfoStateLoaded} */
-    state: {
-      type: 'loaded',
-      links: [apmLink, kibanaLink, elasticsearchLink],
+  items: [
+    {
+      /** @type {ElasticSearchInfoStateLoaded} */
+      state: {
+        type: 'loaded',
+        links: [apmLink, kibanaLink, elasticsearchLink],
+      },
     },
-  }],
+  ],
 });
 
 export const noLinks = makeStory(conf, {
-  items: [{
-    /** @type {ElasticSearchInfoStateLoaded} */
-    state: {
-      type: 'loaded',
-      links: [],
+  items: [
+    {
+      /** @type {ElasticSearchInfoStateLoaded} */
+      state: {
+        type: 'loaded',
+        links: [],
+      },
     },
-  }],
+  ],
 });
 
 export const onlyKibana = makeStory(conf, {
-  items: [{
-    /** @type {ElasticSearchInfoStateLoaded} */
-    state: {
-      type: 'loaded',
-      links: [kibanaLink],
+  items: [
+    {
+      /** @type {ElasticSearchInfoStateLoaded} */
+      state: {
+        type: 'loaded',
+        links: [kibanaLink],
+      },
     },
-  }],
+  ],
 });
 
 export const onlyApm = makeStory(conf, {
-  items: [{
-    /** @type {ElasticSearchInfoStateLoaded} */
-    state: {
-      type: 'loaded',
-      links: [apmLink],
+  items: [
+    {
+      /** @type {ElasticSearchInfoStateLoaded} */
+      state: {
+        type: 'loaded',
+        links: [apmLink],
+      },
     },
-  }],
+  ],
 });
 
 export const kibanaAndApm = makeStory(conf, {
-  items: [{
-    /** @type {ElasticSearchInfoStateLoaded} */
-    state: {
-      type: 'loaded',
-      links: [kibanaLink, apmLink],
+  items: [
+    {
+      /** @type {ElasticSearchInfoStateLoaded} */
+      state: {
+        type: 'loaded',
+        links: [kibanaLink, apmLink],
+      },
     },
-  }],
+  ],
 });
 
 export const loading = makeStory(conf, {
-  items: [{
-    /** @type {ElasticSearchInfoStateLoading} */
-    state: {
-      type: 'loading',
-      links: [{ type: 'elasticsearch' }, { type: 'apm' }, { type: 'kibana' }],
+  items: [
+    {
+      /** @type {ElasticSearchInfoStateLoading} */
+      state: {
+        type: 'loading',
+        links: [{ type: 'elasticsearch' }, { type: 'apm' }, { type: 'kibana' }],
+      },
     },
-  }],
+  ],
 });
 
 export const errorStory = makeStory(conf, {
-  items: [{
-    /** @type {ElasticSearchInfoStateError} */
-    state: { type: 'error' },
-  }],
+  items: [
+    {
+      /** @type {ElasticSearchInfoStateError} */
+      state: { type: 'error' },
+    },
+  ],
 });
 
 export const simulations = makeStory(conf, {
   items: [{}, {}],
   simulations: [
-    storyWait(2000,
+    storyWait(
+      2000,
       /** @param {CcElasticsearchInfo[]} components */
       ([component, componentError]) => {
         component.state = {
@@ -147,6 +170,7 @@ export const simulations = makeStory(conf, {
         componentError.state = {
           type: 'error',
         };
-      }),
+      },
+    ),
   ],
 });

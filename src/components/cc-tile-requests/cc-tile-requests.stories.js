@@ -1,5 +1,5 @@
-import './cc-tile-requests.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-tile-requests.js';
 
 export default {
   tags: ['autodocs'],
@@ -30,33 +30,11 @@ const conf = {
  */
 
 const REQUESTS_COUNTS_BIG = [
-  596600,
-  219080,
-  165930,
-  124350,
-  98820,
-  89510,
-  108320,
-  310880,
-  97549,
-  63093,
-  112781,
-  120270,
+  596600, 219080, 165930, 124350, 98820, 89510, 108320, 310880, 97549, 63093, 112781, 120270,
 ];
 const REQUESTS_COUNTS_SMALL = [895, 2, 78, 95, 630, 3966, 2190, 1659, 988, 1127, 1202, 1243];
 const REQUESTS_COUNTS_SIMILAR = [
-  220024,
-  220132,
-  220088,
-  220248,
-  220242,
-  220101,
-  220092,
-  220011,
-  220736,
-  220521,
-  220098,
-  220881,
+  220024, 220132, 220088, 220248, 220242, 220101, 220092, 220011, 220736, 220521, 220098, 220881,
 ];
 
 const ONE_HOUR = 1000 * 60 * 60;
@@ -66,7 +44,7 @@ const HOURS_IN_A_DAY = 24;
  * @param {Number[]} dataSample
  * @return {RequestsData[]}
  */
-function generateData (dataSample) {
+function generateData(dataSample) {
   const now = new Date();
   const nowTs = now.getTime();
   const nowRoundedTs = nowTs - (nowTs % ONE_HOUR);
@@ -80,21 +58,19 @@ function generateData (dataSample) {
   });
 }
 
-const baseItems = [
-  { style: 'width: 275px' },
-  { style: 'width: 380px' },
-  { style: 'width: 540px' },
-];
+const baseItems = [{ style: 'width: 275px' }, { style: 'width: 380px' }, { style: 'width: 540px' }];
 
 export const defaultStory = makeStory(conf, {
   /** @type {{style: string, state: TileRequestsStateLoaded }[]} */
-  items: [{
-    style: 'width: 275px',
-    state: {
-      type: 'loaded',
-      data: generateData(REQUESTS_COUNTS_SMALL),
+  items: [
+    {
+      style: 'width: 275px',
+      state: {
+        type: 'loaded',
+        data: generateData(REQUESTS_COUNTS_SMALL),
+      },
     },
-  }],
+  ],
 });
 
 export const loading = makeStory(conf, {
@@ -103,18 +79,22 @@ export const loading = makeStory(conf, {
 
 export const error = makeStory(conf, {
   /** @type {{style: string, state: TileRequestsStateError }[]} */
-  items: [{
-    style: 'width: 275px',
-    state: { type: 'error' },
-  }],
+  items: [
+    {
+      style: 'width: 275px',
+      state: { type: 'error' },
+    },
+  ],
 });
 
 export const empty = makeStory(conf, {
   /** @type {{style: string, state: TileRequestsStateLoaded }[]} */
-  items: [{
-    style: 'width: 275px',
-    state: { type: 'loaded', data: [] },
-  }],
+  items: [
+    {
+      style: 'width: 275px',
+      state: { type: 'loaded', data: [] },
+    },
+  ],
 });
 
 export const dataLoadedWithBigRequests = makeStory(conf, {
@@ -153,25 +133,29 @@ export const dataLoadedWithSimilarRequests = makeStory(conf, {
 export const simulationsWithData = makeStory(conf, {
   items: baseItems,
   simulations: [
-    storyWait(2000,
+    storyWait(
+      2000,
       /** @param {CcTileRequests[]} components */
       ([componentSmall, componentMedium, componentBig]) => {
         componentSmall.state = { type: 'loaded', data: generateData(REQUESTS_COUNTS_BIG) };
         componentMedium.state = { type: 'loaded', data: generateData(REQUESTS_COUNTS_BIG) };
         componentBig.state = { type: 'loaded', data: generateData(REQUESTS_COUNTS_BIG) };
-      }),
+      },
+    ),
   ],
 });
 
 export const simulationsWithError = makeStory(conf, {
   items: baseItems,
   simulations: [
-    storyWait(2000,
+    storyWait(
+      2000,
       /** @param {CcTileRequests[]} components */
       ([componentSmall, componentMedium, componentBig]) => {
         componentSmall.state = { type: 'error' };
         componentMedium.state = { type: 'error' };
         componentBig.state = { type: 'error' };
-      }),
+      },
+    ),
   ],
 });

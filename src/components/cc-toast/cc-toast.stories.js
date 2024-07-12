@@ -1,6 +1,6 @@
-import './cc-toast.js';
 import { sanitize } from '../../lib/i18n-sanitize.js';
 import { makeStory } from '../../stories/lib/make-story.js';
+import './cc-toast.js';
 
 export default {
   tags: ['autodocs'],
@@ -53,14 +53,16 @@ export const closeableAndWithProgressBar = makeStory(conf, {
 export const withLongHeadingAndMessage = makeStory(conf, {
   items: getItems({
     heading: 'Notification message can be topped by a bigger heading that is gonna wrap to new line',
-    message: (intent) => `This is a longer notification message with intent ${intent}. This message is going to wrap to new line.`,
+    message: (intent) =>
+      `This is a longer notification message with intent ${intent}. This message is going to wrap to new line.`,
   }),
 });
 
 export const withLongHeadingAndMessageAndWithCloseable = makeStory(conf, {
   items: getItems({
     heading: 'Notification message can be topped by a bigger heading that is gonna wrap to new line',
-    message: (intent) => `This is a longer notification message with intent ${intent}. This message is going to wrap to new line.`,
+    message: (intent) =>
+      `This is a longer notification message with intent ${intent}. This message is going to wrap to new line.`,
     closeable: true,
   }),
 });
@@ -68,6 +70,7 @@ export const withLongHeadingAndMessageAndWithCloseable = makeStory(conf, {
 export const withSanitizedHtmlMessage = makeStory(conf, {
   items: getItems({
     heading: 'Notification message can be topped by a heading',
-    message: (intent) => sanitize`This is an <strong>HTML</strong> notification message with intent <code>${intent}</code>.`,
+    message: (intent) =>
+      sanitize`This is an <strong>HTML</strong> notification message with intent <code>${intent}</code>.`,
   }),
 });

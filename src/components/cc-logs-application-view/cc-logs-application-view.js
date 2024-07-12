@@ -1,16 +1,9 @@
-import '../cc-datetime-relative/cc-datetime-relative.js';
-import '../cc-icon/cc-icon.js';
-import '../cc-input-date/cc-input-date.js';
-import '../cc-loader/cc-loader.js';
-import '../cc-logs-control/cc-logs-control.js';
-import '../cc-logs-instances/cc-logs-instances.js';
-import '../cc-notice/cc-notice.js';
-import '../cc-popover/cc-popover.js';
-import '../cc-toggle/cc-toggle.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import {
+  iconRemixFullscreenExitLine as fullscreenExitIcon,
+  iconRemixFullscreenLine as fullscreenIcon,
   iconRemixArrowDownSLine,
   iconRemixArrowLeftSLine,
   iconRemixArrowRightSLine,
@@ -20,19 +13,22 @@ import {
   iconRemixPauseLine,
   iconRemixPlayLine,
   iconRemixTimeLine,
-  iconRemixFullscreenLine as fullscreenIcon,
-  iconRemixFullscreenExitLine as fullscreenExitIcon,
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { parseRegex } from '../../lib/regex-parse.js';
 import { isStringEmpty } from '../../lib/utils.js';
+import '../cc-datetime-relative/cc-datetime-relative.js';
+import '../cc-icon/cc-icon.js';
+import '../cc-input-date/cc-input-date.js';
+import '../cc-loader/cc-loader.js';
+import '../cc-logs-control/cc-logs-control.js';
+import '../cc-logs-instances/cc-logs-instances.js';
+import '../cc-notice/cc-notice.js';
+import '../cc-popover/cc-popover.js';
+import '../cc-toggle/cc-toggle.js';
 import { dateRangeSelectionToDateRange } from './date-range-selection.js';
-import {
-  isLive,
-  isRightDateRangeAfterNow,
-  shiftDateRange,
-} from './date-range.js';
+import { isLive, isRightDateRangeAfterNow, shiftDateRange } from './date-range.js';
 
 /** @type {{instanceId: MetadataRenderer, instance: MetadataRenderer}} */
 const CUSTOM_METADATA_RENDERERS = {
@@ -96,8 +92,7 @@ const MENU_ENTRIES = ['live', 'lastHour', 'last4Hours', 'today', 'yesterday', 'l
  * @beta
  */
 export class CcLogsApplicationView extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       dateRangeSelection: { type: Object, attribute: 'date-range-selection' },
       limit: { type: Number },
@@ -115,7 +110,7 @@ export class CcLogsApplicationView extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {DateRangeSelection} The date range selection. */
@@ -202,7 +197,7 @@ export class CcLogsApplicationView extends LitElement {
   /**
    * @param {Log[]} logs
    */
-  appendLogs (logs) {
+  appendLogs(logs) {
     if (logs == null || logs.length <= 0) {
       return;
     }
@@ -213,7 +208,7 @@ export class CcLogsApplicationView extends LitElement {
     }
   }
 
-  clear () {
+  clear() {
     this._refs.logs.value?.clear();
     this._loadingProgressCtrl.reset();
   }
@@ -221,7 +216,7 @@ export class CcLogsApplicationView extends LitElement {
   /**
    * @return {DateRange}
    */
-  getDateRange () {
+  getDateRange() {
     return this._currentDateRange;
   }
 
@@ -233,7 +228,7 @@ export class CcLogsApplicationView extends LitElement {
    * @param {DateRangeSelection} dateRangeSelection
    * @return {DateRangeSelectionMenuEntry}
    */
-  _getDateRangeSelectionMenuEntry (dateRangeSelection) {
+  _getDateRangeSelectionMenuEntry(dateRangeSelection) {
     return dateRangeSelection.type === 'predefined' ? dateRangeSelection.def : dateRangeSelection.type;
   }
 
@@ -241,7 +236,7 @@ export class CcLogsApplicationView extends LitElement {
    * @param {DateRangeSelectionMenuEntry} menuEntry
    * @return {IconModel}
    */
-  _getDateRangeSelectionMenuEntryIcon (menuEntry) {
+  _getDateRangeSelectionMenuEntryIcon(menuEntry) {
     if (menuEntry === 'live') {
       return iconRemixFlashlightLine;
     }
@@ -255,7 +250,7 @@ export class CcLogsApplicationView extends LitElement {
    * @param {DateRangeSelectionMenuEntry} type
    * @return {string}
    */
-  _getDateRangeSelectionMenuEntryLabel (type) {
+  _getDateRangeSelectionMenuEntryLabel(type) {
     if (type === 'live') {
       return i18n('cc-logs-application-view.date-selection.live');
     }
@@ -284,7 +279,7 @@ export class CcLogsApplicationView extends LitElement {
   /**
    * @return {string}
    */
-  _getLoadingProgressTitle () {
+  _getLoadingProgressTitle() {
     if (this._loadingProgressCtrl.state === 'completed') {
       return i18n('cc-logs-application-view.progress.loaded');
     }
@@ -293,10 +288,10 @@ export class CcLogsApplicationView extends LitElement {
       return i18n('cc-logs-application-view.progress.loading.live');
     }
 
-    return i18n('cc-logs-application-view.progress.loading', { percent: (this._loadingProgressCtrl.percent) / 100 });
+    return i18n('cc-logs-application-view.progress.loading', { percent: this._loadingProgressCtrl.percent / 100 });
   }
 
-  _validateCustomDateRange () {
+  _validateCustomDateRange() {
     if (this._customDateRange != null) {
       this._refs.since.value.max = this._customDateRange.until;
       this._refs.until.value.min = this._customDateRange.since;
@@ -313,7 +308,7 @@ export class CcLogsApplicationView extends LitElement {
    * @param {{min: string, max: string}} minMax
    * @return {string}
    */
-  _getDateError (code, minMax) {
+  _getDateError(code, minMax) {
     if (code === 'empty') {
       return i18n('cc-logs-application-view.custom-date-range.date.empty');
     }
@@ -336,7 +331,7 @@ export class CcLogsApplicationView extends LitElement {
   /**
    * @param {DateRangeSelection} dateRangeSelection
    */
-  _applyDateRange (dateRangeSelection) {
+  _applyDateRange(dateRangeSelection) {
     this._loadingProgressCtrl.cancel();
     this.dateRangeSelection = dateRangeSelection;
     this._currentDateRange = dateRangeSelectionToDateRange(this.dateRangeSelection);
@@ -345,20 +340,17 @@ export class CcLogsApplicationView extends LitElement {
     dispatchCustomEvent(this, 'date-range-selection-change', this.dateRangeSelection);
   }
 
-  _validateMessageFilter () {
+  _validateMessageFilter() {
     if (isStringEmpty(this._messageFilter)) {
       this._messageFilterValid = true;
-    }
-    else if (this._messageFilterMode === 'regex') {
+    } else if (this._messageFilterMode === 'regex') {
       try {
         parseRegex(this._messageFilter);
         this._messageFilterValid = true;
-      }
-      catch (e) {
+      } catch (e) {
         this._messageFilterValid = false;
       }
-    }
-    else {
+    } else {
       this._messageFilterValid = true;
     }
   }
@@ -370,7 +362,7 @@ export class CcLogsApplicationView extends LitElement {
   /**
    * @param {MouseEvent & {target: {dataset: {type: DateRangeSelectionMenuEntry, current: 'true'|'false'}}}} e
    */
-  _onDateSelectionRangeItemClick (e) {
+  _onDateSelectionRangeItemClick(e) {
     /** @type {DateRangeSelectionMenuEntry} */
     this._selectedDateRangeMenuEntry = e.target.dataset.type;
     const isCurrent = e.target.dataset.current;
@@ -386,13 +378,11 @@ export class CcLogsApplicationView extends LitElement {
         since: this._currentDateRange.since,
         until: isLive(this._currentDateRange) ? new Date().toISOString() : this._currentDateRange.until,
       };
-    }
-    else if (this._selectedDateRangeMenuEntry === 'live') {
+    } else if (this._selectedDateRangeMenuEntry === 'live') {
       this._applyDateRange({
         type: 'live',
       });
-    }
-    else {
+    } else {
       this._applyDateRange({
         type: 'predefined',
         def: this._selectedDateRangeMenuEntry,
@@ -404,7 +394,7 @@ export class CcLogsApplicationView extends LitElement {
    * @param {'since'|'until'} field
    * @param {string} value
    */
-  _onCustomDateChanged (field, value) {
+  _onCustomDateChanged(field, value) {
     this._customDateRange = {
       ...this._customDateRange,
       [field]: value,
@@ -417,7 +407,7 @@ export class CcLogsApplicationView extends LitElement {
    * @param {Object} event
    * @param {string} event.detail
    */
-  _onCustomSinceDateChanged ({ detail }) {
+  _onCustomSinceDateChanged({ detail }) {
     this._onCustomDateChanged('since', detail);
   }
 
@@ -425,34 +415,31 @@ export class CcLogsApplicationView extends LitElement {
    * @param {Object} event
    * @param {string} event.detail
    */
-  _onCustomUntilDateChanged ({ detail }) {
+  _onCustomUntilDateChanged({ detail }) {
     this._onCustomDateChanged('until', detail);
   }
 
-  _onCustomDateRangeShiftLeft () {
+  _onCustomDateRangeShiftLeft() {
     this._customDateRange = shiftDateRange(this._customDateRange, 'left');
   }
 
-  _onCustomDateRangeShiftRight () {
+  _onCustomDateRangeShiftRight() {
     this._customDateRange = shiftDateRange(this._customDateRange, 'right');
   }
 
-  _onApplyCustomDateRange () {
-    this._applyDateRange(
-      {
-        type: 'custom',
-        since: this._customDateRange.since,
-        until: this._customDateRange.until,
-      },
-    );
+  _onApplyCustomDateRange() {
+    this._applyDateRange({
+      type: 'custom',
+      since: this._customDateRange.since,
+      until: this._customDateRange.until,
+    });
   }
 
-  _onInstanceSelectionChange ({ detail: instances }) {
+  _onInstanceSelectionChange({ detail: instances }) {
     if (!isLive(this._currentDateRange)) {
       this._loadingProgressCtrl.cancel();
       dispatchCustomEvent(this, 'instance-selection-change', instances);
-    }
-    else {
+    } else {
       this.state = {
         ...this.state,
         selection: instances,
@@ -464,7 +451,7 @@ export class CcLogsApplicationView extends LitElement {
    * @param {Object} event
    * @param {LogsControlOption} event.detail
    */
-  _onLogsOptionChange ({ detail }) {
+  _onLogsOptionChange({ detail }) {
     this.options = {
       ...this.options,
       [detail.name]: detail.value,
@@ -473,30 +460,30 @@ export class CcLogsApplicationView extends LitElement {
     dispatchCustomEvent(this, 'options-change', this.options);
   }
 
-  _onFullscreenToggle () {
+  _onFullscreenToggle() {
     this._fullscreen = !this._fullscreen;
   }
 
-  _onPause () {
+  _onPause() {
     dispatchCustomEvent(this, 'pause');
   }
 
-  _onResume () {
+  _onResume() {
     dispatchCustomEvent(this, 'resume');
   }
 
-  _onOverflowWatermarkReached () {
+  _onOverflowWatermarkReached() {
     if (this._overflowDecision === 'none') {
       dispatchCustomEvent(this, 'pause');
     }
   }
 
-  _onAcceptOverflow () {
+  _onAcceptOverflow() {
     this._overflowDecision = 'accepted';
     dispatchCustomEvent(this, 'resume');
   }
 
-  _onDiscardOverflow () {
+  _onDiscardOverflow() {
     this._overflowDecision = 'discarded';
     this.dateRangeSelection = {
       type: 'custom',
@@ -509,7 +496,7 @@ export class CcLogsApplicationView extends LitElement {
    * @param {Object} event
    * @param {string} event.detail
    */
-  _onTextFilterInput ({ detail }) {
+  _onTextFilterInput({ detail }) {
     this._messageFilter = detail;
 
     this._validateMessageFilter();
@@ -520,13 +507,12 @@ export class CcLogsApplicationView extends LitElement {
    * @param {Event & {target: HTMLElement & {dataset: {mode: LogMessageFilterMode}}}} e
    * @private
    */
-  _onTextFilterModeClick (e) {
+  _onTextFilterModeClick(e) {
     const mode = e.target.dataset.mode;
 
     if (this._messageFilterMode === mode) {
       this._messageFilterMode = 'loose';
-    }
-    else {
+    } else {
       this._messageFilterMode = mode;
     }
 
@@ -538,7 +524,7 @@ export class CcLogsApplicationView extends LitElement {
   /**
    * @param {CcLogsApplicationViewPropertyValues} changedProperties
    */
-  updated (changedProperties) {
+  updated(changedProperties) {
     if (changedProperties.has('_customDateRange')) {
       this._validateCustomDateRange();
     }
@@ -548,31 +534,31 @@ export class CcLogsApplicationView extends LitElement {
    *
    * @param {CcLogsApplicationViewPropertyValues} changedProperties
    */
-  willUpdate (changedProperties) {
-    const stateTypeHasChanged = changedProperties.has('state') && (changedProperties.get('state')?.type !== this.state.type);
+  willUpdate(changedProperties) {
+    const stateTypeHasChanged =
+      changedProperties.has('state') && changedProperties.get('state')?.type !== this.state.type;
 
     if (changedProperties.has('dateRangeSelection')) {
       this._selectedDateRangeMenuEntry = this._getDateRangeSelectionMenuEntry(this.dateRangeSelection);
-      this._customDateRange = this.dateRangeSelection.type === 'custom' ? {
-        since: this.dateRangeSelection.since,
-        until: this.dateRangeSelection.until,
-      } : null;
+      this._customDateRange =
+        this.dateRangeSelection.type === 'custom'
+          ? {
+              since: this.dateRangeSelection.since,
+              until: this.dateRangeSelection.until,
+            }
+          : null;
       this._currentDateRange = dateRangeSelectionToDateRange(this.dateRangeSelection);
     }
     if (stateTypeHasChanged) {
       if (this.state.type === 'errorLogs') {
         this._loadingProgressCtrl.reset();
-      }
-      else if (this.state.type === 'connectingLogs') {
+      } else if (this.state.type === 'connectingLogs') {
         this._loadingProgressCtrl.init(this._currentDateRange);
-      }
-      else if (this.state.type === 'receivingLogs') {
+      } else if (this.state.type === 'receivingLogs') {
         this._loadingProgressCtrl.start();
-      }
-      else if (this.state.type === 'logStreamPaused') {
+      } else if (this.state.type === 'logStreamPaused') {
         this._loadingProgressCtrl.pause();
-      }
-      else if (this.state.type === 'logStreamEnded') {
+      } else if (this.state.type === 'logStreamEnded') {
         this._loadingProgressCtrl.complete();
       }
     }
@@ -586,7 +572,7 @@ export class CcLogsApplicationView extends LitElement {
     }
   }
 
-  render () {
+  render() {
     const overlay = {
       overlay: true,
       fullscreen: this._fullscreen,
@@ -599,23 +585,19 @@ export class CcLogsApplicationView extends LitElement {
       <div class=${classMap(overlay)}>
         <div class=${classMap(wrapper)}>
           <div class="left">
-            ${this._renderDateRangeSelection()}
-            ${this._renderCustomDateRange()}
-            ${this._renderInstances()}
+            ${this._renderDateRangeSelection()} ${this._renderCustomDateRange()} ${this._renderInstances()}
             ${this._renderLoadingProgress()}
           </div>
-  
-          <div class="logs-wrapper">
-            ${this._renderLogs()}
-          </div>
+
+          <div class="logs-wrapper">${this._renderLogs()}</div>
         </div>
       </div>
     `;
   }
 
-  _renderDateRangeSelection () {
+  _renderDateRangeSelection() {
     return html`
-      <cc-popover 
+      <cc-popover
         ${ref(this._refs.dateRangeSelector)}
         .icon=${this._getDateRangeSelectionMenuEntryIcon(this._selectedDateRangeMenuEntry)}
         class="date-range-selection"
@@ -628,14 +610,21 @@ export class CcLogsApplicationView extends LitElement {
           ${MENU_ENTRIES.map((type) => {
             const current = type === this._selectedDateRangeMenuEntry;
 
-            return html`<button 
-              class="date-range-selection-menu-entry" 
+            return html`<button
+              class="date-range-selection-menu-entry"
               data-type="${type}"
               data-current="${current}"
-              @click=${this._onDateSelectionRangeItemClick}>
+              @click=${this._onDateSelectionRangeItemClick}
+            >
               <cc-icon .icon=${this._getDateRangeSelectionMenuEntryIcon(type)} data-type="${type}"></cc-icon>
               <span data-type="${type}">${this._getDateRangeSelectionMenuEntryLabel(type)}</span>
-              ${current ? html`<cc-icon class="date-range-selection-current" .icon=${iconRemixCheckLine} data-type="${type}"></cc-icon>` : ''}
+              ${current
+                ? html`<cc-icon
+                    class="date-range-selection-current"
+                    .icon=${iconRemixCheckLine}
+                    data-type="${type}"
+                  ></cc-icon>`
+                : ''}
             </button>`;
           })}
         </div>
@@ -643,17 +632,25 @@ export class CcLogsApplicationView extends LitElement {
     `;
   }
 
-  _renderCustomDateRange () {
+  _renderCustomDateRange() {
     if (this._customDateRange == null) {
       return null;
     }
 
-    const sinceErr = this._dateRangeValidation.since.valid === true
-      ? null
-      : this._getDateError(this._dateRangeValidation.since.code, { min: this._customDateRange.since, max: this._customDateRange.until });
-    const untilErr = this._dateRangeValidation.until.valid === true
-      ? null
-      : this._getDateError(this._dateRangeValidation.until.code, { min: this._customDateRange.since, max: this._customDateRange.until });
+    const sinceErr =
+      this._dateRangeValidation.since.valid === true
+        ? null
+        : this._getDateError(this._dateRangeValidation.since.code, {
+            min: this._customDateRange.since,
+            max: this._customDateRange.until,
+          });
+    const untilErr =
+      this._dateRangeValidation.until.valid === true
+        ? null
+        : this._getDateError(this._dateRangeValidation.until.code, {
+            min: this._customDateRange.since,
+            max: this._customDateRange.until,
+          });
     const nextDisabled = isRightDateRangeAfterNow(this._customDateRange);
     const isDateRangeInvalid = !this._dateRangeValidation.since.valid || !this._dateRangeValidation.until.valid;
 
@@ -662,7 +659,9 @@ export class CcLogsApplicationView extends LitElement {
         <cc-input-date
           ${ref(this._refs.since)}
           .value=${this._customDateRange.since}
-          label=${this.options.timezone === 'UTC' ? i18n('cc-logs-application-view.custom-date-range.since.utc') : i18n('cc-logs-application-view.custom-date-range.since.local')}
+          label=${this.options.timezone === 'UTC'
+            ? i18n('cc-logs-application-view.custom-date-range.since.utc')
+            : i18n('cc-logs-application-view.custom-date-range.since.local')}
           .max=${this._customDateRange.until}
           timezone=${this.options.timezone}
           @cc-input-date:input=${this._onCustomSinceDateChanged}
@@ -673,7 +672,9 @@ export class CcLogsApplicationView extends LitElement {
         <cc-input-date
           ${ref(this._refs.until)}
           .value=${this._customDateRange.until}
-          label=${this.options.timezone === 'UTC' ? i18n('cc-logs-application-view.custom-date-range.until.utc') : i18n('cc-logs-application-view.custom-date-range.until.local')}
+          label=${this.options.timezone === 'UTC'
+            ? i18n('cc-logs-application-view.custom-date-range.until.utc')
+            : i18n('cc-logs-application-view.custom-date-range.until.local')}
           .min=${this._customDateRange.since}
           timezone=${this.options.timezone}
           @cc-input-date:input=${this._onCustomUntilDateChanged}
@@ -682,43 +683,45 @@ export class CcLogsApplicationView extends LitElement {
           ${untilErr != null ? html`<p slot="error">${untilErr}</p>` : ''}
         </cc-input-date>
         <div class="date-range-buttons">
-          <cc-button class="date-range-left"
-                     ?disabled=${isDateRangeInvalid}
-                     .icon=${iconRemixArrowLeftSLine}
-                     hide-text
-                     a11y-name=${i18n('cc-logs-application-view.custom-date-range.previous')}
-                     @cc-button:click=${this._onCustomDateRangeShiftLeft}>
+          <cc-button
+            class="date-range-left"
+            ?disabled=${isDateRangeInvalid}
+            .icon=${iconRemixArrowLeftSLine}
+            hide-text
+            a11y-name=${i18n('cc-logs-application-view.custom-date-range.previous')}
+            @cc-button:click=${this._onCustomDateRangeShiftLeft}
+          >
           </cc-button>
-          <cc-button class="date-range-right"
-                     ?disabled=${nextDisabled || isDateRangeInvalid}
-                     .icon=${iconRemixArrowRightSLine}
-                     hide-text
-                     a11y-name=${i18n('cc-logs-application-view.custom-date-range.next')}
-                     @cc-button:click=${this._onCustomDateRangeShiftRight}>
+          <cc-button
+            class="date-range-right"
+            ?disabled=${nextDisabled || isDateRangeInvalid}
+            .icon=${iconRemixArrowRightSLine}
+            hide-text
+            a11y-name=${i18n('cc-logs-application-view.custom-date-range.next')}
+            @cc-button:click=${this._onCustomDateRangeShiftRight}
+          >
           </cc-button>
           <cc-button
             class="date-range-apply-button"
             ?disabled=${isDateRangeInvalid}
             @cc-button:click=${this._onApplyCustomDateRange}
-          >${i18n('cc-logs-application-view.custom-date-range.apply')}
-          </cc-button>                 
+            >${i18n('cc-logs-application-view.custom-date-range.apply')}
+          </cc-button>
         </div>
       </div>
     `;
   }
 
-  _renderInstances () {
+  _renderInstances() {
     /**
      * @type {LogsInstancesState}
      */
     let state;
     if (this.state.type === 'loadingInstances') {
       state = { state: 'loading' };
-    }
-    else if (this.state.type === 'errorInstances') {
+    } else if (this.state.type === 'errorInstances') {
       state = { state: 'error' };
-    }
-    else {
+    } else {
       state = {
         state: 'loaded',
         mode: isLive(this._currentDateRange) ? 'live' : 'cold',
@@ -727,8 +730,8 @@ export class CcLogsApplicationView extends LitElement {
       };
     }
 
-    return html`<cc-logs-instances-beta 
-      .state=${state} 
+    return html`<cc-logs-instances-beta
+      .state=${state}
       class="cc-logs-instances"
       @cc-logs-instances:selection-change=${this._onInstanceSelectionChange}
     ></cc-logs-instances-beta>`;
@@ -737,14 +740,16 @@ export class CcLogsApplicationView extends LitElement {
   /**
    * @return {TemplateResult|null}
    */
-  _renderLoadingProgress () {
+  _renderLoadingProgress() {
     if (this._loadingProgressCtrl.value === 0) {
       return null;
     }
 
-    const shouldAskForOverflowDecision = this._overflowDecision === 'none' && this._loadingProgressCtrl.overflowWatermarkReached;
-    const shouldDisplayPauseResumeControls = !shouldAskForOverflowDecision
-      && (this._loadingProgressCtrl.state === 'running' || this._loadingProgressCtrl.state === 'paused');
+    const shouldAskForOverflowDecision =
+      this._overflowDecision === 'none' && this._loadingProgressCtrl.overflowWatermarkReached;
+    const shouldDisplayPauseResumeControls =
+      !shouldAskForOverflowDecision &&
+      (this._loadingProgressCtrl.state === 'running' || this._loadingProgressCtrl.state === 'paused');
     const shouldDisplayOverflowWarning = !shouldAskForOverflowDecision && this._loadingProgressCtrl.overflowing;
 
     const getPlayPauseButton = () => {
@@ -773,51 +778,57 @@ export class CcLogsApplicationView extends LitElement {
     return html`
       <div class="logs-loading-state">
         <div class="loading-state-heading">
-          <div class="loading-state-title">
-            ${this._getLoadingProgressTitle()}
-          </div>
+          <div class="loading-state-title">${this._getLoadingProgressTitle()}</div>
 
-          ${playPauseButton != null ? html`
-            <cc-button .icon=${playPauseButton.icon}
-                       hide-text
-                       a11y-name=${playPauseButton.a11yName}
-                       @cc-button:click=${playPauseButton.onclick}
-            ></cc-button>
-          ` : ''}
+          ${playPauseButton != null
+            ? html`
+                <cc-button
+                  .icon=${playPauseButton.icon}
+                  hide-text
+                  a11y-name=${playPauseButton.a11yName}
+                  @cc-button:click=${playPauseButton.onclick}
+                ></cc-button>
+              `
+            : ''}
         </div>
-        ${this._loadingProgressCtrl.percent != null ? html`
-          <div class="progress-bar">
-            <div class="progress-bar-track" style="width: ${this._loadingProgressCtrl.percent}%;"></div>
-          </div>
-        ` : ''}
+        ${this._loadingProgressCtrl.percent != null
+          ? html`
+              <div class="progress-bar">
+                <div class="progress-bar-track" style="width: ${this._loadingProgressCtrl.percent}%;"></div>
+              </div>
+            `
+          : ''}
         <div class="loading-state-content">
           <div class="loading-state-text">
             ${i18n('cc-logs-application-view.progress.message', { count: this._loadingProgressCtrl.value })}
           </div>
-          
-          ${shouldAskForOverflowDecision ? html`
-            <cc-notice intent="info" heading="${i18n('cc-logs-application-view.progress.overflow.title')}">
-              <div slot="message">
-                ${i18n('cc-logs-application-view.progress.overflow.message.almost', { limit: this.limit })}
-                <div class="overflow-control">
-                  <cc-button link @cc-button:click=${this._onAcceptOverflow}>
-                    ${i18n('cc-logs-application-view.progress.overflow.continue')}
-                  </cc-button>
-                  <cc-button link @cc-button:click=${this._onDiscardOverflow}>
-                    ${i18n('cc-logs-application-view.progress.overflow.stop')}
-                  </cc-button>
-                </div>
-              </div>
-            </cc-notice>
-          ` : ''}
 
-          ${shouldDisplayOverflowWarning ? html`
-            <cc-notice intent="info" no-icon>
-              <div slot="message">
-                ${i18n('cc-logs-application-view.progress.overflow.message', { limit: this.limit })}
-              </div>
-            </cc-notice>
-          ` : ''}
+          ${shouldAskForOverflowDecision
+            ? html`
+                <cc-notice intent="info" heading="${i18n('cc-logs-application-view.progress.overflow.title')}">
+                  <div slot="message">
+                    ${i18n('cc-logs-application-view.progress.overflow.message.almost', { limit: this.limit })}
+                    <div class="overflow-control">
+                      <cc-button link @cc-button:click=${this._onAcceptOverflow}>
+                        ${i18n('cc-logs-application-view.progress.overflow.continue')}
+                      </cc-button>
+                      <cc-button link @cc-button:click=${this._onDiscardOverflow}>
+                        ${i18n('cc-logs-application-view.progress.overflow.stop')}
+                      </cc-button>
+                    </div>
+                  </div>
+                </cc-notice>
+              `
+            : ''}
+          ${shouldDisplayOverflowWarning
+            ? html`
+                <cc-notice intent="info" no-icon>
+                  <div slot="message">
+                    ${i18n('cc-logs-application-view.progress.overflow.message', { limit: this.limit })}
+                  </div>
+                </cc-notice>
+              `
+            : ''}
         </div>
       </div>
     `;
@@ -826,25 +837,27 @@ export class CcLogsApplicationView extends LitElement {
   /**
    * @return {TemplateResult}
    */
-  _renderLogs () {
+  _renderLogs() {
     if (this.state.type === 'errorLogs') {
       return html`
         <div class="center-logs-wrapper">
-          <cc-notice slot="header"
-                     intent="warning"
-                     message=${i18n('cc-logs-application-view.logs.error')}
-          ></cc-notice>
+          <cc-notice slot="header" intent="warning" message=${i18n('cc-logs-application-view.logs.error')}></cc-notice>
         </div>
       `;
     }
 
-    const metadataFilter = this.state.type === 'connectingLogs' || this.state.type === 'receivingLogs' || this.state.type === 'logStreamEnded' || this.state.type === 'logStreamPaused'
-      ? this.state.selection?.map((instanceId) => {
-        return {
-          metadata: 'instanceId',
-          value: instanceId,
-        };
-      }) : [];
+    const metadataFilter =
+      this.state.type === 'connectingLogs' ||
+      this.state.type === 'receivingLogs' ||
+      this.state.type === 'logStreamEnded' ||
+      this.state.type === 'logStreamPaused'
+        ? this.state.selection?.map((instanceId) => {
+            return {
+              metadata: 'instanceId',
+              value: instanceId,
+            };
+          })
+        : [];
 
     const strictToggleButtonLabel = i18n('cc-logs-application-view.filter.mode.strict');
     const regexToggleButtonLabel = i18n('cc-logs-application-view.filter.mode.regex');
@@ -878,18 +891,24 @@ export class CcLogsApplicationView extends LitElement {
                 @cc-input-text:input=${this._onTextFilterInput}
               >
               </cc-input-text>
-              
+
               <div class="inner-buttons-wrapper">
-                ${!this._messageFilterValid ? html`
-                  <div class="logs-filter-input-error" id="logs-filter-input-error">${i18n('cc-logs-application-view.filter.bad-format')}</div>
-                ` : ''} 
+                ${!this._messageFilterValid
+                  ? html`
+                      <div class="logs-filter-input-error" id="logs-filter-input-error">
+                        ${i18n('cc-logs-application-view.filter.bad-format')}
+                      </div>
+                    `
+                  : ''}
                 <button
                   data-mode="strict"
                   title="${strictToggleButtonLabel}"
                   aria-label="${strictToggleButtonLabel}"
                   aria-pressed=${this._messageFilterMode === 'strict'}
                   @click=${this._onTextFilterModeClick}
-                >“”</button>
+                >
+                  “”
+                </button>
                 <button
                   data-mode="regex"
                   title="${regexToggleButtonLabel}"
@@ -897,14 +916,18 @@ export class CcLogsApplicationView extends LitElement {
                   aria-pressed=${this._messageFilterMode === 'regex'}
                   @click=${this._onTextFilterModeClick}
                   aria-describedby="${this._messageFilterValid ? '' : 'logs-filter-input-error'}"
-                >.*</button>
+                >
+                  .*
+                </button>
               </div>
             </div>
-            
+
             <cc-button
               class="header-fullscreen-button"
               .icon=${this._fullscreen ? fullscreenExitIcon : fullscreenIcon}
-              a11y-name=${this._fullscreen ? i18n('cc-logs-application-view.fullscreen.exit') : i18n('cc-logs-application-view.fullscreen')}
+              a11y-name=${this._fullscreen
+                ? i18n('cc-logs-application-view.fullscreen.exit')
+                : i18n('cc-logs-application-view.fullscreen')}
               hide-text
               @cc-button:click=${this._onFullscreenToggle}
             ></cc-button>
@@ -912,43 +935,48 @@ export class CcLogsApplicationView extends LitElement {
         </div>
       </cc-logs-control-beta>
 
-      ${this._loadingProgressCtrl.state === 'completed' && this._loadingProgressCtrl.value === 0 ? html`
-        <div class="overlay-logs-wrapper">
-          <cc-notice intent="info"
-                     heading=${i18n('cc-logs-application-view.logs.warning.no-logs.title')}
-                     message=${i18n('cc-logs-application-view.logs.warning.no-logs.message')}
-          ></cc-notice>
-        </div>
-      ` : ''}
-
-      ${this._loadingProgressCtrl.state === 'init' || this._loadingProgressCtrl.state === 'started' ? html`
-        <div class="overlay-logs-wrapper">
-          <cc-notice intent="info" no-icon>
-            <div class="overlay-logs-wrapper--loader" slot="message">
-              <cc-loader></cc-loader>
-              <span>${i18n('cc-logs-application-view.logs.loading')}</span>
+      ${this._loadingProgressCtrl.state === 'completed' && this._loadingProgressCtrl.value === 0
+        ? html`
+            <div class="overlay-logs-wrapper">
+              <cc-notice
+                intent="info"
+                heading=${i18n('cc-logs-application-view.logs.warning.no-logs.title')}
+                message=${i18n('cc-logs-application-view.logs.warning.no-logs.message')}
+              ></cc-notice>
             </div>
-          </cc-notice>
-        </div>
-      ` : ''}
-
-      ${this._loadingProgressCtrl.state === 'waiting' ? html`
-        <div class="overlay-logs-wrapper">
-          <cc-notice intent="info"
-                     heading=${i18n('cc-logs-application-view.logs.warning.waiting.title')}
-                     message=${i18n('cc-logs-application-view.logs.warning.waiting.message')}
-          ></cc-notice>
-        </div>
-      ` : ''}
+          `
+        : ''}
+      ${this._loadingProgressCtrl.state === 'init' || this._loadingProgressCtrl.state === 'started'
+        ? html`
+            <div class="overlay-logs-wrapper">
+              <cc-notice intent="info" no-icon>
+                <div class="overlay-logs-wrapper--loader" slot="message">
+                  <cc-loader></cc-loader>
+                  <span>${i18n('cc-logs-application-view.logs.loading')}</span>
+                </div>
+              </cc-notice>
+            </div>
+          `
+        : ''}
+      ${this._loadingProgressCtrl.state === 'waiting'
+        ? html`
+            <div class="overlay-logs-wrapper">
+              <cc-notice
+                intent="info"
+                heading=${i18n('cc-logs-application-view.logs.warning.waiting.title')}
+                message=${i18n('cc-logs-application-view.logs.warning.waiting.message')}
+              ></cc-notice>
+            </div>
+          `
+        : ''}
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
         /* stylelint-disable no-duplicate-selectors */
-        
         :host {
           display: block;
         }
@@ -959,13 +987,13 @@ export class CcLogsApplicationView extends LitElement {
         }
 
         .overlay.fullscreen {
-          position: fixed;
-          z-index: 999;
-          top: 0;
-          right: 0;
+          backdrop-filter: blur(5px);
           bottom: 0;
           left: 0;
-          backdrop-filter: blur(5px);
+          position: fixed;
+          right: 0;
+          top: 0;
+          z-index: 999;
         }
 
         .wrapper {
@@ -975,47 +1003,47 @@ export class CcLogsApplicationView extends LitElement {
         }
 
         .wrapper.fullscreen {
-          padding: 1em;
-          border: 1px solid var(--cc-color-border-neutral);
-          margin: 1em;
           background-color: var(--cc-color-bg-default);
+          border: 1px solid var(--cc-color-border-neutral);
           border-radius: var(--cc-border-radius-default);
+          margin: 1em;
+          padding: 1em;
         }
 
         .left {
           display: flex;
-          width: 18em;
-          height: 100%;
           flex-direction: column;
           gap: 0.5em;
+          height: 100%;
+          width: 18em;
         }
 
         .cc-logs-instances {
-          flex: 1;
-          border: 1px solid var(--cc-color-border-neutral, #aaa);
           background-color: var(--cc-color-bg-default, #fff);
+          border: 1px solid var(--cc-color-border-neutral, #aaa);
           border-radius: var(--cc-border-radius-default, 0.25em);
+          flex: 1;
         }
 
         .mode {
-          padding: 0.25em;
           grid-area: mode;
+          padding: 0.25em;
         }
 
         .date-range {
+          background-color: var(--cc-color-bg-default, #fff);
+          border: 1px solid var(--cc-color-border-neutral, #aaa);
+          border-radius: var(--cc-border-radius-default, 0.25em);
           display: flex;
           flex-direction: column;
-          padding: 0.5em;
-          border: 1px solid var(--cc-color-border-neutral, #aaa);
-          background-color: var(--cc-color-bg-default, #fff);
-          border-radius: var(--cc-border-radius-default, 0.25em);
           gap: 0.75em;
           grid-area: date-range;
+          padding: 0.5em;
         }
 
         .date-range-buttons {
-          display: grid;
           align-items: center;
+          display: grid;
           grid-gap: 0.5em;
           grid-template-areas: 'left right spacer apply';
           grid-template-columns: auto auto 1fr auto;
@@ -1032,8 +1060,8 @@ export class CcLogsApplicationView extends LitElement {
         }
 
         .date-range-selection-button-content {
-          display: flex;
           align-items: center;
+          display: flex;
           font-size: 1.2em;
           gap: 1em;
         }
@@ -1057,23 +1085,23 @@ export class CcLogsApplicationView extends LitElement {
         }
 
         button {
-          display: block;
-          padding: 0;
-          border: none;
-          margin: 0;
           background: unset;
+          border: none;
+          display: block;
           font-family: inherit;
           font-size: unset;
+          margin: 0;
+          padding: 0;
         }
 
         .date-range-selection-menu-entry {
-          display: grid;
           align-items: start;
-          padding: 0.5em;
           cursor: pointer;
+          display: grid;
           gap: 0.5em;
           grid-template-columns: auto 1fr auto;
           justify-items: start;
+          padding: 0.5em;
         }
 
         .date-range-selection-current {
@@ -1086,52 +1114,52 @@ export class CcLogsApplicationView extends LitElement {
         }
 
         .logs-loading-state {
-          border: 1px solid var(--cc-color-border-neutral, #aaa);
           background-color: var(--cc-color-bg-default, #fff);
+          border: 1px solid var(--cc-color-border-neutral, #aaa);
           border-radius: var(--cc-border-radius-default, 0.25em);
         }
 
         .loading-state-heading {
-          display: flex;
-          max-height: 2em;
           align-items: center;
-          padding: 0.5em;
           background-color: var(--cc-color-bg-neutral, #eee);
           border-top-left-radius: var(--cc-border-radius-default, 0.25em);
           border-top-right-radius: var(--cc-border-radius-default, 0.25em);
+          display: flex;
           gap: 0.3em;
+          max-height: 2em;
+          padding: 0.5em;
         }
 
         .loading-state-title {
-          flex: 1;
           color: var(--cc-color-text-default, #000);
+          flex: 1;
           font-weight: bold;
         }
 
         .loading-state-content {
+          color: var(--cc-color-text-weak);
           display: flex;
           flex-direction: column;
-          padding: 1em;
-          color: var(--cc-color-text-weak);
           gap: 1em;
+          padding: 1em;
         }
 
         .progress-bar {
+          background-color: var(--cc-color-bg-primary-weak);
+          height: 0.2em;
           overflow: hidden;
           width: 100%;
-          height: 0.2em;
-          background-color: var(--cc-color-bg-primary-weak);
         }
 
         .progress-bar-track {
-          height: 100%;
           background-color: var(--cc-color-bg-primary);
+          height: 100%;
         }
 
         .progress-bar-track.indeterminate {
-          width: 100%;
           animation: indeterminate-animation 1s infinite linear;
           transform-origin: 0 50%;
+          width: 100%;
         }
 
         .overflow-control {
@@ -1140,7 +1168,6 @@ export class CcLogsApplicationView extends LitElement {
         }
 
         @keyframes indeterminate-animation {
-
           0% {
             transform: translateX(0) scaleX(0);
           }
@@ -1155,8 +1182,8 @@ export class CcLogsApplicationView extends LitElement {
         }
 
         .logs-wrapper {
-          position: relative;
           flex: 1;
+          position: relative;
         }
 
         .logs {
@@ -1164,42 +1191,42 @@ export class CcLogsApplicationView extends LitElement {
         }
 
         .logs-header {
-          display: flex;
-          width: 100%;
           align-items: center;
+          display: flex;
           gap: 1em;
+          width: 100%;
         }
 
         .logs-filter-input {
           --cc-input-font-family: var(--cc-ff-monospace, monospace);
-          
+
           flex: 1;
         }
 
         .center-logs-wrapper {
-          display: flex;
-          height: 100%;
-          flex-direction: row;
           align-items: center;
+          display: flex;
+          flex-direction: row;
+          height: 100%;
           justify-content: center;
         }
 
         .overlay-logs-wrapper {
+          left: 50%;
           position: absolute;
           top: 50%;
-          left: 50%;
           transform: translate(-50%, -50%);
         }
 
         .overlay-logs-wrapper--loader {
-          display: flex;
           align-items: center;
+          display: flex;
           gap: 0.5em;
         }
 
         .overlay-logs-wrapper--loader cc-loader {
-          width: 1.5em;
           height: 1.5em;
+          width: 1.5em;
         }
 
         .spacer {
@@ -1207,35 +1234,35 @@ export class CcLogsApplicationView extends LitElement {
         }
 
         .input-wrapper {
-          position: relative;
           display: flex;
           flex: 1;
+          position: relative;
         }
 
         .input-wrapper .inner-buttons-wrapper {
-          position: absolute;
-          z-index: 2;
-          right: 5px;
+          align-items: center;
           display: flex;
           height: 100%;
-          align-items: center;
+          position: absolute;
+          right: 5px;
+          z-index: 2;
         }
 
         .inner-buttons-wrapper button {
-          width: 1.6em;
-          height: 1.6em;
-          flex-shrink: 0;
           background: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-default, 0.15em);
           color: var(--cc-input-btn-icons-color, #595959);
           cursor: pointer;
+          flex-shrink: 0;
           font-family: var(--cc-ff-monospace, monospace);
+          height: 1.6em;
+          width: 1.6em;
         }
 
         .inner-buttons-wrapper button:focus {
-          z-index: 1;
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
+          z-index: 1;
         }
 
         .inner-buttons-wrapper button:active,
@@ -1262,16 +1289,16 @@ export class CcLogsApplicationView extends LitElement {
           border-bottom-right-radius: 0;
           border-top-right-radius: 0;
         }
-        
+
         .inner-buttons-wrapper button:last-of-type {
           border-bottom-left-radius: 0;
           border-top-left-radius: 0;
         }
 
         .logs-filter-input-error {
-          margin-right: 0.5em;
           background: var(--cc-color-bg-default, #fff);
           color: var(--cc-color-text-danger);
+          margin-right: 0.5em;
         }
       `,
     ];
@@ -1295,13 +1322,13 @@ class LoadingProgressController {
    *
    * @param {CcLogsApplicationView} host
    */
-  constructor (host) {
+  constructor(host) {
     this._host = host;
     this._debug = false;
     this.reset();
   }
 
-  reset () {
+  reset() {
     this._dateRange = null;
     this._isLive = false;
     this._dateRangeStart = null;
@@ -1319,7 +1346,7 @@ class LoadingProgressController {
   /**
    * @param {DateRange} dateRange
    */
-  init (dateRange) {
+  init(dateRange) {
     this.reset();
 
     this._dateRange = dateRange;
@@ -1335,7 +1362,7 @@ class LoadingProgressController {
     });
   }
 
-  start () {
+  start() {
     this._step('start', {
       none: () => {
         return 'none';
@@ -1360,7 +1387,7 @@ class LoadingProgressController {
    *
    * @param {Array<Log>} logs
    */
-  progress (logs) {
+  progress(logs) {
     if (logs.length === 0) {
       return;
     }
@@ -1371,7 +1398,7 @@ class LoadingProgressController {
 
       if (!this._isLive) {
         const timeProgress = this._lastLogDate.getTime() - this._dateRangeStart;
-        this._percent = 100 * timeProgress / this._dateRangeDuration;
+        this._percent = (100 * timeProgress) / this._dateRangeDuration;
       }
 
       if (this.overflowWatermarkReached) {
@@ -1400,7 +1427,7 @@ class LoadingProgressController {
     });
   }
 
-  pause () {
+  pause() {
     this._step('pause', {
       running: () => {
         return 'paused';
@@ -1408,7 +1435,7 @@ class LoadingProgressController {
     });
   }
 
-  complete () {
+  complete() {
     this._step('complete', {
       none: () => {
         return 'none';
@@ -1428,7 +1455,7 @@ class LoadingProgressController {
     });
   }
 
-  cancel () {
+  cancel() {
     this._step('cancel', {
       '*': () => {
         this.reset();
@@ -1440,46 +1467,46 @@ class LoadingProgressController {
   /**
    * @return {ProgressState}
    */
-  get state () {
+  get state() {
     return this._state;
   }
 
   /**
    * @return {number|null}
    */
-  get percent () {
+  get percent() {
     return this._isLive ? null : this._percent;
   }
 
   /**
    * @return {number}
    */
-  get value () {
+  get value() {
     return this._value;
   }
 
   /**
    * @return {boolean}
    */
-  get overflowing () {
+  get overflowing() {
     return this._value > this._host.limit;
   }
 
   /**
    * @return {boolean}
    */
-  get overflowWatermarkReached () {
+  get overflowWatermarkReached() {
     return this._value >= this._host.limit - this._host.overflowWatermarkOffset;
   }
 
   /**
    * @return {Date}
    */
-  get lastLogDate () {
+  get lastLogDate() {
     return this._lastLogDate;
   }
 
-  _clearWaitingTimeout () {
+  _clearWaitingTimeout() {
     if (this._waitingTimeoutId != null) {
       clearTimeout(this._waitingTimeoutId);
       this._waitingTimeoutId = null;
@@ -1491,7 +1518,7 @@ class LoadingProgressController {
    * @param {string} actionName
    * @param {{[state: ProgressState|'*']: () => ProgressState|null}} machine
    */
-  _step (actionName, machine) {
+  _step(actionName, machine) {
     const state = this._state;
 
     this._log(`progressCtrl: ACTION<${actionName}> from state ${state}`);
@@ -1514,7 +1541,7 @@ class LoadingProgressController {
     }
   }
 
-  _log (...args) {
+  _log(...args) {
     if (this._debug) {
       console.log(...args);
     }

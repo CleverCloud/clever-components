@@ -3,11 +3,11 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import {
-  iconRemixAlertLine as iconWarning,
   iconRemixCloseLine as iconClose,
-  iconRemixInformationLine as iconInfo,
   iconRemixSpam_2Line as iconDanger,
+  iconRemixInformationLine as iconInfo,
   iconRemixCheckboxCircleLine as iconSuccess,
+  iconRemixAlertLine as iconWarning,
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
@@ -44,10 +44,9 @@ import '../cc-icon/cc-icon.js';
  *
  * @fires {CustomEvent} cc-toast:dismiss - Fires whenever the toast is dismissed.
  * @cssprop {Color} --cc-toast-icon-color - The color of the icon on the left of the toast (defaults: `e7e7e7`).
-*/
+ */
 export class CcToast extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       closeable: { type: Boolean },
       heading: { type: String },
@@ -58,7 +57,7 @@ export class CcToast extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {boolean} Whether a close button is displayed. */
@@ -91,11 +90,11 @@ export class CcToast extends LitElement {
   }
 
   /* region PRIVATE METHODS*/
-  _dismiss () {
+  _dismiss() {
     dispatchCustomEvent(this, 'dismiss');
   }
 
-  _getIcon () {
+  _getIcon() {
     if (this.intent === 'info') {
       return iconInfo;
     }
@@ -110,7 +109,7 @@ export class CcToast extends LitElement {
     }
   }
 
-  _getIconAlt () {
+  _getIconAlt() {
     if (this.intent === 'info') {
       return i18n('cc-toast.icon-alt.info');
     }
@@ -125,29 +124,31 @@ export class CcToast extends LitElement {
     }
   }
 
-  _onCloseButtonClick () {
+  _onCloseButtonClick() {
     this._dismiss();
   }
 
-  _pause () {
+  _pause() {
     this._progressAnimateCtrl.isAnimating && this._progressAnimateCtrl.pause();
   }
 
-  _resume () {
+  _resume() {
     this._progressAnimateCtrl.isAnimating && this._progressAnimateCtrl.play();
   }
   /* endregion*/
 
-  render () {
-    const tabIndex = (this.timeout > 0) ? '0' : undefined;
+  render() {
+    const tabIndex = this.timeout > 0 ? '0' : undefined;
 
     return html`
-      <div class="toast" 
-           @mouseenter=${this._pause} 
-           @mouseleave=${this._resume} 
-           @focus=${this._pause}
-           @blur=${this._resume}
-           tabindex="${ifDefined(tabIndex)}">
+      <div
+        class="toast"
+        @mouseenter=${this._pause}
+        @mouseleave=${this._resume}
+        @focus=${this._pause}
+        @blur=${this._resume}
+        tabindex="${ifDefined(tabIndex)}"
+      >
         <div class="icon-wrapper">
           <cc-icon class="icon" .icon="${this._getIcon()}" a11y-name="${this._getIconAlt()}"></cc-icon>
         </div>
@@ -157,29 +158,32 @@ export class CcToast extends LitElement {
             ${this.message ? html`<div>${this.message}</div>` : ''}
           </div>
 
-          ${this.closeable ? html`
-            <button class="close-button"
-                    @click=${this._onCloseButtonClick}
-                    @focus=${this._pause}
-                    @blur=${this._resume}
-                    title="${i18n('cc-toast.close')}">
-              <cc-icon .icon="${iconClose}" a11y-name="${i18n('cc-toast.close')}"></cc-icon>
-            </button>
-          ` : ''}
-
-          ${this.timeout > 0 ? html`
-            <div class="progress-bar ${classMap({ invisible: !this.showProgress })}">
-              <div class="progress-bar-track" 
-                   ${animate({ keyframeOptions: { duration: this.timeout } })}
-              ></div>
-            </div>
-          ` : ''}
+          ${this.closeable
+            ? html`
+                <button
+                  class="close-button"
+                  @click=${this._onCloseButtonClick}
+                  @focus=${this._pause}
+                  @blur=${this._resume}
+                  title="${i18n('cc-toast.close')}"
+                >
+                  <cc-icon .icon="${iconClose}" a11y-name="${i18n('cc-toast.close')}"></cc-icon>
+                </button>
+              `
+            : ''}
+          ${this.timeout > 0
+            ? html`
+                <div class="progress-bar ${classMap({ invisible: !this.showProgress })}">
+                  <div class="progress-bar-track" ${animate({ keyframeOptions: { duration: this.timeout } })}></div>
+                </div>
+              `
+            : ''}
         </div>
       </div>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
@@ -192,14 +196,15 @@ export class CcToast extends LitElement {
         /* region COMMON */
 
         .toast {
+          align-items: stretch;
+          background-color: var(--toast-color);
+          border: 1px solid var(--toast-color);
+          border-radius: 0.3em;
+          box-shadow:
+            0 2px 4px rgb(38 38 38 / 25%),
+            0 5px 15px rgb(38 38 38 / 25%);
           display: flex;
           overflow: hidden;
-          align-items: stretch;
-          border: 1px solid var(--toast-color);
-          background-color: var(--toast-color);
-          border-radius: 0.3em;
-          box-shadow: 0 2px 4px rgb(38 38 38 / 25%),
-            0 5px 15px rgb(38 38 38 / 25%);
           pointer-events: all;
         }
         /* endregion */
@@ -226,11 +231,11 @@ export class CcToast extends LitElement {
         /* region ICON */
 
         .icon-wrapper {
-          display: flex;
           align-items: center;
-          padding: var(--padding);
-          border-right: 1px solid var(--toast-color);
           background-color: var(--toast-color);
+          border-right: 1px solid var(--toast-color);
+          display: flex;
+          padding: var(--padding);
         }
 
         .icon {
@@ -238,26 +243,26 @@ export class CcToast extends LitElement {
           --cc-icon-size: 1.8em;
         }
         /* endregion */
-        
+
         .right {
-          position: relative;
+          background-color: var(--cc-color-bg-default);
           display: flex;
           flex: 1 1 auto;
           justify-content: stretch;
-          background-color: var(--cc-color-bg-default);
+          position: relative;
         }
-        
+
         /* region CONTENT */
 
         .content {
+          align-self: center;
+          color: var(--toast-color);
           display: flex;
           flex: 1 1 auto;
           flex-direction: column;
-          align-self: center;
+          gap: 0.5em;
           justify-content: center;
           padding: var(--padding);
-          color: var(--toast-color);
-          gap: 0.5em;
         }
 
         .heading {
@@ -271,28 +276,28 @@ export class CcToast extends LitElement {
         .close-button {
           --cc-icon-color: var(--cc-color-text-weak);
           --cc-icon-size: 1.5em;
-        
-          width: auto;
-          height: auto;
+
           align-self: start;
-          padding: 0.2em;
-          border: none;
-          margin: 0.25em;
           background-color: transparent;
+          border: none;
           border-radius: var(--cc-border-radius-small, 0.15em);
           cursor: pointer;
+          height: auto;
+          margin: 0.25em;
+          padding: 0.2em;
+          width: auto;
         }
 
         .close-button img {
           display: block;
-          width: 1em;
           height: 1em;
+          width: 1em;
         }
 
         .close-button:hover {
           background-color: var(--cc-color-bg-neutral-hovered);
         }
-        
+
         .close-button:enabled:focus {
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
@@ -302,16 +307,16 @@ export class CcToast extends LitElement {
         /* region PROGRESS */
 
         .progress-bar {
-          position: absolute;
           bottom: 0;
-          width: 100%;
           height: 0.3em;
+          position: absolute;
+          width: 100%;
         }
 
         .progress-bar-track {
-          width: 0;
-          height: 100%;
           background-color: var(--toast-color);
+          height: 100%;
+          width: 0;
         }
 
         .progress-bar.invisible {

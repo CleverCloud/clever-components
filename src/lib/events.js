@@ -5,7 +5,7 @@
  * @param {any} [detail]
  * @return {CustomEvent} the event that has been dispatched.
  */
-export function dispatchCustomEvent (node, eventNameOrSuffix, detail) {
+export function dispatchCustomEvent(node, eventNameOrSuffix, detail) {
   const eventName = getEventName(node, eventNameOrSuffix);
   const event = new CustomEvent(eventName, { detail, bubbles: true, composed: true });
   node.dispatchEvent(event);
@@ -20,7 +20,7 @@ const betaComponentNodeNameRegex = /^(cc-.+?)-beta$/;
  * @param {string} eventNameOrSuffix
  * @return {string}
  */
-function getEventName (node, eventNameOrSuffix) {
+function getEventName(node, eventNameOrSuffix) {
   if (eventNameOrSuffix.includes(':')) {
     return eventNameOrSuffix;
   }
@@ -48,7 +48,7 @@ export class EventHandler {
    * @param {string} event The name of the event to listen to.
    * @param {(event: T) => void} handler The function to execute when event occurs.
    */
-  constructor (element, event, handler) {
+  constructor(element, event, handler) {
     this._element = element;
     this._event = event;
     this._handler = handler;
@@ -58,7 +58,7 @@ export class EventHandler {
   /**
    * Adds the event listener
    */
-  connect () {
+  connect() {
     if (!this._connected && this._castHandler(this._handler)) {
       this._element.addEventListener(this._event, this._handler);
       this._connected = true;
@@ -68,7 +68,7 @@ export class EventHandler {
   /**
    * Removes the event listener
    */
-  disconnect () {
+  disconnect() {
     if (this._connected && this._castHandler(this._handler)) {
       this._element.removeEventListener(this._event, this._handler);
       this._connected = false;
@@ -80,7 +80,7 @@ export class EventHandler {
    * @param {(event: T) => void} _handler
    * @return {_handler is EventListener}
    */
-  _castHandler (_handler) {
+  _castHandler(_handler) {
     return true;
   }
 }

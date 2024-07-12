@@ -5,9 +5,9 @@ import { ResizeController } from '../../controllers/resize-controller.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
+import '../cc-icon/cc-icon.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
-import '../cc-icon/cc-icon.js';
 
 // 800 seems like a good arbitrary value for the content we need to display.
 const BREAKPOINT = 800;
@@ -70,8 +70,7 @@ const DEFAULT_TEMPORALITY_LIST = [{ type: '30-days', digits: 2 }];
  * @cssprop {Color} --cc-pricing-hovered-color - Sets the text color used on hover (defaults: `purple`).
  */
 export class CcPricingProduct extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       action: { type: String },
       currency: { type: Object },
@@ -80,7 +79,7 @@ export class CcPricingProduct extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {ActionType} Sets the type of action: "add" to display add buttons for each plan and "none" for no actions (defaults to "add"). */
@@ -93,9 +92,9 @@ export class CcPricingProduct extends LitElement {
     this.product = { state: 'loading' };
 
     /**
-    * @type {Temporality[]} Sets the time window(s) you want to display the prices in (defaults to 30 days with 2 fraction digits).
-    * You may display one or several time windows at once.
-    */
+     * @type {Temporality[]} Sets the time window(s) you want to display the prices in (defaults to 30 days with 2 fraction digits).
+     * You may display one or several time windows at once.
+     */
     this.temporalities = DEFAULT_TEMPORALITY_LIST;
 
     /** @type {ResizeController} */
@@ -108,7 +107,7 @@ export class CcPricingProduct extends LitElement {
    * @param {Feature} feature - the feature to translate
    * @return {string|undefined} the translated feature name if a translation exists or nothing if the translation does not exist
    */
-  _getFeatureName (feature) {
+  _getFeatureName(feature) {
     if (feature == null) {
       return '';
     }
@@ -128,7 +127,7 @@ export class CcPricingProduct extends LitElement {
    * @param {feature} feature - the feature to get the formatted value from
    * @return {string} the formatted value for the given feature or the feature value itself if it does not require any formatting
    */
-  _getFeatureValue (feature) {
+  _getFeatureValue(feature) {
     if (feature == null) {
       return '';
     }
@@ -138,11 +137,11 @@ export class CcPricingProduct extends LitElement {
       case 'boolean-shared':
         return i18n('cc-pricing-product.type.boolean-shared', { shared: feature.value === 'shared' });
       case 'bytes':
-        return (feature.code === 'memory' && feature.value === '0')
+        return feature.code === 'memory' && feature.value === '0'
           ? i18n('cc-pricing-product.type.boolean-shared', { shared: true })
           : i18n('cc-pricing-product.type.bytes', { bytes: Number(feature.value) });
       case 'number':
-        return (feature.code === 'cpu' && feature.value === '0')
+        return feature.code === 'cpu' && feature.value === '0'
           ? i18n('cc-pricing-product.type.boolean-shared', { shared: true })
           : i18n('cc-pricing-product.type.number', { number: Number(feature.value) });
       case 'number-cpu-runtime':
@@ -162,18 +161,18 @@ export class CcPricingProduct extends LitElement {
    * @param {number} hourlyPrice - the hourly price to compute
    * @return {number} the computed price based on the given temporality
    */
-  _getPrice (type, hourlyPrice) {
+  _getPrice(type, hourlyPrice) {
     if (type === 'second') {
-      return hourlyPrice / 60 / 60 * this.currency.changeRate;
+      return (hourlyPrice / 60 / 60) * this.currency.changeRate;
     }
     if (type === 'minute') {
-      return hourlyPrice / 60 * this.currency.changeRate;
+      return (hourlyPrice / 60) * this.currency.changeRate;
     }
     if (type === 'hour') {
       return hourlyPrice * this.currency.changeRate;
     }
     if (type === '1000-minutes') {
-      return hourlyPrice / 60 * 1000 * this.currency.changeRate;
+      return (hourlyPrice / 60) * 1000 * this.currency.changeRate;
     }
     if (type === 'day') {
       return hourlyPrice * 24 * this.currency.changeRate;
@@ -189,7 +188,7 @@ export class CcPricingProduct extends LitElement {
    * @param {Temporality['type']} type - the temporality type
    * @return {string} the translated label corresponding to the given temporality
    */
-  _getPriceLabel (type) {
+  _getPriceLabel(type) {
     if (type === 'second') {
       return i18n('cc-pricing-product.price-name.second');
     }
@@ -218,7 +217,7 @@ export class CcPricingProduct extends LitElement {
    * @param {number} hourlyPrice - the price to base the calculations on
    * @param {number} digits - the number of digits to be used for price rounding
    */
-  _getPriceValue (type, hourlyPrice, digits) {
+  _getPriceValue(type, hourlyPrice, digits) {
     const price = this._getPrice(type, hourlyPrice);
     if (price != null) {
       return i18n('cc-pricing-product.price', { price, code: this.currency.code, digits });
@@ -232,20 +231,16 @@ export class CcPricingProduct extends LitElement {
    * @param {string} productName - the name of the product to which the plan is attached
    * @param {Plan} plan - the plan to be added to the estimation
    */
-  _onAddPlan (productName, plan) {
+  _onAddPlan(productName, plan) {
     dispatchCustomEvent(this, 'add-plan', { productName, ...plan });
   }
 
-  render () {
-
+  render() {
     return html`
-
-      ${this.product.state === 'error' ? html`
-        <cc-notice intent="warning" message=${i18n('cc-pricing-product.error')}></cc-notice>
-      ` : ''}
-      ${this.product.state === 'loading' ? html`
-        <cc-loader></cc-loader>
-      ` : ''}
+      ${this.product.state === 'error'
+        ? html` <cc-notice intent="warning" message=${i18n('cc-pricing-product.error')}></cc-notice> `
+        : ''}
+      ${this.product.state === 'loading' ? html` <cc-loader></cc-loader> ` : ''}
       ${this.product.state === 'loaded'
         ? this._renderProductPlans(this.product.name, this.product.plans, this.product.productFeatures)
         : ''}
@@ -257,15 +252,16 @@ export class CcPricingProduct extends LitElement {
    * @param {Plan[]} productPlans - the list of plans attached to this product
    * @param {Feature[]} productFeatures - the list of features to display
    */
-  _renderProductPlans (productName, productPlans, productFeatures) {
-
+  _renderProductPlans(productName, productPlans, productFeatures) {
     // this component is not rerendering very often so we consider we can afford to sort plans and filter the features here.
     const sortedPlans = [...productPlans].sort((a, b) => a.price - b.price);
-    const filteredProductFeatures = productFeatures.filter((feature) => AVAILABLE_FEATURES.includes(feature.code) || feature.name != null);
+    const filteredProductFeatures = productFeatures.filter(
+      (feature) => AVAILABLE_FEATURES.includes(feature.code) || feature.name != null,
+    );
 
     // We don't really have a good way to detect when the component should switch between big and small mode.
     // Also, when this component is used several times in the page, it's better if all instances switch at the same breakpoint.
-    return (this._resizeController.width > BREAKPOINT)
+    return this._resizeController.width > BREAKPOINT
       ? this._renderBigPlans(productName, sortedPlans, filteredProductFeatures)
       : this._renderSmallPlans(productName, sortedPlans, filteredProductFeatures);
   }
@@ -275,46 +271,58 @@ export class CcPricingProduct extends LitElement {
    * @param {Plan[]} sortedPlans
    * @param {Feature[]} productFeatures
    */
-  _renderBigPlans (productName, sortedPlans, productFeatures) {
+  _renderBigPlans(productName, sortedPlans, productFeatures) {
     const temporality = this.temporalities ?? DEFAULT_TEMPORALITY_LIST;
 
     return html`
       <table>
-        <caption class="visually-hidden">${productName}</caption>
+        <caption class="visually-hidden">
+          ${productName}
+        </caption>
         <thead>
           <tr>
             <th>${i18n('cc-pricing-product.plan')}</th>
-            ${productFeatures.map((feature) => html`
-              <th class=${classMap({ 'number-align': NUMBER_FEATURE_TYPES.includes(feature.type) })}>${this._getFeatureName(feature)}</th>
-            `)}
-            ${temporality.map(({ type }) => html`
-              <th class="number-align">${this._getPriceLabel(type)}</th>
-            `)}
-            ${this.action === 'add' ? html`
-              <th class="btn-col"></th>
-            ` : ''}
+            ${productFeatures.map(
+              (feature) => html`
+                <th class=${classMap({ 'number-align': NUMBER_FEATURE_TYPES.includes(feature.type) })}>
+                  ${this._getFeatureName(feature)}
+                </th>
+              `,
+            )}
+            ${temporality.map(({ type }) => html` <th class="number-align">${this._getPriceLabel(type)}</th> `)}
+            ${this.action === 'add' ? html` <th class="btn-col"></th> ` : ''}
           </tr>
         </thead>
         <tbody>
-        ${sortedPlans.map((plan) => html`
-          <tr>
-            <td>${plan.name}</td>
-            ${this._renderBigPlanFeatures(plan.features, productFeatures)}
-            ${temporality.map(({ type, digits }) => html`
-              <td class="number-align">${this._getPriceValue(type, plan.price, digits)}</td>
-            `)}
-            ${this.action === 'add' ? html`
-              <td class="btn-col">
-                <button class="btn" @click="${() => this._onAddPlan(productName, plan)}" title="${i18n('cc-pricing-product.add-button', { productName, size: plan.name })}">
-                  <cc-icon
-                    .icon=${iconAdd}
-                    a11y-name=${i18n('cc-pricing-product.add-button', { productName, size: plan.name })}
-                  ></cc-icon>
-                </button>
-              </td>
-            ` : ''}
-          </tr>
-        `)}
+          ${sortedPlans.map(
+            (plan) => html`
+              <tr>
+                <td>${plan.name}</td>
+                ${this._renderBigPlanFeatures(plan.features, productFeatures)}
+                ${temporality.map(
+                  ({ type, digits }) => html`
+                    <td class="number-align">${this._getPriceValue(type, plan.price, digits)}</td>
+                  `,
+                )}
+                ${this.action === 'add'
+                  ? html`
+                      <td class="btn-col">
+                        <button
+                          class="btn"
+                          @click="${() => this._onAddPlan(productName, plan)}"
+                          title="${i18n('cc-pricing-product.add-button', { productName, size: plan.name })}"
+                        >
+                          <cc-icon
+                            .icon=${iconAdd}
+                            a11y-name=${i18n('cc-pricing-product.add-button', { productName, size: plan.name })}
+                          ></cc-icon>
+                        </button>
+                      </td>
+                    `
+                  : ''}
+              </tr>
+            `,
+          )}
         </tbody>
       </table>
     `;
@@ -324,11 +332,13 @@ export class CcPricingProduct extends LitElement {
    * @param {Feature[]} planFeatures
    * @param {Feature[]} productFeatures
    */
-  _renderBigPlanFeatures (planFeatures, productFeatures) {
+  _renderBigPlanFeatures(planFeatures, productFeatures) {
     return productFeatures.map((feature) => {
       const currentPlanFeature = planFeatures.find((f) => feature.code === f.code);
       return html`
-        <td class=${classMap({ 'number-align': NUMBER_FEATURE_TYPES.includes(feature.type) })}>${this._getFeatureValue(currentPlanFeature)}</td>
+        <td class=${classMap({ 'number-align': NUMBER_FEATURE_TYPES.includes(feature.type) })}>
+          ${this._getFeatureValue(currentPlanFeature)}
+        </td>
       `;
     });
   }
@@ -338,38 +348,47 @@ export class CcPricingProduct extends LitElement {
    * @param {Plan[]} sortedPlans
    * @param {Feature[]} productFeatures
    */
-  _renderSmallPlans (productName, sortedPlans, productFeatures) {
+  _renderSmallPlans(productName, sortedPlans, productFeatures) {
     const temporality = this.temporalities ?? DEFAULT_TEMPORALITY_LIST;
 
     return html`
       <div>
         <div class="visually-hidden">${productName}</div>
-        ${sortedPlans.map((plan) => html`
-          <div class="plan">
+        ${sortedPlans.map(
+          (plan) => html`
+            <div class="plan">
+              <div class="plan-name">
+                <span>${plan.name}</span>
+                ${this.action === 'add'
+                  ? html`
+                      <button
+                        class="btn"
+                        @click="${() => this._onAddPlan(productName, plan)}"
+                        title="${i18n('cc-pricing-product.add-button', { productName, size: plan.name })}"
+                      >
+                        <cc-icon
+                          .icon=${iconAdd}
+                          a11y-name=${i18n('cc-pricing-product.add-button', { productName, size: plan.name })}
+                        ></cc-icon>
+                      </button>
+                    `
+                  : ''}
+              </div>
 
-            <div class="plan-name">
-              <span>${plan.name}</span>
-              ${this.action === 'add' ? html`
-                <button class="btn" @click="${() => this._onAddPlan(productName, plan)}" title="${i18n('cc-pricing-product.add-button', { productName, size: plan.name })}">
-                  <cc-icon
-                    .icon=${iconAdd}
-                    a11y-name=${i18n('cc-pricing-product.add-button', { productName, size: plan.name })}
-                  ></cc-icon>
-                </button>
-              ` : ''}
+              <dl class="feature-list">
+                ${this._renderSmallPlanFeatures(plan.features, productFeatures)}
+                ${temporality.map(
+                  ({ type, digits }) => html`
+                    <div class="price-small">
+                      <dt class="feature-name">${this._getPriceLabel(type)}</dt>
+                      <dd class="feature-value">${this._getPriceValue(type, plan.price, digits)}</dd>
+                    </div>
+                  `,
+                )}
+              </dl>
             </div>
-
-            <dl class="feature-list">
-              ${this._renderSmallPlanFeatures(plan.features, productFeatures)}
-              ${temporality.map(({ type, digits }) => html`
-                <div class="price-small">
-                  <dt class="feature-name">${this._getPriceLabel(type)}</dt>
-                  <dd class="feature-value">${this._getPriceValue(type, plan.price, digits)}</dd>
-                </div>
-              `)}
-            </dl>
-          </div>
-        `)}
+          `,
+        )}
       </div>
     `;
   }
@@ -378,7 +397,7 @@ export class CcPricingProduct extends LitElement {
    * @param {Feature[]} planFeatures
    * @param {Feature[]} productFeatures
    */
-  _renderSmallPlanFeatures (planFeatures, productFeatures) {
+  _renderSmallPlanFeatures(planFeatures, productFeatures) {
     return productFeatures.map((feature) => {
       const currentPlanFeature = planFeatures.find((f) => feature.code === f.code);
       return html`
@@ -390,170 +409,169 @@ export class CcPricingProduct extends LitElement {
     });
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       accessibilityStyles,
       css`
-      :host {
-        display: block;
-      }
+        :host {
+          display: block;
+        }
 
-      button:focus {
-        outline: var(--cc-focus-outline, #000);
-        outline-offset: var(--cc-focus-outline-offset);
-      }
+        button:focus {
+          outline: var(--cc-focus-outline, #000);
+          outline-offset: var(--cc-focus-outline-offset);
+        }
 
-      cc-loader {
-        min-height: 20em;
-      }
+        cc-loader {
+          min-height: 20em;
+        }
 
-      cc-notice {
-        max-width: max-content;
-      }
-        
-      /* region pricing table */
-      /* region COMMON */
+        cc-notice {
+          max-width: max-content;
+        }
 
-      .number-align {
-        text-align: right;
-      }
+        /* region pricing table */
+        /* region COMMON */
 
-      /* this selector applies to content coming from the translation files */
+        .number-align {
+          text-align: right;
+        }
 
-      em[title] {
-        position: relative;
-        cursor: help;
-        font-style: normal;
-      }
+        /* this selector applies to content coming from the translation files */
 
-      /* this selector applies to content coming from the translation files. */    
-  
-      em[title] code {
-        color: var(--cc-color-text-primary-highlight, blue);
-        font-family: monospace;
-        font-weight: bold;
-      }
-      
-      .btn {
-        display: grid;
-        width: 1.5em;
-        height: 1.5em;
-        border: solid 1px var(--cc-color-border-neutral-strong, #eee);
-        background-color: var(--cc-color-bg-default, #fff);
-        color: var(--cc-color-text-weak, #333);
-        cursor: pointer;
-        font-size: 1.2em;
-        line-height: 1.2em;
-        place-content: center;
-      }
+        em[title] {
+          cursor: help;
+          font-style: normal;
+          position: relative;
+        }
 
-      .btn:hover {
-        --cc-icon-color: var(--cc-pricing-hovered-color);
+        /* this selector applies to content coming from the translation files. */
 
-        border-color: var(--cc-color-border-hovered);
-      }
+        em[title] code {
+          color: var(--cc-color-text-primary-highlight, blue);
+          font-family: monospace;
+          font-weight: bold;
+        }
 
-      /* endregion */
+        .btn {
+          background-color: var(--cc-color-bg-default, #fff);
+          border: solid 1px var(--cc-color-border-neutral-strong, #eee);
+          color: var(--cc-color-text-weak, #333);
+          cursor: pointer;
+          display: grid;
+          font-size: 1.2em;
+          height: 1.5em;
+          line-height: 1.2em;
+          place-content: center;
+          width: 1.5em;
+        }
 
-      /* region BIG */
+        .btn:hover {
+          --cc-icon-color: var(--cc-pricing-hovered-color);
 
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        border-spacing: 0;
-      }
+          border-color: var(--cc-color-border-hovered);
+        }
 
-      /* Fix to prevent position absolute from breaking border collapse between thead and tbody */
+        /* endregion */
 
-      caption.visually-hidden {
-        position: static;
-      }
+        /* region BIG */
 
-      tr {
-        border-block: solid 1px var(--cc-color-border-neutral-weak, #eee);
-      }
+        table {
+          border-collapse: collapse;
+          border-spacing: 0;
+          width: 100%;
+        }
 
-      th {
-        padding: 2em 0.5em;
-        color: var(--cc-color-text-weak, #333);
-        font-weight: bold;
-        text-align: left;
-      }
+        /* Fix to prevent position absolute from breaking border collapse between thead and tbody */
 
-      th.btn-col,
-      td.btn-col {
-        width: 2em;
-      }
+        caption.visually-hidden {
+          position: static;
+        }
 
-      td {
-        padding: 1.5em 0.5em;
-        color: var(--cc-color-text-default, #000);
-        font-weight: 500;
-        white-space: nowrap;
-      }
+        tr {
+          border-block: solid 1px var(--cc-color-border-neutral-weak, #eee);
+        }
 
-      td.btn-col {
-        padding: 0.25em 1em;
-      }
+        th {
+          color: var(--cc-color-text-weak, #333);
+          font-weight: bold;
+          padding: 2em 0.5em;
+          text-align: left;
+        }
 
-      tr:hover td {
-        background-color: var(--cc-color-bg-neutral-hovered, #f5f5f5);
-      }
+        th.btn-col,
+        td.btn-col {
+          width: 2em;
+        }
 
-      .price-col {
-        padding: 0;
-      }
+        td {
+          color: var(--cc-color-text-default, #000);
+          font-weight: 500;
+          padding: 1.5em 0.5em;
+          white-space: nowrap;
+        }
 
-      table em[title] code {
-        position: absolute;
-        left: 100%;
-        box-sizing: border-box;
-        padding: 0 0.15em;
-      }
-      
-      /* endregion */
+        td.btn-col {
+          padding: 0.25em 1em;
+        }
 
-      /* region SMALL */
+        tr:hover td {
+          background-color: var(--cc-color-bg-neutral-hovered, #f5f5f5);
+        }
 
-      .plan {
-        padding: 1em;
-        border-bottom: 1px solid var(--cc-color-border-neutral-weak, #ddd);
-        margin: 0;
-      }
+        .price-col {
+          padding: 0;
+        }
 
-      .plan-name {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 1em;
-        font-size: 1.2em;
-        font-weight: bold;
-      }
+        table em[title] code {
+          box-sizing: border-box;
+          left: 100%;
+          padding: 0 0.15em;
+          position: absolute;
+        }
 
-      
-      .feature-list {
-        display: grid;
-        gap: 1em;
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      }
+        /* endregion */
 
-      dl,
-      dd,
-      dt {
-        padding: 0;
-        margin: 0;
-      }
+        /* region SMALL */
 
-      dd {
-        color: var(--cc-color-text-default, #000);
-        font-weight: 500;
-      }
-      
-      dt {
-        color: var(--cc-color-text-weak);
-        font-weight: 600;
-      }
-      /*  endregion */
+        .plan {
+          border-bottom: 1px solid var(--cc-color-border-neutral-weak, #ddd);
+          margin: 0;
+          padding: 1em;
+        }
+
+        .plan-name {
+          display: flex;
+          font-size: 1.2em;
+          font-weight: bold;
+          justify-content: space-between;
+          margin-bottom: 1em;
+        }
+
+        .feature-list {
+          display: grid;
+          gap: 1em;
+          grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        }
+
+        dl,
+        dd,
+        dt {
+          margin: 0;
+          padding: 0;
+        }
+
+        dd {
+          color: var(--cc-color-text-default, #000);
+          font-weight: 500;
+        }
+
+        dt {
+          color: var(--cc-color-text-weak);
+          font-weight: 600;
+        }
+        /*  endregion */
       `,
     ];
   }

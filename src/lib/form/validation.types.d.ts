@@ -15,4 +15,4 @@ export interface Validator {
 
 export type ErrorMessage = null | string | Node;
 
-export type ErrorMessageMap = {[code: string]: ErrorMessage | (() => ErrorMessage)};
+export type ErrorMessageMap = { [code: string]: ErrorMessage | (() => ErrorMessage) };

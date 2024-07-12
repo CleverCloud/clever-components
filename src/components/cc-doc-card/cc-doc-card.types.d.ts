@@ -1,16 +1,16 @@
 export type DocCardState = DocCardStateLoaded | DocCardStateLoading;
 
 export interface DocCardStateLoaded extends DocCard {
-    type: 'loaded';
+  type: 'loaded';
 }
 
 export interface DocCardStateLoading {
-    type: 'loading';
+  type: 'loading';
 }
 
 export interface DocCard {
-    description: string;
-    heading: string;
-    icons: string[];
-    link: string;
+  description: string;
+  heading: string;
+  icons: string[];
+  link: string;
 }

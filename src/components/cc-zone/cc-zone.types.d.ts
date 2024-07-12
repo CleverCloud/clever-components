@@ -7,7 +7,7 @@ export interface ZoneStateLoaded extends Zone {
 }
 
 export interface ZoneStateLoading {
-  type: 'loading'
+  type: 'loading';
 }
 
 export type ZoneModeType = 'default' | 'small' | 'small-infra';

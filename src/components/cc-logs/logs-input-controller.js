@@ -24,11 +24,10 @@ const DRAG_ANIMATION_LOG_OFFSET_INTERVAL = DRAG_ANIMATION_LOG_OFFSET_MAX - DRAG_
  * Controls some of the user interactions that can be done on the cc-logs component.
  */
 export class LogsInputController {
-
   /**
    * @param {CcLogs} host
    */
-  constructor (host) {
+  constructor(host) {
     /** @type {CcLogs} */
     this._host = host;
 
@@ -53,7 +52,7 @@ export class LogsInputController {
 
   // region Keyboard navigation
 
-  onKeyDown (e) {
+  onKeyDown(e) {
     if (e.key === 'Escape') {
       this._host._onEscape();
     }
@@ -64,22 +63,19 @@ export class LogsInputController {
     // we keep track of the shift modifier key to handle it in keyboard selection on every browser
     else if (e.key === 'Shift') {
       this._keyModifiers.shift = true;
-    }
-    else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-
+    } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
       // we don't want to use the native behavior: scroll up/down
       // Note that user will still have PageUp and PageDown keys to scroll up and down
       e.preventDefault();
 
-      const direction = (e.key === 'ArrowDown') ? 'down' : 'up';
+      const direction = e.key === 'ArrowDown' ? 'down' : 'up';
 
       if (this._arrowKeysAnimationRunner.isStopped()) {
-
         let hasAnimationStarted = false;
 
         this._arrowKeysAnimationRunner.start((nowTimestamp, startTimestamp, lastTimestamp) => {
           const isFirstFrame = nowTimestamp === startTimestamp;
-          hasAnimationStarted ||= (nowTimestamp - startTimestamp) > ARROW_KEYS_ANIMATION_DELAY_MS;
+          hasAnimationStarted ||= nowTimestamp - startTimestamp > ARROW_KEYS_ANIMATION_DELAY_MS;
 
           // Browsers will run `requestAnimationFrame()` as many times as they can per second (depending on the system and what it can handle).
           // We want to run our `this._host._onArrow()` at a slower speed, that's why we use timestamps diffs.
@@ -93,42 +89,35 @@ export class LogsInputController {
           return false;
         });
       }
-    }
-    else if (e.key === 'c' && this._keyModifiers.ctrl) {
+    } else if (e.key === 'c' && this._keyModifiers.ctrl) {
       this._host._onCopySelectionToClipboard();
-    }
-    else if (e.key === 'Enter' || e.key === ' ') {
+    } else if (e.key === 'Enter' || e.key === ' ') {
       // we prevent default because we don't want the native keyboard click simulation to be fired
       e.preventDefault();
       const logIndex = Number(e.target.closest(`.log`).dataset.index);
       this._host._onClickLog(logIndex, this._keyModifiers);
-    }
-    else if (e.key === 'a' && this._keyModifiers.ctrl) {
+    } else if (e.key === 'a' && this._keyModifiers.ctrl) {
       // we prevent default because we don't want the native keyboard "ctrl + a" to be fired
       e.preventDefault();
       this._host._onSelectAll();
-    }
-    else if (e.key === 'Home') {
+    } else if (e.key === 'Home') {
       this._host._onHome(this._keyModifiers.ctrl && this._keyModifiers.shift);
-    }
-    else if (e.key === 'End') {
+    } else if (e.key === 'End') {
       this._host._onEnd(this._keyModifiers.ctrl && this._keyModifiers.shift);
     }
   }
 
-  onKeyUp (e) {
+  onKeyUp(e) {
     if (e.key === 'Control' || e.key === 'Meta') {
       this._keyModifiers.ctrl = false;
-    }
-    else if (e.key === 'Shift') {
+    } else if (e.key === 'Shift') {
       this._keyModifiers.shift = false;
-    }
-    else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
       this._arrowKeysAnimationRunner.stop();
     }
   }
 
-  onClick (e) {
+  onClick(e) {
     // When a drag stop happens, the mouse is released and Chrome & Safari consider that a click event happened on the container.
     // Firefox doesn't! And we think that a drag movement ending should not be a click.
     // Therefore, if a drag stop just happened (_dragState = stopping) we should not trigger the onClick on the host.
@@ -137,7 +126,7 @@ export class LogsInputController {
     }
   }
 
-  onClickLog (e) {
+  onClickLog(e) {
     // We don't want to pollute the parent click listener
     e.stopPropagation();
     const logIndex = Number(e.target.closest(`.log`).dataset.index);
@@ -147,7 +136,7 @@ export class LogsInputController {
   /**
    * Initiates the drag movement.
    */
-  onMouseDownGutter (e) {
+  onMouseDownGutter(e) {
     this._windowMouseMoveHandler.connect();
     this._windowMouseUpHandler.connect();
     this._dragState = 'init';
@@ -156,19 +145,18 @@ export class LogsInputController {
   /**
    * Handles the drag movement.
    */
-  _onDrag (e) {
+  _onDrag(e) {
     // We do not support drag with ctrl and shift key modifiers.
     if (e.ctrlKey || e.shiftKey) {
       return;
     }
 
-    const isFirstDrag = (this._dragState === 'init');
+    const isFirstDrag = this._dragState === 'init';
     this._dragState = 'dragging';
 
     const { position, distance } = this._getCursorPosition(e, this._host);
 
     if (position === 'inside' || position === 'left' || position === 'right') {
-
       // Stop the animation
       this._dragAnimationRunner.stop();
 
@@ -186,17 +174,18 @@ export class LogsInputController {
     }
 
     if (position === 'above' || position === 'below') {
-
       const direction = position === 'above' ? 'up' : 'down';
 
       const speed = clampNumber(distance, DRAG_VERTICAL_DISTANCE_PX_MIN, DRAG_VERTICAL_DISTANCE_PX_MAX);
-      this._dragAnimationPeriodMs = Math.ceil(DRAG_ANIMATION_PERIOD_MS_MAX - (speed * DRAG_ANIMATION_PERIOD_INTERVAL / DRAG_VERTICAL_DISTANCE_INTERVAL));
-      this._dragAnimationLogOffset = Math.ceil(speed * DRAG_ANIMATION_LOG_OFFSET_INTERVAL / DRAG_VERTICAL_DISTANCE_INTERVAL);
+      this._dragAnimationPeriodMs = Math.ceil(
+        DRAG_ANIMATION_PERIOD_MS_MAX - (speed * DRAG_ANIMATION_PERIOD_INTERVAL) / DRAG_VERTICAL_DISTANCE_INTERVAL,
+      );
+      this._dragAnimationLogOffset = Math.ceil(
+        (speed * DRAG_ANIMATION_LOG_OFFSET_INTERVAL) / DRAG_VERTICAL_DISTANCE_INTERVAL,
+      );
 
       if (this._dragAnimationRunner.isStopped()) {
-
         this._dragAnimationRunner.start((nowTimestamp, startTimestamp, lastTimestamp) => {
-
           // Browsers will run `requestAnimationFrame()` as many times as they can per second (depending on the system and what it can handle).
           // We want to run our `this._host._onDrag()` at a slower speed, that's why we use timestamps diffs.
           const shouldTickAnimation = nowTimestamp - lastTimestamp > this._dragAnimationPeriodMs;
@@ -215,7 +204,7 @@ export class LogsInputController {
   /**
    * Terminate the drag movement.
    */
-  _onDragStop (e) {
+  _onDragStop(e) {
     this._windowMouseMoveHandler.disconnect();
     this._windowMouseUpHandler.disconnect();
     this._dragAnimationRunner.stop();
@@ -239,11 +228,10 @@ export class LogsInputController {
    * @param {number} distance
    * @return {EventTarget[]}
    */
-  _getElementsFromPoint (event, position, distance) {
+  _getElementsFromPoint(event, position, distance) {
     if (position === 'inside') {
       return event.composedPath();
-    }
-    else if (position === 'left' || position === 'right') {
+    } else if (position === 'left' || position === 'right') {
       const x = event.clientX + (position === 'left' ? +1 : -1) * (distance + this._host.offsetWidth / 2);
       const y = event.clientY;
       return elementsFromPoint(x, y);
@@ -258,7 +246,7 @@ export class LogsInputController {
    * @param {HTMLElement} target
    * @return {{position: 'above' | 'below' | 'left' | 'right' | 'inside', distance?: number}}
    */
-  _getCursorPosition (e, target) {
+  _getCursorPosition(e, target) {
     const width = target.offsetWidth;
     const height = target.offsetHeight;
     const coordinates = this._getRelativeCoordinates(e, target);
@@ -287,7 +275,7 @@ export class LogsInputController {
    * @param {HTMLElement} referenceElement
    * @return {{x: number, y: number}}
    */
-  _getRelativeCoordinates (event, referenceElement) {
+  _getRelativeCoordinates(event, referenceElement) {
     const position = {
       x: event.pageX,
       y: event.pageY,

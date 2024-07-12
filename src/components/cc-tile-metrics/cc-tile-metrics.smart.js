@@ -21,8 +21,7 @@ defineSmartComponent({
     consoleGrafanaLink: { type: String },
     grafanaBaseLink: { type: String },
   },
-  onContextUpdate ({ component, context, onEvent, updateComponent, signal }) {
-
+  onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId, appId, grafanaBaseLink, consoleGrafanaLink } = context;
 
     updateComponent('state', { type: 'loading' });
@@ -31,8 +30,7 @@ defineSmartComponent({
       .then(({ cpuMetrics, memMetrics }) => {
         if (cpuMetrics.length === 0 || memMetrics.length === 0 || isAppStopped(cpuMetrics)) {
           updateComponent('metricsState', { type: 'empty' });
-        }
-        else {
+        } else {
           updateComponent('metricsState', {
             type: 'loaded',
             metricsData: { cpuMetrics, memMetrics },
@@ -63,7 +61,7 @@ defineSmartComponent({
  * @param {AbortSignal} parameters.signal
  * @returns {Promise<MetricsData>}
  */
-function fetchMetrics ({ apiConfig, ownerId, appId, signal }) {
+function fetchMetrics({ apiConfig, ownerId, appId, signal }) {
   return getAppMetrics({ id: ownerId, appId, interval: 'P1D', span: 'PT1H' })
     .then(sendToApi({ apiConfig, signal }))
     .then((metrics) => {
@@ -78,7 +76,7 @@ function fetchMetrics ({ apiConfig, ownerId, appId, signal }) {
  * @param {string} name
  * @returns {Metric[]}
  */
-function extractMetric (metrics, name) {
+function extractMetric(metrics, name) {
   const metric = metrics?.find((m) => m.name === name)?.data ?? [];
   return metric.map(({ timestamp, value }) => {
     return {
@@ -98,7 +96,7 @@ function extractMetric (metrics, name) {
  * @param {AbortSignal} parameters.signal
  * @returns {Promise<string>}
  */
-function fetchGrafanaAppLink ({ apiConfig, ownerId, appId, grafanaBaseLink, signal }) {
+function fetchGrafanaAppLink({ apiConfig, ownerId, appId, grafanaBaseLink, signal }) {
   return getGrafanaOrganisation({ id: ownerId })
     .then(sendToApi({ apiConfig, signal }))
     .then((grafanaOrg) => {
@@ -113,6 +111,6 @@ function fetchGrafanaAppLink ({ apiConfig, ownerId, appId, grafanaBaseLink, sign
  * @param {Metric[]} data
  * @returns {boolean}
  */
-function isAppStopped (data) {
+function isAppStopped(data) {
   return data.filter((data) => data.value === 0).length === NUMBER_OF_POINTS;
 }

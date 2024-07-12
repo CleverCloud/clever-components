@@ -1,19 +1,16 @@
-import '../cc-button/cc-button.js';
-import '../cc-input-text/cc-input-text.js';
-import '../cc-block-section/cc-block-section.js';
-import '../cc-block/cc-block.js';
-import '../cc-notice/cc-notice.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import {
-  iconRemixCloseLine as iconClose,
-  iconRemixHistoryLine as iconBackup,
-} from '../../assets/cc-remix.icons.js';
+import { iconRemixHistoryLine as iconBackup, iconRemixCloseLine as iconClose } from '../../assets/cc-remix.icons.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
+import '../cc-block-section/cc-block-section.js';
+import '../cc-block/cc-block.js';
+import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
+import '../cc-input-text/cc-input-text.js';
+import '../cc-notice/cc-notice.js';
 
 /** @type {Backup} */
 const SKELETON_BACKUP = { createdAt: new Date(), expiresAt: new Date(), url: '', deleteCommand: 'skeleton' };
@@ -45,8 +42,7 @@ const SKELETON_BACKUPS = {
  * @cssdisplay grid
  */
 export class CcAddonBackups extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       state: { type: Object },
       _overlayType: { type: String, state: true },
@@ -54,7 +50,7 @@ export class CcAddonBackups extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {AddonBackupsState} Sets the state of the component. */
@@ -77,7 +73,7 @@ export class CcAddonBackups extends LitElement {
    * @returns {boolean}
    * @private
    */
-  _displaySectionWithService (providerId) {
+  _displaySectionWithService(providerId) {
     switch (providerId) {
       case 'es-addon':
         return true;
@@ -93,7 +89,7 @@ export class CcAddonBackups extends LitElement {
    * @returns {string}
    * @private
    */
-  _getBackupLink (providerId) {
+  _getBackupLink(providerId) {
     switch (providerId) {
       case 'es-addon':
         return i18n('cc-addon-backups.link.es-addon');
@@ -120,8 +116,8 @@ export class CcAddonBackups extends LitElement {
    * @returns {string}
    * @private
    */
-  _getBackupText ({ createdAt, expiresAt }) {
-    return (expiresAt != null)
+  _getBackupText({ createdAt, expiresAt }) {
+    return expiresAt != null
       ? i18n('cc-addon-backups.text', { createdAt, expiresAt })
       : i18n('cc-addon-backups.text.user-defined-retention', { createdAt });
   }
@@ -131,7 +127,7 @@ export class CcAddonBackups extends LitElement {
    * @returns {string}
    * @private
    */
-  _getDescription (providerId) {
+  _getDescription(providerId) {
     switch (providerId) {
       case 'es-addon':
         return i18n('cc-addon-backups.description.es-addon');
@@ -155,7 +151,7 @@ export class CcAddonBackups extends LitElement {
    * @returns {string}
    * @private
    */
-  _getManualDeleteDescription (providerId) {
+  _getManualDeleteDescription(providerId) {
     switch (providerId) {
       case 'es-addon':
       case 'es-addon-old':
@@ -170,7 +166,7 @@ export class CcAddonBackups extends LitElement {
    * @returns {string}
    * @private
    */
-  _getManualRestoreDescription (providerId) {
+  _getManualRestoreDescription(providerId) {
     switch (providerId) {
       case 'es-addon':
       case 'es-addon-old':
@@ -196,7 +192,7 @@ export class CcAddonBackups extends LitElement {
    * @returns {string}
    * @private
    */
-  _getRestoreWithServiceDescription (providerId, href) {
+  _getRestoreWithServiceDescription(providerId, href) {
     switch (providerId) {
       case 'es-addon':
         return i18n('cc-addon-backups.restore.with-service.description.es-addon', { href });
@@ -210,7 +206,7 @@ export class CcAddonBackups extends LitElement {
    * @returns {string}
    * @private
    */
-  _getRestoreWithServiceTitle (providerId) {
+  _getRestoreWithServiceTitle(providerId) {
     switch (providerId) {
       case 'es-addon':
         return i18n('cc-addon-backups.restore.with-service.title.es-addon');
@@ -220,7 +216,7 @@ export class CcAddonBackups extends LitElement {
   }
 
   /** @private */
-  _onCloseOverlay () {
+  _onCloseOverlay() {
     this._overlayType = null;
     this._selectedBackup = null;
     this.updateComplete.then(() => {
@@ -234,7 +230,7 @@ export class CcAddonBackups extends LitElement {
    * @param {Backup} backup
    * @private
    */
-  _onOpenOverlay (type, backup) {
+  _onOpenOverlay(type, backup) {
     /** @param {CcButtonClickEvent} e */
     return (e) => {
       this._overlayType = type;
@@ -249,17 +245,15 @@ export class CcAddonBackups extends LitElement {
     };
   }
 
-  render () {
+  render() {
     return html`
       <cc-block>
         <div slot="title">${i18n('cc-addon-backups.title')}</div>
 
-        ${this.state.type === 'error' ? html`
-            <cc-notice intent="warning" message="${i18n('cc-addon-backups.loading-error')}"></cc-notice>
-        ` : ''}
-
+        ${this.state.type === 'error'
+          ? html` <cc-notice intent="warning" message="${i18n('cc-addon-backups.loading-error')}"></cc-notice> `
+          : ''}
         ${this.state.type === 'loading' ? this._renderLoading(this.state) : ''}
-
         ${this.state.type === 'loaded' ? this._renderLoaded(this.state) : ''}
       </cc-block>
     `;
@@ -270,12 +264,10 @@ export class CcAddonBackups extends LitElement {
    * @returns {TemplateResult}
    * @private
    */
-  _renderLoading (state) {
+  _renderLoading(state) {
     return html`
       <div>
-        <span class="skeleton">
-          ${fakeString(150)}
-        </span>
+        <span class="skeleton"> ${fakeString(150)} </span>
       </div>
       ${this._renderBackups(state)}
     `;
@@ -286,20 +278,15 @@ export class CcAddonBackups extends LitElement {
    * @returns {TemplateResult}
    * @private
    */
-  _renderLoaded (state) {
+  _renderLoaded(state) {
     const hasData = state.backups.length > 0;
 
     return html`
       <div>${this._getDescription(state.providerId)}</div>
 
-      ${!hasData ? html`
-        <div class="cc-block_empty-msg">${i18n('cc-addon-backups.empty')}</div>
-      ` : ''}
-
+      ${!hasData ? html` <div class="cc-block_empty-msg">${i18n('cc-addon-backups.empty')}</div> ` : ''}
       ${hasData ? this._renderBackups(state) : ''}
-
       ${this._overlayType === 'restore' ? this._renderRestoreOverlay(state.providerId, state.passwordForCommand) : ''}
-
       ${this._overlayType === 'delete' ? this._renderDeleteOverlay(state.providerId, state.passwordForCommand) : ''}
     `;
   }
@@ -308,47 +295,47 @@ export class CcAddonBackups extends LitElement {
    * @param {AddonBackupsStateLoaded | AddonBackupsStateLoading} state
    * @private
    */
-  _renderBackups (state) {
+  _renderBackups(state) {
     const skeleton = state.type === 'loading';
     const areBtnsDisabled = state.type === 'loading' || this._overlayType != null;
 
     const data = state.type === 'loaded' ? state : SKELETON_BACKUPS;
     return html`
       <div class="backup-list">
-          ${data.backups.map((backup) => html`
+        ${data.backups.map(
+          (backup) => html`
             <div class="backup">
               <span class="backup-icon"><cc-icon .icon=${iconBackup} size="lg"></cc-icon></span>
               <span class="backup-text">
                 <span class="backup-text-details ${classMap({ skeleton })}">${this._getBackupText(backup)}</span>
-                <br>
-                ${ccLink(
-                  this._overlayType == null ? backup.url : null,
-                  this._getBackupLink(data.providerId),
-                  skeleton,
-                )}
-                <cc-button 
-                  link 
-                  ?disabled=${areBtnsDisabled} 
-                  ?skeleton=${skeleton} 
+                <br />
+                ${ccLink(this._overlayType == null ? backup.url : null, this._getBackupLink(data.providerId), skeleton)}
+                <cc-button
+                  link
+                  ?disabled=${areBtnsDisabled}
+                  ?skeleton=${skeleton}
                   @cc-button:click=${this._onOpenOverlay('restore', backup)}
                 >
                   ${i18n('cc-addon-backups.restore.btn')}
                 </cc-button>
-                ${backup.deleteCommand != null ? html`
-                  <cc-button 
-                    link 
-                    ?disabled=${areBtnsDisabled} 
-                    ?skeleton=${skeleton} 
-                    @cc-button:click=${this._onOpenOverlay('delete', backup)}
-                  >
-                    ${i18n('cc-addon-backups.delete.btn')}
-                  </cc-button>
-                ` : ''}
+                ${backup.deleteCommand != null
+                  ? html`
+                      <cc-button
+                        link
+                        ?disabled=${areBtnsDisabled}
+                        ?skeleton=${skeleton}
+                        @cc-button:click=${this._onOpenOverlay('delete', backup)}
+                      >
+                        ${i18n('cc-addon-backups.delete.btn')}
+                      </cc-button>
+                    `
+                  : ''}
               </span>
             </div>
-          `)}
+          `,
+        )}
       </div>
-  `;
+    `;
   }
 
   /**
@@ -357,7 +344,7 @@ export class CcAddonBackups extends LitElement {
    * @returns {TemplateResult}
    * @private
    */
-  _renderRestoreOverlay (providerId, passwordForCommand) {
+  _renderRestoreOverlay(providerId, passwordForCommand) {
     return html`
       <!-- The restore and delete overlays are quite similar but's it's easier to read with a big if and some copy/paste than 8 ifs -->
       <div slot="overlay">
@@ -371,23 +358,28 @@ export class CcAddonBackups extends LitElement {
             outlined
             primary
             @cc-button:click=${this._onCloseOverlay}
-          >${i18n('cc-addon-backups.close-btn')}</cc-button>
+            >${i18n('cc-addon-backups.close-btn')}</cc-button
+          >
 
-          ${this._displaySectionWithService(providerId) ? html`
-            <cc-block-section>
-              <div slot="title">${this._getRestoreWithServiceTitle(providerId)}</div>
-              <div>${this._getRestoreWithServiceDescription(providerId, this._selectedBackup.url)}</div>
-            </cc-block-section>
-          ` : ''}
+          ${this._displaySectionWithService(providerId)
+            ? html`
+                <cc-block-section>
+                  <div slot="title">${this._getRestoreWithServiceTitle(providerId)}</div>
+                  <div>${this._getRestoreWithServiceDescription(providerId, this._selectedBackup.url)}</div>
+                </cc-block-section>
+              `
+            : ''}
 
           <cc-block-section>
             <div slot="title">${i18n('cc-addon-backups.restore.manual.title')}</div>
             <div>${this._getManualRestoreDescription(providerId)}</div>
-            ${this._selectedBackup.restoreCommand != null ? html`
-              <cc-input-text readonly clipboard value="${this._selectedBackup.restoreCommand}"></cc-input-text>
-              <div>${i18n('cc-addon-backups.command-password')}</div>
-              <cc-input-text readonly clipboard secret value=${passwordForCommand}></cc-input-text>
-            ` : ''}
+            ${this._selectedBackup.restoreCommand != null
+              ? html`
+                  <cc-input-text readonly clipboard value="${this._selectedBackup.restoreCommand}"></cc-input-text>
+                  <div>${i18n('cc-addon-backups.command-password')}</div>
+                  <cc-input-text readonly clipboard secret value=${passwordForCommand}></cc-input-text>
+                `
+              : ''}
           </cc-block-section>
         </cc-block>
       </div>
@@ -400,7 +392,7 @@ export class CcAddonBackups extends LitElement {
    * @returns {TemplateResult}
    * @private
    */
-  _renderDeleteOverlay (providerId, passwordForCommand) {
+  _renderDeleteOverlay(providerId, passwordForCommand) {
     return html`
       <div slot="overlay">
         <cc-block class="overlay">
@@ -413,14 +405,21 @@ export class CcAddonBackups extends LitElement {
             outlined
             primary
             @cc-button:click=${this._onCloseOverlay}
-          >${i18n('cc-addon-backups.close-btn')}</cc-button>
+            >${i18n('cc-addon-backups.close-btn')}</cc-button
+          >
 
-          ${this._displaySectionWithService(providerId) ? html`
-            <cc-block-section>
-              <div slot="title">${i18n('cc-addon-backups.delete.with-service.title.es-addon')}</div>
-              <div>${i18n('cc-addon-backups.delete.with-service.description.es-addon', { href: this._selectedBackup.url })}</div>
-            </cc-block-section>
-          ` : ''}
+          ${this._displaySectionWithService(providerId)
+            ? html`
+                <cc-block-section>
+                  <div slot="title">${i18n('cc-addon-backups.delete.with-service.title.es-addon')}</div>
+                  <div>
+                    ${i18n('cc-addon-backups.delete.with-service.description.es-addon', {
+                      href: this._selectedBackup.url,
+                    })}
+                  </div>
+                </cc-block-section>
+              `
+            : ''}
 
           <cc-block-section>
             <div slot="title">${i18n('cc-addon-backups.delete.manual.title')}</div>
@@ -434,7 +433,7 @@ export class CcAddonBackups extends LitElement {
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       skeletonStyles,
       linkStyles,
@@ -484,10 +483,10 @@ export class CcAddonBackups extends LitElement {
         }
 
         .overlay {
-          position: fixed;
-          max-width: 50em;
-          margin: 2em;
           box-shadow: 0 0 1em rgb(0 0 0 / 40%);
+          margin: 2em;
+          max-width: 50em;
+          position: fixed;
         }
 
         .overlay-close-btn {

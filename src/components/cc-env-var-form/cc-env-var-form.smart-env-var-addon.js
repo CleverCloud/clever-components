@@ -1,8 +1,8 @@
-import './cc-env-var-form.js';
-import '../cc-smart-container/cc-smart-container.js';
 import { getAllEnvVars } from '@clevercloud/client/esm/api/v2/addon.js';
 import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import '../cc-smart-container/cc-smart-container.js';
+import './cc-env-var-form.js';
 
 defineSmartComponent({
   selector: 'cc-env-var-form[context="env-var-addon"]',
@@ -11,8 +11,7 @@ defineSmartComponent({
     ownerId: { type: String },
     addonId: { type: String },
   },
-  onContextUpdate ({ context, updateComponent, signal }) {
-
+  onContextUpdate({ context, updateComponent, signal }) {
     updateComponent('state', { type: 'loading' });
 
     const { apiConfig, ownerId, addonId } = context;
@@ -28,6 +27,6 @@ defineSmartComponent({
   },
 });
 
-function fetchEnvVars ({ apiConfig, signal, ownerId, addonId }) {
+function fetchEnvVars({ apiConfig, signal, ownerId, addonId }) {
   return getAllEnvVars({ id: ownerId, addonId }).then(sendToApi({ apiConfig, signal }));
 }

@@ -1,5 +1,5 @@
-import './cc-img.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-img.js';
 
 export default {
   tags: ['autodocs'],
@@ -29,19 +29,31 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const noAccessibleName = makeStory(conf, {
-  items: [
-    { },
-    { skeleton: true },
-    { skeleton: true, src: 'http://placekitten.com/200/200' },
-  ],
+  items: [{}, { skeleton: true }, { skeleton: true, src: 'http://placekitten.com/200/200' }],
 });
 
 export const imageFitContain = makeStory(conf, {
   items: [
-    { a11yName: 'CC', src: 'https://assets.clever-cloud.com/infra/clever-cloud.svg', style: 'border: 1px solid #000; height: 7em; width: 2em;' },
-    { a11yName: 'CC', src: 'https://assets.clever-cloud.com/infra/clever-cloud.svg', style: 'border: 1px solid #000; height: 2em; width: 7em;' },
-    { a11yName: 'CC', src: 'https://assets.clever-cloud.com/infra/clever-cloud.svg', style: 'border: 1px solid #000; height: 7em; width: 2em; --cc-img-fit: contain;' },
-    { a11yName: 'CC', src: 'https://assets.clever-cloud.com/infra/clever-cloud.svg', style: 'border: 1px solid #000; height: 2em; width: 7em; --cc-img-fit: contain;' },
+    {
+      a11yName: 'CC',
+      src: 'https://assets.clever-cloud.com/infra/clever-cloud.svg',
+      style: 'border: 1px solid #000; height: 7em; width: 2em;',
+    },
+    {
+      a11yName: 'CC',
+      src: 'https://assets.clever-cloud.com/infra/clever-cloud.svg',
+      style: 'border: 1px solid #000; height: 2em; width: 7em;',
+    },
+    {
+      a11yName: 'CC',
+      src: 'https://assets.clever-cloud.com/infra/clever-cloud.svg',
+      style: 'border: 1px solid #000; height: 7em; width: 2em; --cc-img-fit: contain;',
+    },
+    {
+      a11yName: 'CC',
+      src: 'https://assets.clever-cloud.com/infra/clever-cloud.svg',
+      style: 'border: 1px solid #000; height: 2em; width: 7em; --cc-img-fit: contain;',
+    },
   ],
 });
 
@@ -82,7 +94,6 @@ export const simulationWithPortraitThenLandscape = makeStory(conf, {
   simulations: [
     storyWait(3000, ([component]) => {
       component.src = 'http://placekitten.com/200/500';
-
     }),
     storyWait(3000, ([component]) => {
       component.src = 'http://placekitten.com/500/200';

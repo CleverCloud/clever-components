@@ -1,16 +1,16 @@
-import { promises as fs } from 'fs';
-import util from 'util';
 import chalk from 'chalk';
+import { promises as fs } from 'fs';
 import rawGlob from 'glob';
 import { extractFromCode } from 'i18n-extract';
 import table from 'text-table';
+import util from 'util';
 import { translations as en } from '../src/translations/translations.en.js';
 import { translations as fr } from '../src/translations/translations.fr.js';
 
 const glob = util.promisify(rawGlob);
 const translationsByLang = { en, fr };
 
-async function getUsedKeys (sourceFilepaths) {
+async function getUsedKeys(sourceFilepaths) {
   const usedKeysByFile = {};
   for (const src of sourceFilepaths) {
     const code = await fs.readFile(src, 'utf8');
@@ -20,8 +20,7 @@ async function getUsedKeys (sourceFilepaths) {
   return usedKeysByFile;
 }
 
-async function run () {
-
+async function run() {
   const startTime = process.hrtime();
 
   let errors = false;
@@ -29,28 +28,17 @@ async function run () {
   const allUnusedKeys = new Map();
 
   const sourceFilepaths = await glob('./src/**/*.js', {
-    ignore: [
-      './src/lib/*.js',
-      './src/styles/*.js',
-      './src/translations/*.js',
-    ],
+    ignore: ['./src/lib/*.js', './src/styles/*.js', './src/translations/*.js'],
   });
 
   const usedKeysByFile = await getUsedKeys(sourceFilepaths);
 
-  console.log(
-    chalk
-      .bgWhite
-      .black
-      .bold(`\n ⌛ Checking translations for ${sourceFilepaths.length} files... `),
-  );
+  console.log(chalk.bgWhite.black.bold(`\n ⌛ Checking translations for ${sourceFilepaths.length} files... `));
 
   // MISSING KEYS
   sourceFilepaths.forEach((src) => {
     Object.entries(translationsByLang).forEach(([lang, translations]) => {
-
-      const missingKeys = usedKeysByFile[src]
-        .filter((key) => translations[key] == null);
+      const missingKeys = usedKeysByFile[src].filter((key) => translations[key] == null);
 
       if (missingKeys.length !== 0) {
         errors = true;
@@ -67,11 +55,7 @@ async function run () {
 
   const hasMissingKeys = allMissingKeys.size !== 0;
   if (hasMissingKeys) {
-    console.log(
-      chalk
-        .bgRed
-        .bold(`\n ⛔ ${allMissingKeys.size} keys are missing `),
-    );
+    console.log(chalk.bgRed.bold(`\n ⛔ ${allMissingKeys.size} keys are missing `));
 
     const formattedMissingKeys = [];
     allMissingKeys.forEach((values, key) => {
@@ -84,11 +68,9 @@ async function run () {
   const allUsedKeys = Object.values(usedKeysByFile).flat();
 
   Object.entries(translationsByLang).forEach(([lang, translations]) => {
-
     const translationsKeys = Object.keys(translations).filter((k) => k !== 'LANGUAGE');
 
-    const unusedKeys = translationsKeys
-      .filter((key) => !allUsedKeys.includes(key));
+    const unusedKeys = translationsKeys.filter((key) => !allUsedKeys.includes(key));
 
     if (unusedKeys.length !== 0) {
       errors = true;
@@ -104,12 +86,7 @@ async function run () {
 
   const hasUnusedKeys = allUnusedKeys.size !== 0;
   if (hasUnusedKeys) {
-    console.log(
-      chalk
-        .bgYellow
-        .black
-        .bold(`\n ⚠️  ${allUnusedKeys.size} keys are unused `),
-    );
+    console.log(chalk.bgYellow.black.bold(`\n ⚠️  ${allUnusedKeys.size} keys are unused `));
 
     const formattedUnusedKeys = [];
     allUnusedKeys.forEach((values, key) => {
@@ -120,16 +97,12 @@ async function run () {
 
   // no error message
   if (!hasMissingKeys && !hasUnusedKeys) {
-    console.log(
-      chalk
-        .bgGreen
-        .bold(` 🎉 No keys were found missing or unused! `),
-    );
+    console.log(chalk.bgGreen.bold(` 🎉 No keys were found missing or unused! `));
   }
 
   // script duration
   const elapsedTime = process.hrtime(startTime);
-  const durationInSeconds = (elapsedTime[0] + (elapsedTime[1] / 1e9)).toFixed(2);
+  const durationInSeconds = (elapsedTime[0] + elapsedTime[1] / 1e9).toFixed(2);
   console.log(chalk.italic(`\nDone in ${durationInSeconds}s.`));
 
   // fail task when errors
@@ -138,5 +111,4 @@ async function run () {
   }
 }
 
-run()
-  .catch(console.error);
+run().catch(console.error);

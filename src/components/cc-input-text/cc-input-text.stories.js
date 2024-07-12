@@ -1,8 +1,8 @@
-import './cc-input-text.js';
 import { allFormControlsStory } from '../../stories/all-form-controls.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-input-text.js';
 
-function widthContent (chars) {
+function widthContent(chars) {
   const rawContents = `_chars`;
   return String(chars) + String(rawContents).padStart(chars - 2, '_');
 }
@@ -35,7 +35,11 @@ const baseItems = [
     readonly: true,
   },
   {
-    label: 'The label', placeholder: 'No value yet...', multi: true, value: 'Skeleton\nOther lines...', skeleton: true,
+    label: 'The label',
+    placeholder: 'No value yet...',
+    multi: true,
+    value: 'Skeleton\nOther lines...',
+    skeleton: true,
   },
 ];
 
@@ -200,9 +204,7 @@ export const clipboardAndSecret = makeStory(conf, {
 });
 
 export const longValue = makeStory(conf, {
-  items: baseItems
-    .filter((p) => p.value != null)
-    .map((p) => ({ ...p, value: lorem })),
+  items: baseItems.filter((p) => p.value != null).map((p) => ({ ...p, value: lorem })),
 });
 
 export const tags = makeStory(conf, {
@@ -232,7 +234,13 @@ const customBaseItems = [
   { label: 'The label', placeholder: 'No value yet...', multi: true },
   { label: 'The label', placeholder: 'No value yet...', multi: true, required: true },
   { label: 'The label', placeholder: 'No value yet...', multi: true, value: 'Simple value\nOther lines...' },
-  { label: 'The label', placeholder: 'No value yet...', multi: true, required: true, value: 'Simple value\nOther lines...' },
+  {
+    label: 'The label',
+    placeholder: 'No value yet...',
+    multi: true,
+    required: true,
+    value: 'Simple value\nOther lines...',
+  },
 ];
 
 export const customLabelStyle = makeStory(conf, {

@@ -1,6 +1,6 @@
+import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-grafana-info.js';
 import './cc-grafana-info.smart.js';
-import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 
 export default {
   tags: ['autodocs'],

@@ -1,13 +1,13 @@
-import '../cc-icon/cc-icon.js';
-import '../cc-img/cc-img.js';
-import '../cc-block/cc-block.js';
-import '../cc-notice/cc-notice.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
+import '../cc-block/cc-block.js';
+import '../cc-icon/cc-icon.js';
+import '../cc-img/cc-img.js';
+import '../cc-notice/cc-notice.js';
 
 const ELASTICSEARCH_LOGO_URL = 'https://assets.clever-cloud.com/logos/elastic.svg';
 const KIBANA_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-kibana.svg';
@@ -35,24 +35,19 @@ const linksSortOrder = ['elasticsearch', 'kibana', 'apm'];
  * @cssdisplay block
  */
 export class CcElasticsearchInfo extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       state: { type: Object },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {ElasticSearchInfoState} Sets the state of the component */
     this.state = {
       type: 'loading',
-      links: [
-        { type: 'elasticsearch' },
-        { type: 'kibana' },
-        { type: 'apm' },
-      ],
+      links: [{ type: 'elasticsearch' }, { type: 'kibana' }, { type: 'apm' }],
     };
   }
 
@@ -61,7 +56,7 @@ export class CcElasticsearchInfo extends LitElement {
    * @returns {string} the corresponding translation
    * @private
    */
-  _getLinkText (linkType) {
+  _getLinkText(linkType) {
     switch (linkType) {
       case 'elasticsearch':
         return i18n('cc-elasticsearch-info.link.elasticsearch');
@@ -77,7 +72,7 @@ export class CcElasticsearchInfo extends LitElement {
    * @returns {string} the corresponding logo URL
    * @private
    */
-  _getLogo (linkType) {
+  _getLogo(linkType) {
     switch (linkType) {
       case 'elasticsearch':
         return ELASTICSEARCH_LOGO_URL;
@@ -92,14 +87,13 @@ export class CcElasticsearchInfo extends LitElement {
    * @param {Array<LinkLoaded|LinkLoading>} links
    * @returns {Array<LinkLoaded|LinkLoading>} sorted Links
    */
-  _getSortedLinks (links) {
+  _getSortedLinks(links) {
     return links.sort((a, b) => {
       return linksSortOrder.indexOf(a.type) - linksSortOrder.indexOf(b.type);
     });
-
   }
 
-  render () {
+  render() {
     const skeleton = this.state.type === 'loading';
 
     if (this.state.type === 'error') {
@@ -111,11 +105,13 @@ export class CcElasticsearchInfo extends LitElement {
         <div class="info-text">${i18n('cc-elasticsearch-info.text')}</div>
 
         <div class="link-list">
-          ${ccLink(ELASTICSEARCH_DOCUMENTATION, html`
-            <cc-icon size="lg" .icon=${iconInfo}></cc-icon>
-            <span>${i18n('cc-elasticsearch-info.link.doc')}</span>
-          `)}
-
+          ${ccLink(
+            ELASTICSEARCH_DOCUMENTATION,
+            html`
+              <cc-icon size="lg" .icon=${iconInfo}></cc-icon>
+              <span>${i18n('cc-elasticsearch-info.link.doc')}</span>
+            `,
+          )}
           ${this._renderLinks(this.state.links, skeleton)}
         </div>
       </cc-block>
@@ -128,19 +124,21 @@ export class CcElasticsearchInfo extends LitElement {
    * @returns {TemplateResult[]}
    * @private
    */
-  _renderLinks (links, skeleton) {
+  _renderLinks(links, skeleton) {
     const sortedLinks = this._getSortedLinks(links);
 
-    return sortedLinks.map(({ href, type }) => ccLink(
-      href,
-      html`
-        <cc-img src="${this._getLogo(type)}"></cc-img>
-        <span class="${classMap({ skeleton })}">${this._getLinkText(type)}</span>
-      `,
-    ));
+    return sortedLinks.map(({ href, type }) =>
+      ccLink(
+        href,
+        html`
+          <cc-img src="${this._getLogo(type)}"></cc-img>
+          <span class="${classMap({ skeleton })}">${this._getLinkText(type)}</span>
+        `,
+      ),
+    );
   }
 
-  static get styles () {
+  static get styles() {
     return [
       skeletonStyles,
       linkStyles,
@@ -157,18 +155,18 @@ export class CcElasticsearchInfo extends LitElement {
         }
 
         .cc-link {
-          display: flex;
           align-items: center;
+          display: flex;
         }
 
         cc-img {
-          width: 1.5em;
-          height: 1.5em;
-          flex: 0 0 auto;
-          margin-right: 0.5em;
           border-radius: var(--cc-border-radius-default, 0.25em);
+          flex: 0 0 auto;
+          height: 1.5em;
+          margin-right: 0.5em;
+          width: 1.5em;
         }
-        
+
         cc-icon {
           flex: 0 0 auto;
           margin-right: 0.5em;

@@ -7,15 +7,15 @@ export interface TcpRedirection {
 export type TcpRedirectionState = TcpRedirectionStateLoading | TcpRedirectionStateLoaded | TcpRedirectionStateWaiting;
 
 export interface TcpRedirectionStateLoading {
-  type: "loading";
+  type: 'loading';
 }
 
 export interface TcpRedirectionStateLoaded extends TcpRedirection {
-  type: "loaded";
+  type: 'loaded';
 }
 
 export interface TcpRedirectionStateWaiting extends TcpRedirection {
-  type: "waiting";
+  type: 'waiting';
 }
 
 export interface CreateTcpRedirection {

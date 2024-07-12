@@ -1,5 +1,5 @@
-import './cc-notice.js';
 import { makeStory } from '../../stories/lib/make-story.js';
+import './cc-notice.js';
 
 export default {
   tags: ['autodocs'],
@@ -20,12 +20,11 @@ const LONG_TEXT = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed 
       Mattis nunc sed blandit libero. Libero id faucibus nisl tincidunt eget nullam. Iaculis urna id volutpat lacus 
       laoreet non curabitur.`;
 
-const BASE_ITEMS = INTENTS.map((intent) => (
-  {
-    intent,
-    heading: 'This is a title',
-    message: `this is a message with ${intent} intent.`,
-  }));
+const BASE_ITEMS = INTENTS.map((intent) => ({
+  intent,
+  heading: 'This is a title',
+  message: `this is a message with ${intent} intent.`,
+}));
 
 export const defaultStory = makeStory(conf, {
   items: BASE_ITEMS,
@@ -76,31 +75,25 @@ export const withCloseableAndNoIcons = makeStory(conf, {
 });
 
 export const withLongTextAndCloseable = makeStory(conf, {
-  items: BASE_ITEMS.map(({ intent }) => (
-    {
-      closeable: true,
-      intent,
-      heading: LONG_HEADING,
-      message: LONG_TEXT,
-    }
-  )),
+  items: BASE_ITEMS.map(({ intent }) => ({
+    closeable: true,
+    intent,
+    heading: LONG_HEADING,
+    message: LONG_TEXT,
+  })),
 });
 
 export const withLongText = makeStory(conf, {
-  items: BASE_ITEMS.map(({ intent }) => (
-    {
-      intent,
-      heading: LONG_HEADING,
-      message: LONG_TEXT,
-    }
-  )),
+  items: BASE_ITEMS.map(({ intent }) => ({
+    intent,
+    heading: LONG_HEADING,
+    message: LONG_TEXT,
+  })),
 });
 
 export const withLongTextAndNoHeading = makeStory(conf, {
-  items: BASE_ITEMS.map(({ intent }) => (
-    {
-      intent,
-      message: LONG_TEXT,
-    }
-  )),
+  items: BASE_ITEMS.map(({ intent }) => ({
+    intent,
+    message: LONG_TEXT,
+  })),
 });

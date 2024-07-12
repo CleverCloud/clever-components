@@ -1,11 +1,11 @@
-import '../cc-smart-container/cc-smart-container.js';
-import './cc-pricing-product.js';
 import { getAllAddonProviders } from '@clevercloud/client/esm/api/v2/product.js';
 import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
 import { fetchPriceSystem } from '../../lib/api-helpers.js';
 import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { formatAddonProduct } from '../../lib/product.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import '../cc-smart-container/cc-smart-container.js';
+import './cc-pricing-product.js';
 
 defineSmartComponent({
   selector: 'cc-pricing-product[mode="addon"]',
@@ -14,7 +14,7 @@ defineSmartComponent({
     productId: { type: String },
     zoneId: { type: String },
   },
-  onContextUpdate ({ context, updateComponent, signal }) {
+  onContextUpdate({ context, updateComponent, signal }) {
     const { productId, zoneId, addonFeatures } = context;
 
     // Reset the component before loading
@@ -36,14 +36,13 @@ defineSmartComponent({
   },
 });
 
-function fetchAddonProduct ({ productId, zoneId, addonFeatures, signal }) {
-  return Promise.all([
-    fetchAddonProvider({ productId, signal }),
-    fetchPriceSystem({ zoneId, signal }),
-  ]).then(([addonProvider, priceSystem]) => formatAddonProduct(addonProvider, priceSystem, addonFeatures));
+function fetchAddonProduct({ productId, zoneId, addonFeatures, signal }) {
+  return Promise.all([fetchAddonProvider({ productId, signal }), fetchPriceSystem({ zoneId, signal })]).then(
+    ([addonProvider, priceSystem]) => formatAddonProduct(addonProvider, priceSystem, addonFeatures),
+  );
 }
 
-function fetchAddonProvider ({ signal, productId }) {
+function fetchAddonProvider({ signal, productId }) {
   return getAllAddonProviders()
     .then(sendToApi({ cacheDelay: ONE_DAY, signal }))
     .then((allAddonProviders) => {

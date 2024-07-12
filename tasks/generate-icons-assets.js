@@ -1,13 +1,13 @@
 import { promises as fs } from 'fs';
-import path from 'path';
-import util from 'util';
 import rawGlob from 'glob';
+import path from 'path';
 import SVGO from 'svgo';
+import util from 'util';
 import { pascalCase } from '../src/lib/change-case.js';
 
 const glob = util.promisify(rawGlob);
 
-async function run () {
+async function run() {
   await buildIcons({
     namespace: 'clever',
     glob: 'src/assets/**/*.svg',
@@ -31,7 +31,7 @@ async function run () {
  * @param {string} config.outputFile output file path
  * @returns {Promise<string>}
  */
-async function buildIcons (config) {
+async function buildIcons(config) {
   const lines = [
     '/* eslint-disable camelcase */',
     '',
@@ -62,8 +62,10 @@ async function buildIcons (config) {
   await fs.writeFile(config.outputFile, lines.join('\n'));
 
   const elapsedTime = process.hrtime(startTime);
-  const durationInSeconds = (elapsedTime[0] + (elapsedTime[1] / 1e9)).toFixed(2);
-  console.log(`Icon set '${config.namespace}' successfully generated into ${config.outputFile}! (in ${durationInSeconds}s)`);
+  const durationInSeconds = (elapsedTime[0] + elapsedTime[1] / 1e9).toFixed(2);
+  console.log(
+    `Icon set '${config.namespace}' successfully generated into ${config.outputFile}! (in ${durationInSeconds}s)`,
+  );
 }
 
 /**
@@ -71,7 +73,7 @@ async function buildIcons (config) {
  * @param {array<object>|null} svgoPlugins plugins to pass to SVGO
  * @returns {Promise<string>} SVG file content
  */
-async function getSvgContentFromPath (svgPath, svgoPlugins) {
+async function getSvgContentFromPath(svgPath, svgoPlugins) {
   const rawSvg = await fs.readFile(svgPath, 'utf8');
   const plugins = svgoPlugins ?? [];
   const svgo = await new SVGO({ plugins }).optimize(rawSvg, { plugins });

@@ -1,13 +1,13 @@
-import '../cc-img/cc-img.js';
-import '../cc-input-text/cc-input-text.js';
-import '../cc-notice/cc-notice.js';
-import '../cc-zone/cc-zone.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
+import '../cc-img/cc-img.js';
+import '../cc-input-text/cc-input-text.js';
+import '../cc-notice/cc-notice.js';
+import '../cc-zone/cc-zone.js';
 
 /** @type {Addon} */
 const SKELETON_ADDON = {
@@ -38,40 +38,39 @@ const SKELETON_VERSION = fakeString(5);
  * @cssdisplay block
  */
 export class CcHeaderAddon extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       state: { type: Object },
     };
-  };
+  }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {HeaderAddonState} Sets the state of addon information and the component in general */
     this.state = { type: 'loading', hasVersion: true };
   }
 
-  render () {
-
+  render() {
     const addonInfo = this.state.type === 'loaded' ? this.state : SKELETON_ADDON;
     const skeleton = this.state.type === 'loading';
     const creationDateShort = i18n('cc-header-addon.creation-date.short', { date: addonInfo.creationDate });
-    const creationDateFull = this.state.type === 'loaded' ? i18n('cc-header-addon.creation-date.full', { date: addonInfo.creationDate }) : null;
-    const version = (this.state.type === 'loaded' && this.state.hasVersion) ? this.state.version : SKELETON_VERSION;
+    const creationDateFull =
+      this.state.type === 'loaded'
+        ? i18n('cc-header-addon.creation-date.full', { date: addonInfo.creationDate })
+        : null;
+    const version = this.state.type === 'loaded' && this.state.hasVersion ? this.state.version : SKELETON_VERSION;
     const zoneState = this.state.type === 'loaded' ? { type: 'loaded', ...this.state.zone } : { type: 'loading' };
 
     if (this.state.type === 'error') {
-      return html`
-        <cc-notice intent="warning" message="${i18n('cc-header-addon.error')}"></cc-notice>
-      `;
+      return html` <cc-notice intent="warning" message="${i18n('cc-header-addon.error')}"></cc-notice> `;
     }
 
     return html`
       <div class="wrapper">
         <div class="main">
-          <cc-img 
-            class="logo" 
+          <cc-img
+            class="logo"
             src="${ifDefined(addonInfo.provider.logoUrl)}"
             a11y-name="${addonInfo.provider.name}"
             title="${ifDefined(addonInfo.provider.name)}"
@@ -80,20 +79,20 @@ export class CcHeaderAddon extends LitElement {
           <div class="details">
             <div class="name"><span class="${classMap({ skeleton })}">${addonInfo.name}</span></div>
             <div class="addon-id-inputs">
-              <cc-input-text 
-                label=${i18n('cc-header-addon.id-label')} 
-                hidden-label 
-                readonly 
-                clipboard 
-                value="${ifDefined(addonInfo.id)}" 
+              <cc-input-text
+                label=${i18n('cc-header-addon.id-label')}
+                hidden-label
+                readonly
+                clipboard
+                value="${ifDefined(addonInfo.id)}"
                 ?skeleton=${skeleton}
               ></cc-input-text>
-              <cc-input-text 
-                label=${i18n('cc-header-addon.id-label-alternative')} 
-                hidden-label 
-                readonly 
-                clipboard 
-                value="${ifDefined(addonInfo.realId)}" 
+              <cc-input-text
+                label=${i18n('cc-header-addon.id-label-alternative')}
+                hidden-label
+                readonly
+                clipboard
+                value="${ifDefined(addonInfo.realId)}"
                 ?skeleton=${skeleton}
               ></cc-input-text>
             </div>
@@ -104,12 +103,14 @@ export class CcHeaderAddon extends LitElement {
               <div class="description-label">${i18n('cc-header-addon.plan')}</div>
               <div class="${classMap({ skeleton })}">${addonInfo.plan.name}</div>
             </div>
-            ${this.state.hasVersion ? html`
-              <div class="description-item">
-                <div class="description-label">${i18n('cc-header-addon.version')}</div>
-                <div class="${classMap({ skeleton })}">${version}</div>
-              </div>
-            ` : ''}
+            ${this.state.hasVersion
+              ? html`
+                  <div class="description-item">
+                    <div class="description-label">${i18n('cc-header-addon.version')}</div>
+                    <div class="${classMap({ skeleton })}">${version}</div>
+                  </div>
+                `
+              : ''}
             <div class="description-item">
               <div class="description-label">${i18n('cc-header-addon.creation-date')}</div>
               <div class="${classMap({ skeleton })}" title="${ifDefined(creationDateFull)}">${creationDateShort}</div>
@@ -124,7 +125,7 @@ export class CcHeaderAddon extends LitElement {
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       skeletonStyles,
       // language=CSS
@@ -136,23 +137,23 @@ export class CcHeaderAddon extends LitElement {
         }
 
         .wrapper {
-          overflow: hidden;
-          border: 1px solid var(--cc-color-border-neutral, #aaa);
           background-color: var(--cc-color-bg-default, #fff);
+          border: 1px solid var(--cc-color-border-neutral, #aaa);
           border-radius: var(--cc-border-radius-default, 0.25em);
+          overflow: hidden;
         }
 
         .main {
           display: flex;
           flex-wrap: wrap;
-          padding: 1em;
           gap: 1em;
+          padding: 1em;
         }
 
         .logo {
-          width: 3.25em;
-          height: 3.25em;
           border-radius: var(--cc-border-radius-default, 0.25em);
+          height: 3.25em;
+          width: 3.25em;
         }
 
         .details {
@@ -176,9 +177,9 @@ export class CcHeaderAddon extends LitElement {
         }
 
         .description {
+          align-self: center;
           display: flex;
           flex-wrap: wrap;
-          align-self: center;
           gap: 1em;
         }
 
@@ -191,16 +192,16 @@ export class CcHeaderAddon extends LitElement {
         }
 
         .messages {
-          display: flex;
-          box-sizing: border-box;
-          flex-wrap: wrap;
           align-items: center;
-          justify-content: end;
-          padding: 0.7em 1.1em;
           background-color: var(--cc-color-bg-neutral);
           box-shadow: inset 0 6px 6px -6px rgb(0 0 0 / 40%);
+          box-sizing: border-box;
+          display: flex;
+          flex-wrap: wrap;
           font-size: 0.9em;
           gap: 0.57em;
+          justify-content: end;
+          padding: 0.7em 1.1em;
         }
 
         cc-zone {

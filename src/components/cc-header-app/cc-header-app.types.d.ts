@@ -18,4 +18,4 @@ export interface HeaderAppStateError {
   type: 'error';
 }
 
-export type LastUserAction = 'start'|'restart'|'cancel'|'stop';
+export type LastUserAction = 'start' | 'restart' | 'cancel' | 'stop';

@@ -15,15 +15,14 @@ import '../cc-notice/cc-notice.js';
  * @cssdisplay block
  */
 export class CcWarningPayment extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       errors: { type: Array },
       mode: { type: String },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {PaymentMethodError[]} Sets the list of payment method errors with type (and optional orga name and billing link). */
@@ -36,7 +35,7 @@ export class CcWarningPayment extends LitElement {
   /**
    * @param {PaymentMethodError} error
    */
-  _getOrgaError ({ type }) {
+  _getOrgaError({ type }) {
     if (type === ERROR_TYPES.NO_PAYMENT_METHOD) {
       return {
         title: i18n('cc-payment-warning.orga.no-payment-method.title'),
@@ -57,47 +56,38 @@ export class CcWarningPayment extends LitElement {
     }
   }
 
-  render () {
-
-    const { title, error } = (this.mode === 'overview' || this.mode === 'billing') ? this._getOrgaError(this.errors[0]) : '';
-    const link = (this.mode === 'overview') ? i18n('cc-payment-warning.billing-page-link', this.errors[0]) : '';
+  render() {
+    const { title, error } =
+      this.mode === 'overview' || this.mode === 'billing' ? this._getOrgaError(this.errors[0]) : '';
+    const link = this.mode === 'overview' ? i18n('cc-payment-warning.billing-page-link', this.errors[0]) : '';
 
     return html`
-        ${this.mode === 'home' ? html`
-          <cc-notice
-            .heading="${i18n('cc-payment-warning.home.title')}"
-            intent="warning"
-          >
-            <div slot="message" class="error-container">
-              <span>${i18n('cc-payment-warning.home', { orgaCount: this.errors.length })}</span>
-              <ul>
-                ${this.errors.map((error) => html`
-                  <li>${this._renderHomeItem(error)}</li>
-                `)}
-              </ul>
-            </div>
-          </cc-notice>
-        ` : ''}
-
-
-        ${(this.mode === 'overview' || this.mode === 'billing') ? html`
-          <cc-notice
-            .heading="${title}"
-            intent="warning"
-          >
-            <div slot="message">
-              ${error}
-              ${link}
-            </div>
-          </cc-notice>
-        ` : ''}
+      ${this.mode === 'home'
+        ? html`
+            <cc-notice .heading="${i18n('cc-payment-warning.home.title')}" intent="warning">
+              <div slot="message" class="error-container">
+                <span>${i18n('cc-payment-warning.home', { orgaCount: this.errors.length })}</span>
+                <ul>
+                  ${this.errors.map((error) => html` <li>${this._renderHomeItem(error)}</li> `)}
+                </ul>
+              </div>
+            </cc-notice>
+          `
+        : ''}
+      ${this.mode === 'overview' || this.mode === 'billing'
+        ? html`
+            <cc-notice .heading="${title}" intent="warning">
+              <div slot="message">${error} ${link}</div>
+            </cc-notice>
+          `
+        : ''}
     `;
   }
 
   /**
    * @param {PaymentMethodError} error
    */
-  _renderHomeItem ({ type, orgaName, orgaBillingLink }) {
+  _renderHomeItem({ type, orgaName, orgaBillingLink }) {
     if (type === ERROR_TYPES.NO_PAYMENT_METHOD) {
       return html`
         ${i18n('cc-payment-warning.generic.no-payment-method', { orgaName })}
@@ -118,7 +108,7 @@ export class CcWarningPayment extends LitElement {
     }
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       linkStyles,
@@ -126,12 +116,12 @@ export class CcWarningPayment extends LitElement {
         :host {
           display: block;
         }
-        
+
         ul {
-          padding: 0;
           margin: 0.5em 0 0 1.5em;
+          padding: 0;
         }
-        
+
         li {
           margin-top: 0.5em;
         }

@@ -1,7 +1,7 @@
-import '../cc-doc-card/cc-doc-card.js';
-import '../cc-notice/cc-notice.js';
 import { css, html, LitElement } from 'lit';
 import { i18n } from '../../lib/i18n.js';
+import '../cc-doc-card/cc-doc-card.js';
+import '../cc-notice/cc-notice.js';
 
 const DOC_SKELETON_NUMBER = 9;
 
@@ -15,46 +15,41 @@ const DOC_SKELETON_NUMBER = 9;
  * @cssdisplay block
  */
 export class CcDocList extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       state: { type: Object },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {DocListState} Sets the state of the component */
     this.state = { type: 'loading' };
   }
 
-  render () {
-
+  render() {
     if (this.state.type === 'error') {
-      return html`
-        <cc-notice intent="warning" message="${i18n('cc-doc-list.error')}"></cc-notice>
-      `;
+      return html` <cc-notice intent="warning" message="${i18n('cc-doc-list.error')}"></cc-notice> `;
     }
 
     return html`
       <div class="doc-wrapper">
-        ${this.state.type === 'loading' ? html`
-          ${new Array(DOC_SKELETON_NUMBER).fill(html`
-            <cc-doc-card></cc-doc-card>
-          `)}
-        ` : ''}
-
-        ${this.state.type === 'loaded' ? html`
-          ${this.state.docs.map((docCard) => html`
-            <cc-doc-card .state=${{ type: 'loaded', ...docCard }}></cc-doc-card>
-          `)}
-        ` : ''}
+        ${this.state.type === 'loading'
+          ? html` ${new Array(DOC_SKELETON_NUMBER).fill(html` <cc-doc-card></cc-doc-card> `)} `
+          : ''}
+        ${this.state.type === 'loaded'
+          ? html`
+              ${this.state.docs.map(
+                (docCard) => html` <cc-doc-card .state=${{ type: 'loaded', ...docCard }}></cc-doc-card> `,
+              )}
+            `
+          : ''}
       </div>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`

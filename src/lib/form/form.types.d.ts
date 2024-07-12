@@ -1,5 +1,5 @@
-import { Validity } from "./validation.types.js";
-import { EventWithTarget } from "../events.types.js";
+import { EventWithTarget } from '../events.types.js';
+import { Validity } from './validation.types.js';
 
 export type FormControlData = null | File | string | FormData;
 

@@ -1,5 +1,5 @@
-import './cc-tile-instances.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-tile-instances.js';
 
 export default {
   tags: ['autodocs'],
@@ -22,7 +22,13 @@ export const defaultStory = makeStory(conf, {
   items: [
     { state: { type: 'loaded', running: [{ flavorName: 'nano', count: 1 }], deploying: [] } },
     { state: { type: 'loaded', running: [], deploying: [{ flavorName: 'nano', count: 1 }] } },
-    { state: { type: 'loaded', running: [{ flavorName: 'nano', count: 1 }], deploying: [{ flavorName: 'nano', count: 1 }] } },
+    {
+      state: {
+        type: 'loaded',
+        running: [{ flavorName: 'nano', count: 1 }],
+        deploying: [{ flavorName: 'nano', count: 1 }],
+      },
+    },
   ],
 });
 
@@ -35,9 +41,7 @@ export const error = makeStory(conf, {
 });
 
 export const dataLoadedWithStopped = makeStory(conf, {
-  items: [
-    { state: { type: 'loaded', running: [], deploying: [] } },
-  ],
+  items: [{ state: { type: 'loaded', running: [], deploying: [] } }],
 });
 
 export const dataLoadedWithRunning = makeStory(conf, {
@@ -58,9 +62,21 @@ export const dataLoadedWithDeploying = makeStory(conf, {
 
 export const dataLoadedWithRunningAndDeploying = makeStory(conf, {
   items: [
-    { state: { type: 'loaded', running: [{ flavorName: 'nano', count: 1 }], deploying: [{ flavorName: 'nano', count: 1 }] } },
+    {
+      state: {
+        type: 'loaded',
+        running: [{ flavorName: 'nano', count: 1 }],
+        deploying: [{ flavorName: 'nano', count: 1 }],
+      },
+    },
     { state: { type: 'loaded', running: [{ flavorName: 'S', count: 2 }], deploying: [{ flavorName: 'S', count: 1 }] } },
-    { state: { type: 'loaded', running: [{ flavorName: '2XL', count: 40 }], deploying: [{ flavorName: '2XL', count: 40 }] } },
+    {
+      state: {
+        type: 'loaded',
+        running: [{ flavorName: '2XL', count: 40 }],
+        deploying: [{ flavorName: '2XL', count: 40 }],
+      },
+    },
   ],
 });
 
@@ -78,13 +94,25 @@ export const simulations = makeStory(conf, {
       component.state = { type: 'loaded', running: [{ flavorName: 'XS', count: 3 }], deploying: [] };
     }),
     storyWait(3000, ([component]) => {
-      component.state = { type: 'loaded', running: [{ flavorName: 'XS', count: 3 }], deploying: [{ flavorName: 'XS', count: 1 }] };
+      component.state = {
+        type: 'loaded',
+        running: [{ flavorName: 'XS', count: 3 }],
+        deploying: [{ flavorName: 'XS', count: 1 }],
+      };
     }),
     storyWait(1000, ([component]) => {
-      component.state = { type: 'loaded', running: [{ flavorName: 'XS', count: 3 }], deploying: [{ flavorName: 'XS', count: 2 }] };
+      component.state = {
+        type: 'loaded',
+        running: [{ flavorName: 'XS', count: 3 }],
+        deploying: [{ flavorName: 'XS', count: 2 }],
+      };
     }),
     storyWait(1000, ([component]) => {
-      component.state = { type: 'loaded', running: [{ flavorName: 'XS', count: 3 }], deploying: [{ flavorName: 'XS', count: 3 }] };
+      component.state = {
+        type: 'loaded',
+        running: [{ flavorName: 'XS', count: 3 }],
+        deploying: [{ flavorName: 'XS', count: 3 }],
+      };
     }),
     storyWait(3000, ([component]) => {
       component.state = { type: 'loaded', running: [{ flavorName: 'XS', count: 3 }], deploying: [] };

@@ -1,5 +1,5 @@
-import './cc-zone.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-zone.js';
 
 export default {
   tags: ['autodocs'],
@@ -76,16 +76,21 @@ const zoneWithManyTags = {
   city: 'Warsaw',
   lat: 52.23,
   lon: 21.01,
-  tags: ['region:eu', 'infra:ovh', 'foobar:one', 'foobar:two', 'foobar:three', 'foobar:four', 'foobar:five', 'foobar:six'],
+  tags: [
+    'region:eu',
+    'infra:ovh',
+    'foobar:one',
+    'foobar:two',
+    'foobar:three',
+    'foobar:four',
+    'foobar:five',
+    'foobar:six',
+  ],
 };
 
 export const defaultStory = makeStory(conf, {
   /** @type {{ state: ZoneStateLoaded, mode?: ZoneModeType }[]} */
-  items: [
-    { state: zoneDefault },
-    { state: zoneDefault, mode: 'small' },
-    { state: zoneDefault, mode: 'small-infra' },
-  ],
+  items: [{ state: zoneDefault }, { state: zoneDefault, mode: 'small' }, { state: zoneDefault, mode: 'small-infra' }],
 });
 
 export const loading = makeStory(conf, {
@@ -110,11 +115,7 @@ export const dataLoadedWithInfra = makeStory(conf, {
 
 export const dataLoadedWithPrivate = makeStory(conf, {
   /** @type {{ state: ZoneStateLoaded, mode?: ZoneModeType }[]} */
-  items: [
-    { state: zonePrivate },
-    { state: zonePrivate, mode: 'small' },
-    { state: zonePrivate, mode: 'small-infra' },
-  ],
+  items: [{ state: zonePrivate }, { state: zonePrivate, mode: 'small' }, { state: zonePrivate, mode: 'small-infra' }],
 });
 
 export const dataLoadedWithNoTags = makeStory(conf, {
@@ -138,11 +139,13 @@ export const dataLoadedWithManyTags = makeStory(conf, {
 export const simulations = makeStory(conf, {
   items: [{}, {}],
   simulations: [
-    storyWait(2000,
+    storyWait(
+      2000,
       /** @param {CcZone[]} components */
       ([component, componentWithInfra]) => {
         component.state = zoneDefault;
         componentWithInfra.state = zoneWithInfra;
-      }),
+      },
+    ),
   ],
 });

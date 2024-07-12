@@ -15,14 +15,13 @@ import { i18n } from '../../lib/i18n.js';
  * @cssprop {Color} --cc-loader-color - The color of the animated circle (defaults: `#2653af`).
  */
 export class CcLoader extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       a11yName: { type: String, attribute: 'a11y-name' },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {string|null} The accessible name to set on the svg.
@@ -39,19 +38,19 @@ export class CcLoader extends LitElement {
     this.a11yName = i18n('cc-loader.a11y-name');
   }
 
-  render () {
+  render() {
     const a11yName = this.a11yName == null || this.a11yName.length === 0 ? undefined : this.a11yName;
-    const aria = a11yName == null
-      ? { hidden: true }
-      : { label: a11yName, role: 'img', labelledby: 'title' };
+    const aria = a11yName == null ? { hidden: true } : { label: a11yName, role: 'img', labelledby: 'title' };
 
     // language=HTML
     return html`
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 40 40"
-           aria-hidden=${ifDefined(aria.hidden)}
-           aria-label=${ifDefined(aria.label)}
-           aria-labelledby=${ifDefined(aria.labelledby)}
-           role=${ifDefined(aria.role)}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="20 20 40 40"
+        aria-hidden=${ifDefined(aria.hidden)}
+        aria-label=${ifDefined(aria.label)}
+        aria-labelledby=${ifDefined(aria.labelledby)}
+        role=${ifDefined(aria.role)}
       >
         ${a11yName != null ? html`<title id="title">${a11yName}</title>` : ''}
         <circle cx="40px" cy="40px" r="16px"></circle>
@@ -59,7 +58,7 @@ export class CcLoader extends LitElement {
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
@@ -68,12 +67,12 @@ export class CcLoader extends LitElement {
         }
 
         svg {
-          width: 100%;
-          max-width: 2.5em;
-          height: 100%;
-          max-height: 2.5em;
-          margin: auto;
           animation: progress-circular-rotate 1.75s linear infinite;
+          height: 100%;
+          margin: auto;
+          max-height: 2.5em;
+          max-width: 2.5em;
+          width: 100%;
         }
 
         circle {
@@ -85,7 +84,6 @@ export class CcLoader extends LitElement {
         }
 
         @keyframes progress-circular-rotate {
-
           0% {
             transform: rotate(0turn);
           }
@@ -97,7 +95,6 @@ export class CcLoader extends LitElement {
 
         /* radius is set at 16px => perimeter: 100.53096491487 ~= 100 */
         @keyframes progress-circular-dash {
-
           0% {
             stroke-dasharray: 0, 100px;
             stroke-dashoffset: 0;

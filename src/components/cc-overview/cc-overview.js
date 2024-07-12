@@ -27,15 +27,14 @@ const BREAKPOINTS = [570, 860, 1150];
  * @cssprop {Number} --cc-overview-head-count - How many `.head` elements marked are in the slot  (defaults: `1`).
  */
 export class CcOverview extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       /** @required */
       mode: { type: String, reflect: true },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {OverviewModeType|null} Sets the mode of the layout for the overview */
@@ -46,20 +45,19 @@ export class CcOverview extends LitElement {
     });
   }
 
-  render () {
-    return html`
-      <slot></slot>
-    `;
+  render() {
+    return html` <slot></slot> `;
   }
 
-  static get styles () {
+  static get styles() {
     // language=CSS
     return css`
       :host {
+        /* stylelint-disable-next-line */
         /*
           We ask the user to specify this number (if > 1)
           because the information is known and detecting it automatically and properly requires a MutationObserver
-          to count them in the \` < slot >\` and it seems overkill.
+          to count them in the \\\\\\\\\\\\\\\\\` < slot >\\\\\\\\\\\\\\\\\` and it seems overkill.
         */
         --cc-overview-head-count: 1;
 
@@ -98,12 +96,14 @@ export class CcOverview extends LitElement {
       }
 
       :host([mode='app'][w-gte-860][w-lt-1150]) {
-        grid-template-rows: repeat(calc(var(--cc-overview-head-count) + 1), min-content) 
+        grid-template-rows:
+          repeat(calc(var(--cc-overview-head-count) + 1), min-content)
           [main-start] min-content 1fr 1fr [main-end];
       }
 
       :host([mode='app'][w-gte-1150]) {
-        grid-template-rows: repeat(calc(var(--cc-overview-head-count) + 1), min-content)
+        grid-template-rows:
+          repeat(calc(var(--cc-overview-head-count) + 1), min-content)
           [main-start] 1fr 1fr [main-end];
       }
 
@@ -120,7 +120,8 @@ export class CcOverview extends LitElement {
       }
 
       :host([mode='orga'][w-gte-860]) {
-        grid-template-rows: repeat(calc(var(--cc-overview-head-count) + 0), min-content) 
+        grid-template-rows:
+          repeat(calc(var(--cc-overview-head-count) + 0), min-content)
           [main-start] 1fr 1fr [main-end];
       }
 
@@ -135,11 +136,11 @@ export class CcOverview extends LitElement {
       /* .main TILE POSITION/SIZE */
 
       ::slotted(*.main) {
-        width: auto;
-        height: auto;
-        min-height: 25em;
         grid-column: main-start / main-end;
         grid-row: main-start / main-end;
+        height: auto;
+        min-height: 25em;
+        width: auto;
       }
     `;
   }

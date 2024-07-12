@@ -6,10 +6,10 @@ import { sortBy } from '../src/lib/utils.js';
  * This plugin sorts all items alphabetically by their name.
  * This is very useful when you want to diff different manifests.
  */
-export default function sortItems () {
+export default function sortItems() {
   return {
     name: 'sort-items',
-    packageLinkPhase ({ customElementsManifest }) {
+    packageLinkPhase({ customElementsManifest }) {
       for (const module of customElementsManifest?.modules) {
         for (const declaration of module?.declarations) {
           declaration.attributes?.sort(sortBy('name'));

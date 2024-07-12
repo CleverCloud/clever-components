@@ -1,10 +1,10 @@
 import { ERROR_TYPES, parseRawJson, toJson } from '@clevercloud/client/esm/utils/env-vars.js';
-import { css, html, LitElement } from 'lit';
+import { LitElement, css, html } from 'lit';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
+import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
-import { linkStyles } from '../../templates/cc-link/cc-link.js';
 
 /**
  * @type {Array<EnvVar>}
@@ -29,8 +29,7 @@ const SKELETON_VARIABLES = [
  * @fires {CustomEvent<EnvVar[]>} cc-env-var-editor-json:change - Fires the new list of variables whenever something changes in the list.
  */
 export class CcEnvVarEditorJson extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       disabled: { type: Boolean },
       readonly: { type: Boolean },
@@ -42,7 +41,7 @@ export class CcEnvVarEditorJson extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {boolean} Sets `disabled` attribute on inputs and buttons. */
@@ -61,7 +60,7 @@ export class CcEnvVarEditorJson extends LitElement {
     this._skeleton = false;
   }
 
-  _setErrors (rawErrors) {
+  _setErrors(rawErrors) {
     this._errors = rawErrors.map(({ type, name }) => {
       if (type === ERROR_TYPES.INVALID_NAME) {
         return {
@@ -109,38 +108,33 @@ export class CcEnvVarEditorJson extends LitElement {
     });
   }
 
-  _onInput ({ detail: value }) {
+  _onInput({ detail: value }) {
     this._variablesAsJson = value;
     const { variables, errors } = parseRawJson(value, { mode: this.state.validationMode });
     this._setErrors(errors);
 
     // for INVALID_JSON and INVALID_JSON_FORMAT errors, the parsed 'variables' is an empty array: we don't want to dispatch this case
-    const hasJsonError = errors.some(({ type }) => type === ERROR_TYPES.INVALID_JSON || type === ERROR_TYPES.INVALID_JSON_FORMAT);
+    const hasJsonError = errors.some(
+      ({ type }) => type === ERROR_TYPES.INVALID_JSON || type === ERROR_TYPES.INVALID_JSON_FORMAT,
+    );
     if (!hasJsonError) {
       dispatchCustomEvent(this, 'change', variables);
     }
   }
 
-  willUpdate (changedProperties) {
+  willUpdate(changedProperties) {
     if (changedProperties.has('state')) {
-      this._skeleton = (this.state.type === 'loading');
+      this._skeleton = this.state.type === 'loading';
       const vars = this._skeleton ? SKELETON_VARIABLES : this.state.variables;
-      const filteredVariables = vars
-        .filter(({ isDeleted }) => !isDeleted);
+      const filteredVariables = vars.filter(({ isDeleted }) => !isDeleted);
       this._variablesAsJson = toJson(filteredVariables);
       this._setErrors([]);
     }
   }
 
-  render () {
-
+  render() {
     return html`
-      ${!this.readonly
-        ? html`
-          <div class="example">
-            ${i18n('cc-env-var-editor-json.example')}
-          </div>
-        ` : ''}
+      ${!this.readonly ? html` <div class="example">${i18n('cc-env-var-editor-json.example')}</div> ` : ''}
       <cc-input-text
         label=${i18n('cc-env-var-editor-json.label')}
         hidden-label
@@ -153,21 +147,23 @@ export class CcEnvVarEditorJson extends LitElement {
         @cc-input-text:input=${this._onInput}
       ></cc-input-text>
 
-      ${this._errors.length > 0 ? html`
-        <div class="error-list">
-          ${this._errors.map(({ msg, isWarning }) => html`
-            <cc-notice intent="${!isWarning ? 'warning' : 'info'}">
-              <div slot="message">
-                ${msg}
-              </div>
-            </cc-notice>
-          `)}
-        </div>
-      ` : ''}
+      ${this._errors.length > 0
+        ? html`
+            <div class="error-list">
+              ${this._errors.map(
+                ({ msg, isWarning }) => html`
+                  <cc-notice intent="${!isWarning ? 'warning' : 'info'}">
+                    <div slot="message">${msg}</div>
+                  </cc-notice>
+                `,
+              )}
+            </div>
+          `
+        : ''}
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       linkStyles,
       // language=CSS
@@ -182,23 +178,23 @@ export class CcEnvVarEditorJson extends LitElement {
 
         .error-list {
           display: grid;
-          margin-top: 1em;
           grid-gap: 0.75em;
+          margin-top: 1em;
         }
 
         .example {
-          padding-bottom: 1em;
           line-height: 1.5;
+          padding-bottom: 1em;
         }
 
         /* i18n error message may contain <code> tags */
 
         cc-notice code,
         .example code {
-          padding: 0.15em 0.3em;
           background-color: var(--cc-color-bg-neutral, #eee);
           border-radius: var(--cc-border-radius-default, 0.25em);
           font-family: var(--cc-ff-monospace, monospace);
+          padding: 0.15em 0.3em;
         }
 
         cc-input-text {
@@ -207,7 +203,6 @@ export class CcEnvVarEditorJson extends LitElement {
       `,
     ];
   }
-
 }
 
 window.customElements.define('cc-env-var-editor-json', CcEnvVarEditorJson);

@@ -1,4 +1,3 @@
-import './cc-addon-backups.js';
 import {
   backupsJenkinsState,
   backupsMongodbState,
@@ -9,6 +8,7 @@ import {
   backupsRedisState,
 } from '../../stories/fixtures/addon-backups-data.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-addon-backups.js';
 
 export default {
   tags: ['autodocs'],
@@ -28,189 +28,226 @@ const conf = {
  */
 
 export const defaultStory = makeStory(conf, {
-  items: [{
-    /** @type {AddonBackupsStateLoaded} */
-    state: backupsNewElasticsearchState,
-  }],
+  items: [
+    {
+      /** @type {AddonBackupsStateLoaded} */
+      state: backupsNewElasticsearchState,
+    },
+  ],
 });
 
 export const loading = makeStory(conf, {
-  items: [{
-    /** @type {AddonBackupsStateLoading} */
-    state: { type: 'loading' },
-  }],
+  items: [
+    {
+      /** @type {AddonBackupsStateLoading} */
+      state: { type: 'loading' },
+    },
+  ],
 });
 
 export const error = makeStory(conf, {
-  items: [{
-    /** @type {AddonBackupsStateError} */
-    state: { type: 'error' },
-  }],
+  items: [
+    {
+      /** @type {AddonBackupsStateError} */
+      state: { type: 'error' },
+    },
+  ],
 });
 
 export const empty = makeStory(conf, {
-  items: [{
-    /** @type {AddonBackupsStateLoaded} */
-    state: {
-      ...backupsNewElasticsearchState,
-      backups: [],
+  items: [
+    {
+      /** @type {AddonBackupsStateLoaded} */
+      state: {
+        ...backupsNewElasticsearchState,
+        backups: [],
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithNewElasticsearch = makeStory(conf, {
-  items: [{
-    /** @type {AddonBackupsStateLoaded} */
-    state: backupsNewElasticsearchState,
-  }],
+  items: [
+    {
+      /** @type {AddonBackupsStateLoaded} */
+      state: backupsNewElasticsearchState,
+    },
+  ],
 });
 
 export const dataLoadedWithNewElasticsearchAndSmallbackups = makeStory(conf, {
-  items: [{
-    /** @type {AddonBackupsStateLoaded} */
-    state: {
-      ...backupsNewElasticsearchState,
-      backups: backupsNewElasticsearchState.backups.slice(0, 1),
+  items: [
+    {
+      /** @type {AddonBackupsStateLoaded} */
+      state: {
+        ...backupsNewElasticsearchState,
+        backups: backupsNewElasticsearchState.backups.slice(0, 1),
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithOldElasticsearch = makeStory(conf, {
-  items: [{
-    /** @type {AddonBackupsStateLoaded} */
-    state: backupsOldElasticsearchState,
-  }],
+  items: [
+    {
+      /** @type {AddonBackupsStateLoaded} */
+      state: backupsOldElasticsearchState,
+    },
+  ],
 });
 
 export const dataLoadedWithOldElasticsearchAndBigbackups = makeStory(conf, {
-  items: [{
-    /** @type {AddonBackupsStateLoaded} */
-    state: {
-      ...backupsOldElasticsearchState,
-      backups: [
-        ...backupsOldElasticsearchState.backups,
-        ...backupsOldElasticsearchState.backups,
-        ...backupsOldElasticsearchState.backups,
-        ...backupsOldElasticsearchState.backups,
-      ],
+  items: [
+    {
+      /** @type {AddonBackupsStateLoaded} */
+      state: {
+        ...backupsOldElasticsearchState,
+        backups: [
+          ...backupsOldElasticsearchState.backups,
+          ...backupsOldElasticsearchState.backups,
+          ...backupsOldElasticsearchState.backups,
+          ...backupsOldElasticsearchState.backups,
+        ],
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithPostgresql = makeStory(conf, {
-  items: [{
-    /** @type {AddonBackupsStateLoaded} */
-    state: backupsPostgresqlState,
-  }],
+  items: [
+    {
+      /** @type {AddonBackupsStateLoaded} */
+      state: backupsPostgresqlState,
+    },
+  ],
 });
 
 export const dataLoadedWithPostgresqlAndBigbackups = makeStory(conf, {
-  items: [{
-    /** @type {AddonBackupsStateLoaded} */
-    state: {
-      ...backupsPostgresqlState,
-      backups: [
-        ...backupsPostgresqlState.backups,
-        ...backupsPostgresqlState.backups,
-        ...backupsPostgresqlState.backups,
-        ...backupsPostgresqlState.backups,
-      ],
+  items: [
+    {
+      /** @type {AddonBackupsStateLoaded} */
+      state: {
+        ...backupsPostgresqlState,
+        backups: [
+          ...backupsPostgresqlState.backups,
+          ...backupsPostgresqlState.backups,
+          ...backupsPostgresqlState.backups,
+          ...backupsPostgresqlState.backups,
+        ],
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithMysql = makeStory(conf, {
-  items: [{
-    /** @type {AddonBackupsStateLoaded} */
-    state: backupsMysqlState,
-  }],
+  items: [
+    {
+      /** @type {AddonBackupsStateLoaded} */
+      state: backupsMysqlState,
+    },
+  ],
 });
 
 export const dataLoadedWithMysqlAndBigbackups = makeStory(conf, {
-  items: [{
-    /** @type {AddonBackupsStateLoaded} */
-    state: {
-      ...backupsMysqlState,
-      backups: [
-        ...backupsMysqlState.backups,
-        ...backupsMysqlState.backups,
-        ...backupsMysqlState.backups,
-        ...backupsMysqlState.backups,
-      ],
+  items: [
+    {
+      /** @type {AddonBackupsStateLoaded} */
+      state: {
+        ...backupsMysqlState,
+        backups: [
+          ...backupsMysqlState.backups,
+          ...backupsMysqlState.backups,
+          ...backupsMysqlState.backups,
+          ...backupsMysqlState.backups,
+        ],
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithMongodb = makeStory(conf, {
-  items: [{
-    /** @type {AddonBackupsStateLoaded} */
-    state: backupsMongodbState,
-  }],
+  items: [
+    {
+      /** @type {AddonBackupsStateLoaded} */
+      state: backupsMongodbState,
+    },
+  ],
 });
 
 export const dataLoadedWithMongodbAndBigbackups = makeStory(conf, {
-  items: [{
-    /** @type {AddonBackupsStateLoaded} */
-    state: {
-      ...backupsMongodbState,
-      backups: [
-        ...backupsMongodbState.backups,
-        ...backupsMongodbState.backups,
-        ...backupsMongodbState.backups,
-        ...backupsMongodbState.backups,
-      ],
+  items: [
+    {
+      /** @type {AddonBackupsStateLoaded} */
+      state: {
+        ...backupsMongodbState,
+        backups: [
+          ...backupsMongodbState.backups,
+          ...backupsMongodbState.backups,
+          ...backupsMongodbState.backups,
+          ...backupsMongodbState.backups,
+        ],
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithRedis = makeStory(conf, {
-  items: [{
-    /** @type {AddonBackupsStateLoaded} */
-    state: backupsRedisState,
-  }],
+  items: [
+    {
+      /** @type {AddonBackupsStateLoaded} */
+      state: backupsRedisState,
+    },
+  ],
 });
 
 export const dataLoadedWithRedisAndBigbackups = makeStory(conf, {
-  items: [{
-    /** @type {AddonBackupsStateLoaded} */
-    state: {
-      ...backupsRedisState,
-      backups: [
-        ...backupsRedisState.backups,
-        ...backupsRedisState.backups,
-        ...backupsRedisState.backups,
-        ...backupsRedisState.backups,
-      ],
+  items: [
+    {
+      /** @type {AddonBackupsStateLoaded} */
+      state: {
+        ...backupsRedisState,
+        backups: [
+          ...backupsRedisState.backups,
+          ...backupsRedisState.backups,
+          ...backupsRedisState.backups,
+          ...backupsRedisState.backups,
+        ],
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithJenkins = makeStory(conf, {
-  items: [{
-    /** @type {AddonBackupsStateLoaded} */
-    state: backupsJenkinsState,
-  }],
+  items: [
+    {
+      /** @type {AddonBackupsStateLoaded} */
+      state: backupsJenkinsState,
+    },
+  ],
 });
 
 export const dataLoadedWithJenkinsAndBigbackups = makeStory(conf, {
-  items: [{
-    /** @type {AddonBackupsStateLoaded} */
-    state: {
-      ...backupsJenkinsState,
-      backups: [
-        ...backupsJenkinsState.backups,
-        ...backupsJenkinsState.backups,
-        ...backupsJenkinsState.backups,
-        ...backupsJenkinsState.backups,
-      ],
+  items: [
+    {
+      /** @type {AddonBackupsStateLoaded} */
+      state: {
+        ...backupsJenkinsState,
+        backups: [
+          ...backupsJenkinsState.backups,
+          ...backupsJenkinsState.backups,
+          ...backupsJenkinsState.backups,
+          ...backupsJenkinsState.backups,
+        ],
+      },
     },
-  }],
+  ],
 });
 
 export const simulations = makeStory(conf, {
   items: [{}, {}, {}],
   simulations: [
-    storyWait(2000,
+    storyWait(
+      2000,
       /** @param {CcAddonBackups[]} components */
       ([component, componentEmpty, componentError]) => {
         component.state = backupsNewElasticsearchState;
@@ -218,6 +255,7 @@ export const simulations = makeStory(conf, {
         componentError.state = {
           type: 'error',
         };
-      }),
+      },
+    ),
   ],
 });

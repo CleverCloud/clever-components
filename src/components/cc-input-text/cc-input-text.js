@@ -5,12 +5,12 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import {
   iconRemixCheckLine as iconCheck,
   iconRemixClipboardLine as iconClipboard,
-  iconRemixEyeLine as iconEyeOpen,
   iconRemixEyeOffLine as iconEyeClosed,
+  iconRemixEyeLine as iconEyeOpen,
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { CcFormControlElement } from '../../lib/form/cc-form-control-element.abstract.js';
-import { combineValidators, EmailValidator, RequiredValidator } from '../../lib/form/validation.js';
+import { EmailValidator, RequiredValidator, combineValidators } from '../../lib/form/validation.js';
 import { i18n } from '../../lib/i18n.js';
 import { arrayEquals } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
@@ -55,8 +55,7 @@ const TAG_SEPARATOR = ' ';
  * @slot help - The help message to be displayed right below the `<input>` element. Please use a `<p>` tag.
  */
 export class CcInputText extends CcFormControlElement {
-
-  static get properties () {
+  static get properties() {
     return {
       ...super.properties,
       clipboard: { type: Boolean, reflect: true },
@@ -82,7 +81,7 @@ export class CcInputText extends CcFormControlElement {
 
   static reactiveValidationProperties = ['required', 'type'];
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {boolean} Adds a copy-to-clipboard button (when not disabled and not skeleton). */
@@ -152,8 +151,7 @@ export class CcInputText extends CcFormControlElement {
       empty: () => {
         if (this.type === 'email') {
           return i18n('cc-input-text.error.empty.email');
-        }
-        else {
+        } else {
           return i18n('cc-input-text.error.empty');
         }
       },
@@ -167,7 +165,7 @@ export class CcInputText extends CcFormControlElement {
    * @return {HTMLElement}
    * @protected
    */
-  _getFormControlElement () {
+  _getFormControlElement() {
     return this._inputRef.value;
   }
 
@@ -175,7 +173,7 @@ export class CcInputText extends CcFormControlElement {
    * @return {HTMLElement}
    * @protected
    */
-  _getErrorElement () {
+  _getErrorElement() {
     return this._errorRef.value;
   }
 
@@ -183,7 +181,7 @@ export class CcInputText extends CcFormControlElement {
    * @return {ErrorMessageMap}
    * @protected
    */
-  _getErrorMessages () {
+  _getErrorMessages() {
     return this._errorMessages;
   }
 
@@ -191,7 +189,7 @@ export class CcInputText extends CcFormControlElement {
    * @return {Validator}
    * @protected
    */
-  _getValidator () {
+  _getValidator() {
     return combineValidators([
       this.required ? new RequiredValidator() : null,
       this.type === 'email' ? new EmailValidator() : null,
@@ -202,7 +200,7 @@ export class CcInputText extends CcFormControlElement {
    * @return {FormControlData}
    * @protected
    */
-  _getFormControlData () {
+  _getFormControlData() {
     if (this._tagsEnabled) {
       const data = new FormData();
       this.tags.forEach((tag) => {
@@ -218,7 +216,7 @@ export class CcInputText extends CcFormControlElement {
    * @return {Array<string>}
    * @protected
    */
-  _getReactiveValidationProperties () {
+  _getReactiveValidationProperties() {
     return CcInputText.reactiveValidationProperties;
   }
 
@@ -226,13 +224,11 @@ export class CcInputText extends CcFormControlElement {
 
   // In general, we try to use LitElement's update() lifecycle callback but in this situation,
   // overriding get/set makes more sense
-  get tags () {
-    return this._tagsEnabled
-      ? this.value.split(TAG_SEPARATOR).filter((tag) => tag !== '')
-      : null;
+  get tags() {
+    return this._tagsEnabled ? this.value.split(TAG_SEPARATOR).filter((tag) => tag !== '') : null;
   }
 
-  set tags (newVal) {
+  set tags(newVal) {
     this._tagsEnabled = newVal != null;
     if (this._tagsEnabled) {
       const oldVal = this.tags;
@@ -250,14 +246,14 @@ export class CcInputText extends CcFormControlElement {
   /**
    * Triggers focus on the inner `<input>/<textarea>` element.
    */
-  focus () {
+  focus() {
     this._inputRef.value?.focus();
   }
 
   /**
    * @param {HTMLInputOrTextareaEvent} e
    */
-  _onInput (e) {
+  _onInput(e) {
     // If tags mode is enabled, we want to prevent/remove line breaks
     // and preserve caret position in case of a line break entry (keypress, DnD, copy/paste...)
     if (this._tagsEnabled) {
@@ -281,20 +277,20 @@ export class CcInputText extends CcFormControlElement {
   /**
    * @param {HTMLInputOrTextareaEvent} e
    */
-  _onFocus (e) {
+  _onFocus(e) {
     if (this.readonly) {
       e.target.select();
     }
   }
 
-  _onClickCopy () {
+  _onClickCopy() {
     navigator.clipboard.writeText(this.value).then(() => {
       this._copyOk = true;
       setTimeout(() => (this._copyOk = false), 1000);
     });
   }
 
-  _onClickSecret () {
+  _onClickSecret() {
     this._showSecret = !this._showSecret;
   }
 
@@ -303,7 +299,7 @@ export class CcInputText extends CcFormControlElement {
    *
    * @param {HTMLInputOrTextareaKeyboardEvent} e
    */
-  _onKeyEvent (e) {
+  _onKeyEvent(e) {
     if (e.type === 'keydown' || e.type === 'keypress') {
       e.stopPropagation();
     }
@@ -315,7 +311,7 @@ export class CcInputText extends CcFormControlElement {
     }
     // Request implicit submit with keypress on enter key
     if (!this.readonly && e.type === 'keypress' && e.keyCode === 13) {
-      if ((!this.multi) || (this.multi && e.ctrlKey)) {
+      if (!this.multi || (this.multi && e.ctrlKey)) {
         this._internals.form?.requestSubmit();
         dispatchCustomEvent(this, 'requestimplicitsubmit');
       }
@@ -324,133 +320,144 @@ export class CcInputText extends CcFormControlElement {
 
   /* endregion */
 
-  render () {
+  render() {
     const value = this.value ?? '';
     const rows = value.split('\n').length;
-    const clipboard = (this.clipboard && !this.disabled && !this.skeleton);
+    const clipboard = this.clipboard && !this.disabled && !this.skeleton;
     // NOTE: For now, we don't support secret when multi is activated
-    const secret = (this.secret && !this.multi && !this.disabled && !this.skeleton);
-    const isTextarea = (this.multi || this._tagsEnabled);
+    const secret = this.secret && !this.multi && !this.disabled && !this.skeleton;
+    const isTextarea = this.multi || this._tagsEnabled;
     const hasErrorMessage = this.errorMessage != null && this.errorMessage !== '';
 
     const tags = value
       .split(TAG_SEPARATOR)
-      .map((tag, i, all) => html`<span class="tag">${tag}</span>${i !== (all.length - 1) ? TAG_SEPARATOR : ''}`);
+      .map((tag, i, all) => html`<span class="tag">${tag}</span>${i !== all.length - 1 ? TAG_SEPARATOR : ''}`);
 
     return html`
-
-      ${this.label != null ? html`
-        <label class=${classMap({ 'visually-hidden': this.hiddenLabel })} for="input-id">
-          <span class="label-text">${this.label}</span>
-          ${this.required ? html`
-            <span class="required">${i18n('cc-input-text.required')}</span>
-          ` : ''}
-        </label>
-      ` : ''}
+      ${this.label != null
+        ? html`
+            <label class=${classMap({ 'visually-hidden': this.hiddenLabel })} for="input-id">
+              <span class="label-text">${this.label}</span>
+              ${this.required ? html` <span class="required">${i18n('cc-input-text.required')}</span> ` : ''}
+            </label>
+          `
+        : ''}
 
       <div class="meta-input">
-        <div class="wrapper ${classMap({ skeleton: this.skeleton })}"
-             @input=${this._onInput}
-             @keydown=${this._onKeyEvent}
-             @keypress=${this._onKeyEvent}>
-
-          ${isTextarea ? html`
-            ${this._tagsEnabled && !this.skeleton ? html`
-              <!--
+        <div
+          class="wrapper ${classMap({ skeleton: this.skeleton })}"
+          @input=${this._onInput}
+          @keydown=${this._onKeyEvent}
+          @keypress=${this._onKeyEvent}
+        >
+          ${isTextarea
+            ? html`
+                ${this._tagsEnabled && !this.skeleton
+                  ? html`
+                      <!--
                 We use this to display colored background rectangles behind space separated values. 
                 This needs to be on the same line and the 2 level parent is important to keep scroll behaviour.
               -->
-              <div class="input input-underlayer" style="--rows: ${rows}"><div class="all-tags">${tags}</div></div>
-            ` : ''}
-            <textarea
-              id="input-id"
-              class="input ${classMap({ 'input-tags': this._tagsEnabled, error: hasErrorMessage })}"
-              style="--rows: ${rows}"
-              rows=${rows}
-              ?disabled=${this.disabled || this.skeleton}
-              ?readonly=${this.readonly}
-              .value=${value}
-              placeholder=${this.placeholder}
-              spellcheck="false"
-              wrap="${ifDefined(this._tagsEnabled ? 'soft' : undefined)}"
-              aria-describedby="help-id error-id"
-              @focus=${this._onFocus}
-              ${ref(this._inputRef)}
-            ></textarea>
-          ` : ''}
-
-          ${!isTextarea ? html`
-            ${clipboard && this.readonly ? html`
-              <!--
+                      <div class="input input-underlayer" style="--rows: ${rows}">
+                        <div class="all-tags">${tags}</div>
+                      </div>
+                    `
+                  : ''}
+                <textarea
+                  id="input-id"
+                  class="input ${classMap({ 'input-tags': this._tagsEnabled, error: hasErrorMessage })}"
+                  style="--rows: ${rows}"
+                  rows=${rows}
+                  ?disabled=${this.disabled || this.skeleton}
+                  ?readonly=${this.readonly}
+                  .value=${value}
+                  placeholder=${this.placeholder}
+                  spellcheck="false"
+                  wrap="${ifDefined(this._tagsEnabled ? 'soft' : undefined)}"
+                  aria-describedby="help-id error-id"
+                  @focus=${this._onFocus}
+                  ${ref(this._inputRef)}
+                ></textarea>
+              `
+            : ''}
+          ${!isTextarea
+            ? html`
+                ${clipboard && this.readonly
+                  ? html`
+                      <!--
                 This div has the same styles as the input (but it's hidden with height:0)
                 this way we can use it to know what width the content is
                 and "auto size" the container.
               -->
-              <div class="input input-mirror">${value}</div>
-            ` : ''}
-            <input
-              id="input-id"
-              type=${this.secret && !this._showSecret ? 'password' : 'text'}
-              class="input ${classMap({ error: hasErrorMessage })}"
-              ?disabled=${this.disabled || this.skeleton}
-              ?readonly=${this.readonly}
-              .value=${value}
-              placeholder=${this.placeholder}
-              spellcheck="false"
-              aria-describedby="help-id error-id"
-              @focus=${this._onFocus}
-              ${ref(this._inputRef)}
-            >
-          ` : ''}
+                      <div class="input input-mirror">${value}</div>
+                    `
+                  : ''}
+                <input
+                  id="input-id"
+                  type=${this.secret && !this._showSecret ? 'password' : 'text'}
+                  class="input ${classMap({ error: hasErrorMessage })}"
+                  ?disabled=${this.disabled || this.skeleton}
+                  ?readonly=${this.readonly}
+                  .value=${value}
+                  placeholder=${this.placeholder}
+                  spellcheck="false"
+                  aria-describedby="help-id error-id"
+                  @focus=${this._onFocus}
+                  ${ref(this._inputRef)}
+                />
+              `
+            : ''}
 
           <div class="ring"></div>
         </div>
 
-        ${secret ? html`
-          <button class="btn" @click=${this._onClickSecret}
-                  title=${this._showSecret ? i18n('cc-input-text.secret.hide') : i18n('cc-input-text.secret.show')}
-          >
-            <cc-icon
-              class="btn-img"
-              .icon=${this._showSecret ? iconEyeClosed : iconEyeOpen}
-              a11y-name=${this._showSecret ? i18n('cc-input-text.secret.hide') : i18n('cc-input-text.secret.show')}
-              size="lg"
-            ></cc-icon>
-          </button>
-        ` : ''}
-
-        ${clipboard ? html`
-          <button class="btn" @click=${this._onClickCopy} title=${i18n('cc-input-text.clipboard')}>
-            <cc-icon
-              class="btn-img"
-              .icon=${this._copyOk ? iconCheck : iconClipboard}
-              a11y-name=${i18n('cc-input-text.clipboard')}
-              size="lg"
-            ></cc-icon>
-          </button>
-        ` : ''}
+        ${secret
+          ? html`
+              <button
+                class="btn"
+                @click=${this._onClickSecret}
+                title=${this._showSecret ? i18n('cc-input-text.secret.hide') : i18n('cc-input-text.secret.show')}
+              >
+                <cc-icon
+                  class="btn-img"
+                  .icon=${this._showSecret ? iconEyeClosed : iconEyeOpen}
+                  a11y-name=${this._showSecret ? i18n('cc-input-text.secret.hide') : i18n('cc-input-text.secret.show')}
+                  size="lg"
+                ></cc-icon>
+              </button>
+            `
+          : ''}
+        ${clipboard
+          ? html`
+              <button class="btn" @click=${this._onClickCopy} title=${i18n('cc-input-text.clipboard')}>
+                <cc-icon
+                  class="btn-img"
+                  .icon=${this._copyOk ? iconCheck : iconClipboard}
+                  a11y-name=${i18n('cc-input-text.clipboard')}
+                  size="lg"
+                ></cc-icon>
+              </button>
+            `
+          : ''}
       </div>
-
 
       <div class="help-container" id="help-id">
         <slot name="help"></slot>
       </div>
 
-      ${hasErrorMessage ? html`
-        <p class="error-container" id="error-id" ${ref(this._errorRef)}>
-          ${this.errorMessage}
-        </p>` : ''}
+      ${hasErrorMessage
+        ? html` <p class="error-container" id="error-id" ${ref(this._errorRef)}>${this.errorMessage}</p>`
+        : ''}
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       accessibilityStyles,
       skeletonStyles,
       // language=CSS
       css`
         /* stylelint-disable no-duplicate-selectors */
-
         :host {
           display: inline-block;
         }
@@ -462,8 +469,8 @@ export class CcInputText extends CcFormControlElement {
         /* region Common to cc-input-* & cc-select (apart from multi) */
 
         :host([inline]) {
-          display: inline-grid;
           align-items: baseline;
+          display: inline-grid;
           gap: 0 1em;
           grid-auto-rows: min-content;
           grid-template-areas:
@@ -486,13 +493,13 @@ export class CcInputText extends CcFormControlElement {
         }
 
         label {
-          display: flex;
           align-items: flex-end;
-          justify-content: space-between;
-          padding-bottom: 0.35em;
           cursor: pointer;
+          display: flex;
           gap: 2em;
+          justify-content: space-between;
           line-height: 1.25em;
+          padding-bottom: 0.35em;
         }
 
         label .label-text {
@@ -503,10 +510,10 @@ export class CcInputText extends CcFormControlElement {
 
         :host([inline]) label {
           flex-direction: column;
-          padding: 0;
           gap: 0;
           grid-area: label;
           line-height: normal;
+          padding: 0;
         }
 
         .required {
@@ -520,27 +527,27 @@ export class CcInputText extends CcFormControlElement {
         }
 
         slot[name='help']::slotted(*) {
-          margin: 0.3em 0 0;
           color: var(--cc-color-text-weak);
           font-size: 0.9em;
+          margin: 0.3em 0 0;
         }
 
         .error-container {
-          margin: 0.5em 0 0;
           color: var(--cc-color-text-danger);
+          margin: 0.5em 0 0;
         }
 
         /* endregion */
 
         .meta-input {
+          box-sizing: border-box;
+          display: inline-flex;
+          grid-area: input;
+          height: max-content;
           /* link to position:absolute of .ring */
           position: relative;
-          display: inline-flex;
-          width: 100%;
-          height: max-content;
-          box-sizing: border-box;
-          grid-area: input;
           vertical-align: top;
+          width: 100%;
         }
 
         :host([multi]) .meta-input {
@@ -549,9 +556,9 @@ export class CcInputText extends CcFormControlElement {
 
         .wrapper {
           display: grid;
-          overflow: hidden;
-          min-width: 0;
           flex: 1 1 0;
+          min-width: 0;
+          overflow: hidden;
           /* see input to know why 0.15em */
           padding: 0.15em 0.5em;
         }
@@ -559,35 +566,35 @@ export class CcInputText extends CcFormControlElement {
         /* RESET */
 
         .input {
-          display: block;
-          width: 100%;
-          box-sizing: border-box;
-          padding: 0;
-          border: 1px solid #000;
-          margin: 0;
           /* remove Safari box shadow */
           -webkit-appearance: none;
           background: none;
+          border: 1px solid #000;
+          box-sizing: border-box;
           color: inherit;
+          display: block;
           font-family: inherit;
           font-size: unset;
+          margin: 0;
+          padding: 0;
           resize: none;
+          width: 100%;
         }
 
         /* BASE */
 
         .input {
-          z-index: 2;
-          overflow: hidden;
-          /* multiline behaviour */
-          height: calc(var(--rows, 1) * 2em);
           border: none;
           font-family: var(--cc-input-font-family, inherit);
           font-size: 0.85em;
           grid-area: 1 / 1 / 2 / 2;
+          /* multiline behaviour */
+          height: calc(var(--rows, 1) * 2em);
           /* 2em with a 0.85em font-size ~ 1.7em */
           /* (2em - 1.7em) / 2 ~ 0.15em of padding (top and bottom) on the wrapper */
           line-height: 2em;
+          overflow: hidden;
+          z-index: 2;
         }
 
         .input::placeholder {
@@ -621,46 +628,46 @@ export class CcInputText extends CcFormControlElement {
 
         .input-tags,
         .input-underlayer {
+          font-family: var(--cc-input-font-family, var(--cc-ff-monospace));
           height: auto;
           padding: 0 3px;
-          font-family: var(--cc-input-font-family, var(--cc-ff-monospace));
           word-break: break-all;
           word-spacing: 0.5ch;
         }
 
         .input-underlayer {
-          z-index: 1;
           color: transparent;
           -moz-user-select: none;
           -webkit-user-select: none;
           -ms-user-select: none;
           user-select: none;
           white-space: pre-wrap;
+          z-index: 1;
         }
 
         .input-underlayer .tag:not(:empty) {
           --color: var(--cc-color-bg-soft, #eee);
 
-          padding: 1px 0;
           background-color: var(--color);
           border-radius: 3px;
           box-shadow: 0 0 0 2px var(--color);
+          padding: 1px 0;
         }
 
         /* We use this empty .ring element to decorate the input with background, border, box-shadows... */
 
         .ring {
-          position: absolute;
-          z-index: 0;
-          top: 0;
-          right: 0;
+          background: var(--cc-color-bg-default, #fff);
+          border: 1px solid var(--cc-color-border-neutral-strong, #aaa);
+          border-radius: var(--cc-border-radius-default, 0.25em);
           bottom: 0;
+          box-shadow: 0 0 0 0 rgb(255 255 255 / 0%);
           left: 0;
           overflow: hidden;
-          border: 1px solid var(--cc-color-border-neutral-strong, #aaa);
-          background: var(--cc-color-bg-default, #fff);
-          border-radius: var(--cc-border-radius-default, 0.25em);
-          box-shadow: 0 0 0 0 rgb(255 255 255 / 0%);
+          position: absolute;
+          right: 0;
+          top: 0;
+          z-index: 0;
         }
 
         .input.error + .ring {
@@ -683,8 +690,8 @@ export class CcInputText extends CcFormControlElement {
         }
 
         :host([disabled]) .ring {
-          border-color: var(--cc-color-border-neutral-disabled, #eee);
           background: var(--cc-color-bg-neutral-disabled);
+          border-color: var(--cc-color-border-neutral-disabled, #eee);
         }
 
         :host([readonly]) .ring {
@@ -696,8 +703,8 @@ export class CcInputText extends CcFormControlElement {
         .skeleton .ring,
         .skeleton:hover .ring,
         .skeleton .input:hover + .ring {
-          border-color: var(--cc-color-border-neutral-disabled, #eee);
           background-color: var(--cc-color-bg-neutral-disabled);
+          border-color: var(--cc-color-border-neutral-disabled, #eee);
           cursor: progress;
         }
 
@@ -709,23 +716,23 @@ export class CcInputText extends CcFormControlElement {
         /* RESET */
 
         .btn {
-          display: block;
-          padding: 0;
-          border: none;
-          margin: 0;
           background: transparent;
+          border: none;
+          display: block;
           font-family: inherit;
           font-size: unset;
+          margin: 0;
+          padding: 0;
         }
 
         .btn {
-          z-index: 2;
-          width: 1.6em;
-          height: 1.6em;
-          flex-shrink: 0;
-          margin: 0.2em 0.2em 0.2em 0;
           border-radius: var(--cc-border-radius-small, 0.15em);
           cursor: pointer;
+          flex-shrink: 0;
+          height: 1.6em;
+          margin: 0.2em 0.2em 0.2em 0;
+          width: 1.6em;
+          z-index: 2;
         }
 
         .btn:focus {

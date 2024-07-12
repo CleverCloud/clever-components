@@ -1,23 +1,23 @@
-import { elementUpdated, expect, defineCE } from '@open-wc/testing';
+import { defineCE, elementUpdated, expect } from '@open-wc/testing';
 import * as hanbi from 'hanbi';
-import { html, LitElement } from 'lit';
+import { LitElement, html } from 'lit';
+import '../../src/components/cc-button/cc-button.js';
+import '../../src/components/cc-input-date/cc-input-date.js';
+import '../../src/components/cc-input-number/cc-input-number.js';
+import '../../src/components/cc-input-text/cc-input-text.js';
+import '../../src/components/cc-select/cc-select.js';
 import { formSubmit } from '../../src/lib/form/form-submit-directive.js';
 import { addTranslations, setLanguage } from '../../src/lib/i18n.js';
 import { translations } from '../../src/translations/translations.en.js';
 import { getElement } from '../helpers/element-helper.js';
-import '../../src/components/cc-input-text/cc-input-text.js';
-import '../../src/components/cc-input-number/cc-input-number.js';
-import '../../src/components/cc-input-date/cc-input-date.js';
-import '../../src/components/cc-select/cc-select.js';
-import '../../src/components/cc-button/cc-button.js';
 
-async function spyElement (formContent) {
+async function spyElement(formContent) {
   const validCallbackSpy = hanbi.spy();
   const invalidCallbackSpy = hanbi.spy();
 
   const form = defineCE(
     class extends LitElement {
-      render () {
+      render() {
         return html`<form ${formSubmit(validCallbackSpy.handler, invalidCallbackSpy.handler)}>${formContent}</form>`;
       }
     },
@@ -40,10 +40,10 @@ async function spyElement (formContent) {
       await elementUpdated(element);
       element.shadowRoot.querySelector('form').requestSubmit();
     },
-    get formElement () {
+    get formElement() {
       return element.shadowRoot.querySelector('form');
     },
-    get activeElement () {
+    get activeElement() {
       return element.shadowRoot.activeElement;
     },
     callbacks: {
@@ -65,11 +65,11 @@ before(() => {
 describe('FormSubmitDirective', () => {
   describe('with native inputs', () => {
     const formContent = html`
-      <input name="input1" type="text" required>
-      <input name="input2" type="text">
-      <input name="input3" type="text" required>
-      <input name="input4" type="text">
-      <input name="input5" type="text" required>
+      <input name="input1" type="text" required />
+      <input name="input2" type="text" />
+      <input name="input3" type="text" required />
+      <input name="input4" type="text" />
+      <input name="input5" type="text" required />
       <button type="submit">button</button>
     `;
 
@@ -184,7 +184,14 @@ describe('FormSubmitDirective', () => {
       <cc-input-text name="input-text" required></cc-input-text>
       <cc-input-number name="input-number" required></cc-input-number>
       <cc-input-date name="input-date" required></cc-input-date>
-      <cc-select name="input-select" required .options=${[{ label: 'option1', value: 'option1' }, { label: 'option2', value: 'option2' }]}></cc-select>
+      <cc-select
+        name="input-select"
+        required
+        .options=${[
+          { label: 'option1', value: 'option1' },
+          { label: 'option2', value: 'option2' },
+        ]}
+      ></cc-select>
       <cc-button type="submit">button</cc-button>
     `;
 

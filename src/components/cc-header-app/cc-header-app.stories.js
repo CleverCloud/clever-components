@@ -1,6 +1,6 @@
-import './cc-header-app.js';
 import { ZONE } from '../../stories/fixtures/zones.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-header-app.js';
 
 const COMMIT_ONE = '99b8617a5e102b318593eed3cd0c0a67e77b7e9a';
 const COMMIT_TWO = 'bf4c76b3c563050d32e411b2f06d11515c7d8304';
@@ -30,7 +30,7 @@ const conf = {
  * @param {string} [commit]
  * @returns {App & { type: 'loaded', zone: Zone }}
  */
-function appWithTypeLoadedAndZone (variantName, variantLogoName, commit = COMMIT_ONE) {
+function appWithTypeLoadedAndZone(variantName, variantLogoName, commit = COMMIT_ONE) {
   return {
     type: 'loaded',
     name: `Awesome ${variantName} app (PROD)`,
@@ -43,156 +43,186 @@ function appWithTypeLoadedAndZone (variantName, variantLogoName, commit = COMMIT
 }
 
 export const defaultStory = makeStory(conf, {
-  items: [{
-    /** @type {HeaderAppStateLoaded} */
-    state: {
-      ...appWithTypeLoadedAndZone('Node', 'nodejs'),
-      status: 'running',
-      runningCommit: COMMIT_ONE,
+  items: [
+    {
+      /** @type {HeaderAppStateLoaded} */
+      state: {
+        ...appWithTypeLoadedAndZone('Node', 'nodejs'),
+        status: 'running',
+        runningCommit: COMMIT_ONE,
+      },
     },
-  }],
+  ],
 });
 
 export const loading = makeStory(conf, {
-  items: [{
-    /** @type {HeaderAppStateLoading} */
-    state: { type: 'loading' },
-  }],
+  items: [
+    {
+      /** @type {HeaderAppStateLoading} */
+      state: { type: 'loading' },
+    },
+  ],
 });
 
 export const error = makeStory(conf, {
-  items: [{
-    /** @type {HeaderAppStateError} */
-    state: { type: 'error' },
-  }],
+  items: [
+    {
+      /** @type {HeaderAppStateError} */
+      state: { type: 'error' },
+    },
+  ],
 });
 
 export const unknownState = makeStory(conf, {
-  items: [{
-    /** @type {HeaderAppStateLoaded} */
-    state: {
-      ...appWithTypeLoadedAndZone('PHP', 'php'),
-      status: 'unknown',
+  items: [
+    {
+      /** @type {HeaderAppStateLoaded} */
+      state: {
+        ...appWithTypeLoadedAndZone('PHP', 'php'),
+        status: 'unknown',
+      },
     },
-  }],
+  ],
 });
 
 export const stoppedState = makeStory(conf, {
-  items: [{
-    /** @type {HeaderAppStateLoaded} */
-    state: {
-      ...appWithTypeLoadedAndZone('Docker', 'docker'),
-      status: 'stopped',
+  items: [
+    {
+      /** @type {HeaderAppStateLoaded} */
+      state: {
+        ...appWithTypeLoadedAndZone('Docker', 'docker'),
+        status: 'stopped',
+      },
     },
-  }],
+  ],
 });
 
 export const stoppedStateWithBrandNewApp = makeStory(conf, {
-  items: [{
-    /** @type {HeaderAppStateLoaded} */
-    state: {
-      ...appWithTypeLoadedAndZone('Python', 'python', null),
-      status: 'stopped',
+  items: [
+    {
+      /** @type {HeaderAppStateLoaded} */
+      state: {
+        ...appWithTypeLoadedAndZone('Python', 'python', null),
+        status: 'stopped',
+      },
     },
-  }],
+  ],
 });
 
 export const startFailedState = makeStory(conf, {
-  items: [{
-    /** @type {HeaderAppStateLoaded} */
-    state: {
-      ...appWithTypeLoadedAndZone('Java + WAR', 'java-war'),
-      status: 'start-failed',
+  items: [
+    {
+      /** @type {HeaderAppStateLoaded} */
+      state: {
+        ...appWithTypeLoadedAndZone('Java + WAR', 'java-war'),
+        status: 'start-failed',
+      },
     },
-  }],
+  ],
 });
 
 export const runningStateWithRunningCommitUnknown = makeStory(conf, {
-  items: [{
-    /** @type {HeaderAppStateLoaded} */
-    state: {
-      ...appWithTypeLoadedAndZone('Java + WAR', 'java-war'),
-      status: 'running',
+  items: [
+    {
+      /** @type {HeaderAppStateLoaded} */
+      state: {
+        ...appWithTypeLoadedAndZone('Java + WAR', 'java-war'),
+        status: 'running',
+      },
     },
-  }],
+  ],
 });
 
 export const runningState = makeStory(conf, {
-  items: [{
-    /** @type {HeaderAppStateLoaded} */
-    state: {
-      ...appWithTypeLoadedAndZone('Ruby', 'ruby'),
-      status: 'running',
-      runningCommit: COMMIT_ONE,
+  items: [
+    {
+      /** @type {HeaderAppStateLoaded} */
+      state: {
+        ...appWithTypeLoadedAndZone('Ruby', 'ruby'),
+        status: 'running',
+        runningCommit: COMMIT_ONE,
+      },
     },
-  }],
+  ],
 });
 
 export const restartFailedState = makeStory(conf, {
-  items: [{
-    /** @type {HeaderAppStateLoaded} */
-    state: {
-      ...appWithTypeLoadedAndZone('Java or Scala + Play! 2', 'play2'),
-      status: 'restart-failed',
-      runningCommit: COMMIT_ONE,
+  items: [
+    {
+      /** @type {HeaderAppStateLoaded} */
+      state: {
+        ...appWithTypeLoadedAndZone('Java or Scala + Play! 2', 'play2'),
+        status: 'restart-failed',
+        runningCommit: COMMIT_ONE,
+      },
     },
-  }],
+  ],
 });
 
 export const startingStateWithDeployingCommitUnknown = makeStory(conf, {
-  items: [{
-    /** @type {HeaderAppStateLoaded} */
-    state: {
-      ...appWithTypeLoadedAndZone('Java + Maven', 'maven'),
-      status: 'starting',
+  items: [
+    {
+      /** @type {HeaderAppStateLoaded} */
+      state: {
+        ...appWithTypeLoadedAndZone('Java + Maven', 'maven'),
+        status: 'starting',
+      },
     },
-  }],
+  ],
 });
 
 export const startingState = makeStory(conf, {
-  items: [{
-    /** @type {HeaderAppStateLoaded} */
-    state: {
-      ...appWithTypeLoadedAndZone('Go', 'go'),
-      status: 'starting',
-      runningCommit: COMMIT_ONE,
+  items: [
+    {
+      /** @type {HeaderAppStateLoaded} */
+      state: {
+        ...appWithTypeLoadedAndZone('Go', 'go'),
+        status: 'starting',
+        runningCommit: COMMIT_ONE,
+      },
     },
-  }],
+  ],
 });
 
 export const restartingStateWithDeployingCommitUnknown = makeStory(conf, {
-  items: [{
-    /** @type {HeaderAppStateLoaded} */
-    state: {
-      ...appWithTypeLoadedAndZone('Scala', 'scala'),
-      status: 'restarting',
-      runningCommit: COMMIT_ONE,
+  items: [
+    {
+      /** @type {HeaderAppStateLoaded} */
+      state: {
+        ...appWithTypeLoadedAndZone('Scala', 'scala'),
+        status: 'restarting',
+        runningCommit: COMMIT_ONE,
+      },
     },
-  }],
+  ],
 });
 
 export const restartingState = makeStory(conf, {
-  items: [{
-    /** @type {HeaderAppStateLoaded} */
-    state: {
-      ...appWithTypeLoadedAndZone('Haskell', 'haskell'),
-      status: 'restarting',
-      runningCommit: COMMIT_ONE,
-      startingCommit: COMMIT_TWO,
+  items: [
+    {
+      /** @type {HeaderAppStateLoaded} */
+      state: {
+        ...appWithTypeLoadedAndZone('Haskell', 'haskell'),
+        status: 'restarting',
+        runningCommit: COMMIT_ONE,
+        startingCommit: COMMIT_TWO,
+      },
     },
-  }],
+  ],
 });
 
 export const restartingWithDowntimeState = makeStory(conf, {
-  items: [{
-    /** @type {HeaderAppStateLoaded} */
-    state: {
-      ...appWithTypeLoadedAndZone('Static', 'apache'),
-      status: 'restarting-with-downtime',
-      runningCommit: COMMIT_ONE,
-      startingCommit: COMMIT_ONE,
+  items: [
+    {
+      /** @type {HeaderAppStateLoaded} */
+      state: {
+        ...appWithTypeLoadedAndZone('Static', 'apache'),
+        status: 'restarting-with-downtime',
+        runningCommit: COMMIT_ONE,
+        startingCommit: COMMIT_ONE,
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithDisableButtons = makeStory(conf, {
@@ -227,7 +257,8 @@ export const dataLoadedWithDisableButtons = makeStory(conf, {
 export const simulations = makeStory(conf, {
   items: [{}, {}],
   simulations: [
-    storyWait(3000,
+    storyWait(
+      3000,
       /** @param {CcHeaderApp[]} components */
       ([component, componentError]) => {
         component.state = {
@@ -236,8 +267,10 @@ export const simulations = makeStory(conf, {
           runningCommit: COMMIT_ONE,
         };
         componentError.state = { type: 'error' };
-      }),
-    storyWait(3000,
+      },
+    ),
+    storyWait(
+      3000,
       /** @param {CcHeaderApp[]} components */
       ([component]) => {
         component.state = {
@@ -246,16 +279,20 @@ export const simulations = makeStory(conf, {
           status: 'restarting',
           runningCommit: COMMIT_ONE,
         };
-      }),
-    storyWait(1000,
+      },
+    ),
+    storyWait(
+      1000,
       /** @param {CcHeaderApp & { state: HeaderAppStateLoaded }[]} components */
       ([component]) => {
         component.state = {
           ...component.state,
           startingCommit: COMMIT_TWO,
         };
-      }),
-    storyWait(3000,
+      },
+    ),
+    storyWait(
+      3000,
       /** @param {CcHeaderApp & { state: HeaderAppStateLoaded }[]} components */
       ([component]) => {
         component.state = {
@@ -263,8 +300,10 @@ export const simulations = makeStory(conf, {
           status: 'restart-failed',
           startingCommit: null,
         };
-      }),
-    storyWait(3000,
+      },
+    ),
+    storyWait(
+      3000,
       /** @param {CcHeaderApp & { state: HeaderAppStateLoaded }[]} components */
       ([component]) => {
         component.state = {
@@ -272,6 +311,7 @@ export const simulations = makeStory(conf, {
           status: 'stopped',
           runningCommit: null,
         };
-      }),
+      },
+    ),
   ],
 });

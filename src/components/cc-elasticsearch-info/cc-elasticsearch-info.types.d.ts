@@ -1,4 +1,7 @@
-export type ElasticSearchInfoState = ElasticSearchInfoStateLoaded | ElasticSearchInfoStateLoading | ElasticSearchInfoStateError;
+export type ElasticSearchInfoState =
+  | ElasticSearchInfoStateLoaded
+  | ElasticSearchInfoStateLoading
+  | ElasticSearchInfoStateError;
 
 export interface ElasticSearchInfoStateLoaded {
   type: 'loaded';
@@ -24,4 +27,4 @@ export interface LinkLoading {
   href?: null;
 }
 
-export type LinkType = "elasticsearch" | "kibana" | "apm";
+export type LinkType = 'elasticsearch' | 'kibana' | 'apm';

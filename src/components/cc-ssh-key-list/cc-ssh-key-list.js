@@ -1,11 +1,3 @@
-import '../cc-button/cc-button.js';
-import '../cc-badge/cc-badge.js';
-import '../cc-icon/cc-icon.js';
-import '../cc-img/cc-img.js';
-import '../cc-input-text/cc-input-text.js';
-import '../cc-notice/cc-notice.js';
-import '../cc-block/cc-block.js';
-import '../cc-block-section/cc-block-section.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -24,15 +16,25 @@ import { Validation } from '../../lib/form/validation.js';
 import { i18n } from '../../lib/i18n.js';
 import { sortBy } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
+import '../cc-badge/cc-badge.js';
+import '../cc-block-section/cc-block-section.js';
+import '../cc-block/cc-block.js';
+import '../cc-button/cc-button.js';
+import '../cc-icon/cc-icon.js';
+import '../cc-img/cc-img.js';
+import '../cc-input-text/cc-input-text.js';
+import '../cc-notice/cc-notice.js';
 
 /**
  * @type {SshKeyState[]}
  */
-const SKELETON_KEYS = [{
-  state: 'idle',
-  name: fakeString(15),
-  fingerprint: fakeString(32),
-}];
+const SKELETON_KEYS = [
+  {
+    state: 'idle',
+    name: fakeString(15),
+    fingerprint: fakeString(32),
+  },
+];
 
 class SshPublicKeyValidator {
   /**
@@ -40,7 +42,7 @@ class SshPublicKeyValidator {
    * @param {Object} _formData
    * @return {Validity}
    */
-  validate (value, _formData) {
+  validate(value, _formData) {
     if (value.toLowerCase().match(' private ')) {
       return Validation.invalid('private-key');
     }
@@ -77,15 +79,14 @@ class SshPublicKeyValidator {
  * @fires {CustomEvent<SshKey>} cc-ssh-key-list:import - Fires when clicking a GitHub key import button.
  */
 export class CcSshKeyList extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       createKeyFormState: { type: Object, attribute: false },
       keyData: { type: Object, attribute: 'key-data' },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {CreateSshKeyFormState} create key form state. */
@@ -115,14 +116,14 @@ export class CcSshKeyList extends LitElement {
     };
   }
 
-  resetCreateKeyForm () {
+  resetCreateKeyForm() {
     this._createFormRef.value?.reset();
   }
 
   /**
    * @param {FormDataMap} formData
    */
-  _onCreateKey (formData) {
+  _onCreateKey(formData) {
     // trigger key creation if client form validation is successful
     if (typeof formData.name === 'string' && typeof formData.publicKey === 'string') {
       const newKey = {
@@ -134,20 +135,20 @@ export class CcSshKeyList extends LitElement {
   }
 
   /** @param {SshKeyState} sshKeyState */
-  _onDeleteKey (sshKeyState) {
+  _onDeleteKey(sshKeyState) {
     // removing state property that belongs to internal component implementation
     const { state, ...sshKey } = sshKeyState;
     dispatchCustomEvent(this, 'delete', sshKey);
   }
 
   /** @param {SshKeyState} sshKeyState */
-  _onImportKey (sshKeyState) {
+  _onImportKey(sshKeyState) {
     // removing state property that belongs to internal component implementation
     const { state, ...sshKey } = sshKeyState;
     dispatchCustomEvent(this, 'import', sshKey);
   }
 
-  render () {
+  render() {
     return html`
       <cc-block>
         <div slot="title">${i18n('cc-ssh-key-list.title')}</div>
@@ -164,63 +165,64 @@ export class CcSshKeyList extends LitElement {
         <cc-block-section>
           <div slot="title">
             <span>${i18n('cc-ssh-key-list.personal.title')}</span>
-            ${this.keyData.state === 'loaded' && this.keyData.personalKeys.length > 2 ? html`
-              <cc-badge circle>${this.keyData.personalKeys.length}</cc-badge>
-            ` : ''}
+            ${this.keyData.state === 'loaded' && this.keyData.personalKeys.length > 2
+              ? html` <cc-badge circle>${this.keyData.personalKeys.length}</cc-badge> `
+              : ''}
           </div>
           <div slot="info">${i18n('cc-ssh-key-list.personal.info')}</div>
 
-          ${this.keyData.state === 'loading' ? html`
-            ${this._renderKeyList('skeleton', SKELETON_KEYS)}
-          ` : ''}
-
-          ${this.keyData.state === 'loaded' ? html`
-            ${this.keyData.personalKeys.length === 0 ? html`
-              <p class="info-msg" id="personal-keys-empty-msg" tabindex="-1">${i18n('cc-ssh-key-list.personal.empty')}</p>
-            ` : ''}
-            ${this._renderKeyList('personal', this.keyData.personalKeys)}
-          ` : ''}
-
-          ${this.keyData.state === 'error' ? html`
-            <cc-notice intent="warning" message="${i18n('cc-ssh-key-list.error.loading')}"></cc-notice>
-          ` : ''}
+          ${this.keyData.state === 'loading' ? html` ${this._renderKeyList('skeleton', SKELETON_KEYS)} ` : ''}
+          ${this.keyData.state === 'loaded'
+            ? html`
+                ${this.keyData.personalKeys.length === 0
+                  ? html`
+                      <p class="info-msg" id="personal-keys-empty-msg" tabindex="-1">
+                        ${i18n('cc-ssh-key-list.personal.empty')}
+                      </p>
+                    `
+                  : ''}
+                ${this._renderKeyList('personal', this.keyData.personalKeys)}
+              `
+            : ''}
+          ${this.keyData.state === 'error'
+            ? html` <cc-notice intent="warning" message="${i18n('cc-ssh-key-list.error.loading')}"></cc-notice> `
+            : ''}
         </cc-block-section>
 
         <!-- GitHub keys -->
         <cc-block-section>
           <div slot="title">
             <span>${i18n('cc-ssh-key-list.github.title')}</span>
-            ${this.keyData.state === 'loaded' && this.keyData.isGithubLinked && this.keyData.githubKeys.length > 2 ? html`
-              <cc-badge circle>${this.keyData.githubKeys.length}</cc-badge>
-            ` : ''}
+            ${this.keyData.state === 'loaded' && this.keyData.isGithubLinked && this.keyData.githubKeys.length > 2
+              ? html` <cc-badge circle>${this.keyData.githubKeys.length}</cc-badge> `
+              : ''}
           </div>
           <div slot="info">${i18n('cc-ssh-key-list.github.info')}</div>
 
-          ${this.keyData.state === 'loading' ? html`
-            ${this._renderKeyList('skeleton', SKELETON_KEYS)}
-          ` : ''}
-
-          ${this.keyData.state === 'loaded' && !this.keyData.isGithubLinked ? html`
-            <p class="info-msg">${i18n('cc-ssh-key-list.github.unlinked')}</p>
-          ` : ''}
-
-          ${this.keyData.state === 'loaded' && this.keyData.isGithubLinked ? html`
-            ${this.keyData.githubKeys.length === 0 ? html`
-              <p class="info-msg" id="github-keys-empty-msg" tabindex="-1">${i18n('cc-ssh-key-list.github.empty')}</p>
-            ` : ''}
-            ${this._renderKeyList('github', this.keyData.githubKeys)}
-          ` : ''}
-
-          ${this.keyData.state === 'error' ? html`
-            <cc-notice intent="warning" message="${i18n('cc-ssh-key-list.error.loading')}"></cc-notice>
-          ` : ''}
+          ${this.keyData.state === 'loading' ? html` ${this._renderKeyList('skeleton', SKELETON_KEYS)} ` : ''}
+          ${this.keyData.state === 'loaded' && !this.keyData.isGithubLinked
+            ? html` <p class="info-msg">${i18n('cc-ssh-key-list.github.unlinked')}</p> `
+            : ''}
+          ${this.keyData.state === 'loaded' && this.keyData.isGithubLinked
+            ? html`
+                ${this.keyData.githubKeys.length === 0
+                  ? html`
+                      <p class="info-msg" id="github-keys-empty-msg" tabindex="-1">
+                        ${i18n('cc-ssh-key-list.github.empty')}
+                      </p>
+                    `
+                  : ''}
+                ${this._renderKeyList('github', this.keyData.githubKeys)}
+              `
+            : ''}
+          ${this.keyData.state === 'error'
+            ? html` <cc-notice intent="warning" message="${i18n('cc-ssh-key-list.error.loading')}"></cc-notice> `
+            : ''}
         </cc-block-section>
 
         <!-- documentation link -->
         <cc-block-section>
-          <div class="align-end">
-            ${i18n('cc-ssh-key-list.doc.info')}
-          </div>
+          <div class="align-end">${i18n('cc-ssh-key-list.doc.info')}</div>
         </cc-block-section>
       </cc-block>
     `;
@@ -229,7 +231,7 @@ export class CcSshKeyList extends LitElement {
   /**
    * @return {TemplateResult}
    */
-  _renderCreateSshKeyForm () {
+  _renderCreateSshKeyForm() {
     const isCreating = this.createKeyFormState.type === 'creating';
 
     return html`
@@ -254,12 +256,7 @@ export class CcSshKeyList extends LitElement {
         >
         </cc-input-text>
         <div class="create-form__footer">
-          <cc-button
-            class="create-form__add-btn"
-            primary
-            type="submit"
-            ?waiting=${isCreating}
-          >
+          <cc-button class="create-form__add-btn" primary type="submit" ?waiting=${isCreating}>
             ${i18n('cc-ssh-key-list.add.btn')}
           </cc-button>
         </div>
@@ -272,84 +269,87 @@ export class CcSshKeyList extends LitElement {
    * @param {SshKeyState[]} keys
    * @return {TemplateResult}
    */
-  _renderKeyList (type, keys) {
+  _renderKeyList(type, keys) {
     const sortedKeys = [...keys].sort(sortBy('name'));
-    const skeleton = (type === 'skeleton');
+    const skeleton = type === 'skeleton';
     return html`
       <div class="key-list">
+        ${repeat(
+          sortedKeys,
+          (key) => key.name,
+          (key) => {
+            const name = key.name;
+            const isDisabled = !skeleton && key.state !== 'idle';
+            const classes = {
+              'key--personal': type === 'personal',
+              'key--github': type === 'github',
+              'key--skeleton': skeleton,
+              'is-disabled': isDisabled,
+            };
 
-        ${repeat(sortedKeys, (key) => key.name, (key) => {
-          const name = key.name;
-          const isDisabled = !skeleton && key.state !== 'idle';
-          const classes = {
-            'key--personal': type === 'personal',
-            'key--github': type === 'github',
-            'key--skeleton': skeleton,
-            'is-disabled': isDisabled,
-          };
+            return html`
+              <div class="key ${classMap(classes)}">
+                <div class="key__icon">
+                  <cc-icon .icon="${iconKey}" size="lg" ?skeleton=${skeleton}></cc-icon>
+                </div>
+                <div class="key__name">
+                  <span class=${classMap({ skeleton })}>${name}</span>
+                </div>
+                <div class="key__form">
+                  <div class="key__fingerprint ${classMap({ skeleton })}">${key.fingerprint}</div>
 
-          return html`
-            <div class="key ${classMap(classes)}">
-              <div class="key__icon">
-                <cc-icon .icon="${iconKey}" size="lg" ?skeleton=${skeleton}></cc-icon>
+                  ${type === 'personal'
+                    ? html`
+                        <cc-button
+                          @cc-button:click=${() => this._onDeleteKey(key)}
+                          a11y-name="${i18n('cc-ssh-key-list.personal.delete.a11y', { name })}"
+                          class="key__button key__button--personal"
+                          .icon="${iconBin}"
+                          ?disabled=${isDisabled}
+                          danger
+                          outlined
+                          ?waiting=${isDisabled}
+                        >
+                          ${i18n('cc-ssh-key-list.personal.delete')}
+                        </cc-button>
+                      `
+                    : ''}
+                  ${type === 'github'
+                    ? html`
+                        <cc-button
+                          @cc-button:click=${() => this._onImportKey(key)}
+                          a11y-name="${i18n('cc-ssh-key-list.github.import.a11y', { name })}"
+                          class="key__button key__button--github"
+                          .icon="${iconAdd}"
+                          ?disabled=${isDisabled}
+                          ?waiting=${isDisabled}
+                        >
+                          ${i18n('cc-ssh-key-list.github.import')}
+                        </cc-button>
+                      `
+                    : ''}
+                  ${type === 'skeleton'
+                    ? html`
+                        <cc-button class="key__button key__button--skeleton" .icon="${iconAdd}" skeleton>
+                          ${fakeString(10)}
+                        </cc-button>
+                      `
+                    : ''}
+                </div>
               </div>
-              <div class="key__name">
-                <span class=${classMap({ skeleton })}>${(name)}</span>
-              </div>
-              <div class="key__form">
-                <div class="key__fingerprint ${classMap({ skeleton })}">${(key.fingerprint)}</div>
-
-                ${type === 'personal' ? html`
-                  <cc-button
-                    @cc-button:click=${() => this._onDeleteKey(key)}
-                    a11y-name="${i18n('cc-ssh-key-list.personal.delete.a11y', { name })}"
-                    class="key__button key__button--personal"
-                    .icon="${iconBin}"
-                    ?disabled=${isDisabled}
-                    danger
-                    outlined
-                    ?waiting=${isDisabled}>
-                    ${i18n('cc-ssh-key-list.personal.delete')}
-                  </cc-button>
-                ` : ''}
-
-                ${type === 'github' ? html`
-                  <cc-button
-                    @cc-button:click=${() => this._onImportKey(key)}
-                    a11y-name="${i18n('cc-ssh-key-list.github.import.a11y', { name })}"
-                    class="key__button key__button--github"
-                    .icon="${iconAdd}"
-                    ?disabled=${isDisabled}
-                    ?waiting=${isDisabled}>
-                    ${i18n('cc-ssh-key-list.github.import')}
-                  </cc-button>
-                ` : ''}
-
-                ${type === 'skeleton' ? html`
-                  <cc-button
-                    class="key__button key__button--skeleton"
-                    .icon="${iconAdd}"
-                    skeleton
-                  >
-                    ${fakeString(10)}
-                  </cc-button>
-                ` : ''}
-
-              </div>
-            </div>
-          `;
-        })}
+            `;
+          },
+        )}
       </div>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       skeletonStyles,
       // language=CSS
       css`
         /* region global */
-
         :host {
           --skeleton-color: #bbb;
 
@@ -364,7 +364,7 @@ export class CcSshKeyList extends LitElement {
           flex-direction: column;
           gap: 1em;
         }
-        
+
         .create-form__public-key {
           --cc-input-font-family: var(--cc-ff-monospace);
         }
@@ -388,7 +388,7 @@ export class CcSshKeyList extends LitElement {
         .key {
           display: grid;
           gap: 0.5em 0.75em;
-          grid-template-areas: 
+          grid-template-areas:
             'key-icon key-name'
             '. key-form';
           grid-template-columns: min-content 1fr;
@@ -412,25 +412,25 @@ export class CcSshKeyList extends LitElement {
         }
 
         .key__form {
+          align-items: center;
           display: flex;
           flex-wrap: wrap;
-          align-items: center;
-          justify-content: flex-end;
           gap: 1em;
           grid-area: key-form;
+          justify-content: flex-end;
         }
 
         /* TODO tokenize border & border-color */
 
         .key__fingerprint {
-          flex-basis: min(100%, 21.25em);
-          flex-grow: 1;
-          padding: 0.5em 0.75em;
           background-color: var(--cc-color-bg-neutral);
           border-inline-start: 5px solid #a6a6a6;
           border-radius: 0.125em;
+          flex-basis: min(100%, 21.25em);
+          flex-grow: 1;
           font-family: var(--cc-ff-monospace);
           line-height: 1.5;
+          padding: 0.5em 0.75em;
           word-break: break-word;
         }
 
@@ -451,14 +451,14 @@ export class CcSshKeyList extends LitElement {
         /* TODO tokenize border & border-color */
 
         [slot='info'] code {
-          display: inline-block;
-          padding: 0.25em 0.75em;
-          border: 1px solid var(--cc-color-border-neutral-weak, #eee);
           background-color: var(--cc-color-bg-neutral);
+          border: 1px solid var(--cc-color-border-neutral-weak, #eee);
           border-radius: var(--cc-border-radius-default, 0.25em);
+          display: inline-block;
           font-family: var(--cc-ff-monospace);
           font-size: 0.9em;
           line-height: 2;
+          padding: 0.25em 0.75em;
           white-space: pre-wrap;
           word-break: break-all;
         }
@@ -468,11 +468,11 @@ export class CcSshKeyList extends LitElement {
         }
 
         .info-msg {
-          margin-top: 1em;
-          margin-bottom: 0;
           color: var(--cc-color-text-weak);
           font-style: italic;
           line-height: 1.5;
+          margin-bottom: 0;
+          margin-top: 1em;
         }
 
         .align-end {

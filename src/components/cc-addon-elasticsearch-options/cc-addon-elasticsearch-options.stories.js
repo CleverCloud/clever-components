@@ -1,5 +1,5 @@
-import './cc-addon-elasticsearch-options.js';
 import { makeStory } from '../../stories/lib/make-story.js';
+import './cc-addon-elasticsearch-options.js';
 
 export default {
   tags: ['autodocs'],

@@ -1,9 +1,3 @@
-import '../cc-button/cc-button.js';
-import '../cc-icon/cc-icon.js';
-import '../cc-input-number/cc-input-number.js';
-import '../cc-toggle/cc-toggle.js';
-import '../cc-notice/cc-notice.js';
-import '../cc-loader/cc-loader.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import {
@@ -12,8 +6,8 @@ import {
 } from '../../assets/cc-clever.icons.js';
 import {
   iconRemixArrowDownSLine as iconArrowDown,
-  iconRemixAddLine as iconPlus,
   iconRemixDatabase_2Fill as iconDisk,
+  iconRemixAddLine as iconPlus,
   iconRemixFunctions as iconSum,
   iconRemixUser_3Fill as iconUser,
 } from '../../assets/cc-remix.icons.js';
@@ -21,6 +15,12 @@ import { ResizeController } from '../../controllers/resize-controller.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { PricingConsumptionSimulator } from '../../lib/pricing.js';
+import '../cc-button/cc-button.js';
+import '../cc-icon/cc-icon.js';
+import '../cc-input-number/cc-input-number.js';
+import '../cc-loader/cc-loader.js';
+import '../cc-notice/cc-notice.js';
+import '../cc-toggle/cc-toggle.js';
 
 const BREAKPOINT = 600;
 
@@ -65,8 +65,7 @@ const ICONS = {
  * @cssprop {Color} --cc-pricing-hovered-color - Sets the text color used on hover (defaults: `purple`).
  */
 export class CcPricingProductConsumption extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       action: { type: String },
       currency: { type: Object },
@@ -74,7 +73,7 @@ export class CcPricingProductConsumption extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {ActionType} Sets the type of action: "add" to display the "add" button for the product and "none" for no actions (defaults to "add") */
@@ -101,7 +100,7 @@ export class CcPricingProductConsumption extends LitElement {
    * @param {SectionType|"total"} type - the type of the pricing section
    * @return {string} the translated section title based on the section type
    */
-  _getTitle (type) {
+  _getTitle(type) {
     switch (type) {
       case 'storage':
         return i18n('cc-pricing-product-consumption.storage.title');
@@ -124,7 +123,7 @@ export class CcPricingProductConsumption extends LitElement {
    * @param {SectionType} type - the type of the pricing section
    * @return {string} the translated label corresponding to the given section type
    */
-  _getLabel (type) {
+  _getLabel(type) {
     switch (type) {
       case 'storage':
         return i18n('cc-pricing-product-consumption.storage.label');
@@ -145,7 +144,7 @@ export class CcPricingProductConsumption extends LitElement {
    * @param {number} amount - the amount to base the calculation on
    * @return {Object} An object containing the computed price and the currency code
    */
-  _getCurrencyValue (amount) {
+  _getCurrencyValue(amount) {
     return {
       price: amount * this.currency.changeRate,
       code: this.currency.code,
@@ -161,7 +160,7 @@ export class CcPricingProductConsumption extends LitElement {
    *
    * @return {string|number} the localized maximum range (if maxRange is null, returns `INFINITY`) or the raw maximum range itself
    */
-  _getMaxRange (type, maxRange) {
+  _getMaxRange(type, maxRange) {
     if (maxRange == null) {
       return INFINITY;
     }
@@ -180,10 +179,8 @@ export class CcPricingProductConsumption extends LitElement {
    *
    * @return {string|number} the localized minimum range or the raw minimum range itself
    */
-  _getMinRange (type, minRange) {
-    return this._isTypeBytes(type)
-      ? i18n('cc-pricing-product-consumption.bytes', { bytes: minRange })
-      : minRange;
+  _getMinRange(type, minRange) {
+    return this._isTypeBytes(type) ? i18n('cc-pricing-product-consumption.bytes', { bytes: minRange }) : minRange;
   }
 
   /**
@@ -192,19 +189,21 @@ export class CcPricingProductConsumption extends LitElement {
    * @param {SectionPrice} type - the section type related to the interval price to process
    * @param {number} intervalPrice - the interval price to localize
    */
-  _getIntervalPrice (type, intervalPrice) {
-
+  _getIntervalPrice(type, intervalPrice) {
     if (intervalPrice === 0) {
       return i18n('cc-pricing-product-consumption.price-interval.free');
     }
 
     // type bytes interval prices are specified for 1 byte but we want to display a unit price for 1 gigabyte
     return this._isTypeBytes(type)
-      ? i18n('cc-pricing-product-consumption.price-interval.bytes', this._getCurrencyValue(intervalPrice * ONE_GIGABYTE))
+      ? i18n(
+          'cc-pricing-product-consumption.price-interval.bytes',
+          this._getCurrencyValue(intervalPrice * ONE_GIGABYTE),
+        )
       : i18n('cc-pricing-product-consumption.price-interval.users', {
-        ...this._getCurrencyValue(intervalPrice),
-        userCount: this.product.sections.find((s) => s.type === type).secability ?? 1,
-      });
+          ...this._getCurrencyValue(intervalPrice),
+          userCount: this.product.sections.find((s) => s.type === type).secability ?? 1,
+        });
   }
 
   /**
@@ -212,7 +211,7 @@ export class CcPricingProductConsumption extends LitElement {
    *
    * @return {Array} An array containing objects with a label (localized unit) and a value (the corresponding value in bytes).
    */
-  _getUnits () {
+  _getUnits() {
     return [
       {
         label: i18n('cc-pricing-product-consumption.bytes-unit', { bytes: 1e6 }),
@@ -235,7 +234,7 @@ export class CcPricingProductConsumption extends LitElement {
    * @param {SectionType} type - the type of the section to check
    * @return {boolean} true if values from this section are expressed in bytes, false otherwise
    */
-  _isTypeBytes (type) {
+  _isTypeBytes(type) {
     return ['storage', 'inbound-traffic', 'outbound-traffic'].includes(type);
   }
 
@@ -244,11 +243,9 @@ export class CcPricingProductConsumption extends LitElement {
    *
    * @param {SectionType} type - the type of the section to update within the simulator
    */
-  _updateSimulatorQuantity (type) {
+  _updateSimulatorQuantity(type) {
     const quantity = this._sectionStates[type].quantity;
-    const factor = this._isTypeBytes(type)
-      ? parseInt(this._sectionStates[type].unitValue)
-      : 1;
+    const factor = this._isTypeBytes(type) ? parseInt(this._sectionStates[type].unitValue) : 1;
     this._simulator.setQuantity(type, quantity * factor);
   }
 
@@ -256,8 +253,7 @@ export class CcPricingProductConsumption extends LitElement {
    * Creates a plan object based on the component data.
    * Dispatches a `cc-pricing-product:add-plan` event with the plan as its payload.
    */
-  _onAddPlan () {
-
+  _onAddPlan() {
     const name = (this.product?.sections ?? [])
       .map(({ type }) => {
         const title = this._getTitle(type);
@@ -286,7 +282,7 @@ export class CcPricingProductConsumption extends LitElement {
    * @param {SectionType} type - the type of the section to update
    * @param {number} quantity - the quantity to set
    */
-  _onInputValue (type, quantity) {
+  _onInputValue(type, quantity) {
     this._sectionStates[type].quantity = isNaN(quantity) ? 0 : quantity;
     this._updateSimulatorQuantity(type);
     this.requestUpdate();
@@ -299,7 +295,7 @@ export class CcPricingProductConsumption extends LitElement {
    * @param {SectionType} type - the type of the section to update
    * @param {number} unitValue - the unit to set
    */
-  _onToggleUnit (type, unitValue) {
+  _onToggleUnit(type, unitValue) {
     this._sectionStates[type].unitValue = unitValue;
     this._updateSimulatorQuantity(type);
     this.requestUpdate();
@@ -310,16 +306,15 @@ export class CcPricingProductConsumption extends LitElement {
    *
    * @param {SectionType} type - the type of the section to toggle
    */
-  _onToggleState (type) {
+  _onToggleState(type) {
     this._sectionStates[type].isClosed = !this._sectionStates[type].isClosed;
     this.requestUpdate();
   }
 
-  willUpdate (changedProperties) {
+  willUpdate(changedProperties) {
     // This is not done within the `render` function because we only want to reset this value in specific cases.
     // We reset the simulator & section states only if the product has changed.
     if (changedProperties.has('product') && Array.isArray(this.product.sections)) {
-
       this._sectionStates = {};
       this.product.sections.forEach(({ type }) => {
         this._sectionStates[type] = {
@@ -336,16 +331,12 @@ export class CcPricingProductConsumption extends LitElement {
     }
   }
 
-  render () {
+  render() {
     return html`
-      ${this.product.state === 'error' ? html`
-        <cc-notice intent="warning" message=${i18n('cc-pricing-product-consumption.error')}></cc-notice>
-      ` : ''}
-
-      ${this.product.state === 'loading' ? html`
-        <cc-loader></cc-loader>
-      ` : ''}
-
+      ${this.product.state === 'error'
+        ? html` <cc-notice intent="warning" message=${i18n('cc-pricing-product-consumption.error')}></cc-notice> `
+        : ''}
+      ${this.product.state === 'loading' ? html` <cc-loader></cc-loader> ` : ''}
       ${this.product.state === 'loaded' ? this._renderLoaded(this.product.sections) : ''}
     `;
   }
@@ -353,15 +344,14 @@ export class CcPricingProductConsumption extends LitElement {
   /**
    * @param {PricingSection[]} sections
    */
-  _renderLoaded (sections) {
+  _renderLoaded(sections) {
     const { width } = this._resizeController;
     const bodyClasses = {
-      'body--big': (width > BREAKPOINT),
-      'body--small': (width <= BREAKPOINT),
+      'body--big': width > BREAKPOINT,
+      'body--small': width <= BREAKPOINT,
     };
 
-    const someNullishIntervals = sections
-      .some(({ intervals }) => intervals == null);
+    const someNullishIntervals = sections.some(({ intervals }) => intervals == null);
     const everyQuantityAtZero = sections
       .map(({ type }) => this._simulator.getQuantity(type))
       .every((quantity) => quantity === 0);
@@ -369,29 +359,33 @@ export class CcPricingProductConsumption extends LitElement {
     return html`
       <div class="body ${classMap(bodyClasses)}">
         ${sections.map((section) => this._renderSection(section))}
-  
+
         <div class="section">
           <div class="section-header">
             <cc-icon class="section-icon sum-icon" .icon=${iconSum} size="lg"></cc-icon>
             <div class="section-title section-title--total">
               <div class="section-title-text">${this._getTitle('total')}</div>
-              <div class="section-title-price">${i18n('cc-pricing-product-consumption.price', this._getCurrencyValue(this._simulator.getTotalPrice()))}</div>
+              <div class="section-title-price">
+                ${i18n('cc-pricing-product-consumption.price', this._getCurrencyValue(this._simulator.getTotalPrice()))}
+              </div>
             </div>
           </div>
         </div>
-        <hr class="${classMap({ last: this.action === 'none' })}">
-  
-        ${(this.action === 'add') ? html`
-          <div class="button-bar">
-            <cc-button
-              .icon=${iconPlus}
-              ?disabled=${(someNullishIntervals || everyQuantityAtZero)}
-              @cc-button:click=${this._onAddPlan}
-            >
-              ${i18n('cc-pricing-product-consumption.add')}
-            </cc-button>
-          </div>
-        ` : ''}
+        <hr class="${classMap({ last: this.action === 'none' })}" />
+
+        ${this.action === 'add'
+          ? html`
+              <div class="button-bar">
+                <cc-button
+                  .icon=${iconPlus}
+                  ?disabled=${someNullishIntervals || everyQuantityAtZero}
+                  @cc-button:click=${this._onAddPlan}
+                >
+                  ${i18n('cc-pricing-product-consumption.add')}
+                </cc-button>
+              </div>
+            `
+          : ''}
       </div>
     `;
   }
@@ -399,8 +393,7 @@ export class CcPricingProductConsumption extends LitElement {
   /**
    * @param {PricingSection} section
    */
-  _renderSection (section) {
-
+  _renderSection(section) {
     const intervals = section.intervals;
     const progressive = section.progressive;
 
@@ -412,15 +405,12 @@ export class CcPricingProductConsumption extends LitElement {
 
     return html`
       <div class="section ${classMap({ 'section--closed': isClosed })}">
-
         <div class="section-header">
           <cc-icon class="section-icon" .icon=${icon}></cc-icon>
           <div class="section-title">${this._getTitle(type)}</div>
         </div>
 
-        <div class="input-wrapper">
-          ${this._renderInput({ type, quantity, unitValue })}
-        </div>
+        <div class="input-wrapper">${this._renderInput({ type, quantity, unitValue })}</div>
 
         <button
           aria-controls=${section.type}
@@ -431,7 +421,7 @@ export class CcPricingProductConsumption extends LitElement {
           <span>${i18n('cc-pricing-product-consumption.toggle-btn.label')}</span>
           <cc-icon class="expand-icon" .icon=${iconArrowDown}></cc-icon>
         </button>
-        
+
         <div id=${section.type} class="interval-list">
           ${this._renderIntervalList({ type, progressive, intervals, maxInterval })}
         </div>
@@ -443,7 +433,7 @@ export class CcPricingProductConsumption extends LitElement {
           </div>
         </div>
       </div>
-      <hr>
+      <hr />
     `;
   }
 
@@ -453,8 +443,7 @@ export class CcPricingProductConsumption extends LitElement {
    * @param {number} plan.quantity
    * @param {number} plan.unitValue
    */
-  _renderInput ({ type, quantity, unitValue }) {
-
+  _renderInput({ type, quantity, unitValue }) {
     if (this._isTypeBytes(type)) {
       return html`
         <cc-input-number
@@ -472,8 +461,7 @@ export class CcPricingProductConsumption extends LitElement {
           @cc-toggle:input=${(e) => this._onToggleUnit(type, e.detail)}
         ></cc-toggle>
       `;
-    }
-    else {
+    } else {
       return html`
         <cc-input-number
           label=${i18n('cc-pricing-product-consumption.quantity')}
@@ -492,13 +480,11 @@ export class CcPricingProductConsumption extends LitElement {
    * @param {Interval[]} intervals
    * @param {Interval} maxInterval
    */
-  _renderIntervalList ({ type, progressive, intervals, maxInterval }) {
-
+  _renderIntervalList({ type, progressive, intervals, maxInterval }) {
     return intervals.map((interval, intervalIndex) => {
-
       const maxIntervalIndex = intervals.indexOf(maxInterval);
       const foo = progressive && intervalIndex <= maxIntervalIndex;
-      const highlighted = (interval === maxInterval || foo);
+      const highlighted = interval === maxInterval || foo;
 
       const minRange = this._getMinRange(type, interval.minRange);
       const maxRange = this._getMaxRange(type, interval.maxRange);
@@ -508,14 +494,12 @@ export class CcPricingProductConsumption extends LitElement {
 
       return html`
         <div class="interval-line ${classMap({ progressive, highlighted })}">
-          <div class="interval interval-min">
-            ${minRange}
-          </div>
+          <div class="interval interval-min">${minRange}</div>
           <div class="interval interval-min-sign">&le;</div>
-          <div class="interval interval-label"> ${this._getLabel(type)}</div>
+          <div class="interval interval-label">${this._getLabel(type)}</div>
           <div class="interval interval-max-sign">&lt;</div>
           <div class="interval interval-max">${maxRange}</div>
-          <div class="interval-price ${classMap({ 'interval-price--free': (interval.price === 0) })}">
+          <div class="interval-price ${classMap({ 'interval-price--free': interval.price === 0 })}">
             ${intervalPrice}
           </div>
           <div class="estimated-price">${estimatedPrice}</div>
@@ -524,17 +508,17 @@ export class CcPricingProductConsumption extends LitElement {
     });
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
         :host {
-          display: block;
           color: var(--cc-color-text-default, #000);
+          display: block;
         }
 
         /* region COMMON */
-        
+
         cc-notice {
           max-width: max-content;
         }
@@ -544,16 +528,16 @@ export class CcPricingProductConsumption extends LitElement {
         }
 
         .body {
+          align-items: center;
           display: grid;
           overflow: visible;
-          align-items: center;
           white-space: nowrap;
         }
 
         /* 
-          these elements could be removed but they help the readability of the whole template
-          in source code and browser devtools
-        */
+    these elements could be removed but they help the readability of the whole template
+    in source code and browser devtools
+  */
 
         .section,
         .section-header,
@@ -562,12 +546,12 @@ export class CcPricingProductConsumption extends LitElement {
         }
 
         hr {
-          width: 100%;
-          border-width: 1px 0 0;
-          border-style: solid;
           border-color: var(--cc-color-border-neutral-weak, #e5e5e5);
-          margin: 1em 0;
+          border-style: solid;
+          border-width: 1px 0 0;
           grid-column: 1 / -1;
+          margin: 1em 0;
+          width: 100%;
         }
 
         hr.last {
@@ -577,22 +561,22 @@ export class CcPricingProductConsumption extends LitElement {
         .section-icon {
           --cc-icon-color: var(--cc-color-text-primary, #000);
           --cc-icon-size: 1em;
-          
+
           align-self: center;
-          margin-right: 1em;
           grid-column: section-icon / span 1;
+          margin-right: 1em;
         }
-        
+
         .section-icon.sum-icon {
           --cc-icon-size: 1.25em;
         }
 
         .section-title {
-          display: flex;
           align-self: center;
-          justify-content: space-between;
+          display: flex;
           font-weight: bold;
           grid-column: title / title--end;
+          justify-content: space-between;
         }
 
         .section-title.section-title--subtotal,
@@ -613,16 +597,16 @@ export class CcPricingProductConsumption extends LitElement {
         }
 
         .input-wrapper {
-          display: flex;
-          width: 100%;
           align-items: end;
-          margin: 1em 0;
+          display: flex;
           grid-column: input-wrapper / input-wrapper--end;
+          margin: 1em 0;
+          width: 100%;
         }
 
         .input-quantity {
-          min-width: 10ch;
           flex: 1 1 0;
+          min-width: 10ch;
         }
 
         .input-unit {
@@ -643,14 +627,14 @@ export class CcPricingProductConsumption extends LitElement {
         .interval-price,
         .estimated-price {
           align-self: stretch;
-          padding-top: 0.5em;
-          padding-left: 0.5em;
           margin: 0.1em 0;
+          padding-left: 0.5em;
+          padding-top: 0.5em;
         }
 
         .interval {
-          padding-right: 0.5em;
           padding-bottom: 0.5em;
+          padding-right: 0.5em;
         }
 
         .interval-line.highlighted:not(.progressive) .interval {
@@ -694,8 +678,8 @@ export class CcPricingProductConsumption extends LitElement {
         }
 
         .button-bar {
-          margin-bottom: 1em;
           grid-column: start / end;
+          margin-bottom: 1em;
         }
 
         /* endregion */
@@ -703,7 +687,7 @@ export class CcPricingProductConsumption extends LitElement {
         /* region BIG */
 
         .body--big {
-          grid-template-columns: 
+          grid-template-columns:
             [start section-icon] 1.5em
             [title input-wrapper interval-min] min-content
             [interval-min-sign] min-content
@@ -733,8 +717,8 @@ export class CcPricingProductConsumption extends LitElement {
         }
 
         .body--big .estimated-price {
-          margin-left: 2em;
           grid-column: estimated-price / span 1;
+          margin-left: 2em;
         }
 
         /* endregion */
@@ -756,10 +740,10 @@ export class CcPricingProductConsumption extends LitElement {
         .body--small .section--closed .interval,
         .body--small .section--closed .interval-price {
           height: 0;
-          padding-top: 0;
-          padding-bottom: 0;
-          margin-top: 0;
           margin-bottom: 0;
+          margin-top: 0;
+          padding-bottom: 0;
+          padding-top: 0;
           visibility: hidden;
         }
 
@@ -770,21 +754,21 @@ export class CcPricingProductConsumption extends LitElement {
         .body--small .estimated-price {
           display: none;
         }
-        
+
         .body--small .input-wrapper {
           margin-bottom: 0.5em;
         }
-        
+
         .section-toggle-btn {
-          display: flex;
           align-items: center;
-          padding: 0;
-          border: none;
           background: transparent;
+          border: none;
           color: var(--cc-color-text-primary-highlight, blue);
+          display: flex;
           font-size: 1em;
           grid-column: input-wrapper / -1;
           margin-block: 0.5em;
+          padding: 0;
         }
 
         .section-toggle-btn:hover {
@@ -794,7 +778,7 @@ export class CcPricingProductConsumption extends LitElement {
         .expand-icon {
           --cc-icon-color: var(--cc-color-text-default, #000);
           --cc-icon-size: 1.5em;
-          
+
           transform: rotate(0deg);
           transition: transform 0.2s ease;
         }

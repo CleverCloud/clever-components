@@ -1,5 +1,5 @@
-import './cc-header-orga.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-header-orga.js';
 
 export default {
   tags: ['autodocs'],
@@ -38,98 +38,118 @@ const DEFAULT_SLOTTED_CONTENT = `<div slot="footer">
 </div>`;
 
 export const defaultStory = makeStory(conf, {
-  items: [{
-    /** @type {HeaderOrgaStateLoaded} */
-    state: DEFAULT_ORGA_STATE,
-  }],
+  items: [
+    {
+      /** @type {HeaderOrgaStateLoaded} */
+      state: DEFAULT_ORGA_STATE,
+    },
+  ],
 });
 
 export const loading = makeStory(conf, {
-  items: [{
-    /** @type {HeaderOrgaStateLoading} */
-    state: { type: 'loading' },
-  }],
+  items: [
+    {
+      /** @type {HeaderOrgaStateLoading} */
+      state: { type: 'loading' },
+    },
+  ],
 });
 
 export const error = makeStory(conf, {
-  items: [{
-    /** @type {HeaderOrgaStateError} */
-    state: { type: 'error' },
-  }],
+  items: [
+    {
+      /** @type {HeaderOrgaStateError} */
+      state: { type: 'error' },
+    },
+  ],
 });
 
 export const dataLoadedWithClassicClient = makeStory(conf, {
-  items: [{
-    /** @type {HeaderOrgaStateLoaded} */
-    state: {
-      ...DEFAULT_ORGA_STATE,
-      name: 'ACME Startup',
-      cleverEnterprise: false,
-      emergencyNumber: null,
+  items: [
+    {
+      /** @type {HeaderOrgaStateLoaded} */
+      state: {
+        ...DEFAULT_ORGA_STATE,
+        name: 'ACME Startup',
+        cleverEnterprise: false,
+        emergencyNumber: null,
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithClassicClientAndSlottedContent = makeStory(conf, {
-  items: [{
-    /** @type {HeaderOrgaStateLoaded} */
-    state: {
-      ...DEFAULT_ORGA_STATE,
-      name: 'ACME Startup',
-      cleverEnterprise: false,
-      emergencyNumber: null,
+  items: [
+    {
+      /** @type {HeaderOrgaStateLoaded} */
+      state: {
+        ...DEFAULT_ORGA_STATE,
+        name: 'ACME Startup',
+        cleverEnterprise: false,
+        emergencyNumber: null,
+      },
+      innerHTML: DEFAULT_SLOTTED_CONTENT,
     },
-    innerHTML: DEFAULT_SLOTTED_CONTENT,
-  }],
+  ],
 });
 
 export const dataLoadedWithClassicClientNoAvatar = makeStory(conf, {
-  items: [{
-    /** @type {HeaderOrgaStateLoaded} */
-    state: {
-      ...DEFAULT_ORGA_STATE,
-      name: 'ACME Startup',
-      avatar: null,
-      cleverEnterprise: false,
-      emergencyNumber: null,
+  items: [
+    {
+      /** @type {HeaderOrgaStateLoaded} */
+      state: {
+        ...DEFAULT_ORGA_STATE,
+        name: 'ACME Startup',
+        avatar: null,
+        cleverEnterprise: false,
+        emergencyNumber: null,
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithEnterpriseClient = makeStory(conf, {
-  items: [{
-    /** @type {HeaderOrgaStateLoaded} */
-    state: {
-      ...DEFAULT_ORGA_STATE,
-      emergencyNumber: null,
+  items: [
+    {
+      /** @type {HeaderOrgaStateLoaded} */
+      state: {
+        ...DEFAULT_ORGA_STATE,
+        emergencyNumber: null,
+      },
     },
-  }],
+  ],
 });
 
 export const dataLoadedWithEnterpriseClientAndSlottedContent = makeStory(conf, {
-  items: [{
-    /** @type {HeaderOrgaStateLoaded} */
-    state: {
-      ...DEFAULT_ORGA_STATE,
-      emergencyNumber: null,
+  items: [
+    {
+      /** @type {HeaderOrgaStateLoaded} */
+      state: {
+        ...DEFAULT_ORGA_STATE,
+        emergencyNumber: null,
+      },
+      innerHTML: DEFAULT_SLOTTED_CONTENT,
     },
-    innerHTML: DEFAULT_SLOTTED_CONTENT,
-  }],
+  ],
 });
 
 export const dataLoadedWithEnterpriseClientEmergencyNumber = makeStory(conf, {
-  items: [{
-    /** @type {HeaderOrgaStateLoaded} */
-    state: DEFAULT_ORGA_STATE,
-  }],
+  items: [
+    {
+      /** @type {HeaderOrgaStateLoaded} */
+      state: DEFAULT_ORGA_STATE,
+    },
+  ],
 });
 
 export const dataLoadedWithEnterpriseClientEmergencyNumberAndSlottedContent = makeStory(conf, {
-  items: [{
-    /** @type {HeaderOrgaStateLoaded} */
-    state: DEFAULT_ORGA_STATE,
-    innerHTML: DEFAULT_SLOTTED_CONTENT,
-  }],
+  items: [
+    {
+      /** @type {HeaderOrgaStateLoaded} */
+      state: DEFAULT_ORGA_STATE,
+      innerHTML: DEFAULT_SLOTTED_CONTENT,
+    },
+  ],
 });
 
 export const dataLoadedWithSlottedContentCustomStyling = makeStory(conf, {
@@ -142,23 +162,26 @@ export const dataLoadedWithSlottedContentCustomStyling = makeStory(conf, {
       border-top: solid 2px #000;
     }
   `,
-  items: [{
-    /** @type {HeaderOrgaStateLoaded} */
-    state: DEFAULT_ORGA_STATE,
-    innerHTML: `
+  items: [
+    {
+      /** @type {HeaderOrgaStateLoaded} */
+      state: DEFAULT_ORGA_STATE,
+      innerHTML: `
       <div slot="footer">
         <p>The slotted content container has a default styling: <code>background-color</code>, <code>padding</code> and <code>border-top</code>.</p>
         <p>You may change any of these by styling the tag on which you have added the <code>slot="footer"</code> attribute.</p>
         <p><strong>Caution:</strong> the default styling was designed to remain consistent with the header body and avoid drawing too much attention to it. You should stick to the default styling as much as possible and stay as close as possible to it. This example is only here to demo that anything can be customized.
       </div>
     `,
-  }],
+    },
+  ],
 });
 
 export const simulations = makeStory(conf, {
   items: [{}, {}, { innerHTML: DEFAULT_SLOTTED_CONTENT }, {}],
   simulations: [
-    storyWait(3000,
+    storyWait(
+      3000,
       /** @param {CcHeaderOrga[]} components */
       ([component, componentNoAvatar, componentWithSlottedContent, componentError]) => {
         component.state = DEFAULT_ORGA_STATE;
@@ -171,6 +194,7 @@ export const simulations = makeStory(conf, {
           avatar: null,
         };
         componentError.state = { type: 'error' };
-      }),
+      },
+    ),
   ],
 });
