@@ -2,9 +2,7 @@ import { expect } from '@bundled-es-modules/chai';
 import { prepareNumberBytesFormatter, prepareNumberUnitFormatter } from '../src/lib/i18n-number.js';
 
 describe('prepareNumberUnitFormatter', () => {
-
   describe('english', () => {
-
     const formatNumberUnit = prepareNumberUnitFormatter('en');
 
     it('Small values', () => {
@@ -56,7 +54,6 @@ describe('prepareNumberUnitFormatter', () => {
   });
 
   describe('french', () => {
-
     const formatNumberUnit = prepareNumberUnitFormatter('fr');
 
     it('Small values', () => {
@@ -109,9 +106,7 @@ describe('prepareNumberUnitFormatter', () => {
 });
 
 describe('prepareNumberBytesFormatter', () => {
-
   describe('english', () => {
-
     const formatBytes = prepareNumberBytesFormatter('en', 'B', ' ');
 
     it('Small values', () => {
@@ -198,7 +193,6 @@ describe('prepareNumberBytesFormatter', () => {
   });
 
   describe('french', () => {
-
     const formatBytes = prepareNumberBytesFormatter('fr', 'o', '\u202f');
 
     it('Small values', () => {

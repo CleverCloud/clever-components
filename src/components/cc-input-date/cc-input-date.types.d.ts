@@ -5,12 +5,12 @@ export interface InputDateValueStateEmpty {
 }
 
 export interface InputDateValueStateNaD {
-  type: 'NaD',
+  type: 'NaD';
   value: string;
 }
 
 export interface InputDateValueStateValid {
-  type: 'valid',
+  type: 'valid';
   value: string;
   date: Date;
 }

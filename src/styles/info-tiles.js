@@ -20,7 +20,7 @@ export const tileStyles = css`
     font-size: 1.25em;
     text-align: center;
   }
-  
+
   .tile_title--image {
     text-align: left;
   }

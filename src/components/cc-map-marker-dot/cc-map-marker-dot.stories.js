@@ -1,5 +1,5 @@
-import './cc-map-marker-dot.js';
 import { makeStory } from '../../stories/lib/make-story.js';
+import './cc-map-marker-dot.js';
 
 export default {
   tags: ['autodocs'],

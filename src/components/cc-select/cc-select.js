@@ -7,7 +7,7 @@ import { RequiredValidator } from '../../lib/form/validation.js';
 import { i18n } from '../../lib/i18n.js';
 
 const DEFAULT_ERROR_MESSAGES = {
-  get empty () {
+  get empty() {
     return i18n('cc-select.error.empty');
   },
 };
@@ -41,7 +41,7 @@ const DEFAULT_ERROR_MESSAGES = {
  * @slot help - The help message to be displayed right below the `<select>` element. Please use a `<p>` tag.
  */
 export class CcSelect extends CcFormControlElement {
-  static get properties () {
+  static get properties() {
     return {
       ...super.properties,
       disabled: { type: Boolean, reflect: true },
@@ -58,7 +58,7 @@ export class CcSelect extends CcFormControlElement {
 
   static reactiveValidationProperties = ['required', 'options'];
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {boolean} Sets `disabled` attribute on inner native `<select>` element. */
@@ -103,7 +103,7 @@ export class CcSelect extends CcFormControlElement {
    * @return {HTMLElement}
    * @protected
    */
-  _getFormControlElement () {
+  _getFormControlElement() {
     return this._selectRef.value;
   }
 
@@ -111,7 +111,7 @@ export class CcSelect extends CcFormControlElement {
    * @return {HTMLElement}
    * @protected
    */
-  _getErrorElement () {
+  _getErrorElement() {
     return this._errorRef.value;
   }
 
@@ -119,7 +119,7 @@ export class CcSelect extends CcFormControlElement {
    * @return {ErrorMessageMap}
    * @protected
    */
-  _getErrorMessages () {
+  _getErrorMessages() {
     return DEFAULT_ERROR_MESSAGES;
   }
 
@@ -127,7 +127,7 @@ export class CcSelect extends CcFormControlElement {
    * @return {Validator}
    * @protected
    */
-  _getValidator () {
+  _getValidator() {
     return this.required ? new RequiredValidator() : null;
   }
 
@@ -135,7 +135,7 @@ export class CcSelect extends CcFormControlElement {
    * @return {Array<string>}
    * @protected
    */
-  _getReactiveValidationProperties () {
+  _getReactiveValidationProperties() {
     return CcSelect.reactiveValidationProperties;
   }
 
@@ -144,14 +144,14 @@ export class CcSelect extends CcFormControlElement {
   /**
    * Triggers focus on the inner `<select>` element.
    */
-  focus () {
+  focus() {
     this._selectRef.value?.focus();
   }
 
   /**
    * @param {HTMLSelectElementEvent} e
    */
-  _onSelectInput (e) {
+  _onSelectInput(e) {
     this.value = e.target.value;
     dispatchCustomEvent(this, 'input', this.value);
   }
@@ -159,12 +159,12 @@ export class CcSelect extends CcFormControlElement {
   /**
    * @param {CcSelectPropertyValues} changedProperties
    */
-  updated (changedProperties) {
+  updated(changedProperties) {
     /*
      * The `<select>` value must match the value of an `<option>` element.
      * We need to make sure the value of the `<select>` element in only updated after
      * `<option>` elements have been rendered.
-    */
+     */
     if (changedProperties.has('value') || changedProperties.has('options')) {
       this.shadowRoot.querySelector('select').value = this.value;
     }
@@ -172,15 +172,13 @@ export class CcSelect extends CcFormControlElement {
     super.updated(changedProperties);
   }
 
-  render () {
+  render() {
     const hasErrorMessage = this.errorMessage != null && this.errorMessage !== '';
 
     return html`
       <label for="input-id">
         <span class="label-text">${this.label}</span>
-        ${this.required ? html`
-          <span class="required">${i18n('cc-select.required')}</span>
-        ` : ''}
+        ${this.required ? html` <span class="required">${i18n('cc-select.required')}</span> ` : ''}
       </label>
       <div class="select-wrapper ${classMap({ disabled: this.disabled })}">
         <select
@@ -192,12 +190,10 @@ export class CcSelect extends CcFormControlElement {
           .value=${this.value}
           ${ref(this._selectRef)}
         >
-          ${this.placeholder != null && this.placeholder !== '' ? html`
-            <option value="" ?disabled=${this.required}>${this.placeholder}</option>
-          ` : ''}
-          ${this.options.map((option) => html`
-            <option value=${option.value}>${option.label}</option>
-          `)}
+          ${this.placeholder != null && this.placeholder !== ''
+            ? html` <option value="" ?disabled=${this.required}>${this.placeholder}</option> `
+            : ''}
+          ${this.options.map((option) => html` <option value=${option.value}>${option.label}</option> `)}
         </select>
       </div>
 
@@ -205,19 +201,17 @@ export class CcSelect extends CcFormControlElement {
         <slot name="help"></slot>
       </div>
 
-      ${hasErrorMessage ? html`
-        <p class="error-container" id="error-id" ${ref(this._errorRef)}>
-          ${this.errorMessage}
-        </p>` : ''}
+      ${hasErrorMessage
+        ? html` <p class="error-container" id="error-id" ${ref(this._errorRef)}>${this.errorMessage}</p>`
+        : ''}
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
         /* stylelint-disable no-duplicate-selectors */
-
         :host {
           display: inline-block;
         }
@@ -225,8 +219,8 @@ export class CcSelect extends CcFormControlElement {
         /* region Common to cc-input-* & cc-select */
 
         :host([inline]) {
-          display: inline-grid;
           align-items: baseline;
+          display: inline-grid;
           gap: 0 1em;
           grid-auto-rows: min-content;
           grid-template-areas:
@@ -245,13 +239,13 @@ export class CcSelect extends CcFormControlElement {
         }
 
         label {
-          display: flex;
           align-items: flex-end;
-          justify-content: space-between;
-          padding-bottom: 0.35em;
           cursor: pointer;
+          display: flex;
           gap: 2em;
+          justify-content: space-between;
           line-height: 1.25em;
+          padding-bottom: 0.35em;
         }
 
         label .label-text {
@@ -262,10 +256,10 @@ export class CcSelect extends CcFormControlElement {
 
         :host([inline]) label {
           flex-direction: column;
-          padding: 0;
           gap: 0;
           grid-area: label;
           line-height: normal;
+          padding: 0;
         }
 
         .required {
@@ -279,43 +273,43 @@ export class CcSelect extends CcFormControlElement {
         }
 
         slot[name='help']::slotted(*) {
-          margin: 0.3em 0 0;
           color: var(--cc-color-text-weak);
           font-size: 0.9em;
+          margin: 0.3em 0 0;
         }
-        
+
         .error-container {
-          margin: 0.5em 0 0;
           color: var(--cc-color-text-danger);
+          margin: 0.5em 0 0;
         }
         /* endregion */
 
         /* RESET */
 
         select {
-          width: 100%;
-          padding: 0;
-          border: none;
-          margin: 0;
           -moz-appearance: none;
           -webkit-appearance: none;
           appearance: none;
           background: none;
+          border: none;
           color: inherit;
           cursor: inherit;
           font-family: inherit;
           font-size: inherit;
           line-height: inherit;
+          margin: 0;
+          padding: 0;
+          width: 100%;
         }
 
         select {
-          height: 2em;
-          box-sizing: border-box;
-          padding: 0 3em 0 0.5em;
-          border: 1px solid var(--cc-color-border-neutral-strong, #aaa);
           background-color: var(--cc-color-bg-default, #fff);
+          border: 1px solid var(--cc-color-border-neutral-strong, #aaa);
           border-radius: var(--cc-border-radius-default, 0.25em);
+          box-sizing: border-box;
           grid-area: input;
+          height: 2em;
+          padding: 0 3em 0 0.5em;
         }
 
         select:hover {
@@ -328,34 +322,34 @@ export class CcSelect extends CcFormControlElement {
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
-        
+
         select.error {
           border-color: var(--cc-color-border-danger) !important;
         }
-        
+
         select.error:focus {
           outline: var(--cc-focus-outline-error, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
 
         .select-wrapper {
-          position: relative;
           display: inline-flex;
-          width: 100%;
+          position: relative;
           vertical-align: top;
+          width: 100%;
         }
 
         .select-wrapper::after {
-          position: absolute;
-          top: 50%;
-          right: 0.5em;
-          width: 0.8em;
-          height: 0.5em;
           background-color: var(--cc-color-bg-primary, #000);
           clip-path: polygon(100% 0%, 0 0%, 50% 100%);
           content: '';
+          height: 0.5em;
           pointer-events: none;
+          position: absolute;
+          right: 0.5em;
+          top: 50%;
           transform: translateY(-50%);
+          width: 0.8em;
         }
 
         .disabled::after {
@@ -363,8 +357,8 @@ export class CcSelect extends CcFormControlElement {
         }
 
         select[disabled] {
-          border-color: var(--cc-color-border-neutral-disabled, #777);
           background: var(--cc-color-bg-neutral-disabled);
+          border-color: var(--cc-color-border-neutral-disabled, #777);
           color: var(--cc-color-text-weak);
           opacity: 1;
           pointer-events: none;

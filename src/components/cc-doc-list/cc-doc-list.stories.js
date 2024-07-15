@@ -1,5 +1,5 @@
-import './cc-doc-list.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-doc-list.js';
 
 export default {
   tags: ['autodocs'],
@@ -31,12 +31,17 @@ const DOCS_ITEMS = [
   {
     heading: 'ruby',
     icons: ['https://assets.clever-cloud.com/logos/ruby.svg'],
-    description: 'Run your Ruby and Ruby on Rails applications. Compatible with Rake, Sidekiq and Active Storage for Cellar.',
+    description:
+      'Run your Ruby and Ruby on Rails applications. Compatible with Rake, Sidekiq and Active Storage for Cellar.',
     link: '#',
   },
   {
     heading: 'Java',
-    icons: ['https://assets.clever-cloud.com/logos/java-jar.svg', 'https://assets.clever-cloud.com/logos/maven.svg', 'https://assets.clever-cloud.com/logos/play2.svg'],
+    icons: [
+      'https://assets.clever-cloud.com/logos/java-jar.svg',
+      'https://assets.clever-cloud.com/logos/maven.svg',
+      'https://assets.clever-cloud.com/logos/play2.svg',
+    ],
     description: 'Deploy Java runtimes with your specific process (Jar or War) or build tools (Maven, SBT…).',
     link: '#',
   },
@@ -49,7 +54,8 @@ const DOCS_ITEMS = [
   {
     heading: 'php',
     icons: ['https://assets.clever-cloud.com/logos/php.svg'],
-    description: 'PHP is deployable with both Git and SFTP in version 7.x and 8.x. Need extensions? Check our already installed extensions or ask the support for it.',
+    description:
+      'PHP is deployable with both Git and SFTP in version 7.x and 8.x. Need extensions? Check our already installed extensions or ask the support for it.',
     link: '#',
   },
   {
@@ -61,68 +67,81 @@ const DOCS_ITEMS = [
   {
     heading: 'JavaScript Runtimes',
     icons: ['https://assets.clever-cloud.com/logos/nodejs.svg', 'https://assets.clever-cloud.com/logos/meteor.svg'],
-    description: 'Clever Cloud supports Node.js, Meteor and Deno runtimes in a elegant and performant way. Compatible with statsd for advanced statistics, like counters and timers. ',
+    description:
+      'Clever Cloud supports Node.js, Meteor and Deno runtimes in a elegant and performant way. Compatible with statsd for advanced statistics, like counters and timers. ',
     link: '#',
   },
 ];
 
 export const defaultStory = makeStory(conf, {
-  items: [{
-    /** @type {DocListStateLoaded} */
-    state: {
-      type: 'loaded',
-      docs: DOCS_ITEMS,
+  items: [
+    {
+      /** @type {DocListStateLoaded} */
+      state: {
+        type: 'loaded',
+        docs: DOCS_ITEMS,
+      },
     },
-  }],
+  ],
 });
 
 export const loading = makeStory(conf, {
-  items: [{
-    /** @type {DocListStateLoading} */
-    state: { type: 'loading' },
-  }],
+  items: [
+    {
+      /** @type {DocListStateLoading} */
+      state: { type: 'loading' },
+    },
+  ],
 });
 
 // No need to invest time on empty story right now.
 
 export const error = makeStory(conf, {
-  items: [{
-    /** @type {DocListStateError} */
-    state: { type: 'error' },
-  }],
+  items: [
+    {
+      /** @type {DocListStateError} */
+      state: { type: 'error' },
+    },
+  ],
 });
 
 export const dataLoaded = makeStory(conf, {
-  items: [{
-    /** @type {DocListStateLoaded} */
-    state: {
-      type: 'loaded',
-      docs: DOCS_ITEMS,
+  items: [
+    {
+      /** @type {DocListStateLoaded} */
+      state: {
+        type: 'loaded',
+        docs: DOCS_ITEMS,
+      },
     },
-  }],
+  ],
 });
 
 export const simulationsWithSuccess = makeStory(conf, {
   items: [{}],
   simulations: [
-    storyWait(2000,
+    storyWait(
+      2000,
       /** @param {[CcDocList]} components */
       ([component]) => {
         component.state = {
           type: 'loaded',
           docs: DOCS_ITEMS,
         };
-      }),
+      },
+    ),
   ],
 });
 
 export const simulationsWithFailure = makeStory(conf, {
   items: [{}],
   simulations: [
-    storyWait(2000,
+    storyWait(
+      2000,
       /** @param {[CcDocList]} components */
       ([component]) => {
         component.state = { type: 'error' };
-      }),
+      },
+    ),
   ],
 });

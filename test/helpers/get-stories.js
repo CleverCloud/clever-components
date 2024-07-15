@@ -7,14 +7,9 @@
  * @returns {Array} the story functions, minus the simulations and the excluded stories. These functions can be used to render each story.
  */
 export const getStories = (importedModule, excludedStories = []) => {
+  const allExcludedStories = [...(importedModule.default?.excludeStories ?? []), ...excludedStories];
 
-  const allExcludedStories = [
-    ...(importedModule.default?.excludeStories ?? []),
-    ...excludedStories,
-  ];
-
-  const filteredStories = Object
-    .entries(importedModule)
+  const filteredStories = Object.entries(importedModule)
     .filter(([name, exportItem]) => {
       const isNotExcludedStory = !allExcludedStories.includes(name);
       const isNotSimulation = !name.match(/simulation/i);

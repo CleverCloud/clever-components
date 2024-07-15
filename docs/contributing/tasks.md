@@ -36,6 +36,14 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
 
 * Generate [Custom Elements Manifest](https://github.com/webcomponents/custom-elements-manifest) with [CEM analyzer](https://github.com/open-wc/custom-elements-manifest/tree/master/packages/analyzer) in `dist`.
 
+## `npm run format`
+
+* Formats source code.
+
+## `npm run format:check`
+
+* Checks that files are formatted correctly, used by the CI.
+
 ## `npm run test`
 
 * Run all unit tests present in `test` with [Web Test Runner](https://modern-web.dev/docs/test-runner/overview/).

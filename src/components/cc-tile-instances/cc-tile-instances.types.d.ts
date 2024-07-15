@@ -1,5 +1,4 @@
-
-export type TileInstancesState = TileInstancesStateLoading | TileInstancesStateLoaded |  TileInstancesStateError;
+export type TileInstancesState = TileInstancesStateLoading | TileInstancesStateLoaded | TileInstancesStateError;
 
 export interface TileInstancesStateLoading {
   type: 'loading';

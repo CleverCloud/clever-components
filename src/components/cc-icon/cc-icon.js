@@ -29,7 +29,7 @@ import { skeletonStyles } from '../../styles/skeleton.js';
  * @cssprop {Size} --cc-icon-size - Sets the value of the width and height CSS properties (defaults: `1em`).
  */
 export class CcIcon extends LitElement {
-  static get properties () {
+  static get properties() {
     return {
       a11yName: { type: String, attribute: 'a11y-name' },
       icon: { type: Object },
@@ -38,7 +38,7 @@ export class CcIcon extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {string|null} Only use this prop if your icon provides information that is not already given in its surrounding text.
@@ -64,7 +64,7 @@ export class CcIcon extends LitElement {
     this.skeleton = false;
   }
 
-  updated (changedProperties) {
+  updated(changedProperties) {
     const shouldPatchSvg = changedProperties.has('a11yName') || changedProperties.has('icon');
     const svg = this.shadowRoot.querySelector('svg');
     if (shouldPatchSvg && svg != null) {
@@ -73,8 +73,7 @@ export class CcIcon extends LitElement {
         svg.removeAttribute('aria-label');
         svg.removeAttribute('role');
         svg.querySelector('title')?.remove();
-      }
-      else {
+      } else {
         svg.removeAttribute('aria-hidden');
         svg.setAttribute('aria-label', this.a11yName);
         svg.setAttribute('role', 'img');
@@ -88,19 +87,17 @@ export class CcIcon extends LitElement {
     }
   }
 
-  render () {
+  render() {
     if (this.skeleton) {
       return html`<div class="skeleton"></div>`;
     }
 
-    const theSvg = (this.icon != null)
-      ? unsafeSVG(this.icon.content)
-      : '';
+    const theSvg = this.icon != null ? unsafeSVG(this.icon.content) : '';
 
     return html`${theSvg}`;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       skeletonStyles,
       css`
@@ -108,9 +105,9 @@ export class CcIcon extends LitElement {
           --skeleton-color: #bbb;
 
           display: inline-flex;
-          width: var(--size, 1em);
           height: var(--size, 1em);
           vertical-align: top;
+          width: var(--size, 1em);
         }
 
         :host([size='xs']) {
@@ -134,15 +131,15 @@ export class CcIcon extends LitElement {
         }
 
         svg {
-          width: 100%;
-          height: 100%;
           fill: var(--cc-icon-color, currentColor);
+          height: 100%;
+          width: 100%;
         }
 
         .skeleton {
-          width: var(--size, 1em);
-          height: var(--size, 1em);
           background-color: var(--skeleton-color);
+          height: var(--size, 1em);
+          width: var(--size, 1em);
         }
       `,
     ];

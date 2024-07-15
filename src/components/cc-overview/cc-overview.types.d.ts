@@ -1,1 +1,1 @@
-type OverviewModeType = "app" | "orga";
+type OverviewModeType = 'app' | 'orga';

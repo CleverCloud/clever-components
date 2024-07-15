@@ -16,16 +16,16 @@ export class FormErrorFocusController {
    * @param {HTMLFormElementRef} formRef
    * @param {() => Object} getErrors
    */
-  constructor (host, formRef, getErrors) {
+  constructor(host, formRef, getErrors) {
     this._host = host;
     this._host.addController(this);
     this._formRef = formRef;
     this._getErrors = getErrors;
   }
 
-  hostUpdated () {
+  hostUpdated() {
     const errors = this._getErrors();
-    if (errors != null && (Object.values(errors).some((value) => value != null))) {
+    if (errors != null && Object.values(errors).some((value) => value != null)) {
       this._host.updateComplete.then(() => {
         focusFirstFormControlWithError(this._formRef.value);
       });

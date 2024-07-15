@@ -5,8 +5,7 @@ import { sleep } from '../src/lib/utils.js';
 
 describe('Buffer', () => {
   it('should throw error when constructing without any flush condition', () => {
-    expect(() => new Buffer(() => {
-    }, {})).to.throw();
+    expect(() => new Buffer(() => {}, {})).to.throw();
   });
 
   describe('flush() method', () => {
@@ -74,13 +73,11 @@ describe('Buffer', () => {
 
   describe('with length condition', () => {
     it('should throw error when constructing without length 0', () => {
-      expect(() => new Buffer(() => {
-      }, { length: 0 })).to.throw();
+      expect(() => new Buffer(() => {}, { length: 0 })).to.throw();
     });
 
     it('should throw error when constructing without length lower than 0', () => {
-      expect(() => new Buffer(() => {
-      }, { length: -1 })).to.throw();
+      expect(() => new Buffer(() => {}, { length: -1 })).to.throw();
     });
 
     it('should not flush when max length is not reached', () => {
@@ -106,13 +103,11 @@ describe('Buffer', () => {
 
   describe('with timeout condition', () => {
     it('should throw error when constructing without timeout 0', () => {
-      expect(() => new Buffer(() => {
-      }, { timeout: 0 })).to.throw();
+      expect(() => new Buffer(() => {}, { timeout: 0 })).to.throw();
     });
 
     it('should throw error when constructing without timeout lower than 0', () => {
-      expect(() => new Buffer(() => {
-      }, { timeout: -1 })).to.throw();
+      expect(() => new Buffer(() => {}, { timeout: -1 })).to.throw();
     });
 
     it('should not flush when timeout is not reached', () => {

@@ -11,8 +11,7 @@ import {
 
 const ROOT_DIR = process.cwd();
 
-export default function supportTypedefJsdoc () {
-
+export default function supportTypedefJsdoc() {
   // Map that contains a `type-path` as a key and has its markdown interface as a value.
   const typesStore = new Map();
   // Map that contains for a type file path the corresponding AST and code as a string.
@@ -22,8 +21,7 @@ export default function supportTypedefJsdoc () {
   // e.g: {'projectfolder/src/component/x.d.ts' => [foo, bar],  'projectfolder/src/component/y.d.ts' => [foobar, baz]}
   const moduleTypeCache = new Map();
 
-  function convertImports (ts, imports) {
-
+  function convertImports(ts, imports) {
     const markdownInterfaces = [];
 
     // type-cc-x.d.ts => [Foo, Bar...]
@@ -35,15 +33,13 @@ export default function supportTypedefJsdoc () {
       if (inMemoryType == null) {
         try {
           sourceCode = readFileSync(filename).toString();
-        }
-        catch (e) {
+        } catch (e) {
           console.error(e);
           return;
         }
         sourceAst = ts.createSourceFile(filename, sourceCode, ts.ScriptTarget.ES2015, true);
         fileCache.set(filename, { code: sourceCode, ast: sourceAst });
-      }
-      else {
+      } else {
         sourceCode = inMemoryType.code;
         sourceAst = inMemoryType.ast;
       }
@@ -56,8 +52,7 @@ export default function supportTypedefJsdoc () {
         let importSourceCode;
         try {
           importSourceCode = readFileSync(interfaceImport.path).toString();
-        }
-        catch (e) {
+        } catch (e) {
           console.error(e);
           return;
         }
@@ -90,8 +85,7 @@ export default function supportTypedefJsdoc () {
       filteredTypes.forEach((type) => {
         if (typesStore.has(`${type}-${filename}`)) {
           markdownInterfaces.push(typesStore.get(`${type}-${filename}`));
-        }
-        else {
+        } else {
           const typeDisplay = convertInterface(ts, sourceAst, sourceCode, type, filename);
           if (typeDisplay != null) {
             markdownInterfaces.push(typeDisplay);
@@ -106,8 +100,7 @@ export default function supportTypedefJsdoc () {
 
   return {
     name: 'support-typedef-jsdoc',
-    analyzePhase ({ ts, node, moduleDoc }) {
-
+    analyzePhase({ ts, node, moduleDoc }) {
       // First, we need to find the constructor
       // It can be found as a member of ClassDeclaration
 
@@ -131,46 +124,45 @@ export default function supportTypedefJsdoc () {
       }
 
       // This finds the comment where the imports are located
-      const typeDefNode = node?.jsDoc?.filter((node) => node.tags?.find((tag) => tag.kind === ts.SyntaxKind.JSDocTypedefTag))?.[0];
+      const typeDefNode = node?.jsDoc?.filter((node) =>
+        node.tags?.find((tag) => tag.kind === ts.SyntaxKind.JSDocTypedefTag),
+      )?.[0];
 
       const moduleDir = path.parse(moduleDoc.path).dir;
 
       // Check the jsDoc of the class and find the imports
-      typeDefNode?.tags
-        ?.forEach((tag) => {
+      typeDefNode?.tags?.forEach((tag) => {
+        // Extract the path from the @typedef import
+        const typePath = findTypePath(tag, ROOT_DIR, moduleDir);
 
-          // Extract the path from the @typedef import
-          const typePath = findTypePath(tag, ROOT_DIR, moduleDir);
+        // If an import is not correct and warn the plugin user.
+        if (typePath == null) {
+          console.warn(`There's a problem with one of your @typedef - ${tag.getText()}`);
+          return;
+        }
 
-          // If an import is not correct and warn the plugin user.
-          if (typePath == null) {
-            console.warn(`There's a problem with one of your @typedef - ${tag.getText()}`);
-            return;
+        // Extract the type from the @typedef import
+        const typeDefDisplay = tag.name.getText();
+
+        const type = types.find((type) => type === typeDefDisplay);
+
+        if (type != null) {
+          if (!moduleTypeCache.has(typePath)) {
+            moduleTypeCache.set(typePath, new Set());
           }
-
-          // Extract the type from the @typedef import
-          const typeDefDisplay = tag.name.getText();
-
-          const type = types.find((type) => type === typeDefDisplay);
-
-          if (type != null) {
-            if (!moduleTypeCache.has(typePath)) {
-              moduleTypeCache.set(typePath, new Set());
-            }
-            moduleTypeCache.get(typePath).add(type);
-          }
-        });
+          moduleTypeCache.get(typePath).add(type);
+        }
+      });
 
       // Now that we have the types, and the path of where the types are located
       // We can convert the imports to md types
       const convertedImports = convertImports(ts, moduleTypeCache);
-      const displayText = (convertedImports) ? '### Type Definitions\n\n' + convertedImports : '';
+      const displayText = convertedImports ? '### Type Definitions\n\n' + convertedImports : '';
       const declaration = moduleDoc.declarations.find((declaration) => declaration.name === node.name.getText());
 
       declaration.description = declaration.description + '\n\n' + displayText;
 
       console.info('✅ Successfully generated documentation.');
-
     },
   };
 }

@@ -12,7 +12,7 @@ import {
 } from '../../lib/date/date-utils.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { CcFormControlElement } from '../../lib/form/cc-form-control-element.abstract.js';
-import { combineValidators, createValidator, RequiredValidator, Validation } from '../../lib/form/validation.js';
+import { RequiredValidator, Validation, combineValidators, createValidator } from '../../lib/form/validation.js';
 import { i18n } from '../../lib/i18n.js';
 import { isStringEmpty } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
@@ -23,12 +23,26 @@ const DATE_FORMAT = 'datetime-short';
 // This array is hard coded and corresponds directly to the date format defined above.
 /** @type {Array<'Y'|'M'|'D'|'H'|'m'|'s'>} */
 const FIELDS_POSITION = [
-  'Y', 'Y', 'Y', 'Y', 'Y',
-  'M', 'M', 'M',
-  'D', 'D', 'D',
-  'H', 'H', 'H',
-  'm', 'm', 'm',
-  's', 's', 's',
+  'Y',
+  'Y',
+  'Y',
+  'Y',
+  'Y',
+  'M',
+  'M',
+  'M',
+  'D',
+  'D',
+  'D',
+  'H',
+  'H',
+  'H',
+  'm',
+  'm',
+  'm',
+  's',
+  's',
+  's',
 ];
 
 /**
@@ -36,7 +50,7 @@ const FIELDS_POSITION = [
  * @return {Date}
  * @throws {Error} Whenever the given argument is not a string with valid ISO date format.
  */
-function getDateOrParseIso (dateOrString) {
+function getDateOrParseIso(dateOrString) {
   if (isDateValid(dateOrString)) {
     return dateOrString;
   }
@@ -46,7 +60,7 @@ function getDateOrParseIso (dateOrString) {
 /**
  * @return {InputDateValueStateEmpty}
  */
-function dateStateEmpty () {
+function dateStateEmpty() {
   return {
     type: 'empty',
   };
@@ -56,7 +70,7 @@ function dateStateEmpty () {
  * @param {string} value
  * @return {InputDateValueStateNaD}
  */
-function dateStateNaD (value) {
+function dateStateNaD(value) {
   return {
     type: 'NaD',
     value,
@@ -67,7 +81,7 @@ function dateStateNaD (value) {
  * @param {Date} date
  * @return {InputDateValueStateValid}
  */
-function dateStateValid (date) {
+function dateStateValid(date) {
   return {
     type: 'valid',
     value: date.toISOString(),
@@ -112,8 +126,7 @@ function dateStateValid (date) {
  * @slot help - The help message to be displayed right below the `<input>` element. Please use a `<p>` tag.
  */
 export class CcInputDate extends CcFormControlElement {
-
-  static get properties () {
+  static get properties() {
     return {
       ...super.properties,
       disabled: { type: Boolean, reflect: true },
@@ -134,7 +147,7 @@ export class CcInputDate extends CcFormControlElement {
 
   static reactiveValidationProperties = ['required', 'min', 'max', 'timezone'];
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {boolean} Sets `disabled` attribute on inner native `<input>` element. */
@@ -211,7 +224,7 @@ export class CcInputDate extends CcFormControlElement {
    * @return {HTMLElement}
    * @protected
    */
-  _getFormControlElement () {
+  _getFormControlElement() {
     return this._inputRef.value;
   }
 
@@ -219,7 +232,7 @@ export class CcInputDate extends CcFormControlElement {
    * @return {HTMLElement}
    * @protected
    */
-  _getErrorElement () {
+  _getErrorElement() {
     return this._errorRef.value;
   }
 
@@ -227,7 +240,7 @@ export class CcInputDate extends CcFormControlElement {
    * @return {ErrorMessageMap}
    * @protected
    */
-  _getErrorMessages () {
+  _getErrorMessages() {
     return this._errorMessages;
   }
 
@@ -235,7 +248,7 @@ export class CcInputDate extends CcFormControlElement {
    * @return {Validator}
    * @protected
    */
-  _getValidator () {
+  _getValidator() {
     return combineValidators([
       this.required ? new RequiredValidator() : null,
       createValidator(() => {
@@ -266,7 +279,7 @@ export class CcInputDate extends CcFormControlElement {
    * @return {string}
    * @protected
    */
-  _getFormControlData () {
+  _getFormControlData() {
     if (this._valueState.type === 'empty') {
       return '';
     }
@@ -277,7 +290,7 @@ export class CcInputDate extends CcFormControlElement {
    * @return {Array<string>}
    * @protected
    */
-  _getReactiveValidationProperties () {
+  _getReactiveValidationProperties() {
     return CcInputDate.reactiveValidationProperties;
   }
 
@@ -289,14 +302,14 @@ export class CcInputDate extends CcFormControlElement {
    * Triggers focus on the inner `<input>` element.
    * @param {FocusOptions} [options]
    */
-  focus (options) {
+  focus(options) {
     this._inputRef.value.focus(options);
   }
 
   /**
    * @return {Date|null} The current value as Date or null if the value is not a valid date.
    */
-  get valueAsDate () {
+  get valueAsDate() {
     return this._valueState.type === 'valid' ? this._valueState.date ?? null : null;
   }
 
@@ -304,7 +317,7 @@ export class CcInputDate extends CcFormControlElement {
 
   /* region Private methods */
 
-  _resolveDateFormatter () {
+  _resolveDateFormatter() {
     return new DateFormatter(DATE_FORMAT, this.timezone);
   }
 
@@ -315,14 +328,13 @@ export class CcInputDate extends CcFormControlElement {
    * @return {Date|null} null if given string is empty. Otherwise, the parsed Date.
    * @throws {Error} whenever the given string is not a parseable date.
    */
-  _parseAsDate (string) {
+  _parseAsDate(string) {
     if (isStringEmpty(string)) {
       return null;
     }
     try {
       return parseSimpleDateString(string, this.timezone);
-    }
-    catch (e) {
+    } catch (e) {
       return parseIsoDateString(string);
     }
   }
@@ -331,7 +343,7 @@ export class CcInputDate extends CcFormControlElement {
    * Formats the current value using the current date formatter.
    * @return {string}
    */
-  _formatValue () {
+  _formatValue() {
     switch (this._valueState.type) {
       case 'empty':
         return '';
@@ -346,7 +358,7 @@ export class CcInputDate extends CcFormControlElement {
    * @param {InputDateValueState} newValueState
    * @param {boolean} [dispatchEvent=true]
    */
-  _setNewValueState (newValueState, dispatchEvent = true) {
+  _setNewValueState(newValueState, dispatchEvent = true) {
     const oldValue = this._valueState.type === 'empty' ? '' : this._valueState.value;
 
     // You may wonder why we always change the reactive property `_valueState`!
@@ -366,7 +378,7 @@ export class CcInputDate extends CcFormControlElement {
    * @param {null|Date|string} value
    * @return {InputDateValueState}
    */
-  _toValueState (value) {
+  _toValueState(value) {
     if (value instanceof Date) {
       if (isDateValid(value)) {
         return dateStateValid(value);
@@ -383,8 +395,7 @@ export class CcInputDate extends CcFormControlElement {
       }
 
       return dateStateValid(date);
-    }
-    catch (e) {
+    } catch (e) {
       return dateStateNaD(value);
     }
   }
@@ -396,7 +407,7 @@ export class CcInputDate extends CcFormControlElement {
   /**
    * @param {HTMLInputElementEvent} e
    */
-  _onInput (e) {
+  _onInput(e) {
     const inputValue = e.target.value;
     this._setNewValueState(this._toValueState(inputValue));
   }
@@ -404,7 +415,7 @@ export class CcInputDate extends CcFormControlElement {
   /**
    * @param {HTMLInputElementEvent} e
    */
-  _onFocus (e) {
+  _onFocus(e) {
     if (this.readonly) {
       e.target.select();
     }
@@ -413,7 +424,7 @@ export class CcInputDate extends CcFormControlElement {
   /**
    * @param {HTMLInputElementKeyboardEvent} e
    */
-  _onKeyEvent (e) {
+  _onKeyEvent(e) {
     // Stop propagation of keydown and keypress events (to prevent conflicts with shortcuts)
     if (e.type === 'keydown' || e.type === 'keypress') {
       e.stopPropagation();
@@ -430,10 +441,11 @@ export class CcInputDate extends CcFormControlElement {
       dispatchCustomEvent(this, 'requestimplicitsubmit');
     }
 
-    if (!this.readonly
-      && this._valueState.type === 'valid'
-      && e.type === 'keydown'
-      && ['ArrowDown', 'ArrowUp'].includes(e.key)
+    if (
+      !this.readonly &&
+      this._valueState.type === 'valid' &&
+      e.type === 'keydown' &&
+      ['ArrowDown', 'ArrowUp'].includes(e.key)
     ) {
       e.preventDefault();
 
@@ -458,7 +470,7 @@ export class CcInputDate extends CcFormControlElement {
   /**
    * @param {CcInputDatePropertyValues} changedProperties
    */
-  willUpdate (changedProperties) {
+  willUpdate(changedProperties) {
     if (changedProperties.has('timezone')) {
       this._dateFormatter = this._resolveDateFormatter();
     }
@@ -466,8 +478,7 @@ export class CcInputDate extends CcFormControlElement {
     if (changedProperties.has('min')) {
       try {
         this._minDate = getDateOrParseIso(this.min);
-      }
-      catch (e) {
+      } catch (e) {
         this._minDate = null;
       }
     }
@@ -475,8 +486,7 @@ export class CcInputDate extends CcFormControlElement {
     if (changedProperties.has('max')) {
       try {
         this._maxDate = getDateOrParseIso(this.max);
-      }
-      catch (e) {
+      } catch (e) {
         this._maxDate = null;
       }
     }
@@ -486,21 +496,21 @@ export class CcInputDate extends CcFormControlElement {
     }
   }
 
-  render () {
+  render() {
     const hasErrorMessage = this.errorMessage != null && this.errorMessage !== '';
 
     // We use the live directive for binding the value of the native input.
     // We need that for the case tested by 'should have the formatted value when setting the same value with iso string'
 
     return html`
-      ${this.label != null ? html`
-        <label class=${classMap({ 'visually-hidden': this.hiddenLabel })} for="input">
-          <span class="label-text">${this.label}</span>
-          ${this.required ? html`
-            <span class="required">${i18n('cc-input-date.required')}</span>
-          ` : ''}
-        </label>
-      ` : ''}
+      ${this.label != null
+        ? html`
+            <label class=${classMap({ 'visually-hidden': this.hiddenLabel })} for="input">
+              <span class="label-text">${this.label}</span>
+              ${this.required ? html` <span class="required">${i18n('cc-input-date.required')}</span> ` : ''}
+            </label>
+          `
+        : ''}
 
       <div class="meta-input">
         <div class="wrapper ${classMap({ skeleton: this.skeleton })}">
@@ -519,7 +529,7 @@ export class CcInputDate extends CcFormControlElement {
             @input=${this._onInput}
             @keydown=${this._onKeyEvent}
             @keypress=${this._onKeyEvent}
-          >
+          />
           <div class="ring"></div>
         </div>
       </div>
@@ -528,36 +538,34 @@ export class CcInputDate extends CcFormControlElement {
         <slot name="help"></slot>
       </div>
 
-      ${hasErrorMessage ? html`
-        <p class="error-container" id="error" ${ref(this._errorRef)}>
-          ${this.errorMessage}
-        </p>` : ''}
-
-      ${this._valueState.type === 'valid' ? html`
-        <p id="keyboard-hint" class="visually-hidden">${i18n('cc-input-date.keyboard-hint')}</p>
-      ` : ''}
+      ${hasErrorMessage
+        ? html` <p class="error-container" id="error" ${ref(this._errorRef)}>${this.errorMessage}</p>`
+        : ''}
+      ${this._valueState.type === 'valid'
+        ? html` <p id="keyboard-hint" class="visually-hidden">${i18n('cc-input-date.keyboard-hint')}</p> `
+        : ''}
     `;
   }
 
-  _renderUnderlay () {
+  _renderUnderlay() {
     if (this.skeleton || this._valueState.type !== 'valid') {
       return null;
     }
 
-    return html`
-      <div class="input underlay" aria-hidden="true">
-        ${this._dateFormatter.mapParts(this._valueState.date, ({ type, value }) => type === 'separator' ? value : html`<span>${value}</span>`)}
-      </div>`;
+    return html` <div class="input underlay" aria-hidden="true">
+      ${this._dateFormatter.mapParts(this._valueState.date, ({ type, value }) =>
+        type === 'separator' ? value : html`<span>${value}</span>`,
+      )}
+    </div>`;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       accessibilityStyles,
       skeletonStyles,
       // language=CSS
       css`
         /* stylelint-disable no-duplicate-selectors */
-
         :host {
           display: inline-block;
         }
@@ -565,8 +573,8 @@ export class CcInputDate extends CcFormControlElement {
         /* region Common to cc-input-* & cc-select */
 
         :host([inline]) {
-          display: inline-grid;
           align-items: baseline;
+          display: inline-grid;
           gap: 0 1em;
           grid-auto-rows: min-content;
           grid-template-areas:
@@ -585,13 +593,13 @@ export class CcInputDate extends CcFormControlElement {
         }
 
         label {
-          display: flex;
           align-items: flex-end;
-          justify-content: space-between;
-          padding-bottom: 0.35em;
           cursor: pointer;
+          display: flex;
           gap: 2em;
+          justify-content: space-between;
           line-height: 1.25em;
+          padding-bottom: 0.35em;
         }
 
         label .label-text {
@@ -602,10 +610,10 @@ export class CcInputDate extends CcFormControlElement {
 
         :host([inline]) label {
           flex-direction: column;
-          padding: 0;
           gap: 0;
           grid-area: label;
           line-height: normal;
+          padding: 0;
         }
 
         .required {
@@ -619,35 +627,35 @@ export class CcInputDate extends CcFormControlElement {
         }
 
         slot[name='help']::slotted(*) {
-          margin: 0.3em 0 0;
           color: var(--cc-color-text-weak, #333);
           font-size: 0.9em;
+          margin: 0.3em 0 0;
         }
 
         .error-container {
-          margin: 0.5em 0 0;
           color: var(--cc-color-text-danger);
+          margin: 0.5em 0 0;
         }
 
         /* endregion */
 
         .meta-input {
+          box-sizing: border-box;
+          display: inline-flex;
+          grid-area: input;
+          height: max-content;
+          overflow: visible;
           /* link to position:absolute of .ring */
           position: relative;
-          display: inline-flex;
-          overflow: visible;
-          width: 100%;
-          height: max-content;
-          box-sizing: border-box;
-          grid-area: input;
           vertical-align: top;
+          width: 100%;
         }
 
         .wrapper {
           display: grid;
-          overflow: hidden;
-          min-width: 0;
           flex: 1 1 0;
+          min-width: 0;
+          overflow: hidden;
           /* see input to know why 0.15em */
           padding: 0.15em 0.5em;
         }
@@ -655,34 +663,34 @@ export class CcInputDate extends CcFormControlElement {
         /* RESET */
 
         .input {
-          display: block;
-          width: 100%;
-          box-sizing: border-box;
-          padding: 0;
-          border: 1px solid #000;
-          margin: 0;
           /* remove Safari box shadow */
           -webkit-appearance: none;
           background: none;
+          border: 1px solid #000;
+          box-sizing: border-box;
           color: inherit;
+          display: block;
           font-family: inherit;
           font-size: unset;
+          margin: 0;
+          padding: 0;
           resize: none;
+          width: 100%;
         }
 
         /* BASE */
 
         .input {
-          z-index: 2;
-          overflow: hidden;
-          /* 2em with a 0.85em font-size ~ 1.7em */
-          /* (2em - 1.7em) / 2 ~ 0.15em of padding (top and bottom) on the wrapper */
-          height: 2em;
           border: none;
           font-family: var(--cc-input-font-family, var(--cc-ff-monospace, monospace));
           font-size: 0.85em;
           grid-area: 1 / 1 / 2 / 2;
+          /* 2em with a 0.85em font-size ~ 1.7em */
+          /* (2em - 1.7em) / 2 ~ 0.15em of padding (top and bottom) on the wrapper */
+          height: 2em;
           line-height: 2em;
+          overflow: hidden;
+          z-index: 2;
         }
 
         /* STATES */
@@ -701,17 +709,17 @@ export class CcInputDate extends CcFormControlElement {
         /* We use this empty .ring element to decorate the input with background, border, box-shadows... */
 
         .ring {
-          position: absolute;
-          z-index: 0;
-          top: 0;
-          right: 0;
+          background: var(--cc-color-bg-default, #fff);
+          border: 1px solid var(--cc-color-border-neutral-strong, #aaa);
+          border-radius: var(--cc-border-radius-default, 0.25em);
           bottom: 0;
+          box-shadow: 0 0 0 0 rgb(255 255 255 / 0%);
           left: 0;
           overflow: hidden;
-          border: 1px solid var(--cc-color-border-neutral-strong, #aaa);
-          background: var(--cc-color-bg-default, #fff);
-          border-radius: var(--cc-border-radius-default, 0.25em);
-          box-shadow: 0 0 0 0 rgb(255 255 255 / 0%);
+          position: absolute;
+          right: 0;
+          top: 0;
+          z-index: 0;
         }
 
         input:focus + .ring {
@@ -734,8 +742,8 @@ export class CcInputDate extends CcFormControlElement {
         }
 
         :host([disabled]) .ring {
-          border-color: var(--cc-color-border-neutral-disabled, #777);
           background: var(--cc-color-bg-neutral-disabled, #eee);
+          border-color: var(--cc-color-border-neutral-disabled, #777);
         }
 
         :host([readonly]) .ring {
@@ -747,8 +755,8 @@ export class CcInputDate extends CcFormControlElement {
         .skeleton .ring,
         .skeleton:hover .ring,
         .skeleton input:hover + .ring {
-          border-color: var(--cc-color-border-neutral-disabled, #777);
           background-color: var(--cc-color-bg-neutral-disabled, #eee);
+          border-color: var(--cc-color-border-neutral-disabled, #777);
           cursor: progress;
         }
 
@@ -760,26 +768,26 @@ export class CcInputDate extends CcFormControlElement {
 
         .input,
         .underlay {
+          font-family: var(--cc-input-font-family, var(--cc-ff-monospace, monospace));
           height: auto;
           padding: 0 3px;
-          font-family: var(--cc-input-font-family, var(--cc-ff-monospace, monospace));
         }
 
         .underlay {
-          z-index: 1;
           color: transparent;
           -moz-user-select: none;
           -webkit-user-select: none;
           -ms-user-select: none;
           user-select: none;
           white-space: nowrap;
+          z-index: 1;
         }
 
         .underlay span:not(:empty) {
           --color: var(--cc-color-border-neutral, #aaa);
 
-          padding: 1px 0;
           border-bottom: 2px solid var(--cc-color-border-neutral, #eee);
+          padding: 1px 0;
         }
       `,
     ];

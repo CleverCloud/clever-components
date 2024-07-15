@@ -137,7 +137,7 @@ ANSI_COLORS.forEach((style) => {
  * @param text
  * @return {string}
  */
-export function stripAnsi (text) {
+export function stripAnsi(text) {
   return text.replace(ansiRegEx(), '');
 }
 
@@ -146,21 +146,20 @@ export function stripAnsi (text) {
  *
  * When using this, don't forget to include the `ansiPaletteStyle` CSS rules to a parent element. (see ./ansi-palette-style)
  */
-export function ansiToLit (text) {
+export function ansiToLit(text) {
   if (ansiParser == null) {
     ansiParser = new AnsiParser();
   }
 
   const tokens = ansiParser.parse(text);
-  return tokens
-    .map((token, i) => {
-      if (token.styles.length === 0) {
-        return token.text;
-      }
+  return tokens.map((token, i) => {
+    if (token.styles.length === 0) {
+      return token.text;
+    }
 
-      const cssClass = token.styles.map((styleName) => `ansi-${styleName}`).join(' ');
-      return html`<span class="${cssClass}">${token.text}</span>`;
-    });
+    const cssClass = token.styles.map((styleName) => `ansi-${styleName}`).join(' ');
+    return html`<span class="${cssClass}">${token.text}</span>`;
+  });
 }
 
 /**
@@ -183,19 +182,17 @@ export const ansiStyles = [
     }
   `,
   ...[
-    ...ANSI_EFFECTS
-      .map((style) => {
-        if (style.style != null) {
-          return `.ansi-${style.name} {${style.style};}`;
-        }
-        return null;
-      }).filter((s) => s != null),
-    ...ANSI_COLORS
-      .map((style) => {
-        const styleName = style.name;
-        const styleVar = `var(--cc-color-ansi-${styleName})`;
+    ...ANSI_EFFECTS.map((style) => {
+      if (style.style != null) {
+        return `.ansi-${style.name} {${style.style};}`;
+      }
+      return null;
+    }).filter((s) => s != null),
+    ...ANSI_COLORS.map((style) => {
+      const styleName = style.name;
+      const styleVar = `var(--cc-color-ansi-${styleName})`;
 
-        return `
+      return `
           .ansi-text-${styleName} {
             color: ${styleVar};
           }
@@ -208,7 +205,7 @@ export const ansiStyles = [
           .ansi-bg-${styleName}.ansi-inverse {
             color: ${styleVar} !important;
           }`;
-      }),
+    }),
   ].map(unsafeCSS),
 ];
 
@@ -219,7 +216,7 @@ export const ansiStyles = [
 // -- Uses an in memory cache to speed up parsing
 
 class AnsiParser {
-  constructor () {
+  constructor() {
     /** @type {Map<string, string>} */
     this.codeToStyle = new Map();
     /** @type {Map<string, Set<string>>} */
@@ -231,7 +228,7 @@ class AnsiParser {
     this._init();
   }
 
-  _init () {
+  _init() {
     /** @type {Map<string, Set<string>>} */
     const commonEscapes = new Map();
 
@@ -267,7 +264,7 @@ class AnsiParser {
    * @param str
    * @return {Array<AnsiPart>}
    */
-  parse (str) {
+  parse(str) {
     return this.cache.get(str);
   }
 
@@ -275,7 +272,7 @@ class AnsiParser {
    * @param str
    * @return {Array<AnsiPart>}
    */
-  _doParse (str) {
+  _doParse(str) {
     /** @type {Array<AnsiPart>} */
     const result = [];
     let curr = str;
@@ -292,7 +289,9 @@ class AnsiParser {
       }
 
       // here we handle combination with semicolon. For example: `^<ESC^>[1;31;106m`
-      const ansiCodes = fromAnsi(regexExec[0]).split(';').map((c) => toAnsi(c));
+      const ansiCodes = fromAnsi(regexExec[0])
+        .split(';')
+        .map((c) => toAnsi(c));
 
       ansiCodes.forEach((ansiCode) => {
         this.escapeCodes.get(ansiCode)?.forEach((styleName) => {
@@ -323,24 +322,24 @@ class AnsiParser {
  * @param {string} key
  * @param {string} value
  */
-function addToIndexMap (map, key, value) {
+function addToIndexMap(map, key, value) {
   if (!map.has(key)) {
     map.set(key, new Set());
   }
   map.get(key).add(value);
 }
 
-function removeElm (arr, val) {
+function removeElm(arr, val) {
   const i = arr.indexOf(val);
   if (i >= 0) {
     arr.splice(i, 1);
   }
 }
 
-function toAnsi (code) {
+function toAnsi(code) {
   return `\u001b[${code}m`;
 }
 
-function fromAnsi (ansiCode) {
+function fromAnsi(ansiCode) {
   return ansiCode.slice(2, ansiCode.length - 1);
 }

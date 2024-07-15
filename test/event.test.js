@@ -11,7 +11,7 @@ chai.use(chaiAsPromised);
  * @param detail
  * @return {Promise<CustomEvent>}
  */
-function fireEvent (nodeName, eventNameToDispatch, eventNameToListen, detail) {
+function fireEvent(nodeName, eventNameToDispatch, eventNameToListen, detail) {
   return new Promise((resolve, reject) => {
     const htmlElement = document.createElement(nodeName);
     document.body.appendChild(htmlElement);
@@ -27,8 +27,9 @@ describe('dispatchCustomEvent', () => {
   });
 
   it('should not receive event when listening on wrong event', async () => {
-    expect(fireEvent('cc-component', 'myEvent', 'wrongEvent', 'detail'))
-      .to.eventually.be.rejectedWith('event not received');
+    expect(fireEvent('cc-component', 'myEvent', 'wrongEvent', 'detail')).to.eventually.be.rejectedWith(
+      'event not received',
+    );
   });
 
   it('should dispatch custom event on the right element', async () => {

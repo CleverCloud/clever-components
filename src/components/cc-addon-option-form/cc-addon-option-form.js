@@ -1,10 +1,10 @@
-import '../cc-addon-option/cc-addon-option.js';
-import '../cc-button/cc-button.js';
-import '../cc-block/cc-block.js';
 import { css, html, LitElement } from 'lit';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
+import '../cc-addon-option/cc-addon-option.js';
+import '../cc-block/cc-block.js';
+import '../cc-button/cc-button.js';
 
 /**
  * @typedef {import('../common.types.js').AddonOption} AddonOption
@@ -20,15 +20,14 @@ import { linkStyles } from '../../templates/cc-link/cc-link.js';
  * @slot description - The description of the add-on and available options.
  */
 export class CcAddonOptionForm extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       options: { type: Array },
       title: { type: String },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {AddonOption[]} List of Option object to render. */
@@ -41,7 +40,7 @@ export class CcAddonOptionForm extends LitElement {
     this._optionsStates = {};
   }
 
-  _onSubmit () {
+  _onSubmit() {
     // If some options were not changed, fill them here
     this.options.forEach((option) => {
       if (this._optionsStates[option.name] == null) {
@@ -52,38 +51,35 @@ export class CcAddonOptionForm extends LitElement {
     dispatchCustomEvent(this, 'submit', this._optionsStates);
   }
 
-  _onOptionToggle ({ detail }, optionName) {
+  _onOptionToggle({ detail }, optionName) {
     this._optionsStates[optionName] = detail;
   }
 
-  render () {
+  render() {
     return html`
       <cc-block>
         <div slot="title">${this.title}</div>
         <slot name="description"></slot>
         ${this.options.map((option) => {
           const enabled = option.enabled || false;
-          return html`
-            <cc-addon-option
-              title="${option.title}"
-              .icon="${option.icon}"
-              logo="${option.logo}"
-              ?enabled=${enabled}
-              @cc-addon-option:input=${(e) => this._onOptionToggle(e, option.name)}
-            >
-              ${option.description}
-            </cc-addon-option>`;
+          return html` <cc-addon-option
+            title="${option.title}"
+            .icon="${option.icon}"
+            logo="${option.logo}"
+            ?enabled=${enabled}
+            @cc-addon-option:input=${(e) => this._onOptionToggle(e, option.name)}
+          >
+            ${option.description}
+          </cc-addon-option>`;
         })}
         <div class="button-bar">
-          <cc-button primary @cc-button:click=${this._onSubmit}>
-            ${i18n('cc-addon-option-form.confirm')}
-          </cc-button>
+          <cc-button primary @cc-button:click=${this._onSubmit}> ${i18n('cc-addon-option-form.confirm')} </cc-button>
         </div>
       </cc-block>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       linkStyles,
       // language=CSS

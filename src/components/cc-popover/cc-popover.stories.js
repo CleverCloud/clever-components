@@ -1,4 +1,3 @@
-import './cc-popover.js';
 import {
   iconRemixArrowLeftDownLine as iconArrowLeftDown,
   iconRemixArrowLeftUpLine as iconArrowLeftUp,
@@ -6,6 +5,7 @@ import {
   iconRemixArrowRightUpLine as iconArrowRightUp,
 } from '../../assets/cc-remix.icons.js';
 import { makeStory } from '../../stories/lib/make-story.js';
+import './cc-popover.js';
 
 export default {
   tags: ['autodocs'],

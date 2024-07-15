@@ -1,4 +1,3 @@
-
 /**
  * Finds the active element (the element currently focused). It handles the case where the focused element is
  * inside a custom element.
@@ -6,7 +5,7 @@
  * @param {Document | ShadowRoot} root
  * @return {null | Element}
  */
-export function findActiveElement (root = document) {
+export function findActiveElement(root = document) {
   const activeElement = root.activeElement;
 
   if (activeElement == null) {
@@ -15,8 +14,7 @@ export function findActiveElement (root = document) {
 
   if (activeElement.shadowRoot != null) {
     return findActiveElement(activeElement.shadowRoot);
-  }
-  else {
+  } else {
     return activeElement;
   }
 }
@@ -28,7 +26,7 @@ export function findActiveElement (root = document) {
  * @param {Node} child
  * @return {boolean}
  */
-export function isParentOf (parent, child) {
+export function isParentOf(parent, child) {
   if (parent == null || child == null) {
     return false;
   }
@@ -54,7 +52,7 @@ export function isParentOf (parent, child) {
  * @param {DocumentOrShadowRoot} [root=document]
  * @return {Array<Element>}
  */
-export function elementsFromPoint (x, y, root = document) {
+export function elementsFromPoint(x, y, root = document) {
   let elements = root.elementsFromPoint(x, y);
   if (elements.length === 0) {
     return [];
@@ -65,11 +63,9 @@ export function elementsFromPoint (x, y, root = document) {
     const items = shadow.elementsFromPoint(x, y);
     if (items.length === 0) {
       shadow = null;
-    }
-    else if (elements.includes(items[0])) {
+    } else if (elements.includes(items[0])) {
       shadow = null;
-    }
-    else {
+    } else {
       elements = [...items, elements];
       shadow = items[0].shadowRoot;
     }

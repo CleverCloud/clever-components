@@ -14,8 +14,7 @@ import { css, html, LitElement } from 'lit';
  * @slot title - The title of the section. You can use a `.danger` CSS class on your `<div slot="title">` if it's a danger zone.
  */
 export class CcBlockSection extends LitElement {
-
-  render () {
+  render() {
     return html`
       <slot name="title"></slot>
       <div class="section">
@@ -25,34 +24,35 @@ export class CcBlockSection extends LitElement {
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
         :host {
-          display: grid;
           background-color: var(--cc-color-bg-default, #fff);
+          display: grid;
           grid-gap: 1em;
         }
 
+        /* stylelint-disable-next-line */
         /*
-          REQUIREMENT #1: We want to style <cc-block-section> elements
-                          but only when they are used inside the default slot of a <cc-block>.
-          => This can be done from the <cc-block> with CSS only ::slotted(cc-block-section).
-          REQUIREMENT #2: As the point is to add separation lines/borders, we don't want to style the first one.
-          => This cannot be done with ::slotted(cc-block-section:first-of-type).
-          SOLUTION: Add the margin directly in <cc-block-section> with :host(:not(:first-of-type))
-          WARNINGS #1: This breaks the "don't add margin on the :host,
-                       do it on the parent" but we exlained why we cannot do it.
-          WARNINGS 21: This code will work even if the parent is not a <cc-block>.
-                       We could do something to prevent this pb with connectedCallback
-                       and a class or an attribute but it's a bit much just for this.
-       */
+         * REQUIREMENTS #1: We want to style <cc-block-section> elements
+         * but only when they are used inside the default slot of a <cc-block>.
+         * => This can be done from the <cc-block> with CSS only ::slotted(cc-block-section).
+         * REQUIREMENT #2: As the point is to add separation lines/borders, we don't want to style the first one.
+         * => This cannot be done with ::slotted(cc-block-section:first-of-type).
+         * SOLUTION: Add the margin directly in <cc-block-section> with :host(:not(:first-of-type))
+         * WARNINGS #1: This breaks the "don't add margin on the :host,
+         * do it on the parent" but we exlained why we cannot do it.
+         * WARNINGS 21: This code will work even if the parent is not a <cc-block>.
+         * We could do something to prevent this pb with connectedCallback
+         * and a class or an attribute but it's a bit much just for this.
+        */
 
         :host(:not(:first-of-type)) {
-          padding-top: 2em;
           border-top: 1px solid var(--cc-color-border-neutral-weak, #eee);
           margin-top: 1em;
+          padding-top: 2em;
         }
 
         ::slotted([slot='title']) {

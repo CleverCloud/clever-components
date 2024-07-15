@@ -8,11 +8,10 @@ import { isStringEmpty } from '../../lib/utils.js';
  */
 
 export class ProductsController {
-
   /**
    * @param {CcProductList} host
    */
-  constructor (host) {
+  constructor(host) {
     /** @type {CcProductList} The host. */
     this._host = host;
 
@@ -34,8 +33,7 @@ export class ProductsController {
    *
    * @returns {ProductsByCategory[]}
    */
-  getFilteredProductsByCategories () {
-
+  getFilteredProductsByCategories() {
     const productsByCategoriesToggled = this._getProductsByCurrentCategory();
     const textFilterFormatted = this._currentTextFilter?.toLowerCase().trim();
 
@@ -43,29 +41,30 @@ export class ProductsController {
       return productsByCategoriesToggled;
     }
 
-    const searchTerms = textFilterFormatted
-      .split(' ')
-      .filter((i) => i !== '');
+    const searchTerms = textFilterFormatted.split(' ').filter((i) => i !== '');
 
     return productsByCategoriesToggled
-      .map((productsByCategory) => ({ ...productsByCategory, products: this._filterProducts(productsByCategory.products, searchTerms) }))
+      .map((productsByCategory) => ({
+        ...productsByCategory,
+        products: this._filterProducts(productsByCategory.products, searchTerms),
+      }))
       .filter((productsByCategory) => productsByCategory.products.length > 0);
   }
 
   /**
    * @param {ProductsByCategory[]} productsByCategories
    */
-  set productsByCategories (productsByCategories) {
+  set productsByCategories(productsByCategories) {
     this._productsByCategories = productsByCategories;
     this._categoriesFilters = this._productsByCategories.map(({ categoryName }) => ({ categoryName, toggled: false }));
     this._currentCategoryNameFilter = 'all';
   }
 
-  getCategories () {
+  getCategories() {
     return this._categoriesFilters;
   }
 
-  getCurrentCategory () {
+  getCurrentCategory() {
     return this._currentCategoryNameFilter;
   }
 
@@ -73,7 +72,7 @@ export class ProductsController {
    *
    * @param {string|null} textFilter
    */
-  set textFilter (textFilter) {
+  set textFilter(textFilter) {
     this._currentTextFilter = textFilter ?? '';
 
     this._host.requestUpdate();
@@ -82,20 +81,20 @@ export class ProductsController {
   /**
    * @param {string} categoryName
    */
-  toggleCategoryFilter (categoryName) {
-
+  toggleCategoryFilter(categoryName) {
     const categoryExists = this._categoriesFilters.find((cat) => cat.categoryName === categoryName) != null;
 
     // If we don't have a category or it doesn't exist we reset the category to 'all'
     // If we're being given the current category as it acts as a toggle we also reset to 'all'
-    this._currentCategoryNameFilter = (categoryName == null || categoryName === '' || !categoryExists || this._currentCategoryNameFilter === categoryName)
-      ? 'all'
-      : categoryName;
+    this._currentCategoryNameFilter =
+      categoryName == null || categoryName === '' || !categoryExists || this._currentCategoryNameFilter === categoryName
+        ? 'all'
+        : categoryName;
 
     this._categoriesFilters = this._categoriesFilters.map((category) => {
       return {
         categoryName: category.categoryName,
-        toggled: (this._currentCategoryNameFilter !== 'all') && (this._currentCategoryNameFilter === category.categoryName),
+        toggled: this._currentCategoryNameFilter !== 'all' && this._currentCategoryNameFilter === category.categoryName,
       };
     });
 
@@ -107,15 +106,11 @@ export class ProductsController {
    * @param {string[]} searchTerms
    * @returns {Product[]|[]}
    */
-  _filterProducts (products, searchTerms) {
+  _filterProducts(products, searchTerms) {
     return products.filter((product) => {
       const keywords = product?.keywords?.map(({ value }) => value) ?? [];
 
-      const someText = [
-        product.name,
-        product.description ?? '',
-        ...keywords,
-      ];
+      const someText = [product.name, product.description ?? '', ...keywords];
 
       return someText.some((text) => {
         return searchTerms.some((input) => {
@@ -123,13 +118,11 @@ export class ProductsController {
         });
       });
     });
-
   }
 
-  _getProductsByCurrentCategory () {
-    return (this._currentCategoryNameFilter !== 'all')
+  _getProductsByCurrentCategory() {
+    return this._currentCategoryNameFilter !== 'all'
       ? this._productsByCategories.filter(({ categoryName }) => categoryName === this._currentCategoryNameFilter)
       : this._productsByCategories;
   }
-
 }

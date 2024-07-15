@@ -20,7 +20,7 @@ class FormSubmitDirective extends AsyncDirective {
   /**
    * @param {PartInfo} partInfo
    */
-  constructor (partInfo) {
+  constructor(partInfo) {
     super(partInfo);
 
     /** @type {HTMLFormElement} */
@@ -34,7 +34,7 @@ class FormSubmitDirective extends AsyncDirective {
    * @param {Array<unknown>} _props
    * @return {unknown}
    */
-  render (..._props) {
+  render(..._props) {
     return nothing;
   }
 
@@ -42,7 +42,7 @@ class FormSubmitDirective extends AsyncDirective {
    * @param {Part} part
    * @param {Array<any>} args
    */
-  update (part, args) {
+  update(part, args) {
     const formElement = this.getFormElement(part);
     /** @type {OnValidCallback} */
     const onValid = getArgAt(args, 0);
@@ -65,11 +65,11 @@ class FormSubmitDirective extends AsyncDirective {
     return this.render();
   }
 
-  disconnected () {
+  disconnected() {
     this._eventHandler?.disconnect();
   }
 
-  reconnected () {
+  reconnected() {
     this._eventHandler?.connect();
   }
 
@@ -77,7 +77,7 @@ class FormSubmitDirective extends AsyncDirective {
    * @param {Part} part
    * @return {HTMLFormElement}
    */
-  getFormElement (part) {
+  getFormElement(part) {
     if (!isElementPart(part) || !isFormElement(part.element)) {
       throw new Error('This directive must be used on an `<form>` element');
     }
@@ -98,7 +98,7 @@ export const formSubmit = directive(FormSubmitDirective);
  * @param {Element} element
  * @return {element is HTMLFormElement}
  */
-function isFormElement (element) {
+function isFormElement(element) {
   return element instanceof HTMLFormElement;
 }
 
@@ -107,8 +107,8 @@ function isFormElement (element) {
  * @param {Part} part
  * @return {part is ElementPart}
  */
-function isElementPart (part) {
-  return (part.type === PartType.ELEMENT);
+function isElementPart(part) {
+  return part.type === PartType.ELEMENT;
 }
 
 /**
@@ -116,7 +116,7 @@ function isElementPart (part) {
  * @param {number} index
  * @return {any|null}
  */
-function getArgAt (args, index) {
+function getArgAt(args, index) {
   if (args == null) {
     return null;
   }

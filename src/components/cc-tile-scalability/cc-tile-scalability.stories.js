@@ -1,5 +1,5 @@
-import './cc-tile-scalability.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-tile-scalability.js';
 
 export default {
   tags: ['autodocs'],
@@ -48,13 +48,13 @@ const ALL_FLAVORS = {
 };
 
 /**
-  * @param {Flavor} minFlavor
-  * @param {Flavor} maxFlavor
-  * @param {number} minInstances
-  * @param {number} maxInstances
-  * @return {TileScalabilityStateLoaded}
-  */
-function scalabilityLoaded (minFlavor, maxFlavor, minInstances, maxInstances) {
+ * @param {Flavor} minFlavor
+ * @param {Flavor} maxFlavor
+ * @param {number} minInstances
+ * @param {number} maxInstances
+ * @return {TileScalabilityStateLoaded}
+ */
+function scalabilityLoaded(minFlavor, maxFlavor, minInstances, maxInstances) {
   return { type: 'loaded', minFlavor, maxFlavor, minInstances, maxInstances };
 }
 
@@ -76,17 +76,21 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const loading = makeStory(conf, {
-  items: [{
-    /** @type {TileScalabilityStateLoading} */
-    state: { type: 'loading' },
-  }],
+  items: [
+    {
+      /** @type {TileScalabilityStateLoading} */
+      state: { type: 'loading' },
+    },
+  ],
 });
 
 export const error = makeStory(conf, {
-  items: [{
-    /** @type {TileScalabilityStateError} */
-    state: { type: 'error' },
-  }],
+  items: [
+    {
+      /** @type {TileScalabilityStateError} */
+      state: { type: 'error' },
+    },
+  ],
 });
 
 export const dataLoadedWithNoAutoScalability = makeStory(conf, {
@@ -160,11 +164,13 @@ export const dataLoadedWithHorizontalAndVerticalScalability = makeStory(conf, {
 export const simulations = makeStory(conf, {
   items: [{}, {}],
   simulations: [
-    storyWait(2000,
+    storyWait(
+      2000,
       /** @param {CcTileScalability[]} components */
       ([component, componentError]) => {
         component.state = scalabilityLoaded(ALL_FLAVORS.pico, ALL_FLAVORS.XL, 2, 3);
         componentError.state = { type: 'error' };
-      }),
+      },
+    ),
   ],
 });

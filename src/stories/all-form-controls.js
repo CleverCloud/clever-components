@@ -34,10 +34,9 @@ const conf = {
   `,
 };
 
-export const allFormControlsStory = makeStory(conf,
-  {
-    dom: (container) => {
-      container.innerHTML = `
+export const allFormControlsStory = makeStory(conf, {
+  dom: (container) => {
+    container.innerHTML = `
         <h1>Horizontal layout for form elements</h1>
         <p>To make sure the <code>cc-button</code> element aligns with other form elements even when an error / help message is displayed, do as follows:</p>
         <ul>
@@ -83,6 +82,5 @@ export const allFormControlsStory = makeStory(conf,
           </cc-toggle>
         </form>
       `;
-    },
   },
-);
+});

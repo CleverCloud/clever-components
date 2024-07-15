@@ -44,8 +44,7 @@ import { dispatchCustomEvent } from '../../lib/events.js';
  * @cssprop {TextTransform} --cc-toggle-text-transform - Sets the value of the text transform CSS property (defaults: `uppercase`).
  */
 export class CcToggle extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       /** @required */
       choices: { type: Array },
@@ -60,7 +59,7 @@ export class CcToggle extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {Choice[]|null} Sets the list of choices. */
@@ -95,18 +94,15 @@ export class CcToggle extends LitElement {
     this.value = null;
   }
 
-  _onChange (e) {
+  _onChange(e) {
     if (this.multipleValues == null) {
       this.value = e.target.value;
       dispatchCustomEvent(this, 'input', this.value);
-    }
-    else {
+    } else {
       // Same order as the choices
       const multipleValues = this.choices
         .filter(({ value }) => {
-          return value === e.target.value
-            ? e.target.checked
-            : this.multipleValues.includes(value);
+          return value === e.target.value ? e.target.checked : this.multipleValues.includes(value);
         })
         .map(({ value }) => value);
       this.multipleValues = multipleValues;
@@ -114,8 +110,7 @@ export class CcToggle extends LitElement {
     }
   }
 
-  render () {
-
+  render() {
     const classes = {
       disabled: this.disabled,
       enabled: !this.disabled,
@@ -124,12 +119,10 @@ export class CcToggle extends LitElement {
       'mode-single': this.multipleValues == null,
       'mode-multiple': this.multipleValues != null,
     };
-    const type = (this.multipleValues == null) ? 'radio' : 'checkbox';
+    const type = this.multipleValues == null ? 'radio' : 'checkbox';
 
     const isChecked = (value) => {
-      return (this.multipleValues != null)
-        ? this.multipleValues.includes(value)
-        : this.value === value;
+      return this.multipleValues != null ? this.multipleValues.includes(value) : this.value === value;
     };
 
     const hasLegend = this.legend != null && this.legend.length > 0;
@@ -138,39 +131,39 @@ export class CcToggle extends LitElement {
       <div role="group" aria-labelledby=${ifDefined(hasLegend ? 'legend' : undefined)} class="group">
         ${hasLegend ? html`<div id="legend">${this.legend}</div>` : ''}
         <div class="toggle-group ${classMap(classes)}">
-          ${repeat(this.choices, ({ value }) => value, ({ label, image, value }) => html`
-            <!--
+          ${repeat(
+            this.choices,
+            ({ value }) => value,
+            ({ label, image, value }) => html`
+              <!--
               If the name=null, the name of the native <input> will be 'toggle'. In order to navigate through a group of inputs using the arrow keys, each <input> must have the same name value.
-            -->    
-            <input
-              type=${type}
-              name=${this.name ?? 'toggle'}
-              .value=${value}
-              id=${value}
-              ?disabled=${this.disabled}
-              .checked=${isChecked(value)}
-              @change=${this._onChange}
-              aria-label=${ifDefined((image != null && this.hideText) ? label : undefined)}>
-            <label for=${value} title=${ifDefined((image != null && this.hideText) ? label : undefined)}>
-              ${image != null ? html`
-                <img src=${image} alt="">
-              ` : ''}
-              ${(image == null) || !this.hideText ? html`
-                <span>${label}</span>
-              ` : ''}
-            </label>
-          `)}
+            -->
+              <input
+                type=${type}
+                name=${this.name ?? 'toggle'}
+                .value=${value}
+                id=${value}
+                ?disabled=${this.disabled}
+                .checked=${isChecked(value)}
+                @change=${this._onChange}
+                aria-label=${ifDefined(image != null && this.hideText ? label : undefined)}
+              />
+              <label for=${value} title=${ifDefined(image != null && this.hideText ? label : undefined)}>
+                ${image != null ? html` <img src=${image} alt="" /> ` : ''}
+                ${image == null || !this.hideText ? html` <span>${label}</span> ` : ''}
+              </label>
+            `,
+          )}
         </div>
       </div>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
         /* stylelint-disable no-duplicate-selectors */
-
         :host {
           --cc-toggle-color: var(--cc-color-bg-primary, #000);
           --cc-toggle-img-filter: none;
@@ -179,7 +172,7 @@ export class CcToggle extends LitElement {
 
           display: inline-flex;
         }
-        
+
         .group {
           display: flex;
           flex-direction: column;
@@ -187,11 +180,11 @@ export class CcToggle extends LitElement {
         }
 
         :host([inline]) .group {
-          flex-direction: row;
           align-items: center;
+          flex-direction: row;
           gap: 1em;
         }
-        
+
         #legend {
           color: var(--cc-toggle-legend-color, inherit);
           font-size: var(--cc-toggle-legend-font-size, inherit);
@@ -200,28 +193,28 @@ export class CcToggle extends LitElement {
         }
 
         .toggle-group {
-          display: flex;
-          overflow: visible;
-          width: max-content;
-          height: var(--height);
-          box-sizing: border-box;
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-small, 0.15em);
+          box-sizing: border-box;
+          display: flex;
+          height: var(--height);
           line-height: 1.25;
+          overflow: visible;
+          width: max-content;
         }
 
         /* We hide the <input> and only display the related <label> */
 
         input {
-          display: block;
-          width: 0;
-          height: 0;
-          border: 0;
-          margin: 0;
           -moz-appearance: none;
           -webkit-appearance: none;
           appearance: none;
+          border: 0;
+          display: block;
+          height: 0;
+          margin: 0;
           outline: none;
+          width: 0;
         }
 
         label {
@@ -229,18 +222,18 @@ export class CcToggle extends LitElement {
           --space: 2px;
           --border-radius: var(--cc-toggle-border-radius, 0.15em);
 
-          position: relative;
-          display: grid;
           align-items: center;
-          padding: 0 0.6em;
-          border-style: solid;
           border-color: var(--cc-toggle-color);
+          border-style: solid;
           color: var(--color-txt);
           cursor: pointer;
+          display: grid;
           font-size: 0.85em;
           font-weight: var(--cc-toggle-font-weight, bold);
           gap: 0.6em;
           grid-auto-flow: column;
+          padding: 0 0.6em;
+          position: relative;
           text-transform: var(--cc-toggle-text-transform, uppercase);
           -moz-user-select: none;
           -webkit-user-select: none;
@@ -258,8 +251,8 @@ export class CcToggle extends LitElement {
         }
 
         label:last-of-type {
-          border-right-width: 1px;
           border-radius: 0 var(--border-radius) var(--border-radius) 0;
+          border-right-width: 1px;
         }
 
         label:not(:first-of-type) {
@@ -269,30 +262,30 @@ export class CcToggle extends LitElement {
         /* Used to display a background behind the text */
 
         label::before {
-          position: absolute;
-          z-index: 0;
-          top: var(--space);
-          right: var(--space);
-          bottom: var(--space);
-          left: var(--space);
-          display: block;
           background-color: var(--cc-color-bg);
           border-radius: var(--cc-border-radius-small, 0.15em);
+          bottom: var(--space);
           content: '';
+          display: block;
+          left: var(--space);
+          position: absolute;
+          right: var(--space);
+          top: var(--space);
+          z-index: 0;
         }
 
         /* Used to display a bottom line in display subtle */
 
         .display-subtle label::after {
-          position: absolute;
-          z-index: 0;
-          right: 0.25em;
+          background-color: var(--color-subtle-border);
           bottom: 0;
-          left: 0.25em;
+          content: '';
           display: block;
           height: var(--space);
-          background-color: var(--color-subtle-border);
-          content: '';
+          left: 0.25em;
+          position: absolute;
+          right: 0.25em;
+          z-index: 0;
         }
 
         label span,
@@ -302,8 +295,8 @@ export class CcToggle extends LitElement {
 
         img {
           display: block;
-          width: 1.45em;
           height: 1.45em;
+          width: 1.45em;
         }
 
         /* NOT SELECTED */

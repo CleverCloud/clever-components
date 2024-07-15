@@ -1,16 +1,11 @@
-import '../cc-badge/cc-badge.js';
-import '../cc-button/cc-button.js';
-import '../cc-icon/cc-icon.js';
-import '../cc-loader/cc-loader.js';
-import '../cc-notice/cc-notice.js';
 import '@lit-labs/virtualizer';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { join } from 'lit/directives/join.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import {
-  iconRemixCheckboxBlankCircleFill as iconSelected,
   iconRemixFileCopy_2Line as iconCopy,
+  iconRemixCheckboxBlankCircleFill as iconSelected,
 } from '../../assets/cc-remix.icons.js';
 import { ansiPaletteStyle } from '../../lib/ansi/ansi-palette-style.js';
 import { ansiStyles, ansiToLit, stripAnsi } from '../../lib/ansi/ansi.js';
@@ -21,6 +16,11 @@ import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { notifySuccess } from '../../lib/notifications.js';
 import { isStringEmpty } from '../../lib/utils.js';
+import '../cc-badge/cc-badge.js';
+import '../cc-button/cc-button.js';
+import '../cc-icon/cc-icon.js';
+import '../cc-loader/cc-loader.js';
+import '../cc-notice/cc-notice.js';
 import { DateDisplayer } from './date-displayer.js';
 import { LogsController } from './logs-controller.js';
 import { LogsInputController } from './logs-input-controller.js';
@@ -37,9 +37,7 @@ const DEFAULT_METADATA_RENDERING = {
 // This style is the default ansi palette plus the ability to be overridden with the css theme.
 const DEFAULT_PALETTE_STYLE = ansiPaletteStyle(
   Object.fromEntries(
-    Object
-      .entries(defaultPalette)
-      .map(([name, color]) => [name, `var(--cc-color-ansi-default-${name}, ${color})`]),
+    Object.entries(defaultPalette).map(([name, color]) => [name, `var(--cc-color-ansi-default-${name}, ${color})`]),
   ),
 );
 
@@ -51,17 +49,17 @@ class TemporaryFunctionDisabler {
    * @param {() => any} callback
    * @param {number} timeout
    */
-  constructor (callback, timeout) {
+  constructor(callback, timeout) {
     this._callback = callback;
     this._timeout = timeout;
     this._timestamp = 0;
   }
 
-  disable () {
+  disable() {
     this._timestamp = new Date().getTime();
   }
 
-  call () {
+  call() {
     const timeSinceDisabled = new Date().getTime() - this._timestamp;
 
     if (timeSinceDisabled > this._timeout) {
@@ -228,7 +226,7 @@ class TemporaryFunctionDisabler {
  * @cssprop {Color} --cc-color-ansi-bright-white - The bright white color
  */
 export class CcLogs extends LitElement {
-  static get properties () {
+  static get properties() {
     return {
       follow: { type: Boolean },
       limit: { type: Number },
@@ -245,7 +243,7 @@ export class CcLogs extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {boolean} Whereas the component should scroll to the bottom everytime a new log line is added. */
@@ -321,7 +319,7 @@ export class CcLogs extends LitElement {
    *
    * @param {Array<Log>} logs The logs to append
    */
-  appendLogs (logs) {
+  appendLogs(logs) {
     // We disable the follow modifier to prevent next visibilityChanged events to change the actual follow property.
     this._followSynchronizer.disable();
     this._logsCtrl.append(logs);
@@ -330,20 +328,20 @@ export class CcLogs extends LitElement {
   /**
    * Clears the logs
    */
-  clear () {
+  clear() {
     this._logsCtrl.clear();
   }
 
   /**
    * Forces scroll to the bottom
    */
-  scrollToBottom () {
+  scrollToBottom() {
     this._setFollow(true);
   }
 
   // endregion
 
-  _resolveDateDisplayer () {
+  _resolveDateDisplayer() {
     return new DateDisplayer(this.dateDisplay, this.timezone);
   }
 
@@ -355,7 +353,7 @@ export class CcLogs extends LitElement {
    * If it was not because we lost the focus after the focused log was removed from DOM (this can happen when user scrolls far from the focused log),
    * then we clear the focus.
    */
-  _onFocusLogsContainer () {
+  _onFocusLogsContainer() {
     if (this._focusedIndexIsInDom) {
       this._logsCtrl.clearFocus(false);
     }
@@ -369,7 +367,7 @@ export class CcLogs extends LitElement {
    *
    * @param {FocusEvent & {target: HTMLButtonElement}} e
    */
-  _onFocusLog (e) {
+  _onFocusLog(e) {
     const button = e.target;
     const logIndex = Number(button.closest(`.log`).dataset.index);
     this._logsCtrl.focus(logIndex, false);
@@ -382,11 +380,10 @@ export class CcLogs extends LitElement {
    *
    * @param {number|null} logIndex the log index to focus or `null` if the focus is to be reset to the logs' container.
    */
-  _onFocusedLogChange (logIndex) {
+  _onFocusedLogChange(logIndex) {
     if (logIndex == null) {
       this._logsRef.value.focus();
-    }
-    else {
+    } else {
       // Scroll to the element to focus.
       this._logsRef.value.element(logIndex)?.scrollIntoView({ block: 'nearest' });
 
@@ -414,7 +411,7 @@ export class CcLogs extends LitElement {
    *
    * @param {'up'|'down'} direction
    */
-  _onArrow (direction) {
+  _onArrow(direction) {
     this._logsCtrl.moveFocus(direction, this._visibleRange);
   }
 
@@ -427,11 +424,10 @@ export class CcLogs extends LitElement {
    *
    * @param {boolean} withCtrlShift
    */
-  _onHome (withCtrlShift) {
+  _onHome(withCtrlShift) {
     if (withCtrlShift) {
       this._logsCtrl.extendSelection(0, 'replace');
-    }
-    else {
+    } else {
       this._logsCtrl.focus(0);
     }
   }
@@ -445,11 +441,10 @@ export class CcLogs extends LitElement {
    *
    * @param {boolean} withCtrlShift
    */
-  _onEnd (withCtrlShift) {
+  _onEnd(withCtrlShift) {
     if (withCtrlShift) {
       this._logsCtrl.extendSelection(this._logsCtrl.listLength - 1, 'replace');
-    }
-    else {
+    } else {
       this._logsCtrl.focus(this._logsCtrl.listLength - 1);
     }
   }
@@ -462,7 +457,7 @@ export class CcLogs extends LitElement {
    * Instead, we move to focus on the logs container, and we store the index of the lost button (so that we know where we were when user plays with arrow keys).
    * @param {RangeChangedEvent} e
    */
-  _onRangeChanged (e) {
+  _onRangeChanged(e) {
     this._focusedIndexIsInDom = this._logsCtrl.isFocusedIndexInRange({ first: e.first, last: e.last });
     if (!this._focusedIndexIsInDom && this.shadowRoot.activeElement != null) {
       this._logsRef.value.focus();
@@ -480,8 +475,7 @@ export class CcLogs extends LitElement {
    *
    * @param {MouseEvent} e
    */
-  _onMouseDownGutter (e) {
-
+  _onMouseDownGutter(e) {
     // If the mouse down event doesn't come from the button, a text selection can happen.
     // We don't want this!
     const isInButton = e.composedPath().some((element) => hasClass(element, 'select_button'));
@@ -509,16 +503,13 @@ export class CcLogs extends LitElement {
    * @param {number} [movement.offset] The number of logs to drag.
    * @param {boolean} isFirstDrag Whereas this is the drag movement initiator.
    */
-  _onDrag ({ logIndex, direction, offset }, isFirstDrag) {
-
+  _onDrag({ logIndex, direction, offset }, isFirstDrag) {
     // On first drag, we should clear the text selection because we're about to trigger a log selection
     if (isFirstDrag) {
       document.getSelection().empty();
     }
 
-    const newIndex = logIndex != null
-      ? logIndex
-      : this._getNewDraggedLogIndex(direction, offset ?? 1);
+    const newIndex = logIndex != null ? logIndex : this._getNewDraggedLogIndex(direction, offset ?? 1);
 
     if (newIndex === this._draggedLogIndex) {
       return;
@@ -526,8 +517,7 @@ export class CcLogs extends LitElement {
 
     if (isFirstDrag) {
       this._logsCtrl.select(newIndex);
-    }
-    else {
+    } else {
       this._logsCtrl.extendSelection(newIndex, 'replace');
     }
 
@@ -545,7 +535,7 @@ export class CcLogs extends LitElement {
    * @param {number} offset The amount of log to drag.
    * @return {number}
    */
-  _getNewDraggedLogIndex (direction, offset) {
+  _getNewDraggedLogIndex(direction, offset) {
     if (direction === 'up') {
       return Math.max(0, this._draggedLogIndex - offset);
     }
@@ -568,18 +558,15 @@ export class CcLogs extends LitElement {
    * @param {boolean} modifiers.ctrl
    * @param {boolean} modifiers.shift
    */
-  _onClickLog (logIndex, { ctrl, shift }) {
+  _onClickLog(logIndex, { ctrl, shift }) {
     if (ctrl && !shift) {
       this._logsCtrl.toggleSelection(logIndex);
-    }
-    else if (shift) {
+    } else if (shift) {
       this._logsCtrl.extendSelection(logIndex, ctrl ? 'append' : 'replace');
-    }
-    else {
+    } else {
       if (!this._logsCtrl.isSelected(logIndex) || this._logsCtrl.selectionLength > 1) {
         this._logsCtrl.select(logIndex);
-      }
-      else {
+      } else {
         this._logsCtrl.clearSelection();
       }
     }
@@ -595,7 +582,7 @@ export class CcLogs extends LitElement {
    *
    * It clears the selection when users type the Escape key.
    */
-  _onEscape () {
+  _onEscape() {
     this._logsCtrl.clearSelection();
   }
 
@@ -607,7 +594,7 @@ export class CcLogs extends LitElement {
    *
    * @param {MouseEvent & {target : HTMLElement}} e
    */
-  _onClick (e) {
+  _onClick(e) {
     if (e.detail === 3) {
       const logElement = e.target.closest(`.log`);
       if (logElement != null) {
@@ -616,8 +603,7 @@ export class CcLogs extends LitElement {
         range.selectNode(logElement);
         window.getSelection().addRange(range);
       }
-    }
-    else {
+    } else {
       this._logsCtrl.clearSelection();
     }
   }
@@ -627,12 +613,12 @@ export class CcLogs extends LitElement {
    *
    * It forces follow to stop.
    */
-  _onSelectionChanged () {
+  _onSelectionChanged() {
     this._followSynchronizer.disable();
     this._setFollow(false);
   }
 
-  _onSelectAll () {
+  _onSelectAll() {
     this._logsCtrl.selectAll();
   }
 
@@ -647,8 +633,11 @@ export class CcLogs extends LitElement {
    *
    * @param {ClipboardEvent} e
    */
-  _onCopy (e) {
-    const lines = document.getSelection().toString().split(/[\r\n]+/gm);
+  _onCopy(e) {
+    const lines = document
+      .getSelection()
+      .toString()
+      .split(/[\r\n]+/gm);
     const data = prepareLinesOfCodeForClipboard(lines);
     e.clipboardData.setData('text/plain', data.text);
     e.clipboardData.setData('text/html', data.html);
@@ -660,23 +649,21 @@ export class CcLogs extends LitElement {
    * It takes the logic selection (done with the gutter) as input.
    * Both plain text and html version of this text selection are put in the clipboard.
    */
-  _onCopySelectionToClipboard () {
+  _onCopySelectionToClipboard() {
     if (this._logsCtrl.isSelectionEmpty()) {
       return;
     }
 
-    const lines = this._logsCtrl.getSelectedLogs()
-      .map((log) => {
-        const ts = this._dateDisplayer.format(log.date);
-        const meta = log.metadata
+    const lines = this._logsCtrl.getSelectedLogs().map((log) => {
+      const ts = this._dateDisplayer.format(log.date);
+      const meta =
+        log.metadata
           ?.map((metadata) => ({ metadata, metadataRendering: this._getMetadataRendering(metadata) }))
           .filter(({ metadataRendering }) => !metadataRendering.hidden)
           .map(({ metadata, metadataRendering }) => this._getMetadataText(metadata, metadataRendering)) ?? [];
-        const msg = stripAnsi(log.message);
-        return [ts, ...meta, msg]
-          .filter((t) => t?.length > 0)
-          .join(' ');
-      });
+      const msg = stripAnsi(log.message);
+      return [ts, ...meta, msg].filter((t) => t?.length > 0).join(' ');
+    });
 
     const data = prepareLinesOfCodeForClipboard(lines);
 
@@ -695,7 +682,7 @@ export class CcLogs extends LitElement {
    *
    * @param {WheelEvent} e
    */
-  _onWheel (e) {
+  _onWheel(e) {
     if (e.deltaY < 0) {
       // When wheel up is detected, this means that the user wants to unfollow.
       // We disable the follow modifier to prevent next visibilityChanged events to go against the user decision.
@@ -712,7 +699,7 @@ export class CcLogs extends LitElement {
    *
    * @param {VisibilityChangedEvent} e
    */
-  _onVisibilityChanged (e) {
+  _onVisibilityChanged(e) {
     this._visibleRange = { first: e.first, last: e.last };
     this._followSynchronizer.call();
   }
@@ -724,14 +711,14 @@ export class CcLogs extends LitElement {
    * Otherwise, the follow is deactivated.
    * An event is dispatched when the follow state changes.
    */
-  _synchronizeFollow () {
+  _synchronizeFollow() {
     this._setFollow(this._visibleRange.last === Math.max(0, this._logsCtrl.listLength - 1));
   }
 
   /**
    * @param {boolean} follow
    */
-  _setFollow (follow) {
+  _setFollow(follow) {
     const oldFollow = this.follow;
     this.follow = follow;
     if (oldFollow !== this.follow) {
@@ -747,7 +734,7 @@ export class CcLogs extends LitElement {
    * @param {Metadata} metadata
    * @return {MetadataRendering}
    */
-  _getMetadataRendering (metadata) {
+  _getMetadataRendering(metadata) {
     const renderer = this.metadataRenderers?.[metadata.name];
 
     if (renderer == null) {
@@ -768,7 +755,7 @@ export class CcLogs extends LitElement {
    * @param {MetadataRendering} metadataRendering
    * @return {string}
    */
-  _getMetadataText (metadata, metadataRendering) {
+  _getMetadataText(metadata, metadataRendering) {
     return metadataRendering.text != null
       ? metadataRendering.text
       : `${metadataRendering.showName ? `${metadata.name}: ` : ''}${metadata.value}`;
@@ -779,8 +766,7 @@ export class CcLogs extends LitElement {
   /**
    * @param {CcLogsPropertyValues} changedProperties
    */
-  willUpdate (changedProperties) {
-
+  willUpdate(changedProperties) {
     if (changedProperties.has('dateDisplay') || changedProperties.has('timezone')) {
       this._dateDisplayer = this._resolveDateDisplayer();
     }
@@ -794,9 +780,11 @@ export class CcLogs extends LitElement {
       this._logsCtrl.limit = this.limit;
     }
 
-    if (changedProperties.has('messageFilter')
-      || changedProperties.has('messageFilterMode')
-      || changedProperties.has('metadataFilter')) {
+    if (
+      changedProperties.has('messageFilter') ||
+      changedProperties.has('messageFilterMode') ||
+      changedProperties.has('metadataFilter')
+    ) {
       this._logsCtrl.filter = {
         message: isStringEmpty(this.messageFilter) ? null : { value: this.messageFilter, type: this.messageFilterMode },
         metadata: this.metadataFilter,
@@ -807,27 +795,28 @@ export class CcLogs extends LitElement {
   /**
    * @param {CcLogsPropertyValues} _changedProperties
    */
-  updated (_changedProperties) {
+  updated(_changedProperties) {
     this._horizontalScrollbarHeight = this.wrapLines
       ? 0
       : this._logsRef.value.offsetHeight - this._logsRef.value.clientHeight;
   }
 
-  render () {
-    const layout = this.follow && this._logsCtrl.listLength > 0
-      ? {
-          pin: {
-            index: this._logsCtrl.listLength - 1,
-            block: 'start',
-          },
-        }
-      : null;
+  render() {
+    const layout =
+      this.follow && this._logsCtrl.listLength > 0
+        ? {
+            pin: {
+              index: this._logsCtrl.listLength - 1,
+              block: 'start',
+            },
+          }
+        : null;
 
     /**
      * @param {Log} it
      * @return {string}
      */
-    function keyFunction (it) {
+    function keyFunction(it) {
       return it.id;
     }
 
@@ -861,16 +850,10 @@ export class CcLogs extends LitElement {
           @wheel=${this._onWheel}
         ></lit-virtualizer>
         ${!this._logsCtrl.isSelectionEmpty()
-          ? html`
-            <cc-button
-              class="copy_button"
-              .icon=${iconCopy}
-              @cc-button:click=${this._onCopySelectionToClipboard}
-            >
+          ? html` <cc-button class="copy_button" .icon=${iconCopy} @cc-button:click=${this._onCopySelectionToClipboard}>
               ${i18n('cc-logs.copy')}
             </cc-button>`
-          : null
-        }
+          : null}
       </div>
     `;
   }
@@ -881,8 +864,7 @@ export class CcLogs extends LitElement {
    * @param {Log} log
    * @param {number} index
    */
-  _renderLog (log, index) {
-
+  _renderLog(log, index) {
     const wrap = this.wrapLines;
     const dateDisplayer = this._dateDisplayer;
 
@@ -893,14 +875,8 @@ export class CcLogs extends LitElement {
 
     /* eslint-disable lit-a11y/click-events-have-key-events */
     return html`
-      <p
-        class="log ${classMap({ selected })}"
-        data-index="${index}"
-      >
-        <span
-          class="gutter"
-          @mousedown=${this._onMouseDownGutter}
-          @click=${this._inputCtrl.onClickLog}>
+      <p class="log ${classMap({ selected })}" data-index="${index}">
+        <span class="gutter" @mousedown=${this._onMouseDownGutter} @click=${this._inputCtrl.onClickLog}>
           <button
             class="select_button"
             title="${selectButtonLabel}"
@@ -914,7 +890,9 @@ export class CcLogs extends LitElement {
           </button>
         </span>
         ${this._renderLogTimestamp(log, dateDisplayer)}
-        <span class="log--right ${classMap({ wrap })}">${this._renderLogMetadata(log)}${this._renderLogMessage(log)}</span>
+        <span class="log--right ${classMap({ wrap })}"
+          >${this._renderLogMetadata(log)}${this._renderLogMessage(log)}</span
+        >
       </p>
     `;
   }
@@ -923,7 +901,7 @@ export class CcLogs extends LitElement {
    * @param {Log} log
    * @param {DateDisplayer} dateDisplayer
    */
-  _renderLogTimestamp (log, dateDisplayer) {
+  _renderLogTimestamp(log, dateDisplayer) {
     if (dateDisplayer.display === 'none') {
       return null;
     }
@@ -936,14 +914,12 @@ export class CcLogs extends LitElement {
   /**
    * @param {Log} log
    */
-  _renderLogMetadata (log) {
+  _renderLogMetadata(log) {
     if (log.metadata == null || log.metadata.length === 0) {
       return null;
     }
 
-    const metadata = log.metadata
-      .map((metadata) => this._renderMetadata(metadata))
-      .filter((t) => t != null);
+    const metadata = log.metadata.map((metadata) => this._renderMetadata(metadata)).filter((t) => t != null);
 
     if (metadata.length === 0) {
       return null;
@@ -956,14 +932,14 @@ export class CcLogs extends LitElement {
   /**
    * @param {Metadata} metadata
    */
-  _renderMetadata (metadata) {
+  _renderMetadata(metadata) {
     const metadataRendering = this._getMetadataRendering(metadata);
     if (metadataRendering.hidden) {
       return null;
     }
 
     const text = this._getMetadataText(metadata, metadataRendering);
-    const size = (metadataRendering.size ?? 0);
+    const size = metadataRendering.size ?? 0;
     const classInfo = {
       metadata: true,
       strong: metadataRendering.strong,
@@ -977,24 +953,24 @@ export class CcLogs extends LitElement {
   /**
    * @param {Log} log
    */
-  _renderLogMessage (log) {
+  _renderLogMessage(log) {
     // keep this on one line to make sure we do not break the white-space css rule
     return html`<span class="message">${this.stripAnsi ? stripAnsi(log.message) : ansiToLit(log.message)}</span>`;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       ...ansiStyles,
       unsafeCSS(`:host {${DEFAULT_PALETTE_STYLE}}`),
       // language=CSS
       css`
         :host {
+          background-color: var(--cc-color-bg-default, #fff);
+          border: 1px solid var(--cc-color-border-neutral, #aaa);
+          border-radius: var(--cc-border-radius-default, 0.25em);
           display: block;
           overflow: hidden;
-          border: 1px solid var(--cc-color-border-neutral, #aaa);
-          background-color: var(--cc-color-bg-default, #fff);
-          border-radius: var(--cc-border-radius-default, 0.25em);
-          
+
           --font-size: 0.875em;
         }
 
@@ -1002,12 +978,12 @@ export class CcLogs extends LitElement {
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
-        
+
         .wrapper {
-          position: relative;
           display: flex;
-          height: 100%;
           flex-direction: column;
+          height: 100%;
+          position: relative;
         }
 
         .logs_container {
@@ -1017,11 +993,11 @@ export class CcLogs extends LitElement {
         }
 
         .log {
-          display: flex;
-          width: 100%;
           align-items: center;
-          margin: 0;
+          display: flex;
           gap: 0.5em;
+          margin: 0;
+          width: 100%;
 
           /* We don't need em here. At least with px we avoid strange blinking effect. */
           --spacing: 2px;
@@ -1042,8 +1018,8 @@ export class CcLogs extends LitElement {
 
         .date,
         .log--right {
-          padding: var(--spacing) 0;
           line-height: var(--gutter-size);
+          padding: var(--spacing) 0;
         }
 
         .log--right {
@@ -1055,25 +1031,25 @@ export class CcLogs extends LitElement {
         }
 
         .gutter {
-          flex: 0 0 auto;
           align-self: stretch;
           border-right: 1px solid var(--cc-color-ansi-foreground);
           cursor: pointer;
+          flex: 0 0 auto;
         }
 
         .select_button {
-          display: flex;
-          width: var(--gutter-size);
-          height: var(--gutter-size);
           align-items: center;
-          justify-content: center;
-          padding: 0;
-          border: 0;
-          margin: var(--spacing);
           background: none;
+          border: 0;
           color: var(--cc-color-ansi-foreground);
           cursor: pointer;
+          display: flex;
+          height: var(--gutter-size);
+          justify-content: center;
+          margin: var(--spacing);
           outline-offset: 0;
+          padding: 0;
+          width: var(--gutter-size);
         }
 
         .select_button cc-icon {
@@ -1093,14 +1069,14 @@ export class CcLogs extends LitElement {
 
         .copy_button {
           position: absolute;
-          top: 0.5em;
           right: 1em;
+          top: 0.5em;
         }
 
         .metadata {
           display: inline-block;
         }
-        
+
         .metadata--wrapper {
           margin-right: var(--font-size);
         }
@@ -1128,7 +1104,7 @@ export class CcLogs extends LitElement {
         .danger {
           color: var(--cc-color-ansi-red);
         }
-        
+
         .date {
           align-self: start;
           white-space: nowrap;

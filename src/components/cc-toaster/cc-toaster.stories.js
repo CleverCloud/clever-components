@@ -1,18 +1,18 @@
-import './cc-toaster.js';
-import '../cc-button/cc-button.js';
-import '../cc-input-number/cc-input-number.js';
-import '../cc-toggle/cc-toggle.js';
-import '../cc-block/cc-block.js';
-import '../cc-icon/cc-icon.js';
 import { html, render } from 'lit';
 import {
-  iconRemixAlertLine as iconWarning,
-  iconRemixInformationLine as iconInfo,
   iconRemixSpam_2Line as iconDanger,
+  iconRemixInformationLine as iconInfo,
   iconRemixCheckboxCircleLine as iconSuccess,
+  iconRemixAlertLine as iconWarning,
 } from '../../assets/cc-remix.icons.js';
 import { sanitize } from '../../lib/i18n-sanitize.js';
 import { makeStory } from '../../stories/lib/make-story.js';
+import '../cc-block/cc-block.js';
+import '../cc-button/cc-button.js';
+import '../cc-icon/cc-icon.js';
+import '../cc-input-number/cc-input-number.js';
+import '../cc-toggle/cc-toggle.js';
+import './cc-toaster.js';
 
 const consoleImage = new URL('../../stories/assets/console.png', import.meta.url).href;
 
@@ -115,7 +115,7 @@ export const defaultStory = makeStory(conf, {
     };
 
     let i = 0;
-    function toast (node, { intent }) {
+    function toast(node, { intent }) {
       i++;
 
       container.querySelector('cc-toaster').show({
@@ -125,7 +125,7 @@ export const defaultStory = makeStory(conf, {
       });
     }
 
-    function refresh () {
+    function refresh() {
       render(template(options), container);
     }
 
@@ -143,20 +143,20 @@ export const defaultStory = makeStory(conf, {
       toast(target, { intent: target.dataset.intent });
     };
 
-    const animations = ['fade', 'slide', 'fade-and-slide']
-      .map((value) => ({
-        label: value, value,
-      }));
+    const animations = ['fade', 'slide', 'fade-and-slide'].map((value) => ({
+      label: value,
+      value,
+    }));
 
     const onAnimationChanged = ({ detail: animation }) => {
       options = { ...options, animation };
       refresh();
     };
 
-    const positions = ['top', 'top-left', 'top-right', 'bottom', 'bottom-left', 'bottom-right']
-      .map((value) => ({
-        label: value, value,
-      }));
+    const positions = ['top', 'top-left', 'top-right', 'bottom', 'bottom-left', 'bottom-right'].map((value) => ({
+      label: value,
+      value,
+    }));
 
     const onPositionChanged = ({ detail: position }) => {
       options = { ...options, position };
@@ -173,20 +173,21 @@ export const defaultStory = makeStory(conf, {
       refresh();
     };
 
-    function _renderButton (intent) {
+    function _renderButton(intent) {
       return html`<cc-button
-            .icon=${intentsButtonProp[intent]?.icon}
-            outlined
-            data-intent="${intent}"
-            ?success="${intent === 'success'}"
-            ?warning="${intent === 'warning'}"
-            ?danger="${intent === 'danger'}"
-            @cc-button:click=${onClick}>
-          ${intent}
-        </cc-button>`;
+        .icon=${intentsButtonProp[intent]?.icon}
+        outlined
+        data-intent="${intent}"
+        ?success="${intent === 'success'}"
+        ?warning="${intent === 'warning'}"
+        ?danger="${intent === 'danger'}"
+        @cc-button:click=${onClick}
+      >
+        ${intent}
+      </cc-button>`;
     }
 
-    function template ({ animation, maxToasts, position, timeout, closeable, showProgress }) {
+    function template({ animation, maxToasts, position, timeout, closeable, showProgress }) {
       const options = {
         timeout,
         closeable,
@@ -199,62 +200,62 @@ export const defaultStory = makeStory(conf, {
             <p>Click on buttons to trigger a toast</p>
             <div class="intent-controls">${intents.map(_renderButton)}</div>
           </cc-block>
-          
+
           <cc-block class="options">
             <div slot="title">Options</div>
-            
+
             <div>
-              <cc-input-number 
-                  label="Maximum number of toasts that can be displayed at a time"
-                  value=${maxToasts}
-                  @cc-input-number:input=${onMaxToastChanged}
+              <cc-input-number
+                label="Maximum number of toasts that can be displayed at a time"
+                value=${maxToasts}
+                @cc-input-number:input=${onMaxToastChanged}
               ></cc-input-number>
             </div>
             <div>
               <cc-toggle
-                  legend="Position"
-                  value=${position}
-                  .choices=${positions} 
-                  @cc-toggle:input=${onPositionChanged}
+                legend="Position"
+                value=${position}
+                .choices=${positions}
+                @cc-toggle:input=${onPositionChanged}
               ></cc-toggle>
             </div>
             <div>
-              <cc-toggle 
-                  legend="Kind of animation to be played when the toast appears"
-                  value=${animation}
-                  .choices=${animations}
-                  @cc-toggle:input=${onAnimationChanged}
+              <cc-toggle
+                legend="Kind of animation to be played when the toast appears"
+                value=${animation}
+                .choices=${animations}
+                @cc-toggle:input=${onAnimationChanged}
               ></cc-toggle>
             </div>
             <div>
-              <cc-input-number 
-                  value=${timeout} 
-                  label="Time before the toast is automatically dismissed (0 for infinite time)"
-                  @cc-input-number:input=${onTimeoutChanged}
+              <cc-input-number
+                value=${timeout}
+                label="Time before the toast is automatically dismissed (0 for infinite time)"
+                @cc-input-number:input=${onTimeoutChanged}
               ></cc-input-number>
             </div>
             <div>
               <label for="closeable">
-                <input id="closeable" type="checkbox" @change=${onCloseableChanged} .checked=${closeable}>
+                <input id="closeable" type="checkbox" @change=${onCloseableChanged} .checked=${closeable} />
                 Show close button
               </label>
               &nbsp;&nbsp;&nbsp;&nbsp;
               <label for="showProgress">
-                <input id="showProgress" type="checkbox" @change=${onShowProgressChanged} .checked=${showProgress}>
+                <input id="showProgress" type="checkbox" @change=${onShowProgressChanged} .checked=${showProgress} />
                 Show progress bar
               </label>
             </div>
-            
           </cc-block>
         </div>
-        
+
         <div class="console">
-          <img src="${consoleImage}" alt="Clever Console"/>
-          <cc-toaster class="${position.split('-').join(' ')}"
-                      max-toasts=${maxToasts}
-                      animation="${animation}" 
-                      position="${position}"
-                      .toastDefaultOptions="${options}"
+          <img src="${consoleImage}" alt="Clever Console" />
+          <cc-toaster
+            class="${position.split('-').join(' ')}"
+            max-toasts=${maxToasts}
+            animation="${animation}"
+            position="${position}"
+            .toastDefaultOptions="${options}"
           ></cc-toaster>
         </div>
       `;

@@ -1,6 +1,6 @@
-import './cc-toggle.js';
 import { allFormControlsStory } from '../../stories/all-form-controls.js';
 import { makeStory } from '../../stories/lib/make-story.js';
+import './cc-toggle.js';
 
 const boldSvg = new URL('../../stories/assets/bold.svg', import.meta.url);
 const centerSvg = new URL('../../stories/assets/center.svg', import.meta.url);
@@ -103,10 +103,7 @@ const baseItems = [
   { ...beatles, choices: beatlesChoicesImage, hideText: true },
 ];
 
-const normalAndSubtleItems = [
-  ...baseItems,
-  ...baseItems.map((p) => ({ ...p, subtle: true })),
-];
+const normalAndSubtleItems = [...baseItems, ...baseItems.map((p) => ({ ...p, subtle: true }))];
 
 export const defaultStory = makeStory(conf, {
   items: normalAndSubtleItems,
@@ -122,7 +119,9 @@ export const legend = makeStory(conf, {
 
 export const legendWithInline = makeStory(conf, {
   // language=CSS
-  css: conf.css + `
+  css:
+    conf.css +
+    `
     :host {
       --col-nb: 1;
     }
@@ -132,7 +131,9 @@ export const legendWithInline = makeStory(conf, {
 
 export const multiple = makeStory(conf, {
   // language=CSS
-  css: conf.css + `
+  css:
+    conf.css +
+    `
     :host {
       --col-nb: 3;
     }
@@ -155,7 +156,9 @@ You can have a bit of control over the main color used by the component with \`-
 * You can have a different color when a specific value is selected  \`cc-toggle[value="TRUE"] { --cc-toggle-color: green }\`
 `,
   // language=CSS
-  css: conf.css + `
+  css:
+    conf.css +
+    `
     cc-toggle {
       --cc-toggle-color: #3569aa;
     }
@@ -171,7 +174,9 @@ export const textTransform = makeStory(conf, {
 You can have a bit of control over the text transformation of the labels used by the component with \`--cc-text-transform\`.:
 `,
   // language=CSS
-  css: conf.css + `
+  css:
+    conf.css +
+    `
     cc-toggle {
       --cc-toggle-text-transform: none;
     }
@@ -212,7 +217,9 @@ Here you can see a series of toolbar examples using CSS custom propreties of the
 * \`--cc-toggle-img-filter-selected\` so we can tweak the color of the image from default \`#6999d3\` to gray or white. 
   `,
   // language=CSS
-  css: conf.css + `
+  css:
+    conf.css +
+    `
     :host {
       --col-nb: 2;
     }
@@ -243,9 +250,11 @@ Here you can see a series of toolbar examples using CSS custom propreties of the
   ],
 });
 
-export const customLegendStyle = makeStory({ ...conf, displayMode: 'block' }, {
-  // language=CSS
-  css: `
+export const customLegendStyle = makeStory(
+  { ...conf, displayMode: 'block' },
+  {
+    // language=CSS
+    css: `
     cc-toggle {
       --cc-toggle-legend-color: #475569;
       --cc-toggle-legend-font-size: 1.2em;
@@ -256,10 +265,11 @@ export const customLegendStyle = makeStory({ ...conf, displayMode: 'block' }, {
       margin-block-end: 2em;
     }
   `,
-  items: [
-    ...normalAndSubtleItems.map((p) => ({ ...p, legend: 'The legend' })),
-    ...normalAndSubtleItems.map((p) => ({ ...p, legend: 'The legend', inline: true })),
-  ],
-});
+    items: [
+      ...normalAndSubtleItems.map((p) => ({ ...p, legend: 'The legend' })),
+      ...normalAndSubtleItems.map((p) => ({ ...p, legend: 'The legend', inline: true })),
+    ],
+  },
+);
 
 export const allFormControls = allFormControlsStory;

@@ -14,7 +14,7 @@ class CdnEnvironment {
    * @param {string} [customDomain] - Optional custom domain where the files in the Cellar can be reached.
    *                                  If not set, the default domain will be used: `${bucket}.${cellar-host}`.
    */
-  constructor ({ name, bucket, accessKeyId, secretAccessKey, semver, customDomain }) {
+  constructor({ name, bucket, accessKeyId, secretAccessKey, semver, customDomain }) {
     /** @type {string} */
     this._name = name;
     /** @type {string} */
@@ -29,15 +29,15 @@ class CdnEnvironment {
     this._domain = customDomain ?? `${bucket}.${CELLAR_HOST}`;
   }
 
-  get name () {
+  get name() {
     return this._name;
   }
 
-  get semver () {
+  get semver() {
     return this._semver;
   }
 
-  createCellarClient () {
+  createCellarClient() {
     return new CellarClient({
       bucket: this._bucket,
       accessKeyId: this._accessKeyId,
@@ -45,23 +45,23 @@ class CdnEnvironment {
     });
   }
 
-  getIndexUrl () {
+  getIndexUrl() {
     return this.getUrl('index.html');
   }
 
-  getListUrl () {
+  getListUrl() {
     return this.getUrl('list.html');
   }
 
-  getCdnEntryUrl (cdnEntryName) {
+  getCdnEntryUrl(cdnEntryName) {
     return this.getUrl(`index.html?version=${cdnEntryName}`);
   }
 
-  getUrl (file) {
+  getUrl(file) {
     return `https://${this._domain}/${file}`;
   }
 
-  isImmutable () {
+  isImmutable() {
     return this._semver;
   }
 }
@@ -70,29 +70,31 @@ class CdnEnvironment {
  * The supported environments where CDN are to be stored.
  * @type {{[p: 'release'|'preview'|'staging']: CdnEnvironment}}
  */
-export const CDN_ENVIRONMENTS = Object.fromEntries([
-  new CdnEnvironment({
-    name: 'release',
-    bucket: 'components.clever-cloud.com',
-    accessKeyId: process.env.SMART_CDN_CELLAR_KEY_ID,
-    secretAccessKey: process.env.SMART_CDN_CELLAR_SECRET_KEY,
-    semver: true,
-    customDomain: 'components.clever-cloud.com',
-  }),
-  new CdnEnvironment({
-    name: 'preview',
-    bucket: 'preview-components.clever-cloud.com',
-    accessKeyId: process.env.SMART_CDN_PREVIEW_CELLAR_KEY_ID,
-    secretAccessKey: process.env.SMART_CDN_PREVIEW_CELLAR_SECRET_KEY,
-    semver: false,
-    customDomain: 'preview-components.clever-cloud.com',
-  }),
-  new CdnEnvironment({
-    name: 'staging',
-    bucket: 'staging-components.clever-cloud.com',
-    accessKeyId: process.env.SMART_CDN_STAGING_CELLAR_KEY_ID,
-    secretAccessKey: process.env.SMART_CDN_STAGING_CELLAR_SECRET_KEY,
-    semver: true,
-    customDomain: 'staging-components.clever-cloud.com',
-  }),
-].map((e) => [e.name, e]));
+export const CDN_ENVIRONMENTS = Object.fromEntries(
+  [
+    new CdnEnvironment({
+      name: 'release',
+      bucket: 'components.clever-cloud.com',
+      accessKeyId: process.env.SMART_CDN_CELLAR_KEY_ID,
+      secretAccessKey: process.env.SMART_CDN_CELLAR_SECRET_KEY,
+      semver: true,
+      customDomain: 'components.clever-cloud.com',
+    }),
+    new CdnEnvironment({
+      name: 'preview',
+      bucket: 'preview-components.clever-cloud.com',
+      accessKeyId: process.env.SMART_CDN_PREVIEW_CELLAR_KEY_ID,
+      secretAccessKey: process.env.SMART_CDN_PREVIEW_CELLAR_SECRET_KEY,
+      semver: false,
+      customDomain: 'preview-components.clever-cloud.com',
+    }),
+    new CdnEnvironment({
+      name: 'staging',
+      bucket: 'staging-components.clever-cloud.com',
+      accessKeyId: process.env.SMART_CDN_STAGING_CELLAR_KEY_ID,
+      secretAccessKey: process.env.SMART_CDN_STAGING_CELLAR_SECRET_KEY,
+      semver: true,
+      customDomain: 'staging-components.clever-cloud.com',
+    }),
+  ].map((e) => [e.name, e]),
+);

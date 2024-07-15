@@ -1,5 +1,5 @@
-import './cc-addon-linked-apps.smart.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-addon-linked-apps.smart.js';
 
 /**
  * @typedef {import('./cc-addon-linked-apps.js').CcAddonLinkedApps} CcAddonLinkedApps
@@ -39,7 +39,7 @@ const ZONE_MTL = {
   country: 'Canada',
   countryCode: 'CA',
   city: 'Montreal',
-  lat: 45.50,
+  lat: 45.5,
   lon: -73.61,
   tags: ['infra:ovh'],
 };
@@ -77,38 +77,48 @@ const linkedApplications = [
 ];
 
 export const defaultStory = makeStory(conf, {
-  items: [{
-    /** @type {AddonLinkedAppsStateLoaded} */
-    state: { type: 'loaded', linkedApplications },
-  }],
+  items: [
+    {
+      /** @type {AddonLinkedAppsStateLoaded} */
+      state: { type: 'loaded', linkedApplications },
+    },
+  ],
 });
 
 export const loading = makeStory(conf, {
-  items: [{
-    /** @type {AddonLinkedAppsStateLoading} */
-    state: { type: 'loading' },
-  }],
+  items: [
+    {
+      /** @type {AddonLinkedAppsStateLoading} */
+      state: { type: 'loading' },
+    },
+  ],
 });
 
 export const error = makeStory(conf, {
-  items: [{
-    /** @type {AddonLinkedAppsStateError} */
-    state: { type: 'error' },
-  }],
+  items: [
+    {
+      /** @type {AddonLinkedAppsStateError} */
+      state: { type: 'error' },
+    },
+  ],
 });
 
 export const empty = makeStory(conf, {
-  items: [{
-    /** @type {AddonLinkedAppsStateLoaded} */
-    state: { type: 'loaded', linkedApplications: [] },
-  }],
+  items: [
+    {
+      /** @type {AddonLinkedAppsStateLoaded} */
+      state: { type: 'loaded', linkedApplications: [] },
+    },
+  ],
 });
 
 export const dataLoaded = makeStory(conf, {
-  items: [{
-    /** @type {AddonLinkedAppsStateLoaded} */
-    state: { type: 'loaded', linkedApplications },
-  }],
+  items: [
+    {
+      /** @type {AddonLinkedAppsStateLoaded} */
+      state: { type: 'loaded', linkedApplications },
+    },
+  ],
 });
 
 export const dataLoadedWithLongName = makeStory(conf, {
@@ -131,12 +141,14 @@ export const dataLoadedWithLongName = makeStory(conf, {
 export const simulations = makeStory(conf, {
   items: [{ state: { type: 'loading' } }, { state: { type: 'loading' } }, { state: { type: 'loading' } }],
   simulations: [
-    storyWait(2000,
+    storyWait(
+      2000,
       /** @param {CcAddonLinkedApps[]} components */
       ([component, componentNone, componentError]) => {
         component.state = { type: 'loaded', linkedApplications };
         componentNone.state = { type: 'loaded', linkedApplications: [] };
         componentError.state = { type: 'error' };
-      }),
+      },
+    ),
   ],
 });

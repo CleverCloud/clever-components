@@ -15,8 +15,7 @@ import { skeletonStyles } from '../../styles/skeleton.js';
  * @cssprop {"cover"|"contain"} --cc-img-fit - Sets the `object-fit` of the inner `<img>` element (defaults to "cover").
  */
 export class CcImg extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       a11yName: { type: String, attribute: 'a11y-name' },
       skeleton: { type: Boolean, reflect: true },
@@ -26,7 +25,7 @@ export class CcImg extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {string|null} Sets short fallback text to display when the image cannot be loaded or if `src` is not defined and `skeleton` is `false`. */
@@ -45,42 +44,44 @@ export class CcImg extends LitElement {
     this._loaded = false;
   }
 
-  _onLoad (e) {
+  _onLoad(e) {
     this._loaded = true;
     // WARNING: we modify the exposed property "skeleton" from the inside
     this.skeleton = false;
   }
 
-  _onError (e) {
+  _onError(e) {
     this._error = true;
     // WARNING: we modify the exposed property "skeleton" from the inside
     this.skeleton = false;
   }
 
-  willUpdate (changedProperties) {
+  willUpdate(changedProperties) {
     if (changedProperties.has('src')) {
       this._error = false;
       this._loaded = false;
     }
   }
 
-  render () {
+  render() {
     const altValue = this.a11yName ?? '';
-    const isLoading = (this.src != null && !this._loaded && !this._error);
-    const isSkeleton = (this.skeleton || isLoading);
-    const displayAccessibleName = (this.src == null || this._error);
+    const isLoading = this.src != null && !this._loaded && !this._error;
+    const isSkeleton = this.skeleton || isLoading;
+    const displayAccessibleName = this.src == null || this._error;
     return html`
       <div class="wrapper ${classMap({ skeleton: isSkeleton, loaded: this._loaded })}">
-        <img src=${ifDefined(this.src ?? undefined)} @load=${this._onLoad} @error=${this._onError} alt=${altValue}>
-        ${displayAccessibleName ? html`
-            <!-- We use aria-hidden because we already have an alt value. -->
-          <div class="error-msg" aria-hidden="true">${altValue}</div>
-        ` : ''}
+        <img src=${ifDefined(this.src ?? undefined)} @load=${this._onLoad} @error=${this._onError} alt=${altValue} />
+        ${displayAccessibleName
+          ? html`
+              <!-- We use aria-hidden because we already have an alt value. -->
+              <div class="error-msg" aria-hidden="true">${altValue}</div>
+            `
+          : ''}
       </div>
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       skeletonStyles,
       // language=CSS
@@ -92,15 +93,15 @@ export class CcImg extends LitElement {
 
         .wrapper,
         img {
-          width: 100%;
           height: 100%;
+          width: 100%;
         }
 
         .wrapper {
-          position: relative;
-          display: flex;
           align-items: center;
+          display: flex;
           justify-content: center;
+          position: relative;
         }
 
         .wrapper.skeleton {
@@ -112,13 +113,13 @@ export class CcImg extends LitElement {
         }
 
         img {
-          position: absolute;
-          top: 0;
-          left: 0;
           display: block;
+          left: 0;
           object-fit: var(--cc-img-fit, cover);
           object-position: center center;
           opacity: 0;
+          position: absolute;
+          top: 0;
           transition: opacity 150ms ease-in-out;
         }
 
@@ -127,9 +128,9 @@ export class CcImg extends LitElement {
         }
 
         .error-msg {
+          font-size: 0.85em;
           overflow: hidden;
           padding: 0.3em;
-          font-size: 0.85em;
           text-align: center;
           text-overflow: ellipsis;
           white-space: nowrap;

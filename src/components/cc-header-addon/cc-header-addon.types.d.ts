@@ -1,6 +1,10 @@
 import { Addon, Zone } from '../common.types.js';
 
-export type HeaderAddonState = HeaderAddonStateLoaded | HeaderAddonStateLoadedWithVersion | HeaderAddonStateLoading | HeaderAddonStateError;
+export type HeaderAddonState =
+  | HeaderAddonStateLoaded
+  | HeaderAddonStateLoadedWithVersion
+  | HeaderAddonStateLoading
+  | HeaderAddonStateError;
 
 export interface HeaderAddonStateLoaded extends Addon {
   type: 'loaded';
@@ -24,4 +28,3 @@ export interface HeaderAddonStateError {
   type: 'error';
   hasVersion: boolean;
 }
-

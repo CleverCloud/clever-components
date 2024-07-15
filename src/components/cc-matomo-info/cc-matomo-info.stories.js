@@ -1,5 +1,5 @@
-import './cc-matomo-info.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-matomo-info.js';
 
 export default {
   tags: ['autodocs'],
@@ -24,36 +24,43 @@ const mysqlUrl = '/mysql';
 const redisUrl = '/redis';
 
 export const defaultStory = makeStory(conf, {
-  items: [{
-    /** @type {MatomoInfoStateLoaded} */
-    state: {
-      type: 'loaded',
-      matomoUrl,
-      phpUrl,
-      mysqlUrl,
-      redisUrl,
+  items: [
+    {
+      /** @type {MatomoInfoStateLoaded} */
+      state: {
+        type: 'loaded',
+        matomoUrl,
+        phpUrl,
+        mysqlUrl,
+        redisUrl,
+      },
     },
-  }],
+  ],
 });
 
 export const loading = makeStory(conf, {
-  items: [{
-    /** @type {MatomoInfoStateLoading} */
-    state: { type: 'loading' },
-  }],
+  items: [
+    {
+      /** @type {MatomoInfoStateLoading} */
+      state: { type: 'loading' },
+    },
+  ],
 });
 
 export const errorStory = makeStory(conf, {
-  items: [{
-    /** @type {MatomoInfoStateError} */
-    state: { type: 'error' },
-  }],
+  items: [
+    {
+      /** @type {MatomoInfoStateError} */
+      state: { type: 'error' },
+    },
+  ],
 });
 
 export const simulations = makeStory(conf, {
   items: [{}, {}],
   simulations: [
-    storyWait(2000,
+    storyWait(
+      2000,
       /** @param {CcMatomoInfo[]} components */
       ([component, componentError]) => {
         component.state = {
@@ -67,6 +74,7 @@ export const simulations = makeStory(conf, {
         componentError.state = {
           type: 'error',
         };
-      }),
+      },
+    ),
   ],
 });

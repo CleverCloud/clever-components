@@ -24,8 +24,8 @@ This is also why we have special rules in `rollup/rollup-common.js` at `treeshak
 */
 
 import 'leaflet/src/control/index.js';
-import 'leaflet/src/layer/vector/Renderer.getRenderer.js';
 import 'leaflet/src/layer/Tooltip.js';
+import 'leaflet/src/layer/vector/Renderer.getRenderer.js';
 
 export * from 'leaflet/src/Leaflet.js';
 export { HeatLayer } from './leaflet-heat.js';

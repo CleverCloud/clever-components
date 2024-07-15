@@ -8,8 +8,7 @@
  * @param {Number} limit - Limit the number of articles from the feed.
  * @returns {Article[]}
  */
-export function parseRssFeed (xmlStr, limit = 9) {
-
+export function parseRssFeed(xmlStr, limit = 9) {
   if (limit <= 0) {
     return [];
   }
@@ -22,8 +21,7 @@ export function parseRssFeed (xmlStr, limit = 9) {
     throw new Error(error.innerHTML);
   }
 
-  return Array
-    .from(doc.documentElement.querySelectorAll('item'))
+  return Array.from(doc.documentElement.querySelectorAll('item'))
     .map((node) => {
       const title = node.querySelector('title').textContent;
       const link = node.querySelector('link').textContent;
@@ -34,7 +32,8 @@ export function parseRssFeed (xmlStr, limit = 9) {
       const descriptionNode = new DOMParser().parseFromString(descriptionText, 'text/html');
       const banner = descriptionNode.body?.querySelector('.wp-post-image')?.src ?? null;
       // TODO: we shouldn't have to do the `??` part here but somehow as of 2023-10-18 an article is causing some trouble. We'll have to keep track of this.
-      const description = descriptionNode.body?.querySelectorAll('p')?.[1]?.textContent ?? descriptionNode.body.textContent;
+      const description =
+        descriptionNode.body?.querySelectorAll('p')?.[1]?.textContent ?? descriptionNode.body.textContent;
 
       return { title, link, date, banner, description };
     })

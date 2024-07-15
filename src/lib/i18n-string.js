@@ -4,8 +4,7 @@
  * @param {String} lang - BCP 47 language tag
  * @returns {function(Number, String, String=): String}
  */
-export function preparePlural (lang) {
-
+export function preparePlural(lang) {
   const pr = new Intl.PluralRules(lang);
 
   /**
@@ -15,7 +14,7 @@ export function preparePlural (lang) {
    * @param {String} other - The plural form of the string (optional with automatic "s" suffix).
    * @returns {String}
    */
-  return function plural (number, one, other = one + 's') {
+  return function plural(number, one, other = one + 's') {
     const rules = { one, other };
     return rules[pr.select(number)];
   };

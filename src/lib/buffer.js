@@ -14,7 +14,7 @@ export class Buffer {
    * @param {{ timeout?: number, length?: number }} flushConditions The condition on which the buffer should flush.
    * @throws {Error} if the given flushConditions doesn't provide any flush condition.
    */
-  constructor (onFlush, flushConditions) {
+  constructor(onFlush, flushConditions) {
     this._onFlush = onFlush;
     this._bucket = [];
     this._timeout = flushConditions.timeout;
@@ -43,7 +43,7 @@ export class Buffer {
    *
    * @param {T} item The item to add.
    */
-  add (item) {
+  add(item) {
     if (this._timeout != null && this._timeoutId == null) {
       this._timeoutId = setTimeout(this._flusher, this._timeout);
     }
@@ -58,7 +58,7 @@ export class Buffer {
   /**
    * Flushes the buffer.
    */
-  flush () {
+  flush() {
     const toFlush = [...this._bucket];
     if (toFlush.length > 0) {
       this.clear();
@@ -69,7 +69,7 @@ export class Buffer {
   /**
    * Clears the buffer.
    */
-  clear () {
+  clear() {
     clearTimeout(this._timeoutId);
     this._timeoutId = null;
     this._bucket = [];
@@ -78,7 +78,7 @@ export class Buffer {
   /**
    * @return {number} The length of the buffer
    */
-  get length () {
+  get length() {
     return this._bucket.length;
   }
 }

@@ -1,10 +1,10 @@
-import '../cc-input-text/cc-input-text.js';
-import '../cc-notice/cc-notice.js';
 import { ERROR_TYPES, parseRaw, toNameEqualsValueString } from '@clevercloud/client/esm/utils/env-vars.js';
-import { css, html, LitElement } from 'lit';
+import { LitElement, css, html } from 'lit';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
+import '../cc-input-text/cc-input-text.js';
+import '../cc-notice/cc-notice.js';
 
 /** @type {EnvVar[]} */
 const SKELETON_VARIABLES = [
@@ -27,8 +27,7 @@ const SKELETON_VARIABLES = [
  * @fires {CustomEvent<EnvVar[]>} cc-env-var-editor-expert:change - Fires the new list of variables whenever something changes in the list.
  */
 export class CcEnvVarEditorExpert extends LitElement {
-
-  static get properties () {
+  static get properties() {
     return {
       disabled: { type: Boolean },
       readonly: { type: Boolean },
@@ -39,7 +38,7 @@ export class CcEnvVarEditorExpert extends LitElement {
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {boolean} Sets `disabled` attribute on inputs and buttons. */
@@ -61,7 +60,7 @@ export class CcEnvVarEditorExpert extends LitElement {
     this._variablesAsText = '';
   }
 
-  _setErrors (rawErrors) {
+  _setErrors(rawErrors) {
     this._errors = rawErrors.map(({ type, name, pos }) => {
       if (type === ERROR_TYPES.INVALID_NAME) {
         return {
@@ -110,33 +109,26 @@ export class CcEnvVarEditorExpert extends LitElement {
     });
   }
 
-  _onInput ({ detail: value }) {
+  _onInput({ detail: value }) {
     this._variablesAsText = value;
     const { variables, errors } = parseRaw(value, { mode: this.state.validationMode });
     this._setErrors(errors);
     dispatchCustomEvent(this, 'change', variables);
   }
 
-  willUpdate (changedProperties) {
+  willUpdate(changedProperties) {
     if (changedProperties.has('state')) {
-      this._skeleton = (this.state.type === 'loading');
+      this._skeleton = this.state.type === 'loading';
       const vars = this._skeleton ? SKELETON_VARIABLES : this.state.variables;
-      const filteredVariables = vars
-        .filter(({ isDeleted }) => !isDeleted);
+      const filteredVariables = vars.filter(({ isDeleted }) => !isDeleted);
       this._variablesAsText = toNameEqualsValueString(filteredVariables);
       this._setErrors([]);
     }
   }
 
-  render () {
+  render() {
     return html`
-
-      ${!this.readonly
-        ? html`
-          <div class="example">
-            ${i18n('cc-env-var-editor-expert.example')}
-          </div>
-        ` : ''}
+      ${!this.readonly ? html` <div class="example">${i18n('cc-env-var-editor-expert.example')}</div> ` : ''}
       <cc-input-text
         label=${i18n('cc-env-var-editor-expert.label')}
         hidden-label
@@ -149,21 +141,25 @@ export class CcEnvVarEditorExpert extends LitElement {
         @cc-input-text:input=${this._onInput}
       ></cc-input-text>
 
-      ${this._errors.length > 0 ? html`
-        <div class="error-list">
-          ${this._errors.map(({ line, msg, isWarning }) => html`
-            <cc-notice intent="${!isWarning ? 'warning' : 'info'}">
-                <div slot="message">
-                  <strong>${i18n('cc-env-var-editor-expert.errors.line')} ${line}:</strong> ${msg}
-                </div>
-            </cc-notice>
-          `)}
-        </div>
-      ` : ''}
+      ${this._errors.length > 0
+        ? html`
+            <div class="error-list">
+              ${this._errors.map(
+                ({ line, msg, isWarning }) => html`
+                  <cc-notice intent="${!isWarning ? 'warning' : 'info'}">
+                    <div slot="message">
+                      <strong>${i18n('cc-env-var-editor-expert.errors.line')} ${line}:</strong> ${msg}
+                    </div>
+                  </cc-notice>
+                `,
+              )}
+            </div>
+          `
+        : ''}
     `;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       linkStyles,
       // language=CSS
@@ -178,23 +174,23 @@ export class CcEnvVarEditorExpert extends LitElement {
 
         .error-list {
           display: grid;
-          margin-top: 1em;
           grid-gap: 0.75em;
+          margin-top: 1em;
         }
 
         .example {
-          padding-bottom: 1em;
           line-height: 1.5;
+          padding-bottom: 1em;
         }
 
         /* i18n error message may contain <code> tags */
 
         cc-notice code,
         .example code {
-          padding: 0.15em 0.3em;
           background-color: var(--cc-color-bg-neutral, #eee);
           border-radius: var(--cc-border-radius-default, 0.25em);
           font-family: var(--cc-ff-monospace, monospace);
+          padding: 0.15em 0.3em;
         }
 
         cc-input-text {
@@ -203,7 +199,6 @@ export class CcEnvVarEditorExpert extends LitElement {
       `,
     ];
   }
-
 }
 
 window.customElements.define('cc-env-var-editor-expert', CcEnvVarEditorExpert);

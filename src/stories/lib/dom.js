@@ -1,4 +1,4 @@
-export function createContainer (elements) {
+export function createContainer(elements) {
   const frag = document.createDocumentFragment();
   elements.forEach((el) => {
     if (typeof el === 'string') {
@@ -6,8 +6,7 @@ export function createContainer (elements) {
       title.classList.add('title');
       title.innerHTML = el;
       frag.appendChild(title);
-    }
-    else {
+    } else {
       frag.appendChild(el);
     }
   });

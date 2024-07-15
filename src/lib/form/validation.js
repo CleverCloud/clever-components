@@ -14,7 +14,7 @@ export class Validation {
    * @param {string} code
    * @return {InvalidValidity}
    */
-  static invalid (code) {
+  static invalid(code) {
     return {
       valid: false,
       code,
@@ -37,7 +37,7 @@ export class RequiredValidator {
    * @param {Object} _formData
    * @return {Validity}
    */
-  validate (value, _formData) {
+  validate(value, _formData) {
     return this._isEmpty(value) ? Validation.invalid('empty') : Validation.VALID;
   }
 
@@ -45,7 +45,7 @@ export class RequiredValidator {
    * @param {undefined|null|string|Array<any>|number} value
    * @return {boolean}
    */
-  _isEmpty (value) {
+  _isEmpty(value) {
     if (value == null) {
       return true;
     }
@@ -79,7 +79,7 @@ export class NumberValidator {
    * @param {number} [options.min]
    * @param {number} [options.max]
    */
-  constructor ({ min, max } = {}) {
+  constructor({ min, max } = {}) {
     this._min = min;
     this._max = max;
   }
@@ -90,7 +90,7 @@ export class NumberValidator {
    * @param {Object} _formData
    * @return {Validity}
    */
-  validate (value, _formData) {
+  validate(value, _formData) {
     // check is number
     const num = this._parse(value);
     if (num == null || isNaN(num)) {
@@ -117,7 +117,7 @@ export class NumberValidator {
    * @param {any} value
    * @return {number|null}
    */
-  _parse (value) {
+  _parse(value) {
     if (typeof value === 'number') {
       return value;
     }
@@ -127,7 +127,7 @@ export class NumberValidator {
     return null;
   }
 
-  _getRange () {
+  _getRange() {
     if (this._min == null && this._max == null) {
       return null;
     }
@@ -149,7 +149,7 @@ export class EmailValidator {
    * @param {Object} _formData
    * @return {Validity}
    */
-  validate (value, _formData) {
+  validate(value, _formData) {
     if (!value.match(/^\S+@\S+\.\S+$/gm)) {
       return Validation.invalid('badEmail');
     }
@@ -169,7 +169,7 @@ export class ValidValidator {
    * @param {Object} _formData
    * @return {ValidValidity}
    */
-  validate (_value, _formData) {
+  validate(_value, _formData) {
     return Validation.VALID;
   }
 }
@@ -183,7 +183,7 @@ const ALWAYS_VALID_VALIDATOR = new ValidValidator();
  * @param {Array<Validator>} validators
  * @return {Validator}
  */
-export function combineValidators (validators) {
+export function combineValidators(validators) {
   const nonNullValidators = validators.filter((v) => v != null);
   if (nonNullValidators.length === 0) {
     return ALWAYS_VALID_VALIDATOR;
@@ -208,6 +208,6 @@ export function combineValidators (validators) {
  * @param {(value: any, formData?: Object) => Validity} validate
  * @return {Validator}
  */
-export function createValidator (validate) {
+export function createValidator(validate) {
   return { validate };
 }

@@ -1,4 +1,3 @@
-import '../cc-smart-container/cc-smart-container.js';
 import { getKeys } from '@clevercloud/client/esm/api/v2/github.js';
 import { get as getUser } from '@clevercloud/client/esm/api/v2/organisation.js';
 import {
@@ -11,6 +10,7 @@ import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { i18n } from '../../lib/i18n.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import '../cc-smart-container/cc-smart-container.js';
 import './cc-ssh-key-list.js';
 
 /**
@@ -37,14 +37,14 @@ defineSmartComponent({
    * @param {function} settings.updateComponent
    * @param {AbortSignal} settings.signal
    */
-  onContextUpdate ({ component, context, onEvent, updateComponent, signal }) {
+  onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig } = context;
 
     // Retrieving SSH keys is done in two steps, hidden in the `fetchAllKeys()` implementation:
     // - first, we retrieve the current user information to check if their GitHub account is linked to their main account;
     // - then, we fetch the personal SSH keys and the GitHub keys if needed.
     // Note: we intentionally show `loading` state only on initial load and not on further actions, to keep a responsive UI.
-    function refreshList () {
+    function refreshList() {
       return fetchAllKeys({ apiConfig, signal, cacheDelay: 0 })
         .then(({ isGithubLinked, personalKeys, githubKeys }) => {
           updateComponent('keyData', {
@@ -83,12 +83,14 @@ defineSmartComponent({
     });
 
     onEvent('cc-ssh-key-list:delete', ({ name }) => {
-      updateComponent('keyData',
+      updateComponent(
+        'keyData',
         /** @param {KeyDataStateLoadedAndUnlinked|KeyDataStateLoadedAndLinked} keyData */
         (keyData) => {
           const key = keyData.personalKeys.find((key) => key.name === name);
           key.state = 'deleting';
-        });
+        },
+      );
 
       deleteKey({ apiConfig, key: { name } })
         .then(() => {
@@ -98,42 +100,50 @@ defineSmartComponent({
         .catch((error) => {
           console.error(error);
           notifyError(error, i18n('cc-ssh-key-list.error.delete', { name }));
-          updateComponent('keyData',
+          updateComponent(
+            'keyData',
             /** @param {KeyDataStateLoadedAndUnlinked|KeyDataStateLoadedAndLinked} keyData */
             (keyData) => {
               const key = keyData.personalKeys.find((key) => key.name === name);
               key.state = 'idle';
-            });
+            },
+          );
         });
     });
 
     onEvent('cc-ssh-key-list:import', ({ name, key, fingerprint }) => {
-      updateComponent('keyData',
+      updateComponent(
+        'keyData',
         /** @param {KeyDataStateLoadedAndLinked} keyData */
         (keyData) => {
           const key = keyData.githubKeys.find((key) => key.name === name);
           key.state = 'importing';
-        });
+        },
+      );
 
       importKey({ apiConfig, key: { name, key } })
         .then(() => {
           notifySuccess(i18n('cc-ssh-key-list.success.import', { name }));
-          updateComponent('keyData',
+          updateComponent(
+            'keyData',
             /** @param {KeyDataStateLoadedAndLinked} keyData */
             (keyData) => {
               keyData.personalKeys.push({ state: 'idle', name, fingerprint });
               keyData.githubKeys = keyData.githubKeys.filter((k) => k.name !== name);
-            });
+            },
+          );
         })
         .catch((error) => {
           console.error(error);
           notifyError(error, i18n('cc-ssh-key-list.error.import', { name }));
-          updateComponent('keyData',
+          updateComponent(
+            'keyData',
             /** @param {KeyDataStateLoadedAndLinked} keyData */
             (keyData) => {
               const key = keyData.githubKeys.find((key) => key.name === name);
               key.state = 'idle';
-            });
+            },
+          );
         });
     });
 
@@ -156,7 +166,7 @@ defineSmartComponent({
  *   githubKeys: Array<SshKey>,
  * }>}
  */
-async function fetchAllKeys ({ apiConfig, signal, cacheDelay }) {
+async function fetchAllKeys({ apiConfig, signal, cacheDelay }) {
   const [user, personalKeys] = await Promise.all([
     getUser({}).then(sendToApi({ apiConfig, signal, cacheDelay: ONE_DAY })),
     getSshKeys().then(sendToApi({ apiConfig, signal, cacheDelay })),
@@ -177,11 +187,10 @@ async function fetchAllKeys ({ apiConfig, signal, cacheDelay }) {
  * @param {{name: string, key: string}} args.key
  * @return {Promise<any>}
  */
-async function addKey ({ apiConfig, key }) {
+async function addKey({ apiConfig, key }) {
   const name = encodeURIComponent(key.name);
   const publicKey = key.key;
-  return addSshKey({ key: name }, JSON.stringify(publicKey))
-    .then(sendToApi({ apiConfig }));
+  return addSshKey({ key: name }, JSON.stringify(publicKey)).then(sendToApi({ apiConfig }));
 }
 
 const importKey = addKey;
@@ -192,8 +201,7 @@ const importKey = addKey;
  * @param {{name: string}} args.key
  * @return {Promise<any>}
  */
-async function deleteKey ({ apiConfig, key }) {
+async function deleteKey({ apiConfig, key }) {
   const name = encodeURIComponent(key.name);
-  return removeSshKey({ key: name })
-    .then(sendToApi({ apiConfig }));
+  return removeSshKey({ key: name }).then(sendToApi({ apiConfig }));
 }

@@ -1,5 +1,5 @@
 import { Plan } from '../common.types.js';
 
 export interface SelectedPlans {
-  [key:string]: Plan;
+  [key: string]: Plan;
 }

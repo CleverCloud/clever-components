@@ -4,10 +4,8 @@ import React from 'react';
 // several docs rely on `cc-notice`
 import '../../components/cc-notice/cc-notice.js';
 
-export function MarkdownDocs ({ html }) {
+export function MarkdownDocs({ html }) {
   const htmlContent = { __html: html };
 
-  return (
-    <div className="markdown-body sb-unstyled" dangerouslySetInnerHTML={htmlContent}></div>
-  );
+  return <div className="markdown-body sb-unstyled" dangerouslySetInnerHTML={htmlContent}></div>;
 }

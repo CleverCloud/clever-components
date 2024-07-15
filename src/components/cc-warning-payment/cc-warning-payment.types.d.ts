@@ -1,4 +1,4 @@
-type PaymentWarningModeType = "home" | "overview" | "billing";
+type PaymentWarningModeType = 'home' | 'overview' | 'billing';
 
 interface PaymentMethodError {
   type: number;
