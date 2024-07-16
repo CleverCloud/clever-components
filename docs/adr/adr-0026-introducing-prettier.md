@@ -1,3 +1,4 @@
+---
 kind: '📌 Architecture Decision Records'
 ---
 
