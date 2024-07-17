@@ -1,6 +1,6 @@
-import './cc-ct-zone-select-list.js';
 import { getFlagUrl, getInfraProviderLogoUrl } from '../../lib/remote-assets.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-ct-zone-select-list.js';
 
 export default {
   // this makes storybook generate a doc from the custom elements manifest
@@ -25,9 +25,7 @@ const DEFAULT_ITEMS = [
     city: 'Paris',
     flagUrl: getFlagUrl('FR'),
     images: [getInfraProviderLogoUrl('scaleway')],
-    tags: [
-      'green',
-    ],
+    tags: ['green'],
   },
   {
     name: 'sgp',
@@ -95,13 +93,14 @@ const DEFAULT_ITEMS = [
 ];
 
 export const defaultStory = makeStory(conf, {
-  items: [{
-    state: {
-      type: 'loaded',
-      zoneItems: DEFAULT_ITEMS.map((zi) => ({ ...zi, disabled: true })),
-
+  items: [
+    {
+      state: {
+        type: 'loaded',
+        zoneItems: DEFAULT_ITEMS,
+      },
     },
-  }],
+  ],
 });
 
 export const skeleton = makeStory(conf, {

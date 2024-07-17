@@ -1,31 +1,21 @@
-
 // DOCS: Don't add a 'use strict', no need for them in modern JS modules.
 // DOCS: Put all imports here.
 // DOCS: Always keep the ".js" at the end when you reference a file directly [error in ESLint].
 // DOCS: We enforce import order [fixed by ESLint].
 import { css, html, LitElement } from 'lit';
+import { iconRemixCheckboxCircleFill as selectedIcon } from '../../assets/cc-remix.icons.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
-import {
-  iconRemixLeafFill as greenIcon,
-  iconRemixCheckboxCircleFill as selectedIcon,
-} from '../../assets/cc-remix.icons.js';
 
-import { getFlagUrl, getInfraProviderLogoUrl } from '../../lib/remote-assets.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-badge/cc-badge.js';
-import { classMap } from 'lit/directives/class-map.js';
 
 // DOCS: You may setup/init some stuffs here but this should be rare and most of the setup should happen in the component.
 const MY_AWESOME_CONST = 'foobar';
 
 // DOCS: You may setup/init constant data used when component is in skeleton state.
-const SKELETON_FOOBAR = [
-  { foo: '???????' },
-  { foo: '????' },
-  { foo: '???????' },
-];
+const SKELETON_FOOBAR = [{ foo: '???????' }, { foo: '????' }, { foo: '???????' }];
 
 /** @type {ZoneItem} */
 const LOADING_INFO = {
@@ -71,14 +61,11 @@ const LOADING_INFO = {
  * @cssprop {Color} --cc-loader-color - The color of the animated circle (defaults: `#2653af`).
  */
 export class CcCtZoneSelect extends LitElement {
-
   // DOCS: 1. LitElement's properties descriptor
 
-  static get properties () {
+  static get properties() {
     return {
       state: { type: Object },
-      disabled: { type: Boolean, state: true, reflect: true, attribute: true },
-      selected: { type: Boolean, state: true, reflect: true, attribute: true },
     };
   }
 
@@ -89,9 +76,6 @@ export class CcCtZoneSelect extends LitElement {
 
     /** @type {ZoneItemState} - state of the zone item */
     this.state = { type: 'loading' };
-
-    this.disabled = false;
-    this.selected = false;
   }
 
   // DOCS: 4. Private methods
@@ -104,138 +88,145 @@ export class CcCtZoneSelect extends LitElement {
   /**
    * @param {CcCtZoneSelectPropertyValues} changedProperties
    */
-  willUpdate (changedProperties) {
+  willUpdate(changedProperties) {
     console.log(changedProperties);
     // if (changedProperties.has('state') && 'disabled' in this.state) {
     //   console.log('hello');
     //   this._disabled = true;
     // }
-
   }
 
-  render () {
-
+  render() {
     const loading = this.state.type === 'loading';
     const data = this.state.type === 'loaded' ? this.state : LOADING_INFO;
     const tags = data.tags ?? [];
 
     return html`
-
-      ${loading ? html` 
-      <div class="title">
-        <div class="infra skeleton">${data.name}</div>
-        <div class="city skeleton">${data.city}</div>
-      </div>
-      <div class="thumbnails">
-        <cc-img skeleton></cc-img>
-        <cc-icon .icon="${data.infra}" skeleton></cc-icon>
-        <div class="tags">
-          <cc-badge skeleton>fii</cc-badge>
-        </div>  
-      </div>
-
-      ` : ''}
-
-      ${this.state.type === 'loaded' ? html` 
-      <div class="wrapper"></div>
-      <div class="title">
-        <div class="infra">${data.name}</div>
-        <div class="city">${data.city}</div>
-      </div>
-      <cc-icon class="icon-selected" .icon="${selectedIcon}" size="lg"></cc-icon>
-      <div class="thumbnails">
-       <cc-img class="flag" src=${data.flagUrl}></cc-img>
-        ${data.images.map((image) => html`
-        <cc-img src="${image}"></cc-img>
-        `)}
-        <div class="tags">
-          ${tags.map((tag) => html`<cc-badge>${tag}</cc-badge>`)}
-        </div>  
-      </div>
-      ` : ''}
+      ${loading
+        ? html`
+            <div class="wrapper loading">
+              <div class="title">
+                <div class="infra skeleton">${data.name}</div>
+                <div class="city skeleton">${data.city}</div>
+              </div>
+              <div class="thumbnails">
+                <cc-img skeleton></cc-img>
+                <cc-icon .icon="${data.infra}" skeleton></cc-icon>
+                <div class="tags">
+                  <cc-badge skeleton>fii</cc-badge>
+                </div>
+              </div>
+            </div>
+          `
+        : ''}
+      ${this.state.type === 'loaded'
+        ? html`
+            <div class="wrapper ${classMap({ selected: data.selected, disabled: data.disabled })}">
+              <div class="title">
+                <div class="infra">${data.name}</div>
+                <div class="city">${data.city}</div>
+              </div>
+              <cc-icon class="icon-selected" .icon="${selectedIcon}" size="lg"></cc-icon>
+              <div class="thumbnails">
+                <cc-img class="flag" src=${data.flagUrl}></cc-img>
+                ${data.images.map((image) => html`<cc-img src="${image}"></cc-img>`)}
+                <div class="tags">${tags.map((tag) => html`<cc-badge>${tag}</cc-badge>`)}</div>
+              </div>
+            </div>
+          `
+        : ''}
     `;
   }
 
   // DOCS: 9. "sub render" private methods used by the main render()
 
-  static get styles () {
+  static get styles() {
     return [
       skeletonStyles,
       // language=CSS
       css`
         :host {
-          position: relative;
-          display: flex;
-          overflow: hidden;
-          flex-direction: column;
-          border: 2px solid var(--cc-color-border-neutral);
-          border-radius: var(--cc-border-radius-default);
+          display: block;
         }
 
-        :host .title {
+        .wrapper {
+          border: 2px solid var(--cc-color-border-neutral);
+          border-radius: var(--cc-border-radius-default);
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+          position: relative;
+          height: 100%;
+        }
+
+        .wrapper .title {
           flex: 1 1 auto;
         }
 
-        :host .thumbnails {
+        .wrapper .thumbnails {
           flex: 0 0 auto;
         }
 
-        :host(:hover:not([disabled])) {
+        .wrapper:hover:not(.disabled, .loading) {
           border-color: var(--cc-color-border-neutral-hovered);
         }
 
-        :host(:not([selected], [disabled])) {
+        .wrapper:not(.selected, .disabled, .loading) {
           cursor: pointer;
         }
 
         :host(:focus-visible) {
+          outline: 0;
+        }
+
+        :host(:focus-visible) .wrapper {
           outline: var(--cc-focus-outline);
           outline-offset: 2px;
         }
 
-        :host([selected]) {
+        .wrapper.selected {
           border-color: var(--cc-color-bg-primary);
         }
 
-        :host([selected]) .title .infra {
+        .wrapper.selected .title .infra {
           color: var(--cc-color-text-primary-strong);
         }
 
-        :host([selected]) .title .city {
+        .wrapper.selected .title .city {
           color: var(--cc-color-text-primary-strongest);
         }
 
-        :host([selected]) .icon-selected {
+        .wrapper.selected .icon-selected {
           opacity: 1;
         }
 
-        :host([selected]) .thumbnails {
+        .wrapper.selected .thumbnails {
           background-color: var(--cc-color-bg-primary-weak);
         }
 
-        :host([disabled]) {
+        .wrapper.disabled {
           border-color: var(--cc-color-border-neutral-disabled);
           opacity: var(--cc-opacity-when-disabled);
         }
 
-        :host([disabled]) .title .infra,
-        :host([disabled]) .title .city {
+        .wrapper.disabled .title .infra,
+        .wrapper.disabled .title .city {
           opacity: var(--cc-opacity-when-disabled);
         }
 
-        :host([disabled]) .thumbnails {
+        .wrapper.disabled .thumbnails {
           background-color: #fafafa;
         }
 
-        :host([disabled]) .thumbnails cc-icon,
-        :host([disabled]) .thumbnails cc-img {
+        .wrapper.disabled .thumbnails cc-icon,
+        .wrapper.disabled .thumbnails cc-img {
           filter: grayscale(1);
           opacity: var(--cc-opacity-when-disabled);
         }
 
         .title {
-          width: max-content;
           padding: 1em 1em 0.75em;
+          width: max-content;
         }
 
         .infra {
@@ -246,35 +237,35 @@ export class CcCtZoneSelect extends LitElement {
         }
 
         .city {
-          margin-top: 0.2em;
           font-size: 1.5em;
           line-height: 1.125;
+          margin-top: 0.2em;
         }
-                        
+
         .icon-selected {
           --cc-icon-color: var(--cc-color-bg-primary);
+          opacity: 0;
 
           position: absolute;
-          top: 0.5em;
           right: 0.5em;
-          opacity: 0;
+          top: 0.5em;
         }
 
         .thumbnails {
-          display: inline-flex;
           align-items: center;
-          padding: 0.75em 1.125em;
           background-color: var(--cc-color-bg-neutral);
+          display: inline-flex;
           gap: 0.5em;
+          padding: 0.75em 1.125em;
         }
 
         .thumbnails > cc-img {
           --cc-img-fit: contain;
+          height: 1.125em;
 
           width: 1.25em;
-          height: 1.125em;
         }
-                        
+
         .green {
           --cc-icon-color: var(--color-green-100);
           --cc-icon-size: 1.25em;
@@ -289,9 +280,12 @@ export class CcCtZoneSelect extends LitElement {
         }
 
         .flag {
-          box-shadow: rgb(17 17 26 / 10%) 0 4px 16px, rgb(17 17 26 / 10%) 0 8px 24px, rgb(17 17 26 / 10%) 0 16px 56px;
+          box-shadow:
+            rgb(17 17 26 / 10%) 0 4px 16px,
+            rgb(17 17 26 / 10%) 0 8px 24px,
+            rgb(17 17 26 / 10%) 0 16px 56px;
         }
-     `,
+      `,
     ];
   }
 }

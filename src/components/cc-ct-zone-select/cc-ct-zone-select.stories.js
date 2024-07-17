@@ -1,14 +1,10 @@
-import './cc-ct-zone-select.js';
 import { getFlagUrl, getInfraProviderLogoUrl } from '../../lib/remote-assets.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import './cc-ct-zone-select.js';
 
 export default {
-  // this makes storybook generate a doc from the custom elements manifest
   tags: ['autodocs'],
   title: '🛠 Creation Tunnel/<cc-ct-zone-select>',
-  // This component name is used by Storybook's docs page for the API table.
-  // It will use `custom-elements.json` documentation file.
-  // Run `npm run components:docs-json` to generate this JSON file.
   component: 'cc-ct-zone-select',
 };
 
@@ -26,13 +22,12 @@ const DEFAULT_ITEMS = [
     flagUrl: getFlagUrl('FR'),
     images: [getInfraProviderLogoUrl('scaleway')],
     disabled: true,
-    tags: [
-      'green',
-    ],
+    tags: ['green'],
   },
   {
     name: 'sgp',
     city: 'Singapore',
+    selected: true,
     images: [getInfraProviderLogoUrl('ovh')],
     flagUrl: getFlagUrl('SG'),
     tags: [],
@@ -128,17 +123,13 @@ export const error = makeStory(conf, {
 // You need to name your stories with the `dataLoadedWith` prefix.
 // Don't forget edge cases (ex: small/huge strings, small/huge lists...).
 export const dataLoadedWithFoo = makeStory(conf, {
-  items: [
-    { one: 'Foo', three: [{ foo: 42 }] },
-  ],
+  items: [{ one: 'Foo', three: [{ foo: 42 }] }],
 });
 
 // If your component can trigger updates/deletes remote data,
 // don't forget the case where the user's waiting for an operation to complete.
 export const waiting = makeStory(conf, {
-  items: [
-    { one: 'Foo', three: [{ foo: 42 }], waiting: true },
-  ],
+  items: [{ one: 'Foo', three: [{ foo: 42 }], waiting: true }],
 });
 
 // If your component contains remote data,

@@ -1,4 +1,3 @@
-
 // DOCS: Don't add a 'use strict', no need for them in modern JS modules.
 // DOCS: Put all imports here.
 // DOCS: Always keep the ".js" at the end when you reference a file directly [error in ESLint].
@@ -6,27 +5,16 @@
 import { css, html, LitElement } from 'lit';
 import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
-import {
-  iconRemixLeafFill as greenIcon,
-  iconRemixCheckboxCircleFill as selectedIcon,
-} from '../../assets/cc-remix.icons.js';
 
-import { getFlagUrl, getInfraProviderLogoUrl } from '../../lib/remote-assets.js';
-import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-badge/cc-badge';
-import '../cc-notice/cc-notice';
 import '../cc-ct-zone-select/cc-ct-zone-select.js';
+import '../cc-notice/cc-notice';
 
 // DOCS: You may setup/init some stuffs here but this should be rare and most of the setup should happen in the component.
 const MY_AWESOME_CONST = 'foobar';
 
 // DOCS: You may setup/init constant data used when component is in skeleton state.
-const SKELETON_FOOBAR = [
-  { foo: '???????' },
-  { foo: '????' },
-  { foo: '???????' },
-];
+const SKELETON_FOOBAR = [{ foo: '???????' }, { foo: '????' }, { foo: '???????' }];
 
 const LOADING_NUMBER = 10;
 
@@ -74,10 +62,9 @@ const LOADING_INFO = {
  * @cssprop {Color} --cc-loader-color - The color of the animated circle (defaults: `#2653af`).
  */
 export class CcCtZoneSelectList extends LitElement {
-
   // DOCS: 1. LitElement's properties descriptor
 
-  static get properties () {
+  static get properties() {
     return {
       state: { type: Object },
       _isGreen: { type: Boolean },
@@ -86,12 +73,11 @@ export class CcCtZoneSelectList extends LitElement {
 
   // DOCS: 2. Constructor
 
-  constructor () {
+  constructor() {
     super();
 
     /** @type {ZoneListState} - state of the zone item */
     this.state = { type: 'loading' };
-
   }
 
   // DOCS: 3. Public methods
@@ -106,52 +92,51 @@ export class CcCtZoneSelectList extends LitElement {
   /**
    * @param {CcCtZoneSelectPropertyValues} changedProperties
    */
-  willUpdate (changedProperties) {
-  }
+  willUpdate(changedProperties) {}
 
-  render () {
-
+  render() {
     const loading = this.state.type === 'loading';
     const error = this.state.type === 'error';
     const data = this.state.type === 'loaded' ? this.state.zoneItems : new Array(LOADING_NUMBER);
 
     return html`
-      
-      ${error ? html`
-        <cc-notice intent="warning" message="Something went wrong while loading zones"></cc-notice>
-      ` : ''}
-
-      ${loading ? html` 
-      ${data.fill(LOADING_NUMBER).map((_) => html` 
-      <cc-ct-zone-select .state=${{ type: 'loading' }}></cc-ct-zone-select>
-      `)}
-      ` : ''}
-
-
-      ${this.state.type === 'loaded' ? html` 
-      ${data.map((zoneItem) => html` 
-       <cc-ct-zone-select .state=${{ type: 'loaded', ...zoneItem }}></cc-ct-zone-select>
-      `)}
-           ` : ''}
+      ${error
+        ? html` <cc-notice intent="warning" message="Something went wrong while loading zones"></cc-notice> `
+        : ''}
+      ${loading
+        ? html`
+            ${data
+              .fill(LOADING_NUMBER)
+              .map((_) => html` <cc-ct-zone-select .state=${{ type: 'loading' }}></cc-ct-zone-select> `)}
+          `
+        : ''}
+      ${this.state.type === 'loaded'
+        ? html`
+            ${data.map(
+              (zoneItem) => html`
+                <cc-ct-zone-select
+                  .state=${{ type: 'loaded', ...zoneItem }}
+                  tabindex=${zoneItem.disabled ? 1 : 0}
+                ></cc-ct-zone-select>
+              `,
+            )}
+          `
+        : ''}
     `;
   }
 
   // DOCS: 9. "sub render" private methods used by the main render()
 
-  static get styles () {
+  static get styles() {
     return [
       // language=CSS
       css`
-    :host {
-      display: grid;
-      gap: 0.5em;
-      grid-template-columns: repeat(auto-fit, minmax(20em, 1fr));
-    }
-
-    cc-ct-zone-select {
-      --width: 10em;
-    }
-     `,
+        :host {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(12.5em, 1fr));
+          gap: 1em;
+        }
+      `,
     ];
   }
 }

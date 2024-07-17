@@ -15,5 +15,7 @@ interface ZoneItem {
   flagUrl: string;
   images: Array<string>;
   tags: Array<string>;
+  disabled: boolean;
+  selected: boolean;
 }
 
