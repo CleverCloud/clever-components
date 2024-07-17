@@ -132,8 +132,6 @@ export class CcCtZoneSelect extends LitElement {
     `;
   }
 
-  // DOCS: 9. "sub render" private methods used by the main render()
-
   static get styles() {
     return [
       skeletonStyles,
@@ -148,9 +146,9 @@ export class CcCtZoneSelect extends LitElement {
           border-radius: var(--cc-border-radius-default);
           display: flex;
           flex-direction: column;
+          height: 100%;
           overflow: hidden;
           position: relative;
-          height: 100%;
         }
 
         .wrapper .title {
