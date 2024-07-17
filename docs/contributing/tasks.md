@@ -189,3 +189,13 @@ TODO
 ## `npm run typecheck`
 
 TODO
+
+## `npm run typecheck:stats`
+
+* Report how many files are typechecked through CI for some categories
+  * Components
+  * Components (smart)
+  * Components (test)
+  * Components (stories)
+  * Controllers
+  * Libs
