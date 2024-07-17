@@ -236,8 +236,8 @@ export class CcCtZoneSelect extends LitElement {
 
         .icon-selected {
           --cc-icon-color: var(--cc-color-bg-primary);
-          opacity: 0;
 
+          opacity: 0;
           position: absolute;
           right: 0.5em;
           top: 0.5em;
@@ -253,8 +253,8 @@ export class CcCtZoneSelect extends LitElement {
 
         .thumbnails > cc-img {
           --cc-img-fit: contain;
-          height: 1.125em;
 
+          height: 1.125em;
           width: 1.25em;
         }
 
