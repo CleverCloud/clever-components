@@ -69,9 +69,17 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
 
 * Check components with [lit-analyzer](https://github.com/runem/lit-analyzer), a code analyzer specific to Lit.
 
+## `npm run components:check-type-imports`
+
+TODO
+
 ## `npm run components:docs`
 
 * Generate [Custom Elements Manifest](https://github.com/webcomponents/custom-elements-manifest) with [CEM analyzer](https://github.com/open-wc/custom-elements-manifest/tree/master/packages/analyzer) in `dist`.
+
+## `npm run components:generate-icons-assets`
+
+TODO
 
 ## `npm run components:graph-usage`
 
@@ -120,6 +128,10 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
 * Delete a branch on the preview system.
 * It uses current branch name by default, but you can provide a CLI param to override the name.
 
+## `npm run preview:get`
+
+TODO
+
 ## `npm run preview:list`
 
 * List all the available branches on the preview system.
@@ -142,10 +154,38 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
 * Start prebuilt [Storybook](https://storybook.js.org/) in dev mode with [Web Dev Server](https://modern-web.dev/docs/dev-server/overview/).
 * This implicitly generates the [Custom Elements Manifest](https://github.com/webcomponents/custom-elements-manifest) on each file change.
 
+## `npm run stylelint`
+
+TODO
+
+## `npm run stylelint:ci`
+
+TODO
+
+## `npm run stylelint:fix`
+
+TODO
+
 ## `npm run test`
 
 * Run all unit tests present in `test` with [Web Test Runner](https://modern-web.dev/docs/test-runner/overview/).
 
+## `npm run test:cem`
+
+TODO
+
+## `npm run test:cem:watch`
+
+TODO
+
 ## `npm run test:watch`
 
 * Same as npm run test but in watch mode.
+
+## `npm run test:watch`
+
+TODO
+
+## `npm run typecheck`
+
+TODO
