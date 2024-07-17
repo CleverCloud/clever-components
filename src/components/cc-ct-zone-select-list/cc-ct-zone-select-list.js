@@ -8,14 +8,6 @@ import '../cc-notice/cc-notice.js';
 
 const LOADING_NUMBER = 10;
 
-/** @type {ZoneItem} */
-const LOADING_INFO = {
-  name: '???',
-  city: '?????',
-  countryCode: 'FR',
-  infra: null,
-};
-
 /**
  * @typedef {import('./cc-ct-zone-select-list.types.js').ZoneListState} ZoneListState
  * @typedef {import('./cc-ct-zone-select-list.types.js').ZoneListStateLoaded} ZoneListStateLoaded
