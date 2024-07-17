@@ -1,20 +1,10 @@
-// DOCS: Don't add a 'use strict', no need for them in modern JS modules.
-// DOCS: Put all imports here.
-// DOCS: Always keep the ".js" at the end when you reference a file directly [error in ESLint].
-// DOCS: We enforce import order [fixed by ESLint].
 import { css, html, LitElement } from 'lit';
 import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 
-import '../cc-badge/cc-badge';
+import '../cc-badge/cc-badge.js';
 import '../cc-ct-zone-select/cc-ct-zone-select.js';
-import '../cc-notice/cc-notice';
-
-// DOCS: You may setup/init some stuffs here but this should be rare and most of the setup should happen in the component.
-const MY_AWESOME_CONST = 'foobar';
-
-// DOCS: You may setup/init constant data used when component is in skeleton state.
-const SKELETON_FOOBAR = [{ foo: '???????' }, { foo: '????' }, { foo: '???????' }];
+import '../cc-notice/cc-notice.js';
 
 const LOADING_NUMBER = 10;
 

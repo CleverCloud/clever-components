@@ -11,12 +11,6 @@ import { classMap } from 'lit/directives/class-map.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-badge/cc-badge.js';
 
-// DOCS: You may setup/init some stuffs here but this should be rare and most of the setup should happen in the component.
-const MY_AWESOME_CONST = 'foobar';
-
-// DOCS: You may setup/init constant data used when component is in skeleton state.
-const SKELETON_FOOBAR = [{ foo: '???????' }, { foo: '????' }, { foo: '???????' }];
-
 /** @type {ZoneItem} */
 const LOADING_INFO = {
   name: '???',
