@@ -115,8 +115,8 @@ export class CcCtZoneSelectList extends LitElement {
       css`
         :host {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(12.5em, 1fr));
           gap: 1em;
+          grid-template-columns: repeat(auto-fill, minmax(12.5em, 1fr));
         }
       `,
     ];
