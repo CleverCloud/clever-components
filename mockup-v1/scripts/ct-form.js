@@ -19,6 +19,7 @@ import './ct-plan-config-provider.js';
 import './ct-plan-fs-bucket.js';
 import './ct-plan-matomo.js';
 import './ct-plan-pulsar.js';
+import './ct-scalability.js';
 import './ct-zone-picker.js';
 
 const ADDON_RAW_API = {
@@ -121,12 +122,18 @@ export class CtForm extends LitElement {
 
   render () {
     const isAddon = this.product.type === 'addon';
+    const isApp = this.product.type === 'app';
     return html`
       <ct-product-name></ct-product-name>
       <ct-product-tags></ct-product-tags>
       ${
         isAddon
         ? this._renderPlan()
+        : ``
+      }
+      ${
+        isApp
+        ? html`<ct-scalability .product="${this.product}"></ct-scalability>`
         : ``
       }
       <ct-zone-picker

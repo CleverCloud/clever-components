@@ -6,6 +6,7 @@ import {
 import './ct-summary-encryption.js';
 import './ct-summary-plan.js';
 import './ct-summary-product-name.js';
+import './ct-summary-scalability.js';
 import './ct-summary-version.js';
 import './ct-summary-zone.js';
 
@@ -63,6 +64,11 @@ export class CtSummary extends LitElement {
           .tags="${this.form.tags}"
           ?details-visible="${this._detailsVisible}"
         ></ct-summary-product-name>
+        ${
+          this.product.type === 'app'
+            ? html`<ct-summary-scalability .scalability="${this.form.scalability}" ?details-visible="${this._detailsVisible}"></ct-summary-scalability>`
+            : ``
+        }
         ${
           this.product.type === 'addon' && !SPECIAL_ADDONS.includes(this.product.id)
             ? html`<ct-summary-plan .plan="${this.form.plan}" ?details-visible="${this._detailsVisible}"></ct-summary-plan>`
