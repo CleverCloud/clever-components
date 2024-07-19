@@ -5,7 +5,7 @@ import {
   iconRemixLoginCircleFill as iconRedirectionOn,
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
-import { i18n } from '../../lib/i18n/i18n.js';
+import { i18n } from '@clevercloud/i18n';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { waitingStyles } from '../../styles/waiting.js';
 import '../cc-button/cc-button.js';
@@ -70,7 +70,7 @@ export class CcTcpRedirection extends LitElement {
   /**
    * @param {string} namespace
    * @param {boolean} isPrivate
-   * @returns {string}
+   * @returns {string|Node}
    * @private
    */
   _getHelpTextAddendum(namespace, isPrivate) {

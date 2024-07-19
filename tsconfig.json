@@ -8,6 +8,11 @@
     "**/*.test.js"
   ],
   "compilerOptions": {
+    "paths": {
+      "@clevercloud/i18n": [
+        "./src/translations/translations.types.d.ts"
+      ],
+    },
     /* Visit https://www.typescriptlang.org/tsconfig to read more about this file */
     /* Language and Environment */
     "target": "ES2021", /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */

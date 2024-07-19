@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   prepareFormatDate,
   prepareFormatDateOnly,
@@ -74,8 +75,7 @@ function formatFlavor(flavor) {
   return [cpu + shared, gpu, mem].filter((a) => a).join('\n');
 }
 
-/** @type {Translations} */
-export const translations = {
+export const translations = /** @type {const} */ {
   LANGUAGE: 'Français',
   //#region cc-addon-admin
   'cc-addon-admin.admin': `Administration de l'add-on`,

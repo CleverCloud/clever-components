@@ -1,4 +1,4 @@
-import { i18n } from '../../lib/i18n/i18n.js';
+import { i18n } from '@clevercloud/i18n';
 
 const trackedElements = [];
 let updateIntervalId;

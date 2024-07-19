@@ -4,7 +4,8 @@
   // Every file passing typechecking should be added in the `include` array below
   "include": [
     "src/lib/utils.js",
-    "src/components/cc-beta/cc-beta.js"
+    "src/components/cc-beta/cc-beta.js",
+    "src/components/cc-tcp-redirection/cc-tcp-redirection.js"
   ],
   "extends": "./tsconfig.json",
   "compilerOptions": {
