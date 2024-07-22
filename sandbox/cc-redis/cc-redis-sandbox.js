@@ -1,48 +1,58 @@
 import { css, html, LitElement } from 'lit';
+import '../../src/components/cc-input-text/cc-input-text.js';
 import { sandboxStyles } from '../sandbox-styles.js';
 
 class CcRedis extends LitElement {
-  static get properties () {
+  static get properties() {
     return {
+      _redisUrl: { type: String, state: true },
     };
   }
 
-  constructor () {
+  constructor() {
     super();
 
+    this._redisUrl = 'redis://:a3DqKHACCTd405oX90q@bopsiwrfx543hievv2fb-redis.services.clever-cloud.com:3861';
   }
 
-  render () {
+  _onRedisUrlChange() {}
+
+  render() {
     return html`
       <div class="ctrl-top" style="align-items: normal">
-        
+        <cc-input-text
+          inline
+          label="Redis URL"
+          value=${this._redisUrl}
+          @cc-input-text:input=${this._onRedisUrlChange}
+        ></cc-input-text>
       </div>
-      
+
       <div></div>
     `;
   }
 
-  async firstUpdated (changedProperties) {
+  async firstUpdated(changedProperties) {
     const response = await fetch('http://localhost:8002/command/get', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Cc-Backend-Url': 'redis://:a3DqKHACCTd405oX90q@bopsiwrfx543hievv2fb-redis.services.clever-cloud.com:3861',
+        'Cc-Backend-Url': this._redisUrl,
       },
       body: JSON.stringify(['key']),
     });
     return response.json();
   }
 
-  static get styles () {
+  static get styles() {
     return [
       sandboxStyles,
       css`
         :host {
           display: flex;
-          min-height: 0;
           flex: 1;
           flex-direction: column;
+          min-height: 0;
         }
       `,
     ];
