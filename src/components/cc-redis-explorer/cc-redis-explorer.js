@@ -1,18 +1,23 @@
 import { css, html, LitElement } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
+import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-select/cc-select.js';
 
 /**
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
  * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<InputEvent, HTMLInputElement>} HTMLInputElementEvent
  * @typedef {import('./cc-redis-explorer.types.js').CcRedisExplorerState} CcRedisExplorerState
  * @typedef {import('./cc-redis-explorer.types.js').CcRedisKeyState} CcRedisKeyState
  * @typedef {import('./cc-redis-explorer.types.js').CcRedisExplorerKeyEditorState} CcRedisExplorerKeyEditorState
  * @typedef {import('./cc-redis-explorer.types.js').CcRedisKeyValue} CcRedisKeyValue
  * @typedef {import('./cc-redis-explorer.types.js').CcRedisKeyType} CcRedisKeyType
+ * @typedef {import('../../lib/form/form.types.js').FormDataMap} FormDataMap
  *
  */
 
@@ -20,7 +25,7 @@ export class CcRedisExplorer extends LitElement {
   static get properties() {
     return {
       state: { type: Object },
-      addFormState: { type: Object },
+      keyEditorFormState: { type: Object },
       _addFormSelectedType: { type: String, state: true },
     };
   }
@@ -56,12 +61,21 @@ export class CcRedisExplorer extends LitElement {
     };
 
     /** @type {CcRedisExplorerKeyEditorState} */
-    this.addFormState = {
+    this.keyEditorFormState = {
       type: 'hidden',
     };
 
     /** @type {CcRedisKeyType} */
     this._addFormSelectedType = 'string';
+
+    /** @type {HTMLFormElementRef} */
+    this._formRef = createRef();
+
+    // new FormErrorFocusController(this, this._formRef, () => this.keyEditorFormState.errors);
+  }
+
+  resetKeyEditorForm() {
+    this._formRef.value?.reset();
   }
 
   _getSelectedKey() {
@@ -134,6 +148,21 @@ export class CcRedisExplorer extends LitElement {
     this._addFormSelectedType = detail;
   }
 
+  /**
+   * @param {Event & {dataset: {key: string}}} e
+   */
+  _onDeleteKeyButtonClick(e) {
+    dispatchCustomEvent(this, 'delete-key', e.dataset.key);
+  }
+
+  /**
+   * @param {FormDataMap} formData
+   */
+  _onKeyEditorFormSubmit(formData) {
+    this.keyEditorFormState = { ...this.keyEditorFormState, errors: null };
+    dispatchCustomEvent(this, 'add', formData.address);
+  }
+
   render() {
     return html`
       <div class="wrapper">
@@ -167,15 +196,25 @@ export class CcRedisExplorer extends LitElement {
   _renderKey(keyState) {
     const selected = keyState.type === 'selected';
     const loading = keyState.type === 'loading';
+    const deleting = keyState.type === 'deleting';
     const id = `key-${keyState.key.name}`;
 
     return html`<li class="key">
-      <input type="radio" id=${id} name="selectedKey" .value=${keyState.key.name} ?checked=${selected} />
+      <input type="radio" id=${id} name="selectedKey" .value=${keyState.key.name} ?checked=${selected || loading} />
       <label for=${id}>
         <div>${keyState.key.name}</div>
         <div>${keyState.key.type}</div>
-        ${loading ? html` <div>loading...</div>` : ''}
+        ${loading ? html` ...` : ''}
       </label>
+      <div class="buttons">
+        <cc-button
+          ?disabled=${loading}
+          ?waiting=${deleting}
+          data-key=${keyState.key.name}
+          @cc-button:click=${this._onDeleteKeyButtonClick}
+          >Del</cc-button
+        >
+      </div>
     </li>`;
   }
 
@@ -186,25 +225,27 @@ export class CcRedisExplorer extends LitElement {
       return html`<div>loading...</div>`;
     }
 
-    if (this.addFormState.type === 'hidden') {
+    if (this.keyEditorFormState.type === 'hidden') {
       return null;
     }
 
-    if (this.addFormState.initialKeyValue == null) {
+    if (this.keyEditorFormState.initialKeyValue == null) {
       return this._renderAddForm();
     }
 
-    return this._renderEditForm(this.addFormState.initialKeyValue);
+    return this._renderEditForm(this.keyEditorFormState.initialKeyValue);
   }
 
   _renderAddForm() {
-    const saving = this.addFormState.type === 'saving';
+    const saving = this.keyEditorFormState.type === 'saving';
 
-    return html`<form>
-      <cc-input-text name="keyName" required></cc-input-text>
-      <cc-select name="keyType" required @cc-select:input=${this._onKeyTypeChanged}></cc-select>
+    return html`<form ${ref(this._formRef)} ${formSubmit(this._onKeyEditorFormSubmit.bind(this))}>
+      <cc-input-text name="keyName" label="Name" required></cc-input-text>
+      <cc-select name="keyType" label="Type" required @cc-select:input=${this._onKeyTypeChanged}></cc-select>
       ${this._renderKeyValueFormByType(this._addFormSelectedType)}
-      <cc-button primary ?skeleton=${saving}>Add</cc-button>
+      <div class="buttons">
+        <cc-button type="submit" primary ?waiting=${saving}>Add</cc-button>
+      </div>
     </form>`;
   }
 
@@ -213,15 +254,15 @@ export class CcRedisExplorer extends LitElement {
    * @return {TemplateResult}
    */
   _renderEditForm(keyValue) {
-    const saving = this.addFormState.type === 'saving';
+    const saving = this.keyEditorFormState.type === 'saving';
 
     return html`<form>
       <cc-input-text name="keyName" disabled .resetValue=${keyValue.name} .value=${keyValue.name}></cc-input-text>
       <cc-select name="keyType" disabled .resetValue=${keyValue.type} .value=${keyValue.type}></cc-select>
       ${this._renderKeyValueFormByType(keyValue.type, keyValue)}
       <div class="buttons">
-        <cc-button type="reset" ?disabled=${saving}>Cancel</cc-button>
-        <cc-button type="submit" primary ?skeleton=${saving}>Save</cc-button>
+        <cc-button type="reset" ?disabled=${saving}>Reset</cc-button>
+        <cc-button type="submit" primary ?waiting=${saving}>Save</cc-button>
       </div>
     </form>`;
   }
@@ -233,16 +274,13 @@ export class CcRedisExplorer extends LitElement {
    */
   _renderKeyValueFormByType(keyType, keyValue) {
     if (keyType === 'string') {
-      if (keyValue != null) {
-        return html`<cc-input-text
-          name="value"
-          multi
-          required
-          .resetValue=${keyValue.value}
-          .value=${keyValue.value}
-        ></cc-input-text>`;
-      }
-      return html`<cc-input-text name="value" multi required></cc-input-text>`;
+      return html`<cc-input-text
+        name="value"
+        multi
+        required
+        reset-value=${ifDefined(keyValue?.value ?? undefined)}
+        value=${ifDefined(keyValue?.value ?? undefined)}
+      ></cc-input-text>`;
     }
 
     if (keyType === 'list') {

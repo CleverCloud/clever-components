@@ -20,21 +20,23 @@ export type CcRedisKeyState =
   | CcRedisKeyStateUpdating
   | CcRedisKeyStateDeleting;
 
-export interface CcRedisKeyStateLoading {
-  type: 'loading';
+export interface CcRedisKeyStateIdle {
+  type: 'idle';
   key: CcRedisKey;
 }
 
-export interface CcRedisKeyStateIdle {
-  type: 'idle';
+export interface CcRedisKeyStateLoading {
+  type: 'loading';
   key: CcRedisKey;
 }
 
 export interface CcRedisKeyStateSelected {
   type: 'selected';
   key: CcRedisKey;
+  //todo: do we need a value prop here ?
 }
 
+//todo: do we really need this state ?
 export interface CcRedisKeyStateUpdating {
   type: 'updating';
   key: CcRedisKey;
@@ -106,19 +108,70 @@ export interface CcRedisKeyValueStringHash {
 
 export type CcRedisExplorerKeyEditorState =
   | CcRedisExplorerKeyEditorStateHidden
-  | CcRedisExplorerKeyEditorStateIdle
-  | CcRedisExplorerKeyEditorStateSaving;
+  | CcRedisExplorerKeyEditorStateAdd
+  | CcRedisExplorerKeyEditorStateEdit;
 
 export interface CcRedisExplorerKeyEditorStateHidden {
   type: 'hidden';
 }
 
-export interface CcRedisExplorerKeyEditorStateIdle {
-  type: 'idle';
-  initialKeyValue: CcRedisKeyValue | null;
+export interface CcRedisExplorerKeyEditorStateAdd {
+  type: 'add';
+  addFormState: CcRedisExplorerKeyAddFormState;
 }
 
-export interface CcRedisExplorerKeyEditorStateSaving {
-  type: 'saving';
-  initialKeyValue: CcRedisKeyValue | null;
+export interface CcRedisExplorerKeyAddFormState {
+  type: 'idle' | 'adding';
+  errors?: {
+    name?: 'already-used';
+    type?: 'unsupported';
+  };
 }
+
+export interface CcRedisExplorerKeyEditorStateEdit {
+  type: 'add';
+  editFormState: CcRedisExplorerKeyEditFormState;
+}
+
+export interface CcRedisExplorerKeyEditFormState {
+  type: 'idle' | 'saving';
+  errors?: {};
+}
+
+//
+// export type CcRedisExplorerKeyEditorState =
+//   | CcRedisExplorerKeyEditorStateHidden
+//   | CcRedisExplorerKeyEditorStateIdle
+//   | CcRedisExplorerKeyEditorStateSaving;
+//
+// export interface CcRedisExplorerKeyEditorStateHidden {
+//   type: 'hidden';
+// }
+//
+// export interface CcRedisExplorerKeyEditorStateIdle {
+//   type: 'idle';
+//   initialKeyValue: CcRedisKeyValue | null;
+// }
+//
+// export interface CcRedisExplorerKeyEditorStateSaving {
+//   type: 'saving';
+//   initialKeyValue: CcRedisKeyValue | null;
+// }
+//
+// export interface CcRedisExplorerKeyEditorStateAddMode {
+//   type: 'add-mode';
+// }
+//
+// export interface CcRedisExplorerKeyEditorStateEditMode {
+//   type: 'edit-mode';
+//   keyValue: CcRedisKeyValue;
+// }
+//
+// export interface CcRedisExplorerKeyEditorStateUpdating {
+//   type: 'updating';
+//   initialKeyValue: CcRedisKeyValue | null;
+// }
+//
+// export interface CcRedisExplorerKeyEditorStateAdding {
+//   type: 'adding';
+// }
