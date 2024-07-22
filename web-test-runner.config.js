@@ -8,10 +8,13 @@ export default {
   files: ['test/**/*.test.*', 'src/components/**/*.test.*'],
   browsers: [
     chromeLauncher({
-      async createPage ({ context }) {
+      launchOptions: {
+        env: { LANGUAGE: 'en_US' },
+      },
+      async createPage({ context }) {
         const page = await context.newPage();
         // We need that for unit tests working with dates and timezones
-        page.emulateTimezone('Europe/Paris');
+        await page.emulateTimezone('Europe/Paris');
         return page;
       },
     }),
@@ -35,10 +38,5 @@ export default {
       </head>
     </html>
   `,
-  plugins: [
-    cemAnalyzerPlugin,
-    rollupAdapter(json()),
-    esbuildBundlePluginWithConfig,
-    commonjsPluginWithConfig,
-  ],
+  plugins: [cemAnalyzerPlugin, rollupAdapter(json()), esbuildBundlePluginWithConfig, commonjsPluginWithConfig],
 };
