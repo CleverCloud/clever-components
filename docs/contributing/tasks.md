@@ -34,30 +34,36 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
 ## `npm run cdn-preview:ui`
 
 * Upload all assets in `cdn-ui` to the preview CDN remote object storage.
-* TODO: link to detailed build documentation about the CDN mode
+* You can get more details by reading:
+  * [the documentation about the preview](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-previews--docs). 
+  * [the documentation about the release](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-release--docs). 
 
 ## `npm run cdn-release:build`
 
 * Build components for our smart CDN with [Rollup](https://rollupjs.org/) in `dist-cdn` folder.
 * See config in `rollup/rollup-cdn.config.js` for more details.
 * Requires a `VERSION` environment variable, you can use `0.0.0` when doing some local tests.
-* TODO: link to detailed build documentation
+* You can get more details by reading:
+  * [the documentation about the preview](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-previews--docs).
+  * [the documentation about the release](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-release--docs).
 
 ## `npm run cdn-release:publish`
 
 * Upload all assets in `dist-cdn` to the CDN remote object storage.
-* TODO: link to detailed build documentation about the CDN mode
+* You can get more details by reading:
+  * [the documentation about the preview](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-previews--docs).
+  * [the documentation about the release](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-release--docs).
 
 ## `npm run cdn-release:ui`
 
 * Upload all assets in `cdn-ui` to the CDN remote object storage.
-* TODO: link to detailed build documentation about the CDN mode
+* You can get more details by reading [the documentation about the release](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-release--docs).
 
 ## `npm run components:build`
 
 * Build components for npm with [Rollup](https://rollupjs.org/) in `dist` folder.
 * See config in `rollup/rollup-npm.config.js` for more details.
-* TODO: link to detailed build documentation
+* You can get more details by reading [the global contributing page](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-contribute--docs).
 
 ## `npm run components:check-i18n`
 
@@ -71,7 +77,9 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
 
 ## `npm run components:check-type-imports`
 
-TODO
+* Check that each component has:
+  * types present in `@fires` event are imported.
+  * types present in the constructor are imported.
 
 ## `npm run components:docs`
 
@@ -79,7 +87,12 @@ TODO
 
 ## `npm run components:generate-icons-assets`
 
-TODO
+* Bundles SVG icons in a JavaScript file to facilitate inlining them in components.
+* Two files are generated:
+  * `src/assets/cc-clever.icons.js` from the SVG files in `src/assets/`,
+  * `src/assets/cc-remix.icons.js` from the `remixicon` dependency.
+* Should be executed each time an icon is added, removed or updated.
+* You can get more details by reading [the related ADR](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%93%8C-architecture-decision-records-adr-0022-implementing-a-new-icon-system--docs).
 
 ## `npm run components:graph-usage`
 
@@ -130,7 +143,8 @@ TODO
 
 ## `npm run preview:get`
 
-TODO
+* Prints the preview detail.
+* It uses current branch name by default, but you can provide a CLI param to override the name.
 
 ## `npm run preview:list`
 
@@ -156,15 +170,15 @@ TODO
 
 ## `npm run stylelint`
 
-TODO
+Check the CSS of our components with [Stylelint](https://stylelint.io/).
 
 ## `npm run stylelint:ci`
 
-TODO
+Used by our GitHub action to check our CSS and report errors.
 
 ## `npm run stylelint:fix`
 
-TODO
+Check the CSS of our components with [Stylelint](https://stylelint.io/) and fix errors automatically when it's possible.
 
 ## `npm run test`
 
@@ -172,23 +186,19 @@ TODO
 
 ## `npm run test:cem`
 
-TODO
+* Run unit tests present in `cem/test` with [Mocha](https://mochajs.org/).
 
 ## `npm run test:cem:watch`
 
-TODO
+* Run unit tests present in `cem/test` with [Mocha](https://mochajs.org/) in watch mode.
 
 ## `npm run test:watch`
 
-* Same as npm run test but in watch mode.
-
-## `npm run test:watch`
-
-TODO
+* Run all unit tests present in `test` with [Web Test Runner](https://modern-web.dev/docs/test-runner/overview/) in watch mode.
 
 ## `npm run typecheck`
 
-TODO
+* Run the TypeScript compiler to typecheck every file matching the criteria specified within the `tsconfig.ci.json` file.
 
 ## `npm run typecheck:stats`
 
