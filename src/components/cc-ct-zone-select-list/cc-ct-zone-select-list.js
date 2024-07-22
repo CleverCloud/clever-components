@@ -69,7 +69,20 @@ export class CcCtZoneSelectList extends LitElement {
 
   // DOCS: 6. Custom element lifecycle callbacks
 
-  // DOCS: 7. LitElement lifecycle callbacks
+  connectedCallback() {
+    super.connectedCallback();
+    this.addEventListener('cc-ct-zone-select:selected', this._onZoneSelected);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListener('cc-ct-zone-select:selected', this._onZoneSelected);
+  }
+
+  _onZoneSelected({ detail: { zone, selected } }) {
+    console.log(zone, selected);
+  }
+
   /**
    * @param {CcCtZoneSelectPropertyValues} changedProperties
    */
@@ -97,7 +110,7 @@ export class CcCtZoneSelectList extends LitElement {
               (zoneItem) => html`
                 <cc-ct-zone-select
                   .state=${{ type: 'loaded', ...zoneItem }}
-                  tabindex=${zoneItem.disabled ? 1 : 0}
+                  tabindex="${zoneItem.disabled ? '-1' : '0'}"
                 ></cc-ct-zone-select>
               `,
             )}

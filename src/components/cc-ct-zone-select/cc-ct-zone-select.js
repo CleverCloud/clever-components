@@ -1,21 +1,16 @@
-// DOCS: Don't add a 'use strict', no need for them in modern JS modules.
-// DOCS: Put all imports here.
-// DOCS: Always keep the ".js" at the end when you reference a file directly [error in ESLint].
-// DOCS: We enforce import order [fixed by ESLint].
 import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixCheckboxCircleFill as selectedIcon } from '../../assets/cc-remix.icons.js';
+import { dispatchCustomEvent } from '../../lib/events.js';
+import { skeletonStyles } from '../../styles/skeleton.js';
+import '../cc-badge/cc-badge.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 
-import { classMap } from 'lit/directives/class-map.js';
-import { skeletonStyles } from '../../styles/skeleton.js';
-import '../cc-badge/cc-badge.js';
-
-/** @type {ZoneItem} */
+/** @type {Partial<ZoneItem>} */
 const LOADING_INFO = {
   name: '???',
   city: '?????',
-  countryCode: 'FR',
   infra: null,
 };
 
@@ -30,39 +25,18 @@ const LOADING_INFO = {
 /**
  * A component doing X and Y (one liner description of your component).
  *
- * ## Details
- *
- * * Details about bla.
- * * Details about bla bla.
- * * Details about bla bla bla.
- *
- * ## Technical details
- *
- * * Technical details about foo.
- * * Technical details about bar.
- * * Technical details about baz.
- *
  * @cssdisplay block
  *
- * @prop {String} one - Description for one.
- * @prop {Boolean} two - Description for two.
- *
- * @fires {CustomEvent<any>} example-component:event-name - Fires XXX whenever YYY.
- *
- * @slot - The content of the button (text or HTML). If you want an image, please look at the `image` attribute.
+ * @fires {CustomEvent<any>} cc-ct-zone-select:zone-selected
  *
  * @cssprop {Color} --cc-loader-color - The color of the animated circle (defaults: `#2653af`).
  */
 export class CcCtZoneSelect extends LitElement {
-  // DOCS: 1. LitElement's properties descriptor
-
   static get properties() {
     return {
       state: { type: Object },
     };
   }
-
-  // DOCS: 2. Constructor
 
   constructor() {
     super();
@@ -71,22 +45,23 @@ export class CcCtZoneSelect extends LitElement {
     this.state = { type: 'loading' };
   }
 
-  // DOCS: 4. Private methods
+  connectedCallback() {
+    super.connectedCallback();
+    this.addEventListener('click', this._onClick);
+  }
 
-  // DOCS: 5. Event handlers
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListener('click', this._onClick);
+  }
 
-  // DOCS: 6. Custom element lifecycle callbacks
-
-  // DOCS: 7. LitElement lifecycle callbacks
-  /**
-   * @param {CcCtZoneSelectPropertyValues} changedProperties
-   */
-  willUpdate(changedProperties) {
-    console.log(changedProperties);
-    // if (changedProperties.has('state') && 'disabled' in this.state) {
-    //   console.log('hello');
-    //   this._disabled = true;
-    // }
+  _onClick() {
+    if (this.state.type === 'loaded' && !this.state.disabled && !this.state.selected) {
+      dispatchCustomEvent(this, 'zone-selected', {
+        zone: this.state.name,
+        selected: this.state.selected,
+      });
+    }
   }
 
   render() {
@@ -114,14 +89,18 @@ export class CcCtZoneSelect extends LitElement {
         : ''}
       ${this.state.type === 'loaded'
         ? html`
-            <div class="wrapper ${classMap({ selected: data.selected, disabled: data.disabled })}">
+            <div
+              class="wrapper ${classMap({ selected: data.selected, disabled: data.disabled })}"
+              tabindex="${data.disabled ? '-1' : '0'}"
+              role="button"
+            >
               <div class="title">
                 <div class="infra">${data.name}</div>
                 <div class="city">${data.city}</div>
               </div>
               <cc-icon class="icon-selected" .icon="${selectedIcon}" size="lg"></cc-icon>
               <div class="thumbnails">
-                <cc-img class="flag" src=${data.flagUrl}></cc-img>
+                ${data.flagUrl ? html` <cc-img class="flag" src=${data.flagUrl}></cc-img> ` : ''}
                 ${data.images.map((image) => html`<cc-img src="${image}"></cc-img>`)}
                 <div class="tags">${tags.map((tag) => html`<cc-badge>${tag}</cc-badge>`)}</div>
               </div>
@@ -221,7 +200,7 @@ export class CcCtZoneSelect extends LitElement {
         }
 
         .infra {
-          color: var(--cc-color-text-weaker);
+          color: var(--cc-color-text-weak);
           font-size: 0.875em;
           line-height: 1.125;
           padding-inline-start: 0.125em;
@@ -262,7 +241,7 @@ export class CcCtZoneSelect extends LitElement {
           --cc-icon-size: 1.25em;
         }
 
-        .infra.skeleton {
+        .skeleton.infra {
           color: transparent;
         }
 

@@ -10,7 +10,6 @@ export default {
 
 const conf = {
   component: 'cc-ct-zone-select',
-  // You may need to add some CSS just for your stories.
   // language=CSS
   css: ``,
 };
@@ -35,6 +34,7 @@ const DEFAULT_ITEMS = [
   {
     name: 'par',
     city: 'Paris',
+    selected: false,
     images: [getInfraProviderLogoUrl('clever-cloud')],
     flagUrl: getFlagUrl('FR'),
     tags: ['foo'],
@@ -42,6 +42,7 @@ const DEFAULT_ITEMS = [
   {
     name: 'grahds',
     city: 'Gravelines',
+    selected: false,
     images: [getInfraProviderLogoUrl('ovh')],
     flagUrl: getFlagUrl('FR'),
     tags: [],
@@ -49,12 +50,14 @@ const DEFAULT_ITEMS = [
   {
     name: 'mtl',
     city: 'Montreal',
+    selected: false,
     images: [getInfraProviderLogoUrl('ovh')],
     flagUrl: getFlagUrl('CA'),
     tags: [],
   },
   {
     name: 'syd',
+    selected: false,
     city: 'Sydney',
     images: [getInfraProviderLogoUrl('ovh')],
     flagUrl: getFlagUrl('AU'),
@@ -63,6 +66,7 @@ const DEFAULT_ITEMS = [
   {
     name: 'rbx',
     city: 'Roubaix',
+    selected: false,
     images: [getInfraProviderLogoUrl('ovh')],
     flagUrl: getFlagUrl('FR'),
     tags: [],
@@ -70,6 +74,7 @@ const DEFAULT_ITEMS = [
   {
     name: 'wsw',
     city: 'Warsaw',
+    selected: false,
     images: [getInfraProviderLogoUrl('ovh')],
     flagUrl: getFlagUrl('PL'),
     tags: [],
@@ -77,6 +82,7 @@ const DEFAULT_ITEMS = [
   {
     name: 'rbxhds',
     city: 'Roubaix',
+    selected: false,
     images: [getInfraProviderLogoUrl('ovh')],
     flagUrl: getFlagUrl('FR'),
     tags: [],
@@ -84,58 +90,48 @@ const DEFAULT_ITEMS = [
   {
     name: 'fr-north-hds',
     city: 'North',
+    selected: false,
     images: [getInfraProviderLogoUrl('ovh')],
     flagUrl: getFlagUrl('FR'),
     tags: [],
   },
 ];
 
-// The first story in the file will appear before the API table in Storybook's docs page.
-// We call it the "default story" and it's used as the main presentation of your component.
-// You can set several instances/items to show different situations
-// but no need to get exhaustive or too detailed ;-)
 export const defaultStory = makeStory(conf, {
   items: DEFAULT_ITEMS.map((item) => ({ state: { type: 'loaded', ...item } })),
 });
 
-// If your component contains remote data,
-// you'll need a "skeleton screen" while the user's waiting for the data.
+export const privateZone = makeStory(conf, {
+  items: [
+    {
+      state: {
+        type: 'loaded',
+        name: 'private-zone',
+        city: 'Priv-zone',
+        selected: false,
+        images: [],
+        flagUrl: getFlagUrl('FR'),
+        tags: ['private'],
+      },
+    },
+    {
+      state: {
+        type: 'loaded',
+        name: 'priv-zone',
+        city: 'Private zone',
+        selected: false,
+        images: [],
+        flagUrl: getFlagUrl('FR'),
+        tags: ['private'],
+      },
+    },
+  ],
+});
+
 export const skeleton = makeStory(conf, {
   items: [{}],
 });
 
-// If your component contains remote data,
-// don't forget the case where there is no data (ex: empty lists...).
-export const empty = makeStory(conf, {
-  items: [{ three: [] }],
-});
-
-// If your component contains remote data,
-// don't forget the case where you have loading errors.
-// If you have other kind of errors (ex: saving errors...).
-// You need to name your stories with the `errorWith` prefix.
-export const error = makeStory(conf, {
-  items: [{ error: true }],
-});
-
-// If your component contains remote data,
-// try to present all the possible data combination.
-// You need to name your stories with the `dataLoadedWith` prefix.
-// Don't forget edge cases (ex: small/huge strings, small/huge lists...).
-export const dataLoadedWithFoo = makeStory(conf, {
-  items: [{ one: 'Foo', three: [{ foo: 42 }] }],
-});
-
-// If your component can trigger updates/deletes remote data,
-// don't forget the case where the user's waiting for an operation to complete.
-export const waiting = makeStory(conf, {
-  items: [{ one: 'Foo', three: [{ foo: 42 }], waiting: true }],
-});
-
-// If your component contains remote data,
-// it will have several state transitions (ex: loading => error, loading => loaded, loaded => saving...).
-// When transitioning from one state to another, we try to prevent the display from "jumping" or "blinking" too much.
-// Using "simulations", you can simulate several steps in time to present how your component behaves when it goes through different states.
 export const simulations = makeStory(conf, {
   items: [{}, {}],
   simulations: [
