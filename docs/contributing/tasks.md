@@ -34,24 +34,30 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
 ## `npm run cdn-preview:ui`
 
 * Upload all assets in `cdn-ui` to the preview CDN remote object storage.
-* TODO: link to detailed build documentation about the CDN mode
+* You can get more details by reading:
+  * [the documentation about the preview](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-previews--docs). 
+  * [the documentation about the release](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-release--docs). 
 
 ## `npm run cdn-release:build`
 
 * Build components for our smart CDN with [Rollup](https://rollupjs.org/) in `dist-cdn` folder.
 * See config in `rollup/rollup-cdn.config.js` for more details.
 * Requires a `VERSION` environment variable, you can use `0.0.0` when doing some local tests.
-* TODO: link to detailed build documentation
+* You can get more details by reading:
+  * [the documentation about the preview](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-previews--docs).
+  * [the documentation about the release](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-release--docs).
 
 ## `npm run cdn-release:publish`
 
 * Upload all assets in `dist-cdn` to the CDN remote object storage.
-* TODO: link to detailed build documentation about the CDN mode
+* You can get more details by reading:
+  * [the documentation about the preview](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-previews--docs).
+  * [the documentation about the release](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-release--docs).
 
 ## `npm run cdn-release:ui`
 
 * Upload all assets in `cdn-ui` to the CDN remote object storage.
-* TODO: link to detailed build documentation about the CDN mode
+* You can get more details by reading [the documentation about the release](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-release--docs).
 
 ## `npm run components:build`
 
@@ -130,7 +136,8 @@ TODO
 
 ## `npm run preview:get`
 
-TODO
+* Prints the preview detail
+* It uses current branch name by default, but you can provide a CLI param to override the name.
 
 ## `npm run preview:list`
 
