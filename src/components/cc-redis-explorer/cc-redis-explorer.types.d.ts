@@ -55,7 +55,7 @@ export interface CcRedisKey {
 // export type CcRedisKeyType = 'string' | 'list' | 'set' | 'zset' | 'hash' | 'stream';
 export type CcRedisKeyType = 'string' | 'list' | 'hash';
 
-export type CcRedisKeyValue = CcRedisKeyValueString | CcRedisKeyValueList | CcRedisKeyValueStringHash;
+export type CcRedisKeyValue = CcRedisKeyValueString | CcRedisKeyValueList | CcRedisKeyValueHash;
 
 export interface CcRedisKeyValueString {
   type: 'string';
@@ -63,13 +63,18 @@ export interface CcRedisKeyValueString {
   value: string;
 }
 export interface CcRedisKeyValueList {
-  type: 'string';
+  type: 'list';
   name: string;
-  value: string;
+  values: Array<string>;
 }
-export interface CcRedisKeyValueStringHash {
-  type: 'string';
+export interface CcRedisKeyValueHash {
+  type: 'hash';
   name: string;
+  values: Array<CcRedisKeyValueHashEntry>;
+}
+
+export interface CcRedisKeyValueHashEntry {
+  field: string;
   value: string;
 }
 
@@ -129,8 +134,9 @@ export interface CcRedisExplorerKeyAddFormState {
 }
 
 export interface CcRedisExplorerKeyEditorStateEdit {
-  type: 'add';
+  type: 'edit';
   editFormState: CcRedisExplorerKeyEditFormState;
+  keyValue: CcRedisKeyValue;
 }
 
 export interface CcRedisExplorerKeyEditFormState {

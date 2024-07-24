@@ -1,10 +1,10 @@
+import '../src/components/cc-notice/cc-notice.js';
+import '../src/components/cc-toaster/cc-toaster.js';
+import '../src/components/cc-toggle/cc-toggle.js';
 import { addTranslations, setLanguage } from '../src/lib/i18n.js';
 import { updateRootContext } from '../src/lib/smart-manager.js';
 import { lang as langEn, translations as translationsEn } from '../src/translations/translations.en.js';
 import { lang as langFr, translations as translationsFr } from '../src/translations/translations.fr.js';
-import '../src/components/cc-toaster/cc-toaster.js';
-import '../src/components/cc-notice/cc-notice.js';
-import '../src/components/cc-toggle/cc-toggle.js';
 
 addTranslations(langEn, translationsEn);
 addTranslations(langFr, translationsFr);
@@ -51,7 +51,7 @@ const sandboxes = [
   'cc-product-card',
   'cc-logs-application-view',
   'forms',
-  'cc-redis',
+  'cc-redis-explorer',
 ];
 
 const $listContainer = document.querySelector('.sandboxes-list');
@@ -70,8 +70,7 @@ if (component == null) {
 
 if (!sandboxes.includes(component)) {
   $sandboxContainer.innerHTML = '<cc-notice intent="danger" message="No sandbox found !"></cc-notice>';
-}
-else {
+} else {
   document.querySelector(`.sandboxes-list [data-sandbox="${component}"]`)?.classList.add('selected');
 
   import(`./${component}/${component}-sandbox.js`);

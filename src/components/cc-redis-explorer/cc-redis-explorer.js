@@ -1,12 +1,13 @@
 import { css, html, LitElement } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
+import { FormErrorFocusController } from '../../lib/form/form-error-focus-controller.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-select/cc-select.js';
+import { KeyValueEditorHash, KeyValueEditorList, KeyValueEditorString } from './key-value-editors.js';
 
 /**
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
@@ -16,10 +17,25 @@ import '../cc-select/cc-select.js';
  * @typedef {import('./cc-redis-explorer.types.js').CcRedisKeyState} CcRedisKeyState
  * @typedef {import('./cc-redis-explorer.types.js').CcRedisExplorerKeyEditorState} CcRedisExplorerKeyEditorState
  * @typedef {import('./cc-redis-explorer.types.js').CcRedisKeyValue} CcRedisKeyValue
+ * @typedef {import('./cc-redis-explorer.types.js').CcRedisKeyValueString} CcRedisKeyValueString
+ * @typedef {import('./cc-redis-explorer.types.js').CcRedisKeyValueHash} CcRedisKeyValueHash
+ * @typedef {import('./cc-redis-explorer.types.js').CcRedisKeyValueList} CcRedisKeyValueList
  * @typedef {import('./cc-redis-explorer.types.js').CcRedisKeyType} CcRedisKeyType
+ * @typedef {import('./cc-redis-explorer.types.js').CcRedisExplorerKeyAddFormState} CcRedisExplorerKeyAddFormState
+ * @typedef {import('./cc-redis-explorer.types.js').CcRedisExplorerKeyEditFormState} CcRedisExplorerKeyEditFormState
  * @typedef {import('../../lib/form/form.types.js').FormDataMap} FormDataMap
  *
  */
+
+/**
+ * @typedef {KeyValueEditorString|KeyValueEditorList|KeyValueEditorHash} KeyValueEditor
+ */
+
+const KEY_EDITORS = {
+  string: new KeyValueEditorString(),
+  hash: new KeyValueEditorHash(),
+  list: new KeyValueEditorList(),
+};
 
 export class CcRedisExplorer extends LitElement {
   static get properties() {
@@ -34,7 +50,7 @@ export class CcRedisExplorer extends LitElement {
     super();
     /** @type {CcRedisExplorerState} */
     this.state = {
-      type: 'loaded',
+      type: 'loading',
       keys: [
         {
           type: 'idle',
@@ -69,13 +85,32 @@ export class CcRedisExplorer extends LitElement {
     this._addFormSelectedType = 'string';
 
     /** @type {HTMLFormElementRef} */
-    this._formRef = createRef();
+    this._addFormRef = createRef();
 
-    // new FormErrorFocusController(this, this._formRef, () => this.keyEditorFormState.errors);
+    /** @type {HTMLFormElementRef} */
+    this._editFormRef = createRef();
+
+    new FormErrorFocusController(this, this._addFormRef, () => {
+      if (this.keyEditorFormState.type === 'add') {
+        return this.keyEditorFormState.addFormState.errors;
+      }
+      return null;
+    });
+
+    new FormErrorFocusController(this, this._editFormRef, () => {
+      if (this.keyEditorFormState.type === 'edit') {
+        return this.keyEditorFormState.editFormState.errors;
+      }
+      return null;
+    });
   }
 
-  resetKeyEditorForm() {
-    this._formRef.value?.reset();
+  resetAddEditorForm() {
+    this._addFormRef.value?.reset();
+  }
+
+  resetEditEditorForm() {
+    this._editFormRef.value?.reset();
   }
 
   _getSelectedKey() {
@@ -138,7 +173,7 @@ export class CcRedisExplorer extends LitElement {
     };
 
     // todo: cancel current call if any
-    dispatchCustomEvent(this, 'selected-key-change', keyName);
+    dispatchCustomEvent(this, 'selected-key-change', { keyName, keyType });
   }
 
   /**
@@ -156,11 +191,41 @@ export class CcRedisExplorer extends LitElement {
   }
 
   /**
-   * @param {FormDataMap} formData
+   * @param {FormDataMap & {keyName: string, keyType: CcRedisKeyType}} formData
    */
-  _onKeyEditorFormSubmit(formData) {
-    this.keyEditorFormState = { ...this.keyEditorFormState, errors: null };
-    dispatchCustomEvent(this, 'add', formData.address);
+  _onKeyEditorAddFormSubmit(formData) {
+    if (this.keyEditorFormState.type !== 'add') {
+      return;
+    }
+    this.keyEditorFormState = {
+      ...this.keyEditorFormState,
+      addFormState: { ...this.keyEditorFormState.addFormState, errors: null },
+    };
+
+    const decodedKey = this._decodeKey(formData);
+    dispatchCustomEvent(this, 'add-key', {
+      ...decodedKey,
+      ...KEY_EDITORS[decodedKey.keyType].decodeFormData(formData),
+    });
+  }
+
+  /**
+   * @param {FormDataMap & {keyName: string, keyType: CcRedisKeyType}} formData
+   */
+  _onKeyEditorEditFormSubmit(formData) {
+    if (this.keyEditorFormState.type !== 'edit') {
+      return;
+    }
+    this.keyEditorFormState = {
+      ...this.keyEditorFormState,
+      editFormState: { ...this.keyEditorFormState.editFormState, errors: null },
+    };
+
+    const decodedKey = this._decodeKey(formData);
+    dispatchCustomEvent(this, 'edit-key', {
+      ...decodedKey,
+      ...KEY_EDITORS[decodedKey.keyType].decodeFormData(formData),
+    });
   }
 
   render() {
@@ -229,17 +294,22 @@ export class CcRedisExplorer extends LitElement {
       return null;
     }
 
-    if (this.keyEditorFormState.initialKeyValue == null) {
-      return this._renderAddForm();
+    if (this.keyEditorFormState.type === 'add') {
+      return this._renderAddForm(this.keyEditorFormState.addFormState);
     }
 
-    return this._renderEditForm(this.keyEditorFormState.initialKeyValue);
+    return this._renderEditForm(this.keyEditorFormState.editFormState, this.keyEditorFormState.keyValue);
   }
 
-  _renderAddForm() {
-    const saving = this.keyEditorFormState.type === 'saving';
+  /**
+   *
+   * @param {CcRedisExplorerKeyAddFormState} addFormState
+   * @return {TemplateResult}
+   */
+  _renderAddForm(addFormState) {
+    const saving = addFormState.type === 'adding';
 
-    return html`<form ${ref(this._formRef)} ${formSubmit(this._onKeyEditorFormSubmit.bind(this))}>
+    return html`<form ${ref(this._addFormRef)} ${formSubmit(this._onKeyEditorAddFormSubmit.bind(this))}>
       <cc-input-text name="keyName" label="Name" required></cc-input-text>
       <cc-select name="keyType" label="Type" required @cc-select:input=${this._onKeyTypeChanged}></cc-select>
       ${this._renderKeyValueFormByType(this._addFormSelectedType)}
@@ -250,13 +320,14 @@ export class CcRedisExplorer extends LitElement {
   }
 
   /**
+   * @param {CcRedisExplorerKeyEditFormState} editFormState
    * @param {CcRedisKeyValue} keyValue
    * @return {TemplateResult}
    */
-  _renderEditForm(keyValue) {
-    const saving = this.keyEditorFormState.type === 'saving';
+  _renderEditForm(editFormState, keyValue) {
+    const saving = editFormState.type === 'saving';
 
-    return html`<form>
+    return html`<form ${ref(this._editFormRef)} ${formSubmit(this._onKeyEditorEditFormSubmit.bind(this))}>
       <cc-input-text name="keyName" disabled .resetValue=${keyValue.name} .value=${keyValue.name}></cc-input-text>
       <cc-select name="keyType" disabled .resetValue=${keyValue.type} .value=${keyValue.type}></cc-select>
       ${this._renderKeyValueFormByType(keyValue.type, keyValue)}
@@ -273,25 +344,27 @@ export class CcRedisExplorer extends LitElement {
    * @return {TemplateResult}
    */
   _renderKeyValueFormByType(keyType, keyValue) {
-    if (keyType === 'string') {
-      return html`<cc-input-text
-        name="value"
-        multi
-        required
-        reset-value=${ifDefined(keyValue?.value ?? undefined)}
-        value=${ifDefined(keyValue?.value ?? undefined)}
-      ></cc-input-text>`;
+    if (keyType === 'string' && keyValue.type === 'string') {
+      KEY_EDITORS.string.render(keyValue);
     }
 
-    if (keyType === 'list') {
-      return html`listEditor`;
+    if (keyType === 'list' && keyValue.type === 'list') {
+      KEY_EDITORS.list.render(keyValue);
     }
 
-    if (keyType === 'hash') {
-      return html`hashEditor`;
+    if (keyType === 'hash' && keyValue.type === 'hash') {
+      KEY_EDITORS.hash.render(keyValue);
     }
 
     return html`Unsupported type`;
+  }
+
+  /**
+   * @param {FormDataMap & {keyName: string, keyType: CcRedisKeyType}} formData
+   * @return {{keyName: string, keyType: CcRedisKeyType}}
+   */
+  _decodeKey(formData) {
+    return { keyName: formData.keyName, keyType: formData.keyType };
   }
 
   static get styles() {
