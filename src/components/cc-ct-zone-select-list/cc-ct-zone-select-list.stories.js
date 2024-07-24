@@ -1,12 +1,12 @@
 import { getFlagUrl, getInfraProviderLogoUrl } from '../../lib/remote-assets.js';
-import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import { makeStory } from '../../stories/lib/make-story.js';
 import './cc-ct-zone-select-list.js';
 
 export default {
   // this makes storybook generate a doc from the custom elements manifest
   tags: ['autodocs'],
   title: '🛠 Creation Tunnel/<cc-ct-zone-select-list>',
-  // This component name is used by Storybook's docs page for the API table.
+  // This component code is used by Storybook's docs page for the API table.
   // It will use `custom-elements.json` documentation file.
   // Run `npm run components:docs-json` to generate this JSON file.
   component: 'cc-ct-zone-select-list',
@@ -21,71 +21,146 @@ const conf = {
 
 const DEFAULT_ITEMS = [
   {
-    name: 'scw',
-    city: 'Paris',
+    code: 'scw',
+    name: 'Paris',
     flagUrl: getFlagUrl('FR'),
     images: [getInfraProviderLogoUrl('scaleway')],
     tags: ['green'],
   },
   {
-    name: 'sgp',
-    city: 'Singapore',
+    code: 'sgp',
+    name: 'Singapore',
     images: [getInfraProviderLogoUrl('ovh')],
     flagUrl: getFlagUrl('SG'),
     tags: [],
   },
   {
-    name: 'par',
-    city: 'Paris',
+    code: 'par',
+    name: 'Paris',
     images: [getInfraProviderLogoUrl('clever-cloud')],
     flagUrl: getFlagUrl('FR'),
     tags: ['foo'],
   },
   {
-    name: 'grahds',
-    city: 'Gravelines',
+    code: 'grahds',
+    name: 'Gravelines',
     images: [getInfraProviderLogoUrl('ovh')],
     flagUrl: getFlagUrl('FR'),
     tags: [],
   },
   {
-    name: 'mtl',
-    city: 'Montreal',
+    code: 'mtl',
+    name: 'Montreal',
     images: [getInfraProviderLogoUrl('ovh')],
     flagUrl: getFlagUrl('CA'),
     tags: [],
   },
   {
-    name: 'syd',
-    city: 'Sydney',
+    code: 'syd',
+    name: 'Sydney',
     images: [getInfraProviderLogoUrl('ovh')],
     flagUrl: getFlagUrl('AU'),
     tags: [],
   },
   {
-    name: 'rbx',
-    city: 'Roubaix',
+    code: 'rbx',
+    name: 'Roubaix',
     images: [getInfraProviderLogoUrl('ovh')],
     flagUrl: getFlagUrl('FR'),
     tags: [],
   },
   {
-    name: 'wsw',
-    city: 'Warsaw',
+    code: 'wsw',
+    name: 'Warsaw',
     images: [getInfraProviderLogoUrl('ovh')],
     flagUrl: getFlagUrl('PL'),
     tags: [],
   },
   {
-    name: 'rbxhds',
-    city: 'Roubaix',
+    code: 'rbxhds',
+    name: 'Roubaix',
     images: [getInfraProviderLogoUrl('ovh')],
     flagUrl: getFlagUrl('FR'),
     tags: [],
   },
   {
-    name: 'fr-north-hds',
-    city: 'North',
+    code: 'fr-north-hds',
+    name: 'North',
+    images: [getInfraProviderLogoUrl('ovh')],
+    flagUrl: getFlagUrl('FR'),
+    tags: [],
+  },
+];
+
+const PRIVATE_ZONES = [
+  {
+    code: 'foo-foobars',
+    name: 'Private MySQL Cluster',
+    selected: false,
+    images: [getInfraProviderLogoUrl('ovh')],
+    flagUrl: getFlagUrl('FR'),
+    tags: [],
+  },
+  {
+    code: 'Foo',
+    name: 'City Member Lab',
+    selected: false,
+    images: [],
+    flagUrl: getFlagUrl('FR'),
+    tags: [],
+  },
+  {
+    code: 'foo5',
+    name: 'testing environment',
+    selected: false,
+    images: [getInfraProviderLogoUrl('ovh')],
+    flagUrl: getFlagUrl('FR'),
+    tags: [],
+  },
+  {
+    code: 'foobarz',
+    name: 'Foobarz',
+    selected: false,
+    images: [getInfraProviderLogoUrl('ovh')],
+    flagUrl: getFlagUrl('FR'),
+    tags: [],
+  },
+  {
+    code: 'foozbar',
+    name: 'Clever Edge Faume Paris',
+    selected: false,
+    images: [getInfraProviderLogoUrl('ovh')],
+    flagUrl: getFlagUrl('FR'),
+    tags: [],
+  },
+  {
+    code: 'foobazbabarzone',
+    name: 'Sleep Edge Abroad Bird Random',
+    selected: false,
+    images: [getInfraProviderLogoUrl('ovh')],
+    flagUrl: getFlagUrl('FR'),
+    tags: [],
+  },
+  {
+    code: 'champion',
+    name: 'Private MongoDB Cluster',
+    selected: false,
+    images: [getInfraProviderLogoUrl('ovh')],
+    flagUrl: getFlagUrl('FR'),
+    tags: [],
+  },
+  {
+    code: 'clevercloud-postgresql-internal',
+    name: 'Private PostgreSQL Cluster',
+    selected: false,
+    images: [getInfraProviderLogoUrl('ovh')],
+    flagUrl: getFlagUrl('FR'),
+    tags: [],
+  },
+  {
+    code: 'mainstream',
+    name: 'Sleep Edge Abroad Bird Matrix',
+    selected: false,
     images: [getInfraProviderLogoUrl('ovh')],
     flagUrl: getFlagUrl('FR'),
     tags: [],
@@ -95,29 +170,22 @@ const DEFAULT_ITEMS = [
 export const defaultStory = makeStory(conf, {
   items: [
     {
-      state: {
-        type: 'loaded',
-        zoneItems: DEFAULT_ITEMS,
-      },
+      zones: DEFAULT_ITEMS,
     },
   ],
 });
 
-export const skeleton = makeStory(conf, {
-  items: [{ state: { type: 'loading' } }],
+export const privateZones = makeStory(conf, {
+  items: [
+    {
+      zones: PRIVATE_ZONES,
+    },
+  ],
 });
-
-export const error = makeStory(conf, {
-  items: [{ state: { type: 'error' } }],
-});
-
-export const simulations = makeStory(conf, {
-  items: [{ state: { type: 'loading' } }, { state: { type: 'loading' } }],
-  simulations: [
-    storyWait(2000, ([component, componentError]) => {
-      component.state.zoneItems = DEFAULT_ITEMS;
-      component.state.type = 'loaded';
-      componentError.state.type = 'error';
-    }),
+export const allZones = makeStory(conf, {
+  items: [
+    {
+      zones: [...DEFAULT_ITEMS, ...PRIVATE_ZONES],
+    },
   ],
 });

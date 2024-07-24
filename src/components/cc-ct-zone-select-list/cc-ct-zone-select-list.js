@@ -1,19 +1,12 @@
 import { css, html, LitElement } from 'lit';
-import '../cc-icon/cc-icon.js';
-import '../cc-img/cc-img.js';
-
 import '../cc-badge/cc-badge.js';
 import '../cc-ct-zone-select/cc-ct-zone-select.js';
+import '../cc-icon/cc-icon.js';
+import '../cc-img/cc-img.js';
 import '../cc-notice/cc-notice.js';
 
-const LOADING_NUMBER = 10;
-
 /**
- * @typedef {import('./cc-ct-zone-select-list.types.js').ZoneListState} ZoneListState
- * @typedef {import('./cc-ct-zone-select-list.types.js').ZoneListStateLoaded} ZoneListStateLoaded
- * @typedef {import('./cc-ct-zone-select-list.types.js').ZoneListStateLoading} ZoneListStateLoading
- * @typedef {import('./cc-ct-zone-select-list.types.js').ZoneListStateError} ZoneListStateError
- * @typedef {import('lit').PropertyValues<CcCtZoneSelectList>} CcCtZoneSelectPropertyValues
+ * @typedef {import('./cc-ct-zone-select-list.types.js').ZoneItem} ZoneItem
  */
 
 /**
@@ -33,41 +26,19 @@ const LOADING_NUMBER = 10;
  *
  * @cssdisplay block
  *
- * @prop {String} one - Description for one.
- * @prop {Boolean} two - Description for two.
- *
  * @fires {CustomEvent<any>} example-component:event-name - Fires XXX whenever YYY.
- *
- * @slot - The content of the button (text or HTML). If you want an image, please look at the `image` attribute.
- *
- * @cssprop {Color} --cc-loader-color - The color of the animated circle (defaults: `#2653af`).
  */
 export class CcCtZoneSelectList extends LitElement {
-  // DOCS: 1. LitElement's properties descriptor
-
   static get properties() {
-    return {
-      state: { type: Object },
-      _isGreen: { type: Boolean },
-    };
+    return { zones: { type: Array } };
   }
-
-  // DOCS: 2. Constructor
 
   constructor() {
     super();
 
-    /** @type {ZoneListState} - state of the zone item */
-    this.state = { type: 'loading' };
+    /** @type {Array<ZoneItem>} */
+    this.zones = [];
   }
-
-  // DOCS: 3. Public methods
-
-  // DOCS: 4. Private methods
-
-  // DOCS: 5. Event handlers
-
-  // DOCS: 6. Custom element lifecycle callbacks
 
   connectedCallback() {
     super.connectedCallback();
@@ -83,43 +54,27 @@ export class CcCtZoneSelectList extends LitElement {
     console.log(zone, selected);
   }
 
-  /**
-   * @param {CcCtZoneSelectPropertyValues} changedProperties
-   */
-  willUpdate(changedProperties) {}
-
   render() {
-    const loading = this.state.type === 'loading';
-    const error = this.state.type === 'error';
-    const data = this.state.type === 'loaded' ? this.state.zoneItems : new Array(LOADING_NUMBER);
-
     return html`
-      ${error
-        ? html` <cc-notice intent="warning" message="Something went wrong while loading zones"></cc-notice> `
-        : ''}
-      ${loading
-        ? html`
-            ${data
-              .fill(LOADING_NUMBER)
-              .map((_) => html` <cc-ct-zone-select .state=${{ type: 'loading' }}></cc-ct-zone-select> `)}
-          `
-        : ''}
-      ${this.state.type === 'loaded'
-        ? html`
-            ${data.map(
-              (zoneItem) => html`
-                <cc-ct-zone-select
-                  .state=${{ type: 'loaded', ...zoneItem }}
-                  tabindex="${zoneItem.disabled ? '-1' : '0'}"
-                ></cc-ct-zone-select>
-              `,
-            )}
-          `
-        : ''}
+      <fieldset>
+        <legend>Zone</legend>
+        ${this.zones.map(
+          (zone) => html`
+            <div>
+              <input type="radio" name="zone" id="${zone.code}" />
+              <cc-ct-zone-select
+                name="${zone.name}"
+                code="${zone.code}"
+                flagUrl="${zone.flagUrl}"
+                .images="${zone.images}"
+              ></cc-ct-zone-select>
+            </div>
+            <label for="${zone.code}">${zone.code}</label>
+          `,
+        )}
+      </fieldset>
     `;
   }
-
-  // DOCS: 9. "sub render" private methods used by the main render()
 
   static get styles() {
     return [
@@ -134,7 +89,5 @@ export class CcCtZoneSelectList extends LitElement {
     ];
   }
 }
-
-// DOCS: 11. Define the custom element
 
 window.customElements.define('cc-ct-zone-select-list', CcCtZoneSelectList);
