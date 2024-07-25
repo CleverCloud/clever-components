@@ -5,6 +5,19 @@ title: 'Changelog'
 
 # Changelog
 
+## [15.1.0](https://github.com/CleverCloud/clever-components/compare/15.0.1...15.1.0) (2024-07-25)
+
+
+### 🚀 Features
+
+* **cc-domain-management:** init ([f4d0146](https://github.com/CleverCloud/clever-components/commit/f4d0146cd21dbc7b332a26d8c7069f2277e22263)), closes [#1095](https://github.com/CleverCloud/clever-components/issues/1095)
+* **i18n-sanitize:** authorize `&lt;span&gt;` elements ([21bfad0](https://github.com/CleverCloud/clever-components/commit/21bfad07899eb81c905c071f22be9e184ecf076c))
+
+
+### 🐛 Bug Fixes
+
+* prettier adr wasn't in the correct directory ([07e944b](https://github.com/CleverCloud/clever-components/commit/07e944b6c0eab1788afd545ab2976c802f869695))
+
 ## [15.0.1](https://github.com/CleverCloud/clever-components/compare/15.0.0...15.0.1) (2024-06-28)
 
 
