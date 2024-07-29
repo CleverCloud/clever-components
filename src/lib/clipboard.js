@@ -7,6 +7,7 @@
  */
 export async function copyToClipboard(text, html = null) {
   if (navigator.clipboard?.write != null) {
+    /** @type {{'text/plain': Blob, 'text/html'?: Blob}} */
     const items = {
       'text/plain': new Blob([text], { type: 'text/plain' }),
     };
@@ -16,7 +17,7 @@ export async function copyToClipboard(text, html = null) {
     // eslint-disable-next-line no-undef
     await navigator.clipboard.write([new ClipboardItem(items)]);
   } else if (document.execCommand != null) {
-    const listener = (e) => {
+    const listener = /** @param {ClipboardEvent} e*/ (e) => {
       e.clipboardData.setData('text/plain', text);
       if (html != null) {
         e.clipboardData.setData('text/html', html);
