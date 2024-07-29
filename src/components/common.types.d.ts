@@ -214,3 +214,15 @@ interface EnvVarEditorStateLoaded {
 /* endregion */
 
 export type NotificationIntent = 'info' | 'success' | 'warning' | 'danger';
+
+export interface Notification {
+  message: string | Node;
+  title?: string;
+  intent: NotificationIntent;
+  options?: NotificationOptions;
+}
+
+export interface NotificationOptions {
+  timeout?: number;
+  closeable?: boolean;
+}
