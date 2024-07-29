@@ -2,6 +2,10 @@ import ansiRegEx from 'ansi-regex';
 import { css, html, unsafeCSS } from 'lit';
 import { MemoryCache } from '../memory-cache.js';
 
+/**
+ * @typedef {import('./ansi.types.js').AnsiPart} AnsiPart
+ */
+
 /** @type {AnsiParser} - Lazy loaded parser */
 let ansiParser;
 
@@ -134,7 +138,7 @@ ANSI_COLORS.forEach((style) => {
 
 /**
  * Remove all ANSI escape codes from the given text.
- * @param text
+ * @param {string} text
  * @return {string}
  */
 export function stripAnsi(text) {
@@ -145,6 +149,8 @@ export function stripAnsi(text) {
  * Converts the given text into Lit template according to the ANSI escape codes found in text.
  *
  * When using this, don't forget to include the `ansiPaletteStyle` CSS rules to a parent element. (see ./ansi-palette-style)
+ *
+ * @param {string} text
  */
 export function ansiToLit(text) {
   if (ansiParser == null) {
@@ -152,7 +158,7 @@ export function ansiToLit(text) {
   }
 
   const tokens = ansiParser.parse(text);
-  return tokens.map((token, i) => {
+  return tokens.map((token) => {
     if (token.styles.length === 0) {
       return token.text;
     }
@@ -232,6 +238,11 @@ class AnsiParser {
     /** @type {Map<string, Set<string>>} */
     const commonEscapes = new Map();
 
+    /**
+     * @param {string} name
+     * @param {string} code
+     * @param {Array<string>} escapes
+     */
     const handleCode = (name, code, escapes) => {
       const ansiCode = toAnsi(code);
       this.codeToStyle.set(ansiCode, name);
@@ -261,7 +272,7 @@ class AnsiParser {
   }
 
   /**
-   * @param str
+   * @param {string} str
    * @return {Array<AnsiPart>}
    */
   parse(str) {
@@ -269,7 +280,7 @@ class AnsiParser {
   }
 
   /**
-   * @param str
+   * @param {string} str
    * @return {Array<AnsiPart>}
    */
   _doParse(str) {
@@ -329,6 +340,11 @@ function addToIndexMap(map, key, value) {
   map.get(key).add(value);
 }
 
+/**
+ * @param {Array<T>} arr
+ * @param {T} val
+ * @template T
+ */
 function removeElm(arr, val) {
   const i = arr.indexOf(val);
   if (i >= 0) {
@@ -336,10 +352,18 @@ function removeElm(arr, val) {
   }
 }
 
+/**
+ * @param {string|number} code
+ * @return {string}
+ */
 function toAnsi(code) {
   return `\u001b[${code}m`;
 }
 
+/**
+ * @param {string} ansiCode
+ * @return {string}
+ */
 function fromAnsi(ansiCode) {
   return ansiCode.slice(2, ansiCode.length - 1);
 }
