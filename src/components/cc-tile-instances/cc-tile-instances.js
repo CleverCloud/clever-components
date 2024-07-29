@@ -93,7 +93,12 @@ export class CcTileInstances extends LitElement {
     if (this._lastRunningCount !== runningInstancesCount) {
       this.updateComplete.then(() => {
         // This is not supported in Safari yet, but it's purely decorative so let's keep it like that
-        animate(this.shadowRoot, '.instances[data-type=running] .count-bubble', ...QUICK_SHRINK);
+        animate(
+          this.shadowRoot,
+          '.instances[data-type=running] .count-bubble',
+          QUICK_SHRINK.keyframes,
+          QUICK_SHRINK.options,
+        );
         this._lastRunningCount = runningInstancesCount;
       });
     }
@@ -101,7 +106,12 @@ export class CcTileInstances extends LitElement {
     if (this._lastDeployingCount !== deployingInstancesCount) {
       this.updateComplete.then(() => {
         // This is not supported in Safari yet, but it's purely decorative so let's keep it like that
-        animate(this.shadowRoot, '.instances[data-type=deploying] .count-bubble', ...QUICK_SHRINK);
+        animate(
+          this.shadowRoot,
+          '.instances[data-type=deploying] .count-bubble',
+          QUICK_SHRINK.keyframes,
+          QUICK_SHRINK.options,
+        );
         this._lastDeployingCount = deployingInstancesCount;
       });
     }
