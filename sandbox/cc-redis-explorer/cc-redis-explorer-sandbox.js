@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import '../../src/components/cc-input-text/cc-input-text.js';
 import '../../src/components/cc-redis-explorer/cc-redis-explorer.js';
+import '../../src/components/cc-redis-explorer/cc-redis-explorer.smart.js';
 import '../../src/components/cc-smart-container/cc-smart-container.js';
 import { sandboxStyles } from '../sandbox-styles.js';
 
@@ -21,8 +22,10 @@ class CcRedis extends LitElement {
 
   render() {
     const context = {
-      url: 'http://localhost:8002',
-      backendUrl: this._redisUrl,
+      apiConfig: {
+        url: 'http://localhost:8080',
+        backendUrl: this._redisUrl,
+      },
     };
 
     return html`
