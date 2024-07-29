@@ -179,23 +179,19 @@ TODO
 
 ## `npm run test:cem`
 
-TODO
+* Run unit tests present in `cem/test` with [Mocha](https://mochajs.org/).
 
 ## `npm run test:cem:watch`
 
-TODO
+* Run unit tests present in `cem/test` with [Mocha](https://mochajs.org/) in watch mode.
 
 ## `npm run test:watch`
 
-* Same as npm run test but in watch mode.
-
-## `npm run test:watch`
-
-TODO
+* Run all unit tests present in `test` with [Web Test Runner](https://modern-web.dev/docs/test-runner/overview/) in watch mode.
 
 ## `npm run typecheck`
 
-TODO
+* Run the TypeScript compiler to typecheck every file matching the criteria specified within the `tsconfig.ci.json` file.
 
 ## `npm run typecheck:stats`
 
