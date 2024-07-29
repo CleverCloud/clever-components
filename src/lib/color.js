@@ -22,7 +22,7 @@ export function hexToRgb(hex) {
 }
 
 /**
- *
+ * Transforms the given RGB color into hex format.
  * @param {RgbColor} color
  * @return {string}
  */
@@ -31,7 +31,7 @@ export function rgbToHex(color) {
 }
 
 /**
- *
+ * Transforms the given RGB color into HSL format.
  * @param {RgbColor} color
  * @return {HslColor}
  */
@@ -62,7 +62,7 @@ export function rgbToHsl(color) {
 }
 
 /**
- *
+ * Transforms the given HSL color into RGB format.
  * @param {HslColor} hsl
  * @return {RgbColor}
  */
@@ -95,7 +95,7 @@ export function hslToRgb(hsl) {
 }
 
 /**
- *
+ * Get the luminosity of the given RGB color
  * @param {RgbColor} color
  * @return {number}
  */
@@ -106,6 +106,7 @@ export function getLuminosity(color) {
 }
 
 /**
+ * Returns whether the given color is dark.
  *
  * @param {RgbColor} color
  * @return {boolean}
@@ -131,7 +132,7 @@ export function getContrastRatio(color1, color2) {
  * @return {RgbColor}
  */
 export function shadeColor(color, percent) {
-  const shade = (n) => {
+  const shade = /** @param {number} n */ (n) => {
     return Math.round(Math.max(0, Math.min(255, n + Math.round(2.55 * percent))));
   };
 
@@ -142,10 +143,19 @@ export function shadeColor(color, percent) {
   };
 }
 
+/**
+ * @param {number} lighterLuminosity
+ * @param {number} darkerLuminosity
+ * @return {number}
+ */
 function computeContrast(lighterLuminosity, darkerLuminosity) {
   return (lighterLuminosity + 0.05) / (darkerLuminosity + 0.05);
 }
 
+/**
+ * @param {number} composant
+ * @return {number}
+ */
 function getComposantValue(composant) {
   const c = composant / 255;
   if (c <= 0.03928) {
