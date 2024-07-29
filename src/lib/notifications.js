@@ -1,7 +1,7 @@
 import { dispatchCustomEvent } from './events.js';
 
 /**
- * @typedef {import('../toast/types.js').Notification} Notification
+ * @typedef {import('../components/common.types.js').Notification} Notification
  */
 
 /**
@@ -14,7 +14,7 @@ export function notify(notification, target = window) {
 }
 
 /**
- * @param {string} message
+ * @param {string|Node} message
  * @param {string} [title]
  * @return {CustomEvent} the <code>cc:notify</code> event that has been dispatched.
  */
@@ -27,7 +27,7 @@ export function notifyError(message, title) {
 }
 
 /**
- * @param {string} message
+ * @param {string|Node} message
  * @param {string} [title]
  * @return {CustomEvent} the <code>cc:notify</code> event that has been dispatched.
  */
