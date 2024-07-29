@@ -18,7 +18,7 @@ export class MemoryCache {
 
     /** @type {Map<K, V>} */
     this._map = new Map();
-    /** @type {Array} */
+    /** @type {Array<K>} */
     this._keys = [];
   }
 
