@@ -1,5 +1,9 @@
 const timeoutCache = new WeakMap();
 
+/**
+ * @param {Element} parent
+ * @param {Element} child
+ */
 export function scrollChildIntoParent(parent, child) {
   const oldTimeoutId = timeoutCache.get(parent);
   clearTimeout(oldTimeoutId);
@@ -14,6 +18,10 @@ export function scrollChildIntoParent(parent, child) {
   timeoutCache.set(parent, newTimeoutId);
 }
 
+/**
+ * @param {Element} parent
+ * @param {Element} child
+ */
 function doScrollChildIntoParent(parent, child) {
   // In our situation, we don't need to handle borders and paddings
   const parentRect = parent.getBoundingClientRect();
