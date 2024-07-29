@@ -1,13 +1,24 @@
 import { getContrastRatio, hexToRgb, isDark } from '../color.js';
 
-const colors = ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan'];
+/**
+ * @typedef {import('./ansi.types.js').AnsiPalette} AnsiPalette
+ */
 
 /**
- *
+ * @typedef {keyof AnsiPalette} ColorsType
+ */
+
+/**
+ * @type {Array<ColorsType>}
+ */
+const COLORS = ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan'];
+
+/**
  * @param {AnsiPalette} palette
  */
 export function analyzePalette(palette) {
   const background = hexToRgb(palette.background);
+  /** @type {Array<ColorsType>} */
   const colorsToTest = getColorsToTest(isDark(background));
 
   const colorsCount = colorsToTest.length;
@@ -23,6 +34,7 @@ export function analyzePalette(palette) {
       compliantCount++;
     }
     ratioSum += ratio;
+    // @ts-ignore
     contrasts[colorName] = { ratio, compliant };
   });
 
@@ -34,8 +46,14 @@ export function analyzePalette(palette) {
   };
 }
 
+/**
+ *
+ * @param {boolean} isDarkPalette
+ * @return {Array<ColorsType>}
+ */
 function getColorsToTest(isDarkPalette) {
-  const result = [...colors, isDarkPalette ? 'white' : 'black'];
+  const result = [...COLORS, isDarkPalette ? 'white' : 'black'];
 
+  // @ts-ignore
   return [...result, ...result.map((c) => `bright-${c}`)];
 }
