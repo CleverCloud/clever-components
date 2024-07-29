@@ -45,7 +45,7 @@ const escapeHtml = (() => {
  * @return {string}
  */
 function absorbTextSibling(siblingNode) {
-  if (siblingNode != null && isTextNode(siblingNode)) {
+  if (siblingNode instanceof Text) {
     siblingNode.parentNode.removeChild(siblingNode);
     return siblingNode.data;
   }
@@ -54,15 +54,21 @@ function absorbTextSibling(siblingNode) {
 
 /**
  * @param {TemplateStringsArray} statics
- * @param {Array<string>} params
+ * @param {Array<string|number>} params
  * @return {Node}
  */
 export function sanitize(statics, ...params) {
   let html = '';
   for (let i = 0; i < statics.length; i++) {
     html += statics[i];
-    if (params[i] != null) {
-      html += escapeHtml(params[i]);
+    const param = params[i];
+
+    if (param != null) {
+      if (typeof param === 'string') {
+        html += escapeHtml(param);
+      } else {
+        html += param;
+      }
     }
   }
 

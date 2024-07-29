@@ -36,7 +36,7 @@ In the future, it would have been done in a standard way with import maps (if an
 All components now import directly the file like this:
 
 ```js
-import { i18n } from '../lib/i18n/i18n.js';
+import { i18n } from '../lib/i18n.js';
 ```
 
 This file does not import all languages anymore.

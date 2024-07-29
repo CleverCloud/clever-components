@@ -1,8 +1,8 @@
 /**
- * @typedef {import('./i18n.types.d.ts').TranslationsMap} TranslationsMap
- * @typedef {import('./i18n.types.d.ts').Translations} Translations
- * @typedef {import('./i18n.types.d.ts').TranslateFunction} TranslateFunction
- * @typedef {import('./i18n.types.d.ts').Translated} Translated
+ * @typedef {import('./i18n.types.js').TranslationsMap} TranslationsMap
+ * @typedef {import('./i18n.types.js').Translations} Translations
+ * @typedef {import('./i18n.types.js').TranslateFunction} TranslateFunction
+ * @typedef {import('./i18n.types.js').Translated} Translated
  */
 
 /**

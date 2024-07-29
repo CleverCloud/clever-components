@@ -1,10 +1,10 @@
-export type TranslationsMap = { [key: string]: Translations };
+export type TranslationsMap = { [lang: string]: Translations };
 
 export type Translations = { [key: string]: Translation };
 
 export type Translation = string | TranslateFunction;
 
-export type TranslateFunction = (args: { [key: string]: any }) => Translated;
+export type TranslateFunction = (data: { [key: string]: any }) => Translated;
 
 export type Translated = string | Node;
 

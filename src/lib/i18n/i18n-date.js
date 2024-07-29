@@ -1,8 +1,8 @@
 /**
  *
- * @typedef {import('./i18n.types.d.ts').DateFormatter} DateFormatter
- * @typedef {import('./i18n.types.d.ts').DateUnit} DateUnit
- * @typedef {import('./i18n.types.d.ts').RelativeTimeFormatFunction} RelativeTimeFormatFunction
+ * @typedef {import('./i18n.types.js').DateFormatter} DateFormatter
+ * @typedef {import('./i18n.types.js').DateUnit} DateUnit
+ * @typedef {import('./i18n.types.js').RelativeTimeFormatFunction} RelativeTimeFormatFunction
  */
 
 /**
