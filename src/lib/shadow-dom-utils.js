@@ -66,7 +66,7 @@ export function elementsFromPoint(x, y, root = document) {
     } else if (elements.includes(items[0])) {
       shadow = null;
     } else {
-      elements = [...items, elements];
+      elements = [...items, ...elements];
       shadow = items[0].shadowRoot;
     }
   }
