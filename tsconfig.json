@@ -12,6 +12,7 @@
     /* Language and Environment */
     "target": "ES2021", /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
     "lib": [
+      "ES2021",
       "DOM",
       "DOM.Iterable"
     ], /* Specify a set of bundled library declaration files that describe the target runtime environment. */

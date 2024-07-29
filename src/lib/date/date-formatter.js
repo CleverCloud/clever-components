@@ -19,6 +19,10 @@
  */
 const DATE_TIME_FORMATS_BY_TIMEZONE = new Map();
 
+/**
+ * @param {Timezone} timezone
+ * @return {Intl.DateTimeFormat}
+ */
 function getDateTimeFormat(timezone) {
   let format = DATE_TIME_FORMATS_BY_TIMEZONE.get(timezone);
   if (format == null) {
@@ -84,6 +88,7 @@ export class DateFormatter {
   formatToParts(date) {
     const parts = this.toParts(date);
 
+    /** @type {DateFormattedParts} */
     const result = {
       date: `${parts.year}-${parts.month}-${parts.day}`,
       separator: this._isIso ? 'T' : ' ',
@@ -104,18 +109,14 @@ export class DateFormatter {
   /**
    *
    * @param {Date} date
-   * @param {(part: {value: string|number, type: 'part'|'separator'}) => *} mapper
+   * @param {(part: {value: string, type: 'part'|'separator'}) => *} mapper
    * @return {Array<*>}
    */
   mapParts(date, mapper) {
     const parts = this.toParts(date);
 
-    const dateSeparator = { value: '-', type: 'separator' };
-    const timeSeparator = { value: ':', type: 'separator' };
-    const separator = { value: this._isIso ? 'T' : ' ', type: 'separator' };
-    const part = (value) => {
-      return { value, type: 'part' };
-    };
+    const dateSeparator = separator('-');
+    const timeSeparator = separator(':');
 
     const items = [
       part(parts.year),
@@ -123,7 +124,7 @@ export class DateFormatter {
       part(parts.month),
       dateSeparator,
       part(parts.day),
-      separator,
+      separator(this._isIso ? 'T' : ' '),
       part(parts.hour),
       timeSeparator,
       part(parts.minute),
@@ -149,10 +150,10 @@ export class DateFormatter {
    */
   toParts(date) {
     const dtf = getDateTimeFormat(this._timezone);
-
     const datePartsArray = dtf.formatToParts(date);
     const dateParts = Object.fromEntries(datePartsArray.map(({ type, value }) => [type, value]));
 
+    /** @type {DateParts} */
     const result = {
       year: dateParts.year,
       month: dateParts.month,
@@ -172,4 +173,20 @@ export class DateFormatter {
 
     return result;
   }
+}
+
+/**
+ * @param {string} value
+ * @return {{value: string, type: 'part'}}
+ */
+function part(value) {
+  return { value, type: 'part' };
+}
+
+/**
+ * @param {string} value
+ * @return {{value: string, type: 'separator'}}
+ */
+function separator(value) {
+  return { value, type: 'separator' };
 }
