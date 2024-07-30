@@ -77,7 +77,9 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
 
 ## `npm run components:check-type-imports`
 
-TODO
+* Check that each component has:
+  * types present in `@fires` event are imported.
+  * types present in the constructor are imported.
 
 ## `npm run components:docs`
 
@@ -163,15 +165,15 @@ TODO
 
 ## `npm run stylelint`
 
-TODO
+Check the CSS of our components with [Stylelint](https://stylelint.io/).
 
 ## `npm run stylelint:ci`
 
-TODO
+Used by our GitHub action to check our CSS and report errors.
 
 ## `npm run stylelint:fix`
 
-TODO
+Check the CSS of our components with [Stylelint](https://stylelint.io/) and fix errors automatically when it's possible.
 
 ## `npm run test`
 
