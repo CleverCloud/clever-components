@@ -7,6 +7,7 @@ import { injectAuthForSmartComponentsPlugin } from '../src/stories/lib/smart-aut
 const config = {
   stories: [
     // The Top level Markdown documents
+    '../CONTRIBUTING.md',
     '../README.md',
     // The Markdown documents inside docs (excluding "example" components)
     '../docs/**/!(*example*).md',
