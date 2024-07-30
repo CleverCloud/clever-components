@@ -7,6 +7,7 @@ import { injectAuthForSmartComponentsPlugin } from '../src/stories/lib/smart-aut
 const config = {
   stories: [
     // The Top level Markdown documents
+    '../CONTRIBUTING.md',
     '../README.md',
     // The Markdown documents inside docs (excluding "example" components)
     '../docs/**/!(*example*).md',
@@ -36,7 +37,7 @@ const config = {
   },
   docs: {
     // This makes Storybook auto-generate docs for every story with the `autodocs` tag
-    // We could have set this to `true` to auto-generate docs for every story without adding any tag 
+    // We could have set this to `true` to auto-generate docs for every story without adding any tag
     // but this allows us to create stories with no auto-generated docs if we want to.
     autodocs: "tag",
   },
@@ -67,11 +68,11 @@ const config = {
         appType: 'mpa',
         resolve: {
           alias: [
-            { 
-              // Without this, vite resolves our imports to the actual `custom-elements.json` file 
+            {
+              // Without this, vite resolves our imports to the actual `custom-elements.json` file
               // inside the `dist` folder.
               // We need to rely on a virtual file in dev mode, see the `generateCem` plugin for more info.
-              find: /.*\/dist\/custom-elements\.json$/, 
+              find: /.*\/dist\/custom-elements\.json$/,
               replacement: 'virtual:custom-elements.json'
             },
           ],
