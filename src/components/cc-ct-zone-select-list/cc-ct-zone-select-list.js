@@ -60,16 +60,18 @@ export class CcCtZoneSelectList extends LitElement {
         <legend>Zone</legend>
         ${this.zones.map(
           (zone) => html`
-            <div>
-              <input type="radio" name="zone" id="${zone.code}" />
+            <div class="zone-input">
               <cc-ct-zone-select
+                ?selected="${zone.selected}"
+                ?disabled="${zone.disabled}"
                 name="${zone.name}"
                 code="${zone.code}"
                 flagUrl="${zone.flagUrl}"
                 .images="${zone.images}"
+                .tags="${zone.tags}"
               ></cc-ct-zone-select>
+              <input type="radio" name="zone" value="${zone.code}" ?disabled=${zone.disabled} />
             </div>
-            <label for="${zone.code}">${zone.code}</label>
           `,
         )}
       </fieldset>
@@ -81,6 +83,14 @@ export class CcCtZoneSelectList extends LitElement {
       // language=CSS
       css`
         :host {
+          display: block;
+        }
+
+        .zone-input {
+        }
+
+        fieldset {
+          border: none;
           display: grid;
           gap: 1em;
           grid-template-columns: repeat(auto-fill, minmax(12.5em, 1fr));

@@ -49,6 +49,9 @@ function formatFlavor(f) {
 
 export const translations = {
   LANGUAGE: 'English',
+
+  'cc-foobar.foo': `foobar`,
+  'cc-ct-zone-select.alt.country-name': ({ code, name }) => getCountryName(lang, code, name),
   //#region cc-addon-admin
   'cc-addon-admin.admin': `Add-on administration`,
   'cc-addon-admin.danger-zone': `Danger zone`,

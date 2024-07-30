@@ -1,24 +1,14 @@
 import { css, html, LitElement } from 'lit';
 import { iconRemixCheckboxCircleFill as selectedIcon } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
+import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 
-/** @type {Partial<ZoneItem>} */
-const LOADING_INFO = {
-  name: '???',
-  city: '?????',
-  infra: null,
-};
-
 /**
- * @typedef {import('./cc-ct-zone-select.types.js').ZoneItem} ZoneItem
- * @typedef {import('./cc-ct-zone-select.types.js').ZoneItemState} ZoneItemState
- * @typedef {import('./cc-ct-zone-select.types.js').ZoneItemStateLoaded} ZoneItemStateLoaded
- * @typedef {import('./cc-ct-zone-select.types.js').ZoneItemStateLoading} ZoneItemStateLoading
- * @typedef {import('lit').PropertyValues<CcCtZoneSelect>} CcCtZoneSelectPropertyValues
+ * @typedef {import('./cc-ct-zone-select.types.js').ZoneImage} ZoneImage
  */
 
 /**
@@ -34,6 +24,8 @@ export class CcCtZoneSelect extends LitElement {
   static get properties() {
     return {
       code: { type: String },
+      country: { type: String },
+      countryCode: { type: String, attribute: 'country-code' },
       disabled: { type: Boolean, reflect: true },
       flagUrl: { type: String },
       images: { type: Array },
@@ -59,7 +51,13 @@ export class CcCtZoneSelect extends LitElement {
     /** @type {string} */
     this.flagUrl = null;
 
-    /** @type {string[]} */
+    /** @type {string} */
+    this.country = null;
+
+    /** @type {string} */
+    this.countryCode = null;
+
+    /** @type {ZoneImage[]} */
     this.images = [];
 
     /** @type {string[]} */
@@ -83,7 +81,7 @@ export class CcCtZoneSelect extends LitElement {
   }
 
   _onClick() {
-    if (this.disabled && this.selected) {
+    if (!this.disabled && this.selected) {
       dispatchCustomEvent(this, 'zone-selected', this.code);
     }
   }
@@ -96,8 +94,19 @@ export class CcCtZoneSelect extends LitElement {
       </div>
       <cc-icon class="icon-selected" .icon="${selectedIcon}" size="lg"></cc-icon>
       <div class="thumbnails">
-        ${this.flagUrl ? html` <cc-img class="flag" src=${this.flagUrl}></cc-img> ` : ''}
-        ${this.images.map((image) => html`<cc-img src="${image}"></cc-img>`)}
+        ${this.flagUrl
+          ? html`
+              <cc-img
+                class="flag"
+                src=${this.flagUrl}
+                a11y-name="${i18n('cc-ct-zone-select.alt.country-name', {
+                  code: this.countryCode,
+                  name: this.country,
+                })}"
+              ></cc-img>
+            `
+          : ''}
+        ${this.images.map((image) => html`<cc-img src="${image.url}" a11y-name="${image.alt}"></cc-img>`)}
         <div class="tags">${this.tags.map((tag) => html`<cc-badge>${tag}</cc-badge>`)}</div>
       </div>
     `;
@@ -109,12 +118,18 @@ export class CcCtZoneSelect extends LitElement {
       // language=CSS
       css`
         :host {
-          display: flex;
-          flex-direction: column;
-          position: relative;
           border: 2px solid var(--cc-color-border-neutral);
           border-radius: var(--cc-border-radius-default);
+          display: flex;
+          flex-direction: column;
           overflow: hidden;
+          position: relative;
+        }
+
+        input {
+          height: 100%;
+          position: relative;
+          width: 100%;
         }
 
         :host .title {
@@ -127,7 +142,7 @@ export class CcCtZoneSelect extends LitElement {
         :host(:hover:not([disabled])) {
           border-color: var(--cc-color-border-neutral-hovered);
         }
-        :host(:not([selected]):not([disabled])) {
+        :host(:not([selected], [disabled])) {
           cursor: pointer;
         }
 
@@ -170,14 +185,14 @@ export class CcCtZoneSelect extends LitElement {
         }
 
         .title {
-          padding: 1em 1em 0.75em 1em;
+          padding: 1em 1em 0.75em;
         }
 
         .infra {
-          padding-inline-start: 0.125em;
+          color: var(--cc-color-text-weaker);
           font-size: 0.875em;
           line-height: 1.125;
-          color: var(--cc-color-text-weaker);
+          padding-inline-start: 0.125em;
         }
         .city {
           font-size: 1.5em;
@@ -186,25 +201,25 @@ export class CcCtZoneSelect extends LitElement {
 
         .icon-selected {
           --cc-icon-color: var(--cc-color-bg-primary);
+          opacity: 0;
 
           position: absolute;
-          top: 0.5em;
           right: 0.5em;
-          opacity: 0;
+          top: 0.5em;
         }
 
         .thumbnails {
-          display: inline-flex;
           align-items: center;
+          background-color: var(--cc-color-bg-neutral);
+          display: inline-flex;
           gap: 0.5em;
           padding: 0.75em 1.125em;
-          background-color: var(--cc-color-bg-neutral);
         }
         .thumbnails > cc-img {
           --cc-img-fit: contain;
+          height: 1.125em;
 
           width: 1.25em;
-          height: 1.125em;
         }
       `,
     ];

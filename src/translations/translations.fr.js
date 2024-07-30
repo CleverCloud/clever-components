@@ -1134,6 +1134,7 @@ export const translations = {
   //#endregion
   //#region cc-zone
   'cc-zone.country': ({ code, name }) => getCountryName(lang, code, name),
+  'cc-ct-zone-select.alt.country-name': ({ code, name }) => getCountryName(lang, code, name),
   //#endregion
   //#region cc-zone-input
   'cc-zone-input.error': `Une erreur est survenue pendant le chargement des zones.`,
