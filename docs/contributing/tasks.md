@@ -63,7 +63,7 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
 
 * Build components for npm with [Rollup](https://rollupjs.org/) in `dist` folder.
 * See config in `rollup/rollup-npm.config.js` for more details.
-* TODO: link to detailed build documentation
+* You can get more details by reading [the global contributing page](https://www.clever-cloud.com/doc/clever-components/?path=/docs/👋-contributing-contribute--docs).
 
 ## `npm run components:check-i18n`
 
@@ -87,7 +87,12 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
 
 ## `npm run components:generate-icons-assets`
 
-TODO
+* Bundles SVG icons in a JavaScript file to facilitate inlining them in components.
+* Two files are generated:
+  * `src/assets/cc-clever.icons.js` from the SVG files in `src/assets/`,
+  * `src/assets/cc-remix.icons.js` from the `remixicon` dependency.
+* Should be executed each time an icon is added, removed or updated.
+* You can get more details by reading [the related ADR](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%93%8C-architecture-decision-records-adr-0022-implementing-a-new-icon-system--docs).
 
 ## `npm run components:graph-usage`
 
