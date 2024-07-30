@@ -70,7 +70,9 @@ export const withLongHeadingAndMessageAndWithCloseable = makeStory(conf, {
 export const withSanitizedHtmlMessage = makeStory(conf, {
   items: getItems({
     heading: 'Notification message can be topped by a heading',
-    message: (intent) =>
-      sanitize`This is an <strong>HTML</strong> notification message with intent <code>${intent}</code>.`,
+    message: (intent) => sanitize`
+      <p>This is an <strong>HTML</strong> notification message with intent <code>${intent}</code>.</p>
+      <p>It contains several paragraphs.</p>
+    `,
   }),
 });
