@@ -238,7 +238,7 @@ export class CcSshKeyList extends LitElement {
       <form class="create-form" ${ref(this._createFormRef)} ${formSubmit(this._onCreateKey.bind(this))}>
         <cc-input-text
           name="name"
-          ?disabled=${isCreating}
+          ?is-disabled=${isCreating}
           class="create-form__name"
           label=${i18n('cc-ssh-key-list.add.name')}
           required
@@ -247,7 +247,7 @@ export class CcSshKeyList extends LitElement {
         </cc-input-text>
         <cc-input-text
           name="publicKey"
-          ?disabled=${isCreating}
+          ?is-disabled=${isCreating}
           class="create-form__public-key"
           label=${i18n('cc-ssh-key-list.add.public-key')}
           required
@@ -305,7 +305,7 @@ export class CcSshKeyList extends LitElement {
                           a11y-name="${i18n('cc-ssh-key-list.personal.delete.a11y', { name })}"
                           class="key__button key__button--personal"
                           .icon="${iconBin}"
-                          ?disabled=${isDisabled}
+                          ?is-disabled=${isDisabled}
                           danger
                           outlined
                           ?waiting=${isDisabled}
@@ -321,7 +321,7 @@ export class CcSshKeyList extends LitElement {
                           a11y-name="${i18n('cc-ssh-key-list.github.import.a11y', { name })}"
                           class="key__button key__button--github"
                           .icon="${iconAdd}"
-                          ?disabled=${isDisabled}
+                          ?is-disabled=${isDisabled}
                           ?waiting=${isDisabled}
                         >
                           ${i18n('cc-ssh-key-list.github.import')}

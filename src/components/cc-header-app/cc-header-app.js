@@ -265,21 +265,21 @@ export class CcHeaderApp extends LitElement {
         ? html`
             <cc-button
               title=${ifDefined(disableButtonsTitle)}
-              ?disabled=${shouldDisableAllButtons}
+              ?is-disabled=${shouldDisableAllButtons}
               @cc-button:click=${() => this._onStart('normal')}
             >
               ${i18n('cc-header-app.action.start')}
             </cc-button>
             <cc-button
               title=${ifDefined(disableButtonsTitle)}
-              ?disabled=${shouldDisableAllButtons}
+              ?is-disabled=${shouldDisableAllButtons}
               @cc-button:click=${() => this._onStart('rebuild')}
             >
               ${i18n('cc-header-app.action.start-rebuild')}
             </cc-button>
             <cc-button
               title=${ifDefined(disableButtonsTitle)}
-              ?disabled=${shouldDisableAllButtons}
+              ?is-disabled=${shouldDisableAllButtons}
               @cc-button:click=${() => this._onStart('last-commit')}
             >
               ${i18n('cc-header-app.action.start-last-commit')}
@@ -291,7 +291,7 @@ export class CcHeaderApp extends LitElement {
             <cc-button
               title=${ifDefined(disableButtonsTitle)}
               ?skeleton=${skeleton}
-              ?disabled=${shouldDisableAllButtons}
+              ?is-disabled=${shouldDisableAllButtons}
               @cc-button:click=${() => this._onRestart('normal')}
             >
               ${i18n('cc-header-app.action.restart')}
@@ -299,7 +299,7 @@ export class CcHeaderApp extends LitElement {
             <cc-button
               title=${ifDefined(disableButtonsTitle)}
               ?skeleton=${skeleton}
-              ?disabled=${shouldDisableAllButtons}
+              ?is-disabled=${shouldDisableAllButtons}
               @cc-button:click=${() => this._onRestart('rebuild')}
             >
               ${i18n('cc-header-app.action.restart-rebuild')}
@@ -307,7 +307,7 @@ export class CcHeaderApp extends LitElement {
             <cc-button
               title=${ifDefined(disableButtonsTitle)}
               ?skeleton=${skeleton}
-              ?disabled=${shouldDisableAllButtons}
+              ?is-disabled=${shouldDisableAllButtons}
               @cc-button:click=${() => this._onRestart('last-commit')}
             >
               ${i18n('cc-header-app.action.restart-last-commit')}
@@ -320,7 +320,7 @@ export class CcHeaderApp extends LitElement {
               warning
               outlined
               title=${ifDefined(disableButtonsTitle)}
-              ?disabled=${shouldDisableAllButtons}
+              ?is-disabled=${shouldDisableAllButtons}
               @cc-button:click=${this._onCancel}
             >
               ${i18n('cc-header-app.action.cancel-deployment')}
@@ -334,7 +334,7 @@ export class CcHeaderApp extends LitElement {
         delay="3"
         title=${ifDefined(disableButtonsTitle)}
         ?skeleton=${skeleton}
-        ?disabled=${shouldDisableAllButtons || shouldDisableStopButton}
+        ?is-disabled=${shouldDisableAllButtons || shouldDisableStopButton}
         @cc-button:click=${this._onStop}
         >${i18n('cc-header-app.action.stop')}</cc-button
       >

@@ -132,7 +132,7 @@ export class CcAddonAdmin extends LitElement {
           <cc-input-text
             label="${i18n('cc-addon-admin.input.name')}"
             ?skeleton=${isSkeleton}
-            ?disabled=${isFormDisabled}
+            ?is-disabled=${isFormDisabled}
             .value=${this._name}
             @cc-input-text:input=${this._onNameInput}
             @cc-input-text:requestimplicitsubmit=${this._onNameSubmit}
@@ -140,7 +140,7 @@ export class CcAddonAdmin extends LitElement {
           <cc-button
             primary
             ?skeleton=${isSkeleton}
-            ?disabled=${isFormDisabled}
+            ?is-disabled=${isFormDisabled}
             ?waiting=${state.type === 'updatingName'}
             @cc-button:click=${this._onNameSubmit}
             >${i18n('cc-addon-admin.update')}</cc-button
@@ -155,7 +155,7 @@ export class CcAddonAdmin extends LitElement {
           <cc-input-text
             label="${i18n('cc-addon-admin.input.tags')}"
             ?skeleton=${isSkeleton}
-            ?disabled=${isFormDisabled}
+            ?is-disabled=${isFormDisabled}
             .tags=${this._tags}
             placeholder="${i18n('cc-addon-admin.tags-empty')}"
             @cc-input-text:tags=${this._onTagsInput}
@@ -164,7 +164,7 @@ export class CcAddonAdmin extends LitElement {
           <cc-button
             primary
             ?skeleton=${isSkeleton}
-            ?disabled=${isFormDisabled}
+            ?is-disabled=${isFormDisabled}
             ?waiting=${state.type === 'updatingTags'}
             @cc-button:click=${this._onTagsSubmit}
             >${i18n('cc-addon-admin.tags-update')}</cc-button
@@ -183,7 +183,7 @@ export class CcAddonAdmin extends LitElement {
           <cc-button
             danger
             ?skeleton=${isSkeleton}
-            ?disabled=${isFormDisabled}
+            ?is-disabled=${isFormDisabled}
             ?waiting=${state.type === 'deleting'}
             @cc-button:click=${this._onDeleteSubmit}
             >${i18n('cc-addon-admin.delete')}</cc-button

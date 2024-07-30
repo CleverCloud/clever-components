@@ -312,7 +312,7 @@ export class CcAddonBackups extends LitElement {
                 ${ccLink(this._overlayType == null ? backup.url : null, this._getBackupLink(data.providerId), skeleton)}
                 <cc-button
                   link
-                  ?disabled=${areBtnsDisabled}
+                  ?is-disabled=${areBtnsDisabled}
                   ?skeleton=${skeleton}
                   @cc-button:click=${this._onOpenOverlay('restore', backup)}
                 >
@@ -322,7 +322,7 @@ export class CcAddonBackups extends LitElement {
                   ? html`
                       <cc-button
                         link
-                        ?disabled=${areBtnsDisabled}
+                        ?is-disabled=${areBtnsDisabled}
                         ?skeleton=${skeleton}
                         @cc-button:click=${this._onOpenOverlay('delete', backup)}
                       >

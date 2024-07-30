@@ -24,7 +24,7 @@ export class CcEnvVarInput extends LitElement {
   static get properties() {
     return {
       deleted: { type: Boolean },
-      disabled: { type: Boolean },
+      isDisabled: { type: Boolean, attribute: 'is-disabled' },
       // NOT USED FOR NOW
       edited: { type: Boolean },
       /** @required */
@@ -44,7 +44,7 @@ export class CcEnvVarInput extends LitElement {
     this.deleted = false;
 
     /** @type {boolean} Sets `disabled` attribute on input and button. */
-    this.disabled = false;
+    this.isDisabled = false;
 
     /** @type {boolean} Declares the variable as "edited" (compared to server side state). */
     this.edited = false;
@@ -98,7 +98,7 @@ export class CcEnvVarInput extends LitElement {
             value=${this.value}
             multi
             clipboard
-            ?disabled=${this.deleted || this.disabled}
+            ?is-disabled=${this.deleted || this.isDisabled}
             ?skeleton=${this.skeleton}
             ?readonly=${this.readonly}
             placeholder=${i18n('cc-env-var-input.value-placeholder')}
@@ -109,7 +109,7 @@ export class CcEnvVarInput extends LitElement {
             ? html`
                 <cc-button
                   ?skeleton=${this.skeleton}
-                  ?disabled=${this.disabled}
+                  ?is-disabled=${this.isDisabled}
                   ?danger=${!this.deleted}
                   ?outlined=${!this.deleted}
                   @cc-button:click=${this.deleted ? this._onKeep : this._onDelete}

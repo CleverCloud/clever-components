@@ -51,7 +51,7 @@ export const dataLoaded = makeStory(conf, {
 });
 
 export const dataLoadedWithDisabled = makeStory(conf, {
-  items: [{ state: { type: 'loaded', variables: VARIABLES_FULL, validationMode: 'simple' }, disabled: true }],
+  items: [{ state: { type: 'loaded', variables: VARIABLES_FULL, validationMode: 'simple' }, isDisabled: true }],
 });
 
 export const dataLoadedWithReadonly = makeStory(conf, {

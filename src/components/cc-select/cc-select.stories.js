@@ -180,7 +180,7 @@ export const disabled = makeStory(conf, {
     {
       label: 'Favourite artist',
       value: 'LENNON',
-      disabled: true,
+      isDisabled: true,
       options: baseOptions,
     },
   ],

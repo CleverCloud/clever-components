@@ -129,7 +129,7 @@ export class CcInputDate extends CcFormControlElement {
   static get properties() {
     return {
       ...super.properties,
-      disabled: { type: Boolean, reflect: true },
+      isDisabled: { type: Boolean, attribute: 'is-disabled', reflect: true },
       hiddenLabel: { type: Boolean, attribute: 'hidden-label' },
       inline: { type: Boolean, reflect: true },
       label: { type: String },
@@ -151,7 +151,7 @@ export class CcInputDate extends CcFormControlElement {
     super();
 
     /** @type {boolean} Sets `disabled` attribute on inner native `<input>` element. */
-    this.disabled = false;
+    this.isDisabled = false;
 
     /** @type {boolean} Hides the label visually if `true`. */
     this.hiddenLabel = false;
@@ -520,7 +520,7 @@ export class CcInputDate extends CcFormControlElement {
             ${ref(this._inputRef)}
             type="text"
             class="input ${classMap({ error: hasErrorMessage })}"
-            ?disabled=${this.disabled || this.skeleton}
+            ?disabled=${this.isDisabled || this.skeleton}
             ?readonly=${this.readonly}
             .value=${live(this._formatValue())}
             spellcheck="false"

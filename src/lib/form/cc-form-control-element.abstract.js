@@ -239,7 +239,7 @@ export class CcFormControlElement extends LitElement {
    * @return {boolean}
    */
   get willValidate() {
-    return this._internals.willValidate;
+    return this._getFormControlElement()?.willValidate;
   }
 
   /**
@@ -315,9 +315,17 @@ export class CcFormControlElement extends LitElement {
 
     // Sync form values with our state
     // @ts-ignore
-    if (changedProperties.has(this._getValuePropertyName())) {
+    if (
+      changedProperties.has(this._getValuePropertyName()) ||
+      // FIXME: we're not supposed to know of the `disabled` property name here + this will complexify the class
+      (changedProperties.has('isDisabled') && !this.isDisabled)
+    ) {
       this._internals.setFormValue(this._getFormControlData());
       shouldValidate = true;
+    }
+
+    if (changedProperties.has('isDisabled') && this.isDisabled) {
+      this._internals.setFormValue(null);
     }
 
     // if one of the properties that should trigger a new validation have changed

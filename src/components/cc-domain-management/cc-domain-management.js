@@ -386,7 +386,7 @@ export class CcDomainManagement extends LitElement {
             label="${i18n('cc-domain-management.form.domain.label')}"
             required
             .value="${domain.value}"
-            ?disabled="${isDisabled}"
+            ?is-disabled="${isDisabled}"
             .errorMessage=${this._getErrorMessage(domain.error)}
             ${ref(this._domainInputRef)}
             @cc-input-text:input=${this._onDomainInput}
@@ -398,7 +398,7 @@ export class CcDomainManagement extends LitElement {
             class="fieldgroup__path"
             label="${i18n('cc-domain-management.form.path.label')}"
             .value="${pathPrefix.value}"
-            ?disabled="${isDisabled}"
+            ?is-disabled="${isDisabled}"
             @cc-input-text:input=${this._onPathPrefixInput}
           >
             <p slot="help">${i18n('cc-domain-management.form.path.help')}</p>
@@ -539,7 +539,7 @@ export class CcDomainManagement extends LitElement {
                   class="mark-primary"
                   primary
                   outlined
-                  ?disabled=${isMarkingPrimaryDisabled}
+                  ?is-disabled=${isMarkingPrimaryDisabled}
                   ?waiting="${domainItemStateType === 'marking-primary'}"
                   a11y-name="${i18n('cc-domain-management.list.btn.primary.a11y-name', { domain: hostWithWildcard })}"
                   .icon=${iconPrimary}
@@ -555,7 +555,7 @@ export class CcDomainManagement extends LitElement {
             class="delete-domain"
             danger
             outlined
-            ?disabled="${domainItemStateType === 'marking-primary'}"
+            ?is-disabled="${domainItemStateType === 'marking-primary'}"
             ?waiting="${domainItemStateType === 'deleting'}"
             a11y-name="${i18n('cc-domain-management.list.btn.delete.a11y-name', { domain: hostWithWildcard })}"
             .icon=${iconDelete}

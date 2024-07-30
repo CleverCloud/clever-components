@@ -685,7 +685,7 @@ export class CcLogsApplicationView extends LitElement {
         <div class="date-range-buttons">
           <cc-button
             class="date-range-left"
-            ?disabled=${isDateRangeInvalid}
+            ?is-disabled=${isDateRangeInvalid}
             .icon=${iconRemixArrowLeftSLine}
             hide-text
             a11y-name=${i18n('cc-logs-application-view.custom-date-range.previous')}
@@ -694,7 +694,7 @@ export class CcLogsApplicationView extends LitElement {
           </cc-button>
           <cc-button
             class="date-range-right"
-            ?disabled=${nextDisabled || isDateRangeInvalid}
+            ?is-disabled=${nextDisabled || isDateRangeInvalid}
             .icon=${iconRemixArrowRightSLine}
             hide-text
             a11y-name=${i18n('cc-logs-application-view.custom-date-range.next')}
@@ -703,7 +703,7 @@ export class CcLogsApplicationView extends LitElement {
           </cc-button>
           <cc-button
             class="date-range-apply-button"
-            ?disabled=${isDateRangeInvalid}
+            ?is-disabled=${isDateRangeInvalid}
             @cc-button:click=${this._onApplyCustomDateRange}
             >${i18n('cc-logs-application-view.custom-date-range.apply')}
           </cc-button>

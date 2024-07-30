@@ -383,7 +383,7 @@ export class CcOrgaMemberList extends LitElement {
             type="email"
             .customValidator=${this._memberEmailValidator}
             .customErrorMessages=${this._memberEmailErrorMessages}
-            ?disabled=${isFormDisabled}
+            ?is-disabled=${isFormDisabled}
           >
             <p slot="help">${i18n('cc-orga-member-list.invite.email.format')}</p>
           </cc-input-text>
@@ -395,7 +395,7 @@ export class CcOrgaMemberList extends LitElement {
             reset-value="DEVELOPER"
             value="DEVELOPER"
             required
-            ?disabled=${isFormDisabled}
+            ?is-disabled=${isFormDisabled}
           >
           </cc-select>
 
@@ -479,7 +479,7 @@ export class CcOrgaMemberList extends LitElement {
             danger
             outlined
             @cc-button:click=${this._onLeaveFromDangerZone}
-            ?disabled="${members.dangerZoneState === 'error'}"
+            ?is-disabled="${members.dangerZoneState === 'error'}"
             ?waiting="${members.dangerZoneState === 'leaving'}"
             >${i18n('cc-orga-member-list.leave.btn')}</cc-button
           >

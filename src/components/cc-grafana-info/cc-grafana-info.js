@@ -134,7 +134,7 @@ export class CcGrafanaInfo extends LitElement {
                   <p>${i18n('cc-grafana-info.enable-description')}</p>
                 </div>
                 <div>
-                  <cc-button success ?disabled=${isFormDisabled} @cc-button:click=${this._onEnableSubmit}>
+                  <cc-button success ?is-disabled=${isFormDisabled} @cc-button:click=${this._onEnableSubmit}>
                     ${i18n('cc-grafana-info.enable-title')}
                   </cc-button>
                 </div>
@@ -171,7 +171,7 @@ export class CcGrafanaInfo extends LitElement {
                 <div>
                   <cc-button
                     primary
-                    ?disabled=${isFormDisabled}
+                    ?is-disabled=${isFormDisabled}
                     ?waiting=${isResetting}
                     @cc-button:click=${this._onResetSubmit}
                   >
@@ -205,7 +205,7 @@ export class CcGrafanaInfo extends LitElement {
                 <div slot="title">${i18n('cc-grafana-info.disable-title')}</div>
                 <div slot="info">${i18n('cc-grafana-info.disable-description')}</div>
                 <div>
-                  <cc-button danger delay="3" ?disabled=${isFormDisabled} @cc-button:click=${this._onDisableSubmit}>
+                  <cc-button danger delay="3" ?is-disabled=${isFormDisabled} @cc-button:click=${this._onDisableSubmit}>
                     ${i18n('cc-grafana-info.disable-title')}
                   </cc-button>
                 </div>

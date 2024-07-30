@@ -50,7 +50,7 @@ export class CcInputNumber extends CcFormControlElement {
     return {
       ...super.properties,
       controls: { type: Boolean },
-      disabled: { type: Boolean, reflect: true },
+      isDisabled: { type: Boolean, attribute: 'is-disabled', reflect: true },
       inline: { type: Boolean, reflect: true },
       label: { type: String },
       hiddenLabel: { type: Boolean, attribute: 'hidden-label' },
@@ -74,7 +74,7 @@ export class CcInputNumber extends CcFormControlElement {
     this.controls = false;
 
     /** @type {boolean} Sets `disabled` attribute on inner native `<input>` element. */
-    this.disabled = false;
+    this.isDisabled = false;
 
     /** @type {boolean} Sets the `<label>` on the left of the `<input>` element.
      * Only use this if your form contains 1 or 2 fields and your labels are short.
@@ -262,7 +262,7 @@ export class CcInputNumber extends CcFormControlElement {
               <button
                 class="btn"
                 @click=${this._onDecrement}
-                ?disabled=${this.disabled || this.readonly || minDisabled}
+                ?disabled=${this.isDisabled || this.readonly || minDisabled}
               >
                 <cc-icon
                   class="btn-img"
@@ -278,7 +278,7 @@ export class CcInputNumber extends CcFormControlElement {
             id="input-id"
             type="number"
             class="input ${classMap({ error: hasErrorMessage })}"
-            ?disabled=${this.disabled || this.skeleton}
+            ?disabled=${this.isDisabled || this.skeleton}
             ?readonly=${this.readonly}
             min=${this.min ?? ''}
             max=${this.max ?? ''}
@@ -299,7 +299,7 @@ export class CcInputNumber extends CcFormControlElement {
               <button
                 class="btn"
                 @click=${this._onIncrement}
-                ?disabled=${this.disabled || this.readonly || maxDisabled}
+                ?disabled=${this.isDisabled || this.readonly || maxDisabled}
               >
                 <cc-icon
                   class="btn-img"
@@ -477,13 +477,13 @@ export class CcInputNumber extends CcFormControlElement {
           outline: 0;
         }
 
-        input[disabled] {
+        input[is-disabled] {
           color: var(--cc-color-text-weak);
           opacity: 1;
           pointer-events: none;
         }
 
-        button[disabled] {
+        button[is-disabled] {
           opacity: 0.5;
           pointer-events: none;
         }
@@ -523,7 +523,7 @@ export class CcInputNumber extends CcFormControlElement {
           border-color: var(--cc-color-border-neutral-hovered, #777);
         }
 
-        :host([disabled]) .ring {
+        :host([is-disabled]) .ring {
           background: var(--cc-color-bg-neutral-disabled);
           border-color: var(--cc-color-border-neutral-disabled, #777);
         }

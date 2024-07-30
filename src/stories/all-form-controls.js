@@ -55,12 +55,12 @@ export const allFormControlsStory = makeStory(conf, {
         </form>
         <h1>All form controls - disabled</h1>
         <form>
-          <cc-button disabled>The button</cc-button>
-          <cc-input-number label="The label" value="42" disabled controls></cc-input-number>
-          <cc-input-date label="The label" value="2023-07-21T12:00:00.000Z" disabled controls></cc-input-date>
-          <cc-input-text label="The label" value="The value" disabled></cc-input-text>
-          <cc-select label="The label" options='[{ "label": "one", "value": "one" }, { "label": "two", "value": "two" }]' value="one" disabled></cc-select>
-          <cc-toggle legend="The label" choices='[{ "label": "one", "value": "one" }, { "label": "two", "value": "two" }]' value="one" disabled></cc-toggle>
+          <cc-button is-disabled>The button</cc-button>
+          <cc-input-number label="The label" value="42" is-disabled controls></cc-input-number>
+          <cc-input-date label="The label" value="2023-07-21T12:00:00.000Z" is-disabled controls></cc-input-date>
+          <cc-input-text label="The label" value="The value" is-disabled></cc-input-text>
+          <cc-select label="The label" options='[{ "label": "one", "value": "one" }, { "label": "two", "value": "two" }]' value="one" is-disabled></cc-select>
+          <cc-toggle legend="The label" choices='[{ "label": "one", "value": "one" }, { "label": "two", "value": "two" }]' value="one" is-disabled></cc-toggle>
         </form>
         <h1>Form controls with readonly mode</h1>
         <form>

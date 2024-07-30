@@ -56,7 +56,7 @@ export class CcButton extends LitElement {
       circle: { type: Boolean },
       danger: { type: Boolean },
       delay: { type: Number },
-      disabled: { type: Boolean, reflect: true },
+      isDisabled: { type: Boolean, attribute: 'is-disabled', reflect: true },
       hideText: { type: Boolean, attribute: 'hide-text' },
       icon: { type: Object },
       image: { type: String },

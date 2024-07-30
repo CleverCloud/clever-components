@@ -31,7 +31,7 @@ const SKELETON_VARIABLES = [
 export class CcEnvVarEditorJson extends LitElement {
   static get properties() {
     return {
-      disabled: { type: Boolean },
+      isDisabled: { type: Boolean, attribute: 'is-disabled' },
       readonly: { type: Boolean },
       state: { type: Object },
       _errors: { type: Array, state: true },
@@ -45,7 +45,7 @@ export class CcEnvVarEditorJson extends LitElement {
     super();
 
     /** @type {boolean} Sets `disabled` attribute on inputs and buttons. */
-    this.disabled = false;
+    this.isDisabled = false;
 
     /** @type {boolean} Sets `readonly` attribute on main input and hides buttons. */
     this.readonly = false;
@@ -141,7 +141,7 @@ export class CcEnvVarEditorJson extends LitElement {
         multi
         clipboard
         value=${this._variablesAsJson}
-        ?disabled=${this.disabled}
+        ?is-disabled=${this.isDisabled}
         ?readonly=${this.readonly}
         ?skeleton=${this._skeleton}
         @cc-input-text:input=${this._onInput}

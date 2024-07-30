@@ -307,7 +307,7 @@ export class CcOrgaMemberCard extends LitElement {
           .options=${this._getRoleOptions()}
           .value=${this._newRole ?? this.member.role}
           ?inline=${this._resizeController.width > BREAKPOINT_TINY}
-          ?disabled=${this.member.state === 'updating'}
+          ?is-disabled=${this.member.state === 'updating'}
           @cc-select:input=${this._onRoleInput}
           ${ref(this._roleRef)}
         >
@@ -335,7 +335,7 @@ export class CcOrgaMemberCard extends LitElement {
           outlined
           .icon=${firstBtnIcon}
           ?circle=${isBtnImgOnly}
-          ?disabled=${waiting}
+          ?is-disabled=${waiting}
           ?hide-text=${isBtnImgOnly}
           a11y-name=${this._getFirstBtnAccessibleName()}
           @cc-button:click=${this._onToggleEdit}
@@ -351,7 +351,7 @@ export class CcOrgaMemberCard extends LitElement {
           ?primary=${isEditing}
           outlined
           .icon=${secondBtnIcon}
-          ?disabled=${hasError}
+          ?is-disabled=${hasError}
           ?circle=${isBtnImgOnly}
           ?hide-text=${isBtnImgOnly}
           ?waiting=${waiting}

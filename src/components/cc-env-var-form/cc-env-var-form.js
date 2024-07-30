@@ -249,7 +249,7 @@ export class CcEnvVarForm extends LitElement {
           class="mode-switcher ${classMap({ 'has-overlay': hasOverlay })}"
           value=${this._mode}
           .choices=${this._getModes()}
-          ?disabled=${isEditorDisabled}
+          ?is-disabled=${isEditorDisabled}
           @cc-toggle:input=${this._onToggleMode}
         ></cc-toggle>
       </div>
@@ -261,7 +261,7 @@ export class CcEnvVarForm extends LitElement {
           <cc-env-var-editor-simple
             ?hidden=${this._mode !== 'SIMPLE'}
             .state=${this._editorsState}
-            ?disabled=${isEditorDisabled}
+            ?is-disabled=${isEditorDisabled}
             ?readonly=${this.readonly}
             @cc-env-var-editor-simple:change=${this._onChange}
             @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
@@ -270,7 +270,7 @@ export class CcEnvVarForm extends LitElement {
           <cc-env-var-editor-expert
             ?hidden=${this._mode !== 'EXPERT'}
             .state=${this._editorsState}
-            ?disabled=${isEditorDisabled}
+            ?is-disabled=${isEditorDisabled}
             ?readonly=${this.readonly}
             @cc-env-var-editor-expert:change=${this._onChange}
             @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
@@ -279,7 +279,7 @@ export class CcEnvVarForm extends LitElement {
           <cc-env-var-editor-json
             ?hidden=${this._mode !== 'JSON'}
             .state=${this._editorsState}
-            ?disabled=${isEditorDisabled}
+            ?is-disabled=${isEditorDisabled}
             ?readonly=${this.readonly}
             @cc-env-var-editor-json:change=${this._onChange}
             @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
@@ -306,7 +306,7 @@ export class CcEnvVarForm extends LitElement {
                   `
                 : ''}
 
-              <cc-button success ?disabled=${isFormDisabled} @cc-button:click=${this._onUpdateForm}
+              <cc-button success ?is-disabled=${isFormDisabled} @cc-button:click=${this._onUpdateForm}
                 >${i18n('cc-env-var-form.update')}</cc-button
               >
             </div>

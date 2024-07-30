@@ -27,7 +27,7 @@ import '../cc-notice/cc-notice.js';
 export class CcEnvVarCreate extends LitElement {
   static get properties() {
     return {
-      disabled: { type: Boolean },
+      isDisabled: { type: Boolean, attribute: 'is-disabled' },
       validationMode: { type: String, attribute: 'validation-mode' },
       variablesNames: { type: Array, attribute: 'variables-names' },
       _variableName: { type: String, state: true },
@@ -39,7 +39,7 @@ export class CcEnvVarCreate extends LitElement {
     super();
 
     /** @type {boolean} Sets `disabled` attribute on inputs and button. */
-    this.disabled = false;
+    this.isDisabled = false;
 
     /** @type {EnvVarValidationMode} Sets the mode of the variables name validation. */
     this.validationMode = 'simple';
@@ -101,7 +101,7 @@ export class CcEnvVarCreate extends LitElement {
           class="name"
           name="name"
           value=${this._variableName}
-          ?disabled=${this.disabled}
+          ?is-disabled=${this.isDisabled}
           @cc-input-text:input=${this._onNameInput}
           @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, hasErrors)}
         ></cc-input-text>
@@ -113,12 +113,12 @@ export class CcEnvVarCreate extends LitElement {
             name="value"
             value=${this._variableValue}
             multi
-            ?disabled=${this.disabled}
+            ?is-disabled=${this.isDisabled}
             @cc-input-text:input=${this._onValueInput}
             @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, hasErrors)}
           ></cc-input-text>
 
-          <cc-button primary ?disabled=${hasErrors || this.disabled} @cc-button:click=${this._onSubmit}
+          <cc-button primary ?is-disabled=${hasErrors || this.isDisabled} @cc-button:click=${this._onSubmit}
             >${i18n('cc-env-var-create.create-button')}
           </cc-button>
         </div>

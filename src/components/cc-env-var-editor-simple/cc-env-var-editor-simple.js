@@ -29,7 +29,7 @@ const SKELETON_VARIABLES = [
 export class CcEnvVarEditorSimple extends LitElement {
   static get properties() {
     return {
-      disabled: { type: Boolean },
+      isDisabled: { type: Boolean, attribute: 'is-disabled' },
       readonly: { type: Boolean },
       state: { type: Object },
     };
@@ -39,7 +39,7 @@ export class CcEnvVarEditorSimple extends LitElement {
     super();
 
     /** @type {boolean} Sets `disabled` attribute on inputs and buttons. */
-    this.disabled = false;
+    this.isDisabled = false;
 
     /** @type {boolean} Sets `readonly` attribute on inputs and hides buttons. */
     this.readonly = false;
@@ -100,7 +100,7 @@ export class CcEnvVarEditorSimple extends LitElement {
       ${!this.readonly
         ? html`
             <cc-env-var-create
-              ?disabled=${skeleton || this.disabled}
+              ?is-disabled=${skeleton || this.isDisabled}
               .validationMode=${this.state.validationMode}
               .variablesNames=${variablesNames}
               @cc-env-var-create:create=${this._onCreate}
@@ -121,7 +121,7 @@ export class CcEnvVarEditorSimple extends LitElement {
             ?edited=${isEdited}
             ?deleted=${isDeleted}
             ?skeleton=${skeleton}
-            ?disabled=${this.disabled}
+            ?is-disabled=${this.isDisabled}
             ?readonly=${this.readonly}
             @cc-env-var-input:input=${this._onInput}
             @cc-env-var-input:delete=${this._onDelete}

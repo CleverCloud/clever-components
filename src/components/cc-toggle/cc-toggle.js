@@ -48,7 +48,7 @@ export class CcToggle extends LitElement {
     return {
       /** @required */
       choices: { type: Array },
-      disabled: { type: Boolean },
+      isDisabled: { type: Boolean, attribute: 'is-disabled' },
       hideText: { type: Boolean, attribute: 'hide-text' },
       inline: { type: Boolean, reflect: true },
       legend: { type: String },
@@ -66,7 +66,7 @@ export class CcToggle extends LitElement {
     this.choices = null;
 
     /** @type {boolean} Sets the `disabled` attribute on all inner `<input>` of whole group. */
-    this.disabled = false;
+    this.isDisabled = false;
 
     /** @type {boolean} Hides the text and only displays the image specified with `choices[i].image`. The text will be added as `title` on the inner `<label>` and an `aria-label` on the inner `<input>`. */
     this.hideText = false;
@@ -112,8 +112,8 @@ export class CcToggle extends LitElement {
 
   render() {
     const classes = {
-      disabled: this.disabled,
-      enabled: !this.disabled,
+      disabled: this.isDisabled,
+      enabled: !this.isDisabled,
       'display-normal': !this.subtle,
       'display-subtle': this.subtle,
       'mode-single': this.multipleValues == null,
@@ -143,7 +143,7 @@ export class CcToggle extends LitElement {
                 name=${this.name ?? 'toggle'}
                 .value=${value}
                 id=${value}
-                ?disabled=${this.disabled}
+                ?disabled=${this.isDisabled}
                 .checked=${isChecked(value)}
                 @change=${this._onChange}
                 aria-label=${ifDefined(image != null && this.hideText ? label : undefined)}

@@ -10,7 +10,7 @@ import './cc-input-date.js';
 const baseItems = [
   { label: 'The Label' },
   { label: 'The Label', value: '2023-07-21T14:23:51.254Z' },
-  { label: 'The Label', value: '2023-07-21T14:23:51.000Z', disabled: true },
+  { label: 'The Label', value: '2023-07-21T14:23:51.000Z', isDisabled: true },
   { label: 'The Label', value: '2023-07-21T14:23:51.000Z', readonly: true },
   { label: 'The Label', value: '2023-07-21T14:23:51.000Z', skeleton: true },
 ];
@@ -46,14 +46,14 @@ const minMaxItems = [
     min: '2023-07-21T00:00:00.000Z',
     max: '2023-07-22T00:00:00.000Z',
     label: 'Min: 2023-07-21 00:00:00, Max: 2023-07-22 00:00:00',
-    disabled: true,
+    isDisabled: true,
   },
   {
     value: '2023-07-22T12:00:00.000Z',
     min: '2023-07-21T00:00:00.000Z',
     max: '2023-07-22T00:00:00.000Z',
     label: 'Min: 2023-07-21 00:00:00, Max: 2023-07-22 00:00:00',
-    disabled: true,
+    isDisabled: true,
   },
   {
     value: '2023-07-21T00:00:00.000Z',

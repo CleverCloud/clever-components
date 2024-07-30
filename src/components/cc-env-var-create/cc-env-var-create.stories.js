@@ -25,5 +25,5 @@ export const validationWithStrictMode = makeStory(conf, {
 });
 
 export const disabled = makeStory(conf, {
-  items: [{ disabled: true }],
+  items: [{ isDisabled: true }],
 });

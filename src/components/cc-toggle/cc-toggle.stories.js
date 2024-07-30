@@ -110,7 +110,7 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const disabled = makeStory(conf, {
-  items: normalAndSubtleItems.map((p) => ({ ...p, disabled: true })),
+  items: normalAndSubtleItems.map((p) => ({ ...p, isDisabled: true })),
 });
 
 export const legend = makeStory(conf, {

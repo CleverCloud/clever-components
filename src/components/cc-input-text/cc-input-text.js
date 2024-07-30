@@ -59,7 +59,7 @@ export class CcInputText extends CcFormControlElement {
     return {
       ...super.properties,
       clipboard: { type: Boolean, reflect: true },
-      disabled: { type: Boolean, reflect: true },
+      isDisabled: { type: Boolean, attribute: 'is-disabled', reflect: true },
       label: { type: String },
       hiddenLabel: { type: Boolean, attribute: 'hidden-label' },
       inline: { type: Boolean, reflect: true },
@@ -88,7 +88,7 @@ export class CcInputText extends CcFormControlElement {
     this.clipboard = false;
 
     /** @type {boolean} Sets `disabled` attribute on inner native `<input>/<textarea>` element. */
-    this.disabled = false;
+    this.isDisabled = false;
 
     /** @type {boolean} Sets the `<label>` on the left of the `<input>` element.
      * Only use this if your form contains 1 or 2 fields and your labels are short.
@@ -323,9 +323,9 @@ export class CcInputText extends CcFormControlElement {
   render() {
     const value = this.value ?? '';
     const rows = value.split('\n').length;
-    const clipboard = this.clipboard && !this.disabled && !this.skeleton;
+    const clipboard = this.clipboard && !this.isDisabled && !this.skeleton;
     // NOTE: For now, we don't support secret when multi is activated
-    const secret = this.secret && !this.multi && !this.disabled && !this.skeleton;
+    const secret = this.secret && !this.multi && !this.isDisabled && !this.skeleton;
     const isTextarea = this.multi || this._tagsEnabled;
     const hasErrorMessage = this.errorMessage != null && this.errorMessage !== '';
 
@@ -368,7 +368,7 @@ export class CcInputText extends CcFormControlElement {
                   class="input ${classMap({ 'input-tags': this._tagsEnabled, error: hasErrorMessage })}"
                   style="--rows: ${rows}"
                   rows=${rows}
-                  ?disabled=${this.disabled || this.skeleton}
+                  ?disabled=${this.isDisabled || this.skeleton}
                   ?readonly=${this.readonly}
                   .value=${value}
                   placeholder=${this.placeholder}
@@ -396,7 +396,7 @@ export class CcInputText extends CcFormControlElement {
                   id="input-id"
                   type=${this.secret && !this._showSecret ? 'password' : 'text'}
                   class="input ${classMap({ error: hasErrorMessage })}"
-                  ?disabled=${this.disabled || this.skeleton}
+                  ?disabled=${this.isDisabled || this.skeleton}
                   ?readonly=${this.readonly}
                   .value=${value}
                   placeholder=${this.placeholder}
@@ -612,7 +612,7 @@ export class CcInputText extends CcFormControlElement {
           outline: 0;
         }
 
-        .input[disabled] {
+        .input[is-disabled] {
           color: var(--cc-color-text-weak);
           opacity: 1;
           pointer-events: none;
@@ -689,7 +689,7 @@ export class CcInputText extends CcFormControlElement {
           border-color: var(--cc-color-border-neutral-hovered, #777);
         }
 
-        :host([disabled]) .ring {
+        :host([is-disabled]) .ring {
           background: var(--cc-color-bg-neutral-disabled);
           border-color: var(--cc-color-border-neutral-disabled, #eee);
         }

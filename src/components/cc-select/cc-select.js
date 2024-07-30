@@ -44,7 +44,7 @@ export class CcSelect extends CcFormControlElement {
   static get properties() {
     return {
       ...super.properties,
-      disabled: { type: Boolean, reflect: true },
+      isDisabled: { type: Boolean, attribute: 'is-disabled', reflect: true },
       inline: { type: Boolean, reflect: true },
       /** @required */
       label: { type: String },
@@ -62,7 +62,7 @@ export class CcSelect extends CcFormControlElement {
     super();
 
     /** @type {boolean} Sets `disabled` attribute on inner native `<select>` element. */
-    this.disabled = false;
+    this.isDisabled = false;
 
     /** @type {boolean} Sets the `<label>` on the left of the `<select>` element.
      * Only use this if your form contains 1 or 2 fields and your labels are short.
@@ -180,11 +180,11 @@ export class CcSelect extends CcFormControlElement {
         <span class="label-text">${this.label}</span>
         ${this.required ? html` <span class="required">${i18n('cc-select.required')}</span> ` : ''}
       </label>
-      <div class="select-wrapper ${classMap({ disabled: this.disabled })}">
+      <div class="select-wrapper ${classMap({ disabled: this.isDisabled })}">
         <select
           id="input-id"
           class="${classMap({ error: hasErrorMessage })}"
-          ?disabled=${this.disabled}
+          ?disabled=${this.isDisabled}
           aria-describedby="help-id error-id"
           @input=${this._onSelectInput}
           .value=${this.value}

@@ -65,7 +65,7 @@ export const skeleton = makeStory(conf, {
 });
 
 export const disabled = makeStory(conf, {
-  items: [{ name: 'DISABLED', value: 'disabled value', disabled: true }],
+  items: [{ name: 'DISABLED', value: 'disabled value', isDisabled: true }],
 });
 
 export const readonly = makeStory(conf, {

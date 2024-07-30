@@ -15,7 +15,7 @@ Integer posuere tortor sit amet nisl sollicitudin, at tempus ipsum semper.`;
 const baseItems = [
   { label: 'The label', placeholder: 'No value yet...' },
   { label: 'The label', placeholder: 'No value yet...', value: 'Simple value' },
-  { label: 'The label', placeholder: 'No value yet...', value: 'Disabled value', disabled: true },
+  { label: 'The label', placeholder: 'No value yet...', value: 'Disabled value', isDisabled: true },
   { label: 'The label', placeholder: 'No value yet...', value: 'Readonly value', readonly: true },
   { label: 'The label', placeholder: 'No value yet...', value: 'Skeleton', skeleton: true },
   { label: 'The label', placeholder: 'No value yet...', multi: true },
@@ -25,7 +25,7 @@ const baseItems = [
     placeholder: 'No value yet...',
     multi: true,
     value: 'Disabled value\nOther lines...',
-    disabled: true,
+    isDisabled: true,
   },
   {
     label: 'The label',
@@ -58,7 +58,7 @@ const tagsItems = [
     label: 'The label',
     placeholder: 'No value yet...',
     tags: ['disabled', 'disabled:very-very-very-very-long', 'foo', 'bar', 'disabled:foooobar'],
-    disabled: true,
+    isDisabled: true,
   },
   {
     label: 'The label',
@@ -96,7 +96,7 @@ export const defaultStory = makeStory(conf, {
   items: [
     { label: 'The Label', placeholder: 'No value yet...' },
     { label: 'The Label', value: 'Some example text' },
-    { label: 'The Label', value: 'Disabled value', disabled: true },
+    { label: 'The Label', value: 'Disabled value', isDisabled: true },
     { label: 'The Label', value: 'Readonly value', readonly: true },
     { label: 'The Label', value: 'Copy to clipboard', clipboard: true },
     { label: 'The Label', value: 'Hidden secret', secret: true },
