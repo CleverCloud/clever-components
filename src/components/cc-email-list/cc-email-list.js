@@ -7,6 +7,7 @@ import {
 } from '../../assets/cc-clever.icons.js';
 import {
   iconRemixDeleteBinFill as iconDelete,
+  iconRemixInformationFill as iconInfo,
   iconRemixSpam_2Fill as iconUnverified,
   iconRemixCheckboxCircleFill as iconVerified,
 } from '../../assets/cc-remix.icons.js';
@@ -20,8 +21,8 @@ import { i18n } from '../../lib/i18n.js';
 import { sortBy } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-badge/cc-badge.js';
+import '../cc-block-new/cc-block-new.js';
 import '../cc-block-section/cc-block-section.js';
-import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-input-text/cc-input-text.js';
@@ -178,8 +179,8 @@ export class CcEmailList extends LitElement {
 
   render() {
     return html`
-      <cc-block>
-        <div slot="title">${i18n('cc-email-list.title')}</div>
+      <cc-block-new>
+        <div slot="header-title">${i18n('cc-email-list.title')}</div>
 
         ${this.emails.state === 'loading'
           ? html`
@@ -194,9 +195,16 @@ export class CcEmailList extends LitElement {
             `
           : ''}
         ${this.emails.state === 'error'
-          ? html` <cc-notice intent="warning" message="${i18n('cc-email-list.loading.error')}"></cc-notice> `
+          ? html`
+              <cc-notice slot="content" intent="warning" message="${i18n('cc-email-list.loading.error')}"></cc-notice>
+            `
           : ''}
-      </cc-block>
+
+        <a slot="footer-right" href="#">
+          <cc-icon .icon="${iconInfo}"></cc-icon>
+          Email list Reference</a
+        >
+      </cc-block-new>
     `;
   }
 
@@ -214,7 +222,7 @@ export class CcEmailList extends LitElement {
     const badgeIcon = verified ? iconVerified : iconUnverified;
 
     return html`
-      <cc-block-section>
+      <cc-block-section slot="content">
         <div slot="title">${i18n('cc-email-list.primary.title')}</div>
         <div slot="info">${i18n('cc-email-list.primary.description')}</div>
 
@@ -251,7 +259,7 @@ export class CcEmailList extends LitElement {
     const markingAsPrimary = addresses.some((item) => item.state === 'marking-as-primary');
 
     return html`
-      <cc-block-section>
+      <cc-block-section slot="content">
         <div slot="title">${i18n('cc-email-list.secondary.title')}</div>
         <div slot="info">${i18n('cc-email-list.secondary.description')}</div>
 

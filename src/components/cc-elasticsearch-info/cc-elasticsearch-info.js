@@ -4,7 +4,7 @@ import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icon
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
-import '../cc-block/cc-block.js';
+import '../cc-block-new/cc-block-new.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 import '../cc-notice/cc-notice.js';
@@ -101,20 +101,17 @@ export class CcElasticsearchInfo extends LitElement {
     }
 
     return html`
-      <cc-block ribbon=${i18n('cc-elasticsearch-info.info')} no-head>
-        <div class="info-text">${i18n('cc-elasticsearch-info.text')}</div>
+      <cc-block-new>
+        <div slot="ribbon">${i18n('cc-elasticsearch-info.info')}</div>
+        <div slot="content" class="info-text">${i18n('cc-elasticsearch-info.text')}</div>
 
-        <div class="link-list">
-          ${ccLink(
-            ELASTICSEARCH_DOCUMENTATION,
-            html`
-              <cc-icon size="lg" .icon=${iconInfo}></cc-icon>
-              <span>${i18n('cc-elasticsearch-info.link.doc')}</span>
-            `,
-          )}
-          ${this._renderLinks(this.state.links, skeleton)}
-        </div>
-      </cc-block>
+        <div slot="content" class="link-list">${this._renderLinks(this.state.links, skeleton)}</div>
+
+        <a slot="footer-right" href=${ELASTICSEARCH_DOCUMENTATION}>
+          <cc-icon .icon="${iconInfo}"></cc-icon>
+          Elasticsearch Reference</a
+        >
+      </cc-block-new>
     `;
   }
 

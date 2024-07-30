@@ -1,9 +1,10 @@
 import { css, html, LitElement } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
-import '../cc-block/cc-block.js';
+import '../cc-block-new/cc-block-new.js';
 import '../cc-img/cc-img.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-zone/cc-zone.js';
@@ -49,8 +50,8 @@ export class CcAddonLinkedApps extends LitElement {
    */
   _getEmptyContent() {
     return html`
-      <div>${i18n('cc-addon-linked-apps.details')}</div>
-      <div class="cc-block_empty-msg">${i18n('cc-addon-linked-apps.no-linked-applications')}</div>
+      <div slot="content">${i18n('cc-addon-linked-apps.details')}</div>
+      <div slot="content" class="empty-msg">${i18n('cc-addon-linked-apps.no-linked-applications')}</div>
     `;
   }
 
@@ -59,7 +60,9 @@ export class CcAddonLinkedApps extends LitElement {
    * @private
    */
   _getErrorContent() {
-    return html` <cc-notice intent="warning" message="${i18n('cc-addon-linked-apps.loading-error')}"></cc-notice> `;
+    return html`
+      <cc-notice slot="content" intent="warning" message="${i18n('cc-addon-linked-apps.loading-error')}"></cc-notice>
+    `;
   }
 
   /**
@@ -89,11 +92,11 @@ export class CcAddonLinkedApps extends LitElement {
     }
 
     const content = html`
-      <div>${i18n('cc-addon-linked-apps.details')}</div>
+      <div slot="content">${i18n('cc-addon-linked-apps.details')}</div>
 
       ${linkedApps.map(
         (linkedApp) => html`
-          <div class="application">
+          <div slot="content" class="application">
             <cc-img
               class="logo"
               ?skeleton=${skeleton}
@@ -107,6 +110,11 @@ export class CcAddonLinkedApps extends LitElement {
           </div>
         `,
       )}
+
+      <a slot="footer-right" href="#">
+        <cc-icon .icon="${iconInfo}"></cc-icon>
+        Addon Linked Reference</a
+      >
     `;
 
     return this._renderView(content);
@@ -118,10 +126,10 @@ export class CcAddonLinkedApps extends LitElement {
    */
   _renderView(content) {
     return html`
-      <cc-block>
-        <div slot="title">${i18n('cc-addon-linked-apps.title')}</div>
+      <cc-block-new>
+        <div slot="header-title">${i18n('cc-addon-linked-apps.title')}</div>
         ${content}
-      </cc-block>
+      </cc-block-new>
     `;
   }
 
@@ -154,6 +162,11 @@ export class CcAddonLinkedApps extends LitElement {
           flex-wrap: wrap;
           gap: 0.5em;
           margin-left: 0.5em;
+        }
+
+        .empty-msg {
+          color: var(--cc-color-text-weak);
+          font-style: italic;
         }
 
         /* SKELETON */

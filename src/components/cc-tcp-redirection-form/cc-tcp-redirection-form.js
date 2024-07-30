@@ -1,8 +1,9 @@
 import { css, html, LitElement } from 'lit';
+import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../lib/i18n.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import '../cc-badge/cc-badge.js';
-import '../cc-block/cc-block.js';
+import '../cc-block-new/cc-block-new.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-tcp-redirection/cc-tcp-redirection.js';
 
@@ -47,35 +48,41 @@ export class CcTcpRedirectionForm extends LitElement {
     const blockState = this.context === 'admin' ? 'close' : 'off';
 
     return html`
-      <cc-block state="${blockState}">
-        <div slot="title">${i18n('cc-tcp-redirection-form.title')} ${this._renderRedirectionCountBadge()}</div>
+      <cc-block-new state="${blockState}">
+        <div slot="header-title">${i18n('cc-tcp-redirection-form.title')} ${this._renderRedirectionCountBadge()}</div>
+        <div slot="content" class="content">
+          ${this.context === 'user'
+            ? html` <div class="description">${i18n('cc-tcp-redirection-form.description')}</div> `
+            : ''}
+          ${this.state.type === 'error'
+            ? html` <cc-notice intent="warning" message="${i18n('cc-tcp-redirection-form.error')}"></cc-notice> `
+            : ''}
+          ${this.state.type === 'loading'
+            ? html`
+                ${SKELETON_REDIRECTIONS.map(
+                  (skeletonRedirectionState) => html`
+                    <cc-tcp-redirection .state=${skeletonRedirectionState}></cc-tcp-redirection>
+                  `,
+                )}
+              `
+            : ''}
+          ${this.state.type === 'loaded'
+            ? html`
+                ${this.state.redirections.map(
+                  (redirectionState) => html` <cc-tcp-redirection .state=${redirectionState}></cc-tcp-redirection> `,
+                )}
+                ${this.state.redirections.length === 0
+                  ? html` <div class="empty-msg">${i18n('cc-tcp-redirection-form.empty')}</div> `
+                  : ''}
+              `
+            : ''}
+        </div>
 
-        ${this.context === 'user'
-          ? html` <div class="description">${i18n('cc-tcp-redirection-form.description')}</div> `
-          : ''}
-        ${this.state.type === 'error'
-          ? html` <cc-notice intent="warning" message="${i18n('cc-tcp-redirection-form.error')}"></cc-notice> `
-          : ''}
-        ${this.state.type === 'loading'
-          ? html`
-              ${SKELETON_REDIRECTIONS.map(
-                (skeletonRedirectionState) => html`
-                  <cc-tcp-redirection .state=${skeletonRedirectionState}></cc-tcp-redirection>
-                `,
-              )}
-            `
-          : ''}
-        ${this.state.type === 'loaded'
-          ? html`
-              ${this.state.redirections.map(
-                (redirectionState) => html` <cc-tcp-redirection .state=${redirectionState}></cc-tcp-redirection> `,
-              )}
-              ${this.state.redirections.length === 0
-                ? html` <div class="cc-block_empty-msg">${i18n('cc-tcp-redirection-form.empty')}</div> `
-                : ''}
-            `
-          : ''}
-      </cc-block>
+        <a slot="footer-right" href="https://developers.clever-cloud.com/doc/administrate/tcp-redirections/">
+          <cc-icon .icon="${iconInfo}"></cc-icon>
+          TCP Redirections Reference</a
+        >
+      </cc-block-new>
     `;
   }
 
@@ -106,6 +113,11 @@ export class CcTcpRedirectionForm extends LitElement {
           vertical-align: middle;
         }
 
+        .content {
+          display: grid;
+          gap: 1em;
+        }
+
         .description {
           line-height: 1.6;
         }
@@ -120,6 +132,11 @@ export class CcTcpRedirectionForm extends LitElement {
           border-radius: var(--cc-border-radius-default, 0.25em);
           font-family: var(--cc-ff-monospace);
           padding: 0.15em 0.3em;
+        }
+
+        .empty-msg {
+          color: var(--cc-color-text-weak);
+          font-style: italic;
         }
       `,
     ];

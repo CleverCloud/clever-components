@@ -1,10 +1,14 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { iconCleverRam as iconRam } from '../../assets/cc-clever.icons.js';
-import { iconRemixCpuLine as iconCpu, iconRemixDatabase_2Fill as iconDisk } from '../../assets/cc-remix.icons.js';
+import {
+  iconRemixCpuLine as iconCpu,
+  iconRemixDatabase_2Fill as iconDisk,
+  iconRemixInformationFill as iconInfo,
+} from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
-import '../cc-block/cc-block.js';
+import '../cc-block-new/cc-block-new.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-notice/cc-notice.js';
 
@@ -132,17 +136,23 @@ export class CcAddonFeatures extends LitElement {
     const isLoadedOrLoading = this.state.type === 'loaded' || skeleton;
 
     return html`
-      <cc-block>
-        <div slot="title">${i18n('cc-addon-features.title')}</div>
+      <cc-block-new>
+        <div slot="header-title">${i18n('cc-addon-features.title')}</div>
 
-        <div>${i18n('cc-addon-features.details')}</div>
+        <div slot="content">${i18n('cc-addon-features.details')}</div>
 
         ${this.state.type === 'error'
-          ? html` <cc-notice intent="warning" message="${i18n('cc-addon-features.loading-error')}"></cc-notice> `
+          ? html`
+              <cc-notice
+                slot="content"
+                intent="warning"
+                message="${i18n('cc-addon-features.loading-error')}"
+              ></cc-notice>
+            `
           : ''}
         ${isLoadedOrLoading
           ? html`
-              <div class="feature-list">
+              <div slot="content" class="feature-list">
                 ${features.map(
                   (feature) => html`
                     <div class="feature ${classMap({ skeleton })}">
@@ -159,9 +169,14 @@ export class CcAddonFeatures extends LitElement {
                   `,
                 )}
               </div>
+
+              <a slot="footer-right" href="#">
+                <cc-icon .icon="${iconInfo}"></cc-icon>
+                Addon Features Reference</a
+              >
             `
           : ''}
-      </cc-block>
+      </cc-block-new>
     `;
   }
 

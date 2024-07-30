@@ -1,12 +1,16 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { iconRemixHistoryLine as iconBackup, iconRemixCloseLine as iconClose } from '../../assets/cc-remix.icons.js';
+import {
+  iconRemixHistoryLine as iconBackup,
+  iconRemixCloseLine as iconClose,
+  iconRemixInformationFill as iconInfo,
+} from '../../assets/cc-remix.icons.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
+import '../cc-block-new/cc-block-new.js';
 import '../cc-block-section/cc-block-section.js';
-import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-input-text/cc-input-text.js';
@@ -247,15 +251,27 @@ export class CcAddonBackups extends LitElement {
 
   render() {
     return html`
-      <cc-block>
-        <div slot="title">${i18n('cc-addon-backups.title')}</div>
-
+      <cc-block-new>
+        <div slot="header-title">${i18n('cc-addon-backups.title')}</div>
         ${this.state.type === 'error'
-          ? html` <cc-notice intent="warning" message="${i18n('cc-addon-backups.loading-error')}"></cc-notice> `
+          ? html`
+              <cc-notice
+                slot="content"
+                intent="warning"
+                message="${i18n('cc-addon-backups.loading-error')}"
+              ></cc-notice>
+            `
           : ''}
         ${this.state.type === 'loading' ? this._renderLoading(this.state) : ''}
         ${this.state.type === 'loaded' ? this._renderLoaded(this.state) : ''}
-      </cc-block>
+
+        <div slot="footer-right">
+          <a href="#">
+            <cc-icon .icon="${iconInfo}"></cc-icon>
+            Backups Reference</a
+          >
+        </div>
+      </cc-block-new>
     `;
   }
 
@@ -266,7 +282,7 @@ export class CcAddonBackups extends LitElement {
    */
   _renderLoading(state) {
     return html`
-      <div>
+      <div slot="content">
         <span class="skeleton"> ${fakeString(150)} </span>
       </div>
       ${this._renderBackups(state)}
@@ -282,9 +298,9 @@ export class CcAddonBackups extends LitElement {
     const hasData = state.backups.length > 0;
 
     return html`
-      <div>${this._getDescription(state.providerId)}</div>
+      <div slot="content">${this._getDescription(state.providerId)}</div>
 
-      ${!hasData ? html` <div class="cc-block_empty-msg">${i18n('cc-addon-backups.empty')}</div> ` : ''}
+      ${!hasData ? html` <div slot="content" class="empty-msg">${i18n('cc-addon-backups.empty')}</div> ` : ''}
       ${hasData ? this._renderBackups(state) : ''}
       ${this._overlayType === 'restore' ? this._renderRestoreOverlay(state.providerId, state.passwordForCommand) : ''}
       ${this._overlayType === 'delete' ? this._renderDeleteOverlay(state.providerId, state.passwordForCommand) : ''}
@@ -301,7 +317,7 @@ export class CcAddonBackups extends LitElement {
 
     const data = state.type === 'loaded' ? state : SKELETON_BACKUPS;
     return html`
-      <div class="backup-list">
+      <div slot="content" class="backup-list">
         ${data.backups.map(
           (backup) => html`
             <div class="backup">
@@ -348,29 +364,31 @@ export class CcAddonBackups extends LitElement {
     return html`
       <!-- The restore and delete overlays are quite similar but's it's easier to read with a big if and some copy/paste than 8 ifs -->
       <div slot="overlay">
-        <cc-block class="overlay">
-          <div slot="title">${i18n('cc-addon-backups.restore', this._selectedBackup)}</div>
-          <cc-button
-            class="overlay-close-btn"
-            slot="button"
-            .icon=${iconClose}
-            hide-text
-            outlined
-            primary
-            @cc-button:click=${this._onCloseOverlay}
-            >${i18n('cc-addon-backups.close-btn')}</cc-button
-          >
+        <cc-block-new class="overlay">
+          <div slot="header-title">${i18n('cc-addon-backups.restore', this._selectedBackup)}</div>
+          <div slot="header-right">
+            <cc-button
+              class="overlay-close-btn"
+              slot="button"
+              .icon=${iconClose}
+              hide-text
+              outlined
+              primary
+              @cc-button:click=${this._onCloseOverlay}
+              >${i18n('cc-addon-backups.close-btn')}</cc-button
+            >
+          </div>
 
           ${this._displaySectionWithService(providerId)
             ? html`
-                <cc-block-section>
+                <cc-block-section slot="content">
                   <div slot="title">${this._getRestoreWithServiceTitle(providerId)}</div>
                   <div>${this._getRestoreWithServiceDescription(providerId, this._selectedBackup.url)}</div>
                 </cc-block-section>
               `
             : ''}
 
-          <cc-block-section>
+          <cc-block-section slot="content">
             <div slot="title">${i18n('cc-addon-backups.restore.manual.title')}</div>
             <div>${this._getManualRestoreDescription(providerId)}</div>
             ${this._selectedBackup.restoreCommand != null
@@ -381,7 +399,7 @@ export class CcAddonBackups extends LitElement {
                 `
               : ''}
           </cc-block-section>
-        </cc-block>
+        </cc-block-new>
       </div>
     `;
   }
@@ -395,22 +413,24 @@ export class CcAddonBackups extends LitElement {
   _renderDeleteOverlay(providerId, passwordForCommand) {
     return html`
       <div slot="overlay">
-        <cc-block class="overlay">
-          <div slot="title">${i18n('cc-addon-backups.delete', this._selectedBackup)}</div>
-          <cc-button
-            class="overlay-close-btn"
-            slot="button"
-            .icon=${iconClose}
-            hide-text
-            outlined
-            primary
-            @cc-button:click=${this._onCloseOverlay}
-            >${i18n('cc-addon-backups.close-btn')}</cc-button
-          >
+        <cc-block-new class="overlay">
+          <div slot="header-title">${i18n('cc-addon-backups.delete', this._selectedBackup)}</div>
+          <div slot="header-right">
+            <cc-button
+              class="overlay-close-btn"
+              slot="button"
+              .icon=${iconClose}
+              hide-text
+              outlined
+              primary
+              @cc-button:click=${this._onCloseOverlay}
+              >${i18n('cc-addon-backups.close-btn')}</cc-button
+            >
+          </div>
 
           ${this._displaySectionWithService(providerId)
             ? html`
-                <cc-block-section>
+                <cc-block-section slot="content">
                   <div slot="title">${i18n('cc-addon-backups.delete.with-service.title.es-addon')}</div>
                   <div>
                     ${i18n('cc-addon-backups.delete.with-service.description.es-addon', {
@@ -421,14 +441,14 @@ export class CcAddonBackups extends LitElement {
               `
             : ''}
 
-          <cc-block-section>
+          <cc-block-section slot="content">
             <div slot="title">${i18n('cc-addon-backups.delete.manual.title')}</div>
             <div>${this._getManualDeleteDescription(providerId)}</div>
             <cc-input-text readonly clipboard value="${this._selectedBackup.deleteCommand}"></cc-input-text>
             <div>${i18n('cc-addon-backups.command-password')}</div>
             <cc-input-text readonly clipboard secret value=${passwordForCommand}></cc-input-text>
           </cc-block-section>
-        </cc-block>
+        </cc-block-new>
       </div>
     `;
   }
@@ -443,6 +463,11 @@ export class CcAddonBackups extends LitElement {
           display: grid;
           grid-gap: 1em;
           line-height: 1.5;
+        }
+
+        .content {
+          display: grid;
+          gap: 1em;
         }
 
         .backup-list {
@@ -501,6 +526,11 @@ export class CcAddonBackups extends LitElement {
 
         cc-input-text {
           --cc-input-font-family: var(--cc-ff-monospace, monospace);
+        }
+
+        .empty-msg {
+          color: var(--cc-color-text-weak);
+          font-style: italic;
         }
       `,
     ];

@@ -1,9 +1,10 @@
 import { css, html, LitElement } from 'lit';
+import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import '../cc-addon-option/cc-addon-option.js';
-import '../cc-block/cc-block.js';
+import '../cc-block-new/cc-block-new.js';
 import '../cc-button/cc-button.js';
 
 /**
@@ -57,25 +58,32 @@ export class CcAddonOptionForm extends LitElement {
 
   render() {
     return html`
-      <cc-block>
-        <div slot="title">${this.title}</div>
-        <slot name="description"></slot>
-        ${this.options.map((option) => {
-          const enabled = option.enabled || false;
-          return html` <cc-addon-option
-            title="${option.title}"
-            .icon="${option.icon}"
-            logo="${option.logo}"
-            ?enabled=${enabled}
-            @cc-addon-option:input=${(e) => this._onOptionToggle(e, option.name)}
-          >
-            ${option.description}
-          </cc-addon-option>`;
-        })}
-        <div class="button-bar">
+      <cc-block-new>
+        <div slot="header-title">${this.title}</div>
+        <div slot="content-body" class="content">
+          <slot name="description"></slot>
+          ${this.options.map((option) => {
+            const enabled = option.enabled || false;
+            return html` <cc-addon-option
+              title="${option.title}"
+              .icon="${option.icon}"
+              logo="${option.logo}"
+              ?enabled=${enabled}
+              @cc-addon-option:input=${(e) => this._onOptionToggle(e, option.name)}
+            >
+              ${option.description}
+            </cc-addon-option>`;
+          })}
+        </div>
+        <div slot="content-footer" class="button-bar">
           <cc-button primary @cc-button:click=${this._onSubmit}> ${i18n('cc-addon-option-form.confirm')} </cc-button>
         </div>
-      </cc-block>
+
+        <a slot="footer-right" href="#">
+          <cc-icon .icon="${iconInfo}"></cc-icon>
+          Addon Options Reference</a
+        >
+      </cc-block-new>
     `;
   }
 
@@ -86,6 +94,11 @@ export class CcAddonOptionForm extends LitElement {
       css`
         :host {
           display: block;
+        }
+
+        .content {
+          display: grid;
+          gap: 1em;
         }
 
         .button-bar {

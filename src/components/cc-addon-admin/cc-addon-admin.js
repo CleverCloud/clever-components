@@ -1,8 +1,9 @@
 import { css, html, LitElement } from 'lit';
+import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
+import '../cc-block-new/cc-block-new.js';
 import '../cc-block-section/cc-block-section.js';
-import '../cc-block/cc-block.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
@@ -101,14 +102,21 @@ export class CcAddonAdmin extends LitElement {
 
   render() {
     return html`
-      <cc-block>
-        <div slot="title">${i18n('cc-addon-admin.admin')}</div>
+      <cc-block-new>
+        <div slot="header-title">${i18n('cc-addon-admin.admin')}</div>
 
         ${this.state.type === 'error'
-          ? html` <cc-notice intent="warning" message="${i18n('cc-addon-admin.error-loading')}"></cc-notice> `
+          ? html`
+              <cc-notice slot="content" intent="warning" message="${i18n('cc-addon-admin.error-loading')}"></cc-notice>
+            `
           : ''}
         ${this.state.type !== 'error' ? this._renderContent(this.state) : ''}
-      </cc-block>
+
+        <a slot="footer-right" href="#">
+          <cc-icon .icon="${iconInfo}"></cc-icon>
+          Addon Reference</a
+        >
+      </cc-block-new>
     `;
   }
 
@@ -125,7 +133,7 @@ export class CcAddonAdmin extends LitElement {
     const shouldShowVmText = !this.noDangerZoneVmText;
 
     return html`
-      <cc-block-section>
+      <cc-block-section slot="content">
         <div slot="title">${i18n('cc-addon-admin.heading.name')}</div>
         <div slot="info"></div>
         <div class="one-line-form">
@@ -148,7 +156,7 @@ export class CcAddonAdmin extends LitElement {
         </div>
       </cc-block-section>
 
-      <cc-block-section>
+      <cc-block-section slot="content">
         <div slot="title">${i18n('cc-addon-admin.heading.tags')}</div>
         <div slot="info">${i18n('cc-addon-admin.tags-description')}</div>
         <div class="one-line-form">
@@ -172,7 +180,7 @@ export class CcAddonAdmin extends LitElement {
         </div>
       </cc-block-section>
 
-      <cc-block-section>
+      <cc-block-section slot="content">
         <div slot="title" class="danger">${i18n('cc-addon-admin.danger-zone')}</div>
         <div slot="info" class="danger-desc">
           <p>${i18n('cc-addon-admin.delete-disclaimer')}</p>

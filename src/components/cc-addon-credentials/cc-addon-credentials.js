@@ -1,8 +1,9 @@
 import { css, html, LitElement } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
-import '../cc-block/cc-block.js';
+import '../cc-block-new/cc-block-new.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
 
@@ -93,16 +94,16 @@ export class CcAddonCredentials extends LitElement {
 
   render() {
     return html`
-      <cc-block image=${ifDefined(this.image ?? undefined)} state=${this.toggleState}>
-        <div slot="title">${i18n('cc-addon-credentials.title', { name: this.name })}</div>
+      <cc-block-new image=${ifDefined(this.image ?? undefined)} state=${this.toggleState}>
+        <div slot="header-title">${i18n('cc-addon-credentials.title', { name: this.name })}</div>
 
         ${!this.error
           ? html`
-              <div>${this._getDescription(this.type)}</div>
+              <div slot="content">${this._getDescription(this.type)}</div>
 
               ${this.credentials != null
                 ? html`
-                    <div class="credential-list">
+                    <div slot="content" class="credential-list">
                       ${this.credentials.map(
                         ({ type, secret, value }) => html`
                           <cc-input-text
@@ -121,9 +122,20 @@ export class CcAddonCredentials extends LitElement {
             `
           : ''}
         ${this.error
-          ? html` <cc-notice intent="warning" message="${i18n('cc-addon-credentials.loading-error')}"></cc-notice> `
+          ? html`
+              <cc-notice
+                slot="content"
+                intent="warning"
+                message="${i18n('cc-addon-credentials.loading-error')}"
+              ></cc-notice>
+            `
           : ''}
-      </cc-block>
+
+        <a slot="footer-right" href="#">
+          <cc-icon .icon="${iconInfo}"></cc-icon>
+          Addon Credentials Reference</a
+        >
+      </cc-block-new>
     `;
   }
 

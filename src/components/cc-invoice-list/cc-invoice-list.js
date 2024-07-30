@@ -1,9 +1,10 @@
 import { css, html, LitElement } from 'lit';
+import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
 import { i18n } from '../../lib/i18n.js';
 import { sortBy, unique } from '../../lib/utils.js';
+import '../cc-block-new/cc-block-new.js';
 import '../cc-block-section/cc-block-section.js';
-import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import { PENDING_STATUSES, PROCESSED_STATUSES, PROCESSING_STATUS } from '../cc-invoice-table/cc-invoice-table.js';
 import '../cc-notice/cc-notice.js';
@@ -75,18 +76,18 @@ export class CcInvoiceList extends LitElement {
   render() {
     if (this.state.type === 'error') {
       return this._renderView(html`
-        <cc-notice intent="warning" message="${i18n('cc-invoice-list.error')}"></cc-notice>
+        <cc-notice slot="content" intent="warning" message="${i18n('cc-invoice-list.error')}"></cc-notice>
       `);
     }
 
     if (this.state.type === 'loading') {
       return this._renderView(html`
-        <cc-block-section>
+        <cc-block-section slot="content">
           <div slot="title">${i18n('cc-invoice-list.pending')}</div>
           <cc-invoice-table></cc-invoice-table>
         </cc-block-section>
 
-        <cc-block-section>
+        <cc-block-section slot="content">
           <div slot="title">${i18n('cc-invoice-list.processed')}</div>
           <cc-invoice-table></cc-invoice-table>
         </cc-block-section>
@@ -122,7 +123,7 @@ export class CcInvoiceList extends LitElement {
     const hasYearSelector = filteredProcessedInvoiceTableState.invoices.length > 0 && yearChoices.length > 1;
 
     return this._renderView(html`
-      <cc-block-section>
+      <cc-block-section slot="content">
         <div slot="title">${i18n('cc-invoice-list.pending')}</div>
         ${pendingInvoicesTableState.invoices.length > 0
           ? html` <cc-invoice-table .state=${pendingInvoicesTableState}></cc-invoice-table> `
@@ -134,14 +135,14 @@ export class CcInvoiceList extends LitElement {
 
       ${processingInvoicesTableState.invoices.length > 0
         ? html`
-            <cc-block-section>
+            <cc-block-section slot="content">
               <div slot="title">${i18n('cc-invoice-list.processing')}</div>
               <cc-invoice-table .state=${processingInvoicesTableState}></cc-invoice-table>
             </cc-block-section>
           `
         : ''}
 
-      <cc-block-section>
+      <cc-block-section slot="content">
         <div slot="title">${i18n('cc-invoice-list.processed')}</div>
         ${hasYearSelector
           ? html`
@@ -177,10 +178,14 @@ export class CcInvoiceList extends LitElement {
    */
   _renderView(content) {
     return html`
-      <cc-block>
-        <div slot="title">${i18n('cc-invoice-list.title')}</div>
+      <cc-block-new>
+        <div slot="header-title">${i18n('cc-invoice-list.title')}</div>
         ${content}
-      </cc-block>
+        <a slot="footer-right" href="https://developers.clever-cloud.com/doc/billing/unified-invoices/">
+          <cc-icon .icon="${iconInfo}"></cc-icon>
+          Invoice Reference</a
+        >
+      </cc-block-new>
     `;
   }
 

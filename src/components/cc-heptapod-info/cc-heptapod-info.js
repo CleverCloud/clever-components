@@ -1,9 +1,10 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
-import '../cc-block/cc-block.js';
+import '../cc-block-new/cc-block-new.js';
 import '../cc-notice/cc-notice.js';
 
 /** @type {Statistics} */
@@ -44,26 +45,37 @@ export class CcHeptapodInfo extends LitElement {
 
   render() {
     return html`
-      <cc-block>
-        <div slot="title">Heptapod</div>
-        <div class="header">
+      <cc-block-new>
+        <div slot="header-title">Heptapod</div>
+        <div slot="content" class="header">
           <img class="header-logo" src=${HEPTAPOD_LOGO_URL} alt="heptapod logo" title="heptapod logo" />
           <div class="header-content">
             <div>Heptapod</div>
             <div>${ccLink('https://heptapod.host', 'https://heptapod.host')}</div>
           </div>
         </div>
-        <div class="description">${i18n('cc-heptapod-info.description')}</div>
+        <div slot="content" class="description">${i18n('cc-heptapod-info.description')}</div>
 
         ${this.state.type === 'error'
-          ? html` <cc-notice intent="warning" message="${i18n('cc-heptapod-info.error-loading')}"></cc-notice> `
+          ? html`
+              <cc-notice
+                slot="content"
+                intent="warning"
+                message="${i18n('cc-heptapod-info.error-loading')}"
+              ></cc-notice>
+            `
           : ''}
         ${this.state.type === 'not-used'
-          ? html` <div class="no-statistics">${i18n('cc-heptapod-info.not-in-use')}</div> `
+          ? html` <div slot="content" class="no-statistics">${i18n('cc-heptapod-info.not-in-use')}</div> `
           : ''}
         ${this.state.type === 'loading' ? this._renderStatistics(SKELETON_STATISTICS, true) : ''}
         ${this.state.type === 'loaded' ? this._renderStatistics(this.state.statistics, false) : ''}
-      </cc-block>
+
+        <a slot="footer-right" href="https://developers.clever-cloud.com/doc/addons/heptapod/">
+          <cc-icon .icon="${iconInfo}"></cc-icon>
+          Heptapod Reference</a
+        >
+      </cc-block-new>
     `;
   }
 
@@ -74,7 +86,7 @@ export class CcHeptapodInfo extends LitElement {
    */
   _renderStatistics(statistics, skeleton) {
     return html`
-      <div class="pricing">
+      <div slot="content" class="pricing">
         <div class="pricing-item">
           <div class="pricing-item-value ${classMap({ skeleton })}">${statistics.privateActiveUsers}</div>
           <div>${i18n('cc-heptapod-info.private-active-users-description')}</div>

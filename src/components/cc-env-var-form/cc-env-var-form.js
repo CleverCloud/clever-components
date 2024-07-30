@@ -1,8 +1,10 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
+import '../cc-block-new/cc-block-new.js';
 import '../cc-button/cc-button.js';
 import '../cc-env-var-editor-expert/cc-env-var-editor-expert.js';
 import '../cc-env-var-editor-json/cc-env-var-editor-json.js';
@@ -210,8 +212,26 @@ export class CcEnvVarForm extends LitElement {
   }
 
   willUpdate(changedProperties) {
-    if (changedProperties.has('context') && this.context === 'env-var-addon') {
-      this.readonly = true;
+    if (changedProperties.has('context') || changedProperties.has('addonName') || changedProperties.has('appName')) {
+      if (this.context === 'env-var') {
+        this.heading = i18n('cc-env-var-form.heading.env-var');
+        this._description = i18n('cc-env-var-form.description.env-var', { appName: this.appName });
+      }
+      if (this.context === 'env-var-simple') {
+        this.heading = i18n('cc-env-var-form.heading.env-var');
+      }
+      if (this.context === 'env-var-addon') {
+        this.heading = i18n('cc-env-var-form.heading.env-var');
+        this.readonly = true;
+      }
+      if (this.context === 'exposed-config') {
+        this.heading = i18n('cc-env-var-form.heading.exposed-config');
+        this._description = i18n('cc-env-var-form.description.exposed-config', { appName: this.appName });
+      }
+      if (this.context === 'config-provider') {
+        this.heading = i18n('cc-env-var-form.heading.config-provider');
+        this._description = i18n('cc-env-var-form.description.config-provider', { addonName: this.addonName });
+      }
     }
 
     if (changedProperties.has('state') && this.state.type === 'loaded') {
@@ -225,13 +245,19 @@ export class CcEnvVarForm extends LitElement {
 
     if (this.state.type === 'error') {
       return html`
-        <div class="header">${heading != null ? html` <div class="heading">${heading}</div> ` : ''}</div>
-        <slot class="description">${defaultDescription}</slot>
-        <div class="overlay-container">
-          <div class="error-container">
-            <cc-notice intent="warning" message="${i18n('cc-env-var-form.error.loading')}"></cc-notice>
+        <cc-block-new>
+          <div slot="header-title" class="header">
+            ${heading != null ? html` <div class="heading">${heading}</div> ` : ''}
           </div>
-        </div>
+          <div slot="content-header">
+            <slot class="description">${defaultDescription}</slot>
+          </div>
+          <div slot="content-body" class="overlay-container">
+            <div class="error-container">
+              <cc-notice intent="warning" message="${i18n('cc-env-var-form.error.loading')}"></cc-notice>
+            </div>
+          </div>
+        </cc-block-new>
       `;
     }
 
@@ -242,76 +268,90 @@ export class CcEnvVarForm extends LitElement {
     const hasOverlay = isSaving;
 
     return html`
-      <div class="header">
-        ${heading != null ? html` <div class="heading">${heading}</div> ` : ''}
+      <cc-block-new>
+        ${this.heading != null ? html` <div slot="header-title" class="heading">${this.heading}</div> ` : ''}
+        ${!this.error
+          ? html`
+              <cc-toggle
+                slot="header-right"
+                class="mode-switcher ${classMap({ 'has-overlay': hasOverlay })}"
+                value=${this._mode}
+                .choices=${this._getModes()}
+                ?disabled=${isEditorDisabled}
+                @cc-toggle:input=${this._onToggleMode}
+              ></cc-toggle>
+            `
+          : ''}
 
-        <cc-toggle
-          class="mode-switcher ${classMap({ 'has-overlay': hasOverlay })}"
-          value=${this._mode}
-          .choices=${this._getModes()}
-          ?disabled=${isEditorDisabled}
-          @cc-toggle:input=${this._onToggleMode}
-        ></cc-toggle>
-      </div>
+        <div slot="content-header">
+          <slot class="description">${this._description}</slot>
+        </div>
 
-      <slot class="description">${defaultDescription}</slot>
+        <div slot="content-body" class="overlay-container">
+          <div class="editors ${classMap({ 'has-overlay': hasOverlay })}">
+            <cc-env-var-editor-simple
+              ?hidden=${this._mode !== 'SIMPLE'}
+              .state=${this._editorsState}
+              ?disabled=${isEditorDisabled}
+              ?readonly=${this.readonly}
+              @cc-env-var-editor-simple:change=${this._onChange}
+              @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
+            ></cc-env-var-editor-simple>
 
-      <div class="overlay-container">
-        <cc-expand class=${classMap({ 'has-overlay': hasOverlay })}>
-          <cc-env-var-editor-simple
-            ?hidden=${this._mode !== 'SIMPLE'}
-            .state=${this._editorsState}
-            ?disabled=${isEditorDisabled}
-            ?readonly=${this.readonly}
-            @cc-env-var-editor-simple:change=${this._onChange}
-            @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
-          ></cc-env-var-editor-simple>
+            <cc-env-var-editor-expert
+              ?hidden=${this._mode !== 'EXPERT'}
+              .state=${this._editorsState}
+              ?disabled=${isEditorDisabled}
+              ?readonly=${this.readonly}
+              @cc-env-var-editor-expert:change=${this._onChange}
+              @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
+            ></cc-env-var-editor-expert>
 
-          <cc-env-var-editor-expert
-            ?hidden=${this._mode !== 'EXPERT'}
-            .state=${this._editorsState}
-            ?disabled=${isEditorDisabled}
-            ?readonly=${this.readonly}
-            @cc-env-var-editor-expert:change=${this._onChange}
-            @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
-          ></cc-env-var-editor-expert>
+            <cc-env-var-editor-json
+              ?hidden=${this._mode !== 'JSON'}
+              .state=${this._editorsState}
+              ?disabled=${isEditorDisabled}
+              ?readonly=${this.readonly}
+              @cc-env-var-editor-json:change=${this._onChange}
+              @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
+            ></cc-env-var-editor-json>
+          </div>
 
-          <cc-env-var-editor-json
-            ?hidden=${this._mode !== 'JSON'}
-            .state=${this._editorsState}
-            ?disabled=${isEditorDisabled}
-            ?readonly=${this.readonly}
-            @cc-env-var-editor-json:change=${this._onChange}
-            @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
-          ></cc-env-var-editor-json>
-        </cc-expand>
+          ${isSaving ? html` <cc-loader class="saving-loader"></cc-loader> ` : ''}
+        </div>
 
-        ${isSaving ? html` <cc-loader class="saving-loader"></cc-loader> ` : ''}
-      </div>
+        ${!this.readonly
+          ? html`
+              <div slot="content-footer" class="button-bar">
+                <cc-button @cc-button:click=${() => this._resetForm(this._initVariables)}
+                  >${i18n('cc-env-var-form.reset')}</cc-button
+                >
 
-      ${!this.readonly
-        ? html`
-            <div class="button-bar">
-              <cc-button @cc-button:click=${() => this._resetForm(this._initVariables)}
-                >${i18n('cc-env-var-form.reset')}</cc-button
-              >
+                <div class="spacer"></div>
 
-              <div class="spacer"></div>
+                ${this.restartApp
+                  ? html`
+                      <cc-button @cc-button:click=${() => dispatchCustomEvent(this, 'restart-app')}
+                        >${i18n('cc-env-var-form.restart-app')}</cc-button
+                      >
+                    `
+                  : ''}
 
-              ${this.restartApp
-                ? html`
-                    <cc-button @cc-button:click=${() => dispatchCustomEvent(this, 'restart-app')}
-                      >${i18n('cc-env-var-form.restart-app')}</cc-button
-                    >
-                  `
-                : ''}
+                <cc-button success ?disabled=${isFormDisabled} @cc-button:click=${this._onUpdateForm}
+                  >${i18n('cc-env-var-form.update')}</cc-button
+                >
+              </div>
+            `
+          : ''}
 
-              <cc-button success ?disabled=${isFormDisabled} @cc-button:click=${this._onUpdateForm}
-                >${i18n('cc-env-var-form.update')}</cc-button
-              >
-            </div>
-          `
-        : ''}
+        <a
+          slot="footer-right"
+          href="https://developers.clever-cloud.com/doc/reference/reference-environment-variables/"
+        >
+          <cc-icon .icon="${iconInfo}"></cc-icon>
+          Environment Variables Reference</a
+        >
+      </cc-block-new>
     `;
   }
 
@@ -321,27 +361,7 @@ export class CcEnvVarForm extends LitElement {
       // language=CSS
       css`
         :host {
-          background-color: var(--cc-color-bg-default, #fff);
-          border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
           display: block;
-          padding: 0.5em 1em;
-        }
-
-        .header {
-          align-items: flex-start;
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.5em;
-          justify-content: center;
-          margin-block: 0.5em;
-        }
-
-        .heading {
-          color: var(--cc-color-text-primary-strongest);
-          flex: 1 1 0;
-          font-size: 1.2em;
-          font-weight: bold;
         }
 
         .description {
@@ -349,7 +369,6 @@ export class CcEnvVarForm extends LitElement {
           display: block;
           font-style: italic;
           line-height: 1.5;
-          margin-bottom: 0.5em;
         }
 
         .has-overlay {
@@ -362,7 +381,7 @@ export class CcEnvVarForm extends LitElement {
           position: relative;
         }
 
-        cc-expand {
+        .editors {
           /* We need to spread so the focus rings can be visible even with cc-expand default overflow:hidden */
           /* It also allows cc-env-var-create to span through the whole width of the cc-block in simple mode */
           margin-inline: -1em;
@@ -381,8 +400,6 @@ export class CcEnvVarForm extends LitElement {
           display: flex;
           flex-wrap: wrap;
           gap: 1em;
-          margin-bottom: 0.5em;
-          margin-top: 1em;
         }
 
         .spacer {

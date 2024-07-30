@@ -2,6 +2,7 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
@@ -9,8 +10,8 @@ import { Validation } from '../../lib/form/validation.js';
 import { i18n } from '../../lib/i18n.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import '../cc-badge/cc-badge.js';
+import '../cc-block-new/cc-block-new.js';
 import '../cc-block-section/cc-block-section.js';
-import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-loader/cc-loader.js';
@@ -332,12 +333,12 @@ export class CcOrgaMemberList extends LitElement {
 
   render() {
     return html`
-      <cc-block>
-        <div slot="title">${i18n('cc-orga-member-list.main-heading')}</div>
+      <cc-block-new>
+        <div slot="header-title">${i18n('cc-orga-member-list.main-heading')}</div>
 
         ${this.authorisations.invite ? this._renderInviteForm() : ''}
 
-        <cc-block-section>
+        <cc-block-section slot="content">
           <div slot="title" ${ref(this._memberListHeadingRef)} tabindex="-1">
             ${i18n('cc-orga-member-list.list.heading')}
             ${this.members.state === 'loaded'
@@ -363,7 +364,12 @@ export class CcOrgaMemberList extends LitElement {
         </cc-block-section>
 
         ${this.members.state === 'loaded' ? this._renderDangerZone(this.members) : ''}
-      </cc-block>
+
+        <a slot="footer-right" href="https://developers.clever-cloud.com/doc/account/administrate-organization/">
+          <cc-icon .icon="${iconInfo}"></cc-icon>
+          Organisation Members Reference</a
+        >
+      </cc-block-new>
     `;
   }
 
@@ -371,7 +377,7 @@ export class CcOrgaMemberList extends LitElement {
     const isFormDisabled = this.inviteMemberFormState.type === 'inviting';
 
     return html`
-      <cc-block-section>
+      <cc-block-section slot="content">
         <div slot="title">${i18n('cc-orga-member-list.invite.heading')}</div>
         <p class="info">${i18n('cc-orga-member-list.invite.info')}</p>
 
@@ -471,7 +477,7 @@ export class CcOrgaMemberList extends LitElement {
    */
   _renderDangerZone(members) {
     return html`
-      <cc-block-section>
+      <cc-block-section slot="content">
         <div slot="title" class="danger">${i18n('cc-orga-member-list.leave.heading')}</div>
         <div class="leave">
           <p class="leave__text">${i18n('cc-orga-member-list.leave.text')}</p>

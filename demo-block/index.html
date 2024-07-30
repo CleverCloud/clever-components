@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Demo new cc-block</title>
+  <link rel="stylesheet" href="/src/styles/default-theme.css">
+  <script type="module" src="index.js"></script>
+  <style>
+  body {
+    font-family: sans-serif;
+  }
+
+  p {
+    margin: 0;
+  }
+  [slot="header-title"] {
+      background-color: pink;
+  }
+  </style>
+</head>
+<body>
+
+<cc-block-new state="open">
+  <div slot="header-title">The Title</div>
+  <div slot="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa.</div>
+</cc-block-new>
+
+<cc-block-new>
+  <div slot="header-title">The Title</div>
+  <div slot="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa.</div>
+  <div slot="footer">
+    <div style="background-color:tomato;">full footer</div>
+  </div>
+</cc-block-new>
+
+<cc-block-new>
+  <div slot="header-title">The Title</div>
+  <div slot="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa.</div>
+  <div slot="footer-left" style="white-space: nowrap">very long footer left</div>
+  <div slot="footer-right">
+    <a href="https://developers.clever-cloud.com/">Documentation</a>
+    <a href="#">CCAPI</a>
+    <a href="#">CLI</a>
+  </div>
+</cc-block-new>
+
+<cc-block-new>
+  <div slot="header-title">The Title</div>
+  <div slot="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa.</div>
+  <div slot="footer-left">
+    <div>This command:</div>
+    <pre style="background-color:#000;color:#fff;font-size: 1em;padding: 1em;margin: 0;border-radius: 0.25em;">clever tcp-redirs add</pre>
+  </div>
+</cc-block-new>
+
+<cc-block-new>
+  <div slot="header-title">The Title</div>
+  <div slot="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa.</div>
+  <div slot="footer-right">
+    <a href="https://developers.clever-cloud.com/">Documentation</a>
+    <a href="#">CCAPI</a>
+    <a href="#">CLI</a>
+  </div>
+</cc-block-new>
+
+<cc-block-new image="https://assets.clever-cloud.com/logos/nodejs.svg">
+    <div slot="-ribbon">info</div>
+    <div slot="header-title">New cc-block-new</div>
+    <div slot="header-right">header-right</div>
+
+    <p slot="content-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo
+        porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa. Mauris
+        dignissim accumsan ex, at vestibulum lectus fermentum id. Quisque nec magna arcu.
+        Quisque in metus sed erat sodales euismod eget id purus. Sed sagittis rhoncus mauris.
+        Ut sit amet urna ac nunc semper porta. Nam ut felis eu velit luctus rutrum. Nam leo nisl,
+        molestie a varius non, ullamcorper sit amet tortor. Donec in convallis ex. Vestibulum ante
+        ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent hendrerit
+        venenatis erat, eu malesuada nulla viverra eu. Curabitur porta risus augue,
+        non rutrum lectus hendrerit a.</p>
+
+    <div slot="footer-left">
+        <p>toto</p>
+    </div>
+    <div slot="footer-right">
+        <a href="https://developers.clever-cloud.com/">Documentation</a>
+        <a href="#">CCAPI</a>
+        <a href="#">CLI</a>
+    </div>
+</cc-block-new>
+
+<cc-block-new image="https://assets.clever-cloud.com/logos/nodejs.svg" state="open">
+    <div slot="--ribbon">info</div>
+    <div slot="header-title">New cc-block-new</div>
+    <div slot="header-right">header-right</div>
+
+    <div slot="content-header">HEADER</div>
+    <div slot="content-body"  style="background-color:#ccc; margin-inline: -1em; padding: 1em;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo
+        porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa. Mauris
+        dignissim accumsan ex, at vestibulum lectus fermentum id. Quisque nec magna arcu.
+        Quisque in metus sed erat sodales euismod eget id purus. Sed sagittis rhoncus mauris.
+        Ut sit amet urna ac nunc semper porta. Nam ut felis eu velit luctus rutrum. Nam leo nisl,
+        molestie a varius non, ullamcorper sit amet tortor. Donec in convallis ex. Vestibulum ante
+        ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent hendrerit
+        venenatis erat, eu malesuada nulla viverra eu. Curabitur porta risus augue,
+        non rutrum lectus hendrerit a.</div>
+    <div slot="content-footer">FOOTER</div>
+
+    <div slot="footer-left">
+        <p>toto</p>
+    </div>
+    <div slot="footer-right">
+        <a href="https://developers.clever-cloud.com/">Documentation</a>
+        <a href="#">CCAPI</a>
+        <a href="#">CLI</a>
+    </div>
+</cc-block-new>
+
+<cc-block-new image="https://assets.clever-cloud.com/logos/nodejs.svg" state="open">
+    <div slot="--ribbon">info</div>
+    <div slot="header-title">New cc-block-new</div>
+    <div slot="header-right">header-right</div>
+    <div slot="footer-left">
+        <p>toto</p>
+    </div>
+    <div slot="footer" style="background-color: red;">
+        <a href="https://developers.clever-cloud.com/">Documentation</a>
+        <a href="#">CCAPI</a>
+        <a href="#">CLI</a>
+    </div>
+</cc-block-new>
+
+</body>
+</html>
