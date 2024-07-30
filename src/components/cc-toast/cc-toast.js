@@ -265,6 +265,10 @@ export class CcToast extends LitElement {
           padding: var(--padding);
         }
 
+        .content p {
+          margin-block: 0.5em;
+        }
+
         .heading {
           font-weight: bold;
         }
