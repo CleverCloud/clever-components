@@ -135,6 +135,7 @@ export class CcCtZoneSelect extends LitElement {
         :host .title {
           flex: 1 1 auto;
         }
+
         :host .thumbnails {
           flex: 0 0 auto;
         }
@@ -142,6 +143,7 @@ export class CcCtZoneSelect extends LitElement {
         :host(:hover:not([disabled])) {
           border-color: var(--cc-color-border-neutral-hovered);
         }
+
         :host(:not([selected], [disabled])) {
           cursor: pointer;
         }
@@ -154,15 +156,19 @@ export class CcCtZoneSelect extends LitElement {
         :host([selected]) {
           border-color: var(--cc-color-bg-primary);
         }
+
         :host([selected]) .title .infra {
           color: var(--cc-color-text-primary-strong);
         }
+
         :host([selected]) .title .city {
           color: var(--cc-color-text-primary-strongest);
         }
+
         :host([selected]) .icon-selected {
           opacity: 1;
         }
+
         :host([selected]) .thumbnails {
           background-color: var(--cc-color-bg-primary-weak);
         }
@@ -171,13 +177,16 @@ export class CcCtZoneSelect extends LitElement {
           border-color: var(--cc-color-border-neutral-disabled);
           opacity: var(--cc-opacity-when-disabled);
         }
+
         :host([disabled]) .title .infra,
         :host([disabled]) .title .city {
           opacity: var(--cc-opacity-when-disabled);
         }
+
         :host([disabled]) .thumbnails {
           background-color: #fafafa;
         }
+
         :host([disabled]) .thumbnails cc-icon,
         :host([disabled]) .thumbnails cc-img {
           filter: grayscale(1);
@@ -194,6 +203,7 @@ export class CcCtZoneSelect extends LitElement {
           line-height: 1.125;
           padding-inline-start: 0.125em;
         }
+
         .city {
           font-size: 1.5em;
           line-height: 1.125;
@@ -201,8 +211,8 @@ export class CcCtZoneSelect extends LitElement {
 
         .icon-selected {
           --cc-icon-color: var(--cc-color-bg-primary);
-          opacity: 0;
 
+          opacity: 0;
           position: absolute;
           right: 0.5em;
           top: 0.5em;
@@ -215,10 +225,11 @@ export class CcCtZoneSelect extends LitElement {
           gap: 0.5em;
           padding: 0.75em 1.125em;
         }
+
         .thumbnails > cc-img {
           --cc-img-fit: contain;
-          height: 1.125em;
 
+          height: 1.125em;
           width: 1.25em;
         }
       `,

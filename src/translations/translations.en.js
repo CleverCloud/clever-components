@@ -49,9 +49,6 @@ function formatFlavor(f) {
 
 export const translations = {
   LANGUAGE: 'English',
-
-  'cc-foobar.foo': `foobar`,
-  'cc-ct-zone-select.alt.country-name': ({ code, name }) => getCountryName(lang, code, name),
   //#region cc-addon-admin
   'cc-addon-admin.admin': `Add-on administration`,
   'cc-addon-admin.danger-zone': `Danger zone`,
@@ -228,6 +225,9 @@ export const translations = {
   //#endregion
   //#region cc-button
   'cc-button.cancel': `Click to cancel`,
+  //#endregion
+  //#region cc-ct-zone-select
+  'cc-ct-zone-select.alt.country-name': ({ code, name }) => `country: ${getCountryName(lang, code, name)}`,
   //#endregion
   //#region cc-datetime-relative
   'cc-datetime-relative.distance': ({ date }) => formatDistanceToNow(date),

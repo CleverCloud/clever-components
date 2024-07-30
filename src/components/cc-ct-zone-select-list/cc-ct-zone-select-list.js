@@ -1,4 +1,7 @@
-import { css, html, LitElement } from 'lit';
+import { css, html } from 'lit';
+import { createRef } from 'lit/directives/ref.js';
+import { CcFormControlElement } from '../../lib/form/cc-form-control-element.abstract.js';
+import { accessibilityStyles } from '../../styles/accessibility.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-ct-zone-select/cc-ct-zone-select.js';
 import '../cc-icon/cc-icon.js';
@@ -28,9 +31,13 @@ import '../cc-notice/cc-notice.js';
  *
  * @fires {CustomEvent<any>} example-component:event-name - Fires XXX whenever YYY.
  */
-export class CcCtZoneSelectList extends LitElement {
+export class CcCtZoneSelectList extends CcFormControlElement {
   static get properties() {
-    return { zones: { type: Array } };
+    return {
+      ...super.properties,
+      value: { type: String },
+      zones: { type: Array },
+    };
   }
 
   constructor() {
@@ -38,55 +45,73 @@ export class CcCtZoneSelectList extends LitElement {
 
     /** @type {Array<ZoneItem>} */
     this.zones = [];
+
+    this.value = null;
+
+    this._formRef = createRef();
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-    this.addEventListener('cc-ct-zone-select:selected', this._onZoneSelected);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this.removeEventListener('cc-ct-zone-select:selected', this._onZoneSelected);
-  }
-
-  _onZoneSelected({ detail: { zone, selected } }) {
-    console.log(zone, selected);
+  _onZoneSelect(e) {
+    console.log(e.target);
+    this.value = e.target.value;
   }
 
   render() {
     return html`
-      <fieldset>
-        <legend>Zone</legend>
-        ${this.zones.map(
-          (zone) => html`
-            <div class="zone-input">
-              <cc-ct-zone-select
-                ?selected="${zone.selected}"
-                ?disabled="${zone.disabled}"
-                name="${zone.name}"
-                code="${zone.code}"
-                flagUrl="${zone.flagUrl}"
-                .images="${zone.images}"
-                .tags="${zone.tags}"
-              ></cc-ct-zone-select>
-              <input type="radio" name="zone" value="${zone.code}" ?disabled=${zone.disabled} />
-            </div>
-          `,
-        )}
-      </fieldset>
+      <form>
+        <fieldset @change="${(e) => this._onZoneSelect(e)}">
+          <legend>Zone</legend>
+          ${this.zones.map((zone) => this._renderZone(zone, this.value))}
+        </fieldset>
+      </form>
+    `;
+  }
+
+  /**
+   * @param {ZoneItem} zone
+   * @param {string} selectedZoneCode
+   */
+  _renderZone(zone, selectedZoneCode) {
+    const isSelected = zone.code === selectedZoneCode;
+    return html`
+      <div>
+        <input
+          class="visually-hidden"
+          type="radio"
+          name="zone"
+          .value="${zone.code}"
+          ?disabled=${zone.disabled}
+          ?checked="${isSelected}"
+          id="${zone.code}"
+        />
+        <label for="${zone.code}">
+          <cc-ct-zone-select
+            ?selected="${isSelected}"
+            ?disabled="${zone.disabled}"
+            name="${zone.name}"
+            country="${zone.country}"
+            code="${zone.code}"
+            flagUrl="${zone.flagUrl}"
+            .images="${zone.images}"
+            .tags="${zone.tags}"
+          ></cc-ct-zone-select>
+        </label>
+      </div>
     `;
   }
 
   static get styles() {
     return [
+      accessibilityStyles,
       // language=CSS
       css`
         :host {
           display: block;
         }
 
-        .zone-input {
+        input[type='radio']:focus + cc-ct-zone-select {
+          outline: var(--cc-focus-outline, #000 solid 2px);
+          outline-offset: var(--cc-focus-outline-offset, 2px);
         }
 
         fieldset {

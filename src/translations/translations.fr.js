@@ -237,6 +237,9 @@ export const translations = {
   //#region cc-button
   'cc-button.cancel': `Cliquez pour annuler`,
   //#endregion
+  //#region cc-ct-zone-select
+  'cc-ct-zone-select.alt.country-name': ({ code, name }) => `pays : ${getCountryName(lang, code, name)}`,
+  //#endregion
   //#region cc-datetime-relative
   'cc-datetime-relative.distance': ({ date }) => formatDistanceToNow(date),
   'cc-datetime-relative.title': ({ date }) => formatDate(lang, date),
@@ -1134,7 +1137,6 @@ export const translations = {
   //#endregion
   //#region cc-zone
   'cc-zone.country': ({ code, name }) => getCountryName(lang, code, name),
-  'cc-ct-zone-select.alt.country-name': ({ code, name }) => getCountryName(lang, code, name),
   //#endregion
   //#region cc-zone-input
   'cc-zone-input.error': `Une erreur est survenue pendant le chargement des zones.`,
