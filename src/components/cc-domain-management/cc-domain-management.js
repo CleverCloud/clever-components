@@ -592,17 +592,14 @@ export class CcDomainManagement extends LitElement {
         <div slot="title">${i18n('cc-domain-management.dns.a.heading')}</div>
         <div slot="info">${i18n('cc-domain-management.dns.a.desc')}</div>
         <div class="a-records">
-          ${aRecords.map(
-            (aRecord, index) => html`
-              <cc-input-text
-                hidden-label
-                label="${i18n('cc-domain-management.dns.a.label', { index: index + 1 })}"
-                readonly
-                clipboard
-                value=${aRecord}
-              ></cc-input-text>
-            `,
-          )}
+          <cc-input-text
+            hidden-label
+            label="${i18n('cc-domain-management.dns.a.label')}"
+            clipboard
+            readonly
+            multi
+            .value=${aRecords.join('\n')}
+          ></cc-input-text>
         </div>
       </cc-block-section>
     `;
