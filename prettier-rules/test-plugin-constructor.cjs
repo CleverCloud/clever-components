@@ -35,24 +35,10 @@ class MyComponent extends LitElement {
     /** @type {boolean} */
     this.selected = false;
   }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.addEventListener('click', this._onClick);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this.removeEventListener('click', this._onClick);
-  }
-
-  _onClick() {
-    if (!this.disabled && this.selected) {
-      dispatchCustomEvent(this, 'zone-selected', this.code);
-    }
-  }
-}
+ }
 `;
+
+const validCode = ``;
 
 format(code, {
   parser: 'babel',
