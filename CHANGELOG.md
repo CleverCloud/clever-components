@@ -5,6 +5,14 @@ title: 'Changelog'
 
 # Changelog
 
+## [15.1.1](https://github.com/CleverCloud/clever-components/compare/15.1.0...15.1.1) (2024-07-30)
+
+
+### 🐛 Bug Fixes
+
+* **cc-input-text:** match text and input ([7e156b4](https://github.com/CleverCloud/clever-components/commit/7e156b402873caa74b963e154ee6ab59f702edec)), closes [#1130](https://github.com/CleverCloud/clever-components/issues/1130)
+* **cc-toast:** decrease paragraph margins ([388b7db](https://github.com/CleverCloud/clever-components/commit/388b7db11b067dcb2d88db36c7295f6089d2543e)), closes [#1127](https://github.com/CleverCloud/clever-components/issues/1127)
+
 ## [15.1.0](https://github.com/CleverCloud/clever-components/compare/15.0.1...15.1.0) (2024-07-25)
 
 
