@@ -1,36 +1,86 @@
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { get as getApp } from '@clevercloud/client/esm/api/v2/application.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { getAllInvoices, getInvoice } from '@clevercloud/client/esm/api/v4/billing.js';
-import { getAllZones } from '@clevercloud/client/esm/api/v4/product.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { addOauthHeader } from '@clevercloud/client/esm/oauth.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { pickNonNull } from '@clevercloud/client/esm/pick-non-null.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { prefixUrl } from '@clevercloud/client/esm/prefix-url.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
 import { sendToApi } from './send-to-api.js';
 import { asyncMap } from './utils.js';
 
+/**
+ * @typedef {import('./send-to-api.types.js').ApiConfig} ApiConfig
+ * @typedef {import('../components/common.types.js').Invoice} Invoice
+ */
+
+/**
+ * @param {object} options
+ * @param {ApiConfig} options.apiConfig
+ * @param {AbortSignal} options.signal
+ * @param {string} options.ownerId
+ * @param {string} options.appId
+ * @return {Promise<{name: string}>}
+ */
 export function fetchApp({ apiConfig, signal, ownerId, appId }) {
   return getApp({ id: ownerId, appId }).then(sendToApi({ apiConfig, signal }));
 }
 
+/**
+ * @param {object} options
+ * @param {ApiConfig} options.apiConfig
+ * @param {AbortSignal} options.signal
+ * @param {string} options.ownerId
+ * @param {string} options.invoiceNumber
+ * @return {Promise<Invoice>}
+ */
 export async function fetchInvoice({ apiConfig, signal, ownerId, invoiceNumber }) {
   return getInvoice({ id: ownerId, invoiceNumber, type: '' })
     .then(sendToApi({ apiConfig, signal }))
-    .then((invoice) => formatInvoice(apiConfig, ownerId, invoice));
+    .then(/** @param {{[p: string]: any}} invoice*/ (invoice) => formatInvoice(apiConfig, ownerId, invoice));
 }
 
+/**
+ * @param {object} options
+ * @param {ApiConfig} options.apiConfig
+ * @param {AbortSignal} options.signal
+ * @param {string} options.ownerId
+ * @param {string} options.invoiceNumber
+ * @return {Promise<string>}
+ */
 export async function fetchInvoiceHtml({ apiConfig, signal, ownerId, invoiceNumber }) {
   return getInvoice({ id: ownerId, invoiceNumber, type: '.html' }).then(sendToApi({ apiConfig, signal }));
 }
 
+/**
+ * @param {object} options
+ * @param {ApiConfig} options.apiConfig
+ * @param {AbortSignal} options.signal
+ * @param {string} options.ownerId
+ * @return {Promise<Array<Invoice>>}
+ */
 export async function fetchAllInvoices({ apiConfig, signal, ownerId }) {
   // We ask for all invoices by default for now
   return getAllInvoices({ id: ownerId, since: '2010-08-01T00:00:00.000Z' })
     .then(sendToApi({ apiConfig, signal }))
-    .then((invoices) => {
-      return asyncMap(invoices, async (i) => formatInvoice(apiConfig, ownerId, i));
-    });
+    .then(
+      /** @param {Array<{[p: string]: any}>} invoices */ (invoices) => {
+        return asyncMap(invoices, async (i) => formatInvoice(apiConfig, ownerId, i));
+      },
+    );
 }
 
+/**
+ *
+ * @param {ApiConfig} apiConfig
+ * @param {string} ownerId
+ * @param {{[p: string]: any}} rawInvoice
+ * @return {Promise<Invoice>}
+ */
 async function formatInvoice(apiConfig, ownerId, rawInvoice) {
   return {
     number: rawInvoice.invoice_number,
@@ -46,17 +96,30 @@ async function formatInvoice(apiConfig, ownerId, rawInvoice) {
   };
 }
 
+/**
+ * @param {ApiConfig} apiConfig
+ * @param {string} ownerId
+ * @param {string} invoiceNumber
+ * @return {Promise<string>}
+ */
 function getDownloadUrl(apiConfig, ownerId, invoiceNumber) {
   return getInvoice({ id: ownerId, invoiceNumber, type: '.pdf' })
     .then(prefixUrl(apiConfig.API_HOST))
     .then(addOauthHeader(apiConfig))
-    .then((requestParams) => {
-      const url = new URL(requestParams.url);
-      url.searchParams.set('authorization', btoa(requestParams.headers.Authorization));
-      return url.toString();
-    });
+    .then(
+      /** @param {{url: string, headers: {Authorization: string}}} requestParams */ (requestParams) => {
+        const url = new URL(requestParams.url);
+        url.searchParams.set('authorization', btoa(requestParams.headers.Authorization));
+        return url.toString();
+      },
+    );
 }
 
+/**
+ * @param {string} ownerId
+ * @param {string} invoiceNumber
+ * @return {string}
+ */
 function getPaymentUrl(ownerId, invoiceNumber) {
   return ownerId == null || ownerId.startsWith('user_')
     ? `/users/me/invoices/${invoiceNumber}`
@@ -66,7 +129,7 @@ function getPaymentUrl(ownerId, invoiceNumber) {
 // TODO: move to clever-client
 /**
  * GET /v4/billing/price-system
- * @param {Object} params
+ * @param {object} params
  * @param {String} params.zone_id
  */
 export function getPriceSystem(params) {
@@ -80,6 +143,13 @@ export function getPriceSystem(params) {
   });
 }
 
+/**
+ *
+ * @param {object} params
+ * @param {AbortSignal} params.signal
+ * @param {string} params.zoneId
+ * @return {Promise<*>}
+ */
 export function fetchPriceSystem({ signal, zoneId }) {
   // eslint-disable-next-line camelcase
   return getPriceSystem({ zone_id: zoneId }).then(sendToApi({ signal, cacheDelay: ONE_DAY }));
@@ -89,8 +159,8 @@ export function fetchPriceSystem({ signal, zoneId }) {
 // Tmp Grafana API calls
 /**
  * GET /v4/saas/grafana/{id}
- * @param {Object} params
- * @param {String} params.id
+ * @param {object} params
+ * @param {string} params.id
  */
 export function getGrafanaOrganisation(params) {
   return Promise.resolve({
@@ -102,8 +172,8 @@ export function getGrafanaOrganisation(params) {
 
 /**
  * POST /v4/saas/grafana/{id}
- * @param {Object} params
- * @param {String} params.id
+ * @param {object} params
+ * @param {string} params.id
  */
 export function createGrafanaOrganisation(params) {
   return Promise.resolve({
@@ -116,7 +186,7 @@ export function createGrafanaOrganisation(params) {
 /**
  * DELETE /v4/saas/grafana/{id}
  * @param {Object} params
- * @param {String} params.id
+ * @param {string} params.id
  */
 export function deleteGrafanaOrganisation(params) {
   return Promise.resolve({
@@ -128,8 +198,8 @@ export function deleteGrafanaOrganisation(params) {
 
 /**
  * POST /v4/saas/grafana/{id}/reset
- * @param {Object} params
- * @param {String} params.id
+ * @param {object} params
+ * @param {string} params.id
  */
 export function resetGrafanaOrganisation(params) {
   return Promise.resolve({
@@ -139,16 +209,19 @@ export function resetGrafanaOrganisation(params) {
   });
 }
 
-export async function fetchAllZones({ signal }) {
-  return getAllZones().then(sendToApi({ signal, cacheDelay: ONE_DAY }));
-}
-
 // TODO: move this to clever client
-export function getAppMetrics(params) {
+/**
+ *
+ * @param {object} params
+ * @param {string} params.id
+ * @param {string} params.appId
+ * @return {Promise<{headers: {Accept: string}, method: string, url: string}>}
+ */
+export function getAppMetrics({ id, appId }) {
   return Promise.resolve({
     method: 'get',
     // TODO: Handle query params properly. (https://github.com/CleverCloud/clever-client.js/issues/76)
-    url: `/v4/stats/organisations/${params.id}/resources/${params.appId}/metrics?interval=P1D&span=PT1H&only=cpu&only=mem`,
+    url: `/v4/stats/organisations/${id}/resources/${appId}/metrics?interval=P1D&span=PT1H&only=cpu&only=mem`,
     headers: { Accept: 'application/json' },
   });
 }
