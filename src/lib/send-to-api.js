@@ -13,9 +13,9 @@ import { dispatchCustomEvent } from './events.js';
 
 /**
  * @param {Object} settings
- * @param {ApiConfig} settings.apiConfig
+ * @param {ApiConfig} [settings.apiConfig]
  * @param {AbortSignal} [settings.signal]
- * @param {Number} [settings.cacheDelay]
+ * @param {number} [settings.cacheDelay]
  * @param {Number} [settings.timeout]
  * @return {(requestParams: Object) => Promise<any>}
  */

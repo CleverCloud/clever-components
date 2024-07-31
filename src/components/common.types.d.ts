@@ -63,7 +63,7 @@ interface InvoiceAmount {
 export interface Invoice {
   downloadUrl: string;
   emissionDate: string;
-  invoiceHtml: string;
+  invoiceHtml?: string;
   number: string;
   paymentUrl: string;
   status: InvoiceStatusType;
