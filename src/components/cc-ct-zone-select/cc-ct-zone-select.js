@@ -1,6 +1,5 @@
 import { css, html, LitElement } from 'lit';
 import { iconRemixCheckboxCircleFill as selectedIcon } from '../../assets/cc-remix.icons.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-badge/cc-badge.js';
@@ -43,47 +42,31 @@ export class CcCtZoneSelect extends LitElement {
     this.code = null;
 
     /** @type {string} */
-    this.name = null;
-
-    /** @type {string} */
-    this.infra = null;
-
-    /** @type {string} */
-    this.flagUrl = null;
-
-    /** @type {string} */
     this.country = null;
 
     /** @type {string} */
     this.countryCode = null;
 
-    /** @type {ZoneImage[]} */
-    this.images = [];
-
-    /** @type {string[]} */
-    this.tags = [];
-
     /** @type {boolean} */
     this.disabled = false;
 
+    /** @type {string} */
+    this.flagUrl = null;
+
+    /** @type {ZoneImage[]} */
+    this.images = [];
+
+    /** @type {string} */
+    this.infra = null;
+
+    /** @type {string} */
+    this.name = null;
+
     /** @type {boolean} */
     this.selected = false;
-  }
 
-  connectedCallback() {
-    super.connectedCallback();
-    this.addEventListener('click', this._onClick);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this.removeEventListener('click', this._onClick);
-  }
-
-  _onClick() {
-    if (!this.disabled && this.selected) {
-      dispatchCustomEvent(this, 'zone-selected', this.code);
-    }
+    /** @type {string[]} */
+    this.tags = [];
   }
 
   render() {
