@@ -697,20 +697,16 @@ export class CcDomainManagement extends LitElement {
         .domains {
           display: grid;
           gap: 1em;
-          grid-auto-rows: 1fr;
           grid-template-columns: repeat(auto-fit, minmax(min(25em, 100%), 1fr));
         }
 
         .domain {
-          align-content: center;
           align-items: center;
           border: solid 1px var(--cc-color-border-neutral-weak);
           border-radius: var(--cc-border-radius-default);
-          display: grid;
+          display: flex;
+          flex-wrap: wrap;
           gap: 0.5em 1em;
-          grid-template-areas:
-            'domain-info domain-info'
-            'badges actions';
           padding: 1em;
         }
 
@@ -724,7 +720,7 @@ export class CcDomainManagement extends LitElement {
         }
 
         .domain-name-with-path {
-          grid-area: domain-info;
+          flex: 1 0 100%;
           word-break: break-all;
         }
 
@@ -755,7 +751,6 @@ export class CcDomainManagement extends LitElement {
           display: flex;
           flex-wrap: wrap;
           gap: 0.5em;
-          grid-area: badges;
         }
 
         .badge-content {
@@ -772,8 +767,7 @@ export class CcDomainManagement extends LitElement {
           align-items: center;
           display: flex;
           gap: 0.5em;
-          grid-area: actions;
-          justify-content: flex-end;
+          margin-inline-start: auto;
         }
 
         .empty {
