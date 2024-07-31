@@ -1,4 +1,5 @@
 const { parsers } = require('prettier/parser-babel.js');
+
 const babelParser = parsers.babel;
 
 function prepreocess(code, options) {
