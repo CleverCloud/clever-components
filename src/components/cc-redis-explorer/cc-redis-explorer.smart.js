@@ -35,9 +35,10 @@ defineSmartComponent({
    * @param _.updateComponent
    * @param {AbortSignal} _.signal
    */
-  onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
+  async onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig } = context;
-    const api = new RedisClient(apiConfig);
+    const redisClient = new RedisClient(apiConfig);
+    const redisKeysScroller = new RedisKeysVirtualScroller(redisClient, { signal });
 
     // -- handle events ---
 
@@ -81,9 +82,17 @@ defineSmartComponent({
           return;
         }
 
-        await fetchKeys({ type, match });
+        redisKeysScroller.changeFilter({ type, match });
+        await fetchKeys();
       },
     );
+
+    onEvent('cc-redis-explorer:fetch-more-keys', async () => {
+      if (component.state.type !== 'loaded') {
+        return;
+      }
+      await fetchKeys();
+    });
 
     onEvent(
       'cc-redis-explorer:selected-key-change',
@@ -94,17 +103,20 @@ defineSmartComponent({
         }
 
         // we keep track of the selected key in case of an API error, for which we need to restore selection
-        const selectedKey = component.state.keys.find((keyState) => keyState.type === 'selected')?.key.key;
+        const previousSelectedKey = component.state.keys.find((keyState) => keyState.type === 'selected')?.key.key;
+        const previousKeyEditorFormState = component.keyEditorFormState;
+
+        // key
+        const selectedKey = component.state.keys.find((k) => k.key.key === key)?.key;
 
         updateKeyState(key, 'loading');
-        if (selectedKey != null) {
-          updateKeyState(selectedKey, 'idle');
+        if (previousSelectedKey != null) {
+          updateKeyState(previousSelectedKey, 'idle');
         }
-        updateComponent('keyEditorFormState', { type: 'hidden' });
+        updateComponent('keyEditorFormState', { type: 'loading', key: selectedKey });
 
         try {
-          const keyValue = await api.describeKey(key, { signal });
-          console.log(keyValue);
+          const keyValue = await redisClient.describeKey(key, { signal });
 
           updateKeyState(key, 'selected');
           updateComponent('keyEditorFormState', {
@@ -116,9 +128,10 @@ defineSmartComponent({
           console.error(e);
           notifyError(`Could not get key ${key}`);
           updateKeyState(key, 'idle');
-          if (selectedKey != null) {
-            updateKeyState(selectedKey, 'selected');
+          if (previousSelectedKey != null) {
+            updateKeyState(previousSelectedKey, 'selected');
           }
+          updateComponent('keyEditorFormState', previousKeyEditorFormState);
         }
       },
     );
@@ -130,7 +143,7 @@ defineSmartComponent({
         updateKeyState(key, 'deleting');
 
         try {
-          await api.deleteKey(key, { signal });
+          await redisClient.deleteKey(key, { signal });
 
           updateComponent(
             'state',
@@ -166,7 +179,7 @@ defineSmartComponent({
         );
 
         try {
-          await api.addKey(keyValue, { signal });
+          await redisClient.addKey(keyValue, { signal });
 
           /** @type {CcRedisKeyState} */
           const newKeyState = { type: 'selected', key: { key: keyValue.key, type: keyValue.type } };
@@ -215,7 +228,7 @@ defineSmartComponent({
         );
 
         try {
-          await api.updateKey(keyValue, { signal });
+          await redisClient.updateKey(keyValue, { signal });
 
           notifySuccess(`Key ${keyValue.key} updated`);
         } catch (e) {
@@ -250,11 +263,13 @@ defineSmartComponent({
         let error = false;
 
         try {
-          const result = await api.sendCommand(command, { signal });
+          // todo: move this logic into API
+          const result = await redisClient.sendCommand(command, { signal });
           lines = transformResultForCLI(result);
         } catch (e) {
+          const err = /** @type {{responseBody: {statusCode: number, message: string}}} */ (e);
           console.error(e);
-          lines = [e.message];
+          lines = [err.responseBody.message];
           error = true;
           // todo: it depends on the kind of error!
         } finally {
@@ -270,42 +285,57 @@ defineSmartComponent({
       },
     );
 
+    // -- init ---
+
     updateComponent('state', { type: 'loading' });
     updateComponent('keyEditorFormState', { type: 'hidden' });
     component.resetAddEditorForm();
     component.resetUpdateEditorForm();
-    api
+
+    try {
       // todo: do more than a simple ping
-      .ping({ signal })
-      .then((pong) => {
-        if (pong) {
-          fetchKeys({}).then();
-        } else {
-          updateComponent('state', { type: 'error' });
-        }
-      })
-      .catch((e) => {
-        console.error(e);
+      const pong = await redisClient.ping({ signal });
+      if (pong) {
+        await fetchKeys();
+      } else {
         updateComponent('state', { type: 'error' });
-      });
+      }
+    } catch (e) {
+      console.error(e);
+      updateComponent('state', { type: 'error' });
+    }
 
     /**
-     * @param {object} options
-     * @param {number} [options.count]
-     * @param {CcRedisKeyType} [options.type]
-     * @param {string} [options.match]
      * @return {Promise<void>}
      */
-    async function fetchKeys({ count, type, match }) {
-      updateComponent('state', { type: 'fetching-keys' });
+    async function fetchKeys() {
+      /** @type {Array<CcRedisKeyState>} */
+      let keys;
+      /** @type {number} */
+      let total;
+      /** @type {boolean} */
+      let hasMore;
+
+      if (component.state.type === 'loaded') {
+        keys = component.state.keys;
+        total = component.state.total;
+        hasMore = component.state.hasMore;
+      }
+
+      updateComponent('state', { type: 'fetching-keys', keys: keys ?? [], total });
 
       try {
-        const { keys } = await api.describeKeys({ count, type, match }, { signal });
-        updateComponent('state', { type: 'loaded', keys: keys.map((key) => ({ type: 'idle', key })) });
+        if (redisKeysScroller.hasMore()) {
+          await redisKeysScroller.next();
+          keys = redisKeysScroller.keys.map((key) => ({ type: 'idle', key }));
+          total = redisKeysScroller.total;
+          hasMore = redisKeysScroller.hasMore();
+        }
       } catch (e) {
         console.error(e);
-        updateComponent('state', { type: 'loaded', keys: [] });
         notifyError(`Could not fetch keys`);
+      } finally {
+        updateComponent('state', { type: 'loaded', keys, total, hasMore });
       }
     }
   },
@@ -352,6 +382,25 @@ class RedisClient {
       url: `/keys`,
       headers: { Accept: 'application/json' },
       queryParams: pickNonNull({ count: count ?? 100, type, match }, ['count', 'type', 'match']),
+    }).then(sendToRedisProxy({ apiConfig: this._apiConfig, signal }));
+  }
+
+  /**
+   * @param {number} cursor
+   * @param {object} options
+   * @param {number} [options.count]
+   * @param {CcRedisKeyType} [options.type]
+   * @param {string} [options.match]
+   * @param {object} _
+   * @param {AbortSignal} [_.signal]
+   * @return {Promise<{cursor: number, total: number, keys: Array<{key: string, type: CcRedisKeyType}>}>}
+   */
+  async describeKeys2(cursor, { count, type, match }, { signal }) {
+    return Promise.resolve({
+      method: 'get',
+      url: `/keys2/${cursor}`,
+      headers: { Accept: 'application/json' },
+      queryParams: pickNonNull({ count, type, match }, ['count', 'type', 'match']),
     }).then(sendToRedisProxy({ apiConfig: this._apiConfig, signal }));
   }
 
@@ -434,7 +483,6 @@ class RedisClient {
     })
       .then(sendToRedisProxy({ apiConfig: this._apiConfig, signal }))
       .then((result) => {
-        console.log(result);
         return result;
       });
   }
@@ -472,3 +520,172 @@ function sendToRedisProxy({ apiConfig, signal, cacheDelay, timeout }) {
     });
   };
 }
+
+class RedisKeysVirtualScroller {
+  /**
+   * @param {RedisClient} redisClient
+   * @param {object} _
+   * @param {AbortSignal} [_.signal]
+   */
+  constructor(redisClient, { signal }) {
+    this._redisClient = redisClient;
+    this._signal = signal;
+    /** @type {Map<string, {key: string, type: CcRedisKeyType}>} */
+    this._keysMap = new Map();
+    /** @type {Array<{key: string, type: CcRedisKeyType}>} */
+    this._keys = [];
+    /** @type {number|null} */
+    this._cursor = null;
+  }
+
+  /**
+   * @param {object} options
+   * @param {CcRedisKeyType} [options.type]
+   * @param {string} [options.match]
+   */
+  changeFilter({ type, match }) {
+    this._type = type;
+    this._match = match;
+    this._cursor = null;
+    this._keysMap.clear();
+    this._keys = [];
+  }
+
+  /**
+   * @return {Array<{key: string, type: CcRedisKeyType}>}
+   */
+  get keys() {
+    return this._keys;
+  }
+
+  /**
+   * @return {number}
+   */
+  get total() {
+    return this._total;
+  }
+
+  /**
+   * @return {boolean}
+   */
+  hasMore() {
+    return this._cursor !== 0;
+  }
+
+  /**
+   * @param {number} [count]
+   * @return {Promise<void>}
+   */
+  async next(count = 100) {
+    if (this._cursor !== 0) {
+      const f = await this._fetch(this._cursor, count);
+      f.keys.forEach((k) => {
+        this._keysMap.set(k.key, k);
+      });
+      this._keys = Array.from(this._keysMap.values());
+      this._cursor = f.cursor;
+      this._total = f.total;
+    }
+  }
+
+  /**
+   *
+   * @param {number} cursor
+   * @param {number} count
+   * @return {Promise<{cursor: number, total: number, keys: Array<{key: string, type: CcRedisKeyType}>}>}
+   * @private
+   */
+  async _fetch(cursor, count) {
+    return await this._redisClient.describeKeys2(
+      cursor ?? 0,
+      { count, type: this._type, match: this._match },
+      { signal: this._signal },
+    );
+  }
+}
+//
+// class RedisKeysVirtualPager {
+//   /**
+//    *
+//    * @param {RedisClient} client
+//    * @param {number} pageSize
+//    * @param {object} options
+//    * @param {CcRedisKeyType} [options.type]
+//    * @param {string} [options.match]
+//    * @param {object} _
+//    * @param {AbortSignal} [_.signal]
+//    */
+//   constructor(client, pageSize, {type, match}, { signal }) {
+//     this._redisClient = client;
+//     this._pageSize = pageSize;
+//     this._currentPage = null;
+//     this._type = type;
+//     this._match = match;
+//     this._signal = signal;
+//
+//     /** @type {Array<{key: string, type: CcRedisKeyType}>} */
+//     this._keys = [];
+//
+//     this._cursor = null;
+//
+//     this._currentPage = null;
+//     this._pageCount = null;
+//   }
+//
+//   async init() {
+//     // goes to the first page
+//     const f = await this._fetch(0);
+//
+//     this._keys = f.keys;
+//     this._total = f.total;
+//     this._cursor = f.cursor;
+//     this._currentPage = 0;
+//     this._pageCount = Math.floor(this._total / this._pageSize) + 1;
+//   }
+//
+//   getCurrentPage() {
+//     // need
+//     return {
+//       index: this._currentPage,
+//       items: ...
+//     }
+//   }
+//
+//   hasNext() {
+//     return this._currentPage < this._pageCount;
+//   }
+//
+//   next() {
+//     if (this.hasNext()) {
+//
+//     }
+//   }
+//
+//   hasPrevious() {
+//     return this._currentPage > 0;
+//   }
+//
+//   previous() {
+//     if (this.hasPrevious()) {
+//       this._currentPage--;
+//     }
+//   }
+//
+//   goToPage(pageIndex) {
+//
+//   }
+//
+//   /**
+//    *
+//    * @param {number} cursor
+//    * @return {Promise<{cursor: number, total: number, keys: Array<{key: string, type: CcRedisKeyType}>}>}
+//    * @private
+//    */
+//   async _fetch(cursor) {
+//     return await this._redisClient.describeKeys2(
+//       cursor,
+//       {count: this._pageSize, type: this._type, match: this._match},
+//       {signal: this._signal}
+//     );
+//   }
+// }

@@ -6,7 +6,8 @@ import { iconRemixDeleteBinFill as iconDelete } from '../../assets/cc-remix.icon
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { FormErrorFocusController } from '../../lib/form/form-error-focus-controller.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
-import { isStringEmpty } from '../../lib/utils.js';
+import { isStringEmpty, random, randomPick, randomString } from '../../lib/utils.js';
+import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
@@ -16,11 +17,8 @@ import '../cc-select/cc-select.js';
 import { getKeyEditor } from './key-value-editors.js';
 
 /**
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
- * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
- * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<InputEvent, HTMLInputElement>} HTMLInputElementEvent
- * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<KeyboardEvent,HTMLInputElement>} HTMLInputKeyboardEvent
  * @typedef {import('./cc-redis-explorer.types.js').CcRedisExplorerState} CcRedisExplorerState
+ * @typedef {import('./cc-redis-explorer.types.js').CcRedisKey} CcRedisKey
  * @typedef {import('./cc-redis-explorer.types.js').CcRedisKeyState} CcRedisKeyState
  * @typedef {import('./cc-redis-explorer.types.js').CcRedisExplorerKeyEditorState} CcRedisExplorerKeyEditorState
  * @typedef {import('./cc-redis-explorer.types.js').CcRedisKeyValue} CcRedisKeyValue
@@ -32,6 +30,16 @@ import { getKeyEditor } from './key-value-editors.js';
  * @typedef {import('./cc-redis-explorer.types.js').CcRedisExplorerKeyUpdateFormState} CcRedisExplorerKeyUpdateFormState
  * @typedef {import('./cc-redis-explorer.types.js').CcRedisExplorerShellState} CcRedisExplorerShellState
  * @typedef {import('../../lib/form/form.types.js').FormDataMap} FormDataMap
+ * @typedef {import('../cc-input-text/cc-input-text.js').CcInputText} CcInputText
+ * @typedef {import('../cc-select/cc-select.js').CcSelect} CcSelect
+ * @typedef {import('lit').TemplateResult<1>} TemplateResult
+ * @typedef {import('lit').PropertyValues<CcRedisExplorer>} CcRedisExplorerPropertyValues
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLInputElement>} HTMLInputElementRef
+ * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<InputEvent, HTMLInputElement>} HTMLInputElementEvent
+ * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<KeyboardEvent,HTMLInputElement>} HTMLInputKeyboardEvent
+ * @typedef {import('../../lib/events.types.js').EventWithTarget<CcInputText>} CcInputTextInputEvent
+ * @typedef {import('../../lib/events.types.js').EventWithTarget<CcSelect>} CcSelectChangeEvent
  */
 
 const REDIS_TYPES_OPTIONS = [
@@ -46,6 +54,21 @@ const REDIS_TYPES_FILTER_OPTIONS = [
   { label: 'Hash', value: 'hash' },
   { label: 'List', value: 'list' },
 ];
+
+/** @type {Array<CcRedisKeyType>} */
+const REDIS_TYPES = ['string', 'hash', 'list'];
+
+/** @type {Array<{keyState: CcRedisKeyState, skeleton: boolean}>} */
+const SKELETON_KEYS = new Array(10).fill(0).map(() => ({
+  skeleton: true,
+  keyState: {
+    type: 'idle',
+    key: {
+      key: randomString(random(8, 15)),
+      type: randomPick(REDIS_TYPES),
+    },
+  },
+}));
 
 export class CcRedisExplorer extends LitElement {
   static get properties() {
@@ -78,10 +101,11 @@ export class CcRedisExplorer extends LitElement {
     /** @type {HTMLFormElementRef} */
     this._updateFormRef = createRef();
 
-    /** @type {HTMLFormElementRef} */
-    this._promptRef = createRef();
+    /** @type {HTMLInputElementRef} */
+    this._shellPromptRef = createRef();
 
-    this._promptHistoryIndex = -1;
+    /** @type {number|null} */
+    this._promptHistoryIndex = null;
 
     this._filter = { type: 'all', match: '' };
 
@@ -130,6 +154,7 @@ export class CcRedisExplorer extends LitElement {
           }
           return keyState;
         }),
+        total: this.state.total + 1,
       };
     }
   }
@@ -153,6 +178,9 @@ export class CcRedisExplorer extends LitElement {
     dispatchCustomEvent(this, 'selected-key-change', key);
   }
 
+  /**
+   * @param {CcInputTextInputEvent} e
+   */
   _onTypeFilterChange(e) {
     this._filter = { ...this._filter, type: e.target.value };
     dispatchCustomEvent(this, 'filter-change', {
@@ -161,6 +189,9 @@ export class CcRedisExplorer extends LitElement {
     });
   }
 
+  /**
+   * @param {CcSelectChangeEvent} e
+   */
   _onPatternFilterChange(e) {
     this._filter = { ...this._filter, match: e.target.value };
     dispatchCustomEvent(this, 'filter-change', {
@@ -174,6 +205,10 @@ export class CcRedisExplorer extends LitElement {
    */
   _onKeyTypeChanged({ detail }) {
     this._addFormSelectedType = detail;
+  }
+
+  _onLoadMoreButtonClick() {
+    dispatchCustomEvent(this, 'fetch-more-keys');
   }
 
   /**
@@ -225,6 +260,7 @@ export class CcRedisExplorer extends LitElement {
 
     if (e.key === 'Enter') {
       e.preventDefault();
+      this._promptHistoryIndex = null;
       const cmd = e.target.value;
       if (!isStringEmpty(cmd)) {
         dispatchCustomEvent(this, 'send-command', cmd);
@@ -233,52 +269,52 @@ export class CcRedisExplorer extends LitElement {
     }
     if (e.key === 'ArrowUp') {
       e.preventDefault();
-      if (this._promptHistoryIndex === -1) {
+
+      if (this._promptHistoryIndex == null) {
         this._promptHistoryIndex = this.shellState.history.length - 1;
       } else {
-        this._promptHistoryIndex--;
+        this._promptHistoryIndex = Math.max(this._promptHistoryIndex - 1, 0);
       }
 
       if (this._promptHistoryIndex >= 0) {
-        this._promptRef.value.value = this.shellState.history[this._promptHistoryIndex].command;
+        this._shellPromptRef.value.value = this.shellState.history[this._promptHistoryIndex].command;
       }
     }
     if (e.key === 'ArrowDown') {
       e.preventDefault();
 
-      this._promptHistoryIndex++;
+      if (this._promptHistoryIndex != null) {
+        this._promptHistoryIndex++;
 
-      if (this._promptHistoryIndex < this.shellState.history.length) {
-        this._promptRef.value.value = this.shellState.history[this._promptHistoryIndex].command;
-      } else {
-        this._promptHistoryIndex = -1;
-        this._promptRef.value.value = '';
+        if (this._promptHistoryIndex < this.shellState.history.length) {
+          this._shellPromptRef.value.value = this.shellState.history[this._promptHistoryIndex].command;
+        } else {
+          this._promptHistoryIndex = null;
+          this._shellPromptRef.value.value = '';
+        }
       }
     }
   }
 
   _onShellClick() {
-    this._promptRef.value?.focus();
+    this._shellPromptRef.value?.focus();
   }
 
+  /**
+   * @param {CcRedisExplorerPropertyValues} changedProperties
+   */
   updated(changedProperties) {
     if (changedProperties.has('shellState')) {
-      this.shadowRoot.querySelector('.command-prompt').scrollIntoView();
+      this._shellPromptRef.value?.scrollIntoView();
     }
   }
 
   render() {
-    /**
-     * @param {CcRedisKeyState} keyState
-     * @return {TemplateResult}
-     */
-    const renderItem = (keyState) => this._renderKey(keyState);
-
     return html`
       <div class="wrapper">
         ${this.state.type === 'loading' ? html`<div class="loading"><cc-loader></cc-loader></div>` : ''}
         ${this.state.type === 'error' ? html`<div class="error">An error occurred while contacting backend</div>` : ''}
-        ${this.state.type === 'loaded' || this.state.type === 'fetching-keys' || this.state.type === 'fetch-keys-error'
+        ${this.state.type === 'loaded' || this.state.type === 'fetching-keys'
           ? html`
               <div class="top-bar">
                 <div class="filters">
@@ -296,42 +332,9 @@ export class CcRedisExplorer extends LitElement {
                     @cc-input-text:requestimplicitsubmit=${this._onPatternFilterChange}
                   ></cc-input-text>
                 </div>
-                <cc-button @cc-button:click=${this._onAddButtonClick}>Add new key</cc-button>
+                <cc-button primary @cc-button:click=${this._onAddButtonClick}>Add new key</cc-button>
               </div>
-              ${this.state.type === 'fetching-keys'
-                ? html`
-                    <div class="keys-area loading">
-                      <cc-loader></cc-loader>
-                    </div>
-                  `
-                : ''}
-              ${this.state.type === 'fetch-keys-error'
-                ? html`
-                    <div class="keys-area">
-                      <cc-notice intent="danger" message="Could not load keys"></cc-notice>
-                    </div>
-                  `
-                : ''}
-              ${this.state.type === 'loaded' && this.state.keys.length === 0
-                ? html`
-                    <div class="keys-area">
-                      <cc-notice intent="info" message="No keys"></cc-notice>
-                    </div>
-                  `
-                : ''}
-              ${this.state.type === 'loaded' && this.state.keys.length > 0
-                ? html`
-                    <ul class="keys-area keys-list" @change=${this._onSelectedKeyChange}>
-                      ${repeat(
-                        this.state.keys,
-                        /** @param {CcRedisKeyState} keyState */
-                        (keyState) => keyState.key.key,
-                        renderItem,
-                      )}
-                    </ul>
-                  `
-                : ''}
-
+              ${this._renderKeys()}
               <div class="detail">${this._renderDetail()}</div>
               ${this._renderShell()}
             `
@@ -340,26 +343,87 @@ export class CcRedisExplorer extends LitElement {
     `;
   }
 
+  _renderKeys() {
+    if (this.state.type !== 'loaded' && this.state.type !== 'fetching-keys') {
+      return html`<div class="keys-area"></div>`;
+    }
+
+    if (this.state.type === 'loaded' && this.state.keys.length === 0) {
+      return html`
+        <div class="keys-area">
+          <cc-notice intent="info" message="No keys"></cc-notice>
+        </div>
+      `;
+    }
+
+    const fetching = this.state.type === 'fetching-keys';
+    const isInitialFetch = this.state.keys.length === 0;
+
+    /** @type {Array<{keyState: CcRedisKeyState, skeleton: boolean}>} */
+    let keys = this.state.keys.map((keyState) => ({ keyState, skeleton: false }));
+    if (fetching) {
+      keys = keys.concat(SKELETON_KEYS);
+    }
+
+    /**
+     * @param {{keyState: CcRedisKeyState, skeleton: boolean}} k
+     * @return {TemplateResult}
+     */
+    const renderItem = (k) => this._renderKey(k);
+
+    return html`
+      <ul class="keys-area keys-list" @change=${this._onSelectedKeyChange}>
+        ${repeat(
+          keys,
+          /** @param {{keyState: CcRedisKeyState, skeleton: boolean}} k */
+          (k) => `${k.skeleton}-${k.keyState.key.key}`,
+          renderItem,
+        )}
+        <li class="load-more">
+          ${!isInitialFetch && (this.state.type === 'fetching-keys' || this.state.hasMore)
+            ? html`
+                <cc-button
+                  .waiting=${fetching && !isInitialFetch}
+                  .disabled=${fetching}
+                  link
+                  @cc-button:click=${this._onLoadMoreButtonClick}
+                  >Load more</cc-button
+                >
+              `
+            : ''}
+        </li>
+      </ul>
+    `;
+  }
+
   /**
-   * @param {CcRedisKeyState} keyState
+   * @param {object} _
+   * @param {CcRedisKeyState} _.keyState
+   * @param {boolean} _.skeleton
    * @return {TemplateResult}
    */
-  _renderKey(keyState) {
+  _renderKey({ keyState, skeleton }) {
     const selected = keyState.type === 'selected';
     const loading = keyState.type === 'loading';
     const deleting = keyState.type === 'deleting';
     const id = `key-${keyState.key.key}`;
 
-    // todo: display focus ring on label
-
     return html`<li class="key">
-      <input type="radio" id=${id} name="selectedKey" .value=${keyState.key.key} .checked=${selected || loading} />
+      <input
+        type="radio"
+        id=${id}
+        name="selectedKey"
+        .value=${keyState.key.key}
+        .checked=${selected || loading}
+        .disabled=${skeleton}
+      />
       <label for=${id}>
-        <span class="key-name">${keyState.key.key}</span>
-        <cc-badge>${keyState.key.type}</cc-badge>
+        <span class=${classMap({ 'key-name': true, skeleton })}>${keyState.key.key}</span>
+        <cc-badge weight="outlined" ?skeleton=${skeleton}>${keyState.key.type}</cc-badge>
         <cc-button
-          ?disabled=${loading}
+          ?disabled=${loading || skeleton}
           ?waiting=${deleting}
+          ?skeleton=${skeleton}
           hide-text
           danger
           circle
@@ -374,21 +438,22 @@ export class CcRedisExplorer extends LitElement {
   }
 
   _renderDetail() {
-    const loading = this._getLoadingKey() != null;
-
-    if (loading) {
-      return html`<div class="loading"><cc-loader></cc-loader></div>`;
-    }
-
-    if (this.keyEditorFormState.type === 'hidden') {
-      return null;
-    }
-
     if (this.keyEditorFormState.type === 'add') {
       return this._renderAddForm(this.keyEditorFormState.formState);
+    } else if (this.keyEditorFormState.type === 'update') {
+      return this._renderUpdateForm(
+        this.keyEditorFormState.formState,
+        { key: this.keyEditorFormState.keyValue.key, type: this.keyEditorFormState.keyValue.type },
+        this.keyEditorFormState.keyValue,
+      );
+    } else if (this.keyEditorFormState.type === 'loading') {
+      return this._renderUpdateForm(
+        { type: 'idle' },
+        { key: this.keyEditorFormState.key.key, type: this.keyEditorFormState.key.type },
+      );
     }
 
-    return this._renderUpdateForm(this.keyEditorFormState.formState, this.keyEditorFormState.keyValue);
+    return null;
   }
 
   /**
@@ -409,50 +474,46 @@ export class CcRedisExplorer extends LitElement {
         .value=${this._addFormSelectedType}
         @cc-select:input=${this._onKeyTypeChanged}
       ></cc-select>
-      ${getKeyEditor(this._addFormSelectedType).render(null)}
+      ${getKeyEditor(this._addFormSelectedType).render(null, false)}
       <div class="buttons">
-        <cc-button type="reset" ?disabled=${saving}>Reset</cc-button>
-        <cc-button type="submit" primary ?waiting=${saving}>Add</cc-button>
+        <cc-button type="reset" .disabled=${saving}>Reset</cc-button>
+        <cc-button type="submit" primary .waiting=${saving}>Add</cc-button>
       </div>
     </form>`;
   }
 
   /**
    * @param {CcRedisExplorerKeyUpdateFormState} formState
-   * @param {CcRedisKeyValue} keyValue
+   * @param {CcRedisKey} key
+   * @param {CcRedisKeyValue} [keyValue]
    * @return {TemplateResult}
    */
-  _renderUpdateForm(formState, keyValue) {
-    const saving = formState.type === 'updating';
-
-    const editor = getKeyEditor(keyValue.type);
+  _renderUpdateForm(formState, key, keyValue) {
+    const editor = getKeyEditor(key.type);
     if (editor == null) {
       return html`Unsupported type`;
     }
 
+    const saving = formState.type === 'updating';
+    const deleting = this._isDeleting(key.key);
+    const loading = this._getLoadingKey() != null;
+
     return html`<form ${ref(this._updateFormRef)} ${formSubmit(this._onKeyEditorUpdateFormSubmit.bind(this))}>
-      <cc-input-text
-        name="key"
-        label="Key"
-        required
-        disabled
-        .value=${keyValue.key}
-        .resetValue=${keyValue.key}
-      ></cc-input-text>
+      <cc-input-text name="key" label="Key" required disabled .value=${key.key} .resetValue=${key.key}></cc-input-text>
       <cc-select
         name="type"
         label="Type"
         required
         disabled
         .options=${REDIS_TYPES_OPTIONS}
-        .value=${keyValue.type}
-        .resetValue=${keyValue.type}
+        .value=${key.type}
+        .resetValue=${key.type}
       ></cc-select>
-      ${editor.render(keyValue)}
+      ${editor.render(keyValue, loading)}
       <div class="buttons">
-        <cc-button type="reset" ?disabled=${saving}>Reset</cc-button>
-        <cc-button type="submit" primary ?waiting=${saving}>Save</cc-button>
-        <!--        toto: add delete button -->
+        <cc-button type="reset" .skeleton=${loading} .disabled=${saving || deleting}>Reset</cc-button>
+        <cc-button type="submit" primary .skeleton=${loading} .waiting=${saving || deleting}>Save</cc-button>
+        <cc-button type="button" danger outlined .skeleton=${loading} .disabled=${saving || deleting}>Delete</cc-button>
       </div>
     </form>`;
   }
@@ -471,7 +532,7 @@ export class CcRedisExplorer extends LitElement {
         <div class="shell-prompt">
           <span>redis>&nbsp;</span>
           <input
-            ${ref(this._promptRef)}
+            ${ref(this._shellPromptRef)}
             type="text"
             name="command"
             autocomplete="false"
@@ -508,8 +569,25 @@ export class CcRedisExplorer extends LitElement {
     return this.state.keys.find((keyState) => keyState.type === 'loading')?.key.key;
   }
 
+  /**
+   *
+   * @param {string} key
+   * @return {boolean}
+   * @private
+   */
+  _isDeleting(key) {
+    if (this.state.type !== 'loaded') {
+      return false;
+    }
+
+    const keyState = this.state.keys.find((keyState) => keyState.key.key === key);
+
+    return keyState?.type === 'deleting';
+  }
+
   static get styles() {
     return [
+      skeletonStyles,
       // language=CSS
       css`
         :host {
@@ -519,13 +597,14 @@ export class CcRedisExplorer extends LitElement {
 
         .wrapper {
           display: grid;
-          grid-gap: 0.5em;
+          grid-gap: 1em;
           grid-template-areas:
             'top-bar top-bar'
             'keys-list detail'
             'shell shell';
           grid-template-columns: minmax(auto, 400px) 1fr;
           grid-template-rows: auto 1fr;
+          height: 100%;
         }
 
         .loading {
@@ -546,19 +625,12 @@ export class CcRedisExplorer extends LitElement {
           display: flex;
           flex-direction: column;
           grid-area: keys-list;
-          padding: 0.5em;
+          overflow: auto;
+          padding: 0;
         }
 
-        .keys-list {
-          gap: 0.2em;
-          list-style-type: none;
-          margin: 0;
-        }
-
-        .detail {
-          border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
-          grid-area: detail;
+        .keys-area > cc-notice {
+          margin: 0.5em;
         }
 
         .filters {
@@ -567,13 +639,19 @@ export class CcRedisExplorer extends LitElement {
           gap: 0.5em;
         }
 
+        .detail {
+          border: 1px solid var(--cc-color-border-neutral, #aaa);
+          border-radius: var(--cc-border-radius-default, 0.25em);
+          grid-area: detail;
+        }
+
         .filters cc-input-text {
           flex: 1;
         }
 
-        .key {
-          display: flex;
-          flex-direction: row;
+        .keys-list {
+          list-style-type: none;
+          margin: 0;
         }
 
         .key input[type='radio'] {
@@ -590,17 +668,20 @@ export class CcRedisExplorer extends LitElement {
 
         .key label {
           align-items: center;
-          border-radius: var(--cc-border-radius-default, 0.25em);
           cursor: pointer;
           display: flex;
           flex: 1;
           flex-direction: row;
-          gap: 0.2em;
-          padding: 0.25em;
+          gap: 0.25em;
+          padding: 0.35em;
         }
 
         .key label:hover {
           background-color: var(--cc-color-bg-neutral-hovered, #e7e7e7);
+        }
+
+        .key:nth-child(odd) {
+          background-color: var(--cc-color-bg-neutral, #f5f5f5);
         }
 
         .key input[type='radio']:checked + label {
@@ -608,13 +689,25 @@ export class CcRedisExplorer extends LitElement {
         }
 
         .key input[type='radio']:focus + label {
-          border-color: var(--cc-color-border-neutral-focused, #777);
+          /* border-color: var(--cc-focus-outline, #595959); */
+          /* border: var(--cc-focus-outline, #000 solid 2px); */
           outline: var(--cc-focus-outline, #000 solid 2px);
-          outline-offset: -1px;
+          outline-offset: -2px;
         }
 
         .key-name {
           flex: 1;
+        }
+
+        .key-name.skeleton {
+          background-color: #bbb;
+        }
+
+        .load-more {
+          align-items: center;
+          justify-content: center;
+          display: flex;
+          padding: 0.35em;
         }
 
         .detail form {
@@ -622,6 +715,16 @@ export class CcRedisExplorer extends LitElement {
           flex-direction: column;
           gap: 1em;
           padding: 1em;
+        }
+
+        .buttons {
+          display: flex;
+          flex-direction: row;
+          gap: 0.5em;
+        }
+
+        .buttons cc-button:last-of-type {
+          margin-left: auto;
         }
 
         .shell {
@@ -638,7 +741,7 @@ export class CcRedisExplorer extends LitElement {
           padding: 0.5em;
         }
 
-        .command-prompt {
+        .shell-prompt {
           display: flex;
         }
 
@@ -650,7 +753,7 @@ export class CcRedisExplorer extends LitElement {
           color: red;
         }
 
-        .command-prompt input {
+        .shell-prompt input {
           -webkit-appearance: none;
           background: none;
           border: none;
@@ -665,8 +768,8 @@ export class CcRedisExplorer extends LitElement {
           resize: none;
         }
 
-        .command-prompt input:focus,
-        .command-prompt input:active {
+        .shell-prompt input:focus,
+        .shell-prompt input:active {
           outline: 0;
         }
       `,

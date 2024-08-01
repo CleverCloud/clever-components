@@ -23,9 +23,10 @@ export class KeyValueEditor {
   /**
    *
    * @param {T|null} _keyValue
+   * @param {boolean} _skeleton
    * @return {TemplateResult}
    */
-  render(_keyValue) {
+  render(_keyValue, _skeleton) {
     throw new Error('Not implemented');
   }
 
@@ -52,12 +53,14 @@ export class KeyValueEditorString extends KeyValueEditor {
 
   /**
    * @param {CcRedisKeyValueString|null} keyValue
+   * @param {boolean} skeleton
    * @return {TemplateResult}
    */
-  render(keyValue) {
+  render(keyValue, skeleton) {
     return html`<cc-input-text
       name="value"
       label="Value"
+      .skeleton=${skeleton}
       multi
       reset-value=${ifDefined(keyValue?.value ?? undefined)}
       value=${ifDefined(keyValue?.value ?? undefined)}
@@ -92,14 +95,16 @@ export class KeyValueEditorHash extends KeyValueEditor {
 
   /**
    * @param {CcRedisKeyValueHash|null} keyValue
+   * @param {boolean} skeleton
    * @return {TemplateResult}
    */
-  render(keyValue) {
+  render(keyValue, skeleton) {
     return html`<cc-redis-key-hash-editor
       name="values"
       required
-      .resetValue=${ifDefined(keyValue?.values ?? undefined)}
-      .value=${ifDefined(keyValue?.values ?? undefined)}
+      .skeleton=${skeleton}
+      .resetValue=${keyValue?.values ?? []}
+      .value=${keyValue?.values ?? []}
     ></cc-redis-key-hash-editor>`;
   }
 
@@ -131,14 +136,16 @@ export class KeyValueEditorList extends KeyValueEditor {
 
   /**
    * @param {CcRedisKeyValueList|null} keyValue
+   * @param {boolean} skeleton
    * @return {TemplateResult}
    */
-  render(keyValue) {
+  render(keyValue, skeleton) {
     return html`<cc-redis-key-list-editor
       name="values"
       required
-      .resetValue=${ifDefined(keyValue?.values ?? undefined)}
-      .value=${ifDefined(keyValue?.values ?? undefined)}
+      .skeleton=${skeleton}
+      .resetValue=${keyValue?.values ?? []}
+      .value=${keyValue?.values ?? []}
     ></cc-redis-key-list-editor>`;
   }
 

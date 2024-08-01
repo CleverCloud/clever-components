@@ -30,6 +30,7 @@ export class CcRedisKeyHashEditor extends CcFormControlElement {
       value: { type: Array },
       resetValue: { type: Array },
       required: { type: Boolean },
+      skeleton: { type: Boolean },
     };
   }
 
@@ -43,6 +44,9 @@ export class CcRedisKeyHashEditor extends CcFormControlElement {
 
     /** @type {boolean} */
     this.required = false;
+
+    /** @type {boolean} */
+    this.skeleton = false;
 
     /** @type {HTMLInputElementRef} */
     this._addInputRef = createRef();
@@ -123,6 +127,7 @@ export class CcRedisKeyHashEditor extends CcFormControlElement {
    */
   _onAddFormSubmit(formData) {
     this.value = [...this.value, { field: formData.field, value: formData.value }];
+    this._addFormRef.value.reset();
   }
 
   /**
@@ -154,9 +159,22 @@ export class CcRedisKeyHashEditor extends CcFormControlElement {
 
     return html`
       <form ${ref(this._addFormRef)} ${formSubmit(this._onAddFormSubmit)}>
-        <cc-input-text ${ref(this._addInputRef)} name="field" label="Field" required></cc-input-text>
-        <cc-input-text name="value" label="Value"></cc-input-text>
-        <cc-button type="submit" .icon=${iconAdd} hide-text primary a11y-name="Add"></cc-button>
+        <cc-input-text
+          ${ref(this._addInputRef)}
+          .skeleton=${this.skeleton}
+          name="field"
+          label="Field"
+          required
+        ></cc-input-text>
+        <cc-input-text name="value" label="Value" .skeleton=${this.skeleton}></cc-input-text>
+        <cc-button
+          type="submit"
+          .icon=${iconAdd}
+          .skeleton=${this.skeleton}
+          hide-text
+          primary
+          a11y-name="Add"
+        ></cc-button>
       </form>
 
       ${hasErrorMessage

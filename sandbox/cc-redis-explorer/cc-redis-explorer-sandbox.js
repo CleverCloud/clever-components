@@ -29,7 +29,7 @@ class CcRedis extends LitElement {
     };
 
     return html`
-      <div class="ctrl-top" style="align-items: normal">
+      <div class="ctrl-top">
         <cc-input-text
           inline
           label="Redis URL"
@@ -38,11 +38,9 @@ class CcRedis extends LitElement {
         ></cc-input-text>
       </div>
 
-      <div>
-        <cc-smart-container .context=${context}>
-          <cc-redis-explorer></cc-redis-explorer>
-        </cc-smart-container>
-      </div>
+      <cc-smart-container .context=${context}>
+        <cc-redis-explorer class="main"></cc-redis-explorer>
+      </cc-smart-container>
     `;
   }
 
@@ -63,6 +61,13 @@ class CcRedis extends LitElement {
       sandboxStyles,
       css`
         :host {
+          display: flex;
+          flex: 1;
+          flex-direction: column;
+          min-height: 0;
+        }
+
+        cc-redis-explorer {
           display: flex;
           flex: 1;
           flex-direction: column;

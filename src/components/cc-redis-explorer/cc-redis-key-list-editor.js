@@ -29,6 +29,7 @@ export class CcRedisKeyListEditor extends CcFormControlElement {
       value: { type: Array },
       resetValue: { type: Array },
       required: { type: Boolean },
+      skeleton: { type: Boolean },
     };
   }
 
@@ -43,6 +44,9 @@ export class CcRedisKeyListEditor extends CcFormControlElement {
 
     /** @type {boolean} */
     this.required = false;
+
+    /** @type {boolean} */
+    this.skeleton = false;
 
     /** @type {HTMLInputElementRef} */
     this._addInputRef = createRef();
@@ -123,6 +127,7 @@ export class CcRedisKeyListEditor extends CcFormControlElement {
    */
   _onAddFormSubmit(formData) {
     this.value = [...this.value, formData.value];
+    this._addFormRef.value.reset();
   }
 
   /**
@@ -146,8 +151,15 @@ export class CcRedisKeyListEditor extends CcFormControlElement {
 
     return html`
       <form ${ref(this._addFormRef)} ${formSubmit(this._onAddFormSubmit)}>
-        <cc-input-text ${ref(this._addInputRef)} name="value" label="Value"></cc-input-text>
-        <cc-button type="submit" .icon=${iconAdd} hide-text a11y-name="Add" primary></cc-button>
+        <cc-input-text ${ref(this._addInputRef)} .skeleton=${this.skeleton} name="value" label="Value"></cc-input-text>
+        <cc-button
+          type="submit"
+          .icon=${iconAdd}
+          .skeleton=${this.skeleton}
+          hide-text
+          a11y-name="Add"
+          primary
+        ></cc-button>
       </form>
 
       ${hasErrorMessage

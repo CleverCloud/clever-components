@@ -2,7 +2,6 @@ export type CcRedisExplorerState =
   | CcRedisExplorerStateLoading
   | CcRedisExplorerStateError
   | CcRedisExplorerStateFetchingKeys
-  | CcRedisExplorerStateFetchKeysError
   | CcRedisExplorerStateLoaded;
 
 export interface CcRedisExplorerStateLoading {
@@ -15,15 +14,14 @@ export interface CcRedisExplorerStateError {
 
 export interface CcRedisExplorerStateFetchingKeys {
   type: 'fetching-keys';
-}
-
-export interface CcRedisExplorerStateFetchKeysError {
-  type: 'fetch-keys-error';
+  keys: Array<CcRedisKeyState>;
 }
 
 export interface CcRedisExplorerStateLoaded {
   type: 'loaded';
   keys: Array<CcRedisKeyState>;
+  total: number;
+  hasMore: boolean;
 }
 
 export type CcRedisKeyState =
@@ -86,6 +84,7 @@ export interface CcRedisKeyValueHashEntry {
 export type CcRedisExplorerKeyEditorState =
   | CcRedisExplorerKeyEditorStateHidden
   | CcRedisExplorerKeyEditorStateAdd
+  | CcRedisExplorerKeyEditorStateLoading
   | CcRedisExplorerKeyEditorStateUpdate;
 
 export interface CcRedisExplorerKeyEditorStateHidden {
@@ -103,6 +102,11 @@ export interface CcRedisExplorerKeyAddFormState {
     name?: 'already-used';
     type?: 'unsupported';
   };
+}
+
+export interface CcRedisExplorerKeyEditorStateLoading {
+  type: 'loading';
+  key: CcRedisKey;
 }
 
 export interface CcRedisExplorerKeyEditorStateUpdate {
