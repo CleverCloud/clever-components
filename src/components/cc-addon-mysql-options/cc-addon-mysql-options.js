@@ -7,6 +7,7 @@ import '../cc-addon-option-form/cc-addon-option-form.js';
 /**
  * @typedef {import('../common.types.js').AddonOption} AddonOption
  * @typedef {import('./cc-addon-mysql-options.types.js').GenericOptions} GenericOptions
+ * @typedef {import('../cc-addon-option-form/cc-addon-option-form.types.js').OptionStates} OptionStates
  */
 
 /**
@@ -30,6 +31,7 @@ export class CcAddonMysqlOptions extends LitElement {
     this.options = [];
   }
 
+  /** @param {Event & { detail: OptionStates }} event */
   _onFormOptionsSubmit({ detail }) {
     dispatchCustomEvent(this, 'submit', detail);
   }

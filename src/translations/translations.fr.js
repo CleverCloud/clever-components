@@ -20,6 +20,10 @@ import { preparePlural } from '../lib/i18n/i18n-string.js';
  * @typedef {import('../components/common.types.js').Flavor} Flavor
  */
 
+/**
+ * @typedef {import('../lib/i18n.types.js').Translations} Translations
+ */
+
 export const lang = 'fr';
 
 const plural = preparePlural(lang);

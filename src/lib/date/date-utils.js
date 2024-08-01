@@ -2,6 +2,7 @@ import { clampNumber } from '../utils.js';
 
 /**
  * @typedef {import('./date.types.js').Timezone} Timezone
+ * @typedef {import('./date.types.js').DateShifter} DateShifter
  */
 
 export const SECOND = 1000;
@@ -50,6 +51,7 @@ export function getNumberOfDaysInMonth(year, month) {
 }
 
 // region Date shift
+/** @type {DateShifter} */
 const DATE_SHIFTER = {
   Y: function (date, offset) {
     const d = cloneDate(date);
@@ -86,7 +88,6 @@ const DATE_SHIFTER = {
 
     return d;
   },
-
   D: function (date, offset) {
     return DATE_SHIFTER._shift(date, offset * DAY);
   },

@@ -7,6 +7,8 @@ import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 
 /**
+ * @typedef {import('./cc-addon-option-form.types.js').OptionStates} OptionStates
+ * @typedef {import('../cc-addon-option/cc-addon-option.js').CcAddonOption} CcAddonOption
  * @typedef {import('../common.types.js').AddonOption} AddonOption
  */
 
@@ -36,7 +38,7 @@ export class CcAddonOptionForm extends LitElement {
     /** @type {string} Title of the whole options form. */
     this.title = null;
 
-    /** @type {object} */
+    /** @type {OptionStates} */
     this._optionsStates = {};
   }
 
@@ -51,8 +53,10 @@ export class CcAddonOptionForm extends LitElement {
     dispatchCustomEvent(this, 'submit', this._optionsStates);
   }
 
-  _onOptionToggle({ detail }, optionName) {
-    this._optionsStates[optionName] = detail;
+  /** @param {Event & { currentTarget: CcAddonOption, detail: boolean }} event */
+  _onOptionToggle(event) {
+    const optionName = event.currentTarget.dataset.optionName;
+    this._optionsStates[optionName] = event.detail;
   }
 
   render() {
@@ -67,7 +71,8 @@ export class CcAddonOptionForm extends LitElement {
             .icon="${option.icon}"
             logo="${option.logo}"
             ?enabled=${enabled}
-            @cc-addon-option:input=${(e) => this._onOptionToggle(e, option.name)}
+            data-option-name=${option.name}
+            @cc-addon-option:input=${this._onOptionToggle}
           >
             ${option.description}
           </cc-addon-option>`;

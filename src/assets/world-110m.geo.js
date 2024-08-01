@@ -12,7 +12,7 @@
  * https://github.com/simonepri/geo-maps
  * https://www.naturalearthdata.com/downloads/110m-cultural-vectors/
  */
-export const WORLD_GEOJSON = {
+export const WORLD_GEOJSON = /** @type {const} */ ({
   type: 'FeatureCollection',
   features: [
     {
@@ -1410,4 +1410,4 @@ export const WORLD_GEOJSON = {
       id: '885',
     },
   ],
-};
+});

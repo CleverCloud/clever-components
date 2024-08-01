@@ -58,7 +58,7 @@ export class CcTcpRedirection extends LitElement {
   /**
    * @param {string} namespace
    * @param {number|null} sourcePort
-   * @returns {string}
+   * @returns {Node}
    * @private
    */
   _getHelpText(namespace, sourcePort) {
@@ -70,7 +70,7 @@ export class CcTcpRedirection extends LitElement {
   /**
    * @param {string} namespace
    * @param {boolean} isPrivate
-   * @returns {string}
+   * @returns {Node|string|void}
    * @private
    */
   _getHelpTextAddendum(namespace, isPrivate) {
@@ -82,8 +82,6 @@ export class CcTcpRedirection extends LitElement {
         return i18n('cc-tcp-redirection.namespace-additionaldescription-default');
       case 'cleverapps':
         return i18n('cc-tcp-redirection.namespace-additionaldescription-cleverapps');
-      default:
-        return null;
     }
   }
 

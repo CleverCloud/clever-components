@@ -19,6 +19,9 @@
  */
 const DATE_TIME_FORMATS_BY_TIMEZONE = new Map();
 
+/**
+ * @param {Timezone} timezone
+ */
 function getDateTimeFormat(timezone) {
   let format = DATE_TIME_FORMATS_BY_TIMEZONE.get(timezone);
   if (format == null) {
@@ -84,6 +87,7 @@ export class DateFormatter {
   formatToParts(date) {
     const parts = this.toParts(date);
 
+    /** @type {DateFormattedParts} */
     const result = {
       date: `${parts.year}-${parts.month}-${parts.day}`,
       separator: this._isIso ? 'T' : ' ',
@@ -110,9 +114,16 @@ export class DateFormatter {
   mapParts(date, mapper) {
     const parts = this.toParts(date);
 
+    /** @type {{ value: string, type: 'separator' }} */
     const dateSeparator = { value: '-', type: 'separator' };
+    /** @type {{ value: string, type: 'separator' }} */
     const timeSeparator = { value: ':', type: 'separator' };
+    /** @type {{ value: string, type: 'separator' }} */
     const separator = { value: this._isIso ? 'T' : ' ', type: 'separator' };
+    /**
+     * @param {string|number} value
+     * @returns {{ value: string|number, type: 'part' }}
+     */
     const part = (value) => {
       return { value, type: 'part' };
     };
@@ -153,6 +164,7 @@ export class DateFormatter {
     const datePartsArray = dtf.formatToParts(date);
     const dateParts = Object.fromEntries(datePartsArray.map(({ type, value }) => [type, value]));
 
+    /** @type {DateParts} */
     const result = {
       year: dateParts.year,
       month: dateParts.month,

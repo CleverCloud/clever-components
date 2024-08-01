@@ -56,9 +56,7 @@ export class CcProductCard extends LitElement {
     return html`
       <div class="wrapper ${classMap({ 'wrapper--no-keywords': !hasKeywords })}">
         <cc-img src="${this.iconUrl}"></cc-img>
-        <a class="name" href="${this.url}" title="${i18n('cc-product-card.select', { name: this.name })}">
-          ${this.name}
-        </a>
+        <a class="name" href="${this.url}" title="${i18n('cc-product-card.select', this.name)}">${this.name}</a>
         ${hasKeywords
           ? html`
               <ul class="keywords">

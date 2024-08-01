@@ -5,6 +5,7 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-addon-option-form/cc-addon-option-form.js';
 
 /**
+ * @typedef {import('../cc-addon-option-form/cc-addon-option-form.types.js').OptionStates} OptionStates
  * @typedef {import('../common.types.js').AddonOption} AddonOption
  */
 
@@ -29,6 +30,7 @@ export class CcAddonPostgresqlOptions extends LitElement {
     this.options = [];
   }
 
+  /** @param {Event & { detail: OptionStates }} event */
   _onFormOptionsSubmit({ detail }) {
     dispatchCustomEvent(this, 'submit', detail);
   }

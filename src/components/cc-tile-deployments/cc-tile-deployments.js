@@ -9,12 +9,13 @@ import '../cc-datetime-relative/cc-datetime-relative.js';
 import '../cc-icon/cc-icon.js';
 
 const SKELETON_DEPLOYS = [
-  { state: '???????', date: '??????????' },
-  { state: '??????', date: '???????????' },
+  { state: '???????', date: '??????????', action: '????', logsUrl: '' },
+  { state: '??????', date: '???????????', action: '????', logsUrl: '' },
 ];
 
 /**
  * @typedef {import('./cc-tile-deployments.types.js').TileDeploymentsState} TileDeploymentsState
+ * @typedef {import('./cc-tile-deployments.types.js').DeploymentTileInfo} DeploymentTileInfo
  */
 
 /**
@@ -36,6 +37,10 @@ export class CcTileDeployments extends LitElement {
     this.state = { type: 'loading' };
   }
 
+  /**
+   * @param {DeploymentTileInfo['state']} state
+   * @param {DeploymentTileInfo['action']} action
+   */
   _getStateLabel(state, action) {
     if (state === 'OK') {
       return action === 'UNDEPLOY'
@@ -75,7 +80,7 @@ export class CcTileDeployments extends LitElement {
     }
 
     const skeleton = this.state.type === 'loading';
-    const deploymentsInfo = skeleton ? SKELETON_DEPLOYS : this.state.deploymentsInfo;
+    const deploymentsInfo = this.state.type === 'loaded' ? this.state.deploymentsInfo : SKELETON_DEPLOYS;
     const hasData = deploymentsInfo.length > 0;
 
     if (!hasData) {

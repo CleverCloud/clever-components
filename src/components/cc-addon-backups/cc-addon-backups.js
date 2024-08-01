@@ -13,7 +13,12 @@ import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
 
 /** @type {Backup} */
-const SKELETON_BACKUP = { createdAt: new Date(), expiresAt: new Date(), url: '', deleteCommand: 'skeleton' };
+const SKELETON_BACKUP = {
+  createdAt: new Date().toString(),
+  expiresAt: new Date().toString(),
+  url: '',
+  deleteCommand: 'skeleton',
+};
 const SKELETON_BACKUPS = {
   /** @type {'skeleton'} */
   providerId: 'skeleton',
@@ -113,7 +118,7 @@ export class CcAddonBackups extends LitElement {
   /**
    *
    * @param {Backup} backup
-   * @returns {string}
+   * @returns {Node}
    * @private
    */
   _getBackupText({ createdAt, expiresAt }) {
@@ -124,7 +129,7 @@ export class CcAddonBackups extends LitElement {
 
   /**
    * @param {ProviderId} providerId
-   * @returns {string}
+   * @returns {string|Node}
    * @private
    */
   _getDescription(providerId) {
@@ -148,7 +153,7 @@ export class CcAddonBackups extends LitElement {
 
   /**
    * @param {ProviderId} providerId
-   * @returns {string}
+   * @returns {string|Node}
    * @private
    */
   _getManualDeleteDescription(providerId) {
@@ -163,7 +168,7 @@ export class CcAddonBackups extends LitElement {
 
   /**
    * @param {ProviderId} providerId
-   * @returns {string}
+   * @returns {string|Node}
    * @private
    */
   _getManualRestoreDescription(providerId) {
@@ -189,7 +194,7 @@ export class CcAddonBackups extends LitElement {
   /**
    * @param {ProviderId} providerId
    * @param {string} href
-   * @returns {string}
+   * @returns {string|Node}
    * @private
    */
   _getRestoreWithServiceDescription(providerId, href) {
