@@ -143,7 +143,7 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
 
 ## `npm run preview:get`
 
-* Prints the preview detail
+* Prints the preview detail.
 * It uses current branch name by default, but you can provide a CLI param to override the name.
 
 ## `npm run preview:list`
