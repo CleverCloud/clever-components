@@ -2,7 +2,7 @@ import { css, html, LitElement, render } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import '../components/cc-button/cc-button.js';
 import { LostFocusController } from './lost-focus-controller.js';
-import docsPage from './lost-focus-controller.md';
+import docStoryModule from './lost-focus-controller.md';
 
 class MyList extends LitElement {
   static get properties() {
@@ -68,9 +68,7 @@ export default {
   title: '🕹️ Controllers/LostFocusController',
   tags: ['autodocs'],
   parameters: {
-    docs: {
-      page: docsPage,
-    },
+    docs: docStoryModule.parameters.docs,
   },
 };
 

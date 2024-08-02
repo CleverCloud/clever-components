@@ -1,6 +1,6 @@
 import generateCem from '../cem/generate-cem-vite-plugin.js';
-import { rollupMdToCsfPlugin } from '../src/stories/lib/markdown-to-csf.js';
 import { markdownIndexer } from '../src/stories/lib/markdown-indexer.js';
+import { rollupMdToCsfPlugin } from '../src/stories/lib/markdown-to-csf.js';
 import { injectAuthForSmartComponentsPlugin } from '../src/stories/lib/smart-auth-plugin.js';
 
 /** @type {import('@storybook/web-components-vite').StorybookConfig} */
@@ -29,22 +29,16 @@ const config = {
       to: 'styles/github-markdown.css',
     },
   ],
-  addons: ["@storybook/addon-links", "@storybook/addon-essentials"],
+  addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
   framework: {
-    name: "@storybook/web-components-vite",
+    name: '@storybook/web-components-vite',
     options: {},
-  },
-  docs: {
-    // This makes Storybook auto-generate docs for every story with the `autodocs` tag
-    // We could have set this to `true` to auto-generate docs for every story without adding any tag 
-    // but this allows us to create stories with no auto-generated docs if we want to.
-    autodocs: "tag",
   },
   // index markdown stories so they can be part of the generated menu and lazy loaded
   experimental_indexers: async (existingIndexers) => {
-    return [markdownIndexer, ...existingIndexers ?? []]
+    return [markdownIndexer, ...(existingIndexers ?? [])];
   },
-  async viteFinal (config, { configType }) {
+  async viteFinal(config, { configType }) {
     // This dynamic import is the recommended Storybook way to
     // import `vite`. With a static import you get a warning about CJS.
     // see: https://storybook.js.org/docs/builders/vite#configuration
@@ -67,27 +61,27 @@ const config = {
         appType: 'mpa',
         resolve: {
           alias: [
-            { 
-              // Without this, vite resolves our imports to the actual `custom-elements.json` file 
+            {
+              // Without this, vite resolves our imports to the actual `custom-elements.json` file
               // inside the `dist` folder.
               // We need to rely on a virtual file in dev mode, see the `generateCem` plugin for more info.
-              find: /.*\/dist\/custom-elements\.json$/, 
-              replacement: 'virtual:custom-elements.json'
+              find: /.*\/dist\/custom-elements\.json$/,
+              replacement: 'virtual:custom-elements.json',
             },
           ],
         },
         plugins: [...commonPlugins, ...devModePlugins],
-      }
+      };
     }
 
     if (configType === 'PRODUCTION') {
       customConfig = {
         plugins: commonPlugins,
-      }
+      };
     }
 
     return mergeConfig(config, customConfig);
-  }
+  },
 };
 
 export default config;
