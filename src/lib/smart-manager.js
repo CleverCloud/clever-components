@@ -210,6 +210,6 @@ function filterContext(source, keyObject) {
   }
   const newEntries = Object.keys(keyObject)
     .map((name) => [name, source[name]])
-    .filter(([name, value]) => value !== undefined);
+    .filter(([, value]) => value !== undefined);
   return Object.fromEntries(newEntries);
 }

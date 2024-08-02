@@ -1,7 +1,6 @@
 import { formatRuntimeProduct } from '../../lib/product.js';
 import { rawPriceSystem } from './price-system.js';
 
-/* eslint-disable quote-props */
 const rawInstances = [
   {
     'type': 'ml_python',

@@ -52,6 +52,8 @@ export class CcBadge extends LitElement {
   }
 
   render() {
+    const helloWold = 'toto';
+    if (helloWold === 'toto') {console.log('toto')}
     const modes = {
       dimmed: this.weight == null || this.weight === 'dimmed',
       strong: this.weight === 'strong',
@@ -66,9 +68,9 @@ export class CcBadge extends LitElement {
     };
 
     return html`
-      <span class="cc-badge ${classMap(modes)}">
+      <span class="cc-badge ${classMap()}">
         ${this.icon != null
-          ? html` <cc-icon .icon=${this.icon} a11y-name=${ifDefined(this.iconA11yName)}></cc-icon> `
+          ? html` <cc-icon icon=${this.icon} a11y-name=${ifDefined(this.iconA11yName)}></cc-icon> `
           : ''}
         <span>
           <slot></slot>
