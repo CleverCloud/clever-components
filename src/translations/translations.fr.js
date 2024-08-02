@@ -259,7 +259,7 @@ export const translations = {
     () => sanitize`<p>Si vous choisissez d'utiliser des enregistrements de type <code>A</code>, vous devrez vous-même assurer leur mise à jour.</p>
   <p>Pensez à suivre notre <a href="https://developers.clever-cloud.com/changelog/" lang="en">changelog</a> ou à utiliser notre <a href="https://developers.clever-cloud.com/api/v4/#load-balancers" lang="en">API v4</a> pour cela.</p>`,
   'cc-domain-management.dns.a.heading': `Enregistrements A`,
-  'cc-domain-management.dns.a.label': ({ index }) => `Valeur d'enregistrement A numéro ${index}`,
+  'cc-domain-management.dns.a.label': `Valeurs d'enregistrement A`,
   'cc-domain-management.dns.cname.desc': () =>
     sanitize`<p>Utiliser un enregistrement <code>CNAME</code> est fortement recommandé. Ainsi, votre configuration est automatiquement maintenue à jour.`,
   'cc-domain-management.dns.cname.heading': `Enregistrement CNAME`,
