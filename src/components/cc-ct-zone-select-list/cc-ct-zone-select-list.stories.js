@@ -3,22 +3,18 @@ import { makeStory } from '../../stories/lib/make-story.js';
 import './cc-ct-zone-select-list.js';
 
 export default {
-  // this makes storybook generate a doc from the custom elements manifest
   tags: ['autodocs'],
   title: '🛠 Creation Tunnel/<cc-ct-zone-select-list>',
-  // This component code is used by Storybook's docs page for the API table.
-  // It will use `custom-elements.json` documentation file.
-  // Run `npm run components:docs-json` to generate this JSON file.
   component: 'cc-ct-zone-select-list',
 };
 
 const conf = {
   component: 'cc-ct-zone-select-list',
-  // You may need to add some CSS just for your stories.
   // language=CSS
   css: ``,
 };
 
+/** @type {ZoneItem[]} */
 const DEFAULT_ITEMS = [
   {
     code: 'scw',
@@ -112,12 +108,16 @@ const DEFAULT_ITEMS = [
     tags: [],
   },
 ];
+
+/** @type {ZoneItem[]} */
 const PRIVATE_ZONES = [
   {
     code: 'foo-foobars',
     name: 'Private MySQL Cluster',
-    images: [getInfraProviderLogoUrl('ovh')],
+    images: [],
     flagUrl: getFlagUrl('FR'),
+    country: 'France',
+    countryCode: 'FR',
     tags: [],
   },
   {
@@ -125,59 +125,78 @@ const PRIVATE_ZONES = [
     name: 'City Member Lab',
     images: [],
     flagUrl: getFlagUrl('FR'),
+    country: 'France',
+    countryCode: 'FR',
     tags: [],
   },
   {
     code: 'foo5',
     name: 'testing environment',
-    images: [getInfraProviderLogoUrl('ovh')],
+    images: [],
     flagUrl: getFlagUrl('FR'),
+    country: 'France',
+    countryCode: 'FR',
     tags: [],
   },
   {
     code: 'foobarz',
     name: 'Foobarz',
-    images: [getInfraProviderLogoUrl('ovh')],
+    images: [],
     flagUrl: getFlagUrl('FR'),
+    country: 'France',
+    countryCode: 'FR',
     tags: [],
   },
   {
     code: 'foozbar',
     name: 'Clever Edge Faume Paris',
-    images: [getInfraProviderLogoUrl('ovh')],
+    images: [],
     flagUrl: getFlagUrl('FR'),
+    country: 'France',
+    countryCode: 'FR',
     tags: [],
   },
   {
     code: 'foobazbabarzone',
     name: 'Sleep Edge Abroad Bird Random',
-    images: [getInfraProviderLogoUrl('ovh')],
+    images: [],
     flagUrl: getFlagUrl('FR'),
+    country: 'France',
+    countryCode: 'FR',
     tags: [],
   },
   {
     code: 'champion',
     name: 'Private MongoDB Cluster',
-    images: [getInfraProviderLogoUrl('ovh')],
+    images: [],
     flagUrl: getFlagUrl('FR'),
+    country: 'France',
+    countryCode: 'FR',
     tags: [],
   },
   {
     code: 'clevercloud-postgresql-internal',
     name: 'Private PostgreSQL Cluster',
-    images: [getInfraProviderLogoUrl('ovh')],
+    images: [],
     flagUrl: getFlagUrl('FR'),
+    country: 'France',
+    countryCode: 'FR',
     tags: [],
   },
   {
     code: 'mainstream',
     name: 'Sleep Edge Abroad Bird Matrix',
-    images: [getInfraProviderLogoUrl('ovh')],
+    images: [],
     flagUrl: getFlagUrl('FR'),
+    country: 'France',
+    countryCode: 'FR',
     tags: [],
   },
 ];
 
+/**
+ * @typedef {import('./cc-ct-zone-select-list.types.js').ZoneItem} ZoneItem
+ */
 export const defaultStory = makeStory(conf, {
   items: [
     {
@@ -197,7 +216,7 @@ export const privateZones = makeStory(conf, {
 export const allZones = makeStory(conf, {
   items: [
     {
-      zones: [...DEFAULT_ITEMS, ...PRIVATE_ZONES],
+      zones: [...PRIVATE_ZONES, ...DEFAULT_ITEMS],
     },
   ],
 });

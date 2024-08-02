@@ -27,7 +27,7 @@ const DEFAULT_ITEMS = [
     countryCode: 'FR',
     country: 'France',
     images: [{ url: getInfraProviderLogoUrl('scaleway'), alt: 'infra' }],
-    disabled: true,
+    disabled: false,
     tags: ['green'],
   },
   {
@@ -121,8 +121,17 @@ const DEFAULT_ITEMS = [
     tags: [],
   },
 ];
+
 export const defaultStory = makeStory(conf, {
   items: DEFAULT_ITEMS,
+});
+
+export const disabled = makeStory(conf, {
+  items: [{ ...DEFAULT_ITEMS[0], disabled: true }],
+});
+
+export const selected = makeStory(conf, {
+  items: [{ ...DEFAULT_ITEMS[0], selected: true }],
 });
 
 export const longCode = makeStory(conf, {

@@ -239,6 +239,7 @@ export const translations = {
   //#endregion
   //#region cc-ct-zone-select
   'cc-ct-zone-select.alt.country-name': ({ code, name }) => `pays : ${getCountryName(lang, code, name)}`,
+  'cc-ct-zone-select.legend': `Sélectionnez votre zone`,
   //#endregion
   //#region cc-datetime-relative
   'cc-datetime-relative.distance': ({ date }) => formatDistanceToNow(date),

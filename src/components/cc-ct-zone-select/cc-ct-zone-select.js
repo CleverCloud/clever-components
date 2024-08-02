@@ -11,20 +11,16 @@ import '../cc-img/cc-img.js';
  */
 
 /**
- * A component doing X and Y (one liner description of your component).
+ * A component displaying a card with relative zone information (name, code...)
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<any>} cc-ct-zone-select:zone-selected
- *
- * @cssprop {Color} --cc-loader-color - The color of the animated circle (defaults: `#2653af`).
  */
 export class CcCtZoneSelect extends LitElement {
   static get properties() {
     return {
       code: { type: String },
-      country: { type: String },
       countryCode: { type: String, attribute: 'country-code' },
+      country: { type: String },
       disabled: { type: Boolean, reflect: true },
       flagUrl: { type: String },
       images: { type: Array },
@@ -115,6 +111,9 @@ export class CcCtZoneSelect extends LitElement {
           width: 100%;
         }
 
+        .flag {
+        }
+
         :host .title {
           flex: 1 1 auto;
         }
@@ -129,11 +128,6 @@ export class CcCtZoneSelect extends LitElement {
 
         :host(:not([selected], [disabled])) {
           cursor: pointer;
-        }
-
-        :host(:focus-visible) {
-          outline: var(--cc-focus-outline);
-          outline-offset: 2px;
         }
 
         :host([selected]) {
@@ -212,14 +206,12 @@ export class CcCtZoneSelect extends LitElement {
         .thumbnails > cc-img {
           --cc-img-fit: contain;
 
-          height: 1.125em;
-          width: 1.25em;
+          height: 1.5em;
+          width: 1.5em;
         }
       `,
     ];
   }
 }
-
-// DOCS: 11. Define the custom element
 
 window.customElements.define('cc-ct-zone-select', CcCtZoneSelect);

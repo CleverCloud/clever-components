@@ -1,10 +1,13 @@
+import { ZoneImage } from "../cc-ct-zone-select/cc-ct-zone-select.types.js";
+
 export interface ZoneItem {
   code: string;
+  country: string;
+  countryCode: string;
   name: string;
-  infra: string;
   flagUrl: string;
-  images: Array<string>;
+  images: Array<ZoneImage>;
   tags: Array<string>;
-  disabled: boolean;
-  selected: boolean;
+  disabled?: boolean;
+  selected?: boolean;
 }
