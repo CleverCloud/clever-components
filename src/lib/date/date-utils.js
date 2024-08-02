@@ -4,6 +4,10 @@ import { clampNumber } from '../utils.js';
  * @typedef {import('./date.types.js').Timezone} Timezone
  */
 
+/**
+ * @typedef {(date: Date, offset: number) => Date} DateShiftFunction
+ */
+
 export const SECOND = 1000;
 export const MINUTE = 60_000;
 export const HOUR = 3_600_000;
@@ -51,6 +55,7 @@ export function getNumberOfDaysInMonth(year, month) {
 
 // region Date shift
 const DATE_SHIFTER = {
+  /** @type {DateShiftFunction} */
   Y: function (date, offset) {
     const d = cloneDate(date);
     const nextYear = date.getUTCFullYear() + offset;
@@ -65,6 +70,7 @@ const DATE_SHIFTER = {
 
     return d;
   },
+  /** @type {DateShiftFunction} */
   M: function (date, offset) {
     const d = cloneDate(date);
 
@@ -86,22 +92,27 @@ const DATE_SHIFTER = {
 
     return d;
   },
-
+  /** @type {DateShiftFunction} */
   D: function (date, offset) {
     return DATE_SHIFTER._shift(date, offset * DAY);
   },
+  /** @type {DateShiftFunction} */
   H: function (date, offset) {
     return DATE_SHIFTER._shift(date, offset * HOUR);
   },
+  /** @type {DateShiftFunction} */
   m: function (date, offset) {
     return DATE_SHIFTER._shift(date, offset * MINUTE);
   },
+  /** @type {DateShiftFunction} */
   s: function (date, offset) {
     return DATE_SHIFTER._shift(date, offset * SECOND);
   },
+  /** @type {DateShiftFunction} */
   S: function (date, offset) {
     return DATE_SHIFTER._shift(date, offset);
   },
+  /** @type {DateShiftFunction} */
   _shift: function (date, offset) {
     return new Date(date.getTime() + offset);
   },

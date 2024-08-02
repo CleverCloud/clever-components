@@ -16,6 +16,7 @@ export class Buffer {
    */
   constructor(onFlush, flushConditions) {
     this._onFlush = onFlush;
+    /** @type {Array<T>} */
     this._bucket = [];
     this._timeout = flushConditions.timeout;
     this._length = flushConditions.length;
