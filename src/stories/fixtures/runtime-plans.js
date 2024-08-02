@@ -33,7 +33,7 @@ const rawInstances = [
         'microservice': false,
         'machine_learning': true,
         'nice': 0,
-        'price_id': 'apps.ML_XS',
+        price_id: 'apps.ML_XS',
         'memory': {
           'unit': 'B',
           'value': 6442450944,
@@ -5009,7 +5009,7 @@ const rawInstances = [
     },
   },
 ];
-/* eslint-enable quote-props */
+ 
 
 const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
 
