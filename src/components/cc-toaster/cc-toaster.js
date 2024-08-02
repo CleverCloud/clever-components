@@ -37,6 +37,8 @@ const slideAnimationSpecs = {
     out: slideToRight,
   },
 };
+
+/** @param {typeof slideAnimationSpecs[keyof typeof slideAnimationSpecs]} spec */
 const withFade = (spec) => {
   return {
     in: [{ ...spec.in[0], opacity: 0 }],
@@ -49,6 +51,7 @@ const withFade = (spec) => {
  * @typedef {import('./cc-toaster.types.js').ToastPosition} ToastPosition
  * @typedef {import('./cc-toaster.types.js').ToastAnimation} ToastAnimation
  * @typedef {import('./cc-toaster.types.js').ToastOptions} ToastOptions
+ * @typedef {import('./cc-toaster.types.js').Notification} Notification
  */
 
 /**
@@ -163,7 +166,7 @@ export class CcToaster extends LitElement {
    * If the maxToasts is 0, nothing happens.
    *
    * @param {Notification} notification the notification to show
-   * @returns {function()|undefined} the function that can be used to dismiss the toast or `undefined` if no toast was shown.
+   * @returns {function()|void} the function that can be used to dismiss the toast or `undefined` if no toast was shown.
    */
   show(notification) {
     if (this.maxToasts === 0) {
@@ -212,35 +215,19 @@ export class CcToaster extends LitElement {
     };
   }
 
+  /** @param {Toast} toastToDismiss */
   _dismiss(toastToDismiss) {
     this._toasts = this._toasts.filter((toast) => toast !== toastToDismiss);
   }
 
-  /* endregion */
-
-  render() {
-    const positionsClasses = this.position.split('-').join(' ');
-
-    return html`
-      <div class="toaster ${positionsClasses}" aria-live="polite" aria-atomic="true">
-        ${repeat(
-          this._toasts,
-          (toast) => toast.key,
-          (toast) => this._renderToast(toast),
-        )}
-      </div>
-    `;
-  }
-
   _getInOutAnimations() {
-    if (this.animation === 'fade') {
-      return fadeAnimation;
-    }
-    if (this.animation === 'slide') {
-      return slideAnimationSpecs[this.position];
-    }
-    if (this.animation === 'fade-and-slide') {
-      return withFade(slideAnimationSpecs[this.position]);
+    switch (this.animation) {
+      case 'fade':
+        return fadeAnimation;
+      case 'slide':
+        return slideAnimationSpecs[this.position];
+      case 'fade-and-slide':
+        return withFade(slideAnimationSpecs[this.position]);
     }
   }
 
@@ -258,6 +245,21 @@ export class CcToaster extends LitElement {
         ...this._getInOutAnimations(),
       });
     }
+  }
+  /* endregion */
+
+  render() {
+    const positionsClasses = this.position.split('-').join(' ');
+
+    return html`
+      <div class="toaster ${positionsClasses}" aria-live="polite" aria-atomic="true">
+        ${repeat(
+          this._toasts,
+          (toast) => toast.key,
+          (toast) => this._renderToast(toast),
+        )}
+      </div>
+    `;
   }
 
   /**

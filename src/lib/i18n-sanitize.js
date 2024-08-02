@@ -1,13 +1,8 @@
 /* global globalThis */
-const AUTHORIZED_TAGS = ['STRONG', 'EM', 'CODE', 'A', 'BR', 'P', 'SPAN'];
+const AUTHORIZED_TAGS = ['STRONG', 'EM', 'CODE', 'A', 'BR', 'P'];
 
 function isAuthorizedAttribute(attributeName, tagName) {
-  return (
-    attributeName === 'title' ||
-    attributeName === 'aria-label' ||
-    (attributeName === 'href' && tagName === 'A') ||
-    attributeName === 'lang'
-  );
+  return attributeName === 'title' || attributeName === 'aria-label' || (attributeName === 'href' && tagName === 'A');
 }
 
 // Reuse one text node to escape HTML

@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { dispatchCustomEvent } from '../../lib/events.js';
-import { i18n } from '../../lib/i18n.js';
+import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 import '../cc-toggle/cc-toggle.js';
@@ -48,6 +48,7 @@ export class CcAddonOption extends LitElement {
     this.title = null;
   }
 
+  /** @param {Event & { detail: 'DISABLED'|'ENABLED' }} event */
   _onToggleOption({ detail: enabled }) {
     this.enabled = enabled === 'ENABLED';
     dispatchCustomEvent(this, 'input', this.enabled);

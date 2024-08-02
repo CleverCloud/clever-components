@@ -1,4 +1,6 @@
+/** @type {(tagName: string) => HTMLElement} */
 const createElement = (tagName) => document.createElement(tagName);
+/** @type {(parent: HTMLElement|ShadowRoot, child: HTMLElement) => HTMLElement} */
 const appendChild = (parent, child) => parent.appendChild(child);
 
 /**
@@ -43,6 +45,7 @@ export class CcExpand extends HTMLElement {
         return;
       }
 
+      /** @type {string} */
       let fromHeight = this._oldHeight;
 
       // If there's already an animation (not finished),

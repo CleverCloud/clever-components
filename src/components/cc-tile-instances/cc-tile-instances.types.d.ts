@@ -14,7 +14,7 @@ export interface TileInstancesStateError {
   type: 'error';
 }
 
-interface InstanceState {
-  flavourName: string;
+export interface InstanceState {
+  flavorName: string;
   count: number;
 }

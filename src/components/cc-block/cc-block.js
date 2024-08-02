@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixArrowDownSFill as iconDown, iconRemixArrowUpSFill as iconUp } from '../../assets/cc-remix.icons.js';
-import { i18n } from '../../lib/i18n.js';
+import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 import '../cc-expand/cc-expand.js';
 import '../cc-icon/cc-icon.js';
@@ -115,8 +115,9 @@ export class CcBlock extends LitElement {
   }
 
   firstUpdated() {
+    /** @type {HTMLSlotElement|undefined} */
     const $overlay = this.shadowRoot.querySelector('slot[name="overlay"]');
-    $overlay.addEventListener('slotchange', (e) => {
+    $overlay.addEventListener('slotchange', () => {
       const oldVal = this._overlay;
       this._overlay = $overlay.assignedNodes().length > 0;
       this.requestUpdate('_overlay', oldVal);

@@ -5,9 +5,9 @@ import {
   iconRemixLoginCircleFill as iconRedirectionOn,
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
-import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { waitingStyles } from '../../styles/waiting.js';
+import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-loader/cc-loader.js';
@@ -58,7 +58,7 @@ export class CcTcpRedirection extends LitElement {
   /**
    * @param {string} namespace
    * @param {number|null} sourcePort
-   * @returns {string}
+   * @returns {Node}
    * @private
    */
   _getHelpText(namespace, sourcePort) {
@@ -70,7 +70,7 @@ export class CcTcpRedirection extends LitElement {
   /**
    * @param {string} namespace
    * @param {boolean} isPrivate
-   * @returns {string}
+   * @returns {Node|string|void}
    * @private
    */
   _getHelpTextAddendum(namespace, isPrivate) {
@@ -82,8 +82,6 @@ export class CcTcpRedirection extends LitElement {
         return i18n('cc-tcp-redirection.namespace-additionaldescription-default');
       case 'cleverapps':
         return i18n('cc-tcp-redirection.namespace-additionaldescription-cleverapps');
-      default:
-        return null;
     }
   }
 

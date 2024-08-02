@@ -29,7 +29,7 @@ const servers = points.map((p) => {
     lon,
     zIndexOffset: state === 'selected' ? 250 : 0,
     marker: { tag: 'cc-map-marker-server', state },
-    tooltip: { tag: 'cc-zone', zone: { city, country, countryCode, tags: [] }, mode: 'small' },
+    tooltip: { tag: 'cc-zone', state: { type: 'loaded', city, country, countryCode, tags: [] }, mode: 'small' },
   };
 });
 

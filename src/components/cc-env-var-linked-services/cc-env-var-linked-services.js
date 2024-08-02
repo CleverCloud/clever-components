@@ -1,5 +1,5 @@
 import { css, html, LitElement } from 'lit';
-import { i18n } from '../../lib/i18n.js';
+import { i18n } from '../../translations/translation.js';
 import '../cc-env-var-form/cc-env-var-form.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
@@ -7,6 +7,8 @@ import '../cc-notice/cc-notice.js';
 /**
  * @typedef {import('./cc-env-var-linked-services.types.js').EnvVarLinkedServicesState} EnvVarLinkedServicesState
  * @typedef {import('./cc-env-var-linked-services.types.js').EnvVarLinkedServicesType} EnvVarLinkedServicesType
+ * @typedef {import('./cc-env-var-linked-services.types.js').LinkedServiceState} LinkedServiceState
+ * @typedef {import('../cc-env-var-form/cc-env-var-form.types.js').EnvVarFormState} EnvVarFormState
  */
 
 /**
@@ -50,6 +52,7 @@ export class CcEnvVarLinkedServices extends LitElement {
     }
   }
 
+  /** @param {string} name */
   _getServiceHeading(name) {
     switch (this.type) {
       case 'addon':
@@ -61,6 +64,7 @@ export class CcEnvVarLinkedServices extends LitElement {
     }
   }
 
+  /** @param {string} serviceName */
   _getServiceDescription(serviceName) {
     const i18nParams = { serviceName, appName: this.appName };
     switch (this.type) {

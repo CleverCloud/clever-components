@@ -8,11 +8,12 @@ import {
   iconRemixAlertFill as iconWarning,
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
-import { i18n } from '../../lib/i18n.js';
+import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
 
 /**
  * @typedef {import('./cc-notice.types.js').NoticeIntent} NoticeIntent
+ * @typedef {import('../common.types.js').IconModel} IconModel
  */
 
 /**
@@ -57,6 +58,7 @@ export class CcNotice extends LitElement {
     this.noIcon = false;
   }
 
+  /** @returns {IconModel|void} */
   _getIcon() {
     if (this.intent === 'danger') {
       return iconDanger;
@@ -72,6 +74,7 @@ export class CcNotice extends LitElement {
     }
   }
 
+  /** @returns {string|void} */
   _getIconAlt() {
     if (this.intent === 'danger') {
       return i18n('cc-notice.icon-alt.danger');
@@ -219,7 +222,6 @@ export class CcNotice extends LitElement {
 
         .close-button {
           --cc-icon-color: var(--cc-color-text-weak);
-
           background-color: transparent;
           border: none;
           border-radius: var(--cc-border-radius-small, 0.15em);

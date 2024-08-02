@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { i18n } from '../../lib/i18n.js';
+import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-button/cc-button.js';
 import '../cc-img/cc-img.js';

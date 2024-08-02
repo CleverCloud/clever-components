@@ -2,33 +2,45 @@ import { ArcElement, Chart, DoughnutController, Legend, Tooltip } from 'chart.js
 import { LitElement, css, html } from 'lit';
 import { cache } from 'lit/directives/cache.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import status from 'statuses';
 import { iconCleverInfo as iconInfo } from '../../assets/cc-clever.icons.js';
 import { iconRemixAlertFill as iconAlert, iconRemixCloseLine as iconClose } from '../../assets/cc-remix.icons.js';
-import { i18n } from '../../lib/i18n.js';
 import { tileStyles } from '../../styles/info-tiles.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
+import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 
 Chart.register(ArcElement, DoughnutController, Legend, Tooltip);
 
+/**
+ * @param {any} a
+ * @param {any} b
+ * @returns {BigInt|number}
+ */
 function xor(a, b) {
   return Number(a) ^ Number(b);
 }
 
-const COLORS = {
-  1: '#bbb',
-  2: '#30ab61',
-  3: '#365bd3',
-  4: '#ff9f40',
-  5: '#cf3942',
-};
+// prettier-ignore
+// we need keys to be of type `string` to help TypeScript
+const COLORS = /** @type {const} */ ({
+  "1": '#bbb',
+  "2": '#30ab61',
+  "3": '#365bd3',
+  "4": '#ff9f40',
+  "5": '#cf3942',
+});
 
+/** @type {StatusCodesData} */
 const SKELETON_STATUS_CODES = { 200: 1 };
 
 /**
  * @typedef {import('./cc-tile-status-codes.types.js').TileStatusCodesState} TileStatusCodesState
+ * @typedef {import('./cc-tile-status-codes.types.js').StatusCodesData} StatusCodesData
+ * @typedef {import('lit').PropertyValues<CcTileStatusCodes>} CcTileStatusCodesChangedProperties
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLCanvasElement>} RefCanvas
  */
 
 /**
@@ -64,20 +76,32 @@ export class CcTileStatusCodes extends LitElement {
 
     /** @type {boolean} */
     this._skeleton = false;
+
+    /** @type {RefCanvas} */
+    this._refCanvas = createRef();
+  }
+
+  /**
+   * @param {keyof StatusCodesData} statusCode
+   * @returns {COLORS[keyof typeof COLORS]}
+   */
+  _getChartColor(statusCode) {
+    const colorKey = /** @type {keyof typeof COLORS} */ (statusCode[0]);
+    return COLORS[colorKey];
   }
 
   _onToggleDocs() {
     this._docs = !this._docs;
   }
 
-  firstUpdated(changedProperties) {
+  firstUpdated() {
     if (this.state.type === 'error') {
       return;
     }
 
-    this._ctx = this.renderRoot.getElementById('chart');
-    this._chart = new Chart(this._ctx, {
+    this._chart = new Chart(this._refCanvas.value, {
       type: 'doughnut',
+      data: null,
       options: {
         responsive: true,
         maintainAspectRatio: false,
@@ -89,21 +113,22 @@ export class CcTileStatusCodes extends LitElement {
             onClick: function (e, legendItem) {
               this.chart.data.labels.forEach((label, i) => {
                 const sameLabel = label === legendItem.text;
+                // @ts-expect-error shiftKey may be undefined but it won't trigger any issue anyway
                 if (xor(e.native.shiftKey, sameLabel)) {
                   this.chart.toggleDataVisibility(i);
                 }
               });
               this.chart.update();
             },
-            onHover: (e) => {
-              this._ctx.style.cursor = 'pointer';
+            onHover: () => {
+              this._refCanvas.value.style.cursor = 'pointer';
             },
-            onLeave: (e) => {
-              this._ctx.style.cursor = null;
+            onLeave: () => {
+              this._refCanvas.value.style.cursor = null;
             },
             position: 'right',
             labels: {
-              fontFamily: 'monospace',
+              font: { size: 16, family: 'monospace' },
               usePointStyle: true,
               // Filter legend items so we can only keep 1xx, 2xx... instead of all status codes
               filter: (current, all) => {
@@ -140,7 +165,11 @@ export class CcTileStatusCodes extends LitElement {
     });
   }
 
-  // updated and not update because we need this._chart before
+  /**
+   * updated and not willUpdate because we need this._chart before
+   *
+   * @param {CcTileStatusCodesChangedProperties} changedProperties
+   */
   updated(changedProperties) {
     if (changedProperties.has('state')) {
       if (this.state.type === 'error') {
@@ -149,12 +178,12 @@ export class CcTileStatusCodes extends LitElement {
 
       this._skeleton = this.state.type === 'loading';
 
-      const statusCodes = this._skeleton ? SKELETON_STATUS_CODES : this.state.statusCodes;
+      const statusCodes = this.state.type === 'loaded' ? this.state.statusCodes : SKELETON_STATUS_CODES;
 
       this._empty = Object.keys(statusCodes).length === 0;
 
       // Raw status codes
-      this._labels = Object.keys(statusCodes);
+      this._labels = /** @type {Array<keyof StatusCodesData>} */ (Object.keys(statusCodes));
 
       // Status codes as categories (2xx, 3xx...)
       this._chartLabels = this._skeleton
@@ -163,11 +192,10 @@ export class CcTileStatusCodes extends LitElement {
 
       this._data = Object.values(statusCodes);
 
-      this._backgroundColor = this._skeleton
-        ? this._labels.map(() => '#bbb')
-        : this._labels.map((statusCode) => COLORS[statusCode[0]]);
+      this._backgroundColor = this._skeleton ? this._labels.map(() => '#bbb') : this._labels.map(this._getChartColor);
 
       this.updateComplete.then(() => {
+        // @ts-expect-error issue with chartjs itself https://github.com/chartjs/Chart.js/issues/10896
         this._chart.options.animation.duration = this._skeleton ? 0 : 300;
         this._chart.options.plugins.tooltip.enabled = !this._skeleton;
         this._chart.data = {
@@ -212,7 +240,7 @@ export class CcTileStatusCodes extends LitElement {
               <div class="tile_body">
                 <!-- https://www.chartjs.org/docs/latest/general/responsive.html -->
                 <div class="chart-container ${classMap({ skeleton: this._skeleton })}">
-                  <canvas id="chart"></canvas>
+                  <canvas id="chart" ${ref(this._refCanvas)}></canvas>
                 </div>
               </div>
             `

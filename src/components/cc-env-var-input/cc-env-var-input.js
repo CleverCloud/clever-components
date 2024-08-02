@@ -1,8 +1,8 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
-import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
+import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
 
@@ -65,6 +65,7 @@ export class CcEnvVarInput extends LitElement {
     this.value = '';
   }
 
+  /** @param {Event & { detail: string }} event */
   _onInput({ detail: value }) {
     this.value = value;
     dispatchCustomEvent(this, 'input', { name: this.name, value: this.value });

@@ -1,3 +1,5 @@
+import { TemplateResult } from 'lit';
+
 export interface App {
   name: string; // Name of the application
   commit?: string; // Head commit on remote repo if app is not brand new (full SHA-1)
@@ -12,7 +14,7 @@ export interface Addon {
   name: string;
   provider: AddonProvider;
   plan: AddonPlan;
-  creationDate: Date | number | string;
+  creationDate: number | string;
 }
 
 interface AddonPlan {
@@ -24,12 +26,16 @@ interface AddonProvider {
   logoUrl: string;
 }
 
+/** FIXME: not great */
 interface AddonOption {
   name: string;
   enabled: boolean;
   icon?: IconModel;
+  title?: string | DocumentFragment;
+  logo?: string;
+  description: string | DocumentFragment | TemplateResult<1>;
   // Option specific params
-  flavor: Flavor; // for "apm" and "kibana" options
+  flavor?: Flavor; // for "apm" and "kibana" options
   apm?: boolean;
   kibana?: boolean;
   encryption?: boolean;
@@ -87,9 +93,10 @@ interface Point {
   lat: number; // Latitude
   lon: number; // Longitude
   count?: number; // Number of occurences for this location (default: 1)
-  delay?: number | string; // How long the point needs to stay (in ms), 'none' for a fixed point, (default: 1000)
-  tooltip?: string; // Tooltip when the point is hovered
+  delay?: number; // How long the point needs to stay (in ms), 'none' for a fixed point, (default: 1000)
+  tooltip?: string | { tag: string; string: any }; // Tooltip when the point is hovered
   marker?: Marker;
+  zIndexOffset?: number;
 }
 
 interface Marker {
@@ -191,15 +198,24 @@ export interface EnvVar {
   isEdited?: boolean;
 }
 
-interface EnvVarParseError {
+export interface EnvVarParseError {
   line?: number;
-  msg: string;
+  msg: string | Node;
   isWarning: Boolean;
 }
 
-type EnvVarValidationMode = 'simple' | 'strict';
+export interface EnvVarRawError {
+  type: string;
+  name: string;
+  pos: {
+    line: number;
+    column: number;
+  };
+}
 
-type EnvVarEditorState = EnvVarEditorStateLoading | EnvVarEditorStateLoaded;
+export type EnvVarValidationMode = 'simple' | 'strict';
+
+export type EnvVarEditorState = EnvVarEditorStateLoading | EnvVarEditorStateLoaded;
 
 interface EnvVarEditorStateLoading {
   type: 'loading';

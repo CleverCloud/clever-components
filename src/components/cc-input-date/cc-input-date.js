@@ -13,15 +13,15 @@ import {
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { CcFormControlElement } from '../../lib/form/cc-form-control-element.abstract.js';
 import { RequiredValidator, Validation, combineValidators, createValidator } from '../../lib/form/validation.js';
-import { i18n } from '../../lib/i18n.js';
 import { isStringEmpty } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
+import { i18n } from '../../translations/translation.js';
 
 // This is the date format chosen to format the date displayed to the user.
 const DATE_FORMAT = 'datetime-short';
 // This array is hard coded and corresponds directly to the date format defined above.
-/** @type {Array<'Y'|'M'|'D'|'H'|'m'|'s'>} */
+/** @type {Array<DateFormatSpecifier>} */
 const FIELDS_POSITION = [
   'Y',
   'Y',
@@ -91,6 +91,7 @@ function dateStateValid(date) {
 
 /**
  * @typedef {import('../../lib/date/date.types.js').Timezone} Timezone
+ * @typedef {import('../../lib/date/date.types.js').DateFormatSpecifier} DateFormatSpecifier
  * @typedef {import('./cc-input-date.types.js').InputDateValueState} InputDateValueState
  * @typedef {import('./cc-input-date.types.js').InputDateValueStateEmpty} InputDateValueStateEmpty
  * @typedef {import('./cc-input-date.types.js').InputDateValueStateNaD} InputDateValueStateNaD

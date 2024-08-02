@@ -2,9 +2,9 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixHistoryLine as iconBackup, iconRemixCloseLine as iconClose } from '../../assets/cc-remix.icons.js';
 import { fakeString } from '../../lib/fake-strings.js';
-import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
+import { i18n } from '../../translations/translation.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
@@ -13,7 +13,12 @@ import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
 
 /** @type {Backup} */
-const SKELETON_BACKUP = { createdAt: new Date(), expiresAt: new Date(), url: '', deleteCommand: 'skeleton' };
+const SKELETON_BACKUP = {
+  createdAt: new Date().toString(),
+  expiresAt: new Date().toString(),
+  url: '',
+  deleteCommand: 'skeleton',
+};
 const SKELETON_BACKUPS = {
   /** @type {'skeleton'} */
   providerId: 'skeleton',
@@ -113,7 +118,7 @@ export class CcAddonBackups extends LitElement {
   /**
    *
    * @param {Backup} backup
-   * @returns {string}
+   * @returns {Node}
    * @private
    */
   _getBackupText({ createdAt, expiresAt }) {
@@ -124,7 +129,7 @@ export class CcAddonBackups extends LitElement {
 
   /**
    * @param {ProviderId} providerId
-   * @returns {string}
+   * @returns {string|Node}
    * @private
    */
   _getDescription(providerId) {
@@ -148,7 +153,7 @@ export class CcAddonBackups extends LitElement {
 
   /**
    * @param {ProviderId} providerId
-   * @returns {string}
+   * @returns {string|Node}
    * @private
    */
   _getManualDeleteDescription(providerId) {
@@ -163,7 +168,7 @@ export class CcAddonBackups extends LitElement {
 
   /**
    * @param {ProviderId} providerId
-   * @returns {string}
+   * @returns {string|Node}
    * @private
    */
   _getManualRestoreDescription(providerId) {
@@ -189,7 +194,7 @@ export class CcAddonBackups extends LitElement {
   /**
    * @param {ProviderId} providerId
    * @param {string} href
-   * @returns {string}
+   * @returns {string|Node}
    * @private
    */
   _getRestoreWithServiceDescription(providerId, href) {

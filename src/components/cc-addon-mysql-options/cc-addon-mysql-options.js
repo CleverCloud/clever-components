@@ -1,12 +1,13 @@
 import { css, html, LitElement } from 'lit';
 import { dispatchCustomEvent } from '../../lib/events.js';
-import { i18n } from '../../lib/i18n.js';
 import { ccAddonEncryptionAtRestOption } from '../../templates/cc-addon-encryption-at-rest-option/cc-addon-encryption-at-rest-option.js';
+import { i18n } from '../../translations/translation.js';
 import '../cc-addon-option-form/cc-addon-option-form.js';
 
 /**
  * @typedef {import('../common.types.js').AddonOption} AddonOption
  * @typedef {import('./cc-addon-mysql-options.types.js').GenericOptions} GenericOptions
+ * @typedef {import('../cc-addon-option-form/cc-addon-option-form.types.js').OptionStates} OptionStates
  */
 
 /**
@@ -30,6 +31,7 @@ export class CcAddonMysqlOptions extends LitElement {
     this.options = [];
   }
 
+  /** @param {Event & { detail: OptionStates }} event */
   _onFormOptionsSubmit({ detail }) {
     dispatchCustomEvent(this, 'submit', detail);
   }
