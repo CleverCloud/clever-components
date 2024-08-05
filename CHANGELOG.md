@@ -5,6 +5,18 @@ title: 'Changelog'
 
 # Changelog
 
+## [15.2.0](https://github.com/CleverCloud/clever-components/compare/15.1.1...15.2.0) (2024-08-05)
+
+
+### 🚀 Features
+
+* **cc-domain-management:** display all A Records within a single input ([cf58a0c](https://github.com/CleverCloud/clever-components/commit/cf58a0c48a1cd990305468dd8d7770a0079fddb8)), closes [#1134](https://github.com/CleverCloud/clever-components/issues/1134)
+
+
+### 🐛 Bug Fixes
+
+* **cc-domain-management:** improve responsive aspect ([dca9c74](https://github.com/CleverCloud/clever-components/commit/dca9c742a5f78bd6d5196ea55ee7cf8c0461f9ed)), closes [#1126](https://github.com/CleverCloud/clever-components/issues/1126)
+
 ## [15.1.1](https://github.com/CleverCloud/clever-components/compare/15.1.0...15.1.1) (2024-07-30)
 
 
