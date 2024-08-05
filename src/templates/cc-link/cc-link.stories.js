@@ -2,15 +2,13 @@ import { render } from 'lit';
 import { makeStory } from '../../stories/lib/make-story.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from './cc-link.js';
-import docsPage from './cc-link.md';
+import docStoryModule from './cc-link.md';
 
 export default {
   title: '♻️ Templates/ccLink()',
   tags: ['autodocs'],
   parameters: {
-    docs: {
-      page: docsPage,
-    },
+    docs: docStoryModule.parameters.docs,
   },
 };
 

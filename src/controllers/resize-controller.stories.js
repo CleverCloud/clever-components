@@ -1,7 +1,7 @@
 import { LitElement, css, html } from 'lit';
 import '../components/cc-expand/cc-expand.js';
 import { ResizeController } from './resize-controller.js';
-import docsPage from './resize-controller.md';
+import docStoryModule from './resize-controller.md';
 
 const BREAKPOINTS = [200, 300, 400];
 
@@ -211,9 +211,7 @@ export default {
   title: '🕹️ Controllers/ResizeController',
   tags: ['autodocs'],
   parameters: {
-    docs: {
-      page: docsPage,
-    },
+    docs: docStoryModule.parameters.docs,
   },
 };
 

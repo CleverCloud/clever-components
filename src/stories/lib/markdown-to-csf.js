@@ -36,12 +36,19 @@ export function markdownToCsfWithDocsPage(markdownText) {
     import React from 'react';
 
 
-    /**
-     * An autodoc is supposed to be generated because the tag "autodocs" has been added
-     * from the indexer function (see "src/stories/lib/markdown-indexer.js").
-     * We override the content to show our own documentation instead.
-     */
-    export default () => React.createElement(MarkdownDocs, { html: ${parsedHTML} });
+    export default {
+      tags: ['autodocs'],
+      /**
+       * An autodoc is supposed to be generated because the tag "autodocs" has been added
+       * from the indexer function (see "src/stories/lib/markdown-indexer.js").
+       * We override the content to show our own documentation instead.
+       */
+      parameters: {
+        docs: {
+          page: () => React.createElement(MarkdownDocs, { html: ${parsedHTML} }),
+        },
+      },
+    }
 
     /**
      * We export an empty story as "docs" so that it can be considered a "docs only" story
