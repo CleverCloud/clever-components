@@ -1,5 +1,6 @@
 import json from '@rollup/plugin-json';
 import { rollupAdapter } from '@web/dev-server-rollup';
+import { defaultReporter, summaryReporter } from '@web/test-runner';
 import { chromeLauncher } from '@web/test-runner-chrome';
 import { cemAnalyzerPlugin } from './wds/cem-analyzer-plugin.js';
 import { commonjsPluginWithConfig, esbuildBundlePluginWithConfig } from './wds/wds-common.js';
@@ -34,6 +35,12 @@ export default {
   mimeTypes: {
     '**/*.json': 'js',
   },
+  reporters: [
+    // mocha like report
+    process.env.CI !== 'true' ? summaryReporter({ flatten: false }) : [],
+    // report global tests progress
+    defaultReporter({ reportTestResults: true, reportTestProgress: true }),
+  ],
   testFramework: {
     config: {
       ui: 'bdd',
