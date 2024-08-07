@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [15.2.1](https://github.com/CleverCloud/clever-components/compare/15.2.0...15.2.1) (2024-08-07)
+
+
+### 🐛 Bug Fixes
+
+* **cc-domain-management:** fix typo & improve texts ([5132105](https://github.com/CleverCloud/clever-components/commit/5132105692a639dc62e76daa1eb2c18abb8b1548))
+
 ## [15.2.0](https://github.com/CleverCloud/clever-components/compare/15.1.1...15.2.0) (2024-08-05)
 
 
