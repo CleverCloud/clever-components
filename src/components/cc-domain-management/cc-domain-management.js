@@ -351,8 +351,7 @@ export class CcDomainManagement extends LitElement {
             <div class="dns-info__desc">${i18n('cc-domain-management.dns.desc')}</div>
             <cc-notice intent="info" heading="${i18n('cc-domain-management.dns.info.heading')}">
               <div slot="message">
-                <p>${i18n('cc-domain-management.dns.info.load-balancer')}</p>
-                <p>${i18n('cc-domain-management.dns.info.apex')}</p>
+                <p>${i18n('cc-domain-management.dns.info.desc')}</p>
               </div>
             </cc-notice>
           </div>

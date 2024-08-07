@@ -222,7 +222,7 @@ export const errorWithPathWithinDomain = makeStory(conf, {
       domainFormState: {
         type: 'idle',
         hostname: {
-          value: 'example.com/example-path',
+          value: 'example.com/example-route',
         },
         pathPrefix: {
           value: '',
