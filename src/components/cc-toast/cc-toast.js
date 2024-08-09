@@ -95,32 +95,28 @@ export class CcToast extends LitElement {
   }
 
   _getIcon() {
-    if (this.intent === 'info') {
-      return iconInfo;
-    }
-    if (this.intent === 'success') {
-      return iconSuccess;
-    }
-    if (this.intent === 'warning') {
-      return iconWarning;
-    }
-    if (this.intent === 'danger') {
-      return iconDanger;
+    switch (this.intent) {
+      case 'info':
+        return iconInfo;
+      case 'success':
+        return iconSuccess;
+      case 'warning':
+        return iconWarning;
+      case 'danger':
+        return iconDanger;
     }
   }
 
   _getIconAlt() {
-    if (this.intent === 'info') {
-      return i18n('cc-toast.icon-alt.info');
-    }
-    if (this.intent === 'success') {
-      return i18n('cc-toast.icon-alt.success');
-    }
-    if (this.intent === 'warning') {
-      return i18n('cc-toast.icon-alt.warning');
-    }
-    if (this.intent === 'danger') {
-      return i18n('cc-toast.icon-alt.danger');
+    switch (this.intent) {
+      case 'info':
+        return i18n('cc-toast.icon-alt.info');
+      case 'success':
+        return i18n('cc-toast.icon-alt.success');
+      case 'warning':
+        return i18n('cc-toast.icon-alt.warning');
+      case 'danger':
+        return i18n('cc-toast.icon-alt.danger');
     }
   }
 
