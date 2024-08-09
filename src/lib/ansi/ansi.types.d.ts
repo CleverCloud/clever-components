@@ -25,3 +25,5 @@ export interface AnsiPart {
   styles: Array<string>;
   text: string;
 }
+
+export type ColorName = keyof AnsiPalette;
