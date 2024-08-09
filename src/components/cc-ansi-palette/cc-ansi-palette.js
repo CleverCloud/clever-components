@@ -10,10 +10,12 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-input-text/cc-input-text.js';
 
-const COLORS = ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan'];
+const COLORS = /** @type {const} */ (['red', 'green', 'yellow', 'blue', 'magenta', 'cyan']);
 
 /**
  * @typedef {import('../../lib/ansi/ansi.types.js').AnsiPalette} AnsiPalette
+ * @typedef {import('../../lib/ansi/ansi.types.js').ColorName} ColorName
+ * @typedef {import('lit').PropertyValues<CcAnsiPaletteComponent>} CcAnsiPalettePropertyValues
  */
 
 /**
@@ -40,8 +42,9 @@ export class CcAnsiPaletteComponent extends LitElement {
     this._analysis = null;
   }
 
-  willUpdate(_changedProperties) {
-    if (_changedProperties.has('palette')) {
+  /** @param {CcAnsiPalettePropertyValues} changedProperties */
+  willUpdate(changedProperties) {
+    if (changedProperties.has('palette')) {
       this._style = ansiPaletteStyle(this.palette).replaceAll(';', ';\n').slice(0, -1);
       this._analysis = analyzePalette(this.palette);
     }
@@ -73,7 +76,9 @@ export class CcAnsiPaletteComponent extends LitElement {
     `;
   }
 
+  /** @param {typeof COLORS[number]} colorName */
   renderColorGridLine(colorName) {
+    /** @type {ColorName} */
     const brightColorName = `bright-${colorName}`;
     return html`
       <div class="color color--left">${this.renderColor(colorName)}</div>
@@ -82,10 +87,12 @@ export class CcAnsiPaletteComponent extends LitElement {
     `;
   }
 
+  /** @param {ColorName} colorName */
   renderSquare(colorName) {
     return html`<div class="square" style="background-color: var(--cc-color-ansi-${colorName});"></div>`;
   }
 
+  /** @param {ColorName} colorName */
   renderColor(colorName) {
     const colorHex = this.palette[colorName];
     const analysis = this._analysis.contrasts[colorName];
