@@ -94,6 +94,7 @@ export class CcToggle extends LitElement {
     this.value = null;
   }
 
+  /** @param {Event & { target: HTMLInputElement }} e */
   _onChange(e) {
     if (this.multipleValues == null) {
       this.value = e.target.value;
@@ -121,6 +122,7 @@ export class CcToggle extends LitElement {
     };
     const type = this.multipleValues == null ? 'radio' : 'checkbox';
 
+    /** @type {(value: string) => boolean} */
     const isChecked = (value) => {
       return this.multipleValues != null ? this.multipleValues.includes(value) : this.value === value;
     };
