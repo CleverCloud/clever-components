@@ -55,6 +55,7 @@ export class CcAddonCredentials extends LitElement {
     this.type = null;
   }
 
+  /** @param {AddonType} addonType */
   _getDescription(addonType) {
     switch (addonType) {
       case 'apm':
@@ -72,6 +73,7 @@ export class CcAddonCredentials extends LitElement {
     }
   }
 
+  /** @param {Credential['type']} fieldType */
   _getFieldName(fieldType) {
     switch (fieldType) {
       case 'auth-token':
