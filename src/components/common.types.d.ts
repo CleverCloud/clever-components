@@ -198,15 +198,24 @@ export interface EnvVar {
   isEdited?: boolean;
 }
 
-interface EnvVarParseError {
+export interface EnvVarParseError {
   line?: number;
-  msg: string;
+  msg: string | Node;
   isWarning: Boolean;
 }
 
-type EnvVarValidationMode = 'simple' | 'strict';
+export interface EnvVarRawError {
+  type: string;
+  name: string;
+  pos: {
+    line: number;
+    column: number;
+  };
+}
 
-type EnvVarEditorState = EnvVarEditorStateLoading | EnvVarEditorStateLoaded;
+export type EnvVarValidationMode = 'simple' | 'strict';
+
+export type EnvVarEditorState = EnvVarEditorStateLoading | EnvVarEditorStateLoaded;
 
 interface EnvVarEditorStateLoading {
   type: 'loading';
