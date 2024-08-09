@@ -1,4 +1,4 @@
-type IframeSandbox =
+export type IframeSandbox =
   | 'allow-forms'
   | 'allow-modals'
   | 'allow-pointer-lock'
