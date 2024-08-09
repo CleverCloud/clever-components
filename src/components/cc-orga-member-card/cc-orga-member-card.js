@@ -32,6 +32,11 @@ const BREAKPOINTS = [BREAKPOINT_TINY, BREAKPOINT_SMALL, BREAKPOINT_MEDIUM];
  * @typedef {import('./cc-orga-member-card.types.js').OrgaMemberCardState} OrgaMemberCardState
  * @typedef {import('./cc-orga-member-card.types.js').ToggleEditing} ToggleEditing
  * @typedef {import('./cc-orga-member-card.types.js').UpdateMember} UpdateMember
+ * @typedef {import('./cc-orga-member-card.types.js').OrgaMemberRole} OrgaMemberRole
+ * @typedef {import('../cc-button/cc-button.js').CcButton} CcButton
+ * @typedef {import('../cc-select/cc-select.js').CcSelect} CcSelect
+ * @typedef {import('lit/directives/ref.js').Ref<CcButton>} RefCcButton
+ * @typedef {import('lit/directives/ref.js').Ref<CcSelect>} RefCcSelect
  */
 
 /**
@@ -83,12 +88,12 @@ export class CcOrgaMemberCard extends LitElement {
       isCurrentUser: false,
     };
 
-    /** @type {Ref<CcInputText>} */
+    /** @type {RefCcButton} */
     this._deleteButtonRef = createRef();
 
     this._newRole = null;
 
-    /** @type {Ref<CcSelect>} */
+    /** @type {RefCcSelect} */
     this._roleRef = createRef();
 
     /**
@@ -151,7 +156,7 @@ export class CcOrgaMemberCard extends LitElement {
   }
 
   /**
-   * @param isEditing
+   * @param {boolean} isEditing
    * @returns {string}
    * @private
    */
@@ -176,6 +181,8 @@ export class CcOrgaMemberCard extends LitElement {
   /**
    * Update the newRole value when the select changes value.
    * We need to do this because we want to be able to reset the newRole when the user toggles the edit mode. (cancel editing)
+   *
+   * @param {CustomEvent<OrgaMemberRole>} event
    */
   _onRoleInput({ detail: value }) {
     this._newRole = value;
@@ -224,7 +231,7 @@ export class CcOrgaMemberCard extends LitElement {
   render() {
     const waiting = this.member.state === 'updating' || this.member.state === 'deleting';
     const hasName = this.member.name != null;
-    const hasError = this.member.error;
+    const hasError = (this.member.state === 'loaded' || this.member.state === 'editing') && this.member.error;
     const hasAdminRights = this.authorisations.edit && this.authorisations.delete;
 
     return html`
@@ -246,7 +253,7 @@ export class CcOrgaMemberCard extends LitElement {
           <p class="email">${this.member.email}</p>
         </div>
 
-        ${this._renderStatusArea()} ${hasAdminRights ? this._renderActionBtns() : ''}
+        ${this._renderStatusArea()} ${hasAdminRights ? this._renderActionBtns(hasError) : ''}
 
         <!-- 
           a11y: we need the live region to be present within the DOM from the start and insert content dynamically inside it.
@@ -319,12 +326,13 @@ export class CcOrgaMemberCard extends LitElement {
   /**
    * This sub render also relies on `cc-stretch` to make sure buttons have the same size whatever their visible text may be (edit vs readonly mode).
    * We rely on the `a11y-name` prop on `cc-button` to make sure assistive get the relevant text with some context in addition.
+   *
+   * @param {boolean} hasError
    */
-  _renderActionBtns() {
+  _renderActionBtns(hasError) {
     const isBtnImgOnly = this._resizeController.width >= BREAKPOINT_MEDIUM;
     const waiting = this.member.state === 'updating' || this.member.state === 'deleting';
     const isEditing = this.member.state === 'editing' || this.member.state === 'updating';
-    const hasError = this.member.error;
     const firstBtnIcon = isEditing ? iconCross : iconPen;
     const secondBtnIcon = isEditing ? iconCheck : iconBin;
 

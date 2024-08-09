@@ -1,4 +1,4 @@
-import { OrgaMemberCardState } from '../cc-orga-member-card/cc-orga-member-card.types';
+import { OrgaMemberCardState } from '../cc-orga-member-card/cc-orga-member-card.types.js';
 
 export type OrgaMemberListState = OrgaMemberListStateLoading | OrgaMemberListStateLoaded | OrgaMemberListStateError;
 

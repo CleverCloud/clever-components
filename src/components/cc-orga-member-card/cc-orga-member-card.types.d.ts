@@ -1,7 +1,7 @@
 /*region Member info*/
-type OrgaMemberRole = 'ADMIN' | 'DEVELOPER' | 'ACCOUNTING' | 'MANAGER';
+export type OrgaMemberRole = 'ADMIN' | 'DEVELOPER' | 'ACCOUNTING' | 'MANAGER';
 
-interface OrgaMember {
+export interface OrgaMember {
   id: string;
   email: string;
   role: OrgaMemberRole; // Sets the role of the member displayed in a badge.
@@ -20,21 +20,21 @@ export type OrgaMemberCardState =
   | OrgaMemberCardStateUpdating
   | OrgaMemberCardStateDeleting;
 
-interface OrgaMemberCardStateLoaded extends OrgaMember {
+export interface OrgaMemberCardStateLoaded extends OrgaMember {
   state: 'loaded';
   error?: boolean;
 }
 
-interface OrgaMemberCardStateEditing extends OrgaMember {
+export interface OrgaMemberCardStateEditing extends OrgaMember {
   state: 'editing';
   error?: boolean;
 }
 
-interface OrgaMemberCardStateUpdating extends OrgaMember {
+export interface OrgaMemberCardStateUpdating extends OrgaMember {
   state: 'updating';
 }
 
-interface OrgaMemberCardStateDeleting extends OrgaMember {
+export interface OrgaMemberCardStateDeleting extends OrgaMember {
   state: 'deleting';
 }
 /*endregion*/
