@@ -65,7 +65,7 @@ export class CcInvoiceList extends LitElement {
   }
 
   /**
-   * @param {Event & { detail: string }} event
+   * @param {CustomEvent<string>} event
    * @private
    */
   _onYearFilterValue({ detail: year }) {
