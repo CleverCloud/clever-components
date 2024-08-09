@@ -49,9 +49,13 @@ export class CcEnvVarEditorSimple extends LitElement {
   }
 
   /**
-   * @type {Array<EnvVar>} variables
+   * @param {Array<EnvVar>} variables
    */
   _changeVariables(variables) {
+    if (this.state.type === 'loading') {
+      return;
+    }
+
     this.state = {
       ...this.state,
       variables,
@@ -59,11 +63,21 @@ export class CcEnvVarEditorSimple extends LitElement {
     dispatchCustomEvent(this, 'change', variables);
   }
 
+  /** @param {CustomEvent<EnvVar>} event */
   _onCreate({ detail: newVar }) {
+    if (this.state.type === 'loading') {
+      return;
+    }
+
     this._changeVariables([...this.state.variables, newVar]);
   }
 
+  /** @param {CustomEvent<EnvVar>} event */
   _onInput({ detail: editedVar }) {
+    if (this.state.type === 'loading') {
+      return;
+    }
+
     this._changeVariables(
       this.state.variables.map((v) => {
         return v.name === editedVar.name ? { ...v, value: editedVar.value } : v;
@@ -71,7 +85,12 @@ export class CcEnvVarEditorSimple extends LitElement {
     );
   }
 
+  /** @param {CustomEvent<EnvVar>} event */
   _onDelete({ detail: deletedVar }) {
+    if (this.state.type === 'loading') {
+      return;
+    }
+
     this._changeVariables(
       this.state.variables
         .filter((v) => {
@@ -83,7 +102,12 @@ export class CcEnvVarEditorSimple extends LitElement {
     );
   }
 
+  /** @param {CustomEvent<EnvVar>} event */
   _onKeep({ detail: keptVar }) {
+    if (this.state.type === 'loading') {
+      return;
+    }
+
     this._changeVariables(
       this.state.variables.map((v) => {
         return v.name === keptVar.name ? { ...v, isDeleted: false } : v;
@@ -93,15 +117,16 @@ export class CcEnvVarEditorSimple extends LitElement {
 
   render() {
     const skeleton = this.state.type === 'loading';
-    const variables = skeleton ? SKELETON_VARIABLES : this.state.variables;
+    const variables = this.state.type === 'loaded' ? this.state.variables : SKELETON_VARIABLES;
     const variablesNames = variables.map(({ name }) => name);
+    const validationMode = this.state.type === 'loaded' ? this.state.validationMode : 'simple';
 
     return html`
       ${!this.readonly
         ? html`
             <cc-env-var-create
               ?disabled=${skeleton || this.disabled}
-              .validationMode=${this.state.validationMode}
+              .validationMode=${validationMode}
               .variablesNames=${variablesNames}
               @cc-env-var-create:create=${this._onCreate}
             ></cc-env-var-create>
@@ -144,9 +169,9 @@ export class CcEnvVarEditorSimple extends LitElement {
         display: none;
       }
 
-      /* 
+      /*
 Negative margin + padding to make the background-color span through the full width of the cc-block,
-despite the cc-block padding 
+despite the cc-block padding
   */
 
       cc-env-var-create {

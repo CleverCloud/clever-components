@@ -1,3 +1,4 @@
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { ERROR_TYPES, parseRaw, toNameEqualsValueString } from '@clevercloud/client/esm/utils/env-vars.js';
 import { LitElement, css, html } from 'lit';
 import { dispatchCustomEvent } from '../../lib/events.js';
@@ -16,7 +17,9 @@ const SKELETON_VARIABLES = [
 /**
  * @typedef {import('../common.types.js').EnvVarEditorState} EnvVarEditorState
  * @typedef {import('../common.types.js').EnvVarParseError} EnvVarParseError
+ * @typedef {import('../common.types.js').EnvVarRawError} EnvVarRawError
  * @typedef {import('../common.types.js').EnvVar} EnvVar
+ * @typedef {import('lit').PropertyValues<CcEnvVarEditorExpert>} CcEnvVarEditorExpertPropertyValues
  */
 
 /**
@@ -60,6 +63,7 @@ export class CcEnvVarEditorExpert extends LitElement {
     this._variablesAsText = '';
   }
 
+  /** @param {EnvVarRawError[]} rawErrors */
   _setErrors(rawErrors) {
     this._errors = rawErrors.map(({ type, name, pos }) => {
       if (type === ERROR_TYPES.INVALID_NAME) {
@@ -105,21 +109,27 @@ export class CcEnvVarEditorExpert extends LitElement {
         };
       }
 
-      return { line: '?', msg: i18n('cc-env-var-editor-expert.errors.unknown') };
+      return { line: '?', msg: i18n('cc-env-var-editor-expert.errors.unknown'), isWarning: false };
     });
   }
 
+  /** @param {CustomEvent<string>} event */
   _onInput({ detail: value }) {
+    if (this.state.type === 'loading') {
+      return;
+    }
+
     this._variablesAsText = value;
     const { variables, errors } = parseRaw(value, { mode: this.state.validationMode });
     this._setErrors(errors);
     dispatchCustomEvent(this, 'change', variables);
   }
 
+  /** @param {CcEnvVarEditorExpertPropertyValues} changedProperties */
   willUpdate(changedProperties) {
     if (changedProperties.has('state')) {
       this._skeleton = this.state.type === 'loading';
-      const vars = this._skeleton ? SKELETON_VARIABLES : this.state.variables;
+      const vars = this.state.type === 'loaded' ? this.state.variables : SKELETON_VARIABLES;
       const filteredVariables = vars.filter(({ isDeleted }) => !isDeleted);
       this._variablesAsText = toNameEqualsValueString(filteredVariables);
       this._setErrors([]);

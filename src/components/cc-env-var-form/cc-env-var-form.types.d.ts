@@ -1,4 +1,4 @@
-import { EnvVar, EnvVarValidationMode } from '../common.types';
+import { EnvVar, EnvVarValidationMode } from '../common.types.js';
 
 export type EnvVarFormState =
   | EnvVarFormStateLoading
@@ -27,3 +27,5 @@ interface EnvVarFormStateError {
 }
 
 type EnvVarFormContextType = 'env-var' | 'env-var-simple' | 'env-var-addon' | 'exposed-config' | 'config-provider';
+
+export type EnvVarFormMode = 'SIMPLE' | 'EXPERT' | 'JSON';

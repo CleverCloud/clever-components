@@ -65,6 +65,7 @@ export class CcEnvVarInput extends LitElement {
     this.value = '';
   }
 
+  /** @param {CustomEvent<string>} event */
   _onInput({ detail: value }) {
     this.value = value;
     dispatchCustomEvent(this, 'input', { name: this.name, value: this.value });

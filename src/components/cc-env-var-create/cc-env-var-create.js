@@ -1,3 +1,4 @@
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { validateName } from '@clevercloud/client/esm/utils/env-vars.js';
 import { css, html, LitElement } from 'lit';
 import { dispatchCustomEvent } from '../../lib/events.js';
@@ -10,6 +11,7 @@ import '../cc-notice/cc-notice.js';
 /**
  * @typedef {import('../common.types.js').EnvVar} EnvVar
  * @typedef {import('../common.types.js').EnvVarValidationMode} EnvVarValidationMode
+ * @typedef {import('../cc-input-text/cc-input-text.js').CcInputText} CcInputText
  */
 
 /**
@@ -60,10 +62,12 @@ export class CcEnvVarCreate extends LitElement {
     this._variableValue = '';
   }
 
+  /** @param {CustomEvent<string>} event */
   _onNameInput({ detail: value }) {
     this._variableName = value;
   }
 
+  /** @param {CustomEvent<string>} event */
   _onValueInput({ detail: value }) {
     this._variableValue = value;
   }
@@ -75,9 +79,15 @@ export class CcEnvVarCreate extends LitElement {
     });
     this.reset();
     // Put focus back on name input, so we can add something else directly
-    this.shadowRoot.querySelector('cc-input-text.name').focus();
+    /** @type {CcInputText|null} */
+    const inputToFocus = this.shadowRoot.querySelector('cc-input-text.name');
+    inputToFocus?.focus();
   }
 
+  /**
+   * @param {CustomEvent<string>} e
+   * @param {boolean} hasErrors
+   */
   _onRequestSubmit(e, hasErrors) {
     e.stopPropagation();
     if (!hasErrors) {
@@ -103,7 +113,10 @@ export class CcEnvVarCreate extends LitElement {
           value=${this._variableName}
           ?disabled=${this.disabled}
           @cc-input-text:input=${this._onNameInput}
-          @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, hasErrors)}
+          @cc-input-text:requestimplicitsubmit=${
+            /** @param {CustomEvent<string>} e */
+            (e) => this._onRequestSubmit(e, hasErrors)
+          }
         ></cc-input-text>
 
         <div class="input-btn">
@@ -115,7 +128,10 @@ export class CcEnvVarCreate extends LitElement {
             multi
             ?disabled=${this.disabled}
             @cc-input-text:input=${this._onValueInput}
-            @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, hasErrors)}
+            @cc-input-text:requestimplicitsubmit=${
+              /** @param {CustomEvent<string>} e */
+              (e) => this._onRequestSubmit(e, hasErrors)
+            }
           ></cc-input-text>
 
           <cc-button primary ?disabled=${hasErrors || this.disabled} @cc-button:click=${this._onSubmit}
