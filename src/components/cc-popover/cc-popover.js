@@ -6,6 +6,10 @@ import '../cc-button/cc-button.js';
 /**
  * @typedef {import('../common.types.js').IconModel} IconModel
  * @typedef {import('./cc-popover.types.js').PopoverPosition} PopoverPosition
+ * @typedef {import('../cc-button/cc-button.js').CcButton} CcButton
+ * @typedef {import('lit/directives/ref.js').Ref<CcButton>} RefCcButton
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLDivElement>} RefDiv
+ * @typedef {import('lit').PropertyValues<CcPopover>} CcPopoverPropertyValues
  */
 
 /**
@@ -82,10 +86,10 @@ export class CcPopover extends LitElement {
     /** @type {PopoverPosition} Sets the position of the popover relative to the `button` element. */
     this.position = 'bottom-left';
 
-    /** @type {Ref<HTMLElement>} */
+    /** @type {RefDiv} */
     this._contentRef = createRef();
 
-    /** @type {Ref<HTMLElement>} */
+    /** @type {RefCcButton} */
     this._buttonRef = createRef();
 
     this._onOutsideClickHandler = new EventHandler(window, 'click', (event) => {
@@ -95,20 +99,26 @@ export class CcPopover extends LitElement {
       }
     });
 
-    this._onEscapeKeyHandler = new EventHandler(this, 'keydown', (event) => {
-      if (event.key === 'Escape') {
-        this.close();
-      }
-    });
+    this._onEscapeKeyHandler = new EventHandler(
+      this,
+      'keydown',
+      /** @param {KeyboardEvent} event */
+      (event) => {
+        if (event.key === 'Escape') {
+          this.close();
+        }
+      },
+    );
 
     // Opening a popover must close the last opened popover.
+    /** @type {CcPopover} */
     let lastOpenedPopover = null;
     this._onCcPopoverOpenHandler = new EventHandler(window, 'cc-popover:open', (event) => {
       // We cannot use event.target because events that happen in shadow DOM and when caught from outside the shadow DOM,
       // have the host element as the target (and not the real target element inside the shadow DOM).
       const popover = event.composedPath()[0];
 
-      if (popover !== this) {
+      if (popover !== this && popover instanceof CcPopover) {
         lastOpenedPopover = popover;
       } else {
         lastOpenedPopover?.close(false);
@@ -165,6 +175,7 @@ export class CcPopover extends LitElement {
 
   // region Lit lifecycle
 
+  /** @param {CcPopoverPropertyValues} changedProperties */
   updated(changedProperties) {
     if (changedProperties.has('isOpen')) {
       if (this.isOpen) {
