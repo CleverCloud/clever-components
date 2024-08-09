@@ -13,7 +13,7 @@ interface TileDeploymentsStateError {
   type: 'error';
 }
 
-interface DeploymentTileInfo {
+export interface DeploymentTileInfo {
   state: string;
   action: string;
   date: string;
