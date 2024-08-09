@@ -14,12 +14,12 @@ import '../cc-notice/cc-notice.js';
 const SKELETON_INVOICE = {
   emissionDate: '2020-01-01',
   number: '????????????',
-  status: 'PENDING',
   amount: 10.0,
 };
 
 /**
  * @typedef {import('./cc-invoice.types.js').InvoiceState} InvoiceState
+ * @typedef {import('./cc-invoice.types.js').InvoiceStateLoaded} InvoiceStateLoaded
  */
 
 /**
@@ -46,7 +46,7 @@ export class CcInvoice extends LitElement {
     const skeletonNumber = invoiceNumber == null;
     const number = skeletonNumber ? SKELETON_INVOICE.number : invoiceNumber;
     const skeleton = skeletonNumber || this.state.type === 'loading';
-    const invoice = skeleton ? SKELETON_INVOICE : this.state;
+    const invoice = this.state.type === 'loaded' && !skeletonNumber ? this.state : SKELETON_INVOICE;
     const title = `${i18n('cc-invoice.title')} ${number}`;
 
     return html`
