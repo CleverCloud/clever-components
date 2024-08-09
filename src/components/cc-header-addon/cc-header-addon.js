@@ -21,7 +21,7 @@ const SKELETON_ADDON = {
   plan: {
     name: fakeString(10),
   },
-  creationDate: new Date(),
+  creationDate: new Date().toString(),
 };
 
 const SKELETON_VERSION = fakeString(5);
