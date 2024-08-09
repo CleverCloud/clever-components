@@ -1,4 +1,4 @@
-interface Option {
+export interface Option {
   name: string;
   enabled: boolean;
   // Option specific params
@@ -15,6 +15,6 @@ interface Flavor {
   monthlyCost: number;
 }
 
-interface GenericOptions {
+export interface GenericOptions {
   encryption: boolean;
 }
