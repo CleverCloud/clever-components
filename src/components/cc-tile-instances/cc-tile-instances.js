@@ -17,6 +17,7 @@ const statusIcon = {
 
 /**
  * @typedef {import('./cc-tile-instances.types.js').TileInstancesState} TileInstancesState
+ * @typedef {import('./cc-tile-instances.types.js').InstanceState} InstanceState
  */
 
 /**
@@ -36,8 +37,18 @@ export class CcTileInstances extends LitElement {
 
     /** @type {TileInstancesState} Sets the current state of running and deploying instances. */
     this.state = { type: 'loading' };
+
+    /** @type {number|null} */
+    this._lastRunningCount = null;
+
+    /** @type {number|null} */
+    this._lastDeployingCount = null;
   }
 
+  /**
+   * @param {'running'|'deploying'} type
+   * @returns {string|void}
+   */
   _getStatusLabel(type) {
     if (type === 'running') {
       return i18n('cc-tile-instances.status.running');
@@ -127,7 +138,7 @@ export class CcTileInstances extends LitElement {
 
   /**
    *
-   * @param {InstanceType} instances
+   * @param {Array<InstanceState>} instances
    * @param {'running'|'deploying'} type
    */
   _renderInstances(instances, type) {
