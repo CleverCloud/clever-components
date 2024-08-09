@@ -2,6 +2,11 @@ import { css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
+/**
+ * @typedef {import('lit').TemplateResult<1>} TemplateResult
+ */
+
+/** @param {string} rawUrl */
 function isDifferentOrigin(rawUrl) {
   try {
     const url = new URL(rawUrl, location.href);
@@ -13,6 +18,13 @@ function isDifferentOrigin(rawUrl) {
 }
 
 // NOTE: we could just create raw DOM but here we benefit from lit-html safe/escaping system on "content"
+/**
+ * @param {string} url
+ * @param {string|TemplateResult} content
+ * @param {boolean} [skeleton]
+ * @param {string} [title]
+ * @return {TemplateResult}
+ */
 export const ccLink = (url, content, skeleton = false, title) => {
   const href = url != null && !skeleton ? url : undefined;
   const target = isDifferentOrigin(href) ? '_blank' : undefined;
