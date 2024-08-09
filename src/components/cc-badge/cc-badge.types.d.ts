@@ -1,3 +1,3 @@
-type BadgeIntent = 'neutral' | 'info' | 'success' | 'warning' | 'danger';
+export type BadgeIntent = 'neutral' | 'info' | 'success' | 'warning' | 'danger';
 
-type BadgeWeight = 'strong' | 'dimmed' | 'outlined';
+export type BadgeWeight = 'strong' | 'dimmed' | 'outlined';
