@@ -1,3 +1,5 @@
+import { TemplateResult } from 'lit';
+
 export interface App {
   name: string; // Name of the application
   commit?: string; // Head commit on remote repo if app is not brand new (full SHA-1)
@@ -24,12 +26,16 @@ interface AddonProvider {
   logoUrl: string;
 }
 
+/** FIXME: not great */
 interface AddonOption {
   name: string;
   enabled: boolean;
   icon?: IconModel;
+  title?: string | DocumentFragment;
+  logo?: string;
+  description: string | DocumentFragment | TemplateResult<1>;
   // Option specific params
-  flavor: Flavor; // for "apm" and "kibana" options
+  flavor?: Flavor; // for "apm" and "kibana" options
   apm?: boolean;
   kibana?: boolean;
   encryption?: boolean;
