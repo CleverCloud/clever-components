@@ -12,6 +12,9 @@ export function esbuildBundlePlugin({ pathsToBundle }) {
           format: 'esm',
           minify: true,
           write: false,
+          // prevents esbuild from bundling types instead of the actual package
+          // because of the `paths` option within the regular `tsconfig.json` file
+          tsconfig: 'src/lib/leaflet/tsconfig-empty.json',
         });
 
         const code = bundle.outputFiles[0].text;

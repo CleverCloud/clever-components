@@ -1,3 +1,4 @@
+// @ts-no-check
 /*
 
 We want to use the ESM version of Leaflet so we can treeshake what we don't use.

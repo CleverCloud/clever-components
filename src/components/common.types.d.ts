@@ -105,9 +105,10 @@ interface Point {
   lat: number; // Latitude
   lon: number; // Longitude
   count?: number; // Number of occurences for this location (default: 1)
-  delay?: number | string; // How long the point needs to stay (in ms), 'none' for a fixed point, (default: 1000)
-  tooltip?: string; // Tooltip when the point is hovered
+  delay?: number; // How long the point needs to stay (in ms), 'none' for a fixed point, (default: 1000)
+  tooltip?: string | { tag: string; string: any }; // Tooltip when the point is hovered
   marker?: Marker;
+  zIndexOffset?: number;
 }
 
 interface Marker {

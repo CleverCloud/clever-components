@@ -1,0 +1,3 @@
+// prevents esbuild from bundling types instead of the actual package
+// because of the `paths` option within the regular `tsconfig.json` file
+{}

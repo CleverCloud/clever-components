@@ -8,11 +8,9 @@
     "tasks/typechecking-stats.js",
   ],
   "exclude": [
-    "src/lib/leaflet-esm.js",
-    "src/lib/leaflet-heat.js",
+    "src/lib/leaflet",
     "src/lib/pricing.js",
     "src/lib/product.js",
-    "src/lib/simpleheat.js",
   ],
   "extends": "./tsconfig.json",
   "compilerOptions": {
