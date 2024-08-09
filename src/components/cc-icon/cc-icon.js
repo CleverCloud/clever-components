@@ -5,6 +5,7 @@ import { skeletonStyles } from '../../styles/skeleton.js';
 /**
  * @typedef {import('../common.types.js').IconModel} IconModel
  * @typedef {import('./cc-icon.types.js').IconSize} IconSize
+ * @typedef {import('lit').PropertyValues<CcIcon>} CcIconPropertyValues
  */
 
 /**
@@ -64,6 +65,7 @@ export class CcIcon extends LitElement {
     this.skeleton = false;
   }
 
+  /** @param {CcIconPropertyValues} changedProperties */
   updated(changedProperties) {
     const shouldPatchSvg = changedProperties.has('a11yName') || changedProperties.has('icon');
     const svg = this.shadowRoot.querySelector('svg');
