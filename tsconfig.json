@@ -8,6 +8,12 @@
     "**/*.test.js"
   ],
   "compilerOptions": {
+    // Necessary because we use `paths`
+    "baseUrl": ".",
+    "paths": {
+      // since we don't directly import leaflet within `leaflet-esm`, we have to tell the compiler where to find the types
+      "leaflet/src/*": ["./node_modules/@types/leaflet/index.d.ts", "./node_modules/@types/leaflet.heat/index.d.ts"]
+    },
     /* Visit https://www.typescriptlang.org/tsconfig to read more about this file */
     /* Language and Environment */
     "target": "ES2021", /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
