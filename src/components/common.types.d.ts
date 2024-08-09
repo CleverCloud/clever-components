@@ -1,3 +1,5 @@
+import { TemplateResult } from 'lit';
+
 export interface App {
   name: string; // Name of the application
   commit?: string; // Head commit on remote repo if app is not brand new (full SHA-1)
@@ -24,17 +26,6 @@ interface AddonProvider {
   logoUrl: string;
 }
 
-interface AddonOption {
-  name: string;
-  enabled: boolean;
-  icon?: IconModel;
-  // Option specific params
-  flavor: Flavor; // for "apm" and "kibana" options
-  apm?: boolean;
-  kibana?: boolean;
-  encryption?: boolean;
-}
-
 export interface Scalability {
   minFlavor: Flavor;
   maxFlavor: Flavor;
@@ -50,6 +41,33 @@ export interface Flavor {
   microservice: boolean;
   monthlyCost?: number | null;
 }
+
+export interface EncryptionAddonOption {
+  name: 'encryption';
+  enabled: boolean;
+}
+
+export interface ElasticAddonOption {
+  name: 'kibana' | 'apm';
+  enabled: boolean;
+  flavor?: Flavor;
+}
+
+export type AddonOption = EncryptionAddonOption | ElasticAddonOption;
+
+export type AddonOptionWithMetadata = {
+  icon?: IconModel;
+  title?: string | DocumentFragment;
+  logo?: string;
+  description: string | DocumentFragment | TemplateResult<1>;
+} & AddonOption;
+
+export interface EncryptionAddonOption {
+  name: 'encryption';
+  enabled: boolean;
+}
+
+export type AddonOptionStates = { [optionName: string]: boolean };
 
 export interface IconModel {
   content: string;
