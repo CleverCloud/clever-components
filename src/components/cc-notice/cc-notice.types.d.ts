@@ -1,1 +1,1 @@
-type NoticeIntent = 'info' | 'danger' | 'success' | 'warning';
+export type NoticeIntent = 'info' | 'danger' | 'success' | 'warning';

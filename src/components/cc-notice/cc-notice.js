@@ -13,6 +13,7 @@ import '../cc-icon/cc-icon.js';
 
 /**
  * @typedef {import('./cc-notice.types.js').NoticeIntent} NoticeIntent
+ * @typedef {import('../common.types.js').IconModel} IconModel
  */
 
 /**
@@ -57,33 +58,31 @@ export class CcNotice extends LitElement {
     this.noIcon = false;
   }
 
+  /** @returns {IconModel} */
   _getIcon() {
-    if (this.intent === 'danger') {
-      return iconDanger;
-    }
-    if (this.intent === 'info') {
-      return iconInfo;
-    }
-    if (this.intent === 'success') {
-      return iconSuccess;
-    }
-    if (this.intent === 'warning') {
-      return iconWarning;
+    switch (this.intent) {
+      case 'danger':
+        return iconDanger;
+      case 'info':
+        return iconInfo;
+      case 'success':
+        return iconSuccess;
+      case 'warning':
+        return iconWarning;
     }
   }
 
+  /** @returns {string} */
   _getIconAlt() {
-    if (this.intent === 'danger') {
-      return i18n('cc-notice.icon-alt.danger');
-    }
-    if (this.intent === 'info') {
-      return i18n('cc-notice.icon-alt.info');
-    }
-    if (this.intent === 'success') {
-      return i18n('cc-notice.icon-alt.success');
-    }
-    if (this.intent === 'warning') {
-      return i18n('cc-notice.icon-alt.warning');
+    switch (this.intent) {
+      case 'danger':
+        return i18n('cc-notice.icon-alt.danger');
+      case 'info':
+        return i18n('cc-notice.icon-alt.info');
+      case 'success':
+        return i18n('cc-notice.icon-alt.success');
+      case 'warning':
+        return i18n('cc-notice.icon-alt.warning');
     }
   }
 
