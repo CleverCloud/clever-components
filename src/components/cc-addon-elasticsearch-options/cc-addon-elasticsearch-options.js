@@ -10,6 +10,7 @@ const APM_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-apm.sv
 
 /**
  * @typedef {import('../common.types.js').AddonOption} AddonOption
+ * @typedef {import('../common.types.js').Flavor} Flavor
  */
 
 /**
@@ -33,10 +34,12 @@ export class CcAddonElasticsearchOptions extends LitElement {
     this.options = [];
   }
 
+  /** @param {Event & { detail: AddonOption }} event */
   _onFormOptionsSubmit({ detail }) {
     dispatchCustomEvent(this, 'submit', detail);
   }
 
+  /** @param {AddonOption} addonOption */
   _getApmOption({ enabled, flavor }) {
     const description = html`
       <div class="option-details">${i18n('cc-addon-elasticsearch-options.description.apm')}</div>
@@ -62,6 +65,7 @@ export class CcAddonElasticsearchOptions extends LitElement {
     };
   }
 
+  /** @param {AddonOption} addonOption */
   _getKibanaOption({ enabled, flavor }) {
     const description = html`
       <div class="option-details">${i18n('cc-addon-elasticsearch-options.description.kibana')}</div>
