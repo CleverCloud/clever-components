@@ -6,6 +6,7 @@ import '../cc-map/cc-map.js';
 import '../cc-toggle/cc-toggle.js';
 
 /**
+ * @typedef {import('./cc-logsmap.types.js').PointsOptions} PointsOptions
  * @typedef {import('../common.types.js').HeatmapPoint} HeatmapPoint
  * @typedef {import('../common.types.js').MapModeType} MapModeType
  * @typedef {import('../common.types.js').Point} Point
@@ -80,6 +81,7 @@ export class CcLogsMap extends LitElement {
     /** @type {Point[]} */
     this._points = [];
 
+    /** @type {Record<string, Point[]>} */
     this._pointsByCoords = {};
   }
 
@@ -91,13 +93,14 @@ export class CcLogsMap extends LitElement {
   addPoints(points, options = {}) {
     const { spreadDuration = false } = options;
 
-    const timeStep = spreadDuration !== false ? Math.floor(spreadDuration / points.length) : 0;
+    const timeStep = spreadDuration !== false ? Math.floor(Number(spreadDuration) / points.length) : 0;
 
     points.forEach((p, i) => {
       setTimeout(() => this._addPoint(p), timeStep * i);
     });
   }
 
+  /** @param {Point} point */
   _addPoint({ lat, lon, count = 1, delay = 1000, tooltip }) {
     const coords = [lat, lon].join(',');
     const newPoint = { lat, lon, count, tooltip };
@@ -124,7 +127,7 @@ export class CcLogsMap extends LitElement {
     // Merge points at the same coordinates:
     // * sum "count"
     // * concatenante "tooltip" (3 max)
-    this._points = Object.entries(this._pointsByCoords).map(([coords, points]) => {
+    this._points = Object.entries(this._pointsByCoords).map(([_, points]) => {
       const { lat, lon } = points[0];
 
       const count = points.map((p) => p.count).reduce((a, b) => a + b, 0);
@@ -188,6 +191,7 @@ export class CcLogsMap extends LitElement {
     `;
   }
 
+  /** @param {CustomEvent<MapModeType>} event */
   _onModeChange({ detail: mode }) {
     this.mode = mode;
     dispatchCustomEvent(this, 'mode', this.mode);
