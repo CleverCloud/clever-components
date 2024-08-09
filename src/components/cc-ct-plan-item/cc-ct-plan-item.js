@@ -1,28 +1,53 @@
-import { LitElement, css, html } from 'lit';
-import { iconRemixCheckboxCircleFill as selectedIcon } from '../../src/assets/cc-remix.icons.js';
+import { css, html, LitElement } from 'lit';
+import { iconRemixCheckboxCircleFill as selectedIcon } from '../../assets/cc-remix.icons.js';
+import '../cc-icon/cc-icon.js';
 
-// TODO https://component.gallery/components/slider/
+/**
+ * A component doing X and Y (one liner description of your component).
+ *
+ * ## Details
+ *
+ * * Details about bla.
+ * * Details about bla bla.
+ * * Details about bla bla bla.
+ *
+ * ## Technical details
+ *
+ * * Technical details about foo.
+ * * Technical details about bar.
+ * * Technical details about baz.
+ *
+ * @cssdisplay block
+ *
+ *
+ * @fires {CustomEvent<ExampleInterface>} example-component:event-name - Fires XXX whenever YYY.
+ *
+ * @slot - The content of the button (text or HTML). If you want an image, please look at the `image` attribute.
+ *
+ * @cssprop {Color} --cc-loader-color - The color of the animated circle (defaults: `#2653af`).
+ */
+export class CcCtPlanItem extends LitElement {
+  // DOCS: 1. LitElement's properties descriptor
 
-export class CtPlanItem extends LitElement {
   static get properties() {
     return {
       id: { type: String },
       name: { type: String },
       details: { type: Array },
+      selected: { type: Boolean, reflect: true },
     };
   }
 
-  willUpdate(_changedProperties) {
-    this.blur();
-  }
+  // DOCS: 2. Constructor
 
-  _renderDetail(detail) {
-    return html`
-      <div class="detail">
-        <span class="detail--icon"><cc-icon .icon="${detail.icon}" size="md"></cc-icon></span>
-        <span class="detail--value">${detail.data.value}&nbsp;${detail.data.name}</span>
-      </div>
-    `;
+  constructor() {
+    super();
+
+    this.id = null;
+
+    this.name = null;
+
+    this.details = [];
   }
 
   render() {
@@ -38,8 +63,18 @@ export class CtPlanItem extends LitElement {
     `;
   }
 
+  _renderDetail(detail) {
+    return html`
+      <div class="detail">
+        <span class="detail-icon"><cc-icon .icon="${detail.icon}" size="md"></cc-icon></span>
+        <span class="detail-value">${detail.data.value}&nbsp;${detail.data.name}</span>
+      </div>
+    `;
+  }
+
   static get styles() {
     return [
+      // language=CSS
       css`
         :host {
           border: 2px solid var(--cc-color-border-neutral);
@@ -129,11 +164,11 @@ export class CtPlanItem extends LitElement {
           line-height: 1;
         }
 
-        .detail--icon {
+        .detail-icon {
           color: var(--cc-color-text-weak);
           flex: 0 0 auto;
         }
-        .detail--value {
+        .detail-value {
           color: var(--cc-color-text-weak);
           flex: 1 1 auto;
           font-size: 0.875em;
@@ -143,4 +178,6 @@ export class CtPlanItem extends LitElement {
   }
 }
 
-customElements.define('ct-plan-item', CtPlanItem);
+// DOCS: 11. Define the custom element
+
+window.customElements.define('cc-ct-plan-item', CcCtPlanItem);

@@ -1,10 +1,10 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, css, html } from 'lit';
 import {
+  iconRemixUserForbidFill as iconConnectionLimit,
   iconRemixCpuLine as iconCpu,
   iconRemixDatabase_2Fill as iconDatabase,
   iconRemixHardDrive_2Fill as iconDisk,
   iconRemixRam_2Fill as iconRam,
-  iconRemixUserForbidFill as iconConnectionLimit,
 } from '../../src/assets/cc-remix.icons.js';
 import './ct-plan-item.js';
 
@@ -22,7 +22,7 @@ const FEATURE_CODE_ICON = {
 };
 
 export class CtPlanPicker extends LitElement {
-  static get properties () {
+  static get properties() {
     return {
       currentPlan: { type: String, attribute: 'current-plan' },
       isCategory: { type: Boolean, attribute: 'is-category' },
@@ -30,9 +30,9 @@ export class CtPlanPicker extends LitElement {
       plans: { type: Array },
       _displayedFeatures: { type: Array, state: true },
     };
-  };
+  }
 
-  constructor () {
+  constructor() {
     super();
 
     this.currentPlan = null;
@@ -40,18 +40,20 @@ export class CtPlanPicker extends LitElement {
     this.isCustomization = false;
   }
 
-  _onPlanItemClick (plan) {
-    this.dispatchEvent(new CustomEvent('ct-plan-item:selected', {
-      detail: {
-        id: plan.id,
-        isCategory: this.isCategory,
-      },
-      bubbles: true,
-      composed: true,
-    }));
+  _onPlanItemClick(plan) {
+    this.dispatchEvent(
+      new CustomEvent('ct-plan-item:selected', {
+        detail: {
+          id: plan.id,
+          isCategory: this.isCategory,
+        },
+        bubbles: true,
+        composed: true,
+      }),
+    );
   }
 
-  _getFullDisplayedFeatures (planWrapper) {
+  _getFullDisplayedFeatures(planWrapper) {
     const displayedFeatures = planWrapper.details.displayedFeatures;
     const plan = planWrapper.details.rawPlan ?? planWrapper.details.plans[0];
     const features = plan.features;
@@ -65,36 +67,36 @@ export class CtPlanPicker extends LitElement {
     });
   }
 
-  render () {
+  render() {
     if (this.plans == null) {
       return ``;
     }
 
-    return html`${
-      this.plans.map((plan) => {
-        return html`
-          <ct-plan-item
-            role="button"
-            tabindex="0"
-            id="${plan.id}"
-            name="${plan.name}"
-            .details="${this._getFullDisplayedFeatures(plan)}"
-            ?selected=${this.currentPlan === plan.id}
-            @click="${() => this._onPlanItemClick(plan)}"
-          >
-          ${
-            this.isCategory && plan.prefix === 'dev'
-            // TODO test 'dev' label & icon instead of notice
-            ? html`<cc-badge slot="decorator" intent="warning" weight="dimmed">${WORDING.BADGE}</cc-badge>`
-            : ``
-          }
-          </ct-plan-item>
-        `;
-      })
-    }`;
+    const foobar = [];
+    const htmll = html`${this.plans.map((plan) => {
+      foobar.push({ id: plan.id, name: plan.name, details: this._getFullDisplayedFeatures(plan) });
+      return html`
+        <ct-plan-item
+          role="button"
+          tabindex="0"
+          id="${plan.id}"
+          name="${plan.name}"
+          .details="${this._getFullDisplayedFeatures(plan)}"
+          ?selected=${this.currentPlan === plan.id}
+          @click="${() => this._onPlanItemClick(plan)}"
+        >
+          ${this.isCategory && plan.prefix === 'dev'
+            ? // TODO test 'dev' label & icon instead of notice
+              html`<cc-badge slot="decorator" intent="warning" weight="dimmed">${WORDING.BADGE}</cc-badge>`
+            : ``}
+        </ct-plan-item>
+      `;
+    })}`;
+    console.log(foobar);
+    return htmll;
   }
 
-  static get styles () {
+  static get styles() {
     return [
       css`
         :host {
