@@ -29,6 +29,7 @@ export class CcAddonJenkinsOptions extends LitElement {
     this.options = [];
   }
 
+  /** @param {Event & { detail: string }} event */
   _onFormOptionsSubmit({ detail }) {
     dispatchCustomEvent(this, 'submit', detail);
   }
