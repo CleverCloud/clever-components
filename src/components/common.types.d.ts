@@ -14,7 +14,7 @@ export interface Addon {
   name: string;
   provider: AddonProvider;
   plan: AddonPlan;
-  creationDate: Date | number | string;
+  creationDate: number | string;
 }
 
 interface AddonPlan {
