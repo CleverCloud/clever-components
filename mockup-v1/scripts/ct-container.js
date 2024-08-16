@@ -23,6 +23,7 @@ export class CtContainer extends LitElement {
     this.addEventListener('ct-zone-picker:zone-updated', this._onZoneUpdated);
     this.addEventListener('ct-addon-options:option-updated', this._onOptionUpdated);
     this.addEventListener('ct-scalability:config-updated', this._onScalabilityUpdated);
+    this.addEventListener('ct-dedicated-build:value-updated', this._onDedicatedBuildUpdated);
   }
 
   disconnectedCallback () {
@@ -33,6 +34,7 @@ export class CtContainer extends LitElement {
     this.removeEventListener('ct-zone-picker:zone-updated', this._onZoneUpdated);
     this.removeEventListener('ct-addon-options:option-updated', this._onOptionUpdated);
     this.removeEventListener('ct-scalability:config-updated', this._onScalabilityUpdated);
+    this.removeEventListener('ct-dedicated-build:value-updated', this._onDedicatedBuildUpdated);
   }
 
   _onProductNameUpdated (e) {
@@ -75,6 +77,13 @@ export class CtContainer extends LitElement {
     this.form = {
       ...this.form,
       scalability,
+    };
+  }
+
+  _onDedicatedBuildUpdated ({ detail: dedicatedBuild }) {
+    this.form = {
+      ...this.form,
+      dedicatedBuild,
     };
   }
 

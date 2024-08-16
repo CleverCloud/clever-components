@@ -10,6 +10,7 @@ import { REDIS_ADDON_RAW } from '../api/redis-addon.js';
 import { API_ZONES_RAW } from '../api/zones.js';
 import { PREFERRED_PLAN_SLUG, PREFERRED_ZONE } from './preferred-items.js';
 import './ct-addon-options.js';
+import './ct-dedicated-build.js';
 import './ct-label-with-icon.js';
 import './ct-product-name.js';
 import './ct-product-tags.js';
@@ -133,7 +134,10 @@ export class CtForm extends LitElement {
       }
       ${
         isApp
-        ? html`<ct-scalability .product="${this.product}"></ct-scalability>`
+        ? html`
+            <ct-scalability .product="${this.product}"></ct-scalability>
+            <ct-dedicated-build .product="${this.product}"></ct-dedicated-build>
+          `
         : ``
       }
       <ct-zone-picker

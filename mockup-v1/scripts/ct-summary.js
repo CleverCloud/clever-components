@@ -125,7 +125,14 @@ export class CtSummary extends LitElement {
         this.product.type === 'app' && this.price != null && !this.price.isEnabled
           ? html`<div class="price-container">
               <div class="price-container--main">${this.price.min}</div>
-              <div class="price-container--baseline">Amount your application will consume for 30 days.</div>
+              <div class="price-container--baseline">
+                <span>Amount your application will consume for 30 days.</span>
+                <span>${
+                  this.form.dedicatedBuild != null
+                  ? `A dedicated build instance may incur additional charges.`
+                  : ''
+                }</span>
+              </div>
             </div>`
           : ``
       }
@@ -133,7 +140,14 @@ export class CtSummary extends LitElement {
         this.product.type === 'app' && this.price != null && this.price.isEnabled
           ? html`<div class="price-container">
               <div class="price-container--main">${this.price.min}&nbsp;<span class="price-range--arrow">&#10148;</span>&nbsp;${this.price.max}</div>
-              <div class="price-container--baseline">Amounts between which your application will consume for 30 days.</div>
+              <div class="price-container--baseline">
+                <span>Amounts between which your application will consume for 30 days.</span>
+                <span>${
+                  this.form.dedicatedBuild != null
+                  ? `A dedicated build instance may incur additional charges.`
+                  : ''
+                }</span>
+              </div>
             </div>`
           : ``
       }
