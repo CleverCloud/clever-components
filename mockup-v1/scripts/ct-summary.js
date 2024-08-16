@@ -21,6 +21,7 @@ export class CtSummary extends LitElement {
   static get properties () {
     return {
       form: { type: Object },
+      price: { type: Number },
       product: { type: Object },
       _detailsVisible: { type: Boolean },
     };
@@ -29,7 +30,41 @@ export class CtSummary extends LitElement {
   constructor () {
     super();
 
+    this.form = {};
+    this.price = {};
+    this.product = {};
     this._detailsVisible = false;
+  }
+
+  willUpdate (_changedProperties) {
+    if (_changedProperties.has('form')) {
+      this.price = this._computePrice();
+    }
+  }
+
+  _computePrice () {
+    function priceToString(nb, unit = '€') {
+      return (Math.round(100 * nb) / 100).toFixed(2) + unit;
+    }
+
+    if (this.product.type === 'addon') {
+      return this.form.plan != null ? priceToString(this.form.plan.price) : null;
+    }
+
+    if (this.form.scalability == null) {
+      return null;
+    }
+
+    const MULTIPLIER = 24 * 30;
+    const { isEnabled, flavors, instances } = this.form.scalability;
+    const price = {
+      isEnabled,
+      min: priceToString(flavors.min.price * instances.min.value * MULTIPLIER),
+    };
+    if (isEnabled) {
+      price.max = priceToString(flavors.max.price * instances.max.value * MULTIPLIER);
+    }
+    return price;
   }
 
   _toggleDetails () {
@@ -86,6 +121,30 @@ export class CtSummary extends LitElement {
           : ``
         }
       </div>
+      ${
+        this.product.type === 'app' && this.price != null && !this.price.isEnabled
+          ? html`<div class="price-container">
+              <div class="price-container--main">${this.price.min}</div>
+              <div class="price-container--baseline">Amount your application will consume for 30 days.</div>
+            </div>`
+          : ``
+      }
+      ${
+        this.product.type === 'app' && this.price != null && this.price.isEnabled
+          ? html`<div class="price-container">
+              <div class="price-container--main">${this.price.min}&nbsp;<span class="price-range--arrow">&#10148;</span>&nbsp;${this.price.max}</div>
+              <div class="price-container--baseline">Amounts between which your application will consume for 30 days.</div>
+            </div>`
+          : ``
+      }
+      ${
+        this.product.type === 'addon' && this.price != null
+          ? html`<div class="price-container">
+              <div class="price-container--main">${this.price}</div>
+              <div class="price-container--baseline">Estimated price for 30 days.</div>
+            </div>`
+          : ``
+      }
       <div class="footer">
         <cc-button class="btn-submit" primary>${WORDING.CREATE}</cc-button>
         <cc-button class="btn-cancel">${WORDING.CANCEL}</cc-button>
@@ -114,7 +173,8 @@ export class CtSummary extends LitElement {
           padding: 1em;
         }
 
-        .body {
+        .body,
+        .price-container {
           border-left: 2px solid var(--cc-color-border-primary-weak);
           border-right: 2px solid var(--cc-color-border-primary-weak);
         }
@@ -174,6 +234,26 @@ export class CtSummary extends LitElement {
           flex: 0 0 auto;
           font-size: initial;
         }
+
+        .price-container {
+          padding: 0.5em 1.25em 1.5em 1.25em;
+        }
+        .price-container--main {
+          color: var(--cc-color-text-primary-strongest);
+          font-size: 1.5em;
+          font-weight: bold;
+        }
+        .price-container--baseline {
+          font-size: 0.825em;
+          line-height: 1.25;
+          color: var(--cc-color-text-weaker);
+          font-weight: 500;
+        }
+        
+        .price-range--arrow {
+          padding-inline: 0.125em;
+          font-size: 0.75em;
+        }
         
         .body {
           display: flex;
@@ -184,6 +264,7 @@ export class CtSummary extends LitElement {
         .footer {
           display: flex;
           column-gap: 0.5em;
+          background: var(--cc-color-bg-neutral);
         }
 
         .footer cc-button {
