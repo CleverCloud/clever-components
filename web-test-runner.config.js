@@ -6,6 +6,15 @@ import { commonjsPluginWithConfig, esbuildBundlePluginWithConfig } from './wds/w
 
 export default {
   files: ['test/**/*.test.*', 'src/components/**/*.test.*'],
+  filterBrowserLogs: ({ args }) => {
+    const logsToExclude = [
+      'Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information.',
+      'Multiple versions of Lit loaded. Loading multiple versions is not recommended. See https://lit.dev/msg/multiple-versions for more information.',
+    ];
+    const logMessage = args[0];
+
+    return logMessage != null && !logsToExclude.includes(logMessage);
+  },
   browsers: [
     chromeLauncher({
       // Fixes random timeouts with Chrome > 127, see https://github.com/CleverCloud/clever-components/issues/1146 for more info
