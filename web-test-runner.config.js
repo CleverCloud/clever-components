@@ -8,6 +8,8 @@ export default {
   files: ['test/**/*.test.*', 'src/components/**/*.test.*'],
   browsers: [
     chromeLauncher({
+      // Fixes random timeouts with Chrome > 127, see https://github.com/CleverCloud/clever-components/issues/1146 for more info
+      concurrency: 1,
       launchOptions: {
         env: { LANGUAGE: 'en_US' },
       },
