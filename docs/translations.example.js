@@ -1,10 +1,10 @@
 // Use existing date helpers if you need them
-import { formatDatetime } from '../lib/i18n-date.js';
+import { prepareFormatDatetime } from '../src/lib/i18n/i18n-date.js';
 // Use HTML sanitizer tag function if you need HTML in translations
-import { sanitize } from '../lib/i18n-sanitize.js';
+import { sanitize } from '../src/lib/i18n/i18n-sanitize.js';
 // Use existing number helpers if you need them
-import { prepareNumberUnitFormatter } from '../src/lib/i18n-number.js';
-import { preparePlural } from '../src/lib/i18n-string.js';
+import { prepareNumberUnitFormatter } from '../src/lib/i18n/i18n-number.js';
+import { preparePlural } from '../src/lib/i18n/i18n-string.js';
 
 // Define language code here
 export const lang = 'example';
@@ -12,6 +12,7 @@ export const lang = 'example';
 const plural = preparePlural(lang);
 
 // Prepare date and number helpers for the current language
+const formatDatetime = prepareFormatDatetime(lang);
 const formatNumberUnit = prepareNumberUnitFormatter(lang);
 
 // DELETE THIS, it's only here to demonstrate some bad examples
@@ -22,13 +23,8 @@ const unknownTagFunction = () => ``;
 // Translations must be grouped with fold region comments like this:
 //#region cc-component
 //#endregion
+
 export const translations = {
-
-  // First, declare the translated language name with some emoji flag with "LANGUAGE"
-  LANGUAGE: 'Français',
-
-  // Then, list the translations...
-
   // The key must follow this pattern: 'cc-component.foo.bar'
   // Valid custom element tag name for the component,
   // then a dot,
@@ -54,8 +50,7 @@ export const translations = {
   'cc-bad.object': {},
   'cc-bad.undefined': undefined,
   'cc-bad.unknown-tag-function': unknownTagFunction`bad`,
-  'cc-bad.function': function () {
-  },
+  'cc-bad.function': function () {},
 
   // If the translation requires one or more params,
   // the value can be an arrow function returning a template literal string.
@@ -72,8 +67,7 @@ export const translations = {
   'cc-bad.arrow-object': ({ foo }) => ({}),
   'cc-bad.arrow-undefined': ({ foo }) => undefined,
   'cc-bad.arrow-unknown-tag-function': ({ foo }) => unknownTagFunction`bad`,
-  'cc-bad.arrow-no-return': () => {
-  },
+  'cc-bad.arrow-no-return': () => {},
 
   // An arrow function cannot be used if there are no params!
   // Exception: if the translation contains sanitized HTML, more details later...

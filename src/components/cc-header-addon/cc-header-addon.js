@@ -2,8 +2,8 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { fakeString } from '../../lib/fake-strings.js';
-import { i18n } from '../../lib/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
+import { i18n } from '../../translations/translation.js';
 import '../cc-img/cc-img.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
@@ -88,7 +88,7 @@ export class CcHeaderAddon extends LitElement {
                 ?skeleton=${skeleton}
               ></cc-input-text>
               <cc-input-text
-                label=${i18n('cc-header-addon.id-label-alternative')}
+                .label=${i18n('cc-header-addon.id-label-alternative')}
                 hidden-label
                 readonly
                 clipboard
