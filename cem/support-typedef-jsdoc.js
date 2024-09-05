@@ -135,9 +135,10 @@ export default function supportTypedefJsdoc() {
         // Extract the path from the @typedef import
         const typePath = findTypePath(tag, ROOT_DIR, moduleDir);
 
-        // If an import is not correct and warn the plugin user.
+        // If an import is not correct, warn the plugin user.
         if (typePath == null) {
           console.warn(`There's a problem with one of your @typedef - ${tag.getText()}`);
+          process.exitCode = 1;
           return;
         }
 

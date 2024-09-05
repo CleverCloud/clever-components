@@ -332,6 +332,11 @@ export function findPathAndTypesFromImports(ts, filePath, ancestors = null) {
   importsDeclaration.forEach((importNode) => {
     const types = [];
     const importFile = importNode.moduleSpecifier.text;
+    const isImportRelative = importFile.startsWith('./') || importFile.startsWith('../');
+    if (!isImportRelative) {
+      return;
+    }
+
     const parsedImportPath = path.parse(importFile);
 
     const formattedImportPath = path.join(parsedPath.dir, parsedImportPath.dir, convertToTSExt(parsedImportPath.base));

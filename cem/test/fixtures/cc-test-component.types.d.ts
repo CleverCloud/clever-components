@@ -1,4 +1,5 @@
-import {ToImport, ImpExtendInterface} from "./test-imports.types";
+import { ToImport, ImpExtendInterface } from "./test-imports.types";
+import { TemplateResult } from "lit";
 
 interface Foo {
   one: string;
@@ -10,17 +11,18 @@ type Bar = "One" | "Two" | false | null;
 interface TheInterface {
   one: number;
   two: string;
+  three: string | TemplateResult;
   sub: SubInterface;
   subSpecialArray: Array<OtherInterface>;
   subArray: OtherInterfaceTwo[];
   subType: SubType;
   subUnion: UnionFoo | UnionBar;
-  onlyType : TheOnlyType;
+  onlyType: TheOnlyType;
 }
 
 interface TupleInterface {
   subTuple: [TupleFoo];
-  multipleTuple: [TupleFooBar, TupleBar, TupleBaz ];
+  multipleTuple: [TupleFooBar, TupleBar, TupleBaz];
 }
 
 interface UnionInterface {
@@ -29,7 +31,7 @@ interface UnionInterface {
 
 type TheOnlyType = SubOnlyType;
 
-interface SubOnlyType {}
+interface SubOnlyType { }
 
 type TheType = "One" | "Two" | SubInterface | Array<OtherInterface> | OtherInterfaceTwo[];
 
@@ -106,7 +108,7 @@ interface PrivateInterface {
 
 }
 
-interface ToBeExtended  extends ExtendedInterface {
+interface ToBeExtended extends ExtendedInterface {
 
 }
 

@@ -250,6 +250,7 @@ describe('findSubtypes()', function () {
 
   it('should find the subtypes for a given type/interface', function () {
     expect(findSubtypes(ts, sourceAst, ['TheInterface', 'TheType'])).to.have.members([
+      'TemplateResult',
       'SubInterface',
       'OtherInterface',
       'OtherInterfaceTwo',
@@ -318,12 +319,13 @@ describe('convertInterface()', function () {
         'interface TheInterface {\n' +
         '  one: number;\n' +
         '  two: string;\n' +
+        '  three: string | TemplateResult;\n' +
         '  sub: SubInterface;\n' +
         '  subSpecialArray: Array<OtherInterface>;\n' +
         '  subArray: OtherInterfaceTwo[];\n' +
         '  subType: SubType;\n' +
         '  subUnion: UnionFoo | UnionBar;\n' +
-        '  onlyType : TheOnlyType;\n' +
+        '  onlyType: TheOnlyType;\n' +
         '}\n' +
         '\n' +
         '```',
