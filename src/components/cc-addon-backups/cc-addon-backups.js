@@ -28,7 +28,7 @@ const SKELETON_BACKUPS = {
  * @typedef {import('./cc-addon-backups.types.js').AddonBackupsStateLoading} AddonBackupsStateLoading
  * @typedef {import('./cc-addon-backups.types.js').ProviderId} ProviderId
  * @typedef {import('../cc-button/cc-button.js').CcButton} CcButton
- * @typedef {Event & { target: CcButton }} CcButtonClickEvent
+ * @typedef {import('../../lib/events.types.js').EventWithTarget<CcButton>} CcButtonClickEvent
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
  */
 
