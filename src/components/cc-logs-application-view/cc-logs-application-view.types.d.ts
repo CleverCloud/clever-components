@@ -67,3 +67,5 @@ export interface LogsApplicationViewOptions {
   timezone: Timezone;
   'wrap-lines': boolean;
 }
+
+export type ProgressState = 'none' | 'init' | 'started' | 'waiting' | 'running' | 'paused' | 'completed';

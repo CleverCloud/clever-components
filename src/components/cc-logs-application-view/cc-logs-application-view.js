@@ -79,7 +79,7 @@ const MENU_ENTRIES = ['live', 'lastHour', 'last4Hours', 'today', 'yesterday', 'l
  * @typedef {import('lit/directives/ref.js').Ref<CcPopover>} RefCcPopover
  * @typedef {import('lit').PropertyValues<CcLogsApplicationView>} CcLogsApplicationViewPropertyValues
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
- * @typedef {'none'|'init'|'started'|'waiting'|'running'|'paused'|'completed'} ProgressState
+ * @typedef {import('./cc-logs-application-view.types.js').ProgressState} ProgressState
  */
 
 /**
