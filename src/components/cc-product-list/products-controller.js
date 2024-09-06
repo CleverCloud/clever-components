@@ -2,9 +2,9 @@ import { isStringEmpty } from '../../lib/utils.js';
 
 /**
  * @typedef {import('./cc-product-list.types.js').ProductsCategory} ProductsByCategory
- * @typedef {import('./cc-product-list').CcProductList} CcProductList
  * @typedef {import('./cc-product-list.types.js').Product} Product
  * @typedef {import('./cc-product-list.types.js').CategoryFilter} CategoryFilter
+ * @typedef {import('./cc-product-list.js').CcProductList} CcProductList
  */
 
 export class ProductsController {
