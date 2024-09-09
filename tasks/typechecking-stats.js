@@ -39,10 +39,24 @@ const categories = {
   Tasks: ['tasks/**/*.js'],
 };
 
-async function run() {
+/**
+ * @return {Promise<Array<string>>}
+ */
+async function getAllCheckedFiles() {
   const tsconfigJson = await fs.readFile('./tsconfig.ci.json', 'utf8');
   const tsconfig = json5.parse(tsconfigJson);
-  const allCheckedFiles = await globAll(tsconfig.include);
+
+  /** @type {Array<string>} */
+  const includePatterns = tsconfig.include;
+  /** @type {Array<string>} */
+  const excludePatterns = tsconfig.exclude;
+  const patterns = includePatterns.concat(excludePatterns.map((p) => `!${p}`));
+
+  return await globAll(patterns);
+}
+
+async function run() {
+  const allCheckedFiles = await getAllCheckedFiles();
 
   const results = await Promise.all(
     Object.entries(categories).map(async ([categoryName, patterns]) => {

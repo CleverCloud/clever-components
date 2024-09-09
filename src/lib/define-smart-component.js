@@ -1,45 +1,26 @@
 import { produce } from './immer.js';
 import { defineSmartComponentCore } from './smart-manager.js';
-
-const META = Symbol('META');
+import { META } from './smart-symbols.js';
 
 /**
- * @typedef {Element} SmartContainer
- * @property {Object} context
+ * @typedef {import('./smart-component.types.js').SmartContainer} SmartContainer
+ * @typedef {import('./smart-component.types.js').SmartComponent} SmartComponent
+ * @typedef {import('./smart-component.types.js').SmartComponentDefinition} SmartComponentDefinition
+ * @typedef {import('./smart-component.types.js').SmartContext} SmartContext
+ * @typedef {import('./smart-component.types.js').OnEventCallback} OnEventCallback
+ * @typedef {import('./smart-component.types.js').CallbackOrObject} CallbackOrObject
+ * @typedef {import('./smart-component.types.js').UpdateComponentCallback} UpdateComponentCallback
  */
 
 /**
- * @typedef {Object|((property: Object) => void)} CallbackOrObject
- */
-
-/**
- * @typedef {Object} SmartDefinitionParam
- * @property {TypeHint} type
- * @property {boolean} [optional=false]
- * @template TypeHint
- */
-
-/**
- * @param {Object} definition
- * @param {string} definition.selector
- * @param {{[name: string]: SmartDefinitionParam}} definition.params
- * @param {({
- *   container?: SmartContainer,
- *   component?: Element,
- *   context?: Object,
- *   onEvent?: (type: string, listener: (detail: Object) => void) => void,
- *   updateComponent?: (
- *     type: string,
- *     callbackOrObject: CallbackOrObject,
- *   ) => void,
- *   signal?: AbortSignal,
- * }) => void} definition.onContextUpdate
+ *
+ * @param {SmartComponentDefinition} definition
  */
 export function defineSmartComponent(definition) {
   defineSmartComponentCore({
     selector: definition.selector,
     params: definition.params,
-    onConnect(container, component) {
+    onConnect(_container, component) {
       if (component[META] == null) {
         component[META] = new Map();
       }
@@ -68,11 +49,14 @@ export function defineSmartComponent(definition) {
 
       // Prepare a helper function to attach event listeners on the component
       // and make sure they're removed if the signal is aborted
+
+      /** @type {OnEventCallback} */
       function onEvent(type, listener) {
         component.addEventListener(
           type,
           (e) => {
-            listener(e.detail);
+            const event = /** @type {CustomEvent} */ (e);
+            listener(event.detail);
           },
           { signal },
         );
@@ -87,30 +71,53 @@ export function defineSmartComponent(definition) {
 
       target.addEventListener(
         'update-component',
-        (event) => {
-          const { property, callbackOrObject } = event.data;
-          if (typeof callbackOrObject === 'function') {
-            if (component[property] != null) {
-              component[property] = produce(component[property], callbackOrObject);
-            }
-          } else {
-            component[property] = callbackOrObject;
-          }
+        (e) => {
+          const event = /** @type {UpdateComponentEvent} */ (e);
+          handleUpdateComponent(component, event.property, event.callbackOrObject);
         },
         { signal },
       );
 
+      /** @type {UpdateComponentCallback} */
       function updateComponent(property, callbackOrObject) {
-        const event = new Event('update-component');
-        event.data = { property, callbackOrObject };
+        const event = new UpdateComponentEvent(property, callbackOrObject);
         target.dispatchEvent(event);
       }
 
       definition.onContextUpdate({ container, component, context, onEvent, updateComponent, signal });
     },
-    onDisconnect(container, component) {
+    onDisconnect(_container, component) {
       component[META].get(definition).abortController?.abort();
       component[META].delete(definition);
     },
   });
+}
+
+class UpdateComponentEvent extends Event {
+  /**
+   * @param {string} property
+   * @param {CallbackOrObject} callbackOrObject
+   */
+  constructor(property, callbackOrObject) {
+    super('update-component');
+    this.property = property;
+    this.callbackOrObject = callbackOrObject;
+  }
+}
+
+/**
+ *
+ * @param {SmartComponent} component
+ * @param {string} property
+ * @param {CallbackOrObject} callbackOrObject
+ */
+function handleUpdateComponent(component, property, callbackOrObject) {
+  const c = /** @type {{[p:property]: any}} */ (component);
+  if (typeof callbackOrObject === 'function') {
+    if (c[property] != null) {
+      c[property] = produce(c[property], callbackOrObject);
+    }
+  } else {
+    c[property] = callbackOrObject;
+  }
 }

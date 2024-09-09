@@ -1,4 +1,13 @@
+import { COMPONENTS, CURRENT_CONTEXT, LAST_CONTEXT } from './smart-symbols.js';
 import { objectEquals } from './utils.js';
+
+/**
+ * @typedef {import('./smart-component.types.js').SmartContainer} SmartContainer
+ * @typedef {import('./smart-component.types.js').SmartComponent} SmartComponent
+ * @typedef {import('./smart-component.types.js').SmartComponentCoreDefinition} SmartComponentCoreDefinition
+ * @typedef {import('./smart-component.types.js').SmartContext} SmartContext
+ * @typedef {import('./smart-component.types.js').SmartDefinitionParam} SmartDefinitionParam
+ */
 
 // In the global space of this module (for any module importing it), we maintain:
 // * a rootContext object
@@ -12,28 +21,16 @@ import { objectEquals } from './utils.js';
 // On each component, we maintain:
 // * an object with the last context on component[LAST_CONTEXT]
 
-/**
- * @typedef SmartComponentDefinition
- * @property {String} selector
- * @property {Object} [params]
- * @property {Function} [onConnect]
- * @property {Function} [onContextUpdate]
- * @property {Function} [onDisconnect]
- */
-
-const COMPONENTS = Symbol('COMPONENTS');
-const CURRENT_CONTEXT = Symbol('CURRENT_CONTEXT');
-const LAST_CONTEXT = Symbol('LAST_CONTEXT');
 let rootContext = {};
 
-/** @type {Set<CcSmartContainer>} */
+/** @type {Set<SmartContainer>} */
 const smartContainers = new Set();
 
-/** @type {Set<SmartComponentDefinition>} */
+/** @type {Set<SmartComponentCoreDefinition>} */
 const smartComponentDefinitions = new Set();
 
 /**
- * @param {CcSmartContainer} container
+ * @param {SmartContainer} container
  * @param {AbortSignal} signal
  */
 export function observeContainer(container, signal) {
@@ -62,7 +59,7 @@ export function observeContainer(container, signal) {
 }
 
 /**
- * @param {SmartComponentDefinition} definition
+ * @param {SmartComponentCoreDefinition} definition
  * @param {AbortSignal} [signal]
  */
 export function defineSmartComponentCore(definition, signal) {
@@ -88,16 +85,19 @@ export function defineSmartComponentCore(definition, signal) {
 }
 
 function updateEverything() {
+  /** @type {Array<[SmartContainer, SmartComponentCoreDefinition, SmartComponent]>} */
   const allDisconnectedComponents = [];
+  /** @type {Array<[SmartContainer, SmartComponentCoreDefinition, SmartComponent]>} */
   const allConnectedComponents = [];
+  /** @type {Array<[SmartContainer, SmartComponentCoreDefinition, SmartComponent]>} */
   const allIdleComponents = [];
 
   smartContainers.forEach((container) => {
     smartComponentDefinitions.forEach((definition) => {
+      /** @type {Array<SmartComponent>} */
       const allDefinitionComponents = Array.from(container.querySelectorAll(definition.selector)).filter(
         (c) => closestParent(c, 'cc-smart-container') === container,
       );
-
       const previousComponents = container[COMPONENTS].get(definition) ?? [];
       container[COMPONENTS].set(definition, allDefinitionComponents);
 
@@ -132,7 +132,7 @@ function updateEverything() {
 }
 
 /**
- * @param {CcSmartContainer} container
+ * @param {SmartContainer} container
  * @param {Object} context
  */
 export function updateContext(container, context) {
@@ -149,9 +149,9 @@ export function updateRootContext(context) {
 }
 
 /**
- * @param {CcSmartComponent} container
- * @param {SmartComponentDefinition} definition
- * @param {Element} component
+ * @param {SmartContainer} container
+ * @param {SmartComponentCoreDefinition} definition
+ * @param {SmartComponent} component
  */
 function connectComponent(container, definition, component) {
   component[LAST_CONTEXT] = {};
@@ -159,9 +159,9 @@ function connectComponent(container, definition, component) {
 }
 
 /**
- * @param {CcSmartComponent} container
- * @param {SmartComponentDefinition} definition
- * @param {Element} component
+ * @param {SmartContainer} container
+ * @param {SmartComponentCoreDefinition} definition
+ * @param {SmartComponent} component
  */
 function updateComponentContext(container, definition, component) {
   const currentContext = { ...rootContext, ...container[CURRENT_CONTEXT] };
@@ -174,9 +174,9 @@ function updateComponentContext(container, definition, component) {
 }
 
 /**
- * @param {CcSmartComponent} container
- * @param {SmartComponentDefinition} definition
- * @param {Element} component
+ * @param {SmartContainer} container
+ * @param {SmartComponentCoreDefinition} definition
+ * @param {SmartComponent} component
  */
 function disconnectComponent(container, definition, component) {
   delete component[LAST_CONTEXT];
@@ -197,8 +197,8 @@ function closestParent(element, selector) {
 
 /**
  *
- * @param {Object|null} source
- * @param {Object|null} keyObject
+ * @param {SmartContext|null} source
+ * @param {Record<string, SmartDefinitionParam>|null} keyObject
  * @return {Object}
  */
 function filterContext(source, keyObject) {
@@ -210,6 +210,6 @@ function filterContext(source, keyObject) {
   }
   const newEntries = Object.keys(keyObject)
     .map((name) => [name, source[name]])
-    .filter(([name, value]) => value !== undefined);
+    .filter(([, value]) => value !== undefined);
   return Object.fromEntries(newEntries);
 }

@@ -1,8 +1,14 @@
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { addOauthHeader } from '@clevercloud/client/esm/oauth.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { prefixUrl } from '@clevercloud/client/esm/prefix-url.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { execWarpscript } from '@clevercloud/client/esm/request-warp10.fetch.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { request } from '@clevercloud/client/esm/request.fetch.js';
+// @ts-expect-error FIXME: remove when clever-client exports types;
 import { withCache } from '@clevercloud/client/esm/with-cache.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { withOptions } from '@clevercloud/client/esm/with-options.js';
 import { dispatchCustomEvent } from './events.js';
 
@@ -13,10 +19,10 @@ import { dispatchCustomEvent } from './events.js';
 
 /**
  * @param {Object} settings
- * @param {ApiConfig} settings.apiConfig
+ * @param {ApiConfig} [settings.apiConfig]
  * @param {AbortSignal} [settings.signal]
- * @param {Number} [settings.cacheDelay]
- * @param {Number} [settings.timeout]
+ * @param {number} [settings.cacheDelay]
+ * @param {number} [settings.timeout]
  * @return {(requestParams: Object) => Promise<any>}
  */
 export function sendToApi({ apiConfig, signal, cacheDelay, timeout }) {
@@ -41,8 +47,8 @@ export function sendToApi({ apiConfig, signal, cacheDelay, timeout }) {
  * @param {Object} settings
  * @param {Warp10ApiConfig} settings.apiConfig
  * @param {AbortSignal} [settings.signal]
- * @param {Number} [settings.cacheDelay]
- * @param {Number} [settings.timeout]
+ * @param {number} [settings.cacheDelay]
+ * @param {number} [settings.timeout]
  * @return {(requestParams: Object) => Promise<any>}
  */
 export function sendToWarp({ apiConfig, signal, cacheDelay, timeout }) {

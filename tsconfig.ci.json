@@ -3,10 +3,16 @@
   // as opposed to the `tsconfig.json` file used for typechecking within IDEs
   // Every file passing typechecking should be added in the `include` array below
   "include": [
-    "src/lib/i18n/**/*.js",
-    "src/lib/utils.js",
+    "src/lib/**/*.js",
     "src/translations/**/*.js",
     "tasks/typechecking-stats.js",
+  ],
+  "exclude": [
+    "src/lib/leaflet-esm.js",
+    "src/lib/leaflet-heat.js",
+    "src/lib/pricing.js",
+    "src/lib/product.js",
+    "src/lib/simpleheat.js",
   ],
   "extends": "./tsconfig.json",
   "compilerOptions": {
