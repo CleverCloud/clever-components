@@ -4,13 +4,25 @@
   // Every file passing typechecking should be added in the `include` array below
   "include": [
     "src/lib/**/*.js",
+    "src/components/**/*.js",
+    "src/controllers/*.js",
+    "src/templates/*.js",
     "src/translations/**/*.js",
-    "tasks/typechecking-stats.js",
+    "tasks/typechecking-stats.js"
   ],
   "exclude": [
     "src/lib/leaflet",
     "src/lib/pricing.js",
     "src/lib/product.js",
+    "src/controllers/*.stories.js",
+    "src/components/**/*.test.js",
+    "src/components/**/*.stories.js",
+    "src/components/**/*.smart*.js",
+    "src/components/cc-grafana-info",
+    "src/components/cc-logs/*",
+    "src/components/cc-logs-*/*",
+    "src/components/cc-pricing-*",
+    "src/components/cc-smart-container/*"
   ],
   "extends": "./tsconfig.json",
   "compilerOptions": {
@@ -18,6 +30,6 @@
     // This means our `d.ts` files are not checked in CI context
     // This needs to be set to `true` at least until we can upgrade TypeScript
     // see https://github.com/CleverCloud/clever-components/issues/972
-    "skipLibCheck": true,
+    "skipLibCheck": true
   }
 }
