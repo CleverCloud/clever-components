@@ -1,4 +1,6 @@
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { addTcpRedir, getTcpRedirs, removeTcpRedir } from '@clevercloud/client/esm/api/v2/application.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { getNamespaces } from '@clevercloud/client/esm/api/v2/organisation.js';
 import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
@@ -29,6 +31,15 @@ defineSmartComponent({
     ownerId: { type: String },
     appId: { type: String },
   },
+  /**
+   * @param {Object} settings
+   * @param {CcTcpRedirectionForm} settings.component
+   * @param {{ apiConfig: ApiConfig, ownerId: string, appId: string }} settings.context
+   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
+   * @param {function} settings.updateComponent
+   * @param {AbortSignal} settings.signal
+   */
+  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate({ container, component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId, appId } = context;
 
