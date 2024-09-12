@@ -11,6 +11,15 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-grafana-info.js';
 
+/**
+ * @typedef {import('./cc-grafana-info.js').CcGrafanaInfo} CcGrafanaInfo
+ * @typedef {import('./cc-grafana-info.types.js').GrafanaInfoState} GrafanaInfoState
+ * @typedef {import('./cc-grafana-info.types.js').GrafanaInfoStateLoaded} GrafanaInfoStateLoaded
+ * @typedef {import('./cc-grafana-info.types.js').GrafanaInfoEnabled} GrafanaInfoEnabled
+ * @typedef {import('./cc-grafana-info.types.js').GrafanaInfoDisabled} GrafanaInfoDisabled
+ * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
+ */
+
 defineSmartComponent({
   selector: 'cc-grafana-info',
   params: {
@@ -18,6 +27,15 @@ defineSmartComponent({
     ownerId: { type: String },
     grafanaBaseLink: { type: String },
   },
+  /**
+   * @param {Object} settings
+   * @param {CcGrafanaInfo} settings.component
+   * @param {{apiConfig: ApiConfig, ownerId: string, grafanaBaseLink: string}} settings.context
+   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
+   * @param {function} settings.updateComponent
+   * @param {AbortSignal} settings.signal
+   */
+  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate({ context, updateComponent, onEvent, signal }) {
     const { apiConfig, ownerId, grafanaBaseLink } = context;
 
@@ -35,9 +53,13 @@ defineSmartComponent({
     }
 
     onEvent('cc-grafana-info:reset', () => {
-      updateComponent('state', (state) => {
-        state.info.action = 'resetting';
-      });
+      updateComponent(
+        'state',
+        /** @param {GrafanaInfoStateLoaded & { info: GrafanaInfoEnabled | GrafanaInfoDisabled }} state */
+        (state) => {
+          state.info.action = 'resetting';
+        },
+      );
 
       doResetGrafanaOrganisation({ apiConfig, ownerId })
         .then(() => notifySuccess(i18n('cc-grafana-info.reset.success')))
@@ -46,22 +68,34 @@ defineSmartComponent({
           notifyError(i18n('cc-grafana-info.reset.error'));
         })
         .finally(() => {
-          updateComponent('state', (state) => {
-            state.info.action = null;
-          });
+          updateComponent(
+            'state',
+            /** @param {GrafanaInfoStateLoaded & { info: GrafanaInfoEnabled | GrafanaInfoDisabled }} state */
+            (state) => {
+              state.info.action = null;
+            },
+          );
         });
     });
 
     onEvent('cc-grafana-info:disable', () => {
-      updateComponent('state', (state) => {
-        state.info.action = 'disabling';
-      });
+      updateComponent(
+        'state',
+        /** @param {GrafanaInfoStateLoaded & { info: GrafanaInfoEnabled | GrafanaInfoDisabled }} state */
+        (state) => {
+          state.info.action = 'disabling';
+        },
+      );
 
       disableGrafanaOrganisation({ apiConfig, ownerId })
         .then(() => {
-          updateComponent('state', (state) => {
-            state.info = { status: 'disabled' };
-          });
+          updateComponent(
+            'state',
+            /** @param {GrafanaInfoStateLoaded & { info: GrafanaInfoEnabled | GrafanaInfoDisabled }} state */
+            (state) => {
+              state.info = { status: 'disabled' };
+            },
+          );
           notifySuccess(i18n('cc-grafana-info.disable.success'));
         })
         .catch((error) => {
@@ -69,16 +103,24 @@ defineSmartComponent({
           notifyError(i18n('cc-grafana-info.disable.error'));
         })
         .finally(() => {
-          updateComponent('state', (state) => {
-            state.info.action = null;
-          });
+          updateComponent(
+            'state',
+            /** @param {GrafanaInfoStateLoaded & { info: GrafanaInfoEnabled | GrafanaInfoDisabled }} state */
+            (state) => {
+              state.info.action = null;
+            },
+          );
         });
     });
 
     onEvent('cc-grafana-info:enable', () => {
-      updateComponent('state', (state) => {
-        state.info.action = 'enabling';
-      });
+      updateComponent(
+        'state',
+        /** @param {GrafanaInfoStateLoaded & { info: GrafanaInfoEnabled | GrafanaInfoDisabled }} state */
+        (state) => {
+          state.info.action = 'enabling';
+        },
+      );
 
       enableGrafanaOrganisation({ apiConfig, ownerId })
         .then(() => {
@@ -90,9 +132,13 @@ defineSmartComponent({
           notifyError(i18n('cc-grafana-info.enable.error'));
         })
         .finally(() => {
-          updateComponent('state', (state) => {
-            state.info.action = null;
-          });
+          updateComponent(
+            'state',
+            /** @param {GrafanaInfoStateLoaded & { info: GrafanaInfoEnabled | GrafanaInfoDisabled }} state */
+            (state) => {
+              state.info.action = null;
+            },
+          );
         });
     });
 
@@ -100,13 +146,23 @@ defineSmartComponent({
   },
 });
 
+/**
+ * @param {object} params
+ * @param {ApiConfig} params.apiConfig
+ * @param {AbortSignal} params.signal
+ * @param {string} params.ownerId
+ * @param {string} params.grafanaBaseLink
+ * @returns {Promise<GrafanaInfoEnabled|GrafanaInfoDisabled>}
+ */
 function fetchGrafanaOrganisation({ apiConfig, signal, ownerId, grafanaBaseLink }) {
   return getGrafanaOrganisation({ id: ownerId })
     .then(sendToApi({ apiConfig, signal }))
     .then((exposedVarsObject) => {
       const grafanaLink = new URL('/d/home/clever-cloud-metrics-home', grafanaBaseLink);
       grafanaLink.searchParams.set('orgId', exposedVarsObject.id);
-      return { status: 'enabled', link: grafanaLink.toString() };
+      /** @type {GrafanaInfoEnabled} */
+      const grafanaInfo = { status: 'enabled', link: grafanaLink.toString() };
+      return grafanaInfo;
     })
     .catch((error) => {
       if (error.response?.status === 404 && error.toString().startsWith('Error: Grafana organization not found')) {
@@ -117,14 +173,32 @@ function fetchGrafanaOrganisation({ apiConfig, signal, ownerId, grafanaBaseLink 
     });
 }
 
+/**
+ * @param {object} params
+ * @param {ApiConfig} params.apiConfig
+ * @param {string} params.ownerId
+ * @returns {Promise<void>}
+ */
 function doResetGrafanaOrganisation({ apiConfig, ownerId }) {
   return resetGrafanaOrganisation({ id: ownerId }).then(sendToApi({ apiConfig }));
 }
 
+/**
+ * @param {object} params
+ * @param {ApiConfig} params.apiConfig
+ * @param {string} params.ownerId
+ * @returns {Promise<void>}
+ */
 function disableGrafanaOrganisation({ apiConfig, ownerId }) {
   return deleteGrafanaOrganisation({ id: ownerId }).then(sendToApi({ apiConfig }));
 }
 
+/**
+ * @param {object} params
+ * @param {ApiConfig} params.apiConfig
+ * @param {string} params.ownerId
+ * @returns {Promise<void>}
+ */
 function enableGrafanaOrganisation({ apiConfig, ownerId }) {
   return createGrafanaOrganisation({ id: ownerId }).then(sendToApi({ apiConfig }));
 }
