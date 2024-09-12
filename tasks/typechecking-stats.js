@@ -34,7 +34,8 @@ const categories = {
   'Components (smart)': ['src/components/**/*.smart.js'],
   'Components (test)': ['src/components/**/*.test.js'],
   'Components (stories)': ['src/components/**/cc-*.stories.js'],
-  Controllers: ['src/controllers/**/*.js'],
+  Controllers: ['src/controllers/**/*.js', '!src/controllers/**/*.stories.js'],
+  'Controllers (stories)': ['src/controllers/**/*.stories.js'],
   Libs: ['src/lib/**/*.js'],
   Tasks: ['tasks/**/*.js'],
 };
