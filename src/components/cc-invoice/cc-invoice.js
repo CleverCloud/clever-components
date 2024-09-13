@@ -51,22 +51,22 @@ export class CcInvoice extends LitElement {
 
     return html`
       <cc-block .icon=${iconFile} class=${classMap({ 'has-errors': this.state.type === 'error' })}>
-        <div slot="title">
+        <div slot="header-title">
           ${skeletonNumber ? html` ${i18n('cc-invoice.title')} <span class="skeleton">${number}</span> ` : title}
         </div>
 
         ${this.state.type === 'error'
-          ? html` <cc-notice intent="warning" message="${i18n('cc-invoice.error')}"></cc-notice> `
+          ? html` <cc-notice slot="content" intent="warning" message="${i18n('cc-invoice.error')}"></cc-notice> `
           : ''}
         ${this.state.type !== 'error'
           ? html`
-              <div slot="button">${ccLink(invoice.downloadUrl, i18n('cc-invoice.download-pdf'), skeleton)}</div>
-              <div class="info">
+              <div slot="header-right">${ccLink(invoice.downloadUrl, i18n('cc-invoice.download-pdf'), skeleton)}</div>
+              <div slot="content" class="info">
                 <em class=${classMap({ skeleton })}>
                   ${i18n('cc-invoice.info', { date: invoice.emissionDate, amount: invoice.amount })}
                 </em>
               </div>
-              <cc-html-frame class="frame" ?loading="${skeleton}" iframe-title="${title}">
+              <cc-html-frame slot="content" class="frame" ?loading="${skeleton}" iframe-title="${title}">
                 ${invoice.invoiceHtml != null ? unsafeHTML(`<template>${invoice.invoiceHtml}</template>`) : ''}
               </cc-html-frame>
             `
