@@ -49,8 +49,8 @@ export class CcAddonLinkedApps extends LitElement {
    */
   _getEmptyContent() {
     return html`
-      <div>${i18n('cc-addon-linked-apps.details')}</div>
-      <div class="cc-block_empty-msg">${i18n('cc-addon-linked-apps.no-linked-applications')}</div>
+      <div slot="content">${i18n('cc-addon-linked-apps.details')}</div>
+      <div slot="content" class="empty-msg">${i18n('cc-addon-linked-apps.no-linked-applications')}</div>
     `;
   }
 
@@ -59,7 +59,9 @@ export class CcAddonLinkedApps extends LitElement {
    * @private
    */
   _getErrorContent() {
-    return html` <cc-notice intent="warning" message="${i18n('cc-addon-linked-apps.loading-error')}"></cc-notice> `;
+    return html`
+      <cc-notice slot="content" intent="warning" message="${i18n('cc-addon-linked-apps.loading-error')}"></cc-notice>
+    `;
   }
 
   /**
@@ -89,11 +91,11 @@ export class CcAddonLinkedApps extends LitElement {
     }
 
     const content = html`
-      <div>${i18n('cc-addon-linked-apps.details')}</div>
+      <div slot="content">${i18n('cc-addon-linked-apps.details')}</div>
 
       ${linkedApps.map(
         (linkedApp) => html`
-          <div class="application">
+          <div slot="content" class="application">
             <cc-img
               class="logo"
               ?skeleton=${skeleton}
@@ -119,7 +121,7 @@ export class CcAddonLinkedApps extends LitElement {
   _renderView(content) {
     return html`
       <cc-block>
-        <div slot="title">${i18n('cc-addon-linked-apps.title')}</div>
+        <div slot="header-title">${i18n('cc-addon-linked-apps.title')}</div>
         ${content}
       </cc-block>
     `;
@@ -154,6 +156,11 @@ export class CcAddonLinkedApps extends LitElement {
           flex-wrap: wrap;
           gap: 0.5em;
           margin-left: 0.5em;
+        }
+
+        .empty-msg {
+          color: var(--cc-color-text-weak);
+          font-style: italic;
         }
 
         /* SKELETON */

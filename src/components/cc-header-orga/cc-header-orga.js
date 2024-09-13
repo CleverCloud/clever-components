@@ -5,6 +5,7 @@ import {
   iconRemixPhoneFill as iconPhone,
 } from '../../assets/cc-remix.icons.js';
 import '../cc-badge/cc-badge.js';
+import '../cc-block/cc-block.js';
 import '../cc-img/cc-img.js';
 import '../cc-notice/cc-notice.js';
 
@@ -91,8 +92,8 @@ export class CcHeaderOrga extends LitElement {
    */
   _renderHeader({ name, avatar = null, cleverEnterprise = false, emergencyNumber = null, skeleton = false }) {
     return html`
-      <div class="wrapper">
-        <div class="header-body">
+      <cc-block>
+        <div slot="content" class="header-body">
           <p class="identity">
             ${this._renderAvatar(skeleton, avatar, name)}
             <span class="name ${classMap({ skeleton })}">${name}</span>
@@ -119,8 +120,9 @@ export class CcHeaderOrga extends LitElement {
               : ''}
           </div>
         </div>
-        <slot name="footer"></slot>
-      </div>
+        <slot slot="footer-left" name="footer-left"></slot>
+        <slot slot="footer-right" name="footer-right"></slot>
+      </cc-block>
     `;
   }
 
@@ -165,20 +167,12 @@ export class CcHeaderOrga extends LitElement {
           width: 100%;
         }
 
-        .wrapper {
-          background-color: var(--cc-color-bg-default, #fff);
-          border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
-          overflow: hidden;
-        }
-
         .header-body {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
           gap: 1em;
           justify-content: space-between;
-          padding: 1em;
         }
 
         .identity {

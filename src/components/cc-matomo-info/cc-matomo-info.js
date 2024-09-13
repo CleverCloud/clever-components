@@ -53,10 +53,11 @@ export class CcMatomoInfo extends LitElement {
     }
 
     return html`
-      <cc-block ribbon=${i18n('cc-matomo-info.info')} no-head>
-        <div class="info-text">${i18n('cc-matomo-info.heading')}</div>
+      <cc-block>
+        <div slot="ribbon">${i18n('cc-matomo-info.info')}</div>
+        <div slot="header" class="info-text">${i18n('cc-matomo-info.heading')}</div>
 
-        <cc-block-section>
+        <cc-block-section slot="content">
           <div slot="title">${i18n('cc-matomo-info.open-matomo.title')}</div>
           <div slot="info">${i18n('cc-matomo-info.open-matomo.text')}</div>
           <div>
@@ -64,13 +65,7 @@ export class CcMatomoInfo extends LitElement {
           </div>
         </cc-block-section>
 
-        <cc-block-section>
-          <div slot="title">${i18n('cc-matomo-info.documentation.title')}</div>
-          <div slot="info">${i18n('cc-matomo-info.documentation.text')}</div>
-          <div>${this._renderIconLink(iconInfo, MATOMO_DOCUMENTATION, i18n('cc-matomo-info.documentation.link'))}</div>
-        </cc-block-section>
-
-        <cc-block-section>
+        <cc-block-section slot="content">
           <div slot="title">${i18n('cc-matomo-info.about.title')}</div>
           <div slot="info">${i18n('cc-matomo-info.about.text')}</div>
           <div class="application-list">
@@ -79,6 +74,13 @@ export class CcMatomoInfo extends LitElement {
             ${this._renderImageLink(REDIS_LOGO_URL, redisUrl, i18n('cc-matomo-info.link.redis'), skeleton)}
           </div>
         </cc-block-section>
+
+        <div slot="footer-right">
+          ${ccLink(
+            `${MATOMO_DOCUMENTATION}`,
+            html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-matomo-info.documentation.text')}`,
+          )}
+        </div>
       </cc-block>
     `;
   }
@@ -100,28 +102,6 @@ export class CcMatomoInfo extends LitElement {
           html`
             <cc-img src=${imageUrl}></cc-img>
             <span class="${classMap({ skeleton })}">${linkText}</span>
-          `,
-        )}
-      </div>
-    `;
-  }
-
-  /**
-   * @param {IconModel} icon
-   * @param {string} linkUrl
-   * @param {string} linkText
-   * @parma {boolean} skeleton
-   * @returns {TemplateResult}
-   * @private
-   */
-  _renderIconLink(icon, linkUrl, linkText) {
-    return html`
-      <div>
-        ${ccLink(
-          linkUrl,
-          html`
-            <cc-icon size="lg" .icon=${icon}></cc-icon>
-            <span>${linkText}</span>
           `,
         )}
       </div>
