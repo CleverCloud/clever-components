@@ -1292,4 +1292,7 @@ export const translations = {
   'cc-zone-input.error': `Something went wrong while loading zones.`,
   'cc-zone-input.private-map-warning': `Private zones don't appear on the map.`,
   //#endregion
+  //#region cc-zone-picker
+  'cc-zone-picker.legend': `Select your zone`,
+  //#endregion
 };

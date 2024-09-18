@@ -1,4 +1,5 @@
 :root {
+  --cc-ff-form-legend: 'Source Sans 3', sans-serif;
   --cc-ff-monospace: 'SourceCodePro', 'monaco', monospace;
 
   /* All custom properties are sorted alphabetically within each region. */
