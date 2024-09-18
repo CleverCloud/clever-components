@@ -1308,6 +1308,10 @@ export const translations = {
   'cc-zone.country': /** @param {{code: string, name: string}} _ */ ({ code, name }) =>
     getCountryName(lang, code, name),
   //#endregion
+  //#region cc-zone-card
+  'cc-zone-card.alt.country-name': /** @param {{code: string, name: string}} _ */ ({ code, name }) =>
+    getCountryName(lang, code, name),
+  //#endregion
   //#region cc-zone-input
   'cc-zone-input.error': `Une erreur est survenue pendant le chargement des zones.`,
   'cc-zone-input.private-map-warning': `Les zones privées n'apparaissent pas sur la carte.`,

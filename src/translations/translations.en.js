@@ -1284,6 +1284,10 @@ export const translations = {
   'cc-zone.country': /** @param {{code: string, name: string}} _ */ ({ code, name }) =>
     getCountryName(lang, code, name),
   //#endregion
+  //#region cc-zone-card
+  'cc-zone-card.alt.country-name': /** @param {{code: string, name: string}} _ */ ({ code, name }) =>
+    getCountryName(lang, code, name),
+  //#endregion
   //#region cc-zone-input
   'cc-zone-input.error': `Something went wrong while loading zones.`,
   'cc-zone-input.private-map-warning': `Private zones don't appear on the map.`,
