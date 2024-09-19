@@ -33,14 +33,16 @@ export class LostFocusController {
    * @param {LitElement} host the custom element
    * @param {string} selector the query selector that will select the elements we want to listen to
    * @param {LostFocusCallback} callback
+   * @param {() => Promise<void>} [additionalWaiter]
    */
-  constructor(host, selector, callback) {
+  constructor(host, selector, callback, additionalWaiter) {
     host.addController(this);
     this.host = host;
     this.selector = selector;
     /** @type {Array<Element>} */
     this.elements = [];
     this.callback = callback;
+    this.additionalWaiter = additionalWaiter;
   }
 
   hostUpdate() {
@@ -48,7 +50,11 @@ export class LostFocusController {
     this.activeElement = findActiveElement();
   }
 
-  hostUpdated() {
+  async hostUpdated() {
+    if (this.additionalWaiter) {
+      await this.additionalWaiter();
+    }
+
     // keep the previous elements because we will want to compare with the new ones
     const previousElements = this.elements;
     // get the elements we are interested in
