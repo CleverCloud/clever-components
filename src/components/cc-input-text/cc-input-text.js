@@ -304,13 +304,13 @@ export class CcInputText extends CcFormControlElement {
       e.stopPropagation();
     }
     // Here we prevent keydown on enter key from modifying the value
-    if (this._tagsEnabled && e.type === 'keydown' && e.keyCode === 13) {
+    if (this._tagsEnabled && e.type === 'keydown' && e.key === 'Enter') {
       e.preventDefault();
       this._internals.form?.requestSubmit();
       dispatchCustomEvent(this, 'requestimplicitsubmit');
     }
     // Request implicit submit with keypress on enter key
-    if (!this.readonly && e.type === 'keypress' && e.keyCode === 13) {
+    if (!this.readonly && e.type === 'keypress' && e.key === 'Enter') {
       if (!this.multi || (this.multi && e.ctrlKey)) {
         this._internals.form?.requestSubmit();
         dispatchCustomEvent(this, 'requestimplicitsubmit');
