@@ -17,6 +17,7 @@ import '../cc-icon/cc-icon.js';
  * @typedef {import('lit/directives/ref.js').Ref<HTMLInputElement>} HTMLInputElementRef
  * @typedef {import('lit/directives/ref.js').Ref<HTMLElement>} HTMLElementRef
  * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement>} HTMLInputElementEvent
+ * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<KeyboardEvent, HTMLInputElement>} HTMLInputElementKeyEvent
  * @typedef {import('../../lib/form/validation.types.js').ErrorMessageMap} ErrorMessageMap
  * @typedef {import('../../lib/form/validation.types.js').Validator} Validator
  * @typedef {import('../../lib/form/form.types.js').FormControlData} FormControlData
@@ -208,20 +209,20 @@ export class CcInputNumber extends CcFormControlElement {
   /**
    * Stop propagation of keydown and keypress events (to prevent conflicts with shortcuts)
    *
-   * @param {HTMLInputElementEvent & { keyCode: number}} e
+   * @param {HTMLInputElementKeyEvent} e
    */
   _onKeyEvent(e) {
     if (e.type === 'keydown' || e.type === 'keypress') {
       e.stopPropagation();
     }
     // Here we prevent keydown on enter key from modifying the value
-    if (e.type === 'keydown' && e.keyCode === 13) {
+    if (e.type === 'keydown' && e.key === 'Enter') {
       e.preventDefault();
       this._internals.form?.requestSubmit();
       dispatchCustomEvent(this, 'requestimplicitsubmit');
     }
     // Request implicit submit with keypress on enter key
-    if (!this.readonly && e.type === 'keypress' && e.keyCode === 13) {
+    if (!this.readonly && e.type === 'keypress' && e.key === 'Enter') {
       this._internals.form?.requestSubmit();
       dispatchCustomEvent(this, 'requestimplicitsubmit');
     }
