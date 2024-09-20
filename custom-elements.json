@@ -1,5 +1,5290 @@
 {
-  "schemaVersion": "1.0.0",
-  "readme": "",
-  "modules": []
+  "version": "experimental",
+  "tags": [
+    {
+      "name": "cc-addon-admin",
+      "path": "./src/components/cc-addon-admin/cc-addon-admin.js",
+      "description": "A component displaying the admin interface of an add-on to edit its name or delete the add-on.",
+      "attributes": [
+        {
+          "name": "no-danger-zone-backup-text",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "no-danger-zone-vm-text",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "state",
+          "type": "AddonAdminState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "noDangerZoneBackupText",
+          "attribute": "no-danger-zone-backup-text",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "noDangerZoneVmText",
+          "attribute": "no-danger-zone-vm-text",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "AddonAdminState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-addon-admin:delete-addon",
+          "description": "Fires when the delete button is clicked."
+        },
+        {
+          "name": "cc-addon-admin:update-name",
+          "description": "Fires the new name of the add-on when update name button is clicked."
+        },
+        {
+          "name": "cc-addon-admin:update-tags",
+          "description": "Fires the new list of tags when update tags button is clicked."
+        }
+      ]
+    },
+    {
+      "name": "cc-addon-backups",
+      "path": "./src/components/cc-addon-backups/cc-addon-backups.js",
+      "description": "A components to display backups available for an add-on.\n\n## Details\n\n* If the retention is not standard (customized by the user), the `expiresAt` backup property should be nullish",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "AddonBackupsState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "AddonBackupsState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ]
+    },
+    {
+      "name": "cc-addon-credentials",
+      "path": "./src/components/cc-addon-credentials/cc-addon-credentials.js",
+      "description": "A component to display an add-on credentials.\n\n## Details\n\n* When the `value` of a credential is nullish, a skeleton UI pattern is displayed (loading hint).",
+      "attributes": [
+        {
+          "name": "credentials",
+          "type": "Credential[]|null"
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "image",
+          "type": "string|null"
+        },
+        {
+          "name": "name",
+          "type": "string|null"
+        },
+        {
+          "name": "toggle-state",
+          "type": "ToggleStateType",
+          "default": "\"off\""
+        },
+        {
+          "name": "type",
+          "type": "AddonType"
+        }
+      ],
+      "properties": [
+        {
+          "name": "credentials",
+          "attribute": "credentials",
+          "type": "Credential[]|null"
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "image",
+          "attribute": "image",
+          "type": "string|null"
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "type": "string|null"
+        },
+        {
+          "name": "toggleState",
+          "attribute": "toggle-state",
+          "type": "ToggleStateType",
+          "default": "\"off\""
+        },
+        {
+          "name": "type",
+          "attribute": "type",
+          "type": "AddonType"
+        }
+      ]
+    },
+    {
+      "name": "cc-addon-elasticsearch-options",
+      "path": "./src/components/cc-addon-elasticsearch-options/cc-addon-elasticsearch-options.js",
+      "description": "A component that displays the available options of an elasticsearch add-on.",
+      "attributes": [
+        {
+          "name": "options",
+          "type": "AddonOption[]",
+          "default": "[]"
+        }
+      ],
+      "properties": [
+        {
+          "name": "options",
+          "attribute": "options",
+          "type": "AddonOption[]",
+          "default": "[]"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-addon-elasticsearch-options:submit",
+          "description": "Fires when the form is submitted."
+        }
+      ]
+    },
+    {
+      "name": "cc-addon-features",
+      "path": "./src/components/cc-addon-features/cc-addon-features.js",
+      "description": "A component to display an add-on set of features.\n\n## Details\n\n* We don't have a proper i18n and icon system for feature names. For the time being, the (lower cased) name is used as some kind of code to match an icon and maybe translate the name of the feature.\n* We don't have a proper i18n system for feature values. For the time being, the (lower cased) value is used as some kind of code to maybe translate the value of the feature.",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "AddonFeaturesState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "AddonFeaturesState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ]
+    },
+    {
+      "name": "cc-addon-jenkins-options",
+      "path": "./src/components/cc-addon-jenkins-options/cc-addon-jenkins-options.js",
+      "description": "A component that displays the available options of a Jenkins add-on.",
+      "attributes": [
+        {
+          "name": "options",
+          "type": "AddonOption[]",
+          "default": "[]"
+        }
+      ],
+      "properties": [
+        {
+          "name": "options",
+          "attribute": "options",
+          "type": "AddonOption[]",
+          "default": "[]"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-addon-jenkins-options:submit",
+          "description": "Fires when the form is submitted."
+        }
+      ]
+    },
+    {
+      "name": "cc-addon-linked-apps",
+      "path": "./src/components/cc-addon-linked-apps/cc-addon-linked-apps.js",
+      "description": "A component to display applications linked to an add-on.",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "AddonLinkedAppsState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "AddonLinkedAppsState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ]
+    },
+    {
+      "name": "cc-addon-mongodb-options",
+      "path": "./src/components/cc-addon-mongodb-options/cc-addon-mongodb-options.js",
+      "description": "A component that displays the available options of a MongoDB add-on.",
+      "attributes": [
+        {
+          "name": "options",
+          "type": "AddonOption[]",
+          "default": "[]"
+        }
+      ],
+      "properties": [
+        {
+          "name": "options",
+          "attribute": "options",
+          "type": "AddonOption[]",
+          "default": "[]"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-addon-mongodb-options:submit",
+          "description": "Fires when the form is submitted."
+        }
+      ]
+    },
+    {
+      "name": "cc-addon-mysql-options",
+      "path": "./src/components/cc-addon-mysql-options/cc-addon-mysql-options.js",
+      "description": "A component that displays the available options of a MySQL add-on.",
+      "attributes": [
+        {
+          "name": "options",
+          "type": "AddonOption[]",
+          "default": "[]"
+        }
+      ],
+      "properties": [
+        {
+          "name": "options",
+          "attribute": "options",
+          "type": "AddonOption[]",
+          "default": "[]"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-addon-mysql-options:submit",
+          "description": "Fires when the form is submitted."
+        }
+      ]
+    },
+    {
+      "name": "cc-addon-option-form",
+      "path": "./src/components/cc-addon-option-form/cc-addon-option-form.js",
+      "description": "A component that displays a form of `<cc-addon-option>`.",
+      "attributes": [
+        {
+          "name": "options",
+          "type": "AddonOption[]"
+        },
+        {
+          "name": "title",
+          "type": "string"
+        }
+      ],
+      "properties": [
+        {
+          "name": "options",
+          "attribute": "options",
+          "type": "AddonOption[]"
+        },
+        {
+          "name": "title",
+          "attribute": "title",
+          "type": "string"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-addon-option-form:submit",
+          "description": "Fires when the form is submitted."
+        }
+      ],
+      "slots": [
+        {
+          "name": "description",
+          "description": "The description of the add-on and available options."
+        }
+      ]
+    },
+    {
+      "name": "cc-addon-option",
+      "path": "./src/components/cc-addon-option/cc-addon-option.js",
+      "description": "A component that allows to enable or disable an add-on option.\n\n## Technical details\n\n* If you want to display a warning in the option, add the `option-warning` class to an HTML element. It will be displayed with a custom color and in italic.",
+      "attributes": [
+        {
+          "name": "enabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "icon",
+          "type": "IconModel|null"
+        },
+        {
+          "name": "logo",
+          "type": "string|null"
+        },
+        {
+          "name": "title",
+          "type": "string|null"
+        }
+      ],
+      "properties": [
+        {
+          "name": "enabled",
+          "attribute": "enabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "icon",
+          "attribute": "icon",
+          "type": "IconModel|null"
+        },
+        {
+          "name": "logo",
+          "attribute": "logo",
+          "type": "string|null"
+        },
+        {
+          "name": "title",
+          "attribute": "title",
+          "type": "string|null"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-addon-option:input",
+          "description": "Fires when the option is enabled or disabled."
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "The content of the option's description (text or HTML)."
+        }
+      ]
+    },
+    {
+      "name": "cc-addon-postgresql-options",
+      "path": "./src/components/cc-addon-postgresql-options/cc-addon-postgresql-options.js",
+      "description": "A component that displays the available options of a PostgreSQL add-on.",
+      "attributes": [
+        {
+          "name": "options",
+          "type": "AddonOption[]",
+          "default": "[]"
+        }
+      ],
+      "properties": [
+        {
+          "name": "options",
+          "attribute": "options",
+          "type": "AddonOption[]",
+          "default": "[]"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-addon-postgresql-options:submit",
+          "description": "Fires when the form is submitted."
+        }
+      ]
+    },
+    {
+      "name": "cc-addon-redis-options",
+      "path": "./src/components/cc-addon-redis-options/cc-addon-redis-options.js",
+      "description": "A component that displays the available options of a Redis add-on.",
+      "attributes": [
+        {
+          "name": "options",
+          "type": "AddonOption[]",
+          "default": "[]"
+        }
+      ],
+      "properties": [
+        {
+          "name": "options",
+          "attribute": "options",
+          "type": "AddonOption[]",
+          "default": "[]"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-addon-redis-options:submit",
+          "description": "Fires when the form is submitted."
+        }
+      ]
+    },
+    {
+      "name": "cc-ansi-palette",
+      "path": "./src/components/cc-ansi-palette/cc-ansi-palette.js",
+      "description": "A component displaying an ANSI palette.",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "default": "\"\""
+        },
+        {
+          "name": "palette",
+          "type": "AnsiPalette|null"
+        }
+      ],
+      "properties": [
+        {
+          "name": "name",
+          "attribute": "name",
+          "type": "string",
+          "default": "\"\""
+        },
+        {
+          "name": "palette",
+          "attribute": "palette",
+          "type": "AnsiPalette|null"
+        }
+      ]
+    },
+    {
+      "name": "cc-article-card",
+      "path": "./src/components/cc-article-card/cc-article-card.js",
+      "description": "A component displaying information of an external article in a card.",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "ArticleCardState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "ArticleCardState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ]
+    },
+    {
+      "name": "cc-article-list",
+      "path": "./src/components/cc-article-list/cc-article-list.js",
+      "description": "A component displaying a list of article cards.",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "ArticleListState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "ArticleListState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ]
+    },
+    {
+      "name": "cc-badge",
+      "path": "./src/components/cc-badge/cc-badge.js",
+      "description": "A component to highlight a small chunk of text.",
+      "attributes": [
+        {
+          "name": "circle",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "icon",
+          "type": "IconModel|null"
+        },
+        {
+          "name": "icon-a11y-name",
+          "type": "string|null"
+        },
+        {
+          "name": "intent",
+          "type": "BadgeIntent",
+          "default": "\"neutral\""
+        },
+        {
+          "name": "skeleton",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "weight",
+          "type": "BadgeWeight",
+          "default": "\"dimmed\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "circle",
+          "attribute": "circle",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "icon",
+          "attribute": "icon",
+          "type": "IconModel|null"
+        },
+        {
+          "name": "iconA11yName",
+          "attribute": "icon-a11y-name",
+          "type": "string|null"
+        },
+        {
+          "name": "intent",
+          "attribute": "intent",
+          "type": "BadgeIntent",
+          "default": "\"neutral\""
+        },
+        {
+          "name": "skeleton",
+          "attribute": "skeleton",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "weight",
+          "attribute": "weight",
+          "type": "BadgeWeight",
+          "default": "\"dimmed\""
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-badge-justify-content",
+          "description": "Specify how the content should be distributed / positioned horizontally within the grid (Default: `center`. Possible values: https://developer.mozilla.org/en-US/docs/Web/CSS/justify-items).",
+          "type": "JustifyContent"
+        }
+      ]
+    },
+    {
+      "name": "cc-beta",
+      "path": "./src/components/cc-beta/cc-beta.js",
+      "description": "A layout component to position a simple beta ribbon around any content.",
+      "attributes": [
+        {
+          "name": "fill",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "position",
+          "type": "PositionType",
+          "default": "\"top-left\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "fill",
+          "attribute": "fill",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "position",
+          "attribute": "position",
+          "type": "PositionType",
+          "default": "\"top-left\""
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "The content around which the beta label will be positionned. You ONLY one element."
+        }
+      ]
+    },
+    {
+      "name": "cc-block-section",
+      "path": "./src/components/cc-block-section/cc-block-section.js",
+      "description": "A display component with mostly HTML+CSS to separate a `<cc-block>` into different sections.\n\n## Details\n\n* This component is designed to only be use as a direct child of `<cc-block>`.",
+      "slots": [
+        {
+          "name": "",
+          "description": "The main content (right part) of the section. If info is not defined, this will take all the width."
+        },
+        {
+          "name": "info",
+          "description": "The info (left part) of the section."
+        },
+        {
+          "name": "title",
+          "description": "The title of the section. You can use a `.danger` CSS class on your `<div slot=\"title\">` if it's a danger zone."
+        }
+      ]
+    },
+    {
+      "name": "cc-block",
+      "path": "./src/components/cc-block/cc-block.js",
+      "description": "A display component with mostly HTML+CSS and a open/close toggle feature.\n\n## Details\n\n* The main section is wrapped in a `<cc-expand>` so variation of this section height will be animated.",
+      "attributes": [
+        {
+          "name": "icon",
+          "type": "IconModel|null"
+        },
+        {
+          "name": "image",
+          "type": "string|null"
+        },
+        {
+          "name": "no-head",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "ribbon",
+          "type": "string|null"
+        },
+        {
+          "name": "state",
+          "type": "ToggleStateType",
+          "default": "\"off\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "icon",
+          "attribute": "icon",
+          "type": "IconModel|null"
+        },
+        {
+          "name": "image",
+          "attribute": "image",
+          "type": "string|null"
+        },
+        {
+          "name": "noHead",
+          "attribute": "no-head",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "ribbon",
+          "attribute": "ribbon",
+          "type": "string|null"
+        },
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "ToggleStateType",
+          "default": "\"off\""
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "The main content of the block. The direct children of this will be spaced in a 1 column CSS grid."
+        },
+        {
+          "name": "button",
+          "description": "A zone dedicated for a button/toggle in the to right corner."
+        },
+        {
+          "name": "overlay",
+          "description": "The content to display on top of the main content."
+        },
+        {
+          "name": "title",
+          "description": "The title of the block. Try to only use text. Use the `icon` property/attribute."
+        }
+      ]
+    },
+    {
+      "name": "cc-button",
+      "path": "./src/components/cc-button/cc-button.js",
+      "description": "Wraps a `<button>` with a skeleton state, some modes and a delay mechanism.\n\n## Details\n\n* Attributes `primary`, `success`, `warning` and `danger` define the UI _mode_ of the button.\n* They are exclusive, you can only set one UI _mode_ at a time.\n* When you don't use any of these values, the default UI _mode_ is `simple`.\n\n## Link appearance\n\n* In some cases (to be defined/explained later), you need a button with a click handler that looks like a link.\n* Don't use a `<a>` without an href and use our `<cc-button link>` instead.\n* When `link` is enabled, the following properties won't have any effect: `primary`, `success`, `warning`, `danger`, `outlined`, `delay`.\n\n## Delay mechanism\n\n* When `delay` is set, `cc-button:click` events are not fired immediately.\n* They are fired after the number of seconds set with `delay`.\n* During this `delay`, the user is presented a \"click to cancel\" label.\n* If the user clicks on \"click to cancel\", the `cc-button:click` event is not fired.\n* If the button `disabled` mode is set during the delay, the `cc-button:click` event is not fired.\n* If you set `delay=0`, the button will have the same width as other buttons with delay, but the event will be triggered instantly.",
+      "attributes": [
+        {
+          "name": "a11y-expanded",
+          "type": "null|boolean"
+        },
+        {
+          "name": "a11y-name",
+          "type": "string|null"
+        },
+        {
+          "name": "a11y-pressed",
+          "type": "null|boolean"
+        },
+        {
+          "name": "circle",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "danger",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "delay",
+          "type": "number|null"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "link",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "hide-text",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "icon",
+          "type": "IconModel|null"
+        },
+        {
+          "name": "image",
+          "type": "string|null"
+        },
+        {
+          "name": "outlined",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "primary",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "skeleton",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "success",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "type",
+          "type": "'button'|'submit'|'reset'",
+          "default": "\"button\""
+        },
+        {
+          "name": "waiting",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "warning",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "a11yExpanded",
+          "attribute": "a11y-expanded",
+          "type": "null|boolean"
+        },
+        {
+          "name": "a11yName",
+          "attribute": "a11y-name",
+          "type": "string|null"
+        },
+        {
+          "name": "a11yPressed",
+          "attribute": "a11y-pressed",
+          "type": "null|boolean"
+        },
+        {
+          "name": "circle",
+          "attribute": "circle",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "danger",
+          "attribute": "danger",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "delay",
+          "attribute": "delay",
+          "type": "number|null"
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "link",
+          "attribute": "link",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "hideText",
+          "attribute": "hide-text",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "icon",
+          "attribute": "icon",
+          "type": "IconModel|null"
+        },
+        {
+          "name": "image",
+          "attribute": "image",
+          "type": "string|null"
+        },
+        {
+          "name": "outlined",
+          "attribute": "outlined",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "primary",
+          "attribute": "primary",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "skeleton",
+          "attribute": "skeleton",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "success",
+          "attribute": "success",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "type",
+          "attribute": "type",
+          "type": "'button'|'submit'|'reset'",
+          "default": "\"button\""
+        },
+        {
+          "name": "waiting",
+          "attribute": "waiting",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "warning",
+          "attribute": "warning",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-button:click",
+          "description": "Fires whenever the button is clicked.<br>If `delay` is set, fires after the specified `delay` (in seconds)."
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "The content of the button (text or HTML). If you want an image, please look at the `image` attribute."
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-button-border-radius",
+          "description": "Sets the value of the border radius CSS property (defaults: `0.15em`).",
+          "type": "BorderRadius"
+        },
+        {
+          "name": "--cc-button-font-weight",
+          "description": "Sets the value of the font weight CSS property (defaults: `bold`).",
+          "type": "FontWeight"
+        },
+        {
+          "name": "--cc-button-text-transform",
+          "description": "Sets the value of the text transform CSS property (defaults: `uppercase`).",
+          "type": "TextTransform"
+        }
+      ]
+    },
+    {
+      "name": "cc-datetime-relative",
+      "path": "./src/components/cc-datetime-relative/cc-datetime-relative.js",
+      "description": "A text-only component to display a localized humanized relative date (ex: \"two minutes ago\").\n\n## Details\n\n* This component relies on the i18n system of this component library to format the relative date.\n* Once the element is attached to the DOM, the displayed text is updated every 10 seconds.\n* The 10 second update loop is the same for all instances of this component.\n* A tooltip is available (with `title=\"\"`) with the full formatted date and time.\n\n## Technical details\n\n* This is mainly inspired by GitHub's [relative-time-element](https://github.com/github/time-elements/blob/master/src/relative-time-element.js).\n* This component does not use lit* deps on purpose (keep small and not useful).",
+      "attributes": [
+        {
+          "name": "datetime",
+          "type": "string|number|null"
+        }
+      ],
+      "properties": [
+        {
+          "name": "datetime",
+          "attribute": "datetime",
+          "type": "string|number|null"
+        }
+      ]
+    },
+    {
+      "name": "cc-doc-card",
+      "path": "./src/components/cc-doc-card/cc-doc-card.js",
+      "description": "A component displaying basic information of a product with a link to redirect to its documentation in a card.",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "DocCardState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "DocCardState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ]
+    },
+    {
+      "name": "cc-doc-list",
+      "path": "./src/components/cc-doc-list/cc-doc-list.js",
+      "description": "A component displaying a list of documentation cards.",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "DocListState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "DocListState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ]
+    },
+    {
+      "name": "cc-domain-management",
+      "path": "./src/components/cc-domain-management/cc-domain-management.js",
+      "description": "A component to manage domains associated to an application.",
+      "attributes": [
+        {
+          "name": "dns-info-state",
+          "type": "DomainManagementDnsInfoState",
+          "default": "{\"type\":\"loading\"}"
+        },
+        {
+          "name": "domain-form-state",
+          "type": "DomainManagementFormState",
+          "default": "{\"type\":\"idle\",\"hostname\":{\"value\":\"\"},\"pathPrefix\":{\"value\":\"\"}}"
+        },
+        {
+          "name": "domain-list-state",
+          "type": "DomainManagementListState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "dnsInfoState",
+          "attribute": "dns-info-state",
+          "type": "DomainManagementDnsInfoState",
+          "default": "{\"type\":\"loading\"}"
+        },
+        {
+          "name": "domainFormState",
+          "attribute": "domain-form-state",
+          "type": "DomainManagementFormState",
+          "default": "{\"type\":\"idle\",\"hostname\":{\"value\":\"\"},\"pathPrefix\":{\"value\":\"\"}}"
+        },
+        {
+          "name": "domainListState",
+          "attribute": "domain-list-state",
+          "type": "DomainManagementListState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-domain-management:add",
+          "description": "Fires when clicking the \"Add a domain\" button."
+        },
+        {
+          "name": "cc-domain-management:mark-as-primary",
+          "description": "Fires when clicking a \"mark as primary\" button."
+        },
+        {
+          "name": "cc-domain-management:delete",
+          "description": "Fires when clicking a \"delete\" button."
+        }
+      ]
+    },
+    {
+      "name": "cc-elasticsearch-info",
+      "path": "./src/components/cc-elasticsearch-info/cc-elasticsearch-info.js",
+      "description": "A component to display various links (Documentation, kibana, APM) for an elasticsearch service.\n\n## Details\n\n* You need to list the links you want to display in `links`.",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "ElasticSearchInfoState",
+          "default": "{\"type\":\"loading\",\"links\":[{\"type\":\"elasticsearch\"},{\"type\":\"kibana\"},{\"type\":\"apm\"}]}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "ElasticSearchInfoState",
+          "default": "{\"type\":\"loading\",\"links\":[{\"type\":\"elasticsearch\"},{\"type\":\"kibana\"},{\"type\":\"apm\"}]}"
+        }
+      ]
+    },
+    {
+      "name": "cc-email-list",
+      "path": "./src/components/cc-email-list/cc-email-list.js",
+      "description": "A component displaying the email addresses associated with a user account.\n\n## Details\n\nThe component gives the ability to:\n\n* Resend the confirmation email to the primary address (if it has not been verified yet)\n* Add a secondary email address\n* Delete a secondary email address\n* Promote a secondary email address to primary.\n\n## secondary email address input validation\n\n* The component is responsible for validating the secondary email address entered by the user.\n* This validation is triggered whenever the add button is clicked.\n* If the validation doesn't succeed, an error message is displayed below the text input. Otherwise, the custom event `cc-email-list:add` is fired.\n* The validation handles only two cases:\n  - the input is empty\n  - the input is not a valid email address.\n* For the other error cases, you'll need to pass the right `addEmailForm` property manually.\n\n## Marking as primary\n\n* Unlike secondary email address deletion, marking as primary is exclusive: Only one email address can be marked as primary at a time.",
+      "attributes": [
+        {
+          "name": "emails",
+          "type": "EmailListState",
+          "default": "{\"state\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "addEmailFormState",
+          "type": "AddEmailFormState",
+          "default": "{\"type\":\"idle\"}"
+        },
+        {
+          "name": "emails",
+          "attribute": "emails",
+          "type": "EmailListState",
+          "default": "{\"state\":\"loading\"}"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-email-list:add",
+          "description": "Fires whenever the add button is clicked. If the validation doesn't succeed, the event is not fired."
+        },
+        {
+          "name": "cc-email-list:send-confirmation-email",
+          "description": "Fires whenever the send confirmation email link is clicked."
+        },
+        {
+          "name": "cc-email-list:delete",
+          "description": "Fires whenever the delete button is clicked."
+        },
+        {
+          "name": "cc-email-list:mark-as-primary",
+          "description": "Fires whenever the 'mark as primary' button is clicked."
+        }
+      ]
+    },
+    {
+      "name": "cc-env-var-create",
+      "path": "./src/components/cc-env-var-create/cc-env-var-create.js",
+      "description": "A small form to create a new environment variable with validations on the name.\n\n## Details\n\n* The validation of the variable name format is handled with [@clevercloud/client](https://github.com/CleverCloud/clever-client.js/blob/master/esm/utils/env-vars.js)\n* The validation of existing names is handled with the `variablesNames` property which is a list of already existing names.",
+      "attributes": [
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "validation-mode",
+          "type": "EnvVarValidationMode",
+          "default": "\"simple\""
+        },
+        {
+          "name": "variables-names",
+          "type": "string[]",
+          "default": "[]"
+        }
+      ],
+      "properties": [
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "validationMode",
+          "attribute": "validation-mode",
+          "type": "EnvVarValidationMode",
+          "default": "\"simple\""
+        },
+        {
+          "name": "variablesNames",
+          "attribute": "variables-names",
+          "type": "string[]",
+          "default": "[]"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-env-var-create:create",
+          "description": "Fires the variable whenever the add button is clicked."
+        }
+      ]
+    },
+    {
+      "name": "cc-env-var-editor-expert",
+      "path": "./src/components/cc-env-var-editor-expert/cc-env-var-editor-expert.js",
+      "description": "A high level environment variable editor to create/edit/delete all variables at once as a big string (properly parsed with validation and error messages).",
+      "attributes": [
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "readonly",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "state",
+          "type": "EnvVarEditorState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "readonly",
+          "attribute": "readonly",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "EnvVarEditorState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-env-var-editor-expert:change",
+          "description": "Fires the new list of variables whenever something changes in the list."
+        }
+      ]
+    },
+    {
+      "name": "cc-env-var-editor-json",
+      "path": "./src/components/cc-env-var-editor-json/cc-env-var-editor-json.js",
+      "description": "A high level environment variable editor to create/edit/delete all variables at once as a JSON text (properly parsed with validation and error messages).",
+      "attributes": [
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "readonly",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "state",
+          "type": "EnvVarEditorState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "readonly",
+          "attribute": "readonly",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "EnvVarEditorState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-env-var-editor-json:change",
+          "description": "Fires the new list of variables whenever something changes in the list."
+        }
+      ]
+    },
+    {
+      "name": "cc-env-var-editor-simple",
+      "path": "./src/components/cc-env-var-editor-simple/cc-env-var-editor-simple.js",
+      "description": "A high level environment variable editor to create/edit/delete variables one at a time (with validation and error messages).",
+      "attributes": [
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "readonly",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "state",
+          "type": "EnvVarEditorState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "readonly",
+          "attribute": "readonly",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "EnvVarEditorState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-env-var-editor-simple:change",
+          "description": "Fires the new list of variables whenever something changes in the list."
+        }
+      ]
+    },
+    {
+      "name": "cc-env-var-form",
+      "path": "./src/components/cc-env-var-form/cc-env-var-form.js",
+      "description": "A high level environment variable form (wrapping simple editor and expert editor into one interface).\n\n## Details\n\n* You can set a custom `heading` and description with the default <slot>.\n* You can also set a context to get the appropriate heading and description (with translations).",
+      "attributes": [
+        {
+          "name": "addon-name",
+          "type": "string",
+          "default": "\"?\""
+        },
+        {
+          "name": "app-name",
+          "type": "string",
+          "default": "\"?\""
+        },
+        {
+          "name": "context",
+          "type": "EnvVarFormContextType"
+        },
+        {
+          "name": "heading",
+          "type": "string|null"
+        },
+        {
+          "name": "readonly",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "restart-app",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "state",
+          "type": "EnvVarFormState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "addonName",
+          "attribute": "addon-name",
+          "type": "string",
+          "default": "\"?\""
+        },
+        {
+          "name": "appName",
+          "attribute": "app-name",
+          "type": "string",
+          "default": "\"?\""
+        },
+        {
+          "name": "context",
+          "attribute": "context",
+          "type": "EnvVarFormContextType"
+        },
+        {
+          "name": "heading",
+          "attribute": "heading",
+          "type": "string|null"
+        },
+        {
+          "name": "readonly",
+          "attribute": "readonly",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "restartApp",
+          "attribute": "restart-app",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "EnvVarFormState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-env-var-form:restart-app",
+          "description": "Fires whenever the restart app button is clicked."
+        },
+        {
+          "name": "cc-env-var-form:submit",
+          "description": "Fires the new list of variables whenever the submit button is clicked."
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "Sets custom HTML description."
+        }
+      ]
+    },
+    {
+      "name": "cc-env-var-input",
+      "path": "./src/components/cc-env-var-input/cc-env-var-input.js",
+      "description": "A small input to manipulate an environment variable.",
+      "attributes": [
+        {
+          "name": "deleted",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "edited",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "name",
+          "type": "string|null"
+        },
+        {
+          "name": "new",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "readonly",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "skeleton",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "default": "\"\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "deleted",
+          "attribute": "deleted",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "edited",
+          "attribute": "edited",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "type": "string|null"
+        },
+        {
+          "name": "new",
+          "attribute": "new",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "readonly",
+          "attribute": "readonly",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "skeleton",
+          "attribute": "skeleton",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "value",
+          "attribute": "value",
+          "type": "string",
+          "default": "\"\""
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-env-var-input:delete",
+          "description": "Fires a variable name whenever the delete button is clicked."
+        },
+        {
+          "name": "cc-env-var-input:input",
+          "description": "Fires a variable whenever its value changes."
+        },
+        {
+          "name": "cc-env-var-input:keep",
+          "description": "Fires a variable name whenever the keep button is clicked."
+        }
+      ]
+    },
+    {
+      "name": "cc-env-var-linked-services",
+      "path": "./src/components/cc-env-var-linked-services/cc-env-var-linked-services.js",
+      "description": "A component to display groups of readonly `<cc-env-var-form>` for linked apps of add-ons.\n\n## Details",
+      "attributes": [
+        {
+          "name": "app-name",
+          "type": "string|null"
+        },
+        {
+          "name": "state",
+          "type": "EnvVarLinkedServicesState",
+          "default": "{\"type\":\"loading\"}"
+        },
+        {
+          "name": "type",
+          "type": "EnvVarLinkedServicesType"
+        }
+      ],
+      "properties": [
+        {
+          "name": "appName",
+          "attribute": "app-name",
+          "type": "string|null"
+        },
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "EnvVarLinkedServicesState",
+          "default": "{\"type\":\"loading\"}"
+        },
+        {
+          "name": "type",
+          "attribute": "type",
+          "type": "EnvVarLinkedServicesType"
+        }
+      ]
+    },
+    {
+      "name": "cc-expand",
+      "path": "./src/components/cc-expand/cc-expand.js",
+      "description": "An invisible wrapper that changes its size (with an animation) according to the size of its children.\n\n## Technical details\n\n* The animation only works in browsers supporting [`ResizeObserver`](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver) and [Web Animation API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API).\n* This component does not use lit* deps on purpose (keep small and not useful).\n* The source code is written in a way so it can be the smallest possible, while keeping a reasonable readability level.",
+      "slots": [
+        {
+          "name": "",
+          "description": "The content that may expand/shrink."
+        }
+      ]
+    },
+    {
+      "name": "cc-grafana-info",
+      "path": "./src/components/cc-grafana-info/cc-grafana-info.js",
+      "description": "A component to display information about grafana and allow some actions: enable, disable, reset.",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "GrafanaInfoState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "GrafanaInfoState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-grafana-info:enable",
+          "description": "Fires when the enable button is clicked."
+        },
+        {
+          "name": "cc-grafana-info:disable",
+          "description": "Fires when the disable button is clicked."
+        },
+        {
+          "name": "cc-grafana-info:reset",
+          "description": "Fires when the reset button is clicked."
+        }
+      ]
+    },
+    {
+      "name": "cc-header-addon",
+      "path": "./src/components/cc-header-addon/cc-header-addon.js",
+      "description": "A component to display various info about an add-on (name, plan, version...).",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "HeaderAddonState",
+          "default": "{\"type\":\"loading\",\"hasVersion\":true}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "HeaderAddonState",
+          "default": "{\"type\":\"loading\",\"hasVersion\":true}"
+        }
+      ]
+    },
+    {
+      "name": "cc-header-app",
+      "path": "./src/components/cc-header-app/cc-header-app.js",
+      "description": "A component to display various info about an app (name, commits, status...).",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "HeaderAppState",
+          "default": "{\"type\":\"loading\"}"
+        },
+        {
+          "name": "disable-buttons",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "HeaderAppState",
+          "default": "{\"type\":\"loading\"}"
+        },
+        {
+          "name": "disableButtons",
+          "attribute": "disable-buttons",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-header-app:cancel",
+          "description": "Fires whenever the cancel button is clicked."
+        },
+        {
+          "name": "cc-header-app:restart",
+          "description": "Fires whenever one of the 3 restart buttons is clicked."
+        },
+        {
+          "name": "cc-header-app:start",
+          "description": "Fires whenever one of the 3 start buttons is clicked."
+        },
+        {
+          "name": "cc-header-app:stop",
+          "description": "Fires whenever the stop button is clicked (after the delay)."
+        }
+      ]
+    },
+    {
+      "name": "cc-header-orga",
+      "path": "./src/components/cc-header-orga/cc-header-orga.js",
+      "description": "A component to display various info about an orga (name and enterprise status).",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "HeaderOrgaState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "HeaderOrgaState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "slots": [
+        {
+          "name": "footer",
+          "description": "An area displayed at the bottom of the header. Content should be short. The element you slot gets a default styling (background color, top border and padding)."
+        }
+      ]
+    },
+    {
+      "name": "cc-heptapod-info",
+      "path": "./src/components/cc-heptapod-info/cc-heptapod-info.js",
+      "description": "A component that shows a summary of our Heptapod SaaS offer.",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "HeptapodInfoState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "HeptapodInfoState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ]
+    },
+    {
+      "name": "cc-html-frame",
+      "path": "./src/components/cc-html-frame/cc-html-frame.js",
+      "description": "A low level component that takes some HMTL and puts it in an iframe.\n\n## Details\n\n* By default, the inner `<iframe>` is borderless and has a transparent background.\n* If you set `loading=true` and a `<template>` inside the main slot, `loading` will be set back to `false` by the component once the inner native `<iframe>` is loaded.\n\n## Technical details\n\n* The HTML contents needs to be wrapped in a `<template>` tag.\n* By default, the origin of the inner `<iframe>` is the same as the parent window. This means the iframe can access the same local storage and other origin bound APIs.\n* If you want to limit this access and increase the isolation, you can add the `sandbox` attribute, see [MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#attr-sandbox) for more details.\n* This implemententation does not create an OOP (out of process) iframe.",
+      "attributes": [
+        {
+          "name": "loading",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "sandbox",
+          "type": "IframeSandbox|null"
+        },
+        {
+          "name": "iframe-title",
+          "type": "string",
+          "default": "\"\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "loading",
+          "attribute": "loading",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "sandbox",
+          "attribute": "sandbox",
+          "type": "IframeSandbox|null"
+        },
+        {
+          "name": "iframeTitle",
+          "attribute": "iframe-title",
+          "type": "string",
+          "default": "\"\""
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "The HTML contents (wrapped in a `<template>`)."
+        }
+      ]
+    },
+    {
+      "name": "cc-icon",
+      "path": "./src/components/cc-icon/cc-icon.js",
+      "description": "A component rendering an SVG icon.\n\n**Accessibility guidelines:**\n\nUse the `a11y-name` prop only if your icon provides information that is not already given in its surrounding text.\n\nIf this prop has a value:\n\n * sets a `role=\"img\"` and `aria-label=\"the value of this prop\"` attributes on the `<svg>` element.\n * creates a `<title>` element inside the `<svg>`.\n\nThis allows assistive technologies to recognize the element as an image and convey its information.\n\nIf this prop has no value, sets an `aria-hidden=\"true\"` attribute on the `<svg>` element so that it can be ignored by assistive technologies.",
+      "attributes": [
+        {
+          "name": "a11y-name",
+          "type": "string|null"
+        },
+        {
+          "name": "icon",
+          "type": "IconModel|null"
+        },
+        {
+          "name": "size",
+          "type": "IconSize",
+          "default": "\"md\""
+        },
+        {
+          "name": "skeleton",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "a11yName",
+          "attribute": "a11y-name",
+          "type": "string|null"
+        },
+        {
+          "name": "icon",
+          "attribute": "icon",
+          "type": "IconModel|null"
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "IconSize",
+          "default": "\"md\""
+        },
+        {
+          "name": "skeleton",
+          "attribute": "skeleton",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-icon-color",
+          "description": "Sets the value of the color CSS property (defaults: `currentColor`).",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-icon-size",
+          "description": "Sets the value of the width and height CSS properties (defaults: `1em`).",
+          "type": "Size"
+        }
+      ]
+    },
+    {
+      "name": "cc-img",
+      "path": "./src/components/cc-img/cc-img.js",
+      "description": "A wrapper around `<img>` to add loader indicator, remove ugly borders and display proper placeholder text when there's an error.\n\n## Details\n\n* If you set `skeleton=true` and `src=\"https://...\"`, `skeleton` will be set back to `false` by the component once the inner native `<img>` is loaded (success or error).",
+      "attributes": [
+        {
+          "name": "a11y-name",
+          "type": "string|null"
+        },
+        {
+          "name": "skeleton",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "src",
+          "type": "string|null"
+        }
+      ],
+      "properties": [
+        {
+          "name": "a11yName",
+          "attribute": "a11y-name",
+          "type": "string|null"
+        },
+        {
+          "name": "skeleton",
+          "attribute": "skeleton",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "src",
+          "attribute": "src",
+          "type": "string|null"
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-img-fit",
+          "description": "Sets the `object-fit` of the inner `<img>` element (defaults to \"cover\").",
+          "type": "\"cover\"|\"contain\""
+        }
+      ]
+    },
+    {
+      "name": "cc-input-date",
+      "path": "./src/components/cc-input-date/cc-input-date.js",
+      "description": "A custom date input.\n\n## Technical details\n\n* Uses a native `<input>` with a type `text`\n* When an `errorMessage` is Set, the input is decorated with a red border and a redish focus ring.",
+      "attributes": [
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "hidden-label",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "inline",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "label",
+          "type": "string|null"
+        },
+        {
+          "name": "max",
+          "type": "string|null"
+        },
+        {
+          "name": "min",
+          "type": "string|null"
+        },
+        {
+          "name": "readonly",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "reset-value",
+          "type": "string|Date|null",
+          "default": "\"\""
+        },
+        {
+          "name": "skeleton",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "timezone",
+          "type": "Timezone",
+          "default": "\"UTC\""
+        },
+        {
+          "name": "value",
+          "type": "string|Date|null"
+        },
+        {
+          "name": "error-message",
+          "type": "ErrorMessage"
+        },
+        {
+          "name": "name",
+          "type": "string|null"
+        }
+      ],
+      "properties": [
+        {
+          "name": "reactiveValidationProperties",
+          "type": "string[]",
+          "default": "[\"required\",\"min\",\"max\",\"timezone\"]"
+        },
+        {
+          "name": "valueAsDate",
+          "type": "Date | null"
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "hiddenLabel",
+          "attribute": "hidden-label",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "inline",
+          "attribute": "inline",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "label",
+          "attribute": "label",
+          "type": "string|null"
+        },
+        {
+          "name": "max",
+          "attribute": "max",
+          "type": "string|null"
+        },
+        {
+          "name": "min",
+          "attribute": "min",
+          "type": "string|null"
+        },
+        {
+          "name": "readonly",
+          "attribute": "readonly",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "required",
+          "attribute": "required",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "resetValue",
+          "attribute": "reset-value",
+          "type": "string|Date|null",
+          "default": "\"\""
+        },
+        {
+          "name": "skeleton",
+          "attribute": "skeleton",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "timezone",
+          "attribute": "timezone",
+          "type": "Timezone",
+          "default": "\"UTC\""
+        },
+        {
+          "name": "value",
+          "attribute": "value",
+          "type": "string|Date|null"
+        },
+        {
+          "name": "inlineValidity",
+          "description": "Returns a `Validity` instance that represents the validity state of this element.",
+          "type": "Validity"
+        },
+        {
+          "name": "willValidate",
+          "description": "[object Object],[object Object]",
+          "type": "boolean"
+        },
+        {
+          "name": "validity",
+          "description": "[object Object],[object Object]",
+          "type": "ValidityState"
+        },
+        {
+          "name": "validationMessage",
+          "description": "[object Object],[object Object],[object Object],[object Object]",
+          "type": "string"
+        },
+        {
+          "name": "customErrorMessages",
+          "type": "ErrorMessageMap"
+        },
+        {
+          "name": "customValidator",
+          "type": "Validator"
+        },
+        {
+          "name": "errorMessage",
+          "attribute": "error-message",
+          "type": "ErrorMessage"
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "type": "string|null"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-input-date:input",
+          "description": "Fires the `value` whenever the `value` changes."
+        },
+        {
+          "name": "cc-input-date:requestimplicitsubmit",
+          "description": "Fires when enter key is pressed."
+        }
+      ],
+      "slots": [
+        {
+          "name": "help",
+          "description": "The help message to be displayed right below the `<input>` element. Please use a `<p>` tag."
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-input-font-family",
+          "description": "The font-family for the input content (defaults: `inherit`).",
+          "type": "FontFamily"
+        },
+        {
+          "name": "--cc-input-label-color",
+          "description": "The color for the input's label (defaults: `inherit`).",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-input-label-font-size",
+          "description": "The font-size for the input's label (defaults: `inherit`).",
+          "type": "FontSize"
+        },
+        {
+          "name": "--cc-input-label-font-weight",
+          "description": "The font-weight for the input's label (defaults: `normal`).",
+          "type": "FontWeight"
+        }
+      ]
+    },
+    {
+      "name": "cc-input-number",
+      "path": "./src/components/cc-input-number/cc-input-number.js",
+      "description": "A custom number input with controls mode.\n\n## Technical details\n\n* Uses a native `<input>` with a type `number` without native arrows mode\n* The `controls` feature enables the \"arrow\" mode but with an increment/decrement button on the side of the input\n* When an `errorMessage` is set, the input is decorated with a red border and a redish focus ring.",
+      "attributes": [
+        {
+          "name": "controls",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "inline",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "label",
+          "type": "string|null"
+        },
+        {
+          "name": "hidden-label",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "max",
+          "type": "number|null"
+        },
+        {
+          "name": "min",
+          "type": "number|null"
+        },
+        {
+          "name": "readonly",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "reset-value",
+          "type": "number|null"
+        },
+        {
+          "name": "skeleton",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "step",
+          "type": "number|null"
+        },
+        {
+          "name": "value",
+          "type": "number|null"
+        },
+        {
+          "name": "error-message",
+          "type": "ErrorMessage"
+        },
+        {
+          "name": "name",
+          "type": "string|null"
+        }
+      ],
+      "properties": [
+        {
+          "name": "reactiveValidationProperties",
+          "type": "string[]",
+          "default": "[\"required\",\"min\",\"max\"]"
+        },
+        {
+          "name": "controls",
+          "attribute": "controls",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "inline",
+          "attribute": "inline",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "label",
+          "attribute": "label",
+          "type": "string|null"
+        },
+        {
+          "name": "hiddenLabel",
+          "attribute": "hidden-label",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "max",
+          "attribute": "max",
+          "type": "number|null"
+        },
+        {
+          "name": "min",
+          "attribute": "min",
+          "type": "number|null"
+        },
+        {
+          "name": "readonly",
+          "attribute": "readonly",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "required",
+          "attribute": "required",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "resetValue",
+          "attribute": "reset-value",
+          "type": "number|null"
+        },
+        {
+          "name": "skeleton",
+          "attribute": "skeleton",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "step",
+          "attribute": "step",
+          "type": "number|null"
+        },
+        {
+          "name": "value",
+          "attribute": "value",
+          "type": "number|null"
+        },
+        {
+          "name": "inlineValidity",
+          "description": "Returns a `Validity` instance that represents the validity state of this element.",
+          "type": "Validity"
+        },
+        {
+          "name": "willValidate",
+          "description": "[object Object],[object Object]",
+          "type": "boolean"
+        },
+        {
+          "name": "validity",
+          "description": "[object Object],[object Object]",
+          "type": "ValidityState"
+        },
+        {
+          "name": "validationMessage",
+          "description": "[object Object],[object Object],[object Object],[object Object]",
+          "type": "string"
+        },
+        {
+          "name": "customErrorMessages",
+          "type": "ErrorMessageMap"
+        },
+        {
+          "name": "customValidator",
+          "type": "Validator"
+        },
+        {
+          "name": "errorMessage",
+          "attribute": "error-message",
+          "type": "ErrorMessage"
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "type": "string|null"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-input-number:input",
+          "description": "Fires the `value` whenever the `value` changes."
+        },
+        {
+          "name": "cc-input-number:requestimplicitsubmit",
+          "description": "Fires when enter key is pressed."
+        }
+      ],
+      "slots": [
+        {
+          "name": "help",
+          "description": "The help message to be displayed right below the `<input>` element. Please use a `<p>` tag."
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-input-number-align",
+          "description": "Change the alignment of the number present in the input (defaults: `right`).",
+          "type": "Align"
+        },
+        {
+          "name": "--cc-input-btn-icon-color",
+          "description": "The color for the icon within the +/- buttons (defaults: `#595959`).",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-input-font-family",
+          "description": "The font-family for the input content (defaults: `inherit`).",
+          "type": "FontFamily"
+        },
+        {
+          "name": "--cc-input-label-color",
+          "description": "The color for the input's label (defaults: `inherit`).",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-input-label-font-size",
+          "description": "The font-size for the input's label (defaults: `inherit`).",
+          "type": "FontSize"
+        },
+        {
+          "name": "--cc-input-label-font-weight",
+          "description": "The font-weight for the input's label (defaults: `normal`).",
+          "type": "FontWeight"
+        }
+      ]
+    },
+    {
+      "name": "cc-input-text",
+      "path": "./src/components/cc-input-text/cc-input-text.js",
+      "description": "An enhanced text input with support for multiline, copy-to-clipboard, show/hide secret and highlighted tags.\n\n## Technical details\n\n* Uses a native `<input>` element by default and a `<textarea>` element when `multi` is true.\n* When you use it with `readonly` \\+ `clipboard` \\+ NOT `multi`, the width of the input auto adapts to the length of the content.\n* The `secret` feature only works for simple line mode (when `multi` is false).\n* The `tags` feature enables a space-separated-value input wrapped on several lines where line breaks are not allowed. Don't use it with `multi` or `secret`.\n* When an `errorMessage` is set, the input is decorated with a red border and a redish focus ring.",
+      "attributes": [
+        {
+          "name": "clipboard",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "inline",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "label",
+          "type": "string|null"
+        },
+        {
+          "name": "hidden-label",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "multi",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "default": "\"\""
+        },
+        {
+          "name": "readonly",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "reset-value",
+          "type": "string",
+          "default": "\"\""
+        },
+        {
+          "name": "secret",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "skeleton",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "tags",
+          "type": "string[]"
+        },
+        {
+          "name": "type",
+          "type": "'text'|'email'",
+          "default": "\"text\""
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "default": "\"\""
+        },
+        {
+          "name": "error-message",
+          "type": "ErrorMessage"
+        },
+        {
+          "name": "name",
+          "type": "string|null"
+        }
+      ],
+      "properties": [
+        {
+          "name": "reactiveValidationProperties",
+          "type": "string[]",
+          "default": "[\"required\",\"type\"]"
+        },
+        {
+          "name": "clipboard",
+          "attribute": "clipboard",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "inline",
+          "attribute": "inline",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "label",
+          "attribute": "label",
+          "type": "string|null"
+        },
+        {
+          "name": "hiddenLabel",
+          "attribute": "hidden-label",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "multi",
+          "attribute": "multi",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "placeholder",
+          "attribute": "placeholder",
+          "type": "string",
+          "default": "\"\""
+        },
+        {
+          "name": "readonly",
+          "attribute": "readonly",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "required",
+          "attribute": "required",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "resetValue",
+          "attribute": "reset-value",
+          "type": "string",
+          "default": "\"\""
+        },
+        {
+          "name": "secret",
+          "attribute": "secret",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "skeleton",
+          "attribute": "skeleton",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "tags",
+          "attribute": "tags",
+          "type": "string[]"
+        },
+        {
+          "name": "type",
+          "attribute": "type",
+          "type": "'text'|'email'",
+          "default": "\"text\""
+        },
+        {
+          "name": "value",
+          "attribute": "value",
+          "type": "string",
+          "default": "\"\""
+        },
+        {
+          "name": "inlineValidity",
+          "description": "Returns a `Validity` instance that represents the validity state of this element.",
+          "type": "Validity"
+        },
+        {
+          "name": "willValidate",
+          "description": "[object Object],[object Object]",
+          "type": "boolean"
+        },
+        {
+          "name": "validity",
+          "description": "[object Object],[object Object]",
+          "type": "ValidityState"
+        },
+        {
+          "name": "validationMessage",
+          "description": "[object Object],[object Object],[object Object],[object Object]",
+          "type": "string"
+        },
+        {
+          "name": "customErrorMessages",
+          "type": "ErrorMessageMap"
+        },
+        {
+          "name": "customValidator",
+          "type": "Validator"
+        },
+        {
+          "name": "errorMessage",
+          "attribute": "error-message",
+          "type": "ErrorMessage"
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "type": "string|null"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-input-text:input",
+          "description": "Fires the `value` whenever the `value` changes."
+        },
+        {
+          "name": "cc-input-text:requestimplicitsubmit",
+          "description": "Fires when enter key is pressed in simple mode, in tags mode or when ctrl+enter is pressed in multi mode."
+        },
+        {
+          "name": "cc-input-text:tags",
+          "description": "Fires an array of tags whenever the `value` changes (separated by spaces)."
+        }
+      ],
+      "slots": [
+        {
+          "name": "help",
+          "description": "The help message to be displayed right below the `<input>` element. Please use a `<p>` tag."
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-input-btn-icon-color",
+          "description": "The color for the icon within the clipboard/secret button (defaults: `#595959`).",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-input-font-family",
+          "description": "The font-family for the input content (defaults: `inherit` or `--cc-ff-monospace` when using the tags mode).",
+          "type": "FontFamily"
+        },
+        {
+          "name": "--cc-input-label-color",
+          "description": "The color for the input's label (defaults: `inherit`).",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-input-label-font-size",
+          "description": "The font-size for the input's label (defaults: `inherit`).",
+          "type": "FontSize"
+        },
+        {
+          "name": "--cc-input-label-font-weight",
+          "description": "The font-weight for the input's label (defaults: `normal`).",
+          "type": "FontWeight"
+        }
+      ]
+    },
+    {
+      "name": "cc-invoice-list",
+      "path": "./src/components/cc-invoice-list/cc-invoice-list.js",
+      "description": "A component to display a list of invoices in paginated categories.",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "InvoiceListState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "InvoiceListState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ]
+    },
+    {
+      "name": "cc-invoice-table",
+      "path": "./src/components/cc-invoice-table/cc-invoice-table.js",
+      "description": "A table component to display a list of invoices.",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "InvoiceTableState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "InvoiceTableState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ]
+    },
+    {
+      "name": "cc-invoice",
+      "path": "./src/components/cc-invoice/cc-invoice.js",
+      "description": "A block component to display an HTML invoice.",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "InvoiceState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "InvoiceState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ]
+    },
+    {
+      "name": "cc-jenkins-info",
+      "path": "./src/components/cc-jenkins-info/cc-jenkins-info.js",
+      "description": "A component to display various information (Documentation, access, updates, ...) for a Jenkins service.",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "JenkinsInfoState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "JenkinsInfoState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ]
+    },
+    {
+      "name": "cc-loader",
+      "path": "./src/components/cc-loader/cc-loader.js",
+      "description": "A loading indicator, auto centered and with flexible size.\n\n## Details\n\n* Size this component like you want, the loading circle will be centered automatically.\n* One can change the default accessible name with the `a11yName` property or `a11y-name` attribute.",
+      "attributes": [
+        {
+          "name": "a11y-name",
+          "type": "string|null"
+        }
+      ],
+      "properties": [
+        {
+          "name": "a11yName",
+          "attribute": "a11y-name",
+          "type": "string|null"
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-loader-color",
+          "description": "The color of the animated circle (defaults: `#2653af`).",
+          "type": "Color"
+        }
+      ]
+    },
+    {
+      "name": "cc-logs-application-view-beta",
+      "path": "./src/components/cc-logs-application-view/cc-logs-application-view.js",
+      "attributes": [
+        {
+          "name": "date-range-selection",
+          "type": "DateRangeSelection",
+          "default": "{\"type\":\"live\"}"
+        },
+        {
+          "name": "limit",
+          "type": "number|null",
+          "default": "1000"
+        },
+        {
+          "name": "options",
+          "type": "LogsApplicationViewOptions",
+          "default": "{\"date-display\":\"datetime-iso\",\"metadata-display\":{\"instance\":false},\"palette\":\"default\",\"strip-ansi\":false,\"timezone\":\"UTC\",\"wrap-lines\":false}"
+        },
+        {
+          "name": "overflow-watermark-offset",
+          "type": "number|null",
+          "default": "10"
+        },
+        {
+          "name": "selected-instances",
+          "type": "Array<string>",
+          "default": "[]"
+        },
+        {
+          "name": "state",
+          "type": "LogsApplicationViewState",
+          "default": "{\"type\":\"loadingInstances\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "dateRangeSelection",
+          "attribute": "date-range-selection",
+          "type": "DateRangeSelection",
+          "default": "{\"type\":\"live\"}"
+        },
+        {
+          "name": "limit",
+          "attribute": "limit",
+          "type": "number|null",
+          "default": "1000"
+        },
+        {
+          "name": "options",
+          "attribute": "options",
+          "type": "LogsApplicationViewOptions",
+          "default": "{\"date-display\":\"datetime-iso\",\"metadata-display\":{\"instance\":false},\"palette\":\"default\",\"strip-ansi\":false,\"timezone\":\"UTC\",\"wrap-lines\":false}"
+        },
+        {
+          "name": "overflowWatermarkOffset",
+          "attribute": "overflow-watermark-offset",
+          "type": "number|null",
+          "default": "10"
+        },
+        {
+          "name": "selectedInstances",
+          "attribute": "selected-instances",
+          "type": "Array<string>",
+          "default": "[]"
+        },
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "LogsApplicationViewState",
+          "default": "{\"type\":\"loadingInstances\"}"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-logs-application-view:date-range-change",
+          "description": "Fires the `range` whenever the `range` changes."
+        },
+        {
+          "name": "cc-logs-application-view:date-range-selection-change",
+          "description": "Fires the `range selection` whenever the `range selection` changes."
+        },
+        {
+          "name": "cc-logs-application-view:pause",
+          "description": "Fires when the pause button is clicked."
+        },
+        {
+          "name": "cc-logs-application-view:resume",
+          "description": "Fires when the resume button is clicked."
+        }
+      ]
+    },
+    {
+      "name": "cc-logs-control-beta",
+      "path": "./src/components/cc-logs-control/cc-logs-control.js",
+      "description": "A component adding visual controls over `<cc-logs>` component.\n\n## Details\n\nThis component is a wrapper around a `<cc-logs>` component and adds the ability for a user to toggle some options.\n\nControlled options are:\n\n* lines wrapping\n* palette scheme\n* strip ansi\n* date display\n* timezone\n* displayed metadata\n\nOptions are encapsulated into a `<cc-popover>` element.",
+      "attributes": [
+        {
+          "name": "date-display",
+          "type": "DateDisplay",
+          "default": "\"datetime-iso\""
+        },
+        {
+          "name": "follow",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "limit",
+          "type": "number|null"
+        },
+        {
+          "name": "logs",
+          "type": "Array<Log>",
+          "default": "[]"
+        },
+        {
+          "name": "message-filter",
+          "type": "string|null"
+        },
+        {
+          "name": "message-filter-mode",
+          "type": "LogMessageFilterMode",
+          "default": "\"loose\""
+        },
+        {
+          "name": "metadataDisplay",
+          "type": "{[key: string]: LogsMetadataDisplay}",
+          "default": "{}"
+        },
+        {
+          "name": "metadata-filter",
+          "type": "Array<MetadataFilter>",
+          "default": "[]"
+        },
+        {
+          "name": "metadataRenderers",
+          "type": "{[key: string]: MetadataRenderer}",
+          "default": "{}"
+        },
+        {
+          "name": "palette",
+          "type": "LogsControlPalette",
+          "default": "\"default\""
+        },
+        {
+          "name": "strip-ansi",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "timezone",
+          "type": "Timezone",
+          "default": "\"UTC\""
+        },
+        {
+          "name": "wrap-lines",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "dateDisplay",
+          "attribute": "date-display",
+          "type": "DateDisplay",
+          "default": "\"datetime-iso\""
+        },
+        {
+          "name": "follow",
+          "attribute": "follow",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "limit",
+          "attribute": "limit",
+          "type": "number|null"
+        },
+        {
+          "name": "logs",
+          "attribute": "logs",
+          "type": "Array<Log>",
+          "default": "[]"
+        },
+        {
+          "name": "messageFilter",
+          "attribute": "message-filter",
+          "type": "string|null"
+        },
+        {
+          "name": "messageFilterMode",
+          "attribute": "message-filter-mode",
+          "type": "LogMessageFilterMode",
+          "default": "\"loose\""
+        },
+        {
+          "name": "metadataDisplay",
+          "attribute": "metadataDisplay",
+          "type": "{[key: string]: LogsMetadataDisplay}",
+          "default": "{}"
+        },
+        {
+          "name": "metadataFilter",
+          "attribute": "metadata-filter",
+          "type": "Array<MetadataFilter>",
+          "default": "[]"
+        },
+        {
+          "name": "metadataRenderers",
+          "attribute": "metadataRenderers",
+          "type": "{[key: string]: MetadataRenderer}",
+          "default": "{}"
+        },
+        {
+          "name": "palette",
+          "attribute": "palette",
+          "type": "LogsControlPalette",
+          "default": "\"default\""
+        },
+        {
+          "name": "stripAnsi",
+          "attribute": "strip-ansi",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "timezone",
+          "attribute": "timezone",
+          "type": "Timezone",
+          "default": "\"UTC\""
+        },
+        {
+          "name": "wrapLines",
+          "attribute": "wrap-lines",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-logs-control:option-change",
+          "description": "Fires a `LogsControlOption` whenever an `option` changes."
+        }
+      ],
+      "slots": [
+        {
+          "name": "header",
+          "description": "The content of the space on top of the logs block."
+        }
+      ]
+    },
+    {
+      "name": "cc-logs-instances-beta",
+      "path": "./src/components/cc-logs-instances/cc-logs-instances.js",
+      "description": "Allows users to select some instances.\n\n* When using `live` mode, instances are grouped by logical state.\n* When using `cold` mode, instances are grouped by deployment.",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "LogsInstancesState",
+          "default": "{\"state\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "LogsInstancesState",
+          "default": "{\"state\":\"loading\"}"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-logs-instances:selection-change",
+          "description": "Fires whenever the instances selection changes"
+        }
+      ]
+    },
+    {
+      "name": "cc-logs-beta",
+      "path": "./src/components/cc-logs/cc-logs.js",
+      "description": "A component displaying lines of log.\n\nA line of log is made of:\n\n* an id\n* a date\n* a message\n* some metadata\n\n## Details\n\nThe component gives the ability to:\n\n* Display a huge amount of logs by using a <a href=\"https://github.com/lit/lit/tree/main/packages/labs/virtualizer\">scroll virtualizer</a>.\n* Limit the amount of logs to be displayed.\n* Filter the logs by metadata.\n* Wrap the long lines.\n* Customize the format of the date (by default, it is displayed using <a href=\"https://www.w3.org/TR/NOTE-datetime\">ISO-8601</a> as UTC).\n* Hide the date.\n* Customize the way the metadata are displayed.\n* Follow the logs (force scroll to bottom) while some new logs are added.\n* Select lines of logs in order to copy them into clipboard.\n* Navigate using keyboard.\n* Colorize the log message using ANSI format specification.\n* Customize the ANSI color palette.\n\n## Follow\n\nThe follow property gives the ability to force the scroll to bottom while logs are added to the component.\nThis property still allows users to scroll up to stop following logs.\nThe follow behavior is automatically reactivated everytime users scroll to the bottom.\nThe `cc-logs:followChange` event is fired whenever the follow property changes because of a user interaction.\n\n## Selection\n\nA gutter on the left allows users to select logs.\nSelecting logs allows user to copy (using a button or the `Ctrl+C` keystroke).\nThere are two ways to select logs:\n\nThe first one is by clicking on the select button in the gutter next to a line of log.\nUsers can then use `Ctrl` and `Shift` modifier keys to select multiple lines.\n\nAnother way is by dragging with the mouse.\nThe drag movement is initiated when the user presses the mouse button inside the gutter.\nIt ends when the user releases the button.\n\n## Keyboard navigation\n\nUsers can navigate with keyboard through the list of logs:\n\n* `ArrowUp` and `ArrowDow` to move the focus from a select button to another.\n* `Space` or `Enter` to activate the focused select button.\n* `Escape` to clear the selection.\n* `Ctrl+C` to copy the selection to clipboard.\n\nNote that the default behavior of the `ArrowUp` and `ArrowDown` keys has been overridden (by default these keys scrolls).\nBut users still have the `PageUp` and `PageDown` keys to scroll.\n\n## ANSI support\n\nThe component supports ANSI format for log messages. It supports:\n\n* Effects\n  * `ESC[0m`: reset\n  * `ESC[1m`: bold\n  * `ESC[2m`: dim\n  * `ESC[3m`: italic\n  * `ESC[4m`: underline\n  * `ESC[7m`: inverse\n  * `ESC[8m`: hidden\n  * `ESC[9m`: strikethrough\n* 16 foreground and background Colors\n  * `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan`, `white`\n  * `bright-black`, `bright-red`, `bright-green`, `bright-yellow`, `bright-blue`, `bright-magenta`, `bright-cyan`, `bright-white`\n\n## Limiting\n\nSetting a limit is encouraged in order to cap the memory usage.\nThe limit is applied directly on the appended logs.\nSo if you have a limit of 50000, when appending the 50001st log, the first log will be discarded.\nNote that the limit is applied before the filter.\n\n## Public API\n\n### Scrolling to bottom\n\nThe component provides a method to scroll down to the bottom:\n```javascript\ndocument.querySelector('cc-logs').scrollToBottom();\n```\n\n### Appending logs\n\nThe component provides a method to append logs:\n\n```javascript\nconst logs = [log1, log2, log3];\ndocument.querySelector('cc-logs').appendLogs(logs);\n```\n\n## Accessibility\n\nThis component is **not compatible with screen readers** because it relies on a virtualizer.\nThis virtualizer allows the component to display a huge amount of logs without slowing or even crashing the browser.\n\nOnly the visible lines of logs and a few more are actually present within the DOM.\nThe rest of the logs lives in memory and is added dynamically with JavaScript.\n\nThe component is still usable with screen readers but when it comes to scrolling back to older logs, the experience won't be very good.\nThis is why **developers implementing this component must make sure that logs can be downloaded from the same page**.\nThis is a decent solution to mitigate the issue as it allows users to view their logs with tools they are used to (their IDE for instance).\n\nOn the contrary, the component is fully compatible with keyboard only navigation. For more information see the `Keyboard navigation` section.",
+      "attributes": [
+        {
+          "name": "follow",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "limit",
+          "type": "number|null"
+        },
+        {
+          "name": "logs",
+          "type": "Array<Log>",
+          "default": "[]"
+        },
+        {
+          "name": "message-filter",
+          "type": "string|null"
+        },
+        {
+          "name": "message-filter-mode",
+          "type": "LogMessageFilterMode",
+          "default": "\"loose\""
+        },
+        {
+          "name": "metadata-filter",
+          "type": "Array<MetadataFilter>",
+          "default": "[]"
+        },
+        {
+          "name": "metadataRenderers",
+          "type": "{[key: string]: MetadataRenderer}|null"
+        },
+        {
+          "name": "strip-ansi",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "date-display",
+          "type": "DateDisplay",
+          "default": "\"datetime-iso\""
+        },
+        {
+          "name": "timezone",
+          "type": "Timezone",
+          "default": "\"UTC\""
+        },
+        {
+          "name": "wrap-lines",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "follow",
+          "attribute": "follow",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "limit",
+          "attribute": "limit",
+          "type": "number|null"
+        },
+        {
+          "name": "logs",
+          "attribute": "logs",
+          "type": "Array<Log>",
+          "default": "[]"
+        },
+        {
+          "name": "messageFilter",
+          "attribute": "message-filter",
+          "type": "string|null"
+        },
+        {
+          "name": "messageFilterMode",
+          "attribute": "message-filter-mode",
+          "type": "LogMessageFilterMode",
+          "default": "\"loose\""
+        },
+        {
+          "name": "metadataFilter",
+          "attribute": "metadata-filter",
+          "type": "Array<MetadataFilter>",
+          "default": "[]"
+        },
+        {
+          "name": "metadataRenderers",
+          "attribute": "metadataRenderers",
+          "type": "{[key: string]: MetadataRenderer}|null"
+        },
+        {
+          "name": "stripAnsi",
+          "attribute": "strip-ansi",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "dateDisplay",
+          "attribute": "date-display",
+          "type": "DateDisplay",
+          "default": "\"datetime-iso\""
+        },
+        {
+          "name": "timezone",
+          "attribute": "timezone",
+          "type": "Timezone",
+          "default": "\"UTC\""
+        },
+        {
+          "name": "wrapLines",
+          "attribute": "wrap-lines",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-logs:followChange",
+          "description": "Fires whenever the follow changed because of a user interaction"
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-color-ansi-foreground",
+          "description": "The foreground color",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-color-ansi-background",
+          "description": "The background color",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-color-ansi-background-hover",
+          "description": "The background color when mouse is hover a log",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-color-ansi-background-selected",
+          "description": "The background color when log is selected",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-color-ansi-black",
+          "description": "The black color",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-color-ansi-red",
+          "description": "The red color",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-color-ansi-green",
+          "description": "The green color",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-color-ansi-yellow",
+          "description": "The yellow color",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-color-ansi-blue",
+          "description": "The blue color",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-color-ansi-magenta",
+          "description": "The magenta color",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-color-ansi-cyan",
+          "description": "The cyan color",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-color-ansi-white",
+          "description": "The white color",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-color-ansi-bright-black",
+          "description": "The bright black color",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-color-ansi-bright-red",
+          "description": "The bright red color",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-color-ansi-bright-green",
+          "description": "The bright green color",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-color-ansi-bright-yellow",
+          "description": "The bright yellow color",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-color-ansi-bright-blue",
+          "description": "The bright blue color",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-color-ansi-bright-magenta",
+          "description": "The bright magenta color",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-color-ansi-bright-cyan",
+          "description": "The bright cyan color",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-color-ansi-bright-white",
+          "description": "The bright white color",
+          "type": "Color"
+        }
+      ]
+    },
+    {
+      "name": "cc-logsmap",
+      "path": "./src/components/cc-logsmap/cc-logsmap.js",
+      "description": "World map of access logs with two modes: blinking dots or heatmap.\n\n## Details\n\n* This component wraps `<cc-map>` with a clickable toggle for the mode.\n* It has predefined i18n label for the toggle and the legend (to display logs).\n* The legend is contextualized to an organization or an app so you MUST set either `orgaName` or `appName` but not both.\n* The component has a default height of 15em and a default width 20em but this can be overridden with CSS.",
+      "attributes": [
+        {
+          "name": "app-name",
+          "type": "string"
+        },
+        {
+          "name": "available-modes",
+          "type": "MapModeType[]",
+          "default": "[\"points\",\"heatmap\"]"
+        },
+        {
+          "name": "center-lat",
+          "type": "number",
+          "default": "48.9"
+        },
+        {
+          "name": "center-lon",
+          "type": "number",
+          "default": "2.4"
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "heatmap-points",
+          "type": "HeatmapPoint[]|null"
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "mode",
+          "type": "MapModeType",
+          "default": "\"points\""
+        },
+        {
+          "name": "orga-name",
+          "type": "string|null"
+        },
+        {
+          "name": "view-zoom",
+          "type": "number",
+          "default": "2"
+        }
+      ],
+      "properties": [
+        {
+          "name": "appName",
+          "attribute": "app-name",
+          "type": "string"
+        },
+        {
+          "name": "availableModes",
+          "attribute": "available-modes",
+          "type": "MapModeType[]",
+          "default": "[\"points\",\"heatmap\"]"
+        },
+        {
+          "name": "centerLat",
+          "attribute": "center-lat",
+          "type": "number",
+          "default": "48.9"
+        },
+        {
+          "name": "centerLon",
+          "attribute": "center-lon",
+          "type": "number",
+          "default": "2.4"
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "heatmapPoints",
+          "attribute": "heatmap-points",
+          "type": "HeatmapPoint[]|null"
+        },
+        {
+          "name": "loading",
+          "attribute": "loading",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "mode",
+          "attribute": "mode",
+          "type": "MapModeType",
+          "default": "\"points\""
+        },
+        {
+          "name": "orgaName",
+          "attribute": "orga-name",
+          "type": "string|null"
+        },
+        {
+          "name": "viewZoom",
+          "attribute": "view-zoom",
+          "type": "number",
+          "default": "2"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-logsmap:mode",
+          "description": "Fires the selected mode whenever the toggle changes."
+        }
+      ]
+    },
+    {
+      "name": "cc-map-marker-dot",
+      "path": "./src/components/cc-map-marker-dot/cc-map-marker-dot.js",
+      "description": "A map marker displayed as a blinking dot with color grading depending on the value of `count`.\n\n## Technical details\n\n* `size`, `anchor` and `tooltip` are readonly.",
+      "attributes": [
+        {
+          "name": "anchor",
+          "type": "Array",
+          "default": "[8,8]"
+        },
+        {
+          "name": "count",
+          "type": "number|null"
+        },
+        {
+          "name": "size",
+          "type": "Array",
+          "default": "[16,16]"
+        },
+        {
+          "name": "tooltip",
+          "type": "Array",
+          "default": "[0,0]"
+        }
+      ],
+      "properties": [
+        {
+          "name": "anchor",
+          "attribute": "anchor",
+          "type": "Array",
+          "default": "[8,8]"
+        },
+        {
+          "name": "count",
+          "attribute": "count",
+          "type": "number|null"
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "Array",
+          "default": "[16,16]"
+        },
+        {
+          "name": "tooltip",
+          "attribute": "tooltip",
+          "type": "Array",
+          "default": "[0,0]"
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-map-marker-dot-size",
+          "description": "The size of the dot (defaults to 6px).",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "cc-map-marker-server",
+      "path": "./src/components/cc-map-marker-server/cc-map-marker-server.js",
+      "description": "A map marker displayed as a server inside a bubble with blinking dots for LEDs when state is \"selected\".\n\n## Technical details\n\n* `size`, `anchor` and `tooltip` are readonly.",
+      "attributes": [
+        {
+          "name": "anchor",
+          "type": "Array",
+          "default": "[16,32]"
+        },
+        {
+          "name": "size",
+          "type": "Array",
+          "default": "[32,32]"
+        },
+        {
+          "name": "state",
+          "type": "MarkerStateType",
+          "default": "\"default\""
+        },
+        {
+          "name": "tooltip",
+          "type": "Array",
+          "default": "[0,-32]"
+        }
+      ],
+      "properties": [
+        {
+          "name": "anchor",
+          "attribute": "anchor",
+          "type": "Array",
+          "default": "[16,32]"
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "Array",
+          "default": "[32,32]"
+        },
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "MarkerStateType",
+          "default": "\"default\""
+        },
+        {
+          "name": "tooltip",
+          "attribute": "tooltip",
+          "type": "Array",
+          "default": "[0,-32]"
+        }
+      ]
+    },
+    {
+      "name": "cc-map",
+      "path": "./src/components/cc-map/cc-map.js",
+      "description": "World map with two modes: positioned markers or heatmap.\n\n## Details\n\n* The component has a default height of 15em and a default width 20em but this can be overridden with CSS.\n* When using `points`, you need to specify which HTML tag should be used to create and display the marker.\n* The marker DOM element should expose `size`, `anchor` and `tooltip` to help this component place the marker and tooltip correctly on the map.\n* When using `points`, you can specify some text for the tooltip but you can also specify which HTML tag to use to create and display the tooltip.",
+      "attributes": [
+        {
+          "name": "points",
+          "type": "array"
+        },
+        {
+          "name": "center-lat",
+          "type": "number",
+          "default": "48.9"
+        },
+        {
+          "name": "center-lon",
+          "type": "number",
+          "default": "2.4"
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "heatmap-points",
+          "type": "HeatmapPoint[]|null"
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "mode",
+          "type": "MapModeType",
+          "default": "\"points\""
+        },
+        {
+          "name": "view-zoom",
+          "type": "number",
+          "default": "2"
+        }
+      ],
+      "properties": [
+        {
+          "name": "points",
+          "attribute": "points",
+          "type": "array"
+        },
+        {
+          "name": "centerLat",
+          "attribute": "center-lat",
+          "type": "number",
+          "default": "48.9"
+        },
+        {
+          "name": "centerLon",
+          "attribute": "center-lon",
+          "type": "number",
+          "default": "2.4"
+        },
+        {
+          "name": "error",
+          "attribute": "error",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "heatmapPoints",
+          "attribute": "heatmap-points",
+          "type": "HeatmapPoint[]|null"
+        },
+        {
+          "name": "loading",
+          "attribute": "loading",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "mode",
+          "attribute": "mode",
+          "type": "MapModeType",
+          "default": "\"points\""
+        },
+        {
+          "name": "viewZoom",
+          "attribute": "view-zoom",
+          "type": "number",
+          "default": "2"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-map:marker-click",
+          "description": "Fires the corresponding point whenever a marker is clicked."
+        },
+        {
+          "name": "cc-map:marker-enter",
+          "description": "Fires the corresponding point whenever a marker is entered by the mouse."
+        },
+        {
+          "name": "cc-map:marker-leave",
+          "description": "Fires the corresponding point whenever a marker is left by the mouse."
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "The legend and/or details for the map (displayed at the bottom)."
+        }
+      ]
+    },
+    {
+      "name": "cc-matomo-info",
+      "path": "./src/components/cc-matomo-info/cc-matomo-info.js",
+      "description": "A component to display information (Documentation, access, links, ...) for a Matomo service.",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "MatomoInfoState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "MatomoInfoState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ]
+    },
+    {
+      "name": "cc-notice",
+      "path": "./src/components/cc-notice/cc-notice.js",
+      "description": "A component to display a block with a title and a message with different modes (info, success, danger, warning).\n\nYou can also close it and override the message or the icon if needed.",
+      "attributes": [
+        {
+          "name": "closeable",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "heading",
+          "type": "string|null"
+        },
+        {
+          "name": "intent",
+          "type": "NoticeIntent",
+          "default": "\"info\""
+        },
+        {
+          "name": "message",
+          "type": "string"
+        },
+        {
+          "name": "no-icon",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "closeable",
+          "attribute": "closeable",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "heading",
+          "attribute": "heading",
+          "type": "string|null"
+        },
+        {
+          "name": "intent",
+          "attribute": "intent",
+          "type": "NoticeIntent",
+          "default": "\"info\""
+        },
+        {
+          "name": "message",
+          "attribute": "message",
+          "type": "string"
+        },
+        {
+          "name": "noIcon",
+          "attribute": "no-icon",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-notice:dismiss",
+          "description": "Fires to inform that the notice should be dismissed."
+        }
+      ],
+      "slots": [
+        {
+          "name": "icon",
+          "description": "Icon slot to override the default one provided."
+        },
+        {
+          "name": "message",
+          "description": "Message slot to override the message if you want more than just a short text."
+        }
+      ]
+    },
+    {
+      "name": "cc-orga-member-card",
+      "path": "./src/components/cc-orga-member-card/cc-orga-member-card.js",
+      "description": "A component showing information about a member from a given organisation.\n\nWith the right authorisations:\n- This component provides a way to delete the member from the organisation.\n- This component provides a way to edit the role of the member within a given organisation.\n\n## Technical Details\n\nThis component heavily relies on `cc-stretch` to make sure all cards look the same whatever the role and MFA status may be.\nThis component also heavily relies on CSS `grid` and the `ResizeController` to switch from a \"table\" like design to a card design when the card width shrinks.",
+      "attributes": [
+        {
+          "name": "authorisations",
+          "type": "Authorisations",
+          "default": "{\"edit\":false,\"delete\":false}"
+        },
+        {
+          "name": "member",
+          "type": "OrgaMemberCardState",
+          "default": "{\"state\":\"loaded\",\"id\":\"\",\"email\":\"\",\"role\":\"DEVELOPER\",\"isMfaEnabled\":false,\"isCurrentUser\":false}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "authorisations",
+          "attribute": "authorisations",
+          "type": "Authorisations",
+          "default": "{\"edit\":false,\"delete\":false}"
+        },
+        {
+          "name": "member",
+          "attribute": "member",
+          "type": "OrgaMemberCardState",
+          "default": "{\"state\":\"loaded\",\"id\":\"\",\"email\":\"\",\"role\":\"DEVELOPER\",\"isMfaEnabled\":false,\"isCurrentUser\":false}"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-orga-member-card:toggle-editing",
+          "description": "Fires the `id` of the member related to the card and the new state (`editing` or `loaded`) to specify when card is in edit mode or not.\nThis allows the list component to close all other cards in edit mode to leave only one in edit mode at once."
+        },
+        {
+          "name": "cc-orga-member-card:delete",
+          "description": "Fires when the user clicks on a remove member button."
+        },
+        {
+          "name": "cc-orga-member-card:leave",
+          "description": "Fires when the user clicks on a leave button (only possible if `isCurrentUser = true`).\nWe don't fire a delete event so that it can be processed differently by the smart component (leaving the org means the user has to be redirected)."
+        },
+        {
+          "name": "cc-orga-member-card:update",
+          "description": "Fires when the user clicks on a validate button after editing member role."
+        }
+      ]
+    },
+    {
+      "name": "cc-orga-member-list",
+      "path": "./src/components/cc-orga-member-list/cc-orga-member-list.js",
+      "description": "A component showing the list of members belonging to a given organisation.\n\nThe list can be filtered by name or email.\nOne can also choose to only show users with Two-Factor Auth (2FA) disabled.\n\nDepending on the current user authorisations:\n\n - The current user may remove members,\n - The current user may edit the role of members.",
+      "attributes": [
+        {
+          "name": "authorisations",
+          "type": "Authorisations",
+          "default": "{\"invite\":false,\"edit\":false,\"delete\":false}"
+        },
+        {
+          "name": "members",
+          "type": "OrgaMemberListState",
+          "default": "{\"state\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "authorisations",
+          "attribute": "authorisations",
+          "type": "Authorisations",
+          "default": "{\"invite\":false,\"edit\":false,\"delete\":false}"
+        },
+        {
+          "name": "inviteMemberFormState",
+          "type": "InviteMemberFormState",
+          "default": "{\"type\":\"idle\"}"
+        },
+        {
+          "name": "members",
+          "attribute": "members",
+          "type": "OrgaMemberListState",
+          "default": "{\"state\":\"loading\"}"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-orga-member-list:invite",
+          "description": "Fires the `email` and `role` information inside an object whenever the invite button is clicked."
+        },
+        {
+          "name": "cc-orga-member-list:leave",
+          "description": "Fires when the user clicks on the leave button inside the Danger Zone or inside their own member card."
+        },
+        {
+          "name": "cc-orga-member-list:update",
+          "description": "Fires when the user validates the editing of a member within a member card, only if the update is not related to the last admin of the org."
+        }
+      ]
+    },
+    {
+      "name": "cc-overview",
+      "path": "./src/components/cc-overview/cc-overview.js",
+      "description": "A display only component (just HTML+CSS) to layout heads, a main and several tiles.\n\n## Details\n\n* The head components must have the `head` CSS class, they will be displayed at the top.\n* If you use more than one `head`, you must specify how many with `--cc-overview-head-count`.\n* The main component must have the `main` CSS class, it will be displayed at the bottom left (depending on the number of columns).\n* The tile components will be displayed in a 1 to 4 columns grid layout, below the header and around the main.\n* The number of columns is variable and depends directly on the width of the component (with some help from the `ResizeController`).\n* `mode=\"app\"` for 6 tiles\n* `mode=\"orga\"` for 2 tiles",
+      "attributes": [
+        {
+          "name": "mode",
+          "type": "OverviewModeType|null"
+        }
+      ],
+      "properties": [
+        {
+          "name": "mode",
+          "attribute": "mode",
+          "type": "OverviewModeType|null"
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "Put your `.head`, tiles and `.main` components here."
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-overview-head-count",
+          "description": "How many `.head` elements marked are in the slot  (defaults: `1`).",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "cc-popover",
+      "path": "./src/components/cc-popover/cc-popover.js",
+      "description": "A component displaying a floating content next to a button element.\n\n## Details\n\n### Button element\n\nThe `button` is the element that will trigger the display of the floating content.\nThis element is a `<cc-button>`. The `cc-button:click` event will trigger the popover toggle.\n\n### Popover content\n\nThe `content` is the element that will be displayed next to the `button` element.\nThis element must be placed in the default slot.\nIt will be placed according to the `position` property.\n\n## Accessibility\n\nThe component places necessary aria attribute on the `button` element:\n\n* `aria-expanded`: set to `true` when popover is open, `false` when it is closed.\n\nWhen the popover is open, pressing `esc` will close the popover and focus the `button` element.\n\n## Usage\n\n```html\n<cc-popover>\n  <span slot=\"button-content\">Click me</span>\n  <div>This is a content to be displayed when button is clicked.</div>\n</cc-popover>\n```",
+      "attributes": [
+        {
+          "name": "a11y-name",
+          "type": "string|null"
+        },
+        {
+          "name": "hide-text",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "icon",
+          "type": "IconModel|null"
+        },
+        {
+          "name": "is-open",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "position",
+          "type": "PopoverPosition",
+          "default": "\"bottom-left\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "a11yName",
+          "attribute": "a11y-name",
+          "type": "string|null"
+        },
+        {
+          "name": "hideText",
+          "attribute": "hide-text",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "icon",
+          "attribute": "icon",
+          "type": "IconModel|null"
+        },
+        {
+          "name": "isOpen",
+          "attribute": "is-open",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "position",
+          "attribute": "position",
+          "type": "PopoverPosition",
+          "default": "\"bottom-left\""
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-popover:open",
+          "description": "Fires whenever the popover is opened."
+        },
+        {
+          "name": "cc-popover:close",
+          "description": "Fires whenever the popover is closed."
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "The area containing the content of the popover."
+        },
+        {
+          "name": "button-content",
+          "description": "The area containing the button content."
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-popover-gap",
+          "description": "Sets the gap between the button and the floating area (default 0.4em).",
+          "type": "Size"
+        },
+        {
+          "name": "--cc-popover-z-index",
+          "description": "Sets the z-index of the floating content (defaults: `999`).",
+          "type": "Number"
+        },
+        {
+          "name": "--cc-popover-trigger-button-width",
+          "description": "Sets the width of the trigger button (defaults: `inherit`).",
+          "type": "Width"
+        }
+      ]
+    },
+    {
+      "name": "cc-pricing-estimation",
+      "path": "./src/components/cc-pricing-estimation/cc-pricing-estimation.js",
+      "description": "A component to display a list of selected product plans with the ability to change their quantity or remove them from the list.",
+      "attributes": [
+        {
+          "name": "currencies",
+          "type": "Currency[]",
+          "default": "[{\"code\":\"EUR\",\"changeRate\":1}]"
+        },
+        {
+          "name": "is-toggle-enabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "selected-currency",
+          "type": "Currency",
+          "default": "{\"code\":\"EUR\",\"changeRate\":1}"
+        },
+        {
+          "name": "selected-plans",
+          "type": "Plan[]",
+          "default": "[]"
+        },
+        {
+          "name": "selected-temporality",
+          "type": "Temporality",
+          "default": "{\"type\":\"30-days\",\"digits\":2}"
+        },
+        {
+          "name": "temporalities",
+          "type": "Temporality[]",
+          "default": "[{\"type\":\"30-days\",\"digits\":2}]"
+        }
+      ],
+      "properties": [
+        {
+          "name": "currencies",
+          "attribute": "currencies",
+          "type": "Currency[]",
+          "default": "[{\"code\":\"EUR\",\"changeRate\":1}]"
+        },
+        {
+          "name": "isToggleEnabled",
+          "attribute": "is-toggle-enabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "selectedCurrency",
+          "attribute": "selected-currency",
+          "type": "Currency",
+          "default": "{\"code\":\"EUR\",\"changeRate\":1}"
+        },
+        {
+          "name": "selectedPlans",
+          "attribute": "selected-plans",
+          "type": "Plan[]",
+          "default": "[]"
+        },
+        {
+          "name": "selectedTemporality",
+          "attribute": "selected-temporality",
+          "type": "Temporality",
+          "default": "{\"type\":\"30-days\",\"digits\":2}"
+        },
+        {
+          "name": "temporalities",
+          "attribute": "temporalities",
+          "type": "Temporality[]",
+          "default": "[{\"type\":\"30-days\",\"digits\":2}]"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-pricing-estimation:change-quantity",
+          "description": "Fires the plan with a modified quantity whenever the quantity on the input changes."
+        },
+        {
+          "name": "cc-pricing-estimation:change-currency",
+          "description": "Fires the `currency` whenever the currency selection changes."
+        },
+        {
+          "name": "cc-pricing-estimation:change-temporality",
+          "description": "Fires the `temporality` whenever the temporality selection changes."
+        },
+        {
+          "name": "cc-pricing-estimation:delete-plan",
+          "description": "Fires the plan whenever a delete button is clicked or when the quantity reaches 0."
+        }
+      ],
+      "slots": [
+        {
+          "name": "footer",
+          "description": "Content at the bottom of the component. Typically used to insert links and call to action elements."
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-pricing-estimation-counter-bg",
+          "description": "Sets the background (color or gradient) of the product counter (defaults: `var(--cc-color-bg-strong)`).",
+          "type": "Background"
+        },
+        {
+          "name": "--cc-pricing-hovered-color",
+          "description": "Sets the text color used on hover (defaults: `purple`).",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-pricing-estimation-counter-color",
+          "description": "Sets the text color of the product counter (defaults: `var(--cc-color-text-inverted)`).",
+          "type": "Color"
+        }
+      ]
+    },
+    {
+      "name": "cc-pricing-header",
+      "path": "./src/components/cc-pricing-header/cc-pricing-header.js",
+      "description": "A component that allows the selection of a temporality, a currency and a zone.",
+      "attributes": [
+        {
+          "name": "currencies",
+          "type": "Currency[]",
+          "default": "[{\"code\":\"EUR\",\"changeRate\":1}]"
+        },
+        {
+          "name": "selected-currency",
+          "type": "Currency",
+          "default": "{\"code\":\"EUR\",\"changeRate\":1}"
+        },
+        {
+          "name": "selected-temporality",
+          "type": "Temporality",
+          "default": "{\"type\":\"30-days\",\"digits\":2}"
+        },
+        {
+          "name": "selected-zone-id",
+          "type": "string|null"
+        },
+        {
+          "name": "temporalities",
+          "type": "Temporality[]",
+          "default": "[{\"type\":\"30-days\",\"digits\":2}]"
+        },
+        {
+          "name": "state",
+          "type": "PricingHeaderState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "currencies",
+          "attribute": "currencies",
+          "type": "Currency[]",
+          "default": "[{\"code\":\"EUR\",\"changeRate\":1}]"
+        },
+        {
+          "name": "selectedCurrency",
+          "attribute": "selected-currency",
+          "type": "Currency",
+          "default": "{\"code\":\"EUR\",\"changeRate\":1}"
+        },
+        {
+          "name": "selectedTemporality",
+          "attribute": "selected-temporality",
+          "type": "Temporality",
+          "default": "{\"type\":\"30-days\",\"digits\":2}"
+        },
+        {
+          "name": "selectedZoneId",
+          "attribute": "selected-zone-id",
+          "type": "string|null"
+        },
+        {
+          "name": "temporalities",
+          "attribute": "temporalities",
+          "type": "Temporality[]",
+          "default": "[{\"type\":\"30-days\",\"digits\":2}]"
+        },
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "PricingHeaderState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-pricing-header:change-currency",
+          "description": "Fires the `currency` whenever the currency selection changes."
+        },
+        {
+          "name": "cc-pricing-header:change-temporality",
+          "description": "Fires the `temporality` whenever the temporality selection changes."
+        },
+        {
+          "name": "cc-pricing-header:change-zone",
+          "description": "Fires the `zoneId` (zone name) whenever the zone selection changes."
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-pricing-hovered-color",
+          "description": "Sets the text color used on hover (defaults: `purple`).",
+          "type": "Color"
+        }
+      ]
+    },
+    {
+      "name": "cc-pricing-page",
+      "path": "./src/components/cc-pricing-page/cc-pricing-page.js",
+      "description": "A component used to make slotted pricing components communicate together.\n\n**Note:**\n\nThis component only contains a slot and it has no specific styling.\nThe goal of this component is to receive pricing components (using the default slot) and allow them to communicate together.\n\nTo do so, the component relies on a mutation observer that detects slotted pricing components and keeps refs of the corresponding DOM elements.\nIt listens to pricing related events and updates the relevant pricing DOM elements depending on the event.",
+      "attributes": [
+        {
+          "name": "selected-currency",
+          "type": "Currency",
+          "default": "{\"code\":\"EUR\",\"changeRate\":1}"
+        },
+        {
+          "name": "selected-plans",
+          "type": "SelectedPlans",
+          "default": "{}"
+        },
+        {
+          "name": "selected-temporality",
+          "type": "Temporality",
+          "default": "{\"type\":\"30-days\",\"digits\":2}"
+        },
+        {
+          "name": "selected-zone-id",
+          "type": "string",
+          "default": "\"par\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "selectedCurrency",
+          "attribute": "selected-currency",
+          "type": "Currency",
+          "default": "{\"code\":\"EUR\",\"changeRate\":1}"
+        },
+        {
+          "name": "selectedPlans",
+          "attribute": "selected-plans",
+          "type": "SelectedPlans",
+          "default": "{}"
+        },
+        {
+          "name": "selectedTemporality",
+          "attribute": "selected-temporality",
+          "type": "Temporality",
+          "default": "{\"type\":\"30-days\",\"digits\":2}"
+        },
+        {
+          "name": "selectedZoneId",
+          "attribute": "selected-zone-id",
+          "type": "string",
+          "default": "\"par\""
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "Use this slot to insert your pricing components and their related content (headings, descriptions, etc.)"
+        }
+      ]
+    },
+    {
+      "name": "cc-pricing-product-consumption",
+      "path": "./src/components/cc-pricing-product-consumption/cc-pricing-product-consumption.js",
+      "description": "A component to simulate pricing for products with consumption based pricing (Cellar, FS Buckets, Pulsar...).\n\n## Details\n\n* Interval prices are defined in \"euros / byte / 30 days\" or just \"euros / byte\" for timeless sections like traffic.\n* Interval ranges are defined in bytes.\n* To comply with `<cc-pricing-product>`, the price in the event `cc-pricing-product:add-plan` is in \"euros / 1 hour\".\n\n**Note:** This component relies on the `ResizeController` to change its layout with `600px` as a width breakpoint.",
+      "attributes": [
+        {
+          "name": "action",
+          "type": "ActionType",
+          "default": "\"add\""
+        },
+        {
+          "name": "currency",
+          "type": "Currency",
+          "default": "{\"code\":\"EUR\",\"changeRate\":1}"
+        },
+        {
+          "name": "product",
+          "type": "PricingProductConsumptionState",
+          "default": "{\"state\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "action",
+          "attribute": "action",
+          "type": "ActionType",
+          "default": "\"add\""
+        },
+        {
+          "name": "currency",
+          "attribute": "currency",
+          "type": "Currency",
+          "default": "{\"code\":\"EUR\",\"changeRate\":1}"
+        },
+        {
+          "name": "product",
+          "attribute": "product",
+          "type": "PricingProductConsumptionState",
+          "default": "{\"state\":\"loading\"}"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-pricing-product:add-plan",
+          "description": "Fires the plan whenever the \"add\" button is clicked."
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-pricing-hovered-color",
+          "description": "Sets the text color used on hover (defaults: `purple`).",
+          "type": "Color"
+        }
+      ]
+    },
+    {
+      "name": "cc-pricing-product",
+      "path": "./src/components/cc-pricing-product/cc-pricing-product.js",
+      "description": "A component to display product information: product plans, their features, their price (based on the given temporality and currency).\n\n## Details\n\nFeatures are characterics with values.\nFor instance the number of CPUs, the amount of RAM, etc.\n\nPlans are a set of features for a given product.\nFor instance, the XS plan of the NodeJS product consists of 1 CPU and 1 GB of RAM.\n\nTemporalities are time windows used to compute the price.\nFor instance, the price over 30 days or the price per second.\n\n* The plans are sorted by price.\n* If a plan has a feature that is not listed in `features`, it will be ignored.\n* If a feature has a `code` that is not supported, it will be ignored.\n\n**Note:** This component relies on the `resizeObserver` mixin to change its layout with `800px` as a width breakpoint.",
+      "attributes": [
+        {
+          "name": "action",
+          "type": "ActionType",
+          "default": "\"add\""
+        },
+        {
+          "name": "currency",
+          "type": "Currency",
+          "default": "{\"code\":\"EUR\",\"changeRate\":1}"
+        },
+        {
+          "name": "product",
+          "type": "PricingProductState",
+          "default": "{\"state\":\"loading\"}"
+        },
+        {
+          "name": "temporalities",
+          "type": "Temporality[]",
+          "default": "[{\"type\":\"30-days\",\"digits\":2}]"
+        }
+      ],
+      "properties": [
+        {
+          "name": "action",
+          "attribute": "action",
+          "type": "ActionType",
+          "default": "\"add\""
+        },
+        {
+          "name": "currency",
+          "attribute": "currency",
+          "type": "Currency",
+          "default": "{\"code\":\"EUR\",\"changeRate\":1}"
+        },
+        {
+          "name": "product",
+          "attribute": "product",
+          "type": "PricingProductState",
+          "default": "{\"state\":\"loading\"}"
+        },
+        {
+          "name": "temporalities",
+          "attribute": "temporalities",
+          "type": "Temporality[]",
+          "default": "[{\"type\":\"30-days\",\"digits\":2}]"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-pricing-product:add-plan",
+          "description": "Fires the plan whenever a \"plus\" button is clicked."
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-pricing-hovered-color",
+          "description": "Sets the text color used on hover (defaults: `purple`).",
+          "type": "Color"
+        }
+      ]
+    },
+    {
+      "name": "cc-product-card",
+      "path": "./src/components/cc-product-card/cc-product-card.js",
+      "description": "A component displaying some information about a product in a card.",
+      "attributes": [
+        {
+          "name": "description",
+          "type": "string|null"
+        },
+        {
+          "name": "icon-url",
+          "type": "string|null"
+        },
+        {
+          "name": "keywords",
+          "type": "Keyword[]",
+          "default": "[]"
+        },
+        {
+          "name": "name",
+          "type": "string|null"
+        },
+        {
+          "name": "url",
+          "type": "string|null"
+        }
+      ],
+      "properties": [
+        {
+          "name": "description",
+          "attribute": "description",
+          "type": "string|null"
+        },
+        {
+          "name": "iconUrl",
+          "attribute": "icon-url",
+          "type": "string|null"
+        },
+        {
+          "name": "keywords",
+          "attribute": "keywords",
+          "type": "Keyword[]",
+          "default": "[]"
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "type": "string|null"
+        },
+        {
+          "name": "url",
+          "attribute": "url",
+          "type": "string|null"
+        }
+      ]
+    },
+    {
+      "name": "cc-product-list",
+      "path": "./src/components/cc-product-list/cc-product-list.js",
+      "description": "A component that displays a list of products in sections and allows to search and filter through it.",
+      "attributes": [
+        {
+          "name": "category-filter",
+          "type": "string|null"
+        },
+        {
+          "name": "products-by-categories",
+          "type": "ProductsCategory[]",
+          "default": "[]"
+        },
+        {
+          "name": "text-filter",
+          "type": "string",
+          "default": "\"\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "categoryFilter",
+          "attribute": "category-filter",
+          "type": "string|null"
+        },
+        {
+          "name": "productsByCategories",
+          "attribute": "products-by-categories",
+          "type": "ProductsCategory[]",
+          "default": "[]"
+        },
+        {
+          "name": "textFilter",
+          "attribute": "text-filter",
+          "type": "string",
+          "default": "\"\""
+        }
+      ]
+    },
+    {
+      "name": "cc-select",
+      "path": "./src/components/cc-select/cc-select.js",
+      "description": "A component wrapping native select element and its label.\n\nCaution:\n\n  * Setting an empty / undefined value displays a `<select>` element with no selected value unless a placeholder is set.\n  * Setting a value that does not match any option displays a `<select>` element with no selected value.",
+      "attributes": [
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "inline",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "label",
+          "type": "string|null"
+        },
+        {
+          "name": "options",
+          "type": "Option[]|[]",
+          "default": "[]"
+        },
+        {
+          "name": "placeholder",
+          "type": "string|null"
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "reset-value",
+          "type": "string|null",
+          "default": "\"\""
+        },
+        {
+          "name": "value",
+          "type": "string|null"
+        },
+        {
+          "name": "error-message",
+          "type": "ErrorMessage"
+        },
+        {
+          "name": "name",
+          "type": "string|null"
+        }
+      ],
+      "properties": [
+        {
+          "name": "reactiveValidationProperties",
+          "type": "string[]",
+          "default": "[\"required\",\"options\"]"
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "inline",
+          "attribute": "inline",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "label",
+          "attribute": "label",
+          "type": "string|null"
+        },
+        {
+          "name": "options",
+          "attribute": "options",
+          "type": "Option[]|[]",
+          "default": "[]"
+        },
+        {
+          "name": "placeholder",
+          "attribute": "placeholder",
+          "type": "string|null"
+        },
+        {
+          "name": "required",
+          "attribute": "required",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "resetValue",
+          "attribute": "reset-value",
+          "type": "string|null",
+          "default": "\"\""
+        },
+        {
+          "name": "value",
+          "attribute": "value",
+          "type": "string|null"
+        },
+        {
+          "name": "inlineValidity",
+          "description": "Returns a `Validity` instance that represents the validity state of this element.",
+          "type": "Validity"
+        },
+        {
+          "name": "willValidate",
+          "description": "[object Object],[object Object]",
+          "type": "boolean"
+        },
+        {
+          "name": "validity",
+          "description": "[object Object],[object Object]",
+          "type": "ValidityState"
+        },
+        {
+          "name": "validationMessage",
+          "description": "[object Object],[object Object],[object Object],[object Object]",
+          "type": "string"
+        },
+        {
+          "name": "customErrorMessages",
+          "type": "ErrorMessageMap"
+        },
+        {
+          "name": "customValidator",
+          "type": "Validator"
+        },
+        {
+          "name": "errorMessage",
+          "attribute": "error-message",
+          "type": "ErrorMessage"
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "type": "string|null"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-select:input",
+          "description": "Fires the `value` whenever the `value` changes."
+        }
+      ],
+      "slots": [
+        {
+          "name": "help",
+          "description": "The help message to be displayed right below the `<select>` element. Please use a `<p>` tag."
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-select-label-color",
+          "description": "The color for the select's label (defaults: `inherit`).",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-select-label-font-size",
+          "description": "The font-size for the select's label (defaults: `inherit`).",
+          "type": "FontSize"
+        },
+        {
+          "name": "--cc-select-label-font-weight",
+          "description": "The font-weight for the select's label (defaults: `normal`).",
+          "type": "FontWeight"
+        }
+      ]
+    },
+    {
+      "name": "cc-smart-container",
+      "path": "./src/components/cc-smart-container/cc-smart-container.js",
+      "attributes": [
+        {
+          "name": "context",
+          "type": "object",
+          "default": "{}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "context",
+          "attribute": "context",
+          "type": "object",
+          "default": "{}"
+        },
+        {
+          "name": "parentContext",
+          "type": "object",
+          "default": "{}"
+        }
+      ]
+    },
+    {
+      "name": "cc-ssh-key-list",
+      "path": "./src/components/cc-ssh-key-list/cc-ssh-key-list.js",
+      "description": "A component that displays a list of SSH keys associated with your account and allows to add new ones.\n\n## Details\n\n* The component displays a form to associate a new SSH key with your account.\n* Then displays the list of personal keys currently associated with your account.\n* Finally, displays the list of keys available from GitHub that you can associate with your account.",
+      "attributes": [
+        {
+          "name": "key-data",
+          "type": "KeyDataState",
+          "default": "{\"state\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "createKeyFormState",
+          "type": "CreateSshKeyFormState",
+          "default": "{\"type\":\"idle\"}"
+        },
+        {
+          "name": "keyData",
+          "attribute": "key-data",
+          "type": "KeyDataState",
+          "default": "{\"state\":\"loading\"}"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-ssh-key-list:create",
+          "description": "Fires when clicking the creation form submit button."
+        },
+        {
+          "name": "cc-ssh-key-list:delete",
+          "description": "Fires when clicking a personal key deletion button."
+        },
+        {
+          "name": "cc-ssh-key-list:import",
+          "description": "Fires when clicking a GitHub key import button."
+        }
+      ]
+    },
+    {
+      "name": "cc-stretch",
+      "path": "./src/components/cc-stretch/cc-stretch.js",
+      "description": "A layout component used to switch visibility between several elements while preventing layout shifts.\n\nUse `visibleElementId` prop to provide the `id` value corresponding to the element you want to make visible.\nOther elements are hidden with `visibility: hidden`.\n\nMore information about the issues this component solves and the technique it uses can be found in [Hubert Sablonnière's blog Post - \"Prevent layout shifts with CSS grid stacks\"](https://www.hsablonniere.com/prevent-layout-shifts-with-css-grid-stacks--qcj5jo/).\n\n**Caution**:\n\nThis component relies on a class named `cc-stretch--visible` applied to the relevant slotted element. Make sure you never override this class.",
+      "attributes": [
+        {
+          "name": "disable-stretching",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "visible-element-id",
+          "type": "string|null"
+        }
+      ],
+      "properties": [
+        {
+          "name": "disableStretching",
+          "attribute": "disable-stretching",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "visibleElementId",
+          "attribute": "visible-element-id",
+          "type": "string|null"
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "The containers you want to switch between. The container you want to be displayed must have an `id` attribute matching the value of the `visibleElementId` prop."
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-stretch-align-items",
+          "description": "Specify how the items should be distributed / positioned vertically within the grid (Default: `center`. Possible values: https://developer.mozilla.org/en-US/docs/Web/CSS/align-items).",
+          "type": "AlignItems"
+        },
+        {
+          "name": "--cc-stretch-justify-items",
+          "description": "Specify how the items should be distributed / positioned horizontally within the grid (Default: `center`. Possible values: https://developer.mozilla.org/en-US/docs/Web/CSS/justify-items).",
+          "type": "JustifyItems"
+        }
+      ]
+    },
+    {
+      "name": "cc-tcp-redirection-form",
+      "path": "./src/components/cc-tcp-redirection-form/cc-tcp-redirection-form.js",
+      "description": "An interface to create / delete TCP redirections in the context of an application.",
+      "attributes": [
+        {
+          "name": "context",
+          "type": "TcpRedirectionFormContextType",
+          "default": "\"user\""
+        },
+        {
+          "name": "state",
+          "type": "TcpRedirectionFormState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "context",
+          "attribute": "context",
+          "type": "TcpRedirectionFormContextType",
+          "default": "\"user\""
+        },
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "TcpRedirectionFormState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-tcp-redirection:create",
+          "description": "Fires a redirection namespace whenever the create button is clicked."
+        },
+        {
+          "name": "cc-tcp-redirection:delete",
+          "description": "Fires a redirection whenever the delete button is clicked."
+        }
+      ]
+    },
+    {
+      "name": "cc-tcp-redirection",
+      "path": "./src/components/cc-tcp-redirection/cc-tcp-redirection.js",
+      "description": "A small form to create or delete a TCP redirection.",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "TcpRedirectionState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "TcpRedirectionState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-tcp-redirection:create",
+          "description": "Fires a redirection namespace whenever the create button is clicked."
+        },
+        {
+          "name": "cc-tcp-redirection:delete",
+          "description": "Fires a redirection whenever the delete button is clicked."
+        }
+      ]
+    },
+    {
+      "name": "cc-tile-deployments",
+      "path": "./src/components/cc-tile-deployments/cc-tile-deployments.js",
+      "description": "A \"tile\" component to display a list of deployments info (state, humanized time ago and logs link).",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "TileDeploymentsState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "TileDeploymentsState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ]
+    },
+    {
+      "name": "cc-tile-instances",
+      "path": "./src/components/cc-tile-instances/cc-tile-instances.js",
+      "description": "A \"tile\" component to display current status of running and deploying instances for a given app.",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "TileInstancesState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "TileInstancesState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ]
+    },
+    {
+      "name": "cc-tile-metrics",
+      "path": "./src/components/cc-tile-metrics/cc-tile-metrics.js",
+      "description": "A \"tile\" component to display CPU and RAM metrics in a bar chart.\n\n## Details\n\nThe tile is composed of two panels:\n * One for the charts (CPU and MEM).\n * The other one is for the docs.\nYou can switch between them by clicking on the info button.\n\nThe Grafana link is the link to the Grafana app.\nThe Metrics link is the link to the Metrics section of the app in the console.",
+      "attributes": [
+        {
+          "name": "metricsLink",
+          "type": "string|null"
+        },
+        {
+          "name": "metricsState",
+          "type": "TileMetricsMetricsState",
+          "default": "{\"type\":\"loading\"}"
+        },
+        {
+          "name": "grafanaLinkState",
+          "type": "TileMetricsGrafanaLinkState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "metricsLink",
+          "attribute": "metricsLink",
+          "type": "string|null"
+        },
+        {
+          "name": "metricsState",
+          "attribute": "metricsState",
+          "type": "TileMetricsMetricsState",
+          "default": "{\"type\":\"loading\"}"
+        },
+        {
+          "name": "grafanaLinkState",
+          "attribute": "grafanaLinkState",
+          "type": "TileMetricsGrafanaLinkState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ]
+    },
+    {
+      "name": "cc-tile-requests",
+      "path": "./src/components/cc-tile-requests/cc-tile-requests.js",
+      "description": "A \"tile\" component to display HTTP requests distribution over the last 24 hours in a bar chart.\n\n## Details\n\n* When `data` is nullish, a skeleton screen UI pattern is displayed (loading hint).\n* A short doc is available when the (i) button is clicked.\n* `data` MUST be an array of 24 slices of one hour but the display will depend on the width of the component:\n  * 6 bars of 4 hours\n  * 8 bars of 3 hours\n  * 12 bars of 2 hours",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "TileRequestsState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "TileRequestsState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ]
+    },
+    {
+      "name": "cc-tile-scalability",
+      "path": "./src/components/cc-tile-scalability/cc-tile-scalability.js",
+      "description": "A \"tile\" component to display the current config of scalability for a given app.",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "TileScalabilityState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "TileScalabilityState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ]
+    },
+    {
+      "name": "cc-tile-status-codes",
+      "path": "./src/components/cc-tile-status-codes/cc-tile-status-codes.js",
+      "description": "A \"tile\" component to display HTTP response status codes in a pie chart (donut).\n\n## Details\n\n* A short doc is available when the (i) button is clicked.",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "TileStatusCodesState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "TileStatusCodesState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ]
+    },
+    {
+      "name": "cc-toast",
+      "path": "./src/components/cc-toast/cc-toast.js",
+      "description": "A component dedicated to display a short message and dismiss it after a short period of time.\n\n## Details\n\nThis component is not to be used directly but should be used through the `cc-toaster` component.\n\n* The component displays a message. Optionally, this message can be topped by a heading.\n* The component dispatches a `cc-toast:dismiss` event after a certain amount of time. The timer starts when the component is attached to the DOM.\n* Optionally, it can be closed manually with a close button. Clicking on the close button dispatches a `cc-toast:dismiss` event.\n* Optionally, it can display a progress bar showing to the user that the message will be dismissed in a short amount of time.\n* When user moves the mouse over the component, the timer is paused. It will be resumed as soon as the user moves the pointer out.\n* As soon as a timeout is set, the toast becomes focusable. Gaining the focus will pause the timer. Losing the focus will resume the timer.\n\nThe `message` property can be a simple string. You can also pass a DOM `Node`, but be careful not to introduce DOM-based injection vulnerability.\n\n## Technical details\n\nThe timer is implemented using [AnimateController from @lit-labs/motion](https://github.com/lit/lit/tree/main/packages/labs/motion).\nThis Lit reactive controller is not only used to animate the progress bar, but also to control the pause/resume of the timer.\nThis means that, even if the progress bar is not displayed (`showProgress = false`), the controller is still used to handle the timeout.\nAs a consequence, even when the progress bar should not be displayed, the DOM node to animate is still there, and we just make sure it is invisible to the user.",
+      "attributes": [
+        {
+          "name": "closeable",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "heading",
+          "type": "string|null"
+        },
+        {
+          "name": "intent",
+          "type": "NotificationIntent",
+          "default": "\"info\""
+        },
+        {
+          "name": "message",
+          "type": "string|Node|null"
+        },
+        {
+          "name": "show-progress",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "timeout",
+          "type": "number",
+          "default": "5000"
+        }
+      ],
+      "properties": [
+        {
+          "name": "closeable",
+          "attribute": "closeable",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "heading",
+          "attribute": "heading",
+          "type": "string|null"
+        },
+        {
+          "name": "intent",
+          "attribute": "intent",
+          "type": "NotificationIntent",
+          "default": "\"info\""
+        },
+        {
+          "name": "message",
+          "attribute": "message",
+          "type": "string|Node|null"
+        },
+        {
+          "name": "showProgress",
+          "attribute": "show-progress",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "timeout",
+          "attribute": "timeout",
+          "type": "number",
+          "default": "5000"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-toast:dismiss",
+          "description": "Fires whenever the toast is dismissed."
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-toast-icon-color",
+          "description": "The color of the icon on the left of the toast (defaults: `e7e7e7`).",
+          "type": "Color"
+        }
+      ]
+    },
+    {
+      "name": "cc-toaster",
+      "path": "./src/components/cc-toaster/cc-toaster.js",
+      "description": "This component is a container for displaying `cc-toast`s.\n\nIt contains a public method for showing a `cc-toast`. It listens to `cc-toast:dismiss` event which is fired by the `cc-toast` component, and reacts by hiding `cc-toast`.\n\n## Details\n\n### About placement\n\nYou can place this component where you want in your application, but you'll need to set the `position` property accordingly.\nThis property doesn't control the position of the toasts on your application, it gives an indication of where it is so that it can display the toasts properly:\n\n* the `slide` animation: sliding up when toaster is placed at the bottom, sliding down when toaster is placed at the top.\n* the toasts order: toasts are ordered up-bottom when toaster is placed at the top, but bottom-up when toaster is placed at the bottom.\n* the toasts' horizontal alignment: toasts are aligned left when toaster is placed on the left, aligned center when centered and aligned right when placed on the right.\n\n### Controlling maximum number of toasts\n\nThe `maxToasts` property gives the control on how many toasts can be displayed at a time. If this maximum is reached, the oldest toast is dismissed.\n\nSetting this property to 0 will prevent any toast to be displayed.\n\n### Giving default properties to toasts\n\nThe `toastDefaultOptions` allows to set up some default options to every toast instead of giving them each time you want to show a toast.\nYou can still override those defaults for a specific toast.\n\n### About accessibility\n\n* The component respects the `prefers-reduced-motion` flag and disable all animations if it is activated.\n* The component uses `aria-live=\"polite\"` and `aria-atomic=\"true\"` attributes for the best cross-platform screen reader support.\n\n## Technical details\n\n### Showing toast\n\nShowing a toast is done using the `show` public method.\n\n```javascript\nconst toast = {\n  message: 'This is a notification message',\n  intent: 'success',\n}\ndocument.querySelector('cc-toaster').show(toast);\n```\n\n### Dismissing toast\n\nToasts are dismissed automatically after the timeout expiration (the cc-toast which is responsible for handling the timeout fires a `cc-toast:dismiss` event to do that).\nThe `cc-toaster` listens to these events and reacts by removing the corresponding `cc-toast` element from the DOM.\n\nYou can also dismiss a toast programmatically: The `show` method returns a function that when called will dismiss the toast.\n\n```javascript\nconst toast = {\n  message: 'This is a notification message',\n  intent: 'success',\n}\nconst dismissToast = document.querySelector('cc-toaster').show(toast);\n\n// ...\n\ndismissToast();\n```\n\n#### Internal implementation of the toast dismiss\n\nInternally, we do not remove the `cc-toast` node from the DOM directly after receiving the `cc-toast:dismiss` event.\nInstead, we trigger a CSS animation and listen to the `animationend` event so that we can remove the `cc-toast`\nelement from the DOM after the animation has finished.",
+      "attributes": [
+        {
+          "name": "animation",
+          "type": "ToastAnimation",
+          "default": "\"fade\""
+        },
+        {
+          "name": "max-toasts",
+          "type": "number|null"
+        },
+        {
+          "name": "position",
+          "type": "ToastPosition",
+          "default": "\"top-right\""
+        },
+        {
+          "name": "toast-default-options",
+          "type": "ToastOptions|null"
+        }
+      ],
+      "properties": [
+        {
+          "name": "animation",
+          "attribute": "animation",
+          "type": "ToastAnimation",
+          "default": "\"fade\""
+        },
+        {
+          "name": "maxToasts",
+          "attribute": "max-toasts",
+          "type": "number|null"
+        },
+        {
+          "name": "position",
+          "attribute": "position",
+          "type": "ToastPosition",
+          "default": "\"top-right\""
+        },
+        {
+          "name": "toastDefaultOptions",
+          "attribute": "toast-default-options",
+          "type": "ToastOptions|null"
+        }
+      ]
+    },
+    {
+      "name": "cc-toggle",
+      "path": "./src/components/cc-toggle/cc-toggle.js",
+      "description": "A radio/checkbox input group component acting like a toggle between many options.\n\n## When to use?\n\n* This component does not replace regular usage of radio/checkbox inputs in forms.\n* It works well in toolbars or filter panels.\n* The single mode (default) works well to toggle a component between two (or more) modes.\n\n## Details\n\n* Single mode (default) is one selected choice.\n* Multiple mode is zero to many selected choices and is enabled by setting \\`multipleValues\\`.\n\n## Technical details\n\n* Single mode (default) uses native `input[type=radio]` under the hood to keep native behaviour (a11y, keyboards...).\n* Multiple mode uses native `input[type=checkbox]` under the hood to keep native behaviour (a11y, keyboards...).\n* We decided to use a JavaScript array of objects for the choices because it's way simpler to implement and not that dirtier to use.",
+      "attributes": [
+        {
+          "name": "choices",
+          "type": "Choice[]|null"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "hide-text",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "inline",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "legend",
+          "type": "string|null"
+        },
+        {
+          "name": "multiple-values",
+          "type": "string[]"
+        },
+        {
+          "name": "name",
+          "type": "string|null"
+        },
+        {
+          "name": "subtle",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "value",
+          "type": "string|null"
+        }
+      ],
+      "properties": [
+        {
+          "name": "choices",
+          "attribute": "choices",
+          "type": "Choice[]|null"
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "hideText",
+          "attribute": "hide-text",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "inline",
+          "attribute": "inline",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "legend",
+          "attribute": "legend",
+          "type": "string|null"
+        },
+        {
+          "name": "multipleValues",
+          "attribute": "multiple-values",
+          "type": "string[]"
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "type": "string|null"
+        },
+        {
+          "name": "subtle",
+          "attribute": "subtle",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "value",
+          "attribute": "value",
+          "type": "string|null"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-toggle:input",
+          "description": "Fires the selected `value` whenever the selected `value` changes (single mode only)."
+        },
+        {
+          "name": "cc-toggle:input-multiple",
+          "description": "Fires the selected `multipleValues` whenever the selected `multipleValues` changes (single mode only)."
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-toggle-border-radius",
+          "description": "Sets the value of the border radius CSS property (defaults: `0.15em`).",
+          "type": "BorderRadius"
+        },
+        {
+          "name": "--cc-toggle-color",
+          "description": "The main color of the toggle (defaults: `#334252`). It must be defined directly on the element.",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-toggle-font-weight",
+          "description": "Sets the value of the font weight CSS property (defaults: `bold`).",
+          "type": "FontWeight"
+        },
+        {
+          "name": "--cc-toggle-img-filter",
+          "description": "A CSS filter to apply on images of all choices (defaults: `none`). It must be defined directly on the element.",
+          "type": "Filter"
+        },
+        {
+          "name": "--cc-toggle-img-filter-selected",
+          "description": "A CSS filter to apply on images of selected choices (defaults: `none`). It must be defined directly on the element.",
+          "type": "Filter"
+        },
+        {
+          "name": "--cc-toggle-legend-color",
+          "description": "The color for the group's legend (defaults: `inherit`).",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-toggle-legend-font-size",
+          "description": "The font-size for the group's legend (defaults: `inherit`).",
+          "type": "FontSize"
+        },
+        {
+          "name": "--cc-toggle-legend-font-weight",
+          "description": "The font-weight for the group's legend (defaults: `normal`).",
+          "type": "FontWeight"
+        },
+        {
+          "name": "--cc-toggle-text-transform",
+          "description": "Sets the value of the text transform CSS property (defaults: `uppercase`).",
+          "type": "TextTransform"
+        }
+      ]
+    },
+    {
+      "name": "cc-warning-payment",
+      "path": "./src/components/cc-warning-payment/cc-warning-payment.js",
+      "description": "A component to display a warning block with details about payment methods errors.",
+      "attributes": [
+        {
+          "name": "errors",
+          "type": "PaymentMethodError[]",
+          "default": "[{\"type\":\"NO_PAYMENT_METHOD\"}]"
+        },
+        {
+          "name": "mode",
+          "type": "PaymentWarningModeType",
+          "default": "\"billing\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "errors",
+          "attribute": "errors",
+          "type": "PaymentMethodError[]",
+          "default": "[{\"type\":\"NO_PAYMENT_METHOD\"}]"
+        },
+        {
+          "name": "mode",
+          "attribute": "mode",
+          "type": "PaymentWarningModeType",
+          "default": "\"billing\""
+        }
+      ]
+    },
+    {
+      "name": "cc-zone-input",
+      "path": "./src/components/cc-zone-input/cc-zone-input.js",
+      "description": "A input component to select a zone with a map and a list.\n\n## Details\n\n* Zones are sorted in the list using `tags`. Clever Cloud, then private, then regular alphanumeric sort on the city name.",
+      "attributes": [
+        {
+          "name": "selected",
+          "type": "string|null"
+        },
+        {
+          "name": "state",
+          "type": "ZoneInputState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "selected",
+          "attribute": "selected",
+          "type": "string|null"
+        },
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "ZoneInputState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "events": [
+        {
+          "name": "cc-zone-input:input",
+          "description": "Fires the `name` of the selected zone whenever the selection changes."
+        }
+      ]
+    },
+    {
+      "name": "cc-zone",
+      "path": "./src/components/cc-zone/cc-zone.js",
+      "description": "A display component to show information about a zone.\n\n## Details\n\n* When a tag prefixed with `infra:` is used, the corresponding logo is displayed.\n* When the `scope:private` tag is used, the optional `displayName` of the zone will be used instead of the City + Country.\n* If the browser supports it, the `countryCode` will be used to display a translated version of the country's name.",
+      "attributes": [
+        {
+          "name": "mode",
+          "type": "ZoneModeType",
+          "default": "\"default\""
+        },
+        {
+          "name": "state",
+          "type": "ZoneState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "mode",
+          "attribute": "mode",
+          "type": "ZoneModeType",
+          "default": "\"default\""
+        },
+        {
+          "name": "state",
+          "attribute": "state",
+          "type": "ZoneState",
+          "default": "{\"type\":\"loading\"}"
+        }
+      ],
+      "cssProperties": [
+        {
+          "name": "--cc-zone-default-text-color",
+          "description": "Default text color (title and tags) (defaults to #000)",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-zone-subtitle-color",
+          "description": "Text color of the subtitle (country name) (defaults to #555)",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-zone-tag-bdcolor",
+          "description": "Border color of the tags (defaults to transparent)",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-zone-tag-bgcolor",
+          "description": "Background color of the tags (defaults to rgba(50, 50, 255, 0.15))",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-zone-tag-category-font-weight",
+          "description": "Font weight of the first half of the tag (defaults to `normal`)",
+          "type": "FontWeight"
+        },
+        {
+          "name": "--cc-zone-tag-font-family",
+          "description": "Font Family of the tags (defaults to --cc-ff-monospace)",
+          "type": "FontFamily"
+        },
+        {
+          "name": "--cc-zone-tag-textcolor",
+          "description": "Text color of the tags (defaults to --cc-color-text-default)",
+          "type": "Color"
+        },
+        {
+          "name": "--cc-zone-tag-padding",
+          "description": "Padding of the tag (defaults to `0.1em 0.3em`)",
+          "type": "Color"
+        }
+      ]
+    }
+  ]
 }

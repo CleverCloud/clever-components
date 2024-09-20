@@ -8,10 +8,10 @@ import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 
 /**
- * @typedef {import('./cc-addon-admin.types.js').AddonAdminState} AddonAdminState
- * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateLoaded} AddonAdminStateLoaded
- * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateLoading} AddonAdminStateLoading
- * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateSaving} AddonAdminStateSaving
+ * @typedef {import('./cc-addon-admin.types.d.ts').AddonAdminState} AddonAdminState
+ * @typedef {import('./cc-addon-admin.types.d.ts').AddonAdminStateLoaded} AddonAdminStateLoaded
+ * @typedef {import('./cc-addon-admin.types.d.ts').AddonAdminStateLoading} AddonAdminStateLoading
+ * @typedef {import('./cc-addon-admin.types.d.ts').AddonAdminStateSaving} AddonAdminStateSaving
  * @typedef {import('lit').PropertyValues<CcAddonAdmin>} CcAddonAdminPropertyValues
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
  */

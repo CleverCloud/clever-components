@@ -10,7 +10,7 @@
  */
 export class Buffer {
   /**
-   * @param {(items: Array<T>) => void} onFlush The function to call whenever the buffer flushes.
+   * @param {(items: T[]) => void} onFlush The function to call whenever the buffer flushes.
    * @param {{ timeout?: number, length?: number }} flushConditions The condition on which the buffer should flush.
    * @throws {Error} if the given flushConditions doesn't provide any flush condition.
    */

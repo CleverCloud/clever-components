@@ -1,0 +1,190 @@
+{
+  "schemaVersion": "1.0.0",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/components/cc-addon-admin/cc-addon-admin.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "CcAddonAdmin",
+          "description": "A component displaying the admin interface of an add-on to edit its name or delete the add-on.",
+          "superclass": { "name": "LitElement", "package": "lit" },
+          "members": [
+            { "kind": "field", "name": "noDangerZoneBackupText", "privacy": "public", "type": { "text": "boolean" } },
+            { "kind": "field", "name": "noDangerZoneVmText", "privacy": "public", "type": { "text": "boolean" } },
+            { "kind": "field", "name": "state", "privacy": "public", "type": { "text": "{ type: \"loading\"; }" } },
+            { "kind": "field", "name": "_name", "privacy": "public", "type": { "text": "null" } },
+            { "kind": "field", "name": "_tags", "privacy": "public", "type": { "text": "null" } },
+            {
+              "kind": "field",
+              "name": "properties",
+              "privacy": "public",
+              "type": {
+                "text": "{ noDangerZoneBackupText: { type: BooleanConstructor; attribute: string; }; noDangerZoneVmText: { type: BooleanConstructor; attribute: string; }; state: { ...; }; _name: { ...; }; _tags: { ...; }; }",
+                "references": [
+                  { "name": "BooleanConstructor", "package": "global:", "start": 34, "end": 52 },
+                  { "name": "BooleanConstructor", "package": "global:", "start": 104, "end": 122 }
+                ]
+              }
+            },
+            {
+              "kind": "field",
+              "name": "styles",
+              "privacy": "public",
+              "type": {
+                "text": "CSSResult[]",
+                "references": [{ "name": "CSSResult", "package": "lit", "start": 0, "end": 9 }]
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_onDeleteSubmit",
+              "privacy": "private",
+              "return": { "type": { "text": "void" } }
+            },
+            {
+              "kind": "method",
+              "name": "_onNameInput",
+              "privacy": "private",
+              "parameters": [{ "name": "{ detail: name }", "type": { "text": "{ detail: string; }" } }],
+              "return": { "type": { "text": "void" } }
+            },
+            {
+              "kind": "method",
+              "name": "_onNameSubmit",
+              "privacy": "private",
+              "return": { "type": { "text": "void" } }
+            },
+            {
+              "kind": "method",
+              "name": "_onTagsInput",
+              "privacy": "private",
+              "parameters": [{ "name": "{ detail: tags }", "type": { "text": "{ detail: string[]; }" } }],
+              "return": { "type": { "text": "void" } }
+            },
+            {
+              "kind": "method",
+              "name": "_onTagsSubmit",
+              "privacy": "private",
+              "return": { "type": { "text": "void" } }
+            },
+            {
+              "kind": "method",
+              "name": "willUpdate",
+              "privacy": "public",
+              "parameters": [
+                {
+                  "name": "changedProperties",
+                  "type": {
+                    "text": "PropertyValueMap<CcAddonAdmin>",
+                    "references": [
+                      { "name": "PropertyValueMap", "package": "lit", "start": 0, "end": 16 },
+                      {
+                        "name": "CcAddonAdmin",
+                        "package": "@clevercloud/components",
+                        "module": "src/components/cc-addon-admin/cc-addon-admin.js",
+                        "start": 17,
+                        "end": 29
+                      }
+                    ]
+                  }
+                }
+              ],
+              "return": { "type": { "text": "void" } }
+            },
+            {
+              "kind": "method",
+              "name": "render",
+              "privacy": "public",
+              "return": {
+                "type": {
+                  "text": "TemplateResult<1>",
+                  "references": [{ "name": "TemplateResult", "package": "lit-html", "start": 0, "end": 14 }]
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_renderContent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "state",
+                  "type": {
+                    "text": "AddonAdminStateLoaded | AddonAdminStateLoading | AddonAdminStateSaving",
+                    "references": [
+                      {
+                        "name": "AddonAdminStateLoaded",
+                        "package": "@clevercloud/components",
+                        "module": "src/components/cc-addon-admin/cc-addon-admin.types.d.ts",
+                        "start": 0,
+                        "end": 21
+                      },
+                      {
+                        "name": "AddonAdminStateLoading",
+                        "package": "@clevercloud/components",
+                        "module": "src/components/cc-addon-admin/cc-addon-admin.types.d.ts",
+                        "start": 24,
+                        "end": 46
+                      },
+                      {
+                        "name": "AddonAdminStateSaving",
+                        "package": "@clevercloud/components",
+                        "module": "src/components/cc-addon-admin/cc-addon-admin.types.d.ts",
+                        "start": 49,
+                        "end": 70
+                      }
+                    ]
+                  }
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": "TemplateResult",
+                  "references": [
+                    {
+                      "name": "TemplateResult",
+                      "package": "@clevercloud/components",
+                      "module": "src/components/cc-addon-admin/cc-addon-admin.js",
+                      "start": 0,
+                      "end": 14
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "customElement": true,
+          "events": [
+            {
+              "name": "cc-addon-admin:delete-addon",
+              "type": {
+                "text": "CustomEvent",
+                "references": [{ "name": "CustomEvent", "package": "global:", "start": 0, "end": 11 }]
+              },
+              "description": "Fires when the delete button is clicked."
+            },
+            {
+              "name": "cc-addon-admin:update-name",
+              "type": {
+                "text": "CustomEvent<string>",
+                "references": [{ "name": "CustomEvent", "package": "global:", "start": 0, "end": 11 }]
+              },
+              "description": "Fires the new name of the add-on when update name button is clicked."
+            },
+            {
+              "name": "cc-addon-admin:update-tags",
+              "type": {
+                "text": "CustomEvent<string[]>",
+                "references": [{ "name": "CustomEvent", "package": "global:", "start": 0, "end": 11 }]
+              },
+              "description": "Fires the new list of tags when update tags button is clicked."
+            }
+          ]
+        }
+      ],
+      "exports": [{ "kind": "js", "name": "CcAddonAdmin", "declaration": { "name": "CcAddonAdmin" } }]
+    }
+  ]
+}
