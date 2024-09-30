@@ -1,8 +1,8 @@
+import { DepGraph } from 'dependency-graph';
 import fs from 'fs';
 import path from 'path';
-import { DepGraph } from 'dependency-graph';
 
-export function depsManifestPlugin ({ packageVersion }) {
+export function depsManifestPlugin({ packageVersion }) {
   return {
     generateBundle: function (options, outputBundle) {
       const depsManifestDir = path.join(process.cwd(), options.dir);
@@ -71,8 +71,6 @@ export function depsManifestPlugin ({ packageVersion }) {
 // No dir prefix, no extension suffix, just a simple short unique ID.
 // We're using Rollup's facadeModuleId for that,
 // if it's a chunk, we won't need to load it directly so we just return ''.
-function getId (id, bundle) {
-  return (bundle.facadeModuleId != null)
-    ? path.parse(bundle.facadeModuleId).name
-    : '';
+function getId(id, bundle) {
+  return bundle.facadeModuleId != null ? path.parse(bundle.facadeModuleId).name : '';
 }

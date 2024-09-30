@@ -12,9 +12,12 @@
     "font-family-name-quotes": "always-unless-keyword",
     "comment-whitespace-inside": "always",
     "comment-empty-line-before": null,
-    "rule-empty-line-before": ["always-multi-line", {
-      "except": ["first-nested"]
-    }],
+    "rule-empty-line-before": [
+      "always-multi-line",
+      {
+        "except": ["first-nested"]
+      }
+    ],
     "selector-pseudo-element-colon-notation": "double",
     "media-feature-name-no-vendor-prefix": true,
     "no-descending-specificity": null,

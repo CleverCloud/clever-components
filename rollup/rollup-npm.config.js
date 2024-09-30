@@ -6,7 +6,8 @@ import {
   getAllSourceFiles,
   getMainFiles,
   importMetaUrlAssetsPlugin,
-  minifyStylesheet, SOURCE_DIR,
+  minifyStylesheet,
+  SOURCE_DIR,
   terserPlugin,
   visualizerPlugin,
 } from './rollup-common.js';
@@ -17,19 +18,19 @@ const outputDir = 'dist';
 const allSourceFiles = getAllSourceFiles();
 const mainFiles = getMainFiles();
 
-const inputFilesPairs = allSourceFiles.map((SOURCE_DIR, (file) => {
+const inputFilesPairs = allSourceFiles.map(
+  (SOURCE_DIR,
+  (file) => {
+    const isMainFile = mainFiles.includes(file);
+    const { dir, name } = path.parse(file);
 
-  const isMainFile = mainFiles.includes(file);
-  const { dir, name } = path.parse(file);
+    // main files go to the root
+    // other files are kept in the same path
+    const entryPath = isMainFile ? name : path.relative(SOURCE_DIR, path.join(dir, name));
 
-  // main files go to the root
-  // other files are kept in the same path
-  const entryPath = isMainFile
-    ? name
-    : path.relative(SOURCE_DIR, path.join(dir, name));
-
-  return [entryPath, file];
-}));
+    return [entryPath, file];
+  }),
+);
 
 export default {
   // defines the files to be included into the build: all components + smart manager + translations

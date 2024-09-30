@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-export function stylesAssetsPlugin (options) {
+export function stylesAssetsPlugin(options) {
   const transform = options?.transform ?? ((css) => css);
   return {
     generateBundle: async function () {
@@ -14,4 +14,4 @@ export function stylesAssetsPlugin (options) {
       });
     },
   };
-};
+}

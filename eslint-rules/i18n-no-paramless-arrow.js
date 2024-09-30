@@ -7,7 +7,7 @@ const {
   isSanitizeTagFunction,
 } = require('./i18n-shared.js');
 
-function report (context, key, arrowNode) {
+function report(context, key, arrowNode) {
   context.report({
     node: arrowNode,
     messageId: 'paramlessArrow',
@@ -33,16 +33,13 @@ module.exports = {
     },
   },
   create: function (context) {
-
     // Early return for non translation files
     if (!isTranslationFile(context)) {
       return {};
     }
 
     return {
-
-      ExportNamedDeclaration (node) {
-
+      ExportNamedDeclaration(node) {
         // Early return for nodes that aren't the one exporting translations
         if (!isMainTranslationNode(node)) {
           return;
@@ -51,11 +48,9 @@ module.exports = {
         const translationProperties = getTranslationProperties(node);
 
         for (const tp of translationProperties) {
-
           const key = tp.key.value;
 
           if (tp.value.type === 'ArrowFunctionExpression' && tp.value.params.length === 0) {
-
             if (tp.value.body.type === 'TemplateLiteral') {
               report(context, key, tp.value);
             }
