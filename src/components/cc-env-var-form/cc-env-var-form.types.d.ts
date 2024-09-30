@@ -6,23 +6,23 @@ export type EnvVarFormState =
   | EnvVarFormStateSaving
   | EnvVarFormStateError;
 
-interface EnvVarFormStateLoading {
+export interface EnvVarFormStateLoading {
   type: 'loading';
 }
 
-interface EnvVarFormStateLoaded {
+export interface EnvVarFormStateLoaded {
   type: 'loaded';
   variables: Array<EnvVar>;
   validationMode: EnvVarValidationMode;
 }
 
-interface EnvVarFormStateSaving {
+export interface EnvVarFormStateSaving {
   type: 'saving';
   variables: Array<EnvVar>;
   validationMode: EnvVarValidationMode;
 }
 
-interface EnvVarFormStateError {
+export interface EnvVarFormStateError {
   type: 'error';
 }
 

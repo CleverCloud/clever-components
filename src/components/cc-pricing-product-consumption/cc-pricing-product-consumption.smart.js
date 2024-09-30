@@ -4,12 +4,26 @@ import { formatAddonCellar, formatAddonFsbucket, formatAddonHeptapod, formatAddo
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-pricing-product-consumption.js';
 
+/**
+ * @typedef {import('./cc-pricing-product-consumption.js').CcPricingProductConsumption} CcPricingProductConsumption
+ * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
+ */
+
 defineSmartComponent({
   selector: 'cc-pricing-product-consumption',
   params: {
     productId: { type: String },
     zoneId: { type: String },
   },
+  /**
+   * @param {Object} settings
+   * @param {CcPricingProductConsumption} settings.component
+   * @param {{ apiConfig: ApiConfig, productId: string, zoneId: string }} settings.context
+   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
+   * @param {function} settings.updateComponent
+   * @param {AbortSignal} settings.signal
+   */
+  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate({ updateComponent, context, signal }) {
     const { productId, zoneId } = context;
 
@@ -31,6 +45,12 @@ defineSmartComponent({
   },
 });
 
+/**
+ * @param {object} params
+ * @param {string} params.productId
+ * @param {string} params.zoneId
+ * @param {AbortSignal} params.signal
+ */
 function fetchProduct({ productId, zoneId, signal }) {
   return fetchPriceSystem({ zoneId, signal }).then((priceSystem) => {
     if (productId === 'cellar') {

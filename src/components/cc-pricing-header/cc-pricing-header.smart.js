@@ -1,4 +1,6 @@
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { getAllZones } from '@clevercloud/client/esm/api/v4/product.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
 import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { sendToApi } from '../../lib/send-to-api.js';
@@ -6,7 +8,9 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-pricing-header.js';
 
 /**
+ * @typedef {import('./cc-pricing-header.js').CcPricingHeader} CcPricingHeader
  * @typedef {import('./cc-pricing-header.types.js').PricingHeaderStateLoaded} PricingHeaderStateLoaded
+ * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
  * @typedef {import('../common.types.js').Zone} Zone
  */
 
@@ -15,6 +19,15 @@ defineSmartComponent({
   params: {
     zoneId: { type: String },
   },
+  /**
+   * @param {Object} settings
+   * @param {CcPricingHeader} settings.component
+   * @param {{apiConfig: ApiConfig, zoneId: string }} settings.context
+   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
+   * @param {function} settings.updateComponent
+   * @param {AbortSignal} settings.signal
+   */
+  // @ts-expect-error FIXME: remove once `onContextUpdate` is type with generics
   onContextUpdate({ container, component, context, onEvent, updateComponent, signal }) {
     const { zoneId } = context;
 
@@ -43,7 +56,7 @@ defineSmartComponent({
      * The only thing we want to do when zoneId changes is to make sure
      * we update `cc-pricing-header` accordingly.
      */
-    if (component.zones.state === 'loading') {
+    if (component.state.type === 'loading') {
       fetchAllZones({ signal })
         .then((zones) => {
           updateComponent('state', { type: 'loaded', zones });

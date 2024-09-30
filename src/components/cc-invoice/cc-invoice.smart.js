@@ -3,6 +3,12 @@ import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-invoice.js';
 
+/**
+ * @typedef {import('./cc-invoice.js').CcInvoice} CcInvoice
+ * @typedef {import('../common.types.js').Invoice} Invoice
+ * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
+ */
+
 defineSmartComponent({
   selector: 'cc-invoice',
   params: {
@@ -10,7 +16,16 @@ defineSmartComponent({
     ownerId: { type: String },
     invoiceNumber: { type: String },
   },
-  onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
+  /**
+   * @param {Object} settings
+   * @param {CcInvoice} settings.component
+   * @param {{apiConfig: ApiConfig, ownerId: string, invoiceNumber: string}} settings.context
+   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
+   * @param {function} settings.updateComponent
+   * @param {AbortSignal} settings.signal
+   */
+  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
+  onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, invoiceNumber } = context;
 
     updateComponent('state', { type: 'loading', number: invoiceNumber });
@@ -33,6 +48,14 @@ defineSmartComponent({
   },
 });
 
+/**
+ * @param {object} params
+ * @param {ApiConfig} params.apiConfig
+ * @param {AbortSignal} params.signal
+ * @param {string} params.ownerId
+ * @param {string} params.invoiceNumber
+ * @returns {Promise<Invoice>}
+ */
 function fetchFullInvoice({ apiConfig, signal, ownerId, invoiceNumber }) {
   return Promise.all([
     fetchInvoice({ apiConfig, signal, ownerId, invoiceNumber }),

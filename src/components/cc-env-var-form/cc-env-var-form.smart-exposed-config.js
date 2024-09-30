@@ -1,4 +1,6 @@
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { getAllExposedEnvVars, updateAllExposedEnvVars } from '@clevercloud/client/esm/api/v2/application.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { toNameValueObject } from '@clevercloud/client/esm/utils/env-vars.js';
 import { fetchApp } from '../../lib/api-helpers.js';
 import { defineSmartComponent } from '../../lib/define-smart-component.js';
@@ -8,6 +10,15 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-env-var-form.js';
 
+/**
+ * @typedef {import('./cc-env-var-form.js').CcEnvVarForm} CcEnvVarForm
+ * @typedef {import('./cc-env-var-form.types.js').EnvVarFormState} EnvVarFormState
+ * @typedef {import('./cc-env-var-form.types.js').EnvVarFormStateLoaded} EnvVarFormStateLoaded
+ * @typedef {import('./cc-env-var-form.types.js').EnvVarFormStateSaving} EnvVarFormStateSaving
+ * @typedef {import('../common.types.js').EnvVar} EnvVar
+ * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
+ */
+
 defineSmartComponent({
   selector: 'cc-env-var-form[context="exposed-config"]',
   params: {
@@ -15,6 +26,15 @@ defineSmartComponent({
     ownerId: { type: String },
     appId: { type: String },
   },
+  /**
+   * @param {Object} settings
+   * @param {CcEnvVarForm} settings.component
+   * @param {{ apiConfig: ApiConfig, ownerId: string, appId: string }} settings.context
+   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
+   * @param {function} settings.updateComponent
+   * @param {AbortSignal} settings.signal
+   */
+  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate({ context, onEvent, updateComponent, signal }) {
     updateComponent('state', { type: 'loading' });
 
@@ -34,34 +54,66 @@ defineSmartComponent({
       });
 
     onEvent('cc-env-var-form:submit', (variables) => {
-      updateComponent('state', (state) => {
-        state.type = 'saving';
-      });
-      updateExposedConfig({ apiConfig, ownerId, appId, variables })
+      updateComponent(
+        'state',
+        /** @param {EnvVarFormState} state */
+        (state) => {
+          state.type = 'saving';
+        },
+      );
+      updateExposedConfig({ apiConfig, ownerId, appId, variables, signal })
         .then(() => {
-          updateComponent('state', (state) => {
-            state.variables = variables;
-          });
+          updateComponent(
+            'state',
+            /** @param {EnvVarFormStateSaving} state */
+            (state) => {
+              state.variables = variables;
+            },
+          );
           notifySuccess(i18n('cc-env-var-form.update.success'));
         })
         .catch(() => notifyError(i18n('cc-env-var-form.update.error')))
         .finally(() => {
-          updateComponent('state', (state) => {
-            state.type = 'loaded';
-          });
+          updateComponent(
+            'state',
+            /** @param {EnvVarFormStateLoaded} state */
+            (state) => {
+              state.type = 'loaded';
+            },
+          );
         });
     });
   },
 });
 
+/**
+ * @param {object} params
+ * @param {ApiConfig} params.apiConfig
+ * @param {AbortSignal} params.signal
+ * @param {string} params.ownerId
+ * @param {string} params.appId
+ * @returns {Promise<Array<EnvVar>>}
+ */
 function fetchExposedConfig({ apiConfig, signal, ownerId, appId }) {
   return getAllExposedEnvVars({ id: ownerId, appId })
     .then(sendToApi({ apiConfig, signal }))
-    .then((exposedVarsObject) => {
-      return Object.entries(exposedVarsObject).map(([name, value]) => ({ name, value }));
-    });
+    .then(
+      /** @param {{ [key: string]: string }} exposedVarsObject */
+      (exposedVarsObject) => {
+        return Object.entries(exposedVarsObject).map(([name, value]) => ({ name, value }));
+      },
+    );
 }
 
+/**
+ * @param {object} params
+ * @param {ApiConfig} params.apiConfig
+ * @param {AbortSignal} params.signal
+ * @param {string} params.ownerId
+ * @param {string} params.appId
+ * @param {Array<EnvVar>} params.variables
+ * @returns {Promise<void>}
+ */
 function updateExposedConfig({ apiConfig, signal, ownerId, appId, variables }) {
   const variablesObject = toNameValueObject(variables);
   return updateAllExposedEnvVars({ id: ownerId, appId }, variablesObject).then(sendToApi({ apiConfig, signal }));

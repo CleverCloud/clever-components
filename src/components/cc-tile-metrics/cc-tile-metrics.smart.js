@@ -5,9 +5,11 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-tile-metrics.js';
 
 /**
+ * @typedef {import('./cc-tile-metrics.js').CcTileMetrics} CcTileMetrics
  * @typedef {import('./cc-tile-metrics.types.js').RawMetric} RawMetric
  * @typedef {import('./cc-tile-metrics.types.js').MetricsData} MetricsData
  * @typedef {import('./cc-tile-metrics.types.js').Metric} Metric
+ * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
  */
 
 const NUMBER_OF_POINTS = 24;
@@ -21,6 +23,16 @@ defineSmartComponent({
     consoleGrafanaLink: { type: String },
     grafanaBaseLink: { type: String },
   },
+  /**
+   *
+   * @param {Object} settings
+   * @param {CcTileMetrics} settings.component
+   * @param {{apiConfig: ApiConfig, ownerId: string, appId: string, grafanaBaseLink: string, consoleGrafanaLink: string }} settings.context
+   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
+   * @param {function} settings.updateComponent
+   * @param {AbortSignal} settings.signal
+   */
+  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId, appId, grafanaBaseLink, consoleGrafanaLink } = context;
 
@@ -62,7 +74,7 @@ defineSmartComponent({
  * @returns {Promise<MetricsData>}
  */
 function fetchMetrics({ apiConfig, ownerId, appId, signal }) {
-  return getAppMetrics({ id: ownerId, appId, interval: 'P1D', span: 'PT1H' })
+  return getAppMetrics({ id: ownerId, appId })
     .then(sendToApi({ apiConfig, signal }))
     .then((metrics) => {
       const cpuMetrics = extractMetric(metrics, 'cpu');

@@ -1,10 +1,11 @@
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { getKeys } from '@clevercloud/client/esm/api/v2/github.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { get as getUser } from '@clevercloud/client/esm/api/v2/organisation.js';
-import {
-  todo_addSshKey as addSshKey,
-  todo_getSshKeys as getSshKeys,
-  todo_removeSshKey as removeSshKey,
-} from '@clevercloud/client/esm/api/v2/user.js';
+// prettier-ignore
+// @ts-expect-error FIXME: remove when clever-client exports types
+import { todo_addSshKey as addSshKey,todo_getSshKeys as getSshKeys,todo_removeSshKey as removeSshKey } from '@clevercloud/client/esm/api/v2/user.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
 import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
@@ -27,7 +28,6 @@ defineSmartComponent({
   params: {
     apiConfig: { type: Object },
   },
-
   /**
    *
    * @param {Object} settings
@@ -37,6 +37,7 @@ defineSmartComponent({
    * @param {function} settings.updateComponent
    * @param {AbortSignal} settings.signal
    */
+  // @ts-expect-error FIXME: remove once `onContextUpdate` is type with generics
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig } = context;
 

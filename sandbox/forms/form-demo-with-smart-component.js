@@ -139,6 +139,7 @@ defineSmartComponent({
    * @param {(prop: string, fn: (prop: any) => void) => void} settings.updateComponent
    * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
    */
+  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   async onContextUpdate({ component, updateComponent, onEvent }) {
     console.log('update context');
     // setting form value from smart

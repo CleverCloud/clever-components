@@ -17,12 +17,10 @@
     "src/controllers/*.stories.js",
     "src/components/**/*.test.js",
     "src/components/**/*.stories.js",
-    "src/components/**/*.smart*.js",
     "src/components/cc-grafana-info",
     "src/components/cc-logs/*",
     "src/components/cc-logs-*/*",
-    "src/components/cc-pricing-*",
-    "src/components/cc-smart-container/*"
+    "src/components/cc-pricing-*"
   ],
   "extends": "./tsconfig.json",
   "compilerOptions": {

@@ -1,31 +1,31 @@
 export type GrafanaInfoState = GrafanaInfoStateLoading | GrafanaInfoStateLoadingError | GrafanaInfoStateLoaded;
 
-interface GrafanaInfoStateLoading {
+export interface GrafanaInfoStateLoading {
   type: 'loading';
 }
 
-interface GrafanaInfoStateLoadingError {
+export interface GrafanaInfoStateLoadingError {
   type: 'error';
 }
 
-interface GrafanaInfoStateLoaded {
+export interface GrafanaInfoStateLoaded {
   type: 'loaded';
   info: GrafanaInfo;
 }
 
-type GrafanaInfo = GrafanaInfoEnabled | GrafanaInfoEnabledWithError | GrafanaInfoDisabled;
+export type GrafanaInfo = GrafanaInfoEnabled | GrafanaInfoEnabledWithError | GrafanaInfoDisabled;
 
-interface GrafanaInfoEnabled {
+export interface GrafanaInfoEnabled {
   status: 'enabled';
   link?: string;
-  action?: 'disabling' | 'resetting';
+  action?: 'disabling' | 'resetting' | null;
 }
 
-interface GrafanaInfoEnabledWithError {
+export interface GrafanaInfoEnabledWithError {
   status: 'enabled';
 }
 
-interface GrafanaInfoDisabled {
+export interface GrafanaInfoDisabled {
   status: 'disabled';
-  action?: 'enabling';
+  action?: 'enabling' | null;
 }

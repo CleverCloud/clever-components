@@ -1,9 +1,7 @@
-import {
-  addMember,
-  getAllMembers,
-  removeMemeber as removeMember,
-  updateMember,
-} from '@clevercloud/client/esm/api/v2/organisation.js';
+// prettier-ignore
+// @ts-expect-error FIXME: remove when clever-client exports types
+import { addMember,getAllMembers,removeMemeber as removeMember,updateMember,} from '@clevercloud/client/esm/api/v2/organisation.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { getId } from '@clevercloud/client/esm/api/v2/user.js';
 import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
@@ -32,7 +30,6 @@ defineSmartComponent({
     apiConfig: { type: Object },
     ownerId: { type: String },
   },
-
   /**
    * @param {Object} settings
    * @param {CcOrgaMemberList} settings.component
@@ -41,6 +38,7 @@ defineSmartComponent({
    * @param {function} settings.updateComponent
    * @param {AbortSignal} settings.signal
    */
+  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId } = context;
 
@@ -325,7 +323,7 @@ function getMemberList({ apiConfig, ownerId, signal }) {
  * @param {string} args.ownerId
  * @param {string} args.email
  * @param {OrgaMemberRole} args.role
- * @return {Promise<any>}
+ * @return {Promise<void>}
  */
 function postNewMember({ apiConfig, ownerId, email, role }) {
   return addMember({ id: ownerId }, { email, role, job: null }).then(sendToApi({ apiConfig }));
@@ -336,7 +334,7 @@ function postNewMember({ apiConfig, ownerId, email, role }) {
  * @param {ApiConfig} args.apiConfig
  * @param {string} args.ownerId
  * @param {string} args.id
- * @return {Promise<any>}
+ * @return {Promise<void>}
  */
 function deleteMember({ apiConfig, ownerId, id }) {
   return removeMember({ id: ownerId, userId: id }).then(sendToApi({ apiConfig }));
@@ -348,7 +346,7 @@ function deleteMember({ apiConfig, ownerId, id }) {
  * @param {string} args.ownerId
  * @param {string} args.id
  * @param {OrgaMemberRole} args.newRole
- * @return {Promise<any>}
+ * @return {Promise<void>}
  */
 function editMember({ apiConfig, ownerId, id, newRole }) {
   return updateMember({ id: ownerId, userId: id }, { role: newRole }).then(sendToApi({ apiConfig }));

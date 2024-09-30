@@ -1,9 +1,6 @@
-import {
-  todo_addEmailAddress as addEmailAddress,
-  todo_getEmailAddresses as getEmailAddresses,
-  todo_removeEmailAddress as removeEmailAddress,
-  todo_getConfirmationEmail as sendConfirmationEmail,
-} from '@clevercloud/client/esm/api/v2/user.js';
+// prettier-ignore
+// @ts-expect-error FIXME: remove when clever-client exports types
+import { todo_addEmailAddress as addEmailAddress,todo_getEmailAddresses as getEmailAddresses,todo_removeEmailAddress as removeEmailAddress,todo_getConfirmationEmail as sendConfirmationEmail,} from '@clevercloud/client/esm/api/v2/user.js';
 import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
@@ -26,7 +23,6 @@ defineSmartComponent({
     apiConfig: { type: Object },
   },
   /**
-   *
    * @param {Object} settings
    * @param {CcEmailList} settings.component
    * @param {{apiConfig: ApiConfig}} settings.context
@@ -34,6 +30,7 @@ defineSmartComponent({
    * @param {function} settings.updateComponent
    * @param {AbortSignal} settings.signal
    */
+  // @ts-expect-error FIXME: remove once `onContextUpdate` is type with generics
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     updateComponent('emails', { state: 'loading' });
     updateComponent('addEmailFormState', { state: 'idle' });
@@ -42,7 +39,6 @@ defineSmartComponent({
     const api = getApi(context.apiConfig, signal);
 
     /**
-     *
      * @param {string} address
      * @param {(state: SecondaryAddressState) => void}callback
      */
@@ -268,7 +264,6 @@ function convertApiError(apiErrorId) {
 
 // -- API calls
 /**
- *
  * @param {ApiConfig} apiConfig
  * @param {AbortSignal} signal
  */

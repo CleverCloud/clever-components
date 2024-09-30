@@ -1,11 +1,26 @@
 import { css, html, LitElement } from 'lit';
 import { defineSmartComponentCore, observeContainer, updateContext } from '../../lib/smart-manager.js';
 
+/**
+ * @typedef {import('../../lib/smart-component.types.js').SmartContainer} SmartContainer
+ * @typedef {import('../../lib/smart-component.types.js').SmartContext} SmartContext
+ * @typedef {import('../../lib/smart-component.types.js').SmartComponent} SmartComponent
+ * @typedef {import('lit').PropertyValues<CcSmartContainer>} CcSmartContainerPropertyValues
+ */
+
 // Special case to propagate/merge contexts trough containers
 defineSmartComponentCore({
   selector: 'cc-smart-container',
-  onContextUpdate(container, component, context) {
-    component.parentContext = context;
+  /**
+   * @param {SmartContainer} _
+   * @param {CcSmartContainer} component
+   * @param {SmartContext} context
+   */
+  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
+  onContextUpdate(_, component, context) {
+    if (component instanceof CcSmartContainer) {
+      component.parentContext = context;
+    }
   },
 });
 
@@ -35,7 +50,10 @@ export class CcSmartContainer extends LitElement {
     delete this._abortController;
   }
 
-  willUpdate(changedProperties) {
+  /**
+   * @param {CcSmartContainerPropertyValues} _changedProperties
+   */
+  willUpdate(_changedProperties) {
     updateContext(this, { ...this.parentContext, ...this.context });
   }
 
