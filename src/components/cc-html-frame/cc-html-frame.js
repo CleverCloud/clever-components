@@ -34,8 +34,8 @@ export class CcHtmlFrame extends LitElement {
     };
   }
 
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
 
     /** @type {boolean} Enables the loader indicator. */
     this.loading = false;

@@ -4,6 +4,10 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 
 /**
+ * @typedef {import('lit').PropertyValues<CcImg>} CcImgPropertyValues
+ */
+
+/**
  * A wrapper around `<img>` to add loader indicator, remove ugly borders and display proper placeholder text when there's an error.
  *
  * ## Details
@@ -44,18 +48,19 @@ export class CcImg extends LitElement {
     this._loaded = false;
   }
 
-  _onLoad(e) {
+  _onLoad() {
     this._loaded = true;
     // WARNING: we modify the exposed property "skeleton" from the inside
     this.skeleton = false;
   }
 
-  _onError(e) {
+  _onError() {
     this._error = true;
     // WARNING: we modify the exposed property "skeleton" from the inside
     this.skeleton = false;
   }
 
+  /** @param {CcImgPropertyValues} changedProperties */
   willUpdate(changedProperties) {
     if (changedProperties.has('src')) {
       this._error = false;

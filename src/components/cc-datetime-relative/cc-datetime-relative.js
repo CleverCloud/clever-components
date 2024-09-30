@@ -1,6 +1,8 @@
 import { i18n } from '../../translations/translation.js';
 
+/** @type {CcDatetimeRelative[]} */
 const trackedElements = [];
+/** @type {number} */
 let updateIntervalId;
 
 function updateTrackedElements() {
@@ -47,7 +49,12 @@ export class CcDatetimeRelative extends HTMLElement {
     }
   }
 
-  attributeChangedCallback(attrName, old, date) {
+  /**
+   * @param {string} attrName
+   * @param {string} _
+   * @param {string|number} date
+   */
+  attributeChangedCallback(attrName, _, date) {
     if (attrName === 'datetime') {
       this.title = i18n('cc-datetime-relative.title', { date });
       this._triggerUpdate();
@@ -59,7 +66,7 @@ export class CcDatetimeRelative extends HTMLElement {
     if (updateIntervalId == null) {
       updateTrackedElements();
       // 10 seconds
-      updateIntervalId = setInterval(updateTrackedElements, 10 * 1000);
+      updateIntervalId = window.setInterval(updateTrackedElements, 10 * 1000);
     }
   }
 

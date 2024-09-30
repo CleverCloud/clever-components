@@ -1,3 +1,4 @@
+// @ts-nocheck
 /*
 Copyright (c) 2015, Vladimir Agafonkin
 All rights reserved.

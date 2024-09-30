@@ -1,1 +1,1 @@
-type MarkerStateType = 'default' | 'hovered' | 'selected';
+export type MarkerStateType = 'default' | 'hovered' | 'selected';

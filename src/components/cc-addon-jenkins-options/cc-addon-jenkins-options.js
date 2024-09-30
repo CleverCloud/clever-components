@@ -5,7 +5,8 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-addon-option-form/cc-addon-option-form.js';
 
 /**
- * @typedef {import('../common.types.js').AddonOption} AddonOption
+ * @typedef {import('../common.types.js').AddonOptionStates} AddonOptionStates
+ * @typedef {import('../common.types.js').EncryptionAddonOption} EncryptionAddonOption
  */
 
 /**
@@ -13,7 +14,7 @@ import '../cc-addon-option-form/cc-addon-option-form.js';
  *
  * @cssdisplay block
  *
- * @fires {CustomEvent<AddonOption>} cc-addon-jenkins-options:submit - Fires when the form is submitted.
+ * @fires {CustomEvent<AddonOptionStates>} cc-addon-jenkins-options:submit - Fires when the form is submitted.
  */
 export class CcAddonJenkinsOptions extends LitElement {
   static get properties() {
@@ -25,10 +26,11 @@ export class CcAddonJenkinsOptions extends LitElement {
   constructor() {
     super();
 
-    /** @type {AddonOption[]} List of options for this add-on. */
+    /** @type {Array<EncryptionAddonOption>} List of options for this add-on. */
     this.options = [];
   }
 
+  /** @param {CustomEvent<AddonOptionStates>} event */
   _onFormOptionsSubmit({ detail }) {
     dispatchCustomEvent(this, 'submit', detail);
   }

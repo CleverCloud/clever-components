@@ -7,7 +7,10 @@ import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 
 /**
+ * @typedef {import('../cc-addon-option/cc-addon-option.js').CcAddonOption} CcAddonOption
+ * @typedef {import('../common.types.js').AddonOptionStates} AddonOptionStates
  * @typedef {import('../common.types.js').AddonOption} AddonOption
+ * @typedef {import('../common.types.js').AddonOptionWithMetadata} AddonOptionWithMetadata
  */
 
 /**
@@ -15,7 +18,7 @@ import '../cc-button/cc-button.js';
  *
  * @cssdisplay block
  *
- * @fires {CustomEvent<object>} cc-addon-option-form:submit - Fires when the form is submitted.
+ * @fires {CustomEvent<AddonOptionStates>} cc-addon-option-form:submit - Fires when the form is submitted.
  *
  * @slot description - The description of the add-on and available options.
  */
@@ -30,13 +33,13 @@ export class CcAddonOptionForm extends LitElement {
   constructor() {
     super();
 
-    /** @type {AddonOption[]} List of Option object to render. */
+    /** @type {AddonOptionWithMetadata[]} List of Option object to render. */
     this.options = null;
 
     /** @type {string} Title of the whole options form. */
     this.title = null;
 
-    /** @type {object} */
+    /** @type {AddonOptionStates} */
     this._optionsStates = {};
   }
 
@@ -51,8 +54,12 @@ export class CcAddonOptionForm extends LitElement {
     dispatchCustomEvent(this, 'submit', this._optionsStates);
   }
 
-  _onOptionToggle({ detail }, optionName) {
-    this._optionsStates[optionName] = detail;
+  /** @param {string} optionName */
+  _onOptionToggle(optionName) {
+    /** @param {CustomEvent<boolean>} e */
+    return (e) => {
+      this._optionsStates[optionName] = e.detail;
+    };
   }
 
   render() {
@@ -67,7 +74,7 @@ export class CcAddonOptionForm extends LitElement {
             .icon="${option.icon}"
             logo="${option.logo}"
             ?enabled=${enabled}
-            @cc-addon-option:input=${(e) => this._onOptionToggle(e, option.name)}
+            @cc-addon-option:input=${this._onOptionToggle(option.name)}
           >
             ${option.description}
           </cc-addon-option>`;

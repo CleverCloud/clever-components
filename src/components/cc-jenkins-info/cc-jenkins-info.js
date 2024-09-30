@@ -44,7 +44,7 @@ export class CcJenkinsInfo extends LitElement {
     const skeleton = this.state.type === 'loading';
     const jenkinsLink = this.state.type === 'loaded' ? this.state.jenkinsLink : null;
     const jenkinsManageLink = this.state.type === 'loaded' ? this.state.jenkinsManageLink : null;
-    const versions = this.state.type === 'loaded' ? this.state.versions : {};
+    const versions = this.state.type === 'loaded' ? this.state.versions : { current: null, available: null };
     const hasNewVersion = versions.current !== versions.available;
 
     return html`

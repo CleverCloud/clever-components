@@ -1,4 +1,4 @@
-import { Keyword } from '../cc-product-card/cc-product-card.types';
+import { Keyword } from '../cc-product-card/cc-product-card.types.js';
 
 export interface Product {
   description: string;

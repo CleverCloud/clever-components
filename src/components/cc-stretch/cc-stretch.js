@@ -1,6 +1,10 @@
 import { css, html, LitElement } from 'lit';
 
 /**
+ * @typedef {import('lit').PropertyValues<CcStretch>} CcStretchPropertyValues
+ */
+
+/**
  * A layout component used to switch visibility between several elements while preventing layout shifts.
  *
  * Use `visibleElementId` prop to provide the `id` value corresponding to the element you want to make visible.
@@ -56,6 +60,7 @@ export class CcStretch extends LitElement {
     elementToMakeVisible?.classList.add('cc-stretch--visible');
   }
 
+  /** @param {CcStretchPropertyValues} changedProperties */
   updated(changedProperties) {
     if (changedProperties.has('visibleElementId')) {
       this._makeElementVisible();
@@ -86,7 +91,7 @@ export class CcStretch extends LitElement {
           visibility: hidden;
         }
 
-        /* 
+        /*
    * Very important: do not set to visible as this would break nested cc-stretch components.
    * In a parent with "visibility: hidden", a child with "visibility: visible" is visible.
    * With inherit, the visibility of the child depends on the visibility of the parents, which is what we want.

@@ -103,7 +103,7 @@ export class CcDomainManagement extends LitElement {
     this._sortedDomains = null;
 
     new LostFocusController(this, '.delete-domain', ({ suggestedElement }) => {
-      if (suggestedElement != null) {
+      if (suggestedElement != null && suggestedElement instanceof HTMLElement) {
         suggestedElement.focus();
       } else {
         this._emptyMessageRef.value?.focus();
@@ -143,7 +143,7 @@ export class CcDomainManagement extends LitElement {
 
   /**
    * @param {FormError|null} error
-   * @returns {string}
+   * @returns {string|Node}
    */
   _getErrorMessage(error) {
     switch (error?.code) {
@@ -248,7 +248,7 @@ export class CcDomainManagement extends LitElement {
     return () => dispatchCustomEvent(this, 'delete', { id, hostname, pathPrefix, isWildcard, isPrimary });
   }
 
-  /** @param {Event & { detail: string }} event */
+  /** @param {CustomEvent<string>} event */
   _onDomainInput({ detail: value }) {
     if (this.domainFormState.type !== 'idle') {
       return;
@@ -263,7 +263,7 @@ export class CcDomainManagement extends LitElement {
     };
   }
 
-  /** @param {Event & { detail: string }} event */
+  /** @param {CustomEvent<string>} event */
   _onPathPrefixInput({ detail: value }) {
     // add "/" at the beginning in case the user forgot to type it
     if (value.length > 0 && !value.startsWith('/')) {
@@ -478,7 +478,7 @@ export class CcDomainManagement extends LitElement {
     return html`
       <!--
         Caution: the primary class is used to focus the primary domain when it changes, do not remove or change this class
-        (see LostFocusController within the constructor for more info) 
+        (see LostFocusController within the constructor for more info)
       -->
       <div class="domain ${classMap({ primary: isPrimary, waiting })}" tabindex="-1">
         <span class="domain-name-with-path">

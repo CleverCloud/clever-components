@@ -188,7 +188,7 @@ export const treeshakeOptions = {
     const isComponent = /^src\/.+\/cc-[a-z-]+\.js$/.test(relativeId);
     const isEntryPoint = /^src\/[a-z-]+\.js$/.test(relativeId);
 
-    // More details at src/lib/leaflet-esm.js
+    // More details at src/lib/leaflet/leaflet-esm.js
     const isLeaflet = relativeId.endsWith('leaflet-esm.js')
       || relativeId.includes('leaflet/src/layer/vector/Renderer.getRenderer.js')
       || relativeId.includes('leaflet/src/layer/Tooltip.js')

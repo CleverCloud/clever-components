@@ -26,16 +26,16 @@ export class CcMapMarkerServer extends LitElement {
   constructor() {
     super();
 
-    /** @type {Array} Exposes the coordinates of the "tip" of the marker, relative to its top left corner: `[x, y]` (used by `<cc-map>`) */
+    /** @type {[number, number]} Exposes the coordinates of the "tip" of the marker, relative to its top left corner: `[x, y]` (used by `<cc-map>`) */
     this.anchor = [16, 32];
 
-    /** @type {Array} Exposes the size of the marker: `[width, height]` (used by `<cc-map>`) */
+    /** @type {[number, number]} Exposes the size of the marker: `[width, height]` (used by `<cc-map>`) */
     this.size = [32, 32];
 
     /** @type {MarkerStateType} Sets the state of the marker */
     this.state = 'default';
 
-    /** @type {Array} Exposes the coordinates from which tooltips will "open", relative to the marker anchor: `[width, height]` (used by `<cc-map>`) */
+    /** @type {[number, number]} Exposes the coordinates from which tooltips will "open", relative to the marker anchor: `[width, height]` (used by `<cc-map>`) */
     this.tooltip = [0, -32];
   }
 

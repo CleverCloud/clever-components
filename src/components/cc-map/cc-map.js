@@ -4,7 +4,7 @@ import { iconRemixAlertFill as iconAlert } from '../../assets/cc-remix.icons.js'
 import { WORLD_GEOJSON } from '../../assets/world-110m.geo.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
-import * as leaflet from '../../lib/leaflet-esm.js';
+import * as leaflet from '../../lib/leaflet/leaflet-esm.js';
 import { leafletStyles } from '../../styles/leaflet.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
@@ -14,6 +14,9 @@ import '../cc-loader/cc-loader.js';
  * @typedef {import('../common.types.js').HeatmapPoint} HeatmapPoint
  * @typedef {import('../common.types.js').MapModeType} MapModeType
  * @typedef {import('../common.types.js').Point} Point
+ * @typedef {import('./cc-map.types.js').CachedPoint} CachedPoint
+ * @typedef {import('./cc-map.types.js').MapIconElement} MapIconElement
+ * @typedef {import('lit').PropertyValues<CcMap>} CcMapPropertyValues
  */
 
 /**
@@ -70,9 +73,13 @@ export class CcMap extends LitElement {
     /** @type {MapModeType} Sets map mode: `"points"` for points with custom markers and `"heatmap"` for a heatmap. */
     this.mode = 'points';
 
+    /** @type {Point[]} */
+    this.points = [];
+
     /** @type {number} Sets the zoom of the map (between 1 and 6). */
     this.viewZoom = 2;
 
+    /** @type {Record<string, CachedPoint>} */
     this._pointsCache = {};
 
     new ResizeController(this, {
@@ -87,6 +94,7 @@ export class CcMap extends LitElement {
     this._map.addLayer(layerToAdd);
   }
 
+  /** @param {Point[]} newPoints */
   _updateHeatmap(newPoints) {
     if (!Array.isArray(newPoints)) {
       return;
@@ -104,9 +112,11 @@ export class CcMap extends LitElement {
       radius: 8,
     };
 
+    // @ts-expect-error we cannot typecheck the vendored dependency
     this._heatLayer.clearLayers().addLayer(new leaflet.HeatLayer(heatPoints, heatOptions));
   }
 
+  /** @param {Point[]} newPoints */
   _updatePoints(newPoints) {
     if (!Array.isArray(newPoints)) {
       return;
@@ -132,9 +142,13 @@ export class CcMap extends LitElement {
     }
   }
 
+  /**
+   * @param {string} id
+   * @param {Point} point
+   */
   _createMarker(id, point) {
     // Prepare icon with custom element
-    const iconElement = document.createElement(point.marker.tag);
+    const iconElement = /** @type {MapIconElement} */ (document.createElement(point.marker.tag));
     const icon = leaflet.divIcon({
       html: iconElement,
       iconSize: iconElement.size,
@@ -157,6 +171,10 @@ export class CcMap extends LitElement {
     this._pointsCache[id] = { point, marker, iconElement };
   }
 
+  /**
+   * @param {string} id
+   * @param {Point} newPoint
+   */
   _updateMarker(id, newPoint) {
     this._pointsCache[id].point = newPoint;
     const { point, marker, iconElement } = this._pointsCache[id];
@@ -164,6 +182,7 @@ export class CcMap extends LitElement {
     // Update marker icon custom element properties
     for (const k in point.marker) {
       if (k !== 'tag') {
+        // @ts-expect-error no way to statically determine the properties of iconElement & point.marker since they could be related to any custom element / HTMLElement
         iconElement[k] = point.marker[k];
       }
     }
@@ -179,12 +198,12 @@ export class CcMap extends LitElement {
         // Create empty tooltip
         marker.bindTooltip('', { direction: 'top', opacity: 1 });
       }
-      if (point.tooltip.tag == null) {
+      if (typeof point.tooltip === 'string') {
         // Simple tooltip with text
         marker.setTooltipContent(point.tooltip);
       } else {
         // Complex tooltip with custom element
-        const oldElement = marker.getTooltip().getContent();
+        const oldElement = /** @type {HTMLElement|null} */ (marker.getTooltip().getContent());
         const oldTagName = oldElement?.tagName?.toLowerCase();
         const tooltipElement =
           oldTagName !== point.tooltip.tag ? document.createElement(point.tooltip.tag) : oldElement;
@@ -192,6 +211,7 @@ export class CcMap extends LitElement {
         // Update tooltip custom element properties
         for (const k in point.tooltip) {
           if (k !== 'tag') {
+            // @ts-expect-error no way to statically determine the properties of tooltipElement & point.tooltip since they could be related to any custom element / HTMLElement
             tooltipElement[k] = point.tooltip[k];
           }
         }
@@ -210,6 +230,7 @@ export class CcMap extends LitElement {
     }
   }
 
+  /** @param {string} id */
   _deleteMarker(id) {
     const { marker } = this._pointsCache[id];
     this._pointsLayer.removeLayer(marker);
@@ -218,8 +239,9 @@ export class CcMap extends LitElement {
 
   /**
    * Pan the map to a given point but only if it's necessary and with some small padding (50px).
-   * @prop {number} lat - Sets the latitude of the point.
-   * @prop {number} lon - Sets the longitude of the point.
+   *
+   * @param {number} lat - Sets the latitude of the point.
+   * @param {number} lon - Sets the longitude of the point.
    */
   panInside(lat, lon) {
     this._map.panInside([lat, lon], { padding: [50, 50] });
@@ -227,6 +249,7 @@ export class CcMap extends LitElement {
 
   // Draw the Leaflet map
   firstUpdated() {
+    /** @type {leaflet.MapOptions} */
     const leafletOptions = {
       // Block view on the world
       attributionControl: false,
@@ -245,7 +268,7 @@ export class CcMap extends LitElement {
 
     // Init map
     this._map = leaflet
-      .map(this.renderRoot.getElementById('cc-map-container'), leafletOptions)
+      .map(this.shadowRoot.getElementById('cc-map-container'), leafletOptions)
       .setView([this.centerLat, this.centerLon], this.viewZoom);
 
     this._map.on('zoomanim', (e) => {
@@ -269,7 +292,11 @@ export class CcMap extends LitElement {
     this._resetCurrentLayer();
   }
 
-  // updated and not udpate because we need this._map before
+  /**
+   * updated and not willUdpate because we need this._map before
+   *
+   * @param {CcMapPropertyValues} changedProperties
+   */
   updated(changedProperties) {
     if (changedProperties.has('centerLat') || changedProperties.has('centerLon')) {
       this._map.setView([this.centerLat, this.centerLon]);
@@ -458,3 +485,7 @@ export class CcMap extends LitElement {
 }
 
 window.customElements.define('cc-map', CcMap);
+// eslint-disable-next-line spaced-comment
+/// <reference types="leaflet" />
+// eslint-disable-next-line spaced-comment
+/// <reference path="../../node_modules/@types/leaflet/index.d.ts" />

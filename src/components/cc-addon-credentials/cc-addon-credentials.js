@@ -55,6 +55,7 @@ export class CcAddonCredentials extends LitElement {
     this.type = null;
   }
 
+  /** @param {AddonType} addonType */
   _getDescription(addonType) {
     switch (addonType) {
       case 'apm':
@@ -67,11 +68,10 @@ export class CcAddonCredentials extends LitElement {
         return i18n('cc-addon-credentials.description.pulsar');
       case 'materia-kv':
         return i18n('cc-addon-credentials.description.materia-kv');
-      default:
-        return '';
     }
   }
 
+  /** @param {Credential['type']} fieldType */
   _getFieldName(fieldType) {
     switch (fieldType) {
       case 'auth-token':
@@ -86,8 +86,6 @@ export class CcAddonCredentials extends LitElement {
         return i18n('cc-addon-credentials.field.user');
       case 'port':
         return i18n('cc-addon-credentials.field.port');
-      default:
-        return '';
     }
   }
 

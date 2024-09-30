@@ -48,6 +48,7 @@ export class CcAddonOption extends LitElement {
     this.title = null;
   }
 
+  /** @param {CustomEvent<'DISABLED'|'ENABLED'>} event */
   _onToggleOption({ detail: enabled }) {
     this.enabled = enabled === 'ENABLED';
     dispatchCustomEvent(this, 'input', this.enabled);

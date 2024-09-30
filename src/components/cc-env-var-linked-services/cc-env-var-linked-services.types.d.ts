@@ -1,4 +1,4 @@
-import { EnvVar } from '../common.types';
+import { EnvVar } from '../common.types.js';
 
 export type EnvVarLinkedServicesState =
   | EnvVarLinkedServicesStateLoading

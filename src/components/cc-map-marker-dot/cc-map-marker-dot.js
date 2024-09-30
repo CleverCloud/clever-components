@@ -1,10 +1,23 @@
 import { css, html, LitElement } from 'lit';
 
+/**
+ * @typedef {import('lit').PropertyValues<CcMapMarkerDot>} CcMapMarkerDotPropertyValues
+ */
+
 // Generated with https://components.ai/color-scale/
 // Canvas at #F5F5F5 (map country color)
 // From #40B970 to #003814 with 8 steps
 // /!\ Moving this to CSS with getCssCustomProperties() is really tricky, don't do this at home ;-)
-const COLOR_PALETTE = ['#40b970', '#36a562', '#2c9254', '#237f46', '#1a6c39', '#115a2c', '#084920', '#003814'];
+const COLOR_PALETTE = /** @type {const} */ ([
+  '#40b970',
+  '#36a562',
+  '#2c9254',
+  '#237f46',
+  '#1a6c39',
+  '#115a2c',
+  '#084920',
+  '#003814',
+]);
 
 /**
  * A map marker displayed as a blinking dot with color grading depending on the value of `count`.
@@ -31,22 +44,26 @@ export class CcMapMarkerDot extends LitElement {
   constructor() {
     super();
 
-    /** @type {Array} Exposes the coordinates of the "tip" of the marker, relative to its top left corner: `[x, y]` (used by `<cc-map>`). */
+    /** @type {[number, number]} Exposes the coordinates of the "tip" of the marker, relative to its top left corner: `[x, y]` (used by `<cc-map>`). */
     this.anchor = [8, 8];
 
     /** @type {number|null} Sets an abstract value for this marker to vary the color grading. */
     this.count = null;
 
-    /** @type {Array} Exposes the size of the marker: `[width, height]` (used by `<cc-map>`). */
+    /** @type {[number, number]} Exposes the size of the marker: `[width, height]` (used by `<cc-map>`). */
     this.size = [16, 16];
 
-    /** @type {Array} Exposes the coordinates from which tooltips will "open", relative to the marker anchor: `[width, height]` (used by `<cc-map>`). */
+    /** @type {[number, number]} Exposes the coordinates from which tooltips will "open", relative to the marker anchor: `[width, height]` (used by `<cc-map>`). */
     this.tooltip = [0, 0];
 
-    /** @type {string|null} */
+    /** @type {typeof COLOR_PALETTE[number]|null} */
     this._color = null;
   }
 
+  /**
+   * @param {number} count
+   * @returns {typeof COLOR_PALETTE[number]}
+   */
   _getColorFromCount(count) {
     // This blinking dot is mainly used to display the number of HTTP requests received at a given location on a map
     // Let's take the total number of requests for a given set of coordinates
@@ -72,6 +89,7 @@ export class CcMapMarkerDot extends LitElement {
     return COLOR_PALETTE[colorIndex];
   }
 
+  /** @param {CcMapMarkerDotPropertyValues} changedProperties */
   willUpdate(changedProperties) {
     if (changedProperties.has('count')) {
       this._color = this._getColorFromCount(this.count);

@@ -1,6 +1,10 @@
 import { findActiveElement, isParentOf } from '../lib/shadow-dom-utils.js';
 
 /**
+ * @typedef {import('lit').LitElement} LitElement
+ */
+
+/**
  * @callback LostFocusCallback
  * @param {LostFocusEvent} event
  * @returns {void}
@@ -34,6 +38,7 @@ export class LostFocusController {
     host.addController(this);
     this.host = host;
     this.selector = selector;
+    /** @type {Array<Element>} */
     this.elements = [];
     this.callback = callback;
   }

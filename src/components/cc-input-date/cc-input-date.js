@@ -21,8 +21,7 @@ import { i18n } from '../../translations/translation.js';
 // This is the date format chosen to format the date displayed to the user.
 const DATE_FORMAT = 'datetime-short';
 // This array is hard coded and corresponds directly to the date format defined above.
-/** @type {Array<'Y'|'M'|'D'|'H'|'m'|'s'>} */
-const FIELDS_POSITION = [
+const FIELDS_POSITION = /** @type {const} */ ([
   'Y',
   'Y',
   'Y',
@@ -43,7 +42,7 @@ const FIELDS_POSITION = [
   's',
   's',
   's',
-];
+]);
 
 /**
  * @param {Date|string} dateOrString

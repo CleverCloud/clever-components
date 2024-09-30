@@ -1,3 +1,4 @@
+// @ts-expect-error FIXME: remove when the clever-client exports types
 import { ERROR_TYPES, parseRawJson, toJson } from '@clevercloud/client/esm/utils/env-vars.js';
 import { LitElement, css, html } from 'lit';
 import { dispatchCustomEvent } from '../../lib/events.js';
@@ -19,6 +20,8 @@ const SKELETON_VARIABLES = [
  * @typedef {import('../common.types.js').EnvVarEditorState} EnvVarEditorState
  * @typedef {import('../common.types.js').EnvVarParseError} EnvVarParseError
  * @typedef {import('../common.types.js').EnvVar} EnvVar
+ * @typedef {import('../common.types.js').EnvVarRawError} EnvVarRawError
+ * @typedef {import('lit').PropertyValues<CcEnvVarEditorJson>} CcEnvVarEditorJsonPropertyValues
  */
 
 /**
@@ -58,8 +61,12 @@ export class CcEnvVarEditorJson extends LitElement {
 
     /** @type {boolean} */
     this._skeleton = false;
+
+    /** @type {string} */
+    this._variablesAsJson = '';
   }
 
+  /** @param {EnvVarRawError[]} rawErrors */
   _setErrors(rawErrors) {
     this._errors = rawErrors.map(({ type, name }) => {
       if (type === ERROR_TYPES.INVALID_NAME) {
@@ -104,12 +111,19 @@ export class CcEnvVarEditorJson extends LitElement {
           isWarning: true,
         };
       }
-      return { line: '?', msg: i18n('cc-env-var-editor-json.errors.unknown') };
+
+      return { line: '?', msg: i18n('cc-env-var-editor-json.errors.unknown'), isWarning: false };
     });
   }
 
+  /** @param {CustomEvent<string>} event */
   _onInput({ detail: value }) {
+    if (this.state.type === 'loading') {
+      return;
+    }
+
     this._variablesAsJson = value;
+    /** @type {{ variables: string[], errors: EnvVarRawError[] }} */
     const { variables, errors } = parseRawJson(value, { mode: this.state.validationMode });
     this._setErrors(errors);
 
@@ -122,10 +136,11 @@ export class CcEnvVarEditorJson extends LitElement {
     }
   }
 
+  /** @param {CcEnvVarEditorJsonPropertyValues} changedProperties */
   willUpdate(changedProperties) {
     if (changedProperties.has('state')) {
       this._skeleton = this.state.type === 'loading';
-      const vars = this._skeleton ? SKELETON_VARIABLES : this.state.variables;
+      const vars = this.state.type === 'loading' ? SKELETON_VARIABLES : this.state.variables;
       const filteredVariables = vars.filter(({ isDeleted }) => !isDeleted);
       this._variablesAsJson = toJson(filteredVariables);
       this._setErrors([]);

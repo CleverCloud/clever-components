@@ -115,8 +115,9 @@ export class CcBlock extends LitElement {
   }
 
   firstUpdated() {
+    /** @type {HTMLSlotElement|undefined} */
     const $overlay = this.shadowRoot.querySelector('slot[name="overlay"]');
-    $overlay.addEventListener('slotchange', (e) => {
+    $overlay.addEventListener('slotchange', () => {
       const oldVal = this._overlay;
       this._overlay = $overlay.assignedNodes().length > 0;
       this.requestUpdate('_overlay', oldVal);

@@ -15,7 +15,10 @@ import '../cc-toggle/cc-toggle.js';
 /**
  * @typedef {import('./cc-env-var-form.types.js').EnvVarFormContextType} EnvVarFormContextType
  * @typedef {import('./cc-env-var-form.types.js').EnvVarFormState} EnvVarFormState
+ * @typedef {import('./cc-env-var-form.types.js').EnvVarFormMode} EnvVarFormMode
+ * @typedef {import('../common.types.js').EnvVarEditorState} EnvVarEditorState
  * @typedef {import('../common.types.js').EnvVar} EnvVar
+ * @typedef {import('lit').PropertyValues<CcEnvVarForm>} CcEnvVarFormPropertyValues
  */
 
 /**
@@ -73,12 +76,13 @@ export class CcEnvVarForm extends LitElement {
     /** @type {EnvVarFormState} Sets variables form state. */
     this.state = { type: 'loading' };
 
+    /** @type {EnvVarEditorState} */
     this._editorsState = { type: 'loading' };
 
     /** @type {EnvVar[]|null} */
     this._currentVariables = null;
 
-    /** @type {'SIMPLE'|'EXPERT'|'JSON'} */
+    /** @type {EnvVarFormMode} */
     this._mode = 'SIMPLE';
 
     /** @type {boolean} */
@@ -93,6 +97,7 @@ export class CcEnvVarForm extends LitElement {
     ];
   }
 
+  /** @returns {string|void} */
   _getHeading() {
     if (this.heading != null) {
       return this.heading;
@@ -115,19 +120,24 @@ export class CcEnvVarForm extends LitElement {
     }
   }
 
+  /** @returns {Node|void} */
   _getDescription() {
-    if (this.context === 'env-var') {
-      return i18n('cc-env-var-form.description.env-var', { appName: this.appName });
-    }
-    if (this.context === 'exposed-config') {
-      return i18n('cc-env-var-form.description.exposed-config', { appName: this.appName });
-    }
-    if (this.context === 'config-provider') {
-      return i18n('cc-env-var-form.description.config-provider', { addonName: this.addonName });
+    switch (this.context) {
+      case 'env-var':
+        return i18n('cc-env-var-form.description.env-var', { appName: this.appName });
+      case 'exposed-config':
+        return i18n('cc-env-var-form.description.exposed-config', { appName: this.appName });
+      case 'config-provider':
+        return i18n('cc-env-var-form.description.config-provider', { addonName: this.addonName });
     }
   }
 
+  /** @param {CustomEvent<EnvVar[]>} event */
   _onChange({ detail: changedVariables }) {
+    if (this.state.type === 'loading' || this.state.type === 'error') {
+      return;
+    }
+
     const deletedVariables = this._initVariables
       .filter((initVar) => {
         const changedVar = changedVariables.find((v) => v.name === initVar.name);
@@ -170,7 +180,12 @@ export class CcEnvVarForm extends LitElement {
     }
   }
 
+  /** @param {CustomEvent<EnvVarFormMode>} event */
   _onToggleMode({ detail: mode }) {
+    if (this.state.type === 'error' || this.state.type === 'loading') {
+      return;
+    }
+
     this._mode = mode;
     this._editorsState = {
       type: 'loaded',
@@ -180,9 +195,13 @@ export class CcEnvVarForm extends LitElement {
   }
 
   /**
-   * @type {Array<EnvVar>} variables
+   * @param {Array<EnvVar>} variables
    */
   _resetForm(variables) {
+    if (this.state.type === 'loading' || this.state.type === 'error') {
+      return;
+    }
+
     this._initVariables = variables;
     this._isPristine = true;
     if (variables == null) {
@@ -202,13 +221,18 @@ export class CcEnvVarForm extends LitElement {
     dispatchCustomEvent(this, 'submit', cleanVariables);
   }
 
-  _onRequestSubmit(e, isFormDisabled) {
-    e.stopPropagation();
-    if (!isFormDisabled) {
-      this._onUpdateForm();
-    }
+  /** @param {boolean} isFormDisabled */
+  _onRequestSubmit(isFormDisabled) {
+    /** @param {Event} e */
+    return (e) => {
+      e.stopPropagation();
+      if (!isFormDisabled) {
+        this._onUpdateForm();
+      }
+    };
   }
 
+  /** @param {CcEnvVarFormPropertyValues} changedProperties */
   willUpdate(changedProperties) {
     if (changedProperties.has('context') && this.context === 'env-var-addon') {
       this.readonly = true;
@@ -264,7 +288,7 @@ export class CcEnvVarForm extends LitElement {
             ?disabled=${isEditorDisabled}
             ?readonly=${this.readonly}
             @cc-env-var-editor-simple:change=${this._onChange}
-            @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
+            @cc-input-text:requestimplicitsubmit=${this._onRequestSubmit(isFormDisabled)}
           ></cc-env-var-editor-simple>
 
           <cc-env-var-editor-expert
@@ -273,7 +297,7 @@ export class CcEnvVarForm extends LitElement {
             ?disabled=${isEditorDisabled}
             ?readonly=${this.readonly}
             @cc-env-var-editor-expert:change=${this._onChange}
-            @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
+            @cc-input-text:requestimplicitsubmit=${this._onRequestSubmit(isFormDisabled)}
           ></cc-env-var-editor-expert>
 
           <cc-env-var-editor-json
@@ -282,7 +306,7 @@ export class CcEnvVarForm extends LitElement {
             ?disabled=${isEditorDisabled}
             ?readonly=${this.readonly}
             @cc-env-var-editor-json:change=${this._onChange}
-            @cc-input-text:requestimplicitsubmit=${(e) => this._onRequestSubmit(e, isFormDisabled)}
+            @cc-input-text:requestimplicitsubmit=${this._onRequestSubmit(isFormDisabled)}
           ></cc-env-var-editor-json>
         </cc-expand>
 

@@ -9,7 +9,10 @@ const KIBANA_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-kib
 const APM_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-apm.svg';
 
 /**
+ * @typedef {import('../common.types.js').AddonOptionStates} AddonOptionStates
  * @typedef {import('../common.types.js').AddonOption} AddonOption
+ * @typedef {import('../common.types.js').ElasticAddonOption} ElasticAddonOption
+ * @typedef {import('../common.types.js').AddonOptionWithMetadata} AddonOptionWithMetadata
  */
 
 /**
@@ -17,26 +20,31 @@ const APM_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-apm.sv
  *
  * @cssdisplay block
  *
- * @fires {CustomEvent<AddonOption>} cc-addon-elasticsearch-options:submit - Fires when the form is submitted.
+ * @fires {CustomEvent<AddonOptionStates>} cc-addon-elasticsearch-options:submit - Fires when the form is submitted.
  */
 export class CcAddonElasticsearchOptions extends LitElement {
   static get properties() {
     return {
-      options: { type: Array, attribute: 'options' },
+      options: { type: Array },
     };
   }
 
   constructor() {
     super();
 
-    /** @type {AddonOption[]} List of options for this add-on. */
+    /** @type {Array<AddonOption>} List of options for this add-on. */
     this.options = [];
   }
 
+  /** @param {CustomEvent<AddonOptionStates>} event */
   _onFormOptionsSubmit({ detail }) {
     dispatchCustomEvent(this, 'submit', detail);
   }
 
+  /**
+   * @param {ElasticAddonOption} addonOption
+   * @returns {AddonOptionWithMetadata}
+   */
   _getApmOption({ enabled, flavor }) {
     const description = html`
       <div class="option-details">${i18n('cc-addon-elasticsearch-options.description.apm')}</div>
@@ -62,6 +70,10 @@ export class CcAddonElasticsearchOptions extends LitElement {
     };
   }
 
+  /**
+   * @param {ElasticAddonOption} addonOption
+   * @returns {AddonOptionWithMetadata}
+   */
   _getKibanaOption({ enabled, flavor }) {
     const description = html`
       <div class="option-details">${i18n('cc-addon-elasticsearch-options.description.kibana')}</div>

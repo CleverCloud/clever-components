@@ -16,8 +16,8 @@ export interface AddonBackupsStateError {
 }
 
 export interface Backup {
-  createdAt: Date;
-  expiresAt?: Date;
+  createdAt: string | number; // date as a string or timestamp
+  expiresAt?: string | number; // date as a string or timestamp
   url: string;
   restoreCommand?: string;
   deleteCommand?: string;

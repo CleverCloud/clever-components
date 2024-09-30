@@ -118,7 +118,7 @@ export class CcZoneInput extends LitElement {
   }
 
   /**
-   * @param {Event & { detail: { name: string } }} [event]
+   * @param {CustomEvent<{ name: string }>} [event]
    * @private
    */
   _onMarkerHover(event) {
@@ -233,7 +233,7 @@ export class CcZoneInput extends LitElement {
           .points=${this._points}
           ?loading=${skeleton}
           @cc-map:marker-click=${
-            /** @param {Event & { detail: { name: string } }} event */
+            /** @param {CustomEvent<{ name: string }>} event */
             ({ detail }) => this._onSelect(detail.name)
           }
           @cc-map:marker-enter=${this._onMarkerHover}

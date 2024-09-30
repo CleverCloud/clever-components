@@ -1,1 +1,1 @@
-type OverviewModeType = 'app' | 'orga';
+export type OverviewModeType = 'app' | 'orga';

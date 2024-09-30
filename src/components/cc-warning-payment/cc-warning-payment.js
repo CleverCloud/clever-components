@@ -1,3 +1,4 @@
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { ERROR_TYPES } from '@clevercloud/client/esm/utils/payment.js';
 import { css, html, LitElement } from 'lit';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
@@ -34,78 +35,90 @@ export class CcWarningPayment extends LitElement {
 
   /**
    * @param {PaymentMethodError} error
+   * @returns {{title: string, errorMessage: string}}
    */
   _getOrgaError({ type }) {
-    if (type === ERROR_TYPES.NO_PAYMENT_METHOD) {
-      return {
-        title: i18n('cc-payment-warning.orga.no-payment-method.title'),
-        error: i18n('cc-payment-warning.orga.no-payment-method'),
-      };
+    switch (type) {
+      case ERROR_TYPES.NO_PAYMENT_METHOD:
+        return {
+          title: i18n('cc-payment-warning.orga.no-payment-method.title'),
+          errorMessage: i18n('cc-payment-warning.orga.no-payment-method'),
+        };
+      case ERROR_TYPES.NO_DEFAULT_PAYMENT_METHOD:
+        return {
+          title: i18n('cc-payment-warning.orga.no-default-payment-method.title'),
+          errorMessage: i18n('cc-payment-warning.orga.no-default-payment-method'),
+        };
+      case ERROR_TYPES.DEFAULT_PAYMENT_METHOD_IS_EXPIRED:
+        return {
+          title: i18n('cc-payment-warning.orga.default-payment-method-is-expired.title'),
+          errorMessage: i18n('cc-payment-warning.orga.default-payment-method-is-expired'),
+        };
+      default:
+        return { title: null, errorMessage: null };
     }
-    if (type === ERROR_TYPES.NO_DEFAULT_PAYMENT_METHOD) {
-      return {
-        title: i18n('cc-payment-warning.orga.no-default-payment-method.title'),
-        error: i18n('cc-payment-warning.orga.no-default-payment-method'),
-      };
-    }
-    if (type === ERROR_TYPES.DEFAULT_PAYMENT_METHOD_IS_EXPIRED) {
-      return {
-        title: i18n('cc-payment-warning.orga.default-payment-method-is-expired.title'),
-        error: i18n('cc-payment-warning.orga.default-payment-method-is-expired'),
-      };
-    }
-  }
-
-  render() {
-    const { title, error } =
-      this.mode === 'overview' || this.mode === 'billing' ? this._getOrgaError(this.errors[0]) : '';
-    const link = this.mode === 'overview' ? i18n('cc-payment-warning.billing-page-link', this.errors[0]) : '';
-
-    return html`
-      ${this.mode === 'home'
-        ? html`
-            <cc-notice .heading="${i18n('cc-payment-warning.home.title')}" intent="warning">
-              <div slot="message" class="error-container">
-                <span>${i18n('cc-payment-warning.home', { orgaCount: this.errors.length })}</span>
-                <ul>
-                  ${this.errors.map((error) => html` <li>${this._renderHomeItem(error)}</li> `)}
-                </ul>
-              </div>
-            </cc-notice>
-          `
-        : ''}
-      ${this.mode === 'overview' || this.mode === 'billing'
-        ? html`
-            <cc-notice .heading="${title}" intent="warning">
-              <div slot="message">${error} ${link}</div>
-            </cc-notice>
-          `
-        : ''}
-    `;
   }
 
   /**
    * @param {PaymentMethodError} error
+   * @returns {Node|void}
    */
-  _renderHomeItem({ type, orgaName, orgaBillingLink }) {
-    if (type === ERROR_TYPES.NO_PAYMENT_METHOD) {
-      return html`
-        ${i18n('cc-payment-warning.generic.no-payment-method', { orgaName })}
-        ${i18n('cc-payment-warning.billing-page-link', { orgaName, orgaBillingLink })}
-      `;
+  _getHomeError({ type, orgaName }) {
+    switch (type) {
+      case ERROR_TYPES.NO_PAYMENT_METHOD:
+        return i18n('cc-payment-warning.generic.no-payment-method', { orgaName });
+      case ERROR_TYPES.NO_DEFAULT_PAYMENT_METHOD:
+        return i18n('cc-payment-warning.generic.no-default-payment-method', { orgaName });
+      case ERROR_TYPES.DEFAULT_PAYMENT_METHOD_IS_EXPIRED:
+        return i18n('cc-payment-warning.generic.default-payment-method-is-expired', { orgaName });
     }
-    if (type === ERROR_TYPES.NO_DEFAULT_PAYMENT_METHOD) {
-      return html`
-        ${i18n('cc-payment-warning.generic.no-default-payment-method', { orgaName })}
-        ${i18n('cc-payment-warning.billing-page-link', { orgaName, orgaBillingLink })}
-      `;
+  }
+
+  render() {
+    switch (this.mode) {
+      case 'home':
+        return this._renderHomeWarning(this.errors);
+      case 'billing':
+      case 'overview':
+        return this._renderOrgaWarning(this.errors[0]);
     }
-    if (type === ERROR_TYPES.DEFAULT_PAYMENT_METHOD_IS_EXPIRED) {
-      return html`
-        ${i18n('cc-payment-warning.generic.default-payment-method-is-expired', { orgaName })}
-        ${i18n('cc-payment-warning.billing-page-link', { orgaName, orgaBillingLink })}
-      `;
-    }
+  }
+
+  /** @param {PaymentMethodError} error */
+  _renderOrgaWarning({ type, orgaName, orgaBillingLink }) {
+    const { title, errorMessage } = this._getOrgaError({ type });
+    const link =
+      this.mode === 'overview' ? i18n('cc-payment-warning.billing-page-link', { orgaName, orgaBillingLink }) : '';
+
+    return html`
+      <cc-notice .heading="${title}" intent="warning">
+        <div slot="message">${errorMessage} ${link}</div>
+      </cc-notice>
+    `;
+  }
+
+  /** @param {PaymentMethodError[]} errors */
+  _renderHomeWarning(errors) {
+    return html`
+      <cc-notice .heading="${i18n('cc-payment-warning.home.title')}" intent="warning">
+        <div slot="message" class="error-container">
+          <span>${i18n('cc-payment-warning.home', { orgaCount: this.errors.length })}</span>
+          <ul>
+            ${errors.map(
+              (error) => html`
+                <li>
+                  ${this._getHomeError(error)}
+                  ${i18n('cc-payment-warning.billing-page-link', {
+                    orgaName: error.orgaName,
+                    orgaBillingLink: error.orgaBillingLink,
+                  })}
+                </li>
+              `,
+            )}
+          </ul>
+        </div>
+      </cc-notice>
+    `;
   }
 
   static get styles() {
