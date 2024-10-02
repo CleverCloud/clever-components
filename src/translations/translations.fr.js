@@ -625,8 +625,12 @@ export const translations = {
   //#region cc-invoice
   'cc-invoice.download-pdf': `Télécharger le PDF`,
   'cc-invoice.error': `Une erreur est survenue pendant le chargement de la facture.`,
-  'cc-invoice.info': /** @param {{date: string|number, amount: number}} _ */ ({ date, amount }) => {
-    return sanitize`Cette facture a été émise le <strong>${formatDateOnly(date)}</strong> pour un total de <strong>${formatCurrency(lang, amount)}</strong>.`;
+  'cc-invoice.info': /** @param {{date: string|number, amount: number, currency: string }} _ */ ({
+    date,
+    amount,
+    currency,
+  }) => {
+    return sanitize`Cette facture a été émise le <strong>${formatDateOnly(date)}</strong> pour un total de <strong>${formatCurrency(lang, amount, { currency })}</strong>.`;
   },
   'cc-invoice.title': `Facture`,
   //#endregion

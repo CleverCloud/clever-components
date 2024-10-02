@@ -75,7 +75,7 @@ export interface IconModel {
 
 interface InvoiceAmount {
   amount: number;
-  currency: 'EUR' | 'USD';
+  currency: string; // ISO 4217 currency code
 }
 
 export interface Invoice {

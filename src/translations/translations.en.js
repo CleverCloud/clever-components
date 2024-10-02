@@ -613,8 +613,12 @@ export const translations = {
   //#region cc-invoice
   'cc-invoice.download-pdf': `Download PDF`,
   'cc-invoice.error': `Something went wrong while loading the invoice.`,
-  'cc-invoice.info': /** @param {{date: string, amount: number}} _ */ ({ date, amount }) => {
-    return sanitize`This invoice was issued on <strong>${formatDateOnly(date)}</strong> for a total amount of <strong>${formatCurrency(lang, amount)}</strong>.`;
+  'cc-invoice.info': /** @param {{date: string, amount: number, currency: string}} _ */ ({
+    date,
+    amount,
+    currency,
+  }) => {
+    return sanitize`This invoice was issued on <strong>${formatDateOnly(date)}</strong> for a total amount of <strong>${formatCurrency(lang, amount, { currency })}</strong>.`;
   },
   'cc-invoice.title': `Invoice`,
   //#endregion
