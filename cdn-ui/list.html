@@ -1,77 +1,77 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Clever Components smart CDN (WIP)</title>
-  <style>
-    body {
-      margin: 0 auto;
-      font-family: Arial, sans-serif;
-      width: 100%;
-      max-width: 50em;
-    }
-    code {
-      font-family: "SourceCodePro", "monaco", monospace;
-      font-size: 1em;
-    }
-    table {
-      width: 100%;
-    }
-    th {
-      text-align: left;
-    }
-    th,
-    td {
-      padding: 0.25em 0;
-    }
-  </style>
-  <script type="module" src="https://components.clever-cloud.com/load.js?version=6.10.0&components=cc-datetime-relative"></script>
-</head>
-<body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Clever Components smart CDN (WIP)</title>
+    <style>
+      body {
+        margin: 0 auto;
+        font-family: Arial, sans-serif;
+        width: 100%;
+        max-width: 50em;
+      }
+      code {
+        font-family: 'SourceCodePro', 'monaco', monospace;
+        font-size: 1em;
+      }
+      table {
+        width: 100%;
+      }
+      th {
+        text-align: left;
+      }
+      th,
+      td {
+        padding: 0.25em 0;
+      }
+    </style>
+    <script
+      type="module"
+      src="https://components.clever-cloud.com/load.js?version=6.10.0&components=cc-datetime-relative"
+    ></script>
+  </head>
+  <body>
+    <h1>List of Clever Components smart CDN (WIP)</h1>
 
-<h1>List of Clever Components smart CDN (WIP)</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Branch</th>
+          <th>Updated</th>
+          <th>Commit ID</th>
+          <th>Author</th>
+        </tr>
+      </thead>
+      <tbody id="entries"></tbody>
+    </table>
 
-<table>
-  <thead>
-  <tr>
-    <th>Branch</th>
-    <th>Updated</th>
-    <th>Commit ID</th>
-    <th>Author</th>
-  </tr>
-  </thead>
-  <tbody id="entries">
+    <script type="module">
+      const CDN_ORIGIN = new URL(import.meta.url).origin;
 
-  </tbody>
-</table>
+      const $entries = document.querySelector('#entries');
 
-<script type="module">
-  const CDN_ORIGIN = new URL(import.meta.url).origin;
-
-  const $entries = document.querySelector('#entries');
-
-  fetch(CDN_ORIGIN + '/manifest.json?t=' + (new Date().getTime()))
-    .then((r) => r.json())
-    .then((manifest) => {
-      if (manifest.version === 1) {
-        $entries.innerHTML = manifest.entries
-          .map((entry) => `
+      fetch(CDN_ORIGIN + '/manifest.json?t=' + new Date().getTime())
+        .then((r) => r.json())
+        .then((manifest) => {
+          if (manifest.version === 1) {
+            $entries.innerHTML = manifest.entries
+              .map(
+                (entry) => `
             <tr>
               <td><a href="${entry.url}"><code>${entry.name}</code></a></td>
               <td><cc-datetime-relative datetime="${entry.updatedAt}">${entry.updatedAt}</cc-datetime-relative></td>
               <td><span title="${entry.commitId}">${entry.commitId.substring(0, 8)}</span></td>
               <td>${entry.author}</td>
             </tr>
-          `)
-          .join('');
-      }
-      else {
-        throw new Error(`Unsupported manifest version ${manifest.version}`);
-      }
-    })
-    .catch(console.error);
-</script>
-
-</body>
+          `,
+              )
+              .join('');
+          } else {
+            throw new Error(`Unsupported manifest version ${manifest.version}`);
+          }
+        })
+        .catch(console.error);
+    </script>
+  </body>
 </html>

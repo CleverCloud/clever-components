@@ -1,7 +1,7 @@
-import path from 'path';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
+import path from 'path';
 import {
   babelPlugin,
   clearPlugin,
@@ -22,7 +22,7 @@ const inputFilesPairs = getMainFiles().map((file) => {
 });
 const outputDir = 'dist-cdn';
 
-export function getCdnRollupConfig (cdnEntryName, minifyJs) {
+export function getCdnRollupConfig(cdnEntryName, minifyJs) {
   console.log(`Building CDN for '${cdnEntryName}'`);
 
   return {

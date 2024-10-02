@@ -7,7 +7,7 @@ const {
   parseTemplate,
 } = require('./i18n-shared.js');
 
-function testNode (context, key, templateLiteralNode) {
+function testNode(context, key, templateLiteralNode) {
   if (templateLiteralNode.type === 'TemplateLiteral') {
     const { contents, hasHtml } = parseTemplate(context, templateLiteralNode);
     if (hasHtml) {
@@ -16,7 +16,7 @@ function testNode (context, key, templateLiteralNode) {
   }
 }
 
-function report (context, key, templateLiteralNode, contents) {
+function report(context, key, templateLiteralNode, contents) {
   context.report({
     node: templateLiteralNode,
     messageId: 'unsafeHtmlValue',
@@ -38,16 +38,13 @@ module.exports = {
     },
   },
   create: function (context) {
-
     // Early return for non translation files
     if (!isTranslationFile(context)) {
       return {};
     }
 
     return {
-
-      ExportNamedDeclaration (node) {
-
+      ExportNamedDeclaration(node) {
         // Early return for nodes that aren't the one exporting translations
         if (!isMainTranslationNode(node)) {
           return;
@@ -56,13 +53,11 @@ module.exports = {
         const translationProperties = getTranslationProperties(node);
 
         for (const tp of translationProperties) {
-
           const key = tp.key.value;
 
           testNode(context, key, tp.value);
 
           if (tp.value.type === 'ArrowFunctionExpression') {
-
             testNode(context, key, tp.value.body);
 
             if (tp.value.body.type === 'BlockStatement') {

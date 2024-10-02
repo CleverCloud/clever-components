@@ -1,247 +1,246 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Clever Components smart CDN (WIP)</title>
-  <style>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Clever Components smart CDN (WIP)</title>
+    <style>
+      body {
+        font-family: sans-serif;
+      }
 
-  body {
-    font-family: sans-serif;
-  }
+      section {
+        margin: 2rem 0;
+      }
 
-  section {
-    margin: 2rem 0;
-  }
+      .control-list {
+        display: grid;
+        grid-template-columns: min-content min-content;
+        gap: 1rem;
+        align-items: end;
+      }
 
-  .control-list {
-    display: grid;
-    grid-template-columns: min-content min-content;
-    gap: 1rem;
-    align-items: end;
-  }
+      .control-item {
+        display: flex;
+        flex-direction: column;
+      }
 
-  .control-item {
-    display: flex;
-    flex-direction: column;
-  }
+      .control-list span {
+        padding-bottom: 0.35rem;
+      }
 
-  .control-list span {
-    padding-bottom: 0.35rem;
-  }
+      select {
+        height: 2rem;
+        padding: 0 0.25rem;
+      }
 
-  select {
-    height: 2rem;
-    padding: 0 0.25rem;
-  }
+      cc-toggle {
+        display: inline-flex;
+      }
 
-  cc-toggle {
-    display: inline-flex;
-  }
+      .cdn-urls {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5em;
+        width: max-content;
+      }
 
-  .cdn-urls {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em;
-    width: max-content;
-  }
+      #components-choice {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 0.25rem 1rem;
+      }
 
-  #components-choice {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 0.25rem 1rem;
-  }
+      .choice-label {
+        white-space: nowrap;
+      }
 
-  .choice-label {
-    white-space: nowrap;
-  }
+      .choice-label:focus,
+      .choice-label:focus-within {
+        background-color: #eee;
+        border-radius: 0.5rem;
+      }
 
-  .choice-label:focus,
-  .choice-label:focus-within {
-    background-color: #eee;
-    border-radius: 0.5rem;
-  }
+      .choice-input {
+        margin-right: 0.5rem;
+      }
 
-  .choice-input {
-    margin-right: 0.5rem;
-  }
+      dl dd {
+        margin: 0;
+      }
 
-  dl dd {
-    margin: 0;
-  }
+      p {
+        margin: 0.2rem;
+      }
 
-  p {
-    margin: 0.2rem;
-  }
+      .hidden {
+        display: none;
+      }
+    </style>
+    <script
+      type="module"
+      src="https://components.clever-cloud.com/load.js?version=6.10.0&components=cc-expand,cc-input-text,cc-toggle"
+    ></script>
+  </head>
+  <body>
+    <h1>Clever Components smart CDN (WIP)</h1>
 
-  .hidden {
-    display: none;
-  }
-  </style>
-  <script type="module" src="https://components.clever-cloud.com/load.js?version=6.10.0&components=cc-expand,cc-input-text,cc-toggle"></script>
-</head>
-<body>
-
-<h1>Clever Components smart CDN (WIP)</h1>
-
-<section class="control-list">
-  <label class="control-item">
-    <span>Version:</span><select id="version-choice"></select>
-  </label>
-  <cc-toggle id="lang-choice" legend="Language:" value="en" choices='[
+    <section class="control-list">
+      <label class="control-item">
+        <span>Version:</span
+        ><select id="version-choice"></select>
+      </label>
+      <cc-toggle
+        id="lang-choice"
+        legend="Language:"
+        value="en"
+        choices='[
       {"label":"english","value":"en"},
       {"label":"french","value":"fr"}
-    ]'></cc-toggle>
-</section>
+    ]'
+      ></cc-toggle>
+    </section>
 
-<section>
-  Components (<span id="component-count">?</span>):
-</section>
+    <section>Components (<span id="component-count">?</span>):</section>
 
-<cc-expand>
-  <div id="components-choice"></div>
-</cc-expand>
+    <cc-expand>
+      <div id="components-choice"></div>
+    </cc-expand>
 
-<section>
-  <div id="styles-warning" class="hidden">
-    <p>This version does not support the component theme.</p>
-    <p>Styles are included in the component JavaScript files.</p>
-  </div>
-  <dl id="styles-area">
-    <dt>Styles URL:</dt>
-    <dd><a id="cdn-styles-url" target="_blank">?</a></dd>
-  </dl>
-  <dl>
-    <dt>Script URL:</dt>
-    <dd><a id="cdn-script-url" target="_blank">?</a></dd>
-  </dl>
+    <section>
+      <div id="styles-warning" class="hidden">
+        <p>This version does not support the component theme.</p>
+        <p>Styles are included in the component JavaScript files.</p>
+      </div>
+      <dl id="styles-area">
+        <dt>Styles URL:</dt>
+        <dd><a id="cdn-styles-url" target="_blank">?</a></dd>
+      </dl>
+      <dl>
+        <dt>Script URL:</dt>
+        <dd><a id="cdn-script-url" target="_blank">?</a></dd>
+      </dl>
+    </section>
 
-</section>
+    <section class="cdn-urls">
+      <cc-input-text id="cdn-styles" label="Styles to include:" readonly clipboard></cc-input-text>
+      <cc-input-text id="cdn-script" label="Script to include:" readonly clipboard></cc-input-text>
+    </section>
 
-<section class="cdn-urls">
-  <cc-input-text id="cdn-styles" label="Styles to include:" readonly clipboard></cc-input-text>
-  <cc-input-text id="cdn-script" label="Script to include:" readonly clipboard></cc-input-text>
-</section>
+    <script type="module">
+      const CDN_ORIGIN = new URL(import.meta.url).origin;
 
-<script type="module">
+      let manifest_version = 0;
+      let dependencies_manifest_version = 0;
 
-const CDN_ORIGIN = new URL(import.meta.url).origin;
-
-let manifest_version = 0;
-let dependencies_manifest_version = 0;
-
-function $ (selector) {
-  return document.querySelector(selector);
-}
-
-function $$ (selector) {
-  return Array.from(document.querySelectorAll(selector));
-}
-
-fetch(CDN_ORIGIN + '/manifest.json?t=' + (new Date().getTime()))
-  .then((r) => r.json())
-  .then((manifest) => {
-    manifest_version = manifest.version;
-    if (manifest.version === 1) {
-      const versionList = manifest.entries
-        .map((e) => e.name);
-
-      $('#version-choice').innerHTML = versionList
-        .map((v) => `<option value="${v}">${v}</option>`)
-        .join('');
-
-      const version = new URLSearchParams(window.location.search).get('version');
-      if (version != null && versionList.includes(version)) {
-        $('#version-choice').value = version;
-      } else {
-        $('#version-choice').value = versionList[0];
+      function $(selector) {
+        return document.querySelector(selector);
       }
-    }
-    else {
-      throw new Error(`Unsupported manifest version ${manifest.version}`);
-    }
-  })
-  .then(updateComponentList)
-  .catch(console.error);
 
-function updateComponentList () {
-  const version = $('#version-choice').value;
-  if (version === '') {
-    return;
-  }
-  fetch(CDN_ORIGIN + `/deps-manifest-${version}.json`)
-    .then((r) => r.json())
-    .then((manifest) => {
-      const components = manifest.files
-        .filter((file) => file.id.startsWith('cc-'));
-      dependencies_manifest_version = manifest.manifestVersion;
-      $('#components-choice').innerHTML = components
-        .map((file) => `<label class="choice-label"><input class="choice-input" type="checkbox" name="components" value="${file.id}">${file.id}</label>`)
-        .join('');
-      $('#component-count').textContent = components.length;
-    })
-    .then(() => {
-      updateStylesSection();
-      updateScriptSection();
-    })
-    .catch(console.error);
-}
+      function $$(selector) {
+        return Array.from(document.querySelectorAll(selector));
+      }
 
-function updateStylesSection () {
-  const version = $('#version-choice').value;
-  const stylesheetUrl = new URL('/styles.css', CDN_ORIGIN);
+      fetch(CDN_ORIGIN + '/manifest.json?t=' + new Date().getTime())
+        .then((r) => r.json())
+        .then((manifest) => {
+          manifest_version = manifest.version;
+          if (manifest.version === 1) {
+            const versionList = manifest.entries.map((e) => e.name);
 
-  if (version !== '') {
-    stylesheetUrl.searchParams.set('version', version);
-  }
+            $('#version-choice').innerHTML = versionList.map((v) => `<option value="${v}">${v}</option>`).join('');
 
-  if (dependencies_manifest_version === '2') {
-    const stylesheetUrlString = stylesheetUrl.toString().replace(/%2C/g, ',');
-    // update texts & values to display the stylesheet URL
-    $('#cdn-styles-url').href = stylesheetUrlString;
-    $('#cdn-styles-url').textContent = stylesheetUrlString;
-    $('#cdn-styles').value = `<link rel="stylesheet" href="${stylesheetUrlString}">`;
+            const version = new URLSearchParams(window.location.search).get('version');
+            if (version != null && versionList.includes(version)) {
+              $('#version-choice').value = version;
+            } else {
+              $('#version-choice').value = versionList[0];
+            }
+          } else {
+            throw new Error(`Unsupported manifest version ${manifest.version}`);
+          }
+        })
+        .then(updateComponentList)
+        .catch(console.error);
 
-    // Show stylesheet Url areas and hide warning about theme
-    $('#styles-area').classList.remove('hidden');
-    $('#cdn-styles').classList.remove('hidden');
-    $('#styles-warning').classList.add('hidden');
-  }
-  else {
-    // Show warning about theme and hide stylesheet Url areas
-    $('#styles-warning').classList.remove('hidden');
-    $('#styles-area').classList.add('hidden');
-    $('#cdn-styles').classList.add('hidden');
-  }
-}
+      function updateComponentList() {
+        const version = $('#version-choice').value;
+        if (version === '') {
+          return;
+        }
+        fetch(CDN_ORIGIN + `/deps-manifest-${version}.json`)
+          .then((r) => r.json())
+          .then((manifest) => {
+            const components = manifest.files.filter((file) => file.id.startsWith('cc-'));
+            dependencies_manifest_version = manifest.manifestVersion;
+            $('#components-choice').innerHTML = components
+              .map(
+                (file) =>
+                  `<label class="choice-label"><input class="choice-input" type="checkbox" name="components" value="${file.id}">${file.id}</label>`,
+              )
+              .join('');
+            $('#component-count').textContent = components.length;
+          })
+          .then(() => {
+            updateStylesSection();
+            updateScriptSection();
+          })
+          .catch(console.error);
+      }
 
-function updateScriptSection () {
-  const version = $('#version-choice').value;
-  const lang = $('#lang-choice').value;
-  const components = $$('#components-choice input:checked')
-    .map((node) => node.value)
-    .join(',');
-  const url = new URL('/load.js', CDN_ORIGIN);
+      function updateStylesSection() {
+        const version = $('#version-choice').value;
+        const stylesheetUrl = new URL('/styles.css', CDN_ORIGIN);
 
-  if (version !== '') {
-    url.searchParams.set('version', version);
-  }
-  if (lang !== '') {
-    url.searchParams.set('lang', lang);
-  }
-  if (components !== '') {
-    url.searchParams.set('components', components);
-  }
-  const urlString = url.toString().replace(/%2C/g, ',');
-  $('#cdn-script-url').href = urlString;
-  $('#cdn-script-url').textContent = urlString;
-  $('#cdn-script').value = `<script type="module" src="${urlString}"><` + `/script>`;
-}
+        if (version !== '') {
+          stylesheetUrl.searchParams.set('version', version);
+        }
 
-$('#version-choice').addEventListener('input', updateComponentList);
-$('#lang-choice').addEventListener('cc-toggle:input', updateScriptSection);
-$('#components-choice').addEventListener('input', updateScriptSection);
-</script>
+        if (dependencies_manifest_version === '2') {
+          const stylesheetUrlString = stylesheetUrl.toString().replace(/%2C/g, ',');
+          // update texts & values to display the stylesheet URL
+          $('#cdn-styles-url').href = stylesheetUrlString;
+          $('#cdn-styles-url').textContent = stylesheetUrlString;
+          $('#cdn-styles').value = `<link rel="stylesheet" href="${stylesheetUrlString}">`;
 
-</body>
+          // Show stylesheet Url areas and hide warning about theme
+          $('#styles-area').classList.remove('hidden');
+          $('#cdn-styles').classList.remove('hidden');
+          $('#styles-warning').classList.add('hidden');
+        } else {
+          // Show warning about theme and hide stylesheet Url areas
+          $('#styles-warning').classList.remove('hidden');
+          $('#styles-area').classList.add('hidden');
+          $('#cdn-styles').classList.add('hidden');
+        }
+      }
+
+      function updateScriptSection() {
+        const version = $('#version-choice').value;
+        const lang = $('#lang-choice').value;
+        const components = $$('#components-choice input:checked')
+          .map((node) => node.value)
+          .join(',');
+        const url = new URL('/load.js', CDN_ORIGIN);
+
+        if (version !== '') {
+          url.searchParams.set('version', version);
+        }
+        if (lang !== '') {
+          url.searchParams.set('lang', lang);
+        }
+        if (components !== '') {
+          url.searchParams.set('components', components);
+        }
+        const urlString = url.toString().replace(/%2C/g, ',');
+        $('#cdn-script-url').href = urlString;
+        $('#cdn-script-url').textContent = urlString;
+        $('#cdn-script').value = `<script type="module" src="${urlString}"><` + `/script>`;
+      }
+
+      $('#version-choice').addEventListener('input', updateComponentList);
+      $('#lang-choice').addEventListener('cc-toggle:input', updateScriptSection);
+      $('#components-choice').addEventListener('input', updateScriptSection);
+    </script>
+  </body>
 </html>

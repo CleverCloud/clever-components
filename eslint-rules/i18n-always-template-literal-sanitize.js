@@ -10,12 +10,9 @@
 
 'use strict';
 
-const {
-  getClosestParentFromType,
-  isTranslationFile,
-} = require('./i18n-shared.js');
+const { getClosestParentFromType, isTranslationFile } = require('./i18n-shared.js');
 
-function report (context, key, callExpressionNode) {
+function report(context, key, callExpressionNode) {
   context.report({
     node: callExpressionNode,
     messageId: 'sanitizeAlwaysTemplateLiteral',
@@ -47,14 +44,13 @@ module.exports = {
     },
   },
   create: function (context) {
-
     // Early return for non translation files
     if (!isTranslationFile(context)) {
       return {};
     }
 
     return {
-      CallExpression (node) {
+      CallExpression(node) {
         if (node.callee.name === 'sanitize') {
           const parentProperty = getClosestParentFromType(node, 'Property');
           if (parentProperty != null) {

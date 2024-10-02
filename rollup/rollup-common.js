@@ -1,7 +1,7 @@
-import path from 'path';
 import { importMetaAssets } from '@web/rollup-plugin-import-meta-assets';
 import CleanCSS from 'clean-css';
 import glob from 'glob';
+import path from 'path';
 import babel from 'rollup-plugin-babel';
 import clear from 'rollup-plugin-clear';
 import { terser } from 'rollup-plugin-terser';
@@ -64,18 +64,17 @@ const svgo = new SVGO({
   ],
 });
 
-export function multiGlob (patterns, opts) {
+export function multiGlob(patterns, opts) {
   return patterns.flatMap((pattern) => glob.sync(pattern, opts));
 }
 
-export function minifyStylesheet (stylesheet) {
+export function minifyStylesheet(stylesheet) {
   const minifiedStylesheet = new CleanCSS().minify(stylesheet);
 
   return minifiedStylesheet.styles;
 }
 
-export function getMainFiles () {
-
+export function getMainFiles() {
   const mainFilesPatterns = [
     `${SOURCE_DIR}/components/**/*.js`,
     `${SOURCE_DIR}/lib/i18n/i18n.js`,
@@ -83,52 +82,42 @@ export function getMainFiles () {
     `${SOURCE_DIR}/translations/*.js`,
   ];
 
-  const ignorePatterns = [
-    `${SOURCE_DIR}/components/**/*.stories.js`,
-    `${SOURCE_DIR}/components/**/*.test.js`,
-  ];
+  const ignorePatterns = [`${SOURCE_DIR}/components/**/*.stories.js`, `${SOURCE_DIR}/components/**/*.test.js`];
 
   return multiGlob(mainFilesPatterns, { ignore: ignorePatterns });
 }
 
-export function getAllSourceFiles () {
-
+export function getAllSourceFiles() {
   const allSourceFilesPatterns = `${SOURCE_DIR}/**/*.js`;
 
-  const ignorePatterns = [
-    `${SOURCE_DIR}/**/*.test.js`,
-    `${SOURCE_DIR}/**/*.stories.js`,
-    `${SOURCE_DIR}/stories/**/*`,
-  ];
+  const ignorePatterns = [`${SOURCE_DIR}/**/*.test.js`, `${SOURCE_DIR}/**/*.stories.js`, `${SOURCE_DIR}/stories/**/*`];
 
   return glob.sync(allSourceFilesPatterns, { ignore: ignorePatterns });
 }
 
-export function clearPlugin ({ outputDir }) {
+export function clearPlugin({ outputDir }) {
   return clear({
     targets: [outputDir],
   });
 }
 
-export function importMetaUrlAssetsPlugin () {
+export function importMetaUrlAssetsPlugin() {
   return importMetaAssets({
     // Let's assume we don't have import.meta.url assets in our deps to speed up things
     exclude: 'node_modules/**',
     transform: (svgBuffer, id) => {
-      return svgo
-        .optimize(svgBuffer.toString())
-        .then(({ data }) => data);
+      return svgo.optimize(svgBuffer.toString()).then(({ data }) => data);
     },
   });
 }
 
-export function terserPlugin () {
+export function terserPlugin() {
   return terser({
     output: { comments: false },
   });
 }
 
-export function babelPlugin () {
+export function babelPlugin() {
   return babel({
     plugins: [
       // Minify HTML inside lit-html and LitElement html`` templates
@@ -137,10 +126,7 @@ export function babelPlugin () {
         'template-html-minifier',
         {
           modules: {
-            lit: [
-              'html',
-              { name: 'css', encapsulation: 'style' },
-            ],
+            lit: ['html', { name: 'css', encapsulation: 'style' }],
           },
           htmlMinifier: {
             caseSensitive: true,
@@ -159,24 +145,26 @@ export function babelPlugin () {
   });
 }
 
-export function visualizerPlugin ({ outputDir, packageVersion }) {
-  const filename = (packageVersion != null)
-    ? `${outputDir}/visualizer-stats-${packageVersion}.html`
-    : `${outputDir}/visualizer-stats.html`;
+export function visualizerPlugin({ outputDir, packageVersion }) {
+  const filename =
+    packageVersion != null
+      ? `${outputDir}/visualizer-stats-${packageVersion}.html`
+      : `${outputDir}/visualizer-stats.html`;
   return visualizer({
     filename,
     template: 'treemap',
     gzipSize: true,
     brotliSize: true,
   });
-};
+}
 
 export const manualChunkOptions = (id) => {
-  const isSmall = id.endsWith('src/lib/events.js')
-    || id.endsWith('src/styles/skeleton.js')
-    || id.endsWith('src/styles/waiting.js')
-    || id.endsWith('lit/directives/if-defined.js')
-    || id.endsWith('lit/directives/class-map.js');
+  const isSmall =
+    id.endsWith('src/lib/events.js') ||
+    id.endsWith('src/styles/skeleton.js') ||
+    id.endsWith('src/styles/waiting.js') ||
+    id.endsWith('lit/directives/if-defined.js') ||
+    id.endsWith('lit/directives/class-map.js');
   if (isSmall) {
     return 'vendor';
   }
@@ -189,10 +177,11 @@ export const treeshakeOptions = {
     const isEntryPoint = /^src\/[a-z-]+\.js$/.test(relativeId);
 
     // More details at src/lib/leaflet/leaflet-esm.js
-    const isLeaflet = relativeId.endsWith('leaflet-esm.js')
-      || relativeId.includes('leaflet/src/layer/vector/Renderer.getRenderer.js')
-      || relativeId.includes('leaflet/src/layer/Tooltip.js')
-      || relativeId.includes('leaflet/src/control');
+    const isLeaflet =
+      relativeId.endsWith('leaflet-esm.js') ||
+      relativeId.includes('leaflet/src/layer/vector/Renderer.getRenderer.js') ||
+      relativeId.includes('leaflet/src/layer/Tooltip.js') ||
+      relativeId.includes('leaflet/src/control');
 
     // Shoelace exposes components with window.customElements.define()
     const isShoelace = relativeId.includes('@shoelace-style/shoelace');

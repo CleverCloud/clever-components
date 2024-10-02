@@ -7,9 +7,8 @@ const {
   isSanitizeTagFunction,
 } = require('./i18n-shared.js');
 
-function report (context, key, node) {
-
-  const isLiteralString = (node.type === 'Literal') && (typeof node.value === 'string');
+function report(context, key, node) {
+  const isLiteralString = node.type === 'Literal' && typeof node.value === 'string';
 
   const messageId = isLiteralString ? 'unexpectedLiteralString' : 'unexpectedTranslationType';
   const fix = isLiteralString ? (fixer) => fixer.replaceText(node, `\`${node.value}\``) : null;
@@ -22,7 +21,7 @@ function report (context, key, node) {
   });
 }
 
-function reportMissingReturn (context, key, node) {
+function reportMissingReturn(context, key, node) {
   context.report({
     node,
     messageId: 'missingReturnStatement',
@@ -45,16 +44,13 @@ module.exports = {
     },
   },
   create: function (context) {
-
     // Early return for non translation files
     if (!isTranslationFile(context)) {
       return {};
     }
 
     return {
-
-      ExportNamedDeclaration (node) {
-
+      ExportNamedDeclaration(node) {
         // Early return for nodes that aren't the one exporting translations
         if (!isMainTranslationNode(node)) {
           return;
@@ -63,7 +59,6 @@ module.exports = {
         const translationProperties = getTranslationProperties(node);
 
         for (const tp of translationProperties) {
-
           const key = tp.key.value;
 
           if (tp.value.type === 'TemplateLiteral') {
@@ -75,7 +70,6 @@ module.exports = {
           }
 
           if (tp.value.type === 'ArrowFunctionExpression') {
-
             if (tp.value.body.type === 'TemplateLiteral') {
               continue;
             }
@@ -87,15 +81,12 @@ module.exports = {
             }
 
             if (tp.value.body.type === 'BlockStatement') {
-
               const returnStatement = tp.value.body.body.find(({ type }) => type === 'ReturnStatement');
 
               if (returnStatement == null) {
                 reportMissingReturn(context, key, tp.value.body);
                 continue;
-              }
-              else {
-
+              } else {
                 const returnArgument = returnStatement.argument;
 
                 if (returnArgument.type === 'TemplateLiteral') {

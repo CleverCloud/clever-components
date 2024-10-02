@@ -1,152 +1,163 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="../../src/styles/default-theme.css">
-  <title>Pricing Page test</title>
-  <style>
-    body {
-      max-width: min(100%, 1450px);
-      margin-inline: auto;
-      padding: 1em;
-      font-family: "Nunito Sans", -apple-system, ".SFNSText-Regular", "San Francisco", BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    }
-
-    .header {
-      margin-inline: auto;
-    }
-
-    .main-content {
-      display: flex;
-      gap: 1em;
-      margin-block: 2em;
-    }
-
-    cc-pricing-estimation {
-      --shadow-color: 45deg 3% 46%;
-
-      position: sticky;
-      z-index: 10;
-      top: 0;
-      height: max-content;
-      max-height: 80vh;
-      min-width: 18em;
-      flex: 0 1 25em;
-      padding: 1em;
-      background-color: #fff;
-      box-shadow: 0.3px 0.5px 0.7px hsl(var(--shadow-color) / 36%),
-        0.8px 1.6px 2px -0.8px hsl(var(--shadow-color) / 36%),
-        2.1px 4.1px 5.2px -1.7px hsl(var(--shadow-color) / 36%),
-        5px 10px 12.6px -2.5px hsl(var(--shadow-color) / 36%);
-      margin-block: 2em;
-      overflow-y: scroll;
-    }
-
-    .product-list {
-      flex: 1 1 auto;
-      order: -1;
-    }
-
-    @media (max-width:81.25em) {
-
-      .main-content {
-        flex-direction: column;
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="../../src/styles/default-theme.css" />
+    <title>Pricing Page test</title>
+    <style>
+      body {
+        max-width: min(100%, 1450px);
+        margin-inline: auto;
+        padding: 1em;
+        font-family:
+          'Nunito Sans',
+          -apple-system,
+          '.SFNSText-Regular',
+          'San Francisco',
+          BlinkMacSystemFont,
+          'Segoe UI',
+          'Helvetica Neue',
+          Helvetica,
+          Arial,
+          sans-serif;
       }
 
-      .product-list {
-        padding-inline: 1em;
+      .header {
+        margin-inline: auto;
+      }
+
+      .main-content {
+        display: flex;
+        gap: 1em;
+        margin-block: 2em;
       }
 
       cc-pricing-estimation {
-        bottom: 0;
-        overflow: auto;
-        flex: 0 0 auto;
-        order: 2;
+        --shadow-color: 45deg 3% 46%;
+
+        position: sticky;
+        z-index: 10;
+        top: 0;
+        height: max-content;
+        max-height: 80vh;
+        min-width: 18em;
+        flex: 0 1 25em;
+        padding: 1em;
+        background-color: #fff;
+        box-shadow:
+          0.3px 0.5px 0.7px hsl(var(--shadow-color) / 36%),
+          0.8px 1.6px 2px -0.8px hsl(var(--shadow-color) / 36%),
+          2.1px 4.1px 5.2px -1.7px hsl(var(--shadow-color) / 36%),
+          5px 10px 12.6px -2.5px hsl(var(--shadow-color) / 36%);
+        margin-block: 2em;
+        overflow-y: scroll;
       }
-    }
-  </style>
-  <script type="module">
-    import '../../src/components/cc-pricing-page/cc-pricing-page.js';
-    import { addTranslations, setLanguage } from '../../src/lib/i18n/i18n.js';
-    import { lang, translations } from '../../src/translations/translations.fr.js';
-    import '../../src/components/cc-pricing-product/cc-pricing-product.smart-addon.js';
-    import '../../src/components/cc-pricing-product/cc-pricing-product.smart-runtime.js';
-    import '../../src/components/cc-pricing-product-consumption/cc-pricing-product-consumption.smart.js';
-    import '../../src/components/cc-pricing-estimation/cc-pricing-estimation.js';
-    import '../../src/components/cc-pricing-header/cc-pricing-header.smart.js';
 
+      .product-list {
+        flex: 1 1 auto;
+        order: -1;
+      }
 
-    addTranslations(lang, translations);
-    setLanguage(lang);
-  </script>
-  <script defer>
-    let cart;
+      @media (max-width: 81.25em) {
+        .main-content {
+          flex-direction: column;
+        }
 
-    addEventListener('load', () => {
-      cart = document.querySelector('cc-pricing-estimation');
-      cart.isToggleEnabled = window.matchMedia('(max-width: 81.25em)').matches;
-    });
+        .product-list {
+          padding-inline: 1em;
+        }
 
-    const mediaQueryList = window.matchMedia('(max-width: 81.25em)');
+        cc-pricing-estimation {
+          bottom: 0;
+          overflow: auto;
+          flex: 0 0 auto;
+          order: 2;
+        }
+      }
+    </style>
+    <script type="module">
+      import '../../src/components/cc-pricing-page/cc-pricing-page.js';
+      import { addTranslations, setLanguage } from '../../src/lib/i18n/i18n.js';
+      import { lang, translations } from '../../src/translations/translations.fr.js';
+      import '../../src/components/cc-pricing-product/cc-pricing-product.smart-addon.js';
+      import '../../src/components/cc-pricing-product/cc-pricing-product.smart-runtime.js';
+      import '../../src/components/cc-pricing-product-consumption/cc-pricing-product-consumption.smart.js';
+      import '../../src/components/cc-pricing-estimation/cc-pricing-estimation.js';
+      import '../../src/components/cc-pricing-header/cc-pricing-header.smart.js';
 
-    mediaQueryList.addEventListener('change', switchCartLayout);
+      addTranslations(lang, translations);
+      setLanguage(lang);
+    </script>
+    <script defer>
+      let cart;
 
-    function switchCartLayout (e) {
-      cart.isToggleEnabled = e.matches;
-    }
-  </script>
-</head>
-<body>
+      addEventListener('load', () => {
+        cart = document.querySelector('cc-pricing-estimation');
+        cart.isToggleEnabled = window.matchMedia('(max-width: 81.25em)').matches;
+      });
 
-<cc-smart-container context='{ "zoneId": "par", "addonFeatures":["cpu","memory","max-db-size","disk-size","connection-limit","version","databases","has-logs","has-metrics"]}'>
-  <cc-pricing-page>
+      const mediaQueryList = window.matchMedia('(max-width: 81.25em)');
 
-    <div class="header">
-      <cc-pricing-header
-        currencies='[{"code":"EUR","changeRate":1},{"code":"USD","changeRate":1.1717}]'
-        temporalities='[{"type":"second","digits":7},{"type":"minute","digits":5},{"type":"hour","digits":3},{"type":"day","digits":2},{"type":"30-days","digits":2}]'
-      ></cc-pricing-header>
-    </div>
-    <div class="main-content">
-      <div class="product-list">
-        <div class="product">
-            <cc-smart-container context='{"productId":"php"}'>
-              <h2>PHP</h2>
-              <cc-pricing-product mode="runtime" action="add"></cc-pricing-product>
-            </cc-smart-container>
+      mediaQueryList.addEventListener('change', switchCartLayout);
+
+      function switchCartLayout(e) {
+        cart.isToggleEnabled = e.matches;
+      }
+    </script>
+  </head>
+  <body>
+    <cc-smart-container
+      context='{ "zoneId": "par", "addonFeatures":["cpu","memory","max-db-size","disk-size","connection-limit","version","databases","has-logs","has-metrics"]}'
+    >
+      <cc-pricing-page>
+        <div class="header">
+          <cc-pricing-header
+            currencies='[{"code":"EUR","changeRate":1},{"code":"USD","changeRate":1.1717}]'
+            temporalities='[{"type":"second","digits":7},{"type":"minute","digits":5},{"type":"hour","digits":3},{"type":"day","digits":2},{"type":"30-days","digits":2}]'
+          ></cc-pricing-header>
         </div>
+        <div class="main-content">
+          <div class="product-list">
+            <div class="product">
+              <cc-smart-container context='{"productId":"php"}'>
+                <h2>PHP</h2>
+                <cc-pricing-product mode="runtime" action="add"></cc-pricing-product>
+              </cc-smart-container>
+            </div>
 
-        <div class="product">
-            <cc-smart-container context='{"productId":"redis-addon"}'>
-              <h2>Redis</h2>
-              <cc-pricing-product mode="addon" action="add"></cc-pricing-product>
-            </cc-smart-container>
+            <div class="product">
+              <cc-smart-container context='{"productId":"redis-addon"}'>
+                <h2>Redis</h2>
+                <cc-pricing-product mode="addon" action="add"></cc-pricing-product>
+              </cc-smart-container>
+            </div>
+
+            <div class="product">
+              <cc-smart-container context='{"productId":"mongodb-addon"}'>
+                <h2>MongoDB</h2>
+                <cc-pricing-product mode="addon" action="add"></cc-pricing-product>
+              </cc-smart-container>
+            </div>
+
+            <div class="product">
+              <cc-smart-container context='{ "productId": "cellar" }'>
+                <h2>Cellar</h2>
+                <cc-pricing-product-consumption></cc-pricing-product-consumption>
+              </cc-smart-container>
+            </div>
+          </div>
+
+          <cc-pricing-estimation
+            currencies='[{"code":"EUR","changeRate":1},{"code":"USD","changeRate":1.1717}]'
+            temporalities='[{"type":"second","digits":7},{"type":"minute","digits":5},{"type":"hour","digits":3},{"type":"day","digits":2},{"type":"30-days","digits":2}]'
+          ></cc-pricing-estimation>
         </div>
-
-        <div class="product">
-          <cc-smart-container context='{"productId":"mongodb-addon"}'>
-            <h2>MongoDB</h2>
-            <cc-pricing-product mode="addon" action="add"></cc-pricing-product>
-          </cc-smart-container>
-        </div>
-
-        <div class="product">
-            <cc-smart-container context='{ "productId": "cellar" }'>
-              <h2>Cellar</h2>
-              <cc-pricing-product-consumption></cc-pricing-product-consumption>
-            </cc-smart-container>
-        </div>
-      </div>
-
-      <cc-pricing-estimation
-        currencies='[{"code":"EUR","changeRate":1},{"code":"USD","changeRate":1.1717}]'
-        temporalities='[{"type":"second","digits":7},{"type":"minute","digits":5},{"type":"hour","digits":3},{"type":"day","digits":2},{"type":"30-days","digits":2}]'
-      ></cc-pricing-estimation>
-    </div>
-  </cc-pricing-page>
-</cc-smart-container>
-</body>
+      </cc-pricing-page>
+    </cc-smart-container>
+  </body>
 </html>

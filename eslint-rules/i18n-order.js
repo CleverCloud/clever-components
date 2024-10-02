@@ -2,9 +2,9 @@
 
 const { isTranslationFile, isMainTranslationNode, getTranslationProperties } = require('./i18n-shared.js');
 
-function getPrefix (key) {
+function getPrefix(key) {
   return key.split('.')[0];
-};
+}
 
 module.exports = {
   meta: {
@@ -19,16 +19,13 @@ module.exports = {
     },
   },
   create: function (context) {
-
     // Early return for non translation files
     if (!isTranslationFile(context)) {
       return {};
     }
 
     return {
-
-      ExportNamedDeclaration (node) {
-
+      ExportNamedDeclaration(node) {
         // Early return for nodes that aren't the one exporting translations
         if (!isMainTranslationNode(node)) {
           return;
@@ -54,12 +51,13 @@ module.exports = {
         const keysToNode = {};
 
         // Identify translation comments so we can remove them (they will be recreated after words
-        const translationComments = sourceCode.ast.comments
-          .filter((commentNode) => {
-            return commentNode.type === 'Line'
-              && node.loc.start.line < commentNode.loc.start.line
-              && commentNode.loc.end.line < node.loc.end.line;
-          });
+        const translationComments = sourceCode.ast.comments.filter((commentNode) => {
+          return (
+            commentNode.type === 'Line' &&
+            node.loc.start.line < commentNode.loc.start.line &&
+            commentNode.loc.end.line < node.loc.end.line
+          );
+        });
 
         getTranslationProperties(node).forEach((tpNode) => {
           keysToNode[tpNode.key.value] = tpNode;
@@ -70,18 +68,14 @@ module.exports = {
           const aPrefix = getPrefix(a);
           const bPrefix = getPrefix(b);
           // Make sure we sort by prefix before sorting by the rest of the key
-          return (aPrefix !== bPrefix)
-            ? aPrefix.localeCompare(bPrefix)
-            : a.localeCompare(b);
+          return aPrefix !== bPrefix ? aPrefix.localeCompare(bPrefix) : a.localeCompare(b);
         });
 
         if (JSON.stringify(translationKeys) !== JSON.stringify(sortedTranslationKeys)) {
-
           const firstNodes = {};
 
           const fixes = translationKeys
             .map((oldKey, index) => {
-
               const oldNode = keysToNode[oldKey];
               const newKey = sortedTranslationKeys[index];
               const newNode = keysToNode[newKey];
@@ -99,7 +93,7 @@ module.exports = {
               return { oldRange, newText, isFirstNode, prefix };
             })
             .map((item, index, allItems) => {
-              const isLastNode = (index === allItems.length - 1) || allItems[index + 1].isFirstNode;
+              const isLastNode = index === allItems.length - 1 || allItems[index + 1].isFirstNode;
               return { ...item, isLastNode };
             });
 
@@ -108,12 +102,13 @@ module.exports = {
             messageId: 'badTranslationKeysSortOrder',
             fix: (fixer) => {
               return [
-
                 // Remove empty lines
                 ...emptyLines.flatMap(({ rangeStart, rangeEnd }) => fixer.removeRange([rangeStart, rangeEnd])),
 
                 // Remove translation comments
-                ...translationComments.flatMap((cmtNode) => fixer.removeRange([cmtNode.range[0], cmtNode.range[1] + 1])),
+                ...translationComments.flatMap((cmtNode) =>
+                  fixer.removeRange([cmtNode.range[0], cmtNode.range[1] + 1]),
+                ),
 
                 // Sort translations (and insert fold region comments)
                 ...fixes.flatMap(({ oldRange, newText, isFirstNode, isLastNode, prefix }) => {

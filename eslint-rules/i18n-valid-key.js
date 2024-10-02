@@ -4,7 +4,7 @@ const { isTranslationFile, isMainTranslationNode, getTranslationProperties } = r
 
 const VALID_TRANSLATION_KEY = /^[a-z]+-[a-z][a-z-]*\.[a-z0-9-.]+$/;
 
-function report (context, key, node) {
+function report(context, key, node) {
   context.report({
     node,
     messageId: 'unexpectedTranslationKey',
@@ -25,16 +25,13 @@ module.exports = {
     },
   },
   create: function (context) {
-
     // Early return for non translation files
     if (!isTranslationFile(context)) {
       return {};
     }
 
     return {
-
-      ExportNamedDeclaration (node) {
-
+      ExportNamedDeclaration(node) {
         // Early return for nodes that aren't the one exporting translations
         if (!isMainTranslationNode(node)) {
           return;
@@ -43,7 +40,6 @@ module.exports = {
         const translationProperties = getTranslationProperties(node);
 
         for (const tp of translationProperties) {
-
           const key = tp.key.value;
 
           if (key == null || !key.match(VALID_TRANSLATION_KEY)) {

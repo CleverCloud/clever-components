@@ -1,10 +1,9 @@
 import path from 'path';
 
-export function indexGeneratorPlugin (files) {
+export function indexGeneratorPlugin(files) {
   return {
     name: 'index-generator',
-    generateBundle (options, outputBundle) {
-
+    generateBundle(options, outputBundle) {
       const source = files
         .map((f) => {
           const filename = path.parse(f).base;
