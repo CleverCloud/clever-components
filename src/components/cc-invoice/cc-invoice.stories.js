@@ -25,6 +25,7 @@ const defaultNumber = '20210501-1234';
 const defaultInvoiceState = {
   type: 'loaded',
   number: defaultNumber,
+  currency: 'EUR',
   downloadUrl: '/download/20210501-1234',
   emissionDate: '2021-05-01',
   amount: 327.48,
@@ -46,6 +47,7 @@ const defaultInvoiceState = {
 };
 
 export const defaultStory = makeStory(conf, {
+  /** @type {Array<Partial<CcInvoice>>} */
   items: [{ state: defaultInvoiceState }],
 });
 
@@ -77,7 +79,13 @@ export const error = makeStory(conf, {
 });
 
 export const dataLoaded = makeStory(conf, {
+  /** @type {Array<Partial<CcInvoice>>} */
   items: [{ state: defaultInvoiceState }],
+});
+
+export const dataLoadedWithDollar = makeStory(conf, {
+  /** @type {Array<Partial<CcInvoice>>} */
+  items: [{ state: { ...defaultInvoiceState, currency: 'USD' } }],
 });
 
 export const simulations = makeStory(conf, {
