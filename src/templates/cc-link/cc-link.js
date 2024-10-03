@@ -75,8 +75,4 @@ export const linkStyles = css`
     background-color: var(--cc-color-text-primary-weak, hsl(209deg 98% 73%));
     color: transparent;
   }
-
-  .cc-link cc-icon {
-    margin-right: 0.25em;
-  }
 `;

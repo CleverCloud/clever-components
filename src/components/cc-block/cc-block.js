@@ -42,10 +42,10 @@ import '../cc-img/cc-img.js';
 export class CcBlock extends LitElement {
   static get properties() {
     return {
-      icon: { type: Object, reflect: true },
-      image: { type: String, reflect: true },
-      ribbon: { type: String },
-      toggle: { type: String, reflect: true },
+      icon: { type: Object },
+      image: { type: String },
+      ribbon: { type: String, reflect: true },
+      toggle: { type: String },
     };
   }
 
@@ -177,7 +177,8 @@ export class CcBlock extends LitElement {
           --left-space: 1em;
         }
 
-        .container[ribbon-is-slotted] {
+        .container[ribbon-is-slotted],
+        :host([ribbon]:not([ribbon=''])) .container {
           --left-space: 3.5em;
         }
 
@@ -185,7 +186,8 @@ export class CcBlock extends LitElement {
           display: none;
         }
 
-        .container[ribbon-is-slotted] .ribbon {
+        .container[ribbon-is-slotted] .ribbon,
+        :host([ribbon]:not([ribbon=''])) .ribbon {
           background: var(--cc-color-bg-strong);
           color: white;
           display: inherit;
@@ -244,7 +246,8 @@ export class CcBlock extends LitElement {
           display: flex;
         }
 
-        .header-img {
+        .header-img,
+        ::slotted([slot='header-icon']) {
           border-radius: var(--cc-border-radius-default, 0.25em);
           height: 1.5em;
           width: 1.5em;
@@ -354,7 +357,14 @@ export class CcBlock extends LitElement {
           padding: 0.5em 1em;
         }
 
-        /* TMP at least one of these slots is used: footer, footer-left, footer-right */
+        .footer-left {
+          flex: 1 1 0;
+        }
+
+        .footer-left,
+        .footer-right {
+          display: none;
+        }
 
         .container[footer-is-slotted],
         .container[footer-left-is-slotted],
@@ -376,15 +386,6 @@ export class CcBlock extends LitElement {
 
         ::slotted([slot='footer']) {
           padding: 0.5em 1em;
-        }
-
-        .footer-left,
-        .footer-right {
-          display: none;
-        }
-
-        .footer-left {
-          flex: 1 1 0;
         }
 
         /* endregion */

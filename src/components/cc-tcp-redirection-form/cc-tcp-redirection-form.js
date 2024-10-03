@@ -148,6 +148,7 @@ export class CcTcpRedirectionForm extends LitElement {
         [slot='footer-right'] .cc-link {
           align-items: center;
           display: flex;
+          gap: 0.5em;
         }
       `,
     ];

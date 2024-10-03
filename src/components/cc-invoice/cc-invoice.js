@@ -61,12 +61,12 @@ export class CcInvoice extends LitElement {
         ${this.state.type !== 'error'
           ? html`
               <div slot="header-right">${ccLink(invoice.downloadUrl, i18n('cc-invoice.download-pdf'), skeleton)}</div>
-              <div slot="content" class="info">
+              <div slot="content-body" class="info">
                 <em class=${classMap({ skeleton })}>
                   ${i18n('cc-invoice.info', { date: invoice.emissionDate, amount: invoice.amount })}
                 </em>
               </div>
-              <cc-html-frame slot="content" class="frame" ?loading="${skeleton}" iframe-title="${title}">
+              <cc-html-frame slot="content-body" class="frame" ?loading="${skeleton}" iframe-title="${title}">
                 ${invoice.invoiceHtml != null ? unsafeHTML(`<template>${invoice.invoiceHtml}</template>`) : ''}
               </cc-html-frame>
             `
@@ -102,16 +102,19 @@ export class CcInvoice extends LitElement {
           background-color: #bbb;
         }
 
-        .info,
-        .frame {
-          justify-self: center;
+        .info {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 1em;
         }
 
         .frame {
           /* height and max-width are roughly set to have a standard letter / A4 paper ratio */
           box-shadow: 0 0 0.5em rgb(0 0 0 / 40%);
           height: 31cm;
+          margin-inline: auto;
           max-width: 22cm;
+          padding-inline: 1em;
           width: 100%;
         }
       `,

@@ -495,6 +495,7 @@ export class CcAddonBackups extends LitElement {
           box-shadow: 0 0 1em rgb(0 0 0 / 40%);
           left: 50%;
           max-width: 50em;
+          padding-inline: 0;
           position: fixed;
           transform: translateX(-50%);
           width: 90%;

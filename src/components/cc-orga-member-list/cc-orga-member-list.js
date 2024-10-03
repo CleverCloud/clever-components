@@ -369,7 +369,7 @@ export class CcOrgaMemberList extends LitElement {
 
         <div slot="footer-right">
           ${ccLink(
-            `${ORGA_MEMBER_DOCUMENTATION}`,
+            ORGA_MEMBER_DOCUMENTATION,
             html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-orga-member-list.documentation.text')}`,
           )}
         </div>
@@ -637,6 +637,7 @@ export class CcOrgaMemberList extends LitElement {
         [slot='footer-right'] .cc-link {
           align-items: center;
           display: flex;
+          gap: 0.5em;
         }
       `,
     ];
