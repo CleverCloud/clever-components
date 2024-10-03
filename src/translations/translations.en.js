@@ -638,15 +638,17 @@ export const translations = {
   'cc-invoice-table.number': `Number`,
   'cc-invoice-table.open-pdf': `Download PDF`,
   'cc-invoice-table.pay': `Pay`,
-  'cc-invoice-table.text': /** @param {{number: string, date: string|number, amount: number}} _ */ ({
+  'cc-invoice-table.text': /** @param {{number: string, date: string|number, amount: number, currency: string}} _ */ ({
     number,
     date,
     amount,
+    currency,
   }) => {
-    return sanitize`Invoice <strong>${number}</strong> issued on <strong>${formatDateOnly(date)}</strong> for a total amount of <code>${formatCurrency(lang, amount)}</code>`;
+    return sanitize`Invoice <strong>${number}</strong> issued on <strong>${formatDateOnly(date)}</strong> for a total amount of <code>${formatCurrency(lang, amount, { currency })}</code>`;
   },
   'cc-invoice-table.total.label': `Total`,
-  'cc-invoice-table.total.value': /** @param {{amount: number}} _ */ ({ amount }) => `${formatCurrency(lang, amount)}`,
+  'cc-invoice-table.total.value': /** @param {{amount: number, currency: string}} _ */ ({ amount, currency }) =>
+    `${formatCurrency(lang, amount, { currency })}`,
   //#endregion
   //#region cc-jenkins-info
   'cc-jenkins-info.documentation.link': `Read the documentation`,
