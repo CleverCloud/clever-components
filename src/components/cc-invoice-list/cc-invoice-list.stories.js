@@ -105,6 +105,26 @@ export const dataLoadedWithNoProcessed = makeStory(conf, {
   ],
 });
 
+export const dataLoadedWithDollars = makeStory(conf, {
+  items: [
+    {
+      /** @type {InvoiceListStateLoaded} */
+      state: {
+        type: 'loaded',
+        invoices: [
+          ...pendingInvoices('2020').map((invoice) => ({
+            ...invoice,
+            total: {
+              ...invoice.total,
+              currency: 'USD',
+            },
+          })),
+        ],
+      },
+    },
+  ],
+});
+
 export const simulations = makeStory(conf, {
   items: [{}, {}],
   simulations: [
