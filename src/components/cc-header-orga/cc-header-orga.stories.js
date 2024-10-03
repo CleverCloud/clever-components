@@ -34,7 +34,7 @@ const DEFAULT_ORGA_STATE = {
 };
 
 const DEFAULT_SLOTTED_CONTENT_FOOTER_LEFT = `<div slot="footer-left">
-  <p>This content is slotted on the left footer side.</p>
+  <p slot="footer-left">This content is slotted on the left footer side.</p>
 </div>`;
 
 const DEFAULT_SLOTTED_CONTENT_FOOTER_RIGHT = `<div slot="footer-right">

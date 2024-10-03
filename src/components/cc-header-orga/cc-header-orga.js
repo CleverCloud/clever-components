@@ -9,6 +9,8 @@ import '../cc-block/cc-block.js';
 import '../cc-img/cc-img.js';
 import '../cc-notice/cc-notice.js';
 
+import { hasSlottedChildren } from '../../directives/hasSlottedChildren.js';
+import { toto } from '../../directives/toto.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
@@ -92,7 +94,7 @@ export class CcHeaderOrga extends LitElement {
    */
   _renderHeader({ name, avatar = null, cleverEnterprise = false, emergencyNumber = null, skeleton = false }) {
     return html`
-      <cc-block>
+      <cc-block ${hasSlottedChildren()}>
         <div slot="content" class="header-body">
           <p class="identity">
             ${this._renderAvatar(skeleton, avatar, name)}
@@ -120,8 +122,8 @@ export class CcHeaderOrga extends LitElement {
               : ''}
           </div>
         </div>
-        <slot slot="footer-left" name="footer-left"></slot>
-        <slot slot="footer-right" name="footer-right"></slot>
+        <slot ${toto()} name="footer-left" class="footer"></slot>
+        <slot ${toto()} name="footer-right" class="footer"></slot>
       </cc-block>
     `;
   }
@@ -227,6 +229,15 @@ export class CcHeaderOrga extends LitElement {
           background-color: var(--cc-color-bg-neutral);
           border-top: solid 1px var(--cc-color-border-neutral-weak);
           padding: 0.5em 1em;
+        }
+
+        .footer {
+          display: none;
+        }
+
+        cc-block[footer-left-is-slotted] .footer,
+        cc-block[footer-right-is-slotted] .footer {
+          display: block;
         }
 
         /* SKELETON */
