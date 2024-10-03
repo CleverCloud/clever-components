@@ -109,7 +109,7 @@ export class CcElasticsearchInfo extends LitElement {
 
         <div slot="footer-right">
           ${ccLink(
-            `${ELASTICSEARCH_DOCUMENTATION}`,
+            ELASTICSEARCH_DOCUMENTATION,
             html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-elasticsearch-info.documentation.text')}`,
           )}
         </div>

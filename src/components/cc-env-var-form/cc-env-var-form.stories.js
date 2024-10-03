@@ -156,6 +156,7 @@ export const saving = makeStory(conf, {
       state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL },
     },
   ],
+  // The component needs to be loaded with data for it to display this data in saving mode afterward.
   onUpdateComplete: (component) => {
     component.state = { type: 'saving', validationMode: 'simple', variables: VARIABLES_FULL };
   },

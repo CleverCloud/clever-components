@@ -294,7 +294,7 @@ export class CcEnvVarForm extends LitElement {
       <cc-block>
         ${this.heading != null ? html` <div slot="header-title" class="heading">${this.heading}</div> ` : ''}
 
-        <div slot="header-right" class="toggle">
+        <div slot="${this.heading != null ? 'header-right' : 'header'}" class="toggle">
           <cc-toggle
             class="mode-switcher"
             value=${this._mode}
@@ -385,7 +385,11 @@ export class CcEnvVarForm extends LitElement {
         }
 
         .toggle {
-          margin-top: -1em;
+          display: flex;
+        }
+
+        .toggle[slot='header'] {
+          justify-content: center;
         }
 
         .description {
@@ -412,6 +416,7 @@ export class CcEnvVarForm extends LitElement {
         [slot='footer-right'] .cc-link {
           align-items: center;
           display: flex;
+          gap: 0.5em;
         }
       `,
     ];

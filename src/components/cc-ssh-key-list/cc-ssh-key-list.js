@@ -226,7 +226,7 @@ export class CcSshKeyList extends LitElement {
 
         <div slot="footer-right">
           ${ccLink(
-            `${SSH_KEY_DOCUMENTATION}`,
+            SSH_KEY_DOCUMENTATION,
             html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-ssh-key-list.documentation.text')}`,
           )}
         </div>
@@ -487,6 +487,7 @@ export class CcSshKeyList extends LitElement {
         [slot='footer-right'] .cc-link {
           align-items: center;
           display: flex;
+          gap: 0.5em;
         }
       `,
     ];

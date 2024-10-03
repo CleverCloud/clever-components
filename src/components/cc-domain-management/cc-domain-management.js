@@ -344,7 +344,7 @@ export class CcDomainManagement extends LitElement {
 
           <div slot="footer-right">
             ${ccLink(
-              `${DOMAIN_NAMES_DOCUMENTATION}`,
+              DOMAIN_NAMES_DOCUMENTATION,
               html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-domain-management.names.documentation.text')}`,
             )}
           </div>
@@ -358,7 +358,7 @@ export class CcDomainManagement extends LitElement {
           </div>
           <div slot="footer-right">
             ${ccLink(
-              `${TLS_CERTIFICATES_DOCUMENTATION}`,
+              TLS_CERTIFICATES_DOCUMENTATION,
               html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n(
                   'cc-domain-management.tls.certificates.documentation.text',
                 )}`,
@@ -389,7 +389,7 @@ export class CcDomainManagement extends LitElement {
 
           <div slot="footer-right">
             ${ccLink(
-              `${DNS_DOCUMENTATION}`,
+              DNS_DOCUMENTATION,
               html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-domain-management.dns.documentation.text')}`,
             )}
           </div>
@@ -855,6 +855,7 @@ export class CcDomainManagement extends LitElement {
         [slot='footer-right'] .cc-link {
           align-items: center;
           display: flex;
+          gap: 0.5em;
         }
       `,
     ];
