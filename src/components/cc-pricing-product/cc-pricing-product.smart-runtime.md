@@ -14,10 +14,11 @@ title: '💡 Smart (runtime)'
 
 ## ⚙️ Params
 
-| Name        | Type        | Details                                                                                          | Default |
-|-------------|-------------|--------------------------------------------------------------------------------------------------|---------|
-| `productId` | `string`    | Variant slug from [`/v2/products/instances`](https://api.clever-cloud.com/v2/products/instances) |         |
-| `zoneId`    | `string`    | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones)                 | `par`   |
+| Name        | Type        | Required | Details                                                                                          | Default                                        |
+|-------------|-------------|----------|--------------------------------------------------------------------------------------------------|------------------------------------------------|
+| `apiConfig` | `ApiConfig` | No       | Object with API configuration (target host, tokens...)                                           | `{ API_HOST: "https://api.clever-cloud.com" }` |
+| `productId` | `string`    | Yes      | Variant slug from [`/v2/products/instances`](https://api.clever-cloud.com/v2/products/instances) |                                                |
+| `zoneId`    | `string`    | Yes      | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones)                 | `par`                                          |
 
 ## 🌐 API endpoints
 

@@ -10,16 +10,17 @@ import './cc-pricing-product.js';
 defineSmartComponent({
   selector: 'cc-pricing-product[mode="runtime"]',
   params: {
+    apiConfig: { type: Object, optional: true },
     productId: { type: String },
     zoneId: { type: String },
   },
   onContextUpdate({ context, updateComponent, signal }) {
-    const { productId, zoneId } = context;
+    const { apiConfig, productId, zoneId } = context;
 
     // Reset the component before loading
     updateComponent('state', { state: 'loading' });
 
-    fetchRuntimeProduct({ productId, zoneId, signal })
+    fetchRuntimeProduct({ apiConfig, productId, zoneId, signal })
       .then((productDetails) => {
         updateComponent('product', {
           state: 'loaded',
@@ -35,15 +36,16 @@ defineSmartComponent({
   },
 });
 
-function fetchRuntimeProduct({ productId, zoneId, signal }) {
-  return Promise.all([fetchRuntime({ productId, signal }), fetchPriceSystem({ zoneId, signal })]).then(
-    ([runtime, priceSystem]) => formatRuntimeProduct(runtime, priceSystem),
-  );
+function fetchRuntimeProduct({ apiConfig, productId, zoneId, signal }) {
+  return Promise.all([
+    fetchRuntime({ apiConfig, productId, signal }),
+    fetchPriceSystem({ apiConfig, zoneId, signal }),
+  ]).then(([runtime, priceSystem]) => formatRuntimeProduct(runtime, priceSystem));
 }
 
-function fetchRuntime({ productId, signal }) {
+function fetchRuntime({ apiConfig, productId, signal }) {
   return getAvailableInstances()
-    .then(sendToApi({ cacheDelay: ONE_DAY, signal }))
+    .then(sendToApi({ apiConfig, cacheDelay: ONE_DAY, signal }))
     .then((allRuntimes) => {
       const runtime = allRuntimes.find((f) => f.variant.slug === productId);
       if (runtime == null) {

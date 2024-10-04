@@ -15,10 +15,11 @@ title: '💡 Smart'
 
 ## ⚙️ Params
 
-| Name        | Type        | Details                                                                          | Default |
-|-------------|-------------|----------------------------------------------------------------------------------|---------|
-| `productId` | `string`    | `cellar`, `fsbucket`, `heptapod`, or `pulsar`                                    |         |
-| `zoneId`    | `string`    | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones) | `par`   |
+| Name        | Type        | Required | Details                                                                                          | Default                                        |
+|-------------|-------------|----------|--------------------------------------------------------------------------------------------------|------------------------------------------------|
+| `apiConfig` | `ApiConfig` | No       | Object with API configuration (target host, tokens...)                                           | `{ API_HOST: "https://api.clever-cloud.com" }` |
+| `productId` | `string`    | Yes      | `cellar`, `fsbucket`, `heptapod`, or `pulsar`                                                    |                                                |
+| `zoneId`    | `string`    | Yes      | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones)                 | `par`                                          |
 
 ## 🌐 API endpoints
 
@@ -89,4 +90,3 @@ NOTE: Prices are the same on all zones right now.
   <cc-pricing-product-consumption></cc-pricing-product-consumption>
 </cc-smart-container>
 ```
-

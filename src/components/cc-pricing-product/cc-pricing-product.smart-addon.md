@@ -14,11 +14,12 @@ title: '💡 Smart (add-on)'
 
 ## ⚙️ Params
 
-| Name            | Type        | Details                                                                                          | Default |
-|-----------------|-------------|--------------------------------------------------------------------------------------------------|---------|
-| `productId`     | `string`    | id from [`/v2/products/addonproviders`](https://api.clever-cloud.com/v2/products/addonproviders) |         |
-| `zoneId`        | `string`    | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones)                 | `par`   |
-| `addonFeatures` | `string[]`  | List of feature codes as describe in the component API.                                          |         |
+| Name            | Type        | Required | Details                                                                                             | Default                                        |
+|-----------------|-------------|----------|-----------------------------------------------------------------------------------------------------|------------------------------------------------|
+| `apiConfig`     | `ApiConfig` | No       | Object with API configuration (target host, tokens...)                                              | `{ API_HOST: "https://api.clever-cloud.com" }` |
+| `productId`     | `string`    | Yes      | id from [`/v2/products/addonproviders`](https://api.clever-cloud.com/v2/products/addonproviders)    |                                                |
+| `zoneId`        | `string`    | Yes      | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones)                    | `par`                                          |
+| `addonFeatures` | `string[]`  | Yes      | List of feature codes as describe in the component API.                                             |                                                |
 
 * When `addonFeatures` is not specified, all product features are listed in the order of the API.
 * Setting `addonFeatures` allows you to filter the features you want to display.
@@ -73,4 +74,3 @@ It's also a good way to filter features.
   <cc-pricing-product mode="addon"></cc-pricing-product>
 </cc-smart-container>
 ```
-
