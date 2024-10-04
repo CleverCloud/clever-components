@@ -146,13 +146,14 @@ export function getPriceSystem(params) {
 /**
  *
  * @param {object} params
+ * @param {ApiConfig} [params.apiConfig]
  * @param {AbortSignal} params.signal
  * @param {string} params.zoneId
  * @return {Promise<*>}
  */
-export function fetchPriceSystem({ signal, zoneId }) {
+export function fetchPriceSystem({ apiConfig, signal, zoneId }) {
   // eslint-disable-next-line camelcase
-  return getPriceSystem({ zone_id: zoneId }).then(sendToApi({ signal, cacheDelay: ONE_DAY }));
+  return getPriceSystem({ zone_id: zoneId }).then(sendToApi({ apiConfig, signal, cacheDelay: ONE_DAY }));
 }
 
 // TODO: move to clever-client

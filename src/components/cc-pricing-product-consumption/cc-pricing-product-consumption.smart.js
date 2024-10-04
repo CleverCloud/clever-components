@@ -12,25 +12,26 @@ import './cc-pricing-product-consumption.js';
 defineSmartComponent({
   selector: 'cc-pricing-product-consumption',
   params: {
+    apiConfig: { type: Object, optional: true },
     productId: { type: String },
     zoneId: { type: String },
   },
   /**
    * @param {Object} settings
    * @param {CcPricingProductConsumption} settings.component
-   * @param {{ apiConfig: ApiConfig, productId: string, zoneId: string }} settings.context
+   * @param {{ apiConfig?: ApiConfig, productId: string, zoneId: string }} settings.context
    * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
    * @param {function} settings.updateComponent
    * @param {AbortSignal} settings.signal
    */
   // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate({ updateComponent, context, signal }) {
-    const { productId, zoneId } = context;
+    const { apiConfig, productId, zoneId } = context;
 
     // Reset the component before loading
     updateComponent('product', { state: 'loading' });
 
-    fetchProduct({ productId, zoneId, signal })
+    fetchProduct({ apiConfig, productId, zoneId, signal })
       .then((product) => {
         updateComponent('product', {
           name: product.name,
@@ -47,12 +48,13 @@ defineSmartComponent({
 
 /**
  * @param {object} params
+ * @param {ApiConfig} [params.apiConfig]
  * @param {string} params.productId
  * @param {string} params.zoneId
  * @param {AbortSignal} params.signal
  */
-function fetchProduct({ productId, zoneId, signal }) {
-  return fetchPriceSystem({ zoneId, signal }).then((priceSystem) => {
+function fetchProduct({ apiConfig, productId, zoneId, signal }) {
+  return fetchPriceSystem({ apiConfig, zoneId, signal }).then((priceSystem) => {
     if (productId === 'cellar') {
       return {
         name: 'Cellar',

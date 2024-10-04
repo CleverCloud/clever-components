@@ -17,6 +17,7 @@ import './cc-pricing-header.js';
 defineSmartComponent({
   selector: 'cc-pricing-header',
   params: {
+    apiConfig: { type: Object, optional: true },
     zoneId: { type: String },
   },
   /**
@@ -29,7 +30,7 @@ defineSmartComponent({
    */
   // @ts-expect-error FIXME: remove once `onContextUpdate` is type with generics
   onContextUpdate({ container, component, context, onEvent, updateComponent, signal }) {
-    const { zoneId } = context;
+    const { apiConfig, zoneId } = context;
 
     /**
      * This `cc-smart-container` is placed around the whole `cc-pricing-page` component.
@@ -57,7 +58,7 @@ defineSmartComponent({
      * we update `cc-pricing-header` accordingly.
      */
     if (component.state.type === 'loading') {
-      fetchAllZones({ signal })
+      fetchAllZones({ apiConfig, signal })
         .then((zones) => {
           updateComponent('state', { type: 'loaded', zones });
           updateComponent('selectedZoneId', zoneId);
@@ -74,12 +75,13 @@ defineSmartComponent({
 
 /**
  * @param {Object} parameters
+ * @param {ApiConfig} [parameters.apiConfig]
  * @param {AbortSignal} parameters.signal
  * @returns {Promise<Zone[]>}
  */
-function fetchAllZones({ signal }) {
+function fetchAllZones({ apiConfig, signal }) {
   return getAllZones()
-    .then(sendToApi({ signal, cacheDelay: ONE_DAY }))
+    .then(sendToApi({ apiConfig, signal, cacheDelay: ONE_DAY }))
     .then(
       /**
        * @param {Zone[]} zones
