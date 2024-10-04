@@ -5012,7 +5012,7 @@ const rawInstances = [
 ];
 /* eslint-enable quote-props */
 
-const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
+const CURRENCY_EUR = 'EUR';
 
 export function getFullProductRuntime (runtimeVariantSlug) {
   const runtime = rawInstances.find((runtime) => runtime.variant.slug === runtimeVariantSlug);

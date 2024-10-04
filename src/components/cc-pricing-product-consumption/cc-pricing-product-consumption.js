@@ -25,7 +25,7 @@ import '../cc-toggle/cc-toggle.js';
 const BREAKPOINT = 600;
 
 // FIXME: this code is duplicated across all pricing components (see issue #732 for more details)
-const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
+const CURRENCY_EUR = 'EUR';
 
 const INFINITY = '∞';
 const THIRTY_DAYS_IN_HOURS = 24 * 30;
@@ -41,7 +41,6 @@ const ICONS = {
 
 /**
  * @typedef {import('../common.types.js').ActionType} ActionType
- * @typedef {import('../common.types.js').Currency} Currency
  * @typedef {import('../common.types.js').Plan} Plan
  * @typedef {import('./cc-pricing-product-consumption.types.js').PricingProductConsumptionState} PricingProductConsumptionState
  * @typedef {import('./cc-pricing-product-consumption.types.js').SectionStates} SectionStates
@@ -68,7 +67,7 @@ export class CcPricingProductConsumption extends LitElement {
   static get properties() {
     return {
       action: { type: String },
-      currency: { type: Object },
+      currency: { type: String },
       product: { type: Object },
     };
   }
@@ -79,7 +78,7 @@ export class CcPricingProductConsumption extends LitElement {
     /** @type {ActionType} Sets the type of action: "add" to display the "add" button for the product and "none" for no actions (defaults to "add") */
     this.action = 'add';
 
-    /** @type {Currency} Sets the currency used to display the prices (defaults to euros) */
+    /** @type {string} Sets the currency used to display the prices (defaults to euros) */
     this.currency = CURRENCY_EUR;
 
     /** @type {PricingProductConsumptionState} Sets the state of the product */
@@ -142,12 +141,12 @@ export class CcPricingProductConsumption extends LitElement {
    * Returns the currency code and the computed price factored with the currency changerate
    *
    * @param {number} amount - the amount to base the calculation on
-   * @return {Object} An object containing the computed price and the currency code
+   * @return {Object} An object containing the computed price and the currency
    */
   _getCurrencyValue(amount) {
     return {
-      price: amount * this.currency.changeRate,
-      code: this.currency.code,
+      price: amount,
+      currency: this.currency,
     };
   }
 
@@ -534,7 +533,7 @@ export class CcPricingProductConsumption extends LitElement {
           white-space: nowrap;
         }
 
-        /* 
+        /*
     these elements could be removed but they help the readability of the whole template
     in source code and browser devtools
   */

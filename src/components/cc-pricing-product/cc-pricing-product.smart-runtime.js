@@ -13,14 +13,15 @@ defineSmartComponent({
     apiConfig: { type: Object, optional: true },
     productId: { type: String },
     zoneId: { type: String },
+    currency: { type: String, optional: true },
   },
   onContextUpdate({ context, updateComponent, signal }) {
-    const { apiConfig, productId, zoneId } = context;
+    const { apiConfig, productId, zoneId, currency = 'EUR' } = context;
 
     // Reset the component before loading
     updateComponent('state', { state: 'loading' });
 
-    fetchRuntimeProduct({ apiConfig, productId, zoneId, signal })
+    fetchRuntimeProduct({ apiConfig, productId, zoneId, currency, signal })
       .then((productDetails) => {
         updateComponent('product', {
           state: 'loaded',
@@ -36,10 +37,10 @@ defineSmartComponent({
   },
 });
 
-function fetchRuntimeProduct({ apiConfig, productId, zoneId, signal }) {
+function fetchRuntimeProduct({ apiConfig, productId, zoneId, currency, signal }) {
   return Promise.all([
     fetchRuntime({ apiConfig, productId, signal }),
-    fetchPriceSystem({ apiConfig, zoneId, signal }),
+    fetchPriceSystem({ apiConfig, zoneId, currency, signal }),
   ]).then(([runtime, priceSystem]) => formatRuntimeProduct(runtime, priceSystem));
 }
 

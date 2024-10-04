@@ -116,11 +116,6 @@ interface Marker {
   // Additional specific properties for the marker custom element.
 }
 
-interface Currency {
-  code: string;
-  changeRate: number;
-}
-
 interface Plan {
   productName: string;
   name: string;

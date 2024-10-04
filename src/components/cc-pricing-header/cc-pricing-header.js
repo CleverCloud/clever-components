@@ -14,16 +14,14 @@ import '../cc-icon/cc-icon.js';
 import '../cc-notice/cc-notice.js';
 import { CcZone } from '../cc-zone/cc-zone.js';
 
-/** @type {Currency} */
 // FIXME: this code is duplicated across all pricing components (see issue #732 for more details)
-const DEFAULT_CURRENCY = { code: 'EUR', changeRate: 1 };
+const DEFAULT_CURRENCY = 'EUR';
 
 /** @type {Temporality} */
 // FIXME: this code is duplicated across all pricing components (see issue #732 for more details)
 const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
 
 /**
- * @typedef {import('../common.types.js').Currency} Currency
  * @typedef {import('../common.types.js').Temporality} Temporality
  * @typedef {import('./cc-pricing-header.types.js').PricingHeaderState} PricingHeaderState
  */
@@ -33,7 +31,7 @@ const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
  *
  * @cssdisplay block
  *
- * @fires {CustomEvent<Currency>} cc-pricing-header:change-currency - Fires the `currency` whenever the currency selection changes.
+ * @fires {CustomEvent<string>} cc-pricing-header:change-currency - Fires the `currency` whenever the currency selection changes.
  * @fires {CustomEvent<Temporality>} cc-pricing-header:change-temporality - Fires the `temporality` whenever the temporality selection changes.
  * @fires {CustomEvent<string>} cc-pricing-header:change-zone - Fires the `zoneId` (zone name) whenever the zone selection changes.
  *
@@ -43,7 +41,7 @@ export class CcPricingHeader extends LitElement {
   static get properties() {
     return {
       currencies: { type: Array },
-      selectedCurrency: { type: Object, attribute: 'selected-currency' },
+      selectedCurrency: { type: String, attribute: 'selected-currency' },
       selectedTemporality: { type: Object, attribute: 'selected-temporality' },
       selectedZoneId: { type: String, attribute: 'selected-zone-id' },
       state: { type: Object },
@@ -54,10 +52,10 @@ export class CcPricingHeader extends LitElement {
   constructor() {
     super();
 
-    /** @type {Currency[]} Sets the list of currencies available for selection. */
+    /** @type {string[]} Sets the list of currencies available for selection. */
     this.currencies = [DEFAULT_CURRENCY];
 
-    /** @type {Currency}  Sets the current selected currency. */
+    /** @type {string}  Sets the current selected currency. */
     this.selectedCurrency = DEFAULT_CURRENCY;
 
     /** @type {Temporality} Sets the current selected temporality. */
@@ -103,8 +101,7 @@ export class CcPricingHeader extends LitElement {
    * @param {Event & { target: { value: string }}} e - the event that called this method
    */
   _onCurrencyChange(e) {
-    const currency = this.currencies.find((c) => c.code === e.target.value);
-    dispatchCustomEvent(this, 'change-currency', currency);
+    this.selectedCurrency = e.target.value;
   }
 
   /**
@@ -127,6 +124,17 @@ export class CcPricingHeader extends LitElement {
   _onZoneChange(e) {
     const zoneId = e.target.value;
     dispatchCustomEvent(this, 'change-zone', zoneId);
+  }
+
+  updated(changedProperties) {
+    if (changedProperties.has('selectedCurrency') && this.selectedCurrency != null) {
+      /*
+       * When the currency changes (from this component or from outside), we need to propagate the change to the parent
+       * smart component so that it updates its context and make all product smart components (its children) fetch a new
+       * priceSystem based on the new currency
+       */
+      dispatchCustomEvent(this, 'change-currency', this.selectedCurrency);
+    }
   }
 
   render() {
@@ -154,11 +162,11 @@ export class CcPricingHeader extends LitElement {
         <sl-select
           label="${i18n('cc-pricing-header.label.currency')}"
           class="currency-select"
-          value=${this.selectedCurrency?.code}
+          value=${this.selectedCurrency}
           @sl-change=${this._onCurrencyChange}
         >
           ${this.currencies.map(
-            (c) => html` <sl-option value=${c.code}>${getCurrencySymbol(c.code)} ${c.code}</sl-option> `,
+            (currency) => html` <sl-option value=${currency}>${getCurrencySymbol(currency)} ${currency}</sl-option> `,
           )}
           <cc-icon slot="expand-icon" .icon=${iconArrowDown}></cc-icon>
         </sl-select>

@@ -1,8 +1,7 @@
 import { css, html, LitElement } from 'lit';
 
-/** @type {Currency} */
 // FIXME: this code is duplicated across all pricing components (see issue #732 for more details)
-const DEFAULT_CURRENCY = { code: 'EUR', changeRate: 1 };
+const DEFAULT_CURRENCY = 'EUR';
 /** @type {Temporality} */
 // FIXME: this code is duplicated across all pricing components (see issue #732 for more details)
 const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
@@ -11,7 +10,6 @@ const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
  * @typedef {import('../cc-pricing-estimation/cc-pricing-estimation.js').CcPricingEstimation} CcPricingEstimation
  * @typedef {import('../cc-pricing-header/cc-pricing-header.js').CcPricingHeader} CcPricingHeader
  * @typedef {import('../cc-pricing-product/cc-pricing-product.js').CcPricingProduct} CcPricingProduct
- * @typedef {import('../common.types.js').Currency} Currency
  * @typedef {import('./cc-pricing-page.types.js').SelectedPlans} SelectedPlans
  * @typedef {import('../common.types.js').Temporality} Temporality
  */
@@ -47,7 +45,7 @@ export class CcPricingPage extends LitElement {
   constructor() {
     super();
 
-    /** @type {Currency} Sets the current selected currency. */
+    /** @type {string} Sets the current selected currency. */
     this.selectedCurrency = DEFAULT_CURRENCY;
 
     /** @type {SelectedPlans} Sets the current selected plans. */

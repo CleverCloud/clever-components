@@ -254,7 +254,7 @@ export const dataLoadedWithNoAction = makeStory(conf, {
 export const dataLoadedWithDollars = makeStory(conf, {
   items: [
     {
-      currency: { code: 'USD', changeRate: 1.1802 },
+      currency: 'USD',
       product: {
         state: 'loaded',
         ...getFullProductAddon('postgresql-addon', addonFeatures),

@@ -14,14 +14,15 @@ defineSmartComponent({
     addonFeatures: { type: Array },
     productId: { type: String },
     zoneId: { type: String },
+    currency: { type: String, optional: true },
   },
   onContextUpdate({ context, updateComponent, signal }) {
-    const { apiConfig, productId, zoneId, addonFeatures } = context;
+    const { apiConfig, productId, zoneId, addonFeatures, currency = 'EUR' } = context;
 
     // Reset the component before loading
     updateComponent('state', { state: 'loading' });
 
-    fetchAddonProduct({ apiConfig, zoneId, productId, addonFeatures, signal })
+    fetchAddonProduct({ apiConfig, zoneId, productId, addonFeatures, currency, signal })
       .then((productDetails) => {
         updateComponent('product', {
           state: 'loaded',
@@ -37,10 +38,10 @@ defineSmartComponent({
   },
 });
 
-function fetchAddonProduct({ apiConfig, productId, zoneId, addonFeatures, signal }) {
+function fetchAddonProduct({ apiConfig, productId, zoneId, addonFeatures, currency, signal }) {
   return Promise.all([
     fetchAddonProvider({ apiConfig, productId, signal }),
-    fetchPriceSystem({ apiConfig, zoneId, signal }),
+    fetchPriceSystem({ apiConfig, zoneId, currency, signal }),
   ]).then(([addonProvider, priceSystem]) => formatAddonProduct(addonProvider, priceSystem, addonFeatures));
 }
 

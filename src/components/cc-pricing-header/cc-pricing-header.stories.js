@@ -23,11 +23,7 @@ const conf = {
 
 /** @type {{ currencies: Currency[], temporalities: Temporality[], state: PricingHeaderStateLoaded, selectedZoneId: 'par' }} */
 const defaultItem = {
-  currencies: [
-    { code: 'EUR', changeRate: 1 },
-    { code: 'GBP', changeRate: 0.88603 },
-    { code: 'USD', changeRate: 1.1717 },
-  ],
+  currencies: ['EUR', 'GBP', 'USD'],
   temporalities: [
     {
       type: 'second',
@@ -84,7 +80,7 @@ export const dataLoadedWithDollars = makeStory(conf, {
   items: [
     {
       ...defaultItem,
-      selectedCurrency: { code: 'USD', changeRate: 1.1717 },
+      selectedCurrency: 'USD',
       selectedZoneId: 'mtl',
     },
   ],
