@@ -961,13 +961,13 @@ export const translations = {
     productName,
     planName,
   }) => `Total pour ${productName} ${planName}`,
-  'cc-pricing-estimation.price': /** @param {{price: number, code: string, digits: number}} _ */ ({
+  'cc-pricing-estimation.price': /** @param {{price: number, currency: string, digits: number}} _ */ ({
     price,
-    code,
+    currency,
     digits,
   }) =>
     formatCurrency(lang, price, {
-      currency: code,
+      currency,
       minimumFractionDigits: digits,
       maximumFractionDigits: digits,
     }),
@@ -1025,13 +1025,13 @@ export const translations = {
   'cc-pricing-product.feature.memory': `RAM`,
   'cc-pricing-product.feature.version': `Version`,
   'cc-pricing-product.plan': `Plan`,
-  'cc-pricing-product.price': /** @param {{price: number, code: string, digits: number}} _ */ ({
+  'cc-pricing-product.price': /** @param {{price: number, currency: string, digits: number}} _ */ ({
     price,
-    code,
+    currency,
     digits,
   }) =>
     formatCurrency(lang, price, {
-      currency: code,
+      currency,
       minimumFractionDigits: digits,
       maximumFractionDigits: digits,
     }),
@@ -1065,23 +1065,23 @@ export const translations = {
   'cc-pricing-product-consumption.outbound-traffic.title': `Trafic sortant :`,
   'cc-pricing-product-consumption.price': /** @param {{price: number, code: string}} _ */ ({ price, code }) =>
     `${formatCurrency(lang, price, { currency: code })}`,
-  'cc-pricing-product-consumption.price-interval.bytes': /** @param {{price: number, code: string}} _ */ ({
+  'cc-pricing-product-consumption.price-interval.bytes': /** @param {{price: number, currency: string}} _ */ ({
     price,
-    code,
+    currency,
   }) => {
     const priceInterval = formatCurrency(lang, price, {
       minimumFractionDigits: 3,
       maximumFractionDigits: 3,
-      currency: code,
+      currency,
     });
     const priceOneGigabyte = getUnit(1e9);
     return `${priceInterval} / ${priceOneGigabyte} (30 jours)`;
   },
   'cc-pricing-product-consumption.price-interval.free': `GRATUIT`,
   'cc-pricing-product-consumption.price-interval.users':
-    /** @param {{userCount: number, price: number, code: string}} _ */ ({ userCount, price, code }) => {
+    /** @param {{userCount: number, price: number, currency: string}} _ */ ({ userCount, price, currency }) => {
       const users = plural(userCount, 'utilisateur');
-      const priceInterval = formatCurrency(lang, price * userCount, { currency: code });
+      const priceInterval = formatCurrency(lang, price * userCount, { currency });
       return `${priceInterval} / ${userCount} ${users} (30 jours)`;
     },
   'cc-pricing-product-consumption.private-users.label': `utilisateurs privés`,

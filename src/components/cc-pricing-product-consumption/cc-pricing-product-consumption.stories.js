@@ -296,7 +296,7 @@ export const dataLoadedWithNoAction = makeStory(conf, {
 export const dataLoadedWithDollars = makeStory(conf, {
   items: [
     {
-      currency: { code: 'USD', changeRate: 1.25 },
+      currency: 'USD',
       product: {
         state: 'loaded',
         ...baseCellar,

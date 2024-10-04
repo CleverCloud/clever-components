@@ -105,21 +105,21 @@ const websiteStyles = `
     --cc-color-border-neutral-weak: #deddee;
 
     --cc-border-radius-default: 0;
-    
+
     --cc-pricing-estimation-counter-bg: linear-gradient(90deg, #f57461, #cb1c42 50.48%, #a51050);
 
     --cc-zone-tag-bgcolor: transparent;
     --cc-zone-tag-font-family: sans-serif;
-    
+
     --cc-focus-outline: solid 2px #5754aa;
     --cc-focus-outline-offset: 4px;
   }
 `;
 
 const currencies = {
-  eur: { code: 'EUR', changeRate: 1 },
-  gbp: { code: 'GBP', changeRate: 0.88603 },
-  usd: { code: 'USD', changeRate: 1.1717 },
+  eur: 'EUR',
+  gbp: 'GBP',
+  usd: 'USD',
 };
 
 const temporalities = {

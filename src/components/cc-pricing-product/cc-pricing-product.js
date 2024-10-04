@@ -28,16 +28,14 @@ const FEATURES_I18N = {
 const AVAILABLE_FEATURES = Object.keys(FEATURES_I18N);
 const NUMBER_FEATURE_TYPES = ['bytes', 'number', 'number-cpu-runtime'];
 
-/** @type {Currency} */
 // FIXME: this code is duplicated across all pricing components (see issue #732 for more details)
-const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
+const CURRENCY_EUR = 'EUR';
 
 /** @type {Temporality[]} */
 const DEFAULT_TEMPORALITY_LIST = [{ type: '30-days', digits: 2 }];
 
 /**
  * @typedef {import('../common.types.js').ActionType} ActionType
- * @typedef {import('../common.types.js').Currency} Currency
  * @typedef {import('./cc-pricing-product.types.js').PricingProductState} PricingProductState
  * @typedef {import('../common.types.js').Temporality} Temporality
  * @typedef {import('../common.types.js').Plan} Plan
@@ -73,7 +71,7 @@ export class CcPricingProduct extends LitElement {
   static get properties() {
     return {
       action: { type: String },
-      currency: { type: Object },
+      currency: { type: String },
       product: { type: Object },
       temporalities: { type: Array },
     };
@@ -85,7 +83,7 @@ export class CcPricingProduct extends LitElement {
     /** @type {ActionType} Sets the type of action: "add" to display add buttons for each plan and "none" for no actions (defaults to "add"). */
     this.action = 'add';
 
-    /** @type {Currency} Sets the currency used to display the prices (defaults to euros). */
+    /** @type {string} Sets the currency used to display the prices (defaults to euros). */
     this.currency = CURRENCY_EUR;
 
     /** @type {PricingProductState} Sets the state of the pricing product component. */
@@ -163,22 +161,22 @@ export class CcPricingProduct extends LitElement {
    */
   _getPrice(type, hourlyPrice) {
     if (type === 'second') {
-      return (hourlyPrice / 60 / 60) * this.currency.changeRate;
+      return hourlyPrice / 60 / 60;
     }
     if (type === 'minute') {
-      return (hourlyPrice / 60) * this.currency.changeRate;
+      return hourlyPrice / 60;
     }
     if (type === 'hour') {
-      return hourlyPrice * this.currency.changeRate;
+      return hourlyPrice;
     }
     if (type === '1000-minutes') {
-      return (hourlyPrice / 60) * 1000 * this.currency.changeRate;
+      return (hourlyPrice / 60) * 1000;
     }
     if (type === 'day') {
-      return hourlyPrice * 24 * this.currency.changeRate;
+      return hourlyPrice * 24;
     }
     if (type === '30-days') {
-      return hourlyPrice * 24 * 30 * this.currency.changeRate;
+      return hourlyPrice * 24 * 30;
     }
   }
 
@@ -220,7 +218,7 @@ export class CcPricingProduct extends LitElement {
   _getPriceValue(type, hourlyPrice, digits) {
     const price = this._getPrice(type, hourlyPrice);
     if (price != null) {
-      return i18n('cc-pricing-product.price', { price, code: this.currency.code, digits });
+      return i18n('cc-pricing-product.price', { price, currency: this.currency, digits });
     }
   }
 

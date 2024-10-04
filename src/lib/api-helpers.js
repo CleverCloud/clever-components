@@ -131,6 +131,7 @@ function getPaymentUrl(ownerId, invoiceNumber) {
  * GET /v4/billing/price-system
  * @param {object} params
  * @param {String} params.zone_id
+ * @param {String} params.currency
  */
 export function getPriceSystem(params) {
   // no multipath for /self or /organisations/{id}
@@ -138,7 +139,7 @@ export function getPriceSystem(params) {
     method: 'get',
     url: `/v4/billing/price-system`,
     headers: { Accept: 'application/json' },
-    queryParams: pickNonNull(params, ['zone_id']),
+    queryParams: pickNonNull(params, ['zone_id', 'currency']),
     // no body
   });
 }
@@ -149,11 +150,12 @@ export function getPriceSystem(params) {
  * @param {ApiConfig} [params.apiConfig]
  * @param {AbortSignal} params.signal
  * @param {string} params.zoneId
+ * @param {string} params.currency
  * @return {Promise<*>}
  */
-export function fetchPriceSystem({ apiConfig, signal, zoneId }) {
+export function fetchPriceSystem({ apiConfig, signal, zoneId, currency }) {
   // eslint-disable-next-line camelcase
-  return getPriceSystem({ zone_id: zoneId }).then(sendToApi({ apiConfig, signal, cacheDelay: ONE_DAY }));
+  return getPriceSystem({ zone_id: zoneId, currency }).then(sendToApi({ apiConfig, signal, cacheDelay: ONE_DAY }));
 }
 
 // TODO: move to clever-client

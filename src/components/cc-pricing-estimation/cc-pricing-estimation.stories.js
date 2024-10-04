@@ -35,11 +35,7 @@ const nodeExample = {
 const selectedPlans = [pgExample, cellarExample, nodeExample];
 
 const defaultItem = {
-  currencies: [
-    { code: 'EUR', changeRate: 1 },
-    { code: 'GBP', changeRate: 0.88603 },
-    { code: 'USD', changeRate: 1.1717 },
-  ],
+  currencies: ['EUR', 'GBP', 'USD'],
   temporalities: [
     {
       type: 'second',
@@ -72,11 +68,7 @@ export const defaultStory = makeStory(conf, {
 export const empty = makeStory(conf, {
   items: [
     {
-      currencies: [
-        { code: 'EUR', changeRate: 1 },
-        { code: 'GBP', changeRate: 0.88603 },
-        { code: 'USD', changeRate: 1.1717 },
-      ],
+      currencies: ['EUR', 'GBP', 'USD'],
       temporalities: [
         {
           type: 'second',
@@ -141,7 +133,7 @@ export const dataLoadedWithDollars = makeStory(conf, {
   items: [
     {
       ...defaultItem,
-      selectedCurrency: { code: 'USD', changeRate: 1.1717 },
+      selectedCurrency: 'USD',
     },
   ],
 });

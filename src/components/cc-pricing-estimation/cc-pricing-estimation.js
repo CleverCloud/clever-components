@@ -33,16 +33,14 @@ const FEATURES_I18N = {
 };
 const AVAILABLE_FEATURES = Object.keys(FEATURES_I18N);
 
-/** @type {Currency} */
 // FIXME: this code is duplicated across all pricing components (see issue #732 for more details)
-const DEFAULT_CURRENCY = { code: 'EUR', changeRate: 1 };
+const DEFAULT_CURRENCY = 'EUR';
 
 /** @type {Temporality} */
 // FIXME: this code is duplicated across all pricing components (see issue #732 for more details)
 const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
 
 /**
- * @typedef {import('../common.types.js').Currency} Currency
  * @typedef {import('../common.types.js').Plan} Plan
  * @typedef {import('../common.types.js').Temporality} Temporality
  */
@@ -53,7 +51,7 @@ const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
  * @cssdisplay block
  *
  * @fires {CustomEvent<Plan>} cc-pricing-estimation:change-quantity - Fires the plan with a modified quantity whenever the quantity on the input changes.
- * @fires {CustomEvent<Currency>} cc-pricing-estimation:change-currency - Fires the `currency` whenever the currency selection changes.
+ * @fires {CustomEvent<string>} cc-pricing-estimation:change-currency - Fires the `currency` whenever the currency selection changes.
  * @fires {CustomEvent<Temporality>} cc-pricing-estimation:change-temporality - Fires the `temporality` whenever the temporality selection changes.
  * @fires {CustomEvent<Plan>} cc-pricing-estimation:delete-plan - Fires the plan whenever a delete button is clicked or when the quantity reaches 0.
  *
@@ -67,7 +65,7 @@ export class CcPricingEstimation extends LitElement {
     return {
       currencies: { type: Array },
       isToggleEnabled: { type: Boolean, attribute: 'is-toggle-enabled' },
-      selectedCurrency: { type: Object, attribute: 'selected-currency' },
+      selectedCurrency: { type: String, attribute: 'selected-currency' },
       selectedPlans: { type: Array, attribute: 'selected-plans' },
       selectedTemporality: { type: Object, attribute: 'selected-temporality' },
       temporalities: { type: Array },
@@ -78,7 +76,7 @@ export class CcPricingEstimation extends LitElement {
   constructor() {
     super();
 
-    /** @type {Currency[]} Sets the list of currencies. */
+    /** @type {string[]} Sets the list of currencies. */
     this.currencies = [DEFAULT_CURRENCY];
 
     /** @type {boolean} Switches the display to toggle.
@@ -88,7 +86,7 @@ export class CcPricingEstimation extends LitElement {
      */
     this.isToggleEnabled = false;
 
-    /** @type {Currency} Sets the current currency. */
+    /** @type {string} Sets the current currency. */
     this.selectedCurrency = DEFAULT_CURRENCY;
 
     /** @type {Plan[]} Sets the list of selected plans with their quantity. */
@@ -213,22 +211,22 @@ export class CcPricingEstimation extends LitElement {
    */
   _getPrice(type, hourlyPrice) {
     if (type === 'second') {
-      return (hourlyPrice / 60 / 60) * this.selectedCurrency.changeRate;
+      return hourlyPrice / 60 / 60;
     }
     if (type === 'minute') {
-      return (hourlyPrice / 60) * this.selectedCurrency.changeRate;
+      return hourlyPrice / 60;
     }
     if (type === 'hour') {
-      return hourlyPrice * this.selectedCurrency.changeRate;
+      return hourlyPrice;
     }
     if (type === '1000-minutes') {
-      return (hourlyPrice / 60) * 1000 * this.selectedCurrency.changeRate;
+      return (hourlyPrice / 60) * 1000;
     }
     if (type === 'day') {
-      return hourlyPrice * 24 * this.selectedCurrency.changeRate;
+      return hourlyPrice * 24;
     }
     if (type === '30-days') {
-      return hourlyPrice * 24 * 30 * this.selectedCurrency.changeRate;
+      return hourlyPrice * 24 * 30;
     }
   }
 
@@ -270,7 +268,7 @@ export class CcPricingEstimation extends LitElement {
   _getPriceValue(type, hourlyPrice, digits) {
     const price = this._getPrice(type, hourlyPrice);
     if (price != null) {
-      return i18n('cc-pricing-estimation.price', { price, code: this.selectedCurrency.code, digits });
+      return i18n('cc-pricing-estimation.price', { price, currency: this.selectedCurrency, digits });
     }
   }
 
@@ -300,8 +298,7 @@ export class CcPricingEstimation extends LitElement {
    * @param {Event} e - the event that called this method
    */
   _onCurrencyChange(e) {
-    const currency = this.currencies.find((c) => c.code === e.target.value);
-    dispatchCustomEvent(this, 'change-currency', currency);
+    dispatchCustomEvent(this, 'change-currency', e.target.value);
   }
 
   /**
@@ -378,7 +375,7 @@ export class CcPricingEstimation extends LitElement {
             <span class="visually-hidden"> ${i18n('cc-pricing-estimation.total.label')} </span>
             ${i18n('cc-pricing-estimation.price', {
               price: totalPrice,
-              code: this.selectedCurrency.code,
+              currency: this.selectedCurrency,
               digits: this.selectedTemporality.digits,
             })}
           </strong>
@@ -410,7 +407,7 @@ export class CcPricingEstimation extends LitElement {
           <strong>
             ${i18n('cc-pricing-estimation.price', {
               price: totalPrice,
-              code: this.selectedCurrency.code,
+              currency: this.selectedCurrency,
               digits: this.selectedTemporality.digits,
             })}
           </strong>
@@ -456,7 +453,7 @@ export class CcPricingEstimation extends LitElement {
             <span class="plan__toggle__header__total">
               ${i18n('cc-pricing-estimation.price', {
                 price: totalPlanPrice,
-                code: this.selectedCurrency.code,
+                currency: this.selectedCurrency,
                 digits: this.selectedTemporality.digits,
               })}
             </span>
@@ -531,7 +528,7 @@ export class CcPricingEstimation extends LitElement {
               </span>
               ${i18n('cc-pricing-estimation.price', {
                 price: totalPlanPrice,
-                code: this.selectedCurrency.code,
+                currency: this.selectedCurrency,
                 digits: this.selectedTemporality.digits,
               })}
             </strong>
@@ -581,13 +578,11 @@ export class CcPricingEstimation extends LitElement {
           class="currency-select"
           hoist
           placement="top"
-          value=${this.selectedCurrency?.code}
+          value=${this.selectedCurrency}
           @sl-change=${this._onCurrencyChange}
         >
           ${this.currencies.map(
-            (currency) => html`
-              <sl-option value=${currency.code}>${getCurrencySymbol(currency.code)} ${currency.code}</sl-option>
-            `,
+            (currency) => html` <sl-option value=${currency}>${getCurrencySymbol(currency)} ${currency}</sl-option> `,
           )}
           <cc-icon slot="expand-icon" .icon=${iconArrowDown} size="xl"></cc-icon>
         </sl-select>
