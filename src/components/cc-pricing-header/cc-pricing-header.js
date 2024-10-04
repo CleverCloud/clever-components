@@ -26,7 +26,7 @@ const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
  * @typedef {import('./cc-pricing-header.types.js').PricingHeaderState} PricingHeaderState
  * @typedef {import('lit').PropertyValues<CcPricingHeader>} CcPricingHeaderPropertyValues
  * @typedef {import('@shoelace-style/shoelace').SlDropdown} SlDropdown
- * @typedef {import('../../lib/events.types.js').EventWithTarget<SlDropdown>} SlDropdownElementEvent
+ * @typedef {import('../../lib/events.types.js').EventWithTarget<SlDropdown>} SlDropdownEvent
  */
 
 /**
@@ -101,7 +101,7 @@ export class CcPricingHeader extends LitElement {
    * Retrieves the currency corresponding to the selected currency code.
    * Dispatches a `cc-pricing-header:change-currency` event with the currency as its payload.
    *
-   * @param {SlDropdownElementEvent} e - the event that called this method
+   * @param {SlDropdownEvent} e - the event that called this method
    */
   _onCurrencyChange(e) {
     this.selectedCurrency = e.target.value;
@@ -111,7 +111,7 @@ export class CcPricingHeader extends LitElement {
    * Retrieves the temporality corresponding to the selected temporality type.
    * Dispatches a `cc-pricing-header:change-temporality` event with the temporality as its payload.
    *
-   * @param {SlDropdownElementEvent} e - the event that called this method
+   * @param {SlDropdownEvent} e - the event that called this method
    */
   _onTemporalityChange(e) {
     const temporality = this.temporalities.find((t) => t.type === e.target.value);
@@ -122,7 +122,7 @@ export class CcPricingHeader extends LitElement {
    * Retrieves the zone id from the event payload.
    * Dispatches a `cc-pricing-header:change-zone` event with the zone id as its payload.
    *
-   * @param {SlDropdownElementEvent} e - the event that called this method
+   * @param {SlDropdownEvent} e - the event that called this method
    */
   _onZoneChange(e) {
     const zoneId = e.target.value;

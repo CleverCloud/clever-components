@@ -41,8 +41,13 @@ const DEFAULT_CURRENCY = 'EUR';
 const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
 
 /**
+ * @typedef {import('../common.types.js').Feature} Feature
  * @typedef {import('../common.types.js').Plan} Plan
  * @typedef {import('../common.types.js').Temporality} Temporality
+ * @typedef {import('@shoelace-style/shoelace').SlDropdown} SlDropdown
+ * @typedef {import('../../lib/events.types.js').EventWithTarget<SlDropdown>} SlDropdownEvent
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLParagraphElement>} HTMLParagraphElementRef
+ * @typedef {import('lit').PropertyValues<CcPricingEstimation>} CcPricingEstimationPropertyValues
  */
 
 /**
@@ -101,11 +106,15 @@ export class CcPricingEstimation extends LitElement {
     /** @type {boolean} Collapses the component if `isToggleEnabled` is also set to `true`. */
     this._isCollapsed = false;
 
+    /** @type {HTMLParagraphElementRef} */
     this._totalRef = createRef();
 
     new LostFocusController(this, '.plan', ({ suggestedElement }) => {
       if (suggestedElement != null) {
-        suggestedElement.querySelector('.plan__toggle__header').focus();
+        const planToggleHeaderElement = suggestedElement.querySelector('.plan__toggle__header');
+        if (planToggleHeaderElement instanceof HTMLElement) {
+          planToggleHeaderElement.focus();
+        }
       } else {
         this._totalRef.value?.focus();
       }
@@ -116,25 +125,22 @@ export class CcPricingEstimation extends LitElement {
    * Returns the localized "estimated/temporality" based on the given temporality type.
    *
    * @param {Temporality['type']} type - the temporality type
+   * @returns {string|Node}
    */
   _getEstimatedPriceLabel(type) {
-    if (type === 'second') {
-      return i18n('cc-pricing-estimation.estimated-price-name.second');
-    }
-    if (type === 'minute') {
-      return i18n('cc-pricing-estimation.estimated-price-name.minute');
-    }
-    if (type === 'hour') {
-      return i18n('cc-pricing-estimation.estimated-price-name.hour');
-    }
-    if (type === '1000-minutes') {
-      return i18n('cc-pricing-estimation.estimated-price-name.1000-minutes');
-    }
-    if (type === 'day') {
-      return i18n('cc-pricing-estimation.estimated-price-name.day');
-    }
-    if (type === '30-days') {
-      return i18n('cc-pricing-estimation.estimated-price-name.30-days');
+    switch (type) {
+      case 'second':
+        return i18n('cc-pricing-estimation.estimated-price-name.second');
+      case 'minute':
+        return i18n('cc-pricing-estimation.estimated-price-name.minute');
+      case 'hour':
+        return i18n('cc-pricing-estimation.estimated-price-name.hour');
+      case '1000-minutes':
+        return i18n('cc-pricing-estimation.estimated-price-name.1000-minutes');
+      case 'day':
+        return i18n('cc-pricing-estimation.estimated-price-name.day');
+      case '30-days':
+        return i18n('cc-pricing-estimation.estimated-price-name.30-days');
     }
   }
 
@@ -142,7 +148,7 @@ export class CcPricingEstimation extends LitElement {
    * Returns the translated string corresponding to a feature code.
    *
    * @param {Feature} feature - the feature to translate
-   * @return {string|void} the translated feature name if a translation exists or nothing if the translation does not exist
+   * @return {string|Node|void} the translated feature name if a translation exists or nothing if the translation does not exist
    */
   _getFeatureName(feature) {
     if (feature == null) {
@@ -161,8 +167,8 @@ export class CcPricingEstimation extends LitElement {
   /**
    * Returns the formatted value corresponding to a feature
    *
-   * @param {feature} feature - the feature to get the formatted value from
-   * @return {string} the formatted value for the given feature or the feature value itself if it does not require any formatting
+   * @param {Feature} feature - the feature to get the formatted value from
+   * @return {string|Node|void} the formatted value for the given feature or the feature value itself if it does not require any formatting
    */
   _getFeatureValue(feature) {
     if (feature == null) {
@@ -172,7 +178,7 @@ export class CcPricingEstimation extends LitElement {
       case 'boolean':
         return i18n('cc-pricing-estimation.type.boolean', { boolean: feature.value === 'true' });
       case 'boolean-shared':
-        return i18n('cc-pricing-estimation.type.boolean-shared', { boolean: feature.value === 'shared' });
+        return i18n('cc-pricing-estimation.type.boolean-shared', { shared: feature.value === 'shared' });
       case 'bytes':
         return feature.code === 'memory' && feature.value === '0'
           ? i18n('cc-pricing-estimation.type.boolean-shared', { shared: true })
@@ -187,7 +193,7 @@ export class CcPricingEstimation extends LitElement {
           shared: feature.value.shared,
         });
       case 'string':
-        return feature.value;
+        return feature.value.toString();
     }
   }
 
@@ -210,23 +216,19 @@ export class CcPricingEstimation extends LitElement {
    * @return {number} the computed price based on the given temporality
    */
   _getPrice(type, hourlyPrice) {
-    if (type === 'second') {
-      return hourlyPrice / 60 / 60;
-    }
-    if (type === 'minute') {
-      return hourlyPrice / 60;
-    }
-    if (type === 'hour') {
-      return hourlyPrice;
-    }
-    if (type === '1000-minutes') {
-      return (hourlyPrice / 60) * 1000;
-    }
-    if (type === 'day') {
-      return hourlyPrice * 24;
-    }
-    if (type === '30-days') {
-      return hourlyPrice * 24 * 30;
+    switch (type) {
+      case 'second':
+        return hourlyPrice / 60 / 60;
+      case 'minute':
+        return hourlyPrice / 60;
+      case 'hour':
+        return hourlyPrice;
+      case '1000-minutes':
+        return (hourlyPrice / 60) * 1000;
+      case 'day':
+        return hourlyPrice * 24;
+      case '30-days':
+        return hourlyPrice * 24 * 30;
     }
   }
 
@@ -234,26 +236,22 @@ export class CcPricingEstimation extends LitElement {
    * Returns the translated price label corresponding to a temporality
    *
    * @param {Temporality['type']} type - the temporality type
-   * @return {string} the translated label corresponding to the given temporality
+   * @return {string|Node} the translated label corresponding to the given temporality
    */
   _getPriceLabel(type) {
-    if (type === 'second') {
-      return i18n('cc-pricing-estimation.price-name.second');
-    }
-    if (type === 'minute') {
-      return i18n('cc-pricing-estimation.price-name.minute');
-    }
-    if (type === 'hour') {
-      return i18n('cc-pricing-estimation.price-name.hour');
-    }
-    if (type === '1000-minutes') {
-      return i18n('cc-pricing-estimation.price-name.1000-minutes');
-    }
-    if (type === 'day') {
-      return i18n('cc-pricing-estimation.price-name.day');
-    }
-    if (type === '30-days') {
-      return i18n('cc-pricing-estimation.price-name.30-days');
+    switch (type) {
+      case 'second':
+        return i18n('cc-pricing-estimation.price-name.second');
+      case 'minute':
+        return i18n('cc-pricing-estimation.price-name.minute');
+      case 'hour':
+        return i18n('cc-pricing-estimation.price-name.hour');
+      case '1000-minutes':
+        return i18n('cc-pricing-estimation.price-name.1000-minutes');
+      case 'day':
+        return i18n('cc-pricing-estimation.price-name.day');
+      case '30-days':
+        return i18n('cc-pricing-estimation.price-name.30-days');
     }
   }
 
@@ -264,6 +262,7 @@ export class CcPricingEstimation extends LitElement {
    * @param {Temporality['type']} type - the temporality type
    * @param {number} hourlyPrice - the price to base the calculations on
    * @param {number} digits - the number of digits to be used for price rounding
+   * @returns {string|void}
    */
   _getPriceValue(type, hourlyPrice, digits) {
     const price = this._getPrice(type, hourlyPrice);
@@ -295,7 +294,7 @@ export class CcPricingEstimation extends LitElement {
   /**
    * Dispatches a `cc-pricing-estimation:change-currency` event with the currency as payload.
    *
-   * @param {Event} e - the event that called this method
+   * @param {SlDropdownEvent} e - the event that called this method
    */
   _onCurrencyChange(e) {
     dispatchCustomEvent(this, 'change-currency', e.target.value);
@@ -353,6 +352,7 @@ export class CcPricingEstimation extends LitElement {
     this._isCollapsed = !this._isCollapsed;
   }
 
+  /** @param {CcPricingEstimationPropertyValues} changedProperties */
   willUpdate(changedProperties) {
     // This is not done within the `render` function because we only want to reset this value in specific cases.
     // If `isToggleEnabled` is set to true, we need to make sure the content is hidden by default
