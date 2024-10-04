@@ -24,6 +24,9 @@ const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
 /**
  * @typedef {import('../common.types.js').Temporality} Temporality
  * @typedef {import('./cc-pricing-header.types.js').PricingHeaderState} PricingHeaderState
+ * @typedef {import('lit').PropertyValues<CcPricingHeader>} CcPricingHeaderPropertyValues
+ * @typedef {import('@shoelace-style/shoelace').SlDropdown} SlDropdown
+ * @typedef {import('../../lib/events.types.js').EventWithTarget<SlDropdown>} SlDropdownElementEvent
  */
 
 /**
@@ -75,7 +78,7 @@ export class CcPricingHeader extends LitElement {
    * Returns the localized string corresponding to a given temporality type.
    *
    * @param {Temporality['type']} type - the temporality type
-   * @return {string} the localized string corresponding to the given temporality type
+   * @return {string|Node} the localized string corresponding to the given temporality type
    */
   _getPriceLabel(type) {
     switch (type) {
@@ -98,7 +101,7 @@ export class CcPricingHeader extends LitElement {
    * Retrieves the currency corresponding to the selected currency code.
    * Dispatches a `cc-pricing-header:change-currency` event with the currency as its payload.
    *
-   * @param {Event & { target: { value: string }}} e - the event that called this method
+   * @param {SlDropdownElementEvent} e - the event that called this method
    */
   _onCurrencyChange(e) {
     this.selectedCurrency = e.target.value;
@@ -108,7 +111,7 @@ export class CcPricingHeader extends LitElement {
    * Retrieves the temporality corresponding to the selected temporality type.
    * Dispatches a `cc-pricing-header:change-temporality` event with the temporality as its payload.
    *
-   * @param {Event & { target: { value: string }}} e - the event that called this method
+   * @param {SlDropdownElementEvent} e - the event that called this method
    */
   _onTemporalityChange(e) {
     const temporality = this.temporalities.find((t) => t.type === e.target.value);
@@ -119,13 +122,14 @@ export class CcPricingHeader extends LitElement {
    * Retrieves the zone id from the event payload.
    * Dispatches a `cc-pricing-header:change-zone` event with the zone id as its payload.
    *
-   * @param {Event & { target: { value: string }}} e - the event that called this method
+   * @param {SlDropdownElementEvent} e - the event that called this method
    */
   _onZoneChange(e) {
     const zoneId = e.target.value;
     dispatchCustomEvent(this, 'change-zone', zoneId);
   }
 
+  /** @param {CcPricingHeaderPropertyValues} changedProperties */
   updated(changedProperties) {
     if (changedProperties.has('selectedCurrency') && this.selectedCurrency != null) {
       /*
