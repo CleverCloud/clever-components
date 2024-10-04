@@ -13,11 +13,11 @@ defineSmartComponent({
     apiConfig: { type: Object, optional: true },
     addonFeatures: { type: Array },
     productId: { type: String },
-    zoneId: { type: String },
+    zoneId: { type: String, optional: true },
     currency: { type: String, optional: true },
   },
   onContextUpdate({ context, updateComponent, signal }) {
-    const { apiConfig, productId, zoneId, addonFeatures, currency = 'EUR' } = context;
+    const { apiConfig, productId, zoneId = 'par', addonFeatures, currency = 'EUR' } = context;
 
     // Reset the component before loading
     updateComponent('state', { state: 'loading' });
