@@ -16,9 +16,9 @@ title: '💡 Smart'
 ## ⚙️ Params
 
 | Name        | Type        | Required | Details                                                                          | Default                                        |
-|-------------|:-----------:|:--------:|----------------------------------------------------------------------------------|:-----------------------------------------------|
-| `apiConfig` | `ApiConfig` |    No    | Object with API configuration (target host, tokens...)                           | `{ API_HOST: "https://api.clever-cloud.com" }` |
-| `zoneId`    | `string`    |  Yes     | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones) | `par`                                          |
+|-------------|:-----------:|:--------:|----------------------------------------------------------------------------------|------------------------------------------------|
+| `apiConfig` | `ApiConfig` |   No     | Object with API configuration (target host, tokens...)                           | `{ API_HOST: "https://api.clever-cloud.com" }` |
+| `zoneId`    | `string`    |  No      | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones) | `par`                                          |
 
 ## 🌐 API endpoints
 

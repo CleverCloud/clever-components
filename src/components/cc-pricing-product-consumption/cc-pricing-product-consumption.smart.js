@@ -14,20 +14,20 @@ defineSmartComponent({
   params: {
     apiConfig: { type: Object, optional: true },
     productId: { type: String },
-    zoneId: { type: String },
+    zoneId: { type: String, optional: true },
     currency: { type: String },
   },
   /**
    * @param {Object} settings
    * @param {CcPricingProductConsumption} settings.component
-   * @param {{ apiConfig?: ApiConfig, productId: string, zoneId: string, currency: string }} settings.context
+   * @param {{ apiConfig?: ApiConfig, productId: string, zoneId?: string, currency: string }} settings.context
    * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
    * @param {function} settings.updateComponent
    * @param {AbortSignal} settings.signal
    */
   // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate({ updateComponent, context, signal }) {
-    const { apiConfig, productId, zoneId, currency = 'EUR' } = context;
+    const { apiConfig, productId, zoneId = 'par', currency = 'EUR' } = context;
 
     // Reset the component before loading
     updateComponent('product', { state: 'loading' });
