@@ -5,6 +5,15 @@ title: 'Changelog'
 
 # Changelog
 
+## [15.2.2](https://github.com/CleverCloud/clever-components/compare/15.2.1...15.2.2) (2024-10-07)
+
+
+### 🐛 Bug Fixes
+
+* **cc-domain-management:** update `cleverapps` docs link ([f2b44ac](https://github.com/CleverCloud/clever-components/commit/f2b44ac41d9d04f7975bbc88d84380956ddb4ad5)), closes [#1173](https://github.com/CleverCloud/clever-components/issues/1173)
+* **cem-types-plugin:** ignore non relative path imports ([bbe2c02](https://github.com/CleverCloud/clever-components/commit/bbe2c029d18348e70d90bd90366ff6a9410daa2c))
+* **storybook:** update storybook config ([b4eea78](https://github.com/CleverCloud/clever-components/commit/b4eea787854cf201a4d5d76783c2ffeb414b3fe6))
+
 ## [15.2.1](https://github.com/CleverCloud/clever-components/compare/15.2.0...15.2.1) (2024-08-07)
 
 
