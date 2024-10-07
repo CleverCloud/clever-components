@@ -289,7 +289,7 @@ export const translations = {
     sanitize`For instance: <code>example.com</code>, <code>*.example.com</code> or <code>example.cleverapps.io</code>`,
   'cc-domain-management.form.domain.label': `Domain name`,
   'cc-domain-management.form.info.cleverapps': () =>
-    sanitize`By default, an application is automatically associated to <code>app_id.cleverapps.io</code> as primary domain. You can remove it or change the subdomain freely, but <code>xxx.cleverapps.io</code> should only be used for testing purposes (see our <a href="https://developers.clever-cloud.com/doc/administrate/domain-names/#using-a-cleverappsio-free-domain-with-built-in-ssl">documentation</a>).`,
+    sanitize`By default, an application is automatically associated to <code>app_id.cleverapps.io</code> as primary domain. You can remove it or change the subdomain freely, but <code>xxx.cleverapps.io</code> should only be used for testing purposes (see our <a href="https://developers.clever-cloud.com/doc/administrate/domain-names/#testing-with-cleverappsio-domain">documentation</a>).`,
   'cc-domain-management.form.info.docs': `You can associate one or more domain names with your application. The primary domain is the one that will be used in Console links and in e-mails sent to you. Several applications can share the same domain, each with a specific subdomain and/or route.`,
   'cc-domain-management.form.path.help': () => sanitize`For example: <code>/api</code> or <code>/blog</code>`,
   'cc-domain-management.form.path.label': `Route`,
