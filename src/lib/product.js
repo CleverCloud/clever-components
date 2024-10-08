@@ -15,7 +15,7 @@
  * @param {AddonProvider} addonProvider
  * @param {PriceSystem} priceSystem
  * @param {Array<FormattedFeature>} selectedFeatures
- * @returns {Omit<PricingProductStateLoaded, 'state'>}
+ * @returns {Omit<PricingProductStateLoaded, 'type'>}
  */
 export function formatAddonProduct(addonProvider, priceSystem, selectedFeatures) {
   // We filter out add-ons that are not attached to any zone. This is sometimes done on dev plans to disable them.
@@ -209,7 +209,7 @@ function formatAddonPlans(allPlans, priceSystem, selectedFeatures) {
  *
  * @param {Instance} runtime - The runtime object containing variant and flavors information.
  * @param {PriceSystem} priceSystem - The price system object containing pricing information.
- * @returns {Omit<PricingProductStateLoaded, 'state'>} Formatted runtime product with name, features, and plans.
+ * @returns {Omit<PricingProductStateLoaded, 'type'>} Formatted runtime product with name, features, and plans.
  */
 export function formatRuntimeProduct(runtime, priceSystem) {
   const features = formatRuntimeFeatures(runtime);
