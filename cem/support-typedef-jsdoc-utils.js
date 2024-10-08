@@ -132,7 +132,7 @@ export function findCustomType(nodeType, ts) {
     return findCustomType(nodeType.typeArguments?.[0], ts);
   }
   // {{key: string]: any}
-  if (nodeKind === ts.SyntaxKind.TypeLiteral && nodeType.members[0].kind === ts.SyntaxKind.IndexSignature) {
+  if (nodeKind === ts.SyntaxKind.TypeLiteral && nodeType.members[0]?.kind === ts.SyntaxKind.IndexSignature) {
     return findCustomType(nodeType.members[0].type, ts);
   }
 
