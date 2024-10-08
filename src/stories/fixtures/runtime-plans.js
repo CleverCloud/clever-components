@@ -1,7 +1,12 @@
 import { formatRuntimeProduct } from '../../lib/product.js';
 import { rawPriceSystem } from './price-system.js';
 
+/**
+ * @typedef {import('../../components/common.types.js').Instance} Instance
+ */
+
 /* eslint-disable quote-props */
+/** @type {Array<Instance>} */
 const rawInstances = [
   {
     'type': 'ml_python',
@@ -40,7 +45,6 @@ const rawInstances = [
           'value': 6442450944,
           'formatted': '6144 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'ML_S',
@@ -59,7 +63,6 @@ const rawInstances = [
           'value': 15032385536,
           'formatted': '14336 MiB',
         },
-        'rbdimage': null,
       },
     ],
     'defaultFlavor': {
@@ -79,7 +82,6 @@ const rawInstances = [
         'value': 15032385536,
         'formatted': '14336 MiB',
       },
-      'rbdimage': null,
     },
     'buildFlavor': {
       'name': 'ML_L',
@@ -98,7 +100,6 @@ const rawInstances = [
         'value': 27917287424,
         'formatted': '26624 MiB',
       },
-      'rbdimage': null,
     },
   },
   {
@@ -138,7 +139,6 @@ const rawInstances = [
           'value': 6442450944,
           'formatted': '6144 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'ML_S',
@@ -157,7 +157,6 @@ const rawInstances = [
           'value': 15032385536,
           'formatted': '14336 MiB',
         },
-        'rbdimage': null,
       },
     ],
     'defaultFlavor': {
@@ -177,7 +176,6 @@ const rawInstances = [
         'value': 15032385536,
         'formatted': '14336 MiB',
       },
-      'rbdimage': null,
     },
     'buildFlavor': {
       'name': 'ML_L',
@@ -196,7 +194,6 @@ const rawInstances = [
         'value': 27917287424,
         'formatted': '26624 MiB',
       },
-      'rbdimage': null,
     },
   },
   {
@@ -236,7 +233,6 @@ const rawInstances = [
           'value': 6442450944,
           'formatted': '6144 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'ML_S',
@@ -255,7 +251,6 @@ const rawInstances = [
           'value': 15032385536,
           'formatted': '14336 MiB',
         },
-        'rbdimage': null,
       },
     ],
     'defaultFlavor': {
@@ -275,7 +270,6 @@ const rawInstances = [
         'value': 15032385536,
         'formatted': '14336 MiB',
       },
-      'rbdimage': null,
     },
     'buildFlavor': {
       'name': 'ML_L',
@@ -294,7 +288,6 @@ const rawInstances = [
         'value': 27917287424,
         'formatted': '26624 MiB',
       },
-      'rbdimage': null,
     },
   },
   {
@@ -334,7 +327,6 @@ const rawInstances = [
           'value': 6442450944,
           'formatted': '6144 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'ML_S',
@@ -353,7 +345,6 @@ const rawInstances = [
           'value': 15032385536,
           'formatted': '14336 MiB',
         },
-        'rbdimage': null,
       },
     ],
     'defaultFlavor': {
@@ -373,7 +364,6 @@ const rawInstances = [
         'value': 15032385536,
         'formatted': '14336 MiB',
       },
-      'rbdimage': null,
     },
     'buildFlavor': {
       'name': 'ML_L',
@@ -392,7 +382,6 @@ const rawInstances = [
         'value': 27917287424,
         'formatted': '26624 MiB',
       },
-      'rbdimage': null,
     },
   },
   {
@@ -432,7 +421,6 @@ const rawInstances = [
           'value': 6442450944,
           'formatted': '6144 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'ML_S',
@@ -451,7 +439,6 @@ const rawInstances = [
           'value': 15032385536,
           'formatted': '14336 MiB',
         },
-        'rbdimage': null,
       },
     ],
     'defaultFlavor': {
@@ -471,7 +458,6 @@ const rawInstances = [
         'value': 15032385536,
         'formatted': '14336 MiB',
       },
-      'rbdimage': null,
     },
     'buildFlavor': {
       'name': 'ML_L',
@@ -490,7 +476,6 @@ const rawInstances = [
         'value': 27917287424,
         'formatted': '26624 MiB',
       },
-      'rbdimage': null,
     },
   },
   {
@@ -530,7 +515,6 @@ const rawInstances = [
           'value': 6442450944,
           'formatted': '6144 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'ML_S',
@@ -549,7 +533,6 @@ const rawInstances = [
           'value': 15032385536,
           'formatted': '14336 MiB',
         },
-        'rbdimage': null,
       },
     ],
     'defaultFlavor': {
@@ -569,7 +552,6 @@ const rawInstances = [
         'value': 15032385536,
         'formatted': '14336 MiB',
       },
-      'rbdimage': null,
     },
     'buildFlavor': {
       'name': 'ML_L',
@@ -588,7 +570,6 @@ const rawInstances = [
         'value': 27917287424,
         'formatted': '26624 MiB',
       },
-      'rbdimage': null,
     },
   },
   {
@@ -632,7 +613,6 @@ const rawInstances = [
           'value': 268435456,
           'formatted': '256 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'nano',
@@ -651,7 +631,6 @@ const rawInstances = [
           'value': 536870912,
           'formatted': '512 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XS',
@@ -670,7 +649,6 @@ const rawInstances = [
           'value': 1073741824,
           'formatted': '1024 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'S',
@@ -689,7 +667,6 @@ const rawInstances = [
           'value': 2147483648,
           'formatted': '2048 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'M',
@@ -708,7 +685,6 @@ const rawInstances = [
           'value': 4294967296,
           'formatted': '4096 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'L',
@@ -727,7 +703,6 @@ const rawInstances = [
           'value': 8589934592,
           'formatted': '8192 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XL',
@@ -746,7 +721,6 @@ const rawInstances = [
           'value': 17179869184,
           'formatted': '16384 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '2XL',
@@ -765,7 +739,6 @@ const rawInstances = [
           'value': 25769803776,
           'formatted': '24576 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '3XL',
@@ -784,7 +757,6 @@ const rawInstances = [
           'value': 34359738368,
           'formatted': '32768 MiB',
         },
-        'rbdimage': null,
       },
     ],
     'defaultFlavor': {
@@ -804,7 +776,6 @@ const rawInstances = [
         'value': 1073741824,
         'formatted': '1024 MiB',
       },
-      'rbdimage': null,
     },
     'buildFlavor': {
       'name': 'M',
@@ -823,7 +794,6 @@ const rawInstances = [
         'value': 4294967296,
         'formatted': '4096 MiB',
       },
-      'rbdimage': null,
     },
   },
   {
@@ -863,7 +833,6 @@ const rawInstances = [
           'value': 268435456,
           'formatted': '256 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'nano',
@@ -882,7 +851,6 @@ const rawInstances = [
           'value': 536870912,
           'formatted': '512 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XS',
@@ -901,7 +869,6 @@ const rawInstances = [
           'value': 1073741824,
           'formatted': '1024 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'S',
@@ -920,7 +887,6 @@ const rawInstances = [
           'value': 2147483648,
           'formatted': '2048 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'M',
@@ -939,7 +905,6 @@ const rawInstances = [
           'value': 4294967296,
           'formatted': '4096 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'L',
@@ -958,7 +923,6 @@ const rawInstances = [
           'value': 8589934592,
           'formatted': '8192 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XL',
@@ -977,7 +941,6 @@ const rawInstances = [
           'value': 17179869184,
           'formatted': '16384 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '2XL',
@@ -996,7 +959,6 @@ const rawInstances = [
           'value': 25769803776,
           'formatted': '24576 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '3XL',
@@ -1015,7 +977,6 @@ const rawInstances = [
           'value': 34359738368,
           'formatted': '32768 MiB',
         },
-        'rbdimage': null,
       },
     ],
     'defaultFlavor': {
@@ -1035,7 +996,6 @@ const rawInstances = [
         'value': 1073741824,
         'formatted': '1024 MiB',
       },
-      'rbdimage': null,
     },
     'buildFlavor': {
       'name': 'M',
@@ -1054,7 +1014,6 @@ const rawInstances = [
         'value': 4294967296,
         'formatted': '4096 MiB',
       },
-      'rbdimage': null,
     },
   },
   {
@@ -1094,7 +1053,6 @@ const rawInstances = [
           'value': 268435456,
           'formatted': '256 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'nano',
@@ -1113,7 +1071,6 @@ const rawInstances = [
           'value': 536870912,
           'formatted': '512 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XS',
@@ -1132,7 +1089,6 @@ const rawInstances = [
           'value': 1073741824,
           'formatted': '1024 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'S',
@@ -1151,7 +1107,6 @@ const rawInstances = [
           'value': 2147483648,
           'formatted': '2048 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'M',
@@ -1170,7 +1125,6 @@ const rawInstances = [
           'value': 4294967296,
           'formatted': '4096 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'L',
@@ -1189,7 +1143,6 @@ const rawInstances = [
           'value': 8589934592,
           'formatted': '8192 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XL',
@@ -1208,7 +1161,6 @@ const rawInstances = [
           'value': 17179869184,
           'formatted': '16384 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '2XL',
@@ -1227,7 +1179,6 @@ const rawInstances = [
           'value': 25769803776,
           'formatted': '24576 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '3XL',
@@ -1246,7 +1197,6 @@ const rawInstances = [
           'value': 34359738368,
           'formatted': '32768 MiB',
         },
-        'rbdimage': null,
       },
     ],
     'defaultFlavor': {
@@ -1266,7 +1216,6 @@ const rawInstances = [
         'value': 1073741824,
         'formatted': '1024 MiB',
       },
-      'rbdimage': null,
     },
     'buildFlavor': {
       'name': 'S',
@@ -1285,7 +1234,6 @@ const rawInstances = [
         'value': 2147483648,
         'formatted': '2048 MiB',
       },
-      'rbdimage': null,
     },
   },
   {
@@ -1328,7 +1276,6 @@ const rawInstances = [
           'value': 268435456,
           'formatted': '256 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'nano',
@@ -1347,7 +1294,6 @@ const rawInstances = [
           'value': 536870912,
           'formatted': '512 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XS',
@@ -1366,7 +1312,6 @@ const rawInstances = [
           'value': 1073741824,
           'formatted': '1024 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'S',
@@ -1385,7 +1330,6 @@ const rawInstances = [
           'value': 2147483648,
           'formatted': '2048 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'M',
@@ -1404,7 +1348,6 @@ const rawInstances = [
           'value': 4294967296,
           'formatted': '4096 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'L',
@@ -1423,7 +1366,6 @@ const rawInstances = [
           'value': 8589934592,
           'formatted': '8192 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XL',
@@ -1442,7 +1384,6 @@ const rawInstances = [
           'value': 17179869184,
           'formatted': '16384 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '2XL',
@@ -1461,7 +1402,6 @@ const rawInstances = [
           'value': 25769803776,
           'formatted': '24576 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '3XL',
@@ -1480,7 +1420,6 @@ const rawInstances = [
           'value': 34359738368,
           'formatted': '32768 MiB',
         },
-        'rbdimage': null,
       },
     ],
     'defaultFlavor': {
@@ -1500,7 +1439,6 @@ const rawInstances = [
         'value': 1073741824,
         'formatted': '1024 MiB',
       },
-      'rbdimage': null,
     },
     'buildFlavor': {
       'name': 'S',
@@ -1519,7 +1457,6 @@ const rawInstances = [
         'value': 2147483648,
         'formatted': '2048 MiB',
       },
-      'rbdimage': null,
     },
   },
   {
@@ -1562,7 +1499,6 @@ const rawInstances = [
           'value': 268435456,
           'formatted': '256 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'nano',
@@ -1581,7 +1517,6 @@ const rawInstances = [
           'value': 536870912,
           'formatted': '512 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XS',
@@ -1600,7 +1535,6 @@ const rawInstances = [
           'value': 1073741824,
           'formatted': '1024 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'S',
@@ -1619,7 +1553,6 @@ const rawInstances = [
           'value': 2147483648,
           'formatted': '2048 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'M',
@@ -1638,7 +1571,6 @@ const rawInstances = [
           'value': 4294967296,
           'formatted': '4096 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'L',
@@ -1657,7 +1589,6 @@ const rawInstances = [
           'value': 8589934592,
           'formatted': '8192 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XL',
@@ -1676,7 +1607,6 @@ const rawInstances = [
           'value': 17179869184,
           'formatted': '16384 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '2XL',
@@ -1695,7 +1625,6 @@ const rawInstances = [
           'value': 25769803776,
           'formatted': '24576 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '3XL',
@@ -1714,7 +1643,6 @@ const rawInstances = [
           'value': 34359738368,
           'formatted': '32768 MiB',
         },
-        'rbdimage': null,
       },
     ],
     'defaultFlavor': {
@@ -1734,7 +1662,6 @@ const rawInstances = [
         'value': 1073741824,
         'formatted': '1024 MiB',
       },
-      'rbdimage': null,
     },
     'buildFlavor': {
       'name': 'S',
@@ -1753,7 +1680,6 @@ const rawInstances = [
         'value': 2147483648,
         'formatted': '2048 MiB',
       },
-      'rbdimage': null,
     },
   },
   {
@@ -1793,7 +1719,6 @@ const rawInstances = [
           'value': 268435456,
           'formatted': '256 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'nano',
@@ -1812,7 +1737,6 @@ const rawInstances = [
           'value': 536870912,
           'formatted': '512 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XS',
@@ -1831,7 +1755,6 @@ const rawInstances = [
           'value': 1073741824,
           'formatted': '1024 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'S',
@@ -1850,7 +1773,6 @@ const rawInstances = [
           'value': 2147483648,
           'formatted': '2048 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'M',
@@ -1869,7 +1791,6 @@ const rawInstances = [
           'value': 4294967296,
           'formatted': '4096 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'L',
@@ -1888,7 +1809,6 @@ const rawInstances = [
           'value': 8589934592,
           'formatted': '8192 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XL',
@@ -1907,7 +1827,6 @@ const rawInstances = [
           'value': 17179869184,
           'formatted': '16384 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '2XL',
@@ -1926,7 +1845,6 @@ const rawInstances = [
           'value': 25769803776,
           'formatted': '24576 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '3XL',
@@ -1945,7 +1863,6 @@ const rawInstances = [
           'value': 34359738368,
           'formatted': '32768 MiB',
         },
-        'rbdimage': null,
       },
     ],
     'defaultFlavor': {
@@ -1965,7 +1882,6 @@ const rawInstances = [
         'value': 1073741824,
         'formatted': '1024 MiB',
       },
-      'rbdimage': null,
     },
     'buildFlavor': {
       'name': 'L',
@@ -1984,7 +1900,6 @@ const rawInstances = [
         'value': 8589934592,
         'formatted': '8192 MiB',
       },
-      'rbdimage': null,
     },
   },
   {
@@ -2026,7 +1941,6 @@ const rawInstances = [
           'value': 268435456,
           'formatted': '256 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'nano',
@@ -2045,7 +1959,6 @@ const rawInstances = [
           'value': 536870912,
           'formatted': '512 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XS',
@@ -2064,7 +1977,6 @@ const rawInstances = [
           'value': 1073741824,
           'formatted': '1024 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'S',
@@ -2083,7 +1995,6 @@ const rawInstances = [
           'value': 2147483648,
           'formatted': '2048 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'M',
@@ -2102,7 +2013,6 @@ const rawInstances = [
           'value': 4294967296,
           'formatted': '4096 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'L',
@@ -2121,7 +2031,6 @@ const rawInstances = [
           'value': 8589934592,
           'formatted': '8192 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XL',
@@ -2140,7 +2049,6 @@ const rawInstances = [
           'value': 17179869184,
           'formatted': '16384 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '2XL',
@@ -2159,7 +2067,6 @@ const rawInstances = [
           'value': 25769803776,
           'formatted': '24576 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '3XL',
@@ -2178,7 +2085,6 @@ const rawInstances = [
           'value': 34359738368,
           'formatted': '32768 MiB',
         },
-        'rbdimage': null,
       },
     ],
     'defaultFlavor': {
@@ -2198,7 +2104,6 @@ const rawInstances = [
         'value': 1073741824,
         'formatted': '1024 MiB',
       },
-      'rbdimage': null,
     },
     'buildFlavor': {
       'name': 'S',
@@ -2217,7 +2122,6 @@ const rawInstances = [
         'value': 2147483648,
         'formatted': '2048 MiB',
       },
-      'rbdimage': null,
     },
   },
   {
@@ -2258,7 +2162,6 @@ const rawInstances = [
           'value': 536870912,
           'formatted': '512 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XS',
@@ -2277,7 +2180,6 @@ const rawInstances = [
           'value': 1073741824,
           'formatted': '1024 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'S',
@@ -2296,7 +2198,6 @@ const rawInstances = [
           'value': 2147483648,
           'formatted': '2048 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'M',
@@ -2315,7 +2216,6 @@ const rawInstances = [
           'value': 4294967296,
           'formatted': '4096 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'L',
@@ -2334,7 +2234,6 @@ const rawInstances = [
           'value': 8589934592,
           'formatted': '8192 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XL',
@@ -2353,7 +2252,6 @@ const rawInstances = [
           'value': 17179869184,
           'formatted': '16384 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '2XL',
@@ -2372,7 +2270,6 @@ const rawInstances = [
           'value': 25769803776,
           'formatted': '24576 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '3XL',
@@ -2391,7 +2288,6 @@ const rawInstances = [
           'value': 34359738368,
           'formatted': '32768 MiB',
         },
-        'rbdimage': null,
       },
     ],
     'defaultFlavor': {
@@ -2411,7 +2307,6 @@ const rawInstances = [
         'value': 1073741824,
         'formatted': '1024 MiB',
       },
-      'rbdimage': null,
     },
     'buildFlavor': {
       'name': 'M',
@@ -2430,7 +2325,6 @@ const rawInstances = [
         'value': 4294967296,
         'formatted': '4096 MiB',
       },
-      'rbdimage': null,
     },
   },
   {
@@ -2471,7 +2365,6 @@ const rawInstances = [
           'value': 536870912,
           'formatted': '512 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XS',
@@ -2490,7 +2383,6 @@ const rawInstances = [
           'value': 1073741824,
           'formatted': '1024 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'S',
@@ -2509,7 +2401,6 @@ const rawInstances = [
           'value': 2147483648,
           'formatted': '2048 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'M',
@@ -2528,7 +2419,6 @@ const rawInstances = [
           'value': 4294967296,
           'formatted': '4096 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'L',
@@ -2547,7 +2437,6 @@ const rawInstances = [
           'value': 8589934592,
           'formatted': '8192 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XL',
@@ -2566,7 +2455,6 @@ const rawInstances = [
           'value': 17179869184,
           'formatted': '16384 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '2XL',
@@ -2585,7 +2473,6 @@ const rawInstances = [
           'value': 25769803776,
           'formatted': '24576 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '3XL',
@@ -2604,7 +2491,6 @@ const rawInstances = [
           'value': 34359738368,
           'formatted': '32768 MiB',
         },
-        'rbdimage': null,
       },
     ],
     'defaultFlavor': {
@@ -2624,7 +2510,6 @@ const rawInstances = [
         'value': 1073741824,
         'formatted': '1024 MiB',
       },
-      'rbdimage': null,
     },
     'buildFlavor': {
       'name': 'M',
@@ -2643,7 +2528,6 @@ const rawInstances = [
         'value': 4294967296,
         'formatted': '4096 MiB',
       },
-      'rbdimage': null,
     },
   },
   {
@@ -2683,7 +2567,6 @@ const rawInstances = [
           'value': 268435456,
           'formatted': '256 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'nano',
@@ -2702,7 +2585,6 @@ const rawInstances = [
           'value': 536870912,
           'formatted': '512 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XS',
@@ -2721,7 +2603,6 @@ const rawInstances = [
           'value': 1073741824,
           'formatted': '1024 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'S',
@@ -2740,7 +2621,6 @@ const rawInstances = [
           'value': 2147483648,
           'formatted': '2048 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'M',
@@ -2759,7 +2639,6 @@ const rawInstances = [
           'value': 4294967296,
           'formatted': '4096 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'L',
@@ -2778,7 +2657,6 @@ const rawInstances = [
           'value': 8589934592,
           'formatted': '8192 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XL',
@@ -2797,7 +2675,6 @@ const rawInstances = [
           'value': 17179869184,
           'formatted': '16384 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '2XL',
@@ -2816,7 +2693,6 @@ const rawInstances = [
           'value': 25769803776,
           'formatted': '24576 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '3XL',
@@ -2835,7 +2711,6 @@ const rawInstances = [
           'value': 34359738368,
           'formatted': '32768 MiB',
         },
-        'rbdimage': null,
       },
     ],
     'defaultFlavor': {
@@ -2855,7 +2730,6 @@ const rawInstances = [
         'value': 1073741824,
         'formatted': '1024 MiB',
       },
-      'rbdimage': null,
     },
     'buildFlavor': {
       'name': 'M',
@@ -2874,7 +2748,6 @@ const rawInstances = [
         'value': 4294967296,
         'formatted': '4096 MiB',
       },
-      'rbdimage': null,
     },
   },
   {
@@ -2914,7 +2787,6 @@ const rawInstances = [
           'value': 536870912,
           'formatted': '512 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XS',
@@ -2933,7 +2805,6 @@ const rawInstances = [
           'value': 1073741824,
           'formatted': '1024 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'S',
@@ -2952,7 +2823,6 @@ const rawInstances = [
           'value': 2147483648,
           'formatted': '2048 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'M',
@@ -2971,7 +2841,6 @@ const rawInstances = [
           'value': 4294967296,
           'formatted': '4096 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'L',
@@ -2990,7 +2859,6 @@ const rawInstances = [
           'value': 8589934592,
           'formatted': '8192 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XL',
@@ -3009,7 +2877,6 @@ const rawInstances = [
           'value': 17179869184,
           'formatted': '16384 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '2XL',
@@ -3028,7 +2895,6 @@ const rawInstances = [
           'value': 25769803776,
           'formatted': '24576 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '3XL',
@@ -3047,7 +2913,6 @@ const rawInstances = [
           'value': 34359738368,
           'formatted': '32768 MiB',
         },
-        'rbdimage': null,
       },
     ],
     'defaultFlavor': {
@@ -3067,7 +2932,6 @@ const rawInstances = [
         'value': 1073741824,
         'formatted': '1024 MiB',
       },
-      'rbdimage': null,
     },
     'buildFlavor': {
       'name': 'S',
@@ -3086,7 +2950,6 @@ const rawInstances = [
         'value': 2147483648,
         'formatted': '2048 MiB',
       },
-      'rbdimage': null,
     },
   },
   {
@@ -3128,7 +2991,6 @@ const rawInstances = [
           'value': 268435456,
           'formatted': '256 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'nano',
@@ -3147,7 +3009,6 @@ const rawInstances = [
           'value': 536870912,
           'formatted': '512 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XS',
@@ -3166,7 +3027,6 @@ const rawInstances = [
           'value': 1073741824,
           'formatted': '1024 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'S',
@@ -3185,7 +3045,6 @@ const rawInstances = [
           'value': 2147483648,
           'formatted': '2048 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'M',
@@ -3204,7 +3063,6 @@ const rawInstances = [
           'value': 4294967296,
           'formatted': '4096 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'L',
@@ -3223,7 +3081,6 @@ const rawInstances = [
           'value': 8589934592,
           'formatted': '8192 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XL',
@@ -3242,7 +3099,6 @@ const rawInstances = [
           'value': 17179869184,
           'formatted': '16384 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '2XL',
@@ -3261,7 +3117,6 @@ const rawInstances = [
           'value': 25769803776,
           'formatted': '24576 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '3XL',
@@ -3280,7 +3135,6 @@ const rawInstances = [
           'value': 34359738368,
           'formatted': '32768 MiB',
         },
-        'rbdimage': null,
       },
     ],
     'defaultFlavor': {
@@ -3300,7 +3154,6 @@ const rawInstances = [
         'value': 1073741824,
         'formatted': '1024 MiB',
       },
-      'rbdimage': null,
     },
     'buildFlavor': {
       'name': 'M',
@@ -3319,7 +3172,6 @@ const rawInstances = [
         'value': 4294967296,
         'formatted': '4096 MiB',
       },
-      'rbdimage': null,
     },
   },
   {
@@ -3369,7 +3221,6 @@ const rawInstances = [
           'value': 268435456,
           'formatted': '256 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'nano',
@@ -3388,7 +3239,6 @@ const rawInstances = [
           'value': 536870912,
           'formatted': '512 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XS',
@@ -3407,7 +3257,6 @@ const rawInstances = [
           'value': 1073741824,
           'formatted': '1024 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'S',
@@ -3426,7 +3275,6 @@ const rawInstances = [
           'value': 2147483648,
           'formatted': '2048 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'M',
@@ -3445,7 +3293,6 @@ const rawInstances = [
           'value': 4294967296,
           'formatted': '4096 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'L',
@@ -3464,7 +3311,6 @@ const rawInstances = [
           'value': 8589934592,
           'formatted': '8192 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XL',
@@ -3483,7 +3329,6 @@ const rawInstances = [
           'value': 17179869184,
           'formatted': '16384 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '2XL',
@@ -3502,7 +3347,6 @@ const rawInstances = [
           'value': 25769803776,
           'formatted': '24576 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '3XL',
@@ -3521,7 +3365,6 @@ const rawInstances = [
           'value': 34359738368,
           'formatted': '32768 MiB',
         },
-        'rbdimage': null,
       },
     ],
     'defaultFlavor': {
@@ -3541,7 +3384,6 @@ const rawInstances = [
         'value': 1073741824,
         'formatted': '1024 MiB',
       },
-      'rbdimage': null,
     },
     'buildFlavor': {
       'name': 'M',
@@ -3560,7 +3402,6 @@ const rawInstances = [
         'value': 4294967296,
         'formatted': '4096 MiB',
       },
-      'rbdimage': null,
     },
   },
   {
@@ -3610,7 +3451,6 @@ const rawInstances = [
           'value': 268435456,
           'formatted': '256 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'nano',
@@ -3629,7 +3469,6 @@ const rawInstances = [
           'value': 536870912,
           'formatted': '512 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XS',
@@ -3648,7 +3487,6 @@ const rawInstances = [
           'value': 1073741824,
           'formatted': '1024 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'S',
@@ -3667,7 +3505,6 @@ const rawInstances = [
           'value': 2147483648,
           'formatted': '2048 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'M',
@@ -3686,7 +3523,6 @@ const rawInstances = [
           'value': 4294967296,
           'formatted': '4096 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'L',
@@ -3705,7 +3541,6 @@ const rawInstances = [
           'value': 8589934592,
           'formatted': '8192 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XL',
@@ -3724,7 +3559,6 @@ const rawInstances = [
           'value': 17179869184,
           'formatted': '16384 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '2XL',
@@ -3743,7 +3577,6 @@ const rawInstances = [
           'value': 25769803776,
           'formatted': '24576 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '3XL',
@@ -3762,7 +3595,6 @@ const rawInstances = [
           'value': 34359738368,
           'formatted': '32768 MiB',
         },
-        'rbdimage': null,
       },
     ],
     'defaultFlavor': {
@@ -3782,7 +3614,6 @@ const rawInstances = [
         'value': 1073741824,
         'formatted': '1024 MiB',
       },
-      'rbdimage': null,
     },
     'buildFlavor': {
       'name': 'M',
@@ -3801,7 +3632,6 @@ const rawInstances = [
         'value': 4294967296,
         'formatted': '4096 MiB',
       },
-      'rbdimage': null,
     },
   },
   {
@@ -3851,7 +3681,6 @@ const rawInstances = [
           'value': 268435456,
           'formatted': '256 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'nano',
@@ -3870,7 +3699,6 @@ const rawInstances = [
           'value': 536870912,
           'formatted': '512 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XS',
@@ -3889,7 +3717,6 @@ const rawInstances = [
           'value': 1073741824,
           'formatted': '1024 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'S',
@@ -3908,7 +3735,6 @@ const rawInstances = [
           'value': 2147483648,
           'formatted': '2048 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'M',
@@ -3927,7 +3753,6 @@ const rawInstances = [
           'value': 4294967296,
           'formatted': '4096 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'L',
@@ -3946,7 +3771,6 @@ const rawInstances = [
           'value': 8589934592,
           'formatted': '8192 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XL',
@@ -3965,7 +3789,6 @@ const rawInstances = [
           'value': 17179869184,
           'formatted': '16384 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '2XL',
@@ -3984,7 +3807,6 @@ const rawInstances = [
           'value': 25769803776,
           'formatted': '24576 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '3XL',
@@ -4003,7 +3825,6 @@ const rawInstances = [
           'value': 34359738368,
           'formatted': '32768 MiB',
         },
-        'rbdimage': null,
       },
     ],
     'defaultFlavor': {
@@ -4023,7 +3844,6 @@ const rawInstances = [
         'value': 1073741824,
         'formatted': '1024 MiB',
       },
-      'rbdimage': null,
     },
     'buildFlavor': {
       'name': 'M',
@@ -4042,7 +3862,6 @@ const rawInstances = [
         'value': 4294967296,
         'formatted': '4096 MiB',
       },
-      'rbdimage': null,
     },
   },
   {
@@ -4092,7 +3911,6 @@ const rawInstances = [
           'value': 268435456,
           'formatted': '256 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'nano',
@@ -4111,7 +3929,6 @@ const rawInstances = [
           'value': 536870912,
           'formatted': '512 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XS',
@@ -4130,7 +3947,6 @@ const rawInstances = [
           'value': 1073741824,
           'formatted': '1024 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'S',
@@ -4149,7 +3965,6 @@ const rawInstances = [
           'value': 2147483648,
           'formatted': '2048 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'M',
@@ -4168,7 +3983,6 @@ const rawInstances = [
           'value': 4294967296,
           'formatted': '4096 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'L',
@@ -4187,7 +4001,6 @@ const rawInstances = [
           'value': 8589934592,
           'formatted': '8192 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XL',
@@ -4206,7 +4019,6 @@ const rawInstances = [
           'value': 17179869184,
           'formatted': '16384 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '2XL',
@@ -4225,7 +4037,6 @@ const rawInstances = [
           'value': 25769803776,
           'formatted': '24576 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '3XL',
@@ -4244,7 +4055,6 @@ const rawInstances = [
           'value': 34359738368,
           'formatted': '32768 MiB',
         },
-        'rbdimage': null,
       },
     ],
     'defaultFlavor': {
@@ -4264,7 +4074,6 @@ const rawInstances = [
         'value': 1073741824,
         'formatted': '1024 MiB',
       },
-      'rbdimage': null,
     },
     'buildFlavor': {
       'name': 'M',
@@ -4283,7 +4092,6 @@ const rawInstances = [
         'value': 4294967296,
         'formatted': '4096 MiB',
       },
-      'rbdimage': null,
     },
   },
   {
@@ -4333,7 +4141,6 @@ const rawInstances = [
           'value': 268435456,
           'formatted': '256 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'nano',
@@ -4352,7 +4159,6 @@ const rawInstances = [
           'value': 536870912,
           'formatted': '512 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XS',
@@ -4371,7 +4177,6 @@ const rawInstances = [
           'value': 1073741824,
           'formatted': '1024 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'S',
@@ -4390,7 +4195,6 @@ const rawInstances = [
           'value': 2147483648,
           'formatted': '2048 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'M',
@@ -4409,7 +4213,6 @@ const rawInstances = [
           'value': 4294967296,
           'formatted': '4096 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'L',
@@ -4428,7 +4231,6 @@ const rawInstances = [
           'value': 8589934592,
           'formatted': '8192 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XL',
@@ -4447,7 +4249,6 @@ const rawInstances = [
           'value': 17179869184,
           'formatted': '16384 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '2XL',
@@ -4466,7 +4267,6 @@ const rawInstances = [
           'value': 25769803776,
           'formatted': '24576 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '3XL',
@@ -4485,7 +4285,6 @@ const rawInstances = [
           'value': 34359738368,
           'formatted': '32768 MiB',
         },
-        'rbdimage': null,
       },
     ],
     'defaultFlavor': {
@@ -4505,7 +4304,6 @@ const rawInstances = [
         'value': 1073741824,
         'formatted': '1024 MiB',
       },
-      'rbdimage': null,
     },
     'buildFlavor': {
       'name': 'M',
@@ -4524,7 +4322,6 @@ const rawInstances = [
         'value': 4294967296,
         'formatted': '4096 MiB',
       },
-      'rbdimage': null,
     },
   },
   {
@@ -4574,7 +4371,6 @@ const rawInstances = [
           'value': 268435456,
           'formatted': '256 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'nano',
@@ -4593,7 +4389,6 @@ const rawInstances = [
           'value': 536870912,
           'formatted': '512 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XS',
@@ -4612,7 +4407,6 @@ const rawInstances = [
           'value': 1073741824,
           'formatted': '1024 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'S',
@@ -4631,7 +4425,6 @@ const rawInstances = [
           'value': 2147483648,
           'formatted': '2048 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'M',
@@ -4650,7 +4443,6 @@ const rawInstances = [
           'value': 4294967296,
           'formatted': '4096 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'L',
@@ -4669,7 +4461,6 @@ const rawInstances = [
           'value': 8589934592,
           'formatted': '8192 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XL',
@@ -4688,7 +4479,6 @@ const rawInstances = [
           'value': 17179869184,
           'formatted': '16384 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '2XL',
@@ -4707,7 +4497,6 @@ const rawInstances = [
           'value': 25769803776,
           'formatted': '24576 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '3XL',
@@ -4726,7 +4515,6 @@ const rawInstances = [
           'value': 34359738368,
           'formatted': '32768 MiB',
         },
-        'rbdimage': null,
       },
     ],
     'defaultFlavor': {
@@ -4746,7 +4534,6 @@ const rawInstances = [
         'value': 1073741824,
         'formatted': '1024 MiB',
       },
-      'rbdimage': null,
     },
     'buildFlavor': {
       'name': 'M',
@@ -4765,7 +4552,6 @@ const rawInstances = [
         'value': 4294967296,
         'formatted': '4096 MiB',
       },
-      'rbdimage': null,
     },
   },
   {
@@ -4815,7 +4601,6 @@ const rawInstances = [
           'value': 268435456,
           'formatted': '256 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'nano',
@@ -4834,7 +4619,6 @@ const rawInstances = [
           'value': 536870912,
           'formatted': '512 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XS',
@@ -4853,7 +4637,6 @@ const rawInstances = [
           'value': 1073741824,
           'formatted': '1024 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'S',
@@ -4872,7 +4655,6 @@ const rawInstances = [
           'value': 2147483648,
           'formatted': '2048 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'M',
@@ -4891,7 +4673,6 @@ const rawInstances = [
           'value': 4294967296,
           'formatted': '4096 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'L',
@@ -4910,7 +4691,6 @@ const rawInstances = [
           'value': 8589934592,
           'formatted': '8192 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': 'XL',
@@ -4929,7 +4709,6 @@ const rawInstances = [
           'value': 17179869184,
           'formatted': '16384 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '2XL',
@@ -4948,7 +4727,6 @@ const rawInstances = [
           'value': 25769803776,
           'formatted': '24576 MiB',
         },
-        'rbdimage': null,
       },
       {
         'name': '3XL',
@@ -4967,7 +4745,6 @@ const rawInstances = [
           'value': 34359738368,
           'formatted': '32768 MiB',
         },
-        'rbdimage': null,
       },
     ],
     'defaultFlavor': {
@@ -4987,7 +4764,6 @@ const rawInstances = [
         'value': 1073741824,
         'formatted': '1024 MiB',
       },
-      'rbdimage': null,
     },
     'buildFlavor': {
       'name': 'M',
@@ -5006,7 +4782,6 @@ const rawInstances = [
         'value': 4294967296,
         'formatted': '4096 MiB',
       },
-      'rbdimage': null,
     },
   },
 ];

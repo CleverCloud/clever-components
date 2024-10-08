@@ -1,3 +1,22 @@
+/**
+ * @typedef {import('../components/common.types.js').AddonProvider} AddonProvider
+ * @typedef {import('../components/common.types.js').PriceSystem} PriceSystem
+ * @typedef {import('../components/common.types.js').FormattedFeature} FormattedFeature
+ * @typedef {import('../components/common.types.js').PricingSection} PricingSection
+ * @typedef {import('../components/common.types.js').PricingInterval} PricingInterval
+ * @typedef {import('../components/common.types.js').Plan} Plan
+ * @typedef {import('../components/common.types.js').Instance} Instance
+ * @typedef {import('../components/cc-pricing-product/cc-pricing-product.types.js').PricingProductStateLoaded} PricingProductStateLoaded
+ */
+
+/**
+ * Formats an add-on product with its features and plans.
+ *
+ * @param {AddonProvider} addonProvider
+ * @param {PriceSystem} priceSystem
+ * @param {Array<FormattedFeature>} selectedFeatures
+ * @returns {Omit<PricingProductStateLoaded, 'state'>}
+ */
 export function formatAddonProduct(addonProvider, priceSystem, selectedFeatures) {
   // We filter out add-ons that are not attached to any zone. This is sometimes done on dev plans to disable them.
   const addonPlansWithZones = addonProvider.plans.filter((plan) => plan.zones.length > 0);
@@ -14,6 +33,12 @@ export function formatAddonProduct(addonProvider, priceSystem, selectedFeatures)
 // Therefore, we need to apply a price factor for on interval prices.
 const THIRTY_DAYS_IN_HOURS = 24 * 30;
 
+/**
+ * Formats the add-on data for Cellar.
+ *
+ * @param {PriceSystem} priceSystem - The price system object containing pricing information.
+ * @returns {{ sections: Array<PricingSection> }} An object containing sections for storage and outbound traffic.
+ */
 export function formatAddonCellar(priceSystem) {
   return {
     sections: [
@@ -29,6 +54,12 @@ export function formatAddonCellar(priceSystem) {
   };
 }
 
+/**
+ * Formats the add-on data for FSBucket.
+ *
+ * @param {PriceSystem} priceSystem - The price system object containing pricing information.
+ * @returns {{ sections: Array<PricingSection> }} An object containing a section for storage.
+ */
 export function formatAddonFsbucket(priceSystem) {
   return {
     sections: [
@@ -40,6 +71,12 @@ export function formatAddonFsbucket(priceSystem) {
   };
 }
 
+/**
+ * Formats the add-on data for Pulsar.
+ *
+ * @param {PriceSystem} priceSystem - The price system object containing pricing information.
+ * @returns {{ sections: Array<PricingSection> }} An object containing sections for storage, inbound traffic, and outbound traffic.
+ */
 export function formatAddonPulsar(priceSystem) {
   return {
     sections: [
@@ -59,6 +96,12 @@ export function formatAddonPulsar(priceSystem) {
   };
 }
 
+/**
+ * Formats the add-on data for Heptapod.
+ *
+ * @param {PriceSystem} priceSystem - The price system object containing pricing information.
+ * @returns {{ sections: Array<PricingSection> }} An object containing sections for storage, private users, and public users.
+ */
 export function formatAddonHeptapod(priceSystem) {
   return {
     sections: [
@@ -80,6 +123,13 @@ export function formatAddonHeptapod(priceSystem) {
   };
 }
 
+/**
+ * Formats the consumption intervals for a product based on the price system and service name.
+ *
+ * @param {PriceSystem} priceSystem - The price system object containing pricing information.
+ * @param {string} serviceName - The name of the service to format consumption intervals for.
+ * @returns {Pick<PricingSection, 'secability' | 'intervals'>}
+ */
 function formatProductConsumptionIntervals(priceSystem, serviceName) {
   const service = priceSystem.countable.find((c) => c.service === serviceName);
 
@@ -103,6 +153,13 @@ function formatProductConsumptionIntervals(priceSystem, serviceName) {
   return { secability, intervals };
 }
 
+/**
+ * Formats add-on features based on provider features and selected features.
+ *
+ * @param {AddonProvider['features']|AddonProvider['plans'][number]['features']} providerFeatures - Array of provider feature objects.
+ * @param {Array<FormattedFeature>} [selectedFeatures] - Array of selected feature codes.
+ * @returns {Array<FormattedFeature>} Formatted addon features.
+ */
 function formatAddonFeatures(providerFeatures, selectedFeatures) {
   // If selectedFeatures is not specified, we just use the features as is
   const featureCodes =
@@ -119,13 +176,21 @@ function formatAddonFeatures(providerFeatures, selectedFeatures) {
       return {
         code: feature.name_code,
         type: feature.type.toLowerCase(),
-        // Only used when we format plan features
+        // @ts-ignore Only used when we format plan features
         value: feature.computable_value ?? '',
         name: feature.name,
       };
     });
 }
 
+/**
+ * Formats add-on plans based on provided plans, price system, and selected features.
+ *
+ * @param {AddonProvider['plans']} allPlans - Array of all available plans.
+ * @param {PriceSystem} priceSystem - The price system object containing pricing information.
+ * @param {Array<FormattedFeature>} selectedFeatures - Array of selected feature codes.
+ * @returns {Pick<Plan, 'name' | 'price' | 'features'>[]} Formatted add-on plans with name, price, and features.
+ */
 function formatAddonPlans(allPlans, priceSystem, selectedFeatures) {
   return allPlans.map((plan) => {
     const priceItem = priceSystem.runtime.find(
@@ -139,6 +204,13 @@ function formatAddonPlans(allPlans, priceSystem, selectedFeatures) {
   });
 }
 
+/**
+ * Formats a runtime product with its features and plans.
+ *
+ * @param {Instance} runtime - The runtime object containing variant and flavors information.
+ * @param {PriceSystem} priceSystem - The price system object containing pricing information.
+ * @returns {Omit<PricingProductStateLoaded, 'state'>} Formatted runtime product with name, features, and plans.
+ */
 export function formatRuntimeProduct(runtime, priceSystem) {
   const features = formatRuntimeFeatures(runtime);
   return {
@@ -148,7 +220,14 @@ export function formatRuntimeProduct(runtime, priceSystem) {
   };
 }
 
+/**
+ * Formats runtime features based on the provided runtime object.
+ *
+ * @param {Instance} runtime - The runtime object containing variant information.
+ * @returns {Array<FormattedFeature>} An array of feature objects with code and type properties.
+ */
 function formatRuntimeFeatures(runtime) {
+  /** @type {FormattedFeature[]} */
   const features = [
     { code: 'cpu', type: 'number-cpu-runtime' },
     { code: 'memory', type: 'bytes' },
@@ -159,6 +238,14 @@ function formatRuntimeFeatures(runtime) {
   return features;
 }
 
+/**
+ * Formats runtime plans based on the provided flavors, price system, and features.
+ *
+ * @param {Instance['flavors']} allFlavors - Array of all available flavors.
+ * @param {PriceSystem} priceSystem - The price system object containing pricing information.
+ * @param {Array<FormattedFeature>} features - Array of formatted features.
+ * @returns {Pick<Plan, 'name' | 'price' | 'features'>[]} Formatted runtime plans with name, price, and features.
+ */
 function formatRuntimePlans(allFlavors, priceSystem, features) {
   return allFlavors.map((flavor) => {
     const priceItem = priceSystem.runtime.find(
@@ -172,6 +259,13 @@ function formatRuntimePlans(allFlavors, priceSystem, features) {
   });
 }
 
+/**
+ * Formats runtime feature values based on the provided features and flavor.
+ *
+ * @param {Array<FormattedFeature>} allFeatures - Array of all formatted features.
+ * @param {Instance['flavors'][number]} flavor - The flavor object containing feature values.
+ * @returns {Array<FormattedFeature>} An array of feature objects with added value property.
+ */
 function formatRuntimeFeatureValues(allFeatures, flavor) {
   return allFeatures.map((feature) => {
     return {
@@ -181,6 +275,13 @@ function formatRuntimeFeatureValues(allFeatures, flavor) {
   });
 }
 
+/**
+ * Gets the runtime feature value based on the feature code and flavor.
+ *
+ * @param {FormattedFeature['code']} featureCode - The code of the feature to get the value for.
+ * @param {Instance['flavors'][number]} flavor - The flavor object containing feature details.
+ * @returns {FormattedFeature['value']} The feature value based on the feature code.
+ */
 function getRuntimeFeatureValue(featureCode, flavor) {
   switch (featureCode) {
     case 'cpu':
@@ -193,10 +294,19 @@ function getRuntimeFeatureValue(featureCode, flavor) {
       return flavor.memory.value;
     case 'gpu':
       return flavor.gpus;
+    default:
+      return null;
   }
 }
 
+/**
+ * Returns a runner product based on the provided product ID.
+ *
+ * @param {string} productId - The ID of the product to retrieve ('jenkins-runner' or 'heptapod-runner').
+ * @returns {Partial<Instance>|void} The runner product object if a valid product ID is provided, undefined otherwise.
+ */
 export function getRunnerProduct(productId) {
+  /** @type {Partial<Instance>} */
   const baseProduct = {
     type: 'docker',
     // Fake date
@@ -261,6 +371,17 @@ export function getRunnerProduct(productId) {
   }
 }
 
+/**
+ * Generates a runner flavor object with the specified parameters.
+ *
+ * @param {string} prefix - The prefix for the price_id.
+ * @param {string} name - The name of the flavor.
+ * @param {number} cpus - The number of CPUs for the flavor.
+ * @param {number} memory - The amount of memory in GB for the flavor.
+ * @param {boolean} [microservice=false] - Whether the flavor is a microservice.
+ * @param {number} [nice=0] - The nice value for the flavor.
+ * @returns {Instance['flavors'][number]} The runner flavor object.
+ */
 function getRunnerFlavor(prefix, name, cpus, memory, microservice = false, nice = 0) {
   return {
     name,
