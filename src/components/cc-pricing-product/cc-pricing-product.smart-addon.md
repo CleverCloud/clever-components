@@ -14,12 +14,13 @@ title: '💡 Smart (add-on)'
 
 ## ⚙️ Params
 
-| Name        | Type        | Required | Details                                                                                          | Default                                        |
-|-------------|-------------|----------|--------------------------------------------------------------------------------------------------|------------------------------------------------|
-| `apiConfig` | `ApiConfig` | No       | Object with API configuration (target host, tokens...)                                           | `{ API_HOST: "https://api.clever-cloud.com" }` |
-| `currency`  | `string`    | No       | Currency code matching the ISO 4217 format                                                       | `EUR`                                          |
-| `productId` | `string`    | Yes      | id from [`/v2/products/addonproviders`](https://api.clever-cloud.com/v2/products/addonproviders) |                                                |
-| `zoneId`    | `string`    | No       | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones)                 | `par`                                          |
+| Name            | Type                 | Required | Details                                                                                          | Default                                        |
+|-----------------|----------------------|----------|--------------------------------------------------------------------------------------------------|------------------------------------------------|
+| `addonFeatures` | `FormattedFeature[]` | No       | List of features used to filter and sort displayed features                                      |                                                |
+| `apiConfig`     | `ApiConfig`          | No       | Object with API configuration (target host, tokens...)                                           | `{ API_HOST: "https://api.clever-cloud.com" }` |
+| `currency`      | `string`             | No       | Currency code matching the ISO 4217 format                                                       | `EUR`                                          |
+| `productId`     | `string`             | Yes      | id from [`/v2/products/addonproviders`](https://api.clever-cloud.com/v2/products/addonproviders) |                                                |
+| `zoneId`        | `string`             | No       | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones)                 | `par`                                          |
 
 * When `addonFeatures` is not specified, all product features are listed in the order of the API.
 * Setting `addonFeatures` allows you to filter the features you want to display.
