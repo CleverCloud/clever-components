@@ -51,9 +51,7 @@ export class LostFocusController {
   }
 
   async hostUpdated() {
-    if (this.additionalWaiter) {
-      await this.additionalWaiter();
-    }
+    await this.additionalWaiter?.();
 
     // keep the previous elements because we will want to compare with the new ones
     const previousElements = this.elements;

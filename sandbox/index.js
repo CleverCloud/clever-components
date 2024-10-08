@@ -45,7 +45,14 @@ window.addEventListener('cc:notify', (event) => {
   document.querySelector('cc-toaster').show(event.detail);
 });
 
-const sandboxes = ['cc-ansi-palette', 'cc-logs', 'cc-product-card', 'cc-logs-application-view', 'forms'];
+const sandboxes = [
+  'cc-ansi-palette',
+  'cc-logs',
+  'cc-product-card',
+  'cc-logs-application-view',
+  'forms',
+  'cc-kv-explorer',
+];
 
 const $listContainer = document.querySelector('.sandboxes-list');
 const $sandboxContainer = document.querySelector('.sandbox-container');

@@ -667,6 +667,145 @@ export const translations = {
   'cc-jenkins-info.update.title': `Updates`,
   'cc-jenkins-info.update.up-to-date': `Your Jenkins version is up-to-date.`,
   //#endregion
+  //#region cc-kv-console
+  'cc-kv-console.header': `KV Explorer Console`,
+  'cc-kv-console.shell.prompt': `Command line`,
+  'cc-kv-console.warning': `All commands executed in this CLI are immediately sent to the database`,
+  //#endregion
+  //#region cc-kv-explorer
+  'cc-kv-explorer.details.empty': `Select a key in the list to get its content`,
+  'cc-kv-explorer.details.unsupported': `The selected key type is not supported`,
+  'cc-kv-explorer.error.add-key': `An error occurred while adding the key`,
+  'cc-kv-explorer.error.delete-key': `An error occurred while deleting the key`,
+  'cc-kv-explorer.error.fetch-keys': `An error occurred while fetching keys`,
+  'cc-kv-explorer.error.get-key': `An error occurred while fetching the key`,
+  'cc-kv-explorer.error.key-doesnt-exist': `The key doesn't exist anymore`,
+  'cc-kv-explorer.filter.all': `All`,
+  'cc-kv-explorer.filter.apply': `Apply the filter`,
+  'cc-kv-explorer.filter.by-pattern': `Filter by key`,
+  'cc-kv-explorer.filter.by-type': `Filter by type`,
+  'cc-kv-explorer.form.add': `Add`,
+  'cc-kv-explorer.form.error.already-used': `Key name already used`,
+  'cc-kv-explorer.form.key': `Key name`,
+  'cc-kv-explorer.form.reset': `Cancel`,
+  'cc-kv-explorer.form.string.value': `Value`,
+  'cc-kv-explorer.form.type': `Key type`,
+  'cc-kv-explorer.key.delete': /** @param {{index: number}} _ */ ({ index }) => `Delete the key at index ${index}`,
+  'cc-kv-explorer.key.header.copy': `Copy the key name to clipboard`,
+  'cc-kv-explorer.key.header.delete': `Delete key`,
+  'cc-kv-explorer.key.type.hash': `Hash`,
+  'cc-kv-explorer.key.type.list': `List`,
+  'cc-kv-explorer.key.type.set': `Set`,
+  'cc-kv-explorer.key.type.string': `String`,
+  'cc-kv-explorer.keys.empty': `Database is empty!`,
+  'cc-kv-explorer.keys.empty.create-key': `Create a new key`,
+  'cc-kv-explorer.keys.header.add-key': `key`,
+  'cc-kv-explorer.keys.header.add-key.a11y': `Add new key`,
+  'cc-kv-explorer.keys.header.refresh': `Refresh`,
+  'cc-kv-explorer.keys.header.total': /** @param {{total: number}} _ */ ({ total }) =>
+    `${formatNumber(lang, total)} ${plural(total, 'key')}`,
+  'cc-kv-explorer.keys.no-results': `No results matching the filter`,
+  'cc-kv-explorer.loading.error': `An error occurred while connecting to the database`,
+  'cc-kv-explorer.success.add-key': `The key has been added`,
+  'cc-kv-explorer.success.delete-key': `The key has been deleted`,
+  //#endregion
+  //#region cc-kv-hash-explorer
+  'cc-kv-hash-explorer.add-form.element-field': `Field`,
+  'cc-kv-hash-explorer.add-form.element-value': `Value`,
+  'cc-kv-hash-explorer.add-form.submit': `Add`,
+  'cc-kv-hash-explorer.add-form.submit.a11y': `Add the field`,
+  'cc-kv-hash-explorer.element.copy': /** @param {{index: number}} _ */ ({ index }) =>
+    `Copy value at index ${index} to clipboard`,
+  'cc-kv-hash-explorer.element.delete': /** @param {{index: number}} _ */ ({ index }) =>
+    `Delete the field at index ${index}`,
+  'cc-kv-hash-explorer.element.edit.cancel': `Cancel value edition`,
+  'cc-kv-hash-explorer.element.edit.save': `Update the value`,
+  'cc-kv-hash-explorer.element.edit.start': /** @param {{index: number}} _ */ ({ index }) =>
+    `Edit the value at index ${index}`,
+  'cc-kv-hash-explorer.element.edit.value-input': `Value`,
+  'cc-kv-hash-explorer.error.apply-filter': `An error occurred while applying filter`,
+  'cc-kv-hash-explorer.error.element-add': `An error occurred while adding the field`,
+  'cc-kv-hash-explorer.error.element-delete': `An error occurred while deleting the field`,
+  'cc-kv-hash-explorer.error.element-update': `An error occurred while updating the value`,
+  'cc-kv-hash-explorer.error.fetch-elements': `An error occurred while fetching fields`,
+  'cc-kv-hash-explorer.filter': `Filter by field`,
+  'cc-kv-hash-explorer.filter.apply': `Apply the filter`,
+  'cc-kv-hash-explorer.header.field': `Field`,
+  'cc-kv-hash-explorer.header.value': `Value`,
+  'cc-kv-hash-explorer.no-results': `No results matching the filter`,
+  'cc-kv-hash-explorer.success.element-add': `The field has been added`,
+  'cc-kv-hash-explorer.success.element-delete': `The field has been deleted`,
+  'cc-kv-hash-explorer.success.element-update': `The value has been updated`,
+  //#endregion
+  //#region cc-kv-hash-input
+  'cc-kv-hash-input.element.add': `Add a new field`,
+  'cc-kv-hash-input.element.delete': /** @param {{index: number}} _ */ ({ index }) =>
+    `Remove the field at index ${index}`,
+  'cc-kv-hash-input.element.field-input': `Field`,
+  'cc-kv-hash-input.element.value-input': `Value`,
+  'cc-kv-hash-input.header.field': `Field`,
+  'cc-kv-hash-input.header.value': `Value`,
+  //#endregion
+  //#region cc-kv-list-explorer
+  'cc-kv-list-explorer.add-form.element-position': `Push to`,
+  'cc-kv-list-explorer.add-form.element-position.head': `Head`,
+  'cc-kv-list-explorer.add-form.element-position.tail': `Tail`,
+  'cc-kv-list-explorer.add-form.element-value': `Element`,
+  'cc-kv-list-explorer.add-form.submit': `Push`,
+  'cc-kv-list-explorer.add-form.submit.a11y': `Push the element`,
+  'cc-kv-list-explorer.element.copy': /** @param {{index: number}} _ */ ({ index }) =>
+    `Copy value at index ${index} to clipboard`,
+  'cc-kv-list-explorer.element.edit.cancel': `Cancel element edition`,
+  'cc-kv-list-explorer.element.edit.save': `Update the element`,
+  'cc-kv-list-explorer.element.edit.start': /** @param {{index: number}} _ */ ({ index }) =>
+    `Edit the element at index ${index}`,
+  'cc-kv-list-explorer.element.edit.value-input': `Element value`,
+  'cc-kv-list-explorer.error.apply-filter': `An error occurred while applying filter`,
+  'cc-kv-list-explorer.error.element-add': `An error occurred while adding the element`,
+  'cc-kv-list-explorer.error.element-update': `An error occurred while updating the element`,
+  'cc-kv-list-explorer.error.fetch-elements': `An error occurred while fetching elements`,
+  'cc-kv-list-explorer.filter': `Filter by index`,
+  'cc-kv-list-explorer.filter.apply': `Apply the filter`,
+  'cc-kv-list-explorer.header.index': `Index`,
+  'cc-kv-list-explorer.header.value': `Element`,
+  'cc-kv-list-explorer.no-results': `No results matching the filter`,
+  'cc-kv-list-explorer.success.element-add': /** @param {{index: number}} _ */ ({ index }) =>
+    `The element has been added at index ${index}`,
+  'cc-kv-list-explorer.success.element-update': `The element has been updated`,
+  //#endregion
+  //#region cc-kv-list-input
+  'cc-kv-list-input.element.add': `Add a new element`,
+  'cc-kv-list-input.element.delete': /** @param {{index: number}} _ */ ({ index }) =>
+    `Remove the element at index ${index}`,
+  'cc-kv-list-input.element.value-input': `Element`,
+  'cc-kv-list-input.header.elements': `Elements`,
+  //#endregion
+  //#region cc-kv-set-explorer
+  'cc-kv-set-explorer.add-form.element-value': `Member`,
+  'cc-kv-set-explorer.add-form.submit': `Add`,
+  'cc-kv-set-explorer.add-form.submit.a11y': `Add the member`,
+  'cc-kv-set-explorer.element.copy': /** @param {{index: number}} _ */ ({ index }) =>
+    `Copy value at index ${index} to clipboard`,
+  'cc-kv-set-explorer.element.delete': /** @param {{index: number}} _ */ ({ index }) =>
+    `Delete the member at index ${index}`,
+  'cc-kv-set-explorer.error.apply-filter': `An error occurred while applying filter`,
+  'cc-kv-set-explorer.error.element-add': `An error occurred while adding the member`,
+  'cc-kv-set-explorer.error.element-delete': `An error occurred while deleting the member`,
+  'cc-kv-set-explorer.error.fetch-elements': `An error occurred while fetching members`,
+  'cc-kv-set-explorer.filter': `Filter`,
+  'cc-kv-set-explorer.filter.apply': `Apply the filter`,
+  'cc-kv-set-explorer.no-results': `No results matching the filter`,
+  'cc-kv-set-explorer.success.element-add': `The member has been added`,
+  'cc-kv-set-explorer.success.element-already-exist': `The member already existed`,
+  'cc-kv-set-explorer.success.element-delete': `The member has been deleted`,
+  //#endregion
+  //#region cc-kv-string-editor
+  'cc-kv-string-editor.error.update-value': `An error occurred while updating the value`,
+  'cc-kv-string-editor.form.reset': `Cancel`,
+  'cc-kv-string-editor.form.save': `Save`,
+  'cc-kv-string-editor.form.value': `Value`,
+  'cc-kv-string-editor.success.update-value': `The value has been updated`,
+  //#endregion
   //#region cc-loader
   'cc-loader.a11y-name': `Loading`,
   //#endregion
