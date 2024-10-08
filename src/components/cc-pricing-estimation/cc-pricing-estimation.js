@@ -338,7 +338,7 @@ export class CcPricingEstimation extends LitElement {
   /**
    * Dispatches a `cc-pricing-estimation:change-temporality` event with the selected temporality as its payload.
    *
-   * @param {Event} e - the event that called this method
+   * @param {SlDropdownEvent} e - the event that called this method
    */
   _onTemporalityChange(e) {
     const temporality = this.temporalities.find((t) => t.type === e.target.value);

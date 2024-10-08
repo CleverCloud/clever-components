@@ -21,11 +21,6 @@ interface AddonPlan {
   name: string;
 }
 
-interface AddonProvider {
-  name: string;
-  logoUrl: string;
-}
-
 export interface Scalability {
   minFlavor: Flavor;
   maxFlavor: Flavor;
@@ -117,14 +112,14 @@ interface Marker {
 }
 
 interface Plan {
-  productName: string;
+  productName?: string;
   name: string;
   price: number; // price in euros for 1 hour
-  features: Feature[];
-  quantity: number;
+  features: FormattedFeature[];
+  quantity?: number;
 }
 
-interface Feature {
+interface FormattedFeature {
   code:
     | 'connection-limit'
     | 'cpu'
@@ -136,8 +131,8 @@ interface Feature {
     | 'max-db-size'
     | 'memory'
     | 'version';
-  type: 'boolean' | 'shared' | 'bytes' | 'number' | 'runtime' | 'string';
-  value?: number | string; // Only required for a plan feature
+  type: 'boolean' | 'shared' | 'bytes' | 'number' | 'runtime' | string;
+  value?: number | string | { cpu: number; shared: boolean; nice: number }; // Only required for a plan feature
   name?: string;
 }
 
@@ -248,4 +243,169 @@ export interface Notification {
 export interface NotificationOptions {
   timeout?: number;
   closeable?: boolean;
+}
+
+// FIXME: this should be provided by the client
+export interface Instance {
+  type: string;
+  version: string;
+  name: string;
+  variant: {
+    id: string;
+    slug: string;
+    name: string;
+    deployType: string;
+    logo: string;
+  };
+  description: string;
+  enabled: boolean;
+  comingSoon: boolean;
+  maxInstances: number;
+  tags: Array<string>;
+  deployments: Array<string>;
+  flavors: Array<{
+    name: string;
+    mem: number;
+    cpus: number;
+    gpus: number;
+    disk: number;
+    price: number;
+    available: boolean;
+    microservice: boolean;
+    machine_learning: boolean;
+    nice: number;
+    price_id: string;
+    memory: {
+      unit: string;
+      value: number;
+      formatted: string;
+    };
+  }>;
+  defaultFlavor: {
+    name: string;
+    mem: number;
+    cpus: number;
+    gpus: number;
+    disk: number;
+    price: number;
+    available: boolean;
+    microservice: boolean;
+    machine_learning: boolean;
+    nice: number;
+    price_id: string;
+    memory: {
+      unit: string;
+      value: number;
+      formatted: string;
+    };
+  };
+  buildFlavor: {
+    name: string;
+    mem: number;
+    cpus: number;
+    gpus: number;
+    disk: number;
+    price: number;
+    available: boolean;
+    microservice: boolean;
+    machine_learning: boolean;
+    nice: number;
+    price_id: string;
+    memory: {
+      unit: string;
+      value: number;
+      formatted: string;
+    };
+  };
+}
+
+// FIXME: this should be provided by the client
+export interface PriceSystem {
+  zone_id: string;
+  currency: string;
+  runtime: Array<{
+    runtime_policy_id: string;
+    source: string;
+    flavor: string;
+    time_unit: string;
+    price: number;
+    slug_id: string;
+  }>;
+  countable: Array<{
+    countable_policy_id: string;
+    service: string;
+    data_unit: string;
+    data_quantity_for_price: {
+      secability: string;
+      quantity: number;
+    };
+    time_interval_for_price: {
+      secability: string;
+      interval: string;
+    };
+    first_x_free: number;
+    price_plans: Array<{
+      plan_id: string;
+      max_quantity: number;
+      price: number;
+    }>;
+  }>;
+}
+
+// FIXME: this should be provided by the client
+export interface AddonProvider {
+  id: string;
+  name: string;
+  website: string;
+  supportEmail: string;
+  googlePlusName: string;
+  twitterName: string;
+  analyticsId: string;
+  shortDesc: string;
+  longDesc: string;
+  logoUrl: string;
+  status: string;
+  openInNewTab: boolean;
+  canUpgrade: boolean;
+  regions: Array<string>;
+  plans: {
+    id: string;
+    name: string;
+    slug: string;
+    price: number;
+    price_id: string;
+    features: {
+      name: string;
+      type: 'boolean' | 'shared' | 'bytes' | 'number' | 'runtime' | string;
+      value: string;
+      computable_value: string;
+      name_code:
+        | 'connection-limit'
+        | 'cpu'
+        | 'databases'
+        | 'disk-size'
+        | 'gpu'
+        | 'has-logs'
+        | 'has-metrics'
+        | 'max-db-size'
+        | 'memory'
+        | 'version';
+    }[];
+    zones: Array<string>;
+  }[];
+  features: {
+    name: string;
+    type: 'boolean' | 'shared' | 'bytes' | 'number' | 'runtime' | string;
+    name_code:
+      | 'connection-limit'
+      | 'cpu'
+      | 'databases'
+      | 'disk-size'
+      | 'gpu'
+      | 'has-logs'
+      | 'has-metrics'
+      | 'max-db-size'
+      | 'memory'
+      | 'version';
+  }[];
 }
