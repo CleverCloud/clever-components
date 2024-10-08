@@ -108,7 +108,7 @@ describe('lost-focus-controller', () => {
     expect(spy.called).to.equal(false);
   });
 
-  it('should not notify focus lost when no items is not focused', async () => {
+  it('should not notify focus lost when no elements is not focused', async () => {
     const { element, spy } = await createElement();
 
     element.focusHeader();
