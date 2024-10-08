@@ -1,15 +1,15 @@
 import { FormattedFeature, Plan } from '../common.types.js';
 
 interface PricingProductStateLoading {
-  state: 'loading';
+  type: 'loading';
 }
 
 interface PricingProductStateError {
-  state: 'error';
+  type: 'error';
 }
 
 interface PricingProductStateLoaded {
-  state: 'loaded';
+  type: 'loaded';
   productFeatures: FormattedFeature[];
   name: string;
   plans: Plan[];

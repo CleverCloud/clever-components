@@ -72,7 +72,7 @@ export class CcPricingProduct extends LitElement {
     return {
       action: { type: String },
       currency: { type: String },
-      product: { type: Object },
+      state: { type: Object },
       temporalities: { type: Array },
     };
   }
@@ -87,7 +87,7 @@ export class CcPricingProduct extends LitElement {
     this.currency = CURRENCY_EUR;
 
     /** @type {PricingProductState} Sets the state of the pricing product component. */
-    this.product = { state: 'loading' };
+    this.state = { type: 'loading' };
 
     /**
      * @type {Temporality[]} Sets the time window(s) you want to display the prices in (defaults to 30 days with 2 fraction digits).
@@ -235,12 +235,12 @@ export class CcPricingProduct extends LitElement {
 
   render() {
     return html`
-      ${this.product.state === 'error'
+      ${this.state.type === 'error'
         ? html` <cc-notice intent="warning" message=${i18n('cc-pricing-product.error')}></cc-notice> `
         : ''}
-      ${this.product.state === 'loading' ? html` <cc-loader></cc-loader> ` : ''}
-      ${this.product.state === 'loaded'
-        ? this._renderProductPlans(this.product.name, this.product.plans, this.product.productFeatures)
+      ${this.state.type === 'loading' ? html` <cc-loader></cc-loader> ` : ''}
+      ${this.state.type === 'loaded'
+        ? this._renderProductPlans(this.state.name, this.state.plans, this.state.productFeatures)
         : ''}
     `;
   }
