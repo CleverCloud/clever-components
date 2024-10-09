@@ -8,9 +8,7 @@
  * which must be a template literal (`TemplateLiteral` AST type).
  */
 
-'use strict';
-
-const { getClosestParentFromType, isTranslationFile } = require('./i18n-shared.js');
+import { getClosestParentFromType, isTranslationFile } from './i18n-shared.js';
 
 function report(context, key, callExpressionNode) {
   context.report({
@@ -31,7 +29,7 @@ function report(context, key, callExpressionNode) {
   });
 }
 
-module.exports = {
+export default {
   meta: {
     type: 'problem',
     docs: {

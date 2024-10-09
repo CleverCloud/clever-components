@@ -1,11 +1,9 @@
-'use strict';
-
-const {
-  isTranslationFile,
-  isMainTranslationNode,
+import {
   getTranslationProperties,
+  isMainTranslationNode,
   isSanitizeTagFunction,
-} = require('./i18n-shared.js');
+  isTranslationFile,
+} from './i18n-shared.js';
 
 function report(context, key, node) {
   const isLiteralString = node.type === 'Literal' && typeof node.value === 'string';
@@ -29,7 +27,7 @@ function reportMissingReturn(context, key, node) {
   });
 }
 
-module.exports = {
+export default {
   meta: {
     type: 'problem',
     docs: {

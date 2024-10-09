@@ -1,12 +1,10 @@
-'use strict';
-
-const {
-  isTranslationFile,
-  isMainTranslationNode,
+import {
   getTranslationProperties,
-  parseTemplate,
+  isMainTranslationNode,
   isSanitizeTagFunction,
-} = require('./i18n-shared.js');
+  isTranslationFile,
+  parseTemplate,
+} from './i18n-shared.js';
 
 function testNode(context, key, node) {
   if (isSanitizeTagFunction(node)) {
@@ -26,7 +24,7 @@ function report(context, key, sanitizeTaggedTemplateNode, contents) {
   });
 }
 
-module.exports = {
+export default {
   meta: {
     type: 'suggestion',
     docs: {

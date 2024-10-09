@@ -1,12 +1,10 @@
-'use strict';
-
-const { isTranslationFile, isMainTranslationNode, getTranslationProperties } = require('./i18n-shared.js');
+import { getTranslationProperties, isMainTranslationNode, isTranslationFile } from './i18n-shared.js';
 
 function getPrefix(key) {
   return key.split('.')[0];
 }
 
-module.exports = {
+export default {
   meta: {
     type: 'suggestion',
     docs: {

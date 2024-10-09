@@ -1,6 +1,4 @@
-'use strict';
-
-const { isTranslationFile, isMainTranslationNode, getTranslationProperties } = require('./i18n-shared.js');
+import { getTranslationProperties, isMainTranslationNode, isTranslationFile } from './i18n-shared.js';
 
 const VALID_TRANSLATION_KEY = /^[a-z]+-[a-z][a-z-]*\.[a-z0-9-.]+$/;
 
@@ -12,7 +10,7 @@ function report(context, key, node) {
   });
 }
 
-module.exports = {
+export default {
   meta: {
     type: 'suggestion',
     docs: {

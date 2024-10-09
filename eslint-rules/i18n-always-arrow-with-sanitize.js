@@ -1,11 +1,9 @@
-'use strict';
-
-const {
-  isTranslationFile,
-  isMainTranslationNode,
+import {
   getTranslationProperties,
+  isMainTranslationNode,
   isSanitizeTagFunction,
-} = require('./i18n-shared.js');
+  isTranslationFile,
+} from './i18n-shared.js';
 
 function report(context, key, sanitizeTaggedTemplateNode, contents) {
   context.report({
@@ -16,7 +14,7 @@ function report(context, key, sanitizeTaggedTemplateNode, contents) {
   });
 }
 
-module.exports = {
+export default {
   meta: {
     type: 'problem',
     docs: {
