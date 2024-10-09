@@ -1025,8 +1025,8 @@ export const translations = {
   'cc-pricing-product.price-name.hour': `Price/Hour`,
   'cc-pricing-product.price-name.minute': `Price/Minute`,
   'cc-pricing-product.price-name.second': `Price/Second`,
-  'cc-pricing-product.type.boolean': /** @param {{boolean: string}} _ */ ({ boolean }) => `${boolean ? 'Yes' : 'No'}`,
-  'cc-pricing-product.type.boolean-shared': /** @param {{shared: string}} _ */ ({ shared }) =>
+  'cc-pricing-product.type.boolean': /** @param {{boolean: boolean}} _ */ ({ boolean }) => `${boolean ? 'Yes' : 'No'}`,
+  'cc-pricing-product.type.boolean-shared': /** @param {{shared: boolean}} _ */ ({ shared }) =>
     `${shared ? 'Shared' : 'Dedicated'}`,
   'cc-pricing-product.type.bytes': /** @param {{bytes: number}} _ */ ({ bytes }) => formatBytes(bytes, 0, 3),
   'cc-pricing-product.type.number': /** @param {{number: number}} _ */ ({ number }) => formatNumber(lang, number),

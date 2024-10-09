@@ -13,7 +13,7 @@ import './cc-pricing-product.js';
  * @typedef {import('./cc-pricing-product.js').CcPricingProduct} CcPricingProduct
  * @typedef {import('./cc-pricing-product.types.js').PricingProductStateLoaded} PricingProductStateLoaded
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../common.types.js').FormattedFeature} FormattedFeature
+ * @typedef {import('../common.types.js').AddonFormattedFeature} AddonFormattedFeature
  * @typedef {import('../common.types.js').AddonProvider} AddonProvider
  * @typedef {import('../common.types.js').Zone} Zone
  * @typedef {import('../common.types.js').Instance} Instance
@@ -31,7 +31,7 @@ defineSmartComponent({
   /**
    * @param {Object} settings
    * @param {CcPricingProduct} settings.component
-   * @param {{apiConfig?: ApiConfig, productId: string, zoneId?: string, currency?: string, addonFeatures?: FormattedFeature[] }} settings.context
+   * @param {{apiConfig?: ApiConfig, productId: string, zoneId?: string, currency?: string, addonFeatures?: Array<AddonFormattedFeature> }} settings.context
    * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
    * @param {Function} settings.updateComponent
    * @param {AbortSignal} settings.signal
@@ -45,7 +45,7 @@ defineSmartComponent({
 
     fetchAddonProduct({ apiConfig, zoneId, productId, addonFeatures, currency, signal })
       .then((productDetails) => {
-        updateComponent('product', {
+        updateComponent('state', {
           type: 'loaded',
           name: productDetails.name,
           productFeatures: productDetails.productFeatures,
@@ -66,7 +66,7 @@ defineSmartComponent({
  * @param {ApiConfig} options.apiConfig - The API configuration.
  * @param {string} options.productId - The ID of the product.
  * @param {string} options.zoneId - The ID of the zone.
- * @param {Array<FormattedFeature>} options.addonFeatures - The features of the addon.
+ * @param {Array<AddonFormattedFeature>} options.addonFeatures - The features of the addon.
  * @param {string} options.currency - The currency for pricing.
  * @param {AbortSignal} options.signal - The abort signal for the fetch operation.
  * @returns {Promise<Omit<PricingProductStateLoaded, 'type'>>} A promise that resolves to the formatted addon product.

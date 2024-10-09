@@ -11,9 +11,15 @@ const conf = {
   component: 'cc-pricing-product-consumption',
 };
 
+/**
+ * @typedef {import('./cc-pricing-product-consumption.js').CcPricingProductConsumption} CcPricingProductConsumption
+ * @typedef {import('./cc-pricing-product-consumption.types.js').PricingProductConsumptionStateLoaded} PricingProductConsumptionStateLoaded
+ */
+
 const THIRTY_DAYS_IN_HOURS = 24 * 30;
 const ONE_GIGABYTE = 1e9;
 
+/** @type {Omit<PricingProductConsumptionStateLoaded, 'type'>} */
 const baseCellar = {
   name: 'Cellar',
   sections: [
@@ -58,6 +64,7 @@ const baseCellar = {
   ],
 };
 
+/** @type {Omit<PricingProductConsumptionStateLoaded, 'type'>} */
 const baseFsBucket = {
   name: 'FS Bucket',
   sections: [
@@ -78,6 +85,7 @@ const baseFsBucket = {
   ],
 };
 
+/** @type {Omit<PricingProductConsumptionStateLoaded, 'type'>} */
 const basePulsar = {
   name: 'Pulsar',
   sections: [
@@ -171,6 +179,7 @@ const basePulsar = {
   ],
 };
 
+/** @type {Omit<PricingProductConsumptionStateLoaded, 'type'>} */
 const baseHeptapod = {
   name: 'Heptapod',
   sections: [
@@ -218,10 +227,11 @@ const baseHeptapod = {
 };
 
 export const defaultStory = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProductConsumption>>} */
   items: [
     {
-      product: {
-        state: 'loaded',
+      state: {
+        type: 'loaded',
         ...baseCellar,
       },
     },
@@ -229,30 +239,33 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const loading = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProductConsumption>>} */
   items: [
     {
-      product: {
-        state: 'loading',
+      state: {
+        type: 'loading',
       },
     },
   ],
 });
 
 export const error = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProductConsumption>>} */
   items: [
     {
-      product: {
-        state: 'error',
+      state: {
+        type: 'error',
       },
     },
   ],
 });
 
 export const dataLoadedWithFsBucket = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProductConsumption>>} */
   items: [
     {
-      product: {
-        state: 'loaded',
+      state: {
+        type: 'loaded',
         ...baseFsBucket,
       },
     },
@@ -260,10 +273,11 @@ export const dataLoadedWithFsBucket = makeStory(conf, {
 });
 
 export const dataLoadedWithPulsar = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProductConsumption>>} */
   items: [
     {
-      product: {
-        state: 'loaded',
+      state: {
+        type: 'loaded',
         ...basePulsar,
       },
     },
@@ -271,10 +285,11 @@ export const dataLoadedWithPulsar = makeStory(conf, {
 });
 
 export const dataLoadedWithHeptapod = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProductConsumption>>} */
   items: [
     {
-      product: {
-        state: 'loaded',
+      state: {
+        type: 'loaded',
         ...baseHeptapod,
       },
     },
@@ -282,11 +297,12 @@ export const dataLoadedWithHeptapod = makeStory(conf, {
 });
 
 export const dataLoadedWithNoAction = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProductConsumption>>} */
   items: [
     {
       action: 'none',
-      product: {
-        state: 'loaded',
+      state: {
+        type: 'loaded',
         ...baseCellar,
       },
     },
@@ -294,11 +310,12 @@ export const dataLoadedWithNoAction = makeStory(conf, {
 });
 
 export const dataLoadedWithDollars = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProductConsumption>>} */
   items: [
     {
       currency: 'USD',
-      product: {
-        state: 'loaded',
+      state: {
+        type: 'loaded',
         ...baseCellar,
       },
     },
@@ -306,64 +323,84 @@ export const dataLoadedWithDollars = makeStory(conf, {
 });
 
 export const simulationsWithCellar = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProductConsumption>>} */
   items: [
     {
-      product: { state: 'loading' },
+      state: { type: 'loading' },
     },
   ],
   simulations: [
-    storyWait(2000, ([component]) => {
-      component.product = {
-        state: 'loaded',
-        ...baseCellar,
-      };
-    }),
+    storyWait(
+      2000,
+      /** @param {Array<CcPricingProductConsumption>} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          ...baseCellar,
+        };
+      },
+    ),
   ],
 });
 
 export const simulationsWithFsBucket = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProductConsumption>>} */
   items: [
     {
-      product: { state: 'loading' },
+      state: { type: 'loading' },
     },
   ],
   simulations: [
-    storyWait(2000, ([component]) => {
-      component.product = {
-        state: 'loaded',
-        ...baseFsBucket,
-      };
-    }),
+    storyWait(
+      2000,
+      /** @param {Array<CcPricingProductConsumption>} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          ...baseFsBucket,
+        };
+      },
+    ),
   ],
 });
 
 export const simulationsWithPulsar = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProductConsumption>>} */
   items: [
     {
-      product: { state: 'loading' },
+      state: { type: 'loading' },
     },
   ],
   simulations: [
-    storyWait(2000, ([component]) => {
-      component.product = {
-        state: 'loaded',
-        ...basePulsar,
-      };
-    }),
+    storyWait(
+      2000,
+      /** @param {Array<CcPricingProductConsumption>} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          ...basePulsar,
+        };
+      },
+    ),
   ],
 });
 
 export const simulationsWithError = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProductConsumption>>} */
   items: [
     {
-      product: { state: 'loading' },
+      state: { type: 'loading' },
     },
   ],
   simulations: [
-    storyWait(2000, ([component]) => {
-      component.product = {
-        state: 'error',
-      };
-    }),
+    storyWait(
+      2000,
+      /** @param {Array<CcPricingProductConsumption>} components */
+      ([component]) => {
+        component.state = {
+          type: 'error',
+        };
+      },
+    ),
   ],
 });

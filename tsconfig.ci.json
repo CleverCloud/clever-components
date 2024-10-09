@@ -11,9 +11,6 @@
     "tasks/typechecking-stats.js"
   ],
   "exclude": [
-    "src/lib/leaflet",
-    "src/lib/pricing.js",
-    "src/lib/product.js",
     "src/controllers/*.stories.js",
     "src/components/**/*.test.js",
     "src/components/**/*.stories.js",

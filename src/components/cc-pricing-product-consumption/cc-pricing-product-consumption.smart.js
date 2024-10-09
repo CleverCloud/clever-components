@@ -15,12 +15,12 @@ defineSmartComponent({
     apiConfig: { type: Object, optional: true },
     productId: { type: String },
     zoneId: { type: String, optional: true },
-    currency: { type: String },
+    currency: { type: String, optional: true },
   },
   /**
    * @param {Object} settings
    * @param {CcPricingProductConsumption} settings.component
-   * @param {{ apiConfig?: ApiConfig, productId: string, zoneId?: string, currency: string }} settings.context
+   * @param {{ apiConfig?: ApiConfig, productId: string, zoneId?: string, currency?: string }} settings.context
    * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
    * @param {function} settings.updateComponent
    * @param {AbortSignal} settings.signal
@@ -30,19 +30,19 @@ defineSmartComponent({
     const { apiConfig, productId, zoneId = 'par', currency = 'EUR' } = context;
 
     // Reset the component before loading
-    updateComponent('product', { state: 'loading' });
+    updateComponent('state', { state: 'loading' });
 
     fetchProduct({ apiConfig, productId, zoneId, currency, signal })
       .then((product) => {
-        updateComponent('product', {
+        updateComponent('state', {
           name: product.name,
-          state: 'loaded',
+          type: 'loaded',
           sections: product.sections,
         });
       })
       .catch((error) => {
         console.error(error);
-        updateComponent('product', { state: 'error' });
+        updateComponent('state', { state: 'error' });
       });
   },
 });

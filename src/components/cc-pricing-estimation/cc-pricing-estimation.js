@@ -41,7 +41,7 @@ const DEFAULT_CURRENCY = 'EUR';
 const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
 
 /**
- * @typedef {import('../common.types.js').Feature} Feature
+ * @typedef {import('../common.types.js').FormattedFeature} FormattedFeature
  * @typedef {import('../common.types.js').Plan} Plan
  * @typedef {import('../common.types.js').Temporality} Temporality
  * @typedef {import('@shoelace-style/shoelace').SlDropdown} SlDropdown
@@ -147,7 +147,7 @@ export class CcPricingEstimation extends LitElement {
   /**
    * Returns the translated string corresponding to a feature code.
    *
-   * @param {Feature} feature - the feature to translate
+   * @param {FormattedFeature} feature - the feature to translate
    * @return {string|Node|void} the translated feature name if a translation exists or nothing if the translation does not exist
    */
   _getFeatureName(feature) {
@@ -167,13 +167,14 @@ export class CcPricingEstimation extends LitElement {
   /**
    * Returns the formatted value corresponding to a feature
    *
-   * @param {Feature} feature - the feature to get the formatted value from
+   * @param {FormattedFeature} feature - the feature to get the formatted value from
    * @return {string|Node|void} the formatted value for the given feature or the feature value itself if it does not require any formatting
    */
   _getFeatureValue(feature) {
     if (feature == null) {
       return '';
     }
+
     switch (feature.type) {
       case 'boolean':
         return i18n('cc-pricing-estimation.type.boolean', { boolean: feature.value === 'true' });

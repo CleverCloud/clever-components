@@ -9,7 +9,7 @@ import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-zone/cc-zone.js';
 
-/** @type {Addon} */
+/** @type {Partial<Omit<Addon, 'provider'>> & { provider: { name: string, logoUrl: string }}} */
 const SKELETON_ADDON = {
   id: null,
   realId: null,

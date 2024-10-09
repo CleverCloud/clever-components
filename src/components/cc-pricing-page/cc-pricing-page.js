@@ -11,6 +11,8 @@ const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
  * @typedef {import('../cc-pricing-header/cc-pricing-header.js').CcPricingHeader} CcPricingHeader
  * @typedef {import('../cc-pricing-product/cc-pricing-product.js').CcPricingProduct} CcPricingProduct
  * @typedef {import('./cc-pricing-page.types.js').SelectedPlans} SelectedPlans
+ * @typedef {import('../common.types.js').Plan} Plan
+ * @typedef {import('../common.types.js').AddonProvider['plans'][number]} AddonProviderPlan
  * @typedef {import('../common.types.js').Temporality} Temporality
  */
 
@@ -63,12 +65,16 @@ export class CcPricingPage extends LitElement {
     /** @type {CcPricingProduct[]|null} */
     this._productElements = null;
 
-    /** @type {CcPricingEstimation[]|null} */
+    /** @type {CcPricingEstimation|null} */
     this._estimationElement = null;
   }
 
+  /**
+   * @param {Plan} plan
+   * @returns {string}
+   */
   _getPlanId(plan) {
-    return plan.id ?? `${plan.productName}/${plan.name}`;
+    return `${plan.productName}/${plan.name}`;
   }
 
   /**
@@ -80,6 +86,7 @@ export class CcPricingPage extends LitElement {
     this._estimationElement = this.querySelector('cc-pricing-estimation');
   }
 
+  /** @param {CustomEvent<Plan>} event */
   _onAddPlan({ detail: plan }) {
     const planId = this._getPlanId(plan);
     if (this.selectedPlans[planId] == null) {
@@ -89,20 +96,25 @@ export class CcPricingPage extends LitElement {
     this.requestUpdate();
   }
 
+  /** @param {CustomEvent<string>} event */
   _onChangeCurrency({ detail: currency }) {
+    console.log(this.selectedPlans);
     this.selectedCurrency = currency;
   }
 
+  /** @param {CustomEvent<Temporality>} event */
   _onChangeTemporality({ detail: temporality }) {
     this.selectedTemporality = temporality;
   }
 
+  /** @param {CustomEvent<Plan>} event */
   _onChangeQuantity({ detail: plan }) {
     const planId = this._getPlanId(plan);
     this.selectedPlans[planId].quantity = plan.quantity;
     this.requestUpdate();
   }
 
+  /** @param {CustomEvent<Plan>} event */
   _onDeletePlan({ detail: plan }) {
     const planId = this._getPlanId(plan);
     delete this.selectedPlans[planId];

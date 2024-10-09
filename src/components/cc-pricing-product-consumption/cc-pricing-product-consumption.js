@@ -41,9 +41,13 @@ const ICONS = {
 
 /**
  * @typedef {import('../common.types.js').ActionType} ActionType
+ * @typedef {import('../common.types.js').SectionType} SectionType
+ * @typedef {import('../common.types.js').PricingSection} PricingSection
+ * @typedef {import('../common.types.js').PricingInterval} PricingInterval
  * @typedef {import('../common.types.js').Plan} Plan
  * @typedef {import('./cc-pricing-product-consumption.types.js').PricingProductConsumptionState} PricingProductConsumptionState
  * @typedef {import('./cc-pricing-product-consumption.types.js').SectionStates} SectionStates
+ * @typedef {import('lit').PropertyValues<CcPricingProductConsumption>} CcPricingProductConsumptionPropertyValues
  */
 
 /**
@@ -68,7 +72,7 @@ export class CcPricingProductConsumption extends LitElement {
     return {
       action: { type: String },
       currency: { type: String },
-      product: { type: Object },
+      state: { type: Object },
     };
   }
 
@@ -82,7 +86,7 @@ export class CcPricingProductConsumption extends LitElement {
     this.currency = CURRENCY_EUR;
 
     /** @type {PricingProductConsumptionState} Sets the state of the product */
-    this.product = { state: 'loading' };
+    this.state = { type: 'loading' };
 
     this._simulator = new PricingConsumptionSimulator();
 
@@ -141,7 +145,7 @@ export class CcPricingProductConsumption extends LitElement {
    * Returns the currency code and the computed price factored with the currency changerate
    *
    * @param {number} amount - the amount to base the calculation on
-   * @return {Object} An object containing the computed price and the currency
+   * @return {{ price: number, currency: string }} An object containing the computed price and the currency
    */
   _getCurrencyValue(amount) {
     return {
@@ -185,10 +189,15 @@ export class CcPricingProductConsumption extends LitElement {
   /**
    * Returns the localized interval price depending on the given section type.
    *
-   * @param {SectionPrice} type - the section type related to the interval price to process
+   * @param {SectionType} type - the section type related to the interval price to process
    * @param {number} intervalPrice - the interval price to localize
+   * @returns {string}
    */
   _getIntervalPrice(type, intervalPrice) {
+    if (this.state.type !== 'loaded') {
+      return null;
+    }
+
     if (intervalPrice === 0) {
       return i18n('cc-pricing-product-consumption.price-interval.free');
     }
@@ -201,14 +210,14 @@ export class CcPricingProductConsumption extends LitElement {
         )
       : i18n('cc-pricing-product-consumption.price-interval.users', {
           ...this._getCurrencyValue(intervalPrice),
-          userCount: this.product.sections.find((s) => s.type === type).secability ?? 1,
+          userCount: this.state.sections.find((s) => s.type === type).secability ?? 1,
         });
   }
 
   /**
    * Returns the localized and formatted units based with their corresponding value in bytes.
    *
-   * @return {Array} An array containing objects with a label (localized unit) and a value (the corresponding value in bytes).
+   * @return {Array<{ label: string, value: string }>} An array containing objects with a label (localized unit) and a value (the corresponding value in bytes).
    */
   _getUnits() {
     return [
@@ -253,7 +262,11 @@ export class CcPricingProductConsumption extends LitElement {
    * Dispatches a `cc-pricing-product:add-plan` event with the plan as its payload.
    */
   _onAddPlan() {
-    const name = (this.product?.sections ?? [])
+    if (this.state.type !== 'loaded') {
+      return;
+    }
+
+    const name = (this.state?.sections ?? [])
       .map(({ type }) => {
         const title = this._getTitle(type);
         const quantity = this._isTypeBytes(type)
@@ -264,7 +277,7 @@ export class CcPricingProductConsumption extends LitElement {
       .join(', ');
 
     const plan = {
-      productName: this.product.name,
+      productName: this.state.name,
       name,
       // As explained above, interval prices are expected to be in "euros / byte / 30 days" or just "euros / byte" for timeless sections like traffic
       // To comply with `<cc-pricing-product>`, the price in this event is in "euros / 1 hour"
@@ -279,12 +292,14 @@ export class CcPricingProductConsumption extends LitElement {
    * Triggers an update of the simulator so that it retrieves the new quantity.
    *
    * @param {SectionType} type - the type of the section to update
-   * @param {number} quantity - the quantity to set
    */
-  _onInputValue(type, quantity) {
-    this._sectionStates[type].quantity = isNaN(quantity) ? 0 : quantity;
-    this._updateSimulatorQuantity(type);
-    this.requestUpdate();
+  _onInputValue(type) {
+    /** @param {CustomEvent<number>} e */
+    return (e) => {
+      this._sectionStates[type].quantity = isNaN(e.detail) ? 0 : e.detail;
+      this._updateSimulatorQuantity(type);
+      this.requestUpdate();
+    };
   }
 
   /**
@@ -292,12 +307,14 @@ export class CcPricingProductConsumption extends LitElement {
    * Triggers an update of the simulator so that it retrieves the new unit.
    *
    * @param {SectionType} type - the type of the section to update
-   * @param {number} unitValue - the unit to set
    */
-  _onToggleUnit(type, unitValue) {
-    this._sectionStates[type].unitValue = unitValue;
-    this._updateSimulatorQuantity(type);
-    this.requestUpdate();
+  _onToggleUnit(type) {
+    /** @param {CustomEvent<string>} e */
+    return (e) => {
+      this._sectionStates[type].unitValue = e.detail;
+      this._updateSimulatorQuantity(type);
+      this.requestUpdate();
+    };
   }
 
   /**
@@ -310,12 +327,13 @@ export class CcPricingProductConsumption extends LitElement {
     this.requestUpdate();
   }
 
+  /** @param {CcPricingProductConsumptionPropertyValues} changedProperties */
   willUpdate(changedProperties) {
     // This is not done within the `render` function because we only want to reset this value in specific cases.
     // We reset the simulator & section states only if the product has changed.
-    if (changedProperties.has('product') && Array.isArray(this.product.sections)) {
+    if (changedProperties.has('state') && this.state.type === 'loaded' && Array.isArray(this.state.sections)) {
       this._sectionStates = {};
-      this.product.sections.forEach(({ type }) => {
+      this.state.sections.forEach(({ type }) => {
         this._sectionStates[type] = {
           // In small mode, sections are closed by default
           isClosed: true,
@@ -326,23 +344,21 @@ export class CcPricingProductConsumption extends LitElement {
         };
       });
 
-      this._simulator = new PricingConsumptionSimulator(this.product.sections);
+      this._simulator = new PricingConsumptionSimulator(this.state.sections);
     }
   }
 
   render() {
     return html`
-      ${this.product.state === 'error'
+      ${this.state.type === 'error'
         ? html` <cc-notice intent="warning" message=${i18n('cc-pricing-product-consumption.error')}></cc-notice> `
         : ''}
-      ${this.product.state === 'loading' ? html` <cc-loader></cc-loader> ` : ''}
-      ${this.product.state === 'loaded' ? this._renderLoaded(this.product.sections) : ''}
+      ${this.state.type === 'loading' ? html` <cc-loader></cc-loader> ` : ''}
+      ${this.state.type === 'loaded' ? this._renderLoaded(this.state.sections) : ''}
     `;
   }
 
-  /**
-   * @param {PricingSection[]} sections
-   */
+  /** @param {Array<PricingSection>} sections */
   _renderLoaded(sections) {
     const { width } = this._resizeController;
     const bodyClasses = {
@@ -389,9 +405,7 @@ export class CcPricingProductConsumption extends LitElement {
     `;
   }
 
-  /**
-   * @param {PricingSection} section
-   */
+  /** @param {PricingSection} section */
   _renderSection(section) {
     const intervals = section.intervals;
     const progressive = section.progressive;
@@ -440,24 +454,25 @@ export class CcPricingProductConsumption extends LitElement {
    * @param {Object} plan
    * @param {SectionType} plan.type
    * @param {number} plan.quantity
-   * @param {number} plan.unitValue
+   * @param {string} plan.unitValue
    */
   _renderInput({ type, quantity, unitValue }) {
+    console.log('RENDER INPUT', typeof unitValue);
     if (this._isTypeBytes(type)) {
       return html`
         <cc-input-number
-          label=${i18n('cc-pricing-product-consumption.size', { bytes: unitValue })}
+          label=${i18n('cc-pricing-product-consumption.size', { bytes: Number(unitValue) })}
           class="input-quantity"
           value=${quantity}
           min="0"
-          @cc-input-number:input=${(e) => this._onInputValue(type, e.detail)}
+          @cc-input-number:input=${this._onInputValue(type)}
         ></cc-input-number>
         <cc-toggle
           legend=${i18n('cc-pricing-product-consumption.unit')}
           class="input-unit"
           value=${unitValue}
           .choices=${this._getUnits()}
-          @cc-toggle:input=${(e) => this._onToggleUnit(type, e.detail)}
+          @cc-toggle:input=${this._onToggleUnit(type)}
         ></cc-toggle>
       `;
     } else {
@@ -467,17 +482,18 @@ export class CcPricingProductConsumption extends LitElement {
           class="input-quantity"
           value=${quantity}
           min="0"
-          @cc-input-number:input=${(e) => this._onInputValue(type, e.detail)}
+          @cc-input-number:input=${this._onInputValue(type)}
         ></cc-input-number>
       `;
     }
   }
 
   /**
-   * @param {SectionType} type
-   * @param {boolean} progressive
-   * @param {Interval[]} intervals
-   * @param {Interval} maxInterval
+   * @param {Object} params
+   * @param {SectionType} params.type
+   * @param {boolean} params.progressive
+   * @param {Array<PricingInterval>} params.intervals
+   * @param {PricingInterval} params.maxInterval
    */
   _renderIntervalList({ type, progressive, intervals, maxInterval }) {
     return intervals.map((interval, intervalIndex) => {
