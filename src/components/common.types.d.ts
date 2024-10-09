@@ -119,33 +119,67 @@ interface Plan {
   quantity?: number;
 }
 
-interface FormattedFeature {
+export type FormattedFeature = AddonFormattedFeature | RuntimeFormattedFeature;
+
+// export interface GenericFormattedFeature {
+//   code:
+//     | 'connection-limit'
+//     | 'cpu'
+//     | 'databases'
+//     | 'disk-size'
+//     | 'gpu'
+//     | 'has-logs'
+//     | 'has-metrics'
+//     | 'max-db-size'
+//     | 'memory'
+//     | 'version';
+//   type: 'boolean' | 'shared' | 'boolean-shared' | 'bytes' | 'number' | 'runtime' | 'string';
+//   value?: number | string; // Only required for a plan feature
+//   name?: string;
+// }
+
+export interface AddonFormattedFeature {
   code:
     | 'connection-limit'
     | 'cpu'
     | 'databases'
     | 'disk-size'
-    | 'gpu'
     | 'has-logs'
     | 'has-metrics'
     | 'max-db-size'
     | 'memory'
     | 'version';
-  type: 'boolean' | 'shared' | 'bytes' | 'number' | 'runtime' | string;
-  value?: number | string | { cpu: number; shared: boolean; nice: number }; // Only required for a plan feature
+  type: 'boolean' | 'shared' | 'boolean-shared' | 'bytes' | 'number' | 'string';
+  value?: number | string; // Only required for a plan feature
   name?: string;
 }
 
-interface PricingSection {
+export type RuntimeFormattedFeature = GenericRuntimeFormattedFeature | CpuRuntimeFormattedFeature;
+
+export interface GenericRuntimeFormattedFeature {
+  code: 'disk-size' | 'gpu' | 'has-logs' | 'has-metrics' | 'max-db-size' | 'memory' | 'version';
+  type: 'boolean' | 'shared' | 'boolean-shared' | 'bytes' | 'number' | 'runtime' | 'string';
+  value?: number | string; // Only required for a plan feature
+  name?: string;
+}
+
+interface CpuRuntimeFormattedFeature {
+  code: 'cpu';
+  type: 'number-cpu-runtime';
+  value?: { cpu: number; shared: boolean; nice: number };
+  name?: string;
+}
+
+export interface PricingSection {
   type: SectionType;
   progressive?: boolean; // defaults to false
   secability?: number; // defaults to 1
   intervals: PricingInterval[];
 }
 
-interface PricingInterval {
+export interface PricingInterval {
   minRange: number; // byte
-  maxRange: number; // byte
+  maxRange?: number; // byte
   price: number; // "euros / byte / 30 days" or just "euros / byte" for timeless sections like traffic
 }
 
@@ -376,7 +410,7 @@ export interface AddonProvider {
     price_id: string;
     features: {
       name: string;
-      type: 'boolean' | 'shared' | 'bytes' | 'number' | 'runtime' | string;
+      type: 'boolean' | 'shared' | 'bytes' | 'number' | 'string';
       value: string;
       computable_value: string;
       name_code:
@@ -384,7 +418,6 @@ export interface AddonProvider {
         | 'cpu'
         | 'databases'
         | 'disk-size'
-        | 'gpu'
         | 'has-logs'
         | 'has-metrics'
         | 'max-db-size'
@@ -395,13 +428,12 @@ export interface AddonProvider {
   }[];
   features: {
     name: string;
-    type: 'boolean' | 'shared' | 'bytes' | 'number' | 'runtime' | string;
+    type: 'boolean' | 'shared' | 'bytes' | 'number' | 'runtime' | 'string';
     name_code:
       | 'connection-limit'
       | 'cpu'
       | 'databases'
       | 'disk-size'
-      | 'gpu'
       | 'has-logs'
       | 'has-metrics'
       | 'max-db-size'

@@ -124,7 +124,7 @@ export class CcPricingProduct extends LitElement {
    * Returns the formatted value corresponding to a feature
    *
    * @param {FormattedFeature} feature - the feature to get the formatted value from
-   * @return {string|void} the formatted value for the given feature or the feature value itself if it does not require any formatting
+   * @return {string|Node|void} the formatted value for the given feature or the feature value itself if it does not require any formatting
    */
   _getFeatureValue(feature) {
     if (feature == null) {
@@ -150,7 +150,7 @@ export class CcPricingProduct extends LitElement {
           shared: feature.value.shared,
         });
       case 'string':
-        return feature.value;
+        return feature.value.toString();
     }
   }
 
@@ -243,7 +243,7 @@ export class CcPricingProduct extends LitElement {
   /**
    * @param {string} productName - the name of the product
    * @param {Plan[]} productPlans - the list of plans attached to this product
-   * @param {FormattedFeature[]} productFeatures - the list of features to display
+   * @param {Array<FormattedFeature>} productFeatures - the list of features to display
    */
   _renderProductPlans(productName, productPlans, productFeatures) {
     // this component is not rerendering very often so we consider we can afford to sort plans and filter the features here.
@@ -262,7 +262,7 @@ export class CcPricingProduct extends LitElement {
   /**
    * @param {string} productName
    * @param {Plan[]} sortedPlans
-   * @param {FormattedFeature[]} productFeatures
+   * @param {Array<FormattedFeature>} productFeatures
    */
   _renderBigPlans(productName, sortedPlans, productFeatures) {
     const temporality = this.temporalities ?? DEFAULT_TEMPORALITY_LIST;
@@ -322,8 +322,8 @@ export class CcPricingProduct extends LitElement {
   }
 
   /**
-   * @param {FormattedFeature[]} planFeatures
-   * @param {FormattedFeature[]} productFeatures
+   * @param {Array<FormattedFeature>} planFeatures
+   * @param {Array<FormattedFeature>} productFeatures
    */
   _renderBigPlanFeatures(planFeatures, productFeatures) {
     return productFeatures.map((feature) => {
@@ -339,7 +339,7 @@ export class CcPricingProduct extends LitElement {
   /**
    * @param {string} productName
    * @param {Plan[]} sortedPlans
-   * @param {FormattedFeature[]} productFeatures
+   * @param {Array<FormattedFeature>} productFeatures
    */
   _renderSmallPlans(productName, sortedPlans, productFeatures) {
     const temporality = this.temporalities ?? DEFAULT_TEMPORALITY_LIST;
@@ -387,8 +387,8 @@ export class CcPricingProduct extends LitElement {
   }
 
   /**
-   * @param {FormattedFeature[]} planFeatures
-   * @param {FormattedFeature[]} productFeatures
+   * @param {Array<FormattedFeature>} planFeatures
+   * @param {Array<FormattedFeature>} productFeatures
    */
   _renderSmallPlanFeatures(planFeatures, productFeatures) {
     return productFeatures.map((feature) => {
