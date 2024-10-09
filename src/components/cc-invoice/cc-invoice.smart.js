@@ -38,6 +38,7 @@ defineSmartComponent({
           downloadUrl: invoice.downloadUrl,
           emissionDate: invoice.emissionDate,
           amount: invoice.total.amount,
+          currency: invoice.total.currency,
           invoiceHtml: invoice.invoiceHtml,
         });
       })

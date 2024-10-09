@@ -137,7 +137,10 @@ export class CcInvoiceTable extends LitElement {
               </td>
               <td class="number">
                 <code class="${classMap({ skeleton, 'credit-note': invoice.type === 'CREDITNOTE' })}">
-                  ${i18n('cc-invoice-table.total.value', { amount: invoice.total.amount })}
+                  ${i18n('cc-invoice-table.total.value', {
+                    amount: invoice.total.amount,
+                    currency: invoice.total.currency,
+                  })}
                 </code>
               </td>
               <td>${this._renderLinks(skeleton, invoice)}</td>
@@ -166,6 +169,7 @@ export class CcInvoiceTable extends LitElement {
                   number: invoice.number,
                   date: invoice.emissionDate,
                   amount: invoice.total.amount,
+                  currency: invoice.total.currency,
                 })}
                 <br />
                 ${this._renderLinks(skeleton, invoice)}
