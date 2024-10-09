@@ -28,7 +28,8 @@ export const sandboxStyles = css`
   }
 
   .main {
-    border: 1px solid #555;
+    background-color: #f1f4f9; /* this is the color used in console3 */
+    border: 1px solid #8aa3cd;
     grid-area: main;
     padding: 0.5em;
   }
