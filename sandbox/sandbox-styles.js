@@ -13,9 +13,9 @@ export const sandboxStyles = css`
   }
 
   .ctrl-top {
+    align-items: center;
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
     gap: 0.5em;
     grid-area: ctrl-top;
   }
@@ -28,8 +28,9 @@ export const sandboxStyles = css`
   }
 
   .main {
-    padding: 0.5em;
-    border: 1px solid #555;
+    background-color: #f1f4f9; /* this is the color used in console3 */
+    border: 1px solid #8aa3cd;
     grid-area: main;
+    padding: 0.5em;
   }
 `;
