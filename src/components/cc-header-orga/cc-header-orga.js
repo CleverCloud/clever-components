@@ -41,6 +41,8 @@ export class CcHeaderOrga extends LitElement {
     this.state = {
       type: 'loading',
     };
+
+    this._usedSlots = new UsedSlots();
   }
 
   /**
@@ -94,7 +96,8 @@ export class CcHeaderOrga extends LitElement {
    */
   _renderHeader({ name, avatar = null, cleverEnterprise = false, emergencyNumber = null, skeleton = false }) {
     return html`
-      <cc-block ${hasSlottedChildren()}>
+      <!-- <cc-block ${hasSlottedChildren((slotName, isSlotted) => (this._footerIsSlotted = isSlotted))}> -->
+      <cc-block ${hasSlottedChildren(this._usedSlots)}>
         <div slot="content" class="header-body">
           <p class="identity">
             ${this._renderAvatar(skeleton, avatar, name)}
@@ -122,7 +125,14 @@ export class CcHeaderOrga extends LitElement {
               : ''}
           </div>
         </div>
-        <slot ${toto()} name="footer-left" class="footer"></slot>
+        <!-- <slot slot=${ifDefined(
+          this._footerIsSlotted ? 'footer-left' : null,
+        )} name="footer-left" class="footer"></slot> -->
+        <slot
+          slot=${ifDefined(this._usedSlots.has('footer-left') ? 'footer-left' : null)}
+          name="footer-left"
+          class="footer"
+        ></slot>
         <slot ${toto()} name="footer-right" class="footer"></slot>
       </cc-block>
     `;
@@ -229,15 +239,6 @@ export class CcHeaderOrga extends LitElement {
           background-color: var(--cc-color-bg-neutral);
           border-top: solid 1px var(--cc-color-border-neutral-weak);
           padding: 0.5em 1em;
-        }
-
-        .footer {
-          display: none;
-        }
-
-        cc-block[footer-left-is-slotted] .footer,
-        cc-block[footer-right-is-slotted] .footer {
-          display: block;
         }
 
         /* SKELETON */
