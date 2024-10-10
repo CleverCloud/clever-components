@@ -249,10 +249,6 @@ export const translations = {
   //#region cc-beta
   'cc-beta.label': `bêta`,
   //#endregion
-  //#region cc-block
-  'cc-block.toggle.close': `Fermer`,
-  'cc-block.toggle.open': `Ouvrir`,
-  //#endregion
   //#region cc-button
   'cc-button.cancel': `Cliquez pour annuler`,
   //#endregion
@@ -284,6 +280,7 @@ export const translations = {
   'cc-domain-management.dns.cname.label': `Valeur d'enregistrement CNAME`,
   'cc-domain-management.dns.desc': () =>
     sanitize`<p>Afin de lier un domaine géré par un fournisseur tiers à votre application Clever Cloud, vous devez configurer votre zone DNS. Pour cela, vous pouvez utiliser un enregistrement <code>CNAME</code> ou <code>A</code>. L'enregistrement <code>CNAME</code> est à privilégier puisque vous n'aurez pas à le reconfigurer si nous modifions nos IP d'accès.</p>`,
+  'cc-domain-management.dns.documentation.text': `Enregistrements DNS - Documentation`,
   'cc-domain-management.dns.heading': `Configurez vos DNS`,
   'cc-domain-management.dns.info.desc': () =>
     sanitize`Si vous bénéficiez d'un <span lang="en">load balancer</span> dédié, référez-vous à sa configuration ou contactez le support. Notre équipe pourra également vous aider pour commander un tel service. Pour un domaine APEX ou un sous-domaine disposant déjà d'une zone DNS, référez-vous à notre <a href="https://developers.clever-cloud.com/doc/administrate/domain-names/">documentation</a>.`,
@@ -342,13 +339,15 @@ export const translations = {
   'cc-domain-management.list.primary.success': /** @param {{domain: string}} _ */ ({ domain }) =>
     `"${domain}" a bien été défini comme nom de domaine principal`,
   'cc-domain-management.main-heading': `Gérez vos noms de domaine`,
+  'cc-domain-management.names.documentation.text': `Noms de domaine - Documentation`,
   'cc-domain-management.new-window': `Nouvelle fenêtre`,
+  'cc-domain-management.tls.certificates.documentation.text': `Certificats TLS - Documentation`,
   //#endregion
   //#region cc-elasticsearch-info
+  'cc-elasticsearch-info.documentation.text': `Elasticsearch - Documentation`,
   'cc-elasticsearch-info.error': `Une erreur est survenue pendant le chargement des liens des add-on liés à cette application.`,
   'cc-elasticsearch-info.info': `Info`,
   'cc-elasticsearch-info.link.apm': `Ouvrir APM`,
-  'cc-elasticsearch-info.link.doc': `Lire la documentation`,
   'cc-elasticsearch-info.link.elasticsearch': `Voir l'add-on Elasticsearch`,
   'cc-elasticsearch-info.link.kibana': `Ouvrir Kibana`,
   'cc-elasticsearch-info.text': `Cet add-on fait partie de l'offre Suite Elastic. Vous pouvez retrouver la documentation ainsi que les différents services liés ci-dessous.`,
@@ -449,9 +448,10 @@ export const translations = {
   'cc-env-var-form.description.config-provider': /** @param {{addonName: string}} _ */ ({ addonName }) =>
     sanitize`Configuration publiée pour les applications dépendantes. <a href="https://www.clever-cloud.com/doc/deploy/addon/config-provider/">En savoir plus</a><br>Ces seront injectées en tant que variables d'environnement dans les applications qui ont l'add-on <strong>${addonName}</strong> dans leurs services liés.<br>À chaque fois que vous mettez à jour les changements, toutes les applications dépendantes seront redémarrées automatiquement.`,
   'cc-env-var-form.description.env-var': /** @param {{appName: string}} _ */ ({ appName }) =>
-    sanitize`Ces variables seront injectées en tant que variables d'environnement dans l'application <strong>${appName}</strong>. <a href="https://doc.clever-cloud.com/admin-console/environment-variables/">En savoir plus</a>`,
+    sanitize`Ces variables seront injectées en tant que variables d'environnement dans l'application <strong>${appName}</strong>. <a href="https://developers.clever-cloud.com/doc/reference/reference-environment-variables/">En savoir plus</a>`,
   'cc-env-var-form.description.exposed-config': /** @param {{appName: string}} _ */ ({ appName }) =>
     sanitize`Configuration publiée pour les applications dépendantes. <a href="https://www.clever-cloud.com/doc/admin-console/service-dependencies/">En savoir plus</a><br>Ces variables ne seront pas injectées dans l'application <strong>${appName}</strong>, elles seront injectées en tant que variables d'environnement dans les applications qui ont <strong>${appName}</strong> dans leurs services liés.`,
+  'cc-env-var-form.documentation.text': `Variable d’environnement - Référence`,
   'cc-env-var-form.error.loading': `Une erreur est survenue pendant le chargement des variables.`,
   'cc-env-var-form.heading.config-provider': `Variables`,
   'cc-env-var-form.heading.env-var': `Variables d'environnement`,
@@ -506,6 +506,7 @@ export const translations = {
   'cc-grafana-info.disable.success': `Les tableaux de bords du Grafana ont été désactivés avec succès.`,
   'cc-grafana-info.documentation-description': `Ce service est utilisé pour visualiser nos métriques. Vous pouvez trouver la documentation et les détails de ces métriques ici.`,
   'cc-grafana-info.documentation-title': `Documentation`,
+  'cc-grafana-info.documentation.text': `Métriques avec Grafana - Documentation`,
   'cc-grafana-info.enable-description': `L'activation de Grafana créera et fournira les accès à une organisation Grafana.`,
   'cc-grafana-info.enable-title': `Activer Grafana`,
   'cc-grafana-info.enable.error': `Une erreur s'est produite lors de l'activation des tableaux de bord du Grafana.`,
@@ -517,7 +518,7 @@ export const translations = {
   'cc-grafana-info.link.doc': `Lire la documentation`,
   'cc-grafana-info.link.grafana': `Ouvrir Grafana`,
   'cc-grafana-info.loading-title': `Grafana`,
-  'cc-grafana-info.main-title': `Métriques dans Grafana`,
+  'cc-grafana-info.main-title': `Métriques avec Grafana`,
   'cc-grafana-info.reset-description': `Réinitialisez tous les tableaux de bord Clever Cloud à leur état initial.`,
   'cc-grafana-info.reset-title': `Réinitialiser tous les tableaux de bord`,
   'cc-grafana-info.reset.error': `Une erreur s'est produite lors de la réinitialisation des tableaux de bord du Grafana.`,
@@ -582,6 +583,7 @@ export const translations = {
   //#region cc-heptapod-info
   'cc-heptapod-info.description': () =>
     sanitize`Cette instance Heptapod héberge des dépôts Mercurial. Plus d'informations sur <a href="https://about.heptapod.host">https://about.heptapod.host</a>.`,
+  'cc-heptapod-info.documentation.text': `Heptapod - Documentation`,
   'cc-heptapod-info.error-loading': `Une erreur est survenue pendant le chargement des informations d'utilisation.`,
   'cc-heptapod-info.not-in-use': `Vous n'utilisez pas ce service Heptapod.`,
   'cc-heptapod-info.price-description': `Prix estimé`,
@@ -631,6 +633,7 @@ export const translations = {
   'cc-invoice.title': `Facture`,
   //#endregion
   //#region cc-invoice-list
+  'cc-invoice-list.documentation.text': `Facturation chez Clever Cloud - Documentation`,
   'cc-invoice-list.error': `Une erreur est survenue pendant le chargement des factures.`,
   'cc-invoice-list.pending': `Factures en attente de paiement`,
   'cc-invoice-list.pending.no-invoices': `Il n'y a aucune facture en attente de paiement pour le moment.`,
@@ -656,9 +659,7 @@ export const translations = {
   'cc-invoice-table.total.value': /** @param {{amount: number}} _ */ ({ amount }) => `${formatCurrency(lang, amount)}`,
   //#endregion
   //#region cc-jenkins-info
-  'cc-jenkins-info.documentation.link': `Consulter la documentation`,
-  'cc-jenkins-info.documentation.text': `Notre documentation peut vous accompagner pour commencer à utiliser Jenkins ainsi qu'à créer des jobs qui s'exécutent dans des runners Docker sur Clever Cloud.`,
-  'cc-jenkins-info.documentation.title': `Documentation`,
+  'cc-jenkins-info.documentation.text': `Jenkins - Documentation`,
   'cc-jenkins-info.error': `Une erreur est survenue pendant le chargement des informations liées à cet add-on.`,
   'cc-jenkins-info.info': `Info`,
   'cc-jenkins-info.open-jenkins.link': `Accéder à Jenkins`,
@@ -800,9 +801,7 @@ export const translations = {
     <p>Cet add-on est gratuit, mais ses dépendances sont facturées en fonction de leur consommation.</p>
   `,
   'cc-matomo-info.about.title': `À propos`,
-  'cc-matomo-info.documentation.link': `Accéder à la documentation`,
-  'cc-matomo-info.documentation.text': `Consultez notre documentation pour en apprendre plus sur l'utilisation ou la configuration de votre Matomo et de ses dépendances.`,
-  'cc-matomo-info.documentation.title': `Documentation`,
+  'cc-matomo-info.documentation.text': `Matomo - Documentation`,
   'cc-matomo-info.error': `An error occured while fetching the information about this add-on.`,
   'cc-matomo-info.heading': `Cet add-on Matomo inclut toutes les dépendances nécessaires à son bon fonctionnement.`,
   'cc-matomo-info.info': `Info`,
@@ -851,6 +850,7 @@ export const translations = {
     sanitize`Une erreur est survenue lors la suppression de <strong>${memberIdentity}</strong>.`,
   'cc-orga-member-list.delete.success': /** @param {{memberIdentity: string}} _ */ ({ memberIdentity }) =>
     sanitize`<strong>${memberIdentity}</strong> a été supprimé de l'organisation.`,
+  'cc-orga-member-list.documentation.text': `Membres d'organisation - Documentation`,
   'cc-orga-member-list.edit.error': /** @param {{memberIdentity: string}} _ */ ({ memberIdentity }) =>
     sanitize`Une erreur est survenue lors de la modification de <strong>${memberIdentity}</strong>.`,
   'cc-orga-member-list.edit.success': /** @param {{memberIdentity: string}} _ */ ({ memberIdentity }) =>
@@ -1118,8 +1118,7 @@ export const translations = {
   'cc-ssh-key-list.add.name': `Nom`,
   'cc-ssh-key-list.add.public-key': `Clé publique`,
   'cc-ssh-key-list.add.title': `Ajouter une nouvelle clé`,
-  'cc-ssh-key-list.doc.info': () =>
-    sanitize`Pour plus d'aide, vous pouvez consulter notre <a href="https://www.clever-cloud.com/doc/admin-console/ssh-keys/">documentation (en anglais)</a>.`,
+  'cc-ssh-key-list.documentation.text': `Clés SSH - Documentation`,
   'cc-ssh-key-list.error.add': /** @param {{name: string}} _ */ ({ name }) =>
     `Une erreur est survenue pendant l'ajout de votre nouvelle clé personnelle "${name}".`,
   'cc-ssh-key-list.error.delete': /** @param {{name: string}} _ */ ({ name }) =>
@@ -1191,10 +1190,10 @@ export const translations = {
       Vous pouvez créer une redirection TCP par application sur chaque espace de nommage auquel vous avez accès.
     </p>
     <p>
-      Un espace de nommage correspond à un groupe de frontaux : public, cleverapps.io, ou encore dédiés dans le cadre de Clever Cloud Premium.<br>
-      Retrouvez plus de détails sur la <a href="https://www.clever-cloud.com/doc/administrate/tcp-redirections/">page de documentation des redirections TCP</a>.
+      Un espace de nommage correspond à un groupe de frontaux : public, cleverapps.io, ou encore dédiés dans le cadre de Clever Cloud Premium.
     </p>
   `,
+  'cc-tcp-redirection-form.documentation.text': `Redirections TCP - Documentation`,
   'cc-tcp-redirection-form.empty': `Vous n'avez accès à aucun espace de nommage.`,
   'cc-tcp-redirection-form.error': `Une erreur est survenue pendant le chargement des redirections TCP.`,
   'cc-tcp-redirection-form.title': `Redirections TCP`,

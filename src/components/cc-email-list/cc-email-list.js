@@ -179,7 +179,7 @@ export class CcEmailList extends LitElement {
   render() {
     return html`
       <cc-block>
-        <div slot="title">${i18n('cc-email-list.title')}</div>
+        <div slot="header-title">${i18n('cc-email-list.title')}</div>
 
         ${this.emails.state === 'loading'
           ? html`
@@ -194,7 +194,9 @@ export class CcEmailList extends LitElement {
             `
           : ''}
         ${this.emails.state === 'error'
-          ? html` <cc-notice intent="warning" message="${i18n('cc-email-list.loading.error')}"></cc-notice> `
+          ? html`
+              <cc-notice slot="content" intent="warning" message="${i18n('cc-email-list.loading.error')}"></cc-notice>
+            `
           : ''}
       </cc-block>
     `;
@@ -214,7 +216,7 @@ export class CcEmailList extends LitElement {
     const badgeIcon = verified ? iconVerified : iconUnverified;
 
     return html`
-      <cc-block-section>
+      <cc-block-section slot="content">
         <div slot="title">${i18n('cc-email-list.primary.title')}</div>
         <div slot="info">${i18n('cc-email-list.primary.description')}</div>
 
@@ -251,7 +253,7 @@ export class CcEmailList extends LitElement {
     const markingAsPrimary = addresses.some((item) => item.state === 'marking-as-primary');
 
     return html`
-      <cc-block-section>
+      <cc-block-section slot="content">
         <div slot="title">${i18n('cc-email-list.secondary.title')}</div>
         <div slot="info">${i18n('cc-email-list.secondary.description')}</div>
 

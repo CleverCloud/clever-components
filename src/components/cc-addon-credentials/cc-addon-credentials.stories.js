@@ -58,7 +58,7 @@ export const dataLoadedWithKibana = makeStory(conf, {
       type: 'kibana',
       name: 'Kibana',
       image: 'https://assets.clever-cloud.com/logos/elasticsearch-kibana.svg',
-      toggleState: 'close',
+      toggle: 'close',
       credentials: [
         { type: 'host', value: 'my-host.services.clever-cloud.com', secret: false },
         { type: 'user', value: 'my-super-user', secret: false },
@@ -73,7 +73,7 @@ export const dataLoadedWithApm = makeStory(conf, {
     {
       type: 'apm',
       name: 'APM',
-      toggleState: 'close',
+      toggle: 'close',
       image: 'https://assets.clever-cloud.com/logos/elasticsearch-apm.svg',
       credentials: [
         { type: 'user', value: 'my-super-user', secret: false },
@@ -89,7 +89,7 @@ export const dataLoadedWithPulsar = makeStory(conf, {
     {
       type: 'pulsar',
       name: 'Pulsar',
-      toggleState: 'open',
+      toggle: 'open',
       image: 'https://assets.clever-cloud.com/logos/pulsar.svg',
       credentials: [
         { type: 'url', value: 'pulsar+ssl://url:port', secret: false },
@@ -104,7 +104,7 @@ export const dataLoadedWithMateriaKv = makeStory(conf, {
     {
       type: 'materia-kv',
       name: 'Materia KV',
-      toggleState: 'off',
+      toggle: 'off',
       image: 'https://assets.clever-cloud.com/logos/materia-db-kv.png',
       credentials: [
         { type: 'host', value: 'example.com', secret: false },

@@ -65,21 +65,23 @@ export class CcAddonOptionForm extends LitElement {
   render() {
     return html`
       <cc-block>
-        <div slot="title">${this.title}</div>
-        <slot name="description"></slot>
-        ${this.options.map((option) => {
-          const enabled = option.enabled || false;
-          return html` <cc-addon-option
-            title="${option.title}"
-            .icon="${option.icon}"
-            logo="${option.logo}"
-            ?enabled=${enabled}
-            @cc-addon-option:input=${this._onOptionToggle(option.name)}
-          >
-            ${option.description}
-          </cc-addon-option>`;
-        })}
-        <div class="button-bar">
+        <div slot="header-title">${this.title}</div>
+        <div slot="content-body" class="content">
+          <slot name="description"></slot>
+          ${this.options.map((option) => {
+            const enabled = option.enabled || false;
+            return html` <cc-addon-option
+              title="${option.title}"
+              .icon="${option.icon}"
+              logo="${option.logo}"
+              ?enabled=${enabled}
+              @cc-addon-option:input=${this._onOptionToggle(option.name)}
+            >
+              ${option.description}
+            </cc-addon-option>`;
+          })}
+        </div>
+        <div slot="content-footer" class="button-bar">
           <cc-button primary @cc-button:click=${this._onSubmit}> ${i18n('cc-addon-option-form.confirm')} </cc-button>
         </div>
       </cc-block>
@@ -93,6 +95,11 @@ export class CcAddonOptionForm extends LitElement {
       css`
         :host {
           display: block;
+        }
+
+        .content {
+          display: grid;
+          gap: 1em;
         }
 
         .button-bar {

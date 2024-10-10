@@ -1,16 +1,18 @@
 import { css, html, LitElement } from 'lit';
-import { classMap } from 'lit/directives/class-map.js';
+import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
-import { linkStyles } from '../../templates/cc-link/cc-link.js';
+import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
+import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-env-var-editor-expert/cc-env-var-editor-expert.js';
 import '../cc-env-var-editor-json/cc-env-var-editor-json.js';
 import '../cc-env-var-editor-simple/cc-env-var-editor-simple.js';
 import '../cc-expand/cc-expand.js';
-import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-toggle/cc-toggle.js';
+
+const ENV_VAR_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/reference/reference-environment-variables/';
 
 /**
  * @typedef {import('./cc-env-var-form.types.js').EnvVarFormContextType} EnvVarFormContextType
@@ -234,8 +236,26 @@ export class CcEnvVarForm extends LitElement {
 
   /** @param {CcEnvVarFormPropertyValues} changedProperties */
   willUpdate(changedProperties) {
-    if (changedProperties.has('context') && this.context === 'env-var-addon') {
-      this.readonly = true;
+    if (changedProperties.has('context') || changedProperties.has('addonName') || changedProperties.has('appName')) {
+      if (this.context === 'env-var') {
+        this.heading = i18n('cc-env-var-form.heading.env-var');
+        this._description = i18n('cc-env-var-form.description.env-var', { appName: this.appName });
+      }
+      if (this.context === 'env-var-simple') {
+        this.heading = i18n('cc-env-var-form.heading.env-var');
+      }
+      if (this.context === 'env-var-addon') {
+        this.heading = i18n('cc-env-var-form.heading.env-var');
+        this.readonly = true;
+      }
+      if (this.context === 'exposed-config') {
+        this.heading = i18n('cc-env-var-form.heading.exposed-config');
+        this._description = i18n('cc-env-var-form.description.exposed-config', { appName: this.appName });
+      }
+      if (this.context === 'config-provider') {
+        this.heading = i18n('cc-env-var-form.heading.config-provider');
+        this._description = i18n('cc-env-var-form.description.config-provider', { addonName: this.addonName });
+      }
     }
 
     if (changedProperties.has('state') && this.state.type === 'loaded') {
@@ -249,13 +269,19 @@ export class CcEnvVarForm extends LitElement {
 
     if (this.state.type === 'error') {
       return html`
-        <div class="header">${heading != null ? html` <div class="heading">${heading}</div> ` : ''}</div>
-        <slot class="description">${defaultDescription}</slot>
-        <div class="overlay-container">
-          <div class="error-container">
-            <cc-notice intent="warning" message="${i18n('cc-env-var-form.error.loading')}"></cc-notice>
+        <cc-block>
+          <div slot="header-title" class="header">
+            ${heading != null ? html` <div class="heading">${heading}</div> ` : ''}
           </div>
-        </div>
+          <div slot="content-header">
+            <slot class="description">${defaultDescription}</slot>
+          </div>
+          <div slot="content-body">
+            <div class="error-container">
+              <cc-notice intent="warning" message="${i18n('cc-env-var-form.error.loading')}"></cc-notice>
+            </div>
+          </div>
+        </cc-block>
       `;
     }
 
@@ -263,25 +289,26 @@ export class CcEnvVarForm extends LitElement {
     const isSaving = this.state.type === 'saving';
     const isEditorDisabled = isSaving || isLoading;
     const isFormDisabled = this._currentVariables == null || this._isPristine || isEditorDisabled;
-    const hasOverlay = isSaving;
 
     return html`
-      <div class="header">
-        ${heading != null ? html` <div class="heading">${heading}</div> ` : ''}
+      <cc-block>
+        ${this.heading != null ? html` <div slot="header-title" class="heading">${this.heading}</div> ` : ''}
 
-        <cc-toggle
-          class="mode-switcher ${classMap({ 'has-overlay': hasOverlay })}"
-          value=${this._mode}
-          .choices=${this._getModes()}
-          ?disabled=${isEditorDisabled}
-          @cc-toggle:input=${this._onToggleMode}
-        ></cc-toggle>
-      </div>
+        <div slot="${this.heading != null ? 'header-right' : 'header'}" class="toggle">
+          <cc-toggle
+            class="mode-switcher"
+            value=${this._mode}
+            .choices=${this._getModes()}
+            ?disabled=${isEditorDisabled}
+            @cc-toggle:input=${this._onToggleMode}
+          ></cc-toggle>
+        </div>
 
-      <slot class="description">${defaultDescription}</slot>
+        <div slot="content-header">
+          <slot class="description">${this._description}</slot>
+        </div>
 
-      <div class="overlay-container">
-        <cc-expand class=${classMap({ 'has-overlay': hasOverlay })}>
+        <div slot="content-body">
           <cc-env-var-editor-simple
             ?hidden=${this._mode !== 'SIMPLE'}
             .state=${this._editorsState}
@@ -308,34 +335,43 @@ export class CcEnvVarForm extends LitElement {
             @cc-env-var-editor-json:change=${this._onChange}
             @cc-input-text:requestimplicitsubmit=${this._onRequestSubmit(isFormDisabled)}
           ></cc-env-var-editor-json>
-        </cc-expand>
+        </div>
 
-        ${isSaving ? html` <cc-loader class="saving-loader"></cc-loader> ` : ''}
-      </div>
+        ${!this.readonly
+          ? html`
+              <div slot="content-footer" class="button-bar">
+                <cc-button ?disabled="${isSaving}" @cc-button:click=${() => this._resetForm(this._initVariables)}
+                  >${i18n('cc-env-var-form.reset')}</cc-button
+                >
 
-      ${!this.readonly
-        ? html`
-            <div class="button-bar">
-              <cc-button @cc-button:click=${() => this._resetForm(this._initVariables)}
-                >${i18n('cc-env-var-form.reset')}</cc-button
-              >
+                <div class="spacer"></div>
 
-              <div class="spacer"></div>
+                ${this.restartApp
+                  ? html`
+                      <cc-button @cc-button:click=${() => dispatchCustomEvent(this, 'restart-app')}
+                        >${i18n('cc-env-var-form.restart-app')}</cc-button
+                      >
+                    `
+                  : ''}
 
-              ${this.restartApp
-                ? html`
-                    <cc-button @cc-button:click=${() => dispatchCustomEvent(this, 'restart-app')}
-                      >${i18n('cc-env-var-form.restart-app')}</cc-button
-                    >
-                  `
-                : ''}
+                <cc-button
+                  success
+                  ?disabled=${isFormDisabled}
+                  ?waiting="${isSaving}"
+                  @cc-button:click=${this._onUpdateForm}
+                  >${i18n('cc-env-var-form.update')}</cc-button
+                >
+              </div>
+            `
+          : ''}
 
-              <cc-button success ?disabled=${isFormDisabled} @cc-button:click=${this._onUpdateForm}
-                >${i18n('cc-env-var-form.update')}</cc-button
-              >
-            </div>
-          `
-        : ''}
+        <div slot="footer-right">
+          ${ccLink(
+            `${ENV_VAR_DOCUMENTATION}`,
+            html`<cc-icon .icon="${iconInfo}"></cc-icon>${i18n('cc-env-var-form.documentation.text')}`,
+          )}
+        </div>
+      </cc-block>
     `;
   }
 
@@ -345,27 +381,15 @@ export class CcEnvVarForm extends LitElement {
       // language=CSS
       css`
         :host {
-          background-color: var(--cc-color-bg-default, #fff);
-          border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
           display: block;
-          padding: 0.5em 1em;
         }
 
-        .header {
-          align-items: flex-start;
+        .toggle {
           display: flex;
-          flex-wrap: wrap;
-          gap: 0.5em;
-          justify-content: center;
-          margin-block: 0.5em;
         }
 
-        .heading {
-          color: var(--cc-color-text-primary-strongest);
-          flex: 1 1 0;
-          font-size: 1.2em;
-          font-weight: bold;
+        .toggle[slot='header'] {
+          justify-content: center;
         }
 
         .description {
@@ -373,40 +397,12 @@ export class CcEnvVarForm extends LitElement {
           display: block;
           font-style: italic;
           line-height: 1.5;
-          margin-bottom: 0.5em;
-        }
-
-        .has-overlay {
-          --cc-skeleton-state: paused;
-
-          filter: blur(0.3em);
-        }
-
-        .overlay-container {
-          position: relative;
-        }
-
-        cc-expand {
-          /* We need to spread so the focus rings can be visible even with cc-expand default overflow:hidden */
-          /* It also allows cc-env-var-create to span through the whole width of the cc-block in simple mode */
-          margin-inline: -1em;
-          padding: 0.5em 1em;
-        }
-
-        .saving-loader {
-          height: 100%;
-          left: 0;
-          position: absolute;
-          top: 0;
-          width: 100%;
         }
 
         .button-bar {
           display: flex;
           flex-wrap: wrap;
           gap: 1em;
-          margin-bottom: 0.5em;
-          margin-top: 1em;
         }
 
         .spacer {
@@ -415,6 +411,12 @@ export class CcEnvVarForm extends LitElement {
 
         .error-container {
           padding-bottom: 0.5em;
+        }
+
+        [slot='footer-right'] .cc-link {
+          align-items: center;
+          display: flex;
+          gap: 0.5em;
         }
       `,
     ];
