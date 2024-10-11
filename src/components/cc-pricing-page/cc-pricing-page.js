@@ -166,6 +166,8 @@ export class CcPricingPage extends LitElement {
       this._estimationElement.selectedTemporality = this.selectedTemporality ?? DEFAULT_TEMPORALITY;
       this._estimationElement.selectedPlans = Object.values(this.selectedPlans);
     }
+
+    console.log(this.selectedPlans);
   }
 
   render() {

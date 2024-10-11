@@ -204,6 +204,7 @@ function formatAddonPlans(allPlans, priceSystem, selectedFeatures) {
       name: plan.name,
       price: priceItem?.price ?? 0,
       features: formatAddonFeatures(plan.features, selectedFeatures),
+      slugId: priceItem.slug_id,
     };
   });
 }
@@ -259,6 +260,7 @@ function formatRuntimePlans(allFlavors, priceSystem, features) {
       name: flavor.name,
       price: priceItem?.price ?? 0,
       features: formatRuntimeFeatureValues(features, flavor),
+      slugId: priceItem.slug_id,
     };
   });
 }
