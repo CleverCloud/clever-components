@@ -197,21 +197,21 @@ export const defaultStory = makeStory(conf, {
       return html`
         <div class="knob">
           <cc-block class="buttons">
-            <p>Click on buttons to trigger a toast</p>
-            <div class="intent-controls">${intents.map(_renderButton)}</div>
+            <p slot="content">Click on buttons to trigger a toast</p>
+            <div slot="content" class="intent-controls">${intents.map(_renderButton)}</div>
           </cc-block>
 
           <cc-block class="options">
-            <div slot="title">Options</div>
+            <div slot="header-title">Options</div>
 
-            <div>
+            <div slot="content">
               <cc-input-number
                 label="Maximum number of toasts that can be displayed at a time"
                 value=${maxToasts}
                 @cc-input-number:input=${onMaxToastChanged}
               ></cc-input-number>
             </div>
-            <div>
+            <div slot="content">
               <cc-toggle
                 legend="Position"
                 value=${position}
@@ -219,7 +219,7 @@ export const defaultStory = makeStory(conf, {
                 @cc-toggle:input=${onPositionChanged}
               ></cc-toggle>
             </div>
-            <div>
+            <div slot="content">
               <cc-toggle
                 legend="Kind of animation to be played when the toast appears"
                 value=${animation}
@@ -227,14 +227,14 @@ export const defaultStory = makeStory(conf, {
                 @cc-toggle:input=${onAnimationChanged}
               ></cc-toggle>
             </div>
-            <div>
+            <div slot="content">
               <cc-input-number
                 value=${timeout}
                 label="Time before the toast is automatically dismissed (0 for infinite time)"
                 @cc-input-number:input=${onTimeoutChanged}
               ></cc-input-number>
             </div>
-            <div>
+            <div slot="content">
               <label for="closeable">
                 <input id="closeable" type="checkbox" @change=${onCloseableChanged} .checked=${closeable} />
                 Show close button
