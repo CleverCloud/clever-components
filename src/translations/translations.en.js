@@ -1101,8 +1101,7 @@ export const translations = {
   'cc-ssh-key-list.add.name': `Name`,
   'cc-ssh-key-list.add.public-key': `Public key`,
   'cc-ssh-key-list.add.title': `Add a new key`,
-  'cc-ssh-key-list.doc.info': () =>
-    sanitize`If you need any help, head up to our <a href="https://www.clever-cloud.com/doc/admin-console/ssh-keys/">documentation</a>.`,
+  'cc-ssh-key-list.documentation.text': `SSH keys - Documentation`,
   'cc-ssh-key-list.error.add': /** @param {{name: string}} _ */ ({ name }) =>
     `An error occurred while adding your new personal key "${name}".`,
   'cc-ssh-key-list.error.delete': /** @param {{name: string}} _ */ ({ name }) =>
