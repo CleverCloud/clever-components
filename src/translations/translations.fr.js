@@ -637,6 +637,7 @@ export const translations = {
   'cc-invoice.title': `Facture`,
   //#endregion
   //#region cc-invoice-list
+  'cc-invoice-list.documentation.text': `Facturation chez Clever Cloud - Documentation`,
   'cc-invoice-list.error': `Une erreur est survenue pendant le chargement des factures.`,
   'cc-invoice-list.pending': `Factures en attente de paiement`,
   'cc-invoice-list.pending.no-invoices': `Il n'y a aucune facture en attente de paiement pour le moment.`,

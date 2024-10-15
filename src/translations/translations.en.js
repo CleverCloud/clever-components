@@ -625,6 +625,7 @@ export const translations = {
   'cc-invoice.title': `Invoice`,
   //#endregion
   //#region cc-invoice-list
+  'cc-invoice-list.documentation.text': `Clever Cloud billing - Documentation`,
   'cc-invoice-list.error': `An error occured while loading invoices.`,
   'cc-invoice-list.pending': `Pending invoices`,
   'cc-invoice-list.pending.no-invoices': `No pending invoices at the moment.`,
