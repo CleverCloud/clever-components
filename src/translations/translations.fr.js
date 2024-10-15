@@ -583,6 +583,7 @@ export const translations = {
   //#region cc-heptapod-info
   'cc-heptapod-info.description': () =>
     sanitize`Cette instance Heptapod héberge des dépôts Mercurial. Plus d'informations sur <a href="https://about.heptapod.host">https://about.heptapod.host</a>.`,
+  'cc-heptapod-info.documentation.text': `Heptapod - Documentation`,
   'cc-heptapod-info.error-loading': `Une erreur est survenue pendant le chargement des informations d'utilisation.`,
   'cc-heptapod-info.not-in-use': `Vous n'utilisez pas ce service Heptapod.`,
   'cc-heptapod-info.price-description': `Prix estimé`,
