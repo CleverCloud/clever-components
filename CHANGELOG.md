@@ -5,6 +5,14 @@ title: 'Changelog'
 
 # Changelog
 
+## [15.4.0](https://github.com/CleverCloud/clever-components/compare/15.3.0...15.4.0) (2024-10-15)
+
+
+### 🚀 Features
+
+* **cc-invoice-table:** support multi-currency ([a7a9ec2](https://github.com/CleverCloud/clever-components/commit/a7a9ec2eb89c611e6282c2399364c7b8447db592)), closes [#1171](https://github.com/CleverCloud/clever-components/issues/1171)
+* **cc-invoice:** add `currency` as part of the `state` ([5590257](https://github.com/CleverCloud/clever-components/commit/5590257e047741e9d91c970b46ca426d7de121a0)), closes [#1169](https://github.com/CleverCloud/clever-components/issues/1169)
+
 ## [15.3.0](https://github.com/CleverCloud/clever-components/compare/15.2.2...15.3.0) (2024-10-09)
 
 
