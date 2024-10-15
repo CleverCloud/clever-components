@@ -270,6 +270,7 @@ export const translations = {
   'cc-domain-management.dns.desc':
     () => sanitize`<p>To associate a domain managed by a third-party provider to your Clever Cloud application, you need to configure its DNS zone.</p>
   <p>This may be achieved using a <code>CNAME</code> or <code>A</code> records. We recommend using a <code>CNAME</code> record, as you won't have to reconfigure it if we change our IPs.</p>`,
+  'cc-domain-management.dns.documentation.text': `DNS records - Documentation`,
   'cc-domain-management.dns.heading': `Configure your DNS`,
   'cc-domain-management.dns.info.desc': () =>
     sanitize`If you are using a dedicated load balancer, refer to its configuration or contact support. Our team can also help you to order such a service. For APEX domains or subdomains with an existing DNS zone, refer to our <a href="https://developers.clever-cloud.com/doc/administrate/domain-names/">DNS & Domains documentation</a>.`,
@@ -328,7 +329,9 @@ export const translations = {
   'cc-domain-management.list.primary.success': /** @param {{domain: string}} _ */ ({ domain }) =>
     `"${domain}" has been successfully marked as primary domain`,
   'cc-domain-management.main-heading': `Manage your domain names`,
+  'cc-domain-management.names.documentation.text': `Domain names - Documentation`,
   'cc-domain-management.new-window': `New Window`,
+  'cc-domain-management.tls.certificates.documentation.text': `TLS certificates - Documentation`,
   //#endregion
   //#region cc-elasticsearch-info
   'cc-elasticsearch-info.error': `Something went wrong while loading add-ons linked to this application.`,

@@ -5,6 +5,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import {
   iconRemixDeleteBinLine as iconDelete,
   iconRemixLockUnlockFill as iconHttpOnly,
+  iconRemixInformationFill as iconInfo,
   iconRemixExternalLinkLine as iconLink,
   iconRemixStarLine as iconPrimary,
   iconRemixFlaskLine as iconTest,
@@ -22,7 +23,7 @@ import {
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { focusBySelector } from '../../lib/focus-helper.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
-import { linkStyles } from '../../templates/cc-link/cc-link.js';
+import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-block-section/cc-block-section.js';
@@ -31,6 +32,11 @@ import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
+
+const DOMAIN_NAMES_DOCUMENTATION =
+  'https://developers.clever-cloud.com/doc/administrate/domain-names/#using-a-cleverappsio-free-domain-with-built-in-ssl';
+const TLS_CERTIFICATES_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/administrate/ssl/';
+const DNS_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/administrate/domain-names/';
 
 /**
  * @typedef {import('./cc-domain-management.types.js').DomainManagementDnsInfoState} DomainManagementDnsInfoState
@@ -309,9 +315,9 @@ export class CcDomainManagement extends LitElement {
     return html`
       <div class="wrapper">
         <cc-block>
-          <div slot="title">${i18n('cc-domain-management.main-heading')}</div>
+          <div slot="header-title">${i18n('cc-domain-management.main-heading')}</div>
 
-          <cc-block-section>
+          <cc-block-section slot="content">
             <div class="form-info">
               <p>${i18n('cc-domain-management.form.info.docs')}</p>
               <p>${i18n('cc-domain-management.form.info.cleverapps')}</p>
@@ -319,7 +325,7 @@ export class CcDomainManagement extends LitElement {
             <div>${this._renderForm(this.domainFormState)}</div>
           </cc-block-section>
 
-          <cc-block-section>
+          <cc-block-section slot="content">
             <div slot="title">
               ${i18n('cc-domain-management.list.heading')}
               ${this.domainListState.type === 'loaded'
@@ -335,19 +341,34 @@ export class CcDomainManagement extends LitElement {
             ${this.domainListState.type === 'loading' ? html` <cc-loader></cc-loader> ` : ''}
             ${this.domainListState.type === 'loaded' ? this._renderDomains(this._sortedDomains) : ''}
           </cc-block-section>
+
+          <div slot="footer-right">
+            ${ccLink(
+              DOMAIN_NAMES_DOCUMENTATION,
+              html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-domain-management.names.documentation.text')}`,
+            )}
+          </div>
         </cc-block>
 
         <cc-block>
-          <div slot="title">${i18n('cc-domain-management.certif.heading')}</div>
-          <div class="certif-info">
+          <div slot="header-title">${i18n('cc-domain-management.certif.heading')}</div>
+          <div slot="content" class="certif-info">
             <p>${i18n('cc-domain-management.certif.automated')}</p>
             <p>${i18n('cc-domain-management.certif.custom')}</p>
+          </div>
+          <div slot="footer-right">
+            ${ccLink(
+              TLS_CERTIFICATES_DOCUMENTATION,
+              html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n(
+                  'cc-domain-management.tls.certificates.documentation.text',
+                )}`,
+            )}
           </div>
         </cc-block>
 
         <cc-block class="dns-info">
-          <div slot="title">${i18n('cc-domain-management.dns.heading')}</div>
-          <div>
+          <div slot="header-title">${i18n('cc-domain-management.dns.heading')}</div>
+          <div slot="content">
             <div class="dns-info__desc">${i18n('cc-domain-management.dns.desc')}</div>
             <cc-notice intent="info" heading="${i18n('cc-domain-management.dns.info.heading')}">
               <div slot="message">
@@ -365,6 +386,13 @@ export class CcDomainManagement extends LitElement {
           ${this.dnsInfoState.type === 'loaded'
             ? this._renderDnsInfo(this.dnsInfoState.cnameRecord, this.dnsInfoState.aRecords)
             : ''}
+
+          <div slot="footer-right">
+            ${ccLink(
+              DNS_DOCUMENTATION,
+              html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-domain-management.dns.documentation.text')}`,
+            )}
+          </div>
         </cc-block>
       </div>
     `;
@@ -576,7 +604,7 @@ export class CcDomainManagement extends LitElement {
    */
   _renderDnsInfo(cnameRecord, aRecords) {
     return html`
-      <cc-block-section>
+      <cc-block-section slot="content">
         <div slot="title">${i18n('cc-domain-management.dns.cname.heading')}</div>
         <div slot="info">${i18n('cc-domain-management.dns.cname.desc')}</div>
         <cc-input-text
@@ -587,7 +615,7 @@ export class CcDomainManagement extends LitElement {
           value=${cnameRecord}
         ></cc-input-text>
       </cc-block-section>
-      <cc-block-section>
+      <cc-block-section slot="content">
         <div slot="title">${i18n('cc-domain-management.dns.a.heading')}</div>
         <div slot="info">${i18n('cc-domain-management.dns.a.desc')}</div>
         <div class="a-records">
@@ -616,7 +644,7 @@ export class CcDomainManagement extends LitElement {
         .wrapper {
           display: flex;
           flex-direction: column;
-          gap: 1.5em;
+          gap: 0.5em;
         }
 
         code {
@@ -823,6 +851,12 @@ export class CcDomainManagement extends LitElement {
         }
 
         /** #endregion */
+
+        [slot='footer-right'] .cc-link {
+          align-items: center;
+          display: flex;
+          gap: 0.5em;
+        }
       `,
     ];
   }
