@@ -122,16 +122,13 @@ export function asyncMap(array, asyncCallback) {
  * Returns the currency symbol corresponding to the given currency.
  *
  * @param {string} currency - the currency to get the symbol for
+ * @param {string} [currencyDisplay] - the currency formatting dysplay (defaults to "narrowSymbol")
  */
-export function getCurrencySymbol(currency) {
+export function getCurrencySymbol(currency, currencyDisplay = 'narrowSymbol') {
   // The lang does not really matter
-  const nf = new Intl.NumberFormat('en', { style: 'currency', currency });
+  const nf = new Intl.NumberFormat('en', { style: 'currency', currency, currencyDisplay });
 
-  // Safari does not support currencySymbol: 'narrow' in Intl.NumberFormat so we need to do this `.replace()` #sorry
-  return nf
-    .formatToParts(0)
-    .find((p) => p.type === 'currency')
-    .value.replace('$US', '$');
+  return nf.formatToParts(0).find((p) => p.type === 'currency');
 }
 
 /**
