@@ -795,9 +795,7 @@ export const translations = {
     <p>This add-on is free but its dependencies are billed based on their consumptions, just like other applications and add-ons.</p>
   `,
   'cc-matomo-info.about.title': `About`,
-  'cc-matomo-info.documentation.link': `Read the documentation`,
-  'cc-matomo-info.documentation.text': `Our documentation can help you start using Matomo and configure its dependencies.`,
-  'cc-matomo-info.documentation.title': `Documentation`,
+  'cc-matomo-info.documentation.text': `Matomo - Documentation`,
   'cc-matomo-info.error': `An error occured while fetching the information about this add-on.`,
   'cc-matomo-info.heading': `This Matomo add-on provides all required dependencies to get started.`,
   'cc-matomo-info.info': `Info`,

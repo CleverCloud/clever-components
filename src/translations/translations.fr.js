@@ -807,9 +807,7 @@ export const translations = {
     <p>Cet add-on est gratuit, mais ses dépendances sont facturées en fonction de leur consommation.</p>
   `,
   'cc-matomo-info.about.title': `À propos`,
-  'cc-matomo-info.documentation.link': `Accéder à la documentation`,
-  'cc-matomo-info.documentation.text': `Consultez notre documentation pour en apprendre plus sur l'utilisation ou la configuration de votre Matomo et de ses dépendances.`,
-  'cc-matomo-info.documentation.title': `Documentation`,
+  'cc-matomo-info.documentation.text': `Matomo - Documentation`,
   'cc-matomo-info.error': `An error occured while fetching the information about this add-on.`,
   'cc-matomo-info.heading': `Cet add-on Matomo inclut toutes les dépendances nécessaires à son bon fonctionnement.`,
   'cc-matomo-info.info': `Info`,
