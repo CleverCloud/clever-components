@@ -29,26 +29,23 @@ export function formatNumber(lang, value, options = {}) {
  * @param {number} value - The number to format
  * @param {Object} [options]
  * @param {string} [options.currency] - Currency code (defaults to EUR)
+ * @param {'code'|'symbol'|'narrowSymbol'|'name'} [options.currencyDisplay] - currency formatting display (defaults to "narrowSymbol")
  * @param {number} [options.minimumFractionDigits] - minimum fraction digits (defaults to 2)
  * @param {number} [options.maximumFractionDigits] - maximum fraction digits (defaults to 2)
  * @returns {string}
  */
 export function formatCurrency(lang, value, options = {}) {
   const { currency = 'EUR' } = options;
-  const { minimumFractionDigits = 2, maximumFractionDigits = 2 } = options;
+  const { currencyDisplay = 'narrowSymbol', minimumFractionDigits = 2, maximumFractionDigits = 2 } = options;
   const nf = new Intl.NumberFormat(lang, {
     style: 'currency',
     currency,
+    currencyDisplay,
     minimumFractionDigits,
     maximumFractionDigits,
   });
 
-  return (
-    nf
-      .format(value)
-      // Safari does not support currencySymbol: 'narrow' in Intl.NumberFormat so we need to do this #sorry
-      .replace('$US', '$')
-  );
+  return nf.format(value);
 }
 
 /**

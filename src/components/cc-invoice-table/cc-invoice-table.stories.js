@@ -71,3 +71,20 @@ export const dataLoadedWithCreditNotes = makeStory(conf, {
     },
   ],
 });
+
+export const dataLoadedWithDollars = makeStory(conf, {
+  /** @type {{ state: InvoiceTableStateLoaded }[] } */
+  items: [
+    {
+      state: {
+        type: 'loaded',
+        invoices: [
+          ...processedInvoices('2019').map((invoice) => ({
+            ...invoice,
+            total: { ...invoice.total, currency: 'USD' },
+          })),
+        ],
+      },
+    },
+  ],
+});

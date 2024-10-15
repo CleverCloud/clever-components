@@ -63,7 +63,11 @@ export class CcInvoice extends LitElement {
               <div slot="button">${ccLink(invoice.downloadUrl, i18n('cc-invoice.download-pdf'), skeleton)}</div>
               <div class="info">
                 <em class=${classMap({ skeleton })}>
-                  ${i18n('cc-invoice.info', { date: invoice.emissionDate, amount: invoice.amount })}
+                  ${i18n('cc-invoice.info', {
+                    date: invoice.emissionDate,
+                    amount: invoice.amount,
+                    currency: invoice.currency,
+                  })}
                 </em>
               </div>
               <cc-html-frame class="frame" ?loading="${skeleton}" iframe-title="${title}">
