@@ -153,9 +153,13 @@ export const saving = makeStory(conf, {
     {
       appName: 'Foobar backend python',
       context: 'env-var',
-      state: { type: 'saving', validationMode: 'simple', variables: VARIABLES_FULL },
+      state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL },
     },
   ],
+  // The component needs to be loaded with data for it to display this data in saving mode afterward.
+  onUpdateComplete: (component) => {
+    component.state = { type: 'saving', validationMode: 'simple', variables: VARIABLES_FULL };
+  },
 });
 
 export const errorWithLoading = makeStory(conf, {
