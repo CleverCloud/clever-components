@@ -844,6 +844,7 @@ export const translations = {
     sanitize`Something went wrong while trying to remove <strong>${memberIdentity}</strong> from this organisation.`,
   'cc-orga-member-list.delete.success': /** @param {{memberIdentity: string}} _ */ ({ memberIdentity }) =>
     sanitize`<strong>${memberIdentity}</strong> has been removed from this organisation.`,
+  'cc-orga-member-list.documentation.text': `Organisation members - Documentation`,
   'cc-orga-member-list.edit.error': /** @param {{memberIdentity: string}} _ */ ({ memberIdentity }) =>
     sanitize`Something went wrong while editing <strong>${memberIdentity}</strong>.`,
   'cc-orga-member-list.edit.success': /** @param {{memberIdentity: string}} _ */ ({ memberIdentity }) =>
