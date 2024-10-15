@@ -32,6 +32,9 @@ export function enhanceStoryName(defaultName) {
   ) {
     return '⌛ ' + formatStoryName(defaultName);
   }
+  if (defaultName.startsWith('Add')) {
+    return '➕ ' + formatStoryName(defaultName);
+  }
   if (defaultName.startsWith('Editing')) {
     return '📝 ' + formatStoryName(defaultName);
   }
