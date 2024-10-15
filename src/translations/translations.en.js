@@ -334,10 +334,10 @@ export const translations = {
   'cc-domain-management.tls.certificates.documentation.text': `TLS certificates - Documentation`,
   //#endregion
   //#region cc-elasticsearch-info
+  'cc-elasticsearch-info.documentation.text': `Elasticsearch - Documentation`,
   'cc-elasticsearch-info.error': `Something went wrong while loading add-ons linked to this application.`,
   'cc-elasticsearch-info.info': `Info`,
   'cc-elasticsearch-info.link.apm': `Open APM`,
-  'cc-elasticsearch-info.link.doc': `Read the documentation`,
   'cc-elasticsearch-info.link.elasticsearch': `Check out the Elasticsearch add-on`,
   'cc-elasticsearch-info.link.kibana': `Open Kibana`,
   'cc-elasticsearch-info.text': `This add-on is part of the Elastic Stack offer. You can find the documentation and linked services right below.`,

@@ -344,10 +344,10 @@ export const translations = {
   'cc-domain-management.tls.certificates.documentation.text': `Certificats TLS - Documentation`,
   //#endregion
   //#region cc-elasticsearch-info
+  'cc-elasticsearch-info.documentation.text': `Elasticsearch - Documentation`,
   'cc-elasticsearch-info.error': `Une erreur est survenue pendant le chargement des liens des add-on liés à cette application.`,
   'cc-elasticsearch-info.info': `Info`,
   'cc-elasticsearch-info.link.apm': `Ouvrir APM`,
-  'cc-elasticsearch-info.link.doc': `Lire la documentation`,
   'cc-elasticsearch-info.link.elasticsearch': `Voir l'add-on Elasticsearch`,
   'cc-elasticsearch-info.link.kibana': `Ouvrir Kibana`,
   'cc-elasticsearch-info.text': `Cet add-on fait partie de l'offre Suite Elastic. Vous pouvez retrouver la documentation ainsi que les différents services liés ci-dessous.`,
