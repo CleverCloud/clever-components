@@ -856,6 +856,7 @@ export const translations = {
     sanitize`Une erreur est survenue lors la suppression de <strong>${memberIdentity}</strong>.`,
   'cc-orga-member-list.delete.success': /** @param {{memberIdentity: string}} _ */ ({ memberIdentity }) =>
     sanitize`<strong>${memberIdentity}</strong> a été supprimé de l'organisation.`,
+  'cc-orga-member-list.documentation.text': `Membres d'organisation - Documentation`,
   'cc-orga-member-list.edit.error': /** @param {{memberIdentity: string}} _ */ ({ memberIdentity }) =>
     sanitize`Une erreur est survenue lors de la modification de <strong>${memberIdentity}</strong>.`,
   'cc-orga-member-list.edit.success': /** @param {{memberIdentity: string}} _ */ ({ memberIdentity }) =>
