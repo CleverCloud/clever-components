@@ -654,9 +654,7 @@ export const translations = {
     `${formatCurrency(lang, amount, { currency })}`,
   //#endregion
   //#region cc-jenkins-info
-  'cc-jenkins-info.documentation.link': `Read the documentation`,
-  'cc-jenkins-info.documentation.text': `Our documentation can help you start using Jenkins and create jobs that run on Clever Cloud docker applications.`,
-  'cc-jenkins-info.documentation.title': `Documentation`,
+  'cc-jenkins-info.documentation.text': `Jenkins - Documentation`,
   'cc-jenkins-info.error': `An error occured while fetching the information about this add-on.`,
   'cc-jenkins-info.info': `Info`,
   'cc-jenkins-info.open-jenkins.link': `Access Jenkins`,
