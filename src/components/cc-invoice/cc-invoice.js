@@ -51,17 +51,17 @@ export class CcInvoice extends LitElement {
 
     return html`
       <cc-block .icon=${iconFile} class=${classMap({ 'has-errors': this.state.type === 'error' })}>
-        <div slot="title">
+        <div slot="header-title">
           ${skeletonNumber ? html` ${i18n('cc-invoice.title')} <span class="skeleton">${number}</span> ` : title}
         </div>
 
         ${this.state.type === 'error'
-          ? html` <cc-notice intent="warning" message="${i18n('cc-invoice.error')}"></cc-notice> `
+          ? html` <cc-notice slot="content" intent="warning" message="${i18n('cc-invoice.error')}"></cc-notice> `
           : ''}
         ${this.state.type !== 'error'
           ? html`
-              <div slot="button">${ccLink(invoice.downloadUrl, i18n('cc-invoice.download-pdf'), skeleton)}</div>
-              <div class="info">
+              <div slot="header-right">${ccLink(invoice.downloadUrl, i18n('cc-invoice.download-pdf'), skeleton)}</div>
+              <div slot="content-body" class="info">
                 <em class=${classMap({ skeleton })}>
                   ${i18n('cc-invoice.info', {
                     date: invoice.emissionDate,
@@ -70,7 +70,7 @@ export class CcInvoice extends LitElement {
                   })}
                 </em>
               </div>
-              <cc-html-frame class="frame" ?loading="${skeleton}" iframe-title="${title}">
+              <cc-html-frame slot="content-body" class="frame" ?loading="${skeleton}" iframe-title="${title}">
                 ${invoice.invoiceHtml != null ? unsafeHTML(`<template>${invoice.invoiceHtml}</template>`) : ''}
               </cc-html-frame>
             `
@@ -106,16 +106,19 @@ export class CcInvoice extends LitElement {
           background-color: #bbb;
         }
 
-        .info,
-        .frame {
-          justify-self: center;
+        .info {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 1em;
         }
 
         .frame {
           /* height and max-width are roughly set to have a standard letter / A4 paper ratio */
           box-shadow: 0 0 0.5em rgb(0 0 0 / 40%);
           height: 31cm;
+          margin-inline: auto;
           max-width: 22cm;
+          padding-inline: 1em;
           width: 100%;
         }
       `,
