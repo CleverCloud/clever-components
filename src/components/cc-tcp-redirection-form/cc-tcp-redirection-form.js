@@ -1,10 +1,13 @@
 import { css, html, LitElement } from 'lit';
-import { linkStyles } from '../../templates/cc-link/cc-link.js';
+import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
+import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-block/cc-block.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-tcp-redirection/cc-tcp-redirection.js';
+
+const TCP_REDIRECTION_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/administrate/tcp-redirections/';
 
 /** @type {TcpRedirectionStateLoading[]} */
 const SKELETON_REDIRECTIONS = [{ type: 'loading' }, { type: 'loading' }];
@@ -15,6 +18,7 @@ const SKELETON_REDIRECTIONS = [{ type: 'loading' }, { type: 'loading' }];
  * @typedef {import('../cc-tcp-redirection/cc-tcp-redirection.types.js').TcpRedirectionStateLoading} TcpRedirectionStateLoading
  * @typedef {import('../cc-tcp-redirection/cc-tcp-redirection.types.js').CreateTcpRedirection} CreateTcpRedirection
  * @typedef {import('../cc-tcp-redirection/cc-tcp-redirection.types.js').DeleteTcpRedirection} DeleteTcpRedirection
+ * @typedef {import('../cc-block/cc-block.types.js').BlockToggleState} BlockToggleState
  */
 
 /**
@@ -44,37 +48,46 @@ export class CcTcpRedirectionForm extends LitElement {
   }
 
   render() {
+    /** @type {BlockToggleState} blockState */
     const blockState = this.context === 'admin' ? 'close' : 'off';
 
     return html`
-      <cc-block state="${blockState}">
-        <div slot="title">${i18n('cc-tcp-redirection-form.title')} ${this._renderRedirectionCountBadge()}</div>
+      <cc-block toggle="${blockState}">
+        <div slot="header-title">${i18n('cc-tcp-redirection-form.title')} ${this._renderRedirectionCountBadge()}</div>
+        <div slot="content" class="content">
+          ${this.context === 'user'
+            ? html` <div class="description">${i18n('cc-tcp-redirection-form.description')}</div> `
+            : ''}
+          ${this.state.type === 'error'
+            ? html` <cc-notice intent="warning" message="${i18n('cc-tcp-redirection-form.error')}"></cc-notice> `
+            : ''}
+          ${this.state.type === 'loading'
+            ? html`
+                ${SKELETON_REDIRECTIONS.map(
+                  (skeletonRedirectionState) => html`
+                    <cc-tcp-redirection .state=${skeletonRedirectionState}></cc-tcp-redirection>
+                  `,
+                )}
+              `
+            : ''}
+          ${this.state.type === 'loaded'
+            ? html`
+                ${this.state.redirections.map(
+                  (redirectionState) => html` <cc-tcp-redirection .state=${redirectionState}></cc-tcp-redirection> `,
+                )}
+                ${this.state.redirections.length === 0
+                  ? html` <div class="empty-msg">${i18n('cc-tcp-redirection-form.empty')}</div> `
+                  : ''}
+              `
+            : ''}
+        </div>
 
-        ${this.context === 'user'
-          ? html` <div class="description">${i18n('cc-tcp-redirection-form.description')}</div> `
-          : ''}
-        ${this.state.type === 'error'
-          ? html` <cc-notice intent="warning" message="${i18n('cc-tcp-redirection-form.error')}"></cc-notice> `
-          : ''}
-        ${this.state.type === 'loading'
-          ? html`
-              ${SKELETON_REDIRECTIONS.map(
-                (skeletonRedirectionState) => html`
-                  <cc-tcp-redirection .state=${skeletonRedirectionState}></cc-tcp-redirection>
-                `,
-              )}
-            `
-          : ''}
-        ${this.state.type === 'loaded'
-          ? html`
-              ${this.state.redirections.map(
-                (redirectionState) => html` <cc-tcp-redirection .state=${redirectionState}></cc-tcp-redirection> `,
-              )}
-              ${this.state.redirections.length === 0
-                ? html` <div class="cc-block_empty-msg">${i18n('cc-tcp-redirection-form.empty')}</div> `
-                : ''}
-            `
-          : ''}
+        <div slot="footer-right">
+          ${ccLink(
+            `${TCP_REDIRECTION_DOCUMENTATION}`,
+            html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-tcp-redirection-form.documentation.text')}`,
+          )}
+        </div>
       </cc-block>
     `;
   }
@@ -106,6 +119,11 @@ export class CcTcpRedirectionForm extends LitElement {
           vertical-align: middle;
         }
 
+        .content {
+          display: grid;
+          gap: 1em;
+        }
+
         .description {
           line-height: 1.6;
         }
@@ -120,6 +138,17 @@ export class CcTcpRedirectionForm extends LitElement {
           border-radius: var(--cc-border-radius-default, 0.25em);
           font-family: var(--cc-ff-monospace);
           padding: 0.15em 0.3em;
+        }
+
+        .empty-msg {
+          color: var(--cc-color-text-weak);
+          font-style: italic;
+        }
+
+        [slot='footer-right'] .cc-link {
+          align-items: center;
+          display: flex;
+          gap: 0.5em;
         }
       `,
     ];

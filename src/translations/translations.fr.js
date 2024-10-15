@@ -1196,10 +1196,10 @@ export const translations = {
       Vous pouvez créer une redirection TCP par application sur chaque espace de nommage auquel vous avez accès.
     </p>
     <p>
-      Un espace de nommage correspond à un groupe de frontaux : public, cleverapps.io, ou encore dédiés dans le cadre de Clever Cloud Premium.<br>
-      Retrouvez plus de détails sur la <a href="https://www.clever-cloud.com/doc/administrate/tcp-redirections/">page de documentation des redirections TCP</a>.
+      Un espace de nommage correspond à un groupe de frontaux : public, cleverapps.io, ou encore dédiés dans le cadre de Clever Cloud Premium.
     </p>
   `,
+  'cc-tcp-redirection-form.documentation.text': `Redirections TCP - Documentation`,
   'cc-tcp-redirection-form.empty': `Vous n'avez accès à aucun espace de nommage.`,
   'cc-tcp-redirection-form.error': `Une erreur est survenue pendant le chargement des redirections TCP.`,
   'cc-tcp-redirection-form.title': `Redirections TCP`,

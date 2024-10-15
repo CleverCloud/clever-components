@@ -1172,10 +1172,10 @@ export const translations = {
       You can create one TCP redirection per application for each namespace you have access to.
     </p>
     <p>
-      A namespace is a group of load balancers: either the default public ones, cleverapps.io, or dedicated ones if you are a Clever Cloud Premium customer.<br>
-      Find out more details on the <a href="https://www.clever-cloud.com/doc/administrate/tcp-redirections/">documentation page for TCP redirections</a>.
+      A namespace is a group of load balancers: either the default public ones, cleverapps.io, or dedicated ones if you are a Clever Cloud Premium customer.
     </p>
   `,
+  'cc-tcp-redirection-form.documentation.text': `TCP Redirections - Documentation`,
   'cc-tcp-redirection-form.empty': `You do not have access to any namespaces.`,
   'cc-tcp-redirection-form.error': `Something went wrong while loading TCP redirections.`,
   'cc-tcp-redirection-form.title': `TCP Redirections`,
