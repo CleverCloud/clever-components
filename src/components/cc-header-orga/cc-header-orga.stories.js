@@ -11,7 +11,7 @@ const conf = {
   component: 'cc-header-orga',
   // language=CSS
   css: `
-    [slot='footer'] p {
+   p {
       margin: 0;
     }
   `,
@@ -33,8 +33,12 @@ const DEFAULT_ORGA_STATE = {
   emergencyNumber: '+33 6 00 00 00 00',
 };
 
-const DEFAULT_SLOTTED_CONTENT = `<div slot="footer">
-  <p>This content is slotted. You should keep it short because it's a header component.</p>
+const DEFAULT_SLOTTED_CONTENT_FOOTER_LEFT = `<div slot="footer-left">
+  <p>This content is slotted on the left footer side.</p>
+</div>`;
+
+const DEFAULT_SLOTTED_CONTENT_FOOTER_RIGHT = `<div slot="footer-right">
+  <p>This content is slotted on the right footer side.</p>
 </div>`;
 
 export const defaultStory = makeStory(conf, {
@@ -88,7 +92,7 @@ export const dataLoadedWithClassicClientAndSlottedContent = makeStory(conf, {
         cleverEnterprise: false,
         emergencyNumber: null,
       },
-      innerHTML: DEFAULT_SLOTTED_CONTENT,
+      innerHTML: DEFAULT_SLOTTED_CONTENT_FOOTER_LEFT,
     },
   ],
 });
@@ -128,7 +132,7 @@ export const dataLoadedWithEnterpriseClientAndSlottedContent = makeStory(conf, {
         ...DEFAULT_ORGA_STATE,
         emergencyNumber: null,
       },
-      innerHTML: DEFAULT_SLOTTED_CONTENT,
+      innerHTML: DEFAULT_SLOTTED_CONTENT_FOOTER_LEFT,
     },
   ],
 });
@@ -147,38 +151,43 @@ export const dataLoadedWithEnterpriseClientEmergencyNumberAndSlottedContent = ma
     {
       /** @type {HeaderOrgaStateLoaded} */
       state: DEFAULT_ORGA_STATE,
-      innerHTML: DEFAULT_SLOTTED_CONTENT,
+      innerHTML: DEFAULT_SLOTTED_CONTENT_FOOTER_LEFT,
     },
   ],
 });
 
-export const dataLoadedWithSlottedContentCustomStyling = makeStory(conf, {
-  css: `
-    [slot="footer"] {
-      background-color: var(--cc-color-bg-primary);
-      color: white;
-      padding: 2em;
-      margin: 0;
-      border-top: solid 2px #000;
-    }
-  `,
+export const dataLoadedWithSlottedContentFooterLeft = makeStory(conf, {
   items: [
     {
       /** @type {HeaderOrgaStateLoaded} */
       state: DEFAULT_ORGA_STATE,
-      innerHTML: `
-      <div slot="footer">
-        <p>The slotted content container has a default styling: <code>background-color</code>, <code>padding</code> and <code>border-top</code>.</p>
-        <p>You may change any of these by styling the tag on which you have added the <code>slot="footer"</code> attribute.</p>
-        <p><strong>Caution:</strong> the default styling was designed to remain consistent with the header body and avoid drawing too much attention to it. You should stick to the default styling as much as possible and stay as close as possible to it. This example is only here to demo that anything can be customized.
-      </div>
-    `,
+      innerHTML: DEFAULT_SLOTTED_CONTENT_FOOTER_LEFT,
+    },
+  ],
+});
+
+export const dataLoadedWithSlottedContentFooterRight = makeStory(conf, {
+  items: [
+    {
+      /** @type {HeaderOrgaStateLoaded} */
+      state: DEFAULT_ORGA_STATE,
+      innerHTML: DEFAULT_SLOTTED_CONTENT_FOOTER_RIGHT,
+    },
+  ],
+});
+
+export const dataLoadedWithSlottedContentFooterLeftAndRight = makeStory(conf, {
+  items: [
+    {
+      /** @type {HeaderOrgaStateLoaded} */
+      state: DEFAULT_ORGA_STATE,
+      innerHTML: [DEFAULT_SLOTTED_CONTENT_FOOTER_LEFT, DEFAULT_SLOTTED_CONTENT_FOOTER_RIGHT],
     },
   ],
 });
 
 export const simulations = makeStory(conf, {
-  items: [{}, {}, { innerHTML: DEFAULT_SLOTTED_CONTENT }, {}],
+  items: [{}, {}, { innerHTML: DEFAULT_SLOTTED_CONTENT_FOOTER_LEFT }, {}],
   simulations: [
     storyWait(
       3000,
