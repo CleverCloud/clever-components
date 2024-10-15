@@ -238,10 +238,6 @@ export const translations = {
   //#region cc-beta
   'cc-beta.label': `beta`,
   //#endregion
-  //#region cc-block
-  'cc-block.toggle.close': `Close`,
-  'cc-block.toggle.open': `Open`,
-  //#endregion
   //#region cc-button
   'cc-button.cancel': `Click to cancel`,
   //#endregion
