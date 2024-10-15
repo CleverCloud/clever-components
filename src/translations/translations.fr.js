@@ -280,6 +280,7 @@ export const translations = {
   'cc-domain-management.dns.cname.label': `Valeur d'enregistrement CNAME`,
   'cc-domain-management.dns.desc': () =>
     sanitize`<p>Afin de lier un domaine géré par un fournisseur tiers à votre application Clever Cloud, vous devez configurer votre zone DNS. Pour cela, vous pouvez utiliser un enregistrement <code>CNAME</code> ou <code>A</code>. L'enregistrement <code>CNAME</code> est à privilégier puisque vous n'aurez pas à le reconfigurer si nous modifions nos IP d'accès.</p>`,
+  'cc-domain-management.dns.documentation.text': `Enregistrements DNS - Documentation`,
   'cc-domain-management.dns.heading': `Configurez vos DNS`,
   'cc-domain-management.dns.info.desc': () =>
     sanitize`Si vous bénéficiez d'un <span lang="en">load balancer</span> dédié, référez-vous à sa configuration ou contactez le support. Notre équipe pourra également vous aider pour commander un tel service. Pour un domaine APEX ou un sous-domaine disposant déjà d'une zone DNS, référez-vous à notre <a href="https://developers.clever-cloud.com/doc/administrate/domain-names/">documentation</a>.`,
@@ -338,7 +339,9 @@ export const translations = {
   'cc-domain-management.list.primary.success': /** @param {{domain: string}} _ */ ({ domain }) =>
     `"${domain}" a bien été défini comme nom de domaine principal`,
   'cc-domain-management.main-heading': `Gérez vos noms de domaine`,
+  'cc-domain-management.names.documentation.text': `Noms de domaine - Documentation`,
   'cc-domain-management.new-window': `Nouvelle fenêtre`,
+  'cc-domain-management.tls.certificates.documentation.text': `Certificats TLS - Documentation`,
   //#endregion
   //#region cc-elasticsearch-info
   'cc-elasticsearch-info.error': `Une erreur est survenue pendant le chargement des liens des add-on liés à cette application.`,
