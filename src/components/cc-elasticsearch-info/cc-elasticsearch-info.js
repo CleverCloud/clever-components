@@ -101,18 +101,17 @@ export class CcElasticsearchInfo extends LitElement {
     }
 
     return html`
-      <cc-block ribbon=${i18n('cc-elasticsearch-info.info')} no-head>
-        <div class="info-text">${i18n('cc-elasticsearch-info.text')}</div>
+      <cc-block>
+        <div slot="ribbon">${i18n('cc-elasticsearch-info.info')}</div>
+        <div slot="content" class="info-text">${i18n('cc-elasticsearch-info.text')}</div>
 
-        <div class="link-list">
+        <div slot="content" class="link-list">${this._renderLinks(this.state.links, skeleton)}</div>
+
+        <div slot="footer-right">
           ${ccLink(
             ELASTICSEARCH_DOCUMENTATION,
-            html`
-              <cc-icon size="lg" .icon=${iconInfo}></cc-icon>
-              <span>${i18n('cc-elasticsearch-info.link.doc')}</span>
-            `,
+            html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-elasticsearch-info.documentation.text')}`,
           )}
-          ${this._renderLinks(this.state.links, skeleton)}
         </div>
       </cc-block>
     `;
