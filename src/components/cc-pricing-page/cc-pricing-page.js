@@ -10,7 +10,7 @@ const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
  * @typedef {import('../cc-pricing-estimation/cc-pricing-estimation.js').CcPricingEstimation} CcPricingEstimation
  * @typedef {import('../cc-pricing-header/cc-pricing-header.js').CcPricingHeader} CcPricingHeader
  * @typedef {import('../cc-pricing-product/cc-pricing-product.js').CcPricingProduct} CcPricingProduct
- * @typedef {import('./cc-pricing-page.types.js').SelectedPlans} SelectedPlans
+ * @typedef {import('./cc-pricing-page.types.js').SelectedPlansById} SelectedPlansById
  * @typedef {import('../common.types.js').Plan} Plan
  * @typedef {import('../common.types.js').AddonProvider['plans'][number]} AddonProviderPlan
  * @typedef {import('../common.types.js').Temporality} Temporality
@@ -34,7 +34,7 @@ const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
 export class CcPricingPage extends LitElement {
   static get properties() {
     return {
-      selectedCurrency: { type: Object, attribute: 'selected-currency' },
+      selectedCurrency: { type: String, attribute: 'selected-currency' },
       selectedPlans: { type: Object, attribute: 'selected-plans' },
       selectedTemporality: { type: Object, attribute: 'selected-temporality' },
       selectedZoneId: { type: String, attribute: 'selected-zone-id' },
@@ -50,7 +50,7 @@ export class CcPricingPage extends LitElement {
     /** @type {string} Sets the current selected currency. */
     this.selectedCurrency = DEFAULT_CURRENCY;
 
-    /** @type {SelectedPlans} Sets the current selected plans. */
+    /** @type {SelectedPlansById} Sets the current selected plans. */
     this.selectedPlans = {};
 
     /** @type {Temporality} Sets the current selected temporality. */
@@ -98,7 +98,6 @@ export class CcPricingPage extends LitElement {
 
   /** @param {CustomEvent<string>} event */
   _onChangeCurrency({ detail: currency }) {
-    console.log(this.selectedPlans);
     this.selectedCurrency = currency;
   }
 

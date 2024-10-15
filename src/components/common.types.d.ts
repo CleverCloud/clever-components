@@ -115,6 +115,7 @@ interface Plan {
   productName?: string;
   name: string;
   price: number; // price in euros for 1 hour
+  priceId: string;
   features: FormattedFeature[];
   quantity?: number;
 }
@@ -386,22 +387,7 @@ export interface PriceSystem {
   }>;
 }
 
-// FIXME: this should be provided by the client
-export interface AddonProvider {
-  id: string;
-  name: string;
-  website: string;
-  supportEmail: string;
-  googlePlusName: string;
-  twitterName: string;
-  analyticsId: string;
-  shortDesc: string;
-  longDesc: string;
-  logoUrl: string;
-  status: string;
-  openInNewTab: boolean;
-  canUpgrade: boolean;
-  regions: Array<string>;
+export interface AddonProvider extends Omit<RawAddonProvider, 'plans' | 'features'> {
   plans: {
     id: string;
     name: string;
@@ -429,6 +415,62 @@ export interface AddonProvider {
   features: {
     name: string;
     type: 'boolean' | 'shared' | 'bytes' | 'number' | 'runtime' | 'string';
+    name_code:
+      | 'connection-limit'
+      | 'cpu'
+      | 'databases'
+      | 'disk-size'
+      | 'has-logs'
+      | 'has-metrics'
+      | 'max-db-size'
+      | 'memory'
+      | 'version';
+  }[];
+}
+
+// FIXME: this should be provided by the client
+export interface RawAddonProvider {
+  id: string;
+  name: string;
+  website: string;
+  supportEmail: string;
+  googlePlusName: string;
+  twitterName: string;
+  analyticsId: string;
+  shortDesc: string;
+  longDesc: string;
+  logoUrl: string;
+  status: string;
+  openInNewTab: boolean;
+  canUpgrade: boolean;
+  regions: Array<string>;
+  plans: {
+    id: string;
+    name: string;
+    slug: string;
+    price: number;
+    price_id: string;
+    features: {
+      name: string;
+      type: 'BOOLEAN' | 'SHARED' | 'BYTES' | 'NUMBER' | 'STRING';
+      value: string;
+      computable_value: string;
+      name_code:
+        | 'connection-limit'
+        | 'cpu'
+        | 'databases'
+        | 'disk-size'
+        | 'has-logs'
+        | 'has-metrics'
+        | 'max-db-size'
+        | 'memory'
+        | 'version';
+    }[];
+    zones: Array<string>;
+  }[];
+  features: {
+    name: string;
+    type: 'BOOLEAN' | 'SHARED' | 'BYTES' | 'NUMBER' | 'RUNTIME' | 'STRING';
     name_code:
       | 'connection-limit'
       | 'cpu'

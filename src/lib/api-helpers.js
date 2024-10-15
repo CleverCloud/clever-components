@@ -16,6 +16,7 @@ import { asyncMap } from './utils.js';
 /**
  * @typedef {import('./send-to-api.types.js').ApiConfig} ApiConfig
  * @typedef {import('../components/common.types.js').Invoice} Invoice
+ * @typedef {import('./product.js').PriceSystem} PriceSystem
  */
 
 /**
@@ -151,7 +152,7 @@ export function getPriceSystem(params) {
  * @param {AbortSignal} params.signal
  * @param {string} params.zoneId
  * @param {string} params.currency
- * @return {Promise<*>}
+ * @return {Promise<PriceSystem>}
  */
 export function fetchPriceSystem({ apiConfig, signal, zoneId, currency }) {
   // eslint-disable-next-line camelcase

@@ -974,6 +974,7 @@ export const translations = {
     `${boolean ? 'Yes' : 'No'}`,
   'cc-pricing-estimation.type.boolean-shared': /** @param {{shared: boolean}} _ */ ({ shared }) =>
     `${shared ? 'Shared' : 'Dedicated'}`,
+  'cc-pricing-estimation.error': `An error occurred while loading pricing details.`,
   'cc-pricing-estimation.type.bytes': /** @param {{bytes: number}} _ */ ({ bytes }) => formatBytes(bytes, 0, 3),
   'cc-pricing-estimation.type.number': /** @param {{number: number}} _ */ ({ number }) => formatNumber(lang, number),
   'cc-pricing-estimation.type.number-cpu-runtime': /** @param {{cpu: number, shared: boolean}} _ */ ({

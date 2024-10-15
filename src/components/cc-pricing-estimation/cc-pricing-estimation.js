@@ -14,10 +14,12 @@ import { dispatchCustomEvent } from '../../lib/events.js';
 import { getCurrencySymbol } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { shoelaceStyles } from '../../styles/shoelace.js';
+import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
+import '../cc-notice/cc-notice';
 
 const FEATURES_I18N = {
   'connection-limit': () => i18n('cc-pricing-estimation.feature.connection-limit'),
@@ -41,8 +43,9 @@ const DEFAULT_CURRENCY = 'EUR';
 const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
 
 /**
+ * @typedef {import('./cc-pricing-estimation.types.js').PricingEstimationState} PricingStateEstimation
+ * @typedef {import('./cc-pricing-estimation.types.js').PlanWithQuantity} PlanWithQuantity
  * @typedef {import('../common.types.js').FormattedFeature} FormattedFeature
- * @typedef {import('../common.types.js').Plan} Plan
  * @typedef {import('../common.types.js').Temporality} Temporality
  * @typedef {import('@shoelace-style/shoelace').SlDropdown} SlDropdown
  * @typedef {import('../../lib/events.types.js').EventWithTarget<SlDropdown>} SlDropdownEvent
@@ -55,10 +58,10 @@ const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
  *
  * @cssdisplay block
  *
- * @fires {CustomEvent<Plan>} cc-pricing-estimation:change-quantity - Fires the plan with a modified quantity whenever the quantity on the input changes.
+ * @fires {CustomEvent<PricingEstimationPlan>} cc-pricing-estimation:change-quantity - Fires the plan with a modified quantity whenever the quantity on the input changes.
  * @fires {CustomEvent<string>} cc-pricing-estimation:change-currency - Fires the `currency` whenever the currency selection changes.
  * @fires {CustomEvent<Temporality>} cc-pricing-estimation:change-temporality - Fires the `temporality` whenever the temporality selection changes.
- * @fires {CustomEvent<Plan>} cc-pricing-estimation:delete-plan - Fires the plan whenever a delete button is clicked or when the quantity reaches 0.
+ * @fires {CustomEvent<PricingEstimationPlan>} cc-pricing-estimation:delete-plan - Fires the plan whenever a delete button is clicked or when the quantity reaches 0.
  *
  * @slot footer - Content at the bottom of the component. Typically used to insert links and call to action elements.
  * @cssprop {Background} --cc-pricing-estimation-counter-bg - Sets the background (color or gradient) of the product counter (defaults: `var(--cc-color-bg-strong)`).
@@ -73,8 +76,10 @@ export class CcPricingEstimation extends LitElement {
       selectedCurrency: { type: String, attribute: 'selected-currency' },
       selectedPlans: { type: Array, attribute: 'selected-plans' },
       selectedTemporality: { type: Object, attribute: 'selected-temporality' },
+      state: { type: Object },
       temporalities: { type: Array },
       _isCollapsed: { type: Boolean, state: true },
+      _priceMap: { type: Object, state: true },
     };
   }
 
@@ -94,11 +99,14 @@ export class CcPricingEstimation extends LitElement {
     /** @type {string} Sets the current currency. */
     this.selectedCurrency = DEFAULT_CURRENCY;
 
-    /** @type {Plan[]} Sets the list of selected plans with their quantity. */
+    /** @type {PlanWithQuantity[]} Sets the list of selected plans with their quantity. */
     this.selectedPlans = [];
 
     /** @type {Temporality} Sets the current temporality. */
     this.selectedTemporality = DEFAULT_TEMPORALITY;
+
+    /** @type {PricingStateEstimation} Sets the state of the component. */
+    this.state = { type: 'loading' };
 
     /** @type {Temporality[]} Sets the list of temporalities. */
     this.temporalities = [DEFAULT_TEMPORALITY];
@@ -119,6 +127,8 @@ export class CcPricingEstimation extends LitElement {
         this._totalRef.value?.focus();
       }
     });
+
+    this._priceMap = null;
   }
 
   /**
@@ -275,11 +285,12 @@ export class CcPricingEstimation extends LitElement {
   /**
    * Returns the total price for a given plan (factoring its quantity)
    *
-   * @param {Plan} plan - the plan to compute the total for
+   * @param {PlanWithQuantity} plan - the plan to compute the total for
    * @return {number} the total price for the given plan
    */
   _getTotalPlanPrice(plan) {
-    const price = this._getPrice(this.selectedTemporality.type, plan.price);
+    const unitPlanPrice = this._priceMap.get(plan.priceId);
+    const price = this._getPrice(this.selectedTemporality.type, unitPlanPrice);
     return price * plan.quantity;
   }
 
@@ -305,7 +316,7 @@ export class CcPricingEstimation extends LitElement {
    * Dispatches a `cc-pricing-estimation:change-quantity` event with the plan which quantity has been reduced by 1.
    * If quantity = 0, dispatches a `cc-pricing-estimation:delete-plan` instead with the plan as payload.
    *
-   * @param {Plan} plan - the plan to modify
+   * @param {PlanWithQuantity} plan - the plan to modify
    */
   _onDecreaseQuantity(plan) {
     const quantity = plan.quantity - 1;
@@ -320,7 +331,7 @@ export class CcPricingEstimation extends LitElement {
   /**
    * Dispatches a `cc-pricing-estimation:delete-plan` event with the plan as its payload
    *
-   * @param {Plan} plan - the plan to delete
+   * @param {PlanWithQuantity} plan - the plan to delete
    */
   _onDeletePlan(plan) {
     dispatchCustomEvent(this, 'delete-plan', plan);
@@ -329,7 +340,7 @@ export class CcPricingEstimation extends LitElement {
   /**
    * Dispatches a `cc-pricing-estimation:change-quantity` event with the plan which quantity has been increased by 1.
    *
-   * @param {Plan} plan - the plan to modify
+   * @param {PlanWithQuantity} plan - the plan to modify
    */
   _onIncreaseQuantity(plan) {
     const quantity = plan.quantity + 1;
@@ -360,19 +371,30 @@ export class CcPricingEstimation extends LitElement {
     if (changedProperties.has('isToggleEnabled') && this.isToggleEnabled === true) {
       this._isCollapsed = true;
     }
+
+    if (changedProperties.has('state') && this.state.type === 'loaded') {
+      /** @type {Array<[string, number]>} */
+      const pricesAsKeyValue = this.state.prices.map(({ priceId, price }) => [priceId, price]);
+      this._priceMap = new Map(pricesAsKeyValue);
+    }
   }
 
   render() {
     const totalPrice = this._getTotalPrice();
+    const skeleton = this.state.type === 'loading';
+
+    if (this.state.type === 'error') {
+      return html`<cc-notice intent="warning" message=${i18n('cc-pricing-estimation.error')}></cc-notice> `;
+    }
 
     return html`
-      ${this.isToggleEnabled ? this._renderHeaderWithToggle(totalPrice) : this._renderHeaderWithoutToggle()}
+      ${this.isToggleEnabled ? this._renderHeaderWithToggle(totalPrice, skeleton) : this._renderHeaderWithoutToggle()}
 
       <div class="content ${classMap({ 'content--hidden': this.isToggleEnabled && this._isCollapsed })}">
-        ${this.selectedPlans.map((plan) => this._renderSelectedPlan(plan))}
+        ${this.selectedPlans.map((plan) => this._renderSelectedPlan(plan, skeleton))}
 
         <p class="content__total" tabindex="-1" ${ref(this._totalRef)}>
-          <strong>
+          <strong class="${classMap({ skeleton })}">
             <span class="visually-hidden"> ${i18n('cc-pricing-estimation.total.label')} </span>
             ${i18n('cc-pricing-estimation.price', {
               price: totalPrice,
@@ -381,7 +403,9 @@ export class CcPricingEstimation extends LitElement {
             })}
           </strong>
           <span>${i18n('cc-pricing-estimation.tax-excluded')}</span>
-          <span class="content__total__estimated">${this._getEstimatedPriceLabel(this.selectedTemporality.type)}</span>
+          <span class="content__total__estimated ${classMap({ skeleton })}"
+            >${this._getEstimatedPriceLabel(this.selectedTemporality.type)}</span
+          >
         </p>
 
         ${this._renderSelectForm()}
@@ -393,8 +417,9 @@ export class CcPricingEstimation extends LitElement {
 
   /**
    * @param {number} totalPrice
+   * @param {boolean} skeleton
    */
-  _renderHeaderWithToggle(totalPrice) {
+  _renderHeaderWithToggle(totalPrice, skeleton) {
     const productCount = this._getProductCount();
 
     return html`
@@ -405,7 +430,7 @@ export class CcPricingEstimation extends LitElement {
           <span class="visually-hidden">${i18n('cc-pricing-estimation.count.label', { productCount })}</span>
         </span>
         <p class="header__total ${classMap({ 'header__total--hidden': !this._isCollapsed })}">
-          <strong>
+          <strong class="${classMap({ skeleton })}">
             ${i18n('cc-pricing-estimation.price', {
               price: totalPrice,
               currency: this.selectedCurrency,
@@ -436,9 +461,10 @@ export class CcPricingEstimation extends LitElement {
   }
 
   /**
-   * @param {Plan} plan - the plan to render
+   * @param {PlanWithQuantity} plan - the plan to render
+   * @param {boolean} skeleton
    */
-  _renderSelectedPlan(plan) {
+  _renderSelectedPlan(plan, skeleton) {
     const totalPlanPrice = this._getTotalPlanPrice(plan);
     const hasFeatures = Array.isArray(plan.features);
 
@@ -451,7 +477,7 @@ export class CcPricingEstimation extends LitElement {
               <span class="plan__toggle__header__name__plan"> &ndash; ${plan.name}</span>
             </span>
 
-            <span class="plan__toggle__header__total">
+            <span class="plan__toggle__header__total ${classMap({ skeleton })}">
               ${i18n('cc-pricing-estimation.price', {
                 price: totalPlanPrice,
                 currency: this.selectedCurrency,
@@ -520,7 +546,7 @@ export class CcPricingEstimation extends LitElement {
                 ></cc-icon>
               </button>
             </div>
-            <strong class="plan__price__total" aria-live="polite" aria-atomic="true">
+            <strong class="plan__price__total ${classMap({ skeleton })}" aria-live="polite" aria-atomic="true">
               <span class="visually-hidden">
                 ${i18n('cc-pricing-estimation.plan.total.label', {
                   productName: plan.productName,
@@ -595,6 +621,7 @@ export class CcPricingEstimation extends LitElement {
     return [
       accessibilityStyles,
       shoelaceStyles,
+      skeletonStyles,
       // language=CSS
       css`
         :host {

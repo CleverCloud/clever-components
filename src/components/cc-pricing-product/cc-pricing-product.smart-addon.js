@@ -14,7 +14,7 @@ import './cc-pricing-product.js';
  * @typedef {import('./cc-pricing-product.types.js').PricingProductStateLoaded} PricingProductStateLoaded
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
  * @typedef {import('../common.types.js').AddonFormattedFeature} AddonFormattedFeature
- * @typedef {import('../common.types.js').AddonProvider} AddonProvider
+ * @typedef {import('../common.types.js').RawAddonProvider} RawAddonProvider
  * @typedef {import('../common.types.js').Zone} Zone
  * @typedef {import('../common.types.js').Instance} Instance
  */
@@ -85,14 +85,14 @@ function fetchAddonProduct({ apiConfig, productId, zoneId, addonFeatures, curren
  * @param {ApiConfig} options.apiConfig - The API configuration.
  * @param {AbortSignal} options.signal - The abort signal for the fetch operation.
  * @param {string} options.productId - The ID of the product to fetch the addon provider for.
- * @returns {Promise<AddonProvider>} A promise that resolves to the addon provider object.
+ * @returns {Promise<RawAddonProvider>} A promise that resolves to the addon provider object.
  * @throws {Error} Throws an error if the addon provider is not found.
  */
 function fetchAddonProvider({ apiConfig, signal, productId }) {
   return getAllAddonProviders()
     .then(sendToApi({ apiConfig, cacheDelay: ONE_DAY, signal }))
     .then(
-      /** @param {Array<AddonProvider>} allAddonProviders */
+      /** @param {Array<RawAddonProvider>} allAddonProviders */
       (allAddonProviders) => {
         const addonProvider = allAddonProviders.find((ap) => ap.id === productId);
         if (addonProvider == null) {

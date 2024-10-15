@@ -13,6 +13,12 @@ const conf = {
   component: 'cc-pricing-estimation',
 };
 
+/**
+ * @typedef {import('./cc-pricing-estimation.js').CcPricingEstimation} CcPricingEstimation
+ * @typedef {import('./cc-pricing-estimation.types.js').PlanWithQuantity} PlanWithQuantity
+ */
+
+/** @type {PlanWithQuantity} */
 const pgExample = {
   productName: 'Postgresql',
   ...getProductAddon('postgresql-addon').plans.find((p) => p.name === 'XS Small Space'),
@@ -63,6 +69,12 @@ const defaultItem = {
 
 export const defaultStory = makeStory(conf, {
   items: [defaultItem],
+});
+
+export const loading = makeStory(conf, {
+  items: [{
+    state: { type: 'loading' };
+  }],
 });
 
 export const empty = makeStory(conf, {

@@ -1,5 +1,6 @@
 /**
  * @typedef {import('../components/common.types.js').AddonProvider} AddonProvider
+ * @typedef {import('../components/common.types.js').RawAddonProvider} RawAddonProvider
  * @typedef {import('../components/common.types.js').PriceSystem} PriceSystem
  * @typedef {import('../components/common.types.js').FormattedFeature} FormattedFeature
  * @typedef {import('../components/common.types.js').AddonFormattedFeature} AddonFormattedFeature
@@ -16,7 +17,7 @@
 /**
  * Formats an add-on product with its features and plans.
  *
- * @param {AddonProvider} addonProvider
+ * @param {RawAddonProvider} addonProvider
  * @param {PriceSystem} priceSystem
  * @param {Array<AddonFormattedFeature>} selectedFeatures
  * @returns {Omit<PricingProductStateLoaded, 'type'>}
@@ -160,7 +161,7 @@ function formatProductConsumptionIntervals(priceSystem, serviceName) {
 /**
  * Formats add-on features based on provider features and selected features.
  *
- * @param {AddonProvider['features']|AddonProvider['plans'][number]['features']} providerFeatures - Array of provider feature objects.
+ * @param {RawAddonProvider['features']|RawAddonProvider['plans'][number]['features']} providerFeatures - Array of provider feature objects.
  * @param {Array<AddonFormattedFeature>} [selectedFeatures] - Array of selected feature codes.
  * @returns {Array<AddonFormattedFeature>} Formatted addon features.
  */
@@ -190,10 +191,10 @@ function formatAddonFeatures(providerFeatures, selectedFeatures) {
 /**
  * Formats add-on plans based on provided plans, price system, and selected features.
  *
- * @param {AddonProvider['plans']} allPlans - Array of all available plans.
+ * @param {RawAddonProvider['plans']} allPlans - Array of all available plans.
  * @param {PriceSystem} priceSystem - The price system object containing pricing information.
  * @param {Array<AddonFormattedFeature>} selectedFeatures - Array of selected feature codes.
- * @returns {Pick<Plan, 'name' | 'price' | 'features'>[]} Formatted add-on plans with name, price, and features.
+ * @returns {Pick<Plan, 'name' | 'price' | 'features' | 'priceId'>[]} Formatted add-on plans with name, price, and features.
  */
 function formatAddonPlans(allPlans, priceSystem, selectedFeatures) {
   return allPlans.map((plan) => {
@@ -204,7 +205,7 @@ function formatAddonPlans(allPlans, priceSystem, selectedFeatures) {
       name: plan.name,
       price: priceItem?.price ?? 0,
       features: formatAddonFeatures(plan.features, selectedFeatures),
-      slugId: priceItem.slug_id,
+      priceId: priceItem.slug_id,
     };
   });
 }
@@ -249,7 +250,7 @@ function formatRuntimeFeatures(runtime) {
  * @param {Instance['flavors']} allFlavors - Array of all available flavors.
  * @param {PriceSystem} priceSystem - The price system object containing pricing information.
  * @param {Array<RuntimeFormattedFeature>} features - Array of formatted features.
- * @returns {Pick<Plan, 'name' | 'price' | 'features'>[]} Formatted runtime plans with name, price, and features.
+ * @returns {Pick<Plan, 'name' | 'price' | 'features' | 'priceId'>[]} Formatted runtime plans with name, price, and features.
  */
 function formatRuntimePlans(allFlavors, priceSystem, features) {
   return allFlavors.map((flavor) => {
@@ -260,7 +261,7 @@ function formatRuntimePlans(allFlavors, priceSystem, features) {
       name: flavor.name,
       price: priceItem?.price ?? 0,
       features: formatRuntimeFeatureValues(features, flavor),
-      slugId: priceItem.slug_id,
+      priceId: priceItem.slug_id,
     };
   });
 }
