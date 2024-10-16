@@ -48,10 +48,11 @@ export class CcJenkinsInfo extends LitElement {
     const hasNewVersion = versions.current !== versions.available;
 
     return html`
-      <cc-block ribbon=${i18n('cc-jenkins-info.info')} no-head>
-        <div class="info-text">${i18n('cc-jenkins-info.text')}</div>
+      <cc-block>
+        <div slot="ribbon">${i18n('cc-jenkins-info.info')}</div>
+        <div slot="header" class="info-text">${i18n('cc-jenkins-info.text')}</div>
 
-        <cc-block-section>
+        <cc-block-section slot="content">
           <div slot="title">${i18n('cc-jenkins-info.open-jenkins.title')}</div>
           <div slot="info">${i18n('cc-jenkins-info.open-jenkins.text')}</div>
           <div class="one-line-form">
@@ -65,21 +66,7 @@ export class CcJenkinsInfo extends LitElement {
           </div>
         </cc-block-section>
 
-        <cc-block-section>
-          <div slot="title">${i18n('cc-jenkins-info.documentation.title')}</div>
-          <div slot="info">${i18n('cc-jenkins-info.documentation.text')}</div>
-          <div class="one-line-form">
-            ${ccLink(
-              JENKINS_DOCUMENTATION,
-              html`
-                <cc-icon size="lg" .icon=${iconInfo}></cc-icon
-                ><span>${i18n('cc-jenkins-info.documentation.link')}</span>
-              `,
-            )}
-          </div>
-        </cc-block-section>
-
-        <cc-block-section>
+        <cc-block-section slot="content">
           <div slot="title">${i18n('cc-jenkins-info.update.title')}</div>
           <div slot="info">${i18n('cc-jenkins-info.update.text')}</div>
           <div class="one-line-form">
@@ -96,6 +83,13 @@ export class CcJenkinsInfo extends LitElement {
             )}
           </div>
         </cc-block-section>
+
+        <div slot="footer-right">
+          ${ccLink(
+            `${JENKINS_DOCUMENTATION}`,
+            html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-jenkins-info.documentation.text')}`,
+          )}
+        </div>
       </cc-block>
     `;
   }
