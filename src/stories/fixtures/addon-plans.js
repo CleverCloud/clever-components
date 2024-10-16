@@ -3,11 +3,11 @@ import { rawPriceSystem } from './price-system.js';
 
 /**
  * @typedef {import('../../components/common.types.js').AddonFormattedFeature} AddonFormattedFeature
- * @typedef {import('../../components/common.types.js').AddonProvider} AddonProvider
+ * @typedef {import('../../components/common.types.js').RawAddonProvider} RawAddonProvider
  */
 
 /* eslint-disable quote-props */
-/** @type {Array<AddonProvider>} */
+/** @type {Array<RawAddonProvider>} */
 const rawAddonProviders = [
   {
     id: 'cellar-addon',
@@ -6159,7 +6159,7 @@ const rawAddonProviders = [
 
 /**
  * @param {string} addonProviderId
- * @param {Array<AddonFormattedFeature>} addonFeatures
+ * @param {Array<AddonFormattedFeature>} [addonFeatures]
  */
 export function getFullProductAddon(addonProviderId, addonFeatures) {
   const rawAddonProvider = rawAddonProviders.find((addonProvider) => addonProvider.id === addonProviderId);
@@ -6168,7 +6168,6 @@ export function getFullProductAddon(addonProviderId, addonFeatures) {
 
 /**
  * @param {string} addonProviderId
- * @returns {}
  */
 export function getProductAddon(addonProviderId) {
   const { plans, productFeatures } = getFullProductAddon(addonProviderId);

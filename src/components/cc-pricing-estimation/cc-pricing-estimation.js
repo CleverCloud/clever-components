@@ -289,6 +289,10 @@ export class CcPricingEstimation extends LitElement {
    * @return {number} the total price for the given plan
    */
   _getTotalPlanPrice(plan) {
+    if (this.state.type === 'loading' || this.state.type === 'error') {
+      return 0;
+    }
+
     const unitPlanPrice = this._priceMap.get(plan.priceId);
     const price = this._getPrice(this.selectedTemporality.type, unitPlanPrice);
     return price * plan.quantity;
@@ -394,18 +398,18 @@ export class CcPricingEstimation extends LitElement {
         ${this.selectedPlans.map((plan) => this._renderSelectedPlan(plan, skeleton))}
 
         <p class="content__total" tabindex="-1" ${ref(this._totalRef)}>
-          <strong class="${classMap({ skeleton })}">
+          <strong>
             <span class="visually-hidden"> ${i18n('cc-pricing-estimation.total.label')} </span>
-            ${i18n('cc-pricing-estimation.price', {
-              price: totalPrice,
-              currency: this.selectedCurrency,
-              digits: this.selectedTemporality.digits,
-            })}
+            <span class="content__total__price ${classMap({ skeleton })}">
+              ${i18n('cc-pricing-estimation.price', {
+                price: totalPrice,
+                currency: this.selectedCurrency,
+                digits: this.selectedTemporality.digits,
+              })}
+            </span>
           </strong>
           <span>${i18n('cc-pricing-estimation.tax-excluded')}</span>
-          <span class="content__total__estimated ${classMap({ skeleton })}"
-            >${this._getEstimatedPriceLabel(this.selectedTemporality.type)}</span
-          >
+          <span class="content__total__estimated">${this._getEstimatedPriceLabel(this.selectedTemporality.type)}</span>
         </p>
 
         ${this._renderSelectForm()}
@@ -508,7 +512,9 @@ export class CcPricingEstimation extends LitElement {
           <div class="plan__price">
             <span>
               <span class="visually-hidden">${i18n('cc-pricing-estimation.price.unit.label')}</span>
-              ${this._getPriceValue(this.selectedTemporality.type, plan.price, this.selectedTemporality.digits)}
+              <span class="${classMap({ skeleton })}">
+                ${this._getPriceValue(this.selectedTemporality.type, plan.price, this.selectedTemporality.digits)}
+              </span>
             </span>
             <div class="plan__price__quantity">
               <button
@@ -627,6 +633,15 @@ export class CcPricingEstimation extends LitElement {
         :host {
           display: block;
           padding: 2em;
+        }
+
+        .skeleton {
+          background-color: #bbb;
+          color: transparent;
+        }
+
+        .content__total__price.skeleton {
+          display: inline-block;
         }
 
         button {

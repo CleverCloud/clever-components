@@ -201,11 +201,12 @@ function formatAddonPlans(allPlans, priceSystem, selectedFeatures) {
     const priceItem = priceSystem.runtime.find(
       (runtime) => runtime.slug_id.toLowerCase() === plan.price_id.toLowerCase(),
     );
+    console.log(plan);
     return {
       name: plan.name,
       price: priceItem?.price ?? 0,
       features: formatAddonFeatures(plan.features, selectedFeatures),
-      priceId: priceItem.slug_id,
+      priceId: priceItem?.slug_id ?? plan.price_id,
     };
   });
 }

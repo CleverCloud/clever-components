@@ -408,7 +408,8 @@ export interface AddonProvider extends Omit<RawAddonProvider, 'plans' | 'feature
         | 'has-metrics'
         | 'max-db-size'
         | 'memory'
-        | 'version';
+        | 'version'
+        | string;
     }[];
     zones: Array<string>;
   }[];
@@ -424,7 +425,8 @@ export interface AddonProvider extends Omit<RawAddonProvider, 'plans' | 'feature
       | 'has-metrics'
       | 'max-db-size'
       | 'memory'
-      | 'version';
+      | 'version'
+      | string;
   }[];
 }
 
@@ -464,7 +466,8 @@ export interface RawAddonProvider {
         | 'has-metrics'
         | 'max-db-size'
         | 'memory'
-        | 'version';
+        | 'version'
+        | string;
     }[];
     zones: Array<string>;
   }[];
@@ -480,6 +483,7 @@ export interface RawAddonProvider {
       | 'has-metrics'
       | 'max-db-size'
       | 'memory'
-      | 'version';
+      | 'version'
+      | string;
   }[];
 }

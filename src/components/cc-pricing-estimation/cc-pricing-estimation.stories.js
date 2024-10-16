@@ -25,10 +25,12 @@ const pgExample = {
   quantity: 2,
 };
 
+/** @type {PlanWithQuantity} */
 const cellarExample = {
   productName: 'Cellar',
   name: 'Storage: 1.5 TB, Outbound traffic: 500 GB',
   price: 0.09449999999999999,
+  priceId: '',
   quantity: 1,
 };
 
@@ -72,9 +74,21 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const loading = makeStory(conf, {
-  items: [{
-    state: { type: 'loading' };
-  }],
+  items: [
+    {
+      selectedPlans: defaultItem.selectedPlans,
+      state: { type: 'loading' },
+    },
+  ],
+});
+
+export const error = makeStory(conf, {
+  items: [
+    {
+      selectedPlans: defaultItem.selectedPlans,
+      state: { type: 'error' },
+    },
+  ],
 });
 
 export const empty = makeStory(conf, {
