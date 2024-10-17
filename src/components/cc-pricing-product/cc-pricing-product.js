@@ -11,6 +11,7 @@ import '../cc-notice/cc-notice.js';
 
 // 800 seems like a good arbitrary value for the content we need to display.
 const BREAKPOINT = 800;
+/** @type {Record<FormattedFeature['code'], () => string>} */
 const FEATURES_I18N = {
   'connection-limit': () => i18n('cc-pricing-product.feature.connection-limit'),
   cpu: () => i18n('cc-pricing-product.feature.cpu'),
@@ -111,7 +112,7 @@ export class CcPricingProduct extends LitElement {
       return '';
     }
 
-    if (FEATURES_I18N[feature.code] != null) {
+    if (feature.code in FEATURES_I18N) {
       return FEATURES_I18N[feature.code]();
     }
 
@@ -145,10 +146,14 @@ export class CcPricingProduct extends LitElement {
           ? i18n('cc-pricing-product.type.boolean-shared', { shared: true })
           : i18n('cc-pricing-product.type.number', { number: Number(feature.value) });
       case 'number-cpu-runtime':
-        return i18n('cc-pricing-product.type.number-cpu-runtime', {
-          cpu: feature.value.cpu,
-          shared: feature.value.shared,
-        });
+        const translatedString =
+          typeof feature.value === 'object'
+            ? i18n('cc-pricing-product.type.number-cpu-runtime', {
+                cpu: feature.value.cpu,
+                shared: feature.value.shared,
+              })
+            : '';
+        return translatedString;
       case 'string':
         return feature.value.toString();
     }

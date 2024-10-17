@@ -21,14 +21,17 @@ import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-notice/cc-notice';
 
+/** @type {Record<FormattedFeature['code'], () => string|Node>} */
 const FEATURES_I18N = {
   'connection-limit': () => i18n('cc-pricing-estimation.feature.connection-limit'),
   cpu: () => i18n('cc-pricing-estimation.feature.cpu'),
   databases: () => i18n('cc-pricing-estimation.feature.databases'),
+  dedicated: () => i18n('cc-pricing-estimation.feature.dedicated'),
   'disk-size': () => i18n('cc-pricing-estimation.feature.disk-size'),
   gpu: () => i18n('cc-pricing-estimation.feature.gpu'),
   'has-logs': () => i18n('cc-pricing-estimation.feature.has-logs'),
   'has-metrics': () => i18n('cc-pricing-estimation.feature.has-metrics'),
+  'is-migratable': () => i18n('cc-pricing-estimation.feature.is-migratable'),
   'max-db-size': () => i18n('cc-pricing-estimation.feature.max-db-size'),
   memory: () => i18n('cc-pricing-estimation.feature.memory'),
   version: () => i18n('cc-pricing-estimation.feature.version'),
@@ -199,10 +202,14 @@ export class CcPricingEstimation extends LitElement {
           ? i18n('cc-pricing-estimation.type.boolean-shared', { shared: true })
           : i18n('cc-pricing-estimation.type.number', { number: Number(feature.value) });
       case 'number-cpu-runtime':
-        return i18n('cc-pricing-estimation.type.number-cpu-runtime', {
-          cpu: feature.value.cpu,
-          shared: feature.value.shared,
-        });
+        const translatedString =
+          typeof feature.value === 'object'
+            ? i18n('cc-pricing-estimation.type.number-cpu-runtime', {
+                cpu: feature.value.cpu,
+                shared: feature.value.shared,
+              })
+            : '';
+        return translatedString;
       case 'string':
         return feature.value.toString();
     }

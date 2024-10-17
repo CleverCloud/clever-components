@@ -12,7 +12,6 @@ const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
  * @typedef {import('../cc-pricing-product/cc-pricing-product.js').CcPricingProduct} CcPricingProduct
  * @typedef {import('./cc-pricing-page.types.js').SelectedPlansById} SelectedPlansById
  * @typedef {import('../common.types.js').Plan} Plan
- * @typedef {import('../common.types.js').AddonProvider['plans'][number]} AddonProviderPlan
  * @typedef {import('../common.types.js').Temporality} Temporality
  */
 

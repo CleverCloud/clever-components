@@ -120,54 +120,23 @@ interface Plan {
   quantity?: number;
 }
 
-export type FormattedFeature = AddonFormattedFeature | RuntimeFormattedFeature;
-
-// export interface GenericFormattedFeature {
-//   code:
-//     | 'connection-limit'
-//     | 'cpu'
-//     | 'databases'
-//     | 'disk-size'
-//     | 'gpu'
-//     | 'has-logs'
-//     | 'has-metrics'
-//     | 'max-db-size'
-//     | 'memory'
-//     | 'version';
-//   type: 'boolean' | 'shared' | 'boolean-shared' | 'bytes' | 'number' | 'runtime' | 'string';
-//   value?: number | string; // Only required for a plan feature
-//   name?: string;
-// }
-
-export interface AddonFormattedFeature {
+export interface FormattedFeature {
   code:
     | 'connection-limit'
     | 'cpu'
+    | 'gpu'
+    | 'is-migratable'
     | 'databases'
+    | 'dedicated'
     | 'disk-size'
     | 'has-logs'
     | 'has-metrics'
     | 'max-db-size'
     | 'memory'
-    | 'version';
-  type: 'boolean' | 'shared' | 'boolean-shared' | 'bytes' | 'number' | 'string';
-  value?: number | string; // Only required for a plan feature
-  name?: string;
-}
-
-export type RuntimeFormattedFeature = GenericRuntimeFormattedFeature | CpuRuntimeFormattedFeature;
-
-export interface GenericRuntimeFormattedFeature {
-  code: 'disk-size' | 'gpu' | 'has-logs' | 'has-metrics' | 'max-db-size' | 'memory' | 'version';
-  type: 'boolean' | 'shared' | 'boolean-shared' | 'bytes' | 'number' | 'runtime' | 'string';
-  value?: number | string; // Only required for a plan feature
-  name?: string;
-}
-
-interface CpuRuntimeFormattedFeature {
-  code: 'cpu';
-  type: 'number-cpu-runtime';
-  value?: { cpu: number; shared: boolean; nice: number };
+    | 'version'
+    | (string & {});
+  type: 'boolean' | 'shared' | 'bytes' | 'number' | 'runtime' | 'string' | (string & {});
+  value?: number | string | { cpu: number; shared: boolean; nice: number };
   name?: string;
 }
 
@@ -387,48 +356,7 @@ export interface PriceSystem {
   }>;
 }
 
-export interface AddonProvider extends Omit<RawAddonProvider, 'plans' | 'features'> {
-  plans: {
-    id: string;
-    name: string;
-    slug: string;
-    price: number;
-    price_id: string;
-    features: {
-      name: string;
-      type: 'boolean' | 'shared' | 'bytes' | 'number' | 'string';
-      value: string;
-      computable_value: string;
-      name_code:
-        | 'connection-limit'
-        | 'cpu'
-        | 'databases'
-        | 'disk-size'
-        | 'has-logs'
-        | 'has-metrics'
-        | 'max-db-size'
-        | 'memory'
-        | 'version'
-        | string;
-    }[];
-    zones: Array<string>;
-  }[];
-  features: {
-    name: string;
-    type: 'boolean' | 'shared' | 'bytes' | 'number' | 'runtime' | 'string';
-    name_code:
-      | 'connection-limit'
-      | 'cpu'
-      | 'databases'
-      | 'disk-size'
-      | 'has-logs'
-      | 'has-metrics'
-      | 'max-db-size'
-      | 'memory'
-      | 'version'
-      | string;
-  }[];
-}
+export type AddonProvider = Pick<RawAddonProvider, 'name' | 'logoUrl'>;
 
 // FIXME: this should be provided by the client
 export interface RawAddonProvider {

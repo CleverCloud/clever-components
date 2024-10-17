@@ -64,8 +64,8 @@ function formatFlavor(flavor) {
 }
 
 export const translations = {
-  //#region cc-addon-admin
-  'cc-addon-admin.admin': `Add-on administration`,
+      //#region cc-addon-admin
+'cc-addon-admin.admin': `Add-on administration`,
   'cc-addon-admin.danger-zone': `Danger zone`,
   'cc-addon-admin.delete': `Delete the add-on`,
   'cc-addon-admin.delete-backups': `Backups are kept according to the retention policy.`,
@@ -81,8 +81,8 @@ export const translations = {
   'cc-addon-admin.tags-update': `Update tags`,
   'cc-addon-admin.update': `Update name`,
   //#endregion
-  //#region cc-addon-backups
-  'cc-addon-backups.close-btn': `Close this panel`,
+        //#region cc-addon-backups
+'cc-addon-backups.close-btn': `Close this panel`,
   'cc-addon-backups.command-password': `This command will ask for your password, here it is:`,
   'cc-addon-backups.delete': /** @param {{createdAt: string|number}} _ */ ({ createdAt }) =>
     sanitize`Delete the backup from <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
@@ -139,8 +139,8 @@ export const translations = {
     sanitize`Backup from <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong> (expires after defined retention)`,
   'cc-addon-backups.title': `Backups`,
   //#endregion
-  //#region cc-addon-credentials
-  'cc-addon-credentials.description.apm': `Use those credentials to connect an APM Server instance to your Elasticsearch cluster.`,
+        //#region cc-addon-credentials
+'cc-addon-credentials.description.apm': `Use those credentials to connect an APM Server instance to your Elasticsearch cluster.`,
   'cc-addon-credentials.description.elasticsearch': `Use those credentials to connect to your Elasticsearch cluster.`,
   'cc-addon-credentials.description.kibana': `Use those credentials to connect a Kibana instance to your Elasticsearch cluster.`,
   'cc-addon-credentials.description.materia-kv': `Use this information to connect your Materia KV add-on.`,
@@ -154,8 +154,8 @@ export const translations = {
   'cc-addon-credentials.loading-error': `Something went wrong while loading the credentials.`,
   'cc-addon-credentials.title': /** @param {{name: string}} _ */ ({ name }) => `${name} credentials`,
   //#endregion
-  //#region cc-addon-elasticsearch-options
-  'cc-addon-elasticsearch-options.description': () =>
+        //#region cc-addon-elasticsearch-options
+'cc-addon-elasticsearch-options.description': () =>
     sanitize`This add-on is part of the Elastic Stack offer which includes two options. Both these options will be deployed as applications, managed and updated by Clever Cloud on your behalf. They will appear as regular applications that you can stop, scale up or down automatically like one of your own applications. As such, <strong>enabling these options will result in an increase in credits consumption</strong> as well.`,
   'cc-addon-elasticsearch-options.description.apm': () =>
     sanitize`Elastic APM server is an application performance monitoring system built on the Elastic Stack. Deploying this will allow you to automatically send APM metrics from any applications linked to the Elasticsearch add-on instance, providing you add the Elastic APM agent to the application code. Learn more in the <a href="https://www.elastic.co/guide/en/apm/get-started/current/overview.html">official APM server documentation</a>.`,
@@ -170,13 +170,13 @@ export const translations = {
   'cc-addon-elasticsearch-options.warning.kibana.details': /** @param {Flavor} flavor */ (flavor) =>
     sanitize`By default, the app will start on a <strong title="${formatFlavor(flavor)}">${flavor.name} instance</strong> which costs around <strong>${formatCurrency(lang, flavor.monthlyCost)} per month</strong>.`,
   //#endregion
-  //#region cc-addon-encryption-at-rest-option
-  'cc-addon-encryption-at-rest-option.description': () =>
+        //#region cc-addon-encryption-at-rest-option
+'cc-addon-encryption-at-rest-option.description': () =>
     sanitize`Encryption at rest encrypts the entire data disk of your add-on. It prevents reading the stored data in case of a physical access to the hard drive. More information in our <a href="https://www.clever-cloud.com/doc/administrate/encryption-at-rest/">documentation</a>.`,
   'cc-addon-encryption-at-rest-option.title': `Encryption at rest`,
   //#endregion
-  //#region cc-addon-features
-  'cc-addon-features.details': `Here's the list of all the features of your add-on. Features may evolve and your add-on would need a migration to match them all.`,
+        //#region cc-addon-features
+'cc-addon-features.details': `Here's the list of all the features of your add-on. Features may evolve and your add-on would need a migration to match them all.`,
   'cc-addon-features.feature-name.disk': `Disk`,
   'cc-addon-features.feature-name.memory': `Memory`,
   'cc-addon-features.feature-name.nodes': `Nodes`,
@@ -186,41 +186,41 @@ export const translations = {
   'cc-addon-features.loading-error': `Something went wrong while loading add-on features.`,
   'cc-addon-features.title': `Features`,
   //#endregion
-  //#region cc-addon-jenkins-options
-  'cc-addon-jenkins-options.description': `Choose the options you want for your Jenkins add-on.`,
+        //#region cc-addon-jenkins-options
+'cc-addon-jenkins-options.description': `Choose the options you want for your Jenkins add-on.`,
   'cc-addon-jenkins-options.title': `Options for the Jenkins add-on`,
   //#endregion
-  //#region cc-addon-linked-apps
-  'cc-addon-linked-apps.details': `Here's the list of applications linked to this add-on. The add-on exposes its environment variables to those linked applications.`,
+        //#region cc-addon-linked-apps
+'cc-addon-linked-apps.details': `Here's the list of applications linked to this add-on. The add-on exposes its environment variables to those linked applications.`,
   'cc-addon-linked-apps.loading-error': `Something went wrong while loading linked applications.`,
   'cc-addon-linked-apps.no-linked-applications': `No applications linked yet.`,
   'cc-addon-linked-apps.title': `Linked applications`,
   //#endregion
-  //#region cc-addon-mongodb-options
-  'cc-addon-mongodb-options.description': `Choose the options you want for your MongoDB add-on.`,
+        //#region cc-addon-mongodb-options
+'cc-addon-mongodb-options.description': `Choose the options you want for your MongoDB add-on.`,
   'cc-addon-mongodb-options.title': `Options for the MongoDB add-on`,
   //#endregion
-  //#region cc-addon-mysql-options
-  'cc-addon-mysql-options.description': `Choose the options you want for your MySQL add-on.`,
+        //#region cc-addon-mysql-options
+'cc-addon-mysql-options.description': `Choose the options you want for your MySQL add-on.`,
   'cc-addon-mysql-options.title': `Options for the MySQL add-on`,
   //#endregion
-  //#region cc-addon-option
-  'cc-addon-option.disabled': `Disabled`,
+        //#region cc-addon-option
+'cc-addon-option.disabled': `Disabled`,
   'cc-addon-option.enabled': `Enabled`,
   //#endregion
-  //#region cc-addon-option-form
-  'cc-addon-option-form.confirm': `Confirm options`,
+        //#region cc-addon-option-form
+'cc-addon-option-form.confirm': `Confirm options`,
   //#endregion
-  //#region cc-addon-postgresql-options
-  'cc-addon-postgresql-options.description': `Choose the options you want for your PostgreSQL add-on.`,
+        //#region cc-addon-postgresql-options
+'cc-addon-postgresql-options.description': `Choose the options you want for your PostgreSQL add-on.`,
   'cc-addon-postgresql-options.title': `Options for the PostgreSQL add-on`,
   //#endregion
-  //#region cc-addon-redis-options
-  'cc-addon-redis-options.description': `Choose the options you want for your Redis add-on.`,
+        //#region cc-addon-redis-options
+'cc-addon-redis-options.description': `Choose the options you want for your Redis add-on.`,
   'cc-addon-redis-options.title': `Options for the Redis add-on`,
   //#endregion
-  //#region cc-ansi-palette
-  'cc-ansi-palette.compliant': `Color compliant with RGAA`,
+        //#region cc-ansi-palette
+'cc-ansi-palette.compliant': `Color compliant with RGAA`,
   'cc-ansi-palette.fg-bg': /** @param {{foreground: string, background: string}} _ */ ({ foreground, background }) =>
     `Foreground: ${foreground}, Background: ${background}`,
   'cc-ansi-palette.hover': /** @param {{color: string}} _ */ ({ color }) => `Hover background: ${color}`,
@@ -229,36 +229,36 @@ export const translations = {
     formatNumber(lang, ratio, { minimumFractionDigits: 2, maximumFractionDigits: 2 }).padStart(5, '0'),
   'cc-ansi-palette.selected': /** @param {{color: string}} _ */ ({ color }) => `Selected background: ${color}`,
   //#endregion
-  //#region cc-article-card
-  'cc-article-card.date': /** @param {{date: string}} _ */ ({ date }) => formatDateOnly(date),
+        //#region cc-article-card
+'cc-article-card.date': /** @param {{date: string}} _ */ ({ date }) => formatDateOnly(date),
   //#endregion
-  //#region cc-article-list
-  'cc-article-list.error': `An error occurred while loading articles.`,
+        //#region cc-article-list
+'cc-article-list.error': `An error occurred while loading articles.`,
   //#endregion
-  //#region cc-beta
-  'cc-beta.label': `beta`,
+        //#region cc-beta
+'cc-beta.label': `beta`,
   //#endregion
-  //#region cc-block
-  'cc-block.toggle.close': `Close`,
+        //#region cc-block
+'cc-block.toggle.close': `Close`,
   'cc-block.toggle.open': `Open`,
   //#endregion
-  //#region cc-button
-  'cc-button.cancel': `Click to cancel`,
+        //#region cc-button
+'cc-button.cancel': `Click to cancel`,
   //#endregion
-  //#region cc-datetime-relative
-  'cc-datetime-relative.distance': /** @param {{date: string|number}} _ */ ({ date }) => formatDistanceToNow(date),
+        //#region cc-datetime-relative
+'cc-datetime-relative.distance': /** @param {{date: string|number}} _ */ ({ date }) => formatDistanceToNow(date),
   'cc-datetime-relative.title': /** @param {{date: string|number}} _ */ ({ date }) => formatDate(date),
   //#endregion
-  //#region cc-doc-card
-  'cc-doc-card.link': /** @param {{link: string, product: string}} _ */ ({ link, product }) =>
+        //#region cc-doc-card
+'cc-doc-card.link': /** @param {{link: string, product: string}} _ */ ({ link, product }) =>
     sanitize`<a href=${link} aria-label="Read the documentation - ${product}">Read the documentation</a>`,
   'cc-doc-card.skeleton-link-title': `Read the documentation`,
   //#endregion
-  //#region cc-doc-list
-  'cc-doc-list.error': `An error occurred while loading documentation`,
+        //#region cc-doc-list
+'cc-doc-list.error': `An error occurred while loading documentation`,
   //#endregion
-  //#region cc-domain-management
-  'cc-domain-management.certif.automated': () =>
+        //#region cc-domain-management
+'cc-domain-management.certif.automated': () =>
     sanitize`Whether you use <code>cleverapps.io</code> or your own domain names with applications hosted by Clever Cloud, a Let's Encrypt certificate is automatically issued and renewed for HTTPS/TLS access. No action is required from you, this is all automated. For specific cases, refer to <a href="https://developers.clever-cloud.com/doc/administrate/ssl/">Installing TLS Certificates</a>.`,
   'cc-domain-management.certif.custom': () =>
     sanitize`You can provide your own certificate by using the <a href="https://api.clever-cloud.com/v2/certificates/new">Clever Cloud Certificate Manager</a>.`,
@@ -334,8 +334,8 @@ export const translations = {
   'cc-domain-management.main-heading': `Manage your domain names`,
   'cc-domain-management.new-window': `New Window`,
   //#endregion
-  //#region cc-elasticsearch-info
-  'cc-elasticsearch-info.error': `Something went wrong while loading add-ons linked to this application.`,
+        //#region cc-elasticsearch-info
+'cc-elasticsearch-info.error': `Something went wrong while loading add-ons linked to this application.`,
   'cc-elasticsearch-info.info': `Info`,
   'cc-elasticsearch-info.link.apm': `Open APM`,
   'cc-elasticsearch-info.link.doc': `Read the documentation`,
@@ -343,8 +343,8 @@ export const translations = {
   'cc-elasticsearch-info.link.kibana': `Open Kibana`,
   'cc-elasticsearch-info.text': `This add-on is part of the Elastic Stack offer. You can find the documentation and linked services right below.`,
   //#endregion
-  //#region cc-email-list
-  'cc-email-list.loading.error': `Something went wrong while loading email addresses.`,
+        //#region cc-email-list
+'cc-email-list.loading.error': `Something went wrong while loading email addresses.`,
   'cc-email-list.primary.action.resend-confirmation-email': `Resend a confirmation email`,
   'cc-email-list.primary.action.resend-confirmation-email.error': /** @param {{address: string}} _ */ ({ address }) =>
     sanitize`Something went wrong while sending the confirmation email to <strong>${address}</strong>.`,
@@ -385,8 +385,8 @@ export const translations = {
   'cc-email-list.secondary.title': `Secondary email addresses`,
   'cc-email-list.title': `Email addresses`,
   //#endregion
-  //#region cc-env-var-create
-  'cc-env-var-create.create-button': `Add`,
+        //#region cc-env-var-create
+'cc-env-var-create.create-button': `Add`,
   'cc-env-var-create.errors.already-defined-name': /** @param {{name: string}} _ */ ({ name }) =>
     sanitize`Name <code>${name}</code> is already defined`,
   'cc-env-var-create.errors.invalid-name': /** @param {{name: string}} _ */ ({ name }) =>
@@ -396,8 +396,8 @@ export const translations = {
   'cc-env-var-create.name.label': `Variable name`,
   'cc-env-var-create.value.label': `Variable value`,
   //#endregion
-  //#region cc-env-var-editor-expert
-  'cc-env-var-editor-expert.errors.duplicated-name': /** @param {{name: string}} _ */ ({ name }) =>
+        //#region cc-env-var-editor-expert
+'cc-env-var-editor-expert.errors.duplicated-name': /** @param {{name: string}} _ */ ({ name }) =>
     sanitize`be careful, the name <code>${name}</code> is already defined`,
   'cc-env-var-editor-expert.errors.invalid-line': () =>
     sanitize`this line is not valid, the correct pattern is: <code>NAME="VALUE"</code>`,
@@ -415,8 +415,8 @@ export const translations = {
     sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-formats">more details</a>`,
   'cc-env-var-editor-expert.label': `Variable editing. Format: VARIABLE_NAME="variable value". Every variable must be separated by a line break.`,
   //#endregion
-  //#region cc-env-var-editor-json
-  'cc-env-var-editor-json.errors.duplicated-name': /** @param {{name: string}} _ */ ({ name }) =>
+        //#region cc-env-var-editor-json
+'cc-env-var-editor-json.errors.duplicated-name': /** @param {{name: string}} _ */ ({ name }) =>
     sanitize`be careful, the name <code>${name}</code> is already defined`,
   'cc-env-var-editor-json.errors.invalid-json': `The JSON entered is invalid`,
   'cc-env-var-editor-json.errors.invalid-json-entry': () =>
@@ -433,11 +433,11 @@ export const translations = {
     sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-formats">more details</a>`,
   'cc-env-var-editor-json.label': `Variable editing. Array of objects following the format: { "name": "VARIABLE_NAME", "value": "variable value" }.`,
   //#endregion
-  //#region cc-env-var-editor-simple
-  'cc-env-var-editor-simple.empty-data': `There are no variables.`,
+        //#region cc-env-var-editor-simple
+'cc-env-var-editor-simple.empty-data': `There are no variables.`,
   //#endregion
-  //#region cc-env-var-form
-  'cc-env-var-form.description.config-provider': /** @param {{addonName: string}} _ */ ({ addonName }) =>
+        //#region cc-env-var-form
+'cc-env-var-form.description.config-provider': /** @param {{addonName: string}} _ */ ({ addonName }) =>
     sanitize`Configuration exposed to dependent applications. <a href="https://www.clever-cloud.com/doc/deploy/addon/config-provider/">Learn more</a><br>These variables will be injected as environment variables in applications that have the add-on <strong>${addonName}</strong> in their service dependencies.<br>Every time you update your changes, all the dependent applications will be automatically restarted.`,
   'cc-env-var-form.description.env-var': /** @param {{appName: string}} _ */ ({ appName }) =>
     sanitize`These variables will be injected as environment variables in the application <strong>${appName}</strong>. <a href="https://doc.clever-cloud.com/admin-console/environment-variables/">Learn more</a>`,
@@ -455,15 +455,15 @@ export const translations = {
   'cc-env-var-form.update.error': `Something went wrong while updating variables.`,
   'cc-env-var-form.update.success': `Variables have been updated successfully.`,
   //#endregion
-  //#region cc-env-var-input
-  'cc-env-var-input.delete-button': `Remove`,
+        //#region cc-env-var-input
+'cc-env-var-input.delete-button': `Remove`,
   'cc-env-var-input.keep-button': `Keep`,
   'cc-env-var-input.value-label': /** @param {{variableName: string}} _ */ ({ variableName }) =>
     `${variableName} value`,
   'cc-env-var-input.value-placeholder': `variable value`,
   //#endregion
-  //#region cc-env-var-linked-services
-  'cc-env-var-linked-services.description.addon': /** @param {{serviceName: string, appName: string}} _ */ ({
+        //#region cc-env-var-linked-services
+'cc-env-var-linked-services.description.addon': /** @param {{serviceName: string, appName: string}} _ */ ({
     serviceName,
     appName,
   }) => {
@@ -490,8 +490,8 @@ export const translations = {
   'cc-env-var-linked-services.loading.app': /** @param {{appName: string}} _ */ ({ appName }) =>
     sanitize`Loading configuration exposed by applications linked to <strong>${appName}</strong>...`,
   //#endregion
-  //#region cc-grafana-info
-  'cc-grafana-info.disable-description': `Disabling Grafana will delete and end all accesses to this Grafana organisation. You will still be able to create another one.`,
+        //#region cc-grafana-info
+'cc-grafana-info.disable-description': `Disabling Grafana will delete and end all accesses to this Grafana organisation. You will still be able to create another one.`,
   'cc-grafana-info.disable-title': `Disable Grafana`,
   'cc-grafana-info.disable.error': `Something went wrong while disabling Grafana dashboards.`,
   'cc-grafana-info.disable.success': `Grafana dashboards have been disabled successfully.`,
@@ -526,8 +526,8 @@ export const translations = {
     sanitize`This dashboard features an <strong>overview panel</strong> to get quick information about an application, as well as several panels about its system metrics. <br> It provides several graphs summarizing the state of <strong>CPU, memory, disks and network</strong>. <br> For each of these metric types, you will retrieve usage graphs, gauges, as well as the result of a simple linear prediction done on the elapsed Grafana time interval. This linear prediction yields the expected duration for the metric to reach 90%.`,
   'cc-grafana-info.screenshot.runtime.title': `Application runtime dashboard preview`,
   //#endregion
-  //#region cc-header-addon
-  'cc-header-addon.creation-date': `Creation date`,
+        //#region cc-header-addon
+'cc-header-addon.creation-date': `Creation date`,
   'cc-header-addon.creation-date.full': /** @param {{date: string|number}} _ */ ({ date }) => formatDate(date),
   'cc-header-addon.creation-date.short': /** @param {{date: string|number}} _ */ ({ date }) => formatDateOnly(date),
   'cc-header-addon.error': `Something went wrong while loading add-on info.`,
@@ -536,8 +536,8 @@ export const translations = {
   'cc-header-addon.plan': `Plan`,
   'cc-header-addon.version': `Version`,
   //#endregion
-  //#region cc-header-app
-  'cc-header-app.action.cancel-deployment': `Cancel deployment`,
+        //#region cc-header-app
+'cc-header-app.action.cancel-deployment': `Cancel deployment`,
   'cc-header-app.action.restart': `Restart`,
   'cc-header-app.action.restart-last-commit': `Restart last pushed commit`,
   'cc-header-app.action.restart-rebuild': `Re-build and restart`,
@@ -563,12 +563,12 @@ export const translations = {
   'cc-header-app.user-action-msg.deploy-cancelled': `This deployment has been cancelled.`,
   'cc-header-app.user-action-msg.deploy-will-begin': `A new deployment is about to begin...`,
   //#endregion
-  //#region cc-header-orga
-  'cc-header-orga.error': `Something went wrong while loading organisation info.`,
+        //#region cc-header-orga
+'cc-header-orga.error': `Something went wrong while loading organisation info.`,
   'cc-header-orga.hotline': `Hotline:`,
   //#endregion
-  //#region cc-heptapod-info
-  'cc-heptapod-info.description': () =>
+        //#region cc-heptapod-info
+'cc-heptapod-info.description': () =>
     sanitize`This Heptapod instance hosts mercurial projects. Learn more on <a href="https://about.heptapod.host">https://about.heptapod.host</a>.`,
   'cc-heptapod-info.error-loading': `Something went wrong while loading usage info.`,
   'cc-heptapod-info.not-in-use': `You are not using this Heptapod service.`,
@@ -580,8 +580,8 @@ export const translations = {
   'cc-heptapod-info.storage-bytes': /** @param {{storage: number}} _ */ ({ storage }) => formatBytes(storage, 1),
   'cc-heptapod-info.storage-description': `Storage size`,
   //#endregion
-  //#region cc-input-date
-  'cc-input-date.error.bad-input': `You must enter a date.`,
+        //#region cc-input-date
+'cc-input-date.error.bad-input': `You must enter a date.`,
   'cc-input-date.error.empty': `You must enter a value.`,
   'cc-input-date.error.range-overflow': /** @param {{max: string}} _ */ ({ max }) =>
     `You must enter a date lower that ${max}.`,
@@ -590,8 +590,8 @@ export const translations = {
   'cc-input-date.keyboard-hint': `You can use up or down arrow keys to modify parts of the date.`,
   'cc-input-date.required': `required`,
   //#endregion
-  //#region cc-input-number
-  'cc-input-number.decrease': `decrease`,
+        //#region cc-input-number
+'cc-input-number.decrease': `decrease`,
   'cc-input-number.error.bad-type': `You must enter a number.`,
   'cc-input-number.error.empty': `You must enter a value.`,
   'cc-input-number.error.range-overflow': /** @param {{max: number}} _ */ ({ max }) =>
@@ -601,8 +601,8 @@ export const translations = {
   'cc-input-number.increase': `increase`,
   'cc-input-number.required': `required`,
   //#endregion
-  //#region cc-input-text
-  'cc-input-text.clipboard': `Copy to clipboard`,
+        //#region cc-input-text
+'cc-input-text.clipboard': `Copy to clipboard`,
   'cc-input-text.error.bad-email': () => sanitize`Invalid email address format.<br>Example: john.doe@example.com.`,
   'cc-input-text.error.empty': `You must enter a value.`,
   'cc-input-text.error.empty.email': `Please enter an email address.`,
@@ -610,8 +610,8 @@ export const translations = {
   'cc-input-text.secret.hide': `Hide secret`,
   'cc-input-text.secret.show': `Show secret`,
   //#endregion
-  //#region cc-invoice
-  'cc-invoice.download-pdf': `Download PDF`,
+        //#region cc-invoice
+'cc-invoice.download-pdf': `Download PDF`,
   'cc-invoice.error': `Something went wrong while loading the invoice.`,
   'cc-invoice.info': /** @param {{date: string, amount: number, currency: string}} _ */ ({
     date,
@@ -622,8 +622,8 @@ export const translations = {
   },
   'cc-invoice.title': `Invoice`,
   //#endregion
-  //#region cc-invoice-list
-  'cc-invoice-list.error': `An error occured while loading invoices.`,
+        //#region cc-invoice-list
+'cc-invoice-list.error': `An error occured while loading invoices.`,
   'cc-invoice-list.pending': `Pending invoices`,
   'cc-invoice-list.pending.no-invoices': `No pending invoices at the moment.`,
   'cc-invoice-list.processed': `Paid invoices`,
@@ -632,8 +632,8 @@ export const translations = {
   'cc-invoice-list.title': `Invoices`,
   'cc-invoice-list.year': `Year:`,
   //#endregion
-  //#region cc-invoice-table
-  'cc-invoice-table.date.emission': `Emission date`,
+        //#region cc-invoice-table
+'cc-invoice-table.date.emission': `Emission date`,
   'cc-invoice-table.date.value': /** @param {{date: string}} _ */ ({ date }) => `${formatDateOnly(date)}`,
   'cc-invoice-table.number': `Number`,
   'cc-invoice-table.open-pdf': `Download PDF`,
@@ -650,8 +650,8 @@ export const translations = {
   'cc-invoice-table.total.value': /** @param {{amount: number, currency: string}} _ */ ({ amount, currency }) =>
     `${formatCurrency(lang, amount, { currency })}`,
   //#endregion
-  //#region cc-jenkins-info
-  'cc-jenkins-info.documentation.link': `Read the documentation`,
+        //#region cc-jenkins-info
+'cc-jenkins-info.documentation.link': `Read the documentation`,
   'cc-jenkins-info.documentation.text': `Our documentation can help you start using Jenkins and create jobs that run on Clever Cloud docker applications.`,
   'cc-jenkins-info.documentation.title': `Documentation`,
   'cc-jenkins-info.error': `An error occured while fetching the information about this add-on.`,
@@ -666,17 +666,17 @@ export const translations = {
   'cc-jenkins-info.update.title': `Updates`,
   'cc-jenkins-info.update.up-to-date': `Your Jenkins version is up-to-date.`,
   //#endregion
-  //#region cc-loader
-  'cc-loader.a11y-name': `Loading`,
+        //#region cc-loader
+'cc-loader.a11y-name': `Loading`,
   //#endregion
-  //#region cc-logs
-  'cc-logs.copied': /** @param {{count: number}} _ */ ({ count }) => `Copied (${count} ${plural(count, 'line')})`,
+        //#region cc-logs
+'cc-logs.copied': /** @param {{count: number}} _ */ ({ count }) => `Copied (${count} ${plural(count, 'line')})`,
   'cc-logs.copy': `Copy`,
   'cc-logs.select-button.label': /** @param {{index: number}} _ */ ({ index }) => `Select the line ${index}`,
   'cc-logs.unselect-button.label': /** @param {{index: number}} _ */ ({ index }) => `Unselect the line ${index}`,
   //#endregion
-  //#region cc-logs-application-view
-  'cc-logs-application-view.custom-date-range.apply': `Apply`,
+        //#region cc-logs-application-view
+'cc-logs-application-view.custom-date-range.apply': `Apply`,
   'cc-logs-application-view.custom-date-range.date.bad-input': `Invalid date format (YYYY-MM-DD HH:mm:ss)`,
   'cc-logs-application-view.custom-date-range.date.empty': `Please enter a value`,
   'cc-logs-application-view.custom-date-range.date.range-overflow': /** @param {{max: string}} _ */ ({ max }) =>
@@ -725,8 +725,8 @@ export const translations = {
   'cc-logs-application-view.progress.pause': `Pause`,
   'cc-logs-application-view.progress.resume': `Resume`,
   //#endregion
-  //#region cc-logs-control
-  'cc-logs-control.date-display': `Date format`,
+        //#region cc-logs-control
+'cc-logs-control.date-display': `Date format`,
   'cc-logs-control.date-display.datetime-iso': `Date and hour ISO`,
   'cc-logs-control.date-display.datetime-short': `Date and hour`,
   'cc-logs-control.date-display.none': `Do not display`,
@@ -745,8 +745,8 @@ export const translations = {
   'cc-logs-control.timezone.utc': `UTC`,
   'cc-logs-control.wrap-lines': `Force lines wrap`,
   //#endregion
-  //#region cc-logs-instances
-  'cc-logs-instances.cold.empty': `No instance`,
+        //#region cc-logs-instances
+'cc-logs-instances.cold.empty': `No instance`,
   'cc-logs-instances.cold.header': `Instances`,
   'cc-logs-instances.commit.title': /** @param {{commit: string}} _ */ ({ commit }) => `Deployed commit: ${commit}`,
   'cc-logs-instances.deleted.header': `Deleted instances`,
@@ -770,8 +770,8 @@ export const translations = {
   'cc-logs-instances.running.header': `Running instances`,
   'cc-logs-instances.stopping.header': `Stopping instances`,
   //#endregion
-  //#region cc-logsmap
-  'cc-logsmap.legend.heatmap': /** @param {{orgaName: string}} _ */ ({ orgaName }) =>
+        //#region cc-logsmap
+'cc-logsmap.legend.heatmap': /** @param {{orgaName: string}} _ */ ({ orgaName }) =>
     sanitize`Heatmap of HTTP requests received by all apps from <strong>${orgaName}</strong> during the last 24 hours.`,
   'cc-logsmap.legend.heatmap.app': /** @param {{appName: string}} _ */ ({ appName }) =>
     sanitize`Heatmap of HTTP requests received by <strong>${appName}</strong> during the last 24 hours.`,
@@ -782,13 +782,13 @@ export const translations = {
   'cc-logsmap.mode.heatmap': `Last 24h`,
   'cc-logsmap.mode.points': `Realtime`,
   //#endregion
-  //#region cc-map
-  'cc-map.error': `Something went wrong while trying to fetch data for the map.`,
+        //#region cc-map
+'cc-map.error': `Something went wrong while trying to fetch data for the map.`,
   'cc-map.error.icon-a11y-name': `Warning`,
   'cc-map.no-points': `No data to display on the map right now.`,
   //#endregion
-  //#region cc-matomo-info
-  'cc-matomo-info.about.text': () => sanitize`
+        //#region cc-matomo-info
+'cc-matomo-info.about.text': () => sanitize`
     <p>The Matomo add-on is a meta add-on. It provides you with a <strong>PHP</strong> application, a <strong>MySQL</strong> add-on and a <strong>Redis</strong> add-on.</p>
     <p>They appear in your organisation just like your other applications and add-ons. You can still configure them as you like. For example, you may want to change the PHP application's domain or migrate the MySQL add-on to a bigger plan.</p>
     <p>This add-on is free but its dependencies are billed based on their consumptions, just like other applications and add-ons.</p>
@@ -807,15 +807,15 @@ export const translations = {
   'cc-matomo-info.open-matomo.text': `You can access your Matomo using your Clever Cloud account. Organisation members can also access the Matomo service.`,
   'cc-matomo-info.open-matomo.title': `Access Matomo`,
   //#endregion
-  //#region cc-notice
-  'cc-notice.close': `Close this notice`,
+        //#region cc-notice
+'cc-notice.close': `Close this notice`,
   'cc-notice.icon-alt.danger': `Error`,
   'cc-notice.icon-alt.info': `Information`,
   'cc-notice.icon-alt.success': `Success`,
   'cc-notice.icon-alt.warning': `Warning`,
   //#endregion
-  //#region cc-orga-member-card
-  'cc-orga-member-card.btn.cancel.accessible-name': /** @param {{memberIdentity: string}} _ */ ({ memberIdentity }) =>
+        //#region cc-orga-member-card
+'cc-orga-member-card.btn.cancel.accessible-name': /** @param {{memberIdentity: string}} _ */ ({ memberIdentity }) =>
     `Cancel editing member - ${memberIdentity}`,
   'cc-orga-member-card.btn.cancel.visible-text': `Cancel`,
   'cc-orga-member-card.btn.delete.accessible-name': /** @param {{memberIdentity: string}} _ */ ({ memberIdentity }) =>
@@ -840,8 +840,8 @@ export const translations = {
   'cc-orga-member-card.role.label': `Role`,
   'cc-orga-member-card.role.manager': `Manager`,
   //#endregion
-  //#region cc-orga-member-list
-  'cc-orga-member-list.delete.error': /** @param {{memberIdentity: string}} _ */ ({ memberIdentity }) =>
+        //#region cc-orga-member-list
+'cc-orga-member-list.delete.error': /** @param {{memberIdentity: string}} _ */ ({ memberIdentity }) =>
     sanitize`Something went wrong while trying to remove <strong>${memberIdentity}</strong> from this organisation.`,
   'cc-orga-member-list.delete.success': /** @param {{memberIdentity: string}} _ */ ({ memberIdentity }) =>
     sanitize`<strong>${memberIdentity}</strong> has been removed from this organisation.`,
@@ -889,8 +889,8 @@ export const translations = {
   'cc-orga-member-list.main-heading': `Manage organisation members`,
   'cc-orga-member-list.no-result': `No results matching your criteria.`,
   //#endregion
-  //#region cc-payment-warning
-  'cc-payment-warning.billing-page-link': /** @param {{orgaName: string, orgaBillingLink: string}} _ */ ({
+        //#region cc-payment-warning
+'cc-payment-warning.billing-page-link': /** @param {{orgaName: string, orgaBillingLink: string}} _ */ ({
     orgaName,
     orgaBillingLink,
   }) =>
@@ -913,9 +913,10 @@ export const translations = {
   'cc-payment-warning.orga.no-payment-method': `To avoid any suspension of your services and deletion of your data, please add a valid payment method and set it as default.`,
   'cc-payment-warning.orga.no-payment-method.title': `Beware! You don't have any registered payment method`,
   //#endregion
-  //#region cc-pricing-estimation
-  'cc-pricing-estimation.count.label': /** @param {{productCount: number}} _ */ ({ productCount }) =>
+        //#region cc-pricing-estimation
+'cc-pricing-estimation.count.label': /** @param {{productCount: number}} _ */ ({ productCount }) =>
     plural(productCount, 'product'),
+  'cc-pricing-estimation.error': `An error occurred while loading pricing details.`,
   'cc-pricing-estimation.estimated-price-name.1000-minutes': `Price (${formatNumber(lang, 1000)} minutes)`,
   'cc-pricing-estimation.estimated-price-name.30-days': () => sanitize`estimated/30&nbsp;days`,
   'cc-pricing-estimation.estimated-price-name.day': `estimated/Day`,
@@ -927,10 +928,12 @@ export const translations = {
   'cc-pricing-estimation.feature.custom': /** @param {{featureName: string}} _ */ ({ featureName }) =>
     `${featureName}: `,
   'cc-pricing-estimation.feature.databases': `Databases: `,
+  'cc-pricing-estimation.feature.dedicated': `Dedicated`,
   'cc-pricing-estimation.feature.disk-size': `Disk size: `,
   'cc-pricing-estimation.feature.gpu': `GPUs: `,
   'cc-pricing-estimation.feature.has-logs': `Logs: `,
   'cc-pricing-estimation.feature.has-metrics': `Metrics: `,
+  'cc-pricing-estimation.feature.is-migratable': `Migration tool`,
   'cc-pricing-estimation.feature.max-db-size': `Max DB size: `,
   'cc-pricing-estimation.feature.memory': `RAM: `,
   'cc-pricing-estimation.feature.version': `Version: `,
@@ -974,7 +977,6 @@ export const translations = {
     `${boolean ? 'Yes' : 'No'}`,
   'cc-pricing-estimation.type.boolean-shared': /** @param {{shared: boolean}} _ */ ({ shared }) =>
     `${shared ? 'Shared' : 'Dedicated'}`,
-  'cc-pricing-estimation.error': `An error occurred while loading pricing details.`,
   'cc-pricing-estimation.type.bytes': /** @param {{bytes: number}} _ */ ({ bytes }) => formatBytes(bytes, 0, 3),
   'cc-pricing-estimation.type.number': /** @param {{number: number}} _ */ ({ number }) => formatNumber(lang, number),
   'cc-pricing-estimation.type.number-cpu-runtime': /** @param {{cpu: number, shared: boolean}} _ */ ({
@@ -986,8 +988,8 @@ export const translations = {
       : formatNumber(lang, cpu);
   },
   //#endregion
-  //#region cc-pricing-header
-  'cc-pricing-header.error': `Something went wrong while loading pricing filters.`,
+        //#region cc-pricing-header
+'cc-pricing-header.error': `Something went wrong while loading pricing filters.`,
   'cc-pricing-header.label.currency': `Currency`,
   'cc-pricing-header.label.temporality': `Unit of time`,
   'cc-pricing-header.label.zone': `Zone`,
@@ -998,8 +1000,8 @@ export const translations = {
   'cc-pricing-header.price-name.minute': `Price/Minute`,
   'cc-pricing-header.price-name.second': `Price/Second`,
   //#endregion
-  //#region cc-pricing-product
-  'cc-pricing-product.add-button': /** @param {{productName: string, size: string}} _ */ ({ productName, size }) =>
+        //#region cc-pricing-product
+'cc-pricing-product.add-button': /** @param {{productName: string, size: string}} _ */ ({ productName, size }) =>
     `Add ${productName} - ${size} to the cost estimate`,
   'cc-pricing-product.error': `An error occurred while loading pricing details.`,
   'cc-pricing-product.feature.connection-limit': `Connection limit`,
@@ -1037,8 +1039,8 @@ export const translations = {
       : formatNumber(lang, cpu);
   },
   //#endregion
-  //#region cc-pricing-product-consumption
-  'cc-pricing-product-consumption.add': `Add`,
+        //#region cc-pricing-product-consumption
+'cc-pricing-product-consumption.add': `Add`,
   'cc-pricing-product-consumption.bytes': /** @param {{bytes: number}} _ */ ({ bytes }) => formatBytesSi(bytes),
   'cc-pricing-product-consumption.bytes-unit': /** @param {{bytes: number}} _ */ ({ bytes }) => getUnit(bytes),
   'cc-pricing-product-consumption.error': `An error occurred while retrieving pricing details.`,
@@ -1082,21 +1084,21 @@ export const translations = {
   'cc-pricing-product-consumption.total.title': `Estimated total (30 days):`,
   'cc-pricing-product-consumption.unit': `Unit`,
   //#endregion
-  //#region cc-product-card
-  'cc-product-card.select': /** @param {{name: string}} _ */ ({ name }) => `${name} - select this product`,
+        //#region cc-product-card
+'cc-product-card.select': /** @param {{name: string}} _ */ ({ name }) => `${name} - select this product`,
   //#endregion
-  //#region cc-product-list
-  'cc-product-list.all-label': `All`,
+        //#region cc-product-list
+'cc-product-list.all-label': `All`,
   'cc-product-list.filter-category-legend': `Filter by category`,
   'cc-product-list.search-empty': `No products matching your search criteria were found.`,
   'cc-product-list.search-label': `Search for a product`,
   //#endregion
-  //#region cc-select
-  'cc-select.error.empty': `You must select a value.`,
+        //#region cc-select
+'cc-select.error.empty': `You must select a value.`,
   'cc-select.required': `required`,
   //#endregion
-  //#region cc-ssh-key-list
-  'cc-ssh-key-list.add.btn': `Add key`,
+        //#region cc-ssh-key-list
+'cc-ssh-key-list.add.btn': `Add key`,
   'cc-ssh-key-list.add.info': () =>
     sanitize`<p>You need to associate an SSH key to your account to deploy via Git. Use this form to do so.</p><p>You can create an SSH key with the following command:</p><code>ssh-keygen -t ed25519 -C "my-email@example.com"</code><p>The generated public key is written in the "*.pub" file.</p>`,
   'cc-ssh-key-list.add.name': `Name`,
@@ -1138,8 +1140,8 @@ export const translations = {
     sanitize`Your key <strong>${name}</strong> has been imported successfully.`,
   'cc-ssh-key-list.title': `SSH Keys`,
   //#endregion
-  //#region cc-tcp-redirection
-  'cc-tcp-redirection.create-button': `Create`,
+        //#region cc-tcp-redirection
+'cc-tcp-redirection.create-button': `Create`,
   'cc-tcp-redirection.delete-button': `Delete`,
   'cc-tcp-redirection.namespace-additionaldescription-cleverapps': () =>
     sanitize`This namespace is used by all <em>cleverapps.io</em> domains (e.g. <em>my-app.cleverapps.io</em>).`,
@@ -1155,8 +1157,8 @@ export const translations = {
   'cc-tcp-redirection.redirection-not-defined': /** @param {{namespace: string}} _ */ ({ namespace }) =>
     sanitize`You can create a redirection in the <strong>${namespace}</strong> namespace.`,
   //#endregion
-  //#region cc-tcp-redirection-form
-  'cc-tcp-redirection-form.create.error': /** @param {{namespace: string}} _ */ ({ namespace }) => {
+        //#region cc-tcp-redirection-form
+'cc-tcp-redirection-form.create.error': /** @param {{namespace: string}} _ */ ({ namespace }) => {
     return sanitize`Something went wrong while creating a TCP redirection in the <strong>${namespace}</strong> namespace.`;
   },
   'cc-tcp-redirection-form.create.success': /** @param {{namespace: string}} _ */ ({ namespace }) => {
@@ -1182,8 +1184,8 @@ export const translations = {
   'cc-tcp-redirection-form.error': `Something went wrong while loading TCP redirections.`,
   'cc-tcp-redirection-form.title': `TCP Redirections`,
   //#endregion
-  //#region cc-tile-deployments
-  'cc-tile-deployments.empty': `No deployments yet.`,
+        //#region cc-tile-deployments
+'cc-tile-deployments.empty': `No deployments yet.`,
   'cc-tile-deployments.error': `Something went wrong while loading deployments info.`,
   'cc-tile-deployments.error.icon-a11y-name': `Warning`,
   'cc-tile-deployments.state.cancelled': `Cancelled`,
@@ -1192,16 +1194,16 @@ export const translations = {
   'cc-tile-deployments.state.stopped': `Stopped`,
   'cc-tile-deployments.title': `Last deployments`,
   //#endregion
-  //#region cc-tile-instances
-  'cc-tile-instances.empty': `No instances. Your app is stopped.`,
+        //#region cc-tile-instances
+'cc-tile-instances.empty': `No instances. Your app is stopped.`,
   'cc-tile-instances.error': `Something went wrong while loading instances.`,
   'cc-tile-instances.error.icon-a11y-name': `Warning`,
   'cc-tile-instances.status.deploying': `Deploying`,
   'cc-tile-instances.status.running': `Running`,
   'cc-tile-instances.title': `Instances`,
   //#endregion
-  //#region cc-tile-metrics
-  'cc-tile-metrics.a11y.table-header.cpu': `CPU usage over 24h`,
+        //#region cc-tile-metrics
+'cc-tile-metrics.a11y.table-header.cpu': `CPU usage over 24h`,
   'cc-tile-metrics.a11y.table-header.mem': `RAM usage over 24h`,
   'cc-tile-metrics.a11y.table-header.timestamp': `Timestamp`,
   'cc-tile-metrics.about-btn': `Show details about this chart`,
@@ -1224,8 +1226,8 @@ export const translations = {
     formatDate(timestamp),
   'cc-tile-metrics.title': `Server metrics`,
   //#endregion
-  //#region cc-tile-requests
-  'cc-tile-requests.about-btn': `About this chart...`,
+        //#region cc-tile-requests
+'cc-tile-requests.about-btn': `About this chart...`,
   'cc-tile-requests.close-btn': `Display chart`,
   'cc-tile-requests.date-hours': /** @param {{date: string|number}} _ */ ({ date }) => formatHours(date),
   'cc-tile-requests.date-tooltip': /** @param {{from: string|number, to: string|number}} _ */ ({ from, to }) => {
@@ -1256,16 +1258,16 @@ export const translations = {
   },
   'cc-tile-requests.title': `HTTP requests`,
   //#endregion
-  //#region cc-tile-scalability
-  'cc-tile-scalability.error': `Something went wrong while loading scalability config.`,
+        //#region cc-tile-scalability
+'cc-tile-scalability.error': `Something went wrong while loading scalability config.`,
   'cc-tile-scalability.error.icon-a11y-name': `Warning`,
   'cc-tile-scalability.flavor-info': /** @param {Flavor} flavor */ (flavor) => formatFlavor(flavor),
   'cc-tile-scalability.number': `Number`,
   'cc-tile-scalability.size': `Size`,
   'cc-tile-scalability.title': `Scalability`,
   //#endregion
-  //#region cc-tile-status-codes
-  'cc-tile-status-codes.about-btn': `About this chart...`,
+        //#region cc-tile-status-codes
+'cc-tile-status-codes.about-btn': `About this chart...`,
   'cc-tile-status-codes.close-btn': `Display chart`,
   'cc-tile-status-codes.docs.link': () =>
     sanitize`<a href="https://developer.mozilla.org/en/docs/Web/HTTP/Status">HTTP response status codes (MDN)</a>`,
@@ -1280,26 +1282,26 @@ export const translations = {
     return `${formattedValue} ${request} (${formatPercent(lang, percent)})`;
   },
   //#endregion
-  //#region cc-toast
-  'cc-toast.close': `Close this notification`,
+        //#region cc-toast
+'cc-toast.close': `Close this notification`,
   'cc-toast.icon-alt.danger': `Error`,
   'cc-toast.icon-alt.info': `Information`,
   'cc-toast.icon-alt.success': `Success`,
   'cc-toast.icon-alt.warning': `Warning`,
   //#endregion
-  //#region cc-zone
-  'cc-zone.country': /** @param {{code: string, name: string}} _ */ ({ code, name }) =>
+        //#region cc-zone
+'cc-zone.country': /** @param {{code: string, name: string}} _ */ ({ code, name }) =>
     getCountryName(lang, code, name),
   //#endregion
-  //#region cc-zone-card
-  'cc-zone-card.alt.country-name': /** @param {{code: string, name: string}} _ */ ({ code, name }) =>
+        //#region cc-zone-card
+'cc-zone-card.alt.country-name': /** @param {{code: string, name: string}} _ */ ({ code, name }) =>
     getCountryName(lang, code, name),
   //#endregion
-  //#region cc-zone-input
-  'cc-zone-input.error': `Something went wrong while loading zones.`,
+        //#region cc-zone-input
+'cc-zone-input.error': `Something went wrong while loading zones.`,
   'cc-zone-input.private-map-warning': `Private zones don't appear on the map.`,
   //#endregion
-  //#region cc-zone-picker
-  'cc-zone-picker.legend': `Select your zone`,
+        //#region cc-zone-picker
+'cc-zone-picker.legend': `Select your zone`,
   //#endregion
-};
+  };
