@@ -48,10 +48,12 @@ export function formatAddonCellar(priceSystem) {
       {
         type: 'storage',
         ...formatProductConsumptionIntervals(priceSystem, 'cellar.storage'),
+        service: 'cellar.storage',
       },
       {
         type: 'outbound-traffic',
         ...formatProductConsumptionIntervals(priceSystem, 'cellar.outbound'),
+        service: 'cellar.outbound',
       },
     ],
   };
@@ -70,6 +72,7 @@ export function formatAddonFsbucket(priceSystem) {
       {
         type: 'storage',
         ...formatProductConsumptionIntervals(priceSystem, 'fsbucket.storage'),
+        service: 'fsbucket.storage',
       },
     ],
   };
@@ -88,14 +91,17 @@ export function formatAddonPulsar(priceSystem) {
       {
         type: 'storage',
         ...formatProductConsumptionIntervals(priceSystem, 'pulsar_storage_size'),
+        service: 'pulsar_storage_size',
       },
       {
         type: 'inbound-traffic',
         ...formatProductConsumptionIntervals(priceSystem, 'pulsar_throughput_in'),
+        service: 'pulsar_throughput_in',
       },
       {
         type: 'outbound-traffic',
         ...formatProductConsumptionIntervals(priceSystem, 'pulsar_throughput_out'),
+        service: 'pulsar_throughput_out',
       },
     ],
   };
@@ -114,16 +120,19 @@ export function formatAddonHeptapod(priceSystem) {
       {
         type: 'storage',
         ...formatProductConsumptionIntervals(priceSystem, 'heptapod.storage'),
+        service: 'heptapod.storage',
       },
       {
         type: 'private-users',
         progressive: true,
         ...formatProductConsumptionIntervals(priceSystem, 'heptapod.private_active_users'),
+        service: 'heptapod.private_active_users',
       },
       {
         type: 'public-users',
         progressive: true,
         ...formatProductConsumptionIntervals(priceSystem, 'heptapod.public_active_users'),
+        service: 'heptapod.public_active_users',
       },
     ],
   };
@@ -153,6 +162,7 @@ export function formatProductConsumptionIntervals(priceSystem, serviceName) {
       minRange,
       maxRange: interval.max_quantity,
       price: interval.price * priceFactor,
+      priceId: interval.plan_id,
     };
   });
 

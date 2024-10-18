@@ -390,8 +390,12 @@ export class CcPricingEstimation extends LitElement {
           price: this._priceMap.get(selectedPlan.priceId),
         };
       }
-      const selectedPlanTest = this._priceMap.get('');
-      const simulator = new PricingConsumptionSimulator(selectedPlan.sections);
+
+      const sectionsWithUpdatedPrices = selectedPlan.sections.map((section) => ({
+        ...section,
+        ...this._priceMap.get(section.service),
+      }));
+      const simulator = new PricingConsumptionSimulator(sectionsWithUpdatedPrices);
 
       return {
         ...selectedPlan,
@@ -412,9 +416,11 @@ export class CcPricingEstimation extends LitElement {
       /** @type {Array<[string, number]>} */
       const runtimePricesAsKeyValue = this.state.runtimePrices.map(({ priceId, price }) => [priceId, price]);
       /** @type {Array<[string, Object]>} */
-      const countablePricesAsKeyValue = this.state.countablePrices.map(({ name, ...rest }) => [name, rest]);
+      const countablePricesAsKeyValue = this.state.countablePrices.map(({ service, ...rest }) => [
+        service,
+        { ...rest },
+      ]);
       this._priceMap = new Map([...runtimePricesAsKeyValue, ...countablePricesAsKeyValue]);
-      console.log(this._priceMap);
       this._generateUnitPrices();
     }
 

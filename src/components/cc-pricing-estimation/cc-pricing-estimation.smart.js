@@ -101,22 +101,10 @@ function fetchPrices({ apiConfig, zoneId, currency, signal }) {
     /* eslint-enable camelcase */
 
     const formattedCountableData = [
-      {
-        name: 'Cellar',
-        ...formatAddonCellar(priceSystem),
-      },
-      {
-        name: 'FS Bucket',
-        ...formatAddonFsbucket(priceSystem),
-      },
-      {
-        name: 'Pulsar',
-        ...formatAddonPulsar(priceSystem),
-      },
-      {
-        name: 'Heptapod',
-        ...formatAddonHeptapod(priceSystem),
-      },
+      ...formatAddonCellar(priceSystem).sections,
+      ...formatAddonFsbucket(priceSystem).sections,
+      ...formatAddonPulsar(priceSystem).sections,
+      ...formatAddonHeptapod(priceSystem).sections,
     ];
 
     return { runtimePrices: formattedRuntimeData, countablePrices: formattedCountableData };
