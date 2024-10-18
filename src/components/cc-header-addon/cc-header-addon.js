@@ -4,6 +4,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
+import '../cc-block/cc-block.js';
 import '../cc-img/cc-img.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
@@ -67,8 +68,8 @@ export class CcHeaderAddon extends LitElement {
     }
 
     return html`
-      <div class="wrapper">
-        <div class="main">
+      <cc-block>
+        <div slot="content" class="main">
           <cc-img
             class="logo"
             src="${ifDefined(addonInfo.provider.logoUrl)}"
@@ -118,10 +119,8 @@ export class CcHeaderAddon extends LitElement {
           </div>
         </div>
 
-        <div class="messages">
-          <cc-zone .state=${zoneState} mode="small-infra"></cc-zone>
-        </div>
-      </div>
+        <cc-zone slot="footer-right" .state=${zoneState} mode="small-infra"></cc-zone>
+      </cc-block>
     `;
   }
 
@@ -136,18 +135,10 @@ export class CcHeaderAddon extends LitElement {
           display: block;
         }
 
-        .wrapper {
-          background-color: var(--cc-color-bg-default, #fff);
-          border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
-          overflow: hidden;
-        }
-
         .main {
           display: flex;
           flex-wrap: wrap;
           gap: 1em;
-          padding: 1em;
         }
 
         .logo {
@@ -189,19 +180,6 @@ export class CcHeaderAddon extends LitElement {
 
         .description-label {
           font-weight: bold;
-        }
-
-        .messages {
-          align-items: center;
-          background-color: var(--cc-color-bg-neutral);
-          box-shadow: inset 0 6px 6px -6px rgb(0 0 0 / 40%);
-          box-sizing: border-box;
-          display: flex;
-          flex-wrap: wrap;
-          font-size: 0.9em;
-          gap: 0.57em;
-          justify-content: end;
-          padding: 0.7em 1.1em;
         }
 
         cc-zone {

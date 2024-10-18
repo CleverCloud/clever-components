@@ -5,6 +5,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import {
   iconRemixAddCircleFill as iconAdd,
   iconRemixDeleteBin_5Fill as iconBin,
+  iconRemixInformationFill as iconInfo,
   iconRemixKey_2Fill as iconKey,
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
@@ -15,6 +16,7 @@ import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { Validation } from '../../lib/form/validation.js';
 import { sortBy } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
+import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-block-section/cc-block-section.js';
@@ -24,6 +26,8 @@ import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
+
+const SSH_KEY_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/account/ssh-keys-management/';
 
 /**
  * @type {SshKeyState[]}
@@ -151,10 +155,10 @@ export class CcSshKeyList extends LitElement {
   render() {
     return html`
       <cc-block>
-        <div slot="title">${i18n('cc-ssh-key-list.title')}</div>
+        <div slot="header-title">${i18n('cc-ssh-key-list.title')}</div>
 
         <!-- creation form -->
-        <cc-block-section>
+        <cc-block-section slot="content">
           <div slot="title">${i18n('cc-ssh-key-list.add.title')}</div>
           <div slot="info">${i18n('cc-ssh-key-list.add.info')}</div>
 
@@ -162,7 +166,7 @@ export class CcSshKeyList extends LitElement {
         </cc-block-section>
 
         <!-- personal keys -->
-        <cc-block-section>
+        <cc-block-section slot="content">
           <div slot="title">
             <span>${i18n('cc-ssh-key-list.personal.title')}</span>
             ${this.keyData.state === 'loaded' && this.keyData.personalKeys.length > 2
@@ -190,7 +194,7 @@ export class CcSshKeyList extends LitElement {
         </cc-block-section>
 
         <!-- GitHub keys -->
-        <cc-block-section>
+        <cc-block-section slot="content">
           <div slot="title">
             <span>${i18n('cc-ssh-key-list.github.title')}</span>
             ${this.keyData.state === 'loaded' && this.keyData.isGithubLinked && this.keyData.githubKeys.length > 2
@@ -220,10 +224,12 @@ export class CcSshKeyList extends LitElement {
             : ''}
         </cc-block-section>
 
-        <!-- documentation link -->
-        <cc-block-section>
-          <div class="align-end">${i18n('cc-ssh-key-list.doc.info')}</div>
-        </cc-block-section>
+        <div slot="footer-right">
+          ${ccLink(
+            SSH_KEY_DOCUMENTATION,
+            html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-ssh-key-list.documentation.text')}`,
+          )}
+        </div>
       </cc-block>
     `;
   }
@@ -347,6 +353,7 @@ export class CcSshKeyList extends LitElement {
   static get styles() {
     return [
       skeletonStyles,
+      linkStyles,
       // language=CSS
       css`
         /* region global */
@@ -475,10 +482,13 @@ export class CcSshKeyList extends LitElement {
           margin-top: 1em;
         }
 
-        .align-end {
-          text-align: end;
-        }
         /* endregion */
+
+        [slot='footer-right'] .cc-link {
+          align-items: center;
+          display: flex;
+          gap: 0.5em;
+        }
       `,
     ];
   }
