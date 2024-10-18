@@ -15,7 +15,7 @@ const conf = {
 
 /**
  * @typedef {import('./cc-pricing-estimation.js').CcPricingEstimation} CcPricingEstimation
- * @typedef {import('./cc-pricing-estimation.types.js').PlanWithQuantity} PlanWithQuantity
+ * @typedef {import('./cc-pricing-estimation.types.js').RuntimePlanWithQuantity} PlanWithQuantity
  */
 
 /** @type {PlanWithQuantity} */

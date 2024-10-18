@@ -28,7 +28,6 @@ const BREAKPOINT = 600;
 const CURRENCY_EUR = 'EUR';
 
 const INFINITY = '∞';
-const THIRTY_DAYS_IN_HOURS = 24 * 30;
 const ONE_GIGABYTE = 1e9;
 
 const ICONS = {
@@ -63,7 +62,7 @@ const ICONS = {
  *
  * @cssdisplay block
  *
- * @fires {CustomEvent<Plan>} cc-pricing-product:add-plan - Fires the plan whenever the "add" button is clicked.
+ * @fires {CustomEvent<Plan & { section: PricingSection }>} cc-pricing-product:add-plan - Fires the plan whenever the "add" button is clicked.
  *
  * @cssprop {Color} --cc-pricing-hovered-color - Sets the text color used on hover (defaults: `purple`).
  */
@@ -276,12 +275,16 @@ export class CcPricingProductConsumption extends LitElement {
       })
       .join(', ');
 
+    // [{ 'cellar.outbound-traffic': 8 } ]
     const plan = {
       productName: this.state.name,
       name,
       // As explained above, interval prices are expected to be in "euros / byte / 30 days" or just "euros / byte" for timeless sections like traffic
       // To comply with `<cc-pricing-product>`, the price in this event is in "euros / 1 hour"
-      price: this._simulator.getTotalPrice() / THIRTY_DAYS_IN_HOURS,
+      sections: this.state.sections.map((section) => ({
+        ...section,
+        quantity: this._simulator.getQuantity(section.type),
+      })),
     };
 
     dispatchCustomEvent(this, 'cc-pricing-product:add-plan', plan);
@@ -457,7 +460,6 @@ export class CcPricingProductConsumption extends LitElement {
    * @param {string} plan.unitValue
    */
   _renderInput({ type, quantity, unitValue }) {
-    console.log('RENDER INPUT', typeof unitValue);
     if (this._isTypeBytes(type)) {
       return html`
         <cc-input-number

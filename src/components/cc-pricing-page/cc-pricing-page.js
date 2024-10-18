@@ -89,9 +89,11 @@ export class CcPricingPage extends LitElement {
   _onAddPlan({ detail: plan }) {
     const planId = this._getPlanId(plan);
     if (this.selectedPlans[planId] == null) {
+      console.log(plan);
       this.selectedPlans[planId] = { ...plan, quantity: 0 };
     }
     this.selectedPlans[planId].quantity += 1;
+    console.log(plan);
     this.requestUpdate();
   }
 

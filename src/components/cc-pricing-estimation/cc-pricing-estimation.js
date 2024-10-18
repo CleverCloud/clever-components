@@ -11,6 +11,7 @@ import {
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
+import { PricingConsumptionSimulator } from '../../lib/pricing.js';
 import { getCurrencySymbol } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { shoelaceStyles } from '../../styles/shoelace.js';
@@ -19,7 +20,7 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
-import '../cc-notice/cc-notice';
+import '../cc-notice/cc-notice.js';
 
 /** @type {Record<FormattedFeature['code'], () => string|Node>} */
 const FEATURES_I18N = {
@@ -37,6 +38,7 @@ const FEATURES_I18N = {
   version: () => i18n('cc-pricing-estimation.feature.version'),
 };
 const AVAILABLE_FEATURES = Object.keys(FEATURES_I18N);
+const THIRTY_DAYS_IN_HOURS = 24 * 30;
 
 // FIXME: this code is duplicated across all pricing components (see issue #732 for more details)
 const DEFAULT_CURRENCY = 'EUR';
@@ -47,7 +49,8 @@ const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
 
 /**
  * @typedef {import('./cc-pricing-estimation.types.js').PricingEstimationState} PricingStateEstimation
- * @typedef {import('./cc-pricing-estimation.types.js').PlanWithQuantity} PlanWithQuantity
+ * @typedef {import('./cc-pricing-estimation.types.js').RuntimePlanWithQuantity} RuntimePlanWithQuantity
+ * @typedef {import('./cc-pricing-estimation.types.js').CountablePlanWithQuanty} CountablePlanWithQuanty
  * @typedef {import('../common.types.js').FormattedFeature} FormattedFeature
  * @typedef {import('../common.types.js').Temporality} Temporality
  * @typedef {import('@shoelace-style/shoelace').SlDropdown} SlDropdown
@@ -83,6 +86,7 @@ export class CcPricingEstimation extends LitElement {
       temporalities: { type: Array },
       _isCollapsed: { type: Boolean, state: true },
       _priceMap: { type: Object, state: true },
+      _selectedPlansWithPrices: { type: Array, state: true },
     };
   }
 
@@ -102,7 +106,7 @@ export class CcPricingEstimation extends LitElement {
     /** @type {string} Sets the current currency. */
     this.selectedCurrency = DEFAULT_CURRENCY;
 
-    /** @type {PlanWithQuantity[]} Sets the list of selected plans with their quantity. */
+    /** @type {Array<RuntimePlanWithQuantity|CountablePlanWithQuanty>} Sets the list of selected plans with their quantity. */
     this.selectedPlans = [];
 
     /** @type {Temporality} Sets the current temporality. */
@@ -116,6 +120,9 @@ export class CcPricingEstimation extends LitElement {
 
     /** @type {boolean} Collapses the component if `isToggleEnabled` is also set to `true`. */
     this._isCollapsed = false;
+
+    /** @type {Array<RuntimePlanWithQuantity|CountablePlanWithQuanty>} Sets the list of selected plans with their quantity. */
+    this._selectedPlansWithPrices = [];
 
     /** @type {HTMLParagraphElementRef} */
     this._totalRef = createRef();
@@ -221,7 +228,7 @@ export class CcPricingEstimation extends LitElement {
    * @return {number} total number of products
    */
   _getProductCount() {
-    return this.selectedPlans.reduce((itemCount, plan) => {
+    return this._selectedPlansWithPrices.reduce((itemCount, plan) => {
       return itemCount + plan.quantity;
     }, 0);
   }
@@ -292,15 +299,15 @@ export class CcPricingEstimation extends LitElement {
   /**
    * Returns the total price for a given plan (factoring its quantity)
    *
-   * @param {PlanWithQuantity} plan - the plan to compute the total for
+   * @param {CountablePlanWithQuanty|RuntimePlanWithQuantity} plan - the plan to compute the total for
    * @return {number} the total price for the given plan
    */
   _getTotalPlanPrice(plan) {
     if (this.state.type === 'loading' || this.state.type === 'error') {
       return 0;
     }
-
-    const unitPlanPrice = this._priceMap.get(plan.priceId);
+    console.log(plan);
+    const unitPlanPrice = plan.price;
     const price = this._getPrice(this.selectedTemporality.type, unitPlanPrice);
     return price * plan.quantity;
   }
@@ -311,7 +318,7 @@ export class CcPricingEstimation extends LitElement {
    * @return {number} the total price (counting all plans)
    */
   _getTotalPrice() {
-    return this.selectedPlans?.map((plan) => this._getTotalPlanPrice(plan)).reduce((a, b) => a + b, 0);
+    return this._selectedPlansWithPrices?.map((plan) => this._getTotalPlanPrice(plan)).reduce((a, b) => a + b, 0);
   }
 
   /**
@@ -327,7 +334,7 @@ export class CcPricingEstimation extends LitElement {
    * Dispatches a `cc-pricing-estimation:change-quantity` event with the plan which quantity has been reduced by 1.
    * If quantity = 0, dispatches a `cc-pricing-estimation:delete-plan` instead with the plan as payload.
    *
-   * @param {PlanWithQuantity} plan - the plan to modify
+   * @param {CountablePlanWithQuanty|RuntimePlanWithQuantity} plan - the plan to modify
    */
   _onDecreaseQuantity(plan) {
     const quantity = plan.quantity - 1;
@@ -342,7 +349,7 @@ export class CcPricingEstimation extends LitElement {
   /**
    * Dispatches a `cc-pricing-estimation:delete-plan` event with the plan as its payload
    *
-   * @param {PlanWithQuantity} plan - the plan to delete
+   * @param {CountablePlanWithQuanty|RuntimePlanWithQuantity} plan - the plan to delete
    */
   _onDeletePlan(plan) {
     dispatchCustomEvent(this, 'delete-plan', plan);
@@ -351,7 +358,7 @@ export class CcPricingEstimation extends LitElement {
   /**
    * Dispatches a `cc-pricing-estimation:change-quantity` event with the plan which quantity has been increased by 1.
    *
-   * @param {PlanWithQuantity} plan - the plan to modify
+   * @param {CountablePlanWithQuanty|RuntimePlanWithQuantity} plan - the plan to modify
    */
   _onIncreaseQuantity(plan) {
     const quantity = plan.quantity + 1;
@@ -375,6 +382,24 @@ export class CcPricingEstimation extends LitElement {
     this._isCollapsed = !this._isCollapsed;
   }
 
+  _generateUnitPrices() {
+    this._selectedPlansWithPrices = this.selectedPlans.map((selectedPlan) => {
+      if (selectedPlan.pricingType === 'runtime') {
+        return {
+          ...selectedPlan,
+          price: this._priceMap.get(selectedPlan.priceId),
+        };
+      }
+      const selectedPlanTest = this._priceMap.get('');
+      const simulator = new PricingConsumptionSimulator(selectedPlan.sections);
+
+      return {
+        ...selectedPlan,
+        price: simulator.getTotalPrice() / THIRTY_DAYS_IN_HOURS,
+      };
+    });
+  }
+
   /** @param {CcPricingEstimationPropertyValues} changedProperties */
   willUpdate(changedProperties) {
     // This is not done within the `render` function because we only want to reset this value in specific cases.
@@ -385,8 +410,16 @@ export class CcPricingEstimation extends LitElement {
 
     if (changedProperties.has('state') && this.state.type === 'loaded') {
       /** @type {Array<[string, number]>} */
-      const pricesAsKeyValue = this.state.prices.map(({ priceId, price }) => [priceId, price]);
-      this._priceMap = new Map(pricesAsKeyValue);
+      const runtimePricesAsKeyValue = this.state.runtimePrices.map(({ priceId, price }) => [priceId, price]);
+      /** @type {Array<[string, Object]>} */
+      const countablePricesAsKeyValue = this.state.countablePrices.map(({ name, ...rest }) => [name, rest]);
+      this._priceMap = new Map([...runtimePricesAsKeyValue, ...countablePricesAsKeyValue]);
+      console.log(this._priceMap);
+      this._generateUnitPrices();
+    }
+
+    if (changedProperties.has('selectedPlans') && this.selectedPlans.length > 0) {
+      this._generateUnitPrices();
     }
   }
 
@@ -402,7 +435,7 @@ export class CcPricingEstimation extends LitElement {
       ${this.isToggleEnabled ? this._renderHeaderWithToggle(totalPrice, skeleton) : this._renderHeaderWithoutToggle()}
 
       <div class="content ${classMap({ 'content--hidden': this.isToggleEnabled && this._isCollapsed })}">
-        ${this.selectedPlans.map((plan) => this._renderSelectedPlan(plan, skeleton))}
+        ${this._selectedPlansWithPrices.map((plan) => this._renderSelectedPlan(plan, skeleton))}
 
         <p class="content__total" tabindex="-1" ${ref(this._totalRef)}>
           <strong>
@@ -472,7 +505,7 @@ export class CcPricingEstimation extends LitElement {
   }
 
   /**
-   * @param {PlanWithQuantity} plan - the plan to render
+   * @param {CountablePlanWithQuanty|RuntimePlanWithQuantity} plan - the plan to render
    * @param {boolean} skeleton
    */
   _renderSelectedPlan(plan, skeleton) {

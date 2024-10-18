@@ -1,5 +1,6 @@
 import { fetchPriceSystem } from '../../lib/api-helpers.js';
 import { defineSmartComponent } from '../../lib/define-smart-component.js';
+import { formatAddonCellar, formatAddonFsbucket, formatAddonHeptapod, formatAddonPulsar } from '../../lib/product.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-pricing-estimation.js';
 
@@ -65,8 +66,8 @@ defineSmartComponent({
     updateComponent('state', { type: 'loading' });
 
     fetchPrices({ apiConfig, zoneId, currency, signal })
-      .then((prices) => {
-        updateComponent('state', { type: 'loaded', prices });
+      .then(({ runtimePrices, countablePrices }) => {
+        updateComponent('state', { type: 'loaded', runtimePrices, countablePrices });
       })
       .catch(() => {
         updateComponent('state', { type: 'error' });
@@ -85,8 +86,9 @@ defineSmartComponent({
  * @returns {Promise<Array<FormattedProductPrice>>} A promise that resolves to an array of formatted product prices.
  */
 function fetchPrices({ apiConfig, zoneId, currency, signal }) {
-  return fetchPriceSystem({ apiConfig, zoneId, currency, signal }).then(({ countable, runtime }) => {
-    const formattedRuntimeData = runtime
+  /* eslint-disable camelcase */
+  return fetchPriceSystem({ apiConfig, zoneId, currency, signal }).then((priceSystem) => {
+    const formattedRuntimeData = priceSystem.runtime
       .filter(({ source }) => source !== 'adc')
       .map(({ slug_id, price }) => {
         /** @type {FormattedProductPrice} */
@@ -96,17 +98,27 @@ function fetchPrices({ apiConfig, zoneId, currency, signal }) {
         };
         return formattedProductPrice;
       });
-    const formattedCountableData = countable.flatMap((countableItem) => {
-      return countableItem.price_plans.map(({ plan_id, price }) => {
-        /** @type {FormattedProductPrice} */
-        const formattedProductPrice = {
-          priceId: plan_id,
-          price,
-        };
-        return formattedProductPrice;
-      });
-    });
+    /* eslint-enable camelcase */
 
-    return [...formattedRuntimeData, ...formattedCountableData];
+    const formattedCountableData = [
+      {
+        name: 'Cellar',
+        ...formatAddonCellar(priceSystem),
+      },
+      {
+        name: 'FS Bucket',
+        ...formatAddonFsbucket(priceSystem),
+      },
+      {
+        name: 'Pulsar',
+        ...formatAddonPulsar(priceSystem),
+      },
+      {
+        name: 'Heptapod',
+        ...formatAddonHeptapod(priceSystem),
+      },
+    ];
+
+    return { runtimePrices: formattedRuntimeData, countablePrices: formattedCountableData };
   });
 }

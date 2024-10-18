@@ -145,6 +145,7 @@ export interface PricingSection {
   progressive?: boolean; // defaults to false
   secability?: number; // defaults to 1
   intervals: PricingInterval[];
+  quantity?: number;
 }
 
 export interface PricingInterval {

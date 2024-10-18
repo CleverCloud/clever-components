@@ -6,7 +6,7 @@ import { rawPriceSystem } from './price-system.js';
  * @typedef {import('../../components/common.types.js').RawAddonProvider} RawAddonProvider
  */
 
-/* eslint-disable quote-props */
+/* eslint-disable quote-props, camelcase */
 /** @type {Array<RawAddonProvider>} */
 const rawAddonProviders = [
   {
@@ -6155,7 +6155,7 @@ const rawAddonProviders = [
     ],
   },
 ];
-/* eslint-enable quote-props */
+/* eslint-enable quote-props, camelcase */
 
 /**
  * @param {string} addonProviderId

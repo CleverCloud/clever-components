@@ -1,3 +1,4 @@
+import { PricingSection } from '../cc-pricing-product-consumption/cc-pricing-product-consumption.js';
 import { Plan } from '../common.types.js';
 
 export type PricingEstimationState =
@@ -23,6 +24,13 @@ export interface FormattedProductPrice {
   price: number;
 }
 
-export interface PlanWithQuantity extends Plan {
+export interface RuntimePlanWithQuantity extends Plan {
+  pricingType: 'runtime';
   quantity: number;
+}
+
+export interface CountablePlanWithQuanty extends Plan {
+  pricingType: 'countable';
+  quantity: number;
+  sections: PricingSection[];
 }

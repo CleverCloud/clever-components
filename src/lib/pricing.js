@@ -54,13 +54,12 @@ export class PricingConsumptionSimulator {
   constructor(sections = []) {
     /** @type {PricingSimulatorState}*/
     this._state = {};
-    sections.forEach(({ type, intervals, progressive = false, secability = 1 }) => {
-      /**  */
+    sections.forEach(({ type, intervals, progressive = false, secability = 1, quantity = 0 }) => {
       this._state[type] = {
         intervals,
         progressive,
         secability,
-        quantity: 0,
+        quantity,
       };
     });
   }

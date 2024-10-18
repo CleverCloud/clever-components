@@ -41,7 +41,9 @@ const THIRTY_DAYS_IN_HOURS = 24 * 30;
  * @returns {{ sections: Array<PricingSection> }} An object containing sections for storage and outbound traffic.
  */
 export function formatAddonCellar(priceSystem) {
+  console.log(priceSystem);
   return {
+    pricingType: 'countable',
     sections: [
       {
         type: 'storage',
@@ -63,6 +65,7 @@ export function formatAddonCellar(priceSystem) {
  */
 export function formatAddonFsbucket(priceSystem) {
   return {
+    pricingType: 'countable',
     sections: [
       {
         type: 'storage',
@@ -80,6 +83,7 @@ export function formatAddonFsbucket(priceSystem) {
  */
 export function formatAddonPulsar(priceSystem) {
   return {
+    pricingType: 'countable',
     sections: [
       {
         type: 'storage',
@@ -105,6 +109,7 @@ export function formatAddonPulsar(priceSystem) {
  */
 export function formatAddonHeptapod(priceSystem) {
   return {
+    pricingType: 'countable',
     sections: [
       {
         type: 'storage',
@@ -131,7 +136,7 @@ export function formatAddonHeptapod(priceSystem) {
  * @param {string} serviceName - The name of the service to format consumption intervals for.
  * @returns {Pick<PricingSection, 'secability' | 'intervals'>}
  */
-function formatProductConsumptionIntervals(priceSystem, serviceName) {
+export function formatProductConsumptionIntervals(priceSystem, serviceName) {
   const service = priceSystem.countable.find((c) => c.service === serviceName);
 
   const secability =
@@ -200,12 +205,13 @@ function formatAddonPlans(allPlans, priceSystem, selectedFeatures) {
     const priceItem = priceSystem.runtime.find(
       (runtime) => runtime.slug_id.toLowerCase() === plan.price_id.toLowerCase(),
     );
-    console.log(plan);
+
     return {
+      pricingType: 'runtime',
       name: plan.name,
       price: priceItem?.price ?? 0,
       features: formatAddonFeatures(plan.features, selectedFeatures),
-      priceId: priceItem?.slug_id ?? plan.price_id,
+      priceId: priceItem?.slug_id,
     };
   });
 }
@@ -258,6 +264,7 @@ function formatRuntimePlans(allFlavors, priceSystem, features) {
       (runtime) => runtime.slug_id.toLowerCase() === flavor.price_id.toLowerCase(),
     );
     return {
+      pricingType: 'runtime',
       name: flavor.name,
       price: priceItem?.price ?? 0,
       features: formatRuntimeFeatureValues(features, flavor),

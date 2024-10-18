@@ -1072,8 +1072,8 @@ export const translations = {
     formatNumber(lang, number),
   'cc-pricing-product-consumption.outbound-traffic.label': `trafic sortant`,
   'cc-pricing-product-consumption.outbound-traffic.title': `Trafic sortant :`,
-  'cc-pricing-product-consumption.price': /** @param {{price: number, code: string}} _ */ ({ price, code }) =>
-    `${formatCurrency(lang, price, { currency: code })}`,
+  'cc-pricing-product-consumption.price': /** @param {{price: number, currency: string}} _ */ ({ price, currency }) =>
+    `${formatCurrency(lang, price, { currency })}`,
   'cc-pricing-product-consumption.price-interval.bytes': /** @param {{price: number, currency: string}} _ */ ({
     price,
     currency,
