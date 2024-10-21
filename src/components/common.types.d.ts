@@ -188,8 +188,6 @@ interface Zone {
   lon: number; // Longitude
 }
 
-type ToggleStateType = 'off' | 'open' | 'close';
-
 type AppStatus =
   | 'restart-failed'
   | 'restarting'

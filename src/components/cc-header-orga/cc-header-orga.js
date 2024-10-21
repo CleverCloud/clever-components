@@ -5,6 +5,7 @@ import {
   iconRemixPhoneFill as iconPhone,
 } from '../../assets/cc-remix.icons.js';
 import '../cc-badge/cc-badge.js';
+import '../cc-block/cc-block.js';
 import '../cc-img/cc-img.js';
 import '../cc-notice/cc-notice.js';
 
@@ -14,6 +15,7 @@ import { i18n } from '../../translations/translation.js';
 
 /**
  * @typedef {import('./cc-header-orga.types.js').HeaderOrgaState} HeaderOrgaState
+ * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLSlotElement>} SlotEventWithTarget
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
  */
 
@@ -54,6 +56,26 @@ export class CcHeaderOrga extends LitElement {
       .join('');
   }
 
+  /**
+   * Returns a function that sets or removes the 'slot' attribute on a slot element based on whether it has assigned nodes.
+   *
+   * @param {string} slotName - The name of the slot to set if the element has assigned nodes.
+   * @returns {(e: SlotEventWithTarget) => void} A function that handles the slot change event.
+   */
+  _setSlotAttributeIfHasAssignedNodes(slotName) {
+    return (e) => {
+      const slotElement = e.target;
+      const isSlotted = slotElement.assignedNodes().length > 0;
+
+      if (isSlotted) {
+        slotElement.setAttribute('slot', slotName);
+      } else {
+        slotElement.removeAttribute('slot');
+      }
+      this.requestUpdate();
+    };
+  }
+
   render() {
     if (this.state.type === 'error') {
       return html` <cc-notice intent="warning" message="${i18n('cc-header-orga.error')}"></cc-notice> `;
@@ -91,8 +113,8 @@ export class CcHeaderOrga extends LitElement {
    */
   _renderHeader({ name, avatar = null, cleverEnterprise = false, emergencyNumber = null, skeleton = false }) {
     return html`
-      <div class="wrapper">
-        <div class="header-body">
+      <cc-block>
+        <div slot="content" class="header-body">
           <p class="identity">
             ${this._renderAvatar(skeleton, avatar, name)}
             <span class="name ${classMap({ skeleton })}">${name}</span>
@@ -119,8 +141,19 @@ export class CcHeaderOrga extends LitElement {
               : ''}
           </div>
         </div>
-        <slot name="footer"></slot>
-      </div>
+        <!-- @ts-ignore -->
+        <slot
+          @slotchange=${this._setSlotAttributeIfHasAssignedNodes('footer-left')}
+          name="footer-left"
+          class="footer"
+        ></slot>
+        <!-- @ts-ignore -->
+        <slot
+          @slotchange=${this._setSlotAttributeIfHasAssignedNodes('footer-right')}
+          name="footer-right"
+          class="footer"
+        ></slot>
+      </cc-block>
     `;
   }
 
@@ -165,20 +198,12 @@ export class CcHeaderOrga extends LitElement {
           width: 100%;
         }
 
-        .wrapper {
-          background-color: var(--cc-color-bg-default, #fff);
-          border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
-          overflow: hidden;
-        }
-
         .header-body {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
           gap: 1em;
           justify-content: space-between;
-          padding: 1em;
         }
 
         .identity {

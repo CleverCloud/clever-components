@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { dispatchCustomEvent } from '../../lib/events.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block/cc-block.js';
@@ -8,7 +9,7 @@ import '../cc-notice/cc-notice.js';
 
 /**
  * @typedef {import('./cc-addon-credentials.types.js').Credential} Credential
- * @typedef {import('../common.types.js').ToggleStateType} ToggleStateType
+ * @typedef {import('../cc-block/cc-block.types.js').BlockToggleState} BlockToggleState
  * @typedef {import('./cc-addon-credentials.types.js').AddonType} AddonType
  */
 
@@ -20,6 +21,8 @@ import '../cc-notice/cc-notice.js';
  * * When the `value` of a credential is nullish, a skeleton UI pattern is displayed (loading hint).
  *
  * @cssdisplay block
+ *
+ * @fires {CustomEvent<'open'|'close'>} cc-addon-credentials:toggle-change - Fires toggle state whenever it changes.
  */
 export class CcAddonCredentials extends LitElement {
   static get properties() {
@@ -28,7 +31,7 @@ export class CcAddonCredentials extends LitElement {
       error: { type: Boolean },
       image: { type: String },
       name: { type: String },
-      toggleState: { type: Boolean, attribute: 'toggle-state' },
+      toggle: { type: String },
       type: { type: String },
     };
   }
@@ -48,8 +51,8 @@ export class CcAddonCredentials extends LitElement {
     /** @type {string|null} Sets the display name of the add-on. */
     this.name = null;
 
-    /** @type {ToggleStateType} Sets the toggle state of the inner block. */
-    this.toggleState = 'off';
+    /** @type {BlockToggleState} Sets the toggle state of the inner block. */
+    this.toggle = 'off';
 
     /** @type {AddonType}  Sets the type of the add-on. */
     this.type = null;
@@ -89,18 +92,28 @@ export class CcAddonCredentials extends LitElement {
     }
   }
 
+  /** @param {CustomEvent<'open'|'close'>} event */
+  _onToggleChange({ detail: value }) {
+    this.toggle = value;
+    dispatchCustomEvent(this, 'toggle-change', this.toggle);
+  }
+
   render() {
     return html`
-      <cc-block image=${ifDefined(this.image ?? undefined)} state=${this.toggleState}>
-        <div slot="title">${i18n('cc-addon-credentials.title', { name: this.name })}</div>
+      <cc-block
+        image=${ifDefined(this.image ?? undefined)}
+        toggle=${this.toggle}
+        @cc-block:toggle-change=${this._onToggleChange}
+      >
+        <div slot="header-title">${i18n('cc-addon-credentials.title', { name: this.name })}</div>
 
         ${!this.error
           ? html`
-              <div>${this._getDescription(this.type)}</div>
+              <div slot="content">${this._getDescription(this.type)}</div>
 
               ${this.credentials != null
                 ? html`
-                    <div class="credential-list">
+                    <div slot="content" class="credential-list">
                       ${this.credentials.map(
                         ({ type, secret, value }) => html`
                           <cc-input-text
@@ -119,7 +132,13 @@ export class CcAddonCredentials extends LitElement {
             `
           : ''}
         ${this.error
-          ? html` <cc-notice intent="warning" message="${i18n('cc-addon-credentials.loading-error')}"></cc-notice> `
+          ? html`
+              <cc-notice
+                slot="content"
+                intent="warning"
+                message="${i18n('cc-addon-credentials.loading-error')}"
+              ></cc-notice>
+            `
           : ''}
       </cc-block>
     `;

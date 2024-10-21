@@ -90,11 +90,11 @@ export class CcGrafanaInfo extends LitElement {
 
     return html`
       <cc-block>
-        <div slot="title">${i18n('cc-grafana-info.main-title')}</div>
+        <div slot="header-title">${i18n('cc-grafana-info.main-title')}</div>
 
         ${isSwitchingGrafanaStatus ? html` <cc-loader slot="overlay"></cc-loader> ` : ''}
 
-        <cc-block-section>
+        <cc-block-section slot="content">
           <div slot="title">${i18n('cc-grafana-info.documentation-title')}</div>
           <div slot="info">${i18n('cc-grafana-info.documentation-description')}</div>
           <div>
@@ -110,7 +110,7 @@ export class CcGrafanaInfo extends LitElement {
 
         ${this.state.type === 'loading'
           ? html`
-              <cc-block-section>
+              <cc-block-section slot="content">
                 <div slot="title">${i18n('cc-grafana-info.loading-title')}</div>
                 <div>
                   <cc-loader></cc-loader>
@@ -120,7 +120,7 @@ export class CcGrafanaInfo extends LitElement {
           : ''}
         ${this.state.type === 'error'
           ? html`
-              <cc-block-section>
+              <cc-block-section slot="content">
                 <div slot="title">${i18n('cc-grafana-info.loading-title')}</div>
                 <cc-notice intent="warning" message="${i18n('cc-grafana-info.error-loading')}"></cc-notice>
               </cc-block-section>
@@ -128,13 +128,18 @@ export class CcGrafanaInfo extends LitElement {
           : ''}
         ${isGrafanaDisabled
           ? html`
-              <cc-block-section>
+              <cc-block-section slot="content">
                 <div slot="title">${i18n('cc-grafana-info.enable-title')}</div>
                 <div slot="info">
                   <p>${i18n('cc-grafana-info.enable-description')}</p>
                 </div>
                 <div>
-                  <cc-button success ?disabled=${isFormDisabled} @cc-button:click=${this._onEnableSubmit}>
+                  <cc-button
+                    success
+                    ?waiting=${isSwitchingGrafanaStatus}
+                    ?disabled=${isFormDisabled}
+                    @cc-button:click=${this._onEnableSubmit}
+                  >
                     ${i18n('cc-grafana-info.enable-title')}
                   </cc-button>
                 </div>
@@ -143,7 +148,7 @@ export class CcGrafanaInfo extends LitElement {
           : ''}
         ${isGrafanaEnabled
           ? html`
-              <cc-block-section>
+              <cc-block-section slot="content">
                 <div slot="title">${i18n('cc-grafana-info.grafana-link-title')}</div>
                 <div slot="info">
                   <p>${i18n('cc-grafana-info.grafana-link-description')}</p>
@@ -165,7 +170,7 @@ export class CcGrafanaInfo extends LitElement {
                     `}
               </cc-block-section>
 
-              <cc-block-section>
+              <cc-block-section slot="content">
                 <div slot="title">${i18n('cc-grafana-info.reset-title')}</div>
                 <div slot="info">${i18n('cc-grafana-info.reset-description')}</div>
                 <div>
@@ -185,7 +190,7 @@ export class CcGrafanaInfo extends LitElement {
           ? html`
               ${this._getDashboards().map(
                 (item) => html`
-                  <cc-block-section>
+                  <cc-block-section slot="content">
                     <div slot="title">${item.title}</div>
                     <div slot="info">${item.description}</div>
                     <div>
@@ -201,17 +206,30 @@ export class CcGrafanaInfo extends LitElement {
           : ''}
         ${isGrafanaEnabled
           ? html`
-              <cc-block-section>
+              <cc-block-section slot="content">
                 <div slot="title">${i18n('cc-grafana-info.disable-title')}</div>
                 <div slot="info">${i18n('cc-grafana-info.disable-description')}</div>
                 <div>
-                  <cc-button danger delay="3" ?disabled=${isFormDisabled} @cc-button:click=${this._onDisableSubmit}>
+                  <cc-button
+                    ?waiting=${isSwitchingGrafanaStatus}
+                    danger
+                    delay="3"
+                    ?disabled=${isFormDisabled}
+                    @cc-button:click=${this._onDisableSubmit}
+                  >
                     ${i18n('cc-grafana-info.disable-title')}
                   </cc-button>
                 </div>
               </cc-block-section>
             `
           : ''}
+
+        <div slot="footer-right">
+          ${ccLink(
+            `${GRAFANA_DOCUMENTATION}`,
+            html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-grafana-info.documentation.text')}`,
+          )}
+        </div>
       </cc-block>
     `;
   }

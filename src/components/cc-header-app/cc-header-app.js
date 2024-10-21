@@ -16,6 +16,7 @@ import { skeletonStyles } from '../../styles/skeleton.js';
 import { waitingStyles } from '../../styles/waiting.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
+import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-notice/cc-notice.js';
@@ -215,8 +216,8 @@ export class CcHeaderApp extends LitElement {
     const isRunning = ['restart-failed', 'restarting', 'running'].includes(appInfo.status);
 
     return html`
-      <div class="wrapper">
-        <div class="main">
+      <cc-block>
+        <div slot="content" class="main">
           <div class="flavor-logo ${classMap({ skeleton })}" title=${ifDefined(appInfo.variantName)}>
             <!-- image has a presentation role => alt="" -->
             <img class="flavor-logo_img" src=${ifDefined(appInfo.variantLogo)} alt="" />
@@ -238,12 +239,12 @@ export class CcHeaderApp extends LitElement {
           <div class="buttons">${this._renderActions(appInfo.status, isDeploying, skeleton)}</div>
         </div>
 
-        <div class="messages ${classMap({ 'cc-waiting': isDeploying })}">
+        <div slot="footer-left" class="messages ${classMap({ 'cc-waiting': isDeploying })}">
           ${this._renderFooter(appInfo.status, appInfo.lastDeploymentLogsUrl, skeleton)}
 
           <cc-zone .state=${zoneState} mode="small-infra"></cc-zone>
         </div>
-      </div>
+      </cc-block>
     `;
   }
 
@@ -412,18 +413,10 @@ export class CcHeaderApp extends LitElement {
           display: block;
         }
 
-        .wrapper {
-          background-color: var(--cc-color-bg-default, #fff);
-          border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
-          overflow: hidden;
-        }
-
         .main {
           display: flex;
           flex-wrap: wrap;
           gap: 1em;
-          padding: 1em;
         }
 
         .flavor-logo {
@@ -510,15 +503,11 @@ export class CcHeaderApp extends LitElement {
 
         .messages {
           align-items: center;
-          background-color: var(--cc-color-bg-neutral);
-          box-shadow: inset 0 6px 6px -6px rgb(0 0 0 / 40%);
-          box-sizing: border-box;
           display: flex;
           flex-wrap: wrap;
           font-size: 0.9em;
           font-style: italic;
           gap: 0.57em;
-          padding: 0.5em 1.1em;
         }
 
         .status-icon {

@@ -133,16 +133,22 @@ export class CcAddonFeatures extends LitElement {
 
     return html`
       <cc-block>
-        <div slot="title">${i18n('cc-addon-features.title')}</div>
+        <div slot="header-title">${i18n('cc-addon-features.title')}</div>
 
-        <div>${i18n('cc-addon-features.details')}</div>
+        <div slot="content">${i18n('cc-addon-features.details')}</div>
 
         ${this.state.type === 'error'
-          ? html` <cc-notice intent="warning" message="${i18n('cc-addon-features.loading-error')}"></cc-notice> `
+          ? html`
+              <cc-notice
+                slot="content"
+                intent="warning"
+                message="${i18n('cc-addon-features.loading-error')}"
+              ></cc-notice>
+            `
           : ''}
         ${isLoadedOrLoading
           ? html`
-              <div class="feature-list">
+              <div slot="content" class="feature-list">
                 ${features.map(
                   (feature) => html`
                     <div class="feature ${classMap({ skeleton })}">
