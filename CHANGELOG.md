@@ -5,6 +5,45 @@ title: 'Changelog'
 
 # Changelog
 
+## [16.0.0](https://github.com/CleverCloud/clever-components/compare/15.3.0...16.0.0) (2024-10-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* **cc-header-orga:** the footer slot has changed
+    - `slot='footer'`: has been removed
+    - `slot='footer-left'`: has been created
+    - `slot='footer-right`: has been created
+* **cc-addon-credentials:** the properties have changed
+    - `toggleState`: property has been renamed to `toggle`
+* **cc-block:** the properties have changed
+    - `noHead`: property has been deleted
+    - `state`: property has been renamed to `toggle`
+    - `overlay`: property has been deleted
+
+### 🚀 Features
+
+* **cc-domain-management:** move doc link into `cc-block` footer slot ([6430b67](https://github.com/CleverCloud/clever-components/commit/6430b6772b69b2eab4c60a6024d02951f9581450))
+* **cc-elasticsearch-info:** move doc link into `cc-block` footer slot ([ecfa136](https://github.com/CleverCloud/clever-components/commit/ecfa136ab24bccb1c218d9bf3908fb68fc56e60c))
+* **cc-env-var-form:** move doc link into `cc-block` footer slot ([2be6567](https://github.com/CleverCloud/clever-components/commit/2be656740c9d98f8d80e55189829f47db26e0154))
+* **cc-grafana-info:** move doc link into `cc-block` footer slot ([1f4940e](https://github.com/CleverCloud/clever-components/commit/1f4940e84f484606c30bb131754e5239418d60b4))
+* **cc-heptapod-info:** move doc link into `cc-block` footer slot ([cab5c7e](https://github.com/CleverCloud/clever-components/commit/cab5c7e0d6d3d69a29c0d65b2406a3d278c53b6d))
+* **cc-invoice-list:** move doc link into `cc-block` footer slot ([ff67820](https://github.com/CleverCloud/clever-components/commit/ff67820743d34c2b72c3152de8362cad6273fe7e))
+* **cc-invoice-table:** support multi-currency ([a7a9ec2](https://github.com/CleverCloud/clever-components/commit/a7a9ec2eb89c611e6282c2399364c7b8447db592)), closes [#1171](https://github.com/CleverCloud/clever-components/issues/1171)
+* **cc-invoice:** add `currency` as part of the `state` ([5590257](https://github.com/CleverCloud/clever-components/commit/5590257e047741e9d91c970b46ca426d7de121a0)), closes [#1169](https://github.com/CleverCloud/clever-components/issues/1169)
+* **cc-jenkins-info:** move doc link into `cc-block` footer slot ([a23e8f7](https://github.com/CleverCloud/clever-components/commit/a23e8f755308d59e58102b8744f4579ceb8aa7e3))
+* **cc-matomo-info:** move doc link into `cc-block` footer slot ([20ef5fa](https://github.com/CleverCloud/clever-components/commit/20ef5fa9c866e9e975cd3abc2fb4b5678d15a361))
+* **cc-orga-member-list:** move doc link into `cc-block` footer slot ([7f4e006](https://github.com/CleverCloud/clever-components/commit/7f4e006d6c2ae9daf71436c5168e8be90cc29b7b))
+* **cc-ssh-key-list:** move doc link into `cc-block` footer slot ([841a584](https://github.com/CleverCloud/clever-components/commit/841a5845dc3d77bf5475d95892acd62a0251d722))
+* **cc-tcp-redirection-form:** move doc link into `cc-block` footer slot ([b619304](https://github.com/CleverCloud/clever-components/commit/b619304375b52e39dd9be430b4db07cabe82da1f))
+
+
+### 🛠 Code Refactoring
+
+* **cc-addon-credentials:** adapt component with the new `cc-block` ([2e39c47](https://github.com/CleverCloud/clever-components/commit/2e39c4763f1db9e9c12bd88b7b59ee5a41f1fd99))
+* **cc-block:** rework component and introduce slot stack ([7bb3425](https://github.com/CleverCloud/clever-components/commit/7bb34257a205d5d3de4cecdfb4acfda2b9f2fdf9)), closes [#225](https://github.com/CleverCloud/clever-components/issues/225)
+* **cc-header-orga:** adapt component with the new `cc-block` ([9107721](https://github.com/CleverCloud/clever-components/commit/9107721be75964991fe13ede59a41175cc479f1a))
+
 ## [15.3.0](https://github.com/CleverCloud/clever-components/compare/15.2.2...15.3.0) (2024-10-09)
 
 
