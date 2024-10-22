@@ -164,7 +164,6 @@ export class CcBlock extends LitElement {
           border-radius: var(--cc-border-radius-default, 0.25em);
           box-sizing: border-box;
           display: block;
-          margin-bottom: 1em;
           overflow: hidden;
           position: relative;
         }

@@ -644,7 +644,7 @@ export class CcDomainManagement extends LitElement {
         .wrapper {
           display: flex;
           flex-direction: column;
-          gap: 0.5em;
+          gap: 1.5em;
         }
 
         code {
