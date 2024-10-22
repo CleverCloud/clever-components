@@ -107,9 +107,8 @@ defineSmartComponent({
               'domainListState',
               /** @param {DomainManagementListStateLoaded} domainListState */
               (domainListState) => {
-                const hasPathPrefix = pathPrefix != null && pathPrefix !== '/';
                 // TODO: once the API returns actual ids, this should be adapted (either refetch or use the API response)
-                const id = hasPathPrefix ? hostname + pathPrefix : hostname;
+                const id = hostname + pathPrefix;
 
                 /** @type {DomainStateIdle} */
                 const newDomain = {
