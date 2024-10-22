@@ -752,7 +752,6 @@ export class CcDomainManagement extends LitElement {
           color: var(--cc-color-text-primary-strongest);
           font-family: var(--cc-ff-monospace);
           font-weight: bold;
-          padding-left: 0.5em;
         }
 
         .domain-link {
