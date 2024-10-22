@@ -118,7 +118,6 @@ export class CcInvoice extends LitElement {
           height: 31cm;
           margin-inline: auto;
           max-width: 22cm;
-          padding-inline: 1em;
           width: 100%;
         }
       `,
