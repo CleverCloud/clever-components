@@ -439,7 +439,7 @@ export const translations = {
   'cc-env-var-form.description.config-provider': /** @param {{addonName: string}} _ */ ({ addonName }) =>
     sanitize`Configuration exposed to dependent applications. <a href="https://www.clever-cloud.com/doc/deploy/addon/config-provider/">Learn more</a><br>These variables will be injected as environment variables in applications that have the add-on <strong>${addonName}</strong> in their service dependencies.<br>Every time you update your changes, all the dependent applications will be automatically restarted.`,
   'cc-env-var-form.description.env-var': /** @param {{appName: string}} _ */ ({ appName }) =>
-    sanitize`These variables will be injected as environment variables in the application <strong>${appName}</strong>. <a href="https://developers.clever-cloud.com/doc/reference/reference-environment-variables/">Learn more</a>`,
+    sanitize`These variables will be injected as environment variables in the application <strong>${appName}</strong>.`,
   'cc-env-var-form.description.exposed-config': /** @param {{appName: string}} _ */ ({ appName }) =>
     sanitize`Configuration exposed to dependent applications. <a href="https://www.clever-cloud.com/doc/admin-console/service-dependencies/">Learn more</a><br>These variables won't be injected in the application <strong>${appName}</strong>, they will be injected as environment variables in applications that have <strong>${appName}</strong> in their service dependencies.`,
   'cc-env-var-form.documentation.text': `Environment variables - Reference`,
