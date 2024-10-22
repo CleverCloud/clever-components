@@ -5,6 +5,22 @@ title: 'Changelog'
 
 # Changelog
 
+## [16.1.0](https://github.com/CleverCloud/clever-components/compare/16.0.0...16.1.0) (2024-10-22)
+
+
+### 🚀 Features
+
+* **cc-domain-management:** remove spacing between domain and path ([b5498f3](https://github.com/CleverCloud/clever-components/commit/b5498f31f89e24ca6ba9dda9d2685de34d7a0b7e)), closes [#1204](https://github.com/CleverCloud/clever-components/issues/1204)
+
+
+### 🐛 Bug Fixes
+
+* **cc-block:** remove margin bottom ([1ca09d5](https://github.com/CleverCloud/clever-components/commit/1ca09d553d9f07b8326fc47946b6d35e118b55ae))
+* **cc-domain-management:** allow newly added domain to be marked as primary ([68c3961](https://github.com/CleverCloud/clever-components/commit/68c3961645aedb7dafeff7dd0822a6fde7592dd1)), closes [#1213](https://github.com/CleverCloud/clever-components/issues/1213)
+* **cc-domain-management:** revert to initial gap ([993ff9f](https://github.com/CleverCloud/clever-components/commit/993ff9f106e4e77585f2c0b9551d3f6a0b32541a))
+* **cc-env-var-form:** remove unnecessary link and fix typo in description text ([4b2e3f7](https://github.com/CleverCloud/clever-components/commit/4b2e3f701a125daf189937eef18b5395ac534023))
+* **cc-invoice:** remove unnecessary padding ([458a488](https://github.com/CleverCloud/clever-components/commit/458a4889ac2f06d3c76421cafe5ddd73df7aeca5))
+
 ## [16.0.0](https://github.com/CleverCloud/clever-components/compare/15.3.0...16.0.0) (2024-10-21)
 
 
