@@ -23,9 +23,8 @@ setLanguage(INIT_LANG);
 
 const ALL_LANGS = availableLanguages.map((o) => o.value);
 
-window.addEventListener('keypress', ({ keyCode, altKey, ctrlKey, metaKey, shiftKey }) => {
-  // "i" key
-  if (keyCode === 105 && !altKey && !ctrlKey && !metaKey && !shiftKey) {
+window.addEventListener('keypress', ({ key, altKey, ctrlKey, metaKey, shiftKey }) => {
+  if (key === 'i' && !altKey && !ctrlKey && !metaKey && !shiftKey) {
     const langIdx = ALL_LANGS.indexOf(getLanguage());
     const nextIdx = (langIdx + 1) % ALL_LANGS.length;
     const nextLang = ALL_LANGS[nextIdx];
