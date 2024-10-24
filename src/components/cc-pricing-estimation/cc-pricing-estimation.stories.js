@@ -1,6 +1,8 @@
+import { formatEstimationPrices } from '../../lib/product.js';
 import { getProductAddon } from '../../stories/fixtures/addon-plans.js';
+import { rawPriceSystemDollars, rawPriceSystemEuro } from '../../stories/fixtures/price-system.js';
 import { getProductRuntime } from '../../stories/fixtures/runtime-plans.js';
-import { makeStory } from '../../stories/lib/make-story.js';
+import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-pricing-estimation.js';
 
 export default {
@@ -13,33 +15,97 @@ const conf = {
   component: 'cc-pricing-estimation',
 };
 
+/**
+ * @typedef {import('./cc-pricing-estimation.js').CcPricingEstimation} CcPricingEstimation
+ * @typedef {import('./cc-pricing-estimation.types.js').PricingEstimationStateLoaded} PricingEstimationStateLoaded
+ * @typedef {import('./cc-pricing-estimation.types.js').RuntimePlanWithQuantity} RuntimePlanWithQuantity
+ * @typedef {import('./cc-pricing-estimation.types.js').CountablePlanWithQuanty} CountablePlanWithQuanty
+ * @typedef {import('./cc-pricing-estimation.types.js').FormattedRuntimePrice} FormattedRuntimePrice
+ */
+
+const THIRTY_DAYS_IN_HOURS = 24 * 30;
+const ONE_GIGABYTE = 1e9;
+
+const pricesInEuro = formatEstimationPrices(rawPriceSystemEuro);
+const pricesInDollars = formatEstimationPrices(rawPriceSystemDollars);
+
+/** @type {PricingEstimationStateLoaded} */
+const defaultState = {
+  type: 'loaded',
+  runtimePrices: pricesInEuro.runtimePrices,
+  countablePrices: pricesInEuro.countablePrices,
+};
+
+/** @type {RuntimePlanWithQuantity} */
 const pgExample = {
   productName: 'Postgresql',
   ...getProductAddon('postgresql-addon').plans.find((p) => p.name === 'XS Small Space'),
   quantity: 2,
 };
 
+/** @type {CountablePlanWithQuanty} */
 const cellarExample = {
   productName: 'Cellar',
   name: 'Storage: 1.5 TB, Outbound traffic: 500 GB',
-  price: 0.09449999999999999,
+  price: 0,
+  sections: [
+    {
+      type: 'storage',
+      service: 'cellar.storage',
+      intervals: [
+        {
+          minRange: 0,
+          maxRange: 100 * 1e6,
+          price: (0 * THIRTY_DAYS_IN_HOURS) / ONE_GIGABYTE,
+        },
+        {
+          minRange: 100 * 1e6,
+          maxRange: 1e12,
+          price: (0.00002844444444444444 * THIRTY_DAYS_IN_HOURS) / ONE_GIGABYTE,
+        },
+        {
+          minRange: 1e12,
+          maxRange: 25 * 1e12,
+          price: (0.00002133333333333333 * THIRTY_DAYS_IN_HOURS) / ONE_GIGABYTE,
+        },
+        {
+          minRange: 25 * 1e12,
+          price: (0.00001422222222222222 * THIRTY_DAYS_IN_HOURS) / ONE_GIGABYTE,
+        },
+      ],
+    },
+    {
+      type: 'outbound-traffic',
+      service: 'cellar.outbound',
+      intervals: [
+        {
+          minRange: 0,
+          maxRange: 10 * 1e12,
+          price: 0.09 / ONE_GIGABYTE,
+        },
+        {
+          minRange: 10 * 1e12,
+          price: 0.07 / ONE_GIGABYTE,
+        },
+      ],
+    },
+  ],
   quantity: 1,
 };
 
+/** @type {RuntimePlanWithQuantity} */
 const nodeExample = {
   productName: 'Node.js',
   ...getProductRuntime('node').plans.find((p) => p.name === 'S'),
   quantity: 3,
 };
 
+/** @type {Array<RuntimePlanWithQuantity|CountablePlanWithQuanty>} */
 const selectedPlans = [pgExample, cellarExample, nodeExample];
 
+/** @type {Partial<CcPricingEstimation>} */
 const defaultItem = {
-  currencies: [
-    { code: 'EUR', changeRate: 1 },
-    { code: 'GBP', changeRate: 0.88603 },
-    { code: 'USD', changeRate: 1.1717 },
-  ],
+  currencies: ['EUR', 'GBP', 'USD'],
   temporalities: [
     {
       type: 'second',
@@ -66,17 +132,40 @@ const defaultItem = {
 };
 
 export const defaultStory = makeStory(conf, {
-  items: [defaultItem],
+  /** @type {Partial<CcPricingEstimation>[]} */
+  items: [
+    {
+      ...defaultItem,
+      state: defaultState,
+    },
+  ],
+});
+
+export const loading = makeStory(conf, {
+  /** @type {Partial<CcPricingEstimation>[]} */
+  items: [
+    {
+      ...defaultItem,
+      state: { type: 'loading' },
+    },
+  ],
+});
+
+export const error = makeStory(conf, {
+  /** @type {Partial<CcPricingEstimation>[]} */
+  items: [
+    {
+      selectedPlans: defaultItem.selectedPlans,
+      state: { type: 'error' },
+    },
+  ],
 });
 
 export const empty = makeStory(conf, {
+  /** @type {Partial<CcPricingEstimation>[]} */
   items: [
     {
-      currencies: [
-        { code: 'EUR', changeRate: 1 },
-        { code: 'GBP', changeRate: 0.88603 },
-        { code: 'USD', changeRate: 1.1717 },
-      ],
+      currencies: ['EUR', 'GBP', 'USD'],
       temporalities: [
         {
           type: 'second',
@@ -99,19 +188,28 @@ export const empty = makeStory(conf, {
           digits: 2,
         },
       ],
+      state: defaultState,
     },
   ],
 });
 
 export const dataLoaded = makeStory(conf, {
-  items: [defaultItem],
+  /** @type {Partial<CcPricingEstimation>[]} */
+  items: [
+    {
+      ...defaultItem,
+      state: defaultState,
+    },
+  ],
 });
 
 export const dataLoadedWithToggle = makeStory(conf, {
+  /** @type {Partial<CcPricingEstimation>[]} */
   items: [
     {
       ...defaultItem,
       isToggleEnabled: true,
+      state: defaultState,
     },
   ],
 });
@@ -128,9 +226,11 @@ export const dataLoadedWithCustomFooter = makeStory(conf, {
       color: var(--cc-color-text-primary-highlight);
     }
   `,
+  /** @type {Partial<CcPricingEstimation>[]} */
   items: [
     {
       ...defaultItem,
+      state: defaultState,
       innerHTML:
         '<p slot="footer">Here is my custom footer with a great link leading to <a href="https://www.clever-cloud.com/">Clever Cloud</a>.</p>',
     },
@@ -138,58 +238,126 @@ export const dataLoadedWithCustomFooter = makeStory(conf, {
 });
 
 export const dataLoadedWithDollars = makeStory(conf, {
+  /** @type {Partial<CcPricingEstimation>[]} */
   items: [
     {
       ...defaultItem,
-      selectedCurrency: { code: 'USD', changeRate: 1.1717 },
+      selectedCurrency: 'USD',
+      state: defaultState,
     },
   ],
 });
 
 export const dataLoadedWithTemporalitySecond7Digits = makeStory(conf, {
+  /** @type {Partial<CcPricingEstimation>[]} */
   items: [
     {
       ...defaultItem,
       selectedTemporality: { type: 'second', digits: 7 },
+      state: defaultState,
     },
   ],
 });
 
 export const dataLoadedWithTemporalityMinute5Digits = makeStory(conf, {
+  /** @type {Partial<CcPricingEstimation>[]} */
   items: [
     {
       ...defaultItem,
       selectedTemporality: { type: 'minute', digits: 5 },
+      state: defaultState,
     },
   ],
 });
 
 export const dataLoadedWithTemporalityHour3Digits = makeStory(conf, {
+  /** @type {Partial<CcPricingEstimation>[]} */
   items: [
     {
       ...defaultItem,
       selectedTemporality: { type: 'hour', digits: 3 },
+      state: defaultState,
     },
   ],
 });
 
 export const dataLoadedWithTemporalityDay2Digits = makeStory(conf, {
+  /** @type {Partial<CcPricingEstimation>[]} */
   items: [
     {
       ...defaultItem,
       selectedTemporality: { type: 'day', digits: 2 },
+      state: defaultState,
     },
   ],
 });
 
 export const dataLoadedWithTemporality30Days1Digit = makeStory(conf, {
+  /** @type {Partial<CcPricingEstimation>[]} */
   items: [
     {
       ...defaultItem,
       selectedTemporality: { type: '30-days', digits: 1 },
+      state: defaultState,
     },
   ],
 });
 
-// Right now, because of how we're using this component, we don't need:
-// * error state
+export const simulations = makeStory(conf, {
+  items: [
+    {
+      currencies: defaultItem.currencies,
+      temporalities: defaultItem.temporalities,
+    },
+  ],
+  simulations: [
+    storyWait(
+      2000,
+      /** @param {CcPricingEstimation[]} components */
+      ([component]) => {
+        component.state = defaultState;
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcPricingEstimation[]} components */
+      ([component]) => {
+        component.selectedPlans = defaultItem.selectedPlans.slice(0, 1);
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcPricingEstimation[]} components */
+      ([component]) => {
+        component.selectedPlans = defaultItem.selectedPlans;
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcPricingEstimation[]} components */
+      ([component]) => {
+        component.selectedTemporality = defaultItem.temporalities[3];
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcPricingEstimation[]} components */
+      ([component]) => {
+        component.selectedCurrency = defaultItem.currencies[1];
+        component.state = { type: 'loading' };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcPricingEstimation[]} components */
+      ([component]) => {
+        component.selectedCurrency = defaultItem.currencies[1];
+        component.state = {
+          ...defaultState,
+          runtimePrices: pricesInDollars.runtimePrices,
+          countablePrices: pricesInEuro.countablePrices,
+        };
+      },
+    ),
+  ],
+});

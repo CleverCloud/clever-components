@@ -1,5 +1,5 @@
-import { Plan } from '../common.types.js';
+import { CountablePlanWithQuanty, RuntimePlanWithQuantity } from '../cc-pricing-estimation/cc-pricing-estimation.js';
 
-export interface SelectedPlans {
-  [key: string]: Plan;
+export interface SelectedPlansById {
+  [planId: string]: RuntimePlanWithQuantity | CountablePlanWithQuanty;
 }

@@ -1,8 +1,26 @@
 import { getFullProductAddon } from '../../stories/fixtures/addon-plans.js';
+import { rawPriceSystemDollars } from '../../stories/fixtures/price-system.js';
 import { getFullProductRuntime } from '../../stories/fixtures/runtime-plans.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-pricing-product.js';
 
+export default {
+  tags: ['autodocs'],
+  title: '🛠 pricing/<cc-pricing-product>',
+  component: 'cc-pricing-product',
+};
+
+const conf = {
+  component: 'cc-pricing-product',
+};
+
+/**
+ * @typedef {import('./cc-pricing-product.js').CcPricingProduct} CcPricingProduct
+ * @typedef {import('../common.types.js').Plan} Plan
+ * @typedef {import('../common.types.js').FormattedFeature} FormattedFeature
+ */
+
+/** @type {Array<FormattedFeature['code']>} */
 const addonFeatures = [
   'connection-limit',
   'cpu',
@@ -18,6 +36,7 @@ const addonFeatures = [
 // Feature order is not the same between plans
 // Some features will be ignored because they are not listed
 // Some features are missing for some plans
+/** @type {Array<Plan>} */
 const fakeProductPlans = [
   {
     name: 'ONE',
@@ -77,21 +96,12 @@ const fakeProductPlans = [
   },
 ];
 
-export default {
-  tags: ['autodocs'],
-  title: '🛠 pricing/<cc-pricing-product>',
-  component: 'cc-pricing-product',
-};
-
-const conf = {
-  component: 'cc-pricing-product',
-};
-
 export const defaultStory = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProduct>>} */
   items: [
     {
-      product: {
-        state: 'loaded',
+      state: {
+        type: 'loaded',
         ...getFullProductRuntime('ruby'),
       },
     },
@@ -99,22 +109,26 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const loading = makeStory(conf, {
-  items: [{ product: { state: 'loading' } }],
+  /** @type {Array<Partial<CcPricingProduct>>} */
+  items: [{ state: { type: 'loading' } }],
 });
 
 export const error = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProduct>>} */
   items: [
     {
-      product: { state: 'error' },
+      state: { type: 'error' },
     },
   ],
 });
 
 export const dataLoadedWithFakeProduct = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProduct>>} */
   items: [
     {
-      product: {
-        state: 'loaded',
+      action: 'none',
+      state: {
+        type: 'loaded',
         name: 'fake database',
         plans: fakeProductPlans,
         productFeatures: [
@@ -131,8 +145,9 @@ export const dataLoadedWithFakeProduct = makeStory(conf, {
       },
     },
     {
-      product: {
-        state: 'loaded',
+      action: 'none',
+      state: {
+        type: 'loaded',
         name: 'fake runtime',
         plans: fakeProductPlans,
         productFeatures: [
@@ -152,10 +167,11 @@ export const dataLoadedWithFakeProduct = makeStory(conf, {
 });
 
 export const dataLoadedWithRuntimePhp = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProduct>>} */
   items: [
     {
-      product: {
-        state: 'loaded',
+      state: {
+        type: 'loaded',
         ...getFullProductRuntime('php'),
       },
     },
@@ -163,10 +179,11 @@ export const dataLoadedWithRuntimePhp = makeStory(conf, {
 });
 
 export const dataLoadedWithRuntimePythonAndMl = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProduct>>} */
   items: [
     {
-      product: {
-        state: 'loaded',
+      state: {
+        type: 'loaded',
         ...getFullProductRuntime('ml_python'),
       },
     },
@@ -174,10 +191,11 @@ export const dataLoadedWithRuntimePythonAndMl = makeStory(conf, {
 });
 
 export const dataLoadedWithRuntimeNode = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProduct>>} */
   items: [
     {
-      product: {
-        state: 'loaded',
+      state: {
+        type: 'loaded',
         ...getFullProductRuntime('node'),
       },
     },
@@ -185,10 +203,11 @@ export const dataLoadedWithRuntimeNode = makeStory(conf, {
 });
 
 export const dataLoadedWithAddonElasticsearch = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProduct>>} */
   items: [
     {
-      product: {
-        state: 'loaded',
+      state: {
+        type: 'loaded',
         ...getFullProductAddon('es-addon', addonFeatures),
       },
     },
@@ -196,10 +215,11 @@ export const dataLoadedWithAddonElasticsearch = makeStory(conf, {
 });
 
 export const dataLoadedWithAddonMongodb = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProduct>>} */
   items: [
     {
-      product: {
-        state: 'loaded',
+      state: {
+        type: 'loaded',
         ...getFullProductAddon('mongodb-addon', addonFeatures),
       },
     },
@@ -207,10 +227,11 @@ export const dataLoadedWithAddonMongodb = makeStory(conf, {
 });
 
 export const dataLoadedWithAddonMysql = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProduct>>} */
   items: [
     {
-      product: {
-        state: 'loaded',
+      state: {
+        type: 'loaded',
         ...getFullProductAddon('mysql-addon', addonFeatures),
       },
     },
@@ -218,10 +239,11 @@ export const dataLoadedWithAddonMysql = makeStory(conf, {
 });
 
 export const dataLoadedWithAddonPostgresql = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProduct>>} */
   items: [
     {
-      product: {
-        state: 'loaded',
+      state: {
+        type: 'loaded',
         ...getFullProductAddon('postgresql-addon', addonFeatures),
       },
     },
@@ -229,10 +251,11 @@ export const dataLoadedWithAddonPostgresql = makeStory(conf, {
 });
 
 export const dataLoadedWithAddonRedis = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProduct>>} */
   items: [
     {
-      product: {
-        state: 'loaded',
+      state: {
+        type: 'loaded',
         ...getFullProductAddon('redis-addon', addonFeatures),
       },
     },
@@ -240,11 +263,12 @@ export const dataLoadedWithAddonRedis = makeStory(conf, {
 });
 
 export const dataLoadedWithNoAction = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProduct>>} */
   items: [
     {
       action: 'none',
-      product: {
-        state: 'loaded',
+      state: {
+        type: 'loaded',
         ...getFullProductAddon('postgresql-addon', addonFeatures),
       },
     },
@@ -252,22 +276,24 @@ export const dataLoadedWithNoAction = makeStory(conf, {
 });
 
 export const dataLoadedWithDollars = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProduct>>} */
   items: [
     {
-      currency: { code: 'USD', changeRate: 1.1802 },
-      product: {
-        state: 'loaded',
-        ...getFullProductAddon('postgresql-addon', addonFeatures),
+      currency: 'USD',
+      state: {
+        type: 'loaded',
+        ...getFullProductAddon('postgresql-addon', addonFeatures, rawPriceSystemDollars),
       },
     },
   ],
 });
 
 export const dataLoadedWithTemporalitySecond7Digits = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProduct>>} */
   items: [
     {
-      product: {
-        state: 'loaded',
+      state: {
+        type: 'loaded',
         ...getFullProductRuntime('node'),
       },
       temporalities: [{ type: 'second', digits: 7 }],
@@ -276,10 +302,11 @@ export const dataLoadedWithTemporalitySecond7Digits = makeStory(conf, {
 });
 
 export const dataLoadedWithTemporalityMinute5Digits = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProduct>>} */
   items: [
     {
-      product: {
-        state: 'loaded',
+      state: {
+        type: 'loaded',
         ...getFullProductRuntime('node'),
       },
       temporalities: [{ type: 'minute', digits: 5 }],
@@ -288,10 +315,11 @@ export const dataLoadedWithTemporalityMinute5Digits = makeStory(conf, {
 });
 
 export const dataLoadedWithTemporalityHour3Digits = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProduct>>} */
   items: [
     {
-      product: {
-        state: 'loaded',
+      state: {
+        type: 'loaded',
         ...getFullProductRuntime('node'),
       },
       temporalities: [{ type: 'hour', digits: 3 }],
@@ -300,10 +328,11 @@ export const dataLoadedWithTemporalityHour3Digits = makeStory(conf, {
 });
 
 export const dataLoadedWithTemporality1000Minutes2Digits = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProduct>>} */
   items: [
     {
-      product: {
-        state: 'loaded',
+      state: {
+        type: 'loaded',
         ...getFullProductRuntime('node'),
       },
       temporalities: [{ type: '1000-minutes' }],
@@ -312,10 +341,11 @@ export const dataLoadedWithTemporality1000Minutes2Digits = makeStory(conf, {
 });
 
 export const dataLoadedWithTemporalityDay2Digits = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProduct>>} */
   items: [
     {
-      product: {
-        state: 'loaded',
+      state: {
+        type: 'loaded',
         ...getFullProductRuntime('node'),
       },
       temporalities: [{ type: 'day', digits: 2 }],
@@ -324,10 +354,11 @@ export const dataLoadedWithTemporalityDay2Digits = makeStory(conf, {
 });
 
 export const dataLoadedWithTemporality30Days1Digit = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProduct>>} */
   items: [
     {
-      product: {
-        state: 'loaded',
+      state: {
+        type: 'loaded',
         ...getFullProductRuntime('node'),
       },
       temporalities: [{ type: '30-days', digits: 1 }],
@@ -336,10 +367,11 @@ export const dataLoadedWithTemporality30Days1Digit = makeStory(conf, {
 });
 
 export const dataLoadedWithTemporalityAll = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProduct>>} */
   items: [
     {
-      product: {
-        state: 'loaded',
+      state: {
+        type: 'loaded',
         ...getFullProductRuntime('node'),
       },
       temporalities: [
@@ -355,32 +387,42 @@ export const dataLoadedWithTemporalityAll = makeStory(conf, {
 });
 
 export const simulationWithLoaded = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProduct>>} */
   items: [
     {
-      product: { state: 'loading' },
+      state: { type: 'loading' },
     },
   ],
   simulations: [
-    storyWait(2000, ([component]) => {
-      component.product = {
-        state: 'loaded',
-        ...getFullProductRuntime('node'),
-      };
-    }),
+    storyWait(
+      2000,
+      /** @param {Array<CcPricingProduct>} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          ...getFullProductRuntime('node'),
+        };
+      },
+    ),
   ],
 });
 
 export const simulationWithError = makeStory(conf, {
+  /** @type {Array<Partial<CcPricingProduct>>} */
   items: [
     {
-      product: { state: 'loading' },
+      state: { type: 'loading' },
     },
   ],
   simulations: [
-    storyWait(2000, ([component]) => {
-      component.product = {
-        state: 'error',
-      };
-    }),
+    storyWait(
+      2000,
+      /** @param {Array<CcPricingProduct>} components */
+      ([component]) => {
+        component.state = {
+          type: 'error',
+        };
+      },
+    ),
   ],
 });

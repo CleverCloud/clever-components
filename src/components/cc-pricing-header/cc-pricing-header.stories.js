@@ -17,17 +17,12 @@ const conf = {
  * @typedef {import('./cc-pricing-header.types.js').PricingHeaderStateLoaded} PricingHeaderStateLoaded
  * @typedef {import('./cc-pricing-header.types.js').PricingHeaderStateLoading} PricingHeaderStateLoading
  * @typedef {import('./cc-pricing-header.types.js').PricingHeaderStateError} PricingHeaderStateError
- * @typedef {import('../common.types.js').Currency} Currency
  * @typedef {import('../common.types.js').Temporality} Temporality
  */
 
-/** @type {{ currencies: Currency[], temporalities: Temporality[], state: PricingHeaderStateLoaded, selectedZoneId: 'par' }} */
+/** @type {Partial<CcPricingHeader>} */
 const defaultItem = {
-  currencies: [
-    { code: 'EUR', changeRate: 1 },
-    { code: 'GBP', changeRate: 0.88603 },
-    { code: 'USD', changeRate: 1.1717 },
-  ],
+  currencies: ['EUR', 'GBP', 'USD'],
   temporalities: [
     {
       type: 'second',
@@ -58,40 +53,43 @@ const defaultItem = {
 };
 
 export const defaultStory = makeStory(conf, {
+  /** @type {Partial<CcPricingHeader>[]} */
   items: [defaultItem],
 });
 
 export const loading = makeStory(conf, {
+  /** @type {Partial<CcPricingHeader>[]} */
   items: [
     {
-      /** @type {PricingHeaderStateLoading} */
+      ...defaultItem,
       state: { type: 'loading' },
     },
   ],
 });
 
 export const error = makeStory(conf, {
+  /** @type {Partial<CcPricingHeader>[]} */
   items: [
     {
-      /** @type {PricingHeaderStateError} */
+      ...defaultItem,
       state: { type: 'error' },
     },
   ],
 });
 
 export const dataLoadedWithDollars = makeStory(conf, {
-  /** @type {{ state: PricingHeaderStateLoaded, selectedCurrency: Currency, selectedZoneId: 'mtl' }[]} */
+  /** @type {Partial<CcPricingHeader>[]} */
   items: [
     {
       ...defaultItem,
-      selectedCurrency: { code: 'USD', changeRate: 1.1717 },
+      selectedCurrency: 'USD',
       selectedZoneId: 'mtl',
     },
   ],
 });
 
 export const dataLoadedWithMinute = makeStory(conf, {
-  /** @type {{ state: PricingHeaderStateLoaded, selectedTemporality: Temporality, selectedZoneId: 'war' }[]} */
+  /** @type {Partial<CcPricingHeader>[]} */
   items: [
     {
       ...defaultItem,
@@ -102,6 +100,7 @@ export const dataLoadedWithMinute = makeStory(conf, {
 });
 
 export const simulations = makeStory(conf, {
+  /** @type {Partial<CcPricingHeader>[]} */
   items: [
     {
       currencies: defaultItem.currencies,
@@ -132,6 +131,13 @@ export const simulations = makeStory(conf, {
       /** @param {CcPricingHeader[]} components */
       ([component]) => {
         component.selectedCurrency = defaultItem.currencies[1];
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcPricingHeader[]} components */
+      ([component]) => {
+        component.selectedZoneId = 'mtl';
       },
     ),
   ],

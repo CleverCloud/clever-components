@@ -29,7 +29,7 @@ export function sendToApi({ apiConfig, signal, cacheDelay, timeout }) {
   return (requestParams) => {
     const cacheParams = { ...apiConfig, ...requestParams };
     return withCache(cacheParams, cacheDelay, () => {
-      const { API_HOST = 'https://api.clever-cloud.com', ...tokens } = apiConfig;
+      const { API_HOST = 'https://api.clever-cloud.com', ...tokens } = apiConfig ?? {};
       return Promise.resolve(requestParams)
         .then(prefixUrl(API_HOST))
         .then(addOauthHeader(tokens))
