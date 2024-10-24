@@ -14,28 +14,47 @@ title: '💡 Smart (add-on)'
 
 ## ⚙️ Params
 
-| Name            | Type        | Details                                                                                          | Default |
-|-----------------|-------------|--------------------------------------------------------------------------------------------------|---------|
-| `productId`     | `string`    | id from [`/v2/products/addonproviders`](https://api.clever-cloud.com/v2/products/addonproviders) |         |
-| `zoneId`        | `string`    | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones)                 | `par`   |
-| `addonFeatures` | `string[]`  | List of feature codes as describe in the component API.                                          |         |
+| Name            | Type                 | Required | Details                                                                                          | Default                                        |
+|-----------------|----------------------|----------|--------------------------------------------------------------------------------------------------|------------------------------------------------|
+| `addonFeatures` | `Array<FeatureCode>` | No       | List of features used to filter and sort displayed features                                      |                                                |
+| `apiConfig`     | `ApiConfig`          | No       | Object with API configuration (target host, tokens...)                                           | `{ API_HOST: "https://api.clever-cloud.com" }` |
+| `currency`      | `string`             | No       | Currency code matching the ISO 4217 format                                                       | `EUR`                                          |
+| `productId`     | `string`             | Yes      | id from [`/v2/products/addonproviders`](https://api.clever-cloud.com/v2/products/addonproviders) |                                                |
+| `zoneId`        | `string`             | No       | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones)                 | `par`                                          |
 
 * When `addonFeatures` is not specified, all product features are listed in the order of the API.
 * Setting `addonFeatures` allows you to filter the features you want to display.
 * Setting `addonFeatures` allows you to control the display order of the features.
 
+```ts
+type FeatureCode =
+  | 'connection-limit'
+  | 'cpu'
+  | 'gpu'
+  | 'is-migratable'
+  | 'databases'
+  | 'dedicated'
+  | 'disk-size'
+  | 'has-logs'
+  | 'has-metrics'
+  | 'max-db-size'
+  | 'memory'
+  | 'version'
+  | string;
+```
+
 ## 🌐 API endpoints
 
-| Method | Type                               | Cache? |
-|--------|:-----------------------------------|--------|
-| `GET`  | `/v2/products/addonproviders`      | 1 day  |
-| `GET`  | `/v4/billing/price-system?zone_id` | 1 day  |
+| Method | Type                                             | Cache? |
+|--------|--------------------------------------------------|--------|
+| `GET`  | `/v2/products/addonproviders`                    | 1 day  |
+| `GET`  | `/v4/billing/price-system?zone_id&currency`      | 1 day  |
 
 ## ⬇️️ Examples
 
 ### Simple
 
-Simple example based on default zone.
+Simple example based on default zone and default currency.
 
 ```html
 <cc-smart-container context='{
@@ -60,6 +79,19 @@ NOTE: Prices are the same on all zones right now.
 </cc-smart-container>
 ```
 
+### Currency
+
+Simple example with custom currency.
+
+```html
+<cc-smart-container context='{
+    "productId": "postgresql-addon",
+    "currency": "USD",
+}'>
+  <cc-pricing-product mode="addon"></cc-pricing-product>
+</cc-smart-container>
+```
+
 ### With feature list
 
 Setting `addonFeatures` is the only way to enforce a sort order on the feature list.
@@ -73,4 +105,3 @@ It's also a good way to filter features.
   <cc-pricing-product mode="addon"></cc-pricing-product>
 </cc-smart-container>
 ```
-

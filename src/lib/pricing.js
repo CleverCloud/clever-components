@@ -1,4 +1,11 @@
 /**
+ * @typedef {import('./pricing.types.js').PricingSimulatorState} PricingSimulatorState
+ * @typedef {import('../components/common.types.js').PricingSection} PricingSection
+ * @typedef {import('../components/common.types.js').SectionType} SectionType
+ * @typedef {import('../components/common.types.js').PricingInterval} PricingInterval
+ */
+
+/**
  * A pricing simulator for products with consumption based pricings.
  *
  * * Interval prices are defined in "euros / [unit]".
@@ -43,17 +50,17 @@
  * ```
  */
 export class PricingConsumptionSimulator {
-  /**
-   * @param {Section[]} sections
-   */
+  /** @param {Array<PricingSection>} sections */
   constructor(sections = []) {
+    /** @type {PricingSimulatorState}*/
     this._state = {};
-    sections.forEach(({ type, intervals, progressive = false, secability = 1 }) => {
+    sections.forEach(({ type, intervals, service, progressive = false, secability = 1, quantity = 0 }) => {
       this._state[type] = {
         intervals,
+        service,
         progressive,
         secability,
-        quantity: 0,
+        quantity,
       };
     });
   }
@@ -61,7 +68,7 @@ export class PricingConsumptionSimulator {
   /**
    * Get the quantity for a given section.
    * @param {SectionType} type
-   * @returns {Number} - How many [unit]
+   * @returns {number} - How many [unit]
    */
   getQuantity(type) {
     return this._state[type].quantity;
@@ -70,7 +77,7 @@ export class PricingConsumptionSimulator {
   /**
    * Set the quantity for a given section.
    * @param {SectionType} type - The section type
-   * @param {Number} quantity - How many [unit]
+   * @param {number} quantity - How many [unit]
    */
   setQuantity(type, quantity) {
     if (!isNaN(quantity)) {
@@ -81,7 +88,7 @@ export class PricingConsumptionSimulator {
   /**
    * Get the maximum interval (the one matching the quantity) for a given section.
    * @param {SectionType} type - The section type
-   * @returns {Interval} - Interval matching the quantity or null
+   * @returns {PricingInterval} - Interval matching the quantity or null
    */
   getMaxInterval(type) {
     const { intervals, quantity } = this._state[type];
@@ -95,7 +102,7 @@ export class PricingConsumptionSimulator {
   /**
    * Get the estimated price for a given interval.
    * @param {SectionType} type - The section type
-   * @param {Number} intervalIndex - The index of the interval
+   * @param {number} intervalIndex - The index of the interval
    * @returns {number} - Estimated price for a given interval.
    */
   getIntervalPrice(type, intervalIndex) {
@@ -128,18 +135,16 @@ export class PricingConsumptionSimulator {
    */
   getSectionPrice(type) {
     const intervals = this._state[type].intervals ?? [];
-    return intervals
-      .map((interval, intervalIndex) => this.getIntervalPrice(type, intervalIndex))
-      .reduce((a, b) => a + b, 0);
+    return intervals.map((_, intervalIndex) => this.getIntervalPrice(type, intervalIndex)).reduce((a, b) => a + b, 0);
   }
 
   /**
    * Get the estimated price for all sections.
-   * @returns {Number} - Estimated price for all intervals of a given section.
+   * @returns {number} - Estimated price for all intervals of a given section.
    */
   getTotalPrice() {
     return Object.keys(this._state)
-      .map((type) => this.getSectionPrice(type))
+      .map((type) => this.getSectionPrice(/** @type {SectionType} */ (type)))
       .reduce((a, b) => a + b, 0);
   }
 }

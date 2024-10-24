@@ -11,51 +11,69 @@ import {
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
+import { PricingConsumptionSimulator } from '../../lib/pricing.js';
 import { getCurrencySymbol } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { shoelaceStyles } from '../../styles/shoelace.js';
+import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
-import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
+import '../cc-notice/cc-notice.js';
 
+/** @type {Record<FormattedFeature['code'], () => string|Node>} */
 const FEATURES_I18N = {
   'connection-limit': () => i18n('cc-pricing-estimation.feature.connection-limit'),
   cpu: () => i18n('cc-pricing-estimation.feature.cpu'),
   databases: () => i18n('cc-pricing-estimation.feature.databases'),
+  dedicated: () => i18n('cc-pricing-estimation.feature.dedicated'),
   'disk-size': () => i18n('cc-pricing-estimation.feature.disk-size'),
   gpu: () => i18n('cc-pricing-estimation.feature.gpu'),
   'has-logs': () => i18n('cc-pricing-estimation.feature.has-logs'),
   'has-metrics': () => i18n('cc-pricing-estimation.feature.has-metrics'),
+  'is-migratable': () => i18n('cc-pricing-estimation.feature.is-migratable'),
   'max-db-size': () => i18n('cc-pricing-estimation.feature.max-db-size'),
   memory: () => i18n('cc-pricing-estimation.feature.memory'),
   version: () => i18n('cc-pricing-estimation.feature.version'),
 };
 const AVAILABLE_FEATURES = Object.keys(FEATURES_I18N);
+const THIRTY_DAYS_IN_HOURS = 24 * 30;
 
-/** @type {Currency} */
 // FIXME: this code is duplicated across all pricing components (see issue #732 for more details)
-const DEFAULT_CURRENCY = { code: 'EUR', changeRate: 1 };
+const DEFAULT_CURRENCY = 'EUR';
 
 /** @type {Temporality} */
 // FIXME: this code is duplicated across all pricing components (see issue #732 for more details)
 const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
 
 /**
- * @typedef {import('../common.types.js').Currency} Currency
- * @typedef {import('../common.types.js').Plan} Plan
+ * @typedef {import('./cc-pricing-estimation.types.js').PricingEstimationState} PricingStateEstimation
+ * @typedef {import('./cc-pricing-estimation.types.js').RuntimePlanWithQuantity} RuntimePlanWithQuantity
+ * @typedef {import('./cc-pricing-estimation.types.js').CountablePlanWithQuanty} CountablePlanWithQuanty
+ * @typedef {import('../common.types.js').PricingSection} PricingSection
+ * @typedef {import('../common.types.js').FormattedFeature} FormattedFeature
  * @typedef {import('../common.types.js').Temporality} Temporality
+ * @typedef {import('@shoelace-style/shoelace').SlDropdown} SlDropdown
+ * @typedef {import('../../lib/events.types.js').EventWithTarget<SlDropdown>} SlDropdownEvent
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLParagraphElement>} HTMLParagraphElementRef
+ * @typedef {import('lit').PropertyValues<CcPricingEstimation>} CcPricingEstimationPropertyValues
  */
 
 /**
  * A component to display a list of selected product plans with the ability to change their quantity or remove them from the list.
  *
+ * WARNING:
+ *
+ * All products added to the estimation must be part of the Clever Cloud Price System (see ``).
+ * This component only supports products also supported by the Clever Cloud Price System (see `/v4/billing/price-system?zone_id&currency`).
+ * Custom products cannot be added to the estimation because the `cc-pricing-estimation` cannot determine their price based on the selected currency.
+ *
  * @cssdisplay block
  *
- * @fires {CustomEvent<Plan>} cc-pricing-estimation:change-quantity - Fires the plan with a modified quantity whenever the quantity on the input changes.
- * @fires {CustomEvent<Currency>} cc-pricing-estimation:change-currency - Fires the `currency` whenever the currency selection changes.
+ * @fires {CustomEvent<PricingEstimationPlan>} cc-pricing-estimation:change-quantity - Fires the plan with a modified quantity whenever the quantity on the input changes.
+ * @fires {CustomEvent<string>} cc-pricing-estimation:change-currency - Fires the `currency` whenever the currency selection changes.
  * @fires {CustomEvent<Temporality>} cc-pricing-estimation:change-temporality - Fires the `temporality` whenever the temporality selection changes.
- * @fires {CustomEvent<Plan>} cc-pricing-estimation:delete-plan - Fires the plan whenever a delete button is clicked or when the quantity reaches 0.
+ * @fires {CustomEvent<PricingEstimationPlan>} cc-pricing-estimation:delete-plan - Fires the plan whenever a delete button is clicked or when the quantity reaches 0.
  *
  * @slot footer - Content at the bottom of the component. Typically used to insert links and call to action elements.
  * @cssprop {Background} --cc-pricing-estimation-counter-bg - Sets the background (color or gradient) of the product counter (defaults: `var(--cc-color-bg-strong)`).
@@ -67,18 +85,22 @@ export class CcPricingEstimation extends LitElement {
     return {
       currencies: { type: Array },
       isToggleEnabled: { type: Boolean, attribute: 'is-toggle-enabled' },
-      selectedCurrency: { type: Object, attribute: 'selected-currency' },
+      selectedCurrency: { type: String, attribute: 'selected-currency' },
       selectedPlans: { type: Array, attribute: 'selected-plans' },
       selectedTemporality: { type: Object, attribute: 'selected-temporality' },
+      state: { type: Object },
       temporalities: { type: Array },
       _isCollapsed: { type: Boolean, state: true },
+      _runtimePriceMap: { type: Object, state: true },
+      _countablePriceMap: { type: Object, state: true },
+      _selectedPlansWithPrices: { type: Array, state: true },
     };
   }
 
   constructor() {
     super();
 
-    /** @type {Currency[]} Sets the list of currencies. */
+    /** @type {string[]} Sets the list of currencies. */
     this.currencies = [DEFAULT_CURRENCY];
 
     /** @type {boolean} Switches the display to toggle.
@@ -88,14 +110,17 @@ export class CcPricingEstimation extends LitElement {
      */
     this.isToggleEnabled = false;
 
-    /** @type {Currency} Sets the current currency. */
+    /** @type {string} Sets the current currency. */
     this.selectedCurrency = DEFAULT_CURRENCY;
 
-    /** @type {Plan[]} Sets the list of selected plans with their quantity. */
+    /** @type {Array<RuntimePlanWithQuantity|CountablePlanWithQuanty>} Sets the list of selected plans with their quantity. */
     this.selectedPlans = [];
 
     /** @type {Temporality} Sets the current temporality. */
     this.selectedTemporality = DEFAULT_TEMPORALITY;
+
+    /** @type {PricingStateEstimation} Sets the state of the component. */
+    this.state = { type: 'loading' };
 
     /** @type {Temporality[]} Sets the list of temporalities. */
     this.temporalities = [DEFAULT_TEMPORALITY];
@@ -103,48 +128,58 @@ export class CcPricingEstimation extends LitElement {
     /** @type {boolean} Collapses the component if `isToggleEnabled` is also set to `true`. */
     this._isCollapsed = false;
 
+    /** @type {Array<RuntimePlanWithQuantity|CountablePlanWithQuanty>} Sets the list of selected plans with their quantity. */
+    this._selectedPlansWithPrices = [];
+
+    /** @type {HTMLParagraphElementRef} */
     this._totalRef = createRef();
 
     new LostFocusController(this, '.plan', ({ suggestedElement }) => {
       if (suggestedElement != null) {
-        suggestedElement.querySelector('.plan__toggle__header').focus();
+        const planToggleHeaderElement = suggestedElement.querySelector('.plan__toggle__header');
+        if (planToggleHeaderElement instanceof HTMLElement) {
+          planToggleHeaderElement.focus();
+        }
       } else {
         this._totalRef.value?.focus();
       }
     });
+
+    /** @type {Map<string, number>} */
+    this._runtimePriceMap = null;
+
+    /** @type {Map<string, Omit<PricingSection, 'service'>>} */
+    this._countablePriceMap = null;
   }
 
   /**
    * Returns the localized "estimated/temporality" based on the given temporality type.
    *
    * @param {Temporality['type']} type - the temporality type
+   * @returns {string|Node}
    */
   _getEstimatedPriceLabel(type) {
-    if (type === 'second') {
-      return i18n('cc-pricing-estimation.estimated-price-name.second');
-    }
-    if (type === 'minute') {
-      return i18n('cc-pricing-estimation.estimated-price-name.minute');
-    }
-    if (type === 'hour') {
-      return i18n('cc-pricing-estimation.estimated-price-name.hour');
-    }
-    if (type === '1000-minutes') {
-      return i18n('cc-pricing-estimation.estimated-price-name.1000-minutes');
-    }
-    if (type === 'day') {
-      return i18n('cc-pricing-estimation.estimated-price-name.day');
-    }
-    if (type === '30-days') {
-      return i18n('cc-pricing-estimation.estimated-price-name.30-days');
+    switch (type) {
+      case 'second':
+        return i18n('cc-pricing-estimation.estimated-price-name.second');
+      case 'minute':
+        return i18n('cc-pricing-estimation.estimated-price-name.minute');
+      case 'hour':
+        return i18n('cc-pricing-estimation.estimated-price-name.hour');
+      case '1000-minutes':
+        return i18n('cc-pricing-estimation.estimated-price-name.1000-minutes');
+      case 'day':
+        return i18n('cc-pricing-estimation.estimated-price-name.day');
+      case '30-days':
+        return i18n('cc-pricing-estimation.estimated-price-name.30-days');
     }
   }
 
   /**
    * Returns the translated string corresponding to a feature code.
    *
-   * @param {Feature} feature - the feature to translate
-   * @return {string|void} the translated feature name if a translation exists or nothing if the translation does not exist
+   * @param {FormattedFeature} feature - the feature to translate
+   * @return {string|Node|void} the translated feature name if a translation exists or nothing if the translation does not exist
    */
   _getFeatureName(feature) {
     if (feature == null) {
@@ -163,18 +198,19 @@ export class CcPricingEstimation extends LitElement {
   /**
    * Returns the formatted value corresponding to a feature
    *
-   * @param {feature} feature - the feature to get the formatted value from
-   * @return {string} the formatted value for the given feature or the feature value itself if it does not require any formatting
+   * @param {FormattedFeature} feature - the feature to get the formatted value from
+   * @return {string|Node|void} the formatted value for the given feature or the feature value itself if it does not require any formatting
    */
   _getFeatureValue(feature) {
     if (feature == null) {
       return '';
     }
+
     switch (feature.type) {
       case 'boolean':
         return i18n('cc-pricing-estimation.type.boolean', { boolean: feature.value === 'true' });
       case 'boolean-shared':
-        return i18n('cc-pricing-estimation.type.boolean-shared', { boolean: feature.value === 'shared' });
+        return i18n('cc-pricing-estimation.type.boolean-shared', { shared: feature.value === 'shared' });
       case 'bytes':
         return feature.code === 'memory' && feature.value === '0'
           ? i18n('cc-pricing-estimation.type.boolean-shared', { shared: true })
@@ -185,11 +221,13 @@ export class CcPricingEstimation extends LitElement {
           : i18n('cc-pricing-estimation.type.number', { number: Number(feature.value) });
       case 'number-cpu-runtime':
         return i18n('cc-pricing-estimation.type.number-cpu-runtime', {
+          // @ts-ignore
           cpu: feature.value.cpu,
+          // @ts-ignore
           shared: feature.value.shared,
         });
       case 'string':
-        return feature.value;
+        return feature.value.toString();
     }
   }
 
@@ -199,7 +237,7 @@ export class CcPricingEstimation extends LitElement {
    * @return {number} total number of products
    */
   _getProductCount() {
-    return this.selectedPlans.reduce((itemCount, plan) => {
+    return this._selectedPlansWithPrices.reduce((itemCount, plan) => {
       return itemCount + plan.quantity;
     }, 0);
   }
@@ -212,23 +250,23 @@ export class CcPricingEstimation extends LitElement {
    * @return {number} the computed price based on the given temporality
    */
   _getPrice(type, hourlyPrice) {
-    if (type === 'second') {
-      return (hourlyPrice / 60 / 60) * this.selectedCurrency.changeRate;
+    if (this.state.type === 'loading') {
+      return 0;
     }
-    if (type === 'minute') {
-      return (hourlyPrice / 60) * this.selectedCurrency.changeRate;
-    }
-    if (type === 'hour') {
-      return hourlyPrice * this.selectedCurrency.changeRate;
-    }
-    if (type === '1000-minutes') {
-      return (hourlyPrice / 60) * 1000 * this.selectedCurrency.changeRate;
-    }
-    if (type === 'day') {
-      return hourlyPrice * 24 * this.selectedCurrency.changeRate;
-    }
-    if (type === '30-days') {
-      return hourlyPrice * 24 * 30 * this.selectedCurrency.changeRate;
+
+    switch (type) {
+      case 'second':
+        return hourlyPrice / 60 / 60;
+      case 'minute':
+        return hourlyPrice / 60;
+      case 'hour':
+        return hourlyPrice;
+      case '1000-minutes':
+        return (hourlyPrice / 60) * 1000;
+      case 'day':
+        return hourlyPrice * 24;
+      case '30-days':
+        return hourlyPrice * 24 * 30;
     }
   }
 
@@ -236,26 +274,22 @@ export class CcPricingEstimation extends LitElement {
    * Returns the translated price label corresponding to a temporality
    *
    * @param {Temporality['type']} type - the temporality type
-   * @return {string} the translated label corresponding to the given temporality
+   * @return {string|Node} the translated label corresponding to the given temporality
    */
   _getPriceLabel(type) {
-    if (type === 'second') {
-      return i18n('cc-pricing-estimation.price-name.second');
-    }
-    if (type === 'minute') {
-      return i18n('cc-pricing-estimation.price-name.minute');
-    }
-    if (type === 'hour') {
-      return i18n('cc-pricing-estimation.price-name.hour');
-    }
-    if (type === '1000-minutes') {
-      return i18n('cc-pricing-estimation.price-name.1000-minutes');
-    }
-    if (type === 'day') {
-      return i18n('cc-pricing-estimation.price-name.day');
-    }
-    if (type === '30-days') {
-      return i18n('cc-pricing-estimation.price-name.30-days');
+    switch (type) {
+      case 'second':
+        return i18n('cc-pricing-estimation.price-name.second');
+      case 'minute':
+        return i18n('cc-pricing-estimation.price-name.minute');
+      case 'hour':
+        return i18n('cc-pricing-estimation.price-name.hour');
+      case '1000-minutes':
+        return i18n('cc-pricing-estimation.price-name.1000-minutes');
+      case 'day':
+        return i18n('cc-pricing-estimation.price-name.day');
+      case '30-days':
+        return i18n('cc-pricing-estimation.price-name.30-days');
     }
   }
 
@@ -266,22 +300,28 @@ export class CcPricingEstimation extends LitElement {
    * @param {Temporality['type']} type - the temporality type
    * @param {number} hourlyPrice - the price to base the calculations on
    * @param {number} digits - the number of digits to be used for price rounding
+   * @returns {string|void}
    */
   _getPriceValue(type, hourlyPrice, digits) {
     const price = this._getPrice(type, hourlyPrice);
     if (price != null) {
-      return i18n('cc-pricing-estimation.price', { price, code: this.selectedCurrency.code, digits });
+      return i18n('cc-pricing-estimation.price', { price, currency: this.selectedCurrency, digits });
     }
   }
 
   /**
    * Returns the total price for a given plan (factoring its quantity)
    *
-   * @param {Plan} plan - the plan to compute the total for
+   * @param {CountablePlanWithQuanty|RuntimePlanWithQuantity} plan - the plan to compute the total for
    * @return {number} the total price for the given plan
    */
   _getTotalPlanPrice(plan) {
-    const price = this._getPrice(this.selectedTemporality.type, plan.price);
+    if (this.state.type === 'loading' || this.state.type === 'error') {
+      return 0;
+    }
+
+    const unitPlanPrice = plan.price;
+    const price = this._getPrice(this.selectedTemporality.type, unitPlanPrice);
     return price * plan.quantity;
   }
 
@@ -291,24 +331,23 @@ export class CcPricingEstimation extends LitElement {
    * @return {number} the total price (counting all plans)
    */
   _getTotalPrice() {
-    return this.selectedPlans?.map((plan) => this._getTotalPlanPrice(plan)).reduce((a, b) => a + b, 0);
+    return this._selectedPlansWithPrices?.map((plan) => this._getTotalPlanPrice(plan)).reduce((a, b) => a + b, 0);
   }
 
   /**
    * Dispatches a `cc-pricing-estimation:change-currency` event with the currency as payload.
    *
-   * @param {Event} e - the event that called this method
+   * @param {SlDropdownEvent} e - the event that called this method
    */
   _onCurrencyChange(e) {
-    const currency = this.currencies.find((c) => c.code === e.target.value);
-    dispatchCustomEvent(this, 'change-currency', currency);
+    dispatchCustomEvent(this, 'change-currency', e.target.value);
   }
 
   /**
    * Dispatches a `cc-pricing-estimation:change-quantity` event with the plan which quantity has been reduced by 1.
    * If quantity = 0, dispatches a `cc-pricing-estimation:delete-plan` instead with the plan as payload.
    *
-   * @param {Plan} plan - the plan to modify
+   * @param {CountablePlanWithQuanty|RuntimePlanWithQuantity} plan - the plan to modify
    */
   _onDecreaseQuantity(plan) {
     const quantity = plan.quantity - 1;
@@ -323,7 +362,7 @@ export class CcPricingEstimation extends LitElement {
   /**
    * Dispatches a `cc-pricing-estimation:delete-plan` event with the plan as its payload
    *
-   * @param {Plan} plan - the plan to delete
+   * @param {CountablePlanWithQuanty|RuntimePlanWithQuantity} plan - the plan to delete
    */
   _onDeletePlan(plan) {
     dispatchCustomEvent(this, 'delete-plan', plan);
@@ -332,7 +371,7 @@ export class CcPricingEstimation extends LitElement {
   /**
    * Dispatches a `cc-pricing-estimation:change-quantity` event with the plan which quantity has been increased by 1.
    *
-   * @param {Plan} plan - the plan to modify
+   * @param {CountablePlanWithQuanty|RuntimePlanWithQuantity} plan - the plan to modify
    */
   _onIncreaseQuantity(plan) {
     const quantity = plan.quantity + 1;
@@ -342,7 +381,7 @@ export class CcPricingEstimation extends LitElement {
   /**
    * Dispatches a `cc-pricing-estimation:change-temporality` event with the selected temporality as its payload.
    *
-   * @param {Event} e - the event that called this method
+   * @param {SlDropdownEvent} e - the event that called this method
    */
   _onTemporalityChange(e) {
     const temporality = this.temporalities.find((t) => t.type === e.target.value);
@@ -356,37 +395,92 @@ export class CcPricingEstimation extends LitElement {
     this._isCollapsed = !this._isCollapsed;
   }
 
+  _generateUnitPrices() {
+    if (this.state.type === 'loading') {
+      this._selectedPlansWithPrices = this.selectedPlans.map((selectedPlan) => ({
+        ...selectedPlan,
+        price: 0,
+      }));
+      return;
+    }
+
+    this._selectedPlansWithPrices = this.selectedPlans.map((selectedPlan) => {
+      if ('sections' in selectedPlan) {
+        const sectionsWithUpdatedPrices = selectedPlan.sections.map((section) => ({
+          ...section,
+          ...this._countablePriceMap.get(section.service),
+        }));
+        const simulator = new PricingConsumptionSimulator(sectionsWithUpdatedPrices);
+
+        return {
+          ...selectedPlan,
+          price: simulator.getTotalPrice() / THIRTY_DAYS_IN_HOURS,
+        };
+      }
+
+      return {
+        ...selectedPlan,
+        price: this._runtimePriceMap.get(selectedPlan.priceId) ?? selectedPlan.price,
+      };
+    });
+  }
+
+  /** @param {CcPricingEstimationPropertyValues} changedProperties */
   willUpdate(changedProperties) {
     // This is not done within the `render` function because we only want to reset this value in specific cases.
     // If `isToggleEnabled` is set to true, we need to make sure the content is hidden by default
     if (changedProperties.has('isToggleEnabled') && this.isToggleEnabled === true) {
       this._isCollapsed = true;
     }
+
+    if (changedProperties.has('state') && this.state.type === 'loaded') {
+      /** @type {Array<[string, number]>} */
+      const runtimePricesAsKeyValue = this.state.runtimePrices.map(({ priceId, price }) => [priceId, price]);
+      /** @type {Array<[PricingSection['service'], Omit<PricingSection, 'service'>]>} */
+      const countablePricesAsKeyValue = this.state.countablePrices.map(({ service, ...rest }) => [
+        service,
+        { ...rest },
+      ]);
+      this._runtimePriceMap = new Map(runtimePricesAsKeyValue);
+      this._countablePriceMap = new Map(countablePricesAsKeyValue);
+      this._generateUnitPrices();
+    }
+
+    if (changedProperties.has('selectedPlans') && this.selectedPlans.length > 0 && this.state.type !== 'error') {
+      this._generateUnitPrices();
+    }
   }
 
   render() {
+    if (this.state.type === 'error') {
+      return html`<cc-notice intent="warning" message=${i18n('cc-pricing-estimation.error')}></cc-notice> `;
+    }
+
     const totalPrice = this._getTotalPrice();
+    const skeleton = this.state.type === 'loading';
 
     return html`
-      ${this.isToggleEnabled ? this._renderHeaderWithToggle(totalPrice) : this._renderHeaderWithoutToggle()}
+      ${this.isToggleEnabled ? this._renderHeaderWithToggle(totalPrice, skeleton) : this._renderHeaderWithoutToggle()}
 
       <div class="content ${classMap({ 'content--hidden': this.isToggleEnabled && this._isCollapsed })}">
-        ${this.selectedPlans.map((plan) => this._renderSelectedPlan(plan))}
+        ${this._selectedPlansWithPrices.map((plan) => this._renderSelectedPlan(plan, skeleton))}
 
         <p class="content__total" tabindex="-1" ${ref(this._totalRef)}>
           <strong>
             <span class="visually-hidden"> ${i18n('cc-pricing-estimation.total.label')} </span>
-            ${i18n('cc-pricing-estimation.price', {
-              price: totalPrice,
-              code: this.selectedCurrency.code,
-              digits: this.selectedTemporality.digits,
-            })}
+            <span class="content__total__price ${classMap({ skeleton })}">
+              ${i18n('cc-pricing-estimation.price', {
+                price: totalPrice,
+                currency: this.selectedCurrency,
+                digits: this.selectedTemporality.digits,
+              })}
+            </span>
           </strong>
           <span>${i18n('cc-pricing-estimation.tax-excluded')}</span>
           <span class="content__total__estimated">${this._getEstimatedPriceLabel(this.selectedTemporality.type)}</span>
         </p>
 
-        ${this._renderSelectForm()}
+        ${this._renderSelectForm(skeleton)}
 
         <slot name="footer"></slot>
       </div>
@@ -395,8 +489,9 @@ export class CcPricingEstimation extends LitElement {
 
   /**
    * @param {number} totalPrice
+   * @param {boolean} skeleton
    */
-  _renderHeaderWithToggle(totalPrice) {
+  _renderHeaderWithToggle(totalPrice, skeleton) {
     const productCount = this._getProductCount();
 
     return html`
@@ -407,10 +502,10 @@ export class CcPricingEstimation extends LitElement {
           <span class="visually-hidden">${i18n('cc-pricing-estimation.count.label', { productCount })}</span>
         </span>
         <p class="header__total ${classMap({ 'header__total--hidden': !this._isCollapsed })}">
-          <strong>
+          <strong class="${classMap({ skeleton })}">
             ${i18n('cc-pricing-estimation.price', {
               price: totalPrice,
-              code: this.selectedCurrency.code,
+              currency: this.selectedCurrency,
               digits: this.selectedTemporality.digits,
             })}
           </strong>
@@ -438,11 +533,12 @@ export class CcPricingEstimation extends LitElement {
   }
 
   /**
-   * @param {Plan} plan - the plan to render
+   * @param {CountablePlanWithQuanty|RuntimePlanWithQuantity} plan - the plan to render
+   * @param {boolean} skeleton
    */
-  _renderSelectedPlan(plan) {
+  _renderSelectedPlan(plan, skeleton) {
     const totalPlanPrice = this._getTotalPlanPrice(plan);
-    const hasFeatures = Array.isArray(plan.features);
+    const hasFeatures = 'features' in plan && Array.isArray(plan.features);
 
     return html`
       <div class="plan">
@@ -453,10 +549,10 @@ export class CcPricingEstimation extends LitElement {
               <span class="plan__toggle__header__name__plan"> &ndash; ${plan.name}</span>
             </span>
 
-            <span class="plan__toggle__header__total">
+            <span class="plan__toggle__header__total ${classMap({ skeleton })}">
               ${i18n('cc-pricing-estimation.price', {
                 price: totalPlanPrice,
-                code: this.selectedCurrency.code,
+                currency: this.selectedCurrency,
                 digits: this.selectedTemporality.digits,
               })}
             </span>
@@ -484,7 +580,9 @@ export class CcPricingEstimation extends LitElement {
           <div class="plan__price">
             <span>
               <span class="visually-hidden">${i18n('cc-pricing-estimation.price.unit.label')}</span>
-              ${this._getPriceValue(this.selectedTemporality.type, plan.price, this.selectedTemporality.digits)}
+              <span class="${classMap({ skeleton })}">
+                ${this._getPriceValue(this.selectedTemporality.type, plan.price, this.selectedTemporality.digits)}
+              </span>
             </span>
             <div class="plan__price__quantity">
               <button
@@ -493,6 +591,7 @@ export class CcPricingEstimation extends LitElement {
                   productName: plan.productName,
                   planName: plan.name,
                 })}"
+                ?disabled=${skeleton}
               >
                 <cc-icon
                   .icon=${iconSubtract}
@@ -512,6 +611,7 @@ export class CcPricingEstimation extends LitElement {
                   productName: plan.productName,
                   planName: plan.name,
                 })}"
+                ?disabled=${skeleton}
               >
                 <cc-icon
                   .icon=${iconAdd}
@@ -522,7 +622,7 @@ export class CcPricingEstimation extends LitElement {
                 ></cc-icon>
               </button>
             </div>
-            <strong class="plan__price__total" aria-live="polite" aria-atomic="true">
+            <strong class="plan__price__total ${classMap({ skeleton })}" aria-live="polite" aria-atomic="true">
               <span class="visually-hidden">
                 ${i18n('cc-pricing-estimation.plan.total.label', {
                   productName: plan.productName,
@@ -531,7 +631,7 @@ export class CcPricingEstimation extends LitElement {
               </span>
               ${i18n('cc-pricing-estimation.price', {
                 price: totalPlanPrice,
-                code: this.selectedCurrency.code,
+                currency: this.selectedCurrency,
                 digits: this.selectedTemporality.digits,
               })}
             </strong>
@@ -544,6 +644,7 @@ export class CcPricingEstimation extends LitElement {
             planName: plan.name,
           })}"
           @click="${() => this._onDeletePlan(plan)}"
+          ?disabled=${skeleton}
         >
           <cc-icon
             .icon=${iconBin}
@@ -557,7 +658,8 @@ export class CcPricingEstimation extends LitElement {
     `;
   }
 
-  _renderSelectForm() {
+  /** @param {boolean} skeleton */
+  _renderSelectForm(skeleton) {
     return html`
       <div class="form">
         <sl-select
@@ -570,7 +672,11 @@ export class CcPricingEstimation extends LitElement {
         >
           ${this.temporalities.map(
             (temporality) => html`
-              <sl-option value=${temporality.type}>${this._getPriceLabel(temporality.type)}</sl-option>
+              <sl-option
+                ?disabled=${skeleton && this.selectedTemporality.type !== temporality.type}
+                value=${temporality.type}
+                >${this._getPriceLabel(temporality.type)}</sl-option
+              >
             `,
           )}
           <cc-icon slot="expand-icon" .icon=${iconArrowDown} size="xl"></cc-icon>
@@ -581,12 +687,14 @@ export class CcPricingEstimation extends LitElement {
           class="currency-select"
           hoist
           placement="top"
-          value=${this.selectedCurrency?.code}
+          value=${this.selectedCurrency}
           @sl-change=${this._onCurrencyChange}
         >
           ${this.currencies.map(
             (currency) => html`
-              <sl-option value=${currency.code}>${getCurrencySymbol(currency.code)} ${currency.code}</sl-option>
+              <sl-option ?disabled=${skeleton && this.selectedCurrency !== currency} value=${currency}
+                >${getCurrencySymbol(currency)} ${currency}</sl-option
+              >
             `,
           )}
           <cc-icon slot="expand-icon" .icon=${iconArrowDown} size="xl"></cc-icon>
@@ -599,11 +707,21 @@ export class CcPricingEstimation extends LitElement {
     return [
       accessibilityStyles,
       shoelaceStyles,
+      skeletonStyles,
       // language=CSS
       css`
         :host {
           display: block;
           padding: 2em;
+        }
+
+        .skeleton {
+          background-color: #bbb;
+          color: transparent;
+        }
+
+        .content__total__price.skeleton {
+          display: inline-block;
         }
 
         button {
