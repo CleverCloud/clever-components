@@ -502,7 +502,6 @@ export class CcHeaderApp extends LitElement {
         }
 
         .messages {
-          align-items: center;
           display: flex;
           flex-wrap: wrap;
           font-size: 0.9em;
