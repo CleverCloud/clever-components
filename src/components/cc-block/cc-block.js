@@ -346,6 +346,7 @@ export class CcBlock extends LitElement {
         /* region footer */
 
         .footer {
+          align-items: center;
           background-color: var(--cc-color-bg-neutral);
           box-shadow: inset 0 6px 6px -6px rgb(0 0 0 / 40%);
           display: none;
