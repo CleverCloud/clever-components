@@ -119,7 +119,9 @@ export class CcHeaderAddon extends LitElement {
           </div>
         </div>
 
-        <cc-zone slot="footer-right" .state=${zoneState} mode="small-infra"></cc-zone>
+        <div slot="footer-right" class="messages">
+          <cc-zone .state=${zoneState} mode="small-infra"></cc-zone>
+        </div>
       </cc-block>
     `;
   }
@@ -180,6 +182,11 @@ export class CcHeaderAddon extends LitElement {
 
         .description-label {
           font-weight: bold;
+        }
+
+        .messages {
+          font-size: 0.9em;
+          padding-block: 0.2em;
         }
 
         cc-zone {
