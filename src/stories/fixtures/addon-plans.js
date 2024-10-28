@@ -1,8 +1,16 @@
 import { formatAddonProduct } from '../../lib/product.js';
-import { rawPriceSystem } from './price-system.js';
+import { rawPriceSystemEuro } from './price-system.js';
 
-/* eslint-disable quote-props */
-const rawAddonProviders = [
+/**
+ * @typedef {import('../../components/common.types.js').FormattedFeature} FormattedFeature
+ * @typedef {import('../../components/common.types.js').RawAddonProvider} RawAddonProvider
+ * @typedef {import('../../components/common.types.js').PriceSystem} PriceSystem
+ */
+
+/* prettier-ignore */
+/* eslint-disable quote-props, camelcase */
+/** @satisfies {Array<RawAddonProvider>} */
+const rawAddonProviders = /** @type {const} */ ([
   {
     'id': 'cellar-addon',
     'name': 'Cellar S3 storage',
@@ -6886,15 +6894,24 @@ const rawAddonProviders = [
       },
     ],
   },
-];
-/* eslint-enable quote-props */
+]);
+/* eslint-enable quote-props, camelcase */
 
-export function getFullProductAddon (addonProviderId, addonFeatures) {
+/**
+ * @param {typeof rawAddonProviders[number]['id']} addonProviderId
+ * @param {Array<FormattedFeature['code']>} [addonFeatures]
+ * @param {PriceSystem} [rawPriceSystem] (default: rawPriceSystemEuro)
+ */
+export function getFullProductAddon(addonProviderId, addonFeatures, rawPriceSystem = rawPriceSystemEuro) {
   const rawAddonProvider = rawAddonProviders.find((addonProvider) => addonProvider.id === addonProviderId);
   return formatAddonProduct(rawAddonProvider, rawPriceSystem, addonFeatures);
 }
 
-export function getProductAddon (addonProviderId) {
-  const { plans, productFeatures } = getFullProductAddon(addonProviderId);
+/**
+ * @param {typeof rawAddonProviders[number]['id']} addonProviderId
+ * @param {PriceSystem} [rawPriceSystem] (default: rawPriceSystemEuro)
+ */
+export function getProductAddon(addonProviderId, rawPriceSystem = rawPriceSystemEuro) {
+  const { plans, productFeatures } = getFullProductAddon(addonProviderId, null, rawPriceSystem);
   return { plans, productFeatures };
 }

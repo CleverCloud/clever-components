@@ -1170,13 +1170,13 @@ export const translations = {
   'cc-pricing-product.feature.memory': `RAM`,
   'cc-pricing-product.feature.version': `Version`,
   'cc-pricing-product.plan': `Plan`,
-  'cc-pricing-product.price': /** @param {{price: number, code: string, digits: number}} _ */ ({
+  'cc-pricing-product.price': /** @param {{price: number, currency: string, digits: number}} _ */ ({
     price,
-    code,
+    currency,
     digits,
   }) =>
     formatCurrency(lang, price, {
-      currency: code,
+      currency,
       minimumFractionDigits: digits,
       maximumFractionDigits: digits,
     }),

@@ -1,3 +1,21 @@
+/**
+ * @typedef {import('../components/common.types.js').AddonProvider} AddonProvider
+ * @typedef {import('../components/common.types.js').RawAddonProvider} RawAddonProvider
+ * @typedef {import('../components/common.types.js').PriceSystem} PriceSystem
+ * @typedef {import('../components/common.types.js').FormattedFeature} FormattedFeature
+ * @typedef {import('../components/common.types.js').Plan} Plan
+ * @typedef {import('../components/common.types.js').Instance} Instance
+ * @typedef {import('../components/cc-pricing-product/cc-pricing-product.types.js').PricingProductStateLoaded} PricingProductStateLoaded
+ */
+
+/**
+ * Formats an add-on product with its features and plans.
+ *
+ * @param {RawAddonProvider} addonProvider
+ * @param {PriceSystem} priceSystem
+ * @param {Array<FormattedFeature['code']>} selectedFeatures
+ * @returns {Omit<PricingProductStateLoaded, 'type'>}
+ */
 export function formatAddonProduct(addonProvider, priceSystem, selectedFeatures) {
   // We filter out add-ons that are not attached to any zone. This is sometimes done on dev plans to disable them.
   const addonPlansWithZones = addonProvider.plans.filter((plan) => plan.zones.length > 0);
@@ -103,6 +121,13 @@ function formatProductConsumptionIntervals(priceSystem, serviceName) {
   return { secability, intervals };
 }
 
+/**
+ * Formats add-on features based on provider features and selected features.
+ *
+ * @param {RawAddonProvider['features']|RawAddonProvider['plans'][number]['features']} providerFeatures - Array of provider feature objects.
+ * @param {Array<FormattedFeature['code']>} [selectedFeatures] - Array of selected feature codes.
+ * @returns {Array<FormattedFeature>} Formatted addon features.
+ */
 function formatAddonFeatures(providerFeatures, selectedFeatures) {
   // If selectedFeatures is not specified, we just use the features as is
   const featureCodes =
@@ -116,29 +141,49 @@ function formatAddonFeatures(providerFeatures, selectedFeatures) {
     })
     .filter((feature) => feature != null)
     .map((feature) => {
-      return {
+      /** @type {FormattedFeature} */
+      const formattedFeature = {
         code: feature.name_code,
-        type: feature.type.toLowerCase(),
-        // Only used when we format plan features
+        type: /** @type {FormattedFeature['type']} */ (feature.type.toLowerCase()),
+        // @ts-ignore Only used when we format plan features
         value: feature.computable_value ?? '',
         name: feature.name,
       };
+
+      return formattedFeature;
     });
 }
 
+/**
+ * Formats add-on plans based on provided plans, price system, and selected features.
+ *
+ * @param {RawAddonProvider['plans']} allPlans - Array of all available plans.
+ * @param {PriceSystem} priceSystem - The price system object containing pricing information.
+ * @param {Array<FormattedFeature['code']>} selectedFeatures - Array of selected feature codes.
+ * @returns {Pick<Plan, 'name' | 'price' | 'features' | 'priceId'>[]} Formatted add-on plans with name, price, and features.
+ */
 function formatAddonPlans(allPlans, priceSystem, selectedFeatures) {
   return allPlans.map((plan) => {
     const priceItem = priceSystem.runtime.find(
       (runtime) => runtime.slug_id.toLowerCase() === plan.price_id.toLowerCase(),
     );
+
     return {
       name: plan.name,
       price: priceItem?.price ?? 0,
       features: formatAddonFeatures(plan.features, selectedFeatures),
+      priceId: priceItem?.slug_id,
     };
   });
 }
 
+/**
+ * Formats a runtime product with its features and plans.
+ *
+ * @param {Instance} runtime - The runtime object containing variant and flavors information.
+ * @param {PriceSystem} priceSystem - The price system object containing pricing information.
+ * @returns {Omit<PricingProductStateLoaded, 'type'>} Formatted runtime product with name, features, and plans.
+ */
 export function formatRuntimeProduct(runtime, priceSystem) {
   const features = formatRuntimeFeatures(runtime);
   return {
@@ -148,7 +193,14 @@ export function formatRuntimeProduct(runtime, priceSystem) {
   };
 }
 
+/**
+ * Formats runtime features based on the provided runtime object.
+ *
+ * @param {Instance} runtime - The runtime object containing variant information.
+ * @returns {Array<FormattedFeature>} An array of feature objects with code and type properties.
+ */
 function formatRuntimeFeatures(runtime) {
+  /** @type {Array<FormattedFeature>} */
   const features = [
     { code: 'cpu', type: 'number-cpu-runtime' },
     { code: 'memory', type: 'bytes' },
@@ -159,6 +211,14 @@ function formatRuntimeFeatures(runtime) {
   return features;
 }
 
+/**
+ * Formats runtime plans based on the provided flavors, price system, and features.
+ *
+ * @param {Instance['flavors']} allFlavors - Array of all available flavors.
+ * @param {PriceSystem} priceSystem - The price system object containing pricing information.
+ * @param {Array<FormattedFeature>} features - Array of formatted features.
+ * @returns {Pick<Plan, 'name' | 'price' | 'features' | 'priceId'>[]} Formatted runtime plans with name, price, and features.
+ */
 function formatRuntimePlans(allFlavors, priceSystem, features) {
   return allFlavors.map((flavor) => {
     const priceItem = priceSystem.runtime.find(
@@ -168,19 +228,32 @@ function formatRuntimePlans(allFlavors, priceSystem, features) {
       name: flavor.name,
       price: priceItem?.price ?? 0,
       features: formatRuntimeFeatureValues(features, flavor),
+      priceId: priceItem.slug_id,
     };
   });
 }
 
+/**
+ * Formats runtime feature values based on the provided features and flavor.
+ *
+ * @param {Array<FormattedFeature>} allFeatures - Array of all formatted features.
+ * @param {Instance['flavors'][number]} flavor - The flavor object containing feature values.
+ * @returns {Array<FormattedFeature>} An array of feature objects with added value property.
+ */
 function formatRuntimeFeatureValues(allFeatures, flavor) {
-  return allFeatures.map((feature) => {
-    return {
-      ...feature,
-      value: getRuntimeFeatureValue(feature.code, flavor),
-    };
-  });
+  return allFeatures.map((feature) => ({
+    ...feature,
+    value: getRuntimeFeatureValue(feature.code, flavor),
+  }));
 }
 
+/**
+ * Gets the runtime feature value based on the feature code and flavor.
+ *
+ * @param {FormattedFeature['code']} featureCode - The code of the feature to get the value for.
+ * @param {Instance['flavors'][number]} flavor - The flavor object containing feature details.
+ * @returns {FormattedFeature['value']} The feature value based on the feature code.
+ */
 function getRuntimeFeatureValue(featureCode, flavor) {
   switch (featureCode) {
     case 'cpu':
@@ -193,10 +266,19 @@ function getRuntimeFeatureValue(featureCode, flavor) {
       return flavor.memory.value;
     case 'gpu':
       return flavor.gpus;
+    default:
+      return null;
   }
 }
 
+/**
+ * Returns a runner product based on the provided product ID.
+ *
+ * @param {string} productId - The ID of the product to retrieve ('jenkins-runner' or 'heptapod-runner').
+ * @returns {Partial<Instance>|void} The runner product object if a valid product ID is provided, undefined otherwise.
+ */
 export function getRunnerProduct(productId) {
+  /** @type {Partial<Instance>} */
   const baseProduct = {
     type: 'docker',
     // Fake date
@@ -261,6 +343,17 @@ export function getRunnerProduct(productId) {
   }
 }
 
+/**
+ * Generates a runner flavor object with the specified parameters.
+ *
+ * @param {string} prefix - The prefix for the price_id.
+ * @param {string} name - The name of the flavor.
+ * @param {number} cpus - The number of CPUs for the flavor.
+ * @param {number} memory - The amount of memory in GB for the flavor.
+ * @param {boolean} [microservice=false] - Whether the flavor is a microservice.
+ * @param {number} [nice=0] - The nice value for the flavor.
+ * @returns {Instance['flavors'][number]} The runner flavor object.
+ */
 function getRunnerFlavor(prefix, name, cpus, memory, microservice = false, nice = 0) {
   return {
     name,

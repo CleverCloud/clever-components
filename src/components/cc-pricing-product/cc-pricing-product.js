@@ -11,6 +11,7 @@ import '../cc-notice/cc-notice.js';
 
 // 800 seems like a good arbitrary value for the content we need to display.
 const BREAKPOINT = 800;
+/** @type {Record<FormattedFeature['code'], () => string>} */
 const FEATURES_I18N = {
   'connection-limit': () => i18n('cc-pricing-product.feature.connection-limit'),
   cpu: () => i18n('cc-pricing-product.feature.cpu'),
@@ -28,19 +29,18 @@ const FEATURES_I18N = {
 const AVAILABLE_FEATURES = Object.keys(FEATURES_I18N);
 const NUMBER_FEATURE_TYPES = ['bytes', 'number', 'number-cpu-runtime'];
 
-/** @type {Currency} */
 // FIXME: this code is duplicated across all pricing components (see issue #732 for more details)
-const CURRENCY_EUR = { code: 'EUR', changeRate: 1 };
+const CURRENCY_EUR = 'EUR';
 
 /** @type {Temporality[]} */
 const DEFAULT_TEMPORALITY_LIST = [{ type: '30-days', digits: 2 }];
 
 /**
  * @typedef {import('../common.types.js').ActionType} ActionType
- * @typedef {import('../common.types.js').Currency} Currency
  * @typedef {import('./cc-pricing-product.types.js').PricingProductState} PricingProductState
  * @typedef {import('../common.types.js').Temporality} Temporality
  * @typedef {import('../common.types.js').Plan} Plan
+ * @typedef {import('../common.types.js').FormattedFeature} FormattedFeature
  */
 
 /**
@@ -73,8 +73,8 @@ export class CcPricingProduct extends LitElement {
   static get properties() {
     return {
       action: { type: String },
-      currency: { type: Object },
-      product: { type: Object },
+      currency: { type: String },
+      state: { type: Object },
       temporalities: { type: Array },
     };
   }
@@ -85,11 +85,11 @@ export class CcPricingProduct extends LitElement {
     /** @type {ActionType} Sets the type of action: "add" to display add buttons for each plan and "none" for no actions (defaults to "add"). */
     this.action = 'add';
 
-    /** @type {Currency} Sets the currency used to display the prices (defaults to euros). */
+    /** @type {string} Sets the currency used to display the prices (defaults to `EUR`). */
     this.currency = CURRENCY_EUR;
 
     /** @type {PricingProductState} Sets the state of the pricing product component. */
-    this.product = { state: 'loading' };
+    this.state = { type: 'loading' };
 
     /**
      * @type {Temporality[]} Sets the time window(s) you want to display the prices in (defaults to 30 days with 2 fraction digits).
@@ -104,15 +104,15 @@ export class CcPricingProduct extends LitElement {
   /**
    * Returns the translated string corresponding to a feature code.
    *
-   * @param {Feature} feature - the feature to translate
-   * @return {string|undefined} the translated feature name if a translation exists or nothing if the translation does not exist
+   * @param {FormattedFeature} feature - the feature to translate
+   * @return {string|void} the translated feature name if a translation exists or nothing if the translation does not exist
    */
   _getFeatureName(feature) {
     if (feature == null) {
       return '';
     }
 
-    if (FEATURES_I18N[feature.code] != null) {
+    if (feature.code in FEATURES_I18N) {
       return FEATURES_I18N[feature.code]();
     }
 
@@ -124,13 +124,14 @@ export class CcPricingProduct extends LitElement {
   /**
    * Returns the formatted value corresponding to a feature
    *
-   * @param {feature} feature - the feature to get the formatted value from
-   * @return {string} the formatted value for the given feature or the feature value itself if it does not require any formatting
+   * @param {FormattedFeature} feature - the feature to get the formatted value from
+   * @return {string|Node|void} the formatted value for the given feature or the feature value itself if it does not require any formatting
    */
   _getFeatureValue(feature) {
     if (feature == null) {
       return '';
     }
+
     switch (feature.type) {
       case 'boolean':
         return i18n('cc-pricing-product.type.boolean', { boolean: feature.value === 'true' });
@@ -146,11 +147,17 @@ export class CcPricingProduct extends LitElement {
           : i18n('cc-pricing-product.type.number', { number: Number(feature.value) });
       case 'number-cpu-runtime':
         return i18n('cc-pricing-product.type.number-cpu-runtime', {
+          /**
+           * Narrowing the type would make the code less readable for no gain, improving the type to separate
+           * `number-cpu-runtime` from other types makes the code a lot more complex for almost no type safety gain
+           */
+          // @ts-ignore
           cpu: feature.value.cpu,
+          // @ts-ignore
           shared: feature.value.shared,
         });
       case 'string':
-        return feature.value;
+        return feature.value.toString();
     }
   }
 
@@ -162,23 +169,19 @@ export class CcPricingProduct extends LitElement {
    * @return {number} the computed price based on the given temporality
    */
   _getPrice(type, hourlyPrice) {
-    if (type === 'second') {
-      return (hourlyPrice / 60 / 60) * this.currency.changeRate;
-    }
-    if (type === 'minute') {
-      return (hourlyPrice / 60) * this.currency.changeRate;
-    }
-    if (type === 'hour') {
-      return hourlyPrice * this.currency.changeRate;
-    }
-    if (type === '1000-minutes') {
-      return (hourlyPrice / 60) * 1000 * this.currency.changeRate;
-    }
-    if (type === 'day') {
-      return hourlyPrice * 24 * this.currency.changeRate;
-    }
-    if (type === '30-days') {
-      return hourlyPrice * 24 * 30 * this.currency.changeRate;
+    switch (type) {
+      case 'second':
+        return hourlyPrice / 60 / 60;
+      case 'minute':
+        return hourlyPrice / 60;
+      case 'hour':
+        return hourlyPrice;
+      case '1000-minutes':
+        return (hourlyPrice / 60) * 1000;
+      case 'day':
+        return hourlyPrice * 24;
+      case '30-days':
+        return hourlyPrice * 24 * 30;
     }
   }
 
@@ -186,26 +189,22 @@ export class CcPricingProduct extends LitElement {
    * Returns the translated price label corresponding to a temporality
    *
    * @param {Temporality['type']} type - the temporality type
-   * @return {string} the translated label corresponding to the given temporality
+   * @return {string|Node} the translated label corresponding to the given temporality
    */
   _getPriceLabel(type) {
-    if (type === 'second') {
-      return i18n('cc-pricing-product.price-name.second');
-    }
-    if (type === 'minute') {
-      return i18n('cc-pricing-product.price-name.minute');
-    }
-    if (type === 'hour') {
-      return i18n('cc-pricing-product.price-name.hour');
-    }
-    if (type === '1000-minutes') {
-      return i18n('cc-pricing-product.price-name.1000-minutes');
-    }
-    if (type === 'day') {
-      return i18n('cc-pricing-product.price-name.day');
-    }
-    if (type === '30-days') {
-      return i18n('cc-pricing-product.price-name.30-days');
+    switch (type) {
+      case 'second':
+        return i18n('cc-pricing-product.price-name.second');
+      case 'minute':
+        return i18n('cc-pricing-product.price-name.minute');
+      case 'hour':
+        return i18n('cc-pricing-product.price-name.hour');
+      case '1000-minutes':
+        return i18n('cc-pricing-product.price-name.1000-minutes');
+      case 'day':
+        return i18n('cc-pricing-product.price-name.day');
+      case '30-days':
+        return i18n('cc-pricing-product.price-name.30-days');
     }
   }
 
@@ -216,11 +215,12 @@ export class CcPricingProduct extends LitElement {
    * @param {Temporality['type']} type - the temporality type
    * @param {number} hourlyPrice - the price to base the calculations on
    * @param {number} digits - the number of digits to be used for price rounding
+   * @returns {string|void}
    */
   _getPriceValue(type, hourlyPrice, digits) {
     const price = this._getPrice(type, hourlyPrice);
     if (price != null) {
-      return i18n('cc-pricing-product.price', { price, code: this.currency.code, digits });
+      return i18n('cc-pricing-product.price', { price, currency: this.currency, digits });
     }
   }
 
@@ -237,12 +237,12 @@ export class CcPricingProduct extends LitElement {
 
   render() {
     return html`
-      ${this.product.state === 'error'
+      ${this.state.type === 'error'
         ? html` <cc-notice intent="warning" message=${i18n('cc-pricing-product.error')}></cc-notice> `
         : ''}
-      ${this.product.state === 'loading' ? html` <cc-loader></cc-loader> ` : ''}
-      ${this.product.state === 'loaded'
-        ? this._renderProductPlans(this.product.name, this.product.plans, this.product.productFeatures)
+      ${this.state.type === 'loading' ? html` <cc-loader></cc-loader> ` : ''}
+      ${this.state.type === 'loaded'
+        ? this._renderProductPlans(this.state.name, this.state.plans, this.state.productFeatures)
         : ''}
     `;
   }
@@ -250,7 +250,7 @@ export class CcPricingProduct extends LitElement {
   /**
    * @param {string} productName - the name of the product
    * @param {Plan[]} productPlans - the list of plans attached to this product
-   * @param {Feature[]} productFeatures - the list of features to display
+   * @param {Array<FormattedFeature>} productFeatures - the list of features to display
    */
   _renderProductPlans(productName, productPlans, productFeatures) {
     // this component is not rerendering very often so we consider we can afford to sort plans and filter the features here.
@@ -269,7 +269,7 @@ export class CcPricingProduct extends LitElement {
   /**
    * @param {string} productName
    * @param {Plan[]} sortedPlans
-   * @param {Feature[]} productFeatures
+   * @param {Array<FormattedFeature>} productFeatures
    */
   _renderBigPlans(productName, sortedPlans, productFeatures) {
     const temporality = this.temporalities ?? DEFAULT_TEMPORALITY_LIST;
@@ -329,8 +329,8 @@ export class CcPricingProduct extends LitElement {
   }
 
   /**
-   * @param {Feature[]} planFeatures
-   * @param {Feature[]} productFeatures
+   * @param {Array<FormattedFeature>} planFeatures
+   * @param {Array<FormattedFeature>} productFeatures
    */
   _renderBigPlanFeatures(planFeatures, productFeatures) {
     return productFeatures.map((feature) => {
@@ -346,7 +346,7 @@ export class CcPricingProduct extends LitElement {
   /**
    * @param {string} productName
    * @param {Plan[]} sortedPlans
-   * @param {Feature[]} productFeatures
+   * @param {Array<FormattedFeature>} productFeatures
    */
   _renderSmallPlans(productName, sortedPlans, productFeatures) {
     const temporality = this.temporalities ?? DEFAULT_TEMPORALITY_LIST;
@@ -394,8 +394,8 @@ export class CcPricingProduct extends LitElement {
   }
 
   /**
-   * @param {Feature[]} planFeatures
-   * @param {Feature[]} productFeatures
+   * @param {Array<FormattedFeature>} planFeatures
+   * @param {Array<FormattedFeature>} productFeatures
    */
   _renderSmallPlanFeatures(planFeatures, productFeatures) {
     return productFeatures.map((feature) => {
