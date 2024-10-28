@@ -123,12 +123,13 @@ export function asyncMap(array, asyncCallback) {
  *
  * @param {string} currency - the currency to get the symbol for
  * @param {string} [currencyDisplay] - the currency formatting dysplay (defaults to "narrowSymbol")
+ * @returns {string} the formatted currency symbol
  */
 export function getCurrencySymbol(currency, currencyDisplay = 'narrowSymbol') {
   // The lang does not really matter
   const nf = new Intl.NumberFormat('en', { style: 'currency', currency, currencyDisplay });
 
-  return nf.formatToParts(0).find((p) => p.type === 'currency');
+  return nf.formatToParts(0).find((p) => p.type === 'currency').value;
 }
 
 /**
