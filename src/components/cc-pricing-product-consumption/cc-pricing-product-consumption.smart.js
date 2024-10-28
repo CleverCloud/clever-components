@@ -12,47 +12,51 @@ import './cc-pricing-product-consumption.js';
 defineSmartComponent({
   selector: 'cc-pricing-product-consumption',
   params: {
+    apiConfig: { type: Object },
     productId: { type: String },
-    zoneId: { type: String },
+    zoneId: { type: String, optional: true },
+    currency: { type: String, optional: true },
   },
   /**
    * @param {Object} settings
    * @param {CcPricingProductConsumption} settings.component
-   * @param {{ apiConfig: ApiConfig, productId: string, zoneId: string }} settings.context
+   * @param {{ apiConfig: ApiConfig, productId: string, zoneId?: string, currency?: string }} settings.context
    * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
    * @param {function} settings.updateComponent
    * @param {AbortSignal} settings.signal
    */
   // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate({ updateComponent, context, signal }) {
-    const { productId, zoneId } = context;
+    const { apiConfig, productId, zoneId = 'par', currency = 'EUR' } = context;
 
     // Reset the component before loading
-    updateComponent('product', { state: 'loading' });
+    updateComponent('state', { state: 'loading' });
 
-    fetchProduct({ productId, zoneId, signal })
+    fetchProduct({ apiConfig, productId, zoneId, currency, signal })
       .then((product) => {
-        updateComponent('product', {
+        updateComponent('state', {
           name: product.name,
-          state: 'loaded',
+          type: 'loaded',
           sections: product.sections,
         });
       })
       .catch((error) => {
         console.error(error);
-        updateComponent('product', { state: 'error' });
+        updateComponent('state', { state: 'error' });
       });
   },
 });
 
 /**
  * @param {object} params
+ * @param {ApiConfig} [params.apiConfig]
  * @param {string} params.productId
  * @param {string} params.zoneId
+ * @param {string} params.currency
  * @param {AbortSignal} params.signal
  */
-function fetchProduct({ productId, zoneId, signal }) {
-  return fetchPriceSystem({ zoneId, signal }).then((priceSystem) => {
+function fetchProduct({ apiConfig, productId, zoneId, currency, signal }) {
+  return fetchPriceSystem({ apiConfig, zoneId, currency, signal }).then((priceSystem) => {
     if (productId === 'cellar') {
       return {
         name: 'Cellar',

@@ -3,6 +3,8 @@
  * @typedef {import('../components/common.types.js').RawAddonProvider} RawAddonProvider
  * @typedef {import('../components/common.types.js').PriceSystem} PriceSystem
  * @typedef {import('../components/common.types.js').FormattedFeature} FormattedFeature
+ * @typedef {import('../components/common.types.js').PricingSection} PricingSection
+ * @typedef {import('../components/common.types.js').PricingInterval} PricingInterval
  * @typedef {import('../components/common.types.js').Plan} Plan
  * @typedef {import('../components/common.types.js').Instance} Instance
  * @typedef {import('../components/cc-pricing-product/cc-pricing-product.types.js').PricingProductStateLoaded} PricingProductStateLoaded
@@ -32,73 +34,113 @@ export function formatAddonProduct(addonProvider, priceSystem, selectedFeatures)
 // Therefore, we need to apply a price factor for on interval prices.
 const THIRTY_DAYS_IN_HOURS = 24 * 30;
 
+/**
+ * Formats the add-on data for Cellar.
+ *
+ * @param {PriceSystem} priceSystem - The price system object containing pricing information.
+ * @returns {{ sections: Array<PricingSection> }} An object containing sections for storage and outbound traffic.
+ */
 export function formatAddonCellar(priceSystem) {
   return {
     sections: [
       {
         type: 'storage',
         ...formatProductConsumptionIntervals(priceSystem, 'cellar.storage'),
+        service: 'cellar.storage',
       },
       {
         type: 'outbound-traffic',
         ...formatProductConsumptionIntervals(priceSystem, 'cellar.outbound'),
+        service: 'cellar.outbound',
       },
     ],
   };
 }
 
+/**
+ * Formats the add-on data for FSBucket.
+ *
+ * @param {PriceSystem} priceSystem - The price system object containing pricing information.
+ * @returns {{ sections: Array<PricingSection> }} An object containing a section for storage.
+ */
 export function formatAddonFsbucket(priceSystem) {
   return {
     sections: [
       {
         type: 'storage',
         ...formatProductConsumptionIntervals(priceSystem, 'fsbucket.storage'),
+        service: 'fsbucket.storage',
       },
     ],
   };
 }
 
+/**
+ * Formats the add-on data for Pulsar.
+ *
+ * @param {PriceSystem} priceSystem - The price system object containing pricing information.
+ * @returns {{ sections: Array<PricingSection> }} An object containing sections for storage, inbound traffic, and outbound traffic.
+ */
 export function formatAddonPulsar(priceSystem) {
   return {
     sections: [
       {
         type: 'storage',
         ...formatProductConsumptionIntervals(priceSystem, 'pulsar_storage_size'),
+        service: 'pulsar_storage_size',
       },
       {
         type: 'inbound-traffic',
         ...formatProductConsumptionIntervals(priceSystem, 'pulsar_throughput_in'),
+        service: 'pulsar_throughput_in',
       },
       {
         type: 'outbound-traffic',
         ...formatProductConsumptionIntervals(priceSystem, 'pulsar_throughput_out'),
+        service: 'pulsar_throughput_out',
       },
     ],
   };
 }
 
+/**
+ * Formats the add-on data for Heptapod.
+ *
+ * @param {PriceSystem} priceSystem - The price system object containing pricing information.
+ * @returns {{ sections: Array<PricingSection> }} An object containing sections for storage, private users, and public users.
+ */
 export function formatAddonHeptapod(priceSystem) {
   return {
     sections: [
       {
         type: 'storage',
         ...formatProductConsumptionIntervals(priceSystem, 'heptapod.storage'),
+        service: 'heptapod.storage',
       },
       {
         type: 'private-users',
         progressive: true,
         ...formatProductConsumptionIntervals(priceSystem, 'heptapod.private_active_users'),
+        service: 'heptapod.private_active_users',
       },
       {
         type: 'public-users',
         progressive: true,
         ...formatProductConsumptionIntervals(priceSystem, 'heptapod.public_active_users'),
+        service: 'heptapod.public_active_users',
       },
     ],
   };
 }
 
-function formatProductConsumptionIntervals(priceSystem, serviceName) {
+/**
+ * Formats the consumption intervals for a product based on the price system and service name.
+ *
+ * @param {PriceSystem} priceSystem - The price system object containing pricing information.
+ * @param {string} serviceName - The name of the service to format consumption intervals for.
+ * @returns {Pick<PricingSection, 'secability' | 'intervals'>}
+ */
+export function formatProductConsumptionIntervals(priceSystem, serviceName) {
   const service = priceSystem.countable.find((c) => c.service === serviceName);
 
   const secability =
@@ -111,11 +153,13 @@ function formatProductConsumptionIntervals(priceSystem, serviceName) {
 
   const intervals = service.price_plans.map((interval, idx, allIntervals) => {
     const minRange = idx === 0 ? 0 : allIntervals[idx - 1].max_quantity;
-    return {
+    /** @type {PricingInterval} */
+    const formattedInterval = {
       minRange,
       maxRange: interval.max_quantity,
       price: interval.price * priceFactor,
     };
+    return formattedInterval;
   });
 
   return { secability, intervals };

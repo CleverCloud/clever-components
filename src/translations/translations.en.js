@@ -1186,25 +1186,25 @@ export const translations = {
     formatNumber(lang, number),
   'cc-pricing-product-consumption.outbound-traffic.label': `traffic out`,
   'cc-pricing-product-consumption.outbound-traffic.title': `Outbound traffic:`,
-  'cc-pricing-product-consumption.price': /** @param {{price: number, code: string}} _ */ ({ price, code }) =>
-    `${formatCurrency(lang, price, { currency: code })}`,
-  'cc-pricing-product-consumption.price-interval.bytes': /** @param {{price: number, code: string}} _ */ ({
+  'cc-pricing-product-consumption.price': /** @param {{price: number, currency: string}} _ */ ({ price, currency }) =>
+    `${formatCurrency(lang, price, { currency })}`,
+  'cc-pricing-product-consumption.price-interval.bytes': /** @param {{price: number, currency: string}} _ */ ({
     price,
-    code,
+    currency,
   }) => {
     const priceInterval = formatCurrency(lang, price, {
       minimumFractionDigits: 3,
       maximumFractionDigits: 3,
-      currency: code,
+      currency,
     });
     const priceOneGigabyte = getUnit(1e9);
     return `${priceInterval} / ${priceOneGigabyte} (30 days)`;
   },
   'cc-pricing-product-consumption.price-interval.free': `FREE`,
   'cc-pricing-product-consumption.price-interval.users':
-    /** @param {{userCount: number, price: number, code: string}} _ */ ({ userCount, price, code }) => {
+    /** @param {{userCount: number, price: number, currency: string}} _ */ ({ userCount, price, currency }) => {
       const users = plural(userCount, 'user');
-      const priceInterval = formatCurrency(lang, price * userCount, { currency: code });
+      const priceInterval = formatCurrency(lang, price * userCount, { currency });
       return `${priceInterval} / ${userCount} ${users} (30 days)`;
     },
   'cc-pricing-product-consumption.private-users.label': `private users`,

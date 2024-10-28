@@ -120,6 +120,13 @@ interface Plan {
   quantity?: number;
 }
 
+interface ConsumptionPlan {
+  productName: string;
+  name: string;
+  price: number;
+  sections: Array<PricingSection>;
+  quantity?: number;
+}
 
 export interface FormattedFeature {
   // `string & {}` means any string other than the ones listed before. Without this, you get no autocomplete because string and 'toto' overlap.
@@ -143,16 +150,27 @@ export interface FormattedFeature {
   name?: string;
 }
 
-interface PricingSection {
+export interface PricingSection {
   type: SectionType;
+  service:
+    | 'cellar.storage'
+    | 'cellar.outbound'
+    | 'fsbucket.storage'
+    | 'pulsar_storage_size'
+    | 'pulsar_throughput_in'
+    | 'pulsar_throughput_out'
+    | 'heptapod.storage'
+    | 'heptapod.private_active_users'
+    | 'heptapod.public_active_users';
   progressive?: boolean; // defaults to false
   secability?: number; // defaults to 1
   intervals: PricingInterval[];
+  quantity?: number;
 }
 
-interface PricingInterval {
+export interface PricingInterval {
   minRange: number; // byte
-  maxRange: number; // byte
+  maxRange?: number; // byte
   price: number; // "euros / byte / 30 days" or just "euros / byte" for timeless sections like traffic
 }
 
