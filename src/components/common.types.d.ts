@@ -116,11 +116,6 @@ interface Marker {
   // Additional specific properties for the marker custom element.
 }
 
-interface Currency {
-  code: string;
-  changeRate: number;
-}
-
 interface Plan {
   productName: string;
   name: string;
@@ -165,7 +160,7 @@ type ActionType = 'add' | 'none';
 
 interface Temporality {
   type: 'second' | 'minute' | 'hour' | 'day' | '30-days' | '1000-minutes';
-  digits: number; // how many fraction digits to display the price
+  digits?: number; // how many fraction digits to display the price
 }
 
 interface RedirectionNamespace {
