@@ -1055,6 +1055,7 @@ export const translations = {
   //#region cc-pricing-estimation
   'cc-pricing-estimation.count.label': /** @param {{productCount: number}} _ */ ({ productCount }) =>
     plural(productCount, 'product'),
+  'cc-pricing-estimation.error': `An error occurred while loading pricing details.`,
   'cc-pricing-estimation.estimated-price-name.1000-minutes': `Price (${formatNumber(lang, 1000)} minutes)`,
   'cc-pricing-estimation.estimated-price-name.30-days': () => sanitize`estimated/30&nbsp;days`,
   'cc-pricing-estimation.estimated-price-name.day': `estimated/Day`,
@@ -1066,10 +1067,12 @@ export const translations = {
   'cc-pricing-estimation.feature.custom': /** @param {{featureName: string}} _ */ ({ featureName }) =>
     `${featureName}: `,
   'cc-pricing-estimation.feature.databases': `Databases: `,
+  'cc-pricing-estimation.feature.dedicated': `Dedicated`,
   'cc-pricing-estimation.feature.disk-size': `Disk size: `,
   'cc-pricing-estimation.feature.gpu': `GPUs: `,
   'cc-pricing-estimation.feature.has-logs': `Logs: `,
   'cc-pricing-estimation.feature.has-metrics': `Metrics: `,
+  'cc-pricing-estimation.feature.is-migratable': `Migration tool`,
   'cc-pricing-estimation.feature.max-db-size': `Max DB size: `,
   'cc-pricing-estimation.feature.memory': `RAM: `,
   'cc-pricing-estimation.feature.version': `Version: `,
@@ -1094,11 +1097,11 @@ export const translations = {
     productName,
     planName,
   }) => `Total for ${productName} ${planName}`,
-  'cc-pricing-estimation.price': /** @param {{price: number, code: string, digits: number}} _ */ ({
+  'cc-pricing-estimation.price': /** @param {{price: number, currency: string, digits: number}} _ */ ({
     price,
-    code,
+    currency,
     digits,
-  }) => formatCurrency(lang, price, { currency: code, minimumFractionDigits: digits, maximumFractionDigits: digits }),
+  }) => formatCurrency(lang, price, { currency, minimumFractionDigits: digits, maximumFractionDigits: digits }),
   'cc-pricing-estimation.price-name.1000-minutes': `Price (${formatNumber(lang, 1000)} minutes)`,
   'cc-pricing-estimation.price-name.30-days': () => sanitize`Price/30&nbsp;days`,
   'cc-pricing-estimation.price-name.day': `Price/Day`,

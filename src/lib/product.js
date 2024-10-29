@@ -8,6 +8,8 @@
  * @typedef {import('../components/common.types.js').Plan} Plan
  * @typedef {import('../components/common.types.js').Instance} Instance
  * @typedef {import('../components/cc-pricing-product/cc-pricing-product.types.js').PricingProductStateLoaded} PricingProductStateLoaded
+ * @typedef {import('../components/cc-pricing-estimation/cc-pricing-estimation.types.js').PricingEstimationStateLoaded} PricingEstimationStateLoaded
+ * @typedef {import('../components/cc-pricing-estimation/cc-pricing-estimation.types.js').FormattedRuntimePrice} FormattedRuntimePrice
  */
 
 /**
@@ -422,4 +424,32 @@ function getRunnerFlavor(prefix, name, cpus, memory, microservice = false, nice 
       formatted: null,
     },
   };
+}
+
+/**
+ * @param {PriceSystem} priceSystem
+ * @returns {Omit<PricingEstimationStateLoaded, 'type'>}
+ */
+export function formatEstimationPrices(priceSystem) {
+  /* eslint-disable camelcase */
+  const runtimePrices = priceSystem.runtime
+    .filter(({ source }) => source !== 'adc')
+    .map(({ slug_id, price }) => {
+      /** @type {FormattedRuntimePrice} */
+      const formattedProductPrice = {
+        priceId: slug_id,
+        price,
+      };
+      return formattedProductPrice;
+    });
+  /* eslint-enable camelcase */
+
+  const countablePrices = [
+    ...formatAddonCellar(priceSystem).sections,
+    ...formatAddonFsbucket(priceSystem).sections,
+    ...formatAddonPulsar(priceSystem).sections,
+    ...formatAddonHeptapod(priceSystem).sections,
+  ];
+
+  return { runtimePrices, countablePrices };
 }

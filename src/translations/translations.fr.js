@@ -1067,6 +1067,7 @@ export const translations = {
   //#region cc-pricing-estimation
   'cc-pricing-estimation.count.label': /** @param {{productCount: number}} _ */ ({ productCount }) =>
     plural(productCount, 'produit'),
+  'cc-pricing-estimation.error': `Une erreur est survenue pendant le chargement des prix.`,
   'cc-pricing-estimation.estimated-price-name.1000-minutes': `estimé (${formatNumber(lang, 1000)} minutes)`,
   'cc-pricing-estimation.estimated-price-name.30-days': () => sanitize`estimé/30&nbsp;jours`,
   'cc-pricing-estimation.estimated-price-name.day': `estimé/jour`,
@@ -1078,10 +1079,12 @@ export const translations = {
   'cc-pricing-estimation.feature.custom': /** @param {{featureName: string}} _ */ ({ featureName }) =>
     sanitize`${featureName}&nbsp;: `,
   'cc-pricing-estimation.feature.databases': () => sanitize`Bases de données&nbsp;: `,
+  'cc-pricing-estimation.feature.dedicated': `Dédié`,
   'cc-pricing-estimation.feature.disk-size': () => sanitize`Taille du disque&nbsp;: `,
   'cc-pricing-estimation.feature.gpu': () => sanitize`GPUs&nbsp;: `,
   'cc-pricing-estimation.feature.has-logs': () => sanitize`Logs&nbsp;: `,
   'cc-pricing-estimation.feature.has-metrics': () => sanitize`Métriques&nbsp;: `,
+  'cc-pricing-estimation.feature.is-migratable': `Outil de migration`,
   'cc-pricing-estimation.feature.max-db-size': () => sanitize`Taille BDD max&nbsp;: `,
   'cc-pricing-estimation.feature.memory': () => sanitize`RAM&nbsp;: `,
   'cc-pricing-estimation.feature.version': () => sanitize`Version&nbsp;: `,
@@ -1106,13 +1109,13 @@ export const translations = {
     productName,
     planName,
   }) => `Total pour ${productName} ${planName}`,
-  'cc-pricing-estimation.price': /** @param {{price: number, code: string, digits: number}} _ */ ({
+  'cc-pricing-estimation.price': /** @param {{price: number, currency: string, digits: number}} _ */ ({
     price,
-    code,
+    currency,
     digits,
   }) =>
     formatCurrency(lang, price, {
-      currency: code,
+      currency,
       minimumFractionDigits: digits,
       maximumFractionDigits: digits,
     }),
