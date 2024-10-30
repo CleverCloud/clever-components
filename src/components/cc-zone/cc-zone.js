@@ -188,6 +188,7 @@ export class CcZone extends LitElement {
         }
 
         .wrapper-details {
+          align-items: center;
           display: flex;
         }
 
