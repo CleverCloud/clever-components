@@ -35,7 +35,7 @@ const PRIVATE_ZONE = 'scope:private';
  * * When the `scope:private` tag is used, the optional `displayName` of the zone will be used instead of the City + Country.
  * * If the browser supports it, the `countryCode` will be used to display a translated version of the country's name.
  *
- * @cssdisplay flex
+ * @cssdisplay block
  *
  * @cssprop {Color} --cc-zone-default-text-color - Default text color (title and tags) (defaults to #000)
  * @cssprop {Color} --cc-zone-subtitle-color - Text color of the subtitle (country name) (defaults to #555)
@@ -101,29 +101,31 @@ export class CcZone extends LitElement {
     const { title, subtitle, infra } = CcZone._getTextParts(zone);
 
     return html`
-      <cc-img
-        class="flag"
-        ?skeleton=${skeleton}
-        src=${ifDefined(getFlagUrl(zone.countryCode))}
-        a11y-name=${ifDefined(zone.countryCode)}
-      ></cc-img>
-      <div class="wrapper-details-logo">
-        <div class="wrapper-details">
-          <div class="details">
-            <span class="title ${classMap({ skeleton })}">${title}</span>
-            <span class="subtitle ${classMap({ skeleton })}">${subtitle}</span>
+      <div class="wrapper ${classMap({ 'centered-block': zone.tags.length === 0 })}">
+        <cc-img
+          class="flag"
+          ?skeleton=${skeleton}
+          src=${ifDefined(getFlagUrl(zone.countryCode))}
+          a11y-name=${ifDefined(zone.countryCode)}
+        ></cc-img>
+        <div class="wrapper-details-logo">
+          <div class="wrapper-details">
+            <div class="details">
+              <span class="title ${classMap({ skeleton })}">${title}</span>
+              <span class="subtitle ${classMap({ skeleton })}">${subtitle}</span>
+            </div>
+            ${infra != null
+              ? html`
+                  <cc-img
+                    class="infra-logo ${classMap({ skeleton })}"
+                    src=${getInfraProviderLogoUrl(infra)}
+                    a11y-name=${infra}
+                  ></cc-img>
+                `
+              : ''}
           </div>
-          ${infra != null
-            ? html`
-                <cc-img
-                  class="infra-logo ${classMap({ skeleton })}"
-                  src=${getInfraProviderLogoUrl(infra)}
-                  a11y-name=${infra}
-                ></cc-img>
-              `
-            : ''}
+          <div class="tag-list">${zone.tags.map((tag) => this._renderTag(tag, skeleton))}</div>
         </div>
-        <div class="tag-list">${zone.tags.map((tag) => this._renderTag(tag, skeleton))}</div>
       </div>
     `;
   }
@@ -159,12 +161,17 @@ export class CcZone extends LitElement {
         :host {
           --lh: 1.5em;
 
-          display: flex;
+          display: block;
         }
 
         :host([mode='small']),
         :host([mode='small-infra']) {
           --lh: 1em;
+        }
+
+        .wrapper {
+          align-items: center;
+          display: flex;
         }
 
         .flag {
@@ -188,6 +195,7 @@ export class CcZone extends LitElement {
         }
 
         .wrapper-details {
+          align-items: center;
           display: flex;
         }
 
