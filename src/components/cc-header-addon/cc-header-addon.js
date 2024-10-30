@@ -190,6 +190,9 @@ export class CcHeaderAddon extends LitElement {
         }
 
         cc-zone {
+          /* FIXME: remove align-items once #1225 is merged */
+
+          align-items: center;
           font-style: normal;
           white-space: nowrap;
         }

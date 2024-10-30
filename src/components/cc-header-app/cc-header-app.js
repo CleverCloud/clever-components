@@ -502,6 +502,7 @@ export class CcHeaderApp extends LitElement {
         }
 
         .messages {
+          align-items: center;
           display: flex;
           flex-wrap: wrap;
           font-size: 0.9em;
@@ -548,6 +549,9 @@ export class CcHeaderApp extends LitElement {
         }
 
         cc-zone {
+          /* FIXME: remove align-items once #1225 is merged */
+
+          align-items: center;
           font-style: normal;
           white-space: nowrap;
         }
