@@ -5,6 +5,21 @@ title: 'Changelog'
 
 # Changelog
 
+## [16.2.0](https://github.com/CleverCloud/clever-components/compare/16.1.0...16.2.0) (2024-10-30)
+
+
+### 🚀 Features
+
+* **cc-zone-picker:** add disabled and readonly modes ([a17dfd1](https://github.com/CleverCloud/clever-components/commit/a17dfd15cc6c88626192466741c8fadeb424cd31))
+
+
+### 🐛 Bug Fixes
+
+* **cc-block:** improve alignment in footer ([0a7e3ae](https://github.com/CleverCloud/clever-components/commit/0a7e3aedb360f502731cd7cefb2aca80c736ab8d))
+* **cc-header-addon:** improve zone alignment in footer ([d875d57](https://github.com/CleverCloud/clever-components/commit/d875d5757fba33b8e710e762eb4f925d702de3ab))
+* **cc-header-app:** improve zone alignment in footer ([8c72d23](https://github.com/CleverCloud/clever-components/commit/8c72d23761d8eec410653712bd9d2a0ca83ed847))
+* **cc-zone:** improve alignment ([5b42c3d](https://github.com/CleverCloud/clever-components/commit/5b42c3d88f2b9233c2cdc8cdace76c3cc79629f2)), closes [#1226](https://github.com/CleverCloud/clever-components/issues/1226)
+
 ## [16.1.0](https://github.com/CleverCloud/clever-components/compare/16.0.0...16.1.0) (2024-10-22)
 
 
@@ -852,17 +867,17 @@ title: 'Changelog'
 
 * `<cc-map>`: make dot markers not focusable.
 * `<cc-zone-input>`: make server markers not focusable.
-* `<cc-addon-admin>`: 
+* `<cc-addon-admin>`:
   * fix skeleton mode
   * add visually hidden label for `addon name` and `addon tags` input fields so that these fields can be identified by assistive technologies.
 * `<cc-env-var-form>`: fix toggling to JSON mode while in skeleton state.
 * `<cc-button>`: display progress bar during waiting state when button is in link mode.
 * `<cc-badge>`: add skeleton mode
-* `<cc-input-text>`: 
+* `<cc-input-text>`:
   * remove the unique id generation technique and rely on Shadow DOM isolation instead.
   * add `hiddenLabel` prop to allow the label to be visually hidden in some cases.
   * add red border and redish focus ring when error slot is used
-* `<cc-input-number>`: 
+* `<cc-input-number>`:
   * remove the unique id generation technique and rely on Shadow DOM isolation instead.
   * update stories to always show visible labels.
   * remove `tagsWithLabel` story since there is always a visible label now.
@@ -883,13 +898,13 @@ title: 'Changelog'
 * `<cc-header-addon>`: add visually hidden label for `addonId` and `realAddonId` input fields so that these fields can be identified by assistive technologies.
 * `<cc-html-frame> loading story`: add a `title` attribute so that it can be identified by assistive technologies.
 * `<cc-invoice>`: add a `title` on the `<cc-html-frame>` so that the `<iframe>` can be identified by assistive technologies.
-* `<cc-pricing-estimation>`: add visually hidden label for `<cc-input-number>` showing the quantity so that they can be identified by assistive technologies. 
+* `<cc-pricing-estimation>`: add visually hidden label for `<cc-input-number>` showing the quantity so that they can be identified by assistive technologies.
 * `<cc-pricing-product-consumption>`:
   * add text content to `<cc-button>` elements (toggle State buttons) so that they can be identified by assistive technologies.
   * add visually hidden label for `<cc-input-number>` showing the size or the quantity so that they can be identified by assistive technologies.
 * `<cc-pricing-table>`: add text content to `<cc-button>` elements (toggle State and add buttons) so that they can be identified by assistive technologies.
 * `resizeObserver`: add `window.requestAnimationFrame` in the resize observer callback to mitigate the `resize observer loop limit exceeded issue`.
-* stories: fix several stories not being passed to `enhancedStoryNames`. 
+* stories: fix several stories not being passed to `enhancedStoryNames`.
 * `<cc-tile-status-codes>`: fix JavaScript errors in case initial loading fails (error state).
 * `<cc-button>`:
   * add a new `accessibleName` prop to override the `aria-label` and `title` values.
@@ -937,13 +952,13 @@ title: 'Changelog'
 
 ### ⚠️ BREAKING CHANGES
 
-* `<cc-input-text>`: 
+* `<cc-input-text>`:
   * change default font-family to inherit instead of monospace (BREAKING CHANGE),
   * add CSS Custom Prop to change the `<input>` font-family.
 * `<cc-input-number>`:
   * change default font-family to inherit instead of monospace (BREAKING CHANGE),
   * add CSS Custom Prop to change the `<input>` font-family.
-* `<cc-toggle>`: 
+* `<cc-toggle>`:
   * rename `--cc-text-transform` to `--cc-toggle-text-transform` (BREAKING CHANGE),
   * add CSS Custom Prop to customize `border-radius`, `font-weight`.
 * Introduce a public theme based on a CSS files (BREAKING CHANGE):
@@ -956,7 +971,7 @@ title: 'Changelog'
 
 ### Components
 
-* Replace error state after user action by `cc-toast` notification (`cc-grafana-info`, `cc-tcp-redirection-form`, `cc-env-var-form`). 
+* Replace error state after user action by `cc-toast` notification (`cc-grafana-info`, `cc-tcp-redirection-form`, `cc-env-var-form`).
 * New components:
   * `<cc-toaster>`
   * `<cc-toast>`
@@ -965,8 +980,8 @@ title: 'Changelog'
 ### For devs
 
 * `rollup`:
-  * add new plugin `rollup-plugin-styles-assets` to bundle the `default-theme` CSS file. 
-  * add new property (array) `styles` in `deps-manifest` to specify the hashed name of the `default-theme` CSS file corresponding to a specific version (to be used by the CDN). 
+  * add new plugin `rollup-plugin-styles-assets` to bundle the `default-theme` CSS file.
+  * add new property (array) `styles` in `deps-manifest` to specify the hashed name of the `default-theme` CSS file corresponding to a specific version (to be used by the CDN).
 
 ...
 ## 8.0.1 (2022-07-15)
@@ -989,7 +1004,7 @@ title: 'Changelog'
 
 ### Components
 
-* `<cc-article-list>`: fix error mode not triggering on XML parsing failure (smart). 
+* `<cc-article-list>`: fix error mode not triggering on XML parsing failure (smart).
 * `parseRssFeed()`: trim XML string before parse to avoid whitespaces error.
 * `<cc-button>`: update waiting loader animation in circle state.
 * Color design tokens: add darker shades for light colors.
@@ -998,7 +1013,7 @@ title: 'Changelog'
 * `<cc-tcp-redirection-form>`: Use `<cc-badge>` to display redirection count.
 * `<cc-header-app>`: Change footer background to neutral.
 * `<cc-header-addon>`: Change footer background to neutral.
-* `<cc-header-orga>`: Use `<cc-badge>` to display org status and hotline number. 
+* `<cc-header-orga>`: Use `<cc-badge>` to display org status and hotline number.
 * `<cc-input-text>`: add `inline` prop to place the label on the left of the `<input>` element. Add new `inline` story to show this behavior.
 * `<cc-input-number>`: add `inline` prop to place the label on the left of the `<input>` element. Add new `inline` story to show this behavior.
 * `<cc-select>`: add `inline` prop to place the label on the left of the `<select>` element. Add new `inline` story to show this behavior.
@@ -1230,7 +1245,7 @@ If you need to use the `pricing` components, please update to a version >= `11.0
 
 ### ⚠️ BREAKING CHANGES
 
-* Browser support updated (Safari >=14), see [browser support reference](https://github.com/CleverCloud/clever-components/blob/7.0.0/docs/references/browser-support.reference.md) for details (BREAKING CHANGE). 
+* Browser support updated (Safari >=14), see [browser support reference](https://github.com/CleverCloud/clever-components/blob/7.0.0/docs/references/browser-support.reference.md) for details (BREAKING CHANGE).
 * `<cc-pricing-product-cellar>`: delete component and replace it with a more generic component (BREAKING CHANGE)
 * `<cc-pricing-table>`:
   * rename `items` to `plans` (BREAKING CHANGE)
