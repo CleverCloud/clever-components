@@ -201,6 +201,63 @@ export const defaultStory = makeStory(conf, {
   ],
 });
 
+export const partiallyDisabled = makeStory(conf, {
+  /** @type {Array<Partial<CcZonePicker>>} */
+  items: [
+    {
+      zonesSections: [
+        {
+          zones: PUBLIC_ZONES.map((z, i) => ({ ...z, disabled: i % 2 === 1 })),
+        },
+      ],
+      value: 'par',
+    },
+  ],
+});
+
+export const disabled = makeStory(conf, {
+  /** @type {Array<Partial<CcZonePicker>>} */
+  items: [
+    {
+      disabled: true,
+      zonesSections: [
+        {
+          zones: PUBLIC_ZONES,
+        },
+      ],
+      value: 'par',
+    },
+  ],
+});
+
+export const readonly = makeStory(conf, {
+  /** @type {Array<Partial<CcZonePicker>>} */
+  items: [
+    {
+      readonly: true,
+      zonesSections: [
+        {
+          zones: PUBLIC_ZONES,
+        },
+      ],
+      value: 'par',
+    },
+  ],
+});
+
+export const defaultValue = makeStory(conf, {
+  /** @type {Array<Partial<CcZonePicker>>} */
+  items: [
+    {
+      zonesSections: [
+        {
+          zones: PUBLIC_ZONES,
+        },
+      ],
+    },
+  ],
+});
+
 export const publicAndPrivateZones = makeStory(conf, {
   /** @type {Array<Partial<CcZonePicker>>} */
   items: [

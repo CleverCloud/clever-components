@@ -14,6 +14,7 @@ import { dispatchCustomEvent } from '../../lib/events.js';
  * @typedef {import('./cc-zone-picker.types.js').SingleZoneSection} SingleZoneSection
  * @typedef {import('./cc-zone-picker.types.js').ZonesSections} ZonesSections
  * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement>} HTMLInputElementEvent
+ * @typedef {import('lit').PropertyValues} CcZonePickerPropertyValues
  */
 
 /**
@@ -27,6 +28,8 @@ export class CcZonePicker extends CcFormControlElement {
   static get properties() {
     return {
       ...super.properties,
+      disabled: { type: Boolean },
+      readonly: { type: Boolean },
       value: { type: String },
       zonesSections: { type: Array, attribute: 'zones-sections' },
     };
@@ -35,12 +38,30 @@ export class CcZonePicker extends CcFormControlElement {
   constructor() {
     super();
 
-    /** @type {ZonesSections} array of zones sections */
-    this.zonesSections = [];
+    /** @type {boolean} whether all the form controls should be disabled */
+    this.disabled = false;
+
+    /** @type {boolean} whether all the form controls should be readonly */
+    this.readonly = false;
 
     /** @type {string} current selected zone code */
     this.value = null;
+
+    /** @type {ZonesSections} array of zones sections */
+    this.zonesSections = [];
   }
+
+  /**
+   * @param {CcZonePickerPropertyValues} changedProperties
+   */
+  willUpdate(changedProperties) {
+    if (changedProperties.has('value') && this.value == null) {
+      this.value = this.zonesSections?.[0]?.zones?.[0]?.code;
+    }
+  }
+
+  // @ts-expect-error: We override this setter as the component doesn't handle error for now.
+  set errorMessage(_) {}
 
   /**
    * @param {HTMLInputElementEvent} e
@@ -87,13 +108,14 @@ export class CcZonePicker extends CcFormControlElement {
    * @param {string} zoneSectionHeaderId
    */
   _renderZoneCard(zone, isZoneSelected, zoneSectionHeaderId) {
+    const disabled = this.readonly ? !isZoneSelected : zone.disabled || this.disabled;
     return html`
       <input
         class="visually-hidden"
         type="radio"
         name="zone"
         .value="${zone.code}"
-        ?disabled=${zone.disabled}
+        ?disabled=${disabled}
         ?checked="${isZoneSelected}"
         id="${zone.code}"
         aria-describedby="${ifDefined(zoneSectionHeaderId)}"
@@ -101,7 +123,7 @@ export class CcZonePicker extends CcFormControlElement {
       <label for="${zone.code}">
         <cc-zone-card
           ?selected="${isZoneSelected}"
-          ?disabled="${zone.disabled}"
+          ?disabled="${disabled}"
           name="${zone.name}"
           country="${zone.country}"
           code="${zone.code}"
