@@ -3,7 +3,7 @@
 import { defineCE, elementUpdated, expect } from '@open-wc/testing';
 import { LitElement, html } from 'lit';
 import { getElement } from '../../test/helpers/element-helper.js';
-import { hasSlottedChildren } from './hasSlottedChildren.js';
+import { hasSlottedChildren } from './has-slotted-children.js';
 
 describe('hasSlottedChildrenDirective', () => {
   it('Should set the right attribute when slot is used', async () => {
