@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixArrowRightSLine as iconArrowRight } from '../../assets/cc-remix.icons.js';
-import { hasSlottedChildren } from '../../directives/hasSlottedChildren.js';
+import { hasSlottedChildren } from '../../directives/has-slotted-children.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { isStringEmpty } from '../../lib/utils.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
