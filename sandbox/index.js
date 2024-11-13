@@ -52,6 +52,7 @@ const sandboxes = [
   'cc-logs-application-view',
   'forms',
   'cc-kv-explorer',
+  'cc-test-kv',
 ];
 
 const $listContainer = document.querySelector('.sandboxes-list');
