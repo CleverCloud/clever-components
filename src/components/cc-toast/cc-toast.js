@@ -195,7 +195,7 @@ export class CcToast extends LitElement {
           align-items: stretch;
           background-color: var(--toast-color);
           border: 1px solid var(--toast-color);
-          border-radius: 0.3em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
           box-shadow:
             0 2px 4px rgb(38 38 38 / 25%),
             0 5px 15px rgb(38 38 38 / 25%);
