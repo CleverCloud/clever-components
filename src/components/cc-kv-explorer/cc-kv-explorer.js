@@ -420,8 +420,10 @@ export class CcKvExplorer extends LitElement {
     return html`
       <div class="wrapper">
         ${this._renderFilterBar()}
-        <div class="keys">${this._renderKeys(this.state)}</div>
-        ${this._renderDetail()}
+        <div class="middle-row">
+          <div class="keys">${this._renderKeys(this.state)}</div>
+          ${this._renderDetail()}
+        </div>
         <cc-kv-console-beta
           class="console"
           .state=${this.consoleState}
@@ -901,12 +903,7 @@ export class CcKvExplorer extends LitElement {
 
         .wrapper {
           display: grid;
-          grid-gap: 1em;
-          grid-template-areas:
-            'top-bar top-bar'
-            'keys    detail'
-            'console console';
-          grid-template-columns: minmax(auto, 400px) 1fr;
+          gap: 1em;
           grid-template-rows: auto 1fr auto;
           height: 100%;
         }
@@ -915,11 +912,16 @@ export class CcKvExplorer extends LitElement {
           align-items: center;
           display: flex;
           gap: 0.5em;
-          grid-area: top-bar;
         }
 
         .filter-bar cc-input-text {
           flex: 1;
+        }
+
+        .middle-row {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1em;
         }
 
         .keys {
@@ -927,9 +929,9 @@ export class CcKvExplorer extends LitElement {
           border: 1px solid var(--cc-color-border-neutral, #aaa);
           border-radius: var(--cc-border-radius-default, 0.25em);
           display: grid;
-          grid-area: keys;
           grid-auto-rows: auto 1fr;
           overflow: hidden;
+          flex: 1 1 25em;
         }
 
         .keys-header {
@@ -959,15 +961,14 @@ export class CcKvExplorer extends LitElement {
           border-radius: var(--cc-border-radius-default, 0.25em);
           display: flex;
           flex-direction: column;
-          grid-area: detail;
           min-height: 0;
           overflow: auto;
+          flex: 100 1 auto;
         }
 
         .detail-empty {
           align-items: center;
           display: flex;
-          grid-area: detail;
           justify-content: center;
         }
 
@@ -1063,7 +1064,6 @@ export class CcKvExplorer extends LitElement {
         .console {
           border: 1px solid var(--cc-color-border-neutral, #aaa);
           border-radius: var(--cc-border-radius-default, 0.25em);
-          grid-area: console;
           max-height: 400px;
         }
 
