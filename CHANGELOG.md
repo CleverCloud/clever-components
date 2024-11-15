@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [16.3.1](https://github.com/CleverCloud/clever-components/compare/16.3.0...16.3.1) (2024-11-15)
+
+
+### 🐛 Bug Fixes
+
+* **cc-kv-explorer:** wrong gap between buttons in hash, list and set explorers ([038a5da](https://github.com/CleverCloud/clever-components/commit/038a5dadce7d206b9875ec36714bb67724a9eff5)), closes [#1236](https://github.com/CleverCloud/clever-components/issues/1236)
+
 ## [16.3.0](https://github.com/CleverCloud/clever-components/compare/16.2.0...16.3.0) (2024-11-15)
 
 
