@@ -5,6 +5,21 @@ title: 'Changelog'
 
 # Changelog
 
+## [16.3.0](https://github.com/CleverCloud/clever-components/compare/16.2.0...16.3.0) (2024-11-15)
+
+
+### 🚀 Features
+
+* **cc-kv-explorer:** init component ([d6e3ee7](https://github.com/CleverCloud/clever-components/commit/d6e3ee744f816cff9685eca91a856805ede13888)), closes [#1177](https://github.com/CleverCloud/clever-components/issues/1177)
+* **LostFocusController:** add an additional waiter ([327b180](https://github.com/CleverCloud/clever-components/commit/327b180edccf7cab22a18e02a6ad1ac8fb559c03)), closes [#1155](https://github.com/CleverCloud/clever-components/issues/1155)
+
+
+### 🐛 Bug Fixes
+
+* **cc-input-text:** fix `Ctrl`+`Enter` keystroke when in `multi` mode on Chrome ([5be2bcd](https://github.com/CleverCloud/clever-components/commit/5be2bcdc4942e0d13fc66b9c4dd3f977515a12e1)), closes [#861](https://github.com/CleverCloud/clever-components/issues/861)
+* **cc-toast:** replace hard coded border radius with `--cc-border-radius-default` ([c3ae6bb](https://github.com/CleverCloud/clever-components/commit/c3ae6bb5c3c8e646a6fd28ff0638e5b2c336015e)), closes [#1232](https://github.com/CleverCloud/clever-components/issues/1232)
+* fix `visually-hidden` style to prevent a strange bug in Chrome ([e05e85c](https://github.com/CleverCloud/clever-components/commit/e05e85cc2c4d084d0689749c3672704caea7d59f)), closes [#1200](https://github.com/CleverCloud/clever-components/issues/1200)
+
 ## [16.2.0](https://github.com/CleverCloud/clever-components/compare/16.1.0...16.2.0) (2024-10-30)
 
 
