@@ -1,15 +1,15 @@
 import { makeStory } from '../../stories/lib/make-story.js';
 import './cc-kv-hash-input.js';
 
-/**
- * @typedef {import('./cc-kv-hash-input.js').CcKvHashInput} CcKvHashInput
- */
-
 export default {
   tags: ['autodocs'],
   title: '🚧 Beta/🛠 Kv Explorer/<cc-kv-hash-input-beta>',
   component: 'cc-kv-hash-input-beta',
 };
+
+/**
+ * @typedef {import('./cc-kv-hash-input.js').CcKvHashInput} CcKvHashInput
+ */
 
 const conf = {
   component: 'cc-kv-hash-input-beta',

@@ -1,15 +1,15 @@
 import { makeStory } from '../../stories/lib/make-story.js';
 import './cc-kv-list-explorer.js';
 
-/**
- * @typedef {import('./cc-kv-list-explorer.js').CcKvListExplorer} CcKvListExplorer
- */
-
 export default {
   tags: ['autodocs'],
   title: '🚧 Beta/🛠 Kv Explorer/<cc-kv-list-explorer-beta>',
   component: 'cc-kv-list-explorer-beta',
 };
+
+/**
+ * @typedef {import('./cc-kv-list-explorer.js').CcKvListExplorer} CcKvListExplorer
+ */
 
 const conf = {
   component: 'cc-kv-list-explorer-beta',

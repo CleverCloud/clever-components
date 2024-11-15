@@ -1,15 +1,15 @@
 import { makeStory } from '../../stories/lib/make-story.js';
 import './cc-kv-hash-explorer.js';
 
-/**
- * @typedef {import('./cc-kv-hash-explorer.js').CcKvHashExplorer} CcKvHashExplorer
- */
-
 export default {
   tags: ['autodocs'],
   title: '🚧 Beta/🛠 Kv Explorer/<cc-kv-hash-explorer-beta>',
   component: 'cc-kv-hash-explorer-beta',
 };
+
+/**
+ * @typedef {import('./cc-kv-hash-explorer.js').CcKvHashExplorer} CcKvHashExplorer
+ */
 
 const conf = {
   component: 'cc-kv-hash-explorer-beta',

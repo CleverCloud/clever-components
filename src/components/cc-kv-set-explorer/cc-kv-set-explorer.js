@@ -241,29 +241,31 @@ export class CcKvSetExplorer extends LitElement {
     return html`
       <div class="element">
         <span class=${classMap({ 'element-value': true, skeleton })}>${state.value}</span>
-        <cc-button
-          class="delete-button"
-          .icon=${iconBin}
-          a11y-name=${i18n('cc-kv-set-explorer.element.delete', { index })}
-          data-element=${state.value}
-          hide-text
-          outlined
-          ?skeleton=${skeleton}
-          danger
-          ?disabled=${this.disabled}
-          ?waiting=${state.type === 'deleting'}
-          @cc-button:click=${this._onDeleteElement}
-        ></cc-button>
-        <cc-button
-          .icon=${iconCopy}
-          outlined
-          hide-text
-          data-text=${state.value}
-          ?skeleton=${skeleton}
-          ?disabled=${this.disabled}
-          @cc-button:click=${this._onCopyKeyButtonClick}
-          >${i18n('cc-kv-set-explorer.element.copy', { index })}</cc-button
-        >
+        <div class="element-value-buttons">
+          <cc-button
+            class="delete-button"
+            .icon=${iconBin}
+            a11y-name=${i18n('cc-kv-set-explorer.element.delete', { index })}
+            data-element=${state.value}
+            hide-text
+            outlined
+            ?skeleton=${skeleton}
+            danger
+            ?disabled=${this.disabled}
+            ?waiting=${state.type === 'deleting'}
+            @cc-button:click=${this._onDeleteElement}
+          ></cc-button>
+          <cc-button
+            .icon=${iconCopy}
+            outlined
+            hide-text
+            data-text=${state.value}
+            ?skeleton=${skeleton}
+            ?disabled=${this.disabled}
+            @cc-button:click=${this._onCopyKeyButtonClick}
+            >${i18n('cc-kv-set-explorer.element.copy', { index })}</cc-button
+          >
+        </div>
       </div>
     `;
   }
@@ -325,7 +327,7 @@ export class CcKvSetExplorer extends LitElement {
           align-items: center;
           display: grid;
           gap: 0.5em;
-          grid-template-columns: 1fr auto auto;
+          grid-template-columns: 1fr auto;
           padding: 0.25em 0.5em;
           width: 100%;
         }
@@ -342,6 +344,11 @@ export class CcKvSetExplorer extends LitElement {
 
         .element:hover {
           background-color: var(--cc-color-bg-neutral-hovered, #e7e7e7);
+        }
+
+        .element-value-buttons {
+          display: flex;
+          gap: 0.35em;
         }
 
         .skeleton {
