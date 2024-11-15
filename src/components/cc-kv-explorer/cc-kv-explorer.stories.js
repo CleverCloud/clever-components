@@ -3,12 +3,6 @@ import { randomString } from '../../lib/utils.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 import './cc-kv-explorer.js';
 
-/**
- * @typedef {import('./cc-kv-explorer.js').CcKvExplorer} CcKvExplorer
- * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyState} CcKvKeyState
- * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyType} CcKvKeyType
- */
-
 /** @type {Array<CcKvKeyType>} */
 const KEY_TYPES = ['string', 'hash', 'list', 'set'];
 
@@ -30,6 +24,12 @@ export default {
   title: '🚧 Beta/🛠 Kv Explorer/<cc-kv-explorer-beta>',
   component: 'cc-kv-explorer-beta',
 };
+
+/**
+ * @typedef {import('./cc-kv-explorer.js').CcKvExplorer} CcKvExplorer
+ * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyState} CcKvKeyState
+ * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyType} CcKvKeyType
+ */
 
 const conf = {
   component: 'cc-kv-explorer-beta',

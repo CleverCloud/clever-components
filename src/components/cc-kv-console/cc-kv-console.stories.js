@@ -1,15 +1,15 @@
 import { makeStory } from '../../stories/lib/make-story.js';
 import './cc-kv-console.js';
 
-/**
- * @typedef {import('./cc-kv-console.js').CcKvConsole} CcKvConsole
- */
-
 export default {
   tags: ['autodocs'],
   title: '🚧 Beta/🛠 Kv Explorer/<cc-kv-console-beta>',
   component: 'cc-kv-console-beta',
 };
+
+/**
+ * @typedef {import('./cc-kv-console.js').CcKvConsole} CcKvConsole
+ */
 
 const conf = {
   component: 'cc-kv-console-beta',
